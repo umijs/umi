@@ -1,4 +1,46 @@
 {
   "name": "umi",
-  "version": "1.0.0-alpha.0"
+  "version": "1.0.0-alpha.0",
+  "dependencies": {
+    "umi-buildAndDev": "^0.1.0",
+    "umi-router": "^0.1.0",
+    "babel-plugin-import": "^1.6.2",
+    "babel-preset-umi": "^0.1.0",
+    "fastclick": "^1.0.6",
+    "history": "^4.7.2",
+    "@babel/runtime": "7.0.0-beta.31",
+    "babel-plugin-module-resolver": "^3.0.0-beta.5",
+    "chai": "^4.1.2",
+    "cross-spawn": "^5.1.0",
+    "ejs": "^2.5.7",
+    "query-string": "^5.0.0",
+    "uppercamelcase": "^3.0.0",
+    "url": "^0.11.0",
+    "yargs-parser": "^7.0.0"
+  },
+  "bin": {
+    "umi": "./bin/umi.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "scripts": {
+    "build": "ruban build",
+    "test": "ruban test",
+    "debug": "ruban debug",
+    "coveralls": "ruban coveralls"
+  },
+  "files": [
+    "lib",
+    "src",
+    "bin"
+  ]
 }

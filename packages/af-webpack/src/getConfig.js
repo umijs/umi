@@ -289,7 +289,7 @@ export default function getConfig(opts = {}) {
   const eslintOptions = {
     formatter: eslintFormatter,
     baseConfig: {
-      extends: [require.resolve('eslint-config-af-react')],
+      extends: [require.resolve('eslint-config-umi')],
     },
     ignore: false,
     eslintPath: require.resolve('eslint'),

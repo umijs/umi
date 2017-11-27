@@ -1,0 +1,46 @@
+{
+  "name": "umi-buildAndDev",
+  "version": "0.1.0",
+  "dependencies": {
+    "address": "^1.0.3",
+    "af-webpack": "^0.9.1",
+    "antd-mobile": "^2.0.0",
+    "chalk": "^2.1.0",
+    "chokidar": "^1.7.0",
+    "debug": "^3.1.0",
+    "didyoumean": "^1.2.1",
+    "ejs": "^2.5.7",
+    "is-plain-object": "^2.0.4",
+    "lodash.debounce": "^4.0.8",
+    "lodash.isequal": "^4.5.0",
+    "mkdirp": "^0.5.1",
+    "preact": "^8.2.5",
+    "preact-compat": "^3.17.0",
+    "rimraf": "^2.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi/tree/master/packages/umi-buildAndDev"
+  },
+  "homepage": "http://github.com/umijs/umi/tree/master/packages/umi-buildAndDev",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "http://github.com/umijs/umi/issues"
+  },
+  "scripts": {
+    "build": "DISABLE_TRANSFORM_RUNTIME=1 NODE_TARGET=1 ruban build",
+    "test": "ruban test",
+    "debug": "ruban debug",
+    "coveralls": "ruban coveralls"
+  },
+  "devDependencies": {
+    "glob": "^7.1.2"
+  },
+  "files": [
+    "lib",
+    "src",
+    "template"
+  ]
+}

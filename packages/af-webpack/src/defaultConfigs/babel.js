@@ -1,3 +1,3 @@
 export default {
-  presets: [require.resolve('babel-preset-af-react')],
+  presets: [require.resolve('babel-preset-umi')],
 };
