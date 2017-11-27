@@ -1,0 +1,17 @@
+.DS_Store
+tmp
+/node_modules
+/packages/*/node_modules
+/boilerplates/*/node_modules
+/boilerplates/*/www
+/boilerplates/*/_dist
+/boilerplates/*/_package
+lib
+dist
+coverage
+.nyc_output
+npm-debug.log*
+lerna-debug.log
+.changelog
+.koi
+/boilerplates/*/node_modules
