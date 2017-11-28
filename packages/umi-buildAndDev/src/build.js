@@ -11,7 +11,7 @@ import generateRenderConfig from './generateRenderConfig';
 import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
 
-const debug = require('debug')('koi-buildAndDev:build');
+const debug = require('debug')('umi-buildAndDev:build');
 
 const cwd = process.cwd();
 const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);

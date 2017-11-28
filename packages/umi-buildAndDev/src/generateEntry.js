@@ -10,7 +10,7 @@ import getRPCContent from './getRPCContent';
 import getModelContent from './getModelContent';
 import getRouterContent from './getRouterContent';
 
-const debug = require('debug')('koi-buildAndDev:generateEntry');
+const debug = require('debug')('umi-buildAndDev:generateEntry');
 
 let cachedRouterContent = null;
 let koiJSGenerated = false;

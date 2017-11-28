@@ -12,7 +12,7 @@ import { PAGES_PATH } from './constants';
 import addBaconToHtml from './addBaconToHtml';
 import addMetaInfoToHtml from './addMetaInfoToHtml';
 
-const debug = require('debug')('koi-buildAndDev:generateHTML');
+const debug = require('debug')('umi-buildAndDev:generateHTML');
 
 export default function generateHTML(
   routeConfig,

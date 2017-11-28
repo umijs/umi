@@ -4,7 +4,7 @@ import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import defaultBrowsers from './defaultConfigs/browsers';
 
-const debug = require('debug')('koi-buildAndDev:getWebpackConfig');
+const debug = require('debug')('umi-buildAndDev:getWebpackConfig');
 
 const env = process.env.NODE_ENV;
 

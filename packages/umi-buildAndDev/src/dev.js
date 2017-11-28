@@ -8,7 +8,7 @@ import send, { PAGE_LIST } from './send';
 import { getConfig, watchConfigs } from './getConfig';
 import { unwatch } from './getConfig/watch';
 
-const debug = require('debug')('koi-buildAndDev:dev');
+const debug = require('debug')('umi-buildAndDev:dev');
 
 export default function runDev(opts) {
   const {

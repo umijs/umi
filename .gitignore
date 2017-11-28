@@ -2,10 +2,10 @@
 tmp
 /node_modules
 /packages/*/node_modules
-/boilerplates/*/node_modules
-/boilerplates/*/www
-/boilerplates/*/_dist
-/boilerplates/*/_package
+/examples/*/node_modules
+/examples/*/www
+/examples/*/_dist
+/examples/*/_package
 lib
 dist
 coverage
@@ -14,4 +14,3 @@ npm-debug.log*
 lerna-debug.log
 .changelog
 .koi
-/boilerplates/*/node_modules
