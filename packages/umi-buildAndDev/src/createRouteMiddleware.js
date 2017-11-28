@@ -5,20 +5,21 @@ import { PAGES_PATH } from './constants';
 
 let config = null;
 
-export default function createRouteMiddleware(root, _config) {
+export default function createRouteMiddleware(root, _config, plugins) {
   config = _config;
   return (req, res, next) => {
     const routeConfig = getRouteConfig(join(root, PAGES_PATH));
     const { pages: pagesConfig } = config;
     const path = req.path === '/' ? '/index.html' : req.path;
     if (routeConfig[path]) {
-      const content = getHTMLContent(
-        path,
-        routeConfig[path],
-        join(root, PAGES_PATH),
+      const content = getHTMLContent({
+        route: path,
+        entry: routeConfig[path],
+        pagesPath: join(root, PAGES_PATH),
         root,
-        pagesConfig && pagesConfig[path],
-      );
+        pageConfig: pagesConfig && pagesConfig[path],
+        plugins,
+      });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
     } else {

@@ -3,11 +3,11 @@ import { join } from 'path';
 import normalizeEntry from './normalizeEntry';
 import winPath from './winPath';
 
-export default function getRouterContent(routeConfig, tplPath, useModel) {
-  const routerTpl = useModel ? 'routerWithModel' : 'router';
+export default function getRouterContent(routeConfig, tplPath) {
   if (!tplPath) {
-    tplPath = join(__dirname, `../template/${routerTpl}.js`);
+    tplPath = join(__dirname, `../template/router.js`);
   }
+
   if (!exists(tplPath)) {
     throw new Error('tplPath 不存在');
   }

@@ -16,7 +16,8 @@
     "mkdirp": "^0.5.1",
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "umi-plugin": "^0.1.0"
   },
   "repository": {
     "type": "git",

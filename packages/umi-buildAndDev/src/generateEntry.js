@@ -4,10 +4,9 @@ import { writeFileSync, readFileSync } from 'fs';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import { applyPlugins } from 'umi-plugin';
 import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import getRouteConfig from './getRouteConfig';
-import getRPCContent from './getRPCContent';
-import getModelContent from './getModelContent';
 import getRouterContent from './getRouterContent';
 
 const debug = require('debug')('umi-buildAndDev:generateEntry');
@@ -15,12 +14,12 @@ const debug = require('debug')('umi-buildAndDev:generateEntry');
 let cachedRouterContent = null;
 let koiJSGenerated = false;
 
-export default function generateEntry(cwd, opts = {}) {
-  const { onChange } = opts;
+export default function generateEntry(opts = {}) {
+  const { cwd, onChange } = opts;
   const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
 
   mkdirp(entryPath);
-  const { routeConfig } = generate(cwd, entryPath);
+  const { routeConfig } = generate({ ...opts, entryPath });
   if (onChange) onChange(routeConfig);
 
   function watch(devServer) {
@@ -28,7 +27,7 @@ export default function generateEntry(cwd, opts = {}) {
     watchPages(cwd, () => {
       try {
         const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
-        const { routeConfig } = generate(cwd, entryPath);
+        const { routeConfig } = generate({ ...opts, entryPath });
         if (onChange) onChange(routeConfig);
         if (hasError) {
           // 从出错中恢复时，刷新浏览器
@@ -72,19 +71,14 @@ export function watchPages(cwd, onChange) {
   return watcher;
 }
 
-function generate(cwd, entryPath) {
+function generate(opts = {}) {
+  const { cwd, entryPath, plugins } = opts;
   const routeConfig = getRouteConfig(join(cwd, PAGES_PATH));
-  const isTwa = process.env.IS_TWA === 'true';
 
-  if (isTwa) {
-    const modelContent = getModelContent(join(cwd, PAGES_PATH));
-    writeFileSync(join(entryPath, 'model.js'), modelContent, 'utf-8');
-    const rpcContent = getRPCContent(cwd);
-    writeFileSync(join(entryPath, 'rpc.js'), rpcContent, 'utf-8');
-  }
+  applyPlugins(plugins, 'generateEntry');
 
   // 缓存一次
-  const routerContent = getRouterContent(routeConfig, null, isTwa);
+  const routerContent = getRouterContent(routeConfig, opts.routerTpl);
   if (cachedRouterContent !== routerContent) {
     writeFileSync(join(entryPath, 'router.js'), routerContent, 'utf-8');
     cachedRouterContent = routerContent;
@@ -94,12 +88,7 @@ function generate(cwd, entryPath) {
   if (!koiJSGenerated) {
     writeFileSync(
       join(entryPath, 'koi.js'),
-      readFileSync(
-        join(
-          __dirname,
-          isTwa ? '../template/koi_twa.js' : '../template/koi.js',
-        ),
-      ),
+      readFileSync(opts.koiJSTpl || join(__dirname, '../template/koi.js')),
       'utf-8',
     );
     koiJSGenerated = true;

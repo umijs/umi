@@ -33,7 +33,6 @@ Run webpack-dev-server more gracefully with [react-dev-utils](https://github.com
 ```js
 dev({
   webpackConfig,
-  appName,
   extraMiddlewares,
   beforeServer,
 });
@@ -44,7 +43,6 @@ webpackConfig is required, other optional.
 Options:
 
 * `webpackConfig`: the webpack config 
-* `appName`: the default is "Your Project", text to show after dev server is started
 * `extraMiddlewares`: extra middlewares for webpack-dev-server, based on express
 * `beforeServer`: the function to execute before dev server is started
 

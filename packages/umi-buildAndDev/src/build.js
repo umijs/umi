@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
+import { resolvePlugins, applyPlugins } from 'umi-plugin';
 import registerBabel from './registerBabel';
 import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import getWebpackConfig from './getWebpackConfig';
@@ -23,7 +24,9 @@ export default function(opts = {}) {
     enableCSSModules,
     extraResolveModules,
     hash,
+    plugins: pluginFiles,
   } = opts;
+  const plugins = resolvePlugins(pluginFiles);
 
   function getChunkToFilesMap(chunks) {
     return chunks.reduce((memo, chunk) => {
@@ -45,7 +48,12 @@ export default function(opts = {}) {
     rimraf(entryPath);
 
     // 生成入口文件
-    const { routeConfig } = generateEntry(cwd);
+    const { routeConfig } = generateEntry({
+      cwd,
+      plugins,
+      routerTpl: opts.routerTpl,
+      koiJSTpl: opts.koiJSTpl,
+    });
 
     // 获取 webpack 配置
     const webpackConfig = getWebpackConfig({
@@ -69,10 +77,12 @@ export default function(opts = {}) {
           debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
         }
         const routeConfig = getRouteConfig(join(cwd, PAGES_PATH));
-        generateHTML(routeConfig, {
+        generateHTML({
           cwd,
+          routeConfig,
           config,
           chunkToFilesMap,
+          plugins,
         });
         debug('打包 HTML 完成...');
 

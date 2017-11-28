@@ -1,5 +1,6 @@
 import dev from 'af-webpack/dev';
 import chalk from 'chalk';
+import { resolvePlugins, applyPlugins } from 'umi-plugin';
 import registerBabel from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -12,14 +13,14 @@ const debug = require('debug')('umi-buildAndDev:dev');
 
 export default function runDev(opts) {
   const {
-    cwd: cwdFromOpts,
+    cwd = process.cwd(),
     babel,
     enableCSSModules,
     extraResolveModules,
-    extraMiddlewares = [],
+    extraMiddlewares = [], // TODO: move to plugins
+    plugins: pluginFiles,
   } = opts;
-
-  const cwd = cwdFromOpts || process.cwd();
+  const plugins = resolvePlugins(pluginFiles);
 
   // 为配置注册 babel 解析
   registerBabel(babel, {
@@ -50,7 +51,11 @@ export default function runDev(opts) {
   // 生成入口文件
   let watchEntry = null;
   try {
-    const entryGObj = generateEntry(cwd, {
+    const entryGObj = generateEntry({
+      cwd,
+      plugins,
+      routerTpl: opts.routerTpl,
+      koiJSTpl: opts.koiJSTpl,
       onChange(routeConfig) {
         sendPageList(routeConfig);
       },
@@ -78,8 +83,10 @@ export default function runDev(opts) {
   // af-webpack dev
   dev({
     webpackConfig,
-    appName: 'your app',
-    extraMiddlewares: [createRouteMiddleware(cwd, config), ...extraMiddlewares],
+    extraMiddlewares: [
+      createRouteMiddleware(cwd, config, plugins),
+      ...extraMiddlewares,
+    ],
     afterServer(devServer) {
       // 监听配置变更
       debug('watch configs');

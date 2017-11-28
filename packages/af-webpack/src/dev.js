@@ -19,7 +19,6 @@ process.env.NODE_ENV = 'development';
 
 export default function dev({
   webpackConfig,
-  appName,
   extraMiddlewares,
   beforeServer,
   afterServer,
@@ -39,12 +38,7 @@ export default function dev({
       }
 
       const urls = prepareUrls(PROTOCOL, HOST, port);
-      const compiler = createCompiler(
-        webpack,
-        webpackConfig,
-        appName || 'Your App',
-        urls,
-      );
+      const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
 
       // Webpack startup recompilation fix. Remove when @sokra fixes the bug.
       // https://github.com/webpack/webpack/issues/2983
