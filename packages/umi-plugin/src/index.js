@@ -1,4 +1,8 @@
+import { existsSync } from 'fs';
+import assert from 'assert';
+
 function resolvePlugin(plugin) {
+  assert(existsSync(plugin), `plugin file not exists: ${plugin}`);
   return require(plugin);
 }
 

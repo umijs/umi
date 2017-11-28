@@ -1,4 +1,5 @@
 import expect from 'expect';
+import { join } from 'path';
 import { resolvePlugins, applyPlugins } from '../src/index';
 
 describe('plugin', () => {
@@ -10,5 +11,11 @@ describe('plugin', () => {
     expect(applyPlugins(plugins, 'foo', 1)).toEqual(10);
     expect(applyPlugins(plugins, 'bar', 1)).toEqual(1);
     expect(applyPlugins(plugins, 'foo', 1, /* plugin arg */ 2)).toEqual(15);
+  });
+
+  it('plugin file not exists', () => {
+    expect(() => {
+      resolvePlugins([join(__dirname, 'not-exists')]);
+    }).toThrow(/plugin file not exists/);
   });
 });
