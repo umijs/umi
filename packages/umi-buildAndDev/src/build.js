@@ -22,7 +22,7 @@ export default function(opts = {}) {
     enableCSSModules,
     extraResolveModules,
     hash,
-    libraryName,
+    libraryName = 'umi',
     staticDirectory = 'static',
     plugins: pluginFiles,
   } = opts;
@@ -88,6 +88,7 @@ export default function(opts = {}) {
           chunkToFilesMap,
           plugins,
           staticDirectory,
+          libraryName,
         });
         debug('打包 HTML 完成...');
 

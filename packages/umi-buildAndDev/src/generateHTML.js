@@ -17,6 +17,7 @@ export default function generateHTML(opts = {}) {
     chunkToFilesMap,
     plugins,
     staticDirectory,
+    libraryName,
   } = opts;
   const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
@@ -31,6 +32,7 @@ export default function generateHTML(opts = {}) {
       chunkToFilesMap,
       plugins,
       staticDirectory,
+      libraryName,
     });
     mkdirp(dirname(outputFilePath));
     writeFileSync(outputFilePath, content, 'utf-8');
@@ -90,6 +92,7 @@ export function getHTMLContent(opts = {}) {
     chunkToFilesMap,
     plugins,
     staticDirectory,
+    libraryName,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 
@@ -120,8 +123,8 @@ export function getHTMLContent(opts = {}) {
   // 生成 tailBodyReplace
   let relPath = new Array(route.slice(1).split(sep).length).join('../');
   relPath = relPath === '' ? './' : relPath;
-  const koiCSSFileName = getFile(chunkToFilesMap, 'koi', '.css');
-  const koiJSFileName = getFile(chunkToFilesMap, 'koi', '.js');
+  const koiCSSFileName = getFile(chunkToFilesMap, libraryName, '.css');
+  const koiJSFileName = getFile(chunkToFilesMap, libraryName, '.js');
   const asyncJSFileName = getFile(
     chunkToFilesMap,
     normalizeEntry(entry),

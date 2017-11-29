@@ -22,15 +22,18 @@ export default function(opts = {}) {
   const browsers = config.browsers || defaultBrowsers;
 
   // entry
-  const koiScript = join(cwd, `./${PAGES_PATH}/${KOI_DIRECTORY}/koi.js`);
+  const entryScript = join(
+    cwd,
+    `./${PAGES_PATH}/${KOI_DIRECTORY}/${libraryName}.js`,
+  );
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
   const isDev = env === 'development';
   const entry = isDev
     ? {
-        koi: [webpackHotDevClientPath, koiScript],
+        [libraryName]: [webpackHotDevClientPath, entryScript],
       }
     : {
-        koi: [setPublicPathFile, koiScript],
+        [libraryName]: [setPublicPathFile, entryScript],
       };
 
   const pageCount = isDev ? null : Object.keys(routeConfig).length;

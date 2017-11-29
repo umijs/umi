@@ -91,7 +91,7 @@ function generate(opts = {}) {
   // koi.js 不会变化，生成一次即可
   if (!koiJSGenerated) {
     writeFileSync(
-      join(entryPath, 'koi.js'),
+      join(entryPath, `${libraryName}.js`),
       readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),
       'utf-8',
     );

@@ -10,6 +10,7 @@ export default function createRouteMiddleware(
   _config,
   plugins,
   staticDirectory,
+  libraryName,
 ) {
   config = _config;
   return (req, res, next) => {
@@ -25,6 +26,7 @@ export default function createRouteMiddleware(
         pageConfig: pagesConfig && pagesConfig[path],
         plugins,
         staticDirectory,
+        libraryName,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

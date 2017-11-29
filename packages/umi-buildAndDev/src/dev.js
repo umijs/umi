@@ -17,7 +17,7 @@ export default function runDev(opts) {
     babel,
     enableCSSModules,
     extraResolveModules,
-    libraryName,
+    libraryName = 'umi',
     extraMiddlewares = [], // TODO: move to plugins
     plugins: pluginFiles,
     staticDirectory = 'static',
@@ -59,7 +59,7 @@ export default function runDev(opts) {
       plugins,
       routerTpl: opts.routerTpl,
       entryJSTpl: opts.entryJSTpl,
-      libraryName: libraryName,
+      libraryName,
       onChange(routeConfig) {
         sendPageList(routeConfig);
       },
@@ -91,7 +91,7 @@ export default function runDev(opts) {
   dev({
     webpackConfig,
     extraMiddlewares: [
-      createRouteMiddleware(cwd, config, plugins, staticDirectory),
+      createRouteMiddleware(cwd, config, plugins, staticDirectory, libraryName),
       ...extraMiddlewares,
     ],
     afterServer(devServer) {
