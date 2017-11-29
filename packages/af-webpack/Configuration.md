@@ -41,3 +41,4 @@ export default {
 | extraPostCSSPlugins | [] |  |
 | ignoreMomentLocale | false |  |
 | extraResolveModules | [] |  |
+| disableCSSSourceMap | false |  |

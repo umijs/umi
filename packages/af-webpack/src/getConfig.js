@@ -42,6 +42,7 @@ const debug = require('debug')('af-webpack:getConfig');
 // - extraResolveExtensions
 // - ignoreMomentLocale
 // - copy
+// - disableCSSSourceMap
 
 function invalidProp(obj, prop) {
   return !(prop in obj) || obj[prop] === undefined;
@@ -138,8 +139,16 @@ export default function getConfig(opts = {}) {
       opts.ignoreMomentLocale
     }`,
   );
+  assert(
+    invalidProp(opts, 'disableCSSSourceMap') ||
+      typeof opts.disableCSSSourceMap === 'boolean',
+    `opts.disableCSSSourceMap must be Boolean, but got ${
+      opts.disableCSSSourceMap
+    }`,
+  );
 
   const isDev = process.env.NODE_ENV === 'development';
+  const theme = normalizeTheme(opts.theme);
   const postcssOptions = {
     // Necessary for external CSS imports to work
     // https://github.com/facebookincubator/create-react-app/issues/2677
@@ -153,8 +162,6 @@ export default function getConfig(opts = {}) {
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),
     ],
   };
-
-  const theme = normalizeTheme(opts.theme);
   const cssModulesConfig = opts.enableCSSModules
     ? {
         modules: true,
@@ -164,6 +171,16 @@ export default function getConfig(opts = {}) {
   const lessOptions = {
     modifyVars: theme,
   };
+  const cssOptions = {
+    importLoaders: 1,
+    ...(isDev
+      ? {}
+      : {
+          minimize: true,
+          sourceMap: !opts.disableCSSSourceMap,
+        }),
+  };
+
   const cssRules = [
     {
       test: /\.css$/,
@@ -176,8 +193,7 @@ export default function getConfig(opts = {}) {
         {
           loader: require.resolve('css-loader'),
           options: {
-            importLoaders: 1,
-            sourceMap: true,
+            ...cssOptions,
             ...cssModulesConfig,
           },
         },
@@ -194,10 +210,7 @@ export default function getConfig(opts = {}) {
         require.resolve('style-loader'),
         {
           loader: require.resolve('css-loader'),
-          options: {
-            importLoaders: 1,
-            sourceMap: true,
-          },
+          options: cssOptions,
         },
         {
           loader: require.resolve('postcss-loader'),
@@ -213,8 +226,7 @@ export default function getConfig(opts = {}) {
         {
           loader: require.resolve('css-loader'),
           options: {
-            importLoaders: 1,
-            sourceMap: true,
+            ...cssOptions,
             ...cssModulesConfig,
           },
         },
@@ -235,10 +247,7 @@ export default function getConfig(opts = {}) {
         require.resolve('style-loader'),
         {
           loader: require.resolve('css-loader'),
-          options: {
-            importLoaders: 1,
-            sourceMap: true,
-          },
+          options: cssOptions,
         },
         {
           loader: require.resolve('postcss-loader'),
