@@ -3,17 +3,21 @@ import { join } from 'path';
 import normalizeEntry from './normalizeEntry';
 import winPath from './winPath';
 
-export default function getRouterContent(routeConfig, tplPath) {
-  if (!tplPath) {
-    tplPath = join(__dirname, `../template/router.js`);
-  }
+export default function getRouterContent(opts = {}) {
+  const {
+    routeConfig,
+    tplPath = join(__dirname, `../template/router.js`),
+    libraryName = 'umi',
+  } = opts;
 
   if (!exists(tplPath)) {
     throw new Error('tplPath 不存在');
   }
   const tpl = readFile(tplPath, 'utf-8');
   const routeComponents = getRouteComponents(routeConfig);
-  return tpl.replace(/<%= routeComponents %>/g, routeComponents);
+  return tpl
+    .replace(/<%= routeComponents %>/g, routeComponents)
+    .replace(/<%= libraryName %>/g, libraryName || 'umi');
 }
 
 function getRouteComponents(routeConfig) {

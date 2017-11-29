@@ -1,5 +1,5 @@
 export default function(context, opts = {}) {
-  const libName = opts.libName || 'umi';
+  const libraryName = opts.libraryName || 'umi';
   return {
     presets: [
       [
@@ -28,9 +28,9 @@ export default function(context, opts = {}) {
             'history/createBrowserHistory': require.resolve(
               'history/createBrowserHistory',
             ),
-            [`${libName}/dynamic`]: require.resolve('./dynamic'),
-            [`${libName}/link`]: require.resolve('./link'),
-            [`${libName}/router`]: require.resolve('./router'),
+            [`${libraryName}/dynamic`]: require.resolve('./dynamic'),
+            [`${libraryName}/link`]: require.resolve('./link'),
+            [`${libraryName}/router`]: require.resolve('./router'),
           },
         },
       ],

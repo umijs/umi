@@ -72,13 +72,17 @@ export function watchPages(cwd, onChange) {
 }
 
 function generate(opts = {}) {
-  const { cwd, entryPath, plugins } = opts;
+  const { cwd, entryPath, plugins, libraryName } = opts;
   const routeConfig = getRouteConfig(join(cwd, PAGES_PATH));
 
   applyPlugins(plugins, 'generateEntry');
 
   // 缓存一次
-  const routerContent = getRouterContent(routeConfig, opts.routerTpl);
+  const routerContent = getRouterContent({
+    ...opts,
+    routeConfig,
+    libraryName,
+  });
   if (cachedRouterContent !== routerContent) {
     writeFileSync(join(entryPath, 'router.js'), routerContent, 'utf-8');
     cachedRouterContent = routerContent;

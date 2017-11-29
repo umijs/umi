@@ -8,12 +8,10 @@ import getWebpackConfig from './getWebpackConfig';
 import generateHTML from './generateHTML';
 import generateEntry from './generateEntry';
 import getRouteConfig from './getRouteConfig';
-import generateRenderConfig from './generateRenderConfig';
 import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
 
 const debug = require('debug')('umi-buildAndDev:build');
-
 const cwd = process.cwd();
 const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
 
@@ -24,6 +22,7 @@ export default function(opts = {}) {
     enableCSSModules,
     extraResolveModules,
     hash,
+    libraryName,
     plugins: pluginFiles,
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
@@ -48,11 +47,13 @@ export default function(opts = {}) {
     rimraf(entryPath);
 
     // 生成入口文件
+    debug(`libraryName: ${libraryName}`);
     const { routeConfig } = generateEntry({
       cwd,
       plugins,
       routerTpl: opts.routerTpl,
       koiJSTpl: opts.koiJSTpl,
+      libraryName,
     });
 
     // 获取 webpack 配置
@@ -64,6 +65,7 @@ export default function(opts = {}) {
       enableCSSModules,
       extraResolveModules,
       routeConfig,
+      libraryName,
     });
 
     // af-webpack build

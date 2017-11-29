@@ -17,6 +17,7 @@ export default function runDev(opts) {
     babel,
     enableCSSModules,
     extraResolveModules,
+    libraryName,
     extraMiddlewares = [], // TODO: move to plugins
     plugins: pluginFiles,
   } = opts;
@@ -51,11 +52,13 @@ export default function runDev(opts) {
   // 生成入口文件
   let watchEntry = null;
   try {
+    debug(`libraryName: ${libraryName}`);
     const entryGObj = generateEntry({
       cwd,
       plugins,
       routerTpl: opts.routerTpl,
       koiJSTpl: opts.koiJSTpl,
+      libraryName: libraryName,
       onChange(routeConfig) {
         sendPageList(routeConfig);
       },
@@ -78,6 +81,7 @@ export default function runDev(opts) {
     babel,
     enableCSSModules,
     extraResolveModules,
+    libraryName,
   });
 
   // af-webpack dev

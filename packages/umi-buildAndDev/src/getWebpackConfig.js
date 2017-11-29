@@ -5,7 +5,6 @@ import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-buildAndDev:getWebpackConfig');
-
 const env = process.env.NODE_ENV;
 
 export default function({
@@ -15,6 +14,7 @@ export default function({
   hash,
   enableCSSModules,
   routeConfig,
+  libraryName,
 }) {
   // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
   const browsers = config.browsers || defaultBrowsers;
@@ -40,7 +40,7 @@ export default function({
     entry,
     autoprefixer: { browsers },
     babel: {
-      presets: [[babel, { browsers }]],
+      presets: [[babel, { browsers, libraryName }]],
     },
     theme: config.theme,
     outputPath: join(cwd, `dist/.koi`),
