@@ -86,13 +86,10 @@ export default function(opts = {}) {
         });
         debug('打包 HTML 完成...');
 
-        if (process.env.KOI_RENDER === 'true') {
-          debug('生成 RenderConfig...');
-          generateRenderConfig(routeConfig, {
-            cwd,
-          });
-          debug('生成 RenderConfig 完成...');
-        }
+        applyPlugins(plugins, 'buildSuccess', null, {
+          routeConfig,
+          cwd,
+        });
         send({ type: BUILD_DONE });
         resolve();
       },
