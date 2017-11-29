@@ -52,7 +52,7 @@ export default function(opts = {}) {
       cwd,
       plugins,
       routerTpl: opts.routerTpl,
-      koiJSTpl: opts.koiJSTpl,
+      entryJSTpl: opts.entryJSTpl,
       libraryName,
     });
 

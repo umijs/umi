@@ -57,7 +57,7 @@ export default function runDev(opts) {
       cwd,
       plugins,
       routerTpl: opts.routerTpl,
-      koiJSTpl: opts.koiJSTpl,
+      entryJSTpl: opts.entryJSTpl,
       libraryName: libraryName,
       onChange(routeConfig) {
         sendPageList(routeConfig);

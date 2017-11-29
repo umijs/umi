@@ -9,7 +9,7 @@
 * extraResolveModules
 * plugins
 * routerTpl
-* koiJSTpl
+* entryJSTpl
 
 ## dev
 

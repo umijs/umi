@@ -92,7 +92,7 @@ function generate(opts = {}) {
   if (!koiJSGenerated) {
     writeFileSync(
       join(entryPath, 'koi.js'),
-      readFileSync(opts.koiJSTpl || join(__dirname, '../template/koi.js')),
+      readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),
       'utf-8',
     );
     koiJSGenerated = true;
