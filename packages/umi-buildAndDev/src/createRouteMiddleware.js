@@ -1,7 +1,6 @@
 import { join } from 'path';
 import getRouteConfig from './getRouteConfig';
 import { getHTMLContent } from './generateHTML';
-import { PAGES_PATH } from './constants';
 
 let config = null;
 
@@ -11,17 +10,22 @@ export default function createRouteMiddleware(
   plugins,
   staticDirectory,
   libraryName,
+  tmpDirectory,
+  paths,
 ) {
   config = _config;
+  const { absPagesPath } = paths;
   return (req, res, next) => {
-    const routeConfig = getRouteConfig(join(root, PAGES_PATH));
+    const routeConfig = getRouteConfig(absPagesPath, '', {
+      tmpDirectory,
+    });
     const { pages: pagesConfig } = config;
     const path = req.path === '/' ? '/index.html' : req.path;
     if (routeConfig[path]) {
       const content = getHTMLContent({
         route: path,
         entry: routeConfig[path],
-        pagesPath: join(root, PAGES_PATH),
+        pagesPath: absPagesPath,
         root,
         pageConfig: pagesConfig && pagesConfig[path],
         plugins,

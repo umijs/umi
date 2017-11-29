@@ -5,7 +5,6 @@ import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
 import { applyPlugins } from 'umi-plugin';
 import normalizeEntry from './normalizeEntry';
-import { PAGES_PATH } from './constants';
 
 const debug = require('debug')('umi-buildAndDev:generateHTML');
 
@@ -18,6 +17,7 @@ export default function generateHTML(opts = {}) {
     plugins,
     staticDirectory,
     libraryName,
+    paths,
   } = opts;
   const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
@@ -26,7 +26,7 @@ export default function generateHTML(opts = {}) {
     const content = getHTMLContent({
       route,
       entry: routeConfig[route],
-      pagesPath: join(cwd, PAGES_PATH),
+      pagesPath: paths.absPagesPath,
       root: cwd,
       pageConfig: pagesConfig && pagesConfig[route],
       chunkToFilesMap,

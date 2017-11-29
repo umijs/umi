@@ -1,7 +1,6 @@
 import { join, dirname } from 'path';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
-import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-buildAndDev:getWebpackConfig');
@@ -17,6 +16,8 @@ export default function(opts = {}) {
     routeConfig,
     libraryName,
     staticDirectory,
+    tmpDirectory,
+    paths,
   } = opts;
   // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
   const browsers = config.browsers || defaultBrowsers;
@@ -24,7 +25,7 @@ export default function(opts = {}) {
   // entry
   const entryScript = join(
     cwd,
-    `./${PAGES_PATH}/${KOI_DIRECTORY}/${libraryName}.js`,
+    `./${paths.pagesPath}/${tmpDirectory}/${libraryName}.js`,
   );
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
   const isDev = env === 'development';

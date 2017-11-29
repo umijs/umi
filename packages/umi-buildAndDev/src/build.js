@@ -3,17 +3,16 @@ import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
 import registerBabel from './registerBabel';
-import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import getWebpackConfig from './getWebpackConfig';
 import generateHTML from './generateHTML';
 import generateEntry from './generateEntry';
 import getRouteConfig from './getRouteConfig';
 import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
+import getPaths from './getPaths';
 
 const debug = require('debug')('umi-buildAndDev:build');
 const cwd = process.cwd();
-const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
 
 export default function(opts = {}) {
   const {
@@ -24,9 +23,11 @@ export default function(opts = {}) {
     hash,
     libraryName = 'umi',
     staticDirectory = 'static',
+    tmpDirectory = `.${libraryName}`,
     plugins: pluginFiles,
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
+  const paths = getPaths({ cwd, tmpDirectory });
 
   function getChunkToFilesMap(chunks) {
     return chunks.reduce((memo, chunk) => {
@@ -44,8 +45,8 @@ export default function(opts = {}) {
     // 获取用户配置
     const { config } = getConfig(cwd);
 
-    debug(`清理临时文件夹 ${entryPath.replace(`${cwd}/`, '')}`);
-    rimraf(entryPath);
+    debug(`清理临时文件夹 ${paths.absTmpDirPath.replace(`${cwd}/`, '')}`);
+    rimraf(paths.absTmpDirPath);
 
     // 生成入口文件
     debug(`libraryName: ${libraryName}`);
@@ -55,6 +56,8 @@ export default function(opts = {}) {
       routerTpl: opts.routerTpl,
       entryJSTpl: opts.entryJSTpl,
       libraryName,
+      paths,
+      tmpDirectory,
     });
 
     // 获取 webpack 配置
@@ -68,6 +71,8 @@ export default function(opts = {}) {
       routeConfig,
       libraryName,
       staticDirectory,
+      tmpDirectory,
+      paths,
     });
 
     // af-webpack build
@@ -80,7 +85,9 @@ export default function(opts = {}) {
           chunkToFilesMap = getChunkToFilesMap(stats.compilation.chunks);
           debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
         }
-        const routeConfig = getRouteConfig(join(cwd, PAGES_PATH));
+        const routeConfig = getRouteConfig(paths.absPagesPath, '', {
+          tmpDirectory,
+        });
         generateHTML({
           cwd,
           routeConfig,
@@ -89,6 +96,7 @@ export default function(opts = {}) {
           plugins,
           staticDirectory,
           libraryName,
+          paths,
         });
         debug('打包 HTML 完成...');
 

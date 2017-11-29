@@ -4,11 +4,12 @@ import {
   existsSync as exists,
 } from 'fs';
 import { join, extname, basename } from 'path';
-import { ROUTE_FILE, KOI_DIRECTORY } from './constants';
+import { ROUTE_FILE } from './constants';
 
 const DOT_JS = '.js';
 
-export default function getRouteConfig(root, dirPath = '') {
+export default function getRouteConfig(root, dirPath = '', opts = {}) {
+  const { tmpDirectory } = opts;
   const path = join(root, dirPath);
   const files = readdir(path);
 
@@ -21,7 +22,7 @@ export default function getRouteConfig(root, dirPath = '') {
         ...memo,
         [`/${fullPath}.html`]: `${fullPath}${DOT_JS}`,
       };
-    } else if (stats.isDirectory() && file !== KOI_DIRECTORY) {
+    } else if (stats.isDirectory() && file !== tmpDirectory) {
       const fullPath = join(dirPath, file);
       if (exists(join(root, fullPath, ROUTE_FILE))) {
         if (exists(join(root, `${fullPath}${DOT_JS}`))) {
@@ -38,7 +39,7 @@ export default function getRouteConfig(root, dirPath = '') {
       } else {
         return {
           ...memo,
-          ...getRouteConfig(root, fullPath),
+          ...getRouteConfig(root, fullPath, opts),
         };
       }
     } else {

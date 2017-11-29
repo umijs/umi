@@ -8,6 +8,7 @@ import generateEntry, { watchPages } from './generateEntry';
 import send, { PAGE_LIST } from './send';
 import { getConfig, watchConfigs } from './getConfig';
 import { unwatch } from './getConfig/watch';
+import getPaths from './getPaths';
 
 const debug = require('debug')('umi-buildAndDev:dev');
 
@@ -18,11 +19,13 @@ export default function runDev(opts) {
     enableCSSModules,
     extraResolveModules,
     libraryName = 'umi',
-    extraMiddlewares = [], // TODO: move to plugins
-    plugins: pluginFiles,
     staticDirectory = 'static',
+    tmpDirectory = `.${libraryName}`,
+    plugins: pluginFiles,
+    extraMiddlewares = [], // TODO: move to plugins
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
+  const paths = getPaths({ cwd, tmpDirectory });
 
   // 为配置注册 babel 解析
   registerBabel(babel, {
@@ -63,14 +66,21 @@ export default function runDev(opts) {
       onChange(routeConfig) {
         sendPageList(routeConfig);
       },
+      paths,
+      tmpDirectory,
     });
     watchEntry = entryGObj.watch;
   } catch (e) {
     console.error(chalk.red(e.message));
+    console.error(chalk.red(e.stack));
     debug('generate entry failed, watch pages and reload');
-    watchPages(cwd, watcher => {
-      watcher.close();
-      runDev(opts);
+    watchPages({
+      cwd,
+      paths,
+      onChange(watcher) {
+        watcher.close();
+        runDev(opts);
+      },
     });
     return;
   }
@@ -84,6 +94,8 @@ export default function runDev(opts) {
     extraResolveModules,
     libraryName,
     staticDirectory,
+    paths,
+    tmpDirectory,
   });
   debug(`webpackConfig: ${JSON.stringify(webpackConfig)}`);
 
@@ -91,7 +103,15 @@ export default function runDev(opts) {
   dev({
     webpackConfig,
     extraMiddlewares: [
-      createRouteMiddleware(cwd, config, plugins, staticDirectory, libraryName),
+      createRouteMiddleware(
+        cwd,
+        config,
+        plugins,
+        staticDirectory,
+        libraryName,
+        tmpDirectory,
+        paths,
+      ),
       ...extraMiddlewares,
     ],
     afterServer(devServer) {

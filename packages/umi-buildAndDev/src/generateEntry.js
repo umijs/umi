@@ -5,7 +5,6 @@ import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import { applyPlugins } from 'umi-plugin';
-import { KOI_DIRECTORY, PAGES_PATH } from './constants';
 import getRouteConfig from './getRouteConfig';
 import getRouterContent from './getRouterContent';
 
@@ -15,35 +14,38 @@ let cachedRouterContent = null;
 let koiJSGenerated = false;
 
 export default function generateEntry(opts = {}) {
-  const { cwd, onChange } = opts;
-  const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
+  const { cwd, onChange, paths } = opts;
+  const { absTmpDirPath } = paths;
 
-  mkdirp(entryPath);
-  const { routeConfig } = generate({ ...opts, entryPath });
+  mkdirp(absTmpDirPath);
+  const { routeConfig } = generate(opts);
   if (onChange) onChange(routeConfig);
 
   function watch(devServer) {
     let hasError = false;
-    watchPages(cwd, () => {
-      try {
-        const entryPath = join(cwd, PAGES_PATH, KOI_DIRECTORY);
-        const { routeConfig } = generate({ ...opts, entryPath });
-        if (onChange) onChange(routeConfig);
-        if (hasError) {
-          // 从出错中恢复时，刷新浏览器
-          devServer.sockWrite(devServer.sockets, 'content-changed');
-          hasError = false;
-        }
-      } catch (e) {
-        // 向浏览器发送出错信息
-        devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
+    watchPages({
+      cwd,
+      paths,
+      onChange() {
+        try {
+          const { routeConfig } = generate(opts);
+          if (onChange) onChange(routeConfig);
+          if (hasError) {
+            // 从出错中恢复时，刷新浏览器
+            devServer.sockWrite(devServer.sockets, 'content-changed');
+            hasError = false;
+          }
+        } catch (e) {
+          // 向浏览器发送出错信息
+          devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
 
-        hasError = true;
-        cachedRouterContent = null;
-        debug(`generate failed: ${e.message}`);
-        debug(e);
-        console.error(chalk.red(e.message));
-      }
+          hasError = true;
+          cachedRouterContent = null;
+          debug(`generate failed: ${e.message}`);
+          debug(e);
+          console.error(chalk.red(e.message));
+        }
+      },
     });
   }
 
@@ -53,8 +55,9 @@ export default function generateEntry(opts = {}) {
   };
 }
 
-export function watchPages(cwd, onChange) {
-  const watcher = chokidar.watch(join(cwd, PAGES_PATH), {
+export function watchPages(opts = {}) {
+  const { cwd, onChange, paths } = opts;
+  const watcher = chokidar.watch(paths.absPagesPath, {
     ignored: /(\.koi|\.idea)/,
     ignoreInitial: true,
   });
@@ -72,8 +75,11 @@ export function watchPages(cwd, onChange) {
 }
 
 function generate(opts = {}) {
-  const { cwd, entryPath, plugins, libraryName } = opts;
-  const routeConfig = getRouteConfig(join(cwd, PAGES_PATH));
+  const { paths, plugins, libraryName, tmpDirectory } = opts;
+  const { absTmpDirPath, absPagesPath } = paths;
+  const routeConfig = getRouteConfig(absPagesPath, '', {
+    tmpDirectory,
+  });
 
   applyPlugins(plugins, 'generateEntry');
 
@@ -84,14 +90,14 @@ function generate(opts = {}) {
     libraryName,
   });
   if (cachedRouterContent !== routerContent) {
-    writeFileSync(join(entryPath, 'router.js'), routerContent, 'utf-8');
+    writeFileSync(join(absTmpDirPath, 'router.js'), routerContent, 'utf-8');
     cachedRouterContent = routerContent;
   }
 
   // koi.js 不会变化，生成一次即可
   if (!koiJSGenerated) {
     writeFileSync(
-      join(entryPath, `${libraryName}.js`),
+      join(absTmpDirPath, `${libraryName}.js`),
       readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),
       'utf-8',
     );
