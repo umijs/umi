@@ -18,7 +18,7 @@ function push(path) {
   if (isAlipayContainer()) {
     window.ap.pushWindow(addRouterBase(normalizePath(path)));
   } else {
-    window.koi_history.push(normalizePath(path));
+    window.g_history.push(normalizePath(path));
   }
 }
 
@@ -26,7 +26,7 @@ function replace(path) {
   if (isAlipayContainer()) {
     window.ap.redirectTo(addRouterBase(normalizePath(path)));
   } else {
-    window.koi_history.replace(normalizePath(path));
+    window.g_history.replace(normalizePath(path));
   }
 }
 
@@ -34,7 +34,7 @@ function go(count) {
   if (isAlipayContainer()) {
     window.ap.popTo(count);
   } else {
-    window.koi_history.go(count);
+    window.g_history.go(count);
   }
 }
 
@@ -42,7 +42,7 @@ function goBack() {
   if (isAlipayContainer()) {
     window.ap.popWindow();
   } else {
-    window.koi_history.goBack();
+    window.g_history.goBack();
   }
 }
 

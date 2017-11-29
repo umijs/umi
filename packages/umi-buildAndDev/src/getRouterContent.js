@@ -40,7 +40,7 @@ function getRouteComponents(routeConfig) {
   });
 
   return `
-<Router history={window.koi_history}>
+<Router history={window.g_history}>
   <Switch>
 ${routerComponents.join('\n')}
   </Switch>

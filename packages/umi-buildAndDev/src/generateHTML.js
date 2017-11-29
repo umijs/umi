@@ -89,7 +89,7 @@ export function getHTMLContent(opts = {}) {
   const tpl = getHTMLTpl(pagesPath, root, document);
   let html = ejs.render(tpl, context, {
     _with: false,
-    localsName: 'umi',
+    localsName: 'context',
   });
 
   // 获取 configScript

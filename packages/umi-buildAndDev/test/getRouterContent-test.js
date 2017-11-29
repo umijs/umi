@@ -15,7 +15,7 @@ import dynamic from 'koi/dynamic';
 
 export default function KoiRouter() {
   return (
-<Router history={window.koi_history}>
+<Router history={window.g_history}>
   <Switch>
     <Route exact path="/detail.html" component={dynamic(() => import(/* webpackChunkName: 'detail__page' */'../detail/page.js'))}></Route>
     <Route exact path="/index.html" component={dynamic(() => import(/* webpackChunkName: 'index' */'../index.js'))}></Route>

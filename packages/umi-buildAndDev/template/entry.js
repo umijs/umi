@@ -4,7 +4,7 @@ import createHistory from 'history/createBrowserHistory';
 import FastClick from 'fastclick';
 
 // create history
-window.koi_history = createHistory({
+window.g_history = createHistory({
   basename: window.routerBase,
 });
 
