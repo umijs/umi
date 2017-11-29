@@ -10,7 +10,14 @@ import { PAGES_PATH } from './constants';
 const debug = require('debug')('umi-buildAndDev:generateHTML');
 
 export default function generateHTML(opts = {}) {
-  const { routeConfig, cwd, config, chunkToFilesMap, plugins } = opts;
+  const {
+    routeConfig,
+    cwd,
+    config,
+    chunkToFilesMap,
+    plugins,
+    staticDirectory,
+  } = opts;
   const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
   routes.forEach(route => {
@@ -23,6 +30,7 @@ export default function generateHTML(opts = {}) {
       pageConfig: pagesConfig && pagesConfig[route],
       chunkToFilesMap,
       plugins,
+      staticDirectory,
     });
     mkdirp(dirname(outputFilePath));
     writeFileSync(outputFilePath, content, 'utf-8');
@@ -81,6 +89,7 @@ export function getHTMLContent(opts = {}) {
     pageConfig = {},
     chunkToFilesMap,
     plugins,
+    staticDirectory,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 
@@ -93,7 +102,9 @@ export function getHTMLContent(opts = {}) {
   });
 
   // 获取 configScript
-  const resourceBaseUrl = `location.origin + window.routerBase + '.koi/'`;
+  const resourceBaseUrl = `location.origin + window.routerBase + '${
+    staticDirectory
+  }/'`;
   let configScript = `
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -${
@@ -116,11 +127,14 @@ export function getHTMLContent(opts = {}) {
     normalizeEntry(entry),
     '.async.js',
   );
-  const koiJSPath = `${relPath}.koi/${koiJSFileName}`;
-  const koiCSSPath = `${relPath}.koi/${koiCSSFileName}`;
-  const asyncJSPath = `${relPath}.koi/${asyncJSFileName}`;
+  const koiJSPath = `${relPath}${staticDirectory}/${koiJSFileName}`;
+  const koiCSSPath = `${relPath}${staticDirectory}/${koiCSSFileName}`;
+  const asyncJSPath = `${relPath}${staticDirectory}/${asyncJSFileName}`;
   let css = '';
-  if (!isDev && existsSync(join(root, `dist/.koi/${koiCSSFileName}`))) {
+  if (
+    !isDev &&
+    existsSync(join(root, `dist/${staticDirectory}/${koiCSSFileName}`))
+  ) {
     css = `
 <link rel="stylesheet" href="${koiCSSPath}" />
   `;
@@ -142,7 +156,7 @@ ${js.trim()}
     {
       root,
       outputPath: './dist',
-      assetsFolder: '.koi',
+      staticDirectory,
       koiCSSFileName,
       koiJSFileName,
       asyncJSFileName,

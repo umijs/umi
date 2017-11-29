@@ -20,6 +20,7 @@ export default function runDev(opts) {
     libraryName,
     extraMiddlewares = [], // TODO: move to plugins
     plugins: pluginFiles,
+    staticDirectory = 'static',
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
 
@@ -82,13 +83,15 @@ export default function runDev(opts) {
     enableCSSModules,
     extraResolveModules,
     libraryName,
+    staticDirectory,
   });
+  debug(`webpackConfig: ${JSON.stringify(webpackConfig)}`);
 
   // af-webpack dev
   dev({
     webpackConfig,
     extraMiddlewares: [
-      createRouteMiddleware(cwd, config, plugins),
+      createRouteMiddleware(cwd, config, plugins, staticDirectory),
       ...extraMiddlewares,
     ],
     afterServer(devServer) {

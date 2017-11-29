@@ -7,15 +7,17 @@ import defaultBrowsers from './defaultConfigs/browsers';
 const debug = require('debug')('umi-buildAndDev:getWebpackConfig');
 const env = process.env.NODE_ENV;
 
-export default function({
-  cwd,
-  config,
-  babel,
-  hash,
-  enableCSSModules,
-  routeConfig,
-  libraryName,
-}) {
+export default function(opts = {}) {
+  const {
+    cwd,
+    config,
+    babel,
+    hash,
+    enableCSSModules,
+    routeConfig,
+    libraryName,
+    staticDirectory,
+  } = opts;
   // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
   const browsers = config.browsers || defaultBrowsers;
 
@@ -43,7 +45,7 @@ export default function({
       presets: [[babel, { browsers, libraryName }]],
     },
     theme: config.theme,
-    outputPath: join(cwd, `dist/.koi`),
+    outputPath: join(cwd, `dist/${staticDirectory}`),
     hash: !isDev && hash,
     enableCSSModules,
     define: {
@@ -66,8 +68,8 @@ export default function({
     ...(isDev
       ? {
           // 生成环境的 publicPath 是服务端把 assets 发布到 cdn 后配到 HTML 里的
-          // 开发环境的 publicPath 写死 /.koi/
-          publicPath: '/.koi/',
+          // 开发环境的 publicPath 写死 /static/
+          publicPath: `/${staticDirectory}/`,
         }
       : {}),
     commons: isDev

@@ -10,6 +10,7 @@
 * plugins
 * routerTpl
 * entryJSTpl
+* staticDirectory, default `static`
 
 ## dev
 

@@ -5,7 +5,12 @@ import { PAGES_PATH } from './constants';
 
 let config = null;
 
-export default function createRouteMiddleware(root, _config, plugins) {
+export default function createRouteMiddleware(
+  root,
+  _config,
+  plugins,
+  staticDirectory,
+) {
   config = _config;
   return (req, res, next) => {
     const routeConfig = getRouteConfig(join(root, PAGES_PATH));
@@ -19,6 +24,7 @@ export default function createRouteMiddleware(root, _config, plugins) {
         root,
         pageConfig: pagesConfig && pagesConfig[path],
         plugins,
+        staticDirectory,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

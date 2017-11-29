@@ -23,6 +23,7 @@ export default function(opts = {}) {
     extraResolveModules,
     hash,
     libraryName,
+    staticDirectory = 'static',
     plugins: pluginFiles,
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
@@ -66,6 +67,7 @@ export default function(opts = {}) {
       extraResolveModules,
       routeConfig,
       libraryName,
+      staticDirectory,
     });
 
     // af-webpack build
@@ -85,6 +87,7 @@ export default function(opts = {}) {
           config,
           chunkToFilesMap,
           plugins,
+          staticDirectory,
         });
         debug('打包 HTML 完成...');
 
