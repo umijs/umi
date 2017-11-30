@@ -5,17 +5,16 @@ import { join } from 'path';
 import { readFileSync, readdirSync, existsSync } from 'fs';
 import getConfig from '../src/getConfig';
 
-function build(env, opts, done) {
-  if (!opts.cwd) {
-    throw new Error('opts.cwd must be supplied.');
-  }
+process.env.NODE_ENV = 'production';
+process.env.NO_COMPRESS = 1;
+
+function build(opts, done) {
   const configFile = join(opts.cwd, 'config.json');
   const localConfig = existsSync(configFile)
     ? JSON.parse(readFileSync(configFile, 'utf-8'))
     : {};
-  const config = getConfig(env, {
+  const config = getConfig({
     ...opts,
-    noCompress: true,
     ...localConfig,
   });
   config.entry = {
@@ -48,7 +47,7 @@ function assertBuildResult(cwd) {
   });
 }
 
-describe('index', () => {
+describe('build', () => {
   const fixtures = join(__dirname, './fixtures');
   readdirSync(fixtures)
     .filter(dir => dir.charAt(0) !== '.')
@@ -58,7 +57,6 @@ describe('index', () => {
         const cwd = join(fixtures, dir);
         process.chdir(cwd);
         build(
-          'production',
           {
             cwd,
             outputPath: join(cwd, 'dist'),

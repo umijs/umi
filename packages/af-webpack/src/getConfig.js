@@ -176,7 +176,7 @@ export default function getConfig(opts = {}) {
     ...(isDev
       ? {}
       : {
-          minimize: true,
+          minimize: !process.env.NO_COMPRESS,
           sourceMap: !opts.disableCSSSourceMap,
         }),
   };
@@ -443,7 +443,7 @@ export default function getConfig(opts = {}) {
               allChunks: true,
             }),
           ]),
-      ...(isDev || opts.noCompress || process.env.NO_COMPRESS
+      ...(isDev || process.env.NO_COMPRESS
         ? []
         : [new webpack.optimize.UglifyJsPlugin(uglifyJSConfig)]),
       new webpack.DefinePlugin({
