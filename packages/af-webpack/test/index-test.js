@@ -2,11 +2,7 @@ import expect from 'expect';
 import webpack from 'webpack';
 import glob from 'glob';
 import { join } from 'path';
-import {
-  readFileSync as readFile,
-  readdirSync as readdir,
-  existsSync as exists,
-} from 'fs';
+import { readFileSync, readdirSync, existsSync } from 'fs';
 import getConfig from '../src/getConfig';
 
 function build(env, opts, done) {
@@ -14,8 +10,8 @@ function build(env, opts, done) {
     throw new Error('opts.cwd must be supplied.');
   }
   const configFile = join(opts.cwd, 'config.json');
-  const localConfig = exists(configFile)
-    ? JSON.parse(readFile(configFile, 'utf-8'))
+  const localConfig = existsSync(configFile)
+    ? JSON.parse(readFileSync(configFile, 'utf-8'))
     : {};
   const config = getConfig(env, {
     ...opts,
@@ -46,15 +42,15 @@ function assertBuildResult(cwd) {
   expect(actualFiles.length).toEqual(expectFiles.length);
 
   actualFiles.forEach(file => {
-    const actualFile = readFile(join(actualDir, file), 'utf-8');
-    const expectFile = readFile(join(expectDir, file), 'utf-8');
+    const actualFile = readFileSync(join(actualDir, file), 'utf-8');
+    const expectFile = readFileSync(join(expectDir, file), 'utf-8');
     expect(actualFile).toEqual(expectFile);
   });
 }
 
 describe('index', () => {
   const fixtures = join(__dirname, './fixtures');
-  readdir(fixtures)
+  readdirSync(fixtures)
     .filter(dir => dir.charAt(0) !== '.')
     .forEach(dir => {
       const fn = dir.indexOf('-only') > -1 ? it.only : it;

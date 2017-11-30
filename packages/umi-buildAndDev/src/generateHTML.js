@@ -82,6 +82,30 @@ function getFile(map, name, type) {
   );
 }
 
+function getScriptFiles(opts = {}) {
+  const { chunkToFilesMap, libraryName, entry } = opts;
+  const files = [getFile(chunkToFilesMap, libraryName, '.js')];
+  try {
+    files.push(getFile(chunkToFilesMap, `__common-${libraryName}`, '.js'));
+  } catch (e) {}
+  try {
+    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.async.js'));
+  } catch (e) {}
+  return files;
+}
+
+function getCSSFiles(opts = {}) {
+  const { chunkToFilesMap, libraryName, entry } = opts;
+  const files = [];
+  try {
+    files.push(getFile(chunkToFilesMap, libraryName, '.js'));
+  } catch (e) {}
+  try {
+    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.async.js'));
+  } catch (e) {}
+  return files;
+}
+
 export function getHTMLContent(opts = {}) {
   const {
     route,
@@ -125,39 +149,32 @@ export function getHTMLContent(opts = {}) {
   relPath = relPath === '' ? './' : relPath;
   debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
   const koiCSSFileName = getFile(chunkToFilesMap, libraryName, '.css');
-  const koiJSFileName = getFile(chunkToFilesMap, libraryName, '.js');
-  const commonJSFileName = getFile(
-    chunkToFilesMap,
-    `__common-${libraryName}`,
-    '.js',
-  );
-  const asyncJSFileName = getFile(
-    chunkToFilesMap,
-    normalizeEntry(entry),
-    '.async.js',
-  );
-  const koiJSPath = `${relPath}${staticDirectory}/${koiJSFileName}`;
   const koiCSSPath = `${relPath}${staticDirectory}/${koiCSSFileName}`;
-  const commonJSPath = `${relPath}${staticDirectory}/${commonJSFileName}`;
-  const asyncJSPath = `${relPath}${staticDirectory}/${asyncJSFileName}`;
-  let css = '';
-  if (
-    !isDev &&
-    existsSync(join(root, `dist/${staticDirectory}/${koiCSSFileName}`))
-  ) {
-    css = `
-<link rel="stylesheet" href="${koiCSSPath}" />
-  `;
+
+  function getAssetsPath(file) {
+    return `${relPath}${staticDirectory}/${file}`;
   }
+
+  const getFilesOpts = {
+    entry,
+    libraryName,
+    chunkToFilesMap,
+  };
+  const scriptFiles = getScriptFiles(getFilesOpts);
+  const cssFiles = getCSSFiles(getFilesOpts);
+
+  const css = cssFiles
+    .map(file => `<link rel="stylesheet" href="${file}" />`)
+    .join('\r\n');
   const js = `
-<script src="${koiJSPath}"></script>
+<script src="${getAssetsPath(scriptFiles[0])}"></script>
 ${
     isDev
       ? ''
-      : `
-<script src="${commonJSPath}"></script>
-<script src="${asyncJSPath}"></script>
-`.trim()
+      : scriptFiles
+          .slice(1)
+          .map(script => `<script src="${getAssetsPath(script)}"></script>`)
+          .join('\r\n')
   }
   `;
 
@@ -175,10 +192,8 @@ ${js.trim()}
       root,
       outputPath: './dist',
       staticDirectory,
-      koiCSSFileName,
-      koiJSFileName,
-      asyncJSFileName,
-      commonJSFileName,
+      cssFiles,
+      scriptFiles,
     },
   );
 

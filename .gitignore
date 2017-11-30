@@ -2,6 +2,7 @@
 tmp
 /node_modules
 /packages/*/node_modules
+/packages/*/test/fixtures/**/node_modules
 /examples/*/node_modules
 /examples/*/www
 /examples/*/_dist

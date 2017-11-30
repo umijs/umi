@@ -95,7 +95,7 @@ function generate(opts = {}) {
   }
 
   // koi.js 不会变化，生成一次即可
-  if (!koiJSGenerated) {
+  if (process.env.DISABLE_KOIJS_G_CACHE || !koiJSGenerated) {
     writeFileSync(
       join(absTmpDirPath, `${libraryName}.js`),
       readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),

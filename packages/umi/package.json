@@ -34,13 +34,16 @@
   },
   "scripts": {
     "build": "ruban build",
-    "test": "ruban test",
-    "debug": "ruban debug",
+    "test": "ruban test --timeout 200000",
+    "debug": "ruban debug --timeout 200000",
     "coveralls": "ruban coveralls"
   },
   "files": [
     "lib",
     "src",
     "bin"
-  ]
+  ],
+  "devDependencies": {
+    "glob": "^7.1.2"
+  }
 }

@@ -4,7 +4,7 @@ import getRouteConfig from '../src/getRouteConfig';
 
 const fixture = join(__dirname, 'fixtures/getRouteConfig');
 
-describe('getRouteConfig', () => {
+xdescribe('getRouteConfig', () => {
   it('normal', () => {
     const config = getRouteConfig(join(fixture, 'normal'));
     expect(config).toEqual({
