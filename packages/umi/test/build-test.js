@@ -15,7 +15,7 @@ function assertBuildResult(cwd) {
 
   actualFiles.forEach(file => {
     // don't assert umi.js, since it's too big
-    if (file.indexOf('umi.js') > -1) return;
+    if (file.indexOf('umi.js') > -1 || file.indexOf('umi.css') > -1) return;
 
     const actualFile = readFileSync(join(actualDir, file), 'utf-8');
     const expectFile = readFileSync(join(expectDir, file), 'utf-8');
@@ -39,6 +39,7 @@ describe('build', () => {
         build({
           cwd,
           hash: false,
+          enableCSSModules: false,
         })
           .then(() => {
             assertBuildResult(cwd);
