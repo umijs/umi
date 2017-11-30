@@ -123,8 +123,14 @@ export function getHTMLContent(opts = {}) {
   // 生成 tailBodyReplace
   let relPath = new Array(route.slice(1).split(sep).length).join('../');
   relPath = relPath === '' ? './' : relPath;
+  debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
   const koiCSSFileName = getFile(chunkToFilesMap, libraryName, '.css');
   const koiJSFileName = getFile(chunkToFilesMap, libraryName, '.js');
+  const commonJSFileName = getFile(
+    chunkToFilesMap,
+    `__common-${libraryName}`,
+    '.js',
+  );
   const asyncJSFileName = getFile(
     chunkToFilesMap,
     normalizeEntry(entry),
@@ -132,6 +138,7 @@ export function getHTMLContent(opts = {}) {
   );
   const koiJSPath = `${relPath}${staticDirectory}/${koiJSFileName}`;
   const koiCSSPath = `${relPath}${staticDirectory}/${koiCSSFileName}`;
+  const commonJSPath = `${relPath}${staticDirectory}/${commonJSFileName}`;
   const asyncJSPath = `${relPath}${staticDirectory}/${asyncJSFileName}`;
   let css = '';
   if (
@@ -144,13 +151,21 @@ export function getHTMLContent(opts = {}) {
   }
   const js = `
 <script src="${koiJSPath}"></script>
-${isDev ? '' : `<script src="${asyncJSPath}"></script>`}
+${
+    isDev
+      ? ''
+      : `
+<script src="${commonJSPath}"></script>
+<script src="${asyncJSPath}"></script>
+`.trim()
+  }
   `;
 
   let tailBodyReplace = `
 ${css.trim()}
 ${configScript.trim()}
 ${js.trim()}
+
 </body>`.trim();
   tailBodyReplace = applyPlugins(
     plugins,
@@ -163,6 +178,7 @@ ${js.trim()}
       koiCSSFileName,
       koiJSFileName,
       asyncJSFileName,
+      commonJSFileName,
     },
   );
 

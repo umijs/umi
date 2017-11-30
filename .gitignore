@@ -13,4 +13,4 @@ coverage
 npm-debug.log*
 lerna-debug.log
 .changelog
-.koi
+.umi

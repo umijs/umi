@@ -58,7 +58,7 @@ export default function generateEntry(opts = {}) {
 export function watchPages(opts = {}) {
   const { cwd, onChange, paths } = opts;
   const watcher = chokidar.watch(paths.absPagesPath, {
-    ignored: /(\.koi|\.idea)/,
+    ignored: /(\.koi|\.umi|\.idea)/,
     ignoreInitial: true,
   });
   watcher.on(
