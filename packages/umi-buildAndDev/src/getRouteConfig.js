@@ -1,31 +1,26 @@
-import {
-  readdirSync as readdir,
-  statSync as stat,
-  existsSync as exists,
-} from 'fs';
+import { readdirSync, statSync, existsSync } from 'fs';
 import { join, extname, basename } from 'path';
 import { ROUTE_FILE } from './constants';
 
 const DOT_JS = '.js';
 
-export default function getRouteConfig(root, dirPath = '', opts = {}) {
-  const { tmpDirectory } = opts;
+export default function getRouteConfig(root, dirPath = '') {
   const path = join(root, dirPath);
-  const files = readdir(path);
+  const files = readdirSync(path);
 
   return files.reduce((memo, file) => {
     if (file === '.' || file === '..') return memo;
-    const stats = stat(join(path, file));
+    const stats = statSync(join(path, file));
     if (stats.isFile() && extname(file) === DOT_JS) {
       const fullPath = join(dirPath, basename(file, DOT_JS));
       return {
         ...memo,
         [`/${fullPath}.html`]: `${fullPath}${DOT_JS}`,
       };
-    } else if (stats.isDirectory() && file !== tmpDirectory) {
+    } else if (stats.isDirectory()) {
       const fullPath = join(dirPath, file);
-      if (exists(join(root, fullPath, ROUTE_FILE))) {
-        if (exists(join(root, `${fullPath}${DOT_JS}`))) {
+      if (existsSync(join(root, fullPath, ROUTE_FILE))) {
+        if (existsSync(join(root, `${fullPath}${DOT_JS}`))) {
           throw new Error(
             `路由冲突，src/page 目录下同时存在 "${fullPath}${
               DOT_JS
@@ -39,7 +34,7 @@ export default function getRouteConfig(root, dirPath = '', opts = {}) {
       } else {
         return {
           ...memo,
-          ...getRouteConfig(root, fullPath, opts),
+          ...getRouteConfig(root, fullPath),
         };
       }
     } else {

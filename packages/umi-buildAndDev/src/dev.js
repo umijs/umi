@@ -67,7 +67,6 @@ export default function runDev(opts) {
         sendPageList(routeConfig);
       },
       paths,
-      tmpDirectory,
     });
     watchEntry = entryGObj.watch;
   } catch (e) {
@@ -95,7 +94,6 @@ export default function runDev(opts) {
     libraryName,
     staticDirectory,
     paths,
-    tmpDirectory,
   });
   debug(`webpackConfig: ${JSON.stringify(webpackConfig)}`);
 
@@ -109,7 +107,6 @@ export default function runDev(opts) {
         plugins,
         staticDirectory,
         libraryName,
-        tmpDirectory,
         paths,
       ),
       ...extraMiddlewares,

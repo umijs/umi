@@ -58,7 +58,7 @@ export default function generateEntry(opts = {}) {
 export function watchPages(opts = {}) {
   const { cwd, onChange, paths } = opts;
   const watcher = chokidar.watch(paths.absPagesPath, {
-    ignored: /(\.koi|\.umi|\.idea)/,
+    ignored: /(^|[\/\\])\../, // ignore .dotfiles
     ignoreInitial: true,
   });
   watcher.on(
@@ -75,11 +75,9 @@ export function watchPages(opts = {}) {
 }
 
 function generate(opts = {}) {
-  const { paths, plugins, libraryName, tmpDirectory } = opts;
+  const { paths, plugins, libraryName } = opts;
   const { absTmpDirPath, absPagesPath } = paths;
-  const routeConfig = getRouteConfig(absPagesPath, '', {
-    tmpDirectory,
-  });
+  const routeConfig = getRouteConfig(absPagesPath);
 
   applyPlugins(plugins, 'generateEntry');
 

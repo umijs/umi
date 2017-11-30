@@ -15,13 +15,16 @@ export default function(opts = {}) {
   if (test(join(cwd, 'src/pages'))) {
     pagesPath = 'src/pages';
   }
-  const absPagesPath = join(cwd, pagesPath);
-  const absTmpDirPath = join(absPagesPath, tmpDirectory);
+
+  const envAffix =
+    process.env.NODE_ENV === 'development' ? '' : `-${process.env.NODE_ENV}`;
+  const tmpDirPath = `${pagesPath}/${tmpDirectory}${envAffix}`;
 
   return {
     cwd,
     pagesPath,
-    absPagesPath,
-    absTmpDirPath,
+    absPagesPath: join(cwd, pagesPath),
+    tmpDirPath,
+    absTmpDirPath: join(cwd, tmpDirPath),
   };
 }

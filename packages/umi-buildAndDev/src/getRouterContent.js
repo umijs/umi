@@ -7,7 +7,8 @@ export default function getRouterContent(opts = {}) {
   const {
     routeConfig,
     tplPath = join(__dirname, `../template/router.js`),
-    libraryName = 'umi',
+    libraryName,
+    paths,
   } = opts;
 
   if (!exists(tplPath)) {
@@ -17,7 +18,7 @@ export default function getRouterContent(opts = {}) {
   const routeComponents = getRouteComponents(routeConfig);
   return tpl
     .replace(/<%= routeComponents %>/g, routeComponents)
-    .replace(/<%= libraryName %>/g, libraryName || 'umi');
+    .replace(/<%= libraryName %>/g, libraryName);
 }
 
 function getRouteComponents(routeConfig) {

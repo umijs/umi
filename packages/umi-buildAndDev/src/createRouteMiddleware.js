@@ -10,15 +10,12 @@ export default function createRouteMiddleware(
   plugins,
   staticDirectory,
   libraryName,
-  tmpDirectory,
   paths,
 ) {
   config = _config;
   const { absPagesPath } = paths;
   return (req, res, next) => {
-    const routeConfig = getRouteConfig(absPagesPath, '', {
-      tmpDirectory,
-    });
+    const routeConfig = getRouteConfig(absPagesPath);
     const { pages: pagesConfig } = config;
     const path = req.path === '/' ? '/index.html' : req.path;
     if (routeConfig[path]) {

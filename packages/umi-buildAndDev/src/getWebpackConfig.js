@@ -16,17 +16,13 @@ export default function(opts = {}) {
     routeConfig,
     libraryName,
     staticDirectory,
-    tmpDirectory,
     paths,
   } = opts;
   // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
   const browsers = config.browsers || defaultBrowsers;
 
   // entry
-  const entryScript = join(
-    cwd,
-    `./${paths.pagesPath}/${tmpDirectory}/${libraryName}.js`,
-  );
+  const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
   const isDev = env === 'development';
   const entry = isDev

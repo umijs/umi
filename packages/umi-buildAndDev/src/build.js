@@ -57,7 +57,6 @@ export default function(opts = {}) {
       entryJSTpl: opts.entryJSTpl,
       libraryName,
       paths,
-      tmpDirectory,
     });
 
     // 获取 webpack 配置
@@ -71,7 +70,6 @@ export default function(opts = {}) {
       routeConfig,
       libraryName,
       staticDirectory,
-      tmpDirectory,
       paths,
     });
 
@@ -79,15 +77,16 @@ export default function(opts = {}) {
     build({
       webpackConfig,
       success({ stats }) {
+        debug(`删除临时文件夹 ${paths.tmpDirPath}`);
+        rimraf(paths.absTmpDirPath);
+
         debug('打包 HTML...');
         let chunkToFilesMap = null;
         if (hash) {
           chunkToFilesMap = getChunkToFilesMap(stats.compilation.chunks);
           debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
         }
-        const routeConfig = getRouteConfig(paths.absPagesPath, '', {
-          tmpDirectory,
-        });
+        const routeConfig = getRouteConfig(paths.absPagesPath);
         generateHTML({
           cwd,
           routeConfig,
