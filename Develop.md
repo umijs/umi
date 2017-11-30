@@ -32,3 +32,19 @@ require('umi/lib/build')(opts);
 Opts for build only:
 
 * hash
+
+## Plugin
+
+### Generate Entry
+
+generateEntry
+ 
+### Generate HTML
+
+getConfigScript
+getTailBodyReplace
+generateHTML
+ 
+### Build
+
+buildSuccess
