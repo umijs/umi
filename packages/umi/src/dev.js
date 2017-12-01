@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 
 export default function(opts) {
-  return require('umi-buildAndDev/lib/dev').default({
+  return require('umi-build-dev/lib/dev').default({
     babel: resolve(__dirname, '../babel'),
     enableCSSModules: true,
     extraResolveModules: [resolve(__dirname, '../../node_modules')],
@@ -9,4 +9,4 @@ export default function(opts) {
   });
 }
 
-export { fork } from 'umi-buildAndDev/lib/dev';
+export { fork } from 'umi-build-dev/lib/dev';

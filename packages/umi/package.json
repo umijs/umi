@@ -12,7 +12,7 @@
     "fastclick": "^1.0.6",
     "history": "^4.7.2",
     "query-string": "^5.0.0",
-    "umi-buildAndDev": "^0.1.1",
+    "umi-build-dev": "^0.1.1",
     "umi-router": "^0.1.1",
     "uppercamelcase": "^3.0.0",
     "url": "^0.11.0",

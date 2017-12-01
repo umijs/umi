@@ -3,7 +3,7 @@ import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import defaultBrowsers from './defaultConfigs/browsers';
 
-const debug = require('debug')('umi-buildAndDev:getWebpackConfig');
+const debug = require('debug')('umi-build-dev:getWebpackConfig');
 const env = process.env.NODE_ENV;
 
 export default function(opts = {}) {

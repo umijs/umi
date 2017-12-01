@@ -1,5 +1,5 @@
 {
-  "name": "umi-buildAndDev",
+  "name": "umi-build-dev",
   "version": "0.1.1",
   "dependencies": {
     "address": "^1.0.3",
@@ -21,9 +21,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/umijs/umi/tree/master/packages/umi-buildAndDev"
+    "url": "http://github.com/umijs/umi/tree/master/packages/umi-build-dev"
   },
-  "homepage": "http://github.com/umijs/umi/tree/master/packages/umi-buildAndDev",
+  "homepage": "http://github.com/umijs/umi/tree/master/packages/umi-build-dev",
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],

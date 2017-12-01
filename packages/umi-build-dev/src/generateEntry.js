@@ -8,7 +8,7 @@ import { applyPlugins } from 'umi-plugin';
 import getRouteConfig from './getRouteConfig';
 import getRouterContent from './getRouterContent';
 
-const debug = require('debug')('umi-buildAndDev:generateEntry');
+const debug = require('debug')('umi-build-dev:generateEntry');
 
 let cachedRouterContent = null;
 let koiJSGenerated = false;

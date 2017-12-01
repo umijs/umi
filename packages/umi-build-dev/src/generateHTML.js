@@ -6,7 +6,7 @@ import { writeFileSync, existsSync, readFileSync } from 'fs';
 import { applyPlugins } from 'umi-plugin';
 import normalizeEntry from './normalizeEntry';
 
-const debug = require('debug')('umi-buildAndDev:generateHTML');
+const debug = require('debug')('umi-build-dev:generateHTML');
 
 export default function generateHTML(opts = {}) {
   const {

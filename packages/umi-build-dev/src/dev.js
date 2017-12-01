@@ -10,7 +10,7 @@ import { getConfig, watchConfigs } from './getConfig';
 import { unwatch } from './getConfig/watch';
 import getPaths from './getPaths';
 
-const debug = require('debug')('umi-buildAndDev:dev');
+const debug = require('debug')('umi-build-dev:dev');
 
 export default function runDev(opts) {
   const {

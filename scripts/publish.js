@@ -9,7 +9,9 @@ if (
     .exec('npm config get registry')
     .stdout.indexOf('https://registry.npmjs.org/') === -1
 ) {
-  console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
+  console.error(
+    'Failed: set npm registry to https://registry.npmjs.org/ first',
+  );
   process.exit(1);
 }
 
@@ -23,12 +25,6 @@ const updatedRepos = ret
 if (updatedRepos.length === 0) {
   console.log('No package is updated.');
   process.exit(0);
-}
-
-const { code: buildCode } = shell.exec('npm run build');
-if (buildCode === 1) {
-  console.error('Failed: npm run build');
-  process.exit(1);
 }
 
 const { code: buildCode } = shell.exec('npm run build');

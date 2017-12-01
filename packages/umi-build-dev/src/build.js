@@ -11,7 +11,7 @@ import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
 import getPaths from './getPaths';
 
-const debug = require('debug')('umi-buildAndDev:build');
+const debug = require('debug')('umi-build-dev:build');
 const cwd = process.cwd();
 
 export default function(opts = {}) {
