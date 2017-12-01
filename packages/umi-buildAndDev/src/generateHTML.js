@@ -19,6 +19,7 @@ export default function generateHTML(opts = {}) {
     libraryName,
     paths,
   } = opts;
+
   const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
   routes.forEach(route => {
@@ -34,6 +35,7 @@ export default function generateHTML(opts = {}) {
       staticDirectory,
       libraryName,
     });
+
     mkdirp(dirname(outputFilePath));
     writeFileSync(outputFilePath, content, 'utf-8');
   });
@@ -65,14 +67,9 @@ function getFile(map, name, type) {
   }
   const files = map[name];
   assert(files, `name ${name} don't exists in map ${JSON.stringify(map)}`);
-  if (files.length === 1) {
-    return files[0];
-  }
-  if (type) {
-    for (const file of files) {
-      if (extname(file) === type) {
-        return file;
-      }
+  for (const file of files) {
+    if (extname(file) === type) {
+      return file;
     }
   }
   throw new Error(
@@ -89,7 +86,7 @@ function getScriptFiles(opts = {}) {
     files.push(getFile(chunkToFilesMap, `__common-${libraryName}`, '.js'));
   } catch (e) {}
   try {
-    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.async.js'));
+    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.js'));
   } catch (e) {}
   return files;
 }
@@ -98,10 +95,10 @@ function getCSSFiles(opts = {}) {
   const { chunkToFilesMap, libraryName, entry } = opts;
   const files = [];
   try {
-    files.push(getFile(chunkToFilesMap, libraryName, '.js'));
+    files.push(getFile(chunkToFilesMap, libraryName, '.css'));
   } catch (e) {}
   try {
-    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.async.js'));
+    files.push(getFile(chunkToFilesMap, normalizeEntry(entry), '.css'));
   } catch (e) {}
   return files;
 }
@@ -147,9 +144,6 @@ export function getHTMLContent(opts = {}) {
   // 生成 tailBodyReplace
   let relPath = new Array(route.slice(1).split(sep).length).join('../');
   relPath = relPath === '' ? './' : relPath;
-  debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
-  const koiCSSFileName = getFile(chunkToFilesMap, libraryName, '.css');
-  const koiCSSPath = `${relPath}${staticDirectory}/${koiCSSFileName}`;
 
   function getAssetsPath(file) {
     return `${relPath}${staticDirectory}/${file}`;
@@ -160,12 +154,13 @@ export function getHTMLContent(opts = {}) {
     libraryName,
     chunkToFilesMap,
   };
-  const scriptFiles = getScriptFiles(getFilesOpts);
-  const cssFiles = getCSSFiles(getFilesOpts);
 
+  const cssFiles = isDev ? [] : getCSSFiles(getFilesOpts);
   const css = cssFiles
-    .map(file => `<link rel="stylesheet" href="${file}" />`)
+    .map(file => `<link rel="stylesheet" href="${getAssetsPath(file)}" />`)
     .join('\r\n');
+
+  const scriptFiles = getScriptFiles(getFilesOpts);
   const js = `
 <script src="${getAssetsPath(scriptFiles[0])}"></script>
 ${

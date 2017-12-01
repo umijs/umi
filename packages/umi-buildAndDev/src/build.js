@@ -81,11 +81,9 @@ export default function(opts = {}) {
         rimraf(paths.absTmpDirPath);
 
         debug('打包 HTML...');
-        let chunkToFilesMap = null;
-        if (hash) {
-          chunkToFilesMap = getChunkToFilesMap(stats.compilation.chunks);
-          debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
-        }
+        const chunkToFilesMap = getChunkToFilesMap(stats.compilation.chunks);
+        debug(`chunkToFilesMap: ${JSON.stringify(chunkToFilesMap)}`);
+
         const routeConfig = getRouteConfig(paths.absPagesPath);
         generateHTML({
           cwd,

@@ -4846,35 +4846,35 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: .-buildAndDev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
 var preact_compat = __webpack_require__(3);
 var preact_compat_default = /*#__PURE__*/__webpack_require__.n(preact_compat);
 
-// EXTERNAL MODULE: .-router/index.js
-var __router = __webpack_require__(74);
-var __router_default = /*#__PURE__*/__webpack_require__.n(__router);
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-router/index.js
+var umi_router = __webpack_require__(74);
+var umi_router_default = /*#__PURE__*/__webpack_require__.n(umi_router);
 
-// EXTERNAL MODULE: ../af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/core-js/object/get-prototype-of.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/core-js/object/get-prototype-of.js
 var get_prototype_of = __webpack_require__(20);
 var get_prototype_of_default = /*#__PURE__*/__webpack_require__.n(get_prototype_of);
 
-// EXTERNAL MODULE: ../af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/classCallCheck.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__(21);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
 
-// EXTERNAL MODULE: ../af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/createClass.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/createClass.js
 var createClass = __webpack_require__(22);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
 
-// EXTERNAL MODULE: ../af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/possibleConstructorReturn.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/possibleConstructorReturn.js
 var possibleConstructorReturn = __webpack_require__(23);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
-// EXTERNAL MODULE: ../af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/inherits.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/af-webpack/node_modules/_@babel_runtime@7.0.0-beta.31@@babel/runtime/helpers/inherits.js
 var inherits = __webpack_require__(24);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
-// CONCATENATED MODULE: ./src/dynamic.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi/src/dynamic.js
 
 
 
@@ -4961,15 +4961,15 @@ function asyncComponent(config) {
     }(preact_compat["Component"])
   );
 }
-// CONCATENATED MODULE: ./test/fixtures/build/single-page-without-page-script-only/pages/.umi/router.js
+// CONCATENATED MODULE: ./pages/.umi-production/router.js
 /* harmony export (immutable) */ __webpack_exports__["default"] = KoiRouter;
 
 
 
 function KoiRouter() {
-  return preact_compat_default.a.createElement(__router["Router"], {
+  return preact_compat_default.a.createElement(umi_router["Router"], {
     history: window.g_history
-  }, preact_compat_default.a.createElement(__router["Switch"], null, preact_compat_default.a.createElement(__router["Route"], {
+  }, preact_compat_default.a.createElement(umi_router["Switch"], null, preact_compat_default.a.createElement(umi_router["Route"], {
     exact: true,
     path: "/a.html",
     component: dynamic(function () {

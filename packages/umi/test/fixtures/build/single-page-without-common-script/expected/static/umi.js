@@ -4961,7 +4961,7 @@ function asyncComponent(config) {
     }(preact_compat["Component"])
   );
 }
-// CONCATENATED MODULE: ./pages/.umi/router.js
+// CONCATENATED MODULE: ./pages/.umi-production/router.js
 /* harmony export (immutable) */ __webpack_exports__["default"] = KoiRouter;
 
 

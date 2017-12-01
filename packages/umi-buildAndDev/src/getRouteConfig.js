@@ -9,7 +9,8 @@ export default function getRouteConfig(root, dirPath = '') {
   const files = readdirSync(path);
 
   return files.reduce((memo, file) => {
-    if (file === '.' || file === '..') return memo;
+    // 包含 ., .., 以及其他 dotfile
+    if (file.charAt(0) === '.') return memo;
     const stats = statSync(join(path, file));
     if (stats.isFile() && extname(file) === DOT_JS) {
       const fullPath = join(dirPath, basename(file, DOT_JS));

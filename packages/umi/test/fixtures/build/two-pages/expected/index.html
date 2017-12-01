@@ -13,14 +13,13 @@
 
 <div id="root"></div>
 
-<link rel="stylesheet" href="umi.js" />
-<link rel="stylesheet" href="index.async.js" />
+<link rel="stylesheet" href="./static/umi.css" />
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
   window.resourceBaseUrl = location.origin + window.routerBase + 'static/';
 </script>
 <script src="./static/umi.js"></script>
-<script src="./static/__common-umi.js"></script>
+<script src="./static/__common-umi.async.js"></script>
 <script src="./static/index.async.js"></script>
 
 </body>

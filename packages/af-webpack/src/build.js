@@ -83,6 +83,7 @@ export default function build({ webpackConfig, success }) {
     .catch(err => {
       console.log(chalk.red('Failed to compile.\n'));
       printBuildError(err);
+      debug(err);
       process.exit(1);
     });
 }
