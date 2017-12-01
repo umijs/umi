@@ -41,7 +41,8 @@
   "files": [
     "lib",
     "src",
-    "bin"
+    "bin",
+    "babel.js"
   ],
   "devDependencies": {
     "glob": "^7.1.2"
