@@ -38,14 +38,14 @@ Opts for build only:
 
 ### Generate Entry
 
-generateEntry
+* generateEntry
  
 ### Generate HTML
 
-getConfigScript
-getTailBodyReplace
-generateHTML
+* getConfigScript
+* getTailBodyReplace
+* generateHTML
  
 ### Build
 
-buildSuccess
+* buildSuccess
