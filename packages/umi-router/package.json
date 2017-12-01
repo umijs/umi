@@ -1,6 +1,6 @@
 {
   "name": "umi-router",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
     "path-to-regexp": "^2.0.0",
     "prop-types": "^15.5.10",

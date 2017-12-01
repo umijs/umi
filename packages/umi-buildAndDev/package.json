@@ -1,9 +1,9 @@
 {
   "name": "umi-buildAndDev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
     "address": "^1.0.3",
-    "af-webpack": "^0.9.1",
+    "af-webpack": "^0.10.0",
     "antd-mobile": "^2.0.0",
     "chalk": "^2.1.0",
     "chokidar": "^1.7.0",
@@ -17,7 +17,7 @@
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
     "rimraf": "^2.6.1",
-    "umi-plugin": "^0.1.0"
+    "umi-plugin": "^0.1.1"
   },
   "repository": {
     "type": "git",

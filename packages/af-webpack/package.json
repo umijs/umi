@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "dependencies": {
     "@babel/core": "7.0.0-beta.31",
     "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.31",
@@ -11,7 +11,7 @@
     "babel-eslint": "^8.0.1",
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-umi": "^0.1.0",
+    "babel-preset-umi": "^0.1.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.1.0",
     "copy-webpack-plugin": "^4.2.0",
@@ -19,7 +19,7 @@
     "debug": "^3.1.0",
     "detect-port": "^1.2.1",
     "eslint": "^4.7.1",
-    "eslint-config-umi": "^0.1.0",
+    "eslint-config-umi": "^0.1.1",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-flowtype": "^2.34.1",
     "eslint-plugin-import": "^2.6.0",
