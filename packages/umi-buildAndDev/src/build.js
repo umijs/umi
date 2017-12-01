@@ -46,8 +46,10 @@ export default function(opts = {}) {
     // 获取用户配置
     const { config } = getConfig(cwd);
 
-    debug(`清理临时文件夹 ${paths.absTmpDirPath.replace(`${cwd}/`, '')}`);
+    debug(`清理临时文件夹 ${paths.tmpDirPath}`);
     rimraf(paths.absTmpDirPath);
+    debug(`清理 outputPath ${paths.outputPath}`);
+    rimraf(paths.absOutputPath);
 
     // 生成入口文件
     debug(`libraryName: ${libraryName}`);
