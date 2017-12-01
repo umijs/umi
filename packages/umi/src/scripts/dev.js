@@ -1,5 +1,3 @@
-import { resolve } from 'path';
-import { forkADevServer } from 'umi-buildAndDev/lib/dev';
+import { fork } from 'umi-buildAndDev/lib/dev';
 
-const devScriptPath = resolve(__dirname, './realDev.js');
-forkADevServer(devScriptPath);
+fork(require.resolve('./realDev.js'));

@@ -129,4 +129,4 @@ function sendPageList(routeConfig) {
 }
 
 // 给 koi-core 用，后期需要干掉，fork 的功能集中在 af-webpack 里完成
-export forkADevServer from 'af-webpack/lib/fork';
+export fork from 'af-webpack/lib/fork';

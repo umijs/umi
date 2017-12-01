@@ -8,3 +8,5 @@ export default function(opts) {
     ...opts,
   });
 }
+
+export { fork } from 'umi-buildAndDev/lib/dev';
