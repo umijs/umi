@@ -12,6 +12,7 @@
 * entryJSTpl
 * staticDirectory, default `static`
 * tmpDirectory, default `.${libraryName}`
+* outputPath, default `./dist`
 
 ## dev
 
