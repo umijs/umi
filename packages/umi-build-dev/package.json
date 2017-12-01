@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {
     "address": "^1.0.3",
     "af-webpack": "^0.10.0",
