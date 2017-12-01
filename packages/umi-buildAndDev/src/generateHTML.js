@@ -80,7 +80,7 @@ function getFile(map, name, type) {
   );
 }
 
-function getScriptFiles(opts = {}) {
+function getJSFiles(opts = {}) {
   const { chunkToFilesMap, libraryName, entry } = opts;
   const files = [getFile(chunkToFilesMap, libraryName, '.js')];
   try {
@@ -162,13 +162,13 @@ export function getHTMLContent(opts = {}) {
     .map(file => `<link rel="stylesheet" href="${getAssetsPath(file)}" />`)
     .join('\r\n');
 
-  const scriptFiles = getScriptFiles(getFilesOpts);
+  const jsFiles = getJSFiles(getFilesOpts);
   const js = `
-<script src="${getAssetsPath(scriptFiles[0])}"></script>
+<script src="${getAssetsPath(jsFiles[0])}"></script>
 ${
     isDev
       ? ''
-      : scriptFiles
+      : jsFiles
           .slice(1)
           .map(script => `<script src="${getAssetsPath(script)}"></script>`)
           .join('\r\n')
@@ -183,14 +183,15 @@ ${js.trim()}
 </body>`.trim();
   tailBodyReplace = applyPlugins(
     plugins,
-    'getTailBodyRepalce',
+    'getTailBodyReplace',
     tailBodyReplace,
     {
       root,
       outputPath: paths.outputPath,
       staticDirectory,
       cssFiles,
-      scriptFiles,
+      jsFiles,
+      configScript,
     },
   );
 
