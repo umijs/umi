@@ -24,10 +24,11 @@ export default function(opts = {}) {
     libraryName = 'umi',
     staticDirectory = 'static',
     tmpDirectory = `.${libraryName}`,
+    outputPath = './dist',
     plugins: pluginFiles,
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
-  const paths = getPaths({ cwd, tmpDirectory });
+  const paths = getPaths({ cwd, tmpDirectory, outputPath });
 
   function getChunkToFilesMap(chunks) {
     return chunks.reduce((memo, chunk) => {

@@ -21,11 +21,12 @@ export default function runDev(opts) {
     libraryName = 'umi',
     staticDirectory = 'static',
     tmpDirectory = `.${libraryName}`,
+    outputPath = './dist',
     plugins: pluginFiles,
     extraMiddlewares = [], // TODO: move to plugins
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
-  const paths = getPaths({ cwd, tmpDirectory });
+  const paths = getPaths({ cwd, tmpDirectory, outputPath });
 
   // 为配置注册 babel 解析
   registerBabel(babel, {

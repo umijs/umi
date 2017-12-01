@@ -6,7 +6,7 @@ function test(path) {
 }
 
 export default function(opts = {}) {
-  const { cwd, tmpDirectory } = opts;
+  const { cwd, tmpDirectory, outputPath } = opts;
 
   let pagesPath = 'pages';
   if (test(join(cwd, 'src/page'))) {
@@ -22,6 +22,8 @@ export default function(opts = {}) {
 
   return {
     cwd,
+    outputPath,
+    absOutputPath: join(cwd, outputPath),
     pagesPath,
     absPagesPath: join(cwd, pagesPath),
     tmpDirPath,

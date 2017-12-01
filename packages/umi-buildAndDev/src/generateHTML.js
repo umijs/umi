@@ -23,7 +23,7 @@ export default function generateHTML(opts = {}) {
   const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
   routes.forEach(route => {
-    const outputFilePath = join(cwd, 'dist', route.slice(1));
+    const outputFilePath = join(paths.absOutputPath, route.slice(1));
     const content = getHTMLContent({
       route,
       entry: routeConfig[route],
@@ -34,6 +34,7 @@ export default function generateHTML(opts = {}) {
       plugins,
       staticDirectory,
       libraryName,
+      paths,
     });
 
     mkdirp(dirname(outputFilePath));
@@ -114,6 +115,7 @@ export function getHTMLContent(opts = {}) {
     plugins,
     staticDirectory,
     libraryName,
+    paths,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 
@@ -185,7 +187,7 @@ ${js.trim()}
     tailBodyReplace,
     {
       root,
-      outputPath: './dist',
+      outputPath: paths.outputPath,
       staticDirectory,
       cssFiles,
       scriptFiles,

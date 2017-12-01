@@ -45,7 +45,7 @@ export default function(opts = {}) {
       presets: [[babel, { browsers, libraryName }]],
     },
     theme: config.theme,
-    outputPath: join(cwd, `dist/${staticDirectory}`),
+    outputPath: join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
     enableCSSModules,
     define: {

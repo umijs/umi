@@ -28,6 +28,7 @@ export default function createRouteMiddleware(
         plugins,
         staticDirectory,
         libraryName,
+        paths,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
