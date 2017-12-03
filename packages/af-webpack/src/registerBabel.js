@@ -1,6 +1,7 @@
 export default function registerBabel(opts = {}) {
   const { only, ignore, babelPreset, disablePreventTest } = opts;
   if (disablePreventTest || process.env.NODE_ENV !== 'test') {
+    process.env.BABEL_DISABLE_CACHE = 1;
     require('@babel/register')({
       presets: [babelPreset],
       plugins: [
@@ -10,7 +11,7 @@ export default function registerBabel(opts = {}) {
       only,
       ignore,
       babelrc: false,
-      cache: false, // 无效？待排查。
+      cache: false,
     });
   }
 }
