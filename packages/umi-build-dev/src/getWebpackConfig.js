@@ -74,6 +74,7 @@ export default function(opts = {}) {
       // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
       // 详见：https://tinyletter.com/sorrycc/letters/babel
       'antd-mobile': dirname(require.resolve('antd-mobile/package')),
+      antd: dirname(require.resolve('antd/package')),
       ...(config.alias || {}),
     },
     ...(isDev

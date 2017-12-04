@@ -14,6 +14,14 @@ export default function(context, opts = {}) {
       [
         require.resolve('babel-plugin-import'),
         {
+          libraryName: 'antd',
+          libraryDirectory: 'es',
+          style: true,
+        },
+      ],
+      [
+        require.resolve('babel-plugin-import'),
+        {
           libraryName: 'antd-mobile',
           libraryDirectory: 'es',
           style: true,
