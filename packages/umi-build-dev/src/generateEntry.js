@@ -75,11 +75,11 @@ export function watchPages(opts = {}) {
 }
 
 function generate(opts = {}) {
-  const { paths, plugins, libraryName } = opts;
+  const { cwd, paths, plugins, libraryName } = opts;
   const { absTmpDirPath, absPagesPath } = paths;
   const routeConfig = getRouteConfig(absPagesPath);
 
-  applyPlugins(plugins, 'generateEntry');
+  applyPlugins(plugins, 'generateEntry', null, opts);
 
   // 缓存一次
   const routerContent = getRouterContent({

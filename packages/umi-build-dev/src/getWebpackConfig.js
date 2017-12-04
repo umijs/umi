@@ -17,6 +17,7 @@ export default function(opts = {}) {
     routeConfig,
     libraryName,
     staticDirectory,
+    extraResolveModules,
     paths,
     preact,
   } = opts;
@@ -87,6 +88,7 @@ export default function(opts = {}) {
     outputPath: join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
     enableCSSModules,
+    extraResolveModules,
     define: {
       // 禁用 antd-mobile 升级提醒
       // ref: http://gitlab.alipay-inc.com/twa/koi-pkgs/issues/53
