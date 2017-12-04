@@ -1,4 +1,5 @@
 import { join, dirname } from 'path';
+import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import defaultBrowsers from './defaultConfigs/browsers';
@@ -52,6 +53,29 @@ export default function(opts = {}) {
         'react-dom': require.resolve('react-dom'),
       };
 
+  // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
+  // 详见：https://tinyletter.com/sorrycc/letters/babel
+  const libAlias = {
+    'antd-mobile': dirname(require.resolve('antd-mobile/package')),
+    antd: dirname(require.resolve('antd/package')),
+  };
+  // 支持用户指定 antd 和 antd-mobile 的版本
+  // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install
+  const pkgPath = join(cwd, 'package.json');
+  if (existsSync(pkgPath)) {
+    const { dependencies = {} } = require(pkgPath);
+    if (dependencies.antd) {
+      libAlias['antd'] = dirname(
+        require.resolve(join(cwd, 'node_modules/antd/package')),
+      );
+    }
+    if (dependencies['antd-mobile']) {
+      libAlias['antd-mobile'] = dirname(
+        require.resolve(join(cwd, 'node_modules/antd-mobile/package')),
+      );
+    }
+  }
+
   return getConfig({
     cwd,
     entry,
@@ -71,10 +95,7 @@ export default function(opts = {}) {
     },
     alias: {
       ...reactAlias,
-      // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
-      // 详见：https://tinyletter.com/sorrycc/letters/babel
-      'antd-mobile': dirname(require.resolve('antd-mobile/package')),
-      antd: dirname(require.resolve('antd/package')),
+      ...libAlias,
       ...(config.alias || {}),
     },
     ...(isDev

@@ -40,6 +40,7 @@ describe('build', () => {
           cwd,
           hash: false,
           enableCSSModules: false,
+          preact: true,
         })
           .then(() => {
             assertBuildResult(cwd);

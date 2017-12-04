@@ -5168,9 +5168,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
 	if (true) {
 
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+		!(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 			return FastClick;
-		}.call(exports, __webpack_require__, exports, module),
+		}).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else if (typeof module !== 'undefined' && module.exports) {
 		module.exports = FastClick.attach;
@@ -5188,7 +5188,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
 var preact_compat = __webpack_require__(3);
 var preact_compat_default = /*#__PURE__*/__webpack_require__.n(preact_compat);
 

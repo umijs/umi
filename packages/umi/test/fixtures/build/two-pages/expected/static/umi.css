@@ -772,7 +772,6 @@ template {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-size: 16px;
   background-color: #f5f5f9;
 }
 *[contenteditable] {

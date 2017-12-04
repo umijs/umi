@@ -6,13 +6,13 @@ webpackJsonp([1],{
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/button/style/index.js + 2 modules
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/button/style/index.js + 2 modules
 var style = __webpack_require__(138);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/button/index.js + 4 modules
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/button/index.js + 4 modules
 var es_button = __webpack_require__(139);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
 var preact_compat = __webpack_require__(3);
 var preact_compat_default = /*#__PURE__*/__webpack_require__.n(preact_compat);
 

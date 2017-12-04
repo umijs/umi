@@ -182,9 +182,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		module.exports = classNames;
 	} else if (true) {
 		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
 			return classNames;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 		window.classNames = classNames;
@@ -198,32 +198,32 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_normalize.css@7.0.0@normalize.css/normalize.css
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_normalize.css@7.0.0@normalize.css/normalize.css
 var normalize = __webpack_require__(144);
 var normalize_default = /*#__PURE__*/__webpack_require__.n(normalize);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/style/index.less
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/style/index.less
 var style = __webpack_require__(145);
 var style_default = /*#__PURE__*/__webpack_require__.n(style);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/_util/upgradeTip.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/_util/upgradeTip.js
 var upgradeTip = __webpack_require__(146);
 
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/style/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/style/index.js
 
 
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/icon/style/index.less
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/icon/style/index.less
 var icon_style = __webpack_require__(156);
 var icon_style_default = /*#__PURE__*/__webpack_require__.n(icon_style);
 
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/icon/style/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/icon/style/index.js
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/button/style/index.less
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/button/style/index.less
 var button_style = __webpack_require__(157);
 var button_style_default = /*#__PURE__*/__webpack_require__.n(button_style);
 
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/button/style/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/button/style/index.js
 
 
 
@@ -234,39 +234,39 @@ var button_style_default = /*#__PURE__*/__webpack_require__.n(button_style);
 
 "use strict";
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/extends.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/extends.js
 var helpers_extends = __webpack_require__(132);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/defineProperty.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__(159);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/classCallCheck.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/classCallCheck.js
 var classCallCheck = __webpack_require__(133);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/createClass.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/createClass.js
 var createClass = __webpack_require__(134);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/possibleConstructorReturn.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/possibleConstructorReturn.js
 var possibleConstructorReturn = __webpack_require__(135);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/inherits.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_babel-runtime@6.26.0@babel-runtime/helpers/inherits.js
 var inherits = __webpack_require__(136);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_preact-compat@3.17.0@preact-compat/dist/preact-compat.js
 var preact_compat = __webpack_require__(3);
 var preact_compat_default = /*#__PURE__*/__webpack_require__.n(preact_compat);
 
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_classnames@2.2.5@classnames/index.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_classnames@2.2.5@classnames/index.js
 var _classnames_2_2_5_classnames = __webpack_require__(137);
 var _classnames_2_2_5_classnames_default = /*#__PURE__*/__webpack_require__.n(_classnames_2_2_5_classnames);
 
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/icon/loadSprite.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/icon/loadSprite.js
 /* tslint:disable:max-line-length */
 // inspried by https://github.com/kisenka/svg-sprite-loader/blob/master/runtime/browser-sprite.js
 // Much simplified, do make sure run this after document ready
@@ -318,7 +318,7 @@ var loadSprite = function loadSprite() {
     }
 };
 /* harmony default export */ var icon_loadSprite = (loadSprite);
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/icon/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/icon/index.js
 
 
 
@@ -375,7 +375,7 @@ var icon_Icon = function (_React$Component) {
 icon_Icon.defaultProps = {
     size: 'md'
 };
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_rmc-feedback@1.0.3@rmc-feedback/es/TouchFeedback.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_rmc-feedback@1.0.3@rmc-feedback/es/TouchFeedback.js
 
 
 
@@ -492,9 +492,9 @@ var TouchFeedback_TouchFeedback = function (_React$Component) {
 TouchFeedback_TouchFeedback.defaultProps = {
     disabled: false
 };
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_rmc-feedback@1.0.3@rmc-feedback/es/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_rmc-feedback@1.0.3@rmc-feedback/es/index.js
 
-// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-buildAndDev/node_modules/_antd-mobile@2.0.3@antd-mobile/es/button/index.js
+// CONCATENATED MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_antd-mobile@2.1.0@antd-mobile/es/button/index.js
 
 
 
@@ -563,9 +563,7 @@ var button_Button = function (_React$Component) {
                 activeStyle = _a.activeStyle,
                 activeClassName = _a.activeClassName,
                 onClick = _a.onClick,
-                delayPressIn = _a.delayPressIn,
-                delayPressOut = _a.delayPressOut,
-                restProps = button___rest(_a, ["children", "className", "prefixCls", "type", "size", "inline", "disabled", "icon", "loading", "activeStyle", "activeClassName", "onClick", "delayPressIn", "delayPressOut"]);
+                restProps = button___rest(_a, ["children", "className", "prefixCls", "type", "size", "inline", "disabled", "icon", "loading", "activeStyle", "activeClassName", "onClick"]);
             var iconType = loading ? 'loading' : icon;
             var wrapCls = _classnames_2_2_5_classnames_default()(prefixCls, className, (_classnames = {}, defineProperty_default()(_classnames, prefixCls + '-primary', type === 'primary'), defineProperty_default()(_classnames, prefixCls + '-ghost', type === 'ghost'), defineProperty_default()(_classnames, prefixCls + '-warning', type === 'warning'), defineProperty_default()(_classnames, prefixCls + '-small', size === 'small'), defineProperty_default()(_classnames, prefixCls + '-inline', inline), defineProperty_default()(_classnames, prefixCls + '-disabled', disabled), defineProperty_default()(_classnames, prefixCls + '-loading', loading), defineProperty_default()(_classnames, prefixCls + '-icon', !!iconType), _classnames));
             var kids = preact_compat_default.a.Children.map(children, insertSpace);
@@ -2406,9 +2404,9 @@ Url.prototype.parseHost = function() {
 	if (
 		true
 	) {
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+		!(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 			return punycode;
-		}.call(exports, __webpack_require__, exports, module),
+		}).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else if (freeExports && freeModule) {
 		if (module.exports == freeExports) {
