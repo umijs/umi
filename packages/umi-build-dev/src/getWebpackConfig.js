@@ -81,7 +81,7 @@ export default function(opts = {}) {
     entry,
     autoprefixer: { browsers },
     babel: {
-      presets: [[babel, { browsers, libraryName }]],
+      presets: [[babel, { browsers }]],
     },
     theme: config.theme,
     outputPath: join(paths.absOutputPath, staticDirectory),
