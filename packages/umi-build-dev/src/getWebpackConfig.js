@@ -17,6 +17,7 @@ export default function(opts = {}) {
     libraryName,
     staticDirectory,
     paths,
+    preact,
   } = opts;
   // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
   const browsers = config.browsers || defaultBrowsers;
@@ -37,6 +38,20 @@ export default function(opts = {}) {
   debug(`pageCount: ${pageCount}`);
   debug(`config: ${JSON.stringify(config)}`);
 
+  // default react, support config with preact
+  const reactAlias = preact
+    ? {
+        react: require.resolve('preact-compat'),
+        'react-dom': require.resolve('preact-compat'),
+        'create-react-class': require.resolve(
+          'preact-compat/lib/create-react-class',
+        ),
+      }
+    : {
+        react: require.resolve('react'),
+        'react-dom': require.resolve('react-dom'),
+      };
+
   return getConfig({
     cwd,
     entry,
@@ -55,11 +70,7 @@ export default function(opts = {}) {
       ...(config.define || {}),
     },
     alias: {
-      react: require.resolve('preact-compat'),
-      'react-dom': require.resolve('preact-compat'),
-      'create-react-class': require.resolve(
-        'preact-compat/lib/create-react-class',
-      ),
+      ...reactAlias,
       // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
       // 详见：https://tinyletter.com/sorrycc/letters/babel
       'antd-mobile': dirname(require.resolve('antd-mobile/package')),

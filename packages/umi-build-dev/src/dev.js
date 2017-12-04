@@ -23,6 +23,7 @@ export default function runDev(opts) {
     tmpDirectory = `.${libraryName}`,
     outputPath = './dist',
     plugins: pluginFiles,
+    preact,
     extraMiddlewares = [], // TODO: move to plugins
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
@@ -95,6 +96,7 @@ export default function runDev(opts) {
     libraryName,
     staticDirectory,
     paths,
+    preact,
   });
   debug(`webpackConfig: ${JSON.stringify(webpackConfig)}`);
 

@@ -26,6 +26,7 @@ export default function(opts = {}) {
     tmpDirectory = `.${libraryName}`,
     outputPath = './dist',
     plugins: pluginFiles,
+    preact,
   } = opts;
   const plugins = resolvePlugins(pluginFiles);
   const paths = getPaths({ cwd, tmpDirectory, outputPath });
@@ -74,6 +75,7 @@ export default function(opts = {}) {
       libraryName,
       staticDirectory,
       paths,
+      preact,
     });
 
     // af-webpack build
