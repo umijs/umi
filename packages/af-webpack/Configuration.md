@@ -43,3 +43,4 @@ export default {
 | extraResolveModules | [] |  |
 | disableCSSSourceMap | false |  |
 | sass | {} |  |
+| devtool | false |  |

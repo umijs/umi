@@ -44,6 +44,7 @@ const debug = require('debug')('af-webpack:getConfig');
 // - copy
 // - disableCSSSourceMap
 // - sass
+// - devtool
 
 function invalidProp(obj, prop) {
   return !(prop in obj) || obj[prop] === undefined;
@@ -150,6 +151,10 @@ export default function getConfig(opts = {}) {
   assert(
     invalidProp(opts, 'sass') || isPlainObject(opts.theme),
     `opts.sass must be Object, but got ${opts.sass}`,
+  );
+  assert(
+    invalidProp(opts, 'devtool') || typeof opts.theme === 'string',
+    `opts.devtool must be String, but got ${opts.devtool}`,
   );
 
   const isDev = process.env.NODE_ENV === 'development';
@@ -334,6 +339,7 @@ export default function getConfig(opts = {}) {
 
   const config = {
     bail: !isDev,
+    devtool: opts.devtool || undefined,
     entry: opts.entry || null,
     output: {
       path: opts.outputPath || null,
@@ -437,23 +443,33 @@ export default function getConfig(opts = {}) {
       ...(isDev
         ? [
             new webpack.HotModuleReplacementPlugin(),
-            new webpack.SourceMapDevToolPlugin({
-              columns: false,
-              moduleFilenameTemplate: info => {
-                if (
-                  /\/koi-pkgs\/packages/.test(info.absoluteResourcePath) ||
-                  /packages\/koi-core/.test(info.absoluteResourcePath) ||
-                  /webpack\/bootstrap/.test(info.absoluteResourcePath) ||
-                  /\/node_modules\//.test(info.absoluteResourcePath)
-                ) {
-                  return `internal:///${info.absoluteResourcePath}`;
-                }
-                return resolve(info.absoluteResourcePath).replace(/\\/g, '/');
-              },
-            }),
             new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
             new SystemBellWebpackPlugin(),
-          ]
+          ].concat(
+            opts.devtool
+              ? []
+              : [
+                  new webpack.SourceMapDevToolPlugin({
+                    columns: false,
+                    moduleFilenameTemplate: info => {
+                      if (
+                        /\/koi-pkgs\/packages/.test(
+                          info.absoluteResourcePath,
+                        ) ||
+                        /packages\/koi-core/.test(info.absoluteResourcePath) ||
+                        /webpack\/bootstrap/.test(info.absoluteResourcePath) ||
+                        /\/node_modules\//.test(info.absoluteResourcePath)
+                      ) {
+                        return `internal:///${info.absoluteResourcePath}`;
+                      }
+                      return resolve(info.absoluteResourcePath).replace(
+                        /\\/g,
+                        '/',
+                      );
+                    },
+                  }),
+                ],
+          )
         : [
             new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
