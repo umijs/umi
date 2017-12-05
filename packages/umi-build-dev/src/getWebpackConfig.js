@@ -13,7 +13,7 @@ export default function(opts = {}) {
     config,
     babel,
     hash,
-    enableCSSModules,
+    disableCSSModules,
     routeConfig,
     libraryName,
     staticDirectory,
@@ -87,7 +87,7 @@ export default function(opts = {}) {
     theme: config.theme,
     outputPath: join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
-    enableCSSModules,
+    disableCSSModules,
     extraResolveModules,
     define: {
       // 禁用 antd-mobile 升级提醒

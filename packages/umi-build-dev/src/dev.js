@@ -16,7 +16,7 @@ export default function runDev(opts) {
   const {
     cwd = process.cwd(),
     babel,
-    enableCSSModules,
+    disableCSSModules,
     extraResolveModules,
     libraryName = 'umi',
     staticDirectory = 'static',
@@ -91,7 +91,7 @@ export default function runDev(opts) {
     cwd,
     config,
     babel,
-    enableCSSModules,
+    disableCSSModules,
     extraResolveModules,
     libraryName,
     staticDirectory,

@@ -18,7 +18,7 @@ export default function(opts = {}) {
   const {
     cwd = process.cwd(),
     babel,
-    enableCSSModules,
+    disableCSSModules,
     extraResolveModules,
     hash,
     libraryName = 'umi',
@@ -69,7 +69,7 @@ export default function(opts = {}) {
       config,
       babel,
       hash,
-      enableCSSModules,
+      disableCSSModules,
       extraResolveModules,
       routeConfig,
       libraryName,

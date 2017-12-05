@@ -35,7 +35,7 @@ export default {
 | hash | false |  |
 | externals | {} |  |
 | copy | [] |  |
-| enableCSSModules | false |  |
+| disableCSSModules | false |  |
 | extraBabelIncludes | [] |  |
 | extraResolveExtensions | [] |  |
 | extraPostCSSPlugins | [] |  |

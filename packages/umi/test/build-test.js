@@ -39,7 +39,7 @@ describe('build', () => {
         build({
           cwd,
           hash: false,
-          enableCSSModules: false,
+          disableCSSModules: true,
           preact: true,
         })
           .then(() => {

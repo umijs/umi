@@ -25,7 +25,7 @@ const debug = require('debug')('af-webpack:getConfig');
 // - cwd
 // - browsers
 // - extraPostCSSPlugins
-// - enableCSSModules
+// - disableCSSModules
 // - theme
 // - babel
 // - noCompress
@@ -73,9 +73,9 @@ export default function getConfig(opts = {}) {
     `opts.babel must be Object, but got ${opts.babel}`,
   );
   assert(
-    invalidProp(opts, 'enableCSSModules') ||
-      typeof opts.enableCSSModules === 'boolean',
-    `opts.enableCSSModules must be Boolean, but got ${opts.enableCSSModules}`,
+    invalidProp(opts, 'disableCSSModules') ||
+      typeof opts.disableCSSModules === 'boolean',
+    `opts.disableCSSModules must be Boolean, but got ${opts.disableCSSModules}`,
   );
   assert(
     invalidProp(opts, 'noCompress') || typeof opts.noCompress === 'boolean',
@@ -167,12 +167,12 @@ export default function getConfig(opts = {}) {
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),
     ],
   };
-  const cssModulesConfig = opts.enableCSSModules
-    ? {
+  const cssModulesConfig = opts.disableCSSModules
+    ? {}
+    : {
         modules: true,
         localIdentName: '[local]___[hash:base64:5]',
-      }
-    : {};
+      };
   const lessOptions = {
     modifyVars: theme,
   };
