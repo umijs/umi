@@ -42,3 +42,4 @@ export default {
 | ignoreMomentLocale | false |  |
 | extraResolveModules | [] |  |
 | disableCSSSourceMap | false |  |
+| sass | {} |  |

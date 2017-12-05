@@ -43,6 +43,7 @@ const debug = require('debug')('af-webpack:getConfig');
 // - ignoreMomentLocale
 // - copy
 // - disableCSSSourceMap
+// - sass
 
 function invalidProp(obj, prop) {
   return !(prop in obj) || obj[prop] === undefined;
