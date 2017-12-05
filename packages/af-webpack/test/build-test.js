@@ -8,6 +8,14 @@ import getConfig from '../src/getConfig';
 process.env.NODE_ENV = 'production';
 process.env.NO_COMPRESS = 1;
 
+function getEntry(cwd) {
+  if (existsSync(join(cwd, 'index.ts'))) {
+    return join(cwd, 'index.ts');
+  } else {
+    return join(cwd, 'index.js');
+  }
+}
+
 function build(opts, done) {
   const configFile = join(opts.cwd, 'config.json');
   const localConfig = existsSync(configFile)
@@ -18,7 +26,7 @@ function build(opts, done) {
     ...localConfig,
   });
   config.entry = {
-    index: join(opts.cwd, 'index.js'),
+    index: getEntry(opts.cwd),
   };
   config.output.path = join(opts.cwd, 'dist');
   const compiler = webpack(config);

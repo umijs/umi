@@ -395,6 +395,19 @@ export default function getConfig(opts = {}) {
           exclude: /node_modules/,
           use: babelUse,
         },
+        {
+          test: /\.(ts|tsx)$/,
+          exclude: /node_modules/,
+          use: [
+            ...babelUse,
+            {
+              loader: 'awesome-typescript-loader',
+              options: {
+                transpileOnly: true,
+              },
+            },
+          ],
+        },
         ...(opts.extraBabelIncludes
           ? opts.extraBabelIncludes.map(include => {
               return {
