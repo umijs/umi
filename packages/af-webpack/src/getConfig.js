@@ -146,6 +146,10 @@ export default function getConfig(opts = {}) {
       opts.disableCSSSourceMap
     }`,
   );
+  assert(
+    invalidProp(opts, 'sass') || isPlainObject(opts.theme),
+    `opts.sass must be Object, but got ${opts.sass}`,
+  );
 
   const isDev = process.env.NODE_ENV === 'development';
   const theme = normalizeTheme(opts.theme);
@@ -181,83 +185,84 @@ export default function getConfig(opts = {}) {
         }),
   };
 
+  function getCSSLoader(opts = {}) {
+    const { cssModules, less, sass, sassOptions } = opts;
+    return [
+      require.resolve('style-loader'),
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          ...cssOptions,
+          ...(cssModules ? cssModulesConfig : {}),
+        },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: postcssOptions,
+      },
+      ...(less
+        ? [
+            {
+              loader: require.resolve('less-loader'),
+              options: lessOptions,
+            },
+          ]
+        : []),
+      ...(sass
+        ? [
+            {
+              loader: require.resolve('sass-loader'),
+              options: sassOptions,
+            },
+          ]
+        : []),
+    ];
+  }
+
   const cssRules = [
     {
       test: /\.css$/,
       exclude: /node_modules/,
-      use: [
-        require.resolve('style-loader'),
-        {
-          loader: require('path').join(__dirname, 'debugLoader.js'),
-        },
-        {
-          loader: require.resolve('css-loader'),
-          options: {
-            ...cssOptions,
-            ...cssModulesConfig,
-          },
-        },
-        {
-          loader: require.resolve('postcss-loader'),
-          options: postcssOptions,
-        },
-      ],
+      use: getCSSLoader({
+        cssModules: true,
+      }),
     },
     {
       test: /\.css$/,
       include: /node_modules/,
-      use: [
-        require.resolve('style-loader'),
-        {
-          loader: require.resolve('css-loader'),
-          options: cssOptions,
-        },
-        {
-          loader: require.resolve('postcss-loader'),
-          options: postcssOptions,
-        },
-      ],
+      use: getCSSLoader(),
     },
     {
       test: /\.less$/,
       exclude: /node_modules/,
-      use: [
-        require.resolve('style-loader'),
-        {
-          loader: require.resolve('css-loader'),
-          options: {
-            ...cssOptions,
-            ...cssModulesConfig,
-          },
-        },
-        {
-          loader: require.resolve('postcss-loader'),
-          options: postcssOptions,
-        },
-        {
-          loader: require.resolve('less-loader'),
-          options: lessOptions,
-        },
-      ],
+      use: getCSSLoader({
+        cssModules: true,
+        less: true,
+      }),
     },
     {
       test: /\.less$/,
       include: /node_modules/,
-      use: [
-        require.resolve('style-loader'),
-        {
-          loader: require.resolve('css-loader'),
-          options: cssOptions,
-        },
-        {
-          loader: require.resolve('postcss-loader'),
-          options: postcssOptions,
-        },
-        {
-          loader: require.resolve('less-loader'),
-          options: lessOptions,
-        },
-      ],
+      use: getCSSLoader({
+        less: true,
+      }),
+    },
+    {
+      test: /\.(sass|scss)$/,
+      exclude: /node_modules/,
+      use: getCSSLoader({
+        cssModules: true,
+        sass: true,
+        sassOptions: opts.sass,
+      }),
+    },
+    {
+      test: /\.(sass|scss)$/,
+      include: /node_modules/,
+      use: getCSSLoader({
+        sass: true,
+        sassOptions: opts.sass,
+      }),
     },
   ];
 

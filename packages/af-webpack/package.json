@@ -67,7 +67,9 @@
     "coveralls": "ruban coveralls"
   },
   "devDependencies": {
-    "glob": "^7.1.2"
+    "glob": "^7.1.2",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6"
   },
   "files": [
     "lib",
