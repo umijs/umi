@@ -2,9 +2,8 @@ import { resolve } from 'path';
 
 const debug = require('debug')('umi:build');
 
-export default function(opts) {
+export default function(opts = {}) {
   const { extraResolveModules } = opts;
-
   debug(`opts: ${JSON.stringify(opts)}`);
   delete opts.extraResolveModules;
 
