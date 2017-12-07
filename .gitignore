@@ -15,3 +15,4 @@ npm-debug.log*
 lerna-debug.log
 .changelog
 .umi
+.umi-production

@@ -19,6 +19,7 @@
     "preact-compat": "^3.17.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "requireindex": "^1.1.0",
     "rimraf": "^2.6.1",
     "umi-plugin": "^0.1.1"
   },

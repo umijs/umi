@@ -4,18 +4,15 @@ import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
 import isEqual from 'lodash.isequal';
 import didyoumean from 'didyoumean';
-import alias from './configPlugins/alias';
-import browsers from './configPlugins/browsers';
-import pages from './configPlugins/pages';
-import theme from './configPlugins/theme';
-import context from './configPlugins/context';
-import define from './configPlugins/define';
+import requireindex from 'requireindex';
 import { CONFIG_FILES } from '../constants';
 import { watch, unwatch } from './watch';
 import { setConfig } from '../createRouteMiddleware';
 
-// TODO: 改成自动读 configPlugins 目录下的文件
-const plugins = [browsers(), pages(), theme(), context(), alias(), define()];
+const pluginsMap = requireindex(join(__dirname, './configPlugins'));
+const plugins = Object.keys(pluginsMap).map(key => {
+  return pluginsMap[key]();
+});
 let devServer = null;
 
 function printError(messages) {
