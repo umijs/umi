@@ -36,6 +36,7 @@ export default function generateHTML(opts = {}) {
       staticDirectory,
       libraryName,
       paths,
+      config,
     });
 
     mkdirp(dirname(outputFilePath));
@@ -128,6 +129,7 @@ export function getHTMLContent(opts = {}) {
     staticDirectory,
     libraryName,
     paths,
+    config,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 

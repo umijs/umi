@@ -2,6 +2,7 @@ import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
+import px2rem from 'postcss-plugin-px2rem';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
@@ -27,13 +28,15 @@ export default function(opts = {}) {
   // entry
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
+  const hdFile = join(__dirname, '../template/hd/index.js');
   const isDev = env === 'development';
+  const initialEntry = config.hd ? [hdFile] : [];
   const entry = isDev
     ? {
-        [libraryName]: [webpackHotDevClientPath, entryScript],
+        [libraryName]: [...initialEntry, webpackHotDevClientPath, entryScript],
       }
     : {
-        [libraryName]: [setPublicPathFile, entryScript],
+        [libraryName]: [...initialEntry, setPublicPathFile, entryScript],
       };
 
   const pageCount = isDev ? null : Object.keys(routeConfig).length;
@@ -84,7 +87,7 @@ export default function(opts = {}) {
     babel: {
       presets: [[babel, { browsers }]],
     },
-    theme: config.theme,
+    theme: { ...config.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
     outputPath: join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
     disableCSSModules,
@@ -121,5 +124,13 @@ export default function(opts = {}) {
             },
           },
         ],
+    extraPostCSSPlugins: config.hd
+      ? [
+          px2rem({
+            rootValue: 100,
+            minPixelValue: 2,
+          }),
+        ]
+      : [],
   });
 }

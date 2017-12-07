@@ -29,6 +29,7 @@ export default function createRouteMiddleware(
         staticDirectory,
         libraryName,
         paths,
+        config,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
