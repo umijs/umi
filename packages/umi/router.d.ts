@@ -1,6 +1,8 @@
+interface RouteData { pathname: string, query?: string }
+
 declare const router: {
-  push: (path: string) => void;
-  replace: (path: string) => void;
+  push: (path: string | RouteData) => void;
+  replace: (path: string | RouteData) => void;
   go: (count: number) => void;
   goBack: () => void;
 }
