@@ -68,6 +68,7 @@ describe('build', () => {
           {
             cwd,
             outputPath: join(cwd, 'dist'),
+            disableCSSModules: true,
           },
           () => {
             assertBuildResult(cwd);
