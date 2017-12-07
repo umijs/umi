@@ -1,10 +1,11 @@
-import { sep, join, dirname, extname } from 'path';
+import { sep, join, dirname, extname, basename } from 'path';
 import ejs from 'ejs';
 import { sync as mkdirp } from 'mkdirp';
 import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
 import { applyPlugins } from 'umi-plugin';
 import normalizeEntry from './normalizeEntry';
+import { ROUTE_FILE } from './constants';
 
 const debug = require('debug')('umi-build-dev:generateHTML');
 
@@ -104,6 +105,17 @@ function getCSSFiles(opts = {}) {
   return files;
 }
 
+function getEntry(entry) {
+  if (basename(entry) === ROUTE_FILE) {
+    return entry
+      .split('/')
+      .slice(0, -1)
+      .join('/');
+  } else {
+    return entry;
+  }
+}
+
 export function getHTMLContent(opts = {}) {
   const {
     route,
@@ -134,7 +146,7 @@ export function getHTMLContent(opts = {}) {
   let configScript = `
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -${
-    entry.split('/').length
+    getEntry(entry).split('/').length
   }).concat('').join('/');
   window.resourceBaseUrl = ${resourceBaseUrl};
 </script>
