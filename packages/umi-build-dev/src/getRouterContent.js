@@ -3,6 +3,8 @@ import { join } from 'path';
 import normalizeEntry from './normalizeEntry';
 import winPath from './winPath';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 export default function getRouterContent(opts = {}) {
   const {
     routeConfig,
@@ -27,7 +29,7 @@ function getRouteComponents(routeConfig) {
   }
   const routerComponents = Object.keys(routeConfig).map(key => {
     const pageJSFile = winPath(join('..', routeConfig[key]));
-    if (process.env.NODE_ENV === 'development') {
+    if (isDev) {
       return `    <Route exact path="${key}" component={require('${
         pageJSFile
       }').default}></Route>`;

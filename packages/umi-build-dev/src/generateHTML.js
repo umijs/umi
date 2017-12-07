@@ -5,7 +5,7 @@ import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
 import { applyPlugins } from 'umi-plugin';
 import normalizeEntry from './normalizeEntry';
-import { ROUTE_FILE } from './constants';
+import { ROUTE_FILES } from './constants';
 
 const debug = require('debug')('umi-build-dev:generateHTML');
 
@@ -106,7 +106,7 @@ function getCSSFiles(opts = {}) {
 }
 
 function getEntry(entry) {
-  if (basename(entry) === ROUTE_FILE) {
+  if (ROUTE_FILES.indexOf(basename(entry)) > -1) {
     return entry
       .split('/')
       .slice(0, -1)

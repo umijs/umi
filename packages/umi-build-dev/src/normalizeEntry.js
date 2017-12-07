@@ -7,5 +7,6 @@ export default function(entry) {
   return entry
     .replace(/^.(\/|\\)/, '')
     .replace(/(\/|\\)/g, '__')
-    .replace(/\.js$/, '');
+    .replace(/\.jsx?$/, '')
+    .replace(/\.tsx?$/, '');
 }

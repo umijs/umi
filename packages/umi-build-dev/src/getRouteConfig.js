@@ -1,8 +1,9 @@
 import { readdirSync, statSync, existsSync } from 'fs';
 import { join, extname, basename } from 'path';
-import { ROUTE_FILE } from './constants';
+import { ROUTE_FILES } from './constants';
 
 const DOT_JS = '.js';
+const EXT_NAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default function getRouteConfig(root, dirPath = '') {
   const path = join(root, dirPath);
@@ -12,32 +13,34 @@ export default function getRouteConfig(root, dirPath = '') {
     // 包含 ., .., 以及其他 dotfile
     if (file.charAt(0) === '.') return memo;
     const stats = statSync(join(path, file));
-    if (stats.isFile() && extname(file) === DOT_JS) {
-      const fullPath = join(dirPath, basename(file, DOT_JS));
+    const ext = extname(file);
+    if (stats.isFile() && EXT_NAMES.indexOf(ext) > -1) {
+      const fullPath = join(dirPath, basename(file, ext));
       return {
         ...memo,
-        [`/${fullPath}.html`]: `${fullPath}${DOT_JS}`,
+        [`/${fullPath}.html`]: `${fullPath}${ext}`,
       };
     } else if (stats.isDirectory()) {
       const fullPath = join(dirPath, file);
-      if (existsSync(join(root, fullPath, ROUTE_FILE))) {
-        if (existsSync(join(root, `${fullPath}${DOT_JS}`))) {
-          throw new Error(
-            `路由冲突，src/page 目录下同时存在 "${fullPath}${
-              DOT_JS
-            }" 和 "${join(fullPath, ROUTE_FILE)}"，两者指向同一路由。`,
-          );
+      for (const routeFile of ROUTE_FILES) {
+        if (existsSync(join(root, fullPath, routeFile))) {
+          if (existsSync(join(root, `${fullPath}${DOT_JS}`))) {
+            throw new Error(
+              `路由冲突，src/page 目录下同时存在 "${fullPath}${
+                DOT_JS
+              }" 和 "${join(fullPath, routeFile)}"，两者指向同一路由。`,
+            );
+          }
+          return {
+            ...memo,
+            [`/${fullPath}.html`]: join(fullPath, routeFile),
+          };
         }
-        return {
-          ...memo,
-          [`/${fullPath}.html`]: join(fullPath, ROUTE_FILE),
-        };
-      } else {
-        return {
-          ...memo,
-          ...getRouteConfig(root, fullPath),
-        };
       }
+      return {
+        ...memo,
+        ...getRouteConfig(root, fullPath),
+      };
     } else {
       return memo;
     }
