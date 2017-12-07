@@ -415,11 +415,6 @@ export default function getConfig(opts = {}) {
             {
               loader: require.resolve('awesome-typescript-loader'),
               options: {
-                target: 'es6',
-                module: 'es6',
-                moduleResolution: 'node',
-                jsx: 'react',
-                allowSyntheticDefaultImports: true,
                 transpileOnly: true,
               },
             },
