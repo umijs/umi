@@ -1,9 +1,9 @@
 {
   "name": "umi",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "dependencies": {
-    "@types/react": "^16.0.27",
     "@babel/runtime": "7.0.0-beta.31",
+    "@types/react": "^16.0.27",
     "babel-plugin-import": "^1.6.2",
     "babel-plugin-module-resolver": "^3.0.0-beta.5",
     "babel-preset-umi": "^0.1.1",
@@ -13,7 +13,7 @@
     "fastclick": "^1.0.6",
     "history": "^4.7.2",
     "query-string": "^5.0.0",
-    "umi-build-dev": "^0.1.2",
+    "umi-build-dev": "^0.2.0",
     "umi-router": "^0.1.1",
     "uppercamelcase": "^3.0.0",
     "url": "^0.11.0",
