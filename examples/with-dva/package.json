@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "umi": "1.0.0-beta.3"
+  },
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "dependencies": {
+    "dva-no-router": "^1.0.3"
+  }
+}
