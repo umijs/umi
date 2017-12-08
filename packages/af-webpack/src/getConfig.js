@@ -193,6 +193,14 @@ export default function getConfig(opts = {}) {
 
   function getCSSLoader(opts = {}) {
     const { cssModules, less, sass, sassOptions } = opts;
+
+    let hasSassLoader = true;
+    try {
+      require.resolve('sass-loader');
+    } catch (e) {
+      hasSassLoader = false;
+    }
+
     return [
       require.resolve('style-loader'),
       {
@@ -214,7 +222,7 @@ export default function getConfig(opts = {}) {
             },
           ]
         : []),
-      ...(sass
+      ...(sass && hasSassLoader
         ? [
             {
               loader: require.resolve('sass-loader'),
