@@ -30,6 +30,10 @@ export default function(context, opts = {}) {
     );
   }
 
+  if (opts.commonjs) {
+    plugins.push(require.resolve('@babel/plugin-transform-modules-commonjs'));
+  }
+
   if (env !== 'test' && !opts.disableTransform) {
     plugins.push(require.resolve('@babel/plugin-transform-runtime'));
   }
