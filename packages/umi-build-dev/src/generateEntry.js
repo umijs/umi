@@ -21,37 +21,41 @@ export default function generateEntry(opts = {}) {
   const { routeConfig } = generate(opts);
   if (onChange) onChange(routeConfig);
 
+  let hasError = false;
+
+  function rebuild(devServer) {
+    try {
+      const { routeConfig } = generate(opts);
+      if (onChange) onChange(routeConfig);
+      if (hasError) {
+        // 从出错中恢复时，刷新浏览器
+        devServer.sockWrite(devServer.sockets, 'content-changed');
+        hasError = false;
+      }
+    } catch (e) {
+      // 向浏览器发送出错信息
+      devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
+
+      hasError = true;
+      cachedRouterContent = null;
+      debug(`generate failed: ${e.message}`);
+      debug(e);
+      console.error(chalk.red(e.message));
+    }
+  }
+
   function watch(devServer) {
-    let hasError = false;
     watchPages({
       cwd,
       paths,
-      onChange() {
-        try {
-          const { routeConfig } = generate(opts);
-          if (onChange) onChange(routeConfig);
-          if (hasError) {
-            // 从出错中恢复时，刷新浏览器
-            devServer.sockWrite(devServer.sockets, 'content-changed');
-            hasError = false;
-          }
-        } catch (e) {
-          // 向浏览器发送出错信息
-          devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
-
-          hasError = true;
-          cachedRouterContent = null;
-          debug(`generate failed: ${e.message}`);
-          debug(e);
-          console.error(chalk.red(e.message));
-        }
-      },
+      onChange: rebuild.bind(null, devServer),
     });
   }
 
   return {
     watch,
     routeConfig,
+    rebuild,
   };
 }
 
@@ -75,7 +79,7 @@ export function watchPages(opts = {}) {
 }
 
 function generate(opts = {}) {
-  const { cwd, paths, plugins, libraryName } = opts;
+  const { paths, plugins, libraryName } = opts;
   const { absTmpDirPath, absPagesPath } = paths;
   const routeConfig = getRouteConfig(absPagesPath);
 
