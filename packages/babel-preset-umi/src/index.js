@@ -7,6 +7,7 @@ export default function(context, opts = {}) {
     require.resolve('@babel/plugin-syntax-dynamic-import'),
     require.resolve('@babel/plugin-proposal-object-rest-spread'),
     require.resolve('@babel/plugin-proposal-optional-catch-binding'),
+    require.resolve('@babel/plugin-proposal-async-generator-functions'),
     require.resolve('@babel/plugin-proposal-decorators'),
     [
       require.resolve('@babel/plugin-proposal-class-properties'),
