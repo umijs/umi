@@ -5,7 +5,7 @@
 * cwd
 * libraryName
 * babel
-* enableCSSModules
+* disableCSSModules
 * extraResolveModules
 * plugins
 * routerTpl
