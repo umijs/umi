@@ -29,11 +29,17 @@ export default function(opts = {}) {
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
   const hdFile = join(__dirname, '../template/hd/index.js');
+  const compileOnDemandFile = join(__dirname, '../template/compileOnDemand.js');
   const isDev = env === 'development';
   const initialEntry = config.hd ? [hdFile] : [];
   const entry = isDev
     ? {
-        [libraryName]: [...initialEntry, webpackHotDevClientPath, entryScript],
+        [libraryName]: [
+          ...initialEntry,
+          webpackHotDevClientPath,
+          entryScript,
+          compileOnDemandFile,
+        ],
       }
     : {
         [libraryName]: [...initialEntry, setPublicPathFile, entryScript],

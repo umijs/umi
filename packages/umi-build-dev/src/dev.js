@@ -57,6 +57,7 @@ export default function runDev(opts) {
 
   // 生成入口文件
   let watchEntry = null;
+  let rebuildEntry = null;
   try {
     debug(`libraryName: ${libraryName}`);
     const entryGObj = generateEntry({
@@ -71,6 +72,7 @@ export default function runDev(opts) {
       paths,
     });
     watchEntry = entryGObj.watch;
+    rebuildEntry = entryGObj.rebuild;
   } catch (e) {
     console.error(chalk.red(e.message));
     console.error(chalk.red(e.stack));
@@ -101,6 +103,7 @@ export default function runDev(opts) {
   debug(`webpackConfig: ${JSON.stringify(webpackConfig)}`);
 
   // af-webpack dev
+  let webpackDevServer = null;
   dev({
     webpackConfig,
     extraMiddlewares: [
@@ -111,12 +114,19 @@ export default function runDev(opts) {
         staticDirectory,
         libraryName,
         paths,
+        () => {
+          if (!webpackDevServer) {
+            throw new Error('webpackDevServer not ready');
+          }
+          rebuildEntry(webpackDevServer);
+        },
       ),
       ...extraMiddlewares,
     ],
     afterServer(devServer) {
       // 监听配置变更
       debug('watch configs');
+      webpackDevServer = devServer;
       watchConfig(devServer);
       watchEntry(devServer);
     },

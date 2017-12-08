@@ -2,7 +2,9 @@ import { readFileSync as readFile, existsSync as exists } from 'fs';
 import { join } from 'path';
 import normalizeEntry from './normalizeEntry';
 import winPath from './winPath';
+import { getRequest } from './requestCache';
 
+const debug = require('debug')('umi-build-dev:getRouterContent');
 const isDev = process.env.NODE_ENV === 'development';
 
 export default function getRouterContent(opts = {}) {
@@ -10,7 +12,6 @@ export default function getRouterContent(opts = {}) {
     routeConfig,
     tplPath = join(__dirname, `../template/router.js`),
     libraryName,
-    paths,
   } = opts;
 
   if (!exists(tplPath)) {
@@ -27,12 +28,15 @@ function getRouteComponents(routeConfig) {
   if (routeConfig['/index.html']) {
     routeConfig['/'] = routeConfig['/index.html'];
   }
+
   const routerComponents = Object.keys(routeConfig).map(key => {
     const pageJSFile = winPath(join('..', routeConfig[key]));
+    debug(`${JSON.stringify(getRequest())}, key`);
     if (isDev) {
-      return `    <Route exact path="${key}" component={require('${
-        pageJSFile
-      }').default}></Route>`;
+      const component = getRequest()[key]
+        ? `require('${pageJSFile}').default`
+        : '() => <div>Compiling...</div>';
+      return `    <Route exact path="${key}" component={${component}}></Route>`;
     } else {
       return `    <Route exact path="${
         key
