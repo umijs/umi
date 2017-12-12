@@ -402,7 +402,7 @@ export default function getConfig(opts = {}) {
             /\.html$/,
             /\.json$/,
             /\.(js|jsx|ts|tsx)$/,
-            /\.(css|less|scss)$/,
+            /\.(css|less|scss|sass)$/,
           ],
           loader: require.resolve('url-loader'),
           options: {
