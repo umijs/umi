@@ -104,6 +104,11 @@ export default function runDev(opts) {
 
   // af-webpack dev
   let webpackDevServer = null;
+  let isCompileDone = false;
+  let onCompileDone = () => {
+    debug('default compiledone');
+    isCompileDone = true;
+  };
   dev({
     webpackConfig,
     extraMiddlewares: [
@@ -118,7 +123,18 @@ export default function runDev(opts) {
           if (!webpackDevServer) {
             throw new Error('webpackDevServer not ready');
           }
-          rebuildEntry(webpackDevServer);
+          debug(`isCompileDone: ${isCompileDone}`);
+          if (!isCompileDone) {
+            const defaultOnCompileDone = onCompileDone;
+            onCompileDone = () => {
+              debug('new compile done');
+              rebuildEntry(webpackDevServer);
+              defaultOnCompileDone();
+              onCompileDone = () => {};
+            };
+          } else {
+            rebuildEntry(webpackDevServer);
+          }
         },
       ),
       ...extraMiddlewares,
@@ -129,6 +145,9 @@ export default function runDev(opts) {
       webpackDevServer = devServer;
       watchConfig(devServer);
       watchEntry(devServer);
+    },
+    onCompileDone() {
+      onCompileDone();
     },
   });
 }

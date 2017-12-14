@@ -14,6 +14,7 @@ const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = '0.0.0.0';
 const PROTOCOL = 'http';
+const noop = () => {};
 
 process.env.NODE_ENV = 'development';
 
@@ -22,6 +23,8 @@ export default function dev({
   extraMiddlewares,
   beforeServer,
   afterServer,
+  onCompileDone = noop,
+  onCompileInvalid = noop,
   proxy,
 }) {
   if (!webpackConfig) {
@@ -49,14 +52,13 @@ export default function dev({
         callback();
       });
       compiler.plugin('done', stats => {
+        send({ type: DONE });
         stats.startTime -= timefix;
+        onCompileDone();
       });
-
       compiler.plugin('invalid', () => {
         send({ type: COMPILING });
-      });
-      compiler.plugin('done', () => {
-        send({ type: DONE });
+        onCompileInvalid();
       });
       const serverConfig = {
         disableHostCheck: true,
