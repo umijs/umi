@@ -98,6 +98,7 @@ export default function(opts = {}) {
     hash: !isDev && hash,
     disableCSSModules,
     extraResolveModules,
+    extraBabelIncludes: config.extraBabelIncludes,
     define: {
       // 禁用 antd-mobile 升级提醒
       'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,

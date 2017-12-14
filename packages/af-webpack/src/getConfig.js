@@ -310,6 +310,7 @@ export default function getConfig(opts = {}) {
         ...(opts.babel || babelConfig),
         // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
         cacheDirectory: false,
+        babelrc: process.env.DISABLE_BABELRC ? false : true,
       },
     },
   ];
