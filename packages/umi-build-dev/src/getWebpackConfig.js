@@ -36,7 +36,7 @@ export default function(opts = {}) {
     ? {
         [libraryName]: [
           ...initialEntry,
-          webpackHotDevClientPath,
+          ...(process.env.DISABLE_HMR ? [] : [webpackHotDevClientPath]),
           entryScript,
           compileOnDemandFile,
         ],
