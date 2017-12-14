@@ -11,7 +11,7 @@ import getRouterContent from './getRouterContent';
 const debug = require('debug')('umi-build-dev:generateEntry');
 
 let cachedRouterContent = null;
-let koiJSGenerated = false;
+let libraryJSGenerated = false;
 
 export default function generateEntry(opts = {}) {
   const { cwd, onChange, paths } = opts;
@@ -96,14 +96,14 @@ function generate(opts = {}) {
     cachedRouterContent = routerContent;
   }
 
-  // koi.js 不会变化，生成一次即可
-  if (process.env.DISABLE_KOIJS_G_CACHE || !koiJSGenerated) {
+  // library js 不会变化，生成一次即可
+  if (process.env.DISABLE_UMIJS_G_CACHE || !libraryJSGenerated) {
     writeFileSync(
       join(absTmpDirPath, `${libraryName}.js`),
       readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),
       'utf-8',
     );
-    koiJSGenerated = true;
+    libraryJSGenerated = true;
   }
 
   return {

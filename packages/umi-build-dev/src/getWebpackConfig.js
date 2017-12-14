@@ -100,7 +100,6 @@ export default function(opts = {}) {
     extraResolveModules,
     define: {
       // 禁用 antd-mobile 升级提醒
-      // ref: http://gitlab.alipay-inc.com/twa/koi-pkgs/issues/53
       'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,
       ...(config.define || {}),
     },
