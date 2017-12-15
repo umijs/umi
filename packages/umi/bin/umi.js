@@ -36,6 +36,7 @@ switch (aliasedScript) {
     break;
   case 'build':
   case 'dev':
+  case 'test':
   case 'generate':
     runScript(aliasedScript, args);
     break;
