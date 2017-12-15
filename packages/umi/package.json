@@ -15,6 +15,7 @@
     "query-string": "^5.0.0",
     "umi-build-dev": "^0.4.2",
     "umi-router": "^0.1.2",
+    "umi-test": "^0.0.1",
     "uppercamelcase": "^3.0.0",
     "url": "^0.11.0",
     "yargs-parser": "^7.0.0"

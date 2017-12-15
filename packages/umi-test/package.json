@@ -4,6 +4,7 @@
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi/tree/master/packages/umi-test"
