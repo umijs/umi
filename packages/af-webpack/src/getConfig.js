@@ -18,6 +18,7 @@ import browsersConfig from './defaultConfigs/browsers';
 import stringifyObject from './stringifyObject';
 import normalizeTheme from './normalizeTheme';
 import { applyWebpackConfig } from './applyWebpackConfig';
+import readRc from './readRc';
 
 const debug = require('debug')('af-webpack:getConfig');
 
@@ -338,12 +339,27 @@ export default function getConfig(opts = {}) {
   } catch (e) {
     // do nothing
   }
+
   // 读用户的 eslintrc
   if (existsSync(resolve('.eslintrc'))) {
-    debug(`use user's .eslintrc: ${resolve('.eslintrc')}`);
-    eslintOptions.useEslintrc = true;
-    eslintOptions.baseConfig = false;
-    eslintOptions.ignore = true;
+    try {
+      const userRc = readRc(resolve('.eslintrc'));
+      debug(`userRc: ${JSON.stringify(userRc)}`);
+      if (userRc.extends) {
+        debug(`use user's .eslintrc: ${resolve('.eslintrc')}`);
+        eslintOptions.useEslintrc = true;
+        eslintOptions.baseConfig = false;
+        eslintOptions.ignore = true;
+      } else {
+        debug(`extend with user's .eslintrc: ${resolve('.eslintrc')}`);
+        eslintOptions.baseConfig = {
+          ...eslintOptions.baseConfig,
+          ...userRc,
+        };
+      }
+    } catch (e) {
+      debug(e);
+    }
   }
 
   const config = {
