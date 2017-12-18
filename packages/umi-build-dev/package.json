@@ -1,9 +1,9 @@
 {
   "name": "umi-build-dev",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "dependencies": {
     "address": "^1.0.3",
-    "af-webpack": "^0.12.2",
+    "af-webpack": "^0.12.3",
     "antd": "^3.0.0",
     "antd-mobile": "^2.0.0",
     "chalk": "^2.1.0",
@@ -22,7 +22,7 @@
     "react-dom": "^16.2.0",
     "requireindex": "^1.1.0",
     "rimraf": "^2.6.1",
-    "umi-plugin": "^0.1.1"
+    "umi-plugin": "^0.1.2"
   },
   "repository": {
     "type": "git",
