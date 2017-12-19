@@ -12,6 +12,7 @@ export default function(opts = {}) {
   const {
     cwd,
     config,
+    webpackRCConfig,
     babel,
     hash,
     disableCSSModules,
@@ -88,55 +89,62 @@ export default function(opts = {}) {
 
   return getConfig({
     cwd,
+    ...webpackRCConfig,
+
+    // 不允许配置
     entry,
-    autoprefixer: { browsers },
-    babel: {
-      presets: [[babel, { browsers }]],
-    },
-    theme: { ...config.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
     outputPath: join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
-    disableCSSModules,
-    extraResolveModules,
-    extraBabelIncludes: config.extraBabelIncludes,
+
+    // 扩展
+    babel: webpackRCConfig.babel || {
+      presets: [[babel, { browsers }]],
+    },
+    theme: { ...webpackRCConfig.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
+    extraResolveModules: [
+      ...(webpackRCConfig.extraResolveModules || []),
+      ...(extraResolveModules || []),
+    ],
     define: {
       // 禁用 antd-mobile 升级提醒
       'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,
-      ...(config.define || {}),
+      ...(webpackRCConfig.define || {}),
     },
     alias: {
       ...reactAlias,
       ...libAlias,
       ...(config.alias || {}),
     },
+    extraPostCSSPlugins: [
+      ...(webpackRCConfig.extraPostCSSPlugins || []),
+      ...(config.hd
+        ? [
+            px2rem({
+              rootValue: 100,
+              minPixelValue: 2,
+            }),
+          ]
+        : []),
+    ],
     ...(isDev
       ? {
           // 生成环境的 publicPath 是服务端把 assets 发布到 cdn 后配到 HTML 里的
           // 开发环境的 publicPath 写死 /static/
-          publicPath: `/${staticDirectory}/`,
+          publicPath: webpackRCConfig.publicPath || `/${staticDirectory}/`,
         }
-      : {}),
-    commons: isDev
-      ? []
-      : [
-          {
-            async: '__common',
-            children: true,
-            minChunks(module, count) {
-              if (pageCount <= 2) {
-                return count >= pageCount;
-              }
-              return count >= pageCount * 0.5;
+      : {
+          commons: webpackRCConfig.commons || [
+            {
+              async: '__common',
+              children: true,
+              minChunks(module, count) {
+                if (pageCount <= 2) {
+                  return count >= pageCount;
+                }
+                return count >= pageCount * 0.5;
+              },
             },
-          },
-        ],
-    extraPostCSSPlugins: config.hd
-      ? [
-          px2rem({
-            rootValue: 100,
-            minPixelValue: 2,
-          }),
-        ]
-      : [],
+          ],
+        }),
   });
 }

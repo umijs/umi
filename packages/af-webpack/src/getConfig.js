@@ -8,7 +8,6 @@ import { dirname, resolve, join } from 'path';
 import { existsSync } from 'fs';
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
@@ -22,141 +21,9 @@ import readRc from './readRc';
 
 const debug = require('debug')('af-webpack:getConfig');
 
-// opts 包含：
-// - cwd
-// - browsers
-// - extraPostCSSPlugins
-// - disableCSSModules
-// - theme
-// - babel
-// - noCompress
-// - define
-// - alias
-// - outputPath
-// - publicPath
-// - entry
-// - extraResolveModules
-// - commons
-// - hash
-// - externals
-// - extraBabelIncludes
-// - extraResolveExtensions
-// - ignoreMomentLocale
-// - copy
-// - disableCSSSourceMap
-// - sass
-// - devtool
-
-function invalidProp(obj, prop) {
-  return !(prop in obj) || obj[prop] === undefined;
-}
-
 export default function getConfig(opts = {}) {
   assert(opts.cwd, 'opts.cwd must be specified');
   assert(opts.outputPath, 'opts.outputPath must be specified');
-  assert(
-    invalidProp(opts, 'browsers') || Array.isArray(opts.browsers),
-    `opts.browsers must be Array, but got ${opts.browsers}`,
-  );
-  assert(
-    invalidProp(opts, 'extraPostCSSPlugins') ||
-      Array.isArray(opts.extraPostCSSPlugins),
-    `opts.extraPostCSSPlugins must be Array, but got ${
-      opts.extraPostCSSPlugins
-    }`,
-  );
-  assert(
-    invalidProp(opts, 'theme') ||
-      (isPlainObject(opts.theme) || typeof opts.theme === 'string'),
-    `opts.theme must be Object or String, but got ${opts.theme}`,
-  );
-  assert(
-    invalidProp(opts, 'babel') || isPlainObject(opts.babel),
-    `opts.babel must be Object, but got ${opts.babel}`,
-  );
-  assert(
-    invalidProp(opts, 'disableCSSModules') ||
-      typeof opts.disableCSSModules === 'boolean',
-    `opts.disableCSSModules must be Boolean, but got ${opts.disableCSSModules}`,
-  );
-  assert(
-    invalidProp(opts, 'noCompress') || typeof opts.noCompress === 'boolean',
-    `opts.noCompress must be Boolean, but got ${opts.noCompress}`,
-  );
-  assert(
-    invalidProp(opts, 'define') || isPlainObject(opts.define),
-    `opts.define must be Object, but got ${opts.define}`,
-  );
-  assert(
-    invalidProp(opts, 'publicPath') || typeof opts.publicPath === 'string',
-    `opts.publicPath must be String, but got ${opts.publicPath}`,
-  );
-  assert(
-    invalidProp(opts, 'alias') || isPlainObject(opts.alias),
-    `opts.alias must be Boolean, but got ${opts.alias}`,
-  );
-  assert(
-    invalidProp(opts, 'outputPath') || typeof opts.outputPath === 'string',
-    `opts.outputPath must be String, but got ${opts.outputPath}`,
-  );
-  assert(
-    invalidProp(opts, 'entry') ||
-      (typeof opts.entry === 'string' || isPlainObject(opts.entry)),
-    `opts.entry must be String or PlainObject, but got ${opts.entry}`,
-  );
-  assert(
-    invalidProp(opts, 'extraResolveModules') ||
-      Array.isArray(opts.extraResolveModules),
-    `opts.extraResolveModules must be Array, but got ${
-      opts.extraResolveModules
-    }`,
-  );
-  assert(
-    invalidProp(opts, 'commons') || Array.isArray(opts.commons),
-    `opts.commons must be Array, but got ${opts.commons}`,
-  );
-  assert(
-    invalidProp(opts, 'hash') || typeof opts.hash === 'boolean',
-    `opts.hash must be Boolean, but got ${opts.hash}`,
-  );
-  assert(
-    invalidProp(opts, 'extraBabelIncludes') ||
-      Array.isArray(opts.extraBabelIncludes),
-    `opts.extraBabelIncludes must be Array, but got ${opts.extraBabelIncludes}`,
-  );
-  assert(
-    invalidProp(opts, 'extraResolveExtensions') ||
-      Array.isArray(opts.extraResolveExtensions),
-    `opts.extraResolveExtensions must be Array, but got ${
-      opts.extraResolveExtensions
-    }`,
-  );
-  assert(
-    invalidProp(opts, 'copy') || Array.isArray(opts.copy),
-    `opts.copy must be Array, but got ${opts.copy}`,
-  );
-  assert(
-    invalidProp(opts, 'ignoreMomentLocale') ||
-      typeof opts.ignoreMomentLocale === 'boolean',
-    `opts.ignoreMomentLocale must be Boolean, but got ${
-      opts.ignoreMomentLocale
-    }`,
-  );
-  assert(
-    invalidProp(opts, 'disableCSSSourceMap') ||
-      typeof opts.disableCSSSourceMap === 'boolean',
-    `opts.disableCSSSourceMap must be Boolean, but got ${
-      opts.disableCSSSourceMap
-    }`,
-  );
-  assert(
-    invalidProp(opts, 'sass') || isPlainObject(opts.theme),
-    `opts.sass must be Object, but got ${opts.sass}`,
-  );
-  assert(
-    invalidProp(opts, 'devtool') || typeof opts.theme === 'string',
-    `opts.devtool must be String, but got ${opts.devtool}`,
-  );
 
   const isDev = process.env.NODE_ENV === 'development';
   const theme = normalizeTheme(opts.theme);
@@ -167,7 +34,7 @@ export default function getConfig(opts = {}) {
     plugins: () => [
       require('postcss-flexbugs-fixes'),
       autoprefixer({
-        browsers: opts.browsers || browsersConfig,
+        browsers: opts.browserslist || browsersConfig,
         flexbox: 'no-2009',
       }),
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),

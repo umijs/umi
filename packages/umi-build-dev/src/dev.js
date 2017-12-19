@@ -7,6 +7,10 @@ import createRouteMiddleware from './createRouteMiddleware';
 import generateEntry, { watchPages } from './generateEntry';
 import send, { PAGE_LIST } from './send';
 import { getConfig, watchConfigs } from './getConfig';
+import getWebpackRCConfig, {
+  watchConfigs as watchWebpackRCConfig,
+  unwatchConfigs as unwatchWebpackRCConfig,
+} from 'af-webpack/getUserConfig';
 import { unwatch } from './getConfig/watch';
 import getPaths from './getPaths';
 
@@ -16,7 +20,6 @@ export default function runDev(opts) {
   const {
     cwd = process.cwd(),
     babel,
-    disableCSSModules,
     extraResolveModules,
     libraryName = 'umi',
     staticDirectory = 'static',
@@ -34,16 +37,40 @@ export default function runDev(opts) {
     configOnly: true,
   });
 
-  // 获取用户配置
+  // 获取 .webpackrc 配置
+  let webpackRCConfig = null;
+  let returnedWatchWebpackRCConfig = null;
+  try {
+    const configObj = getWebpackRCConfig({
+      cwd,
+      disabledConfigs: ['entry', 'outputPath', 'hash'],
+    });
+    webpackRCConfig = configObj.config;
+    returnedWatchWebpackRCConfig = configObj.watch;
+  } catch (e) {
+    console.error(chalk.red(e.message));
+    debug('Get .webpackrc config failed, watch config and reload');
+
+    // 监听配置项变更，然后重新执行 dev 逻辑
+    watchWebpackRCConfig().on('all', (event, path) => {
+      debug(`[${event}] ${path}, unwatch and reload`);
+      // 重新执行 dev 逻辑
+      unwatchWebpackRCConfig();
+      runDev(opts);
+    });
+    return;
+  }
+
+  // 获取用户 config.js 配置
   let config = null;
-  let watchConfig = null;
+  let returnedWatchConfig = null;
   try {
     const configObj = getConfig(cwd, { force: true });
     config = configObj.config;
-    watchConfig = configObj.watch;
+    returnedWatchConfig = configObj.watch;
   } catch (e) {
     console.error(chalk.red(e.message));
-    debug('get config failed, watch config and reload');
+    debug('Get config failed, watch config and reload');
 
     // 监听配置项变更，然后重新执行 dev 逻辑
     watchConfigs().on('all', (event, path) => {
@@ -92,8 +119,8 @@ export default function runDev(opts) {
   const webpackConfig = getWebpackConfig({
     cwd,
     config,
+    webpackRCConfig,
     babel,
-    disableCSSModules,
     extraResolveModules,
     libraryName,
     staticDirectory,
@@ -143,7 +170,8 @@ export default function runDev(opts) {
       // 监听配置变更
       debug('watch configs');
       webpackDevServer = devServer;
-      watchConfig(devServer);
+      returnedWatchWebpackRCConfig(devServer);
+      returnedWatchConfig(devServer);
       watchEntry(devServer);
     },
     onCompileDone() {

@@ -9,6 +9,7 @@ import generateEntry from './generateEntry';
 import getRouteConfig from './getRouteConfig';
 import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
+import getWebpackRCConfig from 'af-webpack/getUserConfig';
 import getPaths from './getPaths';
 
 const debug = require('debug')('umi-build-dev:build');
@@ -18,7 +19,6 @@ export default function(opts = {}) {
   const {
     cwd = process.cwd(),
     babel,
-    disableCSSModules,
     extraResolveModules,
     hash,
     libraryName = 'umi',
@@ -44,6 +44,12 @@ export default function(opts = {}) {
       configOnly: true,
     });
 
+    // 获取 .webpackrc 配置
+    const { config: webpackRCConfig } = getWebpackRCConfig({
+      cwd,
+      disabledConfigs: ['entry', 'outputPath', 'hash'],
+    });
+
     // 获取用户配置
     const { config } = getConfig(cwd);
 
@@ -67,9 +73,9 @@ export default function(opts = {}) {
     const webpackConfig = getWebpackConfig({
       cwd,
       config,
+      webpackRCConfig,
       babel,
       hash,
-      disableCSSModules,
       extraResolveModules,
       routeConfig,
       libraryName,
