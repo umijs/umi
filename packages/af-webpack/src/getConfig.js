@@ -13,7 +13,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
 import babelConfig from './defaultConfigs/babel';
-import browsersConfig from './defaultConfigs/browsers';
+import defaultBrowsers from './defaultConfigs/browsers';
 import stringifyObject from './stringifyObject';
 import normalizeTheme from './normalizeTheme';
 import { applyWebpackConfig } from './applyWebpackConfig';
@@ -34,7 +34,7 @@ export default function getConfig(opts = {}) {
     plugins: () => [
       require('postcss-flexbugs-fixes'),
       autoprefixer({
-        browsers: opts.browserslist || browsersConfig,
+        browsers: opts.browserslist || defaultBrowsers,
         flexbox: 'no-2009',
       }),
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),

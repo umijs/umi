@@ -15,7 +15,6 @@ export default function(opts = {}) {
     webpackRCConfig,
     babel,
     hash,
-    disableCSSModules,
     routeConfig,
     libraryName,
     staticDirectory,
@@ -23,8 +22,6 @@ export default function(opts = {}) {
     paths,
     preact,
   } = opts;
-  // browsers 配置同时给 babel-preset-env 和 autoprefixer 用
-  const browsers = config.browsers || defaultBrowsers;
 
   // entry
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
@@ -51,18 +48,25 @@ export default function(opts = {}) {
   debug(`config: ${JSON.stringify(config)}`);
 
   // default react, support config with preact
-  const reactAlias = preact
-    ? {
-        react: require.resolve('preact-compat'),
-        'react-dom': require.resolve('preact-compat'),
-        'create-react-class': require.resolve(
-          'preact-compat/lib/create-react-class',
-        ),
-      }
-    : {
-        react: require.resolve('react'),
-        'react-dom': require.resolve('react-dom'),
-      };
+  // 优先级：用户配置 > preact argument > default (React)
+  const preactAlias = {
+    react: require.resolve('preact-compat'),
+    'react-dom': require.resolve('preact-compat'),
+    'create-react-class': require.resolve(
+      'preact-compat/lib/create-react-class',
+    ),
+  };
+  const reactAlias = {
+    react: require.resolve('react'),
+    'react-dom': require.resolve('react-dom'),
+  };
+  let preactOrReactAlias = preact ? preactAlias : reactAlias;
+  if (config.preact === true) {
+    preactOrReactAlias = preactAlias;
+  }
+  if (config.preact === false) {
+    preactOrReactAlias = reactAlias;
+  }
 
   // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
   // 详见：https://tinyletter.com/sorrycc/letters/babel
@@ -87,6 +91,8 @@ export default function(opts = {}) {
     }
   }
 
+  const browserslist = webpackRCConfig.browserslist || defaultBrowsers;
+
   return getConfig({
     cwd,
     ...webpackRCConfig,
@@ -98,8 +104,9 @@ export default function(opts = {}) {
 
     // 扩展
     babel: webpackRCConfig.babel || {
-      presets: [[babel, { browsers }]],
+      presets: [[babel, { browsers: browserslist }]],
     },
+    browserslist,
     theme: { ...webpackRCConfig.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
     extraResolveModules: [
       ...(webpackRCConfig.extraResolveModules || []),
@@ -111,7 +118,7 @@ export default function(opts = {}) {
       ...(webpackRCConfig.define || {}),
     },
     alias: {
-      ...reactAlias,
+      ...preactOrReactAlias,
       ...libAlias,
       ...(config.alias || {}),
     },
