@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import glob from 'glob';
 import { join } from 'path';
 import { readFileSync, readdirSync, existsSync } from 'fs';
+import getUserConfig from '../src/getUserConfig';
 import getConfig from '../src/getConfig';
 
 process.env.NODE_ENV = 'production';
@@ -17,19 +18,18 @@ function getEntry(cwd) {
 }
 
 function build(opts, done) {
-  const configFile = join(opts.cwd, 'config.json');
-  const localConfig = existsSync(configFile)
-    ? JSON.parse(readFileSync(configFile, 'utf-8'))
-    : {};
-  const config = getConfig({
-    ...opts,
-    ...localConfig,
+  const { config: userConfig } = getUserConfig({
+    cwd: opts.cwd,
   });
-  config.entry = {
+  const webpackConfig = getConfig({
+    ...opts,
+    ...userConfig,
+  });
+  webpackConfig.entry = {
     index: getEntry(opts.cwd),
   };
-  config.output.path = join(opts.cwd, 'dist');
-  const compiler = webpack(config);
+  webpackConfig.output.path = join(opts.cwd, 'dist');
+  const compiler = webpack(webpackConfig);
   compiler.run(err => {
     if (err) {
       throw new Error(err);

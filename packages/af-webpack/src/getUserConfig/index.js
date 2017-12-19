@@ -142,12 +142,12 @@ export default function getUserConfig(opts = {}) {
 
   // Replace npm variables
   const pkgFile = resolve(cwd, 'package.json');
-  if (existsSync(pkgFile)) {
+  if (Object.keys(config).length && existsSync(pkgFile)) {
     const pkg = JSON.parse(readFileSync(pkgFile, 'utf-8'));
     config = Object.keys(config).reduce((memo, key) => {
       memo[key] = replaceNpmVariables(config[key], pkg);
       return memo;
-    });
+    }, {});
   }
 
   let configFailed = false;
