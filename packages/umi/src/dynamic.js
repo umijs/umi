@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 
-export default function(resolve) {
-  return asyncComponent({
-    resolve,
-    loadingComponent: () => null,
-  });
-}
-
-function asyncComponent(config) {
-  const { resolve } = config;
+export default function(config) {
+  config = typeof config === 'function' ? { resolve: config } : config;
+  const { resolve, LoadingComponent = () => null } = config;
 
   return class DynamicComponent extends Component {
     constructor(...args) {
       super(...args);
-      this.LoadingComponent =
-        config.LoadingComponent || (() => <p>loading...</p>);
+      this.LoadingComponent = LoadingComponent;
       this.state = {
         AsyncComponent: null,
       };
