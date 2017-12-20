@@ -89,6 +89,7 @@ export default function runDev(opts) {
     debug(`libraryName: ${libraryName}`);
     const entryGObj = generateEntry({
       cwd,
+      config,
       plugins,
       routerTpl: opts.routerTpl,
       entryJSTpl: opts.entryJSTpl,

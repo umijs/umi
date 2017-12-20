@@ -79,7 +79,7 @@ export function watchPages(opts = {}) {
 }
 
 function generate(opts = {}) {
-  const { paths, plugins, libraryName } = opts;
+  const { paths, plugins, libraryName, config } = opts;
   const { absTmpDirPath, absPagesPath } = paths;
   const routeConfig = getRouteConfig(absPagesPath);
 
@@ -90,6 +90,7 @@ function generate(opts = {}) {
     ...opts,
     routeConfig,
     libraryName,
+    config,
   });
   if (cachedRouterContent !== routerContent) {
     writeFileSync(join(absTmpDirPath, 'router.js'), routerContent, 'utf-8');

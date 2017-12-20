@@ -12,21 +12,32 @@ export default function getRouterContent(opts = {}) {
     routeConfig,
     tplPath = join(__dirname, `../template/router.js`),
     libraryName,
+    config,
+    paths,
   } = opts;
 
   if (!exists(tplPath)) {
     throw new Error('tplPath 不存在');
   }
   const tpl = readFile(tplPath, 'utf-8');
-  const routeComponents = getRouteComponents(routeConfig);
+  const routeComponents = getRouteComponents(routeConfig, config, paths);
   return tpl
     .replace(/<%= routeComponents %>/g, routeComponents)
     .replace(/<%= libraryName %>/g, libraryName);
 }
 
-function getRouteComponents(routeConfig) {
+function getRouteComponents(routeConfig, config = {}, paths) {
   if (routeConfig['/index.html']) {
     routeConfig['/'] = routeConfig['/index.html'];
+  }
+
+  const { loading } = config;
+  let loadingOpts = '';
+  if (loading) {
+    loadingOpts = `, { loading: require('${join(
+      paths.cwd,
+      loading,
+    )}').default }`;
   }
 
   const routerComponents = Object.keys(routeConfig).map(key => {
@@ -42,7 +53,7 @@ function getRouteComponents(routeConfig) {
         key
       }" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
         routeConfig[key],
-      )}' */'${pageJSFile}'))}></Route>`;
+      )}' */'${pageJSFile}')${loadingOpts})}></Route>`;
     }
   });
 

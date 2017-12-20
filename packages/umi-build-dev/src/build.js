@@ -62,6 +62,7 @@ export default function(opts = {}) {
     debug(`libraryName: ${libraryName}`);
     const { routeConfig } = generateEntry({
       cwd,
+      config,
       plugins,
       routerTpl: opts.routerTpl,
       entryJSTpl: opts.entryJSTpl,
@@ -88,8 +89,10 @@ export default function(opts = {}) {
     build({
       webpackConfig,
       success({ stats }) {
-        debug(`删除临时文件夹 ${paths.tmpDirPath}`);
-        rimraf(paths.absTmpDirPath);
+        if (!process.env.DISABLE_RM_TMPDIR) {
+          debug(`删除临时文件夹 ${paths.tmpDirPath}`);
+          rimraf(paths.absTmpDirPath);
+        }
 
         debug('打包 HTML...');
         const chunkToFilesMap = getChunkToFilesMap(stats.compilation.chunks);
