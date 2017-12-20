@@ -55,15 +55,21 @@ if (module.hot && typeof module.hot.dispose === 'function') {
   });
 }
 
+function stripLastSlash(str) {
+  return str.slice(-1) === '/' ? str.slice(0, -1) : str;
+}
+
 // Connect to WebpackDevServer via a socket.
 var connection = new SockJS(
-  url.format({
-    protocol: window.location.protocol,
-    hostname: window.location.hostname,
-    port: window.location.port,
-    // Hardcoded in WebpackDevServer
-    pathname: '/sockjs-node',
-  }),
+  process.env.SOCKET_SERVER
+    ? `${stripLastSlash(process.env.SOCKET_SERVER)}/sockjs-node`
+    : url.format({
+        protocol: window.location.protocol,
+        hostname: window.location.hostname,
+        port: window.location.port,
+        // Hardcoded in WebpackDevServer
+        pathname: '/sockjs-node',
+      }),
 );
 
 // Unlike WebpackDevServer client, we won't try to reconnect

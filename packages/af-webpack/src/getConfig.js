@@ -11,6 +11,7 @@ import assert from 'assert';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
+import { format } from 'url';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
 import babelConfig from './defaultConfigs/babel';
 import defaultBrowsers from './defaultConfigs/browsers';
@@ -378,6 +379,14 @@ export default function getConfig(opts = {}) {
           // eslint-disable-line
           isDev ? 'development' : 'production',
         ), // eslint-disable-line
+        // 给 socket server 用
+        ...(process.env.SOCKET_SERVER
+          ? {
+              'process.env.SOCKET_SERVER': JSON.stringify(
+                process.env.SOCKET_SERVER,
+              ),
+            }
+          : {}),
         ...stringifyObject(opts.define || {}),
       }),
       ...(process.env.ANALYZE
@@ -415,6 +424,10 @@ export default function getConfig(opts = {}) {
         }
       : {},
   };
+
+  if (process.env.PUBLIC_PATH) {
+    config.output.publicPath = process.env.PUBLIC_PATH;
+  }
 
   return applyWebpackConfig(config);
 }
