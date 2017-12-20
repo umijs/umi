@@ -103,6 +103,11 @@ export default function getUserConfig(opts = {}) {
     config = require(jsRCFile);
   }
 
+  // Context for validate function
+  const context = {
+    cwd,
+  };
+
   // Validate
   let errorMsg = null;
   Object.keys(config).forEach(key => {
@@ -120,7 +125,7 @@ export default function getUserConfig(opts = {}) {
     const plugin = pluginsMapByName[key];
     if (plugin.validate) {
       try {
-        plugin.validate(config[key]);
+        plugin.validate.call(context, config[key]);
       } catch (e) {
         errorMsg = e.message;
       }
