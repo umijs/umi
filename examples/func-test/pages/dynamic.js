@@ -8,15 +8,17 @@ const A = dynamic(async function() {
   return () => <div>A rendered after 1s</div>;
 });
 
-const B = dynamic({
-  resolve: async function() {
+const B = dynamic(
+  async function() {
     await delay(/* 1s */ 1000);
     return () => <div>B rendered after 1s</div>;
   },
-  LoadingComponent() {
-    return <div>Custome Loading...</div>;
+  {
+    loading() {
+      return <div>Custome Loading...</div>;
+    },
   },
-});
+);
 
 export default class Dynamic extends Component {
   constructor(props) {
@@ -29,6 +31,7 @@ export default class Dynamic extends Component {
   render() {
     return (
       <div>
+        <h2>{`dynamic(resolve)`}</h2>
         <button
           onClick={() => {
             this.setState({ A: true });
@@ -37,6 +40,8 @@ export default class Dynamic extends Component {
           loadA
         </button>
         {this.state.A ? <A /> : <div>A is not loaded</div>}
+
+        <h2>{`dynamic(resolve, { loading })`}</h2>
         <button
           onClick={() => {
             this.setState({ B: true });

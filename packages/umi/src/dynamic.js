@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-export default function(config) {
-  config = typeof config === 'function' ? { resolve: config } : config;
-  const { resolve, LoadingComponent = () => null } = config;
+export default function(resolve, opts = {}) {
+  const { loading: LoadingComponent = () => null } = opts;
 
   return class DynamicComponent extends Component {
     constructor(...args) {
