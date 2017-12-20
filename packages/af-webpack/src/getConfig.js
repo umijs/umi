@@ -11,7 +11,6 @@ import assert from 'assert';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
-import { format } from 'url';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
 import babelConfig from './defaultConfigs/babel';
 import defaultBrowsers from './defaultConfigs/browsers';
