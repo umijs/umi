@@ -178,6 +178,7 @@ export default function runDev(opts) {
     onCompileDone() {
       onCompileDone();
     },
+    proxy: webpackRCConfig.proxy || {},
   });
 }
 
