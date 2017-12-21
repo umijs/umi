@@ -35,6 +35,10 @@ dev({
   webpackConfig,
   extraMiddlewares,
   beforeServer,
+  afterServer,
+  onCompileDone,
+  onCompileInvalid,
+  proxy,
 });
 ```
 
@@ -42,9 +46,13 @@ webpackConfig is required, other optional.
 
 Options:
 
-* `webpackConfig`: the webpack config 
-* `extraMiddlewares`: extra middlewares for webpack-dev-server, based on express
-* `beforeServer`: the function to execute before dev server is started
+* `webpackConfig`: The webpack config 
+* `extraMiddlewares`: Extra middlewares for webpack-dev-server, based on express
+* `beforeServer`: The function to execute before dev server is started
+* `beforeServer`: The function to execute after dev server is started
+* `onCompileDone`
+* `onCompileInvalid`
+* `proxy`: The proxy config which will pass through to webpack-dev-server
 
 ### af-webpack/build
 
