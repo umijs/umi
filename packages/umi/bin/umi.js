@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const spawn = require('cross-spawn');
+const chalk = require('chalk');
 
 const script = process.argv[2];
 const args = process.argv.slice(3);
@@ -41,5 +42,6 @@ switch (aliasedScript) {
     runScript(aliasedScript, args);
     break;
   default:
+    console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
     break;
 }

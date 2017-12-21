@@ -162,11 +162,23 @@ export default function getConfig(opts = {}) {
     return new webpack.optimize.CommonsChunkPlugin(common);
   });
 
+  // Declare outputPath here for reuse
+  const outputPath = opts.outputPath || resolve(opts.cwd, 'dist');
+
+  // Copy files in public to outputPath
   const copyPlugins = opts.copy ? [new CopyWebpackPlugin(opts.copy)] : [];
+  if (existsSync(resolve(opts.cwd, 'public'))) {
+    copyPlugins.push(
+      new CopyWebpackPlugin({
+        from: resolve(opts.cwd, 'public'),
+        to: resolve(opts.cwd, outputPath),
+      }),
+    );
+  }
 
   // js 和 css 采用不同的 hash 算法
-  const jsHash = opts.hash ? '.[chunkhash:8]' : '';
-  const cssHash = opts.hash ? '.[contenthash:8]' : '';
+  const jsHash = !isDev && opts.hash ? '.[chunkhash:8]' : '';
+  const cssHash = !isDev && opts.hash ? '.[contenthash:8]' : '';
 
   const babelUse = [
     {
@@ -234,7 +246,7 @@ export default function getConfig(opts = {}) {
     devtool: opts.devtool || undefined,
     entry: opts.entry || null,
     output: {
-      path: opts.outputPath || null,
+      path: outputPath,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isDev,
       filename: `[name]${jsHash}.js`,
