@@ -23,7 +23,6 @@ const debug = require('debug')('af-webpack:getConfig');
 
 export default function getConfig(opts = {}) {
   assert(opts.cwd, 'opts.cwd must be specified');
-  assert(opts.outputPath, 'opts.outputPath must be specified');
 
   const isDev = process.env.NODE_ENV === 'development';
   const theme = normalizeTheme(opts.theme);
