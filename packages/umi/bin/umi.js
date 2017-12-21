@@ -34,6 +34,9 @@ switch (aliasedScript) {
   case '-v':
   case '--version':
     console.log(require('../package.json').version);
+    if (__dirname.indexOf('/Users/chencheng/Documents/Work/Misc') > -1) {
+      console.log(chalk.cyan('@local'));
+    }
     break;
   case 'build':
   case 'dev':
