@@ -168,10 +168,12 @@ export default function getConfig(opts = {}) {
   const copyPlugins = opts.copy ? [new CopyWebpackPlugin(opts.copy)] : [];
   if (existsSync(resolve(opts.cwd, 'public'))) {
     copyPlugins.push(
-      new CopyWebpackPlugin({
-        from: resolve(opts.cwd, 'public'),
-        to: resolve(opts.cwd, outputPath),
-      }),
+      new CopyWebpackPlugin([
+        {
+          from: resolve(opts.cwd, 'public'),
+          to: resolve(opts.cwd, outputPath),
+        },
+      ]),
     );
   }
 
