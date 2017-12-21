@@ -13,7 +13,6 @@ import getWebpackRCConfig from 'af-webpack/getUserConfig';
 import getPaths from './getPaths';
 
 const debug = require('debug')('umi-build-dev:build');
-const cwd = process.cwd();
 
 export default function(opts = {}) {
   const {

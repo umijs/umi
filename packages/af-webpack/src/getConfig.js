@@ -284,6 +284,7 @@ export default function getConfig(opts = {}) {
           : [
               {
                 test: /\.(js|jsx)$/,
+                include: opts.cwd,
                 exclude: /node_modules/,
                 enforce: 'pre',
                 use: [
