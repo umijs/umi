@@ -1,9 +1,9 @@
 {
   "name": "umi-build-dev",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "dependencies": {
     "address": "^1.0.3",
-    "af-webpack": "^0.12.3",
+    "af-webpack": "^0.13.0",
     "antd": "^3.0.0",
     "antd-mobile": "^2.0.0",
     "chalk": "^2.1.0",
