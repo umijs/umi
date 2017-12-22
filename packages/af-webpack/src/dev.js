@@ -36,10 +36,6 @@ export default function dev({
         return;
       }
 
-      if (beforeServer) {
-        beforeServer();
-      }
-
       const urls = prepareUrls(PROTOCOL, HOST, port);
       const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
 
@@ -86,6 +82,11 @@ export default function dev({
         },
       };
       const devServer = new WebpackDevServer(compiler, serverConfig);
+
+      if (beforeServer) {
+        beforeServer(devServer);
+      }
+
       devServer.listen(port, HOST, err => {
         if (err) {
           console.log(err);
