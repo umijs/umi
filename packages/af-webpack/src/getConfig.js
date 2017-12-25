@@ -418,7 +418,7 @@ export default function getConfig(opts = {}) {
           context: __dirname,
         },
       }),
-      new ForkTsCheckerWebpackPlugin(),
+      ...(process.env.TS_TYPECHECK ? [new ForkTsCheckerWebpackPlugin()] : []),
       ...(opts.ignoreMomentLocale
         ? [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
         : []),
