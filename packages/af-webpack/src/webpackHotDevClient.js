@@ -17,12 +17,12 @@
 // that looks similar to our console output. The error overlay is inspired by:
 // https://github.com/glenjamin/webpack-hot-middleware
 
-var SockJS = require('sockjs-client');
 var stripAnsi = require('strip-ansi');
 var url = require('url');
 var launchEditorEndpoint = require('react-dev-utils/launchEditorEndpoint');
 var formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 var ErrorOverlay = require('react-error-overlay');
+var socket = require('./socket');
 
 ErrorOverlay.setEditorHandler(function editorHandler(errorLocation) {
   // Keep this sync with errorOverlayMiddleware.js
@@ -60,7 +60,7 @@ function stripLastSlash(str) {
 }
 
 // Connect to WebpackDevServer via a socket.
-var connection = new SockJS(
+var connection = socket(
   process.env.SOCKET_SERVER
     ? `${stripLastSlash(process.env.SOCKET_SERVER)}/sockjs-node`
     : url.format({
@@ -70,18 +70,43 @@ var connection = new SockJS(
         // Hardcoded in WebpackDevServer
         pathname: '/sockjs-node',
       }),
+  {
+    onclose() {
+      if (
+        typeof console !== 'undefined' &&
+        typeof console.info === 'function'
+      ) {
+        console.info(
+          'The development server has disconnected.\nRefresh the page if necessary.',
+        );
+      }
+    },
+    onmessage(e) {
+      var message = JSON.parse(e.data);
+      switch (message.type) {
+        case 'hash':
+          handleAvailableHash(message.data);
+          break;
+        case 'still-ok':
+        case 'ok':
+          handleSuccess();
+          break;
+        case 'content-changed':
+          // Triggered when a file from `contentBase` changed.
+          window.location.reload();
+          break;
+        case 'warnings':
+          handleWarnings(message.data);
+          break;
+        case 'errors':
+          handleErrors(message.data);
+          break;
+        default:
+        // Do nothing.
+      }
+    },
+  },
 );
-
-// Unlike WebpackDevServer client, we won't try to reconnect
-// to avoid spamming the console. Disconnect usually happens
-// when developer stops the server.
-connection.onclose = function() {
-  if (typeof console !== 'undefined' && typeof console.info === 'function') {
-    console.info(
-      'The development server has disconnected.\nRefresh the page if necessary.',
-    );
-  }
-};
 
 // Remember some state related to hot module replacement.
 var isFirstCompilation = true;
@@ -193,32 +218,6 @@ function handleAvailableHash(hash) {
   mostRecentCompilationHash = hash;
 }
 
-// Handle messages from the server.
-connection.onmessage = function(e) {
-  var message = JSON.parse(e.data);
-  switch (message.type) {
-    case 'hash':
-      handleAvailableHash(message.data);
-      break;
-    case 'still-ok':
-    case 'ok':
-      handleSuccess();
-      break;
-    case 'content-changed':
-      // Triggered when a file from `contentBase` changed.
-      window.location.reload();
-      break;
-    case 'warnings':
-      handleWarnings(message.data);
-      break;
-    case 'errors':
-      handleErrors(message.data);
-      break;
-    default:
-    // Do nothing.
-  }
-};
-
 // Is there a newer version of this code available?
 function isUpdateAvailable() {
   /* globals __webpack_hash__ */
@@ -276,5 +275,3 @@ function tryApplyUpdates(onHotUpdateSuccess) {
     );
   }
 }
-
-require('./patchConnection')(connection);

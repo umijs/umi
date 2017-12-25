@@ -2,7 +2,7 @@
 
 let el = null;
 
-function showLoading() {
+export function showLoading() {
   el = document.createElement('div');
   el.style.position = 'absolute';
   el.style.left = 0;
@@ -20,11 +20,11 @@ function showLoading() {
   document.body.appendChild(el);
 }
 
-function hideLoading() {
+export function hideLoading() {
   el.parentNode.removeChild(el);
 }
 
-function connectServer(onSuccess) {
+export function connectServer(onSuccess) {
   fetch(window.location.href)
     .then(onSuccess)
     .catch(() => {
@@ -32,15 +32,4 @@ function connectServer(onSuccess) {
         connectServer(onSuccess);
       }, 1000);
     });
-}
-
-export default function(connection) {
-  const oldOnclose = connection.onclose;
-  connection.onclose = () => {
-    oldOnclose();
-    showLoading();
-    connectServer(() => {
-      window.location.reload();
-    });
-  };
 }
