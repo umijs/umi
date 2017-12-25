@@ -280,6 +280,25 @@ export default function getConfig(opts = {}) {
     },
     module: {
       rules: [
+        ...(process.env.DISABLE_TSLINT
+          ? []
+          : [
+              {
+                test: /\.tsx?$/,
+                include: opts.cwd,
+                exclude: /node_modules/,
+                enforce: 'pre',
+                use: [
+                  {
+                    options: {
+                      emitErrors: true,
+                      // formatter: eslintFormatter,
+                    },
+                    loader: require.resolve('tslint-loader'),
+                  },
+                ],
+              },
+            ]),
         ...(process.env.DISABLE_ESLINT
           ? []
           : [
