@@ -83,6 +83,7 @@
     "build.js",
     "dev.js",
     "getConfig.js",
+    "getUserConfig.js",
     "react-dev-utils.js",
     "registerBabel.js",
     "webpack.js"
