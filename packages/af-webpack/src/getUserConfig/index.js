@@ -201,6 +201,8 @@ export default function getUserConfig(opts = {}) {
     });
   }
 
+  debug(`UserConfig: ${JSON.stringify(config)}`);
+
   return { config, watch: watchConfigsAndRun };
 }
 

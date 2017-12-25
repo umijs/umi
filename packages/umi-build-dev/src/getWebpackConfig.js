@@ -120,7 +120,7 @@ export default function(opts = {}) {
     alias: {
       ...preactOrReactAlias,
       ...libAlias,
-      ...(config.alias || {}),
+      ...(webpackRCConfig.alias || {}),
     },
     extraPostCSSPlugins: [
       ...(webpackRCConfig.extraPostCSSPlugins || []),

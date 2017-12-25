@@ -11,6 +11,7 @@ import assert from 'assert';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
 import babelConfig from './defaultConfigs/babel';
 import defaultBrowsers from './defaultConfigs/browsers';
@@ -417,6 +418,7 @@ export default function getConfig(opts = {}) {
           context: __dirname,
         },
       }),
+      new ForkTsCheckerWebpackPlugin(),
       ...(opts.ignoreMomentLocale
         ? [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
         : []),

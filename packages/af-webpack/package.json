@@ -30,6 +30,7 @@
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
+    "fork-ts-checker-webpack-plugin": "^0.2.9",
     "inquirer": "^3.3.0",
     "is-plain-object": "^2.0.4",
     "is-root": "^1.0.0",
