@@ -23,6 +23,7 @@ var launchEditorEndpoint = require('react-dev-utils/launchEditorEndpoint');
 var formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 var ErrorOverlay = require('react-error-overlay');
 var socket = require('./socket');
+var stripLastSlash = require('./utils').stripLastSlash;
 
 ErrorOverlay.setEditorHandler(function editorHandler(errorLocation) {
   // Keep this sync with errorOverlayMiddleware.js
@@ -53,10 +54,6 @@ if (module.hot && typeof module.hot.dispose === 'function') {
     // TODO: why do we need this?
     ErrorOverlay.stopReportingRuntimeErrors();
   });
-}
-
-function stripLastSlash(str) {
-  return str.slice(-1) === '/' ? str.slice(0, -1) : str;
 }
 
 // Connect to WebpackDevServer via a socket.
