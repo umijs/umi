@@ -16,13 +16,17 @@ if (major * 10 + minor * 1 < 65) {
   process.exit(1);
 }
 
-function runScript(script, args) {
-  const result = spawn.sync(
-    'node',
-    [require.resolve(`../lib/scripts/${script}`)].concat(args),
-    { stdio: 'inherit' } // eslint-disable-line
-  );
-  process.exit(result.status);
+function runScript(script, args, isFork) {
+  if (isFork) {
+    const result = spawn.sync(
+      'node',
+      [require.resolve(`../lib/scripts/${script}`)].concat(args),
+      {stdio: 'inherit'} // eslint-disable-line
+    );
+    process.exit(result.status);
+  } else {
+    require(`../lib/scripts/${script}`);
+  }
 }
 
 const scriptAlias = {
@@ -40,8 +44,10 @@ switch (aliasedScript) {
     break;
   case 'build':
   case 'dev':
-  case 'test':
   case 'generate':
+    runScript(aliasedScript, args, /* isFork */true);
+    break;
+  case 'test':
     runScript(aliasedScript, args);
     break;
   default:
