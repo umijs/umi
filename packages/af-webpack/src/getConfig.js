@@ -19,6 +19,7 @@ import stringifyObject from './stringifyObject';
 import normalizeTheme from './normalizeTheme';
 import { applyWebpackConfig } from './applyWebpackConfig';
 import readRc from './readRc';
+import { stripLastSlash } from './utils';
 
 const debug = require('debug')('af-webpack:getConfig');
 
@@ -460,7 +461,7 @@ export default function getConfig(opts = {}) {
   };
 
   if (process.env.PUBLIC_PATH) {
-    config.output.publicPath = process.env.PUBLIC_PATH;
+    config.output.publicPath = `${stripLastSlash(process.env.PUBLIC_PATH)}/`;
   }
 
   return applyWebpackConfig(config);
