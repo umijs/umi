@@ -407,7 +407,12 @@ export default function getConfig(opts = {}) {
           ]),
       ...(isDev || process.env.NO_COMPRESS
         ? []
-        : [new webpack.optimize.UglifyJsPlugin(uglifyJSConfig)]),
+        : [
+            new webpack.optimize.UglifyJsPlugin({
+              ...uglifyJSConfig,
+              ...(opts.devtool ? { sourceMap: true } : {}),
+            }),
+          ]),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
           // eslint-disable-line

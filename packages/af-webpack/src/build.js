@@ -17,6 +17,7 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 function buildWebpack(webpackConfig) {
+  debug(`webpack config: ${JSON.stringify(webpackConfig)}`);
   debug(
     `Clean output path ${webpackConfig.output.path.replace(
       `${process.cwd()}/`,
