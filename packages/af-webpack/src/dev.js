@@ -26,7 +26,6 @@ export default function dev({
   onCompileDone = noop,
   onCompileInvalid = noop,
   proxy,
-  urls: urlsFromOpts,
 }) {
   if (!webpackConfig) {
     throw new Error('必须提供 webpackConfig 配置项');
@@ -37,7 +36,7 @@ export default function dev({
         return;
       }
 
-      const urls = urlsFromOpts || prepareUrls(PROTOCOL, HOST, port);
+      const urls = prepareUrls(PROTOCOL, HOST, port);
       const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
 
       // Webpack startup recompilation fix. Remove when @sokra fixes the bug.
