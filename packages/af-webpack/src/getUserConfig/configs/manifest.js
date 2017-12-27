@@ -1,12 +1,13 @@
 import assert from 'assert';
+import isPlainObject from 'is-plain-object';
 
 export default function() {
   return {
     name: 'manifest',
     validate(val) {
       assert(
-        typeof val === 'boolean',
-        `The manifest config must be Boolean, but got ${val}`,
+        isPlainObject(val),
+        `The entry config must be Plain Object, but got ${val}`,
       );
     },
   };
