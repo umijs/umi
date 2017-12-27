@@ -1,6 +1,6 @@
 import { Button } from 'antd-mobile';
 import Link from 'umi/link';
-import styles from './index.css';
+import styles from './index.less';
 
 export default function() {
   return (
