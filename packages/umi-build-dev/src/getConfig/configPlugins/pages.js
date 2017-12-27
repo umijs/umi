@@ -8,6 +8,8 @@ export default function() {
     const files = [
       join(__dirname, '../../../template/document.ejs'),
       join(cwd, 'src/page/document.ejs'),
+      join(cwd, 'src/pages/document.ejs'),
+      join(cwd, 'pages/document.ejs'),
     ];
     if (pages) {
       Object.keys(pages).forEach(key => {
