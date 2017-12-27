@@ -3,6 +3,7 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import SystemBellWebpackPlugin from 'system-bell-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ManifestPlugin from 'webpack-manifest-plugin';
 import autoprefixer from 'autoprefixer';
 import { dirname, resolve, join } from 'path';
 import { existsSync } from 'fs';
@@ -404,6 +405,14 @@ export default function getConfig(opts = {}) {
               filename: `[name]${cssHash}.css`,
               allChunks: true,
             }),
+            ...(opts.manifest
+              ? [
+                  new ManifestPlugin({
+                    fileName: 'manifest.json',
+                    ...opts.manifest,
+                  }),
+                ]
+              : []),
           ]),
       ...(isDev || process.env.NO_COMPRESS
         ? []
