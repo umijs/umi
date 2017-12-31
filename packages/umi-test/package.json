@@ -28,12 +28,18 @@
     "src"
   ],
   "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.36",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^22.0.3",
     "babel-plugin-module-resolver": "^3.0.0-beta.5",
     "babel-preset-umi": "^0.2.0",
     "debug": "^3.1.0",
-    "jest-cli": "^22.0.3",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest-cli": "^21.2.1",
+    "jsdom": "^11.5.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "ts-jest": "^22.0.0",
     "typescript": "^2.6.2"
   }

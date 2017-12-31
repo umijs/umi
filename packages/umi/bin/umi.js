@@ -37,8 +37,9 @@ const aliasedScript = scriptAlias[script] || script;
 switch (aliasedScript) {
   case '-v':
   case '--version':
-    console.log(require('../package.json').version);
-    if (__dirname.indexOf('/Users/chencheng/Documents/Work/Misc') > -1) {
+    const pkg = require('../package.json');
+    console.log(pkg.version);
+    if (!(pkg._from && pkg._resolved)) {
       console.log(chalk.cyan('@local'));
     }
     break;

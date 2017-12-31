@@ -21,15 +21,19 @@ export default function(opts = {}) {
 
   const config = {
     rootDir: process.cwd(),
+    setupFiles: [
+      require.resolve('./shim.js'),
+      require.resolve('./setupTests.js'),
+    ],
     transform: {
-      '\\.js$': require.resolve('./transformers/jsTransformer'),
+      '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
     },
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
-      '\\.(css|less)$': require.resolve('./styleMock'),
+      '\\.(css|less|sass|scss)$': require.resolve('./styleMock'),
     },
     ...(coverage
       ? {

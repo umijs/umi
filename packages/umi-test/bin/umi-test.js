@@ -2,4 +2,6 @@
 
 const test = require('../lib');
 
-test();
+test().catch(e => {
+  console.log(e);
+});
