@@ -11,6 +11,7 @@ import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import assert from 'assert';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
@@ -319,7 +320,7 @@ export default function getConfig(opts = {}) {
             ]),
         {
           exclude: [
-            /\.html$/,
+            /\.html|ejs$/,
             /\.json$/,
             /\.(js|jsx|ts|tsx)$/,
             /\.(css|less|scss|sass)$/,
@@ -446,6 +447,7 @@ export default function getConfig(opts = {}) {
             }),
           ]
         : []),
+      ...(opts.html ? [new HTMLWebpackPlugin(opts.html)] : []),
       new CaseSensitivePathsPlugin(),
       new webpack.LoaderOptionsPlugin({
         options: {
