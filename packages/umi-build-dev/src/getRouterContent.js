@@ -40,7 +40,7 @@ function getRouteComponents(routeConfig, config = {}, paths) {
   const routerComponents = Object.keys(routeConfig).map(key => {
     const pageJSFile = winPath(join('..', routeConfig[key]));
     debug(`${JSON.stringify(getRequest())}, key`);
-    if (isDev) {
+    if (isDev && !process.env.DISABLE_COMPILE_ON_DEMAND) {
       const component = getRequest()[key]
         ? `require('${pageJSFile}').default`
         : '() => <div>Compiling...</div>';
