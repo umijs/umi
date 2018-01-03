@@ -49,7 +49,7 @@ Options:
 * `webpackConfig`: The webpack config 
 * `extraMiddlewares`: Extra middlewares for webpack-dev-server, based on express
 * `beforeServer`: The function to execute before dev server is started
-* `beforeServer`: The function to execute after dev server is started
+* `afterServer`: The function to execute after dev server is started
 * `onCompileDone`
 * `onCompileInvalid`
 * `proxy`: The proxy config which will pass through to webpack-dev-server
