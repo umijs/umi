@@ -48,7 +48,8 @@
     "babel.js",
     "dynamic.d.ts",
     "link.d.ts",
-    "router.d.ts"
+    "router.d.ts",
+    "event.d.ts"
   ],
   "devDependencies": {
     "glob": "^7.1.2"

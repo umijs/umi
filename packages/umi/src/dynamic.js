@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
 export default function(resolve, opts = {}) {
-  const { loading: LoadingComponent = () => null } = opts;
+  const {
+    loading: LoadingComponent = () => null,
+    callback = () => null,
+  } = opts;
 
   return class DynamicComponent extends Component {
     constructor(...args) {
@@ -22,14 +25,20 @@ export default function(resolve, opts = {}) {
     }
 
     load() {
-      resolve().then(m => {
-        const AsyncComponent = m.default || m;
-        if (this.mounted) {
-          this.setState({ AsyncComponent });
-        } else {
-          this.state.AsyncComponent = AsyncComponent; // eslint-disable-line
-        }
-      });
+      resolve()
+        .then(m => {
+          const AsyncComponent = m.default || m;
+          if (this.mounted) {
+            this.setState({ AsyncComponent }, () => {
+              callback();
+            });
+          } else {
+            this.state.AsyncComponent = AsyncComponent; // eslint-disable-line
+          }
+        })
+        .catch(err => {
+          callback(err);
+        });
     }
 
     render() {
