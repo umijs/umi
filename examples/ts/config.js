@@ -1,5 +1,1 @@
-export default {
-  alias: {
-    dva: 'dva-no-router',
-  },
-};
+export default {};

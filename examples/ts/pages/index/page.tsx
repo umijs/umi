@@ -4,6 +4,13 @@ import dva from 'dva';
 import Count from './components/Count';
 import styles from './page.css';
 
+import { default as event, Events, EventTypes } from 'umi/event';
+const { PAGE_INITIALIZED } = Events;
+
+event.addEventListener<EventTypes.PAGE_INITIALIZED_TYPE>(PAGE_INITIALIZED, (evt) => {
+  console.log('PAGE_INITIALIZED', evt);
+});
+
 const app = dva();
 app.model(require('./models/count').default);
 
