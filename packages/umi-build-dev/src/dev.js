@@ -179,6 +179,7 @@ export default function runDev(opts) {
       onCompileDone();
     },
     proxy: webpackRCConfig.proxy || {},
+    openBrowser: !process.env.ALIPAY_EDITOR,
   });
 }
 

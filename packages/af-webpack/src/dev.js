@@ -3,6 +3,7 @@ import {
   prepareUrls,
 } from 'react-dev-utils/WebpackDevServerUtils';
 import clearConsole from 'react-dev-utils/clearConsole';
+import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
@@ -26,6 +27,7 @@ export default function dev({
   onCompileDone = noop,
   onCompileInvalid = noop,
   proxy,
+  openBrowser: openBrowserOpts,
 }) {
   if (!webpackConfig) {
     throw new Error('必须提供 webpackConfig 配置项');
@@ -96,6 +98,9 @@ export default function dev({
           clearConsole();
         }
         console.log(chalk.cyan('Starting the development server...\n'));
+        if (openBrowserOpts) {
+          openBrowser(urls.localUrlForBrowser);
+        }
         send({ type: STARTING });
         if (afterServer) {
           afterServer(devServer);
