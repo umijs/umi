@@ -166,7 +166,9 @@ export default function getConfig(opts = {}) {
   });
 
   // Declare outputPath here for reuse
-  const outputPath = opts.outputPath || resolve(opts.cwd, 'dist');
+  const outputPath = opts.outputPath
+    ? resolve(opts.cwd, opts.outputPath)
+    : resolve(opts.cwd, 'dist');
 
   // Copy files in public to outputPath
   const copyPlugins = opts.copy ? [new CopyWebpackPlugin(opts.copy)] : [];
