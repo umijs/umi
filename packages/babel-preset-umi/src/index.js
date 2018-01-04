@@ -63,7 +63,6 @@ export default function(context, opts = {}) {
             'transform-modules-systemjs',
             'transform-modules-amd',
             'transform-literals',
-            'transform-exponentiation-operator',
             'transform-duplicate-keys',
           ],
         },
