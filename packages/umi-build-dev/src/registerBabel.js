@@ -6,11 +6,9 @@ export default function(babelPreset, opts) {
   const only = configOnly
     ? [
         new RegExp(
-          `(${CONFIG_FILES.concat([
-            'webpack.config.js',
-            '.webpackrc',
-            '.webpackrc.js',
-          ]).join('|')})`,
+          `(${CONFIG_FILES.concat(['webpack.config.js', '.webpackrc.js']).join(
+            '|',
+          )})`,
         ),
       ]
     : null;
