@@ -8,7 +8,6 @@ export default function() {
       <h1>List Page</h1>
       <Button
         onClick={() => {
-          debugger;
           router.goBack();
         }}
       >
