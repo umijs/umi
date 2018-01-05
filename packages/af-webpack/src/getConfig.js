@@ -187,18 +187,25 @@ export default function getConfig(opts = {}) {
   const jsHash = !isDev && opts.hash ? '.[chunkhash:8]' : '';
   const cssHash = !isDev && opts.hash ? '.[contenthash:8]' : '';
 
+  const babelOptions = {
+    ...(opts.babel || babelConfig),
+    // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
+    cacheDirectory: false,
+    babelrc: process.env.ENABLE_BABELRC ? true : false,
+  };
+  babelOptions.plugins = [
+    ...(babelOptions.plugins || []),
+    ...(opts.disableDynamicImport
+      ? [require.resolve('babel-plugin-dynamic-import-node-sync')]
+      : []),
+  ];
   const babelUse = [
     {
       loader: require('path').join(__dirname, 'debugLoader.js'),
     },
     {
       loader: require.resolve('babel-loader'),
-      options: {
-        ...(opts.babel || babelConfig),
-        // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
-        cacheDirectory: false,
-        babelrc: process.env.ENABLE_BABELRC ? true : false,
-      },
+      options: babelOptions,
     },
   ];
 
