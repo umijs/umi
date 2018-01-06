@@ -120,22 +120,25 @@ export default function getUserConfig(opts = {}) {
       const guess = didyoumean(key, pluginNames);
       const affix = guess ? `do you meen ${guess} ?` : 'please remove it.';
       errorMsg = `Configuration item ${key} is not valid, ${affix}`;
-    }
-    // run config plugin's validate
-    const plugin = pluginsMapByName[key];
-    if (plugin.validate) {
-      try {
-        plugin.validate.call(context, config[key]);
-      } catch (e) {
-        errorMsg = e.message;
+    } else {
+      // run config plugin's validate
+      const plugin = pluginsMapByName[key];
+      if (plugin.validate) {
+        try {
+          plugin.validate.call(context, config[key]);
+        } catch (e) {
+          errorMsg = e.message;
+        }
       }
     }
   });
 
   // 确保不管校验是否出错，下次 watch 判断时能拿到正确的值
-  if (/* from watch */ opts.setConfig && errorMsg) {
-    opts.setConfig(config);
-    throwError(e.message);
+  if (errorMsg) {
+    if (/* from watch */ opts.setConfig) {
+      opts.setConfig(config);
+    }
+    throwError(errorMsg);
   }
 
   // Merge config with current env
