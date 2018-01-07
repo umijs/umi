@@ -16,6 +16,11 @@ if (major * 10 + minor * 1 < 65) {
   process.exit(1);
 }
 
+// Notify update when process exits
+const updater = require('update-notifier');
+const pkg = require('../package.json');
+updater({ pkg: pkg }).notify({ defer: true });
+
 function runScript(script, args, isFork) {
   if (isFork) {
     const result = spawn.sync(
