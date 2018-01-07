@@ -16,7 +16,8 @@ process.env.NODE_ENV = 'production';
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
-function buildWebpack(webpackConfig) {
+function buildWebpack(opts = {}) {
+  const { webpackConfig, watch, success } = opts;
   debug(`webpack config: ${JSON.stringify(webpackConfig)}`);
   debug(
     `Clean output path ${webpackConfig.output.path.replace(
@@ -26,65 +27,72 @@ function buildWebpack(webpackConfig) {
   );
   rimraf(webpackConfig.output.path);
 
-  const compiler = webpack(webpackConfig);
-  return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
-      if (err) {
-        return reject(err);
-      }
-      const messages = formatWebpackMessages(stats.toJson({}, true));
-      if (messages.errors.length) {
-        if (messages.errors.length > 1) {
-          messages.errors.length = 1;
-        }
-        return reject(new Error(messages.errors.join('\n\n')));
-      }
+  function successHandler({ stats, warnings }) {
+    if (warnings.length) {
+      console.log(chalk.yellow('Compiled with warnings.\n'));
+      console.log(warnings.join('\n\n'));
+    } else {
+      console.log(chalk.green('Compiled successfully.\n'));
+    }
 
-      return resolve({
-        stats,
-        warnings: messages.warnings,
-      });
+    console.log('File sizes after gzip:\n');
+    printFileSizesAfterBuild(
+      stats,
+      {
+        root: webpackConfig.output.path,
+        sizes: {},
+      },
+      webpackConfig.output.path,
+      WARN_AFTER_BUNDLE_GZIP_SIZE,
+      WARN_AFTER_CHUNK_GZIP_SIZE,
+    );
+    console.log();
+
+    if (success) {
+      success({ stats, warnings });
+    }
+  }
+
+  function errorHandler(err) {
+    console.log(chalk.red('Failed to compile.\n'));
+    printBuildError(err);
+    debug(err);
+    if (!watch) process.exit(1);
+  }
+
+  function doneHandler(err, stats) {
+    if (err) {
+      return errorHandler(err);
+    }
+    const messages = formatWebpackMessages(stats.toJson({}, true));
+    if (messages.errors.length) {
+      if (messages.errors.length > 1) {
+        messages.errors.length = 1;
+      }
+      return errorHandler(new Error(messages.errors.join('\n\n')));
+    }
+
+    return successHandler({
+      stats,
+      warnings: messages.warnings,
     });
-  });
+  }
+
+  const compiler = webpack(webpackConfig);
+  if (watch) {
+    compiler.watch(200, doneHandler);
+  } else {
+    compiler.run(doneHandler);
+  }
 }
 
-export default function build({ webpackConfig, success }) {
+export default function build(opts = {}) {
+  const { webpackConfig } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
 
   // 存在 webpack.config.js 时提醒用户
   warnIfWebpackConfigExists();
 
-  buildWebpack(webpackConfig)
-    .then(({ stats, warnings }) => {
-      if (warnings.length) {
-        console.log(chalk.yellow('Compiled with warnings.\n'));
-        console.log(warnings.join('\n\n'));
-      } else {
-        console.log(chalk.green('Compiled successfully.\n'));
-      }
-
-      console.log('File sizes after gzip:\n');
-      printFileSizesAfterBuild(
-        stats,
-        {
-          root: webpackConfig.output.path,
-          sizes: {},
-        },
-        webpackConfig.output.path,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE,
-      );
-      console.log();
-
-      if (success) {
-        success({ stats, warnings });
-      }
-    })
-    .catch(err => {
-      console.log(chalk.red('Failed to compile.\n'));
-      printBuildError(err);
-      debug(err);
-      process.exit(1);
-    });
+  buildWebpack(opts);
 }
