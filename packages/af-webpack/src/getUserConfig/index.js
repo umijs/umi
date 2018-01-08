@@ -6,7 +6,7 @@ import requireindex from 'requireindex';
 import didyoumean from 'didyoumean';
 import chalk from 'chalk';
 import isEqual from 'lodash.isequal';
-import isPlainObject from 'isPlainObject';
+import isPlainObject from 'is-plain-object';
 import { clearConsole } from '../reactDevUtils';
 import { watch, unwatch } from './watch';
 

@@ -1,3 +1,3 @@
 export default {
-  plugins: ['./plugin', 'a'],
+  plugins: ['./plugin', 'umi-plugin-yunfengdie'],
 };
