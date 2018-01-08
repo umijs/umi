@@ -20,11 +20,16 @@ export default function(context, opts = {}) {
     require.resolve('@babel/plugin-proposal-pipeline-operator'),
     require.resolve('@babel/plugin-proposal-do-expressions'),
     require.resolve('@babel/plugin-proposal-function-bind'),
-    require.resolve('@babel/plugin-transform-react-constant-elements'),
   ];
 
+  if (env === 'production') {
+    plugins.push(
+      require.resolve('@babel/plugin-transform-react-constant-elements'),
+    );
+  }
+
   // transform-react-inline-element don't support preact
-  if (!opts.preact) {
+  if (!opts.preact && env === 'production') {
     plugins.push(
       require.resolve('@babel/plugin-transform-react-inline-elements'),
     );
