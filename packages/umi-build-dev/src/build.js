@@ -52,9 +52,11 @@ export default function(opts = {}) {
     const configPlugins = (config.plugins || []).map(p => {
       return resolvePlugin(p, { cwd });
     });
-    registerBabel(babel, {
-      only: [new RegExp(`(${configPlugins.join('|')})`)],
-    });
+    if (configPlugins.length) {
+      registerBabel(babel, {
+        only: [new RegExp(`(${configPlugins.join('|')})`)],
+      });
+    }
     const plugins = resolvePlugins([
       ...configPlugins,
       ...(pluginsFromOpts || []),

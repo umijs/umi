@@ -87,9 +87,11 @@ export default function runDev(opts) {
       cwd,
     });
   });
-  registerBabel(babel, {
-    only: [new RegExp(`(${configPlugins.join('|')})`)],
-  });
+  if (configPlugins.length) {
+    registerBabel(babel, {
+      only: [new RegExp(`(${configPlugins.join('|')})`)],
+    });
+  }
   const plugins = resolvePlugins([
     ...configPlugins,
     ...(pluginsFromOpts || []),
