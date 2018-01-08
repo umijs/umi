@@ -1,4 +1,4 @@
-import { join, resolve as resolvePath } from 'path';
+import { join } from 'path';
 import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
@@ -11,6 +11,7 @@ import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
 import getWebpackRCConfig from 'af-webpack/getUserConfig';
 import getPaths from './getPaths';
+import resolvePlugin from './resolvePlugin';
 
 const debug = require('debug')('umi-build-dev:build');
 
@@ -49,7 +50,7 @@ export default function(opts = {}) {
     // 获取用户配置
     const { config } = getConfig(cwd);
     const configPlugins = (config.plugins || []).map(p => {
-      return resolvePath(p);
+      return resolvePlugin(p, { cwd });
     });
     registerBabel(babel, {
       only: [new RegExp(`(${configPlugins.join('|')})`)],

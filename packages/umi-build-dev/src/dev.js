@@ -1,7 +1,6 @@
 import dev from 'af-webpack/dev';
 import chalk from 'chalk';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
-import { resolve as resolvePath } from 'path';
 import registerBabel, { registerBabelForConfig } from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -14,6 +13,7 @@ import getWebpackRCConfig, {
 } from 'af-webpack/getUserConfig';
 import { unwatch } from './getConfig/watch';
 import getPaths from './getPaths';
+import resolvePlugin from './resolvePlugin';
 
 const debug = require('debug')('umi-build-dev:dev');
 
@@ -83,7 +83,9 @@ export default function runDev(opts) {
   }
 
   const configPlugins = (config.plugins || []).map(p => {
-    return resolvePath(p);
+    return resolvePlugin(p, {
+      cwd,
+    });
   });
   registerBabel(babel, {
     only: [new RegExp(`(${configPlugins.join('|')})`)],

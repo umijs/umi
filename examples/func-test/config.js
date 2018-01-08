@@ -1,3 +1,3 @@
 export default {
-  plugins: ['./plugin.js'],
+  plugins: ['./plugin', 'a'],
 };
