@@ -110,7 +110,6 @@ export default function(opts = {}) {
     theme: { ...webpackRCConfig.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
     extraBabelIncludes: [
       ...(webpackRCConfig.extraBabelIncludes || []),
-      'node_modules/af-webpack/lib',
       'node_modules/umi-build-dev',
     ],
     extraResolveModules: [

@@ -187,6 +187,11 @@ export default function getConfig(opts = {}) {
   const jsHash = !isDev && opts.hash ? '.[chunkhash:8]' : '';
   const cssHash = !isDev && opts.hash ? '.[contenthash:8]' : '';
 
+  const extraBabelIncludes = [
+    ...(opts.extraBabelIncludes || []),
+    'node_modules/af-webpack/lib',
+  ];
+
   const babelOptions = {
     ...(opts.babel || babelConfig),
     // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
@@ -358,15 +363,13 @@ export default function getConfig(opts = {}) {
             },
           ],
         },
-        ...(opts.extraBabelIncludes
-          ? opts.extraBabelIncludes.map(include => {
-              return {
-                test: /\.(js|jsx)$/,
-                include: join(opts.cwd, include),
-                use: babelUse,
-              };
-            })
-          : []),
+        ...extraBabelIncludes.map(include => {
+          return {
+            test: /\.(js|jsx)$/,
+            include: join(opts.cwd, include),
+            use: babelUse,
+          };
+        }),
         {
           test: /\.html$/,
           loader: require.resolve('file-loader'),
