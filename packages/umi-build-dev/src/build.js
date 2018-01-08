@@ -1,8 +1,8 @@
-import { join } from 'path';
+import { join, resolve as resolvePath } from 'path';
 import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
-import registerBabel from './registerBabel';
+import registerBabel, { registerBabelForConfig } from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import generateHTML from './generateHTML';
 import generateEntry from './generateEntry';
@@ -24,10 +24,9 @@ export default function(opts = {}) {
     staticDirectory = 'static',
     tmpDirectory = `.${libraryName}`,
     outputPath = './dist',
-    plugins: pluginFiles,
+    plugins: pluginsFromOpts,
     preact,
   } = opts;
-  const plugins = resolvePlugins(pluginFiles);
   const paths = getPaths({ cwd, tmpDirectory, outputPath });
 
   function getChunkToFilesMap(chunks) {
@@ -39,9 +38,7 @@ export default function(opts = {}) {
 
   return new Promise(resolve => {
     // 为配置注册 babel 解析
-    registerBabel(babel, {
-      configOnly: true,
-    });
+    registerBabelForConfig(babel);
 
     // 获取 .webpackrc 配置
     const { config: webpackRCConfig } = getWebpackRCConfig({
@@ -51,6 +48,16 @@ export default function(opts = {}) {
 
     // 获取用户配置
     const { config } = getConfig(cwd);
+    const configPlugins = (config.plugins || []).map(p => {
+      return resolvePath(p);
+    });
+    registerBabel(babel, {
+      only: [new RegExp(`(${configPlugins.join('|')})`)],
+    });
+    const plugins = resolvePlugins([
+      ...configPlugins,
+      ...(pluginsFromOpts || []),
+    ]);
 
     debug(`清理临时文件夹 ${paths.tmpDirPath}`);
     rimraf(paths.absTmpDirPath);

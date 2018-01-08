@@ -1,7 +1,8 @@
 import dev from 'af-webpack/dev';
 import chalk from 'chalk';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
-import registerBabel from './registerBabel';
+import { resolve as resolvePath } from 'path';
+import registerBabel, { registerBabelForConfig } from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateEntry, { watchPages } from './generateEntry';
@@ -25,15 +26,14 @@ export default function runDev(opts) {
     staticDirectory = 'static',
     tmpDirectory = `.${libraryName}`,
     outputPath = './dist',
-    plugins: pluginFiles,
+    plugins: pluginsFromOpts,
     preact,
     extraMiddlewares = [], // TODO: move to plugins
   } = opts;
-  const plugins = resolvePlugins(pluginFiles);
   const paths = getPaths({ cwd, tmpDirectory, outputPath });
 
   // 为配置注册 babel 解析
-  registerBabel(babel, {
+  registerBabelForConfig(babel, {
     configOnly: true,
   });
 
@@ -81,6 +81,17 @@ export default function runDev(opts) {
     });
     return;
   }
+
+  const configPlugins = (config.plugins || []).map(p => {
+    return resolvePath(p);
+  });
+  registerBabel(babel, {
+    only: [new RegExp(`(${configPlugins.join('|')})`)],
+  });
+  const plugins = resolvePlugins([
+    ...configPlugins,
+    ...(pluginsFromOpts || []),
+  ]);
 
   // 生成入口文件
   let watchEntry = null;
