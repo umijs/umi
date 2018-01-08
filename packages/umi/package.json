@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "1.0.0-beta.26",
+  "version": "1.0.0-beta.27",
   "description": "A neat framework for building highly performance and cross-platform optimized web apps.",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.31",
@@ -14,7 +14,7 @@
     "fastclick": "^1.0.6",
     "history": "^4.7.2",
     "query-string": "^5.0.0",
-    "umi-build-dev": "^0.5.15",
+    "umi-build-dev": "^0.5.16",
     "umi-router": "^0.1.2",
     "umi-test": "^0.2.2",
     "update-notifier": "^2.3.0",
