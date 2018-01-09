@@ -155,6 +155,7 @@ export function getHTMLContent(opts = {}) {
 `;
   configScript = applyPlugins(plugins, 'getConfigScript', configScript, {
     entry,
+    staticDirectory,
   });
 
   // 生成 tailBodyReplace
