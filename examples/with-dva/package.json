@@ -4,6 +4,6 @@
     "build": "umi build"
   },
   "dependencies": {
-    "dva-no-router": "^1.0.3"
+    "dva-no-router": "^1.1.0-0"
   }
 }
