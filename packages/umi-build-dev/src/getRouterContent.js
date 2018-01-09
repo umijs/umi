@@ -34,7 +34,7 @@ function getRouteComponents(routeConfig, config = {}, paths) {
   const { loading } = config;
   let loadingOpts = '';
   if (loading) {
-    loadingOpts = `loading: require('${join(paths.cwd, loading)}').default,`;
+    loadingOpts = `, loading: require('${join(paths.cwd, loading)}').default,`;
   }
 
   const routerComponents = Object.keys(routeConfig).map(key => {
@@ -46,9 +46,13 @@ function getRouteComponents(routeConfig, config = {}, paths) {
         : '() => <div>Compiling...</div>';
       return `    <Route exact path="${key}" component={${component}}></Route>`;
     } else {
-      return `    <Route exact path="${key}" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
+      return `    <Route exact path="${
+        key
+      }" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
         routeConfig[key],
-      )}' */'${pageJSFile}'), { callback: (err) => callback('${key}', err), ${loadingOpts} }) }></Route>`;
+      )}' */'${pageJSFile}'), { callback: (err) => callback('${key}', err)${
+        loadingOpts
+      } }) }></Route>`;
     }
   });
 
