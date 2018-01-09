@@ -30,7 +30,7 @@ export default function(baseFontSize, fontscale) {
       ',maximum-scale=' +
       scale +
       ',minimum-scale=' +
-      scale,
+      scale
   );
   doc.documentElement.style.fontSize =
     _baseFontSize / 2 * dpr * _fontscale + 'px';

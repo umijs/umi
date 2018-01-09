@@ -49,7 +49,7 @@ export default function(baseFontSize, psdWidth) {
       ',maximum-scale=' +
       scale +
       ',minimum-scale=' +
-      scale,
+      scale
   );
 
   // width/750*100, 为了统一rem为0.01rem = 1px
