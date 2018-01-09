@@ -72,7 +72,7 @@
     "url": "https://github.com/umijs/umi/issues"
   },
   "scripts": {
-    "build": "NODE_TARGET=1 ruban build",
+    "build": "ruban build",
     "test": "ruban test --timeout 200000",
     "debug": "ruban debug --timeout 200000",
     "coveralls": "ruban coveralls"

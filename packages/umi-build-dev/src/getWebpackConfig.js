@@ -108,10 +108,6 @@ export default function(opts = {}) {
     },
     browserslist,
     theme: { ...webpackRCConfig.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
-    extraBabelIncludes: [
-      ...(webpackRCConfig.extraBabelIncludes || []),
-      'node_modules/umi-build-dev',
-    ],
     extraResolveModules: [
       ...(webpackRCConfig.extraResolveModules || []),
       ...(extraResolveModules || []),
