@@ -61,6 +61,7 @@ function buildWebpack(opts = {}) {
   }
 
   function doneHandler(err, stats) {
+    debug('build done');
     if (err) {
       return errorHandler(err);
     }

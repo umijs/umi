@@ -177,7 +177,8 @@ export default function getConfig(opts = {}) {
       new CopyWebpackPlugin([
         {
           from: resolve(opts.cwd, 'public'),
-          to: resolve(opts.cwd, outputPath),
+          to: outputPath,
+          toType: 'dir',
         },
       ]),
     );
