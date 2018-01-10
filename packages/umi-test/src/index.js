@@ -38,9 +38,9 @@ export default function(opts = {}) {
     ...(coverage
       ? {
           collectCoverageFrom: [
-            'pages/**/*.{ts,tsx,js,jsx}',
-            'src/pages/**/*.{ts,tsx,js,jsx}',
-            'src/page/**/*.{ts,tsx,js,jsx}',
+            'pages/**/*.{ts,tsx,js,jsx',
+            'src/**/*.{ts,tsx,js,jsx}',
+            '!**/*.d.ts',
           ],
           collectCoverage: true,
           coveragePathIgnorePatterns: [
@@ -56,6 +56,7 @@ export default function(opts = {}) {
       .runCLI(
         {
           watch,
+          testPathPattern: process.argv.slice(2).filter(arg => !arg.startsWith('-')),
           config: JSON.stringify(config),
         },
         [cwd],
