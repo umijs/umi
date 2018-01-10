@@ -32,7 +32,7 @@ export default function(context, opts = {}) {
         {
           alias: {
             fastclick: require.resolve('fastclick'),
-            'react-router': require.resolve('react-router'),
+            'react-router-dom': require.resolve('react-router-dom'),
             'history/createBrowserHistory': require.resolve(
               'history/createBrowserHistory',
             ),
