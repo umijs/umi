@@ -73,6 +73,8 @@ export default function(opts = {}) {
   const libAlias = {
     'antd-mobile': dirname(require.resolve('antd-mobile/package')),
     antd: dirname(require.resolve('antd/package')),
+    'react-router': dirname(require.resolve('react-router/package')),
+    'react-router-dom': dirname(require.resolve('react-router-dom/package')),
   };
   // 支持用户指定 antd 和 antd-mobile 的版本
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install

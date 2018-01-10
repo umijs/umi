@@ -1,5 +1,6 @@
 import { readFileSync as readFile, existsSync as exists } from 'fs';
 import { join } from 'path';
+import { applyPlugins } from 'umi-plugin';
 import normalizeEntry from './normalizeEntry';
 import winPath from './winPath';
 import { getRequest } from './requestCache';
@@ -14,14 +15,21 @@ export default function getRouterContent(opts = {}) {
     libraryName,
     config,
     paths,
+    plugins,
   } = opts;
 
   if (!exists(tplPath)) {
     throw new Error('tplPath 不存在');
   }
-  const tpl = readFile(tplPath, 'utf-8');
+  let tpl = readFile(tplPath, 'utf-8');
   const routeComponents = getRouteComponents(routeConfig, config, paths);
+
+  tpl = applyPlugins(plugins, 'preBuildRouterContent', tpl, {
+    routeConfig,
+  });
+
   return tpl
+    .replace(/<%= codeForPlugin %>/g, '')
     .replace(/<%= routeComponents %>/g, routeComponents)
     .replace(/<%= libraryName %>/g, libraryName);
 }
