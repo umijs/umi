@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import px2rem from 'postcss-plugin-px2rem';
+import { applyPlugins } from 'umi-plugin';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
@@ -11,6 +12,7 @@ const env = process.env.NODE_ENV;
 export default function(opts = {}) {
   const {
     cwd,
+    plugins,
     config,
     webpackRCConfig,
     babel,
@@ -73,7 +75,6 @@ export default function(opts = {}) {
   const libAlias = {
     'antd-mobile': dirname(require.resolve('antd-mobile/package')),
     antd: dirname(require.resolve('antd/package')),
-    'react-router': dirname(require.resolve('react-router/package')),
     'react-router-dom': dirname(require.resolve('react-router-dom/package')),
   };
   // 支持用户指定 antd 和 antd-mobile 的版本
@@ -95,7 +96,7 @@ export default function(opts = {}) {
 
   const browserslist = webpackRCConfig.browserslist || defaultBrowsers;
 
-  return getConfig({
+  let webpackConfig = getConfig({
     cwd,
     ...webpackRCConfig,
 
@@ -156,4 +157,7 @@ export default function(opts = {}) {
           ],
         }),
   });
+
+  webpackConfig = applyPlugins(plugins, 'updateWebpackConfig', webpackConfig);
+  return webpackConfig;
 }

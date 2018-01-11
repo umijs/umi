@@ -129,7 +129,6 @@ export function getHTMLContent(opts = {}) {
     staticDirectory,
     libraryName,
     paths,
-    config,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 

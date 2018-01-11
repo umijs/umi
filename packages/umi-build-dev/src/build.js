@@ -82,6 +82,7 @@ export default function(opts = {}) {
     // 获取 webpack 配置
     const webpackConfig = getWebpackConfig({
       cwd,
+      plugins,
       config,
       webpackRCConfig,
       babel,

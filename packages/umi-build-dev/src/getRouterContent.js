@@ -25,7 +25,7 @@ export default function getRouterContent(opts = {}) {
   const routeComponents = getRouteComponents(routeConfig, config, paths);
 
   tpl = applyPlugins(plugins, 'preBuildRouterContent', tpl, {
-    routeConfig,
+    config,
   });
 
   return tpl
