@@ -76,6 +76,7 @@ export default function(opts = {}) {
     'antd-mobile': dirname(require.resolve('antd-mobile/package')),
     antd: dirname(require.resolve('antd/package')),
     'react-router-dom': dirname(require.resolve('react-router-dom/package')),
+    history: dirname(require.resolve('umi-history')),
   };
   // 支持用户指定 antd 和 antd-mobile 的版本
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install

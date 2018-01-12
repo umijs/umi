@@ -22,6 +22,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
+    "umi-history": "^0.1.0",
     "requireindex": "^1.1.0",
     "resolve": "^1.5.0",
     "rimraf": "^2.6.1",
