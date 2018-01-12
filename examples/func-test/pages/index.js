@@ -1,6 +1,11 @@
 import { Button } from 'antd-mobile';
 import Link from 'umi/link';
+import event, { Events } from 'umi/event';
 import styles from './index.less';
+
+event.addEventListener(Events.PAGE_INITIALIZED, () => {
+  console.log('mounted');
+});
 
 export default function() {
   return (

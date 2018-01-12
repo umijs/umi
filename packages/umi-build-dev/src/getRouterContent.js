@@ -50,7 +50,7 @@ function getRouteComponents(routeConfig, config = {}, paths) {
     debug(`${JSON.stringify(getRequest())}, key`);
     if (isDev && !process.env.DISABLE_COMPILE_ON_DEMAND) {
       const component = getRequest()[key]
-        ? `require('${pageJSFile}').default`
+        ? `hoc(require('${pageJSFile}').default)`
         : '() => <div>Compiling...</div>';
       return `    <Route exact path="${key}" component={${component}}></Route>`;
     } else {
@@ -58,9 +58,7 @@ function getRouteComponents(routeConfig, config = {}, paths) {
         key
       }" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
         routeConfig[key],
-      )}' */'${pageJSFile}'), { callback: (err) => callback('${key}', err)${
-        loadingOpts
-      } }) }></Route>`;
+      )}' */'${pageJSFile}'), { hoc${loadingOpts} }) }></Route>`;
     }
   });
 

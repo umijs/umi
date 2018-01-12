@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 
 export default function(resolve, opts = {}) {
-  const {
-    loading: LoadingComponent = () => null,
-    callback = () => null,
-  } = opts;
+  const { loading: LoadingComponent = () => null, hoc = C => C } = opts;
 
   return class DynamicComponent extends Component {
     constructor(...args) {
@@ -29,24 +26,23 @@ export default function(resolve, opts = {}) {
         .then(m => {
           const AsyncComponent = m.default || m;
           if (this.mounted) {
-            this.setState({ AsyncComponent }, () => {
-              callback();
-            });
+            this.setState({ AsyncComponent });
           } else {
             this.state.AsyncComponent = AsyncComponent; // eslint-disable-line
           }
         })
-        .catch(err => {
-          callback(err);
-        });
+        .catch(err => {});
     }
 
     render() {
-      const { AsyncComponent } = this.state;
-      const { LoadingComponent } = this;
-      if (AsyncComponent) return <AsyncComponent {...this.props} />;
+      const { LoadingComponent, state: { AsyncComponent } } = this;
 
-      return <LoadingComponent {...this.props} />;
+      if (AsyncComponent) {
+        const Component = hoc(AsyncComponent);
+        return <Component {...this.props} />;
+      } else {
+        return <LoadingComponent {...this.props} />;
+      }
     }
   };
 }
