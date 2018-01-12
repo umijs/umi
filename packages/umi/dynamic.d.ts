@@ -1,7 +1,7 @@
 declare const dynamic: (resolve: (value?: PromiseLike<any>) => void, opts?: {
   /** LoadingComponent */
   loading?: Function,
-  /** The callback of load script */
-  callback?: (err?: Error) => void,
+  /** The hoc for resolved component */
+  hoc?: Function,
 }) => void;
 export default dynamic;
