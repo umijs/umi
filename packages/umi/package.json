@@ -12,7 +12,6 @@
     "cross-spawn": "^5.1.0",
     "ejs": "^2.5.7",
     "fastclick": "^1.0.6",
-    "history": "^4.7.2",
     "query-string": "^5.0.0",
     "umi-build-dev": "^0.6.0",
     "umi-test": "^0.3.0",

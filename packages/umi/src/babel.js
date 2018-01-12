@@ -32,13 +32,13 @@ export default function(context, opts = {}) {
         {
           alias: {
             fastclick: require.resolve('fastclick'),
-            'history/createBrowserHistory': require.resolve(
-              'history/createBrowserHistory',
-            ),
             [`${libraryName}/dynamic`]: require.resolve('./dynamic'),
             [`${libraryName}/link`]: require.resolve('./link'),
             [`${libraryName}/router`]: require.resolve('./router'),
             [`${libraryName}/event`]: require.resolve('./event'),
+            [`${libraryName}/_createHistory`]: require.resolve(
+              './createHistory',
+            ),
           },
         },
       ],

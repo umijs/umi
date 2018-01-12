@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'umi/_createHistory';
 import FastClick from 'fastclick';
 
 // create history
