@@ -1,6 +1,6 @@
 import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
 import dynamic from '<%= libraryName %>/dynamic';
-import { default as event, Events } from '<%= libraryName %>/event';
+import { default as event, Events } from '<%= libraryName %>/_event';
 <%= codeForPlugin %>
 
 const Router = window.g_CustomRouter || DefaultRouter;
