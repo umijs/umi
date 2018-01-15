@@ -16,6 +16,6 @@ export function normalizePath(path) {
   }
   return {
     ...path,
-    pathname: addHtmlAffix(pathname),
+    pathname: addHtmlAffix(path.pathname),
   };
 }
