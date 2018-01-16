@@ -12,6 +12,7 @@ const debug = require('debug')('umi-build-dev:generateEntry');
 
 let cachedRouterContent = null;
 let libraryJSGenerated = false;
+let swJSGenerated = false;
 
 export default function generateEntry(opts = {}) {
   const { cwd, onChange, paths } = opts;
@@ -105,6 +106,16 @@ function generate(opts = {}) {
       'utf-8',
     );
     libraryJSGenerated = true;
+  }
+
+  // service worker js 不会变化，生成一次即可
+  if (!swJSGenerated) {
+    writeFileSync(
+      join(absTmpDirPath, `registerServiceWorker.js`),
+      readFileSync(join(__dirname, '../template/registerServiceWorker.js')),
+      'utf-8',
+    );
+    swJSGenerated = true;
   }
 
   return {

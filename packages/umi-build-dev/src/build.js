@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { existsSync, renameSync } from 'fs';
 import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
 import { resolvePlugins, applyPlugins } from 'umi-plugin';
@@ -120,6 +121,19 @@ export default function(opts = {}) {
           paths,
         });
         debug('打包 HTML 完成...');
+
+        debug('移动 service-worker.js 和 asset-manifest.json...');
+        if (
+          existsSync(
+            join(paths.absOutputPath, staticDirectory, 'service-worker.js'),
+          )
+        ) {
+          renameSync(
+            join(paths.absOutputPath, staticDirectory, 'service-worker.js'),
+            join(paths.absOutputPath, 'service-worker.js'),
+          );
+        }
+        debug('移动 service-worker.js 和 asset-manifest.json 完成...');
 
         applyPlugins(plugins, 'buildSuccess', null, {
           routeConfig,

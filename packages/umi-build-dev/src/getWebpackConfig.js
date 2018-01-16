@@ -156,6 +156,7 @@ export default function(opts = {}) {
               },
             },
           ],
+          serviceWorker: {},
         }),
   });
 
