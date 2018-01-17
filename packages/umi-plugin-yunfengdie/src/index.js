@@ -44,6 +44,6 @@ export function buildSuccess(memo, opts = {}) {
 export function updateWebpackConfig(memo) {
   if (isFDRender) {
     memo.output.publicPath = '{{ publicPath }}';
-    return memo;
   }
+  return memo;
 }

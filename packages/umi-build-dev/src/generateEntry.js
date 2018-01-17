@@ -100,16 +100,27 @@ function generate(opts = {}) {
 
   // library js 不会变化，生成一次即可
   if (process.env.DISABLE_UMIJS_G_CACHE || !libraryJSGenerated) {
+    let entryContent = readFileSync(
+      opts.entryJSTpl || join(__dirname, '../template/entry.js'),
+    );
+    if (!config.disableServiceWorker) {
+      entryContent = `${entryContent}
+// Enable service worker
+if (process.env.NODE_ENV === 'production') {
+  require('./registerServiceWorker');
+}
+      `;
+    }
     writeFileSync(
       join(absTmpDirPath, `${libraryName}.js`),
-      readFileSync(opts.entryJSTpl || join(__dirname, '../template/entry.js')),
+      entryContent,
       'utf-8',
     );
     libraryJSGenerated = true;
   }
 
   // service worker js 不会变化，生成一次即可
-  if (!swJSGenerated) {
+  if (!config.disableServiceWorker && !swJSGenerated) {
     writeFileSync(
       join(absTmpDirPath, `registerServiceWorker.js`),
       readFileSync(join(__dirname, '../template/registerServiceWorker.js')),

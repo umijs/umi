@@ -23,11 +23,6 @@ function render() {
 }
 render();
 
-// service worker
-if (process.env.NODE_ENV === 'production') {
-  require('./registerServiceWorker');
-}
-
 // hot module replacement
 if (module.hot) {
   module.hot.accept('./router', () => {

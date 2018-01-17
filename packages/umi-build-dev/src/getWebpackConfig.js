@@ -157,7 +157,13 @@ export default function(opts = {}) {
               },
             },
           ],
-          serviceWorker: {},
+          ...(config.disableServiceWorker
+            ? {}
+            : {
+                serviceWorker: {
+                  ...(webpackRCConfig.serviceWorker || {}),
+                },
+              }),
         }),
   });
 
