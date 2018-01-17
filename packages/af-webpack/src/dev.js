@@ -64,6 +64,9 @@ export default function dev({
         clientLogLevel: 'none',
         hot: true,
         quiet: true,
+        headers: {
+          'access-control-allow-origin': '*',
+        },
         publicPath: webpackConfig.output.publicPath,
         watchOptions: {
           ignored: /node_modules/,
