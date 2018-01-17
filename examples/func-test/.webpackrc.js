@@ -7,4 +7,8 @@ export default {
   manifest: {
     basePath: '/app/',
   },
+  // ./static by default
+  // publicPath: './static/',
+  // publicPath: '/dist/static/',
+  // publicPath: 'http://localhost:8888/dist/static/',
 };

@@ -180,6 +180,7 @@ export default function runDev(opts) {
             rebuildEntry(webpackDevServer);
           }
         },
+        webpackConfig,
       ),
       ...extraMiddlewares,
     ],

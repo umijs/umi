@@ -5,4 +5,5 @@ export default {
     '/list.html': { spmb: 'b3333333333333' },
   },
   plugins: ['./plugin', 'umi-plugin-yunfengdie'],
+  // disableServiceWorker: true,
 };

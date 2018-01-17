@@ -23,25 +23,6 @@ export function getConfigScript(memo, opts = {}) {
   return memo;
 }
 
-export function getTailBodyReplace(memo, opts = {}) {
-  const { cssFiles, jsFiles, configScript } = opts;
-
-  if (isFDRender) {
-    const css = cssFiles
-      .map(file => `<link rel="stylesheet" href="{{ publicPath }}${file}" />`)
-      .join('\r\n');
-    const js = jsFiles
-      .map(file => `<script src="{{ publicPath }}${file}"></script>`)
-      .join('\r\n');
-    memo = `
-${css.trim()}
-${configScript.trim()}
-${js.trim()}
-</body>`.trim();
-  }
-  return memo;
-}
-
 export function generateHTML(memo, opts = {}) {
   const { route } = opts;
 
@@ -58,4 +39,11 @@ export function buildSuccess(memo, opts = {}) {
     generateRenderConfig(opts);
     debug('generate render config complete');
   }
+}
+
+export function updateWebpackConfig(memo) {
+  if (isFDRender) {
+    memo.output.publicPath = '{{ publicPath }}';
+  }
+  return memo;
 }

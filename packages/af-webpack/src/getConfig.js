@@ -4,6 +4,7 @@ import SystemBellWebpackPlugin from 'system-bell-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
+import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import { dirname, resolve, join } from 'path';
 import { existsSync } from 'fs';
@@ -414,6 +415,19 @@ export default function getConfig(opts = {}) {
               filename: `[name]${cssHash}.css`,
               allChunks: true,
             }),
+            ...(opts.serviceWorker
+              ? [
+                  new SWPrecacheWebpackPlugin({
+                    filename: 'service-worker.js',
+                    minify: false,
+                    staticFileGlobsIgnorePatterns: [
+                      /\.map$/,
+                      /asset-manifest\.json$/,
+                    ],
+                    ...opts.serviceWorker,
+                  }),
+                ]
+              : []),
             ...(opts.manifest
               ? [
                   new ManifestPlugin({

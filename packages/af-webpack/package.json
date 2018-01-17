@@ -50,6 +50,7 @@
     "strip-ansi": "3.0.1",
     "strip-json-comments": "^2.0.1",
     "style-loader": "^0.18.2",
+    "sw-precache-webpack-plugin": "^0.11.4",
     "system-bell-webpack-plugin": "^1.0.0",
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
