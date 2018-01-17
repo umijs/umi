@@ -124,7 +124,7 @@ function stripFirstSlash(str) {
 }
 
 function makeSureHaveLastSlash(str) {
-  if (str.slice(-1) === '/') {
+  if (str === '{{ publicPath }}' || str.slice(-1) === '/') {
     return str;
   } else {
     return `${str}/`;
@@ -164,6 +164,7 @@ export function getHTMLContent(opts = {}) {
   publicPath = makeSureHaveLastSlash(publicPath);
   let resourceBaseUrl = `'${publicPath}'`;
   let pathToScript = publicPath;
+  debug(`publicPath: ${publicPath}`);
   if (
     !(
       publicPath.charAt(0) === '/' ||
