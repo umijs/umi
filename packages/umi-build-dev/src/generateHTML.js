@@ -19,6 +19,7 @@ export default function generateHTML(opts = {}) {
     staticDirectory,
     libraryName,
     paths,
+    webpackConfig,
   } = opts;
 
   const routes = Object.keys(routeConfig);
@@ -37,6 +38,7 @@ export default function generateHTML(opts = {}) {
       libraryName,
       paths,
       config,
+      webpackConfig,
     });
 
     mkdirp(dirname(outputFilePath));
@@ -117,6 +119,18 @@ function getEntry(entry) {
   }
 }
 
+function stripFirstSlash(str) {
+  return str.replace(/^\//, '');
+}
+
+function makeSureHaveLastSlash(str) {
+  if (str.slice(-1) === '/') {
+    return str;
+  } else {
+    return `${str}/`;
+  }
+}
+
 export function getHTMLContent(opts = {}) {
   const {
     route,
@@ -129,6 +143,7 @@ export function getHTMLContent(opts = {}) {
     staticDirectory,
     libraryName,
     paths,
+    webpackConfig,
   } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 
@@ -140,10 +155,31 @@ export function getHTMLContent(opts = {}) {
     localsName: 'context',
   });
 
+  // 生成 tailBodyReplace
+  let relPath = new Array(route.slice(1).split(sep).length).join('../');
+  relPath = relPath === '' ? './' : relPath;
+
+  // set publicPath
+  let publicPath = webpackConfig.output.publicPath;
+  publicPath = makeSureHaveLastSlash(publicPath);
+  let resourceBaseUrl = `'${publicPath}'`;
+  let pathToScript = publicPath;
+  if (
+    !(
+      publicPath.charAt(0) === '/' ||
+      publicPath.indexOf('http://') === 0 ||
+      publicPath.indexOf('https://') === 0 ||
+      /* 变量 */ publicPath === '{{ publicPath }}'
+    )
+  ) {
+    // 相对路径时需和 routerBase 匹配使用，否则子文件夹路由会出错
+    resourceBaseUrl = `location.origin + window.routerBase + '${stripFirstSlash(
+      publicPath,
+    )}'`;
+    pathToScript = `${relPath}${publicPath}`;
+  }
+
   // 获取 configScript
-  const resourceBaseUrl = `location.origin + window.routerBase + '${
-    staticDirectory
-  }/'`;
   let configScript = `
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -${
@@ -157,12 +193,8 @@ export function getHTMLContent(opts = {}) {
     staticDirectory,
   });
 
-  // 生成 tailBodyReplace
-  let relPath = new Array(route.slice(1).split(sep).length).join('../');
-  relPath = relPath === '' ? './' : relPath;
-
   function getAssetsPath(file) {
-    return `${relPath}${staticDirectory}/${file}`;
+    return `${pathToScript}${stripFirstSlash(file)}`;
   }
 
   const getFilesOpts = {

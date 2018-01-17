@@ -13,6 +13,7 @@ export default function createRouteMiddleware(
   libraryName,
   paths,
   rebuildEntry,
+  webpackConfig,
 ) {
   config = _config;
   const { absPagesPath } = paths;
@@ -35,6 +36,7 @@ export default function createRouteMiddleware(
         libraryName,
         paths,
         config,
+        webpackConfig,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

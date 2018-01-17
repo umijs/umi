@@ -119,6 +119,7 @@ export default function(opts = {}) {
           staticDirectory,
           libraryName,
           paths,
+          webpackConfig,
         });
         debug('打包 HTML 完成...');
 

@@ -141,9 +141,10 @@ export default function(opts = {}) {
       ? {
           // 生产环境的 publicPath 是服务端把 assets 发布到 cdn 后配到 HTML 里的
           // 开发环境的 publicPath 写死 /static/
-          publicPath: webpackRCConfig.publicPath || `/${staticDirectory}/`,
+          publicPath: `/`,
         }
       : {
+          publicPath: webpackRCConfig.publicPath || `./${staticDirectory}/`,
           commons: webpackRCConfig.commons || [
             {
               async: '__common',
