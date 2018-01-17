@@ -109,6 +109,26 @@ export function getConfig(cwd, opts = {}) {
       });
     }
 
+    // pages 配置补丁
+    // /index -> /index.html
+    // index -> /index.html
+    if (config.pages) {
+      config.pages = Object.keys(config.pages).reduce((memo, key) => {
+        let newKey = key;
+        if (newKey === '/') {
+          newKey = '/index.html';
+        }
+        if (newKey.slice(-5) !== '.html') {
+          newKey = `${newKey}.html`;
+        }
+        if (newKey.charAt(0) !== '/') {
+          newKey = `/${newKey}`;
+        }
+        memo[newKey] = config.pages[key];
+        return memo;
+      }, {});
+    }
+
     // 校验
     for (const plugin of plugins) {
       const { name } = plugin;
