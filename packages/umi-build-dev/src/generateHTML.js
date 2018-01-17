@@ -195,7 +195,7 @@ export function getHTMLContent(opts = {}) {
   });
 
   function getAssetsPath(file) {
-    return `${pathToScript}${stripFirstSlash(file)}`;
+    return `${pathToScript}${stripFirstSlash(file)}`.replace(/^\.\/\.\//, './');
   }
 
   const getFilesOpts = {
