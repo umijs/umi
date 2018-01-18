@@ -11,7 +11,7 @@ import { setConfig } from '../createRouteMiddleware';
 
 const pluginsMap = requireindex(join(__dirname, './configPlugins'));
 const plugins = Object.keys(pluginsMap).map(key => {
-  return pluginsMap[key]();
+  return pluginsMap[key].default();
 });
 let devServer = null;
 
@@ -168,9 +168,7 @@ export function getConfig(cwd, opts = {}) {
         )}" 中的一项，详见 https://fengdie.alipay-eco.com/doc/h5app/configuration`;
         const guess = didyoumean(key, pluginNames);
         const midMsg = guess ? `你是不是想配置 "${guess}" ？ 或者` : '请';
-        const msg = `"${relativeFile}" 中配置的 "${key}" 并非约定的配置项，${
-          midMsg
-        }${affixmsg}`;
+        const msg = `"${relativeFile}" 中配置的 "${key}" 并非约定的配置项，${midMsg}${affixmsg}`;
         printError(msg);
         throw new Error(msg);
       }

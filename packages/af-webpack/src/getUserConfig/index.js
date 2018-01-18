@@ -14,7 +14,7 @@ const debug = require('debug')('af-webpack:getUserConfig');
 
 const pluginsMap = requireindex(join(__dirname, './configs'));
 const plugins = Object.keys(pluginsMap).map(key => {
-  return pluginsMap[key]();
+  return pluginsMap[key].default();
 });
 const pluginNames = plugins.map(p => p.name);
 const pluginsMapByName = plugins.reduce((memo, p) => {
@@ -89,9 +89,7 @@ export default function getUserConfig(opts = {}) {
 
   assert(
     !(existsSync(rcFile) && existsSync(jsRCFile)),
-    `${configFile} file and ${
-      configFile
-    }.js file can not exist at the same time.`,
+    `${configFile} file and ${configFile}.js file can not exist at the same time.`,
   );
 
   let config = {};
