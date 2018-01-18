@@ -18,6 +18,7 @@ export default function(context, opts = {}) {
           libraryDirectory: 'es',
           style: true,
         },
+        'antd',
       ],
       [
         require.resolve('babel-plugin-import'),
@@ -26,6 +27,7 @@ export default function(context, opts = {}) {
           libraryDirectory: 'es',
           style: true,
         },
+        'antd-mobile',
       ],
       [
         require.resolve('babel-plugin-module-resolver'),

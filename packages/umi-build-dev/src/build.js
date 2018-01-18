@@ -40,7 +40,9 @@ export default function(opts = {}) {
 
   return new Promise(resolve => {
     // 为配置注册 babel 解析
-    registerBabelForConfig(babel);
+    registerBabelForConfig(babel, {
+      paths,
+    });
 
     // 获取 .webpackrc 配置
     const { config: webpackRCConfig } = getWebpackRCConfig({

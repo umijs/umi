@@ -7,7 +7,7 @@ export default function(opts = {}) {
   debug(`opts: ${JSON.stringify(opts)}`);
   delete opts.extraResolveModules;
 
-  return require('umi-build-dev/lib/build')({
+  return require('umi-build-dev/lib/build').default({
     babel: resolve(__dirname, './babel'),
     extraResolveModules: [
       ...(extraResolveModules || []),

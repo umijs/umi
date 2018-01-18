@@ -5,6 +5,9 @@ export default {
     'list.html': { spmb: 'b3333333333333', context: { title: '列表页' } },
     '/dynamic': { spmb: 'b3333333333333', context: { title: '动态页' } },
   },
-  plugins: ['./plugin', 'umi-plugin-yunfengdie'],
+  plugins: [
+    './plugin',
+    // 'umi-plugin-yunfengdie',
+  ],
   // disableServiceWorker: true,
 };

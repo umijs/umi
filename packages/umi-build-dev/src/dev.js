@@ -34,7 +34,7 @@ export default function runDev(opts) {
 
   // 为配置注册 babel 解析
   registerBabelForConfig(babel, {
-    configOnly: true,
+    paths,
   });
 
   // 获取 .webpackrc 配置
