@@ -52,7 +52,10 @@ export default function(opts = {}) {
 
     // 获取用户配置
     const { config } = getConfig(cwd);
-    const configPlugins = (config.plugins || []).map(p => {
+    const configPlugins = [
+      ...(config.plugins || []),
+      ...(pluginsFromOpts || []),
+    ].map(p => {
       return resolvePlugin(p, { cwd });
     });
     if (configPlugins.length) {
@@ -60,10 +63,7 @@ export default function(opts = {}) {
         only: [new RegExp(`(${configPlugins.join('|')})`)],
       });
     }
-    const plugins = resolvePlugins([
-      ...configPlugins,
-      ...(pluginsFromOpts || []),
-    ]);
+    const plugins = resolvePlugins(configPlugins);
 
     debug(`清理临时文件夹 ${paths.tmpDirPath}`);
     rimraf(paths.absTmpDirPath);

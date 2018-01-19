@@ -82,7 +82,10 @@ export default function runDev(opts) {
     return;
   }
 
-  const configPlugins = (config.plugins || []).map(p => {
+  const configPlugins = [
+    ...(config.plugins || []),
+    ...(pluginsFromOpts || []),
+  ].map(p => {
     return resolvePlugin(p, {
       cwd,
     });
@@ -92,10 +95,7 @@ export default function runDev(opts) {
       only: [new RegExp(`(${configPlugins.join('|')})`)],
     });
   }
-  const plugins = resolvePlugins([
-    ...configPlugins,
-    ...(pluginsFromOpts || []),
-  ]);
+  const plugins = resolvePlugins(configPlugins);
 
   // 生成入口文件
   let watchEntry = null;

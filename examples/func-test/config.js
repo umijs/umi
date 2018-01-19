@@ -6,7 +6,7 @@ export default {
     '/dynamic': { spmb: 'b3333333333333', context: { title: '动态页' } },
   },
   plugins: [
-    './plugin',
+    './plugin1',
     // 'umi-plugin-yunfengdie',
   ],
   // disableServiceWorker: true,
