@@ -7,6 +7,6 @@ const argv = yParser(process.argv.slice(2));
 build({
   plugins: argv.plugins ? argv.plugins.split(',') : [],
 }).catch(e => {
-  console.error(chalk.red('构建出错'));
+  console.error(chalk.red(`Build failed: ${e.message}`));
   console.log(e);
 });

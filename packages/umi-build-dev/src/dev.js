@@ -1,7 +1,6 @@
 import dev from 'af-webpack/dev';
 import chalk from 'chalk';
-import { resolvePlugins, applyPlugins } from 'umi-plugin';
-import registerBabel, { registerBabelForConfig } from './registerBabel';
+import { registerBabelForConfig } from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateEntry, { watchPages } from './generateEntry';
@@ -13,7 +12,7 @@ import getWebpackRCConfig, {
 } from 'af-webpack/getUserConfig';
 import { unwatch } from './getConfig/watch';
 import getPaths from './getPaths';
-import resolvePlugin from './resolvePlugin';
+import getPlugins from './getPlugins';
 
 const debug = require('debug')('umi-build-dev:dev');
 
@@ -82,20 +81,12 @@ export default function runDev(opts) {
     return;
   }
 
-  const configPlugins = [
-    ...(config.plugins || []),
-    ...(pluginsFromOpts || []),
-  ].map(p => {
-    return resolvePlugin(p, {
-      cwd,
-    });
+  const plugins = getPlugins({
+    configPlugins: config.plugins,
+    pluginsFromOpts,
+    cwd,
+    babel,
   });
-  if (configPlugins.length) {
-    registerBabel(babel, {
-      only: [new RegExp(`(${configPlugins.join('|')})`)],
-    });
-  }
-  const plugins = resolvePlugins(configPlugins);
 
   // 生成入口文件
   let watchEntry = null;

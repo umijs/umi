@@ -2,8 +2,8 @@ import { join } from 'path';
 import { existsSync, renameSync } from 'fs';
 import { sync as rimraf } from 'rimraf';
 import build from 'af-webpack/build';
-import { resolvePlugins, applyPlugins } from 'umi-plugin';
-import registerBabel, { registerBabelForConfig } from './registerBabel';
+import { applyPlugins } from 'umi-plugin';
+import { registerBabelForConfig } from './registerBabel';
 import getWebpackConfig from './getWebpackConfig';
 import generateHTML from './generateHTML';
 import generateEntry from './generateEntry';
@@ -12,7 +12,7 @@ import send, { BUILD_DONE } from './send';
 import { getConfig } from './getConfig';
 import getWebpackRCConfig from 'af-webpack/getUserConfig';
 import getPaths from './getPaths';
-import resolvePlugin from './resolvePlugin';
+import getPlugins from './getPlugins';
 
 const debug = require('debug')('umi-build-dev:build');
 
@@ -52,18 +52,12 @@ export default function(opts = {}) {
 
     // 获取用户配置
     const { config } = getConfig(cwd);
-    const configPlugins = [
-      ...(config.plugins || []),
-      ...(pluginsFromOpts || []),
-    ].map(p => {
-      return resolvePlugin(p, { cwd });
+    const plugins = getPlugins({
+      configPlugins: config.plugins,
+      pluginsFromOpts,
+      cwd,
+      babel,
     });
-    if (configPlugins.length) {
-      registerBabel(babel, {
-        only: [new RegExp(`(${configPlugins.join('|')})`)],
-      });
-    }
-    const plugins = resolvePlugins(configPlugins);
 
     debug(`清理临时文件夹 ${paths.tmpDirPath}`);
     rimraf(paths.absTmpDirPath);
