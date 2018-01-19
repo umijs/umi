@@ -1,0 +1,15 @@
+{
+  "docs": {
+    "Introduction": [
+      "getting-started",
+      "navigate-between-pages",
+      "write-css",
+      "using-antd-or-antd-mobile"
+    ],
+    "Guides": ["config-umi", "config-webpack-via-af-webpack"],
+    "API Reference": ["api"]
+  },
+  "docs-other": {
+    "First Category": []
+  }
+}
