@@ -1,5 +1,5 @@
 import detect from 'detect-port';
-import clearConsole from 'react-dev-utils/clearConsole';
+import clearConsole from './clearConsole';
 import getProcessForPort from 'react-dev-utils/getProcessForPort';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
@@ -26,9 +26,11 @@ export default function choosePort(defaultPort) {
             name: 'shouldChangePort',
             message:
               chalk.yellow(
-                `message${existingProcess // eslint-disable-line
-                  ? ` Probably:\n  ${existingProcess}`
-                  : ''}`,
+                `message${
+                  existingProcess // eslint-disable-line
+                    ? ` Probably:\n  ${existingProcess}`
+                    : ''
+                }`,
               ) + '\n\nWould you like to run the app on another port instead?',
             default: true,
           };

@@ -1,2 +1,2 @@
-export clearConsole from 'react-dev-utils/clearConsole';
+export clearConsole from './clearConsole';
 export const webpackHotDevClientPath = require.resolve('./webpackHotDevClient');
