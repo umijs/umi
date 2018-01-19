@@ -1,5 +1,5 @@
 
-## next version
+## 0.15.0 (2018.1.19)
 
 * Support env variable `DISABLE_CLEAR_CONSOLE` to disable clear console
 * Support service worker by config `serviceworker`
