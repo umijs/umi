@@ -51,7 +51,7 @@ const Logo = props => (
 
 const ProjectTitle = props => (
   <h2 className="projectTitle">
-    {siteConfig.title} （五米）
+    { props.language === 'en' ? siteConfig.title : '五米' }
     <small>{siteConfig.tagline}</small>
   </h2>
 );
@@ -71,7 +71,7 @@ class HomeSplash extends React.Component {
       <SplashContainer>
         <Logo img_src={imgUrl('rice.svg')} />
         <div className="inner">
-          <ProjectTitle />
+          <ProjectTitle language={language} />
           <PromoSection>
             <Button href={docUrl('getting-started.html', language)}>
               GET STARTED
