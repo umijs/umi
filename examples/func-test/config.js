@@ -10,4 +10,5 @@ export default {
     // 'umi-plugin-yunfengdie',
   ],
   // disableServiceWorker: true,
+  exportStatic: true,
 };

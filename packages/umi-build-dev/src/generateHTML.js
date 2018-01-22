@@ -22,10 +22,31 @@ export default function generateHTML(opts = {}) {
     webpackConfig,
   } = opts;
 
-  const routes = Object.keys(routeConfig);
   const pagesConfig = normalizePageConfig(config.pages || {});
-  routes.forEach(route => {
-    const outputFilePath = join(paths.absOutputPath, route.slice(1));
+  if (config.exportStatic) {
+    const routes = Object.keys(routeConfig);
+    routes.forEach(route => {
+      const outputFilePath = join(paths.absOutputPath, route.slice(1));
+      const content = getHTMLContent({
+        route,
+        entry: routeConfig[route],
+        pagesPath: paths.absPagesPath,
+        root: cwd,
+        pageConfig: pagesConfig && pagesConfig[route],
+        chunkToFilesMap,
+        plugins,
+        staticDirectory,
+        libraryName,
+        paths,
+        config,
+        webpackConfig,
+      });
+      mkdirp(dirname(outputFilePath));
+      writeFileSync(outputFilePath, content, 'utf-8');
+    });
+  } else {
+    const outputFilePath = join(paths.absOutputPath, 'index.html');
+    const route = '/index.html';
     const content = getHTMLContent({
       route,
       entry: routeConfig[route],
@@ -40,10 +61,8 @@ export default function generateHTML(opts = {}) {
       config,
       webpackConfig,
     });
-
-    mkdirp(dirname(outputFilePath));
     writeFileSync(outputFilePath, content, 'utf-8');
-  });
+  }
 }
 
 function normalizePageConfig(config) {
@@ -78,9 +97,9 @@ function getFile(map, name, type) {
     }
   }
   throw new Error(
-    `getFile failed:\nmap: ${JSON.stringify(map)}\nname: ${name}\ntype: ${
-      type
-    }`,
+    `getFile failed:\nmap: ${JSON.stringify(
+      map,
+    )}\nname: ${name}\ntype: ${type}`,
   );
 }
 
@@ -144,7 +163,9 @@ export function getHTMLContent(opts = {}) {
     libraryName,
     paths,
     webpackConfig,
+    config,
   } = opts;
+
   const isDev = process.env.NODE_ENV === 'development';
 
   // 从模板生成 html
@@ -213,7 +234,7 @@ export function getHTMLContent(opts = {}) {
   const js = `
 <script src="${getAssetsPath(jsFiles[0])}"></script>
 ${
-    isDev
+    isDev || !config.exportStatic
       ? ''
       : jsFiles
           .slice(1)
