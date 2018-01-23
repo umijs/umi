@@ -419,7 +419,7 @@ export default function getConfig(opts = {}) {
               ? [
                   new SWPrecacheWebpackPlugin({
                     filename: 'service-worker.js',
-                    minify: false,
+                    minify: true,
                     staticFileGlobsIgnorePatterns: [
                       /\.map$/,
                       /asset-manifest\.json$/,
