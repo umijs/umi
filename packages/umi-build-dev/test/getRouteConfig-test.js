@@ -16,7 +16,7 @@ describe('getRouteConfig', () => {
         component: './pages/a',
       },
       {
-        path: '/list.html',
+        path: '/list',
         exact: true,
         component: './pages/b',
       },
@@ -30,19 +30,50 @@ describe('getRouteConfig', () => {
     });
     expect(config).toEqual([
       {
-        path: '/detail.html',
+        path: '/detail',
         exact: true,
-        component: 'pages/detail/page.js',
+        component: './pages/detail/page.js',
       },
       {
-        path: '/index.html',
+        path: '/',
         exact: true,
-        component: 'pages/index.js',
+        component: './pages/index.js',
+      },
+      {
+        path: '/users/list',
+        exact: true,
+        component: './pages/users/list.js',
+      },
+    ]);
+  });
+
+  it('normal with html suffix', () => {
+    const config = getRouteConfig(
+      {
+        cwd: join(fixture, 'normal'),
+        absPagesPath: join(fixture, 'normal', 'pages'),
+      },
+      {
+        exportStatic: {
+          htmlSuffix: true,
+        },
+      },
+    );
+    expect(config).toEqual([
+      {
+        path: '/detail.html',
+        exact: true,
+        component: './pages/detail/page.js',
+      },
+      {
+        path: '/',
+        exact: true,
+        component: './pages/index.js',
       },
       {
         path: '/users/list.html',
         exact: true,
-        component: 'pages/users/list.js',
+        component: './pages/users/list.js',
       },
     ]);
   });
@@ -56,23 +87,36 @@ describe('getRouteConfig', () => {
     }).toThrow(/路由冲突/);
   });
 
-  it.only('variable path', () => {
+  it('variable path', () => {
     const config = getRouteConfig({
       cwd: join(fixture, 'variable-path'),
       absPagesPath: join(fixture, 'variable-path'),
     });
-    console.log(config);
     expect(config).toEqual([
       {
-        path: '/$userId.html',
+        path: '/:userId',
         exact: true,
-        component: '$userId/page.js',
+        component: './$userId/page.js',
       },
       {
-        path: '/a.html',
+        path: '/a',
         exact: true,
-        component: 'a.js',
+        component: './a.js',
       },
     ]);
+  });
+
+  it('throw error when variable path with exportStatic', () => {
+    expect(() => {
+      getRouteConfig(
+        {
+          cwd: join(fixture, 'variable-path'),
+          absPagesPath: join(fixture, 'variable-path'),
+        },
+        {
+          exportStatic: {},
+        },
+      );
+    }).toThrow(/Variable path/);
   });
 });

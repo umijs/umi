@@ -113,12 +113,18 @@ export function getConfig(cwd, opts = {}) {
     // /index -> /index.html
     // index -> /index.html
     if (config.pages) {
+      const htmlSuffix = !!(
+        config.exportStatic &&
+        typeof config.exportStatic === 'object' &&
+        config.exportStatic.htmlSuffix
+      );
       config.pages = Object.keys(config.pages).reduce((memo, key) => {
         let newKey = key;
-        if (newKey === '/') {
-          newKey = '/index.html';
-        }
-        if (newKey.slice(-5) !== '.html') {
+        // Remove it if no break
+        // if (newKey === '/') {
+        //   newKey = '/index.html';
+        // }
+        if (htmlSuffix && newKey.slice(-5) !== '.html') {
           newKey = `${newKey}.html`;
         }
         if (newKey.charAt(0) !== '/') {

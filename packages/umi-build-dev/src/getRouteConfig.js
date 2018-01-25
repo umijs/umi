@@ -6,13 +6,29 @@ import { ROUTE_FILES, ROUTES_CONFIG_FILE } from './constants';
 const DOT_JS = '.js';
 const EXT_NAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
-export default function(paths, dirPath = '') {
+export default function(paths, config = {}) {
   const routeConfigFile = routesConfigExists(paths.cwd);
-  if (routeConfigFile) {
-    return getRoutesByConfig(routeConfigFile);
-  } else {
-    return getRoutesByPagesDir(paths, dirPath);
+  const routes = routeConfigFile
+    ? getRoutesByConfig(routeConfigFile)
+    : getRoutesByPagesDir(paths);
+
+  if (config.exportStatic) {
+    routes.forEach(route => {
+      if (route.path.indexOf(':') > -1) {
+        throw new Error(
+          `Variable path ${route.path} don\'t work with exportStatic`,
+        );
+      }
+      if (
+        typeof config.exportStatic === 'object' &&
+        config.exportStatic.htmlSuffix
+      ) {
+        route.path = addHtmlSuffix(route.path);
+      }
+    });
   }
+
+  return routes;
 }
 
 function routesConfigExists(root) {
@@ -33,12 +49,11 @@ function getRoutesByConfig(routesConfigFile) {
     Array.isArray(routesConfig),
     `router config must be Array, but got ${routesConfig}`,
   );
-  return routesConfig.map(route => {
-    return {
-      ...route,
-      path: addHtmlSuffix(route.path),
-    };
-  });
+  return routesConfig;
+}
+
+function variablePath(path) {
+  return path.replace(/\$/g, ':');
 }
 
 function getRoutesByPagesDir(paths, dirPath = '') {
@@ -58,9 +73,9 @@ function getRoutesByPagesDir(paths, dirPath = '') {
     if (stats.isFile() && EXT_NAMES.indexOf(ext) > -1) {
       const fullPath = join(dirPath, basename(file, ext));
       ret.push({
-        path: addHtmlSuffix(`/${fullPath}`),
+        path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
         exact: true,
-        component: relative(cwd, filePath),
+        component: `./${relative(cwd, filePath)}`,
       });
     } else if (stats.isDirectory()) {
       let routerFound = false;
@@ -76,9 +91,12 @@ function getRoutesByPagesDir(paths, dirPath = '') {
             );
           }
           ret.push({
-            path: addHtmlSuffix(`/${fullPath}`),
+            path: `/${variablePath(fullPath)}`,
             exact: true,
-            component: relative(cwd, join(absPagesPath, fullPath, routeFile)),
+            component: `./${relative(
+              cwd,
+              join(absPagesPath, fullPath, routeFile),
+            )}`,
           });
           routerFound = true;
           break;

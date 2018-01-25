@@ -53,7 +53,6 @@ export default class Service {
     this.outputPath = outputPath;
 
     this.paths = getPaths(this);
-    this.routes = getRouteConfig(this.paths);
 
     this.registerBabel();
   }
@@ -116,6 +115,7 @@ export default class Service {
       return;
     }
 
+    this.initRoutes();
     this.initPlugins();
 
     // 生成入口文件
@@ -185,6 +185,10 @@ export default class Service {
     });
   }
 
+  initRoutes() {
+    this.routes = getRouteConfig(this.paths, this.config);
+  }
+
   initPlugins() {
     this.plugins = getPlugins({
       configPlugins: this.config.plugins,
@@ -207,6 +211,7 @@ export default class Service {
   build() {
     this.webpackRCConfig = this.getWebpackRCConfig().config;
     this.config = getConfig(this.cwd).config;
+    this.initRoutes();
     this.initPlugins();
 
     debug('umi:build')(`Clean tmp dir ${this.paths.tmpDirPath}`);

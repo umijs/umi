@@ -8,7 +8,7 @@ import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
-export default function(opts = {}) {
+export default function(service = {}) {
   const {
     cwd,
     plugins,
@@ -22,7 +22,7 @@ export default function(opts = {}) {
     extraResolveModules,
     paths,
     preact,
-  } = opts;
+  } = service;
   const isDev = process.env.NODE_ENV === 'development';
 
   // entry
@@ -118,6 +118,11 @@ export default function(opts = {}) {
     define: {
       // 禁用 antd-mobile 升级提醒
       'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,
+      __UMI_HTML_SUFFIX: !!(
+        config.exportStatic &&
+        typeof config.exportStatic === 'object' &&
+        config.exportStatic.htmlSuffix
+      ),
       ...(webpackRCConfig.define || {}),
     },
     alias: {

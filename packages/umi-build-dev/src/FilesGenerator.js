@@ -99,9 +99,9 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   generateRouterJS() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
     const { absRouterJSPath } = paths;
-    const routes = getRouteConfig(paths);
+    const routes = getRouteConfig(paths, config);
 
     this.service.setRoutes(routes);
 
@@ -143,9 +143,10 @@ if (process.env.NODE_ENV === 'production') {
       memo[path] = component;
       return memo;
     }, {});
-    if (routesByPath['/index.html']) {
-      routesByPath['/'] = routesByPath['/index.html'];
-    }
+    // Remove it if no break
+    // if (routesByPath['/index.html']) {
+    //   routesByPath['/'] = routesByPath['/index.html'];
+    // }
 
     const { loading } = config;
     let loadingOpts = '';

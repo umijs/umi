@@ -6,7 +6,7 @@ let config = null;
 export default function createRouteMiddleware(service, opts = {}) {
   config = service.config;
   return (req, res, next) => {
-    const path = req.path === '/' ? '/index.html' : req.path;
+    const { path } = req;
     const route = service.routes.filter(r => {
       return r.path === path;
     })[0];
