@@ -7,7 +7,9 @@ export default function createRouteMiddleware(service, opts = {}) {
   config = service.config;
   return (req, res, next) => {
     const path = req.path === '/' ? '/index.html' : req.path;
-    const route = service.routes.filter(r => r.path === path)[0];
+    const route = service.routes.filter(r => {
+      return r.path === path;
+    })[0];
     if (route) {
       setRequest(path, {
         onChange: opts.rebuildEntry,

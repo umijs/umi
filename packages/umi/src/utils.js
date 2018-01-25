@@ -1,6 +1,3 @@
-/* global window */
-import { parse } from 'url';
-
 function addHtmlAffix(pathname) {
   if (pathname.slice(-1) === '/' || pathname.slice(-5) === '.html') {
     return pathname;
