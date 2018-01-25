@@ -11,7 +11,7 @@ const debug = require('debug')('umi-build-dev:generateHTML');
 
 export default function generateHTML(opts = {}) {
   const {
-    routeConfig,
+    routes,
     cwd,
     config,
     chunkToFilesMap,
@@ -24,15 +24,15 @@ export default function generateHTML(opts = {}) {
 
   const pagesConfig = normalizePageConfig(config.pages || {});
   if (config.exportStatic) {
-    const routes = Object.keys(routeConfig);
     routes.forEach(route => {
-      const outputFilePath = join(paths.absOutputPath, route.slice(1));
+      const { path, component } = route;
+      const outputFilePath = join(paths.absOutputPath, path.slice(1));
       const content = getHTMLContent({
-        route,
-        entry: routeConfig[route],
+        route: path,
+        entry: component,
         pagesPath: paths.absPagesPath,
         root: cwd,
-        pageConfig: pagesConfig && pagesConfig[route],
+        pageConfig: pagesConfig && pagesConfig[path],
         chunkToFilesMap,
         plugins,
         staticDirectory,
@@ -49,7 +49,7 @@ export default function generateHTML(opts = {}) {
     const route = '/index.html';
     const content = getHTMLContent({
       route,
-      entry: routeConfig[route],
+      entry: getIndexRouteComponent(routes),
       pagesPath: paths.absPagesPath,
       root: cwd,
       pageConfig: pagesConfig && pagesConfig[route],
@@ -62,6 +62,14 @@ export default function generateHTML(opts = {}) {
       webpackConfig,
     });
     writeFileSync(outputFilePath, content, 'utf-8');
+  }
+}
+
+function getIndexRouteComponent(routes) {
+  for (const route of routes) {
+    if (route.path === '/' || route.path === '/index.html') {
+      return routes[route];
+    }
   }
 }
 
@@ -181,7 +189,7 @@ export function getHTMLContent(opts = {}) {
   relPath = relPath === '' ? './' : relPath;
 
   // set publicPath
-  let publicPath = webpackConfig.output.publicPath;
+  let { publicPath } = webpackConfig.output;
   publicPath = makeSureHaveLastSlash(publicPath);
   let resourceBaseUrl = `'${publicPath}'`;
   let pathToScript = publicPath;

@@ -1,42 +1,22 @@
-import { join } from 'path';
-import getRouteConfig from './getRouteConfig';
-import { getHTMLContent } from './generateHTML';
 import { setRequest } from './requestCache';
+import HtmlGenerator from './HtmlGenerator';
 
 let config = null;
 
-export default function createRouteMiddleware(
-  root,
-  _config,
-  plugins,
-  staticDirectory,
-  libraryName,
-  paths,
-  rebuildEntry,
-  webpackConfig,
-) {
-  config = _config;
-  const { absPagesPath } = paths;
+export default function createRouteMiddleware(service, opts = {}) {
+  config = service.config;
   return (req, res, next) => {
-    const routeConfig = getRouteConfig(absPagesPath);
-    const { pages: pagesConfig } = config;
     const path = req.path === '/' ? '/index.html' : req.path;
-    if (routeConfig[path]) {
+    const route = service.routes.filter(r => r.path === path)[0];
+    if (route) {
       setRequest(path, {
-        onChange: rebuildEntry,
+        onChange: opts.rebuildEntry,
       });
-      const content = getHTMLContent({
-        route: path,
-        entry: routeConfig[path],
-        pagesPath: absPagesPath,
-        root,
-        pageConfig: pagesConfig && pagesConfig[path],
-        plugins,
-        staticDirectory,
-        libraryName,
-        paths,
-        config,
-        webpackConfig,
+
+      const htmlGenerator = new HtmlGenerator(service);
+      const content = htmlGenerator.getContent({
+        pageConfig: (config.pagesConfig || {})[path],
+        route,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

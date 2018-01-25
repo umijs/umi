@@ -14,19 +14,19 @@ let cachedRouterContent = null;
 let libraryJSGenerated = false;
 let swJSGenerated = false;
 
-export default function generateEntry(opts = {}) {
-  const { cwd, onChange, paths } = opts;
+export default function generateEntry(service) {
+  const { cwd, onChange, paths } = service;
   const { absTmpDirPath } = paths;
 
   mkdirp(absTmpDirPath);
-  const { routeConfig } = generate(opts);
+  const { routeConfig } = generate(service);
   if (onChange) onChange(routeConfig);
 
   let hasError = false;
 
   function rebuild(devServer) {
     try {
-      const { routeConfig } = generate(opts);
+      const { routeConfig } = generate(service);
       if (onChange) onChange(routeConfig);
       if (hasError) {
         // 从出错中恢复时，刷新浏览器
@@ -61,7 +61,7 @@ export default function generateEntry(opts = {}) {
 }
 
 export function watchPages(opts = {}) {
-  const { cwd, onChange, paths } = opts;
+  const { onChange, paths } = opts;
   const watcher = chokidar.watch(paths.absPagesPath, {
     ignored: /(^|[\/\\])\../, // ignore .dotfiles
     ignoreInitial: true,
@@ -81,8 +81,8 @@ export function watchPages(opts = {}) {
 
 function generate(opts = {}) {
   const { paths, plugins, libraryName, config } = opts;
-  const { absTmpDirPath, absPagesPath } = paths;
-  const routeConfig = getRouteConfig(absPagesPath);
+  const { absTmpDirPath } = paths;
+  const routeConfig = getRouteConfig(paths);
 
   applyPlugins(plugins, 'generateEntry', null, opts);
 

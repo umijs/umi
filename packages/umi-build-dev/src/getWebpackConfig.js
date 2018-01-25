@@ -7,7 +7,6 @@ import { applyPlugins } from 'umi-plugin';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
-const env = process.env.NODE_ENV;
 
 export default function(opts = {}) {
   const {
@@ -17,20 +16,20 @@ export default function(opts = {}) {
     webpackRCConfig,
     babel,
     hash,
-    routeConfig,
+    routes,
     libraryName,
     staticDirectory,
     extraResolveModules,
     paths,
     preact,
   } = opts;
+  const isDev = process.env.NODE_ENV === 'development';
 
   // entry
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
   const hdFile = join(__dirname, '../template/hd/index.js');
   const compileOnDemandFile = join(__dirname, '../template/compileOnDemand.js');
-  const isDev = env === 'development';
   const initialEntry = config.hd ? [hdFile] : [];
   const entry = isDev
     ? {
@@ -45,7 +44,7 @@ export default function(opts = {}) {
         [libraryName]: [...initialEntry, setPublicPathFile, entryScript],
       };
 
-  const pageCount = isDev ? null : Object.keys(routeConfig).length;
+  const pageCount = isDev ? null : Object.keys(routes).length;
   debug(`pageCount: ${pageCount}`);
   debug(`config: ${JSON.stringify(config)}`);
 

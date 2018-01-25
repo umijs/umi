@@ -1,0 +1,204 @@
+import { sep, join, dirname, extname } from 'path';
+import ejs from 'ejs';
+import { sync as mkdirp } from 'mkdirp';
+import assert from 'assert';
+import { writeFileSync, existsSync, readFileSync } from 'fs';
+import normalizeEntry from './normalizeEntry';
+
+const debug = require('debug')('umi:HtmlGenerator');
+
+export default class HtmlGenerator {
+  constructor(service, opts = {}) {
+    this.service = service;
+    this.chunksMap = opts.chunksMap;
+  }
+
+  // 仅在 build 时调用
+  generate() {
+    const { config, routes, paths } = this.service;
+
+    if (config.exportStatic) {
+      const pagesConfig = config.pages || {};
+      routes.forEach(route => {
+        const { path } = route;
+        const content = this.getContent({
+          route,
+          pageConfig: pagesConfig[path],
+        });
+        const outputPath = join(
+          paths.absOutputPath,
+          path.slice(1) === '' ? 'index.html' : path.slice(1),
+        );
+        mkdirp(dirname(outputPath));
+        writeFileSync(outputPath, content, 'utf-8');
+      });
+    } else {
+      const content = this.getContent();
+      const outputPath = join(paths.absOutputPath, 'index.html');
+      writeFileSync(outputPath, content, 'utf-8');
+    }
+  }
+
+  getContent(opts = {}) {
+    const { pageConfig = {}, route = {} } = opts;
+    const { paths, webpackConfig } = this.service;
+    const { document, context } = pageConfig;
+
+    // e.g.
+    // path: /user.html
+    // component: ./user/page.js
+    // entry: ./user
+    const { path, component } = route;
+
+    const customDocPath = document
+      ? join(paths.cwd, document)
+      : paths.absPageDocumentPath;
+    const docPath = existsSync(customDocPath)
+      ? customDocPath
+      : paths.defaultDocumentPath;
+    const tpl = readFileSync(docPath, 'utf-8');
+    let html = ejs.render(tpl, context, {
+      _with: false,
+      localsName: 'context',
+    });
+
+    let relPath = path
+      ? new Array(path.slice(1).split(sep).length).join('../')
+      : '';
+    relPath = relPath === '' ? './' : relPath;
+
+    // set publicPath
+    let { publicPath } = webpackConfig.output;
+    publicPath = makeSureHaveLastSlash(publicPath);
+    let resourceBaseUrl = `'${publicPath}'`;
+    let pathToScript = publicPath;
+    debug(`publicPath: ${publicPath}`);
+    if (
+      !(
+        publicPath.charAt(0) === '/' ||
+        publicPath.indexOf('http://') === 0 ||
+        publicPath.indexOf('https://') === 0 ||
+        /* 变量 */ publicPath === '{{ publicPath }}'
+      )
+    ) {
+      // 相对路径时需和 routerBase 匹配使用，否则子文件夹路由会出错
+      resourceBaseUrl = `location.origin + window.routerBase + '${stripFirstSlash(
+        publicPath,
+      )}'`;
+      pathToScript = `${relPath}${publicPath}`;
+    }
+
+    function getAssetsPath(file) {
+      return `${pathToScript}${stripFirstSlash(file)}`.replace(
+        /^\.\/\.\//,
+        './',
+      );
+    }
+
+    const routerBase = path
+      ? `location.pathname.split('/').slice(0, -${path.split('/').length -
+          1}).concat('').join('/')`
+      : `'/'`;
+    const inlineScriptContent = `
+<script>
+  window.routerBase = ${routerBase};
+  window.resourceBaseUrl = ${resourceBaseUrl};
+</script>
+    `.trim();
+
+    const isDev = process.env.NODE_ENV === 'development';
+    const cssFiles = isDev ? [] : this.getCSSFiles(component);
+    const cssContent = cssFiles
+      .map(file => `<link rel="stylesheet" href="${getAssetsPath(file)}" />`)
+      .join('\r\n');
+
+    const jsFiles = this.getJSFiles(component);
+    const jsContent = jsFiles
+      .map(file => `<script src="${getAssetsPath(file)}"></script>`)
+      .join('\r\n');
+
+    const injectContent = `
+${cssContent}
+${inlineScriptContent}
+${jsContent}
+    `.trim();
+    html = html.replace('</body>', `${injectContent}\r\n</body>`);
+
+    // 插件最后处理一遍 HTML
+    // html = applyPlugins(plugins, 'generateHTML', html, {
+    //   route,
+    // });
+
+    return `${html}\r\n`;
+  }
+
+  getJSFiles(component) {
+    const { libraryName, config } = this.service;
+    const files = [];
+    try {
+      files.push(this.getFile(libraryName, '.js'));
+    } catch (e) {}
+    const isDev = process.env.NODE_ENV === 'development';
+    if (!isDev && config.exportStatic) {
+      try {
+        files.push(this.getFile(`__common-${libraryName}`, '.js'));
+      } catch (e) {}
+      try {
+        if (component) {
+          files.push(this.getFile(normalizeEntry(component), '.js'));
+        }
+      } catch (e) {}
+    }
+    return files;
+  }
+
+  getCSSFiles(component) {
+    const { libraryName } = this.service;
+    const files = [];
+    try {
+      files.push(this.getFile(libraryName, '.css'));
+    } catch (e) {}
+    try {
+      if (component) {
+        files.push(this.getFile(normalizeEntry(component), '.css'));
+      }
+    } catch (e) {}
+    return files;
+  }
+
+  getFile(name, type) {
+    if (!this.chunksMap) {
+      return [name, type].join('');
+    }
+
+    const files = this.chunksMap[name];
+    assert(
+      files,
+      `name ${name} don't exists in chunksMap ${JSON.stringify(
+        this.chunksMap,
+      )}`,
+    );
+    for (const file of files) {
+      if (extname(file) === type) {
+        return file;
+      }
+    }
+    throw new Error(
+      `getFile failed:\nmap: ${JSON.stringify(
+        this.chunksMap,
+      )}\nname: ${name}\ntype: ${type}`,
+    );
+  }
+}
+
+function stripFirstSlash(str) {
+  return str.replace(/^\//, '');
+}
+
+function makeSureHaveLastSlash(str) {
+  if (str === '{{ publicPath }}' || str.slice(-1) === '/') {
+    return str;
+  } else {
+    return `${str}/`;
+  }
+}

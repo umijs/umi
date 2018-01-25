@@ -18,6 +18,9 @@ export default function() {
         <li>
           <Link to="/list.html">go to /list.html</Link>
         </li>
+        <li>
+          <Link to="/users/detail">go to /users/detail</Link>
+        </li>
       </ul>
       <Button type="primary">一个没啥用的 Button</Button>
     </div>

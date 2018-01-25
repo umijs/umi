@@ -1,0 +1,18 @@
+
+[
+  {
+    "path": "/",
+    "exact": true,
+    "component": "./pages/a"
+  },
+  {
+    "path": "/list",
+    "exact": true,
+    "component": "./pages/b"
+  },
+  {
+    "path": "/users/:name",
+    "exact": true,
+    "component": "./components/c"
+  }
+]

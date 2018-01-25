@@ -6,7 +6,6 @@ import winPath from './winPath';
 import { getRequest } from './requestCache';
 
 const debug = require('debug')('umi-build-dev:getRouterContent');
-const isDev = process.env.NODE_ENV === 'development';
 
 export default function getRouterContent(opts = {}) {
   const {
@@ -34,7 +33,15 @@ export default function getRouterContent(opts = {}) {
     .replace(/<%= libraryName %>/g, libraryName);
 }
 
-function getRouteComponents(routeConfig, config = {}, paths) {
+function getRouteComponents(routeConfigFromOpts, config = {}, paths) {
+  const routeConfig = routeConfigFromOpts.reduce(
+    (memo, { path, component }) => {
+      memo[path] = component;
+      return memo;
+    },
+    {},
+  );
+
   if (routeConfig['/index.html']) {
     routeConfig['/'] = routeConfig['/index.html'];
   }
@@ -44,19 +51,17 @@ function getRouteComponents(routeConfig, config = {}, paths) {
   if (loading) {
     loadingOpts = `, loading: require('${join(paths.cwd, loading)}').default,`;
   }
-
   const routerComponents = Object.keys(routeConfig).map(key => {
     const pageJSFile = winPath(join('..', routeConfig[key]));
     debug(`${JSON.stringify(getRequest())}, key`);
+    const isDev = process.env.NODE_ENV === 'development';
     if (isDev && !process.env.DISABLE_COMPILE_ON_DEMAND) {
       const component = getRequest()[key]
         ? `hoc(require('${pageJSFile}').default)`
         : '() => <div>Compiling...</div>';
       return `    <Route exact path="${key}" component={${component}}></Route>`;
     } else {
-      return `    <Route exact path="${
-        key
-      }" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
+      return `    <Route exact path="${key}" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
         routeConfig[key],
       )}' */'${pageJSFile}'), { hoc${loadingOpts} }) }></Route>`;
     }

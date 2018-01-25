@@ -5,8 +5,12 @@ function test(path) {
   return existsSync(path) && statSync(path).isDirectory();
 }
 
-export default function(opts = {}) {
-  const { cwd, tmpDirectory, outputPath } = opts;
+function template(path) {
+  return join(__dirname, '../template', path);
+}
+
+export default function(service) {
+  const { cwd, tmpDirectory, outputPath, libraryName } = service;
 
   let pagesPath = 'pages';
   if (test(join(cwd, 'src/page'))) {
@@ -15,18 +19,27 @@ export default function(opts = {}) {
   if (test(join(cwd, 'src/pages'))) {
     pagesPath = 'src/pages';
   }
+  const absPagesPath = join(cwd, pagesPath);
 
-  const envAffix =
-    process.env.NODE_ENV === 'development' ? '' : `-${process.env.NODE_ENV}`;
+  const envAffix = process.env.NODE_ENV === 'development' ? '' : `-production`;
   const tmpDirPath = `${pagesPath}/${tmpDirectory}${envAffix}`;
+  const absTmpDirPath = join(cwd, tmpDirPath);
 
   return {
     cwd,
     outputPath,
     absOutputPath: join(cwd, outputPath),
     pagesPath,
-    absPagesPath: join(cwd, pagesPath),
+    absPagesPath,
     tmpDirPath,
-    absTmpDirPath: join(cwd, tmpDirPath),
+    absTmpDirPath,
+    absRouterJSPath: join(absTmpDirPath, 'router.js'),
+    absLibraryJSPath: join(absTmpDirPath, `${libraryName}.js`),
+    absRegisterSWJSPath: join(absTmpDirPath, 'registerServiceWorker.js'),
+    absPageDocumentPath: join(absPagesPath, 'document.ejs'),
+    defaultEntryTplPath: template('entry.js'),
+    defaultRouterTplPath: template('router.js'),
+    defaultRegisterSWTplPath: template('registerServiceWorker.js'),
+    defaultDocumentPath: template('document.ejs'),
   };
 }

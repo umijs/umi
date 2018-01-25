@@ -1,11 +1,11 @@
 import { Button } from 'antd-mobile';
 import router from 'umi/router';
-import styles from './list.css';
 
-export default function() {
+export default function(props) {
+  const { name } = props.match.params;
   return (
-    <div className={styles.normal}>
-      <h1>List Page</h1>
+    <div>
+      <h1>User: {name}</h1>
       <Button
         onClick={() => {
           router.goBack();

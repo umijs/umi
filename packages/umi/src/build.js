@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 
 const debug = require('debug')('umi:build');
+process.env.NODE_ENV = 'production';
 
 export default function(opts = {}) {
   const { extraResolveModules } = opts;
