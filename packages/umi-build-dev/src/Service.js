@@ -245,10 +245,9 @@ export default class Service {
           }
 
           debug('umi:build')('Move service-worker.js');
-          const { staticDirectory } = this.projectOptions;
           const sourceSW = join(
             this.paths.absOutputPath,
-            staticDirectory,
+            this.staticDirectory,
             'service-worker.js',
           );
           const targetSW = join(this.paths.absOutputPath, 'service-worker.js');

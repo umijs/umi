@@ -13,22 +13,53 @@ export default class HtmlGenerator {
     this.chunksMap = opts.chunksMap;
   }
 
+  /*
+  // e.g.
+  //
+  // path  no htmlSuffix     with htmlSuffix
+  // ---
+  // /     /index.html       /index.html
+  // /a    /a/index.html     /a.html
+  // /a/   /a/index.html     /a.html
+  // /a/b  /a/b/index.html   /a/b.html
+  */
+  getHtmlPath(path) {
+    const { config } = this.service;
+    const htmlSuffix =
+      config.exportStatic &&
+      typeof config.exportStatic === 'object' &&
+      config.exportStatic.htmlSuffix;
+
+    path = path.slice(1);
+    if (path === '') {
+      return 'index.html';
+    }
+
+    // remove last slash
+    path = path.replace(/\/$/, '');
+
+    if (htmlSuffix) {
+      return path;
+    } else {
+      return `${path}/index.html`;
+    }
+  }
+
   // 仅在 build 时调用
   generate() {
     const { config, routes, paths } = this.service;
 
     if (config.exportStatic) {
+      console.log('export static');
       const pagesConfig = config.pages || {};
       routes.forEach(route => {
+        console.log('export static', route.path);
         const { path } = route;
         const content = this.getContent({
           route,
           pageConfig: pagesConfig[path],
         });
-        const outputPath = join(
-          paths.absOutputPath,
-          path.slice(1) === '' ? 'index.html' : path.slice(1),
-        );
+        const outputPath = join(paths.absOutputPath, this.getHtmlPath(path));
         mkdirp(dirname(outputPath));
         writeFileSync(outputPath, content, 'utf-8');
       });
