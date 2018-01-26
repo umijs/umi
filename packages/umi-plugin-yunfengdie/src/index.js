@@ -6,22 +6,6 @@ const debug = require('debug')('umi:plugin-yunfengdie');
 
 const isFDRender = !!process.env.FD_RENDER;
 
-// export function getConfigScript(memo, opts = {}) {
-//   const { entry } = opts;
-//   if (isFDRender) {
-//     memo = `
-// <script>
-//   window.routerBase = location.pathname.split('/').slice(0, -${
-//     entry.split('/').length
-//   }).concat('').join('/');
-//   window.resourceBaseUrl = '{{ publicPath }}';
-// </script>
-//   `;
-//   }
-//
-//   return memo;
-// }
-
 export function generateHTML(memo, opts = {}) {
   if (isFDRender) {
     const { route } = opts;
