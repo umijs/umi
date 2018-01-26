@@ -33,6 +33,13 @@ if (buildCode === 1) {
   process.exit(1);
 }
 
+shell.exec(`
+  echo '\\r\\nmodule.exports = exports["default"];' >> ./packages/umi-test/lib/transformers/jsTransformer.js
+`);
+shell.exec(`
+  echo '\\r\\nmodule.exports = exports["default"];' >> ./packages/umi-test/lib/transformers/tsTransformer.js
+`);
+
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
   ['publish', '--skip-npm'].concat(process.argv.slice(2)),
