@@ -132,7 +132,7 @@ export default class Service {
       debug('Generate entry failed, watch pages and reload');
       filesGenerator.watch({
         onChange: () => {
-          filesGenerator.watcher.close();
+          filesGenerator.unwatch();
           this.dev();
         },
       });

@@ -30,9 +30,8 @@ export default class FilesGenerator {
     if (opts.onChange) opts.onChange();
   }
 
-  watch() {
-    const { paths } = this.service;
-    const watcher = chokidar.watch(paths.absPagesPath, {
+  createWatcher(path) {
+    const watcher = chokidar.watch(path, {
       ignored: /(^|[\/\\])\../, // ignore .dotfiles
       ignoreInitial: true,
     });
@@ -43,10 +42,26 @@ export default class FilesGenerator {
         this.rebuild();
       }, 100),
     );
+    return watcher;
+  }
+
+  watch() {
+    const { paths } = this.service;
+    this.watchers = [
+      this.createWatcher(paths.absPagesPath),
+      this.createWatcher(paths.absLayoutPath),
+    ];
     process.on('SIGINT', () => {
-      if (watcher) watcher.close();
+      this.unwatch();
     });
-    this.watcher = watcher;
+  }
+
+  unwatch() {
+    if (this.watchers) {
+      this.watchers.forEach(watcher => {
+        watcher.close();
+      });
+    }
   }
 
   rebuild() {
@@ -129,11 +144,35 @@ if (process.env.NODE_ENV === 'production') {
       this.service,
     );
 
+    tplContent = this.addLayout(tplContent);
+
     const routesContent = this.getRouterContent();
     return tplContent
-      .replace(/<%= codeForPlugin %>/g, '')
-      .replace(/<%= routeComponents %>/g, routesContent)
+      .replace('<%= codeForPlugin %>', '')
+      .replace('<%= routeComponents %>', routesContent)
       .replace(/<%= libraryName %>/g, libraryName);
+  }
+
+  addLayout(tplContent) {
+    const { paths } = this.service;
+    if (existsSync(paths.absLayoutPath)) {
+      return tplContent
+        .replace(
+          '<%= codeForPlugin %>',
+          `
+import Layout from '${paths.absLayoutPath}';
+<%= codeForPlugin %>
+        `.trim(),
+        )
+        .replace(
+          '<%= routeComponents %>',
+          `
+<Layout><%= routeComponents %></Layout>
+        `.trim(),
+        );
+    } else {
+      return tplContent;
+    }
   }
 
   getRouterContent() {
@@ -143,10 +182,6 @@ if (process.env.NODE_ENV === 'production') {
       memo[path] = component;
       return memo;
     }, {});
-    // Remove it if no break
-    // if (routesByPath['/index.html']) {
-    //   routesByPath['/'] = routesByPath['/index.html'];
-    // }
 
     const { loading } = config;
     let loadingOpts = '';
