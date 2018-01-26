@@ -6,8 +6,15 @@
       "write-css",
       "using-antd-or-antd-mobile"
     ],
-    "Guides": ["config-umi", "config-webpack-via-af-webpack"],
-    "API Reference": ["api"]
+    "Guides": [
+      "directory-contract",
+      "config-umi",
+      "config-webpack-via-af-webpack",
+      "write-css"
+    ],
+    "API Reference": [
+      "api"
+    ]
   },
   "docs-other": {
     "First Category": []
