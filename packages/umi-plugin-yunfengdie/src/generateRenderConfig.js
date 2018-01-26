@@ -2,21 +2,24 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 
 export default function generateRenderConfig(opts = {}) {
-  const { routeConfig, cwd } = opts;
-  const config = getRenderConfig(routeConfig);
+  const { cwd, routes } = opts.service;
+  const config = getRenderConfig(routes);
   const outputFilePath = join(cwd, 'dist', 'config.json');
   writeFileSync(outputFilePath, JSON.stringify(config, null, 2), 'utf-8');
 }
 
-function getRenderConfig(routeConfig) {
-  const pages = Object.keys(routeConfig).reduce((memo, key) => {
-    const newKey = key.slice(1);
-    memo[newKey] = {
-      template: newKey,
+function getRenderConfig(routes) {
+  const pages = routes.reduce((memo, route) => {
+    const { path } = route;
+    let key = path.slice(1);
+    if (key === '') {
+      key = 'index.html';
+    }
+    memo[key] = {
+      template: key,
     };
     return memo;
   }, {});
-
   return {
     pages,
   };

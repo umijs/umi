@@ -255,7 +255,11 @@ export default class Service {
             renameSync(sourceSW, targetSW);
           }
 
-          applyPlugins(this.plugins, 'buildSuccess', null, this);
+          // Usage:
+          // - umi-plugin-yunfengdie
+          applyPlugins(this.plugins, 'buildSuccess', null, {
+            service: this,
+          });
           send({
             type: BUILD_DONE,
           });

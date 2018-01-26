@@ -4,12 +4,9 @@ export default {
     '/': { spmb: 'b2222222222222', context: { title: '首页' } },
     'list.html': { spmb: 'b3333333333333', context: { title: '列表页' } },
   },
-  plugins: [
-    './plugin1',
-    // 'umi-plugin-yunfengdie',
-  ],
+  plugins: ['./plugin1', 'umi-plugin-yunfengdie'],
   // disableServiceWorker: true,
-  // exportStatic: {
-  //   htmlSuffix: true,
-  // },
+  exportStatic: {
+    htmlSuffix: true,
+  },
 };

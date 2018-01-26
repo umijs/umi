@@ -171,6 +171,9 @@ export default function(service = {}) {
         }),
   });
 
+  // Usage:
+  // - umi-plugin-yunfengdie
   webpackConfig = applyPlugins(plugins, 'updateWebpackConfig', webpackConfig);
+
   return webpackConfig;
 }

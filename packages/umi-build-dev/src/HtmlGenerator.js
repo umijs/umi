@@ -4,6 +4,7 @@ import { sync as mkdirp } from 'mkdirp';
 import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
 import normalizeEntry from './normalizeEntry';
+import { applyPlugins } from 'umi-plugin';
 
 const debug = require('debug')('umi:HtmlGenerator');
 
@@ -50,10 +51,8 @@ export default class HtmlGenerator {
     const { config, routes, paths } = this.service;
 
     if (config.exportStatic) {
-      console.log('export static');
       const pagesConfig = config.pages || {};
       routes.forEach(route => {
-        console.log('export static', route.path);
         const { path } = route;
         const content = this.getContent({
           route,
@@ -72,7 +71,7 @@ export default class HtmlGenerator {
 
   getContent(opts = {}) {
     const { pageConfig = {}, route = {} } = opts;
-    const { paths, webpackConfig } = this.service;
+    const { paths, webpackConfig, plugins } = this.service;
     const { document, context } = pageConfig;
 
     // e.g.
@@ -156,9 +155,11 @@ ${jsContent}
     html = html.replace('</body>', `${injectContent}\r\n</body>`);
 
     // 插件最后处理一遍 HTML
-    // html = applyPlugins(plugins, 'generateHTML', html, {
-    //   route,
-    // });
+    // Usage:
+    // - umi-plugin-yunfengdie
+    html = applyPlugins(plugins, 'generateHTML', html, {
+      route,
+    });
 
     return `${html}\r\n`;
   }
