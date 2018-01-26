@@ -1,4 +1,9 @@
 
+## 0.16.0 (under development)
+
+* Fix: opts.serviceworker typo, sorrycc/roadhog#594
+* Feat: compress service-worker.js by default
+
 ## 0.15.0 (2018.1.19)
 
 * Support env variable `DISABLE_CLEAR_CONSOLE` to disable clear console
