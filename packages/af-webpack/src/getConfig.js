@@ -415,7 +415,7 @@ export default function getConfig(opts = {}) {
               filename: `[name]${cssHash}.css`,
               allChunks: true,
             }),
-            ...(opts.serviceWorker
+            ...(opts.serviceworker
               ? [
                   new SWPrecacheWebpackPlugin({
                     filename: 'service-worker.js',
@@ -424,7 +424,7 @@ export default function getConfig(opts = {}) {
                       /\.map$/,
                       /asset-manifest\.json$/,
                     ],
-                    ...opts.serviceWorker,
+                    ...opts.serviceworker,
                   }),
                 ]
               : []),
