@@ -186,10 +186,7 @@ import Layout from '${paths.absLayoutPath}';
     const { loading } = config;
     let loadingOpts = '';
     if (loading) {
-      loadingOpts = `, loading: require('${join(
-        paths.cwd,
-        loading,
-      )}').default,`;
+      loadingOpts = `loading: require('${join(paths.cwd, loading)}').default,`;
     }
     const routesContent = Object.keys(routesByPath).map(key => {
       const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
@@ -198,13 +195,13 @@ import Layout from '${paths.absLayoutPath}';
       const isDev = process.env.NODE_ENV === 'development';
       if (isDev && !process.env.DISABLE_COMPILE_ON_DEMAND) {
         const component = getRequest()[key]
-          ? `hoc(require('${pageJSFile}').default)`
+          ? `require('${pageJSFile}').default`
           : '() => <div>Compiling...</div>';
         return `    <Route exact path="${key}" component={${component}}></Route>`;
       } else {
         return `    <Route exact path="${key}" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
           routesByPath[key],
-        )}' */'${pageJSFile}'), { hoc${loadingOpts} }) }></Route>`;
+        )}' */'${pageJSFile}'), { ${loadingOpts} }) }></Route>`;
       }
     });
 
