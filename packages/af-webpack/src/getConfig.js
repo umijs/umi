@@ -450,6 +450,7 @@ export default function getConfig(opts = {}) {
           // eslint-disable-line
           isDev ? 'development' : 'production',
         ), // eslint-disable-line
+        'process.env.RELOAD': process.env.RELOAD,
         // 给 socket server 用
         ...(process.env.SOCKET_SERVER
           ? {
