@@ -15,6 +15,8 @@ export default function(context, opts = {}) {
     ],
     require.resolve('@babel/plugin-proposal-export-namespace'),
     require.resolve('@babel/plugin-proposal-export-default'),
+    require.resolve('@babel/plugin-proposal-export-namespace-from'),
+    require.resolve('@babel/plugin-proposal-export-default-from'),
     require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
     require.resolve('@babel/plugin-proposal-optional-chaining'),
     require.resolve('@babel/plugin-proposal-pipeline-operator'),
