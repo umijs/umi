@@ -219,11 +219,11 @@ export default class Service {
     this.initRoutes();
     this.initPlugins();
 
-    debug('umi:build')(`Clean tmp dir ${this.paths.tmpDirPath}`);
+    debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
     rimraf(this.paths.absTmpDirPath);
-    debug('umi:build')(`Clean output path ${this.paths.outputPath}`);
+    debug(`Clean output path ${this.paths.outputPath}`);
     rimraf(this.paths.absOutputPath);
-    debug('umi:build')('Generate entry');
+    debug('Generate entry');
     const filesGenerator = new FilesGenerator(this);
     filesGenerator.generate();
 
@@ -233,12 +233,12 @@ export default class Service {
       require('af-webpack/build').default({
         webpackConfig,
         success: ({ stats }) => {
-          if (!process.env.DISABLE_RM_TMPDIR) {
-            debug('umi:build')(`Clean tmp dir ${this.paths.tmpDirPath}`);
+          if (process.env.RM_TMPDIR === 'none') {
+            debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
             rimraf(this.paths.absTmpDirPath);
           }
 
-          debug('umi:build')(`Bundle html files`);
+          debug(`Bundle html files`);
           const chunksMap = chunksToMap(stats.compilation.chunks);
           try {
             const hg = new HtmlGenerator(this, {
@@ -249,7 +249,7 @@ export default class Service {
             console.log(e);
           }
 
-          debug('umi:build')('Move service-worker.js');
+          debug('Move service-worker.js');
           const sourceSW = join(
             this.paths.absOutputPath,
             this.staticDirectory,

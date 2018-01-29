@@ -20,6 +20,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.28.7",
     "debug": "^3.1.0",
+    "deprecate": "^1.0.0",
     "detect-port": "^1.2.1",
     "didyoumean": "^1.2.1",
     "eslint": "^4.7.1",
