@@ -3,20 +3,35 @@ id: app-structure
 title: 目录结构
 ---
 
-test
-├── components          ---- 通用组件目录
-│   └── base.js
-├── pages
-│   └── a.js            ---- /a/index.html
-│   └── b
-│       └── a.js        ---- /a/index.html
-├── .webpackrc
+一个包含所有约定的目录结构是这样的。
 
-### pages
-umi 的页面路由是根据目录约定生成的：
-- 在pages目录下的js文件会生成路由，e.g: /pages/a.js -> /a/index.html
-- 在pages目录下的目录会遵循：
-  - /pages/a/pages.js -> /a/index.html
-  - /pages/a/b/pages.js -> /a/b/index.html
+```bash
+.
+├── dist/                          // 构建产物目录
+└── src/                           // 源码目录，可选，把里面的内容直接移到外面即可
+    ├── layouts/
+    │   └── index.js               // 全局布局
+    ├── pages/                     // 页面目录，里面的文件即路由
+        ├── .umi/                  // dev 临时目录，需添加到 .gitignore
+        ├── .umi-production/       // build 临时目录，会自动删除
+        ├── _document.ejs          // HTML 模板
+        ├── list.js                // 页面 1
+        └── index.js               // 页面 2
+    ├── _routes.json               // 路由配置，和文件路由二选一
+├── test/                          // 测试用例放这里
+├── .umirc.js                      // umi 配置
+├── .webpackrc                     // webpack 配置
+└── package.json
+```
 
-[TBC]
+这里大部分的约定和配置文件都是可选的，唯一强约定只有 pages 目录。
+
+比如一个简单的应用，目录结构可能这样的。
+
+```bash
+.
+├── pages/              
+    ├── list.js         
+    └── index.js        
+└── package.json
+```
