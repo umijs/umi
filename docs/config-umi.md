@@ -1,6 +1,6 @@
 ---
 id: config-umi
-title: Config Umi
+title: 配置 umi
 ---
 
 在 `config.js` 中配置，支持 ES6 语法。

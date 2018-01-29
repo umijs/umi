@@ -1,6 +1,6 @@
 ---
 id: navigate-between-pages
-title: Navigate Between Pages
+title: 在页面间跳转
 ---
 
 在 umi 里，页面之间跳转有两种方式：声明式和编程式。

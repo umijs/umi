@@ -1,19 +1,29 @@
 {
   "docs": {
     "Introduction": [
+      "introduction",
       "getting-started",
+      "app-structure",
       "navigate-between-pages",
+      "layout",
       "write-css",
-      "using-antd-or-antd-mobile"
+      "using-antd-or-antd-mobile",
+      "theme"
     ],
     "Guides": [
-      "directory-contract",
-      "config-umi",
-      "config-webpack-via-af-webpack",
-      "write-css"
+      "router",
+      "load-on-demand",
+      "pwa",
+      "test",
+      "deploy",
+      "faq"
     ],
     "API Reference": [
-      "api"
+      "api",
+      "config-umi",
+      "config-webpack",
+      "cli",
+      "env-variables"
     ]
   },
   "docs-other": {

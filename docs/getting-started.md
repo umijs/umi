@@ -1,6 +1,6 @@
 ---
 id: getting-started
-title: Getting Started
+title: 快速上手
 ---
 
 Umi 读作**五米**，是基于 React 的高性能、跨平台且体验良好的框架。

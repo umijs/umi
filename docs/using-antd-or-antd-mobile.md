@@ -1,6 +1,6 @@
 ---
 id: using-antd-or-antd-mobile
-title: Using antd and antd-mobile
+title: 使用 antd 或 antd-mobile
 ---
 
 umi 内置了 antd 和 antd-mobile，以及 babel-plugin-import 插件，可无需安装依赖而直接使用。

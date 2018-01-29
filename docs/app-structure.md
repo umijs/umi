@@ -1,6 +1,6 @@
 ---
-id: directory-contract
-title: Directory Contract
+id: app-structure
+title: 目录结构
 ---
 
 test

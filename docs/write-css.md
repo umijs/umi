@@ -1,6 +1,6 @@
 ---
 id: write-css
-title: Write CSS
+title: 写 CSS
 ---
 
 umi 的样式是通过 css modules 的方式组织的。
