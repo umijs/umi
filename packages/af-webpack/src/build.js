@@ -10,7 +10,7 @@ import { warnIfExists as warnIfWebpackConfigExists } from './applyWebpackConfig'
 
 const debug = require('debug')('af-webpack:build');
 
-if (!process.env.NO_COMPRESS) {
+if (!(process.env.NO_COMPRESS || process.env.COMPRESS === 'none')) {
   process.env.NODE_ENV = 'production';
 }
 

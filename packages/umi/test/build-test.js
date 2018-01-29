@@ -24,7 +24,7 @@ function assertBuildResult(cwd) {
 }
 
 describe('build', () => {
-  process.env.NO_COMPRESS = 1;
+  process.env.COMPRESS = 'none';
   process.env.ESLINT = 'none';
 
   const fixtures = join(__dirname, './fixtures/build');

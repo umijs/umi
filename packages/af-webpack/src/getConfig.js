@@ -33,6 +33,9 @@ if (process.env.DISABLE_TSLINT) {
 if (process.env.DISABLE_ESLINT) {
   deprecate('DISABLE_ESLINT is deprecated, use ESLINT=none instead');
 }
+if (process.env.NO_COMPRESS) {
+  deprecate('NO_COMPRESS is deprecated, use COMPRESS=none instead');
+}
 
 export default function getConfig(opts = {}) {
   assert(opts.cwd, 'opts.cwd must be specified');
@@ -66,7 +69,9 @@ export default function getConfig(opts = {}) {
     ...(isDev
       ? {}
       : {
-          minimize: !process.env.NO_COMPRESS,
+          minimize: !(
+            process.env.NO_COMPRESS || process.env.COMPRESS === 'none'
+          ),
           sourceMap: !opts.disableCSSSourceMap,
         }),
   };
@@ -427,7 +432,9 @@ export default function getConfig(opts = {}) {
               ? [
                   new SWPrecacheWebpackPlugin({
                     filename: 'service-worker.js',
-                    minify: !!process.env.NO_COMPRESS,
+                    minify: !(
+                      process.env.NO_COMPRESS || process.env.COMPRESS === 'none'
+                    ),
                     staticFileGlobsIgnorePatterns: [
                       /\.map$/,
                       /asset-manifest\.json$/,
@@ -445,7 +452,7 @@ export default function getConfig(opts = {}) {
                 ]
               : []),
           ]),
-      ...(isDev || process.env.NO_COMPRESS
+      ...(isDev || (process.env.NO_COMPRESS || process.env.COMPRESS === 'none')
         ? []
         : [
             new webpack.optimize.UglifyJsPlugin({
