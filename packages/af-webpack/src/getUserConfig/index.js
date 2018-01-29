@@ -158,11 +158,15 @@ export default function getUserConfig(opts = {}) {
   }
 
   let configFailed = false;
-  function watchConfigsAndRun(_devServer) {
+  function watchConfigsAndRun(_devServer, watchOpts = {}) {
     devServer = _devServer;
 
     watchConfigs(opts).on('all', (event, path) => {
       try {
+        if (watchOpts.beforeChange) {
+          watchOpts.beforeChange();
+        }
+
         const { config: newConfig } = getUserConfig({
           ...opts,
           setConfig(newConfig) {

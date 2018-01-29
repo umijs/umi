@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { sync as rimraf } from 'rimraf';
 import { existsSync, renameSync } from 'fs';
 import { join } from 'path';
@@ -20,6 +19,8 @@ import send, { PAGE_LIST, BUILD_DONE } from './send';
 import FilesGenerator from './FilesGenerator';
 import HtmlGenerator from './HtmlGenerator';
 import createRouteMiddleware from './createRouteMiddleware';
+
+const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
   constructor(
@@ -172,7 +173,11 @@ export default class Service {
       ],
       afterServer: devServer => {
         this.devServer = devServer;
-        returnedWatchWebpackRCConfig(devServer);
+        returnedWatchWebpackRCConfig(devServer, {
+          beforeChange: () => {
+            this.registerBabel();
+          },
+        });
         returnedWatchConfig(devServer);
         filesGenerator.watch();
       },
