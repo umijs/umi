@@ -35,7 +35,7 @@ export default function(service = {}) {
     ? {
         [libraryName]: [
           ...initialEntry,
-          ...(process.env.DISABLE_HMR ? [] : [webpackHotDevClientPath]),
+          ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
           entryScript,
           compileOnDemandFile,
         ],

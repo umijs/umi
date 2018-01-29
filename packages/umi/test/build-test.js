@@ -25,8 +25,7 @@ function assertBuildResult(cwd) {
 
 describe('build', () => {
   process.env.NO_COMPRESS = 1;
-  process.env.DISABLE_ESLINT = 1;
-  process.env.DISABLE_KOIJS_G_CACHE = 1;
+  process.env.ESLINT = 'none';
 
   const fixtures = join(__dirname, './fixtures/build');
   readdirSync(fixtures)

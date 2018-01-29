@@ -230,7 +230,7 @@ function canApplyUpdates() {
 
 // Attempt to update code on the fly, fall back to a hard reload.
 function tryApplyUpdates(onHotUpdateSuccess) {
-  if (process.env.RELOAD || !module.hot) {
+  if (process.env.HMR === 'reload' || !module.hot) {
     // HotModuleReplacementPlugin is not in Webpack configuration.
     window.location.reload();
     return;

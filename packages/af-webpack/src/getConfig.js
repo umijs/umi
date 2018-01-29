@@ -193,7 +193,7 @@ export default function getConfig(opts = {}) {
     ...(opts.babel || babelConfig),
     // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
     cacheDirectory: false,
-    babelrc: process.env.ENABLE_BABELRC ? true : false,
+    babelrc: !!process.env.BABELRC,
   };
   babelOptions.plugins = [
     ...(babelOptions.plugins || []),
@@ -294,7 +294,7 @@ export default function getConfig(opts = {}) {
     },
     module: {
       rules: [
-        ...(process.env.DISABLE_TSLINT
+        ...(process.env.TSLINT === 'none'
           ? []
           : [
               {
@@ -313,7 +313,7 @@ export default function getConfig(opts = {}) {
                 ],
               },
             ]),
-        ...(process.env.DISABLE_ESLINT
+        ...(process.env.ESLINT === 'none'
           ? []
           : [
               {
@@ -450,7 +450,7 @@ export default function getConfig(opts = {}) {
           // eslint-disable-line
           isDev ? 'development' : 'production',
         ), // eslint-disable-line
-        'process.env.RELOAD': process.env.RELOAD,
+        'process.env.HMR': process.env.HMR,
         // 给 socket server 用
         ...(process.env.SOCKET_SERVER
           ? {

@@ -193,7 +193,7 @@ import Layout from '${paths.absLayoutPath}';
       // const jsFileInPages = relative(paths.pagesPath, routesByPath[key]);
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
-      if (isDev && !process.env.DISABLE_COMPILE_ON_DEMAND) {
+      if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {
         const component = getRequest()[key]
           ? `require('${pageJSFile}').default`
           : '() => <div>Compiling...</div>';
