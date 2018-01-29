@@ -10,6 +10,7 @@ import { dirname, resolve, join } from 'path';
 import { existsSync } from 'fs';
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import assert from 'assert';
+import deprecate from 'deprecate';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
@@ -25,6 +26,13 @@ import readRc from './readRc';
 import { stripLastSlash } from './utils';
 
 const debug = require('debug')('af-webpack:getConfig');
+
+if (process.env.DISABLE_TSLINT) {
+  deprecate('DISABLE_TSLINT is deprecated, use TSLINT=none instead');
+}
+if (process.env.DISABLE_ESLINT) {
+  deprecate('DISABLE_ESLINT is deprecated, use ESLINT=none instead');
+}
 
 export default function getConfig(opts = {}) {
   assert(opts.cwd, 'opts.cwd must be specified');
@@ -294,7 +302,7 @@ export default function getConfig(opts = {}) {
     },
     module: {
       rules: [
-        ...(process.env.TSLINT === 'none'
+        ...(process.env.DISABLE_TSLINT || process.env.TSLINT === 'none'
           ? []
           : [
               {
@@ -313,7 +321,7 @@ export default function getConfig(opts = {}) {
                 ],
               },
             ]),
-        ...(process.env.ESLINT === 'none'
+        ...(process.env.DISABLE_ESLINT || process.env.ESLINT === 'none'
           ? []
           : [
               {
