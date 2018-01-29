@@ -233,7 +233,7 @@ export default class Service {
       require('af-webpack/build').default({
         webpackConfig,
         success: ({ stats }) => {
-          if (!process.env.DISABLE_RM_TMPDIR) {
+          if (process.env.RM_TMPDIR === 'none') {
             debug('umi:build')(`Clean tmp dir ${this.paths.tmpDirPath}`);
             rimraf(this.paths.absTmpDirPath);
           }
