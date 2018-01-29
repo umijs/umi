@@ -190,7 +190,6 @@ import Layout from '${paths.absLayoutPath}';
     }
     const routesContent = Object.keys(routesByPath).map(key => {
       const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
-      // const jsFileInPages = relative(paths.pagesPath, routesByPath[key]);
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
       if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {

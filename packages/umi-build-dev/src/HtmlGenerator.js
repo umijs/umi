@@ -125,10 +125,15 @@ export default class HtmlGenerator {
       );
     }
 
-    const routerBase = path
-      ? `location.pathname.split('/').slice(0, -${path.split('/').length -
-          1}).concat('').join('/')`
-      : `'/'`;
+    let routerBase;
+    if (process.env.BASE_URL) {
+      routerBase = JSON.stringify(process.env.BASE_URL);
+    } else {
+      routerBase = path
+        ? `location.pathname.split('/').slice(0, -${path.split('/').length -
+            1}).concat('').join('/')`
+        : `'/'`;
+    }
     const inlineScriptContent = `
 <script>
   window.routerBase = ${routerBase};
