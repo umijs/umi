@@ -59,11 +59,15 @@ ANALYZE 服务器端口，默认 8888。
 
 ### COMPRESS
 
-默认压缩，值为 none 时不压缩，build 时有效。比如：
+默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。比如：
 
 ```bash
 $ COMPRESS=none umi build
 ```
+
+### CSS_COMPRESS
+
+默认压缩，值为 none 时不压缩，build 时有效。因为 css 压缩有时是会有问题的，而且压缩并不能减少多少尺寸，所以有时可以压 JS 而不压 CSS。
 
 ### BROWSER
 
