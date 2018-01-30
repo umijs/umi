@@ -3,7 +3,19 @@ id: faq
 title: FAQ
 ---
 
+> 持续补充。
+
 ## CSS
+
+### 如何禁用 css modules ？
+
+修改 `.webpackrc`:
+
+```json
+{
+ "disableCSSModules": true
+}
+```
 
 ### 如何使用 sass ？
 
