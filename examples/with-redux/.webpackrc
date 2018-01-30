@@ -1,0 +1,23 @@
+{
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "iOS >= 8"
+  ],
+  "extraBabelIncludes": [
+    "node_modules/af-webpack/lib",
+    "node_modules/umi-build-dev",
+    "node_modules/af-webpack/node_modules"
+  ],
+  "sass": {},
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8000/",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  },
+  "theme": {}
+}
