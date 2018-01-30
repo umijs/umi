@@ -70,7 +70,9 @@ export default function getConfig(opts = {}) {
       ? {}
       : {
           minimize: !(
-            process.env.NO_COMPRESS || process.env.COMPRESS === 'none'
+            process.env.CSS_COMPRESS === 'none' ||
+            process.env.COMPRESS === 'none' ||
+            process.env.NO_COMPRESS
           ),
           sourceMap: !opts.disableCSSSourceMap,
         }),

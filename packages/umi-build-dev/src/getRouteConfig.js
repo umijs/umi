@@ -59,55 +59,57 @@ function variablePath(path) {
 function getRoutesByPagesDir(paths, dirPath = '') {
   const { cwd, absPagesPath } = paths;
 
-  const path = join(absPagesPath, dirPath);
-  const files = readdirSync(path);
   let ret = [];
+  const path = join(absPagesPath, dirPath);
+  if (existsSync(path)) {
+    const files = readdirSync(path);
 
-  files.forEach(file => {
-    // 包含 ., .., 以及其他 dotfile
-    if (file.charAt(0) === '.') return;
-    const filePath = join(path, file);
-    const stats = statSync(filePath);
-    const ext = extname(file);
+    files.forEach(file => {
+      // 包含 ., .., 以及其他 dotfile
+      if (file.charAt(0) === '.') return;
+      const filePath = join(path, file);
+      const stats = statSync(filePath);
+      const ext = extname(file);
 
-    if (stats.isFile() && EXT_NAMES.indexOf(ext) > -1) {
-      const fullPath = join(dirPath, basename(file, ext));
-      ret.push({
-        path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
-        exact: true,
-        component: `./${relative(cwd, filePath)}`,
-      });
-    } else if (stats.isDirectory()) {
-      let routerFound = false;
-      const fullPath = join(dirPath, file);
-      for (const routeFile of ROUTE_FILES) {
-        if (existsSync(join(absPagesPath, fullPath, routeFile))) {
-          if (existsSync(join(absPagesPath, `${fullPath}${DOT_JS}`))) {
-            throw new Error(
-              `路由冲突，src/page 目录下同时存在 "${fullPath}${DOT_JS}" 和 "${join(
-                fullPath,
-                routeFile,
-              )}"，两者指向同一路由。`,
-            );
+      if (stats.isFile() && EXT_NAMES.indexOf(ext) > -1) {
+        const fullPath = join(dirPath, basename(file, ext));
+        ret.push({
+          path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
+          exact: true,
+          component: `./${relative(cwd, filePath)}`,
+        });
+      } else if (stats.isDirectory()) {
+        let routerFound = false;
+        const fullPath = join(dirPath, file);
+        for (const routeFile of ROUTE_FILES) {
+          if (existsSync(join(absPagesPath, fullPath, routeFile))) {
+            if (existsSync(join(absPagesPath, `${fullPath}${DOT_JS}`))) {
+              throw new Error(
+                `路由冲突，src/page 目录下同时存在 "${fullPath}${DOT_JS}" 和 "${join(
+                  fullPath,
+                  routeFile,
+                )}"，两者指向同一路由。`,
+              );
+            }
+            ret.push({
+              path: `/${variablePath(fullPath)}`,
+              exact: true,
+              component: `./${relative(
+                cwd,
+                join(absPagesPath, fullPath, routeFile),
+              )}`,
+            });
+            routerFound = true;
+            break;
           }
-          ret.push({
-            path: `/${variablePath(fullPath)}`,
-            exact: true,
-            component: `./${relative(
-              cwd,
-              join(absPagesPath, fullPath, routeFile),
-            )}`,
-          });
-          routerFound = true;
-          break;
+        }
+
+        if (!routerFound) {
+          ret = ret.concat(getRoutesByPagesDir(paths, fullPath));
         }
       }
-
-      if (!routerFound) {
-        ret = ret.concat(getRoutesByPagesDir(paths, fullPath));
-      }
-    }
-  });
+    });
+  }
 
   return ret;
 }

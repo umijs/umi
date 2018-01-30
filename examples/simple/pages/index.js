@@ -1,14 +1,14 @@
-import { Button } from 'antd-mobile';
 import Link from 'umi/link';
+import { Button } from 'antd';
 import styles from './index.css';
+import '../global.less';
 
-export default function() {
-  return (
-    <div className={styles.normal}>
-      <h1>Index Page</h1>
-      <Link to="/list">
-        <Button type="primary">跳转到列表页</Button>
-      </Link>
-    </div>
-  );
-}
+export default () => (
+  <div className={styles.normal}>
+    Index Page
+    <br />
+    <Link to="/list">
+      <Button type="primary">go to /list</Button>
+    </Link>
+  </div>
+);
