@@ -5,7 +5,7 @@
 Install dependencies.
 
 ```bash
-$ tnpm i
+$ npm i
 ```
 
 Start dev server.

@@ -21,7 +21,7 @@ export default class extends Component {
   };
 
   render() {
-    const { location, value } = this.props;
+    const { value } = this.props;
 
     return (
       <div>

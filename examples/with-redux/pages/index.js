@@ -1,14 +1,12 @@
 import router from 'umi/router';
 import { connect } from 'react-redux';
 import { Component } from '../components/base';
-import { Button, List, WhiteSpace, Stepper } from 'antd-mobile';
+import { List, WhiteSpace, Stepper } from 'antd-mobile';
 import Link from 'umi/link';
-import styles from './index.css';
 
 import { updateValue } from '../store/action';
 
 const Item = List.Item;
-const Brief = List.Brief;
 
 @connect(state => ({
   value: state.global.value,

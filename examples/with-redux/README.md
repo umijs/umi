@@ -1,4 +1,4 @@
-# umi example
+# umi example with redux
 
 ## Getting Started
 
@@ -18,14 +18,4 @@ Build.
 
 ```bash
 $ npm run build
-```
-
-if need:
-jsconfig.json
-```json
-{
-  "compilerOptions": {
-    "experimentalDecorators": true
-  }
-}
 ```
