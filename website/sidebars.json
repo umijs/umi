@@ -22,7 +22,6 @@
       "api",
       "config-umi",
       "config-webpack",
-      "cli",
       "env-variables"
     ]
   },
