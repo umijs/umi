@@ -1,6 +1,6 @@
 ---
 id: router
-title: 路由
+title: 路由配置
 ---
 
-xxx
+

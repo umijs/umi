@@ -18,7 +18,7 @@
     "load-on-demand": "按需加载",
     "navigate-between-pages": "在页面间跳转",
     "pwa": "PWA",
-    "router": "路由",
+    "router": "路由配置",
     "test": "单元测试",
     "theme": "定制主题",
     "using-antd-or-antd-mobile": "使用 antd 或 antd-mobile",
