@@ -26,12 +26,12 @@ title: 目录结构
 
 这里大部分的约定和配置文件都是可选的，唯一强约定只有 pages 目录。
 
-比如一个简单的应用，目录结构可能这样的。
+比如一个简单的应用，目录结构只要这样就好。
 
 ```bash
 .
-├── pages/              
-    ├── list.js         
-    └── index.js        
+├── pages/
+    ├── list.js
+    └── index.js
 └── package.json
 ```
