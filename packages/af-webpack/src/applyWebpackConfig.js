@@ -20,7 +20,11 @@ export function warnIfExists() {
 export function applyWebpackConfig(config) {
   const filePath = resolve('webpack.config.js');
   if (existsSync(filePath)) {
-    return require(filePath)(config, {
+    let customConfigFn = require(filePath);
+    if (customConfigFn.default) {
+      customConfigFn = customConfigFn.default;
+    }
+    return customConfigFn(config, {
       // eslint-disable-line
       webpack,
     });
