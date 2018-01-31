@@ -1,9 +1,10 @@
 
-## 0.16.0 (under development)
+## 0.16.0 (2018.1.30)
 
 * Fix: opts.serviceworker typo, sorrycc/roadhog#594
 * Feat: compress service-worker.js by default
-* Feat: Support hmr via reload with env var process.env.RELOAD, #64
+* Feat: Support hmr via reload with env var process.env.HRM=reload, #64
+* Feat: Improve env variables, NO_COMPRESS -> COMPRESS=none, DISABLE_ESLINT => ESLINT=none, #69
 
 ## 0.15.0 (2018.1.19)
 
