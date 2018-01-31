@@ -71,8 +71,12 @@ describe('build', () => {
             disableCSSModules: true,
           },
           () => {
-            assertBuildResult(cwd);
-            done();
+            try {
+              assertBuildResult(cwd);
+              done();
+            } catch (e) {
+              done(e);
+            }
           },
         );
       });

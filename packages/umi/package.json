@@ -37,7 +37,7 @@
   "scripts": {
     "build": "ruban build",
     "test": "ruban test --timeout 200000",
-    "debug": "ruban debug --timeout 200000",
+    "debug": "DISABLE_TRANSFORM_RUNTIME=1 ruban debug --timeout 200000",
     "coveralls": "ruban coveralls"
   },
   "files": [

@@ -101,6 +101,10 @@ export function getConfig(cwd, opts = {}) {
       throw new Error(msg);
     }
 
+    if (config.default) {
+      config = config.default;
+    }
+
     // 把外层 context 的内容复制进来，用内层的覆盖它
     if (config.context && config.pages) {
       Object.keys(config.pages).forEach(key => {

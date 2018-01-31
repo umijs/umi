@@ -14,8 +14,9 @@ function assertBuildResult(cwd) {
   expect(actualFiles.length).toEqual(expectFiles.length);
 
   actualFiles.forEach(file => {
+    if (file.indexOf('static/') > -1) return;
     // don't assert umi.js, since it's too big
-    if (file.indexOf('umi.js') > -1 || file.indexOf('umi.css') > -1) return;
+    // if (file.indexOf('umi.js') > -1 || file.indexOf('umi.css') > -1) return;
 
     const actualFile = readFileSync(join(actualDir, file), 'utf-8');
     const expectFile = readFileSync(join(expectDir, file), 'utf-8');
@@ -46,8 +47,7 @@ describe('build', () => {
             done();
           })
           .catch(e => {
-            console.log(e);
-            done();
+            done(e);
           });
       });
     });
