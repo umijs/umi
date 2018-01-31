@@ -78,6 +78,25 @@ describe('getRouteConfig', () => {
     ]);
   });
 
+  it('index directory', () => {
+    const config = getRouteConfig({
+      cwd: join(fixture, 'index-directory'),
+      absPagesPath: join(fixture, 'index-directory', 'pages'),
+    });
+    expect(config).toEqual([
+      {
+        path: '/',
+        exact: true,
+        component: './pages/index/page.js',
+      },
+      {
+        path: '/list',
+        exact: true,
+        component: './pages/list/page.js',
+      },
+    ]);
+  });
+
   it('conflicts', () => {
     expect(() => {
       getRouteConfig({

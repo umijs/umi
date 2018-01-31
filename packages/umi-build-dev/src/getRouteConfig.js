@@ -92,7 +92,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
               );
             }
             ret.push({
-              path: `/${variablePath(fullPath)}`,
+              path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
               exact: true,
               component: `./${relative(
                 cwd,
