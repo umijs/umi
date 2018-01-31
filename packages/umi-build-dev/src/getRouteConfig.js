@@ -2,6 +2,7 @@ import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
 import assert from 'assert';
 import { ROUTE_FILES, ROUTES_CONFIG_FILE } from './constants';
+import winPath from './winPath';
 
 const DOT_JS = '.js';
 const EXT_NAMES = ['.js', '.jsx', '.ts', '.tsx'];
@@ -74,7 +75,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
       if (stats.isFile() && EXT_NAMES.indexOf(ext) > -1) {
         const fullPath = join(dirPath, basename(file, ext));
         ret.push({
-          path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
+          path: winPath(`/${variablePath(fullPath)}`).replace(/\/index$/, '/'),
           exact: true,
           component: `./${relative(cwd, filePath)}`,
         });
@@ -92,7 +93,10 @@ function getRoutesByPagesDir(paths, dirPath = '') {
               );
             }
             ret.push({
-              path: `/${variablePath(fullPath)}`.replace(/\/index$/, '/'),
+              path: winPath(`/${variablePath(fullPath)}`).replace(
+                /\/index$/,
+                '/',
+              ),
               exact: true,
               component: `./${relative(
                 cwd,

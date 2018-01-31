@@ -160,7 +160,7 @@ if (process.env.NODE_ENV === 'production') {
         .replace(
           '<%= codeForPlugin %>',
           `
-import Layout from '${paths.absLayoutPath}';
+import Layout from '${winPath(paths.absLayoutPath)}';
 <%= codeForPlugin %>
         `.trim(),
         )
@@ -186,7 +186,9 @@ import Layout from '${paths.absLayoutPath}';
     const { loading } = config;
     let loadingOpts = '';
     if (loading) {
-      loadingOpts = `loading: require('${join(paths.cwd, loading)}').default,`;
+      loadingOpts = `loading: require('${winPath(
+        join(paths.cwd, loading),
+      )}').default,`;
     }
     const routesContent = Object.keys(routesByPath).map(key => {
       const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));

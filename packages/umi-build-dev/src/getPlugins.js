@@ -1,4 +1,5 @@
 import { resolvePlugins } from 'umi-plugin';
+import excapeRegExp from 'lodash.escaperegexp';
 import resolvePlugin from './resolvePlugin';
 import registerBabel from './registerBabel';
 
@@ -16,7 +17,15 @@ export default function(opts = {}) {
   );
   if (plugins.length) {
     registerBabel(babel, {
-      only: [new RegExp(`(${plugins.join('|')})`)],
+      only: [
+        new RegExp(
+          `(${plugins
+            .map(p => {
+              return excapeRegExp(p);
+            })
+            .join('|')})`,
+        ),
+      ],
     });
   }
   return resolvePlugins(plugins);
