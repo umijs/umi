@@ -100,6 +100,9 @@ export default function getUserConfig(opts = {}) {
     // no cache
     delete require.cache[jsRCFile];
     config = require(jsRCFile);
+    if (config.default) {
+      config = config.default;
+    }
   }
 
   // Context for validate function
