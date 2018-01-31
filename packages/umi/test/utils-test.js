@@ -7,7 +7,9 @@ describe('utils', () => {
       normalizePath({
         pathname: '/index',
       }),
-    ).toEqual('/index.html');
+    ).toEqual({
+      pathname: '/index.html',
+    });
   });
 
   it('normalizePath object with query', () => {
@@ -16,7 +18,12 @@ describe('utils', () => {
         pathname: '/index',
         query: { a: 'b' },
       }),
-    ).toEqual('/index.html?a=b');
+    ).toEqual({
+      pathname: '/index.html',
+      query: {
+        a: 'b',
+      },
+    });
   });
 
   it('normalizePath string', () => {
