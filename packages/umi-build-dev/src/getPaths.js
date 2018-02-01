@@ -33,6 +33,7 @@ export default function(service) {
     absOutputPath: join(cwd, outputPath),
     pagesPath,
     absPagesPath,
+    absSrcPath,
     tmpDirPath,
     absTmpDirPath,
     absLayoutPath,
