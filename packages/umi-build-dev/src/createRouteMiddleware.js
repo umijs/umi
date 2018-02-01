@@ -17,7 +17,7 @@ export default function createRouteMiddleware(service, opts = {}) {
 
       const htmlGenerator = new HtmlGenerator(service);
       const content = htmlGenerator.getContent({
-        pageConfig: (config.pagesConfig || {})[path],
+        pageConfig: (config.pages || {})[path],
         route,
       });
       res.setHeader('Content-Type', 'text/html');
