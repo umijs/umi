@@ -6,7 +6,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import autoprefixer from 'autoprefixer';
-import { dirname, resolve, join } from 'path';
+import { dirname, resolve, join, extname } from 'path';
 import { existsSync } from 'fs';
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import assert from 'assert';
@@ -121,6 +121,19 @@ export default function getConfig(opts = {}) {
   }
 
   const cssRules = [
+    ...(opts.globalCSSFiles
+      ? opts.globalCSSFiles.map(file => {
+          return {
+            test(filePath) {
+              console.log(filePath, file);
+              return filePath.indexOf(file) > -1;
+            },
+            use: getCSSLoader({
+              less: extname(file).toLowerCase() === '.less',
+            }),
+          };
+        })
+      : []),
     {
       test: /\.css$/,
       exclude: /node_modules/,

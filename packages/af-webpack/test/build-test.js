@@ -68,7 +68,7 @@ describe('build', () => {
           {
             cwd,
             outputPath: join(cwd, 'dist'),
-            disableCSSModules: true,
+            disableCSSModules: dir.indexOf('globalCSSFiles') > -1,
           },
           () => {
             try {
