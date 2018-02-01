@@ -121,11 +121,10 @@ export default function getConfig(opts = {}) {
   }
 
   const cssRules = [
-    ...(opts.globalCSSFiles
-      ? opts.globalCSSFiles.map(file => {
+    ...(opts.cssModulesExcludes
+      ? opts.cssModulesExcludes.map(file => {
           return {
             test(filePath) {
-              console.log(filePath, file);
               return filePath.indexOf(file) > -1;
             },
             use: getCSSLoader({
@@ -136,7 +135,16 @@ export default function getConfig(opts = {}) {
       : []),
     {
       test: /\.css$/,
-      exclude: /node_modules/,
+      exclude(filePath) {
+        if (/node_modules/.test(filePath)) {
+          return true;
+        }
+        if (opts.cssModulesExcludes) {
+          for (const exclude of opts.cssModulesExcludes) {
+            if (filePath.indexOf(exclude) > -1) return true;
+          }
+        }
+      },
       use: getCSSLoader({
         cssModules: true,
       }),
@@ -148,7 +156,16 @@ export default function getConfig(opts = {}) {
     },
     {
       test: /\.less$/,
-      exclude: /node_modules/,
+      exclude(filePath) {
+        if (/node_modules/.test(filePath)) {
+          return true;
+        }
+        if (opts.cssModulesExcludes) {
+          for (const exclude of opts.cssModulesExcludes) {
+            if (filePath.indexOf(exclude) > -1) return true;
+          }
+        }
+      },
       use: getCSSLoader({
         cssModules: true,
         less: true,
