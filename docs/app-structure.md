@@ -17,6 +17,7 @@ title: 目录结构
         ├── _document.ejs          // HTML 模板
         ├── list.js                // 页面 1
         └── index.js               // 页面 2
+    ├── global.css                 // 约定的全局样式文件，自动引入，也可以用 global.less
     ├── _routes.json               // 路由配置，和文件路由二选一
 ├── test/                          // 测试用例放这里
 ├── .umirc.js                      // umi 配置

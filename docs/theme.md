@@ -25,6 +25,16 @@ title: 定制主题
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/qGncpVZOUmhbcxbvihRW.png" width="450" height="414" style="margin-left:0;" />
 
+## 覆盖样式
+
+你可以在 `global.css` 或 `global.less` 里覆盖 antd 的样式，比如：
+
+```css
+.ant-btn {
+  border-radius: 0 !import;
+}
+```
+
 ## 参考
 
 * https://ant.design/docs/react/customize-theme-cn
