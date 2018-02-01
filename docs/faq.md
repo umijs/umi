@@ -5,6 +5,18 @@ title: FAQ
 
 > 持续补充。
 
+## General
+
+### umi 和 dva 以及 roadhog 是什么关系？
+
+简单来说，
+
+* dva 是数据流
+* roadhog 是通用工具
+* umi 是框架，包含路由和工具，很多的约定，很多的性能优化，以及开发体验优化
+
+然后，umi 和 roadhog 共用同一个底层 [af-webpack](https://github.com/umijs/umi/tree/master/packages/af-webpack)，他们在功能上有一定重叠，可以说 umi 包含 roadhog，react 项目我会倾向于推荐用 umi。
+
 ## ESLint
 
 ### 如何让编辑器的 eslint 校验生效？
