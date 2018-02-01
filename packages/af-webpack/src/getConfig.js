@@ -6,7 +6,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import autoprefixer from 'autoprefixer';
-import { dirname, resolve, join } from 'path';
+import { dirname, resolve, join, extname } from 'path';
 import { existsSync } from 'fs';
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import assert from 'assert';
@@ -121,9 +121,30 @@ export default function getConfig(opts = {}) {
   }
 
   const cssRules = [
+    ...(opts.cssModulesExcludes
+      ? opts.cssModulesExcludes.map(file => {
+          return {
+            test(filePath) {
+              return filePath.indexOf(file) > -1;
+            },
+            use: getCSSLoader({
+              less: extname(file).toLowerCase() === '.less',
+            }),
+          };
+        })
+      : []),
     {
       test: /\.css$/,
-      exclude: /node_modules/,
+      exclude(filePath) {
+        if (/node_modules/.test(filePath)) {
+          return true;
+        }
+        if (opts.cssModulesExcludes) {
+          for (const exclude of opts.cssModulesExcludes) {
+            if (filePath.indexOf(exclude) > -1) return true;
+          }
+        }
+      },
       use: getCSSLoader({
         cssModules: true,
       }),
@@ -135,7 +156,16 @@ export default function getConfig(opts = {}) {
     },
     {
       test: /\.less$/,
-      exclude: /node_modules/,
+      exclude(filePath) {
+        if (/node_modules/.test(filePath)) {
+          return true;
+        }
+        if (opts.cssModulesExcludes) {
+          for (const exclude of opts.cssModulesExcludes) {
+            if (filePath.indexOf(exclude) > -1) return true;
+          }
+        }
+      },
       use: getCSSLoader({
         cssModules: true,
         less: true,

@@ -140,6 +140,10 @@ export default {
 
 定义额外需要做 babel 转换的文件匹配列表，格式为数组。
 
+### cssModulesExcludes
+
+指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
+
 ### copy
 
 定义需要单纯做复制的文件列表，格式为数组，项的格式参考 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin) 的配置。

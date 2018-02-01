@@ -1,7 +1,6 @@
 import Link from 'umi/link';
 import { Button } from 'antd';
 import styles from './index.css';
-import '../global.less';
 
 export default () => (
   <div className={styles.normal}>

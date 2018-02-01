@@ -43,34 +43,25 @@ export default () => <div className={styles.normal}>
 
 有些样式我们希望全局生效，比如针对 antd 的样式覆盖，全局配置字体、行高、链接等。
 
-新增 `global.less` 为页头页尾添加样式，内容如下：
+新增 `global.css` 为页头页尾添加样式，内容如下：
 
 ```
-:global {
-  header {
-    background: #aaa;
-    font-size: 20px;
-  }
-  footer {
-    border-top: 1px solid #ccc;
-    padding-top: 8px;
-    color: #aaa;
-  }
+header {
+  background: #aaa;
+  font-size: 20px;
+}
+footer {
+  border-top: 1px solid #ccc;
+  padding-top: 8px;
+  color: #aaa;
 }
 ```
 
-之所以用 less，是因为可以运用 less 的嵌套规则，少写一些 `:global` 伪类。
-
-然后在 pages/index.js 里增加对他的引用。
-
-```diff
-+ import '../global.less';
-```
+`global.css` 或 `global.less` 是全局样式的约定文件，这个文件存在即会自动引入。
 
 最终效果如下：
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/PEzsPNTSsztxKWoyApTa.png" width="450" height="414" style="margin-left:0;" />
-
 
 ## 参考
 

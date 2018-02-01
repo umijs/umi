@@ -50,6 +50,8 @@ export default class FilesGenerator {
     this.watchers = [
       this.createWatcher(paths.absPagesPath),
       this.createWatcher(paths.absLayoutPath),
+      this.createWatcher(join(paths.absSrcPath, 'global.css')),
+      this.createWatcher(join(paths.absSrcPath, 'global.less')),
     ];
     process.on('SIGINT', () => {
       this.unwatch();
@@ -145,6 +147,7 @@ if (process.env.NODE_ENV === 'production') {
     );
 
     tplContent = this.addLayout(tplContent);
+    tplContent = this.addGlobalCSS(tplContent);
 
     const routesContent = this.getRouterContent();
     return tplContent
@@ -170,6 +173,28 @@ import Layout from '${winPath(paths.absLayoutPath)}';
 <Layout><%= routeComponents %></Layout>
         `.trim(),
         );
+    } else {
+      return tplContent;
+    }
+  }
+
+  addGlobalCSS(tplContent) {
+    const { paths } = this.service;
+    const cssImports = [
+      join(paths.absSrcPath, 'global.css'),
+      join(paths.absSrcPath, 'global.less'),
+    ]
+      .filter(f => existsSync(f))
+      .map(f => `import('${f}');`);
+
+    if (cssImports.length) {
+      return tplContent.replace(
+        '<%= codeForPlugin %>',
+        `
+${cssImports.join('\r\n')}
+<%= codeForPlugin %>
+          `.trim(),
+      );
     } else {
       return tplContent;
     }
