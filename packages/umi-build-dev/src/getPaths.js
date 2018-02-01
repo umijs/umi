@@ -13,6 +13,9 @@ export default function(service) {
   const { cwd, tmpDirectory, outputPath, libraryName } = service;
 
   let pagesPath = 'pages';
+  if (process.env.PAGES_PATH) {
+    pagesPath = process.env.PAGES_PATH;
+  }
   if (test(join(cwd, 'src/page'))) {
     pagesPath = 'src/page';
   }
