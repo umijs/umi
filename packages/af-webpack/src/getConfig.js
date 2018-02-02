@@ -408,7 +408,8 @@ export default function getConfig(opts = {}) {
         ...(opts.extraBabelIncludes || []).map(include => {
           return {
             test: /\.(js|jsx)$/,
-            include: join(opts.cwd, include),
+            include:
+              typeof include === 'string' ? join(opts.cwd, include) : include,
             use: babelUse,
           };
         }),
