@@ -1,7 +1,6 @@
 import { sync as rimraf } from 'rimraf';
 import { existsSync, renameSync } from 'fs';
 import { join } from 'path';
-import { applyPlugins } from 'umi-plugin';
 import getWebpackRCConfig, {
   watchConfigs as watchWebpackRCConfig,
   unwatchConfigs as unwatchWebpackRCConfig,

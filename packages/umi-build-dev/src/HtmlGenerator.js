@@ -4,7 +4,6 @@ import { sync as mkdirp } from 'mkdirp';
 import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
 import normalizeEntry from './normalizeEntry';
-import { applyPlugins } from 'umi-plugin';
 
 const debug = require('debug')('umi:HtmlGenerator');
 
