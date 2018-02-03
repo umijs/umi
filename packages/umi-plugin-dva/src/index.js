@@ -57,4 +57,13 @@ import DvaContainer from '${winPath(dvaContainerPath)}';
       .replace('<Switch>', '<DvaContainer><Switch>')
       .replace('</Switch>', '</Switch></DvaContainer>');
   });
+
+  api.register('modifyAFWebpackOpts', ({ memo }) => {
+    memo.alias = {
+      ...memo.alias,
+      dva: require.resolve('dva-no-router'),
+      'dva-loading': require.resolve('dva-loading'),
+    };
+    return memo;
+  });
 }

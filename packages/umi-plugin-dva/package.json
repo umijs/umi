@@ -8,7 +8,6 @@
     "debug": "ruban debug"
   },
   "dependencies": {
-    "babel-plugin-dva-hmr": "^0.4.1",
     "debug": "^3.1.0",
     "dva-loading": "^1.0.4",
     "dva-no-router": "^1.0.3",
