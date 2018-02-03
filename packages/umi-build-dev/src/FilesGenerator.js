@@ -147,10 +147,12 @@ if (process.env.NODE_ENV === 'production') {
       initialValue: tplContent,
     });
 
-    const routesContent = this.getRouterContent();
+    const routerContent = this.service.applyPlugins('modifyRouterContent', {
+      initialValue: this.getRouterContent(),
+    });
     return tplContent
       .replace('<%= codeForPlugin %>', '')
-      .replace('<%= routeComponents %>', routesContent)
+      .replace('<%= routeComponents %>', routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
   }
 

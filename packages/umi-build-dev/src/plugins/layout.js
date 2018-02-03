@@ -4,24 +4,28 @@ import { existsSync } from 'fs';
 export default function(api) {
   const { paths } = api.service;
   const { winPath } = api.utils;
+  const layoutPath = join(paths.absSrcPath, 'layouts/index.js');
 
   api.register('modifyRouterFile', ({ memo }) => {
-    const layoutPath = join(paths.absSrcPath, 'layouts/index.js');
     if (existsSync(layoutPath)) {
-      return memo
-        .replace(
-          '<%= codeForPlugin %>',
-          `
+      return memo.replace(
+        '<%= codeForPlugin %>',
+        `
 import Layout from '${winPath(layoutPath)}';
 <%= codeForPlugin %>
         `.trim(),
-        )
-        .replace(
-          '<%= routeComponents %>',
-          `
-<Layout><%= routeComponents %></Layout>
-        `.trim(),
-        );
+      );
+    } else {
+      return memo;
+    }
+  });
+
+  api.register('modifyRouterContent', ({ memo }) => {
+    console.log(layoutPath, existsSync(layoutPath));
+    if (existsSync(layoutPath)) {
+      return memo
+        .replace('<Switch>', '<Layout><Switch>')
+        .replace('</Switch>', '</Switch></Layout>');
     } else {
       return memo;
     }
