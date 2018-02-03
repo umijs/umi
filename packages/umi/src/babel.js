@@ -36,6 +36,7 @@ export default function(context, opts = {}) {
             fastclick: require.resolve('fastclick'),
             [`${libraryName}/dynamic`]: require.resolve('./dynamic'),
             [`${libraryName}/link`]: require.resolve('./link'),
+            [`${libraryName}/navlink`]: require.resolve('./navlink'),
             [`${libraryName}/router`]: require.resolve('./router'),
             [`${libraryName}/_createHistory`]: require.resolve(
               './createHistory',
