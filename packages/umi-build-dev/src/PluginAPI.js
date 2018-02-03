@@ -1,3 +1,4 @@
+import debug from 'debug';
 import winPath from './winPath';
 
 // 参考：
@@ -9,6 +10,7 @@ class PluginAPI {
     this.service = service;
     this.utils = {
       winPath,
+      debug: debug(`umi-plugin: ${id}`),
     };
   }
 
