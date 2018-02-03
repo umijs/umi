@@ -11,6 +11,12 @@ export default function createRouteMiddleware(service, opts = {}) {
       return r.path === path;
     })[0];
     if (route) {
+      service.applyPlugins('onRouteRequest', {
+        args: {
+          route,
+          req,
+        },
+      });
       setRequest(path, {
         onChange: opts.rebuildEntry,
       });

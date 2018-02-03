@@ -24,7 +24,6 @@ export default function(service) {
   }
   const absPagesPath = join(cwd, pagesPath);
   const absSrcPath = join(absPagesPath, '../');
-  const absLayoutPath = join(absSrcPath, 'layouts/index.js');
 
   const envAffix = process.env.NODE_ENV === 'development' ? '' : `-production`;
   const tmpDirPath = `${pagesPath}/${tmpDirectory}${envAffix}`;
@@ -39,7 +38,6 @@ export default function(service) {
     absSrcPath,
     tmpDirPath,
     absTmpDirPath,
-    absLayoutPath,
     absRouterJSPath: join(absTmpDirPath, 'router.js'),
     absLibraryJSPath: join(absTmpDirPath, `${libraryName}.js`),
     absRegisterSWJSPath: join(absTmpDirPath, 'registerServiceWorker.js'),

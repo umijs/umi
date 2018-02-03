@@ -160,10 +160,11 @@ ${jsContent}
     html = html.replace('</body>', `${injectContent}\r\n</body>`);
 
     // 插件最后处理一遍 HTML
-    // Usage:
-    // - umi-plugin-yunfengdie
-    html = applyPlugins(plugins, 'generateHTML', html, {
-      route,
+    html = this.service.applyPlugins('modifyHTML', {
+      initialValue: html,
+      args: {
+        route,
+      },
     });
 
     return `${html}\r\n`;

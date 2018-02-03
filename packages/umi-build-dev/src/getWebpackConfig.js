@@ -3,7 +3,6 @@ import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import px2rem from 'postcss-plugin-px2rem';
-import { applyPlugins } from 'umi-plugin';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
@@ -11,7 +10,6 @@ const debug = require('debug')('umi-build-dev:getWebpackConfig');
 export default function(service = {}) {
   const {
     cwd,
-    plugins,
     config,
     webpackRCConfig,
     babel,
@@ -95,8 +93,7 @@ export default function(service = {}) {
   }
 
   const browserslist = webpackRCConfig.browserslist || defaultBrowsers;
-
-  let webpackConfig = getConfig({
+  let afWebpackOpts = {
     cwd,
     ...webpackRCConfig,
 
@@ -176,11 +173,15 @@ export default function(service = {}) {
                 },
               }),
         }),
+  };
+  afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
+    initialValue: afWebpackOpts,
   });
 
-  // Usage:
-  // - umi-plugin-yunfengdie
-  webpackConfig = applyPlugins(plugins, 'updateWebpackConfig', webpackConfig);
+  let webpackConfig = getConfig(afWebpackOpts);
+  webpackConfig = service.applyPlugins('modifyWebpackConfig', {
+    initialValue: webpackConfig,
+  });
 
   return webpackConfig;
 }

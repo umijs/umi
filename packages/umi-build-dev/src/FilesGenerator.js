@@ -5,7 +5,6 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
-import { applyPlugins } from 'umi-plugin';
 import getRouteConfig from './getRouteConfig';
 import { getRequest } from './requestCache';
 import winPath from './winPath';
@@ -38,6 +37,7 @@ export default class FilesGenerator {
     watcher.on(
       'all',
       debounce((event, path) => {
+        console.log('rebuild');
         debug(`${event} ${path}`);
         this.rebuild();
       }, 100),
@@ -47,12 +47,12 @@ export default class FilesGenerator {
 
   watch() {
     const { paths } = this.service;
-    this.watchers = [
-      this.createWatcher(paths.absPagesPath),
-      this.createWatcher(paths.absLayoutPath),
-      this.createWatcher(join(paths.absSrcPath, 'global.css')),
-      this.createWatcher(join(paths.absSrcPath, 'global.less')),
-    ];
+    const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
+      initialValue: [paths.absPagesPath],
+    });
+    this.watchers = watcherPaths.map(p => {
+      return this.createWatcher(p);
+    });
     process.on('SIGINT', () => {
       this.unwatch();
     });
@@ -90,13 +90,17 @@ export default class FilesGenerator {
   }
 
   generateFiles() {
-    const { paths, plugins, entryJSTpl, config } = this.service;
-    applyPlugins(plugins, 'generateEntry', null, this.service);
+    const { paths, entryJSTpl, config } = this.service;
+    this.service.applyPlugins('generateFiles');
 
     this.generateRouterJS();
 
     // Generate umi.js
     let entryContent = readFileSync(entryJSTpl || paths.defaultEntryTplPath);
+    entryContent = this.service.applyPlugins('modifyEntryFile', {
+      initialValue: entryContent,
+    });
+
     if (!config.disableServiceWorker) {
       entryContent = `${entryContent}
 // Enable service worker
@@ -131,7 +135,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRouterJSContent() {
-    const { routerTpl, paths, libraryName, plugins } = this.service;
+    const { routerTpl, paths, libraryName } = this.service;
     const routerTplPath = routerTpl || paths.defaultRouterTplPath;
     assert(
       existsSync(routerTplPath),
@@ -139,65 +143,15 @@ if (process.env.NODE_ENV === 'production') {
     );
 
     let tplContent = readFileSync(routerTplPath, 'utf-8');
-    tplContent = applyPlugins(
-      plugins,
-      'preBuildRouterContent',
-      tplContent,
-      this.service,
-    );
-
-    tplContent = this.addLayout(tplContent);
-    tplContent = this.addGlobalCSS(tplContent);
+    tplContent = this.service.applyPlugins('modifyRouterFile', {
+      initialValue: tplContent,
+    });
 
     const routesContent = this.getRouterContent();
     return tplContent
       .replace('<%= codeForPlugin %>', '')
       .replace('<%= routeComponents %>', routesContent)
       .replace(/<%= libraryName %>/g, libraryName);
-  }
-
-  addLayout(tplContent) {
-    const { paths } = this.service;
-    if (existsSync(paths.absLayoutPath)) {
-      return tplContent
-        .replace(
-          '<%= codeForPlugin %>',
-          `
-import Layout from '${winPath(paths.absLayoutPath)}';
-<%= codeForPlugin %>
-        `.trim(),
-        )
-        .replace(
-          '<%= routeComponents %>',
-          `
-<Layout><%= routeComponents %></Layout>
-        `.trim(),
-        );
-    } else {
-      return tplContent;
-    }
-  }
-
-  addGlobalCSS(tplContent) {
-    const { paths } = this.service;
-    const cssImports = [
-      join(paths.absSrcPath, 'global.css'),
-      join(paths.absSrcPath, 'global.less'),
-    ]
-      .filter(f => existsSync(f))
-      .map(f => `import('${f}');`);
-
-    if (cssImports.length) {
-      return tplContent.replace(
-        '<%= codeForPlugin %>',
-        `
-${cssImports.join('\r\n')}
-<%= codeForPlugin %>
-          `.trim(),
-      );
-    } else {
-      return tplContent;
-    }
   }
 
   getRouterContent() {
@@ -219,16 +173,29 @@ ${cssImports.join('\r\n')}
       const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
+
+      let component;
+      let isCompiling = false;
       if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {
-        const component = getRequest()[key]
-          ? `require('${pageJSFile}').default`
-          : '() => <div>Compiling...</div>';
-        return `    <Route exact path="${key}" component={${component}}></Route>`;
+        if (getRequest()[key]) {
+          component = `require('${pageJSFile}').default`;
+        } else {
+          component = '() => <div>Compiling...</div>';
+          isCompiling = true;
+        }
       } else {
-        return `    <Route exact path="${key}" component={dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
+        component = `dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
           routesByPath[key],
-        )}' */'${pageJSFile}'), { ${loadingOpts} }) }></Route>`;
+        )}' */'${pageJSFile}'), { ${loadingOpts} })`;
       }
+      component = this.service.applyPlugins('modifyRouteComponent', {
+        initialValue: component,
+        args: {
+          isCompiling,
+        },
+      });
+
+      return `    <Route exact path="${key}" component={${component}}></Route>`;
     });
 
     return `

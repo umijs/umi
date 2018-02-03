@@ -1,3 +1,5 @@
-export function generateEntry() {
-  console.log('generate entry in plugin1');
+export default function(api) {
+  api.register('generateFiles', () => {
+    console.log('generate files in plugin1');
+  });
 }
