@@ -31,11 +31,8 @@ function App(props) {
   );
 }
 
-const ConnectedApp = connect(state => {
+export default connect(state => {
   return {
     text: state.global.text,
   };
 })(App);
-app.router(() => <ConnectedApp />);
-
-export default app.start();
