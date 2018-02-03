@@ -7,11 +7,8 @@ const app = dva();
 
 class DvaContainer extends Component {
   render() {
-    const props = this.props;
-    app.router(() => {
-      return <div>{ props.children }</div>;
-    });
-    return app.start();
+    app.router(() => this.props.children);
+    return app.start()();
   }
 }
 

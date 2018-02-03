@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "dependencies": {
+    "dva-no-router": "^1.1.0-0"
+  }
+}

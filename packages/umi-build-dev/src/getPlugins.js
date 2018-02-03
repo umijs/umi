@@ -41,17 +41,18 @@ export default function(opts = {}) {
   // 内置插件
   const builtInPlugins = ['./plugins/global-css', './plugins/layout'];
   const plugins = [
-    ...pluginPaths.map(p => {
-      const apply = require(p); // eslint-disable-line
-      return {
-        id: p.replace(cwd, 'user:'),
-        apply: apply.default || apply,
-      };
-    }),
+    // builtIn 的在最前面
     ...builtInPlugins.map(p => {
       const apply = require(p); // eslint-disable-line
       return {
         id: p.replace(/^.\//, 'built-in:'),
+        apply: apply.default || apply,
+      };
+    }),
+    ...pluginPaths.map(p => {
+      const apply = require(p); // eslint-disable-line
+      return {
+        id: p.replace(cwd, 'user:'),
         apply: apply.default || apply,
       };
     }),

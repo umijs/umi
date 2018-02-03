@@ -37,7 +37,6 @@ export default class FilesGenerator {
     watcher.on(
       'all',
       debounce((event, path) => {
-        console.log('rebuild');
         debug(`${event} ${path}`);
         this.rebuild();
       }, 100),

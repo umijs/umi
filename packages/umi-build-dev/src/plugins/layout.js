@@ -21,7 +21,6 @@ import Layout from '${winPath(layoutPath)}';
   });
 
   api.register('modifyRouterContent', ({ memo }) => {
-    console.log(layoutPath, existsSync(layoutPath));
     if (existsSync(layoutPath)) {
       return memo
         .replace('<Switch>', '<Layout><Switch>')
