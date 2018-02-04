@@ -3,10 +3,6 @@ import { connect } from 'dva';
 import { Button } from 'antd-mobile';
 import Count from './components/Count';
 import styles from './page.css';
-import createSharedDva from '../../createSharedDva';
-
-const app = createSharedDva();
-app.model(require('./models/count').default);
 
 function App(props) {
   return (

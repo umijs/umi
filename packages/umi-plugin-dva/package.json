@@ -1,0 +1,30 @@
+{
+  "name": "umi-plugin-dva",
+  "version": "0.1.0",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "DISABLE_TRANSFORM_RUNTIME=1 NODE_TARGET=1 ruban build",
+    "test": "ruban test",
+    "debug": "ruban debug"
+  },
+  "dependencies": {
+    "dva-loading": "^1.0.4",
+    "dva-no-router": "^1.0.3",
+    "globby": "^7.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-yunfengdie"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-yunfengdie",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "files": [
+    "lib",
+    "src"
+  ]
+}

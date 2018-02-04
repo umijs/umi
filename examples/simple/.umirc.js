@@ -1,5 +1,1 @@
-export default {
-  exportStatic: {
-    htmlSuffix: true,
-  },
-};
+export default {};

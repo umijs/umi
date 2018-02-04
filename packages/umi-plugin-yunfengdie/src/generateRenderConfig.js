@@ -1,8 +1,8 @@
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 
-export default function generateRenderConfig(opts = {}) {
-  const { cwd, routes } = opts.service;
+export default function generateRenderConfig(service) {
+  const { cwd, routes } = service;
   const config = getRenderConfig(routes);
   const outputFilePath = join(cwd, 'dist', 'config.json');
   writeFileSync(outputFilePath, JSON.stringify(config, null, 2), 'utf-8');

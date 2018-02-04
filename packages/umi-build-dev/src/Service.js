@@ -1,7 +1,6 @@
 import { sync as rimraf } from 'rimraf';
 import { existsSync, renameSync } from 'fs';
 import { join } from 'path';
-import { applyPlugins } from 'umi-plugin';
 import getWebpackRCConfig, {
   watchConfigs as watchWebpackRCConfig,
   unwatchConfigs as unwatchWebpackRCConfig,
@@ -19,6 +18,7 @@ import send, { PAGE_LIST, BUILD_DONE } from './send';
 import FilesGenerator from './FilesGenerator';
 import HtmlGenerator from './HtmlGenerator';
 import createRouteMiddleware from './createRouteMiddleware';
+import PluginAPI from './PluginAPI';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -54,6 +54,7 @@ export default class Service {
     this.outputPath = outputPath;
 
     this.paths = getPaths(this);
+    this.pluginMethods = {};
 
     this.registerBabel();
   }
@@ -116,8 +117,8 @@ export default class Service {
       return;
     }
 
-    this.initRoutes();
     this.initPlugins();
+    this.initRoutes();
 
     // 生成入口文件
     const filesGenerator = new FilesGenerator(this);
@@ -148,13 +149,10 @@ export default class Service {
       isCompileDone = true;
     };
 
-    // webpackConfig.output.publicPath = '/static/';
-    require('af-webpack/dev').default({
-      webpackConfig,
-      extraMiddlewares: [
+    const extraMiddlewares = this.applyPlugins('modifyMiddlewares', {
+      initialValue: [
         createRouteMiddleware(this, {
           rebuildEntry() {
-            // return;
             if (!isCompileDone) {
               // 改写
               const defaultOnCompileDone = onCompileDone;
@@ -171,8 +169,19 @@ export default class Service {
           },
         }),
       ],
+    });
+
+    require('af-webpack/dev').default({
+      webpackConfig,
+      extraMiddlewares,
       afterServer: devServer => {
         this.devServer = devServer;
+        this.applyPlugins('afterServer', {
+          args: {
+            devServer,
+          },
+        });
+
         returnedWatchWebpackRCConfig(devServer, {
           beforeChange: () => {
             this.registerBabel();
@@ -181,8 +190,13 @@ export default class Service {
         returnedWatchConfig(devServer);
         filesGenerator.watch();
       },
-      onCompileDone() {
+      onCompileDone: stats => {
         onCompileDone();
+        this.applyPlugins('onCompileDone', {
+          args: {
+            stats,
+          },
+        });
       },
       proxy: this.webpackRCConfig.proxy || {},
       // 支付宝 IDE 里不自动打开浏览器
@@ -191,16 +205,31 @@ export default class Service {
   }
 
   initRoutes() {
-    this.routes = getRouteConfig(this.paths, this.config);
+    this.routes = this.applyPlugins('modifyRoutes', {
+      initialValue: getRouteConfig(this.paths, this.config),
+    });
   }
 
   initPlugins() {
+    // TODO: getPlugins 的出错处理
     this.plugins = getPlugins({
       configPlugins: this.config.plugins,
       pluginsFromOpts: this.pluginFiles,
       cwd: this.cwd,
       babel: this.babel,
     });
+    this.plugins.forEach(({ id, apply }) => {
+      apply(new PluginAPI(id, this));
+    });
+  }
+
+  applyPlugins(key, opts = {}) {
+    return (this.pluginMethods[key] || []).reduce((memo, { fn }) => {
+      return fn({
+        memo,
+        args: opts.args,
+      });
+    }, opts.initialValue);
   }
 
   sendPageList() {
@@ -216,8 +245,8 @@ export default class Service {
   build() {
     this.webpackRCConfig = this.getWebpackRCConfig().config;
     this.config = getConfig(this.cwd).config;
-    this.initRoutes();
     this.initPlugins();
+    this.initRoutes();
 
     debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
     rimraf(this.paths.absTmpDirPath);
@@ -260,11 +289,7 @@ export default class Service {
             renameSync(sourceSW, targetSW);
           }
 
-          // Usage:
-          // - umi-plugin-yunfengdie
-          applyPlugins(this.plugins, 'buildSuccess', null, {
-            service: this,
-          });
+          this.applyPlugins('buildSuccess');
           send({
             type: BUILD_DONE,
           });

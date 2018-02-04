@@ -1,25 +1,34 @@
-import { resolvePlugins } from 'umi-plugin';
 import excapeRegExp from 'lodash.escaperegexp';
-import resolvePlugin from './resolvePlugin';
+import resolve from 'resolve';
 import registerBabel from './registerBabel';
 
 export default function(opts = {}) {
   const { configPlugins = [], pluginsFromOpts = [], babel, cwd } = opts;
 
-  const plugins = [...(configPlugins || []), ...(pluginsFromOpts || [])].map(
-    p => {
+  function pluginToPath(plugins) {
+    return plugins.map(p => {
       try {
-        return resolvePlugin(p, { cwd });
+        return resolve.sync(p, {
+          basedir: cwd,
+        });
       } catch (e) {
         throw new Error(`Plugin ${p} don't exists.`);
       }
-    },
-  );
-  if (plugins.length) {
+    });
+  }
+
+  // 拿到绝对路径
+  const pluginPaths = [
+    ...pluginToPath(configPlugins),
+    ...pluginToPath(pluginsFromOpts),
+  ];
+
+  // 用户给的插件需要做 babel 转换
+  if (pluginPaths.length) {
     registerBabel(babel, {
       only: [
         new RegExp(
-          `(${plugins
+          `(${pluginPaths
             .map(p => {
               return excapeRegExp(p);
             })
@@ -28,5 +37,26 @@ export default function(opts = {}) {
       ],
     });
   }
-  return resolvePlugins(plugins);
+
+  // 内置插件
+  const builtInPlugins = ['./plugins/global-css', './plugins/layout'];
+  const plugins = [
+    // builtIn 的在最前面
+    ...builtInPlugins.map(p => {
+      const apply = require(p); // eslint-disable-line
+      return {
+        id: p.replace(/^.\//, 'built-in:'),
+        apply: apply.default || apply,
+      };
+    }),
+    ...pluginPaths.map(p => {
+      const apply = require(p); // eslint-disable-line
+      return {
+        id: p.replace(cwd, 'user:'),
+        apply: apply.default || apply,
+      };
+    }),
+  ];
+
+  return plugins;
 }

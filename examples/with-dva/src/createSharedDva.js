@@ -1,11 +1,10 @@
 import dva from 'dva';
 
-let instance = null;
+let app;
 
-export default function() {
-  if (!instance) {
-    instance = dva();
-    instance.model(require('./models/global').default);
+export default () => {
+  if (!app) {
+    app = dva();
   }
-  return instance;
-}
+  return app;
+};

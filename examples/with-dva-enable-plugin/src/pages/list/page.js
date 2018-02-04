@@ -1,9 +1,6 @@
 import { connect } from 'dva';
 import router from 'umi/router';
 import styles from './page.css';
-import createSharedDva from '../../createSharedDva';
-
-const app = createSharedDva();
 
 function App(props) {
   return (

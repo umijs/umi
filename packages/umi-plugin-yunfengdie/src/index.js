@@ -2,34 +2,30 @@ import addBacon from './addBacon';
 import addMetaInfo from './addMetaInfo';
 import generateRenderConfig from './generateRenderConfig';
 
-const debug = require('debug')('umi:plugin-yunfengdie');
+export default function(api) {
+  if (!process.env.FD_RENDER) return;
 
-const isFDRender = !!process.env.FD_RENDER;
+  const { debug } = api.utils;
 
-export function generateHTML(memo, opts = {}) {
-  if (isFDRender) {
-    const { route } = opts;
+  api.register('modifyAFWebpackOpts', ({ memo }) => {
+    memo.publicPath = '{{ publicPath }}';
+    return memo;
+  });
+
+  api.register('modifyHTML', ({ memo, args }) => {
+    const { route } = args;
     let path = route.path.slice(1);
     if (path === '') {
       path = 'index.html';
     }
-    memo = addBacon(memo, route.path.slice(1));
+    memo = addBacon(memo, path);
     memo = addMetaInfo(memo);
-  }
-  return memo;
-}
+    return memo;
+  });
 
-export function buildSuccess(memo, opts = {}) {
-  if (isFDRender) {
+  api.register('buildSuccess', () => {
     debug('generate render config...');
-    generateRenderConfig(opts);
+    generateRenderConfig(api.service);
     debug('generate render config complete');
-  }
-}
-
-export function updateWebpackConfig(memo) {
-  if (isFDRender) {
-    memo.output.publicPath = '{{ publicPath }}';
-  }
-  return memo;
+  });
 }
