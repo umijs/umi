@@ -221,6 +221,8 @@ export default class Service {
     this.plugins.forEach(({ id, apply }) => {
       apply(new PluginAPI(id, this));
     });
+
+    this.applyPlugins('onStart');
   }
 
   applyPlugins(key, opts = {}) {

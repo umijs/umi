@@ -133,12 +133,15 @@ export default class HtmlGenerator {
             1}).concat('').join('/')`
         : `'/'`;
     }
-    const inlineScriptContent = `
+    let inlineScriptContent = `
 <script>
   window.routerBase = ${routerBase};
   window.resourceBaseUrl = ${resourceBaseUrl};
 </script>
     `.trim();
+    inlineScriptContent = this.service.applyPlugins('modifyHTMLScript', {
+      initialValue: inlineScriptContent,
+    });
 
     const isDev = process.env.NODE_ENV === 'development';
     const cssFiles = isDev ? [] : this.getCSSFiles(component);
