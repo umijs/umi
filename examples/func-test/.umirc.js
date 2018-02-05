@@ -8,6 +8,7 @@ export default {
     './plugin1',
     // 'umi-plugin-yunfengdie',
   ],
+  // hd: 1,
   loading: './PageLoadingComponent',
   // disableServiceWorker: true,
   // exportStatic: {

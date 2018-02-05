@@ -3,8 +3,10 @@ import isPlainObject from 'is-plain-object';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
-export default function() {
-  function getFiles(cwd, pages) {
+export default function(api) {
+  const { cwd } = api.service.paths;
+
+  function getFiles(pages) {
     const files = [
       join(__dirname, '../../../template/document.ejs'),
       join(cwd, 'src/page/document.ejs'),
@@ -28,32 +30,35 @@ export default function() {
       assert(
         isPlainObject(pages),
         `"${
-          this.relativeFile
+          api.relativeFile
         }" 的 "pages" 配置必须是 "Object 对象"，但你配置的是 ${pages.toString()} 。`,
       );
       Object.keys(pages).forEach(key => {
         const { document } = pages[key];
         if (document) {
           assert(
-            existsSync(join(this.cwd, document)),
-            `"${this.relativeFile}" 文件中 "${key}" 的模板文件 "${
-              document
-            }" 并不存在。`,
+            existsSync(join(cwd, document)),
+            `"${
+              api.relativeFile
+            }" 文件中 "${key}" 的模板文件 "${document}" 并不存在。`,
           );
         }
       });
     },
     watch(pages) {
-      this.unwatch();
-      const files = getFiles(this.cwd, pages);
-      this.watch(files).on('all', type => {
+      if (!pages) {
+        pages = api.config[this.name];
+      }
+      api.unwatch();
+      const files = getFiles(pages);
+      api.watch(files).on('all', type => {
         if (type === 'add') return;
-        this.reload();
+        api.service.reload();
       });
     },
     onChange(newPages) {
-      this.reload();
-      this.plugin.watch.call(this, newPages);
+      api.service.reload();
+      this.watch(newPages);
     },
   };
 }

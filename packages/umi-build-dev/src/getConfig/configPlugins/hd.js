@@ -1,8 +1,8 @@
-export default function() {
+export default function(api) {
   return {
     name: 'hd',
     onChange() {
-      this.restart(/* why */ 'Config hd Changed');
+      api.service.restart(/* why */ 'Config hd Changed');
     },
   };
 }

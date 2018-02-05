@@ -2,7 +2,7 @@ import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
-export default function() {
+export default function(api) {
   return {
     name: 'loading',
     validate(val) {
@@ -10,12 +10,13 @@ export default function() {
         typeof val === 'string',
         `Configure item loading should be string, but got ${val}.`,
       );
+      const { cwd } = api.service.paths;
       assert(
-        existsSync(join(this.cwd, val)) ||
-          existsSync(join(this.cwd, `${val}.js`)) ||
-          existsSync(join(this.cwd, `${val}.jsx`)) ||
-          existsSync(join(this.cwd, `${val}.ts`)) ||
-          existsSync(join(this.cwd, `${val}.tsx`)),
+        existsSync(join(cwd, val)) ||
+          existsSync(join(cwd, `${val}.js`)) ||
+          existsSync(join(cwd, `${val}.jsx`)) ||
+          existsSync(join(cwd, `${val}.ts`)) ||
+          existsSync(join(cwd, `${val}.tsx`)),
         `File ${val} of configure item loading not found.`,
       );
     },

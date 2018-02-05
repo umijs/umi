@@ -5,12 +5,13 @@ import getWebpackRCConfig, {
   watchConfigs as watchWebpackRCConfig,
   unwatchConfigs as unwatchWebpackRCConfig,
 } from 'af-webpack/getUserConfig';
+import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
 import getPaths from './getPaths';
 import getRouteConfig from './getRouteConfig';
 import { registerBabelForConfig } from './registerBabel';
-import { getConfig, watchConfigs } from './getConfig';
 import { unwatch } from './getConfig/watch';
+import UserConfig from './UserConfig';
 import getPlugins from './getPlugins';
 import getWebpackConfig from './getWebpackConfig';
 import chunksToMap from './utils/chunksToMap';
@@ -98,20 +99,18 @@ export default class Service {
     }
 
     // 获取用户 config.js 配置
-    let returnedWatchConfig = null;
+    const userConfig = new UserConfig(this);
     try {
-      const configObj = getConfig(this.cwd, { force: true });
-      this.config = configObj.config;
-      returnedWatchConfig = configObj.watch;
+      this.config = userConfig.getConfig({ force: true });
     } catch (e) {
       console.error(chalk.red(e.message));
       debug('Get config failed, watch config and reload');
 
       // 监听配置项变更，然后重新执行 dev 逻辑
-      watchConfigs().on('all', (event, path) => {
+      userConfig.watchConfigs((event, path) => {
         debug(`[${event}] ${path}, unwatch and reload`);
         // 重新执行 dev 逻辑
-        unwatch();
+        userConfig.unwatch();
         this.dev();
       });
       return;
@@ -187,7 +186,8 @@ export default class Service {
             this.registerBabel();
           },
         });
-        returnedWatchConfig(devServer);
+        userConfig.setConfig(this.config);
+        userConfig.watchWithDevServer();
         filesGenerator.watch();
       },
       onCompileDone: stats => {
@@ -244,9 +244,36 @@ export default class Service {
     });
   }
 
+  reload = () => {
+    if (!this.devServer) return;
+    this.devServer.sockWrite(this.devServer.sockets, 'content-changed');
+  };
+
+  printWarn = messages => {
+    if (!this.devServer) return;
+    messages = typeof messages === 'string' ? [messages] : messages;
+    this.devServer.sockWrite(this.devServer.sockets, 'warns', messages);
+  };
+
+  printError = messages => {
+    if (!this.devServer) return;
+    messages = typeof messages === 'string' ? [messages] : messages;
+    this.devServer.sockWrite(this.devServer.sockets, 'errors', messages);
+  };
+
+  restart = why => {
+    if (!this.devServer) return;
+    clearConsole();
+    console.log(chalk.green(`Since ${why}, try to restart server`));
+    unwatch();
+    this.devServer.close();
+    process.send({ type: 'RESTART' });
+  };
+
   build() {
     this.webpackRCConfig = this.getWebpackRCConfig().config;
-    this.config = getConfig(this.cwd).config;
+    const userConfig = new UserConfig(this);
+    this.config = userConfig.getConfig();
     this.initPlugins();
     this.initRoutes();
 

@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { join } from 'path';
-import getConfig, { validConfig } from '../src/getConfig';
+import getConfig, { validConfig } from '../src/getConfig/backup';
 
 const fixtures = join(__dirname, 'fixtures/getConfig');
 

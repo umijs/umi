@@ -1,8 +1,8 @@
-export default function() {
+export default function(api) {
   return {
     name: 'disableServiceWorker',
     onChange() {
-      this.restart(/* why */ 'Config disableServiceWorker Changed');
+      api.service.restart(/* why */ 'Config disableServiceWorker Changed');
     },
   };
 }
