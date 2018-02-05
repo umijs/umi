@@ -33,7 +33,6 @@ export default function(context, opts = {}) {
         require.resolve('babel-plugin-module-resolver'),
         {
           alias: {
-            fastclick: require.resolve('fastclick'),
             [`${libraryName}/dynamic`]: require.resolve('./dynamic'),
             [`${libraryName}/link`]: require.resolve('./link'),
             [`${libraryName}/navlink`]: require.resolve('./navlink'),

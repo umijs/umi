@@ -12,6 +12,7 @@
     "debug": "^3.1.0",
     "didyoumean": "^1.2.1",
     "ejs": "^2.5.7",
+    "fastclick": "^1.0.6",
     "is-plain-object": "^2.0.4",
     "lodash.debounce": "^4.0.8",
     "lodash.escaperegexp": "^4.1.2",
