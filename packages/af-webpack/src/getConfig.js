@@ -509,15 +509,6 @@ export default function getConfig(opts = {}) {
           : {}),
         ...stringifyObject(opts.define || {}),
       }),
-      ...(process.env.ANALYZE
-        ? [
-            new BundleAnalyzerPlugin({
-              analyzerMode: 'server',
-              analyzerPort: process.env.ANALYZE_PORT || 8888,
-              openAnalyzer: true,
-            }),
-          ]
-        : []),
       ...(opts.html ? [new HTMLWebpackPlugin(opts.html)] : []),
       new CaseSensitivePathsPlugin(),
       new webpack.LoaderOptionsPlugin({
@@ -531,6 +522,15 @@ export default function getConfig(opts = {}) {
         : []),
       ...commonsPlugins,
       ...copyPlugins,
+      ...(process.env.ANALYZE
+        ? [
+            new BundleAnalyzerPlugin({
+              analyzerMode: 'server',
+              analyzerPort: process.env.ANALYZE_PORT || 8888,
+              openAnalyzer: true,
+            }),
+          ]
+        : []),
     ],
     externals: opts.externals,
     node: {
