@@ -23,12 +23,12 @@ class UserConfig {
   initConfigPlugins() {
     const map = requireindex(join(__dirname, 'getConfig/configPlugins'));
     let plugins = Object.keys(map).map(key => {
-      return map[key].default(this);
+      return map[key].default;
     });
     plugins = this.service.applyPlugins('modifyConfigPlugins', {
       initialValue: plugins,
     });
-    this.plugins = plugins;
+    this.plugins = plugins.map(p => p(this));
   }
 
   getConfigFile() {
