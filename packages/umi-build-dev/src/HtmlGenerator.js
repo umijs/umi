@@ -70,7 +70,7 @@ export default class HtmlGenerator {
 
   getContent(opts = {}) {
     const { pageConfig = {}, route = {} } = opts;
-    const { paths, webpackConfig, plugins } = this.service;
+    const { paths, webpackConfig } = this.service;
     const { document, context } = pageConfig;
 
     // e.g.
