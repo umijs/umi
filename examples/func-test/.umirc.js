@@ -4,7 +4,7 @@ export default {
     'list.html': { context: { title: '列表页' } },
   },
   plugins: ['./plugin1', 'umi-plugin-yunfengdie'],
-  // hd: 1,
+  hd: 1,
   loading: './PageLoadingComponent',
   // disableServiceWorker: true,
   // exportStatic: {
