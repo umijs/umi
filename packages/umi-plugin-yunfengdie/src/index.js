@@ -6,6 +6,19 @@ export default function(api) {
   if (!process.env.FD_RENDER) return;
 
   const { debug } = api.utils;
+  const { config } = api.service;
+
+  if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
+    throw new Error(
+      `
+云凤蝶发布的项目，请在 .umijs.rc 里配置：
+
+"exportStatic": {
+  "htmlSuffix": true
+}
+    `.trim(),
+    );
+  }
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.publicPath = '{{ publicPath }}';
@@ -14,6 +27,7 @@ export default function(api) {
 
   api.register('modifyHTML', ({ memo, args }) => {
     const { route } = args;
+    console.log('route', route);
     let path = route.path.slice(1);
     if (path === '') {
       path = 'index.html';

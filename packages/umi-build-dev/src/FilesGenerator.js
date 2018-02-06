@@ -100,12 +100,10 @@ export default class FilesGenerator {
       entryJSTpl || paths.defaultEntryTplPath,
       'utf-8',
     );
-    console.log('t1', entryContent);
     entryContent = this.service.applyPlugins('modifyEntryFile', {
       initialValue: entryContent,
     });
 
-    console.log('t2', entryContent);
     entryContent = entryContent.replace(PLACEHOLDER_IMPORT, '');
 
     if (!config.disableServiceWorker) {

@@ -218,9 +218,14 @@ export default class Service {
       cwd: this.cwd,
       babel: this.babel,
     });
-    this.plugins.forEach(({ id, apply }) => {
-      apply(new PluginAPI(id, this));
-    });
+    try {
+      this.plugins.forEach(({ id, apply }) => {
+        apply(new PluginAPI(id, this));
+      });
+    } catch (e) {
+      console.log(chalk.red(`Plugin initialize failed, ${e.message}`));
+      process.exit(1);
+    }
 
     this.applyPlugins('onStart');
   }
