@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-export default function() {
+export default function(api) {
   return {
     name: 'preact',
     validate(val) {
@@ -10,7 +10,7 @@ export default function() {
       );
     },
     onChange() {
-      this.restart(/* why */ 'Configure item preact Changed.');
+      api.service.restart(/* why */ 'Configure item preact Changed.');
     },
   };
 }

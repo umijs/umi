@@ -1,7 +1,6 @@
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
 
-export default function() {
+export default function(api) {
   return {
     name: 'plugins',
     validate(val) {
@@ -11,7 +10,7 @@ export default function() {
       );
     },
     onChange() {
-      this.restart(/* why */ 'Config plugins Changed');
+      api.service.restart(/* why */ 'Config plugins Changed');
     },
   };
 }

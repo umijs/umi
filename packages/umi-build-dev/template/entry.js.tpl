@@ -1,21 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createHistory from 'umi/_createHistory';
-import FastClick from 'fastclick';
+<%= IMPORT %>
 
 // create history
 window.g_history = createHistory({
   basename: window.routerBase,
 });
-
-// fastclick
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-    FastClick.attach(document.body);
-  },
-  false,
-);
 
 // render
 function render() {
