@@ -27,7 +27,7 @@ export default class Service {
   constructor(
     cwd,
     {
-      pluginFiles,
+      plugins: pluginFiles,
       babel,
       entryJSTpl,
       routerTpl,
