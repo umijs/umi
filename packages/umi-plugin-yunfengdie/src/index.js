@@ -11,7 +11,7 @@ export default function(api) {
   if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
     throw new Error(
       `
-云凤蝶发布的项目，请在 .umijs.rc 里配置：
+云凤蝶发布的项目，请在 .umirc.js 里配置：
 
 "exportStatic": {
   "htmlSuffix": true
@@ -27,7 +27,6 @@ export default function(api) {
 
   api.register('modifyHTML', ({ memo, args }) => {
     const { route } = args;
-    console.log('route', route);
     let path = route.path.slice(1);
     if (path === '') {
       path = 'index.html';
