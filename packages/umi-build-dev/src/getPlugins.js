@@ -44,6 +44,7 @@ export default function(opts = {}) {
     './plugins/layout',
     './plugins/fastclick',
     './plugins/hd',
+    './plugins/mock',
   ];
   const plugins = [
     // builtIn 的在最前面
