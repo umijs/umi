@@ -2,6 +2,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 
 export default function(api) {
+  const { IMPORT } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
   const layoutPath = join(paths.absSrcPath, 'layouts/index.js');
@@ -9,10 +10,10 @@ export default function(api) {
   api.register('modifyRouterFile', ({ memo }) => {
     if (existsSync(layoutPath)) {
       return memo.replace(
-        '<%= codeForPlugin %>',
+        IMPORT,
         `
 import Layout from '${winPath(layoutPath)}';
-<%= codeForPlugin %>
+${IMPORT}
         `.trim(),
       );
     } else {

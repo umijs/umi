@@ -2,6 +2,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 
 export default function(api) {
+  const { IMPORT } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
 
@@ -15,10 +16,10 @@ export default function(api) {
 
     if (cssImports.length) {
       return memo.replace(
-        '<%= codeForPlugin %>',
+        IMPORT,
         `
 ${cssImports.join('\r\n')}
-<%= codeForPlugin %>
+${IMPORT}
           `.trim(),
       );
     } else {

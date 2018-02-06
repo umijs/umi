@@ -150,8 +150,8 @@ if (process.env.NODE_ENV === 'production') {
       initialValue: this.getRouterContent(),
     });
     return tplContent
-      .replace('<%= codeForPlugin %>', '')
-      .replace('<%= routeComponents %>', routerContent)
+      .replace('<%= IMPORT %>', '')
+      .replace('<%= ROUTER %>', routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
   }
 

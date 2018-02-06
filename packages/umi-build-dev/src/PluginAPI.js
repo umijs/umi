@@ -1,5 +1,6 @@
 import debug from 'debug';
 import winPath from './winPath';
+import { PLACEHOLDER_IMPORT } from './constants';
 
 // 参考：
 // https://github.com/vuejs/vue-cli/blob/next/packages/%40vue/cli-service/lib/PluginAPI.js
@@ -11,6 +12,9 @@ class PluginAPI {
     this.utils = {
       winPath,
       debug: debug(`umi-plugin: ${id}`),
+    };
+    this.placeholder = {
+      IMPORT: PLACEHOLDER_IMPORT,
     };
   }
 

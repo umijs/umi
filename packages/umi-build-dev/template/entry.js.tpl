@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createHistory from 'umi/_createHistory';
 import FastClick from 'fastclick';
+<%= IMPORT %>
 
 // create history
 window.g_history = createHistory({

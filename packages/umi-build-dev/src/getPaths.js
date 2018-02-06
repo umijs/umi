@@ -42,8 +42,8 @@ export default function(service) {
     absLibraryJSPath: join(absTmpDirPath, `${libraryName}.js`),
     absRegisterSWJSPath: join(absTmpDirPath, 'registerServiceWorker.js'),
     absPageDocumentPath: join(absPagesPath, 'document.ejs'),
-    defaultEntryTplPath: template('entry.js'),
-    defaultRouterTplPath: template('router.js'),
+    defaultEntryTplPath: template('entry.js.tpl'),
+    defaultRouterTplPath: template('router.js.tpl'),
     defaultRegisterSWTplPath: template('registerServiceWorker.js'),
     defaultDocumentPath: template('document.ejs'),
   };
