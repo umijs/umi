@@ -2,7 +2,6 @@ import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
-import px2rem from 'postcss-plugin-px2rem';
 import defaultBrowsers from './defaultConfigs/browsers';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
@@ -26,18 +25,15 @@ export default function(service = {}) {
   // entry
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
   const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
-  const hdFile = join(__dirname, '../template/hd/index.js');
-  const initialEntry = config.hd ? [hdFile] : [];
   const entry = isDev
     ? {
         [libraryName]: [
-          ...initialEntry,
           ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
           entryScript,
         ],
       }
     : {
-        [libraryName]: [...initialEntry, setPublicPathFile, entryScript],
+        [libraryName]: [setPublicPathFile, entryScript],
       };
 
   const pageCount = isDev ? null : Object.keys(routes).length;
@@ -105,7 +101,6 @@ export default function(service = {}) {
       presets: [[babel, { browsers: browserslist }]],
     },
     browserslist,
-    theme: { ...webpackRCConfig.theme, ...(config.hd ? { '@hd': '2px' } : {}) },
     extraResolveModules: [
       ...(webpackRCConfig.extraResolveModules || []),
       ...(extraResolveModules || []),
@@ -132,17 +127,6 @@ export default function(service = {}) {
       ...libAlias,
       ...(webpackRCConfig.alias || {}),
     },
-    extraPostCSSPlugins: [
-      ...(webpackRCConfig.extraPostCSSPlugins || []),
-      ...(config.hd
-        ? [
-            px2rem({
-              rootValue: 100,
-              minPixelValue: 2,
-            }),
-          ]
-        : []),
-    ],
     ...(isDev
       ? {
           // 生产环境的 publicPath 是服务端把 assets 发布到 cdn 后配到 HTML 里的

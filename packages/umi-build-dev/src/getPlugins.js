@@ -43,6 +43,7 @@ export default function(opts = {}) {
     './plugins/global-css',
     './plugins/layout',
     './plugins/fastclick',
+    './plugins/hd',
   ];
   const plugins = [
     // builtIn 的在最前面
