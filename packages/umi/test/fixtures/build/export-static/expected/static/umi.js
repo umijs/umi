@@ -5053,7 +5053,7 @@ function utils_normalizePath(path) {
 
   return history;
 });
-// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi/node_modules/_fastclick@1.0.6@fastclick/lib/fastclick.js
+// EXTERNAL MODULE: /Users/chencheng/Documents/Work/Misc/umi/packages/umi-build-dev/node_modules/_fastclick@1.0.6@fastclick/lib/fastclick.js
 var fastclick = __webpack_require__(97);
 var fastclick_default = /*#__PURE__*/__webpack_require__.n(fastclick);
 
@@ -5061,15 +5061,14 @@ var fastclick_default = /*#__PURE__*/__webpack_require__.n(fastclick);
 
 
 
- // create history
-
-window.g_history = createHistory({
-  basename: window.routerBase
-}); // fastclick
 
 document.addEventListener('DOMContentLoaded', function () {
   fastclick_default.a.attach(document.body);
-}, false); // render
+}, false); // create history
+
+window.g_history = createHistory({
+  basename: window.routerBase
+}); // render
 
 function render() {
   preact_compat_default.a.render(preact_compat_default.a.createElement(__webpack_require__(98).default), document.getElementById('root'));
@@ -5080,6 +5079,12 @@ render(); // hot module replacement
 if (false) {
   module.hot.accept('./router', function () {
     render();
+  });
+}
+
+if (false) {
+  window.g_history.listen(function (location) {
+    new Image().src = (window.routerBase + location.pathname).replace(/\/\//g, '/');
   });
 } // Enable service worker
 
