@@ -9,6 +9,7 @@ import getRouteConfig from './getRouteConfig';
 import { getRequest } from './requestCache';
 import winPath from './winPath';
 import normalizeEntry from './normalizeEntry';
+import { PLACEHOLDER_IMPORT } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -95,10 +96,17 @@ export default class FilesGenerator {
     this.generateRouterJS();
 
     // Generate umi.js
-    let entryContent = readFileSync(entryJSTpl || paths.defaultEntryTplPath);
+    let entryContent = readFileSync(
+      entryJSTpl || paths.defaultEntryTplPath,
+      'utf-8',
+    );
+    console.log('t1', entryContent);
     entryContent = this.service.applyPlugins('modifyEntryFile', {
       initialValue: entryContent,
     });
+
+    console.log('t2', entryContent);
+    entryContent = entryContent.replace(PLACEHOLDER_IMPORT, '');
 
     if (!config.disableServiceWorker) {
       entryContent = `${entryContent}

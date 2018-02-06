@@ -39,7 +39,11 @@ export default function(opts = {}) {
   }
 
   // 内置插件
-  const builtInPlugins = ['./plugins/global-css', './plugins/layout'];
+  const builtInPlugins = [
+    './plugins/global-css',
+    './plugins/layout',
+    './plugins/fastclick',
+  ];
   const plugins = [
     // builtIn 的在最前面
     ...builtInPlugins.map(p => {
