@@ -2,7 +2,7 @@ import px2rem from 'postcss-plugin-px2rem';
 import { join } from 'path';
 
 export default function(api) {
-  const { config, libraryName } = api.service;
+  const { libraryName } = api.service;
 
   api.register('modifyConfigPlugins', ({ memo }) => {
     memo.push(api => {
@@ -17,7 +17,7 @@ export default function(api) {
   });
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
-    if (config.hd) {
+    if (api.service.config.hd) {
       memo.theme = {
         ...(memo.theme || {}),
         '@hd': '2px',

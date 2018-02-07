@@ -9,6 +9,21 @@ import { watch, unwatch } from './getConfig/watch';
 import { setConfig as setMiddlewareConfig } from './createRouteMiddleware';
 
 class UserConfig {
+  static getPluginsConfig(opts = {}) {
+    const { cwd } = opts;
+    const absConfigPath = existsSync(join(cwd, CONFIG_FILES[0]));
+    if (existsSync(absConfigPath)) {
+      try {
+        return require(absConfigPath).plugins;
+      } catch (e) {
+        console.log(e);
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
   constructor(service) {
     this.service = service;
     this.configFailed = false;

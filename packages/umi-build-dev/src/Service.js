@@ -58,6 +58,7 @@ export default class Service {
     this.pluginMethods = {};
 
     this.registerBabel();
+    this.initPlugins();
   }
 
   registerBabel() {
@@ -116,7 +117,6 @@ export default class Service {
       return;
     }
 
-    this.initPlugins();
     this.initRoutes();
 
     // 生成入口文件
@@ -218,9 +218,11 @@ export default class Service {
   }
 
   initPlugins() {
-    // TODO: getPlugins 的出错处理
+    const configPlugins = UserConfig.getPluginsConfig({
+      cwd: this.cwd,
+    });
     this.plugins = getPlugins({
-      configPlugins: this.config.plugins,
+      configPlugins,
       pluginsFromOpts: this.pluginFiles,
       cwd: this.cwd,
       babel: this.babel,
@@ -289,7 +291,6 @@ export default class Service {
     this.webpackRCConfig = this.getWebpackRCConfig().config;
     const userConfig = new UserConfig(this);
     this.config = userConfig.getConfig();
-    this.initPlugins();
     this.initRoutes();
 
     debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
