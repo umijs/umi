@@ -3,7 +3,7 @@ import { join, dirname } from 'path';
 import globby from 'globby';
 
 export default function(api) {
-  const { IMPORT } = api.placeholder;
+  const { IMPORT, RENDER } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
@@ -43,20 +43,18 @@ export default function(api) {
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
   });
 
-  api.register('modifyRouterFile', ({ memo }) => {
+  api.register('modifyEntryFile', ({ memo }) => {
     return memo.replace(
-      IMPORT,
+      RENDER,
       `
-import DvaContainer from '${winPath(dvaContainerPath)}';
-${IMPORT}
+const DvaContainer = require('./DvaContainer').default;
+ReactDOM.render(React.createElement(
+  DvaContainer,
+  null,
+  React.createElement(require('./router').default)
+), document.getElementById('root'));
       `.trim(),
     );
-  });
-
-  api.register('modifyRouterContent', ({ memo }) => {
-    return memo
-      .replace('<Switch>', '<DvaContainer><Switch>')
-      .replace('</Switch>', '</Switch></DvaContainer>');
   });
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {

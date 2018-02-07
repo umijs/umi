@@ -1,7 +1,7 @@
 import debug from 'debug';
 import excapeRegExp from 'lodash.escaperegexp';
 import winPath from './winPath';
-import { PLACEHOLDER_IMPORT } from './constants';
+import { PLACEHOLDER_IMPORT, PLACEHOLDER_RENDER } from './constants';
 import registerBabel from './registerBabel';
 
 // 参考：
@@ -17,6 +17,7 @@ class PluginAPI {
     };
     this.placeholder = {
       IMPORT: PLACEHOLDER_IMPORT,
+      RENDER: PLACEHOLDER_RENDER,
     };
   }
 

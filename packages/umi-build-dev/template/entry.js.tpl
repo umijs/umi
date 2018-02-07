@@ -10,7 +10,7 @@ window.g_history = createHistory({
 
 // render
 function render() {
-  ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));
+  <%= RENDER %>
 }
 render();
 
