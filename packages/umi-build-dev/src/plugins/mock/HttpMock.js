@@ -22,8 +22,9 @@ class HttpMock {
   }
 
   realApplyMock() {
+    const { debug } = this.api.utils;
     const config = this.getConfig();
-    this.api.debug(`config: ${JSON.stringify(config)}`);
+    debug(`config: ${JSON.stringify(config)}`);
     const { devServer } = this;
     const { app } = devServer;
 
