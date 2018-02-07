@@ -307,7 +307,7 @@ export default class Service {
       require('af-webpack/build').default({
         webpackConfig,
         success: ({ stats }) => {
-          if (process.env.RM_TMPDIR === 'none') {
+          if (process.env.RM_TMPDIR !== 'none') {
             debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
             rimraf(this.paths.absTmpDirPath);
           }
