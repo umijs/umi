@@ -137,7 +137,7 @@ export default function(service = {}) {
           publicPath: webpackRCConfig.publicPath || `./${staticDirectory}/`,
           commons: webpackRCConfig.commons || [
             {
-              async: '__common',
+              async: 'common',
               children: true,
               minChunks(module, count) {
                 if (pageCount <= 2) {
