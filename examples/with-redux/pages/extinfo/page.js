@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { Component } from '../../components/base';
 import { List, Stepper, Button, WhiteSpace } from 'antd-mobile';
 import styles from './page.css';
+import { updateValue } from '../../redux/action';
+import { registerReducer } from '../../redux/store';
 
-import { updateValue } from '../../store/action';
-
-import { registerReducer } from '../../store';
 registerReducer('extinfo', (state, action) => {
   return { ready: 'extinfo' };
 });

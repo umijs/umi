@@ -4,7 +4,7 @@ import { Component } from '../components/base';
 import { List, WhiteSpace, Stepper } from 'antd-mobile';
 import Link from 'umi/link';
 
-import { updateValue } from '../store/action';
+import { updateValue } from '../redux/action';
 
 const Item = List.Item;
 
