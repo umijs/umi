@@ -17,9 +17,13 @@ export default function createRouteMiddleware(service, opts = {}) {
           req,
         },
       });
-      setRequest(path, {
-        onChange: opts.rebuildEntry,
-      });
+
+      // 尝试解决 Compiling... 不消失的问题
+      setTimeout(() => {
+        setRequest(path, {
+          onChange: opts.rebuildEntry,
+        });
+      }, 300);
 
       const htmlGenerator = new HtmlGenerator(service);
       const content = htmlGenerator.getContent({
