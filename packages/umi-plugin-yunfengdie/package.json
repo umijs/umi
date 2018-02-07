@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-yunfengdie",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "./lib/index.js",
   "scripts": {
     "build": "DISABLE_TRANSFORM_RUNTIME=1 NODE_TARGET=1 ruban build",
