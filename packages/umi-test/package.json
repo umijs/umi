@@ -37,7 +37,7 @@
     "debug": "^3.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "jest-cli": "^21.2.1",
+    "jest-cli": "^22.1.4",
     "jsdom": "^11.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
