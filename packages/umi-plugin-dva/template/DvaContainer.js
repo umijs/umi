@@ -5,6 +5,7 @@ import createLoading from 'dva-loading';
 const app = dva({
   history: window.g_history,
 });
+window.g_app = app;
 app.use(createLoading());
 <%= RegisterPlugins %>
 <%= RegisterModels %>

@@ -25,6 +25,7 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "template"
   ]
 }
