@@ -37,6 +37,7 @@ export default function(context, opts = {}) {
             [`${libraryName}/link`]: require.resolve('./link'),
             [`${libraryName}/navlink`]: require.resolve('./navlink'),
             [`${libraryName}/router`]: require.resolve('./router'),
+            [`${libraryName}/withRouter`]: require.resolve('./withRouter'),
             [`${libraryName}/_createHistory`]: require.resolve(
               './createHistory',
             ),

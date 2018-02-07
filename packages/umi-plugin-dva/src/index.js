@@ -1,8 +1,9 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import globby from 'globby';
 
 export default function(api) {
+  const { IMPORT } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
@@ -44,10 +45,10 @@ export default function(api) {
 
   api.register('modifyRouterFile', ({ memo }) => {
     return memo.replace(
-      '<%= codeForPlugin %>',
+      IMPORT,
       `
 import DvaContainer from '${winPath(dvaContainerPath)}';
-<%= codeForPlugin %>
+${IMPORT}
       `.trim(),
     );
   });
@@ -61,7 +62,7 @@ import DvaContainer from '${winPath(dvaContainerPath)}';
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.alias = {
       ...memo.alias,
-      dva: require.resolve('dva-no-router'),
+      dva: dirname(require.resolve('dva/package')),
       'dva-loading': require.resolve('dva-loading'),
     };
     return memo;

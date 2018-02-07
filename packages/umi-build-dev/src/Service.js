@@ -173,6 +173,13 @@ export default class Service {
     require('af-webpack/dev').default({
       webpackConfig,
       extraMiddlewares,
+      beforeServer: devServer => {
+        this.applyPlugins('beforeServer', {
+          args: {
+            devServer,
+          },
+        });
+      },
       afterServer: devServer => {
         this.devServer = devServer;
         this.applyPlugins('afterServer', {
@@ -218,14 +225,17 @@ export default class Service {
       cwd: this.cwd,
       babel: this.babel,
     });
-    try {
-      this.plugins.forEach(({ id, apply }) => {
+    this.plugins.forEach(({ id, apply }) => {
+      try {
         apply(new PluginAPI(id, this));
-      });
-    } catch (e) {
-      console.log(chalk.red(`Plugin initialize failed, ${e.message}`));
-      process.exit(1);
-    }
+      } catch (e) {
+        console.error(
+          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
+        );
+        console.error(e);
+        process.exit(1);
+      }
+    });
 
     this.applyPlugins('onStart');
   }

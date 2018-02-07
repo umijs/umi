@@ -1,6 +1,8 @@
 import debug from 'debug';
+import excapeRegExp from 'lodash.escaperegexp';
 import winPath from './winPath';
 import { PLACEHOLDER_IMPORT } from './constants';
+import registerBabel from './registerBabel';
 
 // 参考：
 // https://github.com/vuejs/vue-cli/blob/next/packages/%40vue/cli-service/lib/PluginAPI.js
@@ -29,6 +31,13 @@ class PluginAPI {
 
   modifyWebpackConfig(fn) {
     this.register('modifyWebpackConfig', fn);
+  }
+
+  registerBabel(files) {
+    const excapedFiles = files.map(file => excapeRegExp(file));
+    registerBabel(this.service.babel, {
+      only: [new RegExp(`(${excapedFiles.join('|')})`)],
+    });
   }
 }
 

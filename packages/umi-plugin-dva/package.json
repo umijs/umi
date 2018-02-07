@@ -8,8 +8,8 @@
     "debug": "ruban debug"
   },
   "dependencies": {
+    "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
-    "dva-no-router": "^1.0.3",
     "globby": "^7.1.1"
   },
   "repository": {

@@ -7,6 +7,7 @@
     "af-webpack": "^0.16.3",
     "antd": "^3.0.0",
     "antd-mobile": "^2.0.0",
+    "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
     "chokidar": "^1.7.0",
     "debug": "^3.1.0",
