@@ -173,6 +173,11 @@ if (process.env.NODE_ENV === 'production') {
       return memo;
     }, {});
 
+    // 导出静态文件时，匹配 /index.html 到 /
+    if (config.exportStatic && routesByPath['/']) {
+      routesByPath['/index.html'] = routesByPath['/'];
+    }
+
     const { loading } = config;
     let loadingOpts = '';
     if (loading) {
