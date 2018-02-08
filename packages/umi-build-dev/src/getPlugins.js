@@ -2,6 +2,8 @@ import excapeRegExp from 'lodash.escaperegexp';
 import resolve from 'resolve';
 import registerBabel from './registerBabel';
 
+const debug = require('debug')('umi-build-dev:getPlugin');
+
 export default function(opts = {}) {
   const { configPlugins = [], pluginsFromOpts = [], babel, cwd } = opts;
 
@@ -63,6 +65,8 @@ export default function(opts = {}) {
       };
     }),
   ];
+
+  debug(`plugins: ${plugins.map(p => p.id)}`);
 
   return plugins;
 }

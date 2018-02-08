@@ -8,8 +8,8 @@ function Count({ dispatch, count }) {
       <div>Count: {count}</div>
       <br />
       <div>
-        type="primary"
         <Button
+          type="primary"
           onClick={() => {
             dispatch({ type: 'count/increase' });
           }}
