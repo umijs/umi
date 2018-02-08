@@ -6,7 +6,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "components": ["./"]
+      "components": ["components"]
     },
     "allowSyntheticDefaultImports": true
   }

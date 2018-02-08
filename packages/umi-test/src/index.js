@@ -4,6 +4,8 @@ import { existsSync, statSync } from 'fs';
 
 const debug = require('debug')('umi-test');
 
+process.env.NODE_ENV = 'test';
+
 function test(path) {
   return existsSync(path) && statSync(path).isDirectory();
 }
@@ -35,6 +37,11 @@ export default function(opts = {}) {
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('./styleMock'),
     },
+    globals: {
+      'ts-jest': {
+        useBabelrc: true,
+      },
+    },
     ...(coverage
       ? {
           collectCoverageFrom: [
@@ -56,7 +63,9 @@ export default function(opts = {}) {
       .runCLI(
         {
           watch,
-          testPathPattern: process.argv.slice(2).filter(arg => !arg.startsWith('-')),
+          testPathPattern: process.argv
+            .slice(2)
+            .filter(arg => !arg.startsWith('-')),
           config: JSON.stringify(config),
         },
         [cwd],

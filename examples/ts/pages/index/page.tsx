@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'umi/link';
 import Count from './components/Count';
-import A from '../../components/A';
+import A from 'components/A';
 import styles from './page.css';
 
 export default () => {

@@ -8,6 +8,7 @@ tmp
 /examples/*/_dist
 /examples/*/_package
 /website/build
+/packages/umi-test/examples/*/node_modules
 lib
 dist
 coverage
