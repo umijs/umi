@@ -1,0 +1,15 @@
+{
+  "name": "umi-ele-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build"
+  },
+  "author": "zhang740@vmzclub.com",
+  "license": "MIT",
+  "dependencies": {
+    "react-sticky": "^6.0.1"
+  }
+}

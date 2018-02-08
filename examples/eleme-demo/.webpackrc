@@ -1,0 +1,11 @@
+{
+  "proxy": {
+    "/restapi": {
+      "target": "https://h5.ele.me/restapi/",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/restapi": ""
+      }
+    }
+  }
+}
