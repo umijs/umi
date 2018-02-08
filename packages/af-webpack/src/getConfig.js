@@ -25,6 +25,7 @@ import { applyWebpackConfig } from './applyWebpackConfig';
 import readRc from './readRc';
 import { stripLastSlash } from './utils';
 
+const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 const debug = require('debug')('af-webpack:getConfig');
 
 if (process.env.DISABLE_TSLINT) {
@@ -336,6 +337,7 @@ export default function getConfig(opts = {}) {
         '@babel/runtime': dirname(require.resolve('@babel/runtime/package')),
         ...opts.alias,
       },
+      plugins: [new TsConfigPathsPlugin()]
     },
     module: {
       rules: [
