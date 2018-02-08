@@ -51,8 +51,12 @@ const Logo = props => (
 
 const ProjectTitle = props => (
   <h2 className="projectTitle">
-    { props.language === 'en' ? siteConfig.title : '五米' }
-    <small>{siteConfig.tagline}</small>
+    {props.language === 'en' ? siteConfig.title : '五米'}
+    <small>
+      {props.language === 'en'
+        ? siteConfig.tagline
+        : '极快的类 Next.js 的 React 应用框架。'}
+    </small>
   </h2>
 );
 
@@ -74,7 +78,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle language={language} />
           <PromoSection>
             <Button href={docUrl('getting-started.html', language)}>
-              GET STARTED
+              {language === 'en' ? 'GET STARTED' : '快速入门'}
             </Button>
             <Button href="https://github.com/umijs/umi">GITHUB</Button>
           </PromoSection>
@@ -117,21 +121,21 @@ const Features = props => (
       ? [
           {
             content:
-              "Built-in PWA, page-level on-demand loading, Webpack's tree-shake and scope hoist, intelligent extraction of common modules, and more. And, your application will continue to improve performance as umi improves.",
+              'PWA, code splitting, tree-shake, scope-hoist, smart extraction of common files, Critical CSS, preload, hash build, preact and more, and your same code will continue to improve as umi improves.',
             image: imgUrl('speed.svg'),
             imageAlign: 'top',
             title: 'High Performance',
           },
           {
             content:
-              'You do not need to install dozens of dependencies such as react, antd, antd-mobile, webpack, babel, eslint, jest, etc., and only need one umi dependency. You do not even have to configure babel-plugin-import for antd.',
+              'You just need only one dependent umi to start the development, without having to install react, preact, react-router, eslint, babel, jest and so on.',
             image: imgUrl('out-of-box.svg'),
             imageAlign: 'top',
             title: 'Out Of The Box',
           },
           {
             content:
-              'By statically wrapping the way, seamlessly switch between single page and multi page mode, so if you want to deploy to the server and containers (such as Alipay, Taobao, etc.), a code can be.',
+              'Support both single page and multiple pages, deploy to the cdn, APP Containers, yunfengdie and other environments with one copy of code.',
             image: imgUrl('user.svg'),
             imageAlign: 'top',
             title: 'Multiple Platform',
@@ -140,24 +144,31 @@ const Features = props => (
       : [
           {
             content:
-              '默认内置 PWA、页面级的按需加载、Webpack 的 tree-shake 和 scope hoist、公共模块的智能提取，等等。并且，你相同的代码会随着 umi 的改进而不断提升性能。',
+              'PWA、按需加载、tree-shake、scope-hoist、智能提取公共文件、Critical CSS、preload、hash build、preact 等等，并且，你相同的代码会随着 umi 的改进而不断提升性能。',
             image: imgUrl('speed.svg'),
             imageAlign: 'top',
             title: '高性能',
           },
           {
             content:
-              '您无需安装 react、antd、antd-mobile、webpack、babel、eslint、jest 等数十个依赖，只需一个 umi 依赖。甚至无需为 antd 配置 babel-plugin-import 。',
+              '你只需一个依赖 umi 就可启动开发，而无需安装 react、preact、react-router、eslint、babel、jest 等。',
             image: imgUrl('out-of-box.svg'),
             imageAlign: 'top',
             title: '开箱即用',
           },
           {
             content:
-              '通过静态化打包的方式，无缝切换单页和多页模式，所以你如果要同步部署到服务器和容器（比如支付宝、淘宝等），一份代码即可。',
+              '一键切换单页和多页，一份代码同时部署到 cdn、容器、云凤蝶等环境，详见部署文档。',
             image: imgUrl('user.svg'),
             imageAlign: 'top',
             title: '多端',
+          },
+          {
+            content:
+              'umi 的整个生命周期都是插件化的，甚至就是由大量插件组成，比如 http mock、service worker、layout、高清方案等，都是一个个的插件。',
+            image: imgUrl('plugin.svg'),
+            imageAlign: 'top',
+            title: '扩展性',
           },
         ]}
   </Block>
@@ -202,16 +213,28 @@ const TryOut = props => (
 );
 
 const Description = props => (
-  <Block background="dark">
-    {[
-      {
-        content: 'This is another description of how this project is useful',
-        image: imgUrl('rice.svg'),
-        imageAlign: 'right',
-        title: 'Description',
-      },
-    ]}
-  </Block>
+  <Container padding={['bottom', 'top']} background="light">
+    <GridBlock
+      align="left"
+      contents={[
+        props.language === 'en'
+          ? {
+              content:
+                'Based on the experience of create-react-app, and do more, such as compile on-demand, dev server disconnection reconnect ...',
+              image: imgUrl('terminal.png'),
+              imageAlign: 'right',
+              title: 'Development experience',
+            }
+          : {
+              content:
+                '基于 create-react-app 实现更多体验上的优化，比如按需编译（不管有项目多大启动时间都不超过 10s）、dev server 断线重连、配置的校验、自动生效以及提示到行等。',
+              image: imgUrl('terminal.png'),
+              imageAlign: 'right',
+              title: '开发体验',
+            },
+      ]}
+    />
+  </Container>
 );
 
 const Showcase = props => {
@@ -256,7 +279,7 @@ class Index extends React.Component {
           {/*<FeatureCallout language={language} />*/}
           {/*<LearnHow />*/}
           {/*<TryOut />*/}
-          <Description />
+          <Description language={language} />
           <Showcase language={language} />
         </div>
       </div>
