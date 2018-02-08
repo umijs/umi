@@ -37,6 +37,7 @@ class PluginAPI {
   registerBabel(files) {
     const excapedFiles = files.map(file => excapeRegExp(file));
     registerBabel(this.service.babel, {
+      cwd: this.service.cwd,
       only: [new RegExp(`(${excapedFiles.join('|')})`)],
     });
   }

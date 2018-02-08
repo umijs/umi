@@ -4,6 +4,10 @@
     "module": "es6",
     "moduleResolution": "node",
     "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "components": ["./"]
+    },
     "allowSyntheticDefaultImports": true
   }
 }
