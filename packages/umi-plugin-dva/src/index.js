@@ -9,7 +9,7 @@ export default function(api) {
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
 
   function getModels() {
-    const modelPaths = globby.sync('**/models/*.js', {
+    const modelPaths = globby.sync('**/models/*.{ts,js}', {
       cwd: paths.absSrcPath,
     });
     return modelPaths
