@@ -28,14 +28,12 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
-              Getting Started (or other categories)
+            <a href={this.docUrl('getting-started.html', this.props.language)}>
+              Getting Started
             </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
-            </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <a href={this.docUrl('router.html', this.props.language)}>Guides</a>
+            <a href={this.docUrl('api.html', this.props.language)}>
+              API Reference
             </a>
           </div>
           <div>
@@ -45,6 +43,18 @@ class Footer extends React.Component {
             </a>
             <a href="https://twitter.com/chenchengpro" target="_blank">
               Twitter
+            </a>
+            <a
+              href="https://gw.alipayobjects.com/zos/rmsportal/lCQGxCGfVgoDfXkYguor.jpg"
+              target="_blank"
+            >
+              加入微信群
+            </a>
+            <a
+              href="https://gw.alipayobjects.com/zos/rmsportal/JYGguxCbfjGAxQxNZQdD.jpg"
+              target="_blank"
+            >
+              加入钉钉群
             </a>
           </div>
           <div>
