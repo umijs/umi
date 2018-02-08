@@ -5,11 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "umi dev",
-    "build": "umi build"
+    "build": "umi build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "zhang740@vmzclub.com",
   "license": "MIT",
   "dependencies": {
     "react-sticky": "^6.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-umi": "^0.1.2",
+    "eslint-plugin-flowtype": "^2.42.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.1",
+    "antd-mobile": "^2.1.6",
+    "umi": "^1.0.0-rc.13"
   }
 }

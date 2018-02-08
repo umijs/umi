@@ -1,4 +1,5 @@
 import * as React from "react";
+import router from "umi/router";
 import { NavBar, Icon, List, WhiteSpace } from "antd-mobile";
 import * as styles from "./page.less";
 
@@ -24,6 +25,7 @@ export default class extends React.Component {
       <div>
         <div className={styles.banner}>
           <NavBar
+            onLeftClick={() => router.goBack()}
             mode="dark"
             icon={<Icon type="left" />}
           >我的</NavBar>

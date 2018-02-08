@@ -1,9 +1,19 @@
 import * as React from "react";
+import router from "umi/router";
 import { StickyContainer, Sticky } from 'react-sticky';
 import { SearchBar, Grid, ListView } from "antd-mobile";
 import * as styles from './page.less';
 
 export default class extends React.Component {
+
+  constructor(props) {
+    super(props);
+    if (window.location.pathname.indexOf('/home') < 0) {
+      router.replace('/home');
+      return;
+    }
+  }
+
   state = {
     address: '当前地址',
     coords: {},
@@ -17,7 +27,6 @@ export default class extends React.Component {
   });
 
   componentWillMount() {
-    console.log('componentWillMount', navigator.geolocation)
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         console.log('getCurrentPosition', position)
@@ -138,13 +147,25 @@ export default class extends React.Component {
     }
   }
 
+  gotoDetail = (data) => {
+    const { coords } = this.state;
+    router.push({
+      pathname: '/shop',
+      query: {
+        id: data.id,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      }
+    });
+  }
+
   renderRow = (rowData, sectionID, rowID) => {
     if (!rowData) {
       return null;
     }
     const data = rowData.restaurant;
     return (
-      <div className={styles.restItem}>
+      <div className={styles.restItem} onClick={() => this.gotoDetail(data)}>
         <div className={styles.logo}>
           <img src={this.getImage(data.image_path)} alt="" />
         </div>
@@ -203,7 +224,7 @@ export default class extends React.Component {
           <Sticky>
             {
               ({ style }) => (
-                <div style={{ ...style, zIndex: 1, height: 147, overflow: 'hidden' }}>
+                <div style={{ ...style, zIndex: 1, height: '1.2rem', overflow: 'hidden' }}>
                   <SearchBar
                     placeholder="搜索商家、商品名称"
                     className={styles.search}

@@ -1,53 +1,80 @@
 import * as React from 'react';
+import withRouter from 'umi/withRouter';
 import router from 'umi/router';
 import { Tabs } from 'antd-mobile';
 import * as styles from './index.less';
 
-export default class extends React.Component {
-  isActive(url) {
-    return window.location.pathname.indexOf(url) > -1;
+@withRouter
+export default class extends React.PureComponent {
+  state = {
+    showTab: false,
+  };
+
+  tabData = [
+    { title: '首页', href: '/home', icon: svgs[0], icon2: svgs2[0] },
+    { title: '发现', href: '/discover', icon: svgs[1], icon2: svgs2[1] },
+    { title: '订单', href: '/order', icon: svgs[2], icon2: svgs2[2] },
+    { title: '我的', href: '/profile', icon: svgs[3], icon2: svgs2[3] },
+  ];
+
+  componentWillMount() {
+    this.setState({
+      showTab: this.needShowTab(),
+    });
   }
 
-  gotoTab(url) {
-    router.push(url);
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      showTab: this.needShowTab(nextProps.location.pathname),
+    });
   }
+
+  needShowTab(url) {
+    return this.tabData.some(item => this.isActive(item.href, url));
+  }
+
+  isActive(href, url = window.location.pathname) {
+    return url.indexOf(href) > -1;
+  }
+
+  gotoTab = url => {
+    router.push(url);
+  };
 
   render() {
+    const { showTab } = this.state;
+
     return (
       <div>
-        <div className={styles.content}>{this.props.children}</div>
-        <div className={styles.tabbar}>
-          <Tabs
-            tabs={[
-              { title: '首页', href: '/home', icon: svgs[0], icon2: svgs2[0] },
-              {
-                title: '发现',
-                href: '/discover',
-                icon: svgs[1],
-                icon2: svgs2[1],
-              },
-              { title: '订单', href: '/order', icon: svgs[2], icon2: svgs2[2] },
-              {
-                title: '我的',
-                href: '/profile',
-                icon: svgs[3],
-                icon2: svgs2[3],
-              },
-            ]}
-            noRenderContent={true}
-            animated={false}
-            renderTab={tab => (
-              <div className={styles.tab}>
-                <div className={styles.icon}>
-                  {this.isActive(tab.href) ? tab.icon2 : tab.icon}
-                </div>
-                <div className={styles.title}>{tab.title}</div>
-              </div>
-            )}
-            tabBarUnderlineStyle={{ display: 'none' }}
-            onTabClick={tab => this.gotoTab(tab.href)}
-          />
+        <div className={showTab ? styles.contentTab : styles.content}>
+          {this.props.children}
         </div>
+        {showTab && (
+          <div className={styles.tabbar}>
+            <Tabs
+              tabs={this.tabData}
+              noRenderContent={true}
+              animated={false}
+              renderTab={tab => (
+                <div className={styles.tab}>
+                  <div className={styles.icon}>
+                    {this.isActive(tab.href) ? tab.icon2 : tab.icon}
+                  </div>
+                  <div
+                    className={styles.title}
+                    style={{
+                      color: this.isActive(tab.href) ? '#0089dc' : '',
+                    }}
+                  >
+                    {tab.title}
+                  </div>
+                </div>
+              )}
+              tabBarUnderlineStyle={{ display: 'none' }}
+              onTabClick={tab => this.gotoTab(tab.href)}
+            />
+          </div>
+        )}
       </div>
     );
   }
