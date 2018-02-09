@@ -6,19 +6,21 @@ export default function(api) {
   if (!process.env.FD_RENDER) return;
 
   const { debug } = api.utils;
-  const { config } = api.service;
 
-  if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
-    throw new Error(
-      `
+  api.register('onStart', () => {
+    const { config } = api.service;
+    if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
+      throw new Error(
+        `
 云凤蝶发布的项目，请在 .umirc.js 里配置：
 
 "exportStatic": {
   "htmlSuffix": true
 }
     `.trim(),
-    );
-  }
+      );
+    }
+  });
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.publicPath = '{{ publicPath }}';

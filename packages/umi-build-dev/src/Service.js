@@ -117,6 +117,7 @@ export default class Service {
       return;
     }
 
+    this.applyPlugins('onStart');
     this.initRoutes();
 
     // 生成入口文件
@@ -238,16 +239,19 @@ export default class Service {
         process.exit(1);
       }
     });
-
-    this.applyPlugins('onStart');
   }
 
   applyPlugins(key, opts = {}) {
     return (this.pluginMethods[key] || []).reduce((memo, { fn }) => {
-      return fn({
-        memo,
-        args: opts.args,
-      });
+      try {
+        return fn({
+          memo,
+          args: opts.args,
+        });
+      } catch (e) {
+        console.error(chalk.red(`Plugin apply failed: ${e.message}`));
+        throw e;
+      }
     }, opts.initialValue);
   }
 
@@ -291,6 +295,7 @@ export default class Service {
     this.webpackRCConfig = this.getWebpackRCConfig().config;
     const userConfig = new UserConfig(this);
     this.config = userConfig.getConfig();
+    this.applyPlugins('onStart');
     this.initRoutes();
 
     debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
