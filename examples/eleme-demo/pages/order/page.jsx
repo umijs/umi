@@ -12,15 +12,6 @@ export default class extends React.Component {
   }
 
   render() {
-    const items = [
-      { title: '金币商城' },
-      { title: '有红包快抢' },
-      { title: '必吃爆料' },
-      { title: '推荐有奖' },
-      { title: '周边优惠' },
-      { title: '百元红包' },
-    ];
-
     return (
       <div>
         <NavBar
