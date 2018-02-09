@@ -1,6 +1,8 @@
 import { Component } from 'react';
+import withRouter from 'umi/withRouter';
+import { connect } from 'react-redux';
 
-export default class Layout extends Component {
+class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,3 +26,5 @@ export default class Layout extends Component {
     }
   }
 }
+
+export default withRouter(connect()(Layout));
