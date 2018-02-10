@@ -59,6 +59,7 @@ export default function(context, opts = {}) {
         {
           targets: opts.targets || { browsers },
           debug: opts.debug,
+          useBuiltIns: opts.useBuiltIns,
           modules: false,
           exclude: [
             'transform-typeof-symbol',
