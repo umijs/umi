@@ -13,6 +13,7 @@
     "env-variables": "环境变量",
     "faq": "FAQ",
     "getting-started": "快速上手",
+    "html-tpl": "配置 HTML 模板",
     "introduction": "简介",
     "layout": "添加布局",
     "load-on-demand": "按需加载",

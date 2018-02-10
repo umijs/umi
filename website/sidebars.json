@@ -12,6 +12,7 @@
     ],
     "Guides": [
       "router",
+      "html-tpl",
       "load-on-demand",
       "pwa",
       "test",
