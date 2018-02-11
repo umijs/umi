@@ -6,10 +6,10 @@
 
 ## 社区
 
-扫码进入 ICE 公测微信群。
+扫码进入微信群。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/lCQGxCGfVgoDfXkYguor.jpg"  />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/lCQGxCGfVgoDfXkYguor.jpg" width="200" />
 
 或者钉钉群。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/JYGguxCbfjGAxQxNZQdD.jpg" />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/JYGguxCbfjGAxQxNZQdD.jpg" width="200" />
