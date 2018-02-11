@@ -35,7 +35,7 @@ export default function(opts = {}) {
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
-      '\\.(css|less|sass|scss)$': require.resolve('./styleMock'),
+      '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
     },
     globals: {
       'ts-jest': {
