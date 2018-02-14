@@ -59,7 +59,7 @@ export default function getConfig(opts = {}) {
     ? {}
     : {
         modules: true,
-        localIdentName: '[local]___[hash:base64:5]',
+        localIdentName: isDev ? '[name]__[local]___[hash:base64:5]' : '[local]___[hash:base64:5]',
       };
   const lessOptions = {
     modifyVars: theme,
