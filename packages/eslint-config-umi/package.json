@@ -13,7 +13,6 @@
     "url": "https://github.com/umijs/umi/issues"
   },
   "scripts": {
-    "build": "DISABLE_TRANSFORM_RUNTIME=1 NODE_TARGET=1 ruban build",
     "test": "ruban test",
     "debug": "ruban debug",
     "coveralls": "ruban coveralls"

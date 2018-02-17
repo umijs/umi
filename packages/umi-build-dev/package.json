@@ -42,7 +42,6 @@
     "url": "http://github.com/umijs/umi/issues"
   },
   "scripts": {
-    "build": "ruban build",
     "test": "ruban test",
     "debug": "ruban debug",
     "coveralls": "ruban coveralls"

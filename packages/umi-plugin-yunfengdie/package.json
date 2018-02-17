@@ -3,7 +3,6 @@
   "version": "0.3.3",
   "main": "./lib/index.js",
   "scripts": {
-    "build": "DISABLE_TRANSFORM_RUNTIME=1 NODE_TARGET=1 ruban build",
     "test": "ruban test",
     "debug": "ruban debug"
   },
