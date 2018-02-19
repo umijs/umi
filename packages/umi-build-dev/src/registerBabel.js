@@ -16,7 +16,6 @@ export default function(babelPreset, opts = {}) {
     const fullPath = f.charAt(0) === '/' ? f : join(cwd, f);
     return excapeRegExp(winPath(fullPath));
   });
-  console.log(only);
   registerBabel({
     only: [only.join('|')],
     babelPreset: [babelPreset, { disableTransform: true }],
