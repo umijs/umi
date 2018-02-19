@@ -1,6 +1,6 @@
 import excapeRegExp from 'lodash.escaperegexp';
 import resolve from 'resolve';
-import registerBabel from './registerBabel';
+import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 const debug = require('debug')('umi-build-dev:getPlugin');
 
@@ -27,17 +27,9 @@ export default function(opts = {}) {
 
   // 用户给的插件需要做 babel 转换
   if (pluginPaths.length) {
+    addBabelRegisterFiles(pluginPaths);
     registerBabel(babel, {
       cwd,
-      only: [
-        new RegExp(
-          `(${pluginPaths
-            .map(p => {
-              return excapeRegExp(p);
-            })
-            .join('|')})`,
-        ),
-      ],
     });
   }
 

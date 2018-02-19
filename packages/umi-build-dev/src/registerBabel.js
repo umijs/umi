@@ -2,28 +2,23 @@ import { join } from 'path';
 import registerBabel from 'af-webpack/registerBabel';
 import excapeRegExp from 'lodash.escaperegexp';
 import { CONFIG_FILES } from './constants';
+import winPath from './winPath';
 
-export default function resiterBabelFn(babelPreset, opts) {
-  const { only, disablePreventTest, ignore, cwd } = opts;
+const files = [...CONFIG_FILES, 'webpack.config.js', '.webpackrc.js'];
 
-  const files = [...CONFIG_FILES, 'webpack.config.js', '.webpackrc.js'].map(
-    file => {
-      return excapeRegExp(join(cwd, file));
-    },
-  );
-
-  registerBabel({
-    only: [...(only || []), new RegExp(`(${files.join('|')})`)],
-    ignore,
-    babelPreset: [babelPreset, { disableTransform: true }],
-    disablePreventTest,
-  });
+export function addBabelRegisterFiles(extraFiles) {
+  files.push.apply(files, extraFiles);
 }
 
-export function registerBabelForConfig(babelPreset, opts = {}) {
-  const { paths } = opts;
-  resiterBabelFn(babelPreset, {
-    ...opts,
-    cwd: paths.cwd,
+export default function(babelPreset, opts = {}) {
+  const { cwd } = opts;
+  const only = files.map(f => {
+    const fullPath = f.charAt(0) === '/' ? f : join(cwd, f);
+    return excapeRegExp(winPath(fullPath));
+  });
+  console.log(only);
+  registerBabel({
+    only: [only.join('|')],
+    babelPreset: [babelPreset, { disableTransform: true }],
   });
 }

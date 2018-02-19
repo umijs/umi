@@ -118,8 +118,6 @@ class UserConfig {
       });
     }
 
-    this.service.registerBabel();
-
     let config = null;
     const relativeFile = file.replace(`${paths.cwd}/`, '');
     this.relativeFile = relativeFile;

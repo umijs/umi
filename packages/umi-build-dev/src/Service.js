@@ -9,7 +9,7 @@ import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
 import getPaths from './getPaths';
 import getRouteConfig from './getRouteConfig';
-import { registerBabelForConfig } from './registerBabel';
+import registerBabel from './registerBabel';
 import { unwatch } from './getConfig/watch';
 import UserConfig from './UserConfig';
 import getPlugins from './getPlugins';
@@ -57,14 +57,10 @@ export default class Service {
     this.paths = getPaths(this);
     this.pluginMethods = {};
 
-    this.registerBabel();
-    this.initPlugins();
-  }
-
-  registerBabel() {
-    registerBabelForConfig(this.babel, {
-      paths: this.paths,
+    registerBabel(this.babel, {
+      cwd: this.cwd,
     });
+    this.initPlugins();
   }
 
   setRoutes(routes) {
