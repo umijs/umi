@@ -186,11 +186,7 @@ export default class Service {
           },
         });
 
-        returnedWatchWebpackRCConfig(devServer, {
-          beforeChange: () => {
-            this.registerBabel();
-          },
-        });
+        returnedWatchWebpackRCConfig(devServer);
         userConfig.setConfig(this.config);
         userConfig.watchWithDevServer();
         filesGenerator.watch();
@@ -219,12 +215,14 @@ export default class Service {
     const configPlugins = UserConfig.getPluginsConfig({
       cwd: this.cwd,
     });
+    debug(`configPlugins: ${configPlugins.join(' | ')}`);
     this.plugins = getPlugins({
       configPlugins,
       pluginsFromOpts: this.pluginFiles,
       cwd: this.cwd,
       babel: this.babel,
     });
+    debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
     this.plugins.forEach(({ id, apply }) => {
       try {
         apply(new PluginAPI(id, this));

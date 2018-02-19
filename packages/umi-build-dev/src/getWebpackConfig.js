@@ -159,6 +159,7 @@ export default function(service = {}) {
   afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
     initialValue: afWebpackOpts,
   });
+  debug(`afWebpackOpts: ${JSON.stringify(afWebpackOpts)}`);
 
   let webpackConfig = getConfig(afWebpackOpts);
   webpackConfig = service.applyPlugins('modifyWebpackConfig', {
