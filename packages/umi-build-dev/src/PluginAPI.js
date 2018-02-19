@@ -1,8 +1,8 @@
 import debug from 'debug';
-import excapeRegExp from 'lodash.escaperegexp';
+import assert from 'assert';
 import winPath from './winPath';
 import { PLACEHOLDER_IMPORT, PLACEHOLDER_RENDER } from './constants';
-import registerBabel from './registerBabel';
+import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 // 参考：
 // https://github.com/vuejs/vue-cli/blob/next/packages/%40vue/cli-service/lib/PluginAPI.js
@@ -35,10 +35,13 @@ class PluginAPI {
   }
 
   registerBabel(files) {
-    const excapedFiles = files.map(file => excapeRegExp(file));
+    assert(
+      Array.isArray(files),
+      `[PluginAPI] files for registerBabel must be Array, but got ${files}`,
+    );
+    addBabelRegisterFiles(files);
     registerBabel(this.service.babel, {
       cwd: this.service.cwd,
-      only: [new RegExp(`(${excapedFiles.join('|')})`)],
     });
   }
 }
