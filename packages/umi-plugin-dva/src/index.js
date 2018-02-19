@@ -3,9 +3,8 @@ import { join, dirname } from 'path';
 import globby from 'globby';
 
 export default function(api) {
-  const { IMPORT, RENDER } = api.placeholder;
+  const { RENDER } = api.placeholder;
   const { paths } = api.service;
-  const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
 
   function getModels() {

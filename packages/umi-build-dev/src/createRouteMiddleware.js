@@ -5,7 +5,7 @@ import HtmlGenerator from './HtmlGenerator';
 let config = null;
 
 export default function createRouteMiddleware(service, opts = {}) {
-  config = service.config;
+  ({ config } = service);
   return (req, res, next) => {
     const { path } = req;
     const route = service.routes.filter(r => {

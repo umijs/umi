@@ -168,6 +168,7 @@ export default class Service {
     });
 
     require('af-webpack/dev').default({
+      // eslint-disable-line
       webpackConfig,
       extraMiddlewares,
       beforeServer: devServer => {
@@ -306,6 +307,7 @@ export default class Service {
     this.webpackConfig = webpackConfig;
     return new Promise(resolve => {
       require('af-webpack/build').default({
+        // eslint-disable-line
         webpackConfig,
         success: ({ stats }) => {
           if (process.env.RM_TMPDIR !== 'none') {

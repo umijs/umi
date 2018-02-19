@@ -1,4 +1,3 @@
-import excapeRegExp from 'lodash.escaperegexp';
 import resolve from 'resolve';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 

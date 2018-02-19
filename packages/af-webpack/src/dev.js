@@ -1,9 +1,9 @@
-import { createCompiler, prepareUrls } from './WebpackDevServerUtils';
-import clearConsole from './clearConsole';
 import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import { createCompiler, prepareUrls } from './WebpackDevServerUtils';
+import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, COMPILING, DONE } from './send';
 import choosePort from './choosePort';

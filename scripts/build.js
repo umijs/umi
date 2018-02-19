@@ -41,6 +41,10 @@ const BROWSER_FILES = [
   'packages/umi/src/router.js',
   'packages/umi/src/withRouter.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
+  'packages/af-webpack/src/utils.js',
+  'packages/af-webpack/src/formatWebpackMessages.js',
+  'packages/af-webpack/src/socket.js',
+  'packages/af-webpack/src/patchConnection.js',
 ];
 const cwd = process.cwd();
 

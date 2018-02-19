@@ -1,5 +1,4 @@
 import babelJest from 'babel-jest';
-import { dirname } from 'path';
 
 export default babelJest.createTransformer({
   presets: [
@@ -20,7 +19,6 @@ export default babelJest.createTransformer({
           react: require.resolve('react'),
           'react-dom': require.resolve('react-dom'),
           enzyme: require.resolve('enzyme'),
-          // '@babel/runtime': dirname(require.resolve('@babel/runtime/package')),
         },
       },
     ],

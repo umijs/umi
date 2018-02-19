@@ -29,13 +29,13 @@ const socket = function initSocket(url, handlers) {
       const retryInMs = 1000 * Math.pow(2, retries) + Math.random() * 100;
       retries += 1;
 
-      setTimeout(function cb() {
+      setTimeout(() => {
         socket(url, handlers);
       }, retryInMs);
     } else {
       showLoading();
       connectServer(() => {
-        location.reload();
+        window.location.reload();
       });
     }
   };

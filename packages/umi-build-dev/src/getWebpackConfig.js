@@ -73,9 +73,9 @@ export default function(service = {}) {
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install
   const pkgPath = join(cwd, 'package.json');
   if (existsSync(pkgPath)) {
-    const { dependencies = {} } = require(pkgPath);
+    const { dependencies = {} } = require(pkgPath); // eslint-disable-line
     if (dependencies.antd) {
-      libAlias['antd'] = dirname(
+      libAlias.antd = dirname(
         require.resolve(join(cwd, 'node_modules/antd/package')),
       );
     }

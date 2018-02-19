@@ -31,7 +31,7 @@ export default function(resolve, opts = {}) {
             this.state.AsyncComponent = AsyncComponent; // eslint-disable-line
           }
         })
-        .catch(err => {});
+        .catch(() => {});
     }
 
     render() {

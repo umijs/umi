@@ -85,7 +85,7 @@ class HttpMock {
     if (key.indexOf(' ') > -1) {
       const splited = key.split(' ');
       method = splited[0].toLowerCase();
-      path = splited[1];
+      path = splited[1]; // eslint-disable-line
     }
     return { method, path };
   }

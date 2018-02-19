@@ -45,7 +45,11 @@
     "space-before-function-paren": [0],
     "no-useless-escape": [0],
     "object-curly-newline": [0],
-    "no-restricted-globals": ["self"]
+    "function-paren-newline": [0],
+    "class-methods-use-this": [0],
+    "no-new": [0],
+    "import/newline-after-import": [0],
+    "no-console": [0]
   },
   "parserOptions": {
     "ecmaFeatures": {

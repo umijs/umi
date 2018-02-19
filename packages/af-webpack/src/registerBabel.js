@@ -3,6 +3,7 @@ export default function registerBabel(opts = {}) {
   if (disablePreventTest || process.env.NODE_ENV !== 'test') {
     process.env.BABEL_DISABLE_CACHE = 1;
     require('@babel/register')({
+      // eslint-disable-line
       presets: [babelPreset],
       plugins: [
         require.resolve('babel-plugin-add-module-exports'),

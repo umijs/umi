@@ -25,7 +25,8 @@ import { applyWebpackConfig } from './applyWebpackConfig';
 import readRc from './readRc';
 import { stripLastSlash } from './utils';
 
-const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
+const TsConfigPathsPlugin = require('awesome-typescript-loader')
+  .TsConfigPathsPlugin; // eslint-disable-line
 const debug = require('debug')('af-webpack:getConfig');
 
 if (process.env.DISABLE_TSLINT) {
@@ -48,7 +49,7 @@ export default function getConfig(opts = {}) {
     // https://github.com/facebookincubator/create-react-app/issues/2677
     ident: 'postcss',
     plugins: () => [
-      require('postcss-flexbugs-fixes'),
+      require('postcss-flexbugs-fixes'), // eslint-disable-line
       autoprefixer({
         browsers: opts.browserslist || defaultBrowsers,
         flexbox: 'no-2009',
@@ -60,7 +61,9 @@ export default function getConfig(opts = {}) {
     ? {}
     : {
         modules: true,
-        localIdentName: isDev ? '[name]__[local]___[hash:base64:5]' : '[local]___[hash:base64:5]',
+        localIdentName: isDev
+          ? '[name]__[local]___[hash:base64:5]'
+          : '[local]___[hash:base64:5]',
       };
   const lessOptions = {
     modifyVars: theme,
@@ -249,7 +252,7 @@ export default function getConfig(opts = {}) {
   ];
   const babelUse = [
     {
-      loader: require('path').join(__dirname, 'debugLoader.js'),
+      loader: require('path').join(__dirname, 'debugLoader.js'), // eslint-disable-line
     },
     {
       loader: require.resolve('babel-loader'),
@@ -337,7 +340,7 @@ export default function getConfig(opts = {}) {
         '@babel/runtime': dirname(require.resolve('@babel/runtime/package')),
         ...opts.alias,
       },
-      plugins: [new TsConfigPathsPlugin()]
+      plugins: [new TsConfigPathsPlugin()],
     },
     module: {
       rules: [

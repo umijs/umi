@@ -1,8 +1,9 @@
+/* eslint-disable */
 import address from 'address';
 import url from 'url';
 import chalk from 'chalk';
-import clearConsole from './clearConsole';
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
+import clearConsole from './clearConsole';
 
 const isInteractive = process.stdout.isTTY;
 let handleCompile;

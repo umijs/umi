@@ -7,7 +7,7 @@ import winPath from './winPath';
 const files = [...CONFIG_FILES, 'webpack.config.js', '.webpackrc.js'];
 
 export function addBabelRegisterFiles(extraFiles) {
-  files.push.apply(files, extraFiles);
+  files.push(...extraFiles);
 }
 
 export default function(babelPreset, opts = {}) {

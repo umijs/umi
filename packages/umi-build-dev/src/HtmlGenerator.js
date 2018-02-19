@@ -177,17 +177,23 @@ ${jsContent}
     const files = [];
     try {
       files.push(this.getFile(libraryName, '.js'));
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     const isDev = process.env.NODE_ENV === 'development';
     if (!isDev && config.exportStatic) {
       try {
         files.push(this.getFile(`__common-${libraryName}`, '.js'));
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
       try {
         if (component) {
           files.push(this.getFile(normalizeEntry(component), '.js'));
         }
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
     }
     return files;
   }
@@ -197,12 +203,16 @@ ${jsContent}
     const files = [];
     try {
       files.push(this.getFile(libraryName, '.css'));
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     try {
       if (component) {
         files.push(this.getFile(normalizeEntry(component), '.css'));
       }
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     return files;
   }
 

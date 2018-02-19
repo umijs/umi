@@ -99,7 +99,7 @@ export default function getUserConfig(opts = {}) {
   if (existsSync(jsRCFile)) {
     // no cache
     delete require.cache[jsRCFile];
-    config = require(jsRCFile);
+    config = require(jsRCFile); // eslint-disable-line
     if (config.default) {
       config = config.default;
     }
@@ -145,8 +145,9 @@ export default function getUserConfig(opts = {}) {
 
   // Merge config with current env
   if (config.env) {
-    if (config.env[process.env.NODE_ENV])
+    if (config.env[process.env.NODE_ENV]) {
       merge(config, config.env[process.env.NODE_ENV]);
+    }
     delete config.env;
   }
 
@@ -164,7 +165,7 @@ export default function getUserConfig(opts = {}) {
   function watchConfigsAndRun(_devServer, watchOpts = {}) {
     devServer = _devServer;
 
-    watchConfigs(opts).on('all', (event, path) => {
+    watchConfigs(opts).on('all', () => {
       try {
         if (watchOpts.beforeChange) {
           watchOpts.beforeChange();

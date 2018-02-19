@@ -1,9 +1,9 @@
 import detect from 'detect-port';
-import clearConsole from './clearConsole';
 import getProcessForPort from 'react-dev-utils/getProcessForPort';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import isRoot from 'is-root';
+import clearConsole from './clearConsole';
 
 const isInteractive = process.stdout.isTTY;
 
@@ -24,14 +24,13 @@ export default function choosePort(defaultPort) {
           const question = {
             type: 'confirm',
             name: 'shouldChangePort',
-            message:
-              chalk.yellow(
-                `message${
-                  existingProcess // eslint-disable-line
-                    ? ` Probably:\n  ${existingProcess}`
-                    : ''
-                }`,
-              ) + '\n\nWould you like to run the app on another port instead?',
+            message: `${chalk.yellow(
+              `message${
+                existingProcess // eslint-disable-line
+                  ? ` Probably:\n  ${existingProcess}`
+                  : ''
+              }`,
+            )}\n\nWould you like to run the app on another port instead?`,
             default: true,
           };
           inquirer.prompt(question).then(answer => {

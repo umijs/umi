@@ -14,7 +14,7 @@ class UserConfig {
     const absConfigPath = join(cwd, CONFIG_FILES[0]);
     if (existsSync(absConfigPath)) {
       try {
-        return require(absConfigPath).plugins;
+        return require(absConfigPath).plugins; // eslint-disable-line
       } catch (e) {
         console.log(e);
         return [];

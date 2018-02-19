@@ -74,7 +74,11 @@ export default function(opts = {}) {
         debug(result);
         const { results } = result;
         // const success = results.every(result => result.success);
-        results.success ? resolve() : reject('jest failed');
+        if (results.success) {
+          resolve();
+        } else {
+          reject(new Error('Jest failed'));
+        }
       })
       .catch(e => {
         console.log(e);
