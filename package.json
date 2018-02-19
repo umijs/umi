@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "lerna exec --bail --parallel -- npm run build --",
+    "build": "node scripts/build.js",
     "debug": "lerna run debug",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
