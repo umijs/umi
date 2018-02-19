@@ -3,6 +3,7 @@ import ejs from 'ejs';
 import { sync as mkdirp } from 'mkdirp';
 import assert from 'assert';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
+import { minify } from 'html-minifier';
 import normalizeEntry from './normalizeEntry';
 
 const debug = require('debug')('umi:HtmlGenerator');
@@ -168,6 +169,17 @@ ${jsContent}
         route,
       },
     });
+
+    // Minify html content
+    if (
+      process.env.NODE_ENV === 'production' &&
+      process.env.COMPRESS !== 'none'
+    ) {
+      html = minify(html, {
+        removeAttributeQuotes: true,
+        collapseWhitespace: true,
+      });
+    }
 
     return `${html}\r\n`;
   }
