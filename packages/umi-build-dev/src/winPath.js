@@ -1,3 +1,5 @@
+import slash from 'slash';
+
 export default function(path) {
-  return path.replace(/\\/g, '/');
+  return slash(path);
 }
