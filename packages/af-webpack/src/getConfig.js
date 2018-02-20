@@ -25,8 +25,7 @@ import { applyWebpackConfig } from './applyWebpackConfig';
 import readRc from './readRc';
 import { stripLastSlash } from './utils';
 
-const TsConfigPathsPlugin = require('awesome-typescript-loader')
-  .TsConfigPathsPlugin; // eslint-disable-line
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader'); // eslint-disable-line
 const debug = require('debug')('af-webpack:getConfig');
 
 if (process.env.DISABLE_TSLINT) {
