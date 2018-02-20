@@ -8,7 +8,7 @@
 
 扫码进入微信群。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/lCQGxCGfVgoDfXkYguor.jpg" width="200" />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/PScpKOOrOZGFuXIQSxIR.jpeg" width="200" />
 
 或者钉钉群。
 
