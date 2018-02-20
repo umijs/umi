@@ -223,9 +223,9 @@ export default class Service {
       babel: this.babel,
     });
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
-    this.plugins.forEach(({ id, apply }) => {
+    this.plugins.forEach(({ id, apply, opts }) => {
       try {
-        apply(new PluginAPI(id, this));
+        apply(new PluginAPI(id, this), opts);
       } catch (e) {
         console.error(
           chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
