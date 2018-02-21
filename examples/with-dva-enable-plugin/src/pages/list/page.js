@@ -5,7 +5,9 @@ import styles from './page.css';
 function App(props) {
   return (
     <div className={styles.normal}>
-      <h2>{props.text}</h2>
+      <h2>
+        {props.text} @ {props.pathname}
+      </h2>
       <div
         onClick={() => {
           router.goBack();
@@ -19,6 +21,7 @@ function App(props) {
 
 export default connect(state => {
   return {
+    pathname: state.routing.location.pathname,
     text: state.global.text,
   };
 })(App);
