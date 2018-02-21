@@ -51,6 +51,7 @@ export default function(opts = {}) {
     './plugins/fastclick',
     './plugins/hd',
     './plugins/mock',
+    './plugins/hash-history',
   ];
   const plugins = [
     // builtIn 的在最前面

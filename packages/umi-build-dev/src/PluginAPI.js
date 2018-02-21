@@ -5,6 +5,7 @@ import {
   PLACEHOLDER_IMPORT,
   PLACEHOLDER_RENDER,
   PLACEHOLDER_ROUTER_MODIFIER,
+  PLACEHOLDER_HISTORY_MODIFIER,
 } from './constants';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
@@ -23,6 +24,7 @@ class PluginAPI {
       IMPORT: PLACEHOLDER_IMPORT,
       RENDER: PLACEHOLDER_RENDER,
       ROUTER_MODIFIER: PLACEHOLDER_ROUTER_MODIFIER,
+      HISTORY_MODIFIER: PLACEHOLDER_HISTORY_MODIFIER,
     };
   }
 

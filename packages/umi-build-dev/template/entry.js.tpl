@@ -7,6 +7,7 @@ import createHistory from 'umi/_createHistory';
 window.g_history = createHistory({
   basename: window.routerBase,
 });
+<%= HISTORY_MODIFIER %>
 
 // render
 function render() {

@@ -10,6 +10,7 @@ import { getRequest } from './requestCache';
 import winPath from './winPath';
 import normalizeEntry from './normalizeEntry';
 import {
+  PLACEHOLDER_HISTORY_MODIFIER,
   PLACEHOLDER_IMPORT,
   PLACEHOLDER_RENDER,
   PLACEHOLDER_ROUTER,
@@ -109,11 +110,13 @@ export default class FilesGenerator {
       initialValue: entryContent,
     });
 
-    entryContent = entryContent.replace(PLACEHOLDER_IMPORT, '');
-    entryContent = entryContent.replace(
-      PLACEHOLDER_RENDER,
-      `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
-    );
+    entryContent = entryContent
+      .replace(PLACEHOLDER_IMPORT, '')
+      .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
+      .replace(
+        PLACEHOLDER_RENDER,
+        `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
+      );
 
     if (!config.disableServiceWorker) {
       entryContent = `${entryContent}
