@@ -1,4 +1,5 @@
 import resolve from 'resolve';
+import assert from 'assert';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 const debug = require('debug')('umi-build-dev:getPlugin');
@@ -8,10 +9,21 @@ export default function(opts = {}) {
 
   function pluginToPath(plugins) {
     return plugins.map(p => {
+      assert(
+        Array.isArray(p) || typeof p === 'string',
+        `Plugin config should be String or Array, but got ${p}`,
+      );
+      if (typeof p === 'string') {
+        p = [p];
+      }
+      const [path, opts] = p;
       try {
-        return resolve.sync(p, {
-          basedir: cwd,
-        });
+        return [
+          resolve.sync(path, {
+            basedir: cwd,
+          }),
+          opts,
+        ];
       } catch (e) {
         throw new Error(`Plugin ${p} don't exists.`);
       }
@@ -26,7 +38,7 @@ export default function(opts = {}) {
 
   // 用户给的插件需要做 babel 转换
   if (pluginPaths.length) {
-    addBabelRegisterFiles(pluginPaths);
+    addBabelRegisterFiles(pluginPaths.map(p => p[0]));
     registerBabel(babel, {
       cwd,
     });
@@ -44,16 +56,24 @@ export default function(opts = {}) {
     // builtIn 的在最前面
     ...builtInPlugins.map(p => {
       const apply = require(p); // eslint-disable-line
+      let opts;
+      if (Array.isArray(p)) {
+        opts = p[1]; // eslint-disable-line
+        p = [0];
+      }
       return {
         id: p.replace(/^.\//, 'built-in:'),
         apply: apply.default || apply,
+        opts,
       };
     }),
     ...pluginPaths.map(p => {
-      const apply = require(p); // eslint-disable-line
+      const [path, opts] = p;
+      const apply = require(path); // eslint-disable-line
       return {
-        id: p.replace(cwd, 'user:'),
+        id: path.replace(cwd, 'user:'),
         apply: apply.default || apply,
+        opts,
       };
     }),
   ];

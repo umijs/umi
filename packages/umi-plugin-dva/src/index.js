@@ -3,7 +3,7 @@ import { join, dirname } from 'path';
 import globby from 'globby';
 
 export default function(api) {
-  const { RENDER } = api.placeholder;
+  const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
   const { paths } = api.service;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
 
@@ -40,6 +40,25 @@ export default function(api) {
       .replace('<%= RegisterPlugins %>', getPlugins())
       .replace('<%= RegisterModels %>', getModels());
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
+  });
+
+  api.register('modifyRouterFile', ({ memo }) => {
+    return memo
+      .replace(
+        IMPORT,
+        `
+import { routerRedux } from 'dva/router';
+${IMPORT}
+      `.trim(),
+      )
+      .replace(
+        ROUTER_MODIFIER,
+        `
+const { ConnectedRouter } = routerRedux;
+Router = ConnectedRouter;
+${ROUTER_MODIFIER}
+      `.trim(),
+      );
   });
 
   api.register('modifyEntryFile', ({ memo }) => {

@@ -9,7 +9,12 @@ import getRouteConfig from './getRouteConfig';
 import { getRequest } from './requestCache';
 import winPath from './winPath';
 import normalizeEntry from './normalizeEntry';
-import { PLACEHOLDER_IMPORT, PLACEHOLDER_RENDER } from './constants';
+import {
+  PLACEHOLDER_IMPORT,
+  PLACEHOLDER_RENDER,
+  PLACEHOLDER_ROUTER,
+  PLACEHOLDER_ROUTER_MODIFIER,
+} from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -160,8 +165,9 @@ if (process.env.NODE_ENV === 'production') {
       initialValue: this.getRouterContent(),
     });
     return tplContent
-      .replace('<%= IMPORT %>', '')
-      .replace('<%= ROUTER %>', routerContent)
+      .replace(PLACEHOLDER_IMPORT, '')
+      .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
+      .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
   }
 

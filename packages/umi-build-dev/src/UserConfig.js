@@ -8,19 +8,58 @@ import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import { setConfig as setMiddlewareConfig } from './createRouteMiddleware';
 
+function normalizeConfig(config) {
+  config = config.default || config;
+
+  if (config.context && config.pages) {
+    Object.keys(config.pages).forEach(key => {
+      const page = config.pages[key];
+      page.context = {
+        ...config.context,
+        ...page.context,
+      };
+    });
+  }
+
+  // pages 配置补丁
+  // /index -> /index.html
+  // index -> /index.html
+  if (config.pages) {
+    const htmlSuffix = !!(
+      config.exportStatic &&
+      typeof config.exportStatic === 'object' &&
+      config.exportStatic.htmlSuffix
+    );
+    config.pages = Object.keys(config.pages).reduce((memo, key) => {
+      let newKey = key;
+      if (htmlSuffix && newKey.slice(-5) !== '.html') {
+        newKey = `${newKey}.html`;
+      }
+      if (newKey.charAt(0) !== '/') {
+        newKey = `/${newKey}`;
+      }
+      memo[newKey] = config.pages[key];
+      return memo;
+    }, {});
+  }
+
+  return config;
+}
+
 class UserConfig {
-  static getPluginsConfig(opts = {}) {
+  static getConfig(opts = {}) {
     const { cwd } = opts;
     const absConfigPath = join(cwd, CONFIG_FILES[0]);
     if (existsSync(absConfigPath)) {
       try {
-        return require(absConfigPath).plugins || []; // eslint-disable-line
+        const config = require(absConfigPath) || {}; // eslint-disable-line
+        return normalizeConfig(config);
       } catch (e) {
-        console.log(e);
-        return [];
+        console.error(e);
+        return {};
       }
     } else {
-      return [];
+      return {};
     }
   }
 
@@ -63,44 +102,6 @@ class UserConfig {
     return files[0];
   }
 
-  normalizeConfig(config) {
-    config = config.default || config;
-
-    if (config.context && config.pages) {
-      Object.keys(config.pages).forEach(key => {
-        const page = config.pages[key];
-        page.context = {
-          ...config.context,
-          ...page.context,
-        };
-      });
-    }
-
-    // pages 配置补丁
-    // /index -> /index.html
-    // index -> /index.html
-    if (config.pages) {
-      const htmlSuffix = !!(
-        config.exportStatic &&
-        typeof config.exportStatic === 'object' &&
-        config.exportStatic.htmlSuffix
-      );
-      config.pages = Object.keys(config.pages).reduce((memo, key) => {
-        let newKey = key;
-        if (htmlSuffix && newKey.slice(-5) !== '.html') {
-          newKey = `${newKey}.html`;
-        }
-        if (newKey.charAt(0) !== '/') {
-          newKey = `/${newKey}`;
-        }
-        memo[newKey] = config.pages[key];
-        return memo;
-      }, {});
-    }
-
-    return config;
-  }
-
   getConfig(opts = {}) {
     const { paths, printError } = this.service;
     const { force, setConfig } = opts;
@@ -130,7 +131,7 @@ class UserConfig {
       throw new Error(msg);
     }
 
-    config = this.normalizeConfig(config);
+    config = normalizeConfig(config);
 
     // Validate
     for (const plugin of this.plugins) {

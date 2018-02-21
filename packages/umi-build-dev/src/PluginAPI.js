@@ -1,7 +1,11 @@
 import debug from 'debug';
 import assert from 'assert';
 import winPath from './winPath';
-import { PLACEHOLDER_IMPORT, PLACEHOLDER_RENDER } from './constants';
+import {
+  PLACEHOLDER_IMPORT,
+  PLACEHOLDER_RENDER,
+  PLACEHOLDER_ROUTER_MODIFIER,
+} from './constants';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 // 参考：
@@ -18,6 +22,7 @@ class PluginAPI {
     this.placeholder = {
       IMPORT: PLACEHOLDER_IMPORT,
       RENDER: PLACEHOLDER_RENDER,
+      ROUTER_MODIFIER: PLACEHOLDER_ROUTER_MODIFIER,
     };
   }
 

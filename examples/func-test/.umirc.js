@@ -5,6 +5,7 @@ export default {
   },
   plugins: [
     './plugin1',
+    ['./plugin2', 'hihi'],
     // 'umi-plugin-yunfengdie',
   ],
   hd: 1,
