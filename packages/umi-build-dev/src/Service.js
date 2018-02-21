@@ -75,6 +75,24 @@ export default class Service {
   }
 
   dev() {
+    // 获取用户 config.js 配置
+    const userConfig = new UserConfig(this);
+    try {
+      this.config = userConfig.getConfig({ force: true });
+    } catch (e) {
+      console.error(chalk.red(e.message));
+      debug('Get config failed, watch config and reload');
+
+      // 监听配置项变更，然后重新执行 dev 逻辑
+      userConfig.watchConfigs((event, path) => {
+        debug(`[${event}] ${path}, unwatch and reload`);
+        // 重新执行 dev 逻辑
+        userConfig.unwatch();
+        this.dev();
+      });
+      return;
+    }
+
     // 获取 .webpackrc 配置
     let returnedWatchWebpackRCConfig = null;
     try {
@@ -90,24 +108,6 @@ export default class Service {
         debug(`[${event}] ${path}, unwatch and reload`);
         // 重新执行 dev 逻辑
         unwatchWebpackRCConfig();
-        this.dev();
-      });
-      return;
-    }
-
-    // 获取用户 config.js 配置
-    const userConfig = new UserConfig(this);
-    try {
-      this.config = userConfig.getConfig({ force: true });
-    } catch (e) {
-      console.error(chalk.red(e.message));
-      debug('Get config failed, watch config and reload');
-
-      // 监听配置项变更，然后重新执行 dev 逻辑
-      userConfig.watchConfigs((event, path) => {
-        debug(`[${event}] ${path}, unwatch and reload`);
-        // 重新执行 dev 逻辑
-        userConfig.unwatch();
         this.dev();
       });
       return;
@@ -212,16 +212,17 @@ export default class Service {
   }
 
   initPlugins() {
-    const configPlugins = UserConfig.getPluginsConfig({
+    const config = UserConfig.getConfig({
       cwd: this.cwd,
     });
-    debug(`configPlugins: ${configPlugins.join(' | ')}`);
+    debug(`user config: ${JSON.stringify(config)}`);
     this.plugins = getPlugins({
-      configPlugins,
+      configPlugins: config.plugins || [],
       pluginsFromOpts: this.pluginFiles,
       cwd: this.cwd,
       babel: this.babel,
     });
+    this.config = config;
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
     this.plugins.forEach(({ id, apply, opts }) => {
       try {
@@ -287,9 +288,11 @@ export default class Service {
   };
 
   build() {
-    this.webpackRCConfig = this.getWebpackRCConfig().config;
     const userConfig = new UserConfig(this);
     this.config = userConfig.getConfig();
+
+    this.webpackRCConfig = this.getWebpackRCConfig().config;
+
     this.applyPlugins('onStart');
     this.initRoutes();
 

@@ -6,10 +6,10 @@ export default function(api) {
   if (!process.env.FD_RENDER) return;
 
   const { debug } = api.utils;
+  const { config } = api.service;
 
-  api.register('onStart', () => {
-    const { config } = api.service;
-    if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
+  if (!config.exportStatic || !config.exportStatic.htmlSuffix) {
+    api.register('onStart', () => {
       throw new Error(
         `
 云凤蝶发布的项目，请在 .umirc.js 里配置：
@@ -17,10 +17,10 @@ export default function(api) {
 "exportStatic": {
   "htmlSuffix": true
 }
-    `.trim(),
+        `.trim(),
       );
-    }
-  });
+    });
+  }
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.publicPath = '{{ publicPath }}';
