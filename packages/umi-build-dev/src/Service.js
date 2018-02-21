@@ -60,7 +60,6 @@ export default class Service {
     registerBabel(this.babel, {
       cwd: this.cwd,
     });
-    this.initPlugins();
   }
 
   setRoutes(routes) {
@@ -75,6 +74,8 @@ export default class Service {
   }
 
   dev() {
+    this.initPlugins();
+
     // 获取用户 config.js 配置
     const userConfig = new UserConfig(this);
     try {
@@ -288,6 +289,8 @@ export default class Service {
   };
 
   build() {
+    this.initPlugins();
+
     const userConfig = new UserConfig(this);
     this.config = userConfig.getConfig();
 
