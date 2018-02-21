@@ -18,3 +18,4 @@ class DvaContainer extends Component {
 }
 
 export default DvaContainer;
+export const Store = app._store;
