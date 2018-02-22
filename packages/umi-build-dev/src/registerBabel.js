@@ -1,6 +1,6 @@
 import { join } from 'path';
+import isAbsolute from 'path-is-absolute';
 import registerBabel from 'af-webpack/registerBabel';
-import excapeRegExp from 'lodash.escaperegexp';
 import { CONFIG_FILES } from './constants';
 import winPath from './winPath';
 
@@ -13,8 +13,8 @@ export function addBabelRegisterFiles(extraFiles) {
 export default function(babelPreset, opts = {}) {
   const { cwd } = opts;
   const only = files.map(f => {
-    const fullPath = f.charAt(0) === '/' ? f : join(cwd, f);
-    return excapeRegExp(winPath(fullPath));
+    const fullPath = isAbsolute(f) ? f : join(cwd, f);
+    return winPath(fullPath);
   });
   registerBabel({
     only: [only.join('|')],
