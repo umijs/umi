@@ -14,7 +14,7 @@ title: 目录结构
     ├── pages/                     // 页面目录，里面的文件即路由
         ├── .umi/                  // dev 临时目录，需添加到 .gitignore
         ├── .umi-production/       // build 临时目录，会自动删除
-        ├── _document.ejs          // HTML 模板
+        ├── document.ejs           // HTML 模板
         ├── list.js                // 页面 1
         └── index.js               // 页面 2
     ├── global.css                 // 约定的全局样式文件，自动引入，也可以用 global.less
