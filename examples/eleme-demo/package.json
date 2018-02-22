@@ -11,6 +11,7 @@
   "author": "zhang740@vmzclub.com",
   "license": "MIT",
   "dependencies": {
+    "umi": "^1.0.0-rc.13",
     "react-sticky": "^6.0.1"
   },
   "devDependencies": {
@@ -19,7 +20,6 @@
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.6.1",
-    "umi": "^1.0.0-rc.13"
+    "eslint-plugin-react": "^7.6.1"
   }
 }
