@@ -40,6 +40,7 @@ const BROWSER_FILES = [
   'packages/umi/src/navlink.js',
   'packages/umi/src/router.js',
   'packages/umi/src/withRouter.js',
+  'packages/umi/src/utils.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
   'packages/af-webpack/src/utils.js',
   'packages/af-webpack/src/formatWebpackMessages.js',
