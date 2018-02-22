@@ -69,8 +69,8 @@ function buildPkg(pkg) {
   return vfs
     .src(`./packages/${pkg}/src/**/*.js`)
     .pipe(
-      through.obj(function(f, enc, cb) {
-        f.contents = new Buffer(
+      through.obj((f, enc, cb) => {
+        f.contents = new Buffer( // eslint-disable-line
           transform({
             content: f.contents,
             path: f.path,
