@@ -31,7 +31,7 @@ title: 定制主题
 
 ```css
 .ant-btn {
-  border-radius: 0 !import;
+  border-radius: 0 !important;
 }
 ```
 

@@ -64,7 +64,7 @@ export default () => {
     <div>
       ListPage
       <br />
-      <button onClick={() => { router.goBack(); }}>go back</button>
+      <Link to="/list"><button>go to /list</button></Link>
     </div>
   );
 }
