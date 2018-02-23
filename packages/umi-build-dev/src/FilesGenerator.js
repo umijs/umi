@@ -76,7 +76,9 @@ export default class FilesGenerator {
     const { devServer } = this.service;
     try {
       this.service.applyPlugins('generateFiles', {
-        isRebuild: true,
+        args: {
+          isRebuild: true,
+        },
       });
 
       // rebuild 时只生成 router.js
