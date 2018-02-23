@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="format-detection" content="email=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>umi development 404 page</title>
+  <style>
+    code {
+      background-color: #0000000a;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>umi development 404 page</h1>
+
+<p>There's not a page yet at <code><script>document.write(location.pathname);</script></code></p>
+
+<p>Create a React.js component in your pages directory at <code><%= PAGES_PATH %><script>document.write(location.pathname);</script>.js</code> and this page will automatically refresh to show the new page component you created.</p>
+
+<h2>Pages</h2>
+
+<ul>
+<%= PAGES_LIST %>
+</ul>
+
+</body>
+</html>
