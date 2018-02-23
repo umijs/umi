@@ -68,6 +68,11 @@ function getRoutesByPagesDir(paths, dirPath = '') {
     files.forEach(file => {
       // 包含 ., .., 以及其他 dotfile
       if (file.charAt(0) === '.') return;
+
+      // TODO: move it to the plugins/404.js
+      // TODO: prod 下且没有配 exportStatic 不生成
+      // if (dirPath === '' && basename(file, extname(file)) === '404') return;
+
       const filePath = join(path, file);
       const stats = statSync(filePath);
       const ext = extname(file);

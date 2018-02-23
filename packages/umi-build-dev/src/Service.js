@@ -1,5 +1,5 @@
 import { sync as rimraf } from 'rimraf';
-import { existsSync, renameSync } from 'fs';
+import { existsSync, renameSync, readFileSync } from 'fs';
 import { join } from 'path';
 import getWebpackRCConfig, {
   watchConfigs as watchWebpackRCConfig,
@@ -203,6 +203,35 @@ export default class Service {
       proxy: this.webpackRCConfig.proxy || {},
       // 支付宝 IDE 里不自动打开浏览器
       openBrowser: !process.env.ALIPAY_EDITOR,
+      serverConfig: {
+        after: app => {
+          app.use((req, res, next) => {
+            if (req.accepts('html')) {
+              let pageContent = readFileSync(
+                join(__dirname, '../template/404.html'),
+                'utf-8',
+              );
+              pageContent = pageContent
+                .replace('<%= PAGES_PATH %>', this.paths.pagesPath)
+                .replace(
+                  '<%= PAGES_LIST %>',
+                  this.routes
+                    .map(route => {
+                      return `<li><a href="${route.path}">${
+                        route.path
+                      }</a></li>`;
+                    })
+                    .join('\r\n'),
+                );
+              res.writeHead(404, { 'Content-Type': 'text/html' });
+              res.write(pageContent);
+              res.end();
+            } else {
+              next();
+            }
+          });
+        },
+      },
     });
   }
 

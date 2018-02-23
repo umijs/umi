@@ -200,7 +200,7 @@ if (process.env.NODE_ENV === 'production') {
         join(paths.cwd, loading),
       )}').default,`;
     }
-    const routesContent = Object.keys(routesByPath).map(key => {
+    let routesContent = Object.keys(routesByPath).map(key => {
       const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
@@ -226,7 +226,11 @@ if (process.env.NODE_ENV === 'production') {
         },
       });
 
-      return `    <Route exact path="${key}" component={${component}}></Route>`;
+      return `    <Route exact path="${key}" component={${component}} />`;
+    });
+
+    routesContent = this.service.applyPlugins('modifyRoutesContent', {
+      initialValue: routesContent,
     });
 
     return `

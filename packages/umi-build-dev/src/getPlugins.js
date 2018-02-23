@@ -52,6 +52,7 @@ export default function(opts = {}) {
     './plugins/hd',
     './plugins/mock',
     './plugins/hash-history',
+    './plugins/404',
   ];
   const plugins = [
     // builtIn 的在最前面
