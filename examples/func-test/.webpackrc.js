@@ -7,6 +7,9 @@ export default {
   manifest: {
     basePath: '/app/',
   },
+  theme: {
+    'brand-primary': '#7546c9',
+  },
   // ./static by default
   // publicPath: './static/',
   // publicPath: '/dist/static/',
