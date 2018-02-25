@@ -32,7 +32,11 @@ function normalizeConfig(config) {
     );
     config.pages = Object.keys(config.pages).reduce((memo, key) => {
       let newKey = key;
-      if (htmlSuffix && newKey.slice(-5) !== '.html') {
+      if (
+        htmlSuffix &&
+        newKey.slice(-1) !== '/' &&
+        newKey.slice(-5) !== '.html'
+      ) {
         newKey = `${newKey}.html`;
       }
       if (newKey.charAt(0) !== '/') {
