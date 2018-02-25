@@ -6,7 +6,7 @@
 
 ## 社区
 
-扫码进入微信群。
+扫码进入微信群。（群满 100 人，加 sorryccpro 好友备注 `umi` 邀请加入）
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/PScpKOOrOZGFuXIQSxIR.jpeg" width="200" />
 
