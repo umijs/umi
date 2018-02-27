@@ -25,7 +25,9 @@ export default function dev({
   onCompileInvalid = noop,
   proxy,
   openBrowser: openBrowserOpts,
-  serverConfig: serverConfigOpts = {},
+  historyApiFallback = {
+    disableDotRule: true,
+  },
 }) {
   if (!webpackConfig) {
     throw new Error('必须提供 webpackConfig 配置项');
@@ -69,9 +71,7 @@ export default function dev({
         watchOptions: {
           ignored: /node_modules/,
         },
-        historyApiFallback: {
-          disableDotRule: true,
-        },
+        historyApiFallback,
         overlay: false,
         host: HOST,
         proxy,
@@ -83,7 +83,6 @@ export default function dev({
           }
           app.use(errorOverlayMiddleware());
         },
-        ...serverConfigOpts,
       };
       const devServer = new WebpackDevServer(compiler, serverConfig);
 
