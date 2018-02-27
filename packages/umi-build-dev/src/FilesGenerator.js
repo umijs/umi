@@ -102,7 +102,7 @@ export default class FilesGenerator {
   }
 
   generateFiles() {
-    const { paths, entryJSTpl, config } = this.service;
+    const { paths, entryJSTpl, config, libraryName } = this.service;
     this.service.applyPlugins('generateFiles');
 
     this.generateRouterJS();
@@ -119,6 +119,7 @@ export default class FilesGenerator {
     entryContent = entryContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
+      .replace(/<%= libraryName %>/g, libraryName)
       .replace(
         PLACEHOLDER_RENDER,
         `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
