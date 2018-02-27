@@ -83,4 +83,12 @@ ReactDOM.render(React.createElement(
     };
     return memo;
   });
+
+  api.register('modifyPageWatchers', ({ memo }) => {
+    return [
+      ...memo,
+      join(paths.absSrcPath, 'models'),
+      join(paths.absSrcPath, 'plugins'),
+    ];
+  });
 }
