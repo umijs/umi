@@ -52,7 +52,7 @@ export default function(opts = {}) {
     './plugins/hd',
     './plugins/mock',
     './plugins/hash-history',
-    './plugins/404',
+    './plugins/404', // 404 must after mock
   ];
   const plugins = [
     // builtIn 的在最前面
