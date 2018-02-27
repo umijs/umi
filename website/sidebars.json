@@ -12,6 +12,7 @@
     ],
     "Guides": [
       "router",
+      "add-404-page",
       "html-tpl",
       "load-on-demand",
       "pwa",

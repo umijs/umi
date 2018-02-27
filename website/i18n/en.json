@@ -4,6 +4,7 @@
     "next": "Next",
     "previous": "Previous",
     "tagline": "Blazing-fast next.js-like framework for React apps.",
+    "add-404-page": "添加 404 页面",
     "api": "API",
     "app-structure": "目录结构",
     "cli": "命令行",
