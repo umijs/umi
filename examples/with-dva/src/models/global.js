@@ -10,4 +10,9 @@ export default {
       };
     },
   },
+  effects: {
+    *throwError() {
+      throw new Error('hi error');
+    },
+  },
 };

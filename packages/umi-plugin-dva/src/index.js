@@ -21,13 +21,13 @@ export default function(api) {
   }
 
   function getPlugins() {
-    const pluginPaths = globby.sync('../../plugins/*.js', {
+    const pluginPaths = globby.sync('plugins/*.js', {
       cwd: paths.absSrcPath,
     });
     return pluginPaths
       .map(path =>
         `
-    app.use(require('./${path}').default);
+    app.use(require('../../${path}').default);
   `.trim(),
       )
       .join('\r\n');
