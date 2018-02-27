@@ -21,6 +21,15 @@ function App(props) {
       >
         Set Title
       </Button>
+      <Button
+        onClick={() => {
+          props.dispatch({
+            type: 'global/throwError',
+          });
+        }}
+      >
+        Throw error
+      </Button>
       <br />
       <div>
         <Link to="/list">Go to list.html</Link>
