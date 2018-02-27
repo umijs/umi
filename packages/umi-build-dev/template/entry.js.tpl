@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'umi/_createHistory';
+import createHistory from '<%= libraryName %>/_createHistory';
 <%= IMPORT %>
 
 // create history
