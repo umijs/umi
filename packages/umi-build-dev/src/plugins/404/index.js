@@ -25,7 +25,7 @@ export default function(api) {
   });
 
   api.register('beforeServer', ({ args: { devServer } }) => {
-    devServer.use((req, res, next) => {
+    function UMI_PLUGIN_404(req, res, next) {
       if (req.accepts('html')) {
         let pageContent = readFileSync(
           join(__dirname, '../../../template/404.html'),
@@ -47,6 +47,7 @@ export default function(api) {
       } else {
         next();
       }
-    });
+    }
+    devServer.use(UMI_PLUGIN_404);
   });
 }
