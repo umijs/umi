@@ -7,6 +7,9 @@ title: API
 
 * [umi/link](#umi-link)
 * [umi/router](#umi-router)
+* [umi/navlink](#umi-navlink)
+* [umi/redirect](#umi-redirect)
+* [umi/withRouter](#umi-withRouter)
 * [umi/dynamic](#umi-dynamic)
 * [umi/babel](#umi-babel)
 
@@ -86,6 +89,27 @@ router.go(2);
 import router from 'umi/router';
 router.goBack();
 ```
+
+### umi/navlink
+
+详见：https://reacttraining.com/react-router/web/api/NavLink
+
+### umi/redirect
+
+重定向用。
+
+例子：
+
+```js
+import Redirect from 'umi/redirect';
+<Redirect to="/login" />
+```
+
+详见：https://reacttraining.com/react-router/web/api/Redirect
+
+### umi/withRouter
+
+详见：https://reacttraining.com/react-router/web/api/withRouter
 
 ### umi/dynamic
 动态加载组件。
