@@ -34,6 +34,9 @@ function App(props) {
       <div>
         <Link to="/list">Go to list.html</Link>
       </div>
+      <div>
+        <Link to="/admin">Go to admin.html</Link>
+      </div>
     </div>
   );
 }
