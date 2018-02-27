@@ -3,15 +3,13 @@ import { connect } from 'dva';
 import { Button } from 'antd-mobile';
 import Count from './components/Count';
 import styles from './page.css';
-import createSharedDva from '../../createSharedDva';
-
-const app = createSharedDva();
-app.model(require('./models/count').default);
 
 function App(props) {
   return (
     <div className={styles.normal}>
-      <h2>{props.text}</h2>
+      <h2>
+        {props.text} @ {props.pathname}
+      </h2>
       <Count />
       <br />
       <Button
@@ -33,6 +31,7 @@ function App(props) {
 
 export default connect(state => {
   return {
+    pathname: state.routing.location.pathname,
     text: state.global.text,
   };
 })(App);

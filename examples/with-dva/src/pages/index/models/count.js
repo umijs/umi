@@ -9,4 +9,11 @@ export default {
       return state - 1;
     },
   },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname, query }) => {
+        console.log(history);
+      });
+    },
+  },
 };
