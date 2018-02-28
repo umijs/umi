@@ -44,6 +44,10 @@ export default () => <div className={styles.normal}>
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/RmXJNQcKLGTgHGLmZrVs.png" width="450" height="414" style="margin-left:0;" />
 
+## 自定义 antd 或 antd-mobile 版本
+
+如果在 `package.json` 存在 antd 或 antd-mobile 的依赖，则会优先使用其指定的版本。
+
 ## 参考
 
 * https://ant.design/
