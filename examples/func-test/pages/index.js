@@ -6,6 +6,9 @@ export default function() {
   return (
     <div className={styles.normal}>
       <h1>Index Page</h1>
+      <div>
+        <img src={require('../assets/umi.png')} />
+      </div>
       <ul>
         <li>
           <Link to="/list">go to /list</Link>
