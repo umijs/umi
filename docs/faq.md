@@ -71,3 +71,15 @@ $ npm i node-sass sass-loader --save
  "sass": {}
 }
 ```
+
+## Test
+
+### 如何断点调试
+
+确保 node 在 8 以上，然后执行：
+
+```bash
+$ node --inspect-brk ./node_modules/.bin/umi test
+```
+
+然后在浏览器里打开 chrome://inspect/#devices 进行 inspect 和断点。
