@@ -1,14 +1,19 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, basename } from 'path';
 import globby from 'globby';
+
+const ROUTE_FILES = ['page.js', 'page.ts', 'page.jsx', 'page.tsx'];
 
 export default function(api) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
   const { paths } = api.service;
+  const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
+  const isProduction = process.env.NODE_ENV === 'production';
 
   function getModels() {
-    const modelPaths = globby.sync('**/models/*.{ts,js}', {
+    const pattern = isProduction ? 'models/*.{ts,js}' : '**/models/*.{ts,js}';
+    const modelPaths = globby.sync(pattern, {
       cwd: paths.absSrcPath,
     });
     return modelPaths
@@ -18,6 +23,20 @@ export default function(api) {
   `.trim(),
       )
       .join('\r\n');
+  }
+
+  function getPageModels(pageJSFile) {
+    const filePath = join(paths.absTmpDirPath, pageJSFile);
+    const fileName = basename(filePath);
+    if (ROUTE_FILES.indexOf(fileName) > -1) {
+      const root = dirname(filePath);
+      const modelPaths = globby.sync('./models/*.{ts,js}', {
+        cwd: root,
+      });
+      return modelPaths.map(m => join(root, m));
+    } else {
+      return [];
+    }
   }
 
   function getPlugins() {
@@ -31,6 +50,21 @@ export default function(api) {
   `.trim(),
       )
       .join('\r\n');
+  }
+
+  function stripFirstSlash(path) {
+    if (path.charAt(0) === '/') {
+      return path.slice(1);
+    } else {
+      return path;
+    }
+  }
+
+  function chunkName(path) {
+    return stripFirstSlash(winPath(path.replace(paths.cwd, ''))).replace(
+      /\//g,
+      '__',
+    );
   }
 
   api.register('generateFiles', () => {
@@ -48,6 +82,7 @@ export default function(api) {
         IMPORT,
         `
 import { routerRedux } from 'dva/router';
+${isProduction ? `import _dvaDynamic from 'dva/dynamic';` : ''}
 ${IMPORT}
       `.trim(),
       )
@@ -60,6 +95,36 @@ ${ROUTER_MODIFIER}
       `.trim(),
       );
   });
+
+  if (isProduction) {
+    api.register('modifyRouteComponent', ({ memo, args }) => {
+      const { pageJSFile, webpackChunkName, config } = args;
+      let ret = `
+_dvaDynamic({
+  <%= MODELS %>
+  component: () => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'),
+})
+      `.trim();
+      const models = getPageModels(pageJSFile);
+      if (models && models.length) {
+        ret = ret.replace(
+          '<%= MODELS %>',
+          `
+app: window.g_app,
+models: () => [
+  ${models
+    .map(
+      model =>
+        `import(/* webpackChunkName: '${chunkName(model)}' */'${model}')`,
+    )
+    .join(',\r\n  ')}
+],
+      `.trim(),
+        );
+      }
+      return ret.replace('<%= MODELS %>', '');
+    });
+  }
 
   api.register('modifyEntryFile', ({ memo }) => {
     return memo.replace(

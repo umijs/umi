@@ -15,6 +15,9 @@ function App(props) {
       >
         Back
       </div>
+      <div>
+        test: {props.a} | {props.b}
+      </div>
     </div>
   );
 }
@@ -23,5 +26,7 @@ export default connect(state => {
   return {
     pathname: state.routing.location.pathname,
     text: state.global.text,
+    a: state.a,
+    b: state.b,
   };
 })(App);
