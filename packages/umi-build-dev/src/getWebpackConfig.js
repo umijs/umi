@@ -150,8 +150,8 @@ export default function(service = {}) {
           ...(config.disableServiceWorker
             ? {}
             : {
-                serviceWorker: {
-                  ...(webpackRCConfig.serviceWorker || {}),
+                serviceworker: {
+                  ...(webpackRCConfig.serviceworker || {}),
                 },
               }),
         }),
