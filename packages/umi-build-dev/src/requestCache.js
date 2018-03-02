@@ -12,7 +12,9 @@ export function setRequest(url, opts = {}) {
   if (!requested[url]) {
     requested[url] = 1;
     if (url === '/index.html') requested['/'] = 1;
-    if (onChange) onChange();
+    if (onChange) {
+      onChange();
+    }
   }
 }
 

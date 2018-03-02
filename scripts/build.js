@@ -41,6 +41,7 @@ const BROWSER_FILES = [
   'packages/umi/src/router.js',
   'packages/umi/src/withRouter.js',
   'packages/umi/src/utils.js',
+  'packages/umi-build-dev/src/Compiling.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
   'packages/af-webpack/src/utils.js',
   'packages/af-webpack/src/formatWebpackMessages.js',
