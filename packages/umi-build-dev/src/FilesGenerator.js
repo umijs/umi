@@ -208,6 +208,7 @@ if (process.env.NODE_ENV === 'production') {
 
       let component;
       let isCompiling = false;
+      let webpackChunkName = null;
       if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {
         if (getRequest()[key]) {
           component = `require('${pageJSFile}').default`;
@@ -216,14 +217,16 @@ if (process.env.NODE_ENV === 'production') {
           isCompiling = true;
         }
       } else {
-        component = `dynamic(() => import(/* webpackChunkName: '${normalizeEntry(
-          routesByPath[key],
-        )}' */'${pageJSFile}'), { ${loadingOpts} })`;
+        webpackChunkName = normalizeEntry(routesByPath[key]);
+        component = `dynamic(() => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'), { ${loadingOpts} })`;
       }
       component = this.service.applyPlugins('modifyRouteComponent', {
         initialValue: component,
         args: {
           isCompiling,
+          pageJSFile,
+          webpackChunkName,
+          config,
         },
       });
 
