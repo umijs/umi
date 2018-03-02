@@ -141,28 +141,11 @@ export default class Service {
     const webpackConfig = getWebpackConfig(this);
     this.webpackConfig = webpackConfig;
 
-    let isCompileDone = false;
-    let onCompileDone = () => {
-      isCompileDone = true;
-    };
-
     const extraMiddlewares = this.applyPlugins('modifyMiddlewares', {
       initialValue: [
         createRouteMiddleware(this, {
           rebuildEntry() {
-            if (!isCompileDone) {
-              // 改写
-              const defaultOnCompileDone = onCompileDone;
-              onCompileDone = () => {
-                debug('new compile done');
-                filesGenerator.rebuild();
-                defaultOnCompileDone();
-                // 再次改写
-                onCompileDone = () => {};
-              };
-            } else {
-              filesGenerator.rebuild();
-            }
+            filesGenerator.rebuild();
           },
         }),
       ],
@@ -193,7 +176,6 @@ export default class Service {
         filesGenerator.watch();
       },
       onCompileDone: stats => {
-        onCompileDone();
         this.applyPlugins('onCompileDone', {
           args: {
             stats,

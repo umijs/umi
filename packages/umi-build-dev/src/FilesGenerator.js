@@ -209,11 +209,12 @@ if (process.env.NODE_ENV === 'production') {
       let component;
       let isCompiling = false;
       let webpackChunkName = null;
+      const compilingPath = join(__dirname, 'Compiling.js');
       if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {
         if (getRequest()[key]) {
           component = `require('${pageJSFile}').default`;
         } else {
-          component = '() => <div>Compiling...</div>';
+          component = `() => React.createElement(require('${compilingPath}').default, { route: '${key}' })`;
           isCompiling = true;
         }
       } else {
