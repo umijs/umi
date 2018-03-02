@@ -209,7 +209,7 @@ if (process.env.NODE_ENV === 'production') {
       let component;
       let isCompiling = false;
       let webpackChunkName = null;
-      const compilingPath = join(__dirname, 'Compiling.js');
+      const compilingPath = winPath(join(__dirname, 'Compiling.js'));
       if (isDev && process.env.COMPILE_ON_DEMAND !== 'none') {
         if (getRequest()[key]) {
           component = `require('${pageJSFile}').default`;
