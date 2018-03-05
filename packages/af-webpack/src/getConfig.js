@@ -384,6 +384,7 @@ export default function getConfig(opts = {}) {
             /\.json$/,
             /\.(js|jsx|ts|tsx)$/,
             /\.(css|less|scss|sass)$/,
+            ...(opts.urlLoaderExcludes || []),
           ],
           loader: require.resolve('url-loader'),
           options: {
