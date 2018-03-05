@@ -80,6 +80,10 @@ export default class HtmlGenerator {
     // entry: ./user
     const { path, component } = route;
 
+    if (!context.path) {
+      context.path = path;
+    }
+
     const customDocPath = document
       ? join(paths.cwd, document)
       : paths.absPageDocumentPath;
