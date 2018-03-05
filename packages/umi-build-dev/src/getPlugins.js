@@ -46,6 +46,7 @@ export default function(opts = {}) {
 
   // 内置插件
   const builtInPlugins = [
+    './plugins/global-js',
     './plugins/global-css',
     './plugins/layout',
     './plugins/fastclick',

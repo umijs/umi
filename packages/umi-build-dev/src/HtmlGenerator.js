@@ -72,7 +72,7 @@ export default class HtmlGenerator {
   getContent(opts = {}) {
     const { pageConfig = {}, route = {} } = opts;
     const { paths, webpackConfig } = this.service;
-    const { document, context } = pageConfig;
+    const { document, context = {} } = pageConfig;
 
     // e.g.
     // path: /user.html

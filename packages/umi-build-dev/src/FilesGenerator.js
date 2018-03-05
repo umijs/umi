@@ -81,8 +81,9 @@ export default class FilesGenerator {
         },
       });
 
-      // rebuild 时只生成 router.js
       this.generateRouterJS();
+      this.generateEntry();
+
       if (this.onChange) this.onChange();
       if (this.hasRebuildError) {
         // 从出错中恢复时，刷新浏览器
@@ -101,11 +102,8 @@ export default class FilesGenerator {
     }
   }
 
-  generateFiles() {
+  generateEntry() {
     const { paths, entryJSTpl, config, libraryName } = this.service;
-    this.service.applyPlugins('generateFiles');
-
-    this.generateRouterJS();
 
     // Generate umi.js
     let entryContent = readFileSync(
@@ -134,6 +132,14 @@ if (process.env.NODE_ENV === 'production') {
       `;
     }
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
+  }
+
+  generateFiles() {
+    const { paths } = this.service;
+    this.service.applyPlugins('generateFiles');
+
+    this.generateRouterJS();
+    this.generateEntry();
 
     // Generate registerServiceWorker.js
     writeFileSync(
