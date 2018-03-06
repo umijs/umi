@@ -72,13 +72,17 @@ export default class HtmlGenerator {
   getContent(opts = {}) {
     const { pageConfig = {}, route = {} } = opts;
     const { paths, webpackConfig } = this.service;
-    const { document, context } = pageConfig;
+    const { document, context = {} } = pageConfig;
 
     // e.g.
     // path: /user.html
     // component: ./user/page.js
     // entry: ./user
     const { path, component } = route;
+
+    if (!context.path) {
+      context.path = path;
+    }
 
     const customDocPath = document
       ? join(paths.cwd, document)
@@ -176,7 +180,7 @@ ${jsContent}
       process.env.COMPRESS !== 'none'
     ) {
       html = minify(html, {
-        removeAttributeQuotes: true,
+        removeAttributeQuotes: false, // site don't support no quote attributes
         collapseWhitespace: true,
       });
     }

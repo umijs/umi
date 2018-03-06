@@ -1,8 +1,25 @@
 import px2rem from 'postcss-plugin-px2rem';
 import { join } from 'path';
+import { existsSync } from 'fs';
 
 export default function(api) {
-  const { config, libraryName } = api.service;
+  const { config, paths } = api.service;
+
+  const hdFiles = [
+    join(paths.absSrcPath, 'hd.tsx'),
+    join(paths.absSrcPath, 'hd.ts'),
+    join(paths.absSrcPath, 'hd.jsx'),
+    join(paths.absSrcPath, 'hd.js'),
+  ];
+
+  function getHdJS() {
+    for (const file of hdFiles) {
+      if (existsSync(file)) {
+        return file;
+      }
+    }
+    return join(__dirname, './template/index.js');
+  }
 
   api.register('modifyConfigPlugins', ({ memo }) => {
     memo.push(api => {
@@ -29,9 +46,19 @@ export default function(api) {
           minPixelValue: 2,
         }),
       ];
-      const hdFile = join(__dirname, './template/index.js');
-      memo.entry[libraryName].unshift(hdFile);
       return memo;
+    });
+
+    api.register('modifyEntryFile', ({ memo }) => {
+      const hdJS = getHdJS();
+      if (hdJS) {
+        memo = `import '${hdJS}';\r\n${memo}`;
+      }
+      return memo;
+    });
+
+    api.register('modifyPageWatchers', ({ memo }) => {
+      return [...memo, ...hdFiles];
     });
   }
 }

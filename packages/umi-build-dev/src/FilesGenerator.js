@@ -81,8 +81,9 @@ export default class FilesGenerator {
         },
       });
 
-      // rebuild 时只生成 router.js
       this.generateRouterJS();
+      this.generateEntry();
+
       if (this.onChange) this.onChange();
       if (this.hasRebuildError) {
         // 从出错中恢复时，刷新浏览器
@@ -101,11 +102,8 @@ export default class FilesGenerator {
     }
   }
 
-  generateFiles() {
+  generateEntry() {
     const { paths, entryJSTpl, config, libraryName } = this.service;
-    this.service.applyPlugins('generateFiles');
-
-    this.generateRouterJS();
 
     // Generate umi.js
     let entryContent = readFileSync(
@@ -134,6 +132,14 @@ if (process.env.NODE_ENV === 'production') {
       `;
     }
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
+  }
+
+  generateFiles() {
+    const { paths } = this.service;
+    this.service.applyPlugins('generateFiles');
+
+    this.generateRouterJS();
+    this.generateEntry();
 
     // Generate registerServiceWorker.js
     writeFileSync(
@@ -184,8 +190,8 @@ if (process.env.NODE_ENV === 'production') {
   getRouterContent() {
     const { routes, config, paths } = this.service;
 
-    const routesByPath = routes.reduce((memo, { path, component }) => {
-      memo[path] = component;
+    const routesByPath = routes.reduce((memo, route) => {
+      memo[route.path] = route;
       return memo;
     }, {});
 
@@ -202,7 +208,8 @@ if (process.env.NODE_ENV === 'production') {
       )}').default,`;
     }
     let routesContent = Object.keys(routesByPath).map(key => {
-      const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
+      const route = routesByPath[key];
+      const pageJSFile = winPath(relative(paths.tmpDirPath, route.component));
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
 
@@ -218,7 +225,7 @@ if (process.env.NODE_ENV === 'production') {
           isCompiling = true;
         }
       } else {
-        webpackChunkName = normalizeEntry(routesByPath[key]);
+        webpackChunkName = normalizeEntry(route.component);
         component = `dynamic(() => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'), { ${loadingOpts} })`;
       }
       component = this.service.applyPlugins('modifyRouteComponent', {
@@ -231,7 +238,8 @@ if (process.env.NODE_ENV === 'production') {
         },
       });
 
-      return `    <Route exact path="${key}" component={${component}} />`;
+      const exact = route.exact ? 'exact ' : '';
+      return `    <Route ${exact}path="${key}" component={${component}} />`;
     });
 
     routesContent = this.service.applyPlugins('modifyRoutesContent', {

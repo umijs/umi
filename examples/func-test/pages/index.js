@@ -1,5 +1,6 @@
 import { Button } from 'antd-mobile';
 import Link from 'umi/link';
+import router from 'umi/router';
 import styles from './index.less';
 
 export default function() {
@@ -20,7 +21,14 @@ export default function() {
           <Link to="/users/detail">go to /users/detail</Link>
         </li>
       </ul>
-      <Button type="primary">一个没啥用的 Button</Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          router.push('/list');
+        }}
+      >
+        go to /list with router.push()
+      </Button>
     </div>
   );
 }
