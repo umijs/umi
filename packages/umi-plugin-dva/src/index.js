@@ -1,8 +1,6 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, lstatSync } from 'fs';
+import { join, dirname } from 'path';
 import globby from 'globby';
-
-const ROUTE_FILES = ['page.js', 'page.ts', 'page.jsx', 'page.tsx'];
 
 export default function(api) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
@@ -27,15 +25,19 @@ export default function(api) {
 
   function getPageModels(pageJSFile) {
     const filePath = join(paths.absTmpDirPath, pageJSFile);
-    const fileName = basename(filePath);
-    if (ROUTE_FILES.indexOf(fileName) > -1) {
-      const root = dirname(filePath);
-      const modelPaths = globby.sync('./models/*.{ts,js}', {
-        cwd: root,
-      });
-      return modelPaths.map(m => join(root, m));
+    const root = getRootPath(filePath);
+    const modelPaths = globby.sync('./models/*.{ts,js}', {
+      cwd: root,
+    });
+    return modelPaths.map(m => join(root, m));
+  }
+
+  function getRootPath(pageJSFile) {
+    const filePath = join(paths.absTmpDirPath, pageJSFile);
+    if (lstatSync(filePath).isDirectory()) {
+      return filePath;
     } else {
-      return [];
+      return dirname(filePath);
     }
   }
 
