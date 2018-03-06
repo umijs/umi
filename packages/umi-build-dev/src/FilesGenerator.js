@@ -190,8 +190,8 @@ if (process.env.NODE_ENV === 'production') {
   getRouterContent() {
     const { routes, config, paths } = this.service;
 
-    const routesByPath = routes.reduce((memo, { path, component }) => {
-      memo[path] = component;
+    const routesByPath = routes.reduce((memo, route) => {
+      memo[route.path] = route;
       return memo;
     }, {});
 
@@ -208,7 +208,8 @@ if (process.env.NODE_ENV === 'production') {
       )}').default,`;
     }
     let routesContent = Object.keys(routesByPath).map(key => {
-      const pageJSFile = winPath(relative(paths.tmpDirPath, routesByPath[key]));
+      const route = routesByPath[key];
+      const pageJSFile = winPath(relative(paths.tmpDirPath, route.component));
       debug(`requested: ${JSON.stringify(getRequest())}`);
       const isDev = process.env.NODE_ENV === 'development';
 
@@ -224,7 +225,7 @@ if (process.env.NODE_ENV === 'production') {
           isCompiling = true;
         }
       } else {
-        webpackChunkName = normalizeEntry(routesByPath[key]);
+        webpackChunkName = normalizeEntry(route.component);
         component = `dynamic(() => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'), { ${loadingOpts} })`;
       }
       component = this.service.applyPlugins('modifyRouteComponent', {
@@ -237,7 +238,8 @@ if (process.env.NODE_ENV === 'production') {
         },
       });
 
-      return `    <Route exact path="${key}" component={${component}} />`;
+      const exact = route.exact ? 'exact ' : '';
+      return `    <Route ${exact}path="${key}" component={${component}} />`;
     });
 
     routesContent = this.service.applyPlugins('modifyRoutesContent', {
