@@ -180,7 +180,7 @@ ${jsContent}
       process.env.COMPRESS !== 'none'
     ) {
       html = minify(html, {
-        removeAttributeQuotes: true,
+        removeAttributeQuotes: false, // site don't support no quote attributes
         collapseWhitespace: true,
       });
     }
