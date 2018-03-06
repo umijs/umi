@@ -76,7 +76,12 @@ export default function getConfig(opts = {}) {
             process.env.CSS_COMPRESS === 'none' ||
             process.env.COMPRESS === 'none' ||
             process.env.NO_COMPRESS
-          ),
+          )
+            ? {
+                // ref: https://github.com/umijs/umi/issues/164
+                minifyFontValues: false,
+              }
+            : false,
           sourceMap: !opts.disableCSSSourceMap,
         }),
   };
