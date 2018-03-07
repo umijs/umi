@@ -9,7 +9,8 @@
   "dependencies": {
     "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
-    "globby": "^7.1.1"
+    "globby": "^7.1.1",
+    "lodash.uniq": "^4.5.0"
   },
   "repository": {
     "type": "git",
