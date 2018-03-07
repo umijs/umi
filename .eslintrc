@@ -16,7 +16,7 @@
     "consistent-return": [0],
     "react/react-in-jsx-scope": [0],
     "react/forbid-prop-types": [0],
-    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    // "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "global-require": [1],
     "import/prefer-default-export": [0],
     "react/jsx-no-bind": [0],
@@ -39,7 +39,7 @@
     "no-underscore-dangle": [0],
     "spaced-comment": [0],
     "indent": [0],
-    "quotes": [0],
+    // "quotes": [0],
     "func-names": [0],
     "arrow-parens": [0],
     "space-before-function-paren": [0],
@@ -49,7 +49,8 @@
     "class-methods-use-this": [0],
     "no-new": [0],
     "import/newline-after-import": [0],
-    "no-console": [0]
+    "no-console": [1],
+    "quote-props": ["error", "as-needed"]
   },
   "parserOptions": {
     "ecmaFeatures": {

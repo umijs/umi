@@ -63,12 +63,12 @@ export default class Service {
   }
 
   setRoutes(routes) {
-    this.routes = routes;
+    this.routes = routes
   }
 
   getWebpackRCConfig() {
     return getWebpackRCConfig({
-      cwd: this.cwd,
+      'cwd': this.cwd,
       disabledConfigs: ['entry', 'outputPath', 'hash'],
     });
   }
@@ -150,7 +150,7 @@ export default class Service {
       initialValue: [
         createRouteMiddleware(this, {
           rebuildEntry() {
-            if (!isCompileDone) {
+            if(!isCompileDone) {
               // 改写
               const defaultOnCompileDone = onCompileDone;
               onCompileDone = () => {

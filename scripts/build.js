@@ -6,13 +6,13 @@ const rimraf = require('rimraf');
 const { readdirSync, readFileSync, writeFileSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
-
+console.log('1')
 const nodeBabelConfig = {
   presets: [
     [
       require.resolve('@babel/preset-env'),
       {
-        targets: {
+        'targets': {
           node: 6,
         },
       },
