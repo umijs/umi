@@ -6,7 +6,7 @@ const rimraf = require('rimraf');
 const { readdirSync, readFileSync, writeFileSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
-console.log('1')
+console.log('1');
 const nodeBabelConfig = {
   presets: [
     [
@@ -21,7 +21,7 @@ const nodeBabelConfig = {
   ],
 };
 const browserBabelConfig = {
-  presets: [
+  "presets": [
     [
       require.resolve('@babel/preset-env'),
       {

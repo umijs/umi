@@ -1,22 +1,33 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb",
+  // "parser": "babel-eslint",
   "env": {
     "browser": true,
-    "mocha": true
+    "mocha": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "jsx": true,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "rules": {
     "jsx-a11y/href-no-hash": [0],
     "jsx-a11y/click-events-have-key-events": [0],
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "to" ]
-    }],
     "generator-star-spacing": [0],
     "consistent-return": [0],
     "react/react-in-jsx-scope": [0],
     "react/forbid-prop-types": [0],
-    // "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    "react/jsx-filename-extension": [
+      0, 
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
     "global-require": [1],
     "import/prefer-default-export": [0],
     "react/jsx-no-bind": [0],
@@ -27,6 +38,7 @@
     "import/no-extraneous-dependencies": [0],
     "no-use-before-define": [0],
     "jsx-a11y/no-static-element-interactions": [0],
+    "jsx-a11y/anchor-is-valid": [0],
     "no-nested-ternary": [0],
     "arrow-body-style": [0],
     "import/extensions": [0],
@@ -39,7 +51,7 @@
     "no-underscore-dangle": [0],
     "spaced-comment": [0],
     "indent": [0],
-    // "quotes": [0],
+    "quotes": [0],
     "func-names": [0],
     "arrow-parens": [0],
     "space-before-function-paren": [0],
@@ -49,12 +61,8 @@
     "class-methods-use-this": [0],
     "no-new": [0],
     "import/newline-after-import": [0],
-    "no-console": [1],
-    "quote-props": ["error", "as-needed"]
-  },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
+    "no-console": [0],
+    "quote-props": ["error", "as-needed"],
+    "semi": [2]
   }
 }
