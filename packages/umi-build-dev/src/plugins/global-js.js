@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 
 export default function(api) {
   const { paths } = api.service;
+  const { winPath } = api.utils;
 
   const globalFiles = [
     join(paths.absSrcPath, 'global.tsx'),
@@ -22,7 +23,7 @@ export default function(api) {
   api.register('modifyEntryFile', ({ memo }) => {
     const globalJS = getGlobalJS();
     if (globalJS) {
-      memo = `import '${globalJS}';\r\n${memo}`;
+      memo = `import '${winPath(globalJS)}';\r\n${memo}`;
     }
     return memo;
   });

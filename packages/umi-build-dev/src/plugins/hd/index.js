@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 
 export default function(api) {
   const { config, paths } = api.service;
+  const { winPath } = api.utils;
 
   const hdFiles = [
     join(paths.absSrcPath, 'hd.tsx'),
@@ -52,7 +53,7 @@ export default function(api) {
     api.register('modifyEntryFile', ({ memo }) => {
       const hdJS = getHdJS();
       if (hdJS) {
-        memo = `import '${hdJS}';\r\n${memo}`;
+        memo = `import '${winPath(hdJS)}';\r\n${memo}`;
       }
       return memo;
     });
