@@ -1,8 +1,7 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
 import globby from 'globby';
-
-const ROUTE_FILES = ['page.js', 'page.ts', 'page.jsx', 'page.tsx'];
+import uniq from 'lodash.uniq';
 
 export default function(api) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
@@ -11,35 +10,63 @@ export default function(api) {
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
 
-  function getModels() {
-    const pattern = isProduction ? 'models/*.{ts,js}' : '**/models/*.{ts,js}';
-    const modelPaths = globby.sync(pattern, {
-      cwd: paths.absSrcPath,
-    });
-    return modelPaths
+  function getModel(cwd) {
+    const modelJSPath = join(cwd, 'model.js');
+    if (existsSync(modelJSPath)) {
+      return [winPath(modelJSPath)];
+    }
+
+    return globby
+      .sync('./models/**/*.{ts,js}', {
+        cwd,
+      })
+      .map(p => winPath(join(cwd, p)));
+  }
+
+  function endWithSlash(path) {
+    return path.slice(-1) !== '/' ? `${path}/` : path;
+  }
+
+  function isPagesPath(path) {
+    return (
+      winPath(endWithSlash(path)) === winPath(endWithSlash(paths.absPagesPath))
+    );
+  }
+
+  function getGlobalModels() {
+    let models = getModel(paths.absSrcPath);
+    if (!isProduction) {
+      // dev 模式下还需要额外载入 page 路由的 models 文件
+      // TODO: routes 支持嵌套时这里需要同步处理
+      api.service.routes.forEach(({ component }) => {
+        models = models.concat(getPageModels(join(paths.cwd, component)));
+      });
+      // 去重
+      models = uniq(models);
+    }
+    return models;
+  }
+
+  function getPageModels(cwd) {
+    let models = [];
+    while (!isPagesPath(cwd)) {
+      models = models.concat(getModel(cwd));
+      cwd = dirname(cwd);
+    }
+    return models;
+  }
+
+  function getGlobalModelContent() {
+    return getGlobalModels()
       .map(path =>
         `
-    app.model({ ...(require('../../${path}').default) });
+    app.model({ ...(require('${path}').default) });
   `.trim(),
       )
       .join('\r\n');
   }
 
-  function getPageModels(pageJSFile) {
-    const filePath = join(paths.absTmpDirPath, pageJSFile);
-    const fileName = basename(filePath);
-    if (ROUTE_FILES.indexOf(fileName) > -1) {
-      const root = dirname(filePath);
-      const modelPaths = globby.sync('./models/*.{ts,js}', {
-        cwd: root,
-      });
-      return modelPaths.map(m => join(root, m));
-    } else {
-      return [];
-    }
-  }
-
-  function getPlugins() {
+  function getPluginContent() {
     const pluginPaths = globby.sync('plugins/*.js', {
       cwd: paths.absSrcPath,
     });
@@ -71,8 +98,8 @@ export default function(api) {
     const tpl = join(__dirname, '../template/DvaContainer.js');
     let tplContent = readFileSync(tpl, 'utf-8');
     tplContent = tplContent
-      .replace('<%= RegisterPlugins %>', getPlugins())
-      .replace('<%= RegisterModels %>', getModels());
+      .replace('<%= RegisterPlugins %>', getPluginContent())
+      .replace('<%= RegisterModels %>', getGlobalModelContent());
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
   });
 
@@ -105,7 +132,7 @@ _dvaDynamic({
   component: () => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'),
 })
       `.trim();
-      const models = getPageModels(pageJSFile);
+      const models = getPageModels(join(paths.absTmpDirPath, pageJSFile));
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',
