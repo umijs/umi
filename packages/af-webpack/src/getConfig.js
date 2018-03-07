@@ -56,14 +56,12 @@ export default function getConfig(opts = {}) {
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),
     ],
   };
-  const cssModulesConfig = opts.disableCSSModules
-    ? {}
-    : {
-        modules: true,
-        localIdentName: isDev
-          ? '[name]__[local]___[hash:base64:5]'
-          : '[local]___[hash:base64:5]',
-      };
+  const cssModulesConfig = {
+    modules: true,
+    localIdentName: isDev
+      ? '[name]__[local]___[hash:base64:5]'
+      : '[local]___[hash:base64:5]',
+  };
   const lessOptions = {
     modifyVars: theme,
   };
@@ -128,6 +126,20 @@ export default function getConfig(opts = {}) {
     ];
   }
 
+  function exclude(filePath) {
+    if (/node_modules/.test(filePath)) {
+      return true;
+    }
+    if (opts.cssModulesWithAffix) {
+      if (/\.module\.(css|less|sass|scss)$/.test(filePath)) return true;
+    }
+    if (opts.cssModulesExcludes) {
+      for (const exclude of opts.cssModulesExcludes) {
+        if (filePath.indexOf(exclude) > -1) return true;
+      }
+    }
+  }
+
   const cssRules = [
     ...(opts.cssModulesExcludes
       ? opts.cssModulesExcludes.map(file => {
@@ -137,24 +149,44 @@ export default function getConfig(opts = {}) {
             },
             use: getCSSLoader({
               less: extname(file).toLowerCase() === '.less',
+              sass:
+                extname(file).toLowerCase() === '.sass' ||
+                extname(file).toLowerCase() === '.scss',
+              sassOptions: opts.sass,
             }),
           };
         })
       : []),
+    ...(opts.cssModulesWithAffix
+      ? [
+          {
+            test: /\.module\.css$/,
+            use: getCSSLoader({
+              cssModules: true,
+            }),
+          },
+          {
+            test: /\.module\.less$/,
+            use: getCSSLoader({
+              cssModules: true,
+              less: true,
+            }),
+          },
+          {
+            test: /\.module\.(sass|scss)$/,
+            use: getCSSLoader({
+              cssModules: true,
+              sass: true,
+              sassOptions: opts.sass,
+            }),
+          },
+        ]
+      : []),
     {
       test: /\.css$/,
-      exclude(filePath) {
-        if (/node_modules/.test(filePath)) {
-          return true;
-        }
-        if (opts.cssModulesExcludes) {
-          for (const exclude of opts.cssModulesExcludes) {
-            if (filePath.indexOf(exclude) > -1) return true;
-          }
-        }
-      },
+      exclude,
       use: getCSSLoader({
-        cssModules: true,
+        cssModules: !opts.disableCSSModules,
       }),
     },
     {
@@ -164,18 +196,9 @@ export default function getConfig(opts = {}) {
     },
     {
       test: /\.less$/,
-      exclude(filePath) {
-        if (/node_modules/.test(filePath)) {
-          return true;
-        }
-        if (opts.cssModulesExcludes) {
-          for (const exclude of opts.cssModulesExcludes) {
-            if (filePath.indexOf(exclude) > -1) return true;
-          }
-        }
-      },
+      exclude,
       use: getCSSLoader({
-        cssModules: true,
+        cssModules: !opts.disableCSSModules,
         less: true,
       }),
     },
@@ -188,9 +211,9 @@ export default function getConfig(opts = {}) {
     },
     {
       test: /\.(sass|scss)$/,
-      exclude: /node_modules/,
+      exclude,
       use: getCSSLoader({
-        cssModules: true,
+        cssModules: !opts.disableCSSModules,
         sass: true,
         sassOptions: opts.sass,
       }),
