@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { normalizePath } from '../src/utils';
+import { normalizePath } from './utils';
 
 describe('utils', () => {
   it('normalizePath object', () => {

@@ -64,10 +64,12 @@ export default function(service = {}) {
   // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
   // 详见：https://tinyletter.com/sorrycc/letters/babel
   const libAlias = {
-    'antd-mobile': dirname(require.resolve('antd-mobile/package')),
-    antd: dirname(require.resolve('antd/package')),
-    'react-router-dom': dirname(require.resolve('react-router-dom/package')),
-    history: dirname(require.resolve('umi-history/package')),
+    'antd-mobile': dirname(require.resolve('antd-mobile/package.json')),
+    antd: dirname(require.resolve('antd/package.json')),
+    'react-router-dom': dirname(
+      require.resolve('react-router-dom/package.json'),
+    ),
+    history: dirname(require.resolve('umi-history/package.json')),
   };
   // 支持用户指定 antd 和 antd-mobile 的版本
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install
@@ -81,7 +83,7 @@ export default function(service = {}) {
     }
     if (dependencies['antd-mobile']) {
       libAlias['antd-mobile'] = dirname(
-        require.resolve(join(cwd, 'node_modules/antd-mobile/package')),
+        require.resolve(join(cwd, 'node_modules/antd-mobile/package.json')),
       );
     }
   }

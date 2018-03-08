@@ -51,7 +51,7 @@ export default function(opts = {}) {
     ...(coverage
       ? {
           collectCoverageFrom: [
-            'pages/**/*.{ts,tsx,js,jsx',
+            'pages/**/*.{ts,tsx,js,jsx}',
             'src/**/*.{ts,tsx,js,jsx}',
             '!**/*.d.ts',
           ],
