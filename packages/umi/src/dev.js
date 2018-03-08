@@ -9,6 +9,7 @@ export default function(opts = {}) {
   delete opts.extraResolveModules;
 
   return require('umi-build-dev/lib/dev').default({
+    cwd: process.env.APP_ROOT,
     // eslint-disable-line
     babel: resolve(__dirname, '../babel'),
     extraResolveModules: [
