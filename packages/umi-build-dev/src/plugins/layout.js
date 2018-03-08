@@ -5,14 +5,29 @@ export default function(api) {
   const { IMPORT } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
-  const layoutPath = join(paths.absSrcPath, 'layouts/index.js');
+
+  const layoutFiles = [
+    join(paths.absSrcPath, 'layouts/index.tsx'),
+    join(paths.absSrcPath, 'layouts/index.ts'),
+    join(paths.absSrcPath, 'layouts/index.jsx'),
+    join(paths.absSrcPath, 'layouts/index.js'),
+  ];
+
+  function getLayoutJS() {
+    for (const file of layoutFiles) {
+      if (existsSync(file)) {
+        return file;
+      }
+    }
+  }
 
   api.register('modifyRouterFile', ({ memo }) => {
-    if (existsSync(layoutPath)) {
+    const layoutJS = getLayoutJS();
+    if (layoutJS) {
       return memo.replace(
         IMPORT,
         `
-import Layout from '${winPath(layoutPath)}';
+import Layout from '${winPath(layoutJS)}';
 ${IMPORT}
         `.trim(),
       );
@@ -22,7 +37,8 @@ ${IMPORT}
   });
 
   api.register('modifyRouterContent', ({ memo }) => {
-    if (existsSync(layoutPath)) {
+    const layoutJS = getLayoutJS();
+    if (layoutJS) {
       return memo
         .replace('<Switch>', '<Layout><Switch>')
         .replace('</Switch>', '</Switch></Layout>');
@@ -32,6 +48,6 @@ ${IMPORT}
   });
 
   api.register('modifyPageWatchers', ({ memo }) => {
-    return [...memo, join(paths.absSrcPath, 'layouts/index.js')];
+    return [...memo, ...layoutFiles];
   });
 }
