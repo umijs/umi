@@ -1,8 +1,8 @@
 import expect from 'expect';
 import { join } from 'path';
-import getRouteConfig from '../src/getRouteConfig';
+import getRouteConfig from './getRouteConfig';
 
-const fixture = join(__dirname, 'fixtures/getRouteConfig');
+const fixture = join(__dirname, '../test/fixtures/getRouteConfig');
 
 describe('getRouteConfig', () => {
   it('routes via config', () => {

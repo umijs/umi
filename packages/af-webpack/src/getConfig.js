@@ -364,7 +364,9 @@ export default function getConfig(opts = {}) {
         '.tsx',
       ],
       alias: {
-        '@babel/runtime': dirname(require.resolve('@babel/runtime/package')),
+        '@babel/runtime': dirname(
+          require.resolve('@babel/runtime/package.json'),
+        ),
         ...opts.alias,
       },
       plugins: [new TsConfigPathsPlugin()],

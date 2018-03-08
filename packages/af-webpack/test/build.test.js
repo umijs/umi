@@ -8,6 +8,8 @@ import getConfig from '../src/getConfig';
 
 process.env.NODE_ENV = 'production';
 process.env.COMPRESS = 'none';
+process.env.ESLINT = 'none';
+process.env.TSLINT = 'none';
 
 function getEntry(cwd) {
   if (existsSync(join(cwd, 'index.ts'))) {

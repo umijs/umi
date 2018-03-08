@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.js",
-    "debug": "lerna run debug",
+    "test": "./packages/umi-test/bin/umi-test.js",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "publish": "./scripts/publish.js"
@@ -35,6 +35,7 @@
     "rimraf": "^2.6.2",
     "shelljs": "^0.7.8",
     "through2": "^2.0.3",
+    "umi-test": "^0.4.4",
     "vinyl-fs": "^3.0.2"
   }
 }
