@@ -13,6 +13,12 @@ function test(path) {
 export default function(opts = {}) {
   const { watch, coverage, libraryName = 'umi', cwd = process.cwd() } = opts;
 
+  const jestConfigFile = join(cwd, 'jest.config.js');
+  let userJestConfig = {};
+  if (existsSync(jestConfigFile)) {
+    userJestConfig = require(jestConfigFile); // eslint-disable-line
+  }
+
   let pagesPath = 'pages';
   if (test(join(cwd, 'src/page'))) {
     pagesPath = 'src/page';
@@ -45,7 +51,7 @@ export default function(opts = {}) {
     ...(coverage
       ? {
           collectCoverageFrom: [
-            'pages/**/*.{ts,tsx,js,jsx',
+            'pages/**/*.{ts,tsx,js,jsx}',
             'src/**/*.{ts,tsx,js,jsx}',
             '!**/*.d.ts',
           ],
@@ -56,6 +62,7 @@ export default function(opts = {}) {
           ],
         }
       : {}),
+    ...(userJestConfig || {}),
   };
 
   return new Promise((resolve, reject) => {
