@@ -6,6 +6,7 @@ const rimraf = require('rimraf');
 const { readdirSync, readFileSync, writeFileSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
+const shell = require('shelljs');
 
 const nodeBabelConfig = {
   presets: [
@@ -68,7 +69,7 @@ function transform(opts = {}) {
 
 function buildPkg(pkg) {
   rimraf.sync(join(cwd, 'packages', pkg, 'lib'));
-  return vfs
+  const stream = vfs
     .src(`./packages/${pkg}/src/**/*.js`)
     .pipe(
       through.obj((f, enc, cb) => {
@@ -82,6 +83,16 @@ function buildPkg(pkg) {
       }),
     )
     .pipe(vfs.dest(`./packages/${pkg}/lib/`));
+  if (pkg === 'umi-test') {
+    stream.on('end', () => {
+      shell.exec(`
+echo '\\r\\nmodule.exports = exports["default"];' >> ./packages/umi-test/lib/transformers/jsTransformer.js
+`);
+      shell.exec(`
+echo '\\r\\nmodule.exports = exports["default"];' >> ./packages/umi-test/lib/transformers/tsTransformer.js
+`);
+    });
+  }
 }
 
 // buildPkg('umi');
