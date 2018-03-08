@@ -325,6 +325,7 @@ export default class Service {
           }
 
           this.applyPlugins('buildSuccess');
+          this.sendPageList();
           send({
             type: BUILD_DONE,
           });
