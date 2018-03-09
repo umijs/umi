@@ -61,7 +61,7 @@ export default class extends React.Component {
    * @param {Coordinates} coords
    */
   loadTypeData({ latitude, longitude }) {
-    fetch(`/restapi/shopping/openapi/entries?latitude=${latitude}&longitude=${longitude}&templates[]=main_template&templates[]=favourable_template&templates[]=svip_template`)
+    fetch(`https://eleme-proxy.sorrycc.com/restapi/shopping/openapi/entries?latitude=${latitude}&longitude=${longitude}&templates[]=main_template&templates[]=favourable_template&templates[]=svip_template`)
       .then(res => {
         if (res.status === 200) {
           res.json().then(data => {
@@ -82,7 +82,7 @@ export default class extends React.Component {
    */
   loadPoiData({ latitude, longitude }) {
     // poi数据
-    fetch(`/restapi/bgs/poi/reverse_geo_coding?latitude=${latitude}&longitude=${longitude}`)
+    fetch(`https://eleme-proxy.sorrycc.com/restapi/bgs/poi/reverse_geo_coding?latitude=${latitude}&longitude=${longitude}`)
       .then(res => {
         if (res.status === 200) {
           res.json().then(data => {
@@ -103,7 +103,7 @@ export default class extends React.Component {
    * @param {number} offset
   */
   loadRestaurantData({ latitude, longitude }, rank_id = '') {
-    fetch(`/restapi/shopping/v3/restaurants?latitude=${latitude}&longitude=${longitude}&offset=${this.rests.length}limit=8&extras[]=activities&extras[]=tags&extra_filters=home&rank_id=&terminal=h5&rank_id=${rank_id}`)
+    fetch(`https://eleme-proxy.sorrycc.com/restapi/shopping/v3/restaurants?latitude=${latitude}&longitude=${longitude}&offset=${this.rests.length}limit=8&extras[]=activities&extras[]=tags&extra_filters=home&rank_id=&terminal=h5&rank_id=${rank_id}`)
       .then(res => {
         if (res.status === 200) {
           res.json().then(data => {
