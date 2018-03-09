@@ -89,3 +89,7 @@ export default {
 ### plugins
 
 指定插件，格式为数组。
+
+### hashHistory
+
+启用 hash history 的方式。
