@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-declare class Link extends React.Component<{
+declare class NavLink extends React.Component<{
   to: string | {
     pathname: string,
     search: string,
@@ -12,7 +12,13 @@ declare class Link extends React.Component<{
   title?: string,
   id?: string,
   className?: string,
+  activeClassName?: string,
+  activeStyle?: object,
+  exact?: boolean,
+  strict?: boolean,
+  isActive?: Function,
+  location?: object,
 }, any> {
   render(): JSX.Element;
 }
-export default Link;
+export default NavLink;
