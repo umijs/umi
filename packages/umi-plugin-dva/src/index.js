@@ -15,11 +15,16 @@ export default function(api) {
     if (existsSync(modelJSPath)) {
       return [winPath(modelJSPath)];
     }
+    const modelTSPath = join(cwd, 'model.ts');
+    if (existsSync(modelTSPath)) {
+      return [winPath(modelTSPath)];
+    }
 
     return globby
       .sync('./models/**/*.{ts,js}', {
         cwd,
       })
+      .filter(p => !p.endsWith('.d.ts'))
       .map(p => winPath(join(cwd, p)));
   }
 
@@ -67,7 +72,7 @@ export default function(api) {
   }
 
   function getPluginContent() {
-    const pluginPaths = globby.sync('plugins/*.js', {
+    const pluginPaths = globby.sync('plugins/*.(js|ts)', {
       cwd: paths.absSrcPath,
     });
     return pluginPaths
