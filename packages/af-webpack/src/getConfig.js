@@ -410,7 +410,7 @@ export default function getConfig(opts = {}) {
             ]),
         {
           exclude: [
-            /\.html|ejs$/,
+            /\.(html|ejs)$/,
             /\.json$/,
             /\.(js|jsx|ts|tsx)$/,
             /\.(css|less|scss|sass)$/,
