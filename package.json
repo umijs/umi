@@ -3,7 +3,9 @@
   "scripts": {
     "build": "node scripts/build.js",
     "changelog": "lerna-changelog",
-    "test": "./packages/umi-test/bin/umi-test.js",
+    "test": "./packages/umi-test/bin/umi-test.js --coverage",
+    "debug": "./packages/umi-test/bin/umi-test.js",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
     "publish": "./scripts/publish.js"
@@ -23,6 +25,7 @@
     "@babel/runtime": "^7.0.0-beta.32",
     "babel-eslint": "^8.0.2",
     "chokidar": "^2.0.2",
+    "coveralls": "^3.0.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
