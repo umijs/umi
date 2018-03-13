@@ -159,12 +159,15 @@ export default class HtmlGenerator {
       .map(file => `<script src="${getAssetsPath(file)}"></script>`)
       .join('\r\n');
 
-    const injectContent = `
-${cssContent}
-${inlineScriptContent}
-${jsContent}
-    `.trim();
-    html = html.replace('</body>', `${injectContent}\r\n</body>`);
+    if (html.indexOf('</head>') > -1) {
+      html = html.replace('</head>', `${cssContent}\r\n</head>`);
+    } else {
+      html = html.replace('</body>', `${cssContent}\r\n</body>`);
+    }
+    html = html.replace(
+      '</body>',
+      `${inlineScriptContent}\r\n${jsContent}\r\n</body>`,
+    );
 
     // 插件最后处理一遍 HTML
     html = this.service.applyPlugins('modifyHTML', {
