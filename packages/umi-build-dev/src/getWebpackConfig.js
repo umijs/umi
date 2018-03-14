@@ -95,7 +95,10 @@ export default function(service = {}) {
 
     // 不允许配置
     entry,
-    outputPath: join(paths.absOutputPath, staticDirectory),
+    outputPath:
+      process.env.HTML === 'none'
+        ? paths.absOutputPath
+        : join(paths.absOutputPath, staticDirectory),
     hash: !isDev && hash,
 
     // 扩展

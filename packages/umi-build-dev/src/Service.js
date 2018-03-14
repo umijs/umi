@@ -304,26 +304,31 @@ export default class Service {
 
           this.applyPlugins('beforeGenerateHTML');
 
-          debug(`Bundle html files`);
-          const chunksMap = chunksToMap(stats.compilation.chunks);
-          try {
-            const hg = new HtmlGenerator(this, {
-              chunksMap,
-            });
-            hg.generate();
-          } catch (e) {
-            console.log(e);
-          }
+          if (process.env.HTML !== 'none') {
+            debug(`Bundle html files`);
+            const chunksMap = chunksToMap(stats.compilation.chunks);
+            try {
+              const hg = new HtmlGenerator(this, {
+                chunksMap,
+              });
+              hg.generate();
+            } catch (e) {
+              console.log(e);
+            }
 
-          debug('Move service-worker.js');
-          const sourceSW = join(
-            this.paths.absOutputPath,
-            this.staticDirectory,
-            'service-worker.js',
-          );
-          const targetSW = join(this.paths.absOutputPath, 'service-worker.js');
-          if (existsSync(sourceSW)) {
-            renameSync(sourceSW, targetSW);
+            debug('Move service-worker.js');
+            const sourceSW = join(
+              this.paths.absOutputPath,
+              this.staticDirectory,
+              'service-worker.js',
+            );
+            const targetSW = join(
+              this.paths.absOutputPath,
+              'service-worker.js',
+            );
+            if (existsSync(sourceSW)) {
+              renameSync(sourceSW, targetSW);
+            }
           }
 
           this.applyPlugins('buildSuccess');
