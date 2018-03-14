@@ -29,6 +29,7 @@ export default function() {
       >
         go to /list with router.push()
       </Button>
+      <div className="welcome">WELCOME</div>
     </div>
   );
 }
