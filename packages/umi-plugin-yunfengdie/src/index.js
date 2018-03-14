@@ -23,8 +23,14 @@ export default function(api) {
   }
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
-    memo.publicPath = '{{ publicPath }}';
+    // publicPath for CSS
+    memo.publicPath = './';
     return memo;
+  });
+
+  api.register('beforeGenerateHTML', () => {
+    // publicPath for JS
+    api.service.webpackConfig.output.publicPath = '{{ publicPath }}';
   });
 
   api.register('modifyHTML', ({ memo, args }) => {
