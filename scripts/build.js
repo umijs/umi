@@ -3,7 +3,7 @@ const babel = require('@babel/core');
 const through = require('through2');
 const chalk = require('chalk');
 const rimraf = require('rimraf');
-const { readdirSync, readFileSync, writeFileSync } = require('fs');
+const { readdirSync, readFileSync, writeFileSync, existsSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
 const shell = require('shelljs');
@@ -108,6 +108,7 @@ function build() {
         ignoreInitial: true,
       });
       watcher.on('all', (event, fullPath) => {
+        if (!existsSync(fullPath)) return;
         const relPath = fullPath.replace(`${cwd}/packages/${pkg}/src/`, '');
         const content = readFileSync(fullPath, 'utf-8');
         try {
