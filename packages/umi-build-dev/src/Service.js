@@ -302,6 +302,8 @@ export default class Service {
             rimraf(this.paths.absTmpDirPath);
           }
 
+          this.applyPlugins('beforeGenerateHTML');
+
           debug(`Bundle html files`);
           const chunksMap = chunksToMap(stats.compilation.chunks);
           try {
