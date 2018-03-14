@@ -93,10 +93,9 @@ export default function(api) {
   }
 
   function chunkName(path) {
-    return stripFirstSlash(winPath(path.replace(paths.cwd, ''))).replace(
-      /\//g,
-      '__',
-    );
+    return stripFirstSlash(
+      winPath(path).replace(winPath(paths.cwd), ''),
+    ).replace(/\//g, '__');
   }
 
   api.register('generateFiles', () => {
