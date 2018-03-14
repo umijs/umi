@@ -103,7 +103,11 @@ export default function(service = {}) {
 
     // 扩展
     babel: webpackRCConfig.babel || {
-      presets: [[babel, { browsers: browserslist }]],
+      presets: [
+        [babel, { browsers: browserslist }],
+        ...(webpackRCConfig.extraBabelPresets || []),
+      ],
+      plugins: webpackRCConfig.extraBabelPlugins || [],
     },
     browserslist,
     extraResolveModules: [
