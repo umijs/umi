@@ -1,5 +1,5 @@
 import { sync as rimraf } from 'rimraf';
-import { existsSync, renameSync, readFileSync } from 'fs';
+import { existsSync, renameSync } from 'fs';
 import { join } from 'path';
 import getWebpackRCConfig, {
   watchConfigs as watchWebpackRCConfig,
