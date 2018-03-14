@@ -14,4 +14,5 @@ export default {
   // exportStatic: {
   //   htmlSuffix: true,
   // },
+  outputPath: './www',
 };
