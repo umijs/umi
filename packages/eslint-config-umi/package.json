@@ -12,11 +12,6 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
-  "scripts": {
-    "test": "ruban test",
-    "debug": "ruban debug",
-    "coveralls": "ruban coveralls"
-  },
   "dependencies": {
     "eslint-config-react-app": "^2.0.0"
   },

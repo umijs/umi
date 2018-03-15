@@ -33,11 +33,6 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
-  "scripts": {
-    "test": "ruban test --timeout 200000",
-    "debug": "DISABLE_TRANSFORM_RUNTIME=1 ruban debug --timeout 200000",
-    "coveralls": "ruban coveralls"
-  },
   "files": [
     "lib",
     "src",

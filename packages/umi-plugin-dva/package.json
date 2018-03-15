@@ -2,10 +2,6 @@
   "name": "umi-plugin-dva",
   "version": "0.3.3",
   "main": "./lib/index.js",
-  "scripts": {
-    "test": "ruban test",
-    "debug": "ruban debug"
-  },
   "dependencies": {
     "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
@@ -14,9 +10,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-yunfengdie"
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-yunfengdie",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva",
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],

@@ -2,10 +2,6 @@
   "name": "umi-plugin-yunfengdie",
   "version": "0.4.1",
   "main": "./lib/index.js",
-  "scripts": {
-    "test": "ruban test",
-    "debug": "ruban debug"
-  },
   "dependencies": {
     "debug": "^3.1.0"
   },
