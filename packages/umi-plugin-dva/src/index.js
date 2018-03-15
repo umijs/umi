@@ -72,13 +72,14 @@ export default function(api) {
   }
 
   function getPluginContent() {
-    const pluginPaths = globby.sync('plugins/*.(js|ts)', {
+    const pluginPaths = globby.sync('plugins/**/*.{js,ts}', {
       cwd: paths.absSrcPath,
     });
+    console.log('xxxxx', pluginPaths);
     return pluginPaths
       .map(path =>
         `
-    app.use(require('../../${path}').default);
+app.use(require('../../${path}').default);
   `.trim(),
       )
       .join('\r\n');
