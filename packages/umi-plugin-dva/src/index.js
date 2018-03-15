@@ -38,6 +38,12 @@ export default function(api) {
     );
   }
 
+  function isSrcPath(path) {
+    return (
+      winPath(endWithSlash(path)) === winPath(endWithSlash(paths.absSrcPath))
+    );
+  }
+
   function getGlobalModels() {
     let models = getModel(paths.absSrcPath);
     if (!isProduction) {
@@ -54,7 +60,7 @@ export default function(api) {
 
   function getPageModels(cwd) {
     let models = [];
-    while (!isPagesPath(cwd)) {
+    while (!isPagesPath(cwd) && !isSrcPath(cwd) && cwd !== '/') {
       models = models.concat(getModel(cwd));
       cwd = dirname(cwd);
     }
