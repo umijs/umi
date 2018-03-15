@@ -75,7 +75,6 @@ export default function(api) {
     const pluginPaths = globby.sync('plugins/**/*.{js,ts}', {
       cwd: paths.absSrcPath,
     });
-    console.log('xxxxx', pluginPaths);
     return pluginPaths
       .map(path =>
         `
