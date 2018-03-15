@@ -152,7 +152,9 @@ if (process.env.NODE_ENV === 'production') {
   generateRouterJS() {
     const { paths, config } = this.service;
     const { absRouterJSPath } = paths;
-    const routes = getRouteConfig(paths, config);
+    const routes = this.service.applyPlugins('modifyRoutes', {
+      initialValue: getRouteConfig(paths, config),
+    });
 
     this.service.setRoutes(routes);
 

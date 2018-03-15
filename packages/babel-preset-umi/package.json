@@ -13,11 +13,6 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
-  "scripts": {
-    "test": "ruban test",
-    "debug": "ruban debug",
-    "coveralls": "ruban coveralls"
-  },
   "dependencies": {
     "@babel/plugin-proposal-async-generator-functions": "^7.0.0-beta.31",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.31",
