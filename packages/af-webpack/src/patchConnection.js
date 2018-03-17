@@ -9,13 +9,14 @@ export function showLoading() {
   el.style.top = '50%';
   el.style.marginTop = '-10px';
   el.style.width = '100%';
-  el.style.background = 'yellow';
+  el.style.background = '#fff1b8';
   el.style.zIndex = 2147483647000000;
-  el.style.color = '#8b0000';
+  el.style.color = '#613400';
   el.style.textAlign = 'center';
   el.style.fontSize = '18px';
-  el.style.padding = '4px 0';
-  el.style.boxShadow = '0px 0px 20px #00000054';
+  el.style.fontFamily = 'Consolas, Menlo, Courier, monospace';
+  el.style.padding = '8px 0';
+  el.style.boxShadow = '0px 4px 8px rgba(254, 241, 184, 0.3)';
   el.innerHTML = 'Disconnected from the devServer, trying to reconnect...';
   document.body.appendChild(el);
 }
