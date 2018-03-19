@@ -9,13 +9,13 @@ e.g. start dev server with port 3000,
 
 ```
 # OS X, Linux
-$ PORT=3000 roadhog dev
+$ PORT=3000 umi dev
 
 # Windows (cmd.exe)
-$ set PORT=3000&&roadhog dev
+$ set PORT=3000&&umi dev
 
 # Or use cross-env for all platforms
-$ cross-env PORT=3000 roadhog dev
+$ cross-env PORT=3000 umi dev
 ```
 
 ## 环境变量
