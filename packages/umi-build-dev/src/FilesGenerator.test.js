@@ -2,7 +2,7 @@ import expect from 'expect';
 import { join } from 'path';
 import FilesGenerator from './FilesGenerator';
 
-describe('FilesGenerator', () => {
+describe('FilesGenerator (getRoutesJSON)', () => {
   it('normal', () => {
     const service = {
       routes: [
@@ -15,6 +15,7 @@ describe('FilesGenerator', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const routesJSON = fg
@@ -50,6 +51,7 @@ describe('FilesGenerator', () => {
         ),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const routesJSON = fg
@@ -96,6 +98,7 @@ describe('FilesGenerator', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const routesJSON = fg
@@ -159,6 +162,7 @@ describe('FilesGenerator', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const routesJSON = fg
@@ -227,6 +231,7 @@ describe('FilesGenerator', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const routesJSON = fg
@@ -269,8 +274,10 @@ describe('FilesGenerator', () => {
       },
     ]);
   });
+});
 
-  it('getRequestedRoutes', () => {
+describe('FilesGenerator (getRequestedRoutes)', () => {
+  it('normal', () => {
     const service = {
       routes: [
         {
@@ -299,6 +306,7 @@ describe('FilesGenerator', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
     const requested = fg.getRequestedRoutes({
