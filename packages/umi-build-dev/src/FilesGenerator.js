@@ -5,11 +5,13 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import { matchRoutes } from 'react-router-config';
 import getRouteConfig from './getRouteConfig';
 import { getRequest } from './requestCache';
 import winPath from './winPath';
 import normalizeEntry from './normalizeEntry';
 import {
+  EXT_LIST,
   PLACEHOLDER_HISTORY_MODIFIER,
   PLACEHOLDER_IMPORT,
   PLACEHOLDER_RENDER,
@@ -187,6 +189,105 @@ if (process.env.NODE_ENV === 'production') {
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
       .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
+  }
+
+  getLayoutFile() {
+    const { paths } = this.service;
+    for (const ext of EXT_LIST) {
+      const filePath = join(paths.absSrcPath, `layouts/index${ext}`);
+      if (existsSync(filePath)) {
+        return winPath(filePath);
+      }
+    }
+    return winPath(join(__dirname, './defaultLayout.js'));
+  }
+
+  markRouteWithSuffix(routes, webpackChunkName) {
+    return routes.map(route => {
+      const ret = {
+        ...route,
+        component: `${route.component}^^${webpackChunkName}^^${route.path}`,
+      };
+      if (ret.routes) {
+        ret.routes = this.markRouteWithSuffix(route.routes, webpackChunkName);
+      }
+      return ret;
+    });
+  }
+
+  getRequestedRoutes(requested) {
+    const { routes } = this.service;
+    return Object.keys(requested).reduce((memo, pathname) => {
+      matchRoutes(routes, pathname).forEach(({ route }) => {
+        memo[route.path] = 1;
+      });
+      return memo;
+    }, {});
+  }
+
+  getRoutesJSON(opts = {}) {
+    const { env = 'production', requested = {} } = opts;
+    const { routes, paths, config = {} } = this.service;
+
+    const { loading } = config;
+    let loadingOpts = '';
+    if (loading) {
+      loadingOpts = `loading: require('${winPath(
+        join(paths.cwd, loading),
+      )}').default,`;
+    }
+
+    // 只在一级路由做按需编译
+    routes.forEach(route => {
+      const webpackChunkName = normalizeEntry(route.component);
+      route.component = `${route.component}^^${webpackChunkName}^^${
+        route.path
+      }`;
+      if (route.routes) {
+        route.routes = this.markRouteWithSuffix(route.routes, webpackChunkName);
+      }
+    });
+
+    // 添加 layout wrapper
+    const layoutFile = this.getLayoutFile();
+    const wrappedRoutes = [
+      {
+        component: layoutFile,
+        routes,
+      },
+    ];
+
+    const requestedPaths = this.getRequestedRoutes(requested);
+    const compilingPath = winPath(join(__dirname, 'Compiling.js'));
+
+    return JSON.stringify(
+      wrappedRoutes,
+      (key, value) => {
+        if (key === 'component') {
+          const [component, webpackChunkName, path] = value.split('^^');
+          const importPath =
+            value.charAt(0) === '/'
+              ? value
+              : winPath(relative(paths.tmpDirPath, component));
+          if (value === layoutFile) {
+            return `require('${importPath}').default`;
+          } else if (env === 'production') {
+            // 按需加载
+            return `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
+          } else {
+            // 非按需加载
+            if (requestedPaths[path]) {
+              return `require('${importPath}').default`;
+            } else {
+              return `() => React.createElement(require('${compilingPath}').default, { route: '${path}' })`;
+            }
+          }
+        } else {
+          return value;
+        }
+      },
+      2,
+    );
   }
 
   getRouterContent() {
