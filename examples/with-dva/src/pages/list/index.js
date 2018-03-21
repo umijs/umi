@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import router from 'umi/router';
-import styles from './page.css';
+import styles from './index.css';
 
 function App(props) {
   return (

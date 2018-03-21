@@ -39,6 +39,7 @@ export default function(context, opts = {}) {
             [`${libraryName}/redirect`]: require.resolve('./redirect'),
             [`${libraryName}/router`]: require.resolve('./router'),
             [`${libraryName}/withRouter`]: require.resolve('./withRouter'),
+            [`${libraryName}/_renderRoutes`]: require.resolve('./renderRoutes'),
             [`${libraryName}/_createHistory`]: require.resolve(
               './createHistory',
             ),

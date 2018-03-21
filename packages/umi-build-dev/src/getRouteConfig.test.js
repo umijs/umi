@@ -138,4 +138,23 @@ describe('getRouteConfig', () => {
       );
     }).toThrow(/Variable path/);
   });
+
+  it('nested-routes', () => {
+    const config = getRouteConfig({
+      cwd: join(fixture, 'nested-routes'),
+      absPagesPath: join(fixture, 'nested-routes'),
+    });
+    expect(config).toEqual([
+      { path: '/a', exact: true, component: './a.js' },
+      {
+        path: '/list',
+        exact: false,
+        component: './list/_layout.js',
+        routes: [
+          { path: '/list/b', exact: true, component: './list/b.js' },
+          { path: '/list/', exact: true, component: './list/index.js' },
+        ],
+      },
+    ]);
+  });
 });
