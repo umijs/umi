@@ -44,14 +44,21 @@ export default function(api) {
     );
   }
 
+  function getModelsWithRoutes(routes) {
+    return routes.reduce((memo, route) => {
+      return [
+        ...memo,
+        ...getPageModels(join(paths.cwd, route.component)),
+        ...(route.routes ? getModelsWithRoutes(route.routes) : []),
+      ];
+    }, []);
+  }
+
   function getGlobalModels() {
     let models = getModel(paths.absSrcPath);
     if (!isProduction) {
       // dev 模式下还需要额外载入 page 路由的 models 文件
-      // TODO: routes 支持嵌套时这里需要同步处理
-      api.service.routes.forEach(({ component }) => {
-        models = models.concat(getPageModels(join(paths.cwd, component)));
-      });
+      models = [...models, ...getModelsWithRoutes(api.service.routes)];
       // 去重
       models = uniq(models);
     }

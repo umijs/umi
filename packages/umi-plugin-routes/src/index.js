@@ -10,20 +10,29 @@ function optsToArray(item) {
   }
 }
 
+function exclude(routes, excludes) {
+  return routes.filter(route => {
+    for (const exclude of excludes) {
+      if (typeof exclude === 'function' && exclude(route)) {
+        return false;
+      }
+      if (exclude instanceof RegExp && exclude.test(route.component)) {
+        return false;
+      }
+    }
+
+    if (route.routes) {
+      route.routes = exclude(route.routes, excludes);
+    }
+
+    return true;
+  });
+}
+
 export default function(api, opts) {
   api.register('modifyRoutes', ({ memo }) => {
     // opts.exclude
-    memo = memo.filter(route => {
-      for (const exclude of optsToArray(opts.exclude)) {
-        if (typeof exclude === 'function' && exclude(route)) {
-          return false;
-        }
-        if (exclude instanceof RegExp && exclude.test(route.component)) {
-          return false;
-        }
-      }
-      return true;
-    });
+    memo = exclude(memo, optsToArray(opts.exclude));
 
     // opts.include
     for (const include of optsToArray(opts.include)) {

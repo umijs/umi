@@ -6,9 +6,10 @@ export default {
       {
         exclude: [
           /model\.(j|t)sx?$/,
-          /models\/$/,
-          /components\/$/,
-          /services\/$/,
+          /service\.(j|t)sx?$/,
+          /models\//,
+          /components\//,
+          /services\//,
         ],
       },
     ],

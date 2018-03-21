@@ -1,4 +1,5 @@
 import matchPath from 'react-router-dom/matchPath';
+import { matchRoutes } from 'react-router-config';
 import { setRequest } from './requestCache';
 import HtmlGenerator from './HtmlGenerator';
 
@@ -8,15 +9,13 @@ const COMPILING_PREFIX = '/__umi_dev/compiling';
 function handleUmiDev(req, res, service, opts) {
   const { path } = req;
   const routePath = path.replace(COMPILING_PREFIX, '');
-  const route = service.routes.filter(r => {
-    return matchPath(routePath, r);
-  })[0];
+  const routes = matchRoutes(service.routes, routePath);
 
-  if (route) {
-    // 尝试解决 Compiling... 不消失的问题
-    setRequest(route.path, {
-      onChange: opts.rebuildEntry,
+  if (routes && routes.length) {
+    routes.forEach(({ route }) => {
+      setRequest(route.path);
     });
+    opts.rebuildEntry();
   }
 
   res.end('done');

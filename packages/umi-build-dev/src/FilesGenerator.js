@@ -57,7 +57,10 @@ export default class FilesGenerator {
   watch() {
     const { paths } = this.service;
     const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
-      initialValue: [paths.absPagesPath],
+      initialValue: [
+        paths.absPagesPath,
+        ...EXT_LIST.map(ext => join(paths.absSrcPath, `layouts/index${ext}`)),
+      ],
     });
     this.watchers = watcherPaths.map(p => {
       return this.createWatcher(p);
