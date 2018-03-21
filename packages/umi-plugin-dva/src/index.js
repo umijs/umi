@@ -134,8 +134,12 @@ ${ROUTER_MODIFIER}
   });
 
   if (isProduction) {
-    api.register('modifyRouteComponent', ({ args }) => {
+    api.register('modifyRouteComponent', ({ memo, args }) => {
       const { pageJSFile, webpackChunkName } = args;
+      if (!webpackChunkName) {
+        return memo;
+      }
+
       let ret = `
 _dvaDynamic({
   <%= MODELS %>

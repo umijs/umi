@@ -92,11 +92,13 @@ function getRoutesByPagesDir(paths, dirPath = '') {
         const bname = basename(file, ext);
         if (bname !== '_layout') {
           const fullPath = join(dirPath, bname);
+          let path = winPath(`/${variablePath(fullPath)}`);
+          if (path === '/index/index') {
+            path = '/';
+          }
+          path = path.replace(/\/index$/, '/');
           ret.push({
-            path: winPath(`/${variablePath(fullPath)}`).replace(
-              /\/index$/,
-              '/',
-            ),
+            path,
             exact: true,
             component: `./${relative(cwd, filePath)}`,
           });

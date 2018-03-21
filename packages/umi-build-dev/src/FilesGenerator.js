@@ -207,7 +207,7 @@ if (process.env.NODE_ENV === 'production') {
         return winPath(filePath);
       }
     }
-    return winPath(join(__dirname, './defaultLayout.js'));
+    return winPath(join(__dirname, './DefaultLayout.js'));
   }
 
   markRouteWithSuffix(routes, webpackChunkName) {

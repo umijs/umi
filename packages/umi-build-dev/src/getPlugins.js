@@ -49,7 +49,7 @@ export default function(opts = {}) {
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',
-    './plugins/layout',
+    // './plugins/layout',
     './plugins/fastclick',
     './plugins/hd',
     './plugins/mock',
