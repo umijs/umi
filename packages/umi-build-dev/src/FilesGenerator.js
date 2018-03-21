@@ -18,6 +18,7 @@ import {
   PLACEHOLDER_ROUTER,
   PLACEHOLDER_ROUTER_MODIFIER,
 } from './constants';
+import stripComponentQuote from './stripComponentQuote';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -181,10 +182,11 @@ if (process.env.NODE_ENV === 'production') {
       initialValue: tplContent,
     });
 
-    const routes = this.getRoutesJSON({
+    let routes = this.getRoutesJSON({
       env: process.env.NODE_ENV,
       requested: getRequest(),
     });
+    routes = stripComponentQuote(routes);
 
     const routerContent = this.service.applyPlugins('modifyRouterContent', {
       initialValue: this.getRouterContent(),
@@ -313,8 +315,6 @@ if (process.env.NODE_ENV === 'production') {
             },
           });
 
-          ret = `^^${ret}^^`;
-
           return ret;
         } else {
           return value;
@@ -322,7 +322,6 @@ if (process.env.NODE_ENV === 'production') {
       },
       2,
     );
-    ret = ret.replace(/\"\^\^/g, '').replace(/\^\^\"/g, '');
     return ret;
   }
 
