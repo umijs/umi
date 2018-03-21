@@ -240,12 +240,6 @@ if (process.env.NODE_ENV === 'production') {
     const { env = 'production', requested = {} } = opts;
     const { routes, paths, config = {} } = this.service;
 
-    // 导出静态文件时，匹配 /index.html 到 /
-    // TODO: test it
-    // if (config.exportStatic && routesByPath['/']) {
-    //   routesByPath['/index.html'] = routesByPath['/'];
-    // }
-
     const { loading } = config;
     let loadingOpts = '';
     if (loading) {
