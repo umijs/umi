@@ -1,8 +1,12 @@
+import { IntlProvider } from 'react-intl';
+
 export default props => {
   return (
-    <div>
-      <h1>Layout</h1>
-      {props.children}
-    </div>
+    <IntlProvider locale="en">
+      <div>
+        <h1>Layout</h1>
+        {props.children}
+      </div>
+    </IntlProvider>
   );
 };
