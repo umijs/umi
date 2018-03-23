@@ -93,3 +93,7 @@ export default {
 ### hashHistory
 
 启用 hash history 的方式。
+
+### outputPath
+
+指定输出路径，默认是 `./dist`。
