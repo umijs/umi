@@ -3,10 +3,5 @@
     "> 1%",
     "last 2 versions",
     "iOS >= 8"
-  ],
-  "extraBabelIncludes": [
-    "node_modules/af-webpack/lib",
-    "node_modules/umi-build-dev",
-    "node_modules/af-webpack/node_modules"
   ]
 }
