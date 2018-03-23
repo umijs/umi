@@ -24,7 +24,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
     expect(JSON.parse(routesJSON)).toEqual([
       {
         component:
-          "require('<%= cwd %>/packages/umi-build-dev/src/defaultLayout.js').default",
+          "require('<%= cwd %>/packages/umi-build-dev/src/DefaultLayout.js').default",
         routes: [
           {
             path: '/a',
@@ -107,7 +107,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
     expect(JSON.parse(routesJSON)).toEqual([
       {
         component:
-          "require('<%= cwd %>/packages/umi-build-dev/src/defaultLayout.js').default",
+          "require('<%= cwd %>/packages/umi-build-dev/src/DefaultLayout.js').default",
         routes: [
           {
             path: '/a',
@@ -173,7 +173,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
     expect(JSON.parse(routesJSON)).toEqual([
       {
         component:
-          "require('<%= cwd %>/packages/umi-build-dev/src/defaultLayout.js').default",
+          "require('<%= cwd %>/packages/umi-build-dev/src/DefaultLayout.js').default",
         routes: [
           {
             path: '/a',
@@ -245,7 +245,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
     expect(JSON.parse(routesJSON)).toEqual([
       {
         component:
-          "require('<%= cwd %>/packages/umi-build-dev/src/defaultLayout.js').default",
+          "require('<%= cwd %>/packages/umi-build-dev/src/DefaultLayout.js').default",
         routes: [
           {
             path: '/a',

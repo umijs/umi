@@ -8,6 +8,10 @@ import normalizeEntry from './normalizeEntry';
 
 const debug = require('debug')('umi:HtmlGenerator');
 
+function makeSureSlashSuffix(path) {
+  return path.endsWith('/') ? path : `${path}/`;
+}
+
 export default class HtmlGenerator {
   constructor(service, opts = {}) {
     this.service = service;
@@ -46,13 +50,14 @@ export default class HtmlGenerator {
     }
   }
 
-  // 仅在 build 时调用
-  generate() {
-    const { config, routes, paths } = this.service;
+  generateForRoutes(routes) {
+    const { config, paths } = this.service;
+    const pagesConfig = config.pages || {};
 
-    if (config.exportStatic) {
-      const pagesConfig = config.pages || {};
-      routes.forEach(route => {
+    routes.forEach(route => {
+      if (route.routes) {
+        this.generateForRoutes(route.routes);
+      } else {
         const { path } = route;
         const content = this.getContent({
           route,
@@ -61,7 +66,16 @@ export default class HtmlGenerator {
         const outputPath = join(paths.absOutputPath, this.getHtmlPath(path));
         mkdirp(dirname(outputPath));
         writeFileSync(outputPath, content, 'utf-8');
-      });
+      }
+    });
+  }
+
+  // 仅在 build 时调用
+  generate() {
+    const { config, routes, paths } = this.service;
+
+    if (config.exportStatic) {
+      this.generateForRoutes(routes);
     } else {
       const content = this.getContent();
       const outputPath = join(paths.absOutputPath, 'index.html');
@@ -71,14 +85,20 @@ export default class HtmlGenerator {
 
   getContent(opts = {}) {
     const { pageConfig = {}, route = {} } = opts;
-    const { paths, webpackConfig } = this.service;
+    const { paths, webpackConfig, config } = this.service;
     const { document, context = {} } = pageConfig;
 
     // e.g.
     // path: /user.html
     // component: ./user/page.js
     // entry: ./user
-    const { path, component } = route;
+    const { component } = route;
+    let { path } = route;
+    const isExportStatic =
+      config.exportStatic && !config.exportStatic.htmlSuffix;
+    if (isExportStatic) {
+      path = makeSureHaveLastSlash(path);
+    }
 
     if (!context.path) {
       context.path = path;

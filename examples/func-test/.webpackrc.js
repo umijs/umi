@@ -10,7 +10,7 @@ export default {
   theme: {
     'brand-primary': '#7546c9',
   },
-  publicPath: '/static/',
+  // publicPath: '/static/',
   // ./static by default
   // publicPath: './static/',
   // publicPath: '/dist/static/',

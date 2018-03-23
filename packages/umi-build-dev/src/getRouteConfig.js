@@ -14,22 +14,31 @@ export default function(paths, config = {}) {
     : getRoutesByPagesDir(paths);
 
   if (config.exportStatic) {
-    routes.forEach(route => {
-      if (route.path.indexOf(':') > -1) {
-        throw new Error(
-          `Variable path ${route.path} don\'t work with exportStatic`,
-        );
-      }
+    patchRoutes(routes, config);
+  }
+
+  return routes;
+}
+
+function patchRoutes(routes, config) {
+  routes.forEach(route => {
+    if (route.path.indexOf(':') > -1) {
+      throw new Error(
+        `Variable path ${route.path} don\'t work with exportStatic`,
+      );
+    }
+
+    if (route.routes) {
+      patchRoutes(route.routes, config);
+    } else {
       if (
         typeof config.exportStatic === 'object' &&
         config.exportStatic.htmlSuffix
       ) {
         route.path = addHtmlSuffix(route.path);
       }
-    });
-  }
-
-  return routes;
+    }
+  });
 }
 
 function routesConfigExists(root) {
@@ -41,7 +50,8 @@ function routesConfigExists(root) {
 }
 
 function addHtmlSuffix(path) {
-  return path.slice(-1) === '/' ? path : `${path}.html`;
+  if (path === '/') return path;
+  return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
 }
 
 function getRoutesByConfig(routesConfigFile) {
