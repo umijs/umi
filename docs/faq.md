@@ -17,7 +17,19 @@ title: FAQ
 
 然后，umi 和 roadhog 共用同一个底层 [af-webpack](https://github.com/umijs/umi/tree/master/packages/af-webpack)，他们在功能上有一定重叠，可以说 umi 包含 roadhog，react 项目我会倾向于推荐用 umi。
 
-## ESLint
+### 如何引入 polyfill？
+
+先安装依赖，
+
+```bash
+$ npm install @babel/polyfill --save
+```
+
+新建 `src/global.js`，内容如下：
+
+```js
+import '@babel/polyfill';
+```
 
 ### 如何让编辑器的 eslint 校验生效？
 
@@ -83,3 +95,13 @@ $ node --inspect-brk ./node_modules/.bin/umi test
 ```
 
 然后在浏览器里打开 chrome://inspect/#devices 进行 inspect 和断点。
+
+## 部署
+
+### build 后访问路由刷新后 404？
+
+几个方案供选择：
+
+* 改用 hashHistory，在 `.umirc.js` 里配 `hashHistory: true`
+* 静态化，在 `.umirc.js` 里配 `exportStatic: true`
+* 服务端配置路由 fallback 到 index.html
