@@ -237,9 +237,27 @@ if (process.env.NODE_ENV === 'production') {
     }, {});
   }
 
+  fixHtmlSuffix(routes) {
+    routes.forEach(route => {
+      if (route.routes) {
+        route.path = `${route.path}(.html)?`;
+        this.fixHtmlSuffix(route.routes);
+      }
+    });
+  }
+
   getRoutesJSON(opts = {}) {
     const { env = 'production', requested = {} } = opts;
-    const { routes, paths, config = {} } = this.service;
+    const { paths, config = {} } = this.service;
+    const routes = [...this.service.routes];
+
+    const rootRoute = routes.filter(route => route.path === '/')[0];
+    if (rootRoute) {
+      routes.push({
+        ...rootRoute,
+        path: '/index.html',
+      });
+    }
 
     const { loading } = config;
     let loadingOpts = '';
@@ -259,6 +277,15 @@ if (process.env.NODE_ENV === 'production') {
         route.routes = this.markRouteWithSuffix(route.routes, webpackChunkName);
       }
     });
+
+    if (
+      process.env.NODE_ENV === 'production' &&
+      config.exportStatic &&
+      config.exportStatic.htmlSuffix
+    ) {
+      // 为 layout 组件加 (.html)? 兼容
+      this.fixHtmlSuffix(routes);
+    }
 
     // 添加 layout wrapper
     const layoutFile = this.getLayoutFile();

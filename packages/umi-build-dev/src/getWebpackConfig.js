@@ -143,7 +143,7 @@ export default function(service = {}) {
           publicPath: `/`,
         }
       : {
-          publicPath: webpackRCConfig.publicPath || `./${staticDirectory}/`,
+          publicPath: webpackRCConfig.publicPath || `/${staticDirectory}/`,
           commons: webpackRCConfig.commons || [
             {
               async: 'common',

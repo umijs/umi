@@ -75,6 +75,11 @@ describe('getRouteConfig', () => {
         exact: true,
         component: './pages/users/list.js',
       },
+      {
+        path: '/index.html',
+        exact: true,
+        component: './pages/index.js',
+      },
     ]);
   });
 
