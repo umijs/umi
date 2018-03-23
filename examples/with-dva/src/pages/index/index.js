@@ -1,12 +1,14 @@
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { Button } from 'antd-mobile';
+import { FormattedDate } from 'react-intl';
 import Count from './components/Count';
 import styles from './index.css';
 
 function App(props) {
   return (
     <div className={styles.normal}>
+      <FormattedDate value={Date.now()} />
       <h2>
         {props.text} @ {props.pathname}
       </h2>
