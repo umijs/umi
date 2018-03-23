@@ -43,15 +43,15 @@ export default function(service = {}) {
   // default react, support config with preact
   // 优先级：用户配置 > preact argument > default (React)
   const preactAlias = {
-    react: require.resolve('preact-compat'),
-    'react-dom': require.resolve('preact-compat'),
+    react: dirname(require.resolve('preact-compat/package.json')),
+    'react-dom': dirname(require.resolve('preact-compat/package.json')),
     'create-react-class': require.resolve(
       'preact-compat/lib/create-react-class',
     ),
   };
   const reactAlias = {
-    react: require.resolve('react'),
-    'react-dom': require.resolve('react-dom'),
+    react: dirname(require.resolve('react/package.json')),
+    'react-dom': dirname(require.resolve('react-dom/package.json')),
   };
   let preactOrReactAlias = preact ? preactAlias : reactAlias;
   if (config.preact === true) {
