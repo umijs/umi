@@ -147,7 +147,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
           const childRoutes = getRoutesByPagesDir(paths, fullPath);
           if (layoutFile) {
             ret = ret.concat({
-              path: winPath(`/${fullPath}`),
+              path: winPath(`/${variablePath(fullPath)}`),
               exact: false,
               component: `./${relative(cwd, layoutFile)}`,
               routes: childRoutes,
