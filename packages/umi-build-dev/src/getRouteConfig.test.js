@@ -81,6 +81,11 @@ describe('getRouteConfig', () => {
     });
     expect(config).toEqual([
       {
+        path: '/:postId/',
+        exact: true,
+        component: './$postId/index.js',
+      },
+      {
         path: '/:userId',
         exact: true,
         component: './$userId/page.js',
