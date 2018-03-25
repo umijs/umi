@@ -3,7 +3,7 @@
   "extends": "airbnb",
   "env": {
     "browser": true,
-    "mocha": true
+    "jest": true
   },
   "rules": {
     "jsx-a11y/href-no-hash": [0],

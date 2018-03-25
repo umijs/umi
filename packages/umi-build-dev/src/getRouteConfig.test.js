@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { join } from 'path';
 import getRouteConfig from './getRouteConfig';
 
@@ -43,42 +42,6 @@ describe('getRouteConfig', () => {
         path: '/users/list',
         exact: true,
         component: './pages/users/list.js',
-      },
-    ]);
-  });
-
-  it('normal with html suffix', () => {
-    const config = getRouteConfig(
-      {
-        cwd: join(fixture, 'normal'),
-        absPagesPath: join(fixture, 'normal', 'pages'),
-      },
-      {
-        exportStatic: {
-          htmlSuffix: true,
-        },
-      },
-    );
-    expect(config).toEqual([
-      {
-        path: '/detail.html',
-        exact: true,
-        component: './pages/detail/page.js',
-      },
-      {
-        path: '/',
-        exact: true,
-        component: './pages/index.js',
-      },
-      {
-        path: '/users/list.html',
-        exact: true,
-        component: './pages/users/list.js',
-      },
-      {
-        path: '/index.html',
-        exact: true,
-        component: './pages/index.js',
       },
     ]);
   });
