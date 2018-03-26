@@ -29,23 +29,6 @@ export default function(context, opts = {}) {
         },
         'antd-mobile',
       ],
-      [
-        require.resolve('babel-plugin-module-resolver'),
-        {
-          alias: {
-            [`${libraryName}/dynamic`]: require.resolve('./dynamic'),
-            [`${libraryName}/link`]: require.resolve('./link'),
-            [`${libraryName}/navlink`]: require.resolve('./navlink'),
-            [`${libraryName}/redirect`]: require.resolve('./redirect'),
-            [`${libraryName}/router`]: require.resolve('./router'),
-            [`${libraryName}/withRouter`]: require.resolve('./withRouter'),
-            [`${libraryName}/_renderRoutes`]: require.resolve('./renderRoutes'),
-            [`${libraryName}/_createHistory`]: require.resolve(
-              './createHistory',
-            ),
-          },
-        },
-      ],
     ],
   };
 }
