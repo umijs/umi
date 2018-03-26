@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import assert from 'assert';
 import bodyParser from 'body-parser';
 import chokidar from 'chokidar';
+import glob from 'glob';
 
 function MOCK_START(req, res, next) {
   next();
@@ -33,7 +34,7 @@ class HttpMock {
   }
 
   watch() {
-    const { devServer, api: { utils: { debug } } } = this;
+    const { api: { utils: { debug } } } = this;
     const watcher = chokidar.watch([this.configPath, this.absMockPath], {
       ignoreInitial: true,
     });
@@ -145,15 +146,33 @@ class HttpMock {
     return { method, path };
   }
 
+  disableRequireCache() {
+    Object.keys(require.cache).forEach(file => {
+      if (file === this.configPath || file.indexOf(this.absMockPath) > -1) {
+        delete require.cache[file];
+      }
+    });
+  }
+
   getConfig() {
+    const { debug } = this.api.utils;
+
     if (existsSync(this.configPath)) {
-      // disable require cache
-      Object.keys(require.cache).forEach(file => {
-        if (file === this.configPath || file.indexOf(this.absMockPath) > -1) {
-          delete require.cache[file];
-        }
-      });
+      this.disableRequireCache();
       return require(this.configPath); // eslint-disable-line
+    } else if (existsSync(this.absMockPath)) {
+      this.disableRequireCache();
+      const mockFiles = glob.sync('**/*.js', {
+        cwd: this.absMockPath,
+      });
+      debug(`mockFiles: ${JSON.stringify(mockFiles)}`);
+      return mockFiles.reduce((memo, mockFile) => {
+        memo = {
+          ...memo,
+          ...require(join(this.absMockPath, mockFile)),
+        };
+        return memo;
+      }, {});
     } else {
       return {};
     }
