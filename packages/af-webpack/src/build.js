@@ -10,10 +10,6 @@ import { warnIfExists as warnIfWebpackConfigExists } from './applyWebpackConfig'
 
 const debug = require('debug')('af-webpack:build');
 
-if (!(process.env.NO_COMPRESS || process.env.COMPRESS === 'none')) {
-  process.env.NODE_ENV = 'production';
-}
-
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;

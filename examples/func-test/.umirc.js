@@ -9,7 +9,7 @@ export default {
     ['./plugin2', 'hihi'],
     // 'umi-plugin-yunfengdie',
   ],
-  hd: 1,
+  // hd: 1,
   loading: './PageLoadingComponent',
   // disableServiceWorker: true,
   // exportStatic: {

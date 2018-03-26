@@ -268,7 +268,7 @@ export default function getConfig(opts = {}) {
   const babelOptions = {
     ...(opts.babel || babelConfig),
     // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
-    cacheDirectory: false,
+    cacheDirectory: true,
     babelrc: !!process.env.BABELRC,
   };
   babelOptions.plugins = [
@@ -424,11 +424,13 @@ export default function getConfig(opts = {}) {
         },
         {
           test: /\.(js|jsx)$/,
+          include: opts.cwd,
           exclude: /node_modules/,
           use: babelUse,
         },
         {
           test: /\.(ts|tsx)$/,
+          include: opts.cwd,
           exclude: /node_modules/,
           use: [
             ...babelUse,

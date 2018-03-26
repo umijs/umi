@@ -34,6 +34,7 @@ export default class Service {
       hash,
       preact,
       extraResolveModules,
+      libraryAlias = {},
       libraryName = 'umi',
       staticDirectory = 'static',
       tmpDirectory = '.umi',
@@ -49,6 +50,7 @@ export default class Service {
     this.hash = hash;
     this.preact = preact;
     this.extraResolveModules = extraResolveModules;
+    this.libraryAlias = libraryAlias;
     this.libraryName = libraryName;
     this.staticDirectory = staticDirectory;
     this.tmpDirectory = tmpDirectory;

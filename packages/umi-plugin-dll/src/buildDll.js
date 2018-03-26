@@ -7,6 +7,8 @@ export default function(opts = {}) {
     webpack,
     afWebpackBuild,
     afWebpackGetConfig,
+    webpackHotDevClientPath,
+    dllDir,
     service,
     service: { paths },
     include,
@@ -19,32 +21,52 @@ export default function(opts = {}) {
     exclude,
   );
 
-  const appBuild = join(paths.absTmpDirPath, 'dll');
-
   const afWebpackConfig = afWebpackGetConfig({
     cwd: paths.cwd,
+    disableBabelTransform: true,
   });
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {
-      umi: uniq([...depNames, 'umi/link', 'umi/navlink', 'umi/route']),
+      umi: uniq([
+        ...depNames,
+        webpackHotDevClientPath,
+        'umi/link',
+        'umi/dynamic',
+        'umi/navlink',
+        'umi/redirect',
+        'umi/router',
+        'umi/withRouter',
+        'umi/_renderRoutes',
+        'umi/_createHistory',
+        'umi-fastclick',
+        'react',
+        'react-dom',
+        'react-router-dom',
+      ]),
     },
     output: {
-      path: appBuild,
+      path: dllDir,
       filename: '[name].dll.js',
       library: '[name]',
     },
     plugins: [
       ...afWebpackConfig.plugins,
+      ...service.webpackConfig.plugins.filter(plugin => {
+        return plugin instanceof webpack.DefinePlugin;
+      }),
       new webpack.DllPlugin({
-        path: join(appBuild, '[name].json'),
+        path: join(dllDir, '[name].json'),
         name: '[name]',
         context: paths.absSrcPath,
       }),
     ],
-    alias: {
-      ...afWebpackConfig.alias,
-      ...service.webpackConfig.alias,
+    resolve: {
+      ...afWebpackConfig.resolve,
+      alias: {
+        ...afWebpackConfig.resolve.alias,
+        ...service.webpackConfig.resolve.alias,
+      },
     },
   };
 
