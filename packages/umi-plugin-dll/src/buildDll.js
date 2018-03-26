@@ -1,6 +1,7 @@
 import { join } from 'path';
 import pullAll from 'lodash.pullall';
 import uniq from 'lodash.uniq';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 export default function(opts = {}) {
   const {
@@ -15,11 +16,40 @@ export default function(opts = {}) {
     exclude,
   } = opts;
 
-  const pkg = require(join(paths.cwd, 'package.json')); // eslint-disable-line
+  const pkgFile = join(paths.cwd, 'package.json');
+  const pkg = existsSync(pkgFile) ? require(pkgFile) : {}; // eslint-disable-line
   const depNames = pullAll(
-    uniq(Object.keys(pkg.dependencies).concat(include || [])),
+    uniq(Object.keys(pkg.dependencies || {}).concat(include || [])),
     exclude,
   );
+  const files = uniq([
+    ...depNames,
+    webpackHotDevClientPath,
+    'umi/link',
+    'umi/dynamic',
+    'umi/navlink',
+    'umi/redirect',
+    'umi/router',
+    'umi/withRouter',
+    'umi/_renderRoutes',
+    'umi/_createHistory',
+    'umi-fastclick',
+    'react',
+    'react-dom',
+    'react-router-dom',
+  ]).sort((a, b) => (a > b ? 1 : -1));
+
+  const filesInfoFile = join(dllDir, 'filesInfo.json');
+
+  if (existsSync(filesInfoFile)) {
+    if (
+      JSON.parse(readFileSync(filesInfoFile, 'utf-8')).join(', ') ===
+      files.join(', ')
+    ) {
+      console.log(`File list is equal, don't generate the dll file.`);
+      return Promise.resolve();
+    }
+  }
 
   const afWebpackConfig = afWebpackGetConfig({
     cwd: paths.cwd,
@@ -28,22 +58,7 @@ export default function(opts = {}) {
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {
-      umi: uniq([
-        ...depNames,
-        webpackHotDevClientPath,
-        'umi/link',
-        'umi/dynamic',
-        'umi/navlink',
-        'umi/redirect',
-        'umi/router',
-        'umi/withRouter',
-        'umi/_renderRoutes',
-        'umi/_createHistory',
-        'umi-fastclick',
-        'react',
-        'react-dom',
-        'react-router-dom',
-      ]),
+      umi: files,
     },
     output: {
       path: dllDir,
@@ -73,7 +88,9 @@ export default function(opts = {}) {
   return new Promise((resolve, reject) => {
     afWebpackBuild({
       webpackConfig,
-      success({ stats, warnings }) {
+      success() {
+        console.log('Build dll done');
+        writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
       fail(err) {

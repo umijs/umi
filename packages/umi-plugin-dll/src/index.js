@@ -23,9 +23,6 @@ export default function(api, opts = {}) {
 
   api.register('beforeDevAsync', () => {
     return new Promise(resolve => {
-      console.log('test webpackHotDevClientPath', webpackHotDevClientPath);
-      resolve();
-      return;
       buildDll({
         webpack,
         afWebpackGetConfig,
@@ -36,7 +33,6 @@ export default function(api, opts = {}) {
         ...opts,
       })
         .then(() => {
-          console.log('build dll done');
           resolve();
         })
         .catch(e => {
