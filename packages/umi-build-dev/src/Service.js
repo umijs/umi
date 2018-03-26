@@ -34,6 +34,7 @@ export default class Service {
       hash,
       preact,
       extraResolveModules,
+      libraryAlias = {},
       libraryName = 'umi',
       staticDirectory = 'static',
       tmpDirectory = '.umi',
@@ -49,6 +50,7 @@ export default class Service {
     this.hash = hash;
     this.preact = preact;
     this.extraResolveModules = extraResolveModules;
+    this.libraryAlias = libraryAlias;
     this.libraryName = libraryName;
     this.staticDirectory = staticDirectory;
     this.tmpDirectory = tmpDirectory;
@@ -73,7 +75,7 @@ export default class Service {
     });
   }
 
-  dev() {
+  async dev() {
     this.initPlugins();
 
     // 获取用户 config.js 配置
@@ -150,6 +152,8 @@ export default class Service {
         }),
       ],
     });
+
+    await this.applyPluginsAsync('beforeDevAsync');
 
     require('af-webpack/dev').default({
       // eslint-disable-line
@@ -233,6 +237,18 @@ export default class Service {
         throw e;
       }
     }, opts.initialValue);
+  }
+
+  async applyPluginsAsync(key, opts = {}) {
+    const plugins = this.pluginMethods[key] || [];
+    let memo = opts.initialValue;
+    for (const plugin of plugins) {
+      const { fn } = plugin;
+      memo = await fn({
+        memo,
+        args: opts.args,
+      });
+    }
   }
 
   sendPageList() {

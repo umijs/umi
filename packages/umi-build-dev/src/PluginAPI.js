@@ -17,6 +17,13 @@ class PluginAPI {
     this.id = id;
     this.service = service;
     this.utils = {
+      // private for umi-plugin-dll
+      _webpack: require('af-webpack/webpack'),
+      _afWebpackGetConfig: require('af-webpack/getConfig').default,
+      _afWebpackBuild: require('af-webpack/build').default,
+      _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
+        .webpackHotDevClientPath,
+
       winPath,
       debug: debug(`umi-plugin: ${id}`),
     };

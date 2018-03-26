@@ -1,0 +1,24 @@
+{
+  "name": "umi-plugin-dll",
+  "version": "0.0.1",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-dll"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-dll",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "lodash.pullall": "^4.2.0",
+    "lodash.uniq": "^4.5.0"
+  }
+}

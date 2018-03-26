@@ -14,6 +14,7 @@ export default function(service = {}) {
     babel,
     hash,
     routes,
+    libraryAlias,
     libraryName,
     staticDirectory,
     extraResolveModules,
@@ -70,7 +71,14 @@ export default function(service = {}) {
       require.resolve('react-router-dom/package.json'),
     ),
     history: dirname(require.resolve('umi-history/package.json')),
+    ...Object.keys(libraryAlias).reduce((memo, key) => {
+      return {
+        ...memo,
+        [`${libraryName}/${key}`]: libraryAlias[key],
+      };
+    }, {}),
   };
+
   // 支持用户指定 antd 和 antd-mobile 的版本
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install
   const pkgPath = join(cwd, 'package.json');

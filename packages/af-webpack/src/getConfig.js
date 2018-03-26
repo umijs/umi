@@ -424,11 +424,13 @@ export default function getConfig(opts = {}) {
         },
         {
           test: /\.(js|jsx)$/,
+          include: opts.cwd,
           exclude: /node_modules/,
           use: babelUse,
         },
         {
           test: /\.(ts|tsx)$/,
+          include: opts.cwd,
           exclude: /node_modules/,
           use: [
             ...babelUse,
