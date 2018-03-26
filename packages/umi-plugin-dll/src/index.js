@@ -36,7 +36,7 @@ export default function(api, opts = {}) {
           resolve();
         })
         .catch(e => {
-          console.log('error', e);
+          console.log('[umi-plugin-dll] error', e);
         });
     });
   });

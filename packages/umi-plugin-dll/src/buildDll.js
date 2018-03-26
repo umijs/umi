@@ -46,7 +46,9 @@ export default function(opts = {}) {
       JSON.parse(readFileSync(filesInfoFile, 'utf-8')).join(', ') ===
       files.join(', ')
     ) {
-      console.log(`File list is equal, don't generate the dll file.`);
+      console.log(
+        `[umi-plugin-dll] File list is equal, don't generate the dll file.`,
+      );
       return Promise.resolve();
     }
   }
@@ -89,7 +91,7 @@ export default function(opts = {}) {
     afWebpackBuild({
       webpackConfig,
       success() {
-        console.log('Build dll done');
+        console.log('[umi-plugin-dll] Build dll done');
         writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
