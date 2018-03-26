@@ -267,8 +267,7 @@ export default function getConfig(opts = {}) {
 
   const babelOptions = {
     ...(opts.babel || babelConfig),
-    // 性能提升有限，但会带来一系列答疑的工作量，所以不开放
-    cacheDirectory: false,
+    cacheDirectory: process.env.BABEL_CACHE !== 'none',
     babelrc: !!process.env.BABELRC,
   };
   babelOptions.plugins = [
