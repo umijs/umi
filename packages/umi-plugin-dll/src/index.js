@@ -47,6 +47,7 @@ export default function(api, opts = {}) {
         const content = existsSync(dllFile)
           ? readFileSync(dllFile, 'utf-8')
           : `console.error('File pages/.umi/dll/umi.dll.js not found, please reload after it\'s ready.');`;
+        res.setHeader('Content-Type', 'text/javascript');
         res.end(content);
       } else {
         next();
