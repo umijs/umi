@@ -253,7 +253,7 @@ if (process.env.NODE_ENV === 'production') {
 
     const rootRoute = routes.filter(route => route.path === '/')[0];
     if (rootRoute) {
-      routes.push({
+      routes.unshift({
         ...rootRoute,
         path: '/index.html',
       });
