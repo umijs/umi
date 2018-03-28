@@ -22,6 +22,18 @@ export default function(api) {
     });
   }
 
+  if (!config.disableServiceWorker) {
+    api.register('onStart', () => {
+      throw new Error(
+        `
+云凤蝶暂不支持 ServiceWorker，请在 .umirc.js 里配置：
+
+"disableServiceWorker": true
+        `.trim(),
+      );
+    });
+  }
+
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     // publicPath for CSS
     memo.publicPath = './';
