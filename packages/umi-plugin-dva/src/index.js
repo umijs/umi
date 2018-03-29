@@ -10,6 +10,15 @@ export default function(api) {
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
 
+  function getDvaJS() {
+    if (existsSync(join(paths.absSrcPath, 'dva.js'))) {
+      return winPath(join(paths.absSrcPath, 'dva.js'));
+    }
+    if (existsSync(join(paths.absSrcPath, 'dva.ts'))) {
+      return winPath(join(paths.absSrcPath, 'dva.ts'));
+    }
+  }
+
   function getModel(cwd) {
     const modelJSPath = join(cwd, 'model.js');
     if (existsSync(modelJSPath)) {
@@ -114,7 +123,21 @@ app.use(require('../../${path}').default);
   api.register('generateFiles', () => {
     const tpl = join(__dirname, '../template/DvaContainer.js');
     let tplContent = readFileSync(tpl, 'utf-8');
+    const dvaJS = getDvaJS();
+    if (dvaJS) {
+      tplContent = tplContent.replace(
+        '<%= ExtendDvaConfig %>',
+        `
+...((require('${dvaJS}').config || (() => ({})))()),
+        `.trim(),
+      );
+      //         .replace('<%= EnhanceApp %>', `
+      // app = (require('${dvaJS}').enhance || (app => app))(app);
+      //         `.trim());
+    }
     tplContent = tplContent
+      .replace('<%= ExtendDvaConfig %>', '')
+      .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
@@ -202,6 +225,8 @@ ReactDOM.render(React.createElement(
       ...memo,
       join(paths.absSrcPath, 'models'),
       join(paths.absSrcPath, 'plugins'),
+      join(paths.absSrcPath, 'dva.js'),
+      join(paths.absSrcPath, 'dva.ts'),
     ];
   });
 }

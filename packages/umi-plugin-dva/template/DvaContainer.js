@@ -2,9 +2,11 @@ import { Component } from 'react';
 import dva from 'dva';
 import createLoading from 'dva-loading';
 
-const app = dva({
+let app = dva({
   history: window.g_history,
+  <%= ExtendDvaConfig %>
 });
+<%= EnhanceApp %>
 window.g_app = app;
 app.use(createLoading());
 <%= RegisterPlugins %>
