@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFileSync, existsSync } from 'fs';
+import serveStatic from 'serve-static';
 import buildDll from './buildDll';
 
 export default function(api, opts = {}) {
@@ -18,7 +18,6 @@ export default function(api, opts = {}) {
   const { paths } = api.service;
 
   const dllDir = join(paths.absNodeModulesPath, 'umi-dlls');
-  const dllFile = join(dllDir, 'umi.dll.js');
   const dllManifest = join(dllDir, 'umi.json');
 
   api.register('beforeDevAsync', () => {
@@ -42,18 +41,7 @@ export default function(api, opts = {}) {
   });
 
   api.register('modifyMiddlewares', ({ memo }) => {
-    memo.push((req, res, next) => {
-      if (req.path === '/__umi.dll.js') {
-        const content = existsSync(dllFile)
-          ? readFileSync(dllFile, 'utf-8')
-          : `console.error('File pages/.umi/dll/umi.dll.js not found, please reload after it\'s ready.');`;
-        res.setHeader('Content-Type', 'text/javascript');
-        res.end(content);
-      } else {
-        next();
-      }
-    });
-    return memo;
+    return [...memo, serveStatic(dllDir)];
   });
 
   api.register('modifyWebpackConfig', ({ memo }) => {
@@ -70,7 +58,7 @@ export default function(api, opts = {}) {
     memo = memo.replace(
       '</head>',
       `
-<script src="/__umi.dll.js"></script>
+<script src="/umi.dll.js"></script>
 </head>
     `.trim(),
     );
