@@ -22,9 +22,9 @@ export function patchRoutes(routes) {
 }
 
 export default function(api) {
-  const { paths } = api.service;
+  const { paths, config } = api.service;
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !config.exportStatic) {
     api.register('modifyRoutes', ({ memo }) => {
       return patchRoutes(memo);
     });
