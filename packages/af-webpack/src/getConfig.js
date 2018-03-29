@@ -491,7 +491,7 @@ export default function getConfig(opts = {}) {
                 ],
           )
         : [
-            new webpack.optimize.OccurrenceOrderPlugin(),
+            new webpack.HashedModuleIdsPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
             new ExtractTextPlugin({
               filename: `[name]${cssHash}.css`,
