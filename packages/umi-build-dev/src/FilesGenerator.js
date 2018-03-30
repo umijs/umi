@@ -313,12 +313,13 @@ if (process.env.NODE_ENV === 'production') {
           let isCompiling = false;
           if (value === layoutFile) {
             ret = `require('${importPath}').default`;
-          } else if (env === 'production') {
+          } else if (env === 'production' && !config.disableDynamicImport) {
             // 按需加载
             ret = `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
           } else {
             // 非按需加载
             if (
+              env === 'production' ||
               process.env.COMPILE_ON_DEMAND === 'none' ||
               requestedPaths[path]
             ) {

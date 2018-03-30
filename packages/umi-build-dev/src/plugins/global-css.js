@@ -12,7 +12,7 @@ export default function(api) {
       join(paths.absSrcPath, 'global.less'),
     ]
       .filter(f => existsSync(f))
-      .map(f => `import('${winPath(f)}');`);
+      .map(f => `require('${winPath(f)}');`);
 
     if (cssImports.length) {
       return memo.replace(
