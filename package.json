@@ -33,14 +33,14 @@
     "eslint-plugin-react": "^7.4.0",
     "expect": "^1.20.2",
     "husky": "^0.14.3",
-    "lerna": "^2.0.0",
+    "lerna": "^2.9.1",
     "lerna-changelog": "^0.7.0",
-    "lint-staged": "^4.0.4",
+    "lint-staged": "^7.0.0",
     "prettier": "^1.8.1",
     "rimraf": "^2.6.2",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.1",
     "through2": "^2.0.3",
-    "umi-test": "^0.4.4",
+    "umi-test": "^0.5.2",
     "vinyl-fs": "^3.0.2"
   }
 }

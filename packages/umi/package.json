@@ -4,11 +4,11 @@
   "description": "A neat framework for building highly performance and cross-platform optimized web apps.",
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.31",
-    "@types/react": "^16.0.27",
+    "@types/react": "^16.1.0",
     "babel-plugin-import": "^1.6.4",
     "babel-preset-umi": "^0.2.7",
     "chai": "^4.1.2",
-    "cross-spawn": "^5.1.0",
+    "cross-spawn": "^6.0.5",
     "ejs": "^2.5.7",
     "query-string": "^5.0.0",
     "umi-build-dev": "^0.13.3",
@@ -16,7 +16,7 @@
     "update-notifier": "^2.3.0",
     "uppercamelcase": "^3.0.0",
     "url": "^0.11.0",
-    "yargs-parser": "^7.0.0"
+    "yargs-parser": "^9.0.2"
   },
   "bin": {
     "umi": "./bin/umi.js"
