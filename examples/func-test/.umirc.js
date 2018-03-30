@@ -16,5 +16,6 @@ export default {
   exportStatic: {
     // htmlSuffix: true,
   },
+  disableDynamicImport: true,
   outputPath: './www',
 };

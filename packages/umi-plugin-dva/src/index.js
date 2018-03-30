@@ -5,10 +5,11 @@ import uniq from 'lodash.uniq';
 
 export default function(api) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
-  const { paths } = api.service;
+  const { paths, config } = api.service;
   const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
+  const shouldImportDynamic = isProduction && !config.disableDynamicImport;
 
   function getDvaJS() {
     if (existsSync(join(paths.absSrcPath, 'dva.js'))) {
@@ -65,7 +66,7 @@ export default function(api) {
 
   function getGlobalModels() {
     let models = getModel(paths.absSrcPath);
-    if (!isProduction) {
+    if (!shouldImportDynamic) {
       // dev 模式下还需要额外载入 page 路由的 models 文件
       models = [...models, ...getModelsWithRoutes(api.service.routes)];
       // 去重
@@ -149,7 +150,7 @@ app.use(require('../../${path}').default);
         IMPORT,
         `
 import { routerRedux } from 'dva/router';
-${isProduction ? `import _dvaDynamic from 'dva/dynamic';` : ''}
+${shouldImportDynamic ? `import _dvaDynamic from 'dva/dynamic';` : ''}
 ${IMPORT}
       `.trim(),
       )
@@ -163,7 +164,7 @@ ${ROUTER_MODIFIER}
       );
   });
 
-  if (isProduction) {
+  if (shouldImportDynamic) {
     api.register('modifyRouteComponent', ({ memo, args }) => {
       const { pageJSFile, webpackChunkName } = args;
       if (!webpackChunkName) {
