@@ -31,7 +31,7 @@ export default function(api) {
     }
 
     return globby
-      .sync('./models/**/*.{ts,js}', {
+      .sync(`./${config.singular ? 'model' : 'models'}/**/*.{ts,js}`, {
         cwd,
       })
       .filter(p => !p.endsWith('.d.ts'))
