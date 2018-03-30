@@ -27,6 +27,7 @@ export default class FilesGenerator {
     this.service = service;
     this.routesContent = null;
     this.hasRebuildError = false;
+    this.layoutDirectoryName = service.config.singular ? 'layout' : 'layouts';
   }
 
   generate(opts = {}) {
@@ -60,7 +61,9 @@ export default class FilesGenerator {
       initialValue: [
         paths.absPagesPath,
         join(paths.absSrcPath, '_routes.json'),
-        ...EXT_LIST.map(ext => join(paths.absSrcPath, `layouts/index${ext}`)),
+        ...EXT_LIST.map(ext =>
+          join(paths.absSrcPath, `${this.layoutDirectoryName}/index${ext}`),
+        ),
       ],
     });
     this.watchers = watcherPaths.map(p => {
@@ -206,7 +209,10 @@ if (process.env.NODE_ENV === 'production') {
   getLayoutFile() {
     const { paths } = this.service;
     for (const ext of EXT_LIST) {
-      const filePath = join(paths.absSrcPath, `layouts/index${ext}`);
+      const filePath = join(
+        paths.absSrcPath,
+        `${this.layoutDirectoryName}/index${ext}`,
+      );
       if (existsSync(filePath)) {
         return winPath(filePath);
       }
