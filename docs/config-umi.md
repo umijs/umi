@@ -90,6 +90,20 @@ export default {
 
 指定插件，格式为数组。
 
+比如：
+
+```
+export default {
+  plugins: [
+    'umi-plugin-dva',
+    // 有参数时为数组，数组的第二项是参数，类似 babel 插件
+    ['umi-plugin-routes', {
+      update() {},
+    }],
+  ],
+};
+```
+
 ### hashHistory
 
 启用 hash history 的方式。
@@ -97,3 +111,16 @@ export default {
 ### outputPath
 
 指定输出路径，默认是 `./dist`。
+
+### singular
+
+启用单数目录，格式为布尔值。
+
+* src/layout/index.js
+* src/page
+* model（如果有开启 umi-plugin-dva 插件的话）
+
+### disableDynamicImport
+
+禁用 Code Splitting，格式为布尔值。
+
