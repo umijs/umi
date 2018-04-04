@@ -3,8 +3,8 @@
   "scripts": {
     "build": "node scripts/build.js",
     "changelog": "lerna-changelog",
-    "test": "./packages/umi-test/bin/umi-test.js --coverage",
-    "debug": "./packages/umi-test/bin/umi-test.js",
+    "test": "umi-test --coverage",
+    "debug": "umi-test",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
@@ -40,6 +40,7 @@
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.1",
     "through2": "^2.0.3",
+    "umi-test": "^0.5.3",
     "vinyl-fs": "^3.0.2"
   }
 }
