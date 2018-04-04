@@ -436,6 +436,8 @@ export default function getConfig(opts = {}) {
             {
               loader: require.resolve('awesome-typescript-loader'),
               options: {
+                configFileName:
+                  opts.tsConfigFile || join(opts.cwd, 'tsconfig.json'),
                 transpileOnly: true,
               },
             },
