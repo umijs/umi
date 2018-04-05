@@ -42,7 +42,6 @@ const aliasedScript = scriptAlias[script] || script;
 switch (aliasedScript) {
   case '-v':
   case '--version':
-    const pkg = require('../package.json');
     console.log(pkg.version);
     if (!(pkg._from && pkg._resolved)) {
       console.log(chalk.cyan('@local'));
