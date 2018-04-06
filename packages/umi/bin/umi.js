@@ -46,8 +46,7 @@ function help(aliasedScript) {
   let usage = "\nUsage: umi <command>\n";
   let helpArea = "";
   for(var cmd in cmds) {
-    let space = 25 - cmd.length;
-    helpArea += ("  " + cmd + Array(space).join(' ') + cmds[cmd] + '\n');
+    helpArea += ("  " + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n');
   };
   console.log([usage,helpArea].join("\nCommands:\n"));
   aliasedScript !== "help" && console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
