@@ -40,16 +40,16 @@ const cmds = {
   "dev": "start a development server",
   "help": "show help",
   "-v, --version": "show version",  
-}
+};
 
 function help(aliasedScript) {
-  let usage = "\nUsage: umi <command>\n"
+  let usage = "\nUsage: umi <command>\n";
   let helpArea = "";
   for(var cmd in cmds) {
-    let space = 25 - cmd.length
+    let space = 25 - cmd.length;
     helpArea += ("  " + cmd + Array(space).join(' ') + cmds[cmd] + '\n');
   };
-  console.log([usage,helpArea].join("\nCommands:\n"))
+  console.log([usage,helpArea].join("\nCommands:\n"));
   aliasedScript !== "help" && console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
 }
 
