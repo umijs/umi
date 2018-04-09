@@ -7,6 +7,10 @@ const languages = ['en', 'zh-Hans'];
 app.use(function (req, res, next) {
   // autodetect language
   if (req.path === '/') {
+    if (req.subdomains[0] === 'ali') {
+      res.redirect('https://lark.alipay.com/umijs/umi');
+      return;
+    }
     const lang = [req.query.locale, req.subdomains[0], req.acceptsLanguages(...languages), 'en'].find(function (lang) {
       return languages.includes(lang);
     });

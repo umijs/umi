@@ -226,6 +226,8 @@ ReactDOM.render(React.createElement(
       ...memo,
       join(paths.absSrcPath, 'models'),
       join(paths.absSrcPath, 'plugins'),
+      join(paths.absSrcPath, 'model.js'),
+      join(paths.absSrcPath, 'model.ts'),
       join(paths.absSrcPath, 'dva.js'),
       join(paths.absSrcPath, 'dva.ts'),
     ];
