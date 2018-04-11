@@ -36,20 +36,23 @@ function runScript(script, args, isFork) {
 
 // Add help command
 const cmds = {
-  "build": "create a production build",
-  "dev": "start a development server",
-  "help": "show help",
-  "-v, --version": "show version",  
+  build: 'create a production build',
+  dev: 'start a development server',
+  test: 'do unit/ui test with jest',
+  help: 'show help',
+  '-v, --version': 'show version',
 };
 
 function help(aliasedScript) {
-  let usage = "\nUsage: umi <command>\n";
-  let helpArea = "";
-  for(var cmd in cmds) {
+  let usage = `\nUsage: umi <command>\n`;
+  let helpArea = '';
+  for (var cmd in cmds) {
     helpArea += ("  " + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n');
-  };
-  console.log([usage,helpArea].join("\nCommands:\n"));
-  aliasedScript !== "help" && console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
+  }
+  console.log([usage,helpArea].join(`\nCommands:\n`));
+  if (!['help', '-h', '--help'].includes(aliasedScript)) {
+    console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
+  }
 }
 
 // Script area
