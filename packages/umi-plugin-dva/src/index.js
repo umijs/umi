@@ -1,9 +1,9 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 
-export default function(api) {
+export default function(api, opts = {}) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
   const { paths, config } = api.service;
   const { winPath } = api.utils;
@@ -98,13 +98,19 @@ export default function(api) {
     const pluginPaths = globby.sync('plugins/**/*.{js,ts}', {
       cwd: paths.absSrcPath,
     });
-    return pluginPaths
-      .map(path =>
-        `
+    const ret = pluginPaths.map(path =>
+      `
 app.use(require('../../${path}').default);
   `.trim(),
-      )
-      .join('\r\n');
+    );
+    if (opts.immer) {
+      ret.push(
+        `
+app.use(require('${require.resolve('dva-immer')}').default());
+      `.trim(),
+      );
+    }
+    return ret.join('\r\n');
   }
 
   function stripFirstSlash(path) {
