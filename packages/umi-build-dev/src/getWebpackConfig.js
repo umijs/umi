@@ -94,6 +94,25 @@ export default function(service = {}) {
         require.resolve(join(cwd, 'node_modules/antd-mobile/package.json')),
       );
     }
+    if (preact) {
+      if (dependencies['preact-compat']) {
+        libAlias.react = libAlias['react-dom'] = dirname(
+          // eslint-disable-line
+          require.resolve(join(cwd, 'node_modules/preact-compat/package.json')),
+        );
+      }
+    } else {
+      if (dependencies.react) {
+        libAlias.react = dirname(
+          require.resolve(join(cwd, 'node_modules/react/package.json')),
+        );
+      }
+      if (dependencies['react-dom']) {
+        libAlias['react-dom'] = dirname(
+          require.resolve(join(cwd, 'node_modules/react-dom/package.json')),
+        );
+      }
+    }
   }
 
   const browserslist = webpackRCConfig.browserslist || defaultBrowsers;
