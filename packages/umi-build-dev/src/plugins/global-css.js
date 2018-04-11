@@ -2,11 +2,10 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 
 export default function(api) {
-  const { IMPORT } = api.placeholder;
   const { paths } = api.service;
   const { winPath } = api.utils;
 
-  api.register('modifyRouterFile', ({ memo }) => {
+  api.register('modifyEntryFile', ({ memo }) => {
     const cssImports = [
       join(paths.absSrcPath, 'global.css'),
       join(paths.absSrcPath, 'global.less'),
@@ -17,13 +16,10 @@ export default function(api) {
       .map(f => `require('${winPath(f)}');`);
 
     if (cssImports.length) {
-      return memo.replace(
-        IMPORT,
-        `
-${cssImports.join('\r\n')}
-${IMPORT}
-          `.trim(),
-      );
+      return `
+${memo}
+${cssImports.join('\\r\\n')}
+      `.trim();
     } else {
       return memo;
     }
