@@ -106,7 +106,7 @@ app.use(require('../../${path}').default);
     if (opts.immer) {
       ret.push(
         `
-app.use(require('${require.resolve('dva-immer')}').default());
+app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       `.trim(),
       );
     }
