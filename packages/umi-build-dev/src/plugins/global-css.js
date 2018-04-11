@@ -13,7 +13,7 @@ export default function(api) {
       join(paths.absSrcPath, 'global.scss'),
     ]
       .filter(f => existsSync(f))
-      .map(f => `require('${winPath(f)}');`);
+      .map(f => `import('${winPath(f)}');`);
 
     if (cssImports.length) {
       return `
