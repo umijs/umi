@@ -78,6 +78,10 @@ function getLayoutJS(paths, fullPath) {
   }
 }
 
+function startsWith$(file) {
+  return file.charAt(0) === '$';
+}
+
 function getRoutesByPagesDir(paths, dirPath = '') {
   const { cwd, absPagesPath } = paths;
 
@@ -107,7 +111,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
             path = '/';
           }
           path = path.replace(/\/index$/, '/');
-          ret.push({
+          ret[startsWith$(file) ? 'push' : 'unshift']({
             path,
             exact: true,
             component: `./${relative(cwd, filePath)}`,
@@ -126,7 +130,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
                 )}"，两者指向同一路由。`,
               );
             }
-            ret.push({
+            ret[startsWith$(file) ? 'push' : 'unshift']({
               path: winPath(`/${variablePath(fullPath)}`).replace(
                 /\/index$/,
                 '/',
@@ -146,7 +150,7 @@ function getRoutesByPagesDir(paths, dirPath = '') {
           const layoutFile = getLayoutJS(paths, fullPath);
           const childRoutes = getRoutesByPagesDir(paths, fullPath);
           if (layoutFile) {
-            ret = ret.concat({
+            ret[startsWith$(file) ? 'push' : 'unshift']({
               path: winPath(`/${variablePath(fullPath)}`),
               exact: false,
               component: `./${relative(cwd, layoutFile)}`,

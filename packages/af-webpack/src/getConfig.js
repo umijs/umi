@@ -494,7 +494,9 @@ export default function getConfig(opts = {}) {
                 ],
           )
         : [
-            new webpack.HashedModuleIdsPlugin(),
+            ...(process.env.__FROM_TEST
+              ? []
+              : [new webpack.HashedModuleIdsPlugin()]),
             new webpack.optimize.ModuleConcatenationPlugin(),
             new ExtractTextPlugin({
               filename: `[name]${cssHash}.css`,

@@ -29,14 +29,14 @@ describe('getRouteConfig', () => {
     });
     expect(config).toEqual([
       {
-        path: '/detail',
-        exact: true,
-        component: './pages/detail/page.js',
-      },
-      {
         path: '/',
         exact: true,
         component: './pages/index.js',
+      },
+      {
+        path: '/detail',
+        exact: true,
+        component: './pages/detail/page.js',
       },
       {
         path: '/users/list',
@@ -53,14 +53,14 @@ describe('getRouteConfig', () => {
     });
     expect(config).toEqual([
       {
-        path: '/',
-        exact: true,
-        component: './pages/index/page.js',
-      },
-      {
         path: '/list',
         exact: true,
         component: './pages/list/page.js',
+      },
+      {
+        path: '/',
+        exact: true,
+        component: './pages/index/page.js',
       },
     ]);
   });
@@ -81,6 +81,11 @@ describe('getRouteConfig', () => {
     });
     expect(config).toEqual([
       {
+        path: '/a',
+        exact: true,
+        component: './a.js',
+      },
+      {
         path: '/:postId/',
         exact: true,
         component: './$postId/index.js',
@@ -89,11 +94,6 @@ describe('getRouteConfig', () => {
         path: '/:userId',
         exact: true,
         component: './$userId/page.js',
-      },
-      {
-        path: '/a',
-        exact: true,
-        component: './a.js',
       },
     ]);
   });
@@ -112,22 +112,22 @@ describe('getRouteConfig', () => {
     }).toThrow(/Variable path/);
   });
 
-  it('nested-routes', () => {
+  it('nested routes', () => {
     const config = getRouteConfig({
       cwd: join(fixture, 'nested-routes'),
       absPagesPath: join(fixture, 'nested-routes'),
     });
     expect(config).toEqual([
-      { path: '/a', exact: true, component: './a.js' },
       {
         path: '/list',
         exact: false,
         component: './list/_layout.js',
         routes: [
-          { path: '/list/b', exact: true, component: './list/b.js' },
           { path: '/list/', exact: true, component: './list/index.js' },
+          { path: '/list/b', exact: true, component: './list/b.js' },
         ],
       },
+      { path: '/a', exact: true, component: './a.js' },
     ]);
   });
 });
