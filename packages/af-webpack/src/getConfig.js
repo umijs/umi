@@ -14,6 +14,7 @@ import deprecate from 'deprecate';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
+import ProgressPlugin from 'progress-bar-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
@@ -554,6 +555,7 @@ export default function getConfig(opts = {}) {
           context: __dirname,
         },
       }),
+      new ProgressPlugin(),
       ...(process.env.TS_TYPECHECK ? [new ForkTsCheckerWebpackPlugin()] : []),
       ...(opts.ignoreMomentLocale
         ? [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
