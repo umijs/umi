@@ -17,5 +17,6 @@ export default {
     // htmlSuffix: true,
   },
   disableDynamicImport: true,
+  disableFastClick: true,
   outputPath: './www',
 };
