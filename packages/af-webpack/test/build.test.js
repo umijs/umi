@@ -1,4 +1,3 @@
-import expect from 'expect';
 import webpack from 'webpack';
 import glob from 'glob';
 import { join } from 'path';
@@ -10,6 +9,7 @@ process.env.NODE_ENV = 'production';
 process.env.COMPRESS = 'none';
 process.env.ESLINT = 'none';
 process.env.TSLINT = 'none';
+process.env.__FROM_TEST = true;
 
 function getEntry(cwd) {
   if (existsSync(join(cwd, 'index.ts'))) {

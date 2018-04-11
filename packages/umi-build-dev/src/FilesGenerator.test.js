@@ -15,6 +15,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
@@ -51,6 +52,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
         ),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
@@ -98,6 +100,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
@@ -162,6 +165,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
@@ -231,6 +235,7 @@ describe('FilesGenerator (getRoutesJSON)', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
@@ -306,6 +311,7 @@ describe('FilesGenerator (getRequestedRoutes)', () => {
         absSrcPath: join(__dirname, '../test/fixtures/FilesGenerator/normal'),
         tmpDirPath: '.umi',
       },
+      config: {},
       applyPlugins: (key, { initialValue }) => initialValue,
     };
     const fg = new FilesGenerator(service);
