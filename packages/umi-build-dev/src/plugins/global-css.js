@@ -10,6 +10,8 @@ export default function(api) {
     const cssImports = [
       join(paths.absSrcPath, 'global.css'),
       join(paths.absSrcPath, 'global.less'),
+      join(paths.absSrcPath, 'global.sass'),
+      join(paths.absSrcPath, 'global.scss'),
     ]
       .filter(f => existsSync(f))
       .map(f => `require('${winPath(f)}');`);
@@ -32,6 +34,8 @@ ${IMPORT}
       ...memo,
       join(paths.absSrcPath, 'global.css'),
       join(paths.absSrcPath, 'global.less'),
+      join(paths.absSrcPath, 'global.sass'),
+      join(paths.absSrcPath, 'global.scss'),
     ];
   });
 }
