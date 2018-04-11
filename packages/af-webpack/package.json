@@ -37,7 +37,7 @@
     "inquirer": "^3.3.0",
     "is-plain-object": "^2.0.4",
     "is-root": "^1.0.0",
-    "less": "^2.7.2",
+    "less": "^3.0.1",
     "less-loader": "^4.0.5",
     "lodash.isequal": "^4.5.0",
     "postcss": "^6.0.11",
