@@ -47,9 +47,9 @@ function help(aliasedScript) {
   let usage = `\nUsage: umi <command>\n`;
   let helpArea = '';
   for (var cmd in cmds) {
-    helpArea += ("  " + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n');
+    helpArea += (' ' + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n');
   }
-  console.log([usage,helpArea].join(`\nCommands:\n`));
+  console.log([usage,helpArea].join(`\nCommands:\n\n`));
   if (!['help', '-h', '--help'].includes(aliasedScript)) {
     console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
   }
@@ -57,7 +57,7 @@ function help(aliasedScript) {
 
 // Script area
 const scriptAlias = {
-  g: 'generate',
+  g: 'generate' // eslint-disable-line
 };
 const aliasedScript = scriptAlias[script] || script;
 
