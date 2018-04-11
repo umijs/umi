@@ -124,3 +124,7 @@ export default {
 
 禁用 Code Splitting，格式为布尔值。
 
+### disableFastClick
+
+禁用 fastclick 脚本引入，格式为布尔值。
+
