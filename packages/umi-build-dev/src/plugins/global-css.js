@@ -34,4 +34,17 @@ ${cssImports.join('\\r\\n')}
       join(paths.absSrcPath, 'global.scss'),
     ];
   });
+
+  api.register('modifyAFWebpackOpts', ({ memo }) => {
+    return {
+      ...memo,
+      cssModulesExcludes: [
+        ...(memo.cssModulesExcludes || []),
+        join(paths.absSrcPath, 'global.css'),
+        join(paths.absSrcPath, 'global.less'),
+        join(paths.absSrcPath, 'global.scss'),
+        join(paths.absSrcPath, 'global.sass'),
+      ],
+    };
+  });
 }
