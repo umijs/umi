@@ -12,7 +12,7 @@ const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 const https = process.env.HTTPS ? true : false;
-const contentBase = process.env.CONTENTBASE || '';
+const contentBase = process.env.CONTENTBASE || './';
 const PROTOCOL = 'http';
 const noop = () => {};
 
