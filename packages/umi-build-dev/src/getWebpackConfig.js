@@ -141,11 +141,7 @@ export default function(service = {}) {
       ...(webpackRCConfig.extraResolveModules || []),
       ...(extraResolveModules || []),
     ],
-    cssModulesExcludes: [
-      ...(webpackRCConfig.cssModulesExcludes || []),
-      join(paths.absSrcPath, 'global.css'),
-      join(paths.absSrcPath, 'global.less'),
-    ],
+    cssModulesExcludes: [...(webpackRCConfig.cssModulesExcludes || [])],
     define: {
       // 禁用 antd-mobile 升级提醒
       'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,
