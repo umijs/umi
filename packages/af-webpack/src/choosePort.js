@@ -8,6 +8,10 @@ import clearConsole from './clearConsole';
 const isInteractive = process.stdout.isTTY;
 
 export default function choosePort(defaultPort) {
+  if (process.env.DETECT_PORT === 'none') {
+    return Promise.resolve(defaultPort);
+  }
+
   return detect(defaultPort).then(
     port =>
       new Promise(resolve => {
