@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -12,8 +11,6 @@ import choosePort from './choosePort';
 const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
-const https = process.env.HTTPS ? true : false;
-const contentBase = process.env.CONTENTBASE || resolve('./');
 const PROTOCOL = 'http';
 const noop = () => {};
 
@@ -78,8 +75,8 @@ export default function dev({
         overlay: false,
         host: HOST,
         proxy,
-        https,
-        contentBase,
+        https: process.env.HTTPS,
+        contentBase: process.env.CONTENT_BASE,
         before(app) {
           if (extraMiddlewares) {
             extraMiddlewares.forEach(middleware => {
