@@ -75,6 +75,8 @@ export default function dev({
         overlay: false,
         host: HOST,
         proxy,
+        https: process.env.HTTPS,
+        contentBase: process.env.CONTENT_BASE,
         before(app) {
           if (extraMiddlewares) {
             extraMiddlewares.forEach(middleware => {
