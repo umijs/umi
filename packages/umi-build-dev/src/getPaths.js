@@ -22,6 +22,9 @@ export default function(service) {
   if (test(join(cwd, 'src/pages'))) {
     pagesPath = 'src/pages';
   }
+  if (test(join(cwd, 'page'))) {
+    pagesPath = 'page';
+  }
   const absPagesPath = join(cwd, pagesPath);
   const absSrcPath = join(absPagesPath, '../');
 
