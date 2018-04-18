@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "react-intl": "^2.4.0"
-  },
-  "devDependencies": {
-    "babel-plugin-module-resolver": "^3.1.0"
-  }
-}

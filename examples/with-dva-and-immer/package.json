@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "umi": "*",
-    "umi-plugin-dva": "*"
-  }
-}
