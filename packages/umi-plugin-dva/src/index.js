@@ -223,6 +223,8 @@ ReactDOM.render(React.createElement(
       ...memo.alias,
       dva: dirname(require.resolve('dva/package')),
       'dva-loading': require.resolve('dva-loading'),
+      'path-to-regexp': require.resolve('path-to-regexp'),
+      'object-assign': require.resolve('object-assign'),
     };
     return memo;
   });
