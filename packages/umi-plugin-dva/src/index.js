@@ -225,6 +225,11 @@ ReactDOM.render(React.createElement(
       'dva-loading': require.resolve('dva-loading'),
       'path-to-regexp': require.resolve('path-to-regexp'),
       'object-assign': require.resolve('object-assign'),
+      ...(opts.immer
+        ? {
+            immer: require.resolve('immer'),
+          }
+        : {}),
     };
     return memo;
   });
