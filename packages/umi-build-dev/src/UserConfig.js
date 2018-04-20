@@ -4,6 +4,7 @@ import requireindex from 'requireindex';
 import chalk from 'chalk';
 import didyoumean from 'didyoumean';
 import isEqual from 'lodash.isequal';
+import clone from 'lodash.clonedeep';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import { setConfig as setMiddlewareConfig } from './createRouteMiddleware';
@@ -208,15 +209,16 @@ class UserConfig {
           this.service.reload();
         }
 
+        const oldConfig = clone(this.config);
+        this.config = newConfig;
         for (const plugin of this.plugins) {
           const { name } = plugin;
-          if (!isEqual(newConfig[name], this.config[name])) {
+          if (!isEqual(newConfig[name], oldConfig[name])) {
             if (plugin.onChange) {
               plugin.onChange(newConfig);
             }
           }
         }
-        this.config = newConfig;
       } catch (e) {
         this.configFailed = true;
         console.error(chalk.red(`watch handler failed, since ${e.message}`));

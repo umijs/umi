@@ -348,6 +348,9 @@ if (process.env.NODE_ENV === 'production') {
           });
 
           return ret;
+        } else if (key === 'Route') {
+          const path = winPath(join(paths.cwd, value));
+          return `require('${path}').default`;
         } else {
           return value;
         }
@@ -360,7 +363,9 @@ if (process.env.NODE_ENV === 'production') {
   getRouterContent() {
     return `
 <Router history={window.g_history}>
-  { renderRoutes(routes) }
+  <Route render={({ location }) =>
+    renderRoutes(routes, {}, { location })
+  } />
 </Router>
     `.trim();
   }

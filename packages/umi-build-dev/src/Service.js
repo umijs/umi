@@ -120,7 +120,7 @@ export default class Service {
     this.initRoutes();
 
     // 生成入口文件
-    const filesGenerator = new FilesGenerator(this);
+    const filesGenerator = (this.filesGenerator = new FilesGenerator(this));
     try {
       filesGenerator.generate({
         onChange: () => {
