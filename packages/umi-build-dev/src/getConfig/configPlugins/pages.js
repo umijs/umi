@@ -49,16 +49,19 @@ export default function(api) {
       if (!pages) {
         pages = api.config[this.name];
       }
-      api.unwatch();
+      api.unwatch('pages');
       const files = getFiles(pages);
-      api.watch(files).on('all', type => {
+      api.watch('pages', files).on('all', type => {
         if (type === 'add') return;
         api.service.reload();
       });
     },
-    onChange(newPages) {
-      api.service.reload();
-      this.watch(newPages);
+    onChange(newConfig) {
+      console.log('CHANGE');
+      api.service.config = newConfig;
+      api.service.filesGenerator.rebuild();
+      // api.service.reload();
+      this.watch(newConfig[this.name]);
     },
   };
 }

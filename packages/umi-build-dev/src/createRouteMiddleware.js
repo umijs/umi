@@ -31,6 +31,10 @@ export default function createRouteMiddleware(service, opts = {}) {
       return handleUmiDev(req, res, service, opts);
     }
 
+    if (path === '/umi.js') {
+      return next();
+    }
+
     const route = service.routes.filter(r => {
       return matchPath(path, r);
     })[0];

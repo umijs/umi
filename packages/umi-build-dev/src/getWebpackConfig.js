@@ -70,6 +70,7 @@ export default function(service = {}) {
     'react-router-dom': dirname(
       require.resolve('react-router-dom/package.json'),
     ),
+    'react-router': dirname(require.resolve('react-router/package.json')),
     history: dirname(require.resolve('umi-history/package.json')),
     ...Object.keys(libraryAlias).reduce((memo, key) => {
       return {

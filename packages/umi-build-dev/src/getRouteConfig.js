@@ -13,25 +13,36 @@ export default function(paths, config = {}) {
     ? getRoutesByConfig(routeConfigFile)
     : getRoutesByPagesDir(paths);
 
-  if (config.exportStatic) {
-    patchRoutes(routes, config);
-  }
+  patchRoutes(routes, config, {
+    patchHtmlSuffix: config.exportStatic,
+    patchMeta: !routeConfigFile,
+  });
 
   return routes;
 }
 
-function patchRoutes(routes, config) {
+function patchRoutes(routes, config, opts = {}) {
   routes.forEach(route => {
-    if (route.path.indexOf(':') > -1) {
+    if (opts.patchHtmlSuffix && route.path.indexOf(':') > -1) {
       throw new Error(
         `Variable path ${route.path} don\'t work with exportStatic`,
       );
     }
 
     if (route.routes) {
-      patchRoutes(route.routes, config);
+      patchRoutes(route.routes, config, opts);
     } else {
       if (
+        opts.patchMeta &&
+        config.pages &&
+        config.pages[route.path] &&
+        config.pages[route.path].Route
+      ) {
+        route.meta = { Route: config.pages[route.path].Route };
+      }
+
+      if (
+        opts.patchHtmlSuffix &&
         typeof config.exportStatic === 'object' &&
         config.exportStatic.htmlSuffix
       ) {
@@ -64,7 +75,10 @@ function getRoutesByConfig(routesConfigFile) {
 }
 
 function variablePath(path) {
-  return path.replace(/\$/g, ':');
+  return path
+    .split('/')
+    .map(path => path.replace(/^\$/, ':').replace(/\$$/, '?'))
+    .join('/');
 }
 
 function getLayoutJS(paths, fullPath) {
