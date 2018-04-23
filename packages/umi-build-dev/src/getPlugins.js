@@ -57,6 +57,7 @@ Try:
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',
+    './plugins/antd',
     './plugins/fastclick',
     './plugins/hd',
     './plugins/mock',

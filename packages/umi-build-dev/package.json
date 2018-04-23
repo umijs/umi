@@ -7,6 +7,7 @@
     "af-webpack": "^0.19.2",
     "antd": "^3.0.0",
     "antd-mobile": "^2.0.0",
+    "babel-plugin-import": "^1.6.4",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
