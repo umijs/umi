@@ -144,8 +144,6 @@ export default function(service = {}) {
     ],
     cssModulesExcludes: [...(webpackRCConfig.cssModulesExcludes || [])],
     define: {
-      // 禁用 antd-mobile 升级提醒
-      'process.env.DISABLE_ANTD_MOBILE_UPGRADE': true,
       // For registerServiceWorker.js
       'process.env.BASE_URL': process.env.BASE_URL,
       __UMI_HTML_SUFFIX: !!(
