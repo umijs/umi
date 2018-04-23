@@ -145,18 +145,20 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   generateFiles() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
     this.service.applyPlugins('generateFiles');
 
     this.generateRouterJS();
     this.generateEntry();
 
     // Generate registerServiceWorker.js
-    writeFileSync(
-      paths.absRegisterSWJSPath,
-      readFileSync(paths.defaultRegisterSWTplPath),
-      'utf-8',
-    );
+    if (process.env.NODE_ENV === 'production' && !config.disableServiceWorker) {
+      writeFileSync(
+        paths.absRegisterSWJSPath,
+        readFileSync(paths.defaultRegisterSWTplPath),
+        'utf-8',
+      );
+    }
   }
 
   generateRouterJS() {
