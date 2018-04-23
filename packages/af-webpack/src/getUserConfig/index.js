@@ -79,6 +79,7 @@ export default function getUserConfig(opts = {}) {
     cwd = process.cwd(),
     configFile = '.webpackrc',
     disabledConfigs = [],
+    preprocessor,
   } = opts;
 
   // TODO: 支持数组的形式？
@@ -103,6 +104,9 @@ export default function getUserConfig(opts = {}) {
     if (config.default) {
       config = config.default;
     }
+  }
+  if (typeof preprocessor === 'function') {
+    config = preprocessor(config);
   }
 
   // Context for validate function
