@@ -33,7 +33,7 @@ export default function(opts = {}) {
     'umi/withRouter',
     'umi/_renderRoutes',
     'umi/_createHistory',
-    'umi-fastclick',
+    ...(service.config.disableFastClick ? [] : ['umi-fastclick']),
     'react',
     'react-dom',
     'react-router-dom',
@@ -53,10 +53,14 @@ export default function(opts = {}) {
     }
   }
 
-  const afWebpackConfig = afWebpackGetConfig({
-    cwd: paths.cwd,
-    disableBabelTransform: true,
+  const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
+    initialValue: {
+      cwd: paths.cwd,
+      disableBabelTransform: true,
+      alias: {},
+    },
   });
+  const afWebpackConfig = afWebpackGetConfig(afWebpackOpts);
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {
