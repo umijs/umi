@@ -25,7 +25,15 @@ export default function(opts = {}) {
           opts,
         ];
       } catch (e) {
-        throw new Error(`Plugin ${p} don't exists.`);
+        throw new Error(
+          `
+Plugin ${path} can't be resolved, please make sure you have installed it.
+
+Try:
+
+  npm install ${path} --save-dev        
+        `.trim(),
+        );
       }
     });
   }

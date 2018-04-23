@@ -204,12 +204,17 @@ export default class Service {
       cwd: this.cwd,
     });
     debug(`user config: ${JSON.stringify(config)}`);
-    this.plugins = getPlugins({
-      configPlugins: config.plugins || [],
-      pluginsFromOpts: this.pluginFiles,
-      cwd: this.cwd,
-      babel: this.babel,
-    });
+    try {
+      this.plugins = getPlugins({
+        configPlugins: config.plugins || [],
+        pluginsFromOpts: this.pluginFiles,
+        cwd: this.cwd,
+        babel: this.babel,
+      });
+    } catch (e) {
+      console.error(chalk.red(e.message));
+      process.exit(1);
+    }
     this.config = config;
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
     this.plugins.forEach(({ id, apply, opts }) => {
