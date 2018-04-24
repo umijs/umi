@@ -58,6 +58,7 @@ export default function(opts = {}) {
       cwd: paths.cwd,
       disableBabelTransform: true,
       alias: {},
+      babel: {},
     },
   });
   const afWebpackConfig = afWebpackGetConfig(afWebpackOpts);
