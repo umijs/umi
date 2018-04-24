@@ -1,6 +1,6 @@
 {
   "name": "umi-test",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },
@@ -32,7 +32,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^22.0.3",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-preset-umi": "^0.2.7",
+    "babel-preset-umi": "^0.3.0",
     "debug": "^3.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
