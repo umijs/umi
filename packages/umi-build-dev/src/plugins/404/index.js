@@ -37,11 +37,19 @@ export default function(api) {
           join(__dirname, '../../../template/404.html'),
           'utf-8',
         );
+        const routes = [...api.service.routes];
+        const rootRoute = routes.filter(route => route.path === '/')[0];
+        if (rootRoute) {
+          routes.unshift({
+            ...rootRoute,
+            path: '/index.html',
+          });
+        }
         pageContent = pageContent
           .replace('<%= PAGES_PATH %>', paths.pagesPath)
           .replace(
             '<%= PAGES_LIST %>',
-            api.service.routes
+            routes
               .map(route => {
                 return `<li><a href="${route.path}">${route.path}</a></li>`;
               })
