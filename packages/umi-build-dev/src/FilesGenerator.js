@@ -328,6 +328,8 @@ if (process.env.NODE_ENV === 'production') {
             // 非按需加载
             if (
               env === 'production' ||
+              // 无 socket 时按需编译体验很差，所以禁用
+              process.env.SOCKET_SERVER === 'none' ||
               process.env.COMPILE_ON_DEMAND === 'none' ||
               requestedPaths[path]
             ) {
