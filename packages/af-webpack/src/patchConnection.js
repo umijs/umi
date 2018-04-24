@@ -26,11 +26,20 @@ export function hideLoading() {
 }
 
 export function connectServer(onSuccess) {
-  fetch(window.location.href)
-    .then(onSuccess)
-    .catch(() => {
-      setTimeout(() => {
-        connectServer(onSuccess);
-      }, 1000);
-    });
+  let count = 0;
+
+  function retry() {
+    if (++count > 20) {
+      el.innerHTML = 'Disconnected from the devServer.';
+      return;
+    }
+
+    fetch(window.location.href)
+      .then(onSuccess)
+      .catch(() => {
+        setTimeout(retry, 1000);
+      });
+  }
+
+  retry();
 }
