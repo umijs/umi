@@ -75,10 +75,7 @@ function getRoutesByConfig(routesConfigFile) {
 }
 
 function variablePath(path) {
-  return path
-    .split('/')
-    .map(path => path.replace(/^\$/, ':').replace(/\$$/, '?'))
-    .join('/');
+  return winPath(path).split('/').map(path => path.replace(/^\$/, ':').replace(/\$$/, '?')).join('/')
 }
 
 function getLayoutJS(paths, fullPath) {
