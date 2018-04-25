@@ -236,7 +236,14 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRequestedRoutes(requested) {
-    const { routes } = this.service;
+    const routes = [...this.service.routes];
+    const rootRoute = routes.filter(route => route.path === '/')[0];
+    if (rootRoute) {
+      routes.unshift({
+        ...rootRoute,
+        path: '/index.html',
+      });
+    }
     return Object.keys(requested).reduce((memo, pathname) => {
       matchRoutes(routes, pathname).forEach(({ route }) => {
         memo[route.path] = 1;

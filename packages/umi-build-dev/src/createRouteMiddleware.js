@@ -9,10 +9,18 @@ const COMPILING_PREFIX = '/__umi_dev/compiling';
 function handleUmiDev(req, res, service, opts) {
   const { path } = req;
   const routePath = path.replace(COMPILING_PREFIX, '');
-  const routes = matchRoutes(service.routes, routePath);
+  const routes = [...service.routes];
+  const rootRoute = routes.filter(route => route.path === '/')[0];
+  if (rootRoute) {
+    routes.unshift({
+      ...rootRoute,
+      path: '/index.html',
+    });
+  }
+  const matchedRoutes = matchRoutes(routes, routePath);
 
-  if (routes && routes.length) {
-    routes.forEach(({ route }) => {
+  if (matchedRoutes && matchedRoutes.length) {
+    matchedRoutes.forEach(({ route }) => {
       setRequest(route.path);
     });
     opts.rebuildEntry();
