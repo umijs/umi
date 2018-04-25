@@ -2,11 +2,6 @@
 tmp
 /node_modules
 /packages/*/node_modules
-/packages/*/test/fixtures/**/node_modules
-/examples/*/node_modules
-/examples/*/www
-/examples/*/_dist
-/examples/*/_package
 /website/build
 /packages/umi-test/examples/*/node_modules
 lib
