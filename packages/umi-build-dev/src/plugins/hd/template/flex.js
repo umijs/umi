@@ -34,4 +34,18 @@ export default function(baseFontSize, fontscale) {
   );
   doc.documentElement.style.fontSize =
     _baseFontSize / 2 * dpr * _fontscale + 'px';
+  //处理在OPPO R9S 手机QQ扫码访问，页面显示错误的问题，在该情况下，获取的doc.documentElement.clientWidth为360，
+  //其他情况下获取的doc.documentElement.clientWidth为1090
+  var clientWidth = doc.documentElement.clientWidth;
+  if (!clientWidth) return;
+  var div = doc.createElement("div");
+  div.style.width = "1rem";
+  div.style.height = "0";
+  doc.body.appendChild(div);
+  var ideal = _baseFontSize * clientWidth / 750;
+  var rmd = div.clientWidth / ideal;
+  if (rmd > 1.2 || rmd < 0.8) {
+    doc.documentElement.style.fontSize = _baseFontSize / 2 * dpr * _fontscale / rmd + "px";
+  }
+  doc.body.removeChild(div);
 }
