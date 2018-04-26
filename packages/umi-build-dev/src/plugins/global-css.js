@@ -18,7 +18,7 @@ export default function(api) {
     if (cssImports.length) {
       return `
 ${memo}
-${cssImports.join('\\r\\n')}
+${cssImports.join('\r\n')}
       `.trim();
     } else {
       return memo;
