@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-es5-imcompatible-versions",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
