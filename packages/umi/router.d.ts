@@ -1,4 +1,4 @@
-interface RouteData { pathname: string, query?: string | any }
+interface RouteData { pathname: string, query?: any, search?: string, state?: any }
 
 declare const router: {
   push: (path: string | RouteData) => void;
