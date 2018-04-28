@@ -25,6 +25,7 @@ import normalizeTheme from './normalizeTheme';
 import { applyWebpackConfig } from './applyWebpackConfig';
 import readRc from './readRc';
 import { stripLastSlash } from './utils';
+import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader'); // eslint-disable-line
 const debug = require('debug')('af-webpack:getConfig');
@@ -333,6 +334,15 @@ export default function getConfig(opts = {}) {
     }
   }
 
+  const extraBabelIncludes = opts.extraBabelIncludes || [];
+  if (opts.es5ImcompatibleVersions) {
+    extraBabelIncludes.push(a => {
+      if (a.indexOf('node_modules') === -1) return false;
+      const pkgPath = getPkgPath(a);
+      return shouldTransform(pkgPath);
+    });
+  }
+
   const config = {
     bail: !isDev,
     devtool: opts.devtool || undefined,
@@ -449,7 +459,7 @@ export default function getConfig(opts = {}) {
             },
           ],
         },
-        ...(opts.extraBabelIncludes || []).map(include => {
+        ...extraBabelIncludes.map(include => {
           return {
             test: /\.(js|jsx)$/,
             include:
