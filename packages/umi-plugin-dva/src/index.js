@@ -25,13 +25,22 @@ export default function(api, opts = {}) {
     if (existsSync(modelJSPath)) {
       return [winPath(modelJSPath)];
     }
+    const modelJSXPath = join(cwd, 'model.jsx');
+    if (existsSync(modelJSXPath)) {
+      return [winPath(modelJSXPath)];
+    }
     const modelTSPath = join(cwd, 'model.ts');
     if (existsSync(modelTSPath)) {
       return [winPath(modelTSPath)];
     }
 
+    const modelTSXPath = join(cwd, 'model.tsx');
+    if (existsSync(modelTSXPath)) {
+      return [winPath(modelTSXPath)];
+    }
+
     return globby
-      .sync(`./${config.singular ? 'model' : 'models'}/**/*.{ts,js}`, {
+      .sync(`./${config.singular ? 'model' : 'models'}/**/*.{ts,tsx,js,jsx}`, {
         cwd,
       })
       .filter(p => !p.endsWith('.d.ts'))
@@ -240,7 +249,9 @@ ReactDOM.render(React.createElement(
       join(paths.absSrcPath, 'models'),
       join(paths.absSrcPath, 'plugins'),
       join(paths.absSrcPath, 'model.js'),
+      join(paths.absSrcPath, 'model.jsx'),
       join(paths.absSrcPath, 'model.ts'),
+      join(paths.absSrcPath, 'model.tsx'),
       join(paths.absSrcPath, 'dva.js'),
       join(paths.absSrcPath, 'dva.ts'),
     ];
