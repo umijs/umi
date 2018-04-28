@@ -1,10 +1,10 @@
 {
   "name": "umi-build-dev",
-  "version": "0.16.3",
+  "version": "0.17.0",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.46",
     "address": "^1.0.3",
-    "af-webpack": "^0.20.1",
+    "af-webpack": "^0.21.0",
     "antd": "^3.0.0",
     "antd-mobile": "^2.0.0",
     "babel-plugin-import": "^1.6.4",
