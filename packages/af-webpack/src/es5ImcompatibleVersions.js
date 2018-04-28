@@ -6,7 +6,7 @@ const pkgPathCache = {};
 const pkgCache = {};
 const {
   config: { 'es5-imcompatible-versions': config },
-} = require('es5-imcompatible-versions/package');
+} = require('es5-imcompatible-versions/package.json');
 
 export function getPkgPath(filePath) {
   const dir = dirname(filePath);
