@@ -19,6 +19,7 @@ process.env.NODE_ENV = 'development';
 export default function dev({
   webpackConfig,
   extraMiddlewares,
+  beforeServerWithApp,
   beforeServer,
   afterServer,
   onCompileDone = noop,
@@ -75,9 +76,12 @@ export default function dev({
         overlay: false,
         host: HOST,
         proxy,
-        https: process.env.HTTPS ? true : false,
+        https: !!process.env.HTTPS,
         contentBase: process.env.CONTENT_BASE,
         before(app) {
+          if (beforeServerWithApp) {
+            beforeServerWithApp(app);
+          }
           if (extraMiddlewares) {
             extraMiddlewares.forEach(middleware => {
               app.use(middleware);

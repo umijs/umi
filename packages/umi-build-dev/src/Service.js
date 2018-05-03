@@ -159,6 +159,13 @@ export default class Service {
       // eslint-disable-line
       webpackConfig,
       extraMiddlewares,
+      beforeServerWithApp: app => {
+        this.applyPlugins('beforeServerWithApp', {
+          args: {
+            app,
+          },
+        });
+      },
       beforeServer: devServer => {
         this.applyPlugins('beforeServer', {
           args: {
