@@ -2,7 +2,7 @@ import expect from 'expect';
 import { join } from 'path';
 import FilesGenerator from './FilesGenerator';
 
-describe('FilesGenerator (getRoutesJSON)', () => {
+xdescribe('FilesGenerator (getRoutesJSON)', () => {
   it('normal', () => {
     const service = {
       routes: [

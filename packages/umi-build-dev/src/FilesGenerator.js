@@ -6,7 +6,7 @@ import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import { matchRoutes } from 'react-router-config';
-import getRouteConfig from './getRouteConfig';
+import getRouteConfig from './routes/getRouteConfig';
 import { getRequest } from './requestCache';
 import winPath from './winPath';
 import normalizeEntry from './normalizeEntry';
@@ -208,20 +208,6 @@ if (process.env.NODE_ENV === 'production') {
       .replace(/<%= libraryName %>/g, libraryName);
   }
 
-  getLayoutFile() {
-    const { paths } = this.service;
-    for (const ext of EXT_LIST) {
-      const filePath = join(
-        paths.absSrcPath,
-        `${this.layoutDirectoryName}/index${ext}`,
-      );
-      if (existsSync(filePath)) {
-        return winPath(filePath);
-      }
-    }
-    return winPath(join(__dirname, './DefaultLayout.js'));
-  }
-
   markRouteWithSuffix(routes, webpackChunkName) {
     return routes.map(route => {
       const ret = {
@@ -293,29 +279,20 @@ if (process.env.NODE_ENV === 'production') {
       }
     });
 
-    if (
-      process.env.NODE_ENV === 'production' &&
-      config.exportStatic &&
-      config.exportStatic.htmlSuffix
-    ) {
-      // 为 layout 组件加 (.html)? 兼容
-      this.fixHtmlSuffix(routes);
-    }
-
-    // 添加 layout wrapper
-    const layoutFile = this.getLayoutFile();
-    const wrappedRoutes = [
-      {
-        component: layoutFile,
-        routes,
-      },
-    ];
+    // if (
+    //   process.env.NODE_ENV === 'production' &&
+    //   config.exportStatic &&
+    //   config.exportStatic.htmlSuffix
+    // ) {
+    //   // 为 layout 组件加 (.html)? 兼容
+    //   this.fixHtmlSuffix(routes);
+    // }
 
     const requestedPaths = this.getRequestedRoutes(requested);
     const compilingPath = winPath(join(__dirname, 'Compiling.js'));
 
-    let ret = JSON.stringify(
-      wrappedRoutes,
+    const ret = JSON.stringify(
+      routes,
       (key, value) => {
         if (key === 'component') {
           const [component, webpackChunkName, path] = value.split('^^');
@@ -326,9 +303,7 @@ if (process.env.NODE_ENV === 'production') {
 
           let ret;
           let isCompiling = false;
-          if (value === layoutFile) {
-            ret = `require('${importPath}').default`;
-          } else if (env === 'production' && !config.disableDynamicImport) {
+          if (env === 'production' && !config.disableDynamicImport) {
             // 按需加载
             ret = `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
           } else {

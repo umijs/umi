@@ -8,7 +8,7 @@ import getWebpackRCConfig, {
 import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
 import getPaths from './getPaths';
-import getRouteConfig from './getRouteConfig';
+import getRouteConfig from './routes/getRouteConfig';
 import registerBabel from './registerBabel';
 import { unwatch } from './getConfig/watch';
 import UserConfig from './UserConfig';

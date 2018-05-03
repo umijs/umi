@@ -1,34 +1,8 @@
-import { join, basename, extname } from 'path';
+import { join } from 'path';
 import { readFileSync } from 'fs';
 
-export function patchRoutes(routes) {
-  let index = null;
-  for (const [i, value] of routes.entries()) {
-    const { component } = value;
-    if (basename(component, extname(component)) === '404') {
-      index = i;
-    }
-    if (value.routes) {
-      value.routes = patchRoutes(value.routes);
-    }
-  }
-  if (index !== null) {
-    const route = routes.splice(index, 1)[0];
-    routes = routes.concat({
-      component: route.component,
-    });
-  }
-  return routes;
-}
-
 export default function(api) {
-  const { paths, config } = api.service;
-
-  if (process.env.NODE_ENV === 'production' && !config.exportStatic) {
-    api.register('modifyRoutes', ({ memo }) => {
-      return patchRoutes(memo);
-    });
-  }
+  const { paths } = api.service;
 
   api.register('beforeServer', ({ args: { devServer } }) => {
     function UMI_PLUGIN_404(req, res, next) {

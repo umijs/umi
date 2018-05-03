@@ -9,8 +9,7 @@ export default function renderRoutes(
   return routes ? (
     <Switch {...switchProps}>
       {routes.map((route, i) => {
-        const RouteComponent =
-          route.meta && route.meta.Route ? route.meta.Route : Route;
+        const RouteComponent = route.Route || Route;
         return (
           <RouteComponent
             key={route.key || i}
@@ -18,6 +17,7 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             render={props => {
+              console.log('test', route.path);
               return (
                 <route.component {...props} {...extraProps} route={route}>
                   {renderRoutes(
