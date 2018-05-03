@@ -56,6 +56,7 @@ export default class FilesGenerator {
   }
 
   watch() {
+    if (process.env.WATCH_FILES === 'none') return;
     const { paths } = this.service;
     const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
       initialValue: [

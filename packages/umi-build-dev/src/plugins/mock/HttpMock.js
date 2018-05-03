@@ -34,7 +34,12 @@ class HttpMock {
   }
 
   watch() {
-    const { api: { utils: { debug } } } = this;
+    if (process.env.WATCH_FILES === 'none') return;
+    const {
+      api: {
+        utils: { debug },
+      },
+    } = this;
     const watcher = chokidar.watch([this.configPath, this.absMockPath], {
       ignoreInitial: true,
     });
@@ -49,7 +54,12 @@ class HttpMock {
    * Delete from MOCK_START to MOCK_END
    */
   deleteRoutes() {
-    const { devServer, api: { utils: { debug } } } = this;
+    const {
+      devServer,
+      api: {
+        utils: { debug },
+      },
+    } = this;
     const { app } = devServer;
     let startIndex = null;
     let endIndex = null;
