@@ -169,50 +169,53 @@ export default function getUserConfig(opts = {}) {
   function watchConfigsAndRun(_devServer, watchOpts = {}) {
     devServer = _devServer;
 
-    watchConfigs(opts).on('all', () => {
-      try {
-        if (watchOpts.beforeChange) {
-          watchOpts.beforeChange();
-        }
-
-        const { config: newConfig } = getUserConfig({
-          ...opts,
-          setConfig(newConfig) {
-            config = newConfig;
-          },
-        });
-
-        // 从失败中恢复过来，需要 reload 一次
-        if (configFailed) {
-          configFailed = false;
-          reload();
-        }
-
-        // 比较，然后执行 onChange
-        for (const plugin of plugins) {
-          const { name, onChange } = plugin;
-
-          if (!isEqual(newConfig[name], config[name])) {
-            debug(
-              `Config ${name} changed, from ${JSON.stringify(
-                config[name],
-              )} to ${JSON.stringify(newConfig[name])}`,
-            );
-            (onChange || restart.bind(null, `${name} changed`)).call(null, {
-              name,
-              val: config[name],
-              newVal: newConfig[name],
-              config,
-              newConfig,
-            });
+    const watcher = watchConfigs(opts);
+    if (watcher) {
+      watcher.on('all', () => {
+        try {
+          if (watchOpts.beforeChange) {
+            watchOpts.beforeChange();
           }
+
+          const { config: newConfig } = getUserConfig({
+            ...opts,
+            setConfig(newConfig) {
+              config = newConfig;
+            },
+          });
+
+          // 从失败中恢复过来，需要 reload 一次
+          if (configFailed) {
+            configFailed = false;
+            reload();
+          }
+
+          // 比较，然后执行 onChange
+          for (const plugin of plugins) {
+            const { name, onChange } = plugin;
+
+            if (!isEqual(newConfig[name], config[name])) {
+              debug(
+                `Config ${name} changed, from ${JSON.stringify(
+                  config[name],
+                )} to ${JSON.stringify(newConfig[name])}`,
+              );
+              (onChange || restart.bind(null, `${name} changed`)).call(null, {
+                name,
+                val: config[name],
+                newVal: newConfig[name],
+                config,
+                newConfig,
+              });
+            }
+          }
+        } catch (e) {
+          configFailed = true;
+          console.error(chalk.red(`Watch handler failed, since ${e.message}`));
+          console.error(e);
         }
-      } catch (e) {
-        configFailed = true;
-        console.error(chalk.red(`Watch handler failed, since ${e.message}`));
-        console.error(e);
-      }
-    });
+      });
+    }
   }
 
   debug(`UserConfig: ${JSON.stringify(config)}`);

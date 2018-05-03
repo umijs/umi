@@ -228,7 +228,10 @@ class UserConfig {
   }
 
   watchConfigs(handler) {
-    return this.watch('CONFIG_FILES', CONFIG_FILES).on('all', handler);
+    const watcher = this.watch('CONFIG_FILES', CONFIG_FILES);
+    if (watcher) {
+      watcher.on('all', handler);
+    }
   }
 }
 

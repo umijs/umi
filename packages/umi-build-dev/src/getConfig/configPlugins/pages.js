@@ -51,10 +51,13 @@ export default function(api) {
       }
       api.unwatch('pages');
       const files = getFiles(pages);
-      api.watch('pages', files).on('all', type => {
-        if (type === 'add') return;
-        api.service.reload();
-      });
+      const watcher = api.watch('pages', files);
+      if (watcher) {
+        watcher.on('all', type => {
+          if (type === 'add') return;
+          api.service.reload();
+        });
+      }
     },
     onChange(newConfig) {
       console.log('CHANGE');
