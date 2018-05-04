@@ -32,15 +32,17 @@ function patchRoutes(routes, config, opts = {}) {
     if (route.routes) {
       patchRoutes(route.routes, config, opts);
     } else {
-      if (
-        opts.patchMeta &&
-        config.pages &&
-        config.pages[route.path] &&
-        config.pages[route.path].Route
-      ) {
-        route.meta = { Route: config.pages[route.path].Route };
+      //配置权限路由
+      if (opts.patchMeta && config.pages) {
+        Object.keys(config.pages).forEach(key => {
+          //判断路由包含配置，且路由不包含忽略的配置
+          if (route.path.indexOf(key) !== -1 && (!config.pages[key].ignore || route.path.indexOf(config.pages[key].ignore) === -1)) {
+            route.meta = {
+              Route: config.pages[key].Route
+            };
+          }
+        });
       }
-
       if (
         opts.patchHtmlSuffix &&
         typeof config.exportStatic === 'object' &&
