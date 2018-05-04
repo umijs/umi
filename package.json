@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "build": "node scripts/build.js",
     "changelog": "lerna-changelog",
     "test": "umi-test --coverage",
