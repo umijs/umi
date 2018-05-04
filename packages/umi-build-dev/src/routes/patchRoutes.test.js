@@ -49,7 +49,7 @@ describe('patchRoutes', () => {
       { path: '/a.html' },
       { path: '/b.html' },
       {
-        path: '/c.html',
+        path: '/c',
         routes: [{ path: '/c/d.html' }, { path: '/c/e.html' }],
       },
     ]);

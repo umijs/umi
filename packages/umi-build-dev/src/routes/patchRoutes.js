@@ -12,6 +12,7 @@ function patchRoutes(routes, config, isProduction) {
     }
   });
 
+  // Transform /404 to fallback route in production and exportStatic is not set
   if (notFoundIndex !== null && isProduction && !config.exportStatic) {
     const notFoundRoute = routes.splice(notFoundIndex, 1)[0];
     routes.push({ component: notFoundRoute.component });
@@ -48,7 +49,7 @@ function patchRoute(route, config, isProduction) {
 function addHtmlSuffix(path, hasRoutes) {
   if (path === '/') return path;
   if (hasRoutes) {
-    return `${path}(.html)?`;
+    return path;
   } else {
     return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
   }
