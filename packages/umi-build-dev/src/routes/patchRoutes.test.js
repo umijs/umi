@@ -111,4 +111,9 @@ describe('patchRoutes', () => {
       { path: '/b' },
     ]);
   });
+
+  it('support old meta Route which is deprecated', () => {
+    const routes = patchRoutes([{ path: '/b', meta: { Route: './A' } }]);
+    expect(routes).toEqual([{ path: '/b', Route: './A' }]);
+  });
 });

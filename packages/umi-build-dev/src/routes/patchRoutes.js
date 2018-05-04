@@ -1,3 +1,5 @@
+import deprecate from 'deprecate';
+
 export default (routes, config = {}, isProduction) => {
   patchRoutes(routes, config, isProduction);
   return routes;
@@ -39,6 +41,13 @@ function patchRoute(route, config, isProduction) {
     config.pages[route.path].Route
   ) {
     route.Route = config.pages[route.path].Route;
+  }
+
+  // Compatible the meta.Route and warn deprecated
+  if (route.meta && route.meta.Route) {
+    deprecate('route.meta.Route is deprecated, use route.Route instead');
+    route.Route = route.meta.Route;
+    delete route.meta;
   }
 
   if (route.routes) {

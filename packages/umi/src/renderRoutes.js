@@ -17,7 +17,6 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             render={props => {
-              console.log('test', route.path);
               return (
                 <route.component {...props} {...extraProps} route={route}>
                   {renderRoutes(
