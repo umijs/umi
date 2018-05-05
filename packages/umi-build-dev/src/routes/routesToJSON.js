@@ -2,7 +2,8 @@ import { join, relative } from 'path';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
-export default (routes, { config, applyPlugins, paths }, requestedMap, env) => {
+export default (routes, service, requestedMap, env) => {
+  const { config, applyPlugins, paths } = service;
   patchRoutes(routes);
 
   const { loading } = config;
@@ -49,7 +50,7 @@ export default (routes, { config, applyPlugins, paths }, requestedMap, env) => {
           }
 
           if (applyPlugins) {
-            applyPlugins('modifyRouteComponent', {
+            applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
                 isCompiling,

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { join, relative } from 'path';
+import { join } from 'path';
 import { sync as mkdirp } from 'mkdirp';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
 import chokidar from 'chokidar';
@@ -7,9 +7,9 @@ import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import { matchRoutes } from 'react-router-config';
 import getRouteConfig from './routes/getRouteConfig';
+import stripJSONQuote from './routes/stripJSONQuote';
+import routesToJSON from './routes/routesToJSON';
 import { getRequest } from './requestCache';
-import winPath from './winPath';
-import normalizeEntry from './normalizeEntry';
 import {
   EXT_LIST,
   PLACEHOLDER_HISTORY_MODIFIER,
@@ -18,7 +18,6 @@ import {
   PLACEHOLDER_ROUTER,
   PLACEHOLDER_ROUTER_MODIFIER,
 } from './constants';
-import stripComponentQuote from './stripComponentQuote';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -195,7 +194,7 @@ if (process.env.NODE_ENV === 'production') {
       env: process.env.NODE_ENV,
       requested: getRequest(),
     });
-    routes = stripComponentQuote(routes);
+    routes = stripJSONQuote(routes);
 
     const routerContent = this.service.applyPlugins('modifyRouterContent', {
       initialValue: this.getRouterContent(),
@@ -206,19 +205,6 @@ if (process.env.NODE_ENV === 'production') {
       .replace('<%= ROUTES %>', routes)
       .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
-  }
-
-  markRouteWithSuffix(routes, webpackChunkName) {
-    return routes.map(route => {
-      const ret = {
-        ...route,
-        component: `${route.component}^^${webpackChunkName}^^${route.path}`,
-      };
-      if (ret.routes) {
-        ret.routes = this.markRouteWithSuffix(route.routes, webpackChunkName);
-      }
-      return ret;
-    });
   }
 
   getRequestedRoutes(requested) {
@@ -248,102 +234,9 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRoutesJSON(opts = {}) {
-    const { env = 'production', requested = {} } = opts;
-    const { paths, config = {} } = this.service;
-    const routes = [...this.service.routes];
-
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute) {
-      routes.unshift({
-        ...rootRoute,
-        path: '/index.html',
-      });
-    }
-
-    const { loading } = config;
-    let loadingOpts = '';
-    if (loading) {
-      loadingOpts = `loading: require('${winPath(
-        join(paths.cwd, loading),
-      )}').default,`;
-    }
-
-    // 只在一级路由做按需编译
-    routes.forEach(route => {
-      const webpackChunkName = normalizeEntry(route.component);
-      route.component = `${route.component}^^${webpackChunkName}^^${
-        route.path
-      }`;
-      if (route.routes) {
-        route.routes = this.markRouteWithSuffix(route.routes, webpackChunkName);
-      }
-    });
-
-    // if (
-    //   process.env.NODE_ENV === 'production' &&
-    //   config.exportStatic &&
-    //   config.exportStatic.htmlSuffix
-    // ) {
-    //   // 为 layout 组件加 (.html)? 兼容
-    //   this.fixHtmlSuffix(routes);
-    // }
-
-    const requestedPaths = this.getRequestedRoutes(requested);
-    const compilingPath = winPath(join(__dirname, 'Compiling.js'));
-
-    const ret = JSON.stringify(
-      routes,
-      (key, value) => {
-        if (key === 'component') {
-          const [component, webpackChunkName, path] = value.split('^^');
-          const importPath =
-            value.charAt(0) === '/'
-              ? value
-              : winPath(relative(paths.tmpDirPath, component));
-
-          let ret;
-          let isCompiling = false;
-          if (env === 'production' && !config.disableDynamicImport) {
-            // 按需加载
-            ret = `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
-          } else {
-            // 非按需加载
-            if (
-              env === 'production' ||
-              // 无 socket 时按需编译体验很差，所以禁用
-              process.env.SOCKET_SERVER === 'none' ||
-              process.env.COMPILE_ON_DEMAND === 'none' ||
-              requestedPaths[path]
-            ) {
-              ret = `require('${importPath}').default`;
-            } else {
-              isCompiling = true;
-              ret = `() => React.createElement(require('${compilingPath}').default, { route: '${path}' })`;
-            }
-          }
-
-          ret = this.service.applyPlugins('modifyRouteComponent', {
-            initialValue: ret,
-            args: {
-              isCompiling,
-              pageJSFile: importPath,
-              importPath,
-              webpackChunkName,
-              config,
-            },
-          });
-
-          return ret;
-        } else if (key === 'Route') {
-          const path = winPath(join(paths.cwd, value));
-          return `require('${path}').default`;
-        } else {
-          return value;
-        }
-      },
-      2,
-    );
-    return ret;
+    const { env, requested = {} } = opts;
+    const requestedMap = this.getRequestedRoutes(requested);
+    return routesToJSON(this.service.routes, this.service, requestedMap, env);
   }
 
   getRouterContent() {
