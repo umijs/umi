@@ -11,6 +11,9 @@ process.env.ESLINT = 'none';
 process.env.TSLINT = 'none';
 process.env.__FROM_TEST = true;
 
+const cwd = process.cwd();
+const re = new RegExp(cwd, 'gm');
+
 function getEntry(cwd) {
   if (existsSync(join(cwd, 'index.ts'))) {
     return join(cwd, 'index.ts');
@@ -53,7 +56,7 @@ function assertBuildResult(cwd) {
   actualFiles.forEach(file => {
     const actualFile = readFileSync(join(actualDir, file), 'utf-8');
     const expectFile = readFileSync(join(expectDir, file), 'utf-8');
-    expect(actualFile).toEqual(expectFile);
+    expect(actualFile.replace(re, '$CWD$').trim()).toEqual(expectFile.trim());
   });
 }
 
