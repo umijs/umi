@@ -60,7 +60,6 @@ export default function(api) {
       }
     },
     onChange(newConfig) {
-      console.log('CHANGE');
       api.service.config = newConfig;
       api.service.filesGenerator.rebuild();
       // api.service.reload();

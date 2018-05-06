@@ -53,7 +53,11 @@ function assertBuildResult(cwd) {
   actualFiles.forEach(file => {
     const actualFile = readFileSync(join(actualDir, file), 'utf-8');
     const expectFile = readFileSync(join(expectDir, file), 'utf-8');
-    expect(actualFile).toEqual(expectFile);
+    expect(
+      actualFile
+        .replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$')
+        .trim(),
+    ).toEqual(expectFile.trim());
   });
 }
 

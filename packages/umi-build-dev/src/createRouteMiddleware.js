@@ -67,7 +67,7 @@ export default function createRouteMiddleware(service, opts = {}) {
       const gcOpts = config.exportStatic
         ? {
             pageConfig: (config.pages || {})[path],
-            route,
+            route: { path: req.path },
           }
         : {};
       const content = htmlGenerator.getContent(gcOpts);

@@ -9,8 +9,7 @@ export default function renderRoutes(
   return routes ? (
     <Switch {...switchProps}>
       {routes.map((route, i) => {
-        const RouteComponent =
-          route.meta && route.meta.Route ? route.meta.Route : Route;
+        const RouteComponent = route.Route || Route;
         return (
           <RouteComponent
             key={route.key || i}
