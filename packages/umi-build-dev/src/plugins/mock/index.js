@@ -1,9 +1,9 @@
 import HttpMock from './HttpMock';
 
 export default function(api) {
-  api.register('beforeServer', ({ args: { devServer } }) => {
+  api.register('beforeServerWithApp', ({ args: { app } }) => {
     new HttpMock({
-      devServer,
+      app,
       cwd: api.service.cwd,
       api,
     });

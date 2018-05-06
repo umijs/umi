@@ -22,6 +22,7 @@ export default function dev({
   beforeServerWithApp,
   beforeServer,
   afterServer,
+  contentBase,
   onCompileDone = noop,
   onCompileInvalid = noop,
   proxy,
@@ -77,17 +78,19 @@ export default function dev({
         host: HOST,
         proxy,
         https: !!process.env.HTTPS,
-        contentBase: process.env.CONTENT_BASE,
+        contentBase: contentBase || process.env.CONTENT_BASE,
         before(app) {
           if (beforeServerWithApp) {
             beforeServerWithApp(app);
           }
+          app.use(errorOverlayMiddleware());
+        },
+        after(app) {
           if (extraMiddlewares) {
             extraMiddlewares.forEach(middleware => {
               app.use(middleware);
             });
           }
-          app.use(errorOverlayMiddleware());
         },
       };
       const devServer = new WebpackDevServer(compiler, serverConfig);

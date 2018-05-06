@@ -17,6 +17,21 @@ describe('stripJSONQuote', () => {
     `);
   });
 
+  it('component with json', () => {
+    const striped = stripJSONQuote(`
+{
+  "a": "aaa",
+  "component": "haha {^a^:^b^}"
+}
+    `);
+    expect(striped).toEqual(`
+{
+  "a": "aaa",
+  "component": haha {"a":"b"}
+}
+    `);
+  });
+
   it('child component', () => {
     const striped = stripJSONQuote(`
 {

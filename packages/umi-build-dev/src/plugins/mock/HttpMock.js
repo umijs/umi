@@ -15,8 +15,8 @@ function MOCK_END(req, res, next) {
 }
 
 class HttpMock {
-  constructor({ cwd, devServer, api }) {
-    this.devServer = devServer;
+  constructor({ cwd, app, api }) {
+    this.app = app;
     this.api = api;
     this.absMockPath = join(cwd, 'mock');
     this.configPath = join(cwd, '.umirc.mock.js');
@@ -55,12 +55,11 @@ class HttpMock {
    */
   deleteRoutes() {
     const {
-      devServer,
+      app,
       api: {
         utils: { debug },
       },
     } = this;
-    const { app } = devServer;
     let startIndex = null;
     let endIndex = null;
     app._router.stack.forEach((item, index) => {
@@ -81,12 +80,11 @@ class HttpMock {
     const { debug } = this.api.utils;
     const config = this.getConfig();
     debug(`config: ${JSON.stringify(config)}`);
-    const { devServer } = this;
-    const { app } = devServer;
+    const { app } = this;
 
-    devServer.use(MOCK_START);
-    devServer.use(bodyParser.json({ limit: '5mb', strict: false }));
-    devServer.use(
+    app.use(MOCK_START);
+    app.use(bodyParser.json({ limit: '5mb', strict: false }));
+    app.use(
       bodyParser.urlencoded({
         extended: true,
         limit: '5mb',
@@ -107,7 +105,7 @@ class HttpMock {
         this.createMockHandler(keyParsed.method, keyParsed.path, config[key]),
       );
     });
-    devServer.use(MOCK_END);
+    app.use(MOCK_END);
 
     // 调整 stack，把 UMI_PLUGIN_404 放到最后
     let umiPlugin404Index = null;
