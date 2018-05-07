@@ -8,10 +8,6 @@ import normalizeEntry from './normalizeEntry';
 
 const debug = require('debug')('umi:HtmlGenerator');
 
-function makeSureSlashSuffix(path) {
-  return path.endsWith('/') ? path : `${path}/`;
-}
-
 export default class HtmlGenerator {
   constructor(service, opts = {}) {
     this.service = service;

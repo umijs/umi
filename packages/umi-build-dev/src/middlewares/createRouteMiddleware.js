@@ -8,15 +8,7 @@ export default function createRouteMiddleware(service) {
 
   return (req, res, next) => {
     const { path } = req;
-    const routes = [...service.routes];
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute) {
-      routes.unshift({
-        ...rootRoute,
-        path: '/index.html',
-      });
-    }
-    const route = routes.filter(r => {
+    const route = service.routes.filter(r => {
       return matchPath(path, r);
     })[0];
 

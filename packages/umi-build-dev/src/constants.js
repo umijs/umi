@@ -1,5 +1,3 @@
-export const ROUTES_CONFIG_FILE = ['src/_routes.json', '_routes.json'];
-export const ROUTE_FILES = ['page.js', 'page.ts', 'page.jsx', 'page.tsx'];
 export const CONFIG_FILES = ['.umirc.js'];
 
 export const PLACEHOLDER_IMPORT = '<%= IMPORT %>';

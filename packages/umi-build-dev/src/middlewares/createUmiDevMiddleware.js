@@ -12,15 +12,7 @@ export default function createUmiDevMiddleware(service, opts = {}) {
     }
 
     const routePath = path.replace(COMPILING_PREFIX, '');
-    const routes = [...service.routes];
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute) {
-      routes.unshift({
-        ...rootRoute,
-        path: '/index.html',
-      });
-    }
-    const matchedRoutes = matchRoutes(routes, routePath);
+    const matchedRoutes = matchRoutes(service.routes, routePath);
 
     if (matchedRoutes && matchedRoutes.length) {
       matchedRoutes.forEach(({ route }) => {

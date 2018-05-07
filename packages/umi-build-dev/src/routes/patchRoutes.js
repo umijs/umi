@@ -7,10 +7,19 @@ export default (routes, config = {}, isProduction) => {
 
 function patchRoutes(routes, config, isProduction) {
   let notFoundIndex = null;
+  let rootIndex = null;
   routes.forEach((route, index) => {
     patchRoute(route, config, isProduction);
     if (route.path === '/404') {
       notFoundIndex = index;
+    }
+    if (
+      !isProduction &&
+      config.exportStatic &&
+      route.path === '/' &&
+      route.exact
+    ) {
+      rootIndex = index;
     }
   });
 
@@ -18,6 +27,13 @@ function patchRoutes(routes, config, isProduction) {
   if (notFoundIndex !== null && isProduction && !config.exportStatic) {
     const notFoundRoute = routes.splice(notFoundIndex, 1)[0];
     routes.push({ component: notFoundRoute.component });
+  }
+
+  if (rootIndex !== null) {
+    routes.splice(rootIndex, 0, {
+      ...routes[rootIndex],
+      path: '/index.html',
+    });
   }
 }
 
@@ -34,6 +50,7 @@ function patchRoute(route, config, isProduction) {
     route.path = addHtmlSuffix(route.path, !!route.routes);
   }
 
+  // 权限路由
   // TODO: use config from config.routes
   if (
     config.pages &&

@@ -55,6 +55,91 @@ describe('patchRoutes', () => {
     ]);
   });
 
+  it('copy /index.html for / if exportStatic and development', () => {
+    let routes;
+
+    routes = patchRoutes(
+      [
+        { path: '/', exact: true, component: './A' },
+        { path: '/b', exact: true, component: './B' },
+      ],
+      { exportStatic: true },
+      true,
+    );
+    expect(routes).toEqual([
+      { path: '/', exact: true, component: './A' },
+      { path: '/b', exact: true, component: './B' },
+    ]);
+
+    routes = patchRoutes(
+      [
+        { path: '/', exact: true, component: './A' },
+        { path: '/b', exact: true, component: './B' },
+      ],
+      { exportStatic: false },
+      false,
+    );
+    expect(routes).toEqual([
+      { path: '/', exact: true, component: './A' },
+      { path: '/b', exact: true, component: './B' },
+    ]);
+
+    routes = patchRoutes(
+      [
+        { path: '/', component: './A' },
+        { path: '/b', exact: true, component: './B' },
+      ],
+      { exportStatic: true },
+      false,
+    );
+    expect(routes).toEqual([
+      { path: '/', component: './A' },
+      { path: '/b', exact: true, component: './B' },
+    ]);
+
+    routes = patchRoutes(
+      [
+        { path: '/', exact: true, component: './A' },
+        { path: '/b', exact: true, component: './B' },
+      ],
+      { exportStatic: true },
+      false,
+    );
+    expect(routes).toEqual([
+      { path: '/index.html', exact: true, component: './A' },
+      { path: '/', exact: true, component: './A' },
+      { path: '/b', exact: true, component: './B' },
+    ]);
+
+    routes = patchRoutes(
+      [
+        {
+          path: '/',
+          component: './A',
+          routes: [
+            { path: '/', exact: true, component: './AA' },
+            { path: '/c', exact: true, component: './C' },
+          ],
+        },
+        { path: '/b', exact: true, component: './B' },
+      ],
+      { exportStatic: true },
+      false,
+    );
+    expect(routes).toEqual([
+      {
+        path: '/',
+        component: './A',
+        routes: [
+          { path: '/index.html', exact: true, component: './AA' },
+          { path: '/', exact: true, component: './AA' },
+          { path: '/c', exact: true, component: './C' },
+        ],
+      },
+      { path: '/b', exact: true, component: './B' },
+    ]);
+  });
+
   it('Route', () => {
     const routes = patchRoutes(
       [{ path: '/a' }, { path: '/b' }, { path: '/c', routes: [] }],
