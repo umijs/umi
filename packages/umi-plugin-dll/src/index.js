@@ -41,7 +41,7 @@ export default function(api, opts = {}) {
   });
 
   api.register('modifyMiddlewares', ({ memo }) => {
-    return [...memo, serveStatic(dllDir)];
+    return [serveStatic(dllDir), ...memo];
   });
 
   api.register('modifyWebpackConfig', ({ memo }) => {

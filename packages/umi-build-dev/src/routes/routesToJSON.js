@@ -19,6 +19,10 @@ export default (routes, service, requestedMap, env) => {
     (key, value) => {
       switch (key) {
         case 'component':
+          if (value.startsWith('() =>')) {
+            return value;
+          }
+
           const [component, webpackChunkName, path] = value.split('^^');
           const importPath =
             component.charAt(0) === '/'
@@ -80,7 +84,7 @@ function patchRoutes(routes, webpackChunkName) {
 }
 
 function patchRoute(route, webpackChunkName) {
-  if (route.component) {
+  if (route.component && !route.component.startsWith('() =>')) {
     if (!webpackChunkName) {
       webpackChunkName = normalizeEntry(route.component || 'common_component');
     }

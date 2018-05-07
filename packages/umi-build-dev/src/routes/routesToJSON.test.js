@@ -138,6 +138,15 @@ describe('routesToJSON', () => {
     ]);
   });
 
+  it('component with react function', () => {
+    const json = routesToJSON(
+      [{ component: '() => A', path: '/a' }],
+      service,
+      {},
+    );
+    expect(JSON.parse(json)).toEqual([{ component: '() => A', path: '/a' }]);
+  });
+
   it('applyPlugins', () => {
     let applyPluginName = null;
     let applyPluginOpts = null;

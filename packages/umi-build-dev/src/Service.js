@@ -18,8 +18,9 @@ import chunksToMap from './utils/chunksToMap';
 import send, { PAGE_LIST, BUILD_DONE } from './send';
 import FilesGenerator from './FilesGenerator';
 import HtmlGenerator from './HtmlGenerator';
-import createRouteMiddleware from './createRouteMiddleware';
+import createRouteMiddleware from './middlewares/createRouteMiddleware';
 import PluginAPI from './PluginAPI';
+import createUmiDevMiddleware from './middlewares/createUmiDevMiddleware';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -145,11 +146,12 @@ export default class Service {
 
     const extraMiddlewares = this.applyPlugins('modifyMiddlewares', {
       initialValue: [
-        createRouteMiddleware(this, {
+        createUmiDevMiddleware(this, {
           rebuildEntry() {
             filesGenerator.rebuild();
           },
         }),
+        createRouteMiddleware(this),
       ],
     });
 
@@ -159,6 +161,7 @@ export default class Service {
       // eslint-disable-line
       webpackConfig,
       extraMiddlewares,
+      contentBase: './path-do-not-exists',
       beforeServerWithApp: app => {
         this.applyPlugins('beforeServerWithApp', {
           args: {
