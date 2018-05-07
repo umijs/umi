@@ -35,7 +35,7 @@ export default (routes, service, requestedMap, env) => {
 
           if (env === 'production' && !config.disabledynamicimport) {
             // 按需加载
-            ret = `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
+            ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
           } else {
             // 非按需加载
             if (

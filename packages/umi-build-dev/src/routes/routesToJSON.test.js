@@ -46,7 +46,7 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([
       {
         component:
-          "dynamic(() => import(/* webpackChunkName: pages__A */'../A'), {})",
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})",
       },
     ]);
   });
@@ -64,7 +64,7 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([
       {
         component:
-          "dynamic(() => import(/* webpackChunkName: pages__A */'../A'), { loading: require('$CWD$/LoadingComponent').default })",
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$CWD$/LoadingComponent').default })",
       },
     ]);
   });
@@ -82,7 +82,7 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([
       {
         component:
-          "dynamic(() => import(/* webpackChunkName: pages__A */'../A'), { loading: require('$CWD$/AAA/LoadingComponent').default })",
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$CWD$/AAA/LoadingComponent').default })",
       },
     ]);
   });
@@ -168,7 +168,7 @@ describe('routesToJSON', () => {
     expect(applyPluginName).toEqual('modifyRouteComponent');
     expect(applyPluginOpts).toEqual({
       initialValue:
-        "dynamic(() => import(/* webpackChunkName: pages__A */'../A'), {})",
+        "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})",
       args: {
         isCompiling: false,
         pageJSFile: '../A',
