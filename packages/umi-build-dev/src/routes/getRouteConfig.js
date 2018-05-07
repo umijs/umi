@@ -17,6 +17,6 @@ export default (paths, config = {}) => {
     routes = getRouteConfigFromDir(paths);
   }
 
-  patchRoutes(routes, config);
+  patchRoutes(routes, config, process.env.NODE_ENV === 'production');
   return routes;
 };
