@@ -25,9 +25,9 @@ class HttpMock {
     this.watch();
   }
 
-  applyMock() {
+  applyMock(isWatch) {
     try {
-      this.realApplyMock();
+      this.realApplyMock(isWatch);
     } catch (e) {
       console.error(chalk.red(`mock failed: ${e.message}`));
     }
@@ -45,8 +45,7 @@ class HttpMock {
     });
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}`);
-      this.deleteRoutes();
-      this.applyMock();
+      this.applyMock(/* isWatch */ true);
     });
   }
 
@@ -76,11 +75,26 @@ class HttpMock {
     );
   }
 
-  realApplyMock() {
+  realApplyMock(isWatch) {
     const { debug } = this.api.utils;
     const config = this.getConfig();
     debug(`config: ${JSON.stringify(config)}`);
     const { app } = this;
+
+    let startIndex = null;
+    let endIndex = null;
+    let routesLength = null;
+
+    if (isWatch) {
+      app._router.stack.forEach((item, index) => {
+        if (item.name === 'MOCK_START') startIndex = index;
+        if (item.name === 'MOCK_END') endIndex = index;
+      });
+      if (startIndex !== null && endIndex !== null) {
+        app._router.stack.splice(startIndex, endIndex - startIndex + 1);
+      }
+      routesLength = app._router.stack.length;
+    }
 
     app.use(MOCK_START);
     app.use(bodyParser.json({ limit: '5mb', strict: false }));
@@ -107,24 +121,15 @@ class HttpMock {
     });
     app.use(MOCK_END);
 
-    // 调整 stack，把 UMI_PLUGIN_404 放到最后
-    let umiPlugin404Index = null;
-    let endIndex = null;
-    app._router.stack.forEach((item, index) => {
-      if (item.name === 'UMI_PLUGIN_404') umiPlugin404Index = index;
-      if (item.name === 'MOCK_END') endIndex = index;
-    });
-    if (
-      umiPlugin404Index !== null &&
-      endIndex !== null &&
-      umiPlugin404Index < endIndex
-    ) {
-      const umiPlugin404Middleware = app._router.stack.splice(
-        umiPlugin404Index,
-        1,
+    if (isWatch) {
+      const newRoutes = app._router.stack.splice(
+        routesLength,
+        app._router.stack.length - routesLength,
       );
-      app._router.stack.push(umiPlugin404Middleware[0]);
+      app._router.stack.splice(startIndex, 0, ...newRoutes);
     }
+
+    // 调整 stack，把 UMI_PLUGIN_404 放到最后
     debug(
       `routes after resort: ${app._router.stack
         .map(item => item.name || 'undefined name')
