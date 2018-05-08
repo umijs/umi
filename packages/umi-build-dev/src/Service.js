@@ -17,7 +17,7 @@ import getWebpackConfig from './getWebpackConfig';
 import chunksToMap from './utils/chunksToMap';
 import send, { PAGE_LIST, BUILD_DONE } from './send';
 import FilesGenerator from './FilesGenerator';
-import HtmlGenerator from './HtmlGenerator';
+import HtmlGenerator from './html/HtmlGenerator';
 import createRouteMiddleware from './middlewares/createRouteMiddleware';
 import PluginAPI from './PluginAPI';
 import createUmiDevMiddleware from './middlewares/createUmiDevMiddleware';
