@@ -1,5 +1,5 @@
 import matchPath from 'react-router-dom/matchPath';
-import HtmlGenerator from '../HtmlGenerator';
+import HtmlGenerator from '../html/HtmlGenerator';
 
 let config = null;
 
@@ -23,7 +23,6 @@ export default function createRouteMiddleware(service) {
       const htmlGenerator = new HtmlGenerator(service);
       const gcOpts = config.exportStatic
         ? {
-            pageConfig: (config.pages || {})[path],
             route: { path: req.path },
           }
         : {};
