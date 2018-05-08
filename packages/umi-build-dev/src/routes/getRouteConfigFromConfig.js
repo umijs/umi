@@ -23,6 +23,29 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     route.component = resolveComponent(pagesPath, route.component);
   }
 
+  // TODO: move this to bigfish
+  // Compatible with bigfish
+  if (route.childRoutes) {
+    route.routes = route.childRoutes;
+    delete route.childRoutes;
+  }
+  if (route.indexRoute) {
+    if (route.indexRoute.redirect) {
+      route.redirect = route.indexRoute.redirect;
+    }
+    if (route.indexRoute.component) {
+      if (!route.routes) {
+        route.routes = [];
+      }
+      route.routes.unshift({
+        path: route.path,
+        exact: true,
+        component: route.indexRoute.component,
+      });
+    }
+    delete route.indexRoute;
+  }
+
   if (route.path && route.path.charAt(0) !== '/') {
     route.path = join(parentRoutePath, route.path);
   }

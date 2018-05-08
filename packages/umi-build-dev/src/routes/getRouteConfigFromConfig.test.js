@@ -94,4 +94,20 @@ describe('getRoutesConfigFromConfig', () => {
       { path: '/a', component: './src/new-pages/A', exact: true },
     ]);
   });
+
+  it('bigfish compatibility', () => {
+    const routes = getRoute([
+      { path: '/a', indexRoute: { component: 'A' } },
+      { path: '/b', indexRoute: { redirect: 'B' } },
+      { path: '/c', childRoutes: [] },
+    ]);
+    expect(routes).toEqual([
+      {
+        path: '/a',
+        routes: [{ path: '/a', component: './src/pages/A', exact: true }],
+      },
+      { path: '/b', redirect: './src/pages/B', exact: true },
+      { path: '/c', routes: [] },
+    ]);
+  });
 });
