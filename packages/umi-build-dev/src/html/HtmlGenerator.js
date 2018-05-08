@@ -43,18 +43,13 @@ export default class HtmlGenerator {
   }
 
   generateForRoutes(routes) {
-    const { config, paths } = this.service;
-    const pagesConfig = config.pages || {};
-
+    const { paths } = this.service;
     routes.forEach(route => {
       if (route.routes) {
         this.generateForRoutes(route.routes);
       } else {
         const { path } = route;
-        const content = this.getContent({
-          route,
-          pageConfig: pagesConfig[path],
-        });
+        const content = this.getContent(path);
         const outputPath = join(paths.absOutputPath, this.getHtmlPath(path));
         mkdirp(dirname(outputPath));
         writeFileSync(outputPath, content, 'utf-8');
