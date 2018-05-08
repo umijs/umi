@@ -5,7 +5,7 @@ module.exports = {
     '/examples/',
     '/lib/',
     '/packages/umi/src/scripts/test.js',
-    'packages/umi/src/test.js',
+    '/packages/umi/src/test.js',
   ],
-  collectCoverageFrom: ['packages/**/src/*.{ts,tsx,js,jsx}'],
+  collectCoverageFrom: ['packages/**/src/**/*.{ts,tsx,js,jsx}'],
 };
