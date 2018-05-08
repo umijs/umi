@@ -1,11 +1,13 @@
 import assert from 'assert';
 import { join } from 'path';
+import deepclone from 'lodash.clonedeep';
 import winPath from '../winPath';
 
 export default (routes, pagesPath = 'src/pages', parentRoutePath = '/') => {
-  // deep clone?
-  patchRoutes(routes, pagesPath, parentRoutePath);
-  return routes;
+  // deepclone 是为了避免 patch 多次
+  const clonedRoutes = deepclone(routes);
+  patchRoutes(clonedRoutes, pagesPath, parentRoutePath);
+  return clonedRoutes;
 };
 
 function patchRoutes(routes, pagesPath, parentRoutePath) {
