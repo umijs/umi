@@ -40,6 +40,9 @@ Try:
 
   // 拿到绝对路径
   const pluginPaths = [
+    ...pluginToPath(
+      process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [],
+    ),
     ...pluginToPath(configPlugins),
     ...pluginToPath(pluginsFromOpts),
   ];
