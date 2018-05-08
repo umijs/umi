@@ -75,13 +75,12 @@ export default class HtmlGenerator {
     }
   }
 
-  getContent(opts = {}) {
-    const { route = {} } = opts;
+  getContent(path) {
     const minifyHTML =
       process.env.NODE_ENV === 'production' && process.env.COMPRESS !== 'none';
 
     return getHTMLContent(
-      route.path,
+      path,
       this.service,
       getChunksMap(this.chunksMap),
       minifyHTML,

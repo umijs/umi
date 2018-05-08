@@ -1,4 +1,3 @@
-import matchPath from 'react-router-dom/matchPath';
 import HtmlGenerator from '../html/HtmlGenerator';
 
 let config = null;
@@ -6,32 +5,19 @@ let config = null;
 export default function createRouteMiddleware(service) {
   ({ config } = service);
 
-  return (req, res, next) => {
+  return (req, res) => {
     const { path } = req;
-    const route = service.routes.filter(r => {
-      return matchPath(path, r);
-    })[0];
-
-    if (route) {
-      service.applyPlugins('onRouteRequest', {
-        args: {
-          route,
-          req,
-        },
-      });
-
-      const htmlGenerator = new HtmlGenerator(service);
-      const gcOpts = config.exportStatic
-        ? {
-            route: { path: req.path },
-          }
-        : {};
-      const content = htmlGenerator.getContent(gcOpts);
-      res.setHeader('Content-Type', 'text/html');
-      res.send(content);
-    } else {
-      next();
-    }
+    service.applyPlugins('onRouteRequest', {
+      args: {
+        req,
+      },
+    });
+    const htmlGenerator = new HtmlGenerator(service);
+    const content = htmlGenerator.getContent(
+      config.exportStatic ? path : undefined,
+    );
+    res.setHeader('Content-Type', 'text/html');
+    res.send(content);
   };
 }
 
