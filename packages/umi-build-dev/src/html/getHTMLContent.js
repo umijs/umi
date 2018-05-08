@@ -81,6 +81,8 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
     : [];
   const jsFiles = [getChunkFile(`${libraryName}.js`, chunksMap, isProduction)];
   const cssContent = cssFiles
+    // umi.css may don't exists
+    .filter(file => file)
     .map(
       file =>
         `<link rel="stylesheet" href="${getAssetsPath(file, pathToStatic)}" />`,
@@ -121,7 +123,6 @@ function getAssetsPath(file, pathToScript) {
 
 function getChunkFile(file, chunksMap, isProduction) {
   if (isProduction) {
-    assert(chunksMap[file], `getChunkFile failed for file: ${file}`);
     return chunksMap[file];
   } else {
     return file;

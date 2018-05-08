@@ -23,6 +23,10 @@ const chunksMap = {
   'umi.css': 'umi-hash.css',
 };
 
+const chunksMapWithoutCSS = {
+  'umi.js': 'umi-hash.js',
+};
+
 describe('getHTMLContent', () => {
   it('normal', () => {
     const service = getService();
@@ -130,6 +134,17 @@ describe('getHTMLContent', () => {
     expect(html.trim()).toEqual(
       `
 <head><link rel="stylesheet" href="/umi-hash.css"></head><body><div id="root"></div><script>window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
+  window.publicPath = '/';</script><script src="/umi-hash.js"></script></body>
+    `.trim(),
+    );
+  });
+
+  it('production without css', () => {
+    const service = getService();
+    const html = getHTMLContent('/', service, chunksMapWithoutCSS, true, true);
+    expect(html.trim()).toEqual(
+      `
+<head></head><body><div id="root"></div><script>window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
   window.publicPath = '/';</script><script src="/umi-hash.js"></script></body>
     `.trim(),
     );
