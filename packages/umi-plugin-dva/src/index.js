@@ -103,26 +103,25 @@ export default function(api, opts = {}) {
     return models;
   }
 
-  function getModelName(model){
+  function getModelName(model) {
     const modelArr = winPath(model).split('/');
-    return modelArr[modelArr.length-1] 
+    return modelArr[modelArr.length - 1];
   }
+
   function exclude(models, excludes) {
     return models.filter(model => {
       for (const exclude of excludes) {
         if (typeof exclude === 'function' && exclude(getModelName(model))) {
           return false;
         }
-        if (
-          exclude instanceof RegExp &&
-          exclude.test(getModelName(model))
-        ) {
+        if (exclude instanceof RegExp && exclude.test(getModelName(model))) {
           return false;
         }
       }
       return true;
     });
   }
+
   function optsToArray(item) {
     if (!item) return [];
     if (Array.isArray(item)) {
@@ -131,8 +130,9 @@ export default function(api, opts = {}) {
       return [item];
     }
   }
+
   function getGlobalModelContent() {
-    return exclude(getGlobalModels(),optsToArray(opts.exclude))
+    return exclude(getGlobalModels(), optsToArray(opts.exclude))
       .map(path =>
         `
     app.model({ ...(require('${path}').default) });
