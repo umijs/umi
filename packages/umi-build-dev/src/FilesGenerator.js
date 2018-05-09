@@ -203,7 +203,7 @@ if (process.env.NODE_ENV === 'production') {
     return tplContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
-      .replace('<%= ROUTES %>', routes)
+      .replace('<%= ROUTES %>', () => routes)
       .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
   }
