@@ -1,7 +1,44 @@
-import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
+
+export function getModel(cwd, api) {
+  const { config } = api.service;
+  const { winPath } = api.utils;
+
+  const modelJSPath = join(cwd, 'model.js');
+  if (existsSync(modelJSPath)) {
+    return [winPath(modelJSPath)];
+  }
+  const modelJSXPath = join(cwd, 'model.jsx');
+  if (existsSync(modelJSXPath)) {
+    return [winPath(modelJSXPath)];
+  }
+  const modelTSPath = join(cwd, 'model.ts');
+  if (existsSync(modelTSPath)) {
+    return [winPath(modelTSPath)];
+  }
+
+  const modelTSXPath = join(cwd, 'model.tsx');
+  if (existsSync(modelTSXPath)) {
+    return [winPath(modelTSXPath)];
+  }
+
+  return globby
+    .sync(`./${config.singular ? 'model' : 'models'}/**/*.{ts,tsx,js,jsx}`, {
+      cwd,
+    })
+    .filter(
+      p =>
+        !p.endsWith('.d.ts') &&
+        !p.endsWith('.test.js') &&
+        !p.endsWith('.test.jsx') &&
+        !p.endsWith('.test.ts') &&
+        !p.endsWith('.test.tsx'),
+    )
+    .map(p => winPath(join(cwd, p)));
+}
 
 export default function(api, opts = {}) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
@@ -18,33 +55,6 @@ export default function(api, opts = {}) {
     if (existsSync(join(paths.absSrcPath, 'dva.ts'))) {
       return winPath(join(paths.absSrcPath, 'dva.ts'));
     }
-  }
-
-  function getModel(cwd) {
-    const modelJSPath = join(cwd, 'model.js');
-    if (existsSync(modelJSPath)) {
-      return [winPath(modelJSPath)];
-    }
-    const modelJSXPath = join(cwd, 'model.jsx');
-    if (existsSync(modelJSXPath)) {
-      return [winPath(modelJSXPath)];
-    }
-    const modelTSPath = join(cwd, 'model.ts');
-    if (existsSync(modelTSPath)) {
-      return [winPath(modelTSPath)];
-    }
-
-    const modelTSXPath = join(cwd, 'model.tsx');
-    if (existsSync(modelTSXPath)) {
-      return [winPath(modelTSXPath)];
-    }
-
-    return globby
-      .sync(`./${config.singular ? 'model' : 'models'}/**/*.{ts,tsx,js,jsx}`, {
-        cwd,
-      })
-      .filter(p => !p.endsWith('.d.ts'))
-      .map(p => winPath(join(cwd, p)));
   }
 
   function endWithSlash(path) {
@@ -74,7 +84,7 @@ export default function(api, opts = {}) {
   }
 
   function getGlobalModels() {
-    let models = getModel(paths.absSrcPath);
+    let models = getModel(paths.absSrcPath, api);
     if (!shouldImportDynamic) {
       // dev 模式下还需要额外载入 page 路由的 models 文件
       models = [...models, ...getModelsWithRoutes(api.service.routes)];
@@ -87,7 +97,7 @@ export default function(api, opts = {}) {
   function getPageModels(cwd) {
     let models = [];
     while (!isPagesPath(cwd) && !isSrcPath(cwd) && cwd !== '/') {
-      models = models.concat(getModel(cwd));
+      models = models.concat(getModel(cwd, api));
       cwd = dirname(cwd);
     }
     return models;

@@ -6,6 +6,7 @@ module.exports = {
     '/lib/',
     '/packages/umi/src/scripts/test.js',
     '/packages/umi/src/test.js',
+    '/packages/**/fixtures/**/*.test.(j|t)s?(x)',
   ],
   collectCoverageFrom: ['packages/**/src/**/*.{ts,tsx,js,jsx}'],
 };

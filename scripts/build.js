@@ -74,7 +74,11 @@ function transform(opts = {}) {
 function buildPkg(pkg) {
   rimraf.sync(join(cwd, 'packages', pkg, 'lib'));
   const stream = vfs
-    .src(`./packages/${pkg}/src/**/*.js`)
+    .src([
+      `./packages/${pkg}/src/**/*.js`,
+      `!./packages/${pkg}/src/**/fixtures/**/*.js`,
+      `!./packages/${pkg}/src/**/*.test.js`,
+    ])
     .pipe(
       through.obj((f, enc, cb) => {
         f.contents = new Buffer( // eslint-disable-line
