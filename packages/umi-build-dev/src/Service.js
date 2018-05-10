@@ -21,6 +21,7 @@ import HtmlGenerator from './html/HtmlGenerator';
 import createRouteMiddleware from './middlewares/createRouteMiddleware';
 import PluginAPI from './PluginAPI';
 import createUmiDevMiddleware from './middlewares/createUmiDevMiddleware';
+import winPath from './winPath';
 
 const debug = require('debug')('umi-build-dev:Service');
 
