@@ -54,7 +54,7 @@ export default (routes, service, requestedMap, env) => {
           }
 
           if (applyPlugins) {
-            applyPlugins.call(service, 'modifyRouteComponent', {
+            ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
                 isCompiling,

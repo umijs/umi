@@ -151,19 +151,27 @@ describe('routesToJSON', () => {
     let applyPluginName = null;
     let applyPluginOpts = null;
     let applied = false;
-    routesToJSON(
-      [{ component: './pages/A' }],
+    const json = routesToJSON(
+      [{ path: '/', component: './pages/A' }],
       {
         ...service,
         applyPlugins(name, opts) {
           applyPluginName = name;
           applyPluginOpts = opts;
           applied = true;
+          return `${opts.initialValue}__Modified`;
         },
       },
       {},
       'production',
     );
+    expect(JSON.parse(json)).toEqual([
+      {
+        path: '/',
+        component:
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})__Modified",
+      },
+    ]);
     expect(applied).toEqual(true);
     expect(applyPluginName).toEqual('modifyRouteComponent');
     expect(applyPluginOpts).toEqual({
