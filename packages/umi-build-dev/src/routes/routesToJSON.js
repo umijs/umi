@@ -1,4 +1,5 @@
 import { join, relative } from 'path';
+import isAbsolute from 'path-is-absolute';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
@@ -24,10 +25,9 @@ export default (routes, service, requestedMap, env) => {
           }
 
           const [component, webpackChunkName, path] = value.split('^^');
-          const importPath =
-            component.charAt(0) === '/'
-              ? component
-              : winPath(relative(paths.tmpDirPath, component));
+          const importPath = isAbsolute(component)
+            ? component
+            : winPath(relative(paths.tmpDirPath, component));
 
           let ret;
           let isCompiling = false;
