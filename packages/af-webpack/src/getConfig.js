@@ -457,7 +457,6 @@ export default function getConfig(opts = {}) {
               options: {
                 configFileName:
                   opts.tsConfigFile || join(opts.cwd, 'tsconfig.json'),
-                transpileOnly: true,
               },
             },
           ],
