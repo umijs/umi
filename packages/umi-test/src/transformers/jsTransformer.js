@@ -21,6 +21,7 @@ export default babelJest.createTransformer({
           enzyme: require.resolve('enzyme'),
         },
       },
+      'module-resolver-in-umi-test',
     ],
   ],
 });

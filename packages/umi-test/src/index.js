@@ -38,7 +38,7 @@ export default function(opts = {}) {
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
     },
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
-    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
