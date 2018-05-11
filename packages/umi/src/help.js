@@ -19,23 +19,11 @@ const commands = {
     aliases: ['h'],
   },
   version: {
-    name: '--version --v',
+    name: 'version',
     description: 'Outputs Umi version.',
     aliases: ['v'],
   },
 };
-
-function help(aliasedScript) {
-  let usage = `\nUsage: umi <command>\n`;
-  let helpArea = '';
-  for (let cmd in cmds) {
-    helpArea += ' ' + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n';
-  }
-  console.log([usage, helpArea].join(`\nCommands:\n\n`));
-  if (!['help', '-h', '--help'].includes(aliasedScript)) {
-    console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
-  }
-}
 
 class Logger {
   info = message => {
