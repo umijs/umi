@@ -6,7 +6,8 @@ let redirects;
 export default (routes, config = {}, isProduction) => {
   redirects = [];
   patchRoutes(routes, config, isProduction);
-  return [...redirects, ...routes];
+  routes.unshift(...redirects);
+  return routes;
 };
 
 function patchRoutes(routes, config, isProduction) {

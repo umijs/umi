@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 export default function renderRoutes(
   routes,
@@ -17,6 +17,9 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             render={props => {
+              if (route.redirect) {
+                return <Redirect to={route.redirect} />;
+              }
               return (
                 <route.component {...props} {...extraProps} route={route}>
                   {renderRoutes(
