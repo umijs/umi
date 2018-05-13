@@ -1,4 +1,4 @@
-export const CONFIG_FILES = ['.umirc.js'];
+export const CONFIG_FILES = ['.umirc.js', 'config/config.js'];
 
 export const PLACEHOLDER_IMPORT = '<%= IMPORT %>';
 export const PLACEHOLDER_ROUTER_MODIFIER = '<%= ROUTER_MODIFIER %>';
