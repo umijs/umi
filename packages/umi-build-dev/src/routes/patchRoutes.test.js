@@ -201,4 +201,31 @@ describe('patchRoutes', () => {
     const routes = patchRoutes([{ path: '/b', meta: { Route: './A' } }]);
     expect(routes).toEqual([{ path: '/b', Route: './A' }]);
   });
+
+  it('redirect hoist', () => {
+    const routes = patchRoutes([
+      { path: '/a', component: './A' },
+      { path: '/b', redirect: '/c' },
+      {
+        path: '/c',
+        routes: [
+          { path: '/c/d', component: 'D' },
+          { path: '/c/e', redirect: '/c/f' },
+          { path: '/c/f', component: 'F' },
+        ],
+      },
+    ]);
+    expect(routes).toEqual([
+      { path: '/c/e', redirect: '/c/f' },
+      { path: '/b', redirect: '/c' },
+      { path: '/a', component: './A' },
+      {
+        path: '/c',
+        routes: [
+          { path: '/c/d', component: 'D' },
+          { path: '/c/f', component: 'F' },
+        ],
+      },
+    ]);
+  });
 });

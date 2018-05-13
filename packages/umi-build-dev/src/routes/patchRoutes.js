@@ -1,13 +1,18 @@
 import deprecate from 'deprecate';
+import remove from 'lodash.remove';
+
+let redirects;
 
 export default (routes, config = {}, isProduction) => {
+  redirects = [];
   patchRoutes(routes, config, isProduction);
-  return routes;
+  return [...redirects, ...routes];
 };
 
 function patchRoutes(routes, config, isProduction) {
   let notFoundIndex = null;
   let rootIndex = null;
+
   routes.forEach((route, index) => {
     patchRoute(route, config, isProduction);
     if (route.path === '/404') {
@@ -35,6 +40,11 @@ function patchRoutes(routes, config, isProduction) {
       path: '/index.html',
     });
   }
+
+  const removedRoutes = remove(routes, route => {
+    return route.redirect;
+  });
+  redirects = redirects.concat(removedRoutes);
 }
 
 function patchRoute(route, config, isProduction) {
