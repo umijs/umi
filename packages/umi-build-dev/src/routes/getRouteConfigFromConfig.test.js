@@ -62,10 +62,23 @@ describe('getRoutesConfigFromConfig', () => {
     ]);
   });
 
-  it('add pages prefix to redirect', () => {
-    const routes = getRoute([{ path: '/a', redirect: 'A' }]);
+  it('relative redirect', () => {
+    const routes = getRoute([
+      { path: '/a' },
+      {
+        path: '/c',
+        routes: [{ path: '/d', redirect: '/f' }, { path: '/e', redirect: 'e' }],
+      },
+    ]);
     expect(routes).toEqual([
-      { path: '/a', redirect: './src/pages/A', exact: true },
+      { path: '/a', exact: true },
+      {
+        path: '/c',
+        routes: [
+          { path: '/d', exact: true, redirect: '/f' },
+          { path: '/e', exact: true, redirect: '/c/e' },
+        ],
+      },
     ]);
   });
 
@@ -106,7 +119,7 @@ describe('getRoutesConfigFromConfig', () => {
         path: '/a',
         routes: [{ path: '/a', component: './src/pages/A', exact: true }],
       },
-      { path: '/b', redirect: './src/pages/B', exact: true },
+      { path: '/b', redirect: '/B', exact: true },
       { path: '/c', routes: [] },
     ]);
   });

@@ -21,6 +21,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
+    "lodash.remove": "^4.7.0",
     "mkdirp": "^0.5.1",
     "path-is-absolute": "^1.0.1",
     "postcss-plugin-px2rem": "^0.7.0",
