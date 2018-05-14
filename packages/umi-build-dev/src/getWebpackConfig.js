@@ -10,7 +10,6 @@ export default function(service = {}) {
   const {
     cwd,
     config,
-    webpackRCConfig,
     babel,
     hash,
     routes,
@@ -22,6 +21,13 @@ export default function(service = {}) {
     preact,
   } = service;
   const isDev = process.env.NODE_ENV === 'development';
+
+  // merge config to webpackRCConfig
+  let { webpackRCConfig } = service;
+  webpackRCConfig = {
+    ...(config || {}),
+    ...(webpackRCConfig || {}),
+  };
 
   // entry
   const entryScript = join(cwd, `./${paths.tmpDirPath}/${libraryName}.js`);
@@ -39,7 +45,6 @@ export default function(service = {}) {
 
   const pageCount = isDev ? null : Object.keys(routes).length;
   debug(`pageCount: ${pageCount}`);
-  debug(`config: ${JSON.stringify(config)}`);
 
   // default react, support config with preact
   // 优先级：用户配置 > preact argument > default (React)
@@ -177,7 +182,6 @@ export default function(service = {}) {
   afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
     initialValue: afWebpackOpts,
   });
-  debug(`afWebpackOpts: ${JSON.stringify(afWebpackOpts)}`);
 
   let webpackConfig = getConfig(afWebpackOpts);
   webpackConfig = service.applyPlugins('modifyWebpackConfig', {

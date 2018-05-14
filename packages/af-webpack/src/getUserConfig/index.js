@@ -2,20 +2,17 @@ import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import assert from 'assert';
 import stripJsonComments from 'strip-json-comments';
-import requireindex from 'requireindex';
 import didyoumean from 'didyoumean';
 import chalk from 'chalk';
 import isEqual from 'lodash.isequal';
 import isPlainObject from 'is-plain-object';
 import { clearConsole } from '../reactDevUtils';
 import { watch, unwatch } from './watch';
+import getPlugins from './getPlugins';
 
 const debug = require('debug')('af-webpack:getUserConfig');
 
-const pluginsMap = requireindex(join(__dirname, './configs'));
-const plugins = Object.keys(pluginsMap).map(key => {
-  return pluginsMap[key].default();
-});
+const plugins = getPlugins();
 const pluginNames = plugins.map(p => p.name);
 const pluginsMapByName = plugins.reduce((memo, p) => {
   memo[p.name] = p;
