@@ -9,4 +9,5 @@ module.exports = {
     '/packages/umi-plugin-dva/src/fixtures',
   ],
   collectCoverageFrom: ['packages/**/src/**/*.{ts,tsx,js,jsx}'],
+  coveragePathIgnorePatterns: ['/packages/umi-plugin-dva/src/fixtures'],
 };
