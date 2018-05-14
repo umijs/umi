@@ -8,4 +8,7 @@ const coverage = args.indexOf('--coverage') > -1;
 test({
   watch,
   coverage,
+}).catch(e => {
+  console.log(e);
+  process.exit(1);
 });
