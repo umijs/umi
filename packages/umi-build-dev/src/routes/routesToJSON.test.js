@@ -51,6 +51,80 @@ describe('routesToJSON', () => {
     ]);
   });
 
+  it('dynamic load when env is production (dynamicLevel = 1)', () => {
+    const json = routesToJSON(
+      [
+        { component: './pages/A' },
+        {
+          path: '/B',
+          component: './pages/B',
+          routes: [{ component: './pages/B/B' }, { component: './pages/B/C' }],
+        },
+      ],
+      service,
+      {},
+      'production',
+    );
+    expect(JSON.parse(json)).toEqual([
+      {
+        component:
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})",
+      },
+      {
+        path: '/B',
+        component:
+          "dynamic(() => import(/* webpackChunkName: ^pages__B^ */'../B'), {})",
+        routes: [
+          {
+            component:
+              "dynamic(() => import(/* webpackChunkName: ^pages__B^ */'../B/B'), {})",
+          },
+          {
+            component:
+              "dynamic(() => import(/* webpackChunkName: ^pages__B^ */'../B/C'), {})",
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('dynamic load when env is production (dynamicLevel = 2)', () => {
+    const json = routesToJSON(
+      [
+        { component: './pages/A' },
+        {
+          path: '/',
+          component: './pages/B',
+          routes: [{ component: './pages/B/B' }, { component: './pages/B/C' }],
+        },
+      ],
+      service,
+      {},
+      'production',
+    );
+    expect(JSON.parse(json)).toEqual([
+      {
+        component:
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})",
+      },
+      {
+        path: '/',
+        component:
+          "dynamic(() => import(/* webpackChunkName: ^pages__B^ */'../B'), {})",
+        routes: [
+          {
+            component:
+              "dynamic(() => import(/* webpackChunkName: ^pages__B__B^ */'../B/B'), {})",
+          },
+          {
+            component:
+              "dynamic(() => import(/* webpackChunkName: ^pages__B__C^ */'../B/C'), {})",
+          },
+        ],
+      },
+    ]);
+  });
+
   it('dynamic load when env is production (with loading)', () => {
     const json = routesToJSON(
       [{ component: './pages/A' }],

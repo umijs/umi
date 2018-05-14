@@ -43,7 +43,11 @@ export default function(service = {}) {
         [libraryName]: [setPublicPathFile, entryScript],
       };
 
-  const pageCount = isDev ? null : Object.keys(routes).length;
+  let pageCount = routes.length;
+  const rootRoute = routes.filter(route => route.path === '/')[0];
+  if (rootRoute && rootRoute.routes) {
+    pageCount = rootRoute.routes.length;
+  }
   debug(`pageCount: ${pageCount}`);
 
   // default react, support config with preact
