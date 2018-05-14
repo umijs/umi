@@ -1,6 +1,6 @@
 # umi-plugin-datahub
 
-umi plugin for integrating [macaca-datahub](https://github.com/macacajs/macaca-datahub), which is a GUI-style mock tool that can be used to replace umi's built-in mock solution.
+umi plugin for integrating [macaca-datahub](//github.com/macacajs/macaca-datahub), which is a GUI-style mock tool that can be used to replace umi's built-in mock solution.
 
 <div align="center">
   <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1fpbmdx2whdj21kw13a7fa.jpg" width="75%" />
@@ -28,13 +28,13 @@ export default {
 
 We can specify options for macaca-datahub, such as proxy and store.
 
-```js
+```javascript
 export default {
   plugins: [
     ['umi-plugin-datahub', {
       proxy: {
         '^/api': {
-          hub: 'ifccustmng',
+          hub: 'hubname',
         },
       },
       store: path.join(__dirname, 'data'),
@@ -43,7 +43,11 @@ export default {
 };
 ```
 
-Checkout [macaca-datahub](https://github.com/macacajs/macaca-datahub#configuration) for more options.
+Checkout [macaca-datahub](//github.com/macacajs/macaca-datahub#configuration) for more options.
+
+## Example
+
+- [umi-examples](//github.com/umijs/umi-examples/tree/master/eleme-demo)
 
 ## LICENSE
 

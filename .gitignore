@@ -13,3 +13,5 @@ lerna-debug.log
 .changelog
 .umi
 .umi-production
+*.sw*
+*.un~
