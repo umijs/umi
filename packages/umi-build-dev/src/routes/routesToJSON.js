@@ -3,7 +3,15 @@ import isAbsolute from 'path-is-absolute';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
+let targetLevel = 1;
+let level = 0;
+
 export default (routes, service, requestedMap, env) => {
+  const rootRoute = routes.filter(route => route.path === '/')[0];
+  if (rootRoute && rootRoute.routes) {
+    targetLevel = 2;
+  }
+
   const { config, applyPlugins, paths } = service;
   patchRoutes(routes);
 
@@ -78,14 +86,16 @@ export default (routes, service, requestedMap, env) => {
 };
 
 function patchRoutes(routes, webpackChunkName) {
+  level += 1;
   routes.forEach(route => {
     patchRoute(route, webpackChunkName);
   });
+  level -= 1;
 }
 
 function patchRoute(route, webpackChunkName) {
   if (route.component && !route.component.startsWith('() =>')) {
-    if (!webpackChunkName) {
+    if (!webpackChunkName || level <= targetLevel) {
       webpackChunkName = normalizeEntry(route.component || 'common_component');
     }
     route.component = [
