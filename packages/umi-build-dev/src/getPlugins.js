@@ -65,6 +65,7 @@ Try:
     './plugins/hd',
     './plugins/mock',
     './plugins/hash-history',
+    './plugins/afwebpack-config',
     './plugins/404', // 404 must after mock
   ];
   const plugins = [

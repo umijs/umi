@@ -1,10 +1,6 @@
 import assert from 'assert';
-import { join } from 'path';
-import { existsSync } from 'fs';
 
 export default function(api) {
-  const { cwd } = api.service.paths;
-
   return {
     name: 'routes',
     validate(val) {
