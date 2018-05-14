@@ -17,6 +17,7 @@ import {
   PLACEHOLDER_RENDER,
   PLACEHOLDER_ROUTER,
   PLACEHOLDER_ROUTER_MODIFIER,
+  PLACEHOLDER_ROUTES_MODIFIER,
 } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
@@ -203,6 +204,7 @@ if (process.env.NODE_ENV === 'production') {
     return tplContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
+      .replace(PLACEHOLDER_ROUTES_MODIFIER, '')
       .replace('<%= ROUTES %>', () => routes)
       .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);

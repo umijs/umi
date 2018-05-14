@@ -7,7 +7,8 @@ import renderRoutes from '<%= libraryName %>/_renderRoutes';
 let Router = DefaultRouter;
 <%= ROUTER_MODIFIER %>
 
-const routes = <%= ROUTES %>;
+let routes = <%= ROUTES %>;
+<%= ROUTES_MODIFIER %>
 
 export default function() {
   return (
