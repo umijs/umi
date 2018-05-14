@@ -7,7 +7,7 @@ import isEqual from 'lodash.isequal';
 import clone from 'lodash.clonedeep';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
-import { setConfig as setMiddlewareConfig } from './createRouteMiddleware';
+import { setConfig as setMiddlewareConfig } from './middlewares/createRouteMiddleware';
 
 function normalizeConfig(config) {
   config = config.default || config;

@@ -203,22 +203,14 @@ if (process.env.NODE_ENV === 'production') {
     return tplContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
-      .replace('<%= ROUTES %>', routes)
+      .replace('<%= ROUTES %>', () => routes)
       .replace(PLACEHOLDER_ROUTER, routerContent)
       .replace(/<%= libraryName %>/g, libraryName);
   }
 
   getRequestedRoutes(requested) {
-    const routes = [...this.service.routes];
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute) {
-      routes.unshift({
-        ...rootRoute,
-        path: '/index.html',
-      });
-    }
     return Object.keys(requested).reduce((memo, pathname) => {
-      matchRoutes(routes, pathname).forEach(({ route }) => {
+      matchRoutes(this.service.routes, pathname).forEach(({ route }) => {
         memo[route.path] = 1;
       });
       return memo;

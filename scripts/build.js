@@ -7,6 +7,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
 const shell = require('shelljs');
+const slash = require('slash');
 
 const nodeBabelConfig = {
   presets: [
@@ -33,7 +34,6 @@ const browserBabelConfig = {
     [require.resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
   ],
 };
-
 const BROWSER_FILES = [
   'packages/umi/src/createHistory.js',
   'packages/umi/src/dynamic.js',
@@ -43,6 +43,7 @@ const BROWSER_FILES = [
   'packages/umi/src/renderRoutes.js',
   'packages/umi/src/withRouter.js',
   'packages/umi/src/utils.js',
+  'packages/umi-build-dev/src/plugins/404/NotFound.js',
   'packages/umi-build-dev/src/Compiling.js',
   'packages/umi-build-dev/src/DefaultLayout.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
@@ -54,15 +55,16 @@ const BROWSER_FILES = [
 const cwd = process.cwd();
 
 function isBrowserTransform(path) {
-  return BROWSER_FILES.includes(path.replace(`${cwd}/`, ''));
+  return BROWSER_FILES.includes(path.replace(`${slash(cwd)}/`, ''));
 }
 
 function transform(opts = {}) {
   const { content, path } = opts;
-  const isBrowser = isBrowserTransform(path);
+  const winPath=slash(path);
+  const isBrowser = isBrowserTransform(winPath);
   console.log(
     chalk[isBrowser ? 'yellow' : 'blue'](
-      `[TRANSFORM] ${path.replace(`${cwd}/`, '')}`,
+      `[TRANSFORM] ${winPath.replace(`${cwd}/`, '')}`,
     ),
   );
   const config = isBrowser ? browserBabelConfig : nodeBabelConfig;
@@ -72,7 +74,11 @@ function transform(opts = {}) {
 function buildPkg(pkg) {
   rimraf.sync(join(cwd, 'packages', pkg, 'lib'));
   const stream = vfs
-    .src(`./packages/${pkg}/src/**/*.js`)
+    .src([
+      `./packages/${pkg}/src/**/*.js`,
+      `!./packages/${pkg}/src/**/fixtures/**/*.js`,
+      `!./packages/${pkg}/src/**/*.test.js`,
+    ])
     .pipe(
       through.obj((f, enc, cb) => {
         f.contents = new Buffer( // eslint-disable-line

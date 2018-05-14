@@ -1,4 +1,5 @@
 import { join, relative } from 'path';
+import isAbsolute from 'path-is-absolute';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
@@ -19,11 +20,14 @@ export default (routes, service, requestedMap, env) => {
     (key, value) => {
       switch (key) {
         case 'component':
+          if (value.startsWith('() =>')) {
+            return value;
+          }
+
           const [component, webpackChunkName, path] = value.split('^^');
-          const importPath =
-            component.charAt(0) === '/'
-              ? component
-              : winPath(relative(paths.tmpDirPath, component));
+          const importPath = isAbsolute(component)
+            ? component
+            : winPath(relative(paths.tmpDirPath, component));
 
           let ret;
           let isCompiling = false;
@@ -31,7 +35,7 @@ export default (routes, service, requestedMap, env) => {
 
           if (env === 'production' && !config.disabledynamicimport) {
             // 按需加载
-            ret = `dynamic(() => import(/* webpackChunkName: ${webpackChunkName} */'${importPath}'), {${loadingOpts}})`;
+            ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
           } else {
             // 非按需加载
             if (
@@ -50,7 +54,7 @@ export default (routes, service, requestedMap, env) => {
           }
 
           if (applyPlugins) {
-            applyPlugins.call(service, 'modifyRouteComponent', {
+            ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
                 isCompiling,
@@ -80,7 +84,7 @@ function patchRoutes(routes, webpackChunkName) {
 }
 
 function patchRoute(route, webpackChunkName) {
-  if (route.component) {
+  if (route.component && !route.component.startsWith('() =>')) {
     if (!webpackChunkName) {
       webpackChunkName = normalizeEntry(route.component || 'common_component');
     }

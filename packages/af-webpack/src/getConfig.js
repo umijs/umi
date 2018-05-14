@@ -379,7 +379,10 @@ export default function getConfig(opts = {}) {
         ),
         ...opts.alias,
       },
-      plugins: [new TsConfigPathsPlugin()],
+      plugins:
+        process.env.TS_CONFIG_PATHS_PLUGIN !== 'none'
+          ? [new TsConfigPathsPlugin()]
+          : [],
     },
     module: {
       rules: [

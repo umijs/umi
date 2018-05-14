@@ -2,6 +2,7 @@
 
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
+// const yParser = require('yargs-parser');
 
 const script = process.argv[2];
 const args = process.argv.slice(3);
@@ -22,7 +23,10 @@ const pkg = require('../package.json');
 updater({ pkg: pkg }).notify({ defer: true });
 
 function runScript(script, args, isFork) {
-  if (isFork) {
+  // const options= yParser(args);
+  if(script === 'help' || args.help || args.h){
+    require(`../lib/scripts/help`)
+  }else if (isFork) {
     const result = spawn.sync(
       'node',
       [require.resolve(`../lib/scripts/${script}`)].concat(args),
@@ -31,27 +35,6 @@ function runScript(script, args, isFork) {
     process.exit(result.status);
   } else {
     require(`../lib/scripts/${script}`);
-  }
-}
-
-// Add help command
-const cmds = {
-  build: 'create a production build',
-  dev: 'start a development server',
-  test: 'do unit/ui test with jest',
-  help: 'show help',
-  '-v, --version': 'show version',
-};
-
-function help(aliasedScript) {
-  let usage = `\nUsage: umi <command>\n`;
-  let helpArea = '';
-  for (var cmd in cmds) {
-    helpArea += (' ' + cmd + Array(25 - cmd.length).join(' ') + cmds[cmd] + '\n');
-  }
-  console.log([usage,helpArea].join(`\nCommands:\n\n`));
-  if (!['help', '-h', '--help'].includes(aliasedScript)) {
-    console.log(`Unknown script ${chalk.cyan(aliasedScript)}.`);
   }
 }
 
@@ -74,10 +57,11 @@ switch (aliasedScript) {
   case 'generate':
     runScript(aliasedScript, args, /* isFork */true);
     break;
+  case 'help':  
   case 'test':
     runScript(aliasedScript, args);
     break;
   default:
-    help(aliasedScript);
+    runScript('help', args);
     break;
 }

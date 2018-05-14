@@ -1,16 +1,31 @@
 import deprecate from 'deprecate';
+import remove from 'lodash.remove';
+
+let redirects;
 
 export default (routes, config = {}, isProduction) => {
+  redirects = [];
   patchRoutes(routes, config, isProduction);
+  routes.unshift(...redirects);
   return routes;
 };
 
 function patchRoutes(routes, config, isProduction) {
   let notFoundIndex = null;
+  let rootIndex = null;
+
   routes.forEach((route, index) => {
     patchRoute(route, config, isProduction);
     if (route.path === '/404') {
       notFoundIndex = index;
+    }
+    if (
+      !isProduction &&
+      config.exportStatic &&
+      route.path === '/' &&
+      route.exact
+    ) {
+      rootIndex = index;
     }
   });
 
@@ -19,6 +34,18 @@ function patchRoutes(routes, config, isProduction) {
     const notFoundRoute = routes.splice(notFoundIndex, 1)[0];
     routes.push({ component: notFoundRoute.component });
   }
+
+  if (rootIndex !== null) {
+    routes.splice(rootIndex, 0, {
+      ...routes[rootIndex],
+      path: '/index.html',
+    });
+  }
+
+  const removedRoutes = remove(routes, route => {
+    return route.redirect;
+  });
+  redirects = redirects.concat(removedRoutes);
 }
 
 function patchRoute(route, config, isProduction) {
@@ -34,6 +61,7 @@ function patchRoute(route, config, isProduction) {
     route.path = addHtmlSuffix(route.path, !!route.routes);
   }
 
+  // 权限路由
   // TODO: use config from config.routes
   if (
     config.pages &&

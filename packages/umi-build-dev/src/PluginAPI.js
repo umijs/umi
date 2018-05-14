@@ -23,7 +23,6 @@ class PluginAPI {
       _afWebpackBuild: require('af-webpack/build').default,
       _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
         .webpackHotDevClientPath,
-
       winPath,
       debug: debug(`umi-plugin: ${id}`),
     };

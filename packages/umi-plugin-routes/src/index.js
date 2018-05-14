@@ -16,7 +16,11 @@ function exclude(routes, excludes) {
       if (typeof exclude === 'function' && exclude(route)) {
         return false;
       }
-      if (exclude instanceof RegExp && exclude.test(route.component)) {
+      if (
+        !route.component.startsWith('() =>') &&
+        exclude instanceof RegExp &&
+        exclude.test(route.component)
+      ) {
         return false;
       }
     }
