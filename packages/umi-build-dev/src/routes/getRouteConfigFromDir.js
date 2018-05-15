@@ -25,7 +25,9 @@ export default function getRouteConfigFromDir(paths) {
     .reduce(handleFile.bind(null, paths, absPath), []);
 
   if (dirPath === '' && absSrcPath) {
-    const globalLayoutFile = findJSFile(absSrcPath, 'layouts/index');
+    const globalLayoutFile =
+      findJSFile(absSrcPath, 'layouts/index') ||
+      findJSFile(absSrcPath, 'layout/index');
     if (globalLayoutFile) {
       return [
         {
