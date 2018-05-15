@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
-import isAbsolute from 'path-is-absolute';
+import isRoot from 'path-is-root';
 
 export function getModel(cwd, api) {
   const { config } = api.service;
@@ -97,7 +97,7 @@ export default function(api, opts = {}) {
 
   function getPageModels(cwd) {
     let models = [];
-    while (!isPagesPath(cwd) && !isSrcPath(cwd) && !isAbsolute(cwd)) {
+    while (!isPagesPath(cwd) && !isSrcPath(cwd) && !isRoot(cwd)) {
       models = models.concat(getModel(cwd, api));
       cwd = dirname(cwd);
     }

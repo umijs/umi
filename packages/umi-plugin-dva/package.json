@@ -9,7 +9,7 @@
     "globby": "^7.1.1",
     "lodash.uniq": "^4.5.0",
     "object-assign": "^4.1.1",
-    "path-is-absolute": "^1.0.1",
+    "path-is-root": "^0.1.0",
     "path-to-regexp": "^1.7.0"
   },
   "repository": {
