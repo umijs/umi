@@ -122,6 +122,21 @@ describe('getRouteConfigFromDir', () => {
     ]);
   });
 
+  it('global layout (sigular)', () => {
+    const routes = getRoute({
+      cwd: join(__dirname, 'fixtures', 'global-layout-sigular'),
+      absPagesPath: join(__dirname, 'fixtures', 'global-layout-sigular'),
+      absSrcPath: join(__dirname, 'fixtures', 'global-layout-sigular', '_src'),
+    });
+    expect(routes).toEqual([
+      {
+        path: '/',
+        component: './_src/layout/index.js',
+        routes: [{ path: '/a', exact: true, component: './a.js' }],
+      },
+    ]);
+  });
+
   it('global layout not found', () => {
     const routes = getRoute({
       cwd: join(__dirname, 'fixtures', 'global-layout-not-found'),
