@@ -19,12 +19,7 @@ function patchRoutes(routes, config, isProduction) {
     if (route.path === '/404') {
       notFoundIndex = index;
     }
-    if (
-      !isProduction &&
-      config.exportStatic &&
-      route.path === '/' &&
-      route.exact
-    ) {
+    if (config.exportStatic && route.path === '/' && route.exact) {
       rootIndex = index;
     }
   });

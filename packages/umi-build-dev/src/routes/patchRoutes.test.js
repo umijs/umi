@@ -55,21 +55,8 @@ describe('patchRoutes', () => {
     ]);
   });
 
-  it('copy /index.html for / if exportStatic and development', () => {
+  it('copy /index.html for / if exportStatic', () => {
     let routes;
-
-    routes = patchRoutes(
-      [
-        { path: '/', exact: true, component: './A' },
-        { path: '/b', exact: true, component: './B' },
-      ],
-      { exportStatic: true },
-      true,
-    );
-    expect(routes).toEqual([
-      { path: '/', exact: true, component: './A' },
-      { path: '/b', exact: true, component: './B' },
-    ]);
 
     routes = patchRoutes(
       [
