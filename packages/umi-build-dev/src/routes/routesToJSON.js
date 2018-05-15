@@ -3,13 +3,18 @@ import isAbsolute from 'path-is-absolute';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
-let targetLevel = 1;
+let targetLevel = null;
 let level = 0;
 
 export default (routes, service, requestedMap, env) => {
-  const rootRoute = routes.filter(route => route.path === '/')[0];
-  if (rootRoute && rootRoute.routes) {
-    targetLevel = 2;
+  if (process.env.CODE_SPLITTING_LEVEL) {
+    targetLevel = process.env.CODE_SPLITTING_LEVEL;
+  } else {
+    targetLevel = 1;
+    const rootRoute = routes.filter(route => route.path === '/')[0];
+    if (rootRoute && rootRoute.routes) {
+      targetLevel = 2;
+    }
   }
 
   const { config, applyPlugins, paths } = service;
