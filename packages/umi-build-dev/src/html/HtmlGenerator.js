@@ -28,7 +28,7 @@ export default class HtmlGenerator {
       config.exportStatic.htmlSuffix;
 
     path = path.slice(1);
-    if (path === '') {
+    if (path === '' || path === 'index.html') {
       return 'index.html';
     }
 
