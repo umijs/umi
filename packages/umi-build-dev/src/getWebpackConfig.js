@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import getConfig from 'af-webpack/getConfig';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 import defaultBrowsers from './defaultConfigs/browsers';
+import getPageCountFromRoutes from './routes/getPageCountFromRoutes';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
@@ -43,11 +44,7 @@ export default function(service = {}) {
         [libraryName]: [setPublicPathFile, entryScript],
       };
 
-  let pageCount = routes.length;
-  const rootRoute = routes.filter(route => route.path === '/')[0];
-  if (rootRoute && rootRoute.routes) {
-    pageCount = rootRoute.routes.length;
-  }
+  const pageCount = process.env.PAGE_COUNT || getPageCountFromRoutes(routes);
   debug(`pageCount: ${pageCount}`);
 
   // default react, support config with preact
