@@ -5,8 +5,10 @@
 
 export default function(entry) {
   return entry
-    .replace(/^.(\/|\\)/, '')
-    .replace(/(\/|\\)/g, '__')
-    .replace(/\.jsx?$/, '')
-    .replace(/\.tsx?$/, '');
+    ? entry
+        .replace(/^.(\/|\\)/, '')
+        .replace(/(\/|\\)/g, '__')
+        .replace(/\.jsx?$/, '')
+        .replace(/\.tsx?$/, '')
+    : '';
 }
