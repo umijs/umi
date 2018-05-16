@@ -16,7 +16,7 @@ export default function createUmiDevMiddleware(service, opts = {}) {
 
     if (matchedRoutes && matchedRoutes.length) {
       matchedRoutes.forEach(({ route }) => {
-        setRequest(route.path);
+        if (route.path) setRequest(route.path);
       });
       opts.rebuildEntry();
     }
