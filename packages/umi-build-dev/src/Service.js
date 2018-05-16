@@ -21,7 +21,6 @@ import HtmlGenerator from './html/HtmlGenerator';
 import createRouteMiddleware from './middlewares/createRouteMiddleware';
 import PluginAPI from './PluginAPI';
 import createUmiDevMiddleware from './middlewares/createUmiDevMiddleware';
-import winPath from './winPath';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -197,7 +196,7 @@ export default class Service {
           },
         });
       },
-      proxy: this.webpackRCConfig.proxy || {},
+      proxy: this.config.proxy || this.webpackRCConfig.proxy || {},
       // 支付宝 IDE 里不自动打开浏览器
       openBrowser: !process.env.ALIPAY_EDITOR,
       historyApiFallback: false,
