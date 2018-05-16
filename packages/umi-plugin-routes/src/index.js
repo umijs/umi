@@ -10,7 +10,7 @@ function optsToArray(item) {
   }
 }
 
-function exclude(routes, excludes) {
+function exclude(routes, excludes, winPath) {
   return routes.filter(route => {
     for (const exclude of excludes) {
       if (typeof exclude === 'function' && exclude(route)) {
@@ -19,14 +19,14 @@ function exclude(routes, excludes) {
       if (
         !route.component.startsWith('() =>') &&
         exclude instanceof RegExp &&
-        exclude.test(route.component)
+        exclude.test(winPath(route.component))
       ) {
         return false;
       }
     }
 
     if (route.routes) {
-      route.routes = exclude(route.routes, excludes);
+      route.routes = exclude(route.routes, excludes, winPath);
     }
 
     return true;
@@ -34,9 +34,10 @@ function exclude(routes, excludes) {
 }
 
 export default function(api, opts) {
+  const { winPath } = api.utils;
   api.register('modifyRoutes', ({ memo }) => {
     // opts.exclude
-    memo = exclude(memo, optsToArray(opts.exclude));
+    memo = exclude(memo, optsToArray(opts.exclude), winPath);
 
     // opts.include
     for (const include of optsToArray(opts.include)) {
