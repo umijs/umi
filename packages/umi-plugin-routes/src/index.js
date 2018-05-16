@@ -19,7 +19,7 @@ function exclude(routes, excludes, winPath) {
       if (
         !route.component.startsWith('() =>') &&
         exclude instanceof RegExp &&
-        exclude.test(winPath(route.component));
+        exclude.test(winPath(route.component))
       ) {
         return false;
       }
