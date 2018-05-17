@@ -253,16 +253,22 @@ models: () => [
   }
 
   api.register('modifyEntryFile', ({ memo }) => {
-    return memo.replace(
-      RENDER,
-      `
-const DvaContainer = require('./DvaContainer').default;
+    const dvaRender = api.service.applyPlugins('modifyDvaRender', {
+      initialValue: `
 ReactDOM.render(React.createElement(
   DvaContainer,
   null,
   React.createElement(require('./router').default)
 ), document.getElementById('root'));
-      `.trim(),
+`.trim(),
+    });
+
+    return memo.replace(
+      RENDER,
+      `
+const DvaContainer = require('./DvaContainer').default;
+${dvaRender}
+`.trim(),
     );
   });
 
