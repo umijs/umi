@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-dva",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "main": "./lib/index.js",
   "dependencies": {
     "dva": "^2.2.2",
