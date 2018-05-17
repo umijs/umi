@@ -1,10 +1,16 @@
 import { join } from 'path';
-import { getModel } from './index';
+import dvaPlugin, { getModel } from './index';
+
+const RENDER = 'testrender';
+const base = join(__dirname, 'fixtures', 'getModel');
 
 const api = {
   service: {
     config: {
       singular: false,
+    },
+    paths: {
+      absTmpDirPath: base,
     },
   },
   utils: {
@@ -12,9 +18,10 @@ const api = {
       return p;
     },
   },
+  placeholder: {
+    RENDER,
+  },
 };
-
-const base = join(__dirname, 'fixtures', 'getModel');
 
 function normalizeModels(models, base) {
   return models.map(model => model.replace(base, '$CWD$'));
@@ -60,5 +67,22 @@ describe('umi-plugin-dva', () => {
     const dir = join(base, 'ignore-test-files');
     const models = normalizeModels(getModel(dir, api), dir);
     expect(models).toEqual(['$CWD$/models/a.ts']);
+  });
+
+  it('apply modifyDvaRender', () => {
+    api.service.applyPlugins = (name, params) => {
+      if (name === 'modifyDvaRender') {
+        return 'new dva render';
+      }
+    };
+    api.register = (name, handler) => {
+      if (name === 'modifyEntryFile') {
+        const ret = handler({
+          memo: `i am test content with ${RENDER}, hahaha`,
+        });
+        expect(ret).toEqual(expect.stringContaining('new dva render'));
+      }
+    };
+    dvaPlugin(api);
   });
 });
