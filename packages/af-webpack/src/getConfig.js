@@ -17,6 +17,7 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import ProgressPlugin from 'progress-bar-webpack-plugin';
 import { sync as resolveSync } from 'resolve';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import uglifyJSConfig from './defaultConfigs/uglifyJS';
 import babelConfig from './defaultConfigs/babel';
 import defaultBrowsers from './defaultConfigs/browsers';
@@ -486,6 +487,9 @@ export default function getConfig(opts = {}) {
             new webpack.HotModuleReplacementPlugin(),
             new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
             new SystemBellWebpackPlugin(),
+            ...(process.env.HARD_SOURCE === 'none'
+              ? []
+              : [new HardSourceWebpackPlugin()]),
           ].concat(
             opts.devtool
               ? []

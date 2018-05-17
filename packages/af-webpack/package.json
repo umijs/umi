@@ -34,6 +34,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
+    "hard-source-webpack-plugin": "^0.6.7",
     "html-webpack-plugin": "^2.30.1",
     "inquirer": "^3.3.0",
     "is-plain-object": "^2.0.4",
