@@ -63,11 +63,12 @@ Try:
     './plugins/antd',
     './plugins/fastclick',
     './plugins/hd',
-    './plugins/mock',
+    ...(process.env.MOCK === 'none' ? [] : ['./plugins/mock']),
     './plugins/hash-history',
     './plugins/afwebpack-config',
     './plugins/404', // 404 must after mock
   ];
+
   const plugins = [
     // builtIn 的在最前面
     ...builtInPlugins.map(p => {
