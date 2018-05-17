@@ -487,6 +487,9 @@ export default function getConfig(opts = {}) {
             new webpack.HotModuleReplacementPlugin(),
             new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
             new SystemBellWebpackPlugin(),
+            ...(process.env.HARD_SOURCE === 'none'
+              ? []
+              : [new HardSourceWebpackPlugin()]),
           ].concat(
             opts.devtool
               ? []
@@ -576,9 +579,6 @@ export default function getConfig(opts = {}) {
           context: __dirname,
         },
       }),
-      ...(process.env.HARD_SOURCE === 'none'
-        ? []
-        : [new HardSourceWebpackPlugin()]),
       new ProgressPlugin(),
       ...(process.env.TS_TYPECHECK ? [new ForkTsCheckerWebpackPlugin()] : []),
       ...(opts.ignoreMomentLocale

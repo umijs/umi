@@ -22,6 +22,7 @@ export default function(api, opts = {}) {
 
   api.register('beforeDevAsync', () => {
     return new Promise(resolve => {
+      process.env.HARD_SOURCE = 'none';
       buildDll({
         webpack,
         afWebpackGetConfig,
@@ -32,6 +33,7 @@ export default function(api, opts = {}) {
         ...opts,
       })
         .then(() => {
+          process.env.HARD_SOURCE = '';
           resolve();
         })
         .catch(e => {
