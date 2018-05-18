@@ -2,7 +2,12 @@ import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 
 export default function(api) {
-  const { cwd } = api.service;
+  const { cwd, config } = api.service;
+
+  let style = 'css';
+  if (config.theme && Object.keys(config.theme) > 0) {
+    style = true;
+  }
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.babel.plugins = [
@@ -12,7 +17,7 @@ export default function(api) {
         {
           libraryName: 'antd',
           libraryDirectory: 'es',
-          style: true,
+          style,
         },
         'antd',
       ],
@@ -21,7 +26,7 @@ export default function(api) {
         {
           libraryName: 'antd-mobile',
           libraryDirectory: 'es',
-          style: true,
+          style,
         },
         'antd-mobile',
       ],
