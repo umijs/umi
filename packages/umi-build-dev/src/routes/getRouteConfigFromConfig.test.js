@@ -13,7 +13,7 @@ describe('getRoutesConfigFromConfig', () => {
     ]);
     expect(routes).toEqual([
       { path: '/a', exact: true },
-      { path: '/b', exact: false },
+      { path: '/bb', exact: false },
     ]);
   });
 
