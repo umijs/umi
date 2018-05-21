@@ -358,8 +358,8 @@ export default function getConfig(opts = {}) {
     },
     resolve: {
       modules: [
-        resolve(__dirname, '../node_modules'),
         'node_modules',
+        resolve(__dirname, '../node_modules'),
         ...(opts.extraResolveModules || []),
       ],
       extensions: [
