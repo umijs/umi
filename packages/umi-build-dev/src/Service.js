@@ -212,6 +212,7 @@ export default class Service {
   initPlugins() {
     const config = UserConfig.getConfig({
       cwd: this.cwd,
+      service: this,
     });
     debug(`user config: ${JSON.stringify(config)}`);
     try {
