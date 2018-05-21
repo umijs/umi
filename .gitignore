@@ -2,6 +2,8 @@
 tmp
 /node_modules
 /packages/*/node_modules
+package-lock.json
+yarn.lock
 /website/build
 /packages/umi-test/examples/*/node_modules
 lib

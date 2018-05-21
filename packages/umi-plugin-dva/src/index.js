@@ -76,6 +76,9 @@ export default function(api, opts = {}) {
 
   function getModelsWithRoutes(routes) {
     return routes.reduce((memo, route) => {
+      if (route.redirect) {
+        return memo;
+      }
       return [
         ...memo,
         ...getPageModels(join(paths.cwd, route.component)),
