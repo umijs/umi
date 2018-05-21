@@ -51,10 +51,27 @@ function normalizeConfig(config) {
   return config;
 }
 
+function getConfigFile(cwd, service) {
+  const { printWarn } = service;
+  const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
+    existsSync(file),
+  );
+
+  if (files.length > 1) {
+    printWarn(
+      `Muitiple config files ${files.join(', ')} detected, umi will use ${
+        files[0]
+      }.`,
+    );
+  }
+
+  return files[0];
+}
+
 class UserConfig {
   static getConfig(opts = {}) {
-    const { cwd } = opts;
-    const absConfigPath = join(cwd, CONFIG_FILES[0]);
+    const { cwd, service } = opts;
+    const absConfigPath = getConfigFile(cwd, service);
     if (existsSync(absConfigPath)) {
       try {
         const config = require(absConfigPath) || {}; // eslint-disable-line
@@ -90,28 +107,11 @@ class UserConfig {
     this.plugins = plugins.map(p => p(this));
   }
 
-  getConfigFile() {
-    const { paths, printWarn } = this.service;
-    const files = CONFIG_FILES.map(file => join(paths.cwd, file)).filter(file =>
-      existsSync(file),
-    );
-
-    if (files.length > 1) {
-      printWarn(
-        `Muitiple config files ${files.join(', ')} detected, umi will use ${
-          files[0]
-        }.`,
-      );
-    }
-
-    return files[0];
-  }
-
   getConfig(opts = {}) {
     const { paths, printError } = this.service;
     const { force, setConfig } = opts;
 
-    const file = this.getConfigFile();
+    const file = getConfigFile(paths.cwd, this.service);
     this.file = file;
     if (!file) {
       return {};
