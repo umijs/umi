@@ -127,6 +127,8 @@ class UserConfig {
   }
 
   getConfig(opts = {}) {
+    const env = process.env.UMI_ENV;
+    const isDev = process.env.NODE_ENV === 'development';
     const { paths, printError } = this.service;
     const { force, setConfig } = opts;
 
@@ -163,8 +165,6 @@ class UserConfig {
       throw new Error(msg);
     }
 
-    const env = process.env.UMI_ENV;
-    const isDev = process.env.NODE_ENV === 'development';
     config = normalizeConfig({
       ...requireFile(file, { onError }),
       ...(env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {}),
