@@ -95,13 +95,19 @@ class UserConfig {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
 
-    return normalizeConfig({
-      ...requireFile(absConfigPath),
-      ...(env ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`)) : {}),
-      ...(isDev
-        ? requireFile(absConfigPath.replace(/\.js$/, '.local.js'))
-        : {}),
-    });
+    if (absConfigPath) {
+      return normalizeConfig({
+        ...requireFile(absConfigPath),
+        ...(env
+          ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`))
+          : {}),
+        ...(isDev
+          ? requireFile(absConfigPath.replace(/\.js$/, '.local.js'))
+          : {}),
+      });
+    } else {
+      return {};
+    }
   }
 
   constructor(service) {
