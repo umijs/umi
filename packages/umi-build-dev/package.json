@@ -20,6 +20,7 @@
     "is-plain-object": "^2.0.4",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
+    "lodash.flatten": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "lodash.remove": "^4.7.0",
     "mkdirp": "^0.5.1",

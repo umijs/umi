@@ -5,9 +5,12 @@ import chalk from 'chalk';
 import didyoumean from 'didyoumean';
 import isEqual from 'lodash.isequal';
 import clone from 'lodash.clonedeep';
+import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import { setConfig as setMiddlewareConfig } from './middlewares/createRouteMiddleware';
+
+let env;
 
 function normalizeConfig(config) {
   config = config.default || config;
@@ -52,6 +55,7 @@ function normalizeConfig(config) {
 }
 
 function getConfigFile(cwd, service) {
+  env = getEnv();
   const { printWarn } = service;
   const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
     existsSync(file),
@@ -68,21 +72,42 @@ function getConfigFile(cwd, service) {
   return files[0];
 }
 
+export function getEnv() {
+  let env = process.env.UMI_ENV;
+  if (process.env.NODE_ENV === 'development') {
+    env = 'local';
+  }
+  return env;
+}
+
+function requireFile(filePath, opts = {}) {
+  if (!existsSync(filePath)) {
+    return {};
+  }
+
+  const onError =
+    opts.onError ||
+    function(e) {
+      console.error(e);
+      return {};
+    };
+  try {
+    const config = require(filePath) || {}; // eslint-disable-line
+    return normalizeConfig(config);
+  } catch (e) {
+    return onError(e, filePath);
+  }
+}
+
 class UserConfig {
   static getConfig(opts = {}) {
     const { cwd, service } = opts;
     const absConfigPath = getConfigFile(cwd, service);
-    if (existsSync(absConfigPath)) {
-      try {
-        const config = require(absConfigPath) || {}; // eslint-disable-line
-        return normalizeConfig(config);
-      } catch (e) {
-        console.error(e);
-        return {};
-      }
-    } else {
-      return {};
-    }
+
+    return normalizeConfig({
+      ...requireFile(absConfigPath),
+      ...(env ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`)) : {}),
+    });
   }
 
   constructor(service) {
@@ -121,22 +146,30 @@ class UserConfig {
     if (force) {
       CONFIG_FILES.forEach(file => {
         delete require.cache[join(paths.cwd, file)];
+        delete require.cache[
+          join(paths.cwd, file.replace(/\.js$/, `.${env}.js`))
+        ];
       });
     }
 
     let config = null;
     const relativeFile = file.replace(`${paths.cwd}/`, '');
     this.relativeFile = relativeFile;
-    try {
-      config = require(file); // eslint-disable-line
-    } catch (e) {
-      const msg = `配置文件 "${relativeFile}" 解析出错，请检查语法。
+
+    function onError(e, file) {
+      const msg = `配置文件 "${file.replace(
+        `${paths.cwd}/`,
+        '',
+      )}" 解析出错，请检查语法。
 \r\n${e.toString()}`;
       printError(msg);
       throw new Error(msg);
     }
 
-    config = normalizeConfig(config);
+    config = normalizeConfig({
+      ...requireFile(file, { onError }),
+      ...(env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {}),
+    });
 
     // Validate
     for (const plugin of this.plugins) {
@@ -228,7 +261,14 @@ class UserConfig {
   }
 
   watchConfigs(handler) {
-    const watcher = this.watch('CONFIG_FILES', CONFIG_FILES);
+    const watcher = this.watch(
+      'CONFIG_FILES',
+      flatten(
+        CONFIG_FILES.map(file => {
+          return [file, file.replace(/\.js$/, `.${env}.js`)];
+        }),
+      ),
+    );
     if (watcher) {
       watcher.on('all', handler);
     }
