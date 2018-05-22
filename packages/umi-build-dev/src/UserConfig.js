@@ -268,6 +268,7 @@ class UserConfig {
         CONFIG_FILES.map(file => [
           file,
           env ? [file.replace(/\.js$/, `.${env}.js`)] : [],
+          file.replace(/\.js$/, `.local.js`),
         ]),
       ),
     );
