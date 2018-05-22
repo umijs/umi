@@ -485,7 +485,8 @@ export default function getConfig(opts = {}) {
       ...(isDev
         ? [
             new webpack.HotModuleReplacementPlugin(),
-            new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
+            // Disable this plugin since it causes 100% cpu when have lost deps
+            // new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
             new SystemBellWebpackPlugin(),
             ...(process.env.HARD_SOURCE === 'none'
               ? []
