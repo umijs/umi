@@ -10,8 +10,6 @@ import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import { setConfig as setMiddlewareConfig } from './middlewares/createRouteMiddleware';
 
-let env;
-
 function normalizeConfig(config) {
   config = config.default || config;
 
@@ -55,7 +53,6 @@ function normalizeConfig(config) {
 }
 
 function getConfigFile(cwd, service) {
-  env = getEnv();
   const { printWarn } = service;
   const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
     existsSync(file),
@@ -70,14 +67,6 @@ function getConfigFile(cwd, service) {
   }
 
   return files[0];
-}
-
-export function getEnv() {
-  let env = process.env.UMI_ENV;
-  if (process.env.NODE_ENV === 'development') {
-    env = 'local';
-  }
-  return env;
 }
 
 function requireFile(filePath, opts = {}) {
@@ -103,10 +92,15 @@ class UserConfig {
   static getConfig(opts = {}) {
     const { cwd, service } = opts;
     const absConfigPath = getConfigFile(cwd, service);
+    const env = process.env.UMI_ENV;
+    const isDev = process.env.NODE_ENV === 'development';
 
     return normalizeConfig({
       ...requireFile(absConfigPath),
       ...(env ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`)) : {}),
+      ...(isDev
+        ? requireFile(absConfigPath.replace(/\.js$/, '.local.js'))
+        : {}),
     });
   }
 
@@ -149,6 +143,9 @@ class UserConfig {
         delete require.cache[
           join(paths.cwd, file.replace(/\.js$/, `.${env}.js`))
         ];
+        delete require.cache[
+          join(paths.cwd, file.replace(/\.js$/, `.local.js`))
+        ];
       });
     }
 
@@ -166,9 +163,12 @@ class UserConfig {
       throw new Error(msg);
     }
 
+    const env = process.env.UMI_ENV;
+    const isDev = process.env.NODE_ENV === 'development';
     config = normalizeConfig({
       ...requireFile(file, { onError }),
       ...(env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {}),
+      ...(isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {}),
     });
 
     // Validate
@@ -261,12 +261,14 @@ class UserConfig {
   }
 
   watchConfigs(handler) {
+    const env = process.env.UMI_ENV;
     const watcher = this.watch(
       'CONFIG_FILES',
       flatten(
-        CONFIG_FILES.map(file => {
-          return [file, file.replace(/\.js$/, `.${env}.js`)];
-        }),
+        CONFIG_FILES.map(file => [
+          file,
+          env ? [file.replace(/\.js$/, `.${env}.js`)] : [],
+        ]),
       ),
     );
     if (watcher) {

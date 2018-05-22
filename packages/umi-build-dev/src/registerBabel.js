@@ -2,7 +2,6 @@ import { join } from 'path';
 import isAbsolute from 'path-is-absolute';
 import registerBabel from 'af-webpack/registerBabel';
 import flatten from 'lodash.flatten';
-import { getEnv } from './UserConfig';
 import { CONFIG_FILES } from './constants';
 import winPath from './winPath';
 
@@ -10,10 +9,14 @@ let files = null;
 
 function initFiles() {
   if (files) return;
-  const env = getEnv();
+  const env = process.env.UMI_ENV;
   files = [
     ...flatten(
-      CONFIG_FILES.map(file => [file, file.replace(/\.js$/, `.${env}.js`)]),
+      CONFIG_FILES.map(file => [
+        file,
+        ...(env ? [file.replace(/\.js$/, `.${env}.js`)] : []),
+        file.replace(/\.js$/, `.local.js`),
+      ]),
     ),
     'webpack.config.js',
     '.webpackrc.js',
