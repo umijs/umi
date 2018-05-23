@@ -23,6 +23,11 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     route.component = resolveComponent(pagesPath, route.component);
   }
 
+  // path patch must be before bigfish patch
+  if (route.path && route.path.charAt(0) !== '/') {
+    route.path = join(parentRoutePath, route.path);
+  }
+
   // TODO: move this to bigfish
   // Compatible with bigfish
   if (route.childRoutes) {
@@ -52,9 +57,6 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     delete route.indexRoute;
   }
 
-  if (route.path && route.path.charAt(0) !== '/') {
-    route.path = join(parentRoutePath, route.path);
-  }
   if (route.redirect && route.redirect.charAt(0) !== '/') {
     route.redirect = join(parentRoutePath, route.redirect);
   }
