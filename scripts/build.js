@@ -44,6 +44,7 @@ const BROWSER_FILES = [
   'packages/umi/src/withRouter.js',
   'packages/umi/src/utils.js',
   'packages/umi-build-dev/src/plugins/404/NotFound.js',
+  'packages/umi-build-dev/src/utils/guessJSFileFromPath.js',
   'packages/umi-build-dev/src/Compiling.js',
   'packages/umi-build-dev/src/DefaultLayout.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
