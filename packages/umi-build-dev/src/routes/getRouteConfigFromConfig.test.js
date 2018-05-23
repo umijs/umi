@@ -111,7 +111,7 @@ describe('getRoutesConfigFromConfig', () => {
   it('bigfish compatibility', () => {
     const routes = getRoute([
       { path: '/a', indexRoute: { component: 'A' } },
-      { path: '/b', indexRoute: { redirect: 'B' } },
+      { path: '/b', indexRoute: { redirect: '/a' } },
       { path: '/c', childRoutes: [] },
     ]);
     expect(routes).toEqual([
@@ -119,7 +119,10 @@ describe('getRoutesConfigFromConfig', () => {
         path: '/a',
         routes: [{ path: '/a', component: './src/pages/A', exact: true }],
       },
-      { path: '/b', redirect: '/B', exact: true },
+      {
+        path: '/b',
+        routes: [{ path: '/b', exact: true, redirect: '/a' }],
+      },
       { path: '/c', routes: [] },
     ]);
   });

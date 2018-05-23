@@ -31,7 +31,13 @@ function patchRoute(route, pagesPath, parentRoutePath) {
   }
   if (route.indexRoute) {
     if (route.indexRoute.redirect) {
-      route.redirect = route.indexRoute.redirect;
+      if (!route.routes) {
+        route.routes = [];
+      }
+      route.routes.unshift({
+        path: route.path,
+        redirect: route.indexRoute.redirect,
+      });
     }
     if (route.indexRoute.component) {
       if (!route.routes) {
