@@ -112,7 +112,10 @@ describe('getRoutesConfigFromConfig', () => {
     const routes = getRoute([
       { path: '/a', indexRoute: { component: 'A' } },
       { path: '/b', indexRoute: { redirect: '/a' } },
-      { path: '/c', childRoutes: [] },
+      {
+        path: '/c',
+        childRoutes: [{ path: 'e', indexRoute: { component: 'A' } }],
+      },
     ]);
     expect(routes).toEqual([
       {
@@ -123,7 +126,15 @@ describe('getRoutesConfigFromConfig', () => {
         path: '/b',
         routes: [{ path: '/b', exact: true, redirect: '/a' }],
       },
-      { path: '/c', routes: [] },
+      {
+        path: '/c',
+        routes: [
+          {
+            path: '/c/e',
+            routes: [{ path: '/c/e', exact: true, component: './src/pages/A' }],
+          },
+        ],
+      },
     ]);
   });
 });
