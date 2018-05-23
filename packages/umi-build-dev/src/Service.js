@@ -32,7 +32,6 @@ export default class Service {
       babel,
       entryJSTpl,
       routerTpl,
-      hash,
       preact,
       extraResolveModules,
       libraryAlias = {},
@@ -48,7 +47,6 @@ export default class Service {
     this.babel = babel;
     this.entryJSTpl = entryJSTpl;
     this.routerTpl = routerTpl;
-    this.hash = hash;
     this.preact = preact;
     this.extraResolveModules = extraResolveModules;
     this.libraryAlias = libraryAlias;
