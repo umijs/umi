@@ -30,7 +30,7 @@ export default function(api, opts = {}) {
     });
   }
   api.register('modifyEntryFile', ({ memo }) => {
-    memo = `import 'umi-plugin-polyfills/lib/global.js';\r\n${extendFile}${memo}`;
+    memo = `import 'umi-plugin-polyfill/lib/global.js';\r\n${extendFile}${memo}`;
     return memo;
   });
 }
