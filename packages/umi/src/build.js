@@ -6,7 +6,6 @@ export default function(opts = {}) {
   return require('umi-build-dev/lib/build').default(
     buildDevOpts({
       ...opts,
-      hash: true,
     }),
   );
 }
