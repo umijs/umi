@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-polyfill",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "@babel/polyfill": "7.0.0-beta.46",
-    "setprototypeof": "1.1.0",
-    "assert": "1.4.1"
+    "assert": "1.4.1",
+    "setprototypeof": "1.1.0"
   }
 }
