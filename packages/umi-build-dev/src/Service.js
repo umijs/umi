@@ -224,7 +224,12 @@ export default class Service {
       console.error(chalk.red(e.message));
       process.exit(1);
     }
-    this.config = config;
+    this.config = new Proxy(config, {
+      set: (target, name, value) => {
+        target[name] = value;
+        this.config[name] = value;
+      },
+    });
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
     this.plugins.forEach(({ id, apply, opts }) => {
       try {
