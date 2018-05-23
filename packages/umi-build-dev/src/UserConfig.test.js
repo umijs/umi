@@ -92,4 +92,12 @@ describe('UserConfig', () => {
       local: 1,
     });
   });
+
+  it('no config file', () => {
+    const config = UserConfig.getConfig({
+      cwd: join(base, 'empty'),
+      service,
+    });
+    expect(config).toEqual({});
+  });
 });
