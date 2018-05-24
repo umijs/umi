@@ -8,7 +8,7 @@ umi的兼容插件，主要是为了umi兼容ie而创建的，所以现在内置
 ```js
 export default {
   plugins: [
-    "umi-plugin-polyfills"
+    "umi-plugin-polyfill"
   ]
 };
 ```
@@ -16,7 +16,7 @@ export default {
 ```js
 export default {
   plugins: [
-    ["umi-plugin-polyfills",{
+    ["umi-plugin-polyfill",{
       extend:['model name']
     }]
   ]
