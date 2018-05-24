@@ -161,12 +161,12 @@ describe('routesToJSON', () => {
     ]);
   });
 
-  it('disable dyamic load if config.disableDynamicimport is set', () => {
+  it('disable dyamic load if config.disableDynamicImport is set', () => {
     const json = routesToJSON(
       [{ component: './pages/A' }],
       {
         ...service,
-        config: { disableDynamicimport: true },
+        config: { disableDynamicImport: true },
       },
       {},
       'production',
