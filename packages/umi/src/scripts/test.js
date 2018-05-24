@@ -1,13 +1,10 @@
 import test from '../test';
+import yParser from 'yargs-parser';
 
-const args = process.argv.slice(2);
-
-const watch = args.indexOf('-w') > -1 || args.indexOf('--watch') > -1;
-const coverage = args.indexOf('--coverage') > -1;
+const argv = yParser(process.argv.slice(2));
 
 test({
-  watch,
-  coverage,
+  argv,
 }).catch(e => {
   console.log(e);
   process.exit(1);

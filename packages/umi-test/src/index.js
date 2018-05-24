@@ -11,8 +11,8 @@ function test(path) {
 }
 
 export default function(opts = {}) {
-  const { watch, coverage, libraryName = 'umi', cwd = process.cwd() } = opts;
-
+  const { argv, libraryName = 'umi', cwd = process.cwd() } = opts;
+  const { watch, coverage = false } = argv;
   const jestConfigFile = join(cwd, 'jest.config.js');
   let userJestConfig = {};
   if (existsSync(jestConfigFile)) {
@@ -69,7 +69,7 @@ export default function(opts = {}) {
     jestCli
       .runCLI(
         {
-          watch,
+          ...argv,
           testPathPattern: process.argv
             .slice(2)
             .filter(arg => !arg.startsWith('-')),
