@@ -46,7 +46,7 @@ export default (routes, service, requestedMap, env) => {
           let isCompiling = false;
           const compilingPath = winPath(paths.absCompilingComponentPath);
 
-          if (env === 'production' && !config.disabledynamicimport) {
+          if (env === 'production' && !config.disableDynamicimport) {
             // 按需加载
             ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
           } else {
