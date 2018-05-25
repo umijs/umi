@@ -17,6 +17,7 @@
     "ejs": "^2.5.7",
     "fastclick": "^1.0.6",
     "html-minifier": "^3.5.9",
+    "http-proxy-middleware": "^0.18.0",
     "is-plain-object": "^2.0.4",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
