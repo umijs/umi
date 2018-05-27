@@ -9,9 +9,9 @@ export default function renderRoutes(
   return routes ? (
     <Switch {...switchProps}>
       {routes.map((route, i) => {
-        const RouteComponent = route.Route || Route;
+        const RouteRoute = route.Route || Route;
         return (
-          <RouteComponent
+          <RouteRoute
             key={route.key || i}
             path={route.path}
             exact={route.exact}
@@ -20,17 +20,23 @@ export default function renderRoutes(
               if (route.redirect) {
                 return <Redirect to={route.redirect} />;
               }
-              return (
-                <route.component {...props} {...extraProps} route={route}>
-                  {renderRoutes(
-                    route.routes,
-                    {},
-                    {
-                      location: props.location,
-                    },
-                  )}
-                </route.component>
+              const childRoutes = renderRoutes(
+                route.routes,
+                {} /* extraProps */,
+                {
+                  /* switchProps */
+                  location: props.location,
+                },
               );
+              if (route.component) {
+                return (
+                  <route.component {...props} {...extraProps} route={route}>
+                    {childRoutes}
+                  </route.component>
+                );
+              } else {
+                return childRoutes;
+              }
             }}
           />
         );
