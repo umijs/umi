@@ -3,9 +3,9 @@ import * as React from 'react';
 declare class Link extends React.Component<{
   to: string | {
     pathname: string,
-    search: string,
-    hash: string,
-    state: any,
+    search?: string,
+    hash?: string,
+    state?: any,
   },
   replace?: boolean,
   innerRef?: Function,
