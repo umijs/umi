@@ -1,29 +1,17 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
+import winPath from 'slash';
+import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
 
-export function getModel(cwd, api) {
-  const { config } = api.service;
-  const { winPath } = api.utils;
+export function getModel(cwd, service) {
+  const { config } = service;
 
-  const modelJSPath = join(cwd, 'model.js');
-  if (existsSync(modelJSPath)) {
+  const modelJSPath = findJSFile(cwd, 'model');
+  if (modelJSPath) {
     return [winPath(modelJSPath)];
-  }
-  const modelJSXPath = join(cwd, 'model.jsx');
-  if (existsSync(modelJSXPath)) {
-    return [winPath(modelJSXPath)];
-  }
-  const modelTSPath = join(cwd, 'model.ts');
-  if (existsSync(modelTSPath)) {
-    return [winPath(modelTSPath)];
-  }
-
-  const modelTSXPath = join(cwd, 'model.tsx');
-  if (existsSync(modelTSXPath)) {
-    return [winPath(modelTSXPath)];
   }
 
   return globby
@@ -41,71 +29,72 @@ export function getModel(cwd, api) {
     .map(p => winPath(join(cwd, p)));
 }
 
+function getModelsWithRoutes(routes, service) {
+  const { paths } = service;
+  return routes.reduce((memo, route) => {
+    if (route.component) {
+      return [
+        ...memo,
+        ...getPageModels(join(paths.cwd, route.component), service),
+        ...(route.routes ? getModelsWithRoutes(route.routes, service) : []),
+      ];
+    } else {
+      return memo;
+    }
+  }, []);
+}
+
+function getPageModels(cwd, service) {
+  let models = [];
+  while (
+    !isPagesPath(cwd, service) &&
+    !isSrcPath(cwd, service) &&
+    !isRoot(cwd)
+  ) {
+    models = models.concat(getModel(cwd, service));
+    cwd = dirname(cwd);
+  }
+  return models;
+}
+
+function isPagesPath(path, service) {
+  const { paths } = service;
+  return (
+    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
+  );
+}
+
+function isSrcPath(path, service) {
+  const { paths } = service;
+  return (
+    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
+  );
+}
+
+export function getGlobalModels(service, shouldImportDynamic) {
+  const { paths, routes } = service;
+  let models = getModel(paths.absSrcPath, service);
+  if (!shouldImportDynamic) {
+    // 不做按需加载时，还需要额外载入 page 路由的 models 文件
+    models = [...models, ...getModelsWithRoutes(routes, service)];
+    // 去重
+    models = uniq(models);
+  }
+  return models;
+}
+
 export default function(api, opts = {}) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
   const { paths, config } = api.service;
-  const { winPath } = api.utils;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && !config.disableDynamicImport;
 
   function getDvaJS() {
-    if (existsSync(join(paths.absSrcPath, 'dva.js'))) {
-      return winPath(join(paths.absSrcPath, 'dva.js'));
+    const dvaJS = findJSFile(paths.absSrcPath, 'dva');
+    if (dvaJS) {
+      return winPath(dvaJS);
     }
-    if (existsSync(join(paths.absSrcPath, 'dva.ts'))) {
-      return winPath(join(paths.absSrcPath, 'dva.ts'));
-    }
-  }
-
-  function endWithSlash(path) {
-    return path.slice(-1) !== '/' ? `${path}/` : path;
-  }
-
-  function isPagesPath(path) {
-    return (
-      endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
-    );
-  }
-
-  function isSrcPath(path) {
-    return (
-      endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
-    );
-  }
-
-  function getModelsWithRoutes(routes) {
-    return routes.reduce((memo, route) => {
-      if (route.component) {
-        return [
-          ...memo,
-          ...getPageModels(join(paths.cwd, route.component)),
-          ...(route.routes ? getModelsWithRoutes(route.routes) : []),
-        ];
-      } else {
-        return memo;
-      }
-    }, []);
-  }
-
-  function getGlobalModels() {
-    let models = getModel(paths.absSrcPath, api);
-    if (!shouldImportDynamic) {
-      // dev 模式下还需要额外载入 page 路由的 models 文件
-      models = [...models, ...getModelsWithRoutes(api.service.routes)];
-      // 去重
-      models = uniq(models);
-    }
-    return models;
-  }
-
-  function getPageModels(cwd) {
-    let models = [];
-    while (!isPagesPath(cwd) && !isSrcPath(cwd) && !isRoot(cwd)) {
-      models = models.concat(getModel(cwd, api));
-      cwd = dirname(cwd);
-    }
-    return models;
   }
 
   function getModelName(model) {
@@ -127,17 +116,11 @@ export default function(api, opts = {}) {
     });
   }
 
-  function optsToArray(item) {
-    if (!item) return [];
-    if (Array.isArray(item)) {
-      return item;
-    } else {
-      return [item];
-    }
-  }
-
   function getGlobalModelContent() {
-    return exclude(getGlobalModels(), optsToArray(opts.exclude))
+    return exclude(
+      getGlobalModels(api.service, shouldImportDynamic),
+      optsToArray(opts.exclude),
+    )
       .map(path =>
         `
     app.model({ ...(require('${path}').default) });
@@ -163,20 +146,6 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       );
     }
     return ret.join('\r\n');
-  }
-
-  function stripFirstSlash(path) {
-    if (path.charAt(0) === '/') {
-      return path.slice(1);
-    } else {
-      return path;
-    }
-  }
-
-  function chunkName(path) {
-    return stripFirstSlash(
-      winPath(path).replace(winPath(paths.cwd), ''),
-    ).replace(/\//g, '__');
   }
 
   api.register('generateFiles', () => {
@@ -235,7 +204,10 @@ _dvaDynamic({
   component: () => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'),
 })
       `.trim();
-      const models = getPageModels(join(paths.absTmpDirPath, pageJSFile));
+      const models = getPageModels(
+        join(paths.absTmpDirPath, pageJSFile),
+        api.service,
+      );
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',
@@ -245,7 +217,10 @@ models: () => [
   ${models
     .map(
       model =>
-        `import(/* webpackChunkName: '${chunkName(model)}' */'${model}')`,
+        `import(/* webpackChunkName: '${chunkName(
+          paths.cwd,
+          model,
+        )}' */'${model}')`,
     )
     .join(',\r\n  ')}
 ],
@@ -302,7 +277,9 @@ ${dvaRender}
       join(paths.absSrcPath, 'model.ts'),
       join(paths.absSrcPath, 'model.tsx'),
       join(paths.absSrcPath, 'dva.js'),
+      join(paths.absSrcPath, 'dva.jsx'),
       join(paths.absSrcPath, 'dva.ts'),
+      join(paths.absSrcPath, 'dva.tsx'),
     ];
   });
 }

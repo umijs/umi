@@ -1,8 +1,9 @@
 import { join } from 'path';
-import dvaPlugin, { getModel } from './index';
+import dvaPlugin, { getGlobalModels, getModel } from './index';
 
 const RENDER = 'testrender';
-const base = join(__dirname, 'fixtures', 'getModel');
+const fixtures = join(__dirname, 'fixtures');
+const base = join(fixtures, 'getModel');
 
 const api = {
   service: {
@@ -13,11 +14,7 @@ const api = {
       absTmpDirPath: base,
     },
   },
-  utils: {
-    winPath(p) {
-      return p;
-    },
-  },
+  utils: {},
   placeholder: {
     RENDER,
   },
@@ -30,13 +27,13 @@ function normalizeModels(models, base) {
 describe('umi-plugin-dva', () => {
   it('getModel with model.js', () => {
     const dir = join(base, 'model');
-    const models = normalizeModels(getModel(dir, api), dir);
+    const models = normalizeModels(getModel(dir, api.service), dir);
     expect(models).toEqual(['$CWD$/model.js']);
   });
 
   it('getModel with models directory', () => {
     const dir = join(base, 'models');
-    const models = normalizeModels(getModel(dir, api), dir);
+    const models = normalizeModels(getModel(dir, api.service), dir);
     expect(models).toEqual([
       '$CWD$/models/a.js',
       '$CWD$/models/a.jsx',
@@ -49,8 +46,8 @@ describe('umi-plugin-dva', () => {
     const dir = join(base, 'models-with-singular');
     const models = normalizeModels(
       getModel(dir, {
-        ...api,
-        service: { config: { singular: true } },
+        ...api.service,
+        config: { singular: true },
       }),
       dir,
     );
@@ -59,18 +56,18 @@ describe('umi-plugin-dva', () => {
 
   it('getModel ignore d.ts', () => {
     const dir = join(base, 'ignore-d-ts');
-    const models = normalizeModels(getModel(dir, api), dir);
+    const models = normalizeModels(getModel(dir, api.service), dir);
     expect(models).toEqual(['$CWD$/models/a.ts']);
   });
 
   it('getModel ignore test files', () => {
     const dir = join(base, 'ignore-test-files');
-    const models = normalizeModels(getModel(dir, api), dir);
+    const models = normalizeModels(getModel(dir, api.service), dir);
     expect(models).toEqual(['$CWD$/models/a.ts']);
   });
 
   it('apply modifyDvaRender', () => {
-    api.service.applyPlugins = (name, params) => {
+    api.service.applyPlugins = name => {
       if (name === 'modifyDvaRender') {
         return 'new dva render';
       }
@@ -84,5 +81,94 @@ describe('umi-plugin-dva', () => {
       }
     };
     dvaPlugin(api);
+  });
+
+  it('getGlobalModels with shouldImportDynamic=true', () => {
+    const absSrcPath = join(fixtures, 'normal');
+    const models = getGlobalModels(
+      {
+        paths: {
+          absSrcPath,
+        },
+        config: {},
+      },
+      /* shouldImportDynamic */ true,
+    );
+    expect(normalizeModels(models, absSrcPath)).toEqual([
+      '$CWD$/models/global.js',
+    ]);
+  });
+
+  it('getGlobalModels with shouldImportDynamic=false', () => {
+    const cwd = join(fixtures, 'normal');
+    const service = {
+      paths: {
+        absSrcPath: cwd,
+        cwd,
+        absPagesPath: join(cwd, 'pages'),
+      },
+      config: {},
+      routes: [
+        { path: '/', component: './pages/index.js' },
+        { path: '/c', component: './pages/c/index.js' },
+      ],
+    };
+    let models = null;
+
+    models = getGlobalModels(
+      {
+        ...service,
+        routes: [{ path: '/', component: './pages/index.js' }],
+      },
+      /* shouldImportDynamic */ false,
+    );
+    expect(normalizeModels(models, cwd)).toEqual(['$CWD$/models/global.js']);
+
+    // don't crash if have no component property
+    models = getGlobalModels(
+      {
+        ...service,
+        routes: [{ path: '/' }],
+      },
+      /* shouldImportDynamic */ false,
+    );
+    expect(normalizeModels(models, cwd)).toEqual(['$CWD$/models/global.js']);
+
+    models = getGlobalModels(
+      {
+        ...service,
+        routes: [{ path: '/b', component: './pages/b/index.js' }],
+      },
+      /* shouldImportDynamic */ false,
+    );
+    expect(normalizeModels(models, cwd)).toEqual([
+      '$CWD$/models/global.js',
+      '$CWD$/pages/b/models/b.js',
+    ]);
+
+    models = getGlobalModels(
+      {
+        ...service,
+        routes: [{ path: '/c', component: './pages/c/index.js' }],
+      },
+      /* shouldImportDynamic */ false,
+    );
+    expect(normalizeModels(models, cwd)).toEqual([
+      '$CWD$/models/global.js',
+      '$CWD$/pages/c/models/c.js',
+    ]);
+
+    models = getGlobalModels(
+      {
+        ...service,
+        routes: [{ path: '/d', component: './pages/c/d/index.js' }],
+      },
+      /* shouldImportDynamic */ false,
+    );
+    expect(normalizeModels(models, cwd)).toEqual([
+      '$CWD$/models/global.js',
+      '$CWD$/pages/c/d/models/d.js',
+      '$CWD$/pages/c/models/c.js',
+    ]);
   });
 });
