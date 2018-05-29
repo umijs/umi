@@ -287,6 +287,27 @@ export default function getConfig(opts = {}) {
       options: babelOptions,
     },
   ];
+  const babelOptionsDeps = {
+    presets: [
+      [
+        require.resolve('babel-preset-umi'),
+        {
+          disableTransform: true,
+        },
+      ],
+    ],
+    cacheDirectory: process.env.BABEL_CACHE !== 'none',
+    babelrc: !!process.env.BABELRC,
+  };
+  const babelUseDeps = [
+    {
+      loader: require('path').join(__dirname, 'debugLoader.js'), // eslint-disable-line
+    },
+    {
+      loader: require.resolve('babel-loader'),
+      options: babelOptionsDeps,
+    },
+  ];
 
   const eslintOptions = {
     formatter: eslintFormatter,
@@ -467,7 +488,7 @@ export default function getConfig(opts = {}) {
             test: /\.(js|jsx)$/,
             include:
               typeof include === 'string' ? join(opts.cwd, include) : include,
-            use: babelUse,
+            use: babelUseDeps,
           };
         }),
         {
