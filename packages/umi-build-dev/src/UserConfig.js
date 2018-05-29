@@ -201,9 +201,7 @@ class UserConfig {
         if (opts.setConfig) {
           opts.setConfig(config);
         }
-        const affixmsg = `选择 "${pluginNames.join(
-          ', ',
-        )}" 中的一项，详见 https://fengdie.alipay-eco.com/doc/h5app/configuration`;
+        const affixmsg = `选择 "${pluginNames.join(', ')}" 中的一项`;
         const guess = didyoumean(key, pluginNames);
         const midMsg = guess ? `你是不是想配置 "${guess}" ？ 或者` : '请';
         const msg = `"${relativeFile}" 中配置的 "${key}" 并非约定的配置项，${midMsg}${affixmsg}`;
