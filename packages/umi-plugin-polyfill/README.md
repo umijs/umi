@@ -2,13 +2,15 @@
 
 umi的兼容插件，主要是为了umi兼容ie而创建的，所以现在内置了babel/polyfill和setprototypeof和window.NodeList，处理在ie下的兼容，但考虑到后续的扩展和可能存在的其他兼容问题，增加了extend配置。
 
+经测试，在IE9下能语法兼容。
+测试发现一个问题：ie9 antd 中的输入框无法输入（antd的iss里面已经有人提了）
 
 在.umirc.js用法：
 简单用法：
 ```js
 export default {
   plugins: [
-    "umi-plugin-polyfills"
+    "umi-plugin-polyfill"
   ]
 };
 ```
@@ -16,7 +18,7 @@ export default {
 ```js
 export default {
   plugins: [
-    ["umi-plugin-polyfills",{
+    ["umi-plugin-polyfill",{
       extend:['model name']
     }]
   ]
