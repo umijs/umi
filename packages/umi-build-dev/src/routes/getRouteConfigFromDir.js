@@ -96,7 +96,7 @@ Routes conflict:
     addRoute(memo, {
       path,
       exact: true,
-      component: `./${relative(cwd, absFilePath)}`,
+      component: `./${winPath(relative(cwd, absFilePath))}`,
     });
   }
 
