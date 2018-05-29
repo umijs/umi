@@ -11,7 +11,7 @@ import choosePort from './choosePort';
 const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
-const PROTOCOL = 'http';
+const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
 const noop = () => {};
 
 process.env.NODE_ENV = 'development';
