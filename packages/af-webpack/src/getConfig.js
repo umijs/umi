@@ -322,7 +322,7 @@ export default function getConfig(opts = {}) {
   // 用用户的 eslint
   try {
     const { dependencies, devDependencies } = require(resolve('package.json')); // eslint-disable-line
-    if (dependencies.eslint || devDependencies) {
+    if (dependencies.eslint || devDependencies.eslint) {
       const eslintPath = resolveSync('eslint', {
         basedir: opts.cwd,
       });
