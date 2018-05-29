@@ -55,6 +55,7 @@ switch (aliasedScript) {
   case 'build':
   case 'dev':
   case 'generate':
+  case 'new':
     runScript(aliasedScript, args, /* isFork */true);
     break;
   case 'help':  
