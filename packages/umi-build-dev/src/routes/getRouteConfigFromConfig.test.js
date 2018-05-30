@@ -109,6 +109,7 @@ describe('getRoutesConfigFromConfig', () => {
   });
 
   it('bigfish compatibility', () => {
+    process.env.BIGFISH_COMPAT = true;
     const routes = getRoute([
       { path: '/a', indexRoute: { component: 'A' } },
       { path: '/b', indexRoute: { redirect: '/a' } },
@@ -136,5 +137,6 @@ describe('getRoutesConfigFromConfig', () => {
         ],
       },
     ]);
+    process.env.BIGFISH_COMPAT = false;
   });
 });

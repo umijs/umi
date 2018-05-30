@@ -29,8 +29,24 @@ export default function renderRoutes(
                 },
               );
               if (route.component) {
+                const compatProps = {};
+                if (process.env.BIGFISH_COMPAT) {
+                  if (
+                    props.match &&
+                    props.match.params &&
+                    !props.params &&
+                    !extraProps.params
+                  ) {
+                    compatProps.params = props.match.params;
+                  }
+                }
                 return (
-                  <route.component {...props} {...extraProps} route={route}>
+                  <route.component
+                    {...props}
+                    {...extraProps}
+                    {...compatProps}
+                    route={route}
+                  >
                     {childRoutes}
                   </route.component>
                 );
