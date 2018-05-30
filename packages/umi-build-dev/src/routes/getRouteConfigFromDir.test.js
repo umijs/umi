@@ -92,6 +92,22 @@ describe('getRouteConfigFromDir', () => {
     ]);
   });
 
+  it('index layout order', () => {
+    const routes = getRoute({
+      cwd: join(__dirname, 'fixtures', 'index-layout-order'),
+      absPagesPath: join(__dirname, 'fixtures', 'index-layout-order'),
+    });
+    expect(routes).toEqual([
+      { path: '/list', exact: true, component: './list.js' },
+      {
+        path: '/',
+        exact: false,
+        component: './index/_layout.js',
+        routes: [{ path: '/', exact: true, component: './index/index.js' }],
+      },
+    ]);
+  });
+
   it('layout', () => {
     const routes = getRoute({
       cwd: join(__dirname, 'fixtures', 'layout'),

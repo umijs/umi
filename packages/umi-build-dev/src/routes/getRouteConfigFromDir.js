@@ -22,7 +22,16 @@ export default function getRouteConfigFromDir(paths) {
       return true;
     })
     .sort(a => (a.charAt(0) === '$' ? 1 : -1))
-    .reduce(handleFile.bind(null, paths, absPath), []);
+    .reduce(handleFile.bind(null, paths, absPath), [])
+    .sort((a, b) => {
+      if (a.isParamsRoute !== b.isParamsRoute) return a.isParamsRoute ? 1 : -1;
+      if (a.exact !== b.exact) return !a.exact ? 1 : -1;
+      return 0;
+    })
+    .map(a => {
+      delete a.isParamsRoute;
+      return a;
+    });
 
   if (dirPath === '' && absSrcPath) {
     const globalLayoutFile =
@@ -46,6 +55,7 @@ function handleFile(paths, absPath, memo, file) {
   const { cwd, absPagesPath, dirPath = '' } = paths;
   const absFilePath = join(absPath, file);
   const stats = statSync(absFilePath);
+  const isParamsRoute = file.charAt(0) === '$';
 
   if (stats.isDirectory()) {
     const newDirPath = join(dirPath, file);
@@ -68,6 +78,7 @@ Routes conflict:
         path: normalizePath(newDirPath),
         exact: true,
         component: `./${relative(cwd, absPageFile)}`,
+        isParamsRoute,
       });
     } else {
       // routes & _layout
@@ -85,6 +96,7 @@ Routes conflict:
           exact: false,
           component: `./${relative(cwd, absLayoutFile)}`,
           routes,
+          isParamsRoute,
         });
       } else {
         memo = memo.concat(routes);
@@ -97,6 +109,7 @@ Routes conflict:
       path,
       exact: true,
       component: `./${relative(cwd, absFilePath)}`,
+      isParamsRoute,
     });
   }
 
