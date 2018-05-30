@@ -28,33 +28,34 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     route.path = join(parentRoutePath, route.path);
   }
 
-  // TODO: move this to bigfish
   // Compatible with bigfish
-  if (route.childRoutes) {
-    route.routes = route.childRoutes;
-    delete route.childRoutes;
-  }
-  if (route.indexRoute) {
-    if (route.indexRoute.redirect) {
-      if (!route.routes) {
-        route.routes = [];
-      }
-      route.routes.unshift({
-        path: route.path,
-        redirect: route.indexRoute.redirect,
-      });
+  if (process.env.BIGFISH_COMPAT) {
+    if (route.childRoutes) {
+      route.routes = route.childRoutes;
+      delete route.childRoutes;
     }
-    if (route.indexRoute.component) {
-      if (!route.routes) {
-        route.routes = [];
+    if (route.indexRoute) {
+      if (route.indexRoute.redirect) {
+        if (!route.routes) {
+          route.routes = [];
+        }
+        route.routes.unshift({
+          path: route.path,
+          redirect: route.indexRoute.redirect,
+        });
       }
-      route.routes.unshift({
-        path: route.path,
-        exact: true,
-        component: route.indexRoute.component,
-      });
+      if (route.indexRoute.component) {
+        if (!route.routes) {
+          route.routes = [];
+        }
+        route.routes.unshift({
+          path: route.path,
+          exact: true,
+          component: route.indexRoute.component,
+        });
+      }
+      delete route.indexRoute;
     }
-    delete route.indexRoute;
   }
 
   if (route.redirect && route.redirect.charAt(0) !== '/') {
