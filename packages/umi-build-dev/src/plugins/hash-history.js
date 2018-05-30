@@ -1,6 +1,5 @@
 export default function(api) {
   const { IMPORT, HISTORY_MODIFIER } = api.placeholder;
-  const { config } = api.service;
 
   api.register('modifyConfigPlugins', ({ memo }) => {
     memo.push(api => {
@@ -14,8 +13,9 @@ export default function(api) {
     return memo;
   });
 
-  if (config.hashHistory) {
-    api.register('modifyEntryFile', ({ memo }) => {
+  api.register('modifyEntryFile', ({ memo }) => {
+    const { config } = api.service;
+    if (config.hashHistory) {
       return memo
         .replace(
           IMPORT,
@@ -31,6 +31,8 @@ window.g_history = createHashHistory();
 ${HISTORY_MODIFIER}
         `.trim(),
         );
-    });
-  }
+    } else {
+      return memo;
+    }
+  });
 }
