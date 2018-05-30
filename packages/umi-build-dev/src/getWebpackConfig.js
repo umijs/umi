@@ -139,6 +139,7 @@ export default function(service = {}) {
     define: {
       // For registerServiceWorker.js
       'process.env.BASE_URL': process.env.BASE_URL,
+      'process.env.BIGFISH_COMPAT': process.env.BIGFISH_COMPAT,
       __UMI_HTML_SUFFIX: !!(
         config.exportStatic &&
         typeof config.exportStatic === 'object' &&
