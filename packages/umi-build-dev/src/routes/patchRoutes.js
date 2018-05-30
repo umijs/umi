@@ -81,7 +81,7 @@ function patchRoute(route, config, isProduction) {
 function addHtmlSuffix(path, hasRoutes) {
   if (path === '/') return path;
   if (hasRoutes) {
-    return path;
+    return path.endsWith('/') ? path : `${path}(.html)?`;
   } else {
     return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
   }

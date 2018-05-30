@@ -221,6 +221,32 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([{ component: '() => A', path: '/a' }]);
   });
 
+  it('path with htmlSuffix', () => {
+    const json = routesToJSON(
+      [
+        { component: './pages/A', path: '/a(.html)?' },
+        { component: './pages/B', path: '/b' },
+      ],
+      {
+        ...service,
+        config: { exportStatic: { htmlSuffix: true } },
+      },
+      {},
+    );
+    expect(JSON.parse(json)).toEqual([
+      {
+        component:
+          "() => React.createElement(require('$COMPILING$').default, { route: '/a' })",
+        path: '/a(.html)?',
+      },
+      {
+        component:
+          "() => React.createElement(require('$COMPILING$').default, { route: '/b' })",
+        path: '/b',
+      },
+    ]);
+  });
+
   it('applyPlugins', () => {
     let applyPluginName = null;
     let applyPluginOpts = null;
