@@ -177,6 +177,10 @@ class UserConfig {
       ...(isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {}),
     });
 
+    config = this.service.applyPlugins('modifyConfig', {
+      initialValue: config,
+    });
+
     // Validate
     for (const plugin of this.plugins) {
       const { name, validate } = plugin;
