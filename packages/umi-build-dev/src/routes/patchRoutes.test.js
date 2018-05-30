@@ -24,7 +24,7 @@ describe('patchRoutes', () => {
     }).toThrowError(/you should not use exportStatic with dynamic route/);
   });
 
-  it('exportStatic with htmlSuffix', () => {
+  it('exportStatic without htmlSuffix', () => {
     const routes = patchRoutes([{ path: '/a' }], {
       exportStatic: {},
     });
@@ -49,7 +49,7 @@ describe('patchRoutes', () => {
       { path: '/a.html' },
       { path: '/b.html' },
       {
-        path: '/c',
+        path: '/c(.html)?',
         routes: [{ path: '/c/d.html' }, { path: '/c/e.html' }],
       },
     ]);

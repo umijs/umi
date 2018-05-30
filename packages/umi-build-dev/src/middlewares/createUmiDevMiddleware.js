@@ -4,6 +4,7 @@ import { setRequest } from '../requestCache';
 const COMPILING_PREFIX = '/__umi_dev/compiling';
 
 export default function createUmiDevMiddleware(service, opts = {}) {
+  const { config } = service;
   return (req, res, next) => {
     const { path } = req;
 
@@ -16,7 +17,11 @@ export default function createUmiDevMiddleware(service, opts = {}) {
 
     if (matchedRoutes && matchedRoutes.length) {
       matchedRoutes.forEach(({ route }) => {
-        if (route.path) setRequest(route.path);
+        let newPath = null;
+        if (config.exportStatic && config.exportStatic.htmlSuffix) {
+          newPath = route.path.replace('(.html)?', '');
+        }
+        if (route.path) setRequest(newPath || route.path);
       });
       opts.rebuildEntry();
     }

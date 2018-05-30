@@ -62,7 +62,12 @@ export default (routes, service, requestedMap, env) => {
               ret = `require('${importPath}').default`;
             } else {
               isCompiling = true;
-              ret = `() => React.createElement(require('${compilingPath}').default, { route: '${path}' })`;
+              let newPath = null;
+              if (config.exportStatic && config.exportStatic.htmlSuffix) {
+                newPath = path.replace('(.html)?', '');
+              }
+              ret = `() => React.createElement(require('${compilingPath}').default, { route: '${newPath ||
+                path}' })`;
             }
           }
 
