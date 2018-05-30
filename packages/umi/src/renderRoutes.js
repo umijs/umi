@@ -9,6 +9,17 @@ export default function renderRoutes(
   return routes ? (
     <Switch {...switchProps}>
       {routes.map((route, i) => {
+        if (route.redirect) {
+          return (
+            <Redirect
+              key={route.key || i}
+              from={route.path}
+              to={route.redirect}
+              exact={route.exact}
+              strict={route.strict}
+            />
+          );
+        }
         const RouteRoute = route.Route || Route;
         return (
           <RouteRoute
@@ -17,9 +28,6 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             render={props => {
-              if (route.redirect) {
-                return <Redirect to={route.redirect} />;
-              }
               const childRoutes = renderRoutes(
                 route.routes,
                 {} /* extraProps */,
