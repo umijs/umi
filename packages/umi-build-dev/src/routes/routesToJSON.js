@@ -56,6 +56,7 @@ export default (routes, service, requestedMap, env) => {
               // 无 socket 时按需编译体验很差，所以禁用
               process.env.SOCKET_SERVER === 'none' ||
               process.env.COMPILE_ON_DEMAND === 'none' ||
+              !process.env.COMPILE_ON_DEMAND ||
               !path ||
               requestedMap[path]
             ) {
