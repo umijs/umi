@@ -480,6 +480,7 @@ export default function getConfig(opts = {}) {
                 configFileName:
                   opts.tsConfigFile || join(opts.cwd, 'tsconfig.json'),
                 transpileOnly: true,
+                ...(opts.typescript || {}),
               },
             },
           ],
