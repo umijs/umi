@@ -1,5 +1,7 @@
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
 function optsToArray(item) {
   if (!item) return [];
@@ -60,6 +62,12 @@ export default function(api, opts) {
       memo = opts.update(memo);
     }
 
+    if (opts.outputJson) {
+      const { service } = api;
+      const { paths } = service;
+      const umiRouteFile = join(paths.cwd, 'public', 'UmiRoute.json');
+      writeFileSync(umiRouteFile, JSON.stringify(memo), 'utf-8');
+    }
     return memo;
   });
 }
