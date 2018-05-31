@@ -77,7 +77,7 @@ Routes conflict:
       addRoute(memo, {
         path: normalizePath(newDirPath),
         exact: true,
-        component: `./${relative(cwd, absPageFile)}`,
+        component: `./${winPath(relative(cwd, absPageFile))}`,
         isParamsRoute,
       });
     } else {
@@ -94,7 +94,7 @@ Routes conflict:
         addRoute(memo, {
           path: normalizePath(newDirPath),
           exact: false,
-          component: `./${relative(cwd, absLayoutFile)}`,
+          component: `./${winPath(relative(cwd, absLayoutFile))}`,
           routes,
           isParamsRoute,
         });
@@ -108,7 +108,7 @@ Routes conflict:
     addRoute(memo, {
       path,
       exact: true,
-      component: `./${relative(cwd, absFilePath)}`,
+      component: `./${winPath(relative(cwd, absFilePath))}`,
       isParamsRoute,
     });
   }
