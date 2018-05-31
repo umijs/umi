@@ -401,6 +401,7 @@ export default function getConfig(opts = {}) {
         ...opts.alias,
       },
       plugins:
+        process.env.TS_CONFIG_PATHS_PLUGIN &&
         process.env.TS_CONFIG_PATHS_PLUGIN !== 'none'
           ? [new TsConfigPathsPlugin()]
           : [],
@@ -508,9 +509,9 @@ export default function getConfig(opts = {}) {
             // Disable this plugin since it causes 100% cpu when have lost deps
             // new WatchMissingNodeModulesPlugin(join(opts.cwd, 'node_modules')),
             new SystemBellWebpackPlugin(),
-            ...(process.env.HARD_SOURCE === 'none'
-              ? []
-              : [new HardSourceWebpackPlugin()]),
+            ...(process.env.HARD_SOURCE && process.env.HARD_SOURCE !== 'none'
+              ? [new HardSourceWebpackPlugin()]
+              : []),
           ].concat(
             opts.devtool
               ? []
