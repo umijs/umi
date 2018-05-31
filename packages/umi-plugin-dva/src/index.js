@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, basename, extname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
@@ -123,7 +123,7 @@ export default function(api, opts = {}) {
     )
       .map(path =>
         `
-    app.model({ ...(require('${path}').default) });
+    app.model({ namespace: '${basename(path, extname(path))}', ...(require('${path}').default) });
   `.trim(),
       )
       .join('\r\n');
