@@ -258,6 +258,7 @@ export default function getConfig(opts = {}) {
           from: resolve(opts.cwd, 'public'),
           to: outputPath,
           toType: 'dir',
+          ignore: ['**.DS_Store'],
         },
       ]),
     );
