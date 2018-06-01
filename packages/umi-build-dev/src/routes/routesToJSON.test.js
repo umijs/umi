@@ -9,6 +9,8 @@ const service = {
   },
 };
 
+process.env.COMPILE_ON_DEMAND = true;
+
 describe('routesToJSON', () => {
   it('normal', () => {
     const json = routesToJSON([{ component: './pages/A' }], service, {});
