@@ -7,6 +7,7 @@ import getWebpackRCConfig, {
 } from 'af-webpack/getUserConfig';
 import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
+import assign from 'object-assign';
 import getPaths from './getPaths';
 import getRouteConfig from './routes/getRouteConfig';
 import registerBabel from './registerBabel';
@@ -81,6 +82,7 @@ export default class Service {
     const userConfig = new UserConfig(this);
     try {
       this.config = userConfig.getConfig({ force: true });
+      assign(this._initialConfig, this.config);
     } catch (e) {
       console.error(chalk.red(e.message));
       debug('Get config failed, watch config and reload');
