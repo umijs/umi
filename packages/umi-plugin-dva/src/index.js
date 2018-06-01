@@ -3,7 +3,7 @@ import { join, dirname, basename, extname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
-import winPath from 'slash';
+import winPath from 'slash2';
 import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
 
 export function getModel(cwd, service) {
@@ -123,7 +123,10 @@ export default function(api, opts = {}) {
     )
       .map(path =>
         `
-    app.model({ namespace: '${basename(path, extname(path))}', ...(require('${path}').default) });
+    app.model({ namespace: '${basename(
+      path,
+      extname(path),
+    )}', ...(require('${path}').default) });
   `.trim(),
       )
       .join('\r\n');
