@@ -224,6 +224,7 @@ export default class Service {
       console.error(chalk.red(e.message));
       process.exit(1);
     }
+    this._initialConfig = config;
     this.config = new Proxy(config, {
       set: (target, name, value) => {
         target[name] = value;
