@@ -252,9 +252,12 @@ class UserConfig {
 
         const oldConfig = clone(this.config);
         this.config = newConfig;
+
         for (const plugin of this.plugins) {
           const { name } = plugin;
           if (!isEqual(newConfig[name], oldConfig[name])) {
+            this.service._initialConfig[name] = newConfig[name];
+            this.service.config[name] = newConfig[name];
             if (plugin.onChange) {
               plugin.onChange(newConfig);
             }
