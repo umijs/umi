@@ -1,4 +1,4 @@
-import winPath from 'slash';
+import winPath from 'slash2';
 import { join } from 'path';
 import { existsSync } from 'fs';
 

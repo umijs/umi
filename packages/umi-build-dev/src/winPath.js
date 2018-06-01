@@ -1,6 +1,5 @@
-import slash from 'slash';
+import slash from 'slash2';
 
 export default function(path) {
-  const hasChinese = /[^\u4e00-\u9fa5]+/.test(path);
-  return hasChinese ? path.replace(/\\/g, '/') : slash(path);
+  return slash(path);
 }

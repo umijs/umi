@@ -7,7 +7,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync } = require('fs');
 const { join } = require('path');
 const chokidar = require('chokidar');
 const shell = require('shelljs');
-const slash = require('slash');
+const slash = require('slash2');
 
 const nodeBabelConfig = {
   presets: [
@@ -61,7 +61,7 @@ function isBrowserTransform(path) {
 
 function transform(opts = {}) {
   const { content, path } = opts;
-  const winPath=slash(path);
+  const winPath = slash(path);
   const isBrowser = isBrowserTransform(winPath);
   console.log(
     chalk[isBrowser ? 'yellow' : 'blue'](
