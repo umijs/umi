@@ -4,7 +4,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "dva": "^2.2.2",
-    "dva-immer": "^0.1.2",
+    "dva-immer": "^0.2.0",
     "dva-loading": "^2.0.0",
     "globby": "^7.1.1",
     "lodash.uniq": "^4.5.0",
