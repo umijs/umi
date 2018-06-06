@@ -40,9 +40,10 @@
     "prettier": "^1.8.1",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.1",
+    "slash2": "^2.0.0",
     "through2": "^2.0.3",
     "umi-test": "^0.5.3",
     "vinyl-fs": "^3.0.2",
-    "slash2": "^2.0.0"
+    "vuepress": "^0.10.0"
   }
 }

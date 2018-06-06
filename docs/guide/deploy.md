@@ -1,7 +1,4 @@
----
-id: deploy
-title: 部署
----
+# 部署
 
 umi build 后会生成 dist 目录，这个目录可直接用于部署。
 

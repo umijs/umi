@@ -1,7 +1,6 @@
----
-id: env-variables
-title: 环境变量
----
+# 环境变量
+
+[[toc]]
 
 ## 如何配置
 
@@ -31,6 +30,14 @@ $ PORT=8001 umi dev
 ### HOST
 
 默认是 `0.0.0.0`。
+
+### APP_ROOT
+
+指定项目根目录。比如：
+
+```bash
+$ APP_ROOT=src/renderer umi dev
+```
 
 ### PUBLIC_PATH
 

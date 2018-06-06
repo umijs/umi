@@ -1,23 +1,20 @@
----
-id: getting-started
-title: 快速上手
----
+# 快速上手
 
 ## 安装
 
-用 `npm` 安装 umi ：
-
-```bash
-$ npm i umi -g
-```
-
-或者用 `yarn` ：
+用 `yarn` 安装 umi ：
 
 ```bash
 $ yarn global add umi
 ```
 
-然后可以 `umi -v` 检查版本号。
+或者用 `npm` ：
+
+```bash
+$ npm install -g umi
+```
+
+用 `umi -v` 检查版本号。
 
 ```bash
 $ umi -v
@@ -26,13 +23,30 @@ umi@1.0.0
 
 ## 创建应用
 
-> umi 暂时没有提供脚手架，之后可能会添加。
+::: warning
+umi 暂时没有提供脚手架，之后会添加。
+:::
 
 创建应用并进入。
 
 ```bash
 $ mkdir myapp
 $ cd myapp
+```
+
+## 创建第一个页面
+
+创建 `pages` 目录并新建一个页面。
+
+```bash
+$ mkdir pages
+$ echo 'export default () => <div>Index Page</div>' > pages/index.js
+```
+
+如果你是 Window 系统，可以手动新建 `pages/index.js`，并填入：
+
+```js
+export default () => <div>Index Page</div>;
 ```
 
 ## 启动 dev 服务器
@@ -48,20 +62,6 @@ You can now view Your App in the browser.
 
 Note that the development build is not optimized.
 To create a production build, use npm run build.
-```
-
-## 创建第一个页面
-
-在 `pages` 目录里新建首页。
-
-```bash
-$ echo 'export default () => <div>Index Page</div>' > pages/index.js
-```
-
-如果你是 Window 系统，可以手动新建 `pages/index.js`，并填入：
-
-```js
-export default () => <div>Index Page</div>;
 ```
 
 然后在浏览器中打开 [http://localhost:8000/](http://localhost:8000/)，你会看到 `Index Page` 。

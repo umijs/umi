@@ -1,20 +1,11 @@
 ---
-id: api
-title: API
+sidebarDepth: 2
 ---
 
-## 索引
+# API
 
-* [umi/link](#umi-link)
-* [umi/router](#umi-router)
-* [umi/navlink](#umi-navlink)
-* [umi/redirect](#umi-redirect)
-* [umi/withRouter](#umi-withRouter)
-* [umi/dynamic](#umi-dynamic)
-* [umi/babel](#umi-babel)
+## 路由
 
-
-## API 列表
 ### umi/link
 通过声明的方式做路由跳转。
 
@@ -81,6 +72,7 @@ router.go(2);
 ```
 
 #### router.goBack()
+
 后退一页。
 
 例子：
@@ -111,7 +103,10 @@ import Redirect from 'umi/redirect';
 
 详见：https://reacttraining.com/react-router/web/api/withRouter
 
+## 性能
+
 ### umi/dynamic
+
 动态加载组件。
 
 #### dynamic(resolve)
@@ -149,6 +144,8 @@ dynamic(async function() {}, {
 })
 ```
 
-### umi/babel
-让用户可基于 umi 的 babel 配置进行扩展。
+## 构建
 
+### umi/babel
+
+让用户可基于 umi 的 babel 配置进行扩展。

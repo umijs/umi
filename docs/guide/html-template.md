@@ -1,7 +1,4 @@
----
-id: html-tpl
-title: 配置 HTML 模板
----
+# HTML 模板
 
 ## 修改默认模板
 

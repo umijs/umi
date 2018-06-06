@@ -1,7 +1,8 @@
----
-id: router
-title: 路由配置
----
+# 路由
+
+::: tip 提示
+下文介绍的路由使用可以在 [umi-examples/routes](https://github.com/umijs/umi-examples/tree/master/routes) 和 [umi-examples/routes-via-config](https://github.com/umijs/umi-examples/tree/master/routes-via-config) 里找到示例代码。
+:::
 
 umi 会根据 `pages` 目录自动生成路由配置。
 
@@ -256,28 +257,30 @@ export default (args) => {
 
 ## 配置式路由
 
-umi 推荐的路由方式是基于目录和文件的约定的，但如果你倾向于使用配置式的路由，可以在 `src` 下新建 `_routes.json` 文件，此文件存在时则不会对 pages 目录做解析。
+umi 推荐的路由方式是基于目录和文件的约定的，但如果你倾向于使用配置式的路由，可以在 `.umirc.js` 里配置 `routes` ，此配置存在时则不会对 pages 目录做解析。
 
 比如：
 
-```json
-[
-  { "path": "/", "exact": true, "component": "./components/a" },
-  { "path": "/list", "component": "./pages/b", "meta": { "Route": "./routes/PrivateRoute.js" } },
-  { "path": "/users", "component": "./pages/users/_layout",
-    "routes": [
-      { "path": "/users/detail", "exact": true, "component": "./pages/users/detail" },
-      { "path": "/users/:id", "exact": true, "component": "./pages/users/id" }
-    ]
-  }
-]
+```js
+export default {
+  routes: [
+    { path: '/', exact: true, component: './components/a' },
+    { path: '/list', component: './pages/b', Route: './routes/PrivateRoute.js' },
+    { path: '/users', component: './pages/users/_layout',
+      routes: [
+        { path: '/users/detail', exact: true, component: './pages/users/detail' },
+        { path: '/users/:id', exact: true, component: '/pages/users/id' }
+      ]
+    },
+  ],
+};
 ```
 
 注意：
 
 1. component 为指向文件的相对路径，**而非 React 组件**
 1. 支持通过 routes 实现嵌套路由
-1. 支持通过 meta.Route 实现权限路由
+1. 支持通过 Route 指定权限路由
 
 ## 路由动效
 
@@ -391,4 +394,4 @@ export default withRouter(Layout);
 
 ## 参考
 
-* https://reacttraining.com/react-router/
+* [https://reacttraining.com/react-router/](https://reacttraining.com/react-router/)
