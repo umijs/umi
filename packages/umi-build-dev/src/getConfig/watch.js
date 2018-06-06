@@ -10,6 +10,7 @@ export function watch(key, files) {
   }
   const watcher = chokidar.watch(files, {
     ignoreInitial: true,
+    cwd: process.env.APP_ROOT || process.cwd(),
   });
   watchers[key].push(watcher);
   return watcher;

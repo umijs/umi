@@ -17,6 +17,7 @@ const noop = () => {};
 process.env.NODE_ENV = 'development';
 
 export default function dev({
+  cwd,
   webpackConfig,
   extraMiddlewares,
   beforeServerWithApp,

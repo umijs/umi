@@ -87,12 +87,12 @@ function buildWebpack(opts = {}) {
 }
 
 export default function build(opts = {}) {
-  const { webpackConfig } = opts;
+  const { webpackConfig, cwd = process.cwd() } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
 
   // 存在 webpack.config.js 时提醒用户
-  warnIfWebpackConfigExists();
+  warnIfWebpackConfigExists(opts.cwd || cwd);
 
   buildWebpack(opts);
 }

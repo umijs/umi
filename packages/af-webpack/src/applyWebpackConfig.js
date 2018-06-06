@@ -1,10 +1,10 @@
 import { existsSync } from 'fs';
-import { resolve } from 'path';
+import { join } from 'path';
 import chalk from 'chalk';
 import webpack from 'webpack';
 
-export function warnIfExists() {
-  const filePath = resolve('webpack.config.js');
+export function warnIfExists(cwd) {
+  const filePath = join(cwd, 'webpack.config.js');
   if (existsSync(filePath)) {
     console.log(
       chalk.yellow(
@@ -17,8 +17,8 @@ export function warnIfExists() {
   }
 }
 
-export function applyWebpackConfig(config) {
-  const filePath = resolve('webpack.config.js');
+export function applyWebpackConfig(cwd, config) {
+  const filePath = join(cwd, 'webpack.config.js');
   if (existsSync(filePath)) {
     let customConfigFn = require(filePath); // eslint-disable-line
     if (customConfigFn.default) {

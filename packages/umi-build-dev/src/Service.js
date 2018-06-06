@@ -158,6 +158,7 @@ export default class Service {
     await this.applyPluginsAsync('beforeDevAsync');
 
     require('af-webpack/dev').default({
+      cwd: this.cwd,
       // eslint-disable-line
       webpackConfig,
       extraMiddlewares,
@@ -332,6 +333,7 @@ export default class Service {
     this.webpackConfig = webpackConfig;
     return new Promise(resolve => {
       require('af-webpack/build').default({
+        cwd: this.cwd,
         // eslint-disable-line
         webpackConfig,
         success: ({ stats }) => {
