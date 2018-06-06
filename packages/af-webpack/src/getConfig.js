@@ -638,5 +638,5 @@ export default function getConfig(opts = {}) {
     config.output.publicPath = `${stripLastSlash(process.env.PUBLIC_PATH)}/`;
   }
 
-  return applyWebpackConfig(config);
+  return applyWebpackConfig(opts.cwd, config);
 }
