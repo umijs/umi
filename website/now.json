@@ -2,6 +2,5 @@
   "alias": [
     "umijs.org",
     "ali.umijs.org"
-  ],
-  "NODE_ENV": "production"
+  ]
 }

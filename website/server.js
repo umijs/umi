@@ -11,16 +11,16 @@ app.use(function (req, res, next) {
       res.redirect('https://lark.alipay.com/umijs/umi');
       return;
     }
-    const lang = [req.query.locale, req.subdomains[0], req.acceptsLanguages(...languages), 'en'].find(function (lang) {
-      return languages.includes(lang);
-    });
-    req.url = '/' + lang + req.url;
-    res.setHeader('Content-Language', lang);
+    // const lang = [req.query.locale, req.subdomains[0], req.acceptsLanguages(...languages), 'en'].find(function (lang) {
+    //   return languages.includes(lang);
+    // });
+    // req.url = '/' + lang + req.url;
+    // res.setHeader('Content-Language', lang);
   }
   next();
 });
 
-app.use(express.static(__dirname + '/build/umijs-site', {
+app.use(express.static(__dirname + '/build', {
   maxAge: 60000
 }));
 
