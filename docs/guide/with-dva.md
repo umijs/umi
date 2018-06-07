@@ -133,6 +133,15 @@ export default {
 };
 ```
 
+### 全局 layout 使用 connect 后路由切换后没有刷新？
+
+需用 withRouter 包一下导出的 react 组件，注意顺序。
+
+```js
+import withRouter from 'umi/withRouter';
+export default withRouter(connect()(Layout));
+```
+
 ## 参考
 
 * [使用 umi 改进 dva 项目开发](https://github.com/sorrycc/blog/issues/66)

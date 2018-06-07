@@ -8,7 +8,7 @@
 
 ## General
 
-### 如何引入 polyfill？
+### 如何引入 polyfill ？
 
 先安装依赖，
 
@@ -21,6 +21,10 @@ $ npm install @babel/polyfill --save
 ```js
 import '@babel/polyfill';
 ```
+
+### 如何动态修改 title ？
+
+可以通过 [react-helmet](https://github.com/nfl/react-helmet) 动态修改 title 。
 
 ### 如何让编辑器的 eslint 校验生效？
 
@@ -46,6 +50,12 @@ $ npm i eslint@4 eslint-config-umi eslint-plugin-flowtype@2 eslint-plugin-import
 $ ESLINT=none umi dev
 $ ESLINT=none umi build
 ```
+
+## 报错
+
+### this.setDynamic is not a function
+
+不要自己配置 `babel-plugin-transform-runtime`，因为 umi 已内置处理，transform-runtime 处理两边会出现上述问题。
 
 ## CSS
 
