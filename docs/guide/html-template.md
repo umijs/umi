@@ -6,6 +6,10 @@
 
 ## 针对特定页面指定模板
 
+::: warning
+此功能需配合 `exportStatic: true` 或 `exportStatic: { htmlSuffix: true }` 使用。
+:::
+
 配置 `.umirc.js`
 
 ```js

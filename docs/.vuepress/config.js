@@ -12,6 +12,7 @@ module.exports = {
   //   },
   // },
   themeConfig: {
+    repo: 'umijs/umi',
     lastUpdated: 'Last Updated',
     editLinks: true,
     editLinkText: '在 GitHub 上编辑此页',
@@ -35,6 +36,7 @@ module.exports = {
             'config',
             'add-404-page',
             'html-template',
+            'with-dva',
             'load-on-demand',
             'deploy',
             'env-variables',
