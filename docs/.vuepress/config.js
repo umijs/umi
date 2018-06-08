@@ -30,6 +30,7 @@ module.exports = {
           children: [
             '',
             'getting-started',
+            'examples-and-boilerplates',
             'app-structure',
             'router',
             'navigate-between-pages',
