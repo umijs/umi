@@ -16,6 +16,7 @@ module.exports = {
     lastUpdated: 'Last Updated',
     editLinks: true,
     editLinkText: '在 GitHub 上编辑此页',
+    docsDir: 'docs',
     nav: [
       { text: '指南', link: '/guide/' },
       { text: '配置', link: '/config/' },
