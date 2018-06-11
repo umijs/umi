@@ -6,14 +6,14 @@ umi 暂未在命令行里提供项目初始化功能，大家可以 clone 以下
 
 ## 官方
 
-* [with-dva](https://github.com/umijs/umi/tree/master/examples/with-dva)，umi + dva 的例子
+* [with-dva](https://github.com/umijs/umi-examples/tree/master/with-dva)，umi + dva 的例子
 * [umi-dva-user-dashboard](https://github.com/umijs/umi-dva-user-dashboard)，umi + dva 的 dashboard 例子
-* [routes](https://github.com/umijs/umi/tree/master/examples/routes)，约定式路由的例子
-* [routes-via-config](https://github.com/umijs/umi/tree/master/examples/routes-via-config)，配置式路由的例子
+* [routes](https://github.com/umijs/umi-examples/tree/master/routes)，约定式路由的例子
+* [routes-via-config](https://github.com/umijs/umi-examples/blob/master/routes-via-config)，配置式路由的例子
 * [umi-example-electron](https://github.com/umijs/umi-example-electron)，umi + electron 的例子
 * [umi-antd-admin](https://github.com/umijs/umi-antd-admin)，antd-admin 的 umi 版本
-* [with-unstated](https://github.com/umijs/umi/tree/master/examples/with-unstated)，使用 unstated 的例子
-* [with-nav-and-sidebar](https://github.com/umijs/umi/tree/master/examples/with-nav-and-sidebar)，包含 antd-pro 的头和侧边栏的例子
+* [with-unstated](https://github.com/umijs/umi-examples/tree/master/with-unstated)，使用 unstated 的例子
+* [with-nav-and-sidebar](https://github.com/umijs/umi-examples/tree/master/with-nav-and-sidebar)，包含 antd-pro 的头和侧边栏的例子
 
 ## 社区
 
