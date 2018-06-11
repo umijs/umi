@@ -258,6 +258,11 @@ class UserConfig {
           if (!isEqual(newConfig[name], oldConfig[name])) {
             this.service._initialConfig[name] = newConfig[name];
             this.service.config[name] = newConfig[name];
+            this.service.applyPlugins('onUserConfigChange', {
+              args: {
+                newConfig,
+              },
+            });
             if (plugin.onChange) {
               plugin.onChange(newConfig);
             }
