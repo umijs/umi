@@ -135,7 +135,7 @@ class UserConfig {
   getConfig(opts = {}) {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
-    const { paths, printError } = this.service;
+    const { paths, printError, cwd } = this.service;
     const { force, setConfig } = opts;
 
     const file = getConfigFile(paths.cwd, this.service);
@@ -186,7 +186,7 @@ class UserConfig {
       const { name, validate } = plugin;
       if (config[name] && validate) {
         try {
-          plugin.validate(config[name]);
+          plugin.validate.call({ cwd }, config[name]);
         } catch (e) {
           // 校验出错后要把值设到缓存的 config 里，确保 watch 判断时才能拿到正确的值
           if (setConfig) {
