@@ -112,11 +112,12 @@ describe('getRoutesConfigFromConfig', () => {
     process.env.BIGFISH_COMPAT = true;
     const routes = getRoute([
       { path: '/a', indexRoute: { component: 'A' } },
-      { path: '/b', indexRoute: { redirect: '/a' } },
+      { path: '/b', indexRoute: { redirect: '/a', component: 'B' } },
       {
         path: '/c',
         childRoutes: [{ path: 'e', indexRoute: { component: 'A' } }],
       },
+      { path: '/d', indexRoute: { redirect: '/a' } },
     ]);
     expect(routes).toEqual([
       {
@@ -125,7 +126,10 @@ describe('getRoutesConfigFromConfig', () => {
       },
       {
         path: '/b',
-        routes: [{ path: '/b', exact: true, redirect: '/a' }],
+        routes: [
+          { path: '/b', exact: true, component: './src/pages/B' },
+          { path: '/b', exact: true, redirect: '/a' },
+        ],
       },
       {
         path: '/c',
@@ -136,6 +140,7 @@ describe('getRoutesConfigFromConfig', () => {
           },
         ],
       },
+      { path: '/d', exact: true, redirect: '/a' },
     ]);
     process.env.BIGFISH_COMPAT = false;
   });
