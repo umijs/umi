@@ -111,3 +111,11 @@ $ ESLINT=none umi dev
 ### BABELRC
 
 开启 `.babelrc` 解析，默认不解析。
+
+### MOCK
+
+默认开启 mock，值为 none 时禁用。比如：
+
+```bash
+$ MOCK=none umi dev
+```

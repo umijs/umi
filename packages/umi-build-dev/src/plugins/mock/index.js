@@ -1,11 +1,9 @@
-import HttpMock from './HttpMock';
+import createMockMiddleware from './createMockMiddleware';
 
 export default function(api) {
   api.register('beforeServerWithApp', ({ args: { app } }) => {
-    new HttpMock({
-      app,
-      cwd: api.service.cwd,
-      api,
-    });
+    if (process.env.MOCK !== 'none') {
+      app.use(createMockMiddleware(api));
+    }
   });
 }
