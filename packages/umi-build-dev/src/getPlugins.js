@@ -63,8 +63,8 @@ Try:
     './plugins/antd',
     './plugins/fastclick',
     './plugins/hd',
+    './plugins/mock',
     './plugins/proxy',
-    ...(process.env.MOCK === 'none' ? [] : ['./plugins/mock']),
     './plugins/hash-history',
     './plugins/afwebpack-config',
     './plugins/404', // 404 must after mock
