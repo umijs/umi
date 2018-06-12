@@ -5,7 +5,7 @@ import glob from 'glob';
 import assert from 'assert';
 import chokidar from 'chokidar';
 
-const VALID_METHODS = ['get', 'post', 'pust', 'delete'];
+const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 
 export default function getMockMiddleware(api) {
   const { debug } = api.utils;
