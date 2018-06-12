@@ -23,7 +23,7 @@ export default function getMockMiddleware(api) {
       ignoreInitial: true,
     });
     watcher.on('all', (event, file) => {
-      debug(`[${event}] ${file}`);
+      debug(`[${event}] ${file}, reload mock data`);
       mockData = getConfig();
     });
   }
@@ -32,12 +32,17 @@ export default function getMockMiddleware(api) {
     cleanRequireCache();
     let ret = null;
     if (existsSync(absConfigPath)) {
+      debug(`load mock data from ${absConfigPath}`);
       ret = require(absConfigPath); // eslint-disable-line
     } else {
       const mockFiles = glob.sync('**/*.js', {
         cwd: absMockPath,
       });
-      debug(`mockFiles: ${JSON.stringify(mockFiles)}`);
+      debug(
+        `load mock data from ${absMockPath}, including files ${JSON.stringify(
+          mockFiles,
+        )}`,
+      );
       ret = mockFiles.reduce((memo, mockFile) => {
         memo = {
           ...memo,
@@ -131,6 +136,7 @@ export default function getMockMiddleware(api) {
   return (req, res, next) => {
     const match = matchMock(req);
     if (match) {
+      debug(`mock matched: [${match.method}] ${match.path}`);
       return match.handler(req, res, next);
     } else {
       return next();
