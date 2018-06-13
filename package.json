@@ -18,12 +18,12 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.43",
-    "@babel/core": "7.0.0-beta.43",
-    "@babel/preset-env": "7.0.0-beta.43",
-    "@babel/preset-react": "7.0.0-beta.43",
-    "@babel/preset-stage-0": "7.0.0-beta.43",
-    "@babel/runtime": "7.0.0-beta.43",
+    "@babel/cli": "7.0.0-beta.46",
+    "@babel/core": "7.0.0-beta.46",
+    "@babel/preset-env": "7.0.0-beta.46",
+    "@babel/preset-react": "7.0.0-beta.46",
+    "@babel/preset-stage-0": "7.0.0-beta.46",
+    "@babel/runtime": "7.0.0-beta.46",
     "babel-eslint": "^8.0.2",
     "chokidar": "^2.0.2",
     "coveralls": "^3.0.0",
