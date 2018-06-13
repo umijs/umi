@@ -25,7 +25,7 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 
   // path patch must be before bigfish patch
   if (route.path && route.path.charAt(0) !== '/') {
-    route.path = join(parentRoutePath, route.path);
+    route.path = winPath(join(parentRoutePath, route.path));
   }
 
   // Compatible with bigfish
@@ -63,7 +63,7 @@ function patchRoute(route, pagesPath, parentRoutePath) {
   }
 
   if (route.redirect && route.redirect.charAt(0) !== '/') {
-    route.redirect = join(parentRoutePath, route.redirect);
+    route.redirect = winPath(join(parentRoutePath, route.redirect));
   }
   if (route.routes) {
     patchRoutes(route.routes, pagesPath, route.path);
