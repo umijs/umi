@@ -217,6 +217,8 @@ umi 是通过配置定制化的 Route 组件来实现权限路由的，如果你
 export default {
   pages: {
     '/list': { Route: './routes/PrivateRoute.js' },
+    // 如果你使用了动态路由，/products/$id.js 或者 /products/$id/index.js这种结构
+    '/products/:id': { Route: './routes/PrivateRoute.js' },
   },
 }
 ```
@@ -226,7 +228,8 @@ export default {
 ```js
 [
   { path: '/': exact: true, component: './pages/index.js' },
-  { path: '/list': exact: true, component: './pages/list.js', meta: { Route: './routes/PrivateRoute.js' } },
+  { path: '/list': exact: true, component: './pages/list.js', Route: './routes/PrivateRoute.js' },
+  { path: '/products/:id': exact: true, component: './pages/list.js', Route: './routes/PrivateRoute.js' },
 ]
 ```
 
