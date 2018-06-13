@@ -31,8 +31,14 @@ $ umi build
 
 ### 社区
 
-扫码加钉钉群。
+#### 钉钉群
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="200" />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
 
-或是微信群。（群满 100 人，加 `sorryccpro` 好友备注 `umi` 邀请加入）
+#### 微信群
+
+群满 100 人，加 `sorryccpro` 好友备注 `umi` 邀请加入。
+
+#### Telegram
+
+[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
