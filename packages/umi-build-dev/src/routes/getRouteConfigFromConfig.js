@@ -36,16 +36,20 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     }
     if (route.indexRoute) {
       if (route.indexRoute.redirect) {
+        let { redirect } = route.indexRoute;
+        if (redirect.charAt(0) !== '/') {
+          redirect = winPath(join(route.path, redirect));
+        }
         if (route.indexRoute.component || route.routes) {
           if (!route.routes) {
             route.routes = [];
           }
           route.routes.unshift({
             path: route.path,
-            redirect: route.indexRoute.redirect,
+            redirect,
           });
         } else {
-          route.redirect = route.indexRoute.redirect;
+          route.redirect = redirect;
         }
       }
       if (route.indexRoute.component) {

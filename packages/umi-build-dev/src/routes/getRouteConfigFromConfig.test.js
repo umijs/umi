@@ -118,6 +118,7 @@ describe('getRoutesConfigFromConfig', () => {
         childRoutes: [{ path: 'e', indexRoute: { component: 'A' } }],
       },
       { path: '/d', indexRoute: { redirect: '/a' } },
+      { path: '/e', indexRoute: { redirect: 'b' } },
     ]);
     expect(routes).toEqual([
       {
@@ -141,6 +142,7 @@ describe('getRoutesConfigFromConfig', () => {
         ],
       },
       { path: '/d', exact: true, redirect: '/a' },
+      { path: '/e', exact: true, redirect: '/e/b' },
     ]);
     process.env.BIGFISH_COMPAT = false;
   });
