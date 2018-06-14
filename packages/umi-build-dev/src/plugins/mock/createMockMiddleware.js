@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import glob from 'glob';
 import assert from 'assert';
 import chokidar from 'chokidar';
+import pathToRegexp from 'path-to-regexp';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 
@@ -107,9 +108,13 @@ export default function getMockMiddleware(api) {
         `mock value of ${key} should be function or object, but got ${type}`,
       );
       const { method, path } = parseKey(key);
+      const keys = [];
+      const re = pathToRegexp(path, keys);
       memo.push({
         method,
         path,
+        re,
+        keys,
         handler: createHandler(method, path, handler),
       });
       return memo;
@@ -128,13 +133,53 @@ export default function getMockMiddleware(api) {
     const { path: exceptPath } = req;
     const exceptMethod = req.method.toLowerCase();
 
-    return mockData.filter(({ method, path }) => {
-      return method === exceptMethod && path === exceptPath;
+    for (const mock of mockData) {
+      const { method, re, keys } = mock;
+      if (method === exceptMethod) {
+        const match = re.exec(req.path);
+        if (match) {
+          const params = {};
+
+          for (let i = 1; i < match.length; i = i + 1) {
+            const key = keys[i - 1];
+            const prop = key.name;
+            const val = decodeParam(match[i]);
+
+            if (val !== undefined || !hasOwnProperty.call(params, prop)) {
+              params[prop] = val;
+            }
+          }
+          req.params = params;
+          return mock;
+        }
+      }
+    }
+
+    function decodeParam(val) {
+      if (typeof val !== 'string' || val.length === 0) {
+        return val;
+      }
+
+      try {
+        return decodeURIComponent(val);
+      } catch (err) {
+        if (err instanceof URIError) {
+          err.message = `Failed to decode param ' ${val} '`;
+          err.status = err.statusCode = 400;
+        }
+
+        throw err;
+      }
+    }
+
+    return mockData.filter(({ method, re }) => {
+      return method === exceptMethod && re.test(exceptPath);
     })[0];
   }
 
   return (req, res, next) => {
     const match = matchMock(req);
+
     if (match) {
       debug(`mock matched: [${match.method}] ${match.path}`);
       return match.handler(req, res, next);
