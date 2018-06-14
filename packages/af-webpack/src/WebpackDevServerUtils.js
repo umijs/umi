@@ -109,7 +109,7 @@ function createCompiler(webpack, config, appName, urls, useYarn) {
   } catch (err) {
     console.log(chalk.red('Failed to compile.'));
     console.log();
-    console.log(err.message || err);
+    console.log(err.stack);
     console.log();
     process.exit(1);
   }

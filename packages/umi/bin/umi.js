@@ -2,7 +2,6 @@
 
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
-// const yParser = require('yargs-parser');
 
 const script = process.argv[2];
 const args = process.argv.slice(3);
@@ -23,10 +22,7 @@ const pkg = require('../package.json');
 updater({ pkg: pkg }).notify({ defer: true });
 
 function runScript(script, args, isFork) {
-  // const options= yParser(args);
-  if(script === 'help' || args.help || args.h){
-    require(`../lib/scripts/help`)
-  }else if (isFork) {
+  if (isFork) {
     const result = spawn.sync(
       'node',
       [require.resolve(`../lib/scripts/${script}`)].concat(args),
@@ -38,7 +34,6 @@ function runScript(script, args, isFork) {
   }
 }
 
-// Script area
 const scriptAlias = {
   g: 'generate' // eslint-disable-line
 };
@@ -48,6 +43,7 @@ switch (aliasedScript) {
   case '-v':
   case '--version':
     console.log(pkg.version);
+    // TODO: support yarn
     if (!(pkg._from && pkg._resolved)) {
       console.log(chalk.cyan('@local'));
     }
@@ -57,11 +53,10 @@ switch (aliasedScript) {
   case 'generate':
     runScript(aliasedScript, args, /* isFork */true);
     break;
-  case 'help':  
   case 'test':
     runScript(aliasedScript, args);
     break;
   default:
-    runScript('help', args);
+    console.log(chalk.red(`unknown command ${script}`));
     break;
 }

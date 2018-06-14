@@ -18,12 +18,12 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.40",
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/preset-env": "^7.0.0-beta.40",
-    "@babel/preset-react": "^7.0.0-beta.40",
-    "@babel/preset-stage-0": "^7.0.0-beta.40",
-    "@babel/runtime": "^7.0.0-beta.32",
+    "@babel/cli": "7.0.0-beta.46",
+    "@babel/core": "7.0.0-beta.46",
+    "@babel/preset-env": "7.0.0-beta.46",
+    "@babel/preset-react": "7.0.0-beta.46",
+    "@babel/preset-stage-0": "7.0.0-beta.46",
+    "@babel/runtime": "7.0.0-beta.46",
     "babel-eslint": "^8.0.2",
     "chokidar": "^2.0.2",
     "coveralls": "^3.0.0",
@@ -37,14 +37,12 @@
     "lerna": "^2.9.1",
     "lerna-changelog": "^0.7.0",
     "lint-staged": "^7.0.0",
-    "now": "^11.2.1",
     "prettier": "^1.8.1",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.1",
     "slash2": "^2.0.0",
     "through2": "^2.0.3",
     "umi-test": "^0.5.3",
-    "vinyl-fs": "^3.0.2",
-    "vuepress": "^0.10.0"
+    "vinyl-fs": "^3.0.2"
   }
 }
