@@ -23,6 +23,8 @@ $ cross-env PORT=3000 umi dev
 
 指定覆盖默认配置的配置文件。比如 `UMI_ENV=prod umi build`，那么则会用 `.umirc.prod.js` 覆盖 `.umirc.js`。或者是 `config/config.prod.js` 覆盖 `config/config.js`。注意是覆盖而不是替换，`.umirc.prod.js` 中没有的配置者会使用 `.umirc.js` 中的配置。
 
+另外，开发模式下 `.umirc.local.js` 或者 `config/config.local.js` 中的配置永远是优先级最高的。
+
 ### PORT
 
 指定端口号，默认是 `8000`。比如：
