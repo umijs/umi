@@ -294,6 +294,14 @@ pages: {
 
 让 babel 自动编译使用了 es6 语法的 npm 模块，[为什么会有这个配置？](https://github.com/sorrycc/blog/issues/68)。
 
+### lessLoaderOptions
+
+给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。 
+
+### cssLoaderOptions
+
+给 [css-loader](https://github.com/webpack-contrib/css-loader) 的额外配置项。
+
 ### env
 
 针对特定的环境进行配置。dev 的环境变量是?`development`，build 的环境变量是?`production`。

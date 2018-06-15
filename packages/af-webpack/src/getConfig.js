@@ -66,6 +66,7 @@ export default function getConfig(opts = {}) {
   };
   const lessOptions = {
     modifyVars: theme,
+    ...(opts.lessLoaderOptions || {}),
   };
   const cssOptions = {
     importLoaders: 1,
@@ -84,6 +85,7 @@ export default function getConfig(opts = {}) {
             : false,
           sourceMap: !opts.disableCSSSourceMap,
         }),
+    ...(opts.cssLoaderOptions || {}),
   };
 
   function getCSSLoader(opts = {}) {
