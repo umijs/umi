@@ -37,6 +37,7 @@ module.exports = {
             'navigate-between-pages',
             'config',
             'add-404-page',
+            'mock-data',
             'html-template',
             'with-dva',
             'load-on-demand',
