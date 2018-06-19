@@ -45,7 +45,9 @@ $ umi build
 
 ### 微信群
 
-群满 100 人，加 `sorryccpro` 好友备注 `umi` 邀请加入。
+<img src="https://gw.alipayobjects.com/zos/rmsportal/KyFxYsHITgIAaVgQxfeE.jpg" width="60" />
+
+群满 100 人后，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
 
 ### Telegram
 
