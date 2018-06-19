@@ -336,17 +336,18 @@ export default function getConfig(opts = {}) {
   }
 
   // 读用户的 eslintrc
-  if (existsSync(resolve('.eslintrc'))) {
+  const userEslintRulePath = resolve(opts.cwd, '.eslintrc');
+  if (existsSync(userEslintRulePath)) {
     try {
-      const userRc = readRc(resolve('.eslintrc'));
+      const userRc = readRc(userEslintRulePath);
       debug(`userRc: ${JSON.stringify(userRc)}`);
       if (userRc.extends) {
-        debug(`use user's .eslintrc: ${resolve('.eslintrc')}`);
+        debug(`use user's .eslintrc: ${userEslintRulePath}`);
         eslintOptions.useEslintrc = true;
         eslintOptions.baseConfig = false;
         eslintOptions.ignore = true;
       } else {
-        debug(`extend with user's .eslintrc: ${resolve('.eslintrc')}`);
+        debug(`extend with user's .eslintrc: ${userEslintRulePath}`);
         eslintOptions.baseConfig = {
           ...eslintOptions.baseConfig,
           ...userRc,
