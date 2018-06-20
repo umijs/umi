@@ -9,6 +9,8 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
+    "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
+    "doc:deploy": "cd ./website && npm run deploy && cd -",
     "publish": "./scripts/publish.js"
   },
   "lint-staged": {
