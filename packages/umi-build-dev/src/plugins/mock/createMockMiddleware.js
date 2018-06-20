@@ -7,6 +7,7 @@ import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
+const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 
 export default function getMockMiddleware(api) {
   const { debug } = api.utils;
@@ -75,7 +76,7 @@ export default function getMockMiddleware(api) {
 
   function createHandler(method, path, handler) {
     return function(req, res, next) {
-      if (method === 'post') {
+      if (BODY_PARSED_METHODS.includes(method)) {
         bodyParser.json({ limit: '5mb', strict: false })(req, res, () => {
           bodyParser.urlencoded({ limit: '5mb', extended: true })(
             req,
