@@ -2,6 +2,8 @@
 
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
+const { join } = require('path');
+const { existsSync } = require('fs');
 
 const script = process.argv[2];
 const args = process.argv.slice(3);
@@ -43,8 +45,7 @@ switch (aliasedScript) {
   case '-v':
   case '--version':
     console.log(pkg.version);
-    // TODO: support yarn
-    if (!(pkg._from && pkg._resolved)) {
+    if (existsSync(join(__dirname, '../.local'))) {
       console.log(chalk.cyan('@local'));
     }
     break;
