@@ -1,6 +1,7 @@
 module.exports = {
   title: 'UmiJS',
   description: '🚀 极快的类 Next.js 的 React 应用框架。',
+  serviceWorker: true,
   // locales: {
   //   '/': {
   //     lang: 'en-US',
@@ -37,14 +38,18 @@ module.exports = {
             'navigate-between-pages',
             'config',
             'add-404-page',
-            'mock-data',
             'html-template',
-            'with-dva',
-            'load-on-demand',
-            'deploy',
-            'env-variables',
-            'faq',
           ],
+        },
+        {
+          title: '进阶',
+          collapsable: false,
+          children: ['mock-data', 'with-dva', 'load-on-demand', 'deploy'],
+        },
+        {
+          title: '参考',
+          collapsable: false,
+          children: ['faq', 'env-variables'],
         },
       ],
       '/config/': [''],
