@@ -8,15 +8,18 @@ sidebarDepth: 2
 
 ### plugins
 
-指定插件，格式为数组。
+* 类型：`Array`
+* 默认值：`[]`
+
+指定插件。
 
 比如：
 
-```
+```js
 export default {
   plugins: [
     'umi-plugin-dva',
-    // 有参数时为数组，数组的第二项是参数，类似 babel 插件
+    // 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
     ['umi-plugin-routes', {
       update() {},
     }],
@@ -26,19 +29,35 @@ export default {
 
 ### hd
 
-是否开启高清方案，默认为 `false` 。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，则开启高清方案。
 
 ### disableServiceWorker
 
-禁用 service worker 缓存，默认开启。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，则禁用 service worker 。
 
 ### preact
 
-是否切换到 preact，默认为 `false`。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，则切换 react 到 preact 。
+
+::: warning 注意兼容性
+umi 框架本身是兼容 preact 的，但需注意项目代码和引入依赖库的兼容问题，比如 antd 是不兼容 preact 的。
+:::
 
 ### loading
 
-指定页面切换时的 loading 效果组件，默认为空组件。格式为字符串，指向 loading 组件所在的文件。
+* 类型：`String`
+* 默认值：`null`
+
+指定页面切换时的 loading 效果组件，值为相对于项目根目录的文件路径。
 
 比如：
 
@@ -48,13 +67,23 @@ export default {
 };
 ```
 
+::: warning
+只在 build 后有效。
+:::
+
 ### hashHistory
 
-启用 hash history 的方式。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，切换 history 方式为 hash（默认是 browser history）。
 
 ### singular
 
-启用单数目录，格式为布尔值。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，启用单数模式的目录。
 
 * src/layout/index.js
 * src/page
@@ -62,19 +91,35 @@ export default {
 
 ### disableDynamicImport
 
-禁用 Code Splitting，格式为布尔值。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，禁用 Code Splitting，打包后只输出 umi.css 和 umi.js。
+
+::: warning
+注意潜在的性能问题，但文件尺寸会比较大。
+:::
 
 ### disableFastClick
 
-禁用 fastclick 脚本引入，格式为布尔值。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，不引入 fastclick 脚本。
 
 ## 构建流程
 
 ### outputPath
 
-指定输出路径，默认是 `./dist`。
+* 类型：`String`
+* 默认值：`./dist`
+
+指定输出路径。
 
 ### pages
+
+* 类型：`{ [path]: { context, document } }`
+* 默认值：`{}`
 
 配置每个页面的属性。
 
@@ -87,18 +132,24 @@ pages: {
 },
 ```
 
-有两个属性：
+每个 page 都可配两个属性：
 
 1. document，指定模板
 2. context，指定模板里的变量，比如标题之类的
 
 ### context
 
+* 类型：`Object`
+* 默认值：`{}`
+
 配置全局 context，会覆盖到每个 pages 里的 context。
 
 ### exportStatic
 
-是否导出全部路由为静态页面，默认只输出一个 index.html。
+* 类型：`Boolean | Object`
+* 默认值：`false`
+
+如果设为 `true` 或 `Object`，则导出全部路由为静态页面，否则默认只输出一个 index.html。
 
 比如：
 
@@ -114,11 +165,15 @@ pages: {
 
 ### disableHash
 
-构建输出的文件名不带 hash 值。
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，则构建输出的文件名不带 hash 值。
 
 ## webpack
 
 ### theme
+
 配置主题，实际上是配 less 变量。支持对象和字符串两种类型，字符串需要指向一个返回配置的文件。
 比如：
 
