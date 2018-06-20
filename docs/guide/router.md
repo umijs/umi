@@ -130,7 +130,7 @@ export default function(props) {
 
 ```js
 export default function(props) {
-  if (props.location.path === '/login') {
+  if (props.location.pathname === '/login') {
     return <SimpleLayout>{ props.children }</SimpleLayout>
   }
   
