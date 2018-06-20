@@ -1,7 +1,7 @@
 module.exports = {
   title: 'UmiJS',
   description: '🚀 极快的类 Next.js 的 React 应用框架。',
-  serviceWorker: true,
+  serviceWorker: false,
   // locales: {
   //   '/': {
   //     lang: 'en-US',
