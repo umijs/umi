@@ -41,7 +41,7 @@ export default function dev({
         return;
       }
 
-      const urls = prepareUrls(PROTOCOL, HOST, port);
+      const urls = prepareUrls(PROTOCOL, HOST, port, webpackConfig.output.publicPath);
       const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
 
       // Webpack startup recompilation fix. Remove when @sokra fixes the bug.
