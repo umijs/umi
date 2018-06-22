@@ -21,20 +21,20 @@ if (isSmokeTest) {
   };
 }
 
-function prepareUrls(protocol, host, port) {
+function prepareUrls(protocol, host, port, publicPath = '/') {
   const formatUrl = hostname =>
     url.format({
       protocol,
       hostname,
       port,
-      pathname: '/',
+      pathname: publicPath,
     });
   const prettyPrintUrl = hostname =>
     url.format({
       protocol,
       hostname,
       port: chalk.bold(port),
-      pathname: '/',
+      pathname: publicPath,
     });
 
   const isUnspecifiedHost = host === '0.0.0.0' || host === '::';
