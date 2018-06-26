@@ -229,44 +229,8 @@ pages: {
 ### publicPath
 配置 webpack 的 [output.publicPath](https://webpack.js.org/configuration/output/#output-publicpath) 属性。
 
-### outputPath
-配置 webpack 的?[output.path](https://webpack.js.org/configuration/output/#output-path)?属性。
-
 ### devtool
 配置 webpack 的 [devtool](https://webpack.js.org/configuration/devtool/) 属性。
-
-### commons
-
-配置 webpack 的 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/) 插件，格式为数组，有几项配几个 CommonsChunkPlugin 。
-
-比如：
-
-```markup
-"commons": [
-  {
-    async: '__common',
-    children: true,
-    minChunks(module, count) {
-      if (pageCount <= 2) {
-        return count >= pageCount;
-      }
-      return count >= pageCount * 0.5;
-    },
-  },
-]
-```
-
-### html
-
-配置 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 插件。
-
-比如：
-
-```markup
-"html": {
-  "template": "./src/index.ejs"
-}
-```
 
 ### disableCSSModules
 
