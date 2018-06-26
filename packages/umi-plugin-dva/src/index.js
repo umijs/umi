@@ -201,10 +201,18 @@ ${ROUTER_MODIFIER}
         return memo;
       }
 
+      const { loading } = config;
+      let loadingOpts = '';
+      if (loading) {
+        loadingOpts = `LoadingComponent: require('${winPath(
+          join(paths.cwd, loading),
+        )}').default,`;
+      }
       let ret = `
 _dvaDynamic({
   <%= MODELS %>
   component: () => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'),
+  ${loadingOpts}
 })
       `.trim();
       const models = getPageModels(
