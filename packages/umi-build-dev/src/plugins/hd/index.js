@@ -63,7 +63,8 @@ export default function(api) {
 
   api.register('modifyPageWatchers', ({ memo }) => {
     if (config.hd) {
-      return [...memo, ...hdFiles];
+      memo = [...memo, ...hdFiles];
     }
+    return memo;
   });
 }
