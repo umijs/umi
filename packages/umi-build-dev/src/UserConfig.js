@@ -171,7 +171,12 @@ class UserConfig {
       throw new Error(msg);
     }
 
+    const defaultConfig = this.service.applyPlugins('modifyDefaultConfig', {
+      initialValue: {},
+    });
+
     config = normalizeConfig({
+      ...defaultConfig,
       ...requireFile(file, { onError }),
       ...(env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {}),
       ...(isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {}),
