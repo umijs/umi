@@ -34,8 +34,8 @@ export default function(api) {
     return memo;
   });
 
-  if (config.hd) {
-    api.register('modifyAFWebpackOpts', ({ memo }) => {
+  api.register('modifyAFWebpackOpts', ({ memo }) => {
+    if (config.hd) {
       memo.theme = {
         ...(memo.theme || {}),
         '@hd': '2px',
@@ -47,19 +47,23 @@ export default function(api) {
           minPixelValue: 2,
         }),
       ];
-      return memo;
-    });
+    }
+    return memo;
+  });
 
-    api.register('modifyEntryFile', ({ memo }) => {
+  api.register('modifyEntryFile', ({ memo }) => {
+    if (config.hd) {
       const hdJS = getHdJS();
       if (hdJS) {
         memo = `import '${winPath(hdJS)}';\r\n${memo}`;
       }
-      return memo;
-    });
+    }
+    return memo;
+  });
 
-    api.register('modifyPageWatchers', ({ memo }) => {
+  api.register('modifyPageWatchers', ({ memo }) => {
+    if (config.hd) {
       return [...memo, ...hdFiles];
-    });
-  }
+    }
+  });
 }
