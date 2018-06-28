@@ -22,10 +22,17 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   const customizedDocPath = document
     ? join(paths.cwd, document)
     : paths.absPageDocumentPath;
-  const docPath = existsSync(customizedDocPath)
+  const existsCustomTpl = existsSync(customizedDocPath);
+  const docPath = existsCustomTpl
     ? customizedDocPath
     : paths.defaultDocumentPath;
-  const tpl = readFileSync(docPath, 'utf-8');
+  let tpl = readFileSync(docPath, 'utf-8');
+
+  if (!existsCustomTpl) {
+    tpl = service.applyPlugins('modifyDefaultTemplate', {
+      initialValue: tpl,
+    });
+  }
 
   if (config.exportStatic && !config.exportStatic.htmlSuffix) {
     path = makeSureLastSlash(path);
