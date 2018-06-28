@@ -2,9 +2,10 @@ import { join } from 'path';
 import UserConfig from './UserConfig';
 
 const base = join(__dirname, './fixtures/UserConfig');
-const service = {};
 
-describe('UserConfig', () => {
+describe('static UserConfig', () => {
+  const service = {};
+
   it('config/config.js', () => {
     const config = UserConfig.getConfig({
       cwd: join(base, 'config-config'),
@@ -99,5 +100,42 @@ describe('UserConfig', () => {
       service,
     });
     expect(config).toEqual({});
+  });
+});
+
+describe('instance UserConfig', () => {
+  const service = {
+    paths: {
+      cwd: join(base, 'umirc'),
+    },
+    applyPlugins(name, { initialValue }) {
+      if (name === 'modifyDefaultConfig') {
+        return {
+          alias: { a: 'default' },
+          hd: true,
+          local: 0,
+        };
+      } else if (name === 'modifyConfigPlugins') {
+        return ['alias', 'hd', 'local'].map(name => {
+          return () => {
+            return { name };
+          };
+        });
+      } else {
+        return initialValue;
+      }
+    },
+  };
+
+  it('modifyDefaultConfig', () => {
+    process.env.NODE_ENV = 'development';
+    const userConfig = new UserConfig(service);
+    const config = userConfig.getConfig();
+    process.env.NODE_ENV = '';
+    expect(config).toEqual({
+      alias: { a: 'b' },
+      local: 1,
+      hd: true,
+    });
   });
 });
