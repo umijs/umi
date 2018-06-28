@@ -108,7 +108,7 @@ export default function dev({
         if (isInteractive) {
           clearConsole();
         }
-        console.log(chalk.cyan('Starting the development server...\n'));
+        console.log(chalk.cyan('\nStarting the development server...\n'));
         if (openBrowserOpts) {
           openBrowser(urls.localUrlForBrowser);
         }
