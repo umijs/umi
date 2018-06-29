@@ -4,6 +4,7 @@ import SystemBellWebpackPlugin from 'system-bell-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import { dirname, resolve, join, extname } from 'path';
 import { existsSync } from 'fs';
@@ -580,8 +581,11 @@ export default function getConfig(opts = {}) {
       ...(isDev || (process.env.NO_COMPRESS || process.env.COMPRESS === 'none')
         ? []
         : [
-            new webpack.optimize.UglifyJsPlugin({
-              ...uglifyJSConfig,
+            new UglifyJsPlugin({
+              parallel: true,
+              uglifyOptions: {
+                ...uglifyJSConfig,
+              },
               ...(opts.devtool ? { sourceMap: true } : {}),
             }),
           ]),
