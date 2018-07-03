@@ -315,6 +315,7 @@ export default class Service {
 
     const userConfig = new UserConfig(this);
     this.config = userConfig.getConfig();
+    assign(this._initialConfig, this.config);
 
     this.webpackRCConfig = this.getWebpackRCConfig().config;
 
