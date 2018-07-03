@@ -60,7 +60,7 @@ export default function(opts) {
       '.tsx',
     ])
     .end()
-    .alias// .set('@', api.resolve('src'))
+    .alias // .set('@', api.resolve('src'))
     .set(
       '@babel/runtime',
       dirname(require.resolve('@babel/runtime/package.json')),
@@ -245,13 +245,15 @@ export default function(opts) {
   }
 
   // plugins -> friendly-errors
-  webpackConfig
-    .plugin('friendly-errors')
-    .use(require('friendly-errors-webpack-plugin'), [
-      {
-        clearConsole: process.env.CLEAR_CONSOLE !== 'none',
-      },
-    ]);
+  if (!process.env.__FROM_UMI_TEST) {
+    webpackConfig
+      .plugin('friendly-errors')
+      .use(require('friendly-errors-webpack-plugin'), [
+        {
+          clearConsole: process.env.CLEAR_CONSOLE !== 'none',
+        },
+      ]);
+  }
 
   // externals
   if (opts.externals) {

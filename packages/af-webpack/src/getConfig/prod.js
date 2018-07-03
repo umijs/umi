@@ -39,7 +39,7 @@ export default function(webpackConfig, opts) {
   if (opts.manifest) {
     webpackConfig.plugin('manifest').use(require('webpack-manifest-plugin'), [
       {
-        fileName: 'assets.json',
+        fileName: 'asset-manifest.json',
         ...opts.manifest,
       },
     ]);
