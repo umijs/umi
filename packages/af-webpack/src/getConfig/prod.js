@@ -20,6 +20,8 @@ export default function(webpackConfig, opts) {
       .chunkFilename(`[name].[chunkhash:8].async.js`);
   }
 
+  webpackConfig.performance.hints(false);
+
   if (opts.manifest) {
     webpackConfig.plugin('manifest').use(require('webpack-manifest-plugin'), [
       {
@@ -29,23 +31,22 @@ export default function(webpackConfig, opts) {
     ]);
   }
 
-  // don't emit files if have error
-  webpackConfig.optimization.noEmitOnErrors(true);
+  webpackConfig.optimization
+    // don't emit files if have error
+    .noEmitOnErrors(true);
 
-  if (process.env.__FROM_UMI_TEST) {
+  if (disableCompress || process.env.__FROM_UMI_TEST) {
     webpackConfig.optimization.minimize(false);
   } else {
     webpackConfig
       .plugin('hash-module-ids')
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
-    if (!disableCompress) {
-      webpackConfig.optimization.minimizer([
-        new UglifyPlugin({
-          ...uglifyOptions,
-          sourceMap: !!opts.devtool,
-        }),
-      ]);
-    }
+    webpackConfig.optimization.minimizer([
+      new UglifyPlugin({
+        ...uglifyOptions,
+        sourceMap: !!opts.devtool,
+      }),
+    ]);
   }
 }

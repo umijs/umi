@@ -3,7 +3,7 @@ import address from 'address';
 import url from 'url';
 import chalk from 'chalk';
 
-function prepareUrls(protocol, host, port) {
+export default function prepareUrls(protocol, host, port) {
   const formatUrl = hostname =>
     url.format({
       protocol,
@@ -56,7 +56,3 @@ function prepareUrls(protocol, host, port) {
     localUrlForBrowser,
   };
 }
-
-module.exports = {
-  prepareUrls,
-};

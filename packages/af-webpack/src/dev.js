@@ -2,7 +2,7 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
-import { prepareUrls } from './WebpackDevServerUtils';
+import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, DONE } from './send';
