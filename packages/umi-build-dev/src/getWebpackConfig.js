@@ -12,7 +12,6 @@ export default function(service = {}) {
     cwd,
     config,
     babel,
-    hash,
     routes,
     libraryAlias,
     libraryName,

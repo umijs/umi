@@ -1,0 +1,5 @@
+{
+  "alias": {
+    "mixin": "./mixin.less"
+  }
+}

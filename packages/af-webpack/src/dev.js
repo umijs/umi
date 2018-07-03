@@ -2,10 +2,10 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
-import { createCompiler, prepareUrls } from './WebpackDevServerUtils';
+import { prepareUrls } from './WebpackDevServerUtils';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
-import send, { STARTING, COMPILING, DONE } from './send';
+import send, { STARTING, DONE } from './send';
 import choosePort from './choosePort';
 
 const isInteractive = process.stdout.isTTY;
@@ -17,7 +17,6 @@ const noop = () => {};
 process.env.NODE_ENV = 'development';
 
 export default function dev({
-  cwd,
   webpackConfig,
   extraMiddlewares,
   beforeServerWithApp,
@@ -25,7 +24,6 @@ export default function dev({
   afterServer,
   contentBase,
   onCompileDone = noop,
-  onCompileInvalid = noop,
   proxy,
   openBrowser: openBrowserOpts,
   historyApiFallback = {
@@ -41,26 +39,44 @@ export default function dev({
         return;
       }
 
-      const urls = prepareUrls(PROTOCOL, HOST, port);
-      const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
+      const compiler = webpack(webpackConfig);
 
-      // Webpack startup recompilation fix. Remove when @sokra fixes the bug.
-      // https://github.com/webpack/webpack/issues/2983
-      // https://github.com/webpack/watchpack/issues/25
-      const timefix = 11000;
-      compiler.plugin('watch-run', (watching, callback) => {
-        watching.startTime += timefix;
-        callback();
-      });
-      compiler.plugin('done', stats => {
+      let isFirstCompile = true;
+      const urls = prepareUrls(PROTOCOL, HOST, port);
+      compiler.hooks.done.tap('af-webpack dev', stats => {
         send({ type: DONE });
-        stats.startTime -= timefix;
+
+        if (stats.hasErrors()) {
+          return;
+        }
+
+        let copied = '';
+        if (isFirstCompile) {
+          require('clipboardy').write(urls.localUrlForBrowser);
+          copied = chalk.dim('(copied to clipboard)');
+        }
+
+        console.log();
+        console.log(
+          [
+            `  App running at:`,
+            `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
+            `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+          ].join('\n'),
+        );
+        console.log();
+
+        if (isFirstCompile) {
+          isFirstCompile = false;
+
+          if (openBrowserOpts) {
+            openBrowser(urls.localUrlForBrowser);
+          }
+        }
+
         onCompileDone();
       });
-      compiler.plugin('invalid', () => {
-        send({ type: COMPILING });
-        onCompileInvalid();
-      });
+
       const serverConfig = {
         disableHostCheck: true,
         compress: true,
@@ -94,13 +110,21 @@ export default function dev({
           }
         },
       };
-      const devServer = new WebpackDevServer(compiler, serverConfig);
+      const server = new WebpackDevServer(compiler, serverConfig);
+
+      ['SIGINT', 'SIGTERM'].forEach(signal => {
+        process.on(signal, () => {
+          server.close(() => {
+            process.exit(0);
+          });
+        });
+      });
 
       if (beforeServer) {
-        beforeServer(devServer);
+        beforeServer(server);
       }
 
-      devServer.listen(port, HOST, err => {
+      server.listen(port, HOST, err => {
         if (err) {
           console.log(err);
           return;
@@ -108,13 +132,10 @@ export default function dev({
         if (isInteractive) {
           clearConsole();
         }
-        console.log(chalk.cyan('\nStarting the development server...\n'));
-        if (openBrowserOpts) {
-          openBrowser(urls.localUrlForBrowser);
-        }
+        console.log(chalk.cyan('Starting the development server...\n'));
         send({ type: STARTING });
         if (afterServer) {
-          afterServer(devServer);
+          afterServer(server);
         }
       });
     })

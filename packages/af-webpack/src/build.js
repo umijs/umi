@@ -6,7 +6,7 @@ import isPlainObject from 'is-plain-object';
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
 import printBuildError from 'react-dev-utils/printBuildError';
 import { printFileSizesAfterBuild } from 'react-dev-utils/FileSizeReporter';
-import { warnIfExists as warnIfWebpackConfigExists } from './applyWebpackConfig';
+import { warnIfExists as warnIfWebpackConfigExists } from './getConfig/applyWebpackConfig';
 
 const debug = require('debug')('af-webpack:build');
 

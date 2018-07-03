@@ -7,9 +7,7 @@ import getConfig from '../src/getConfig';
 
 process.env.NODE_ENV = 'production';
 process.env.COMPRESS = 'none';
-process.env.ESLINT = 'none';
-process.env.TSLINT = 'none';
-process.env.__FROM_TEST = true;
+process.env.__FROM_UMI_TEST = true;
 
 function getEntry(cwd) {
   if (existsSync(join(cwd, 'index.ts'))) {
@@ -26,13 +24,15 @@ function build(opts, done) {
   const webpackConfig = getConfig({
     ...opts,
     ...userConfig,
+    babel: {
+      presets: [require.resolve('babel-preset-umi')],
+    },
+    entry: {
+      index: getEntry(opts.cwd),
+    },
   });
-  webpackConfig.entry = {
-    index: getEntry(opts.cwd),
-  };
   webpackConfig.output.path = join(opts.cwd, 'dist');
-  const compiler = webpack(webpackConfig);
-  compiler.run(err => {
+  webpack(webpackConfig, err => {
     if (err) {
       throw new Error(err);
     } else {
@@ -74,7 +74,7 @@ describe('build', () => {
           {
             cwd,
             outputPath: join(cwd, 'dist'),
-            disableCSSModules: dir.indexOf('cssModulesExcludes') === -1,
+            disableCSSModules: dir.indexOf('css-modules-exclude') === -1,
           },
           () => {
             try {
