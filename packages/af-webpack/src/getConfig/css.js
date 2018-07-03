@@ -220,7 +220,7 @@ export default function(webpackConfig, opts) {
       .use(require('mini-css-extract-plugin'), [
         {
           filename: `[name]${hash}.css`,
-          allChunks: true,
+          chunkFilename: `[name]${hash}.chunk.css`,
         },
       ]);
   }

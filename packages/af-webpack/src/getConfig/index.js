@@ -50,13 +50,14 @@ export default function(opts) {
     .end()
     .extensions.merge([
       '.web.js',
-      '.web.jsx',
-      '.web.ts',
-      '.web.tsx',
+      '.mjs',
       '.js',
       '.json',
+      '.web.jsx',
       '.jsx',
+      '.web.ts',
       '.ts',
+      '.web.tsx',
       '.tsx',
     ])
     .end()
@@ -77,6 +78,13 @@ export default function(opts) {
     .add('node_modules')
     .add(join(__dirname, '../../node_modules'))
     .end();
+
+  webpackConfig.optimization
+    .splitChunks({
+      chunks: 'all',
+      name: 'vendors',
+    })
+    .runtimeChunk(true);
 
   // module -> exclude
   const DEFAULT_INLINE_LIMIT = 10000;
