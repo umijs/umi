@@ -1,5 +1,19 @@
 import UglifyPlugin from 'uglifyjs-webpack-plugin';
+import isPlainObject from 'is-plain-object';
 import uglifyOptions from './uglifyOptions';
+
+function mergeConfig(config, userConfig) {
+  if (typeof userConfig === 'function') {
+    return userConfig(config);
+  } else if (isPlainObject(userConfig)) {
+    return {
+      ...config,
+      ...userConfig,
+    };
+  } else {
+    return config;
+  }
+}
 
 export default function(webpackConfig, opts) {
   const disableCompress = process.env.COMPRESS === 'none';
@@ -43,10 +57,15 @@ export default function(webpackConfig, opts) {
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
     webpackConfig.optimization.minimizer([
-      new UglifyPlugin({
-        ...uglifyOptions,
-        sourceMap: !!opts.devtool,
-      }),
+      new UglifyPlugin(
+        mergeConfig(
+          {
+            ...uglifyOptions,
+            sourceMap: !!opts.devtool,
+          },
+          opts.uglifyJSOptions,
+        ),
+      ),
     ]);
   }
 }

@@ -1,6 +1,17 @@
+/**
+ * ref:
+ * - https://github.com/facebook/create-react-app/blob/581c453/packages/react-scripts/config/webpack.config.prod.js#L120-L154
+ * - https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/uglifyOptions.js
+ */
 export default {
   uglifyOptions: {
+    parse: {
+      ecma: 8,
+    },
     compress: {
+      ecma: 5,
+      warnings: false,
+
       // turn off flags with small gains to speed up minification
       arrows: false,
       collapse_vars: false, // 0.3kb
@@ -33,6 +44,11 @@ export default {
     },
     mangle: {
       safari10: true,
+    },
+    output: {
+      ecma: 5,
+      comments: false,
+      ascii_only: true,
     },
   },
   sourceMap: false,
