@@ -93,11 +93,17 @@ export default function(opts) {
 
   // module -> exclude
   const DEFAULT_INLINE_LIMIT = 10000;
-  webpackConfig.module
+  const rule = webpackConfig.module
     .rule('exclude')
     .exclude.add(/\.json$/)
     .add(/\.(js|jsx|ts|tsx)$/)
-    .add(/\.(css|less|scss|sass)$/)
+    .add(/\.(css|less|scss|sass)$/);
+  if (opts.urlLoaderExcludes) {
+    opts.urlLoaderExcludes.forEach(exclude => {
+      rule.add(exclude);
+    });
+  }
+  rule
     .end()
     .use('url-loader')
     .loader(require.resolve('url-loader'))
@@ -110,7 +116,10 @@ export default function(opts) {
     cacheDirectory: process.env.BABEL_CACHE !== 'none', // enable by default
     babelrc: !!process.env.BABELRC, // disable by default
   };
+  const babel = opts.babel || {};
   const babelOpts = {
+    presets: [...(babel.presets || []), ...(opts.extraBabelPresets || [])],
+    plugins: [...(babel.plugins || []), ...(opts.extraBabelPlugins || [])],
     ...opts.babel,
     ...babelOptsCommon,
   };
