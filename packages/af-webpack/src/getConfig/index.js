@@ -1,8 +1,6 @@
 import Config from 'webpack-chain';
 import { join, dirname, resolve, relative } from 'path';
 import { existsSync } from 'fs';
-import assert from 'assert';
-import isPlainObject from 'is-plain-object';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
 import { applyWebpackConfig } from './applyWebpackConfig';
@@ -16,22 +14,19 @@ export default function(opts) {
   const { cwd } = opts;
   const isDev = process.env.NODE_ENV === 'development';
 
-  assert(
-    opts.entry && isPlainObject(opts.entry),
-    `opts.entry must be Plain Object, but got ${opts.entry}`,
-  );
-
   const webpackConfig = new Config();
 
   // mode
   webpackConfig.mode('development');
 
   // entry
-  for (const key in opts.entry) {
-    const entry = webpackConfig.entry(key);
-    makeArray(opts.entry[key]).forEach(file => {
-      entry.add(file);
-    });
+  if (opts.entry) {
+    for (const key in opts.entry) {
+      const entry = webpackConfig.entry(key);
+      makeArray(opts.entry[key]).forEach(file => {
+        entry.add(file);
+      });
+    }
   }
 
   // output
@@ -85,10 +80,10 @@ export default function(opts) {
   if (!opts.disableDynamicImport && !process.env.__FROM_UMI_TEST) {
     webpackConfig.optimization
       .splitChunks({
-        chunks: 'all',
+        chunks: 'async',
         name: 'vendors',
       })
-      .runtimeChunk(true);
+      .runtimeChunk(false);
   }
 
   // module -> exclude
