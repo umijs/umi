@@ -1,5 +1,5 @@
 import Config from 'webpack-chain';
-import { join, dirname, resolve } from 'path';
+import { join, dirname, resolve, relative } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
@@ -40,7 +40,10 @@ export default function(opts) {
     .path(absOutputPath)
     .filename(`[name].js`)
     .chunkFilename(`[name].async.js`)
-    .publicPath(opts.publicPath || undefined);
+    .publicPath(opts.publicPath || undefined)
+    .devtoolModuleFilenameTemplate(info => {
+      return relative(opts.cwd, info.absoluteResourcePath).replace(/\\/g, '/');
+    });
 
   // resolve
   webpackConfig.resolve
@@ -79,12 +82,14 @@ export default function(opts) {
     .add(join(__dirname, '../../node_modules'))
     .end();
 
-  webpackConfig.optimization
-    .splitChunks({
-      chunks: 'all',
-      name: 'vendors',
-    })
-    .runtimeChunk(true);
+  if (!process.env.__FROM_UMI_TEST) {
+    webpackConfig.optimization
+      .splitChunks({
+        chunks: 'all',
+        name: 'vendors',
+      })
+      .runtimeChunk(true);
+  }
 
   // module -> exclude
   const DEFAULT_INLINE_LIMIT = 10000;

@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import glob from 'glob';
 import { join } from 'path';
 import { readFileSync, readdirSync, existsSync } from 'fs';
+import rimraf from 'rimraf';
 import getUserConfig from '../src/getUserConfig';
 import getConfig from '../src/getConfig';
 
@@ -31,7 +32,9 @@ function build(opts, done) {
       index: getEntry(opts.cwd),
     },
   });
-  webpackConfig.output.path = join(opts.cwd, 'dist');
+  const outputPath = join(opts.cwd, 'dist');
+  rimraf.sync(outputPath);
+  webpackConfig.output.path = outputPath;
   webpack(webpackConfig, err => {
     if (err) {
       throw new Error(err);
