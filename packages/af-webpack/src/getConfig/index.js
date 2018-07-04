@@ -82,7 +82,7 @@ export default function(opts) {
     .add(join(__dirname, '../../node_modules'))
     .end();
 
-  if (!process.env.__FROM_UMI_TEST) {
+  if (!opts.disableDynamicImport && !process.env.__FROM_UMI_TEST) {
     webpackConfig.optimization
       .splitChunks({
         chunks: 'all',
