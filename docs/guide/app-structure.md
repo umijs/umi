@@ -16,10 +16,13 @@
         ├── .umi/                  // dev 临时目录，需添加到 .gitignore
         ├── .umi-production/       // build 临时目录，会自动删除
         ├── document.ejs           // HTML 模板
-        ├── 404.js                 // 404 页面
-        ├── page1.js               // 页面 1，任意命名，导出 react 组件
-        ├── page1.test.js          // 用例文件，umi test 会匹配所有 .test.js 和 .e2e.js 结尾的文件
-        └── page2.js               // 页面 2，任意命名
+        ├── 404.js                 // 404 页面 访问路由：/404
+        ├── page1.js               // 页面 1，任意命名，导出 react 组件 访问路由：/page1
+        ├── page1.test.js          // 用例文件，umi test 会匹配所有 .test.js 和 .e2e.js 结尾的文件 
+        ├── page2.js               // 页面 2，任意命名，导出 react 组件 访问路由：/page2
+        └── page3                  // 包含子路由的页面
+            ├──_layout.js          // 嵌套路由 page3 的局部布局
+            └── page4.js           // 页面 2，任意命名，导出 react 组件 访问路由：/page3/page4
     ├── global.css                 // 约定的全局样式文件，自动引入，也可以用 global.less
     ├── global.js                  // 可以在这里加入 polyfill
 ├── .umirc.js                      // umi 配置
