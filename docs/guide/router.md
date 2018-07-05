@@ -258,6 +258,24 @@ export default (args) => {
 
 注：`PrivateRoute` 里渲染子组件是通过 `render` 方法，**而非 Component 组件属性**。
 
+
+如果希望通过编程方式批量设置权限路由，可以利用`umi-plugin-routes`插件，修改`.umirc.js`如下：
+
+```javascript
+export default {
+  plugins: [
+    ['umi-plugin-routes', {
+      update(routes) {
+        // 指定Route属性为你的权限路由组件
+        // 例如：routes[0].Route = './routes/PrivateRoute.js';
+        return routes;
+      },
+    }],
+  ],
+}
+```
+
+
 ## 配置式路由
 
 umi 推荐的路由方式是基于目录和文件的约定的，但如果你倾向于使用配置式的路由，可以在 `.umirc.js` 里配置 `routes` ，此配置存在时则不会对 pages 目录做解析。
