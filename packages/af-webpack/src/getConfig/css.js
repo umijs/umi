@@ -14,7 +14,9 @@ export default function(webpackConfig, opts) {
   const cssOpts = {
     importLoaders: 1,
     ...(isDev
-      ? {}
+      ? {
+          sourceMap: !opts.disableCSSSourceMap,
+        }
       : {
           minimize: !(
             process.env.CSS_COMPRESS === 'none' ||
