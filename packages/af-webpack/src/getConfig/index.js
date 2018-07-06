@@ -1,6 +1,7 @@
 import Config from 'webpack-chain';
 import { join, dirname, resolve, relative } from 'path';
 import { existsSync } from 'fs';
+import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
 import { applyWebpackConfig } from './applyWebpackConfig';
@@ -292,6 +293,14 @@ export default function(opts) {
     require('./dev').default(webpackConfig, opts);
   } else {
     require('./prod').default(webpackConfig, opts);
+  }
+
+  if (opts.chainConfig) {
+    assert(
+      typeof opts.chainConfig === 'function',
+      `opts.chainConfig should be function, but got ${opts.chainConfig}`,
+    );
+    opts.chainConfig(webpackConfig);
   }
 
   return applyWebpackConfig(opts.cwd, webpackConfig.toConfig());
