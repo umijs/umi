@@ -12,7 +12,6 @@ export default function(service = {}) {
     cwd,
     config,
     babel,
-    hash,
     routes,
     libraryAlias,
     libraryName,
@@ -181,11 +180,24 @@ export default function(service = {}) {
               }),
         }),
   };
+
+  // 修改传给 af-webpack 的配置项
+  // deprecated
   afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
     initialValue: afWebpackOpts,
   });
 
-  let webpackConfig = getConfig(afWebpackOpts);
+  // 通过 webpack-chain 扩展 webpack 配置
+  let webpackConfig = getConfig(afWebpackOpts, {
+    webpackChain(webpackConfig) {
+      service.applyPlugins('chainWebpackConfig', {
+        args: { webpackConfig },
+      });
+    },
+  });
+
+  // 直接修改 webpack 对象
+  // deprecated
   webpackConfig = service.applyPlugins('modifyWebpackConfig', {
     initialValue: webpackConfig,
   });

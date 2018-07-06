@@ -3,10 +3,6 @@ import serveStatic from 'serve-static';
 import buildDll from './buildDll';
 
 export default function(api, opts = {}) {
-  // TODO: generateDll command
-  // api.registerCommand('generateDll', () => {
-  // });
-
   if (process.env.NODE_ENV !== 'development') return;
 
   const {
