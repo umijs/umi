@@ -93,7 +93,6 @@ export default function(service = {}) {
       process.env.HTML === 'none'
         ? paths.absOutputPath
         : join(paths.absOutputPath, staticDirectory),
-    hash: !isDev && !config.disableHash,
 
     // 扩展
     babel: webpackRCConfig.babel || {
