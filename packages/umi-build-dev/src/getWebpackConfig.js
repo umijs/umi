@@ -110,8 +110,6 @@ export default function(service = {}) {
     ],
     cssModulesExcludes: [...(webpackRCConfig.cssModulesExcludes || [])],
     define: {
-      // For registerServiceWorker.js
-      'process.env.BASE_URL': process.env.BASE_URL,
       'process.env.BIGFISH_COMPAT': process.env.BIGFISH_COMPAT,
       __UMI_HTML_SUFFIX: !!(
         config.exportStatic &&

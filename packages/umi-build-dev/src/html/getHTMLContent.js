@@ -63,8 +63,8 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   }
 
   let routerBaseStr;
-  if (process.env.BASE_URL) {
-    routerBaseStr = JSON.stringify(process.env.BASE_URL);
+  if (config.base) {
+    routerBaseStr = JSON.stringify(config.base);
   } else {
     routerBaseStr = path
       ? `location.pathname.split('/').slice(0, -${path.split('/').length -
