@@ -11,6 +11,7 @@
     "ejs": "^2.5.7",
     "is-windows": "^1.0.2",
     "path-is-absolute": "^1.0.1",
+    "path-to-regexp": "^2.2.1",
     "query-string": "^5.0.0",
     "slash2": "^2.0.0",
     "umi-build-dev": "^0.20.7",

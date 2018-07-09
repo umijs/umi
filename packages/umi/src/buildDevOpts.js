@@ -38,6 +38,7 @@ export default function(opts = {}) {
       router: require.resolve('./router'),
       withRouter: require.resolve('./withRouter'),
       _renderRoutes: require.resolve('./renderRoutes'),
+      _routeMatchers: require.resolve('./routeMatchers'),
       _createHistory: require.resolve('./createHistory'),
     },
     hash,
