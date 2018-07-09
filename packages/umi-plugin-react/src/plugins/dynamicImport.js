@@ -4,5 +4,11 @@ export default function(api) {
   } = api.service;
 
   if (react.dynamicImport) {
+    api.register('modifyAFWebpackOpts', ({ memo }) => {
+      return {
+        ...memo,
+        disableDynamicImport: false,
+      };
+    });
   }
 }

@@ -13,8 +13,7 @@ export default function(api) {
         .set('react-dom', compatDirname('preact-compat/package.json'), cwd)
         .set(
           'create-react-class',
-          compatDirname('preact-compat/lib/create-react-class'),
-          cwd,
+          compatDirname('preact-compat/lib/create-react-class', cwd),
         );
     }
   });

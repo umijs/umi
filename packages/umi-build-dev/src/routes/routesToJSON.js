@@ -46,7 +46,12 @@ export default (routes, service, requestedMap, env) => {
           let isCompiling = false;
           const compilingPath = winPath(paths.absCompilingComponentPath);
 
-          if (env === 'production' && !config.disableDynamicImport) {
+          // TODO: 这里强依赖了 umi-plugin-react 的配置项
+          if (
+            env === 'production' &&
+            config.react &&
+            config.react.dynamicImport
+          ) {
             // 按需加载
             ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
           } else {
