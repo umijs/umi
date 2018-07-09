@@ -11,19 +11,30 @@ export default function(api) {
     return memo;
   });
 
+  const {
+    config: { react = {} },
+  } = api.service;
+
   // mobile
-  require('./plugins/mobile/hd').default(api);
-  require('./plugins/mobile/fastclick').default(api);
+  if (react.hd) require('./plugins/mobile/hd').default(api, react.hd);
+  if (react.fastClick)
+    require('./plugins/mobile/fastclick').default(api, react.fastClick);
 
   // performance
-  require('./plugins/library').default(api);
-  require('./plugins/dynamicImport').default(api);
+  if (react.library) require('./plugins/library').default(api, react.library);
+  if (react.dynamicImport)
+    require('./plugins/dynamicImport').default(api, react.dynamicImport);
+  if (react.dll) require('umi-plugin-dll').default(api, react.dll);
+  if (react.hardSource) require('./plugins/hardSource').default(api);
   // TODO: serviceWorker
-  require('./plugins/dll').default(api);
-  require('./plugins/hardSource').default(api);
 
   // deploy
   // TODO: loading
+
+  // misc
+  if (react.dva) require('umi-plugin-dva').default(api, react.dva);
+  if (react.polyfills)
+    require('./plugins/polyfills').default(api, react.polyfills);
 
   // antd + antd-mobile
   require('./plugins/antd').default(api);

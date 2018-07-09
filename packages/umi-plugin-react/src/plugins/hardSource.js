@@ -1,10 +1,6 @@
-export default function(api) {
-  const {
-    config: { react = {} },
-  } = api.service;
-
+export default function() {
   // 允许用户通过环境变量覆盖配置
-  if (react.hardSource && !('HARD_SOURCE' in process.env)) {
+  if (!('HARD_SOURCE' in process.env)) {
     process.env.HARD_SOURCE = true;
   }
 }
