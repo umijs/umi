@@ -31,7 +31,7 @@ Plugin ${path} can't be resolved, please make sure you have installed it.
 
 Try:
 
-  npm install ${path} --save-dev        
+  npm install ${path} --save-dev
         `.trim(),
         );
       }
@@ -60,12 +60,9 @@ Try:
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',
-    './plugins/antd',
-    './plugins/fastclick',
-    './plugins/hd',
     './plugins/mock',
     './plugins/proxy',
-    './plugins/hash-history',
+    './plugins/history',
     './plugins/afwebpack-config',
     './plugins/404', // 404 must after mock
   ];
