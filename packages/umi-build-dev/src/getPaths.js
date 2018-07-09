@@ -50,6 +50,5 @@ export default function(service) {
     defaultRouterTplPath: template('router.js.tpl'),
     defaultRegisterSWTplPath: template('registerServiceWorker.js'),
     defaultDocumentPath: template('document.ejs'),
-    absCompilingComponentPath: join(__dirname, 'Compiling.js'),
   };
 }

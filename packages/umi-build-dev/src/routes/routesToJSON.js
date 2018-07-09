@@ -6,7 +6,7 @@ import normalizeEntry from '../normalizeEntry';
 let targetLevel = null;
 let level = 0;
 
-export default (routes, service, requestedMap, env) => {
+export default (routes, service, env) => {
   if (process.env.CODE_SPLITTING_LEVEL) {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
@@ -43,8 +43,6 @@ export default (routes, service, requestedMap, env) => {
             : winPath(relative(paths.tmpDirPath, component));
 
           let ret;
-          let isCompiling = false;
-          const compilingPath = winPath(paths.absCompilingComponentPath);
 
           // TODO: 这里强依赖了 umi-plugin-react 的配置项
           if (
@@ -56,32 +54,13 @@ export default (routes, service, requestedMap, env) => {
             ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
           } else {
             // 非按需加载
-            if (
-              env === 'production' ||
-              // 无 socket 时按需编译体验很差，所以禁用
-              process.env.SOCKET_SERVER === 'none' ||
-              process.env.COMPILE_ON_DEMAND === 'none' ||
-              !process.env.COMPILE_ON_DEMAND ||
-              !path ||
-              requestedMap[path]
-            ) {
-              ret = `require('${importPath}').default`;
-            } else {
-              isCompiling = true;
-              let newPath = null;
-              if (config.exportStatic && config.exportStatic.htmlSuffix) {
-                newPath = path.replace('(.html)?', '');
-              }
-              ret = `() => React.createElement(require('${compilingPath}').default, { route: '${newPath ||
-                path}' })`;
-            }
+            ret = `require('${importPath}').default`;
           }
 
           if (applyPlugins) {
             ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
-                isCompiling,
                 pageJSFile: importPath,
                 importPath,
                 webpackChunkName,

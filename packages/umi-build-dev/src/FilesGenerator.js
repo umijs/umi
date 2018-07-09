@@ -9,7 +9,6 @@ import { matchRoutes } from 'react-router-config';
 import getRouteConfig from './routes/getRouteConfig';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
-import { getRequest } from './requestCache';
 import {
   EXT_LIST,
   PLACEHOLDER_HISTORY_MODIFIER,
@@ -194,7 +193,6 @@ if (process.env.NODE_ENV === 'production') {
 
     let routes = this.getRoutesJSON({
       env: process.env.NODE_ENV,
-      requested: getRequest(),
     });
     routes = stripJSONQuote(routes);
 
@@ -210,15 +208,6 @@ if (process.env.NODE_ENV === 'production') {
       .replace(/<%= libraryName %>/g, libraryName);
   }
 
-  getRequestedRoutes(requested) {
-    return Object.keys(requested).reduce((memo, pathname) => {
-      matchRoutes(this.service.routes, pathname).forEach(({ route }) => {
-        memo[route.path] = 1;
-      });
-      return memo;
-    }, {});
-  }
-
   fixHtmlSuffix(routes) {
     routes.forEach(route => {
       if (route.routes) {
@@ -229,9 +218,8 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRoutesJSON(opts = {}) {
-    const { env, requested = {} } = opts;
-    const requestedMap = this.getRequestedRoutes(requested);
-    return routesToJSON(this.service.routes, this.service, requestedMap, env);
+    const { env } = opts;
+    return routesToJSON(this.service.routes, this.service, env);
   }
 
   getRouterContent() {

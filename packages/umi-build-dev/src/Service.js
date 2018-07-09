@@ -21,7 +21,6 @@ import FilesGenerator from './FilesGenerator';
 import HtmlGenerator from './html/HtmlGenerator';
 import createRouteMiddleware from './middlewares/createRouteMiddleware';
 import PluginAPI from './PluginAPI';
-import createUmiDevMiddleware from './middlewares/createUmiDevMiddleware';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -145,14 +144,7 @@ export default class Service {
     this.webpackConfig = webpackConfig;
 
     const extraMiddlewares = this.applyPlugins('modifyMiddlewares', {
-      initialValue: [
-        createUmiDevMiddleware(this, {
-          rebuildEntry() {
-            filesGenerator.rebuild();
-          },
-        }),
-        createRouteMiddleware(this),
-      ],
+      initialValue: [createRouteMiddleware(this)],
     });
 
     await this.applyPluginsAsync('beforeDevAsync');

@@ -4,6 +4,7 @@ const service = {
   config: {},
   paths: {
     cwd: '$CWD$',
+    absSrcPath: '$SRC$',
     tmpDirPath: './pages/.umi',
     absCompilingComponentPath: '$COMPILING$',
   },
@@ -38,11 +39,13 @@ describe('routesToJSON', () => {
     ]);
   });
 
-  it('dynamic load when env is production', () => {
+  it('dynamic load when env is production and react.dynamicImport is true', () => {
     const json = routesToJSON(
       [{ component: './pages/A' }],
-      service,
-      {},
+      {
+        ...service,
+        config: { react: { dynamicImport: true } },
+      },
       'production',
     );
     expect(JSON.parse(json)).toEqual([
@@ -63,8 +66,10 @@ describe('routesToJSON', () => {
           routes: [{ component: './pages/B/B' }, { component: './pages/B/C' }],
         },
       ],
-      service,
-      {},
+      {
+        ...service,
+        config: { react: { dynamicImport: true } },
+      },
       'production',
     );
     expect(JSON.parse(json)).toEqual([
@@ -100,8 +105,10 @@ describe('routesToJSON', () => {
           routes: [{ component: './pages/B/B' }, { component: './pages/B/C' }],
         },
       ],
-      service,
-      {},
+      {
+        ...service,
+        config: { react: { dynamicImport: true } },
+      },
       'production',
     );
     expect(JSON.parse(json)).toEqual([
@@ -132,15 +139,19 @@ describe('routesToJSON', () => {
       [{ component: './pages/A' }],
       {
         ...service,
-        config: { loading: './LoadingComponent' },
+        config: {
+          react: {
+            dynamicImport: true,
+            loadingComponent: './LoadingComponent',
+          },
+        },
       },
-      {},
       'production',
     );
     expect(JSON.parse(json)).toEqual([
       {
         component:
-          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$CWD$/LoadingComponent').default })",
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$SRC$/LoadingComponent').default })",
       },
     ]);
   });
@@ -150,67 +161,31 @@ describe('routesToJSON', () => {
       [{ component: './pages/A' }],
       {
         ...service,
-        config: { loading: 'AAA\\LoadingComponent' },
+        config: {
+          react: {
+            dynamicImport: true,
+            loadingComponent: 'AAA\\LoadingComponent',
+          },
+        },
       },
-      {},
       'production',
     );
     expect(JSON.parse(json)).toEqual([
       {
         component:
-          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$CWD$/AAA/LoadingComponent').default })",
+          "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), { loading: require('$SRC$/AAA/LoadingComponent').default })",
       },
     ]);
   });
 
-  it('disable dyamic load if config.disableDynamicImport is set', () => {
+  it('disable dynamicImport by default', () => {
     const json = routesToJSON(
       [{ component: './pages/A' }],
-      {
-        ...service,
-        config: { disableDynamicImport: true },
-      },
-      {},
+      service,
       'production',
     );
     expect(JSON.parse(json)).toEqual([
       { component: "require('../A').default" },
-    ]);
-  });
-
-  it('show compiling if have path', () => {
-    const json = routesToJSON(
-      [{ component: './pages/A', path: '/a' }],
-      service,
-      {},
-    );
-    expect(JSON.parse(json)).toEqual([
-      {
-        component:
-          "() => React.createElement(require('$COMPILING$').default, { route: '/a' })",
-        path: '/a',
-      },
-    ]);
-  });
-
-  it('do not show compiling if have requested', () => {
-    const json = routesToJSON(
-      [
-        { component: './pages/A', path: '/a' },
-        { component: './pages/B', path: '/b' },
-      ],
-      service,
-      {
-        '/a': 1,
-      },
-    );
-    expect(JSON.parse(json)).toEqual([
-      { component: "require('../A').default", path: '/a' },
-      {
-        component:
-          "() => React.createElement(require('$COMPILING$').default, { route: '/b' })",
-        path: '/b',
-      },
     ]);
   });
 
@@ -233,17 +208,14 @@ describe('routesToJSON', () => {
         ...service,
         config: { exportStatic: { htmlSuffix: true } },
       },
-      {},
     );
     expect(JSON.parse(json)).toEqual([
       {
-        component:
-          "() => React.createElement(require('$COMPILING$').default, { route: '/a' })",
+        component: "require('../A').default",
         path: '/a(.html)?',
       },
       {
-        component:
-          "() => React.createElement(require('$COMPILING$').default, { route: '/b' })",
+        component: "require('../B').default",
         path: '/b',
       },
     ]);
@@ -257,6 +229,7 @@ describe('routesToJSON', () => {
       [{ path: '/', component: './pages/A' }],
       {
         ...service,
+        config: { react: { dynamicImport: true } },
         applyPlugins(name, opts) {
           applyPluginName = name;
           applyPluginOpts = opts;
@@ -264,7 +237,6 @@ describe('routesToJSON', () => {
           return `${opts.initialValue}__Modified`;
         },
       },
-      {},
       'production',
     );
     expect(JSON.parse(json)).toEqual([
@@ -280,11 +252,10 @@ describe('routesToJSON', () => {
       initialValue:
         "dynamic(() => import(/* webpackChunkName: ^pages__A^ */'../A'), {})",
       args: {
-        isCompiling: false,
         pageJSFile: '../A',
         importPath: '../A',
         webpackChunkName: 'pages__A',
-        config: {},
+        config: { react: { dynamicImport: true } },
       },
     });
   });
