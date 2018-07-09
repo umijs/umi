@@ -18,7 +18,6 @@ export default function(service = {}) {
     staticDirectory,
     extraResolveModules,
     paths,
-    preact,
   } = service;
   const isDev = process.env.NODE_ENV === 'development';
 
@@ -46,26 +45,10 @@ export default function(service = {}) {
   const pageCount = process.env.PAGE_COUNT || getPageCountFromRoutes(routes);
   debug(`pageCount: ${pageCount}`);
 
-  // default react, support config with preact
-  // 优先级：用户配置 > preact argument > default (React)
-  const preactAlias = {
-    react: dirname(require.resolve('preact-compat/package.json')),
-    'react-dom': dirname(require.resolve('preact-compat/package.json')),
-    'create-react-class': require.resolve(
-      'preact-compat/lib/create-react-class',
-    ),
-  };
   const reactAlias = {
     react: dirname(require.resolve('react/package.json')),
     'react-dom': dirname(require.resolve('react-dom/package.json')),
   };
-  let preactOrReactAlias = preact ? preactAlias : reactAlias;
-  if (config.preact === true) {
-    preactOrReactAlias = preactAlias;
-  }
-  if (config.preact === false) {
-    preactOrReactAlias = reactAlias;
-  }
 
   // 关于为啥放 webpack 而不放 babel-plugin-module-resolver 里
   // 详见：https://tinyletter.com/sorrycc/letters/babel
@@ -87,24 +70,15 @@ export default function(service = {}) {
   const pkgPath = join(cwd, 'package.json');
   if (existsSync(pkgPath)) {
     const { dependencies = {} } = require(pkgPath); // eslint-disable-line
-    if (preact) {
-      if (dependencies['preact-compat']) {
-        libAlias.react = libAlias['react-dom'] = dirname(
-          // eslint-disable-line
-          require.resolve(join(cwd, 'node_modules/preact-compat/package.json')),
-        );
-      }
-    } else {
-      if (dependencies.react) {
-        libAlias.react = dirname(
-          require.resolve(join(cwd, 'node_modules/react/package.json')),
-        );
-      }
-      if (dependencies['react-dom']) {
-        libAlias['react-dom'] = dirname(
-          require.resolve(join(cwd, 'node_modules/react-dom/package.json')),
-        );
-      }
+    if (dependencies.react) {
+      libAlias.react = dirname(
+        require.resolve(join(cwd, 'node_modules/react/package.json')),
+      );
+    }
+    if (dependencies['react-dom']) {
+      libAlias['react-dom'] = dirname(
+        require.resolve(join(cwd, 'node_modules/react-dom/package.json')),
+      );
     }
   }
 
@@ -147,7 +121,7 @@ export default function(service = {}) {
       ...(webpackRCConfig.define || {}),
     },
     alias: {
-      ...preactOrReactAlias,
+      ...reactAlias,
       ...libAlias,
       ...(webpackRCConfig.alias || {}),
     },

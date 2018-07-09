@@ -1,0 +1,26 @@
+{
+  "name": "umi-plugin-react",
+  "version": "0.0.1-alpha.1",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "antd": "^3.6.5",
+    "antd-mobile": "^2.2.1",
+    "preact": "^8.2.9",
+    "preact-compat": "^3.18.0"
+  }
+}
