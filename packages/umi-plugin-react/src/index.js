@@ -20,7 +20,7 @@ export default function(api) {
   require('./plugins/dynamicImport').default(api);
   // TODO: serviceWorker
   require('./plugins/dll').default(api);
-  // TODO: hard-source
+  require('./plugins/hardSource').default(api);
 
   // deploy
   // TODO: loading
