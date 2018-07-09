@@ -201,11 +201,10 @@ ${ROUTER_MODIFIER}
         return memo;
       }
 
-      const { loading } = config;
       let loadingOpts = '';
-      if (loading) {
+      if (opts.loadingComponent) {
         loadingOpts = `LoadingComponent: require('${winPath(
-          join(paths.cwd, loading),
+          join(paths.absSrcPath, opts.loadingComponent),
         )}').default,`;
       }
       let ret = `

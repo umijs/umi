@@ -30,9 +30,11 @@ export default function(api) {
 
   // deploy
   // TODO: loading
+  if (react.loadingComponent)
+    require('./plugins/loadingComponent').default(api);
 
   // misc
-  if (react.dva) require('umi-plugin-dva').default(api, react.dva);
+  if (react.dva) require('umi-plugin-dva').default(api, react.dva, react);
   if (react.polyfills)
     require('./plugins/polyfills').default(api, react.polyfills);
 

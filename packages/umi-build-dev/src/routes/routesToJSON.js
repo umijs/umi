@@ -20,11 +20,11 @@ export default (routes, service, requestedMap, env) => {
   const { config, applyPlugins, paths } = service;
   patchRoutes(routes);
 
-  const { loading } = config;
+  // TODO: 这里和 umi-plugin-react 强绑定了
   let loadingOpts = '';
-  if (loading) {
+  if (config.react && config.react.loadingComponent) {
     loadingOpts = ` loading: require('${winPath(
-      join(paths.cwd, loading),
+      join(paths.absSrcPath, config.react.loadingComponent),
     )}').default `;
   }
 
