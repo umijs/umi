@@ -19,6 +19,11 @@ export default function(api) {
   require('./plugins/library').default(api);
   require('./plugins/dynamicImport').default(api);
   // TODO: serviceWorker
+  require('./plugins/dll').default(api);
+  // TODO: hard-source
+
+  // deploy
+  // TODO: loading
 
   // antd + antd-mobile
   require('./plugins/antd').default(api);

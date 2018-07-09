@@ -21,6 +21,9 @@
     "antd": "^3.6.5",
     "antd-mobile": "^2.2.1",
     "preact": "^8.2.9",
-    "preact-compat": "^3.18.0"
+    "preact-compat": "^3.18.0",
+    "umi-plugin-dll": "^0.2.1",
+    "umi-plugin-dva": "^0.9.1",
+    "umi-plugin-polyfill": "^0.2.0"
   }
 }
