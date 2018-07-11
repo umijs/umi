@@ -285,12 +285,12 @@ umi 推荐的路由方式是基于目录和文件的约定的，但如果你倾�
 ```js
 export default {
   routes: [
-    { path: '/', exact: true, component: './components/a' },
-    { path: '/list', component: './pages/b', Route: './routes/PrivateRoute.js' },
-    { path: '/users', component: './pages/users/_layout',
+    { path: '/', exact: true, component: './a' },
+    { path: '/list', component: './b', Route: './routes/PrivateRoute.js' },
+    { path: '/users', component: './users/_layout',
       routes: [
-        { path: '/users/detail', exact: true, component: './pages/users/detail' },
-        { path: '/users/:id', exact: true, component: '/pages/users/id' }
+        { path: '/users/detail', exact: true, component: './users/detail' },
+        { path: '/users/:id', exact: true, component: './users/id' }
       ]
     },
   ],
@@ -299,7 +299,7 @@ export default {
 
 注意：
 
-1. component 为指向文件的相对路径，**而非 React 组件**
+1. component 为指向文件的相对于 page(s) 的路径，**而非 React 组件**
 1. 支持通过 routes 实现嵌套路由
 1. 支持通过 Route 指定权限路由
 
