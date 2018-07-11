@@ -22,7 +22,8 @@ import {
 const debug = require('debug')('umi:FilesGenerator');
 
 export default class FilesGenerator {
-  constructor(service) {
+  constructor(service, RoutesManager) {
+    this.RoutesManager = RoutesManager;
     this.service = service;
     this.routesContent = null;
     this.hasRebuildError = false;
@@ -32,7 +33,7 @@ export default class FilesGenerator {
   generate(opts = {}) {
     const { paths } = this.service;
     const { absTmpDirPath, tmpDirPath } = paths;
-    debug(`Mkdir tmp dir: ${tmpDirPath}`);
+    debug(`mkdir tmp dir: ${tmpDirPath}`);
     mkdirp(absTmpDirPath);
 
     this.generateFiles();
@@ -60,7 +61,6 @@ export default class FilesGenerator {
     const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
       initialValue: [
         paths.absPagesPath,
-        join(paths.absSrcPath, '_routes.json'),
         ...EXT_LIST.map(ext =>
           join(paths.absSrcPath, `${this.layoutDirectoryName}/index${ext}`),
         ),
@@ -113,7 +113,7 @@ export default class FilesGenerator {
   }
 
   generateEntry() {
-    const { paths, entryJSTpl, config, libraryName } = this.service;
+    const { paths, entryJSTpl, config } = this.service;
 
     // Generate umi.js
     let entryContent = readFileSync(
@@ -127,7 +127,6 @@ export default class FilesGenerator {
     entryContent = entryContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
-      .replace(/<%= libraryName %>/g, libraryName)
       .replace(
         PLACEHOLDER_RENDER,
         `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
@@ -162,13 +161,9 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   generateRouterJS() {
-    const { paths, config } = this.service;
+    const { paths } = this.service;
     const { absRouterJSPath } = paths;
-    const routes = this.service.applyPlugins('modifyRoutes', {
-      initialValue: getRouteConfig(paths, config),
-    });
-
-    this.service.setRoutes(routes);
+    this.RoutesManager.fetchRoutes();
 
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
@@ -179,7 +174,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRouterJSContent() {
-    const { routerTpl, paths, libraryName } = this.service;
+    const { routerTpl, paths } = this.service;
     const routerTplPath = routerTpl || paths.defaultRouterTplPath;
     assert(
       existsSync(routerTplPath),
@@ -204,8 +199,7 @@ if (process.env.NODE_ENV === 'production') {
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
       .replace(PLACEHOLDER_ROUTES_MODIFIER, '')
       .replace('<%= ROUTES %>', () => routes)
-      .replace(PLACEHOLDER_ROUTER, routerContent)
-      .replace(/<%= libraryName %>/g, libraryName);
+      .replace(PLACEHOLDER_ROUTER, routerContent);
   }
 
   fixHtmlSuffix(routes) {
@@ -219,7 +213,7 @@ if (process.env.NODE_ENV === 'production') {
 
   getRoutesJSON(opts = {}) {
     const { env } = opts;
-    return routesToJSON(this.service.routes, this.service, env);
+    return routesToJSON(this.RoutesManager.routes, this.service, env);
   }
 
   getRouterContent() {

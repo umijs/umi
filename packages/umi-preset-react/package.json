@@ -1,12 +1,12 @@
 {
-  "name": "umi-plugin-react",
+  "name": "umi-preset-react",
   "version": "0.0.1-alpha.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react"
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-preset-react"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-preset-react",
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
@@ -22,6 +22,7 @@
     "antd-mobile": "^2.2.1",
     "preact": "^8.2.9",
     "preact-compat": "^3.18.0",
+    "umi-utils": "^0.0.1",
     "umi-plugin-dll": "^0.2.1",
     "umi-plugin-dva": "^0.9.1",
     "umi-plugin-polyfill": "^0.2.0"

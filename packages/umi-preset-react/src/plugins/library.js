@@ -1,4 +1,4 @@
-import compatDirname from '../utils/compatDirname';
+import { compatDirname } from 'umi-utils';
 
 export default function(api, options) {
   const { cwd } = api.service;

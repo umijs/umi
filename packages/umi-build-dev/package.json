@@ -5,6 +5,7 @@
     "@babel/runtime": "7.0.0-beta.46",
     "address": "^1.0.3",
     "af-webpack": "^0.22.10",
+    "babel-preset-umi": "^0.3.0",
     "babel-plugin-import": "^1.6.4",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
@@ -36,6 +37,7 @@
     "resolve": "^1.5.0",
     "rimraf": "^2.6.1",
     "slash2": "^2.0.0",
+    "umi-utils": "^0.0.1",
     "umi-history": "^0.1.0"
   },
   "repository": {

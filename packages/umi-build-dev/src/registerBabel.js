@@ -37,6 +37,9 @@ export default function(babelPreset, opts = {}) {
   });
   registerBabel({
     only: [only.join('|')],
-    babelPreset: [babelPreset, { disableTransform: true }],
+    babelPreset: [
+      require.resolve('babel-preset-umi'),
+      { disableTransform: true },
+    ],
   });
 }

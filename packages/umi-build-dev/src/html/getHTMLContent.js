@@ -14,7 +14,7 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // 2.3 css
   // 3. 压缩
 
-  const { config, paths, webpackConfig, libraryName } = service;
+  const { config, paths, webpackConfig } = service;
 
   const pageConfig = (config.pages || {})[path] || {};
   const { document, context = {} } = pageConfig;
@@ -83,9 +83,9 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   });
 
   const cssFiles = isProduction
-    ? [getChunkFile(`${libraryName}.css`, chunksMap, isProduction)]
+    ? [getChunkFile('umi.css', chunksMap, isProduction)]
     : [];
-  const jsFiles = [getChunkFile(`${libraryName}.js`, chunksMap, isProduction)];
+  const jsFiles = [getChunkFile('umi.js', chunksMap, isProduction)];
   const cssContent = cssFiles
     // umi.css may don't exists
     .filter(file => file)

@@ -45,8 +45,22 @@ class PluginAPI {
     });
   }
 
+  registerCommand(name, opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts;
+      opts = null;
+    }
+    this.service.commands[name] = { fn, opts: opts || {} };
+  }
+
   modifyWebpackConfig(fn) {
     this.register('modifyWebpackConfig', fn);
+  }
+
+  chainWebpack(fn) {
+    this.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
+      fn(webpackConfig);
+    });
   }
 
   registerBabel(files) {

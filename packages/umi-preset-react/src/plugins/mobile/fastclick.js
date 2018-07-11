@@ -1,6 +1,7 @@
+import { winPath } from 'umi-utils';
+
 export default function(api, options) {
   const { IMPORT } = api.placeholder;
-  const { winPath } = api.utils;
 
   api.register('modifyEntryFile', ({ memo }) => {
     const libraryPath = winPath(

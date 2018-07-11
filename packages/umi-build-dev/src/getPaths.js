@@ -10,7 +10,8 @@ function template(path) {
 }
 
 export default function(service) {
-  const { cwd, tmpDirectory, outputPath, libraryName } = service;
+  const { cwd, config } = service;
+  const outputPath = config.outputPath || './dist';
 
   let pagesPath = 'pages';
   if (process.env.PAGES_PATH) {
@@ -29,7 +30,7 @@ export default function(service) {
   const absSrcPath = join(absPagesPath, '../');
 
   const envAffix = process.env.NODE_ENV === 'development' ? '' : `-production`;
-  const tmpDirPath = `${pagesPath}/${tmpDirectory}${envAffix}`;
+  const tmpDirPath = `${pagesPath}/.umi${envAffix}`;
   const absTmpDirPath = join(cwd, tmpDirPath);
 
   return {
@@ -43,7 +44,7 @@ export default function(service) {
     tmpDirPath,
     absTmpDirPath,
     absRouterJSPath: join(absTmpDirPath, 'router.js'),
-    absLibraryJSPath: join(absTmpDirPath, `${libraryName}.js`),
+    absLibraryJSPath: join(absTmpDirPath, 'umi.js'),
     absRegisterSWJSPath: join(absTmpDirPath, 'registerServiceWorker.js'),
     absPageDocumentPath: join(absPagesPath, 'document.ejs'),
     defaultEntryTplPath: template('entry.js.tpl'),

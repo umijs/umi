@@ -16,11 +16,6 @@
   "bugs": {
     "url": "http://github.com/umijs/umi/issues"
   },
-  "scripts": {
-    "test": "ruban test",
-    "debug": "ruban debug",
-    "coveralls": "ruban coveralls"
-  },
   "files": [
     "bin",
     "lib",

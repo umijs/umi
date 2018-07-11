@@ -1,10 +1,9 @@
 import px2rem from 'postcss-plugin-px2rem';
 import { join } from 'path';
-import findJS from '../../../utils/findJS';
+import { findJS, winPath } from 'umi-utils';
 
 export default function(api, options) {
   const { paths } = api.service;
-  const { winPath } = api.utils;
 
   api.register('modifyAFWebpackOpts', ({ memo }) => {
     memo.theme = {
