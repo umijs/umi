@@ -7,5 +7,3 @@ export default function(opts = {}) {
   new Service(null, buildDevOpts(opts)).run('dev');
   // return require('umi-build-dev/lib/Service').default(buildDevOpts(opts));
 }
-
-export { fork } from 'umi-build-dev/lib/dev';

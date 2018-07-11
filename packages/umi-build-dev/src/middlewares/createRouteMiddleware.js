@@ -7,11 +7,6 @@ export default function createRouteMiddleware(service) {
 
   return (req, res) => {
     const { path } = req;
-    service.applyPlugins('onRouteRequest', {
-      args: {
-        req,
-      },
-    });
     const htmlGenerator = new HtmlGenerator(service);
     const content = htmlGenerator.getContent(
       config.exportStatic ? path : undefined,

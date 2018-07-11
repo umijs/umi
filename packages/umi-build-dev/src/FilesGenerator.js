@@ -5,8 +5,6 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
-import { matchRoutes } from 'react-router-config';
-import getRouteConfig from './routes/getRouteConfig';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import {

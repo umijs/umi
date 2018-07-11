@@ -1,5 +1,6 @@
 import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
+import assert from 'assert';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
 import prepareUrls from './prepareUrls';
@@ -18,21 +19,16 @@ process.env.NODE_ENV = 'development';
 
 export default function dev({
   webpackConfig,
-  extraMiddlewares,
-  beforeServerWithApp,
+  _beforeServerWithApp,
+  beforeMiddlewares,
+  afterMiddlewares,
   beforeServer,
   afterServer,
   contentBase,
   onCompileDone = noop,
   proxy,
-  openBrowser: openBrowserOpts,
-  historyApiFallback = {
-    disableDotRule: true,
-  },
 }) {
-  if (!webpackConfig) {
-    throw new Error('必须提供 webpackConfig 配置项');
-  }
+  assert(webpackConfig, 'webpackConfig must be supplied');
   choosePort(DEFAULT_PORT)
     .then(port => {
       if (port === null) {
@@ -68,10 +64,7 @@ export default function dev({
 
         if (isFirstCompile) {
           isFirstCompile = false;
-
-          if (openBrowserOpts) {
-            openBrowser(urls.localUrlForBrowser);
-          }
+          openBrowser(urls.localUrlForBrowser);
         }
 
         onCompileDone();
@@ -90,24 +83,26 @@ export default function dev({
         watchOptions: {
           ignored: /node_modules/,
         },
-        historyApiFallback,
+        historyApiFallback: false,
         overlay: false,
         host: HOST,
         proxy,
         https: !!process.env.HTTPS,
         contentBase: contentBase || process.env.CONTENT_BASE,
         before(app) {
-          if (beforeServerWithApp) {
-            beforeServerWithApp(app);
+          (beforeMiddlewares || []).forEach(middleware => {
+            app.use(middleware);
+          });
+          // internal usage for proxy
+          if (_beforeServerWithApp) {
+            _beforeServerWithApp(app);
           }
           app.use(errorOverlayMiddleware());
         },
         after(app) {
-          if (extraMiddlewares) {
-            extraMiddlewares.forEach(middleware => {
-              app.use(middleware);
-            });
-          }
+          (afterMiddlewares || []).forEach(middleware => {
+            app.use(middleware);
+          });
         },
       };
       const server = new WebpackDevServer(compiler, serverConfig);
