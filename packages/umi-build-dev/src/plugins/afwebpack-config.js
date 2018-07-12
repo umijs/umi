@@ -103,7 +103,10 @@ export default function(api) {
     const isDev = process.env.NODE_ENV === 'development';
 
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
-    const setPublicPathFile = join(__dirname, '../template/setPublicPath.js');
+    const setPublicPathFile = join(
+      __dirname,
+      '../../template/setPublicPath.js',
+    );
     const entry = isDev
       ? {
           umi: [

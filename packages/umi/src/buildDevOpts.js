@@ -21,8 +21,6 @@ export default function(opts = {}) {
     }
   }
 
-  process.env.UMI_DIR = dirname(require.resolve('../package'));
-
   return {
     cwd,
   };

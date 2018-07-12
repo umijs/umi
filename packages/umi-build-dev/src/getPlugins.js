@@ -58,6 +58,7 @@ Try:
   // 内置插件
   const builtInPlugins = [
     './plugins/commands/dev',
+    './plugins/commands/build',
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',

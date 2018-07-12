@@ -2,7 +2,7 @@
 
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
-const { join } = require('path');
+const { join, dirname } = require('path');
 const { existsSync } = require('fs');
 
 const script = process.argv[2];
@@ -36,6 +36,8 @@ function runScript(script, args, isFork) {
   }
 }
 
+process.env.UMI_DIR = dirname(require.resolve('../package'));
+
 const scriptAlias = {
   g: 'generate' // eslint-disable-line
 };
@@ -58,6 +60,7 @@ switch (aliasedScript) {
     runScript(aliasedScript, args);
     break;
   default:
+    new require('umi-build-dev/lib/Service').default().run(script);
     console.log(chalk.red(`unknown command ${script}`));
     break;
 }

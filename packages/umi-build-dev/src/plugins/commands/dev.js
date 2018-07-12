@@ -17,6 +17,7 @@ export default function(api) {
   };
 
   api.registerCommand('dev', {}, () => {
+    process.env.NODE_ENV = 'development';
     service.applyPlugins('onStart');
 
     const filesGenerator = new FilesGenerator(service, RoutesManager);
