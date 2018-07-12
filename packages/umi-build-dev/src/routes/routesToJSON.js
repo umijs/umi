@@ -1,7 +1,6 @@
 import { join, relative } from 'path';
 import isAbsolute from 'path-is-absolute';
-import winPath from '../winPath';
-import normalizeEntry from '../normalizeEntry';
+import { winPath } from 'umi-utils';
 
 let targetLevel = null;
 let level = 0;
@@ -86,6 +85,14 @@ function patchRoutes(routes, webpackChunkName) {
     patchRoute(route, webpackChunkName);
   });
   level -= 1;
+}
+
+function normalizeEntry(entry) {
+  return entry
+    .replace(/^.(\/|\\)/, '')
+    .replace(/(\/|\\)/g, '__')
+    .replace(/\.jsx?$/, '')
+    .replace(/\.tsx?$/, '');
 }
 
 function patchRoute(route, webpackChunkName) {

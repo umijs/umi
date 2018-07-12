@@ -2,7 +2,7 @@ import { join, sep } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
-import winPath from '../winPath';
+import { winPath } from 'umi-utils';
 
 export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // Steps:

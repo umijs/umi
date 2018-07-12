@@ -1,6 +1,6 @@
 import debug from 'debug';
 import assert from 'assert';
-import winPath from './winPath';
+import { winPath } from 'umi-utils';
 import {
   PLACEHOLDER_IMPORT,
   PLACEHOLDER_RENDER,
@@ -9,9 +9,6 @@ import {
   PLACEHOLDER_HISTORY_MODIFIER,
 } from './constants';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
-
-// 参考：
-// https://github.com/vuejs/vue-cli/blob/next/packages/%40vue/cli-service/lib/PluginAPI.js
 
 class PluginAPI {
   constructor(id, service) {

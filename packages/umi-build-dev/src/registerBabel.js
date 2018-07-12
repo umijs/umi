@@ -3,7 +3,7 @@ import isAbsolute from 'path-is-absolute';
 import registerBabel from 'af-webpack/registerBabel';
 import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
-import winPath from './winPath';
+import { winPath } from 'umi-utils';
 
 let files = null;
 
