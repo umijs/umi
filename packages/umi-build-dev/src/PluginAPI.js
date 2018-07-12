@@ -66,7 +66,7 @@ class PluginAPI {
       `[PluginAPI] files for registerBabel must be Array, but got ${files}`,
     );
     addBabelRegisterFiles(files);
-    registerBabel(this.service.babel, {
+    registerBabel({
       cwd: this.service.cwd,
     });
   }

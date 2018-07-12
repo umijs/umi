@@ -8,7 +8,7 @@ import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
-import { setConfig as setMiddlewareConfig } from './middlewares/createRouteMiddleware';
+import { setConfig as setMiddlewareConfig } from './plugins/commands/dev/createRouteMiddleware';
 
 function normalizeConfig(config) {
   config = config.default || config;
@@ -261,7 +261,6 @@ class UserConfig {
         for (const plugin of this.plugins) {
           const { name } = plugin;
           if (!isEqual(newConfig[name], oldConfig[name])) {
-            this.service._initialConfig[name] = newConfig[name];
             this.service.config[name] = newConfig[name];
             this.service.applyPlugins('onUserConfigChange', {
               args: {

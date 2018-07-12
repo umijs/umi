@@ -11,7 +11,7 @@ export default class Service {
   constructor({ cwd, plugins }) {
     this.cwd = cwd || process.cwd();
 
-    registerBabel(null, {
+    registerBabel({
       cwd: this.cwd,
     });
 

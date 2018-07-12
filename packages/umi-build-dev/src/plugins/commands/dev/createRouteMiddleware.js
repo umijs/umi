@@ -1,4 +1,4 @@
-import HtmlGenerator from '../html/HtmlGenerator';
+import HtmlGenerator from '../../../html/HtmlGenerator';
 
 let config = null;
 

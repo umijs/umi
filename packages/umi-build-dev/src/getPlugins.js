@@ -50,7 +50,7 @@ Try:
   // 用户给的插件需要做 babel 转换
   if (pluginPaths.length) {
     addBabelRegisterFiles(pluginPaths.map(p => p[0]));
-    registerBabel(babel, {
+    registerBabel({
       cwd,
     });
   }

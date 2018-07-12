@@ -2,8 +2,8 @@ import { join } from 'path';
 import isAbsolute from 'path-is-absolute';
 import registerBabel from 'af-webpack/registerBabel';
 import flatten from 'lodash.flatten';
-import { CONFIG_FILES } from './constants';
 import { winPath } from 'umi-utils';
+import { CONFIG_FILES } from './constants';
 
 let files = null;
 
@@ -28,7 +28,7 @@ export function addBabelRegisterFiles(extraFiles) {
   files.push(...extraFiles);
 }
 
-export default function(babelPreset, opts = {}) {
+export default function(opts = {}) {
   initFiles();
   const { cwd } = opts;
   const only = files.map(f => {

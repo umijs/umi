@@ -1,9 +1,9 @@
 import rimraf from 'rimraf';
-import getRouteConfig from '../../routes/getRouteConfig';
-import FilesGenerator from '../../FilesGenerator';
-import getWebpackConfig from '../../getWebpackConfig';
-import chunksToMap from '../../utils/chunksToMap';
-import HtmlGenerator from '../../html/HtmlGenerator';
+import getRouteConfig from '../../../routes/getRouteConfig';
+import FilesGenerator from '../../../FilesGenerator';
+import getWebpackConfig from '../../../getWebpackConfig';
+import chunksToMap from './chunksToMap';
+import HtmlGenerator from '../../../html/HtmlGenerator';
 
 export default function(api) {
   const {

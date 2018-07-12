@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'umi/link';
 import withRouter from 'umi/withRouter';
-import guessJSFileFromPath from '../../utils/guessJSFileFromPath';
+import guessJSFileFromPath from './guessJSFileFromPath';
 
 function renderRoutes(routes) {
   return (
