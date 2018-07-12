@@ -26,7 +26,7 @@ function patchRoutes(routes, config, isProduction) {
 
   // Transform /404 to fallback route in production and exportStatic is not set
   if (notFoundIndex !== null && isProduction && !config.exportStatic) {
-    const notFoundRoute = routes.splice(notFoundIndex, 1)[0];
+    const notFoundRoute = routes.slice(notFoundIndex, notFoundIndex + 1)[0];
     routes.push({ component: notFoundRoute.component });
   }
 
