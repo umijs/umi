@@ -1,4 +1,4 @@
-import { resolve, join, dirname } from 'path';
+import { join } from 'path';
 import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';

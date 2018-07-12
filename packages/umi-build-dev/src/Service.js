@@ -8,7 +8,7 @@ import registerBabel from './registerBabel';
 const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
-  constructor(cwd, { plugins }) {
+  constructor({ cwd, plugins }) {
     this.cwd = cwd || process.cwd();
 
     registerBabel(null, {

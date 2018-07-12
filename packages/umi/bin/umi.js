@@ -4,6 +4,7 @@ const spawn = require('cross-spawn');
 const chalk = require('chalk');
 const { join, dirname } = require('path');
 const { existsSync } = require('fs');
+const Service = require('umi-build-dev/lib/Service').default;
 
 const script = process.argv[2];
 const args = process.argv.slice(3);
@@ -53,14 +54,14 @@ switch (aliasedScript) {
     break;
   case 'build':
   case 'dev':
-  case 'generate':
     runScript(aliasedScript, args, /* isFork */true);
     break;
   case 'test':
     runScript(aliasedScript, args);
     break;
   default:
-    new require('umi-build-dev/lib/Service').default().run(script);
-    console.log(chalk.red(`unknown command ${script}`));
+    new Service(
+      require('../lib/buildDevOpts').default()
+    ).run(script);
     break;
 }
