@@ -13,6 +13,7 @@ export default function(webpackConfig, opts) {
   const isDev = process.env.NODE_ENV === 'development';
   const cssOpts = {
     importLoaders: 1,
+    sourceMap: !opts.disableCSSSourceMap,
     ...(isDev
       ? {}
       : {
@@ -26,7 +27,6 @@ export default function(webpackConfig, opts) {
                 minifyFontValues: false,
               }
             : false,
-          sourceMap: !opts.disableCSSSourceMap,
         }),
     ...(opts.cssLoaderOptions || {}),
   };

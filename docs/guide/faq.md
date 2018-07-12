@@ -29,6 +29,7 @@ import '@babel/polyfill';
 ### 如何动态修改 title ？
 
 可以通过 [react-helmet](https://github.com/nfl/react-helmet) 动态修改 title 。
+> 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
 
 ### 如何让编辑器的 eslint 校验生效？
 
@@ -110,3 +111,28 @@ $ node --inspect-brk ./node_modules/.bin/umi test
 * 改用 hashHistory，在 `.umirc.js` 里配 `hashHistory: true`
 * 静态化，在 `.umirc.js` 里配 `exportStatic: true`
 * 服务端配置路由 fallback 到 index.html
+
+### build之后图片丢失？
+
+可能是图片没有正确引用，可以参考一下代码，正确引入图片。
+
+```js
+import React from 'react';
+import logo from './logo.png'; // 告诉WebPACK这个JS文件使用这个图像
+
+console.log(logo); // logo.84287d09.png
+
+function Header() {
+  // 导入图片
+  return <img src={logo} alt="Logo" />;
+}
+
+export default Header;
+```
+在css中使用，注意不要使用绝对路径
+```css
+.Logo {
+  background-image: url(./logo.png);
+}
+```
+> 注意：图片大小小于10k，走basement。即不会被拷贝到public文件夹下，而是以base64的资源存在。

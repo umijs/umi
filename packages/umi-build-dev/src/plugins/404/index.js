@@ -17,18 +17,18 @@ export default function(api) {
         `.trim(),
       };
       const routes = deepclone(memo);
-      const globalLayoutRoute = routes.filter(route => {
-        return route.path === '/' && route.exact !== true;
-      })[0];
-      if (globalLayoutRoute) {
-        globalLayoutRoute.routes = [
-          ...(globalLayoutRoute.routes || []),
-          notFoundRoute,
-        ];
-        return routes;
-      } else {
-        return [...routes, notFoundRoute];
+
+      function addNotFound(_route) {
+        if (!_route.routes) {
+          return;
+        }
+        _route.routes.forEach(_r => addNotFound(_r));
+        _route.routes.push(notFoundRoute);
       }
+
+      routes.forEach(r => addNotFound(r));
+
+      return routes;
     });
   }
 }

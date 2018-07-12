@@ -150,7 +150,11 @@ describe('patchRoutes', () => {
       {},
       /* isProduction */ true,
     );
-    expect(routes).toEqual([{ path: '/b' }, { component: './A' }]);
+    expect(routes).toEqual([
+      { component: './A', path: '/404' },
+      { path: '/b' },
+      { component: './A' },
+    ]);
   });
 
   it('404 is not the first one', () => {
@@ -180,7 +184,11 @@ describe('patchRoutes', () => {
     expect(routes).toEqual([
       {
         path: '/b',
-        routes: [{ path: '/c' }, { component: './A' }],
+        routes: [
+          { path: '/404', component: './A' },
+          { path: '/c' },
+          { component: './A' },
+        ],
       },
     ]);
   });
