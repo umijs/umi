@@ -238,7 +238,7 @@ if (process.env.NODE_ENV === 'production') {
     return `
 <Router history={window.g_history}>
   <Route render={({ location }) =>
-    renderRoutes(routes, {}, { location })
+    renderRoutes(routes, { isPathnameMatched: pathnameMatcher(location) }, { location })
   } />
 </Router>
     `.trim();
