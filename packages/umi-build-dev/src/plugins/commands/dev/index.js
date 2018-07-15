@@ -47,12 +47,22 @@ export default function(api) {
     let server = null;
     function restart(why) {
       if (!server) return;
-      console.log(chalk.green(`Since ${why}, try to restart server`));
+      if (why) {
+        console.log(chalk.green(`Since ${why}, try to restart server`));
+      } else {
+        console.log(chalk.green(`Try to restart server`));
+      }
       unwatch();
       server.close();
       process.send({ type: 'RESTART' });
     }
     service.restart = restart;
+
+    function startWatch() {
+      filesGenerator.watch();
+      userConfig.setConfig(service.config);
+      userConfig.watchWithDevServer();
+    }
 
     require('af-webpack/dev').default({
       cwd,
@@ -74,9 +84,7 @@ export default function(api) {
       },
       afterServer(devServer) {
         service.applyPlugins('afterServer', { args: { devServer } });
-        filesGenerator.watch();
-        userConfig.setConfig(service.config);
-        userConfig.watchWithDevServer();
+        startWatch();
       },
       onCompileDone: stats => {
         service.applyPlugins('onCompileDone', { args: { stats } });
