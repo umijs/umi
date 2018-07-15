@@ -5,7 +5,7 @@ import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 const debug = require('debug')('umi-build-dev:getPlugin');
 
 export default function(opts = {}) {
-  const { configPlugins = [], pluginsFromOpts = [], babel, cwd } = opts;
+  const { configPlugins = [], pluginsFromOpts = [], cwd } = opts;
 
   function pluginToPath(plugins) {
     return plugins.map(p => {
@@ -96,6 +96,5 @@ Try:
   ];
 
   debug(`plugins: ${plugins.map(p => p.id)}`);
-
   return plugins;
 }

@@ -1,7 +1,7 @@
-import assert from 'assert';
 import { join } from 'path';
-import { sync as mkdirp } from 'mkdirp';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
+import assert from 'assert';
+import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
@@ -28,14 +28,13 @@ export default class FilesGenerator {
     this.layoutDirectoryName = service.config.singular ? 'layout' : 'layouts';
   }
 
-  generate(opts = {}) {
+  generate() {
     const { paths } = this.service;
     const { absTmpDirPath, tmpDirPath } = paths;
     debug(`mkdir tmp dir: ${tmpDirPath}`);
-    mkdirp(absTmpDirPath);
+    mkdirp.sync(absTmpDirPath);
 
     this.generateFiles();
-    if (opts.onChange) opts.onChange();
   }
 
   createWatcher(path) {
@@ -55,13 +54,15 @@ export default class FilesGenerator {
 
   watch() {
     if (process.env.WATCH_FILES === 'none') return;
-    const { paths } = this.service;
+    const {
+      paths,
+      config: { singular },
+    } = this.service;
+    const layout = singular ? 'layout' : 'layouts';
     const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
       initialValue: [
         paths.absPagesPath,
-        ...EXT_LIST.map(ext =>
-          join(paths.absSrcPath, `${this.layoutDirectoryName}/index${ext}`),
-        ),
+        ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
       ],
     });
     this.watchers = watcherPaths.map(p => {
@@ -81,7 +82,9 @@ export default class FilesGenerator {
   }
 
   rebuild() {
-    const { devServer } = this.service;
+    const {
+      dev: { server },
+    } = this.service;
     try {
       this.service.applyPlugins('generateFiles', {
         args: {
@@ -92,21 +95,37 @@ export default class FilesGenerator {
       this.generateRouterJS();
       this.generateEntry();
 
-      if (this.onChange) this.onChange();
       if (this.hasRebuildError) {
         // 从出错中恢复时，刷新浏览器
-        devServer.sockWrite(devServer.sockets, 'content-changed');
+        server.sockWrite(server.sockets, 'content-changed');
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
+      server.sockWrite(server.sockets, 'errors', [e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?
       debug(`Generate failed: ${e.message}`);
       debug(e);
       console.error(chalk.red(e.message));
+    }
+  }
+
+  generateFiles() {
+    const { paths, config } = this.service;
+    this.service.applyPlugins('generateFiles');
+
+    this.generateRouterJS();
+    this.generateEntry();
+
+    // Generate registerServiceWorker.js
+    if (process.env.NODE_ENV === 'production' && !config.disableServiceWorker) {
+      writeFileSync(
+        paths.absRegisterSWJSPath,
+        readFileSync(paths.defaultRegisterSWTplPath),
+        'utf-8',
+      );
     }
   }
 
@@ -139,23 +158,6 @@ if (process.env.NODE_ENV === 'production') {
       `;
     }
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
-  }
-
-  generateFiles() {
-    const { paths, config } = this.service;
-    this.service.applyPlugins('generateFiles');
-
-    this.generateRouterJS();
-    this.generateEntry();
-
-    // Generate registerServiceWorker.js
-    if (process.env.NODE_ENV === 'production' && !config.disableServiceWorker) {
-      writeFileSync(
-        paths.absRegisterSWJSPath,
-        readFileSync(paths.defaultRegisterSWTplPath),
-        'utf-8',
-      );
-    }
   }
 
   generateRouterJS() {

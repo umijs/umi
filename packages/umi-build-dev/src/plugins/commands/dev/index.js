@@ -1,24 +1,15 @@
 import assign from 'object-assign';
 import chalk from 'chalk';
-import getRouteConfig from '../../../routes/getRouteConfig';
 import FilesGenerator from '../../../FilesGenerator';
-import getWebpackConfig from '../../../getWebpackConfig';
 import createRouteMiddleware from './createRouteMiddleware';
 import UserConfig from '../../../UserConfig';
 import { unwatch } from '../../../getConfig/watch';
+import getRouteManager from '../getRouteManager';
 
 export default function(api) {
   const { service } = api;
-  const { cwd, paths, config } = service;
-
-  const RoutesManager = {
-    routes: null,
-    fetchRoutes() {
-      this.routes = service.applyPlugins('modifyRoutes', {
-        initialValue: getRouteConfig(paths, config),
-      });
-    },
-  };
+  const { cwd } = service;
+  const RoutesManager = getRouteManager(service);
 
   function mergeConfig(oldConfig, newConfig) {
     Object.keys(oldConfig).forEach(key => {
@@ -41,9 +32,6 @@ export default function(api) {
     const config = userConfig.getConfig({ force: true });
     mergeConfig(service.config, config);
 
-    const webpackConfig = getWebpackConfig(service);
-    service.webpackConfig = webpackConfig;
-
     let server = null;
     function restart(why) {
       if (!server) return;
@@ -53,10 +41,17 @@ export default function(api) {
         console.log(chalk.green(`Try to restart server`));
       }
       unwatch();
+      filesGenerator.unwatch();
       server.close();
       process.send({ type: 'RESTART' });
     }
-    service.restart = restart;
+    service.dev = {
+      restart,
+      server: null,
+      rebuildFiles() {
+        filesGenerator.rebuild();
+      },
+    };
 
     function startWatch() {
       filesGenerator.watch();
@@ -66,7 +61,7 @@ export default function(api) {
 
     require('af-webpack/dev').default({
       cwd,
-      webpackConfig,
+      webpackConfig: service.webpackConfig,
       proxy: config.proxy || {},
       contentBase: './path-do-not-exists',
       _beforeServerWithApp(app) {
@@ -80,6 +75,7 @@ export default function(api) {
       }),
       beforeServer(devServer) {
         server = devServer;
+        service.dev.server = server;
         service.applyPlugins('beforeServer', { args: { devServer } });
       },
       afterServer(devServer) {

@@ -2,7 +2,6 @@ import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 
 export default function(service) {
-  // 修改传给 af-webpack 的配置项
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
     initialValue: {},
   });

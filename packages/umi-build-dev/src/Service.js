@@ -4,6 +4,7 @@ import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
+import getWebpackConfig from './getWebpackConfig';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -66,6 +67,9 @@ export default class Service {
     // load env
 
     // load user config
+
+    // webpack config
+    this.webpackConfig = getWebpackConfig(this);
 
     // init plugins
     this.plugins.forEach(({ id, apply, opts }) => {
