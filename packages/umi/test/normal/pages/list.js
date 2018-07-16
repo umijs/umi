@@ -6,7 +6,7 @@ function goBack() {
 
 export default () => (
   <>
-    <h1>list page</h1>
+    <h1>list</h1>
     <button onClick={goBack}>back</button>
   </>
 );
