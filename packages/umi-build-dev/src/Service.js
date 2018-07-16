@@ -68,9 +68,6 @@ export default class Service {
 
     // load user config
 
-    // webpack config
-    this.webpackConfig = getWebpackConfig(this);
-
     // init plugins
     this.plugins.forEach(({ id, apply, opts }) => {
       try {
@@ -83,6 +80,9 @@ export default class Service {
         process.exit(1);
       }
     });
+
+    // webpack config
+    this.webpackConfig = getWebpackConfig(this);
   }
 
   run(name, args = {}) {

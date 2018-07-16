@@ -13,7 +13,6 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // 2.2 js
   // 2.3 css
   // 3. 压缩
-
   const { config, paths, webpackConfig } = service;
 
   const pageConfig = (config.pages || {})[path] || {};

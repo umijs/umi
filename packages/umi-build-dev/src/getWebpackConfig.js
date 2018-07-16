@@ -3,7 +3,9 @@ import assert from 'assert';
 
 export default function(service) {
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
-    initialValue: {},
+    initialValue: {
+      cwd: service.cwd,
+    },
   });
 
   assert(
