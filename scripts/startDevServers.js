@@ -32,3 +32,7 @@ startDevServer({
   port: 12351,
   cwd: join(__dirname, '../packages/umi-plugin-react/test/normal'),
 });
+startDevServer({
+  port: 12352,
+  cwd: join(__dirname, '../packages/umi-plugin-react/test/with-dva'),
+});

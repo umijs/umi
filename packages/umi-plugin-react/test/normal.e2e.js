@@ -1,5 +1,4 @@
 import puppeteer from 'puppeteer';
-import got from 'got';
 
 describe('normal', () => {
   let browser;

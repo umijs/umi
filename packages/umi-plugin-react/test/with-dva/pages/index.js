@@ -2,7 +2,11 @@ import { connect } from 'dva';
 
 const mapStateToProps = state => ({ user: state.users.data[0] });
 const Users = connect(mapStateToProps)(({ user }) => {
-  return <>user: {user}</>;
+  return (
+    <>
+      user: <span id="user">{user}</span>
+    </>
+  );
 });
 
 export default () => (
