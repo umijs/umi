@@ -22,7 +22,7 @@ export default function(api, options) {
   if (options.dll) require('umi-plugin-dll').default(api, options.dll);
   if (options.hardSource)
     require('./plugins/hardSource').default(api, options.hardSource);
-  // TODO: serviceWorker
+  if (options.pwa) require('./plugins/pwa').default(api, options.pwa);
 
   // misc
   if (options.dva)

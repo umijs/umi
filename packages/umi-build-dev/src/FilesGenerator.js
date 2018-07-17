@@ -118,19 +118,10 @@ export default class FilesGenerator {
 
     this.generateRouterJS();
     this.generateEntry();
-
-    // Generate registerServiceWorker.js
-    if (process.env.NODE_ENV === 'production' && !config.disableServiceWorker) {
-      writeFileSync(
-        paths.absRegisterSWJSPath,
-        readFileSync(paths.defaultRegisterSWTplPath),
-        'utf-8',
-      );
-    }
   }
 
   generateEntry() {
-    const { paths, entryJSTpl, config } = this.service;
+    const { paths, entryJSTpl } = this.service;
 
     // Generate umi.js
     let entryContent = readFileSync(
@@ -148,15 +139,6 @@ export default class FilesGenerator {
         PLACEHOLDER_RENDER,
         `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
       );
-
-    if (!config.disableServiceWorker) {
-      entryContent = `${entryContent}
-// Enable service worker
-if (process.env.NODE_ENV === 'production') {
-  require('./registerServiceWorker');
-}
-      `;
-    }
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
   }
 

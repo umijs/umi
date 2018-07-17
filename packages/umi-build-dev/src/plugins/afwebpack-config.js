@@ -134,6 +134,7 @@ export default function(api) {
         plugins: config.extraBabelPlugins || [],
       },
       define: {
+        'process.env.BASE_URL': config.base || '/',
         __UMI_BIGFISH_COMPAT: process.env.BIGFISH_COMPAT,
         __UMI_HTML_SUFFIX: !!(
           config.exportStatic &&

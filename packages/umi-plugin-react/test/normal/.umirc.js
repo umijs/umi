@@ -12,7 +12,7 @@ export default {
         hardSource: false,
 
         // performace
-        serviceWorker: false,
+        pwa: {},
         dynamicImport: {
           webpackChunkName: true,
           loadingComponent: './Loading.js',
@@ -20,7 +20,7 @@ export default {
         library: 'react',
 
         // misc
-        dva: false, //{ immer: true },
+        dva: false,
         polyfills: [],
       },
     ],

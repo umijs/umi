@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { join } from 'path';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -11,6 +12,11 @@ const debug = require('debug')('umi-build-dev:Service');
 export default class Service {
   constructor({ cwd, plugins }) {
     this.cwd = cwd || process.cwd();
+    try {
+      this.pkg = require(join(this.cwd, 'package.json'));
+    } catch (e) {
+      this.pkg = {};
+    }
 
     registerBabel({
       cwd: this.cwd,

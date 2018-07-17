@@ -6,6 +6,7 @@ package-lock.json
 yarn.lock
 /website/build
 /packages/umi-test/examples/*/node_modules
+/packages/umi-plugin-react/test/*/node_modules
 lib
 dist
 coverage
