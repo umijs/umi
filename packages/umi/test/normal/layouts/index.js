@@ -1,3 +1,5 @@
 export default ({ children }) => (
-  <div style={{ border: '3px solid red' }}>{children}</div>
+  <div id="layout" style={{ border: '3px solid red' }}>
+    {children}
+  </div>
 );

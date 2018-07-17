@@ -1,5 +1,5 @@
 export default () => (
   <>
-    <h1>404 page</h1>
+    <h1>404</h1>
   </>
 );

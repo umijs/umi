@@ -22,7 +22,8 @@ export default function(api) {
     return oldConfig;
   }
 
-  api.registerCommand('dev', {}, () => {
+  api.registerCommand('dev', {}, (args = {}) => {
+    const { port } = args;
     process.env.NODE_ENV = 'development';
     service.applyPlugins('onStart');
 
@@ -62,6 +63,7 @@ export default function(api) {
 
     require('af-webpack/dev').default({
       cwd,
+      port,
       webpackConfig: service.webpackConfig,
       proxy: config.proxy || {},
       contentBase: './path-do-not-exists',

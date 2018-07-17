@@ -27,9 +27,10 @@ export default function dev({
   contentBase,
   onCompileDone = noop,
   proxy,
+  port,
 }) {
   assert(webpackConfig, 'webpackConfig must be supplied');
-  choosePort(DEFAULT_PORT)
+  choosePort(port || DEFAULT_PORT)
     .then(port => {
       if (port === null) {
         return;
@@ -40,8 +41,6 @@ export default function dev({
       let isFirstCompile = true;
       const urls = prepareUrls(PROTOCOL, HOST, port);
       compiler.hooks.done.tap('af-webpack dev', stats => {
-        send({ type: DONE });
-
         if (stats.hasErrors()) {
           return;
         }
@@ -65,6 +64,7 @@ export default function dev({
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);
+          send({ type: DONE });
         }
 
         onCompileDone();

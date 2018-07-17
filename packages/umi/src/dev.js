@@ -4,5 +4,5 @@ import buildDevOpts from './buildDevOpts';
 process.env.NODE_ENV = 'development';
 
 export default function(opts = {}) {
-  new Service(buildDevOpts(opts)).run('dev');
+  new Service(buildDevOpts(opts)).run('dev', opts);
 }

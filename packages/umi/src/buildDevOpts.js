@@ -3,13 +3,8 @@ import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';
 
-const debug = require('debug')('umi:devDevOpts');
-
 export default function(opts = {}) {
-  debug(`opts: ${JSON.stringify(opts)}`);
-  delete opts.extraResolveModules;
-
-  let cwd = process.env.APP_ROOT;
+  let cwd = opts.cwd || process.env.APP_ROOT;
   if (cwd) {
     if (!isAbsolute(cwd)) {
       cwd = join(process.cwd(), cwd);

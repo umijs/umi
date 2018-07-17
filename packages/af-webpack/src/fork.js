@@ -1,15 +1,17 @@
 import { fork } from 'child_process';
 import send, { RESTART } from './send';
 
-export default function start(devScriptPath) {
-  const devProcess = fork(devScriptPath, process.argv.slice(2));
+export default function start(scriptPath) {
+  const child = fork(scriptPath, process.argv.slice(2));
 
-  devProcess.on('message', data => {
+  child.on('message', data => {
     const type = (data && data.type) || null;
     if (type === RESTART) {
-      devProcess.kill('SIGINT');
-      start(devScriptPath);
+      child.kill('SIGINT');
+      start(scriptPath);
     }
     send(data);
   });
+
+  return child;
 }

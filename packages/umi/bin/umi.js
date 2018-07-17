@@ -26,12 +26,12 @@ updater({ pkg: pkg }).notify({ defer: true });
 
 function runScript(script, args, isFork) {
   if (isFork) {
-    const result = spawn.sync(
+    const child = spawn.sync(
       'node',
       [require.resolve(`../lib/scripts/${script}`)].concat(args),
       {stdio: 'inherit'} // eslint-disable-line
     );
-    process.exit(result.status);
+    process.exit(child.status);
   } else {
     require(`../lib/scripts/${script}`);
   }

@@ -5,7 +5,7 @@ export default () => (
   <>
     <h1 className={`${styles.a} b`}>{window.g_page_title}</h1>
     <hr />
-    <div style={{ display: 'flex' }}>
+    <div id="test-images" style={{ display: 'flex' }}>
       <img alt="" width="200" height="200" src={require('../assets/dva.jpg')} />
       <div>
         <img alt="" src={require('../assets/antd.png')} />

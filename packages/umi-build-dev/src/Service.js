@@ -93,6 +93,7 @@ export default class Service {
 
   run(name, args = {}) {
     this.init();
+    debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];
     if (!command && name) {
