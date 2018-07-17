@@ -1,12 +1,12 @@
 {
-  "name": "umi-preset-react",
+  "name": "umi-plugin-react",
   "version": "0.0.1-alpha.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-preset-react"
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-preset-react",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react",
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
