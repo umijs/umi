@@ -1,20 +1,12 @@
 import puppeteer from 'puppeteer';
 import got from 'got';
-import { join } from 'path';
-import startDevServer from './startDevServer';
-
-const PORT = '12345';
 
 describe('normal', () => {
   let browser;
   let page;
-  let devProcess;
+  const port = 12341;
 
   beforeAll(async () => {
-    devProcess = await startDevServer({
-      port: PORT,
-      cwd: join(__dirname, './normal'),
-    });
     browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   });
 
@@ -23,7 +15,7 @@ describe('normal', () => {
   });
 
   it('index page', async () => {
-    await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle2' });
+    await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
 
     // global.js
     const text = await page.evaluate(
@@ -55,7 +47,7 @@ describe('normal', () => {
   });
 
   it('404 page', async () => {
-    await page.goto(`http://localhost:${PORT}/404`, {
+    await page.goto(`http://localhost:${port}/404`, {
       waitUntil: 'networkidle2',
     });
     const text = await page.evaluate(
@@ -65,7 +57,7 @@ describe('normal', () => {
   });
 
   it('umi development 404 page', async () => {
-    await page.goto(`http://localhost:${PORT}/page-dont-exists`, {
+    await page.goto(`http://localhost:${port}/page-dont-exists`, {
       waitUntil: 'networkidle2',
     });
     const text = await page.evaluate(
@@ -75,12 +67,12 @@ describe('normal', () => {
   });
 
   it('mock', async () => {
-    const res = await got(`http://localhost:${PORT}/api/users`);
+    const res = await got(`http://localhost:${port}/api/users`);
     expect(res.body).toEqual('{"name":"cc"}');
   });
 
   it('routes', async () => {
-    await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle2' });
+    await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
     await page.click('button');
     await page.waitForSelector('h1');
     const listText = await page.evaluate(
@@ -97,6 +89,5 @@ describe('normal', () => {
 
   afterAll(() => {
     browser.close();
-    devProcess.kill('SIGINT');
   });
 });
