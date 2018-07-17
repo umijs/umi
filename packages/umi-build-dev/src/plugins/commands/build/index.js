@@ -11,6 +11,7 @@ export default function(api) {
   } = api;
   const { cwd, paths } = service;
   const RoutesManager = getRouteManager(service);
+  RoutesManager.fetchRoutes();
 
   api.registerCommand('build', {}, () => {
     process.env.NODE_ENV = 'production';

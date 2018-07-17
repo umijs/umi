@@ -8,6 +8,7 @@ export default function(service) {
       this.routes = service.applyPlugins('modifyRoutes', {
         initialValue: getRouteConfig(paths, config),
       });
+      service.routes = this.routes;
     },
   };
 }

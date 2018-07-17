@@ -9,9 +9,8 @@ export default function(api) {
         `routes should be Array, but got ${val.toString()}.`,
       );
     },
-    onChange(newConfig) {
-      api.service.config = newConfig;
-      api.service.filesGenerator.rebuild();
+    onChange() {
+      api.service.dev.rebuildFiles();
     },
   };
 }

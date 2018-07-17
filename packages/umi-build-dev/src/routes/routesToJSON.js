@@ -5,7 +5,7 @@ import { winPath } from 'umi-utils';
 let targetLevel = null;
 let level = 0;
 
-export default (routes, service, env) => {
+export default (routes, service) => {
   if (process.env.CODE_SPLITTING_LEVEL) {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
@@ -19,14 +19,6 @@ export default (routes, service, env) => {
   const { config, applyPlugins, paths } = service;
   patchRoutes(routes);
 
-  // TODO: 这里和 umi-plugin-react 强绑定了
-  let loadingOpts = '';
-  if (config.react && config.react.loadingComponent) {
-    loadingOpts = ` loading: require('${winPath(
-      join(paths.absSrcPath, config.react.loadingComponent),
-    )}').default `;
-  }
-
   return JSON.stringify(
     routes,
     (key, value) => {
@@ -36,26 +28,12 @@ export default (routes, service, env) => {
             return value;
           }
 
-          const [component, webpackChunkName, path] = value.split('^^');
+          const [component, webpackChunkName] = value.split('^^');
           const importPath = isAbsolute(component)
             ? component
             : winPath(relative(paths.tmpDirPath, component));
 
-          let ret;
-
-          // TODO: 这里强依赖了 umi-plugin-react 的配置项
-          if (
-            env === 'production' &&
-            config.react &&
-            config.react.dynamicImport
-          ) {
-            // 按需加载
-            ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
-          } else {
-            // 非按需加载
-            ret = `require('${importPath}').default`;
-          }
-
+          let ret = `require('${importPath}').default`;
           if (applyPlugins) {
             ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,

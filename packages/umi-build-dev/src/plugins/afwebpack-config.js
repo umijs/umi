@@ -34,7 +34,7 @@ export default function(api) {
             if (name === 'proxy') {
               global.g_umi_reloadProxy(newConfig[name]);
             } else {
-              api.service.restart(`${name} changed`);
+              api.service.dev.restart(`${name} changed`);
             }
           },
         }));

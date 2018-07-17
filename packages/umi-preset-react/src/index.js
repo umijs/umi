@@ -1,42 +1,37 @@
-export default function(api) {
-  api.register('modifyConfigPlugins', ({ memo }) => {
-    memo.push(api => {
-      return {
-        name: 'react',
-        onChange() {
-          api.service.restart(/* why */ 'Config react changed');
-        },
-      };
-    });
-    return memo;
-  });
+import isPlainObject from 'is-plain-object';
 
-  const {
-    config: { react = {} },
-  } = api.service;
+function toObject(o) {
+  if (!isPlainObject(o)) {
+    return {};
+  } else {
+    return o;
+  }
+}
 
+export default function(api, options) {
   // mobile
-  if (react.hd) require('./plugins/mobile/hd').default(api, react.hd);
-  if (react.fastClick)
-    require('./plugins/mobile/fastclick').default(api, react.fastClick);
+  if (options.hd) require('./plugins/mobile/hd').default(api, options.hd);
+  if (options.fastClick)
+    require('./plugins/mobile/fastclick').default(api, options.fastClick);
 
   // performance
-  if (react.library) require('./plugins/library').default(api, react.library);
-  if (react.dynamicImport)
-    require('./plugins/dynamicImport').default(api, react.dynamicImport);
-  if (react.dll) require('umi-plugin-dll').default(api, react.dll);
-  if (react.hardSource) require('./plugins/hardSource').default(api);
+  if (options.library)
+    require('./plugins/library').default(api, options.library);
+  if (options.dynamicImport)
+    require('./plugins/dynamicImport').default(api, options.dynamicImport);
+  if (options.dll) require('umi-plugin-dll').default(api, options.dll);
+  if (options.hardSource)
+    require('./plugins/hardSource').default(api, options.hardSource);
   // TODO: serviceWorker
 
-  // deploy
-  // TODO: loading
-  if (react.loadingComponent)
-    require('./plugins/loadingComponent').default(api);
-
   // misc
-  if (react.dva) require('umi-plugin-dva').default(api, react.dva, react);
-  if (react.polyfills)
-    require('./plugins/polyfills').default(api, react.polyfills);
+  if (options.dva)
+    require('umi-plugin-dva').default(api, {
+      ...toObject(options.dva),
+      dynamicImport: options.dynamicImport,
+    });
+  if (options.polyfills)
+    require('./plugins/polyfills').default(api, options.polyfills);
 
   // antd + antd-mobile
   require('./plugins/antd').default(api);

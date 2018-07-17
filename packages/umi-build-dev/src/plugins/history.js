@@ -15,7 +15,7 @@ export default function(api) {
           );
         },
         onChange() {
-          api.service.restart(/* why */ 'Config history Changed');
+          api.service.dev.restart(/* why */ 'Config history Changed');
         },
       };
     });

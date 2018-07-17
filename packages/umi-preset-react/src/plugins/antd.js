@@ -1,4 +1,5 @@
 import { compatDirname } from 'umi-utils';
+import { dirname } from 'path';
 
 function importPlugin(key) {
   return [
@@ -26,7 +27,21 @@ export default function(api) {
 
   api.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
     webpackConfig.resolve.alias
-      .set('antd', compatDirname('antd/package.json', cwd))
-      .set('antd-mobile', compatDirname('antd-mobile/package.json', cwd));
+      .set(
+        'antd',
+        compatDirname(
+          'antd/package.json',
+          cwd,
+          dirname(require.resolve('antd/package.json')),
+        ),
+      )
+      .set(
+        'antd-mobile',
+        compatDirname(
+          'antd-mobile/package.json',
+          cwd,
+          dirname(require.resolve('antd-mobile/package.json')),
+        ),
+      );
   });
 }

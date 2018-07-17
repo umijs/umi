@@ -10,6 +10,7 @@ export default function(api) {
   const { service } = api;
   const { cwd } = service;
   const RoutesManager = getRouteManager(service);
+  RoutesManager.fetchRoutes();
 
   function mergeConfig(oldConfig, newConfig) {
     Object.keys(oldConfig).forEach(key => {
@@ -65,6 +66,7 @@ export default function(api) {
       proxy: config.proxy || {},
       contentBase: './path-do-not-exists',
       _beforeServerWithApp(app) {
+        // @private
         service.applyPlugins('_beforeServerWithApp', { args: { app } });
       },
       beforeMiddlewares: service.applyPlugins('modifyBeforeMiddlewares', {

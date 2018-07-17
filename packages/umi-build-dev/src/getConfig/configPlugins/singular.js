@@ -10,7 +10,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.restart(/* why */ 'Configure item singular Changed.');
+      api.service.dev.restart(/* why */ 'Configure item singular Changed.');
     },
   };
 }
