@@ -108,7 +108,6 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
     initialValue: html,
     args: {
       path,
-      route: { path }, // Will remove in umi@2.0
     },
   });
 

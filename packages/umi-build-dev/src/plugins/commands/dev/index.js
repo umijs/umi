@@ -69,7 +69,7 @@ export default function(api) {
       contentBase: './path-do-not-exists',
       _beforeServerWithApp(app) {
         // @private
-        service.applyPlugins('_beforeServerWithApp', { args: { app } });
+        service.applyPlugins('_onBeforeServerWithApp', { args: { app } });
       },
       beforeMiddlewares: service.applyPlugins('modifyBeforeMiddlewares', {
         initialValue: [],
@@ -80,14 +80,11 @@ export default function(api) {
       beforeServer(devServer) {
         server = devServer;
         service.dev.server = server;
-        service.applyPlugins('beforeServer', { args: { devServer } });
+        service.applyPlugins('onBeforeServer', { args: { devServer } });
       },
       afterServer(devServer) {
-        service.applyPlugins('afterServer', { args: { devServer } });
+        service.applyPlugins('onAfterServer', { args: { devServer } });
         startWatch();
-      },
-      onCompileDone: stats => {
-        service.applyPlugins('onCompileDone', { args: { stats } });
       },
     });
   });

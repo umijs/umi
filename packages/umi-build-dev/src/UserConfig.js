@@ -266,7 +266,7 @@ class UserConfig {
           const { name } = plugin;
           if (!isEqual(newConfig[name], oldConfig[name])) {
             this.service.config[name] = newConfig[name];
-            this.service.applyPlugins('onUserConfigChange', {
+            this.service.applyPlugins('onConfigChange', {
               args: {
                 newConfig,
               },

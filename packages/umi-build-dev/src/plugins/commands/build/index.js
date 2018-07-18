@@ -29,7 +29,7 @@ export default function(api) {
           rimraf.sync(paths.absTmpDirPath);
         }
 
-        service.applyPlugins('beforeGenerateHTML');
+        service.applyPlugins('onBeforeGenerateHTML');
 
         if (process.env.HTML !== 'none') {
           debug(`Bundle html files`);
@@ -44,7 +44,7 @@ export default function(api) {
           }
         }
 
-        service.applyPlugins('buildSuccess');
+        service.applyPlugins('onBuildSuccess');
       },
     });
   });
