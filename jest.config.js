@@ -1,5 +1,5 @@
 module.exports = {
-  testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
+  testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/examples/',
