@@ -85,10 +85,10 @@ export function getGlobalModels(service, shouldImportDynamic) {
 
 export default function(api, opts = {}) {
   const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
-  const { paths, config } = api.service;
+  const { paths } = api.service;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
-  const shouldImportDynamic = isProduction && !config.disableDynamicImport;
+  const shouldImportDynamic = isProduction && opts.dynamicImport;
 
   function getDvaJS() {
     const dvaJS = findJSFile(paths.absSrcPath, 'dva');
@@ -162,9 +162,6 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
 ...((require('${dvaJS}').config || (() => ({})))()),
         `.trim(),
       );
-      //         .replace('<%= EnhanceApp %>', `
-      // app = (require('${dvaJS}').enhance || (app => app))(app);
-      //         `.trim());
     }
     tplContent = tplContent
       .replace('<%= ExtendDvaConfig %>', '')
@@ -201,17 +198,22 @@ ${ROUTER_MODIFIER}
         return memo;
       }
 
-      const { loading } = config;
       let loadingOpts = '';
-      if (loading) {
+      if (opts.dynamicImport.loadingComponent) {
         loadingOpts = `LoadingComponent: require('${winPath(
-          join(paths.cwd, loading),
+          join(paths.absSrcPath, opts.dynamicImport.loadingComponent),
         )}').default,`;
       }
+
+      let extendStr = '';
+      if (opts.dynamicImport.webpackChunkName) {
+        extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
+      }
+
       let ret = `
 _dvaDynamic({
   <%= MODELS %>
-  component: () => import(/* webpackChunkName: '${webpackChunkName}' */'${pageJSFile}'),
+  component: () => import(${extendStr}'${pageJSFile}'),
   ${loadingOpts}
 })
       `.trim();
@@ -228,10 +230,11 @@ models: () => [
   ${models
     .map(
       model =>
-        `import(/* webpackChunkName: '${chunkName(
-          paths.cwd,
-          model,
-        )}' */'${model}')`,
+        `import(${
+          opts.dynamicImport.webpackChunkName
+            ? `/* webpackChunkName: '${chunkName(paths.cwd, model)}' */`
+            : ''
+        }'${model}')`,
     )
     .join(',\r\n  ')}
 ],

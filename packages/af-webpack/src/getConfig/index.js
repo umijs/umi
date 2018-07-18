@@ -105,7 +105,7 @@ export default function(opts) {
     .loader(require.resolve('url-loader'))
     .options({
       limit: opts.inlineLimit || DEFAULT_INLINE_LIMIT,
-      name: 'static/[name].[hash.8].[ext]',
+      name: 'static/[name].[hash:8].[ext]',
     });
 
   const babelOptsCommon = {

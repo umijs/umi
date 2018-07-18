@@ -9,8 +9,6 @@ process.on('SIGINT', () => {
 });
 
 dev({
+  ...argv,
   plugins: argv.plugins ? argv.plugins.split(',') : [],
-}).catch(e => {
-  console.log(e);
-  process.exit(1);
 });

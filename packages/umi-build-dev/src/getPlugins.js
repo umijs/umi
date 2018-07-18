@@ -5,7 +5,7 @@ import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 const debug = require('debug')('umi-build-dev:getPlugin');
 
 export default function(opts = {}) {
-  const { configPlugins = [], pluginsFromOpts = [], babel, cwd } = opts;
+  const { configPlugins = [], pluginsFromOpts = [], cwd } = opts;
 
   function pluginToPath(plugins) {
     return plugins.map(p => {
@@ -31,7 +31,7 @@ Plugin ${path} can't be resolved, please make sure you have installed it.
 
 Try:
 
-  npm install ${path} --save-dev        
+  npm install ${path} --save-dev
         `.trim(),
         );
       }
@@ -50,22 +50,21 @@ Try:
   // 用户给的插件需要做 babel 转换
   if (pluginPaths.length) {
     addBabelRegisterFiles(pluginPaths.map(p => p[0]));
-    registerBabel(babel, {
+    registerBabel({
       cwd,
     });
   }
 
   // 内置插件
   const builtInPlugins = [
+    './plugins/commands/dev',
+    './plugins/commands/build',
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',
-    './plugins/antd',
-    './plugins/fastclick',
-    './plugins/hd',
     './plugins/mock',
     './plugins/proxy',
-    './plugins/hash-history',
+    './plugins/history',
     './plugins/afwebpack-config',
     './plugins/404', // 404 must after mock
   ];
@@ -97,6 +96,5 @@ Try:
   ];
 
   debug(`plugins: ${plugins.map(p => p.id)}`);
-
   return plugins;
 }

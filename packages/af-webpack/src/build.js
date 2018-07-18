@@ -13,7 +13,7 @@ const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 export default function build(opts = {}) {
-  const { webpackConfig, cwd = process.cwd(), success } = opts;
+  const { webpackConfig, cwd = process.cwd(), onSuccess } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
 
@@ -53,8 +53,8 @@ export default function build(opts = {}) {
     );
     console.log();
 
-    if (success) {
-      success({ stats });
+    if (onSuccess) {
+      onSuccess({ stats });
     }
   });
 }

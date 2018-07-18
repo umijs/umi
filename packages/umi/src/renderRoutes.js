@@ -38,7 +38,7 @@ export default function renderRoutes(
               );
               if (route.component) {
                 const compatProps = {};
-                if (process.env.BIGFISH_COMPAT) {
+                if (__UMI_BIGFISH_COMPAT) {
                   if (
                     props.match &&
                     props.match.params &&

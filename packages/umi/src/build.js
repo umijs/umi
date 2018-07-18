@@ -1,11 +1,8 @@
+import Service from 'umi-build-dev/lib/Service';
 import buildDevOpts from './buildDevOpts';
 
 process.env.NODE_ENV = 'production';
 
 export default function(opts = {}) {
-  return require('umi-build-dev/lib/build').default(
-    buildDevOpts({
-      ...opts,
-    }),
-  );
+  new Service(buildDevOpts(opts)).run('build', opts);
 }

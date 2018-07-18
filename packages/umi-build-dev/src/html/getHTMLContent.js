@@ -2,7 +2,7 @@ import { join, sep } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
-import winPath from '../winPath';
+import { winPath } from 'umi-utils';
 
 export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // Steps:
@@ -13,8 +13,7 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // 2.2 js
   // 2.3 css
   // 3. 压缩
-
-  const { config, paths, webpackConfig, libraryName } = service;
+  const { config, paths, webpackConfig } = service;
 
   const pageConfig = (config.pages || {})[path] || {};
   const { document, context = {} } = pageConfig;
@@ -63,8 +62,8 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   }
 
   let routerBaseStr;
-  if (process.env.BASE_URL) {
-    routerBaseStr = JSON.stringify(process.env.BASE_URL);
+  if (config.base) {
+    routerBaseStr = JSON.stringify(config.base);
   } else {
     routerBaseStr = path
       ? `location.pathname.split('/').slice(0, -${path.split('/').length -
@@ -83,9 +82,9 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   });
 
   const cssFiles = isProduction
-    ? [getChunkFile(`${libraryName}.css`, chunksMap, isProduction)]
+    ? [getChunkFile('umi.css', chunksMap, isProduction)]
     : [];
-  const jsFiles = [getChunkFile(`${libraryName}.js`, chunksMap, isProduction)];
+  const jsFiles = [getChunkFile('umi.js', chunksMap, isProduction)];
   const cssContent = cssFiles
     // umi.css may don't exists
     .filter(file => file)
