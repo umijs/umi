@@ -85,7 +85,7 @@ export default class FilesGenerator {
       dev: { server },
     } = this.service;
     try {
-      this.service.applyPlugins('generateFiles', {
+      this.service.applyPlugins('onGenerateFiles', {
         args: {
           isRebuild: true,
         },
@@ -112,7 +112,7 @@ export default class FilesGenerator {
   }
 
   generateFiles() {
-    this.service.applyPlugins('generateFiles');
+    this.service.applyPlugins('onGenerateFiles');
     this.generateRouterJS();
     this.generateEntry();
   }
