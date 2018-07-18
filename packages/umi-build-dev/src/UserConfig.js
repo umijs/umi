@@ -95,8 +95,12 @@ class UserConfig {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
 
+    const defaultConfig = service.applyPlugins('modifyDefaultConfig', {
+      initialValue: {},
+    });
     if (absConfigPath) {
       return normalizeConfig({
+        ...defaultConfig,
         ...requireFile(absConfigPath),
         ...(env
           ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`))
@@ -126,7 +130,7 @@ class UserConfig {
     let plugins = Object.keys(map).map(key => {
       return map[key].default;
     });
-    plugins = this.service.applyPlugins('modifyConfigPlugins', {
+    plugins = this.service.applyPlugins('_modifyConfigPlugins', {
       initialValue: plugins,
     });
     this.plugins = plugins.map(p => p(this));

@@ -4,7 +4,11 @@ import UserConfig from './UserConfig';
 const base = join(__dirname, './fixtures/UserConfig');
 
 describe('static UserConfig', () => {
-  const service = {};
+  const service = {
+    applyPlugins(name, { initialValue }) {
+      return initialValue;
+    },
+  };
 
   it('config/config.js', () => {
     const config = UserConfig.getConfig({
@@ -115,7 +119,7 @@ describe('instance UserConfig', () => {
           hd: true,
           local: 0,
         };
-      } else if (name === 'modifyConfigPlugins') {
+      } else if (name === '_modifyConfigPlugins') {
         return ['alias', 'hd', 'local'].map(name => {
           return () => {
             return { name };

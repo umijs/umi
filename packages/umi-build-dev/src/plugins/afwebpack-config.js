@@ -19,7 +19,7 @@ export default function(api) {
   } = api;
 
   // 把 af-webpack 的配置插件转化为 umi-build-dev 的
-  api.register('modifyConfigPlugins', ({ memo }) => {
+  api.register('_modifyConfigPlugins', ({ memo }) => {
     plugins.forEach(({ name, validate = noop }) => {
       if (!excludes.includes(name)) {
         memo.push(() => ({

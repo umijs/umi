@@ -11,7 +11,7 @@ export default function(api) {
     }
   });
 
-  api.register('modifyConfigPlugins', ({ memo }) => {
+  api.register('_modifyConfigPlugins', ({ memo }) => {
     memo.push(() => {
       return {
         name: 'outputPath',

@@ -4,7 +4,7 @@ export default function(api) {
   const { IMPORT, HISTORY_MODIFIER } = api.placeholder;
   const { config } = api.service;
 
-  api.register('modifyConfigPlugins', ({ memo }) => {
+  api.register('_modifyConfigPlugins', ({ memo }) => {
     memo.push(api => {
       return {
         name: 'history',

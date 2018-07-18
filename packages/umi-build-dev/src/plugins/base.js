@@ -3,7 +3,7 @@ import assert from 'assert';
 export default function(api) {
   const { config } = api.service;
 
-  api.register('modifyConfigPlugins', ({ memo }) => {
+  api.register('_modifyConfigPlugins', ({ memo }) => {
     memo.push(api => {
       return {
         name: 'base',
