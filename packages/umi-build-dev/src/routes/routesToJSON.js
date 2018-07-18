@@ -1,6 +1,7 @@
 import { join, relative } from 'path';
 import isAbsolute from 'path-is-absolute';
 import { winPath } from 'umi-utils';
+import cloneDeep from 'lodash.clonedeep';
 
 let targetLevel = null;
 let level = 0;
@@ -17,10 +18,11 @@ export default (routes, service) => {
   }
 
   const { config, applyPlugins, paths } = service;
-  patchRoutes(routes);
+  const clonedRoutes = cloneDeep(routes);
+  patchRoutes(clonedRoutes);
 
   return JSON.stringify(
-    routes,
+    clonedRoutes,
     (key, value) => {
       switch (key) {
         case 'component':
