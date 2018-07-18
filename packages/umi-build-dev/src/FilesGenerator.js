@@ -25,7 +25,6 @@ export default class FilesGenerator {
     this.service = service;
     this.routesContent = null;
     this.hasRebuildError = false;
-    this.layoutDirectoryName = service.config.singular ? 'layout' : 'layouts';
   }
 
   generate() {
@@ -113,9 +112,7 @@ export default class FilesGenerator {
   }
 
   generateFiles() {
-    const { paths, config } = this.service;
     this.service.applyPlugins('generateFiles');
-
     this.generateRouterJS();
     this.generateEntry();
   }

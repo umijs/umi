@@ -111,10 +111,9 @@ describe('routesToJSON', () => {
     expect(applyPluginOpts).toEqual({
       initialValue: "require('../A').default",
       args: {
-        pageJSFile: '../A',
         importPath: '../A',
         webpackChunkName: 'pages__A',
-        config: { react: { dynamicImport: true } },
+        component: './pages/A',
       },
     });
   });

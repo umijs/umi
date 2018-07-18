@@ -40,10 +40,9 @@ export default (routes, service) => {
             ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
-                pageJSFile: importPath,
                 importPath,
                 webpackChunkName,
-                config,
+                component,
               },
             });
           }

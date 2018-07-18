@@ -193,7 +193,7 @@ ${ROUTER_MODIFIER}
 
   if (shouldImportDynamic) {
     api.register('modifyRouteComponent', ({ memo, args }) => {
-      const { pageJSFile, webpackChunkName } = args;
+      const { importPath, webpackChunkName } = args;
       if (!webpackChunkName) {
         return memo;
       }
@@ -213,12 +213,12 @@ ${ROUTER_MODIFIER}
       let ret = `
 _dvaDynamic({
   <%= MODELS %>
-  component: () => import(${extendStr}'${pageJSFile}'),
+  component: () => import(${extendStr}'${importPath}'),
   ${loadingOpts}
 })
       `.trim();
       const models = getPageModels(
-        join(paths.absTmpDirPath, pageJSFile),
+        join(paths.absTmpDirPath, importPath),
         api.service,
       );
       if (models && models.length) {

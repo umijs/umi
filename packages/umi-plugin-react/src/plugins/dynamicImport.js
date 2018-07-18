@@ -13,7 +13,7 @@ export default function(api, options) {
     });
 
     api.register('modifyRouteComponent', ({ args }) => {
-      const { webpackChunkName, importPath } = args;
+      const { importPath, webpackChunkName } = args;
 
       let loadingOpts = '';
       if (options.loadingComponent) {
