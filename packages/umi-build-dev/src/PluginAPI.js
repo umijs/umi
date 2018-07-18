@@ -14,6 +14,7 @@ class PluginAPI {
   constructor(id, service) {
     this.id = id;
     this.service = service;
+    this.debug = debug(`umi-plugin: ${id}`);
     this.utils = {
       // private for umi-plugin-dll
       _webpack: require('af-webpack/webpack'),
@@ -21,8 +22,6 @@ class PluginAPI {
       _afWebpackBuild: require('af-webpack/build').default,
       _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
         .webpackHotDevClientPath,
-      winPath,
-      debug: debug(`umi-plugin: ${id}`),
     };
     this.placeholder = {
       IMPORT: PLACEHOLDER_IMPORT,

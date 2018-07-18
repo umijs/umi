@@ -5,10 +5,7 @@ import HtmlGenerator from '../../../html/HtmlGenerator';
 import getRouteManager from '../getRouteManager';
 
 export default function(api) {
-  const {
-    service,
-    utils: { debug },
-  } = api;
+  const { service, debug } = api;
   const { cwd, paths } = service;
   const RoutesManager = getRouteManager(service);
   RoutesManager.fetchRoutes();
@@ -29,8 +26,6 @@ export default function(api) {
           rimraf.sync(paths.absTmpDirPath);
         }
 
-        service.applyPlugins('onBeforeGenerateHTML');
-
         if (process.env.HTML !== 'none') {
           debug(`Bundle html files`);
           const chunksMap = chunksToMap(stats.compilation.chunks);
@@ -44,7 +39,18 @@ export default function(api) {
           }
         }
 
-        service.applyPlugins('onBuildSuccess');
+        service.applyPlugins('onBuildSuccess', {
+          args: {
+            stats,
+          },
+        });
+      },
+      onFail(err) {
+        service.applyPlugins('onBuildFail', {
+          args: {
+            err,
+          },
+        });
       },
     });
   });

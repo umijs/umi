@@ -14,7 +14,7 @@ const excludes = ['entry', 'outputPath', 'hash'];
 
 export default function(api) {
   const {
-    utils: { debug },
+    debug,
     service: { cwd, config, paths },
   } = api;
 

@@ -10,7 +10,7 @@ const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 
 export default function getMockMiddleware(api) {
-  const { debug } = api.utils;
+  const { debug } = api;
   const { cwd } = api.service;
   const absMockPath = join(cwd, 'mock');
   const absConfigPath = join(cwd, '.umirc.mock.js');

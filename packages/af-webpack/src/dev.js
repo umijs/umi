@@ -67,7 +67,10 @@ export default function dev({
           send({ type: DONE });
         }
 
-        onCompileDone();
+        onCompileDone({
+          isFirstCompile,
+          stats,
+        });
       });
 
       const serverConfig = {

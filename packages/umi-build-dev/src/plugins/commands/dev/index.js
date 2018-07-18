@@ -80,11 +80,19 @@ export default function(api) {
       beforeServer(devServer) {
         server = devServer;
         service.dev.server = server;
-        service.applyPlugins('onBeforeServer', { args: { devServer } });
+        service.applyPlugins('beforeDevServer', { args: { devServer } });
       },
       afterServer(devServer) {
-        service.applyPlugins('onAfterServer', { args: { devServer } });
+        service.applyPlugins('afterDevServer', { args: { devServer } });
         startWatch();
+      },
+      onCompileDone({ isFirstCompile, stats }) {
+        service.applyPlugins('onDevCompileDone', {
+          args: {
+            isFirstCompile,
+            stats,
+          },
+        });
       },
     });
   });
