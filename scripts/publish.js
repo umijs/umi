@@ -58,11 +58,11 @@ function publishToNpm() {
   console.log(`repos to publish: ${updatedRepos.join(', ')}`);
   updatedRepos.forEach(repo => {
     shell.cd(join(cwd, 'packages', repo));
-    const { name } = require(join(cwd, 'packages', repo, 'package.json'));
+    const { version } = require(join(cwd, 'packages', repo, 'package.json'));
     if (
-      name.includes('-rc.') ||
-      name.includes('-beta.') ||
-      name.includes('-alpha.')
+      version.includes('-rc.') ||
+      version.includes('-beta.') ||
+      version.includes('-alpha.')
     ) {
       console.log(`[${repo}] npm publish --tag next`);
       shell.exec(`npm publish --tag next`);
