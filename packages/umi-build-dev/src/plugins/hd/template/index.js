@@ -1,5 +1,5 @@
-import vw from './vw.js';
-import flex from './flex.js';
+import vw from 'umi-hd/lib/vw';
+import flex from 'umi-hd/lib/flex';
 
 if (document.documentElement.clientWidth >= 750) {
   vw(100, 750);
