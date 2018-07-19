@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "start": "CLEAR_CONSOLE=none umi dev"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,29 @@
+{
+  "name": "umi-plugin-locale",
+  "version": "1.0.1",
+  "description": "A umi plugin for provide internationalization function.",
+  "main": "./lib/index.js",
+  "authors": [
+    "yutingzhao1991 <yutingzhao1991@sina.com> (https://github.com/yutingzhao1991)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale",
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "keywords": [
+    "umi"
+  ],
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react-intl": "^2.4.0",
+    "umi-utils": "^0.0.1"
+  }
+}
