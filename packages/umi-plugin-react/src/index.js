@@ -30,9 +30,14 @@ export default function(api, options) {
       ...toObject(options.dva),
       dynamicImport: options.dynamicImport,
     });
+  if (options.locale)
+    require('umi-plugin-locale').default(api, {
+      antd: options.antd,
+      ...options.locale,
+    });
   if (options.polyfills)
     require('./plugins/polyfills').default(api, options.polyfills);
 
   // antd + antd-mobile
-  require('./plugins/antd').default(api);
+  if (options.antd) require('./plugins/antd').default(api, options.antd);
 }

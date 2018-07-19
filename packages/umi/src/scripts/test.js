@@ -1,14 +1,12 @@
-import test from '../test';
+import yParser from 'yargs-parser';
+import buildDevOpts from '../buildDevOpts';
 
-const args = process.argv.slice(2);
+process.env.NODE_ENV = 'development';
 
-const watch = args.indexOf('-w') > -1 || args.indexOf('--watch') > -1;
-const coverage = args.indexOf('--coverage') > -1;
-
-test({
-  watch,
-  coverage,
-}).catch(e => {
-  console.log(e);
-  process.exit(1);
-});
+const argv = yParser(process.argv.slice(2));
+const opts = {
+  ...argv,
+  plugins: argv.plugins ? argv.plugins.split(',') : [],
+};
+const Service = require('umi-build-dev/lib/Service').default;
+new Service(buildDevOpts(opts)).run('test', opts);

@@ -8,9 +8,7 @@ function PROXY_END(req, res, next) {
 }
 
 export default function(api) {
-  const {
-    utils: { debug },
-  } = api;
+  const { debug } = api;
 
   api.register('beforeServerWithApp', ({ args: { app } }) => {
     const { config, webpackRCConfig } = api.service;

@@ -59,6 +59,7 @@ Try:
   const builtInPlugins = [
     './plugins/commands/dev',
     './plugins/commands/build',
+    './plugins/commands/test',
     './plugins/output-path',
     './plugins/global-js',
     './plugins/global-css',

@@ -53,17 +53,18 @@ function normalizeConfig(config) {
 }
 
 function getConfigFile(cwd, service) {
-  const { printWarn } = service;
   const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
     existsSync(file),
   );
 
   if (files.length > 1) {
-    printWarn(
-      `Muitiple config files ${files.join(', ')} detected, umi will use ${
-        files[0]
-      }.`,
-    );
+    if (service.dev && service.dev.server) {
+      service.dev.server.sockWrite(service.dev.server.sockets, 'warns', [
+        `Muitiple config files ${files.join(', ')} detected, umi will use ${
+          files[0]
+        }.`,
+      ]);
+    }
   }
 
   return files[0];
@@ -95,8 +96,12 @@ class UserConfig {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
 
+    const defaultConfig = service.applyPlugins('modifyDefaultConfig', {
+      initialValue: {},
+    });
     if (absConfigPath) {
       return normalizeConfig({
+        ...defaultConfig,
         ...requireFile(absConfigPath),
         ...(env
           ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`))
@@ -126,16 +131,27 @@ class UserConfig {
     let plugins = Object.keys(map).map(key => {
       return map[key].default;
     });
-    plugins = this.service.applyPlugins('modifyConfigPlugins', {
+    plugins = this.service.applyPlugins('_modifyConfigPlugins', {
       initialValue: plugins,
     });
     this.plugins = plugins.map(p => p(this));
   }
 
+  printError(messages) {
+    if (this.service.dev && this.service.dev.server) {
+      messages = typeof messages === 'string' ? [messages] : messages;
+      this.service.dev.server.sockWrite(
+        this.service.dev.server.sockets,
+        'errors',
+        messages,
+      );
+    }
+  }
+
   getConfig(opts = {}) {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
-    const { paths, printError, cwd } = this.service;
+    const { paths, cwd } = this.service;
     const { force, setConfig } = opts;
 
     const file = getConfigFile(paths.cwd, this.service);
@@ -167,7 +183,7 @@ class UserConfig {
         '',
       )}" 解析出错，请检查语法。
 \r\n${e.toString()}`;
-      printError(msg);
+      this.printError(msg);
       throw new Error(msg);
     }
 
@@ -197,7 +213,7 @@ class UserConfig {
           if (setConfig) {
             setConfig(config);
           }
-          printError(e.message);
+          this.printError(e.message);
           throw new Error(`配置 ${name} 校验失败, ${e.message}`);
         }
       }
@@ -214,7 +230,7 @@ class UserConfig {
         const guess = didyoumean(key, pluginNames);
         const midMsg = guess ? `你是不是想配置 "${guess}" ？ 或者` : '请';
         const msg = `"${relativeFile}" 中配置的 "${key}" 并非约定的配置项，${midMsg}${affixmsg}`;
-        printError(msg);
+        this.printError(msg);
         throw new Error(msg);
       }
     });
@@ -262,7 +278,7 @@ class UserConfig {
           const { name } = plugin;
           if (!isEqual(newConfig[name], oldConfig[name])) {
             this.service.config[name] = newConfig[name];
-            this.service.applyPlugins('onUserConfigChange', {
+            this.service.applyPlugins('onConfigChange', {
               args: {
                 newConfig,
               },

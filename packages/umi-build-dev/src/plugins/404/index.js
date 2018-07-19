@@ -1,9 +1,9 @@
 import { join } from 'path';
 import deepclone from 'lodash.clonedeep';
+import { winPath } from 'umi-utils';
 
 export default function(api) {
   const { paths } = api.service;
-  const { winPath } = api.utils;
 
   if (process.env.NODE_ENV === 'development') {
     api.register('modifyRoutes', ({ memo }) => {

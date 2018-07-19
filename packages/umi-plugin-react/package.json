@@ -30,6 +30,7 @@
     "umi-utils": "^0.0.1",
     "umi-plugin-dll": "^0.2.1",
     "umi-plugin-dva": "^0.9.1",
+    "umi-plugin-locale": "^1.0.1",
     "umi-plugin-polyfill": "^0.2.0",
     "webpack": "^4.16.1",
     "workbox-webpack-plugin": "^3.4.1"

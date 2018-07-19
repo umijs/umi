@@ -1,9 +1,9 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { winPath } from 'umi-utils';
 
 export default function(api) {
   const { paths } = api.service;
-  const { winPath } = api.utils;
 
   api.register('modifyEntryFile', ({ memo }) => {
     const cssImports = [
