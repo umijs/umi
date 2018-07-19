@@ -136,10 +136,21 @@ class UserConfig {
     this.plugins = plugins.map(p => p(this));
   }
 
+  printError(messages) {
+    if (this.service.dev && this.service.dev.server) {
+      messages = typeof messages === 'string' ? [messages] : messages;
+      this.service.dev.server.sockWrite(
+        this.service.dev.server.sockets,
+        'errors',
+        messages,
+      );
+    }
+  }
+
   getConfig(opts = {}) {
     const env = process.env.UMI_ENV;
     const isDev = process.env.NODE_ENV === 'development';
-    const { paths, printError, cwd } = this.service;
+    const { paths, cwd } = this.service;
     const { force, setConfig } = opts;
 
     const file = getConfigFile(paths.cwd, this.service);
@@ -171,7 +182,7 @@ class UserConfig {
         '',
       )}" 解析出错，请检查语法。
 \r\n${e.toString()}`;
-      printError(msg);
+      this.printError(msg);
       throw new Error(msg);
     }
 
@@ -201,7 +212,7 @@ class UserConfig {
           if (setConfig) {
             setConfig(config);
           }
-          printError(e.message);
+          this.printError(e.message);
           throw new Error(`配置 ${name} 校验失败, ${e.message}`);
         }
       }
@@ -218,7 +229,7 @@ class UserConfig {
         const guess = didyoumean(key, pluginNames);
         const midMsg = guess ? `你是不是想配置 "${guess}" ？ 或者` : '请';
         const msg = `"${relativeFile}" 中配置的 "${key}" 并非约定的配置项，${midMsg}${affixmsg}`;
-        printError(msg);
+        this.printError(msg);
         throw new Error(msg);
       }
     });
