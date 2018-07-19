@@ -81,6 +81,7 @@
     "sass-loader": "^7.0.3"
   },
   "files": [
+    "bin",
     "lib",
     "src",
     "build.js",
