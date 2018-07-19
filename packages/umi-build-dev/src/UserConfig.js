@@ -53,17 +53,18 @@ function normalizeConfig(config) {
 }
 
 function getConfigFile(cwd, service) {
-  const { printWarn } = service;
   const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
     existsSync(file),
   );
 
   if (files.length > 1) {
-    printWarn(
-      `Muitiple config files ${files.join(', ')} detected, umi will use ${
-        files[0]
-      }.`,
-    );
+    if (service.dev && service.dev.server) {
+      service.dev.server.sockWrite(service.dev.server.sockets, 'warns', [
+        `Muitiple config files ${files.join(', ')} detected, umi will use ${
+          files[0]
+        }.`,
+      ]);
+    }
   }
 
   return files[0];

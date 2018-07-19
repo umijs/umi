@@ -1,6 +1,5 @@
 import debug from 'debug';
 import assert from 'assert';
-import { winPath } from 'umi-utils';
 import {
   PLACEHOLDER_IMPORT,
   PLACEHOLDER_RENDER,
@@ -15,6 +14,7 @@ class PluginAPI {
     this.id = id;
     this.service = service;
     this.debug = debug(`umi-plugin: ${id}`);
+    // deprecated
     this.utils = {
       // private for umi-plugin-dll
       _webpack: require('af-webpack/webpack'),
@@ -23,6 +23,7 @@ class PluginAPI {
       _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
         .webpackHotDevClientPath,
     };
+    // deprecated
     this.placeholder = {
       IMPORT: PLACEHOLDER_IMPORT,
       RENDER: PLACEHOLDER_RENDER,
