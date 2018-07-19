@@ -25,7 +25,7 @@ export function getLocaleFileList(absSrcPath, singular) {
   return localeList;
 }
 
-export default function(api, options) {
+export default function(api, options = {}) {
   const { service, placeholder } = api;
   const { IMPORT } = placeholder;
   const { paths } = service;

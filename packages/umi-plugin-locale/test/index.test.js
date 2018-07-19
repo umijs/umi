@@ -17,57 +17,14 @@ const api = {
       singular: true,
     },
     paths: {
-      absSrcPath: absSrcPath,
+      absSrcPath,
     },
   },
   register() {},
 };
 
 describe('test plugin', () => {
-  test('not modify content when enable is not true', () => {
-    api.register = (name, handler) => {
-      if (name === 'modifyPageWatchers') {
-        const ret = handler({
-          memo: ['/some/test'],
-        });
-        expect(ret).toEqual(['/some/test']);
-      }
-      if (name === 'modifyRouterContent') {
-        const ret = handler({
-          memo: '<Router />',
-        });
-        expect(ret).toEqual('<Router />');
-      }
-      if (name === 'modifyRouterFile') {
-        const ret = handler({
-          memo: 'test-placeholder',
-        });
-        expect(ret).toEqual('test-placeholder');
-      }
-      if (name === 'modifyAFWebpackOpts') {
-        const ret = handler({
-          memo: {
-            xxx: {},
-            alias: {
-              test: 'hi/hello',
-            },
-          },
-        });
-        expect(ret).toEqual({
-          xxx: {},
-          alias: {
-            test: 'hi/hello',
-          },
-        });
-      }
-    };
-    localePlugin(api);
-  });
-
   test('enable is true', () => {
-    api.service.config.locale = {
-      enable: true,
-    };
     api.register = (name, handler) => {
       if (name === 'modifyPageWatchers') {
         const ret = handler({
@@ -116,10 +73,6 @@ describe('test plugin', () => {
 });
 
 test('antd is false', () => {
-  api.service.config.locale = {
-    enable: true,
-    antd: false,
-  };
   api.register = (name, handler) => {
     if (name === 'modifyPageWatchers') {
       const ret = handler({
@@ -164,7 +117,9 @@ test('antd is false', () => {
       });
     }
   };
-  localePlugin(api);
+  localePlugin(api, {
+    antd: false,
+  });
 });
 
 describe('test func with singular true', () => {
