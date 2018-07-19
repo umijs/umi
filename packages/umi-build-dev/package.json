@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "0.21.1",
+  "version": "0.22.0",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.46",
     "address": "^1.0.3",
