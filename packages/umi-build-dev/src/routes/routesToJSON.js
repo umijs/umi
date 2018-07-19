@@ -1,12 +1,11 @@
 import { join, relative } from 'path';
 import isAbsolute from 'path-is-absolute';
-import winPath from '../winPath';
-import normalizeEntry from '../normalizeEntry';
+import { winPath } from 'umi-utils';
 
 let targetLevel = null;
 let level = 0;
 
-export default (routes, service, requestedMap, env) => {
+export default (routes, service) => {
   if (process.env.CODE_SPLITTING_LEVEL) {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
@@ -20,14 +19,6 @@ export default (routes, service, requestedMap, env) => {
   const { config, applyPlugins, paths } = service;
   patchRoutes(routes);
 
-  const { loading } = config;
-  let loadingOpts = '';
-  if (loading) {
-    loadingOpts = ` loading: require('${winPath(
-      join(paths.cwd, loading),
-    )}').default `;
-  }
-
   return JSON.stringify(
     routes,
     (key, value) => {
@@ -37,46 +28,16 @@ export default (routes, service, requestedMap, env) => {
             return value;
           }
 
-          const [component, webpackChunkName, path] = value.split('^^');
+          const [component, webpackChunkName] = value.split('^^');
           const importPath = isAbsolute(component)
             ? component
             : winPath(relative(paths.tmpDirPath, component));
 
-          let ret;
-          let isCompiling = false;
-          const compilingPath = winPath(paths.absCompilingComponentPath);
-
-          if (env === 'production' && !config.disableDynamicImport) {
-            // 按需加载
-            ret = `dynamic(() => import(/* webpackChunkName: ^${webpackChunkName}^ */'${importPath}'), {${loadingOpts}})`;
-          } else {
-            // 非按需加载
-            if (
-              env === 'production' ||
-              // 无 socket 时按需编译体验很差，所以禁用
-              process.env.SOCKET_SERVER === 'none' ||
-              process.env.COMPILE_ON_DEMAND === 'none' ||
-              !process.env.COMPILE_ON_DEMAND ||
-              !path ||
-              requestedMap[path]
-            ) {
-              ret = `require('${importPath}').default`;
-            } else {
-              isCompiling = true;
-              let newPath = null;
-              if (config.exportStatic && config.exportStatic.htmlSuffix) {
-                newPath = path.replace('(.html)?', '');
-              }
-              ret = `() => React.createElement(require('${compilingPath}').default, { route: '${newPath ||
-                path}' })`;
-            }
-          }
-
+          let ret = `require('${importPath}').default`;
           if (applyPlugins) {
             ret = applyPlugins.call(service, 'modifyRouteComponent', {
               initialValue: ret,
               args: {
-                isCompiling,
                 pageJSFile: importPath,
                 importPath,
                 webpackChunkName,
@@ -102,6 +63,14 @@ function patchRoutes(routes, webpackChunkName) {
     patchRoute(route, webpackChunkName);
   });
   level -= 1;
+}
+
+function normalizeEntry(entry) {
+  return entry
+    .replace(/^.(\/|\\)/, '')
+    .replace(/(\/|\\)/g, '__')
+    .replace(/\.jsx?$/, '')
+    .replace(/\.tsx?$/, '');
 }
 
 function patchRoute(route, webpackChunkName) {

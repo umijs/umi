@@ -1,0 +1,37 @@
+{
+  "name": "umi-plugin-react",
+  "version": "0.0.1-alpha.1",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "antd": "^3.6.5",
+    "antd-mobile": "^2.2.1",
+    "babel-plugin-import": "^1.8.0",
+    "fastclick": "^1.0.6",
+    "is-plain-object": "^2.0.4",
+    "postcss-plugin-px2rem": "^0.7.0",
+    "preact": "^8.2.9",
+    "preact-compat": "^3.18.0",
+    "register-service-worker": "^1.4.1",
+    "umi-utils": "^0.0.1",
+    "umi-plugin-dll": "^0.2.1",
+    "umi-plugin-dva": "^0.9.1",
+    "umi-plugin-polyfill": "^0.2.0",
+    "webpack": "^4.16.1",
+    "workbox-webpack-plugin": "^3.4.1"
+  }
+}

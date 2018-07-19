@@ -1,6 +1,6 @@
 import { readdirSync, statSync, existsSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
-import winPath from '../winPath';
+import { winPath } from 'umi-utils';
 
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 

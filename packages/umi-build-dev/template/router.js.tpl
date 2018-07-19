@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
-import dynamic from '<%= libraryName %>/dynamic';
-import renderRoutes from '<%= libraryName %>/_renderRoutes';
+import dynamic from 'umi/dynamic';
+import renderRoutes from 'umi/_renderRoutes';
 <%= IMPORT %>
 
 let Router = DefaultRouter;

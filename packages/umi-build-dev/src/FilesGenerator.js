@@ -1,15 +1,12 @@
-import assert from 'assert';
 import { join } from 'path';
-import { sync as mkdirp } from 'mkdirp';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
+import assert from 'assert';
+import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
-import { matchRoutes } from 'react-router-config';
-import getRouteConfig from './routes/getRouteConfig';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
-import { getRequest } from './requestCache';
 import {
   EXT_LIST,
   PLACEHOLDER_HISTORY_MODIFIER,
@@ -23,21 +20,21 @@ import {
 const debug = require('debug')('umi:FilesGenerator');
 
 export default class FilesGenerator {
-  constructor(service) {
+  constructor(service, RoutesManager) {
+    this.RoutesManager = RoutesManager;
     this.service = service;
     this.routesContent = null;
     this.hasRebuildError = false;
     this.layoutDirectoryName = service.config.singular ? 'layout' : 'layouts';
   }
 
-  generate(opts = {}) {
+  generate() {
     const { paths } = this.service;
     const { absTmpDirPath, tmpDirPath } = paths;
-    debug(`Mkdir tmp dir: ${tmpDirPath}`);
-    mkdirp(absTmpDirPath);
+    debug(`mkdir tmp dir: ${tmpDirPath}`);
+    mkdirp.sync(absTmpDirPath);
 
     this.generateFiles();
-    if (opts.onChange) opts.onChange();
   }
 
   createWatcher(path) {
@@ -57,14 +54,15 @@ export default class FilesGenerator {
 
   watch() {
     if (process.env.WATCH_FILES === 'none') return;
-    const { paths } = this.service;
+    const {
+      paths,
+      config: { singular },
+    } = this.service;
+    const layout = singular ? 'layout' : 'layouts';
     const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
       initialValue: [
         paths.absPagesPath,
-        join(paths.absSrcPath, '_routes.json'),
-        ...EXT_LIST.map(ext =>
-          join(paths.absSrcPath, `${this.layoutDirectoryName}/index${ext}`),
-        ),
+        ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
       ],
     });
     this.watchers = watcherPaths.map(p => {
@@ -84,7 +82,9 @@ export default class FilesGenerator {
   }
 
   rebuild() {
-    const { devServer } = this.service;
+    const {
+      dev: { server },
+    } = this.service;
     try {
       this.service.applyPlugins('generateFiles', {
         args: {
@@ -95,15 +95,14 @@ export default class FilesGenerator {
       this.generateRouterJS();
       this.generateEntry();
 
-      if (this.onChange) this.onChange();
       if (this.hasRebuildError) {
         // 从出错中恢复时，刷新浏览器
-        devServer.sockWrite(devServer.sockets, 'content-changed');
+        server.sockWrite(server.sockets, 'content-changed');
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      devServer.sockWrite(devServer.sockets, 'errors', [e.message]);
+      server.sockWrite(server.sockets, 'errors', [e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?
@@ -113,8 +112,16 @@ export default class FilesGenerator {
     }
   }
 
+  generateFiles() {
+    const { paths, config } = this.service;
+    this.service.applyPlugins('generateFiles');
+
+    this.generateRouterJS();
+    this.generateEntry();
+  }
+
   generateEntry() {
-    const { paths, entryJSTpl, config, libraryName } = this.service;
+    const { paths, entryJSTpl } = this.service;
 
     // Generate umi.js
     let entryContent = readFileSync(
@@ -128,48 +135,17 @@ export default class FilesGenerator {
     entryContent = entryContent
       .replace(PLACEHOLDER_IMPORT, '')
       .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
-      .replace(/<%= libraryName %>/g, libraryName)
       .replace(
         PLACEHOLDER_RENDER,
         `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
       );
-
-    if (!config.disableServiceWorker) {
-      entryContent = `${entryContent}
-// Enable service worker
-if (process.env.NODE_ENV === 'production') {
-  require('./registerServiceWorker');
-}
-      `;
-    }
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
   }
 
-  generateFiles() {
-    const { paths, config } = this.service;
-    this.service.applyPlugins('generateFiles');
-
-    this.generateRouterJS();
-    this.generateEntry();
-
-    // Generate registerServiceWorker.js
-    if (process.env.NODE_ENV === 'production' && !config.disableServiceWorker) {
-      writeFileSync(
-        paths.absRegisterSWJSPath,
-        readFileSync(paths.defaultRegisterSWTplPath),
-        'utf-8',
-      );
-    }
-  }
-
   generateRouterJS() {
-    const { paths, config } = this.service;
+    const { paths } = this.service;
     const { absRouterJSPath } = paths;
-    const routes = this.service.applyPlugins('modifyRoutes', {
-      initialValue: getRouteConfig(paths, config),
-    });
-
-    this.service.setRoutes(routes);
+    this.RoutesManager.fetchRoutes();
 
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
@@ -180,7 +156,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRouterJSContent() {
-    const { routerTpl, paths, libraryName } = this.service;
+    const { routerTpl, paths } = this.service;
     const routerTplPath = routerTpl || paths.defaultRouterTplPath;
     assert(
       existsSync(routerTplPath),
@@ -194,7 +170,6 @@ if (process.env.NODE_ENV === 'production') {
 
     let routes = this.getRoutesJSON({
       env: process.env.NODE_ENV,
-      requested: getRequest(),
     });
     routes = stripJSONQuote(routes);
 
@@ -206,17 +181,7 @@ if (process.env.NODE_ENV === 'production') {
       .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
       .replace(PLACEHOLDER_ROUTES_MODIFIER, '')
       .replace('<%= ROUTES %>', () => routes)
-      .replace(PLACEHOLDER_ROUTER, routerContent)
-      .replace(/<%= libraryName %>/g, libraryName);
-  }
-
-  getRequestedRoutes(requested) {
-    return Object.keys(requested).reduce((memo, pathname) => {
-      matchRoutes(this.service.routes, pathname).forEach(({ route }) => {
-        memo[route.path] = 1;
-      });
-      return memo;
-    }, {});
+      .replace(PLACEHOLDER_ROUTER, routerContent);
   }
 
   fixHtmlSuffix(routes) {
@@ -229,9 +194,8 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   getRoutesJSON(opts = {}) {
-    const { env, requested = {} } = opts;
-    const requestedMap = this.getRequestedRoutes(requested);
-    return routesToJSON(this.service.routes, this.service, requestedMap, env);
+    const { env } = opts;
+    return routesToJSON(this.RoutesManager.routes, this.service, env);
   }
 
   getRouterContent() {
