@@ -1,10 +1,10 @@
 {
   "name": "umi-build-dev",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.46",
     "address": "^1.0.3",
-    "af-webpack": "^1.0.0-beta.1",
+    "af-webpack": "^1.0.0-beta.2",
     "babel-preset-umi": "^0.3.0",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
