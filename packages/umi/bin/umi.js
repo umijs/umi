@@ -54,11 +54,7 @@ switch (aliasedScript) {
     break;
   case 'build':
   case 'dev':
-  case 'generate':
-    if (process.env.ALI_MONITOR !== 'none') {
-      // Disable atool monitor when ALI_MONITOR=none
-      require('atool-monitor').emit();
-    }
+    require('atool-monitor').emit();
     runScript(aliasedScript, args, /* isFork */true);
     break;
   case 'test':
