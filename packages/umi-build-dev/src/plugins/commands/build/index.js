@@ -7,10 +7,11 @@ import getRouteManager from '../getRouteManager';
 export default function(api) {
   const { service, debug } = api;
   const { cwd, paths } = service;
-  const RoutesManager = getRouteManager(service);
-  RoutesManager.fetchRoutes();
 
   api.registerCommand('build', {}, () => {
+    const RoutesManager = getRouteManager(service);
+    RoutesManager.fetchRoutes();
+
     process.env.NODE_ENV = 'production';
     service.applyPlugins('onStart');
 

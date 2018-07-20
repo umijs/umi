@@ -9,8 +9,6 @@ import getRouteManager from '../getRouteManager';
 export default function(api) {
   const { service } = api;
   const { cwd } = service;
-  const RoutesManager = getRouteManager(service);
-  RoutesManager.fetchRoutes();
 
   function mergeConfig(oldConfig, newConfig) {
     Object.keys(oldConfig).forEach(key => {
@@ -23,6 +21,9 @@ export default function(api) {
   }
 
   api.registerCommand('dev', {}, (args = {}) => {
+    const RoutesManager = getRouteManager(service);
+    RoutesManager.fetchRoutes();
+
     const { port } = args;
     process.env.NODE_ENV = 'development';
     service.applyPlugins('onStart');
