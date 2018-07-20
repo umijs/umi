@@ -11,7 +11,13 @@ function test(path) {
 }
 
 export default function(opts = {}) {
-  const { watch, coverage, libraryName = 'umi', cwd = process.cwd() } = opts;
+  const {
+    watch,
+    coverage,
+    libraryName = 'umi',
+    cwd = process.cwd(),
+    moduleNameMapper,
+  } = opts;
 
   const jestConfigFile = join(cwd, 'jest.config.js');
   let userJestConfig = {};
@@ -42,6 +48,7 @@ export default function(opts = {}) {
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
+      ...(moduleNameMapper || {}),
     },
     globals: {
       'ts-jest': {
