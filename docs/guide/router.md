@@ -48,10 +48,10 @@ umi 里约定，带 $ 前缀的目录或文件为动态路由。
 
 ```js
 [
-  { path: '/': exact: true, component: './pages/index.js' },
-  { path: '/users/:id': exact: true, component: './pages/users/$id.js' },
-  { path: '/:post/': exact: true, component: './pages/$post/index.js' },
-  { path: '/:post/comments': exact: true, component: './pages/$post/comments.js' },
+  { path: '/', exact: true, component: './pages/index.js' },
+  { path: '/users/:id', exact: true, component: './pages/users/$id.js' },
+  { path: '/:post/', exact: true, component: './pages/$post/index.js' },
+  { path: '/:post/comments', exact: true, component: './pages/$post/comments.js' },
 ]
 ```
 
