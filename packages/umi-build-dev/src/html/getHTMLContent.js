@@ -61,10 +61,18 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
       publicPath,
     )}'`;
   }
-
+  let dynamicNonRootRouterScript = '';
   let routerBaseStr;
   if (process.env.BASE_URL) {
     routerBaseStr = JSON.stringify(process.env.BASE_URL);
+    dynamicNonRootRouterScript = `
+    if (window.routerBase !== ''){
+      var _idxOf_rb = location.pathname.indexOf(window.routerBase);
+      if (_idxOf_rb > -1){
+        window.routerBase = location.pathname.substr(0,_idxOf_rb) + window.routerBase + '/';
+      }
+    }
+   `.trim();
   } else {
     routerBaseStr = path
       ? `location.pathname.split('/').slice(0, -${path.split('/').length -
@@ -75,6 +83,7 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   let htmlScript = `
 <script>
   window.routerBase = ${routerBaseStr};
+  ${dynamicNonRootRouterScript}
   window.publicPath = ${publicPathStr};
 </script>
     `.trim();
