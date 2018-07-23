@@ -5,6 +5,7 @@ const service = {
   paths: {
     cwd: '$CWD$',
     absSrcPath: '$SRC$',
+    absTmpDirPath: '$CWD$/.pages/.umi',
     tmpDirPath: './pages/.umi',
     absCompilingComponentPath: '$COMPILING$',
   },
@@ -116,17 +117,17 @@ describe('routesToJSON', () => {
     });
   });
 
-  it('Route', () => {
-    const json = routesToJSON([{ Route: './routes/A' }], service, {});
+  it('Routes', () => {
+    const json = routesToJSON([{ Routes: ['./routes/A'] }], service, {});
     expect(JSON.parse(json)).toEqual([
-      { Route: "require('$CWD$/routes/A').default" },
+      { Routes: "[require('../../routes/A').default]" },
     ]);
   });
 
-  it('Route with winPath', () => {
-    const json = routesToJSON([{ Route: 'routes\\A' }], service, {});
+  it('Routes with winPath', () => {
+    const json = routesToJSON([{ Routes: ['routes\\A'] }], service, {});
     expect(JSON.parse(json)).toEqual([
-      { Route: "require('$CWD$/routes/A').default" },
+      { Routes: "[require('../../routes/A').default]" },
     ]);
   });
 });

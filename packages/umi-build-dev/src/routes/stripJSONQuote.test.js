@@ -51,17 +51,17 @@ describe('stripJSONQuote', () => {
     `);
   });
 
-  it('Route', () => {
+  it('Routes', () => {
     const striped = stripJSONQuote(`
 {
   "a": "aaa",
-  "Route": "haha"
+  "Routes": "['a', 2]"
 }
     `);
     expect(striped).toEqual(`
 {
   "a": "aaa",
-  "Route": haha
+  "Routes": ['a', 2]
 }
     `);
   });

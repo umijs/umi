@@ -1,6 +1,8 @@
-import { readdirSync, statSync, existsSync } from 'fs';
+import { readdirSync, statSync, existsSync, readFileSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
 import { winPath } from 'umi-utils';
+import assert from 'assert';
+import getYamlConfig from './getYamlConfig';
 
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -38,13 +40,19 @@ export default function getRouteConfigFromDir(paths) {
       findJSFile(absSrcPath, 'layouts/index') ||
       findJSFile(absSrcPath, 'layout/index');
     if (globalLayoutFile) {
-      return [
+      const wrappedRoutes = [];
+      addRoute(
+        wrappedRoutes,
         {
           path: '/',
           component: `./${relative(cwd, globalLayoutFile)}`,
           routes,
         },
-      ];
+        {
+          componentFile: globalLayoutFile,
+        },
+      );
+      return wrappedRoutes;
     }
   }
 
@@ -59,58 +67,44 @@ function handleFile(paths, absPath, memo, file) {
 
   if (stats.isDirectory()) {
     const newDirPath = join(dirPath, file);
-
-    // xxxx/page.(t|j)sx?
-    const absPageFile = findJSFile(join(absPagesPath, newDirPath), 'page');
-    if (absPageFile) {
-      const absConflictFile = findJSFile(absPagesPath, newDirPath);
-      if (absConflictFile) {
-        throw new Error(
-          `
-Routes conflict:
-
-  - ${absPageFile}
-  - ${absConflictFile}
-        `.trim(),
-        );
-      }
-      addRoute(memo, {
-        path: normalizePath(newDirPath),
-        exact: true,
-        component: `./${winPath(relative(cwd, absPageFile))}`,
-        isParamsRoute,
-      });
-    } else {
-      // routes & _layout
-      const routes = getRouteConfigFromDir({
-        ...paths,
-        dirPath: newDirPath,
-      });
-      const absLayoutFile = findJSFile(
-        join(absPagesPath, newDirPath),
-        '_layout',
-      );
-      if (absLayoutFile) {
-        addRoute(memo, {
+    // routes & _layout
+    const routes = getRouteConfigFromDir({
+      ...paths,
+      dirPath: newDirPath,
+    });
+    const absLayoutFile = findJSFile(join(absPagesPath, newDirPath), '_layout');
+    if (absLayoutFile) {
+      addRoute(
+        memo,
+        {
           path: normalizePath(newDirPath),
           exact: false,
           component: `./${winPath(relative(cwd, absLayoutFile))}`,
           routes,
           isParamsRoute,
-        });
-      } else {
-        memo = memo.concat(routes);
-      }
+        },
+        {
+          componentFile: absLayoutFile,
+        },
+      );
+    } else {
+      memo = memo.concat(routes);
     }
   } else if (stats.isFile() && isValidJS(file)) {
     const bName = basename(file, extname(file));
     const path = normalizePath(join(dirPath, bName));
-    addRoute(memo, {
-      path,
-      exact: true,
-      component: `./${winPath(relative(cwd, absFilePath))}`,
-      isParamsRoute,
-    });
+    addRoute(
+      memo,
+      {
+        path,
+        exact: true,
+        component: `./${winPath(relative(cwd, absFilePath))}`,
+        isParamsRoute,
+      },
+      {
+        componentFile: absFilePath,
+      },
+    );
   }
 
   return memo;
@@ -148,8 +142,16 @@ function findJSFile(baseDir, fileNameWithoutExtname) {
   }
 }
 
-function addRoute(memo, route) {
-  memo.push(route);
+function addRoute(memo, route, { componentFile }) {
+  const code = readFileSync(componentFile, 'utf-8');
+  const config = getYamlConfig(code);
+  ['path', 'exact', 'component', 'routes'].forEach(key => {
+    assert(!(key in config), `Unexpected key ${key} in file ${componentFile}`);
+  });
+  memo.push({
+    ...route,
+    ...config,
+  });
 }
 
 function isValidJS(file) {
