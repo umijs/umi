@@ -1,6 +1,36 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+function withRoutes(Routes) {
+  let len = Routes.length - 1;
+  let Component = args => {
+    const { render, ...props } = args;
+    return render(props);
+  };
+  while (len >= 0) {
+    const AuthRoute = Routes[len];
+    const OldComponent = Component;
+    Component = props => (
+      <AuthRoute {...props}>
+        <OldComponent {...props} />
+      </AuthRoute>
+    );
+    len -= 1;
+  }
+
+  return args => {
+    const { render, ...rest } = args;
+    return (
+      <Route
+        {...rest}
+        render={props => {
+          return <Component {...props} render={render} />;
+        }}
+      />
+    );
+  };
+}
+
 export default function renderRoutes(
   routes,
   extraProps = {},
@@ -20,7 +50,7 @@ export default function renderRoutes(
             />
           );
         }
-        const RouteRoute = route.Route || Route;
+        const RouteRoute = route.Routes ? withRoutes(route.Routes) : Route;
         return (
           <RouteRoute
             key={route.key || i}

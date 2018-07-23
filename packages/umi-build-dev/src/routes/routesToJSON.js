@@ -48,8 +48,15 @@ export default (routes, service) => {
           }
 
           return ret;
-        case 'Route':
-          return `require('${winPath(join(paths.cwd, value))}').default`;
+        case 'Routes':
+          return `[${value
+            .map(
+              v =>
+                `require('${winPath(
+                  relative(paths.absTmpDirPath, join(paths.cwd, v)),
+                )}').default`,
+            )
+            .join(', ')}]`;
         default:
           return value;
       }
