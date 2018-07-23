@@ -11,7 +11,9 @@ c:
   e: 2
 */
 
-alert(1);
+const a = () => {};
+const b = <><div /></>;
+const { c } = b;
     `),
     ).toEqual({
       a: 'b',

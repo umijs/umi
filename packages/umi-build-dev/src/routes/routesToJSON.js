@@ -17,7 +17,7 @@ export default (routes, service) => {
     }
   }
 
-  const { config, applyPlugins, paths } = service;
+  const { applyPlugins, paths } = service;
   const clonedRoutes = cloneDeep(routes);
   patchRoutes(clonedRoutes);
 
