@@ -6,6 +6,8 @@
 
 🚀 Blazing-fast next.js-like framework for React apps.
 
+> Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
+
 ---
 
 ## Features
