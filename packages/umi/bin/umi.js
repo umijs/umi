@@ -54,6 +54,7 @@ switch (aliasedScript) {
     break;
   case 'build':
   case 'dev':
+    require('atool-monitor').emit();
     runScript(aliasedScript, args, /* isFork */true);
     break;
   case 'test':
