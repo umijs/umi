@@ -146,10 +146,7 @@ function addRoute(memo, route, { componentFile }) {
   const code = readFileSync(componentFile, 'utf-8');
   const config = getYamlConfig(code);
   ['path', 'exact', 'component', 'routes'].forEach(key => {
-    assert(
-      !(key in config),
-      `You should not config ${key} in file ${componentFile}`,
-    );
+    assert(!(key in config), `Unexpected key ${key} in file ${componentFile}`);
   });
   memo.push({
     ...route,

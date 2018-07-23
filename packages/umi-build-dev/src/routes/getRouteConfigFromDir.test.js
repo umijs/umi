@@ -26,6 +26,15 @@ describe('getRouteConfigFromDir', () => {
     ]);
   });
 
+  it('file config unexpected key', () => {
+    expect(() => {
+      getRoute({
+        cwd: join(__dirname, 'fixtures', 'file-config-unexpected-key'),
+        absPagesPath: join(__dirname, 'fixtures', 'file-config-unexpected-key'),
+      });
+    }).toThrowError(/Unexpected key/);
+  });
+
   it('index/index', () => {
     const routes = getRoute({
       cwd: join(__dirname, 'fixtures', 'index-index'),
