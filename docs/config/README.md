@@ -252,6 +252,10 @@ pages: {
 
 定义额外需要做 babel 转换的文件匹配列表，格式为数组。
 
+### extraPostCSSPlugins
+
+定义额外的 PostCSS 插件，格式为数组。
+
 ### cssModulesExcludes
 
 指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
