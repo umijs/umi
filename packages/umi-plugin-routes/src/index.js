@@ -60,6 +60,41 @@ export default function(api, opts) {
       memo = opts.update(memo);
     }
 
+    // 权限路由
+    // TODO: use opts from opts.authorize
+    if (opts.authorize) {
+      assert(
+        Array.isArray(opts.authorize),
+        `The authorize must be Array, but got ${opts.authorize}`,
+      );
+      patchRoutes(memo, opts.authorize);
+    }
     return memo;
+  });
+}
+function patchRoutes(routes, authorize) {
+  routes.forEach(route => {
+    if (route.routes) {
+      patchRoutes(route.routes, authorize);
+    } else {
+      authorize.forEach(auth => {
+        const { guard, include, exclude } = auth;
+        //exclude和include可能是正则表达式或者字符串
+        if (
+          (!exclude ||
+            (exclude instanceof RegExp && !exclude.test(route.path)) ||
+            (route.path &&
+              typeof exclude === 'string' &&
+              route.path.indexOf(exclude) === -1)) &&
+          ((include &&
+            (include instanceof RegExp && include.test(route.path))) ||
+            (route.path &&
+              typeof include === 'string' &&
+              route.path.indexOf(include) !== -1))
+        ) {
+          route.Route = guard;
+        }
+      });
+    }
   });
 }
