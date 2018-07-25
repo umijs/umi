@@ -1,6 +1,7 @@
 import { join, dirname } from 'path';
 import { sync as mkdirp } from 'mkdirp';
 import { writeFileSync } from 'fs';
+import assert from 'assert';
 import getHTMLContent from './getHTMLContent';
 import getChunksMap from './getChunksMap';
 
@@ -57,10 +58,14 @@ export default class HtmlGenerator {
     });
   }
 
-  // 仅在 build 时调用
   generate() {
-    const { config, routes, paths } = this.service;
+    // 仅在 build 时调用
+    assert(
+      process.env.NODE_ENV === 'production',
+      `HtmlGenerator.generate() should only be used in umi build`,
+    );
 
+    const { config, routes, paths } = this.service;
     if (config.exportStatic) {
       this.generateForRoutes(routes);
     } else {
