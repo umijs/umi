@@ -64,7 +64,7 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   let dynamicNonRootRouterScript = '';
   let routerBaseStr;
   if (process.env.BASE_URL) {
-    //不需要在代码里写死根目录，如之前/app/pages/ 现在去掉app,只需要子/pages/,/app为动态获取，这样，编译出来的文件，只要复制到子pages/目录下就可以运行,符合ssr编译,tomcat,jboss可将前端和后端同时发布，免去跨域等麻烦
+    //不需要在代码里写死根目录，如之前/app/pages/ 现在去掉app,只需要子/pages/,/app为动态获取，这样，编译出来的文件，只要复制到任何子目录pages/下就可以运行,符合ssr编译,tomcat,jboss可将前端和后端同时发布，免去跨域等麻烦
     routerBaseStr = JSON.stringify(process.env.BASE_URL);
     const routerBaseSlash = process.env.BASE_URL.endsWith('/') ? '' : " + '/'";
     //下面代码兼容之前的配置
