@@ -1,5 +1,4 @@
 import routesToJSON from './routesToJSON';
-import { isGetAccessor } from '../../../../node_modules/typescript';
 
 const service = {
   config: {},
