@@ -1,12 +1,16 @@
 import { join, relative } from 'path';
 import isAbsolute from 'path-is-absolute';
+import clone from 'lodash.clonedeep';
 import winPath from '../winPath';
 import normalizeEntry from '../normalizeEntry';
 
 let targetLevel = null;
 let level = 0;
 
-export default (routes, service, requestedMap, env) => {
+export default (rawRoutes, service, requestedMap, env) => {
+  // clone 一份数据，避免 patchRoute 修改到原始的 routes 配置
+  const routes = clone(rawRoutes);
+
   if (process.env.CODE_SPLITTING_LEVEL) {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
@@ -18,6 +22,7 @@ export default (routes, service, requestedMap, env) => {
   }
 
   const { config, applyPlugins, paths } = service;
+
   patchRoutes(routes);
 
   const { loading } = config;

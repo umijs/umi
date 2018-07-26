@@ -1,4 +1,5 @@
 import routesToJSON from './routesToJSON';
+import { isGetAccessor } from '../../../../node_modules/typescript';
 
 const service = {
   config: {},
@@ -17,6 +18,12 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([
       { component: "require('../A').default" },
     ]);
+  });
+
+  it("can't modify routes object", () => {
+    const routes = [{ component: './pages/A' }];
+    routesToJSON(routes, service, {});
+    expect(routes).toEqual([{ component: './pages/A' }]);
   });
 
   it('relative component path', () => {
