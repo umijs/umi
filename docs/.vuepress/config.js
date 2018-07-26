@@ -22,6 +22,7 @@ module.exports = {
       { text: '指南', link: '/guide/' },
       { text: '配置', link: '/config/' },
       { text: 'API', link: '/api/' },
+      { text: '插件', link: '/plugin/' },
       { text: '发布日志', link: 'https://github.com/umijs/umi/releases' },
     ],
     sidebar: {
@@ -54,6 +55,18 @@ module.exports = {
       ],
       '/config/': [''],
       '/api/': [''],
+      '/plugin/': [
+        {
+          title: '插件',
+          collapsable: false,
+          children: [''],
+        },
+        {
+          title: '插件开发',
+          collapsable: false,
+          children: ['develop'],
+        },
+      ],
     },
   },
 };
