@@ -32,7 +32,7 @@ export function getModel(cwd, service) {
 function getModelsWithRoutes(routes, service) {
   const { paths } = service;
   return routes.reduce((memo, route) => {
-    if (route.component) {
+    if (route.path && route.component) {
       return [
         ...memo,
         ...getPageModels(join(paths.cwd, route.component), service),
