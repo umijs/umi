@@ -22,8 +22,8 @@ export default class Service {
       cwd: this.cwd,
     });
 
-    this.pluginMethods = {};
     this.commands = {};
+    this.pluginHooks = {};
     this.plugins = this.resolvePlugins({
       plugins,
     });
@@ -56,7 +56,7 @@ export default class Service {
   }
 
   applyPlugins(key, opts = {}) {
-    return (this.pluginMethods[key] || []).reduce((memo, { fn }) => {
+    return (this.pluginHooks[key] || []).reduce((memo, { fn }) => {
       try {
         return fn({
           memo,
