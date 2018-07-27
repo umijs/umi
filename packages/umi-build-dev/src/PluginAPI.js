@@ -34,10 +34,10 @@ class PluginAPI {
   }
 
   register(key, fn) {
-    if (!this.service.pluginMethods[key]) {
-      this.service.pluginMethods[key] = [];
+    if (!this.service.pluginHooks[key]) {
+      this.service.pluginHooks[key] = [];
     }
-    this.service.pluginMethods[key].push({
+    this.service.pluginHooks[key].push({
       fn,
     });
   }
