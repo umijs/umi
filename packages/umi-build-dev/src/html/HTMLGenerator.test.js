@@ -82,7 +82,7 @@ describe('HG', () => {
     );
   });
 
-  it('getRoute', () => {
+  it('getContent', () => {
     const hg = new HTMLGenerator({
       env: 'production',
       chunksMap: {
@@ -90,6 +90,42 @@ describe('HG', () => {
       },
       minify: false,
       config: {},
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(__dirname, 'fixtures/document.ejs'),
+      },
+    });
+    const content = hg.getContent({
+      path: '/',
+    });
+    expect(content.trim()).toEqual(
+      `
+<head>
+
+<link ref="stylesheet" href="/umi.css" />
+<script>
+  window.routerBase = "/";
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="/umi.js"></script>
+</body>
+    `.trim(),
+    );
+  });
+
+  it('getContent with runtimePublicPath', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
+      minify: false,
+      config: {
+        runtimePublicPath: true,
+      },
       paths: {
         cwd: '/a',
         absPageDocumentPath: '/tmp/files-not-exists',
@@ -117,7 +153,7 @@ describe('HG', () => {
     );
   });
 
-  it('getRoute in development', () => {
+  it('getContent in development', () => {
     const hg = new HTMLGenerator({
       env: 'development',
       config: {},
@@ -135,7 +171,6 @@ describe('HG', () => {
 <head>
 <script>
   window.routerBase = "/";
-  window.publicPath = "/";
 </script>
 </head>
 <body>
@@ -165,8 +200,7 @@ describe('HG', () => {
     });
     expect(content.trim()).toEqual(
       `
-<head><link ref="stylesheet" href="/umi.css"><script>window.routerBase = "/";
-  window.publicPath = "/";</script></head><body><div id="root"></div><script src="/umi.js"></script></body>
+<head><link ref="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="root"></div><script src="/umi.js"></script></body>
     `.trim(),
     );
   });

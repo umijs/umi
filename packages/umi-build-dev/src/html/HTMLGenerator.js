@@ -204,7 +204,7 @@ export default class HTMLGenerator {
 
   getContent(route) {
     const { cwd } = this.paths;
-    const { exportStatic } = this.config;
+    const { exportStatic, runtimePublicPath } = this.config;
 
     let context = {
       route,
@@ -259,11 +259,13 @@ export default class HTMLGenerator {
       publicPathStr = this.modifyPublicPath(publicPathStr);
     }
 
+    const setPublicPath =
+      runtimePublicPath || (exportStatic && exportStatic.dynamicRoot);
     headScripts.push({
-      content: `
-window.routerBase = ${routerBaseStr};
-window.publicPath = ${publicPathStr};
-      `.trim(),
+      content: [
+        `window.routerBase = ${routerBaseStr};`,
+        ...(setPublicPath ? [`window.publicPath = ${publicPathStr};`] : []),
+      ].join('\n'),
     });
     scripts.push({
       src: `<%= pathToPublicPath %>${this.getHashedFileName('umi.js')}`,
