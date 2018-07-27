@@ -262,9 +262,6 @@ class UserConfig {
           },
         });
 
-        // 更新 middleware 的配置
-        setMiddlewareConfig(newConfig);
-
         // 从失败中恢复过来，需要 reload 一次
         if (this.configFailed) {
           this.configFailed = false;
