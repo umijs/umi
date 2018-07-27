@@ -10,7 +10,7 @@ function noop() {
   return true;
 }
 
-const excludes = ['entry', 'outputPath', 'hash'];
+const excludes = ['entry', 'outputPath'];
 
 export default function(api) {
   const {
@@ -107,6 +107,9 @@ export default function(api) {
       __dirname,
       '../../template/setPublicPath.js',
     );
+    const setPublicPath =
+      config.runtimePublicPath ||
+      (config.exportStatic && config.exportStatic.dynamicRoot);
     const entry = isDev
       ? {
           umi: [
@@ -115,7 +118,7 @@ export default function(api) {
           ],
         }
       : {
-          umi: [setPublicPathFile, entryScript],
+          umi: [...(setPublicPath ? [setPublicPathFile] : []), entryScript],
         };
 
     return {
