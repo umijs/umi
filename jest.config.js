@@ -1,4 +1,5 @@
 module.exports = {
+  testEnvironment: 'node',
   testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
   testPathIgnorePatterns: [
     '/node_modules/',
