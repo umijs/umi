@@ -1,8 +1,8 @@
 import rimraf from 'rimraf';
 import FilesGenerator from '../../../FilesGenerator';
 import chunksToMap from './chunksToMap';
-import HtmlGenerator from '../../../html/HtmlGenerator';
 import getRouteManager from '../getRouteManager';
+import getHtmlGenerator from '../getHtmlGenerator';
 
 export default function(api) {
   const { service, debug } = api;
@@ -31,7 +31,7 @@ export default function(api) {
           debug(`Bundle html files`);
           const chunksMap = chunksToMap(stats.compilation.chunks);
           try {
-            const hg = new HtmlGenerator(service, {
+            const hg = getHtmlGenerator(service, {
               chunksMap,
             });
             hg.generate();

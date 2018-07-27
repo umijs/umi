@@ -12,5 +12,8 @@ export default function(api) {
         }" 的 "exportStatic" 配置必须是 "对象" 或者 "布尔值"，但你配置的是 ${val.toString()} 。`,
       );
     },
+    onChange() {
+      api.service.dev.restart(/* why */ 'Config exportStatic Changed');
+    },
   };
 }
