@@ -19,6 +19,12 @@ describe('routesToJSON', () => {
     ]);
   });
 
+  it("can't modify routes object", () => {
+    const routes = [{ component: './pages/A' }];
+    routesToJSON(routes, service, {});
+    expect(routes).toEqual([{ component: './pages/A' }]);
+  });
+
   it('relative component path', () => {
     const json = routesToJSON(
       [
