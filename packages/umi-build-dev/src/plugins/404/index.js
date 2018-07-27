@@ -27,6 +27,7 @@ export default function(api) {
       }
 
       routes.forEach(r => addNotFound(r));
+      routes.push(notFoundRoute);
 
       return routes;
     });

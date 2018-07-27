@@ -36,7 +36,10 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   if (config.exportStatic && !config.exportStatic.htmlSuffix) {
     path = makeSureLastSlash(path);
   }
+  context.webpackConfig = webpackConfig;
+  context.config = config;
   context.path = context.path || path;
+  context.env = process.env.NODE_ENV;
   let html = ejs.render(tpl, context, {
     _with: false,
     localsName: 'context',

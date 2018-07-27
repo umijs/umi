@@ -1,9 +1,9 @@
-import getChunksMap from './getChunksMap';
+import formatChunksMap from './formatChunksMap';
 
-describe('getChunksMap', () => {
+describe('formatChunksMap', () => {
   it('normal', () => {
     expect(
-      getChunksMap({
+      formatChunksMap({
         a: ['a.1816b15e.async.js'],
         umi: ['umi.4d5989ce.js', 'umi.30c54e86.css'],
       }),
