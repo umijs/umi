@@ -1,5 +1,5 @@
 module.exports = {
-  testEnvironment: 'node',
+  testURL: 'http://localhost/',
   testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
   testPathIgnorePatterns: [
     '/node_modules/',
