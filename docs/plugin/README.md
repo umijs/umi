@@ -26,7 +26,7 @@ export default {
 ### 官方插件
 
 - umi-plugin-dva
-- umi-plugin-lcoale
+- umi-plugin-locale
 
 ### 社区插件
 
