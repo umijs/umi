@@ -24,19 +24,6 @@ export default function(context, opts = {}) {
     require.resolve('@babel/plugin-proposal-function-bind'),
   ];
 
-  if (env === 'production') {
-    plugins.push(
-      require.resolve('@babel/plugin-transform-react-constant-elements'),
-    );
-  }
-
-  // transform-react-inline-element don't support preact
-  if (!opts.preact && env === 'production') {
-    plugins.push(
-      require.resolve('@babel/plugin-transform-react-inline-elements'),
-    );
-  }
-
   if (opts.commonjs) {
     plugins.push(require.resolve('@babel/plugin-transform-modules-commonjs'));
   }
