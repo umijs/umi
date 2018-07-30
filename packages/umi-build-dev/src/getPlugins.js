@@ -5,7 +5,7 @@ import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 const debug = require('debug')('umi-build-dev:getPlugin');
 
 export default function(opts = {}) {
-  const { configPlugins = [], pluginsFromOpts = [], cwd } = opts;
+  const { cwd, plugins = [] } = opts;
 
   function pluginToPath(plugins) {
     return plugins.map(p => {
@@ -25,15 +25,7 @@ export default function(opts = {}) {
           opts,
         ];
       } catch (e) {
-        throw new Error(
-          `
-Plugin ${path} can't be resolved, please make sure you have installed it.
-
-Try:
-
-  npm install ${path} --save-dev
-        `.trim(),
-        );
+        throw new Error(`Plugin ${path} can't be resolved`);
       }
     });
   }
@@ -43,8 +35,7 @@ Try:
     ...pluginToPath(
       process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [],
     ),
-    ...pluginToPath(configPlugins),
-    ...pluginToPath(pluginsFromOpts),
+    ...pluginToPath(plugins),
   ];
 
   // 用户给的插件需要做 babel 转换
@@ -70,7 +61,7 @@ Try:
     './plugins/404', // 404 must after mock
   ];
 
-  const plugins = [
+  const pluginsObj = [
     // builtIn 的在最前面
     ...builtInPlugins.map(p => {
       const apply = require(p); // eslint-disable-line
@@ -89,13 +80,17 @@ Try:
       const [path, opts] = p;
       const apply = require(path); // eslint-disable-line
       return {
-        id: path.replace(cwd, 'user:'),
+        id: path.replace(makesureLastSlash(cwd), 'user:'),
         apply: apply.default || apply,
         opts,
       };
     }),
   ];
 
-  debug(`plugins: ${plugins.map(p => p.id)}`);
-  return plugins;
+  debug(`plugins: \n${pluginsObj.map(p => `  ${p.id}`).join('\n')}`);
+  return pluginsObj;
+}
+
+function makesureLastSlash(path) {
+  return path.slice(-1) === '/' ? path : `${path}/`;
 }
