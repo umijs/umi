@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import { join } from 'path';
+import assert from 'assert';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -10,10 +11,10 @@ import getWebpackConfig from './getWebpackConfig';
 const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
-  constructor({ cwd, plugins }) {
+  constructor({ cwd }) {
     this.cwd = cwd || process.cwd();
     try {
-      this.pkg = require(join(this.cwd, 'package.json'));
+      this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
     } catch (e) {
       this.pkg = {};
     }
@@ -24,35 +25,86 @@ export default class Service {
 
     this.commands = {};
     this.pluginHooks = {};
-    this.plugins = this.resolvePlugins({
-      plugins,
-    });
-    debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
+    this.pluginMethods = {};
 
-    // resolve paths after resolvePlugins, since it needs this.config
-    this.paths = getPaths(this);
-  }
-
-  resolvePlugins({ plugins }) {
-    const config = UserConfig.getConfig({
+    // resolve user config
+    this.config = UserConfig.getConfig({
       cwd: this.cwd,
       service: this,
     });
-    debug(`user config: ${JSON.stringify(config)}`);
+    debug(`user config: ${JSON.stringify(this.config)}`);
 
-    this.config = config;
+    // resolve plugins
+    this.plugins = this.resolvePlugins();
+    debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
 
+    // resolve paths
+    this.paths = getPaths(this);
+  }
+
+  resolvePlugins() {
     try {
       return getPlugins({
-        configPlugins: config.plugins || [],
-        pluginsFromOpts: plugins,
         cwd: this.cwd,
+        plugins: this.config.plugins || [],
       });
     } catch (e) {
-      console.error(chalk.red(e.message));
-      console.error(e);
-      process.exit(1);
+      if (process.env.UMI_TEST) {
+        throw new Error(e);
+      } else {
+        console.error(chalk.red(e.message));
+        console.error(e);
+        process.exit(1);
+      }
     }
+  }
+
+  initPlugins() {
+    this.plugins.forEach(plugin => {
+      const { id, apply, opts } = plugin;
+      try {
+        const api = new Proxy(new PluginAPI(id, this), {
+          get: (target, prop) => {
+            return this.pluginMethods[prop] || target[prop];
+          },
+        });
+        api.onOptionChange = fn => {
+          assert(
+            typeof fn === 'function',
+            `The first argument for api.onOptionChange should be function in ${id}.`,
+          );
+          plugin.onOptionChange = fn;
+        };
+        apply(api, opts);
+        plugin._api = api;
+      } catch (e) {
+        if (process.env.UMI_TEST) {
+          throw new Error(e);
+        } else {
+          console.error(
+            chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
+          );
+          console.error(e);
+          process.exit(1);
+        }
+      }
+    });
+
+    // Throw error for methods that can't be called after plugins is initialized
+    this.plugins.forEach(plugin => {
+      [
+        'onOptionChange',
+        'register',
+        'registerMethod',
+        'registerPlugin',
+      ].forEach(method => {
+        plugin._api[method] = () => {
+          throw new Error(
+            `api.${method}() should not be called after plugin is initialized.`,
+          );
+        };
+      });
+    });
   }
 
   applyPlugins(key, opts = {}) {
@@ -75,17 +127,7 @@ export default class Service {
     // load user config
 
     // init plugins
-    this.plugins.forEach(({ id, apply, opts }) => {
-      try {
-        apply(new PluginAPI(id, this), opts);
-      } catch (e) {
-        console.error(
-          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
-        );
-        console.error(e);
-        process.exit(1);
-      }
-    });
+    this.initPlugins();
 
     // webpack config
     this.webpackConfig = getWebpackConfig(this);

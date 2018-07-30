@@ -1,75 +1,82 @@
 import debug from 'debug';
 import assert from 'assert';
-import {
-  PLACEHOLDER_IMPORT,
-  PLACEHOLDER_RENDER,
-  PLACEHOLDER_ROUTER_MODIFIER,
-  PLACEHOLDER_ROUTES_MODIFIER,
-  PLACEHOLDER_HISTORY_MODIFIER,
-} from './constants';
-import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
-class PluginAPI {
+export default class PluginAPI {
   constructor(id, service) {
     this.id = id;
     this.service = service;
     this.debug = debug(`umi-plugin: ${id}`);
-    // deprecated
-    this.utils = {
-      // private for umi-plugin-dll
-      _webpack: require('af-webpack/webpack'),
-      _afWebpackGetConfig: require('af-webpack/getConfig').default,
-      _afWebpackBuild: require('af-webpack/build').default,
-      _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
-        .webpackHotDevClientPath,
-    };
-    // deprecated
-    this.placeholder = {
-      IMPORT: PLACEHOLDER_IMPORT,
-      RENDER: PLACEHOLDER_RENDER,
-      ROUTER_MODIFIER: PLACEHOLDER_ROUTER_MODIFIER,
-      ROUTES_MODIFIER: PLACEHOLDER_ROUTES_MODIFIER,
-      HISTORY_MODIFIER: PLACEHOLDER_HISTORY_MODIFIER,
+
+    this.API_TYPE = {
+      ADD: 'add',
+      MODIFY: 'modify',
+      EVENT: 'event',
     };
   }
 
   register(key, fn) {
-    if (!this.service.pluginHooks[key]) {
-      this.service.pluginHooks[key] = [];
-    }
-    this.service.pluginHooks[key].push({
+    assert(
+      typeof key === 'string',
+      `The first argument of api.register() must be string, but got ${key}`,
+    );
+    assert(
+      typeof fn === 'function',
+      `The second argument of api.register() must be function, but got ${fn}`,
+    );
+    const { pluginHooks } = this.service;
+    pluginHooks[key] = pluginHooks[key] || [];
+    pluginHooks[key].push({
       fn,
     });
   }
 
   registerCommand(name, opts, fn) {
+    const { commands } = this.service;
     if (typeof opts === 'function') {
       fn = opts;
       opts = null;
     }
-    this.service.commands[name] = { fn, opts: opts || {} };
-  }
-
-  modifyWebpackConfig(fn) {
-    this.register('modifyWebpackConfig', fn);
-  }
-
-  chainWebpack(fn) {
-    this.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
-      fn(webpackConfig);
-    });
-  }
-
-  registerBabel(files) {
     assert(
-      Array.isArray(files),
-      `[PluginAPI] files for registerBabel must be Array, but got ${files}`,
+      !(name in commands),
+      `Command ${name} exists, please select another one.`,
     );
-    addBabelRegisterFiles(files);
-    registerBabel({
-      cwd: this.service.cwd,
-    });
+    commands[name] = { fn, opts: opts || {} };
   }
-}
 
-export default PluginAPI;
+  registerPlugin(opts) {
+    // TODO: validate opts
+  }
+
+  registerMethod(hook, opts) {
+    assert(!this[hook], `api.${hook} exists.`);
+    assert(opts, `opts must supplied`);
+    const { type, apply } = opts;
+    assert(!(type && apply), `Only be one for type and apply.`);
+    assert(type || apply, `One of type and apply must supplied.`);
+
+    this.service.pluginMethods[hook] = (...args) => {
+      if (apply) {
+        apply(...args);
+      } else if (type === this.API_TYPE.ADD) {
+        this.register(hook, opts => {
+          const { memo } = opts;
+          return (memo || []).concat(
+            typeof args[0] === 'function' ? args[0](opts) : args[0],
+          );
+        });
+      } else if (type === this.API_TYPE.MODIFY) {
+        this.register(hook, opts => {
+          return args[0](opts);
+        });
+      } else if (type === this.API_TYPE.EVENT) {
+        this.register(hook, opts => {
+          args[0](opts);
+        });
+      } else {
+        throw new Error(`unexpected api type ${type}`);
+      }
+    };
+  }
+
+  onOptionChange() {}
+}
