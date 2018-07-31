@@ -75,6 +75,7 @@ export default class Service {
               'applyPlugins',
               'cwd',
               'config',
+              'webpackConfig',
               'pkg',
               'paths',
               'routes',
