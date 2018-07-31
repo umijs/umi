@@ -10,9 +10,9 @@ export default class PluginAPI {
     this.debug = debug(`umi-plugin: ${id}`);
 
     this.API_TYPE = {
-      ADD: 'add',
-      MODIFY: 'modify',
-      EVENT: 'event',
+      ADD: Symbol('add'),
+      MODIFY: Symbol('modify'),
+      EVENT: Symbol('event'),
     };
 
     this._addMethods();

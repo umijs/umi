@@ -84,7 +84,9 @@ export function getGlobalModels(service, shouldImportDynamic) {
 }
 
 export default function(api, opts = {}) {
-  const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
+  const RENDER = '<%= RENDER %>';
+  const ROUTER_MODIFIER = '<%= ROUTER_MODIFIER %>';
+  const IMPORT = '<%= IMPORT %>';
   const { paths } = api.service;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';

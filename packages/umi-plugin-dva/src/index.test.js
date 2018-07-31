@@ -15,9 +15,6 @@ const api = {
     },
   },
   utils: {},
-  placeholder: {
-    RENDER,
-  },
 };
 
 function normalizeModels(models, base) {
@@ -75,7 +72,7 @@ describe('umi-plugin-dva', () => {
     api.register = (name, handler) => {
       if (name === 'modifyEntryFile') {
         const ret = handler({
-          memo: `i am test content with ${RENDER}, hahaha`,
+          memo: `i am test content with <%= RENDER %>, hahaha`,
         });
         expect(ret).toEqual(expect.stringContaining('new dva render'));
       }
