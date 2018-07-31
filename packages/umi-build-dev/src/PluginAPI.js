@@ -1,5 +1,6 @@
 import debug from 'debug';
 import assert from 'assert';
+import isPlainObject from 'is-plain-object';
 
 export default class PluginAPI {
   constructor(id, service) {
@@ -44,7 +45,20 @@ export default class PluginAPI {
   }
 
   registerPlugin(opts) {
-    // TODO: validate opts
+    assert(isPlainObject(opts), `opts should be plain object, but got ${opts}`);
+    const { id, apply } = opts;
+    assert(id && apply, `id and apply must supplied`);
+    assert(typeof id === 'string', `id must be string`);
+    assert(typeof apply === 'function', `apply must be function`);
+    assert(
+      id.indexOf('user:') !== 0 && id.indexOf('built-in:') !== 0,
+      `api.registerPlugin() should not register plugin prefixed with user: and built-in:`,
+    );
+    assert(
+      Object.keys(opts).every(key => ['id', 'apply', 'opts'].includes(key)),
+      `Only id, apply and opts is valid plugin properties`,
+    );
+    this.service.extraPlugins.push(opts);
   }
 
   registerMethod(hook, opts) {
@@ -56,7 +70,9 @@ export default class PluginAPI {
 
     this.service.pluginMethods[hook] = (...args) => {
       if (apply) {
-        apply(...args);
+        this.register(hook, opts => {
+          return apply(opts, ...args);
+        });
       } else if (type === this.API_TYPE.ADD) {
         this.register(hook, opts => {
           const { memo } = opts;
@@ -77,6 +93,4 @@ export default class PluginAPI {
       }
     };
   }
-
-  onOptionChange() {}
 }
