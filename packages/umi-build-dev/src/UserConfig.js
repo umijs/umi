@@ -8,7 +8,6 @@ import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
-import { setConfig as setMiddlewareConfig } from './plugins/commands/dev/createRouteMiddleware';
 
 function normalizeConfig(config) {
   config = config.default || config;
@@ -281,7 +280,7 @@ class UserConfig {
               },
             });
             if (plugin.onChange) {
-              plugin.onChange(newConfig);
+              plugin.onChange(newConfig, oldConfig);
             }
           }
         }

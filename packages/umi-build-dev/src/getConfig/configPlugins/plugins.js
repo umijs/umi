@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { diffPlugins } from '../../getPlugins';
 
 export default function(api) {
   return {
@@ -9,8 +10,15 @@ export default function(api) {
         `Configure item plugins should be Array, but got ${val}.`,
       );
     },
-    onChange() {
-      api.service.dev.restart(/* why */ 'Config plugins Changed');
+    onChange(newConfig, oldConfig) {
+      const result = diffPlugins(newConfig[this.name], oldConfig[this.name]);
+      if (result.pluginsChanged) {
+        api.service.restart('Config plugins Changed');
+      } else {
+        result.optionChanged.forEach(({ id, opts }) => {
+          api.service.changePluginOption(id, opts);
+        });
+      }
     },
   };
 }

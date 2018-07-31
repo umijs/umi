@@ -154,6 +154,90 @@ describe('Service', () => {
     expect(val).toEqual([1, 2]);
   });
 
+  it('registerMethod with API_TYPE.MODIFY', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerMethod('modifyFoo', {
+            type: api.API_TYPE.MODIFY,
+          });
+          api.modifyFoo(({ memo }) => ({ ...memo, a: 'b' }));
+          api.modifyFoo(({ memo }) => ({ ...memo, c: 'd' }));
+        },
+      },
+    ];
+    service.initPlugins();
+    const val = service.applyPlugins('modifyFoo', {
+      initialValue: { d: 1 },
+    });
+    expect(val).toEqual({ d: 1, a: 'b', c: 'd' });
+  });
+
+  it('registerMethod with API_TYPE.EVENT', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    let count = 0;
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerMethod('onFoo', {
+            type: api.API_TYPE.MODIFY,
+          });
+          api.onFoo(({ args }) => {
+            count += args;
+          });
+          api.onFoo(({ args }) => {
+            count += args;
+          });
+        },
+      },
+    ];
+    service.initPlugins();
+    service.applyPlugins('onFoo', {
+      args: 1,
+    });
+    expect(count).toEqual(2);
+  });
+
+  it('registerMethod with apply method', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerMethod('customFoo', {
+            apply({ memo, args }, ...userArgs) {
+              return (
+                memo +
+                args +
+                1 +
+                (typeof userArgs[0] === 'function'
+                  ? userArgs[0]({ memo, args })
+                  : userArgs[0])
+              );
+            },
+          });
+          api.customFoo('22');
+          api.customFoo(({ memo }) => `${memo}33`);
+        },
+      },
+    ];
+    service.initPlugins();
+    const val = service.applyPlugins('customFoo', {
+      initialValue: 'initialValue',
+      args: '_args_',
+    });
+    expect(val).toEqual('initialValue_args_122_args_1initialValue_args_12233');
+  });
+
   it('throw error if api.xxx is not defined', () => {
     const service = new Service({
       cwd: join(fixtures, 'plugins-empty'),
@@ -191,5 +275,114 @@ describe('Service', () => {
     expect(() => {
       service.initPlugins();
     }).toThrow(/api\.addFoo exists/);
+  });
+
+  it('changePluginOption', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    let newOption = null;
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.onOptionChange((...args) => {
+            newOption = args[0];
+          });
+        },
+      },
+    ];
+    service.initPlugins();
+    expect(service.plugins[0].opts).toEqual(undefined);
+    service.plugins[0]._api.changePluginOption('user:a', {
+      a: 'b',
+    });
+    expect(newOption).toEqual({ a: 'b' });
+    expect(service.plugins[0].opts).toEqual({ a: 'b' });
+  });
+
+  it('registerPlugin', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerPlugin({
+            id: 'a',
+            apply(api) {
+              api.registerPlugin({
+                id: 'b',
+                apply() {},
+              });
+            },
+          });
+        },
+      },
+    ];
+    service.initPlugins();
+    expect(service.plugins.map(p => p.id)).toEqual(['user:a', 'a', 'b']);
+  });
+
+  it('registerPlugin failed without id or apply', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerPlugin({
+            id: 'a',
+          });
+        },
+      },
+    ];
+    expect(() => {
+      service.initPlugins();
+    }).toThrow(/id and apply must supplied/);
+
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerPlugin({
+            apply() {},
+          });
+        },
+      },
+    ];
+    expect(() => {
+      service.initPlugins();
+    }).toThrow(/id and apply must supplied/);
+  });
+
+  it('registerPlugin and changePluginOption', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    let newOption = null;
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.registerPlugin({
+            id: 'a',
+            apply(api) {
+              api.onOptionChange((...args) => {
+                newOption = args[0];
+              });
+            },
+          });
+        },
+      },
+    ];
+    service.initPlugins();
+    service.plugins[0]._api.changePluginOption('a', {
+      a: 'b',
+    });
+    expect(newOption).toEqual({ a: 'b' });
+    expect(service.plugins[1].opts).toEqual({ a: 'b' });
   });
 });

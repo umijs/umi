@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { join } from 'path';
 import assert from 'assert';
+import clonedeep from 'lodash.clonedeep';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -36,6 +37,7 @@ export default class Service {
 
     // resolve plugins
     this.plugins = this.resolvePlugins();
+    this.extraPlugins = [];
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
 
     // resolve paths
@@ -59,36 +61,73 @@ export default class Service {
     }
   }
 
+  initPlugin(plugin) {
+    const { id, apply, opts } = plugin;
+    try {
+      const api = new Proxy(new PluginAPI(id, this), {
+        get: (target, prop) => {
+          if (this.pluginMethods[prop]) {
+            return this.pluginMethods[prop];
+          }
+          if (
+            [
+              'changePluginOption',
+              'applyPlugins',
+              'cwd',
+              'config',
+              'pkg',
+              'paths',
+              'routes',
+            ].includes(prop)
+          ) {
+            if (typeof this[prop] === 'function') {
+              return this[prop].bind(this);
+            } else {
+              return this[prop];
+            }
+          } else {
+            return target[prop];
+          }
+        },
+      });
+      api.onOptionChange = fn => {
+        assert(
+          typeof fn === 'function',
+          `The first argument for api.onOptionChange should be function in ${id}.`,
+        );
+        plugin.onOptionChange = fn;
+      };
+      apply(api, opts);
+      plugin._api = api;
+    } catch (e) {
+      if (process.env.UMI_TEST) {
+        throw new Error(e);
+      } else {
+        console.error(
+          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
+        );
+        console.error(e);
+        process.exit(1);
+      }
+    }
+  }
+
   initPlugins() {
     this.plugins.forEach(plugin => {
-      const { id, apply, opts } = plugin;
-      try {
-        const api = new Proxy(new PluginAPI(id, this), {
-          get: (target, prop) => {
-            return this.pluginMethods[prop] || target[prop];
-          },
-        });
-        api.onOptionChange = fn => {
-          assert(
-            typeof fn === 'function',
-            `The first argument for api.onOptionChange should be function in ${id}.`,
-          );
-          plugin.onOptionChange = fn;
-        };
-        apply(api, opts);
-        plugin._api = api;
-      } catch (e) {
-        if (process.env.UMI_TEST) {
-          throw new Error(e);
-        } else {
-          console.error(
-            chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
-          );
-          console.error(e);
-          process.exit(1);
-        }
-      }
+      this.initPlugin(plugin);
     });
+
+    let count = 0;
+    while (this.extraPlugins.length) {
+      const extraPlugins = clonedeep(this.extraPlugins);
+      this.extraPlugins = [];
+      extraPlugins.forEach(plugin => {
+        this.initPlugin(plugin);
+        this.plugins.push(plugin);
+      });
+      count += 1;
+      assert(count <= 10, `插件注册死循环？`);
+    }
 
     // Throw error for methods that can't be called after plugins is initialized
     this.plugins.forEach(plugin => {
@@ -105,6 +144,16 @@ export default class Service {
         };
       });
     });
+  }
+
+  changePluginOption(id, newOpts) {
+    assert(id, `id must supplied`);
+    const plugin = this.plugins.filter(p => p.id === id)[0];
+    assert(plugin, `plugin ${id} not found`);
+    plugin.opts = newOpts;
+    if (plugin.onOptionChange) {
+      plugin.onOptionChange(newOpts);
+    }
   }
 
   applyPlugins(key, opts = {}) {
