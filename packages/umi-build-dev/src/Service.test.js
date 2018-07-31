@@ -187,12 +187,12 @@ describe('Service', () => {
         id: 'user:a',
         apply: api => {
           api.registerMethod('onFoo', {
-            type: api.API_TYPE.MODIFY,
+            type: api.API_TYPE.EVENT,
           });
-          api.onFoo(({ args }) => {
+          api.onFoo(args => {
             count += args;
           });
-          api.onFoo(({ args }) => {
+          api.onFoo(args => {
             count += args;
           });
         },

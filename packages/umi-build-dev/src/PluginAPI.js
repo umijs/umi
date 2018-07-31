@@ -1,6 +1,7 @@
 import debug from 'debug';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
+import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
   constructor(id, service) {
@@ -13,20 +14,28 @@ export default class PluginAPI {
       MODIFY: 'modify',
       EVENT: 'event',
     };
+
+    this._addMethods();
   }
 
-  register(key, fn) {
+  _addMethods() {
+    this.registerMethod('chainWebpackConfig', {
+      type: this.API_TYPE.EVENT,
+    });
+  }
+
+  register(hook, fn) {
     assert(
-      typeof key === 'string',
-      `The first argument of api.register() must be string, but got ${key}`,
+      typeof hook === 'string',
+      `The first argument of api.register() must be string, but got ${hook}`,
     );
     assert(
       typeof fn === 'function',
       `The second argument of api.register() must be function, but got ${fn}`,
     );
     const { pluginHooks } = this.service;
-    pluginHooks[key] = pluginHooks[key] || [];
-    pluginHooks[key].push({
+    pluginHooks[hook] = pluginHooks[hook] || [];
+    pluginHooks[hook].push({
       fn,
     });
   }
@@ -61,36 +70,47 @@ export default class PluginAPI {
     this.service.extraPlugins.push(opts);
   }
 
-  registerMethod(hook, opts) {
-    assert(!this[hook], `api.${hook} exists.`);
+  registerMethod(name, opts) {
+    assert(!this[name], `api.${name} exists.`);
     assert(opts, `opts must supplied`);
     const { type, apply } = opts;
     assert(!(type && apply), `Only be one for type and apply.`);
     assert(type || apply, `One of type and apply must supplied.`);
 
-    this.service.pluginMethods[hook] = (...args) => {
+    this.service.pluginMethods[name] = (...args) => {
       if (apply) {
-        this.register(hook, opts => {
+        this.register(name, opts => {
           return apply(opts, ...args);
         });
       } else if (type === this.API_TYPE.ADD) {
-        this.register(hook, opts => {
+        this.register(name, opts => {
           const { memo } = opts;
           return (memo || []).concat(
             typeof args[0] === 'function' ? args[0](opts) : args[0],
           );
         });
       } else if (type === this.API_TYPE.MODIFY) {
-        this.register(hook, opts => {
+        this.register(name, opts => {
           return args[0](opts);
         });
       } else if (type === this.API_TYPE.EVENT) {
-        this.register(hook, opts => {
-          args[0](opts);
+        this.register(name, opts => {
+          args[0](opts.args);
         });
       } else {
         throw new Error(`unexpected api type ${type}`);
       }
     };
+  }
+
+  addBabelRegister(files) {
+    assert(
+      Array.isArray(files),
+      `files for registerBabel must be Array, but got ${files}`,
+    );
+    addBabelRegisterFiles(files);
+    registerBabel({
+      cwd: this.service.cwd,
+    });
   }
 }
