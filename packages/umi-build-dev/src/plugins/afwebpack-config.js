@@ -43,7 +43,7 @@ export default function(api) {
     return memo;
   });
 
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set(
         'react',
@@ -98,7 +98,7 @@ export default function(api) {
       );
   });
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
+  api.modifyAFWebpackOpts(({ memo }) => {
     const browserslist = config.browserslist || defaultBrowsers;
     const isDev = process.env.NODE_ENV === 'development';
 

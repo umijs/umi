@@ -1,7 +1,6 @@
 import assert from 'assert';
 
 export default function(api) {
-  const { IMPORT, HISTORY_MODIFIER } = api.placeholder;
   const { config } = api.service;
 
   api.register('_modifyConfigPlugins', ({ memo }) => {
@@ -26,17 +25,17 @@ export default function(api) {
     api.register('modifyEntryFile', ({ memo }) => {
       return memo
         .replace(
-          IMPORT,
+          '<%= IMPORT %>',
           `
 import createHashHistory from 'history/createHashHistory';
-${IMPORT}
+<%= IMPORT %>
         `.trim(),
         )
         .replace(
-          HISTORY_MODIFIER,
+          '<%= HISTORY_MODIFIER %>',
           `
 window.g_history = createHashHistory();
-${HISTORY_MODIFIER}
+<%= HISTORY_MODIFIER %>
         `.trim(),
         );
     });

@@ -22,6 +22,9 @@ export default class PluginAPI {
     this.registerMethod('chainWebpackConfig', {
       type: this.API_TYPE.EVENT,
     });
+    this.registerMethod('modifyAFWebpackOpts', {
+      type: this.API_TYPE.MODIFY,
+    });
   }
 
   register(hook, fn) {

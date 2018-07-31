@@ -22,7 +22,7 @@ export default function(api) {
   });
 
   if (config.base) {
-    api.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
+    api.chainWebpackConfig(webpackConfig => {
       webpackConfig.resolve.alias.set(
         'process.env.BASE_URL',
         process.env.BASE_URL,
