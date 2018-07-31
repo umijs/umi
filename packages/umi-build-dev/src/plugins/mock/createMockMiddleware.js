@@ -14,7 +14,7 @@ export default function getMockMiddleware(api) {
   const { cwd } = api.service;
   const absMockPath = join(cwd, 'mock');
   const absConfigPath = join(cwd, '.umirc.mock.js');
-  api.registerBabel([absMockPath, absConfigPath]);
+  api.addBabelRegister([absMockPath, absConfigPath]);
 
   let mockData = getConfig();
   watch();

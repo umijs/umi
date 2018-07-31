@@ -14,18 +14,9 @@ export default function(service) {
   );
   afWebpackOpts.chainConfig = webpackConfig => {
     service.applyPlugins('chainWebpackConfig', {
-      args: { webpackConfig },
+      args: webpackConfig,
     });
   };
 
-  // 通过 webpack-chain 扩展 webpack 配置
-  let webpackConfig = getConfig(afWebpackOpts);
-
-  // 直接修改 webpack 对象
-  // deprecated
-  webpackConfig = service.applyPlugins('modifyWebpackConfig', {
-    initialValue: webpackConfig,
-  });
-
-  return webpackConfig;
+  return getConfig(afWebpackOpts);
 }
