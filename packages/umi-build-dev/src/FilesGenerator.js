@@ -1,5 +1,6 @@
-import { join } from 'path';
+import { join, relative } from 'path';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
+import { winPath } from 'umi-utils';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
@@ -16,6 +17,7 @@ import {
   PLACEHOLDER_ROUTER_MODIFIER,
   PLACEHOLDER_ROUTES_MODIFIER,
 } from './constants';
+import importsToStr from './importsToStr';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -126,8 +128,9 @@ export default class FilesGenerator {
       initialValue: entryContent,
     });
 
+    const imports = this.service.applyPlugins('addEntryImport');
     entryContent = entryContent
-      .replace(PLACEHOLDER_IMPORT, '')
+      .replace(PLACEHOLDER_IMPORT, importsToStr(imports).join('\n'))
       .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
       .replace(
         PLACEHOLDER_RENDER,

@@ -35,6 +35,9 @@ export default class PluginAPI {
     this.registerMethod('addPageWatcher', {
       type: this.API_TYPE.ADD,
     });
+    this.registerMethod('addEntryImport', {
+      type: this.API_TYPE.ADD,
+    });
   }
 
   register(hook, fn) {
