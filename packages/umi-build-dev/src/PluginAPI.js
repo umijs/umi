@@ -1,6 +1,7 @@
 import debug from 'debug';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
+import { winPath } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -8,6 +9,7 @@ export default class PluginAPI {
     this.id = id;
     this.service = service;
     this.debug = debug(`umi-plugin: ${id}`);
+    this.winPath = winPath;
 
     this.API_TYPE = {
       ADD: Symbol('add'),
