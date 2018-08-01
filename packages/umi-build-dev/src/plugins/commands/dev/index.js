@@ -48,12 +48,21 @@ export default function(api) {
       server.close();
       process.send({ type: 'RESTART' });
     }
-    service.dev = {
-      restart,
-      server: null,
-      rebuildFiles() {
-        filesGenerator.rebuild();
-      },
+
+    // Add more service methods.
+    service.restart = restart;
+    service.printError = messages => {
+      if (!server) return;
+      messages = typeof messages === 'string' ? [messages] : messages;
+      server.sockWrite(server.sockets, 'errors', messages);
+    };
+    service.printWarn = messages => {
+      if (!server) return;
+      messages = typeof messages === 'string' ? [messages] : messages;
+      server.sockWrite(server.sockets, 'warns', messages);
+    };
+    service.rebuildTmpFiles = () => {
+      filesGenerator.rebuild();
     };
 
     function startWatch() {
@@ -80,7 +89,6 @@ export default function(api) {
       }),
       beforeServer(devServer) {
         server = devServer;
-        service.dev.server = server;
         service.applyPlugins('beforeDevServer', { args: { devServer } });
       },
       afterServer(devServer) {

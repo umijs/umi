@@ -11,7 +11,9 @@ export default function(api) {
       );
     },
     onChange(newConfig, oldConfig) {
-      const result = diffPlugins(newConfig[this.name], oldConfig[this.name]);
+      const result = diffPlugins(newConfig[this.name], oldConfig[this.name], {
+        cwd: api.service.cwd,
+      });
       if (result.pluginsChanged) {
         api.service.restart('Config plugins Changed');
       } else {
