@@ -71,14 +71,22 @@ export default class Service {
           }
           if (
             [
+              // methods
               'changePluginOption',
               'applyPlugins',
+              // properties
               'cwd',
               'config',
               'webpackConfig',
               'pkg',
               'paths',
               'routes',
+              // dev methods
+              'restart',
+              'printError',
+              'printWarn',
+              'refreshBrowser',
+              'rebuildTmpFiles',
             ].includes(prop)
           ) {
             if (typeof this[prop] === 'function') {

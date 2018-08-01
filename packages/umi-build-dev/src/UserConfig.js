@@ -56,14 +56,12 @@ function getConfigFile(cwd, service) {
     existsSync(file),
   );
 
-  if (files.length > 1) {
-    if (service.dev && service.dev.server) {
-      service.dev.server.sockWrite(service.dev.server.sockets, 'warns', [
-        `Muitiple config files ${files.join(', ')} detected, umi will use ${
-          files[0]
-        }.`,
-      ]);
-    }
+  if (files.length > 1 && service.printWarn) {
+    service.printWarn([
+      `Muitiple config files ${files.join(', ')} detected, umi will use ${
+        files[0]
+      }.`,
+    ]);
   }
 
   return files[0];
@@ -137,14 +135,7 @@ class UserConfig {
   }
 
   printError(messages) {
-    if (this.service.dev && this.service.dev.server) {
-      messages = typeof messages === 'string' ? [messages] : messages;
-      this.service.dev.server.sockWrite(
-        this.service.dev.server.sockets,
-        'errors',
-        messages,
-      );
-    }
+    if (this.service.printError) this.service.printError(messages);
   }
 
   getConfig(opts = {}) {
@@ -264,7 +255,7 @@ class UserConfig {
         // 从失败中恢复过来，需要 reload 一次
         if (this.configFailed) {
           this.configFailed = false;
-          this.service.reload();
+          this.service.refreshBrowser();
         }
 
         const oldConfig = clone(this.config);
