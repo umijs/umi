@@ -36,7 +36,9 @@ export default function(api) {
     mergeConfig(service.config, config);
 
     let server = null;
-    function restart(why) {
+
+    // Add more service methods.
+    service.restart = why => {
       if (!server) return;
       if (why) {
         console.log(chalk.green(`Since ${why}, try to restart server`));
@@ -47,10 +49,11 @@ export default function(api) {
       filesGenerator.unwatch();
       server.close();
       process.send({ type: 'RESTART' });
-    }
-
-    // Add more service methods.
-    service.restart = restart;
+    };
+    service.refreshBrowser = () => {
+      if (!server) return;
+      server.sockWrite(server.sockets, 'content-changed');
+    };
     service.printError = messages => {
       if (!server) return;
       messages = typeof messages === 'string' ? [messages] : messages;
