@@ -1,20 +1,19 @@
-import { join } from 'path';
+import { join, relative } from 'path';
 import { existsSync } from 'fs';
-import { winPath } from 'umi-utils';
 
 export default function(api) {
-  const { paths } = api;
+  const { paths, winPath } = api;
+  const cssFiles = [
+    join(paths.absSrcPath, 'global.css'),
+    join(paths.absSrcPath, 'global.less'),
+    join(paths.absSrcPath, 'global.sass'),
+    join(paths.absSrcPath, 'global.scss'),
+  ];
 
   api.register('modifyEntryFile', ({ memo }) => {
-    const cssImports = [
-      join(paths.absSrcPath, 'global.css'),
-      join(paths.absSrcPath, 'global.less'),
-      join(paths.absSrcPath, 'global.sass'),
-      join(paths.absSrcPath, 'global.scss'),
-    ]
+    const cssImports = cssFiles
       .filter(f => existsSync(f))
-      .map(f => `require('${winPath(f)}');`);
-
+      .map(f => `require('${winPath(relative(paths.absTmpDirPath, f))}');`);
     if (cssImports.length) {
       return `
 ${memo}
@@ -25,26 +24,12 @@ ${cssImports.join('\r\n')}
     }
   });
 
-  api.register('modifyPageWatchers', ({ memo }) => {
-    return [
-      ...memo,
-      join(paths.absSrcPath, 'global.css'),
-      join(paths.absSrcPath, 'global.less'),
-      join(paths.absSrcPath, 'global.sass'),
-      join(paths.absSrcPath, 'global.scss'),
-    ];
-  });
+  api.addPageWatcher(cssFiles);
 
   api.modifyAFWebpackOpts(memo => {
     return {
       ...memo,
-      cssModulesExcludes: [
-        ...(memo.cssModulesExcludes || []),
-        join(paths.absSrcPath, 'global.css'),
-        join(paths.absSrcPath, 'global.less'),
-        join(paths.absSrcPath, 'global.scss'),
-        join(paths.absSrcPath, 'global.sass'),
-      ],
+      cssModulesExcludes: [...(memo.cssModulesExcludes || []), ...cssFiles],
     };
   });
 }
