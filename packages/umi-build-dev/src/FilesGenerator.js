@@ -129,8 +129,10 @@ export default class FilesGenerator {
     });
 
     const imports = this.service.applyPlugins('addEntryImport');
+    const importsAhead = this.service.applyPlugins('addEntryImportAhead');
     entryContent = entryContent
-      .replace(PLACEHOLDER_IMPORT, importsToStr(imports).join('\n'))
+      .replace('<%= IMPORT_AHEAD %>', importsToStr(importsAhead).join('\n'))
+      .replace('<%= IMPORT %>', importsToStr(imports).join('\n'))
       .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
       .replace(
         PLACEHOLDER_RENDER,

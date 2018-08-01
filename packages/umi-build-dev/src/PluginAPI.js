@@ -38,6 +38,9 @@ export default class PluginAPI {
     this.registerMethod('addEntryImport', {
       type: this.API_TYPE.ADD,
     });
+    this.registerMethod('addEntryImportAhead', {
+      type: this.API_TYPE.ADD,
+    });
   }
 
   register(hook, fn) {
