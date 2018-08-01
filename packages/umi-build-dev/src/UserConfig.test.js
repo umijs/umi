@@ -119,7 +119,7 @@ describe('instance UserConfig', () => {
           hd: true,
           local: 0,
         };
-      } else if (name === '_modifyConfigPlugins') {
+      } else if (name === '_registerConfig') {
         return ['alias', 'hd', 'local'].map(name => {
           return () => {
             return { name };

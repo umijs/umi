@@ -25,6 +25,9 @@ export default class PluginAPI {
     this.registerMethod('modifyAFWebpackOpts', {
       type: this.API_TYPE.MODIFY,
     });
+    this.registerMethod('_registerConfig', {
+      type: this.API_TYPE.ADD,
+    });
   }
 
   register(hook, fn) {
@@ -89,12 +92,12 @@ export default class PluginAPI {
         this.register(name, opts => {
           const { memo } = opts;
           return (memo || []).concat(
-            typeof args[0] === 'function' ? args[0](opts) : args[0],
+            typeof args[0] === 'function' ? args[0](memo, opts.args) : args[0],
           );
         });
       } else if (type === this.API_TYPE.MODIFY) {
         this.register(name, opts => {
-          return args[0](opts);
+          return args[0](opts.memo, opts.args);
         });
       } else if (type === this.API_TYPE.EVENT) {
         this.register(name, opts => {

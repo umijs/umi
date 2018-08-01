@@ -3,7 +3,7 @@ import { existsSync } from 'fs';
 import { winPath } from 'umi-utils';
 
 export default function(api) {
-  const { paths } = api.service;
+  const { paths } = api;
 
   api.register('modifyEntryFile', ({ memo }) => {
     const cssImports = [
@@ -35,7 +35,7 @@ ${cssImports.join('\r\n')}
     ];
   });
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
+  api.modifyAFWebpackOpts(memo => {
     return {
       ...memo,
       cssModulesExcludes: [
