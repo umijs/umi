@@ -128,7 +128,7 @@ class UserConfig {
     let plugins = Object.keys(map).map(key => {
       return map[key].default;
     });
-    plugins = this.service.applyPlugins('_modifyConfigPlugins', {
+    plugins = this.service.applyPlugins('_registerConfig', {
       initialValue: plugins,
     });
     this.plugins = plugins.map(p => p(this));

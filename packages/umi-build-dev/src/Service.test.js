@@ -165,8 +165,8 @@ describe('Service', () => {
           api.registerMethod('modifyFoo', {
             type: api.API_TYPE.MODIFY,
           });
-          api.modifyFoo(({ memo }) => ({ ...memo, a: 'b' }));
-          api.modifyFoo(({ memo }) => ({ ...memo, c: 'd' }));
+          api.modifyFoo(memo => ({ ...memo, a: 'b' }));
+          api.modifyFoo(memo => ({ ...memo, c: 'd' }));
         },
       },
     ];

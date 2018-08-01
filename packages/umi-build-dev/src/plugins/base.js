@@ -3,8 +3,8 @@ import assert from 'assert';
 export default function(api) {
   const { config } = api.service;
 
-  api.register('_modifyConfigPlugins', ({ memo }) => {
-    memo.push(api => {
+  api._registerConfig(() => {
+    return api => {
       return {
         name: 'base',
         validate(val) {
@@ -17,16 +17,15 @@ export default function(api) {
           api.service.restart(/* why */ 'Config base Changed');
         },
       };
-    });
-    return memo;
+    };
   });
 
-  if (config.base) {
-    api.chainWebpackConfig(webpackConfig => {
+  api.chainWebpackConfig(webpackConfig => {
+    if (config.base) {
       webpackConfig.resolve.alias.set(
         'process.env.BASE_URL',
         process.env.BASE_URL,
       );
-    });
-  }
+    }
+  });
 }
