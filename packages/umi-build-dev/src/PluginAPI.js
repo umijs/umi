@@ -1,7 +1,7 @@
 import debug from 'debug';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
-import { winPath } from 'umi-utils';
+import { winPath, findJS, findCSS } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -10,6 +10,8 @@ export default class PluginAPI {
     this.service = service;
     this.debug = debug(`umi-plugin: ${id}`);
     this.winPath = winPath;
+    this.findJS = findJS;
+    this.findCSS = findCSS;
 
     this.API_TYPE = {
       ADD: Symbol('add'),
@@ -28,6 +30,9 @@ export default class PluginAPI {
       type: this.API_TYPE.MODIFY,
     });
     this.registerMethod('_registerConfig', {
+      type: this.API_TYPE.ADD,
+    });
+    this.registerMethod('addPageWatcher', {
       type: this.API_TYPE.ADD,
     });
   }

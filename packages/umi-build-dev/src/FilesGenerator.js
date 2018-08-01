@@ -58,7 +58,7 @@ export default class FilesGenerator {
       config: { singular },
     } = this.service;
     const layout = singular ? 'layout' : 'layouts';
-    const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
+    const watcherPaths = this.service.applyPlugins('addPageWatcher', {
       initialValue: [
         paths.absPagesPath,
         ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
@@ -81,9 +81,7 @@ export default class FilesGenerator {
   }
 
   rebuild() {
-    const {
-      dev: { server },
-    } = this.service;
+    const { refreshBrowser, printError } = this.service;
     try {
       this.service.applyPlugins('onGenerateFiles', {
         args: {
@@ -95,13 +93,12 @@ export default class FilesGenerator {
       this.generateEntry();
 
       if (this.hasRebuildError) {
-        // 从出错中恢复时，刷新浏览器
-        server.sockWrite(server.sockets, 'content-changed');
+        refreshBrowser();
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      server.sockWrite(server.sockets, 'errors', [e.message]);
+      printError([e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?

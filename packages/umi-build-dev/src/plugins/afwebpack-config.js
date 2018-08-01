@@ -20,7 +20,7 @@ export default function(api) {
     return plugins
       .filter(p => !excludes.includes(p.name))
       .map(({ name, validate = noop }) => {
-        return {
+        return api => ({
           name,
           validate,
           onChange(newConfig) {
@@ -35,7 +35,7 @@ export default function(api) {
               api.service.restart(`${name} changed`);
             }
           },
-        };
+        });
       });
   });
 
