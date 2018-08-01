@@ -1,7 +1,6 @@
 import { join } from 'path';
 import dvaPlugin, { getGlobalModels, getModel } from './index';
 
-const RENDER = 'testrender';
 const fixtures = join(__dirname, 'fixtures');
 const base = join(fixtures, 'getModel');
 
