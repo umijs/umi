@@ -514,7 +514,7 @@ require 一个模块并在最后执行它的 default 方法。
 
 在 <App/> 外面包一层组件。
 
-### addRendereWrapperWithModule
+### addRendererWrapperWithModule
 
 在挂载 <App/> 前执行一个 Module，支持异步。
 
