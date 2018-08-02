@@ -78,6 +78,7 @@ export default class PluginAPI {
       'addHTMLLinks',
       'addHTMLScripts',
       'addHTMLHeadScripts',
+      'onGenerateFiles',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
