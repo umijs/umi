@@ -107,7 +107,7 @@ function funcToStr(obj) {
   if (typeof obj === 'function') return obj.toString();
   if (isPlainObject(obj)) {
     return Object.keys(obj).reduce((memo, key) => {
-      memo[key] = funcToStr(memo[key]);
+      memo[key] = funcToStr(obj[key]);
       return memo;
     }, {});
   } else {

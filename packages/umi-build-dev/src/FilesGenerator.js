@@ -178,7 +178,9 @@ require('umi/_createHistory').default({
       }),
     );
     const rendererWrappers = this.service
-      .applyPlugins('addRendererWrapperWithComponent')
+      .applyPlugins('addRendererWrapperWithComponent', {
+        initialValue: [],
+      })
       .map((source, index) => {
         return {
           source,

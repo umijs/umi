@@ -79,6 +79,21 @@ describe('getPlugins', () => {
   });
 
   it('diffPlugins optionChanged 1', () => {
+    expect(
+      diffPlugins([['./a', { antd: false }]], [['./a', { antd: true }]], {
+        cwd,
+      }),
+    ).toEqual({
+      optionChanged: [
+        {
+          id: 'user:a.js',
+          opts: { antd: false },
+        },
+      ],
+    });
+  });
+
+  it('diffPlugins optionChanged 2', () => {
     expect(diffPlugins([['./a', { a: 'b' }]], ['./a'], { cwd })).toEqual({
       optionChanged: [
         {
@@ -89,7 +104,7 @@ describe('getPlugins', () => {
     });
   });
 
-  it('diffPlugins optionChanged 2', () => {
+  it('diffPlugins optionChanged 3', () => {
     expect(
       diffPlugins([['./a', { a: 'b' }], './b'], ['./a', ['./b', 'foo']], {
         cwd,
