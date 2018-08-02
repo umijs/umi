@@ -126,14 +126,14 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = `
 ReactDOM.render(
-  React.createElement(require('./router').default),
-  document.getElementById('root'),
-);
+    React.createElement(require('./router').default),
+    document.getElementById('root'),
+  );
     `.trim();
     const initialHistory = `
 require('umi/_createHistory').default({
   basename: window.routerBase,
-});
+})
     `.trim();
     const entryContent = Mustache.render(entryTpl, {
       imports: importsToStr(
@@ -153,7 +153,7 @@ require('umi/_createHistory').default({
         initialValue: initialHistory,
       }),
     });
-    writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
+    writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
 
   generateRouterJS() {
@@ -164,7 +164,7 @@ require('umi/_createHistory').default({
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
     if (this.routesContent !== routesContent) {
-      writeFileSync(absRouterJSPath, routesContent, 'utf-8');
+      writeFileSync(absRouterJSPath, `${routesContent.trim()}\n`, 'utf-8');
       this.routesContent = routesContent;
     }
   }
