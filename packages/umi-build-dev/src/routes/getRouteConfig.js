@@ -5,7 +5,7 @@ import getRouteConfigFromDir from './getRouteConfigFromDir';
 import patchRoutes from './patchRoutes';
 import getRouteConfigFromConfig from './getRouteConfigFromConfig';
 
-export default (paths, config = {}, updateRoute) => {
+export default (paths, config = {}, onPatchRoute) => {
   let routes = null;
 
   const routeConfigFile = join(paths.absSrcPath, '_routes.json');
@@ -21,7 +21,7 @@ export default (paths, config = {}, updateRoute) => {
     routes,
     config,
     /* isProduction */ process.env.NODE_ENV === 'production',
-    updateRoute,
+    onPatchRoute,
   );
   return routes;
 };
