@@ -63,6 +63,10 @@ export default class PluginAPI {
       'addMiddleware',
       'modifyRoutes',
       'onPatchRoute',
+      'addHTMLMetas',
+      'addHTMLLinks',
+      'addHTMLScripts',
+      'addHTMLHeadScripts',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
