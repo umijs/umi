@@ -6,7 +6,7 @@ export default function(api) {
   const { paths } = api.service;
 
   if (process.env.NODE_ENV === 'development') {
-    api.register('modifyRoutes', ({ memo }) => {
+    api.modifyRoutes(memo => {
       const notFoundRoute = {
         component: `
 () => React.createElement(require('${winPath(

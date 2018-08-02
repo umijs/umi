@@ -10,12 +10,12 @@ export default (routes, config = {}, isProduction) => {
   return routes;
 };
 
-function patchRoutes(routes, config, isProduction) {
+function patchRoutes(routes, config, isProduction, updateRoute) {
   let notFoundIndex = null;
   let rootIndex = null;
 
   routes.forEach((route, index) => {
-    patchRoute(route, config, isProduction);
+    patchRoute(route, config, isProduction, updateRoute);
     if (route.path === '/404') {
       notFoundIndex = index;
     }
@@ -43,7 +43,7 @@ function patchRoutes(routes, config, isProduction) {
   redirects = redirects.concat(removedRoutes);
 }
 
-function patchRoute(route, config, isProduction) {
+function patchRoute(route, config, isProduction, updateRoute) {
   const isDynamicRoute = route.path.indexOf('/:') > -1;
   if (config.exportStatic && isDynamicRoute) {
     throw new Error(
@@ -73,8 +73,9 @@ function patchRoute(route, config, isProduction) {
     delete route.meta;
   }
 
+  if (updateRoute) updateRoute(route);
   if (route.routes) {
-    patchRoutes(route.routes, config, isProduction);
+    patchRoutes(route.routes, config, isProduction, updateRoute);
   }
 }
 

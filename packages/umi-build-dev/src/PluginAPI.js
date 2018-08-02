@@ -61,6 +61,8 @@ export default class PluginAPI {
       'afterDevServer',
       'addMiddlewareAhead',
       'addMiddleware',
+      'modifyRoutes',
+      'onPatchRoute',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
