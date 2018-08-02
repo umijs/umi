@@ -2,13 +2,11 @@ import { join } from 'path';
 import pullAll from 'lodash.pullall';
 import uniq from 'lodash.uniq';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import webpack from 'af-webpack/webpack';
+import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 
 export default function(opts = {}) {
   const {
-    webpack,
-    afWebpackBuild,
-    afWebpackGetConfig,
-    webpackHotDevClientPath,
     dllDir,
     service,
     service: { paths },
@@ -33,7 +31,6 @@ export default function(opts = {}) {
     'umi/withRouter',
     'umi/_renderRoutes',
     'umi/_createHistory',
-    ...(service.config.disableFastClick ? [] : ['umi-fastclick']),
     'react',
     'react-dom',
     'react-router-dom',
@@ -61,7 +58,9 @@ export default function(opts = {}) {
       babel: {},
     },
   });
-  const afWebpackConfig = afWebpackGetConfig(afWebpackOpts);
+  const afWebpackConfig = require('af-webpack/getConfig').default(
+    afWebpackOpts,
+  );
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {
@@ -93,14 +92,14 @@ export default function(opts = {}) {
   };
 
   return new Promise((resolve, reject) => {
-    afWebpackBuild({
+    require('af-webpack/build').default({
       webpackConfig,
-      success() {
+      onSuccess() {
         console.log('[umi-plugin-dll] Build dll done');
         writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
-      fail(err) {
+      onFail(err) {
         reject(err);
       },
     });

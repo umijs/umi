@@ -74,6 +74,7 @@ export default class Service {
               // methods
               'changePluginOption',
               'applyPlugins',
+              '_applyPluginsAsync',
               // properties
               'cwd',
               'config',
@@ -179,6 +180,18 @@ export default class Service {
         throw e;
       }
     }, opts.initialValue);
+  }
+
+  async _applyPluginsAsync(key, opts = {}) {
+    const plugins = this.pluginHooks[key] || [];
+    let memo = opts.initialValue;
+    for (const plugin of plugins) {
+      const { fn } = plugin;
+      memo = await fn({
+        memo,
+        args: opts.args,
+      });
+    }
   }
 
   init() {

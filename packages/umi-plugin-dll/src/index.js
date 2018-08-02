@@ -1,35 +1,27 @@
 import { join } from 'path';
 import serveStatic from 'serve-static';
+import webpack from 'af-webpack/webpack';
 import buildDll from './buildDll';
 
 export default function(api, opts = {}) {
   if (process.env.NODE_ENV !== 'development') return;
 
-  const {
-    _webpack: webpack,
-    _afWebpackGetConfig: afWebpackGetConfig,
-    _afWebpackBuild: afWebpackBuild,
-    _webpackHotDevClientPath: webpackHotDevClientPath,
-  } = api.utils;
   const { paths } = api.service;
 
   const dllDir = join(paths.absNodeModulesPath, 'umi-dlls');
   const dllManifest = join(dllDir, 'umi.json');
 
-  api.register('beforeDevAsync', () => {
+  api._beforeDevServerAsync(() => {
     return new Promise(resolve => {
+      const originHardSource = process.env.HARD_SOURCE;
       process.env.HARD_SOURCE = 'none';
       buildDll({
-        webpack,
-        afWebpackGetConfig,
-        afWebpackBuild,
-        webpackHotDevClientPath,
         service: api.service,
         dllDir,
         ...opts,
       })
         .then(() => {
-          process.env.HARD_SOURCE = '';
+          process.env.HARD_SOURCE = originHardSource;
           resolve();
         })
         .catch(e => {
@@ -38,28 +30,20 @@ export default function(api, opts = {}) {
     });
   });
 
-  api.register('modifyMiddlewares', ({ memo }) => {
-    return [serveStatic(dllDir), ...memo];
+  api.addMiddlewareAhead(() => {
+    return serveStatic(dllDir);
   });
 
-  api.register('modifyWebpackConfig', ({ memo }) => {
-    memo.plugins.push(
-      new webpack.DllReferencePlugin({
+  api.chainWebpackConfig(webpackConfig => {
+    webpackConfig.plugin('dll-reference').use(webpack.DllReferencePlugin, [
+      {
         context: paths.absSrcPath,
         manifest: dllManifest,
-      }),
-    );
-    return memo;
+      },
+    ]);
   });
 
-  api.register('modifyHTML', ({ memo }) => {
-    memo = memo.replace(
-      '</head>',
-      `
-<script src="/umi.dll.js"></script>
-</head>
-    `.trim(),
-    );
-    return memo;
+  api.addHTMLHeadScript({
+    src: '/umi.dll.js',
   });
 }
