@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { writeFileSync, readFileSync } from 'fs';
-import assert from 'assert';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
@@ -9,13 +8,7 @@ import Mustache from 'mustache';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
-import {
-  EXT_LIST,
-  PLACEHOLDER_IMPORT,
-  PLACEHOLDER_ROUTER,
-  PLACEHOLDER_ROUTER_MODIFIER,
-  PLACEHOLDER_ROUTES_MODIFIER,
-} from './constants';
+import { EXT_LIST } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
