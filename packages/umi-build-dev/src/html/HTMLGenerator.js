@@ -252,11 +252,11 @@ export default class HTMLGenerator {
       publicPathStr = 'location.origin + window.routerBase';
     }
 
-    if (this.modifyRouterBase) {
-      routerBaseStr = this.modifyRouterBase(routerBaseStr, { route });
+    if (this.modifyRouterBaseStr) {
+      routerBaseStr = this.modifyRouterBaseStr(routerBaseStr, { route });
     }
-    if (this.modifyPublicPath) {
-      publicPathStr = this.modifyPublicPath(publicPathStr);
+    if (this.modifyPublicPathStr) {
+      publicPathStr = this.modifyPublicPathStr(publicPathStr);
     }
 
     const setPublicPath =
