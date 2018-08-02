@@ -50,7 +50,7 @@ export default function(api, option) {
     // misc
     dva: () => require('umi-plugin-dva').default,
     locale: () => require('umi-plugin-locale').default,
-    polyfills: () => require('./plugins/polyfills').default,
+    polyfills: () => require('umi-plugin-polyfill').default,
     antd: () => require('./plugins/antd').default,
   };
 
