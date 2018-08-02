@@ -3,8 +3,8 @@ import assert from 'assert';
 export default function(api) {
   const { config } = api.service;
 
-  api.register('_modifyConfigPlugins', ({ memo }) => {
-    memo.push(api => {
+  api._registerConfig(() => {
+    return api => {
       return {
         name: 'history',
         validate(val) {
@@ -17,27 +17,14 @@ export default function(api) {
           api.service.restart(/* why */ 'Config history Changed');
         },
       };
-    });
-    return memo;
+    };
   });
 
   if (config.history === 'hash') {
-    api.register('modifyEntryFile', ({ memo }) => {
-      return memo
-        .replace(
-          '<%= IMPORT %>',
-          `
-import createHashHistory from 'history/createHashHistory';
-<%= IMPORT %>
-        `.trim(),
-        )
-        .replace(
-          '<%= HISTORY_MODIFIER %>',
-          `
-window.g_history = createHashHistory();
-<%= HISTORY_MODIFIER %>
-        `.trim(),
-        );
+    api.addEntryImportAhead({
+      source: 'history/createHashHistory',
+      specifier: 'createHashHistory',
     });
+    api.modifyEntryHistory(`createHashHistory()`);
   }
 }

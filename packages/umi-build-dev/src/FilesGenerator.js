@@ -1,13 +1,14 @@
-import { join, relative } from 'path';
+import { join } from 'path';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
-import { winPath } from 'umi-utils';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import Mustache from 'mustache';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
+import importsToStr from './importsToStr';
 import {
   EXT_LIST,
   PLACEHOLDER_HISTORY_MODIFIER,
@@ -17,14 +18,15 @@ import {
   PLACEHOLDER_ROUTER_MODIFIER,
   PLACEHOLDER_ROUTES_MODIFIER,
 } from './constants';
-import importsToStr from './importsToStr';
 
 const debug = require('debug')('umi:FilesGenerator');
 
 export default class FilesGenerator {
-  constructor(service, RoutesManager) {
-    this.RoutesManager = RoutesManager;
-    this.service = service;
+  constructor(opts) {
+    Object.keys(opts).forEach(key => {
+      this[key] = opts[key];
+    });
+
     this.routesContent = null;
     this.hasRebuildError = false;
   }
@@ -59,14 +61,17 @@ export default class FilesGenerator {
       paths,
       config: { singular },
     } = this.service;
+
     const layout = singular ? 'layout' : 'layouts';
-    const watcherPaths = this.service.applyPlugins('addPageWatcher', {
-      initialValue: [
-        paths.absPagesPath,
-        ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
-      ],
-    });
-    this.watchers = watcherPaths.map(p => {
+    let pageWatchers = [
+      paths.absPagesPath,
+      ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
+    ];
+    if (this.modifyPageWatcher) {
+      pageWatchers = this.modifyPageWatcher(pageWatchers);
+    }
+
+    this.watchers = pageWatchers.map(p => {
       return this.createWatcher(p);
     });
     process.on('SIGINT', () => {
@@ -117,27 +122,35 @@ export default class FilesGenerator {
   }
 
   generateEntry() {
-    const { paths, entryJSTpl } = this.service;
+    const { paths } = this.service;
 
     // Generate umi.js
-    let entryContent = readFileSync(
-      entryJSTpl || paths.defaultEntryTplPath,
-      'utf-8',
-    );
-    entryContent = this.service.applyPlugins('modifyEntryFile', {
-      initialValue: entryContent,
+    const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
+    const initialRender = `
+ReactDOM.render(
+  React.createElement(require('./router').default),
+  document.getElementById('root'),
+);
+    `.trim();
+    const initialHistory = `
+require('umi/_createHistory').default({
+  basename: window.routerBase,
+});
+    `.trim();
+    const entryContent = Mustache.render(entryTpl, {
+      imports: importsToStr(this.service.applyPlugins('addEntryImport')).join(
+        '\n',
+      ),
+      importsAhead: importsToStr(
+        this.service.applyPlugins('addEntryImportAhead'),
+      ).join('\n'),
+      render: this.service.applyPlugins('modifyEntryRender', {
+        initialValue: initialRender,
+      }),
+      history: this.service.applyPlugins('modifyEntryHistory', {
+        initialValue: initialHistory,
+      }),
     });
-
-    const imports = this.service.applyPlugins('addEntryImport');
-    const importsAhead = this.service.applyPlugins('addEntryImportAhead');
-    entryContent = entryContent
-      .replace('<%= IMPORT_AHEAD %>', importsToStr(importsAhead).join('\n'))
-      .replace('<%= IMPORT %>', importsToStr(imports).join('\n'))
-      .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
-      .replace(
-        PLACEHOLDER_RENDER,
-        `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
-      );
     writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
   }
 

@@ -1,8 +1,8 @@
 import rimraf from 'rimraf';
-import FilesGenerator from '../../../FilesGenerator';
 import chunksToMap from './chunksToMap';
 import getRouteManager from '../getRouteManager';
 import getHtmlGenerator from '../getHtmlGenerator';
+import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
   const { service, debug } = api;
@@ -15,7 +15,7 @@ export default function(api) {
     process.env.NODE_ENV = 'production';
     service.applyPlugins('onStart');
 
-    const filesGenerator = new FilesGenerator(service, RoutesManager);
+    const filesGenerator = getFilesGenerator(service, { RoutesManager });
     filesGenerator.generate();
 
     require('af-webpack/build').default({

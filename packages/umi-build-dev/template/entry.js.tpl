@@ -1,18 +1,14 @@
-<%= IMPORT_AHEAD %>
+{{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'umi/_createHistory';
-<%= IMPORT %>
+{{{ imports }}}
 
 // create history
-window.g_history = createHistory({
-  basename: window.routerBase,
-});
-<%= HISTORY_MODIFIER %>
+window.g_history = {{{ history }}};
 
 // render
 function render() {
-  <%= RENDER %>
+  {{{ render }}}
 }
 render();
 
