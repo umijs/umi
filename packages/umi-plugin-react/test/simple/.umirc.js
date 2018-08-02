@@ -5,8 +5,8 @@ export default {
       {
         antd: true,
 
-        // // mobile
-        // hd: true,
+        // mobile
+        hd: true,
         // fastClick: true,
         //
         // // dev boost
