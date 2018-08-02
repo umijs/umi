@@ -129,6 +129,16 @@ require('umi/_createHistory').default({
 })
     `.trim();
     const entryContent = Mustache.render(entryTpl, {
+      code: this.service
+        .applyPlugins('addEntryCode', {
+          initialValue: [],
+        })
+        .join('\n\n'),
+      codeAhead: this.service
+        .applyPlugins('addEntryCodeAhead', {
+          initialValue: [],
+        })
+        .join('\n\n'),
       imports: importsToStr(
         this.service.applyPlugins('addEntryImport', {
           initialValue: [],

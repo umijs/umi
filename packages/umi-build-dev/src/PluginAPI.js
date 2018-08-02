@@ -48,6 +48,8 @@ export default class PluginAPI {
       'onBuildSuccess',
       'onBuildFail',
       'addPageWatcher',
+      'addEntryCode',
+      'addEntryCodeAhead',
       'addEntryImport',
       'addEntryImportAhead',
       'addRendererWrapperWithComponent',

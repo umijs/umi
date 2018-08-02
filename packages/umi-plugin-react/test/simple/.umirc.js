@@ -7,7 +7,7 @@ export default {
 
         // mobile
         hd: true,
-        // fastClick: true,
+        fastClick: true,
         //
         // // dev boost
         // dll: false,
