@@ -46,9 +46,12 @@ export default class PluginAPI {
       'addPageWatcher',
       'addEntryImport',
       'addEntryImportAhead',
+      'addRouterImport',
+      'addRouterImportAhead',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',
+      'modifyRouterRootComponent',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
