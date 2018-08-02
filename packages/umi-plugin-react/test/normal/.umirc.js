@@ -8,7 +8,7 @@ export default {
         fastClick: true,
 
         // dev boost
-        dll: false,
+        dll: true,
         hardSource: false,
 
         // performace

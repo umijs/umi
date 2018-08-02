@@ -21,22 +21,22 @@ export default (service, opts = {}) => {
       return str;
     },
     modifyMetas(memo) {
-      return service.applyPlugins('addHTMLMetas', {
+      return service.applyPlugins('addHTMLMeta', {
         initialValue: memo,
       });
     },
     modifyLinks(memo) {
-      return service.applyPlugins('addHTMLLinks', {
+      return service.applyPlugins('addHTMLLink', {
         initialValue: memo,
       });
     },
     modifyScripts(memo) {
-      return service.applyPlugins('addHTMLScripts', {
+      return service.applyPlugins('addHTMLScript', {
         initialValue: memo,
       });
     },
     modifyHeadScripts(memo) {
-      return service.applyPlugins('addHTMLHeadScripts', {
+      return service.applyPlugins('addHTMLHeadScript', {
         initialValue: memo,
       });
     },

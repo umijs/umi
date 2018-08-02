@@ -74,40 +74,49 @@ export default function(api) {
       userConfig.watchWithDevServer();
     }
 
-    require('af-webpack/dev').default({
-      cwd,
-      port,
-      webpackConfig: service.webpackConfig,
-      proxy: config.proxy || {},
-      contentBase: './path-do-not-exists',
-      _beforeServerWithApp(app) {
-        // @private
-        service.applyPlugins('_beforeServerWithApp', { args: { app } });
-      },
-      beforeMiddlewares: service.applyPlugins('addMiddlewareAhead', {
-        initialValue: [],
-      }),
-      afterMiddlewares: service.applyPlugins('addMiddleware', {
-        initialValue: [createRouteMiddleware(service)],
-      }),
-      beforeServer(devServer) {
-        server = devServer;
-        service.applyPlugins('beforeDevServer', {
-          args: { server: devServer },
-        });
-      },
-      afterServer(devServer) {
-        service.applyPlugins('afterDevServer', { args: { server: devServer } });
-        startWatch();
-      },
-      onCompileDone({ isFirstCompile, stats }) {
-        service.applyPlugins('onDevCompileDone', {
-          args: {
-            isFirstCompile,
-            stats,
+    service
+      ._applyPluginsAsync('_beforeDevServerAsync')
+      .then(() => {
+        require('af-webpack/dev').default({
+          cwd,
+          port,
+          webpackConfig: service.webpackConfig,
+          proxy: config.proxy || {},
+          contentBase: './path-do-not-exists',
+          _beforeServerWithApp(app) {
+            // @private
+            service.applyPlugins('_beforeServerWithApp', { args: { app } });
+          },
+          beforeMiddlewares: service.applyPlugins('addMiddlewareAhead', {
+            initialValue: [],
+          }),
+          afterMiddlewares: service.applyPlugins('addMiddleware', {
+            initialValue: [createRouteMiddleware(service)],
+          }),
+          beforeServer(devServer) {
+            server = devServer;
+            service.applyPlugins('beforeDevServer', {
+              args: { server: devServer },
+            });
+          },
+          afterServer(devServer) {
+            service.applyPlugins('afterDevServer', {
+              args: { server: devServer },
+            });
+            startWatch();
+          },
+          onCompileDone({ isFirstCompile, stats }) {
+            service.applyPlugins('onDevCompileDone', {
+              args: {
+                isFirstCompile,
+                stats,
+              },
+            });
           },
         });
-      },
-    });
+      })
+      .catch(e => {
+        console.error(e);
+      });
   });
 }
