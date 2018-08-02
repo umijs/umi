@@ -58,6 +58,7 @@ export default class PluginAPI {
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',
+      'modifyRouteComponent',
       'modifyRouterRootComponent',
       '_beforeServerWithApp',
       'beforeDevServer',

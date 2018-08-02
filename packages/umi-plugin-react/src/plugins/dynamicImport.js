@@ -1,18 +1,17 @@
 import { join } from 'path';
-import { winPath } from 'umi-utils';
 
 export default function(api, options) {
-  const { paths } = api.service;
+  const { paths, winPath } = api;
 
   if (process.env.NODE_ENV === 'production') {
-    api.register('modifyAFWebpackOpts', ({ memo }) => {
+    api.modifyAFWebpackOpts(opts => {
       return {
-        ...memo,
+        ...opts,
         disableDynamicImport: false,
       };
     });
 
-    api.register('modifyRouteComponent', ({ args }) => {
+    api.modifyRouteComponent((memo, args) => {
       const { importPath, webpackChunkName } = args;
 
       let loadingOpts = '';
