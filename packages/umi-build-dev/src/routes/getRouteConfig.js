@@ -20,7 +20,7 @@ export default (paths, config = {}, updateRoute) => {
   patchRoutes(
     routes,
     config,
-    process.env.NODE_ENV === 'production',
+    /* isProduction */ process.env.NODE_ENV === 'production',
     updateRoute,
   );
   return routes;
