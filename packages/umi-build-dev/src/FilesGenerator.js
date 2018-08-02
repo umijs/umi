@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
@@ -11,9 +11,7 @@ import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
 import {
   EXT_LIST,
-  PLACEHOLDER_HISTORY_MODIFIER,
   PLACEHOLDER_IMPORT,
-  PLACEHOLDER_RENDER,
   PLACEHOLDER_ROUTER,
   PLACEHOLDER_ROUTER_MODIFIER,
   PLACEHOLDER_ROUTES_MODIFIER,
@@ -138,11 +136,15 @@ require('umi/_createHistory').default({
 });
     `.trim();
     const entryContent = Mustache.render(entryTpl, {
-      imports: importsToStr(this.service.applyPlugins('addEntryImport')).join(
-        '\n',
-      ),
+      imports: importsToStr(
+        this.service.applyPlugins('addEntryImport', {
+          initialValue: [],
+        }),
+      ).join('\n'),
       importsAhead: importsToStr(
-        this.service.applyPlugins('addEntryImportAhead'),
+        this.service.applyPlugins('addEntryImportAhead', {
+          initialValue: [],
+        }),
       ).join('\n'),
       render: this.service.applyPlugins('modifyEntryRender', {
         initialValue: initialRender,
@@ -168,32 +170,34 @@ require('umi/_createHistory').default({
   }
 
   getRouterJSContent() {
-    const { routerTpl, paths } = this.service;
-    const routerTplPath = routerTpl || paths.defaultRouterTplPath;
-    assert(
-      existsSync(routerTplPath),
-      `routerTpl don't exists: ${routerTplPath}`,
+    const { paths } = this.service;
+    const routerTpl = readFileSync(paths.defaultRouterTplPath, 'utf-8');
+    const routes = stripJSONQuote(
+      this.getRoutesJSON({
+        env: process.env.NODE_ENV,
+      }),
     );
-
-    let tplContent = readFileSync(routerTplPath, 'utf-8');
-    tplContent = this.service.applyPlugins('modifyRouterFile', {
-      initialValue: tplContent,
+    const routerContent = this.getRouterContent();
+    return Mustache.render(routerTpl, {
+      imports: importsToStr(
+        this.service.applyPlugins('addRouterImport', {
+          initialValue: [],
+        }),
+      ).join('\n'),
+      importsAhead: importsToStr(
+        this.service.applyPlugins('addRouterImportAhead', {
+          initialValue: [],
+        }),
+      ).join('\n'),
+      routes,
+      routerContent,
+      RouterRootComponent: this.service.applyPlugins(
+        'modifyRouterRootComponent',
+        {
+          initialValue: 'DefaultRouter',
+        },
+      ),
     });
-
-    let routes = this.getRoutesJSON({
-      env: process.env.NODE_ENV,
-    });
-    routes = stripJSONQuote(routes);
-
-    const routerContent = this.service.applyPlugins('modifyRouterContent', {
-      initialValue: this.getRouterContent(),
-    });
-    return tplContent
-      .replace(PLACEHOLDER_IMPORT, '')
-      .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
-      .replace(PLACEHOLDER_ROUTES_MODIFIER, '')
-      .replace('<%= ROUTES %>', () => routes)
-      .replace(PLACEHOLDER_ROUTER, routerContent);
   }
 
   fixHtmlSuffix(routes) {
