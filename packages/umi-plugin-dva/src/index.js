@@ -84,10 +84,7 @@ export function getGlobalModels(service, shouldImportDynamic) {
 }
 
 export default function(api, opts = {}) {
-  const RENDER = '<%= RENDER %>';
-  const ROUTER_MODIFIER = '<%= ROUTER_MODIFIER %>';
-  const IMPORT = '<%= IMPORT %>';
-  const { paths } = api.service;
+  const { paths } = api;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && opts.dynamicImport;
@@ -153,7 +150,7 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  api.register('onGenerateFiles', () => {
+  api.onGenerateFiles(() => {
     const tpl = join(__dirname, '../template/DvaContainer.js');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
@@ -173,28 +170,19 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
   });
 
-  api.register('modifyRouterFile', ({ memo }) => {
-    return memo
-      .replace(
-        IMPORT,
-        `
-import { routerRedux } from 'dva/router';
-${shouldImportDynamic ? `import _dvaDynamic from 'dva/dynamic';` : ''}
-${IMPORT}
-      `.trim(),
-      )
-      .replace(
-        ROUTER_MODIFIER,
-        `
-const { ConnectedRouter } = routerRedux;
-Router = ConnectedRouter;
-${ROUTER_MODIFIER}
-      `.trim(),
-      );
-  });
+  api.modifyRouterRootComponent(
+    `require('dva/router').routerRedux.ConnectedRouter`,
+  );
 
   if (shouldImportDynamic) {
-    api.register('modifyRouteComponent', ({ memo, args }) => {
+    api.addRouterImport({
+      source: 'dva/dynamic',
+      specifier: '_dvaDynamic',
+    });
+  }
+
+  if (shouldImportDynamic) {
+    api.modifyRouteComponent((memo, args) => {
       const { importPath, webpackChunkName } = args;
       if (!webpackChunkName) {
         return memo;
@@ -247,28 +235,19 @@ models: () => [
     });
   }
 
-  api.register('modifyEntryFile', ({ memo }) => {
-    const dvaRender = api.service.applyPlugins('modifyDvaRender', {
-      initialValue: `
-ReactDOM.render(React.createElement(
-  DvaContainer,
-  null,
-  React.createElement(require('./router').default)
-), document.getElementById('root'));
-`.trim(),
-    });
-
-    return memo.replace(
-      RENDER,
-      `
+  api.modifyEntryRender(() => {
+    return `
 const DvaContainer = require('./DvaContainer').default;
-${dvaRender}
-`.trim(),
-    );
+  ReactDOM.render(React.createElement(
+    DvaContainer,
+    null,
+    React.createElement(require('./router').default)
+  ), document.getElementById('root'));
+    `.trim();
   });
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
-    memo.alias = {
+  api.modifyAFWebpackOpts(memo => {
+    const alias = {
       ...memo.alias,
       dva: dirname(require.resolve('dva/package')),
       'dva-loading': require.resolve('dva-loading'),
@@ -280,22 +259,22 @@ ${dvaRender}
           }
         : {}),
     };
-    return memo;
+    return {
+      ...memo,
+      alias,
+    };
   });
 
-  api.register('modifyPageWatchers', ({ memo }) => {
-    return [
-      ...memo,
-      join(paths.absSrcPath, 'models'),
-      join(paths.absSrcPath, 'plugins'),
-      join(paths.absSrcPath, 'model.js'),
-      join(paths.absSrcPath, 'model.jsx'),
-      join(paths.absSrcPath, 'model.ts'),
-      join(paths.absSrcPath, 'model.tsx'),
-      join(paths.absSrcPath, 'dva.js'),
-      join(paths.absSrcPath, 'dva.jsx'),
-      join(paths.absSrcPath, 'dva.ts'),
-      join(paths.absSrcPath, 'dva.tsx'),
-    ];
-  });
+  api.addPageWatcher([
+    join(paths.absSrcPath, 'models'),
+    join(paths.absSrcPath, 'plugins'),
+    join(paths.absSrcPath, 'model.js'),
+    join(paths.absSrcPath, 'model.jsx'),
+    join(paths.absSrcPath, 'model.ts'),
+    join(paths.absSrcPath, 'model.tsx'),
+    join(paths.absSrcPath, 'dva.js'),
+    join(paths.absSrcPath, 'dva.jsx'),
+    join(paths.absSrcPath, 'dva.ts'),
+    join(paths.absSrcPath, 'dva.tsx'),
+  ]);
 }
