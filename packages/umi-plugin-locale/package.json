@@ -22,6 +22,7 @@
     "umi"
   ],
   "dependencies": {
+    "mustache": "^2.3.0",
     "prop-types": "^15.6.2",
     "react-intl": "^2.4.0",
     "umi-utils": "^0.1.0"
