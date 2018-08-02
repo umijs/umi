@@ -1,10 +1,10 @@
 import assign from 'object-assign';
 import chalk from 'chalk';
-import FilesGenerator from '../../../FilesGenerator';
 import createRouteMiddleware from './createRouteMiddleware';
 import UserConfig from '../../../UserConfig';
 import { unwatch } from '../../../getConfig/watch';
 import getRouteManager from '../getRouteManager';
+import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
   const { service } = api;
@@ -28,7 +28,7 @@ export default function(api) {
     process.env.NODE_ENV = 'development';
     service.applyPlugins('onStart');
 
-    const filesGenerator = new FilesGenerator(service, RoutesManager);
+    const filesGenerator = getFilesGenerator(service, { RoutesManager });
     filesGenerator.generate();
 
     const userConfig = new UserConfig(service);

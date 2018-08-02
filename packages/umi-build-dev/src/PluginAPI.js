@@ -26,20 +26,49 @@ export default class PluginAPI {
     this.registerMethod('chainWebpackConfig', {
       type: this.API_TYPE.EVENT,
     });
-    this.registerMethod('modifyAFWebpackOpts', {
-      type: this.API_TYPE.MODIFY,
-    });
     this.registerMethod('_registerConfig', {
       type: this.API_TYPE.ADD,
     });
-    this.registerMethod('addPageWatcher', {
-      type: this.API_TYPE.ADD,
-    });
-    this.registerMethod('addEntryImport', {
-      type: this.API_TYPE.ADD,
-    });
-    this.registerMethod('addEntryImportAhead', {
-      type: this.API_TYPE.ADD,
+
+    [
+      [
+        'chainWebpackConfig',
+        {
+          type: this.API_TYPE.EVENT,
+        },
+      ],
+      [
+        '_registerConfig',
+        {
+          type: this.API_TYPE.ADD,
+        },
+      ],
+      'addPageWatcher',
+      'addEntryImport',
+      'addEntryImportAhead',
+      'modifyAFWebpackOpts',
+      'modifyEntryRender',
+      'modifyEntryHistory',
+    ].forEach(method => {
+      if (Array.isArray(method)) {
+        this.registerMethod(...method);
+      } else {
+        let type;
+        if (method.indexOf('modify') === 0) {
+          type = this.API_TYPE.MODIFY;
+        } else if (method.indexOf('add') === 0) {
+          type = this.API_TYPE.ADD;
+        } else if (
+          method.indexOf('on') === 0 ||
+          method.indexOf('before') === 0 ||
+          method.indexOf('after') === 0
+        ) {
+          type = this.API_TYPE.ADD;
+        } else {
+          throw new Error(`unexpected method name ${method}`);
+        }
+        this.registerMethod(method, { type });
+      }
     });
   }
 
@@ -103,14 +132,17 @@ export default class PluginAPI {
         });
       } else if (type === this.API_TYPE.ADD) {
         this.register(name, opts => {
-          const { memo } = opts;
-          return (memo || []).concat(
-            typeof args[0] === 'function' ? args[0](memo, opts.args) : args[0],
+          return (opts.memo || []).concat(
+            typeof args[0] === 'function'
+              ? args[0](opts.memo, opts.args)
+              : args[0],
           );
         });
       } else if (type === this.API_TYPE.MODIFY) {
         this.register(name, opts => {
-          return args[0](opts.memo, opts.args);
+          return typeof args[0] === 'function'
+            ? args[0](opts.memo, opts.args)
+            : args[0];
         });
       } else if (type === this.API_TYPE.EVENT) {
         this.register(name, opts => {
