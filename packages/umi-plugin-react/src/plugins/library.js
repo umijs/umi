@@ -2,7 +2,8 @@ import { compatDirname } from 'umi-utils';
 
 export default function(api, options) {
   const { cwd } = api.service;
-  api.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
+
+  api.chainWebpackConfig(webpackConfig => {
     if (options === 'preact') {
       webpackConfig.resolve.alias
         .set('react', compatDirname('preact-compat/package.json'), cwd)

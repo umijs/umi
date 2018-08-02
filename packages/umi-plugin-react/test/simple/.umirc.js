@@ -8,20 +8,20 @@ export default {
         // mobile
         hd: true,
         fastClick: true,
-        //
-        // // dev boost
+
+        // dev boost
         // dll: false,
         // hardSource: false,
-        //
-        // // performace
+
+        // performace
         // pwa: {},
-        // dynamicImport: {
-        //   webpackChunkName: true,
-        //   loadingComponent: './Loading.js',
-        // },
-        // library: 'react',
-        //
-        // // misc
+        dynamicImport: {
+          webpackChunkName: true,
+          loadingComponent: './Loading.js',
+        },
+        library: 'react',
+
+        // misc
         // dva: false,
         // polyfills: [],
       },
