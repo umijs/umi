@@ -11,10 +11,10 @@ export default {
 
         // dev boost
         // dll: false,
-        // hardSource: false,
+        hardSource: false,
 
         // performace
-        // pwa: {},
+        pwa: {},
         dynamicImport: {
           webpackChunkName: true,
           loadingComponent: './Loading.js',
@@ -23,7 +23,7 @@ export default {
 
         // misc
         // dva: false,
-        // polyfills: [],
+        polyfills: [],
       },
     ],
   ],
