@@ -3,19 +3,19 @@ import remove from 'lodash.remove';
 
 let redirects;
 
-export default (routes, config = {}, isProduction) => {
+export default (routes, config = {}, isProduction, onPatchRoute) => {
   redirects = [];
-  patchRoutes(routes, config, isProduction);
+  patchRoutes(routes, config, isProduction, onPatchRoute);
   routes.unshift(...redirects);
   return routes;
 };
 
-function patchRoutes(routes, config, isProduction, updateRoute) {
+function patchRoutes(routes, config, isProduction, onPatchRoute) {
   let notFoundIndex = null;
   let rootIndex = null;
 
   routes.forEach((route, index) => {
-    patchRoute(route, config, isProduction, updateRoute);
+    patchRoute(route, config, isProduction, onPatchRoute);
     if (route.path === '/404') {
       notFoundIndex = index;
     }
@@ -43,7 +43,7 @@ function patchRoutes(routes, config, isProduction, updateRoute) {
   redirects = redirects.concat(removedRoutes);
 }
 
-function patchRoute(route, config, isProduction, updateRoute) {
+function patchRoute(route, config, isProduction, onPatchRoute) {
   const isDynamicRoute = route.path.indexOf('/:') > -1;
   if (config.exportStatic && isDynamicRoute) {
     throw new Error(
@@ -73,9 +73,9 @@ function patchRoute(route, config, isProduction, updateRoute) {
     delete route.meta;
   }
 
-  if (updateRoute) updateRoute(route);
+  if (onPatchRoute) onPatchRoute(route);
   if (route.routes) {
-    patchRoutes(route.routes, config, isProduction, updateRoute);
+    patchRoutes(route.routes, config, isProduction, onPatchRoute);
   }
 }
 
