@@ -162,6 +162,8 @@ export default class Service {
     plugin.opts = newOpts;
     if (plugin.onOptionChange) {
       plugin.onOptionChange(newOpts);
+    } else {
+      this.restart(`plugin ${id}'s option changed`);
     }
   }
 
