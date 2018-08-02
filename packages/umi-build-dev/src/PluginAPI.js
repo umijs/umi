@@ -1,5 +1,6 @@
 import debug from 'debug';
 import assert from 'assert';
+import { relative } from 'path';
 import isPlainObject from 'is-plain-object';
 import { winPath, findJS, findCSS } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
@@ -8,6 +9,8 @@ export default class PluginAPI {
   constructor(id, service) {
     this.id = id;
     this.service = service;
+
+    // utils
     this.debug = debug(`umi-plugin: ${id}`);
     this.winPath = winPath;
     this.findJS = findJS;
@@ -20,6 +23,10 @@ export default class PluginAPI {
     };
 
     this._addMethods();
+  }
+
+  relativeToTmp(path) {
+    return this.winPath(relative(this.service.paths.absTmpDirPath, path));
   }
 
   _addMethods() {
