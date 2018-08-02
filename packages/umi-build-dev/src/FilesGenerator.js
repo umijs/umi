@@ -177,11 +177,22 @@ require('umi/_createHistory').default({
         env: process.env.NODE_ENV,
       }),
     );
-    const routerContent = this.getRouterContent();
+    const rendererWrappers = this.service
+      .applyPlugins('addRendererWrapperWithComponent', {
+        initialValue: [],
+      })
+      .map((source, index) => {
+        return {
+          source,
+          specifier: `RendererWrapper${index}`,
+        };
+      });
+
+    const routerContent = this.getRouterContent(rendererWrappers);
     return Mustache.render(routerTpl, {
       imports: importsToStr(
         this.service.applyPlugins('addRouterImport', {
-          initialValue: [],
+          initialValue: rendererWrappers,
         }),
       ).join('\n'),
       importsAhead: importsToStr(
@@ -214,13 +225,20 @@ require('umi/_createHistory').default({
     return routesToJSON(this.RoutesManager.routes, this.service, env);
   }
 
-  getRouterContent() {
-    return `
-<Router history={window.g_history}>
-  <Route render={({ location }) =>
-    renderRoutes(routes, {}, { location })
-  } />
-</Router>
+  getRouterContent(rendererWrappers) {
+    const defaultRenderer = `
+    <Router history={window.g_history}>
+      <Route render={({ location }) =>
+        renderRoutes(routes, {}, { location })
+      } />
+    </Router>
     `.trim();
+    return rendererWrappers.reduce((memo, wrapper) => {
+      return `
+        <${wrapper.specifier}>
+          ${memo}
+        </${wrapper.specifier}>
+      `.trim();
+    }, defaultRenderer);
   }
 }

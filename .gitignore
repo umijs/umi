@@ -2,6 +2,7 @@
 tmp
 /node_modules
 /packages/*/node_modules
+/examples/*/node_modules
 package-lock.json
 yarn.lock
 /website/build
