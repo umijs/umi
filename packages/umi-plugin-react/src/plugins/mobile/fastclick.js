@@ -1,18 +1,21 @@
-import { winPath } from 'umi-utils';
+import { relative } from 'path';
 
 export default function(api, options) {
-  const IMPORT = '<%= IMPORT %>';
+  const { paths } = api;
 
-  api.register('modifyEntryFile', ({ memo }) => {
-    const libraryPath = winPath(
-      options.libraryPath || require.resolve('fastclick'),
-    );
-    memo = memo.replace(
-      IMPORT,
-      `
-import FastClick from '${libraryPath}';
-${IMPORT}
+  api.addEntryImport(() => {
+    return {
+      source: relative(
+        paths.absTmpDirPath,
+        options.libraryPath || require.resolve('fastclick'),
+      ),
+      specifier: 'FastClick',
+    };
+  });
 
+  api.addEntryCodeAhead(
+    `
+// Initialize fastclick
 document.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -20,8 +23,6 @@ document.addEventListener(
   },
   false,
 );
-      `.trim(),
-    );
-    return memo;
-  });
+  `.trim(),
+  );
 }
