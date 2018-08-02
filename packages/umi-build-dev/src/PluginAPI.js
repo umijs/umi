@@ -43,6 +43,7 @@ export default class PluginAPI {
           type: this.API_TYPE.ADD,
         },
       ],
+      'onStart',
       'addPageWatcher',
       'addEntryImport',
       'addEntryImportAhead',
