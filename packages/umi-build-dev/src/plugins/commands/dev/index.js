@@ -82,20 +82,22 @@ export default function(api) {
       contentBase: './path-do-not-exists',
       _beforeServerWithApp(app) {
         // @private
-        service.applyPlugins('_onBeforeServerWithApp', { args: { app } });
+        service.applyPlugins('_beforeServerWithApp', { args: { app } });
       },
-      beforeMiddlewares: service.applyPlugins('modifyBeforeMiddlewares', {
+      beforeMiddlewares: service.applyPlugins('addMiddlewareAhead', {
         initialValue: [],
       }),
-      afterMiddlewares: service.applyPlugins('modifyAfterMiddlewares', {
+      afterMiddlewares: service.applyPlugins('addMiddleware', {
         initialValue: [createRouteMiddleware(service)],
       }),
       beforeServer(devServer) {
         server = devServer;
-        service.applyPlugins('beforeDevServer', { args: { devServer } });
+        service.applyPlugins('beforeDevServer', {
+          args: { server: devServer },
+        });
       },
       afterServer(devServer) {
-        service.applyPlugins('afterDevServer', { args: { devServer } });
+        service.applyPlugins('afterDevServer', { args: { server: devServer } });
         startWatch();
       },
       onCompileDone({ isFirstCompile, stats }) {
