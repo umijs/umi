@@ -50,6 +50,7 @@ export default class PluginAPI {
       'addPageWatcher',
       'addEntryImport',
       'addEntryImportAhead',
+      'addRendererWrapperWithComponent',
       'addRouterImport',
       'addRouterImportAhead',
       'modifyAFWebpackOpts',
