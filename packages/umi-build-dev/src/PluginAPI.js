@@ -56,21 +56,28 @@ export default class PluginAPI {
       'modifyEntryRender',
       'modifyEntryHistory',
       'modifyRouterRootComponent',
+      '_beforeServerWithApp',
+      'beforeDevServer',
+      'afterDevServer',
+      'addMiddlewareAhead',
+      'addMiddleware',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
       } else {
         let type;
-        if (method.indexOf('modify') === 0) {
+        const isPrivate = method.charAt(0) === '_';
+        const slicedMethod = isPrivate ? method.slice(1) : method;
+        if (slicedMethod.indexOf('modify') === 0) {
           type = this.API_TYPE.MODIFY;
-        } else if (method.indexOf('add') === 0) {
+        } else if (slicedMethod.indexOf('add') === 0) {
           type = this.API_TYPE.ADD;
         } else if (
-          method.indexOf('on') === 0 ||
-          method.indexOf('before') === 0 ||
-          method.indexOf('after') === 0
+          slicedMethod.indexOf('on') === 0 ||
+          slicedMethod.indexOf('before') === 0 ||
+          slicedMethod.indexOf('after') === 0
         ) {
-          type = this.API_TYPE.ADD;
+          type = this.API_TYPE.EVENT;
         } else {
           throw new Error(`unexpected method name ${method}`);
         }
