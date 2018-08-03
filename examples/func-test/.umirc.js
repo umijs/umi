@@ -1,3 +1,3 @@
 export default {
-  plugins: ['./plugins/render-wrapper'],
+  plugins: ['umi-plugin-react/lib/plugins/antd', './plugins/render-wrapper'],
 };

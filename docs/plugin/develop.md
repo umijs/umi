@@ -487,41 +487,29 @@ api.addRouteWrapperWithComponent('./path/to/component.js');
 
 在路由组件外面包一层组件，也可以用 modifySingleRouteConfig 这个实现，这个相当于是一个快捷方式。
 
-### addFragmentToEntry
+### addEntryImportAhead
 
-在 entry 最后添加代码。
-
-### addFragmentAfterImport
-
-在 import 的位置添加代码。
-
-### addFragmentAhead
-
-在最前面添加代码。
-
-### addModuleImport
-
-添加模块的引入，可以指定模块引入后的名称。
+在入口文件在最上面 import 模块。
 
 ```js
-api.addModuleImport({
-  path: '/path/to/module', // 可以是数组
-  name: 'xxx', // 如果有该项，那么 Module 会被 setRuntimeState 设置到 runtimeState 中
-});
-
-// or
-
-api.addModuleImport(() => {
-  return {
-    path: '/path/to/module',
-    name: 'xxx', // 可以缺省，直接返回一个 path 的 string
-  };
+api.addEntryImportAhead({
+  source: '/path/to/module',
+  specifier: 'name', // import 出来后的名称，可以缺省
 });
 ```
 
-### addModuleAndExcuteDefault
 
-require 一个模块并在最后执行它的 default 方法。
+### addEntryImport
+
+在入口文件中 import 模块。
+
+### addEntryCodeAhead
+
+在 render 之前添加代码。
+
+### addEntryCode
+
+在 render 之后添加代码。
 
 ### addRendererWrapperWithComponent
 
