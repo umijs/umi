@@ -22,6 +22,7 @@
     "antd-mobile": "^2.2.1",
     "babel-plugin-import": "^1.8.0",
     "fastclick": "^1.0.6",
+    "lodash.isequal": "^4.5.0",
     "is-plain-object": "^2.0.4",
     "postcss-plugin-px2rem": "^0.7.0",
     "preact": "^8.2.9",

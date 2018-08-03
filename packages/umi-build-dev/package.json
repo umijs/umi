@@ -24,6 +24,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.remove": "^4.7.0",
     "mkdirp": "^0.5.1",
+    "mustache": "^2.3.0",
     "object-assign": "^4.1.1",
     "path-is-absolute": "^1.0.1",
     "path-to-regexp": "^1.7.0",

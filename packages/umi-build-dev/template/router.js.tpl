@@ -1,17 +1,16 @@
+{{{ importsAhead }}}
 import React from 'react';
 import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/_renderRoutes';
-<%= IMPORT %>
+{{{ imports }}}
 
-let Router = DefaultRouter;
-<%= ROUTER_MODIFIER %>
+let Router = {{{ RouterRootComponent }}};
 
-let routes = <%= ROUTES %>;
-<%= ROUTES_MODIFIER %>
+let routes = {{{ routes }}};
 
 export default function() {
   return (
-<%= ROUTER %>
+{{{ routerContent }}}
   );
 }

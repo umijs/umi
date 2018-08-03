@@ -6,8 +6,8 @@ import isRoot from 'path-is-root';
 import winPath from 'slash2';
 import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
 
-export function getModel(cwd, service) {
-  const { config } = service;
+export function getModel(cwd, api) {
+  const { config } = api;
 
   const modelJSPath = findJSFile(cwd, 'model');
   if (modelJSPath) {
@@ -29,14 +29,14 @@ export function getModel(cwd, service) {
     .map(p => winPath(join(cwd, p)));
 }
 
-function getModelsWithRoutes(routes, service) {
-  const { paths } = service;
+function getModelsWithRoutes(routes, api) {
+  const { paths } = api;
   return routes.reduce((memo, route) => {
     if (route.component) {
       return [
         ...memo,
-        ...getPageModels(join(paths.cwd, route.component), service),
-        ...(route.routes ? getModelsWithRoutes(route.routes, service) : []),
+        ...getPageModels(join(paths.cwd, route.component), api),
+        ...(route.routes ? getModelsWithRoutes(route.routes, api) : []),
       ];
     } else {
       return memo;
@@ -44,39 +44,35 @@ function getModelsWithRoutes(routes, service) {
   }, []);
 }
 
-function getPageModels(cwd, service) {
+function getPageModels(cwd, api) {
   let models = [];
-  while (
-    !isPagesPath(cwd, service) &&
-    !isSrcPath(cwd, service) &&
-    !isRoot(cwd)
-  ) {
-    models = models.concat(getModel(cwd, service));
+  while (!isPagesPath(cwd, api) && !isSrcPath(cwd, api) && !isRoot(cwd)) {
+    models = models.concat(getModel(cwd, api));
     cwd = dirname(cwd);
   }
   return models;
 }
 
-function isPagesPath(path, service) {
-  const { paths } = service;
+function isPagesPath(path, api) {
+  const { paths } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
   );
 }
 
-function isSrcPath(path, service) {
-  const { paths } = service;
+function isSrcPath(path, api) {
+  const { paths } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
   );
 }
 
-export function getGlobalModels(service, shouldImportDynamic) {
-  const { paths, routes } = service;
-  let models = getModel(paths.absSrcPath, service);
+export function getGlobalModels(api, shouldImportDynamic) {
+  const { paths, routes } = api;
+  let models = getModel(paths.absSrcPath, api);
   if (!shouldImportDynamic) {
     // 不做按需加载时，还需要额外载入 page 路由的 models 文件
-    models = [...models, ...getModelsWithRoutes(routes, service)];
+    models = [...models, ...getModelsWithRoutes(routes, api)];
     // 去重
     models = uniq(models);
   }
@@ -84,8 +80,7 @@ export function getGlobalModels(service, shouldImportDynamic) {
 }
 
 export default function(api, opts = {}) {
-  const { RENDER, ROUTER_MODIFIER, IMPORT } = api.placeholder;
-  const { paths } = api.service;
+  const { paths } = api;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && opts.dynamicImport;
@@ -118,7 +113,7 @@ export default function(api, opts = {}) {
 
   function getGlobalModelContent() {
     return exclude(
-      getGlobalModels(api.service, shouldImportDynamic),
+      getGlobalModels(api, shouldImportDynamic),
       optsToArray(opts.exclude),
     )
       .map(path =>
@@ -151,7 +146,7 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  api.register('onGenerateFiles', () => {
+  api.onGenerateFiles(() => {
     const tpl = join(__dirname, '../template/DvaContainer.js');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
@@ -171,28 +166,19 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     writeFileSync(dvaContainerPath, tplContent, 'utf-8');
   });
 
-  api.register('modifyRouterFile', ({ memo }) => {
-    return memo
-      .replace(
-        IMPORT,
-        `
-import { routerRedux } from 'dva/router';
-${shouldImportDynamic ? `import _dvaDynamic from 'dva/dynamic';` : ''}
-${IMPORT}
-      `.trim(),
-      )
-      .replace(
-        ROUTER_MODIFIER,
-        `
-const { ConnectedRouter } = routerRedux;
-Router = ConnectedRouter;
-${ROUTER_MODIFIER}
-      `.trim(),
-      );
-  });
+  api.modifyRouterRootComponent(
+    `require('dva/router').routerRedux.ConnectedRouter`,
+  );
 
   if (shouldImportDynamic) {
-    api.register('modifyRouteComponent', ({ memo, args }) => {
+    api.addRouterImport({
+      source: 'dva/dynamic',
+      specifier: '_dvaDynamic',
+    });
+  }
+
+  if (shouldImportDynamic) {
+    api.modifyRouteComponent((memo, args) => {
       const { importPath, webpackChunkName } = args;
       if (!webpackChunkName) {
         return memo;
@@ -217,10 +203,7 @@ _dvaDynamic({
   ${loadingOpts}
 })
       `.trim();
-      const models = getPageModels(
-        join(paths.absTmpDirPath, importPath),
-        api.service,
-      );
+      const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',
@@ -245,28 +228,19 @@ models: () => [
     });
   }
 
-  api.register('modifyEntryFile', ({ memo }) => {
-    const dvaRender = api.service.applyPlugins('modifyDvaRender', {
-      initialValue: `
-ReactDOM.render(React.createElement(
-  DvaContainer,
-  null,
-  React.createElement(require('./router').default)
-), document.getElementById('root'));
-`.trim(),
-    });
-
-    return memo.replace(
-      RENDER,
-      `
+  api.modifyEntryRender(() => {
+    return `
 const DvaContainer = require('./DvaContainer').default;
-${dvaRender}
-`.trim(),
-    );
+  ReactDOM.render(React.createElement(
+    DvaContainer,
+    null,
+    React.createElement(require('./router').default)
+  ), document.getElementById('root'));
+    `.trim();
   });
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
-    memo.alias = {
+  api.modifyAFWebpackOpts(memo => {
+    const alias = {
       ...memo.alias,
       dva: dirname(require.resolve('dva/package')),
       'dva-loading': require.resolve('dva-loading'),
@@ -278,22 +252,22 @@ ${dvaRender}
           }
         : {}),
     };
-    return memo;
+    return {
+      ...memo,
+      alias,
+    };
   });
 
-  api.register('modifyPageWatchers', ({ memo }) => {
-    return [
-      ...memo,
-      join(paths.absSrcPath, 'models'),
-      join(paths.absSrcPath, 'plugins'),
-      join(paths.absSrcPath, 'model.js'),
-      join(paths.absSrcPath, 'model.jsx'),
-      join(paths.absSrcPath, 'model.ts'),
-      join(paths.absSrcPath, 'model.tsx'),
-      join(paths.absSrcPath, 'dva.js'),
-      join(paths.absSrcPath, 'dva.jsx'),
-      join(paths.absSrcPath, 'dva.ts'),
-      join(paths.absSrcPath, 'dva.tsx'),
-    ];
-  });
+  api.addPageWatcher([
+    join(paths.absSrcPath, 'models'),
+    join(paths.absSrcPath, 'plugins'),
+    join(paths.absSrcPath, 'model.js'),
+    join(paths.absSrcPath, 'model.jsx'),
+    join(paths.absSrcPath, 'model.ts'),
+    join(paths.absSrcPath, 'model.tsx'),
+    join(paths.absSrcPath, 'dva.js'),
+    join(paths.absSrcPath, 'dva.jsx'),
+    join(paths.absSrcPath, 'dva.ts'),
+    join(paths.absSrcPath, 'dva.tsx'),
+  ]);
 }

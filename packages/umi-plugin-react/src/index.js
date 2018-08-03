@@ -1,4 +1,5 @@
 import isPlainObject from 'is-plain-object';
+import isEqual from 'lodash.isequal';
 
 function toObject(o) {
   if (!isPlainObject(o)) {
@@ -8,36 +9,72 @@ function toObject(o) {
   }
 }
 
-export default function(api, options) {
-  // mobile
-  if (options.hd) require('./plugins/mobile/hd').default(api, options.hd);
-  if (options.fastClick)
-    require('./plugins/mobile/fastclick').default(api, options.fastClick);
+function getId(id) {
+  return `umi-plugin-react:${id}`;
+}
 
-  // performance
-  if (options.library)
-    require('./plugins/library').default(api, options.library);
-  if (options.dynamicImport)
-    require('./plugins/dynamicImport').default(api, options.dynamicImport);
-  if (options.dll) require('umi-plugin-dll').default(api, options.dll);
-  if (options.hardSource)
-    require('./plugins/hardSource').default(api, options.hardSource);
-  if (options.pwa) require('./plugins/pwa').default(api, options.pwa);
+function getPlugins(obj) {
+  return Object.keys(obj).filter(key => obj[key]);
+}
 
-  // misc
-  if (options.dva)
-    require('umi-plugin-dva').default(api, {
-      ...toObject(options.dva),
-      dynamicImport: options.dynamicImport,
-    });
-  if (options.locale)
-    require('umi-plugin-locale').default(api, {
-      antd: options.antd,
-      ...options.locale,
-    });
-  if (options.polyfills)
-    require('./plugins/polyfills').default(api, options.polyfills);
+function diffPlugins(newOption, oldOption) {
+  return Object.keys(newOption).filter(key => {
+    return newOption[key] && !isEqual(newOption[key], oldOption[key]);
+  });
+}
 
-  // antd + antd-mobile
-  if (options.antd) require('./plugins/antd').default(api, options.antd);
+export default function(api, option) {
+  api.onOptionChange(newOption => {
+    if (isEqual(getPlugins(newOption), getPlugins(option))) {
+      diffPlugins(newOption, option).forEach(key => {
+        api.changePluginOption(getId(key), newOption[key]);
+      });
+      option = newOption;
+    } else {
+      api.restart();
+    }
+  });
+
+  const plugins = {
+    // mobile
+    hd: () => require('./plugins/mobile/hd').default,
+    fastClick: () => require('./plugins/mobile/fastClick').default,
+
+    // performance
+    library: () => require('./plugins/library').default,
+    dynamicImport: () => require('./plugins/dynamicImport').default,
+    dll: () => require('umi-plugin-dll').default,
+    hardSource: () => require('./plugins/hardSource').default,
+    pwa: () => require('./plugins/pwa').default,
+
+    // misc
+    dva: () => require('umi-plugin-dva').default,
+    locale: () => require('umi-plugin-locale').default,
+    polyfills: () => require('umi-plugin-polyfill').default,
+    antd: () => require('./plugins/antd').default,
+  };
+
+  Object.keys(plugins).forEach(key => {
+    if (option[key]) {
+      let opts = option[key];
+      if (key === 'locale') {
+        opts = {
+          antd: option.antd,
+          ...opts,
+        };
+      }
+      if (key === 'dva') {
+        opts = {
+          ...toObject(opts),
+          dynamicImport: option.dynamicImport,
+        };
+      }
+
+      api.registerPlugin({
+        id: getId(key),
+        apply: plugins[key](),
+        opts,
+      });
+    }
+  });
 }

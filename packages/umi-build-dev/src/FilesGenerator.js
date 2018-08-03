@@ -1,28 +1,23 @@
 import { join } from 'path';
-import { existsSync, writeFileSync, readFileSync } from 'fs';
-import assert from 'assert';
+import { writeFileSync, readFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import Mustache from 'mustache';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
-import {
-  EXT_LIST,
-  PLACEHOLDER_HISTORY_MODIFIER,
-  PLACEHOLDER_IMPORT,
-  PLACEHOLDER_RENDER,
-  PLACEHOLDER_ROUTER,
-  PLACEHOLDER_ROUTER_MODIFIER,
-  PLACEHOLDER_ROUTES_MODIFIER,
-} from './constants';
+import importsToStr from './importsToStr';
+import { EXT_LIST } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
 export default class FilesGenerator {
-  constructor(service, RoutesManager) {
-    this.RoutesManager = RoutesManager;
-    this.service = service;
+  constructor(opts) {
+    Object.keys(opts).forEach(key => {
+      this[key] = opts[key];
+    });
+
     this.routesContent = null;
     this.hasRebuildError = false;
   }
@@ -57,14 +52,17 @@ export default class FilesGenerator {
       paths,
       config: { singular },
     } = this.service;
+
     const layout = singular ? 'layout' : 'layouts';
-    const watcherPaths = this.service.applyPlugins('modifyPageWatchers', {
-      initialValue: [
-        paths.absPagesPath,
-        ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
-      ],
-    });
-    this.watchers = watcherPaths.map(p => {
+    let pageWatchers = [
+      paths.absPagesPath,
+      ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
+    ];
+    if (this.modifyPageWatcher) {
+      pageWatchers = this.modifyPageWatcher(pageWatchers);
+    }
+
+    this.watchers = pageWatchers.map(p => {
       return this.createWatcher(p);
     });
     process.on('SIGINT', () => {
@@ -81,9 +79,7 @@ export default class FilesGenerator {
   }
 
   rebuild() {
-    const {
-      dev: { server },
-    } = this.service;
+    const { refreshBrowser, printError } = this.service;
     try {
       this.service.applyPlugins('onGenerateFiles', {
         args: {
@@ -95,13 +91,12 @@ export default class FilesGenerator {
       this.generateEntry();
 
       if (this.hasRebuildError) {
-        // 从出错中恢复时，刷新浏览器
-        server.sockWrite(server.sockets, 'content-changed');
+        refreshBrowser();
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      server.sockWrite(server.sockets, 'errors', [e.message]);
+      printError([e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?
@@ -118,25 +113,64 @@ export default class FilesGenerator {
   }
 
   generateEntry() {
-    const { paths, entryJSTpl } = this.service;
+    const { paths } = this.service;
 
     // Generate umi.js
-    let entryContent = readFileSync(
-      entryJSTpl || paths.defaultEntryTplPath,
-      'utf-8',
-    );
-    entryContent = this.service.applyPlugins('modifyEntryFile', {
-      initialValue: entryContent,
+    const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
+    const initialRender = this.service.applyPlugins('modifyEntryRender', {
+      initialValue: `
+  ReactDOM.render(
+    React.createElement(require('./router').default),
+    document.getElementById('root'),
+  );
+      `.trim(),
     });
 
-    entryContent = entryContent
-      .replace(PLACEHOLDER_IMPORT, '')
-      .replace(PLACEHOLDER_HISTORY_MODIFIER, '')
-      .replace(
-        PLACEHOLDER_RENDER,
-        `ReactDOM.render(React.createElement(require('./router').default), document.getElementById('root'));`,
-      );
-    writeFileSync(paths.absLibraryJSPath, entryContent, 'utf-8');
+    const moduleBeforeRenderer = this.service
+      .applyPlugins('addRendererWrapperWithModule', {
+        initialValue: [],
+      })
+      .map((source, index) => {
+        return {
+          source,
+          specifier: `moduleBeforeRenderer${index}`,
+        };
+      });
+
+    const initialHistory = `
+require('umi/_createHistory').default({
+  basename: window.routerBase,
+})
+    `.trim();
+
+    const entryContent = Mustache.render(entryTpl, {
+      code: this.service
+        .applyPlugins('addEntryCode', {
+          initialValue: [],
+        })
+        .join('\n\n'),
+      codeAhead: this.service
+        .applyPlugins('addEntryCodeAhead', {
+          initialValue: [],
+        })
+        .join('\n\n'),
+      imports: importsToStr(
+        this.service.applyPlugins('addEntryImport', {
+          initialValue: moduleBeforeRenderer,
+        }),
+      ).join('\n'),
+      importsAhead: importsToStr(
+        this.service.applyPlugins('addEntryImportAhead', {
+          initialValue: [],
+        }),
+      ).join('\n'),
+      moduleBeforeRenderer,
+      render: initialRender,
+      history: this.service.applyPlugins('modifyEntryHistory', {
+        initialValue: initialHistory,
+      }),
+    });
+    writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
 
   generateRouterJS() {
@@ -147,38 +181,51 @@ export default class FilesGenerator {
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
     if (this.routesContent !== routesContent) {
-      writeFileSync(absRouterJSPath, routesContent, 'utf-8');
+      writeFileSync(absRouterJSPath, `${routesContent.trim()}\n`, 'utf-8');
       this.routesContent = routesContent;
     }
   }
 
   getRouterJSContent() {
-    const { routerTpl, paths } = this.service;
-    const routerTplPath = routerTpl || paths.defaultRouterTplPath;
-    assert(
-      existsSync(routerTplPath),
-      `routerTpl don't exists: ${routerTplPath}`,
+    const { paths } = this.service;
+    const routerTpl = readFileSync(paths.defaultRouterTplPath, 'utf-8');
+    const routes = stripJSONQuote(
+      this.getRoutesJSON({
+        env: process.env.NODE_ENV,
+      }),
     );
+    const rendererWrappers = this.service
+      .applyPlugins('addRendererWrapperWithComponent', {
+        initialValue: [],
+      })
+      .map((source, index) => {
+        return {
+          source,
+          specifier: `RendererWrapper${index}`,
+        };
+      });
 
-    let tplContent = readFileSync(routerTplPath, 'utf-8');
-    tplContent = this.service.applyPlugins('modifyRouterFile', {
-      initialValue: tplContent,
+    const routerContent = this.getRouterContent(rendererWrappers);
+    return Mustache.render(routerTpl, {
+      imports: importsToStr(
+        this.service.applyPlugins('addRouterImport', {
+          initialValue: rendererWrappers,
+        }),
+      ).join('\n'),
+      importsAhead: importsToStr(
+        this.service.applyPlugins('addRouterImportAhead', {
+          initialValue: [],
+        }),
+      ).join('\n'),
+      routes,
+      routerContent,
+      RouterRootComponent: this.service.applyPlugins(
+        'modifyRouterRootComponent',
+        {
+          initialValue: 'DefaultRouter',
+        },
+      ),
     });
-
-    let routes = this.getRoutesJSON({
-      env: process.env.NODE_ENV,
-    });
-    routes = stripJSONQuote(routes);
-
-    const routerContent = this.service.applyPlugins('modifyRouterContent', {
-      initialValue: this.getRouterContent(),
-    });
-    return tplContent
-      .replace(PLACEHOLDER_IMPORT, '')
-      .replace(PLACEHOLDER_ROUTER_MODIFIER, '')
-      .replace(PLACEHOLDER_ROUTES_MODIFIER, '')
-      .replace('<%= ROUTES %>', () => routes)
-      .replace(PLACEHOLDER_ROUTER, routerContent);
   }
 
   fixHtmlSuffix(routes) {
@@ -195,13 +242,20 @@ export default class FilesGenerator {
     return routesToJSON(this.RoutesManager.routes, this.service, env);
   }
 
-  getRouterContent() {
-    return `
-<Router history={window.g_history}>
-  <Route render={({ location }) =>
-    renderRoutes(routes, {}, { location })
-  } />
-</Router>
+  getRouterContent(rendererWrappers) {
+    const defaultRenderer = `
+    <Router history={window.g_history}>
+      <Route render={({ location }) =>
+        renderRoutes(routes, {}, { location })
+      } />
+    </Router>
     `.trim();
+    return rendererWrappers.reduce((memo, wrapper) => {
+      return `
+        <${wrapper.specifier}>
+          ${memo}
+        </${wrapper.specifier}>
+      `.trim();
+    }, defaultRenderer);
   }
 }

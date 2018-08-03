@@ -10,11 +10,10 @@ function PROXY_END(req, res, next) {
 export default function(api) {
   const { debug } = api;
 
-  api.register('beforeServerWithApp', ({ args: { app } }) => {
-    const { config, webpackRCConfig } = api.service;
-    loadProxy(webpackRCConfig.proxy || config.proxy);
+  api._beforeServerWithApp(({ app }) => {
+    const { config } = api.service;
+    loadProxy(config.proxy);
     delete config.proxy;
-    delete webpackRCConfig.proxy;
     global.g_umi_reloadProxy = reloadProxy; // eslint-disable-line
 
     function deleteRoutes() {

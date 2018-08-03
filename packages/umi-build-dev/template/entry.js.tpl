@@ -1,19 +1,37 @@
+{{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'umi/_createHistory';
-<%= IMPORT %>
+{{{ imports }}}
+
+{{{ codeAhead }}}
 
 // create history
-window.g_history = createHistory({
-  basename: window.routerBase,
-});
-<%= HISTORY_MODIFIER %>
+window.g_history = {{{ history }}};
 
 // render
 function render() {
-  <%= RENDER %>
+  {{{ render }}}
 }
-render();
+
+const moduleBeforeRendererPromises = [];
+{{# moduleBeforeRenderer }}
+if (typeof {{ specifier }} === 'function') {
+  const promiseOf{{ specifier }} = {{ specifier }}();
+  if (promiseOf{{ specifier }} && promiseOf{{ specifier }}.then) {
+    moduleBeforeRendererPromises.push(promiseOf{{ specifier }});
+  }
+}
+{{/ moduleBeforeRenderer }}
+
+Promise.all(moduleBeforeRendererPromises).then(() => {
+  render();
+}).catch((err) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(err);
+  }
+});
+
+{{{ code }}}
 
 // hot module replacement
 if (module.hot) {

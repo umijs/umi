@@ -14,18 +14,18 @@ function importPlugin(key) {
 }
 
 export default function(api) {
-  const { cwd } = api.service;
+  const { cwd } = api;
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
-    memo.babel.plugins = [
-      ...(memo.babel.plugins || []),
+  api.modifyAFWebpackOpts(opts => {
+    opts.babel.plugins = [
+      ...(opts.babel.plugins || []),
       importPlugin('antd'),
       importPlugin('antd-mobile'),
     ];
-    return memo;
+    return opts;
   });
 
-  api.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
+  api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set(
         'antd',

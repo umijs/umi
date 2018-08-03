@@ -8,7 +8,6 @@ import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
-import { setConfig as setMiddlewareConfig } from './plugins/commands/dev/createRouteMiddleware';
 
 function normalizeConfig(config) {
   config = config.default || config;
@@ -57,14 +56,12 @@ function getConfigFile(cwd, service) {
     existsSync(file),
   );
 
-  if (files.length > 1) {
-    if (service.dev && service.dev.server) {
-      service.dev.server.sockWrite(service.dev.server.sockets, 'warns', [
-        `Muitiple config files ${files.join(', ')} detected, umi will use ${
-          files[0]
-        }.`,
-      ]);
-    }
+  if (files.length > 1 && service.printWarn) {
+    service.printWarn([
+      `Muitiple config files ${files.join(', ')} detected, umi will use ${
+        files[0]
+      }.`,
+    ]);
   }
 
   return files[0];
@@ -131,21 +128,14 @@ class UserConfig {
     let plugins = Object.keys(map).map(key => {
       return map[key].default;
     });
-    plugins = this.service.applyPlugins('_modifyConfigPlugins', {
+    plugins = this.service.applyPlugins('_registerConfig', {
       initialValue: plugins,
     });
     this.plugins = plugins.map(p => p(this));
   }
 
   printError(messages) {
-    if (this.service.dev && this.service.dev.server) {
-      messages = typeof messages === 'string' ? [messages] : messages;
-      this.service.dev.server.sockWrite(
-        this.service.dev.server.sockets,
-        'errors',
-        messages,
-      );
-    }
+    if (this.service.printError) this.service.printError(messages);
   }
 
   getConfig(opts = {}) {
@@ -265,7 +255,7 @@ class UserConfig {
         // 从失败中恢复过来，需要 reload 一次
         if (this.configFailed) {
           this.configFailed = false;
-          this.service.reload();
+          this.service.refreshBrowser();
         }
 
         const oldConfig = clone(this.config);
@@ -281,7 +271,7 @@ class UserConfig {
               },
             });
             if (plugin.onChange) {
-              plugin.onChange(newConfig);
+              plugin.onChange(newConfig, oldConfig);
             }
           }
         }

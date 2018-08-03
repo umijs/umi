@@ -13,7 +13,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.dev.restart(/* why */ 'Config exportStatic Changed');
+      api.service.restart(/* why */ 'Config exportStatic Changed');
     },
   };
 }

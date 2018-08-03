@@ -2,17 +2,17 @@ import assert from 'assert';
 import { join } from 'path';
 
 export default function(api) {
-  const { paths, config } = api.service;
+  const { paths, config } = api;
 
-  api.register('onStart', () => {
+  api.onStart(() => {
     if (config.outputPath) {
       paths.outputPath = config.outputPath;
       paths.absOutputPath = join(paths.cwd, config.outputPath);
     }
   });
 
-  api.register('_modifyConfigPlugins', ({ memo }) => {
-    memo.push(() => {
+  api._registerConfig(() => {
+    return () => {
       return {
         name: 'outputPath',
         validate(val) {
@@ -22,7 +22,6 @@ export default function(api) {
           );
         },
       };
-    });
-    return memo;
+    };
   });
 }

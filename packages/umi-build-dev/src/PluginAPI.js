@@ -1,69 +1,202 @@
 import debug from 'debug';
 import assert from 'assert';
-import {
-  PLACEHOLDER_IMPORT,
-  PLACEHOLDER_RENDER,
-  PLACEHOLDER_ROUTER_MODIFIER,
-  PLACEHOLDER_ROUTES_MODIFIER,
-  PLACEHOLDER_HISTORY_MODIFIER,
-} from './constants';
+import { relative } from 'path';
+import isPlainObject from 'is-plain-object';
+import { winPath, findJS, findCSS } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
-class PluginAPI {
+export default class PluginAPI {
   constructor(id, service) {
     this.id = id;
     this.service = service;
+
+    // utils
     this.debug = debug(`umi-plugin: ${id}`);
-    // deprecated
-    this.utils = {
-      // private for umi-plugin-dll
-      _webpack: require('af-webpack/webpack'),
-      _afWebpackGetConfig: require('af-webpack/getConfig').default,
-      _afWebpackBuild: require('af-webpack/build').default,
-      _webpackHotDevClientPath: require('af-webpack/react-dev-utils')
-        .webpackHotDevClientPath,
+    this.winPath = winPath;
+    this.findJS = findJS;
+    this.findCSS = findCSS;
+
+    this.API_TYPE = {
+      ADD: Symbol('add'),
+      MODIFY: Symbol('modify'),
+      EVENT: Symbol('event'),
     };
-    // deprecated
-    this.placeholder = {
-      IMPORT: PLACEHOLDER_IMPORT,
-      RENDER: PLACEHOLDER_RENDER,
-      ROUTER_MODIFIER: PLACEHOLDER_ROUTER_MODIFIER,
-      ROUTES_MODIFIER: PLACEHOLDER_ROUTES_MODIFIER,
-      HISTORY_MODIFIER: PLACEHOLDER_HISTORY_MODIFIER,
-    };
+
+    this._addMethods();
   }
 
-  register(key, fn) {
-    if (!this.service.pluginMethods[key]) {
-      this.service.pluginMethods[key] = [];
-    }
-    this.service.pluginMethods[key].push({
+  relativeToTmp(path) {
+    return this.winPath(relative(this.service.paths.absTmpDirPath, path));
+  }
+
+  _resolveDeps(file) {
+    return require.resolve(file);
+  }
+
+  _addMethods() {
+    this.registerMethod('chainWebpackConfig', {
+      type: this.API_TYPE.EVENT,
+    });
+    this.registerMethod('_registerConfig', {
+      type: this.API_TYPE.ADD,
+    });
+
+    [
+      [
+        'chainWebpackConfig',
+        {
+          type: this.API_TYPE.EVENT,
+        },
+      ],
+      [
+        '_registerConfig',
+        {
+          type: this.API_TYPE.ADD,
+        },
+      ],
+      'onStart',
+      'onDevCompileDone',
+      'onBuildSuccess',
+      'onBuildFail',
+      'addPageWatcher',
+      'addEntryCode',
+      'addEntryCodeAhead',
+      'addEntryImport',
+      'addEntryImportAhead',
+      'addRendererWrapperWithComponent',
+      'addRendererWrapperWithModule',
+      'addRouterImport',
+      'addRouterImportAhead',
+      'modifyAFWebpackOpts',
+      'modifyEntryRender',
+      'modifyEntryHistory',
+      'modifyRouteComponent',
+      'modifyRouterRootComponent',
+      '_beforeServerWithApp',
+      'beforeDevServer',
+      '_beforeDevServerAsync',
+      'afterDevServer',
+      'addMiddlewareAhead',
+      'addMiddleware',
+      'modifyRoutes',
+      'onPatchRoute',
+      'addHTMLMeta',
+      'addHTMLLink',
+      'addHTMLScript',
+      'addHTMLHeadScript',
+      'onGenerateFiles',
+      'modifyDefaultConfig',
+    ].forEach(method => {
+      if (Array.isArray(method)) {
+        this.registerMethod(...method);
+      } else {
+        let type;
+        const isPrivate = method.charAt(0) === '_';
+        const slicedMethod = isPrivate ? method.slice(1) : method;
+        if (slicedMethod.indexOf('modify') === 0) {
+          type = this.API_TYPE.MODIFY;
+        } else if (slicedMethod.indexOf('add') === 0) {
+          type = this.API_TYPE.ADD;
+        } else if (
+          slicedMethod.indexOf('on') === 0 ||
+          slicedMethod.indexOf('before') === 0 ||
+          slicedMethod.indexOf('after') === 0
+        ) {
+          type = this.API_TYPE.EVENT;
+        } else {
+          throw new Error(`unexpected method name ${method}`);
+        }
+        this.registerMethod(method, { type });
+      }
+    });
+  }
+
+  register(hook, fn) {
+    assert(
+      typeof hook === 'string',
+      `The first argument of api.register() must be string, but got ${hook}`,
+    );
+    assert(
+      typeof fn === 'function',
+      `The second argument of api.register() must be function, but got ${fn}`,
+    );
+    const { pluginHooks } = this.service;
+    pluginHooks[hook] = pluginHooks[hook] || [];
+    pluginHooks[hook].push({
       fn,
     });
   }
 
   registerCommand(name, opts, fn) {
+    const { commands } = this.service;
     if (typeof opts === 'function') {
       fn = opts;
       opts = null;
     }
-    this.service.commands[name] = { fn, opts: opts || {} };
+    assert(
+      !(name in commands),
+      `Command ${name} exists, please select another one.`,
+    );
+    commands[name] = { fn, opts: opts || {} };
   }
 
-  modifyWebpackConfig(fn) {
-    this.register('modifyWebpackConfig', fn);
+  registerPlugin(opts) {
+    assert(isPlainObject(opts), `opts should be plain object, but got ${opts}`);
+    const { id, apply } = opts;
+    assert(id && apply, `id and apply must supplied`);
+    assert(typeof id === 'string', `id must be string`);
+    assert(typeof apply === 'function', `apply must be function`);
+    assert(
+      id.indexOf('user:') !== 0 && id.indexOf('built-in:') !== 0,
+      `api.registerPlugin() should not register plugin prefixed with user: and built-in:`,
+    );
+    assert(
+      Object.keys(opts).every(key => ['id', 'apply', 'opts'].includes(key)),
+      `Only id, apply and opts is valid plugin properties`,
+    );
+    this.service.extraPlugins.push(opts);
   }
 
-  chainWebpack(fn) {
-    this.register('chainWebpackConfig', ({ args: { webpackConfig } }) => {
-      fn(webpackConfig);
-    });
+  registerMethod(name, opts) {
+    assert(!this[name], `api.${name} exists.`);
+    assert(opts, `opts must supplied`);
+    const { type, apply } = opts;
+    assert(!(type && apply), `Only be one for type and apply.`);
+    assert(type || apply, `One of type and apply must supplied.`);
+
+    this.service.pluginMethods[name] = (...args) => {
+      if (apply) {
+        this.register(name, opts => {
+          return apply(opts, ...args);
+        });
+      } else if (type === this.API_TYPE.ADD) {
+        this.register(name, opts => {
+          return (opts.memo || []).concat(
+            typeof args[0] === 'function'
+              ? args[0](opts.memo, opts.args)
+              : args[0],
+          );
+        });
+      } else if (type === this.API_TYPE.MODIFY) {
+        this.register(name, opts => {
+          return typeof args[0] === 'function'
+            ? args[0](opts.memo, opts.args)
+            : args[0];
+        });
+      } else if (type === this.API_TYPE.EVENT) {
+        this.register(name, opts => {
+          args[0](opts.args);
+        });
+      } else {
+        throw new Error(`unexpected api type ${type}`);
+      }
+    };
   }
 
-  registerBabel(files) {
+  addBabelRegister(files) {
     assert(
       Array.isArray(files),
-      `[PluginAPI] files for registerBabel must be Array, but got ${files}`,
+      `files for registerBabel must be Array, but got ${files}`,
     );
     addBabelRegisterFiles(files);
     registerBabel({
@@ -71,5 +204,3 @@ class PluginAPI {
     });
   }
 }
-
-export default PluginAPI;

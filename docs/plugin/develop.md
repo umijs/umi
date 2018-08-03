@@ -122,35 +122,36 @@ absSrcPath
 
 ## 系统级 API
 
-### loadPlugin
+### registerPlugin
 
 加载插件，用于插件集或者 bigfish。
 
 ```js
 const demoPlugin = require('./demoPlugin');
-api.loadPlugin(demoPlugin);
-api.loadPlugin('umi-plugin-dva', {
-  immer: true,
+api.registerPlugin({
+  id: 'plugin-id',
+  apply: demoPlugin,
+  opts: {},
 });
 ```
 
-### registerApi
+### registerMethod
 
 注册插件方法，用于给插件添加新的方法给其它插件使用。
 
 ```js
 // 类型通常和方法名对应 addXxx modifyXxx onXxx afterXxx beforeXxx
-api.registerApi('addDvaRendererWrapperWithComponent', {
+api.registerMethod('addDvaRendererWrapperWithComponent', {
   type: api.API_TYPE.ADD
   type: api.API_TYPE.EVENT
   type: api.API_TYPE.MODIFY
-  reducerHandler: () => {} // for custom type
+  apply: () => {} // for custom type
 });
 ```
 
 ### applyPlugin
 
-在插件用应用通过 registerApi 注册的某个方法。
+在插件用应用通过 registerMethod 注册的某个方法。
 
 ```js
 // 如果 type 为 api.API_TYPE.ADD wrappers 为各个插件返回的值组成的数组
@@ -167,13 +168,13 @@ api.restart();
 
 重新执行 `umi dev`，比如在 bigfish 中修改了 appType，需要重新挂载插件的时候可以调用该方法。
 
-### rebuildFiles
+### rebuildTmpFiles
 
 ```js
-api.rebuildFiles('config dva changed');
+api.rebuildTmpFiles('config dva changed');
 ```
 
-重新生成 bootstrap file（entryFile），这个是最常用的方法，国际化，dva 等插件的配置变化都会用到。
+重新生成 bootstrap file（entryFile）等临时文件，这个是最常用的方法，国际化，dva 等插件的配置变化都会用到。
 
 ### refreshBrowser
 
@@ -186,7 +187,7 @@ api.rebuildFiles('config dva changed');
 ```js
 const dvaPlugin = require('umi-plugin-dva');
 
-api.setPluginDefaultOption(dvaPlugin, {
+api.changePluginOption('plugin-id', {
   immer: true
 });
 ```
@@ -222,7 +223,7 @@ const config = api.setState('routesConfig');
 注册一个配置项，类似之前的 modifyConfigPlugins。
 
 ```js
-api.addConfig({
+api._registerConfig({
   name: 'dva',
   onChange(config) {
     api.setPluginDefaultConfig('umi-plugin-dva', config);
@@ -354,13 +355,13 @@ onRouteChange((routes) => {
 直接调用的示例如下：
 
 ```js
-api.addRendererWapperWithComponent('/path/to/component.js');
+api.addRendererWrapperWithComponent('/path/to/component.js');
 ```
 
 函数回调的示例如下：
 
 ```js
-api.addRendererWapperWithComponent(() => {
+api.addRendererWrapperWithComponent(() => {
   if (opts.antd) {
     return '/path/to/component.js';
   }
@@ -514,7 +515,7 @@ require 一个模块并在最后执行它的 default 方法。
 
 在 <App/> 外面包一层组件。
 
-### addRendereWrapperWithModule
+### addRendererWrapperWithModule
 
 在挂载 <App/> 前执行一个 Module，支持异步。
 

@@ -13,16 +13,14 @@ function noop() {
 const excludes = ['entry', 'outputPath'];
 
 export default function(api) {
-  const {
-    debug,
-    service: { cwd, config, paths },
-  } = api;
+  const { debug, cwd, config, paths } = api;
 
   // 把 af-webpack 的配置插件转化为 umi-build-dev 的
-  api.register('_modifyConfigPlugins', ({ memo }) => {
-    plugins.forEach(({ name, validate = noop }) => {
-      if (!excludes.includes(name)) {
-        memo.push(() => ({
+  api._registerConfig(() => {
+    return plugins
+      .filter(p => !excludes.includes(p.name))
+      .map(({ name, validate = noop }) => {
+        return api => ({
           name,
           validate,
           onChange(newConfig) {
@@ -34,16 +32,14 @@ export default function(api) {
             if (name === 'proxy') {
               global.g_umi_reloadProxy(newConfig[name]);
             } else {
-              api.service.dev.restart(`${name} changed`);
+              api.service.restart(`${name} changed`);
             }
           },
-        }));
-      }
-    });
-    return memo;
+        });
+      });
   });
 
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set(
         'react',
@@ -98,7 +94,7 @@ export default function(api) {
       );
   });
 
-  api.register('modifyAFWebpackOpts', ({ memo }) => {
+  api.modifyAFWebpackOpts(memo => {
     const browserslist = config.browserslist || defaultBrowsers;
     const isDev = process.env.NODE_ENV === 'development';
 

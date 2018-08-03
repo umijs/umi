@@ -5,10 +5,15 @@ export default function(service) {
   return {
     routes: null,
     fetchRoutes() {
-      this.routes = service.applyPlugins('modifyRoutes', {
-        initialValue: getRouteConfig(paths, config),
+      const routes = service.applyPlugins('modifyRoutes', {
+        initialValue: getRouteConfig(paths, config, route => {
+          service.applyPlugins('onPatchRoute', {
+            initialValue: route,
+          });
+        }),
       });
-      service.routes = this.routes;
+      this.routes = routes;
+      service.routes = routes;
     },
   };
 }

@@ -10,7 +10,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.dev.rebuildFiles();
+      api.service.rebuildTmpFiles();
     },
   };
 }
