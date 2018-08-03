@@ -25,6 +25,10 @@ if (typeof {{ specifier }} === 'function') {
 
 Promise.all(moduleBeforeRendererPromises).then(() => {
   render();
+}).catch((err) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(err);
+  }
 });
 
 {{{ code }}}
