@@ -134,6 +134,26 @@ export default class HTMLGenerator {
     return defaultDocumentPath;
   }
 
+  getStylesContent(styles) {
+    return styles
+      .map(style => {
+        const { content = '' } = style;
+        delete style.content;
+        const attrs = Object.keys(style).reduce((memo, key) => {
+          return memo.concat(`${key}="${style[key]}"`);
+        }, []);
+        return [
+          `<style${attrs.length ? ' ' : ''}${attrs.join(' ')}>`,
+          content
+            .split('\n')
+            .map(line => `  ${line}`)
+            .join('\n'),
+          '</style>',
+        ].join('\n');
+      })
+      .join('\n');
+  }
+
   getLinksContent(links) {
     return links
       .map(link => {
@@ -239,6 +259,7 @@ export default class HTMLGenerator {
     let metas = [];
     let links = [];
     let scripts = [];
+    let styles = [];
     let headScripts = [];
 
     let routerBaseStr = JSON.stringify(this.config.base || '/');
@@ -280,6 +301,7 @@ export default class HTMLGenerator {
     if (this.modifyMetas) metas = this.modifyMetas(metas);
     if (this.modifyLinks) links = this.modifyLinks(links);
     if (this.modifyScripts) scripts = this.modifyScripts(scripts);
+    if (this.modifyStyles) styles = this.modifyStyles(styles);
     if (this.modifyHeadScripts)
       headScripts = this.modifyHeadScripts(headScripts);
 
@@ -290,6 +312,7 @@ export default class HTMLGenerator {
 <head>
 ${metas.length ? this.getMetasContent(metas) : ''}
 ${links.length ? this.getLinksContent(links) : ''}
+${styles.length ? this.getStylesContent(styles) : ''}
     `.trim() + '\n',
     );
     html = html.replace(

@@ -82,6 +82,20 @@ describe('HG', () => {
     );
   });
 
+  it('getStylesContent', () => {
+    const hg = new HTMLGenerator();
+    const result = hg.getStylesContent([
+      { content: 'body { color: red; }', a: 'b' },
+    ]);
+    expect(result).toEqual(
+      `
+<style a="b">
+  body { color: red; }
+</style>
+    `.trim(),
+    );
+  });
+
   it('getContent', () => {
     const hg = new HTMLGenerator({
       env: 'production',

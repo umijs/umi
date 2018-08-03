@@ -35,6 +35,11 @@ export default (service, opts = {}) => {
         initialValue: memo,
       });
     },
+    modifyStyles(memo) {
+      return service.applyPlugins('addHTMLStyle', {
+        initialValue: memo,
+      });
+    },
     modifyHeadScripts(memo) {
       return service.applyPlugins('addHTMLHeadScript', {
         initialValue: memo,
