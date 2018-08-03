@@ -117,17 +117,32 @@ export default class FilesGenerator {
 
     // Generate umi.js
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
-    const initialRender = `
-ReactDOM.render(
+    const initialRender = this.service.applyPlugins('modifyEntryRender', {
+      initialValue: `
+  ReactDOM.render(
     React.createElement(require('./router').default),
     document.getElementById('root'),
   );
-    `.trim();
+      `.trim(),
+    });
+
+    const moduleBeforeRenderer = this.service
+      .applyPlugins('addRendererWrapperWithModule', {
+        initialValue: [],
+      })
+      .map((source, index) => {
+        return {
+          source,
+          specifier: `moduleBeforeRenderer${index}`,
+        };
+      });
+
     const initialHistory = `
 require('umi/_createHistory').default({
   basename: window.routerBase,
 })
     `.trim();
+
     const entryContent = Mustache.render(entryTpl, {
       code: this.service
         .applyPlugins('addEntryCode', {
@@ -141,7 +156,7 @@ require('umi/_createHistory').default({
         .join('\n\n'),
       imports: importsToStr(
         this.service.applyPlugins('addEntryImport', {
-          initialValue: [],
+          initialValue: moduleBeforeRenderer,
         }),
       ).join('\n'),
       importsAhead: importsToStr(
@@ -149,9 +164,8 @@ require('umi/_createHistory').default({
           initialValue: [],
         }),
       ).join('\n'),
-      render: this.service.applyPlugins('modifyEntryRender', {
-        initialValue: initialRender,
-      }),
+      moduleBeforeRenderer,
+      render: initialRender,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
       }),

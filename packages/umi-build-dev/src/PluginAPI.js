@@ -29,10 +29,6 @@ export default class PluginAPI {
     return this.winPath(relative(this.service.paths.absTmpDirPath, path));
   }
 
-  _resolveDeps(file) {
-    return require.resolve(file);
-  }
-
   _addMethods() {
     this.registerMethod('chainWebpackConfig', {
       type: this.API_TYPE.EVENT,
@@ -64,6 +60,7 @@ export default class PluginAPI {
       'addEntryImport',
       'addEntryImportAhead',
       'addRendererWrapperWithComponent',
+      'addRendererWrapperWithModule',
       'addRouterImport',
       'addRouterImportAhead',
       'modifyAFWebpackOpts',
