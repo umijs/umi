@@ -1,19 +1,19 @@
 {
   "name": "umi-build-dev",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.46",
     "address": "^1.0.3",
-    "af-webpack": "^1.0.0-beta.2",
-    "babel-preset-umi": "^0.3.0",
+    "af-webpack": "^1.0.0-beta.3",
+    "babel-preset-umi": "^1.0.0-beta.1",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
     "debug": "^3.1.0",
     "deprecate": "^1.0.0",
     "didyoumean": "^1.2.1",
-    "esprima-extract-comments": "^1.1.0",
     "ejs": "^2.5.7",
+    "esprima-extract-comments": "^1.1.0",
     "html-minifier": "^3.5.9",
     "http-proxy-middleware": "^0.18.0",
     "is-plain-object": "^2.0.4",
@@ -37,8 +37,8 @@
     "resolve": "^1.5.0",
     "rimraf": "^2.6.1",
     "umi-history": "^0.1.0",
-    "umi-test": "^1.0.0-beta.2",
-    "umi-utils": "^0.1.0"
+    "umi-test": "^1.0.0-beta.3",
+    "umi-utils": "^0.2.0"
   },
   "repository": {
     "type": "git",
