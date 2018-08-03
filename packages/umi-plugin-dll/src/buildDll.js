@@ -2,24 +2,21 @@ import { join } from 'path';
 import pullAll from 'lodash.pullall';
 import uniq from 'lodash.uniq';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import webpack from 'af-webpack/webpack';
-import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 
 export default function(opts = {}) {
-  const {
-    dllDir,
-    service,
-    service: { paths },
-    include,
-    exclude,
-  } = opts;
+  const { dllDir, api, include, exclude } = opts;
 
+  const { paths, _resolveDeps } = api;
   const pkgFile = join(paths.cwd, 'package.json');
   const pkg = existsSync(pkgFile) ? require(pkgFile) : {}; // eslint-disable-line
   const depNames = pullAll(
     uniq(Object.keys(pkg.dependencies || {}).concat(include || [])),
     exclude,
   );
+  const webpack = require(_resolveDeps('af-webpack/webpack'));
+  const { webpackHotDevClientPath } = require(_resolveDeps(
+    'af-webpack/react-dev-utils',
+  ));
   const files = uniq([
     ...depNames,
     webpackHotDevClientPath,
@@ -50,7 +47,7 @@ export default function(opts = {}) {
     }
   }
 
-  const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
+  const afWebpackOpts = api.applyPlugins('modifyAFWebpackOpts', {
     initialValue: {
       cwd: paths.cwd,
       disableBabelTransform: true,
@@ -73,7 +70,7 @@ export default function(opts = {}) {
     },
     plugins: [
       ...afWebpackConfig.plugins,
-      ...service.webpackConfig.plugins.filter(plugin => {
+      ...api.webpackConfig.plugins.filter(plugin => {
         return plugin instanceof webpack.DefinePlugin;
       }),
       new webpack.DllPlugin({
@@ -86,7 +83,7 @@ export default function(opts = {}) {
       ...afWebpackConfig.resolve,
       alias: {
         ...afWebpackConfig.resolve.alias,
-        ...service.webpackConfig.resolve.alias,
+        ...api.webpackConfig.resolve.alias,
       },
     },
   };

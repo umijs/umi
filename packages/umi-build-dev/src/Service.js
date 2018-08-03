@@ -183,15 +183,16 @@ export default class Service {
   }
 
   async _applyPluginsAsync(key, opts = {}) {
-    const plugins = this.pluginHooks[key] || [];
+    const hooks = this.pluginHooks[key] || [];
     let memo = opts.initialValue;
-    for (const plugin of plugins) {
-      const { fn } = plugin;
+    for (const hook of hooks) {
+      const { fn } = hook;
       memo = await fn({
         memo,
         args: opts.args,
       });
     }
+    return memo;
   }
 
   init() {

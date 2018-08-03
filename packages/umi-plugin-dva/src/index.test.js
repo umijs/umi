@@ -5,15 +5,12 @@ const fixtures = join(__dirname, 'fixtures');
 const base = join(fixtures, 'getModel');
 
 const api = {
-  service: {
-    config: {
-      singular: false,
-    },
-    paths: {
-      absTmpDirPath: base,
-    },
+  paths: {
+    absTmpDirPath: base,
   },
-  utils: {},
+  config: {
+    singular: false,
+  },
 };
 
 function normalizeModels(models, base) {
@@ -23,13 +20,13 @@ function normalizeModels(models, base) {
 describe('umi-plugin-dva', () => {
   it('getModel with model.js', () => {
     const dir = join(base, 'model');
-    const models = normalizeModels(getModel(dir, api.service), dir);
+    const models = normalizeModels(getModel(dir, api), dir);
     expect(models).toEqual(['$CWD$/model.js']);
   });
 
   it('getModel with models directory', () => {
     const dir = join(base, 'models');
-    const models = normalizeModels(getModel(dir, api.service), dir);
+    const models = normalizeModels(getModel(dir, api), dir);
     expect(models).toEqual([
       '$CWD$/models/a.js',
       '$CWD$/models/a.jsx',
@@ -42,7 +39,7 @@ describe('umi-plugin-dva', () => {
     const dir = join(base, 'models-with-singular');
     const models = normalizeModels(
       getModel(dir, {
-        ...api.service,
+        ...api,
         config: { singular: true },
       }),
       dir,
@@ -52,18 +49,18 @@ describe('umi-plugin-dva', () => {
 
   it('getModel ignore d.ts', () => {
     const dir = join(base, 'ignore-d-ts');
-    const models = normalizeModels(getModel(dir, api.service), dir);
+    const models = normalizeModels(getModel(dir, api), dir);
     expect(models).toEqual(['$CWD$/models/a.ts']);
   });
 
   it('getModel ignore test files', () => {
     const dir = join(base, 'ignore-test-files');
-    const models = normalizeModels(getModel(dir, api.service), dir);
+    const models = normalizeModels(getModel(dir, api), dir);
     expect(models).toEqual(['$CWD$/models/a.ts']);
   });
 
-  it('apply modifyDvaRender', () => {
-    api.service.applyPlugins = name => {
+  xit('apply modifyDvaRender', () => {
+    api.applyPlugins = name => {
       if (name === 'modifyDvaRender') {
         return 'new dva render';
       }

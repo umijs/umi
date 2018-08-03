@@ -6,8 +6,8 @@ import isRoot from 'path-is-root';
 import winPath from 'slash2';
 import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
 
-export function getModel(cwd, service) {
-  const { config } = service;
+export function getModel(cwd, api) {
+  const { config } = api;
 
   const modelJSPath = findJSFile(cwd, 'model');
   if (modelJSPath) {
@@ -29,14 +29,14 @@ export function getModel(cwd, service) {
     .map(p => winPath(join(cwd, p)));
 }
 
-function getModelsWithRoutes(routes, service) {
-  const { paths } = service;
+function getModelsWithRoutes(routes, api) {
+  const { paths } = api;
   return routes.reduce((memo, route) => {
     if (route.component) {
       return [
         ...memo,
-        ...getPageModels(join(paths.cwd, route.component), service),
-        ...(route.routes ? getModelsWithRoutes(route.routes, service) : []),
+        ...getPageModels(join(paths.cwd, route.component), api),
+        ...(route.routes ? getModelsWithRoutes(route.routes, api) : []),
       ];
     } else {
       return memo;
@@ -44,39 +44,35 @@ function getModelsWithRoutes(routes, service) {
   }, []);
 }
 
-function getPageModels(cwd, service) {
+function getPageModels(cwd, api) {
   let models = [];
-  while (
-    !isPagesPath(cwd, service) &&
-    !isSrcPath(cwd, service) &&
-    !isRoot(cwd)
-  ) {
-    models = models.concat(getModel(cwd, service));
+  while (!isPagesPath(cwd, api) && !isSrcPath(cwd, api) && !isRoot(cwd)) {
+    models = models.concat(getModel(cwd, api));
     cwd = dirname(cwd);
   }
   return models;
 }
 
-function isPagesPath(path, service) {
-  const { paths } = service;
+function isPagesPath(path, api) {
+  const { paths } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
   );
 }
 
-function isSrcPath(path, service) {
-  const { paths } = service;
+function isSrcPath(path, api) {
+  const { paths } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
   );
 }
 
-export function getGlobalModels(service, shouldImportDynamic) {
-  const { paths, routes } = service;
-  let models = getModel(paths.absSrcPath, service);
+export function getGlobalModels(api, shouldImportDynamic) {
+  const { paths, routes } = api;
+  let models = getModel(paths.absSrcPath, api);
   if (!shouldImportDynamic) {
     // 不做按需加载时，还需要额外载入 page 路由的 models 文件
-    models = [...models, ...getModelsWithRoutes(routes, service)];
+    models = [...models, ...getModelsWithRoutes(routes, api)];
     // 去重
     models = uniq(models);
   }
@@ -117,7 +113,7 @@ export default function(api, opts = {}) {
 
   function getGlobalModelContent() {
     return exclude(
-      getGlobalModels(api.service, shouldImportDynamic),
+      getGlobalModels(api, shouldImportDynamic),
       optsToArray(opts.exclude),
     )
       .map(path =>
@@ -207,10 +203,7 @@ _dvaDynamic({
   ${loadingOpts}
 })
       `.trim();
-      const models = getPageModels(
-        join(paths.absTmpDirPath, importPath),
-        api.service,
-      );
+      const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',

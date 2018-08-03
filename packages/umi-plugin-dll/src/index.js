@@ -1,31 +1,29 @@
 import { join } from 'path';
 import serveStatic from 'serve-static';
-import webpack from 'af-webpack/webpack';
 import buildDll from './buildDll';
 
 export default function(api, opts = {}) {
   if (process.env.NODE_ENV !== 'development') return;
 
-  const { paths } = api.service;
+  const { debug, paths } = api;
 
   const dllDir = join(paths.absNodeModulesPath, 'umi-dlls');
   const dllManifest = join(dllDir, 'umi.json');
 
-  api._beforeDevServerAsync(() => {
-    return new Promise(resolve => {
-      const originHardSource = process.env.HARD_SOURCE;
-      process.env.HARD_SOURCE = 'none';
+  api.register('_beforeDevServerAsync', () => {
+    return new Promise((resolve, reject) => {
       buildDll({
-        service: api.service,
+        api,
         dllDir,
         ...opts,
       })
         .then(() => {
-          process.env.HARD_SOURCE = originHardSource;
+          debug('umi-plugin-dll done');
           resolve();
         })
         .catch(e => {
           console.log('[umi-plugin-dll] error', e);
+          reject(e);
         });
     });
   });
@@ -35,6 +33,7 @@ export default function(api, opts = {}) {
   });
 
   api.chainWebpackConfig(webpackConfig => {
+    const webpack = require(api._resolveDeps('af-webpack/webpack')); // eslint-disable-line
     webpackConfig.plugin('dll-reference').use(webpack.DllReferencePlugin, [
       {
         context: paths.absSrcPath,

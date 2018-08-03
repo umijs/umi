@@ -107,6 +107,43 @@ describe('Service', () => {
     expect(val).toEqual('a_b_1_b_2');
   });
 
+  it('applyPluginsAsync', done => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugins-empty'),
+    });
+    service.plugins = [
+      {
+        id: 'user:a',
+        apply: api => {
+          api.register('modifyFooAsync', ({ memo, args }) => {
+            return new Promise(resolve => {
+              setTimeout(() => {
+                resolve(`${memo}_${args}_1`);
+              }, 300);
+            });
+          });
+          api.register('modifyFooAsync', ({ memo, args }) => {
+            return new Promise(resolve => {
+              setTimeout(() => {
+                resolve(`${memo}_${args}_2`);
+              }, 300);
+            });
+          });
+        },
+      },
+    ];
+    service.initPlugins();
+    service
+      ._applyPluginsAsync('modifyFooAsync', {
+        initialValue: 'a',
+        args: 'b',
+      })
+      .then(data => {
+        expect(data).toEqual('a_b_1_b_2');
+        done();
+      });
+  });
+
   it('registerMethod with API_TYPE.ADD', () => {
     const service = new Service({
       cwd: join(fixtures, 'plugins-empty'),

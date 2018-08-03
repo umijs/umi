@@ -39,10 +39,10 @@ export function getLocaleFileList(absSrcPath, singular) {
 }
 
 export default function(api, options = {}) {
-  const { service, paths } = api;
+  const { config, paths } = api;
 
   api.addPageWatcher(
-    join(paths.absSrcPath, service.config.singular ? 'locale' : 'locales'),
+    join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),
   );
 
   api.onOptionChange(newOpts => {
@@ -51,10 +51,7 @@ export default function(api, options = {}) {
   });
 
   api.addRendererWrapperWithComponent(() => {
-    const localeFileList = getLocaleFileList(
-      paths.absSrcPath,
-      service.config.singular,
-    );
+    const localeFileList = getLocaleFileList(paths.absSrcPath, config.singular);
     const wrapperTpl = readFileSync(
       join(__dirname, '../template/wrapper.jsx.tpl'),
       'utf-8',
