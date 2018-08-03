@@ -64,6 +64,7 @@ export default function(api) {
         require('af-webpack/dev').default({
           cwd,
           port,
+          base: service.config.base,
           webpackConfig: service.webpackConfig,
           proxy: service.config.proxy || {},
           contentBase: './path-do-not-exists',

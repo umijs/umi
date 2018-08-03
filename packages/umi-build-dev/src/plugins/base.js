@@ -1,8 +1,6 @@
 import assert from 'assert';
 
 export default function(api) {
-  const { config } = api.service;
-
   api._registerConfig(() => {
     return api => {
       return {
@@ -18,14 +16,5 @@ export default function(api) {
         },
       };
     };
-  });
-
-  api.chainWebpackConfig(webpackConfig => {
-    if (config.base) {
-      webpackConfig.resolve.alias.set(
-        'process.env.BASE_URL',
-        process.env.BASE_URL,
-      );
-    }
   });
 }
