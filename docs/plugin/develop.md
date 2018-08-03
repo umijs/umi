@@ -192,13 +192,17 @@ api.changePluginOption('plugin-id', {
 });
 ```
 
-### setDefaultConfig
+### modifyDefaultConfig
 
 设置 umi 的默认配置。
 
 ```js
-api.setDefaultConfig({
-  disableDynamicImport: true,
+api.modifyDefaultConfig(memo => {
+  return {
+    // 默认使用单数目录
+    ...memo,
+    singular: true,
+  }
 });
 ```
 
@@ -397,25 +401,33 @@ export default (runtimeApi, opts) => {
 
 修改默认的模板，bigfish 会用到。
 
-### addFragmentToHTML
+### addHTMLMeta
 
-在头部添加内容，bigfish 会用到添加一些注释信息
+在 HTML 中添加 meta 标签。
 
-### addFragmentInHTMLBodyTail
+### addHTMLLink
 
-在 body 的最后添加内容
+在 HTML 中添加 Link 标签。
 
-### addFragmentInHTMLBodyTop
+### addHTMLStyle
 
-在 body 的前面添加内容
+在 HTML 中添加 Style 标签。
 
-### addFragmentInHTMLHead
+### addHTMLScript
 
-在 head 的最后添加内容
+在 HTML 尾部添加脚本。
 
-### addFragmentInHeadTop
+```js
+api.addHTMLScript({
+  content: '',
+  src: '',
+  // ...attrs
+});
+```
 
-在 head 的前面添加内容。
+### addHTMLHeadScript
+
+在 HTML 头部添加脚本。
 
 ### modifyRoutesConfig
 
