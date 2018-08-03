@@ -32,6 +32,6 @@ Promise.all(moduleBeforeRendererPromises).then(() => {
 // hot module replacement
 if (module.hot) {
   module.hot.accept('./router', () => {
-    render(true);
+    render();
   });
 }
