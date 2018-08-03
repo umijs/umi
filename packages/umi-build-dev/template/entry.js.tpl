@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 window.g_history = {{{ history }}};
 
 // render
-function render() {
+function render(hot) {
   {{{ render }}}
 }
 render();
@@ -19,6 +19,6 @@ render();
 // hot module replacement
 if (module.hot) {
   module.hot.accept('./router', () => {
-    render();
+    render(true);
   });
 }

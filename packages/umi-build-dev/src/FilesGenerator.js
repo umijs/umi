@@ -117,17 +117,54 @@ export default class FilesGenerator {
 
     // Generate umi.js
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
-    const initialRender = `
-ReactDOM.render(
-    React.createElement(require('./router').default),
-    document.getElementById('root'),
-  );
-    `.trim();
+    let initialRender = this.service.applyPlugins('modifyEntryRender', {
+      initialValue: `
+         ReactDOM.render(
+          React.createElement(require('./router').default),
+          document.getElementById('root'),
+        );
+      `.trim(),
+    });
+
+    const moduleBeforeRenderer = this.service
+      .applyPlugins('addRendererWrapperWithModule', {
+        initialValue: [],
+      })
+      .map((source, index) => {
+        return {
+          source,
+          specifier: `moduleBeforeRenderer${index}`,
+        };
+      });
+
+    initialRender = moduleBeforeRenderer.reduce((memo, m) => {
+      return `
+        const renderAfter${m.specifier} = function() {
+          ${memo}
+        };
+        if (hot) {
+          renderAfter${m.specifier}();
+        } else if (typeof ${m.specifier} === 'function') {
+          const promiseOf${m.specifier} = ${m.specifier}();
+          if (promiseOf${m.specifier} && promiseOf${m.specifier}.then) {
+            promiseOf${m.specifier}.then(() => {
+              renderAfter${m.specifier}();
+            });
+          } else {
+            renderAfter${m.specifier}();
+          }
+        } else {
+          renderAfter${m.specifier}();
+        }
+      `.trim();
+    }, initialRender);
+
     const initialHistory = `
 require('umi/_createHistory').default({
   basename: window.routerBase,
 })
     `.trim();
+
     const entryContent = Mustache.render(entryTpl, {
       code: this.service
         .applyPlugins('addEntryCode', {
@@ -141,7 +178,7 @@ require('umi/_createHistory').default({
         .join('\n\n'),
       imports: importsToStr(
         this.service.applyPlugins('addEntryImport', {
-          initialValue: [],
+          initialValue: moduleBeforeRenderer,
         }),
       ).join('\n'),
       importsAhead: importsToStr(
@@ -149,9 +186,7 @@ require('umi/_createHistory').default({
           initialValue: [],
         }),
       ).join('\n'),
-      render: this.service.applyPlugins('modifyEntryRender', {
-        initialValue: initialRender,
-      }),
+      render: initialRender,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
       }),
