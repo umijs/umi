@@ -28,6 +28,7 @@ export default function dev({
   onCompileDone = noop,
   proxy,
   port,
+  base,
 }) {
   assert(webpackConfig, 'webpackConfig must be supplied');
   choosePort(port || DEFAULT_PORT)
@@ -39,7 +40,7 @@ export default function dev({
       const compiler = webpack(webpackConfig);
 
       let isFirstCompile = true;
-      const urls = prepareUrls(PROTOCOL, HOST, port);
+      const urls = prepareUrls(PROTOCOL, HOST, port, base);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
           return;

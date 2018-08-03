@@ -3,20 +3,20 @@ import address from 'address';
 import url from 'url';
 import chalk from 'chalk';
 
-export default function prepareUrls(protocol, host, port) {
+export default function prepareUrls(protocol, host, port, pathname) {
   const formatUrl = hostname =>
     url.format({
       protocol,
       hostname,
       port,
-      pathname: '/',
+      pathname: pathname || '/',
     });
   const prettyPrintUrl = hostname =>
     url.format({
       protocol,
       hostname,
       port: chalk.bold(port),
-      pathname: '/',
+      pathname: pathname || '/',
     });
 
   const isUnspecifiedHost = host === '0.0.0.0' || host === '::';
