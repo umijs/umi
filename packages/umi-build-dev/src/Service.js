@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { join } from 'path';
 import assert from 'assert';
 import clonedeep from 'lodash.clonedeep';
+import assign from 'object-assign';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -203,6 +204,12 @@ export default class Service {
     // init plugins
     this.initPlugins();
 
+    // reload user config
+    const userConfig = new UserConfig(this);
+    const config = userConfig.getConfig({ force: true });
+    mergeConfig(this.config, config);
+    this.userConfig = userConfig;
+
     // webpack config
     this.webpackConfig = getWebpackConfig(this);
   }
@@ -220,4 +227,14 @@ export default class Service {
     const { fn } = command;
     return fn(args);
   }
+}
+
+function mergeConfig(oldConfig, newConfig) {
+  Object.keys(oldConfig).forEach(key => {
+    if (!(key in newConfig)) {
+      delete oldConfig[key];
+    }
+  });
+  assign(oldConfig, newConfig);
+  return oldConfig;
 }

@@ -1,7 +1,5 @@
-import assign from 'object-assign';
 import chalk from 'chalk';
 import createRouteMiddleware from './createRouteMiddleware';
-import UserConfig from '../../../UserConfig';
 import { unwatch } from '../../../getConfig/watch';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
@@ -9,16 +7,6 @@ import getFilesGenerator from '../getFilesGenerator';
 export default function(api) {
   const { service } = api;
   const { cwd } = service;
-
-  function mergeConfig(oldConfig, newConfig) {
-    Object.keys(oldConfig).forEach(key => {
-      if (!(key in newConfig)) {
-        delete oldConfig[key];
-      }
-    });
-    assign(oldConfig, newConfig);
-    return oldConfig;
-  }
 
   api.registerCommand('dev', {}, (args = {}) => {
     const RoutesManager = getRouteManager(service);
@@ -30,10 +18,6 @@ export default function(api) {
 
     const filesGenerator = getFilesGenerator(service, { RoutesManager });
     filesGenerator.generate();
-
-    const userConfig = new UserConfig(service);
-    const config = userConfig.getConfig({ force: true });
-    mergeConfig(service.config, config);
 
     let server = null;
 
@@ -70,8 +54,8 @@ export default function(api) {
 
     function startWatch() {
       filesGenerator.watch();
-      userConfig.setConfig(service.config);
-      userConfig.watchWithDevServer();
+      service.userConfig.setConfig(service.config);
+      service.userConfig.watchWithDevServer();
     }
 
     service
@@ -81,7 +65,7 @@ export default function(api) {
           cwd,
           port,
           webpackConfig: service.webpackConfig,
-          proxy: config.proxy || {},
+          proxy: service.config.proxy || {},
           contentBase: './path-do-not-exists',
           _beforeServerWithApp(app) {
             // @private
