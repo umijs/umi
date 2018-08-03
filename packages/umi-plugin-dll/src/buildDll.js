@@ -55,7 +55,7 @@ export default function(opts = {}) {
       babel: {},
     },
   });
-  const afWebpackConfig = require('af-webpack/getConfig').default(
+  const afWebpackConfig = require(_resolveDeps('af-webpack/getConfig')).default(
     afWebpackOpts,
   );
   const webpackConfig = {
@@ -89,7 +89,7 @@ export default function(opts = {}) {
   };
 
   return new Promise((resolve, reject) => {
-    require('af-webpack/build').default({
+    require(_resolveDeps('af-webpack/build')).default({
       webpackConfig,
       onSuccess() {
         console.log('[umi-plugin-dll] Build dll done');
