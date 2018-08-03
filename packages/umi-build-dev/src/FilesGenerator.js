@@ -117,12 +117,12 @@ export default class FilesGenerator {
 
     // Generate umi.js
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
-    let initialRender = this.service.applyPlugins('modifyEntryRender', {
+    const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
-         ReactDOM.render(
-          React.createElement(require('./router').default),
-          document.getElementById('root'),
-        );
+  ReactDOM.render(
+    React.createElement(require('./router').default),
+    document.getElementById('root'),
+  );
       `.trim(),
     });
 
@@ -136,28 +136,6 @@ export default class FilesGenerator {
           specifier: `moduleBeforeRenderer${index}`,
         };
       });
-
-    initialRender = moduleBeforeRenderer.reduce((memo, m) => {
-      return `
-        const renderAfter${m.specifier} = function() {
-          ${memo}
-        };
-        if (hot) {
-          renderAfter${m.specifier}();
-        } else if (typeof ${m.specifier} === 'function') {
-          const promiseOf${m.specifier} = ${m.specifier}();
-          if (promiseOf${m.specifier} && promiseOf${m.specifier}.then) {
-            promiseOf${m.specifier}.then(() => {
-              renderAfter${m.specifier}();
-            });
-          } else {
-            renderAfter${m.specifier}();
-          }
-        } else {
-          renderAfter${m.specifier}();
-        }
-      `.trim();
-    }, initialRender);
 
     const initialHistory = `
 require('umi/_createHistory').default({
@@ -186,6 +164,7 @@ require('umi/_createHistory').default({
           initialValue: [],
         }),
       ).join('\n'),
+      moduleBeforeRenderer,
       render: initialRender,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
