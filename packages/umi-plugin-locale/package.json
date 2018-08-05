@@ -16,7 +16,8 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "template"
   ],
   "keywords": [
     "umi"
