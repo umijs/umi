@@ -88,6 +88,7 @@ export default class PluginAPI {
       'addHTMLStyle',
       'addHTMLHeadScript',
       'onGenerateFiles',
+      'onHTMLRebuild',
       'modifyDefaultConfig',
       '_modifyConfig',
     ].forEach(method => {
