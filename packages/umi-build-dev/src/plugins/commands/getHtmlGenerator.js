@@ -1,3 +1,4 @@
+import cheerio from 'cheerio';
 import HtmlGenerator from '../../html/HTMLGenerator';
 
 export default (service, opts = {}) => {
@@ -46,7 +47,14 @@ export default (service, opts = {}) => {
       });
     },
     modifyHTML(memo, { route }) {
-      return memo;
+      const $ = cheerio.load(memo);
+      service.applyPlugins('modifyHTMLWithAST', {
+        initialValue: $,
+        args: {
+          route,
+        },
+      });
+      return $.html();
     },
   });
 };

@@ -52,7 +52,7 @@ export default function(opts = {}) {
 }
 
 function pluginToPath(plugins, { cwd }) {
-  return plugins.map(p => {
+  return (plugins || []).map(p => {
     assert(
       Array.isArray(p) || typeof p === 'string',
       `Plugin config should be String or Array, but got ${p}`,
