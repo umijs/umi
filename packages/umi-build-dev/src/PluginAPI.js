@@ -2,7 +2,7 @@ import debug from 'debug';
 import assert from 'assert';
 import { relative } from 'path';
 import isPlainObject from 'is-plain-object';
-import { winPath, findJS, findCSS } from 'umi-utils';
+import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -13,6 +13,7 @@ export default class PluginAPI {
     // utils
     this.debug = debug(`umi-plugin: ${id}`);
     this.winPath = winPath;
+    this.compatDirname = compatDirname;
     this.findJS = findJS;
     this.findCSS = findCSS;
 
