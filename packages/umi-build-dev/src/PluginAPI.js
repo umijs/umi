@@ -81,6 +81,7 @@ export default class PluginAPI {
       'addMiddleware',
       'modifyRoutes',
       'onPatchRoute',
+      'modifyHTMLContext',
       'addHTMLMeta',
       'addHTMLLink',
       'addHTMLScript',
