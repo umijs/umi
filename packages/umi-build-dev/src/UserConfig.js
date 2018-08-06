@@ -188,7 +188,7 @@ class UserConfig {
       ...(isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {}),
     });
 
-    config = this.service.applyPlugins('modifyConfig', {
+    config = this.service.applyPlugins('_modifyConfig', {
       initialValue: config,
     });
 
