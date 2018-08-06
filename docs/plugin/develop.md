@@ -178,7 +178,15 @@ api.rebuildTmpFiles('config dva changed');
 
 ### refreshBrowser
 
-刷新浏览器，通常需要按照配置重新修改 HTML 的时候要用到。
+刷新浏览器。
+
+### rebuildHTML
+
+触发 HTML 重新构建。
+
+### onHTMLRebuild
+
+当 HTML 重新构建时被触发。
 
 ### setPluginDefaultOption
 
