@@ -51,6 +51,11 @@ export default function(api) {
     service.rebuildTmpFiles = () => {
       filesGenerator.rebuild();
     };
+    service.rebuildHTML = () => {
+      // Currently, refresh browser will get new HTML.
+      service.applyPlugins('onHTMLRebuild');
+      service.refreshBrowser();
+    };
 
     function startWatch() {
       filesGenerator.watch();

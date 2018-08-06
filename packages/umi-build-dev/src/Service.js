@@ -89,6 +89,7 @@ export default class Service {
               'printWarn',
               'refreshBrowser',
               'rebuildTmpFiles',
+              'rebuildHTML',
             ].includes(prop)
           ) {
             if (typeof this[prop] === 'function') {
