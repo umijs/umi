@@ -530,13 +530,13 @@ api.chainWebpackConfig(({ memo }) => {
 });
 ```
 
-### modifyAfWebpackConfig
+### modifyAFWebpackOpts
 
 修改 af-webpack 配置。
 
 ```js
 // 示例
-api.modifyAfWebpackConfig(({ memo }) => {
+api.modifyAFWebpackOpts(({ memo }) => {
   return memo;
 });
 ```
