@@ -330,16 +330,16 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
     `.trim(),
     );
 
-    if (this.modifyHTML) {
-      html = this.modifyHTML(html, { route });
-    }
-
     const relPathToPublicPath = this.getRelPathToPublicPath(route.path);
     const pathToPublicPath =
       exportStatic && exportStatic.dynamicRoot
         ? relPathToPublicPath
         : publicPath;
     html = html.replace(/<%= pathToPublicPath %>/g, pathToPublicPath);
+
+    if (this.modifyHTML) {
+      html = this.modifyHTML(html, { route });
+    }
 
     if (this.minify) {
       html = minify(html, {

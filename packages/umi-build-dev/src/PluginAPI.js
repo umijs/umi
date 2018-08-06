@@ -90,6 +90,7 @@ export default class PluginAPI {
       'onGenerateFiles',
       'modifyDefaultConfig',
       '_modifyConfig',
+      'modifyHTMLWithAST',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
