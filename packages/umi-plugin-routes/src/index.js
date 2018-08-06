@@ -34,7 +34,7 @@ function exclude(routes, excludes, winPath) {
 }
 
 export default function(api, opts) {
-  const { winPath } = api.utils;
+  const { winPath } = api;
   api.register('modifyRoutes', ({ memo }) => {
     // opts.exclude
     memo = exclude(memo, optsToArray(opts.exclude), winPath);
