@@ -89,6 +89,7 @@ export default class PluginAPI {
       'addHTMLHeadScript',
       'onGenerateFiles',
       'modifyDefaultConfig',
+      '_modifyConfig',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
