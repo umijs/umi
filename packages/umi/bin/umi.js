@@ -63,6 +63,6 @@ switch (aliasedScript) {
   default:
     new Service(
       require('../lib/buildDevOpts').default()
-    ).run(script);
+    ).run(script, require('yargs-parser')(process.argv.slice(3)));
     break;
 }

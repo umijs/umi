@@ -28,6 +28,7 @@ export default class Service {
     this.commands = {};
     this.pluginHooks = {};
     this.pluginMethods = {};
+    this.generators = {};
 
     // resolve user config
     this.config = UserConfig.getConfig({
@@ -199,8 +200,6 @@ export default class Service {
 
   init() {
     // load env
-
-    // load user config
 
     // init plugins
     this.initPlugins();
