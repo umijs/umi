@@ -104,6 +104,45 @@ describe('getHTMLContent', () => {
     );
   });
 
+  it('custom doc with global context', () => {
+    const service = getService();
+    service.config.pages = {
+      '/a': {
+        document: './custom-doc-with-context.ejs'
+      }
+    };
+    service.config.context = {
+      title: 'global'
+    }
+    const html = getHTMLContent('/a', service, chunksMap, true, false);
+    expect(html.trim()).toEqual(
+      `
+<head><title>global-/a</title></head><body><div id="root"></div><script>window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
+  window.publicPath = '/';</script><script src="/umi.js"></script></body>
+    `.trim(),
+    );
+  });
+
+  it('custom doc with page & global context', () => {
+    const service = getService();
+    service.config.pages = {
+      '/a': {
+        document: './custom-doc-with-context.ejs',
+        context: { title: 'a' },
+      }
+    }
+    service.config.context = {
+      title: 'global'
+    }
+    const html = getHTMLContent('/a', service, chunksMap, true, false);
+    expect(html.trim()).toEqual(
+      `
+<head><title>a-/a</title></head><body><div id="root"></div><script>window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
+  window.publicPath = '/';</script><script src="/umi.js"></script></body>
+    `.trim(),
+    );
+  });
+
   it('relative publicPath', () => {
     const service = getService();
     service.webpackConfig.output.publicPath = './s/';
