@@ -35,16 +35,25 @@ export default function(api) {
 
     // 支持用户指定 antd 和 antd-mobile 的版本
     const pkgPath = join(cwd, 'package.json');
-    if (existsSync(pkgPath)) {
-      const { dependencies = {} } = require(pkgPath); // eslint-disable-line
+    // 兼容部署模式为 chair 的 Bigfish 应用
+    const pkgPathInChair = join(dirname(dirname(cwd)), 'package.json');
+    const realPkgPath =
+      (existsSync(pkgPath) && pkgPath) ||
+      (existsSync(pkgPathInChair) && pkgPathInChair);
+    if (existsSync(realPkgPath)) {
+      const { dependencies = {} } = require(realPkgPath); // eslint-disable-line
       if (dependencies.antd) {
         memo.alias.antd = dirname(
-          require.resolve(join(cwd, 'node_modules/antd/package')),
+          require.resolve(
+            join(dirname(realPkgPath), 'node_modules/antd/package.json'),
+          ),
         );
       }
       if (dependencies['antd-mobile']) {
         memo.alias['antd-mobile'] = dirname(
-          require.resolve(join(cwd, 'node_modules/antd-mobile/package.json')),
+          require.resolve(
+            join(dirname(realPkgPath), 'node_modules/antd-mobile/package.json'),
+          ),
         );
       }
     }

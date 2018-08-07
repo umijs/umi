@@ -86,24 +86,38 @@ export default function(service = {}) {
 
   // TODO: 出错处理，用户可能指定了依赖，但未指定 npm install
   const pkgPath = join(cwd, 'package.json');
-  if (existsSync(pkgPath)) {
-    const { dependencies = {} } = require(pkgPath); // eslint-disable-line
+  // 兼容部署模式为 chair 的 Bigfish 应用
+  const pkgPathInChair = join(dirname(dirname(cwd)), 'package.json');
+  const realPkgPath =
+    (existsSync(pkgPath) && pkgPath) ||
+    (existsSync(pkgPathInChair) && pkgPathInChair);
+  if (existsSync(realPkgPath)) {
+    const { dependencies = {} } = require(realPkgPath); // eslint-disable-line
     if (preact) {
       if (dependencies['preact-compat']) {
         libAlias.react = libAlias['react-dom'] = dirname(
           // eslint-disable-line
-          require.resolve(join(cwd, 'node_modules/preact-compat/package.json')),
+          require.resolve(
+            join(
+              dirname(realPkgPath),
+              'node_modules/preact-compat/package.json',
+            ),
+          ),
         );
       }
     } else {
       if (dependencies.react) {
         libAlias.react = dirname(
-          require.resolve(join(cwd, 'node_modules/react/package.json')),
+          require.resolve(
+            join(dirname(realPkgPath), 'node_modules/react/package.json'),
+          ),
         );
       }
       if (dependencies['react-dom']) {
         libAlias['react-dom'] = dirname(
-          require.resolve(join(cwd, 'node_modules/react-dom/package.json')),
+          require.resolve(
+            join(dirname(realPkgPath), 'node_modules/react-dom/package.json'),
+          ),
         );
       }
     }
