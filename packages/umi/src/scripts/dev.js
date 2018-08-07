@@ -9,6 +9,9 @@ child.on('message', data => {
     process.send(data);
   }
 });
+child.on('exit', code => {
+  process.exit(code);
+});
 
 process.on('SIGINT', () => {
   child.kill('SIGINT');
