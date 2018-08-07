@@ -549,19 +549,19 @@ api.modifyAFWebpackOpts(({ memo }) => {
 });
 ```
 
-### addMiddlewareAtFront
+### addMiddleware
 
-往前面添加中间件
+往开发服务器后面添加中间件。
 
-### addMiddlewareAtTail
+### addMiddlewareAhead
 
-往后面添加中间件
+往开发服务器前面添加中间件。
 
 ### addMiddlewareBeforeMock
 
-在 mock 前添加中间件
+在 mock 前添加中间件。
 
 ### addMiddlewareAfterMock
 
-在 mock 后添加中间件
+在 mock 后添加中间件。
 

@@ -79,6 +79,8 @@ export default class PluginAPI {
       'afterDevServer',
       'addMiddlewareAhead',
       'addMiddleware',
+      'addMiddlewareBeforeMock',
+      'addMiddlewareAfterMock',
       'modifyRoutes',
       'onPatchRoute',
       'modifyHTMLContext',
