@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from 'fs';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
 import { winPath } from 'umi-utils';
+import cloneDeep from 'lodash.clonedeep';
 
 export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // Steps:
@@ -14,10 +15,7 @@ export default function(path, service, chunksMap, minifyHTML, isProduction) {
   // 2.3 css
   // 3. 压缩
   const { config, paths, webpackConfig } = service;
-
-  const pageConfig = (config.pages || {})[path] || {};
-  const { document, context = {} } = pageConfig;
-
+  const { document, context = {} } = getPageConfig(config, path);
   const customizedDocPath = document
     ? join(paths.cwd, document)
     : paths.absPageDocumentPath;
@@ -163,4 +161,11 @@ function addRelativePrefix(path) {
   } else {
     return path;
   }
+}
+
+function getPageConfig(config, path) {
+  const {
+    context = {}, pages = {}
+  } = config;
+  return Object.assign({ context: cloneDeep(context) }, cloneDeep(pages[path]));
 }
