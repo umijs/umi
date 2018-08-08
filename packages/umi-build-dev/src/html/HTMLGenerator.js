@@ -293,7 +293,7 @@ export default class HTMLGenerator {
     });
     if (this.env === 'production' && this.chunksMap['umi.css']) {
       links.push({
-        ref: 'stylesheet',
+        rel: 'stylesheet',
         href: `<%= pathToPublicPath %>${this.getHashedFileName('umi.css')}`,
       });
     }
