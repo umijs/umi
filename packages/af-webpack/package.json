@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -16,7 +16,7 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dynamic-import-node-sync": "^2.0.1",
-    "babel-preset-umi": "^1.0.0-beta.2",
+    "babel-preset-umi": "^1.0.0-beta.3",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
@@ -94,6 +94,5 @@
     "react-dev-utils.js",
     "registerBabel.js",
     "webpack.js"
-  ],
-  "license": "MIT"
+  ]
 }
