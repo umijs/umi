@@ -13,7 +13,7 @@ export default api => {
     configuring() {}
 
     writing() {
-      const path = this.args[0];
+      const path = this.args[0].toString();
       const name = basename(path);
       this.fs.copyTpl(
         join(absTemplatePath, 'page.js'),
