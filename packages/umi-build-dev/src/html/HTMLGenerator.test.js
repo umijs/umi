@@ -108,6 +108,13 @@ describe('HG', () => {
         absPageDocumentPath: '/tmp/files-not-exists',
         defaultDocumentPath: join(__dirname, 'fixtures/document.ejs'),
       },
+      modifyLinks: links => {
+        links.push({
+          rel: 'stylesheet',
+          href: 'http://ant.design/test.css',
+        });
+        return links;
+      },
     });
     const content = hg.getContent({
       path: '/',
@@ -116,6 +123,7 @@ describe('HG', () => {
       `
 <head>
 
+<link rel="stylesheet" href="http://ant.design/test.css" />
 <link rel="stylesheet" href="/umi.css" />
 <script>
   window.routerBase = "/";
