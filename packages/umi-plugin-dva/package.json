@@ -24,6 +24,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "files": [
     "lib",
     "src",

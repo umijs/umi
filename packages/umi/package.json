@@ -23,6 +23,7 @@
   "bin": {
     "umi": "./bin/umi.js"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi/tree/master/packages/umi"

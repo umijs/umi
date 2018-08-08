@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "dependencies": {
     "eslint-config-react-app": "^2.0.0"
   },
