@@ -20,7 +20,6 @@ export default function build(opts = {}) {
   // 存在 webpack.config.js 时提醒用户
   warnIfWebpackConfigExists(opts.cwd || cwd);
 
-  debug(`webpack config: ${JSON.stringify(webpackConfig)}`);
   debug(
     `Clean output path ${webpackConfig.output.path.replace(
       `${process.cwd()}/`,
