@@ -3,7 +3,7 @@ import deepclone from 'lodash.clonedeep';
 import { winPath } from 'umi-utils';
 
 export default function(api) {
-  const { paths } = api.service;
+  const { paths, config } = api.service;
 
   if (process.env.NODE_ENV === 'development') {
     api.modifyRoutes(memo => {
@@ -11,7 +11,9 @@ export default function(api) {
         component: `
 () => React.createElement(require('${winPath(
           join(__dirname, 'NotFound.js'),
-        )}').default, { pagesPath: '${paths.pagesPath}' })
+        )}').default, { pagesPath: '${
+          paths.pagesPath
+        }', hasRoutesInConfig: ${!!config.routes} })
         `.trim(),
       };
       const routes = deepclone(memo);
