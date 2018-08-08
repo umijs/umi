@@ -2,7 +2,7 @@ import { join, basename } from 'path';
 import randomColor from 'random-color';
 
 export default api => {
-  const { paths } = api;
+  const { paths, config } = api;
   const absTemplatePath = join(__dirname, '../../../../template/generators');
 
   return class Generator extends api.Generator {
@@ -13,6 +13,10 @@ export default api => {
     configuring() {}
 
     writing() {
+      if (config.routes) {
+        throw new Error(`umi g page does not work when config.routes exists`);
+      }
+
       const path = this.args[0].toString();
       const name = basename(path);
       this.fs.copyTpl(
