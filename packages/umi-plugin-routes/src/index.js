@@ -15,7 +15,7 @@ export default function(api, opts) {
     api.rebuildTmpFiles();
   });
 
-  api.modifyRotues(routes => {
+  api.modifyRoutes(routes => {
     routes = exclude(routes, optsToArray(opts.exclude));
 
     if (opts.update) {
