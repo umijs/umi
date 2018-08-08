@@ -37,7 +37,7 @@ export default class HTMLGenerator {
     if (this.config.exportStatic) {
       this.exportRoutes(flatRoutes);
     } else {
-      this.exportRoute(flatRoutes[0], 'index.html');
+      this.exportRoute({ path: '/' }, 'index.html');
     }
   }
 
