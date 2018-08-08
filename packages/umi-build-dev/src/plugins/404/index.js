@@ -11,9 +11,7 @@ export default function(api) {
         component: `
 () => React.createElement(require('${winPath(
           join(__dirname, 'NotFound.js'),
-        )}').default, { pagesPath: '${
-          paths.pagesPath
-        }', routes: '${JSON.stringify(memo).replace(/\"/g, '^')}' })
+        )}').default, { pagesPath: '${paths.pagesPath}' })
         `.trim(),
       };
       const routes = deepclone(memo);
