@@ -16,8 +16,5 @@
   "files": [
     "lib",
     "src"
-  ],
-  "dependencies": {
-    "is-plain-object": "^2.0.4"
-  }
+  ]
 }

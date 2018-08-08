@@ -1,42 +1,55 @@
 # umi-plugin-routes
 
-umi的路由插件
+## Usage
 
-.umirc.js
+Install via yarn or npm.
+
+```bash
+$ yarn add umi-plugin-routes
+```
+
+Configure it in the `.umirc.js`.
+
 ```js
 export default {
   plugins: [
-    [
-      'umi-plugin-routes',
-      {
-        include:[
-
-        ],
-        exclude: [
-          /pages\/site/,
-        ],
-        update(routes) {
-          return [
-            ...(require('./pages/site/_routes')),
-            ...routes
-          ];
-        },
-      },
-    ],
+    ['umi-plugin-routes', option],
   ],
 };
 ```
-./pages/site/_routes.json
-```json
-[
-  {
-    "path": "/site/b",
-    "exact": true,
-    "component": "./pages/site/a"
-  }
-]
+
+## Option
+
+### option.exclude
+
+type: `Array(RegExp|Function)`
+
+e.g.
+
+```js
+{
+  exclude: [
+    // exclude all the `models` directory
+    /models\//,
+    // exclude ./pages/a.js
+    (route) { return route.component === './pages/a.js' },
+  ],
+}
 ```
 
-opts.exclude 排除约定中生成路由的目录
-opts.include 导入不在约定中的目录
-opts.update 导入配置
+### option.update
+
+type: `Function`
+
+e.g.
+
+```
+{
+  update(routes) {
+    return [
+      { path: '/foo', component: './bar.js' },
+      ...routes,
+    ];
+  }
+}
+```

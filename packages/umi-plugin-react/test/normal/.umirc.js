@@ -8,7 +8,7 @@ export default {
         fastClick: true,
 
         // dev boost
-        dll: true,
+        dll: false,
         hardSource: false,
 
         // performace
@@ -21,6 +21,9 @@ export default {
 
         // misc
         dva: false,
+        routes: {
+          exclude: [/b\//],
+        },
         polyfills: [],
       },
     ],

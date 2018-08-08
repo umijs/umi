@@ -51,6 +51,7 @@ export default function(api, option) {
     dva: () => require('umi-plugin-dva').default,
     locale: () => require('umi-plugin-locale').default,
     polyfills: () => require('umi-plugin-polyfill').default,
+    routes: () => require('umi-plugin-routes').default,
     antd: () => require('./plugins/antd').default,
   };
 
