@@ -3,7 +3,7 @@ import deepclone from 'lodash.clonedeep';
 import { winPath } from 'umi-utils';
 
 export default function(api) {
-  const { paths } = api.service;
+  const { paths, config } = api.service;
 
   if (process.env.NODE_ENV === 'development') {
     api.modifyRoutes(memo => {
@@ -13,7 +13,7 @@ export default function(api) {
           join(__dirname, 'NotFound.js'),
         )}').default, { pagesPath: '${
           paths.pagesPath
-        }', routes: '${JSON.stringify(memo).replace(/\"/g, '^')}' })
+        }', hasRoutesInConfig: ${!!config.routes} })
         `.trim(),
       };
       const routes = deepclone(memo);
