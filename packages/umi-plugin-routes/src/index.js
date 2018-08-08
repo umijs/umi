@@ -11,6 +11,10 @@ function optsToArray(item) {
 }
 
 export default function(api, opts) {
+  api.onOptionChange(() => {
+    api.rebuildTmpFiles();
+  });
+
   api.modifyRotues(routes => {
     routes = exclude(routes, optsToArray(opts.exclude));
 
