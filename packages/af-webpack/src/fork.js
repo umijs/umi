@@ -7,7 +7,7 @@ export default function start(scriptPath) {
   child.on('message', data => {
     const type = (data && data.type) || null;
     if (type === RESTART) {
-      child.kill('SIGINT');
+      child.kill();
       start(scriptPath);
     }
     send(data);
