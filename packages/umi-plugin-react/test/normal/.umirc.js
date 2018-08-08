@@ -25,6 +25,7 @@ export default {
           exclude: [/b\//],
         },
         polyfills: [],
+        antd: true,
       },
     ],
   ],
