@@ -75,6 +75,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "devDependencies": {
     "glob": "^7.1.2",
     "node-sass": "^4.7.2",
