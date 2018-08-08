@@ -98,7 +98,7 @@ export default class HTMLGenerator {
     path = path.replace(/\/$/, '');
 
     if (htmlSuffix) {
-      return `${path}.html`;
+      return `${path}`;
     } else {
       return `${path}/index.html`;
     }

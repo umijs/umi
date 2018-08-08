@@ -35,8 +35,7 @@ describe('HG', () => {
       },
     });
     expect(hg.getHtmlPath('/')).toEqual('index.html');
-    expect(hg.getHtmlPath('/a')).toEqual('a.html');
-    expect(hg.getHtmlPath('/a/')).toEqual('a.html');
+    expect(hg.getHtmlPath('/a.html')).toEqual('a.html');
   });
 
   it('getLinksContent', () => {
@@ -117,7 +116,7 @@ describe('HG', () => {
       `
 <head>
 
-<link ref="stylesheet" href="/umi.css" />
+<link rel="stylesheet" href="/umi.css" />
 <script>
   window.routerBase = "/";
 </script>
@@ -153,7 +152,7 @@ describe('HG', () => {
       `
 <head>
 
-<link ref="stylesheet" href="/umi.css" />
+<link rel="stylesheet" href="/umi.css" />
 <script>
   window.routerBase = "/";
   window.publicPath = "/";
@@ -214,7 +213,7 @@ describe('HG', () => {
     });
     expect(content.trim()).toEqual(
       `
-<head><link ref="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="root"></div><script src="/umi.js"></script></body>
+<head><link rel="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="root"></div><script src="/umi.js"></script></body>
     `.trim(),
     );
   });
@@ -245,7 +244,7 @@ describe('HG', () => {
       `
 <head>
 
-<link ref="stylesheet" href="./umi.css" />
+<link rel="stylesheet" href="./umi.css" />
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
   window.publicPath = location.origin + window.routerBase;
@@ -299,7 +298,7 @@ describe('HG', () => {
       `
 <head>
 
-<link ref="stylesheet" href="./umi.css" />
+<link rel="stylesheet" href="./umi.css" />
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
   window.publicPath = location.origin + window.routerBase;
