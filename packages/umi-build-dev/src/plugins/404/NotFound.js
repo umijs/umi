@@ -6,9 +6,9 @@ import guessJSFileFromPath from './guessJSFileFromPath';
 function renderRoutes(routes) {
   return (
     <ul>
-      {routes.map(route => {
+      {routes.map((route, i) => {
         return (
-          <li key={route.path}>
+          <li key={route.key || i}>
             <Link to={route.path}>{route.path}</Link>
             {route.routes ? renderRoutes(route.routes) : null}
           </li>
