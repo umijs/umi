@@ -4,7 +4,6 @@ import { existsSync } from 'fs';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
-import { applyWebpackConfig } from './applyWebpackConfig';
 
 function makeArray(item) {
   if (Array.isArray(item)) return item;
@@ -305,5 +304,5 @@ export default function(opts) {
     opts.chainConfig(webpackConfig);
   }
 
-  return applyWebpackConfig(opts.cwd, webpackConfig.toConfig());
+  return webpackConfig.toConfig();
 }

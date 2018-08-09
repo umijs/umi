@@ -18,8 +18,6 @@ function initFiles() {
         file.replace(/\.js$/, `.local.js`),
       ]),
     ),
-    'webpack.config.js',
-    '.webpackrc.js',
   ];
 }
 
