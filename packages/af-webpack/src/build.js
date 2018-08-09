@@ -4,7 +4,6 @@ import rimraf from 'rimraf';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
 import { printFileSizesAfterBuild } from 'react-dev-utils/FileSizeReporter';
-import { warnIfExists as warnIfWebpackConfigExists } from './getConfig/applyWebpackConfig';
 
 const debug = require('debug')('af-webpack:build');
 
@@ -16,9 +15,6 @@ export default function build(opts = {}) {
   const { webpackConfig, cwd = process.cwd(), onSuccess, onFail } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
-
-  // 存在 webpack.config.js 时提醒用户
-  warnIfWebpackConfigExists(opts.cwd || cwd);
 
   debug(
     `Clean output path ${webpackConfig.output.path.replace(
