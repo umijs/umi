@@ -8,7 +8,6 @@ import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
-import getWebpackConfig from './getWebpackConfig';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -209,14 +208,16 @@ export default class Service {
     const config = userConfig.getConfig({ force: true });
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
-
-    // webpack config
-    this.webpackConfig = getWebpackConfig(this);
   }
 
   run(name, args = {}) {
     this.init();
     debug(`run ${name} with args ${args}`);
+
+    if (['build', 'dev', 'test'].includes(name)) {
+      // webpack config
+      this.webpackConfig = require('./getWebpackConfig').default(this);
+    }
 
     const command = this.commands[name];
     if (!command && name) {
