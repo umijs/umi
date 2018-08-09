@@ -1,5 +1,6 @@
 import { join, basename } from 'path';
 import randomColor from 'random-color';
+import assert from 'assert';
 
 export default api => {
   const { paths, config } = api;
@@ -8,14 +9,16 @@ export default api => {
   return class Generator extends api.Generator {
     constructor(args, options) {
       super(args, options);
+
+      if (config.routes) {
+        throw new Error(`umi g page does not work when config.routes exists`);
+      }
     }
 
     configuring() {}
 
     writing() {
-      if (config.routes) {
-        throw new Error(`umi g page does not work when config.routes exists`);
-      }
+      assert(typeof this.args[0] === 'string', `name should be supplied`);
 
       const path = this.args[0].toString();
       const name = basename(path);
