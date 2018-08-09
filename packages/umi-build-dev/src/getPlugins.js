@@ -14,6 +14,7 @@ export default function(opts = {}) {
     './plugins/commands/dev',
     './plugins/commands/build',
     './plugins/commands/test',
+    './plugins/commands/generate',
     './plugins/global-js',
     './plugins/global-css',
     './plugins/base',

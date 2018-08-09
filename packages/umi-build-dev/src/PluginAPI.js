@@ -3,6 +3,7 @@ import assert from 'assert';
 import { relative } from 'path';
 import isPlainObject from 'is-plain-object';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
+import Generator from 'yeoman-generator';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -16,6 +17,7 @@ export default class PluginAPI {
     this.compatDirname = compatDirname;
     this.findJS = findJS;
     this.findCSS = findCSS;
+    this.Generator = Generator;
 
     this.API_TYPE = {
       ADD: Symbol('add'),
@@ -146,6 +148,24 @@ export default class PluginAPI {
       `Command ${name} exists, please select another one.`,
     );
     commands[name] = { fn, opts: opts || {} };
+  }
+
+  registerGenerator(name, opts) {
+    const { generators } = this.service;
+    assert(
+      typeof name === 'string',
+      `name should be supplied with a string, but got ${name}`,
+    );
+    assert(opts && opts.Generator, `opts.Generator should be supplied`);
+    // assert(
+    //   opts.Generator instanceof this.Generator,
+    //   `opts.Generator should be instance of api.Generator`,
+    // );
+    assert(
+      !(name in generators),
+      `Generator ${name} exists, please select another one.`,
+    );
+    generators[name] = opts;
   }
 
   registerPlugin(opts) {

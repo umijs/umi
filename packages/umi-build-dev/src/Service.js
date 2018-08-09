@@ -8,7 +8,6 @@ import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
-import getWebpackConfig from './getWebpackConfig';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -28,6 +27,7 @@ export default class Service {
     this.commands = {};
     this.pluginHooks = {};
     this.pluginMethods = {};
+    this.generators = {};
 
     // resolve user config
     this.config = UserConfig.getConfig({
@@ -200,8 +200,6 @@ export default class Service {
   init() {
     // load env
 
-    // load user config
-
     // init plugins
     this.initPlugins();
 
@@ -217,9 +215,6 @@ export default class Service {
       paths.outputPath = config.outputPath;
       paths.absOutputPath = join(paths.cwd, config.outputPath);
     }
-
-    // webpack config
-    this.webpackConfig = getWebpackConfig(this);
   }
 
   run(name, args = {}) {
@@ -232,7 +227,12 @@ export default class Service {
       process.exit(1);
     }
 
-    const { fn } = command;
+    const { fn, opts } = command;
+    if (opts.webpack) {
+      // webpack config
+      this.webpackConfig = require('./getWebpackConfig').default(this);
+    }
+
     return fn(args);
   }
 }

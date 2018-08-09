@@ -270,4 +270,9 @@ const DvaContainer = require('./DvaContainer').default;
     join(paths.absSrcPath, 'dva.ts'),
     join(paths.absSrcPath, 'dva.tsx'),
   ]);
+
+  api.registerGenerator('dva:model', {
+    Generator: require('./model').default(api),
+    resolved: join(__dirname, './model'),
+  });
 }
