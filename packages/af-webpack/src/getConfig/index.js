@@ -213,7 +213,9 @@ export default function(opts) {
 
   // plugins -> progress bar
   if (!process.env.__FROM_UMI_TEST) {
-    webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
+    webpackConfig
+      .plugin('progress')
+      .use(require('webpackbar'), [{ minimal: false }]);
   }
 
   // plugins -> ignore moment locale

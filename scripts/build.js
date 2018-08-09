@@ -1,4 +1,5 @@
 const vfs = require('vinyl-fs');
+const { extname } = require('path');
 const babel = require('@babel/core');
 const through = require('through2');
 const chalk = require('chalk');
@@ -70,15 +71,19 @@ function isBrowserTransform(path) {
 
 function transform(opts = {}) {
   const { content, path } = opts;
-  const winPath = slash(path);
-  const isBrowser = isBrowserTransform(winPath);
-  console.log(
-    chalk[isBrowser ? 'yellow' : 'blue'](
-      `[TRANSFORM] ${winPath.replace(`${cwd}/`, '')}`,
-    ),
-  );
-  const config = isBrowser ? browserBabelConfig : nodeBabelConfig;
-  return babel.transform(content, config).code;
+  if (extname(path) === '.js') {
+    const winPath = slash(path);
+    const isBrowser = isBrowserTransform(winPath);
+    console.log(
+      chalk[isBrowser ? 'yellow' : 'blue'](
+        `[TRANSFORM] ${winPath.replace(`${cwd}/`, '')}`,
+      ),
+    );
+    const config = isBrowser ? browserBabelConfig : nodeBabelConfig;
+    return babel.transform(content, config).code;
+  } else {
+    return content;
+  }
 }
 
 function buildPkg(pkg) {
@@ -86,6 +91,7 @@ function buildPkg(pkg) {
   const stream = vfs
     .src([
       `./packages/${pkg}/src/**/*.js`,
+      `./packages/${pkg}/src/**/*.less`,
       `!./packages/${pkg}/src/**/fixtures/**/*.js`,
       `!./packages/${pkg}/src/**/*.test.js`,
     ])

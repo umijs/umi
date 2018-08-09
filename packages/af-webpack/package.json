@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -16,7 +16,7 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dynamic-import-node-sync": "^2.0.1",
-    "babel-preset-umi": "^1.0.0-beta.1",
+    "babel-preset-umi": "^1.0.0-beta.3",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
@@ -62,7 +62,8 @@
     "webpack-chain": "^4.8.0",
     "webpack-dev-server": "^3.1.4",
     "webpack-manifest-plugin": "^2.0.3",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "webpackbar": "^2.6.1"
   },
   "repository": {
     "type": "git",
@@ -75,6 +76,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "devDependencies": {
     "glob": "^7.1.2",
     "node-sass": "^4.7.2",
@@ -92,6 +94,5 @@
     "react-dev-utils.js",
     "registerBabel.js",
     "webpack.js"
-  ],
-  "license": "MIT"
+  ]
 }

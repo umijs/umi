@@ -37,7 +37,7 @@ export default class HTMLGenerator {
     if (this.config.exportStatic) {
       this.exportRoutes(flatRoutes);
     } else {
-      this.exportRoute(flatRoutes[0], 'index.html');
+      this.exportRoute({ path: '/' }, 'index.html');
     }
   }
 
@@ -98,7 +98,7 @@ export default class HTMLGenerator {
     path = path.replace(/\/$/, '');
 
     if (htmlSuffix) {
-      return `${path}.html`;
+      return `${path}`;
     } else {
       return `${path}/index.html`;
     }
@@ -291,12 +291,6 @@ export default class HTMLGenerator {
     scripts.push({
       src: `<%= pathToPublicPath %>${this.getHashedFileName('umi.js')}`,
     });
-    if (this.env === 'production' && this.chunksMap['umi.css']) {
-      links.push({
-        ref: 'stylesheet',
-        href: `<%= pathToPublicPath %>${this.getHashedFileName('umi.css')}`,
-      });
-    }
 
     if (this.modifyMetas) metas = this.modifyMetas(metas);
     if (this.modifyLinks) links = this.modifyLinks(links);
@@ -304,6 +298,14 @@ export default class HTMLGenerator {
     if (this.modifyStyles) styles = this.modifyStyles(styles);
     if (this.modifyHeadScripts)
       headScripts = this.modifyHeadScripts(headScripts);
+
+    if (this.env === 'production' && this.chunksMap['umi.css']) {
+      // umi.css should be the last one stylesheet
+      links.push({
+        rel: 'stylesheet',
+        href: `<%= pathToPublicPath %>${this.getHashedFileName('umi.css')}`,
+      });
+    }
 
     // insert tags
     html = html.replace(

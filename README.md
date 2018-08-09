@@ -54,3 +54,7 @@ $ umi build
 ### Telegram
 
 [https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+
+## License
+
+[MIT](https://github.com/umijs/umi/blob/master/LICENSE)

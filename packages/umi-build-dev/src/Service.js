@@ -208,6 +208,13 @@ export default class Service {
     const config = userConfig.getConfig({ force: true });
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
+
+    // assign user's outputPath config to paths object
+    if (config.outputPath) {
+      const { paths } = this;
+      paths.outputPath = config.outputPath;
+      paths.absOutputPath = join(paths.cwd, config.outputPath);
+    }
   }
 
   run(name, args = {}) {

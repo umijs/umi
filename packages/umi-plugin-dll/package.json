@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-dll",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -13,6 +13,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "files": [
     "lib",
     "src"
