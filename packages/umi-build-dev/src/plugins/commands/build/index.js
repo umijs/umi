@@ -8,51 +8,57 @@ export default function(api) {
   const { service, debug } = api;
   const { cwd, paths } = service;
 
-  api.registerCommand('build', {}, () => {
-    const RoutesManager = getRouteManager(service);
-    RoutesManager.fetchRoutes();
+  api.registerCommand(
+    'build',
+    {
+      webpack: true,
+    },
+    () => {
+      const RoutesManager = getRouteManager(service);
+      RoutesManager.fetchRoutes();
 
-    process.env.NODE_ENV = 'production';
-    service.applyPlugins('onStart');
+      process.env.NODE_ENV = 'production';
+      service.applyPlugins('onStart');
 
-    const filesGenerator = getFilesGenerator(service, { RoutesManager });
-    filesGenerator.generate();
+      const filesGenerator = getFilesGenerator(service, { RoutesManager });
+      filesGenerator.generate();
 
-    require('af-webpack/build').default({
-      cwd,
-      webpackConfig: service.webpackConfig,
-      onSuccess({ stats }) {
-        if (process.env.RM_TMPDIR !== 'none') {
-          debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
-          rimraf.sync(paths.absTmpDirPath);
-        }
-
-        if (process.env.HTML !== 'none') {
-          debug(`Bundle html files`);
-          const chunksMap = chunksToMap(stats.compilation.chunks);
-          try {
-            const hg = getHtmlGenerator(service, {
-              chunksMap,
-            });
-            hg.generate();
-          } catch (e) {
-            console.log(e);
+      require('af-webpack/build').default({
+        cwd,
+        webpackConfig: service.webpackConfig,
+        onSuccess({ stats }) {
+          if (process.env.RM_TMPDIR !== 'none') {
+            debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
+            rimraf.sync(paths.absTmpDirPath);
           }
-        }
 
-        service.applyPlugins('onBuildSuccess', {
-          args: {
-            stats,
-          },
-        });
-      },
-      onFail(err) {
-        service.applyPlugins('onBuildFail', {
-          args: {
-            err,
-          },
-        });
-      },
-    });
-  });
+          if (process.env.HTML !== 'none') {
+            debug(`Bundle html files`);
+            const chunksMap = chunksToMap(stats.compilation.chunks);
+            try {
+              const hg = getHtmlGenerator(service, {
+                chunksMap,
+              });
+              hg.generate();
+            } catch (e) {
+              console.log(e);
+            }
+          }
+
+          service.applyPlugins('onBuildSuccess', {
+            args: {
+              stats,
+            },
+          });
+        },
+        onFail(err) {
+          service.applyPlugins('onBuildFail', {
+            args: {
+              err,
+            },
+          });
+        },
+      });
+    },
+  );
 }

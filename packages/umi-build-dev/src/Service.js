@@ -214,18 +214,18 @@ export default class Service {
     this.init();
     debug(`run ${name} with args ${args}`);
 
-    if (['build', 'dev', 'test'].includes(name)) {
-      // webpack config
-      this.webpackConfig = require('./getWebpackConfig').default(this);
-    }
-
     const command = this.commands[name];
     if (!command && name) {
       console.error(chalk.red(`command "${name}" does not exists.`));
       process.exit(1);
     }
 
-    const { fn } = command;
+    const { fn, opts } = command;
+    if (opts.webpack) {
+      // webpack config
+      this.webpackConfig = require('./getWebpackConfig').default(this);
+    }
+
     return fn(args);
   }
 }
