@@ -81,6 +81,7 @@ export default function(api) {
           dirname(require.resolve('umi-history/package.json')),
         ),
       )
+      .set('@', paths.absSrcPath)
       .set('umi/link', join(process.env.UMI_DIR, 'lib/link'))
       .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic'))
       .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink'))
