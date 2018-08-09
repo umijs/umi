@@ -1,8 +1,7 @@
 import resolve from 'resolve';
 import assert from 'assert';
-import isEqual from 'lodash.isequal';
-import isPlainObject from 'is-plain-object';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
+import isEqual from './isEqual';
 
 const debug = require('debug')('umi-build-dev:getPlugin');
 
@@ -104,22 +103,6 @@ function toIdStr(plugins) {
   return plugins.map(p => p.id).join('^^');
 }
 
-function funcToStr(obj) {
-  if (typeof obj === 'function') return obj.toString();
-  if (isPlainObject(obj)) {
-    return Object.keys(obj).reduce((memo, key) => {
-      memo[key] = funcToStr(obj[key]);
-      return memo;
-    }, {});
-  } else {
-    return obj;
-  }
-}
-
-function isEqualCompatFunction(a, b) {
-  return isEqual(funcToStr(a), funcToStr(b));
-}
-
 /**
  * 返回结果：
  *   pluginsChanged: true | false
@@ -136,10 +119,7 @@ export function diffPlugins(newOption, oldOption, { cwd }) {
   } else {
     return {
       optionChanged: newPlugins.filter((p, index) => {
-        return !isEqualCompatFunction(
-          newPlugins[index].opts,
-          oldPlugins[index].opts,
-        );
+        return !isEqual(newPlugins[index].opts, oldPlugins[index].opts);
       }),
     };
   }

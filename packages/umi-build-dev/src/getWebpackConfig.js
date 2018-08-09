@@ -2,6 +2,8 @@ import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 
 export default function(service) {
+  const { config } = service;
+
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
     initialValue: {
       cwd: service.cwd,
@@ -16,6 +18,9 @@ export default function(service) {
     service.applyPlugins('chainWebpackConfig', {
       args: webpackConfig,
     });
+    if (config.chainWebpackConfig) {
+      config.chainWebpackConfig(webpackConfig);
+    }
   };
 
   return getConfig(afWebpackOpts);

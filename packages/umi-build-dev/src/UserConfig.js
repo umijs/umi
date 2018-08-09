@@ -3,11 +3,11 @@ import { existsSync } from 'fs';
 import requireindex from 'requireindex';
 import chalk from 'chalk';
 import didyoumean from 'didyoumean';
-import isEqual from 'lodash.isequal';
 import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
+import isEqual from './isEqual';
 
 function normalizeConfig(config) {
   config = config.default || config;
