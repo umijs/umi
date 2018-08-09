@@ -46,7 +46,6 @@ ErrorOverlay.startReportingRuntimeErrors({
   onError: function() {
     hadRuntimeError = true;
   },
-  filename: '/static/js/bundle.js',
 });
 
 if (module.hot && typeof module.hot.dispose === 'function') {

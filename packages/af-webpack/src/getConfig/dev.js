@@ -3,7 +3,7 @@ import { join } from 'path';
 
 export default function(webpackConfig, opts) {
   webpackConfig
-    .devtool(opts.devtool || 'cheap-module-eval-source-map')
+    .devtool(opts.devtool || 'cheap-module-source-map')
     .output.pathinfo(true);
 
   webpackConfig
