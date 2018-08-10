@@ -237,11 +237,6 @@ export default class HTMLGenerator {
     const relTplPath = relative(cwd, tplPath);
     const tpl = readFileSync(tplPath, 'utf-8');
 
-    // validate tpl
-    assert(
-      tpl.includes('<div id="root"></div>'),
-      `Document ${relTplPath} must contain <div id="root"></div>`,
-    );
     assert(
       tpl.includes('<head>') && tpl.includes('</head>'),
       `Document ${relTplPath} must contain <head> and </head>`,
@@ -255,6 +250,14 @@ export default class HTMLGenerator {
       _with: false,
       localsName: 'context',
     });
+
+    // validate tpl
+    assert(
+      html.includes(`<div id="${this.config.mountElementId}"></div>`),
+      `Document ${relTplPath} must contain <div id="${
+        this.config.mountElementId
+      }"></div>`,
+    );
 
     let metas = [];
     let links = [];

@@ -17,6 +17,7 @@ export default function(opts = {}) {
     './plugins/global-js',
     './plugins/global-css',
     './plugins/base',
+    './plugins/mountElementId',
     './plugins/mock',
     './plugins/proxy',
     './plugins/history',

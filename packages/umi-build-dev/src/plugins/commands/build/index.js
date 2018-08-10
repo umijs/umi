@@ -5,7 +5,7 @@ import getHtmlGenerator from '../getHtmlGenerator';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug } = api;
+  const { service, debug, config } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(
@@ -20,7 +20,10 @@ export default function(api) {
       process.env.NODE_ENV = 'production';
       service.applyPlugins('onStart');
 
-      const filesGenerator = getFilesGenerator(service, { RoutesManager });
+      const filesGenerator = getFilesGenerator(service, {
+        RoutesManager,
+        mountElementId: config.mountElementId,
+      });
       filesGenerator.generate();
 
       require('af-webpack/build').default({

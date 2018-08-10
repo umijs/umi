@@ -121,7 +121,7 @@ export default class FilesGenerator {
       initialValue: `
   ReactDOM.render(
     React.createElement(require('./router').default),
-    document.getElementById('root'),
+    document.getElementById('${this.mountElementId}'),
   );
       `.trim(),
     });
