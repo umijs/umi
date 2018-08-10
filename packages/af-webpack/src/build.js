@@ -33,7 +33,7 @@ export default function build(opts = {}) {
       console.log(chalk.red('Failed to compile.\n'));
       console.log(`${err}\n`);
       if (onFail) {
-        onFail(err);
+        onFail({ err, stats });
       }
       process.exit(1);
     }

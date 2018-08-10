@@ -54,10 +54,11 @@ export default function(api) {
             },
           });
         },
-        onFail(err) {
+        onFail({ err, stats }) {
           service.applyPlugins('onBuildFail', {
             args: {
               err,
+              stats,
             },
           });
         },
