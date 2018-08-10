@@ -109,7 +109,6 @@ export default function(opts) {
   const babelOpts = {
     presets: [...(babel.presets || []), ...(opts.extraBabelPresets || [])],
     plugins: [...(babel.plugins || []), ...(opts.extraBabelPlugins || [])],
-    ...opts.babel,
     ...babelOptsCommon,
   };
   const babelOptsForDeps = {
