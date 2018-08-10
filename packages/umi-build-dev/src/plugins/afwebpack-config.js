@@ -128,7 +128,10 @@ export default function(api) {
       disableDynamicImport: true,
       babel: config.babel || {
         presets: [
-          [require.resolve('babel-preset-umi'), { browsers: browserslist }],
+          [
+            require.resolve('babel-preset-umi'),
+            { targets: { browsers: browserslist } },
+          ],
           ...(config.extraBabelPresets || []),
         ],
         plugins: config.extraBabelPlugins || [],

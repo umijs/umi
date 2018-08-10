@@ -5,7 +5,7 @@ export default babelJest.createTransformer({
     [
       require.resolve('babel-preset-umi'),
       {
-        disableTransform: true,
+        transformRuntime: false,
       },
     ],
   ],

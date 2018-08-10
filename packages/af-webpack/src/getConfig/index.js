@@ -114,7 +114,7 @@ export default function(opts) {
   };
   const babelOptsForDeps = {
     presets: [
-      [require.resolve('babel-preset-umi'), { disableTransform: true }],
+      [require.resolve('babel-preset-umi'), { transformRuntime: false }],
     ],
     ...babelOptsCommon,
   };

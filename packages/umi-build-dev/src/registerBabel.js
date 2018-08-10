@@ -37,7 +37,7 @@ export default function(opts = {}) {
     only: [new RegExp(`${only.join('|')}`)],
     babelPreset: [
       require.resolve('babel-preset-umi'),
-      { disableTransform: true },
+      { transformRuntime: false },
     ],
   });
 }
