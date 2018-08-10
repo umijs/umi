@@ -22,6 +22,7 @@ export default function(opts = {}) {
     './plugins/proxy',
     './plugins/history',
     './plugins/afwebpack-config',
+    './plugins/mountElementId',
     './plugins/404', // 404 must after mock
   ];
 

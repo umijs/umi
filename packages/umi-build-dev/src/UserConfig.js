@@ -143,11 +143,14 @@ class UserConfig {
     const isDev = process.env.NODE_ENV === 'development';
     const { paths, cwd } = this.service;
     const { force, setConfig } = opts;
+    const defaultConfig = this.service.applyPlugins('modifyDefaultConfig', {
+      initialValue: {},
+    });
 
     const file = getConfigFile(paths.cwd, this.service);
     this.file = file;
     if (!file) {
-      return {};
+      return defaultConfig;
     }
 
     // 强制读取，不走 require 缓存
@@ -176,10 +179,6 @@ class UserConfig {
       this.printError(msg);
       throw new Error(msg);
     }
-
-    const defaultConfig = this.service.applyPlugins('modifyDefaultConfig', {
-      initialValue: {},
-    });
 
     config = normalizeConfig({
       ...defaultConfig,
@@ -247,7 +246,6 @@ class UserConfig {
         const newConfig = this.getConfig({
           force: true,
           setConfig: newConfig => {
-            console.log('set config');
             this.config = newConfig;
           },
         });
