@@ -10,10 +10,6 @@ export default function(webpackConfig, opts) {
     .plugin('hmr')
     .use(require('webpack/lib/HotModuleReplacementPlugin'));
 
-  webpackConfig
-    .plugin('system-bell')
-    .use(require('system-bell-webpack-plugin'));
-
   if (process.env.HARD_SOURCE) {
     const pkgPath = join(opts.cwd, 'package.json');
     if (!existsSync(pkgPath)) {

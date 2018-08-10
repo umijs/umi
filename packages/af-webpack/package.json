@@ -52,7 +52,6 @@
     "strip-ansi": "4.0.0",
     "strip-json-comments": "^2.0.1",
     "style-loader": "^0.21.0",
-    "system-bell-webpack-plugin": "^1.0.0",
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.8.1",
