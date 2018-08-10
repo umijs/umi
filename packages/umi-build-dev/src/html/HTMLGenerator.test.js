@@ -21,7 +21,9 @@ describe('HG', () => {
 
   it('getHtmlPath', () => {
     const hg = new HTMLGenerator({
-      config: {},
+      config: {
+        mountElementId: 'root',
+      },
     });
     expect(hg.getHtmlPath('/')).toEqual('index.html');
     expect(hg.getHtmlPath('/a')).toEqual('a/index.html');
@@ -32,6 +34,7 @@ describe('HG', () => {
     const hg = new HTMLGenerator({
       config: {
         exportStatic: { htmlSuffix: true },
+        mountElementId: 'root',
       },
     });
     expect(hg.getHtmlPath('/')).toEqual('index.html');
@@ -102,7 +105,9 @@ describe('HG', () => {
         umi: ['umi.js', 'umi.css'],
       },
       minify: false,
-      config: {},
+      config: {
+        mountElementId: 'documenttestid',
+      },
       paths: {
         cwd: '/a',
         absPageDocumentPath: '/tmp/files-not-exists',
@@ -130,7 +135,7 @@ describe('HG', () => {
 </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="documenttestid"></div>
 <script src="/umi.js"></script>
 </body>
     `.trim(),
@@ -146,6 +151,7 @@ describe('HG', () => {
       minify: false,
       config: {
         runtimePublicPath: true,
+        mountElementId: 'documenttestid',
       },
       paths: {
         cwd: '/a',
@@ -167,7 +173,7 @@ describe('HG', () => {
 </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="documenttestid"></div>
 <script src="/umi.js"></script>
 </body>
     `.trim(),
@@ -177,7 +183,9 @@ describe('HG', () => {
   it('getContent in development', () => {
     const hg = new HTMLGenerator({
       env: 'development',
-      config: {},
+      config: {
+        mountElementId: 'documenttestid',
+      },
       paths: {
         cwd: '/a',
         absPageDocumentPath: '/tmp/files-not-exists',
@@ -195,7 +203,7 @@ describe('HG', () => {
 </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="documenttestid"></div>
 <script src="/umi.js"></script>
 </body>
     `.trim(),
@@ -209,7 +217,9 @@ describe('HG', () => {
       chunksMap: {
         umi: ['umi.js', 'umi.css'],
       },
-      config: {},
+      config: {
+        mountElementId: 'documenttestid',
+      },
       paths: {
         cwd: '/a',
         absPageDocumentPath: '/tmp/files-not-exists',
@@ -221,7 +231,7 @@ describe('HG', () => {
     });
     expect(content.trim()).toEqual(
       `
-<head><link rel="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="root"></div><script src="/umi.js"></script></body>
+<head><link rel="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="documenttestid"></div><script src="/umi.js"></script></body>
     `.trim(),
     );
   });
@@ -237,6 +247,7 @@ describe('HG', () => {
         exportStatic: {
           dynamicRoot: true,
         },
+        mountElementId: 'documenttestid',
       },
       paths: {
         cwd: '/a',
@@ -259,7 +270,7 @@ describe('HG', () => {
 </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="documenttestid"></div>
 <script src="./umi.js"></script>
 </body>
     `.trim(),
@@ -291,6 +302,7 @@ describe('HG', () => {
           htmlSuffix: true,
           dynamicRoot: true,
         },
+        mountElementId: 'documenttestid',
       },
       paths: {
         cwd: '/a',
@@ -313,7 +325,7 @@ describe('HG', () => {
 </script>
 </head>
 <body>
-<div id="root"></div>
+<div id="documenttestid"></div>
 <script src="./umi.js"></script>
 </body>
     `.trim(),
@@ -340,7 +352,9 @@ describe('HG', () => {
       chunksMap: {
         umi: ['umi.js', 'umi.css'],
       },
-      config: {},
+      config: {
+        mountElementId: 'documenttestid',
+      },
       paths: {
         cwd: '/a',
         absPageDocumentPath: '/tmp/files-not-exists',
@@ -375,6 +389,7 @@ describe('HG', () => {
           htmlSuffix: true,
           dynamicRoot: true,
         },
+        mountElementId: 'documenttestid',
       },
       paths: {
         cwd: '/a',

@@ -5,7 +5,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service } = api;
+  const { service, config } = api;
   const { cwd } = service;
 
   api.registerCommand(
@@ -21,7 +21,10 @@ export default function(api) {
       process.env.NODE_ENV = 'development';
       service.applyPlugins('onStart');
 
-      const filesGenerator = getFilesGenerator(service, { RoutesManager });
+      const filesGenerator = getFilesGenerator(service, {
+        RoutesManager,
+        mountElementId: config.mountElementId,
+      });
       filesGenerator.generate();
 
       let server = null;
