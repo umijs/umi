@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@babel/core": "7.0.0-rc.1",
-    "@babel/plugin-transform-modules-commonjs": "7.0.0-rc.1",
     "@babel/register": "7.0.0-rc.1",
     "@babel/runtime": "7.0.0-rc.1",
     "assert": "^1.4.1",

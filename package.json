@@ -23,9 +23,10 @@
   "devDependencies": {
     "@babel/cli": "7.0.0-rc.1",
     "@babel/core": "7.0.0-rc.1",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0-rc.1",
     "@babel/preset-env": "7.0.0-rc.1",
     "@babel/preset-react": "7.0.0-rc.1",
-    "@babel/preset-stage-0": "7.0.0-rc.1",
     "@babel/runtime": "7.0.0-rc.1",
     "babel-eslint": "^8.0.2",
     "chokidar": "^2.0.2",
@@ -49,9 +50,5 @@
     "through2": "^2.0.3",
     "umi-test": "^0.5.3",
     "vinyl-fs": "^3.0.2"
-  },
-  "dependencies": {
-    "@babel/plugin-proposal-do-expressions": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0-rc.1"
   }
 }

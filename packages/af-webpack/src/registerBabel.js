@@ -3,7 +3,6 @@ export default function registerBabel(opts = {}) {
   if (disablePreventTest || process.env.NODE_ENV !== 'test') {
     require('@babel/register')({
       presets: [babelPreset],
-      plugins: [require.resolve('@babel/plugin-transform-modules-commonjs')],
       only,
       ignore,
       babelrc: false,
