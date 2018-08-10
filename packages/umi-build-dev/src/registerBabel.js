@@ -34,7 +34,7 @@ export default function(opts = {}) {
     return winPath(fullPath);
   });
   registerBabel({
-    only: [only.join('|')],
+    only: [new RegExp(`${only.join('|')}`)],
     babelPreset: [
       require.resolve('babel-preset-umi'),
       { disableTransform: true },
