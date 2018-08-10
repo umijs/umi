@@ -26,7 +26,10 @@ const nodeBabelConfig = {
         },
       },
     ],
-    [require.resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
+  ],
+  plugins: [
+    require.resolve('@babel/plugin-proposal-export-default-from'),
+    require.resolve('@babel/plugin-proposal-do-expressions'),
   ],
 };
 const browserBabelConfig = {
@@ -40,7 +43,10 @@ const browserBabelConfig = {
       },
     ],
     require.resolve('@babel/preset-react'),
-    [require.resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
+  ],
+  plugins: [
+    require.resolve('@babel/plugin-proposal-export-default-from'),
+    require.resolve('@babel/plugin-proposal-do-expressions'),
   ],
 };
 const BROWSER_FILES = [

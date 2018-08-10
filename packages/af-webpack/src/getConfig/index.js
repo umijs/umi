@@ -57,13 +57,7 @@ export default function(opts) {
       '.ts',
       '.web.tsx',
       '.tsx',
-    ])
-    .end()
-    .alias // .set('@', api.resolve('src'))
-    .set(
-      '@babel/runtime',
-      dirname(require.resolve('@babel/runtime/package.json')),
-    );
+    ]);
 
   if (opts.alias) {
     for (const key in opts.alias) {
@@ -120,7 +114,7 @@ export default function(opts) {
   };
   const babelOptsForDeps = {
     presets: [
-      [require.resolve('babel-preset-umi'), { disableTransform: true }],
+      [require.resolve('babel-preset-umi'), { transformRuntime: false }],
     ],
     ...babelOptsCommon,
   };

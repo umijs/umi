@@ -38,7 +38,7 @@ or
 
 ### commonjs
 
-### disableTransform
+### transformRuntime
 
 ### preact
 
