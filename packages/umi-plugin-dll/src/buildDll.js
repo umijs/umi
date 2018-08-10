@@ -96,7 +96,7 @@ export default function(opts = {}) {
         writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
-      onFail(err) {
+      onFail({ err }) {
         reject(err);
       },
     });
