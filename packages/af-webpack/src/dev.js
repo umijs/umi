@@ -43,6 +43,9 @@ export default function dev({
       const urls = prepareUrls(PROTOCOL, HOST, port, base);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
+          // make sound
+          // ref: https://github.com/JannesMeyer/system-bell-webpack-plugin/blob/bb35caf/SystemBellPlugin.js#L14
+          process.stdout.write('\x07');
           return;
         }
 

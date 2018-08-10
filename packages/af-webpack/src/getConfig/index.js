@@ -202,7 +202,7 @@ export default function(opts) {
 
   // plugins -> define
   webpackConfig
-    .plugin('case-sensitive')
+    .plugin('define')
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> case sensitive
