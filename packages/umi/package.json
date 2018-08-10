@@ -3,7 +3,7 @@
   "version": "2.0.0-beta.5",
   "description": "Blazing-fast next.js-like framework for React apps.",
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.46",
+    "@babel/runtime": "7.0.0-rc.1",
     "@types/react": "^16.1.0",
     "atool-monitor": "^0.4.4",
     "babel-preset-umi": "^1.0.0-beta.3",

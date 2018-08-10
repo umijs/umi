@@ -19,7 +19,12 @@ export default function(context, opts = {}) {
     require.resolve('@babel/plugin-proposal-export-default-from'),
     require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
     require.resolve('@babel/plugin-proposal-optional-chaining'),
-    require.resolve('@babel/plugin-proposal-pipeline-operator'),
+    [
+      require.resolve('@babel/plugin-proposal-pipeline-operator'),
+      {
+        proposal: 'minimal',
+      },
+    ],
     require.resolve('@babel/plugin-proposal-do-expressions'),
     require.resolve('@babel/plugin-proposal-function-bind'),
   ];
