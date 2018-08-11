@@ -1,5 +1,5 @@
 import Config from 'webpack-chain';
-import { join, dirname, resolve, relative } from 'path';
+import { join, resolve, relative } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
