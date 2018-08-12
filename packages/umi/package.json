@@ -43,6 +43,7 @@
     "src",
     "bin",
     "babel.js",
+    "cli.js",
     "dynamic.d.ts",
     "link.d.ts",
     "navlink.d.ts",
