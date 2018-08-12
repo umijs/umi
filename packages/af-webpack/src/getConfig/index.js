@@ -1,5 +1,5 @@
 import Config from 'webpack-chain';
-import { join, dirname, resolve, relative } from 'path';
+import { join, resolve, relative } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
@@ -120,11 +120,11 @@ export default function(opts) {
   if (opts.disableDynamicImport) {
     babelOpts.plugins = [
       ...(babelOpts.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node-sync'),
+      require.resolve('babel-plugin-dynamic-import-node'),
     ];
     babelOptsForDeps.plugins = [
       ...(babelOptsForDeps.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node-sync'),
+      require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
 
