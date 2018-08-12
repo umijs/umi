@@ -120,11 +120,11 @@ export default function(opts) {
   if (opts.disableDynamicImport) {
     babelOpts.plugins = [
       ...(babelOpts.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node-sync'),
+      require.resolve('babel-plugin-dynamic-import-node'),
     ];
     babelOptsForDeps.plugins = [
       ...(babelOptsForDeps.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node-sync'),
+      require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
 
