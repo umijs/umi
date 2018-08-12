@@ -25,7 +25,7 @@ export default function(api, options) {
       if (options.webpackChunkName) {
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
-      return `dynamic(() => import(${extendStr}'${importPath}'), {${loadingOpts}})`;
+      return `dynamic(import(${extendStr}'${importPath}'), {${loadingOpts}})`;
     });
   }
 }
