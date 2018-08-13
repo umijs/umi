@@ -1,6 +1,6 @@
 import { relative } from 'path';
 
-export default function(api, options) {
+export default function(api, options = {}) {
   const { paths } = api;
 
   api.addEntryImport(() => {
