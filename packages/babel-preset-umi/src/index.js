@@ -2,12 +2,12 @@ export default function(context, opts = {}) {
   const nodeEnv = process.env.NODE_ENV;
   const {
     useBuiltIns = false,
+    loose = false,
     targets = { browsers: ['last 2 versions'] },
     env = {},
   } = opts;
   const transformRuntime =
     'transformRuntime' in opts ? opts.transformRuntime : {};
-  const loose = 'loose' in opts ? opts.loose : true;
   const exclude = [
     'transform-typeof-symbol',
     'transform-unicode-regex',
