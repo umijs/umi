@@ -2,7 +2,7 @@ import px2rem from 'postcss-plugin-px2rem';
 import { join, relative } from 'path';
 import { findJS } from 'umi-utils';
 
-export default function(api, options) {
+export default function(api, options = {}) {
   const { paths } = api;
 
   api.modifyAFWebpackOpts(opts => {
