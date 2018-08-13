@@ -1,1 +1,1 @@
-export default from 'ts-jest-babel-7';
+export default from 'ts-jest';
