@@ -64,6 +64,7 @@ export default function(api, options = {}) {
         options.baseNavigator === undefined ? true : options.baseNavigator,
       useLocalStorage: true,
       defaultLocale,
+      defaultLang: defaultLocale.split('-')[0],
       defaultAntdLocale: defaultLocale.replace('-', '_'),
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');

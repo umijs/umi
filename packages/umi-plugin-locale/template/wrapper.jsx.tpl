@@ -31,14 +31,16 @@ const localeInfo = {
 let appLocale = {
   locale: '{{defaultLocale}}',
   messages: {},
+  data: require('react-intl/locale-data/{{defaultLang}}')
 };
 if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
   appLocale = localeInfo[localStorage.getItem('umi_locale')];
 } else if (localeInfo[navigator.language] && baseNavigator){
   appLocale = localeInfo[navigator.language];
 } else {
-  appLocale = localeInfo['${defaultLocale}'] || appLocale;
+  appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
 }
+window.g_lang = appLocale.locale;
 {{#localeList.length}}
 appLocale.data && addLocaleData(appLocale.data);
 {{/localeList.length}}
