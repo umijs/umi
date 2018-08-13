@@ -18,8 +18,8 @@ export default function(service) {
     service.applyPlugins('chainWebpackConfig', {
       args: webpackConfig,
     });
-    if (config.chainWebpackConfig) {
-      config.chainWebpackConfig(webpackConfig);
+    if (config.chainWebpack) {
+      config.chainWebpack(webpackConfig);
     }
   };
 
