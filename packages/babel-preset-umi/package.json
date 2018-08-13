@@ -35,7 +35,7 @@
     "@babel/preset-env": "7.0.0-rc.1",
     "@babel/preset-react": "7.0.0-rc.1",
     "babel-plugin-react-require": "^3.0.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.8"
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.14"
   },
   "files": [
     "lib",

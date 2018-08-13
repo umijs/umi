@@ -19,15 +19,15 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "antd": "^3.6.5",
-    "antd-mobile": "^2.2.1",
+    "antd": "^3.8.1",
+    "antd-mobile": "^2.2.3",
     "babel-plugin-import": "^1.8.0",
     "fastclick": "^1.0.6",
     "is-plain-object": "^2.0.4",
     "lodash.isequal": "^4.5.0",
     "postcss-plugin-px2rem": "^0.7.0",
-    "preact": "^8.2.9",
-    "preact-compat": "^3.18.0",
+    "preact": "^8.3.0",
+    "preact-compat": "^3.18.2",
     "register-service-worker": "^1.4.1",
     "umi-plugin-dll": "^1.0.0-beta.7",
     "umi-plugin-dva": "^1.0.0-beta.7",
@@ -35,7 +35,7 @@
     "umi-plugin-polyfill": "^1.0.0-beta.7",
     "umi-plugin-routes": "^1.0.0-beta.7",
     "umi-utils": "^0.2.2",
-    "webpack": "^4.16.1",
+    "webpack": "^4.16.5",
     "workbox-webpack-plugin": "^3.4.1"
   }
 }
