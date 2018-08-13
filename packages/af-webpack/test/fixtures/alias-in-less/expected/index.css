@@ -1,7 +1,4 @@
-.mixin {
-  color: red;
-}
 .index {
-  color: green;
+  color: 'red';
 }
 
