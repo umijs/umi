@@ -3,6 +3,7 @@
   "version": "1.0.0-beta.7",
   "main": "./lib/index.js",
   "dependencies": {
+    "babel-plugin-dva-hmr": "^0.4.1",
     "dva": "^2.4.0",
     "dva-immer": "^0.2.3",
     "dva-loading": "^2.0.5",
