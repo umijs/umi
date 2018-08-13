@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-const { FormattedMessage } = require('react-intl');
-
 function setLocale(lang) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
     // for reset when lang === undefined
@@ -11,7 +9,7 @@ function setLocale(lang) {
 }
 
 function getLocale() {
-  return window.localStorage.getItem('umi_locale');
+  return window.g_lang;
 }
 
 let intl = {
@@ -32,10 +30,6 @@ function formatMessage() {
   return intl.formatMessage.call(intl, ...arguments);
 }
 
-export {
-  formatMessage,
-  setLocale,
-  getLocale,
-  FormattedMessage,
-  _setIntlObject,
-};
+export * from 'react-intl';
+
+export { formatMessage, setLocale, getLocale, _setIntlObject };
