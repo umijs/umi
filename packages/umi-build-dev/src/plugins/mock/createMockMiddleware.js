@@ -101,7 +101,6 @@ export default function getMockMiddleware(api) {
   }
 
   function normalizeConfig(config) {
-    console.log('config', config);
     return Object.keys(config).reduce((memo, key) => {
       const handler = config[key];
       const type = typeof handler;
