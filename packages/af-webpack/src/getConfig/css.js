@@ -14,20 +14,6 @@ export default function(webpackConfig, opts) {
   const cssOpts = {
     importLoaders: 1,
     sourceMap: !opts.disableCSSSourceMap,
-    ...(isDev
-      ? {}
-      : {
-          minimize: !(
-            process.env.CSS_COMPRESS === 'none' ||
-            process.env.COMPRESS === 'none' ||
-            process.env.NO_COMPRESS
-          )
-            ? {
-                // ref: https://github.com/umijs/umi/issues/164
-                minifyFontValues: false,
-              }
-            : false,
-        }),
     ...(opts.cssLoaderOptions || {}),
   };
   const theme = normalizeTheme(opts.theme);
@@ -42,6 +28,12 @@ export default function(webpackConfig, opts) {
         flexbox: 'no-2009',
       }),
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),
+      ...(isDev ||
+      process.env.CSS_COMPRESS === 'none' ||
+      process.env.COMPRESS === 'none' ||
+      process.env.NO_COMPRESS
+        ? []
+        : [require('cssnano')()]),
     ],
   };
   const cssModulesConfig = {
