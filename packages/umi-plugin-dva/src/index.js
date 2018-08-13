@@ -82,6 +82,7 @@ export function getGlobalModels(api, shouldImportDynamic) {
 export default function(api, opts = {}) {
   const { paths } = api;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
+  const isDev = process.env.NODE_ENV === 'development';
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && opts.dynamicImport;
 
@@ -252,9 +253,14 @@ const DvaContainer = require('./DvaContainer').default;
           }
         : {}),
     };
+    const extraBabelPlugins = [
+      ...(memo.extraBabelPlugins || []),
+      ...(isDev && opts.hmr ? [require.resolve('babel-plugin-dva-hmr')] : []),
+    ];
     return {
       ...memo,
       alias,
+      extraBabelPlugins,
     };
   });
 
