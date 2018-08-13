@@ -2,7 +2,7 @@ import assert from 'assert';
 
 export default function(api) {
   return {
-    name: 'chainWebpackConfig',
+    name: 'chainWebpack',
     validate(val) {
       assert(
         typeof val === 'function',
@@ -10,9 +10,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.restart(
-        /* why */ 'Configure item chainWebpackConfig Changed.',
-      );
+      api.service.restart(/* why */ 'Configure item chainWebpack Changed.');
     },
   };
 }
