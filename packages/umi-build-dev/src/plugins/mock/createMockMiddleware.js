@@ -48,7 +48,7 @@ export default function getMockMiddleware(api) {
       ret = mockFiles.reduce((memo, mockFile) => {
         memo = {
           ...memo,
-          ...require(join(absMockPath, mockFile)), // eslint-disable-line
+          ...require(join(absMockPath, mockFile)).default, // eslint-disable-line
         };
         return memo;
       }, {});
@@ -101,25 +101,24 @@ export default function getMockMiddleware(api) {
   }
 
   function normalizeConfig(config) {
+    console.log('config', config);
     return Object.keys(config).reduce((memo, key) => {
       const handler = config[key];
-      if (key !== '__esModule') {
-        const type = typeof handler;
-        assert(
-          type === 'function' || type === 'object',
-          `mock value of ${key} should be function or object, but got ${type}`,
-        );
-        const { method, path } = parseKey(key);
-        const keys = [];
-        const re = pathToRegexp(path, keys);
-        memo.push({
-          method,
-          path,
-          re,
-          keys,
-          handler: createHandler(method, path, handler),
-        });
-      }
+      const type = typeof handler;
+      assert(
+        type === 'function' || type === 'object',
+        `mock value of ${key} should be function or object, but got ${type}`,
+      );
+      const { method, path } = parseKey(key);
+      const keys = [];
+      const re = pathToRegexp(path, keys);
+      memo.push({
+        method,
+        path,
+        re,
+        keys,
+        handler: createHandler(method, path, handler),
+      });
       return memo;
     }, []);
   }
