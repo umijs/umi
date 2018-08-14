@@ -23,6 +23,7 @@
     "css-loader": "^1.0.0",
     "cssnano": "^4.0.5",
     "debug": "^3.1.0",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "deprecate": "^1.0.0",
     "detect-port": "^1.2.1",
     "didyoumean": "^1.2.1",

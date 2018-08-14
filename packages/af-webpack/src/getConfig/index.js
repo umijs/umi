@@ -42,7 +42,8 @@ export default function(opts) {
 
   // resolve
   webpackConfig.resolve
-    .set('symlinks', false)
+    // 不能设为 false，因为 tnpm 是通过 link 处理依赖，设为 false tnpm 下会有大量的冗余模块
+    .set('symlinks', true)
     .modules.add('node_modules')
     .add(join(__dirname, '../../node_modules'))
     .end()
@@ -228,6 +229,12 @@ export default function(opts) {
           openAnalyzer: true,
         },
       ]);
+  }
+
+  if (process.env.DUPLICATE_CHECKER) {
+    webpackConfig
+      .plugin('duplicate-package-checker')
+      .use(require('duplicate-package-checker-webpack-plugin'));
   }
 
   // plugins -> copy
