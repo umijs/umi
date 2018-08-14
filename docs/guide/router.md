@@ -126,7 +126,7 @@ export default function(props) {
 
 你可能需要针对不同路由输出不同的全局 layout，umi 不支持这样的配置，但你仍可以在 `layouts/index.js` 对 location.path 做区分，渲染不同的 layout 。
 
-比如不想要针对 /login 输出简单布局，
+比如想要针对 /login 输出简单布局，
 
 ```js
 export default function(props) {
