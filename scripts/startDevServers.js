@@ -1,5 +1,5 @@
 const { fork } = require('child_process');
-const { join } = require('path');
+const { join, dirname } = require('path');
 
 const DEV_SCRIPT = join(__dirname, '../packages/umi/lib/scripts/dev.js');
 
@@ -10,6 +10,7 @@ function startDevServer(opts = {}) {
       env: {
         CLEAR_CONSOLE: 'none',
         BROWSER: 'none',
+        UMI_DIR: dirname(require.resolve('../packages/umi/package')),
       },
     });
     child.on('message', args => {
