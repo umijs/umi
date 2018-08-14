@@ -82,16 +82,19 @@ export default function(api) {
         ),
       )
       .set('@', paths.absSrcPath)
-      .set('umi/link', join(process.env.UMI_DIR, 'lib/link'))
-      .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic'))
-      .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink'))
-      .set('umi/redirect', join(process.env.UMI_DIR, 'lib/redirect'))
-      .set('umi/router', join(process.env.UMI_DIR, 'lib/router'))
-      .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter'))
-      .set('umi/_renderRoutes', join(process.env.UMI_DIR, 'lib/renderRoutes'))
+      .set('umi/link', join(process.env.UMI_DIR, 'lib/link.js'))
+      .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic.js'))
+      .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink.js'))
+      .set('umi/redirect', join(process.env.UMI_DIR, 'lib/redirect.js'))
+      .set('umi/router', join(process.env.UMI_DIR, 'lib/router.js'))
+      .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter.js'))
+      .set(
+        'umi/_renderRoutes',
+        join(process.env.UMI_DIR, 'lib/renderRoutes.js'),
+      )
       .set(
         'umi/_createHistory',
-        join(process.env.UMI_DIR, 'lib/createHistory'),
+        join(process.env.UMI_DIR, 'lib/createHistory.js'),
       );
   });
 
