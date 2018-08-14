@@ -32,15 +32,13 @@ export function getModel(cwd, api) {
 function getModelsWithRoutes(routes, api) {
   const { paths } = api;
   return routes.reduce((memo, route) => {
-    if (route.component) {
-      return [
-        ...memo,
-        ...getPageModels(join(paths.cwd, route.component), api),
-        ...(route.routes ? getModelsWithRoutes(route.routes, api) : []),
-      ];
-    } else {
-      return memo;
-    }
+    return [
+      ...memo,
+      ...(route.component && route.component.indexOf('() =>') !== 0
+        ? getPageModels(join(paths.cwd, route.component), api)
+        : []),
+      ...(route.routes ? getModelsWithRoutes(route.routes, api) : []),
+    ];
   }, []);
 }
 
