@@ -30,10 +30,10 @@ export default function(api) {
     return [];
   });
 
-  api.modifyEntryHistory(() => {
+  api.modifyEntryHistory(memo => {
     if (config.history === 'hash') {
       return `createHashHistory()`;
     }
-    return [];
+    return memo;
   });
 }
