@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const startDevServers = require('./startDevServers');
 
 startDevServers()
-  .then(() => {
+  .then(devServers => {
     const testCmd = spawn(
       /^win/.test(process.platform) ? 'npm.cmd' : 'npm',
       ['run', 'test:coverage'],
@@ -11,6 +11,7 @@ startDevServers()
       },
     );
     testCmd.on('exit', code => {
+      devServers.forEach(devServer => devServer && devServer.kill('SIGINT'));
       process.exit(code);
     });
   })

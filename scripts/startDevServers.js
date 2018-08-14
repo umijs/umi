@@ -8,6 +8,7 @@ function startDevServer(opts = {}) {
   return new Promise(resolve => {
     const child = fork(DEV_SCRIPT, ['dev', '--port', port, '--cwd', cwd], {
       env: {
+        ...process.env,
         CLEAR_CONSOLE: 'none',
         BROWSER: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
