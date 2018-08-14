@@ -33,7 +33,11 @@ export default function(webpackConfig, opts) {
       process.env.COMPRESS === 'none' ||
       process.env.NO_COMPRESS
         ? []
-        : [require('cssnano')()]),
+        : [
+            require('cssnano')({
+              preset: ['default', opts.cssnano || {}],
+            }),
+          ]),
     ],
   };
   const cssModulesConfig = {
