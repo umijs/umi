@@ -20,11 +20,20 @@ export default function(api) {
     };
   });
 
-  if (config.history === 'hash') {
-    api.addEntryImportAhead({
-      source: 'history/createHashHistory',
-      specifier: 'createHashHistory',
-    });
-    api.modifyEntryHistory(`createHashHistory()`);
-  }
+  api.addEntryImportAhead(() => {
+    if (config.history === 'hash') {
+      return {
+        source: 'history/createHashHistory',
+        specifier: 'createHashHistory',
+      };
+    }
+    return [];
+  });
+
+  api.modifyEntryHistory(() => {
+    if (config.history === 'hash') {
+      return `createHashHistory()`;
+    }
+    return [];
+  });
 }
