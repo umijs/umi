@@ -59,6 +59,6 @@ switch (aliasedScript) {
     runScript(aliasedScript, args);
     break;
   default:
-    new Service(args).run(script);
+    new Service(require('./lib/buildDevOpts').default(args)).run(script);
     break;
 }

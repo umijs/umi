@@ -19,7 +19,8 @@
     "umi-build-dev": "^1.0.0-beta.10",
     "update-notifier": "^2.3.0",
     "uppercamelcase": "^3.0.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "yargs-parser": "^10.1.0"
   },
   "bin": {
     "umi": "./bin/umi.js"

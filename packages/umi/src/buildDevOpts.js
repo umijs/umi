@@ -2,8 +2,10 @@ import { join } from 'path';
 import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';
+import yParser from 'yargs-parser';
 
-export default function(opts = {}) {
+export default function(args = []) {
+  const opts = yParser(args);
   let cwd = opts.cwd || process.env.APP_ROOT;
   if (cwd) {
     if (!isAbsolute(cwd)) {

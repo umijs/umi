@@ -8,18 +8,11 @@ import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
-import buildDevOpts from './buildDevOpts';
 
 const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
-  constructor(rawArgv) {
-    // init yargs
-    this.yargs = require('yargs');
-    this.yargs.parse(rawArgv);
-
-    const { cwd } = buildDevOpts(this.yargs.argv);
-
+  constructor({ cwd }) {
     this.cwd = cwd || process.cwd();
     try {
       this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
@@ -204,8 +197,10 @@ export default class Service {
     return memo;
   }
 
-  init() {
-    // load env
+  init(rawArgv) {
+    // init yargs
+    this.yargs = require('yargs');
+    this.yargs.parse(rawArgv);
 
     // init plugins
     this.initPlugins();
@@ -238,9 +233,9 @@ export default class Service {
     this.yargs.command(name, opts.desc || name);
   }
 
-  run(name) {
+  run(name, rawArgv) {
+    this.init(rawArgv);
     const args = this.yargs.argv;
-    this.init(args);
     if (!name || name === '--help') {
       // commands tip
       this.yargs.showHelp();
