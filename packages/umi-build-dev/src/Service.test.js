@@ -6,9 +6,7 @@ const fixtures = join(__dirname, 'fixtures/Service');
 
 describe('Service', () => {
   it('resolve plugins from file system', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins')]);
     service.plugins = service.plugins.filter(p => p.id.indexOf('user:') === 0);
 
     // resolve plugins
@@ -17,16 +15,12 @@ describe('Service', () => {
 
   it('resolve plugins from file system failed', () => {
     expect(() => {
-      new Service({
-        cwd: join(fixtures, 'plugins-resolve-failed'),
-      });
+      new Service(['--cwd', join(fixtures, 'plugins-resolve-failed')]);
     }).toThrow(/Plugin \.\/a can't be resolved/);
   });
 
   it('init plugins', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     let appliedCount = 0;
     service.plugins = [
       {
@@ -47,9 +41,7 @@ describe('Service', () => {
   });
 
   it('init plugins with onOptionChange', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     const RETURN_VAL = 'return val';
     service.plugins = [
       {
@@ -64,9 +56,7 @@ describe('Service', () => {
   });
 
   it('init plugins with onOptionChange (should be function)', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -83,9 +73,7 @@ describe('Service', () => {
   });
 
   it('applyPlugins and register', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -108,9 +96,7 @@ describe('Service', () => {
   });
 
   it('applyPluginsAsync', done => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -145,9 +131,7 @@ describe('Service', () => {
   });
 
   it('registerMethod with API_TYPE.ADD', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -166,9 +150,7 @@ describe('Service', () => {
   });
 
   it('registerMethod with API_TYPE.ADD in different plugins', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -192,9 +174,7 @@ describe('Service', () => {
   });
 
   it('registerMethod with API_TYPE.MODIFY', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -215,9 +195,7 @@ describe('Service', () => {
   });
 
   it('registerMethod with API_TYPE.EVENT', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     let count = 0;
     service.plugins = [
       {
@@ -243,9 +221,7 @@ describe('Service', () => {
   });
 
   it('registerMethod with apply method', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -276,9 +252,7 @@ describe('Service', () => {
   });
 
   it('throw error if api.xxx is not defined', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -293,9 +267,7 @@ describe('Service', () => {
   });
 
   it('throw error if api method exists', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -315,9 +287,7 @@ describe('Service', () => {
   });
 
   it('changePluginOption', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     let newOption = null;
     service.plugins = [
       {
@@ -339,9 +309,7 @@ describe('Service', () => {
   });
 
   it('registerPlugin', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -363,9 +331,7 @@ describe('Service', () => {
   });
 
   it('registerPlugin failed without id or apply', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     service.plugins = [
       {
         id: 'user:a',
@@ -396,9 +362,7 @@ describe('Service', () => {
   });
 
   it('registerPlugin and changePluginOption', () => {
-    const service = new Service({
-      cwd: join(fixtures, 'plugins-empty'),
-    });
+    const service = new Service(['--cwd', join(fixtures, 'plugins-empty')]);
     let newOption = null;
     service.plugins = [
       {
