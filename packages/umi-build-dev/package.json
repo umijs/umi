@@ -13,6 +13,7 @@
     "debug": "^3.1.0",
     "deprecate": "^1.0.0",
     "didyoumean": "^1.2.1",
+    "dotenv": "^6.0.0",
     "ejs": "^2.5.7",
     "esprima-extract-comments": "^1.1.0",
     "html-minifier": "^3.5.9",
