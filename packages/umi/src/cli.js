@@ -1,10 +1,8 @@
-import spawn from 'cross-spawn';
 import chalk from 'chalk';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 
 const script = process.argv[2];
-const args = process.argv.slice(3);
 
 // Node version check
 const nodeVersion = process.versions.node;
@@ -21,19 +19,6 @@ const updater = require('update-notifier');
 const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
-function runScript(script, args, isFork) {
-  if (isFork) {
-    const child = spawn.sync(
-      'node',
-      [require.resolve(`./scripts/${script}`)].concat(args),
-      { stdio: 'inherit' }, // eslint-disable-line
-    );
-    process.exit(child.status);
-  } else {
-    require(`./scripts/${script}`);
-  }
-}
-
 process.env.UMI_DIR = dirname(require.resolve('../package'));
 
 switch (script) {
@@ -47,10 +32,10 @@ switch (script) {
   case 'build':
   case 'dev':
     require('atool-monitor').emit();
-    runScript(script, args, /* isFork */ true);
+    require(`./scripts/${script}`);
     break;
   case 'test':
-    runScript(script, args);
+    require(`./scripts/${script}`);
     break;
   default: {
     const Service = require('umi-build-dev/lib/Service').default;
