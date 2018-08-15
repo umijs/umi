@@ -235,6 +235,12 @@ export default class Service {
 
   run(name, rawArgv) {
     this.init(rawArgv);
+    this.applyPlugins('_beforeCommandRun', {
+      args: {
+        yargs: this.yargs,
+      },
+    });
+
     const args = this.yargs.argv;
     if (!name || name === '--help') {
       // commands tip

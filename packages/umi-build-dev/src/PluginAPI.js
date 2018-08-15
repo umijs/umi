@@ -75,6 +75,7 @@ export default class PluginAPI {
       'modifyEntryHistory',
       'modifyRouteComponent',
       'modifyRouterRootComponent',
+      '_beforeCommandRun',
       '_beforeServerWithApp',
       'beforeDevServer',
       '_beforeDevServerAsync',
