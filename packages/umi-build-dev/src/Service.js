@@ -239,12 +239,26 @@ export default class Service {
     }
   }
 
-  run(name, args = {}) {
+  registerCommand(name, opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts;
+      opts = null;
+    }
+    opts = opts || {};
+    assert(
+      !(name in this.commands),
+      `Command ${name} exists, please select another one.`,
+    );
+    this.commands[name] = { fn, opts };
+  }
+
+  run(name = 'help', args) {
     this.init();
+
     debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];
-    if (!command && name) {
+    if (!command) {
       console.error(chalk.red(`command "${name}" does not exists.`));
       process.exit(1);
     }
