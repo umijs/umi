@@ -15,7 +15,6 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "babel-preset-umi": "^1.0.0-beta.10",
-    "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
     "clipboardy": "^1.2.3",

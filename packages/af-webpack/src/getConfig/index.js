@@ -199,11 +199,6 @@ export default function(opts) {
     .plugin('define')
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
-  // plugins -> case sensitive
-  webpackConfig
-    .plugin('case-sensitive-paths')
-    .use(require('case-sensitive-paths-webpack-plugin'));
-
   // plugins -> progress bar
   if (!process.env.__FROM_UMI_TEST) {
     webpackConfig
