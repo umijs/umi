@@ -1,9 +1,9 @@
 import { statSync, existsSync } from 'fs';
 
-function getAliasPathWith(alias, key) {
+function getAliasPathWithKey(alias, key) {
   const thePath = alias[key];
   if (alias[thePath]) {
-    return getAliasPathWith(alias, thePath);
+    return getAliasPathWithKey(alias, thePath);
   }
   return thePath;
 }
@@ -18,7 +18,7 @@ export default function(api) {
       const { alias } = api.webpackConfig.resolve;
       const moduleNameMapper = Object.keys(alias).reduce((memo, key) => {
         if (key !== 'react' && key !== 'react-dom') {
-          const aliasPath = getAliasPathWith(alias, key);
+          const aliasPath = getAliasPathWithKey(alias, key);
           if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
             memo[`^${key}/(.*)$`] = `${aliasPath}/$1`;
             memo[`^${key}$`] = aliasPath;
