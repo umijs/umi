@@ -96,6 +96,7 @@ export default class PluginAPI {
       'modifyDefaultConfig',
       '_modifyConfig',
       'modifyHTMLWithAST',
+      '_modifyHelpInfo',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
