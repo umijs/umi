@@ -96,6 +96,7 @@ export default class PluginAPI {
       'modifyDefaultConfig',
       '_modifyConfig',
       'modifyHTMLWithAST',
+      '_modifyHelpInfo',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
@@ -138,16 +139,7 @@ export default class PluginAPI {
   }
 
   registerCommand(name, opts, fn) {
-    const { commands } = this.service;
-    if (typeof opts === 'function') {
-      fn = opts;
-      opts = null;
-    }
-    assert(
-      !(name in commands),
-      `Command ${name} exists, please select another one.`,
-    );
-    commands[name] = { fn, opts: opts || {} };
+    this.service.registerCommand(name, opts, fn);
   }
 
   registerGenerator(name, opts) {

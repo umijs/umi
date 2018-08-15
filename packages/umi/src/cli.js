@@ -1,9 +1,11 @@
 import chalk from 'chalk';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
+import yParser from 'yargs-parser';
+import buildDevOpts from './buildDevOpts';
 
 const script = process.argv[2];
-
+const args = yParser(process.argv.slice(3));
 // Node version check
 const nodeVersion = process.versions.node;
 const versions = nodeVersion.split('.');
@@ -39,10 +41,7 @@ switch (script) {
     break;
   default: {
     const Service = require('umi-build-dev/lib/Service').default;
-    new Service(require('../lib/buildDevOpts').default()).run(
-      script,
-      require('yargs-parser')(process.argv.slice(3)),
-    );
+    new Service(buildDevOpts(args)).run(script, args);
     break;
   }
 }
