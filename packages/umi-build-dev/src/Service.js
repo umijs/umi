@@ -8,11 +8,18 @@ import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
+import buildDevOpts from './buildDevOpts';
 
 const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
-  constructor({ cwd }) {
+  constructor(rawArgv) {
+    // init yargs
+    this.yargs = require('yargs');
+    this.yargs.parse(rawArgv);
+
+    const { cwd } = buildDevOpts(this.yargs.argv);
+
     this.cwd = cwd || process.cwd();
     try {
       this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
@@ -217,12 +224,32 @@ export default class Service {
     }
   }
 
-  run(name, args = {}) {
-    this.init();
+  registerCommand(name, opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts;
+      opts = null;
+    }
+    opts = opts || {};
+    assert(
+      !(name in this.commands),
+      `Command ${name} exists, please select another one.`,
+    );
+    this.commands[name] = { fn, opts };
+    this.yargs.command(name, opts.desc || name);
+  }
+
+  run(name) {
+    const args = this.yargs.argv;
+    this.init(args);
+    if (!name || name === '--help') {
+      // commands tip
+      this.yargs.showHelp();
+      process.exit(0);
+    }
     debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];
-    if (!command && name) {
+    if (!command) {
       console.error(chalk.red(`command "${name}" does not exists.`));
       process.exit(1);
     }
