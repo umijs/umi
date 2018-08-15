@@ -2,7 +2,7 @@ import debug from 'debug';
 import assert from 'assert';
 import { relative } from 'path';
 import isPlainObject from 'is-plain-object';
-import { winPath, compatDirname, findJS, findCSS } from 'umi-utils/lib';
+import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
 import Generator from 'yeoman-generator';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
