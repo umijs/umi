@@ -197,11 +197,7 @@ export default class Service {
     return memo;
   }
 
-  init(rawArgv) {
-    // init yargs
-    this.yargs = require('yargs');
-    this.yargs.parse(rawArgv);
-
+  init() {
     // init plugins
     this.initPlugins();
 
@@ -230,23 +226,11 @@ export default class Service {
       `Command ${name} exists, please select another one.`,
     );
     this.commands[name] = { fn, opts };
-    this.yargs.command(name, opts.desc || name);
   }
 
-  run(name, rawArgv) {
-    this.init(rawArgv);
-    this.applyPlugins('_beforeCommandRun', {
-      args: {
-        yargs: this.yargs,
-      },
-    });
+  run(name = 'help', args) {
+    this.init();
 
-    const args = this.yargs.argv;
-    if (!name || name === '--help') {
-      // commands tip
-      this.yargs.showHelp();
-      process.exit(0);
-    }
     debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];

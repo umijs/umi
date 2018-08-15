@@ -2,10 +2,12 @@ const spawn = require('cross-spawn');
 const chalk = require('chalk');
 const { join, dirname } = require('path');
 const { existsSync } = require('fs');
+const yParser = require('yargs-parser');
 const Service = require('umi-build-dev/lib/Service').default;
 
 const script = process.argv[2];
-const args = process.argv.slice(3);
+const rawArgs = process.argv.slice(3);
+const args = yParser(rawArgs);
 
 const nodeVersion = process.versions.node;
 const versions = nodeVersion.split('.');
@@ -22,11 +24,11 @@ const updater = require('update-notifier');
 const pkg = require('./package.json');
 updater({ pkg: pkg }).notify({ defer: true });
 
-function runScript(script, args, isFork) {
+function runScript(script, rawArgs, isFork) {
   if (isFork) {
     const child = spawn.sync(
       'node',
-      [require.resolve(`./lib/scripts/${script}`)].concat(args),
+      [require.resolve(`./lib/scripts/${script}`)].concat(rawArgs),
       { stdio: 'inherit' }, // eslint-disable-line
     );
     process.exit(child.status);
@@ -53,12 +55,12 @@ switch (aliasedScript) {
   case 'build':
   case 'dev':
     require('atool-monitor').emit();
-    runScript(aliasedScript, args, /* isFork */ true);
+    runScript(aliasedScript, rawArgs, /* isFork */ true);
     break;
   case 'test':
-    runScript(aliasedScript, args);
+    runScript(aliasedScript, rawArgs);
     break;
   default:
-    new Service(require('./lib/buildDevOpts').default(args)).run(script);
+    new Service(require('./lib/buildDevOpts').default(args)).run(script, args);
     break;
 }
