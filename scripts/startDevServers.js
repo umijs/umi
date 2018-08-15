@@ -1,7 +1,7 @@
 const { fork } = require('child_process');
 const { join, dirname } = require('path');
 
-const DEV_SCRIPT = join(__dirname, '../packages/umi/lib/scripts/dev.js');
+const DEV_SCRIPT = join(__dirname, '../packages/umi/bin/umi.js');
 
 function startDevServer(opts = {}) {
   const { port, cwd } = opts;
