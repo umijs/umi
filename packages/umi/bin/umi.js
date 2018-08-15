@@ -8,5 +8,5 @@ if (localCLI && localCLI !== __filename) {
   debug('Using local install of umi');
   require(localCLI);
 } else {
-  require('../cli');
+  require('../lib/cli');
 }
