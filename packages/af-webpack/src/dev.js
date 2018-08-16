@@ -65,16 +65,16 @@ export default function dev({
         );
         console.log();
 
+        onCompileDone({
+          isFirstCompile,
+          stats,
+        });
+
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);
           send({ type: DONE });
         }
-
-        onCompileDone({
-          isFirstCompile,
-          stats,
-        });
       });
 
       const serverConfig = {
