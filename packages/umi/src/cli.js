@@ -33,7 +33,6 @@ switch (script) {
     break;
   case 'build':
   case 'dev':
-    require('atool-monitor').emit();
     require(`./scripts/${script}`);
     break;
   case 'test':

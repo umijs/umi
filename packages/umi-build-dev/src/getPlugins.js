@@ -25,6 +25,7 @@ export default function(opts = {}) {
     './plugins/afwebpack-config',
     './plugins/mountElementId',
     './plugins/404', // 404 must after mock
+    './plugins/atoolMonitor',
   ];
 
   const pluginsObj = [
