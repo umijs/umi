@@ -3,34 +3,38 @@ import chalk from 'chalk';
 import padEnd from 'string.prototype.padend';
 import getPadLength from '../../utils/getPadLength';
 
-export default (
-  api,
-  option = {
-    scriptName: 'umi',
-  },
-) => {
-  api.registerCommand('help', args => {
-    const command = args._[0];
-    if (!command) {
-      logMainHelp();
-    } else {
-      logHelpForCommand(command, api.service.commands[command]);
-    }
-  });
+export default api => {
+  api.registerCommand(
+    'help',
+    {
+      hide: true,
+    },
+    args => {
+      const helpInfo = api.applyPlugins('_modifyHelpInfo', {
+        initialValue: {
+          scriptName: 'umi',
+          commands: api.service.commands,
+        },
+      });
+      const command = args._[0];
+      if (!command) {
+        logMainHelp(helpInfo);
+      } else {
+        logHelpForCommand(command, helpInfo.commands[command]);
+      }
+    },
+  );
 
-  function logMainHelp() {
-    option = api.applyPlugins('_modifyHelpInfo', {
-      initialValue: option,
-    });
+  function logMainHelp(helpInfo) {
     console.log(
-      `\n  Usage: ${option.scriptName} <command> [options]\n` +
+      `\n  Usage: ${helpInfo.scriptName} <command> [options]\n` +
         `\n  Commands:\n`,
     );
-    const commands = api.service.commands;
+    const commands = helpInfo.commands;
     const padLength = getPadLength(commands);
     for (const name in commands) {
-      if (name !== 'help') {
-        const opts = commands[name].opts || {};
+      const opts = commands[name].opts || {};
+      if (opts.hide !== true) {
         console.log(
           `    ${chalk.green(padEnd(name, padLength))}${opts.description ||
             ''}`,
@@ -39,7 +43,7 @@ export default (
     }
     console.log(
       `\n  run ${chalk.blue(
-        `${option.scriptName} help [command]`,
+        `${helpInfo.scriptName} help [command]`,
       )} for usage of a specific command.\n`,
     );
   }
