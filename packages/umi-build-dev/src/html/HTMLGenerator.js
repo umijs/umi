@@ -283,7 +283,7 @@ export default class HTMLGenerator {
     if (this.modifyHeadScripts)
       headScripts = this.modifyHeadScripts(headScripts);
 
-    if (this.env === 'production' && this.chunksMap['umi.css']) {
+    if (this.env === 'development' || this.chunksMap['umi.css']) {
       // umi.css should be the last one stylesheet
       links.push({
         rel: 'stylesheet',
