@@ -13,6 +13,7 @@ export default function(api) {
     'test',
     {
       webpack: true,
+      description: 'run test files *.test.js and *.e2e.js',
     },
     (args = {}) => {
       const { alias } = api.webpackConfig.resolve;

@@ -12,6 +12,7 @@ export default function(api) {
     'dev',
     {
       webpack: true,
+      description: 'start a dev server for development',
     },
     (args = {}) => {
       const RoutesManager = getRouteManager(service);

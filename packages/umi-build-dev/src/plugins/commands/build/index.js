@@ -12,6 +12,7 @@ export default function(api) {
     'build',
     {
       webpack: true,
+      description: 'building for production',
     },
     () => {
       const RoutesManager = getRouteManager(service);
