@@ -209,7 +209,8 @@ export default function(webpackConfig, opts) {
     },
   );
 
-  const hash = opts.hash ? '.[contenthash:8]' : '';
+  const hash = !isDev && opts.hash ? '.[contenthash:8]' : '';
+
   webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
     {
       filename: `[name]${hash}.css`,
