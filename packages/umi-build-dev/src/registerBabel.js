@@ -34,7 +34,9 @@ export default function(opts = {}) {
     return winPath(fullPath);
   });
   registerBabel({
-    only: [new RegExp(`${only.join('|')}`)],
+    // only suport glob
+    // ref: https://babeljs.io/docs/en/next/babel-core.html#configitem-type
+    only,
     babelPreset: [
       require.resolve('babel-preset-umi'),
       { transformRuntime: false },
