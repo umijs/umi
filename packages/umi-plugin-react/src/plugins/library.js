@@ -37,7 +37,7 @@ export default function(api, options) {
   });
 
   api.addEntryImport(() => {
-    if (options === 'preact') {
+    if (process.env.NODE_ENV === 'development' && options === 'preact') {
       return {
         source: 'preact/devtools',
       };
