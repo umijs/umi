@@ -35,7 +35,12 @@ export default function(webpackConfig, opts) {
         ? []
         : [
             require('cssnano')({
-              preset: ['default', opts.cssnano || {}],
+              preset: [
+                'default',
+                opts.cssnano || {
+                  mergeRules: false,
+                },
+              ],
             }),
           ]),
     ],
