@@ -1,4 +1,4 @@
-import jestCli from 'jest-cli';
+import jest from 'jest';
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
 
@@ -73,7 +73,7 @@ export default function(opts = {}) {
   };
 
   return new Promise((resolve, reject) => {
-    jestCli
+    jest
       .runCLI(
         {
           watch,
