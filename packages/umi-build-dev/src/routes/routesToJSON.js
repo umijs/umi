@@ -18,7 +18,6 @@ export default (routes, service) => {
       targetLevel = 2;
     }
   }
-  console.log('targetLevel', targetLevel);
 
   const { applyPlugins, paths } = service;
   const clonedRoutes = cloneDeep(routes);
