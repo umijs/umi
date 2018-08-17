@@ -3,6 +3,10 @@ import { join } from 'path';
 export default function(api, options) {
   const { paths, winPath } = api;
 
+  if (options.level) {
+    process.env.CODE_SPLITTING_LEVEL = options.level;
+  }
+
   if (process.env.NODE_ENV === 'production') {
     api.modifyAFWebpackOpts(opts => {
       return {
