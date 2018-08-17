@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import didyoumean from 'didyoumean';
 import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
+import extend from 'extend2';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
@@ -97,16 +98,15 @@ class UserConfig {
       initialValue: {},
     });
     if (absConfigPath) {
-      return normalizeConfig({
-        ...defaultConfig,
-        ...requireFile(absConfigPath),
-        ...(env
-          ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`))
-          : {}),
-        ...(isDev
-          ? requireFile(absConfigPath.replace(/\.js$/, '.local.js'))
-          : {}),
-      });
+      return normalizeConfig(
+        extend(
+          true,
+          defaultConfig,
+          requireFile(absConfigPath),
+          env ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`)) : {},
+          isDev ? requireFile(absConfigPath.replace(/\.js$/, '.local.js')) : {},
+        ),
+      );
     } else {
       return {};
     }
@@ -180,12 +180,15 @@ class UserConfig {
       throw new Error(msg);
     }
 
-    config = normalizeConfig({
-      ...defaultConfig,
-      ...requireFile(file, { onError }),
-      ...(env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {}),
-      ...(isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {}),
-    });
+    config = normalizeConfig(
+      extend(
+        true,
+        defaultConfig,
+        requireFile(file, { onError }),
+        env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {},
+        isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {},
+      ),
+    );
 
     config = this.service.applyPlugins('_modifyConfig', {
       initialValue: config,

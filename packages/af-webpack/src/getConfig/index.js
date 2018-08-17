@@ -155,13 +155,11 @@ export default function(opts) {
   // module -> extraBabelIncludes
   // suport es5ImcompatibleVersions
   const extraBabelIncludes = opts.extraBabelIncludes || [];
-  if (opts.es5ImcompatibleVersions) {
-    extraBabelIncludes.push(a => {
-      if (a.indexOf('node_modules') === -1) return false;
-      const pkgPath = getPkgPath(a);
-      return shouldTransform(pkgPath);
-    });
-  }
+  extraBabelIncludes.push(a => {
+    if (a.indexOf('node_modules') === -1) return false;
+    const pkgPath = getPkgPath(a);
+    return shouldTransform(pkgPath);
+  });
   extraBabelIncludes.forEach((include, index) => {
     const rule = `extraBabelInclude_${index}`;
     webpackConfig.module

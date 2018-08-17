@@ -198,6 +198,8 @@ describe('HG', () => {
     expect(content.trim()).toEqual(
       `
 <head>
+
+<link rel="stylesheet" href="/umi.css" />
 <script>
   window.routerBase = "/";
 </script>
