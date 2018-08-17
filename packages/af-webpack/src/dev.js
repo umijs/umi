@@ -1,3 +1,4 @@
+import fs from 'fs';
 import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
 import assert from 'assert';
@@ -13,6 +14,8 @@ const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
+const CERT = process.env.HTTPS && process.env.CERT ? fs.readFileSync(process.env.CERT) : '';
+const KEY = process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.KEY) : '';
 const noop = () => {};
 
 process.env.NODE_ENV = 'development';
@@ -95,6 +98,8 @@ export default function dev({
         host: HOST,
         proxy,
         https: !!process.env.HTTPS,
+        cert: CERT,
+        key: KEY,
         contentBase: contentBase || process.env.CONTENT_BASE,
         before(app) {
           (beforeMiddlewares || []).forEach(middleware => {
