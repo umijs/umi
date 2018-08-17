@@ -5,7 +5,7 @@
     "@babel/runtime": "7.0.0-rc.1",
     "address": "^1.0.3",
     "af-webpack": "^1.0.0-beta.11",
-    "atool-monitor": "^1.0.5",
+    "atool-monitor": "^1.0.6",
     "babel-preset-umi": "^1.0.0-beta.11",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
