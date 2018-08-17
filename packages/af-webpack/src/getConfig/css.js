@@ -47,9 +47,9 @@ export default function(webpackConfig, opts) {
   };
   const cssModulesConfig = {
     modules: true,
-    localIdentName: isDev
+    localIdentName: cssOpts.localIdentName || (isDev
       ? '[name]__[local]___[hash:base64:5]'
-      : '[local]___[hash:base64:5]',
+      : '[local]___[hash:base64:5]'),
   };
   const lessOptions = {
     modifyVars: theme,
