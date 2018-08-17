@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-polyfill",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
