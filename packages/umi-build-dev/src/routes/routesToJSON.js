@@ -11,11 +11,14 @@ export default (routes, service) => {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
     targetLevel = 1;
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute && rootRoute.routes) {
+    const routesHaveChild = routes.filter(
+      route => route.routes && route.routes.length,
+    );
+    if (routesHaveChild.length) {
       targetLevel = 2;
     }
   }
+  console.log('targetLevel', targetLevel);
 
   const { applyPlugins, paths } = service;
   const clonedRoutes = cloneDeep(routes);
