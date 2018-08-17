@@ -22,6 +22,7 @@ const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
 process.env.UMI_DIR = dirname(require.resolve('../package'));
+process.env.UMI_VERSION = pkg.version;
 
 switch (script) {
   case '-v':
