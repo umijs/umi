@@ -3,7 +3,7 @@ import isPlainObject from 'is-plain-object';
 
 export default function(api) {
   return {
-    name: 'exportStatic',
+    name: 'context',
     validate(val) {
       assert(
         isPlainObject(val) || typeof val === 'boolean',
@@ -11,7 +11,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.restart(/* why */ 'Config exportStatic Changed');
+      api.service.restart(/* why */ 'Config context Changed');
     },
   };
 }
