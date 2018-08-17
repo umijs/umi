@@ -16,6 +16,7 @@
     "dotenv": "^6.0.0",
     "ejs": "^2.5.7",
     "esprima-extract-comments": "^1.1.0",
+    "extend2": "^1.0.0",
     "html-minifier": "^3.5.9",
     "http-proxy-middleware": "^0.18.0",
     "is-plain-object": "^2.0.4",
