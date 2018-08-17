@@ -1,12 +1,12 @@
 {
   "name": "umi-build-dev",
-  "version": "1.0.0-beta.15",
+  "version": "1.0.0-beta.16",
   "dependencies": {
     "@babel/runtime": "7.0.0-rc.1",
     "address": "^1.0.3",
-    "af-webpack": "^1.0.0-beta.15",
+    "af-webpack": "^1.0.0-beta.16",
     "atool-monitor": "^1.0.6",
-    "babel-preset-umi": "^1.0.0-beta.15",
+    "babel-preset-umi": "^1.0.0-beta.16",
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
     "cheerio": "^1.0.0-rc.2",
@@ -43,7 +43,7 @@
     "rimraf": "^2.6.1",
     "string.prototype.padend": "^3.0.0",
     "umi-history": "^0.1.0",
-    "umi-test": "^1.0.0-beta.15",
+    "umi-test": "^1.0.0-beta.16",
     "umi-utils": "^0.2.2",
     "yeoman-generator": "^3.1.1"
   },
