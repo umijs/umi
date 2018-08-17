@@ -2,29 +2,29 @@
 
 ## Set up
 
-Install lerna@2.x globally after git clone the repo.
+Install npx globally after git clone the repo.
 
 ```bash
-$ npm i lerna@2.x -g
+$ yarn global add npx
 ```
 
 Install dev deps.
 
 ```bash
-$ npm i
+$ yarn
 ```
 
-Bootstrap every package. (Need to execute when new package is included)
+Bootstrap every package with yarn. (Need to execute when new package is included)
 
 ```bash
-$ lerna bootstrap
+$ npm run bootstrap -- --npm-client yarn
 ```
 
 Link umi globally.
 
 ```bash
 $ cd packages/umi
-$ npm link
+$ yarn link
 ```
 
 ## Common Tasks
@@ -44,7 +44,7 @@ $ lerna exec --scope af-webpack -- npm run debug
 Run `umi dev` in examples/simple.
 
 ```bash
-$ cd boilerplates/simple
+$ cd examples/func-test
 $ umi dev
 
 # Specifiy the port
@@ -56,21 +56,15 @@ Then open http://localhost:8000/ in your browser.
 Run `umi build` in examples/simple.
 
 ```bash
-$ cd boilerplates/simple
+$ cd examples/func-test
 $ umi build
 
-# Don't compress
+# Build without compress
 $ NO_COMPRESS=true umi build
-
-# Debug transform result of specified loader
-DEBUG_LOADER=src/page/index.js umi build
 ```
 
 Publish to npm.
 
 ```bash
 $ npm run publish
-
-# Ignore specified package
-$ npm run publish -- --ignore af-webpack
 ```
