@@ -1,14 +1,12 @@
 import { Card } from 'antd';
 import history from 'umi/router';
+import Link from 'umi/link';
 
 export default () => {
   return (
-    <Card
-      onClick={() => {
-        history.push('/testhistory');
-      }}
-    >
+    <Card>
       <div>hello world</div>
+      <Link to="/test">test</Link>
     </Card>
   );
 };
