@@ -84,7 +84,10 @@ function normalizeEntry(entry) {
 function patchRoute(route, webpackChunkName) {
   if (route.component && !route.component.startsWith('() =>')) {
     if (!webpackChunkName || level <= targetLevel) {
-      webpackChunkName = normalizeEntry(route.component || 'common_component');
+      webpackChunkName = normalizeEntry(route.component || 'common_component')
+        .replace(/^src__/, '')
+        .replace(/^pages__/, 'p__')
+        .replace(/^page__/, 'p__');
     }
     route.component = [
       route.component || 'common_component',
