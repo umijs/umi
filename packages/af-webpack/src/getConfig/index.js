@@ -181,6 +181,10 @@ export default function(opts) {
     .end()
     .exclude.add(/node_modules/)
     .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts)
+    .end()
     .use('awesome-typescript-loader')
     .loader(require.resolve('awesome-typescript-loader'))
     .options({
