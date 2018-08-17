@@ -2,13 +2,7 @@
 
 ## Set up
 
-Install npx globally after git clone the repo.
-
-```bash
-$ yarn global add npx
-```
-
-Install dev deps.
+Install dev deps after git clone the repo.
 
 ```bash
 $ yarn
