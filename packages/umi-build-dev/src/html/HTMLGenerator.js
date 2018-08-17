@@ -210,6 +210,7 @@ export default class HTMLGenerator {
     let context = {
       route,
       config: this.config,
+      ...(this.config.context || {}),
       env: this.env,
     };
     if (this.modifyContext) context = this.modifyContext(context);
