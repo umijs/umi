@@ -16,7 +16,7 @@ export default function(api, options) {
 
       let loadingOpts = '';
       if (options.loadingComponent) {
-        loadingOpts = ` loading: require('${winPath(
+        loadingOpts = `, loading: require('${winPath(
           join(paths.absSrcPath, options.loadingComponent),
         )}').default `;
       }
@@ -25,7 +25,7 @@ export default function(api, options) {
       if (options.webpackChunkName) {
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
-      return `dynamic(import(${extendStr}'${importPath}'), {${loadingOpts}})`;
+      return `dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts} })`;
     });
   }
 }
