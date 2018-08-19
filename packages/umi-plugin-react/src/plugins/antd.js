@@ -1,4 +1,3 @@
-import { compatDirname } from 'umi-utils';
 import { dirname } from 'path';
 
 function importPlugin(key) {
@@ -14,7 +13,7 @@ function importPlugin(key) {
 }
 
 export default function(api) {
-  const { cwd } = api;
+  const { cwd, compatDirname } = api;
 
   api.modifyAFWebpackOpts(opts => {
     opts.babel.plugins = [

@@ -37,21 +37,21 @@ export default function(api, option) {
 
   const plugins = {
     // mobile
-    hd: () => require('./plugins/mobile/hd').default,
-    fastClick: () => require('./plugins/mobile/fastClick').default,
+    hd: () => require('./plugins/hd').default,
+    fastClick: () => require('./plugins/fastClick').default,
 
     // performance
     library: () => require('./plugins/library').default,
     dynamicImport: () => require('./plugins/dynamicImport').default,
-    dll: () => require('umi-plugin-dll').default,
+    dll: () => require('./plugins/dll').default,
     hardSource: () => require('./plugins/hardSource').default,
     pwa: () => require('./plugins/pwa').default,
 
     // misc
-    dva: () => require('umi-plugin-dva').default,
-    locale: () => require('umi-plugin-locale').default,
-    polyfills: () => require('umi-plugin-polyfill').default,
-    routes: () => require('umi-plugin-routes').default,
+    dva: () => require('./plugins/dva').default,
+    locale: () => require('./plugins/locale').default,
+    polyfills: () => require('./plugins/polyfills').default,
+    routes: () => require('./plugins/routes').default,
     antd: () => require('./plugins/antd').default,
   };
 

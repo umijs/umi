@@ -1,8 +1,7 @@
-import { compatDirname } from 'umi-utils';
 import { dirname } from 'path';
 
 export default function(api, options) {
-  const { cwd } = api.service;
+  const { cwd, compatDirname } = api.service;
 
   api.chainWebpackConfig(webpackConfig => {
     if (options === 'preact') {

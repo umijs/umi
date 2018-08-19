@@ -33,9 +33,8 @@
     "umi-plugin-dll": "^1.0.0-beta.16",
     "umi-plugin-dva": "^1.0.0-beta.16",
     "umi-plugin-locale": "^2.0.0-beta.16",
-    "umi-plugin-polyfill": "^1.0.0-beta.16",
+    "umi-plugin-polyfills": "^1.0.0-beta.16",
     "umi-plugin-routes": "^1.0.0-beta.16",
-    "umi-utils": "^0.2.2",
     "webpack": "^4.16.5",
     "workbox-webpack-plugin": "^3.4.1"
   }
