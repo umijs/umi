@@ -1,7 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-function withRoutes(Routes) {
+function withRoutes(route) {
+  const Routes = route.Routes;
   let len = Routes.length - 1;
   let Component = args => {
     const { render, ...props } = args;
@@ -24,7 +25,7 @@ function withRoutes(Routes) {
       <Route
         {...rest}
         render={props => {
-          return <Component {...props} render={render} />;
+          return <Component {...props} route={route} render={render} />;
         }}
       />
     );
@@ -50,7 +51,7 @@ export default function renderRoutes(
             />
           );
         }
-        const RouteRoute = route.Routes ? withRoutes(route.Routes) : Route;
+        const RouteRoute = route.Routes ? withRoutes(route) : Route;
         return (
           <RouteRoute
             key={route.key || i}

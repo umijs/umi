@@ -8,7 +8,9 @@ export default function(service) {
       const routes = service.applyPlugins('modifyRoutes', {
         initialValue: getRouteConfig(paths, config, route => {
           service.applyPlugins('onPatchRoute', {
-            initialValue: route,
+            args: {
+              route,
+            },
           });
         }),
       });
