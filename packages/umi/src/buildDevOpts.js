@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';
@@ -26,10 +26,13 @@ export default function(opts = {}) {
 }
 
 function loadDotEnv() {
-  const parsed = parse(readFileSync(join(process.cwd(), '.env'), 'utf-8'));
-  Object.keys(parsed).forEach(key => {
-    if (!process.env.hasOwnProperty(key)) {
-      process.env[key] = parsed[key];
-    }
-  });
+  const envPath = join(process.cwd(), '.env');
+  if (existsSync(envPath)) {
+    const parsed = parse(readFileSync(envPath, 'utf-8'));
+    Object.keys(parsed).forEach(key => {
+      if (!process.env.hasOwnProperty(key)) {
+        process.env[key] = parsed[key];
+      }
+    });
+  }
 }
