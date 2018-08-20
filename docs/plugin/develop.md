@@ -405,10 +405,6 @@ export default (runtimeApi, opts) => {
 }
 ```
 
-### modifyDefaultTemplateContent
-
-修改默认的模板，bigfish 会用到。
-
 ### addHTMLMeta
 
 在 HTML 中添加 meta 标签。
@@ -437,23 +433,22 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
-### modifyRoutesConfig
+### modifyRoutes
 
 修改路由配置。
 
 ```js
-api.modifyRoutesConfig(({ memo, args}) => {
+api.modifyRoutes(({ memo, args}) => {
   return memo;
 })
 ```
 
-### modifySingleRouteConfig
+### onPatchRoute
 
-修改单个路由的配置。
+获取单个路由的配置时触发，可以在这里修改路由配置。
 
 ```js
-api.modifySingleRouteConfig({ memo } => {
-  return memo;
+api.onPatchRoute({ memo } => {
 })
 ```
 
@@ -485,15 +480,6 @@ export class Control extends Component (props) => {
 }
 
 ```
-
-
-### addRouteWrapperWithComponent
-
-```js
-api.addRouteWrapperWithComponent('./path/to/component.js');
-```
-
-在路由组件外面包一层组件，也可以用 modifySingleRouteConfig 这个实现，这个相当于是一个快捷方式。
 
 ### addEntryImportAhead
 
