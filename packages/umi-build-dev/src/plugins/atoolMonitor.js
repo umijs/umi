@@ -16,7 +16,7 @@ export default function(api, opts = {}) {
       };
       const devData = {
         reportFrom: 'umi',
-        umiVersion,
+        umiVersion: process.env.UMI_VERSION,
         env: {
           NODE_ENV: process.env.NODE_ENV,
           UMI_ENV: process.env.UMI_ENV,
@@ -25,7 +25,9 @@ export default function(api, opts = {}) {
         startTime: stats.startTime,
         endTime: stats.endTime,
       };
-      reportData({ appData, devData });
+      try {
+        reportData({ appData, devData });
+      } catch (e) {}
     }
   });
 
@@ -46,7 +48,9 @@ export default function(api, opts = {}) {
         startTime: stats.startTime,
         endTime: stats.endTime,
       };
-      reportBuildData({ buildData });
+      try {
+        reportBuildData({ buildData });
+      } catch (e) {}
     }
   });
 
@@ -68,7 +72,9 @@ export default function(api, opts = {}) {
         startTime: stats.startTime,
         endTime: stats.endTime,
       };
-      reportBuildData({ buildData });
+      try {
+        reportBuildData({ buildData });
+      } catch (e) {}
     }
   });
 }
