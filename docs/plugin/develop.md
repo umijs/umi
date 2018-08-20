@@ -12,12 +12,9 @@ sidebarDepth: 2
 export default (api, opts) => {
   // your plugin code here
 };
-
-// 如果你的插件依赖其它插件，导出该配置后 umi 会帮你检测用户是否在你的插件之前加入了依赖的插件，待定
-export const dependence = ['umi-plugin-dva'];
 ```
 
-需要注意的是，如果你的插件需要发布为 npm 包，那么你需要发布之前做编译，确保发布的代码里面是 ES5 的代码。我们提供了 umi 插件的脚手架（umi-plugin-demo，开发中）方便你进行插件的开发。
+需要注意的是，如果你的插件需要发布为 npm 包，那么你需要发布之前做编译，确保发布的代码里面是 ES5 的代码。
 
 该初始化方法会收到两个参数，第一个参数 `api`，umi 提供给插件的接口都是通过它暴露出来的。第二个参数 `opts` 是用户在初始化插件的时候填写的。
 
@@ -27,36 +24,34 @@ umi 的所有插件接口都是通过初始化插件时候的 api 来提供的�
 
 - 环境变量，插件中可以使用的一些环境变量
 - 系统级变量，一些插件系统暴露出来的变量或者常量
+- 工具类 API，常用的一些工具类方法
 - 系统级 API，一些插件系统暴露的核心方法
 - 事件类 API，一些插件系统提供的关键的事件点
-- 工具类 API，常用的一些工具类方法
-- 运行时 API，umi/runtime 暴露给浏览器中使用的 API
 - 应用类 API，用于实现插件功能需求的 API，有直接调用和函数回调两种方法
 
-**注：** 所有的 API 都是通过 `api.name` 的方法使用的，内部的 API 会统一加上 `_` 的前缀。
+**注：** 所有的 API 都是通过 `api.[theApiName]` 的方法使用的，内部的 API 会统一加上 `_` 的前缀。
 
 下面是一个基本的使用示例：
 
 ```js
 export default (api, opts) => {
   api.onOptionChange(() => {
-    api.rebuildFiles();
+    api.rebuildTmpFiles();
   });
 }
 ```
 
 ## 插件示例
 
-下面是参考 `umi-plugin-locale` 的需求添加的一个插件。
+下面是参考 `umi-plugin-locale` 的需求添加的一个插件伪代码示例，完整的例子可以查看[源代码](https://github.com/umijs/umi/blob/master/packages/umi-plugin-locale/src/index.js)。
 
 ```js
-export default (api, defaultOpts) => {
+export default (api, opts = {}) => {
   const { paths } = api.service;
   // 监听插件配置变化，这一堆代码是不是应该有什么快捷的 alias
-  let opts = defaultOpts;
   api.onOptionChange((newOpts) => {
     opts = newOpts;
-    api.rebuildFile();
+    api.rebuildTmpFiles();
   });
   // 添加 Provider 的包裹
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
@@ -66,29 +61,15 @@ export default (api, defaultOpts) => {
     }
   });
   // 添加对 locale 文件的 watch
-  api.registerWatcher({
-    path: join(paths.srcPath, './locale/*.js')),
-    onChange() {
-      api.rebuildFiles();
-    }
-  });
-  // 语言文件载入到代码中
-  api.importModule(() => {
-    const allLocaleFiles = getLocaleFiles(); // locale/*.js
-    return {
-       path: allLocaleFiles,
-       name: 'localesModules',
-    };
-  });
-  api.insertFragmentAfterImport(`
-     getRuntimeState('localesModules', localesModules);
-  `);
+  api.addPageWatcher(
+    join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),
+  );
 };
 ```
 
 ## 插件的顺序
 
-插件的执行顺序依赖用户在配置文件 `.umirc.js` 中配置的 `plugins` 配置项，有依赖的插件 umi 会通过插件的 `dependence` 配置检查插件的顺序做出警告，但是目前 umi 不会修改用户的顺序。
+插件的执行顺序依赖用户在配置文件 `.umirc.js` 或者 `config/config.js` 中配置的 `plugins` 配置项，有依赖的插件 umi 会通过插件的 `dependence` 配置检查插件的顺序做出警告，但是目前 umi 不会修改用户的顺序。
 
 当插件调用 `api.applyPlugin` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
 
@@ -104,27 +85,33 @@ export default (api, defaultOpts) => {
 
 `.umirc.js` 或者 `config/config.js` 里面的配置。
 
-### service.cwd
-
-### service.pkg
-
 ### service.paths
 
-outputPath
-absOutputPath
-pagesPath
-absPagesPath
-tmpDirPath
-absTmpDirPath
-absSrcPath
+- outputPath: 构建产物的生成目录
+- absOutputPath: 构建产物的生成目录（绝对路径）
+- pagesPath: page(s) 路径
+- absPagesPath: page(s) 的绝对路径
+- tmpDirPath: .umi 临时目录的路径
+- absTmpDirPath: .umi 临时目录的路径（绝对路径）
+- absSrcPath: src 目录的路径（绝对路径），用户缺省 src 时则对应为项目根目录
+- cwd: 项目根目录
 
 ### service.routes
+
+umi 处理过后的路由信息。格式如下：
+
+```js
+const routes = [{
+  path: '/xxx/xxx',
+  component: '',
+}];
+```
 
 ## 系统级 API
 
 ### registerPlugin
 
-加载插件，用于插件集或者 bigfish。
+加载插件，用于插件集等需要在一个插件中加载其它插件的场景。
 
 ```js
 const demoPlugin = require('./demoPlugin');
@@ -149,6 +136,25 @@ api.registerMethod('addDvaRendererWrapperWithComponent', {
 });
 ```
 
+对于类型是 `api.API_TYPE.ADD` 的插件方法，你应该返回一项或者通过数组返回多项，也可以返回一个空数组，比如：
+
+```js
+api.addHTMLMeta({ /* ... */ });
+api.addHTMLMeta([{ /* ... */ }, { /* ... */ }]);
+api.addHTMLMeta(() => {
+  if (opt === 'h5') {
+    return { /* ... */ };
+  }
+  return [];
+});
+```
+
+类型是 `api.API_TYPE.EVENT` 的插件方法，你应该传入一个 function 并且不需要返回任何内容。
+
+类型是 `api.API_TYPE.MODIFY` 的插件方法，返回修改后的内容。
+
+你也可以通过 `apply` 来自定义处理的函数，你注册的方法可能被多个插件使用，当你调用 `applyPlugin` 时在 umi 内部会通过 reduce 函数去处理这些插件的返回值。你定义的 `apply` 函数决定了 `applyPlugin` 是怎么处理多个插件的结果作为它的返回值的。通常情况下内置的三种类型就可以满足你的需求了。
+
 ### applyPlugin
 
 在插件用应用通过 registerMethod 注册的某个方法。
@@ -163,7 +169,7 @@ const wrappers = api.applyPlugin('wrapDvaRendererWithComponent');
 ### restart
 
 ```js
-api.restart();
+api.restart('why');
 ```
 
 重新执行 `umi dev`，比如在 bigfish 中修改了 appType，需要重新挂载插件的时候可以调用该方法。
@@ -188,14 +194,12 @@ api.rebuildTmpFiles('config dva changed');
 
 当 HTML 重新构建时被触发。
 
-### setPluginDefaultOption
+### changePluginOption
 
-设置插件的默认配置，比如在 bigfish 中需要把配置文件中的 dva 配置传递给 dva 插件的时候用到。
+设置插件的配置，比如在 react 插件集中中需要把插件集的 dva 配置传递给 dva 插件的时候用到。
 
 ```js
-const dvaPlugin = require('umi-plugin-dva');
-
-api.changePluginOption('plugin-id', {
+api.changePluginOption('dva-plugin-id', {
   immer: true
 });
 ```
@@ -214,31 +218,32 @@ api.modifyDefaultConfig(memo => {
 });
 ```
 
-### setState
-
-```js
-api.setState('routesConfig', []);
-```
-
-### getState
-
-```js
-const config = api.setState('routesConfig');
-```
-
 ### registerCommand
 
-注册 umi xxx 命令行
+注册 umi xxx 命令行，比如在 umi 内部 help 命令就是这么实现的。
+
+```
+api.registerCommand('help', {
+  hide: true
+}, args => {
+  // more code...
+});
+```
 
 ### \_registerConfig
 
-注册一个配置项，类似之前的 modifyConfigPlugins。
+注册一个配置项，系统方法，通常不要使用。
 
 ```js
-api._registerConfig({
-  name: 'dva',
-  onChange(config) {
-    api.setPluginDefaultConfig('umi-plugin-dva', config);
+api._registerConfig(() => {
+  return () => {
+    return {
+      name: 'dva',
+      validate: validate,
+      onChange(newConfig, oldConfig) {
+        api.setPluginDefaultConfig('umi-plugin-dva', config);
+      }
+    };
   }
 });
 ```
@@ -276,13 +281,13 @@ xxx -> xxx.js xxx.ts
 插件的配置改变的时候触发。
 
 ```js
-export default (api, defaultOpts = { immer: false }) {
+export default (api, defaultOpts = { immer: false }) => {
   let opts = defaultOpts;
   api.onOptionChange((newOpts) => {
     opts = newOpts;
-	api.rebuildFiles();
+  	api.rebuildFiles();
   });
-}
+};
 ```
 
 ### onBuildSuccess
@@ -314,52 +319,6 @@ api.onBuildSuccess({
 
 在 `umi build` 失败的时候。
 
-
-## 运行时 API
-
-在浏览器端可以通过 `umi/runtime` 获得的 API。也可以通过 `registerRuntimeExtension` 添加运行时模块，通过 runtimeApi 获取。`umi/runtime` === `runtimeApi`。
-
-### setRuntimeState
-
-```js
-import { setRuntimeState } from 'umi/runtime';
-
-const app = new Dva();
-
-setRuntimeState('dvaApp', app);
-```
-
-### getRuntimeState
-
-```js
-import { getRuntimeState } from 'umi/runtime';
-
-getRuntimeState('dvaApp', app);
-```
-
-### onRouteChange
-
-路由变化时候调用。
-
-```js
-onRouteChange(({ route, params }) => {
-});
-```
-
-```js
-
-api.import
-
-// runtime.js
-import { onRouteChange } from 'umi/runtime';
-				   
-onRouteChange((routes) => {
-   if (routes.workspace) {
-      window.AntdCloudNav.set();
-   }
-});
-```
-
 ## 应用类 API
 
 对于应用类 API，可以有直接调用和函数回调两种方式。
@@ -382,27 +341,12 @@ api.addRendererWrapperWithComponent(() => {
 
 下面是具体的 API。
 
-### addWatcher
+### addPageWatcher
 
-添加 watch 的文件，类似之前的 modifyPageWatchers。
-
-```js
-api.registerWatcher(['xxx.js', '*.mock.js']);
-```
-
-### addRuntimeExtension
-
-添加运行时的扩展，runtimeApi 提供的方法参考后面的运行时部分。
+添加 watch 的文件。
 
 ```js
-api.registerRuntimeExtension('/runtime.js', {})
-```
-
-```js
-// runtime.js
-export default (runtimeApi, opts) => {
-  // runtimeApi === require('umi/runtime');
-}
+api.addPageWatcher(['xxx.js', '*.mock.js']);
 ```
 
 ### addHTMLMeta
@@ -550,4 +494,3 @@ api.modifyAFWebpackOpts(({ memo }) => {
 ### addMiddlewareAfterMock
 
 在 mock 后添加中间件。
-
