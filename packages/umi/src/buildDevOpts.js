@@ -1,9 +1,13 @@
 import { join } from 'path';
+import { readFileSync } from 'fs';
 import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';
+import { parse } from 'dotenv';
 
 export default function(opts = {}) {
+  loadDotEnv();
+
   let cwd = opts.cwd || process.env.APP_ROOT;
   if (cwd) {
     if (!isAbsolute(cwd)) {
@@ -19,4 +23,13 @@ export default function(opts = {}) {
   return {
     cwd,
   };
+}
+
+function loadDotEnv() {
+  const parsed = parse(readFileSync(join(process.cwd(), '.env'), 'utf-8'));
+  Object.keys(parsed).forEach(key => {
+    if (!process.env.hasOwnProperty(key)) {
+      process.env[key] = parsed[key];
+    }
+  });
 }
