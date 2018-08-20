@@ -16,12 +16,8 @@ export default function(opts = {}) {
     return dep !== 'umi' && !dep.startsWith('umi-plugin-');
   });
   const webpack = require(_resolveDeps('af-webpack/webpack'));
-  const { webpackHotDevClientPath } = require(_resolveDeps(
-    'af-webpack/react-dev-utils',
-  ));
   const files = uniq([
     ...depNames,
-    webpackHotDevClientPath,
     'umi/link',
     'umi/dynamic',
     'umi/navlink',
