@@ -46,6 +46,9 @@ export default function(opts) {
     .set('symlinks', true)
     .modules.add('node_modules')
     .add(join(__dirname, '../../node_modules'))
+    // Fix yarn global resolve problem
+    // ref: https://github.com/umijs/umi/issues/872
+    .add(join(__dirname, '../../../'))
     .end()
     .extensions.merge([
       '.web.js',
@@ -155,13 +158,11 @@ export default function(opts) {
   // module -> extraBabelIncludes
   // suport es5ImcompatibleVersions
   const extraBabelIncludes = opts.extraBabelIncludes || [];
-  if (opts.es5ImcompatibleVersions) {
-    extraBabelIncludes.push(a => {
-      if (a.indexOf('node_modules') === -1) return false;
-      const pkgPath = getPkgPath(a);
-      return shouldTransform(pkgPath);
-    });
-  }
+  extraBabelIncludes.push(a => {
+    if (a.indexOf('node_modules') === -1) return false;
+    const pkgPath = getPkgPath(a);
+    return shouldTransform(pkgPath);
+  });
   extraBabelIncludes.forEach((include, index) => {
     const rule = `extraBabelInclude_${index}`;
     webpackConfig.module
@@ -183,6 +184,10 @@ export default function(opts) {
     .end()
     .exclude.add(/node_modules/)
     .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts)
+    .end()
     .use('awesome-typescript-loader')
     .loader(require.resolve('awesome-typescript-loader'))
     .options({
@@ -198,11 +203,6 @@ export default function(opts) {
   webpackConfig
     .plugin('define')
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
-
-  // plugins -> case sensitive
-  webpackConfig
-    .plugin('case-sensitive-paths')
-    .use(require('case-sensitive-paths-webpack-plugin'));
 
   // plugins -> progress bar
   if (!process.env.__FROM_UMI_TEST) {

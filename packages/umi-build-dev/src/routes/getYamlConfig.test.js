@@ -57,4 +57,14 @@ c: d
       a: 'b',
     });
   });
+
+  it('ignore invalid yaml comment', () => {
+    expect(
+      getYamlConfig(`
+/*
+ * this is a normal text
+ */
+    `),
+    ).toEqual({});
+  });
 });

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const getConfig = require('../getConfig');
-const getUserConfig = require('../getUserConfig');
+const getUserConfig = require('../lib/getUserConfig');
 
 const cwd = process.cwd();
 const webpackConfig = getWebpackConfig();
@@ -32,7 +32,7 @@ function getWebpackConfig() {
     ...userConfig,
     cwd,
     entry: {
-      index: './index.js',
+      index: './index.ts',
     },
   });
 }

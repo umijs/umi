@@ -34,11 +34,14 @@ export default class HTMLGenerator {
 
     const flatRoutes = this.getFlatRoutes(this.routes);
     assert(flatRoutes.length, 'no valid routes found');
-    if (this.config.exportStatic) {
-      this.exportRoutes(flatRoutes);
-    } else {
-      this.exportRoute({ path: '/' }, 'index.html');
-    }
+
+    const routes = this.config.exportStatic ? flatRoutes : [{ path: '/' }];
+    return routes.map(route => {
+      return {
+        filePath: this.getHtmlPath(route.path),
+        content: this.getContent(route),
+      };
+    });
   }
 
   routeWithoutRoutes(route) {
@@ -60,28 +63,6 @@ export default class HTMLGenerator {
         return memo;
       }
     }, []);
-  }
-
-  exportRoutes(routes) {
-    routes.forEach(route => {
-      const content = this.getContent(route);
-      const filePath = join(
-        this.paths.absOutputPath,
-        this.getHtmlPath(route.path),
-      );
-      mkdirp.sync(dirname(filePath));
-      writeFileSync(filePath, content, 'utf-8');
-    });
-  }
-
-  exportRoute(route, opts = {}) {
-    const content = this.getContent(route);
-    const filePath = join(
-      this.paths.absOutputPath,
-      opts.filePath || this.getHtmlPath(route.path),
-    );
-    mkdirp.sync(dirname(filePath));
-    writeFileSync(filePath, content, 'utf-8');
   }
 
   getHtmlPath(path) {
@@ -229,6 +210,7 @@ export default class HTMLGenerator {
     let context = {
       route,
       config: this.config,
+      ...(this.config.context || {}),
       env: this.env,
     };
     if (this.modifyContext) context = this.modifyContext(context);
@@ -302,7 +284,7 @@ export default class HTMLGenerator {
     if (this.modifyHeadScripts)
       headScripts = this.modifyHeadScripts(headScripts);
 
-    if (this.env === 'production' && this.chunksMap['umi.css']) {
+    if (this.env === 'development' || this.chunksMap['umi.css']) {
       // umi.css should be the last one stylesheet
       links.push({
         rel: 'stylesheet',

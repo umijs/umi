@@ -11,8 +11,10 @@ export default (routes, service) => {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
     targetLevel = 1;
-    const rootRoute = routes.filter(route => route.path === '/')[0];
-    if (rootRoute && rootRoute.routes) {
+    const routesHaveChild = routes.filter(
+      route => route.routes && route.routes.length,
+    );
+    if (routesHaveChild.length) {
       targetLevel = 2;
     }
   }
@@ -84,7 +86,10 @@ function normalizeEntry(entry) {
 function patchRoute(route, webpackChunkName) {
   if (route.component && !route.component.startsWith('() =>')) {
     if (!webpackChunkName || level <= targetLevel) {
-      webpackChunkName = normalizeEntry(route.component || 'common_component');
+      webpackChunkName = normalizeEntry(route.component || 'common_component')
+        .replace(/^src__/, '')
+        .replace(/^pages__/, 'p__')
+        .replace(/^page__/, 'p__');
     }
     route.component = [
       route.component || 'common_component',

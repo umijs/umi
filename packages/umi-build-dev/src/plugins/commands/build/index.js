@@ -12,6 +12,7 @@ export default function(api) {
     'build',
     {
       webpack: true,
+      description: 'building for production',
     },
     () => {
       const RoutesManager = getRouteManager(service);
@@ -26,6 +27,13 @@ export default function(api) {
       });
       filesGenerator.generate();
 
+      if (process.env.HTML !== 'none') {
+        const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(
+          service,
+        );
+        service.webpackConfig.plugins.push(new HtmlGeneratorPlugin());
+      }
+
       require('af-webpack/build').default({
         cwd,
         webpackConfig: service.webpackConfig,
@@ -33,19 +41,6 @@ export default function(api) {
           if (process.env.RM_TMPDIR !== 'none') {
             debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
             rimraf.sync(paths.absTmpDirPath);
-          }
-
-          if (process.env.HTML !== 'none') {
-            debug(`Bundle html files`);
-            const chunksMap = chunksToMap(stats.compilation.chunks);
-            try {
-              const hg = getHtmlGenerator(service, {
-                chunksMap,
-              });
-              hg.generate();
-            } catch (e) {
-              console.log(e);
-            }
           }
 
           service.applyPlugins('onBuildSuccess', {

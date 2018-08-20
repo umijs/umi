@@ -111,7 +111,7 @@ describe('routesToJSON', () => {
       initialValue: "require('../A').default",
       args: {
         importPath: '../A',
-        webpackChunkName: 'pages__A',
+        webpackChunkName: 'p__A',
         component: './pages/A',
       },
     });

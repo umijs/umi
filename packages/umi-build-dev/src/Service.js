@@ -1,8 +1,10 @@
 import chalk from 'chalk';
 import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
 import assert from 'assert';
 import clonedeep from 'lodash.clonedeep';
 import assign from 'object-assign';
+import { parse } from 'dotenv';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -197,8 +199,28 @@ export default class Service {
     return memo;
   }
 
+  loadEnv() {
+    const basePath = join(this.cwd, '.env');
+    const localPath = `${basePath}.local`;
+
+    const load = path => {
+      if (existsSync(path)) {
+        const parsed = parse(readFileSync(path, 'utf-8'));
+        Object.keys(parsed).forEach(key => {
+          if (!process.env.hasOwnProperty(key)) {
+            process.env[key] = parsed[key];
+          }
+        });
+      }
+    };
+
+    load(basePath);
+    load(localPath);
+  }
+
   init() {
     // load env
+    this.loadEnv();
 
     // init plugins
     this.initPlugins();
@@ -217,12 +239,26 @@ export default class Service {
     }
   }
 
-  run(name, args = {}) {
+  registerCommand(name, opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts;
+      opts = null;
+    }
+    opts = opts || {};
+    assert(
+      !(name in this.commands),
+      `Command ${name} exists, please select another one.`,
+    );
+    this.commands[name] = { fn, opts };
+  }
+
+  run(name = 'help', args) {
     this.init();
+
     debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];
-    if (!command && name) {
+    if (!command) {
       console.error(chalk.red(`command "${name}" does not exists.`));
       process.exit(1);
     }

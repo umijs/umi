@@ -46,9 +46,10 @@ export default function getMockMiddleware(api) {
         )}`,
       );
       ret = mockFiles.reduce((memo, mockFile) => {
+        const m = require(join(absMockPath, mockFile)); // eslint-disable-line
         memo = {
           ...memo,
-          ...require(join(absMockPath, mockFile)).default, // eslint-disable-line
+          ...(m.default || m),
         };
         return memo;
       }, {});

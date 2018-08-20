@@ -35,16 +35,21 @@ export default function(webpackConfig, opts) {
         ? []
         : [
             require('cssnano')({
-              preset: ['default', opts.cssnano || {}],
+              preset: [
+                'default',
+                opts.cssnano || {
+                  mergeRules: false,
+                },
+              ],
             }),
           ]),
     ],
   };
   const cssModulesConfig = {
     modules: true,
-    localIdentName: isDev
+    localIdentName: cssOpts.localIdentName || (isDev
       ? '[name]__[local]___[hash:base64:5]'
-      : '[local]___[hash:base64:5]',
+      : '[local]___[hash:base64:5]'),
   };
   const lessOptions = {
     modifyVars: theme,
@@ -61,12 +66,12 @@ export default function(webpackConfig, opts) {
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
     if (isDev) {
-      rule.use('style-loader').loader(require.resolve('style-loader'));
-    } else {
-      rule
-        .use('extract-css-loader')
-        .loader(require('mini-css-extract-plugin').loader);
+      rule.use('css-hot-loader').loader(require.resolve('css-hot-loader'));
     }
+
+    rule
+      .use('extract-css-loader')
+      .loader(require('mini-css-extract-plugin').loader);
 
     rule
       .use('css-loader')
@@ -209,15 +214,12 @@ export default function(webpackConfig, opts) {
     },
   );
 
-  if (!isDev) {
-    const hash = opts.hash ? '.[contenthash:8]' : '';
-    webpackConfig
-      .plugin('extract-css')
-      .use(require('mini-css-extract-plugin'), [
-        {
-          filename: `[name]${hash}.css`,
-          chunkFilename: `[name]${hash}.chunk.css`,
-        },
-      ]);
-  }
+  const hash = !isDev && opts.hash ? '.[contenthash:8]' : '';
+
+  webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
+    {
+      filename: `[name]${hash}.css`,
+      chunkFilename: `[name]${hash}.chunk.css`,
+    },
+  ]);
 }

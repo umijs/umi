@@ -13,6 +13,7 @@ export default function(opts = {}) {
     './plugins/commands/dev',
     './plugins/commands/build',
     './plugins/commands/test',
+    './plugins/commands/help',
     './plugins/commands/generate',
     './plugins/global-js',
     './plugins/global-css',
@@ -24,6 +25,8 @@ export default function(opts = {}) {
     './plugins/afwebpack-config',
     './plugins/mountElementId',
     './plugins/404', // 404 must after mock
+    // Disable it since it still havs problems
+    // './plugins/atoolMonitor',
   ];
 
   const pluginsObj = [

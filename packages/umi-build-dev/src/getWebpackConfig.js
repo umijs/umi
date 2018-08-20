@@ -19,7 +19,9 @@ export default function(service) {
       args: webpackConfig,
     });
     if (config.chainWebpack) {
-      config.chainWebpack(webpackConfig);
+      config.chainWebpack(webpackConfig, {
+        webpack: require('af-webpack/webpack'),
+      });
     }
   };
 

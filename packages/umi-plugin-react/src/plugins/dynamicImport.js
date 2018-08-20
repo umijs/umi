@@ -3,6 +3,10 @@ import { join } from 'path';
 export default function(api, options) {
   const { paths, winPath } = api;
 
+  if (options.level) {
+    process.env.CODE_SPLITTING_LEVEL = options.level;
+  }
+
   if (process.env.NODE_ENV === 'production') {
     api.modifyAFWebpackOpts(opts => {
       return {
@@ -16,7 +20,7 @@ export default function(api, options) {
 
       let loadingOpts = '';
       if (options.loadingComponent) {
-        loadingOpts = ` loading: require('${winPath(
+        loadingOpts = `, loading: require('${winPath(
           join(paths.absSrcPath, options.loadingComponent),
         )}').default `;
       }
@@ -25,7 +29,7 @@ export default function(api, options) {
       if (options.webpackChunkName) {
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
-      return `dynamic(import(${extendStr}'${importPath}'), {${loadingOpts}})`;
+      return `dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts} })`;
     });
   }
 }
