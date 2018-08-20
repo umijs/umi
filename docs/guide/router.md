@@ -1,3 +1,7 @@
+---
+sidebarDepth: 3
+---
+
 # 路由
 
 ::: tip 提示
@@ -6,7 +10,9 @@
 
 umi 会根据 `pages` 目录自动生成路由配置。
 
-## 基础路由
+## 约定式路由
+
+### 基础路由
 
 假设 `pages` 目录结构如下：
 
@@ -22,15 +28,15 @@ umi 会根据 `pages` 目录自动生成路由配置。
 
 ```js
 [
-  { path: '/': exact: true, component: './pages/index.js' },
-  { path: '/users/': exact: true, component: './pages/users/index.js' },
-  { path: '/users/list': exact: true, component: './pages/users/list.js' },
+  { path: '/', component: './pages/index.js' },
+  { path: '/users/', component: './pages/users/index.js' },
+  { path: '/users/list', component: './pages/users/list.js' },
 ]
 ```
 
-## 动态路由
+### 动态路由
 
-umi 里约定，带 $ 前缀的目录或文件为动态路由。
+umi 里约定，带 `$` 前缀的目录或文件为动态路由。
 
 比如以下目录结构：
 
@@ -48,23 +54,23 @@ umi 里约定，带 $ 前缀的目录或文件为动态路由。
 
 ```js
 [
-  { path: '/', exact: true, component: './pages/index.js' },
-  { path: '/users/:id', exact: true, component: './pages/users/$id.js' },
-  { path: '/:post/', exact: true, component: './pages/$post/index.js' },
-  { path: '/:post/comments', exact: true, component: './pages/$post/comments.js' },
+  { path: '/', component: './pages/index.js' },
+  { path: '/users/:id', component: './pages/users/$id.js' },
+  { path: '/:post/', component: './pages/$post/index.js' },
+  { path: '/:post/comments', component: './pages/$post/comments.js' },
 ]
 ```
 
-## 可选的动态路由
+### 可选的动态路由
 
-umi 里约定动态路由如果带 $ 后缀，则为可选动态路由。
+umi 里约定动态路由如果带 `$` 后缀，则为可选动态路由。
 
 比如以下结构：
 
 ```
 + pages/
   + users/
-    $id$.js
+    - $id$.js
   - index.js
 ```
 
@@ -72,14 +78,14 @@ umi 里约定动态路由如果带 $ 后缀，则为可选动态路由。
 
 ```js
 [
-  { path: '/': exact: true, component: './pages/index.js' },
-  { path: '/users/:id?': exact: true, component: './pages/users/$id$.js' },
+  { path: '/': component: './pages/index.js' },
+  { path: '/users/:id?': component: './pages/users/$id$.js' },
 ]
 ```
 
-## 嵌套路由
+### 嵌套路由
 
-umi 里约定目录下有 `_layout.js` 时会以生成嵌套路由，以 `_layout.js` 为该目录的 layout 。
+umi 里约定目录下有 `_layout.js` 时会生成嵌套路由，以 `_layout.js` 为该目录的 layout 。
 
 比如以下目录结构：
 
@@ -95,18 +101,18 @@ umi 里约定目录下有 `_layout.js` 时会以生成嵌套路由，以 `_layou
 
 ```js
 [
-  { path: '/users': exact: false, component: './pages/users/_layout.js'
+  { path: '/users': component: './pages/users/_layout.js'
     routes: [
-     { path: '/users/', exact: true, component: './pages/users/index.js' },
-     { path: '/users/:id', exact: true, component: './pages/users/$id.js' },
+     { path: '/users/', component: './pages/users/index.js' },
+     { path: '/users/:id', component: './pages/users/$id.js' },
    ],
   },
 ]
 ```
 
-## 全局 layout
+### 全局 layout
 
-umi 里约定 `src` 目录下的 `layouts/index.js` 为全局路由，返回一个 React 组件，通过 `props.children` 渲染子组件。
+约定 `src/layouts/index.js` 为全局路由，返回一个 React 组件，通过 `props.children` 渲染子组件。
 
 比如：
 
@@ -122,7 +128,7 @@ export default function(props) {
 }
 ```
 
-## 不同的全局 layout
+### 不同的全局 layout
 
 你可能需要针对不同路由输出不同的全局 layout，umi 不支持这样的配置，但你仍可以在 `layouts/index.js` 对 location.path 做区分，渲染不同的 layout 。
 
@@ -144,9 +150,9 @@ export default function(props) {
 }
 ```
 
-## 404 路由
+### 404 路由
 
-umi 中约定 `pages` 目录下的 `404.js` 为 404 页面，需要返回 React 组件。
+约定 `pages/404.js` 为 404 页面，需返回 React 组件。
 
 比如：
 
@@ -158,139 +164,56 @@ export default () => {
 };
 ```
 
-注：开发模式下，umi 会添加一个默认的 404 页面来辅助开发，但你仍然可通过精确地访问 /404 来验证 404 页面。
+> 注意：开发模式下，umi 会添加一个默认的 404 页面来辅助开发，但你仍然可通过精确地访问 `/404` 来验证 404 页面。
 
-## 路由过滤
+### 通过注释扩展路由
 
-如果你需要在 `pages` 下组织文件，那么有可能某些文件是不需要添加到路由的，那么你可以通过 [umi-plugin-routes](https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes) 插件进行排除。
+约定路由文件的首个注释如果包含 **yaml** 格式的配置，则会被用于扩展路由。
 
-比如以下目录结构：
-
-```
-+ pages
-  + users
-    + models
-      - a.js
-    + services
-      - a.js
-    - index.js
-```
-
-你应该只会想要 users/index.js 作为路由，所以需要排除掉 models 和 services 目录。
-
-先安装依赖，
-
-```bash
-$ npm install umi-plugin-routes --save-dev
-```
-
-然后配置 `.umirc.js` 如下：
-
-```js
-export default {
-  plugins: [
-    ['umi-plugin-routes', {
-      exclude: [
-        /models/,
-        /services/,
-      ],
-    }],
-  ]
-}
-```
-
-## 权限路由
-
-umi 是通过配置定制化的 Route 组件来实现权限路由的，如果你熟悉 react-router@4，应该会比较熟悉。
-
-比如以下目录结构：
+比如：
 
 ```
 + pages/
   - index.js
-  - list.js
 ```
 
-然后在 `.umirc.js` 里做如下配置：
+如果 `pages/index.js` 里包含：
 
 ```js
-export default {
-  pages: {
-    '/list': { Route: './routes/PrivateRoute.js' },
-    // 如果你使用了动态路由，/products/$id.js 或者 /products/$id/index.js这种结构
-    '/products/:id': { Route: './routes/PrivateRoute.js' },
-  },
-}
+/**
+ * title: Index Page
+ * Routes:
+ *   - ./src/routes/a.js
+ *   - ./src/routes/b.js
+ */
 ```
 
-则会自动生成以下路由配置：
+则会生成路由配置：
 
 ```js
 [
-  { path: '/': exact: true, component: './pages/index.js' },
-  { path: '/list': exact: true, component: './pages/list.js', Route: './routes/PrivateRoute.js' },
-  { path: '/products/:id': exact: true, component: './pages/list.js', Route: './routes/PrivateRoute.js' },
+  { path: '/', component: './index.js',
+    title: 'Index Page',
+    Routes: [ './src/routes/a.js', './src/routes/b.js' ],
+  },
 ]
 ```
 
-然后 umi 会用 `./routes/PrivateRoute.js` 来渲染 `/list`。
-
-`./routes/PrivateRoute.js` 文件示例：
-
-```js
-import { Route } from 'react-router-dom';
-
-export default (args) => {
-  const { render, ...rest } = args;
-  return <Route
-    {...rest}
-    render={props =>
-      <div>
-        <div>PrivateRoute (routes/PrivateRoute.js)</div>
-        {
-          render(props)
-        }
-      </div>
-    }
-  />;
-}
-```
-
-注：`PrivateRoute` 里渲染子组件是通过 `render` 方法，**而非 Component 组件属性**。
-
-
-如果希望通过编程方式批量设置权限路由，可以利用`umi-plugin-routes`插件，修改`.umirc.js`如下：
-
-```javascript
-export default {
-  plugins: [
-    ['umi-plugin-routes', {
-      update(routes) {
-        // 指定Route属性为你的权限路由组件
-        // 例如：routes[0].Route = './routes/PrivateRoute.js';
-        return routes;
-      },
-    }],
-  ],
-}
-```
-
-
 ## 配置式路由
 
-umi 推荐的路由方式是基于目录和文件的约定的，但如果你倾向于使用配置式的路由，可以在 `.umirc.js` 里配置 `routes` ，此配置存在时则不会对 pages 目录做解析。
+如果你倾向于使用配置式的路由，可以配置 `routes` ，**此配置项存在时则不会对 `src/pages` 目录做约定式的解析**。
 
 比如：
 
 ```js
 export default {
   routes: [
-    { path: '/', exact: true, component: './a' },
-    { path: '/list', component: './b', Route: './routes/PrivateRoute.js' },
+    { path: '/', component: './a' },
+    { path: '/list', component: './b', Routes: ['./routes/PrivateRoute.js'] },
     { path: '/users', component: './users/_layout',
       routes: [
-        { path: '/users/detail', exact: true, component: './users/detail' },
-        { path: '/users/:id', exact: true, component: './users/id' }
+        { path: '/users/detail', component: './users/detail' },
+        { path: '/users/:id', component: './users/id' }
       ]
     },
   ],
@@ -299,9 +222,35 @@ export default {
 
 注意：
 
-1. component 为指向文件的相对于 page(s) 的路径，**而非 React 组件**
-1. 支持通过 routes 实现嵌套路由
-1. 支持通过 Route 指定权限路由
+1. component 是相对于 `src/pages` 目录的
+
+## 权限路由
+
+umi 的权限路由是通过配置路由的 `Routes` 属性来实现。约定式的通过 yaml 注释添加，配置式的直接配上即可。
+
+比如有以下配置：
+
+```js
+[
+  { path: '/', component: './pages/index.js' },
+  { path: '/list', component: './pages/list.js', Routes: ['./routes/PrivateRoute.js'] },
+]
+```
+
+然后 umi 会用 `./routes/PrivateRoute.js` 来渲染 `/list`。
+
+`./routes/PrivateRoute.js` 文件示例：
+
+```js
+export default (props) => {
+  return (
+    <div>
+      <div>PrivateRoute (routes/PrivateRoute.js)</div>
+      { props.children }
+    </div>
+  );
+}
+```
 
 ## 路由动效
 
@@ -310,7 +259,7 @@ export default {
 先安装依赖，
 
 ```bash
-$ npm install react-transition-group --save
+$ yarn add react-transition-group
 ```
 
 在 layout 组件（`layouts/index.js` 或者 pages 子目录下的 `_layout.js`）里在渲染子组件时用 TransitionGroup 和 CSSTransition 包裹一层，并以 `location.key` 为 key，
@@ -350,7 +299,7 @@ export default withRouter(
 先安装依赖，
 
 ```bash
-$ npm install react-router-breadcrumbs-hoc --save
+$ yarn add react-router-breadcrumbs-hoc
 ```
 
 然后实现一个 `Breakcrumbs.js`，比如：
@@ -383,11 +332,11 @@ export default withBreadcrumbs(routes)(({ breadcrumbs }) => (
 
 ## 启用 Hash 路由
 
-umi 默认是用的 Browser History，如果要用 Hash History，需在 `.umirc.js` 里配置：
+umi 默认是用的 Browser History，如果要用 Hash History，需配置：
 
 ```js
 export default {
-  hashHistory: true,
+  history: 'hash',
 }
 ```
 
