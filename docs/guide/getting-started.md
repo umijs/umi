@@ -1,113 +1,174 @@
 # 快速上手
 
-## 安装
+> 更喜欢观看视频？可以 [点此观看](https://www.youtube.com/watch?v=vkAUGUlYm24&list=PLzu0PBqV2jld2q5gCADxX17NE3gF3FvYq)
 
-用 `yarn` 安装 umi ：
+## 环境准备
+
+首先得有 [node](https://nodejs.org/en/)，并确保 node 版本是 8 或以上。（mac 下推荐使用 [nvm](https://github.com/creationix/nvm) 来管理 node 版本）
 
 ```bash
-$ yarn global add umi
+$ node -v
+0.8.x
 ```
 
-或者用 `npm` ：
+推荐使用 yarn 管理 npm 依赖，并[使用国内源](https://github.com/yiminghe/tyarn)（阿里用户使用内网源）。
 
 ```bash
-$ npm install -g umi
+# 国内源
+$ npm i yarn tyarn -g
+# 后面文档里的 yarn 换成 tyarn
+$ tyarn -v
+
+# 阿里内网源
+$ tnpm i yarn @alipay/yarn -g
+# 后面文档里的 yarn 换成 ayarn
+$ ayarn -v
 ```
 
-用 `umi -v` 检查版本号。
+然后全局安装 umi@next，并确保版本是 2.0.0-beta 或以上。
 
 ```bash
+$ yarn global add umi@next
 $ umi -v
-umi@1.0.0
+2.0.0-beta.x
 ```
 
-## 创建应用
+## 脚手架
 
-::: warning
-umi 暂时没有提供脚手架，之后会添加。
-:::
-
-创建应用并进入。
+先找个地方建个空目录。
 
 ```bash
-$ mkdir myapp
-$ cd myapp
+$ mkdir myapp && cd myapp
 ```
 
-## 创建第一个页面
-
-创建 `pages` 目录并新建一个页面。
+然后通过 `umi g` 创建一些页面，
 
 ```bash
-$ mkdir pages
-$ echo 'export default () => <div>Index Page</div>' > pages/index.js
+$ umi g page index
+$ umi g page users
 ```
 
-如果你是 Window 系统，可以手动新建 `pages/index.js`，并填入：
+> `umi g` 是 `umi generate` 的别名，可用于快速生成 component、page、layout 等，并且可在插件里被扩展，比如 umi-plugin-dva 里扩展了 dva:model，然后就可以通过 `umi g dva:model foo` 快速 dva 的 model。
 
-```js
-export default () => <div>Index Page</div>;
+然后通过 tree 查看下目录，（windows 用户可跳过此步）
+
+```bash
+$ tree
+.
+└── pages
+    ├── index.css
+    ├── index.js
+    ├── users.css
+    └── users.js
 ```
 
-## 启动 dev 服务器
+这里的 pages 目录是页面所在的目录，umi 里约定默认情况下 pages 下所有的 js 文件即路由，如果有 [next.js](https://github.com/zeit/next.js) 或 [nuxt.js](https://nuxtjs.org/) 的使用经验，应该会有点眼熟吧。
+
+然后启动本地服务器，
 
 ```bash
 $ umi dev
-
-Compiled successfully!
-
-You can now view Your App in the browser.
-
-  Local:            http://localhost:8000/
-
-Note that the development build is not optimized.
-To create a production build, use npm run build.
 ```
 
-然后在浏览器中打开 [http://localhost:8000/](http://localhost:8000/)，你会看到 `Index Page` 。
+<img src="https://gw.alipayobjects.com/zos/rmsportal/SGkKMTPMJWFnYMbyznFW.png" width="616" />
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/vyNMAXgHZhEHNBisqUcY.png" width="450" height="414" style="margin-left:0;" />
+## 约定式路由
 
-## 构建应用
+启动 `umi dev` 后，大家会发现 pages 下多了个 `.umi` 的目录。这是啥？这是 umi 的临时目录，可以在这里做一些验证，但请不要直接在这里修改代码，umi 重启或者 pages 下的文件修改都会重新生成这个文件夹下的文件。
+
+然后我们在 index 和 users 直接加一些路由跳转逻辑。
+
+先修改 `pages/index.js`，
+
+```diff
++ import Link from 'umi/link';
+import styles from './index.css';
+
+export default function() {
+  return (
+    <div className={styles.normal}>
+      <h1>Page index</h1>
++     <Link to="/users">go to /users</Link>
+    </div>
+  );
+}
+```
+
+再修改 `pages/users.js`，
+
+```diff
++ import router from 'umi/router';
+import styles from './index.css';
+
+export default function() {
+  return (
+    <div className={styles.normal}>
+      <h1>Page index</h1>
++     <button onClick={() => { router.goBack(); }}>go back</button>
+    </div>
+  );
+}
+```
+
+然后浏览器验证，应该已经可以在 index 和 users 两个页面之间通过路由跳转了。
+
+## 部署发布
+
+### 构建
+
+执行 `umi build`，
 
 ```bash
 $ umi build
 
-Compiled successfully.
+DONE  Compiled successfully in 1729ms
 
 File sizes after gzip:
 
-  52.09 KB  static/umi.2b7e5e82.js
-  186 B     static/__common-umi.6a75ebe1.async.js
+  68.04 KB  dist/umi.js
+  83 B      dist/umi.css
 ```
 
-构建产物会生成在 `dist` 目录。
+构建产物默认生成到 `./dist` 下，然后通过 tree 命令查看，(windows 用户可忽略此步）
 
 ```bash
 $ tree ./dist
-
-dist
+./dist
 ├── index.html
-└── static
-    ├── __common-umi.6a75ebe1.async.js
-    └── umi.2b7e5e82.js
-
-1 directory, 3 files
+├── umi.css
+└── umi.js
 ```
 
-## 部署
+### 本地验证
 
-构建产出的 dist 目录是可直接运行的，我们用 [serve](https://github.com/zeit/serve) 让 dist 目录跑起来。
+发布之前，可以通过 `serve` 做本地验证，
 
 ```bash
-$ npm i serve -g
-$ cd dist
-$ serve
+$ yarn global add serve
+$ serve ./dist
 
 Serving!
 
-- Local:            http://localhost:5000   
+- Local:            http://localhost:5000
 - On Your Network:  http://{Your IP}:5000
 
 Copied local address to clipboard!
 ```
+
+访问 http://localhost:5000，正常情况下应该是和 `umi dev` 一致的。
+
+### 部署
+
+本地验证完，就可以部署了，这里通过 now 来做演示。
+
+```bash
+$ yarn global add now
+$ now ./dist
+
+> Deploying /private/tmp/sorrycc-1KVCmK/dist under chencheng
+> Synced 3 files (301.93KB) [2s]
+> https://dist-jtckzjjatx.now.sh [in clipboard] [1s]
+> Deployment complete!
+```
+
+然后打开相应的地址就能访问到线上的地址了。
