@@ -46,6 +46,9 @@ export default function(opts) {
     .set('symlinks', true)
     .modules.add('node_modules')
     .add(join(__dirname, '../../node_modules'))
+    // Fix yarn global resolve problem
+    // ref: https://github.com/umijs/umi/issues/872
+    .add(join(__dirname, '../../../'))
     .end()
     .extensions.merge([
       '.web.js',
