@@ -26,13 +26,20 @@ export default function(opts = {}) {
 }
 
 function loadDotEnv() {
-  const envPath = join(process.cwd(), '.env');
-  if (existsSync(envPath)) {
-    const parsed = parse(readFileSync(envPath, 'utf-8'));
-    Object.keys(parsed).forEach(key => {
-      if (!process.env.hasOwnProperty(key)) {
-        process.env[key] = parsed[key];
-      }
-    });
-  }
+  const baseEnvPath = join(process.cwd(), '.env');
+  const localEnvPath = `${baseEnvPath}.local`;
+
+  const loadEnv = envPath => {
+    if (existsSync(envPath)) {
+      const parsed = parse(readFileSync(envPath, 'utf-8'));
+      Object.keys(parsed).forEach(key => {
+        if (!process.env.hasOwnProperty(key)) {
+          process.env[key] = parsed[key];
+        }
+      });
+    }
+  };
+
+  loadEnv(baseEnvPath);
+  loadEnv(localEnvPath);
 }
