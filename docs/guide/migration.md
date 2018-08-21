@@ -25,3 +25,12 @@
 * 不再支持 TSLINT，umi@2 里没有这个功能了
 * 不再支持 ESLINT，umi@2 里没有这个功能了
 
+## antd
+
+## umi/dynamic
+
+## 依赖
+
+umi-plugin-* -> umi-plugin-react
+
+
