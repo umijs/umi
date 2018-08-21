@@ -18,6 +18,9 @@ footer: MIT Licensed | Copyright © 2017-present
 # 安装
 $ yarn global add umi # 或者 npm install -g umi
 
+# 新建应用
+$ mkdir myapp && cd myapp
+
 # 新建页面
 $ umi generate page index
 

@@ -62,6 +62,11 @@ module.exports = {
           children: [''],
         },
         {
+          title: '官方插件',
+          collapsable: false,
+          children: ['umi-plugin-react'],
+        },
+        {
           title: '插件开发',
           collapsable: false,
           children: ['develop'],
