@@ -45,17 +45,6 @@ export default {
 
 如需切换 history 方式为 hash（默认是 browser history），配置 `history: 'hash'`。
 
-### singular
-
-* 类型：`Boolean`
-* 默认值：`false`
-
-如果设为 `true`，启用单数模式的目录。
-
-* src/layout/index.js
-* src/page
-* model（如果有开启 umi-plugin-dva 插件的话）
-
 ### outputPath
 
 * 类型：`String`
@@ -117,6 +106,17 @@ export default {
 * 默认值：`false`
 
 部署到任意路径。
+
+### singular
+
+* 类型：`Boolean`
+* 默认值：`false`
+
+如果设为 `true`，启用单数模式的目录。
+
+* src/layout/index.js
+* src/page
+* model（如果有开启 umi-plugin-dva 插件的话）
 
 ## webpack
 

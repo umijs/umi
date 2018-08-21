@@ -1,6 +1,6 @@
 module.exports = {
   title: 'UmiJS',
-  description: '🚀 可插拔的轻量级 react 应用框架。',
+  description: '🚀 可插拔的企业级 react 应用框架。',
   serviceWorker: false,
   // locales: {
   //   '/': {
