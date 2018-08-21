@@ -39,7 +39,6 @@ module.exports = {
             'router',
             'navigate-between-pages',
             'config',
-            'add-404-page',
             'html-template',
           ],
         },
@@ -51,7 +50,7 @@ module.exports = {
         {
           title: '参考',
           collapsable: false,
-          children: ['faq', 'env-variables'],
+          children: ['faq', 'migration', 'env-variables'],
         },
       ],
       '/config/': [''],
