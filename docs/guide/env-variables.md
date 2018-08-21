@@ -1,10 +1,12 @@
-# 环境变量
+---
+sidebarDepth: 3
+---
 
-[[toc]]
+# .env 和环境变量
 
 ## 如何配置
 
-e.g. start dev server with port 3000,
+比如要
 
 ```
 # OS X, Linux
@@ -14,7 +16,11 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 
 # Or use cross-env for all platforms
+$ yarn add cross-env --dev
 $ cross-env PORT=3000 umi dev
+
+# .env
+$ echo PORT=3000 > .env
 ```
 
 ## 环境变量
@@ -39,24 +45,15 @@ $ PORT=8001 umi dev
 
 ### APP_ROOT
 
+::: warning
+APP_ROOT 不能配在 .env 里。
+:::
+
 指定项目根目录。比如：
 
 ```bash
 $ APP_ROOT=src/renderer umi dev
 ```
-
-### PUBLIC_PATH
-
-配置静态资源文件所在的路径，即 webpack 的 publicPath，相比 .webpackrc 里的配置，这里的优先级最高。
-
-默认值：
-
-* dev 下是 `/`
-* build 下是 `./dist/static`
-
-### BASE_URL
-
-配置 html 所在的根路径，用于给 react-router 的 basename，以及加载 service-worker.js 用。
 
 ### ANALYZE
 
@@ -90,33 +87,25 @@ $ COMPRESS=none umi build
 $ BROWSER=none umi dev
 ```
 
-### COMPILE_ON_DEMAND
-
-默认开启按需编译，值为 none 时关闭。
-
 ### CLEAR_CONSOLE
 
-默认清屏，值为 none 时不清。
+默认清屏，值为 none 时不清屏。
 
 ### HMR
 
-默认开启 HMR，值为 none 时禁用，值为 reload 时切换为页面刷新的方式。
-
-### TSLINT
-
-默认进行 tslint 校验，值为 none 时不校验。
-
-### ESLINT
-
-默认进行 eslint 校验，值为 none 时不校验。比如：
-
-```bash
-$ ESLINT=none umi dev
-```
+默认开启 HMR，值为 none 时禁用，值为 reload 时文件有变化时刷新浏览器。
 
 ### BABELRC
 
 开启 `.babelrc` 解析，默认不解析。
+
+### BABEL_CACHE
+
+默认开启 babel cache，值为 none 时禁用。比如：
+
+```bash
+$ BABEL_CACHE=none umi dev
+```
 
 ### MOCK
 
@@ -125,3 +114,15 @@ $ ESLINT=none umi dev
 ```bash
 $ MOCK=none umi dev
 ```
+
+### HTML
+
+默认打包 HTML 文件，值为 none 时不打包 HTML 文件。比如：
+
+```bash
+$ HTML=none umi build
+```
+
+### WATCH_FILES
+
+### RM_TMPDIR

@@ -8,16 +8,19 @@ umi 区别于其他前端开发框架和工具的核心就是它的插件机制�
 
 ## 插件使用
 
-插件可以是一个 npm 包，也可以是一个 JS 的路径。用户通过在 umi 的配置文件（.umirc.js 或 config/config.js）中添加 `plugins` 配置项来使用插件。如下所示：
+插件可以是一个 npm 包，也可以是一个 JS 的路径。用户通过配置 `plugins` 来使用插件。如下所示：
 
 ```js
 // .umirc.js
 export default {
-  plugins: [['umi-plugin-dva', {
-    immer: true,
-  }], ['./src/plugins/customPlugin.js', {
-    // plugin config
-  }]],
+  plugins: [
+    ['umi-plugin-dva', {
+      immer: true,
+    }],
+    ['./src/plugins/customPlugin.js', {
+      // plugin config
+    }]
+  ],
 };
 ```
 
@@ -25,8 +28,12 @@ export default {
 
 ### 官方插件
 
+- [umi-plugin-react](/plugin/umi-plugin-react.html)（插件集）
 - umi-plugin-dva
 - umi-plugin-locale
+- umi-plugin-dll
+- umi-plugin-routes
+- umi-plugin-polyfills
 
 ### 社区插件
 

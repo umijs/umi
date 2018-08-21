@@ -2,45 +2,63 @@
 
 ## 配置文件
 
-umi 允许在 `.umirc.js` 或 `config/config.js` （二选一）中进行配置，支持 ES6 语法。
+umi 允许在 `.umirc.js` 或 `config/config.js` （二选一，`.umirc.js` 优先）中进行配置，支持 ES6 语法。
+
+> 为简化说明，后续文档里只会出现 `.umirc.js`。
 
 比如：
 
 ```js
 export default {
-  pages: {
-    '/index': { context: { title: 'IndexPage' } },
-    '/list':  { context: { title: 'ListPage' } },
-  },
-  context: {
-    title: 'Unnamed Page',
-  },
-  hd: true,
+  base: '/admin/',
+  publicPath: 'http://cdn.com/foo',
+  plugins: [
+    ['umi-plugin-react', {
+      dva: true,
+    }],
+  ],
 };
 ```
 
 具体配置项详见[配置](/config/)。
 
-## 扩展 webpack
+## .umirc.local.js
 
-::: danger
-这不是推荐的使用方式，因为 umi 的后续升级有可能会和你的修改冲突。
-:::
+`.umirc.local.js` 是本地的配置文件，**不要提交到 git**，所以通常需要配置到 `.gitignore`。如果存在，会和 `.umirc.js` 合并后再返回。
 
-如果内置的 webpack 配置不满足需求，你可以在根目录新建 `webpack.config.js` 来扩展 webpack 配置。
+## UMI_ENV
 
-比如：
+可以通过环境变量 `UMI_ENV` 区分不同环境来指定配置。
+
+举个例子，
 
 ```js
-// 通过环境变量判断是给 dev 还是 build 用
-const isDev = process.env.NODE_ENV === 'development';
+// .umirc.js
+export default { a: 1, b: 2 };
 
-export default function(webpackConfig) {
-  // 做一些修改
-  webpackConfig.externals = {};
-  webpackConfig.plugins.push(/* Your Plugin */);
-  
-  // 返回新的 webpack 配置
-  return webpackConfig;
+// .umirc.cloud.js
+export default { b: 'cloud', c: 'cloud' };
+
+// .umirc.local.js
+export default { c: 'local' };
+```
+
+不指定 `UMI_ENV` 时，拿到的配置是：
+
+```js
+{
+  a: 1,
+  b: 2,
+  c: 'local',
+}
+```
+
+指定 `UMI_ENV=cloud` 时，拿到的配置是：
+
+```js
+{
+  a: 1,
+  b: 'cloud',
+  c: 'local',
 }
 ```

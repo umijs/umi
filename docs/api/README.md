@@ -7,6 +7,7 @@ sidebarDepth: 2
 ## 路由
 
 ### umi/link
+
 通过声明的方式做路由跳转。
 
 例子：
@@ -29,9 +30,11 @@ export default () => {
 ```
 
 ### umi/router
+
 通过编程的方式做路由切换，包含以下 4 个 API 。
 
 #### router.push(path)
+
 推一个新的页面到 history 里。
 
 例子：
@@ -57,9 +60,11 @@ router.push({
 ```
 
 #### router.replace(path)
+
 替换当前页面，参数和 [router.push()](#router.push\(path\)) 相同。
 
 #### router.go(n)
+
 往前或往后跳指定页数。
 
 例子：
@@ -84,7 +89,7 @@ router.goBack();
 
 ### umi/navlink
 
-详见：https://reacttraining.com/react-router/web/api/NavLink
+详见：[https://reacttraining.com/react-router/web/api/NavLink](https://reacttraining.com/react-router/web/api/NavLink)
 
 ### umi/redirect
 
@@ -97,51 +102,44 @@ import Redirect from 'umi/redirect';
 <Redirect to="/login" />
 ```
 
-详见：https://reacttraining.com/react-router/web/api/Redirect
+详见：[https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
 
 ### umi/withRouter
 
-详见：https://reacttraining.com/react-router/web/api/withRouter
+详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
 
 ## 性能
 
 ### umi/dynamic
 
-动态加载组件。
+动态加载组件，基于 [react-loadable](https://github.com/jamiebuilds/react-loadable) 实现。
 
-#### dynamic(resolve)
+#### dynamic(options)
+
 例子：
 
 ```js
 import dynamic from 'umi/dynamic';
 
 // 延时 1s 渲染的组件。
-const App = dynamic(() => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(() => <div>I will render after 1s</div>);
-    }, /* 1s */1000);
-  }));
+const App = dynamic({
+  loader: () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(() => <div>I will render after 1s</div>);
+      }, /* 1s */1000);
+    }));
+  },
 });
 
 // 或者用 async 语法
 const delay = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
-const App = dynamic(async function() {
-  await delay(/* 1s */1000);
-  return () => <div>I will render after 1s</div>;
+const App = dynamic({
+  loader: async function() {
+    await delay(/* 1s */1000);
+    return () => <div>I will render after 1s</div>;
+  },
 });
-```
-
-#### dynamic(resolve, { loading })
-
-可以通过第二个参数可以指定 Loading Component 。
-
-```js
-dynamic(async function() {}, {
-  loading() {
-    return <div>Loading Component...</div>;
-  }
-})
 ```
 
 ## 构建
