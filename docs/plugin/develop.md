@@ -564,3 +564,7 @@ api.modifyAFWebpackOpts((memo) => {
 ### addMiddlewareAfterMock
 
 在 mock 后添加中间件。
+
+### addVersionInfo
+
+添加版本信息，在 `umi -v` 或 `umi version` 时显示。

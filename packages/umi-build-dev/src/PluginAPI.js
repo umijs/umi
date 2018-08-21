@@ -70,6 +70,7 @@ export default class PluginAPI {
       'addRendererWrapperWithModule',
       'addRouterImport',
       'addRouterImportAhead',
+      'addVersionInfo',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',

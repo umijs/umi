@@ -15,6 +15,7 @@ export default function(opts = {}) {
     './plugins/commands/test',
     './plugins/commands/help',
     './plugins/commands/generate',
+    './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',
     './plugins/base',
