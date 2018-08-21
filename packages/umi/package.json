@@ -10,6 +10,7 @@
     "chai": "^4.1.2",
     "cross-spawn": "^6.0.5",
     "debug": "^3.1.0",
+    "dotenv": "^6.0.0",
     "ejs": "^2.5.7",
     "is-windows": "^1.0.2",
     "path-is-absolute": "^1.0.1",
