@@ -7,6 +7,7 @@ sidebarDepth: 2
 ## 路由
 
 ### umi/link
+
 通过声明的方式做路由跳转。
 
 例子：
@@ -29,9 +30,11 @@ export default () => {
 ```
 
 ### umi/router
+
 通过编程的方式做路由切换，包含以下 4 个 API 。
 
 #### router.push(path)
+
 推一个新的页面到 history 里。
 
 例子：
@@ -57,9 +60,11 @@ router.push({
 ```
 
 #### router.replace(path)
+
 替换当前页面，参数和 [router.push()](#router.push\(path\)) 相同。
 
 #### router.go(n)
+
 往前或往后跳指定页数。
 
 例子：
@@ -110,6 +115,7 @@ import Redirect from 'umi/redirect';
 动态加载组件。
 
 #### dynamic(resolve)
+
 例子：
 
 ```js
