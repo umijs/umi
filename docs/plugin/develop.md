@@ -190,10 +190,6 @@ api.rebuildTmpFiles('config dva changed');
 
 触发 HTML 重新构建。
 
-### onHTMLRebuild
-
-当 HTML 重新构建时被触发。
-
 ### changePluginOption
 
 设置插件的配置，比如在 react 插件集中中需要把插件集的 dva 配置传递给 dva 插件的时候用到。
@@ -201,20 +197,6 @@ api.rebuildTmpFiles('config dva changed');
 ```js
 api.changePluginOption('dva-plugin-id', {
   immer: true
-});
-```
-
-### modifyDefaultConfig
-
-设置 umi 的默认配置。
-
-```js
-api.modifyDefaultConfig(memo => {
-  return {
-    // 默认使用单数目录
-    ...memo,
-    singular: true,
-  }
 });
 ```
 
@@ -276,6 +258,27 @@ xxx -> xxx.js xxx.ts
 
 事件类 API 遵循以 onXxxXxx, beforeXxx, afterXxx 的命名规范，接收一个参数为回调函数。
 
+### beforeDevServer
+
+dev server 启动之前。
+
+### afterDevServer
+
+dev server 启动之后。
+
+### onStart
+
+`umi dev` 或者 `umi build` 开始时触发。
+
+### onDevCompileDone
+
+`umi dev` 编译完成后触发。
+
+```js
+api.onDevCompileDone(({ isFirstCompile, stats }) => {
+});
+```
+
 ### onOptionChange
 
 插件的配置改变的时候触发。
@@ -296,28 +299,37 @@ export default (api, defaultOpts = { immer: false }) => {
 
 ```js
 api.onBuildSuccess({
-  assets,
+  stats,
 } => {
-  /* TODO confirm
-  assets = {
-    common: {
-	  js: [],
-	  css: [],
-	},
-    pages: [{
-	  name: 'index',
-	  html: 'index.html',
-	  js: ['umi-xxx.js'],
-	  css: ['umi-xxx.css']
-	}],
-  }
-  */
+  // handle with stats
 });
 ```
 
 ### onBuildFail
 
 在 `umi build` 失败的时候。
+
+### onHTMLRebuild
+
+当 HTML 重新构建时被触发。
+
+### onGenerateFiles
+
+路由文件，入口文件生成时被触发。
+
+### onPatchRoute
+
+获取单个路由的配置时触发，可以在这里修改路由配置 `route`。比如可以向 `Routes` 中添加组件路径使得可以给路由添加一层封装。
+
+```js
+api.onPatchRoute({ route } => {
+  // route:
+  // {
+  //   path: '/xxx',
+  //   Routes: [] 
+  // }
+})
+```
 
 ## 应用类 API
 
@@ -340,6 +352,20 @@ api.addRendererWrapperWithComponent(() => {
 ```
 
 下面是具体的 API。
+
+### modifyDefaultConfig
+
+设置 umi 的默认配置。
+
+```js
+api.modifyDefaultConfig(memo => {
+  return {
+    // 默认使用单数目录
+    ...memo,
+    singular: true,
+  }
+});
+```
 
 ### addPageWatcher
 
@@ -377,6 +403,23 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
+### modifyHTMLWithAST
+
+修改 HTML，基于 cheerio 。
+
+### modifyHTMLContext
+
+修改 html ejs 渲染时的环境参数。
+
+```js
+api.modifyHTMLContext(memo => {
+  return {
+    ...memo,
+    title: 'test title',
+  };
+});
+```
+
 ### modifyRoutes
 
 修改路由配置。
@@ -384,15 +427,6 @@ api.addHTMLScript({
 ```js
 api.modifyRoutes(({ memo, args}) => {
   return memo;
-})
-```
-
-### onPatchRoute
-
-获取单个路由的配置时触发，可以在这里修改路由配置。
-
-```js
-api.onPatchRoute({ memo } => {
 })
 ```
 
@@ -436,18 +470,38 @@ api.addEntryImportAhead({
 });
 ```
 
-
 ### addEntryImport
 
 在入口文件中 import 模块。
+
+```js
+api.addEntryImport({
+  source: '/modulePath/xxx.js',
+  specifier: 'moduleName',
+});
+```
 
 ### addEntryCodeAhead
 
 在 render 之前添加代码。
 
+```js
+api.addEntryCodeAhead(`
+  console.log('addEntryCodeAhead');
+`);
+```
+
 ### addEntryCode
 
 在 render 之后添加代码。
+
+### addRouterImport
+
+在路由文件中添加模块引入。
+
+### addRouterImportAhead
+
+在路由文件头部添加模块引入。
 
 ### addRendererWrapperWithComponent
 
@@ -457,13 +511,29 @@ api.addEntryImportAhead({
 
 在挂载 <App/> 前执行一个 Module，支持异步。
 
+### modifyEntryRender
+
+modifyEntryRender
+
+### modifyEntryHistory
+
+modifyEntryHistory
+
+### modifyRouteComponent
+
+modifyRouteComponent
+
+### modifyRouterRootComponent
+
+modifyRouterRootComponent
+
 ### modifyWebpackConfig
 
 修改 webpack 配置。
 
 ```js
 // 示例
-api.chainWebpackConfig(({ memo }) => {
+api.chainWebpackConfig((memo) => {
   return memo;
 });
 ```
@@ -474,7 +544,7 @@ api.chainWebpackConfig(({ memo }) => {
 
 ```js
 // 示例
-api.modifyAFWebpackOpts(({ memo }) => {
+api.modifyAFWebpackOpts((memo) => {
   return memo;
 });
 ```
