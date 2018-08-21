@@ -19,5 +19,9 @@
 
 ## 环境变量
 
-
+* 不再支持 PUBLIC_PATH，通过配置 publicPath 实现
+* 不再支持 BASE_URL，通过配置 base 实现
+* 不再支持 COMPILE_ON_DEMAND，umi@2 里没有这个功能了
+* 不再支持 TSLINT，umi@2 里没有这个功能了
+* 不再支持 ESLINT，umi@2 里没有这个功能了
 

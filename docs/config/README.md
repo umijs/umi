@@ -104,17 +104,19 @@ export default {
 "exportStatic": {}
 ```
 
-还可以启用 `.html` 后缀。
+### exportStatic.htmlSuffix
 
-```
-"exportStatic": { htmlSuffix: true },
-```
+* 类型：`Boolean`
+* 默认值：`false`
 
-如需部署到任意路径，配置：
+启用 `.html` 后缀。
 
-```
-"exportStatic": { dynamicRoot: true },
-```
+### exportStatic.dynamicRoot
+
+* 类型：`Boolean`
+* 默认值：`false`
+
+部署到任意路径。
 
 ## webpack
 
@@ -278,19 +280,3 @@ chainWebpack(config, { webpack }) {
 ### cssLoaderOptions
 
 给 [css-loader](https://github.com/webpack-contrib/css-loader) 的额外配置项。
-
-### env
-
-针对特定的环境进行配置。dev 的环境变量是?`development`，build 的环境变量是?`production`。
-比如：
-
-```js
-"extraBabelPlugins": ["transform-runtime"],
-"env": {
-  "development": {
-    "extraBabelPlugins": ["dva-hmr"]
-  }
-}
-```
-
-这样，开发环境下的 extraBabelPlugins 是 `["transform-runtime", "dva-hmr"]`，而生产环境下是 `["transform-runtime"]`。
