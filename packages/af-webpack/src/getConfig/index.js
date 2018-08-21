@@ -84,12 +84,18 @@ export default function(opts) {
       .runtimeChunk(false);
   }
 
+  webpackConfig.module
+    .rule('mjs-pre')
+    .test(/\.mjs$/)
+    .type('javascript/auto')
+    .include.add(opts.cwd);
+
   // module -> exclude
   const DEFAULT_INLINE_LIMIT = 10000;
   const rule = webpackConfig.module
     .rule('exclude')
     .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx)$/)
+    .add(/\.(js|jsx|ts|tsx|mjs)$/)
     .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
@@ -149,6 +155,16 @@ export default function(opts) {
   webpackConfig.module
     .rule('jsx')
     .test(/\.jsx$/)
+    .include.add(opts.cwd)
+    .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts);
+
+  // module -> mjs
+  webpackConfig.module
+    .rule('mjs')
+    .test(/\.mjs$/)
     .include.add(opts.cwd)
     .end()
     .use('babel-loader')
