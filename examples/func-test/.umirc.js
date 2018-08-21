@@ -8,6 +8,7 @@ export default {
         webpackChunkName: true,
       },
     ],
+    ['umi-plugin-react/lib/plugins/title', '默认标题'],
   ],
   mountElementId: 'container',
 };
