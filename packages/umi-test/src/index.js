@@ -1,36 +1,18 @@
 import jest from 'jest';
 import { join } from 'path';
-import { existsSync, statSync } from 'fs';
+import { existsSync } from 'fs';
 
 const debug = require('debug')('umi-test');
 
 process.env.NODE_ENV = 'test';
 
-function test(path) {
-  return existsSync(path) && statSync(path).isDirectory();
-}
-
 export default function(opts = {}) {
-  const {
-    watch,
-    coverage,
-    libraryName = 'umi',
-    cwd = process.cwd(),
-    moduleNameMapper,
-  } = opts;
+  const { cwd = process.cwd(), moduleNameMapper } = opts;
 
   const jestConfigFile = join(cwd, 'jest.config.js');
   let userJestConfig = {};
   if (existsSync(jestConfigFile)) {
     userJestConfig = require(jestConfigFile); // eslint-disable-line
-  }
-
-  let pagesPath = 'pages';
-  if (test(join(cwd, 'src/page'))) {
-    pagesPath = 'src/page';
-  }
-  if (test(join(cwd, 'src/pages'))) {
-    pagesPath = 'src/pages';
   }
 
   const config = {
@@ -55,20 +37,6 @@ export default function(opts = {}) {
         useBabelrc: true,
       },
     },
-    ...(coverage
-      ? {
-          collectCoverageFrom: [
-            'pages/**/*.{ts,tsx,js,jsx}',
-            'src/**/*.{ts,tsx,js,jsx}',
-            '!**/*.d.ts',
-          ],
-          collectCoverage: true,
-          coveragePathIgnorePatterns: [
-            `/${pagesPath}/.${libraryName}/`,
-            `/${pagesPath}/.${libraryName}-production/`,
-          ],
-        }
-      : {}),
     ...(userJestConfig || {}),
   };
 
@@ -76,11 +44,8 @@ export default function(opts = {}) {
     jest
       .runCLI(
         {
-          watch,
-          testPathPattern: process.argv
-            .slice(2)
-            .filter(arg => !arg.startsWith('-')),
           config: JSON.stringify(config),
+          ...opts,
         },
         [cwd],
       )
