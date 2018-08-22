@@ -1,14 +1,15 @@
 export default {
   plugins: [
-    'umi-plugin-react/lib/plugins/antd',
-    './plugins/render-wrapper',
     [
-      'umi-plugin-react/lib/plugins/dynamicImport',
+      'umi-plugin-react',
       {
-        webpackChunkName: true,
+        antd: true,
+        dynamicImport: {
+          webpackChunkName: true,
+        },
+        title: '默认标题',
       },
     ],
-    ['umi-plugin-react/lib/plugins/title', '默认标题'],
   ],
-  mountElementId: 'container',
+  exportStatic: true,
 };

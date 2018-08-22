@@ -10,9 +10,10 @@ export default (service, opts = {}) => {
     routes,
     publicPath: webpackConfig.output.publicPath,
     chunksMap,
-    modifyContext(context) {
+    modifyContext(context, route) {
       return service.applyPlugins('modifyHTMLContext', {
         initialValue: context,
+        args: { route },
       });
     },
     modifyRouterBaseStr(str) {

@@ -213,7 +213,7 @@ export default class HTMLGenerator {
       ...(this.config.context || {}),
       env: this.env,
     };
-    if (this.modifyContext) context = this.modifyContext(context);
+    if (this.modifyContext) context = this.modifyContext(context, route);
 
     const tplPath = this.getDocumentTplPath(route);
     const relTplPath = relative(cwd, tplPath);
