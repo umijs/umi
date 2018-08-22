@@ -1,5 +1,7 @@
 # 从 umi 1.x 迁移
 
+> 更喜欢观看视频？可以[点此观看](https://youtu.be/1mvKzFLLBck)。
+
 下面以 [antd-admin](https://github.com/zuiidea/antd-admin/pull/877) 为例，介绍如何从 umi@1 升级到 umi@2 。
 
 ## npm 依赖
