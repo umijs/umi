@@ -4,7 +4,7 @@ sidebarDepth: 3
 
 # umi-plugin-react
 
-这是官方封装的一个插件集，包含 12 个常用的进阶功能。
+这是官方封装的一个插件集，包含 13 个常用的进阶功能。
 
 ## 安装
 
@@ -191,9 +191,9 @@ export default {
 使用约定式路由的时候则直接在页面组件中配置：
 
 ```jsx
-/*
-title: test page
-*/
+/**
+ * title: test page
+ */
 export default () => {
   return <div>testpage</div>;
 }
