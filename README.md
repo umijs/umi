@@ -25,17 +25,19 @@
 ### Getting Started
 
 ```bash
-# Install umi
-$ yarn global add umi # or: npm install -g umi
+# 安装
+$ yarn global add umi # 或者 npm install -g umi
 
-# Create a page
-$ mkdir pages
-$ echo 'export default () => <h1>Hello umi</h1>;' > pages/index.js
+# 新建应用
+$ mkdir myapp && cd myapp
 
-# Start dev server
+# 新建页面
+$ umi generate page index
+
+# 本地开发
 $ umi dev
 
-# Run build
+# 构建上线
 $ umi build
 ```
 
