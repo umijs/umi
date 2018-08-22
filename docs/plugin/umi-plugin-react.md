@@ -41,6 +41,7 @@ export default {
       pwa: true,
       hd: true,
       fastClick: true,
+      title: 'default title',
     }],
   ],
 };
@@ -159,3 +160,41 @@ export default {
 * 类型：`Boolean`
 
 启用 fastClick。
+
+### title
+
+* 类型：`String` 或者 `Object`
+
+开启 title 插件，设置 HTML title：
+
+配置项包含：
+
+* `defaultTitle`: '默认标题', // 必填，当配置项为 String 时直接配置项作为 defaultTitle
+* `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
+* `separator`: ' - ', // default ' - '
+
+当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
+
+比如使用配置式路由的时候如下配置：
+
+```js
+// .umirc.js or config/config.js
+export default {
+  routes: [{
+    path: '/testpage',
+    component: './testpage',
+    title: 'test page',
+  }],
+}
+```
+
+使用约定式路由的时候则直接在页面组件中配置：
+
+```jsx
+/*
+title: test page
+*/
+export default () => {
+  return <div>testpage</div>;
+}
+```

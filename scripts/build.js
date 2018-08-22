@@ -63,6 +63,7 @@ const BROWSER_FILES = [
   'packages/umi-build-dev/src/Compiling.js',
   'packages/umi-build-dev/src/DefaultLayout.js',
   'packages/umi-plugin-react/src/plugins/registerServiceWorker.js',
+  'packages/umi-plugin-react/src/plugins/title/TitleWrapper.js',
   'packages/af-webpack/src/webpackHotDevClient.js',
   'packages/af-webpack/src/utils.js',
   'packages/af-webpack/src/formatWebpackMessages.js',

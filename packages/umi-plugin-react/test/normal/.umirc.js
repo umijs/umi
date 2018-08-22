@@ -26,6 +26,7 @@ export default {
         },
         polyfills: [],
         antd: true,
+        title: '默认标题',
       },
     ],
   ],
