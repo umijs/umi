@@ -84,12 +84,6 @@ export default function(opts) {
       .runtimeChunk(false);
   }
 
-  webpackConfig.module
-    .rule('mjs-pre')
-    .test(/\.mjs$/)
-    .type('javascript/auto')
-    .include.add(opts.cwd);
-
   // module -> exclude
   const DEFAULT_INLINE_LIMIT = 10000;
   const rule = webpackConfig.module
@@ -138,6 +132,23 @@ export default function(opts) {
     ];
   }
 
+  // Avoid "require is not defined" errors
+  webpackConfig.module
+    .rule('mjs-require')
+    .test(/\.mjs$/)
+    .type('javascript/auto')
+    .include.add(opts.cwd);
+
+  // module -> mjs
+  webpackConfig.module
+    .rule('mjs')
+    .test(/\.mjs$/)
+    .include.add(opts.cwd)
+    .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts);
+
   // module -> js
   webpackConfig.module
     .rule('js')
@@ -155,16 +166,6 @@ export default function(opts) {
   webpackConfig.module
     .rule('jsx')
     .test(/\.jsx$/)
-    .include.add(opts.cwd)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
-
-  // module -> mjs
-  webpackConfig.module
-    .rule('mjs')
-    .test(/\.mjs$/)
     .include.add(opts.cwd)
     .end()
     .use('babel-loader')
