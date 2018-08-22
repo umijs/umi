@@ -1,12 +1,12 @@
 {
   "name": "umi",
-  "version": "2.0.0-beta.16",
+  "version": "2.0.0-beta.17",
   "description": "Blazing-fast next.js-like framework for React apps.",
   "dependencies": {
     "@babel/core": "7.0.0-rc.1",
     "@babel/runtime": "7.0.0-rc.1",
     "@types/react": "^16.4.9",
-    "babel-preset-umi": "^1.0.0-beta.16",
+    "babel-preset-umi": "^1.0.0-beta.17",
     "chai": "^4.1.2",
     "cross-spawn": "^6.0.5",
     "debug": "^3.1.0",
@@ -17,7 +17,7 @@
     "react-loadable": "^5.5.0",
     "resolve-cwd": "^2.0.0",
     "slash2": "^2.0.0",
-    "umi-build-dev": "^1.0.0-beta.16",
+    "umi-build-dev": "^1.0.0-beta.17",
     "update-notifier": "^2.3.0",
     "uppercamelcase": "^3.0.0",
     "url": "^0.11.0",
