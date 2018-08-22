@@ -30,10 +30,11 @@ export default function(api) {
         return memo;
       }, {});
 
+      args._ = args._.slice(1);
       require('umi-test').default({
-        ...args,
+        cwd: api.cwd,
         moduleNameMapper,
-        watch: args.w || args.watch,
+        ...args,
       });
     },
   );
