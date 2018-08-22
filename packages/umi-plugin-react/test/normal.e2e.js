@@ -37,6 +37,24 @@ describe('normal', () => {
       () => document.documentElement.dataset.scale,
     );
     expect(dataScale).toEqual('true');
+
+    // title
+    const titleText = await page.evaluate(
+      () => document.querySelector('title').innerHTML,
+    );
+    expect(titleText).toEqual('默认标题');
+  });
+
+  it('a page', async () => {
+    await page.goto(`http://localhost:${port}/a`, {
+      waitUntil: 'networkidle2',
+    });
+
+    // title
+    const titleText = await page.evaluate(
+      () => document.querySelector('title').innerHTML,
+    );
+    expect(titleText).toEqual('testpage');
   });
 
   afterAll(() => {
