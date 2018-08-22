@@ -89,7 +89,7 @@ export default function(opts) {
   const rule = webpackConfig.module
     .rule('exclude')
     .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx)$/)
+    .add(/\.(js|jsx|ts|tsx|mjs)$/)
     .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
@@ -131,6 +131,23 @@ export default function(opts) {
       require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
+
+  // Avoid "require is not defined" errors
+  webpackConfig.module
+    .rule('mjs-require')
+    .test(/\.mjs$/)
+    .type('javascript/auto')
+    .include.add(opts.cwd);
+
+  // module -> mjs
+  webpackConfig.module
+    .rule('mjs')
+    .test(/\.mjs$/)
+    .include.add(opts.cwd)
+    .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts);
 
   // module -> js
   webpackConfig.module
