@@ -88,7 +88,7 @@ export default class HTMLGenerator {
   getMatchedContent(path) {
     const { config } = this;
     if (config.exportStatic) {
-      const branch = matchRoutes(this.routes, path).filter(r => r.path);
+      const branch = matchRoutes(this.routes, path).filter(r => r.route.path);
       const route = branch.length ? branch[branch.length - 1].route : { path };
       return this.getContent(route);
     } else {
