@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
 
-🚀 Blazing-fast next.js-like framework for React apps.
+🚀 Pluggable enterprise-level react application framework.
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
