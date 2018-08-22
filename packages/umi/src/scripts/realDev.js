@@ -13,7 +13,6 @@ process.once('SIGTERM', () => onSignal('SIGTERM'));
 function onSignal(signal) {
   if (closed) return;
   closed = true;
-  console.warn('umi dev receive signal %s, closing.', signal);
   process.exit(0);
 }
 
