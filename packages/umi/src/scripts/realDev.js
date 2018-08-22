@@ -14,10 +14,7 @@ function onSignal(signal) {
   if (closed) return;
   closed = true;
   console.warn('umi dev receive signal %s, closing.', signal);
-  // sleep to make sure SIGTERM send to the child processes
-  setTimeout(() => {
-    process.exit(0);
-  }, 5000);
+  process.exit(0);
 }
 
 process.env.NODE_ENV = 'development';
