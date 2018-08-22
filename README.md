@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
 
-🐠 Pluggable enterprise-level react application framework.
+🌋 Pluggable enterprise-level react application framework.
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
@@ -12,15 +12,15 @@
 
 ## Features
 
-* **开箱即用**，内置 react、react-router 等
-* **类 next.js 且[功能完备](/guide/router.html)的路由约定**，同时支持配置的路由方式
-* **完善的插件体系**，覆盖从源码到构建产物的每个生命周期
-* **高性能**，通过插件支持 PWA、以路由为单元的 Code Splitting 等
-* **支持静态页面导出**，适配各种环境，比如中台业务、无线业务、[egg](https://github.com/eggjs/egg)、支付宝钱包、云凤蝶等
-* **开发启动快**，支持一键开启 [dll](/plugin/umi-plugin-react.html#dll) 和 [hard-source-webpack-plugin](/plugin/umi-plugin-react.html#hardSource) 等
-* **一键兼容到 IE9**，基于 [umi-plugin-polyfills](/plugin/umi-plugin-react.html#polyfills)
-* **完善的 TypeScript 支持**，包括 d.ts 定义和 umi test
-* **与 dva 数据流的深入融合**，支持 duck directory、model 的自动加载、code splitting 等等
+* 📦 **开箱即用**，内置 react、react-router 等
+* 🏈 **类 next.js 且[功能完备](/guide/router.html)的路由约定**，同时支持配置的路由方式
+* 🎉 **完善的插件体系**，覆盖从源码到构建产物的每个生命周期
+* 🚀 **高性能**，通过插件支持 PWA、以路由为单元的 Code Splitting 等
+* 💈 **支持静态页面导出**，适配各种环境，比如中台业务、无线业务、[egg](https://github.com/eggjs/egg)、支付宝钱包、云凤蝶等
+* 🚄 **开发启动快**，支持一键开启 [dll](/plugin/umi-plugin-react.html#dll) 和 [hard-source-webpack-plugin](/plugin/umi-plugin-react.html#hardSource) 等
+* 🐠 **一键兼容到 IE9**，基于 [umi-plugin-polyfills](/plugin/umi-plugin-react.html#polyfills)
+* 🍁 **完善的 TypeScript 支持**，包括 d.ts 定义和 umi test
+* 🌴 **与 dva 数据流的深入融合**，支持 duck directory、model 的自动加载、code splitting 等等
 
 ### Getting Started
 
