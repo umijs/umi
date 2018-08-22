@@ -1,7 +1,6 @@
 module.exports = {
   title: 'UmiJS',
   description: '🚀 可插拔的企业级 react 应用框架。',
-  serviceWorker: false,
   // locales: {
   //   '/': {
   //     lang: 'en-US',
@@ -12,12 +11,19 @@ module.exports = {
   //     description: '极快的类 Next.js 的 React 应用框架。',
   //   },
   // },
+  serviceWorker: {},
   themeConfig: {
     repo: 'umijs/umi',
     lastUpdated: 'Last Updated',
     editLinks: true,
     editLinkText: '在 GitHub 上编辑此页',
     docsDir: 'docs',
+    serviceWorker: {
+      updatePopup: {
+        message: 'New content is available.',
+        buttonText: 'Refresh',
+      },
+    },
     nav: [
       { text: '指南', link: '/guide/' },
       { text: '配置', link: '/config/' },
