@@ -412,10 +412,10 @@ api.addHTMLScript({
 修改 html ejs 渲染时的环境参数。
 
 ```js
-api.modifyHTMLContext(memo => {
+api.modifyHTMLContext((memo, { route }) => {
   return {
     ...memo,
-    title: 'test title',
+    title: route.title, // umi-plugin-react 的 title 插件包含了类似的逻辑
   };
 });
 ```
