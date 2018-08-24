@@ -30,6 +30,7 @@ const nodeBabelConfig = {
   plugins: [
     require.resolve('@babel/plugin-proposal-export-default-from'),
     require.resolve('@babel/plugin-proposal-do-expressions'),
+    require.resolve('@babel/plugin-proposal-class-properties'),
   ],
 };
 const browserBabelConfig = {
