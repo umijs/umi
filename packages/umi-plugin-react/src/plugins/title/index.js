@@ -24,7 +24,7 @@ export default (api, option) => {
   });
 
   api.onPatchRoute(({ route }) => {
-    if (option) {
+    if (option && (!route.routes || !route.routes.length) && route.title) {
       // only open this plugin when option exist
       route.Routes = [
         ...(route.Routes || []),
@@ -51,6 +51,7 @@ function modifyRoutes(memo, option) {
       defaultTitle,
       format,
       separator,
+      globalDefaultTitle: defaultTitle,
     });
   }
   return memo;
@@ -62,6 +63,7 @@ function setDefaultTitleToRoutes({
   parentTitle,
   format,
   separator,
+  globalDefaultTitle,
 }) {
   routes.forEach(route => {
     if (route.title) {
@@ -73,6 +75,7 @@ function setDefaultTitleToRoutes({
       // title no exist, use the defaultTitle
       route._title = defaultTitle;
     }
+    route._title_default = globalDefaultTitle;
     if (route.routes) {
       setDefaultTitleToRoutes({
         routes: route.routes,
@@ -81,6 +84,7 @@ function setDefaultTitleToRoutes({
         parentTitle: route.title || parentTitle,
         format,
         separator,
+        globalDefaultTitle,
       });
     }
   });
