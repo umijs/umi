@@ -3,8 +3,7 @@ import getYamlConfig from './getYamlConfig';
 describe('getYamlConfig', () => {
   it('single comment', () => {
     expect(
-      getYamlConfig(`
-/*
+      getYamlConfig(`/*
 a: b
 c:
   d: 1
@@ -26,8 +25,7 @@ const { c } = b;
 
   it('comment with * prefix', () => {
     expect(
-      getYamlConfig(`
-/**
+      getYamlConfig(`/**
  * a: b
  * c: d
  **/
@@ -42,8 +40,7 @@ alert(1);
 
   it('only first comment work', () => {
     expect(
-      getYamlConfig(`
-/*
+      getYamlConfig(`/*
 a: b
 */
 
@@ -58,10 +55,22 @@ c: d
     });
   });
 
-  it('ignore invalid yaml comment', () => {
+  it('only the first line comment work', () => {
     expect(
       getYamlConfig(`
+
 /*
+a: b
+*/
+
+alert(1);
+    `),
+    ).toEqual({});
+  });
+
+  it('ignore invalid yaml comment', () => {
+    expect(
+      getYamlConfig(`/*
  * this is a normal text
  */
     `),
