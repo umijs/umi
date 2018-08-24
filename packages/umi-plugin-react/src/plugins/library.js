@@ -1,7 +1,7 @@
 import { dirname } from 'path';
 
 export default function(api, options) {
-  const { cwd, compatDirname } = api.service;
+  const { cwd, compatDirname } = api;
 
   api.chainWebpackConfig(webpackConfig => {
     if (options === 'preact') {
