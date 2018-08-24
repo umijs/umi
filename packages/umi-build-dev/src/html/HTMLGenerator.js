@@ -106,6 +106,7 @@ export default class HTMLGenerator {
     if (route.document) {
       const docPath = join(cwd, route.document);
       assert(existsSync(docPath), `document ${route.document} don't exists.`);
+      return docPath;
     }
 
     if (existsSync(absPageDocumentPath)) {
