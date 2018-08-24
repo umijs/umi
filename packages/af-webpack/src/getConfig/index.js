@@ -52,6 +52,7 @@ export default function(opts) {
     .end()
     .extensions.merge([
       '.web.js',
+      '.wasm',
       '.mjs',
       '.js',
       '.web.jsx',
