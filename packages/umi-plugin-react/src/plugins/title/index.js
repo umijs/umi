@@ -2,7 +2,7 @@ import { join, relative } from 'path';
 import assert from 'assert';
 
 export default (api, option) => {
-  const { paths } = api;
+  const { paths, config } = api;
 
   api.onOptionChange(newOption => {
     option = newOption;
@@ -11,9 +11,10 @@ export default (api, option) => {
 
   api.modifyHTMLContext((memo, { route }) => {
     if (option) {
+      const { defaultTitle } = parseOption(option);
       return {
         ...memo,
-        title: route._title,
+        title: config.exportStatic ? route._title : defaultTitle,
       };
     }
     return memo;
@@ -34,18 +35,27 @@ export default (api, option) => {
   });
 };
 
+function parseOption(option) {
+  // fill title with parent value or default value
+  let defaultTitle = option;
+  let format = '{parent}{separator}{current}';
+  let separator = ' - ';
+  if (typeof option === 'object') {
+    defaultTitle = option.defaultTitle;
+    assert(defaultTitle, 'defaultTitle in title option is required.');
+    format = option.format || format;
+    separator = option.separator || separator;
+  }
+  return {
+    defaultTitle,
+    format,
+    separator,
+  };
+}
+
 function modifyRoutes(memo, option) {
   if (option) {
-    // fill title with parent value or default value
-    let defaultTitle = option;
-    let format = '{parent}{separator}{current}';
-    let separator = ' - ';
-    if (typeof option === 'object') {
-      defaultTitle = option.defaultTitle;
-      assert(defaultTitle, 'defaultTitle in title option is required.');
-      format = option.format || format;
-      separator = option.separator || separator;
-    }
+    const { defaultTitle, format, separator } = parseOption(option);
     setDefaultTitleToRoutes({
       routes: memo,
       defaultTitle,
