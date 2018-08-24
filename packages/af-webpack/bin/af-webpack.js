@@ -25,14 +25,14 @@ switch (process.argv[2]) {
 }
 
 function getWebpackConfig() {
-  const { config: userConfig } = getUserConfig({
+  const { config: userConfig } = getUserConfig.default({
     cwd,
   });
   return getConfig.default({
-    ...userConfig,
-    cwd,
     entry: {
       index: './index.ts',
     },
+    ...userConfig,
+    cwd,
   });
 }
