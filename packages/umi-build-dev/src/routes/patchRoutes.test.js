@@ -6,6 +6,11 @@ describe('patchRoutes', () => {
     expect(routes).toEqual([{ path: '/a' }]);
   });
 
+  it('without path', () => {
+    const routes = patchRoutes([{ component: 'a' }]);
+    expect(routes).toEqual([{ component: 'a' }]);
+  });
+
   it('throw error if use dynamic route with exportStatic', () => {
     expect(() => {
       patchRoutes([{ path: '/:a' }], {

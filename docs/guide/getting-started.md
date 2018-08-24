@@ -1,6 +1,6 @@
 # 快速上手
 
-> 更喜欢观看视频？可以 [点此观看](https://www.youtube.com/watch?v=vkAUGUlYm24&list=PLzu0PBqV2jld2q5gCADxX17NE3gF3FvYq)
+> 更喜欢观看视频？可以[点此观看](https://www.youtube.com/watch?v=vkAUGUlYm24&list=PLzu0PBqV2jld2q5gCADxX17NE3gF3FvYq)
 
 ## 环境准备
 
