@@ -7,8 +7,9 @@ export default function(code) {
   const comments = extractComments(code);
   return comments
     .slice(0, 1)
-    .filter(c => c.value.includes(':'))
-    .reduce((memo, { value }) => {
+    .filter(c => c.value.includes(':') && c.loc.start.line === 1)
+    .reduce((memo, item) => {
+      const { value } = item;
       const v = value.replace(/^(\s+)?\*/gm, '');
       debug(v);
       try {
