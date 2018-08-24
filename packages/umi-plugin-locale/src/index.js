@@ -56,7 +56,7 @@ export default function(api, options = {}) {
       join(__dirname, '../template/wrapper.jsx.tpl'),
       'utf-8',
     );
-    const defaultLocale = options.defaultLocale || 'zh-CN';
+    const defaultLocale = options.default || 'zh-CN';
     const wrapperContent = Mustache.render(wrapperTpl, {
       localeList: localeFileList,
       antd: options.antd === undefined ? true : options.antd,
