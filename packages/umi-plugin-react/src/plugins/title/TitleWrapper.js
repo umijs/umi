@@ -1,8 +1,13 @@
 import React from 'react';
-import DocumentTitle from 'react-document-title';
 
-export default props => {
-  return (
-    <DocumentTitle title={props.route._title}>{props.children}</DocumentTitle>
-  );
-};
+export default class UmiReactTitle extends React.Component {
+  componentDidMount() {
+    document.title = this.props.route._title;
+  }
+  componentWillUnmount() {
+    document.title = this.props.route._title_default;
+  }
+  render() {
+    return this.props.children;
+  }
+}

@@ -63,17 +63,21 @@ describe('modifyRoutes', () => {
     expect(modifyRoutes(routes, 'abc')).toEqual([
       {
         _title: 'abc',
+        _title_default: 'abc',
         routes: [
           {
             title: 'child',
             _title: 'child',
+            _title_default: 'abc',
             routes: [
               {
                 _title: 'child',
+                _title_default: 'abc',
               },
               {
                 title: 'testc',
                 _title: 'child - testc',
+                _title_default: 'abc',
               },
             ],
           },
@@ -82,22 +86,28 @@ describe('modifyRoutes', () => {
       {
         title: 'hahah',
         _title: 'hahah',
+        _title_default: 'abc',
       },
       {
         _title: 'abc',
+        _title_default: 'abc',
         routes: [
           {
             _title: 'abc',
+            _title_default: 'abc',
             routes: [
               {
                 _title: 'abc',
+                _title_default: 'abc',
                 routes: [
                   {
                     _title: 'longlong',
+                    _title_default: 'abc',
                     title: 'longlong',
                   },
                   {
                     _title: 'abc',
+                    _title_default: 'abc',
                   },
                 ],
               },
@@ -142,23 +152,28 @@ describe('modifyRoutes', () => {
     ).toEqual([
       {
         _title: 'abc',
+        _title_default: 'abc',
         routes: [
           {
             title: 'child',
             _title: 'child',
+            _title_default: 'abc',
             routes: [
               {
                 _title: 'child',
+                _title_default: 'abc',
                 routes: [
                   {
                     title: 'last',
                     _title: 'last child',
+                    _title_default: 'abc',
                   },
                 ],
               },
               {
                 title: 'testc',
                 _title: 'testc child',
+                _title_default: 'abc',
               },
             ],
           },
@@ -167,6 +182,7 @@ describe('modifyRoutes', () => {
       {
         title: 'hahah',
         _title: 'hahah',
+        _title_default: 'abc',
       },
     ]);
   });

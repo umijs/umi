@@ -2,7 +2,7 @@ import { join, relative } from 'path';
 import assert from 'assert';
 
 export default (api, option) => {
-  const { paths } = api;
+  const { paths, config } = api;
 
   api.onOptionChange(newOption => {
     option = newOption;
@@ -11,9 +11,10 @@ export default (api, option) => {
 
   api.modifyHTMLContext((memo, { route }) => {
     if (option) {
+      const { defaultTitle } = parseOption(option);
       return {
         ...memo,
-        title: route._title,
+        title: config.exportStatic ? route._title : defaultTitle,
       };
     }
     return memo;
@@ -24,7 +25,7 @@ export default (api, option) => {
   });
 
   api.onPatchRoute(({ route }) => {
-    if (option) {
+    if (option && (!route.routes || !route.routes.length) && route.title) {
       // only open this plugin when option exist
       route.Routes = [
         ...(route.Routes || []),
@@ -34,23 +35,33 @@ export default (api, option) => {
   });
 };
 
+function parseOption(option) {
+  // fill title with parent value or default value
+  let defaultTitle = option;
+  let format = '{parent}{separator}{current}';
+  let separator = ' - ';
+  if (typeof option === 'object') {
+    defaultTitle = option.defaultTitle;
+    assert(defaultTitle, 'defaultTitle in title option is required.');
+    format = option.format || format;
+    separator = option.separator || separator;
+  }
+  return {
+    defaultTitle,
+    format,
+    separator,
+  };
+}
+
 function modifyRoutes(memo, option) {
   if (option) {
-    // fill title with parent value or default value
-    let defaultTitle = option;
-    let format = '{parent}{separator}{current}';
-    let separator = ' - ';
-    if (typeof option === 'object') {
-      defaultTitle = option.defaultTitle;
-      assert(defaultTitle, 'defaultTitle in title option is required.');
-      format = option.format || format;
-      separator = option.separator || separator;
-    }
+    const { defaultTitle, format, separator } = parseOption(option);
     setDefaultTitleToRoutes({
       routes: memo,
       defaultTitle,
       format,
       separator,
+      globalDefaultTitle: defaultTitle,
     });
   }
   return memo;
@@ -62,6 +73,7 @@ function setDefaultTitleToRoutes({
   parentTitle,
   format,
   separator,
+  globalDefaultTitle,
 }) {
   routes.forEach(route => {
     if (route.title) {
@@ -73,6 +85,7 @@ function setDefaultTitleToRoutes({
       // title no exist, use the defaultTitle
       route._title = defaultTitle;
     }
+    route._title_default = globalDefaultTitle;
     if (route.routes) {
       setDefaultTitleToRoutes({
         routes: route.routes,
@@ -81,6 +94,7 @@ function setDefaultTitleToRoutes({
         parentTitle: route.title || parentTitle,
         format,
         separator,
+        globalDefaultTitle,
       });
     }
   });
