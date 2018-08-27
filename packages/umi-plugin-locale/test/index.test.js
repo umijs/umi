@@ -1,123 +1,65 @@
 import { join } from 'path';
+import { readFileSync, unlinkSync } from 'fs';
 import localePlugin, { getLocaleFileList } from '../src/index';
 
 const absSrcPath = join(__dirname, '../examples/base/src');
 
+let wrapperFile;
+
 const api = {
-  placeholder: {
-    IMPORT: 'test-placeholder',
+  addRendererWrapperWithComponent(func) {
+    wrapperFile = func();
   },
-  utils: {
-    winPath: p => {
-      return p;
-    },
+  addPageWatcher() {},
+  onOptionChange() {},
+  rebuildTmpFiles() {},
+  modifyAFWebpackOpts() {},
+  paths: {
+    absSrcPath,
+    absTmpDirPath: absSrcPath,
   },
   config: {
     singular: true,
   },
-  paths: {
-    absSrcPath,
-  },
-  register() {},
 };
 
 describe('test plugin', () => {
-  xtest('enable is true', () => {
-    api.register = (name, handler) => {
-      if (name === 'modifyPageWatchers') {
-        const ret = handler({
-          memo: ['/some/test'],
-        });
-        expect(ret).toEqual(['/some/test', `${absSrcPath}/locale`]);
-      }
-      if (name === 'modifyRouterContent') {
-        const ret = handler({
-          memo: '<Router />',
-        });
-        expect(ret).toEqual(expect.stringContaining('<Router />'));
-        expect(ret).toEqual(expect.stringContaining('<Router />'));
-        expect(ret).toEqual(expect.stringContaining('<LocaleProvider'));
-        expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-      }
-      if (name === 'modifyRouterFile') {
-        const ret = handler({
-          memo: 'test-placeholder',
-        });
-        expect(ret).toEqual(expect.stringContaining('test-placeholder'));
-        expect(ret).toEqual(expect.stringContaining('LocaleProvider'));
-        expect(ret).toEqual(expect.stringContaining('IntlProvider'));
-      }
-      if (name === 'modifyAFWebpackOpts') {
-        const ret = handler({
-          memo: {
-            xxx: {},
-            alias: {
-              test: 'hi/hello',
-            },
-          },
-        });
-        expect(ret).toEqual({
-          xxx: {},
-          alias: {
-            test: 'hi/hello',
-            'umi/locale': join(__dirname, '../src/locale.js'),
-            'react-intl': expect.stringContaining('react-intl'),
-          },
-        });
-      }
-    };
-    localePlugin(api);
+  test('enable is true', () => {
+    localePlugin(api, {
+      enable: true,
+      baseNavigator: false,
+      default: 'en-US',
+    });
+
+    const ret = readFileSync(wrapperFile, 'utf-8');
+
+    expect(ret).toEqual(expect.stringContaining('<LocaleProvider'));
+    expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
+    expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
+    expect(ret).toEqual(
+      expect.stringContaining('antd/lib/locale-provider/en_US'),
+    );
+
+    unlinkSync(wrapperFile);
   });
 });
 
-xtest('antd is false', () => {
-  api.register = (name, handler) => {
-    if (name === 'modifyPageWatchers') {
-      const ret = handler({
-        memo: ['/some/test'],
-      });
-      expect(ret).toEqual(['/some/test', `${absSrcPath}/locale`]);
-    }
-    if (name === 'modifyRouterContent') {
-      const ret = handler({
-        memo: '<Router />',
-      });
-      expect(ret).toEqual(expect.stringContaining('<Router />'));
-      expect(ret).toEqual(expect.stringContaining('<Router />'));
-      expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
-      expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-    }
-    if (name === 'modifyRouterFile') {
-      const ret = handler({
-        memo: 'test-placeholder',
-      });
-      expect(ret).toEqual(expect.stringContaining('test-placeholder'));
-      expect(ret).not.toEqual(expect.stringContaining('LocaleProvider'));
-      expect(ret).not.toEqual(expect.stringContaining('antd'));
-      expect(ret).toEqual(expect.stringContaining('IntlProvider'));
-    }
-    if (name === 'modifyAFWebpackOpts') {
-      const ret = handler({
-        memo: {
-          xxx: {},
-          alias: {
-            test: 'hi/hello',
-          },
-        },
-      });
-      expect(ret).toEqual({
-        xxx: {},
-        alias: {
-          test: 'hi/hello',
-          'umi/locale': join(__dirname, '../src/locale.js'),
-          'react-intl': expect.stringContaining('react-intl'),
-        },
-      });
-    }
-  };
+test('antd is false', () => {
   localePlugin(api, {
+    enable: true,
     antd: false,
+    baseNavigator: false,
   });
+
+  const ret = readFileSync(wrapperFile, 'utf-8');
+
+  expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
+  expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
+  expect(ret).not.toEqual(
+    expect.stringContaining('antd/lib/locale-provider/zh_CN'),
+  );
+
+  unlinkSync(wrapperFile);
 });
 
 describe('test func with singular true', () => {
