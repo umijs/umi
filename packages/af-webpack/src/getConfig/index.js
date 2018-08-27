@@ -54,13 +54,13 @@ export default function(opts) {
       '.web.js',
       '.mjs',
       '.js',
-      '.json',
       '.web.jsx',
       '.jsx',
       '.web.ts',
       '.ts',
       '.web.tsx',
       '.tsx',
+      '.json',
     ]);
 
   if (opts.alias) {
