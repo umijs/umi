@@ -16,7 +16,8 @@ export default function(webpackConfig, opts) {
     sourceMap: !opts.disableCSSSourceMap,
     ...(opts.cssLoaderOptions || {}),
   };
-  const theme = normalizeTheme(opts.theme);
+  // should pass down opts.cwd
+  const theme = normalizeTheme(opts.theme, opts);
   const postcssOptions = {
     // Necessary for external CSS imports to work
     // https://github.com/facebookincubator/create-react-app/issues/2677
