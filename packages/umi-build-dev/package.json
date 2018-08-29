@@ -2,7 +2,7 @@
   "name": "umi-build-dev",
   "version": "1.0.0-beta.19",
   "dependencies": {
-    "@babel/runtime": "7.0.0-rc.1",
+    "@babel/runtime": "^7.0.0",
     "address": "^1.0.3",
     "af-webpack": "^1.0.0-beta.19",
     "atool-monitor": "^1.0.6",
