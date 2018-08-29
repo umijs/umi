@@ -23,8 +23,8 @@
     "src"
   ],
   "dependencies": {
-    "@babel/core": "7.0.0-rc.1",
-    "@babel/polyfill": "7.0.0-rc.1",
+    "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
     "babel-plugin-module-resolver": "^3.1.1",

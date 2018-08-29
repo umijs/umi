@@ -5,14 +5,13 @@
     "af-webpack": "./bin/af-webpack.js"
   },
   "dependencies": {
-    "@babel/core": "7.0.0-rc.1",
-    "@babel/register": "7.0.0-rc.1",
-    "@babel/runtime": "7.0.0-rc.1",
+    "@babel/core": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "assert": "^1.4.1",
     "autoprefixer": "^9.1.1",
     "awesome-typescript-loader": "^5.2.0",
-    "babel-eslint": "^8.0.1",
-    "babel-loader": "^8.0.0-beta.0",
+    "babel-loader": "^8.0.0",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "babel-preset-umi": "^1.0.0-beta.19",
     "chalk": "^2.1.0",
