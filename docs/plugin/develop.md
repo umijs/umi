@@ -47,7 +47,7 @@ export default (api, opts) => {
 
 ```js
 export default (api, opts = {}) => {
-  const { paths } = api.service;
+  const { paths } = api;
   // 监听插件配置变化，这一堆代码是不是应该有什么快捷的 alias
   api.onOptionChange((newOpts) => {
     opts = newOpts;
@@ -81,11 +81,11 @@ export default (api, opts = {}) => {
 
 ## 系统级变量
 
-### service.config
+### config
 
 `.umirc.js` 或者 `config/config.js` 里面的配置。
 
-### service.paths
+### paths
 
 - outputPath: 构建产物的生成目录
 - absOutputPath: 构建产物的生成目录（绝对路径）
@@ -96,7 +96,7 @@ export default (api, opts = {}) => {
 - absSrcPath: src 目录的路径（绝对路径），用户缺省 src 时则对应为项目根目录
 - cwd: 项目根目录
 
-### service.routes
+### routes
 
 umi 处理过后的路由信息。格式如下：
 
