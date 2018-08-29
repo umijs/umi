@@ -13,10 +13,11 @@ function stripFirstSlash(path) {
 }
 
 export function chunkName(cwd, path) {
-  return stripFirstSlash(winPath(path).replace(winPath(cwd), '')).replace(
-    /\//g,
-    '__',
-  );
+  return stripFirstSlash(winPath(path).replace(winPath(cwd), ''))
+    .replace(/\//g, '__')
+    .replace(/^src__/, '')
+    .replace(/^pages__/, 'p__')
+    .replace(/^page__/, 'p__');
 }
 
 export function optsToArray(item) {
