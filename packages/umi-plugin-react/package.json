@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-react",
-  "version": "1.0.0-beta.19",
+  "version": "1.0.0-beta.20",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -30,11 +30,11 @@
     "preact-compat": "^3.18.3",
     "register-service-worker": "^1.4.1",
     "umi-hd": "^5.0.1",
-    "umi-plugin-dll": "^1.0.0-beta.19",
-    "umi-plugin-dva": "^1.0.0-beta.19",
-    "umi-plugin-locale": "^2.0.0-beta.19",
-    "umi-plugin-polyfills": "^1.0.0-beta.19",
-    "umi-plugin-routes": "^1.0.0-beta.19",
+    "umi-plugin-dll": "^1.0.0-beta.20",
+    "umi-plugin-dva": "^1.0.0-beta.20",
+    "umi-plugin-locale": "^2.0.0-beta.20",
+    "umi-plugin-polyfills": "^1.0.0-beta.20",
+    "umi-plugin-routes": "^1.0.0-beta.20",
     "webpack": "^4.16.5",
     "workbox-webpack-plugin": "^3.4.1"
   }
