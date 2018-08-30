@@ -140,9 +140,7 @@ export default function(api) {
             require.resolve('babel-preset-umi'),
             { targets: { browsers: browserslist } },
           ],
-          ...(config.extraBabelPresets || []),
         ],
-        plugins: config.extraBabelPlugins || [],
       },
       define: {
         'process.env.BASE_URL': config.base || '/',
