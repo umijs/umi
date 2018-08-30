@@ -36,7 +36,7 @@ export default function(opts = {}) {
       let opts;
       if (Array.isArray(p)) {
         opts = p[1]; // eslint-disable-line
-        p = [0];
+        p = p[0];
       }
       return {
         id: p.replace(/^.\//, 'built-in:'),
