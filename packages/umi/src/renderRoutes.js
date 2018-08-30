@@ -1,34 +1,15 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-function withRoutes(route) {
-  const Routes = route.Routes;
-  let len = Routes.length - 1;
-  let Component = args => {
-    const { render, ...props } = args;
-    return render(props);
-  };
-  while (len >= 0) {
-    const AuthRoute = Routes[len];
-    const OldComponent = Component;
-    Component = props => (
-      <AuthRoute {...props}>
-        <OldComponent {...props} />
-      </AuthRoute>
-    );
-    len -= 1;
-  }
-
-  return args => {
-    const { render, ...rest } = args;
-    return (
-      <Route
-        {...rest}
-        render={props => {
-          return <Component {...props} route={route} render={render} />;
-        }}
-      />
-    );
+function withRoute(Route) {
+  return ComponentToWrap => {
+    return props => {
+      return (
+        <Route {...props}>
+          <ComponentToWrap {...props} />
+        </Route>
+      );
+    };
   };
 }
 
@@ -51,13 +32,25 @@ export default function renderRoutes(
             />
           );
         }
-        const RouteRoute = route.Routes ? withRoutes(route) : Route;
+        let R = Route;
+        if (route.Routes) {
+          R = props => {
+            const { render, ...rest } = props;
+            return <>{render(rest)}</>;
+          };
+          let len = route.Routes.length - 1;
+          while (len >= 0) {
+            R = withRoute(route.Routes[len])(R);
+            len -= 1;
+          }
+        }
         return (
-          <RouteRoute
+          <R
             key={route.key || i}
             path={route.path}
             exact={route.exact}
             strict={route.strict}
+            route={route}
             render={props => {
               const childRoutes = renderRoutes(
                 route.routes,

@@ -245,9 +245,7 @@ require('umi/_createHistory').default({
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
     <Router history={window.g_history}>
-      <Route render={({ location }) =>
-        renderRoutes(routes, {}, { location })
-      } />
+      { renderRoutes(routes, {}) }
     </Router>
     `.trim();
     return rendererWrappers.reduce((memo, wrapper) => {
