@@ -118,11 +118,9 @@ export default class HTMLGenerator {
 
   getStylesContent(styles) {
     return styles
-      .map(style => {
-        const { content = '' } = style;
-        delete style.content;
-        const attrs = Object.keys(style).reduce((memo, key) => {
-          return memo.concat(`${key}="${style[key]}"`);
+      .map(({ content, ...attrs }) => {
+        attrs = Object.keys(attrs).reduce((memo, key) => {
+          return memo.concat(`${key}="${attrs[key]}"`);
         }, []);
         return [
           `<style${attrs.length ? ' ' : ''}${attrs.join(' ')}>`,
@@ -166,12 +164,10 @@ export default class HTMLGenerator {
 
   getScriptsContent(scripts) {
     return scripts
-      .map(script => {
-        if (script.content) {
-          const { content } = script;
-          delete script.content;
-          const attrs = Object.keys(script).reduce((memo, key) => {
-            return memo.concat(`${key}="${script[key]}"`);
+      .map(({ content, ...attrs }) => {
+        if (content && !attrs.src) {
+          attrs = Object.keys(attrs).reduce((memo, key) => {
+            return memo.concat(`${key}="${attrs[key]}"`);
           }, []);
           return [
             `<script${attrs.length ? ' ' : ''}${attrs.join(' ')}>`,
@@ -182,8 +178,8 @@ export default class HTMLGenerator {
             '</script>',
           ].join('\n');
         } else {
-          const attrs = Object.keys(script).reduce((memo, key) => {
-            return memo.concat(`${key}="${script[key]}"`);
+          attrs = Object.keys(attrs).reduce((memo, key) => {
+            return memo.concat(`${key}="${attrs[key]}"`);
           }, []);
           return `<script ${attrs.join(' ')}></script>`;
         }
