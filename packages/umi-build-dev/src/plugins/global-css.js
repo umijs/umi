@@ -10,14 +10,15 @@ export default function(api) {
     join(paths.absSrcPath, 'global.css'),
   ];
 
-  api.addEntryImport(() => {
-    return cssFiles
+  api.addEntryCode(
+    `
+${cssFiles
       .filter(f => existsSync(f))
       .slice(0, 1)
-      .map(f => ({
-        source: relative(paths.absTmpDirPath, f),
-      }));
-  });
+      .map(f => `require('${relative(paths.absTmpDirPath, f)}');`)
+      .join('')}
+    `.trim(),
+  );
 
   api.addPageWatcher(cssFiles);
 
