@@ -6,6 +6,7 @@ import didyoumean from 'didyoumean';
 import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import extend from 'extend2';
+import { winPath } from 'umi-utils';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
@@ -155,6 +156,11 @@ class UserConfig {
 
     // 强制读取，不走 require 缓存
     if (force) {
+      Object.keys(require.cache).forEach(file => {
+        if (winPath(file).indexOf(winPath(join(paths.cwd, 'config/'))) === 0) {
+          delete require.cache[file];
+        }
+      });
       CONFIG_FILES.forEach(file => {
         delete require.cache[join(paths.cwd, file)];
         delete require.cache[
@@ -289,7 +295,7 @@ class UserConfig {
     const watcher = this.watch(
       'CONFIG_FILES',
       flatten(
-        CONFIG_FILES.map(file => [
+        CONFIG_FILES.concat('config/').map(file => [
           file,
           env ? [file.replace(/\.js$/, `.${env}.js`)] : [],
           file.replace(/\.js$/, `.local.js`),
