@@ -12,7 +12,7 @@ function initFiles() {
   const env = process.env.UMI_ENV;
   files = [
     ...flatten(
-      CONFIG_FILES.map(file => [
+      CONFIG_FILES.concat('config/').map(file => [
         file,
         ...(env ? [file.replace(/\.js$/, `.${env}.js`)] : []),
         file.replace(/\.js$/, `.local.js`),

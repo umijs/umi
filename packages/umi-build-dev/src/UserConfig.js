@@ -170,7 +170,7 @@ class UserConfig {
     const relativeFile = file.replace(`${paths.cwd}/`, '');
     this.relativeFile = relativeFile;
 
-    function onError(e, file) {
+    const onError = (e, file) => {
       const msg = `配置文件 "${file.replace(
         `${paths.cwd}/`,
         '',
@@ -178,7 +178,7 @@ class UserConfig {
 \r\n${e.toString()}`;
       this.printError(msg);
       throw new Error(msg);
-    }
+    };
 
     config = normalizeConfig(
       extend(
