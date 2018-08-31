@@ -244,6 +244,9 @@ export default function(opts) {
           analyzerMode: 'server',
           analyzerPort: process.env.ANALYZE_PORT || 8888,
           openAnalyzer: true,
+          // generate stats file while ANALYZE_DUMP exist
+          generateStatsFile: !!process.env.ANALYZE_DUMP,
+          statsFilename: process.env.ANALYZE_DUMP || 'stats.json',
         },
       ]);
   }
