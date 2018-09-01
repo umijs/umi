@@ -7,6 +7,6 @@ declare const dynamic: (opts: {
   delay?: number | false | null,
   timeout?: number | false | null,
   webpack?: () => number[],
-}) => void;
+}) => React.Component;
 
 export default dynamic;
