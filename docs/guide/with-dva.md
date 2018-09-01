@@ -4,7 +4,7 @@
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-umi 通过 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 深度整合了和 dva 一起使用的场景。
+自`>= umi@2`起，`dva`的整合可以直接通过 [umi-plugin-react](https://github.com/umijs/umi/tree/master/packages/umi-plugin-react) 来配置。
 
 ## 特性
 
@@ -20,16 +20,20 @@ umi 通过 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/um
 用 yarn 安装依赖，
 
 ```bash
-$ yarn add umi-plugin-dva
+$ yarn add umi-plugin-react
 ```
 
-如果你用 npm，执行 `npm install --save umi-plugin-dva`。
+如果你用 npm，执行 `npm install --save umi-plugin-react`。
 
 然后在 `.umirc.js` 里配置插件：
 
 ```js
 export default {
-  plugins: ['umi-plugin-dva'],
+  plugins: [
+    [
+      'umi-plugin-react',
+    ]
+  ],
 };
 ```
 
@@ -38,7 +42,14 @@ export default {
 ```js
 export default {
   plugins: [
-    ['umi-plugin-dva', { immer: true }],
+    [
+      'umi-plugin-react',
+      {
+        dva: {
+          immer: true
+        }
+      }
+    ],
   ],
 };
 ```
@@ -133,7 +144,17 @@ window.g_app._store.dispatch
 
 ```js
 export default {
-  disableDynamicImport: true,
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        dva: {
+          dynamicImport: undefined // 配置在dva里
+        },
+        dynamicImport: undefined   // 或者直接写在react插件的根配置，写在这里也会被继承到上面的dva配置里
+      }
+    ],
+  ],
 };
 ```
 
