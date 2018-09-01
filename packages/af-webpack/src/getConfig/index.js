@@ -205,10 +205,10 @@ export default function(opts) {
     .loader(require.resolve('babel-loader'))
     .options(babelOpts)
     .end()
-    .use('awesome-typescript-loader')
-    .loader(require.resolve('awesome-typescript-loader'))
+    .use('ts-loader')
+    .loader(require.resolve('ts-loader'))
     .options({
-      configFileName: tsConfigFile,
+      configFile: tsConfigFile,
       transpileOnly: true,
       ...(opts.typescript || {}),
     });
@@ -255,6 +255,16 @@ export default function(opts) {
     webpackConfig
       .plugin('duplicate-package-checker')
       .use(require('duplicate-package-checker-webpack-plugin'));
+  }
+
+  if (process.env.FORK_TS_CHECKER) {
+    webpackConfig
+      .plugin('fork-ts-checker')
+      .use(require('fork-ts-checker-webpack-plugin'), [
+        {
+          formatter: 'codeframe',
+        },
+      ]);
   }
 
   // plugins -> copy
