@@ -40,7 +40,8 @@ module.exports = {
           children: [
             '',
             'getting-started',
-            'examples-and-boilerplates',
+            'create-umi-app',
+            'examples',
             'app-structure',
             'router',
             'navigate-between-pages',

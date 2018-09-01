@@ -1,26 +1,24 @@
+---
+sidebarDepth: 3
+---
+
 # FAQ
-
-::: tip
-持续补充中。
-:::
-
-[[toc]]
 
 ## General
 
 ### 是否可用于生产环境？
 
-当然！umi 是公司内（蚂蚁金服）的前端基础框架，已有大量基于 umi 开发的无线和 PC 项目上线。
+当然！umi 是蚂蚁金服的前端基础框架，已有几百个基于 umi 开发的无线和 PC 项目上线。
 
-### 如何引入 polyfill ？
+### 如何引入 @babel/polyfill ？
 
 先安装依赖，
 
 ```bash
-$ npm install @babel/polyfill --save
+$ yarn add @babel/polyfill
 ```
 
-新建 `src/global.js`，内容如下：
+然后新建 `src/global.js`，内容如下：
 
 ```js
 import '@babel/polyfill';
@@ -31,48 +29,21 @@ import '@babel/polyfill';
 可以通过 [react-helmet](https://github.com/nfl/react-helmet) 动态修改 title 。
 > 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
 
-### 如何让编辑器的 eslint 校验生效？
-
-编辑器需要读取 .eslint 和依赖的 eslint bin，所以需要安装相关依赖到项目。
-
-先安装依赖，
-
-```bash
-$ npm i eslint@4 eslint-config-umi eslint-plugin-flowtype@2 eslint-plugin-import@2 eslint-plugin-jsx-a11y@5 eslint-plugin-react@7 --save-dev
-```
-
-然后新增 `.eslintrc`，内容如下：
-
-```json
-{
-  "extends": "eslint-config-umi"
-}
-```
-
-### 如何禁用 dev 和 build 时的 eslint 校验？
-
-```bash
-$ ESLINT=none umi dev
-$ ESLINT=none umi build
-```
-
 ## 报错
-
-### this.setDynamic is not a function
-
-不要自己配置 `babel-plugin-transform-runtime`，因为 umi 已内置处理，transform-runtime 处理两边会出现上述问题。
 
 ## CSS
 
 ### 如何禁用 css modules ？
 
-修改 `.webpackrc`:
+修改 `.umirc.js`:
 
 ```json
 {
  "disableCSSModules": true
 }
 ```
+
+但没有特殊的理由时，不建议关闭 css modules。
 
 ### 如何使用 sass ？
 
@@ -82,7 +53,7 @@ $ ESLINT=none umi build
 $ npm i node-sass sass-loader --save
 ```
 
-然后修改 `.webpackrc`:
+然后修改 `.umirc.js`:
 
 ```json
 {
@@ -108,7 +79,7 @@ $ node --inspect-brk ./node_modules/.bin/umi test
 
 几个方案供选择：
 
-* 改用 hashHistory，在 `.umirc.js` 里配 `hashHistory: true`
+* 改用 hashHistory，在 `.umirc.js` 里配 `history: 'hash'`
 * 静态化，在 `.umirc.js` 里配 `exportStatic: true`
 * 服务端配置路由 fallback 到 index.html
 
@@ -128,6 +99,7 @@ function Header() {
 }
 
 export default Header;
+
 ```
 在css中使用，注意不要使用绝对路径
 ```css
@@ -135,4 +107,5 @@ export default Header;
   background-image: url(./logo.png);
 }
 ```
-> 注意：图片大小小于10k，走basement。即不会被拷贝到public文件夹下，而是以base64的资源存在。
+
+> 注意：图片大小小于 10 k 时会走 base64。即不会被拷贝到 public 文件夹下，而是以 base64 的资源存在。

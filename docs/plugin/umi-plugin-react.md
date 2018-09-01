@@ -94,7 +94,7 @@ export default {
 
 基于 [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills) 实现，用于加各种补丁。
 
-目前只能配置 `['ie9']`，实现一键兼容到 IE9。
+目前支持配置 `['ie9']`、`['ie10']` 或 `['ie11']`，实现一键兼容。
 
 ### locale
 
