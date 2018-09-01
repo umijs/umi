@@ -1,8 +1,4 @@
-# Navigate between pages
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 在页面间跳转
 
 在 umi 里，页面之间跳转有两种方式：声明式和命令式。
 

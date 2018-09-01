@@ -4,10 +4,6 @@ sidebarDepth: 2
 
 # 插件开发
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 ## 初始化插件
 
 在 umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：

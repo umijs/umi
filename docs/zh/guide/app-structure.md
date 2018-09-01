@@ -1,8 +1,4 @@
-# Directory and Convension
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 目录及约定
 
 在文件和目录的组织上，umi 尽量选择了约定的方式。
 

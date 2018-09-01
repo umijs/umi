@@ -1,8 +1,4 @@
-# Migrate from umi 1.x
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 从 umi 1.x 迁移
 
 > 更喜欢观看视频？可以[点此观看](https://youtu.be/1mvKzFLLBck)。
 

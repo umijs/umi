@@ -2,11 +2,7 @@
 sidebarDepth: 3
 ---
 
-# Router
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 路由
 
 ::: tip 提示
 下文介绍的路由使用可以在 [umi-examples/routes](https://github.com/umijs/umi-examples/tree/master/routes) 和 [umi-examples/routes-via-config](https://github.com/umijs/umi-examples/tree/master/routes-via-config) 里找到示例代码。

@@ -4,10 +4,6 @@ sidebarDepth: 3
 
 # umi-plugin-react
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 这是官方封装的一个插件集，包含 13 个常用的进阶功能。
 
 ## 安装

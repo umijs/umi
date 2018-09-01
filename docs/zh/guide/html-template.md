@@ -1,8 +1,4 @@
-# HTML Template
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# HTML 模板
 
 ## 修改默认模板
 

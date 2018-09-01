@@ -1,34 +1,34 @@
-# 通过脚手架创建项目
+# Create a project with create-umi
 
-umi 通过 [create-umi](https://github.com/umijs/create-umi) 提供脚手架，包含一定的定制化能力。推荐使用 `yarn create` 命令，因为能确保每次使用最新的脚手架。
+Umi provides scaffolding through [create-umi] (https://github.com/umijs/create-umi), which includes some customization capabilities. The `yarn create` command is recommended because it ensures that every time you use the latest scaffolding.
 
-首先，在新目录下使用 `yarn create umi`，
+First, use `yarn create umi` in the new directory.
 
 ```bash
 $ mkdir myapp && cd myapp
 $ yarn create umi
 ```
 
-然后，选择你需要的功能，功能介绍详见 [/plugin/umi-plugin-react](/plugin/umi-plugin-react.html)，
+Then, select the function you need, checkout [plugin/umi-plugin-react](../plugin/umi-plugin-react.html) for the detailed description.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mlEDcowMOSeXwLoukayR.png" />
 
-确定后，会根据你的选择自动创建好目录和文件，
+Once determined, the directories and files will be automatically created based on your selection.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/ppRAiFpnZbpwDDuoFdPh.png" width="323" />
 
-然后手动安装依赖，
+Then install the dependencies manually,
 
 ```bash
 $ yarn
 ```
 
-最后通过 `yarn start` 启动本地开发，
+Finally, start local development server with `yarn start`.
 
 ```bash
 $ yarn start
 ```
 
-如果顺利，在浏览器打开 [http://localhost:8000](http://localhost:8000) 可看到以下界面，
+If it goes well, open [http://localhost:8000] (http://localhost:8000) in the browser and you will see the following ui.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/YIFycZRnWWeXBGnSoFoT.png" width="754" />

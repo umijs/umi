@@ -1,48 +1,48 @@
 ---
 home: true
-actionText: 快速上手 →
+actionText: Get Started →
 actionLink: /guide/
 features:
-- title: 插件化
-  details: umi 的整个生命周期都是插件化的，甚至其内部实现就是由大量插件组成，比如 pwa、按需加载、一键切换 preact、一键兼容 ie9 等等，都是由插件实现。
-- title: 开箱即用
-  details: 你只需一个 umi 依赖就可启动开发，无需安装 react、preact、webpack、react-router、babel、jest 等等。
-- title: 约定式路由
-  details: 类 next.js 的约定式路由，无需再维护一份冗余的路由配置，支持权限、动态路由、嵌套路由等等。
+- title: Pluggable
+  details: The entire lifecycle of umi is composed of plugins, and such as pwa, on-demand loading, one-click switching preact, one-button compatibility ie9, etc., all implemented by plugins.
+- title: Out Of Box
+  details: You only need a umi dependency to start development without having to install react, preact, webpack, react-router, babel, jest, and more.
+- title: Conventional Routing
+  details: Next.js like and full featured routing conventions, support permissions, dynamic routing, nested routing, and more.
 footer: MIT Licensed | Copyright © 2017-present
 ---
 
-### 入门非常简单
+### Getting started is very simple
 
 ```bash
-# 安装
+# Install deps
 $ yarn global add umi # 或者 npm install -g umi
 
-# 新建应用
+# Create application
 $ mkdir myapp && cd myapp
 
-# 新建页面
+# Create page
 $ umi generate page index
 
-# 本地开发
+# Start dev server
 $ umi dev
 
-# 构建上线
+# Build and deploy
 $ umi build
 ```
 
-[10 分钟入门 umi 视频版](https://youtu.be/vkAUGUlYm24)
+[Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
 
-### 社区
+## Community
 
-#### 钉钉群
+### Telegram
+
+[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+
+### 钉钉群
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
 
-#### 微信群
+### 微信群
 
 群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
-
-#### Telegram
-
-[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
