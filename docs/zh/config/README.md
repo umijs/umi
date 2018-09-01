@@ -2,13 +2,9 @@
 sidebarDepth: 2
 ---
 
-# Configuration
+# 配置
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
-## Basic
+## 基本配置
 
 ### plugins
 

@@ -1,8 +1,4 @@
-# Use umi with dva
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 和 dva 一起用
 
 umi 通过 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 深度整合了和 dva 一起使用的场景。
 

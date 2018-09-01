@@ -1,8 +1,4 @@
-# Load on demand
-
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+# 按需加载
 
 出于性能的考虑，我们会对模块和组件进行按需加载。
 

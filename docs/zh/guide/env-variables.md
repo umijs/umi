@@ -2,10 +2,6 @@
 sidebarDepth: 3
 ---
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 # .env 和环境变量
 
 ## 如何配置
