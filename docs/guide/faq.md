@@ -2,17 +2,17 @@
 sidebarDepth: 3
 ---
 
+# FAQ
+
 ::: warning
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
-
-# FAQ
 
 ## General
 
 ### 是否可用于生产环境？
 
-当然！umi 是蚂蚁金服的前端基础框架，已有几百个基于 umi 开发的无线和 PC 项目上线。
+当然！umi 是蚂蚁金服的前端基础框架，已有 600+ 直接或间接基于 umi 开发的无线和 PC 项目上线。
 
 ### 如何引入 @babel/polyfill ？
 
