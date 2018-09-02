@@ -24,7 +24,7 @@
     "detect-port": "^1.2.1",
     "didyoumean": "^1.2.1",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
-    "es5-imcompatible-versions": "^0.1.15",
+    "es5-imcompatible-versions": "^0.1.22",
     "file-loader": "^1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.8",
     "friendly-errors-webpack-plugin": "^1.7.0",
