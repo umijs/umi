@@ -232,7 +232,8 @@ export default class HTMLGenerator {
 
     // validate tpl
     assert(
-      (/(<div).*?(id=['"]root['"]).*?(>).*?(<\/div>)/g).test(html),
+      (new RegExp(`(<div).*?(id=['"]${this.config.mountElementId}['"]).*?(>).*?(<\/div>)`)).test(html),
+      html.includes(`<div id="${this.config.mountElementId}"></div>`),
       `Document ${relTplPath} must contain <div id="${
         this.config.mountElementId
       }"></div>`,
