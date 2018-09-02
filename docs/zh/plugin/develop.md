@@ -48,7 +48,7 @@ export default (api, opts) => {
 ```js
 export default (api, opts = {}) => {
   const { paths } = api;
-  // 监听插件配置变化，这一堆代码是不是应该有什么快捷的 alias
+  // 监听插件配置变化
   api.onOptionChange((newOpts) => {
     opts = newOpts;
     api.rebuildTmpFiles();
