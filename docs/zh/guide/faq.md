@@ -10,6 +10,28 @@ sidebarDepth: 3
 
 umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 600+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。
 
+### 如何查看 react、react-dom、react-router 等版本号？
+
+```bash
+$ umi -v --verbose
+
+umi@2.0.0
+darwin x64
+node@v10.6.0
+umi-build-dev@1.0.0
+af-webpack@1.0.0
+babel-preset-umi@1.0.0
+umi-test@1.0.0
+react@16.4.2 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react)
+react-dom@16.4.2 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react-dom)
+react-router@4.3.1 (/Users/chencheng/code/github.com/umijs/umi/packages/umi-build-dev/node_modules/react-router)
+react-router-dom@4.3.1 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react-router-dom)
+dva@2.4.0 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/dva)
+dva-loading@2.0.5
+dva-immer@0.2.3
+path-to-regexp@1.7.0
+```
+
 ### 如何引入 @babel/polyfill ？
 
 先安装依赖，

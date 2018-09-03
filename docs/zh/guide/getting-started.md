@@ -25,12 +25,12 @@ $ tnpm i yarn @alipay/yarn -g
 $ ayarn -v
 ```
 
-然后全局安装 umi@next，并确保版本是 2.0.0-beta 或以上。
+然后全局安装 umi，并确保版本是 2.0.0 或以上。
 
 ```bash
-$ yarn global add umi@next
+$ yarn global add umi
 $ umi -v
-2.0.0-beta.x
+2.0.0
 ```
 
 ## 脚手架
