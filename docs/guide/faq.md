@@ -73,6 +73,14 @@ e.g.
 
 检查 babel 配置，删除不必要的 preset 和 plugin 。
 
+### `Plugin umi-plugin-react:pwa initialize failed`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/lSuOXlbtrZPLoMaLBODj.png" />
+
+确保有 package.json 并配置 `name` 属性。
+
 ### `Conflicting order between [mini-css-extract-plugin]`
 
 e.g.
@@ -80,6 +88,14 @@ e.g.
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mjzdexbrmZulkjCAqzPC.png" />
 
 这是 [webpack 插件的问题](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250)，不会影响 CSS 文件的正常生产，可暂时忽略。
+
+### `umi` 不是内部或外部命令
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/fatmbcGwSOwDntHjmrtG.png" />
+
+需配置 NODE_PATH 环境变量，如使用 yarn，可通过执行 `yarn global bin` 拿到 bin 路径。
 
 ## CSS
 
