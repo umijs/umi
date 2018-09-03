@@ -115,14 +115,23 @@ export default function(api, opts = {}) {
       getGlobalModels(api, shouldImportDynamic),
       optsToArray(opts.exclude),
     )
-      .map(path =>
-        `
-    app.model({ namespace: '${basename(
-      path,
-      extname(path),
-    )}', ...(require('${path}').default) });
-  `.trim(),
-      )
+      .map(path => {
+        if (path.endsWith('/model.js')) {
+          return `
+          app.model({ namespace: '${basename(
+            path,
+            extname(path),
+          )}', ...(require('${path}').default) });
+        `.trim();
+        }
+
+        return `
+        app.model({ ...(require('${path}').default), namespace: '${basename(
+          path,
+          extname(path),
+        )}', });
+      `.trim();
+      })
       .join('\r\n');
   }
 
