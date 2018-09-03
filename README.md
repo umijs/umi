@@ -18,7 +18,7 @@ English | [简体中文](./README_zh-CN.md)
 * 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, also support configured routing
 * 🎉 **Complete plugin system**, covering every lifecycle from source code to production
 * 🚀 **High performance**, support PWA, route level code splitting, etc via plugin
-* 💈 **Support static export**, , adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
+* 💈 **Support static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
 * 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
 * 🐠 **Compatible IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
 * 🍁 **Support TypeScript**, including d.ts definition and `umi test`
