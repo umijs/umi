@@ -1,7 +1,6 @@
 import assert from 'assert';
-import mkdirp from 'mkdirp';
-import { dirname, join, relative } from 'path';
-import { writeFileSync, existsSync, readFileSync } from 'fs';
+import { join, relative } from 'path';
+import { existsSync, readFileSync } from 'fs';
 import isPlainObject from 'is-plain-object';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
@@ -78,7 +77,7 @@ export default class HTMLGenerator {
     path = path.replace(/^\//, '');
     path = path.replace(/\/$/, '');
 
-    if (htmlSuffix) {
+    if (htmlSuffix || path === 'index.html') {
       return `${path}`;
     } else {
       return `${path}/index.html`;
