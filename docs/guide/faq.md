@@ -12,7 +12,7 @@ This article has not been translated yet. Wan't to help us out? Click the `Edit 
 
 ### 是否可用于生产环境？
 
-当然！umi 是蚂蚁金服的前端基础框架，已有 600+ 直接或间接基于 umi 开发的无线和 PC 项目上线。
+umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 600+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。
 
 ### 如何引入 @babel/polyfill ？
 
@@ -34,6 +34,30 @@ import '@babel/polyfill';
 > 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
 
 ## 报错
+
+### `Object.values` is not a function
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
+
+升级 node 版本，并确保版本是 8 或以上。
+
+### `exports is not defined`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/fLNyyPNyquAGoYQxxIDI.png" />
+
+检查 babel 配置，删除不必要的 preset 和 plugin 。
+
+### `Conflicting order between [mini-css-extract-plugin]`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/mjzdexbrmZulkjCAqzPC.png" />
+
+这是 [webpack 插件的问题](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250)，不会影响 CSS 文件的正常生产，可暂时忽略。
 
 ## CSS
 
