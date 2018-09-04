@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "antd": "^3.8.1",
+    "antd": "^3.9.1",
     "antd-mobile": "^2.2.3",
     "babel-plugin-import": "^1.8.0",
     "fastclick": "^1.0.6",
