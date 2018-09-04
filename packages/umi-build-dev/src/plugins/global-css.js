@@ -2,7 +2,7 @@ import { join, relative } from 'path';
 import { existsSync } from 'fs';
 
 export default function(api) {
-  const { paths } = api;
+  const { paths, winPath } = api;
   const cssFiles = [
     join(paths.absSrcPath, 'global.sass'),
     join(paths.absSrcPath, 'global.scss'),
@@ -10,14 +10,15 @@ export default function(api) {
     join(paths.absSrcPath, 'global.css'),
   ];
 
-  api.addEntryImport(() => {
-    return cssFiles
+  api.addEntryCode(
+    `
+${cssFiles
       .filter(f => existsSync(f))
       .slice(0, 1)
-      .map(f => ({
-        source: relative(paths.absTmpDirPath, f),
-      }));
-  });
+      .map(f => `require('${winPath(relative(paths.absTmpDirPath, f))}');`)
+      .join('')}
+    `.trim(),
+  );
 
   api.addPageWatcher(cssFiles);
 

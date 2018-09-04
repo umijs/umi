@@ -1,49 +1,22 @@
-# 部署
+# Deploy
 
-umi build 后会生成 dist 目录，这个目录可直接用于部署。
+::: warning
+This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+:::
 
-比如：
+## 默认方案
 
-```bash
-./pages
-├── index.css
-├── index.js
-└── list.js
-```
+umi@2 默认对新手友好，所以默认不做按需加载处理，`umi build` 后输出 `index.html`、`umi.js` 和 `umi.css` 三个文件。
 
-build 之后会生成：
+## 不输出 html 文件
 
-```
-./dist
-├── index.html
-└── static
-    ├── pages__index.5c0f5f51.async.js
-    ├── pages__list.f940b099.async.js
-    ├── umi.2eaebd79.js
-    └── umi.f4cb51da.css
-```
-
-index.html 会加载 umi.{hash}.js 和 umi.{hash}.css，然后按需加载 index 和 list 两个页面的 JS。
-
-## 部署 static 目录到 cdn
-
-一旦静态资源和 html 分开部署，比如要部署到 cdn 上，而 umi 又大量使用了按需加载，这时，就需要配置 publicPath。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
-
-umi 里，publicPath 可以在 .webpackrc 里配置：
-
-```json
-{
-  "publicPath": "http://yourcdn/path/to/static/"
-}
-```
-
-也可以通过环境变量指定，
+某些场景 html 文件交给后端输出，前端构建并不需要输出 html 文件，可配置环境变量 `HTML=none` 实现。
 
 ```bash
-$ PUBLIC_PATH=http://yourcdn/path/to/static/ umi build
+$ HTML=none umi build
 ```
 
-## HTML 在非根路径
+## 部署 html 到非根目录
 
 经常有同学问这个问题：
 
@@ -53,10 +26,66 @@ $ PUBLIC_PATH=http://yourcdn/path/to/static/ umi build
 
 怎么解决？
 
-通过环境变量配置 BASE_URL，
+可通过配置 [base](/config/#base) 解决。 
 
 ```bash
-$ BASE_URL=/path/to/yourapp/ umi build
+export default {
+  base: '/path/to/your/app/root',
+};
+```
+
+## 使用 hashHistory
+
+可通过配置 [history](/config/#history) 为 `hash` 为解决。 
+
+```bash
+export default {
+  history: 'hash',
+};
+```
+
+## 按需加载
+
+要实现按需加载，需装载 umi-plugin-react 插件并配置 [dynamicImport](/plugin/umi-plugin-react.html#dynamicimport)。
+
+```js
+export default {
+  plugins: [
+    ['umi-plugin-react', {
+      dynamicImport: true,
+    }],
+  ],
+};
+```
+
+参数详见：[umi-plugin-react#dynamicImport](/plugin/umi-plugin-react.html#dynamicimport)。
+
+## 静态资源在非根目录或 cdn
+
+这时，就需要配置 [publicPath](/config/#publicPath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
+
+```js
+export default {
+  publicPath: "http://yourcdn/path/to/static/"
+}
+```
+
+## 使用 runtime 的 publicPath
+
+对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/config/#history) 为解决。 
+
+```bash
+export default {
+  runtimePublicPath: true,
+};
+```
+
+然后在 html 里输出：
+
+```html
+<script>
+window.publicPath = <%= YOUR PUBLIC_PATH %>
+</script>
 ```
 
 ## 静态化
@@ -125,4 +154,15 @@ umi build 会生成，
     ├── pages__list.f940b099.async.js
     ├── umi.2924fdb7.js
     └── umi.cfe3ffab.css
+```
+
+## 静态化后输出到任意路径
+
+```js
+export default {
+  exportStatic: {
+    htmlSuffix: true,
+    dynamicRoot: true,
+  },
+}
 ```

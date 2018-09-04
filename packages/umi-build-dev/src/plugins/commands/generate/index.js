@@ -20,8 +20,20 @@ export default function(api) {
     });
   }
 
-  api.registerCommand('g', {}, generate);
-  api.registerCommand('generate', {}, generate);
+  api.registerCommand(
+    'g',
+    {
+      description: 'generate code snippets quickly (alias for generate)',
+    },
+    generate,
+  );
+  api.registerCommand(
+    'generate',
+    {
+      description: 'generate code snippets quickly',
+    },
+    generate,
+  );
 
   api.registerGenerator('page', {
     Generator: require('./page').default(api),

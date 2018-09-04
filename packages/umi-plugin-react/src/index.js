@@ -53,6 +53,7 @@ export default function(api, option) {
     polyfills: () => require('./plugins/polyfills').default,
     routes: () => require('./plugins/routes').default,
     antd: () => require('./plugins/antd').default,
+    title: () => require('./plugins/title').default,
   };
 
   Object.keys(plugins).forEach(key => {

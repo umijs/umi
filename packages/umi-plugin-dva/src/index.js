@@ -78,7 +78,7 @@ export function getGlobalModels(api, shouldImportDynamic) {
 }
 
 export default function(api, opts = {}) {
-  const { paths } = api;
+  const { paths, cwd, compatDirname } = api;
   const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
   const isDev = process.env.NODE_ENV === 'development';
   const isProduction = process.env.NODE_ENV === 'production';
@@ -238,10 +238,23 @@ const DvaContainer = require('./DvaContainer').default;
     `.trim();
   });
 
+  const dvaDir = compatDirname(
+    'dva/package.json',
+    cwd,
+    dirname(require.resolve('dva/package.json')),
+  );
+
+  api.addVersionInfo([
+    `dva@${require(join(dvaDir, 'package.json')).version} (${dvaDir})`,
+    `dva-loading@${require('dva-loading/package').version}`,
+    `dva-immer@${require('dva-immer/package').version}`,
+    `path-to-regexp@${require('path-to-regexp/package').version}`,
+  ]);
+
   api.modifyAFWebpackOpts(memo => {
     const alias = {
       ...memo.alias,
-      dva: dirname(require.resolve('dva/package')),
+      dva: dvaDir,
       'dva-loading': require.resolve('dva-loading'),
       'path-to-regexp': require.resolve('path-to-regexp'),
       'object-assign': require.resolve('object-assign'),

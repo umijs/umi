@@ -1,10 +1,8 @@
-import chalk from 'chalk';
-import { join, dirname } from 'path';
-import { existsSync } from 'fs';
+import { dirname } from 'path';
 import yParser from 'yargs-parser';
 import buildDevOpts from './buildDevOpts';
 
-const script = process.argv[2];
+let script = process.argv[2];
 const args = yParser(process.argv.slice(3));
 // Node version check
 const nodeVersion = process.versions.node;
@@ -22,15 +20,9 @@ const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
 process.env.UMI_DIR = dirname(require.resolve('../package'));
+process.env.UMI_VERSION = pkg.version;
 
 switch (script) {
-  case '-v':
-  case '--version':
-    console.log(pkg.version);
-    if (existsSync(join(__dirname, '../.local'))) {
-      console.log(chalk.cyan('@local'));
-    }
-    break;
   case 'build':
   case 'dev':
     require(`./scripts/${script}`);
@@ -38,6 +30,9 @@ switch (script) {
   case 'test':
     require(`./scripts/${script}`);
     break;
+  case '-v':
+  case '--version':
+    script = 'version';
   default: {
     const Service = require('umi-build-dev/lib/Service').default;
     new Service(buildDevOpts(args)).run(script, args);

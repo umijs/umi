@@ -1,10 +1,14 @@
-# 在页面间跳转
+# Navigate between pages
+
+::: warning
+This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+:::
 
 在 umi 里，页面之间跳转有两种方式：声明式和命令式。
 
 ## 声明式
 
-基于 `umi/link`。
+基于 `umi/link`，通常作为 React 组件使用。
 
 ```bash
 import Link from 'umi/link';
@@ -16,7 +20,7 @@ export default () => (
 
 ## 命令式
 
-基于 `umi/router`。
+基于 `umi/router`，通常在事件处理中被调用。
 
 ```js
 import router from 'umi/router';
@@ -25,3 +29,5 @@ function goToListPage() {
   router.push('/list');
 }
 ```
+
+更多命令式的跳转方法，详见 [api#umi/router](/api/#umi-router)。

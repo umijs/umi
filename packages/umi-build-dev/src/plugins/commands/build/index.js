@@ -1,7 +1,5 @@
 import rimraf from 'rimraf';
-import chunksToMap from './chunksToMap';
 import getRouteManager from '../getRouteManager';
-import getHtmlGenerator from '../getHtmlGenerator';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
@@ -38,6 +36,7 @@ export default function(api) {
         cwd,
         webpackConfig: service.webpackConfig,
         onSuccess({ stats }) {
+          debug('Build success');
           if (process.env.RM_TMPDIR !== 'none') {
             debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
             rimraf.sync(paths.absTmpDirPath);
@@ -48,8 +47,10 @@ export default function(api) {
               stats,
             },
           });
+          debug('Build success end');
         },
         onFail({ err, stats }) {
+          debug(`Build failed ${err}`);
           service.applyPlugins('onBuildFail', {
             args: {
               err,

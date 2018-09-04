@@ -2,129 +2,116 @@
 sidebarDepth: 2
 ---
 
-# 插件开发
+# Plugin develop
 
-## 初始化插件
+## initialize plugin
 
-在 umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
+In umi, the plugin is actually a JS module, you need to define a plugin initialization method and export by default. The following example:
 
 ```js
 export default (api, opts) => {
   // your plugin code here
 };
-
-// 如果你的插件依赖其它插件，导出该配置后 umi 会帮你检测用户是否在你的插件之前加入了依赖的插件，待定
-export const dependence = ['umi-plugin-dva'];
 ```
 
-需要注意的是，如果你的插件需要发布为 npm 包，那么你需要发布之前做编译，确保发布的代码里面是 ES5 的代码。我们提供了 umi 插件的脚手架（umi-plugin-demo，开发中）方便你进行插件的开发。
+It should be noted that if your plugin needs to be published as an npm package, then you need to compile before publishing, to ensure that the code in the release is ES5 code.
 
-该初始化方法会收到两个参数，第一个参数 `api`，umi 提供给插件的接口都是通过它暴露出来的。第二个参数 `opts` 是用户在初始化插件的时候填写的。
+The initialization method will receive two parameters, the first parameter `api`, the interface provided by the umi to the plugin is exposed through it. The second parameter, `opts`, is filled in by the user when initializing the plugin.
 
-## 插件接口简介
+## Introduction to the plugin interface
 
-umi 的所有插件接口都是通过初始化插件时候的 api 来提供的。分为如下几类：
+All of umi's plugin interfaces are provided through the api when the plugin is initialized. Divided into the following categories:
 
-- 环境变量，插件中可以使用的一些环境变量
-- 系统级变量，一些插件系统暴露出来的变量或者常量
-- 系统级 API，一些插件系统暴露的核心方法
-- 事件类 API，一些插件系统提供的关键的事件点
-- 工具类 API，常用的一些工具类方法
-- 运行时 API，umi/runtime 暴露给浏览器中使用的 API
-- 应用类 API，用于实现插件功能需求的 API，有直接调用和函数回调两种方法
+- Environment variables, some environment variables that can be used in the plugin
+- System-level variables, variables or constants exposed by some plug-in systems
+- Tools API, some commonly used tool class methods
+- System level API, some core methods exposed by plugin systems
+- Event class API, key event points provided by some plugin systems
+- Application class API, API for implementing plugin function requirements, there are two methods of direct call and function callback
 
-**注：** 所有的 API 都是通过 `api.name` 的方法使用的，内部的 API 会统一加上 `_` 的前缀。
+**Note: ** All APIs are used by the `api.[theApiName]` method, and the internal APIs are uniformly prefixed with `_`.
 
-下面是一个基本的使用示例：
+Here's a basic usage example:
 
 ```js
 export default (api, opts) => {
   api.onOptionChange(() => {
-    api.rebuildFiles();
+    api.rebuildTmpFiles();
   });
 }
 ```
 
-## 插件示例
+## Plugin demo
 
-下面是参考 `umi-plugin-locale` 的需求添加的一个插件。
+The following is an example of plugin example code refer to `umi-plugin-locale` plugin code. For a complete example, see [source code] (https://github.com/umijs/umi/blob/master/packages/umi- Plugin-locale/src/index.js).
 
 ```js
-export default (api, defaultOpts) => {
-  const { paths } = api.service;
-  // 监听插件配置变化，这一堆代码是不是应该有什么快捷的 alias
-  let opts = defaultOpts;
+export default (api, opts = {}) => {
+  const { paths } = api;
+  // Linstening plugin options changes
   api.onOptionChange((newOpts) => {
     opts = newOpts;
-    api.rebuildFile();
+    api.rebuildTmpFiles();
   });
-  // 添加 Provider 的包裹
+  // add Provider wrapper
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
   api.addRendererWrapperWithComponent(() => {
     if (opts.antd) {
       return join(__dirnae, './locale-antd.js'));
     }
   });
-  // 添加对 locale 文件的 watch
-  api.registerWatcher({
-    path: join(paths.srcPath, './locale/*.js')),
-    onChange() {
-      api.rebuildFiles();
-    }
-  });
-  // 语言文件载入到代码中
-  api.importModule(() => {
-    const allLocaleFiles = getLocaleFiles(); // locale/*.js
-    return {
-       path: allLocaleFiles,
-       name: 'localesModules',
-    };
-  });
-  api.insertFragmentAfterImport(`
-     getRuntimeState('localesModules', localesModules);
-  `);
+  // add watcher on locale files
+  api.addPageWatcher(
+    join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),
+  );
 };
 ```
 
-## 插件的顺序
+## Plugins order
 
-插件的执行顺序依赖用户在配置文件 `.umirc.js` 中配置的 `plugins` 配置项，有依赖的插件 umi 会通过插件的 `dependence` 配置检查插件的顺序做出警告，但是目前 umi 不会修改用户的顺序。
+The execution order of the plugins depends on the `plugins` configuration item configured by the user in the configuration file `.umirc.js` or `config config.js`. The dependent plugin umi will check the order of the plugins through the plugin's `dependence` configuration. A warning is issued, but currently umi does not modify the order of the users.
 
-当插件调用 `api.applyPlugin` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
+When the plugin calls `api.applyPlugin` to trigger the hooks of the plugin, the execution order of the hooks corresponds to the order of `plugins`. The order in which hooks are concerned is determined by the corresponding hooks.
 
-## 环境变量
+## Environmental variable
 
 ### NODE_ENV
 
-`process.env.NODE_ENV`，区分 development 和 production
+`process.env.NODE_ENV`, Distinguish between development and production
 
-## 系统级变量
+## System level variable
 
-### service.config
+### config
 
-`.umirc.js` 或者 `config/config.js` 里面的配置。
+configuration in `.umirc.js` or `config/config.js`.
 
-### service.cwd
+### paths
 
-### service.pkg
+- outputPath
+- absOutputPath
+- pagesPath
+- absPagesPath
+- tmpDirPath
+- absTmpDirPath
+- absSrcPath
+- cwd: project root
 
-### service.paths
+### routes
 
-outputPath
-absOutputPath
-pagesPath
-absPagesPath
-tmpDirPath
-absTmpDirPath
-absSrcPath
+umi processed routing information. The format is as follows:
 
-### service.routes
+```js
+const routes = [{
+  path: '/xxx/xxx',
+  component: '',
+}];
+```
 
-## 系统级 API
+## System level API
 
 ### registerPlugin
 
-加载插件，用于插件集或者 bigfish。
+Register a plugin, usually used for plugin set.
 
 ```js
 const demoPlugin = require('./demoPlugin');
@@ -137,10 +124,10 @@ api.registerPlugin({
 
 ### registerMethod
 
-注册插件方法，用于给插件添加新的方法给其它插件使用。
+Register a plugin method to add a new method to the plugin for use by other plugins.
 
 ```js
-// 类型通常和方法名对应 addXxx modifyXxx onXxx afterXxx beforeXxx
+// Type usually corresponds to the method name addXxx modifyXxx onXxx afterXxx beforeXxx
 api.registerMethod('addDvaRendererWrapperWithComponent', {
   type: api.API_TYPE.ADD
   type: api.API_TYPE.EVENT
@@ -149,24 +136,43 @@ api.registerMethod('addDvaRendererWrapperWithComponent', {
 });
 ```
 
-### applyPlugin
-
-在插件用应用通过 registerMethod 注册的某个方法。
+For plugin methods of type `api.API_TYPE.ADD`, you should return an item or return a multiple of the array, or you can return an empty array, such as:
 
 ```js
-// 如果 type 为 api.API_TYPE.ADD wrappers 为各个插件返回的值组成的数组
-// EVENT 则 wrappers 返回 undefined
-// MODIFY 则返回最后的修改值
+api.addHTMLMeta({ /* ... */ });
+api.addHTMLMeta([{ /* ... */ }, { /* ... */ }]);
+api.addHTMLMeta(() => {
+  if (opt === 'h5') {
+    return { /* ... */ };
+  }
+  return [];
+});
+```
+
+The type is a plugin method of `api.API_TYPE.EVENT`, you should pass in a function and don't need to return anything.
+
+The plugin method of type `api.API_TYPE.MODIFY` returns the modified content.
+
+You can also use `apply` to customize the processing function. Your registered method may be used by multiple plugins. When you call `applyPlugin`, the return value of these plugins will be processed by the reduce function inside umi. The `apply` function you define determines how `applyPlugin` handles the result of multiple plugins as its return value. Usually three types of built-in can meet your needs.
+
+### applyPlugin
+
+Trigger a method registered by the app via `registerMethod`.
+
+```js
+// If the type is api.API_TYPE.ADD wrappers an array of values returned by each plugin
+// EVENT wrapper returns undefined
+// MODIFY returns the last modified value
 const wrappers = api.applyPlugin('wrapDvaRendererWithComponent');
 ```
 
 ### restart
 
 ```js
-api.restart();
+api.restart('why');
 ```
 
-重新执行 `umi dev`，比如在 bigfish 中修改了 appType，需要重新挂载插件的时候可以调用该方法。
+rerun `umi dev`.
 
 ### rebuildTmpFiles
 
@@ -174,76 +180,57 @@ api.restart();
 api.rebuildTmpFiles('config dva changed');
 ```
 
-重新生成 bootstrap file（entryFile）等临时文件，这个是最常用的方法，国际化，dva 等插件的配置变化都会用到。
+regenerate bootstrap file (entryFile), this is the most commonly used method, plugins such as dva and locale will be used.
 
 ### refreshBrowser
 
-刷新浏览器。
+refresh browser.
 
 ### rebuildHTML
 
-触发 HTML 重新构建。
+Trigger HTML rebuild.
 
-### onHTMLRebuild
+### changePluginOption
 
-当 HTML 重新构建时被触发。
-
-### setPluginDefaultOption
-
-设置插件的默认配置，比如在 bigfish 中需要把配置文件中的 dva 配置传递给 dva 插件的时候用到。
+Set the options of the plugin, such as when you need to pass the dva configuration of the plugin set to the dva plugin in the umi-plugin-react.
 
 ```js
-const dvaPlugin = require('umi-plugin-dva');
-
-api.changePluginOption('plugin-id', {
+api.changePluginOption('dva-plugin-id', {
   immer: true
 });
 ```
 
-### modifyDefaultConfig
-
-设置 umi 的默认配置。
-
-```js
-api.modifyDefaultConfig(memo => {
-  return {
-    // 默认使用单数目录
-    ...memo,
-    singular: true,
-  }
-});
-```
-
-### setState
-
-```js
-api.setState('routesConfig', []);
-```
-
-### getState
-
-```js
-const config = api.setState('routesConfig');
-```
-
 ### registerCommand
 
-注册 umi xxx 命令行
+Register the umi xxx command line, as in the umi internal help command.
+
+```js
+api.registerCommand('help', {
+  hide: true
+}, args => {
+  // more code...
+});
+```
 
 ### \_registerConfig
 
-注册一个配置项，类似之前的 modifyConfigPlugins。
+Register a configuration item, system method, usually do not use.
 
 ```js
-api._registerConfig({
-  name: 'dva',
-  onChange(config) {
-    api.setPluginDefaultConfig('umi-plugin-dva', config);
+api._registerConfig(() => {
+  return () => {
+    return {
+      name: 'dva',
+      validate: validate,
+      onChange(newConfig, oldConfig) {
+        api.setPluginDefaultConfig('umi-plugin-dva', config);
+      }
+    };
   }
 });
 ```
 
-## 工具类 API
+## Tool class API
 
 ### winPath
 
@@ -251,7 +238,7 @@ api._registerConfig({
 api.winPath('/path/to.js');
 ```
 
-将文件路径转换为兼容 window 的路径，用于在代码中添加 `require('/xxx/xxx.js')` 之类的代码。
+Convert the file path to a path compatible with window to add code such as `require('/xxx/xxx.js')`.
 
 ### debug
 
@@ -265,112 +252,96 @@ xxx -> xxx.js xxx.ts
 
 ### compatDirname
 
-先找用户项目目录，再找插件依赖。
+Look for the user project directory first, then find the plugin dependencies.
 
-## 事件类 API
+## Event class API
 
-事件类 API 遵循以 onXxxXxx, beforeXxx, afterXxx 的命名规范，接收一个参数为回调函数。
+The event class API follows the naming convention of onXxxXxx, beforeXxx, afterXxx and receives a parameter as a callback function.
+
+### beforeDevServer
+
+Before dev server start.
+
+### afterDevServer
+
+After dev server start.
+
+### onStart
+
+Triggered when `umi dev` or `umi build` start.
+
+### onDevCompileDone
+
+Triggered after `umi dev` compilation is complete.
+
+```js
+api.onDevCompileDone(({ isFirstCompile, stats }) => {
+});
+```
 
 ### onOptionChange
 
-插件的配置改变的时候触发。
+Triggered when the configuration of the plugin changes.
 
 ```js
-export default (api, defaultOpts = { immer: false }) {
+export default (api, defaultOpts = { immer: false }) => {
   let opts = defaultOpts;
   api.onOptionChange((newOpts) => {
     opts = newOpts;
-	api.rebuildFiles();
+  	api.rebuildFiles();
   });
-}
+};
 ```
 
 ### onBuildSuccess
 
-在 `umi build` 成功时候。主要做一些构建产物的处理。
+When the `umi build` was successful. Mainly do some processing of the construction products.
 
 ```js
 api.onBuildSuccess({
-  assets,
+  stats,
 } => {
-  /* TODO confirm
-  assets = {
-    common: {
-	  js: [],
-	  css: [],
-	},
-    pages: [{
-	  name: 'index',
-	  html: 'index.html',
-	  js: ['umi-xxx.js'],
-	  css: ['umi-xxx.css']
-	}],
-  }
-  */
+  // handle with stats
 });
 ```
 
 ### onBuildFail
 
-在 `umi build` 失败的时候。
+When the `umi build` failed.
 
+### onHTMLRebuild
 
-## 运行时 API
+Triggered when the HTML is rebuilt.
 
-在浏览器端可以通过 `umi/runtime` 获得的 API。也可以通过 `registerRuntimeExtension` 添加运行时模块，通过 runtimeApi 获取。`umi/runtime` === `runtimeApi`。
+### onGenerateFiles
 
-### setRuntimeState
+The routing file is triggered when the entry file is generated.
 
-```js
-import { setRuntimeState } from 'umi/runtime';
+### onPatchRoute
 
-const app = new Dva();
-
-setRuntimeState('dvaApp', app);
-```
-
-### getRuntimeState
+Triggered when getting the configuration of a single route, you can modify the route configuration `route` here. For example, you can add a component path to `Routes` to add a layer of encapsulation to the route.
 
 ```js
-import { getRuntimeState } from 'umi/runtime';
-
-getRuntimeState('dvaApp', app);
+api.onPatchRoute({ route } => {
+  // route:
+  // {
+  //   path: '/xxx',
+  //   Routes: [] 
+  // }
+})
 ```
 
-### onRouteChange
+## Application class API
 
-路由变化时候调用。
+For the application class API, there are two ways to use: direct calling and function callback.
 
-```js
-onRouteChange(({ route, params }) => {
-});
-```
-
-```js
-
-api.import
-
-// runtime.js
-import { onRouteChange } from 'umi/runtime';
-				   
-onRouteChange((routes) => {
-   if (routes.workspace) {
-      window.AntdCloudNav.set();
-   }
-});
-```
-
-## 应用类 API
-
-对于应用类 API，可以有直接调用和函数回调两种方式。
-
-直接调用的示例如下：
+direct calling:
 
 ```js
 api.addRendererWrapperWithComponent('/path/to/component.js');
 ```
 
-函数回调的示例如下：
+function callback:
 
 ```js
 api.addRendererWrapperWithComponent(() => {
@@ -380,50 +351,44 @@ api.addRendererWrapperWithComponent(() => {
 });
 ```
 
-下面是具体的 API。
+Below is the specific API.
 
-### addWatcher
+### modifyDefaultConfig
 
-添加 watch 的文件，类似之前的 modifyPageWatchers。
-
-```js
-api.registerWatcher(['xxx.js', '*.mock.js']);
-```
-
-### addRuntimeExtension
-
-添加运行时的扩展，runtimeApi 提供的方法参考后面的运行时部分。
+set umi default configuration.
 
 ```js
-api.registerRuntimeExtension('/runtime.js', {})
+api.modifyDefaultConfig(memo => {
+  return {
+    ...memo,
+    singular: true,
+  }
+});
 ```
+
+### addPageWatcher
+
+add watching files.
 
 ```js
-// runtime.js
-export default (runtimeApi, opts) => {
-  // runtimeApi === require('umi/runtime');
-}
+api.addPageWatcher(['xxx.js', '*.mock.js']);
 ```
-
-### modifyDefaultTemplateContent
-
-修改默认的模板，bigfish 会用到。
 
 ### addHTMLMeta
 
-在 HTML 中添加 meta 标签。
+add meta in HTML.
 
 ### addHTMLLink
 
-在 HTML 中添加 Link 标签。
+add link in HTML.
 
 ### addHTMLStyle
 
-在 HTML 中添加 Style 标签。
+add tyle in HTML.
 
 ### addHTMLScript
 
-在 HTML 尾部添加脚本。
+Add a script at the bottom of the HTML.
 
 ```js
 api.addHTMLScript({
@@ -435,29 +400,36 @@ api.addHTMLScript({
 
 ### addHTMLHeadScript
 
-在 HTML 头部添加脚本。
+Add a script to the HTML head.
 
-### modifyRoutesConfig
+### modifyHTMLWithAST
 
-修改路由配置。
+Modify the HTML, based on cheerio.
+
+### modifyHTMLContext
+
+Modify the environment parameters when html ejs is rendered.
 
 ```js
-api.modifyRoutesConfig(({ memo, args}) => {
+api.modifyHTMLContext((memo, { route }) => {
+  return {
+    ...memo,
+    title: route.title, // The title plugin for umi-plugin-react contains similar logic
+  };
+});
+```
+
+### modifyRoutes
+
+Modify the routing configuration.
+
+```js
+api.modifyRoutes(({ memo, args}) => {
   return memo;
 })
 ```
 
-### modifySingleRouteConfig
-
-修改单个路由的配置。
-
-```js
-api.modifySingleRouteConfig({ memo } => {
-  return memo;
-})
-```
-
-路由配置的格式如下：
+The format of the route configuration is as follows:
 
 ```js
 const route = {
@@ -486,82 +458,112 @@ export class Control extends Component (props) => {
 
 ```
 
-
-### addRouteWrapperWithComponent
-
-```js
-api.addRouteWrapperWithComponent('./path/to/component.js');
-```
-
-在路由组件外面包一层组件，也可以用 modifySingleRouteConfig 这个实现，这个相当于是一个快捷方式。
-
 ### addEntryImportAhead
 
-在入口文件在最上面 import 模块。
+add import at the top of the entry file.
 
 ```js
 api.addEntryImportAhead({
   source: '/path/to/module',
-  specifier: 'name', // import 出来后的名称，可以缺省
+  specifier: 'name', // module name with import, can be ignored
 });
 ```
 
-
 ### addEntryImport
 
-在入口文件中 import 模块。
+Import module in the entry file.
+
+```js
+api.addEntryImport({
+  source: '/modulePath/xxx.js',
+  specifier: 'moduleName',
+});
+```
 
 ### addEntryCodeAhead
 
-在 render 之前添加代码。
+Add code before render.
+
+```js
+api.addEntryCodeAhead(`
+  console.log('addEntryCodeAhead');
+`);
+```
 
 ### addEntryCode
 
-在 render 之后添加代码。
+Add code after render.
+
+### addRouterImport
+
+Add a module import to the routing file.
+
+### addRouterImportAhead
+
+Add a module to the header of the routing file to introduce.
 
 ### addRendererWrapperWithComponent
 
-在 <App/> 外面包一层组件。
+Wrapper a component outside the <App/>.
 
 ### addRendererWrapperWithModule
 
-在挂载 <App/> 前执行一个 Module，支持异步。
+Excute a module before mount <App/>.
+
+### modifyEntryRender
+
+modifyEntryRender
+
+### modifyEntryHistory
+
+modifyEntryHistory
+
+### modifyRouteComponent
+
+modifyRouteComponent
+
+### modifyRouterRootComponent
+
+modifyRouterRootComponent
 
 ### modifyWebpackConfig
 
-修改 webpack 配置。
+modify webpack Configuration.
 
 ```js
-// 示例
-api.chainWebpackConfig(({ memo }) => {
+// demo
+api.chainWebpackConfig((memo) => {
   return memo;
 });
 ```
 
 ### modifyAFWebpackOpts
 
-修改 af-webpack 配置。
+Modify the af-webpack configuration.
 
 ```js
-// 示例
-api.modifyAFWebpackOpts(({ memo }) => {
+// demo
+api.modifyAFWebpackOpts((memo) => {
   return memo;
 });
 ```
 
 ### addMiddleware
 
-往开发服务器后面添加中间件。
+Append middleware to the dev server.
 
 ### addMiddlewareAhead
 
-往开发服务器前面添加中间件。
+Add middleware to the front of the development server.
 
 ### addMiddlewareBeforeMock
 
-在 mock 前添加中间件。
+Add middleware before the mock.
 
 ### addMiddlewareAfterMock
 
-在 mock 后添加中间件。
+Add middleware after the mock.
 
+### addVersionInfo
+
+Added version information, displayed in `umi -v` or `umi version`.

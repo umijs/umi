@@ -1,46 +1,48 @@
 ---
 home: true
-actionText: 快速上手 →
+actionText: Get Started →
 actionLink: /guide/
 features:
-- title: 开箱即用
-  details: 你只需一个依赖 umi 就可启动开发，而无需安装 react、preact、react-router、eslint、babel、jest 等。
-- title: 高性能
-  details: PWA、按需加载、tree-shake、scope-hoist、智能提取公共文件、Critical CSS、preload、hash build、preact 等等，并且，你相同的代码会随着 umi 的改进而不断提升性能。
-- title: 扩展性
-  details: umi 的整个生命周期都是插件化的，甚至就是由大量插件组成，比如 http mock、service worker、layout、高清方案等，都是一个个的插件。
+- title: Pluggable
+  details: The entire lifecycle of umi is composed of plugins, and such as pwa, on-demand loading, one-click switching preact, one-button compatibility ie9, etc., all implemented by plugins.
+- title: Out Of Box
+  details: You only need a umi dependency to start development without having to install react, preact, webpack, react-router, babel, jest, and more.
+- title: Conventional Routing
+  details: Next.js like and full featured routing conventions, support permissions, dynamic routing, nested routing, and more.
 footer: MIT Licensed | Copyright © 2017-present
 ---
 
-### 入门非常简单
+### Getting started is very simple
 
 ```bash
-# 安装
-$ yarn global add umi # 或者：npm install -g umi
+# Install deps
+$ yarn global add umi # 或者 npm install -g umi
 
-# 新建一个页面
-$ mkdir pages
-$ echo 'export default () => <h1>Hello umi</h1>;' > pages/index.js
+# Create application
+$ mkdir myapp && cd myapp
 
-# 启动调试服务器
+# Create page
+$ umi generate page index
+
+# Start dev server
 $ umi dev
 
-# 构建
+# Build and deploy
 $ umi build
 ```
 
-### 社区
+[Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
 
-#### 钉钉群
+## Community
+
+### Telegram
+
+[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+
+### 钉钉群
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
 
-#### 微信群
+### 微信群
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/KyFxYsHITgIAaVgQxfeE.jpg" width="60" />
-
-群满 100 人后，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
-
-#### Telegram
-
-[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。

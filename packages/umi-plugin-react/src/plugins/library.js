@@ -1,7 +1,7 @@
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 export default function(api, options) {
-  const { cwd, compatDirname } = api.service;
+  const { cwd, compatDirname } = api;
 
   api.chainWebpackConfig(webpackConfig => {
     if (options === 'preact') {
@@ -26,11 +26,11 @@ export default function(api, options) {
         )
         .set(
           'create-react-class',
-          compatDirname(
+          join(compatDirname(
             'preact-compat/lib/create-react-class',
             cwd,
             dirname(require.resolve('preact-compat/lib/create-react-class')),
-          ),
+          ), 'create-react-class'),
         );
     }
   });

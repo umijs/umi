@@ -1,113 +1,162 @@
-# 快速上手
+# Getting Started
 
-## 安装
+> There's also a [video version](https://www.youtube.com/watch?v=vkAUGUlYm24&list=PLzu0PBqV2jld2q5gCADxX17NE3gF3FvYq) of this.
 
-用 `yarn` 安装 umi ：
+## Environmental preparation
+
+First you should have [node](https://nodejs.org/en/), and make sure it's version 8 or above.
+
+```bash
+$ node -v
+0.8.x
+```
+
+Recommended to use `yarn` to management npm dependency.
+
+Then install `umi` globally, and make sure it's 2.0.0 or above.
 
 ```bash
 $ yarn global add umi
-```
-
-或者用 `npm` ：
-
-```bash
-$ npm install -g umi
-```
-
-用 `umi -v` 检查版本号。
-
-```bash
 $ umi -v
-umi@1.0.0
+2.0.0
 ```
 
-## 创建应用
+## Boilerplate
 
-::: warning
-umi 暂时没有提供脚手架，之后会添加。
-:::
-
-创建应用并进入。
+First create an empty directory.
 
 ```bash
-$ mkdir myapp
-$ cd myapp
+$ mkdir myapp && cd myapp
 ```
 
-## 创建第一个页面
-
-创建 `pages` 目录并新建一个页面。
+Then create some pages with `umi g`,
 
 ```bash
-$ mkdir pages
-$ echo 'export default () => <div>Index Page</div>' > pages/index.js
+$ umi g page index
+$ umi g page users
 ```
 
-如果你是 Window 系统，可以手动新建 `pages/index.js`，并填入：
+> `umi g` is the alias of `umi generate`, used for generate `component`, `page`, `layout` quickly. And it can be extended in plugins, such as uni-plugin-dva extended `dva:model`, then you can generate dva's model via `umi g dva:model foo`.
 
-```js
-export default () => <div>Index Page</div>;
+Then view the directory with `tree`, (windows users can skip this step)
+
+```bash
+$ tree
+.
+└── pages
+    ├── index.css
+    ├── index.js
+    ├── users.css
+    └── users.js
 ```
 
-## 启动 dev 服务器
+The pages directory here is the directory where the page is located. In umi, all the js files under the pages are routes. It's like [next.js](https://github.com/zeit/next.js) or [nuxt The experience of .js](https://nuxtjs.org/).
+
+Then start the local dev server,
 
 ```bash
 $ umi dev
-
-Compiled successfully!
-
-You can now view Your App in the browser.
-
-  Local:            http://localhost:8000/
-
-Note that the development build is not optimized.
-To create a production build, use npm run build.
 ```
 
-然后在浏览器中打开 [http://localhost:8000/](http://localhost:8000/)，你会看到 `Index Page` 。
+<img src="https://gw.alipayobjects.com/zos/rmsportal/SGkKMTPMJWFnYMbyznFW.png" width="616" />
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/vyNMAXgHZhEHNBisqUcY.png" width="450" height="414" style="margin-left:0;" />
+## Convensional Routing
 
-## 构建应用
+After starting `umi dev`, you will find a directory of `.umi` under pages. What is this? This is the temporary directory of umi, you can do some verification here, but please do not modify the code directly here, umi restart or file modification under pages will regenerate the files in this folder.
+
+Then we add some route jump code to `index.js` and `users.js`.
+
+First modify `pages/index.js`,
+
+```diff
++ import Link from 'umi/link';
+import styles from './index.css';
+
+export default function() {
+  return (
+    <div className={styles.normal}>
+      <h1>Page index</h1>
++     <Link to="/users">go to /users</Link>
+    </div>
+  );
+}
+```
+
+Then modify `pages/users.js`,
+
+```diff
++ import router from 'umi/router';
+import styles from './index.css';
+
+export default function() {
+  return (
+    <div className={styles.normal}>
+      <h1>Page index</h1>
++     <button onClick={() => { router.goBack(); }}>go back</button>
+    </div>
+  );
+}
+```
+
+Then verify in the browser, and it should already be able to jump between the index page and the users pages.
+
+## Build and Deploy
+
+### Build
+
+Run `umi build`，
 
 ```bash
 $ umi build
 
-Compiled successfully.
+DONE  Compiled successfully in 1729ms
 
 File sizes after gzip:
 
-  52.09 KB  static/umi.2b7e5e82.js
-  186 B     static/__common-umi.6a75ebe1.async.js
+  68.04 KB  dist/umi.js
+  83 B      dist/umi.css
 ```
 
-构建产物会生成在 `dist` 目录。
+The files is generated to `./dist` by default. You could view the files by the `tree` command (Windows users can skip this step)
 
 ```bash
 $ tree ./dist
-
-dist
+./dist
 ├── index.html
-└── static
-    ├── __common-umi.6a75ebe1.async.js
-    └── umi.2b7e5e82.js
-
-1 directory, 3 files
+├── umi.css
+└── umi.js
 ```
 
-## 部署
+### Local Verification
 
-构建产出的 dist 目录是可直接运行的，我们用 [serve](https://github.com/zeit/serve) 让 dist 目录跑起来。
+Local verification can be done via `serve` before publishing.
 
 ```bash
-$ npm i serve -g
-$ cd dist
-$ serve
+$ yarn global add serve
+$ serve ./dist
 
 Serving!
 
-- Local:            http://localhost:5000   
+- Local:            http://localhost:5000
 - On Your Network:  http://{Your IP}:5000
 
 Copied local address to clipboard!
 ```
+
+Visit http://localhost:5000, which should be same as `umi dev`.
+
+### Deploy
+
+Once verified, you can deploy it. Here is a demonstration with [now](http://now.sh/).
+
+```bash
+$ yarn global add now
+$ now ./dist
+
+> Deploying /private/tmp/sorrycc-1KVCmK/dist under chencheng
+> Synced 3 files (301.93KB) [2s]
+> https://dist-jtckzjjatx.now.sh [in clipboard] [1s]
+> Deployment complete!
+```
+
+Then open the url to view it online.

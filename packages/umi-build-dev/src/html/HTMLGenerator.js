@@ -1,7 +1,6 @@
 import assert from 'assert';
-import mkdirp from 'mkdirp';
-import { dirname, join, relative } from 'path';
-import { writeFileSync, existsSync, readFileSync } from 'fs';
+import { join, relative } from 'path';
+import { existsSync, readFileSync } from 'fs';
 import isPlainObject from 'is-plain-object';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
@@ -78,7 +77,7 @@ export default class HTMLGenerator {
     path = path.replace(/^\//, '');
     path = path.replace(/\/$/, '');
 
-    if (htmlSuffix) {
+    if (htmlSuffix || path === 'index.html') {
       return `${path}`;
     } else {
       return `${path}/index.html`;
@@ -88,7 +87,7 @@ export default class HTMLGenerator {
   getMatchedContent(path) {
     const { config } = this;
     if (config.exportStatic) {
-      const branch = matchRoutes(this.routes, path).filter(r => r.path);
+      const branch = matchRoutes(this.routes, path).filter(r => r.route.path);
       const route = branch.length ? branch[branch.length - 1].route : { path };
       return this.getContent(route);
     } else {
@@ -106,6 +105,7 @@ export default class HTMLGenerator {
     if (route.document) {
       const docPath = join(cwd, route.document);
       assert(existsSync(docPath), `document ${route.document} don't exists.`);
+      return docPath;
     }
 
     if (existsSync(absPageDocumentPath)) {
@@ -117,11 +117,9 @@ export default class HTMLGenerator {
 
   getStylesContent(styles) {
     return styles
-      .map(style => {
-        const { content = '' } = style;
-        delete style.content;
-        const attrs = Object.keys(style).reduce((memo, key) => {
-          return memo.concat(`${key}="${style[key]}"`);
+      .map(({ content, ...attrs }) => {
+        attrs = Object.keys(attrs).reduce((memo, key) => {
+          return memo.concat(`${key}="${attrs[key]}"`);
         }, []);
         return [
           `<style${attrs.length ? ' ' : ''}${attrs.join(' ')}>`,
@@ -165,12 +163,10 @@ export default class HTMLGenerator {
 
   getScriptsContent(scripts) {
     return scripts
-      .map(script => {
-        if (script.content) {
-          const { content } = script;
-          delete script.content;
-          const attrs = Object.keys(script).reduce((memo, key) => {
-            return memo.concat(`${key}="${script[key]}"`);
+      .map(({ content, ...attrs }) => {
+        if (content && !attrs.src) {
+          attrs = Object.keys(attrs).reduce((memo, key) => {
+            return memo.concat(`${key}="${attrs[key]}"`);
           }, []);
           return [
             `<script${attrs.length ? ' ' : ''}${attrs.join(' ')}>`,
@@ -181,8 +177,8 @@ export default class HTMLGenerator {
             '</script>',
           ].join('\n');
         } else {
-          const attrs = Object.keys(script).reduce((memo, key) => {
-            return memo.concat(`${key}="${script[key]}"`);
+          attrs = Object.keys(attrs).reduce((memo, key) => {
+            return memo.concat(`${key}="${attrs[key]}"`);
           }, []);
           return `<script ${attrs.join(' ')}></script>`;
         }
@@ -213,7 +209,7 @@ export default class HTMLGenerator {
       ...(this.config.context || {}),
       env: this.env,
     };
-    if (this.modifyContext) context = this.modifyContext(context);
+    if (this.modifyContext) context = this.modifyContext(context, route);
 
     const tplPath = this.getDocumentTplPath(route);
     const relTplPath = relative(cwd, tplPath);

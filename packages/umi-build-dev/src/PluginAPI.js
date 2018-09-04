@@ -28,9 +28,9 @@ export default class PluginAPI {
     this._addMethods();
   }
 
-  relativeToTmp(path) {
+  relativeToTmp = path => {
     return this.winPath(relative(this.service.paths.absTmpDirPath, path));
-  }
+  };
 
   _resolveDeps(file) {
     return require.resolve(file);
@@ -70,6 +70,7 @@ export default class PluginAPI {
       'addRendererWrapperWithModule',
       'addRouterImport',
       'addRouterImportAhead',
+      'addVersionInfo',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',

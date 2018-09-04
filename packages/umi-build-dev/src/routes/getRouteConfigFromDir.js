@@ -4,6 +4,8 @@ import { winPath } from 'umi-utils';
 import assert from 'assert';
 import getYamlConfig from './getYamlConfig';
 
+const debug = require('debug')('umi-build-dev:getRouteConfigFromDir');
+
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default function getRouteConfigFromDir(paths) {
@@ -144,6 +146,7 @@ function findJSFile(baseDir, fileNameWithoutExtname) {
 
 function addRoute(memo, route, { componentFile }) {
   const code = readFileSync(componentFile, 'utf-8');
+  debug(`parse yaml from ${componentFile}`);
   const config = getYamlConfig(code);
   ['path', 'exact', 'component', 'routes'].forEach(key => {
     assert(!(key in config), `Unexpected key ${key} in file ${componentFile}`);

@@ -54,13 +54,13 @@ export default function(opts) {
       '.web.js',
       '.mjs',
       '.js',
-      '.json',
       '.web.jsx',
       '.jsx',
       '.web.ts',
       '.ts',
       '.web.tsx',
       '.tsx',
+      '.json',
     ]);
 
   if (opts.alias) {
@@ -89,7 +89,7 @@ export default function(opts) {
   const rule = webpackConfig.module
     .rule('exclude')
     .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx)$/)
+    .add(/\.(js|jsx|ts|tsx|mjs)$/)
     .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
@@ -131,6 +131,23 @@ export default function(opts) {
       require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
+
+  // Avoid "require is not defined" errors
+  webpackConfig.module
+    .rule('mjs-require')
+    .test(/\.mjs$/)
+    .type('javascript/auto')
+    .include.add(opts.cwd);
+
+  // module -> mjs
+  webpackConfig.module
+    .rule('mjs')
+    .test(/\.mjs$/)
+    .include.add(opts.cwd)
+    .end()
+    .use('babel-loader')
+    .loader(require.resolve('babel-loader'))
+    .options(babelOpts);
 
   // module -> js
   webpackConfig.module
@@ -188,10 +205,10 @@ export default function(opts) {
     .loader(require.resolve('babel-loader'))
     .options(babelOpts)
     .end()
-    .use('awesome-typescript-loader')
-    .loader(require.resolve('awesome-typescript-loader'))
+    .use('ts-loader')
+    .loader(require.resolve('ts-loader'))
     .options({
-      configFileName: tsConfigFile,
+      configFile: tsConfigFile,
       transpileOnly: true,
       ...(opts.typescript || {}),
     });
@@ -205,7 +222,7 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (!process.env.__FROM_UMI_TEST) {
+  if (!process.env.CI && !process.env.__FROM_UMI_TEST) {
     webpackConfig
       .plugin('progress')
       .use(require('webpackbar'), [{ minimal: false }]);
@@ -227,6 +244,9 @@ export default function(opts) {
           analyzerMode: 'server',
           analyzerPort: process.env.ANALYZE_PORT || 8888,
           openAnalyzer: true,
+          // generate stats file while ANALYZE_DUMP exist
+          generateStatsFile: !!process.env.ANALYZE_DUMP,
+          statsFilename: process.env.ANALYZE_DUMP || 'stats.json',
         },
       ]);
   }
@@ -235,6 +255,16 @@ export default function(opts) {
     webpackConfig
       .plugin('duplicate-package-checker')
       .use(require('duplicate-package-checker-webpack-plugin'));
+  }
+
+  if (process.env.FORK_TS_CHECKER) {
+    webpackConfig
+      .plugin('fork-ts-checker')
+      .use(require('fork-ts-checker-webpack-plugin'), [
+        {
+          formatter: 'codeframe',
+        },
+      ]);
   }
 
   // plugins -> copy

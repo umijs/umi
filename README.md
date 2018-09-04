@@ -1,10 +1,12 @@
+English | [简体中文](./README_zh-CN.md)
+
 # umi
 
 [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
 
-🚀 Blazing-fast next.js-like framework for React apps.
+🌋 Pluggable enterprise-level react application framework.
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
@@ -12,34 +14,47 @@
 
 ## Features
 
-* **开箱即用**，内置 react、react-router 等
-* **类 next.js 且[功能完备](/guide/router.html)的路由约定**，同时支持配置的路由方式
-* **完善的插件体系**，覆盖从源码到构建产物的每个生命周期
-* **高性能**，内置 PWA、以路由为单元的 Code Splitting 等
-* **支持静态页面导出**，适配各种环境，比如中台业务、无线业务、[egg](https://github.com/eggjs/egg)、支付宝钱包、云凤蝶等
-* **开发启动快**，支持一键开启按需编译、[dll](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dll)、hard-source-webpack-plugin 等
-* **一键兼容到 IE9**，基于 [umi-plugin-polyfill](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfill)
-* **完善的 TypeScript 支持**，包括 d.ts 定义和 umi test
-* **与 dva 数据流的深入融合**，支持 duck directory、model 的自动加载、code splitting 等等
+* 📦 **Out of box**，built-in react、react-router, etc
+* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, also support configured routing
+* 🎉 **Complete plugin system**, covering every lifecycle from source code to production
+* 🚀 **High performance**, support PWA, route level code splitting, etc via plugin
+* 💈 **Support static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
+* 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
+* 🐠 **Compatible IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
+* 🍁 **Support TypeScript**, including d.ts definition and `umi test`
+* 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
 
-### Getting Started
+## Getting Started
 
 ```bash
-# Install umi
-$ yarn global add umi # or: npm install -g umi
+# Install deps
+$ yarn global add umi # 或者 npm install -g umi
 
-# Create a page
-$ mkdir pages
-$ echo 'export default () => <h1>Hello umi</h1>;' > pages/index.js
+# Create application
+$ mkdir myapp && cd myapp
+
+# Create page
+$ umi generate page index
 
 # Start dev server
 $ umi dev
 
-# Run build
+# Build and deploy
 $ umi build
 ```
 
-## 社区
+[Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
+
+## Examples
+
+* [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
+* [Antd Admin](https://github.com/zuiidea/antd-admin)
+
+## Community
+
+### Telegram
+
+[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
 
 ### 钉钉群
 
@@ -47,13 +62,7 @@ $ umi build
 
 ### 微信群
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/KyFxYsHITgIAaVgQxfeE.jpg" width="60" />
-
-群满 100 人后，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
-
-### Telegram
-
-[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
 
 ## License
 

@@ -15,6 +15,7 @@ export default function(opts = {}) {
     './plugins/commands/test',
     './plugins/commands/help',
     './plugins/commands/generate',
+    './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',
     './plugins/base',
@@ -25,7 +26,7 @@ export default function(opts = {}) {
     './plugins/afwebpack-config',
     './plugins/mountElementId',
     './plugins/404', // 404 must after mock
-    // Disable it since it still havs problems
+    // Disable this since it make umi build exit very slowly (4s+)
     // './plugins/atoolMonitor',
   ];
 
@@ -36,7 +37,7 @@ export default function(opts = {}) {
       let opts;
       if (Array.isArray(p)) {
         opts = p[1]; // eslint-disable-line
-        p = [0];
+        p = p[0];
       }
       return {
         id: p.replace(/^.\//, 'built-in:'),

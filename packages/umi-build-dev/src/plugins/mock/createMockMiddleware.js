@@ -179,7 +179,7 @@ export default function getMockMiddleware(api) {
     })[0];
   }
 
-  return (req, res, next) => {
+  return function UMI_MOCK(req, res, next) {
     const match = matchMock(req);
 
     if (match) {

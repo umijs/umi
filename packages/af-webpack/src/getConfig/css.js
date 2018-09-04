@@ -16,7 +16,8 @@ export default function(webpackConfig, opts) {
     sourceMap: !opts.disableCSSSourceMap,
     ...(opts.cssLoaderOptions || {}),
   };
-  const theme = normalizeTheme(opts.theme);
+  // should pass down opts.cwd
+  const theme = normalizeTheme(opts.theme, opts);
   const postcssOptions = {
     // Necessary for external CSS imports to work
     // https://github.com/facebookincubator/create-react-app/issues/2677
@@ -39,6 +40,8 @@ export default function(webpackConfig, opts) {
                 'default',
                 opts.cssnano || {
                   mergeRules: false,
+                  // ref: https://github.com/umijs/umi/issues/955
+                  normalizeUrl: false,
                 },
               ],
             }),
@@ -47,9 +50,11 @@ export default function(webpackConfig, opts) {
   };
   const cssModulesConfig = {
     modules: true,
-    localIdentName: cssOpts.localIdentName || (isDev
-      ? '[name]__[local]___[hash:base64:5]'
-      : '[local]___[hash:base64:5]'),
+    localIdentName:
+      cssOpts.localIdentName ||
+      (isDev
+        ? '[name]__[local]___[hash:base64:5]'
+        : '[local]___[hash:base64:5]'),
   };
   const lessOptions = {
     modifyVars: theme,

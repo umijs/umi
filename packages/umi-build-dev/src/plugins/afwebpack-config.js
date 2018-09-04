@@ -39,40 +39,32 @@ export default function(api) {
       });
   });
 
+  const reactDir = compatDirname(
+    'react/package.json',
+    cwd,
+    dirname(require.resolve('react/package.json')),
+  );
+  const reactDOMDir = compatDirname(
+    'react-dom/package.json',
+    cwd,
+    dirname(require.resolve('react-dom/package.json')),
+  );
+  const reactRouterDir = compatDirname(
+    'react-router/package.json',
+    cwd,
+    dirname(require.resolve('react-router/package.json')),
+  );
+  const reactRouterDOMDir = compatDirname(
+    'react-router-dom/package.json',
+    cwd,
+    dirname(require.resolve('react-router-dom/package.json')),
+  );
   api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
-      .set(
-        'react',
-        compatDirname(
-          'react/package.json',
-          cwd,
-          dirname(require.resolve('react/package.json')),
-        ),
-      )
-      .set(
-        'react-dom',
-        compatDirname(
-          'react-dom/package.json',
-          cwd,
-          dirname(require.resolve('react-dom/package.json')),
-        ),
-      )
-      .set(
-        'react-router',
-        compatDirname(
-          'react-router/package.json',
-          cwd,
-          dirname(require.resolve('react-router/package.json')),
-        ),
-      )
-      .set(
-        'react-router-dom',
-        compatDirname(
-          'react-router-dom/package.json',
-          cwd,
-          dirname(require.resolve('react-router-dom/package.json')),
-        ),
-      )
+      .set('react', reactDir)
+      .set('react-dom', reactDOMDir)
+      .set('react-router', reactRouterDir)
+      .set('react-router-dom', reactRouterDOMDir)
       .set(
         'history',
         compatDirname(
@@ -97,6 +89,19 @@ export default function(api) {
         join(process.env.UMI_DIR, 'lib/createHistory.js'),
       );
   });
+
+  api.addVersionInfo([
+    `react@${require(join(reactDir, 'package.json')).version} (${reactDir})`,
+    `react-dom@${
+      require(join(reactDOMDir, 'package.json')).version
+    } (${reactDOMDir})`,
+    `react-router@${
+      require(join(reactRouterDir, 'package.json')).version
+    } (${reactRouterDir})`,
+    `react-router-dom@${
+      require(join(reactRouterDOMDir, 'package.json')).version
+    } (${reactRouterDOMDir})`,
+  ]);
 
   api.modifyAFWebpackOpts(memo => {
     const browserslist = config.browserslist || defaultBrowsers;
@@ -135,9 +140,7 @@ export default function(api) {
             require.resolve('babel-preset-umi'),
             { targets: { browsers: browserslist } },
           ],
-          ...(config.extraBabelPresets || []),
         ],
-        plugins: config.extraBabelPlugins || [],
       },
       define: {
         'process.env.BASE_URL': config.base || '/',

@@ -23,6 +23,11 @@ export default function(api) {
         if (item.name === 'PROXY_START') startIndex = index;
         if (item.name === 'PROXY_END') endIndex = index;
       });
+      debug(
+        `routes before changed: ${app._router.stack
+          .map(item => item.name || 'undefined name')
+          .join(', ')}`,
+      );
       if (startIndex !== null && endIndex !== null) {
         app._router.stack.splice(startIndex, endIndex - startIndex + 1);
       }
@@ -34,7 +39,6 @@ export default function(api) {
     }
 
     function reloadProxy(proxy) {
-      deleteRoutes();
       loadProxy(proxy, /* isWatch */ true);
     }
 
@@ -93,6 +97,8 @@ export default function(api) {
           app._router.stack.splice(startIndex, endIndex - startIndex + 1);
         }
         routesLength = app._router.stack.length;
+
+        deleteRoutes();
       }
 
       app.use(PROXY_START);
