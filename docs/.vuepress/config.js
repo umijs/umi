@@ -32,7 +32,7 @@ module.exports = {
           { text: 'Config', link: '/config/' },
           { text: 'API', link: '/api/' },
           { text: 'Plugin', link: '/plugin/' },
-          { text: 'V1 Docs', link: 'https://v1.umijs.org/' },
+          { text: 'v1', link: 'https://v1.umijs.org/' },
           { text: 'Changelog', link: 'https://github.com/umijs/umi/releases' },
         ],
         sidebar: {
@@ -93,7 +93,7 @@ module.exports = {
           { text: '配置', link: '/zh/config/' },
           { text: 'API', link: '/zh/api/' },
           { text: '插件', link: '/zh/plugin/' },
-          { text: 'V1 文档', link: 'https://v1.umijs.org/' },
+          { text: 'v1', link: 'https://v1.umijs.org/' },
           { text: '发布日志', link: 'https://github.com/umijs/umi/releases' },
         ],
         sidebar: {
