@@ -156,6 +156,12 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
 ...((require('${dvaJS}').config || (() => ({})))()),
         `.trim(),
       );
+      tplContent = tplContent.replace(
+        '<%= EnhanceApp %>',
+        `
+((require('${dvaJS}').appEnhancer || (app => app))(app)),
+        `.trim(),
+      );
     }
     tplContent = tplContent
       .replace('<%= ExtendDvaConfig %>', '')
