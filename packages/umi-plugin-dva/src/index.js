@@ -234,7 +234,7 @@ const DvaContainer = require('./DvaContainer').default;
     DvaContainer,
     null,
     React.createElement(require('./router').default)
-  ), document.getElementById('root'));
+  ), document.getElementById('${api.config.mountElementId || 'root'}'));
     `.trim();
   });
 
