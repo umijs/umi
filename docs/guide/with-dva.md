@@ -6,10 +6,10 @@ As of `>= umi@2`, we recommend using [umi-plugin-react](https://github.com/umijs
 
 * **Load model by directory**, get rid of `app.model`
 * **File name as namespace**, `namespace` as model key will be exported by `umi`
-* **No manually defined router.js**, `umi` take over the router stuff, both `model` and `component` can be load on demand
-* **Buildin query-string handler**, manually encode and decode URL is not required any more
-* **Buildin dva-loading and dva-immer**, `dva-immer` can be enabled via configuration
-* **Out of box**, dependencies such as: `dva`, `dva-loading`, `dva-immer`, `path-to-regexp`, `object-assign`, `react`, `react-dom` are buildin, you don't have to worry about them
+* **No manually defined router.js**, `umi` will take over the router stuff, and both `model` and `component` can be load on demand
+* **Built-in query-string handler**, manually encoding and decoding URL are not required any more
+* **Built-in dva-loading and dva-immer**, `dva-immer` can be enabled via configuration
+* **Out of box**, dependencies such as: `dva`, `dva-loading`, `dva-immer`, `path-to-regexp`, `object-assign`, `react`, `react-dom` are built in, so that you don't have to worry about them
 
 ## Usage
 
@@ -19,7 +19,7 @@ Install via `yarn`,
 $ yarn add umi-plugin-react
 ```
 
-Install via `npm`, use `npm install --save umi-plugin-react`.
+Install via `npm`, using the command `npm install --save umi-plugin-react`.
 
 Add configuration in `.umirc.js`:
 
@@ -52,20 +52,20 @@ export default {
 
 ## register model
 
-There are two types of model: global registered model, and page-level model.
+There are two types of models: the globally registered model, and the page-level model.
 
-Global registered model shall be defined in `/src/models/`, can be referenced in all other pages.
+The globally registered model should be defined in `/src/models/`, and can be referenced in all other pages.
 
-Page-level model should be used in any other page.
+The page-level model should be used in any other page.
 
 
-Model load rules:
+Model loading rules:
 
-* `src/models/**/*.js` are defined as global model
-* `src/pages/**/models/**/*.js` are defined as page-level model
-* global model will be load along with the application; page-level models are load on demand while in `production` build(will always be loaded in `development` build)
-* page-level model can be `.js` files in `models/**/*.js` pattern
-* page-level model can be scanned upword to app structure, For example: if you have page `.js` like `pages/a/b.js`, her page-level model shall be `pages/a/b/models/**/*.js` + `pages/a/models/**/*.js`...
+* `src/models/**/*.js` are defined as global models
+* `src/pages/**/models/**/*.js` are defined as page-level models
+* global models will be loaded along with the application; page-level models are loaded on demand while in `production` build (both will always be loaded in `development` build)
+* page-level models can be `.js` files in `models/**/*.js` pattern
+* page-level models can be scanned upward to app structure, For example: if you have page `.js` like `pages/a/b.js`, its page-level model shall be `pages/a/b/models/**/*.js` + `pages/a/models/**/*.js`...
 * if `model.js` is defined, the page should be a single-file-model, which means you don't have to create `modles` directory if you have only one model. So if you have `model.js` defined, all `.js` files defined in `models/**/*.js` will be ignored
 
 Example:
