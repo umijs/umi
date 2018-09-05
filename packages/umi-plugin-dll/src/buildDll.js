@@ -1,6 +1,7 @@
 import { join } from 'path';
 import pullAll from 'lodash.pullall';
 import uniq from 'lodash.uniq';
+import rimraf from 'rimraf';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 export default function(opts = {}) {
@@ -95,6 +96,7 @@ export default function(opts = {}) {
         resolve();
       },
       onFail({ err }) {
+        rimraf.sync(dllDir);
         reject(err);
       },
     });

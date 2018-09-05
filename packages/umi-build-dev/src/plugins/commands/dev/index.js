@@ -115,7 +115,7 @@ export default function(api) {
           });
         })
         .catch(e => {
-          console.error(e);
+          console.error(chalk.red(e));
         });
     },
   );
