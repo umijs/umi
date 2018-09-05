@@ -8,7 +8,7 @@
 
 ```bash
 $ node -v
-0.8.x
+8.x.x
 ```
 
 推荐使用 yarn 管理 npm 依赖，并[使用国内源](https://github.com/yiminghe/tyarn)（阿里用户使用内网源）。
