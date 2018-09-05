@@ -1,5 +1,4 @@
 import webpack from 'webpack';
-import chalk from 'chalk';
 import rimraf from 'rimraf';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
