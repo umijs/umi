@@ -28,7 +28,7 @@ English | [简体中文](./README_zh-CN.md)
 
 ```bash
 # Install deps
-$ yarn global add umi # 或者 npm install -g umi
+$ yarn global add umi # OR npm install -g umi
 
 # Create application
 $ mkdir myapp && cd myapp
