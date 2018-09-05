@@ -293,8 +293,13 @@ export default function(opts) {
     });
   }
 
-  // plugins -> friendly-errors
   if (!process.env.__FROM_UMI_TEST) {
+    // filter `Conflicting order between` warning
+    webpackConfig
+      .plugin('filter-css-conflicting-warnings')
+      .use(require('./FilterCSSConflictingWarning').default);
+
+    // plugins -> friendly-errors
     webpackConfig
       .plugin('friendly-errors')
       .use(require('friendly-errors-webpack-plugin'), [
