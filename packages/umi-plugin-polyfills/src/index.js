@@ -3,7 +3,7 @@ import { join, relative } from 'path';
 export default function(api, options = []) {
   const { paths } = api;
 
-  api.addEntryImportAhead(() => {
+  api.addEntryPolyfillImports(() => {
     return ['ie9', 'ie10', 'ie11']
       .filter(key => {
         return options.includes(key);

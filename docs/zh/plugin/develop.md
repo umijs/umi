@@ -470,6 +470,10 @@ api.addEntryImportAhead({
 });
 ```
 
+### addEntryPolyfillImports
+
+同 addEntryImportAhead，但作为 polyfill，所以添加在最前面。
+
 ### addEntryImport
 
 在入口文件中 import 模块。
