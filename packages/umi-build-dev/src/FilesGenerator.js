@@ -164,6 +164,11 @@ require('umi/_createHistory').default({
           initialValue: [],
         }),
       ).join('\n'),
+      polyfillImports: importsToStr(
+        this.service.applyPlugins('addEntryPolyfillImports', {
+          initialValue: [],
+        }),
+      ).join('\n'),
       moduleBeforeRenderer,
       render: initialRender,
       history: this.service.applyPlugins('modifyEntryHistory', {

@@ -469,6 +469,10 @@ api.addEntryImportAhead({
 });
 ```
 
+### addEntryPolyfillImports
+
+Same as `addEntryImportAhead`, but as a polyfill, so add it first.
+
 ### addEntryImport
 
 Import module in the entry file.
