@@ -11,7 +11,8 @@ function optsToArray(item) {
 }
 
 export default function(api, opts) {
-  api.onOptionChange(() => {
+  api.onOptionChange(newOpts => {
+    opts = newOpts;
     api.rebuildTmpFiles();
   });
 
