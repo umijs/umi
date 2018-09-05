@@ -4,11 +4,11 @@ As of `>= umi@2`, we recommend using [umi-plugin-react](https://github.com/umijs
 
 ## Features
 
-* **Load model by directory**, get rid of `app.model`
+* **Model loading by directory**, getting rid of `app.model`
 * **File name as namespace**, `namespace` as model key will be exported by `umi`
-* **No manually defined router.js**, `umi` will take over the router stuff, and both `model` and `component` can be load on demand
+* **No manually defined router.js**, `umi` will take over the router stuff, and both `model`s and `component`s can be loaded on demand
 * **Built-in query-string handler**, manually encoding and decoding URL are not required any more
-* **Built-in dva-loading and dva-immer**, `dva-immer` can be enabled via configuration
+* **Built-in dva-loading and dva-immer support**, of which `dva-immer` can be enabled via configuration
 * **Out of box**, dependencies such as: `dva`, `dva-loading`, `dva-immer`, `path-to-regexp`, `object-assign`, `react`, `react-dom` are built in, so that you don't have to worry about them
 
 ## Usage
@@ -50,13 +50,13 @@ export default {
 };
 ```
 
-## register model
+## Registering models
 
-There are two types of models: the globally registered model, and the page-level model.
+There are two types of models: the globally registered (global) model, and the page-level model.
 
-The globally registered model should be defined in `/src/models/`, and can be referenced in all other pages.
+The global model should be defined in `/src/models/`, and can be referenced in all other pages.
 
-The page-level model should be used in any other page.
+The page-level model should not be used in any other page.
 
 
 Model loading rules:
@@ -91,12 +91,12 @@ Example:
       - page.js
 ```
 
-With above file structure:
+With the above file structure:
 
-* global model is `src/models/g.js`
-* page-level model for `/a` is `src/pages/a/models/{a,b,ss/s}.js`
-* page-level model for `/c` is `src/pages/c/model.js`
-* page-level model for `/c/d` is `src/pages/c/model.js, src/pages/c/d/models/d.js`
+* the global model is `src/models/g.js`
+* the page-level models for `/a` is `src/pages/a/models/{a,b,ss/s}.js`
+* the page-level model for `/c` is `src/pages/c/model.js`
+* the page-level models for `/c/d` are `src/pages/c/model.js, src/pages/c/d/models/d.js`
 
 ## FAQ
 
