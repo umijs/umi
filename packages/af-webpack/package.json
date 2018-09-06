@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "0.22.11",
+  "version": "0.23.0-beta.1",
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
