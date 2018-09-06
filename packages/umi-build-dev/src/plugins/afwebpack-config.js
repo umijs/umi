@@ -119,6 +119,7 @@ export default function(api) {
       ? {
           umi: [
             ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
+            ...(setPublicPath ? [setPublicPathFile] : []),
             entryScript,
           ],
         }
