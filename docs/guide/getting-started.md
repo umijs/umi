@@ -8,7 +8,7 @@ First you should have [node](https://nodejs.org/en/), and make sure it's version
 
 ```bash
 $ node -v
-0.8.x
+8.x
 ```
 
 Recommended to use `yarn` to management npm dependency.
