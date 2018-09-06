@@ -36,7 +36,7 @@ export default function(babelPreset, opts = {}) {
     return winPath(fullPath);
   });
   registerBabel({
-    only: [only.join('|')],
+    only,
     babelPreset: [babelPreset, { disableTransform: true }],
   });
 }
