@@ -1,6 +1,6 @@
 # Introduction
 
-umi is based on routing, and supports [next.js-like conventional routing](https://umijs.org/guide/router.html) and various advanced routing functions, such as [routing-level on-demand loading](https://umijs.org/en/plugin/umi-plugin-react.html#dynamicimport). With a complete [plugin system](https://umijs.org/plugin/) that covers every life cycle from source code to build product, umi is able to support various functional extensions and business needs. Currently umi has almost 50+ plugins in both community and inside company.
+umi is a routing-based framework that supports [next.js-like conventional routing](https://umijs.org/guide/router.html) and various advanced routing functions, such as [routing-level on-demand loading](https://umijs.org/en/plugin/umi-plugin-react.html#dynamicimport). With a complete [plugin system](https://umijs.org/plugin/) that covers every life cycle from source code to build product, umi is able to support various functional extensions and business needs. Currently umi has almost 50+ plugins in both community and inside company.
 
 umi is the basic front-end framework of [Ant Financial](https://www.antfin.com/), and has served 600+ applications directly or indirectly, including Java, node, mobile apps, Hybrid apps, pure front-end assets apps, CMS apps, and more. umi has served our internal users very well and we hope that it can also serve external users well.
 
