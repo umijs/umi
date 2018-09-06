@@ -1,6 +1,6 @@
 {
   "alias": [
-    "umijs.org"
+    "v1.umijs.org"
   ],
   "env": {
     "NODE_ENV": "production"
