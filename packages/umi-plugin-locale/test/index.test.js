@@ -39,7 +39,7 @@ describe('test plugin', () => {
     expect(ret).toEqual(
       expect.stringContaining('antd/lib/locale-provider/en_US'),
     );
-
+    expect(ret).toEqual(expect.stringContaining('moment/locale/zh-cn'));
     unlinkSync(wrapperFile);
   });
 });
@@ -58,7 +58,7 @@ test('antd is false', () => {
   expect(ret).not.toEqual(
     expect.stringContaining('antd/lib/locale-provider/zh_CN'),
   );
-
+  expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
   unlinkSync(wrapperFile);
 });
 
@@ -71,12 +71,14 @@ describe('test func with singular true', () => {
         country: 'US',
         name: 'en-US',
         path: `${absSrcPath}/locale/en-US.js`,
+        momentLocale: '',
       },
       {
         lang: 'zh',
         country: 'CN',
         name: 'zh-CN',
         path: `${absSrcPath}/locale/zh-CN.js`,
+        momentLocale: 'zh-cn',
       },
     ]);
   });
