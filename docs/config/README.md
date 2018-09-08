@@ -220,7 +220,7 @@ chainWebpack(config, { webpack }) {
 
 ### extraBabelIncludes
 
-定义额外需要做 babel 转换的文件匹配列表，格式为数组。
+定义额外需要做 babel 转换的文件匹配列表，格式为数组，数组项是 [webpack#Condition](https://webpack.js.org/configuration/module/#condition)。
 
 ### extraPostCSSPlugins
 

@@ -48,7 +48,6 @@ export default function(api) {
             },
           });
           debug('Build success end');
-          process.exit(0);
         },
         onFail({ err, stats }) {
           debug(`Build failed ${err}`);
@@ -58,7 +57,6 @@ export default function(api) {
               stats,
             },
           });
-          process.exit(1);
         },
       });
     },

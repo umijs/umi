@@ -8,7 +8,29 @@ sidebarDepth: 3
 
 ### 是否可用于生产环境？
 
-当然！umi 是蚂蚁金服的前端基础框架，已有几百个基于 umi 开发的无线和 PC 项目上线。
+umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 600+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。
+
+### 如何查看 react、react-dom、react-router 等版本号？
+
+```bash
+$ umi -v --verbose
+
+umi@2.0.0
+darwin x64
+node@v10.6.0
+umi-build-dev@1.0.0
+af-webpack@1.0.0
+babel-preset-umi@1.0.0
+umi-test@1.0.0
+react@16.4.2 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react)
+react-dom@16.4.2 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react-dom)
+react-router@4.3.1 (/Users/chencheng/code/github.com/umijs/umi/packages/umi-build-dev/node_modules/react-router)
+react-router-dom@4.3.1 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/react-router-dom)
+dva@2.4.0 (/Users/chencheng/code/github.com/ant-design/ant-design-pro/node_modules/dva)
+dva-loading@2.0.5
+dva-immer@0.2.3
+path-to-regexp@1.7.0
+```
 
 ### 如何引入 @babel/polyfill ？
 
@@ -30,6 +52,47 @@ import '@babel/polyfill';
 > 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
 
 ## 报错
+
+### `Object.values` is not a function
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
+
+升级 node 版本，并确保版本是 8 或以上。
+
+### `exports is not defined`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/fLNyyPNyquAGoYQxxIDI.png" />
+
+检查 babel 配置，删除不必要的 preset 和 plugin 。
+
+### `Plugin umi-plugin-react:pwa initialize failed`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/lSuOXlbtrZPLoMaLBODj.png" />
+
+确保有 package.json 并配置 `name` 属性。
+
+### `Conflicting order between [mini-css-extract-plugin]`
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/mjzdexbrmZulkjCAqzPC.png" />
+
+这是 [webpack 插件的问题](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250)，不会影响 CSS 文件的正常生产，可暂时忽略。
+
+### `umi` 不是内部或外部命令
+
+e.g.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/fatmbcGwSOwDntHjmrtG.png" />
+
+需配置 NODE_PATH 环境变量，如使用 yarn，可通过执行 `yarn global bin` 拿到 bin 路径。
+
 
 ## CSS
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'umi/link';
 import withRouter from 'umi/withRouter';
+import 'whatwg-fetch';
 import guessJSFileFromPath from './guessJSFileFromPath';
 import styles from './NotFound.less';
 

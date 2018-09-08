@@ -4,21 +4,17 @@ sidebarDepth: 3
 
 # umi-plugin-react
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+This is a collection of officially packaged plugins with 13 commonly used advanced features.
 
-这是官方封装的一个插件集，包含 13 个常用的进阶功能。
-
-## 安装
+## Install
 
 ```bash
 $ yarn add umi-plugin-react --dev
 ```
 
-## 使用
+## Usage
 
-在 `.umirc.js` 里配置：
+Configured in `.umirc.js`:
 
 ```js
 export default {
@@ -51,62 +47,62 @@ export default {
 };
 ```
 
-## 配置项
+## Configuration items
 
-所有功能默认关闭，有真值配置才会开启。
+All features are turned off by default and will be enabled if there is a true value.
 
 ### dva
 
-* 类型：`Object`
+* Type: `Object`
 
-基于 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 实现，功能详见 [和 dva 一起用](/guide/with-dva.html)。
+Based on [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva), see the details at [Use with dva](/guide/with-dva.html)。
 
-配置项包含：
+Configuration items includes:
 
-* `immer`，是否启用 [dva-immer](https://github.com/dvajs/dva/tree/master/packages/dva-immer)
-* `dynamicImport`，是否启用按需加载，配置项同 [#dynamicImport](#dynamicImport)，并且如果在 [#dynamicImport](#dynamicImport) 有配置，配置项会继承到 dva 中
-* `hmr`，是否启用 dva 的 hmr
+* `immer`, Whether to enable [dva-immer](https://github.com/dvajs/dva/tree/master/packages/dva-immer)
+* `dynamicImport`, Whether to enable dynamic import, options same as [#dynamicImport](#dynamicImport), and if you configure it in [#dynamicImport](#dynamicImport), the options items will be inherited into dva
+* `hmr`, Whether to enable dva hmr
 
 ::: warning
-如果项目中有 dva 依赖，则优先使用项目中的依赖。
+If there is a dva dependency in the project, the dependencies in the project are prioritized.
 :::
 
 ### antd
 
-* 类型：`Boolean`
+* Type: `Boolean`
 
-启用后自动配置 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 实现 antd 和 antd-mobile 的按需编译，并且内置 antd 和 antd-mobile 依赖，无需手动在项目中安装。
+Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd and antd-mobile, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
 
 ::: warning
-如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。
+If there is an ant or antd-mobile dependency in the project, the dependencies in the project are prioritized.
 :::
 
 ### routes
 
-* 类型：`Object`
+* Type: `Object`
 
-基于 [umi-plugin-routes](https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes) 实现，用于批量修改路由。
+based on [umi-plugin-routes](https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes), used to modify routes in batches.
 
-配置项包含：
+options include:
 
-* `exclude`，值为 `Array(RegExp)`，用于忽略某些路由，比如使用 dva 后，通常需要忽略 models、components、services 等目录
-* `update`, 值为 `Function`，用于更新路由
+* `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
+* `update`, type is `Function`, for update routes.
 
 ### polyfills
 
-* 类型：`Array(String)`
+* Type: `Array(String)`
 
-基于 [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills) 实现，用于加各种补丁。
+Based on [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills), used to add polyfills.
 
-目前支持配置 `['ie9']`、`['ie10']` 或 `['ie11']`，实现一键兼容。
+Currently supports configuration of `['ie9']`, `['ie10']` or `['ie11']` for quickly compatibility.
 
 ### locale
 
-* 类型：`Object`
+* Type `Object`
 
-基于 [umi-plugin-locale](https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale) 和 [react-intl](https://github.com/yahoo/react-intl) 实现，用于解决 i18n 问题。
+Based on [umi-plugin-locale](https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale) and [react-intl](https://github.com/yahoo/react-intl), used to resolve internationalization.
 
-配置项包含：
+options include:
 
 * `default`: 'zh-CN', // default zh-CN
 * `baseNavigator`: true, // default true, when it is true, will use `navigator.language` overwrite default
@@ -114,72 +110,72 @@ export default {
 
 ### library
 
-* 类型：`String`
+* Type: `String`
 
-可能切换底层库为 preact 或 react。
+It is possible to switch the underlying library to either preact or react.
 
 ### dynamicImport
 
-* 类型：`Object`
+* Type: `Object`
 
-实现路由级的动态加载（code splitting），可按需指定哪一级的按需加载。
+Implement routing-level code splitting, which specifies which level of on-demand loading is required.
 
-配置项包含：
+options include:
 
-* `webpackChunkName`，是否通过 webpackChunkName 实现有意义的异步文件名
-* `loadingComponent`，指定加载时的组件路径
-* `level`，指定按需加载的路由等级
+* `webpackChunkName`, Whether to add a meaningful file name
+* `loadingComponent`, Specify the component path at load time
+* `level`, specifying the route level to code splitting
 
 ### dll
 
-* 类型：`Object`
+* Type: `Object`
 
-通过 webpack 的 dll 插件预打包一份 dll 文件来达到二次启动提速的目的。
+Increase the second startup speed by webpack dll plugin.
 
-配置项包含：
+options include:
 
 * `include`
 * `exclude`
 
 ### hardSource
 
-* 类型：`Boolean`
+* Type: `Boolean`
 
-通过 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin) 开启 webpack 缓存，二次启动时间减少 80%。推荐非 windows 电脑使用，windows 下由于大文件 IO 比较慢，可自行决定是否启用。
+Open webpack cache with [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)， 80% increase in speed of the second start. It is recommended to use non-windows computers. Due to the slowness of large file IO under Windows, it is up to you to decide whether to enable it.
 
 ### pwa
 
-* 类型：`Object`
+* Type `Object`
 
-开启 pwa 。
+Enable pwa 。
 
 ### hd
 
-* 类型：`Boolean`
+* Type `Boolean`
 
-开启高清方案。
+Turn on the HD solution.
 
 ### fastClick
 
-* 类型：`Boolean`
+* Type `Boolean`
 
-启用 fastClick。
+Enable fastClick.
 
 ### title
 
-* 类型：`String` 或者 `Object`
+* Type `String` or `Object`
 
-开启 title 插件，设置 HTML title：
+Enable title plugin for set HTML title:
 
-配置项包含：
+options include:
 
-* `defaultTitle`: '默认标题', // 必填，当配置项为 String 时直接配置项作为 defaultTitle
+* `defaultTitle`: 'default tile', // required, when option type is String, will use option as the default title
 * `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
 * `separator`: ' - ', // default ' - '
 
-当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
+When the title plugin is enabled you can configure the title in the route configuration or in the page component in pages folder.
 
-比如使用配置式路由的时候如下配置：
+For example:
 
 ```js
 // .umirc.js or config/config.js
@@ -192,7 +188,7 @@ export default {
 }
 ```
 
-使用约定式路由的时候则直接在页面组件中配置：
+or
 
 ```jsx
 /**

@@ -1,62 +1,74 @@
 # Use umi with dva
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+As of `>= umi@2`, we recommend using [umi-plugin-react](https://github.com/umijs/umi/tree/master/packages/umi-plugin-react) for `dva` integration.
 
-umi 通过 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 深度整合了和 dva 一起使用的场景。
+## Features
 
-## 特性
+* **Model loading by directory**, getting rid of `app.model`
+* **File name as namespace**, `namespace` as model key will be exported by `umi`
+* **No manually defined router.js**, `umi` will take over the router stuff, and both `model`s and `component`s can be loaded on demand
+* **Built-in query-string handler**, manually encoding and decoding URL are not required any more
+* **Built-in dva-loading and dva-immer support**, of which `dva-immer` can be enabled via configuration
+* **Out of box**, dependencies such as: `dva`, `dva-loading`, `dva-immer`, `path-to-regexp`, `object-assign`, `react`, `react-dom` are built in, so that you don't have to worry about them
 
-* **按目录约定注册 model**，无需手动 `app.model`
-* **文件名即 namespace**，可以省去 model 导出的 `namespace` key
-* **无需手写 router.js**，交给 umi 处理，支持 model 和 component 的按需加载
-* **内置 query-string 处理**，无需再手动解码和编码
-* **内置 dva-loading 和 dva-immer**，其中 dva-immer 需通过配置开启
-* **开箱即用**，无需安装额外依赖，比如 dva、dva-loading、dva-immer、path-to-regexp、object-assign、react、react-dom 等
+## Usage
 
-## 使用
-
-用 yarn 安装依赖，
+Install via `yarn`,
 
 ```bash
-$ yarn add umi-plugin-dva
+$ yarn add umi-plugin-react
 ```
 
-如果你用 npm，执行 `npm install --save umi-plugin-dva`。
+Install via `npm`, using the command `npm install --save umi-plugin-react`.
 
-然后在 `.umirc.js` 里配置插件：
-
-```js
-export default {
-  plugins: ['umi-plugin-dva'],
-};
-```
-
-推荐开启 dva-immer 以简化 reducer 编写，
+Add configuration in `.umirc.js`:
 
 ```js
 export default {
   plugins: [
-    ['umi-plugin-dva', { immer: true }],
+    [
+      'umi-plugin-react',
+    ]
   ],
 };
 ```
 
-## model 注册
+Enable `dva-immer` for elegant reducer writing experience
 
-model 分两类，一是全局 model，二是页面 model。全局 model 存于 `/src/models/` 目录，所有页面都可引用；**页面 model 不能被其他页面所引用**。  
+```js
+export default {
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        dva: {
+          immer: true
+        }
+      }
+    ],
+  ],
+};
+```
 
-规则如下：
+## Registering models
 
-* `src/models/**/*.js` 为 global model
-* `src/pages/**/models/**/*.js` 为 page model
-* global model 全量载入，page model 在 production 时按需载入，在 development 时全量载入
-* page model 为 page js 所在路径下 `models/**/*.js` 的文件
-* page model 会向上查找，比如 page js 为 `pages/a/b.js`，他的 page model 为 `pages/a/b/models/**/*.js` + `pages/a/models/**/*.js`，依次类推
-* 约定 model.js 为单文件 model，解决只有一个 model 时不需要建 models 目录的问题，有 model.js 则不去找 `models/**/*.js`
+There are two types of models: the globally registered (global) model, and the page-level model.
 
-举个例子，
+The global model should be defined in `/src/models/`, and can be referenced in all other pages.
+
+The page-level model should not be used in any other page.
+
+
+Model loading rules:
+
+* `src/models/**/*.js` are defined as global models
+* `src/pages/**/models/**/*.js` are defined as page-level models
+* global models will be loaded along with the application; page-level models are loaded on demand while in `production` build (both will always be loaded in `development` build)
+* page-level models can be `.js` files in `models/**/*.js` pattern
+* page-level models can be scanned upward to app structure, For example: if you have page `.js` like `pages/a/b.js`, its page-level model shall be `pages/a/b/models/**/*.js` + `pages/a/models/**/*.js`...
+* if `model.js` is defined, the page should be a single-file-model, which means you don't have to create `modles` directory if you have only one model. So if you have `model.js` defined, all `.js` files defined in `models/**/*.js` will be ignored
+
+Example:
 
 ```
 + src
@@ -79,18 +91,18 @@ model 分两类，一是全局 model，二是页面 model。全局 model 存于 
       - page.js
 ```
 
-如上目录：
+With the above file structure:
 
-* global model 为 `src/models/g.js`
-* `/a` 的 page model 为 `src/pages/a/models/{a,b,ss/s}.js`
-* `/c` 的 page model 为 `src/pages/c/model.js`
-* `/c/d` 的 page model 为 `src/pages/c/model.js, src/pages/c/d/models/d.js`
+* the global model is `src/models/g.js`
+* the page-level models for `/a` is `src/pages/a/models/{a,b,ss/s}.js`
+* the page-level model for `/c` is `src/pages/c/model.js`
+* the page-level models for `/c/d` are `src/pages/c/model.js, src/pages/c/d/models/d.js`
 
 ## FAQ
 
-### 如何配置 onError、initialState 等 hook？
+### How to config dva hooks such as: onError, initialState?
 
-新建 src/dva.js，通过导出的 config 方法来返回额外配置项，比如：
+create `src/dva.js`, export `config` method for hook usage, for example:
 
 ```js
 import { message } from 'antd';
@@ -110,9 +122,9 @@ export function config() {
 }
 ```
 
-### url 变化了，但页面组件也刷新，是什么原因？
+### Page component is not re-rendered whenever url changed?
 
-`layouts/index.js` 里如果用了 connect 传数据，需要用 `umi/withRouter` 高阶一下。
+If you have `connect` data in `layouts/index.js`, `umi/withRouter` is required
 
 ```js
 import withRouter from 'umi/withRouter';
@@ -120,33 +132,43 @@ import withRouter from 'umi/withRouter';
 export default withRouter(connect(mapStateToProps)(LayoutComponent));
 ```
 
-### 如何访问到 store 或 dispatch 方法？
+### How to access `store` or `dispatch`?
 
 ```js
 window.g_app._store
 window.g_app._store.dispatch
 ```
 
-### 如何禁用包括 component 和 models 的按需加载？
+### How to disable load on demand for `component` and `models`?
 
-在 .umirc.js 里配置：
+Add config to `.umirc.js`:
 
 ```js
 export default {
-  disableDynamicImport: true,
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        dva: {
+          dynamicImport: undefined // config in dva
+        },
+        dynamicImport: undefined   // root config will be inherited as well
+      }
+    ],
+  ],
 };
 ```
 
-### 全局 layout 使用 connect 后路由切换后没有刷新？
+### Page component is not re-rendered whenever url is changed while `connect` data in `layout`
 
-需用 withRouter 包一下导出的 react 组件，注意顺序。
+Check the order of `connect`, `withRouter` usage
 
 ```js
 import withRouter from 'umi/withRouter';
 export default withRouter(connect()(Layout));
 ```
 
-## 参考
+## References
 
-* [使用 umi 改进 dva 项目开发](https://github.com/sorrycc/blog/issues/66)
-* [umi + dva，完成用户管理的 CURD 应用](https://github.com/sorrycc/blog/issues/62)
+* [Improve dva project with umi](https://github.com/sorrycc/blog/issues/66)
+* [umi + dva, write your own user-management CURD app](https://github.com/sorrycc/blog/issues/62)

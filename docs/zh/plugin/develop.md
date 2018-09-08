@@ -48,7 +48,7 @@ export default (api, opts) => {
 ```js
 export default (api, opts = {}) => {
   const { paths } = api;
-  // 监听插件配置变化，这一堆代码是不是应该有什么快捷的 alias
+  // 监听插件配置变化
   api.onOptionChange((newOpts) => {
     opts = newOpts;
     api.rebuildTmpFiles();
@@ -469,6 +469,10 @@ api.addEntryImportAhead({
   specifier: 'name', // import 出来后的名称，可以缺省
 });
 ```
+
+### addEntryPolyfillImports
+
+同 addEntryImportAhead，但作为 polyfill，所以添加在最前面。
 
 ### addEntryImport
 

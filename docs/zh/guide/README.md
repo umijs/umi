@@ -1,13 +1,21 @@
 
 # 介绍
 
-UmiJS，发音类似中文的**乌米**，是一个可插拔的企业级 react 应用框架，在蚂蚁金服内部（通过 Bigfish）服务于除小程序外的所有前端应用类型，包括中后台项目、H5 应用、静态站点、chair（egg）应用等，大概 500+ 项目，在阿里的其他 BU 以及业界也有不少应用。
+umi，中文可发音为乌米，是一个可插拔的企业级 react 应用框架。umi 以路由为基础的，支持[类 next.js 的约定式路由](https://umijs.org/zh/guide/router.html)，以及各种进阶的路由功能，并以此进行功能扩展，比如[支持路由级的按需加载](https://umijs.org/zh/plugin/umi-plugin-react.html#dynamicimport)。然后配以完善的[插件体系](https://umijs.org/zh/plugin/)，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求，目前内外部加起来已有 50+ 的插件。
 
-可插拔指 UmiJS 的插件机制，umi 整个生命周期都是插件化的，从路由配置的生成，一路到生成 HTML、CSS、JS 文件，都是插件化的，所以我们可以借助插件来达到定制化的目的。umi 内部实现也是由大量插件组合而成，蚂蚁内部的实现 Bigfish 正是基于 umi 实现大量的插件来适配各种应用类型，以及部署到各种环境。
+umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 600+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。他已经很好地服务了我们的内部用户，同时希望他也能服务好外部用户。
 
-不知大家有没有看过这篇文章，[《Compilers are the new frameworks》](https://tomdale.net/2017/09/compilers-are-the-new-frameworks/)，作者认为，“Web 框架正在从运行库转变为编译器”，我深表认同。
+## 特性
 
-之前，工具是编译时的，框架是运行时的，两者互不强依赖，相互独立。但是，我们发现，把两者结合起来会让框架更强大，对使用者也更友好。比如，我在 pages 目录下建立 404.js 的文件，然后他就变成了整个项目的 fallback 路由，这在工具和框架分离的情况下是很难做到的。
+* 📦 **开箱即用**，内置 react、react-router 等
+* 🏈 **类 next.js 且[功能完备](./router.html)的路由约定**，同时支持配置的路由方式
+* 🎉 **完善的插件体系**，覆盖从源码到构建产物的每个生命周期
+* 🚀 **高性能**，通过插件支持 PWA、以路由为单元的 code splitting 等
+* 💈 **支持静态页面导出**，适配各种环境，比如中台业务、无线业务、[egg](https://github.com/eggjs/egg)、支付宝钱包、云凤蝶等
+* 🚄 **开发启动快**，支持一键开启 [dll](../plugin/umi-plugin-react.html#dll) 和 [hard-source-webpack-plugin](../plugin/umi-plugin-react.html#hardSource) 等
+* 🐠 **一键兼容到 IE9**，基于 [umi-plugin-polyfills](../plugin/umi-plugin-react.html#polyfills)
+* 🍁 **完善的 TypeScript 支持**，包括 d.ts 定义和 umi test
+* 🌴 **与 [dva](https://dvajs.com/) 数据流的深入融合**，支持 duck directory、model 的自动加载、code splitting 等等
 
 ## 架构
 
@@ -24,18 +32,6 @@ UmiJS，发音类似中文的**乌米**，是一个可插拔的企业级 react �
 <img src="https://gw.alipayobjects.com/zos/rmsportal/NKsqmTAttwTzYVMJMcnB.png" />
 
 umi 首先会加载用户的配置和插件，然后基于配置或者目录，生成一份路由配置，再基于此路由配置，把 JS/CSS 源码和 HTML 完整地串联起来。用户配置的参数和插件会影响流程里的每个环节。
-
-## 特性
-
-* 📦 **开箱即用**，内置 react、react-router 等
-* 🏈 **类 next.js 且[功能完备](./router.html)的路由约定**，同时支持配置的路由方式
-* 🎉 **完善的插件体系**，覆盖从源码到构建产物的每个生命周期
-* 🚀 **高性能**，通过插件支持 PWA、以路由为单元的 code splitting 等
-* 💈 **支持静态页面导出**，适配各种环境，比如中台业务、无线业务、[egg](https://github.com/eggjs/egg)、支付宝钱包、云凤蝶等
-* 🚄 **开发启动快**，支持一键开启 [dll](../plugin/umi-plugin-react.html#dll) 和 [hard-source-webpack-plugin](../plugin/umi-plugin-react.html#hardSource) 等
-* 🐠 **一键兼容到 IE9**，基于 [umi-plugin-polyfills](../plugin/umi-plugin-react.html#polyfills)
-* 🍁 **完善的 TypeScript 支持**，包括 d.ts 定义和 umi test
-* 🌴 **与 [dva](https://dvajs.com/) 数据流的深入融合**，支持 duck directory、model 的自动加载、code splitting 等等
 
 ## 他和 dva、roadhog 是什么关系？
 

@@ -66,6 +66,7 @@ export default class PluginAPI {
       'addEntryCodeAhead',
       'addEntryImport',
       'addEntryImportAhead',
+      'addEntryPolyfillImports',
       'addRendererWrapperWithComponent',
       'addRendererWrapperWithModule',
       'addRouterImport',

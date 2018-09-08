@@ -27,6 +27,7 @@ switch (process.argv[2]) {
 function getWebpackConfig() {
   const { config: userConfig } = getUserConfig.default({
     cwd,
+    configFile: process.env.AF_CONFIG_FILE || '.webpackrc'
   });
   return getConfig.default({
     entry: {

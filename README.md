@@ -14,13 +14,13 @@ English | [简体中文](./README_zh-CN.md)
 
 ## Features
 
-* 📦 **Out of box**，built-in react、react-router, etc
-* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, also support configured routing
+* 📦 **Out of box**, with built-in support for react, react-router, etc.
+* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
 * 🎉 **Complete plugin system**, covering every lifecycle from source code to production
-* 🚀 **High performance**, support PWA, route level code splitting, etc via plugin
-* 💈 **Support static export**, , adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
+* 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
+* 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
 * 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
-* 🐠 **Compatible IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
+* 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
 * 🍁 **Support TypeScript**, including d.ts definition and `umi test`
 * 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
 
@@ -28,7 +28,7 @@ English | [简体中文](./README_zh-CN.md)
 
 ```bash
 # Install deps
-$ yarn global add umi # 或者 npm install -g umi
+$ yarn global add umi # OR npm install -g umi
 
 # Create application
 $ mkdir myapp && cd myapp

@@ -8,7 +8,7 @@ First you should have [node](https://nodejs.org/en/), and make sure it's version
 
 ```bash
 $ node -v
-0.8.x
+8.x
 ```
 
 Recommended to use `yarn` to management npm dependency.
@@ -16,7 +16,7 @@ Recommended to use `yarn` to management npm dependency.
 Then install `umi` globally, and make sure it's 2.0.0 or above.
 
 ```bash
-$ yarn global add umi@next
+$ yarn global add umi
 $ umi -v
 2.0.0
 ```

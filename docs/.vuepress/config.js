@@ -32,7 +32,7 @@ module.exports = {
           { text: 'Config', link: '/config/' },
           { text: 'API', link: '/api/' },
           { text: 'Plugin', link: '/plugin/' },
-          { text: 'V1 Docs', link: 'https://v1.umijs.org/' },
+          { text: 'v1', link: 'https://v1.umijs.org/' },
           { text: 'Changelog', link: 'https://github.com/umijs/umi/releases' },
         ],
         sidebar: {
@@ -89,11 +89,11 @@ module.exports = {
         label: '简体中文',
         editLinkText: '在 GitHub 上编辑此页',
         nav: [
-          { text: '指南', link: '/guide/' },
-          { text: '配置', link: '/config/' },
-          { text: 'API', link: '/api/' },
-          { text: '插件', link: '/plugin/' },
-          { text: 'V1 文档', link: 'https://v1.umijs.org/' },
+          { text: '指南', link: '/zh/guide/' },
+          { text: '配置', link: '/zh/config/' },
+          { text: 'API', link: '/zh/api/' },
+          { text: '插件', link: '/zh/plugin/' },
+          { text: 'v1', link: 'https://v1.umijs.org/' },
           { text: '发布日志', link: 'https://github.com/umijs/umi/releases' },
         ],
         sidebar: {

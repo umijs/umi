@@ -5,6 +5,11 @@ import 'core-js/es6/promise';
 // https://reactjs.org/docs/javascript-environment-requirements.html
 import 'core-js/es6/set';
 import 'core-js/es6/map';
-import 'raf/polyfill';
+import 'core-js/es6/object';
+import 'core-js/es6/number';
 
+import 'raf/polyfill';
 import 'url-polyfill';
+
+// https://github.com/umijs/umi/issues/413
+Object.setPrototypeOf = require('setprototypeof');

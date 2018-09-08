@@ -8,7 +8,7 @@
 
 ```bash
 $ node -v
-0.8.x
+8.x
 ```
 
 推荐使用 yarn 管理 npm 依赖，并[使用国内源](https://github.com/yiminghe/tyarn)（阿里用户使用内网源）。
@@ -25,12 +25,12 @@ $ tnpm i yarn @alipay/yarn -g
 $ ayarn -v
 ```
 
-然后全局安装 umi@next，并确保版本是 2.0.0-beta 或以上。
+然后全局安装 umi，并确保版本是 2.0.0 或以上。
 
 ```bash
-$ yarn global add umi@next
+$ yarn global add umi
 $ umi -v
-2.0.0-beta.x
+2.0.0
 ```
 
 ## 脚手架

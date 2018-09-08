@@ -1,5 +1,4 @@
 import webpack from 'webpack';
-import chalk from 'chalk';
 import rimraf from 'rimraf';
 import assert from 'assert';
 import isPlainObject from 'is-plain-object';
@@ -25,10 +24,7 @@ export default function build(opts = {}) {
   webpack(webpackConfig, (err, stats) => {
     debug('build done');
 
-    if (err) {
-      console.log();
-      console.log(chalk.red('Failed to compile.\n'));
-      console.log(`${err}\n`);
+    if (err || stats.hasErrors()) {
       if (onFail) {
         onFail({ err, stats });
       }
