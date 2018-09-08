@@ -33,12 +33,12 @@ export default function(opts = {}) {
   const pluginsObj = [
     // builtIn 的在最前面
     ...builtInPlugins.map(p => {
-      const apply = require(p); // eslint-disable-line
       let opts;
       if (Array.isArray(p)) {
         opts = p[1]; // eslint-disable-line
         p = p[0];
       }
+      const apply = require(p); // eslint-disable-line
       return {
         id: p.replace(/^.\//, 'built-in:'),
         apply: apply.default || apply,
