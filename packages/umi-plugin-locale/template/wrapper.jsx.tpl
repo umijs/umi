@@ -9,11 +9,23 @@ const InjectedWrapper = injectIntl(function(props) {
 })
 {{/localeList.length}}
 
+{{#localeList}}
+{{#antd}}
+{{#momentLocale}}
+import 'moment/locale/{{momentLocale}}';
+{{/momentLocale}}
+{{/antd}}
+{{/localeList}}
+
 const baseNavigator = {{{baseNavigator}}};
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
 import { LocaleProvider } from 'antd';
+import moment from 'moment';
+{{#defaultMomentLocale}}
+import 'moment/locale/{{defaultMomentLocale}}';
+{{/defaultMomentLocale}}
 const defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
 {{/antd}}
 
@@ -24,6 +36,7 @@ const localeInfo = {
     locale: '{{name}}',
     {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
     data: require('react-intl/locale-data/{{lang}}'),
+    momentLocale: '{{momentLocale}}',
   },
   {{/localeList}}
 };
@@ -31,7 +44,8 @@ const localeInfo = {
 let appLocale = {
   locale: '{{defaultLocale}}',
   messages: {},
-  data: require('react-intl/locale-data/{{defaultLang}}')
+  data: require('react-intl/locale-data/{{defaultLang}}'),
+  momentLocale: '{{defaultMomentLocale}}',
 };
 if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
   appLocale = localeInfo[localStorage.getItem('umi_locale')];

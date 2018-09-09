@@ -24,6 +24,7 @@
     "umi"
   ],
   "dependencies": {
+    "moment": "2.x",
     "mustache": "^2.3.0",
     "prop-types": "^15.6.2",
     "react-intl": "^2.4.0",
