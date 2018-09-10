@@ -1,16 +1,12 @@
 # Configuration
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+## Configuration file
 
-## 配置文件
+Umi allows to configure in `.umirc.js` or `config/config.js` (choose one, `.umirc.js` is priority), ES6 syntax is supported.
 
-umi 允许在 `.umirc.js` 或 `config/config.js` （二选一，`.umirc.js` 优先）中进行配置，支持 ES6 语法。
+> To simplify the description, only `.umirc.js` will appear in subsequent documents.
 
-> 为简化说明，后续文档里只会出现 `.umirc.js`。
-
-比如：
+Such as:
 
 ```js
 export default {
@@ -24,17 +20,17 @@ export default {
 };
 ```
 
-具体配置项详见[配置](/config/)。
+For details, see [Configuration](/config/).
 
 ## .umirc.local.js
 
-`.umirc.local.js` 是本地的配置文件，**不要提交到 git**，所以通常需要配置到 `.gitignore`。如果存在，会和 `.umirc.js` 合并后再返回。
+`.umirc.local.js` is a local configuration file, **don't commit to git**, so it usually needs to be configured to `.gitignore`. If it exists, it will be merged with `.umirc.js` and then returned.
 
 ## UMI_ENV
 
-可以通过环境变量 `UMI_ENV` 区分不同环境来指定配置。
+The configuration can be specified by the environment variable `UMI_ENV` to distinguish between different environments.
 
-举个例子，
+For a example,
 
 ```js
 // .umirc.js
@@ -47,7 +43,7 @@ export default { b: 'cloud', c: 'cloud' };
 export default { c: 'local' };
 ```
 
-不指定 `UMI_ENV` 时，拿到的配置是：
+When `UMI_ENV` is not specified, the configuration is:
 
 ```js
 {
@@ -57,7 +53,7 @@ export default { c: 'local' };
 }
 ```
 
-指定 `UMI_ENV=cloud` 时，拿到的配置是：
+When `UMI_ENV=cloud` is specified, the configuration is:
 
 ```js
 {
