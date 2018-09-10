@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "eslint-config-react-app": "^2.0.0"
+    "eslint-config-react-app": "^2.1.0"
   },
   "peerDependencies": {
     "eslint-plugin-flowtype": "^2.34.1",
