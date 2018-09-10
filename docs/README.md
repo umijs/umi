@@ -16,7 +16,7 @@ footer: MIT Licensed | Copyright © 2017-present
 
 ```bash
 # Install deps
-$ yarn global add umi # 或者 npm install -g umi
+$ yarn global add umi # or npm install -g umi
 
 # Create application
 $ mkdir myapp && cd myapp

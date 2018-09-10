@@ -15,6 +15,24 @@ import {
 import { winPath } from 'umi-utils';
 import Mustache from 'mustache';
 
+const momentLocation = require
+  .resolve('moment/locale/zh-cn')
+  .replace(/zh\-cn\.js$/, '');
+
+function getMomentLocale(lang, country) {
+  if (
+    existsSync(
+      join(momentLocation, `${lang}-${country.toLocaleLowerCase()}.js`),
+    )
+  ) {
+    return `${lang}-${country.toLocaleLowerCase()}`;
+  }
+  if (existsSync(join(momentLocation, `${lang}.js`))) {
+    return lang;
+  }
+  return '';
+}
+
 // export for test
 export function getLocaleFileList(absSrcPath, singular) {
   const localeList = [];
@@ -31,6 +49,7 @@ export function getLocaleFileList(absSrcPath, singular) {
           country: fileInfo[2],
           name: `${fileInfo[1]}-${fileInfo[2]}`,
           path: winPath(fullname),
+          momentLocale: getMomentLocale(fileInfo[1], fileInfo[2]),
         });
       }
     }
@@ -57,6 +76,7 @@ export default function(api, options = {}) {
       'utf-8',
     );
     const defaultLocale = options.default || 'zh-CN';
+    const [lang, country] = defaultLocale.split('-');
     const wrapperContent = Mustache.render(wrapperTpl, {
       localeList: localeFileList,
       antd: options.antd === undefined ? true : options.antd,
@@ -64,8 +84,9 @@ export default function(api, options = {}) {
         options.baseNavigator === undefined ? true : options.baseNavigator,
       useLocalStorage: true,
       defaultLocale,
-      defaultLang: defaultLocale.split('-')[0],
-      defaultAntdLocale: defaultLocale.replace('-', '_'),
+      defaultLang: lang,
+      defaultAntdLocale: `${lang}_${country}`,
+      defaultMomentLocale: getMomentLocale(lang, country),
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
     writeFileSync(wrapperPath, wrapperContent, 'utf-8');
