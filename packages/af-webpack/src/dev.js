@@ -122,6 +122,7 @@ export default function dev({
           });
         },
         ...serverConfigFromOpts,
+        ...(webpackConfig.devServer || {}),
       };
       const server = new WebpackDevServer(compiler, serverConfig);
 

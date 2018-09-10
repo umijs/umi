@@ -10,6 +10,10 @@ export default function(webpackConfig, opts) {
     .plugin('hmr')
     .use(require('webpack/lib/HotModuleReplacementPlugin'));
 
+  webpackConfig.when(!!opts.devServer, webpackConfig =>
+    webpackConfig.merge({ devServer: opts.devServer }),
+  );
+
   if (process.env.HARD_SOURCE) {
     const pkgPath = join(opts.cwd, 'package.json');
     if (!existsSync(pkgPath)) {
