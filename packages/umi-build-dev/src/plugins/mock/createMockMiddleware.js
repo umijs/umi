@@ -5,7 +5,6 @@ import glob from 'glob';
 import assert from 'assert';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
-import chalk from 'chalk';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete', '*'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
