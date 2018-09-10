@@ -57,7 +57,8 @@ export default function getMockMiddleware(api) {
         }, {});
       }
     } catch (e) {
-      console.log(chalk.red(e.message));
+      console.error(chalk.red('mock files hava a error!'));
+      console.error(chalk.red(e.message));
       return -1;
     }
 
