@@ -11,7 +11,10 @@ export default function(api) {
       });
 
       beforeMiddlewares.forEach(m => app.use(m));
-      app.use(createMockMiddleware(api));
+      let re = createMockMiddleware(api);
+      if (re !== -1) {
+        app.use(re);
+      }
       afterMiddlewares.forEach(m => app.use(m));
     }
   });

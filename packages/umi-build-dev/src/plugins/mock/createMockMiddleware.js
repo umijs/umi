@@ -5,6 +5,7 @@ import glob from 'glob';
 import assert from 'assert';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
+import chalk from 'chalk';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
@@ -33,27 +34,33 @@ export default function getMockMiddleware(api) {
   function getConfig() {
     cleanRequireCache();
     let ret = null;
-    if (existsSync(absConfigPath)) {
-      debug(`load mock data from ${absConfigPath}`);
-      ret = require(absConfigPath); // eslint-disable-line
-    } else {
-      const mockFiles = glob.sync('**/*.js', {
-        cwd: absMockPath,
-      });
-      debug(
-        `load mock data from ${absMockPath}, including files ${JSON.stringify(
-          mockFiles,
-        )}`,
-      );
-      ret = mockFiles.reduce((memo, mockFile) => {
-        const m = require(join(absMockPath, mockFile)); // eslint-disable-line
-        memo = {
-          ...memo,
-          ...(m.default || m),
-        };
-        return memo;
-      }, {});
+    try {
+      if (existsSync(absConfigPath)) {
+        debug(`load mock data from ${absConfigPath}`);
+        ret = require(absConfigPath); // eslint-disable-line
+      } else {
+        const mockFiles = glob.sync('**/*.js', {
+          cwd: absMockPath,
+        });
+        debug(
+          `load mock data from ${absMockPath}, including files ${JSON.stringify(
+            mockFiles,
+          )}`,
+        );
+        ret = mockFiles.reduce((memo, mockFile) => {
+          const m = require(join(absMockPath, mockFile)); // eslint-disable-line
+          memo = {
+            ...memo,
+            ...(m.default || m),
+          };
+          return memo;
+        }, {});
+      }
+    } catch (e) {
+      console.log(chalk.red(e.message));
+      return -1;
     }
+
     return normalizeConfig(ret);
   }
 
