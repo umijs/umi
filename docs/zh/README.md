@@ -1,7 +1,7 @@
 ---
 home: true
 actionText: 快速上手 →
-actionLink: /guide/
+actionLink: /zh/guide/
 features:
 - title: 插件化
   details: umi 的整个生命周期都是插件化的，甚至其内部实现就是由大量插件组成，比如 pwa、按需加载、一键切换 preact、一键兼容 ie9 等等，都是由插件实现。
