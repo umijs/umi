@@ -7,7 +7,7 @@ import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
 import chalk from 'chalk';
 
-const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
+const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete', '*'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 
 export default function getMockMiddleware(api) {
@@ -57,9 +57,13 @@ export default function getMockMiddleware(api) {
         }, {});
       }
     } catch (e) {
-      console.error(chalk.red('mock files hava a error!'));
-      console.error(chalk.red(e.message));
-      return -1;
+      ret = {
+        '* /': (req, res) => {
+          res.status(500).send({
+            error: e.stack,
+          });
+        },
+      };
     }
 
     return normalizeConfig(ret);
@@ -145,6 +149,9 @@ export default function getMockMiddleware(api) {
 
     for (const mock of mockData) {
       const { method, re, keys } = mock;
+      if (method === '*') {
+        return mock;
+      }
       if (method === exceptMethod) {
         const match = re.exec(req.path);
         if (match) {
