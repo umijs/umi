@@ -6,7 +6,7 @@ import assert from 'assert';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
 
-const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
+const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete', '*'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 
 export default function getMockMiddleware(api) {
@@ -33,27 +33,38 @@ export default function getMockMiddleware(api) {
   function getConfig() {
     cleanRequireCache();
     let ret = null;
-    if (existsSync(absConfigPath)) {
-      debug(`load mock data from ${absConfigPath}`);
-      ret = require(absConfigPath); // eslint-disable-line
-    } else {
-      const mockFiles = glob.sync('**/*.js', {
-        cwd: absMockPath,
-      });
-      debug(
-        `load mock data from ${absMockPath}, including files ${JSON.stringify(
-          mockFiles,
-        )}`,
-      );
-      ret = mockFiles.reduce((memo, mockFile) => {
-        const m = require(join(absMockPath, mockFile)); // eslint-disable-line
-        memo = {
-          ...memo,
-          ...(m.default || m),
-        };
-        return memo;
-      }, {});
+    try {
+      if (existsSync(absConfigPath)) {
+        debug(`load mock data from ${absConfigPath}`);
+        ret = require(absConfigPath); // eslint-disable-line
+      } else {
+        const mockFiles = glob.sync('**/*.js', {
+          cwd: absMockPath,
+        });
+        debug(
+          `load mock data from ${absMockPath}, including files ${JSON.stringify(
+            mockFiles,
+          )}`,
+        );
+        ret = mockFiles.reduce((memo, mockFile) => {
+          const m = require(join(absMockPath, mockFile)); // eslint-disable-line
+          memo = {
+            ...memo,
+            ...(m.default || m),
+          };
+          return memo;
+        }, {});
+      }
+    } catch (e) {
+      ret = {
+        '* /': (req, res) => {
+          res.status(500).send({
+            error: e.stack,
+          });
+        },
+      };
     }
+
     return normalizeConfig(ret);
   }
 
@@ -137,6 +148,9 @@ export default function getMockMiddleware(api) {
 
     for (const mock of mockData) {
       const { method, re, keys } = mock;
+      if (method === '*') {
+        return mock;
+      }
       if (method === exceptMethod) {
         const match = re.exec(req.path);
         if (match) {
