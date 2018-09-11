@@ -2,32 +2,28 @@
 sidebarDepth: 2
 ---
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 # API
 
-## 路由
+## Route
 
 ### umi/link
 
-通过声明的方式做路由跳转。
+Navigation via route declaration.
 
-例子：
+Example:
 
 ```markup
 import Link from 'umi/link';
 
 export default () => {
   <div>
-    /* 普通使用 */
+    /* Normal use */
     <Link to="/list">Go to list page</Link>
-
-    /* 带参数 */
+    
+    /* With query string */
     <Link to="/list?a=b">Go to list page</Link>
 
-    /* 包含子组件 */
+    /* Include child component */
     <Link to="/list?a=b"><button>Go to list page</button></Link>
   </div>
 }
@@ -35,21 +31,21 @@ export default () => {
 
 ### umi/router
 
-通过编程的方式做路由切换，包含以下 4 个 API 。
+Programmatic navigation via four router methods
 
 #### router.push(path)
 
-推一个新的页面到 history 里。
+Add one entry to the browser's history.
 
-例子：
+Example:
 
 ```js
 import router from 'umi/router';
 
-// 普通跳转，不带参数
+// Normal navigation without query string
 router.push('/list');
 
-// 带参数
+// With query string
 router.push('/list?a=b');
 router.push({
   pathname: '/list',
@@ -57,7 +53,7 @@ router.push({
     a: 'b',
   },
 });
-# 对象且不包含 pathname 会报错
+# Object without property `pathname` will throw an error 
 router.push({
   query: {}
 });
@@ -65,13 +61,13 @@ router.push({
 
 #### router.replace(path)
 
-替换当前页面，参数和 [router.push()](#router.push\(path\)) 相同。
+Replace current page. Accept same parameter as [router.push()](#router.push\(path\)) 
 
 #### router.go(n)
 
-往前或往后跳指定页数。
+Move back or forward through history.
 
-例子：
+Example:
 
 ```js
 import router from 'umi/router';
@@ -82,9 +78,9 @@ router.go(2);
 
 #### router.goBack()
 
-后退一页。
+Move backward.
 
-例子：
+Example:
 
 ```js
 import router from 'umi/router';
@@ -97,35 +93,35 @@ router.goBack();
 
 ### umi/redirect
 
-重定向用。
+Redirection.
 
-例子：
+Example:
 
 ```js
 import Redirect from 'umi/redirect';
 <Redirect to="/login" />
 ```
 
-详见：[https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
+Detail: [https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
 
 ### umi/withRouter
 
 详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
 
-## 性能
+## Performance
 
 ### umi/dynamic
 
-动态加载组件，基于 [react-loadable](https://github.com/jamiebuilds/react-loadable) 实现。
+Dynamically loading components based on [react-loadable](https://github.com/jamiebuilds/react-loadable).
 
 #### dynamic(options)
 
-例子：
+Example:
 
 ```js
 import dynamic from 'umi/dynamic';
 
-// 延时 1s 渲染的组件。
+// Render component with 1s delay
 const App = dynamic({
   loader: () => {
     return new Promise((resolve) => {
@@ -136,7 +132,7 @@ const App = dynamic({
   },
 });
 
-// 或者用 async 语法
+// Or use `async function`
 const delay = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 const App = dynamic({
   loader: async function() {
@@ -146,8 +142,8 @@ const App = dynamic({
 });
 ```
 
-## 构建
+## Build
 
 ### umi/babel
 
-让用户可基于 umi 的 babel 配置进行扩展。
+Make umi's babel configuration extensible.
