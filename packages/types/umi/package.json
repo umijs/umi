@@ -1,0 +1,10 @@
+{
+  "name": "@types/umi",
+  "version": "2.0.0",
+  "description": "TypeScript definitions for umijs",
+  "license": "MIT",
+  "main": "",
+  "dependencies": {
+    "@types/react": "*"
+  }
+}
