@@ -1,31 +1,27 @@
 # Mock Data
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+Mock data is indispensable in front-end development process and it is the key link to separate the front-end from the back-end. Through the pre-agreed interface with the server-side, simulation request data and even logic, can make the front-end development independent, will not be blocked by the development of the server-side.
 
-Mock 数据是前端开发过程中必不可少的一环，是分离前后端开发的关键链路。通过预先跟服务器端约定好的接口，模拟请求数据甚至逻辑，能够让前端开发独立自主，不会被服务端的开发所阻塞。
+## Using the mock feature of umi
 
-## 使用 umi 的 mock 功能
-
-umi 里约定 mock 文件夹下的文件即 mock 文件，文件导出接口定义，支持基于 `require` 动态分析的实时刷新，支持 ES6 语法，以及友好的出错提示，详情参看 [umijs.org](https://umijs.org/guide/mock-data.html)。
+Umi agreed that the files under the mock folder are mock files, files export interface definitions, support for real-time refresh based on 'require' dynamic analysis, support for ES6 syntax, and with friendly error messages, see [umijs.org](https://umijs.org/guide/mock-data.html) for more detail.
 
 ```js
 export default {
-  // 支持值为 Object 和 Array
+  // supported values are Object and Array
   'GET /api/users': { users: [1, 2] },
 
-  // GET POST 可省略
+  // GET and POST can be omitted
   '/api/users/1': { id: 1 },
 
-  // 支持自定义函数，API 参考 express@4
+  // support for custom functions, APIs refer to express@4
   'POST /api/users/create': (req, res) => { res.end('OK'); },
 };
 ```
 
-当客户端（浏览器）发送请求，如：`GET /api/users`，那么本地启动的 `umi dev` 会跟此配置文件匹配请求路径以及方法，如果匹配到了，就会将请求通过配置处理，就可以像样例一样，你可以直接返回数据，也可以通过函数处理以及重定向到另一个服务器。
+When a client(browser) sends a request, such as `GET /api/users`, the locally launched `umi dev` will match the request path and method with this configuration file, if it find a match, the request will be processed through configuration, just like the sample, you can directly return the data, or process and redirect it to another server through a function.
 
-比如定义如下映射规则：
+For example, define the following mapping rules as below:
 
 ```
 'GET /api/currentUser': {
@@ -36,34 +32,34 @@ export default {
 },
 ```
 
-访问的本地 `/api/users` 接口：
+Request local interface `/api/users`:
 
-请求头
+Request header
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/ZdlcFoYonSGDupWnktZn.png" width="400" />
 
-返回的数据
+Response data
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/OLHIXePGHkkFoaZVQAts.png" width="600" />
 
-### 引入 Mock.js
+### Introduce Mock.js
 
-[Mock.js](http://mockjs.com/) 是常用的辅助生成模拟数据的第三方库，当然你可以用你喜欢的任意库来结合 roadhog 构建数据模拟功能。
+[Mock.js](http://mockjs.com/) is a commonly used third-party library to help generate mock data. Of course, you can use any library you like working with roadhog to build data simulation functions.
 
 ```js
 import mockjs from 'mockjs';
 
 export default {
-  // 使用 mockjs 等三方库
+  // Use third-party library such as mockjs
   'GET /api/tags': mockjs.mock({
     'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),
 };
 ```
 
-### 添加跨域请求头
+### Add a cross-domain request header
 
-设置 `response` 的请求头即可：
+Just set the header of `response`:
 
 ```
 'POST /api/users/create': (req, res) => {
@@ -73,19 +69,19 @@ export default {
 },
 ```
 
-## 合理的拆分你的 mock 文件
+## Properly split your mock file
 
-对于整个系统来说，请求接口是复杂并且繁多的，为了处理大量模拟请求的场景，我们通常把每一个数据模型抽象成一个文件，统一放在 `mock` 的文件夹中，然后他们会自动被引入。
+For the entire system, the request interface is complex and numerous, in order to handle a large number of mock request scenarios, we usually abstract each data model into a file, and put them all in the `mock` folder. And then they will be automatically introduced.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wbeiDacBkchXrTafasBy.png" width="200" />
 
-## 如何模拟延迟
+## How to simulate delay
 
-为了更加真实的模拟网络数据请求，往往需要模拟网络延迟时间。
+In order to simulate the network data request more realistically, it is necessary to simulate network delay time in most cases.
 
-### 手动添加 setTimeout 模拟延迟
+### Add setTimeout manually to simulate delay
 
-你可以在重写请求的代理方法，在其中添加模拟延迟的处理，如：
+You can rewrite the proxy method of the request and add the processing of simulation delay to it, like:
 
 ```js
 'POST /api/forms': (req, res) => {
@@ -95,9 +91,9 @@ export default {
 },
 ```
 
-### 使用插件模拟延迟
+### Use plugins to simulate delay
 
-上面的方法虽然简便，但是当你需要添加所有的请求延迟的时候，可能就麻烦了，不过可以通过第三方插件来简化这个问题，如：[roadhog-api-doc#delay](https://github.com/nikogu/roadhog-api-doc/blob/master/lib/utils.js#L5)。
+Although the method above is simple, it may be troublesome when you need to add delays for all request, it can be simplified by a third-party plugin，such as [roadhog-api-doc#delay](https://github.com/nikogu/roadhog-api-doc/blob/master/lib/utils.js#L5).
 
 ```js
 import { delay } from 'roadhog-api-doc';
@@ -119,11 +115,10 @@ const proxy = {
   'GET /api/notices': getNotices,
 };
 
-// 调用 delay 函数，统一处理
+// Calling the delay function, unified processing
 export default delay(proxy, 1000);
 ```
 
-## 联调
+## Joint debugging
 
-当本地开发完毕之后，如果服务器的接口满足之前的约定，那么你只需要不开本地代理或者重定向代理到目标服务器就可以访问真实的服务端数据，非常方便。
-
+After finishing the local development, if the interface of server-side meets the previous convention, you only need to open the local proxy or redirect the proxy to the target server to access the real server data, which is very convenient.
