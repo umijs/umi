@@ -49,6 +49,7 @@ $ umi build
 
 * [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
 * [Antd Admin](https://github.com/zuiidea/antd-admin)
+* [antd-table-infinity](https://github.com/Leonard-Li777/antd-table-infinity) , for building lib
 
 ## Community
 
