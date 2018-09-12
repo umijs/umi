@@ -57,7 +57,7 @@ export default (api, opts = {}) => {
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
   api.addRendererWrapperWithComponent(() => {
     if (opts.antd) {
-      return join(__dirnae, './locale-antd.js'));
+      return join(__dirnae, './locale-antd.js');
     }
   });
   // 添加对 locale 文件的 watch
