@@ -4,6 +4,7 @@
 
 * [Ant Design Pro](https://github.com/ant-design/ant-design-pro)，Use Ant Design like a Pro! 
 * [Antd Admin](https://github.com/zuiidea/antd-admin)，A admin dashboard application demo built upon Ant Design and Dva.js.
+* [antd-table-infinity](https://github.com/Leonard-Li777/antd-table-infinity)，An infinite scroll component based on antd table that supports virtual scrolling & high-performance. (An example of building lib)
 
 ## Official
 

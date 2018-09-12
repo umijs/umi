@@ -4,6 +4,7 @@
 
 * [Ant Design Pro](https://github.com/ant-design/ant-design-pro)，Use Ant Design like a Pro! 
 * [Antd Admin](https://github.com/zuiidea/antd-admin)，A admin dashboard application demo built upon Ant Design and Dva.js.
+* [antd-table-infinity](https://github.com/Leonard-Li777/antd-table-infinity)，基于 Antd Table 的无限滚动加载表格组件，不同普通无限滚动方案，它使用了虚拟滚动技术，拥有无可比拟的高性能！(一个构建库的例子)
 
 ## 官方
 
