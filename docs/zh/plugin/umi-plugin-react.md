@@ -104,9 +104,9 @@ export default {
 
 配置项包含：
 
-* `default`: 'zh-CN', // default zh-CN
-* `baseNavigator`: true, // default true, when it is true, will use `navigator.language` overwrite default
-* `antd`: true, // use antd, default is true
+* `default: 'zh-CN'`, // default zh-CN
+* `baseNavigator: true`, // default true, when it is true, will use `navigator.language` overwrite default
+* `antd: true`, // use antd, default is true
 
 ### library
 
@@ -169,9 +169,9 @@ export default {
 
 配置项包含：
 
-* `defaultTitle`: '默认标题', // 必填，当配置项为 String 时直接配置项作为 defaultTitle
-* `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
-* `separator`: ' - ', // default ' - '
+* `defaultTitle: '默认标题'`, // 必填，当配置项为 String 时直接配置项作为 defaultTitle
+* `format: '{parent}{separator}{current}'`, // default {parent}{separator}{current}, title format
+* `separator: ' - '`, // default ' - '
 
 当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
 
