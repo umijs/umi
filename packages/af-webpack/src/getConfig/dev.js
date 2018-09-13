@@ -21,6 +21,13 @@ export default function(webpackConfig, opts) {
     }
     webpackConfig
       .plugin('hard-source')
-      .use(require('hard-source-webpack-plugin'));
+      .use(require('hard-source-webpack-plugin'),[{
+        environmentHash: {
+          root: process.cwd(),
+          directories: ['config'],
+          files: ['package-lock.json', 'yarn.lock', '.umirc.js', '.umirc.local.js'],
+        },
+      },
+    ]);
   }
 }
