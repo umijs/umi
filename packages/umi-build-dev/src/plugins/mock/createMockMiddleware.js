@@ -3,6 +3,7 @@ import { join } from 'path';
 import bodyParser from 'body-parser';
 import glob from 'glob';
 import assert from 'assert';
+import chalk from 'chalk';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
 
@@ -26,6 +27,7 @@ export default function getMockMiddleware(api) {
     });
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
+      console.log(chalk.green(`Try to reload mock file ${file}`));
       mockData = getConfig();
     });
   }
@@ -46,12 +48,17 @@ export default function getMockMiddleware(api) {
         )}`,
       );
       ret = mockFiles.reduce((memo, mockFile) => {
-        const m = require(join(absMockPath, mockFile)); // eslint-disable-line
-        memo = {
-          ...memo,
-          ...(m.default || m),
-        };
-        return memo;
+         try {
+          const m = require(join(absMockPath, mockFile)); // eslint-disable-line
+          memo = {
+            ...memo,
+            ...(m.default || m),
+          };
+          return memo;
+        } catch ({message}) {
+          console.log(message)
+          return memo;
+        }
       }, {});
     }
     return normalizeConfig(ret);
