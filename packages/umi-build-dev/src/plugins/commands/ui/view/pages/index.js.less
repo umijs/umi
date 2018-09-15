@@ -1,0 +1,134 @@
+import React from 'react';
+import 'whatwg-fetch';
+import { Input, Spin } from 'antd';
+import { stripLastSlash } from 'af-webpack/lib/utils';
+import url from 'url';
+import SockJS from 'sockjs-client';
+import RouteTree from '../components/tree';
+import styles from './index.less';
+import 'antd/dist/antd.css';
+
+const Search = Input.Search;
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.routeInput = React.createRef();
+    this.state = {
+      routes: [],
+      sock: null,
+      forceUpdateIndex: 0,
+      updating: true,
+    };
+  }
+
+  componentDidMount() {
+    this.getRouterConfig();
+    this.initDevSocket();
+  }
+
+  initDevSocket = () => {
+    const sock = new SockJS(
+      process.env.SOCKET_SERVER
+        ? `${stripLastSlash(process.env.SOCKET_SERVER)}/sockjs-dashboard`
+        : url.format({
+            protocol: window.location.protocol,
+            hostname: window.location.hostname,
+            port: window.location.port,
+            // Hardcoded in WebpackDevServer
+            pathname: '/sockjs-dashboard',
+          })
+    );
+    sock.onopen = () => {
+      console.log('open');
+      sock.send('test');
+    };
+
+    sock.onmessage = mes => {
+      const message = JSON.parse(mes.data);
+      console.log(message);
+      if (message.type === 0) {
+        console.log('need refresh');
+        this.getRouterConfig();
+      }
+    };
+
+    sock.onclose = function() {
+      console.log('close');
+    };
+
+    console.log(sock);
+    this.setState({
+      sock,
+    });
+  };
+
+  getRouterConfig = () => {
+    fetch('/__umiDashboard/routes')
+      .then(res => res.json())
+      .then(routes => {
+        this.setState({
+          routes,
+          updating: false,
+        });
+      });
+  };
+
+  deleteRouteFile = path => {
+    console.log(`UMI_DEL_${path}`);
+    const { sock } = this.state;
+    sock.send(`UMI_ROUTE_DEL_${path}`);
+    this.setState({
+      updating: true,
+    });
+  };
+
+  addRouteFile = path => {
+    const { sock, forceUpdateIndex } = this.state;
+    sock.send(`UMI_ROUTE_ADD_${path}`);
+    this.setState({
+      forceUpdateIndex: forceUpdateIndex + 1,
+      updating: true,
+    });
+  };
+
+  renderRoutes = routes => {
+    return (
+      <ul>
+        {routes.map((route, i) => {
+          if (!route.path) return null;
+          return (
+            <li key={route.key || i}>
+              <p to={route.path}>{route.path}</p>
+              {route.routes ? this.renderRoutes(route.routes) : null}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  render() {
+    const { routes, forceUpdateIndex, updating } = this.state;
+    return (
+      <div className={styles.wrapper}>
+        <h1 className={styles.title}>🛠 umi dashboard</h1>
+        <Spin spinning={updating} style={{ minHeight: 400 }}>
+          <Search
+            key={forceUpdateIndex}
+            ref={this.routeInput}
+            placeholder="route to add"
+            enterButton="add"
+            size="large"
+            onSearch={path => this.addRouteFile(path)}
+            style={{ width: 250 }}
+          />
+          <div className={styles.treeWrapper}>
+            <RouteTree data={routes} handleDelete={this.deleteRouteFile} />
+          </div>
+        </Spin>
+      </div>
+    );
+  }
+}
+
+export default Dashboard;

@@ -1,0 +1,65 @@
+import React from 'react';
+import { Modal, Tree, Icon } from 'antd';
+import styles from './style.less';
+Icon.setTwoToneColor('#c2292b');
+
+const TreeNode = Tree.TreeNode;
+const confirm = Modal.confirm;
+
+export default class Demo extends React.Component {
+  // onSelect = (selectedKeys, info) => {
+  //   console.log('selected', selectedKeys, info);
+  // };
+
+  // onCheck = (checkedKeys, info) => {
+  //   console.log('onCheck', checkedKeys, info);
+  // };
+
+  showDeleteConfirm = path => {
+    const self = this;
+    confirm({
+      title: '删除确认',
+      content: (
+        <span>
+          确定要删除 <code className={styles.code}>{path}</code> 路由吗？
+        </span>
+      ),
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        self.props.handleDelete(path);
+      },
+    });
+  };
+
+  handleDeleteClick = path => {
+    this.showDeleteConfirm(path);
+  };
+
+  renderRoutes = routes => {
+    return routes.map((route, i) => {
+      if (!route.path) return null;
+      const currDelete = this.handleDeleteClick.bind(this, route.path);
+      return (
+        <TreeNode
+          icon={<Icon type="delete" theme="twoTone" onClick={currDelete} />}
+          title={route.path}
+          key={route.path || i}
+        >
+          {route.routes ? this.renderRoutes(route.routes) : null}
+        </TreeNode>
+      );
+    });
+  };
+
+  render() {
+    const { data } = this.props;
+    const tree = this.renderRoutes(data);
+    return (
+      <Tree showIcon showLine defaultExpandAll>
+        {tree}
+      </Tree>
+    );
+  }
+}

@@ -30,6 +30,9 @@ switch (script) {
   case 'test':
     require(`./scripts/${script}`);
     break;
+  case 'ui':
+    require(`./scripts/${script}`);
+    break;
   case '-v':
   case '--version':
     script = 'version';
