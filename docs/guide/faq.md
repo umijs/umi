@@ -4,10 +4,6 @@ sidebarDepth: 3
 
 # FAQ
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 ## General
 
 ### Can it be used in a production environment?

@@ -1,9 +1,5 @@
 # Navigate between pages
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 In umi, there are two ways to navigate between pages: declarative and imperative.
 
 ## Declarative

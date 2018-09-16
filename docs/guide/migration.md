@@ -1,9 +1,5 @@
 # Migrate from umi 1.x
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 > More like watching videos? You can [click here to watch](https://youtu.be/1mvKzFLLBck).
 
 Let's take an example of [antd-admin](https://github.com/zuiidea/antd-admin/pull/877) to update from umi@1 to umi@2.

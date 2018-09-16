@@ -1,9 +1,5 @@
 # Deploy
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 ## Default Scheme
 
 Umi@2 is friendly to newbies by default, so it does not load on-demand by default. After `umi build`, it outputs three files: `index.html`, `umi.js` and `umi.css`.

@@ -1,9 +1,5 @@
 # Load on demand
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 For performance reasons, we load modules and components on demand.
 
 ## Loading Components on Demand

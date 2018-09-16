@@ -4,10 +4,6 @@ sidebarDepth: 3
 
 # Router
 
-::: warning
-This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 ::: Tip prompt
 The routing usage described below can be found in [umi-examples/routes](https://github.com/umijs/umi-examples/tree/master/routes) and find the sample code in [umi-examples/routes-via-config](https://github.com/umijs/umi-examples/tree/master/routes-via-config).
 :::
