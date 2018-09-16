@@ -43,6 +43,6 @@ $ umi build
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
 
-### 微信群
+### WeChat Group
 
-群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
+Group of 100 people, please add `sorryccpro` friend note `umi` invite to join.

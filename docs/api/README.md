@@ -89,7 +89,7 @@ router.goBack();
 
 ### umi/navlink
 
-详见：[https://reacttraining.com/react-router/web/api/NavLink](https://reacttraining.com/react-router/web/api/NavLink)
+See: [https://reacttraining.com/react-router/web/api/NavLink](https://reacttraining.com/react-router/web/api/NavLink)
 
 ### umi/redirect
 
@@ -106,7 +106,7 @@ Detail: [https://reacttraining.com/react-router/web/api/Redirect](https://reactt
 
 ### umi/withRouter
 
-详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
+See: [https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
 
 ## Performance
 

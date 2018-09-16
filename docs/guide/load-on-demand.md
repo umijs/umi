@@ -4,11 +4,11 @@
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-出于性能的考虑，我们会对模块和组件进行按需加载。
+For performance reasons, we load modules and components on demand.
 
-## 按需加载组件
+## Loading Components on Demand
 
-通过 `umi/dynamic` 接口实现，比如：
+Implemented through the `umi/dynamic` interface, such as:
 
 ```js
 import dynamic from 'umi/dynamic';
@@ -22,9 +22,9 @@ const App = dynamic({
 });
 ```
 
-## 按需加载模块
+## Loading Modules on Demand
 
-通过 `import()` 实现，比如：
+Implemented by `import()`, such as:
 
 ```js
 import('g2').then(() => {

@@ -2,15 +2,15 @@
 sidebarDepth: 3
 ---
 
-# .env and environment variables
+# .env and Environment Variables
 
 ::: warning
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-## 如何配置
+## How to Configure
 
-比如要
+For example
 
 ```
 # OS X, Linux
@@ -27,17 +27,17 @@ $ cross-env PORT=3000 umi dev
 $ echo PORT=3000 > .env
 ```
 
-## 环境变量
+## Environment Variables
 
 ### UMI_ENV
 
-指定覆盖默认配置的配置文件。比如 `UMI_ENV=prod umi build`，那么则会用 `.umirc.prod.js` 覆盖 `.umirc.js`。或者是 `config/config.prod.js` 覆盖 `config/config.js`。注意是覆盖而不是替换，`.umirc.prod.js` 中没有的配置者会使用 `.umirc.js` 中的配置。
+Specifies a profile that overrides the default configuration. For example, `UMI_ENV=prod umi build`, then `.umirc.js` will be overwritten with `.umirc.prod.js`. Or `config/config.prod.js` overrides `config/config.js`. Note that overriding instead of replacing, configurators not in `.umirc.prod.js` will use the configuration in `.umirc.js`.
 
-另外，开发模式下 `.umirc.local.js` 或者 `config/config.local.js` 中的配置永远是优先级最高的。
+In addition, the configuration in `.umirc.local.js` or `config/config.local.js` in development mode is always the highest priority.
 
 ### PORT
 
-指定端口号，默认是 `8000`。比如：
+Specify the port number. The default is `8000`. such as:
 
 ```bash
 $ PORT=8001 umi dev
@@ -45,15 +45,15 @@ $ PORT=8001 umi dev
 
 ### HOST
 
-默认是 `0.0.0.0`。
+The default is `0.0.0.0`.
 
 ### APP_ROOT
 
 ::: warning
-APP_ROOT 不能配在 .env 里。
+APP_ROOT cannot be included in .env.
 :::
 
-指定项目根目录。比如：
+Specify the project root directory. such as:
 
 ```bash
 $ APP_ROOT=src/renderer umi dev
@@ -61,7 +61,7 @@ $ APP_ROOT=src/renderer umi dev
 
 ### ANALYZE
 
-默认关闭。分析 bundle 构成，build 时有效。比如：
+It is off by default. Analyze the bundle composition, valid when building. such as:
 
 ```bash
 $ ANALYZE=1 umi build
@@ -69,11 +69,11 @@ $ ANALYZE=1 umi build
 
 ### ANALYZE_PORT
 
-ANALYZE 服务器端口，默认 8888。
+ANALYZE server port, default 8888.
 
 ### COMPRESS
 
-默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。比如：
+The default compression CSS and JS, the value is none when it is none, and it is valid when building. such as:
 
 ```bash
 $ COMPRESS=none umi build
@@ -81,11 +81,11 @@ $ COMPRESS=none umi build
 
 ### CSS_COMPRESS
 
-默认压缩，值为 none 时不压缩，build 时有效。因为 css 压缩有时是会有问题的，而且压缩并不能减少多少尺寸，所以有时可以压 JS 而不压 CSS。
+The default compression, the value is none without compression, and is valid at build time. Because css compression is sometimes problematic, and compression does not reduce the size, sometimes you can suppress JS without pressing CSS.
 
 ### BROWSER
 
-默认自动开浏览器，值为 none 时不自动打开，dev 时有效。比如：
+The browser is automatically opened by default. If the value is none, it will not be automatically opened. It is valid when dev. such as:
 
 ```bash
 $ BROWSER=none umi dev
@@ -93,19 +93,19 @@ $ BROWSER=none umi dev
 
 ### CLEAR_CONSOLE
 
-默认清屏，值为 none 时不清屏。
+The default is cleared. If the value is none, the screen is not cleared.
 
 ### HMR
 
-默认开启 HMR，值为 none 时禁用，值为 reload 时文件有变化时刷新浏览器。
+The HMR is enabled by default, the value is disabled when none, and the value is refreshed when the file changes when reload.
 
 ### BABELRC
 
-开启 `.babelrc` 解析，默认不解析。
+Turn on `.babelrc` parsing, which is not resolved by default.
 
 ### BABEL_CACHE
 
-默认开启 babel cache，值为 none 时禁用。比如：
+The babel cache is enabled by default, and is disabled when the value is none. such as:
 
 ```bash
 $ BABEL_CACHE=none umi dev
@@ -113,7 +113,7 @@ $ BABEL_CACHE=none umi dev
 
 ### MOCK
 
-默认开启 mock，值为 none 时禁用。比如：
+The mock is enabled by default, and is disabled when the value is none. such as:
 
 ```bash
 $ MOCK=none umi dev
@@ -121,7 +121,7 @@ $ MOCK=none umi dev
 
 ### HTML
 
-默认打包 HTML 文件，值为 none 时不打包 HTML 文件。比如：
+The HTML file is packaged by default, and the HTML file is not packaged when the value is none. such as:
 
 ```bash
 $ HTML=none umi build

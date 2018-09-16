@@ -4,23 +4,23 @@
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-在 umi 里，页面之间跳转有两种方式：声明式和命令式。
+In umi, there are two ways to jump between pages: declarative and imperative.
 
-## 声明式
+## Declarative
 
-基于 `umi/link`，通常作为 React 组件使用。
+Based on `umi/link`, it is usually used as a React component.
 
 ```bash
 import Link from 'umi/link';
 
 export default () => (
-  <Link to="/list">Go to list page</Link>
+   <Link to="/list">Go to list page</Link>
 );
 ```
 
-## 命令式
+## Command
 
-基于 `umi/router`，通常在事件处理中被调用。
+Based on `umi/router`, it is usually called in event processing.
 
 ```js
 import router from 'umi/router';
@@ -30,4 +30,4 @@ function goToListPage() {
 }
 ```
 
-更多命令式的跳转方法，详见 [api#umi/router](/api/#umi-router)。
+For more command-style jump methods, see [api#umi/router](/api/#umi-router).

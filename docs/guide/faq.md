@@ -10,11 +10,11 @@ This article has not been translated yet. Wan't to help us out? Click the `Edit 
 
 ## General
 
-### 是否可用于生产环境？
+### Can it be used in a production environment?
 
-umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 600+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。
+Umi is the underlying front-end framework of Ant Financial, which has directly or indirectly served 600+ applications, including java, node, H5 wireless, Hybrid applications, pure front-end assets applications, CMS applications, and more.
 
-### 如何查看 react、react-dom、react-router 等版本号？
+### How do I view the version numbers such as react, react-dom, and react-router?
 
 ```bash
 $ umi -v --verbose
@@ -36,72 +36,72 @@ dva-immer@0.2.3
 path-to-regexp@1.7.0
 ```
 
-### 如何引入 @babel/polyfill ？
+### How to introduce @babel/polyfill ?
 
-先安装依赖，
+Install dependencies first,
 
 ```bash
 $ yarn add @babel/polyfill
 ```
 
-然后新建 `src/global.js`，内容如下：
+Then create a new `src/global.js` with the following contents:
 
 ```js
 import '@babel/polyfill';
 ```
 
-### 如何动态修改 title ？
+### How to dynamically modify the title?
 
-可以通过 [react-helmet](https://github.com/nfl/react-helmet) 动态修改 title 。
-> 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
+The title can be dynamically modified via [react-helmet](https://github.com/nfl/react-helmet).
+> Note: In a hybrid application, if you use react-helmet in the ios web container, you can try [react-document-title](https://github.com/gaearon/react-document-title).
 
-## 报错
+## Reporting error
 
 ### `Object.values` is not a function
 
-e.g.
+E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
 
-升级 node 版本，并确保版本是 8 或以上。
+Upgrade the node version and make sure the version is 8 or above.
 
 ### `exports is not defined`
 
-e.g.
+E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/fLNyyPNyquAGoYQxxIDI.png" />
 
-检查 babel 配置，删除不必要的 preset 和 plugin 。
+Check the babel configuration to remove unnecessary presets and plugins.
 
 ### `Plugin umi-plugin-react:pwa initialize failed`
 
-e.g.
+E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/lSuOXlbtrZPLoMaLBODj.png" />
 
-确保有 package.json 并配置 `name` 属性。
+Make sure you have package.json and configure the `name` attribute.
 
 ### `Conflicting order between [mini-css-extract-plugin]`
 
-e.g.
+E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mjzdexbrmZulkjCAqzPC.png" />
 
-这是 [webpack 插件的问题](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250)，不会影响 CSS 文件的正常生产，可暂时忽略。
+This is [a problem with the webpack plugin] (https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250), which does not affect the normal production of CSS files and can be ignored for now.
 
-### `umi` 不是内部或外部命令
+### `umi` is not an internal or external command
 
-e.g.
+E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/fatmbcGwSOwDntHjmrtG.png" />
 
-需配置 NODE_PATH 环境变量，如使用 yarn，可通过执行 `yarn global bin` 拿到 bin 路径。
+You need to configure the NODE_PATH environment variable. If you use yarn, you can get the bin path by executing `yarn global bin`.
 
 ## CSS
 
-### 如何禁用 css modules ？
+### How to disable css modules?
 
-修改 `.umirc.js`:
+Modify `.umirc.js`:
 
 ```json
 {
@@ -109,17 +109,17 @@ e.g.
 }
 ```
 
-但没有特殊的理由时，不建议关闭 css modules。
+However, it is not recommended to turn off css modules for no particular reason.
 
-### 如何使用 sass ？
+### How to use sass?
 
-先安装额外的依赖，
+Install additional dependencies first,
 
 ```bash
 $ npm i node-sass sass-loader --save
 ```
 
-然后修改 `.umirc.js`:
+Then modify `.umirc.js`:
 
 ```json
 {
@@ -129,49 +129,49 @@ $ npm i node-sass sass-loader --save
 
 ## Test
 
-### 如何断点调试
+### How to do breakpoint debugging?
 
-确保 node 在 8 以上，然后执行：
+Make sure the node is above 8 and then execute:
 
 ```bash
 $ node --inspect-brk ./node_modules/.bin/umi test
 ```
 
-然后在浏览器里打开 chrome://inspect/#devices 进行 inspect 和断点。
+Then open chrome://inspect/#devices in the browser for inspect and breakpoints.
 
-## 部署
+## Deployment
 
-### build 后访问路由刷新后 404？
+### After the build access route is refreshed 404?
 
-几个方案供选择：
+Several options are available:
 
-* 改用 hashHistory，在 `.umirc.js` 里配 `history: 'hash'`
-* 静态化，在 `.umirc.js` 里配 `exportStatic: true`
-* 服务端配置路由 fallback 到 index.html
+* Use hashHistory instead of `history: 'hash' in `.umirc.js`
+* Static, with `exportStatic: true` in `.umirc.js`
+* The server configures the route fallback to index.html
 
-### build之后图片丢失？
+### After the build, the picture is lost?
 
-可能是图片没有正确引用，可以参考一下代码，正确引入图片。
+It may be that the picture is not correctly quoted. You can refer to the code and import the picture correctly.
 
 ```js
 import React from 'react';
-import logo from './logo.png'; // 告诉WebPACK这个JS文件使用这个图像
+import logo from './logo.png'; // Tell Webpack this JS file to use this image
 
 console.log(logo); // logo.84287d09.png
 
-function Header() {
-  // 导入图片
+function header() {
+  // import image
   return <img src={logo} alt="Logo" />;
 }
 
 export default Header;
 
 ```
-在css中使用，注意不要使用绝对路径
+Use in css, be careful not to use absolute paths
 ```css
 .Logo {
   background-image: url(./logo.png);
 }
 ```
 
-> 注意：图片大小小于 10 k 时会走 base64。即不会被拷贝到 public 文件夹下，而是以 base64 的资源存在。
+> Note: base64 will be taken when the image size is less than 10 k. That is, it will not be copied to the public folder, but will be stored as a base64 resource.

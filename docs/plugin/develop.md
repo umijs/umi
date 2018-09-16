@@ -43,7 +43,7 @@ export default (api, opts) => {
 
 ## Plugin demo
 
-The following is an example of plugin example code refer to `umi-plugin-locale` plugin code. For a complete example, see [source code] (https://github.com/umijs/umi/blob/master/packages/umi- Plugin-locale/src/index.js).
+The following is an example of plugin example code refer to `umi-plugin-locale` plugin code. For a complete example, see [source code](https://github.com/umijs/umi/blob/master/packages/umi- Plugin-locale/src/index.js).
 
 ```js
 export default (api, opts = {}) => {
