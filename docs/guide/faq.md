@@ -119,7 +119,7 @@ export default {
 
 ## CSS
 
-### Why Don't My Imported CSS Files Take Effect?
+### Why don't my imported CSS files take effect?
 
 umi use css modules by default, please write your css as css modules.
 
@@ -128,7 +128,7 @@ Ref:
 * [css-modules/css-modules](https://github.com/css-modules/css-modules)
 * [CSS Modules usage tutorial](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 
-### How to disable css modules?
+### How to disable CSS modules?
 
 Modify `.umirc.js`:
 
