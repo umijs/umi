@@ -1,21 +1,21 @@
 # HTML Template
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-## 修改默认模板
+## Modify the Default Template
 
-新建 `src/pages/document.ejs`，umi 约定如果这个文件存在，会作为默认模板，内容上可以参考 [umi 内置模板](https://github.com/umijs/umi/blob/master/packages/umi-build-dev/template/document.ejs)，需要保证出现 `<div id="root"></div>`。
+Create a new `src/pages/document.ejs`, umi stipulates that if this file exists, it will be used as the default template. The content can refer to [umi built-in template](https://github.com/umijs/umi/blob/master/packages /umi-build-dev/template/document.ejs), you need to ensure that `<div id="root"></div>` appears.
 
-## 针对特定页面指定模板
+## Specifying a Template for a Specific Page
 
 ::: warning
-此功能需开启 `exportStatic` 配置。
+This feature requires the `exportStatic` configuration to be enabled.
 :::
 
 ::: tip
-优先级是：pages 里指定 > pages/document.ejs > umi 内置模板。
+The priority is: pages > pages/document.ejs > umi built-in templates.
 :::
 
 TODO

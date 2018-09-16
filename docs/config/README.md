@@ -5,25 +5,25 @@ sidebarDepth: 2
 # Configuration
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
 ## Basic
 
 ### plugins
 
-* 类型：`Array`
-* 默认值：`[]`
+* Type: `Array`
+* Default: `[]`
 
-指定插件。
+Specify the plugin.
 
-比如：
+such as:
 
 ```js
 export default {
   plugins: [
     'umi-plugin-react',
-    // 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
+    // When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
     ['umi-plugin-react', {
       dva: true,
     }],
@@ -33,65 +33,65 @@ export default {
 
 ### routes
 
-* 类型：`Array`
-* 默认值：`null`
+* Type: `Array`
+* Default: `null`
 
-配置路由。
+Configure routing.
 
-::: tip 提醒
-如果配置了 `routes`，则约定式路由会不生效。
+::: tip reminder
+If `routes` is configured, the negotiated route will not take effect.
 :::
 
 ### history
 
-* 类型：`String`
-* 默认值：`browser`
+* Type: `String`
+* Default: `browser`
 
-如需切换 history 方式为 hash（默认是 browser history），配置 `history: 'hash'`。
+To switch the history mode to hash (the default is browser history), configure `history: 'hash'`.
 
 ### outputPath
 
-* 类型：`String`
-* 默认值：`./dist`
+* Type: `String`
+* Default: `./dist`
 
-指定输出路径。
+Specifies the output path.
 
 ### base
 
-* 类型：`String`
-* 默认值：`/`
+* Type: `String`
+* Default: `/`
 
-指定 react-router 的 base，部署到非根目录时需要配置。
+Specify the base of the react-router to be configured when deploying to a non-root directory.
 
 ### publicPath
 
-* 类型：`String`
-* 默认值：`/`
+* Type: `String`
+* Default: `/`
 
-指定 webpack 的 publicPath，指向静态资源文件所在的路径。
+Specifies the publicPath of the webpack, pointing to the path where the static resource file is located.
 
 ### runtimePublicPath
 
-* 类型：`Boolean`
-* 默认值：`false`
+* Type: `Boolean`
+* Default: `false`
 
-值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
+Use the `window.publicPath` specified in the HTML when the value is `true`.
 
 ### context
 
-* 类型：`Object`
-* 默认值：`{}`
+* Type: `Object`
+* Default: `{}`
 
-配置全局 context，会覆盖到每个 pages 里的 context。
+Configuring a global context will override the context in each page.
 
 ### exportStatic
 
-* 类型：`Boolean | Object`
-* 默认值：`false`
+* Type: `Boolean | Object`
+* Default: `false`
 
-如果设为 `true` 或 `Object`，则导出全部路由为静态页面，否则默认只输出一个 index.html。
+If set to `true` or `Object`, all routes are exported as static pages, otherwise only one index.html is output by default.
 
-比如：
+such as:
 
 ```
 "exportStatic": {}
@@ -99,51 +99,51 @@ export default {
 
 ### exportStatic.htmlSuffix
 
-* 类型：`Boolean`
-* 默认值：`false`
+* Type: `Boolean`
+* Default: `false`
 
-启用 `.html` 后缀。
+Enable the `.html` suffix.
 
 ### exportStatic.dynamicRoot
 
-* 类型：`Boolean`
-* 默认值：`false`
+* Type: `Boolean`
+* Default: `false`
 
-部署到任意路径。
+Deploy to any path.
 
 ### singular
 
-* 类型：`Boolean`
-* 默认值：`false`
+* Type: `Boolean`
+* Default: `false`
 
-如果设为 `true`，启用单数模式的目录。
+If set to `true`, enable the directory for singular mode.
 
 * src/layout/index.js
 * src/page
-* model（如果有开启 umi-plugin-dva 插件的话）
+* model (if umi-plugin-dva plugin is enabled)
 
 ## webpack
 
 ### chainWebpack
 
-通过 [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的 API 扩展或修改 webpack 配置。
+Extend or modify the webpack configuration via the API of [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain).
 
-比如：
+such as:
 
 ```js
 chainWebpack(config, { webpack }) {
-  // 设置 alias
+  // Set alias
   config.resolve.alias.set('a', 'path/to/a');
   
-  // 删除进度条插件
+  // Delete progress bar plugin
   config.plugins.delete('progress');
 }
 ```
 
 ### theme
 
-配置主题，实际上是配 less 变量。支持对象和字符串两种类型，字符串需要指向一个返回配置的文件。
-比如：
+The configuration theme is actually equipped with the less variable. Support for both object and string types, the string needs to point to a file that returns the configuration.
+such as:
 
 ```
 "theme": {
@@ -151,7 +151,7 @@ chainWebpack(config, { webpack }) {
 }
 ```
 
-或者，
+or,
 
 ```
 "theme": "./theme-config.js"
@@ -159,8 +159,8 @@ chainWebpack(config, { webpack }) {
 
 ### define
 
-通过 webpack 的 DefinePlugin 传递给代码，值会自动做 `JSON.stringify` 处理。
-比如：
+Passed to the code via the webP's DefinePlugin , the value is automatically handled by `JSON.stringify`.
+such as:
 
 ```js
 "define": {
@@ -171,11 +171,11 @@ chainWebpack(config, { webpack }) {
 
 ### externals
 
-配置 webpack 的?[externals](https://webpack.js.org/configuration/externals/)?属性。
-比如：
+Configure the [externals](https://webpack.js.org/configuration/externals/) property of webpack.
+such as:
 
 ```js
-// 配置 react 和 react-dom 不打入代码
+// Configure react and react-dom do not enter the code
 "externals": {
   "react": "window.React",
   "react-dom": "window.ReactDOM"
@@ -184,12 +184,12 @@ chainWebpack(config, { webpack }) {
 
 ### alias
 
-配置 webpack 的 [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) 属性。
+Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
 
 ### browserslist
 
-配置 [browserslist](https://github.com/ai/browserslist)，同时作用于 babel-preset-env 和 autoprefixer。
-比如：
+Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
+such as:
 
 ```js
 "browserslist": [
@@ -200,41 +200,41 @@ chainWebpack(config, { webpack }) {
 
 ### devtool
 
-配置 webpack 的 [devtool](https://webpack.js.org/configuration/devtool/) 属性。
+Configure the [devtool](https://webpack.js.org/configuration/devtool/) property of webpack.
 
 ### disableCSSModules
 
-禁用 [CSS Modules](https://github.com/css-modules/css-modules)。
+Disable [CSS Modules](https://github.com/css-modules/css-modules).
 
 ### disableCSSSourceMap
 
-禁用 CSS 的 SourceMap 生成。
+Disable SourceMap generation for CSS.
 
 ### extraBabelPresets
 
-定义额外的 babel preset 列表，格式为数组。
+Define an additional babel preset list in the form of an array.
 
 ### extraBabelPlugins
 
-定义额外的 babel plugin 列表，格式为数组。
+Define an additional babel plugin list in the form of an array.
 
 ### extraBabelIncludes
 
-定义额外需要做 babel 转换的文件匹配列表，格式为数组，数组项是 [webpack#Condition](https://webpack.js.org/configuration/module/#condition)。
+Define a list of additional files that need to be babel converted, in the form of an array, and the array item is [webpack#Condition](https://webpack.js.org/configuration/module/#condition).
 
 ### extraPostCSSPlugins
 
-定义额外的 PostCSS 插件，格式为数组。
+Define additional PostCSS plugins in the format of an array.
 
 ### cssModulesExcludes
 
-指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
+The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
 
 ### copy
 
-定义需要单纯做复制的文件列表，格式为数组，项的格式参考 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin) 的配置。
+Define a list of files that need to be copied simply. The format is an array. The format of the item refers to the configuration of [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin).
 
-比如：
+such as:
 
 ```markup
 "copy": [
@@ -247,8 +247,8 @@ chainWebpack(config, { webpack }) {
 
 ### proxy
 
-配置 webpack-dev-server 的 [proxy](https://webpack.js.org/configuration/dev-server/#devserver-proxy) 属性。
-如果要代理请求到其他服务器，可以这样配：
+Configure the [proxy](https://webpack.js.org/configuration/dev-server/#devserver-proxy) property of webpack-dev-server.
+If you want to proxy requests to other servers, you can do this:
 
 ```markup
 "proxy": {
@@ -260,16 +260,16 @@ chainWebpack(config, { webpack }) {
 }
 ```
 
-然后访问?`/api/users`?就能访问到?[http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users)?的数据。
+Then visit `/api/users` to access the data of [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users).
 
 ### sass
 
-配置 [node-sass](https://github.com/sass/node-sass#options) 的选项。注意：使用 sass 时需在项目目录安装 node-sass 和 sass-loader 依赖。
+Configure options for [node-sass](https://github.com/sass/node-sass#options). Note: The node-sass and sass-loader dependencies need to be installed in the project directory when using sass.
 
 ### manifest
 
-配置后会生成 manifest.json，option 传给 [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin)。
-比如：
+After configuration, manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
+such as:
 
 ```markup
 "manifest": {
@@ -279,12 +279,115 @@ chainWebpack(config, { webpack }) {
 
 ### ignoreMomentLocale
 
-忽略 moment 的 locale 文件，用于减少尺寸。
+Ignore the locale file for moment to reduce the size.
 
 ### lessLoaderOptions
 
-给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。 
+Additional configuration items for [less-loader](https://github.com/webpack-contrib/less-loader).
 
 ### cssLoaderOptions
 
-给 [css-loader](https://github.com/webpack-contrib/css-loader) 的额外配置项。
+Additional configuration items for [css-loader](https://github.com/webpack-contrib/css-loader).Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
+
+### browserslist
+
+Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
+such as:
+
+```js
+"browserslist": [
+  "> 1%",
+  "last 2 versions"
+]
+```
+
+### devtool
+
+Configure the [devtool](https://webpack.js.org/configuration/devtool/) property of webpack.
+
+### disableCSSModules
+
+Disable [CSS Modules](https://github.com/css-modules/css-modules).
+
+### disableCSSSourceMap
+
+Disable SourceMap generation for CSS.
+
+### extraBabelPresets
+
+Define an additional babel preset list in the form of an array.
+
+### extraBabelPlugins
+
+Define an additional babel plugin list in the form of an array.
+
+### extraBabelIncludes
+
+Define a list of additional files that need to be babel converted, in the form of an array, and the array item is [webpack#Condition](https://webpack.js.org/configuration/module/#condition).
+
+### extraPostCSSPlugins
+
+Define additional PostCSS plugins in the format of an array.
+
+### cssModulesExcludes
+
+The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
+
+### copy
+
+Define a list of files that need to be copied simply. The format is an array. The format of the item refers to the configuration of [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin).
+
+such as:
+
+```markup
+"copy": [
+  {
+    "from": "",
+    "to": ""
+  }
+]
+```
+
+### proxy
+
+Configure the [proxy](https://webpack.js.org/configuration/dev-server/#devserver-proxy) property of webpack-dev-server.
+If you want to proxy requests to other servers, you can do this:
+
+```markup
+"proxy": {
+  "/api": {
+    "target": "http://jsonplaceholder.typicode.com/",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api" : "" }
+  }
+}
+```
+
+Then visit `/api/users` to access the data of [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users).
+
+### sass
+
+Configure options for [node-sass](https://github.com/sass/node-sass#options). Note: The node-sass and sass-loader dependencies need to be installed in the project directory when using sass.
+
+### manifest
+
+After configuration, manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
+such as:
+
+```markup
+"manifest": {
+  "basePath": "/app/"
+}
+```
+
+### ignoreMomentLocale
+
+Ignore the locale file for moment to reduce the size.
+
+### lessLoaderOptions
+
+Additional configuration items for [less-loader](https://github.com/webpack-contrib/less-loader).
+
+### cssLoaderOptions
+
+Additional configuration items for [css-loader](https://github.com/webpack-contrib/css-loader).

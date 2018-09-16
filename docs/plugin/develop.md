@@ -29,7 +29,7 @@ All of umi's plugin interfaces are provided through the api when the plugin is i
 - Event class API, key event points provided by some plugin systems
 - Application class API, API for implementing plugin function requirements, there are two methods of direct call and function callback
 
-**Note: ** All APIs are used by the `api.[theApiName]` method, and the internal APIs are uniformly prefixed with `_`.
+**Note:** All APIs are used by the `api.[theApiName]` method, and the internal APIs are uniformly prefixed with `_`.
 
 Here's a basic usage example:
 
@@ -43,7 +43,7 @@ export default (api, opts) => {
 
 ## Plugin demo
 
-The following is an example of plugin example code refer to `umi-plugin-locale` plugin code. For a complete example, see [source code] (https://github.com/umijs/umi/blob/master/packages/umi- Plugin-locale/src/index.js).
+The following is an example of plugin example code refer to `umi-plugin-locale` plugin code. For a complete example, see [source code](https://github.com/umijs/umi/blob/master/packages/umi- Plugin-locale/src/index.js).
 
 ```js
 export default (api, opts = {}) => {

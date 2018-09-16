@@ -1,16 +1,16 @@
 # Migrate from umi 1.x
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-> 更喜欢观看视频？可以[点此观看](https://youtu.be/1mvKzFLLBck)。
+> More like watching videos? You can [click here to watch](https://youtu.be/1mvKzFLLBck).
 
-下面以 [antd-admin](https://github.com/zuiidea/antd-admin/pull/877) 为例，介绍如何从 umi@1 升级到 umi@2 。
+Let's take an example of [antd-admin](https://github.com/zuiidea/antd-admin/pull/877) to update from umi@1 to umi@2.
 
-## npm 依赖
+## npm Dependency
 
-升级 umi 到 `^2.0.0-0`，并使用 umi-plugin-react 代替以前的众多插件，包含 umi-plugin-dva、umi-plugin-dll、umi-plugin-routes、umi-plugin-polyfill 和 umi-plugin-locale。
+Upgrade umi to `^2.0.0-0` and use umi-plugin-react instead of the previous plugins, including umi-plugin-dva, umi-plugin-dll, umi-plugin-routes, umi-plugin-polyfill and Umi-plugin-locale.
 
 ```diff
 - "umi": "^1.3.17",
@@ -22,37 +22,37 @@ This article has not been translated yet. Wan't to help us out? Click the `Edit 
 + "umi-plugin-react": "^1.0.0-beta.16",
 ```
 
-umi-plugin-react 是一个包含了十多个插件的集合，详见 [umi-plugin-react 介绍](/plugin/umi-plugin-react.html)。
+Umi-plugin-react is a collection of more than a dozen plugins, as described in [Introduction to umi-plugin-react](/plugin/umi-plugin-react.html).
 
-## 环境变量
+## Environment Variables
 
-umi@2 支持在 `.env` 里配置环境变量，所以之前写在 package.json scripts 里的环境变量可以切到这里。
+Umi@2 supports configuring environment variables in `.env`, so the environment variables previously written in package.json scripts can be cut here.
 
 ```diff
 - "start": "cross-env COMPILE_ON_DEMAND=none BROWSER=none HOST=0.0.0.0 umi dev",
 + "start": "cross-env BROWSER=none HOST=0.0.0.0 umi dev",
 ```
 
-然后新建 `.env`，（其中 `COMPILE_ON_DEMAND` 已不再支持）
+Then create a new `.env`, (where `COMPILE_ON_DEMAND` is no longer supported)
 
 ```
 BROWSER=none
 HOST=0.0.0.0
 ```
 
-另外，有些环境变量有变化或不再支持：
+In addition, some environment variables have changed or are no longer supported:
 
-* 不再支持 `PUBLIC_PATH`，通过配置 `publicPath` 实现
-* 不再支持 `BASE_URL`，通过配置 `base` 实现
-* 不再支持 `COMPILE_ON_DEMAND`，umi@2 里没有这个功能了
-* 不再支持 `TSLINT`，umi@2 里没有这个功能了
-* 不再支持 `ESLINT`，umi@2 里没有这个功能了
+* `PUBLIC_PATH` is no longer supported, configured by `publicPath`
+* `BASE_URL` is no longer supported, configured by `base`
+* `COMPILE_ON_DEMAND` is no longer supported, and this function is not available in umi@2.
+* `TSLINT` is no longer supported, and this function is not available in umi@2.
+* `ESLINT` is no longer supported, and this function is not available in umi@2.
 
-## 配置
+## Configuration
 
-### 插件配置
+### Plugin Configuration
 
-由于前面我们把很多插件改成通过 umi-plugin-react 实现，所以需要修改 `.umirc.js`，
+Since we changed a lot of plugins to umi-plugin-react, we need to modify `.umirc.js`.
 
 ```diff
 export default {
@@ -60,45 +60,45 @@ export default {
 -    'umi-plugin-dva',
 +    ['umi-plugin-react', {
 +      dva: true,
-+      antd: true,  // antd 默认不开启，如有使用需自行配置
++      antd: true,  // antd is not enabled by default, if you need to use it yourself
 +    }],
   ],
 };
 ```
 
-更多 dll、hardSource、polyfilles、locale、title 等，参考 [umi-plugin-react 文档](/plugin/umi-plugin-react.html)。
+For more dll, hardSource, polyfilles, locale, title, etc., refer to [umi-plugin-react documentation](/plugin/umi-plugin-react.html).
 
 ### webpackrc.js
 
-umi@2 不再支持 `webpackrc.js`，把里面的配置原样复制到 `.umirc.js` 即可。
+Umi@2 no longer supports `webpackrc.js`, copy the configuration inside it to `.umirc.js`.
 
 ### webpack.config.js
 
-umi@2 不再支持 `webpack.config.js`，改为通过配置 [chainWebpack](/config/#chainwebpack) 实现。
+Umi@2 no longer supports `webpack.config.js`, instead it is implemented by configuring [chainWebpack](/config/#chainwebpack).
 
-### 详细的配置项变更
+### Detailed Configuration Item Changes
 
-* 不再支持 `hd`，如需开启，装载插件 `umi-plugin-react` 并配置 `hd: {}`
-* 不再支持 `disableServiceWorker`，默认不开启，如需开启，装载插件 `umi-plugin-react` 并配置 `pwa: {}`
-* 不再支持 `preact`，如需配置，装载插件 `umi-plugin-react` 并配置 `library: 'preact'`
-* 不再支持 `loading`，如需配置，装载插件 `umi-plugin-react` 并配置 `dynamicImport.loadingComponent`
-* `hashHistory: true` 变更为 `history: 'hash'`
-* 不再支持 `disableDynamicImport`，默认不开启，如需开启，装载插件 `umi-plugin-react` 并配置 `dynamicImport: {}`
-* 不再支持 `disableFastClick`，默认不开启，如需开启，装载插件 `umi-plugin-react` 并配置 `fastClick: {}`
-* 不再支持 `pages`，改为直接配在路由上
-* 不再支持 `disableHash`，默认不开启，如需开启，配置 `hash: true`
+* `hd` is no longer supported. To enable it, load the plugin `umi-plugin-react` and configure `hd: {}`
+* `disableServiceWorker` is no longer supported, it is not enabled by default. To enable it, load the plugin `umi-plugin-react` and configure `pwa: {}`
+* `preact` is no longer supported. To configure, load the plugin `umi-plugin-react` and configure `library: 'preact'.
+* `loading` is no longer supported. To configure, load the plugin `umi-plugin-react` and configure `dynamicImport.loadingComponent`
+* `hashHistory: true` changed to `history: 'hash'`
+* `disableDynamicImport` is no longer supported, it is not enabled by default. To enable it, load the plugin `umi-plugin-react` and configure `dynamicImport: {}`
+* `disableFastClick` is no longer supported, it is not enabled by default. To enable it, load the plugin `umi-plugin-react` and configure `fastClick: {}`
+* No longer supports `pages`, instead of directly on the route
+* `disableHash` is no longer supported, it is not enabled by default. To enable it, configure `hash: true`
 
-## 约定式路由
+## Conventional Routing
 
-路由层不再支持 `page.js` 的目录级路由。之前如果有用，需要把不需要的路由通过 umi-plugin-react 的 routes.exclude 排除掉。
+The routing layer no longer supports directory-level routing for `page.js`. Previously useful, you need to exclude unwanted routes through umi-plugin-react's routes.exclude.
 
 ## umi/dynamic
 
-接口变更，umi@2 是基于 [react-loadable](https://github.com/jamiebuilds/react-loadable) 实现的。
+Interface changes, umi@2 is based on [react-loadable](https://github.com/jamiebuilds/react-loadable).
 
 ```diff
 - dynamic(async () => {})
 + dynamic({ loader: async () => {}})
 ```
 
-详见 [umi/dynamic 接口说明](/api/#umi-dynamic)。
+See [umi/dynamic Interface Description](/api/#umi-dynamic) for details.
