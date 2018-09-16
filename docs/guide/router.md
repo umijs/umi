@@ -118,7 +118,7 @@ The routing configuration will be generated as follows:
 
 The convention `src/layouts/index.js` is a global route, returning a React component, and rendering the child components via `props.children`.
 
-Such as:
+Example:
 
 ```js
 export default function(props) {
@@ -156,9 +156,9 @@ export default function(props) {
 
 ### 404 Routing
 
-The convention `pages/404.js` is a 404 page and needs to return the React component.
+The convention `pages/404.js` is a 404 page and needs to return a React component.
 
-such as:
+Example:
 
 ```js
 export default () => {
@@ -174,7 +174,7 @@ export default () => {
 
 The first comment of the contracted routing file is used to extend the route if it contains a configuration in the **yaml** format.
 
-such as:
+Example:
 
 ```
 + pages/
@@ -205,9 +205,9 @@ A route configuration is generated:
 
 ## Configuration Routing
 
-If you prefer to use a configured route, you can configure `routes`, ** this configuration item will not be parsed for the `src/pages` directory**.
+If you prefer to use a configured route, you can configure `routes`, **this configuration item will not be parsed for the `src/pages` directory**.
 
-such as:
+Example:
 
 ```js
 export default {
@@ -256,9 +256,9 @@ export default (props) => {
 }
 ```
 
-## Routing Effect
+## Route Transition Effects
 
-There are several ways to implement routing effects. Here is an example of [react-transition-group](https://github.com/reactjs/react-transition-group).
+There are several ways to implement route transition effects. Here is an example of [react-transition-group](https://github.com/reactjs/react-transition-group).
 
 Install dependencies first,
 
@@ -266,7 +266,7 @@ Install dependencies first,
 $ yarn add react-transition-group
 ```
 
-In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with TransitionGroup and CSSTransition and use `location.key` as the key.
+In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with `TransitionGroup` and `CSSTransition` and use `location.key` as the key.
 
 ```js
 import withRouter from 'umi/withRouter';
@@ -346,7 +346,7 @@ export default {
 
 ## Scroll to Top
 
-Decide whether to scroll to top in the componentDidUpdate of the layout component (`layouts/index.js` or the `_layout.js` in the pages subdirectory), for example:
+Decide whether to scroll to top in the `componentDidUpdate` of the layout component (`layouts/index.js` or the `_layout.js` in the pages subdirectory), for example:
 
 ```js
 import { Component } from 'react';

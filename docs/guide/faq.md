@@ -36,7 +36,7 @@ dva-immer@0.2.3
 path-to-regexp@1.7.0
 ```
 
-### How to introduce @babel/polyfill ?
+### How to introduce @babel/polyfill?
 
 Install dependencies first,
 
@@ -55,7 +55,7 @@ import '@babel/polyfill';
 The title can be dynamically modified via [react-helmet](https://github.com/nfl/react-helmet).
 > Note: In a hybrid application, if you use react-helmet in the ios web container, you can try [react-document-title](https://github.com/gaearon/react-document-title).
 
-## Reporting error
+## Reporting Error
 
 ### `Object.values` is not a function
 
@@ -63,7 +63,7 @@ E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
 
-Upgrade the node version and make sure the version is 8 or above.
+Upgrade the node version and make sure the version is 8 or greater.
 
 ### `exports is not defined`
 
@@ -79,7 +79,7 @@ E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/lSuOXlbtrZPLoMaLBODj.png" />
 
-Make sure you have package.json and configure the `name` attribute.
+Make sure you have package.json and have configured the `name` attribute.
 
 ### `Conflicting order between [mini-css-extract-plugin]`
 
@@ -87,7 +87,7 @@ E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mjzdexbrmZulkjCAqzPC.png" />
 
-This is [a problem with the webpack plugin] (https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250), which does not affect the normal production of CSS files and can be ignored for now.
+This is [a problem with the webpack plugin](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250), which does not affect the normal production of CSS files and can be ignored for now.
 
 ### `umi` is not an internal or external command
 
@@ -131,13 +131,13 @@ Then modify `.umirc.js`:
 
 ### How to do breakpoint debugging?
 
-Make sure the node is above 8 and then execute:
+Make sure node version is above 8 and then execute:
 
 ```bash
 $ node --inspect-brk ./node_modules/.bin/umi test
 ```
 
-Then open chrome://inspect/#devices in the browser for inspect and breakpoints.
+Then open [chrome://inspect/#devices](chrome://inspect/#devices) in the browser for inspect and breakpoints.
 
 ## Deployment
 
@@ -145,7 +145,7 @@ Then open chrome://inspect/#devices in the browser for inspect and breakpoints.
 
 Several options are available:
 
-* Use hashHistory instead of `history: 'hash' in `.umirc.js`
+* Use `hashHistory` instead of `history: 'hash' in `.umirc.js`
 * Static, with `exportStatic: true` in `.umirc.js`
 * The server configures the route fallback to index.html
 

@@ -1,8 +1,8 @@
 # Configuration
 
-## Configuration file
+## Configuration File
 
-Umi allows to configure in `.umirc.js` or `config/config.js` (choose one, `.umirc.js` is priority), ES6 syntax is supported.
+Umi can be configured in `.umirc.js` or `config/config.js` (choose one, `.umirc.js` has priority), ES6 syntax is supported.
 
 > To simplify the description, only `.umirc.js` will appear in subsequent documents.
 

@@ -4,7 +4,7 @@
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-In the organization of files and directories, umi tried to choose the agreed way.
+In the organization of files and directories, umi tries to choose the agreed upon way.
 
 The directory structure of a complex application is as follows:
 
@@ -37,7 +37,7 @@ Configuration files, mock files, etc. are registered in real time with `@babel/r
 
 ## dist
 
-The default output path can be modified by configuring outputPath.
+The default output path can be modified by configuring `outputPath`.
 
 ## mock
 
@@ -55,7 +55,7 @@ Then visit [http://localhost:8000/api/users](http://localhost:8000/api/users) in
 
 ## src
 
-The convention `src` is the source directory, but optional, simple items can be added without the `src` directory.
+By convention, `src` is the source directory. But optional, simple items can be added without the `src` directory.
 
 For example: the effect of the following two directory structures is the same.
 
@@ -102,7 +102,7 @@ If there is `layouts/index.js`, then the route becomes:
 
 ## src/pages
 
-All the `(j|t)sx?` files under the pages are the route. For more information on contracted routing, go to the Routing chapter.
+All the `(j|t)sx?` files under the pages are the routes. For more information on contracted routing, go to the Routing chapter.
 
 ## src/pages/404.js
 
@@ -110,7 +110,7 @@ All the `(j|t)sx?` files under the pages are the route. For more information on 
 
 ## src/pages/document.ejs
 
-When this file is available, it overrides the default HTML template. Need to include at least the following code:
+When this file is available, it overrides the default HTML template. Needs to include at least the following code:
 
 ```html
 <div id="root"></div>

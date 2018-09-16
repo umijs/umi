@@ -4,7 +4,7 @@
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-In umi, there are two ways to jump between pages: declarative and imperative.
+In umi, there are two ways to navigate between pages: declarative and imperative.
 
 ## Declarative
 

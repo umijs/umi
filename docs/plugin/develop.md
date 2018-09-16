@@ -29,7 +29,7 @@ All of umi's plugin interfaces are provided through the api when the plugin is i
 - Event class API, key event points provided by some plugin systems
 - Application class API, API for implementing plugin function requirements, there are two methods of direct call and function callback
 
-**Note: ** All APIs are used by the `api.[theApiName]` method, and the internal APIs are uniformly prefixed with `_`.
+**Note:** All APIs are used by the `api.[theApiName]` method, and the internal APIs are uniformly prefixed with `_`.
 
 Here's a basic usage example:
 

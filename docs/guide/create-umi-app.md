@@ -1,4 +1,4 @@
-# Create a project with create-umi
+# Create a Project With create-umi
 
 Umi provides scaffolding through [create-umi](https://github.com/umijs/create-umi), which includes some customization capabilities. The `yarn create` command is recommended because it ensures that every time you use the latest scaffolding.
 
