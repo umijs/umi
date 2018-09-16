@@ -130,3 +130,8 @@ $ HTML=none umi build
 ### WATCH_FILES
 
 ### RM_TMPDIR
+### FORK_TS_CHECKER
+默认不开启TypeScript检查，值为1时启用。比如：
+ ```bash
+$ FORK_TS_CHECKER=1 umi dev
+```
