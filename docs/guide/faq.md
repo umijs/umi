@@ -97,7 +97,36 @@ E.g.
 
 You need to configure the NODE_PATH environment variable. If you use yarn, you can get the bin path by executing `yarn global bin`.
 
+## webpack
+
+### How to configure additional loader?
+
+For example, I hope .svg not to produce base64, but to generate svg files, which can be configured like this:
+
+```js
+export default {
+  // Add exclude for url-loader
+  urlLoaderExcludes: [/.svg$/],
+  // Add loader
+  chainWebpack(config) {
+    config.module.rule('svg-with-file')
+      .test(/.svg$/)
+      .use('svg-with-file-loader')
+      .loader('file-loader')
+  },
+}
+```
+
 ## CSS
+
+### Why Don't My Imported CSS Files Take Effect?
+
+umi use css modules by default, please write your css as css modules.
+
+Ref:
+
+* [css-modules/css-modules](https://github.com/css-modules/css-modules)
+* [CSS Modules usage tutorial](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 
 ### How to disable css modules?
 

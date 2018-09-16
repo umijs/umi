@@ -191,7 +191,9 @@ export default class HTMLGenerator {
     if (isProduction) {
       assert(
         this.chunksMap[filename],
-        `file ${filename} don't exists in chunksMap`,
+        `file ${filename} don't exists in chunksMap ${JSON.stringify(
+          this.chunksMap,
+        )}`,
       );
       return this.chunksMap[filename];
     } else {
