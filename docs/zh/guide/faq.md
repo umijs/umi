@@ -93,6 +93,25 @@ e.g.
 
 需配置 NODE_PATH 环境变量，如使用 yarn，可通过执行 `yarn global bin` 拿到 bin 路径。
 
+## webpack
+
+### 如何配置额外的 loader ?
+
+比如 svg 我希望不走 base64，而是全部产生 svg 文件，可以这样配：
+
+```js
+export default {
+  // 添加 url-loader 的 exclude
+  urlLoaderExcludes: [/.svg$/],
+  // 添加 loader
+  chainWebpack(config) {
+    config.module.rule('svg-with-file')
+      .test(/.svg$/)
+      .use('svg-with-file-loader')
+      .loader('file-loader')
+  },
+}
+```
 
 ## CSS
 
