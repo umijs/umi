@@ -96,6 +96,15 @@ e.g.
 
 ## CSS
 
+### 为啥我 import 的 css 文件不生效？
+
+umi 默认是开启 css modules 的，请按照 css modules 的方式进行书写。
+
+参考：
+
+* [css-modules/css-modules](https://github.com/css-modules/css-modules)
+* [CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
+
 ### 如何禁用 css modules ？
 
 修改 `.umirc.js`:

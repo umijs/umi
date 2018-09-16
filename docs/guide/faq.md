@@ -99,6 +99,15 @@ e.g.
 
 ## CSS
 
+### Why doesn't my imported css files take effect?
+
+umi use css modules by default, please write as css modules.
+
+Ref:
+
+* [css-modules/css-modules](https://github.com/css-modules/css-modules)
+* [CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
+
 ### 如何禁用 css modules ？
 
 修改 `.umirc.js`:
