@@ -9,12 +9,16 @@ export default service => {
         const hg = getHtmlGenerator(service, {
           chunksMap,
         });
-        hg.generate().forEach(({ filePath, content }) => {
-          compilation.assets[filePath] = {
-            source: () => content,
-            size: () => content.length,
-          };
-        });
+        try {
+          hg.generate().forEach(({ filePath, content }) => {
+            compilation.assets[filePath] = {
+              source: () => content,
+              size: () => content.length,
+            };
+          });
+        } catch (e) {
+          compilation.errors.push(e);
+        }
       });
     }
   };
