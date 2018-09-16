@@ -4,7 +4,7 @@ sidebarDepth: 3
 
 # Router
 
-::: Tip prompt
+::: tip
 The routing usage described below can be found in [umi-examples/routes](https://github.com/umijs/umi-examples/tree/master/routes) and find the sample code in [umi-examples/routes-via-config](https://github.com/umijs/umi-examples/tree/master/routes-via-config).
 :::
 
