@@ -1,7 +1,7 @@
 # Directory and Convention
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
 In the organization of files and directories, umi tries to choose the agreed upon way.

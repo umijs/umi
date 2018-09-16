@@ -1,7 +1,7 @@
 # HTML Template
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
 ## Modify the Default Template

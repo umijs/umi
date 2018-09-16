@@ -1,7 +1,7 @@
 # Migrate from umi 1.x
 
 ::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
+This article is being translated. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
 > More like watching videos? You can [click here to watch](https://youtu.be/1mvKzFLLBck).
