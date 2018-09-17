@@ -162,7 +162,7 @@ Make sure node version is above 8 and then execute:
 $ node --inspect-brk ./node_modules/.bin/umi test
 ```
 
-Then open [chrome://inspect/#devices](chrome://inspect/#devices) in the browser for inspect and breakpoints.
+Then open chrome://inspect/#devices in the browser for inspect and breakpoints.
 
 ## Deployment
 

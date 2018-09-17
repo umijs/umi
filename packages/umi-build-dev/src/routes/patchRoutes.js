@@ -6,7 +6,9 @@ let redirects;
 export default (routes, config = {}, isProduction, onPatchRoute) => {
   redirects = [];
   patchRoutes(routes, config, isProduction, onPatchRoute);
-  routes.unshift(...redirects);
+  if (!config.disableRedirectHoist) {
+    routes.unshift(...redirects);
+  }
   return routes;
 };
 
@@ -37,10 +39,12 @@ function patchRoutes(routes, config, isProduction, onPatchRoute) {
     });
   }
 
-  const removedRoutes = remove(routes, route => {
-    return route.redirect;
-  });
-  redirects = redirects.concat(removedRoutes);
+  if (!config.disableRedirectHoist) {
+    const removedRoutes = remove(routes, route => {
+      return route.redirect;
+    });
+    redirects = redirects.concat(removedRoutes);
+  }
 }
 
 function patchRoute(route, config, isProduction, onPatchRoute) {

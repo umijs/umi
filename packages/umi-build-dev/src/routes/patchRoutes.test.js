@@ -241,4 +241,36 @@ describe('patchRoutes', () => {
       },
     ]);
   });
+
+  it('disable redirect hoist', () => {
+    const routes = patchRoutes(
+      [
+        { path: '/a', component: './A' },
+        { path: '/b', redirect: '/c' },
+        {
+          path: '/c',
+          routes: [
+            { path: '/c/d', component: 'D' },
+            { path: '/c/e', redirect: '/c/f' },
+            { path: '/c/f', component: 'F' },
+          ],
+        },
+      ],
+      {
+        disableRedirectHoist: true,
+      },
+    );
+    expect(routes).toEqual([
+      { path: '/a', component: './A' },
+      { path: '/b', redirect: '/c' },
+      {
+        path: '/c',
+        routes: [
+          { path: '/c/d', component: 'D' },
+          { path: '/c/e', redirect: '/c/f' },
+          { path: '/c/f', component: 'F' },
+        ],
+      },
+    ]);
+  });
 });
