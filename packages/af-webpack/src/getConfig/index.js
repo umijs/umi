@@ -52,6 +52,7 @@ export default function(opts) {
     .end()
     .extensions.merge([
       '.web.js',
+      '.wasm',
       '.mjs',
       '.js',
       '.web.jsx',
@@ -89,7 +90,7 @@ export default function(opts) {
   const rule = webpackConfig.module
     .rule('exclude')
     .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx|mjs)$/)
+    .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
     .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
