@@ -5,6 +5,7 @@ import isPlainObject from 'is-plain-object';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
 import { matchRoutes } from 'react-router-config';
+import cheerio from 'cheerio';
 import formatChunksMap from './formatChunksMap';
 
 export default class HTMLGenerator {
@@ -232,8 +233,9 @@ export default class HTMLGenerator {
     });
 
     // validate tpl
+    const $ = cheerio.load(html);
     assert(
-      html.includes(`<div id="${this.config.mountElementId}"></div>`),
+      $(`#${this.config.mountElementId}`).length === 1,
       `Document ${relTplPath} must contain <div id="${
         this.config.mountElementId
       }"></div>`,
