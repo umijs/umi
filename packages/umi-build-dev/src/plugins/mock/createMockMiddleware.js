@@ -5,11 +5,12 @@ import glob from 'glob';
 import assert from 'assert';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
+import signale from 'signale';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 
-export default function getMockMiddleware(api) {
+export default function getMockMiddleware(api, errors) {
   const { debug } = api;
   const { cwd } = api.service;
   const absMockPath = join(cwd, 'mock');
@@ -27,12 +28,18 @@ export default function getMockMiddleware(api) {
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       mockData = getConfig();
+      if (!errors.length) {
+        signale.success(`Mock file parse success`);
+      }
     });
   }
 
   function getConfig() {
+    // Clear errors
+    errors.splice(0, errors.length);
+
     cleanRequireCache();
-    let ret = null;
+    let ret = {};
     if (existsSync(absConfigPath)) {
       debug(`load mock data from ${absConfigPath}`);
       ret = require(absConfigPath); // eslint-disable-line
@@ -45,14 +52,20 @@ export default function getMockMiddleware(api) {
           mockFiles,
         )}`,
       );
-      ret = mockFiles.reduce((memo, mockFile) => {
-        const m = require(join(absMockPath, mockFile)); // eslint-disable-line
-        memo = {
-          ...memo,
-          ...(m.default || m),
-        };
-        return memo;
-      }, {});
+      try {
+        ret = mockFiles.reduce((memo, mockFile) => {
+          const m = require(join(absMockPath, mockFile)); // eslint-disable-line
+          memo = {
+            ...memo,
+            ...(m.default || m),
+          };
+          return memo;
+        }, {});
+      } catch (e) {
+        errors.push(e);
+        signale.error(`Mock file parse failed`);
+        console.error(e.message);
+      }
     }
     return normalizeConfig(ret);
   }
