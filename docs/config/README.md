@@ -38,6 +38,13 @@ Configure routing.
 If `routes` is configured, the negotiated route will not take effect.
 :::
 
+### disableRedirectHoist
+
+* 类型：`Boolean`
+* 默认值：`false`
+
+For some reason, we hoist all redirect when parsing the route config, but this caused some problems, so add this configuration to disable redirect hoist.
+
 ### history
 
 * Type: `String`
@@ -72,6 +79,13 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 * Default: `false`
 
 Use the `window.publicPath` specified in the HTML when the value is `true`.
+
+### hash
+
+* Type: `Boolean`
+* Default: `false`
+
+Whether to enable the hash file suffix.
 
 ### context
 
