@@ -87,6 +87,10 @@ export default function(api) {
       .set(
         'umi/_createHistory',
         join(process.env.UMI_DIR, 'lib/createHistory.js'),
+      )
+      .set(
+        'umi/_runtimePlugin',
+        join(process.env.UMI_DIR, 'lib/runtimePlugin.js'),
       );
   });
 

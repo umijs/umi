@@ -9,10 +9,21 @@ import ReactDOM from 'react-dom';
 // create history
 window.g_history = {{{ history }}};
 
+// runtime plugins
+window.g_plugins = require('umi/_runtimePlugin');
+window.g_plugins.init({
+  validKeys: [{{#validKeys}}'{{{ . }}}',{{/validKeys}}],
+});
+{{#plugins}}
+window.g_plugins.use(require('{{{ . }}}'));
+{{/plugins}}
+
 // render
-function render() {
+let oldRender = () => {
+  console.log('render');
   {{{ render }}}
-}
+};
+const render = window.g_plugins.compose('render', { initialValue: oldRender });
 
 const moduleBeforeRendererPromises = [];
 {{# moduleBeforeRenderer }}
@@ -37,6 +48,6 @@ Promise.all(moduleBeforeRendererPromises).then(() => {
 // hot module replacement
 if (module.hot) {
   module.hot.accept('./router', () => {
-    render();
+    oldRender();
   });
 }

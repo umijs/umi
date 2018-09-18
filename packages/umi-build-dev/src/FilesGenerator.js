@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
@@ -57,6 +57,7 @@ export default class FilesGenerator {
     let pageWatchers = [
       paths.absPagesPath,
       ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
+      ...EXT_LIST.map(ext => join(paths.absSrcPath, `app${ext}`)),
     ];
     if (this.modifyPageWatcher) {
       pageWatchers = this.modifyPageWatcher(pageWatchers);
@@ -119,8 +120,11 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
+  const rootContainer = window.g_plugins.apply('rootContainer', {
+    initialValue: React.createElement(require('./router').default),
+  });
   ReactDOM.render(
-    React.createElement(require('./router').default),
+    rootContainer,
     document.getElementById('${this.mountElementId}'),
   );
       `.trim(),
@@ -143,6 +147,12 @@ require('umi/_createHistory').default({
 })
     `.trim();
 
+    const plugins = this.service.applyPlugins('addRuntimePlugin', {
+      initialValue: [],
+    });
+    if (existsSync(join(paths.absSrcPath, 'app.js'))) {
+      plugins.push('@/app');
+    }
     const entryContent = Mustache.render(entryTpl, {
       code: this.service
         .applyPlugins('addEntryCode', {
@@ -173,6 +183,10 @@ require('umi/_createHistory').default({
       render: initialRender,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
+      }),
+      plugins,
+      validKeys: this.service.applyPlugins('addRuntimePluginKey', {
+        initialValue: ['patchRoutes', 'render', 'rootContainer'],
       }),
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
