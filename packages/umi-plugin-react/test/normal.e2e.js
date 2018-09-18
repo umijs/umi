@@ -58,7 +58,7 @@ describe('normal', () => {
     const meta = await page.evaluate(() =>
       document.querySelector('#meta1').getAttribute('foo'),
     );
-    expect(meta).toEqual('bar');
+    expect(meta).toEqual('/bar');
   });
 
   it('a page', async () => {

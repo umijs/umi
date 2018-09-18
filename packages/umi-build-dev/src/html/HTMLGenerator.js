@@ -336,7 +336,9 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
       exportStatic && exportStatic.dynamicRoot
         ? relPathToPublicPath
         : publicPath;
-    html = html.replace(/<%= pathToPublicPath %>/g, pathToPublicPath);
+    html = html
+      .replace(/<%= pathToPublicPath %>/g, pathToPublicPath)
+      .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
 
     if (this.modifyHTML) {
       html = this.modifyHTML(html, { route });

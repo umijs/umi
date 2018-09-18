@@ -33,7 +33,7 @@ export default {
           { content: `window.scripts.push('script1');` },
           { src: '/script2.js' },
         ],
-        metas: [{ id: 'meta1', foo: 'bar' }],
+        metas: [{ id: 'meta1', foo: '<%= PUBLIC_PATH %>bar' }],
         links: [{ id: 'link1', foo: 'bar' }],
       },
     ],
