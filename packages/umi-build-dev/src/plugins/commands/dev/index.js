@@ -105,6 +105,7 @@ export default function(api) {
               startWatch();
             },
             onCompileDone({ isFirstCompile, stats }) {
+              service.__chunks = stats.compilation.chunks;
               service.applyPlugins('onDevCompileDone', {
                 args: {
                   isFirstCompile,

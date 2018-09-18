@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { join, relative } from 'path';
+import { join, relative, extname } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import isPlainObject from 'is-plain-object';
 import ejs from 'ejs';
@@ -188,18 +188,16 @@ export default class HTMLGenerator {
   }
 
   getHashedFileName(filename) {
-    const isProduction = this.env === 'production';
-    if (isProduction) {
+    // css is optional
+    if (extname(filename) === '.js') {
       assert(
         this.chunksMap[filename],
         `file ${filename} don't exists in chunksMap ${JSON.stringify(
           this.chunksMap,
         )}`,
       );
-      return this.chunksMap[filename];
-    } else {
-      return filename;
     }
+    return this.chunksMap[filename];
   }
 
   getContent(route) {
@@ -246,6 +244,9 @@ export default class HTMLGenerator {
     let scripts = [];
     let styles = [];
     let headScripts = [];
+    let chunks = ['umi'];
+
+    if (this.modifyChunks) chunks = this.modifyChunks(chunks);
 
     let routerBaseStr = JSON.stringify(this.config.base || '/');
     const publicPath = this.publicPath || '/';
@@ -273,8 +274,14 @@ export default class HTMLGenerator {
         ...(setPublicPath ? [`window.publicPath = ${publicPathStr};`] : []),
       ].join('\n'),
     });
-    scripts.push({
-      src: `<%= pathToPublicPath %>${this.getHashedFileName('umi.js')}`,
+
+    chunks.forEach(chunk => {
+      const hashedFileName = this.getHashedFileName(`${chunk}.js`);
+      if (hashedFileName) {
+        scripts.push({
+          src: `<%= pathToPublicPath %>${hashedFileName}`,
+        });
+      }
     });
 
     if (this.modifyMetas) metas = this.modifyMetas(metas);
@@ -286,9 +293,14 @@ export default class HTMLGenerator {
 
     if (this.env === 'development' || this.chunksMap['umi.css']) {
       // umi.css should be the last one stylesheet
-      links.push({
-        rel: 'stylesheet',
-        href: `<%= pathToPublicPath %>${this.getHashedFileName('umi.css')}`,
+      chunks.forEach(chunk => {
+        const hashedFileName = this.getHashedFileName(`${chunk}.css`);
+        if (hashedFileName) {
+          links.push({
+            rel: 'stylesheet',
+            href: `<%= pathToPublicPath %>${hashedFileName}`,
+          });
+        }
       });
     }
 
@@ -322,7 +334,9 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
       exportStatic && exportStatic.dynamicRoot
         ? relPathToPublicPath
         : publicPath;
-    html = html.replace(/<%= pathToPublicPath %>/g, pathToPublicPath);
+    html = html
+      .replace(/<%= pathToPublicPath %>/g, pathToPublicPath)
+      .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
 
     if (this.modifyHTML) {
       html = this.modifyHTML(html, { route });

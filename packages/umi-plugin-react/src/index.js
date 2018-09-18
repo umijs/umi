@@ -47,6 +47,13 @@ export default function(api, option) {
     hardSource: () => require('./plugins/hardSource').default,
     pwa: () => require('./plugins/pwa').default,
 
+    // html tags
+    chunks: () => require('./plugins/chunks').default,
+    scripts: () => require('./plugins/scripts').default,
+    headScripts: () => require('./plugins/headScripts').default,
+    links: () => require('./plugins/links').default,
+    metas: () => require('./plugins/metas').default,
+
     // misc
     dva: () => require('./plugins/dva').default,
     locale: () => require('./plugins/locale').default,
