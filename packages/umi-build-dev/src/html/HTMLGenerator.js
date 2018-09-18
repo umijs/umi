@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { join, relative } from 'path';
+import { join, relative, extname } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import isPlainObject from 'is-plain-object';
 import ejs from 'ejs';
@@ -188,18 +188,16 @@ export default class HTMLGenerator {
   }
 
   getHashedFileName(filename) {
-    const isProduction = this.env === 'production';
-    if (isProduction) {
+    // css is optional
+    if (extname(filename) === '.js') {
       assert(
         this.chunksMap[filename],
         `file ${filename} don't exists in chunksMap ${JSON.stringify(
           this.chunksMap,
         )}`,
       );
-      return this.chunksMap[filename];
-    } else {
-      return filename;
     }
+    return this.chunksMap[filename];
   }
 
   getContent(route) {
