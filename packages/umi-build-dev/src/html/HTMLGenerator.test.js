@@ -183,6 +183,9 @@ describe('HG', () => {
   it('getContent in development', () => {
     const hg = new HTMLGenerator({
       env: 'development',
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
       config: {
         mountElementId: 'documenttestid',
       },
