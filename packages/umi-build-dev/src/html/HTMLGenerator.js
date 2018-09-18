@@ -246,6 +246,9 @@ export default class HTMLGenerator {
     let scripts = [];
     let styles = [];
     let headScripts = [];
+    let chunks = ['umi'];
+
+    if (this.modifyChunks) chunks = this.modifyChunks(chunks);
 
     let routerBaseStr = JSON.stringify(this.config.base || '/');
     const publicPath = this.publicPath || '/';
@@ -273,8 +276,14 @@ export default class HTMLGenerator {
         ...(setPublicPath ? [`window.publicPath = ${publicPathStr};`] : []),
       ].join('\n'),
     });
-    scripts.push({
-      src: `<%= pathToPublicPath %>${this.getHashedFileName('umi.js')}`,
+
+    chunks.forEach(chunk => {
+      const hashedFileName = this.getHashedFileName(`${chunk}.js`);
+      if (hashedFileName) {
+        scripts.push({
+          src: `<%= pathToPublicPath %>${hashedFileName}`,
+        });
+      }
     });
 
     if (this.modifyMetas) metas = this.modifyMetas(metas);
@@ -286,9 +295,14 @@ export default class HTMLGenerator {
 
     if (this.env === 'development' || this.chunksMap['umi.css']) {
       // umi.css should be the last one stylesheet
-      links.push({
-        rel: 'stylesheet',
-        href: `<%= pathToPublicPath %>${this.getHashedFileName('umi.css')}`,
+      chunks.forEach(chunk => {
+        const hashedFileName = this.getHashedFileName(`${chunk}.css`);
+        if (hashedFileName) {
+          links.push({
+            rel: 'stylesheet',
+            href: `<%= pathToPublicPath %>${hashedFileName}`,
+          });
+        }
       });
     }
 

@@ -403,6 +403,10 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
+### modifyHTMLChunks
+
+修改 chunks 。
+
 ### modifyHTMLWithAST
 
 修改 HTML，基于 cheerio 。

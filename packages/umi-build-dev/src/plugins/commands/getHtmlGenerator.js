@@ -22,6 +22,11 @@ export default (service, opts = {}) => {
     modifyPublicPathStr(str) {
       return str;
     },
+    modifyChunks(memo) {
+      return service.applyPlugins('modifyHTMLChunks', {
+        initialValue: memo,
+      });
+    },
     modifyMetas(memo) {
       return service.applyPlugins('addHTMLMeta', {
         initialValue: memo,

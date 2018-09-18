@@ -402,6 +402,10 @@ api.addHTMLScript({
 
 Add a script to the HTML head.
 
+### modifyHTMLChunks
+
+Modify chunks in HTML.
+
 ### modifyHTMLWithAST
 
 Modify the HTML, based on cheerio.

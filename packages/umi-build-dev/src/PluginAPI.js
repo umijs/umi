@@ -93,6 +93,7 @@ export default class PluginAPI {
       'addHTMLScript',
       'addHTMLStyle',
       'addHTMLHeadScript',
+      'modifyHTMLChunks',
       'onGenerateFiles',
       'onHTMLRebuild',
       'modifyDefaultConfig',
