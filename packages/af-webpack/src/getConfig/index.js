@@ -198,10 +198,6 @@ export default function(opts) {
   webpackConfig.module
     .rule('ts')
     .test(/\.tsx?$/)
-    .include.add(opts.cwd)
-    .end()
-    .exclude.add(/node_modules/)
-    .end()
     .use('babel-loader')
     .loader(require.resolve('babel-loader'))
     .options(babelOpts)
