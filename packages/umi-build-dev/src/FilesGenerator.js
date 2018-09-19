@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, relative } from 'path';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import uniq from 'lodash.uniq';
 import Mustache from 'mustache';
+import { winPath } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -149,9 +150,13 @@ require('umi/_createHistory').default({
 })
     `.trim();
 
-    const plugins = this.service.applyPlugins('addRuntimePlugin', {
-      initialValue: [],
-    });
+    const plugins = this.service
+      .applyPlugins('addRuntimePlugin', {
+        initialValue: [],
+      })
+      .map(plugin => {
+        return winPath(relative(paths.absTmpDirPath, plugin));
+      });
     if (existsSync(join(paths.absSrcPath, 'app.js'))) {
       plugins.push('@/app');
     }
