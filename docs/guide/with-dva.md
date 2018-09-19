@@ -28,6 +28,9 @@ export default {
   plugins: [
     [
       'umi-plugin-react',
+      {
+        dva: true,
+      },.
     ]
   ],
 };
@@ -98,29 +101,27 @@ With the above file structure:
 * the page-level model for `/c` is `src/pages/c/model.js`
 * the page-level models for `/c/d` are `src/pages/c/model.js, src/pages/c/d/models/d.js`
 
-## FAQ
+## Configuration and plugins
 
-### How to config dva hooks such as: onError, initialState?
+> The previous configuration in `src/dva.js` has been deprecated, and will remove support in next major release.
 
-create `src/dva.js`, export `config` method for hook usage, for example:
+Create a new `app.js` in the `src` directory with the following contents:
 
 ```js
-import { message } from 'antd';
-
-export function config() {
-  return {
-    onError(err) {
-      err.preventDefault();
-      message.error(err.message);
+export const dva = {
+  config: {
+    onError(e) {
+      e.preventDefault();
+      console.error(e.message);
     },
-    initialState: {
-      global: {
-        text: 'hi umi + dva',
-      },
-    },
-  };
-}
+  },
+  plugins: [
+    require('dva-logger'),
+  ],
+};
 ```
+
+## FAQ
 
 ### Page component is not re-rendered whenever url changed?
 
