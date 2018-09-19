@@ -2,8 +2,10 @@ import { join } from 'path';
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
+import assert from 'assert';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import uniq from 'lodash.uniq';
 import Mustache from 'mustache';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
@@ -153,6 +155,13 @@ require('umi/_createHistory').default({
     if (existsSync(join(paths.absSrcPath, 'app.js'))) {
       plugins.push('@/app');
     }
+    const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
+      initialValue: ['patchRoutes', 'render', 'rootContainer'],
+    });
+    assert(
+      uniq(validKeys).length === validKeys.length,
+      `Conflict keys found in [${validKeys.join(', ')}]`,
+    );
     const entryContent = Mustache.render(entryTpl, {
       code: this.service
         .applyPlugins('addEntryCode', {
@@ -185,9 +194,7 @@ require('umi/_createHistory').default({
         initialValue: initialHistory,
       }),
       plugins,
-      validKeys: this.service.applyPlugins('addRuntimePluginKey', {
-        initialValue: ['patchRoutes', 'render', 'rootContainer'],
-      }),
+      validKeys,
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
