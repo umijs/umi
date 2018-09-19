@@ -576,3 +576,11 @@ api.modifyAFWebpackOpts((memo) => {
 ### addVersionInfo
 
 添加版本信息，在 `umi -v` 或 `umi version` 时显示。
+
+### addRuntimePlugin
+
+添加运行时插件，参数为文件的绝对路径。
+
+### addRuntimePluginKey
+
+添加运行时可配置项。
