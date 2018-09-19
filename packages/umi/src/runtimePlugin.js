@@ -22,19 +22,17 @@ export function getItem(key) {
 }
 
 function _compose(...funcs) {
-  if (funcs.length === 0) {
-    return arg => arg;
-  }
   if (funcs.length === 1) {
     return funcs[0];
   }
-  return funcs.reduceRight((a, b) => (...args) => a(b(...args)));
+  const last = funcs.pop();
+  return funcs.reduce((a, b) => () => b(a), last);
 }
 
 export function compose(item, { initialValue }) {
   if (typeof item === 'string') item = getItem(item);
   return () => {
-    return _compose(...item)(initialValue);
+    return _compose(...item, initialValue)();
   };
 }
 

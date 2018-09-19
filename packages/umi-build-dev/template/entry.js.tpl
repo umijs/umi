@@ -20,7 +20,6 @@ window.g_plugins.use(require('{{{ . }}}'));
 
 // render
 let oldRender = () => {
-  console.log('render');
   {{{ render }}}
 };
 const render = window.g_plugins.compose('render', { initialValue: oldRender });

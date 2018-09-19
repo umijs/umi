@@ -90,18 +90,14 @@ describe('runtimePlugin', () => {
     const ret = [];
     use({
       foo(memo) {
-        return () => {
-          ret.push(1);
-          memo();
-        };
+        ret.push(1);
+        memo();
       },
     });
     use({
       foo(memo) {
-        return () => {
-          ret.push(2);
-          memo();
-        };
+        ret.push(2);
+        memo();
       },
     });
     const a = compose(
@@ -112,8 +108,25 @@ describe('runtimePlugin', () => {
         },
       },
     );
-    a()();
+    a();
     expect(ret).toEqual([2, 1, 'a']);
+  });
+
+  it('compose empty', () => {
+    init({
+      validKeys: ['foo'],
+    });
+    const ret = [];
+    const a = compose(
+      'foo',
+      {
+        initialValue: () => {
+          ret.push('a');
+        },
+      },
+    );
+    a();
+    expect(ret).toEqual(['a']);
   });
 
   it('mergeConfig', () => {
