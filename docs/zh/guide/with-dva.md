@@ -32,6 +32,9 @@ export default {
   plugins: [
     [
       'umi-plugin-react',
+      {
+        dva: true,
+      },
     ]
   ],
 };
@@ -97,29 +100,27 @@ model 分两类，一是全局 model，二是页面 model。全局 model 存于 
 * `/c` 的 page model 为 `src/pages/c/model.js`
 * `/c/d` 的 page model 为 `src/pages/c/model.js, src/pages/c/d/models/d.js`
 
-## FAQ
+## 配置及插件
 
-### 如何配置 onError、initialState 等 hook？
+> 之前在 `src/dva.js` 下进行配置的方式已 deprecated，下个大版本会移除支持。
 
-新建 src/dva.js，通过导出的 config 方法来返回额外配置项，比如：
+在 `src` 目录下新建 `app.js`，内容如下：
 
 ```js
-import { message } from 'antd';
-
-export function config() {
-  return {
-    onError(err) {
-      err.preventDefault();
-      message.error(err.message);
+export const dva = {
+  config: {
+    onError(e) {
+      e.preventDefault();
+      console.error(e.message);
     },
-    initialState: {
-      global: {
-        text: 'hi umi + dva',
-      },
-    },
-  };
-}
+  },
+  plugins: [
+    require('dva-logger'),
+  ],
+};
 ```
+
+## FAQ
 
 ### url 变化了，但页面组件不刷新，是什么原因？
 

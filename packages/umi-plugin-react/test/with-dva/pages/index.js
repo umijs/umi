@@ -9,12 +9,20 @@ const Users = connect(mapStateToProps)(({ user }) => {
   );
 });
 
-export default () => (
+export default connect()(({ dispatch }) => (
   <>
     <h1>index</h1>
     <div>
       <h2>Users</h2>
       <Users />
     </div>
+    <hr />
+    <button
+      onClick={() => {
+        dispatch({ type: 'users/throwError' });
+      }}
+    >
+      throw error
+    </button>
   </>
-);
+));

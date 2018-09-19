@@ -100,6 +100,8 @@ export default class PluginAPI {
       '_modifyConfig',
       'modifyHTMLWithAST',
       '_modifyHelpInfo',
+      'addRuntimePlugin',
+      'addRuntimePluginKey',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);

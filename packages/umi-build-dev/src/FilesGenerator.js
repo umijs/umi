@@ -1,10 +1,13 @@
-import { join } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { join, relative } from 'path';
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
+import assert from 'assert';
 import chalk from 'chalk';
 import debounce from 'lodash.debounce';
+import uniq from 'lodash.uniq';
 import Mustache from 'mustache';
+import { winPath } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -57,6 +60,7 @@ export default class FilesGenerator {
     let pageWatchers = [
       paths.absPagesPath,
       ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
+      ...EXT_LIST.map(ext => join(paths.absSrcPath, `app${ext}`)),
     ];
     if (this.modifyPageWatcher) {
       pageWatchers = this.modifyPageWatcher(pageWatchers);
@@ -119,8 +123,11 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
+  const rootContainer = window.g_plugins.apply('rootContainer', {
+    initialValue: React.createElement(require('./router').default),
+  });
   ReactDOM.render(
-    React.createElement(require('./router').default),
+    rootContainer,
     document.getElementById('${this.mountElementId}'),
   );
       `.trim(),
@@ -143,6 +150,23 @@ require('umi/_createHistory').default({
 })
     `.trim();
 
+    const plugins = this.service
+      .applyPlugins('addRuntimePlugin', {
+        initialValue: [],
+      })
+      .map(plugin => {
+        return winPath(relative(paths.absTmpDirPath, plugin));
+      });
+    if (existsSync(join(paths.absSrcPath, 'app.js'))) {
+      plugins.push('@/app');
+    }
+    const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
+      initialValue: ['patchRoutes', 'render', 'rootContainer'],
+    });
+    assert(
+      uniq(validKeys).length === validKeys.length,
+      `Conflict keys found in [${validKeys.join(', ')}]`,
+    );
     const entryContent = Mustache.render(entryTpl, {
       code: this.service
         .applyPlugins('addEntryCode', {
@@ -174,6 +198,8 @@ require('umi/_createHistory').default({
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
       }),
+      plugins,
+      validKeys,
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }

@@ -8,6 +8,7 @@ import renderRoutes from 'umi/_renderRoutes';
 let Router = {{{ RouterRootComponent }}};
 
 let routes = {{{ routes }}};
+window.g_plugins.applyForEach('patchRoutes', { initialValue: routes });
 
 export default function() {
   return (

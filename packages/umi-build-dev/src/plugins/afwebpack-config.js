@@ -74,6 +74,7 @@ export default function(api) {
         ),
       )
       .set('@', paths.absSrcPath)
+      .set('@tmp', paths.absTmpDirPath)
       .set('umi/link', join(process.env.UMI_DIR, 'lib/link.js'))
       .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic.js'))
       .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink.js'))
@@ -87,6 +88,10 @@ export default function(api) {
       .set(
         'umi/_createHistory',
         join(process.env.UMI_DIR, 'lib/createHistory.js'),
+      )
+      .set(
+        'umi/_runtimePlugin',
+        join(process.env.UMI_DIR, 'lib/runtimePlugin.js'),
       );
   });
 

@@ -27,6 +27,7 @@
     "lodash.flatten": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "lodash.remove": "^4.7.0",
+    "lodash.uniq": "^4.5.0",
     "mkdirp": "^0.5.1",
     "mustache": "^2.3.1",
     "object-assign": "^4.1.1",

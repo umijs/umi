@@ -227,17 +227,6 @@ models: () => [
     });
   }
 
-  api.modifyEntryRender(() => {
-    return `
-const DvaContainer = require('./DvaContainer').default;
-  ReactDOM.render(React.createElement(
-    DvaContainer,
-    null,
-    React.createElement(require('./router').default)
-  ), document.getElementById('${api.config.mountElementId || 'root'}'));
-    `.trim();
-  });
-
   const dvaDir = compatDirname(
     'dva/package.json',
     cwd,
@@ -292,4 +281,7 @@ const DvaContainer = require('./DvaContainer').default;
     Generator: require('./model').default(api),
     resolved: join(__dirname, './model'),
   });
+
+  api.addRuntimePlugin(join(__dirname, './runtime'));
+  api.addRuntimePluginKey('dva');
 }
