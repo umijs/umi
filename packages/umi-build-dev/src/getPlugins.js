@@ -28,6 +28,7 @@ export default function(opts = {}) {
     './plugins/404', // 404 must after mock
     // Disable this since it make umi build exit very slowly (4s+)
     // './plugins/atoolMonitor',
+    './plugins/targets',
   ];
 
   const pluginsObj = [

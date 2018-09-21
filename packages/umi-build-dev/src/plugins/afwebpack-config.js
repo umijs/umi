@@ -144,7 +144,19 @@ export default function(api) {
         presets: [
           [
             require.resolve('babel-preset-umi'),
-            { targets: { browsers: browserslist } },
+            {
+              targets: {
+                chrome: 49,
+                firefox: 45,
+                safari: 10,
+                edge: 13,
+                ios: 10,
+                ...(config.targets || {}),
+              },
+              env: {
+                useBuiltIns: 'entry',
+              },
+            },
           ],
         ],
       },
