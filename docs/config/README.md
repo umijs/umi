@@ -87,6 +87,25 @@ Use the `window.publicPath` specified in the HTML when the value is `true`.
 
 Whether to enable the hash file suffix.
 
+### targets <Badge text="2.1.0+"/>
+
+* Type: `Object`
+* Default: `{ chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 }`
+
+配置浏览器最低版本，会自动引入 polyfill 和做语法转换，配置的 targets 会和合并到默认值，所以不需要重复配置。
+
+Configuring the minimum version of browsers you want to compatible with.
+
+e.g. Compatible with ie 11,
+
+```js
+export default {
+  targets: {
+    ie: 11,
+  },
+};
+```
+
 ### context
 
 * Type: `Object`

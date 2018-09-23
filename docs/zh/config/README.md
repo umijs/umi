@@ -89,6 +89,23 @@ export default {
 
 是否开启 hash 文件后缀。
 
+### targets <Badge text="2.1.0+"/>
+
+* Type: `Object`
+* Default: `{ chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 }`
+
+配置浏览器最低版本，会自动引入 polyfill 和做语法转换，配置的 targets 会和合并到默认值，所以不需要重复配置。
+
+比如要兼容 ie11，需配置：
+
+```js
+export default {
+  targets: {
+    ie: 11,
+  },
+};
+```
+
 ### context
 
 * 类型：`Object`

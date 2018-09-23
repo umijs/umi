@@ -59,6 +59,7 @@ const BROWSER_FILES = [
   'packages/umi/src/renderRoutes.js',
   'packages/umi/src/withRouter.js',
   'packages/umi/src/utils.js',
+  'packages/umi/src/runtimePlugin.js',
   'packages/umi-build-dev/src/plugins/404/NotFound.js',
   'packages/umi-build-dev/src/plugins/404/guessJSFileFromPath.js',
   'packages/umi-build-dev/src/Compiling.js',

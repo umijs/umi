@@ -2,6 +2,7 @@ import debug from 'debug';
 import assert from 'assert';
 import { relative } from 'path';
 import isPlainObject from 'is-plain-object';
+import Mustache from 'mustache';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
 import Generator from 'yeoman-generator';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
@@ -17,6 +18,7 @@ export default class PluginAPI {
     this.compatDirname = compatDirname;
     this.findJS = findJS;
     this.findCSS = findCSS;
+    this.Mustache = Mustache;
     this.Generator = Generator;
 
     this.API_TYPE = {

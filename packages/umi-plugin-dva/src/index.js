@@ -1,13 +1,12 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join, dirname, basename, extname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
-import winPath from 'slash2';
 import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
 
 export function getModel(cwd, api) {
-  const { config } = api;
+  const { config, winPath } = api;
 
   const modelJSPath = findJSFile(cwd, 'model');
   if (modelJSPath) {
@@ -52,14 +51,14 @@ function getPageModels(cwd, api) {
 }
 
 function isPagesPath(path, api) {
-  const { paths } = api;
+  const { paths, winPath } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
   );
 }
 
 function isSrcPath(path, api) {
-  const { paths } = api;
+  const { paths, winPath } = api;
   return (
     endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
   );
@@ -78,8 +77,7 @@ export function getGlobalModels(api, shouldImportDynamic) {
 }
 
 export default function(api, opts = {}) {
-  const { paths, cwd, compatDirname } = api;
-  const dvaContainerPath = join(paths.absTmpDirPath, 'DvaContainer.js');
+  const { paths, cwd, compatDirname, winPath } = api;
   const isDev = process.env.NODE_ENV === 'development';
   const isProduction = process.env.NODE_ENV === 'production';
   const shouldImportDynamic = isProduction && opts.dynamicImport;
@@ -162,7 +160,7 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
-    writeFileSync(dvaContainerPath, tplContent, 'utf-8');
+    api.writeTmpFile('DvaContainer.js', tplContent);
   });
 
   api.modifyRouterRootComponent(
