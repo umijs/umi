@@ -1,7 +1,8 @@
 import chalk from 'chalk';
-import { join } from 'path';
-import { existsSync, readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import assert from 'assert';
+import mkdirp from 'mkdirp';
 import clonedeep from 'lodash.clonedeep';
 import assign from 'object-assign';
 import { parse } from 'dotenv';
@@ -78,6 +79,7 @@ export default class Service {
               'changePluginOption',
               'applyPlugins',
               '_applyPluginsAsync',
+              'writeTmpFile',
               // properties
               'cwd',
               'config',
@@ -216,6 +218,13 @@ export default class Service {
 
     load(basePath);
     load(localPath);
+  }
+
+  writeTmpFile(file, content) {
+    const { paths } = this;
+    const path = join(paths.absTmpDirPath, file);
+    mkdirp.sync(dirname(path));
+    writeFileSync(path, content, 'utf-8');
   }
 
   init() {

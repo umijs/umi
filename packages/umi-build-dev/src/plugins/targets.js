@@ -1,8 +1,6 @@
 import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
-import Mustache from 'mustache';
+import { readFileSync } from 'fs';
 import assert from 'assert';
-import mkdirp from 'mkdirp';
 import isPlainObject from 'is-plain-object';
 
 export default function(api) {
@@ -26,12 +24,11 @@ export default function(api) {
   });
 
   function writeTmpFile() {
-    console.log('write tmp file');
     const tpl = readFileSync(
       join(__dirname, '../../template/polyfills.js.tpl'),
       'utf-8',
     );
-    const result = Mustache.render(tpl, {
+    const result = api.Mustache.render(tpl, {
       url:
         api.config.targets &&
         api.config.targets.ie &&
@@ -40,9 +37,8 @@ export default function(api) {
         relative(paths.absTmpDirPath, require.resolve('url-polyfill')),
       ),
     });
-    console.log(2, join(paths.absTmpDirPath, 'polyfills.js'), result);
-    mkdirp.sync(paths.absTmpDirPath);
-    writeFileSync(join(paths.absTmpDirPath, 'polyfills.js'), result, 'utf-8');
+    api.debug(`write tmp file: polyfills.js, content: ${result}`);
+    api.writeTmpFile('polyfills.js', result);
   }
   writeTmpFile();
 
