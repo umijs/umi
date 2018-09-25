@@ -11,6 +11,8 @@ import {
   readdirSync,
   readFileSync,
   writeFileSync,
+  basename,
+  extname,
 } from 'fs';
 import { winPath } from 'umi-utils';
 import Mustache from 'mustache';
@@ -33,10 +35,30 @@ function getMomentLocale(lang, country) {
   return '';
 }
 
-// export for test
-export function getLocaleFileList(absSrcPath, singular) {
+function getPathFiles(path,key=''){
+	let dirList = readdirSync(path);
+	let fileList=[];
+	dirList.forEach(function(item){
+        var readResult=statSync(join(path,item));
+        const preFix=(!!key)?`${key}.`:"";
+		if(readResult.isFile()){
+            const fileNameWithOutExt=basename(item,extname(item));
+            fileList.push({
+                path:winPath(join(path,item)),
+                key:`${preFix}${fileNameWithOutExt}`
+            });
+        }
+        else if(readResult.isDirectory()){
+            const subFiles=walk(join(path,item),`${preFix}${item}`);
+            fileList=fileList.concat(subFiles);
+        }
+	});
+	
+	return fileList;
+}
+
+function getLocaleFiles(localePath){
   const localeList = [];
-  const localePath = join(absSrcPath, singular ? 'locale' : 'locales');
   if (existsSync(localePath)) {
     const localePaths = readdirSync(localePath);
     for (let i = 0; i < localePaths.length; i++) {
@@ -57,6 +79,40 @@ export function getLocaleFileList(absSrcPath, singular) {
   return localeList;
 }
 
+function getLocaleFolderFiles(localePath){
+  const localeList = [];
+  if (existsSync(localePath)) {
+    const localePaths = readdirSync(localePath);
+    for (let i = 0; i < localePaths.length; i++) {
+      const fullname = join(localePath, localePaths[i]);
+      const stats = statSync(fullname);
+      const fileInfo = /^([a-z]{2})-([A-Z]{2})$/.exec(localePaths[i]);
+      if (stats.isDirectory() && fileInfo) {
+        let language={
+          lang: fileInfo[1],
+          country: fileInfo[2],
+          name: `${fileInfo[1]}-${fileInfo[2]}`,
+          path: getPathFiles(fullname),// winPath(fullname),
+          momentLocale: getMomentLocale(fileInfo[1], fileInfo[2]),
+        };
+        localeList.push(language);
+      }
+    }
+  }
+  return localeList;
+}
+
+// export for test
+export function getLocaleFileList(absSrcPath, singular,localeFolders) {
+  const localePath = join(absSrcPath, singular ? 'locale' : 'locales');
+  if(localeFolders){
+    return getLocaleFiles(localePath);
+  }
+  else{
+    return getLocaleFolderFiles(localePath);
+  }
+}
+
 export default function(api, options = {}) {
   const { config, paths } = api;
 
@@ -70,7 +126,7 @@ export default function(api, options = {}) {
   });
 
   api.addRendererWrapperWithComponent(() => {
-    const localeFileList = getLocaleFileList(paths.absSrcPath, config.singular);
+    const localeFileList = getLocaleFileList(paths.absSrcPath, config.singular,options.localeFolders);
     const wrapperTpl = readFileSync(
       join(__dirname, '../template/wrapper.jsx.tpl'),
       'utf-8',
@@ -87,6 +143,7 @@ export default function(api, options = {}) {
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,
       defaultMomentLocale: getMomentLocale(lang, country),
+      localeFolders:options.localeFolders
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
     writeFileSync(wrapperPath, wrapperContent, 'utf-8');
