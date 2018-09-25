@@ -29,10 +29,38 @@ import 'moment/locale/{{defaultMomentLocale}}';
 const defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
 {{/antd}}
 
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) === 'object') {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+  return false;
+}
+
+function requireFiles(files){
+  if(!isJsonString(files)){
+    return require(files).default;
+  }
+    var messages={};
+    files=JSON.parse(files);
+    for(var i=0;i<files.length;i++){
+      var key=files[i].key;
+      var fileMessages= require(files[i].path).default;
+      for(var msgKey in fileMessages){
+        messages[key+'.'+msgKey]=fileMessages[msgKey];
+      }
+    }
+    return messages;
+}
+
+
 const localeInfo = {
   {{#localeList}}
   '{{name}}': {
-    messages: require('{{{path}}}').default,
+    messages:requireFiles('{{{path}}}').default,
     locale: '{{name}}',
     {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
     data: require('react-intl/locale-data/{{lang}}'),
