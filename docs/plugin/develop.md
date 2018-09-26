@@ -232,6 +232,19 @@ api._registerConfig(() => {
 
 ## Tool class API
 
+### log
+
+```js
+api.log.success('Done');
+api.log.error('Error');
+api.log.error(new Error('Error'));
+api.log.debug('Hello', 'from', 'L59');
+api.log.pending('Write release notes for %s', '1.2.0');
+api.log.watch('Recursively watching build directory...');
+```
+
+Output various types of logs.
+
 ### winPath
 
 ```js
