@@ -1,9 +1,11 @@
 import getHtmlGenerator from '../getHtmlGenerator';
 import chunksToMap from '../build/chunksToMap';
 
+const debug = require('debug')('umi-build-dev:createRouteMiddleware');
+
 export default function createRouteMiddleware(service) {
-  return (req, res) => {
-    const { path } = req;
+  return (req, res, next) => {
+    const { path, method } = req;
 
     function sendHtml() {
       if (!service.__chunks) {
@@ -19,11 +21,17 @@ export default function createRouteMiddleware(service) {
       res.send(content);
     }
 
-    if (path === '/__umiDev/routes') {
-      res.setHeader('Content-Type', 'text/json');
-      res.send(JSON.stringify(service.routes));
+    if (path === '/favicon.ico') {
+      next();
     } else {
-      sendHtml();
+      debug(`[${method}] ${path}`);
+      if (path === '/__umiDev/routes') {
+        res.setHeader('Content-Type', 'text/json');
+        res.send(JSON.stringify(service.routes));
+      } else {
+        debug(`[${method}] ${path}`);
+        sendHtml();
+      }
     }
   };
 }

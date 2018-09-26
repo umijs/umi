@@ -195,6 +195,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   applyPlugins(key, opts = {}) {
+    debug(`apply plugins ${key}`);
     return (this.pluginHooks[key] || []).reduce((memo, { fn }) => {
       try {
         return fn({
@@ -209,6 +210,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   async _applyPluginsAsync(key, opts = {}) {
+    debug(`apply plugins async ${key}`);
     const hooks = this.pluginHooks[key] || [];
     let memo = opts.initialValue;
     for (const hook of hooks) {
@@ -227,6 +229,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
     const load = path => {
       if (existsSync(path)) {
+        debug(`load env from ${path}`);
         const parsed = parse(readFileSync(path, 'utf-8'));
         Object.keys(parsed).forEach(key => {
           if (!process.env.hasOwnProperty(key)) {
@@ -259,6 +262,8 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const config = userConfig.getConfig({ force: true });
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
+    debug('got user config');
+    debug(this.config);
 
     // assign user's outputPath config to paths object
     if (config.outputPath) {
@@ -266,6 +271,8 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       paths.outputPath = config.outputPath;
       paths.absOutputPath = join(paths.cwd, config.outputPath);
     }
+    debug('got paths');
+    debug(this.paths);
   }
 
   registerCommand(name, opts, fn) {
@@ -288,7 +295,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
     const command = this.commands[name];
     if (!command) {
-      console.error(chalk.red(`command "${name}" does not exists.`));
+      signale.error(`Command ${chalk.underline.cyan(name)} does not exists`);
       process.exit(1);
     }
 
