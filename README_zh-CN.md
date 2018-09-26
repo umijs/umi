@@ -54,7 +54,7 @@ $ umi build
 
 ### 钉钉群
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="60" />
 
 ### 微信群
 
