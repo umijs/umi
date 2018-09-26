@@ -54,7 +54,7 @@
     "tslint-loader": "^3.5.3",
     "typescript": "^3.0.1",
     "url-loader": "^1.0.1",
-    "webpack": "^4.16.5",
+    "webpack": "4.19.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-chain": "^4.8.0",
     "webpack-dev-server": "3.1.5",
