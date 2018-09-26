@@ -32,6 +32,9 @@ switch (script) {
   case '-v':
   case '--version':
     script = 'version';
+  case '-h':
+  case '--help':
+    script = 'help';
   default: {
     const Service = require('umi-build-dev/lib/Service').default;
     new Service(buildDevOpts(args)).run(script, args);

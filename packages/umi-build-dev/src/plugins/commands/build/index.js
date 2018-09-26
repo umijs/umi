@@ -41,7 +41,6 @@ export default function(api) {
             debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
             rimraf.sync(paths.absTmpDirPath);
           }
-
           service.applyPlugins('onBuildSuccess', {
             args: {
               stats,
@@ -50,7 +49,8 @@ export default function(api) {
           debug('Build success end');
         },
         onFail({ err, stats }) {
-          debug(`Build failed ${err}`);
+          debug(`Build failed`);
+          debug(err);
           service.applyPlugins('onBuildFail', {
             args: {
               err,
