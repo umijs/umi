@@ -6,11 +6,13 @@ import mkdirp from 'mkdirp';
 import clonedeep from 'lodash.clonedeep';
 import assign from 'object-assign';
 import { parse } from 'dotenv';
+import signale from 'signale';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
+import getCodeFrame from './utils/getCodeFrame';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -50,6 +52,12 @@ export default class Service {
 
   resolvePlugins() {
     try {
+      assert(
+        Array.isArray(this.config.plugins || []),
+        `Configure item ${chalk.underline.cyan(
+          'plugins',
+        )} should be Array, but got ${chalk.red(typeof this.config.plugins)}`,
+      );
       return getPlugins({
         cwd: this.cwd,
         plugins: this.config.plugins || [],
@@ -58,8 +66,7 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        console.error(chalk.red(e.message));
-        console.error(e);
+        signale.error(e.message);
         process.exit(1);
       }
     }
@@ -68,6 +75,16 @@ export default class Service {
   initPlugin(plugin) {
     const { id, apply, opts } = plugin;
     try {
+      assert(
+        typeof apply === 'function',
+        `
+plugin must export a function, e.g.
+
+  export default function(api) {
+    // Implement functions via api
+  }
+        `.trim(),
+      );
       const api = new Proxy(new PluginAPI(id, this), {
         get: (target, prop) => {
           if (this.pluginMethods[prop]) {
@@ -119,10 +136,13 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        console.error(
-          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
+        signale.error(
+          `
+Plugin ${chalk.cyan.underline(id)} initialize failed
+
+${getCodeFrame(e, { cwd: this.cwd })}
+        `.trim(),
         );
-        console.error(e);
         process.exit(1);
       }
     }
