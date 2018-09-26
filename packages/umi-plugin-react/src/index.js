@@ -24,13 +24,19 @@ function diffPlugins(newOption, oldOption) {
 }
 
 export default function(api, option) {
+  const { debug } = api;
+
   api.onOptionChange(newOption => {
+    debug('new option');
+    debug(newOption);
     if (isEqual(getPlugins(newOption), getPlugins(option))) {
       diffPlugins(newOption, option).forEach(key => {
+        debug(`change plugin option: ${key}`);
         api.changePluginOption(getId(key), newOption[key]);
       });
       option = newOption;
     } else {
+      debug('restart');
       api.restart();
     }
   });
