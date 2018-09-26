@@ -5,6 +5,7 @@ import isPlainObject from 'is-plain-object';
 import Mustache from 'mustache';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
 import Generator from 'yeoman-generator';
+import signale from 'signale';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -14,6 +15,7 @@ export default class PluginAPI {
 
     // utils
     this.debug = debug(`umi-plugin: ${id}`);
+    this.log = signale;
     this.winPath = winPath;
     this.compatDirname = compatDirname;
     this.findJS = findJS;

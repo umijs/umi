@@ -2,6 +2,7 @@
   "name": "umi-build-dev",
   "version": "1.1.0-beta.1",
   "dependencies": {
+    "@babel/code-frame": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "address": "^1.0.3",

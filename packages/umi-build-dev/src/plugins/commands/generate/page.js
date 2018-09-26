@@ -1,6 +1,7 @@
 import { join, basename } from 'path';
 import randomColor from 'random-color';
 import assert from 'assert';
+import chalk from 'chalk';
 
 export default api => {
   const { paths, config } = api;
@@ -10,16 +11,25 @@ export default api => {
     constructor(args, options) {
       super(args, options);
 
-      if (config.routes) {
-        throw new Error(`umi g page does not work when config.routes exists`);
-      }
+      assert(
+        typeof this.args[0] === 'string',
+        `
+${chalk.underline.cyan('name')} should be supplied
+
+Example: 
+
+  umi g page users
+        `.trim(),
+      );
+      assert(
+        !config.routes,
+        `${chalk.underline.cyan('umi g page')} does not work when ${chalk.red(
+          'config.routes',
+        )} exists`,
+      );
     }
 
-    configuring() {}
-
     writing() {
-      assert(typeof this.args[0] === 'string', `name should be supplied`);
-
       const path = this.args[0].toString();
       const name = basename(path);
       this.fs.copyTpl(

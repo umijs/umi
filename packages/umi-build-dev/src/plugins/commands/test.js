@@ -9,6 +9,7 @@ function getAliasPathWithKey(alias, key) {
 }
 
 export default function(api) {
+  const { debug } = api;
   api.registerCommand(
     'test',
     {
@@ -29,6 +30,8 @@ export default function(api) {
         }
         return memo;
       }, {});
+      debug('moduleNameWrapper');
+      debug(moduleNameMapper);
 
       args._ = args._.slice(1);
       require('umi-test').default({

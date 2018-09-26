@@ -7,6 +7,7 @@ import clone from 'lodash.clonedeep';
 import flatten from 'lodash.flatten';
 import extend from 'extend2';
 import { winPath } from 'umi-utils';
+import signale from 'signale';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
@@ -250,7 +251,7 @@ class UserConfig {
 
     // 配置文件的监听
     this.watchConfigs((event, path) => {
-      console.log(`[DEBUG] [${event}] ${path}`);
+      signale.debug(`[${event}] ${path}`);
       try {
         const newConfig = this.getConfig({
           force: true,

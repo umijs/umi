@@ -1,7 +1,9 @@
 import resolve from 'resolve';
 import assert from 'assert';
+import chalk from 'chalk';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 import isEqual from './isEqual';
+import getCodeFrame from './utils/getCodeFrame';
 
 const debug = require('debug')('umi-build-dev:getPlugin');
 
@@ -61,7 +63,7 @@ function pluginToPath(plugins, { cwd }) {
   return (plugins || []).map(p => {
     assert(
       Array.isArray(p) || typeof p === 'string',
-      `Plugin config should be String or Array, but got ${p}`,
+      `Plugin config should be String or Array, but got ${chalk.red(typeof p)}`,
     );
     if (typeof p === 'string') {
       p = [p];
@@ -75,7 +77,20 @@ function pluginToPath(plugins, { cwd }) {
         opts,
       ];
     } catch (e) {
-      throw new Error(`Plugin ${path} can't be resolved`);
+      throw new Error(
+        `
+Plugin ${chalk.underline.cyan(path)} can't be resolved
+
+   Please try the following solutions:
+
+     1. checkout the plugins config in your config file (.umirc.js or config/config.js)
+     ${
+       path.charAt(0) !== '.' && path.charAt(0) !== '/'
+         ? `2. install ${chalk.underline.cyan(path)} via npm/yarn`
+         : ''
+     }
+`.trim(),
+      );
     }
   });
 }
@@ -93,7 +108,18 @@ function getUserPlugins(plugins, { cwd }) {
 
   return pluginPaths.map(p => {
     const [path, opts] = p;
-    const apply = require(path); // eslint-disable-line
+    let apply;
+    try {
+      apply = require(path); // eslint-disable-line
+    } catch (e) {
+      throw new Error(
+        `
+Plugin ${chalk.cyan.underline(path)} require failed
+
+${getCodeFrame(e)}
+      `.trim(),
+      );
+    }
     return {
       id: path.replace(makesureLastSlash(cwd), 'user:'),
       apply: apply.default || apply,

@@ -5,7 +5,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, config } = api;
+  const { service, config, log, debug } = api;
   const { cwd } = service;
 
   api.registerCommand(
@@ -26,17 +26,27 @@ export default function(api) {
         RoutesManager,
         mountElementId: config.mountElementId,
       });
+      debug('generate files');
       filesGenerator.generate();
 
       let server = null;
 
       // Add more service methods.
       service.restart = why => {
-        if (!server) return;
+        if (!server) {
+          log.debug(
+            `Server is not ready, ${chalk.underline.cyan(
+              'api.restart',
+            )} does not work.`,
+          );
+          return;
+        }
         if (why) {
-          console.log(chalk.green(`Since ${why}, try to restart server`));
+          log.pending(
+            `Since ${chalk.cyan.underline(why)}, try to restart server...`,
+          );
         } else {
-          console.log(chalk.green(`Try to restart server`));
+          log.pending(`Try to restart server...`);
         }
         unwatch();
         filesGenerator.unwatch();
@@ -75,6 +85,7 @@ export default function(api) {
       service
         ._applyPluginsAsync('_beforeDevServerAsync')
         .then(() => {
+          debug('start dev server with af-webpack/dev');
           require('af-webpack/dev').default({
             cwd,
             port,
@@ -116,7 +127,7 @@ export default function(api) {
           });
         })
         .catch(e => {
-          console.error(chalk.red(e));
+          log.error(e);
         });
     },
   );
