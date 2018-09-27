@@ -34,11 +34,16 @@ export default function(api) {
       debug(moduleNameMapper);
 
       args._ = args._.slice(1);
-      require('umi-test').default({
-        cwd: api.cwd,
-        moduleNameMapper,
-        ...args,
-      });
+      require('umi-test')
+        .default({
+          cwd: api.cwd,
+          moduleNameMapper,
+          ...args,
+        })
+        .catch(e => {
+          debug(e);
+          process.exit(1);
+        });
     },
   );
 }
