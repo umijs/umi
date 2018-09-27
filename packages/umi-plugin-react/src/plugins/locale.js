@@ -1,1 +1,1 @@
-export default from 'umi-plugin-locale';
+export default from 'umi-plugin-locale-xxg';
