@@ -415,9 +415,9 @@ api.addHTMLScript({
 
 Add a script to the HTML head.
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-Modify chunks in HTML.
+Modify chunks in HTML, default `['umi']`.
 
 ### modifyHTMLWithAST
 

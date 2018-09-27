@@ -416,9 +416,9 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-修改 chunks 。
+修改 chunks，默认值是 `['umi']`。
 
 ### modifyHTMLWithAST
 
