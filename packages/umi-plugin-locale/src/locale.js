@@ -4,8 +4,10 @@ function setLocale(lang) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');
   }
-  window.localStorage.setItem('umi_locale', lang || '');
-  window.location.reload();
+  if (getLocale() !== lang) {
+    window.localStorage.setItem('umi_locale', lang || '');
+    window.location.reload();
+  }
 }
 
 function getLocale() {
