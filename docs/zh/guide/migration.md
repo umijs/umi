@@ -18,7 +18,7 @@
 + "umi-plugin-react": "^1.0.0-beta.16",
 ```
 
-umi-plugin-react 是一个包含了十多个插件的集合，详见 [umi-plugin-react 介绍](/plugin/umi-plugin-react.html)。
+umi-plugin-react 是一个包含了十多个插件的集合，详见 [umi-plugin-react 介绍](/zh/plugin/umi-plugin-react.html)。
 
 ## 环境变量
 
@@ -62,7 +62,7 @@ export default {
 };
 ```
 
-更多 dll、hardSource、polyfilles、locale、title 等，参考 [umi-plugin-react 文档](/plugin/umi-plugin-react.html)。
+更多 dll、hardSource、polyfilles、locale、title 等，参考 [umi-plugin-react 文档](/zh/plugin/umi-plugin-react.html)。
 
 ### webpackrc.js
 
@@ -70,7 +70,7 @@ umi@2 不再支持 `webpackrc.js`，把里面的配置原样复制到 `.umirc.js
 
 ### webpack.config.js
 
-umi@2 不再支持 `webpack.config.js`，改为通过配置 [chainWebpack](/config/#chainwebpack) 实现。
+umi@2 不再支持 `webpack.config.js`，改为通过配置 [chainWebpack](/zh/config/#chainwebpack) 实现。
 
 ### 详细的配置项变更
 
@@ -97,4 +97,4 @@ umi@2 不再支持 `webpack.config.js`，改为通过配置 [chainWebpack](/conf
 + dynamic({ loader: async () => {}})
 ```
 
-详见 [umi/dynamic 接口说明](/api/#umi-dynamic)。
+详见 [umi/dynamic 接口说明](/zh/api/#umi-dynamic)。
