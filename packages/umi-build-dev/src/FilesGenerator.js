@@ -94,6 +94,7 @@ export default class FilesGenerator {
 
       this.generateRouterJS();
       this.generateEntry();
+      this.generateHistory();
 
       if (this.hasRebuildError) {
         refreshBrowser();
@@ -115,6 +116,7 @@ export default class FilesGenerator {
     this.service.applyPlugins('onGenerateFiles');
     this.generateRouterJS();
     this.generateEntry();
+    this.generateHistory();
   }
 
   generateEntry() {
@@ -144,12 +146,6 @@ export default class FilesGenerator {
           specifier: `moduleBeforeRenderer${index}`,
         };
       });
-
-    const initialHistory = `
-require('umi/_createHistory').default({
-  basename: window.routerBase,
-})
-    `.trim();
 
     const plugins = this.service
       .applyPlugins('addRuntimePlugin', {
@@ -196,13 +192,30 @@ require('umi/_createHistory').default({
       ).join('\n'),
       moduleBeforeRenderer,
       render: initialRender,
-      history: this.service.applyPlugins('modifyEntryHistory', {
-        initialValue: initialHistory,
-      }),
       plugins,
       validKeys,
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
+  }
+
+  generateHistory() {
+    const { paths } = this.service;
+    const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
+    const initialHistory = `
+require('umi/_createHistory').default({
+  basename: window.routerBase,
+})
+    `.trim();
+    const content = Mustache.render(tpl, {
+      history: this.service.applyPlugins('modifyEntryHistory', {
+        initialValue: initialHistory,
+      }),
+    });
+    writeFileSync(
+      join(paths.absTmpDirPath, 'initHistory.js'),
+      `${content.trim()}\n`,
+      'utf-8',
+    );
   }
 
   generateRouterJS() {

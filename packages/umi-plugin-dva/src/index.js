@@ -143,8 +143,14 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  api.onGenerateFiles(() => {
+  function generateDvaContainer() {
     const tpl = join(__dirname, '../template/DvaContainer.js');
+    const tplContent = readFileSync(tpl, 'utf-8');
+    api.writeTmpFile('DvaContainer.js', tplContent);
+  }
+
+  function generateInitDva() {
+    const tpl = join(__dirname, '../template/initDva.js');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
     if (dvaJS) {
@@ -160,7 +166,12 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
-    api.writeTmpFile('DvaContainer.js', tplContent);
+    api.writeTmpFile('initDva.js', tplContent);
+  }
+
+  api.onGenerateFiles(() => {
+    generateDvaContainer();
+    generateInitDva();
   });
 
   api.modifyRouterRootComponent(
@@ -282,4 +293,10 @@ models: () => [
 
   api.addRuntimePlugin(join(__dirname, './runtime'));
   api.addRuntimePluginKey('dva');
+
+  api.addEntryCodeAhead(
+    `
+require('@tmp/initDva');
+  `.trim(),
+  );
 }
