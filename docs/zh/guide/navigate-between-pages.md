@@ -26,4 +26,4 @@ function goToListPage() {
 }
 ```
 
-更多命令式的跳转方法，详见 [api#umi/router](/api/#umi-router)。
+更多命令式的跳转方法，详见 [api#umi/router](/zh/api/#umi-router)。

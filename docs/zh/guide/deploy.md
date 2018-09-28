@@ -22,7 +22,7 @@ $ HTML=none umi build
 
 怎么解决？
 
-可通过配置 [base](/config/#base) 解决。 
+可通过配置 [base](/zh/config/#base) 解决。 
 
 ```bash
 export default {
@@ -32,7 +32,7 @@ export default {
 
 ## 使用 hashHistory
 
-可通过配置 [history](/config/#history) 为 `hash` 为解决。 
+可通过配置 [history](/zh/config/#history) 为 `hash` 为解决。 
 
 ```bash
 export default {
