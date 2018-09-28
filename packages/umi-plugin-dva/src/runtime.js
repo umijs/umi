@@ -1,6 +1,6 @@
 import React from 'react';
+const DvaContainer = require('@tmp/DvaContainer').default;
 
 export function rootContainer(container) {
-  const DvaContainer = require('@tmp/DvaContainer').default;
   return React.createElement(DvaContainer, null, container);
 }
