@@ -4,11 +4,11 @@
 
 ## Environmental preparation
 
-First you should have [node](https://nodejs.org/en/), and make sure it's version 8 or above.
+First you should have [node](https://nodejs.org/en/), and make sure it's version 8.10 or above.
 
 ```bash
 $ node -v
-8.x
+8.1x
 ```
 
 Recommended to use `yarn` to management npm dependency.
