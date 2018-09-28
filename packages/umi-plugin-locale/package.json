@@ -1,5 +1,5 @@
 {
-  "name": "umi-plugin-locale",
+  "name": "umi-plugin-locale-xxg",
   "version": "2.0.0",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
