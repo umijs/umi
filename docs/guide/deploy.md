@@ -80,7 +80,7 @@ Then output in html:
 
 ```html
 <script>
-window.publicPath = <%= YOUR PUBLIC_PATH %>
+window.publicPath = <%= YOUR_PUBLIC_PATH %>
 </script>
 ```
 

@@ -1,12 +1,15 @@
 import { join } from 'path';
 import assert from 'assert';
+import chalk from 'chalk';
 import workboxWebpackPlugin from 'workbox-webpack-plugin';
 
 export default function(api, options) {
   const { pkg, relativeToTmp } = api;
   assert(
     pkg && pkg.name,
-    'You need to have package.json and the name in it when using pwa.',
+    `You must have ${chalk.underline.cyan(
+      'package.json',
+    )} and configure ${chalk.underline.cyan('name')} in it when enable pwa.`,
   );
 
   if (process.env.NODE_ENV === 'production') {

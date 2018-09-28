@@ -25,7 +25,7 @@ export function getModel(cwd, api) {
         !p.endsWith('.test.ts') &&
         !p.endsWith('.test.tsx'),
     )
-    .map(p => winPath(join(cwd, p)));
+    .map(p => api.winPath(join(cwd, p)));
 }
 
 function getModelsWithRoutes(routes, api) {

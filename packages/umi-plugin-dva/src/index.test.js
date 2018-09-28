@@ -11,6 +11,9 @@ const api = {
   config: {
     singular: false,
   },
+  winPath(p) {
+    return p;
+  },
 };
 
 function normalizeModels(models, base) {
@@ -84,6 +87,9 @@ describe('umi-plugin-dva', () => {
           absSrcPath,
         },
         config: {},
+        winPath(p) {
+          return p;
+        },
       },
       /* shouldImportDynamic */ true,
     );
@@ -105,6 +111,9 @@ describe('umi-plugin-dva', () => {
         { path: '/', component: './pages/index.js' },
         { path: '/c', component: './pages/c/index.js' },
       ],
+      winPath(p) {
+        return p;
+      },
     };
     let models = null;
 

@@ -1,6 +1,8 @@
 import { join, relative } from 'path';
+import deprecate from 'deprecate';
 
 export default function(api, options = []) {
+  deprecate(`umi-plugin-polyfills is deprecated, use config.targets instead.`);
   const { paths } = api;
 
   api.addEntryPolyfillImports(() => {

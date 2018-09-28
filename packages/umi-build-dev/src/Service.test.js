@@ -20,7 +20,7 @@ describe('Service', () => {
       new Service({
         cwd: join(fixtures, 'plugins-resolve-failed'),
       });
-    }).toThrow(/Plugin \.\/a can't be resolved/);
+    }).toThrow(/can't be resolved/);
   });
 
   it('init plugins', () => {

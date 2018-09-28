@@ -51,6 +51,7 @@ export default function(context, opts = {}) {
     ],
     require.resolve('@babel/plugin-proposal-do-expressions'),
     require.resolve('@babel/plugin-proposal-function-bind'),
+    require.resolve('babel-plugin-macros'),
   ];
 
   if (nodeEnv !== 'test' && transformRuntime) {

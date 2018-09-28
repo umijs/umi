@@ -6,11 +6,13 @@ import mkdirp from 'mkdirp';
 import clonedeep from 'lodash.clonedeep';
 import assign from 'object-assign';
 import { parse } from 'dotenv';
+import signale from 'signale';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
+import getCodeFrame from './utils/getCodeFrame';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -50,6 +52,12 @@ export default class Service {
 
   resolvePlugins() {
     try {
+      assert(
+        Array.isArray(this.config.plugins || []),
+        `Configure item ${chalk.underline.cyan(
+          'plugins',
+        )} should be Array, but got ${chalk.red(typeof this.config.plugins)}`,
+      );
       return getPlugins({
         cwd: this.cwd,
         plugins: this.config.plugins || [],
@@ -58,8 +66,7 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        console.error(chalk.red(e.message));
-        console.error(e);
+        signale.error(e.message);
         process.exit(1);
       }
     }
@@ -68,6 +75,16 @@ export default class Service {
   initPlugin(plugin) {
     const { id, apply, opts } = plugin;
     try {
+      assert(
+        typeof apply === 'function',
+        `
+plugin must export a function, e.g.
+
+  export default function(api) {
+    // Implement functions via api
+  }
+        `.trim(),
+      );
       const api = new Proxy(new PluginAPI(id, this), {
         get: (target, prop) => {
           if (this.pluginMethods[prop]) {
@@ -119,10 +136,13 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        console.error(
-          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
+        signale.error(
+          `
+Plugin ${chalk.cyan.underline(id)} initialize failed
+
+${getCodeFrame(e, { cwd: this.cwd })}
+        `.trim(),
         );
-        console.error(e);
         process.exit(1);
       }
     }
@@ -175,6 +195,7 @@ export default class Service {
   }
 
   applyPlugins(key, opts = {}) {
+    debug(`apply plugins ${key}`);
     return (this.pluginHooks[key] || []).reduce((memo, { fn }) => {
       try {
         return fn({
@@ -189,6 +210,7 @@ export default class Service {
   }
 
   async _applyPluginsAsync(key, opts = {}) {
+    debug(`apply plugins async ${key}`);
     const hooks = this.pluginHooks[key] || [];
     let memo = opts.initialValue;
     for (const hook of hooks) {
@@ -207,6 +229,7 @@ export default class Service {
 
     const load = path => {
       if (existsSync(path)) {
+        debug(`load env from ${path}`);
         const parsed = parse(readFileSync(path, 'utf-8'));
         Object.keys(parsed).forEach(key => {
           if (!process.env.hasOwnProperty(key)) {
@@ -239,6 +262,8 @@ export default class Service {
     const config = userConfig.getConfig({ force: true });
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
+    debug('got user config');
+    debug(this.config);
 
     // assign user's outputPath config to paths object
     if (config.outputPath) {
@@ -246,6 +271,8 @@ export default class Service {
       paths.outputPath = config.outputPath;
       paths.absOutputPath = join(paths.cwd, config.outputPath);
     }
+    debug('got paths');
+    debug(this.paths);
   }
 
   registerCommand(name, opts, fn) {
@@ -268,7 +295,7 @@ export default class Service {
 
     const command = this.commands[name];
     if (!command) {
-      console.error(chalk.red(`command "${name}" does not exists.`));
+      signale.error(`Command ${chalk.underline.cyan(name)} does not exists`);
       process.exit(1);
     }
 

@@ -26,6 +26,7 @@ export default class FilesGenerator {
   }
 
   generate() {
+    debug('generate');
     const { paths } = this.service;
     const { absTmpDirPath, tmpDirPath } = paths;
     debug(`mkdir tmp dir: ${tmpDirPath}`);
