@@ -4,7 +4,7 @@
 
 ## 环境准备
 
-首先得有 [node](https://nodejs.org/en/)，并确保 node 版本是 .10 或以上。（mac 下推荐使用 [nvm](https://github.com/creationix/nvm) 来管理 node 版本）
+首先得有 [node](https://nodejs.org/en/)，并确保 node 版本是 8.10 或以上。（mac 下推荐使用 [nvm](https://github.com/creationix/nvm) 来管理 node 版本）
 
 ```bash
 $ node -v
