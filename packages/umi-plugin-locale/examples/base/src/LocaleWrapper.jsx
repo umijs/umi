@@ -1,5 +1,4 @@
 
-{{#localeList.length}}
 import { addLocaleData, IntlProvider, injectIntl } from 'react-intl';
 import { _setIntlObject } from 'umi/locale';
 
@@ -7,34 +6,22 @@ const InjectedWrapper = injectIntl(function(props) {
   _setIntlObject(props.intl);
   return props.children;
 })
-{{/localeList.length}}
 
-{{#localeList}}
-{{#antd}}
-{{#momentLocale}}
-import 'moment/locale/{{momentLocale}}';
-{{/momentLocale}}
-{{/antd}}
-{{/localeList}}
+import 'moment/locale/zh-cn';
 
-const baseNavigator = {{{baseNavigator}}};
-const useLocalStorage = {{{useLocalStorage}}};
+const baseNavigator = false;
+const useLocalStorage = true;
 
-{{#antd}}
 import { LocaleProvider } from 'antd';
 import moment from 'moment';
-{{#defaultMomentLocale}}
-import 'moment/locale/{{defaultMomentLocale}}';
-{{/defaultMomentLocale}}
-const defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
-{{/antd}}
+const defaultAntd = require('antd/lib/locale-provider/en_US');
 
 function requireFiles(files){
     var messages={};
     files=JSON.parse(files);
     for(var i=0;i<files.length;i++){
       var key=files[i].key?files[i].key+'.':'';
-      var fileMessages= require('{{{localePath}}}'+files[i].path).default;
+      var fileMessages= require('d:/实验室/react/umi/umi-xxg/packages/umi-plugin-locale/examples/base/src/locales'+files[i].path).default;
       for(var msgKey in fileMessages){
         messages[key+msgKey]=fileMessages[msgKey];
       }
@@ -44,46 +31,45 @@ function requireFiles(files){
 
 
 const localeInfo = {
-  {{#localeList}}
-  '{{name}}': {
-    messages:requireFiles('{{{path}}}'),
-    locale: '{{name}}',
-    {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
-    data: require('react-intl/locale-data/{{lang}}'),
-    momentLocale: '{{momentLocale}}',
+  'en-US': {
+    messages:requireFiles('[{"path":"/en-US/component/account.js","key":"component.account"},{"path":"/en-US/global.js","key":""}]'),
+    locale: 'en-US',
+    antd: require('antd/lib/locale-provider/en_US'),
+    data: require('react-intl/locale-data/en'),
+    momentLocale: '',
   },
-  {{/localeList}}
+  'zh-CN': {
+    messages:requireFiles('[{"path":"/zh-CN/component/account.js","key":"component.account"},{"path":"/zh-CN/global.js","key":""}]'),
+    locale: 'zh-CN',
+    antd: require('antd/lib/locale-provider/zh_CN'),
+    data: require('react-intl/locale-data/zh'),
+    momentLocale: 'zh-cn',
+  },
 };
 
 let appLocale = {
-  locale: '{{defaultLocale}}',
+  locale: 'en-US',
   messages: {},
-  data: require('react-intl/locale-data/{{defaultLang}}'),
-  momentLocale: '{{defaultMomentLocale}}',
+  data: require('react-intl/locale-data/en'),
+  momentLocale: '',
 };
 if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
   appLocale = localeInfo[localStorage.getItem('umi_locale')];
 } else if (localeInfo[navigator.language] && baseNavigator){
   appLocale = localeInfo[navigator.language];
 } else {
-  appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
+  appLocale = localeInfo['en-US'] || appLocale;
 }
 window.g_lang = appLocale.locale;
-{{#localeList.length}}
 appLocale.data && addLocaleData(appLocale.data);
-{{/localeList.length}}
 
 export default (props) => {
   let ret = props.children;
-  {{#localeList.length}}
   ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
     <InjectedWrapper>{ret}</InjectedWrapper>
   </IntlProvider>)
-  {{/localeList.length}}
-  {{#antd}}
   ret = (<LocaleProvider locale={appLocale.antd || defaultAntd}>
     {ret}
   </LocaleProvider>);
-  {{/antd}}
   return ret;
 }
