@@ -49,6 +49,7 @@ export default function(service) {
     absPageDocumentPath: join(absPagesPath, 'document.ejs'),
     defaultEntryTplPath: template('entry.js.tpl'),
     defaultRouterTplPath: template('router.js.tpl'),
+    defaultHistoryTplPath: template('history.js.tpl'),
     defaultRegisterSWTplPath: template('registerServiceWorker.js'),
     defaultDocumentPath: template('document.ejs'),
   };
