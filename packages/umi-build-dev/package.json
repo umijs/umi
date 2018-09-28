@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
