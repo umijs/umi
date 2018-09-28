@@ -1,13 +1,9 @@
 {{{ polyfillImports }}}
 {{{ importsAhead }}}
+import '@tmp/initHistory';
 import React from 'react';
 import ReactDOM from 'react-dom';
 {{{ imports }}}
-
-{{{ codeAhead }}}
-
-// create history
-window.g_history = {{{ history }}};
 
 // runtime plugins
 window.g_plugins = require('umi/_runtimePlugin');
@@ -17,6 +13,8 @@ window.g_plugins.init({
 {{#plugins}}
 window.g_plugins.use(require('{{{ . }}}'));
 {{/plugins}}
+
+{{{ codeAhead }}}
 
 // render
 let oldRender = () => {
