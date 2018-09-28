@@ -1,5 +1,5 @@
 {
-  "name": "umi-plugin-react",
+  "name": "umi-plugin-react-xxg",
   "version": "1.1.0",
   "main": "./lib/index.js",
   "repository": {
@@ -32,7 +32,7 @@
     "umi-hd": "^5.0.1",
     "umi-plugin-dll": "^1.0.1",
     "umi-plugin-dva": "^1.1.0",
-    "umi-plugin-locale": "^2.1.0",
+    "umi-plugin-locale": "^2.0.0",
     "umi-plugin-polyfills": "^1.1.0",
     "umi-plugin-routes": "^1.0.1",
     "webpack": "4.19.0",
