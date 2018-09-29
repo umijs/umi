@@ -232,6 +232,19 @@ api._registerConfig(() => {
 
 ## 工具类 API
 
+### log
+
+```js
+api.log.success('Done');
+api.log.error('Error');
+api.log.error(new Error('Error'));
+api.log.debug('Hello', 'from', 'L59');
+api.log.pending('Write release notes for %s', '1.2.0');
+api.log.watch('Recursively watching build directory...');
+```
+
+输出各类日志。
+
 ### winPath
 
 ```js
@@ -403,9 +416,9 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-修改 chunks 。
+修改 chunks，默认值是 `['umi']`。
 
 ### modifyHTMLWithAST
 

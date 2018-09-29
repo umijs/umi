@@ -232,6 +232,19 @@ api._registerConfig(() => {
 
 ## Tool class API
 
+### log
+
+```js
+api.log.success('Done');
+api.log.error('Error');
+api.log.error(new Error('Error'));
+api.log.debug('Hello', 'from', 'L59');
+api.log.pending('Write release notes for %s', '1.2.0');
+api.log.watch('Recursively watching build directory...');
+```
+
+Output various types of logs.
+
 ### winPath
 
 ```js
@@ -402,9 +415,9 @@ api.addHTMLScript({
 
 Add a script to the HTML head.
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-Modify chunks in HTML.
+Modify chunks in HTML, default `['umi']`.
 
 ### modifyHTMLWithAST
 

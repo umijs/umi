@@ -11,7 +11,12 @@ export function init(opts = {}) {
 
 export function use(plugin) {
   Object.keys(plugin).forEach(key => {
-    assert(validKeys.includes(key), `Invalid key ${key} from plugin`);
+    // TODO: remove default
+    // default 是为了兼容内部框架内置的一个 babel 插件问题
+    assert(
+      validKeys.concat('default').includes(key),
+      `Invalid key ${key} from plugin`,
+    );
   });
   plugins.push(plugin);
 }

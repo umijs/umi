@@ -20,19 +20,9 @@ export default function(api) {
     };
   });
 
-  api.addEntryImportAhead(() => {
-    if (config.history === 'hash') {
-      return {
-        source: 'history/createHashHistory',
-        specifier: 'createHashHistory',
-      };
-    }
-    return [];
-  });
-
   api.modifyEntryHistory(memo => {
     if (config.history === 'hash') {
-      return `createHashHistory()`;
+      return `require('history/createHashHistory').default()`;
     }
     return memo;
   });

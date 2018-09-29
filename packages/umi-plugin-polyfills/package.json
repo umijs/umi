@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-polyfills",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "core-js": "^2.5.7",
+    "deprecate": "1.0.0",
     "raf": "3.4.0",
     "setprototypeof": "^1.1.0",
     "url-polyfill": "^1.0.14"

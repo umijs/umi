@@ -59,7 +59,7 @@ E.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
 
-Upgrade the node version and make sure the version is 8 or greater.
+Upgrade the node version and make sure the version is 8.10 or greater.
 
 ### `exports is not defined`
 
@@ -156,7 +156,7 @@ Then modify `.umirc.js`:
 
 ### How to do breakpoint debugging?
 
-Make sure node version is above 8 and then execute:
+Make sure node version is above 8.10 and then execute:
 
 ```bash
 $ node --inspect-brk ./node_modules/.bin/umi test
