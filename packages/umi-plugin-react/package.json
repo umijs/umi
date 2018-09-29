@@ -35,14 +35,14 @@
     "umi-hd": "^5.0.1",
     "umi-plugin-dll": "^1.0.1",
     "umi-plugin-dva": "^1.1.1",
-    "umi-plugin-locale": "^2.1.0",
+    "umi-plugin-locale-xxg": "^2.1.0",
     "umi-plugin-polyfills": "^1.1.0",
     "umi-plugin-routes": "^1.0.1",
     "webpack": "4.19.0",
     "workbox-webpack-plugin": "^3.4.1"
   },
   "devDependencies": {
-    "babel-cli":"^6.26.0",
+    "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1"

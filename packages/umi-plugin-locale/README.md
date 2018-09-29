@@ -2,7 +2,7 @@
 
 `umi`多语言控制插件。
 
-推荐配合[umi-plugin-react](https://umijs.org/plugin/umi-plugin-react.html)使用。
+推荐配合[umi-plugin-react-xxg](https://umijs.org/plugin/umi-plugin-react.html)使用。
 
 ## 配置
 
@@ -12,7 +12,7 @@
 export default {
   plugins: [
     [
-      'umi-plugin-react',
+      'umi-plugin-react-xxg',
       {
         locale: {
           default: 'zh-CN', //默认语言 zh-CN
@@ -35,8 +35,16 @@ export default {
     ├── layouts/index.js          
     ├── pages/                    
     └── locales               // 多语言文件存放目录，里面的文件会被umi自动读取
-        ├── zh-CN.js
-        └── en-US.js               
+        ├──zh-CN
+            ├── global.js      // 默认不会增加前缀
+            ├── user.js       // 生成的键为user.[键名]
+            ├── component
+                ├── login.js   //生成的键为component.login.[键名] 
+        ├──en-US
+            ├── global.js      // 默认不会增加前缀
+            ├── user.js       // 生成的键为user.[键名]
+            ├── component
+                ├── login.js   //生成的键为component.login.[键名]          
 ├── .umirc.js                     
 ├── .env                          
 └── package.json
@@ -48,12 +56,12 @@ export default {
 
 ## 多语言文件约定
 
-多语言文件的命名规范：`<lang>-<COUNTRY>.js`
+多语言文件的命名规范：`<lang>-<COUNTRY>`
 
 
 多语言文件的内容规范：键-值组成的字面量，如下：
 
-zh-CN.js
+zh-CN/global.js
 
 ```javascript
 export default {
@@ -61,7 +69,7 @@ export default {
 }
 ```
 
-en-US.js
+en-US/global.js
 
 ```javascript
 export default {
@@ -97,4 +105,29 @@ function Example() {
   return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: '小伙子' }} />
 }
 ```
+
+
+文件夹下面的多语言文件的内容规范：键-值组成的字面量，如下：
+
+zh-CN/component/login.js
+
+```javascript
+export default {
+  forget: '忘记密码',
+}
+```
+
+en-US/component/login.js
+
+```javascript
+export default {
+  forget: 'Forget password',
+}
+```
+
+使用的时候对应的键值应该为: “component.login.forget  
+``` jsx
+<FormattedMessage id="component.login.forget" />
+```
+
 
