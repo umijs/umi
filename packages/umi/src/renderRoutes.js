@@ -1,7 +1,26 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+const RouteInstanceMap = {
+  remove(key) {
+    key._routeInternalComponent = undefined;
+  },
+  get(key) {
+    return key._routeInternalComponent;
+  },
+  has(key) {
+    return key._routeInternalComponent !== undefined;
+  },
+  set(key, value) {
+    key._routeInternalComponent = value;
+  },
+};
+
 function withRoutes(route) {
+  if (RouteInstanceMap.has(route)) {
+    return RouteInstanceMap.get(route);
+  }
+
   const Routes = route.Routes;
   let len = Routes.length - 1;
   let Component = args => {
@@ -19,7 +38,7 @@ function withRoutes(route) {
     len -= 1;
   }
 
-  return args => {
+  const ret = args => {
     const { render, ...rest } = args;
     return (
       <Route
@@ -30,6 +49,8 @@ function withRoutes(route) {
       />
     );
   };
+  RouteInstanceMap.set(route, ret);
+  return ret;
 }
 
 export default function renderRoutes(
