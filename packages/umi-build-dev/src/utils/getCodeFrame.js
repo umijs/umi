@@ -11,10 +11,14 @@ export default function({ stack, message }, options = {}) {
     return message;
   }
 
+  // console.log(stack);
   const re = /at[^(]+\(([^:]+):(\d+):(\d+)\)/;
   const m = stack.match(re);
   if (m) {
     const [_, file, line, column] = m;
+    if (!file.startsWith('.') && !file.startsWith('/')) {
+      return message;
+    }
     const rawLines = readFileSync(file, 'utf-8');
     if (file.startsWith(cwd)) {
       return [
