@@ -271,7 +271,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 export default withRouter(
   ({ location }) =>
     <TransitionGroup>
-      <CSSTransition key={location.key} classNames="fade" timeout={300}>
+      <CSSTransition key={location.pathname} classNames="fade" timeout={300}>
         { children }
       </CSSTransition>
     </TransitionGroup>
