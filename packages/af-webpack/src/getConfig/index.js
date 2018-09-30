@@ -1,6 +1,7 @@
 import Config from 'webpack-chain';
 import { join, resolve, relative } from 'path';
 import { existsSync } from 'fs';
+import { EOL } from 'os';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
@@ -207,6 +208,25 @@ export default function(opts) {
     .options({
       configFile: tsConfigFile,
       transpileOnly: true,
+      // ref: https://github.com/TypeStrong/ts-loader/blob/fbed24b/src/utils.ts#L23
+      errorFormatter(error, colors) {
+        const messageColor =
+          error.severity === 'warning' ? colors.bold.yellow : colors.bold.red;
+        return (
+          colors.grey('[tsl] ') +
+          messageColor(error.severity.toUpperCase()) +
+          (error.file === ''
+            ? ''
+            : messageColor(' in ') +
+              colors.bold.cyan(
+                `${relative(cwd, join(error.context, error.file))}(${
+                  error.line
+                },${error.character})`,
+              )) +
+          EOL +
+          messageColor(`      TS${error.code}: ${error.content}`)
+        );
+      },
       ...(opts.typescript || {}),
     });
 
