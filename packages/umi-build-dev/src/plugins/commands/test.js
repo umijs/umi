@@ -34,6 +34,7 @@ export default function(api) {
       debug(moduleNameMapper);
 
       args._ = args._.slice(1);
+      if (args.w) args.watch = args.w;
       require('umi-test')
         .default({
           cwd: api.cwd,
