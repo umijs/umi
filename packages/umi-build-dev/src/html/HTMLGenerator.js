@@ -207,6 +207,7 @@ export default class HTMLGenerator {
     let context = {
       route,
       config: this.config,
+      publicPath: this.publicPath,
       ...(this.config.context || {}),
       env: this.env,
     };
