@@ -80,6 +80,13 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 
 Use the `window.publicPath` specified in the HTML when the value is `true`.
 
+### mountElementId
+
+* Type: `String`
+* Default: `root`
+
+Specifies the mount point id which the react app will mount to.
+
 ### hash
 
 * Type: `Boolean`
