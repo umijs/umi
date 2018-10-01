@@ -23,7 +23,7 @@
 
 * `route`，路由对象，包含 path、component 等
 * `config`，用户配置信息
-* `publicPath`，webpack 的 `output.publicPath` 配置
+* `publicPath`<Badge text="2.1.2+"/>，webpack 的 `output.publicPath` 配置
 * `env`，环境变量，值为 development 或 production
 * 其他在路由上通过 context 扩展的配置信息
 
