@@ -142,6 +142,47 @@ describe('HG', () => {
     );
   });
 
+  it('getContent with publicPath', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
+      minify: false,
+      publicPath: '/foo/',
+      config: {
+        mountElementId: 'documenttestid',
+      },
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(
+          __dirname,
+          'fixtures/document-with-publicPath.ejs',
+        ),
+      },
+    });
+    const content = hg.getContent({
+      path: '/',
+    });
+    expect(content.trim()).toEqual(
+      `
+<head>
+
+<link rel="stylesheet" href="/foo/umi.css" />
+<script>
+  window.routerBase = "/";
+</script>
+</head>
+<body>
+<img src="/foo/a.jpg" />
+<div id="documenttestid"></div>
+<script src="/foo/umi.js"></script>
+</body>
+    `.trim(),
+    );
+  });
+
   it('getContent with runtimePublicPath', () => {
     const hg = new HTMLGenerator({
       env: 'production',
