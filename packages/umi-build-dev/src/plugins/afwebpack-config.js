@@ -2,7 +2,6 @@ import getUserConfigPlugins from 'af-webpack/getUserConfigPlugins';
 import { compatDirname } from 'umi-utils';
 import { join, dirname } from 'path';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
-import defaultBrowsers from '../defaultConfigs/browsers';
 
 const plugins = getUserConfigPlugins();
 
@@ -109,7 +108,6 @@ export default function(api) {
   ]);
 
   api.modifyAFWebpackOpts(memo => {
-    const browserslist = config.browserslist || defaultBrowsers;
     const isDev = process.env.NODE_ENV === 'development';
 
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
@@ -132,6 +130,27 @@ export default function(api) {
           umi: [...(setPublicPath ? [setPublicPathFile] : []), entryScript],
         };
 
+    const targets = {
+      chrome: 49,
+      firefox: 64,
+      safari: 10,
+      edge: 13,
+      ios: 10,
+      ...(config.targets || {}),
+    };
+
+    // Transform targets to browserslist for autoprefixer
+    const browserslist =
+      config.browserslist ||
+      targets.browsers ||
+      Object.keys(targets)
+        .filter(key => {
+          return !['node', 'esmodules'].includes(key);
+        })
+        .map(key => {
+          return `${key} >= ${targets[key]}`;
+        });
+
     return {
       ...memo,
       ...config,
@@ -145,14 +164,7 @@ export default function(api) {
           [
             require.resolve('babel-preset-umi'),
             {
-              targets: {
-                chrome: 49,
-                firefox: 45,
-                safari: 10,
-                edge: 13,
-                ios: 10,
-                ...(config.targets || {}),
-              },
+              targets,
               env: {
                 useBuiltIns: 'entry',
               },
