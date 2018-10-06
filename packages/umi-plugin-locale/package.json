@@ -1,18 +1,18 @@
 {
-  "name": "umi-plugin-locale",
+  "name": "umi-plugin-locale-xxg",
   "version": "2.1.1",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
   "authors": [
-    "yutingzhao1991 <yutingzhao1991@sina.com> (https://github.com/yutingzhao1991)"
+    "xiexingen <1002275364@qq.com> (https://github.com/xiexingen)"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale"
+    "url": "https://github.com/xiexingen/umi/tree/master/packages/umi-plugin-locale"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale",
+  "homepage": "https://github.com/xiexingen/umi/tree/master/packages/umi-plugin-locale",
   "bugs": {
-    "url": "https://github.com/umijs/umi/issues"
+    "url": "https://github.com/xiexingen/umi/issues"
   },
   "license": "MIT",
   "files": [

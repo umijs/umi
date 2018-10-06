@@ -1,23 +1,26 @@
 {
-  "name": "umi-plugin-react",
+  "name": "umi-plugin-react-xxg",
   "version": "1.1.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react"
+    "url": "https://github.com/xiexingen/umi/tree/master/packages/umi-plugin-react"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-react",
+  "homepage": "https://github.com/xiexingen/umi/tree/master/packages/umi-plugin-react",
   "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+    "xiexingen 1002275364@qq.com (https://github.com/xiexingen)"
   ],
   "bugs": {
-    "url": "https://github.com/umijs/umi/issues"
+    "url": "https://github.com/xiexingen/umi/issues"
   },
   "files": [
     "lib",
     "src"
   ],
   "license": "MIT",
+  "scripts": {
+    "debug": "babel debug src --watch --source-maps --presets=es2015,stage-1 --out-dir debug-dist"
+  },
   "dependencies": {
     "antd": "^3.8.1",
     "antd-mobile": "^2.2.3",
@@ -32,10 +35,16 @@
     "umi-hd": "^5.0.1",
     "umi-plugin-dll": "^1.0.1",
     "umi-plugin-dva": "^1.1.1",
-    "umi-plugin-locale": "^2.1.1",
+    "umi-plugin-locale-xxg": "^2.1.0",
     "umi-plugin-polyfills": "^1.1.0",
     "umi-plugin-routes": "^1.0.1",
     "webpack": "4.19.0",
     "workbox-webpack-plugin": "^3.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1"
   }
 }
