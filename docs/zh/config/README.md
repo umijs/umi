@@ -82,6 +82,13 @@ export default {
 
 值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
 
+### mountElementId
+
+* 类型：`String`
+* 默认值：`root`
+
+指定 react app 渲染到的 HTML 元素 id。
+
 ### hash
 
 * Type: `Boolean`
