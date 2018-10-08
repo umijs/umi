@@ -1,17 +1,16 @@
 import { dirname } from 'path';
 import yParser from 'yargs-parser';
 import signale from 'signale';
+import semver from 'semver';
 import buildDevOpts from './buildDevOpts';
 
 let script = process.argv[2];
 const args = yParser(process.argv.slice(3));
+
 // Node version check
 const nodeVersion = process.versions.node;
-const versions = nodeVersion.split('.');
-const major = versions[0];
-const minor = versions[1];
-if (major * 10 + minor * 1 < 65) {
-  signale.error(`Node version must >= 6.5, but got ${major}.${minor}`);
+if (semver.satisfies(nodeVersion, '<6.5')) {
+  signale.error(`Node version must >= 6.5, but got ${nodeVersion}`);
   process.exit(1);
 }
 
