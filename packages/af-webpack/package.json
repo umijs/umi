@@ -44,6 +44,7 @@
     "react-error-overlay": "^4.0.0",
     "requireindex": "^1.1.0",
     "resolve": "^1.5.0",
+    "rimraf": "^2.6.2",
     "semver": "^5.5.0",
     "sockjs-client": "1.1.5",
     "strip-ansi": "4.0.0",
@@ -53,6 +54,7 @@
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.0.1",
     "webpack": "4.19.0",
     "webpack-bundle-analyzer": "^2.13.1",
@@ -91,5 +93,14 @@
     "react-dev-utils.js",
     "registerBabel.js",
     "webpack.js"
-  ]
+  ],
+  "umiTools": {
+    "browserFiles": [
+      "src/webpackHotDevClient.js",
+      "src/utils.js",
+      "src/formatWebpackMessages.js",
+      "src/socket.js",
+      "src/patchConnection.js"
+    ]
+  }
 }

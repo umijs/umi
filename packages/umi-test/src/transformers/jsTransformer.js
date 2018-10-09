@@ -1,6 +1,6 @@
 import babelJest from 'babel-jest';
 
-export default babelJest.createTransformer({
+module.exports = babelJest.createTransformer({
   presets: [
     [
       require.resolve('babel-preset-umi'),

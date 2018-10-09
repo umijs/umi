@@ -52,7 +52,17 @@
     "router.d.ts",
     "withRouter.d.ts"
   ],
-  "devDependencies": {
-    "glob": "^7.1.2"
+  "umiTools": {
+    "browserFiles": [
+      "src/createHistory.js",
+      "src/dynamic.js",
+      "src/link.js",
+      "src/navlink.js",
+      "src/router.js",
+      "src/renderRoutes.js",
+      "src/withRouter.js",
+      "src/utils.js",
+      "src/runtimePlugin.js"
+    ]
   }
 }
