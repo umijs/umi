@@ -25,5 +25,7 @@ export default function(service) {
     }
   };
 
-  return getConfig(afWebpackOpts);
+  return service.applyPlugins('modifyWebpackConfig', {
+    initialValue: getConfig(afWebpackOpts),
+  });
 }
