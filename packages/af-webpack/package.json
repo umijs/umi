@@ -8,6 +8,7 @@
     "@babel/core": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "address": "^1.0.3",
     "assert": "^1.4.1",
     "autoprefixer": "^9.1.1",
     "babel-loader": "^8.0.0",
