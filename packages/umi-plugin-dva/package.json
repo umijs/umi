@@ -29,5 +29,10 @@
     "lib",
     "src",
     "template"
-  ]
+  ],
+  "umiTools": {
+    "browserFiles": [
+      "src/runtime.js"
+    ]
+  }
 }

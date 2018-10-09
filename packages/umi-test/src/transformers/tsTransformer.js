@@ -1,1 +1,3 @@
-export default from 'ts-jest';
+import tsJest from 'ts-jest';
+
+module.exports = tsJest;
