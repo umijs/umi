@@ -71,7 +71,7 @@ export default (api, opts = {}) => {
 
 插件的执行顺序依赖用户在配置文件 `.umirc.js` 或者 `config/config.js` 中配置的 `plugins` 配置项，有依赖的插件 umi 会通过插件的 `dependence` 配置检查插件的顺序做出警告，但是目前 umi 不会修改用户的顺序。
 
-当插件调用 `api.applyPlugin` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
+当插件调用 `api.applyPlugins` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
 
 ## 环境变量
 
@@ -153,9 +153,9 @@ api.addHTMLMeta(() => {
 
 类型是 `api.API_TYPE.MODIFY` 的插件方法，返回修改后的内容。
 
-你也可以通过 `apply` 来自定义处理的函数，你注册的方法可能被多个插件使用，当你调用 `applyPlugin` 时在 umi 内部会通过 reduce 函数去处理这些插件的返回值。你定义的 `apply` 函数决定了 `applyPlugin` 是怎么处理多个插件的结果作为它的返回值的。通常情况下内置的三种类型就可以满足你的需求了。
+你也可以通过 `apply` 来自定义处理的函数，你注册的方法可能被多个插件使用，当你调用 `applyPlugins` 时在 umi 内部会通过 reduce 函数去处理这些插件的返回值。你定义的 `apply` 函数决定了 `applyPlugins` 是怎么处理多个插件的结果作为它的返回值的。通常情况下内置的三种类型就可以满足你的需求了。
 
-### applyPlugin
+### applyPlugins
 
 在插件用应用通过 registerMethod 注册的某个方法。
 
@@ -163,7 +163,7 @@ api.addHTMLMeta(() => {
 // 如果 type 为 api.API_TYPE.ADD wrappers 为各个插件返回的值组成的数组
 // EVENT 则 wrappers 返回 undefined
 // MODIFY 则返回最后的修改值
-const wrappers = api.applyPlugin('wrapDvaRendererWithComponent');
+const wrappers = api.applyPlugins('wrapDvaRendererWithComponent');
 ```
 
 ### restart
