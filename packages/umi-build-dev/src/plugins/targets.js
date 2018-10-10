@@ -42,11 +42,17 @@ export default function(api) {
   }
   writeTmpFile();
 
-  api.addEntryPolyfillImports(() => [
-    {
-      source: './polyfills',
-    },
-  ]);
+  api.addEntryPolyfillImports(() => {
+    if (process.env.BABEL_POLYFILL !== 'none') {
+      return [
+        {
+          source: './polyfills',
+        },
+      ];
+    } else {
+      return [];
+    }
+  });
 
   api.chainWebpackConfig(config => {
     config.resolve.alias.set(
