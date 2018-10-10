@@ -67,6 +67,14 @@ $ ANALYZE=1 umi build
 
 ANALYZE 服务器端口，默认 8888。
 
+### BABEL_POLYFILL <Badge text="2.2.0+"/>
+
+默认引入 `@babel/polyfill`，值为 none 时不引入。比如：
+
+```bash
+$ BABEL_POLYFILL=none umi build
+```
+
 ### COMPRESS
 
 默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。比如：
