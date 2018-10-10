@@ -56,11 +56,14 @@ function patchRoute(route, pagesPath, parentRoutePath) {
         if (!route.routes) {
           route.routes = [];
         }
-        route.routes.unshift({
+        const parsedRoute = {
+          ...route.indexRoute,
           path: route.path,
           exact: true,
           component: route.indexRoute.component,
-        });
+        };
+        delete parsedRoute.redirect;
+        route.routes.unshift(parsedRoute);
       }
       delete route.indexRoute;
     }
