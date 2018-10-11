@@ -1,3 +1,3 @@
-import tsJest from 'ts-jest';
+import { createTransformer } from 'ts-jest';
 
-module.exports = tsJest;
+module.exports = { createTransformer };
