@@ -4,7 +4,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 
 export default api => {
-  const { paths, config } = api;
+  const { paths, config, log } = api;
   const absTemplatePath = join(__dirname, '../../../../template/generators');
 
   return class Generator extends api.Generator {
@@ -21,12 +21,14 @@ Example:
   umi g page users
         `.trim(),
       );
-      assert(
-        !config.routes,
-        `${chalk.underline.cyan('umi g page')} does not work when ${chalk.red(
-          'config.routes',
-        )} exists`,
-      );
+      if (config.routes) {
+        log.warn(
+          `You should config the routes in config.routes manunally since ${chalk.red(
+            'config.routes',
+          )} exists`,
+        );
+        console.log();
+      }
     }
 
     writing() {
