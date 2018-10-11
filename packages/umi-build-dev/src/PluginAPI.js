@@ -41,13 +41,6 @@ export default class PluginAPI {
   }
 
   _addMethods() {
-    this.registerMethod('chainWebpackConfig', {
-      type: this.API_TYPE.EVENT,
-    });
-    this.registerMethod('_registerConfig', {
-      type: this.API_TYPE.ADD,
-    });
-
     [
       [
         'chainWebpackConfig',
