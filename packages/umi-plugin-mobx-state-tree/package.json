@@ -1,0 +1,38 @@
+{
+  "name": "umi-plugin-mobx-state-tree",
+  "version": "0.0.1-beta.1",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "globby": "^7.1.1",
+    "lodash.uniq": "^4.5.0",
+    "mobx": "^5.5.0",
+    "mobx-react": "^5.2.8",
+    "mobx-react-devtools": "^6.0.3",
+    "mobx-state-tree": "^3.5.0",
+    "object-assign": "^4.1.1",
+    "path-is-root": "^0.1.0",
+    "path-to-regexp": "^1.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-mobx-state-tree"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-mobx-state-tree",
+  "authors": [
+    "xiaohuoni (https://github.com/xiaohuoni)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "lib",
+    "src",
+    "template"
+  ],
+  "umiTools": {
+    "browserFiles": [
+      "src/runtime.js"
+    ]
+  }
+}
