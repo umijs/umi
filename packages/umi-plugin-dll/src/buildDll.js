@@ -66,6 +66,7 @@ export default function(opts = {}) {
       path: dllDir,
       filename: '[name].dll.js',
       library: '[name]',
+      publicPath: api.webpackConfig.output.publicPath,
     },
     plugins: [
       ...afWebpackConfig.plugins,
