@@ -40,7 +40,7 @@
 ```html
 <% if(context.env === 'production') { %>
   <h2>生产环境</h2>
-<% } else %>
+<% } else {%>
   <h2>开发环境</h2>
 <% } %>
 ```

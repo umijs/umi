@@ -28,7 +28,7 @@ export default {
 
 ### 官方插件
 
-- [umi-plugin-react](/plugin/umi-plugin-react.html)（插件集）
+- [umi-plugin-react](/zh/plugin/umi-plugin-react.html)（插件集）
 - umi-plugin-dva
 - umi-plugin-locale
 - umi-plugin-dll

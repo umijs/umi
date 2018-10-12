@@ -55,7 +55,7 @@ export default {
 
 * 类型：`Object`
 
-基于 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 实现，功能详见 [和 dva 一起用](/guide/with-dva.html)。
+基于 [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva) 实现，功能详见 [和 dva 一起用](/zh/guide/with-dva.html)。
 
 配置项包含：
 
