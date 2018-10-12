@@ -1,0 +1,21 @@
+{
+  "name": "mobxtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mobx": "^5.5.0",
+    "mobx-react": "^5.2.8",
+    "mobx-state-tree": "^3.5.0",
+    "umi": "^2.1.2",
+    "umi-plugin-react": "^1.1.1"
+  }
+}
