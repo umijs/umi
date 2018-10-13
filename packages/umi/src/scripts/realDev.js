@@ -1,13 +1,23 @@
 import yParser from 'yargs-parser';
-import dev from '../dev';
+import buildDevOpts from '../buildDevOpts';
 
-const argv = yParser(process.argv.slice(2));
+let closed = false;
 
-// 修复 Ctrl+C 时 dev server 没有正常退出的问题
-process.on('SIGINT', () => {
-  process.exit(1);
-});
+// kill(2) Ctrl-C
+process.once('SIGINT', () => onSignal('SIGINT'));
+// kill(3) Ctrl-\
+process.once('SIGQUIT', () => onSignal('SIGQUIT'));
+// kill(15) default
+process.once('SIGTERM', () => onSignal('SIGTERM'));
 
-dev({
-  plugins: argv.plugins ? argv.plugins.split(',') : [],
-});
+function onSignal(signal) {
+  if (closed) return;
+  closed = true;
+  process.exit(0);
+}
+
+process.env.NODE_ENV = 'development';
+
+const args = yParser(process.argv.slice(2));
+const Service = require('umi-build-dev/lib/Service').default;
+new Service(buildDevOpts(args)).run('dev', args);

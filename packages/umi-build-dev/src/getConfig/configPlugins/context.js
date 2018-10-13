@@ -6,11 +6,12 @@ export default function(api) {
     name: 'context',
     validate(val) {
       assert(
-        isPlainObject(val),
-        `"${
-          api.relativeFile
-        }" 的 "context" 配置必须是 "Object 对象"，但你配置的是 ${val.toString()} 。`,
+        isPlainObject(val) || typeof val === 'boolean',
+        `Configure item context should be Plain Object, but got ${val}.`,
       );
+    },
+    onChange() {
+      api.service.restart(/* why */ 'Config context Changed');
     },
   };
 }

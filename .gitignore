@@ -2,13 +2,13 @@
 tmp
 /node_modules
 /packages/*/node_modules
-/packages/*/test/fixtures/**/node_modules
 /examples/*/node_modules
-/examples/*/www
-/examples/*/_dist
-/examples/*/_package
+package-lock.json
+yarn.lock
 /website/build
 /packages/umi-test/examples/*/node_modules
+/packages/umi-plugin-locale/examples/*/node_modules
+/packages/umi-plugin-react/test/*/node_modules
 lib
 dist
 coverage
@@ -18,3 +18,5 @@ lerna-debug.log
 .changelog
 .umi
 .umi-production
+*.sw*
+*.un~

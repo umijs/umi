@@ -1,63 +1,90 @@
+import fs from 'fs';
 import openBrowser from 'react-dev-utils/openBrowser';
 import webpack from 'webpack';
+import assert from 'assert';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
-import { createCompiler, prepareUrls } from './WebpackDevServerUtils';
+import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
-import send, { STARTING, COMPILING, DONE } from './send';
+import send, { STARTING, DONE } from './send';
 import choosePort from './choosePort';
 
 const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
-const PROTOCOL = 'http';
+const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
+const CERT =
+  process.env.HTTPS && process.env.CERT
+    ? fs.readFileSync(process.env.CERT)
+    : '';
+const KEY =
+  process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.KEY) : '';
 const noop = () => {};
 
 process.env.NODE_ENV = 'development';
 
 export default function dev({
   webpackConfig,
-  extraMiddlewares,
+  _beforeServerWithApp,
+  beforeMiddlewares,
+  afterMiddlewares,
   beforeServer,
   afterServer,
+  contentBase,
   onCompileDone = noop,
-  onCompileInvalid = noop,
   proxy,
-  openBrowser: openBrowserOpts,
-  historyApiFallback = {
-    disableDotRule: true,
-  },
+  port,
+  base,
+  serverConfig: serverConfigFromOpts = {},
 }) {
-  if (!webpackConfig) {
-    throw new Error('必须提供 webpackConfig 配置项');
-  }
-  choosePort(DEFAULT_PORT)
+  assert(webpackConfig, 'webpackConfig must be supplied');
+  choosePort(port || DEFAULT_PORT)
     .then(port => {
       if (port === null) {
         return;
       }
 
-      const urls = prepareUrls(PROTOCOL, HOST, port);
-      const compiler = createCompiler(webpack, webpackConfig, 'Your App', urls);
+      const compiler = webpack(webpackConfig);
 
-      // Webpack startup recompilation fix. Remove when @sokra fixes the bug.
-      // https://github.com/webpack/webpack/issues/2983
-      // https://github.com/webpack/watchpack/issues/25
-      const timefix = 11000;
-      compiler.plugin('watch-run', (watching, callback) => {
-        watching.startTime += timefix;
-        callback();
+      let isFirstCompile = true;
+      const urls = prepareUrls(PROTOCOL, HOST, port, base);
+      compiler.hooks.done.tap('af-webpack dev', stats => {
+        if (stats.hasErrors()) {
+          // make sound
+          // ref: https://github.com/JannesMeyer/system-bell-webpack-plugin/blob/bb35caf/SystemBellPlugin.js#L14
+          process.stdout.write('\x07');
+          return;
+        }
+
+        let copied = '';
+        if (isFirstCompile) {
+          require('clipboardy').write(urls.localUrlForBrowser);
+          copied = chalk.dim('(copied to clipboard)');
+        }
+
+        console.log();
+        console.log(
+          [
+            `  App running at:`,
+            `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
+            `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+          ].join('\n'),
+        );
+        console.log();
+
+        onCompileDone({
+          isFirstCompile,
+          stats,
+        });
+
+        if (isFirstCompile) {
+          isFirstCompile = false;
+          openBrowser(urls.localUrlForBrowser);
+          send({ type: DONE });
+        }
       });
-      compiler.plugin('done', stats => {
-        send({ type: DONE });
-        stats.startTime -= timefix;
-        onCompileDone();
-      });
-      compiler.plugin('invalid', () => {
-        send({ type: COMPILING });
-        onCompileInvalid();
-      });
+
       const serverConfig = {
         disableHostCheck: true,
         compress: true,
@@ -71,28 +98,47 @@ export default function dev({
         watchOptions: {
           ignored: /node_modules/,
         },
-        historyApiFallback,
+        historyApiFallback: false,
         overlay: false,
         host: HOST,
         proxy,
-        https: process.env.HTTPS ? true : false,
-        contentBase: process.env.CONTENT_BASE,
+        https: !!process.env.HTTPS,
+        cert: CERT,
+        key: KEY,
+        contentBase: contentBase || process.env.CONTENT_BASE,
         before(app) {
-          if (extraMiddlewares) {
-            extraMiddlewares.forEach(middleware => {
-              app.use(middleware);
-            });
+          (beforeMiddlewares || []).forEach(middleware => {
+            app.use(middleware);
+          });
+          // internal usage for proxy
+          if (_beforeServerWithApp) {
+            _beforeServerWithApp(app);
           }
           app.use(errorOverlayMiddleware());
         },
+        after(app) {
+          (afterMiddlewares || []).forEach(middleware => {
+            app.use(middleware);
+          });
+        },
+        ...serverConfigFromOpts,
+        ...(webpackConfig.devServer || {}),
       };
-      const devServer = new WebpackDevServer(compiler, serverConfig);
+      const server = new WebpackDevServer(compiler, serverConfig);
+
+      ['SIGINT', 'SIGTERM'].forEach(signal => {
+        process.on(signal, () => {
+          server.close(() => {
+            process.exit(0);
+          });
+        });
+      });
 
       if (beforeServer) {
-        beforeServer(devServer);
+        beforeServer(server);
       }
 
-      devServer.listen(port, HOST, err => {
+      server.listen(port, HOST, err => {
         if (err) {
           console.log(err);
           return;
@@ -101,12 +147,9 @@ export default function dev({
           clearConsole();
         }
         console.log(chalk.cyan('Starting the development server...\n'));
-        if (openBrowserOpts) {
-          openBrowser(urls.localUrlForBrowser);
-        }
         send({ type: STARTING });
         if (afterServer) {
-          afterServer(devServer);
+          afterServer(server);
         }
       });
     })

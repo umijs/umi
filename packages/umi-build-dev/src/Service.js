@@ -1,237 +1,202 @@
-import { sync as rimraf } from 'rimraf';
-import { existsSync, renameSync } from 'fs';
-import { join } from 'path';
-import getWebpackRCConfig, {
-  watchConfigs as watchWebpackRCConfig,
-  unwatchConfigs as unwatchWebpackRCConfig,
-} from 'af-webpack/getUserConfig';
-import { clearConsole } from 'af-webpack/react-dev-utils';
 import chalk from 'chalk';
+import { join, dirname } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import assert from 'assert';
+import mkdirp from 'mkdirp';
+import clonedeep from 'lodash.clonedeep';
+import assign from 'object-assign';
+import { parse } from 'dotenv';
+import signale from 'signale';
 import getPaths from './getPaths';
-import getRouteConfig from './getRouteConfig';
-import registerBabel from './registerBabel';
-import { unwatch } from './getConfig/watch';
-import UserConfig from './UserConfig';
 import getPlugins from './getPlugins';
-import getWebpackConfig from './getWebpackConfig';
-import chunksToMap from './utils/chunksToMap';
-import send, { PAGE_LIST, BUILD_DONE } from './send';
-import FilesGenerator from './FilesGenerator';
-import HtmlGenerator from './HtmlGenerator';
-import createRouteMiddleware from './createRouteMiddleware';
 import PluginAPI from './PluginAPI';
+import UserConfig from './UserConfig';
+import registerBabel from './registerBabel';
+import getCodeFrame from './utils/getCodeFrame';
 
 const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
-  constructor(
-    cwd,
-    {
-      plugins: pluginFiles,
-      babel,
-      entryJSTpl,
-      routerTpl,
-      hash,
-      preact,
-      extraResolveModules,
-      libraryAlias = {},
-      libraryName = 'umi',
-      staticDirectory = 'static',
-      tmpDirectory = '.umi',
-      outputPath = './dist',
-    },
-  ) {
+  constructor({ cwd }) {
     this.cwd = cwd || process.cwd();
+    try {
+      this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
+    } catch (e) {
+      this.pkg = {};
+    }
 
-    this.pluginFiles = pluginFiles;
-    this.babel = babel;
-    this.entryJSTpl = entryJSTpl;
-    this.routerTpl = routerTpl;
-    this.hash = hash;
-    this.preact = preact;
-    this.extraResolveModules = extraResolveModules;
-    this.libraryAlias = libraryAlias;
-    this.libraryName = libraryName;
-    this.staticDirectory = staticDirectory;
-    this.tmpDirectory = tmpDirectory;
-    this.outputPath = outputPath;
+    registerBabel({
+      cwd: this.cwd,
+    });
 
-    this.paths = getPaths(this);
+    this.commands = {};
+    this.pluginHooks = {};
     this.pluginMethods = {};
+    this.generators = {};
 
-    registerBabel(this.babel, {
+    // resolve user config
+    this.config = UserConfig.getConfig({
       cwd: this.cwd,
+      service: this,
     });
+    debug(`user config: ${JSON.stringify(this.config)}`);
+
+    // resolve plugins
+    this.plugins = this.resolvePlugins();
+    this.extraPlugins = [];
+    debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
+
+    // resolve paths
+    this.paths = getPaths(this);
   }
 
-  setRoutes(routes) {
-    this.routes = routes;
-  }
-
-  getWebpackRCConfig() {
-    return getWebpackRCConfig({
-      cwd: this.cwd,
-      disabledConfigs: ['entry', 'outputPath', 'hash'],
-    });
-  }
-
-  async dev() {
-    this.initPlugins();
-
-    // 获取用户 config.js 配置
-    const userConfig = new UserConfig(this);
+  resolvePlugins() {
     try {
-      this.config = userConfig.getConfig({ force: true });
-    } catch (e) {
-      console.error(chalk.red(e.message));
-      debug('Get config failed, watch config and reload');
-
-      // 监听配置项变更，然后重新执行 dev 逻辑
-      userConfig.watchConfigs((event, path) => {
-        debug(`[${event}] ${path}, unwatch and reload`);
-        // 重新执行 dev 逻辑
-        userConfig.unwatch();
-        this.dev();
+      assert(
+        Array.isArray(this.config.plugins || []),
+        `Configure item ${chalk.underline.cyan(
+          'plugins',
+        )} should be Array, but got ${chalk.red(typeof this.config.plugins)}`,
+      );
+      return getPlugins({
+        cwd: this.cwd,
+        plugins: this.config.plugins || [],
       });
-      return;
-    }
-
-    // 获取 .webpackrc 配置
-    let returnedWatchWebpackRCConfig = null;
-    try {
-      const configObj = this.getWebpackRCConfig();
-      this.webpackRCConfig = configObj.config;
-      returnedWatchWebpackRCConfig = configObj.watch;
     } catch (e) {
-      console.error(chalk.red(e.message));
-      debug('Get .webpackrc config failed, watch config and reload');
-
-      // 监听配置项变更，然后重新执行 dev 逻辑
-      watchWebpackRCConfig().on('all', (event, path) => {
-        debug(`[${event}] ${path}, unwatch and reload`);
-        // 重新执行 dev 逻辑
-        unwatchWebpackRCConfig();
-        this.dev();
-      });
-      return;
+      if (process.env.UMI_TEST) {
+        throw new Error(e);
+      } else {
+        signale.error(e.message);
+        process.exit(1);
+      }
     }
+  }
 
-    this.applyPlugins('onStart');
-    this.initRoutes();
-
-    // 生成入口文件
-    const filesGenerator = (this.filesGenerator = new FilesGenerator(this));
+  initPlugin(plugin) {
+    const { id, apply, opts } = plugin;
     try {
-      filesGenerator.generate({
-        onChange: () => {
-          this.sendPageList();
+      assert(
+        typeof apply === 'function',
+        `
+plugin must export a function, e.g.
+
+  export default function(api) {
+    // Implement functions via api
+  }
+        `.trim(),
+      );
+      const api = new Proxy(new PluginAPI(id, this), {
+        get: (target, prop) => {
+          if (this.pluginMethods[prop]) {
+            return this.pluginMethods[prop];
+          }
+          if (
+            [
+              // methods
+              'changePluginOption',
+              'applyPlugins',
+              '_applyPluginsAsync',
+              'writeTmpFile',
+              // properties
+              'cwd',
+              'config',
+              'webpackConfig',
+              'pkg',
+              'paths',
+              'routes',
+              // dev methods
+              'restart',
+              'printError',
+              'printWarn',
+              'refreshBrowser',
+              'rebuildTmpFiles',
+              'rebuildHTML',
+            ].includes(prop)
+          ) {
+            if (typeof this[prop] === 'function') {
+              return this[prop].bind(this);
+            } else {
+              return this[prop];
+            }
+          } else {
+            return target[prop];
+          }
         },
       });
+      api.onOptionChange = fn => {
+        assert(
+          typeof fn === 'function',
+          `The first argument for api.onOptionChange should be function in ${id}.`,
+        );
+        plugin.onOptionChange = fn;
+      };
+      apply(api, opts);
+      plugin._api = api;
     } catch (e) {
-      console.error(chalk.red(e.message));
-      console.error(chalk.red(e.stack));
-      debug('Generate entry failed, watch pages and reload');
-      filesGenerator.watch({
-        onChange: () => {
-          filesGenerator.unwatch();
-          this.dev();
-        },
-      });
-      return;
+      if (process.env.UMI_TEST) {
+        throw new Error(e);
+      } else {
+        signale.error(
+          `
+Plugin ${chalk.cyan.underline(id)} initialize failed
+
+${getCodeFrame(e, { cwd: this.cwd })}
+        `.trim(),
+        );
+        process.exit(1);
+      }
     }
-
-    const webpackConfig = getWebpackConfig(this);
-    this.webpackConfig = webpackConfig;
-
-    const extraMiddlewares = this.applyPlugins('modifyMiddlewares', {
-      initialValue: [
-        createRouteMiddleware(this, {
-          rebuildEntry() {
-            filesGenerator.rebuild();
-          },
-        }),
-      ],
-    });
-
-    await this.applyPluginsAsync('beforeDevAsync');
-
-    require('af-webpack/dev').default({
-      // eslint-disable-line
-      webpackConfig,
-      extraMiddlewares,
-      beforeServer: devServer => {
-        this.applyPlugins('beforeServer', {
-          args: {
-            devServer,
-          },
-        });
-      },
-      afterServer: devServer => {
-        this.devServer = devServer;
-        this.applyPlugins('afterServer', {
-          args: {
-            devServer,
-          },
-        });
-
-        returnedWatchWebpackRCConfig(devServer);
-        userConfig.setConfig(this.config);
-        userConfig.watchWithDevServer();
-        filesGenerator.watch();
-      },
-      onCompileDone: stats => {
-        this.applyPlugins('onCompileDone', {
-          args: {
-            stats,
-          },
-        });
-      },
-      proxy: this.webpackRCConfig.proxy || {},
-      // 支付宝 IDE 里不自动打开浏览器
-      openBrowser: !process.env.ALIPAY_EDITOR,
-      historyApiFallback: false,
-    });
-  }
-
-  initRoutes() {
-    this.routes = this.applyPlugins('modifyRoutes', {
-      initialValue: getRouteConfig(this.paths, this.config),
-    });
   }
 
   initPlugins() {
-    const config = UserConfig.getConfig({
-      cwd: this.cwd,
+    this.plugins.forEach(plugin => {
+      this.initPlugin(plugin);
     });
-    debug(`user config: ${JSON.stringify(config)}`);
-    try {
-      this.plugins = getPlugins({
-        configPlugins: config.plugins || [],
-        pluginsFromOpts: this.pluginFiles,
-        cwd: this.cwd,
-        babel: this.babel,
+
+    let count = 0;
+    while (this.extraPlugins.length) {
+      const extraPlugins = clonedeep(this.extraPlugins);
+      this.extraPlugins = [];
+      extraPlugins.forEach(plugin => {
+        this.initPlugin(plugin);
+        this.plugins.push(plugin);
       });
-    } catch (e) {
-      console.error(chalk.red(e.message));
-      process.exit(1);
+      count += 1;
+      assert(count <= 10, `插件注册死循环？`);
     }
-    this.config = config;
-    debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
-    this.plugins.forEach(({ id, apply, opts }) => {
-      try {
-        apply(new PluginAPI(id, this), opts);
-      } catch (e) {
-        console.error(
-          chalk.red(`Plugin ${id} initialize failed, ${e.message}`),
-        );
-        console.error(e);
-        process.exit(1);
-      }
+
+    // Throw error for methods that can't be called after plugins is initialized
+    this.plugins.forEach(plugin => {
+      [
+        'onOptionChange',
+        'register',
+        'registerMethod',
+        'registerPlugin',
+      ].forEach(method => {
+        plugin._api[method] = () => {
+          throw new Error(
+            `api.${method}() should not be called after plugin is initialized.`,
+          );
+        };
+      });
     });
   }
 
+  changePluginOption(id, newOpts) {
+    assert(id, `id must supplied`);
+    const plugin = this.plugins.filter(p => p.id === id)[0];
+    assert(plugin, `plugin ${id} not found`);
+    plugin.opts = newOpts;
+    if (plugin.onOptionChange) {
+      plugin.onOptionChange(newOpts);
+    } else {
+      this.restart(`plugin ${id}'s option changed`);
+    }
+  }
+
   applyPlugins(key, opts = {}) {
-    return (this.pluginMethods[key] || []).reduce((memo, { fn }) => {
+    debug(`apply plugins ${key}`);
+    return (this.pluginHooks[key] || []).reduce((memo, { fn }) => {
       try {
         return fn({
           memo,
@@ -244,122 +209,112 @@ export default class Service {
     }, opts.initialValue);
   }
 
-  async applyPluginsAsync(key, opts = {}) {
-    const plugins = this.pluginMethods[key] || [];
+  async _applyPluginsAsync(key, opts = {}) {
+    debug(`apply plugins async ${key}`);
+    const hooks = this.pluginHooks[key] || [];
     let memo = opts.initialValue;
-    for (const plugin of plugins) {
-      const { fn } = plugin;
+    for (const hook of hooks) {
+      const { fn } = hook;
       memo = await fn({
         memo,
         args: opts.args,
       });
     }
+    return memo;
   }
 
-  sendPageList() {
-    const pageList = this.routes.map(route => {
-      return { path: route.path };
-    });
-    send({
-      type: PAGE_LIST,
-      payload: pageList,
-    });
+  loadEnv() {
+    const basePath = join(this.cwd, '.env');
+    const localPath = `${basePath}.local`;
+
+    const load = path => {
+      if (existsSync(path)) {
+        debug(`load env from ${path}`);
+        const parsed = parse(readFileSync(path, 'utf-8'));
+        Object.keys(parsed).forEach(key => {
+          if (!process.env.hasOwnProperty(key)) {
+            process.env[key] = parsed[key];
+          }
+        });
+      }
+    };
+
+    load(basePath);
+    load(localPath);
   }
 
-  reload = () => {
-    if (!this.devServer) return;
-    this.devServer.sockWrite(this.devServer.sockets, 'content-changed');
-  };
+  writeTmpFile(file, content) {
+    const { paths } = this;
+    const path = join(paths.absTmpDirPath, file);
+    mkdirp.sync(dirname(path));
+    writeFileSync(path, content, 'utf-8');
+  }
 
-  printWarn = messages => {
-    if (!this.devServer) return;
-    messages = typeof messages === 'string' ? [messages] : messages;
-    this.devServer.sockWrite(this.devServer.sockets, 'warns', messages);
-  };
+  init() {
+    // load env
+    this.loadEnv();
 
-  printError = messages => {
-    if (!this.devServer) return;
-    messages = typeof messages === 'string' ? [messages] : messages;
-    this.devServer.sockWrite(this.devServer.sockets, 'errors', messages);
-  };
-
-  restart = why => {
-    if (!this.devServer) return;
-    clearConsole();
-    console.log(chalk.green(`Since ${why}, try to restart server`));
-    unwatch();
-    this.devServer.close();
-    process.send({ type: 'RESTART' });
-  };
-
-  build() {
+    // init plugins
     this.initPlugins();
 
+    // reload user config
     const userConfig = new UserConfig(this);
-    this.config = userConfig.getConfig();
+    const config = userConfig.getConfig({ force: true });
+    mergeConfig(this.config, config);
+    this.userConfig = userConfig;
+    debug('got user config');
+    debug(this.config);
 
-    this.webpackRCConfig = this.getWebpackRCConfig().config;
-
-    this.applyPlugins('onStart');
-    this.initRoutes();
-
-    debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
-    rimraf(this.paths.absTmpDirPath);
-    debug(`Clean output path ${this.paths.outputPath}`);
-    rimraf(this.paths.absOutputPath);
-    debug('Generate entry');
-    const filesGenerator = new FilesGenerator(this);
-    filesGenerator.generate();
-
-    const webpackConfig = getWebpackConfig(this);
-    this.webpackConfig = webpackConfig;
-    return new Promise(resolve => {
-      require('af-webpack/build').default({
-        // eslint-disable-line
-        webpackConfig,
-        success: ({ stats }) => {
-          if (process.env.RM_TMPDIR !== 'none') {
-            debug(`Clean tmp dir ${this.paths.tmpDirPath}`);
-            rimraf(this.paths.absTmpDirPath);
-          }
-
-          this.applyPlugins('beforeGenerateHTML');
-
-          if (process.env.HTML !== 'none') {
-            debug(`Bundle html files`);
-            const chunksMap = chunksToMap(stats.compilation.chunks);
-            try {
-              const hg = new HtmlGenerator(this, {
-                chunksMap,
-              });
-              hg.generate();
-            } catch (e) {
-              console.log(e);
-            }
-
-            debug('Move service-worker.js');
-            const sourceSW = join(
-              this.paths.absOutputPath,
-              this.staticDirectory,
-              'service-worker.js',
-            );
-            const targetSW = join(
-              this.paths.absOutputPath,
-              'service-worker.js',
-            );
-            if (existsSync(sourceSW)) {
-              renameSync(sourceSW, targetSW);
-            }
-          }
-
-          this.applyPlugins('buildSuccess');
-          this.sendPageList();
-          send({
-            type: BUILD_DONE,
-          });
-          resolve();
-        },
-      });
-    });
+    // assign user's outputPath config to paths object
+    if (config.outputPath) {
+      const { paths } = this;
+      paths.outputPath = config.outputPath;
+      paths.absOutputPath = join(paths.cwd, config.outputPath);
+    }
+    debug('got paths');
+    debug(this.paths);
   }
+
+  registerCommand(name, opts, fn) {
+    if (typeof opts === 'function') {
+      fn = opts;
+      opts = null;
+    }
+    opts = opts || {};
+    assert(
+      !(name in this.commands),
+      `Command ${name} exists, please select another one.`,
+    );
+    this.commands[name] = { fn, opts };
+  }
+
+  run(name = 'help', args) {
+    this.init();
+
+    debug(`run ${name} with args ${args}`);
+
+    const command = this.commands[name];
+    if (!command) {
+      signale.error(`Command ${chalk.underline.cyan(name)} does not exists`);
+      process.exit(1);
+    }
+
+    const { fn, opts } = command;
+    if (opts.webpack) {
+      // webpack config
+      this.webpackConfig = require('./getWebpackConfig').default(this);
+    }
+
+    return fn(args);
+  }
+}
+
+function mergeConfig(oldConfig, newConfig) {
+  Object.keys(oldConfig).forEach(key => {
+    if (!(key in newConfig)) {
+      delete oldConfig[key];
+    }
+  });
+  assign(oldConfig, newConfig);
+  return oldConfig;
 }

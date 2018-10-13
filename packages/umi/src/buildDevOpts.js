@@ -1,31 +1,45 @@
-import { resolve } from 'path';
-
-const debug = require('debug')('umi:devDevOpts');
+import { join } from 'path';
+import { readFileSync, existsSync } from 'fs';
+import isAbsolute from 'path-is-absolute';
+import isWindows from 'is-windows';
+import slash from 'slash2';
+import { parse } from 'dotenv';
 
 export default function(opts = {}) {
-  const { extraResolveModules, hash } = opts;
-  debug(`opts: ${JSON.stringify(opts)}`);
-  delete opts.extraResolveModules;
+  loadDotEnv();
+
+  let cwd = opts.cwd || process.env.APP_ROOT;
+  if (cwd) {
+    if (!isAbsolute(cwd)) {
+      cwd = join(process.cwd(), cwd);
+    }
+    cwd = slash(cwd);
+    // 原因：webpack 的 include 规则得是 \ 才能判断出是绝对路径
+    if (isWindows()) {
+      cwd = cwd.replace(/\//g, '\\');
+    }
+  }
 
   return {
-    cwd: process.env.APP_ROOT,
-    // eslint-disable-line
-    babel: resolve(__dirname, './babel'),
-    extraResolveModules: [
-      ...(extraResolveModules || []),
-      resolve(__dirname, '../../node_modules'),
-    ],
-    libraryAlias: {
-      dynamic: require.resolve('./dynamic'),
-      link: require.resolve('./link'),
-      navlink: require.resolve('./navlink'),
-      redirect: require.resolve('./redirect'),
-      router: require.resolve('./router'),
-      withRouter: require.resolve('./withRouter'),
-      _renderRoutes: require.resolve('./renderRoutes'),
-      _createHistory: require.resolve('./createHistory'),
-    },
-    hash,
-    ...opts,
+    cwd,
   };
+}
+
+function loadDotEnv() {
+  const baseEnvPath = join(process.cwd(), '.env');
+  const localEnvPath = `${baseEnvPath}.local`;
+
+  const loadEnv = envPath => {
+    if (existsSync(envPath)) {
+      const parsed = parse(readFileSync(envPath, 'utf-8'));
+      Object.keys(parsed).forEach(key => {
+        if (!process.env.hasOwnProperty(key)) {
+          process.env[key] = parsed[key];
+        }
+      });
+    }
+  };
+
+  loadEnv(baseEnvPath);
+  loadEnv(localEnvPath);
 }

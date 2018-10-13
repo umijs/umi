@@ -4,11 +4,13 @@ import chokidar from 'chokidar';
 const watchers = {};
 
 export function watch(key, files) {
+  if (process.env.WATCH_FILES === 'none') return;
   if (!watchers[key]) {
     watchers[key] = [];
   }
   const watcher = chokidar.watch(files, {
     ignoreInitial: true,
+    cwd: process.env.APP_ROOT || process.cwd(),
   });
   watchers[key].push(watcher);
   return watcher;

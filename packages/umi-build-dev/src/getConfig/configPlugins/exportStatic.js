@@ -7,10 +7,11 @@ export default function(api) {
     validate(val) {
       assert(
         isPlainObject(val) || typeof val === 'boolean',
-        `"${
-          api.relativeFile
-        }" 的 "exportStatic" 配置必须是 "对象" 或者 "布尔值"，但你配置的是 ${val.toString()} 。`,
+        `Configure item context should be Plain Object, but got ${val}.`,
       );
+    },
+    onChange() {
+      api.service.restart(/* why */ 'Config exportStatic Changed');
     },
   };
 }

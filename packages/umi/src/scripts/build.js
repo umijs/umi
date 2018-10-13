@@ -1,12 +1,8 @@
-import chalk from 'chalk';
 import yParser from 'yargs-parser';
-import build from '../build';
+import buildDevOpts from '../buildDevOpts';
 
-const argv = yParser(process.argv.slice(2));
+process.env.NODE_ENV = 'production';
 
-build({
-  plugins: argv.plugins ? argv.plugins.split(',') : [],
-}).catch(e => {
-  console.error(chalk.red(`Build failed: ${e.message}`));
-  console.log(e);
-});
+const args = yParser(process.argv.slice(2));
+const Service = require('umi-build-dev/lib/Service').default;
+new Service(buildDevOpts(args)).run('build', args);

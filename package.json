@@ -1,13 +1,17 @@
 {
   "private": true,
   "scripts": {
-    "build": "node scripts/build.js",
+    "bootstrap": "lerna bootstrap",
+    "build": "umi-tools build",
     "changelog": "lerna-changelog",
-    "test": "umi-test --coverage",
+    "test": "node scripts/test.js",
+    "test:coverage": "umi-test --coverage",
     "debug": "umi-test",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
+    "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
+    "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "publish": "./scripts/publish.js"
   },
   "lint-staged": {
@@ -17,30 +21,23 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.40",
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/preset-env": "^7.0.0-beta.40",
-    "@babel/preset-react": "^7.0.0-beta.40",
-    "@babel/preset-stage-0": "^7.0.0-beta.40",
-    "@babel/runtime": "^7.0.0-beta.32",
-    "babel-eslint": "^8.0.2",
+    "babel-eslint": "^9.0.0",
     "chokidar": "^2.0.2",
     "coveralls": "^3.0.0",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",
-    "expect": "^1.20.2",
+    "eslint-plugin-react": "^7.11.1",
+    "got": "^9.1.0",
     "husky": "^0.14.3",
-    "lerna": "^2.9.1",
-    "lerna-changelog": "^0.7.0",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.8.1",
-    "rimraf": "^2.6.2",
+    "lerna": "^3.2.1",
+    "lerna-changelog": "^0.8.0",
+    "lint-staged": "^7.2.2",
+    "prettier": "^1.14.2",
+    "puppeteer": "^1.7.0",
     "shelljs": "^0.8.1",
-    "through2": "^2.0.3",
-    "umi-test": "^0.5.3",
-    "vinyl-fs": "^3.0.2"
+    "umi-test": "^1.0.0-beta.7",
+    "umi-tools": "^0.1.0"
   }
 }

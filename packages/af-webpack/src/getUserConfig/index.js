@@ -2,20 +2,17 @@ import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import assert from 'assert';
 import stripJsonComments from 'strip-json-comments';
-import requireindex from 'requireindex';
 import didyoumean from 'didyoumean';
 import chalk from 'chalk';
 import isEqual from 'lodash.isequal';
 import isPlainObject from 'is-plain-object';
 import { clearConsole } from '../reactDevUtils';
 import { watch, unwatch } from './watch';
+import getPlugins from './getPlugins';
 
 const debug = require('debug')('af-webpack:getUserConfig');
 
-const pluginsMap = requireindex(join(__dirname, './configs'));
-const plugins = Object.keys(pluginsMap).map(key => {
-  return pluginsMap[key].default();
-});
+const plugins = getPlugins();
 const pluginNames = plugins.map(p => p.name);
 const pluginsMapByName = plugins.reduce((memo, p) => {
   memo[p.name] = p;
@@ -169,50 +166,53 @@ export default function getUserConfig(opts = {}) {
   function watchConfigsAndRun(_devServer, watchOpts = {}) {
     devServer = _devServer;
 
-    watchConfigs(opts).on('all', () => {
-      try {
-        if (watchOpts.beforeChange) {
-          watchOpts.beforeChange();
-        }
-
-        const { config: newConfig } = getUserConfig({
-          ...opts,
-          setConfig(newConfig) {
-            config = newConfig;
-          },
-        });
-
-        // 从失败中恢复过来，需要 reload 一次
-        if (configFailed) {
-          configFailed = false;
-          reload();
-        }
-
-        // 比较，然后执行 onChange
-        for (const plugin of plugins) {
-          const { name, onChange } = plugin;
-
-          if (!isEqual(newConfig[name], config[name])) {
-            debug(
-              `Config ${name} changed, from ${JSON.stringify(
-                config[name],
-              )} to ${JSON.stringify(newConfig[name])}`,
-            );
-            (onChange || restart.bind(null, `${name} changed`)).call(null, {
-              name,
-              val: config[name],
-              newVal: newConfig[name],
-              config,
-              newConfig,
-            });
+    const watcher = watchConfigs(opts);
+    if (watcher) {
+      watcher.on('all', () => {
+        try {
+          if (watchOpts.beforeChange) {
+            watchOpts.beforeChange();
           }
+
+          const { config: newConfig } = getUserConfig({
+            ...opts,
+            setConfig(newConfig) {
+              config = newConfig;
+            },
+          });
+
+          // 从失败中恢复过来，需要 reload 一次
+          if (configFailed) {
+            configFailed = false;
+            reload();
+          }
+
+          // 比较，然后执行 onChange
+          for (const plugin of plugins) {
+            const { name, onChange } = plugin;
+
+            if (!isEqual(newConfig[name], config[name])) {
+              debug(
+                `Config ${name} changed, from ${JSON.stringify(
+                  config[name],
+                )} to ${JSON.stringify(newConfig[name])}`,
+              );
+              (onChange || restart.bind(null, `${name} changed`)).call(null, {
+                name,
+                val: config[name],
+                newVal: newConfig[name],
+                config,
+                newConfig,
+              });
+            }
+          }
+        } catch (e) {
+          configFailed = true;
+          console.error(chalk.red(`Watch handler failed, since ${e.message}`));
+          console.error(e);
         }
-      } catch (e) {
-        configFailed = true;
-        console.error(chalk.red(`Watch handler failed, since ${e.message}`));
-        console.error(e);
-      }
-    });
+      });
+    }
   }
 
   debug(`UserConfig: ${JSON.stringify(config)}`);

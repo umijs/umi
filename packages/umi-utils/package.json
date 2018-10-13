@@ -1,0 +1,24 @@
+{
+  "name": "umi-utils",
+  "version": "0.2.2",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi/tree/master/packages/umi-utils"
+  },
+  "homepage": "http://github.com/umijs/umi/tree/master/packages/umi-utils",
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "bugs": {
+    "url": "http://github.com/umijs/umi/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "slash2": "^2.0.0"
+  }
+}

@@ -3,7 +3,8 @@
   "changelog": {
     "labels": {
       "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix"
+      "bug": ":bug: Bug Fix",
+      "documentation": ":book: Documentation"
     },
     "repo": "umijs/umi",
     "cacheDir": ".changelog"

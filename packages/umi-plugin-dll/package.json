@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-dll",
-  "version": "0.1.4",
+  "version": "1.0.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -13,6 +13,7 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "license": "MIT",
   "files": [
     "lib",
     "src"
@@ -20,6 +21,7 @@
   "dependencies": {
     "lodash.pullall": "^4.2.0",
     "lodash.uniq": "^4.5.0",
+    "rimraf": "^2.6.2",
     "serve-static": "^1.13.2"
   }
 }

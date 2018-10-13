@@ -1,0 +1,4 @@
+
+.normal {
+  background: <%= color %>;
+}

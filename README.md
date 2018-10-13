@@ -1,17 +1,69 @@
+English | [简体中文](./README_zh-CN.md)
+
 # umi
 
 [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
 
-🍚 Blazing-fast next.js-like framework for React apps.
+🌋 Pluggable enterprise-level react application framework.
+
+> Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
 ---
 
-## 社区
+## Features
 
-扫码加钉钉群。
+* 📦 **Out of box**, with built-in support for react, react-router, etc.
+* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
+* 🎉 **Complete plugin system**, covering every lifecycle from source code to production
+* 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
+* 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
+* 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
+* 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
+* 🍁 **Support TypeScript**, including d.ts definition and `umi test`
+* 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="200" />
+## Getting Started
 
-或是微信群。（群满 100 人，加 `sorryccpro` 好友备注 `umi` 邀请加入）
+```bash
+# Install deps
+$ yarn global add umi # OR npm install -g umi
+
+# Create application
+$ mkdir myapp && cd myapp
+
+# Create page
+$ umi generate page index
+
+# Start dev server
+$ umi dev
+
+# Build and deploy
+$ umi build
+```
+
+[Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
+
+## Examples
+
+* [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
+* [Antd Admin](https://github.com/zuiidea/antd-admin)
+
+## Community
+
+### Telegram
+
+[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
+
+### 钉钉群
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="60" />
+
+### 微信群
+
+群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
+
+## License
+
+[MIT](https://github.com/umijs/umi/blob/master/LICENSE)

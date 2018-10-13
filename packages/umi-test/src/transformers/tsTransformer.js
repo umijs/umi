@@ -1,1 +1,3 @@
-export default from 'ts-jest-babel-7';
+import { createTransformer } from 'ts-jest';
+
+module.exports = { createTransformer };

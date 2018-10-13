@@ -1,30 +1,24 @@
 import { join } from 'path';
 import pullAll from 'lodash.pullall';
 import uniq from 'lodash.uniq';
+import rimraf from 'rimraf';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 export default function(opts = {}) {
-  const {
-    webpack,
-    afWebpackBuild,
-    afWebpackGetConfig,
-    webpackHotDevClientPath,
-    dllDir,
-    service,
-    service: { paths },
-    include,
-    exclude,
-  } = opts;
+  const { dllDir, api, include, exclude } = opts;
 
+  const { paths, _resolveDeps } = api;
   const pkgFile = join(paths.cwd, 'package.json');
   const pkg = existsSync(pkgFile) ? require(pkgFile) : {}; // eslint-disable-line
   const depNames = pullAll(
     uniq(Object.keys(pkg.dependencies || {}).concat(include || [])),
     exclude,
-  );
+  ).filter(dep => {
+    return dep !== 'umi' && !dep.startsWith('umi-plugin-');
+  });
+  const webpack = require(_resolveDeps('af-webpack/webpack'));
   const files = uniq([
     ...depNames,
-    webpackHotDevClientPath,
     'umi/link',
     'umi/dynamic',
     'umi/navlink',
@@ -33,7 +27,6 @@ export default function(opts = {}) {
     'umi/withRouter',
     'umi/_renderRoutes',
     'umi/_createHistory',
-    ...(service.config.disableFastClick ? [] : ['umi-fastclick']),
     'react',
     'react-dom',
     'react-router-dom',
@@ -53,7 +46,7 @@ export default function(opts = {}) {
     }
   }
 
-  const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
+  const afWebpackOpts = api.applyPlugins('modifyAFWebpackOpts', {
     initialValue: {
       cwd: paths.cwd,
       disableBabelTransform: true,
@@ -61,7 +54,9 @@ export default function(opts = {}) {
       babel: {},
     },
   });
-  const afWebpackConfig = afWebpackGetConfig(afWebpackOpts);
+  const afWebpackConfig = require(_resolveDeps('af-webpack/getConfig')).default(
+    afWebpackOpts,
+  );
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {
@@ -71,10 +66,11 @@ export default function(opts = {}) {
       path: dllDir,
       filename: '[name].dll.js',
       library: '[name]',
+      publicPath: api.webpackConfig.output.publicPath,
     },
     plugins: [
       ...afWebpackConfig.plugins,
-      ...service.webpackConfig.plugins.filter(plugin => {
+      ...api.webpackConfig.plugins.filter(plugin => {
         return plugin instanceof webpack.DefinePlugin;
       }),
       new webpack.DllPlugin({
@@ -87,20 +83,21 @@ export default function(opts = {}) {
       ...afWebpackConfig.resolve,
       alias: {
         ...afWebpackConfig.resolve.alias,
-        ...service.webpackConfig.resolve.alias,
+        ...api.webpackConfig.resolve.alias,
       },
     },
   };
 
   return new Promise((resolve, reject) => {
-    afWebpackBuild({
+    require(_resolveDeps('af-webpack/build')).default({
       webpackConfig,
-      success() {
+      onSuccess() {
         console.log('[umi-plugin-dll] Build dll done');
         writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
-      fail(err) {
+      onFail({ err }) {
+        rimraf.sync(dllDir);
         reject(err);
       },
     });

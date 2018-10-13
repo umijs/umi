@@ -6,8 +6,8 @@ export default function() {
     name: 'externals',
     validate(val) {
       assert(
-        isPlainObject(val),
-        `The externals config must be Plain Object, but got ${val}`,
+        isPlainObject(val) || typeof val === 'function',
+        `The externals config must be Plain Object or Function, but got ${val}`,
       );
     },
   };
