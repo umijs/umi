@@ -59,6 +59,15 @@ export function getLocaleFileList(absSrcPath, singular) {
 
 export default function(api, options = {}) {
   const { config, paths } = api;
+  const {
+    targets: { ie },
+  } = config;
+
+  if (ie <= 10) {
+    api.addEntryPolyfillImports({
+      source: 'intl',
+    });
+  }
 
   api.addPageWatcher(
     join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),
