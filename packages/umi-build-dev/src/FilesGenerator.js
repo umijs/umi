@@ -7,7 +7,7 @@ import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import uniq from 'lodash.uniq';
 import Mustache from 'mustache';
-import { winPath } from 'umi-utils';
+import { winPath, findJS } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -154,7 +154,7 @@ export default class FilesGenerator {
       .map(plugin => {
         return winPath(relative(paths.absTmpDirPath, plugin));
       });
-    if (existsSync(join(paths.absSrcPath, 'app.js'))) {
+    if (findJS(paths.absSrcPath, 'app')) {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
