@@ -7,7 +7,7 @@ import chalk from 'chalk';
 import debounce from 'lodash.debounce';
 import uniq from 'lodash.uniq';
 import Mustache from 'mustache';
-import { winPath } from 'umi-utils';
+import { winPath, findJS } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -15,17 +15,6 @@ import { EXT_LIST } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
-const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
-
-function findJSFile(baseDir, fileNameWithoutExtname) {
-  for (const extname of JS_EXTNAMES) {
-    const fileName = `${fileNameWithoutExtname}${extname}`;
-    const absFilePath = join(baseDir, fileName);
-    if (existsSync(absFilePath)) {
-      return absFilePath;
-    }
-  }
-}
 export default class FilesGenerator {
   constructor(opts) {
     Object.keys(opts).forEach(key => {
@@ -165,7 +154,7 @@ export default class FilesGenerator {
       .map(plugin => {
         return winPath(relative(paths.absTmpDirPath, plugin));
       });
-    if (findJSFile(paths.absSrcPath, 'app')) {
+    if (findJS(paths.absSrcPath, 'app')) {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
