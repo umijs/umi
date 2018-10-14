@@ -1,19 +1,17 @@
 import { readdirSync, statSync, existsSync, readFileSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
-import { winPath } from 'umi-utils';
+import { winPath, findJS } from 'umi-utils';
 import assert from 'assert';
 import getYamlConfig from './getYamlConfig';
 
 const debug = require('debug')('umi-build-dev:getRouteConfigFromDir');
-
-const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default function getRouteConfigFromDir(paths) {
   const { cwd, absPagesPath, absSrcPath, dirPath = '' } = paths;
   const absPath = join(absPagesPath, dirPath);
   const files = readdirSync(absPath);
 
-  const absLayoutFile = findJSFile(absPagesPath, '_layout');
+  const absLayoutFile = findJS(absPagesPath, '_layout');
   if (absLayoutFile) {
     throw new Error(
       'root _layout.js is not supported, use layouts/index.js instead',
@@ -39,8 +37,7 @@ export default function getRouteConfigFromDir(paths) {
 
   if (dirPath === '' && absSrcPath) {
     const globalLayoutFile =
-      findJSFile(absSrcPath, 'layouts/index') ||
-      findJSFile(absSrcPath, 'layout/index');
+      findJS(absSrcPath, 'layouts/index') || findJS(absSrcPath, 'layout/index');
     if (globalLayoutFile) {
       const wrappedRoutes = [];
       addRoute(
@@ -74,7 +71,7 @@ function handleFile(paths, absPath, memo, file) {
       ...paths,
       dirPath: newDirPath,
     });
-    const absLayoutFile = findJSFile(join(absPagesPath, newDirPath), '_layout');
+    const absLayoutFile = findJS(join(absPagesPath, newDirPath), '_layout');
     if (absLayoutFile) {
       addRoute(
         memo,
@@ -132,16 +129,6 @@ function normalizePath(path) {
   }
 
   return newPath;
-}
-
-function findJSFile(baseDir, fileNameWithoutExtname) {
-  for (const extname of JS_EXTNAMES) {
-    const fileName = `${fileNameWithoutExtname}${extname}`;
-    const absFilePath = join(baseDir, fileName);
-    if (existsSync(absFilePath)) {
-      return absFilePath;
-    }
-  }
 }
 
 function addRoute(memo, route, { componentFile }) {
