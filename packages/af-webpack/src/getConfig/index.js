@@ -317,11 +317,12 @@ export default function(opts) {
       .use(require('./FilterCSSConflictingWarning').default);
 
     // plugins -> friendly-errors
+    const { CLEAR_CONSOLE = 'none' } = process.env;
     webpackConfig
       .plugin('friendly-errors')
       .use(require('friendly-errors-webpack-plugin'), [
         {
-          clearConsole: process.env.CLEAR_CONSOLE !== 'none',
+          clearConsole: CLEAR_CONSOLE !== 'none',
         },
       ]);
   }
