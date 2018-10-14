@@ -59,16 +59,12 @@ export function getLocaleFileList(absSrcPath, singular) {
 
 export default function(api, options = {}) {
   const { config, paths } = api;
-  const isProduction = process.env.NODE_ENV === 'production';
+  const { targets: { ie } = {} } = config;
 
-  if (isProduction) {
-    const { targets: { ie } = {} } = config;
-
-    if (ie && ie <= 10) {
-      api.addEntryPolyfillImports({
-        source: 'intl',
-      });
-    }
+  if (ie && ie <= 10) {
+    api.addEntryPolyfillImports({
+      source: 'intl',
+    });
   }
 
   api.addPageWatcher(
