@@ -292,18 +292,16 @@ export default class HTMLGenerator {
     if (this.modifyHeadScripts)
       headScripts = this.modifyHeadScripts(headScripts);
 
-    if (this.env === 'development' || this.chunksMap['umi.css']) {
-      // umi.css should be the last one stylesheet
-      chunks.forEach(chunk => {
-        const hashedFileName = this.getHashedFileName(`${chunk}.css`);
-        if (hashedFileName) {
-          links.push({
-            rel: 'stylesheet',
-            href: `<%= pathToPublicPath %>${hashedFileName}`,
-          });
-        }
-      });
-    }
+    // umi.css should be the last stylesheet
+    chunks.forEach(chunk => {
+      const hashedFileName = this.getHashedFileName(`${chunk}.css`);
+      if (hashedFileName) {
+        links.push({
+          rel: 'stylesheet',
+          href: `<%= pathToPublicPath %>${hashedFileName}`,
+        });
+      }
+    });
 
     // insert tags
     html = html.replace(
