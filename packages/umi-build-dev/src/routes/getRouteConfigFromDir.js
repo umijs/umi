@@ -5,6 +5,7 @@ import assert from 'assert';
 import getYamlConfig from './getYamlConfig';
 
 const debug = require('debug')('umi-build-dev:getRouteConfigFromDir');
+const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default function getRouteConfigFromDir(paths) {
   const { cwd, absPagesPath, absSrcPath, dirPath = '' } = paths;
