@@ -110,6 +110,7 @@ export default function(opts) {
   const babelOptsCommon = {
     cacheDirectory: process.env.BABEL_CACHE !== 'none', // enable by default
     babelrc: !!process.env.BABELRC, // disable by default
+    customize: require.resolve('babel-preset-umi/lib/webpack-overrides'),
   };
   const babel = opts.babel || {};
   const babelOpts = {
