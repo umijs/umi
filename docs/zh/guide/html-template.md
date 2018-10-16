@@ -32,7 +32,7 @@
 比如输出变量，
 
 ```html
-<link rel="icon" type="image/x-icon" href="<%= context.publicPath $>favicon.png" />
+<link rel="icon" type="image/x-icon" href="<%= context.publicPath %>favicon.png" />
 ```
 
 比如条件判断，
