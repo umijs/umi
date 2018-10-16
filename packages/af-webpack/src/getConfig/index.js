@@ -115,7 +115,22 @@ export default function(opts) {
   const babel = opts.babel || {};
   const babelOpts = {
     presets: [...(babel.presets || []), ...(opts.extraBabelPresets || [])],
-    plugins: [...(babel.plugins || []), ...(opts.extraBabelPlugins || [])],
+    plugins: [
+      ...(babel.plugins || []),
+      ...(opts.extraBabelPlugins || []),
+      [
+        require.resolve('babel-plugin-named-asset-import'),
+        {
+          loaderMap: {
+            svg: {
+              ReactComponent: `${require.resolve(
+                '../svgr',
+              )}?-prettier,-svgo![path]`,
+            },
+          },
+        },
+      ],
+    ],
     ...babelOptsCommon,
   };
   const babelOptsForDeps = {
