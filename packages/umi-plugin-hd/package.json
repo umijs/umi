@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-hd",
-  "version": "1.0.0",
+  "version": "1.2.0-beta.3",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "umi-hd": "^5.0.1",
-    "postcss-plugin-px2rem": "^0.7.0"
+    "postcss-plugin-px2rem": "^0.7.0",
+    "umi-hd": "^5.0.1"
   }
 }
