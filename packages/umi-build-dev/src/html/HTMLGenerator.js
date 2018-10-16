@@ -279,10 +279,10 @@ export default class HTMLGenerator {
       ].join('\n'),
     });
 
-    chunks.forEach(({ name, head }) => {
+    chunks.forEach(({ name, headScript }) => {
       const hashedFileName = this.getHashedFileName(`${name}.js`);
       if (hashedFileName) {
-        (head ? headScripts : scripts).push({
+        (headScript ? headScripts : scripts).push({
           src: `<%= pathToPublicPath %>${hashedFileName}`,
         });
       }

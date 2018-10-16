@@ -161,7 +161,7 @@ describe('HG', () => {
         defaultDocumentPath: join(__dirname, 'fixtures/document.ejs'),
       },
       modifyChunks() {
-        return ['a', { name: 'b', head: true }, 'umi', 'c'];
+        return ['a', { name: 'b', headScript: true }, 'umi', 'c'];
       },
     });
     const content = hg.getContent({
