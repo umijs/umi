@@ -248,6 +248,9 @@ export default class HTMLGenerator {
     let chunks = ['umi'];
 
     if (this.modifyChunks) chunks = this.modifyChunks(chunks);
+    chunks = chunks.map(chunk => {
+      return isPlainObject(chunk) ? chunk : { name: chunk };
+    });
 
     let routerBaseStr = JSON.stringify(this.config.base || '/');
     const publicPath = this.publicPath || '/';
@@ -276,10 +279,10 @@ export default class HTMLGenerator {
       ].join('\n'),
     });
 
-    chunks.forEach(chunk => {
-      const hashedFileName = this.getHashedFileName(`${chunk}.js`);
+    chunks.forEach(({ name, headScript }) => {
+      const hashedFileName = this.getHashedFileName(`${name}.js`);
       if (hashedFileName) {
-        scripts.push({
+        (headScript ? headScripts : scripts).push({
           src: `<%= pathToPublicPath %>${hashedFileName}`,
         });
       }
@@ -293,8 +296,8 @@ export default class HTMLGenerator {
       headScripts = this.modifyHeadScripts(headScripts);
 
     // umi.css should be the last stylesheet
-    chunks.forEach(chunk => {
-      const hashedFileName = this.getHashedFileName(`${chunk}.css`);
+    chunks.forEach(({ name }) => {
+      const hashedFileName = this.getHashedFileName(`${name}.css`);
       if (hashedFileName) {
         links.push({
           rel: 'stylesheet',

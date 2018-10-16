@@ -142,6 +142,53 @@ describe('HG', () => {
     );
   });
 
+  it('getContent with chunks', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+        a: ['a.js'],
+        b: ['b.js', 'b.css'],
+        c: ['c.js', 'c.css'],
+      },
+      minify: false,
+      config: {
+        mountElementId: 'documenttestid',
+      },
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(__dirname, 'fixtures/document.ejs'),
+      },
+      modifyChunks() {
+        return ['a', { name: 'b', headScript: true }, 'umi', 'c'];
+      },
+    });
+    const content = hg.getContent({
+      path: '/',
+    });
+    expect(content.trim()).toEqual(
+      `
+<head>
+
+<link rel="stylesheet" href="/b.css" />
+<link rel="stylesheet" href="/umi.css" />
+<link rel="stylesheet" href="/c.css" />
+<script>
+  window.routerBase = "/";
+</script>
+<script src="/b.js"></script>
+</head>
+<body>
+<div id="documenttestid"></div>
+<script src="/a.js"></script>
+<script src="/umi.js"></script>
+<script src="/c.js"></script>
+</body>
+    `.trim(),
+    );
+  });
+
   it('getContent with publicPath', () => {
     const hg = new HTMLGenerator({
       env: 'production',
