@@ -211,7 +211,7 @@ export default class HTMLGenerator {
       ...(this.config.context || {}),
       env: this.env,
     };
-    if (this.modifyContext) context = this.modifyContext(context, route);
+    if (this.modifyContext) context = this.modifyContext(context, { route });
 
     const tplPath = this.getDocumentTplPath(route);
     const relTplPath = relative(cwd, tplPath);
@@ -247,7 +247,7 @@ export default class HTMLGenerator {
     let headScripts = [];
     let chunks = ['umi'];
 
-    if (this.modifyChunks) chunks = this.modifyChunks(chunks);
+    if (this.modifyChunks) chunks = this.modifyChunks(chunks, { route });
     chunks = chunks.map(chunk => {
       return isPlainObject(chunk) ? chunk : { name: chunk };
     });
@@ -288,12 +288,12 @@ export default class HTMLGenerator {
       }
     });
 
-    if (this.modifyMetas) metas = this.modifyMetas(metas);
-    if (this.modifyLinks) links = this.modifyLinks(links);
-    if (this.modifyScripts) scripts = this.modifyScripts(scripts);
-    if (this.modifyStyles) styles = this.modifyStyles(styles);
+    if (this.modifyMetas) metas = this.modifyMetas(metas, { route });
+    if (this.modifyLinks) links = this.modifyLinks(links, { route });
+    if (this.modifyScripts) scripts = this.modifyScripts(scripts, { route });
+    if (this.modifyStyles) styles = this.modifyStyles(styles, { route });
     if (this.modifyHeadScripts)
-      headScripts = this.modifyHeadScripts(headScripts);
+      headScripts = this.modifyHeadScripts(headScripts, { route });
 
     // umi.css should be the last stylesheet
     chunks.forEach(({ name }) => {

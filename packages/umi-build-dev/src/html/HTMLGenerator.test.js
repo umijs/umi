@@ -553,7 +553,7 @@ describe('HG', () => {
           ],
         },
       ],
-      modifyContext: (context, route) => {
+      modifyContext: (context, { route }) => {
         return {
           ...context,
           path: route.path,

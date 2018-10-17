@@ -10,7 +10,8 @@ export default (service, opts = {}) => {
     routes,
     publicPath: webpackConfig.output.publicPath,
     chunksMap,
-    modifyContext(context, route) {
+    modifyContext(context, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('modifyHTMLContext', {
         initialValue: context,
         args: { route },
@@ -22,37 +23,50 @@ export default (service, opts = {}) => {
     modifyPublicPathStr(str) {
       return str;
     },
-    modifyChunks(memo) {
+    modifyChunks(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('modifyHTMLChunks', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyMetas(memo) {
+    modifyMetas(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('addHTMLMeta', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyLinks(memo) {
+    modifyLinks(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('addHTMLLink', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyScripts(memo) {
+    modifyScripts(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('addHTMLScript', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyStyles(memo) {
+    modifyStyles(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('addHTMLStyle', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyHeadScripts(memo) {
+    modifyHeadScripts(memo, opts = {}) {
+      const { route } = opts;
       return service.applyPlugins('addHTMLHeadScript', {
         initialValue: memo,
+        args: { route },
       });
     },
-    modifyHTML(memo, { route }) {
+    modifyHTML(memo, opts = {}) {
+      const { route } = opts;
       const $ = cheerio.load(memo);
       service.applyPlugins('modifyHTMLWithAST', {
         initialValue: $,
