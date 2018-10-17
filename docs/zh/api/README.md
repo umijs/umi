@@ -104,6 +104,10 @@ import Redirect from 'umi/redirect';
 
 详见：[https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
 
+### umi/prompt
+
+详见：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttraining.com/react-router/web/api/Prompt)
+
 ### umi/withRouter
 
 详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)

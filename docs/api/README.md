@@ -102,7 +102,11 @@ import Redirect from 'umi/redirect';
 <Redirect to="/login" />
 ```
 
-Detail: [https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
+See: [https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
+
+### umi/prompt
+
+See：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttraining.com/react-router/web/api/Prompt)
 
 ### umi/withRouter
 
