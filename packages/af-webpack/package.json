@@ -1,16 +1,16 @@
 {
   "name": "af-webpack",
-  "version": "1.2.0-beta.3",
+  "version": "1.2.0-beta.4",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
+    "@babel/plugin-transform-react-constant-elements": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/plugin-transform-react-constant-elements": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "@svgr/core": "3.1.0",
     "address": "^1.0.3",
     "assert": "^1.4.1",
@@ -18,7 +18,7 @@
     "babel-loader": "^8.0.4",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "babel-plugin-named-asset-import": "^0.2.2",
-    "babel-preset-umi": "^1.2.0-beta.3",
+    "babel-preset-umi": "^1.2.0-beta.4",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
     "clipboardy": "^1.2.3",
