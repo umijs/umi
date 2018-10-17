@@ -78,6 +78,7 @@ export default function(api) {
       .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic.js'))
       .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink.js'))
       .set('umi/redirect', join(process.env.UMI_DIR, 'lib/redirect.js'))
+      .set('umi/prompt', join(process.env.UMI_DIR, 'lib/prompt.js'))
       .set('umi/router', join(process.env.UMI_DIR, 'lib/router.js'))
       .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter.js'))
       .set(
