@@ -106,6 +106,26 @@ import Redirect from 'umi/redirect';
 
 ### umi/prompt
 
+例子：
+
+```js
+import Prompt from 'umi/prompt';
+
+export default () => {
+  return (
+    <>
+      <h1>Prompt</h1>
+      <Prompt
+        when={true}
+        message={(location) => {
+          return window.confirm(`confirm to leave to ${location.pathname}?`);
+        }}
+      />
+    </>
+  );
+}
+```
+
 详见：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttraining.com/react-router/web/api/Prompt)
 
 ### umi/withRouter
