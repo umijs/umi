@@ -15,7 +15,7 @@
     "address": "^1.0.3",
     "assert": "^1.4.1",
     "autoprefixer": "^9.1.1",
-    "babel-loader": "^8.0.0",
+    "babel-loader": "^8.0.4",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "babel-plugin-named-asset-import": "^0.2.2",
     "babel-preset-umi": "^1.2.0-beta.3",
