@@ -101,7 +101,7 @@ export default function(opts) {
   rule
     .end()
     .use('url-loader')
-    .loader(require.resolve('url-loader'))
+    .loader(require.resolve('umi-url-pnp-loader'))
     .options({
       limit: opts.inlineLimit || DEFAULT_INLINE_LIMIT,
       name: 'static/[name].[hash:8].[ext]',

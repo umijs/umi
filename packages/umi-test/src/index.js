@@ -21,6 +21,7 @@ export default function(opts = {}) {
       require.resolve('./shim.js'),
       require.resolve('./setupTests.js'),
     ],
+    resolver: require.resolve('jest-pnp-resolver'),
     transform: {
       '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
