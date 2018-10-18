@@ -22,21 +22,22 @@ updater({ pkg }).notify({ defer: true });
 process.env.UMI_DIR = dirname(require.resolve('../package'));
 process.env.UMI_VERSION = pkg.version;
 
+const aliasMap = {
+  '-v': 'version',
+  '--version': 'version',
+  '-h': 'help',
+  '--help': 'help',
+};
+
 switch (script) {
   case 'build':
   case 'dev':
   case 'test':
     require(`./scripts/${script}`);
     break;
-  case '-v':
-  case '--version':
-    script = 'version';
-  case '-h':
-  case '--help':
-    script = 'help';
   default: {
     const Service = require('umi-build-dev/lib/Service').default;
-    new Service(buildDevOpts(args)).run(script, args);
+    new Service(buildDevOpts(args)).run(aliasMap[script] || script, args);
     break;
   }
 }
