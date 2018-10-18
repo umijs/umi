@@ -279,11 +279,20 @@ export default class HTMLGenerator {
       ].join('\n'),
     });
 
-    chunks.forEach(({ name, headScript }) => {
-      const hashedFileName = this.getHashedFileName(`${name}.js`);
+    const getChunkPath = fileName => {
+      const hashedFileName = this.getHashedFileName(fileName);
       if (hashedFileName) {
+        return `__PATH_TO_PUBLIC_PATH__${hashedFileName}`;
+      } else {
+        return null;
+      }
+    };
+
+    chunks.forEach(({ name, headScript }) => {
+      const chunkPath = getChunkPath(`${name}.js`);
+      if (chunkPath) {
         (headScript ? headScripts : scripts).push({
-          src: `<%= pathToPublicPath %>${hashedFileName}`,
+          src: chunkPath,
         });
       }
     });
@@ -292,16 +301,17 @@ export default class HTMLGenerator {
     if (this.modifyLinks) links = this.modifyLinks(links, { route });
     if (this.modifyScripts) scripts = this.modifyScripts(scripts, { route });
     if (this.modifyStyles) styles = this.modifyStyles(styles, { route });
-    if (this.modifyHeadScripts)
+    if (this.modifyHeadScripts) {
       headScripts = this.modifyHeadScripts(headScripts, { route });
+    }
 
     // umi.css should be the last stylesheet
     chunks.forEach(({ name }) => {
-      const hashedFileName = this.getHashedFileName(`${name}.css`);
-      if (hashedFileName) {
+      const chunkPath = getChunkPath(`${name}.css`);
+      if (chunkPath) {
         links.push({
           rel: 'stylesheet',
-          href: `<%= pathToPublicPath %>${hashedFileName}`,
+          href: chunkPath,
         });
       }
     });
@@ -336,13 +346,14 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
       exportStatic && exportStatic.dynamicRoot
         ? relPathToPublicPath
         : publicPath;
-    html = html
-      .replace(/<%= pathToPublicPath %>/g, pathToPublicPath)
-      .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
 
     if (this.modifyHTML) {
-      html = this.modifyHTML(html, { route });
+      html = this.modifyHTML(html, { route, getChunkPath });
     }
+
+    html = html
+      .replace(/__PATH_TO_PUBLIC_PATH__/g, pathToPublicPath)
+      .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
 
     if (this.minify) {
       html = minify(html, {
