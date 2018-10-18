@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-locale",
-  "version": "2.2.0-beta.5",
+  "version": "2.2.0-beta.6",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
   "authors": [
@@ -29,7 +29,7 @@
     "mustache": "^2.3.0",
     "prop-types": "^15.6.2",
     "react-intl": "^2.4.0",
-    "umi-utils": "^1.2.0-beta.5"
+    "umi-utils": "^1.2.0-beta.6"
   },
   "umiTools": {
     "browserFiles": [
