@@ -43,7 +43,7 @@ export default function(api, option) {
 
   const plugins = {
     // mobile
-    hd: () => require('umi-plugin-hd').default,
+    hd: () => require('./plugins/hd').default,
     fastClick: () => require('./plugins/fastClick').default,
 
     // performance

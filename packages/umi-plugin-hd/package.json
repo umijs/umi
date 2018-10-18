@@ -1,7 +1,7 @@
 {
   "name": "umi-plugin-hd",
   "version": "1.2.0-beta.6",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-hd"
@@ -15,7 +15,8 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "template"
   ],
   "license": "MIT",
   "dependencies": {
