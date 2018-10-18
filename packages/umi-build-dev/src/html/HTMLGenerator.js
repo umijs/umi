@@ -347,13 +347,13 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
         ? relPathToPublicPath
         : publicPath;
 
-    if (this.modifyHTML) {
-      html = this.modifyHTML(html, { route, getChunkPath });
-    }
-
     html = html
       .replace(/__PATH_TO_PUBLIC_PATH__/g, pathToPublicPath)
       .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
+
+    if (this.modifyHTML) {
+      html = this.modifyHTML(html, { route, getChunkPath });
+    }
 
     if (this.minify) {
       html = minify(html, {
