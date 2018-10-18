@@ -423,6 +423,19 @@ Modify chunks in HTML, default `['umi']`.
 
 Modify the HTML, based on cheerio.
 
+Options:
+
+* route, current route
+* getChunkPath <Badge text="2.2.0+"/>, get the full path of chunk, including publicPath and hash
+
+e.g.
+
+```js
+api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
+  $('head').append(`<script src="${getChunkPath('a.js')}"></script>`);
+});
+```
+
 ### modifyHTMLContext
 
 Modify the environment parameters when html ejs is rendered.

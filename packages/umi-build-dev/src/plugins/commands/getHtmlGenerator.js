@@ -66,12 +66,13 @@ export default (service, opts = {}) => {
       });
     },
     modifyHTML(memo, opts = {}) {
-      const { route } = opts;
+      const { route, getChunkPath } = opts;
       const $ = cheerio.load(memo);
       service.applyPlugins('modifyHTMLWithAST', {
         initialValue: $,
         args: {
           route,
+          getChunkPath,
         },
       });
       return $.html();

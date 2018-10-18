@@ -424,6 +424,19 @@ api.addHTMLScript({
 
 修改 HTML，基于 cheerio 。
 
+参数：
+
+* route，当前路由
+* getChunkPath <Badge text="2.2.0+"/>，获取 chunk 的完整路径，包含 publicPath 和 hash 信息
+
+例子：
+
+```js
+api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
+  $('head').append(`<script src="${getChunkPath('a.js')}"></script>`);
+});
+```
+
 ### modifyHTMLContext
 
 修改 html ejs 渲染时的环境参数。
