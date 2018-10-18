@@ -121,6 +121,7 @@ export default function(api) {
       (config.exportStatic && config.exportStatic.dynamicRoot);
     const entry = isDev
       ? {
+          ...(memo.entry || {}),
           umi: [
             ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
             ...(setPublicPath ? [setPublicPathFile] : []),
@@ -128,6 +129,7 @@ export default function(api) {
           ],
         }
       : {
+          ...(memo.entry || {}),
           umi: [...(setPublicPath ? [setPublicPathFile] : []), entryScript],
         };
 
