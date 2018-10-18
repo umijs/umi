@@ -3,12 +3,12 @@ import { join, dirname, basename, extname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
-import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
+import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
 
-  const modelJSPath = findJSFile(cwd, 'model');
+  const modelJSPath = findJS(cwd, 'model');
   if (modelJSPath) {
     return [winPath(modelJSPath)];
   }
@@ -83,7 +83,7 @@ export default function(api, opts = {}) {
   const shouldImportDynamic = isProduction && opts.dynamicImport;
 
   function getDvaJS() {
-    const dvaJS = findJSFile(paths.absSrcPath, 'dva');
+    const dvaJS = findJS(paths.absSrcPath, 'dva');
     if (dvaJS) {
       return winPath(dvaJS);
     }
