@@ -2,9 +2,6 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 const RouteInstanceMap = {
-  remove(key) {
-    key._routeInternalComponent = undefined;
-  },
   get(key) {
     return key._routeInternalComponent;
   },
@@ -15,6 +12,17 @@ const RouteInstanceMap = {
     key._routeInternalComponent = value;
   },
 };
+
+// Support pass props from layout to child routes
+const RouteWithProps = ({ path, exact, strict, render, location, ...rest }) => (
+  <Route
+    path={path}
+    exact={exact}
+    strict={strict}
+    location={location}
+    render={props => render({ ...props, ...rest })}
+  />
+);
 
 function withRoutes(route) {
   if (RouteInstanceMap.has(route)) {
@@ -41,7 +49,7 @@ function withRoutes(route) {
   const ret = args => {
     const { render, ...rest } = args;
     return (
-      <Route
+      <RouteWithProps
         {...rest}
         render={props => {
           return <Component {...props} route={route} render={render} />;
@@ -72,7 +80,7 @@ export default function renderRoutes(
             />
           );
         }
-        const RouteRoute = route.Routes ? withRoutes(route) : Route;
+        const RouteRoute = route.Routes ? withRoutes(route) : RouteWithProps;
         return (
           <RouteRoute
             key={route.key || i}
