@@ -1,0 +1,1 @@
+[{"path":"/","component":"./src/layouts/index.js","routes":[{"path":"/","exact":true,"component":"./src/pages/index.js"},{"path":"/:app/:users","exact":true,"component":"./src/pages/$app/$users.js"}]}]
