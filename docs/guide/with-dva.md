@@ -116,7 +116,7 @@ export const dva = {
     },
   },
   plugins: [
-    require('dva-logger'),
+    require('dva-logger')(),
   ],
 };
 ```
