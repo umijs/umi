@@ -1,0 +1,13 @@
+{
+  "name": "fa-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node  ../../packages/af-webpack/bin/af-webpack.js  dev",
+    "build": "node  ../../packages/af-webpack/bin/af-webpack.js  build"
+  },
+  "author": "",
+  "license": "ISC"
+}
