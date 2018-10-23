@@ -25,6 +25,7 @@ export default function(opts = {}) {
     transform: {
       '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
+      '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
