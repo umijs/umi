@@ -14,14 +14,14 @@ export default function generateWebManifest(api, options) {
   const {
     config: { publicPath },
     log,
-    paths: { absPagesPath },
+    paths: { absSrcPath },
     addHTMLLink,
     addHTMLHeadScript,
     addPageWatcher,
   } = api;
 
   const defaultWebManifestOptions = {
-    srcPath: join(absPagesPath, DEFAULT_MANIFEST_FILENAME),
+    srcPath: join(absSrcPath, DEFAULT_MANIFEST_FILENAME),
   };
   let { srcPath } = {
     ...defaultWebManifestOptions,

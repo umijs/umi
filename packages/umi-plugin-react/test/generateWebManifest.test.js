@@ -4,8 +4,6 @@ import generateWebManifest, {
 } from '../src/plugins/pwa/generateWebManifest';
 import { join } from 'path';
 
-jest.mock('fs');
-
 const APIMock = {
   config: {
     publicPath: '/',
@@ -14,7 +12,7 @@ const APIMock = {
     warn: () => {},
   },
   paths: {
-    absPagesPath: 'home/umi-project/src/pages/',
+    absSrcPath: join(__dirname, 'pwa'),
   },
   addHTMLLink: () => {},
   addHTMLHeadScript: () => {},
@@ -29,7 +27,11 @@ describe('generateWebManifest', () => {
   });
 
   it('should use manifest provided by user', () => {
-    const manifestPathProvidedByUser = '/path/to/my/manifest.webmanifest';
+    const manifestPathProvidedByUser = join(
+      __dirname,
+      'pwa',
+      'manifest.webmanifest',
+    );
     const { srcPath, outputPath } = generateWebManifest(APIMock, {
       srcPath: manifestPathProvidedByUser,
     });
@@ -40,7 +42,7 @@ describe('generateWebManifest', () => {
   it('should use a default manifest if not provided by user', () => {
     const { srcPath, outputPath } = generateWebManifest(APIMock);
     expect(srcPath).toBe(
-      join(APIMock.paths.absPagesPath, DEFAULT_MANIFEST_FILENAME),
+      join(APIMock.paths.absSrcPath, DEFAULT_MANIFEST_FILENAME),
     );
     expect(outputPath).toBe(DEFAULT_MANIFEST_FILENAME);
   });

@@ -16,7 +16,7 @@ export default {
         hardSource: false,
         pwa: {
           // manifestOptions: {
-          //   srcPath: join(__dirname, 'src/pages/manifest.webmanifest')
+          //   srcPath: join(__dirname, 'pages/manifest.json')
           // },
           // workboxOptions: {
           // }

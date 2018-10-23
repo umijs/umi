@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-const rawManifestJSON = require('./pwa/pages/manifest.json');
+const rawManifestJSON = require('./pwa/manifest.json');
 
 describe('pwa', () => {
   let browser;

@@ -10,6 +10,7 @@ export default function(api, options) {
     pkg,
     relativeToTmp,
     config: { publicPath },
+    paths: { absSrcPath },
   } = api;
   assert(
     pkg && pkg.name,
@@ -17,6 +18,21 @@ export default function(api, options) {
       'package.json',
     )} and configure ${chalk.underline.cyan('name')} in it when enable pwa.`,
   );
+
+  // generate webmanifest before workbox generation, so that webmanifest can be added to precached list
+  const { srcPath, outputPath } = generateWebManifest(api, {
+    ...options.manifestOptions,
+  });
+  api.chainWebpackConfig(webpackConfig => {
+    webpackConfig.plugin('webmanifest').use(WebManifestPlugin, [
+      {
+        publicPath,
+        srcPath,
+        outputPath,
+        pkgName: pkg.name,
+      },
+    ]);
+  });
 
   if (process.env.NODE_ENV === 'production') {
     api.addEntryCode(
@@ -30,10 +46,21 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
       mode === 'GenerateSW'
         ? {
             cacheId: pkg.name,
+            skipWaiting: true,
+            clientsClaim: true,
+            runtimeCaching: [
+              {
+                urlPattern: /https:\/\/cdn.jsdelivr.net\/npm\/pwacompat/,
+                handler: 'networkFirst',
+              },
+            ],
           }
-        : {};
+        : {
+            swSrc: join(absSrcPath, 'service-worker.js'),
+          };
     const workboxConfig = {
-      exclude: [/\.map$/, /favicon\.ico$/, /manifest\.(json|webmanifest)$/],
+      // remove manifest.json from exlude list. https://github.com/GoogleChrome/workbox/issues/1665
+      exclude: [/\.map$/, /favicon\.ico$/, /^manifest.*\.js?$/],
       ...defaultGenerateSWOptions,
       ...(options.workboxOptions || {}),
     };
@@ -48,19 +75,4 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
       );
     });
   }
-
-  const { srcPath, outputPath } = generateWebManifest(api, {
-    ...options.manifestOptions,
-  });
-
-  api.chainWebpackConfig(webpackConfig => {
-    webpackConfig.plugin('webmanifest').use(WebManifestPlugin, [
-      {
-        publicPath,
-        srcPath,
-        outputPath,
-        pkgName: pkg.name,
-      },
-    ]);
-  });
 }
