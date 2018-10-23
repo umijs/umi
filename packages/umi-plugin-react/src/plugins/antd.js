@@ -20,6 +20,16 @@ export default function(api) {
       ...(opts.babel.plugins || []),
       importPlugin('antd'),
       importPlugin('antd-mobile'),
+      [
+        require.resolve('babel-plugin-import'),
+        {
+          libraryName: 'ant-design-pro',
+          libraryDirectory: 'lib',
+          style: true,
+          camel2DashComponentName: false,
+        },
+        'ant-design-pro',
+      ],
     ];
     return opts;
   });

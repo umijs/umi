@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-const test = require('../lib').default;
+const yParser = require('yargs-parser');
+const args = yParser(process.argv.slice(2));
 
-const args = process.argv.slice(2);
+if (args.v || args.version) {
+  console.log(require('../package').version);
+  process.exit(0);
+}
 
-const watch = args.indexOf('-w') > -1 || args.indexOf('--watch') > -1;
-const coverage = args.indexOf('--coverage') > -1;
-
-test({
-  watch,
-  coverage,
+if (args.w) args.watch = args.w;
+require('../lib').default({
+  ...args,
 }).catch(e => {
-  console.log(e);
+  console.error(e);
   process.exit(1);
 });
