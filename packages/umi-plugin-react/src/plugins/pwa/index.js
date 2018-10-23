@@ -2,9 +2,15 @@ import { join } from 'path';
 import assert from 'assert';
 import chalk from 'chalk';
 import workboxWebpackPlugin from 'workbox-webpack-plugin';
+import WebManifestPlugin from './WebManifestPlugin';
+import generateWebManifest from './generateWebManifest';
 
 export default function(api, options) {
-  const { pkg, relativeToTmp } = api;
+  const {
+    pkg,
+    relativeToTmp,
+    config: { publicPath },
+  } = api;
   assert(
     pkg && pkg.name,
     `You must have ${chalk.underline.cyan(
@@ -26,14 +32,16 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
             cacheId: pkg.name,
           }
         : {};
-    const config = {
-      exclude: [/\.map$/, /favicon\.ico$/, /manifest\.json$/],
+    const workboxConfig = {
+      exclude: [/\.map$/, /favicon\.ico$/, /manifest\.(json|webmanifest)$/],
       ...defaultGenerateSWOptions,
       ...(options.workboxOptions || {}),
     };
 
     api.chainWebpackConfig(webpackConfig => {
-      webpackConfig.plugin('workbox').use(workboxWebpackPlugin[mode], [config]);
+      webpackConfig
+        .plugin('workbox')
+        .use(workboxWebpackPlugin[mode], [workboxConfig]);
       webpackConfig.resolve.alias.set(
         'register-service-worker',
         require.resolve('register-service-worker'),
@@ -41,5 +49,18 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
     });
   }
 
-  // TODO: 更新 html 文件
+  const { srcPath, outputPath } = generateWebManifest(api, {
+    ...options.manifestOptions,
+  });
+
+  api.chainWebpackConfig(webpackConfig => {
+    webpackConfig.plugin('webmanifest').use(WebManifestPlugin, [
+      {
+        publicPath,
+        srcPath,
+        outputPath,
+        pkgName: pkg.name,
+      },
+    ]);
+  });
 }

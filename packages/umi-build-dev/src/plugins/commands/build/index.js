@@ -29,7 +29,9 @@ export default function(api) {
         const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(
           service,
         );
-        service.webpackConfig.plugins.push(new HtmlGeneratorPlugin());
+        // move html-webpack-plugin to the head, so that other plugins (like workbox-webpack-plugin)
+        // which listen to `emit` event can detect assets
+        service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
       }
 
       require('af-webpack/build').default({
