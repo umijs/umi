@@ -4,7 +4,6 @@ tmp
 /packages/*/node_modules
 /examples/*/node_modules
 package-lock.json
-yarn.lock
 /website/build
 /packages/umi-test/examples/*/node_modules
 /packages/umi-plugin-locale/examples/*/node_modules
