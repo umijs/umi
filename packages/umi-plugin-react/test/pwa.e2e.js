@@ -26,9 +26,7 @@ describe('pwa', () => {
     // inject async pwacompat.js to <head>
     const isAsync = await page.evaluate(
       () =>
-        document.head.querySelector(
-          'script[src^="https://cdn.jsdelivr.net/npm/pwacompat"]',
-        ).async,
+        document.head.querySelector('script[src$="pwacompat.min.js"]').async,
     );
     expect(isAsync).toEqual(true);
 

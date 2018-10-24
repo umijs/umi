@@ -48,18 +48,12 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
             cacheId: pkg.name,
             skipWaiting: true,
             clientsClaim: true,
-            runtimeCaching: [
-              {
-                urlPattern: /https:\/\/cdn.jsdelivr.net\/npm\/pwacompat/,
-                handler: 'networkFirst',
-              },
-            ],
           }
         : {
             swSrc: join(absSrcPath, 'service-worker.js'),
           };
     const workboxConfig = {
-      // remove manifest.json from exlude list. https://github.com/GoogleChrome/workbox/issues/1665
+      // remove manifest.json from exclude list. https://github.com/GoogleChrome/workbox/issues/1665
       exclude: [/\.map$/, /favicon\.ico$/, /^manifest.*\.js?$/],
       ...defaultGenerateSWOptions,
       ...(options.workboxOptions || {}),

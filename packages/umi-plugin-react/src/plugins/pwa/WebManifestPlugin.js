@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
-import { prependPublicPath } from './generateWebManifest';
+import { join } from 'path';
+import { prependPublicPath, PWACOMPAT_PATH } from './generateWebManifest';
 
 export default class WebManifestPlugin {
   constructor(options) {
@@ -37,12 +38,22 @@ export default class WebManifestPlugin {
           icon.src = prependPublicPath(publicPath, icon.src);
         });
 
-      // write manifest to filesystem
-      const content = JSON.stringify(rawManifest);
-      compilation.assets[outputPath] = {
-        source: () => content,
-        size: () => content.length,
-      };
+      // write manifest & pwacompat.js to filesystem
+      [
+        {
+          path: outputPath,
+          content: JSON.stringify(rawManifest),
+        },
+        {
+          path: PWACOMPAT_PATH,
+          content: readFileSync(join(__dirname, PWACOMPAT_PATH)),
+        },
+      ].forEach(({ path, content }) => {
+        compilation.assets[path] = {
+          source: () => content,
+          size: () => content.length,
+        };
+      });
     });
   }
 }

@@ -2,8 +2,7 @@ import { existsSync } from 'fs';
 import { basename, join } from 'path';
 import { resolve } from 'url';
 
-const PWACOMPAT_URL =
-  'https://cdn.jsdelivr.net/npm/pwacompat@2.0.7/pwacompat.min.js';
+export const PWACOMPAT_PATH = 'pwacompat.min.js';
 export const DEFAULT_MANIFEST_FILENAME = 'manifest.json';
 
 export function prependPublicPath(publicPath = '/', src) {
@@ -18,6 +17,7 @@ export default function generateWebManifest(api, options) {
     addHTMLLink,
     addHTMLHeadScript,
     addPageWatcher,
+    onGenerateFiles,
   } = api;
 
   const defaultWebManifestOptions = {
@@ -35,9 +35,11 @@ export default function generateWebManifest(api, options) {
       addPageWatcher([srcPath]);
     }
   } else {
-    log.warn(`You'd better provide a WebManifest. Try to:
-              1. Create one under: \`${srcPath}\`,
-              2. Or override its path with \`pwa.manifestOptions.srcPath\` in umi config`);
+    onGenerateFiles(() => {
+      log.warn(`You'd better provide a WebManifest. Try to:
+                1. Create one under: \`${srcPath}\`,
+                2. Or override its path with \`pwa.manifestOptions.srcPath\` in umi config`);
+    });
     srcPath = null;
     manifestFilename = DEFAULT_MANIFEST_FILENAME;
   }
@@ -51,8 +53,7 @@ export default function generateWebManifest(api, options) {
   // use PWACompat(https://github.com/GoogleChromeLabs/pwacompat) for non-compliant browsers
   addHTMLHeadScript({
     async: '',
-    src: PWACOMPAT_URL,
-    crossorigin: 'anonymous',
+    src: prependPublicPath(publicPath, PWACOMPAT_PATH),
   });
 
   return {

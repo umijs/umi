@@ -17,6 +17,7 @@ const APIMock = {
   addHTMLLink: () => {},
   addHTMLHeadScript: () => {},
   addPageWatcher: () => {},
+  onGenerateFiles: () => {},
 };
 
 describe('generateWebManifest', () => {
