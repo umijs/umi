@@ -11,4 +11,5 @@ export default function(baseDir, fileNameWithoutExtname) {
       return absFilePath;
     }
   }
+  return null;
 }
