@@ -8,7 +8,7 @@ function stripFirstSlash(path) {
   }
 }
 
-export function chunkName(cwd, path) {
+export default function chunkName(cwd, path) {
   return stripFirstSlash(winPath(path).replace(winPath(cwd), ''))
     .replace(/\//g, '__')
     .replace(/^src__/, '')
