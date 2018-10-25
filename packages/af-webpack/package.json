@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.2.0-beta.8",
+  "version": "1.2.0-beta.9",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -18,7 +18,7 @@
     "babel-loader": "^8.0.4",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "babel-plugin-named-asset-import": "^0.2.2",
-    "babel-preset-umi": "^1.2.0-beta.8",
+    "babel-preset-umi": "^1.2.0-beta.9",
     "chalk": "^2.1.0",
     "chokidar": "^2.0.3",
     "clipboardy": "^1.2.3",
