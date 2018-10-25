@@ -1,4 +1,5 @@
 import { join } from 'path';
+import isReactComponent from '../utils/isReactComponent';
 
 export default function(api, options) {
   const { paths, winPath } = api;
@@ -19,9 +20,13 @@ export default function(api, options) {
 
     let loadingOpts = '';
     if (options.loadingComponent) {
-      loadingOpts = `, loading: require('${winPath(
-        join(paths.absSrcPath, options.loadingComponent),
-      )}').default `;
+      if (isReactComponent(options.loadingComponent.trim())) {
+        loadingOpts = `, loading: ${options.loadingComponent.trim()}`;
+      } else {
+        loadingOpts = `, loading: require('${winPath(
+          join(paths.absSrcPath, options.loadingComponent),
+        )}').default`;
+      }
     }
 
     let extendStr = '';
