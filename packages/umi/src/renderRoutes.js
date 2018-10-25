@@ -29,7 +29,7 @@ function withRoutes(route) {
     return RouteInstanceMap.get(route);
   }
 
-  const Routes = route.Routes;
+  const { Routes } = route;
   let len = Routes.length - 1;
   let Component = args => {
     const { render, ...props } = args;
@@ -90,9 +90,8 @@ export default function renderRoutes(
             render={props => {
               const childRoutes = renderRoutes(
                 route.routes,
-                {} /* extraProps */,
+                {},
                 {
-                  /* switchProps */
                   location: props.location,
                 },
               );
