@@ -33,6 +33,7 @@ switch (script) {
   case 'build':
   case 'dev':
   case 'test':
+  case 'inspect':
     require(`./scripts/${script}`);
     break;
   default: {
