@@ -15,6 +15,8 @@ export default function(opts = {}) {
     userJestConfig = require(jestConfigFile); // eslint-disable-line
   }
 
+  const { moduleNameMapper: userModuleNameMapper, ...restUserJestConfig } = userJestConfig;
+  
   const config = {
     rootDir: process.cwd(),
     setupFiles: [
@@ -33,13 +35,14 @@ export default function(opts = {}) {
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
       ...(moduleNameMapper || {}),
+      ...(userModuleNameMapper || {}),
     },
     globals: {
       'ts-jest': {
         useBabelrc: true,
       },
     },
-    ...(userJestConfig || {}),
+    ...(restUserJestConfig || {}),
   };
 
   return new Promise((resolve, reject) => {
