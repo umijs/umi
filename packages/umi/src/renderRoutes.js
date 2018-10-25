@@ -24,6 +24,16 @@ const RouteWithProps = ({ path, exact, strict, render, location, ...rest }) => (
   />
 );
 
+function getCompatProps(props) {
+  const compatProps = {};
+  if (__UMI_BIGFISH_COMPAT) {
+    if (props.match && props.match.params && !props.params) {
+      compatProps.params = props.match.params;
+    }
+  }
+  return compatProps;
+}
+
 function withRoutes(route) {
   if (RouteInstanceMap.has(route)) {
     return RouteInstanceMap.get(route);
@@ -52,7 +62,15 @@ function withRoutes(route) {
       <RouteWithProps
         {...rest}
         render={props => {
-          return <Component {...props} route={route} render={render} />;
+          const compatProps = getCompatProps(props);
+          return (
+            <Component
+              {...props}
+              {...compatProps}
+              route={route}
+              render={render}
+            />
+          );
         }}
       />
     );
@@ -96,17 +114,10 @@ export default function renderRoutes(
                 },
               );
               if (route.component) {
-                const compatProps = {};
-                if (__UMI_BIGFISH_COMPAT) {
-                  if (
-                    props.match &&
-                    props.match.params &&
-                    !props.params &&
-                    !extraProps.params
-                  ) {
-                    compatProps.params = props.match.params;
-                  }
-                }
+                const compatProps = getCompatProps({
+                  ...props,
+                  ...extraProps,
+                });
                 return (
                   <route.component
                     {...props}

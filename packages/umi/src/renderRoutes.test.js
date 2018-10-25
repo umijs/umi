@@ -90,6 +90,15 @@ describe('renderRoutes', () => {
     return <h1>Fallback</h1>;
   }
 
+  function BigfishRoute({ children, params }) {
+    return (
+      <>
+        <h1>BigfishRoute: {params.userId}</h1>
+        {children}
+      </>
+    );
+  }
+
   const routes = [
     {
       path: '/',
@@ -99,6 +108,12 @@ describe('renderRoutes', () => {
     },
     { path: '/users/:userId', exact: true, component: UsersPage },
     { path: '/bigfishParams/:userId', exact: true, component: BigfishParams },
+    {
+      path: '/bigfishParamsWithRoutes/:userId',
+      Routes: [BigfishRoute],
+      exact: true,
+      component: BigfishParams,
+    },
     { path: '/redirect', redirect: '/d' },
     { path: '/d', component: Redirect },
     { path: '/test-Routes', Routes: [NeedLogin], component: Route },
@@ -163,6 +178,21 @@ describe('renderRoutes', () => {
       </MemoryRouter>,
     );
     expect(tr.toJSON()).toEqual([
+      { type: 'h1', props: {}, children: ['BigfishParams Page'] },
+      '123',
+    ]);
+    window.__UMI_BIGFISH_COMPAT = false;
+  });
+
+  test('bigfish compatible with Routes', () => {
+    window.__UMI_BIGFISH_COMPAT = true;
+    const tr = TestRenderer.create(
+      <MemoryRouter initialEntries={['/bigfishParamsWithRoutes/123']}>
+        {renderRoutes(routes)}
+      </MemoryRouter>,
+    );
+    expect(tr.toJSON()).toEqual([
+      { type: 'h1', props: {}, children: ['BigfishRoute: ', '123'] },
       { type: 'h1', props: {}, children: ['BigfishParams Page'] },
       '123',
     ]);
