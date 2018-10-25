@@ -147,7 +147,53 @@ export default {
 
 * 类型：`Object`
 
-开启 pwa 。
+开启 PWA 相关功能，包括：
+* 生成 `manifest.json`
+* 在 `PRODUCTION` 模式下生成 Service Worker
+ 
+配置项包含：
+* `manifestOptions` 类型：`Object`，包含如下属性:
+  * `srcPath` manifest 的文件路径，类型：`String`，默认值为 `src/manifest.json`（如果 `src` 不存在，为项目根目录）
+* `workboxPluginMode` Workbox 模式，类型：`String`，默认值为 `GenerateSW` 即生成全新 Service Worker ；也可选填 `InjectManifest` 即向已有 Service Worker 注入代码，适合需要配置复杂缓存规则的场景
+* `workboxOptions` Workbox [配置对象](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config)，其中部分重要属性如下:
+  * `swSrc` 类型：`String`，默认值为 `src/manifest.json`，只有选择了 `InjectManifest` 模式才需要配置
+  * `importWorkboxFrom` 类型：`String`，默认从 Google CDN 加载 Workbox 代码，可选值 `'local'` 适合国内无法访问的环境
+
+更多关于 Workbox 的使用可以参考[官方文档](https://developers.google.com/web/tools/workbox/)。
+
+一个完整示例如下：
+
+```js
+// .umirc.js or config/config.js
+export default {
+  pwa: {
+    manifestOptions: {
+      srcPath: 'path/to/manifest.webmanifest')
+    },
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      importWorkboxFrom: 'local',
+      swSrc: 'path/to/service-worker.js')
+    }
+  }
+}
+```
+
+当 Service Worker 发生更新以及网络断开时，会触发相应的 `CustomEvent`。
+例如当 Service Worker 完成更新时，通常应用会引导用户手动刷新页面，在组件中可以监听 `sw.updated` 事件：
+
+```js
+window.addEventListener('sw.updated', () => {
+  // 弹出提示，引导用户刷新页面
+});
+```
+
+另外，当网络环境发生改变时，也可以给予用户显式反馈：
+```js
+window.addEventListener('sw.offline', () => {
+  // 置灰某些组件
+});
+```
 
 ### hd
 

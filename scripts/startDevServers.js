@@ -28,6 +28,7 @@ function start() {
     [12342, '../packages/umi/test/hashHistory'],
     [12351, '../packages/umi-plugin-react/test/normal'],
     [12352, '../packages/umi-plugin-react/test/with-dva'],
+    [12353, '../packages/umi-plugin-react/test/pwa'],
   ];
 
   return Promise.all(
