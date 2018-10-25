@@ -118,13 +118,16 @@ export default function renderRoutes(
                   ...props,
                   ...extraProps,
                 });
+                const newProps = window.g_plugins.apply('modifyRouteProps', {
+                  initialValue: {
+                    ...props,
+                    ...extraProps,
+                    ...compatProps,
+                  },
+                  args: { route },
+                });
                 return (
-                  <route.component
-                    {...props}
-                    {...extraProps}
-                    {...compatProps}
-                    route={route}
-                  >
+                  <route.component {...newProps} route={route}>
                     {childRoutes}
                   </route.component>
                 );

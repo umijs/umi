@@ -158,7 +158,12 @@ export default class FilesGenerator {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
-      initialValue: ['patchRoutes', 'render', 'rootContainer'],
+      initialValue: [
+        'patchRoutes',
+        'render',
+        'rootContainer',
+        'modifyRouteProps',
+      ],
     });
     assert(
       uniq(validKeys).length === validKeys.length,

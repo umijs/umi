@@ -41,12 +41,12 @@ export function compose(item, { initialValue }) {
   };
 }
 
-export function apply(item, { initialValue }) {
+export function apply(item, { initialValue, args }) {
   if (typeof item === 'string') item = getItem(item);
   assert(Array.isArray(item), `item must be Array`);
   return item.reduce((memo, fn) => {
     assert(typeof fn === 'function', `applied item must be function`);
-    return fn(memo);
+    return fn(memo, args);
   }, initialValue);
 }
 
