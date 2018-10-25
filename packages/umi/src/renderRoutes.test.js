@@ -1,11 +1,15 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { mount, shallow } from 'enzyme';
 
 import renderRoutes from './renderRoutes';
 
 window.__UMI_BIGFISH_COMPAT = false;
+window.g_plugins = {
+  apply(key, { initialValue }) {
+    return initialValue;
+  },
+};
 
 describe('renderRoutes', () => {
   function Layout(props) {
@@ -99,6 +103,10 @@ describe('renderRoutes', () => {
     );
   }
 
+  function ShowFoo(props) {
+    return <h1>foo: {props.foo || 'null'}</h1>;
+  }
+
   const routes = [
     {
       path: '/',
@@ -129,6 +137,7 @@ describe('renderRoutes', () => {
         { path: '/pass-props-from-layout', component: PassPropsRouteComponent },
       ],
     },
+    { path: '/g_plugins', component: ShowFoo },
     { component: Fallback },
   ];
 
@@ -248,5 +257,30 @@ describe('renderRoutes', () => {
       props: {},
       children: ['Fallback'],
     });
+  });
+
+  test('patch with g_plugins', () => {
+    const oldGPlugin = window.g_plugins;
+    window.g_plugins = {
+      apply(key, { initialValue }) {
+        if (key === 'modifyRouteProps') {
+          return {
+            ...initialValue,
+            foo: 'bar',
+          };
+        }
+      },
+    };
+    const tr = TestRenderer.create(
+      <MemoryRouter initialEntries={['/g_plugins']}>
+        {renderRoutes(routes)}
+      </MemoryRouter>,
+    );
+    expect(tr.toJSON()).toEqual({
+      type: 'h1',
+      props: {},
+      children: ['foo: ', 'bar'],
+    });
+    window.g_plugins = oldGPlugin;
   });
 });
