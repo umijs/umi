@@ -35,7 +35,7 @@ export default function(opts = {}) {
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
       ...(moduleNameMapper || {}),
-      ...userModuleNameMapper,
+      ...(userModuleNameMapper || {}),
     },
     globals: {
       'ts-jest': {
