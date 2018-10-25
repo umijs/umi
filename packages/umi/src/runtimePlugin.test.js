@@ -62,6 +62,25 @@ describe('runtimePlugin', () => {
     ).toEqual('012');
   });
 
+  it('apply with args', () => {
+    init({
+      validKeys: ['foo'],
+    });
+    use({
+      foo(memo, { foo }) {
+        return `${memo}1${foo}`;
+      },
+    });
+    expect(
+      apply('foo', {
+        initialValue: '0',
+        args: {
+          foo: 'bar',
+        },
+      }),
+    ).toEqual('01bar');
+  });
+
   it('applyForEach', () => {
     init({
       validKeys: ['foo'],
