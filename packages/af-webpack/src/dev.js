@@ -61,17 +61,17 @@ export default function dev({
         if (isFirstCompile) {
           require('clipboardy').write(urls.localUrlForBrowser);
           copied = chalk.dim('(copied to clipboard)');
+          console.log();
+          console.log(
+            [
+              `  App running at:`,
+              `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
+              `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+            ].join('\n'),
+          );
+          console.log();
         }
 
-        console.log();
-        console.log(
-          [
-            `  App running at:`,
-            `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
-            `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
-          ].join('\n'),
-        );
-        console.log();
 
         onCompileDone({
           isFirstCompile,
