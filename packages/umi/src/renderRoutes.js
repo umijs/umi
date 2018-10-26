@@ -62,15 +62,7 @@ function withRoutes(route) {
       <RouteWithProps
         {...rest}
         render={props => {
-          const compatProps = getCompatProps(props);
-          return (
-            <Component
-              {...props}
-              {...compatProps}
-              route={route}
-              render={render}
-            />
-          );
+          return <Component {...props} route={route} render={render} />;
         }}
       />
     );
