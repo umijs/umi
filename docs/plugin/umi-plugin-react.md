@@ -71,7 +71,7 @@ If there is a dva dependency in the project, the dependencies in the project are
 
 * Type: `Boolean`
 
-Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd and antd-mobile, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
+Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd, antd-mobile and antd-pro, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
 
 ::: warning
 If there is an ant or antd-mobile dependency in the project, the dependencies in the project are prioritized.
