@@ -193,7 +193,7 @@ describe('renderRoutes', () => {
     window.__UMI_BIGFISH_COMPAT = false;
   });
 
-  test('bigfish compatible with Routes', () => {
+  xtest('bigfish compatible with Routes', () => {
     window.__UMI_BIGFISH_COMPAT = true;
     const tr = TestRenderer.create(
       <MemoryRouter initialEntries={['/bigfishParamsWithRoutes/123']}>
