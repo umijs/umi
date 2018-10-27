@@ -36,7 +36,7 @@ $ umi g page index
 $ umi g page users
 ```
 
-> `umi g` is the alias of `umi generate`, used for generate `component`, `page`, `layout` quickly. And it can be extended in plugins, such as uni-plugin-dva extended `dva:model`, then you can generate dva's model via `umi g dva:model foo`.
+> `umi g` is the alias of `umi generate`, used for generate `component`, `page`, `layout` quickly. And it can be extended in plugins, such as umi-plugin-dva extended `dva:model`, then you can generate dva's model via `umi g dva:model foo`.
 
 Then view the directory with `tree`, (windows users can skip this step)
 
