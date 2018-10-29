@@ -202,7 +202,7 @@ export default class HTMLGenerator {
 
   getContent(route) {
     const { cwd } = this.paths;
-    const { exportStatic, runtimePublicPath } = this.config;
+    const { exportStatic, runtimePublicPath, targets } = this.config;
 
     let context = {
       route,
@@ -274,6 +274,11 @@ export default class HTMLGenerator {
       runtimePublicPath || (exportStatic && exportStatic.dynamicRoot);
     headScripts.push({
       content: [
+        ...(targets && targets.ie && targets.ie <= 10
+          ? [
+              `if (window["context"] == undefined) {if (!window.location.origin) {window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');}window["context"] = location.origin+"/V6.0";}`,
+            ]
+          : []),
         `window.routerBase = ${routerBaseStr};`,
         ...(setPublicPath ? [`window.publicPath = ${publicPathStr};`] : []),
       ].join('\n'),
