@@ -59,9 +59,9 @@ export function getLocaleFileList(absSrcPath, singular) {
 
 export default function(api, options = {}) {
   const { config, paths } = api;
-  const { targets: { ie } = {} } = config;
+  const { targets: { ie, android } = {} } = config;
 
-  if (ie && ie <= 10) {
+  if ((ie && ie <= 10) || android) {
     api.addEntryPolyfillImports({
       source: 'intl',
     });
