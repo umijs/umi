@@ -1,9 +1,5 @@
 # Use umi with dva
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 自`>= umi@2`起，`dva`的整合可以直接通过 [umi-plugin-react](https://github.com/umijs/umi/tree/master/packages/umi-plugin-react) 来配置。
 
 ## 特性
