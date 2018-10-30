@@ -183,7 +183,11 @@ export default function(api) {
         ),
         ...(config.define || {}),
       },
-      publicPath: isDev ? '/' : config.publicPath || '/',
+      publicPath: isDev
+        ? '/'
+        : config.publicPath != null
+          ? config.publicPath
+          : '/',
     };
   });
 }
