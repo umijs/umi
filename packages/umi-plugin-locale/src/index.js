@@ -57,11 +57,40 @@ export function getLocaleFileList(absSrcPath, singular) {
   return localeList;
 }
 
+// data come from https://caniuse.com/#search=intl
+// you can find all browsers in https://github.com/browserslist/browserslist#browsers
+const polyfillTargets = [
+  ['ie', 10],
+  ['firefox', 28],
+  ['chrome', 23],
+  ['safari', 9.1],
+  ['opera', 12.1],
+  ['ios', 9.3],
+  ['ios_saf', 9.3],
+  ['operamini', Infinity],
+  ['op_mini', Infinity],
+  ['android', 4.3],
+  ['blackberry', Infinity],
+  ['operamobile', 12.1],
+  ['op_mob', 12.1],
+  ['explorermobile', 10],
+  ['ie_mob', 10],
+  ['ucandroid', Infinity],
+];
+
+export function isNeedPolyfill(targets = {}) {
+  return (
+    polyfillTargets.find(item => {
+      return targets[item[0]] && targets[item[0]] <= item[1];
+    }) !== undefined
+  );
+}
+
 export default function(api, options = {}) {
   const { config, paths } = api;
-  const { targets: { ie, android } = {} } = config;
+  const { targets } = config;
 
-  if ((ie && ie <= 10) || android) {
+  if (isNeedPolyfill(targets)) {
     api.addEntryPolyfillImports({
       source: 'intl',
     });

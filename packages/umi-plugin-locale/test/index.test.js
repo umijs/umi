@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readFileSync, unlinkSync } from 'fs';
-import localePlugin, { getLocaleFileList } from '../src/index';
+import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 
 const absSrcPath = join(__dirname, '../examples/base/src');
 
@@ -88,5 +88,41 @@ describe('test func with singular false', () => {
   test('getLocaleFileList', () => {
     const list = getLocaleFileList(absSrcPath, false);
     expect(list).toEqual([]);
+  });
+});
+
+describe('test utils', () => {
+  test('isNeedPolyfill', () => {
+    expect(isNeedPolyfill()).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        chrome: 24,
+        ios: 9.4,
+      }),
+    ).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        chrome: 24,
+        ios_saf: '9.3',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        chrome: 50,
+        ucandroid: '9.3',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        android: 4.3,
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        android: '4.4',
+      }),
+    ).toEqual(false);
   });
 });
