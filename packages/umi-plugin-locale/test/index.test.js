@@ -124,5 +124,16 @@ describe('test utils', () => {
         android: '4.4',
       }),
     ).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        Android: '4.1',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        OperaMobile: 12,
+      }),
+    ).toEqual(true);
   });
 });
