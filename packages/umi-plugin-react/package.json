@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "umi-plugin-dll": "^1.2.0",
     "umi-plugin-dva": "^1.2.0",
     "umi-plugin-hd": "^1.2.0",
-    "umi-plugin-locale": "^2.2.0",
+    "umi-plugin-locale": "^2.2.1",
     "umi-plugin-polyfills": "^1.2.0",
     "umi-plugin-routes": "^1.0.1",
     "webpack": "4.19.0",
