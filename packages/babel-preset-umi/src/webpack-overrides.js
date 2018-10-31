@@ -17,7 +17,6 @@ export default function() {
       // cacheIdentifier for the file. We cannot tune the loader options on a per
       // file basis.
       if (macroCheck.test(source)) {
-        console.log('source', source);
         return Object.assign({}, config.options, {
           caller: Object.assign({}, config.options.caller, {
             craInvalidationToken: crypto.randomBytes(32).toString('hex'),
