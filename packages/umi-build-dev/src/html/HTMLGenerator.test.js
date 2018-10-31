@@ -359,7 +359,7 @@ describe('HG', () => {
 <link rel="stylesheet" href="./umi.css" />
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
-  window.publicPath = location.origin + window.routerBase;
+  window.publicPath = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase;
 </script>
 </head>
 <body>
@@ -414,7 +414,7 @@ describe('HG', () => {
 <link rel="stylesheet" href="./umi.css" />
 <script>
   window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
-  window.publicPath = location.origin + window.routerBase;
+  window.publicPath = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase;
 </script>
 </head>
 <body>

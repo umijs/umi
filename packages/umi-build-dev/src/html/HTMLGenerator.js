@@ -260,7 +260,7 @@ export default class HTMLGenerator {
       routerBaseStr = `location.pathname.split('/').slice(0, -${route.path.split(
         '/',
       ).length - 1}).concat('').join('/')`;
-      publicPathStr = 'location.origin + window.routerBase';
+      publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
     }
 
     if (this.modifyRouterBaseStr) {
