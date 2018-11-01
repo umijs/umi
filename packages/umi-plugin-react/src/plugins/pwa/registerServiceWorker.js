@@ -6,8 +6,8 @@ function dispathServiceWorkerEvent(eventName) {
   window.dispatchEvent(event);
 }
 
-if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+export default function(swDest) {
+  register(`${process.env.BASE_URL}${swDest}`, {
     updated() {
       dispathServiceWorkerEvent('sw.updated');
     },

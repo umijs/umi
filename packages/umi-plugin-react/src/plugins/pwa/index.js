@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, basename } from 'path';
 import assert from 'assert';
 import chalk from 'chalk';
 import workboxWebpackPlugin from 'workbox-webpack-plugin';
@@ -35,12 +35,6 @@ export default function(api, options) {
   });
 
   if (process.env.NODE_ENV === 'production') {
-    api.addEntryCode(
-      `
-require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
-    `.trim(),
-    );
-
     const mode = options.workboxPluginMode || 'GenerateSW';
     const defaultGenerateSWOptions =
       mode === 'GenerateSW'
@@ -59,6 +53,11 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
       ...(options.workboxOptions || {}),
     };
 
+    const swDest =
+      workboxConfig.swDest ||
+      basename(workboxConfig.swSrc) ||
+      'service-worker.js';
+
     api.chainWebpackConfig(webpackConfig => {
       webpackConfig
         .plugin('workbox')
@@ -68,5 +67,14 @@ require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}');
         require.resolve('register-service-worker'),
       );
     });
+
+    api.addEntryCode(
+      `
+var registerSW = require('${relativeToTmp(
+        join(__dirname, './registerServiceWorker.js'),
+      )}').default;
+registerSW('${swDest}');
+    `.trim(),
+    );
   }
 }
