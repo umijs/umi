@@ -7,15 +7,13 @@ function dispathServiceWorkerEvent(eventName) {
 }
 
 export default function(swDest) {
-  if (process.env.NODE_ENV === 'production') {
-    register(`${process.env.BASE_URL}${swDest}`, {
-      updated() {
-        dispathServiceWorkerEvent('sw.updated');
-      },
+  register(`${process.env.BASE_URL}${swDest}`, {
+    updated() {
+      dispathServiceWorkerEvent('sw.updated');
+    },
 
-      offline() {
-        dispathServiceWorkerEvent('sw.offline');
-      },
-    });
-  }
+    offline() {
+      dispathServiceWorkerEvent('sw.offline');
+    },
+  });
 }
