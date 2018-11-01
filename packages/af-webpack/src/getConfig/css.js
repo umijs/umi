@@ -69,6 +69,19 @@ export default function(webpackConfig, opts) {
     hasSassLoader = false;
   }
 
+  // Add dart-sass support
+  let sassImplementationPath = undefined
+  try{
+    require.resolve('sass');
+    sassImplementationPath='sass';
+  }catch (e) {
+    try{
+      require.resolve('node-sass');
+      sassImplementationPath = 'node-sass';
+    }catch(e){}
+  }
+  const sassImplementation = sassImplementationPath?require(sassImplementationPath):undefined;
+
   function applyCSSRules(rule, { cssModules, less, sass }) {
     if (isDev) {
       rule.use('css-hot-loader').loader(require.resolve('css-hot-loader'));
@@ -102,7 +115,10 @@ export default function(webpackConfig, opts) {
       rule
         .use('sass-loader')
         .loader(require.resolve('sass-loader'))
-        .options(opts.sass);
+        .options({
+          implementation:sassImplementation,
+          ...opts.sass,
+        });
     }
   }
 
