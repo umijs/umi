@@ -18,6 +18,8 @@
 
 ## 社区
 
+* [umi-antd-mobile](https://github.com/jinjinwa/umi-antd-mobile)，来自 @jinjinwa 的 umi@2.x + dva 的 mobile 例子
+
 ::: warning 警告
 以下例子使用 umi@1.x，尚未升级到 umi@2。
 :::
