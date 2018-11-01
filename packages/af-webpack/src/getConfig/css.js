@@ -122,7 +122,7 @@ export default function(webpackConfig, opts) {
 
   if (opts.cssModulesWithAffix) {
     applyCSSRules(
-      webpackConfig.module.rule('.module.css').test(/\.module\.css/),
+      webpackConfig.module.rule('.module.css').test(/\.module\.css$/),
       {
         cssModules: true,
       },
@@ -161,7 +161,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css')
-      .test(/\.css/)
+      .test(/\.css$/)
       .exclude.add(cssExclude)
       .end(),
     {
@@ -171,7 +171,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css-in-node_modules')
-      .test(/\.css/)
+      .test(/\.css$/)
       .include.add(/node_modules/)
       .end(),
     {},
