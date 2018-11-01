@@ -6,14 +6,16 @@ function dispathServiceWorkerEvent(eventName) {
   window.dispatchEvent(event);
 }
 
-if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
-    updated() {
-      dispathServiceWorkerEvent('sw.updated');
-    },
+export default function(swDest) {
+  if (process.env.NODE_ENV === 'production') {
+    register(`${process.env.BASE_URL}${swDest}`, {
+      updated() {
+        dispathServiceWorkerEvent('sw.updated');
+      },
 
-    offline() {
-      dispathServiceWorkerEvent('sw.offline');
-    },
-  });
+      offline() {
+        dispathServiceWorkerEvent('sw.offline');
+      },
+    });
+  }
 }
