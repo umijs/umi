@@ -18,6 +18,8 @@
 
 ## Community
 
+[umi-antd-mobile](https://github.com/jinjinwa/umi-antd-mobile)，an umi@2.x + dva mobile version example from @jinjinwa
+
 ::: warning
 The following example uses umi@1.x and has not been upgraded to umi@2.
 :::
