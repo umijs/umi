@@ -51,6 +51,7 @@
     "umi-test": "^1.2.2",
     "umi-utils": "^1.2.1",
     "url-polyfill": "^1.1.0",
+    "user-home": "^2.0.0",
     "whatwg-fetch": "^2.0.4",
     "yeoman-generator": "^3.1.1"
   },
