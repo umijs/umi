@@ -222,18 +222,6 @@ chainWebpack(config, { webpack }) {
 
 配置 webpack 的 [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) 属性。
 
-### browserslist
-
-配置 [browserslist](https://github.com/ai/browserslist)，同时作用于 babel-preset-env 和 autoprefixer。
-比如：
-
-```js
-"browserslist": [
-  "> 1%",
-  "last 2 versions"
-]
-```
-
 ### devtool
 
 配置 webpack 的 [devtool](https://webpack.js.org/configuration/devtool/) 属性。

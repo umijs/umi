@@ -222,18 +222,6 @@ such as:
 
 Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
 
-### browserslist
-
-Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
-such as:
-
-```js
-"browserslist": [
-  "> 1%",
-  "last 2 versions"
-]
-```
-
 ### devtool
 
 Configure the [devtool](https://webpack.js.org/configuration/devtool/) property of webpack.
