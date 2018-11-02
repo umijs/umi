@@ -143,6 +143,7 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
+        debug(e);
         process.exit(1);
       }
     }

@@ -55,7 +55,7 @@ export default function(api, options) {
 
     const swDest =
       workboxConfig.swDest ||
-      basename(workboxConfig.swSrc) ||
+      (workboxConfig.swSrc && basename(workboxConfig.swSrc)) ||
       'service-worker.js';
 
     api.chainWebpackConfig(webpackConfig => {
