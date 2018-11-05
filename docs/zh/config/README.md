@@ -82,6 +82,13 @@ export default {
 
 值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
 
+### cssPublicPath <Badge text="2.2.5+"/>
+
+* 类型：`String`
+* 默认值：同 publicPath
+
+为 CSS 指定额外的 publicPath 。
+
 ### mountElementId
 
 * 类型：`String`
