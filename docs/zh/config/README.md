@@ -82,7 +82,7 @@ export default {
 
 值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
 
-### cssPublicPath
+### cssPublicPath <Badge text="2.2.5+"/>
 
 * 类型：`String`
 * 默认值：同 publicPath
