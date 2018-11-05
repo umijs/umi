@@ -80,6 +80,13 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 
 Use the `window.publicPath` specified in the HTML when the value is `true`.
 
+### cssPublicPath
+
+* Type: `String`
+* Default: same as `publicPath`
+
+Specify an extra publicPath for CSS.
+
 ### mountElementId
 
 * Type: `String`
