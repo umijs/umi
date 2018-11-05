@@ -17,13 +17,24 @@ export default api => {
     );
     const MaterialGenerate = require('./material').default(api);
     debug(`get url ${url}`);
-    const codePath = getPathWithUrl(url, log);
-    debug(`get local codePath ${codePath}`);
-    const generate = new MaterialGenerate({
-      codePath,
+    const sourcePath = getPathWithUrl(url, log);
+    debug(`get local sourcePath ${sourcePath}`);
+    const generate = new MaterialGenerate(process.argv.slice(4), {
+      sourcePath,
+      env: {
+        cwd: api.cwd,
+      },
+      resolved: __dirname,
     });
 
-    generate.run(() => {});
+    generate
+      .run()
+      .then(() => {
+        log.success('');
+      })
+      .catch(e => {
+        log.error(e);
+      });
   }
 
   const details = `
