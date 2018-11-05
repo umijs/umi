@@ -2,6 +2,8 @@ import assert from 'assert';
 import chalk from 'chalk';
 import { getPathWithUrl } from './download';
 
+const debug = require('debug')('umi-build-dev:materialPlugin');
+
 export default api => {
   const { log } = api;
 
@@ -13,22 +15,10 @@ export default api => {
         'umi help material',
       )} or ${chalk.cyan.underline('umi help m')} to checkout the usage`,
     );
-    const MaterialGenerate = require('./material')(api);
-    let codePath;
-    try {
-      codePath = getPathWithUrl(url, log);
-    } catch (e) {
-      log(chalk.red(e.message));
-      log(
-        chalk.red(`
-Can't parse ${url}, please check your material url or network.
-Url can be a npm package, like '@umi-material/demo'.
-Or a github(gitlab) url, like https://github.com/umijs/umi-materials/tree/master/demo
-Or a git repo url, like git@github.com:umijs/umi-materials.git.
-      `),
-      );
-    }
-
+    const MaterialGenerate = require('./material').default(api);
+    debug(`get url ${url}`);
+    const codePath = getPathWithUrl(url, log);
+    debug(`get local codePath ${codePath}`);
     const generate = new MaterialGenerate({
       codePath,
     });

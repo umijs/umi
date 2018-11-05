@@ -1,31 +1,57 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { spawn } from 'child_process';
+import { spawnSync } from 'child_process';
+import mkdirp from 'mkdirp';
 
+const debug = require('debug')('umi-build-dev:MaterialDownload');
 const userHome = require('user-home');
 const materailsTempPath = join(userHome, '.umi-materials');
 
+function makeSureMaterialsTempPathExist() {
+  if (!existsSync(materailsTempPath)) {
+    debug(`mkdir materailsTempPath ${materailsTempPath}`);
+    mkdirp.sync(materailsTempPath);
+  }
+}
+
 export function downloadNpmPackage(url, log) {
   // TODO support
-  log(`${url} is a npm package, not support now.`);
+  log.info(`${url} is a npm package, not support now.`);
 }
 
 export function getDirNameByUrl(url) {
-  return url.replace(/\//g);
+  return url.replace(/\//g, '-');
 }
 
 export function downloadFromGit(url, branch = 'master', log) {
   const dirName = getDirNameByUrl(url);
   const templateTmpDirPath = join(materailsTempPath, dirName);
+  makeSureMaterialsTempPathExist();
   if (existsSync(templateTmpDirPath)) {
+    log.info(`${url} exist in cache, start pull...`);
+    spawnSync('git', ['fetch'], {
+      cwd: templateTmpDirPath,
+    });
+    spawnSync('git', ['checkout', branch], {
+      cwd: templateTmpDirPath,
+    });
+    spawnSync('git', ['pull'], {
+      cwd: templateTmpDirPath,
+    });
     // git repo already exist, pull it
     // cd dirName && git pull
   } else {
+    log.info(`start clone code from ${url}...`);
+    spawnSync('git', ['clone', url, dirName, '--single-branch', '-b', branch], {
+      cwd: materailsTempPath,
+    });
     // new git repo, clone
     // git clone url dirName
   }
-  // git checkout branch
-  // TODO
+  log.success(
+    `code download to ${templateTmpDirPath} from git ${url} with branch ${branch}`,
+  );
+  return templateTmpDirPath;
 }
 
 export function isNpmPackage(url) {
@@ -72,17 +98,17 @@ export function parseGitSiteUrl(url) {
 // get code local path by http url or npm package name
 export function getPathWithUrl(url, log) {
   if (isNpmPackage(url)) {
-    log(`checked ${url} is a npm package.`);
+    log.info(`checked ${url} is a npm package.`);
     return downloadNpmPackage(url, log);
   } else if (isGitUrl(url)) {
-    log(`checked ${url} is a git repo url.`);
+    log.info(`checked ${url} is a git repo url.`);
     // TODO suuport change branch
     return downloadFromGit(url, 'master', log);
   } else if (isGitSiteUrl(url)) {
-    log(`checked ${url} is a git site url.`);
+    log.info(`checked ${url} is a git site url.`);
     const { repo, branch, path } = parseGitSiteUrl(url);
-    log(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
-    const localPath = downloadFromGit(repo, branch);
+    log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
+    const localPath = downloadFromGit(repo, branch, log);
     return join(localPath, path);
   } else {
     throw new Error(`${url} can't match any Pattern`);
