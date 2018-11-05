@@ -76,7 +76,10 @@ export default function(webpackConfig, opts) {
 
     rule
       .use('extract-css-loader')
-      .loader(require('mini-css-extract-plugin').loader);
+      .loader(require('mini-css-extract-plugin').loader)
+      .options({
+        publicPath: opts.cssPublicPath,
+      });
 
     rule
       .use('css-loader')
