@@ -1,5 +1,4 @@
 import getUserConfigPlugins from 'af-webpack/getUserConfigPlugins';
-import { compatDirname } from 'umi-utils';
 import { join, dirname } from 'path';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 
@@ -10,7 +9,11 @@ function noop() {
 }
 
 const excludes = ['entry', 'outputPath'];
-
+function getPackegeDir(name){
+  return dirname(require.resolve(name,{
+    paths: [process.cwd(),__dirname]
+  }));
+}
 export default function(api) {
   const { debug, cwd, config, paths } = api;
 
@@ -38,26 +41,11 @@ export default function(api) {
       });
   });
 
-  const reactDir = compatDirname(
-    'react/package.json',
-    cwd,
-    dirname(require.resolve('react/package.json')),
-  );
-  const reactDOMDir = compatDirname(
-    'react-dom/package.json',
-    cwd,
-    dirname(require.resolve('react-dom/package.json')),
-  );
-  const reactRouterDir = compatDirname(
-    'react-router/package.json',
-    cwd,
-    dirname(require.resolve('react-router/package.json')),
-  );
-  const reactRouterDOMDir = compatDirname(
-    'react-router-dom/package.json',
-    cwd,
-    dirname(require.resolve('react-router-dom/package.json')),
-  );
+  const reactDir = getPackegeDir('react');
+  const reactDOMDir = getPackegeDir('react-dom');
+  const reactRouterDir = getPackegeDir('react-router');
+  const reactRouterDOMDir = getPackegeDir('react-router-dom');
+
   api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set('react', reactDir)
@@ -65,12 +53,7 @@ export default function(api) {
       .set('react-router', reactRouterDir)
       .set('react-router-dom', reactRouterDOMDir)
       .set(
-        'history',
-        compatDirname(
-          'umi-history/package.json',
-          cwd,
-          dirname(require.resolve('umi-history/package.json')),
-        ),
+        'history',getPackegeDir('umi-history')
       )
       .set('@', paths.absSrcPath)
       .set('@tmp', paths.absTmpDirPath)
