@@ -48,7 +48,7 @@ export default api => {
       this.name = opts.name || getNameFromPkg(this.pkg);
     }
 
-    writing() {
+    async writing() {
       if (!this.name) {
         return log.error("not find name in material's package.json");
       }
@@ -69,7 +69,23 @@ ${conflictDeps.map(info => {
         })}
         `);
       }
-      const targetPath = join(paths.absPagesPath, this.name);
+      let targetPath = join(paths.absPagesPath, this.name);
+      let materialName = this.name;
+      debug(`get targetPath ${targetPath}`);
+      if (existsSync(targetPath)) {
+        materialName = await this.prompt({
+          type: 'input',
+          name: 'name',
+          message: `page ${
+            this.name
+          } already exist, please input a new name for it`,
+          required: true,
+          default: this.name,
+        });
+        materialName = materialName.name;
+        targetPath = join(paths.absPagesPath, materialName);
+        debug(`targetPath exist get new targetPath ${targetPath}`);
+      }
       this.fs.copy(join(this.sourcePath, 'src'), targetPath);
       if (lackDeps.length) {
         log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
@@ -85,13 +101,6 @@ ${conflictDeps.map(info => {
           },
         );
       }
-
-      // TODO
-      // const path = this.args[0].toString();
-      // const name = basename(path);
-      // this.fs.copyTpl(join(paths.absPagesPath, `${path}.js`), {
-      //   name,
-      // });
     }
   };
 };
