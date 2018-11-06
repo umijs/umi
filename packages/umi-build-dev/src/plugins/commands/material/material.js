@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import semver from 'semver';
 
-// const debug = require('debug')('umi-build-dev:MaterialGenerator');
+const debug = require('debug')('umi-build-dev:MaterialGenerator');
 
 export function getNameFromPkg(pkg) {
   if (!pkg.name) {
@@ -31,13 +31,14 @@ export function dependenciesConflictCheck(
 }
 
 export default api => {
-  const { config, paths, log } = api;
+  const { paths, log, Generator } = api;
 
-  return class Generator extends api.Generator {
+  return class MaterialGenerator extends Generator {
     constructor(args, opts) {
       super(args, opts);
 
       this.sourcePath = opts.sourcePath;
+      this.npmClient = opts.npmClient || 'npm';
       const pkgPath = join(this.sourcePath, 'package.json');
       if (!existsSync(pkgPath)) {
         throw new Error(`not find package.json in ${this.sourcePath}`);
@@ -69,8 +70,19 @@ ${conflictDeps.map(info => {
       }
       const targetPath = join(paths.absPagesPath, materialName);
       this.fs.copy(join(this.sourcePath, 'src'), targetPath);
-      if (lackDeps) {
+      if (lackDeps.length) {
+        log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
         // install material dependencies
+        this.scheduleInstallTask(
+          this.npmClient,
+          lackDeps.map(dep => `${dep[0]}@${dep[1]}`),
+          {
+            save: true,
+          },
+          {
+            cwd: paths.cwd,
+          },
+        );
       }
 
       // TODO
