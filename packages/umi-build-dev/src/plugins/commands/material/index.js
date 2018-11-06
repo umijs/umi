@@ -19,10 +19,14 @@ export default api => {
     debug(`get url ${url}`);
     const sourcePath = getPathWithUrl(url, log);
     const npmClient = args['npm-client'];
-    debug(`get local sourcePath: ${sourcePath} and npmClient: ${npmClient}`);
+    const name = args['name'];
+    debug(
+      `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
+    );
     const generate = new MaterialGenerate(process.argv.slice(4), {
       sourcePath,
       npmClient,
+      name,
       env: {
         cwd: api.cwd,
       },

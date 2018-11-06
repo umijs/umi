@@ -20,7 +20,7 @@ export function dependenciesConflictCheck(
   Object.keys(materialPkgDeps).forEach(dep => {
     if (!projectPkgDeps[dep]) {
       lackDeps.push([dep, materialPkgDeps[dep]]);
-    } else if (semver.satisfies(materialPkgDeps[dep], projectPkgDeps[dep])) {
+    } else if (!semver.intersects(projectPkgDeps[dep], materialPkgDeps[dep])) {
       conflictDeps.push([dep, materialPkgDeps[dep], projectPkgDeps[dep]]);
     }
   });
@@ -45,12 +45,12 @@ export default api => {
       }
       // eslint-disable-next-line
       this.pkg = require(pkgPath);
+      this.name = opts.name || getNameFromPkg(this.pkg);
     }
 
     writing() {
-      const materialName = getNameFromPkg(this.pkg);
-      if (!materialName) {
-        return log.error('not find name package.json');
+      if (!this.name) {
+        return log.error("not find name in material's package.json");
       }
       // eslint-disable-next-line
       const projectPkg = require(join(paths.cwd, 'package.json'));
@@ -58,6 +58,7 @@ export default api => {
         this.pkg.dependencies,
         projectPkg.dependencies,
       );
+      debug(`conflictDeps ${conflictDeps}, lackDeps ${lackDeps}`);
       if (conflictDeps.length) {
         return log.error(`
 find dependencies conflict between material and your project:
@@ -68,7 +69,7 @@ ${conflictDeps.map(info => {
         })}
         `);
       }
-      const targetPath = join(paths.absPagesPath, materialName);
+      const targetPath = join(paths.absPagesPath, this.name);
       this.fs.copy(join(this.sourcePath, 'src'), targetPath);
       if (lackDeps.length) {
         log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
