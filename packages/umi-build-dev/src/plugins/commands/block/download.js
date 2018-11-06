@@ -18,12 +18,11 @@ export function getDirNameByUrl(url) {
   return url.replace(/\//g, '-');
 }
 
-export function downloadFromGit(url, branch = 'master', log) {
-  const dirName = getDirNameByUrl(url);
-  const templateTmpDirPath = join(blocksTempPath, dirName);
+export function downloadFromGit(url, id, branch = 'master', log) {
+  const templateTmpDirPath = join(blocksTempPath, id);
   makeSureMaterialsTempPathExist();
   if (existsSync(templateTmpDirPath)) {
-    log.info(`${url} exist in cache, start pull...`);
+    log.info(`${url} exist in cache, start pull from git to update...`);
     spawnSync('git', ['fetch'], {
       cwd: templateTmpDirPath,
     });
@@ -34,14 +33,14 @@ export function downloadFromGit(url, branch = 'master', log) {
       cwd: templateTmpDirPath,
     });
     // git repo already exist, pull it
-    // cd dirName && git pull
+    // cd id && git pull
   } else {
     log.info(`start clone code from ${url}...`);
-    spawnSync('git', ['clone', url, dirName, '--single-branch', '-b', branch], {
+    spawnSync('git', ['clone', url, id, '--single-branch', '-b', branch], {
       cwd: blocksTempPath,
     });
     // new git repo, clone
-    // git clone url dirName
+    // git clone url id
   }
   log.success(
     `code download to ${templateTmpDirPath} from git ${url} with branch ${branch}`,
@@ -53,21 +52,17 @@ export function isNpmPackage(url) {
   return /^@?([\w\-]+\/?)+$/.test(url);
 }
 
-export function isGitUrl(url) {
-  return /\.git$/.test(url);
-}
-
 // git site url maybe like: http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/master/demo
 // or http://gitlab.alitest-inc.com/bigfish/testblocks/tree/master
 // or http://gitlab.alitest-inc.com/bigfish/testblocks
 // or https://github.com/umijs/umi-blocks/tree/master/demo
 // or https://github.com/alibaba/ice/tree/master/react-blocks/blocks/AbilityIntroduction
-const gitSiteParser = /^(https?)\:\/\/((github|gitlab)[\.\w\-]+)\/([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?$/;
-export function isGitSiteUrl(url) {
+const gitSiteParser = /^(https\:\/\/|http\:\/\/|git\@)((github|gitlab)[\.\w\-]+)(\/|\:)([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?(.git)?$/;
+export function isGitUrl(url) {
   return gitSiteParser.test(url);
 }
 
-export function parseGitSiteUrl(url) {
+export function parseGitUrl(url) {
   // (http|s)://(host)/(group)/(name)/tree/(branch)/(path)
   const [
     // eslint-disable-next-line
@@ -76,6 +71,7 @@ export function parseGitSiteUrl(url) {
     host,
     // eslint-disable-next-line
     site,
+    divide, // : or /
     group,
     name,
     // eslint-disable-next-line
@@ -84,22 +80,24 @@ export function parseGitSiteUrl(url) {
     path = '/',
   ] = gitSiteParser.exec(url);
   return {
-    repo: `${protocol}://${host}/${group}/${name}.git`,
+    repo: `${protocol}${host}${divide}${group}/${name}.git`,
     branch,
     path,
+    id: `${host}/${group}/${name}`, // 唯一标识一个 git 仓库
   };
 }
 
 // get code local path by http url or npm package name
 export function getPathWithUrl(url, log, args) {
   if (isGitUrl(url)) {
-    log.info(`checked ${url} is a git repo url.`);
-    return downloadFromGit(url, args.branch, log);
-  } else if (isGitSiteUrl(url)) {
     log.info(`checked ${url} is a git site url.`);
-    const { repo, branch, path } = parseGitSiteUrl(url);
+    const { repo, branch, path, id } = parseGitUrl(url);
     log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
-    const localPath = downloadFromGit(repo, branch, log);
+    const realBranch = args.branch || branch;
+    if (args.branch) {
+      log.log(`find branch in args, use branch ${realBranch}`);
+    }
+    const localPath = downloadFromGit(repo, id, realBranch, log);
     return join(localPath, path);
   } else {
     throw new Error(`${url} can't match any Pattern`);
