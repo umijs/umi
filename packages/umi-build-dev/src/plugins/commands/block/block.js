@@ -12,16 +12,16 @@ export function getNameFromPkg(pkg) {
 }
 
 export function dependenciesConflictCheck(
-  materialPkgDeps = {},
+  blockPkgDeps = {},
   projectPkgDeps = {},
 ) {
   const lackDeps = [];
   const conflictDeps = [];
-  Object.keys(materialPkgDeps).forEach(dep => {
+  Object.keys(blockPkgDeps).forEach(dep => {
     if (!projectPkgDeps[dep]) {
-      lackDeps.push([dep, materialPkgDeps[dep]]);
-    } else if (!semver.intersects(projectPkgDeps[dep], materialPkgDeps[dep])) {
-      conflictDeps.push([dep, materialPkgDeps[dep], projectPkgDeps[dep]]);
+      lackDeps.push([dep, blockPkgDeps[dep]]);
+    } else if (!semver.intersects(projectPkgDeps[dep], blockPkgDeps[dep])) {
+      conflictDeps.push([dep, blockPkgDeps[dep], projectPkgDeps[dep]]);
     }
   });
   return {
@@ -50,7 +50,7 @@ export default api => {
 
     async writing() {
       if (!this.name) {
-        return log.error("not find name in material's package.json");
+        return log.error("not find name in block's package.json");
       }
       // eslint-disable-next-line
       const projectPkg = require(join(paths.cwd, 'package.json'));
@@ -61,19 +61,19 @@ export default api => {
       debug(`conflictDeps ${conflictDeps}, lackDeps ${lackDeps}`);
       if (conflictDeps.length) {
         return log.error(`
-find dependencies conflict between material and your project:
+find dependencies conflict between block and your project:
 ${conflictDeps.map(info => {
           return `dependency ${info[0]}: version${
             info[2]
-          } in your project\n not compatible with  ${info[1]} in material`;
+          } in your project\n not compatible with  ${info[1]} in block`;
         })}
         `);
       }
       let targetPath = join(paths.absPagesPath, this.name);
-      let materialName = this.name;
+      let blockName = this.name;
       debug(`get targetPath ${targetPath}`);
       if (existsSync(targetPath)) {
-        materialName = await this.prompt({
+        blockName = await this.prompt({
           type: 'input',
           name: 'name',
           message: `page ${
@@ -82,13 +82,13 @@ ${conflictDeps.map(info => {
           required: true,
           default: this.name,
         });
-        materialName = materialName.name;
-        targetPath = join(paths.absPagesPath, materialName);
+        blockName = blockName.name;
+        targetPath = join(paths.absPagesPath, blockName);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
       if (lackDeps.length) {
         log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
-        // install material dependencies
+        // install block dependencies
         this.scheduleInstallTask(
           this.npmClient,
           lackDeps.map(dep => `${dep[0]}@${dep[1]}`),
@@ -100,7 +100,7 @@ ${conflictDeps.map(info => {
           },
         );
       }
-      log.log('start copy material file to your project...');
+      log.log('start copy block file to your project...');
       this.fs.copy(join(this.sourcePath, 'src'), targetPath);
       const commonPath = join(this.sourcePath, '@');
       if (existsSync(commonPath)) {

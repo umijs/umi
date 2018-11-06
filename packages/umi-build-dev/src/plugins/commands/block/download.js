@@ -5,18 +5,13 @@ import mkdirp from 'mkdirp';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 const userHome = require('user-home');
-const materailsTempPath = join(userHome, '.umi-materials');
+const blocksTempPath = join(userHome, '.umi/blocks');
 
 function makeSureMaterialsTempPathExist() {
-  if (!existsSync(materailsTempPath)) {
-    debug(`mkdir materailsTempPath ${materailsTempPath}`);
-    mkdirp.sync(materailsTempPath);
+  if (!existsSync(blocksTempPath)) {
+    debug(`mkdir blocksTempPath ${blocksTempPath}`);
+    mkdirp.sync(blocksTempPath);
   }
-}
-
-export function downloadNpmPackage(url, log) {
-  // TODO support
-  log.info(`${url} is a npm package, not support now.`);
 }
 
 export function getDirNameByUrl(url) {
@@ -25,7 +20,7 @@ export function getDirNameByUrl(url) {
 
 export function downloadFromGit(url, branch = 'master', log) {
   const dirName = getDirNameByUrl(url);
-  const templateTmpDirPath = join(materailsTempPath, dirName);
+  const templateTmpDirPath = join(blocksTempPath, dirName);
   makeSureMaterialsTempPathExist();
   if (existsSync(templateTmpDirPath)) {
     log.info(`${url} exist in cache, start pull...`);
@@ -43,7 +38,7 @@ export function downloadFromGit(url, branch = 'master', log) {
   } else {
     log.info(`start clone code from ${url}...`);
     spawnSync('git', ['clone', url, dirName, '--single-branch', '-b', branch], {
-      cwd: materailsTempPath,
+      cwd: blocksTempPath,
     });
     // new git repo, clone
     // git clone url dirName
@@ -62,11 +57,11 @@ export function isGitUrl(url) {
   return /\.git$/.test(url);
 }
 
-// git site url maybe like: http://gitlab.alitest-inc.com/bigfish/bigfish-materials/tree/master/demo
-// or http://gitlab.alitest-inc.com/bigfish/testmaterials/tree/master
-// or http://gitlab.alitest-inc.com/bigfish/testmaterials
-// or https://github.com/umijs/umi-materials/tree/master/demo
-// or https://github.com/alibaba/ice/tree/master/react-materials/blocks/AbilityIntroduction
+// git site url maybe like: http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/master/demo
+// or http://gitlab.alitest-inc.com/bigfish/testblocks/tree/master
+// or http://gitlab.alitest-inc.com/bigfish/testblocks
+// or https://github.com/umijs/umi-blocks/tree/master/demo
+// or https://github.com/alibaba/ice/tree/master/react-blocks/blocks/AbilityIntroduction
 const gitSiteParser = /^(https?)\:\/\/((github|gitlab)[\.\w\-]+)\/([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?$/;
 export function isGitSiteUrl(url) {
   return gitSiteParser.test(url);
@@ -96,14 +91,10 @@ export function parseGitSiteUrl(url) {
 }
 
 // get code local path by http url or npm package name
-export function getPathWithUrl(url, log) {
-  if (isNpmPackage(url)) {
-    log.info(`checked ${url} is a npm package.`);
-    return downloadNpmPackage(url, log);
-  } else if (isGitUrl(url)) {
+export function getPathWithUrl(url, log, args) {
+  if (isGitUrl(url)) {
     log.info(`checked ${url} is a git repo url.`);
-    // TODO suuport change branch
-    return downloadFromGit(url, 'master', log);
+    return downloadFromGit(url, args.branch, log);
   } else if (isGitSiteUrl(url)) {
     log.info(`checked ${url} is a git site url.`);
     const { repo, branch, path } = parseGitSiteUrl(url);

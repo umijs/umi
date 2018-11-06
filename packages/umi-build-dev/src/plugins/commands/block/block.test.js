@@ -1,6 +1,6 @@
-import { dependenciesConflictCheck } from './material';
+import { dependenciesConflictCheck } from './block';
 
-describe('test material generate', () => {
+describe('test block generate', () => {
   it('dependenciesConflictCheck', () => {
     const { conflictDeps, lackDeps } = dependenciesConflictCheck(
       {
