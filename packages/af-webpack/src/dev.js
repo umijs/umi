@@ -49,6 +49,7 @@ export default function dev({
 
       let isFirstCompile = true;
       const IS_CI = !!process.env.CI;
+      const SILENT = !!process.env.SILENT;
       const urls = prepareUrls(PROTOCOL, HOST, port, base);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
@@ -59,7 +60,7 @@ export default function dev({
         }
 
         let copied = '';
-        if (isFirstCompile && !IS_CI) {
+        if (isFirstCompile && !IS_CI && !SILENT) {
           require('clipboardy').write(urls.localUrlForBrowser);
           copied = chalk.dim('(copied to clipboard)');
           console.log();
