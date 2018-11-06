@@ -86,7 +86,6 @@ ${conflictDeps.map(info => {
         targetPath = join(paths.absPagesPath, materialName);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
-      this.fs.copy(join(this.sourcePath, 'src'), targetPath);
       if (lackDeps.length) {
         log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
         // install material dependencies
@@ -100,6 +99,12 @@ ${conflictDeps.map(info => {
             cwd: paths.cwd,
           },
         );
+      }
+      log.log('start copy material file to your project...');
+      this.fs.copy(join(this.sourcePath, 'src'), targetPath);
+      const commonPath = join(this.sourcePath, '@');
+      if (existsSync(commonPath)) {
+        this.fs.copy(commonPath, paths.absSrcPath);
       }
     }
   };
