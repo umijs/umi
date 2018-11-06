@@ -63,12 +63,13 @@ export default api => {
       if (conflictDeps.length) {
         return log.error(`
 find dependencies conflict between block and your project:
-${conflictDeps.map(info => {
-          return `dependency ${info[0]}: version${
-            info[2]
-          } in your project\n not compatible with  ${info[1]} in block`;
-        })}
-        `);
+${conflictDeps
+          .map(info => {
+            return `* ${info[0]}: ${
+              info[2]
+            }(your project) not compatible with ${info[1]}(block)`;
+          })
+          .join('\n')}`);
       }
       let targetPath = join(paths.absPagesPath, this.name);
       let blockName = this.name;

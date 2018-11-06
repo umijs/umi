@@ -42,11 +42,11 @@ export default function(api) {
   }
 
   const details = `
-Examples: 
+Examples:
 
   ${chalk.gray('# generate page users')}
   umi generate page users
-  
+
   ${chalk.gray('# g is the alias for generate')}
   umi g page index
   `.trim();
