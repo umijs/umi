@@ -14,6 +14,7 @@ export default function(opts = {}) {
   const builtInPlugins = [
     './plugins/commands/dev',
     './plugins/commands/build',
+    './plugins/commands/inspect',
     './plugins/commands/test',
     './plugins/commands/help',
     './plugins/commands/generate',

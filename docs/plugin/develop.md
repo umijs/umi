@@ -57,7 +57,7 @@ export default (api, opts = {}) => {
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
   api.addRendererWrapperWithComponent(() => {
     if (opts.antd) {
-      return join(__dirnae, './locale-antd.js'));
+      return join(__dirname, './locale-antd.js'));
     }
   });
   // add watcher on locale files

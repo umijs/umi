@@ -40,7 +40,10 @@ export default function(api) {
     api.debug(`write tmp file: polyfills.js, content: ${result}`);
     api.writeTmpFile('polyfills.js', result);
   }
-  writeTmpFile();
+
+  api.onGenerateFiles(() => {
+    writeTmpFile();
+  });
 
   api.addEntryPolyfillImports(() => {
     if (process.env.BABEL_POLYFILL !== 'none') {

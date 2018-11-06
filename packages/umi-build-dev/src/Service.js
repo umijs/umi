@@ -7,6 +7,7 @@ import clonedeep from 'lodash.clonedeep';
 import assign from 'object-assign';
 import { parse } from 'dotenv';
 import signale from 'signale';
+import deprecate from 'deprecate';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -143,6 +144,7 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
+        debug(e);
         process.exit(1);
       }
     }
@@ -262,6 +264,11 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const config = userConfig.getConfig({ force: true });
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
+    if (config.browserslist) {
+      deprecate(
+        'config.browserslist is deprecated, use config.targets instead',
+      );
+    }
     debug('got user config');
     debug(this.config);
 

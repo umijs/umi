@@ -15,6 +15,8 @@ export default function(opts = {}) {
     userJestConfig = require(jestConfigFile); // eslint-disable-line
   }
 
+  const { moduleNameMapper: userModuleNameMapper, ...restUserJestConfig } = userJestConfig;
+  
   const config = {
     rootDir: process.cwd(),
     setupFiles: [
@@ -25,6 +27,7 @@ export default function(opts = {}) {
     transform: {
       '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
+      '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
@@ -32,13 +35,14 @@ export default function(opts = {}) {
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
       ...(moduleNameMapper || {}),
+      ...(userModuleNameMapper || {}),
     },
     globals: {
       'ts-jest': {
-        useBabelrc: true,
+        babelConfig: true,
       },
     },
-    ...(userJestConfig || {}),
+    ...(restUserJestConfig || {}),
   };
 
   return new Promise((resolve, reject) => {

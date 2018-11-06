@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { join } from 'path';
 import deepclone from 'lodash.clonedeep';
-import { winPath } from 'umi-utils';
+import { winPath, isUrl } from 'umi-utils';
 
 export default (routes, pagesPath = 'src/pages', parentRoutePath = '/') => {
   // deepclone 是为了避免 patch 多次
@@ -25,7 +25,11 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 
   // path patch must be before bigfish patch
   if (route.path && route.path.charAt(0) !== '/') {
-    route.path = winPath(join(parentRoutePath, route.path));
+    if (isUrl(route.path)) {
+      route.path = winPath(route.path);
+    } else {
+      route.path = winPath(join(parentRoutePath, route.path));
+    }
   }
 
   // Compatible with bigfish

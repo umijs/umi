@@ -71,7 +71,7 @@ If there is a dva dependency in the project, the dependencies in the project are
 
 * Type: `Boolean`
 
-Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd and antd-mobile, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
+Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd, antd-mobile and antd-pro, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
 
 ::: warning
 If there is an ant or antd-mobile dependency in the project, the dependencies in the project are prioritized.
@@ -147,7 +147,59 @@ Open webpack cache with [hard-source-webpack-plugin](https://github.com/mzgoddar
 
 * Type `Object`
 
-Enable pwa 。
+Enable some PWA features including:
+
+* Generate a `manifest.json`
+* Generate a Service Worker on `PRODUCTION` mode
+ 
+options include:
+
+* `manifestOptions` Type: `Object`, includes following options:
+  * `srcPath` path of manifest, Type: `String`, Default `src/manifest.json`
+* `workboxPluginMode` Workbox mode, Type: `String`, Default `GenerateSW`(generate a brand new Service Worker); or `InjectManifest`(inject code to existed Service Worker)
+* `workboxOptions` Workbox [Config](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config)，some important options:
+  * `swSrc` Type: `String`, Default `src/manifest.json`, only in `InjectManifest` mode
+  * `swDest` Type: `String`, Defaults to `service-worker.js` or the same with basename in `swSrc` if provided
+  * `importWorkboxFrom` Type: `String`，Workbox loads from Google CDN by default, you can choose to `'local'` mode which will let Workbox loads from local copies
+
+You can refer to [Workbox](https://developers.google.com/web/tools/workbox/) for more API usages.
+
+Here's a simple example:
+
+```js
+// .umirc.js or config/config.js
+export default {
+  pwa: {
+    manifestOptions: {
+      srcPath: 'path/to/manifest.webmanifest')
+    },
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      importWorkboxFrom: 'local',
+      swSrc: 'path/to/service-worker.js'),
+      swDest: 'my-dest-sw.js'
+    }
+  }
+}
+```
+
+You can also listen to some `CustomEvent` when Service Worker has updated old contents in cache.
+It's the perfect time to display some message like "New content is available; please refresh.".
+For example, you can listen to `sw.updated` event in such UI component:
+
+```js
+window.addEventListener('sw.updated', () => {
+  // show message
+});
+```
+
+You can also react to network environment changes, such as offline/online:
+
+```js
+window.addEventListener('sw.offline', () => {
+  // make some components gray
+});
+```
 
 ### hd
 

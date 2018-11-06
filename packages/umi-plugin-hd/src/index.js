@@ -26,7 +26,7 @@ export default function(api, options = {}) {
       source: relative(
         paths.absTmpDirPath,
         findJS(paths.absSrcPath, 'hd') ||
-          join(__dirname, './template/index.js'),
+          join(__dirname, '../template/index.js'),
       ),
     };
   });

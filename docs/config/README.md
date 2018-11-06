@@ -80,6 +80,13 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 
 Use the `window.publicPath` specified in the HTML when the value is `true`.
 
+### cssPublicPath <Badge text="2.2.5+"/>
+
+* Type: `String`
+* Default: same as `publicPath`
+
+Specify an extra publicPath for CSS.
+
 ### mountElementId
 
 * Type: `String`
@@ -221,18 +228,6 @@ such as:
 ### alias
 
 Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
-
-### browserslist
-
-Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
-such as:
-
-```js
-"browserslist": [
-  "> 1%",
-  "last 2 versions"
-]
-```
 
 ### devtool
 

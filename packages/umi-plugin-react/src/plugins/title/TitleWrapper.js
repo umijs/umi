@@ -5,7 +5,9 @@ export default class UmiReactTitle extends React.Component {
     document.title = this.props.route._title;
   }
   componentWillUnmount() {
-    document.title = this.props.route._title_default;
+    if (document.title === this.props.route._title) {
+      document.title = this.props.route._title_default;
+    }
   }
   render() {
     return this.props.children;

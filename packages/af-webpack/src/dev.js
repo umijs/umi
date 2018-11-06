@@ -48,6 +48,7 @@ export default function dev({
       const compiler = webpack(webpackConfig);
 
       let isFirstCompile = true;
+      const IS_CI = !!process.env.CI;
       const urls = prepareUrls(PROTOCOL, HOST, port, base);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
@@ -58,20 +59,19 @@ export default function dev({
         }
 
         let copied = '';
-        if (isFirstCompile) {
+        if (isFirstCompile && !IS_CI) {
           require('clipboardy').write(urls.localUrlForBrowser);
           copied = chalk.dim('(copied to clipboard)');
+          console.log();
+          console.log(
+            [
+              `  App running at:`,
+              `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
+              `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+            ].join('\n'),
+          );
+          console.log();
         }
-
-        console.log();
-        console.log(
-          [
-            `  App running at:`,
-            `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
-            `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
-          ].join('\n'),
-        );
-        console.log();
 
         onCompileDone({
           isFirstCompile,

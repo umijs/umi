@@ -6,6 +6,11 @@ describe('getRoutesConfigFromConfig', () => {
     expect(routes).toEqual([{ path: '/a', exact: true }]);
   });
 
+  it('url path', () => {
+    const routes = getRoute([{ path: 'http://a.com' }]);
+    expect(routes).toEqual([{ path: 'http://a.com', exact: true }]);
+  });
+
   it("don't set exact if it' supplied", () => {
     const routes = getRoute([
       { path: '/a', exact: true },

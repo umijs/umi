@@ -8,7 +8,8 @@ module.exports = {
     '/packages/umi/src/scripts/test.js',
     '/packages/umi/src/test.js',
     '/packages/umi-plugin-dva/src/fixtures',
+    '/packages/umi-utils/src/fixtures',
   ],
-  collectCoverageFrom: ['packages/**/src/**/*.{ts,tsx,js,jsx}'],
+  collectCoverageFrom: ['packages/**/src/**/*.{js,jsx}'],
   coveragePathIgnorePatterns: ['/packages/umi-plugin-dva/src/fixtures'],
 };

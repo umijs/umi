@@ -76,7 +76,10 @@ export default function(webpackConfig, opts) {
 
     rule
       .use('extract-css-loader')
-      .loader(require('mini-css-extract-plugin').loader);
+      .loader(require('mini-css-extract-plugin').loader)
+      .options({
+        publicPath: opts.cssPublicPath,
+      });
 
     rule
       .use('css-loader')
@@ -122,20 +125,20 @@ export default function(webpackConfig, opts) {
 
   if (opts.cssModulesWithAffix) {
     applyCSSRules(
-      webpackConfig.module.rule('.module.css').test(/\.module\.css/),
+      webpackConfig.module.rule('.module.css').test(/\.module\.css$/),
       {
         cssModules: true,
       },
     );
     applyCSSRules(
-      webpackConfig.module.rule('.module.less').test(/\.module\.less/),
+      webpackConfig.module.rule('.module.less').test(/\.module\.less$/),
       {
         cssModules: true,
         less: true,
       },
     );
     applyCSSRules(
-      webpackConfig.module.rule('.module.sass').test(/\.module\.(sass|scss)/),
+      webpackConfig.module.rule('.module.sass').test(/\.module\.(sass|scss)$/),
       {
         cssModules: true,
         sass: true,
@@ -161,7 +164,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css')
-      .test(/\.css/)
+      .test(/\.css$/)
       .exclude.add(cssExclude)
       .end(),
     {
@@ -171,7 +174,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css-in-node_modules')
-      .test(/\.css/)
+      .test(/\.css$/)
       .include.add(/node_modules/)
       .end(),
     {},
@@ -179,7 +182,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('less')
-      .test(/\.less/)
+      .test(/\.less$/)
       .exclude.add(cssExclude)
       .end(),
     {
@@ -190,7 +193,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('less-in-node_modules')
-      .test(/\.less/)
+      .test(/\.less$/)
       .include.add(/node_modules/)
       .end(),
     {
@@ -200,7 +203,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('sass')
-      .test(/\.(sass|scss)/)
+      .test(/\.(sass|scss)$/)
       .exclude.add(cssExclude)
       .end(),
     {
@@ -211,7 +214,7 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('sass-in-node_modules')
-      .test(/\.(sass|scss)/)
+      .test(/\.(sass|scss)$/)
       .include.add(/node_modules/)
       .end(),
     {
