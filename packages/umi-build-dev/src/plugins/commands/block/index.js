@@ -1,11 +1,13 @@
 import assert from 'assert';
 import chalk from 'chalk';
+import { existsSync } from 'fs';
+import { join } from 'path';
 import { getPathWithUrl } from './download';
 
 const debug = require('debug')('umi-build-dev:blockPlugin');
 
 export default api => {
-  const { log } = api;
+  const { log, paths } = api;
 
   function generate(args = {}) {
     try {
@@ -17,7 +19,19 @@ export default api => {
       const MaterialGenerate = require('./block').default(api);
       debug(`get url ${url}`);
       const sourcePath = getPathWithUrl(url, log, args);
-      const { name, npmClient, dryRun } = args;
+      const isUserUseYarn = existsSync(join(paths.cwd, 'yarn.lock'));
+      if (isUserUseYarn) {
+        log.log(
+          'find yarn.lock in your project, use yarn as the default npm client',
+        );
+      }
+      const defaultNpmClient = isUserUseYarn ? 'yarn' : 'npm';
+      const {
+        name,
+        npmClient = defaultNpmClient,
+        dryRun,
+        skipDependencies,
+      } = args;
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
       );
@@ -26,6 +40,7 @@ export default api => {
         npmClient,
         name,
         dryRun,
+        skipDependencies,
         env: {
           cwd: api.cwd,
         },
@@ -66,6 +81,8 @@ Examples:
           'for test, block would have done without actually installing and download anything',
         '--npm-client':
           'use special npm client, default is npm or yarn(when yarn.lock exist in you project)',
+        '--skip-dependencies':
+          'skip block dependencies install and conflict check',
       },
       details,
     },

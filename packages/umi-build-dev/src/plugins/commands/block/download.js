@@ -6,7 +6,8 @@ import mkdirp from 'mkdirp';
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 
 function makeSureMaterialsTempPathExist(dryRun) {
-  const userHome = process.env.UMI_TEST ? '/Users/test' : require('user-home');
+  const userHome =
+    process.env.NODE_ENV === 'test' ? '/Users/test' : require('user-home');
   const blocksTempPath = join(userHome, '.umi/blocks');
   if (dryRun) {
     return blocksTempPath;
@@ -56,9 +57,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
       });
     }
   }
-  log.success(
-    `code download to ${templateTmpDirPath} from git ${url} with branch ${branch}`,
-  );
+  log.info(`code download to ${templateTmpDirPath}`);
   return templateTmpDirPath;
 }
 
