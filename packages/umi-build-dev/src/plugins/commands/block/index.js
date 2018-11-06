@@ -11,14 +11,12 @@ export default api => {
     const url = args._[0];
     assert(
       url,
-      `run ${chalk.cyan.underline('umi help block')} or ${chalk.cyan.underline(
-        'umi help m',
-      )} to checkout the usage`,
+      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
     );
     const MaterialGenerate = require('./block').default(api);
     debug(`get url ${url}`);
     const sourcePath = getPathWithUrl(url, log, args);
-    const { name, npmClient } = args;
+    const { name, npmClient, dryRun } = args;
     debug(
       `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
     );
@@ -26,6 +24,7 @@ export default api => {
       sourcePath,
       npmClient,
       name,
+      dryRun,
       env: {
         cwd: api.cwd,
       },

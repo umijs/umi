@@ -4,52 +4,62 @@ import { spawnSync } from 'child_process';
 import mkdirp from 'mkdirp';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
-const userHome = require('user-home');
-const blocksTempPath = join(userHome, '.umi/blocks');
 
-function makeSureMaterialsTempPathExist() {
+function makeSureMaterialsTempPathExist(dryRun) {
+  const userHome = dryRun ? '/Users/test' : require('user-home');
+  const blocksTempPath = join(userHome, '.umi/blocks');
+  if (dryRun) {
+    return blocksTempPath;
+  }
   if (!existsSync(blocksTempPath)) {
     debug(`mkdir blocksTempPath ${blocksTempPath}`);
     mkdirp.sync(blocksTempPath);
   }
+  return blocksTempPath;
 }
 
 export function getDirNameByUrl(url) {
   return url.replace(/\//g, '-');
 }
 
-export function downloadFromGit(url, id, branch = 'master', log) {
+export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
+  const { dryRun } = args;
+  const blocksTempPath = makeSureMaterialsTempPathExist(dryRun);
   const templateTmpDirPath = join(blocksTempPath, id);
-  makeSureMaterialsTempPathExist();
+
   if (existsSync(templateTmpDirPath)) {
-    log.info(`${url} exist in cache, start pull from git to update...`);
-    spawnSync('git', ['fetch'], {
-      cwd: templateTmpDirPath,
-    });
-    spawnSync('git', ['checkout', branch], {
-      cwd: templateTmpDirPath,
-    });
-    spawnSync('git', ['pull'], {
-      cwd: templateTmpDirPath,
-    });
     // git repo already exist, pull it
     // cd id && git pull
+    log.info(`${url} exist in cache, start pull from git to update...`);
+    if (dryRun) {
+      log.log(`dryRun is true, skip git pull`);
+    } else {
+      spawnSync('git', ['fetch'], {
+        cwd: templateTmpDirPath,
+      });
+      spawnSync('git', ['checkout', branch], {
+        cwd: templateTmpDirPath,
+      });
+      spawnSync('git', ['pull'], {
+        cwd: templateTmpDirPath,
+      });
+    }
   } else {
-    log.info(`start clone code from ${url}...`);
-    spawnSync('git', ['clone', url, id, '--single-branch', '-b', branch], {
-      cwd: blocksTempPath,
-    });
     // new git repo, clone
     // git clone url id
+    log.info(`start clone code from ${url}...`);
+    if (dryRun) {
+      log.log(`dryRun is true, skip git clone`);
+    } else {
+      spawnSync('git', ['clone', url, id, '--single-branch', '-b', branch], {
+        cwd: blocksTempPath,
+      });
+    }
   }
   log.success(
     `code download to ${templateTmpDirPath} from git ${url} with branch ${branch}`,
   );
   return templateTmpDirPath;
-}
-
-export function isNpmPackage(url) {
-  return /^@?([\w\-]+\/?)+$/.test(url);
 }
 
 // git site url maybe like: http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/master/demo
@@ -88,6 +98,7 @@ export function parseGitUrl(url) {
 }
 
 // get code local path by http url or npm package name
+// use --dry-run for test
 export function getPathWithUrl(url, log, args) {
   if (isGitUrl(url)) {
     log.info(`checked ${url} is a git site url.`);
@@ -97,7 +108,7 @@ export function getPathWithUrl(url, log, args) {
     if (args.branch) {
       log.log(`find branch in args, use branch ${realBranch}`);
     }
-    const localPath = downloadFromGit(repo, id, realBranch, log);
+    const localPath = downloadFromGit(repo, id, realBranch, log, args);
     return join(localPath, path);
   } else {
     throw new Error(`${url} can't match any Pattern`);

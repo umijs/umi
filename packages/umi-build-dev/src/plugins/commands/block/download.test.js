@@ -1,4 +1,4 @@
-import { isGitUrl, parseGitUrl } from './download';
+import { isGitUrl, parseGitUrl, getPathWithUrl } from './download';
 
 describe('test block download utils', () => {
   it('isGitUrl', () => {
@@ -65,5 +65,27 @@ describe('test block download utils', () => {
       path: '/',
       id: 'github.com/umijs/umi-blocks',
     });
+  });
+
+  it('getPathWithUrl', () => {
+    const mockLog = {
+      log: () => {},
+      info: () => {},
+      success: () => {},
+    };
+    expect(
+      getPathWithUrl(
+        'https://github.com/umijs/umi-blocks/tree/master/demo',
+        mockLog,
+        {
+          dryRun: true,
+        },
+      ),
+    ).toEqual('/Users/test/.umi/blocks/github.com/umijs/umi-blocks/demo');
+    expect(
+      getPathWithUrl('git@github.com:umijs/testblock.git', mockLog, {
+        dryRun: true,
+      }),
+    ).toEqual('/Users/test/.umi/blocks/github.com/umijs/testblock/');
   });
 });

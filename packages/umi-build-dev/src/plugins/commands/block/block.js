@@ -38,6 +38,7 @@ export default api => {
       super(args, opts);
 
       this.sourcePath = opts.sourcePath;
+      this.dryRun = opts.dryRun;
       this.npmClient = opts.npmClient || 'npm';
       const pkgPath = join(this.sourcePath, 'package.json');
       if (!existsSync(pkgPath)) {
@@ -85,6 +86,10 @@ ${conflictDeps.map(info => {
         blockName = blockName.name;
         targetPath = join(paths.absPagesPath, blockName);
         debug(`targetPath exist get new targetPath ${targetPath}`);
+      }
+      if (this.dryRun) {
+        log.log('dryRun is true, skip install dependencies and copy files');
+        return;
       }
       if (lackDeps.length) {
         log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
