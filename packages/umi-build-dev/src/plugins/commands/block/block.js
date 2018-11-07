@@ -3,8 +3,18 @@ import { join } from 'path';
 import semver from 'semver';
 import chalk from 'chalk';
 import clipboardy from 'clipboardy';
+import { CONFIG_FILES } from '../../../constants';
+import writeNewRoute from '../../../utils/writeNewRoute';
 
 const debug = require('debug')('umi-build-dev:MaterialGenerator');
+
+function getConfigFile(cwd) {
+  // TODO maybe add a paths.absConfigPath
+  const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
+    existsSync(file),
+  );
+  return files[0];
+}
 
 export function getNameFromPkg(pkg) {
   if (!pkg.name) {
@@ -33,7 +43,7 @@ export function dependenciesConflictCheck(
 }
 
 export default api => {
-  const { paths, log, Generator } = api;
+  const { paths, log, Generator, config } = api;
 
   return class MaterialGenerator extends Generator {
     constructor(args, opts) {
@@ -44,6 +54,7 @@ export default api => {
       this.npmClient = opts.npmClient || 'npm';
       this.name = opts.name;
       this.skipDependencies = opts.skipDependencies;
+      this.skipModifyRoutes = opts.skipModifyRoutes;
 
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
@@ -53,6 +64,11 @@ export default api => {
         const viewUrl = `http://localhost:${process.env.PORT || '8000'}/${
           this.name
         }`;
+        if (config.routes && !this.skipModifyRoutes) {
+          log.info('start write new route to your routes config...');
+          writeNewRoute(this.name, getConfigFile(paths.cwd), paths.absSrcPath);
+          log.info('write done');
+        }
         clipboardy.writeSync(viewUrl);
         log.success(
           `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
@@ -153,7 +169,7 @@ export default api => {
         return;
       }
 
-      log.log('start copy block file to your project...');
+      log.info('start copy block file to your project...');
       this.fs.copy(join(this.sourcePath, 'src'), targetPath);
       const commonPath = join(this.sourcePath, '@');
       if (existsSync(commonPath)) {

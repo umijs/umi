@@ -19,6 +19,8 @@
     "didyoumean": "^1.2.1",
     "dotenv": "^6.0.0",
     "ejs": "^2.5.7",
+    "escodegen": "^1.11.0",
+    "esprima": "^4.0.1",
     "esprima-extract-comments": "^1.1.0",
     "extend2": "^1.0.0",
     "glob": "^7.1.2",

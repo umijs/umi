@@ -31,6 +31,7 @@ export default api => {
         npmClient = defaultNpmClient,
         dryRun,
         skipDependencies,
+        skipModifyRoutes,
       } = args;
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
@@ -41,6 +42,7 @@ export default api => {
         name,
         dryRun,
         skipDependencies,
+        skipModifyRoutes,
         env: {
           cwd: api.cwd,
         },
@@ -79,6 +81,8 @@ Examples:
           'use special npm client, default is npm or yarn(when yarn.lock exist in you project)',
         '--skip-dependencies':
           'skip block dependencies install and conflict check',
+        '--skip-modify-routes':
+          'skip modify routes when you use conventional routes',
       },
       details,
     },
