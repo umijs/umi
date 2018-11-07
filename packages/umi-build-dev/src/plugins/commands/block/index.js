@@ -47,14 +47,10 @@ export default api => {
         resolved: __dirname,
       });
 
-      generate
-        .run()
-        .then(() => {
-          log.success('');
-        })
-        .catch(e => {
-          log.error(e);
-        });
+      generate.run(() => {}).catch(e => {
+        debug(e);
+        log.error(e.message);
+      });
     } catch (e) {
       debug(e);
       log.error(`Use block failed, ${e.message}`);

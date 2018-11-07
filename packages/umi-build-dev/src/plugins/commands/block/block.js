@@ -1,6 +1,8 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import semver from 'semver';
+import chalk from 'chalk';
+import clipboardy from 'clipboardy';
 
 const debug = require('debug')('umi-build-dev:MaterialGenerator');
 
@@ -42,6 +44,22 @@ export default api => {
       this.npmClient = opts.npmClient || 'npm';
       this.name = opts.name;
       this.skipDependencies = opts.skipDependencies;
+
+      this.on('error', e => {
+        debug(e); // handle the error for aviod throw generator default error stack
+      });
+
+      this.on('end', () => {
+        const viewUrl = `http://localhost:${process.env.PORT || '8000'}/${
+          this.name
+        }`;
+        clipboardy.writeSync(viewUrl);
+        log.success(
+          `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
+            '(copied to clipboard)',
+          )} for view the block.`,
+        );
+      });
     }
 
     async writing() {
@@ -70,9 +88,7 @@ export default api => {
         // read project package.json
         const projectPkgPath = join(paths.cwd, 'package.json');
         if (!existsSync(projectPkgPath)) {
-          return log.error(
-            `not find package.json in your project ${paths.cwd}`,
-          );
+          throw new Error(`not find package.json in your project ${paths.cwd}`);
         }
         // eslint-disable-next-line
         const projectPkg = require(projectPkgPath);
@@ -86,7 +102,7 @@ export default api => {
 
         // find confilict dependencies throw error
         if (conflictDeps.length) {
-          return log.error(`
+          throw new Error(`
   find dependencies conflict between block and your project:
   ${conflictDeps
     .map(info => {
@@ -117,10 +133,9 @@ export default api => {
       }
 
       let targetPath = join(paths.absPagesPath, this.name);
-      let blockName = this.name;
       debug(`get targetPath ${targetPath}`);
       if (existsSync(targetPath)) {
-        blockName = await this.prompt({
+        this.name = (await this.prompt({
           type: 'input',
           name: 'name',
           message: `page ${
@@ -128,9 +143,8 @@ export default api => {
           } already exist, please input a new name for it`,
           required: true,
           default: this.name,
-        });
-        blockName = blockName.name;
-        targetPath = join(paths.absPagesPath, blockName);
+        })).name;
+        targetPath = join(paths.absPagesPath, this.name);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
 

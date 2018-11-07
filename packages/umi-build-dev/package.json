@@ -13,6 +13,7 @@
     "chalk": "^2.1.0",
     "cheerio": "^1.0.0-rc.2",
     "chokidar": "^2.0.3",
+    "clipboardy": "^1.2.3",
     "debug": "^3.1.0",
     "deprecate": "1.0.0",
     "didyoumean": "^1.2.1",
