@@ -255,7 +255,7 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (!process.env.CI && !process.env.__FROM_UMI_TEST) {
+  if (!process.env.CI && !process.env.__FROM_UMI_TEST && process.stdout.isTTY) {
     webpackConfig
       .plugin('progress')
       .use(require('webpackbar'), [{ minimal: false }]);
