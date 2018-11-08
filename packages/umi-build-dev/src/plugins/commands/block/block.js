@@ -66,8 +66,18 @@ export default api => {
         }`;
         if (config.routes && !this.skipModifyRoutes) {
           log.info('start write new route to your routes config...');
-          writeNewRoute(this.name, getConfigFile(paths.cwd), paths.absSrcPath);
-          log.info('write done');
+          try {
+            writeNewRoute(
+              this.name,
+              getConfigFile(paths.cwd),
+              paths.absSrcPath,
+            );
+            log.info('write done');
+          } catch (e) {
+            debug(e);
+            log.warn(e.message);
+            log.warn('write routes failed, you need modify it by yourself');
+          }
         }
         clipboardy.writeSync(viewUrl);
         log.success(
