@@ -255,10 +255,14 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (!process.env.CI && !process.env.__FROM_UMI_TEST && process.stdout.isTTY) {
-    webpackConfig
-      .plugin('progress')
-      .use(require('webpackbar'), [{ minimal: false }]);
+  if (process.stdout.isTTY) {
+    if (!process.env.CI && !process.env.__FROM_UMI_TEST) {
+      webpackConfig
+        .plugin('progress')
+        .use(require('webpackbar'), [{ minimal: false }]);
+    }
+  } else {
+    console.log('Building ...');
   }
 
   // plugins -> ignore moment locale
