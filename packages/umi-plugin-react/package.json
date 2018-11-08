@@ -39,7 +39,7 @@
   },
   "umiTools": {
     "browserFiles": [
-      "src/plugins/registerServiceWorker.js",
+      "src/plugins/pwa/registerServiceWorker.js",
       "src/plugins/title/TitleWrapper.js"
     ]
   }
