@@ -1,7 +1,43 @@
-import { insertRouteContent } from './writeNewRoute';
+import { join } from 'path';
+import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
 
 describe('insertRouteContent', () => {
-  it.only('routes is a array', () => {
+  it.only('getRealRoutesPath in antdpro', () => {
+    const configPath = join(
+      __dirname,
+      '../fixtures/block/antdpro/config/config.js',
+    );
+    const routesPath = join(
+      __dirname,
+      '../fixtures/block/antdpro/config/router.config.js',
+    );
+    expect(getRealRoutesPath(configPath)).toEqual({
+      realPath: routesPath,
+      routesProperty: null,
+    });
+  });
+
+  it('getRealRoutesPath in simple demo', () => {
+    const configPath = join(__dirname, '../fixtures/block/simple/.umirc.js');
+    expect(getRealRoutesPath(configPath)).toEqual({
+      realPath: configPath,
+      routesProperty: 'routes',
+    });
+  });
+
+  it('getRealRoutesPath in alias demo', () => {
+    const configPath = join(
+      __dirname,
+      '../fixtures/block/alias/config/config.js',
+    );
+    const aliasPath = join(__dirname, '../fixtures/block/alias');
+    expect(getRealRoutesPath(configPath, aliasPath)).toEqual({
+      realPath: join(aliasPath, 'routes.js'),
+      routesProperty: null,
+    });
+  });
+
+  it('routes is a array', () => {
     expect(
       insertRouteContent(
         `import test from './test';
@@ -16,6 +52,7 @@ export default {
 };
 `,
         'demo',
+        'routes',
       ),
     ).toEqual(`import test from './test';
 // test comment
@@ -43,6 +80,7 @@ export default {
 };
 `,
         'demo',
+        'routes',
       ),
     ).toEqual(`import routes from './routes';
 export default {
@@ -66,6 +104,7 @@ export default {
 };
 `,
         'demo',
+        'routes',
       ),
     ).toEqual(`import routes from './routes';
 export default {
@@ -77,6 +116,36 @@ export default {
     ...routes.map(item => item)
   ]
 };
+`);
+  });
+
+  it('routes export from default', () => {
+    expect(
+      insertRouteContent(
+        `import test from './test';
+export default [
+  // user
+  {
+    path: '/',
+    component: 'testindex'
+  }
+];
+`,
+        'demo',
+        null,
+      ),
+    ).toEqual(`import test from './test';
+export default [
+  {
+    path: '/demo',
+    component: './demo'
+  },
+  // user
+  {
+    path: '/',
+    component: 'testindex'
+  }
+];
 `);
   });
 });
