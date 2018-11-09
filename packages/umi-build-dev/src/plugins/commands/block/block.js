@@ -27,18 +27,18 @@ export function dependenciesConflictCheck(
   blockPkgDeps = {},
   projectPkgDeps = {},
 ) {
-  const lackDeps = [];
-  const conflictDeps = [];
+  const lacks = [];
+  const conflicts = [];
   Object.keys(blockPkgDeps).forEach(dep => {
     if (!projectPkgDeps[dep]) {
-      lackDeps.push([dep, blockPkgDeps[dep]]);
+      lacks.push([dep, blockPkgDeps[dep]]);
     } else if (!semver.intersects(projectPkgDeps[dep], blockPkgDeps[dep])) {
-      conflictDeps.push([dep, blockPkgDeps[dep], projectPkgDeps[dep]]);
+      conflicts.push([dep, blockPkgDeps[dep], projectPkgDeps[dep]]);
     }
   });
   return {
-    conflictDeps,
-    lackDeps,
+    conflicts,
+    lacks,
   };
 }
 
@@ -125,17 +125,22 @@ export default api => {
         const projectPkg = require(projectPkgPath);
 
         // get confilict dependencies and lack dependencies
-        const { conflictDeps, lackDeps } = dependenciesConflictCheck(
-          this.pkg.dependencies,
-          projectPkg.dependencies,
+        const { conflicts, lacks } = applyPlugins(
+          '_modifyBlockDependenciesCheckResult',
+          {
+            initialValue: dependenciesConflictCheck(
+              this.pkg.dependencies,
+              projectPkg.dependencies,
+            ),
+          },
         );
-        debug(`conflictDeps ${conflictDeps}, lackDeps ${lackDeps}`);
+        debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`);
 
         // find confilict dependencies throw error
-        if (conflictDeps.length) {
+        if (conflicts.length) {
           throw new Error(`
   find dependencies conflict between block and your project:
-  ${conflictDeps
+  ${conflicts
     .map(info => {
       return `* ${info[0]}: ${info[2]}(your project) not compatible with ${
         info[1]
@@ -147,12 +152,12 @@ export default api => {
         // find lack confilict, auto install
         if (this.dryRun) {
           log.log('dryRun is true, skip install dependencies');
-        } else if (lackDeps.length) {
-          log.info(`install dependencies ${lackDeps} with ${this.npmClient}`);
+        } else if (lacks.length) {
+          log.info(`install dependencies ${lacks} with ${this.npmClient}`);
           // install block dependencies
           this.scheduleInstallTask(
             this.npmClient,
-            lackDeps.map(dep => `${dep[0]}@${dep[1]}`),
+            lacks.map(dep => `${dep[0]}@${dep[1]}`),
             {
               save: true,
             },
