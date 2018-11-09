@@ -15,8 +15,11 @@ export default function(opts = {}) {
     userJestConfig = require(jestConfigFile); // eslint-disable-line
   }
 
-  const { moduleNameMapper: userModuleNameMapper, ...restUserJestConfig } = userJestConfig;
-  
+  const {
+    moduleNameMapper: userModuleNameMapper,
+    ...restUserJestConfig
+  } = userJestConfig;
+
   const config = {
     rootDir: process.cwd(),
     setupFiles: [
@@ -34,14 +37,11 @@ export default function(opts = {}) {
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
-      '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': require.resolve('./fileMock.js'),
+      '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': require.resolve(
+        './fileMock.js',
+      ),
       ...(moduleNameMapper || {}),
       ...(userModuleNameMapper || {}),
-    },
-    globals: {
-      'ts-jest': {
-        babelConfig: true,
-      },
     },
     ...(restUserJestConfig || {}),
   };
