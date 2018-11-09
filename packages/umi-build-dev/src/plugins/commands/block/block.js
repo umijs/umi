@@ -130,12 +130,9 @@ export default api => {
         log.info('skip dependencies');
       } else {
         // read project package.json
-        const projectPkgPath = applyPlugins(
-          '_modifyBlockDependenciesPackageJSONPath',
-          {
-            initialValue: join(paths.cwd, 'package.json'),
-          },
-        );
+        const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
+          initialValue: join(paths.cwd, 'package.json'),
+        });
         if (!existsSync(projectPkgPath)) {
           throw new Error(`not find package.json in your project ${paths.cwd}`);
         }
@@ -143,15 +140,12 @@ export default api => {
         const projectPkg = require(projectPkgPath);
 
         // get confilict dependencies and lack dependencies
-        const { conflicts, lacks } = applyPlugins(
-          '_modifyBlockDependenciesCheckResult',
-          {
-            initialValue: dependenciesConflictCheck(
-              this.pkg.dependencies,
-              projectPkg.dependencies,
-            ),
-          },
-        );
+        const { conflicts, lacks } = applyPlugins('_modifyBlockDependencies', {
+          initialValue: dependenciesConflictCheck(
+            this.pkg.dependencies,
+            projectPkg.dependencies,
+          ),
+        });
         debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`);
 
         // find confilict dependencies throw error
@@ -215,7 +209,7 @@ export default api => {
           if (config.singular) {
             content = parseContentToSingular(content);
           }
-          return applyPlugins('_modifyBlockContent', {
+          return applyPlugins('_modifyBlockFile', {
             initialValue: content,
           });
         },
