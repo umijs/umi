@@ -64,6 +64,8 @@ Examples:
 
   ${chalk.gray('# get block `demo` which in umi official blocks')}
   umi block https://github.com/umijs/umi-blocks/tree/master/demo
+
+  umi block demo ${chalk.gray('# a shortcut command')}
   `.trim();
 
   api.registerCommand(

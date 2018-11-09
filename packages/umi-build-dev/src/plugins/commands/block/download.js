@@ -99,17 +99,22 @@ export function parseGitUrl(url) {
 // get code local path by http url or npm package name
 // use --dry-run for test
 export function getPathWithUrl(url, log, args) {
+  let realUrl;
   if (isGitUrl(url)) {
-    log.info(`checked ${url} is a git site url.`);
-    const { repo, branch, path, id } = parseGitUrl(url);
-    log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
-    const realBranch = args.branch || branch;
-    if (args.branch) {
-      log.log(`find branch in args, use branch ${realBranch}`);
-    }
-    const localPath = downloadFromGit(repo, id, realBranch, log, args);
-    return join(localPath, path);
+    realUrl = url;
+    log.info(`checked ${url} is a git site url`);
+  } else if (/^[\w\-]+$/.test(url)) {
+    realUrl = `https://github.com/umijs/umi-blocks/tree/master/${url}`;
+    log.info(`will use ${realUrl} as the block url`);
   } else {
     throw new Error(`${url} can't match any Pattern`);
   }
+  const { repo, branch, path, id } = parseGitUrl(realUrl);
+  log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
+  const realBranch = args.branch || branch;
+  if (args.branch) {
+    log.log(`find branch in args, use branch ${realBranch}`);
+  }
+  const localPath = downloadFromGit(repo, id, realBranch, log, args);
+  return join(localPath, path);
 }
