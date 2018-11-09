@@ -92,7 +92,7 @@ export default api => {
       // get block package.json data
       const pkgPath = join(this.sourcePath, 'package.json');
       if (!existsSync(pkgPath)) {
-        return log.error(`not find package.json in ${this.sourcePath}`);
+        throw new Error(`not find package.json in ${this.sourcePath}`);
       } else {
         // eslint-disable-next-line
         this.pkg = require(pkgPath);
