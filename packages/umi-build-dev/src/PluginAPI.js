@@ -102,6 +102,7 @@ export default class PluginAPI {
       'addRuntimePluginKey',
       '_modifyBlockDependenciesPackageJSONPath',
       '_modifyBlockDependenciesCheckResult',
+      '_modifyBlockContent',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);

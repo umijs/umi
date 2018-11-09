@@ -1,9 +1,9 @@
-import { existsSync } from 'fs';
+import { existsSync, readdirSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import semver from 'semver';
 import chalk from 'chalk';
 import clipboardy from 'clipboardy';
-import { CONFIG_FILES } from '../../../constants';
+import { CONFIG_FILES, SINGULAR_SENSLTIVE } from '../../../constants';
 import writeNewRoute from '../../../utils/writeNewRoute';
 
 const debug = require('debug')('umi-build-dev:MaterialGenerator');
@@ -40,6 +40,24 @@ export function dependenciesConflictCheck(
     conflicts,
     lacks,
   };
+}
+
+const singularReg = new RegExp(
+  `[\'\"]@\/(${SINGULAR_SENSLTIVE.join('|')})\/`,
+  'g',
+);
+
+export function parseContentToSingular(content) {
+  return content.replace(singularReg, (all, match) => {
+    return all.replace(match, match.replace(/s$/, ''));
+  });
+}
+
+export function getSingularName(name) {
+  if (SINGULAR_SENSLTIVE.includes(name)) {
+    name = name.replace(/s$/, '');
+  }
+  return name;
 }
 
 export default api => {
@@ -189,11 +207,33 @@ export default api => {
         return;
       }
 
+      // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       log.info('start copy block file to your project...');
-      this.fs.copy(join(this.sourcePath, 'src'), targetPath);
+      this.fs.copy(join(this.sourcePath, 'src'), targetPath, {
+        process(content) {
+          content = String(content);
+          if (config.singular) {
+            content = parseContentToSingular(content);
+          }
+          return applyPlugins('_modifyBlockContent', {
+            initialValue: content,
+          });
+        },
+      });
       const commonPath = join(this.sourcePath, '@');
       if (existsSync(commonPath)) {
-        this.fs.copy(commonPath, paths.absSrcPath);
+        if (config.singular) {
+          // @/components/ => @/src/component/
+          readdirSync(commonPath).forEach(name => {
+            const thePath = join(commonPath, name);
+            if (statSync(thePath).isDirectory()) {
+              name = getSingularName(name);
+            }
+            this.fs.copy(thePath, join(paths.absSrcPath, name));
+          });
+        } else {
+          this.fs.copy(commonPath, paths.absSrcPath);
+        }
       }
     }
   };
