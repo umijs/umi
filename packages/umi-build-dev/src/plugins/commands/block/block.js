@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import semver from 'semver';
 import chalk from 'chalk';
 import clipboardy from 'clipboardy';
@@ -43,7 +43,7 @@ export function dependenciesConflictCheck(
 }
 
 export default api => {
-  const { paths, log, Generator, config } = api;
+  const { paths, log, Generator, config, applyPlugins } = api;
 
   return class MaterialGenerator extends Generator {
     constructor(args, opts) {
@@ -112,7 +112,12 @@ export default api => {
         log.info('skip dependencies');
       } else {
         // read project package.json
-        const projectPkgPath = join(paths.cwd, 'package.json');
+        const projectPkgPath = applyPlugins(
+          '_modifyBlockDependenciesPackageJSONPath',
+          {
+            initialValue: join(paths.cwd, 'package.json'),
+          },
+        );
         if (!existsSync(projectPkgPath)) {
           throw new Error(`not find package.json in your project ${paths.cwd}`);
         }
@@ -152,7 +157,7 @@ export default api => {
               save: true,
             },
             {
-              cwd: paths.cwd,
+              cwd: dirname(projectPkgPath),
             },
           );
         }
