@@ -2,6 +2,9 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { parseModule, parse } from 'esprima';
 import escodegen from 'escodegen';
+import estraverse from 'estraverse';
+import { resolve } from 'url';
+import { rejects } from 'assert';
 
 function getPropertyFromDefault(ast, name) {
   const defaultNode = ast.body.find(item => {
@@ -23,6 +26,33 @@ function getPropertyFromDefault(ast, name) {
     };
   }
   return null;
+}
+
+/**
+ * 添加路由到指定 layout
+ * @param {*} ast
+ * @param {*} layoutPath
+ * @param {*} routesProperty
+ */
+export function addRouteToLayout(ast, layoutPath, routesProperty, newRoute) {
+  let matched = false;
+  estraverse.traverse(ast, {
+    enter: function (node, parent) {
+        // 如果节点值为指定的 layout path, 则用父级节点, 找到对应 routes 对象, 在其下添加路径.
+        if(node.value && node.value.value === layoutPath) {
+          parent.properties.map(item => {
+            if(item.key.name === routesProperty) {
+              item.value.elements.push(newRoute);
+              matched = true;
+              this.break();
+            }
+          });
+        }
+    },
+  });
+  if (!matched) {
+    throw new Error('layout path not found.')
+  }
 }
 
 // a demo ast for getRealRoutesPath like this:
@@ -111,33 +141,37 @@ export function getRealRoutesPath(configPath, srcPath) {
   };
 }
 
-export function insertRouteContent(content, routeName, routesProperty) {
+export function insertRouteContent(content, routeName, routesProperty, layoutPath) {
   const ast = parseModule(content, {
     attachComment: true,
   });
-  const { node, key } = getPropertyFromDefault(ast, routesProperty);
-  if (node) {
-    const newObj = parse(
-      `const temp = { path: '/${routeName}', component: './${routeName}' }`,
-    ).body[0].declarations[0].init;
-    if (node[key].type !== 'ArrayExpression') {
-      // routes not a raw array, parse to a array
-      // eg: routes: routes, => routes: [...routes]
-      const oldValue = node[key];
-      node[key] = {
-        type: 'ArrayExpression',
-        elements: [
-          {
-            type: 'SpreadElement',
-            argument: oldValue,
-          },
-        ],
-      };
-    }
-    node[key].elements.unshift(newObj);
+  if (layoutPath) {
+    const newRoute = parse(`({ path: '${routeName}', component: './${routeName}' })`).body[0].expression;
+    addRouteToLayout(ast, layoutPath, routesProperty, newRoute);
   } else {
-    return content;
+    const { node, key } = getPropertyFromDefault(ast, routesProperty);
+    if (node) {
+      if (node[key].type !== 'ArrayExpression') {
+        // routes not a raw array, parse to a array
+        // eg: routes: routes, => routes: [...routes]
+        const oldValue = node[key];
+        node[key] = {
+          type: 'ArrayExpression',
+          elements: [
+            {
+              type: 'SpreadElement',
+              argument: oldValue,
+            },
+          ],
+        };
+      }
+      const newRoute = parse(`({ path: '/${routeName}', component: './${routeName}' })`).body[0].expression;
+      node[key].elements.unshift(newRoute);
+    } else {
+      return content;
+    }
   }
+
   const newCode = escodegen.generate(ast, {
     format: {
       indent: {
@@ -149,12 +183,12 @@ export function insertRouteContent(content, routeName, routesProperty) {
   return `${newCode}\n`;
 }
 
-export default function writeNewRoute(name, configPath, srcPath) {
+export default function writeNewRoute(name, configPath, srcPath, layoutPath) {
   const { realPath, routesProperty } = getRealRoutesPath(configPath, srcPath);
   const routesContent = readFileSync(realPath, 'utf-8');
   writeFileSync(
     realPath,
-    insertRouteContent(routesContent, name, routesProperty),
+    insertRouteContent(routesContent, name, routesProperty, layoutPath),
     'utf-8',
   );
 }

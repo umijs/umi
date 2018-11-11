@@ -22,6 +22,7 @@
     "escodegen": "^1.11.0",
     "esprima": "^4.0.1",
     "esprima-extract-comments": "^1.1.0",
+    "estraverse": "^4.2.0",
     "extend2": "^1.0.0",
     "glob": "^7.1.2",
     "html-minifier": "^3.5.9",

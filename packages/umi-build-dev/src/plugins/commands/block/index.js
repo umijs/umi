@@ -25,6 +25,7 @@ export default api => {
           'find yarn.lock in your project, use yarn as the default npm client',
         );
       }
+
       const defaultNpmClient = isUserUseYarn ? 'yarn' : 'npm';
       const {
         name,
@@ -32,6 +33,7 @@ export default api => {
         dryRun,
         skipDependencies,
         skipModifyRoutes,
+        layoutPath
       } = args;
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
@@ -43,6 +45,7 @@ export default api => {
         dryRun,
         skipDependencies,
         skipModifyRoutes,
+        layoutPath,
         env: {
           cwd: api.cwd,
         },
@@ -66,6 +69,8 @@ Examples:
   umi block https://github.com/umijs/umi-blocks/tree/master/demo
 
   umi block demo ${chalk.gray('# a shortcut command')}
+
+  umi block demo --layout-path /users ${chalk.gray('# add route to the layout')}
   `.trim();
 
   api.registerCommand(
@@ -85,6 +90,8 @@ Examples:
           'skip block dependencies install and conflict check',
         '--skip-modify-routes':
           'skip modify routes when you use conventional routes',
+        '--layout-path':
+          'add route to the layout'
       },
       details,
     },

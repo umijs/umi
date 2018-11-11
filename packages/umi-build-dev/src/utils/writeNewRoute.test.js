@@ -2,7 +2,7 @@ import { join } from 'path';
 import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
 
 describe('insertRouteContent', () => {
-  it.only('getRealRoutesPath in antdpro', () => {
+  it('getRealRoutesPath in antdpro', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/antdpro/config/config.js',
@@ -148,4 +148,68 @@ export default [
 ];
 `);
   });
+
+  it('route with layout path', () => {
+    expect(
+      insertRouteContent(
+`export default {
+  routes: [
+    { path: '/', component: './a' },
+    { path: '/list', component: './b', Routes: ['./routes/PrivateRoute.js'] },
+    {
+      path: '/list2', routes: [   // ** lala
+        { path: '/users', component: './users/_layout',
+          routes: [
+            { path: '/users/detail', component: './users/detail' },
+            { path: '/users/:id', component: './users/id' }    // haha
+          ]
+        }
+      ]
+    }
+  ],
+};`,
+        'demo',
+        'routes',
+        '/users'
+      )
+    ).toEqual(
+`export default {
+  routes: [
+    {
+      path: '/',
+      component: './a'
+    },
+    {
+      path: '/list',
+      component: './b',
+      Routes: ['./routes/PrivateRoute.js']
+    },
+    {
+      path: '/list2',
+      routes: [// ** lala
+        {
+          path: '/users',
+          component: './users/_layout',
+          routes: [
+            {
+              path: '/users/detail',
+              component: './users/detail'
+            },
+            {
+              path: '/users/:id',
+              component: './users/id'
+            }  // haha
+,
+            {
+              path: '/demo',
+              component: './demo'
+            }
+          ]
+        }]
+    }
+  ]
+};
+`
+);
+  })
 });
