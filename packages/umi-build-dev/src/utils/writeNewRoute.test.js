@@ -1,5 +1,8 @@
 import { join } from 'path';
-import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
+import { readFileSync } from 'fs';
+import { getNewRouteCode } from './writeNewRoute';
+
+const antdSrc = '../fixtures/block/antdpro';
 
 describe('insertRouteContent', () => {
   it('getRealRoutesPath in antdpro', () => {
@@ -11,205 +14,59 @@ describe('insertRouteContent', () => {
       __dirname,
       '../fixtures/block/antdpro/config/router.config.js',
     );
-    expect(getRealRoutesPath(configPath)).toEqual({
-      realPath: routesPath,
-      routesProperty: null,
-    });
+    // 不带 layout 参数
+    let { code, routesPath: path } = getNewRouteCode(
+      configPath,
+      'demo',
+      antdSrc,
+    );
+    expect(path).toEqual(routesPath);
+
+    const root = routesPath + '.root.js';
+    expect(code).toEqual(readFileSync(root, 'utf-8'));
+
+    // 带 layout 参数
+    code = getNewRouteCode(configPath, 'demo', antdSrc, '/aa/xx').code;
+    const layout = routesPath + '.layout.js';
+    expect(code).toEqual(readFileSync(layout, 'utf-8'));
   });
 
   it('getRealRoutesPath in simple demo', () => {
     const configPath = join(__dirname, '../fixtures/block/simple/.umirc.js');
-    expect(getRealRoutesPath(configPath)).toEqual({
-      realPath: configPath,
-      routesProperty: 'routes',
-    });
+
+    // 不带 layout 参数
+    let { code, routesPath: path } = getNewRouteCode(configPath, 'demo', null);
+    expect(path).toEqual(configPath);
+    const root = configPath + '.root.js';
+    expect(code).toEqual(readFileSync(root, 'utf-8'));
+
+    // 带 layout 参数
+    code = getNewRouteCode(configPath, 'demo', null, '/aa/xx/sdad').code;
+    const layout = configPath + '.layout.js';
+    expect(code).toEqual(readFileSync(layout, 'utf-8'));
   });
 
-  it('getRealRoutesPath in alias demo', () => {
+  it.only('getRealRoutesPath in alias demo', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/alias/config/config.js',
     );
     const aliasPath = join(__dirname, '../fixtures/block/alias');
-    expect(getRealRoutesPath(configPath, aliasPath)).toEqual({
-      realPath: join(aliasPath, 'routes.js'),
-      routesProperty: null,
-    });
-  });
+    const realConfig = join(aliasPath, 'routes.js');
 
-  it('routes is a array', () => {
-    expect(
-      insertRouteContent(
-        `import test from './test';
-// test comment
-export default {
-  routes: [
-    {
-      path: '/',
-      component: './test'
-    }
-  ]
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import test from './test';
-// test comment
-export default {
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    {
-      path: '/',
-      component: './test'
-    }
-  ]
-};
-`);
-  });
+    // 不带 layout 参数
+    let { code, routesPath: path } = getNewRouteCode(
+      configPath,
+      'demo',
+      aliasPath,
+    );
+    expect(path).toEqual(realConfig);
+    const root = realConfig + '.root.js';
+    expect(code).toEqual(readFileSync(root, 'utf-8'));
 
-  it('routes is a not array', () => {
-    expect(
-      insertRouteContent(
-        `import routes from './routes';
-export default {
-  routes: routes
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import routes from './routes';
-export default {
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    ...routes
-  ]
-};
-`);
+    // 带 layout 参数
+    code = getNewRouteCode(configPath, 'demo', aliasPath, '/aa/xx').code;
+    const layout = realConfig + '.layout.js';
+    expect(code).toEqual(readFileSync(layout, 'utf-8'));
   });
-
-  it('routes is a expression', () => {
-    expect(
-      insertRouteContent(
-        `import routes from './routes';
-export default {
-  routes: routes.map(item => item)
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import routes from './routes';
-export default {
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    ...routes.map(item => item)
-  ]
-};
-`);
-  });
-
-  it('routes export from default', () => {
-    expect(
-      insertRouteContent(
-        `import test from './test';
-export default [
-  // user
-  {
-    path: '/',
-    component: 'testindex'
-  }
-];
-`,
-        'demo',
-        null,
-      ),
-    ).toEqual(`import test from './test';
-export default [
-  {
-    path: '/demo',
-    component: './demo'
-  },
-  // user
-  {
-    path: '/',
-    component: 'testindex'
-  }
-];
-`);
-  });
-
-  it('route with layout path', () => {
-    expect(
-      insertRouteContent(
-`export default {
-  routes: [
-    { path: '/', component: './a' },
-    { path: '/list', component: './b', Routes: ['./routes/PrivateRoute.js'] },
-    {
-      path: '/list2', routes: [   // ** lala
-        { path: '/users', component: './users/_layout',
-          routes: [
-            { path: '/users/detail', component: './users/detail' },
-            { path: '/users/:id', component: './users/id' }    // haha
-          ]
-        }
-      ]
-    }
-  ],
-};`,
-        'demo',
-        'routes',
-        '/users'
-      )
-    ).toEqual(
-`export default {
-  routes: [
-    {
-      path: '/',
-      component: './a'
-    },
-    {
-      path: '/list',
-      component: './b',
-      Routes: ['./routes/PrivateRoute.js']
-    },
-    {
-      path: '/list2',
-      routes: [// ** lala
-        {
-          path: '/users',
-          component: './users/_layout',
-          routes: [
-            {
-              path: '/users/detail',
-              component: './users/detail'
-            },
-            {
-              path: '/users/:id',
-              component: './users/id'
-            }  // haha
-,
-            {
-              path: '/demo',
-              component: './demo'
-            }
-          ]
-        }]
-    }
-  ]
-};
-`
-);
-  })
 });

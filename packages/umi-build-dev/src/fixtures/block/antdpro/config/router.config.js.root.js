@@ -1,15 +1,16 @@
-export default {
-  routes: [{
+export default [
+  {
     path: '/',
-    component: 'test',
-  },{
+    component: 'test'
+  },
+  {
     path: '/aa',
     component: 'aa',
     routes: [
       {
         path: '/aa/vv',
         name: 'dd',
-        component: 'adad'   // 注释2
+        component: 'adad'
       },
       {
         path: '/aa/xx',
@@ -17,26 +18,29 @@ export default {
         component: 'xx',
         routes: [
           {
-            path: '/aa/xx/sdad',   //注释3
+            path: '/aa/xx/sdad',
             name: 'aada',
             component: 'xxx',
-            routes: [
-              {
+            routes: [{
                 name: 'hehe',
                 path: 'xxxcc'
-              }
-            ]
+              }]
           },
           {
             path: 'aa',
             name: 'aadsda',
             component: 'xxxc'
-          },
+          }
         ]
-      },
+      }
     ]
-  },{
+  },
+  {
     path: '/bb',
-    component: 'bb',
-  }],
-};
+    component: 'bb'
+  },
+  {
+    path: 'demo',
+    component: './demo'
+  }
+];

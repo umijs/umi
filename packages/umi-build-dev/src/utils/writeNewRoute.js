@@ -2,176 +2,105 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { parseModule, parse } from 'esprima';
 import escodegen from 'escodegen';
-import estraverse from 'estraverse';
-import { resolve } from 'url';
-import { rejects } from 'assert';
+import esquery from 'esquery';
+import { get as _get } from 'lodash';
+const debug = require('debug')('umi-build-dev:writeNewRoute');
 
-function getPropertyFromDefault(ast, name) {
-  const defaultNode = ast.body.find(item => {
-    return item.type === 'ExportDefaultDeclaration';
-  });
-  if (!name) {
-    return {
-      node: defaultNode,
-      key: 'declaration',
-    };
-  }
-  if (defaultNode.declaration.type === 'ObjectExpression') {
-    const routesNode = defaultNode.declaration.properties.find(item => {
-      return item.type === 'Property' && item.key.name === 'routes';
-    });
-    return {
-      node: routesNode,
-      key: 'value',
-    };
-  }
-  return null;
+/**
+ * 将路由写入路由文件
+ * @param {*} name 路由名
+ * @param {*} configPath 配置路径
+ * @param {*} absSrcPath 代码路径
+ * @param {*} layoutPath 指定 layout 下
+ */
+export default function writeNewRoute(
+  name,
+  configPath,
+  absSrcPath,
+  layoutPath,
+) {
+  const { code, routesPath } = getNewRouteCode(
+    configPath,
+    name,
+    layoutPath,
+    absSrcPath,
+  );
+  writeFileSync(routesPath + '.test.js', code, 'utf-8');
 }
 
 /**
- * 添加路由到指定 layout
- * @param {*} ast
+ * 获取目标
+ * @param {*} configPath
+ * @param {*} name
  * @param {*} layoutPath
- * @param {*} routesProperty
  */
-export function addRouteToLayout(ast, layoutPath, routesProperty, newRoute) {
-  let matched = false;
-  estraverse.traverse(ast, {
-    enter: function (node, parent) {
-        // 如果节点值为指定的 layout path, 则用父级节点, 找到对应 routes 对象, 在其下添加路径.
-        if(node.value && node.value.value === layoutPath) {
-          parent.properties.map(item => {
-            if(item.key.name === routesProperty) {
-              item.value.elements.push(newRoute);
-              matched = true;
-              this.break();
-            }
-          });
-        }
-    },
-  });
-  if (!matched) {
-    throw new Error('layout path not found.')
-  }
-}
-
-// a demo ast for getRealRoutesPath like this:
-// {
-//   "type": "Program",
-//   "body": [
-//     {
-//       "type": "ImportDeclaration",
-//       "specifiers": [
-//         {
-//           "type": "ImportDefaultSpecifier",
-//           "local": { "type": "Identifier", "name": "pageRoutes" }
-//         }
-//       ],
-//       "source": {
-//         "type": "Literal",
-//         "value": "./router.config",
-//         "raw": "'./router.config'"
-//       }
-//     },
-//     {
-//       "type": "ExportDefaultDeclaration",
-//       "declaration": {
-//         "type": "ObjectExpression",
-//         "properties": [
-//           {
-//             "type": "Property",
-//             "key": { "type": "Identifier", "name": "routes" },
-//             "computed": false,
-//             "value": { "type": "Identifier", "name": "pageRoutes" },
-//             "kind": "init",
-//             "method": false,
-//             "shorthand": false
-//           }
-//         ]
-//       }
-//     }
-//   ],
-//   "sourceType": "module"
-// }
-export function getRealRoutesPath(configPath, srcPath) {
-  const configContent = readFileSync(configPath, 'utf-8');
-  const ast = parseModule(configContent);
-  const { node, key } = getPropertyFromDefault(ast, 'routes');
-  if (node && node[key].type === 'Identifier') {
-    // lik: routes: pageRoutes,
-    const routesIdentifier = node[key].name;
-    // find routesIdentifier defined in which module
-    let modulePath;
-    ast.body.find(item => {
-      if (item.type === 'ImportDeclaration') {
-        const routerSpecifie = item.specifiers.find(s => {
-          return (
-            s.type === 'ImportDefaultSpecifier' &&
-            s.local.name === routesIdentifier
-          );
-        });
-        if (routerSpecifie) {
-          modulePath = item.source.value;
-          return true;
-        }
+export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
+  debug(configPath);
+  const ast = parseModule(readFileSync(configPath, 'utf-8'));
+  // 查询当前配置文件是否导出 routes 属性
+  const routes = esquery(
+    ast,
+    'ExportDefaultDeclaration [key.name="routes"]:first-child',
+  )[0];
+  if (routes) {
+    // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
+    if (routes.value.type !== 'ArrayExpression') {
+      const source = esquery(
+        ast,
+        `ImportDeclaration:has([local.name="${routes.value.name}"])`,
+      )[0];
+      if (source) {
+        const newConfigPath = getModulePath(
+          configPath,
+          source.source.value,
+          absSrcPath,
+        );
+        return getNewRouteCode(newConfigPath, name, absSrcPath, layoutPath);
       }
-      return false;
-    });
-    if (modulePath) {
-      // like @/route.config
-      if (/^@\//.test(modulePath)) {
-        modulePath = join(srcPath, modulePath.replace(/^@\//, ''));
-      } else {
-        modulePath = join(dirname(configPath), modulePath);
-      }
-      if (!/\.js$/.test(modulePath)) {
-        modulePath = `${modulePath}.js`;
-      }
-      if (existsSync(modulePath)) {
-        return {
-          realPath: modulePath,
-          routesProperty: null,
-        };
-      }
-    }
-  }
-  return {
-    realPath: configPath,
-    routesProperty: 'routes',
-  };
-}
-
-export function insertRouteContent(content, routeName, routesProperty, layoutPath) {
-  const ast = parseModule(content, {
-    attachComment: true,
-  });
-  if (layoutPath) {
-    const newRoute = parse(`({ path: '${routeName}', component: './${routeName}' })`).body[0].expression;
-    addRouteToLayout(ast, layoutPath, routesProperty, newRoute);
-  } else {
-    const { node, key } = getPropertyFromDefault(ast, routesProperty);
-    if (node) {
-      if (node[key].type !== 'ArrayExpression') {
-        // routes not a raw array, parse to a array
-        // eg: routes: routes, => routes: [...routes]
-        const oldValue = node[key];
-        node[key] = {
-          type: 'ArrayExpression',
-          elements: [
-            {
-              type: 'SpreadElement',
-              argument: oldValue,
-            },
-          ],
-        };
-      }
-      const newRoute = parse(`({ path: '/${routeName}', component: './${routeName}' })`).body[0].expression;
-      node[key].elements.unshift(newRoute);
     } else {
-      return content;
+      // 配置在当前文件 // export default { routes: [] } case 2
+      writeRouteNode(routes.value, name, layoutPath);
     }
+  } else {
+    // 从其他文件导入 export default [] case 3
+    const node = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression')[0];
+    writeRouteNode(node, name, layoutPath);
   }
+  const code = generateCode(ast);
+  debug(code, configPath);
+  return { code, routesPath: configPath };
+}
 
+/**
+ * 写入节点
+ * @param {*} node 找到的节点
+ * @param {*} name 路由名
+ * @param {*} layoutPath 指定的 layout 路径
+ */
+function writeRouteNode(targetNode, name, layoutPath) {
+  if (layoutPath) {
+    // 找到指定的 layout 节点
+    targetNode = esquery.query(
+      targetNode,
+      `[key.name="path"][value.value="${layoutPath}"] ~ [key.name="routes"] > ArrayExpression`,
+    )[0];
+  }
+  if (targetNode) {
+    // 插入相对路由, 兼容 layout
+    const newRoute = parse(`({ path: '${name}', component: './${name}' })`)
+      .body[0].expression;
+    targetNode.elements.push(newRoute);
+    debug(targetNode);
+  } else {
+    throw new Error('route path not found.');
+  }
+}
+
+/**
+ * 生成代码
+ * @param {*} ast
+ */
+function generateCode(ast) {
   const newCode = escodegen.generate(ast, {
     format: {
       indent: {
@@ -183,12 +112,19 @@ export function insertRouteContent(content, routeName, routesProperty, layoutPat
   return `${newCode}\n`;
 }
 
-export default function writeNewRoute(name, configPath, srcPath, layoutPath) {
-  const { realPath, routesProperty } = getRealRoutesPath(configPath, srcPath);
-  const routesContent = readFileSync(realPath, 'utf-8');
-  writeFileSync(
-    realPath,
-    insertRouteContent(routesContent, name, routesProperty, layoutPath),
-    'utf-8',
-  );
+/**
+ * 获取路由配置的真实路径
+ * @param {*} modulePath
+ */
+function getModulePath(configPath, modulePath, absSrcPath) {
+  // like @/route.config
+  if (/^@\//.test(modulePath)) {
+    modulePath = join(absSrcPath, modulePath.replace(/^@\//, ''));
+  } else {
+    modulePath = join(dirname(configPath), modulePath);
+  }
+  if (!/\.js$/.test(modulePath)) {
+    modulePath = `${modulePath}.js`;
+  }
+  return modulePath;
 }
