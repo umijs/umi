@@ -41,8 +41,8 @@ describe('insertRouteContent', () => {
     expect(
       insertRouteContent(
         `import test from './test';
-// test comment
 export default {
+  // test comment
   routes: [
     {
       path: '/',
@@ -55,8 +55,8 @@ export default {
         'routes',
       ),
     ).toEqual(`import test from './test';
-// test comment
 export default {
+  // test comment
   routes: [
     {
       path: '/demo',
