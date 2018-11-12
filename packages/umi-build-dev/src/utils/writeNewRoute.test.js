@@ -2,7 +2,7 @@ import { join } from 'path';
 import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
 
 describe('insertRouteContent', () => {
-  it.only('getRealRoutesPath in antdpro', () => {
+  it('getRealRoutesPath in antdpro', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/antdpro/config/config.js',
