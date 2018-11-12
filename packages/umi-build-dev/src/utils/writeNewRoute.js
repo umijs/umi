@@ -25,7 +25,7 @@ export default function writeNewRoute(
     layoutPath,
     absSrcPath,
   );
-  writeFileSync(routesPath + '.test.js', code, 'utf-8');
+  writeFileSync(routesPath, code, 'utf-8');
 }
 
 /**
