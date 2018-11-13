@@ -2,7 +2,7 @@ import { join } from 'path';
 import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
 
 describe('insertRouteContent', () => {
-  it.only('getRealRoutesPath in antdpro', () => {
+  it('getRealRoutesPath in antdpro', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/antdpro/config/config.js',
@@ -41,8 +41,8 @@ describe('insertRouteContent', () => {
     expect(
       insertRouteContent(
         `import test from './test';
-// test comment
 export default {
+  // test comment
   routes: [
     {
       path: '/',
@@ -55,8 +55,8 @@ export default {
         'routes',
       ),
     ).toEqual(`import test from './test';
-// test comment
 export default {
+  // test comment
   routes: [
     {
       path: '/demo',
