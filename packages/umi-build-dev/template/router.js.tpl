@@ -10,7 +10,7 @@ let Router = {{{ RouterRootComponent }}};
 let routes = {{{ routes }}};
 window.g_plugins.applyForEach('patchRoutes', { initialValue: routes });
 
-export default function() {
+export default function RouterWrapper() {
   return (
 {{{ routerContent }}}
   );
