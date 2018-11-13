@@ -1,9 +1,8 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { parseModule, parse } from 'esprima';
 import escodegen from 'escodegen';
 import esquery from 'esquery';
-import { get as _get } from 'lodash';
 const debug = require('debug')('umi-build-dev:writeNewRoute');
 
 /**
@@ -22,8 +21,8 @@ export default function writeNewRoute(
   const { code, routesPath } = getNewRouteCode(
     configPath,
     name,
-    layoutPath,
     absSrcPath,
+    layoutPath,
   );
   writeFileSync(routesPath, code, 'utf-8');
 }
@@ -36,19 +35,21 @@ export default function writeNewRoute(
  */
 export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
   debug(configPath);
-  const ast = parseModule(readFileSync(configPath, 'utf-8'));
+  const ast = parseModule(readFileSync(configPath, 'utf-8'), {
+    attachComment: true,
+  });
   // 查询当前配置文件是否导出 routes 属性
-  const routes = esquery(
+  const [routes] = esquery(
     ast,
-    'ExportDefaultDeclaration [key.name="routes"]:first-child',
-  )[0];
+    'ExportDefaultDeclaration > ObjectExpression > [key.name="routes"]',
+  );
   if (routes) {
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
     if (routes.value.type !== 'ArrayExpression') {
-      const source = esquery(
+      const [source] = esquery(
         ast,
         `ImportDeclaration:has([local.name="${routes.value.name}"])`,
-      )[0];
+      );
       if (source) {
         const newConfigPath = getModulePath(
           configPath,
@@ -63,7 +64,7 @@ export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
     }
   } else {
     // 从其他文件导入 export default [] case 3
-    const node = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression')[0];
+    const [node] = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression');
     writeRouteNode(node, name, layoutPath);
   }
   const code = generateCode(ast);
@@ -78,16 +79,18 @@ export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
  * @param {*} layoutPath 指定的 layout 路径
  */
 function writeRouteNode(targetNode, name, layoutPath) {
+  debug(targetNode, name, layoutPath);
   if (layoutPath) {
     // 找到指定的 layout 节点
-    targetNode = esquery.query(
+    [targetNode] = esquery.query(
       targetNode,
       `[key.name="path"][value.value="${layoutPath}"] ~ [key.name="routes"] > ArrayExpression`,
-    )[0];
+    );
   }
   if (targetNode) {
-    // 插入相对路由, 兼容 layout
-    const newRoute = parse(`({ path: '${name}', component: './${name}' })`)
+    // 如果插入到 layout, 组件地址是否正确
+    const routePath = layoutPath ? `${layoutPath}/${name}` : `/${name}`;
+    const newRoute = parse(`({ path: '${routePath}', component: './${name}' })`)
       .body[0].expression;
     targetNode.elements.push(newRoute);
     debug(targetNode);

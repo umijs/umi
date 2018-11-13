@@ -12,6 +12,7 @@ export default [
         name: 'dd',
         component: 'adad'
       },
+      // 注释2
       {
         path: '/aa/xx',
         name: 'xx',
@@ -19,21 +20,24 @@ export default [
         routes: [
           {
             path: '/aa/xx/sdad',
+            //注释3
             name: 'aada',
             component: 'xxx',
-            routes: [{
+            routes: [
+              {
                 name: 'hehe',
                 path: 'xxxcc'
-              }]
+              },
+              {
+                path: '/aa/xx/sdad/demo',
+                component: './demo'
+              }
+            ]
           },
           {
             path: 'aa',
             name: 'aadsda',
             component: 'xxxc'
-          },
-          {
-            path: 'demo',
-            component: './demo'
           }
         ]
       }

@@ -62,9 +62,11 @@ export default api => {
       });
 
       this.on('end', () => {
-        const viewUrl = `http://localhost:${process.env.PORT || '8000'}/${
-          this.name
-        }`;
+        const routePath = this.layoutPath
+          ? `${this.layoutPath}/${this.name}`
+          : `/${this.name}`;
+        const viewUrl = `http://localhost:${process.env.PORT ||
+          '8000'}${routePath}`;
         if (config.routes && !this.skipModifyRoutes) {
           log.info('start write new route to your routes config...');
           try {
@@ -72,7 +74,7 @@ export default api => {
               this.name,
               getConfigFile(paths.cwd),
               paths.absSrcPath,
-              this.layoutPath
+              this.layoutPath,
             );
             log.info('write done');
           } catch (e) {

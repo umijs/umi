@@ -33,7 +33,7 @@ export default api => {
         dryRun,
         skipDependencies,
         skipModifyRoutes,
-        layoutPath
+        layoutPath,
       } = args;
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
@@ -52,10 +52,12 @@ export default api => {
         resolved: __dirname,
       });
 
-      generate.run(() => {}).catch(e => {
-        debug(e);
-        log.error(e.message);
-      });
+      generate
+        .run(() => {})
+        .catch(e => {
+          debug(e);
+          log.error(e.message);
+        });
     } catch (e) {
       debug(e);
       log.error(`Use block failed, ${e.message}`);
@@ -90,8 +92,7 @@ Examples:
           'skip block dependencies install and conflict check',
         '--skip-modify-routes':
           'skip modify routes when you use conventional routes',
-        '--layout-path':
-          'add route to the layout'
+        '--layout-path': 'add route to the layout',
       },
       details,
     },

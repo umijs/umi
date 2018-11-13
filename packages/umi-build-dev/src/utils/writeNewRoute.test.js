@@ -2,10 +2,10 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import { getNewRouteCode } from './writeNewRoute';
 
-const antdSrc = '../fixtures/block/antdpro';
+const typeMap = ['./fixtures/exportDefaultRoutes', './fixtures/importedRoutes'];
 
-describe('insertRouteContent', () => {
-  it('getRealRoutesPath in antdpro', () => {
+describe('test get config path', () => {
+  it('get path in antdpro', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/antdpro/config/config.js',
@@ -14,39 +14,23 @@ describe('insertRouteContent', () => {
       __dirname,
       '../fixtures/block/antdpro/config/router.config.js',
     );
-    // 不带 layout 参数
-    let { code, routesPath: path } = getNewRouteCode(
+
+    const { routesPath: path } = getNewRouteCode(
       configPath,
       'demo',
-      antdSrc,
+      '../fixtures/block/antdpro',
     );
     expect(path).toEqual(routesPath);
-
-    const root = routesPath + '.root.js';
-    expect(code).toEqual(readFileSync(root, 'utf-8'));
-
-    // 带 layout 参数
-    code = getNewRouteCode(configPath, 'demo', antdSrc, '/aa/xx').code;
-    const layout = routesPath + '.layout.js';
-    expect(code).toEqual(readFileSync(layout, 'utf-8'));
   });
 
-  it('getRealRoutesPath in simple demo', () => {
+  it('get path in simple demo', () => {
     const configPath = join(__dirname, '../fixtures/block/simple/.umirc.js');
 
-    // 不带 layout 参数
-    let { code, routesPath: path } = getNewRouteCode(configPath, 'demo', null);
+    const { routesPath: path } = getNewRouteCode(configPath, 'demo', null);
     expect(path).toEqual(configPath);
-    const root = configPath + '.root.js';
-    expect(code).toEqual(readFileSync(root, 'utf-8'));
-
-    // 带 layout 参数
-    code = getNewRouteCode(configPath, 'demo', null, '/aa/xx/sdad').code;
-    const layout = configPath + '.layout.js';
-    expect(code).toEqual(readFileSync(layout, 'utf-8'));
   });
 
-  it.only('getRealRoutesPath in alias demo', () => {
+  it('get path in alias demo', () => {
     const configPath = join(
       __dirname,
       '../fixtures/block/alias/config/config.js',
@@ -54,19 +38,38 @@ describe('insertRouteContent', () => {
     const aliasPath = join(__dirname, '../fixtures/block/alias');
     const realConfig = join(aliasPath, 'routes.js');
 
-    // 不带 layout 参数
-    let { code, routesPath: path } = getNewRouteCode(
-      configPath,
-      'demo',
-      aliasPath,
-    );
+    const { routesPath: path } = getNewRouteCode(configPath, 'demo', aliasPath);
     expect(path).toEqual(realConfig);
-    const root = realConfig + '.root.js';
-    expect(code).toEqual(readFileSync(root, 'utf-8'));
+  });
+});
 
-    // 带 layout 参数
-    code = getNewRouteCode(configPath, 'demo', aliasPath, '/aa/xx').code;
-    const layout = realConfig + '.layout.js';
-    expect(code).toEqual(readFileSync(layout, 'utf-8'));
+describe('test get route code', () => {
+  it('get route code no params', () => {
+    typeMap.forEach(item => {
+      const { code } = getNewRouteCode(`${item}.js`, 'demo');
+      expect(code).toEqual(readFileSync(`${item}.result.js`, 'utf-8'));
+    });
+  });
+
+  it('get route code with layout path', () => {
+    typeMap.forEach(item => {
+      const { code } = getNewRouteCode(
+        `${item}.js`,
+        'demo',
+        null,
+        '/aa/xx/sdad',
+      );
+      expect(code).toEqual(
+        readFileSync(`${item}.resultWithLayout.js`, 'utf-8'),
+      );
+    });
+  });
+
+  it('get rout not found', () => {
+    try {
+      getNewRouteCode('./fixtures/notRoutes.js', 'demo', null, '/aa/xx/sdad');
+    } catch (error) {
+      expect(error.message).toEqual('route path not found.');
+    }
   });
 });
