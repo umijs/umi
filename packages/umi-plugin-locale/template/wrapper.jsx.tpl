@@ -3,7 +3,7 @@
 import { addLocaleData, IntlProvider, injectIntl } from 'react-intl';
 import { _setIntlObject } from 'umi/locale';
 
-const InjectedWrapper = injectIntl(function(props) {
+const InjectedWrapper = injectIntl(function ComponentWrapper(props) {
   _setIntlObject(props.intl);
   return props.children;
 })
@@ -59,7 +59,7 @@ window.g_lang = appLocale.locale;
 appLocale.data && addLocaleData(appLocale.data);
 {{/localeList.length}}
 
-export default (props) => {
+export default function LocaleWrapper(props) {
   let ret = props.children;
   {{#localeList.length}}
   ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>

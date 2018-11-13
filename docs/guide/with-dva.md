@@ -69,7 +69,7 @@ Model loading rules:
 * global models will be loaded along with the application; page-level models are loaded on demand while in `production` build (both will always be loaded in `development` build)
 * page-level models can be `.js` files in `models/**/*.js` pattern
 * page-level models can be scanned upward to app structure, For example: if you have page `.js` like `pages/a/b.js`, its page-level model shall be `pages/a/b/models/**/*.js` + `pages/a/models/**/*.js`...
-* if `model.js` is defined, the page should be a single-file-model, which means you don't have to create `modles` directory if you have only one model. So if you have `model.js` defined, all `.js` files defined in `models/**/*.js` will be ignored
+* if `model.js` is defined, the page should be a single-file-model, which means you don't have to create `models` directory if you have only one model. So if you have `model.js` defined, all `.js` files defined in `models/**/*.js` will be ignored
 
 Example:
 
