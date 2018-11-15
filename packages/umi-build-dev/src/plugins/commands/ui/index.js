@@ -4,18 +4,19 @@ export default function(api) {
   const { log } = api;
 
   class PluginAPI {
-    constructor(service) {
+    constructor(service, cache) {
       this.service = service;
+      this.cache = cache;
     }
     onRequest(middleware) {
-      service.middlewares.push(middleware);
+      this.cache.middlewares.push(middleware);
     }
     onSocketData(socketDataHandler) {
-      service.socketDataHandlers.push(socketDataHandler);
+      this.cache.socketDataHandlers.push(socketDataHandler);
     }
   }
 
-  const service = {
+  const cache = {
     middlewares: [],
     socketDataHandlers: [],
   };
@@ -38,13 +39,13 @@ export default function(api) {
       });
       const clients = [];
       uiPlugins.forEach(({ server, client }) => {
-        require(server).default(new PluginAPI(service));
+        require(server).default(new PluginAPI(api.service, cache));
         clients.push(client);
       });
 
       const app = express();
       app.use(serveStatic('dist'));
-      service.middlewares.forEach(middleware => {
+      cache.middlewares.forEach(middleware => {
         app.use(middleware);
       });
 
@@ -58,7 +59,7 @@ export default function(api) {
           try {
             const { type, payload } = JSON.parse(message);
             log.debug('GET Socket:', message);
-            service.socketDataHandlers.forEach(socketDataHandler => {
+            cache.socketDataHandlers.forEach(socketDataHandler => {
               socketDataHandler(type, payload);
             });
           } catch (e) {}
