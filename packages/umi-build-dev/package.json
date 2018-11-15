@@ -1,12 +1,12 @@
 {
   "name": "umi-build-dev",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "address": "^1.0.3",
-    "af-webpack": "^1.2.5",
+    "af-webpack": "^1.2.6",
     "atool-monitor": "^1.0.6",
     "babel-preset-umi": "^1.2.1",
     "body-parser": "^1.18.2",
