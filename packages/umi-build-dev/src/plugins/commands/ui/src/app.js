@@ -15,6 +15,9 @@ const service = (window.g_service = {
 
 export function patchRoutes(routes) {
   service.panels.forEach(panel => {
+    panel.models.forEach(model => {
+      window.g_app.model(model);
+    });
     routes[0].routes.unshift({
       exact: true,
       ...panel,

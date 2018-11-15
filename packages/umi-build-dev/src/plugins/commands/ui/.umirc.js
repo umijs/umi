@@ -4,6 +4,7 @@ export default {
   history: 'hash',
   externals: {
     react: 'window.React',
+    dva: 'window.dva',
   },
   plugins: [
     [
