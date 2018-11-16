@@ -7,33 +7,21 @@ const debug = require('debug')('umi-build-dev:writeNewRoute');
 
 /**
  * 将路由写入路由文件
- * @param {*} name 路由名
+ * @param {*} path 路由名
  * @param {*} configPath 配置路径
  * @param {*} absSrcPath 代码路径
- * @param {*} layoutPath 指定 layout 下
  */
-export default function writeNewRoute(
-  name,
-  configPath,
-  absSrcPath,
-  layoutPath,
-) {
-  const { code, routesPath } = getNewRouteCode(
-    configPath,
-    name,
-    absSrcPath,
-    layoutPath,
-  );
+export default function writeNewRoute(path, configPath, absSrcPath) {
+  const { code, routesPath } = getNewRouteCode(configPath, path, absSrcPath);
   writeFileSync(routesPath, code, 'utf-8');
 }
 
 /**
  * 获取目标
  * @param {*} configPath
- * @param {*} name
- * @param {*} layoutPath
+ * @param {*} path
  */
-export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
+export function getNewRouteCode(configPath, path, absSrcPath) {
   debug(configPath);
   const ast = parseModule(readFileSync(configPath, 'utf-8'), {
     attachComment: true,
@@ -56,16 +44,16 @@ export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
           source.source.value,
           absSrcPath,
         );
-        return getNewRouteCode(newConfigPath, name, absSrcPath, layoutPath);
+        return getNewRouteCode(newConfigPath, path, absSrcPath);
       }
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
-      writeRouteNode(routes.value, name, layoutPath);
+      writeRouteNode(routes.value, path);
     }
   } else {
     // 从其他文件导入 export default [] case 3
     const [node] = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression');
-    writeRouteNode(node, name, layoutPath);
+    writeRouteNode(node, path);
   }
   const code = generateCode(ast);
   debug(code, configPath);
@@ -75,27 +63,53 @@ export function getNewRouteCode(configPath, name, absSrcPath, layoutPath) {
 /**
  * 写入节点
  * @param {*} node 找到的节点
- * @param {*} name 路由名
- * @param {*} layoutPath 指定的 layout 路径
+ * @param {*} path 路由名
  */
-function writeRouteNode(targetNode, name, layoutPath) {
-  debug(targetNode, name, layoutPath);
-  if (layoutPath) {
-    // 找到指定的 layout 节点
-    [targetNode] = esquery.query(
-      targetNode,
-      `[key.name="path"][value.value="${layoutPath}"] ~ [key.name="routes"] > ArrayExpression`,
-    );
-  }
+function writeRouteNode(targetNode, path) {
+  targetNode = findLayoutNode(targetNode, path);
+  debug(targetNode);
   if (targetNode) {
     // 如果插入到 layout, 组件地址是否正确
-    const routePath = layoutPath ? `${layoutPath}/${name}` : `/${name}`;
-    const newRoute = parse(`({ path: '${routePath}', component: './${name}' })`)
-      .body[0].expression;
+    const newRoute = parse(
+      `({ path: '${path.toLowerCase()}', component: '.${path}' })`,
+    ).body[0].expression;
     targetNode.elements.push(newRoute);
-    debug(targetNode);
   } else {
     throw new Error('route path not found.');
+  }
+}
+
+/**
+ * 查找 path 是否有 layout 节点 // like: /users/settings/profile
+ * 会依次查找 /users/settings /users/ /
+ * @param {*} targetNode
+ * @param {*} path
+ */
+export function findLayoutNode(targetNode, path) {
+  debug(path, targetNode);
+  const index = path && path.lastIndexOf('/');
+  if (index !== -1) {
+    path = index === 0 ? '/' : path.slice(0, index).toLowerCase();
+    let query = `[key.name="path"][value.value="${path}"] ~ [key.name="routes"] > ArrayExpression`;
+
+    if (index !== 0) {
+      // 兼容 antd pro 相对路径路由
+      const relativePath = path.split('/').pop();
+      query = `${query},[key.name="path"][value.value="${relativePath}"] ~ [key.name="routes"] > ArrayExpression`;
+    }
+
+    const [layoutNode] = esquery.query(targetNode, query);
+    if (layoutNode) {
+      debug(layoutNode);
+      return layoutNode;
+    } else if (index === 0) {
+      // 执行到 / 后跳出
+      return targetNode;
+    } else {
+      return findLayoutNode(targetNode, path);
+    }
+  } else {
+    return targetNode;
   }
 }
 

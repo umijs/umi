@@ -1,0 +1,934 @@
+{
+  "type": "ArrayExpression",
+  "start": 15,
+  "end": 1844,
+  "elements": [
+    {
+      "type": "ObjectExpression",
+      "start": 19,
+      "end": 1841,
+      "properties": [
+        {
+          "type": "Property",
+          "start": 25,
+          "end": 34,
+          "method": false,
+          "shorthand": false,
+          "computed": false,
+          "key": {
+            "type": "Identifier",
+            "start": 25,
+            "end": 29,
+            "name": "path"
+          },
+          "value": {
+            "type": "Literal",
+            "start": 31,
+            "end": 34,
+            "value": "/",
+            "raw": "'/'"
+          },
+          "kind": "init"
+        },
+        {
+          "type": "Property",
+          "start": 40,
+          "end": 74,
+          "method": false,
+          "shorthand": false,
+          "computed": false,
+          "key": {
+            "type": "Identifier",
+            "start": 40,
+            "end": 49,
+            "name": "component"
+          },
+          "value": {
+            "type": "Literal",
+            "start": 51,
+            "end": 74,
+            "value": "../layout/BasicLayout",
+            "raw": "'../layout/BasicLayout'"
+          },
+          "kind": "init"
+        },
+        {
+          "type": "Property",
+          "start": 80,
+          "end": 138,
+          "method": false,
+          "shorthand": false,
+          "computed": false,
+          "key": {
+            "type": "Identifier",
+            "start": 80,
+            "end": 90,
+            "name": "indexRoute"
+          },
+          "value": {
+            "type": "ObjectExpression",
+            "start": 92,
+            "end": 138,
+            "properties": [
+              {
+                "type": "Property",
+                "start": 100,
+                "end": 131,
+                "method": false,
+                "shorthand": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 100,
+                  "end": 108,
+                  "name": "redirect"
+                },
+                "value": {
+                  "type": "Literal",
+                  "start": 110,
+                  "end": 131,
+                  "value": "/dashboard/analysis",
+                  "raw": "'/dashboard/analysis'"
+                },
+                "kind": "init"
+              }
+            ]
+          },
+          "kind": "init"
+        },
+        {
+          "type": "Property",
+          "start": 144,
+          "end": 1836,
+          "method": false,
+          "shorthand": false,
+          "computed": false,
+          "key": {
+            "type": "Identifier",
+            "start": 144,
+            "end": 150,
+            "name": "routes"
+          },
+          "value": {
+            "type": "ArrayExpression",
+            "start": 152,
+            "end": 1836,
+            "elements": [
+              {
+                "type": "ObjectExpression",
+                "start": 160,
+                "end": 1786,
+                "properties": [
+                  {
+                    "type": "Property",
+                    "start": 170,
+                    "end": 185,
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 170,
+                      "end": 174,
+                      "name": "name"
+                    },
+                    "value": {
+                      "type": "Literal",
+                      "start": 176,
+                      "end": 185,
+                      "value": "account",
+                      "raw": "'account'"
+                    },
+                    "kind": "init"
+                  },
+                  {
+                    "type": "Property",
+                    "start": 195,
+                    "end": 207,
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 195,
+                      "end": 199,
+                      "name": "icon"
+                    },
+                    "value": {
+                      "type": "Literal",
+                      "start": 201,
+                      "end": 207,
+                      "value": "user",
+                      "raw": "'user'"
+                    },
+                    "kind": "init"
+                  },
+                  {
+                    "type": "Property",
+                    "start": 217,
+                    "end": 232,
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 217,
+                      "end": 221,
+                      "name": "path"
+                    },
+                    "value": {
+                      "type": "Literal",
+                      "start": 223,
+                      "end": 232,
+                      "value": "account",
+                      "raw": "'account'"
+                    },
+                    "kind": "init"
+                  },
+                  {
+                    "type": "Property",
+                    "start": 242,
+                    "end": 1777,
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 242,
+                      "end": 248,
+                      "name": "routes"
+                    },
+                    "value": {
+                      "type": "ArrayExpression",
+                      "start": 250,
+                      "end": 1777,
+                      "elements": [
+                        {
+                          "type": "ObjectExpression",
+                          "start": 262,
+                          "end": 880,
+                          "properties": [
+                            {
+                              "type": "Property",
+                              "start": 276,
+                              "end": 290,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 276,
+                                "end": 280,
+                                "name": "path"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 282,
+                                "end": 290,
+                                "value": "center",
+                                "raw": "'center'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 304,
+                              "end": 318,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 304,
+                                "end": 308,
+                                "name": "name"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 310,
+                                "end": 318,
+                                "value": "center",
+                                "raw": "'center'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 332,
+                              "end": 366,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 332,
+                                "end": 341,
+                                "name": "component"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 343,
+                                "end": 366,
+                                "value": "Account/Center/Center",
+                                "raw": "'Account/Center/Center'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 380,
+                              "end": 459,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 380,
+                                "end": 390,
+                                "name": "indexRoute"
+                              },
+                              "value": {
+                                "type": "ObjectExpression",
+                                "start": 392,
+                                "end": 459,
+                                "properties": [
+                                  {
+                                    "type": "Property",
+                                    "start": 408,
+                                    "end": 444,
+                                    "method": false,
+                                    "shorthand": false,
+                                    "computed": false,
+                                    "key": {
+                                      "type": "Identifier",
+                                      "start": 408,
+                                      "end": 416,
+                                      "name": "redirect"
+                                    },
+                                    "value": {
+                                      "type": "Literal",
+                                      "start": 418,
+                                      "end": 444,
+                                      "value": "/account/center/articles",
+                                      "raw": "'/account/center/articles'"
+                                    },
+                                    "kind": "init"
+                                  }
+                                ]
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 473,
+                              "end": 867,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 473,
+                                "end": 479,
+                                "name": "routes"
+                              },
+                              "value": {
+                                "type": "ArrayExpression",
+                                "start": 481,
+                                "end": 867,
+                                "elements": [
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 497,
+                                    "end": 602,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 515,
+                                        "end": 531,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 515,
+                                          "end": 519,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 521,
+                                          "end": 531,
+                                          "value": "articles",
+                                          "raw": "'articles'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 549,
+                                        "end": 585,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 549,
+                                          "end": 558,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 560,
+                                          "end": 585,
+                                          "value": "Account/Center/Articles",
+                                          "raw": "'Account/Center/Articles'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 618,
+                                    "end": 731,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 636,
+                                        "end": 656,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 636,
+                                          "end": 640,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 642,
+                                          "end": 656,
+                                          "value": "applications",
+                                          "raw": "'applications'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 674,
+                                        "end": 714,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 674,
+                                          "end": 683,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 685,
+                                          "end": 714,
+                                          "value": "Account/Center/Applications",
+                                          "raw": "'Account/Center/Applications'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 747,
+                                    "end": 852,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 765,
+                                        "end": 781,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 765,
+                                          "end": 769,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 771,
+                                          "end": 781,
+                                          "value": "projects",
+                                          "raw": "'projects'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 799,
+                                        "end": 835,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 799,
+                                          "end": 808,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 810,
+                                          "end": 835,
+                                          "value": "Account/Center/Projects",
+                                          "raw": "'Account/Center/Projects'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "kind": "init"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "ObjectExpression",
+                          "start": 892,
+                          "end": 1766,
+                          "properties": [
+                            {
+                              "type": "Property",
+                              "start": 906,
+                              "end": 922,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 906,
+                                "end": 910,
+                                "name": "path"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 912,
+                                "end": 922,
+                                "value": "settings",
+                                "raw": "'settings'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 936,
+                              "end": 952,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 936,
+                                "end": 940,
+                                "name": "name"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 942,
+                                "end": 952,
+                                "value": "settings",
+                                "raw": "'settings'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 966,
+                              "end": 1000,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 966,
+                                "end": 975,
+                                "name": "component"
+                              },
+                              "value": {
+                                "type": "Literal",
+                                "start": 977,
+                                "end": 1000,
+                                "value": "Account/Settings/Info",
+                                "raw": "'Account/Settings/Info'"
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 1014,
+                              "end": 1091,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 1014,
+                                "end": 1024,
+                                "name": "indexRoute"
+                              },
+                              "value": {
+                                "type": "ObjectExpression",
+                                "start": 1026,
+                                "end": 1091,
+                                "properties": [
+                                  {
+                                    "type": "Property",
+                                    "start": 1042,
+                                    "end": 1076,
+                                    "method": false,
+                                    "shorthand": false,
+                                    "computed": false,
+                                    "key": {
+                                      "type": "Identifier",
+                                      "start": 1042,
+                                      "end": 1050,
+                                      "name": "redirect"
+                                    },
+                                    "value": {
+                                      "type": "Literal",
+                                      "start": 1052,
+                                      "end": 1076,
+                                      "value": "/account/settings/base",
+                                      "raw": "'/account/settings/base'"
+                                    },
+                                    "kind": "init"
+                                  }
+                                ]
+                              },
+                              "kind": "init"
+                            },
+                            {
+                              "type": "Property",
+                              "start": 1105,
+                              "end": 1753,
+                              "method": false,
+                              "shorthand": false,
+                              "computed": false,
+                              "key": {
+                                "type": "Identifier",
+                                "start": 1105,
+                                "end": 1111,
+                                "name": "routes"
+                              },
+                              "value": {
+                                "type": "ArrayExpression",
+                                "start": 1113,
+                                "end": 1753,
+                                "elements": [
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 1129,
+                                    "end": 1232,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 1147,
+                                        "end": 1163,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1147,
+                                          "end": 1151,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1153,
+                                          "end": 1163,
+                                          "value": "settings",
+                                          "raw": "'settings'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 1181,
+                                        "end": 1215,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1181,
+                                          "end": 1189,
+                                          "name": "redirect"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1191,
+                                          "end": 1215,
+                                          "value": "/account/settings/base",
+                                          "raw": "'/account/settings/base'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 1248,
+                                    "end": 1351,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 1266,
+                                        "end": 1278,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1266,
+                                          "end": 1270,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1272,
+                                          "end": 1278,
+                                          "value": "base",
+                                          "raw": "'base'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 1296,
+                                        "end": 1334,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1296,
+                                          "end": 1305,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1307,
+                                          "end": 1334,
+                                          "value": "Account/Settings/BaseView",
+                                          "raw": "'Account/Settings/BaseView'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 1367,
+                                    "end": 1478,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 1385,
+                                        "end": 1401,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1385,
+                                          "end": 1389,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1391,
+                                          "end": 1401,
+                                          "value": "security",
+                                          "raw": "'security'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 1419,
+                                        "end": 1461,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1419,
+                                          "end": 1428,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1430,
+                                          "end": 1461,
+                                          "value": "Account/Settings/SecurityView",
+                                          "raw": "'Account/Settings/SecurityView'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 1494,
+                                    "end": 1603,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 1512,
+                                        "end": 1527,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1512,
+                                          "end": 1516,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1518,
+                                          "end": 1527,
+                                          "value": "binding",
+                                          "raw": "'binding'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 1545,
+                                        "end": 1586,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1545,
+                                          "end": 1554,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1556,
+                                          "end": 1586,
+                                          "value": "Account/Settings/BindingView",
+                                          "raw": "'Account/Settings/BindingView'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ObjectExpression",
+                                    "start": 1619,
+                                    "end": 1738,
+                                    "properties": [
+                                      {
+                                        "type": "Property",
+                                        "start": 1637,
+                                        "end": 1657,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1637,
+                                          "end": 1641,
+                                          "name": "path"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1643,
+                                          "end": 1657,
+                                          "value": "notification",
+                                          "raw": "'notification'"
+                                        },
+                                        "kind": "init"
+                                      },
+                                      {
+                                        "type": "Property",
+                                        "start": 1675,
+                                        "end": 1721,
+                                        "method": false,
+                                        "shorthand": false,
+                                        "computed": false,
+                                        "key": {
+                                          "type": "Identifier",
+                                          "start": 1675,
+                                          "end": 1684,
+                                          "name": "component"
+                                        },
+                                        "value": {
+                                          "type": "Literal",
+                                          "start": 1686,
+                                          "end": 1721,
+                                          "value": "Account/Settings/NotificationView",
+                                          "raw": "'Account/Settings/NotificationView'"
+                                        },
+                                        "kind": "init"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "kind": "init"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "kind": "init"
+                  }
+                ]
+              },
+              {
+                "type": "ObjectExpression",
+                "start": 1794,
+                "end": 1829,
+                "properties": [
+                  {
+                    "type": "Property",
+                    "start": 1804,
+                    "end": 1820,
+                    "method": false,
+                    "shorthand": false,
+                    "computed": false,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 1804,
+                      "end": 1813,
+                      "name": "component"
+                    },
+                    "value": {
+                      "type": "Literal",
+                      "start": 1815,
+                      "end": 1820,
+                      "value": "404",
+                      "raw": "'404'"
+                    },
+                    "kind": "init"
+                  }
+                ]
+              }
+            ]
+          },
+          "kind": "init"
+        }
+      ]
+    }
+  ]
+}

@@ -28,7 +28,7 @@ export default api => {
 
       const defaultNpmClient = isUserUseYarn ? 'yarn' : 'npm';
       const {
-        name,
+        path,
         npmClient = defaultNpmClient,
         dryRun,
         skipDependencies,
@@ -36,12 +36,12 @@ export default api => {
         layoutPath,
       } = args;
       debug(
-        `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
+        `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${path}`,
       );
       const generate = new MaterialGenerate(process.argv.slice(4), {
         sourcePath,
         npmClient,
-        name,
+        path,
         dryRun,
         skipDependencies,
         skipModifyRoutes,
@@ -72,7 +72,9 @@ Examples:
 
   umi block demo ${chalk.gray('# a shortcut command')}
 
-  umi block demo --layout-path /users ${chalk.gray('# add route to the layout')}
+  umi block demo --path /users/settings/profile ${chalk.gray(
+    '# add route to the layout',
+  )}
   `.trim();
 
   api.registerCommand(
@@ -81,7 +83,7 @@ Examples:
       description: 'get block',
       usage: `umi block <a github/gitlab/gitrepo url> [options]`,
       options: {
-        '--name': "block name, default is name in block's package.json",
+        '--path': "path name, default is name in block's package.json",
         '--branch':
           'git branch, this usually does not need when you use a github url with branch itself',
         '--dry-run':
@@ -92,7 +94,6 @@ Examples:
           'skip block dependencies install and conflict check',
         '--skip-modify-routes':
           'skip modify routes when you use conventional routes',
-        '--layout-path': 'add route to the layout',
       },
       details,
     },

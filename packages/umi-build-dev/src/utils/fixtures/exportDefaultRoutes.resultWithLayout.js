@@ -31,7 +31,7 @@ export default {
                 },
                 {
                   path: '/aa/xx/sdad/demo',
-                  component: './demo'
+                  component: './aa/xx/sdad/demo'
                 }
               ]
             },

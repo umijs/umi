@@ -70,7 +70,7 @@ export default api => {
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.npmClient = opts.npmClient || 'npm';
-      this.name = opts.name;
+      this.path = opts.path;
       this.skipDependencies = opts.skipDependencies;
       this.skipModifyRoutes = opts.skipModifyRoutes;
       this.layoutPath = opts.layoutPath;
@@ -80,19 +80,15 @@ export default api => {
       });
 
       this.on('end', () => {
-        const routePath = this.layoutPath
-          ? `${this.layoutPath}/${this.name}`
-          : `/${this.name}`;
         const viewUrl = `http://localhost:${process.env.PORT ||
-          '8000'}${routePath}`;
+          '8000'}${this.path.toLowerCase()}`;
         if (config.routes && !this.skipModifyRoutes) {
           log.info('start write new route to your routes config...');
           try {
             writeNewRoute(
-              this.name,
+              this.path,
               getConfigFile(paths.cwd),
               paths.absSrcPath,
-              this.layoutPath,
             );
             log.info('write done');
           } catch (e) {
@@ -121,12 +117,12 @@ export default api => {
       }
 
       // generate block name
-      if (!this.name) {
+      if (!this.path) {
         const pkgName = getNameFromPkg(this.pkg);
         if (!pkgName) {
           return log.error("not find name in block's package.json");
         }
-        this.name = pkgName;
+        this.path = `/${pkgName}`;
       }
 
       // check dependencies conflict and install dependencies
@@ -184,19 +180,19 @@ export default api => {
         }
       }
 
-      let targetPath = join(paths.absPagesPath, this.name);
+      let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
       if (existsSync(targetPath)) {
-        this.name = (await this.prompt({
+        this.path = (await this.prompt({
           type: 'input',
-          name: 'name',
-          message: `page ${
-            this.name
-          } already exist, please input a new name for it`,
+          name: 'path',
+          message: `path ${
+            this.path
+          } already exist, please input a new path for it`,
           required: true,
-          default: this.name,
-        })).name;
-        targetPath = join(paths.absPagesPath, this.name);
+          default: this.path,
+        })).path;
+        targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
 
