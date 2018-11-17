@@ -73,7 +73,6 @@ export default api => {
       this.path = opts.path;
       this.skipDependencies = opts.skipDependencies;
       this.skipModifyRoutes = opts.skipModifyRoutes;
-      this.layoutPath = opts.layoutPath;
 
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack

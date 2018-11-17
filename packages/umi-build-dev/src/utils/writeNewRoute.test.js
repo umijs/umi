@@ -120,7 +120,7 @@ describe('find relative layout node', () => {
     ).toEqual(1113);
   });
 
-  it('test uppercase, return /account', () => {
+  it('test uppercase, return /account/settings', () => {
     expect(
       findLayoutNode(relativeRouteNode, '/Account/Settings/Haha').start,
     ).toEqual(1113);

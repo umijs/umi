@@ -33,7 +33,6 @@ export default api => {
         dryRun,
         skipDependencies,
         skipModifyRoutes,
-        layoutPath,
       } = args;
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${path}`,
@@ -45,7 +44,6 @@ export default api => {
         dryRun,
         skipDependencies,
         skipModifyRoutes,
-        layoutPath,
         env: {
           cwd: api.cwd,
         },
