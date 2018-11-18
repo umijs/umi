@@ -11,7 +11,9 @@ const Routes = connect(state => ({
           if (!route.path) return null;
           return (
             <li key={route.key || i}>
-              <div>{route.path}</div>
+              <div>
+                {route.path} ({route.component || ''})
+              </div>
               {route.routes ? renderRoutes(route.routes) : null}
             </li>
           );
@@ -22,7 +24,7 @@ const Routes = connect(state => ({
 
   return (
     <div>
-      <h3>routes page2</h3>
+      <h3>routes page</h3>
       {renderRoutes(props.routes.data)}
     </div>
   );
