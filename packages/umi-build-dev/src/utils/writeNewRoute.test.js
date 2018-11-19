@@ -1,151 +1,134 @@
 import { join } from 'path';
-import { insertRouteContent, getRealRoutesPath } from './writeNewRoute';
+import { readFileSync } from 'fs';
+import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
+import routeNode from './fixtures/routeNode';
+import relativeRouteNode from './fixtures/relativeRouteNode';
 
-describe('insertRouteContent', () => {
-  it('getRealRoutesPath in antdpro', () => {
-    const configPath = join(
-      __dirname,
-      '../fixtures/block/antdpro/config/config.js',
-    );
-    const routesPath = join(
-      __dirname,
+const typeMap = ['./fixtures/exportDefaultRoutes', './fixtures/importedRoutes'];
+const getPath = path => join(__dirname, path);
+
+describe('test get config path', () => {
+  it('get path in antdpro', () => {
+    const configPath = getPath('../fixtures/block/antdpro/config/config.js');
+    const routesPath = getPath(
       '../fixtures/block/antdpro/config/router.config.js',
     );
-    expect(getRealRoutesPath(configPath)).toEqual({
-      realPath: routesPath,
-      routesProperty: null,
-    });
-  });
 
-  it('getRealRoutesPath in simple demo', () => {
-    const configPath = join(__dirname, '../fixtures/block/simple/.umirc.js');
-    expect(getRealRoutesPath(configPath)).toEqual({
-      realPath: configPath,
-      routesProperty: 'routes',
-    });
-  });
-
-  it('getRealRoutesPath in alias demo', () => {
-    const configPath = join(
-      __dirname,
-      '../fixtures/block/alias/config/config.js',
+    const { routesPath: path } = getNewRouteCode(
+      configPath,
+      '/demo',
+      '../fixtures/block/antdpro',
     );
-    const aliasPath = join(__dirname, '../fixtures/block/alias');
-    expect(getRealRoutesPath(configPath, aliasPath)).toEqual({
-      realPath: join(aliasPath, 'routes.js'),
-      routesProperty: null,
+    expect(path).toEqual(routesPath);
+  });
+
+  it('get path in simple demo', () => {
+    const configPath = getPath('../fixtures/block/simple/.umirc.js');
+
+    const { routesPath: path } = getNewRouteCode(configPath, '/demo', null);
+    expect(path).toEqual(configPath);
+  });
+
+  it('get path in alias demo', () => {
+    const configPath = getPath('../fixtures/block/alias/config/config.js');
+    const aliasPath = getPath('../fixtures/block/alias');
+    const realConfig = join(aliasPath, 'routes.js');
+
+    const { routesPath: path } = getNewRouteCode(
+      configPath,
+      '/demo',
+      aliasPath,
+    );
+    expect(path).toEqual(realConfig);
+  });
+});
+
+describe('test get route code', () => {
+  it('get route code no params', () => {
+    typeMap.forEach(item => {
+      const { code } = getNewRouteCode(getPath(`${item}.js`), '/demo');
+      expect(code).toEqual(readFileSync(getPath(`${item}.result.js`), 'utf-8'));
     });
   });
 
-  it('routes is a array', () => {
-    expect(
-      insertRouteContent(
-        `import test from './test';
-export default {
-  // test comment
-  routes: [
-    {
-      path: '/',
-      component: './test'
-    }
-  ]
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import test from './test';
-export default {
-  // test comment
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    {
-      path: '/',
-      component: './test'
-    }
-  ]
-};
-`);
-  });
-
-  it('routes is a not array', () => {
-    expect(
-      insertRouteContent(
-        `import routes from './routes';
-export default {
-  routes: routes
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import routes from './routes';
-export default {
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    ...routes
-  ]
-};
-`);
-  });
-
-  it('routes is a expression', () => {
-    expect(
-      insertRouteContent(
-        `import routes from './routes';
-export default {
-  routes: routes.map(item => item)
-};
-`,
-        'demo',
-        'routes',
-      ),
-    ).toEqual(`import routes from './routes';
-export default {
-  routes: [
-    {
-      path: '/demo',
-      component: './demo'
-    },
-    ...routes.map(item => item)
-  ]
-};
-`);
-  });
-
-  it('routes export from default', () => {
-    expect(
-      insertRouteContent(
-        `import test from './test';
-export default [
-  // user
-  {
-    path: '/',
-    component: 'testindex'
-  }
-];
-`,
-        'demo',
+  it('get route code with layout path', () => {
+    typeMap.forEach(item => {
+      const { code } = getNewRouteCode(
+        getPath(`${item}.js`),
+        '/aa/xx/sdad/demo',
         null,
-      ),
-    ).toEqual(`import test from './test';
-export default [
-  {
-    path: '/demo',
-    component: './demo'
-  },
-  // user
-  {
-    path: '/',
-    component: 'testindex'
-  }
-];
-`);
+      );
+      expect(code).toEqual(
+        readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8'),
+      );
+    });
+  });
+
+  it('get rout not found', () => {
+    try {
+      getNewRouteCode(getPath('./fixtures/notRoutes.js'), '/aa/xx/sdad', null);
+    } catch (error) {
+      expect(error.message).toEqual('route path not found.');
+    }
+  });
+});
+
+describe('find layout node', () => {
+  it('not found, return root', () => {
+    expect(findLayoutNode(routeNode, '/sddd').end).toEqual(299);
+  });
+
+  it('seme as layout, return root', () => {
+    expect(findLayoutNode(routeNode, '/users').end).toEqual(299);
+  });
+
+  it('found, return /users', () => {
+    expect(findLayoutNode(routeNode, '/users/hahaha').start).toEqual(74);
+  });
+
+  it('found, return /users/settings', () => {
+    expect(findLayoutNode(routeNode, '/users/settings/some').start).toEqual(
+      133,
+    );
+  });
+
+  it('found, return /users/settings/help', () => {
+    expect(findLayoutNode(routeNode, '/users/settings/help/faq').start).toEqual(
+      210,
+    );
+  });
+
+  it('found, return /users/settings', () => {
+    expect(
+      findLayoutNode(
+        routeNode,
+        '/users/settings/wanted/adad/adadv/adadad/adadadad/adadad',
+      ).start,
+    ).toEqual(133);
+  });
+});
+
+describe('find relative layout node', () => {
+  it('not found, return root', () => {
+    expect(findLayoutNode(relativeRouteNode, '/adada').start).toEqual(152);
+  });
+
+  it('found, return /account/settings', () => {
+    expect(
+      findLayoutNode(relativeRouteNode, '/account/settings/base/adadadaad')
+        .start,
+    ).toEqual(1113);
+  });
+
+  it('test uppercase, return /account/settings', () => {
+    expect(
+      findLayoutNode(relativeRouteNode, '/Account/Settings/Haha').start,
+    ).toEqual(1113);
+  });
+
+  it('found, return /account', () => {
+    expect(findLayoutNode(relativeRouteNode, '/account/adada').start).toEqual(
+      250,
+    );
   });
 });

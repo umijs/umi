@@ -25,21 +25,22 @@ export default api => {
           'find yarn.lock in your project, use yarn as the default npm client',
         );
       }
+
       const defaultNpmClient = isUserUseYarn ? 'yarn' : 'npm';
       const {
-        name,
+        path,
         npmClient = defaultNpmClient,
         dryRun,
         skipDependencies,
         skipModifyRoutes,
       } = args;
       debug(
-        `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${name}`,
+        `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${path}`,
       );
       const generate = new MaterialGenerate(process.argv.slice(4), {
         sourcePath,
         npmClient,
-        name,
+        path,
         dryRun,
         skipDependencies,
         skipModifyRoutes,
@@ -49,10 +50,12 @@ export default api => {
         resolved: __dirname,
       });
 
-      generate.run(() => {}).catch(e => {
-        debug(e);
-        log.error(e.message);
-      });
+      generate
+        .run(() => {})
+        .catch(e => {
+          debug(e);
+          log.error(e.message);
+        });
     } catch (e) {
       debug(e);
       log.error(`Use block failed, ${e.message}`);
@@ -66,6 +69,10 @@ Examples:
   umi block https://github.com/umijs/umi-blocks/tree/master/demo
 
   umi block demo ${chalk.gray('# a shortcut command')}
+
+  umi block demo --path /users/settings/profile ${chalk.gray(
+    '# add route to the layout',
+  )}
   `.trim();
 
   api.registerCommand(
@@ -74,7 +81,7 @@ Examples:
       description: 'get block',
       usage: `umi block <a github/gitlab/gitrepo url> [options]`,
       options: {
-        '--name': "block name, default is name in block's package.json",
+        '--path': "path name, default is name in block's package.json",
         '--branch':
           'git branch, this usually does not need when you use a github url with branch itself',
         '--dry-run':
