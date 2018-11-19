@@ -257,9 +257,12 @@ export default function(opts) {
   // plugins -> progress bar
   const NO_PROGRESS = process.env.PROGRESS === 'none';
   if (!process.env.CI && !process.env.__FROM_UMI_TEST && !NO_PROGRESS) {
-    webpackConfig
-      .plugin('progress')
-      .use(require('webpackbar'), [{ minimal: false }]);
+    webpackConfig.plugin('progress').use(require('webpackbar'), [
+      {
+        color: 'green',
+        reporters: ['fancy'],
+      },
+    ]);
   } else {
     console.log('Building ...');
   }

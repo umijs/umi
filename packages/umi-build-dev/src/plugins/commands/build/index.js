@@ -51,8 +51,8 @@ export default function(api) {
           debug('Build success end');
         },
         onFail({ err, stats }) {
-          log.error(`Build failed`);
-          log.error(err);
+          debug(`Build failed`);
+          debug(err);
           service.applyPlugins('onBuildFail', {
             args: {
               err,
