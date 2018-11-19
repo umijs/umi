@@ -227,7 +227,7 @@ options include:
 
 When the title plugin is enabled you can configure the title in the route configuration or in the page component in pages folder.
 
-For example:
+For example, with configuration file:
 
 ```js
 // .umirc.js or config/config.js
@@ -240,7 +240,7 @@ export default {
 }
 ```
 
-or
+or with convensional routing
 
 ```jsx
 /**
@@ -250,3 +250,5 @@ export default () => {
   return <div>testpage</div>;
 }
 ```
+
+> `title/route configuration` must be at the top of the routing page component, otherwise it will be ignored by `umi`
