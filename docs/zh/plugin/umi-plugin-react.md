@@ -246,3 +246,5 @@ export default () => {
   return <div>testpage</div>;
 }
 ```
+
+> 在约定式路由里，注释必须写在文件头，否则将不被识别
