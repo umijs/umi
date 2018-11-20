@@ -35,6 +35,7 @@
     "lerna-changelog": "^0.8.0",
     "lint-staged": "^7.2.2",
     "prettier": "^1.14.2",
+    "puppeteer": "^1.7.0",
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.6.0",
     "shelljs": "^0.8.1",
