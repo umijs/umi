@@ -5,6 +5,7 @@ English | [简体中文](./README_zh-CN.md)
 [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
+[![NpmLicense](https://img.shields.io/npm/l/umi.svg?style=flat)](https://github.com/umijs/umi/blob/master/LICENSE)
 
 🌋 Pluggable enterprise-level react application framework.
 
@@ -64,6 +65,4 @@ $ umi build
 
 群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
 
-## License
 
-[MIT](https://github.com/umijs/umi/blob/master/LICENSE)

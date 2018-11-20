@@ -5,6 +5,7 @@
 [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
+[![NpmLicense](https://img.shields.io/npm/l/umi.svg?style=flat)](https://github.com/umijs/umi/blob/master/LICENSE)
 
 🌋 可插拔的企业级 react 应用框架。
 
@@ -64,6 +65,4 @@ $ umi build
 
 [https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
 
-## License
 
-[MIT](https://github.com/umijs/umi/blob/master/LICENSE)
