@@ -220,6 +220,7 @@ window.addEventListener('sw.offline', () => {
 * `defaultTitle: '默认标题'`, // 必填，当配置项为 String 时直接配置项作为 defaultTitle
 * `format: '{parent}{separator}{current}'`, // default {parent}{separator}{current}, title format
 * `separator: ' - '`, // default ' - '
+* `useLocale: true`, // default false，是否使用locale做多语言支持。如果选`true`，则会通过配置的`title`属性去`locales/*.js`找对应文字
 
 当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
 
