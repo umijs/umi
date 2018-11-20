@@ -224,6 +224,7 @@ options include:
 * `defaultTitle`: 'default tile', // required, when option type is String, will use option as the default title
 * `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
 * `separator`: ' - ', // default ' - '
+* `useLocale: true`, // default false, whether to use `locale` for multi-language support. If set `useLocale: true`, title displayed will be picked from `locales/*.js`
 
 When the title plugin is enabled you can configure the title in the route configuration or in the page component in pages folder.
 
