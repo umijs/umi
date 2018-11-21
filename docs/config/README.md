@@ -18,11 +18,13 @@ such as:
 ```js
 export default {
   plugins: [
+    //1. no parameters
     'umi-plugin-react',
-    // When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
-    ['umi-plugin-react', {
-      dva: true,
-    }],
+    //2. When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
+    //['umi-plugin-react', {
+    //  dva: true,
+    //  antd: true,
+    //}],
   ],
 };
 ```
