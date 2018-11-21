@@ -182,7 +182,33 @@ chainWebpack(config, { webpack }) {
   config.plugins.delete('progress');
 }
 ```
-
+configure [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)
+```js
+chainWebpack(config, { webpack }) {
+  config.merge({
+    plugin: {
+      install: {
+        plugin: require('uglifyjs-webpack-plugin'),
+        args: [{
+          sourceMap: false,
+          uglifyOptions: {
+            compress: {
+              // remove `console.*`
+              drop_console: true,
+            },
+            output: {
+              // whether to actually beautify the output
+              beautify: false,
+              // remove all comments
+              comments: false,
+            },
+          }
+        }]
+      }
+    }
+  })
+}
+```
 ### theme
 
 The configuration theme is actually equipped with the less variable. Support for both object and string types, the string needs to point to a file that returns the configuration.
