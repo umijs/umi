@@ -25,6 +25,7 @@
     "fastclick": "^1.0.6",
     "is-plain-object": "^2.0.4",
     "lodash.isequal": "^4.5.0",
+    "mustache": "^2.3.0",
     "preact": "^8.3.1",
     "preact-compat": "^3.18.3",
     "register-service-worker": "^1.4.1",
