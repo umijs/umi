@@ -249,3 +249,7 @@ export default () => {
 ```
 
 > 在约定式路由里，注释必须写在文件头，否则将不被识别
+
+#### 自定义模板document.ejs
+
+如果你使用了自定的`src/pages/document.ejs`，你需要在里面加入`<title><%= context.title %></title>`，以确保`title`功能正常生效
