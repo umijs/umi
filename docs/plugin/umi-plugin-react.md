@@ -253,3 +253,7 @@ export default () => {
 ```
 
 > `title/route configuration` must be at the top of the routing page component, otherwise it will be ignored by `umi`
+
+#### customized document.ejs
+
+If you defined `src/pages/document.ejs` by your own, please make sure the snippet `<title><%= context.title %></title>` is added, otherwise the `title.defaultTitle` will not be injected to the generated `index.html`
