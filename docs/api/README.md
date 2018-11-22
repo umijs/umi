@@ -132,6 +132,62 @@ See：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttrain
 
 See: [https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
 
+
+
+## umi-plugin-react
+
+### umi/locale
+
+Once you configured `umi-plugin-react`, and have `locale` feature enabled, you are able to use `umi/locale`.
+
+`umi/locale` provides internationalize APIs based on [react-intl](https://github.com/yahoo/react-intl).
+
+Example:
+
+If you have locales defined as below:
+
+zh-CN.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: '{name}，欢迎来到umi的世界',
+}
+```
+
+en-US.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: 'welcome to umi\'s world, {name}',
+}
+```
+
+```javascript
+import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi/locale'
+
+// get interpolated text
+const formatedText = formatMessage({
+  id: 'WELCOME_TO_UMI_WORLD'
+}, {
+  name: 'boy',
+})
+
+console.log(formatedText === `welcome to umi's world, boy`)
+
+// switch to en-US
+setLocale('en-US')
+
+// get currently used locale
+console.log(getLocale() === 'en-US')
+
+
+// render with element
+function Example() {
+  return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: 'boy' }} />
+}
+```
+
+
 ## Performance
 
 ### umi/dynamic

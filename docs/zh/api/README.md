@@ -132,6 +132,60 @@ export default () => {
 
 详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
 
+
+## umi-plugin-react
+
+### umi/locale
+
+使用`umi-plugin-react`插件，并且激活`locale`功能后可以使用`umi/locale`。
+
+`umi/locale`提供了基于[react-intl](https://github.com/yahoo/react-intl)的国际化API及组件
+
+例子：
+
+假设你有如下定义好的多语言文件在`src/locales`目录下
+
+zh-CN.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: '{name}，欢迎来到umi的世界',
+}
+```
+
+en-US.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: 'welcome to umi\'s world, {name}',
+}
+```
+
+```javascript
+import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi/locale'
+
+// 获取指定文字的多语言版本
+const formatedText = formatMessage({
+  id: 'WELCOME_TO_UMI_WORLD'
+}, {
+  name: 'boy',
+})
+
+console.log(formatedText === `welcome to umi's world, boy`)
+
+// 切换到 en-US
+setLocale('en-US')
+
+// 获取当前的 locale
+console.log(getLocale() === 'en-US')
+
+
+// 渲染一个文本组件
+function Example() {
+  return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: 'boy' }} />
+}
+```
+
 ## 性能
 
 ### umi/dynamic
