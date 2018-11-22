@@ -232,8 +232,8 @@ export default function getConfig(opts = {}) {
     },
   ];
 
-  // 生成环境下用 ExtractTextPlugin 提取出来
-  if (!isDev) {
+  // 生成环境或开启 enableExtractDevCSS 下用 ExtractTextPlugin 提取出来
+  if (!isDev || opts.enableExtractDevCSS) {
     cssRules.forEach(rule => {
       rule.use = ExtractTextPlugin.extract({
         use: rule.use.slice(1),
@@ -540,6 +540,9 @@ export default function getConfig(opts = {}) {
                     },
                   }),
                 ],
+            opts.enableExtractDevCSS
+              ? [new ExtractTextPlugin({ filename: '[name].css' })]
+              : [],
           )
         : [
             ...(process.env.__FROM_TEST
