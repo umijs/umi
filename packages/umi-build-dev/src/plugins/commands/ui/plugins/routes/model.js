@@ -11,15 +11,15 @@ export default {
     setup({ history, dispatch }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/routes') {
-          dispatch({
-            type: 'fetch',
-          });
+          setTimeout(() => {
+            window.send('routes/fetch');
+          }, 1000);
         }
       });
     },
   },
   reducers: {
-    saveRoutes(state, { payload }) {
+    save(state, { payload }) {
       return {
         ...state,
         data: payload,

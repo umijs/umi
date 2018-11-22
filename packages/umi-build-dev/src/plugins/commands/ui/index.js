@@ -60,7 +60,12 @@ export default function(api) {
             const { type, payload } = JSON.parse(message);
             log.debug('GET Socket:', message);
             cache.socketDataHandlers.forEach(socketDataHandler => {
-              socketDataHandler(type, payload);
+              socketDataHandler(type, payload, {
+                send(type, payload) {
+                  console.log('send', type, payload);
+                  conn.write(JSON.stringify({ type, payload }));
+                },
+              });
             });
           } catch (e) {}
         });

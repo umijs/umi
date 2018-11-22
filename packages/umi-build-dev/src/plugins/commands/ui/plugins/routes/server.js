@@ -1,8 +1,6 @@
 import getRouteManager from '../../../getRouteManager';
 
 export default function(api) {
-  console.log('plugins/routes/server');
-
   function getRoutes() {
     const RoutesManager = getRouteManager(api.service);
     RoutesManager.fetchRoutes();
@@ -13,14 +11,32 @@ export default function(api) {
     console.log(`[LOG] ${req.path}`);
     switch (req.path) {
       case '/api/routes':
-        res.json(getRoutes());
+        res.json();
         break;
       default:
         next();
     }
   });
 
-  api.onSocketData((type, payload) => {
-    console.log(`[LOG] ${type} ${payload}`);
+  api.onSocketData((type, payload, { send }) => {
+    console.log(`[LOG] ${type} ${JSON.stringify(payload)}`);
+
+    switch (type) {
+      case 'generate':
+        api.service
+          .runCommand('generate', {
+            _: payload,
+          })
+          .then(() => {
+            console.log('generate done');
+            send('routes/save', getRoutes());
+          });
+        break;
+      case 'routes/fetch':
+        send('routes/save', getRoutes());
+        break;
+      default:
+        break;
+    }
   });
 }

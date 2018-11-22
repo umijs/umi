@@ -1,3 +1,7 @@
+window.send = function() {
+  alert(`[Error] send not ready.`);
+};
+
 export default {
   state: {},
   subscriptions: {
@@ -7,13 +11,13 @@ export default {
       function send(type, payload) {
         sock.send(JSON.stringify({ type, payload }));
       }
+      window.send = send;
 
-      sock.onopen = () => {
-        send('haha');
-        send('a', { foo: 'bar' });
-      };
+      sock.onopen = () => {};
       sock.onmessage = e => {
         console.log('message', e.data);
+        const { type, payload } = JSON.parse(e.data);
+        dispatch({ type, payload });
       };
       sock.onclose = () => {
         console.log('close');
