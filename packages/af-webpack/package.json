@@ -99,6 +99,7 @@
     "getUserConfigPlugins.js",
     "react-dev-utils.js",
     "registerBabel.js",
+    "webpack-chain.js",
     "webpack.js"
   ],
   "umiTools": {
