@@ -112,9 +112,13 @@ export default function(webpackConfig, opts) {
   if (opts.cssModulesExcludes) {
     opts.cssModulesExcludes.forEach((exclude, index) => {
       const rule = `cssModulesExcludes_${index}`;
-      const config = webpackConfig.module
-        .rule(rule)
-        .test(filePath => filePath.indexOf(exclude) > -1);
+      const config = webpackConfig.module.rule(rule).test(filePath => {
+        if (exclude instanceof RegExp) {
+          return exclude.test(filePath);
+        } else {
+          return filePath.indexOf(exclude) > -1;
+        }
+      });
       const ext = extname(exclude).toLowerCase();
       applyCSSRules(config, {
         less: ext === '.less',
