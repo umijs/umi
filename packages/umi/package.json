@@ -6,6 +6,7 @@
     "@babel/core": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "@types/react": "^16.4.9",
+    "@types/react-router-dom": "4.x",
     "babel-preset-umi": "^1.2.1",
     "debug": "^3.1.0",
     "dotenv": "^6.0.0",
