@@ -24,7 +24,9 @@
     "umi"
   ],
   "dependencies": {
+    "globby": "^7.1.1",
     "intl": "^1.2.5",
+    "lodash.groupby": "^4.6.0",
     "moment": "2.x",
     "mustache": "^2.3.0",
     "prop-types": "^15.6.2",
