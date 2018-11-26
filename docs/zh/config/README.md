@@ -18,11 +18,13 @@ sidebarDepth: 2
 ```js
 export default {
   plugins: [
+    //1. 插件名，无参数
     'umi-plugin-react',
-    // 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
-    ['umi-plugin-react', {
-      dva: true,
-    }],
+    //2. 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
+    //['umi-plugin-react', {
+    //  dva: true,
+    //  antd: true,
+    //}],
   ],
 };
 ```

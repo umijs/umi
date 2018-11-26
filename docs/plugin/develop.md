@@ -311,9 +311,7 @@ export default (api, defaultOpts = { immer: false }) => {
 When the `umi build` was successful. Mainly do some processing of the construction products.
 
 ```js
-api.onBuildSuccess({
-  stats,
-} => {
+api.onBuildSuccess(({ stats })=> {
   // handle with stats
 });
 ```
