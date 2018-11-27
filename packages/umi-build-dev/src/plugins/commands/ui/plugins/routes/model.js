@@ -1,7 +1,3 @@
-async function fetchRoutes() {
-  return window.fetch('/api/routes').then(res => res.json());
-}
-
 export default {
   namespace: 'routes',
   state: {
@@ -24,15 +20,6 @@ export default {
         ...state,
         data: payload,
       };
-    },
-  },
-  effects: {
-    *fetch(_, { put, call }) {
-      const routes = yield call(fetchRoutes);
-      yield put({
-        type: 'saveRoutes',
-        payload: routes,
-      });
     },
   },
 };

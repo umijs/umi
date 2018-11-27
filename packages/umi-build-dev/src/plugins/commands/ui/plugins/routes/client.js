@@ -11,7 +11,17 @@ const Routes = connect(state => ({
           if (!route.path) return null;
           return (
             <li key={route.key || i}>
-              <div>{route.path}</div>
+              <div>
+                {route.path}
+                <button
+                  onClick={(route => {
+                    window.send('rm', ['page', route.component]);
+                  }).bind(null, route)}
+                >
+                  delete
+                </button>
+                <button>move</button>
+              </div>
               {route.routes ? renderRoutes(route.routes) : null}
             </li>
           );

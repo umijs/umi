@@ -32,6 +32,12 @@ export default function(api) {
             send('routes/save', getRoutes());
           });
         break;
+      case 'rm':
+        api.service.runCommand('rm', {
+          _: payload,
+        });
+        send('routes/save', getRoutes());
+        break;
       case 'routes/fetch':
         send('routes/save', getRoutes());
         break;

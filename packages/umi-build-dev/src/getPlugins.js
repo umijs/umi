@@ -18,6 +18,8 @@ export default function(opts = {}) {
     './plugins/commands/test',
     './plugins/commands/help',
     './plugins/commands/generate',
+    './plugins/commands/rm',
+    './plugins/commands/config',
     './plugins/commands/block',
     './plugins/commands/ui',
     './plugins/commands/version',
