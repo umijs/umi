@@ -19,4 +19,3 @@ lerna-debug.log
 .umi-production
 *.sw*
 *.un~
-.idea
