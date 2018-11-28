@@ -19,9 +19,9 @@
     "src"
   ],
   "dependencies": {
-    "lodash.pullall": "^4.2.0",
-    "lodash.uniq": "^4.5.0",
-    "rimraf": "^2.6.2",
-    "serve-static": "^1.13.2"
+    "lodash.pullall": "4.2.0",
+    "lodash.uniq": "4.5.0",
+    "rimraf": "2.6.2",
+    "serve-static": "1.13.2"
   }
 }

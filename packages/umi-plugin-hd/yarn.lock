@@ -45,10 +45,10 @@ js-base64@^2.1.9:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.9.tgz#748911fb04f48a60c4771b375cac45a80df11c03"
   integrity sha512-xcinL3AuDJk7VSzsHgb9DvvIXayBbadtMZ4HFPx8rUszbW1MuNMlwYVC4zzCZ6e1sqZpnNS5ZFYOhXqA39T7LQ==
 
-postcss-plugin-px2rem@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/postcss-plugin-px2rem/-/postcss-plugin-px2rem-0.7.0.tgz#5178cf64d2dc62e98d48d1ccfd053ee4a00e2545"
-  integrity sha1-UXjPZNLcYumNSNHM/QU+5KAOJUU=
+postcss-plugin-px2rem@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/postcss-plugin-px2rem/-/postcss-plugin-px2rem-0.8.0.tgz#baee3e9108ad5223fa6a7df8e2173c738b428661"
+  integrity sha512-/InLV+lzIpyFHEtJAHAm0wR9Ub9xnIMIMJ3aZBwm0FOEY5fWs77l8ebslHIN5cAKucuu6erc1sI2ytUg054qow==
   dependencies:
     postcss "^5.0.21"
 
@@ -86,7 +86,7 @@ supports-color@^3.2.3:
   dependencies:
     has-flag "^1.0.0"
 
-umi-hd@^5.0.1:
+umi-hd@5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/umi-hd/-/umi-hd-5.0.1.tgz#59061d3f4aad70491b7c853525aced91afbe1e21"
   integrity sha512-NFTTzrJArwdqtwZRNo5rF7F+NR95unQUAMkHAgcOGuuaJBnUey5w7lgpDR6K7/mV1bDwY2O3CLXSyLR1wxZyCw==
