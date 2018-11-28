@@ -1,6 +1,5 @@
 import chokidar from 'chokidar';
-import isAbsolute from 'path-is-absolute';
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 
 // 按 key 存，值为数组
 const watchers = {};

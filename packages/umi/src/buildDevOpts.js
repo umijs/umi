@@ -1,6 +1,5 @@
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 import { readFileSync, existsSync } from 'fs';
-import isAbsolute from 'path-is-absolute';
 import isWindows from 'is-windows';
 import slash from 'slash2';
 import { parse } from 'dotenv';

@@ -1,5 +1,4 @@
-import { join } from 'path';
-import isAbsolute from 'path-is-absolute';
+import { join, isAbsolute } from 'path';
 import registerBabel from 'af-webpack/registerBabel';
 import flatten from 'lodash.flatten';
 import { winPath } from 'umi-utils';
