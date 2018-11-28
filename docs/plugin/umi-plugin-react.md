@@ -88,7 +88,7 @@ options include:
 * `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
 * `update`, type is `Function`, for update routes.
 
-### polyfills(deprecated)
+### polyfills (deprecated)
 
 * Type: `Array(String)`
 
@@ -153,7 +153,7 @@ Enable some PWA features including:
 
 * Generate a `manifest.json`
 * Generate a Service Worker on `PRODUCTION` mode
- 
+
 options include:
 
 * `manifestOptions` Type: `Object`, includes following options:

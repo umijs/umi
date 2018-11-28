@@ -88,11 +88,11 @@ export default {
 * `exclude`，值为 `Array(RegExp)`，用于忽略某些路由，比如使用 dva 后，通常需要忽略 models、components、services 等目录
 * `update`, 值为 `Function`，用于更新路由
 
-### polyfills(已废弃)
+### polyfills (已废弃)
 
 * 类型：`Array(String)`
 
-> 请改用[config.targets](https://umijs.org/config/#targets)
+> 请改用 [config.targets](https://umijs.org/zh/config/#targets)
 
 基于 [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills) 实现，用于加各种补丁。
 
@@ -152,7 +152,7 @@ export default {
 开启 PWA 相关功能，包括：
 * 生成 `manifest.json`，对于 WebManifest 中引用的 `icons` 图标，建议放在项目根目录 `public/` 文件夹下，最终会被直接拷贝到构建目录中
 * 在 `PRODUCTION` 模式下生成 Service Worker
- 
+
 配置项包含：
 * `manifestOptions` 类型：`Object`，包含如下属性:
   * `srcPath` manifest 的文件路径，类型：`String`，默认值为 `src/manifest.json`（如果 `src` 不存在，为项目根目录）
