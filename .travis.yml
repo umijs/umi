@@ -6,6 +6,7 @@ node_js:
 
 before_script:
   - npm run build
+  - npm run ui:build
   - npm run bootstrap -- --npm-client=yarn
 
 after_success:

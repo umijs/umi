@@ -210,6 +210,21 @@ describe('patchRoutes', () => {
     ]);
   });
 
+  it('404 with redirect', () => {
+    const routes = patchRoutes(
+      [{ path: '/404', redirect: '/foo' }, { path: '/b' }],
+      {
+        disableRedirectHoist: true,
+      },
+      /* isProduction */ true,
+    );
+    expect(routes).toEqual([
+      { path: '/404', redirect: '/foo' },
+      { path: '/b' },
+      { redirect: '/foo' },
+    ]);
+  });
+
   it('support old meta Route which is deprecated', () => {
     const routes = patchRoutes([{ path: '/b', meta: { Route: './A' } }]);
     expect(routes).toEqual([{ path: '/b', Route: './A' }]);
