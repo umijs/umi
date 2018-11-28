@@ -12,7 +12,9 @@
     "precommit": "lint-staged",
     "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
-    "publish": "./scripts/publish.js"
+    "publish": "./scripts/publish.js",
+    "ui:debug": "BROWSER=none SOCKET_SERVER=http://localhost:8002/ PORT=8002 APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui umi dev",
+    "ui:build": "umi-tools rollup -g dva:dva"
   },
   "lint-staged": {
     "*.js": [
@@ -24,6 +26,7 @@
     "babel-eslint": "^9.0.0",
     "chokidar": "^2.0.2",
     "coveralls": "^3.0.0",
+    "dva": "^2.4.1",
     "eslint": "^5.4.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -40,6 +43,6 @@
     "react-test-renderer": "^16.6.0",
     "shelljs": "^0.8.1",
     "umi-test": "^1.0.0-beta.7",
-    "umi-tools": "^0.1.0"
+    "umi-tools": "^0.2.1"
   }
 }

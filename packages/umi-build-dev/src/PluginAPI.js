@@ -69,6 +69,7 @@ export default class PluginAPI {
       'addRouterImport',
       'addRouterImportAhead',
       'addVersionInfo',
+      'addUIPlugin',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',

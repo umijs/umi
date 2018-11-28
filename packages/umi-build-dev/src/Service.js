@@ -297,7 +297,10 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
   run(name = 'help', args) {
     this.init();
+    return this.runCommand(name, args);
+  }
 
+  runCommand(name, args) {
     debug(`run ${name} with args ${args}`);
 
     const command = this.commands[name];

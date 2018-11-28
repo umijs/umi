@@ -22,13 +22,13 @@ export default function(api) {
         `Generator ${chalk.cyan.underline(name)} not found`,
       );
       const { Generator, resolved } = generators[name];
-      const generator = new Generator(process.argv.slice(4), {
+      const generator = new Generator(args._.slice(1), {
         env: {
           cwd: api.cwd,
         },
         resolved: resolved || __dirname,
       });
-      generator
+      return generator
         .run()
         .then(() => {
           log.success('');
