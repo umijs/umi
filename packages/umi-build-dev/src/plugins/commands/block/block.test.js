@@ -51,6 +51,8 @@ import { api } from '@/services/yes';
 import { ok } from '@/page/ttt';
 import test2 from '@/goos/test';
 import types from '@types/yes';
+import { parseutil } from '../utils/parse';
+import test from './components/test';
 
 // test comment
 export default() {
@@ -66,6 +68,8 @@ import { api } from '@/service/yes';
 import { ok } from '@/page/ttt';
 import test2 from '@/goos/test';
 import types from '@types/yes';
+import { parseutil } from '../util/parse';
+import test from './component/test';
 
 // test comment
 export default() {
