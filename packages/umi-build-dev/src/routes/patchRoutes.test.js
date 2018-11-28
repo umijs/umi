@@ -213,7 +213,10 @@ describe('patchRoutes', () => {
   it('404 with redirect', () => {
     const routes = patchRoutes(
       [{ path: '/404', redirect: '/foo' }, { path: '/b' }],
-      {},
+      {
+        disableRedirectHoist: true,
+      },
+      /* isProduction */ true,
     );
     expect(routes).toEqual([
       { path: '/404', redirect: '/foo' },
