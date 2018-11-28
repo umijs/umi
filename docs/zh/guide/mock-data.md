@@ -4,7 +4,7 @@ Mock 数据是前端开发过程中必不可少的一环，是分离前后端开
 
 ## 使用 umi 的 mock 功能
 
-umi 里约定 mock 文件夹下的文件即 mock 文件，文件导出接口定义，支持基于 `require` 动态分析的实时刷新，支持 ES6 语法，以及友好的出错提示，详情参看 [mock-data](https://umijs.org/zh/guide/mock-data.html)。
+umi 里约定 mock 文件夹下的文件或者 page(s) 文件夹下的 _mock 文件即 mock 文件，文件导出接口定义，支持基于 `require` 动态分析的实时刷新，支持 ES6 语法，以及友好的出错提示，详情参看 [mock-data](https://umijs.org/zh/guide/mock-data.html)。
 
 ```js
 export default {
