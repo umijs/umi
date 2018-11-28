@@ -88,9 +88,11 @@ export default {
 * `exclude`，值为 `Array(RegExp)`，用于忽略某些路由，比如使用 dva 后，通常需要忽略 models、components、services 等目录
 * `update`, 值为 `Function`，用于更新路由
 
-### polyfills
+### polyfills(已废弃)
 
 * 类型：`Array(String)`
+
+> 请改用[config.targets](https://umijs.org/config/#targets)
 
 基于 [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills) 实现，用于加各种补丁。
 

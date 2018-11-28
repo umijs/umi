@@ -88,9 +88,11 @@ options include:
 * `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
 * `update`, type is `Function`, for update routes.
 
-### polyfills
+### polyfills(deprecated)
 
 * Type: `Array(String)`
+
+> Please use [config.targets](https://umijs.org/config/#targets) instead
 
 Based on [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills), used to add polyfills.
 
