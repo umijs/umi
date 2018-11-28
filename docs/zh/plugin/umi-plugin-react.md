@@ -220,6 +220,7 @@ window.addEventListener('sw.offline', () => {
 * `defaultTitle: '默认标题'`, // 必填，当配置项为 String 时直接配置项作为 defaultTitle
 * `format: '{parent}{separator}{current}'`, // default {parent}{separator}{current}, title format
 * `separator: ' - '`, // default ' - '
+* `useLocale: true`, // default false，是否使用locale做多语言支持。如果选`true`，则会通过配置的`title`属性去`locales/*.js`找对应文字
 
 当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
 
@@ -246,3 +247,9 @@ export default () => {
   return <div>testpage</div>;
 }
 ```
+
+> 在约定式路由里，注释必须写在文件头，否则将不被识别
+
+#### 自定义模板document.ejs
+
+如果你使用了自定的`src/pages/document.ejs`，你需要在里面加入`<title><%= context.title %></title>`，以确保`title.defaultTitle`能正常被注入到生成的`index.html`里

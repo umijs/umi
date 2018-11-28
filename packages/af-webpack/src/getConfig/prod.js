@@ -18,10 +18,7 @@ function mergeConfig(config, userConfig) {
 export default function(webpackConfig, opts) {
   const disableCompress = process.env.COMPRESS === 'none';
 
-  webpackConfig
-    .mode('production')
-    .bail(true)
-    .devtool(opts.devtool);
+  webpackConfig.mode('production').devtool(opts.devtool);
 
   if (disableCompress && !process.env.__FROM_UMI_TEST) {
     webpackConfig.output.pathinfo(true);

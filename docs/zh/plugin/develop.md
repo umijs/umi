@@ -311,9 +311,7 @@ export default (api, defaultOpts = { immer: false }) => {
 在 `umi build` 成功时候。主要做一些构建产物的处理。
 
 ```js
-api.onBuildSuccess({
-  stats,
-} => {
+api.onBuildSuccess(({ stats }) => {
   // handle with stats
 });
 ```

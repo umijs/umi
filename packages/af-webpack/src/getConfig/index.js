@@ -255,12 +255,14 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (process.stdout.isTTY) {
-    if (!process.env.CI && !process.env.__FROM_UMI_TEST) {
-      webpackConfig
-        .plugin('progress')
-        .use(require('webpackbar'), [{ minimal: false }]);
-    }
+  const NO_PROGRESS = process.env.PROGRESS === 'none';
+  if (!process.env.CI && !process.env.__FROM_UMI_TEST && !NO_PROGRESS) {
+    webpackConfig.plugin('progress').use(require('webpackbar'), [
+      {
+        color: 'green',
+        reporters: ['fancy'],
+      },
+    ]);
   } else {
     console.log('Building ...');
   }

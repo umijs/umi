@@ -4,16 +4,12 @@
 //   - example 里面的 antd 依赖改为 umi 插件
 //
 
-import { join, dirname } from 'path';
-import {
-  existsSync,
-  statSync,
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from 'fs';
+import { join, dirname, basename } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { winPath } from 'umi-utils';
 import Mustache from 'mustache';
+import globby from 'globby';
+import groupBy from 'lodash.groupby';
 
 const momentLocation = require
   .resolve('moment/locale/zh-cn')
@@ -34,27 +30,41 @@ function getMomentLocale(lang, country) {
 }
 
 // export for test
-export function getLocaleFileList(absSrcPath, singular) {
-  const localeList = [];
-  const localePath = join(absSrcPath, singular ? 'locale' : 'locales');
-  if (existsSync(localePath)) {
-    const localePaths = readdirSync(localePath);
-    for (let i = 0; i < localePaths.length; i++) {
-      const fullname = join(localePath, localePaths[i]);
-      const stats = statSync(fullname);
-      const fileInfo = /^([a-z]{2})-([A-Z]{2})\.(js|ts)$/.exec(localePaths[i]);
-      if (stats.isFile() && fileInfo) {
-        localeList.push({
-          lang: fileInfo[1],
-          country: fileInfo[2],
-          name: `${fileInfo[1]}-${fileInfo[2]}`,
-          path: winPath(fullname),
-          momentLocale: getMomentLocale(fileInfo[1], fileInfo[2]),
-        });
-      }
-    }
-  }
-  return localeList;
+export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
+  const localeFileMath = /^([a-z]{2})-([A-Z]{2})\.(js|ts)$/;
+  const localeFolder = singular ? 'locale' : 'locales';
+  const localeFiles = globby
+    .sync('*.{ts,js}', {
+      cwd: join(absSrcPath, localeFolder),
+    })
+    .map(name => join(absSrcPath, localeFolder, name))
+    .concat(
+      globby
+        .sync(`**/${localeFolder}/*.{ts,js}`, {
+          cwd: absPagesPath,
+        })
+        .map(name => join(absPagesPath, name)),
+    )
+    .filter(p => localeFileMath.test(basename(p)))
+    .map(fullname => {
+      const fileName = basename(fullname);
+      const fileInfo = localeFileMath.exec(fileName);
+      return {
+        name: `${fileInfo[1]}-${fileInfo[2]}`,
+        path: fullname,
+      };
+    });
+  const groups = groupBy(localeFiles, 'name');
+  return Object.keys(groups).map(name => {
+    const fileInfo = name.split('-');
+    return {
+      lang: fileInfo[0],
+      name,
+      country: fileInfo[1],
+      paths: groups[name].map(item => winPath(item.path)),
+      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1]),
+    };
+  });
 }
 
 // data come from https://caniuse.com/#search=intl
@@ -109,7 +119,11 @@ export default function(api, options = {}) {
   });
 
   api.addRendererWrapperWithComponent(() => {
-    const localeFileList = getLocaleFileList(paths.absSrcPath, config.singular);
+    const localeFileList = getLocaleFileList(
+      paths.absSrcPath,
+      paths.absPagesPath,
+      config.singular,
+    );
     const wrapperTpl = readFileSync(
       join(__dirname, '../template/wrapper.jsx.tpl'),
       'utf-8',

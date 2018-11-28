@@ -18,11 +18,13 @@ such as:
 ```js
 export default {
   plugins: [
+    //1. no parameters
     'umi-plugin-react',
-    // When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
-    ['umi-plugin-react', {
-      dva: true,
-    }],
+    //2. When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
+    //['umi-plugin-react', {
+    //  dva: true,
+    //  antd: true,
+    //}],
   ],
 };
 ```
@@ -182,7 +184,33 @@ chainWebpack(config, { webpack }) {
   config.plugins.delete('progress');
 }
 ```
-
+configure [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)
+```js
+chainWebpack(config, { webpack }) {
+  config.merge({
+    plugin: {
+      install: {
+        plugin: require('uglifyjs-webpack-plugin'),
+        args: [{
+          sourceMap: false,
+          uglifyOptions: {
+            compress: {
+              // remove `console.*`
+              drop_console: true,
+            },
+            output: {
+              // whether to actually beautify the output
+              beautify: false,
+              // remove all comments
+              comments: false,
+            },
+          }
+        }]
+      }
+    }
+  })
+}
+```
 ### theme
 
 The configuration theme is actually equipped with the less variable. Support for both object and string types, the string needs to point to a file that returns the configuration.
