@@ -1,5 +1,5 @@
 import UglifyPlugin from 'uglifyjs-webpack-plugin';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 import uglifyOptions from './uglifyOptions';
 
 function mergeConfig(config, userConfig) {

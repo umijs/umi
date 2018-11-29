@@ -1,5 +1,5 @@
-import deprecate from 'deprecate';
-import remove from 'lodash.remove';
+import { deprecate } from 'umi-utils';
+import { remove } from 'lodash';
 
 let redirects;
 

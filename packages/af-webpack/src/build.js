@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import rimraf from 'rimraf';
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 import { printFileSizesAfterBuild } from 'react-dev-utils/FileSizeReporter';
 
 const debug = require('debug')('af-webpack:build');

@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { join } from 'path';
-import deepclone from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash';
 import { winPath, isUrl } from 'umi-utils';
 
 export default (routes, pagesPath = 'src/pages', parentRoutePath = '/') => {
-  // deepclone 是为了避免 patch 多次
-  const clonedRoutes = deepclone(routes);
+  // cloneDeep 是为了避免 patch 多次
+  const clonedRoutes = cloneDeep(routes);
   patchRoutes(clonedRoutes, pagesPath, parentRoutePath);
   return clonedRoutes;
 };

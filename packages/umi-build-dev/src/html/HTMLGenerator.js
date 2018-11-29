@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { join, relative, extname } from 'path';
 import { existsSync, readFileSync } from 'fs';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
 import { matchRoutes } from 'react-router-config';
