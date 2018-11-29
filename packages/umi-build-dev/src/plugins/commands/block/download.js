@@ -108,7 +108,7 @@ export function getPathWithUrl(url, log, args) {
     log.info(`will use ${realUrl} as the block url`);
   } else if (/^[\.\/]/.test(url)) {
     // locale path for test
-    const blockPath = resolve(__dirname, url);
+    const blockPath = resolve(process.cwd(), url);
     log.info(`will use ${blockPath} as the block url`);
     return blockPath;
   } else {
