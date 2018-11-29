@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { isGitUrl, parseGitUrl, getPathWithUrl } from './download';
 
 describe('test block download utils', () => {
@@ -97,5 +98,10 @@ describe('test block download utils', () => {
         dryRun: true,
       }),
     ).toEqual('/test/test/locale');
+    expect(
+      getPathWithUrl('./locale', mockLog, {
+        dryRun: true,
+      }),
+    ).toEqual(join(process.cwd(), './locale'));
   });
 });
