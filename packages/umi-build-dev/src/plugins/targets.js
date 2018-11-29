@@ -1,7 +1,7 @@
 import { join, relative } from 'path';
 import { readFileSync } from 'fs';
+import { isPlainObject } from 'lodash';
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
 
 export default function(api) {
   const { paths, winPath } = api;

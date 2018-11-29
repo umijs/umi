@@ -1,5 +1,4 @@
-import isPlainObject from 'is-plain-object';
-import isEqual from 'lodash.isequal';
+import { isPlainObject, isEqual } from 'lodash';
 
 function toObject(o) {
   if (!isPlainObject(o)) {

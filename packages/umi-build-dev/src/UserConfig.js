@@ -3,8 +3,7 @@ import { existsSync } from 'fs';
 import requireindex from 'requireindex';
 import chalk from 'chalk';
 import didyoumean from 'didyoumean';
-import clone from 'lodash.clonedeep';
-import flatten from 'lodash.flatten';
+import { cloneDeep, flatten } from 'lodash';
 import extend from 'extend2';
 import { winPath } from 'umi-utils';
 import signale from 'signale';
@@ -266,7 +265,7 @@ class UserConfig {
           this.service.refreshBrowser();
         }
 
-        const oldConfig = clone(this.config);
+        const oldConfig = cloneDeep(this.config);
         this.config = newConfig;
 
         for (const plugin of this.plugins) {

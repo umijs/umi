@@ -24,14 +24,14 @@
     "umi"
   ],
   "dependencies": {
-    "globby": "^7.1.1",
-    "intl": "^1.2.5",
-    "lodash.groupby": "^4.6.0",
+    "globby": "7.1.1",
+    "intl": "1.2.5",
+    "lodash.groupby": "4.6.0",
     "moment": "2.x",
-    "mustache": "^2.3.0",
-    "prop-types": "^15.6.2",
-    "react-intl": "^2.4.0",
-    "umi-utils": "^1.2.1"
+    "mustache": "3.0.1",
+    "prop-types": "15.6.2",
+    "react-intl": "2.7.2",
+    "umi-utils": "1.2.1"
   },
   "umiTools": {
     "browserFiles": [

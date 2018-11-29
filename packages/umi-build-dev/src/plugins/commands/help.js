@@ -1,6 +1,6 @@
 // Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/commands/help.js
 import chalk from 'chalk';
-import padEnd from 'string.prototype.padend';
+import { padEnd } from 'lodash';
 import getPadLength from '../../utils/getPadLength';
 
 export default api => {

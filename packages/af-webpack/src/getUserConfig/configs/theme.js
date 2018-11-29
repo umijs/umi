@@ -1,5 +1,5 @@
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 import { existsSync } from 'fs';
 import { join, isAbsolute } from 'path';
 
