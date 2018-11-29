@@ -43,12 +43,12 @@ export function dependenciesConflictCheck(
 }
 
 const singularReg = new RegExp(
-  `[\'\"]@\/(${SINGULAR_SENSLTIVE.join('|')})\/`,
+  `[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`,
   'g',
 );
 
 export function parseContentToSingular(content) {
-  return content.replace(singularReg, (all, match) => {
+  return content.replace(singularReg, (all, prefix, match) => {
     return all.replace(match, match.replace(/s$/, ''));
   });
 }
@@ -202,32 +202,37 @@ export default api => {
 
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       log.info('start copy block file to your project...');
-      this.fs.copy(join(this.sourcePath, 'src'), targetPath, {
-        process(content) {
-          content = String(content);
-          if (config.singular) {
-            content = parseContentToSingular(content);
-          }
-          return applyPlugins('_modifyBlockFile', {
-            initialValue: content,
-          });
-        },
-      });
-      const commonPath = join(this.sourcePath, '@');
-      if (existsSync(commonPath)) {
-        if (config.singular) {
-          // @/components/ => @/src/component/
-          readdirSync(commonPath).forEach(name => {
-            const thePath = join(commonPath, name);
-            if (statSync(thePath).isDirectory()) {
-              name = getSingularName(name);
+      ['src', '@'].forEach(folder => {
+        const folderPath = join(this.sourcePath, folder);
+        const targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
+        const options = {
+          process(content) {
+            content = String(content);
+            if (config.singular) {
+              content = parseContentToSingular(content);
             }
-            this.fs.copy(thePath, join(paths.absSrcPath, name));
-          });
-        } else {
-          this.fs.copy(commonPath, paths.absSrcPath);
+            return applyPlugins('_modifyBlockFile', {
+              initialValue: content,
+            });
+          },
+        };
+        if (existsSync(folderPath)) {
+          if (config.singular) {
+            // @/components/ => @/src/component/ and ./components/ => ./component etc.
+            readdirSync(folderPath).forEach(name => {
+              const thePath = join(folderPath, name);
+              if (statSync(thePath).isDirectory()) {
+                name = getSingularName(name);
+              }
+              debug(`copy ${thePath} to ${join(targetFolder, name)}`);
+              this.fs.copy(thePath, join(targetFolder, name), options);
+            });
+          } else {
+            debug(`copy ${folderPath} to ${targetFolder}`);
+            this.fs.copy(folderPath, targetFolder, options);
+          }
         }
-      }
+      });
     }
   };
 };

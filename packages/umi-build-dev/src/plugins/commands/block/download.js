@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { existsSync } from 'fs';
 import { spawnSync } from 'child_process';
 import mkdirp from 'mkdirp';
@@ -106,6 +106,11 @@ export function getPathWithUrl(url, log, args) {
   } else if (/^[\w\-]+$/.test(url)) {
     realUrl = `https://github.com/umijs/umi-blocks/tree/master/${url}`;
     log.info(`will use ${realUrl} as the block url`);
+  } else if (/^[\.\/]/.test(url)) {
+    // locale path for test
+    const blockPath = resolve(__dirname, url);
+    log.info(`will use ${blockPath} as the block url`);
+    return blockPath;
   } else {
     throw new Error(`${url} can't match any Pattern`);
   }

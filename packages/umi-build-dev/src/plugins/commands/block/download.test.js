@@ -92,5 +92,10 @@ describe('test block download utils', () => {
         dryRun: true,
       }),
     ).toEqual('/Users/test/.umi/blocks/github.com/umijs/umi-blocks/demo-test');
+    expect(
+      getPathWithUrl('/test/test/locale', mockLog, {
+        dryRun: true,
+      }),
+    ).toEqual('/test/test/locale');
   });
 });
