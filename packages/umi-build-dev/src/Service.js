@@ -3,7 +3,7 @@ import { join, dirname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
-import { assign, clonedeep } from 'lodash';
+import { assign, cloneDeep } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
 import { deprecate } from 'umi-utils';
@@ -156,7 +156,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
     let count = 0;
     while (this.extraPlugins.length) {
-      const extraPlugins = clonedeep(this.extraPlugins);
+      const extraPlugins = cloneDeep(this.extraPlugins);
       this.extraPlugins = [];
       extraPlugins.forEach(plugin => {
         this.initPlugin(plugin);
