@@ -265,9 +265,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
     if (config.browserslist) {
-      deprecate(
-        'config.browserslist is deprecated, use config.targets instead',
-      );
+      deprecate('config.browserslist', 'use config.targets instead');
     }
     debug('got user config');
     debug(this.config);

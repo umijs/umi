@@ -19,7 +19,6 @@
     "chokidar": "2.0.4",
     "clipboardy": "1.2.3",
     "debug": "4.1.0",
-    "deprecate": "1.0.0",
     "didyoumean": "1.2.1",
     "dotenv": "6.1.0",
     "ejs": "2.6.1",

@@ -78,7 +78,7 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
 
   // Compatible the meta.Route and warn deprecated
   if (route.meta && route.meta.Route) {
-    deprecate('route.meta.Route is deprecated, use route.Route instead');
+    deprecate('route.meta.Route', 'use route.Route instead');
     route.Route = route.meta.Route;
     delete route.meta;
   }
