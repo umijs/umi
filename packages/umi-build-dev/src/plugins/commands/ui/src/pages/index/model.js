@@ -15,7 +15,7 @@ export default {
 
       sock.onopen = () => {};
       sock.onmessage = e => {
-        console.log('message', e.data);
+        console.log('[RECEIVED FROM SERVER]', e.data);
         const { type, payload } = JSON.parse(e.data);
         dispatch({ type, payload });
       };

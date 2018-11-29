@@ -1,5 +1,5 @@
 export default {
-  namespace: 'routes',
+  namespace: 'config',
   state: {
     data: [],
   },
@@ -7,7 +7,9 @@ export default {
     setup({ history, dispatch }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/config') {
-          console.log('config fetch');
+          setTimeout(() => {
+            window.send('config/fetch');
+          }, 1000);
         }
       });
     },
