@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-hd",
-  "version": "1.2.0",
+  "version": "1.3.0-beta.2",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
