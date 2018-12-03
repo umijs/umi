@@ -1,8 +1,8 @@
 export default {
   routes: [
     {
-      path: '/',
-      component: 'test'
+      path: '/demo',
+      component: './demo'
     },
     {
       path: '/aa',
@@ -43,8 +43,8 @@ export default {
       component: 'bb'
     },
     {
-      path: '/demo',
-      component: './demo'
+      path: '/',
+      component: 'test'
     }
   ]
 };

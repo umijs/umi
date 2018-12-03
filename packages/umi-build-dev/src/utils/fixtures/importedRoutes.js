@@ -1,7 +1,4 @@
 export default [{
-  path: '/',
-  component: 'test',
-},{
   path: '/aa',
   component: 'aa',
   routes: [
@@ -37,4 +34,7 @@ export default [{
 },{
   path: '/bb',
   component: 'bb',
+},{
+  path: '/',
+  component: 'test',
 }];

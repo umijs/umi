@@ -73,7 +73,7 @@ function writeRouteNode(targetNode, path) {
     const newRoute = parse(
       `({ path: '${path.toLowerCase()}', component: '.${path}' })`,
     ).body[0].expression;
-    targetNode.elements.push(newRoute);
+    targetNode.elements.unshift(newRoute);
   } else {
     throw new Error('route path not found.');
   }
