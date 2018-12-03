@@ -1,7 +1,7 @@
 export default [
   {
     path: '/demo',
-    component: './demo'
+    component: './Demo'
   },
   {
     path: '/aa',

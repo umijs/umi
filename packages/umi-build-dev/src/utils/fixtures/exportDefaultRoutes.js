@@ -37,6 +37,10 @@ export default {
     component: 'bb',
   },{
     path: '/',
-    component: 'test',
+    component: '../MainLayout',
+    childRoutes: [{
+      path: 'test1',
+      component: './test1',
+    }],
   }],
 };

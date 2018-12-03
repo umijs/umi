@@ -45,8 +45,9 @@ describe('test get config path', () => {
 
 describe('test get route code', () => {
   it('get route code no params', () => {
+    process.env.BIGFISH_COMPAT = true;
     typeMap.forEach(item => {
-      const { code } = getNewRouteCode(getPath(`${item}.js`), '/demo');
+      const { code } = getNewRouteCode(getPath(`${item}.js`), '/Demo');
       expect(code).toEqual(readFileSync(getPath(`${item}.result.js`), 'utf-8'));
     });
   });

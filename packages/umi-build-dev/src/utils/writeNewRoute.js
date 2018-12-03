@@ -26,17 +26,29 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
   const ast = parseModule(readFileSync(configPath, 'utf-8'), {
     attachComment: true,
   });
+  let routesNode;
   // 查询当前配置文件是否导出 routes 属性
   const [routes] = esquery(
     ast,
     'ExportDefaultDeclaration > ObjectExpression > [key.name="routes"]',
   );
-  if (routes) {
+  // 查询当前配置文件是否导出 childRoute 属性
+  if (!routes && process.env.BIGFISH_COMPAT) {
+    const [childRoute] = esquery(
+      ast,
+      'ExportDefaultDeclaration > ObjectExpression > [key.name="childRoute"]',
+    );
+    routesNode = childRoute;
+  } else {
+    routesNode = routes;
+  }
+
+  if (routesNode) {
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
     if (routes.value.type !== 'ArrayExpression') {
       const [source] = esquery(
         ast,
-        `ImportDeclaration:has([local.name="${routes.value.name}"])`,
+        `ImportDeclaration:has([local.name="${routesNode.value.name}"])`,
       );
       if (source) {
         const newConfigPath = getModulePath(
@@ -96,6 +108,10 @@ export function findLayoutNode(targetNode, path) {
       // 兼容 antd pro 相对路径路由
       const relativePath = path.split('/').pop();
       query = `${query},[key.name="path"][value.value="${relativePath}"] ~ [key.name="routes"] > ArrayExpression`;
+    }
+
+    if (process.env.BIGFISH_COMPAT) {
+      query = `${query},${query.replace(/\"routes\"/g, '"childRoutes"')}`;
     }
 
     const [layoutNode] = esquery.query(targetNode, query);
