@@ -42,7 +42,7 @@
     "react-router-dom": "4.3.1",
     "react-test-renderer": "16.6.3",
     "shelljs": "0.8.3",
-    "umi-test": "1.2.2",
-    "umi-tools": "0.2.1"
+    "umi-test": "^1.2.2",
+    "umi-tools": "^0.2.2"
   }
 }
