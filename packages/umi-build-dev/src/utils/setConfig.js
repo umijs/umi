@@ -42,7 +42,7 @@ export function update({ key, value, content }) {
         for (const property of properties) {
           if (
             t.isIdentifier(property.key, {
-              name: 'mountElementId',
+              name: key,
             })
           ) {
             property.value = buildExpression(value);
