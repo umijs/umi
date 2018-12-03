@@ -11,6 +11,7 @@ export default api => {
 
   function generate(args = {}) {
     try {
+      console.log('_', typeof args._);
       const url = args._[0];
       assert(
         url,

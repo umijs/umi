@@ -109,4 +109,8 @@ export default function(api) {
     client: require.resolve('./plugins/config/client.umd'),
     server: require.resolve('./plugins/config/server'),
   });
+  api.addUIPlugin({
+    client: require.resolve('./plugins/blocks/client.umd'),
+    server: require.resolve('./plugins/blocks/server'),
+  });
 }
