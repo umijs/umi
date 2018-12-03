@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "umi-tools build",
+    "build": "./scripts/build.js",
     "changelog": "lerna-changelog",
     "test": "node scripts/test.js",
     "test:coverage": "umi-test --coverage",
@@ -13,8 +13,7 @@
     "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "publish": "./scripts/publish.js",
-    "ui:debug": "BROWSER=none SOCKET_SERVER=http://localhost:8002/ PORT=8002 APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui umi dev",
-    "ui:build": "umi-tools rollup -g dva:dva"
+    "ui:debug": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui umi dev"
   },
   "lint-staged": {
     "*.js": [
