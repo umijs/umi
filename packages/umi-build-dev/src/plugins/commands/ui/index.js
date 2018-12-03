@@ -71,22 +71,24 @@ export default function(api) {
         });
       });
 
-      if (process.env.LOCAL_DEBUG) {
-        app.get('/', (req, res) => {
-          const clientsHtml = clients
-            .map(
-              client => `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
-            )
-            .join('\n');
-          res.type('html');
-          res.send(
-            readFileSync(`${__dirname}/index-debug.html`, 'utf-8').replace(
-              '<div id="root"></div>',
-              `<div id="root"></div>${clientsHtml}`,
-            ),
-          );
-        });
-      }
+      app.get('/', (req, res) => {
+        const clientsHtml = clients
+          .map(
+            client => `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
+          )
+          .join('\n');
+        res.type('html');
+        const htmlFile = process.env.LOCAL_DEBUG
+          ? `${__dirname}/index-debug.html`
+          : `${__dirname}/dist/index.html`;
+        res.send(
+          readFileSync(htmlFile, 'utf-8').replace(
+            '<div id="root"></div>',
+            `<div id="root"></div>\r\n\r\n${clientsHtml}`,
+          ),
+        );
+      });
+      app.use(require('serve-static')(`${__dirname}/dist/`));
 
       const port = process.env.PORT || args.port || 8001;
       const server = app.listen(port, () => {
