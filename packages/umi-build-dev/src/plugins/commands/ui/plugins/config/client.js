@@ -57,7 +57,6 @@ const ConfigManager = connect(state => ({
 }))(props => {
   return (
     <div>
-      <h3>config mangager page</h3>
       <ul>
         {Object.keys(props.config.data).map(key => (
           <ConfigItem key={key} name={key} data={props.config.data[key]} />

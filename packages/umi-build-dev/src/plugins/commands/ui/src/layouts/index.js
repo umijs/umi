@@ -1,28 +1,34 @@
 import { connect } from 'dva';
-import Link from 'umi/link';
-import styles from './index.css';
+import NavLink from 'umi/navlink';
+import styles from './index.less';
 
 export default connect(state => ({
   service: state.service,
 }))(props => {
   return (
     <div className={styles.normal}>
-      <div className={styles.sidebar}>
-        <h2>sidebar</h2>
-        <div>
-          <Link to="/">Go to Home</Link>
-        </div>
-        {props.service.panels.map((panel, index) => {
-          return (
-            <div key={index}>
-              <Link to={panel.path}>{panel.title}</Link>
-            </div>
-          );
-        })}
+      <div className={styles.header}>
+        <img
+          className={styles.logo}
+          src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
+        />
+        umi ui
       </div>
-      <div className={styles.main}>
-        <h2>main</h2>
-        {props.children}
+      <div className={styles.wrapper}>
+        <div className={styles.sidebar}>
+          <ul>
+            {props.service.panels.map((panel, i) => {
+              return (
+                <li key={i}>
+                  <NavLink activeClassName={styles.active} to={panel.path}>
+                    {panel.title}
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className={styles.main}>{props.children}</div>
       </div>
     </div>
   );

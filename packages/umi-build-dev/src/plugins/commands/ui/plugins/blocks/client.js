@@ -10,7 +10,6 @@ const BlocksViewer = connect(state => ({
 
   return (
     <div>
-      <h3>blocks viewer page</h3>
       <ul>
         {props.blocks.data.map(item => {
           return (

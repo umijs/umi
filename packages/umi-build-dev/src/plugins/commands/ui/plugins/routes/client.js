@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 
 const Routes = connect(state => ({
   routes: state.routes,
@@ -14,13 +14,13 @@ const Routes = connect(state => ({
             <li key={route.key || i}>
               <div>
                 {route.path}
-                <button
+                <Icon
+                  type="delete"
+                  theme="filled"
                   onClick={(route => {
                     window.send('rm', ['page', route.component]);
                   }).bind(null, route)}
-                >
-                  delete
-                </button>
+                />
                 <button>move</button>
               </div>
               {route.routes ? renderRoutes(route.routes) : null}
@@ -33,7 +33,6 @@ const Routes = connect(state => ({
 
   return (
     <div>
-      <h3>routes page</h3>
       <Button
         type="primary"
         onClick={() => {
