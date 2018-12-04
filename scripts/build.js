@@ -21,6 +21,6 @@ cp.on('error', err => {
 });
 cp.on('message', message => {
   if (message === 'BUILD_COMPLETE') {
-    runUmiTools('rollup', '-g', 'dva:dva');
+    runUmiTools('rollup', '-g', 'dva:dva,antd:antd');
   }
 });

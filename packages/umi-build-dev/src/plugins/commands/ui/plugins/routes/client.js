@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { Button } from 'antd';
 
 const Routes = connect(state => ({
   routes: state.routes,
@@ -33,14 +34,15 @@ const Routes = connect(state => ({
   return (
     <div>
       <h3>routes page</h3>
-      <button
+      <Button
+        type="primary"
         onClick={() => {
           const name = window.prompt(`What's your page name?`);
           window.send('generate', ['page', name]);
         }}
       >
         add route
-      </button>
+      </Button>
       {renderRoutes(props.routes.data)}
     </div>
   );
