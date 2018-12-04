@@ -118,7 +118,7 @@ This is a temporary directory produced by umi dev. It contains `umi.js` and `rou
 
 ## src/pages/.umi-production
 
-Same as `src/pagers/.umi`, but generated in `umi build`, it will be automatically deleted after `umi build`.
+Same as `src/pages/.umi`, but generated in `umi build`, it will be automatically deleted after `umi build`.
 
 ## .test.js and .e2e.js
 
