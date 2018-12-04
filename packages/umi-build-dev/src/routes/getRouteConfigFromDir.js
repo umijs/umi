@@ -27,11 +27,16 @@ export default function getRouteConfigFromDir(paths) {
     .sort(a => (a.charAt(0) === '$' ? 1 : -1))
     .reduce(handleFile.bind(null, paths, absPath), [])
     .sort((a, b) => {
+      if (a._sorted || b._sorted) return 0;
       if (a.isParamsRoute !== b.isParamsRoute) return a.isParamsRoute ? 1 : -1;
       if (a.exact !== b.exact) return !a.exact ? 1 : -1;
+      if (a.path && b.path) {
+        return a.path > b.path ? 1 : -1;
+      }
       return 0;
     })
     .map(a => {
+      delete a._sorted;
       delete a.isParamsRoute;
       return a;
     });
@@ -88,7 +93,14 @@ function handleFile(paths, absPath, memo, file) {
         },
       );
     } else {
-      memo = memo.concat(routes);
+      memo = memo.concat(
+        routes.map(route => {
+          return {
+            ...route,
+            _sorted: true,
+          };
+        }),
+      );
     }
   } else if (stats.isFile() && isValidJS(file)) {
     const bName = basename(file, extname(file));

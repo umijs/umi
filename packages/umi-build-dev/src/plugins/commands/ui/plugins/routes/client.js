@@ -12,7 +12,7 @@ const Routes = connect(state => ({
         {routes.map((route, i) => {
           if (!route.path) return null;
           return (
-            <li key={route.key || i}>
+            <li key={route.key || i} className="client-route">
               <div>
                 <span className="client-pathName">{route.path}</span>
                 <Icon

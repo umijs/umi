@@ -1,8 +1,12 @@
 
 .client-actions {
-  margin-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.client-route {
+  font-size: 16px;
 }
 
 .client-pathName {
-  margin-right: 6px;
+  margin-right: 10px;
 }
