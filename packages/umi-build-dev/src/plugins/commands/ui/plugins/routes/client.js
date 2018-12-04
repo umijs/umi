@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Button, Icon } from 'antd';
+import './client.css';
 
 const Routes = connect(state => ({
   routes: state.routes,
@@ -13,7 +14,7 @@ const Routes = connect(state => ({
           return (
             <li key={route.key || i}>
               <div>
-                {route.path}
+                <span className="client-pathName">{route.path}</span>
                 <Icon
                   type="delete"
                   theme="filled"
@@ -21,7 +22,6 @@ const Routes = connect(state => ({
                     window.send('rm', ['page', route.component]);
                   }).bind(null, route)}
                 />
-                <button>move</button>
               </div>
               {route.routes ? renderRoutes(route.routes) : null}
             </li>
@@ -33,15 +33,17 @@ const Routes = connect(state => ({
 
   return (
     <div>
-      <Button
-        type="primary"
-        onClick={() => {
-          const name = window.prompt(`What's your page name?`);
-          window.send('generate', ['page', name]);
-        }}
-      >
-        add route
-      </Button>
+      <div className="client-actions">
+        <Button
+          type="primary"
+          onClick={() => {
+            const name = window.prompt(`What's your page name?`);
+            window.send('generate', ['page', name]);
+          }}
+        >
+          add route
+        </Button>
+      </div>
       {renderRoutes(props.routes.data)}
     </div>
   );

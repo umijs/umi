@@ -36,7 +36,9 @@ export default class FilesGenerator {
 
   createWatcher(path) {
     const watcher = chokidar.watch(path, {
-      ignored: /(^|[\/\\])(_mock.js$)|(\..)/, // ignore .dotfiles and _mock.js
+      // ignored: /(^|[\/\\])(_mock.js$)|(\..)/, // ignore .dotfiles and _mock.js
+      // TODO: support _mock.js ignore
+      ignored: /(^|[\/\\])\../, // ignore dot files
       ignoreInitial: true,
     });
     watcher.on(
