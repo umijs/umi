@@ -29,8 +29,8 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
   // 查询当前配置文件是否导出 routes 属性
   const [routes] = esquery(
     ast,
-    `ExportDefaultDeclaration > ObjectExpression > [key.name="routes"],
-    AssignmentExpression[left.object.name="exports"][left.property.name="routes"]`, // like: exports.routes = {}
+    `ExportDefaultDeclaration > ObjectExpression > [key.name="routes"],\
+  AssignmentExpression[left.object.name="exports"][left.property.name="routes"]`, // like: exports.routes = {}
   );
 
   if (routes) {

@@ -4,7 +4,11 @@ import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
 import routeNode from './fixtures/routeNode';
 import relativeRouteNode from './fixtures/relativeRouteNode';
 
-const typeMap = ['./fixtures/exportDefaultRoutes', './fixtures/importedRoutes'];
+const typeMap = [
+  './fixtures/exportDefaultRoutes',
+  './fixtures/importedRoutes',
+  './fixtures/exportsRoutes',
+];
 const getPath = path => join(__dirname, path);
 
 describe('test get config path', () => {
