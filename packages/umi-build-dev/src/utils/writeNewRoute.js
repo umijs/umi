@@ -26,29 +26,20 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
   const ast = parseModule(readFileSync(configPath, 'utf-8'), {
     attachComment: true,
   });
-  let routesNode;
   // 查询当前配置文件是否导出 routes 属性
   const [routes] = esquery(
     ast,
-    'ExportDefaultDeclaration > ObjectExpression > [key.name="routes"]',
+    `ExportDefaultDeclaration > ObjectExpression > [key.name="routes"],
+    AssignmentExpression[left.object.name="exports"][left.property.name="routes"]`, // like: exports.routes = {}
   );
-  // 查询当前配置文件是否导出 childRoute 属性
-  if (!routes && process.env.BIGFISH_COMPAT) {
-    const [childRoute] = esquery(
-      ast,
-      'ExportDefaultDeclaration > ObjectExpression > [key.name="childRoute"]',
-    );
-    routesNode = childRoute;
-  } else {
-    routesNode = routes;
-  }
 
-  if (routesNode) {
+  if (routes) {
+    const routesNode = routes.value || routes.right;
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
-    if (routes.value.type !== 'ArrayExpression') {
+    if (routesNode.type !== 'ArrayExpression') {
       const [source] = esquery(
         ast,
-        `ImportDeclaration:has([local.name="${routesNode.value.name}"])`,
+        `ImportDeclaration:has([local.name="${routesNode.name}"])`,
       );
       if (source) {
         const newConfigPath = getModulePath(
@@ -60,7 +51,7 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
       }
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
-      writeRouteNode(routes.value, path);
+      writeRouteNode(routesNode, path);
     }
   } else {
     // 从其他文件导入 export default [] case 3
