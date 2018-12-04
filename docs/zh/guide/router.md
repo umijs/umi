@@ -262,7 +262,7 @@ export default (props) => {
 $ yarn add react-transition-group
 ```
 
-在 layout 组件（`layouts/index.js` 或者 pages 子目录下的 `_layout.js`）里在渲染子组件时用 TransitionGroup 和 CSSTransition 包裹一层，并以 `location.key` 为 key，
+在 layout 组件（`layouts/index.js` 或者 pages 子目录下的 `_layout.js`）里在渲染子组件时用 TransitionGroup 和 CSSTransition 包裹一层，并以 `location.pathname` 为 key，
 
 ```js
 import withRouter from 'umi/withRouter';
