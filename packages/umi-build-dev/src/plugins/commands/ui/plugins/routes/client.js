@@ -17,6 +17,15 @@ const Routes = connect(state => ({
             return true;
           });
 
+          function getValue(key) {
+            if (key === 'path') {
+              return (
+                <a href={`http://localhost:8000${route[key]}`}>{route[key]}</a>
+              );
+            }
+            return route[key];
+          }
+
           return (
             <li key={route.key || i} className="client-item">
               <div>
@@ -29,7 +38,7 @@ const Routes = connect(state => ({
                     return (
                       <span key={key}>
                         <strong>{key}: </strong>
-                        <code>{route[key]}</code>
+                        <code>{getValue(key)}</code>
                         {i === keys.length - 1 ? '' : <strong>, </strong>}
                       </span>
                     );
