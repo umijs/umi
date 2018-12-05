@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Popconfirm } from 'antd';
 import './client.css';
 
 const Routes = connect(state => ({
@@ -11,9 +11,12 @@ const Routes = connect(state => ({
       <ul className="client-list">
         {routes.map((route, i) => {
           if (!route.path) return null;
-          const keys = Object.keys(route).filter(
-            key => !['exact', 'routes', 'component'].includes(key),
-          );
+          const keys = Object.keys(route).filter(key => {
+            if (['exact', 'routes', 'component'].includes(key)) return false;
+            if (key.charAt(0) === '_') return false;
+            return true;
+          });
+
           return (
             <li key={route.key || i} className="client-item">
               <div>
@@ -32,15 +35,15 @@ const Routes = connect(state => ({
                     );
                   })}
                 </span>
-                <Icon className="client-icon" type="edit" theme="filled" />
-                <Icon
-                  className="client-icon"
-                  type="delete"
-                  theme="filled"
-                  onClick={(route => {
+                {/*<Icon className="client-icon" type="edit" theme="filled" />*/}
+                <Popconfirm
+                  title="Are you sure delete this component?"
+                  onConfirm={(route => {
                     window.send('rm', ['page', route.component]);
                   }).bind(null, route)}
-                />
+                >
+                  <Icon className="client-icon" type="delete" theme="filled" />
+                </Popconfirm>
               </div>
               {route.routes ? renderRoutes(route.routes) : null}
             </li>
@@ -57,7 +60,9 @@ const Routes = connect(state => ({
           type="primary"
           onClick={() => {
             const name = window.prompt(`What's your page name?`);
-            window.send('generate', ['page', name]);
+            if (name) {
+              window.send('generate', ['page', name]);
+            }
           }}
         >
           add route
@@ -67,7 +72,9 @@ const Routes = connect(state => ({
           type="primary"
           onClick={() => {
             const name = window.prompt(`What's your layout name?`);
-            window.send('generate', ['layout', name]);
+            if (name) {
+              window.send('generate', ['layout', name]);
+            }
           }}
         >
           add layout
