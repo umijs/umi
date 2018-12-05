@@ -105,6 +105,7 @@ export default class PluginAPI {
       '_modifyBlockPackageJSONPath',
       '_modifyBlockDependencies',
       '_modifyBlockFile',
+      '_modifyCommand',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
