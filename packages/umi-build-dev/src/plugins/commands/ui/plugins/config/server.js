@@ -1,6 +1,11 @@
 export default function(api) {
   function getConfig() {
-    return api.service.userConfig.getConfig({ force: true });
+    const config = api.service.userConfig.getConfig({ force: true });
+    // delete default config items
+    if (config.mountElementId === 'root') {
+      delete config.mountElementId;
+    }
+    return config;
   }
 
   api.onSocketData((type, payload, { send }) => {

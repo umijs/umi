@@ -61,7 +61,11 @@ export default function(api) {
         rm(args._[1]);
         break;
       default:
-        throw new Error(`unsupported action ${args._[0]} for umi config`);
+        throw new Error(
+          `unsupported action ${
+            args._[0]
+          } for umi config, try list, get, set and delete`,
+        );
     }
   }
 
