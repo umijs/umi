@@ -8,14 +8,33 @@ const Routes = connect(state => ({
 }))(props => {
   function renderRoutes(routes) {
     return (
-      <ul>
+      <ul className="client-list">
         {routes.map((route, i) => {
           if (!route.path) return null;
+          const keys = Object.keys(route).filter(
+            key => !['exact', 'routes', 'component'].includes(key),
+          );
           return (
-            <li key={route.key || i} className="client-route">
+            <li key={route.key || i} className="client-item">
               <div>
-                <span className="client-pathName">{route.path}</span>
                 <Icon
+                  className="client-type"
+                  type={route.routes ? 'folder-open' : 'file'}
+                />
+                <span className="client-info">
+                  {keys.map((key, i) => {
+                    return (
+                      <span key={key}>
+                        <strong>{key}: </strong>
+                        <code>{route[key]}</code>
+                        {i === keys.length - 1 ? '' : <strong>, </strong>}
+                      </span>
+                    );
+                  })}
+                </span>
+                <Icon className="client-icon" type="edit" theme="filled" />
+                <Icon
+                  className="client-icon"
                   type="delete"
                   theme="filled"
                   onClick={(route => {
@@ -42,6 +61,16 @@ const Routes = connect(state => ({
           }}
         >
           add route
+        </Button>
+        &nbsp;&nbsp;
+        <Button
+          type="primary"
+          onClick={() => {
+            const name = window.prompt(`What's your layout name?`);
+            window.send('generate', ['layout', name]);
+          }}
+        >
+          add layout
         </Button>
       </div>
       {renderRoutes(props.routes.data)}
