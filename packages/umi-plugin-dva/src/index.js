@@ -43,18 +43,11 @@ function getModelsWithRoutes(routes, api) {
 
 function getPageModels(cwd, api) {
   let models = [];
-  while (!isPagesPath(cwd, api) && !isSrcPath(cwd, api) && !isRoot(cwd)) {
+  while (!isSrcPath(cwd, api) && !isRoot(cwd)) {
     models = models.concat(getModel(cwd, api));
     cwd = dirname(cwd);
   }
   return models;
-}
-
-function isPagesPath(path, api) {
-  const { paths, winPath } = api;
-  return (
-    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
-  );
 }
 
 function isSrcPath(path, api) {
