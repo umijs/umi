@@ -217,20 +217,23 @@ export default api => {
           },
         };
         if (existsSync(folderPath)) {
-          if (config.singular) {
-            // @/components/ => @/src/component/ and ./components/ => ./component etc.
-            readdirSync(folderPath).forEach(name => {
-              const thePath = join(folderPath, name);
-              if (statSync(thePath).isDirectory()) {
-                name = getSingularName(name);
-              }
-              debug(`copy ${thePath} to ${join(targetFolder, name)}`);
-              this.fs.copy(thePath, join(targetFolder, name), options);
+          readdirSync(folderPath).forEach(name => {
+            const thePath = join(folderPath, name);
+            if (statSync(thePath).isDirectory() && config.singular) {
+              // @/components/ => @/src/component/ and ./components/ => ./component etc.
+              name = getSingularName(name);
+            }
+            const realTarget = applyPlugins('_modifyBlockTarget', {
+              initialValue: join(targetFolder, name),
+              args: {
+                source: thePath,
+                blockPath: this.path,
+                sourceName: name,
+              },
             });
-          } else {
-            debug(`copy ${folderPath} to ${targetFolder}`);
-            this.fs.copy(folderPath, targetFolder, options);
-          }
+            debug(`copy ${thePath} to ${realTarget}`);
+            this.fs.copy(thePath, realTarget, options);
+          });
         }
       });
     }
