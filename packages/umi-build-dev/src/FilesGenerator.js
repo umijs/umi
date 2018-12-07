@@ -14,6 +14,8 @@ import { EXT_LIST } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
 
+export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
+
 export default class FilesGenerator {
   constructor(opts) {
     Object.keys(opts).forEach(key => {
@@ -36,9 +38,7 @@ export default class FilesGenerator {
 
   createWatcher(path) {
     const watcher = chokidar.watch(path, {
-      // ignored: /(^|[\/\\])(_mock.js$)|(\..)/, // ignore .dotfiles and _mock.js
-      // TODO: support _mock.js ignore
-      ignored: /(^|[\/\\])\../, // ignore dot files
+      ignored: watcherIgnoreRegExp, // ignore .dotfiles and _mock.js
       ignoreInitial: true,
     });
     watcher.on(

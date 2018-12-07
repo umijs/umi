@@ -297,8 +297,15 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     return this.runCommand(name, args);
   }
 
-  runCommand(name, args) {
-    debug(`run ${name} with args ${args}`);
+  runCommand(rawName, rawArgs) {
+    debug(`raw command name: ${rawName}, args: ${JSON.stringify(rawArgs)}`);
+    const { name, args } = this.applyPlugins('_modifyCommand', {
+      initialValue: {
+        name: rawName,
+        args: rawArgs,
+      },
+    });
+    debug(`run ${name} with args ${JSON.stringify(args)}`);
 
     const command = this.commands[name];
     if (!command) {

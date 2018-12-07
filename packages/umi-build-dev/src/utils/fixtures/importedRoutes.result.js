@@ -1,7 +1,7 @@
 export default [
   {
-    path: '/',
-    component: 'test'
+    path: '/demo',
+    component: './Demo'
   },
   {
     path: '/aa',
@@ -42,7 +42,7 @@ export default [
     component: 'bb'
   },
   {
-    path: '/demo',
-    component: './demo'
+    path: '/',
+    component: 'test'
   }
 ];

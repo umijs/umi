@@ -124,7 +124,10 @@ describe('umi-plugin-dva', () => {
       },
       /* shouldImportDynamic */ false,
     );
-    expect(normalizeModels(models, cwd)).toEqual(['$CWD$/models/global.js']);
+    expect(normalizeModels(models, cwd)).toEqual([
+      '$CWD$/models/global.js',
+      '$CWD$/pages/models/a.js',
+    ]);
 
     // don't crash if have no component property
     models = getGlobalModels(
@@ -146,6 +149,7 @@ describe('umi-plugin-dva', () => {
     expect(normalizeModels(models, cwd)).toEqual([
       '$CWD$/models/global.js',
       '$CWD$/pages/b/models/b.js',
+      '$CWD$/pages/models/a.js',
     ]);
 
     models = getGlobalModels(
@@ -158,6 +162,7 @@ describe('umi-plugin-dva', () => {
     expect(normalizeModels(models, cwd)).toEqual([
       '$CWD$/models/global.js',
       '$CWD$/pages/c/models/c.js',
+      '$CWD$/pages/models/a.js',
     ]);
 
     models = getGlobalModels(
@@ -171,6 +176,7 @@ describe('umi-plugin-dva', () => {
       '$CWD$/models/global.js',
       '$CWD$/pages/c/d/models/d.js',
       '$CWD$/pages/c/models/c.js',
+      '$CWD$/pages/models/a.js',
     ]);
   });
 });

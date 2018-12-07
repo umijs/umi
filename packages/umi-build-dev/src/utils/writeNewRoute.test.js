@@ -4,7 +4,11 @@ import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
 import routeNode from './fixtures/routeNode';
 import relativeRouteNode from './fixtures/relativeRouteNode';
 
-const typeMap = ['./fixtures/exportDefaultRoutes', './fixtures/importedRoutes'];
+const typeMap = [
+  './fixtures/exportDefaultRoutes',
+  './fixtures/importedRoutes',
+  './fixtures/exportsRoutes',
+];
 const getPath = path => join(__dirname, path);
 
 describe('test get config path', () => {
@@ -45,8 +49,9 @@ describe('test get config path', () => {
 
 describe('test get route code', () => {
   it('get route code no params', () => {
+    process.env.BIGFISH_COMPAT = true;
     typeMap.forEach(item => {
-      const { code } = getNewRouteCode(getPath(`${item}.js`), '/demo');
+      const { code } = getNewRouteCode(getPath(`${item}.js`), '/Demo');
       expect(code).toEqual(readFileSync(getPath(`${item}.result.js`), 'utf-8'));
     });
   });

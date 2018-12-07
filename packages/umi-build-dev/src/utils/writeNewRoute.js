@@ -29,14 +29,17 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
   // 查询当前配置文件是否导出 routes 属性
   const [routes] = esquery(
     ast,
-    'ExportDefaultDeclaration > ObjectExpression > [key.name="routes"]',
+    `ExportDefaultDeclaration > ObjectExpression > [key.name="routes"],\
+  AssignmentExpression[left.object.name="exports"][left.property.name="routes"]`, // like: exports.routes = {}
   );
+
   if (routes) {
+    const routesNode = routes.value || routes.right;
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
-    if (routes.value.type !== 'ArrayExpression') {
+    if (routesNode.type !== 'ArrayExpression') {
       const [source] = esquery(
         ast,
-        `ImportDeclaration:has([local.name="${routes.value.name}"])`,
+        `ImportDeclaration:has([local.name="${routesNode.name}"])`,
       );
       if (source) {
         const newConfigPath = getModulePath(
@@ -48,7 +51,7 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
       }
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
-      writeRouteNode(routes.value, path);
+      writeRouteNode(routesNode, path);
     }
   } else {
     // 从其他文件导入 export default [] case 3
@@ -73,7 +76,7 @@ function writeRouteNode(targetNode, path) {
     const newRoute = parse(
       `({ path: '${path.toLowerCase()}', component: '.${path}' })`,
     ).body[0].expression;
-    targetNode.elements.push(newRoute);
+    targetNode.elements.unshift(newRoute);
   } else {
     throw new Error('route path not found.');
   }
@@ -96,6 +99,10 @@ export function findLayoutNode(targetNode, path) {
       // 兼容 antd pro 相对路径路由
       const relativePath = path.split('/').pop();
       query = `${query},[key.name="path"][value.value="${relativePath}"] ~ [key.name="routes"] > ArrayExpression`;
+    }
+
+    if (process.env.BIGFISH_COMPAT) {
+      query = `${query},${query.replace(/\"routes\"/g, '"childRoutes"')}`;
     }
 
     const [layoutNode] = esquery.query(targetNode, query);
