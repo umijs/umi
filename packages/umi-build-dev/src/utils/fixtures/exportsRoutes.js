@@ -1,11 +1,12 @@
-export default [{
+exports.plugins = [];
+exports.routes = [{
   path: '/aa',
   component: 'aa',
   routes: [
     {
       path: '/aa/vv',
       name: 'dd',
-      component: 'adad',   // 注释2
+      component: 'adad',     // 注释2
     },
     {
       path: '/aa/xx',
@@ -36,5 +37,9 @@ export default [{
   component: 'bb',
 },{
   path: '/',
-  component: 'test',
+  component: '../MainLayout',
+  childRoutes: [{
+    path: 'test1',
+    component: './test1',
+  }],
 }];

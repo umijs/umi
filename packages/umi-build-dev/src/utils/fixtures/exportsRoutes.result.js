@@ -1,4 +1,5 @@
-export default [
+exports.plugins = [];
+exports.routes = [
   {
     path: '/aa',
     component: 'aa',
@@ -19,16 +20,10 @@ export default [
             //注释3
             name: 'aada',
             component: 'xxx',
-            routes: [
-              {
-                path: '/aa/xx/sdad/demo',
-                component: './aa/xx/sdad/demo'
-              },
-              {
+            routes: [{
                 name: 'hehe',
                 path: 'xxxcc'
-              }
-            ]
+              }]
           },
           {
             path: 'aa',
@@ -45,6 +40,16 @@ export default [
   },
   {
     path: '/',
-    component: 'test'
+    component: '../MainLayout',
+    childRoutes: [
+      {
+        path: '/demo',
+        component: './Demo'
+      },
+      {
+        path: 'test1',
+        component: './test1'
+      }
+    ]
   }
 ];

@@ -1,10 +1,6 @@
 export default {
   routes: [
     {
-      path: '/',
-      component: 'test'
-    },
-    {
       path: '/aa',
       component: 'aa',
       routes: [
@@ -26,12 +22,12 @@ export default {
               component: 'xxx',
               routes: [
                 {
-                  name: 'hehe',
-                  path: 'xxxcc'
-                },
-                {
                   path: '/aa/xx/sdad/demo',
                   component: './aa/xx/sdad/demo'
+                },
+                {
+                  name: 'hehe',
+                  path: 'xxxcc'
                 }
               ]
             },
@@ -47,6 +43,14 @@ export default {
     {
       path: '/bb',
       component: 'bb'
+    },
+    {
+      path: '/',
+      component: '../MainLayout',
+      childRoutes: [{
+          path: 'test1',
+          component: './test1'
+        }]
     }
   ]
 };

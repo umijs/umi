@@ -262,7 +262,7 @@ Install dependencies first,
 $ yarn add react-transition-group
 ```
 
-In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with `TransitionGroup` and `CSSTransition` and use `location.key` as the key.
+In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with `TransitionGroup` and `CSSTransition` and use `location.pathname` as the key.
 
 ```js
 import withRouter from 'umi/withRouter';
