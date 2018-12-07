@@ -74,10 +74,10 @@ $ yarn create umi --block
 当执行 `umi block [block url]` 的时候实际上是执行的如下步骤：
 
 - 将区块 src 下的代码复制到对应的页面目录
-- 将 @ 下的代码负责到对应的 src 目录下
+- 将 @ 下的代码复制到对应的 src 目录下
 - 检测 package.json 中的区块依赖并自动安装到项目中
 
-另外，如果再项目中配置了 [singular](/zh/config/#singular) 为 true，那么这个处理过程也会将对应的复数目录改为单数。
+另外，如果在项目中配置了 [singular](/zh/config/#singular) 为 true，那么这个处理过程也会将对应的复数目录改为单数。
 
 ### 区块调试
 
