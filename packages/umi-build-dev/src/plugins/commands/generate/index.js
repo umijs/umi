@@ -23,6 +23,7 @@ export default function(api) {
       );
       const { Generator, resolved } = generators[name];
       const generator = new Generator(args._.slice(1), {
+        ...args,
         env: {
           cwd: api.cwd,
         },
@@ -41,7 +42,8 @@ export default function(api) {
     }
   }
 
-  const details = `
+  function registerGenerateCommand(command, description) {
+    const details = `
 Examples:
 
   ${chalk.gray('# generate page users')}
@@ -50,27 +52,29 @@ Examples:
   ${chalk.gray('# g is the alias for generate')}
   umi g page index
   `.trim();
-  api.registerCommand(
+    api.registerCommand(
+      command,
+      {
+        description,
+        usage: `umi ${command} name args`,
+        details,
+      },
+      generate,
+    );
+  }
+
+  registerGenerateCommand(
     'g',
-    {
-      description: 'generate code snippets quickly (alias for generate)',
-      usage: 'umi g name args',
-      details,
-    },
-    generate,
+    'generate code snippets quickly (alias for generate)',
   );
-  api.registerCommand(
-    'generate',
-    {
-      description: 'generate code snippets quickly',
-      usage: 'umi generate name args',
-      details,
-    },
-    generate,
-  );
+  registerGenerateCommand('generate', 'generate code snippets quickly');
 
   api.registerGenerator('page', {
     Generator: require('./page').default(api),
     resolved: join(__dirname, './page'),
+  });
+  api.registerGenerator('layout', {
+    Generator: require('./layout').default(api),
+    resolved: join(__dirname, './layout'),
   });
 }

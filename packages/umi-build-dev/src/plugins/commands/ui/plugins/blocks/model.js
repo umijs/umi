@@ -1,14 +1,14 @@
 export default {
-  namespace: 'routes',
+  namespace: 'blocks',
   state: {
     data: [],
   },
   subscriptions: {
     setup({ history }) {
       return history.listen(({ pathname }) => {
-        if (pathname === '/routes') {
+        if (pathname === '/blocks') {
           window.socketReady(() => {
-            window.send('routes/fetch');
+            window.send('blocks/fetch');
           });
         }
       });

@@ -12,7 +12,7 @@ export default function({ key, value, file }) {
     value,
     content: readFileSync(file, 'utf-8'),
   });
-  writeFileSync(file, newContent, 'utf-8');
+  writeFileSync(file, `${newContent}\n`, 'utf-8');
 }
 
 function buildExpression(str) {

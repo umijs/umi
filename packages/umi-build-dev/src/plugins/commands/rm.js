@@ -25,7 +25,8 @@ export default function(api) {
   }
 
   function deletePage(name) {
-    const jsPath = join(paths.absSrcPath, name);
+    const jsPath = join(paths.cwd, name);
+    console.log(`jsPath`, jsPath);
 
     if (existsSync(jsPath)) {
       deleteFile(jsPath);

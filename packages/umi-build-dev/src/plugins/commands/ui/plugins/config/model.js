@@ -4,12 +4,12 @@ export default {
     data: [],
   },
   subscriptions: {
-    setup({ history, dispatch }) {
+    setup({ history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/config') {
-          setTimeout(() => {
+          window.socketReady(() => {
             window.send('config/fetch');
-          }, 1000);
+          });
         }
       });
     },

@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 export default function(api) {
   const { log } = api;
@@ -73,9 +73,15 @@ export default function(api) {
 
       app.get('/', (req, res) => {
         const clientsHtml = clients
-          .map(
-            client => `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
-          )
+          .map(client => {
+            const cssPath = client.replace(/\.js$/, '.css');
+            return [
+              existsSync(cssPath)
+                ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>`
+                : '',
+              `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
+            ].join('\r\n');
+          })
           .join('\n');
         res.type('html');
         const htmlFile = process.env.LOCAL_DEBUG
@@ -108,5 +114,9 @@ export default function(api) {
   api.addUIPlugin({
     client: require.resolve('./plugins/config/client.umd'),
     server: require.resolve('./plugins/config/server'),
+  });
+  api.addUIPlugin({
+    client: require.resolve('./plugins/blocks/client.umd'),
+    server: require.resolve('./plugins/blocks/server'),
   });
 }

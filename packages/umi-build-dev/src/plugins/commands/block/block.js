@@ -67,6 +67,8 @@ export default api => {
     constructor(args, opts) {
       super(args, opts);
 
+      console.log('args', args, opts);
+
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.npmClient = opts.npmClient || 'npm';
