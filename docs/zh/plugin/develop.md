@@ -230,6 +230,20 @@ api._registerConfig(() => {
 });
 ```
 
+### \_modifyCommand
+
+修改命令的名称和参数。
+
+```js
+// A demo for modify block npmClient to cnpm:
+api._modifyCommand(({ name, args }) => {
+  if (name === 'block') {
+    args.npmClient = args.npmClient || 'cnpm';
+  }
+  return { name, args };
+});
+```
+
 ## 工具类 API
 
 ### log

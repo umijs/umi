@@ -230,6 +230,20 @@ api._registerConfig(() => {
 });
 ```
 
+### \_modifyCommand
+
+Modify command name and args.
+
+```js
+// A demo for modify block npmClient to cnpm:
+api._modifyCommand(({ name, args }) => {
+  if (name === 'block') {
+    args.npmClient = args.npmClient || 'cnpm';
+  }
+  return { name, args };
+});
+```
+
 ## Tool class API
 
 ### log
