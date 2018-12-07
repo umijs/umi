@@ -124,6 +124,11 @@ export default api => {
         this.path = `/${pkgName}`;
       }
 
+      // fix demo => /demo
+      if (!/^\//.test(this.path)) {
+        this.path = `/${this.path}`;
+      }
+
       // check dependencies conflict and install dependencies
       if (this.skipDependencies) {
         log.info('skip dependencies');

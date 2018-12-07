@@ -1,4 +1,5 @@
-export default [
+exports.plugins = [];
+exports.routes = [
   {
     path: '/aa',
     component: 'aa',
@@ -45,6 +46,10 @@ export default [
   },
   {
     path: '/',
-    component: 'test'
+    component: '../MainLayout',
+    childRoutes: [{
+        path: 'test1',
+        component: './test1'
+      }]
   }
 ];
