@@ -41,7 +41,7 @@ if (uiBuildCode === 1) {
 
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
-  ['publish', '--skip-npm'].concat(process.argv.slice(2)),
+  ['version'].concat(process.argv.slice(2)),
   {
     stdio: 'inherit',
     cwd: process.cwd(),
