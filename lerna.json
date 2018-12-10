@@ -11,7 +11,7 @@
   "packages": [
     "packages/*"
   ],
-  "commands": {
+  "command": {
     "version": {
       "exact": true
     }
