@@ -11,23 +11,22 @@ export default api => {
 
   function generate(args = {}) {
     try {
-      console.log('_', typeof args._);
       const url = args._[0];
       assert(
         url,
         `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
       );
-      const MaterialGenerate = require('./block').default(api);
+      const BlockGenerator = require('./getBlockGenerator').default(api);
       debug(`get url ${url}`);
       const sourcePath = getPathWithUrl(url, log, args);
-      const isUserUseYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-      if (isUserUseYarn) {
+      const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
+      if (useYarn) {
         log.log(
           'find yarn.lock in your project, use yarn as the default npm client',
         );
       }
 
-      const defaultNpmClient = isUserUseYarn ? 'yarn' : 'npm';
+      const defaultNpmClient = useYarn ? 'yarn' : 'npm';
       const {
         path,
         npmClient = defaultNpmClient,
@@ -38,7 +37,7 @@ export default api => {
       debug(
         `get local sourcePath: ${sourcePath} and npmClient: ${npmClient} and name: ${path}`,
       );
-      const generate = new MaterialGenerate(process.argv.slice(4), {
+      const generator = new BlockGenerator(args._.slice(1), {
         sourcePath,
         npmClient,
         path,
@@ -50,13 +49,10 @@ export default api => {
         },
         resolved: __dirname,
       });
-
-      generate
-        .run(() => {})
-        .catch(e => {
-          debug(e);
-          log.error(e.message);
-        });
+      generator.run().catch(e => {
+        debug(e);
+        log.error(e.message);
+      });
     } catch (e) {
       debug(e);
       log.error(`Use block failed, ${e.message}`);

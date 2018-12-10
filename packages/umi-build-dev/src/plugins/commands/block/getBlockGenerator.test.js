@@ -3,7 +3,7 @@ import {
   getNameFromPkg,
   parseContentToSingular,
   getSingularName,
-} from './block';
+} from './getBlockGenerator';
 
 describe('test block generate', () => {
   it('dependenciesConflictCheck', () => {

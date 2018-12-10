@@ -6,7 +6,7 @@ import clipboardy from 'clipboardy';
 import { CONFIG_FILES, SINGULAR_SENSLTIVE } from '../../../constants';
 import writeNewRoute from '../../../utils/writeNewRoute';
 
-const debug = require('debug')('umi-build-dev:MaterialGenerator');
+const debug = require('debug')('umi-build-dev:getBlockGenerator');
 
 function getConfigFile(cwd) {
   // TODO maybe add a paths.absConfigPath
@@ -66,8 +66,6 @@ export default api => {
   return class MaterialGenerator extends Generator {
     constructor(args, opts) {
       super(args, opts);
-
-      console.log('args', args, opts);
 
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
@@ -188,7 +186,7 @@ export default api => {
 
       let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
-      if (existsSync(targetPath)) {
+      while (existsSync(targetPath)) {
         this.path = (await this.prompt({
           type: 'input',
           name: 'path',

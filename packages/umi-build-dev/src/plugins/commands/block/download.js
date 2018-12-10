@@ -112,7 +112,7 @@ export function getPathWithUrl(url, log, args) {
     log.info(`will use ${blockPath} as the block url`);
     return blockPath;
   } else {
-    throw new Error(`${url} can't match any Pattern`);
+    throw new Error(`${url} can't match any pattern`);
   }
   const { repo, branch, path, id } = parseGitUrl(realUrl);
   log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
