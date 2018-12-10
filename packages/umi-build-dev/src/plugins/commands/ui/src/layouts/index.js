@@ -13,7 +13,7 @@ export default connect(state => ({
           src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
         />
         umi ui
-        <sup>beta</sup>
+        <sup>alpha</sup>
       </div>
       <div className={styles.wrapper}>
         <div className={styles.sidebar}>

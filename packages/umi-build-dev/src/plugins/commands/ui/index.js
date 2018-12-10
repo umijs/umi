@@ -24,7 +24,7 @@ export default function(api) {
   api.registerCommand(
     'ui',
     {
-      description: 'ui helper for umi applications',
+      description: '[alpha] ui helper for umi applications',
       usage: `umi ui [options]`,
       options: {
         '--port': `listening port`,

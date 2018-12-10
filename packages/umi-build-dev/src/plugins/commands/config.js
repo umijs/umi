@@ -72,7 +72,7 @@ export default function(api) {
   api.registerCommand(
     'config',
     {
-      description: 'update config via cli',
+      description: '[alpha] update config via cli',
       options: {},
     },
     configHandler,

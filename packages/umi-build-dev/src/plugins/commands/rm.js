@@ -66,7 +66,7 @@ export default function(api) {
   api.registerCommand(
     'rm',
     {
-      description: 'remove files quickly',
+      description: '[alpha] remove files quickly',
       usage: 'umi rm name args',
       options: {},
     },
