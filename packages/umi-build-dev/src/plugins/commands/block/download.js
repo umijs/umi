@@ -103,7 +103,7 @@ export function getPathWithUrl(url, log, args) {
   if (isGitUrl(url)) {
     realUrl = url;
     log.info(`checked ${url} is a git site url`);
-  } else if (/^[\w\-]+$/.test(url)) {
+  } else if (/^[\w]+[\w\-\/]*$/.test(url)) {
     realUrl = `https://github.com/umijs/umi-blocks/tree/master/${url}`;
     log.info(`will use ${realUrl} as the block url`);
   } else if (/^[\.\/]/.test(url)) {

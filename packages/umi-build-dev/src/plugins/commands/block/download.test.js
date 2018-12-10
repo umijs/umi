@@ -4,6 +4,7 @@ import { isGitUrl, parseGitUrl, getPathWithUrl } from './download';
 describe('test block download utils', () => {
   it('isGitUrl', () => {
     expect(isGitUrl('test-block')).toEqual(false);
+    expect(isGitUrl('ant-design-pro/Analysis')).toEqual(false);
     expect(isGitUrl('git@gitlab.alitest-inc.com:bigfish/bigfish.git')).toEqual(
       true,
     );
@@ -42,6 +43,16 @@ describe('test block download utils', () => {
       repo: 'https://github.com/umijs/umi-blocks.git',
       branch: 'master',
       path: '/demo',
+      id: 'github.com/umijs/umi-blocks',
+    });
+    expect(
+      parseGitUrl(
+        'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro/Analysis',
+      ),
+    ).toEqual({
+      repo: 'https://github.com/umijs/umi-blocks.git',
+      branch: 'master',
+      path: '/ant-design-pro/Analysis',
       id: 'github.com/umijs/umi-blocks',
     });
     expect(
@@ -93,6 +104,13 @@ describe('test block download utils', () => {
         dryRun: true,
       }),
     ).toEqual('/Users/test/.umi/blocks/github.com/umijs/umi-blocks/demo-test');
+    expect(
+      getPathWithUrl('ant-design-pro/Analysis', mockLog, {
+        dryRun: true,
+      }),
+    ).toEqual(
+      '/Users/test/.umi/blocks/github.com/umijs/umi-blocks/ant-design-pro/Analysis',
+    );
     expect(
       getPathWithUrl('/test/test/locale', mockLog, {
         dryRun: true,
