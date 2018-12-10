@@ -19,9 +19,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "antd": "3.10.9",
-    "antd-mobile": "2.2.6",
-    "babel-plugin-import": "1.11.0",
+    "antd": "3.x",
+    "antd-mobile": "2.x",
+    "babel-plugin-import": "1.x",
     "fastclick": "1.0.6",
     "lodash": "4.17.11",
     "mustache": "3.0.1",

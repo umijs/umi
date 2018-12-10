@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "postcss-plugin-px2rem": "0.8.0",
+    "postcss-plugin-px2rem": "0.8.1",
     "umi-hd": "5.0.1"
   }
 }
