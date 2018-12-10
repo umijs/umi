@@ -45,10 +45,10 @@ js-base64@^2.1.9:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.9.tgz#748911fb04f48a60c4771b375cac45a80df11c03"
   integrity sha512-xcinL3AuDJk7VSzsHgb9DvvIXayBbadtMZ4HFPx8rUszbW1MuNMlwYVC4zzCZ6e1sqZpnNS5ZFYOhXqA39T7LQ==
 
-postcss-plugin-px2rem@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/postcss-plugin-px2rem/-/postcss-plugin-px2rem-0.8.0.tgz#baee3e9108ad5223fa6a7df8e2173c738b428661"
-  integrity sha512-/InLV+lzIpyFHEtJAHAm0wR9Ub9xnIMIMJ3aZBwm0FOEY5fWs77l8ebslHIN5cAKucuu6erc1sI2ytUg054qow==
+postcss-plugin-px2rem@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/postcss-plugin-px2rem/-/postcss-plugin-px2rem-0.8.1.tgz#e8adf28fd2befbc079a119126b5c62a88905d5e1"
+  integrity sha512-gNxhrnR57pnGrPLLqVNWY9+BWgj46kYkphw+0gpRJf9tjgwI7/tLqQPK7KdlksB2SSAddOb11otDVwri8b8mXw==
   dependencies:
     postcss "^5.0.21"
 

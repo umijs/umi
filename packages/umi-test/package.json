@@ -23,7 +23,7 @@
     "src"
   ],
   "dependencies": {
-    "@babel/core": "7.1.6",
+    "@babel/core": "7.2.0",
     "@babel/polyfill": "7.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "23.6.0",
@@ -40,7 +40,7 @@
     "react": "16.6.3",
     "react-dom": "16.6.3",
     "ts-jest": "23.10.5",
-    "typescript": "3.1.6",
+    "typescript": "3.2.2",
     "yargs-parser": "11.1.1"
   }
 }

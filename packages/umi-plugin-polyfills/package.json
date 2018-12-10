@@ -18,10 +18,10 @@
     "lib"
   ],
   "dependencies": {
-    "core-js": "2.5.7",
+    "core-js": "2.6.0",
     "raf": "3.4.1",
     "setprototypeof": "1.1.0",
     "umi-utils": "1.3.0-beta.5",
-    "url-polyfill": "1.1.2"
+    "url-polyfill": "1.1.3"
   }
 }
