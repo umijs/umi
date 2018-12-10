@@ -53,15 +53,13 @@ export default function(webpackConfig, opts) {
       .plugin('hash-module-ids')
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
-    webpackConfig.optimization.minimizer([
-      new UglifyPlugin(
-        mergeConfig(
-          {
-            ...uglifyOptions,
-            sourceMap: !!opts.devtool,
-          },
-          opts.uglifyJSOptions,
-        ),
+    webpackConfig.optimization.minimizer('uglifyjs').use(UglifyPlugin, [
+      mergeConfig(
+        {
+          ...uglifyOptions,
+          sourceMap: !!opts.devtool,
+        },
+        opts.uglifyJSOptions,
       ),
     ]);
   }
