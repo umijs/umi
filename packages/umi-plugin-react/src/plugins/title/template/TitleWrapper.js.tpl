@@ -7,7 +7,7 @@ export default class UmiReactTitle extends React.Component {
   componentDidMount() {
     {{#useLocale}}
     document.title = formatMessage({
-      id: this.props.route._title,
+      id: this.props.route.locale,
       defaultMessage: this.props.route._title
     });
     {{/useLocale}}
@@ -20,7 +20,7 @@ export default class UmiReactTitle extends React.Component {
     if (
       document.title ===
       formatMessage({
-        id: this.props.route._title,
+        id: this.props.route.locale,
         defaultMessage: this.props.route._title
       })
     ) {
