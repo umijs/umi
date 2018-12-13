@@ -196,6 +196,10 @@ export default api => {
           required: true,
           default: this.path,
         })).path;
+        // fix demo => /demo
+        if (!/^\//.test(this.path)) {
+          this.path = `/${this.path}`;
+        }
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
