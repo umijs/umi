@@ -200,6 +200,15 @@ export default api => {
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
 
+      const blockPath = this.path;
+
+      applyPlugins('beforeBlockWriting', {
+        args: {
+          sourcePath: this.sourcePath,
+          blockPath,
+        },
+      });
+
       if (this.dryRun) {
         log.log('dryRun is true, skip copy files');
         return;
@@ -211,13 +220,17 @@ export default api => {
         const folderPath = join(this.sourcePath, folder);
         const targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
         const options = {
-          process(content) {
+          process(content, targetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
             }
             return applyPlugins('_modifyBlockFile', {
               initialValue: content,
+              args: {
+                blockPath,
+                targetPath,
+              },
             });
           },
         };
@@ -232,7 +245,7 @@ export default api => {
               initialValue: join(targetFolder, name),
               args: {
                 source: thePath,
-                blockPath: this.path,
+                blockPath,
                 sourceName: name,
               },
             });

@@ -102,6 +102,7 @@ export default class PluginAPI {
       '_modifyHelpInfo',
       'addRuntimePlugin',
       'addRuntimePluginKey',
+      'beforeBlockWriting',
       '_modifyBlockPackageJSONPath',
       '_modifyBlockDependencies',
       '_modifyBlockFile',
