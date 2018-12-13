@@ -129,15 +129,6 @@ export default api => {
         this.path = `/${this.path}`;
       }
 
-      const blockPath = this.path;
-
-      applyPlugins('beforeBlockWriting', {
-        args: {
-          sourcePath: this.sourcePath,
-          blockPath,
-        },
-      });
-
       // check dependencies conflict and install dependencies
       if (this.skipDependencies) {
         log.info('skip dependencies');
@@ -208,6 +199,15 @@ export default api => {
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
+
+      const blockPath = this.path;
+
+      applyPlugins('beforeBlockWriting', {
+        args: {
+          sourcePath: this.sourcePath,
+          blockPath,
+        },
+      });
 
       if (this.dryRun) {
         log.log('dryRun is true, skip copy files');
