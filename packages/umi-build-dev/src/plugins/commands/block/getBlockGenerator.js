@@ -129,6 +129,15 @@ export default api => {
         this.path = `/${this.path}`;
       }
 
+      const blockPath = this.path;
+
+      applyPlugins('beforeBlockWriting', {
+        args: {
+          sourcePath: this.sourcePath,
+          blockPath,
+        },
+      });
+
       // check dependencies conflict and install dependencies
       if (this.skipDependencies) {
         log.info('skip dependencies');
@@ -211,13 +220,17 @@ export default api => {
         const folderPath = join(this.sourcePath, folder);
         const targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
         const options = {
-          process(content) {
+          process(content, targetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
             }
             return applyPlugins('_modifyBlockFile', {
               initialValue: content,
+              args: {
+                blockPath,
+                targetPath,
+              },
             });
           },
         };
@@ -232,7 +245,7 @@ export default api => {
               initialValue: join(targetFolder, name),
               args: {
                 source: thePath,
-                blockPath: this.path,
+                blockPath,
                 sourceName: name,
               },
             });
