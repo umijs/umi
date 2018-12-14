@@ -96,6 +96,14 @@ Specify an extra publicPath for CSS.
 
 Specifies the mount point id which the react app will mount to.
 
+### minimizer
+
+* Type: `String`
+* Default: `uglifyjs`
+* Options: `uglifyjs|terserjs`
+
+Which minimizer to use. UglifyJS does not support es6 while [terser](https://github.com/terser-js/terser) does.
+
 ### hash
 
 * Type: `Boolean`
