@@ -1,5 +1,7 @@
+import TerserPlugin from 'terser-webpack-plugin';
 import UglifyPlugin from 'uglifyjs-webpack-plugin';
 import isPlainObject from 'is-plain-object';
+import terserOptions from './terserOptions';
 import uglifyOptions from './uglifyOptions';
 
 function mergeConfig(config, userConfig) {
@@ -56,16 +58,25 @@ export default function(webpackConfig, opts) {
       .plugin('hash-module-ids')
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
-    webpackConfig.optimization.minimizer([
-      new UglifyPlugin(
-        mergeConfig(
-          {
-            ...uglifyOptions,
-            sourceMap: !!opts.devtool,
-          },
-          opts.uglifyJSOptions,
-        ),
-      ),
-    ]);
+    let minimizerPlugin = opts.minimizer === 'terser' ?
+        new TerserPlugin(
+          mergeConfig(
+            {
+              ...terserOptions,
+              sourceMap: !!opts.devtool,
+            },
+            opts.terserOptions,
+          )
+        ) :
+        new UglifyPlugin(
+          mergeConfig(
+            {
+              ...uglifyOptions,
+              sourceMap: !!opts.devtool,
+            },
+            opts.uglifyJSOptions,
+          ),
+        );
+    webpackConfig.optimization.minimizer([minimizerPlugin]);
   }
 }
