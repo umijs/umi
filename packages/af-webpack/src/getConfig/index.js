@@ -137,6 +137,7 @@ export default function(opts) {
     presets: [
       [require.resolve('babel-preset-umi'), { transformRuntime: false }],
     ],
+    plugins: [...(opts.extraBabelPlugins || [])],
     ...babelOptsCommon,
   };
   if (opts.disableDynamicImport) {
