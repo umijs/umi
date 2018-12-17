@@ -13,7 +13,7 @@ export default class UmiReactTitle extends React.Component {
     {{/useLocale}}
   }
   getTitle() {
-    separator = '{{option.separator}}' || ' - '
+    const separator = '{{option.separator}}' || ' - '
     const title = this.props.route._title.split(separator).map(item => {
       return formatMessage({
         id: item,
