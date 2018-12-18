@@ -4,7 +4,7 @@ sidebarDepth: 3
 
 # umi-plugin-react
 
-这是官方封装的一个插件集，包含 13 个常用的进阶功能。
+这是官方封装的一个插件集，包含 18 个常用的进阶功能。
 
 ## 安装
 
@@ -42,6 +42,19 @@ export default {
       hd: true,
       fastClick: true,
       title: 'default title',
+      chunks: ['vendor', 'umi'],
+      scripts: [
+        { src: 'http://cdn/a.js' },
+        { src: '<%= PUBLIC_PATH %>a.js' },
+        { content: `alert('a');` },
+      ],
+      headScripts: [],
+      metas: [
+        { charset: 'utf-8' },
+      ],
+      links: [
+        { rel: 'stylesheet', href: 'http://cdn/a.css' },
+      ],
     }],
   ],
 };
@@ -255,3 +268,31 @@ export default () => {
 #### 自定义模板document.ejs
 
 如果你使用了自定的`src/pages/document.ejs`，你需要在里面加入`<title><%= context.title %></title>`，以确保`title.defaultTitle`能正常被注入到生成的`index.html`里
+
+### chunks
+
+* 类型：`Array(String)`
+
+默认是 ['umi']，可修改，比如做了 vendors 依赖提取之后，会需要在 umi.js 之前加载 vendors.js
+
+### scripts
+
+* 类型：`Array(Object)`
+
+放在 <head> 里，在 umi.js 之后，可使用 <%= PUBLIC_PATH %> 指向 publicPath
+
+### headScripts
+
+* 类型：`Array(Object)`
+
+放在 <head> 里，在 umi.js 之前，可使用 <%= PUBLIC_PATH %> 指向 publicPath
+
+### metas
+
+* 类型：`Array(Object)`
+
+### links
+
+* 类型：`Array(Object)`
+
+可使用 <%= PUBLIC_PATH %> 指向 publicPath
