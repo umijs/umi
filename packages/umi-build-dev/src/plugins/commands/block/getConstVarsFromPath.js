@@ -9,7 +9,7 @@ function stripFirstSlash(path) {
 
 export default function(path) {
   const ROUTE_PATH = toLower(path);
-  const PAGE_NAME = ROUTE_PATH.split('/').slice(-1)[0];
+  const PAGE_NAME = ROUTE_PATH.split('/').pop();
 
   return new Map([
     ['ROUTE_PATH', ROUTE_PATH],
