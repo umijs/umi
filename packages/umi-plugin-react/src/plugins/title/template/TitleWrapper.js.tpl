@@ -6,23 +6,26 @@ import { formatMessage } from 'umi/locale';
 export default class UmiReactTitle extends React.Component {
   componentDidMount() {
     {{#useLocale}}
-    document.title = formatMessage({
-      id: this.props.route._title,
-      defaultMessage: this.props.route._title
-    });
+    document.title = this.getTitle();
     {{/useLocale}}
     {{^useLocale}}
     document.title = this.props.route._title;
     {{/useLocale}}
   }
+  getTitle() {
+    const separator = '{{option.separator}}' || ' - ';
+    const title = this.props.route._title.split(separator).map(item => {
+      return formatMessage({
+        id: item,
+        defaultMessage: item,
+      });
+    })
+    return title.join(separator);
+  }
   componentWillUnmount() {
     {{#useLocale}}
     if (
-      document.title ===
-      formatMessage({
-        id: this.props.route._title,
-        defaultMessage: this.props.route._title
-      })
+      document.title === this.getTitle();
     ) {
       document.title = this.props.route._title
     }
