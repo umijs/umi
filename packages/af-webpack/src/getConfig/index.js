@@ -133,19 +133,10 @@ export default function(opts) {
     ],
     ...babelOptsCommon,
   };
-  const babelOptsForDeps = {
-    presets: [
-      [require.resolve('babel-preset-umi'), { transformRuntime: false }],
-    ],
-    ...babelOptsCommon,
-  };
+
   if (opts.disableDynamicImport) {
     babelOpts.plugins = [
       ...(babelOpts.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node'),
-    ];
-    babelOptsForDeps.plugins = [
-      ...(babelOptsForDeps.plugins || []),
       require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
@@ -207,7 +198,7 @@ export default function(opts) {
       .end()
       .use('babel-loader')
       .loader(require.resolve('babel-loader'))
-      .options(babelOptsForDeps);
+      .options(babelOpts);
   });
 
   // module -> tsx?
