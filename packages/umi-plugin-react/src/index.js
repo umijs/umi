@@ -79,8 +79,8 @@ export default function(api, option) {
       }
       if (key === 'dva') {
         opts = {
-          ...toObject(opts),
           dynamicImport: option.dynamicImport,
+          ...toObject(opts),
         };
       }
 
