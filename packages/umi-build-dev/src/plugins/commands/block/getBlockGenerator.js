@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import clipboardy from 'clipboardy';
 import { CONFIG_FILES, SINGULAR_SENSLTIVE } from '../../../constants';
 import writeNewRoute from '../../../utils/writeNewRoute';
+import replaceContent from './replaceContent';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
 
@@ -229,6 +230,9 @@ export default api => {
             if (config.singular) {
               content = parseContentToSingular(content);
             }
+            content = replaceContent(content, {
+              path: blockPath,
+            });
             return applyPlugins('_modifyBlockFile', {
               initialValue: content,
               args: {
