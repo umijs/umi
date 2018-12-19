@@ -3,6 +3,7 @@ import { join, dirname } from 'path';
 import semver from 'semver';
 import chalk from 'chalk';
 import clipboardy from 'clipboardy';
+import assert from 'assert';
 import { CONFIG_FILES, SINGULAR_SENSLTIVE } from '../../../constants';
 import writeNewRoute from '../../../utils/writeNewRoute';
 
@@ -63,7 +64,7 @@ export function getSingularName(name) {
 export default api => {
   const { paths, log, Generator, config, applyPlugins } = api;
 
-  return class MaterialGenerator extends Generator {
+  return class BlockGenerator extends Generator {
     constructor(args, opts) {
       super(args, opts);
 
@@ -106,6 +107,8 @@ export default api => {
     }
 
     async writing() {
+      assert(existsSync(this.sourcePath), `${this.sourcePath} don't exists`);
+
       // get block package.json data
       const pkgPath = join(this.sourcePath, 'package.json');
       if (!existsSync(pkgPath)) {

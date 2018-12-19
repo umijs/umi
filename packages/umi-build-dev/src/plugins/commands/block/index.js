@@ -21,7 +21,7 @@ export default api => {
       const sourcePath = getPathWithUrl(url, log, args);
       const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
       if (useYarn) {
-        log.log(
+        log.info(
           'find yarn.lock in your project, use yarn as the default npm client',
         );
       }
