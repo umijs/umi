@@ -13,6 +13,7 @@
     "af-webpack": "1.3.0-beta.6",
     "babel-preset-umi": "1.3.0-beta.6",
     "body-parser": "1.18.3",
+    "camelcase": "^5.0.0",
     "chalk": "2.4.1",
     "cheerio": "1.0.0-rc.2",
     "chokidar": "2.0.4",

@@ -1,5 +1,6 @@
 import { toLower } from 'lodash';
 import upperCamelCase from 'uppercamelcase';
+import camelCase from 'camelcase';
 
 function stripFirstSlash(path) {
   if (path.charAt(0) === '/') {
@@ -10,12 +11,14 @@ function stripFirstSlash(path) {
 export default function(path) {
   const ROUTE_PATH = toLower(path);
   const PAGE_NAME = ROUTE_PATH.split('/').pop();
+  const BLOCK_NAME = stripFirstSlash(ROUTE_PATH).replace(/\//g, '-');
 
   return new Map([
     ['ROUTE_PATH', ROUTE_PATH],
-    ['BLOCK_NAME', stripFirstSlash(ROUTE_PATH).replace(/\//g, '-')],
-    // PAGE_NAME_UPPER_CAMEL_CASE 需要在 PAGE_NAME 之前，
-    // 因为先替换 PAGE_NAME 会修改 PAGE_NAME_UPPER_CAMEL_CASE 里的 PAGE_NAME
+    // [XXX][_UPPER]_CAMEL_CASE 需要在 XXX 之前，
+    // 因为先替换 XXX 会修改 [XXX][_UPPER]_CAMEL_CASE 里的 XXX
+    ['BLOCK_NAME_CAMEL_CASE', camelCase(BLOCK_NAME)],
+    ['BLOCK_NAME', BLOCK_NAME],
     ['PAGE_NAME_UPPER_CAMEL_CASE', upperCamelCase(PAGE_NAME)],
     ['PAGE_NAME', PAGE_NAME],
   ]);
