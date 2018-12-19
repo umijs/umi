@@ -240,6 +240,10 @@ export default api => {
         };
         if (existsSync(folderPath)) {
           readdirSync(folderPath).forEach(name => {
+            // ignore the dot files
+            if (name.charAt(0) === '.') {
+              return;
+            }
             const thePath = join(folderPath, name);
             if (statSync(thePath).isDirectory() && config.singular) {
               // @/components/ => @/src/component/ and ./components/ => ./component etc.
