@@ -111,6 +111,9 @@ export default api => {
             if (config.singular) {
               content = parseContentToSingular(content);
             }
+            content = replaceContent(content, {
+              path: blockPath,
+            });
             return applyPlugins('_modifyBlockFile', {
               initialValue: content,
               args: {

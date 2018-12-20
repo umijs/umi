@@ -7,13 +7,13 @@ export default (api, option) => {
   const { paths, config } = api;
 
   // write titleWrapper at while launching
-  writeTitleWrapper(paths, option.useLocale);
+  writeTitleWrapper(paths, option.useLocale, option);
 
   api.onOptionChange(newOption => {
     option = newOption;
 
     // write titleWrapper whenever title option changed
-    writeTitleWrapper(paths, option.useLocale);
+    writeTitleWrapper(paths, option.useLocale, option);
     api.rebuildHTML();
   });
 
@@ -43,7 +43,7 @@ export default (api, option) => {
   });
 };
 
-function writeTitleWrapper(paths, useLocale) {
+function writeTitleWrapper(paths, useLocale, option) {
   const wrapperPath = join(__dirname, './TitleWrapper.jsx');
   const wrapperTpl = readFileSync(
     join(__dirname, './template/TitleWrapper.js.tpl'),
@@ -51,6 +51,7 @@ function writeTitleWrapper(paths, useLocale) {
   );
   const wrapperContent = Mustache.render(wrapperTpl, {
     useLocale,
+    option,
   });
   writeFileSync(wrapperPath, wrapperContent, 'utf-8');
 }
