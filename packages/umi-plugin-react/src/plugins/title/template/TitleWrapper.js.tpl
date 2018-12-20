@@ -25,7 +25,7 @@ export default class UmiReactTitle extends React.Component {
   componentWillUnmount() {
     {{#useLocale}}
     if (
-      document.title === this.getTitle();
+      document.title === this.getTitle()
     ) {
       document.title = this.props.route._title
     }
