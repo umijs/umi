@@ -108,6 +108,7 @@ export default class PluginAPI {
       '_modifyBlockFile',
       '_modifyBlockTarget',
       '_modifyCommand',
+      '_modifyBlockNewRouteConfig',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
