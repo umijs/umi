@@ -22,12 +22,12 @@ exports.routes = [
             component: 'xxx',
             routes: [
               {
-                path: '/aa/xx/sdad/demo',
-                component: './aa/xx/sdad/Demo',
-              },
-              {
                 name: 'hehe',
                 path: 'xxxcc',
+              },
+              {
+                path: '/aa/xx/sdad/demo',
+                component: './aa/xx/sdad/Demo',
               },
             ],
           },

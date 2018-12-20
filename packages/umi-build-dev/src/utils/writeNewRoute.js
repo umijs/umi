@@ -75,13 +75,19 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
  * @param {*} newRoute 新的路由配置
  */
 function writeRouteNode(targetNode, newRoute) {
-  targetNode = findLayoutNode(targetNode, newRoute.path);
-  debug(targetNode);
-  if (targetNode) {
+  const { level, target } = findLayoutNode(targetNode, 0, newRoute.path);
+  debug(target);
+  if (target) {
     // 如果插入到 layout, 组件地址是否正确
     const newRouteAst = parse(`(${JSON.stringify(newRoute)})`).body[0]
       .expression;
-    targetNode.elements.unshift(newRouteAst);
+    if (level === 0) {
+      // 如果是第一级那么插入到上面，避免被 / 覆盖
+      // 后面应该做更加智能的判断，如果可能被覆盖就插入到前面。如果可能覆盖别人就插入到后面。
+      target.elements.unshift(newRouteAst);
+    } else {
+      target.elements.push(newRouteAst);
+    }
   } else {
     throw new Error('route path not found.');
   }
@@ -93,7 +99,7 @@ function writeRouteNode(targetNode, newRoute) {
  * @param {*} targetNode
  * @param {*} path
  */
-export function findLayoutNode(targetNode, path) {
+export function findLayoutNode(targetNode, level, path) {
   debug(path, targetNode);
   const index = path && path.lastIndexOf('/');
   if (index !== -1) {
@@ -113,15 +119,24 @@ export function findLayoutNode(targetNode, path) {
     const [layoutNode] = esquery.query(targetNode, query);
     if (layoutNode) {
       debug(layoutNode);
-      return layoutNode;
+      return {
+        level: level + 1,
+        target: layoutNode,
+      };
     } else if (index === 0) {
       // 执行到 / 后跳出
-      return targetNode;
+      return {
+        level,
+        target: targetNode,
+      };
     } else {
-      return findLayoutNode(targetNode, path);
+      return findLayoutNode(targetNode, level + 1, path);
     }
   } else {
-    return targetNode;
+    return {
+      level,
+      target: targetNode,
+    };
   }
 }
 
