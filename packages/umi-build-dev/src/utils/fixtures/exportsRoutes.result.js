@@ -7,7 +7,7 @@ exports.routes = [
       {
         path: '/aa/vv',
         name: 'dd',
-        component: 'adad'
+        component: 'adad',
       },
       // 注释2
       {
@@ -20,23 +20,25 @@ exports.routes = [
             //注释3
             name: 'aada',
             component: 'xxx',
-            routes: [{
+            routes: [
+              {
                 name: 'hehe',
-                path: 'xxxcc'
-              }]
+                path: 'xxxcc',
+              },
+            ],
           },
           {
             path: 'aa',
             name: 'aadsda',
-            component: 'xxxc'
-          }
-        ]
-      }
-    ]
+            component: 'xxxc',
+          },
+        ],
+      },
+    ],
   },
   {
     path: '/bb',
-    component: 'bb'
+    component: 'bb',
   },
   {
     path: '/',
@@ -44,12 +46,12 @@ exports.routes = [
     childRoutes: [
       {
         path: '/demo',
-        component: './Demo'
+        component: './Demo',
       },
       {
         path: 'test1',
-        component: './test1'
-      }
-    ]
-  }
+        component: './test1',
+      },
+    ],
+  },
 ];

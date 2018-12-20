@@ -3,6 +3,8 @@ import { join, dirname } from 'path';
 import { parseModule, parse } from 'esprima';
 import escodegen from 'escodegen';
 import esquery from 'esquery';
+import prettier from 'prettier';
+
 const debug = require('debug')('umi-build-dev:writeNewRoute');
 
 /**
@@ -136,7 +138,13 @@ function generateCode(ast) {
     },
     comment: true,
   });
-  return `${newCode}\n`;
+  return prettier.format(newCode, {
+    // format same as ant-design-pro
+    singleQuote: true,
+    trailingComma: 'es5',
+    printWidth: 100,
+    parser: 'babylon',
+  });
 }
 
 /**
