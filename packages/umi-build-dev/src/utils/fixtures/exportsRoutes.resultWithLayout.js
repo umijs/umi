@@ -23,7 +23,7 @@ exports.routes = [
             routes: [
               {
                 path: '/aa/xx/sdad/demo',
-                component: './aa/xx/sdad/demo'
+                component: './aa/xx/sdad/Demo'
               },
               {
                 name: 'hehe',

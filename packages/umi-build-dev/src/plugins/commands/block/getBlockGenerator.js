@@ -83,10 +83,18 @@ export default api => {
         const viewUrl = `http://localhost:${process.env.PORT ||
           '8000'}${this.path.toLowerCase()}`;
         if (config.routes && !this.skipModifyRoutes) {
+          // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
+          // 未来可以做下自动写入注释配置，支持约定式路由
+          const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
+            initialValue: {
+              path: this.path.toLowerCase(),
+              component: `.${this.path}`,
+            },
+          });
           log.info('start write new route to your routes config...');
           try {
             writeNewRoute(
-              this.path,
+              newRouteConfig,
               getConfigFile(paths.cwd),
               paths.absSrcPath,
             );

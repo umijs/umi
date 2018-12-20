@@ -7,21 +7,25 @@ const debug = require('debug')('umi-build-dev:writeNewRoute');
 
 /**
  * 将路由写入路由文件
- * @param {*} path 路由名
+ * @param {*} newRoute 新的路由配置: { path, component, ... }
  * @param {*} configPath 配置路径
  * @param {*} absSrcPath 代码路径
  */
-export default function writeNewRoute(path, configPath, absSrcPath) {
-  const { code, routesPath } = getNewRouteCode(configPath, path, absSrcPath);
+export default function writeNewRoute(newRoute, configPath, absSrcPath) {
+  const { code, routesPath } = getNewRouteCode(
+    configPath,
+    newRoute,
+    absSrcPath,
+  );
   writeFileSync(routesPath, code, 'utf-8');
 }
 
 /**
  * 获取目标
  * @param {*} configPath
- * @param {*} path
+ * @param {*} newRoute
  */
-export function getNewRouteCode(configPath, path, absSrcPath) {
+export function getNewRouteCode(configPath, newRoute, absSrcPath) {
   debug(configPath);
   const ast = parseModule(readFileSync(configPath, 'utf-8'), {
     attachComment: true,
@@ -47,16 +51,16 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
           source.source.value,
           absSrcPath,
         );
-        return getNewRouteCode(newConfigPath, path, absSrcPath);
+        return getNewRouteCode(newConfigPath, newRoute, absSrcPath);
       }
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
-      writeRouteNode(routesNode, path);
+      writeRouteNode(routesNode, newRoute);
     }
   } else {
     // 从其他文件导入 export default [] case 3
     const [node] = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression');
-    writeRouteNode(node, path);
+    writeRouteNode(node, newRoute);
   }
   const code = generateCode(ast);
   debug(code, configPath);
@@ -66,17 +70,16 @@ export function getNewRouteCode(configPath, path, absSrcPath) {
 /**
  * 写入节点
  * @param {*} node 找到的节点
- * @param {*} path 路由名
+ * @param {*} newRoute 新的路由配置
  */
-function writeRouteNode(targetNode, path) {
-  targetNode = findLayoutNode(targetNode, path);
+function writeRouteNode(targetNode, newRoute) {
+  targetNode = findLayoutNode(targetNode, newRoute.path);
   debug(targetNode);
   if (targetNode) {
     // 如果插入到 layout, 组件地址是否正确
-    const newRoute = parse(
-      `({ path: '${path.toLowerCase()}', component: '.${path}' })`,
-    ).body[0].expression;
-    targetNode.elements.unshift(newRoute);
+    const newRouteAst = parse(`(${JSON.stringify(newRoute)})`).body[0]
+      .expression;
+    targetNode.elements.unshift(newRouteAst);
   } else {
     throw new Error('route path not found.');
   }
