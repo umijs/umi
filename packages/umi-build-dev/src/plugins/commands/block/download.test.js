@@ -79,7 +79,7 @@ describe('test block download utils', () => {
     });
   });
 
-  it('getPathWithUrl', () => {
+  xit('getPathWithUrl', () => {
     const mockLog = {
       log: () => {},
       info: () => {},
