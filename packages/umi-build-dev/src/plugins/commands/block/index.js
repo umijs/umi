@@ -225,9 +225,17 @@ export default api => {
       spinner.start(
         `Write route ${ctx.routePath} to ${api.service.userConfig.file}`,
       );
+      // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
+      // 未来可以做下自动写入注释配置，支持约定式路由
+      const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
+        initialValue: {
+          path: ctx.routePath.toLowerCase(),
+          component: `.${ctx.routePath}`,
+        },
+      });
       try {
         writeNewRoute(
-          ctx.routePath,
+          newRouteConfig,
           api.service.userConfig.file,
           paths.absSrcPath,
         );
