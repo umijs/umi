@@ -100,60 +100,67 @@ describe('test get route code', () => {
 
 describe('find layout node', () => {
   it('not found, return root', () => {
-    expect(findLayoutNode(routeNode, '/sddd').end).toEqual(299);
+    expect(findLayoutNode(routeNode, 0, '/sddd').target.end).toEqual(299);
   });
 
   it('seme as layout, return root', () => {
-    expect(findLayoutNode(routeNode, '/users').end).toEqual(299);
+    expect(findLayoutNode(routeNode, 0, '/users').target.end).toEqual(299);
   });
 
   it('found, return /users', () => {
-    expect(findLayoutNode(routeNode, '/users/hahaha').start).toEqual(74);
+    expect(findLayoutNode(routeNode, 0, '/users/hahaha').target.start).toEqual(
+      74,
+    );
   });
 
   it('found, return /users/settings', () => {
-    expect(findLayoutNode(routeNode, '/users/settings/some').start).toEqual(
-      133,
-    );
+    expect(
+      findLayoutNode(routeNode, 0, '/users/settings/some').target.start,
+    ).toEqual(133);
   });
 
   it('found, return /users/settings/help', () => {
-    expect(findLayoutNode(routeNode, '/users/settings/help/faq').start).toEqual(
-      210,
-    );
+    expect(
+      findLayoutNode(routeNode, 0, '/users/settings/help/faq').target.start,
+    ).toEqual(210);
   });
 
   it('found, return /users/settings', () => {
     expect(
       findLayoutNode(
         routeNode,
+        0,
         '/users/settings/wanted/adad/adadv/adadad/adadadad/adadad',
-      ).start,
+      ).target.start,
     ).toEqual(133);
   });
 });
 
 describe('find relative layout node', () => {
   it('not found, return root', () => {
-    expect(findLayoutNode(relativeRouteNode, '/adada').start).toEqual(152);
+    expect(findLayoutNode(relativeRouteNode, 0, '/adada').target.start).toEqual(
+      152,
+    );
+    expect(findLayoutNode(relativeRouteNode, 0, '/adada').level).toEqual(1);
   });
 
   it('found, return /account/settings', () => {
     expect(
-      findLayoutNode(relativeRouteNode, '/account/settings/base/adadadaad')
-        .start,
+      findLayoutNode(relativeRouteNode, 0, '/account/settings/base/adadadaad')
+        .target.start,
     ).toEqual(1113);
   });
 
   it('test uppercase, return /account/settings', () => {
     expect(
-      findLayoutNode(relativeRouteNode, '/Account/Settings/Haha').start,
+      findLayoutNode(relativeRouteNode, 0, '/Account/Settings/Haha').target
+        .start,
     ).toEqual(1113);
   });
 
   it('found, return /account', () => {
-    expect(findLayoutNode(relativeRouteNode, '/account/adada').start).toEqual(
-      250,
-    );
+    expect(
+      findLayoutNode(relativeRouteNode, 0, '/account/adada').target.start,
+    ).toEqual(250);
   });
 });

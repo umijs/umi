@@ -45,12 +45,12 @@ export default {
       component: '../MainLayout',
       childRoutes: [
         {
-          path: '/demo',
-          component: './Demo',
-        },
-        {
           path: 'test1',
           component: './test1',
+        },
+        {
+          path: '/demo',
+          component: './Demo',
         },
       ],
     },
