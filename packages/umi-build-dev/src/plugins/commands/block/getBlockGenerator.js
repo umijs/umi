@@ -1,21 +1,9 @@
 import { existsSync, readdirSync, statSync } from 'fs';
-import { join, dirname } from 'path';
+import { join } from 'path';
 import semver from 'semver';
-import chalk from 'chalk';
-import clipboardy from 'clipboardy';
-import assert from 'assert';
-import { CONFIG_FILES, SINGULAR_SENSLTIVE } from '../../../constants';
-import writeNewRoute from '../../../utils/writeNewRoute';
+import { SINGULAR_SENSLTIVE } from '../../../constants';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
-
-function getConfigFile(cwd) {
-  // TODO maybe add a paths.absConfigPath
-  const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
-    existsSync(file),
-  );
-  return files[0];
-}
 
 export function getNameFromPkg(pkg) {
   if (!pkg.name) {
@@ -62,7 +50,7 @@ export function getSingularName(name) {
 }
 
 export default api => {
-  const { paths, log, Generator, config, applyPlugins } = api;
+  const { paths, Generator, config, applyPlugins } = api;
 
   return class BlockGenerator extends Generator {
     constructor(args, opts) {
@@ -70,123 +58,14 @@ export default api => {
 
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
-      this.npmClient = opts.npmClient || 'npm';
       this.path = opts.path;
-      this.skipDependencies = opts.skipDependencies;
-      this.skipModifyRoutes = opts.skipModifyRoutes;
 
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
       });
-
-      this.on('end', () => {
-        const viewUrl = `http://localhost:${process.env.PORT ||
-          '8000'}${this.path.toLowerCase()}`;
-        if (config.routes && !this.skipModifyRoutes) {
-          log.info('start write new route to your routes config...');
-          try {
-            writeNewRoute(
-              this.path,
-              getConfigFile(paths.cwd),
-              paths.absSrcPath,
-            );
-            log.info('write done');
-          } catch (e) {
-            debug(e);
-            log.warn(e.message);
-            log.warn('write routes failed, you need modify it by yourself');
-          }
-        }
-        clipboardy.writeSync(viewUrl);
-        log.success(
-          `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
-            '(copied to clipboard)',
-          )} for view the block.`,
-        );
-      });
     }
 
     async writing() {
-      assert(existsSync(this.sourcePath), `${this.sourcePath} don't exists`);
-
-      // get block package.json data
-      const pkgPath = join(this.sourcePath, 'package.json');
-      if (!existsSync(pkgPath)) {
-        throw new Error(`not find package.json in ${this.sourcePath}`);
-      } else {
-        // eslint-disable-next-line
-        this.pkg = require(pkgPath);
-      }
-
-      // generate block name
-      if (!this.path) {
-        const pkgName = getNameFromPkg(this.pkg);
-        if (!pkgName) {
-          return log.error("not find name in block's package.json");
-        }
-        this.path = `/${pkgName}`;
-      }
-
-      // fix demo => /demo
-      if (!/^\//.test(this.path)) {
-        this.path = `/${this.path}`;
-      }
-
-      // check dependencies conflict and install dependencies
-      if (this.skipDependencies) {
-        log.info('skip dependencies');
-      } else {
-        // read project package.json
-        const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
-          initialValue: join(paths.cwd, 'package.json'),
-        });
-        if (!existsSync(projectPkgPath)) {
-          throw new Error(`not find package.json in your project ${paths.cwd}`);
-        }
-        // eslint-disable-next-line
-        const projectPkg = require(projectPkgPath);
-
-        // get confilict dependencies and lack dependencies
-        const { conflicts, lacks } = applyPlugins('_modifyBlockDependencies', {
-          initialValue: dependenciesConflictCheck(
-            this.pkg.dependencies,
-            projectPkg.dependencies,
-          ),
-        });
-        debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`);
-
-        // find confilict dependencies throw error
-        if (conflicts.length) {
-          throw new Error(`
-  find dependencies conflict between block and your project:
-  ${conflicts
-    .map(info => {
-      return `* ${info[0]}: ${info[2]}(your project) not compatible with ${
-        info[1]
-      }(block)`;
-    })
-    .join('\n')}`);
-        }
-
-        // find lack confilict, auto install
-        if (this.dryRun) {
-          log.log('dryRun is true, skip install dependencies');
-        } else if (lacks.length) {
-          log.info(`install dependencies ${lacks} with ${this.npmClient}`);
-          // install block dependencies
-          this.scheduleInstallTask(
-            this.npmClient,
-            lacks.map(dep => `${dep[0]}@${dep[1]}`),
-            {
-              save: true,
-            },
-            {
-              cwd: dirname(projectPkgPath),
-            },
-          );
-        }
-      }
-
       let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
       while (existsSync(targetPath)) {
@@ -217,12 +96,12 @@ export default api => {
       });
 
       if (this.dryRun) {
-        log.log('dryRun is true, skip copy files');
+        debug('dryRun is true, skip copy files');
         return;
       }
 
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
-      log.info('start copy block file to your project...');
+      debug('start copy block file to your project...');
       ['src', '@'].forEach(folder => {
         const folderPath = join(this.sourcePath, folder);
         const targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;

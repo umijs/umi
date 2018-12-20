@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 
-function makeSureMaterialsTempPathExist(dryRun) {
+export function makeSureMaterialsTempPathExist(dryRun) {
   const userHome =
     process.env.NODE_ENV === 'test' ? '/Users/test' : require('user-home');
   const blocksTempPath = join(userHome, '.umi/blocks');
@@ -17,10 +17,6 @@ function makeSureMaterialsTempPathExist(dryRun) {
     mkdirp.sync(blocksTempPath);
   }
   return blocksTempPath;
-}
-
-export function getDirNameByUrl(url) {
-  return url.replace(/\//g, '-');
 }
 
 export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
@@ -96,30 +92,25 @@ export function parseGitUrl(url) {
   };
 }
 
-// get code local path by http url or npm package name
-// use --dry-run for test
-export function getPathWithUrl(url, log, args) {
+export function getParsedData(url) {
+  debug(`url: ${url}`);
   let realUrl;
   if (isGitUrl(url)) {
     realUrl = url;
-    log.info(`checked ${url} is a git site url`);
+    debug('is git url');
   } else if (/^[\w]+[\w\-\/]*$/.test(url)) {
     realUrl = `https://github.com/umijs/umi-blocks/tree/master/${url}`;
-    log.info(`will use ${realUrl} as the block url`);
+    debug(`will use ${realUrl} as the block url`);
   } else if (/^[\.\/]/.test(url)) {
     // locale path for test
-    const blockPath = resolve(process.cwd(), url);
-    log.info(`will use ${blockPath} as the block url`);
-    return blockPath;
+    const sourcePath = resolve(process.cwd(), url);
+    debug(`will use ${sourcePath} as the block url`);
+    return {
+      isLocal: true,
+      sourcePath,
+    };
   } else {
     throw new Error(`${url} can't match any pattern`);
   }
-  const { repo, branch, path, id } = parseGitUrl(realUrl);
-  log.info(`url parsed, get repo: ${repo}, branch: ${branch}, path: ${path}`);
-  const realBranch = args.branch || branch;
-  if (args.branch) {
-    log.log(`find branch in args, use branch ${realBranch}`);
-  }
-  const localPath = downloadFromGit(repo, id, realBranch, log, args);
-  return join(localPath, path);
+  return parseGitUrl(realUrl);
 }
