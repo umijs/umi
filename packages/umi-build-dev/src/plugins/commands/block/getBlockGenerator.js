@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import semver from 'semver';
+import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
