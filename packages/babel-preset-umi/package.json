@@ -33,7 +33,7 @@
     "@babel/preset-env": "7.2.3",
     "@babel/preset-react": "7.0.0",
     "babel-plugin-macros": "2.4.3",
-    "babel-plugin-react-require": "3.0.1",
+    "babel-plugin-react-require": "3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.21"
   },
   "files": [
