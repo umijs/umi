@@ -9,7 +9,7 @@
 在项目根目录使用如下命令可以添加一个区块到到你的项目中：
 
 ```bash
-$ umi block [block url]
+$ umi block add [block url]
 ```
 
 其中 `[block url]` 可以是一个 Github 或者 Gitlab 地址，也可以是一个 Git 仓库地址，也可以是一个本地相对或者绝对路径。只要对应的路径下是一个区块的代码，满足 umi 区块的规范，那么 umi 就可以通过该命令将区块的代码下载到你的项目中。
@@ -17,7 +17,7 @@ $ umi block [block url]
 比如，你可以运行：
 
 ```bash
-$ umi block https://github.com/umijs/umi-blocks/tree/master/demo
+$ umi block add https://github.com/umijs/umi-blocks/tree/master/demo
 ```
 
 来将官方的区块仓库中的 demo 区块下载到你的项目本地。对于[官方区块仓库](https://github.com/umijs/umi-blocks)下的区块你可以使用更加简洁的命令，比如 `umi block demo` 来下载区块。
