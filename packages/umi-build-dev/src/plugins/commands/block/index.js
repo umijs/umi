@@ -13,12 +13,31 @@ import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
 export default api => {
   const { log, paths, debug, applyPlugins } = api;
 
-  async function generate(args = {}) {
+  async function block(args = {}) {
+    switch (args._[0]) {
+      case 'add':
+        await add(args);
+        break;
+      case 'list':
+        await list(args);
+        break;
+      default:
+        throw new Error(
+          `Please run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
+        );
+    }
+  }
+
+  async function list() {
+    console.log('list');
+  }
+
+  async function add(args = {}) {
     const spinner = ora();
 
     // 1. parse url and args
     spinner.start('Parse url and args');
-    const url = args._[0];
+    const url = args._[1];
     assert(
       url,
       `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
@@ -204,7 +223,7 @@ export default api => {
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     try {
-      const generator = new BlockGenerator(args._.slice(1), {
+      const generator = new BlockGenerator(args._.slice(2), {
         sourcePath: ctx.sourcePath,
         path: ctx.routePath,
         dryRun,
@@ -297,7 +316,7 @@ Examples:
       details,
     },
     args => {
-      generate(args).catch(e => {
+      block(args).catch(e => {
         log.error(e);
       });
     },
