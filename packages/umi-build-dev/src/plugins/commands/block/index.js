@@ -266,18 +266,12 @@ Commands:
   
 Options for the ${chalk.cyan(`add`)} command:
 
-  ${chalk.green(
-    `--path              `,
-  )} the route path, default the name in package.json
+  ${chalk.green(`--path              `)} the route path, default the name in package.json
   ${chalk.green(`--branch            `)} git branch
-  ${chalk.green(
-    `--npm-client        `,
-  )} the npm client, default npm or yarn (if has yarn.lock)
+  ${chalk.green(`--npm-client        `)} the npm client, default npm or yarn (if has yarn.lock)
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
-  ${chalk.green(
-    `--dry-run           `,
-  )} for test, don't install dependencies and download
+  ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
   
 Examples:
 
