@@ -258,36 +258,48 @@ export default api => {
   }
 
   const details = `
+  
+Commands:
+
+  ${chalk.cyan(`add `)}     add a block to your project
+  ${chalk.cyan(`list`)}     list all blocks
+  
+Options for the ${chalk.cyan(`add`)} command:
+
+  ${chalk.green(
+    `--path              `,
+  )} the route path, default the name in package.json
+  ${chalk.green(`--branch            `)} git branch
+  ${chalk.green(
+    `--npm-client        `,
+  )} the npm client, default npm or yarn (if has yarn.lock)
+  ${chalk.green(`--skip-dependencies `)} don't install dependencies
+  ${chalk.green(`--skip-modify-routes`)} don't modify the routes
+  ${chalk.green(
+    `--dry-run           `,
+  )} for test, don't install dependencies and download
+  
 Examples:
 
-  ${chalk.gray('# get block `demo` which in umi official blocks')}
-  umi block https://github.com/umijs/umi-blocks/tree/master/demo
-
-  umi block demo ${chalk.gray('# a shortcut command')}
-
-  umi block demo --path /users/settings/profile ${chalk.gray(
-    '# add route to the layout',
-  )}
+  ${chalk.gray(`# Add block`)}
+  umi block add demo
+  umi block add ant-design-pro/Monitor
+  
+  ${chalk.gray(`# Add block with full url`)}
+  umi block add https://github.com/umijs/umi-blocks/tree/master/demo
+  
+  ${chalk.gray(`# Add block with specified route path`)}
+  umi block add demo --path /foo/bar
+  
+  ${chalk.gray(`# List all blocks`)}
+  umi list
   `.trim();
 
   api.registerCommand(
     'block',
     {
-      description: 'get block',
-      usage: `umi block <a github/gitlab/gitrepo url> [options]`,
-      options: {
-        '--path': "path name, default is name in block's package.json",
-        '--branch':
-          'git branch, this usually does not need when you use a github url with branch itself',
-        '--dry-run':
-          'for test, block would have done without actually installing and download anything',
-        '--npm-client':
-          'use special npm client, default is npm or yarn(when yarn.lock exist in you project)',
-        '--skip-dependencies':
-          'skip block dependencies install and conflict check',
-        '--skip-modify-routes':
-          'skip modify routes when you use conventional routes',
-      },
+      description: 'block related commands, e.g. add, list',
+      usage: `umi block <command>`,
       details,
     },
     args => {
