@@ -6,6 +6,7 @@ import execa from 'execa';
 import ora from 'ora';
 import { merge } from 'lodash';
 import clipboardy from 'clipboardy';
+import got from 'got';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
@@ -28,34 +29,33 @@ export default api => {
     }
   }
 
-  async function list() {
-    console.log('list');
+  function printBlocks(blocks, parentPath = '') {
+    blocks.forEach(block => {
+      if (block.type === 'block') {
+        console.log(`    ${chalk.cyan(join(parentPath, block.path))}`);
+      }
+      if (block.type === 'dir') {
+        printBlocks(block.blocks, block.path);
+      }
+    });
   }
 
-  async function add(args = {}) {
-    const spinner = ora();
+  async function list() {
+    const { body } = await got(`http://blocks.umijs.org/api/blocks`);
+    const { status, error, data } = JSON.parse(body);
+    if (status === 'success') {
+      console.log(``);
+      console.log(`  Blocks:`);
+      console.log(``);
+      printBlocks(data);
+      console.log(``);
+    } else {
+      throw new Error(error);
+    }
+  }
 
-    // 1. parse url and args
-    spinner.start('Parse url and args');
-    const url = args._[1];
-    assert(
-      url,
-      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
-    );
+  function getCtx(url, args = {}) {
     debug(`get url ${url}`);
-
-    const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
-    debug(`defaultNpmClient: ${defaultNpmClient}`);
-
-    debug(`args: ${JSON.stringify(args)}`);
-    const {
-      path,
-      npmClient = defaultNpmClient,
-      dryRun,
-      skipDependencies,
-      skipModifyRoutes,
-    } = args;
 
     const ctx = getParsedData(url);
     if (!ctx.isLocal) {
@@ -70,6 +70,86 @@ export default api => {
         repoExists: existsSync(templateTmpDirPath),
       });
     }
+
+    return ctx;
+  }
+
+  async function gitUpdate(ctx, spinner) {
+    spinner.start('Git fetch');
+    try {
+      await execa(`git`, ['fetch'], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+
+    spinner.start(`Git checkout ${ctx.branch}`);
+    try {
+      await execa(`git`, ['checkout', ctx.branch], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+
+    spinner.start('Git pull');
+    try {
+      await execa(`git`, [`pull`], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+
+  async function gitClone(ctx, spinner) {
+    spinner.start('Clone git repo');
+    try {
+      await execa(
+        `git`,
+        [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch],
+        {
+          cwd: ctx.blocksTempPath,
+          env: process.env,
+        },
+      );
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+
+  async function add(args = {}) {
+    const spinner = ora();
+
+    // 1. parse url and args
+    spinner.start('Parse url and args');
+    const url = args._[1];
+    assert(
+      url,
+      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
+    );
+
+    const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
+    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
+    debug(`defaultNpmClient: ${defaultNpmClient}`);
+    debug(`args: ${JSON.stringify(args)}`);
+    const {
+      path,
+      npmClient = defaultNpmClient,
+      dryRun,
+      skipDependencies,
+      skipModifyRoutes,
+    } = args;
+    const ctx = getCtx(url);
 
     // make sure sourcePath exists
     assert(existsSync(ctx.sourcePath), `${ctx.sourcePath} don't exists`);
@@ -101,57 +181,12 @@ export default api => {
 
     // 2. clone git repo
     if (!ctx.isLocal && !ctx.repoExists) {
-      spinner.start('Clone git repo');
-      try {
-        await execa(
-          `git`,
-          [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch],
-          {
-            cwd: ctx.blocksTempPath,
-            env: process.env,
-          },
-        );
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
+      await gitClone(ctx, spinner);
     }
 
     // 3. update git repo
     if (!ctx.isLocal && ctx.repoExists) {
-      spinner.start('Git fetch');
-      try {
-        await execa(`git`, ['fetch'], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
-
-      spinner.start(`Git checkout ${ctx.branch}`);
-      try {
-        await execa(`git`, ['checkout', ctx.branch], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
-
-      spinner.start('Git pull');
-      try {
-        await execa(`git`, [`pull`], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
+      await gitUpdate(ctx, spinner);
     }
 
     // 4. install additional dependencies
