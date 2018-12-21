@@ -6,6 +6,7 @@ import execa from 'execa';
 import ora from 'ora';
 import { merge } from 'lodash';
 import clipboardy from 'clipboardy';
+import got from 'got';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
@@ -13,30 +14,48 @@ import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
 export default api => {
   const { log, paths, debug, applyPlugins } = api;
 
-  async function generate(args = {}) {
-    const spinner = ora();
+  async function block(args = {}) {
+    switch (args._[0]) {
+      case 'add':
+        await add(args);
+        break;
+      case 'list':
+        await list(args);
+        break;
+      default:
+        throw new Error(
+          `Please run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
+        );
+    }
+  }
 
-    // 1. parse url and args
-    spinner.start('Parse url and args');
-    const url = args._[0];
-    assert(
-      url,
-      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
-    );
+  function printBlocks(blocks, parentPath = '') {
+    blocks.forEach(block => {
+      if (block.type === 'block') {
+        console.log(`    ${chalk.cyan(join(parentPath, block.path))}`);
+      }
+      if (block.type === 'dir') {
+        printBlocks(block.blocks, block.path);
+      }
+    });
+  }
+
+  async function list() {
+    const { body } = await got(`http://blocks.umijs.org/api/blocks`);
+    const { status, error, data } = JSON.parse(body);
+    if (status === 'success') {
+      console.log(``);
+      console.log(`  Blocks:`);
+      console.log(``);
+      printBlocks(data);
+      console.log(``);
+    } else {
+      throw new Error(error);
+    }
+  }
+
+  function getCtx(url, args = {}) {
     debug(`get url ${url}`);
-
-    const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
-    debug(`defaultNpmClient: ${defaultNpmClient}`);
-
-    debug(`args: ${JSON.stringify(args)}`);
-    const {
-      path,
-      npmClient = defaultNpmClient,
-      dryRun,
-      skipDependencies,
-      skipModifyRoutes,
-    } = args;
 
     const ctx = getParsedData(url);
     if (!ctx.isLocal) {
@@ -51,6 +70,86 @@ export default api => {
         repoExists: existsSync(templateTmpDirPath),
       });
     }
+
+    return ctx;
+  }
+
+  async function gitUpdate(ctx, spinner) {
+    spinner.start('Git fetch');
+    try {
+      await execa(`git`, ['fetch'], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+
+    spinner.start(`Git checkout ${ctx.branch}`);
+    try {
+      await execa(`git`, ['checkout', ctx.branch], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+
+    spinner.start('Git pull');
+    try {
+      await execa(`git`, [`pull`], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+
+  async function gitClone(ctx, spinner) {
+    spinner.start('Clone git repo');
+    try {
+      await execa(
+        `git`,
+        [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch],
+        {
+          cwd: ctx.blocksTempPath,
+          env: process.env,
+        },
+      );
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
+  }
+
+  async function add(args = {}) {
+    const spinner = ora();
+
+    // 1. parse url and args
+    spinner.start('Parse url and args');
+    const url = args._[1];
+    assert(
+      url,
+      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
+    );
+
+    const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
+    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
+    debug(`defaultNpmClient: ${defaultNpmClient}`);
+    debug(`args: ${JSON.stringify(args)}`);
+    const {
+      path,
+      npmClient = defaultNpmClient,
+      dryRun,
+      skipDependencies,
+      skipModifyRoutes,
+    } = args;
+    const ctx = getCtx(url);
 
     // make sure sourcePath exists
     assert(existsSync(ctx.sourcePath), `${ctx.sourcePath} don't exists`);
@@ -82,57 +181,12 @@ export default api => {
 
     // 2. clone git repo
     if (!ctx.isLocal && !ctx.repoExists) {
-      spinner.start('Clone git repo');
-      try {
-        await execa(
-          `git`,
-          [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch],
-          {
-            cwd: ctx.blocksTempPath,
-            env: process.env,
-          },
-        );
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
+      await gitClone(ctx, spinner);
     }
 
     // 3. update git repo
     if (!ctx.isLocal && ctx.repoExists) {
-      spinner.start('Git fetch');
-      try {
-        await execa(`git`, ['fetch'], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
-
-      spinner.start(`Git checkout ${ctx.branch}`);
-      try {
-        await execa(`git`, ['checkout', ctx.branch], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
-
-      spinner.start('Git pull');
-      try {
-        await execa(`git`, [`pull`], {
-          cwd: ctx.templateTmpDirPath,
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
+      await gitUpdate(ctx, spinner);
     }
 
     // 4. install additional dependencies
@@ -204,7 +258,7 @@ export default api => {
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     try {
-      const generator = new BlockGenerator(args._.slice(1), {
+      const generator = new BlockGenerator(args._.slice(2), {
         sourcePath: ctx.sourcePath,
         path: ctx.routePath,
         dryRun,
@@ -258,40 +312,46 @@ export default api => {
   }
 
   const details = `
+  
+Commands:
+
+  ${chalk.cyan(`add `)}     add a block to your project
+  ${chalk.cyan(`list`)}     list all blocks
+  
+Options for the ${chalk.cyan(`add`)} command:
+
+  ${chalk.green(`--path              `)} the route path, default the name in package.json
+  ${chalk.green(`--branch            `)} git branch
+  ${chalk.green(`--npm-client        `)} the npm client, default npm or yarn (if has yarn.lock)
+  ${chalk.green(`--skip-dependencies `)} don't install dependencies
+  ${chalk.green(`--skip-modify-routes`)} don't modify the routes
+  ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
+  
 Examples:
 
-  ${chalk.gray('# get block `demo` which in umi official blocks')}
-  umi block https://github.com/umijs/umi-blocks/tree/master/demo
-
-  umi block demo ${chalk.gray('# a shortcut command')}
-
-  umi block demo --path /users/settings/profile ${chalk.gray(
-    '# add route to the layout',
-  )}
+  ${chalk.gray(`# Add block`)}
+  umi block add demo
+  umi block add ant-design-pro/Monitor
+  
+  ${chalk.gray(`# Add block with full url`)}
+  umi block add https://github.com/umijs/umi-blocks/tree/master/demo
+  
+  ${chalk.gray(`# Add block with specified route path`)}
+  umi block add demo --path /foo/bar
+  
+  ${chalk.gray(`# List all blocks`)}
+  umi list
   `.trim();
 
   api.registerCommand(
     'block',
     {
-      description: 'get block',
-      usage: `umi block <a github/gitlab/gitrepo url> [options]`,
-      options: {
-        '--path': "path name, default is name in block's package.json",
-        '--branch':
-          'git branch, this usually does not need when you use a github url with branch itself',
-        '--dry-run':
-          'for test, block would have done without actually installing and download anything',
-        '--npm-client':
-          'use special npm client, default is npm or yarn(when yarn.lock exist in you project)',
-        '--skip-dependencies':
-          'skip block dependencies install and conflict check',
-        '--skip-modify-routes':
-          'skip modify routes when you use conventional routes',
-      },
+      description: 'block related commands, e.g. add, list',
+      usage: `umi block <command>`,
       details,
     },
     args => {
-      generate(args).catch(e => {
+      block(args).catch(e => {
         log.error(e);
       });
     },

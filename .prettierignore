@@ -2,3 +2,4 @@
 **/template/**/*.js
 **/bin/*.js
 **/website/*.js
+packages/umi-build-dev/src/plugins/commands/block/index.js
