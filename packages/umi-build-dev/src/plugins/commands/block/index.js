@@ -150,6 +150,17 @@ export default api => {
       skipModifyRoutes,
     } = args;
     const ctx = getCtx(url);
+    spinner.succeed();
+
+    // 2. clone git repo
+    if (!ctx.isLocal && !ctx.repoExists) {
+      await gitClone(ctx, spinner);
+    }
+
+    // 3. update git repo
+    if (!ctx.isLocal && ctx.repoExists) {
+      await gitUpdate(ctx, spinner);
+    }
 
     // make sure sourcePath exists
     assert(existsSync(ctx.sourcePath), `${ctx.sourcePath} don't exists`);
@@ -176,17 +187,6 @@ export default api => {
     // fix demo => /demo
     if (!/^\//.test(ctx.routePath)) {
       ctx.routePath = `/${ctx.routePath}`;
-    }
-    spinner.succeed();
-
-    // 2. clone git repo
-    if (!ctx.isLocal && !ctx.repoExists) {
-      await gitClone(ctx, spinner);
-    }
-
-    // 3. update git repo
-    if (!ctx.isLocal && ctx.repoExists) {
-      await gitUpdate(ctx, spinner);
     }
 
     // 4. install additional dependencies
@@ -257,16 +257,16 @@ export default api => {
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
+    const generator = new BlockGenerator(args._.slice(2), {
+      sourcePath: ctx.sourcePath,
+      path: ctx.routePath,
+      dryRun,
+      env: {
+        cwd: api.cwd,
+      },
+      resolved: __dirname,
+    });
     try {
-      const generator = new BlockGenerator(args._.slice(2), {
-        sourcePath: ctx.sourcePath,
-        path: ctx.routePath,
-        dryRun,
-        env: {
-          cwd: api.cwd,
-        },
-        resolved: __dirname,
-      });
       await generator.run();
     } catch (e) {
       spinner.fail();
@@ -277,14 +277,14 @@ export default api => {
     // 6. write routes
     if (api.config.routes && !skipModifyRoutes) {
       spinner.start(
-        `Write route ${ctx.routePath} to ${api.service.userConfig.file}`,
+        `Write route ${generator.path} to ${api.service.userConfig.file}`,
       );
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
         initialValue: {
-          path: ctx.routePath.toLowerCase(),
-          component: `.${ctx.routePath}`,
+          path: generator.path.toLowerCase(),
+          component: `.${generator.path}`,
         },
       });
       try {
@@ -302,7 +302,7 @@ export default api => {
 
     // Final: show success message
     const viewUrl = `http://localhost:${process.env.PORT ||
-      '8000'}${ctx.routePath.toLowerCase()}`;
+      '8000'}${generator.path.toLowerCase()}`;
     clipboardy.writeSync(viewUrl);
     log.success(
       `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
