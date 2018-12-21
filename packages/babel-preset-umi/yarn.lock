@@ -928,10 +928,10 @@ babel-plugin-macros@2.4.3:
     cosmiconfig "^5.0.5"
     resolve "^1.8.1"
 
-babel-plugin-react-require@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.1.tgz#bd052971cc32a3a4450234ae0a252402e7394900"
-  integrity sha512-NAOj+5m+2Y125igiveyBzvSTz8Mv21idmYkmkxFX6aUVRXEmGGaFpuQ347GwSoZgrYmyal3aFw4F6/F6ZmIzUg==
+babel-plugin-react-require@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.0.tgz#2e4e7b4496b93a654a1c80042276de4e4eeb20e3"
+  integrity sha1-Lk57RJa5OmVKHIAEInbeTk7rIOM=
 
 babel-plugin-transform-react-remove-prop-types@0.4.21:
   version "0.4.21"
