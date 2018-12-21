@@ -150,6 +150,17 @@ export default api => {
       skipModifyRoutes,
     } = args;
     const ctx = getCtx(url);
+    spinner.succeed();
+
+    // 2. clone git repo
+    if (!ctx.isLocal && !ctx.repoExists) {
+      await gitClone(ctx, spinner);
+    }
+
+    // 3. update git repo
+    if (!ctx.isLocal && ctx.repoExists) {
+      await gitUpdate(ctx, spinner);
+    }
 
     // make sure sourcePath exists
     assert(existsSync(ctx.sourcePath), `${ctx.sourcePath} don't exists`);
@@ -176,17 +187,6 @@ export default api => {
     // fix demo => /demo
     if (!/^\//.test(ctx.routePath)) {
       ctx.routePath = `/${ctx.routePath}`;
-    }
-    spinner.succeed();
-
-    // 2. clone git repo
-    if (!ctx.isLocal && !ctx.repoExists) {
-      await gitClone(ctx, spinner);
-    }
-
-    // 3. update git repo
-    if (!ctx.isLocal && ctx.repoExists) {
-      await gitUpdate(ctx, spinner);
     }
 
     // 4. install additional dependencies
