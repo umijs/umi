@@ -3,7 +3,7 @@
   "version": "2.3.0-beta.10",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
-    "@babel/core": "7.2.0",
+    "@babel/core": "7.2.2",
     "@babel/runtime": "7.2.0",
     "@types/react": "16.x",
     "@types/react-router-dom": "4.x",
