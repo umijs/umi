@@ -54,24 +54,29 @@ export default function(api) {
        * }
        */
       if (!Array.isArray(proxy)) {
-        proxy = Object.keys(proxy).map(context => {
-          let proxyOptions;
-          // For backwards compatibility reasons.
-          const correctedContext = context
-            .replace(/^\*$/, '**')
-            .replace(/\/\*$/, '');
-          if (typeof proxy[context] === 'string') {
-            proxyOptions = {
-              context: correctedContext,
-              target: proxy[context],
-            };
-          } else {
-            proxyOptions = Object.assign({}, proxy[context]);
-            proxyOptions.context = correctedContext;
-          }
-          proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
-          return proxyOptions;
-        });
+        proxy = Object.keys(proxy)
+          .sort((a, b) => {
+            // /testa need set before /test
+            return a > b ? -1 : 1;
+          })
+          .map(context => {
+            let proxyOptions;
+            // For backwards compatibility reasons.
+            const correctedContext = context
+              .replace(/^\*$/, '**')
+              .replace(/\/\*$/, '');
+            if (typeof proxy[context] === 'string') {
+              proxyOptions = {
+                context: correctedContext,
+                target: proxy[context],
+              };
+            } else {
+              proxyOptions = Object.assign({}, proxy[context]);
+              proxyOptions.context = correctedContext;
+            }
+            proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
+            return proxyOptions;
+          });
       }
 
       const getProxyMiddleware = proxyConfig => {

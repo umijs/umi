@@ -71,6 +71,13 @@ describe('normal', () => {
     expect(res.body).toEqual('{"name":"cc"}');
   });
 
+  it('use proxy when not find mock', async () => {
+    const res = await got(`http://localhost:${port}/proxy/proxytest`);
+    expect(res.body).toEqual('{"data":"proxytest"}');
+    const res1 = await got(`http://localhost:${port}/proxy/proxytest1`);
+    expect(res1.body).toEqual('{"data":"proxytest1"}');
+  });
+
   it('routes', async () => {
     await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
     await page.click('button');
