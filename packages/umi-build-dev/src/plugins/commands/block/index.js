@@ -6,7 +6,6 @@ import execa from 'execa';
 import ora from 'ora';
 import { merge } from 'lodash';
 import clipboardy from 'clipboardy';
-import got from 'got';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
@@ -41,6 +40,7 @@ export default api => {
   }
 
   async function list() {
+    const got = require('got');
     const { body } = await got(`http://blocks.umijs.org/api/blocks`);
     const { status, error, data } = JSON.parse(body);
     if (status === 'success') {
