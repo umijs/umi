@@ -66,7 +66,7 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        signale.error(e.message);
+        signale.error(e);
         process.exit(1);
       }
     }
