@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import semver from 'semver';
+import crequire from 'crequire';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
 
@@ -13,23 +14,56 @@ export function getNameFromPkg(pkg) {
   return pkg.name.split('/').pop();
 }
 
+function checkConflict(blockDeps, projectDeps) {
+  const lacks = [];
+  const conflicts = [];
+  Object.keys(blockDeps).forEach(dep => {
+    if (!projectDeps[dep]) {
+      lacks.push([dep, blockDeps[dep]]);
+    } else if (!semver.intersects(projectDeps[dep], blockDeps[dep])) {
+      conflicts.push([dep, blockDeps[dep], projectDeps[dep]]);
+    }
+  });
+  return [lacks, conflicts];
+}
+
 export function dependenciesConflictCheck(
   blockPkgDeps = {},
   projectPkgDeps = {},
+  blockPkgDevDeps = {},
+  projectPkgAllDeps = {},
 ) {
-  const lacks = [];
-  const conflicts = [];
-  Object.keys(blockPkgDeps).forEach(dep => {
-    if (!projectPkgDeps[dep]) {
-      lacks.push([dep, blockPkgDeps[dep]]);
-    } else if (!semver.intersects(projectPkgDeps[dep], blockPkgDeps[dep])) {
-      conflicts.push([dep, blockPkgDeps[dep], projectPkgDeps[dep]]);
-    }
-  });
+  const [lacks, conflicts] = checkConflict(blockPkgDeps, projectPkgDeps);
+  const [devLacks, devConflicts] = checkConflict(
+    blockPkgDevDeps,
+    projectPkgAllDeps,
+  );
   return {
     conflicts,
     lacks,
+    devConflicts,
+    devLacks,
   };
+}
+
+export function getMockDependencies(mockContent, blockPkg) {
+  const allDependencies = {
+    ...blockPkg.devDependencies,
+    ...blockPkg.dependencies,
+  };
+  const deps = {};
+  try {
+    crequire(mockContent).forEach(item => {
+      if (allDependencies[item.path]) {
+        deps[item.path] = allDependencies[item.path];
+      }
+    });
+  } catch (e) {
+    debug('parse mock content failed');
+    debug(e);
+  }
+
+  return deps;
 }
 
 const singularReg = new RegExp(
