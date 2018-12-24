@@ -26,7 +26,8 @@ import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
 {{/defaultMomentLocale}}
-const defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
+let defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
+defaultAntd = defaultAntd.default || defaultAntd;
 {{/antd}}
 
 const localeInfo = {
@@ -67,7 +68,7 @@ export default (props) => {
   </IntlProvider>)
   {{/localeList.length}}
   {{#antd}}
-  ret = (<LocaleProvider locale={appLocale.antd || defaultAntd}>
+  ret = (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
     {ret}
   </LocaleProvider>);
   {{/antd}}
