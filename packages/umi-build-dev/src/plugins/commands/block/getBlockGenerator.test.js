@@ -3,11 +3,17 @@ import {
   getNameFromPkg,
   parseContentToSingular,
   getSingularName,
+  getMockDependencies,
 } from './getBlockGenerator';
 
 describe('test block generate', () => {
   it('dependenciesConflictCheck', () => {
-    const { conflicts, lacks } = dependenciesConflictCheck(
+    const {
+      conflicts,
+      lacks,
+      devConflicts,
+      devLacks,
+    } = dependenciesConflictCheck(
       {
         react: '>=16.0.0',
         antd: '^3.0.0',
@@ -17,9 +23,20 @@ describe('test block generate', () => {
         react: '^16.1.0',
         moment: '2.1.0',
       },
+      {
+        qs: '^4.3.0',
+        mockjs: '~0.0.1',
+      },
+      {
+        react: '^16.1.0',
+        moment: '2.1.0',
+        mockjs: '^1.1.0-beta3',
+      },
     );
     expect(conflicts).toEqual([['moment', '^2.3.0', '2.1.0']]);
     expect(lacks).toEqual([['antd', '^3.0.0']]);
+    expect(devConflicts).toEqual([['mockjs', '~0.0.1', '^1.1.0-beta3']]);
+    expect(devLacks).toEqual([['qs', '^4.3.0']]);
   });
 
   it('getNameFromPkg', () => {
@@ -84,5 +101,32 @@ export default() {
     expect(getSingularName('components')).toEqual('component');
     expect(getSingularName('.components')).toEqual('.components');
     expect(getSingularName('test-tests')).toEqual('test-tests');
+  });
+
+  it('getMockDependencies', () => {
+    expect(
+      getMockDependencies(
+        `
+import moment from 'moment';
+import qs from 'qs';
+import data from './test.json';
+
+export default {
+  'GET /api/test': { text: 'ok' },
+};
+`,
+        {
+          devDependencies: {
+            moment: '^2.0.0',
+          },
+          dependencies: {
+            qs: '4.0.0',
+          },
+        },
+      ),
+    ).toEqual({
+      moment: '^2.0.0',
+      qs: '4.0.0',
+    });
   });
 });

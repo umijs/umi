@@ -1,6 +1,6 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import execa from 'execa';
 import ora from 'ora';
@@ -8,7 +8,7 @@ import { merge } from 'lodash';
 import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
-import { dependenciesConflictCheck, getNameFromPkg } from './getBlockGenerator';
+import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies } from './getBlockGenerator';
 
 export default api => {
   const { log, paths, debug, applyPlugins } = api;
@@ -205,20 +205,35 @@ export default api => {
       // eslint-disable-next-line
       const projectPkg = require(projectPkgPath);
 
+      // get _mock.js dependencie
+      let devDependencies = {};
+      const mockFilePath = join(ctx.sourcePath, 'src/_mock.js');
+      if (existsSync(mockFilePath)) {
+        devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
+      }
       // get confilict dependencies and lack dependencies
-      const { conflicts, lacks } = applyPlugins('_modifyBlockDependencies', {
+      const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
         initialValue: dependenciesConflictCheck(
           ctx.pkg.dependencies,
           projectPkg.dependencies,
+          devDependencies,
+          {
+            ...projectPkg.devDependencies,
+            ...projectPkg.dependencies,
+          },
         ),
       });
-      debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`);
+      debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`, `devConflictDeps ${devConflicts}, devLackDeps ${devLacks}`);
 
       // find confilict dependencies throw error
-      if (conflicts.length) {
+      const allConflicts = [
+        ...conflicts,
+        ...devConflicts,
+      ];
+      if (allConflicts.length) {
         throw new Error(`
   find dependencies conflict between block and your project:
-  ${conflicts
+  ${allConflicts
     .map(info => {
       return `* ${info[0]}: ${info[2]}(your project) not compatible with ${
         info[1]
@@ -230,26 +245,53 @@ export default api => {
       // find lack confilict, auto install
       if (dryRun) {
         debug('dryRun is true, skip install dependencies');
-      } else if (lacks.length) {
-        const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
-        spinner.start(
-          `Install additional dependencies ${deps.join(',')} with ${npmClient}`,
-        );
-        try {
-          await execa(
-            npmClient,
-            npmClient.includes('yarn')
-              ? ['add', ...deps]
-              : ['install', ...deps, '--save'],
-            {
-              cwd: dirname(projectPkgPath),
-            },
+      } else {
+        if (lacks.length) {
+          const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
+          spinner.start(
+            `Install additional dependencies ${deps.join(',')} with ${npmClient}`,
           );
-        } catch (e) {
-          spinner.fail();
-          throw new Error(e);
+          try {
+            await execa(
+              npmClient,
+              npmClient.includes('yarn')
+                ? ['add', ...deps]
+                : ['install', ...deps, '--save'],
+              {
+                cwd: dirname(projectPkgPath),
+              },
+            );
+          } catch (e) {
+            spinner.fail();
+            throw new Error(e);
+          }
+          spinner.succeed();
         }
-        spinner.succeed();
+
+        if (devLacks.length) {
+          // need skip devDependency which already install in dependencies
+          const devDeps = devLacks
+            .filter(dep => !lacks.find(item => item[0] === dep[0]))
+            .map(dep => `${dep[0]}@${dep[1]}`);
+          spinner.start(
+            `Install additional devDependencies ${devDeps.join(',')} with ${npmClient}`,
+          );
+          try {
+            await execa(
+              npmClient,
+              npmClient.includes('yarn')
+                ? ['add', ...devDeps, '--dev']
+                : ['install', ...devDeps, '--save-dev'],
+              {
+                cwd: dirname(projectPkgPath),
+              },
+            );
+          } catch (e) {
+            spinner.fail();
+            throw new Error(e);
+          }
+          spinner.succeed();
+        }
       }
     }
 
@@ -312,12 +354,12 @@ export default api => {
   }
 
   const details = `
-  
+
 Commands:
 
   ${chalk.cyan(`add `)}     add a block to your project
   ${chalk.cyan(`list`)}     list all blocks
-  
+
 Options for the ${chalk.cyan(`add`)} command:
 
   ${chalk.green(`--path              `)} the route path, default the name in package.json
@@ -326,19 +368,19 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
-  
+
 Examples:
 
   ${chalk.gray(`# Add block`)}
   umi block add demo
   umi block add ant-design-pro/Monitor
-  
+
   ${chalk.gray(`# Add block with full url`)}
   umi block add https://github.com/umijs/umi-blocks/tree/master/demo
-  
+
   ${chalk.gray(`# Add block with specified route path`)}
   umi block add demo --path /foo/bar
-  
+
   ${chalk.gray(`# List all blocks`)}
   umi list
   `.trim();
