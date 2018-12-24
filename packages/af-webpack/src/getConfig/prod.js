@@ -1,5 +1,7 @@
+import TerserPlugin from 'terser-webpack-plugin';
 import UglifyPlugin from 'uglifyjs-webpack-plugin';
 import { isPlainObject } from 'lodash';
+import terserOptions from './terserOptions';
 import uglifyOptions from './uglifyOptions';
 
 function mergeConfig(config, userConfig) {
@@ -53,7 +55,9 @@ export default function(webpackConfig, opts) {
       .plugin('hash-module-ids')
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
-    webpackConfig.optimization.minimizer('uglifyjs').use(UglifyPlugin, [
+    let minimizerName = 'uglifyjs';
+    let minimizerPlugin = UglifyPlugin;
+    let minimizerOptions = [
       mergeConfig(
         {
           ...uglifyOptions,
@@ -61,6 +65,24 @@ export default function(webpackConfig, opts) {
         },
         opts.uglifyJSOptions,
       ),
-    ]);
+    ];
+
+    if (opts.minimizer === 'terserjs') {
+      minimizerName = 'terserjs';
+      minimizerPlugin = TerserPlugin;
+      minimizerOptions = [
+        mergeConfig(
+          {
+            ...terserOptions,
+            sourceMap: !!opts.devtool,
+          },
+          opts.terserJSOptions,
+        ),
+      ];
+    }
+
+    webpackConfig.optimization
+      .minimizer(minimizerName)
+      .use(minimizerPlugin, minimizerOptions);
   }
 }

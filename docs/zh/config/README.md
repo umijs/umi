@@ -98,6 +98,14 @@ export default {
 
 指定 react app 渲染到的 HTML 元素 id。
 
+### minimizer
+
+* 类型：`String`
+* 默认值：`uglifyjs`
+* 选项：`uglifyjs|terserjs`
+
+Which minimizer to use. UglifyJS does not support es6 while [terser](https://github.com/terser-js/terser) does.
+
 ### hash
 
 * Type: `Boolean`
