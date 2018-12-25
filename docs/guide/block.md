@@ -7,8 +7,8 @@ This article has not been translated yet. Wan't to help us out? Click the `Edit 
 ## Usage
 
 ```bash
-$ umi block https://github.com/umijs/umi-blocks/tree/master/demo
-$ umi block demo # a shortcut
+$ umi block add https://github.com/umijs/umi-blocks/tree/master/blank
+$ umi block blank # a shortcut
 ```
 
 ## Develop
