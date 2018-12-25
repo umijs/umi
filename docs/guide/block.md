@@ -8,7 +8,7 @@ This article has not been translated yet. Wan't to help us out? Click the `Edit 
 
 ```bash
 $ umi block add https://github.com/umijs/umi-blocks/tree/master/blank
-$ umi block blank # a shortcut
+$ umi block add blank # a shortcut
 ```
 
 ## Develop

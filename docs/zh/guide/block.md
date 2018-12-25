@@ -20,7 +20,7 @@ $ umi block add [block url]
 $ umi block add https://github.com/umijs/umi-blocks/tree/master/blank
 ```
 
-来将官方的区块仓库中的 blank 区块下载到你的项目本地。对于[官方区块仓库](https://github.com/umijs/umi-blocks)下的区块你可以使用更加简洁的命令，比如 `umi block blank` 来下载区块。
+来将官方的区块仓库中的 blank 区块下载到你的项目本地。对于[官方区块仓库](https://github.com/umijs/umi-blocks)下的区块你可以使用更加简洁的命令，比如 `umi block add blank` 来下载区块。
 
 如果你的项目正在本地调试，那么区块下载到项目中后你就可以访问相应的路径来查看效果了。区块代码会被默认下载到 pages/[name] 下面，其中 name 是默认取区块中的 `package.json` 中的 name字段（会去掉`/`前的无效片段）。对于配置式路由，我们也会默认添加路由配置到你的配置中，所以也一样可以直接访问。
 
