@@ -8,7 +8,7 @@ import pathToRegexp from 'path-to-regexp';
 import signale from 'signale';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
-const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
+const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
 
 export default function getMockMiddleware(api, errors) {
   const { debug, paths } = api;
