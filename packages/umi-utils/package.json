@@ -1,6 +1,6 @@
 {
   "name": "umi-utils",
-  "version": "1.3.0-beta.11",
+  "version": "1.3.0-beta.12",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
