@@ -82,12 +82,6 @@ export function modifyBlockDependencies(memo) {
   if (!dvaLack) {
     return memo;
   }
-  // coerce for transfer 2.5.0-beta.2 to 2.5.0
-  console.log(
-    dvaLack[1],
-    buildInDvaVersion,
-    semver.intersects(dvaLack[1], buildInDvaVersion),
-  );
   if (!semver.intersects(dvaLack[1], buildInDvaVersion)) {
     conflicts.push(['dva', dvaLack[1], buildInDvaVersion]);
   }
