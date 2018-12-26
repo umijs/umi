@@ -1,5 +1,9 @@
 import { join } from 'path';
-import dvaPlugin, { getGlobalModels, getModel } from './index';
+import dvaPlugin, {
+  getGlobalModels,
+  getModel,
+  modifyBlockDependencies,
+} from './index';
 
 const fixtures = join(__dirname, 'fixtures');
 const base = join(fixtures, 'getModel');
@@ -178,5 +182,31 @@ describe('umi-plugin-dva', () => {
       '$CWD$/pages/c/models/c.js',
       '$CWD$/pages/models/a.js',
     ]);
+  });
+
+  it('modifyBlockDependencies', () => {
+    expect(
+      modifyBlockDependencies({
+        lacks: [['dva', '^1.0.0'], ['antd', '2.0.1']],
+        conflicts: [['react', '~15.0.0', '~16.0.0']],
+        devLacks: [],
+      }),
+    ).toEqual({
+      lacks: [['antd', '2.0.1']],
+      conflicts: [['react', '~15.0.0', '~16.0.0'], ['dva', '^1.0.0', '^2.0.0']],
+      devLacks: [],
+    });
+
+    expect(
+      modifyBlockDependencies({
+        lacks: [['dva', '^2.4.0'], ['antd', '2.0.1']],
+        conflicts: [['react', '~15.0.0', '~16.0.0']],
+        devLacks: [],
+      }),
+    ).toEqual({
+      lacks: [['antd', '2.0.1']],
+      conflicts: [['react', '~15.0.0', '~16.0.0']],
+      devLacks: [],
+    });
   });
 });

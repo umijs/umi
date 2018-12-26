@@ -4,6 +4,7 @@ import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
 import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
+import semver from 'semver';
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
@@ -67,6 +68,35 @@ export function getGlobalModels(api, shouldImportDynamic) {
     models = uniq(models);
   }
   return models;
+}
+
+export function modifyBlockDependencies(memo) {
+  const { lacks, conflicts } = memo;
+
+  // not use 2.5.0-beta.2 in package.json
+  // because of semver.intersects('2.5.0-beta.2', '^2.4.0') === false
+  const buildInDvaVersion = '^2.0.0';
+  const dvaLack = lacks.find(item => {
+    return item[0] === 'dva';
+  });
+  if (!dvaLack) {
+    return memo;
+  }
+  // coerce for transfer 2.5.0-beta.2 to 2.5.0
+  console.log(
+    dvaLack[1],
+    buildInDvaVersion,
+    semver.intersects(dvaLack[1], buildInDvaVersion),
+  );
+  if (!semver.intersects(dvaLack[1], buildInDvaVersion)) {
+    conflicts.push(['dva', dvaLack[1], buildInDvaVersion]);
+  }
+  return {
+    ...memo,
+    lacks: lacks.filter(item => {
+      return item[0] !== 'dva';
+    }),
+  };
 }
 
 export default function(api, opts = {}) {
@@ -293,4 +323,6 @@ models: () => [
 require('@tmp/initDva');
   `.trim(),
   );
+
+  api._modifyBlockDependencies(modifyBlockDependencies);
 }

@@ -18,10 +18,12 @@ describe('test block generate', () => {
         react: '>=16.0.0',
         antd: '^3.0.0',
         moment: '^2.3.0',
+        lodash: '^4.0.0',
       },
       {
         react: '^16.1.0',
         moment: '2.1.0',
+        lodash: '^4.2.0-beta.1',
       },
       {
         qs: '^4.3.0',
