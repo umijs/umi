@@ -17,10 +17,10 @@ $ umi block add [block url]
 比如，你可以运行：
 
 ```bash
-$ umi block add https://github.com/umijs/umi-blocks/tree/master/demo
+$ umi block add https://github.com/umijs/umi-blocks/tree/master/blank
 ```
 
-来将官方的区块仓库中的 demo 区块下载到你的项目本地。对于[官方区块仓库](https://github.com/umijs/umi-blocks)下的区块你可以使用更加简洁的命令，比如 `umi block demo` 来下载区块。
+来将官方的区块仓库中的 blank 区块下载到你的项目本地。对于[官方区块仓库](https://github.com/umijs/umi-blocks)下的区块你可以使用更加简洁的命令，比如 `umi block add blank` 来下载区块。
 
 如果你的项目正在本地调试，那么区块下载到项目中后你就可以访问相应的路径来查看效果了。区块代码会被默认下载到 pages/[name] 下面，其中 name 是默认取区块中的 `package.json` 中的 name字段（会去掉`/`前的无效片段）。对于配置式路由，我们也会默认添加路由配置到你的配置中，所以也一样可以直接访问。
 
@@ -55,7 +55,7 @@ $ yarn create umi --block
 
 ```js
 {
-  name: '@umi-blocks/demo',
+  name: '@umi-blocks/blank',
   description: '区块描述',
   // ... 更多其他 npm 包的相关定义
   dependencies: {
@@ -71,13 +71,28 @@ $ yarn create umi --block
 }
 ```
 
-当执行 `umi block [block url]` 的时候实际上是执行的如下步骤：
+### 区块添加逻辑
 
-- 将区块 src 下的代码复制到对应的页面目录
-- 将 @ 下的代码复制到对应的 src 目录下
-- 检测 package.json 中的区块依赖并自动安装到项目中
+当执行 `umi block add [block url]` 的时候实际上是执行的如下步骤：
+
+- 通过 git clone 下载区块代码（如果已经存在则会通过 git pull 更新）
+- 检测区块的 package.json 中的依赖并自动安装到项目中
+- 将区块代码复制到对应的页面目录，复制过程中会做一些宏替换
+- 如果是配置式路由，那么会自动添加路由
 
 另外，如果在项目中配置了 [singular](/zh/config/#singular) 为 true，那么这个处理过程也会将对应的复数目录改为单数。
+
+### 宏替换
+
+为了避免区块添加到应用中出现冲突，umi 提供了一些宏，当区块被添加到项目中时，区块代码中的宏也会按照区块对应的信息被替换。通过这个能力可以避免诸如 dva model 的 namespace 冲突等问题。
+
+具体的宏如下，基于 `--path=/Test_Hello/hello-Block` 示例。
+
+- ROUTE_PATH `/test_hello/hello-block`
+- BLOCK_NAME `test_hello-hello-block`
+- PAGE_NAME `hello-block`
+- PAGE_NAME_UPPER_CAMEL_CASE `HelloBlock`
+- BLOCK_NAME_CAMEL_CASE `testHelloHelloBlock`
 
 ### 区块调试
 
@@ -86,7 +101,9 @@ $ yarn create umi --block
 ```js
 export default {
   plugins: [
-    ['umi-plugin-block-dev', {}],
+    ['umi-plugin-block-dev', {
+      layout: 'ant-design-pro',
+    }],
   ],
 }
 ```
