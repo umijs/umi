@@ -3,6 +3,9 @@
   "version": "2.3.0-beta.12",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
+  "browser": {
+    "./lib/index.js": "./lib/locale.js"
+  },
   "authors": [
     "yutingzhao1991 <yutingzhao1991@sina.com> (https://github.com/yutingzhao1991)"
   ],
@@ -18,7 +21,8 @@
   "files": [
     "lib",
     "src",
-    "template"
+    "template",
+    "index.d.ts"
   ],
   "keywords": [
     "umi"

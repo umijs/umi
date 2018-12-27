@@ -15,7 +15,9 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "locale/index.js",
+    "locale/index.d.ts"
   ],
   "license": "MIT",
   "dependencies": {
