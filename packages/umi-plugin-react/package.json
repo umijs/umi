@@ -15,7 +15,9 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "locale/index.js",
+    "locale/index.d.ts"
   ],
   "license": "MIT",
   "dependencies": {
@@ -40,7 +42,8 @@
   "umiTools": {
     "browserFiles": [
       "src/plugins/pwa/registerServiceWorker.js",
-      "src/plugins/title/TitleWrapper.js"
+      "src/plugins/title/TitleWrapper.js",
+      "src/locale.js"
     ]
   }
 }

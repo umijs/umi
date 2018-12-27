@@ -151,6 +151,8 @@ export default function(api, options = {}) {
       ...memo,
       alias: {
         ...(memo.alias || {}),
+        // umi/locale is deprecated
+        // recommend use `import { getLocale } from 'umi-plugin-locale';` now.
         'umi/locale': join(__dirname, './locale.js'),
         'react-intl': dirname(require.resolve('react-intl/package.json')),
       },
