@@ -1,15 +1,18 @@
+import { IntlProvider } from 'react-intl';
+import renderer from 'react-test-renderer';
 import {
   formatMessage,
   formatHTMLMessage,
-  setLocale,
-  getLocale,
   FormattedMessage,
+  getLocale,
+  intlShape,
+  setLocale,
+  _setIntlObject,
 } from '../src/locale';
 
-jest.mock('react-intl');
-
-var localStorageMock = (function() {
-  var store = {};
+/* eslint-disable */
+const localStorageMock = (function() {
+  let store = {};
 
   return {
     getItem: function(key) {
@@ -24,16 +27,34 @@ var localStorageMock = (function() {
   };
 })();
 
+const InjectedWrapper = (() => {
+  let sfc = (props, context) => {
+    _setIntlObject(context.intl);
+    return props.children;
+  };
+  sfc.contextTypes = {
+    intl: intlShape,
+  };
+  return sfc;
+})();
+/* eslint-enable */
+
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
+// eslint-disable-next-line
 Object.defineProperty(location, 'reload', {
   value: () => {},
 });
 
 describe('test umi/locale', () => {
   test('api exist', () => {
+    renderer.create(
+      <IntlProvider locale="en">
+        <InjectedWrapper>Fallback</InjectedWrapper>
+      </IntlProvider>,
+    );
     expect(formatMessage).toBeTruthy();
     expect(formatHTMLMessage).toBeTruthy();
     expect(setLocale).toBeTruthy();
