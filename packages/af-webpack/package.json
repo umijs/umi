@@ -11,7 +11,7 @@
     "@babel/preset-react": "7.0.0",
     "@babel/register": "7.0.0",
     "@babel/runtime": "7.2.0",
-    "@svgr/core": "4.1.0",
+    "@svgr/core": "3.1.0",
     "address": "1.0.3",
     "assert": "1.4.1",
     "autoprefixer": "9.4.2",
