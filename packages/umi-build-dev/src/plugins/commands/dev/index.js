@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import notify from 'umi-notify';
 import createRouteMiddleware from './createRouteMiddleware';
 import { unwatch } from '../../../getConfig/watch';
 import getRouteManager from '../getRouteManager';
@@ -15,6 +16,8 @@ export default function(api) {
       description: 'start a dev server for development',
     },
     (args = {}) => {
+      notify.onDevStart({ name: 'umi', version: 2 });
+
       const RoutesManager = getRouteManager(service);
       RoutesManager.fetchRoutes();
 
@@ -123,6 +126,12 @@ export default function(api) {
                   stats,
                 },
               });
+              if (isFirstCompile) {
+                notify.onDevComplete({
+                  name: 'umi',
+                  version: 2,
+                });
+              }
             },
           });
         })
