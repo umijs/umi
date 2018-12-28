@@ -1,8 +1,8 @@
 /**
  * Source: @types/react-intl
  * Changes:
- *   - remove some unnecessary interface
- *   - expose interface from `IntlShape`
+ *   - remove some unnecessary interfaces
+ *   - expose interfaces from `IntlShape`
  */
 import * as React from 'react';
 // Basic types and interfaces

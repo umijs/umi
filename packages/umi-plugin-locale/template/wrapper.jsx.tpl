@@ -1,6 +1,5 @@
 
 {{#localeList.length}}
-import { PureComponent } from 'react';
 import { _setIntlObject, addLocaleData, IntlProvider, intlShape } from 'umi/locale';
 
 const InjectedWrapper = (() => {
