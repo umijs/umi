@@ -23,7 +23,7 @@
     "chokidar": "2.0.4",
     "clipboardy": "1.2.3",
     "copy-webpack-plugin": "4.6.0",
-    "css-hot-loader": "1.4.2",
+    "css-hot-loader": "1.4.3",
     "css-loader": "1.0.1",
     "cssnano": "4.1.7",
     "debug": "4.1.0",
