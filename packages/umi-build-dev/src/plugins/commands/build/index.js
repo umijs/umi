@@ -1,9 +1,10 @@
 import rimraf from 'rimraf';
+import notify from 'umi-notify';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug, config } = api;
+  const { service, debug, config, log } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(
@@ -13,6 +14,8 @@ export default function(api) {
       description: 'building for production',
     },
     () => {
+      notify.onBuildStart({ name: 'umi', version: 2 });
+
       const RoutesManager = getRouteManager(service);
       RoutesManager.fetchRoutes();
 
@@ -49,16 +52,17 @@ export default function(api) {
             },
           });
           debug('Build success end');
+
+          notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
         },
         onFail({ err, stats }) {
-          debug(`Build failed`);
-          debug(err);
           service.applyPlugins('onBuildFail', {
             args: {
               err,
               stats,
             },
           });
+          notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
         },
       });
     },

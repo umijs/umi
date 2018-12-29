@@ -43,18 +43,11 @@ function getModelsWithRoutes(routes, api) {
 
 function getPageModels(cwd, api) {
   let models = [];
-  while (!isPagesPath(cwd, api) && !isSrcPath(cwd, api) && !isRoot(cwd)) {
+  while (!isSrcPath(cwd, api) && !isRoot(cwd)) {
     models = models.concat(getModel(cwd, api));
     cwd = dirname(cwd);
   }
   return models;
-}
-
-function isPagesPath(path, api) {
-  const { paths, winPath } = api;
-  return (
-    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
-  );
 }
 
 function isSrcPath(path, api) {
@@ -79,8 +72,7 @@ export function getGlobalModels(api, shouldImportDynamic) {
 export default function(api, opts = {}) {
   const { paths, cwd, compatDirname, winPath } = api;
   const isDev = process.env.NODE_ENV === 'development';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const shouldImportDynamic = isProduction && opts.dynamicImport;
+  const shouldImportDynamic = opts.dynamicImport;
 
   function getDvaJS() {
     const dvaJS = findJS(paths.absSrcPath, 'dva');
@@ -203,7 +195,6 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       if (opts.dynamicImport.webpackChunkName) {
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
-
       let ret = `
 _dvaDynamic({
   <%= MODELS %>
@@ -225,7 +216,10 @@ models: () => [
           opts.dynamicImport.webpackChunkName
             ? `/* webpackChunkName: '${chunkName(paths.cwd, model)}' */`
             : ''
-        }'${model}')`,
+        }'${model}').then(m => { return { namespace: '${basename(
+          model,
+          extname(model),
+        )}',...m.default}})`,
     )
     .join(',\r\n  ')}
 ],

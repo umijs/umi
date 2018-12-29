@@ -1,5 +1,5 @@
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 
 let plugins = null;
 let validKeys = [];
@@ -14,7 +14,7 @@ export function use(plugin) {
     // TODO: remove default
     // default 是为了兼容内部框架内置的一个 babel 插件问题
     assert(
-      validKeys.concat('default').includes(key),
+      validKeys.concat('default').indexOf(key) > -1,
       `Invalid key ${key} from plugin`,
     );
   });
@@ -22,7 +22,7 @@ export function use(plugin) {
 }
 
 export function getItem(key) {
-  assert(validKeys.includes(key), `Invalid key ${key}`);
+  assert(validKeys.indexOf(key) > -1, `Invalid key ${key}`);
   return plugins.filter(plugin => key in plugin).map(plugin => plugin[key]);
 }
 

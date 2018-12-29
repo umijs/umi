@@ -4,8 +4,7 @@ import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
 import chalk from 'chalk';
-import debounce from 'lodash.debounce';
-import uniq from 'lodash.uniq';
+import { debounce, uniq } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, findJS } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
@@ -14,6 +13,8 @@ import importsToStr from './importsToStr';
 import { EXT_LIST } from './constants';
 
 const debug = require('debug')('umi:FilesGenerator');
+
+export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
 
 export default class FilesGenerator {
   constructor(opts) {
@@ -37,7 +38,7 @@ export default class FilesGenerator {
 
   createWatcher(path) {
     const watcher = chokidar.watch(path, {
-      ignored: /(^|[\/\\])\../, // ignore .dotfiles
+      ignored: watcherIgnoreRegExp, // ignore .dotfiles and _mock.js
       ignoreInitial: true,
     });
     watcher.on(

@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, basename } from 'path';
 import bodyParser from 'body-parser';
 import glob from 'glob';
 import assert from 'assert';
@@ -8,23 +8,26 @@ import pathToRegexp from 'path-to-regexp';
 import signale from 'signale';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
-const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
+const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
 
 export default function getMockMiddleware(api, errors) {
-  const { debug } = api;
-  const { cwd } = api.service;
+  const { debug, paths } = api;
+  const { cwd, absPagesPath } = paths;
   const absMockPath = join(cwd, 'mock');
   const absConfigPath = join(cwd, '.umirc.mock.js');
-  api.addBabelRegister([absMockPath, absConfigPath]);
+  api.addBabelRegister([absMockPath, absConfigPath, absPagesPath]);
 
   let mockData = getConfig();
   watch();
 
   function watch() {
     if (process.env.WATCH_FILES === 'none') return;
-    const watcher = chokidar.watch([absConfigPath, absMockPath], {
-      ignoreInitial: true,
-    });
+    const watcher = chokidar.watch(
+      [absConfigPath, absMockPath, join(absPagesPath, '**/_mock.js')],
+      {
+        ignoreInitial: true,
+      },
+    );
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       mockData = getConfig();
@@ -44,9 +47,18 @@ export default function getMockMiddleware(api, errors) {
       debug(`load mock data from ${absConfigPath}`);
       ret = require(absConfigPath); // eslint-disable-line
     } else {
-      const mockFiles = glob.sync('**/*.js', {
-        cwd: absMockPath,
-      });
+      const mockFiles = glob
+        .sync('**/*.js', {
+          cwd: absMockPath,
+        })
+        .map(p => join(absMockPath, p))
+        .concat(
+          glob
+            .sync('**/_mock.js', {
+              cwd: absPagesPath,
+            })
+            .map(p => join(absPagesPath, p)),
+        );
       debug(
         `load mock data from ${absMockPath}, including files ${JSON.stringify(
           mockFiles,
@@ -54,7 +66,7 @@ export default function getMockMiddleware(api, errors) {
       );
       try {
         ret = mockFiles.reduce((memo, mockFile) => {
-          const m = require(join(absMockPath, mockFile)); // eslint-disable-line
+          const m = require(mockFile); // eslint-disable-line
           memo = {
             ...memo,
             ...(m.default || m),
@@ -138,7 +150,11 @@ export default function getMockMiddleware(api, errors) {
 
   function cleanRequireCache() {
     Object.keys(require.cache).forEach(file => {
-      if (file === absConfigPath || file.indexOf(absMockPath) > -1) {
+      if (
+        file === absConfigPath ||
+        file.indexOf(absMockPath) > -1 ||
+        basename(file) === '_mock.js'
+      ) {
         delete require.cache[file];
       }
     });

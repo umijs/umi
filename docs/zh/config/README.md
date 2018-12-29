@@ -18,11 +18,13 @@ sidebarDepth: 2
 ```js
 export default {
   plugins: [
+    //1. 插件名，无参数
     'umi-plugin-react',
-    // 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
-    ['umi-plugin-react', {
-      dva: true,
-    }],
+    //2. 插件有参数时为数组，数组的第二项是参数，类似 babel 插件
+    //['umi-plugin-react', {
+    //  dva: true,
+    //  antd: true,
+    //}],
   ],
 };
 ```
@@ -95,6 +97,14 @@ export default {
 * 默认值：`root`
 
 指定 react app 渲染到的 HTML 元素 id。
+
+### minimizer
+
+* 类型：`String`
+* 默认值：`uglifyjs`
+* 选项：`uglifyjs|terserjs`
+
+Which minimizer to use. UglifyJS does not support es6 while [terser](https://github.com/terser-js/terser) does.
 
 ### hash
 
@@ -181,6 +191,34 @@ chainWebpack(config, { webpack }) {
   // 删除进度条插件
   config.plugins.delete('progress');
 }
+```
+打包优化 [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/) 配置
+```js
+chainWebpack(config, { webpack }) {
+  config.merge({
+    plugin: {
+      install: {
+        plugin: require('uglifyjs-webpack-plugin'),
+        args: [{
+          sourceMap: false,
+          uglifyOptions: {
+            compress: {
+              // 删除所有的 `console` 语句
+              drop_console: true,
+            },
+            output: {
+              // 最紧凑的输出
+              beautify: false,
+              // 删除所有的注释
+              comments: false,
+            },
+          }
+        }]
+      }
+    }
+  })
+}
+
 ```
 
 ### theme

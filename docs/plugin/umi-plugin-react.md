@@ -88,9 +88,11 @@ options include:
 * `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
 * `update`, type is `Function`, for update routes.
 
-### polyfills
+### polyfills (deprecated)
 
 * Type: `Array(String)`
+
+> Please use [config.targets](https://umijs.org/config/#targets) instead
 
 Based on [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills), used to add polyfills.
 
@@ -151,7 +153,7 @@ Enable some PWA features including:
 
 * Generate a `manifest.json`
 * Generate a Service Worker on `PRODUCTION` mode
- 
+
 options include:
 
 * `manifestOptions` Type: `Object`, includes following options:
@@ -224,10 +226,11 @@ options include:
 * `defaultTitle`: 'default tile', // required, when option type is String, will use option as the default title
 * `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
 * `separator`: ' - ', // default ' - '
+* `useLocale: true`, // default false, whether to use `locale` for multi-language support. If set `useLocale: true`, title displayed will be picked from `locales/*.js`
 
 When the title plugin is enabled you can configure the title in the route configuration or in the page component in pages folder.
 
-For example:
+For example, with configuration file:
 
 ```js
 // .umirc.js or config/config.js
@@ -240,7 +243,7 @@ export default {
 }
 ```
 
-or
+or with convensional routing
 
 ```jsx
 /**
@@ -250,3 +253,9 @@ export default () => {
   return <div>testpage</div>;
 }
 ```
+
+> `title/route configuration` must be at the top of the routing page component, otherwise it will be ignored by `umi`
+
+#### customized document.ejs
+
+If you defined `src/pages/document.ejs` by your own, please make sure the snippet `<title><%= context.title %></title>` is added, otherwise the `title.defaultTitle` will not be injected to the generated `index.html`

@@ -1,5 +1,5 @@
-import deprecate from 'deprecate';
-import remove from 'lodash.remove';
+import { deprecate } from 'umi-utils';
+import { remove } from 'lodash';
 
 let redirects;
 
@@ -29,7 +29,13 @@ function patchRoutes(routes, config, isProduction, onPatchRoute) {
   // Transform /404 to fallback route in production and exportStatic is not set
   if (notFoundIndex !== null && isProduction && !config.exportStatic) {
     const notFoundRoute = routes.slice(notFoundIndex, notFoundIndex + 1)[0];
-    routes.push({ component: notFoundRoute.component });
+    if (notFoundRoute.component) {
+      routes.push({ component: notFoundRoute.component });
+    } else if (notFoundRoute.redirect) {
+      routes.push({ redirect: notFoundRoute.redirect });
+    } else {
+      throw new Error('Invalid route config for /404');
+    }
   }
 
   if (rootIndex !== null) {
@@ -72,7 +78,7 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
 
   // Compatible the meta.Route and warn deprecated
   if (route.meta && route.meta.Route) {
-    deprecate('route.meta.Route is deprecated, use route.Route instead');
+    deprecate('route.meta.Route', 'use route.Route instead');
     route.Route = route.meta.Route;
     delete route.meta;
   }

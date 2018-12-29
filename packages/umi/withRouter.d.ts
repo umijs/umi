@@ -1,2 +1,2 @@
-declare const withRouter: (component:Function) => Function;
+import { withRouter } from 'react-router-dom';
 export default withRouter;

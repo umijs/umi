@@ -18,11 +18,13 @@ such as:
 ```js
 export default {
   plugins: [
+    //1. no parameters
     'umi-plugin-react',
-    // When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
-    ['umi-plugin-react', {
-      dva: true,
-    }],
+    //2. When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
+    //['umi-plugin-react', {
+    //  dva: true,
+    //  antd: true,
+    //}],
   ],
 };
 ```
@@ -93,6 +95,14 @@ Specify an extra publicPath for CSS.
 * Default: `root`
 
 Specifies the mount point id which the react app will mount to.
+
+### minimizer
+
+* Type: `String`
+* Default: `uglifyjs`
+* Options: `uglifyjs|terserjs`
+
+Which minimizer to use. UglifyJS does not support es6 while [terser](https://github.com/terser-js/terser) does.
 
 ### hash
 
@@ -182,7 +192,33 @@ chainWebpack(config, { webpack }) {
   config.plugins.delete('progress');
 }
 ```
-
+configure [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)
+```js
+chainWebpack(config, { webpack }) {
+  config.merge({
+    plugin: {
+      install: {
+        plugin: require('uglifyjs-webpack-plugin'),
+        args: [{
+          sourceMap: false,
+          uglifyOptions: {
+            compress: {
+              // remove `console.*`
+              drop_console: true,
+            },
+            output: {
+              // whether to actually beautify the output
+              beautify: false,
+              // remove all comments
+              comments: false,
+            },
+          }
+        }]
+      }
+    }
+  })
+}
+```
 ### theme
 
 The configuration theme is actually equipped with the less variable. Support for both object and string types, the string needs to point to a file that returns the configuration.
@@ -331,94 +367,3 @@ such as:
   "last 2 versions"
 ]
 ```
-
-### devtool
-
-Configure the [devtool](https://webpack.js.org/configuration/devtool/) property of webpack.
-
-### disableCSSModules
-
-Disable [CSS Modules](https://github.com/css-modules/css-modules).
-
-### disableCSSSourceMap
-
-Disable SourceMap generation for CSS.
-
-### extraBabelPresets
-
-Define an additional babel preset list in the form of an array.
-
-### extraBabelPlugins
-
-Define an additional babel plugin list in the form of an array.
-
-### extraBabelIncludes
-
-Define a list of additional files that need to be babel converted, in the form of an array, and the array item is [webpack#Condition](https://webpack.js.org/configuration/module/#condition).
-
-### extraPostCSSPlugins
-
-Define additional PostCSS plugins in the format of an array.
-
-### cssModulesExcludes
-
-The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
-
-### copy
-
-Define a list of files that need to be copied simply. The format is an array. The format of the item refers to the configuration of [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin).
-
-such as:
-
-```markup
-"copy": [
-  {
-    "from": "",
-    "to": ""
-  }
-]
-```
-
-### proxy
-
-Configure the [proxy](https://webpack.js.org/configuration/dev-server/#devserver-proxy) property of webpack-dev-server.
-If you want to proxy requests to other servers, you can do this:
-
-```markup
-"proxy": {
-  "/api": {
-    "target": "http://jsonplaceholder.typicode.com/",
-    "changeOrigin": true,
-    "pathRewrite": { "^/api" : "" }
-  }
-}
-```
-
-Then visit `/api/users` to access the data of [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users).
-
-### sass
-
-Configure options for [node-sass](https://github.com/sass/node-sass#options). Note: The node-sass and sass-loader dependencies need to be installed in the project directory when using sass.
-
-### manifest
-
-After configuration, manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
-such as:
-
-```markup
-"manifest": {
-  "basePath": "/app/"
-}
-```
-
-### ignoreMomentLocale
-
-Ignore the locale file for moment to reduce the size.
-
-### lessLoaderOptions
-
-Additional configuration items for [less-loader](https://github.com/webpack-contrib/less-loader).
-
-### cssLoaderOptions
-
-Additional configuration items for [css-loader](https://github.com/webpack-contrib/css-loader).

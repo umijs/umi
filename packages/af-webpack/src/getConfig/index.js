@@ -133,19 +133,10 @@ export default function(opts) {
     ],
     ...babelOptsCommon,
   };
-  const babelOptsForDeps = {
-    presets: [
-      [require.resolve('babel-preset-umi'), { transformRuntime: false }],
-    ],
-    ...babelOptsCommon,
-  };
+
   if (opts.disableDynamicImport) {
     babelOpts.plugins = [
       ...(babelOpts.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node'),
-    ];
-    babelOptsForDeps.plugins = [
-      ...(babelOptsForDeps.plugins || []),
       require.resolve('babel-plugin-dynamic-import-node'),
     ];
   }
@@ -207,7 +198,7 @@ export default function(opts) {
       .end()
       .use('babel-loader')
       .loader(require.resolve('babel-loader'))
-      .options(babelOptsForDeps);
+      .options(babelOpts);
   });
 
   // module -> tsx?
@@ -255,10 +246,16 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (!process.env.CI && !process.env.__FROM_UMI_TEST && process.stdout.isTTY) {
-    webpackConfig
-      .plugin('progress')
-      .use(require('webpackbar'), [{ minimal: false }]);
+  const NO_PROGRESS = process.env.PROGRESS === 'none';
+  if (!process.env.CI && !process.env.__FROM_UMI_TEST && !NO_PROGRESS) {
+    webpackConfig.plugin('progress').use(require('webpackbar'), [
+      {
+        color: 'green',
+        reporters: ['fancy'],
+      },
+    ]);
+  } else {
+    console.log('Building ...');
   }
 
   // plugins -> ignore moment locale

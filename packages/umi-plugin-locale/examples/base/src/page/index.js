@@ -20,7 +20,10 @@ export default () => {
   );
   return (
     <div>
-      hello world. <FormattedMessage id="test" values={{ name: 'antd' }} />
+      hello world.
+      <FormattedMessage id="test" values={{ name: 'antd' }} />
+      <br />
+      <FormattedMessage id="test2" values={{ name: 'test2' }} />
       <DatePicker />
       <button
         onClick={() => {

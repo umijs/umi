@@ -16,16 +16,18 @@ export default function(service) {
   let pagesPath = 'pages';
   if (process.env.PAGES_PATH) {
     pagesPath = process.env.PAGES_PATH;
+  } else {
+    if (test(join(cwd, 'src/page'))) {
+      pagesPath = 'src/page';
+    }
+    if (test(join(cwd, 'src/pages'))) {
+      pagesPath = 'src/pages';
+    }
+    if (test(join(cwd, 'page'))) {
+      pagesPath = 'page';
+    }
   }
-  if (test(join(cwd, 'src/page'))) {
-    pagesPath = 'src/page';
-  }
-  if (test(join(cwd, 'src/pages'))) {
-    pagesPath = 'src/pages';
-  }
-  if (test(join(cwd, 'page'))) {
-    pagesPath = 'page';
-  }
+
   const absPagesPath = join(cwd, pagesPath);
   const absSrcPath = join(absPagesPath, '../');
 

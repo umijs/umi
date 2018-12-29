@@ -118,7 +118,7 @@ export default {
 
 ## src/pages/.umi-production
 
-同 `src/pagers/.umi`，但是是在 `umi build` 时生成的，会在 `umi build` 执行完自动删除。
+同 `src/pages/.umi`，但是是在 `umi build` 时生成的，会在 `umi build` 执行完自动删除。
 
 ## .test.js 和 .e2e.js
 

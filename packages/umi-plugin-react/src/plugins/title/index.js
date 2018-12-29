@@ -1,11 +1,19 @@
+import { readFileSync, writeFileSync } from 'fs';
 import { join, relative } from 'path';
 import assert from 'assert';
+import Mustache from 'mustache';
 
 export default (api, option) => {
   const { paths, config } = api;
 
+  // write titleWrapper at while launching
+  writeTitleWrapper(paths, option.useLocale, option);
+
   api.onOptionChange(newOption => {
     option = newOption;
+
+    // write titleWrapper whenever title option changed
+    writeTitleWrapper(paths, option.useLocale, option);
     api.rebuildHTML();
   });
 
@@ -29,11 +37,24 @@ export default (api, option) => {
       // only open this plugin when option exist
       route.Routes = [
         ...(route.Routes || []),
-        relative(paths.cwd, join(__dirname, './TitleWrapper.js')),
+        relative(paths.cwd, join(__dirname, 'TitleWrapper.jsx')),
       ];
     }
   });
 };
+
+function writeTitleWrapper(paths, useLocale, option) {
+  const wrapperPath = join(__dirname, './TitleWrapper.jsx');
+  const wrapperTpl = readFileSync(
+    join(__dirname, './template/TitleWrapper.js.tpl'),
+    'utf-8',
+  );
+  const wrapperContent = Mustache.render(wrapperTpl, {
+    useLocale,
+    option,
+  });
+  writeFileSync(wrapperPath, wrapperContent, 'utf-8');
+}
 
 function parseOption(option) {
   // fill title with parent value or default value

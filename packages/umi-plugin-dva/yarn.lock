@@ -84,7 +84,7 @@ arrify@^1.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
-babel-plugin-dva-hmr@^0.4.1:
+babel-plugin-dva-hmr@0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-dva-hmr/-/babel-plugin-dva-hmr-0.4.1.tgz#1c684e90f48e6e5548f1d098b0d5f47fe953168f"
   integrity sha512-q5uLph/66yIEPKNr5rKyOlmlDMr19XHRuGmdcyO3uO3TnsI576qS36XK9FWlwLhmrOIzO1fZPfvyZS8A+lP0pw==
@@ -144,22 +144,22 @@ dva-core@^1.5.0-beta.2:
     redux-saga "^0.16.0"
     warning "^3.0.0"
 
-dva-immer@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/dva-immer/-/dva-immer-0.2.3.tgz#c06c035e8c1b3a6b6ab2a8e186713b59f2083923"
-  integrity sha512-tb9wYOnqt/hrkkOVnpx+uMz7TSoINiRxdjRp4TcQ/hii3wa2QqqfYQDn56Mz2y/Fu2vG1RjysmqFhM8MQiBV/Q==
+dva-immer@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/dva-immer/-/dva-immer-0.2.4.tgz#d038277c4e48e5df19ac60fce7b08e0c4f08ded0"
+  integrity sha512-et00/l1mILd+OlbS7jia6phQqHHmw1Ul4Bj6WvCr4SSDxasauofnhjK7ANbKANEmOOtxlW8bR4+NGonuAf4Q+g==
   dependencies:
     "@babel/runtime" "7.0.0-beta.46"
     immer "^1.2.1"
 
-dva-loading@^2.1.0-beta.2:
+dva-loading@2.1.0-beta.2:
   version "2.1.0-beta.2"
   resolved "https://registry.yarnpkg.com/dva-loading/-/dva-loading-2.1.0-beta.2.tgz#e7711ad8d362340da625b05625de647365c0375c"
   integrity sha512-mAqKE4VC5bLuYUM8gD59BR98WRE8HvGBy1b3W3xQ4bTL/0T6zo9vZ9MNclBO1dx4IfS9AOz+MJai3taO68bv4Q==
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-dva@^2.5.0-beta.2:
+dva@2.5.0-beta.2:
   version "2.5.0-beta.2"
   resolved "https://registry.yarnpkg.com/dva/-/dva-2.5.0-beta.2.tgz#a66607bac776e704f4475c8a5146f0bd2dbd16dd"
   integrity sha512-kc2+CHhF1cNIU3Rg1miMhHgOKJ/VDrq9d6ynVBZf1EN2YKWU3MVFq/uTTBqMr2qkR0m9f8VKHOFmfKLtfMI93Q==
@@ -215,7 +215,7 @@ global@^4.3.2:
     min-document "^2.19.0"
     process "~0.5.1"
 
-globby@^7.1.1:
+globby@7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/globby/-/globby-7.1.1.tgz#fb2ccff9401f8600945dfada97440cca972b8680"
   integrity sha1-+yzP+UAfhgCUXfral0QMypcrhoA=
@@ -320,7 +320,7 @@ lodash-es@^4.17.5, lodash-es@^4.2.1:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
   integrity sha512-DHb1ub+rMjjrxqlB3H56/6MXtm1lSksDp2rA2cNWjG8mlDUYFhUj3Di2Zn5IwSU87xLv8tNIQ7sSwE/YOX/D/Q==
 
-lodash.uniq@^4.5.0:
+lodash.uniq@4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
@@ -359,7 +359,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-object-assign@^4.1.1:
+object-assign@4.1.1, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -376,12 +376,12 @@ path-is-absolute@^1.0.0:
   resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
   integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
 
-path-is-root@^0.1.0:
+path-is-root@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/path-is-root/-/path-is-root-0.1.0.tgz#6663ab3e2b1da706229e11b52c811c2d4708a5a2"
   integrity sha1-ZmOrPisdpwYinhG1LIEcLUcIpaI=
 
-path-to-regexp@^1.7.0:
+path-to-regexp@1.7.0, path-to-regexp@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz#59fde0f435badacba103a84e9d3bc64e96b9937d"
   integrity sha1-Wf3g9DW62suhA6hOnTvGTpa5k30=

@@ -4,7 +4,7 @@ sidebarDepth: 3
 
 # umi-plugin-react
 
-这是官方封装的一个插件集，包含 13 个常用的进阶功能。
+这是官方封装的一个插件集，包含 18 个常用的进阶功能。
 
 ## 安装
 
@@ -42,6 +42,19 @@ export default {
       hd: true,
       fastClick: true,
       title: 'default title',
+      chunks: ['vendor', 'umi'],
+      scripts: [
+        { src: 'http://cdn/a.js' },
+        { src: '<%= PUBLIC_PATH %>a.js' },
+        { content: `alert('a');` },
+      ],
+      headScripts: [],
+      metas: [
+        { charset: 'utf-8' },
+      ],
+      links: [
+        { rel: 'stylesheet', href: 'http://cdn/a.css' },
+      ],
     }],
   ],
 };
@@ -88,9 +101,11 @@ export default {
 * `exclude`，值为 `Array(RegExp)`，用于忽略某些路由，比如使用 dva 后，通常需要忽略 models、components、services 等目录
 * `update`, 值为 `Function`，用于更新路由
 
-### polyfills
+### polyfills (已废弃)
 
 * 类型：`Array(String)`
+
+> 请改用 [config.targets](https://umijs.org/zh/config/#targets)
 
 基于 [umi-plugin-polyfills](https://github.com/umijs/umi/tree/master/packages/umi-plugin-polyfills) 实现，用于加各种补丁。
 
@@ -150,7 +165,7 @@ export default {
 开启 PWA 相关功能，包括：
 * 生成 `manifest.json`，对于 WebManifest 中引用的 `icons` 图标，建议放在项目根目录 `public/` 文件夹下，最终会被直接拷贝到构建目录中
 * 在 `PRODUCTION` 模式下生成 Service Worker
- 
+
 配置项包含：
 * `manifestOptions` 类型：`Object`，包含如下属性:
   * `srcPath` manifest 的文件路径，类型：`String`，默认值为 `src/manifest.json`（如果 `src` 不存在，为项目根目录）
@@ -220,6 +235,7 @@ window.addEventListener('sw.offline', () => {
 * `defaultTitle: '默认标题'`, // 必填，当配置项为 String 时直接配置项作为 defaultTitle
 * `format: '{parent}{separator}{current}'`, // default {parent}{separator}{current}, title format
 * `separator: ' - '`, // default ' - '
+* `useLocale: true`, // default false，是否使用locale做多语言支持。如果选`true`，则会通过配置的`title`属性去`locales/*.js`找对应文字
 
 当 title 插件开启后你可以在 routes 配置或者 pages 下的页面组件中配置 title。
 
@@ -246,3 +262,37 @@ export default () => {
   return <div>testpage</div>;
 }
 ```
+
+> 在约定式路由里，注释必须写在文件头，否则将不被识别
+
+#### 自定义模板document.ejs
+
+如果你使用了自定的`src/pages/document.ejs`，你需要在里面加入`<title><%= context.title %></title>`，以确保`title.defaultTitle`能正常被注入到生成的`index.html`里
+
+### chunks
+
+* 类型：`Array(String)`
+
+默认是 ['umi']，可修改，比如做了 vendors 依赖提取之后，会需要在 umi.js 之前加载 vendors.js
+
+### scripts
+
+* 类型：`Array(Object)`
+
+放在 <head> 里，在 umi.js 之后，可使用 <%= PUBLIC_PATH %> 指向 publicPath
+
+### headScripts
+
+* 类型：`Array(Object)`
+
+放在 <head> 里，在 umi.js 之前，可使用 <%= PUBLIC_PATH %> 指向 publicPath
+
+### metas
+
+* 类型：`Array(Object)`
+
+### links
+
+* 类型：`Array(Object)`
+
+可使用 <%= PUBLIC_PATH %> 指向 publicPath

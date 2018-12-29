@@ -1,5 +1,4 @@
-import isEqual from 'lodash.isequal';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject, isEqual } from 'lodash';
 
 function funcToStr(obj) {
   if (typeof obj === 'function') return obj.toString();

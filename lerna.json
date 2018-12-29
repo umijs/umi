@@ -1,5 +1,4 @@
 {
-  "lerna": "2.0.0",
   "changelog": {
     "labels": {
       "enhancement": ":rocket: Enhancement",
@@ -12,6 +11,11 @@
   "packages": [
     "packages/*"
   ],
-  "npmClient": "npm",
+  "command": {
+    "version": {
+      "exact": true
+    }
+  },
+  "npmClient": "yarn",
   "version": "independent"
 }

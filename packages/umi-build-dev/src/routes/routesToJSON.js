@@ -1,7 +1,6 @@
-import { join, relative } from 'path';
-import isAbsolute from 'path-is-absolute';
+import { join, relative, isAbsolute } from 'path';
 import { winPath } from 'umi-utils';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash';
 
 let targetLevel = null;
 let level = 0;

@@ -3,11 +3,10 @@ import { join, dirname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
-import clonedeep from 'lodash.clonedeep';
-import assign from 'object-assign';
+import { assign, cloneDeep } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
-import deprecate from 'deprecate';
+import { deprecate } from 'umi-utils';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -67,7 +66,7 @@ export default class Service {
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        signale.error(e.message);
+        signale.error(e);
         process.exit(1);
       }
     }
@@ -157,7 +156,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
     let count = 0;
     while (this.extraPlugins.length) {
-      const extraPlugins = clonedeep(this.extraPlugins);
+      const extraPlugins = cloneDeep(this.extraPlugins);
       this.extraPlugins = [];
       extraPlugins.forEach(plugin => {
         this.initPlugin(plugin);
@@ -265,9 +264,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     mergeConfig(this.config, config);
     this.userConfig = userConfig;
     if (config.browserslist) {
-      deprecate(
-        'config.browserslist is deprecated, use config.targets instead',
-      );
+      deprecate('config.browserslist', 'use config.targets instead');
     }
     debug('got user config');
     debug(this.config);
@@ -297,8 +294,18 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
   run(name = 'help', args) {
     this.init();
+    return this.runCommand(name, args);
+  }
 
-    debug(`run ${name} with args ${args}`);
+  runCommand(rawName, rawArgs) {
+    debug(`raw command name: ${rawName}, args: ${JSON.stringify(rawArgs)}`);
+    const { name, args } = this.applyPlugins('_modifyCommand', {
+      initialValue: {
+        name: rawName,
+        args: rawArgs,
+      },
+    });
+    debug(`run ${name} with args ${JSON.stringify(args)}`);
 
     const command = this.commands[name];
     if (!command) {

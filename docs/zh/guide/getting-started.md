@@ -20,7 +20,7 @@ $ npm i yarn tyarn -g
 $ tyarn -v
 
 # 阿里内网源
-$ tnpm i yarn @alipay/yarn -g
+$ tnpm i yarn @ali/yarn -g
 # 后面文档里的 yarn 换成 ayarn
 $ ayarn -v
 ```

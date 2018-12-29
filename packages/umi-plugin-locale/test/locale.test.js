@@ -1,5 +1,6 @@
 import {
   formatMessage,
+  formatHTMLMessage,
   setLocale,
   getLocale,
   FormattedMessage,
@@ -34,6 +35,7 @@ Object.defineProperty(location, 'reload', {
 describe('test umi/locale', () => {
   test('api exist', () => {
     expect(formatMessage).toBeTruthy();
+    expect(formatHTMLMessage).toBeTruthy();
     expect(setLocale).toBeTruthy();
     expect(getLocale).toBeTruthy();
     expect(FormattedMessage).toBeTruthy();

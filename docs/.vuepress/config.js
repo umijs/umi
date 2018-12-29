@@ -55,7 +55,13 @@ module.exports = {
             {
               title: 'Advanced',
               collapsable: false,
-              children: ['mock-data', 'with-dva', 'load-on-demand', 'deploy'],
+              children: [
+                'mock-data',
+                'with-dva',
+                'load-on-demand',
+                'block',
+                'deploy',
+              ],
             },
             {
               title: 'Reference',
@@ -116,7 +122,13 @@ module.exports = {
             {
               title: '进阶',
               collapsable: false,
-              children: ['mock-data', 'with-dva', 'load-on-demand', 'deploy'],
+              children: [
+                'mock-data',
+                'with-dva',
+                'load-on-demand',
+                'block',
+                'deploy',
+              ],
             },
             {
               title: '参考',

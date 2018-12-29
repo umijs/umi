@@ -569,4 +569,30 @@ describe('HG', () => {
     expect(c2.includes('"/umi.js"') && c2.includes('"/umi.css"')).toEqual(true);
     expect(c2.includes('<title>bctitle-/b/c</title>')).toEqual(true);
   });
+
+  it('get content with default document when title is undefined', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      minify: false,
+      config: {
+        mountElementId: 'root',
+      },
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(__dirname, '../../template/document.ejs'),
+      },
+      routes: [{ path: '/a' }],
+      modifyContext: context => {
+        return context;
+      },
+    });
+
+    const c1 = hg.getMatchedContent('/a');
+    expect(c1.includes('"/umi.js"') && c1.includes('"/umi.css"')).toEqual(true);
+    expect(c1.includes('<title>')).toEqual(false);
+  });
 });

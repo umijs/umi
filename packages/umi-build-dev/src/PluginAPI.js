@@ -1,7 +1,7 @@
 import debug from 'debug';
 import assert from 'assert';
 import { relative } from 'path';
-import isPlainObject from 'is-plain-object';
+import lodash, { isPlainObject } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
 import Generator from 'yeoman-generator';
@@ -17,6 +17,7 @@ export default class PluginAPI {
     this.debug = debug(`umi-plugin: ${id}`);
     this.log = signale;
     this.winPath = winPath;
+    this._ = lodash;
     this.compatDirname = compatDirname;
     this.findJS = findJS;
     this.findCSS = findCSS;
@@ -69,6 +70,7 @@ export default class PluginAPI {
       'addRouterImport',
       'addRouterImportAhead',
       'addVersionInfo',
+      'addUIPlugin',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',
@@ -100,6 +102,13 @@ export default class PluginAPI {
       '_modifyHelpInfo',
       'addRuntimePlugin',
       'addRuntimePluginKey',
+      'beforeBlockWriting',
+      '_modifyBlockPackageJSONPath',
+      '_modifyBlockDependencies',
+      '_modifyBlockFile',
+      '_modifyBlockTarget',
+      '_modifyCommand',
+      '_modifyBlockNewRouteConfig',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);

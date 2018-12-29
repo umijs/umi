@@ -1,5 +1,4 @@
-import isPlainObject from 'is-plain-object';
-import isEqual from 'lodash.isequal';
+import { isPlainObject, isEqual } from 'lodash';
 
 function toObject(o) {
   if (!isPlainObject(o)) {
@@ -80,8 +79,8 @@ export default function(api, option) {
       }
       if (key === 'dva') {
         opts = {
-          ...toObject(opts),
           dynamicImport: option.dynamicImport,
+          ...toObject(opts),
         };
       }
 
