@@ -67,7 +67,7 @@ export default (service, opts = {}) => {
     },
     modifyHTML(memo, opts = {}) {
       const { route, getChunkPath } = opts;
-      const $ = cheerio.load(memo);
+      const $ = cheerio.load(memo, {decodeEntities: false});
       service.applyPlugins('modifyHTMLWithAST', {
         initialValue: $,
         args: {
