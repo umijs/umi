@@ -5,7 +5,7 @@ interface Params {
   id: string;
   defaultMessage?: string;
 }
-declare function formatMessage(params: Params, data?: Object): void;
+declare function formatMessage(params: Params, data?: Object): string;
 declare class FormattedMessage extends React.Component<Params> { }
 
 export { setLocale, getLocale, formatMessage, FormattedMessage };
