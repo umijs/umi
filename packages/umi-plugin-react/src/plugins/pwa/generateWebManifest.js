@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { basename, join } from 'path';
-import { resolve } from 'url';
+import { resolve, parse } from 'url';
 
 export const PWACOMPAT_PATH = 'pwacompat.min.js';
 export const DEFAULT_MANIFEST_FILENAME = 'manifest.json';
@@ -29,7 +29,7 @@ export default function generateWebManifest(api, options) {
   };
   let manifestFilename = basename(srcPath);
 
-  if (existsSync(srcPath)) {
+  if (existsSync(parse(srcPath).pathname)) {
     // watch manifest on DEV mode
     if (process.env.NODE_ENV === 'development') {
       addPageWatcher([srcPath]);
