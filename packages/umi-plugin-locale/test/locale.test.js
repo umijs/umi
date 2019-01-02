@@ -15,8 +15,12 @@ const localStorageMock = (function() {
   let store = {};
 
   return {
+    // Reference: greasemonkey_api_test.js@chromium
     getItem: function(key) {
-      return store[key] || null;
+      if (key in store) {
+        return store[key];
+      }
+      return null;
     },
     setItem: function(key, value) {
       store[key] = value.toString();
@@ -27,7 +31,7 @@ const localStorageMock = (function() {
   };
 })();
 
-const InjectedWrapper = (() => {
+const InjectedWrapper = (function() {
   let sfc = (props, context) => {
     _setIntlObject(context.intl);
     return props.children;
@@ -45,12 +49,14 @@ Object.defineProperty(window, 'localStorage', {
 
 // eslint-disable-next-line
 Object.defineProperty(location, 'reload', {
-  value: () => {},
+  value: () => {
+    window.g_lang = window.localStorage.getItem('umi_locale');
+  },
 });
 
 describe('test umi/locale', () => {
   test('api exist', () => {
-    renderer.create(
+    const wrapper = renderer.create(
       <IntlProvider locale="en">
         <InjectedWrapper>Fallback</InjectedWrapper>
       </IntlProvider>,
@@ -60,6 +66,7 @@ describe('test umi/locale', () => {
     expect(setLocale).toBeTruthy();
     expect(getLocale).toBeTruthy();
     expect(FormattedMessage).toBeTruthy();
+    wrapper.unmount();
   });
 
   test('setLocale', () => {
@@ -75,9 +82,10 @@ describe('test umi/locale', () => {
 
     setLocale('zh-CN');
     expect(window.localStorage.getItem('umi_locale')).toBe('zh-CN');
-    // 用例挂了，先注释了。
-    // expect(getLocale()).toBe('zh-CN');
+    expect(getLocale()).toBe('zh-CN');
     setLocale('en-US');
-    // expect(getLocale()).toBe('en-US');
+    expect(getLocale()).toBe('en-US');
+    setLocale();
+    expect(window.localStorage.getItem('umi_locale')).toBe('');
   });
 });

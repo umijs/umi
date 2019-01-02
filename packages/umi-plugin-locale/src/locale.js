@@ -1,3 +1,4 @@
+const ReactIntl = require('react-intl');
 /* eslint-disable no-undef */
 function setLocale(lang) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
@@ -22,4 +23,4 @@ function _setIntlObject(intl) {
   Object.assign(module.exports, intl);
 }
 
-module.exports = { ...require('react-intl'), setLocale, getLocale, _setIntlObject };
+module.exports = { ...ReactIntl, setLocale, getLocale, _setIntlObject };
