@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { isPlainObject } from 'lodash';
+import isPlainObject from 'lodash/isPlainObject';
 
 let plugins = null;
 let validKeys = [];
