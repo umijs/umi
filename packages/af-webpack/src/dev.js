@@ -55,7 +55,9 @@ export default function dev({
         if (stats.hasErrors()) {
           // make sound
           // ref: https://github.com/JannesMeyer/system-bell-webpack-plugin/blob/bb35caf/SystemBellPlugin.js#L14
-          process.stdout.write('\x07');
+          if (process.env.SYSTEM_BELL !== 'none') {
+            process.stdout.write('\x07');
+          }
           return;
         }
 
