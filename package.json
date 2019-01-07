@@ -44,5 +44,8 @@
     "shelljs": "0.8.3",
     "umi-test": "^1.2.2",
     "umi-tools": "^0.2.2"
+  },
+  "dependencies": {
+    "javascript-stringify": "^1.6.0"
   }
 }
