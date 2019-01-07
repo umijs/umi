@@ -238,7 +238,7 @@ or,
 
 ### define
 
-Passed to the code via the webP's DefinePlugin , the value is automatically handled by `JSON.stringify`.
+Passed to the code via the webpack's DefinePlugin , the value is automatically handled by `JSON.stringify`.
 such as:
 
 ```js
