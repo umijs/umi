@@ -1,6 +1,7 @@
 import { join, relative, isAbsolute } from 'path';
 import { winPath } from 'umi-utils';
 import { cloneDeep } from 'lodash';
+import stringifyObject from 'stringify-object';
 
 let targetLevel = null;
 let level = 0;
@@ -59,6 +60,9 @@ export default (routes, service) => {
             )
             .join(', ')}]`;
         default:
+          if (typeof value === 'function') {
+            return stringifyObject(value);
+          }
           return value;
       }
     },
