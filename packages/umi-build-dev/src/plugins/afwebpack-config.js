@@ -168,6 +168,7 @@ export default function(api) {
               targets,
               env: {
                 useBuiltIns: 'entry',
+                modules: false,
               },
             },
           ],
@@ -186,8 +187,8 @@ export default function(api) {
       publicPath: isDev
         ? '/'
         : config.publicPath != null
-          ? config.publicPath
-          : '/',
+        ? config.publicPath
+        : '/',
     };
   });
 }
