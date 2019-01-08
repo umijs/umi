@@ -58,12 +58,18 @@ export default function(api) {
     cwd,
     dirname(require.resolve('react-router-dom/package.json')),
   );
+  const reactRouterConfigDir = compatDirname(
+    'react-router-config/package.json',
+    cwd,
+    dirname(require.resolve('react-router-config/package.json')),
+  );
   api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set('react', reactDir)
       .set('react-dom', reactDOMDir)
       .set('react-router', reactRouterDir)
       .set('react-router-dom', reactRouterDOMDir)
+      .set('react-router-config', reactRouterConfigDir)
       .set(
         'history',
         compatDirname(
@@ -106,6 +112,9 @@ export default function(api) {
     `react-router-dom@${
       require(join(reactRouterDOMDir, 'package.json')).version
     } (${reactRouterDOMDir})`,
+    `react-router-config@${
+      require(join(reactRouterConfigDir, 'package.json')).version
+    } (${reactRouterConfigDir})`,
   ]);
 
   api.modifyAFWebpackOpts(memo => {
