@@ -198,7 +198,12 @@ export default function(opts) {
       .end()
       .use('babel-loader')
       .loader(require.resolve('babel-loader'))
-      .options(babelOpts);
+      .options({
+        ...babelOpts,
+        // Tell babel to guess the type, instead assuming all files are modules
+        // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
+        sourceType: 'unambiguous',
+      });
   });
 
   // module -> tsx?
