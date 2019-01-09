@@ -58,6 +58,51 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([{ component: '() => A', path: '/a' }]);
   });
 
+  it('the value is a function type ', () => {
+    const json = routesToJSON(
+      [
+        {
+          isfunc: () => {
+            const a = () => {};
+            return () => {
+              const b = () => {
+                a();
+              };
+              return b;
+            };
+          },
+          routes: [
+            {
+              isfunc() {},
+            },
+          ],
+        },
+      ],
+      service,
+      {},
+    );
+    expect(JSON.parse(json)).toEqual([
+      {
+        isfunc: `function isfunc() {
+          var a = function a() {};
+
+          return function () {
+            var b = function b() {
+              a();
+            };
+
+            return b;
+          };
+        }"`,
+        routes: [
+          {
+            isfunc: 'function isfunc() {}',
+          },
+        ],
+      },
+    ]);
+  });
+
   it('path with htmlSuffix', () => {
     const json = routesToJSON(
       [

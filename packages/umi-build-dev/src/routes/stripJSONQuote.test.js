@@ -65,4 +65,13 @@ describe('stripJSONQuote', () => {
 }
     `);
   });
+
+  it('the value is a function type ', () => {
+    const striped = stripJSONQuote(
+      `[{"isfunc": "function isfunc() {var a = function a() {};return function () {var b = function b() {a();};return b;};}", "routes": [{"isfunc": "function isfunc() {}"}]}]`,
+    );
+    expect(striped).toEqual(
+      `[{"isfunc": function isfunc() {var a = function a() {};return function () {var b = function b() {a();};return b;};}, "routes": [{"isfunc": function isfunc() {}}]}]`,
+    );
+  });
 });

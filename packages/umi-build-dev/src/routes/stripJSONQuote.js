@@ -3,8 +3,8 @@ export default function(jsonStr) {
     .replace(/\"component\": (\"(.+?)\")/g, (global, m1, m2) => {
       return `"component": ${m2.replace(/\^/g, '"')}`;
     })
-    .replace(/\:(\s\"(function\s\w+\([\s\S]+?)\")\,/g, (global, m1, m2) => {
-      return `: ${m2},`;
+    .replace(/\:\s\"(function[\s\S]+?})"/g, (global, m1) => {
+      return `: ${m1}`;
     })
     .replace(/\"Routes\": (\"(.+?)\")/g, `"Routes": $2`)
     .replace(/\\r\\n/g, '\r\n')
