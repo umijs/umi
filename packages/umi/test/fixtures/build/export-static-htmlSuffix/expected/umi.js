@@ -133,44 +133,7 @@ module.exports = window.ReactRouterDOM;
 
 var warning = function() {};
 
-if (true) {
-  warning = function(condition, format, args) {
-    var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
-    }
-    if (format === undefined) {
-      throw new Error(
-        '`warning(condition, format, ...args)` requires a warning ' +
-        'message argument'
-      );
-    }
-
-    if (format.length < 10 || (/^[s\W]*$/).test(format)) {
-      throw new Error(
-        'The warning format should be able to uniquely identify this ' +
-        'warning. Please, use a more descriptive format than: ' + format
-      );
-    }
-
-    if (!condition) {
-      var argIndex = 0;
-      var message = 'Warning: ' +
-        format.replace(/%s/g, function() {
-          return args[argIndex++];
-        });
-      if (typeof console !== 'undefined') {
-        console.error(message);
-      }
-      try {
-        // This error was thrown as a convenience so that you can use this stack
-        // to find the callsite that caused this warning to fire.
-        throw new Error(message);
-      } catch(x) {}
-    }
-  };
-}
+if (false) {}
 
 module.exports = warning;
 
@@ -811,11 +774,7 @@ exports.default = createBrowserHistory;
  */
 
 var invariant = function(condition, format, a, b, c, d, e, f) {
-  if (true) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  }
+  if (false) {}
 
   if (!condition) {
     var error;
@@ -2454,12 +2413,8 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _router = _interopRequireDefault(__webpack_require__(42));
 
-var _list = _interopRequireDefault(__webpack_require__(43));
-
 function _default() {
-  return _react.default.createElement("div", {
-    className: _list.default.normal
-  }, _react.default.createElement("h1", null, "List Page"), _react.default.createElement("button", {
+  return _react.default.createElement("div", null, _react.default.createElement("h1", null, "List Page"), _react.default.createElement("button", {
     onClick: () => {
       _router.default.goBack();
     }
@@ -2522,13 +2477,6 @@ var _default = {
   goForward: goForward
 };
 exports.default = _default;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-module.exports = {"normal":"normal___ghtU5"};
 
 /***/ })
 /******/ ]);

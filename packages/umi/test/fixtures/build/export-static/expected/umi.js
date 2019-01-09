@@ -2443,12 +2443,8 @@ var _react = _interopRequireDefault(__webpack_require__(0));
 
 var _router = _interopRequireDefault(__webpack_require__(42));
 
-var _list = _interopRequireDefault(__webpack_require__(43));
-
 function _default() {
-  return _react.default.createElement("div", {
-    className: _list.default.normal
-  }, _react.default.createElement("h1", null, "List Page"), _react.default.createElement("button", {
+  return _react.default.createElement("div", null, _react.default.createElement("h1", null, "List Page"), _react.default.createElement("button", {
     onClick: () => {
       _router.default.goBack();
     }
@@ -2511,13 +2507,6 @@ var _default = {
   goForward: goForward
 };
 exports.default = _default;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-module.exports = {"normal":"normal___2S-zN"};
 
 /***/ })
 /******/ ]);

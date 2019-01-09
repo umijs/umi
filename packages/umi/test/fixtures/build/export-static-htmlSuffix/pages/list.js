@@ -1,9 +1,8 @@
 import router from 'umi/router';
-import styles from './list.css';
 
 export default function() {
   return (
-    <div className={styles.normal}>
+    <div>
       <h1>List Page</h1>
       <button
         onClick={() => {
