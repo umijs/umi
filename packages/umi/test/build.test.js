@@ -20,11 +20,5 @@ describe('umi build', () => {
     build({ cwd }) {
       return build({ cwd });
     },
-    replaceContent(content) {
-      return content.replace(
-        /\/\/ EXTERNAL MODULE[^\n]+/g,
-        '// $EXTERNAL_MODULE$',
-      );
-    },
   });
 });

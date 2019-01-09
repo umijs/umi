@@ -390,9 +390,6 @@ __webpack_require__(!(function webpackMissingModule() { var e = new Error("Canno
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 // create history
 window.g_history = __webpack_require__(11).default({
   basename: window.routerBase
