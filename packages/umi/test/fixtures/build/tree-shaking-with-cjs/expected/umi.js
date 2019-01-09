@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -94,13 +94,7 @@ module.exports = window.React;
 /* 1 */
 /***/ (function(module, exports) {
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-module.exports = _interopRequireDefault;
+module.exports = window.ReactRouterDOM;
 
 /***/ }),
 /* 2 */
@@ -203,7 +197,7 @@ var createPath = exports.createPath = function createPath(location) {
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(28);
+var root = __webpack_require__(27);
 
 /** Built-in value references. */
 var Symbol = root.Symbol;
@@ -215,150 +209,183 @@ module.exports = Symbol;
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = window.ReactRouterDOM;
+module.exports = window.ReactDOM;
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(7);
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(1);
-
-__webpack_require__(8);
-
-__webpack_require__(9);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = renderRoutes;
 
 var _react = _interopRequireDefault(__webpack_require__(0));
 
-var _reactDom = _interopRequireDefault(__webpack_require__(23));
+var _reactRouterDom = __webpack_require__(1);
 
-// runtime plugins
-window.g_plugins = __webpack_require__(24);
-window.g_plugins.init({
-  validKeys: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps']
-}); // render
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var oldRender = () => {
-  var rootContainer = window.g_plugins.apply('rootContainer', {
-    initialValue: _react.default.createElement(__webpack_require__(36).default)
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+var RouteInstanceMap = {
+  get: function get(key) {
+    return key._routeInternalComponent;
+  },
+  has: function has(key) {
+    return key._routeInternalComponent !== undefined;
+  },
+  set: function set(key, value) {
+    key._routeInternalComponent = value;
+  }
+}; // Support pass props from layout to child routes
+
+var RouteWithProps = function RouteWithProps(_ref) {
+  var path = _ref.path,
+      exact = _ref.exact,
+      strict = _ref.strict,
+      _render = _ref.render,
+      location = _ref.location,
+      rest = _objectWithoutProperties(_ref, ["path", "exact", "strict", "render", "location"]);
+
+  return _react.default.createElement(_reactRouterDom.Route, {
+    path: path,
+    exact: exact,
+    strict: strict,
+    location: location,
+    render: function render(props) {
+      return _render(_objectSpread({}, props, rest));
+    }
   });
-
-  _reactDom.default.render(rootContainer, document.getElementById('root'));
 };
 
-var render = window.g_plugins.compose('render', {
-  initialValue: oldRender
-});
-var moduleBeforeRendererPromises = [];
-Promise.all(moduleBeforeRendererPromises).then(() => {
-  render();
-}).catch(err => {
-  if (false) {}
-}); // hot module replacement
+function getCompatProps(props) {
+  var compatProps = {};
 
-if (false) {}
+  if (undefined) {
+    if (props.match && props.match.params && !props.params) {
+      compatProps.params = props.match.params;
+    }
+  }
+
+  return compatProps;
+}
+
+function withRoutes(route) {
+  if (RouteInstanceMap.has(route)) {
+    return RouteInstanceMap.get(route);
+  }
+
+  var Routes = route.Routes;
+  var len = Routes.length - 1;
+
+  var Component = function Component(args) {
+    var render = args.render,
+        props = _objectWithoutProperties(args, ["render"]);
+
+    return render(props);
+  };
+
+  var _loop = function _loop() {
+    var AuthRoute = Routes[len];
+    var OldComponent = Component;
+
+    Component = function Component(props) {
+      return _react.default.createElement(AuthRoute, props, _react.default.createElement(OldComponent, props));
+    };
+
+    len -= 1;
+  };
+
+  while (len >= 0) {
+    _loop();
+  }
+
+  var ret = function ret(args) {
+    var _render2 = args.render,
+        rest = _objectWithoutProperties(args, ["render"]);
+
+    return _react.default.createElement(RouteWithProps, _extends({}, rest, {
+      render: function render(props) {
+        return _react.default.createElement(Component, _extends({}, props, {
+          route: route,
+          render: _render2
+        }));
+      }
+    }));
+  };
+
+  RouteInstanceMap.set(route, ret);
+  return ret;
+}
+
+function renderRoutes(routes) {
+  var extraProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var switchProps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  return routes ? _react.default.createElement(_reactRouterDom.Switch, switchProps, routes.map(function (route, i) {
+    if (route.redirect) {
+      return _react.default.createElement(_reactRouterDom.Redirect, {
+        key: route.key || i,
+        from: route.path,
+        to: route.redirect,
+        exact: route.exact,
+        strict: route.strict
+      });
+    }
+
+    var RouteRoute = route.Routes ? withRoutes(route) : RouteWithProps;
+    return _react.default.createElement(RouteRoute, {
+      key: route.key || i,
+      path: route.path,
+      exact: route.exact,
+      strict: route.strict,
+      render: function render(props) {
+        var childRoutes = renderRoutes(route.routes, {}, {
+          location: props.location
+        });
+
+        if (route.component) {
+          var compatProps = getCompatProps(_objectSpread({}, props, extraProps));
+          var newProps = window.g_plugins.apply('modifyRouteProps', {
+            initialValue: _objectSpread({}, props, extraProps, compatProps),
+            args: {
+              route: route
+            }
+          });
+          return _react.default.createElement(route.component, _extends({}, newProps, {
+            route: route
+          }), childRoutes);
+        } else {
+          return childRoutes;
+        }
+      }
+    });
+  })) : null;
+}
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = 'foo';
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+module.exports = __webpack_require__(38);
 
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.from'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.array.includes'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.sort'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.species'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.date.to-primitive'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.function.has-instance'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.map'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.define-getter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.define-setter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.entries'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.get-own-property-descriptors'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.lookup-getter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.lookup-setter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.values'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.promise'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.promise.finally'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.flags'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.match'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.replace'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.split'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.search'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.to-string'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.set'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.symbol'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.symbol.async-iterator'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.string.pad-start'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.string.pad-end'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.array-buffer'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int8-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint8-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint8-clamped-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int16-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint16-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.float32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.float64-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.weak-map'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.weak-set'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.timers'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.immediate'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.dom.iterable'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'regenerator-runtime/runtime'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 /***/ }),
 /* 9 */
@@ -1610,12 +1637,6 @@ function normalizePath(path) {
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports) {
-
-module.exports = window.ReactDOM;
-
-/***/ }),
-/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1632,9 +1653,9 @@ exports.apply = apply;
 exports.applyForEach = applyForEach;
 exports.mergeConfig = mergeConfig;
 
-var _assert = _interopRequireDefault(__webpack_require__(25));
+var _assert = _interopRequireDefault(__webpack_require__(24));
 
-var _isPlainObject = _interopRequireDefault(__webpack_require__(26));
+var _isPlainObject = _interopRequireDefault(__webpack_require__(25));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1734,18 +1755,18 @@ function mergeConfig(item) {
 }
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = window.assert;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(27),
-    getPrototype = __webpack_require__(33),
-    isObjectLike = __webpack_require__(35);
+var baseGetTag = __webpack_require__(26),
+    getPrototype = __webpack_require__(32),
+    isObjectLike = __webpack_require__(34);
 
 /** `Object#toString` result references. */
 var objectTag = '[object Object]';
@@ -1808,12 +1829,12 @@ module.exports = isPlainObject;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(4),
-    getRawTag = __webpack_require__(31),
-    objectToString = __webpack_require__(32);
+    getRawTag = __webpack_require__(30),
+    objectToString = __webpack_require__(31);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -1842,10 +1863,10 @@ module.exports = baseGetTag;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(29);
+var freeGlobal = __webpack_require__(28);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -1857,7 +1878,7 @@ module.exports = root;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -1865,10 +1886,10 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 module.exports = freeGlobal;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(30)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(29)))
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1894,7 +1915,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(4);
@@ -1946,7 +1967,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -1974,10 +1995,10 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(34);
+var overArg = __webpack_require__(33);
 
 /** Built-in value references. */
 var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -1986,7 +2007,7 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
 /**
@@ -2007,7 +2028,7 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /**
@@ -2042,45 +2063,41 @@ module.exports = isObjectLike;
 
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 35 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RouterWrapper; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var umi_dynamic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(36);
+/* harmony import */ var umi_dynamic__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(umi_dynamic__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var umi_renderRoutes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var umi_renderRoutes__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(umi_renderRoutes__WEBPACK_IMPORTED_MODULE_3__);
 
 
-var _interopRequireDefault = __webpack_require__(1);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = RouterWrapper;
 
-var _react = _interopRequireDefault(__webpack_require__(0));
-
-var _reactRouterDom = __webpack_require__(5);
-
-var _dynamic = _interopRequireDefault(__webpack_require__(37));
-
-var _renderRoutes = _interopRequireDefault(__webpack_require__(38));
-
-var Router = _reactRouterDom.Router;
+var Router = react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Router"];
 var routes = [{
   "path": "/",
   "exact": true,
-  "component": __webpack_require__(39).default
+  "component": __webpack_require__(37).default
 }];
 window.g_plugins.applyForEach('patchRoutes', {
   initialValue: routes
 });
-
 function RouterWrapper() {
-  return _react.default.createElement(Router, {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Router, {
     history: window.g_history
-  }, (0, _renderRoutes.default)(routes, {}));
+  }, umi_renderRoutes__WEBPACK_IMPORTED_MODULE_3___default()(routes, {}));
 }
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2168,187 +2185,155 @@ function _default(dynamicOptions, options) {
 }
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _foo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _foo__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_foo__WEBPACK_IMPORTED_MODULE_1__);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Index Page ", _foo__WEBPACK_IMPORTED_MODULE_1___default.a));
 });
-exports.default = renderRoutes;
-
-var _react = _interopRequireDefault(__webpack_require__(0));
-
-var _reactRouterDom = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-var RouteInstanceMap = {
-  get: function get(key) {
-    return key._routeInternalComponent;
-  },
-  has: function has(key) {
-    return key._routeInternalComponent !== undefined;
-  },
-  set: function set(key, value) {
-    key._routeInternalComponent = value;
-  }
-}; // Support pass props from layout to child routes
-
-var RouteWithProps = function RouteWithProps(_ref) {
-  var path = _ref.path,
-      exact = _ref.exact,
-      strict = _ref.strict,
-      _render = _ref.render,
-      location = _ref.location,
-      rest = _objectWithoutProperties(_ref, ["path", "exact", "strict", "render", "location"]);
-
-  return _react.default.createElement(_reactRouterDom.Route, {
-    path: path,
-    exact: exact,
-    strict: strict,
-    location: location,
-    render: function render(props) {
-      return _render(_objectSpread({}, props, rest));
-    }
-  });
-};
-
-function getCompatProps(props) {
-  var compatProps = {};
-
-  if (undefined) {
-    if (props.match && props.match.params && !props.params) {
-      compatProps.params = props.match.params;
-    }
-  }
-
-  return compatProps;
-}
-
-function withRoutes(route) {
-  if (RouteInstanceMap.has(route)) {
-    return RouteInstanceMap.get(route);
-  }
-
-  var Routes = route.Routes;
-  var len = Routes.length - 1;
-
-  var Component = function Component(args) {
-    var render = args.render,
-        props = _objectWithoutProperties(args, ["render"]);
-
-    return render(props);
-  };
-
-  var _loop = function _loop() {
-    var AuthRoute = Routes[len];
-    var OldComponent = Component;
-
-    Component = function Component(props) {
-      return _react.default.createElement(AuthRoute, props, _react.default.createElement(OldComponent, props));
-    };
-
-    len -= 1;
-  };
-
-  while (len >= 0) {
-    _loop();
-  }
-
-  var ret = function ret(args) {
-    var _render2 = args.render,
-        rest = _objectWithoutProperties(args, ["render"]);
-
-    return _react.default.createElement(RouteWithProps, _extends({}, rest, {
-      render: function render(props) {
-        return _react.default.createElement(Component, _extends({}, props, {
-          route: route,
-          render: _render2
-        }));
-      }
-    }));
-  };
-
-  RouteInstanceMap.set(route, ret);
-  return ret;
-}
-
-function renderRoutes(routes) {
-  var extraProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var switchProps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  return routes ? _react.default.createElement(_reactRouterDom.Switch, switchProps, routes.map(function (route, i) {
-    if (route.redirect) {
-      return _react.default.createElement(_reactRouterDom.Redirect, {
-        key: route.key || i,
-        from: route.path,
-        to: route.redirect,
-        exact: route.exact,
-        strict: route.strict
-      });
-    }
-
-    var RouteRoute = route.Routes ? withRoutes(route) : RouteWithProps;
-    return _react.default.createElement(RouteRoute, {
-      key: route.key || i,
-      path: route.path,
-      exact: route.exact,
-      strict: route.strict,
-      render: function render(props) {
-        var childRoutes = renderRoutes(route.routes, {}, {
-          location: props.location
-        });
-
-        if (route.component) {
-          var compatProps = getCompatProps(_objectSpread({}, props, extraProps));
-          var newProps = window.g_plugins.apply('modifyRouteProps', {
-            initialValue: _objectSpread({}, props, extraProps, compatProps),
-            args: {
-              route: route
-            }
-          });
-          return _react.default.createElement(route.component, _extends({}, newProps, {
-            route: route
-          }), childRoutes);
-        } else {
-          return childRoutes;
-        }
-      }
-    });
-  })) : null;
-}
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 38 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./packages/umi/test/fixtures/build/tree-shaking-with-cjs/pages/.umi-production/polyfills.js
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.from'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.array.includes'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.sort'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.array.species'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.date.to-primitive'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.function.has-instance'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.map'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.define-getter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.define-setter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.entries'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.get-own-property-descriptors'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.lookup-getter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.lookup-setter'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.object.values'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.promise'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.promise.finally'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.flags'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.match'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.replace'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.split'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.search'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.regexp.to-string'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.set'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.symbol'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.symbol.async-iterator'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.string.pad-start'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es7.string.pad-end'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.array-buffer'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int8-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint8-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint8-clamped-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int16-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint16-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.int32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.uint32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.float32-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.typed.float64-array'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.weak-map'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/es6.weak-set'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.timers'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.immediate'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'core-js/modules/web.dom.iterable'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'regenerator-runtime/runtime'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
-var _interopRequireDefault = __webpack_require__(1);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EXTERNAL MODULE: ./packages/umi/test/fixtures/build/tree-shaking-with-cjs/pages/.umi-production/initHistory.js
+var initHistory = __webpack_require__(9);
+
+// EXTERNAL MODULE: external "window.React"
+var external_window_React_ = __webpack_require__(0);
+var external_window_React_default = /*#__PURE__*/__webpack_require__.n(external_window_React_);
+
+// EXTERNAL MODULE: external "window.ReactDOM"
+var external_window_ReactDOM_ = __webpack_require__(5);
+var external_window_ReactDOM_default = /*#__PURE__*/__webpack_require__.n(external_window_ReactDOM_);
+
+// CONCATENATED MODULE: ./packages/umi/test/fixtures/build/tree-shaking-with-cjs/pages/.umi-production/umi.js
+
+
+
+ // runtime plugins
+
+window.g_plugins = __webpack_require__(23);
+window.g_plugins.init({
+  validKeys: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps']
+}); // render
+
+var oldRender = () => {
+  var rootContainer = window.g_plugins.apply('rootContainer', {
+    initialValue: external_window_React_default.a.createElement(__webpack_require__(35).default)
+  });
+  external_window_ReactDOM_default.a.render(rootContainer, document.getElementById('root'));
+};
+
+var render = window.g_plugins.compose('render', {
+  initialValue: oldRender
 });
-exports.default = _default;
+var moduleBeforeRendererPromises = [];
+Promise.all(moduleBeforeRendererPromises).then(() => {
+  render();
+}).catch(err => {
+  if (false) {}
+}); // hot module replacement
 
-var _react = _interopRequireDefault(__webpack_require__(0));
-
-function _default() {
-  return _react.default.createElement("div", null, _react.default.createElement("h1", null, "Index Page"));
-}
+if (false) {}
 
 /***/ })
 /******/ ]);
