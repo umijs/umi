@@ -5,8 +5,8 @@
     "build": "./scripts/build.js",
     "changelog": "lerna-changelog",
     "test": "node scripts/test.js",
-    "test:coverage": "umi-test --coverage",
-    "debug": "umi-test",
+    "test:coverage": "./packages/umi-test/bin/umi-test.js --coverage",
+    "debug": "./packages/umi-test/bin/umi-test.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
     "precommit": "lint-staged",
@@ -42,7 +42,7 @@
     "react-router-dom": "4.3.1",
     "react-test-renderer": "16.6.3",
     "shelljs": "0.8.3",
-    "umi-test": "^1.2.2",
+    "test-build-result": "^1.0.1",
     "umi-tools": "^0.2.2"
   }
 }

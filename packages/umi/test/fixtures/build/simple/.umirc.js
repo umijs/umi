@@ -18,5 +18,4 @@ export default {
         ],
       );
   },
-  exportStatic: true,
 }

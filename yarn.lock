@@ -9555,6 +9555,13 @@ temp-write@^3.4.0:
     temp-dir "^1.0.0"
     uuid "^3.0.1"
 
+test-build-result@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/test-build-result/-/test-build-result-1.0.1.tgz#10d2901f9263cade0556e0465002f151809fa5f3"
+  integrity sha512-Z0TxBNXqiVEht6AtqS+ABpBhQwpE23GK9bIGvVrycRU+/6jz0LViLWjnMEHyAnL8y69e7FBArV6qSzVZ7dBz1w==
+  dependencies:
+    glob "^7.1.3"
+
 test-exclude@^4.2.1:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/test-exclude/-/test-exclude-4.2.3.tgz#a9a5e64474e4398339245a0a769ad7c2f4a97c20"
@@ -9784,7 +9791,7 @@ umask@^1.1.0:
   resolved "https://registry.yarnpkg.com/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
 
-umi-test@^1.2.0, umi-test@^1.2.2:
+umi-test@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/umi-test/-/umi-test-1.2.2.tgz#1d7d27499153158adf91365ebdbb9ce74a981bfc"
   integrity sha512-tSgu0uxEo0paph6C/QvbZJFZ/xsOwUfILN+q/gTb3S9C94wFcbMsltqrhLo1KsD4s9/N00lLUAwEkndjurkifQ==

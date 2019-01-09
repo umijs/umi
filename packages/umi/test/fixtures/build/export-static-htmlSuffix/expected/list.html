@@ -1,26 +1,17 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-<meta name="format-detection" content="telephone=no"/>
-<meta name="format-detection" content="email=no"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
-<title></title>
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+<script>
+  window.routerBase = "/";
+</script>
 </head>
 <body>
 
 <div id="root"></div>
 
-<link rel="stylesheet" href="./static/umi.css" />
-<script>
-  window.routerBase = location.pathname.split('/').slice(0, -1).concat('').join('/');
-  window.resourceBaseUrl = location.origin + window.routerBase + './static/';
-</script>
-<script src="./static/umi.js"></script>
-<script src="./static/__common-umi.async.js"></script>
-<script src="./static/pages__list.async.js"></script>
-</body>
-</html>
+<script src="/umi.js"></script>
 
+
+</body></html>
