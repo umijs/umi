@@ -9791,7 +9791,7 @@ umask@^1.1.0:
   resolved "https://registry.yarnpkg.com/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
 
-umi-test@^1.2.0, umi-test@^1.2.2:
+umi-test@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/umi-test/-/umi-test-1.2.2.tgz#1d7d27499153158adf91365ebdbb9ce74a981bfc"
   integrity sha512-tSgu0uxEo0paph6C/QvbZJFZ/xsOwUfILN+q/gTb3S9C94wFcbMsltqrhLo1KsD4s9/N00lLUAwEkndjurkifQ==
