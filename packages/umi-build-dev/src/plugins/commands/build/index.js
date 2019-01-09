@@ -37,33 +37,37 @@ export default function(api) {
         service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
       }
 
-      require('af-webpack/build').default({
-        cwd,
-        webpackConfig: service.webpackConfig,
-        onSuccess({ stats }) {
-          debug('Build success');
-          if (process.env.RM_TMPDIR !== 'none') {
-            debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
-            rimraf.sync(paths.absTmpDirPath);
-          }
-          service.applyPlugins('onBuildSuccess', {
-            args: {
-              stats,
-            },
-          });
-          debug('Build success end');
+      return new Promise((resolve, reject) => {
+        require('af-webpack/build').default({
+          cwd,
+          webpackConfig: service.webpackConfig,
+          onSuccess({ stats }) {
+            debug('Build success');
+            if (process.env.RM_TMPDIR !== 'none') {
+              debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
+              rimraf.sync(paths.absTmpDirPath);
+            }
+            service.applyPlugins('onBuildSuccess', {
+              args: {
+                stats,
+              },
+            });
+            debug('Build success end');
 
-          notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
-        },
-        onFail({ err, stats }) {
-          service.applyPlugins('onBuildFail', {
-            args: {
-              err,
-              stats,
-            },
-          });
-          notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
-        },
+            notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
+            resolve();
+          },
+          onFail({ err, stats }) {
+            service.applyPlugins('onBuildFail', {
+              args: {
+                err,
+                stats,
+              },
+            });
+            notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
+            reject(err);
+          },
+        });
       });
     },
   );

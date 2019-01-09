@@ -1,4 +1,5 @@
 import babelJest from 'babel-jest';
+import { dirname } from 'path';
 
 module.exports = babelJest.createTransformer({
   presets: [
@@ -15,8 +16,8 @@ module.exports = babelJest.createTransformer({
       {
         alias: {
           'ts-jest': require.resolve('ts-jest'),
-          react: require.resolve('react'),
-          'react-dom': require.resolve('react-dom'),
+          react: dirname(require.resolve('react/package')),
+          'react-dom': dirname(require.resolve('react-dom/package')),
           enzyme: require.resolve('enzyme'),
         },
       },

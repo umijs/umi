@@ -28,7 +28,9 @@ export default function build(opts = {}) {
       if (onFail) {
         onFail({ err, stats });
       }
-      process.exit(1);
+      if (!process.env.UMI_TEST) {
+        process.exit(1);
+      }
     }
 
     console.log('File sizes after gzip:\n');

@@ -1,7 +1,6 @@
 import webpack from 'webpack';
-import glob from 'glob';
 import { join } from 'path';
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import rimraf from 'rimraf';
 import getUserConfig from '../src/getUserConfig';
 import getConfig from '../src/getConfig';
@@ -44,50 +43,32 @@ function build(opts, done) {
   });
 }
 
-function assertBuildResult(cwd) {
-  const actualDir = join(cwd, 'dist');
-  const expectDir = join(cwd, 'expected');
-
-  const actualFiles = glob.sync('**/*', { cwd: actualDir, nodir: true });
-  const expectFiles = glob.sync('**/*', { cwd: actualDir, nodir: true });
-
-  expect(actualFiles.length).toEqual(expectFiles.length);
-
-  actualFiles.forEach(file => {
-    const actualFile = readFileSync(join(actualDir, file), 'utf-8');
-    const expectFile = readFileSync(join(expectDir, file), 'utf-8');
-    expect(
-      actualFile
-        .replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$')
-        .trim(),
-    ).toEqual(expectFile.trim());
-  });
-}
-
 describe('build', () => {
-  const fixtures = join(__dirname, './fixtures');
-  readdirSync(fixtures)
-    .filter(dir => dir.charAt(0) !== '.')
-    .forEach(dir => {
-      const fn = dir.indexOf('-only') > -1 ? it.only : it;
-      fn(dir, done => {
-        const cwd = join(fixtures, dir);
-        process.chdir(cwd);
+  require('test-build-result')({
+    root: join(__dirname, './fixtures'),
+    build({ cwd, dir }) {
+      return new Promise((resolve, reject) => {
         build(
           {
             cwd,
             outputPath: join(cwd, 'dist'),
             disableCSSModules: dir.indexOf('css-modules-exclude') === -1,
           },
-          () => {
-            try {
-              assertBuildResult(cwd);
-              done();
-            } catch (e) {
-              done(e);
+          err => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
             }
           },
         );
       });
-    });
+    },
+    replaceContent(content) {
+      return content.replace(
+        /\/\/ EXTERNAL MODULE[^\n]+/g,
+        '// $EXTERNAL_MODULE$',
+      );
+    },
+  });
 });
