@@ -14,7 +14,7 @@ function build({ cwd, args = {} }) {
   return s.run('build', args);
 }
 
-describe('umi build', () => {
+xdescribe('umi build', () => {
   require('test-build-result')({
     root: join(__dirname, './fixtures/build'),
     build({ cwd }) {
