@@ -84,16 +84,16 @@ describe('routesToJSON', () => {
     expect(JSON.parse(json)).toEqual([
       {
         isfunc: `function isfunc() {
-          var a = function a() {};
+        var a = function a() {};
 
-          return function () {
-            var b = function b() {
-              a();
-            };
-
-            return b;
+        return function () {
+          var b = function b() {
+            a();
           };
-        }"`,
+
+          return b;
+        };
+      }`,
         routes: [
           {
             isfunc: 'function isfunc() {}',
