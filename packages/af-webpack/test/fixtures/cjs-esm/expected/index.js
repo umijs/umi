@@ -93,9 +93,42 @@ module.exports = __webpack_require__(1);
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+var _foo = _interopRequireDefault(__webpack_require__(3));
+
+var _bar = __webpack_require__(4);
+
+console.log(_foo.default, _bar.bar);
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
-console.log(1);
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = 'foo';
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+exports.bar = 'bar';
 
 /***/ })
 /******/ ]);
