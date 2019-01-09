@@ -6,6 +6,7 @@ import assert from 'assert';
 import chokidar from 'chokidar';
 import pathToRegexp from 'path-to-regexp';
 import signale from 'signale';
+import multer from 'multer';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
@@ -118,7 +119,9 @@ export default function getMockMiddleware(api, errors) {
 
       function sendData() {
         if (typeof handler === 'function') {
-          handler(req, res, next);
+          multer().any()(req, res, () => {
+            handler(req, res, next);
+          });
         } else {
           res.json(handler);
         }
