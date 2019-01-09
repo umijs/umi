@@ -1,7 +1,7 @@
 export default {
   plugins: [
     [
-      'umi-plugin-react',
+      '../../packages/umi-plugin-react/lib/index.js',
       {
         antd: true,
         dynamicImport: {
