@@ -95,15 +95,32 @@ module.exports = __webpack_require__(1);
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _interopRequireWildcard = __webpack_require__(2);
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(2);
+
+var _interopRequireWildcard2 = _interopRequireDefault(__webpack_require__(3));
 
 Promise.resolve().then(function () {
-  return _interopRequireWildcard(__webpack_require__(3));
+  return (0, _interopRequireWildcard2.default)(__webpack_require__(4));
 });
 console.log('index');
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 function _interopRequireWildcard(obj) {
@@ -134,8 +151,11 @@ function _interopRequireWildcard(obj) {
 module.exports = _interopRequireWildcard;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 console.log('a');
 

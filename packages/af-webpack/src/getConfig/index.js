@@ -108,9 +108,6 @@ export default function(opts) {
     });
 
   const babelOptsCommon = {
-    // Tell babel to guess the type, instead assuming all files are modules
-    // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
-    sourceType: 'unambiguous',
     cacheDirectory: process.env.BABEL_CACHE !== 'none', // enable by default
     babelrc: !!process.env.BABELRC, // disable by default
     customize: require.resolve('babel-preset-umi/lib/webpack-overrides'),
@@ -201,7 +198,12 @@ export default function(opts) {
       .end()
       .use('babel-loader')
       .loader(require.resolve('babel-loader'))
-      .options(babelOpts);
+      .options({
+        ...babelOpts,
+        // Tell babel to guess the type, instead assuming all files are modules
+        // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
+        sourceType: 'unambiguous',
+      });
   });
 
   // module -> tsx?

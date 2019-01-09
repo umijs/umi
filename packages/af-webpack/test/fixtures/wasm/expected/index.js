@@ -255,6 +255,9 @@ module.exports = __webpack_require__(1);
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 __webpack_require__.e(/* import() */ 1).then(__webpack_require__.bind(null, 2)).then(function (popcnt) {
   console.log(popcnt.main(0xF0F));
 });
