@@ -40,6 +40,7 @@
     "lib",
     "src",
     "bin",
+    "index.js",
     "babel.js",
     "dynamic.d.ts",
     "link.d.ts",
