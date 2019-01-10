@@ -9816,10 +9816,10 @@ umi-test@^1.2.0:
     typescript "^3.0.1"
     yargs-parser "^11.0.0"
 
-umi-tools@^0.2.2:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/umi-tools/-/umi-tools-0.2.4.tgz#8d9ca8a208319f3417e32eb5aaa024cc206657ba"
-  integrity sha512-QOsTqgMZfIvj98Jd3WGZv/37ZG7devYO9gkdis5ZILA0ZaveksxQQQcxDQKLnMHpcA0j0C23cOMZr21PT/UsEg==
+umi-tools@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/umi-tools/-/umi-tools-0.3.0.tgz#942d19d5694d3d69877e07a8c4167fe5e1585fe5"
+  integrity sha512-kyiCTKEEux6wt7tTBx9qzjOg5/WguSTfNzrLqOYgcjzMARujT7h8arUm/3tS6PkYC+9dNVGT9i16wAv1r3wrcQ==
   dependencies:
     "@babel/core" "^7.1.2"
     "@babel/plugin-proposal-class-properties" "^7.1.0"
