@@ -101,7 +101,7 @@ umi 里约定目录下有 `_layout.js` 时会生成嵌套路由，以 `_layout.j
 
 ```js
 [
-  { path: '/users': component: './pages/users/_layout.js'
+  { path: '/users', component: './pages/users/_layout.js',
     routes: [
      { path: '/users/', component: './pages/users/index.js' },
      { path: '/users/:id', component: './pages/users/$id.js' },
@@ -139,7 +139,7 @@ export default function(props) {
   if (props.location.pathname === '/login') {
     return <SimpleLayout>{ props.children }</SimpleLayout>
   }
-  
+
   return (
     <>
       <Header />
