@@ -345,12 +345,19 @@ export default api => {
     // Final: show success message
     const viewUrl = `http://localhost:${process.env.PORT ||
       '8000'}${generator.path.toLowerCase()}`;
-    clipboardy.writeSync(viewUrl);
-    log.success(
-      `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
-        '(copied to clipboard)',
-      )} for view the block.`,
-    );
+    try {
+      clipboardy.writeSync(viewUrl);
+      log.success(
+        `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
+          '(copied to clipboard)',
+        )} for view the block.`,
+      );
+    } catch (e) {
+      log.success(
+        `probable url ${chalk.cyan(viewUrl)} for view the block.`,
+      );
+      log.error('copy to clipboard failed');
+    }
   }
 
   const details = `
