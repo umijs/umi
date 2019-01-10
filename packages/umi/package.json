@@ -21,6 +21,10 @@
     "update-notifier": "2.5.0",
     "yargs-parser": "11.1.1"
   },
+  "module": "index.js",
+  "sideEffects":[
+    "./lib/renderRoutes.js"
+  ],
   "bin": {
     "umi": "./bin/umi.js"
   },
@@ -55,11 +59,14 @@
       "src/dynamic.js",
       "src/link.js",
       "src/navlink.js",
-      "src/router.js",
+      "src/prompt.js",
+      "src/redirect.js",
       "src/renderRoutes.js",
-      "src/withRouter.js",
+      "src/Route.js",
+      "src/router.js",
+      "src/runtimePlugin.js",
       "src/utils.js",
-      "src/runtimePlugin.js"
+      "src/withRouter.js"
     ]
   }
 }
