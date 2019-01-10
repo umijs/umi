@@ -63,8 +63,12 @@ export default function dev({
 
         let copied = '';
         if (isFirstCompile && !IS_CI && !SILENT) {
-          require('clipboardy').write(urls.localUrlForBrowser);
-          copied = chalk.dim('(copied to clipboard)');
+          try {
+            require('clipboardy').writeSync(urls.localUrlForBrowser);
+            copied = chalk.dim('(copied to clipboard)');
+          } catch (e) {
+            copied = chalk.red(`(copy to clipboard failed)`);
+          }
           console.log();
           console.log(
             [
