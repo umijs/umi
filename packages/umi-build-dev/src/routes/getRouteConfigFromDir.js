@@ -24,7 +24,7 @@ export default function getRouteConfigFromDir(paths) {
       if (
         file.charAt(0) === '.' ||
         file.charAt(0) === '_' ||
-        /\.test\.(j|t)sx?$/.test(file)
+        /\.(test|spec)\.(j|t)sx?$/.test(file)
       )
         return false;
       return true;
