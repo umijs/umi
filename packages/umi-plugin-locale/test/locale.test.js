@@ -7,6 +7,13 @@ import {
   getLocale,
   intlShape,
   setLocale,
+  now,
+  onError,
+  formatDate,
+  formatTime,
+  formatRelative,
+  formatNumber,
+  formatPlural,
   _setIntlObject,
 } from '../src/locale';
 
@@ -66,7 +73,29 @@ describe('test umi/locale', () => {
     expect(setLocale).toBeTruthy();
     expect(getLocale).toBeTruthy();
     expect(FormattedMessage).toBeTruthy();
+    expect(now).toBeTruthy();
+    expect(onError).toBeTruthy();
+    expect(formatDate).toBeTruthy();
+    expect(formatTime).toBeTruthy();
+    expect(formatRelative).toBeTruthy();
+    expect(formatNumber).toBeTruthy();
+    expect(formatPlural).toBeTruthy();
     wrapper.unmount();
+  });
+
+  test('api exist before mounted', () => {
+    expect(formatMessage).toBeTruthy();
+    expect(formatHTMLMessage).toBeTruthy();
+    expect(setLocale).toBeTruthy();
+    expect(getLocale).toBeTruthy();
+    expect(FormattedMessage).toBeTruthy();
+    expect(now).toBeTruthy();
+    expect(onError).toBeTruthy();
+    expect(formatDate).toBeTruthy();
+    expect(formatTime).toBeTruthy();
+    expect(formatRelative).toBeTruthy();
+    expect(formatNumber).toBeTruthy();
+    expect(formatPlural).toBeTruthy();
   });
 
   test('setLocale', () => {

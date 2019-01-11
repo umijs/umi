@@ -87,11 +87,6 @@ export declare function formatNumber(value: number, options?: FormattedNumberPro
 export declare function formatPlural(value: number, options?: FormattedPluralBase): keyof FormattedPluralProps;
 export declare function formatMessage(messageDescriptor: MessageDescriptor, values?: { [key: string]: MessageValue }): string;
 export declare function formatHTMLMessage(messageDescriptor: MessageDescriptor, values?: { [key: string]: MessageValue }): string;
-export declare const locale: string;
-export declare const formats: any;
-export declare const messages: { [id: string]: string };
-export declare const defaultLocale: string;
-export declare const defaultFormats: any;
 export declare function now(): number;
 export declare function onError(error: string): void;
 
