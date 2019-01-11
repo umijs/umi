@@ -144,6 +144,11 @@ export default function(opts) {
     ];
   }
 
+  // module -> eslint
+  if (!(process.env.DISABLE_ESLINT || process.env.ESLINT === 'none')) {
+    require('./eslint').default(webpackConfig, opts);
+  }
+
   // Avoid "require is not defined" errors
   webpackConfig.module
     .rule('mjs-require')
