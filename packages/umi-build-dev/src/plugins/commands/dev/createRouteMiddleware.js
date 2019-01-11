@@ -16,7 +16,9 @@ export default function createRouteMiddleware(service) {
       const htmlGenerator = getHtmlGenerator(service, {
         chunksMap,
       });
-      const content = htmlGenerator.getMatchedContent(path);
+      const content = htmlGenerator.getMatchedContent(
+        normalizePath(path, service.config.base),
+      );
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
     }
@@ -34,4 +36,11 @@ export default function createRouteMiddleware(service) {
       }
     }
   };
+}
+
+function normalizePath(path, base = '/') {
+  if (path.startsWith(base)) {
+    path = path.replace(base, '/');
+  }
+  return path;
 }
