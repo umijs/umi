@@ -145,7 +145,7 @@ export default function(opts) {
   }
 
   // module -> eslint
-  if (!(process.env.DISABLE_ESLINT || process.env.ESLINT === 'none')) {
+  if (process.env.ESLINT && process.env.ESLINT !== 'none') {
     require('./eslint').default(webpackConfig, opts);
   }
 
