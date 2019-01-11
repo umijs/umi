@@ -60,6 +60,13 @@ describe('patchRoutes', () => {
     ]);
   });
 
+  it('exportStatic.htmlSuffix with no path route', () => {
+    const routes = patchRoutes([{ path: '/a' }, { component: './404.js' }], {
+      exportStatic: { htmlSuffix: true },
+    });
+    expect(routes).toEqual([{ path: '/a.html' }, { component: './404.js' }]);
+  });
+
   it('copy /index.html for / if exportStatic', () => {
     let routes;
 

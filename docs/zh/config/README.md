@@ -267,6 +267,10 @@ chainWebpack(config, { webpack }) {
 
 配置 webpack 的 [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) 属性。
 
+### devServer
+
+配置 webpack 的 [devServer](https://webpack.js.org/configuration/dev-server/#devserver) 属性。
+
 ### devtool
 
 配置 webpack 的 [devtool](https://webpack.js.org/configuration/devtool/) 属性。
