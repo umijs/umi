@@ -53,7 +53,7 @@
     "postcss": "7.0.6",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
-    "react-dev-utils": "6.1.1",
+    "react-dev-utils": "7.0.1",
     "react-error-overlay": "5.1.0",
     "requireindex": "1.2.0",
     "resolve": "1.8.1",

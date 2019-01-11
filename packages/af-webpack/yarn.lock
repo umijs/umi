@@ -6690,10 +6690,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dev-utils@6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.1.1.tgz#a07e3e8923c4609d9f27e5af5207e3ca20724895"
-  integrity sha512-ThbJ86coVd6wV/QiTo8klDTvdAJ1WsFCGQN07+UkN+QN9CtCSsl/+YuDJToKGeG8X4j9HMGXNKbk2QhPAZr43w==
+react-dev-utils@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-7.0.1.tgz#c53e759a22668ee2c0d146c24ce4bdec2b41e3c8"
+  integrity sha512-AN/RKZKHsyB2FebKSyMLOecvjuzZ54lzsLYF8wNmwwgRA3dVC4vhYsafvME7JD4q7RUB0bejqFWjOS9QtN48Zg==
   dependencies:
     "@babel/code-frame" "7.0.0"
     address "1.0.3"
@@ -6713,17 +6713,22 @@ react-dev-utils@6.1.1:
     loader-utils "1.1.0"
     opn "5.4.0"
     pkg-up "2.0.0"
-    react-error-overlay "^5.1.0"
+    react-error-overlay "^5.1.2"
     recursive-readdir "2.2.2"
     shell-quote "1.6.1"
     sockjs-client "1.1.5"
     strip-ansi "4.0.0"
     text-table "0.2.0"
 
-react-error-overlay@5.1.0, react-error-overlay@^5.1.0:
+react-error-overlay@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.0.tgz#c516995a5652e7bfbed8b497910d5280df74a7e8"
   integrity sha512-akMy/BQT5m1J3iJIHkSb4qycq2wzllWsmmolaaFVnb+LPV9cIJ/nTud40ZsiiT0H3P+/wXIdbjx2fzF61OaeOQ==
+
+react-error-overlay@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.2.tgz#888957b884d4b25b083a82ad550f7aad96585394"
+  integrity sha512-7kEBKwU9R8fKnZJBRa5RSIfay4KJwnYvKB6gODGicUmDSAhQJ7Tdnll5S0RLtYrzRfMVXlqYw61rzrSpP4ThLQ==
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
