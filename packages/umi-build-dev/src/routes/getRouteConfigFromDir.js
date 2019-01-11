@@ -21,7 +21,12 @@ export default function getRouteConfigFromDir(paths) {
 
   const routes = files
     .filter(file => {
-      if (file.charAt(0) === '.' || file.charAt(0) === '_') return false;
+      if (
+        file.charAt(0) === '.' ||
+        file.charAt(0) === '_' ||
+        /\.test\.(j|t)sx?$/.test(file)
+      )
+        return false;
       return true;
     })
     .sort(a => (a.charAt(0) === '$' ? 1 : -1))
