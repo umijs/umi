@@ -265,6 +265,10 @@ such as:
 
 Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
 
+### devServer
+
+Configure the [devServer](https://webpack.js.org/configuration/resolve/#devserver) property of webpack.
+
 ### devtool
 
 Configure the [devtool](https://webpack.js.org/configuration/devtool/) property of webpack.
