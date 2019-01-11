@@ -35,7 +35,7 @@ const intlApi = {};
     if (intl && intl[methodName]) {
       // _setIntlObject has been called
       return intl[methodName].call(intl, ...arguments);
-    } else if (console && console.wran) {
+    } else if (console && console.warn) {
       console.warn(
         `[umi-plugin-locale] ${methodName} not initialized yet, you should use it after react app mounted.`,
       );
