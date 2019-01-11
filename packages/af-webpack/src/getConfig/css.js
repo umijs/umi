@@ -71,7 +71,12 @@ export default function(webpackConfig, opts) {
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
     if (isDev) {
-      rule.use('css-hot-loader').loader(require.resolve('css-hot-loader'));
+      rule
+        .use('css-hot-loader')
+        .loader(require.resolve('css-hot-loader'))
+        .options({
+          reloadAll: true,
+        });
     }
 
     rule
