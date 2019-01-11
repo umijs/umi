@@ -62,7 +62,7 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
   }
 
   // /path -> /path.html
-  if (config.exportStatic && config.exportStatic.htmlSuffix) {
+  if (route.path && config.exportStatic && config.exportStatic.htmlSuffix) {
     route.path = addHtmlSuffix(route.path, !!route.routes);
   }
 
