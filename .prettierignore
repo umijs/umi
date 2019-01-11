@@ -3,3 +3,8 @@
 **/bin/*.js
 **/website/*.js
 packages/umi-build-dev/src/plugins/commands/block/index.js
+packages/af-webpack/src/getConfig/index.js
+packages/af-webpack/src/getConfig/css.js
+packages/af-webpack/src/getConfig/eslint.js
+packages/af-webpack/src/getConfig/dev.js
+packages/af-webpack/src/getConfig/prod.js
