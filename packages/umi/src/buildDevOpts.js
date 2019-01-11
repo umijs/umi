@@ -39,6 +39,6 @@ function loadDotEnv() {
     }
   };
 
-  loadEnv(baseEnvPath);
   loadEnv(localEnvPath);
+  loadEnv(baseEnvPath);
 }
