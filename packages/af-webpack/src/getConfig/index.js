@@ -90,9 +90,10 @@ export default function(opts) {
   const DEFAULT_INLINE_LIMIT = 10000;
   const rule = webpackConfig.module
     .rule('exclude')
-    .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
-    .add(/\.(css|less|scss|sass)$/);
+    .exclude
+      .add(/\.json$/)
+      .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
+      .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
       rule.add(exclude);
@@ -152,42 +153,47 @@ export default function(opts) {
   // Avoid "require is not defined" errors
   webpackConfig.module
     .rule('mjs-require')
-    .test(/\.mjs$/)
-    .type('javascript/auto')
-    .include.add(opts.cwd);
+      .test(/\.mjs$/)
+      .type('javascript/auto')
+      .include
+        .add(opts.cwd);
 
   // module -> mjs
   webpackConfig.module
     .rule('mjs')
-    .test(/\.mjs$/)
-    .include.add(opts.cwd)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.mjs$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> js
   webpackConfig.module
     .rule('js')
-    .test(/\.js$/)
-    .include.add(opts.cwd)
-    .end()
-    .exclude.add(/node_modules/)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.js$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .exclude
+        .add(/node_modules/)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> jsx
   // jsx 不 exclude node_modules
   webpackConfig.module
     .rule('jsx')
-    .test(/\.jsx$/)
-    .include.add(opts.cwd)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.jsx$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> extraBabelIncludes
   // suport es5ImcompatibleVersions
@@ -201,49 +207,50 @@ export default function(opts) {
     const rule = `extraBabelInclude_${index}`;
     webpackConfig.module
       .rule(rule)
-      .test(/\.jsx?$/)
-      .include.add(include)
-      .end()
-      .use('babel-loader')
-      .loader(require.resolve('babel-loader'))
-      .options(babelOpts);
+        .test(/\.jsx?$/)
+        .include
+          .add(include)
+          .end()
+        .use('babel-loader')
+          .loader(require.resolve('babel-loader'))
+          .options(babelOpts);
   });
 
   // module -> tsx?
   const tsConfigFile = opts.tsConfigFile || join(opts.cwd, 'tsconfig.json');
   webpackConfig.module
     .rule('ts')
-    .test(/\.tsx?$/)
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts)
-    .end()
-    .use('ts-loader')
-    .loader(require.resolve('ts-loader'))
-    .options({
-      configFile: tsConfigFile,
-      transpileOnly: true,
-      // ref: https://github.com/TypeStrong/ts-loader/blob/fbed24b/src/utils.ts#L23
-      errorFormatter(error, colors) {
-        const messageColor =
-          error.severity === 'warning' ? colors.bold.yellow : colors.bold.red;
-        return (
-          colors.grey('[tsl] ') +
-          messageColor(error.severity.toUpperCase()) +
-          (error.file === ''
-            ? ''
-            : messageColor(' in ') +
-              colors.bold.cyan(
-                `${relative(cwd, join(error.context, error.file))}(${
-                  error.line
-                },${error.character})`,
-              )) +
-          EOL +
-          messageColor(`      TS${error.code}: ${error.content}`)
-        );
-      },
-      ...(opts.typescript || {}),
-    });
+      .test(/\.tsx?$/)
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts)
+        .end()
+      .use('ts-loader')
+        .loader(require.resolve('ts-loader'))
+        .options({
+          configFile: tsConfigFile,
+          transpileOnly: true,
+          // ref: https://github.com/TypeStrong/ts-loader/blob/fbed24b/src/utils.ts#L23
+          errorFormatter(error, colors) {
+            const messageColor =
+              error.severity === 'warning' ? colors.bold.yellow : colors.bold.red;
+            return (
+              colors.grey('[tsl] ') +
+              messageColor(error.severity.toUpperCase()) +
+              (error.file === ''
+                ? ''
+                : messageColor(' in ') +
+                  colors.bold.cyan(
+                    `${relative(cwd, join(error.context, error.file))}(${
+                      error.line
+                    },${error.character})`,
+                  )) +
+              EOL +
+              messageColor(`      TS${error.code}: ${error.content}`)
+            );
+          },
+          ...(opts.typescript || {}),
+        });
 
   // module -> css
   require('./css').default(webpackConfig, opts);
@@ -255,15 +262,18 @@ export default function(opts) {
 
   // plugins -> progress bar
   const NO_PROGRESS = process.env.PROGRESS === 'none';
-  if (!process.env.CI && !process.env.__FROM_UMI_TEST && !NO_PROGRESS) {
-    webpackConfig.plugin('progress').use(require('webpackbar'), [
-      {
-        color: 'green',
-        reporters: ['fancy'],
-      },
-    ]);
-  } else {
-    console.log('Building ...');
+  if (!process.env.__FROM_UMI_TEST) {
+    if (!process.env.CI && !NO_PROGRESS) {
+      webpackConfig.plugin('progress')
+        .use(require('webpackbar'), [
+          {
+            color: 'green',
+            reporters: ['fancy'],
+          },
+        ]);
+    } else {
+      console.log('Building ...');
+    }
   }
 
   // plugins -> ignore moment locale
