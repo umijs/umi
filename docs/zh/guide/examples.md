@@ -22,6 +22,7 @@
 * [umi-antd-pro](https://github.com/xiaohuoni/umi-antd-pro)，来自 @xiaohuni 的 umi + antd-pro 采用约定式路由的例子，antd-pro 官方版本已 2.0 之后切换到 umi, [迁移指南](https://pro.ant.design/docs/upgrade-v2-cn)
 * [dva-umi](https://github.com/xiaohuoni/dva-umi)，来自 @xiaohuni 的 umi + dva 的脚手架
 * [dva-umi-mobile](https://github.com/xiaohuoni/dva-umi-mobile)，来自 @xiaohuni 的 umi + dva 的 mobile 版本脚手架
+* [umi-dva-antd-mobile](https://github.com/hqwlkj/umi-dva-antd-mobile)，来自 @Yanghc 的 umi + dva + antd-mobile 的 mobile 版本脚手架，支持 TypeScript。
 ::: warning 警告
 以下例子使用 umi@1.x，尚未升级到 umi@2。
 :::
