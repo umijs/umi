@@ -32,6 +32,7 @@ export default function(opts = {}) {
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
+    transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
