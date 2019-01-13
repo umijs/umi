@@ -45,7 +45,6 @@ $ umi build
 ```
 
 [Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
-[云谦 - 蚂蚁金服前端框架探索之路](https://www.bilibili.com/video/av40319780/)
 
 ## Examples
 
