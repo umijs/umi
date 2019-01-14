@@ -31,12 +31,15 @@ Example:
 
     writing() {
       const path = this.args[0].toString();
+      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
+      const cssExt = this.options.less ? 'less' : 'css';
       const context = {
         name: basename(path),
         color: randomColor().hexString(),
         isTypeScript: this.isTypeScript,
+        cssExt,
+        jsxExt,
       };
-      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
       this.fs.copyTpl(
         this.templatePath('page.js'),
         join(paths.absPagesPath, `${path}.${jsxExt}`),
@@ -44,7 +47,7 @@ Example:
       );
       this.fs.copyTpl(
         this.templatePath('page.css'),
-        join(paths.absPagesPath, `${path}.css`),
+        join(paths.absPagesPath, `${path}.${cssExt}`),
         context,
       );
     }

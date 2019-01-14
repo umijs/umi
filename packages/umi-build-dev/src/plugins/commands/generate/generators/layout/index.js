@@ -21,13 +21,16 @@ export default api => {
     }
 
     writing() {
+      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
+      const cssExt = this.options.less ? 'less' : 'css';
       const context = {
         name: 'index',
         title: `Global Layout`,
         color: randomColor().hexString(),
         isTypeScript: this.isTypeScript,
+        jsxExt,
+        cssExt,
       };
-      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
       if (this.options.global) {
         assert(
           !this.args.length,
@@ -40,7 +43,7 @@ export default api => {
         );
         this.fs.copyTpl(
           this.templatePath('layout.css'),
-          join(paths.absSrcPath, `layouts`, `index.css`),
+          join(paths.absSrcPath, `layouts`, `index.${cssExt}`),
           context,
         );
         return;
@@ -62,7 +65,7 @@ export default api => {
       );
       this.fs.copyTpl(
         this.templatePath('layout.css'),
-        join(paths.absPagesPath, path, `_layout.css`),
+        join(paths.absPagesPath, path, `_layout.${cssExt}`),
         context,
       );
     }

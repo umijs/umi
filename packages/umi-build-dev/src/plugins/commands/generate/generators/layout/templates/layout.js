@@ -1,7 +1,7 @@
 <% if (isTypeScript) { %>
 import React from 'react';
 <% } %>
-import styles from './<%= name %>.css';
+import styles from './<%= name %>.<%= cssExt %>';
 
 export default function(props) {
   return (
