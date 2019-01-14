@@ -44,6 +44,6 @@
     "react-test-renderer": "16.6.3",
     "shelljs": "0.8.3",
     "test-build-result": "^1.0.1",
-    "umi-tools": "^0.3.0"
+    "umi-tools": "^0.3.1"
   }
 }

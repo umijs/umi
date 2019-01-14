@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { readdirSync } from 'fs';
 import assert from 'assert';
 import chalk from 'chalk';
 
@@ -42,7 +42,7 @@ export default function(api) {
     }
   }
 
-  function registerGenerateCommand(command, description) {
+  function registerCommand(command, description) {
     const details = `
 Examples:
 
@@ -51,30 +51,30 @@ Examples:
 
   ${chalk.gray('# g is the alias for generate')}
   umi g page index
+
+  ${chalk.gray('# generate page with less file')}
+  umi g page index --less
   `.trim();
     api.registerCommand(
       command,
       {
         description,
-        usage: `umi ${command} name args`,
+        usage: `umi ${command} type name [options]`,
         details,
       },
       generate,
     );
   }
 
-  registerGenerateCommand(
-    'g',
-    'generate code snippets quickly (alias for generate)',
-  );
-  registerGenerateCommand('generate', 'generate code snippets quickly');
+  registerCommand('g', 'generate code snippets quickly (alias for generate)');
+  registerCommand('generate', 'generate code snippets quickly');
 
-  api.registerGenerator('page', {
-    Generator: require('./page').default(api),
-    resolved: join(__dirname, './page'),
-  });
-  api.registerGenerator('layout', {
-    Generator: require('./layout').default(api),
-    resolved: join(__dirname, './layout'),
-  });
+  readdirSync(`${__dirname}/generators`)
+    .filter(f => !f.startsWith('.'))
+    .forEach(f => {
+      api.registerGenerator(f, {
+        Generator: require(`./generators/${f}`).default(api),
+        resolved: `${__dirname}/generators/${f}/index`,
+      });
+    });
 }

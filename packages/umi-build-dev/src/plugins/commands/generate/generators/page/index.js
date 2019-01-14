@@ -5,8 +5,6 @@ import chalk from 'chalk';
 
 export default api => {
   const { paths, config, log } = api;
-  const absTemplatePath = join(__dirname, '../../../../template/generators');
-
   return class Generator extends api.Generator {
     constructor(args, options) {
       super(args, options);
@@ -33,20 +31,24 @@ Example:
 
     writing() {
       const path = this.args[0].toString();
-      const name = basename(path);
+      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
+      const cssExt = this.options.less ? 'less' : 'css';
+      const context = {
+        name: basename(path),
+        color: randomColor().hexString(),
+        isTypeScript: this.isTypeScript,
+        cssExt,
+        jsxExt,
+      };
       this.fs.copyTpl(
-        join(absTemplatePath, 'page.js'),
-        join(paths.absPagesPath, `${path}.js`),
-        {
-          name,
-        },
+        this.templatePath('page.js'),
+        join(paths.absPagesPath, `${path}.${jsxExt}`),
+        context,
       );
       this.fs.copyTpl(
-        join(absTemplatePath, 'page.css'),
-        join(paths.absPagesPath, `${path}.css`),
-        {
-          color: randomColor().hexString(),
-        },
+        this.templatePath('page.css'),
+        join(paths.absPagesPath, `${path}.${cssExt}`),
+        context,
       );
     }
   };
