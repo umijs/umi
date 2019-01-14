@@ -21,25 +21,25 @@ export default api => {
     }
 
     writing() {
+      const context = {
+        name: 'index',
+        title: `Global Layout`,
+        color: randomColor().hexString(),
+      };
       if (this.options.global) {
         assert(
           !this.args.length,
           `You don't need to specify the path with --global, e.g. umi g layout --global`,
         );
         this.fs.copyTpl(
-          join(__dirname, 'templates', 'layout.js.tpl'),
+          this.templatePath('layout.js'),
           join(paths.absSrcPath, `layouts`, `index.js`),
-          {
-            name: 'index',
-            title: `Global Layout`,
-          },
+          context,
         );
         this.fs.copyTpl(
-          join(__dirname, 'templates', 'layout.css.tpl'),
+          this.templatePath('layout.css'),
           join(paths.absSrcPath, `layouts`, `index.css`),
-          {
-            color: randomColor().hexString(),
-          },
+          context,
         );
         return;
       }
@@ -50,19 +50,18 @@ export default api => {
         `You should specify the path, e.g. umi g layout abc`,
       );
       this.fs.copyTpl(
-        join(__dirname, 'templates', 'layout.js.tpl'),
+        this.templatePath('layout.js'),
         join(paths.absPagesPath, path, `_layout.js`),
         {
+          ...context,
           name: '_layout',
           title: `Layout for ${path}`,
         },
       );
       this.fs.copyTpl(
-        join(__dirname, 'templates', 'layout.css.tpl'),
+        this.templatePath('layout.css'),
         join(paths.absPagesPath, path, `_layout.css`),
-        {
-          color: randomColor().hexString(),
-        },
+        context,
       );
     }
   };

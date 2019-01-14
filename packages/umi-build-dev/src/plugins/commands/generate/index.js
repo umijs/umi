@@ -1,3 +1,4 @@
+import { readdirSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
 import chalk from 'chalk';
@@ -69,12 +70,20 @@ Examples:
   );
   registerGenerateCommand('generate', 'generate code snippets quickly');
 
-  api.registerGenerator('page', {
-    Generator: require('./page').default(api),
-    resolved: join(__dirname, './page'),
-  });
-  api.registerGenerator('layout', {
-    Generator: require('./layout').default(api),
-    resolved: join(__dirname, './layout'),
-  });
+  readdirSync(`${__dirname}/generators`)
+    .filter(f => !f.startsWith('.'))
+    .forEach(f => {
+      api.registerGenerator(f, {
+        Generator: require(`./generators/${f}`).default(api),
+        resolved: `${__dirname}/generators/${f}/index`,
+      });
+    });
+  // api.registerGenerator('page', {
+  //   Generator: require('./page').default(api),
+  //   resolved: join(__dirname, './page'),
+  // });
+  // api.registerGenerator('layout', {
+  //   Generator: require('./layout').default(api),
+  //   resolved: join(__dirname, './layout'),
+  // });
 }
