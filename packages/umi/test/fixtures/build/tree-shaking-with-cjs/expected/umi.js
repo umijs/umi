@@ -771,6 +771,7 @@ var router_routes = [{
   "exact": true,
   "component": __webpack_require__(19).default
 }];
+window.g_routes = router_routes;
 window.g_plugins.applyForEach('patchRoutes', {
   initialValue: router_routes
 });
