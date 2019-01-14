@@ -2019,6 +2019,7 @@ var routes = [{
   "exact": true,
   "component": __webpack_require__(39).default
 }];
+window.g_routes = routes;
 window.g_plugins.applyForEach('patchRoutes', {
   initialValue: routes
 });
