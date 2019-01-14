@@ -1,5 +1,4 @@
 import { readdirSync } from 'fs';
-import { join } from 'path';
 import assert from 'assert';
 import chalk from 'chalk';
 
@@ -43,7 +42,7 @@ export default function(api) {
     }
   }
 
-  function registerGenerateCommand(command, description) {
+  function registerCommand(command, description) {
     const details = `
 Examples:
 
@@ -64,11 +63,8 @@ Examples:
     );
   }
 
-  registerGenerateCommand(
-    'g',
-    'generate code snippets quickly (alias for generate)',
-  );
-  registerGenerateCommand('generate', 'generate code snippets quickly');
+  registerCommand('g', 'generate code snippets quickly (alias for generate)');
+  registerCommand('generate', 'generate code snippets quickly');
 
   readdirSync(`${__dirname}/generators`)
     .filter(f => !f.startsWith('.'))
@@ -78,12 +74,4 @@ Examples:
         resolved: `${__dirname}/generators/${f}/index`,
       });
     });
-  // api.registerGenerator('page', {
-  //   Generator: require('./page').default(api),
-  //   resolved: join(__dirname, './page'),
-  // });
-  // api.registerGenerator('layout', {
-  //   Generator: require('./layout').default(api),
-  //   resolved: join(__dirname, './layout'),
-  // });
 }

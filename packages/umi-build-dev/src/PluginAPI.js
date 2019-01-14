@@ -4,8 +4,8 @@ import { relative } from 'path';
 import lodash, { isPlainObject } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
-import Generator from 'yeoman-generator';
 import signale from 'signale';
+import BasicGenerator from './BasicGenerator';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -22,7 +22,7 @@ export default class PluginAPI {
     this.findJS = findJS;
     this.findCSS = findCSS;
     this.Mustache = Mustache;
-    this.Generator = Generator;
+    this.Generator = BasicGenerator;
 
     this.API_TYPE = {
       ADD: Symbol('add'),
@@ -161,10 +161,6 @@ export default class PluginAPI {
       `name should be supplied with a string, but got ${name}`,
     );
     assert(opts && opts.Generator, `opts.Generator should be supplied`);
-    // assert(
-    //   opts.Generator instanceof this.Generator,
-    //   `opts.Generator should be instance of api.Generator`,
-    // );
     assert(
       !(name in generators),
       `Generator ${name} exists, please select another one.`,

@@ -34,10 +34,12 @@ Example:
       const context = {
         name: basename(path),
         color: randomColor().hexString(),
+        isTypeScript: this.isTypeScript,
       };
+      const jsxExt = this.isTypeScript ? 'tsx' : 'js';
       this.fs.copyTpl(
         this.templatePath('page.js'),
-        join(paths.absPagesPath, `${path}.js`),
+        join(paths.absPagesPath, `${path}.${jsxExt}`),
         context,
       );
       this.fs.copyTpl(
