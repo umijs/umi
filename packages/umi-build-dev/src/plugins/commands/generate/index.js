@@ -51,12 +51,15 @@ Examples:
 
   ${chalk.gray('# g is the alias for generate')}
   umi g page index
+
+  ${chalk.gray('# generate page with less file')}
+  umi g page index --less
   `.trim();
     api.registerCommand(
       command,
       {
         description,
-        usage: `umi ${command} name args`,
+        usage: `umi ${command} type name [options]`,
         details,
       },
       generate,
