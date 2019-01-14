@@ -11,20 +11,34 @@ sidebarDepth: 2
 * Type: `Array`
 * Default: `[]`
 
-Specify the plugin.
+Specify the plugins.
 
-such as:
+The array item is the path to the plugin and can be an npm dependency, a relative path, or an absolute path. If it is a relative path, it will be resolved from the project root directory. such as:
 
 ```js
 export default {
   plugins: [
-    //1. no parameters
+    // npm dependency
     'umi-plugin-react',
-    //2. When the plugin has parameters, it is an array, and the second item of the array is a parameter, similar to the babel plugin.
-    //['umi-plugin-react', {
-    //  dva: true,
-    //  antd: true,
-    //}],
+    // relative path
+    './plugin',
+    // absolute path
+    `${__dirname}/plugin.js`,
+  ],
+};
+```
+
+If the plugin has parameters, it is configured as an array. The first item is the path and the second item is the parameter, similar to how the babel plugin is configured. such as:
+
+```js
+export default {
+  plugins: [
+    // 有参数
+    ['umi-plugin-react', {
+      dva: true,
+      antd: true,
+    }],
+    './plugin',
   ],
 };
 ```
@@ -36,23 +50,57 @@ export default {
 
 Configure routing.
 
-::: tip reminder
-If `routes` is configured, the negotiated route will not take effect.
-:::
+umi 的路由基于 [react-router](https://reacttraining.com/react-router/web/guides/quick-start) 实现，配置和 react-router@4 基本一致，详见[路由配置](../guide/router.html)章节。
+
+Umi's routing is based on [react-router](https://reacttraining.com/react-router/web/guides/quick-start), and the configuration is basically the same as react-router@4. Checkout [Routing Configuration](. ./guide/router.html) chapter for details.
+
+```js
+export default {
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index',
+      routes: [
+        { path: '/user', redirect: '/user/login' },
+        { path: '/user/login', redirect: './user/login' },
+      ],
+    },
+  ],
+};
+```
+
+Notice:
+
+1. The component file is resolved from the `src/pages` directory.
+2. If `routes` is configured, then the configuration route will be used first, and the convension route will not take effect.
 
 ### disableRedirectHoist
 
-* 类型：`Boolean`
-* 默认值：`false`
+* Type:`Boolean`
+* Default: `false`
 
 For some reason, we hoist all redirect when parsing the route config, but this caused some problems, so add this configuration to disable redirect hoist.
+
+```js
+export default {
+  disableRedirectHoist: true,
+};
+```
 
 ### history
 
 * Type: `String`
 * Default: `browser`
 
-To switch the history mode to hash (the default is browser history), configure `history: 'hash'`.
+Specify the history type, including `browser`, `hash` and `memory`.
+
+e.g.
+
+```js
+export default {
+  history: 'hash',
+};
+```
 
 ### outputPath
 
@@ -236,6 +284,23 @@ or,
 "theme": "./theme-config.js"
 ```
 
+### treeShaking <Badge text="2.4.0+"/>
+
+- Type: `Boolean`
+- Default: `false`
+
+Configure whether to enable treeShaking, which is off by default.
+
+e.g.
+
+```js
+export default {
+  treeShaking: true,
+};
+```
+
+For example, after [ant-design-pro opens tree-shaking](https://github.com/ant-design/ant-design-pro/pull/3350), the size after gzip can be reduced by 10K.
+
 ### define
 
 Passed to the code via the webpack's DefinePlugin , the value is automatically handled by `JSON.stringify`.
@@ -360,14 +425,17 @@ Additional configuration items for [less-loader](https://github.com/webpack-cont
 
 Additional configuration items for [css-loader](https://github.com/webpack-contrib/css-loader).Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
 
-### browserslist
+### browserslist <Badge text="deprecated"/>
 
 Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
-such as:
+
+e.g.
 
 ```js
-"browserslist": [
-  "> 1%",
-  "last 2 versions"
-]
+export default {
+  browserslist: [
+    '> 1%',
+    'last 2 versions',
+  ],
+};
 ```
