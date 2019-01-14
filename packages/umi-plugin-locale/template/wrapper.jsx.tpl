@@ -67,6 +67,10 @@ window.g_lang = appLocale.locale;
 appLocale.data && addLocaleData(appLocale.data);
 {{/localeList.length}}
 
+{{#antd}}
+moment.locale(appLocale.momentLocale);
+{{/antd}}
+
 export default function LocaleWrapper(props) {
   let ret = props.children;
   {{#localeList.length}}
