@@ -43,6 +43,10 @@ $ PORT=8001 umi dev
 
 The default is `0.0.0.0`.
 
+### ESLINT <Badge text="2.4.0+"/>
+
+When ESLINT is set, the basic eslint check is done by [eslint-config-umi](https://github.com/umijs/umi/tree/master/packages/eslint-config-umi) in the dev and build commands. Avoid some simple mistakes.
+
 ### APP_ROOT
 
 ::: warning
@@ -142,4 +146,4 @@ $ HTML=none umi build
 默认不开启TypeScript检查，值为1时启用。比如：
  ```bash
 $ FORK_TS_CHECKER=1 umi dev
-```
+ ```
