@@ -18,6 +18,10 @@ describe('normal', () => {
   it('index page', async () => {
     await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
 
+    // window.g_routes
+    const routes = await page.evaluate(() => window.g_routes);
+    expect(routes[0].path).toEqual('/');
+
     // global.js
     const text = await page.evaluate(
       () => document.querySelector('h1').innerHTML,
