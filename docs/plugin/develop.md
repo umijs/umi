@@ -257,7 +257,7 @@ api.log.pending('Write release notes for %s', '1.2.0');
 api.log.watch('Recursively watching build directory...');
 ```
 
-Output various types of logs.
+Output various [types](https://github.com/klaussinani/signale/blob/94984998a0e9cb280e68959ddd9db70b49713738/types.js#L4) of logs.
 
 ### winPath
 
