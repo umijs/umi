@@ -73,8 +73,6 @@ ANALYZE server port, default 8888.
 
 ### BABEL_POLYFILL <Badge text="2.2.0+"/>
 
-默认引入 `@babel/polyfill`，值为 none 时不引入。比如：
-
 `@babel/polyfill` is included by default, set the value to `none` if you don't want it.
 
 e.g.

@@ -1,10 +1,11 @@
 import { join, relative } from 'path';
 import { readFileSync } from 'fs';
+import chalk from 'chalk';
 import { isPlainObject } from 'lodash';
 import assert from 'assert';
 
 export default function(api) {
-  const { paths, winPath } = api;
+  const { paths, winPath, log } = api;
 
   api._registerConfig(() => {
     return () => {
@@ -53,6 +54,13 @@ export default function(api) {
         },
       ];
     } else {
+      log.warn(
+        chalk.yellow(
+          `Since you have configured the environment variable ${chalk.bold(
+            'BABEL_POLYFILL',
+          )} to none, no patches will be included.`,
+        ),
+      );
       return [];
     }
   });
