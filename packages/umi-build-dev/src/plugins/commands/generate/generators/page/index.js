@@ -14,7 +14,7 @@ export default api => {
         `
 ${chalk.underline.cyan('name')} should be supplied
 
-Example: 
+Example:
 
   umi g page users
         `.trim(),
@@ -41,12 +41,12 @@ Example:
         jsxExt,
       };
       this.fs.copyTpl(
-        this.templatePath('page.js'),
+        this.templatePath('page.js.ejs'),
         join(paths.absPagesPath, `${path}.${jsxExt}`),
         context,
       );
       this.fs.copyTpl(
-        this.templatePath('page.css'),
+        this.templatePath('page.css.ejs'),
         join(paths.absPagesPath, `${path}.${cssExt}`),
         context,
       );

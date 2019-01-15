@@ -37,12 +37,12 @@ export default api => {
           `You don't need to specify the path with --global, e.g. umi g layout --global`,
         );
         this.fs.copyTpl(
-          this.templatePath('layout.js'),
+          this.templatePath('layout.js.ejs'),
           join(paths.absSrcPath, `layouts`, `index.${jsxExt}`),
           context,
         );
         this.fs.copyTpl(
-          this.templatePath('layout.css'),
+          this.templatePath('layout.css.ejs'),
           join(paths.absSrcPath, `layouts`, `index.${cssExt}`),
           context,
         );
@@ -55,7 +55,7 @@ export default api => {
         `You should specify the path, e.g. umi g layout abc`,
       );
       this.fs.copyTpl(
-        this.templatePath('layout.js'),
+        this.templatePath('layout.js.ejs'),
         join(paths.absPagesPath, path, `_layout.${jsxExt}`),
         {
           ...context,
@@ -64,7 +64,7 @@ export default api => {
         },
       );
       this.fs.copyTpl(
-        this.templatePath('layout.css'),
+        this.templatePath('layout.css.ejs'),
         join(paths.absPagesPath, path, `_layout.${cssExt}`),
         context,
       );
