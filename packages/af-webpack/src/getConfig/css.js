@@ -27,6 +27,7 @@ export default function(webpackConfig, opts) {
       autoprefixer({
         browsers: opts.browserslist || DEFAULT_BROWSERS,
         flexbox: 'no-2009',
+        ...(opts.autoprefixer || {}),
       }),
       ...(opts.extraPostCSSPlugins ? opts.extraPostCSSPlugins : []),
       ...(isDev ||

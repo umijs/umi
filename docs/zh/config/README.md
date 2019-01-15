@@ -425,6 +425,15 @@ export default {
 
 给 [css-loader](https://github.com/webpack-contrib/css-loader) 的额外配置项。
 
+### autoprefixer <Badge text="2.4.3+"/>
+
+配置传给 [autoprefixer](https://github.com/postcss/autoprefixer#options) 的配置项。
+
+* 类型：`Object`
+* 默认：`{ browserslist, flexbox: 'no-2019' }`
+
+如果你想兼容旧版本 iOS Safari 的 flexbox，应该需要配置上 `flexbox: true`。
+
 ### browserslist <Badge text="deprecated"/>
 
 配置 [browserslist](https://github.com/ai/browserslist)，同时作用域 babel-preset-env 和 autoprefixer。
