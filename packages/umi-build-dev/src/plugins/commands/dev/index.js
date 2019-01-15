@@ -104,7 +104,11 @@ export default function(api) {
               initialValue: [],
             }),
             afterMiddlewares: service.applyPlugins('addMiddleware', {
-              initialValue: [createRouteMiddleware(service)],
+              initialValue: [
+                ...(process.env.ROUTE_MIDDLEWARE !== 'none'
+                  ? [createRouteMiddleware(service)]
+                  : []),
+              ],
             }),
             beforeServer(devServer) {
               server = devServer;

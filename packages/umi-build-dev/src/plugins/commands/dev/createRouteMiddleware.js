@@ -31,7 +31,6 @@ export default function createRouteMiddleware(service) {
         res.setHeader('Content-Type', 'text/json');
         res.send(JSON.stringify(service.routes));
       } else {
-        debug(`[${method}] ${path}`);
         sendHtml();
       }
     }
