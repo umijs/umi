@@ -16,8 +16,8 @@ export default class UmiReactTitle extends React.Component {
     const separator = '{{option.separator}}' || ' - ';
     const title = this.props.route._title.split(separator).map(item => {
       return formatMessage({
-        id: item,
-        defaultMessage: item,
+        id: item.trim(),
+        defaultMessage: item.trim(),
       });
     })
     return title.join(separator);

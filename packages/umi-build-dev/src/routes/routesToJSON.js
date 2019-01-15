@@ -54,7 +54,9 @@ export default (routes, service) => {
             .map(
               v =>
                 `require('${winPath(
-                  relative(paths.absTmpDirPath, join(paths.cwd, v)),
+                  precedingDot(
+                    relative(paths.absTmpDirPath, join(paths.cwd, v)),
+                  ),
                 )}').default`,
             )
             .join(', ')}]`;
@@ -72,6 +74,10 @@ function patchRoutes(routes, webpackChunkName) {
     patchRoute(route, webpackChunkName);
   });
   level -= 1;
+}
+
+function precedingDot(p) {
+  return p.startsWith('.') ? p : `./${p}`;
 }
 
 function normalizeEntry(entry) {

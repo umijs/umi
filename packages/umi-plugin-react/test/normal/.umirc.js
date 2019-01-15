@@ -26,7 +26,16 @@ export default {
         },
         polyfills: [],
         antd: true,
-        title: '默认标题',
+        title: {
+          defaultTitle: '默认标题',
+          useLocale: true,
+          format: '{current} {separator} {parent}',
+          separator: '|',
+        },
+        locale: {
+          default: 'zh-CN',
+          baseNavigator: false,
+        },
 
         headScripts: [{ content: `window.scripts = ['headScript1'];` }],
         scripts: [
