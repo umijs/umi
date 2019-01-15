@@ -8,7 +8,10 @@ export default (api, option) => {
   const wrapperPath = join(paths.absTmpDirPath, './TitleWrapper.jsx');
 
   // write titleWrapper at while launching
-  writeTitleWrapper(wrapperPath, option.useLocale, option);
+  api.beforeDevServer(() => {
+    // in beforeDevServer for wait absTmpDirPath(.umi) created
+    writeTitleWrapper(wrapperPath, option.useLocale, option);
+  });
 
   api.onOptionChange(newOption => {
     option = newOption;
