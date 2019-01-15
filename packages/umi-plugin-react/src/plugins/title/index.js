@@ -5,15 +5,19 @@ import Mustache from 'mustache';
 
 export default (api, option) => {
   const { paths, config } = api;
+  const wrapperPath = join(paths.absTmpDirPath, './TitleWrapper.jsx');
 
   // write titleWrapper at while launching
-  writeTitleWrapper(paths, option.useLocale, option);
+  api.beforeDevServer(() => {
+    // in beforeDevServer for wait absTmpDirPath(.umi) created
+    writeTitleWrapper(wrapperPath, option.useLocale, option);
+  });
 
   api.onOptionChange(newOption => {
     option = newOption;
 
     // write titleWrapper whenever title option changed
-    writeTitleWrapper(paths, option.useLocale, option);
+    writeTitleWrapper(wrapperPath, option.useLocale, option);
     api.rebuildHTML();
   });
 
@@ -37,14 +41,13 @@ export default (api, option) => {
       // only open this plugin when option exist
       route.Routes = [
         ...(route.Routes || []),
-        relative(paths.cwd, join(__dirname, 'TitleWrapper.jsx')),
+        relative(paths.cwd, wrapperPath),
       ];
     }
   });
 };
 
-function writeTitleWrapper(paths, useLocale, option) {
-  const wrapperPath = join(__dirname, './TitleWrapper.jsx');
+function writeTitleWrapper(targetPath, useLocale, option) {
   const wrapperTpl = readFileSync(
     join(__dirname, './template/TitleWrapper.js.tpl'),
     'utf-8',
@@ -53,7 +56,7 @@ function writeTitleWrapper(paths, useLocale, option) {
     useLocale,
     option,
   });
-  writeFileSync(wrapperPath, wrapperContent, 'utf-8');
+  writeFileSync(targetPath, wrapperContent, 'utf-8');
 }
 
 function parseOption(option) {

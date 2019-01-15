@@ -71,7 +71,7 @@ describe('normal', () => {
     const titleText = await page.evaluate(
       () => document.querySelector('title').innerHTML,
     );
-    expect(titleText).toEqual('testpage');
+    expect(titleText).toEqual('标题测试');
   });
 
   it('mock', async () => {
