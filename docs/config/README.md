@@ -425,6 +425,15 @@ Additional configuration items for [less-loader](https://github.com/webpack-cont
 
 Additional configuration items for [css-loader](https://github.com/webpack-contrib/css-loader).Configure the [resolve.alias](https://webpack.js.org/configuration/resolve/#resolve-alias) property of webpack.
 
+### autoprefixer <Badge text="2.4.3+"/>
+
+Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options) .
+
+- Type: `Object`
+- Default: `{ browserslist, flexbox: 'no-2019' }`
+
+If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
+
 ### browserslist <Badge text="deprecated"/>
 
 Configure [browserslist](https://github.com/ai/browserslist) to work with babel-preset-env and autoprefixer.
