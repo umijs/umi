@@ -12,5 +12,8 @@ module.exports = {
     '/packages/umi-utils/src/fixtures',
   ],
   collectCoverageFrom: ['packages/**/src/**/*.{js,jsx}'],
-  coveragePathIgnorePatterns: ['/packages/umi-plugin-dva/src/fixtures'],
+  coveragePathIgnorePatterns: [
+    '/packages/umi-plugin-dva/src/fixtures',
+    '/packages/umi-build-dev/src/plugins/commands/generate/generators',
+  ],
 };
