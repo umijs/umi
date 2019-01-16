@@ -29,7 +29,10 @@ export default function generateWebManifest(api, options) {
   };
   let manifestFilename = basename(srcPath);
 
-  if (existsSync(parse(srcPath).pathname)) {
+  // remove path query
+  srcPath = parse(srcPath).pathname;
+
+  if (existsSync(srcPath)) {
     // watch manifest on DEV mode
     if (process.env.NODE_ENV === 'development') {
       addPageWatcher([srcPath]);
