@@ -657,7 +657,7 @@ var _reactDom = _interopRequireDefault(__webpack_require__(24));
 // runtime plugins
 window.g_plugins = __webpack_require__(25);
 window.g_plugins.init({
-  validKeys: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps']
+  validKeys: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps', 'onRouteChange']
 }); // render
 
 var oldRender = () => {
@@ -2022,7 +2022,20 @@ var routes = [{
 window.g_routes = routes;
 window.g_plugins.applyForEach('patchRoutes', {
   initialValue: routes
-});
+}); // route change handler
+
+function routeChangeHandler(location, action) {
+  window.g_plugins.applyForEach('onRouteChange', {
+    initialValue: {
+      routes,
+      location,
+      action
+    }
+  });
+}
+
+window.g_history.listen(routeChangeHandler);
+routeChangeHandler(window.g_history.location);
 
 function RouterWrapper() {
   return _react.default.createElement(Router, {
