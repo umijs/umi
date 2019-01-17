@@ -1,8 +1,12 @@
 # umi-plugin-locale
 
-`umi`多语言控制插件。
+i18n plugin for umi.
 
-推荐配合[umi-plugin-react](https://umijs.org/plugin/umi-plugin-react.html)使用。
+---
+
+Suggest to use together with umi-plugin-react, see our website [umi-plugin-react](https://umijs.org/plugin/umi-plugin-react.html) for more.
+
+---
 
 ## 配置
 
