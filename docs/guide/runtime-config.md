@@ -8,7 +8,7 @@ sidebarDepth: 3
 This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
 :::
 
-## 什么有运行时配置？
+## 为什么有运行时配置？
 
 我们通过 `.umirc.js` 做编译时的配置，这能覆盖大量场景，但有一些却是编译时很难触及的。
 
