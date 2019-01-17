@@ -164,6 +164,7 @@ export default class FilesGenerator {
         'render',
         'rootContainer',
         'modifyRouteProps',
+        'onRouteChange',
       ],
     });
     assert(

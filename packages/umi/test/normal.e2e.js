@@ -22,6 +22,10 @@ describe('normal', () => {
     const routes = await page.evaluate(() => window.g_routes);
     expect(routes[0].path).toEqual('/');
 
+    // app.js -> onRouteChange
+    const pathname = await page.evaluate(() => window.g_location_pathname);
+    expect(pathname).toEqual('/');
+
     // global.js
     const text = await page.evaluate(
       () => document.querySelector('h1').innerHTML,
