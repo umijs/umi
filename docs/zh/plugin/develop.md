@@ -619,6 +619,22 @@ api.modifyAFWebpackOpts((memo) => {
 
 添加运行时插件，参数为文件的绝对路径。
 
+比如：
+
+```js
+api.addRuntimePlugin(require.resolve('./app.js'));
+```
+
+然后在 app.js 是以下内容：
+
+```
+export function render(oldRender) {
+  setTimeout(oldRender, 1000);
+}
+```
+
+这样就实现了延迟 1s 渲染应用。
+
 ### addRuntimePluginKey
 
 添加运行时可配置项。

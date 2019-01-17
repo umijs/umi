@@ -618,6 +618,22 @@ Added version information, displayed in `umi -v` or `umi version`.
 
 Add a runtime plugin with parameters as the absolute path to the file.
 
+e.g.
+
+```js
+api.addRuntimePlugin(require.resolve('./app.js'));
+```
+
+Then in `app.js`:
+
+```
+export function render(oldRender) {
+  setTimeout(oldRender, 1000);
+}
+```
+
+This implements a 1 second delayed rendering application.
+
 ### addRuntimePluginKey
 
 Add a runtime configurable item.
