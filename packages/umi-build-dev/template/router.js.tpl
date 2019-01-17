@@ -12,11 +12,12 @@ window.g_routes = routes;
 window.g_plugins.applyForEach('patchRoutes', { initialValue: routes });
 
 // route change handler
-function routeChangeHandler(location) {
+function routeChangeHandler(location, action) {
   window.g_plugins.applyForEach('onRouteChange', {
     initialValue: {
       routes,
       location,
+      action,
     },
   });
 }
