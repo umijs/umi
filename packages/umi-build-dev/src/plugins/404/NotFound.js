@@ -57,7 +57,7 @@ class NotFound extends React.Component {
           </code>{' '}
           {do {
             if (hasRoutesInConfig) {
-              `and configuire the route in config file `;
+              `and configure the route in config file `;
             } else {
               ('');
             }
