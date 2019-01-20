@@ -46,22 +46,43 @@ describe('test plugin', () => {
   });
 });
 
-test('antd is false', () => {
-  localePlugin(api, {
-    enable: true,
-    antd: false,
-    baseNavigator: false,
+describe('test antd, antdMobile config', () => {
+  test('antd is false', () => {
+    localePlugin(api, {
+      enable: true,
+      antd: false,
+      baseNavigator: false,
+    });
+
+    const ret = readFileSync(wrapperFile, 'utf-8');
+
+    expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
+    expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
+    expect(ret).not.toEqual(
+      expect.stringContaining('antd/lib/locale-provider/zh_CN'),
+    );
+    expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
+    unlinkSync(wrapperFile);
   });
 
-  const ret = readFileSync(wrapperFile, 'utf-8');
+  test('antd is false, antdMobile is true', () => {
+    localePlugin(api, {
+      enable: true,
+      antd: false,
+      antdMobile: true,
+      default: 'en-US',
+      baseNavigator: false,
+    });
 
-  expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
-  expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-  expect(ret).not.toEqual(
-    expect.stringContaining('antd/lib/locale-provider/zh_CN'),
-  );
-  expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
-  unlinkSync(wrapperFile);
+    const ret = readFileSync(wrapperFile, 'utf-8');
+
+    expect(ret).toEqual(expect.stringContaining('LocaleProviderMobile'));
+    expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
+    expect(ret).toEqual(
+      expect.stringContaining('antd-mobile/lib/locale-provider/en_US'),
+    );
+    unlinkSync(wrapperFile);
+  });
 });
 
 describe('test func with singular true', () => {

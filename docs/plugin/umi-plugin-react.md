@@ -108,7 +108,8 @@ options include:
 
 * `default`: 'zh-CN', // default zh-CN
 * `baseNavigator`: true, // default true, when it is true, will use `navigator.language` overwrite default
-* `antd`: true, // use antd, default is true
+* `antd: true`, // config LocaleProvider for antd automatically, default is true
+* `antdMobile: false`, // config LocaleProvider for antd-mobile automatically, default is false
 
 ### library
 

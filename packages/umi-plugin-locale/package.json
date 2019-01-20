@@ -28,6 +28,7 @@
     "umi"
   ],
   "dependencies": {
+    "antd-mobile": "2.x",
     "globby": "7.1.1",
     "intl": "1.2.5",
     "lodash.groupby": "4.6.0",

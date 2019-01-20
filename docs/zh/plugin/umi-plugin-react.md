@@ -119,9 +119,10 @@ export default {
 
 配置项包含：
 
-* `default: 'zh-CN'`, // default zh-CN
-* `baseNavigator: true`, // default true, when it is true, will use `navigator.language` overwrite default
-* `antd: true`, // use antd, default is true
+* `default: 'zh-CN'`, // 默认 zh-CN
+* `baseNavigator: true`, // 默认 true，如果设置为true，则umi会用 `navigator.language`替换你设置的default值
+* `antd: true`, // 自动为antd配置LocaleProvider，默认 true
+* `antdMobile: false`, // 自动为antd-mobile配置LocaleProvider，默认 false
 
 ### library
 

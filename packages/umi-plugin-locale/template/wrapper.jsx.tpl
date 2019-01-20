@@ -35,6 +35,15 @@ let defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
 defaultAntd = defaultAntd.default || defaultAntd;
 {{/antd}}
 
+{{#antdMobile}}
+import { LocaleProvider as LocaleProviderMobile } from 'antd-mobile';
+let defaultAntdMobile = {};
+{{#defaultAntdMobileLocale}}
+defaultAntdMobile = require('antd-mobile/lib/locale-provider/{{defaultAntdMobileLocale}}');
+{{/defaultAntdMobileLocale}}
+defaultAntdMobile = defaultAntdMobile.default || defaultAntdMobile;
+{{/antdMobile}}
+
 const localeInfo = {
   {{#localeList}}
   '{{name}}': {
@@ -43,6 +52,7 @@ const localeInfo = {
     },
     locale: '{{name}}',
     {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
+    {{#antdMobileLocale}}antdMobile: require('antd-mobile/lib/locale-provider/{{antdMobileLocale}}'),{{/antdMobileLocale}}
     data: require('react-intl/locale-data/{{lang}}'),
     momentLocale: '{{momentLocale}}',
   },
@@ -79,5 +89,10 @@ export default function LocaleWrapper(props) {
     {ret}
   </LocaleProvider>);
   {{/antd}}
+  {{#antdMobile}}
+  ret = (<LocaleProviderMobile locale={appLocale.antdMobile ? (appLocale.antdMobile.default || appLocale.antdMobile) : defaultAntdMobile}>
+    {ret}
+  </LocaleProviderMobile>);
+  {{/antdMobile}}
   return ret;
 }

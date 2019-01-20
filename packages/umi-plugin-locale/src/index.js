@@ -15,6 +15,10 @@ const momentLocation = require
   .resolve('moment/locale/zh-cn')
   .replace(/zh\-cn\.js$/, '');
 
+const antdMobileLocation = require
+  .resolve('antd-mobile/lib/locale-provider/en_US')
+  .replace(/en\_US\.js$/, '');
+
 function getMomentLocale(lang, country) {
   if (
     existsSync(
@@ -25,6 +29,17 @@ function getMomentLocale(lang, country) {
   }
   if (existsSync(join(momentLocation, `${lang}.js`))) {
     return lang;
+  }
+  return '';
+}
+
+function getAntdMobileLocale(lang, country) {
+  if (
+    existsSync(
+      join(antdMobileLocation, `${lang}_${country.toLocaleUpperCase()}.js`),
+    )
+  ) {
+    return `${lang}_${country.toLocaleUpperCase()}`;
   }
   return '';
 }
@@ -63,6 +78,7 @@ export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
       country: fileInfo[1],
       paths: groups[name].map(item => winPath(item.path)),
       momentLocale: getMomentLocale(fileInfo[0], fileInfo[1]),
+      antdMobileLocale: getAntdMobileLocale(fileInfo[0], fileInfo[1]),
     };
   });
 }
@@ -133,12 +149,14 @@ export default function(api, options = {}) {
     const wrapperContent = Mustache.render(wrapperTpl, {
       localeList: localeFileList,
       antd: options.antd === undefined ? true : options.antd,
+      antdMobile: options.antdMobile === undefined ? false : options.antdMobile,
       baseNavigator:
         options.baseNavigator === undefined ? true : options.baseNavigator,
       useLocalStorage: true,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,
+      defaultAntdMobileLocale: getAntdMobileLocale(lang, country),
       defaultMomentLocale: getMomentLocale(lang, country),
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
