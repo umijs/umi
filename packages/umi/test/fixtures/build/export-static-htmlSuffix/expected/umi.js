@@ -675,7 +675,7 @@ var moduleBeforeRendererPromises = [];
 Promise.all(moduleBeforeRendererPromises).then(() => {
   render();
 }).catch(err => {
-  if (false) {}
+  window.console && window.console.error(err);
 }); // hot module replacement
 
 if (false) {}
