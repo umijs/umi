@@ -86,10 +86,10 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 }
 
 function resolveComponent(pagesPath, component) {
-  const ret = winPath(join(pagesPath, component));
   if (isAbsolute(component)) {
     return winPath(component);
   }
+  const ret = winPath(join(pagesPath, component));
   if (ret.indexOf('./') !== 0) {
     return `./${ret}`;
   }
