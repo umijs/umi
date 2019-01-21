@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 import { cloneDeep } from 'lodash';
 import { winPath, isUrl } from 'umi-utils';
 
@@ -86,6 +86,9 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 }
 
 function resolveComponent(pagesPath, component) {
+  if (isAbsolute(component)) {
+    return winPath(component);
+  }
   const ret = winPath(join(pagesPath, component));
   if (ret.indexOf('./') !== 0) {
     return `./${ret}`;
