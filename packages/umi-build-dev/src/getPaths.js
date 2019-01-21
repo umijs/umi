@@ -32,7 +32,10 @@ export default function(service) {
   const absSrcPath = join(absPagesPath, '../');
 
   const envAffix = process.env.NODE_ENV === 'development' ? '' : `-production`;
-  const tmpDirPath = `${pagesPath}/.umi${envAffix}`;
+  const tmpDirPath = process.env.UMI_TEMP_DIR
+    ? `${process.env.UMI_TEMP_DIR}${envAffix}`
+    : `${pagesPath}/.umi${envAffix}`;
+
   const absTmpDirPath = join(cwd, tmpDirPath);
 
   return {
