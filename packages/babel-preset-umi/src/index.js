@@ -25,8 +25,6 @@ export default function(context, opts = {}) {
     'transform-literals',
   ];
 
-  console.log('haha', transformRuntime);
-
   const plugins = [
     require.resolve('babel-plugin-react-require'),
     require.resolve('@babel/plugin-syntax-dynamic-import'),
