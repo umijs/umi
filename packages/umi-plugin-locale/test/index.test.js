@@ -98,6 +98,7 @@ describe('test func with singular true', () => {
           `${absPagesPath}/temp/locale/en-US.js`,
         ],
         momentLocale: '',
+        antdMobileLocale: 'en_US',
       },
       {
         lang: 'zh',
@@ -108,6 +109,7 @@ describe('test func with singular true', () => {
           `${absPagesPath}/temp/locale/zh-CN.js`,
         ],
         momentLocale: 'zh-cn',
+        antdMobileLocale: '',
       },
     ]);
   });
