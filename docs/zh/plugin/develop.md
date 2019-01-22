@@ -95,6 +95,7 @@ export default (api, opts = {}) => {
 - absTmpDirPath: .umi 临时目录的路径（绝对路径）
 - absSrcPath: src 目录的路径（绝对路径），用户缺省 src 时则对应为项目根目录
 - cwd: 项目根目录
+- absNodeModulesPath: node_modules 的绝对路径
 
 ### routes
 
@@ -275,7 +276,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
