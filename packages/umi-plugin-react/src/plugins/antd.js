@@ -1,25 +1,26 @@
 import { dirname } from 'path';
 
-function importPlugin(key) {
+function importPlugin(key, options) {
   return [
     require.resolve('babel-plugin-import'),
     {
       libraryName: key,
-      libraryDirectory: 'es',
+      libraryDirectory:
+        process.env.ANTD_IMPORT_DIRECTORY || options.importDirectory || 'es',
       style: true,
     },
     key,
   ];
 }
 
-export default function(api) {
+export default function(api, options = {}) {
   const { cwd, compatDirname } = api;
 
   api.modifyAFWebpackOpts(opts => {
     opts.babel.plugins = [
       ...(opts.babel.plugins || []),
-      importPlugin('antd'),
-      importPlugin('antd-mobile'),
+      importPlugin('antd', options),
+      importPlugin('antd-mobile', options),
       [
         require.resolve('babel-plugin-import'),
         {
