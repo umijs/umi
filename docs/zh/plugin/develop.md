@@ -472,8 +472,8 @@ api.modifyHTMLContext((memo, { route }) => {
 修改路由配置。
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 
