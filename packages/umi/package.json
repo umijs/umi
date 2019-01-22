@@ -49,6 +49,7 @@
     "dynamic.d.ts",
     "link.d.ts",
     "navlink.d.ts",
+    "prompt.d.ts",
     "redirect.d.ts",
     "router.d.ts",
     "withRouter.d.ts"
