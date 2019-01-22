@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+
 export default function(context, opts = {}) {
   const nodeEnv = process.env.NODE_ENV;
   const {
@@ -7,7 +9,11 @@ export default function(context, opts = {}) {
     env = {},
   } = opts;
   const transformRuntime =
-    'transformRuntime' in opts ? opts.transformRuntime : {};
+    'transformRuntime' in opts
+      ? opts.transformRuntime
+      : {
+          absoluteRuntime: dirname(require.resolve('../package')),
+        };
   const exclude = [
     'transform-typeof-symbol',
     'transform-unicode-regex',
@@ -18,6 +24,8 @@ export default function(context, opts = {}) {
     'transform-modules-amd',
     'transform-literals',
   ];
+
+  console.log('haha', transformRuntime);
 
   const plugins = [
     require.resolve('babel-plugin-react-require'),
