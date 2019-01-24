@@ -1,5 +1,6 @@
 import { join } from 'path';
 import dvaPlugin, { getGlobalModels, getModel } from './index';
+import { winPath } from 'umi-utils';
 
 const fixtures = join(__dirname, 'fixtures');
 const base = join(fixtures, 'getModel');
@@ -11,13 +12,11 @@ const api = {
   config: {
     singular: false,
   },
-  winPath(p) {
-    return p;
-  },
+  winPath,
 };
 
 function normalizeModels(models, base) {
-  return models.map(model => model.replace(base, '$CWD$'));
+  return models.map(model => model.replace(winPath(base), '$CWD$'));
 }
 
 describe('umi-plugin-dva', () => {
@@ -87,9 +86,7 @@ describe('umi-plugin-dva', () => {
           absSrcPath,
         },
         config: {},
-        winPath(p) {
-          return p;
-        },
+        winPath,
       },
       /* shouldImportDynamic */ true,
     );
@@ -111,9 +108,7 @@ describe('umi-plugin-dva', () => {
         { path: '/', component: './pages/index.js' },
         { path: '/c', component: './pages/c/index.js' },
       ],
-      winPath(p) {
-        return p;
-      },
+      winPath,
     };
     let models = null;
 

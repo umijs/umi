@@ -55,7 +55,7 @@ export default function getRouteConfigFromDir(paths) {
         wrappedRoutes,
         {
           path: '/',
-          component: `./${relative(cwd, globalLayoutFile)}`,
+          component: `./${winPath(relative(cwd, globalLayoutFile))}`,
           routes,
         },
         {
