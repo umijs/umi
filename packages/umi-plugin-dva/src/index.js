@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join, dirname, basename, extname } from 'path';
+import { join, dirname, basename, extname, isAbsolute } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
@@ -202,7 +202,16 @@ _dvaDynamic({
   ${loadingOpts}
 })
       `.trim();
-      const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
+     
+      let models = [];
+      // 处理 node_modules 中页面 Model 按需加载
+      if (isAbsolute(importPath)) {
+        const modelPath = findJS(dirname(importPath), 'model');
+        if (modelPath) models = [modelPath];
+      } else {
+        models = getPageModels(join(paths.absTmpDirPath, importPath), api);
+      }
+      
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',
