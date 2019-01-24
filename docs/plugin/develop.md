@@ -95,6 +95,7 @@ configuration in `.umirc.js` or `config/config.js`.
 - absTmpDirPath
 - absSrcPath
 - cwd: project root
+- absNodeModulesPath
 
 ### routes
 
@@ -275,7 +276,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
@@ -466,8 +471,8 @@ api.modifyHTMLContext((memo, { route }) => {
 Modify the routing configuration.
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 
