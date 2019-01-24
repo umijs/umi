@@ -202,7 +202,16 @@ _dvaDynamic({
   ${loadingOpts}
 })
       `.trim();
-      const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
+       
+      let models;
+      if (_path.isAbsolute(importPath)) {
+        // 按需加载 node_modules 下面依赖包页面 model
+        // importPath 为绝对路径时，单独处理获取 model 绝对路径
+        models = [_path.resolve(importPath, '../model.js')];
+      } else {
+        models = getPageModels((0, _path.join)(paths.absTmpDirPath, importPath), api);
+      }
+      
       if (models && models.length) {
         ret = ret.replace(
           '<%= MODELS %>',
