@@ -16,6 +16,11 @@
     "ui:dev": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js dev",
     "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "lint-staged": {
     "*.js": [
       "prettier --trailing-comma all --single-quote --write",
@@ -23,6 +28,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.3.2",
+    "@commitlint/config-conventional": "^7.3.1",
     "babel-eslint": "10.0.1",
     "chokidar": "2.0.4",
     "coveralls": "3.0.2",

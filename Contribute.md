@@ -62,3 +62,7 @@ Publish to npm.
 ```bash
 $ npm run publish
 ```
+
+## Git Commit Message Convention
+
+> From the [config-conventional](https://github.com/marionebl/commitlint/tree/master/%40commitlint/config-conventional) standard conventional
