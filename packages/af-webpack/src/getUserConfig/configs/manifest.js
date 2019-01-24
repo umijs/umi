@@ -1,5 +1,5 @@
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 
 export default function() {
   return {

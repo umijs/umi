@@ -9,7 +9,7 @@ export default function(api) {
         name: 'history',
         validate(val) {
           assert(
-            ['browser', 'hash'].includes(val),
+            ['browser', 'hash', 'memory'].includes(val),
             `history should be browser or hash, but got ${val}`,
           );
         },
@@ -20,20 +20,22 @@ export default function(api) {
     };
   });
 
-  api.addEntryImportAhead(() => {
-    if (config.history === 'hash') {
-      return {
-        source: 'history/createHashHistory',
-        specifier: 'createHashHistory',
-      };
-    }
-    return [];
-  });
-
   api.modifyEntryHistory(memo => {
     if (config.history === 'hash') {
-      return `createHashHistory()`;
+      return `require('history/createHashHistory').default()`;
+    } else if (config.history === 'memory') {
+      return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
     }
     return memo;
+  });
+
+  api.addHTMLHeadScript((memo, { route }) => {
+    return config.history === 'memory'
+      ? [
+          {
+            content: `window.g_initialEntries = ['${route.path}'];`,
+          },
+        ]
+      : [];
   });
 }

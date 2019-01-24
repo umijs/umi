@@ -1,8 +1,11 @@
 {
   "name": "umi-plugin-locale",
-  "version": "2.1.0-beta.1",
+  "version": "2.4.1",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
+  "browser": {
+    "./lib/index.js": "./lib/locale.js"
+  },
   "authors": [
     "yutingzhao1991 <yutingzhao1991@sina.com> (https://github.com/yutingzhao1991)"
   ],
@@ -18,16 +21,25 @@
   "files": [
     "lib",
     "src",
-    "template"
+    "template",
+    "index.d.ts"
   ],
   "keywords": [
     "umi"
   ],
   "dependencies": {
+    "globby": "7.1.1",
+    "intl": "1.2.5",
+    "lodash.groupby": "4.6.0",
     "moment": "2.x",
-    "mustache": "^2.3.0",
-    "prop-types": "^15.6.2",
-    "react-intl": "^2.4.0",
-    "umi-utils": "^0.2.2"
+    "mustache": "3.0.1",
+    "prop-types": "15.6.2",
+    "react-intl": "2.7.2",
+    "umi-utils": "1.3.1"
+  },
+  "umiTools": {
+    "browserFiles": [
+      "src/locale.js"
+    ]
   }
 }

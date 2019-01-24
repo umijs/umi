@@ -57,7 +57,7 @@ export default (api, opts = {}) => {
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
   api.addRendererWrapperWithComponent(() => {
     if (opts.antd) {
-      return join(__dirnae, './locale-antd.js');
+      return join(__dirname, './locale-antd.js');
     }
   });
   // 添加对 locale 文件的 watch
@@ -71,7 +71,7 @@ export default (api, opts = {}) => {
 
 插件的执行顺序依赖用户在配置文件 `.umirc.js` 或者 `config/config.js` 中配置的 `plugins` 配置项，有依赖的插件 umi 会通过插件的 `dependence` 配置检查插件的顺序做出警告，但是目前 umi 不会修改用户的顺序。
 
-当插件调用 `api.applyPlugin` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
+当插件调用 `api.applyPlugins` 触发插件的 hooks 时，hooks 的执行顺序对应 `plugins` 的顺序。至于 hooks 是否关心顺序由对应的 hooks 决定。
 
 ## 环境变量
 
@@ -95,6 +95,7 @@ export default (api, opts = {}) => {
 - absTmpDirPath: .umi 临时目录的路径（绝对路径）
 - absSrcPath: src 目录的路径（绝对路径），用户缺省 src 时则对应为项目根目录
 - cwd: 项目根目录
+- absNodeModulesPath: node_modules 的绝对路径
 
 ### routes
 
@@ -153,9 +154,9 @@ api.addHTMLMeta(() => {
 
 类型是 `api.API_TYPE.MODIFY` 的插件方法，返回修改后的内容。
 
-你也可以通过 `apply` 来自定义处理的函数，你注册的方法可能被多个插件使用，当你调用 `applyPlugin` 时在 umi 内部会通过 reduce 函数去处理这些插件的返回值。你定义的 `apply` 函数决定了 `applyPlugin` 是怎么处理多个插件的结果作为它的返回值的。通常情况下内置的三种类型就可以满足你的需求了。
+你也可以通过 `apply` 来自定义处理的函数，你注册的方法可能被多个插件使用，当你调用 `applyPlugins` 时在 umi 内部会通过 reduce 函数去处理这些插件的返回值。你定义的 `apply` 函数决定了 `applyPlugins` 是怎么处理多个插件的结果作为它的返回值的。通常情况下内置的三种类型就可以满足你的需求了。
 
-### applyPlugin
+### applyPlugins
 
 在插件用应用通过 registerMethod 注册的某个方法。
 
@@ -163,7 +164,7 @@ api.addHTMLMeta(() => {
 // 如果 type 为 api.API_TYPE.ADD wrappers 为各个插件返回的值组成的数组
 // EVENT 则 wrappers 返回 undefined
 // MODIFY 则返回最后的修改值
-const wrappers = api.applyPlugin('wrapDvaRendererWithComponent');
+const wrappers = api.applyPlugins('wrapDvaRendererWithComponent');
 ```
 
 ### restart
@@ -230,7 +231,34 @@ api._registerConfig(() => {
 });
 ```
 
+### \_modifyCommand
+
+修改命令的名称和参数。
+
+```js
+// A demo for modify block npmClient to cnpm:
+api._modifyCommand(({ name, args }) => {
+  if (name === 'block') {
+    args.npmClient = args.npmClient || 'cnpm';
+  }
+  return { name, args };
+});
+```
+
 ## 工具类 API
+
+### log
+
+```js
+api.log.success('Done');
+api.log.error('Error');
+api.log.error(new Error('Error'));
+api.log.debug('Hello', 'from', 'L59');
+api.log.pending('Write release notes for %s', '1.2.0');
+api.log.watch('Recursively watching build directory...');
+```
+
+输出[各种类型](https://github.com/klaussinani/signale/blob/94984998a0e9cb280e68959ddd9db70b49713738/types.js#L4)的日志。
 
 ### winPath
 
@@ -248,7 +276,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
@@ -298,9 +330,7 @@ export default (api, defaultOpts = { immer: false }) => {
 在 `umi build` 成功时候。主要做一些构建产物的处理。
 
 ```js
-api.onBuildSuccess({
-  stats,
-} => {
+api.onBuildSuccess(({ stats }) => {
   // handle with stats
 });
 ```
@@ -403,13 +433,26 @@ api.addHTMLScript({
 
 在 HTML 头部添加脚本。
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-修改 chunks 。
+修改 chunks，默认值是 `['umi']`。
 
 ### modifyHTMLWithAST
 
 修改 HTML，基于 cheerio 。
+
+参数：
+
+* route，当前路由
+* getChunkPath <Badge text="2.2.0+"/>，获取 chunk 的完整路径，包含 publicPath 和 hash 信息
+
+例子：
+
+```js
+api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
+  $('head').append(`<script src="${getChunkPath('a.js')}"></script>`);
+});
+```
 
 ### modifyHTMLContext
 
@@ -429,8 +472,8 @@ api.modifyHTMLContext((memo, { route }) => {
 修改路由配置。
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 
@@ -580,6 +623,22 @@ api.modifyAFWebpackOpts((memo) => {
 ### addRuntimePlugin
 
 添加运行时插件，参数为文件的绝对路径。
+
+比如：
+
+```js
+api.addRuntimePlugin(require.resolve('./app.js'));
+```
+
+然后在 app.js 是以下内容：
+
+```
+export function render(oldRender) {
+  setTimeout(oldRender, 1000);
+}
+```
+
+这样就实现了延迟 1s 渲染应用。
 
 ### addRuntimePluginKey
 

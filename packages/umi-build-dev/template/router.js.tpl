@@ -8,9 +8,23 @@ import renderRoutes from 'umi/_renderRoutes';
 let Router = {{{ RouterRootComponent }}};
 
 let routes = {{{ routes }}};
+window.g_routes = routes;
 window.g_plugins.applyForEach('patchRoutes', { initialValue: routes });
 
-export default function() {
+// route change handler
+function routeChangeHandler(location, action) {
+  window.g_plugins.applyForEach('onRouteChange', {
+    initialValue: {
+      routes,
+      location,
+      action,
+    },
+  });
+}
+window.g_history.listen(routeChangeHandler);
+routeChangeHandler(window.g_history.location);
+
+export default function RouterWrapper() {
   return (
 {{{ routerContent }}}
   );

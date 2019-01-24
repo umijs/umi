@@ -1,12 +1,17 @@
 
 {{#localeList.length}}
-import { addLocaleData, IntlProvider, injectIntl } from 'react-intl';
-import { _setIntlObject } from 'umi/locale';
+import { _setIntlObject, addLocaleData, IntlProvider, intlShape } from 'umi/locale';
 
-const InjectedWrapper = injectIntl(function(props) {
-  _setIntlObject(props.intl);
-  return props.children;
-})
+const InjectedWrapper = (() => {
+  let sfc = (props, context) => {
+    _setIntlObject(context.intl);
+    return props.children;
+  };
+  sfc.contextTypes = {
+    intl: intlShape,
+  };
+  return sfc;
+})();
 {{/localeList.length}}
 
 {{#localeList}}
@@ -26,13 +31,16 @@ import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
 {{/defaultMomentLocale}}
-const defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
+let defaultAntd = require('antd/lib/locale-provider/{{defaultAntdLocale}}');
+defaultAntd = defaultAntd.default || defaultAntd;
 {{/antd}}
 
 const localeInfo = {
   {{#localeList}}
   '{{name}}': {
-    messages: require('{{{path}}}').default,
+    messages: {
+      {{#paths}}...require('{{{.}}}').default,{{/paths}}
+    },
     locale: '{{name}}',
     {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
     data: require('react-intl/locale-data/{{lang}}'),
@@ -59,7 +67,7 @@ window.g_lang = appLocale.locale;
 appLocale.data && addLocaleData(appLocale.data);
 {{/localeList.length}}
 
-export default (props) => {
+export default function LocaleWrapper(props) {
   let ret = props.children;
   {{#localeList.length}}
   ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
@@ -67,7 +75,7 @@ export default (props) => {
   </IntlProvider>)
   {{/localeList.length}}
   {{#antd}}
-  ret = (<LocaleProvider locale={appLocale.antd || defaultAntd}>
+  ret = (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
     {ret}
   </LocaleProvider>);
   {{/antd}}

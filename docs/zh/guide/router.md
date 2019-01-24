@@ -101,7 +101,7 @@ umi 里约定目录下有 `_layout.js` 时会生成嵌套路由，以 `_layout.j
 
 ```js
 [
-  { path: '/users': component: './pages/users/_layout.js'
+  { path: '/users', component: './pages/users/_layout.js',
     routes: [
      { path: '/users/', component: './pages/users/index.js' },
      { path: '/users/:id', component: './pages/users/$id.js' },
@@ -139,7 +139,7 @@ export default function(props) {
   if (props.location.pathname === '/login') {
     return <SimpleLayout>{ props.children }</SimpleLayout>
   }
-  
+
   return (
     <>
       <Header />
@@ -262,7 +262,7 @@ export default (props) => {
 $ yarn add react-transition-group
 ```
 
-在 layout 组件（`layouts/index.js` 或者 pages 子目录下的 `_layout.js`）里在渲染子组件时用 TransitionGroup 和 CSSTransition 包裹一层，并以 `location.key` 为 key，
+在 layout 组件（`layouts/index.js` 或者 pages 子目录下的 `_layout.js`）里在渲染子组件时用 TransitionGroup 和 CSSTransition 包裹一层，并以 `location.pathname` 为 key，
 
 ```js
 import withRouter from 'umi/withRouter';
@@ -271,7 +271,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 export default withRouter(
   ({ location }) =>
     <TransitionGroup>
-      <CSSTransition key={location.key} classNames="fade" timeout={300}>
+      <CSSTransition key={location.pathname} classNames="fade" timeout={300}>
         { children }
       </CSSTransition>
     </TransitionGroup>

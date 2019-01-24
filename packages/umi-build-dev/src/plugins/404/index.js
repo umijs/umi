@@ -1,5 +1,5 @@
 import { join } from 'path';
-import deepclone from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash';
 import { winPath } from 'umi-utils';
 
 export default function(api) {
@@ -16,7 +16,7 @@ export default function(api) {
         }', hasRoutesInConfig: ${!!config.routes} })
         `.trim(),
       };
-      const routes = deepclone(memo);
+      const routes = cloneDeep(memo);
 
       function addNotFound(_route) {
         if (!_route.routes) {

@@ -22,7 +22,7 @@ $ HTML=none umi build
 
 怎么解决？
 
-可通过配置 [base](/config/#base) 解决。 
+可通过配置 [base](/zh/config/#base) 解决。 
 
 ```bash
 export default {
@@ -32,7 +32,7 @@ export default {
 
 ## 使用 hashHistory
 
-可通过配置 [history](/config/#history) 为 `hash` 为解决。 
+可通过配置 [history](/zh/config/#history) 为 `hash` 为解决。 
 
 ```bash
 export default {
@@ -42,7 +42,7 @@ export default {
 
 ## 按需加载
 
-要实现按需加载，需装载 umi-plugin-react 插件并配置 [dynamicImport](/plugin/umi-plugin-react.html#dynamicimport)。
+要实现按需加载，需装载 umi-plugin-react 插件并配置 [dynamicImport](/zh/plugin/umi-plugin-react.html#dynamicimport)。
 
 ```js
 export default {
@@ -54,11 +54,11 @@ export default {
 };
 ```
 
-参数详见：[umi-plugin-react#dynamicImport](/plugin/umi-plugin-react.html#dynamicimport)。
+参数详见：[umi-plugin-react#dynamicImport](/zh/plugin/umi-plugin-react.html#dynamicimport)。
 
 ## 静态资源在非根目录或 cdn
 
-这时，就需要配置 [publicPath](/config/#publicPath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
+这时，就需要配置 [publicPath](/zh/config/#publicPath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
 
 ```js
 export default {
@@ -68,7 +68,7 @@ export default {
 
 ## 使用 runtime 的 publicPath
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/config/#history) 为解决。 
+对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh/config/#history) 为解决。 
 
 ```bash
 export default {

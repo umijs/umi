@@ -11,6 +11,9 @@ function optsToArray(item) {
 }
 
 export default function(api, opts) {
+  // disable if routes if configured
+  if (api.config.routes) return;
+
   api.onOptionChange(newOpts => {
     opts = newOpts;
     api.rebuildTmpFiles();

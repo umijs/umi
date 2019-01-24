@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+
 export default function(context, opts = {}) {
   const nodeEnv = process.env.NODE_ENV;
   const {
@@ -7,7 +9,11 @@ export default function(context, opts = {}) {
     env = {},
   } = opts;
   const transformRuntime =
-    'transformRuntime' in opts ? opts.transformRuntime : {};
+    'transformRuntime' in opts
+      ? opts.transformRuntime
+      : {
+          absoluteRuntime: dirname(require.resolve('../package')),
+        };
   const exclude = [
     'transform-typeof-symbol',
     'transform-unicode-regex',
@@ -51,6 +57,7 @@ export default function(context, opts = {}) {
     ],
     require.resolve('@babel/plugin-proposal-do-expressions'),
     require.resolve('@babel/plugin-proposal-function-bind'),
+    require.resolve('babel-plugin-macros'),
   ];
 
   if (nodeEnv !== 'test' && transformRuntime) {

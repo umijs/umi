@@ -101,7 +101,7 @@ The routing configuration will be generated as follows:
 
 ```js
 [
-  { path: '/users': component: './pages/users/_layout.js'
+  { path: '/users', component: './pages/users/_layout.js',
     routes: [
      { path: '/users/', component: './pages/users/index.js' },
      { path: '/users/:id', component: './pages/users/$id.js' },
@@ -139,7 +139,7 @@ export default function(props) {
   if (props.location.pathname === '/login') {
     return <SimpleLayout>{ props.children }</SimpleLayout>
   }
-  
+
   return (
     <>
       <Header />
@@ -262,7 +262,7 @@ Install dependencies first,
 $ yarn add react-transition-group
 ```
 
-In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with `TransitionGroup` and `CSSTransition` and use `location.key` as the key.
+In the layout component (`layouts/index.js` or `_layout.js` in the pages subdirectory), wrap a subassembly with `TransitionGroup` and `CSSTransition` and use `location.pathname` as the key.
 
 ```js
 import withRouter from 'umi/withRouter';
@@ -271,7 +271,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 export default withRouter(
   ({ location }) =>
     <TransitionGroup>
-      <CSSTransition key={location.key} classNames="fade" timeout={300}>
+      <CSSTransition key={location.pathname} classNames="fade" timeout={300}>
         { children }
       </CSSTransition>
     </TransitionGroup>

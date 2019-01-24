@@ -100,7 +100,7 @@ module.exports = __webpack_require__(1);
 
 __webpack_require__(2);
 
-__webpack_require__(4);
+__webpack_require__(3);
 
 console.log('index');
 
@@ -111,8 +111,7 @@ console.log('index');
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

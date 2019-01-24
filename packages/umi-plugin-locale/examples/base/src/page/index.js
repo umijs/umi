@@ -3,8 +3,11 @@ import {
   setLocale,
   getLocale,
   FormattedMessage,
+  formatTime,
+  formatDate,
 } from 'umi/locale';
 import { DatePicker } from 'antd';
+import 'antd/lib/date-picker/style';
 
 export default () => {
   console.log(
@@ -19,10 +22,9 @@ export default () => {
     ),
   );
   return (
-    <div>
-      hello world. <FormattedMessage id="test" values={{ name: 'antd' }} />
-      <DatePicker />
+    <div style={{ margin: 16, lineHeight: 2 }}>
       <button
+        style={{ marginRight: 8 }}
         onClick={() => {
           setLocale('en-US');
         }}
@@ -36,6 +38,14 @@ export default () => {
       >
         zh-CN
       </button>
+      <br />
+      <FormattedMessage id="test" values={{ name: 'antd' }} />
+      <br />
+      <FormattedMessage id="test2" values={{ name: <b>{`<b />`}</b> }} />
+      <br />
+      {`${formatDate(new Date())} ${formatTime(new Date())}`}
+      <br />
+      <DatePicker />
     </div>
   );
 };

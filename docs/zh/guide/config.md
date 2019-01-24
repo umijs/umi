@@ -20,7 +20,7 @@ export default {
 };
 ```
 
-具体配置项详见[配置](/config/)。
+具体配置项详见[配置](/zh/config/)。
 
 ## .umirc.local.js
 

@@ -16,21 +16,26 @@ export default function(service) {
   let pagesPath = 'pages';
   if (process.env.PAGES_PATH) {
     pagesPath = process.env.PAGES_PATH;
+  } else {
+    if (test(join(cwd, 'src/page'))) {
+      pagesPath = 'src/page';
+    }
+    if (test(join(cwd, 'src/pages'))) {
+      pagesPath = 'src/pages';
+    }
+    if (test(join(cwd, 'page'))) {
+      pagesPath = 'page';
+    }
   }
-  if (test(join(cwd, 'src/page'))) {
-    pagesPath = 'src/page';
-  }
-  if (test(join(cwd, 'src/pages'))) {
-    pagesPath = 'src/pages';
-  }
-  if (test(join(cwd, 'page'))) {
-    pagesPath = 'page';
-  }
+
   const absPagesPath = join(cwd, pagesPath);
   const absSrcPath = join(absPagesPath, '../');
 
   const envAffix = process.env.NODE_ENV === 'development' ? '' : `-production`;
-  const tmpDirPath = `${pagesPath}/.umi${envAffix}`;
+  const tmpDirPath = process.env.UMI_TEMP_DIR
+    ? `${process.env.UMI_TEMP_DIR}${envAffix}`
+    : `${pagesPath}/.umi${envAffix}`;
+
   const absTmpDirPath = join(cwd, tmpDirPath);
 
   return {
@@ -49,6 +54,7 @@ export default function(service) {
     absPageDocumentPath: join(absPagesPath, 'document.ejs'),
     defaultEntryTplPath: template('entry.js.tpl'),
     defaultRouterTplPath: template('router.js.tpl'),
+    defaultHistoryTplPath: template('history.js.tpl'),
     defaultRegisterSWTplPath: template('registerServiceWorker.js'),
     defaultDocumentPath: template('document.ejs'),
   };

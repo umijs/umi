@@ -7,8 +7,13 @@ module.exports = {
     '/lib/',
     '/packages/umi/src/scripts/test.js',
     '/packages/umi/src/test.js',
+    '/packages/umi-build-dev/src/routes/fixtures',
     '/packages/umi-plugin-dva/src/fixtures',
+    '/packages/umi-utils/src/fixtures',
   ],
-  collectCoverageFrom: ['packages/**/src/**/*.{ts,tsx,js,jsx}'],
-  coveragePathIgnorePatterns: ['/packages/umi-plugin-dva/src/fixtures'],
+  collectCoverageFrom: ['packages/**/src/**/*.{js,jsx}'],
+  coveragePathIgnorePatterns: [
+    '/packages/umi-plugin-dva/src/fixtures',
+    '/packages/umi-build-dev/src/plugins/commands/generate/generators',
+  ],
 };

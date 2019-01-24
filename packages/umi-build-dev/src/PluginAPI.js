@@ -1,10 +1,11 @@
 import debug from 'debug';
 import assert from 'assert';
 import { relative } from 'path';
-import isPlainObject from 'is-plain-object';
+import lodash, { isPlainObject } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
-import Generator from 'yeoman-generator';
+import signale from 'signale';
+import BasicGenerator from './BasicGenerator';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
 export default class PluginAPI {
@@ -14,12 +15,14 @@ export default class PluginAPI {
 
     // utils
     this.debug = debug(`umi-plugin: ${id}`);
+    this.log = signale;
     this.winPath = winPath;
+    this._ = lodash;
     this.compatDirname = compatDirname;
     this.findJS = findJS;
     this.findCSS = findCSS;
     this.Mustache = Mustache;
-    this.Generator = Generator;
+    this.Generator = BasicGenerator;
 
     this.API_TYPE = {
       ADD: Symbol('add'),
@@ -39,13 +42,6 @@ export default class PluginAPI {
   }
 
   _addMethods() {
-    this.registerMethod('chainWebpackConfig', {
-      type: this.API_TYPE.EVENT,
-    });
-    this.registerMethod('_registerConfig', {
-      type: this.API_TYPE.ADD,
-    });
-
     [
       [
         'chainWebpackConfig',
@@ -74,11 +70,13 @@ export default class PluginAPI {
       'addRouterImport',
       'addRouterImportAhead',
       'addVersionInfo',
+      'addUIPlugin',
       'modifyAFWebpackOpts',
       'modifyEntryRender',
       'modifyEntryHistory',
       'modifyRouteComponent',
       'modifyRouterRootComponent',
+      'modifyWebpackConfig',
       '_beforeServerWithApp',
       'beforeDevServer',
       '_beforeDevServerAsync',
@@ -104,6 +102,13 @@ export default class PluginAPI {
       '_modifyHelpInfo',
       'addRuntimePlugin',
       'addRuntimePluginKey',
+      'beforeBlockWriting',
+      '_modifyBlockPackageJSONPath',
+      '_modifyBlockDependencies',
+      '_modifyBlockFile',
+      '_modifyBlockTarget',
+      '_modifyCommand',
+      '_modifyBlockNewRouteConfig',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);
@@ -156,10 +161,6 @@ export default class PluginAPI {
       `name should be supplied with a string, but got ${name}`,
     );
     assert(opts && opts.Generator, `opts.Generator should be supplied`);
-    // assert(
-    //   opts.Generator instanceof this.Generator,
-    //   `opts.Generator should be instance of api.Generator`,
-    // );
     assert(
       !(name in generators),
       `Generator ${name} exists, please select another one.`,

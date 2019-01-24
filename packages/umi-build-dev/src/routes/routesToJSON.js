@@ -1,7 +1,6 @@
-import { join, relative } from 'path';
-import isAbsolute from 'path-is-absolute';
+import { join, relative, isAbsolute } from 'path';
 import { winPath } from 'umi-utils';
-import cloneDeep from 'lodash.clonedeep';
+import { cloneDeep } from 'lodash';
 
 let targetLevel = null;
 let level = 0;
@@ -55,7 +54,9 @@ export default (routes, service) => {
             .map(
               v =>
                 `require('${winPath(
-                  relative(paths.absTmpDirPath, join(paths.cwd, v)),
+                  precedingDot(
+                    relative(paths.absTmpDirPath, join(paths.cwd, v)),
+                  ),
                 )}').default`,
             )
             .join(', ')}]`;
@@ -73,6 +74,10 @@ function patchRoutes(routes, webpackChunkName) {
     patchRoute(route, webpackChunkName);
   });
   level -= 1;
+}
+
+function precedingDot(p) {
+  return p.startsWith('.') ? p : `./${p}`;
 }
 
 function normalizeEntry(entry) {

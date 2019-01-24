@@ -1,6 +1,7 @@
 import Config from 'webpack-chain';
 import { join, resolve, relative } from 'path';
 import { existsSync } from 'fs';
+import { EOL } from 'os';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
@@ -89,9 +90,10 @@ export default function(opts) {
   const DEFAULT_INLINE_LIMIT = 10000;
   const rule = webpackConfig.module
     .rule('exclude')
-    .exclude.add(/\.json$/)
-    .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
-    .add(/\.(css|less|scss|sass)$/);
+    .exclude
+      .add(/\.json$/)
+      .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
+      .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
       rule.add(exclude);
@@ -100,78 +102,98 @@ export default function(opts) {
   rule
     .end()
     .use('url-loader')
-    .loader(require.resolve('url-loader'))
+    .loader(require.resolve('umi-url-pnp-loader'))
     .options({
       limit: opts.inlineLimit || DEFAULT_INLINE_LIMIT,
       name: 'static/[name].[hash:8].[ext]',
     });
 
   const babelOptsCommon = {
+    // Tell babel to guess the type, instead assuming all files are modules
+    // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
+    sourceType: 'unambiguous',
     cacheDirectory: process.env.BABEL_CACHE !== 'none', // enable by default
     babelrc: !!process.env.BABELRC, // disable by default
+    customize: require.resolve('babel-preset-umi/lib/webpack-overrides'),
   };
   const babel = opts.babel || {};
   const babelOpts = {
     presets: [...(babel.presets || []), ...(opts.extraBabelPresets || [])],
-    plugins: [...(babel.plugins || []), ...(opts.extraBabelPlugins || [])],
-    ...babelOptsCommon,
-  };
-  const babelOptsForDeps = {
-    presets: [
-      [require.resolve('babel-preset-umi'), { transformRuntime: false }],
+    plugins: [
+      ...(babel.plugins || []),
+      ...(opts.extraBabelPlugins || []),
+      [
+        require.resolve('babel-plugin-named-asset-import'),
+        {
+          loaderMap: {
+            svg: {
+              ReactComponent: `${require.resolve(
+                '../svgr',
+              )}?-prettier,-svgo![path]`,
+            },
+          },
+        },
+      ],
     ],
     ...babelOptsCommon,
   };
+
   if (opts.disableDynamicImport) {
     babelOpts.plugins = [
       ...(babelOpts.plugins || []),
       require.resolve('babel-plugin-dynamic-import-node'),
     ];
-    babelOptsForDeps.plugins = [
-      ...(babelOptsForDeps.plugins || []),
-      require.resolve('babel-plugin-dynamic-import-node'),
-    ];
+  }
+
+  // module -> eslint
+  if (process.env.ESLINT && process.env.ESLINT !== 'none') {
+    require('./eslint').default(webpackConfig, opts);
   }
 
   // Avoid "require is not defined" errors
   webpackConfig.module
     .rule('mjs-require')
-    .test(/\.mjs$/)
-    .type('javascript/auto')
-    .include.add(opts.cwd);
+      .test(/\.mjs$/)
+      .type('javascript/auto')
+      .include
+        .add(opts.cwd);
 
   // module -> mjs
   webpackConfig.module
     .rule('mjs')
-    .test(/\.mjs$/)
-    .include.add(opts.cwd)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.mjs$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> js
   webpackConfig.module
     .rule('js')
-    .test(/\.js$/)
-    .include.add(opts.cwd)
-    .end()
-    .exclude.add(/node_modules/)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.js$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .exclude
+        .add(/node_modules/)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> jsx
   // jsx 不 exclude node_modules
   webpackConfig.module
     .rule('jsx')
-    .test(/\.jsx$/)
-    .include.add(opts.cwd)
-    .end()
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts);
+      .test(/\.jsx$/)
+      .include
+        .add(opts.cwd)
+        .end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
 
   // module -> extraBabelIncludes
   // suport es5ImcompatibleVersions
@@ -185,30 +207,50 @@ export default function(opts) {
     const rule = `extraBabelInclude_${index}`;
     webpackConfig.module
       .rule(rule)
-      .test(/\.jsx?$/)
-      .include.add(include)
-      .end()
-      .use('babel-loader')
-      .loader(require.resolve('babel-loader'))
-      .options(babelOptsForDeps);
+        .test(/\.jsx?$/)
+        .include
+          .add(include)
+          .end()
+        .use('babel-loader')
+          .loader(require.resolve('babel-loader'))
+          .options(babelOpts);
   });
 
   // module -> tsx?
   const tsConfigFile = opts.tsConfigFile || join(opts.cwd, 'tsconfig.json');
   webpackConfig.module
     .rule('ts')
-    .test(/\.tsx?$/)
-    .use('babel-loader')
-    .loader(require.resolve('babel-loader'))
-    .options(babelOpts)
-    .end()
-    .use('ts-loader')
-    .loader(require.resolve('ts-loader'))
-    .options({
-      configFile: tsConfigFile,
-      transpileOnly: true,
-      ...(opts.typescript || {}),
-    });
+      .test(/\.tsx?$/)
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts)
+        .end()
+      .use('ts-loader')
+        .loader(require.resolve('ts-loader'))
+        .options({
+          configFile: tsConfigFile,
+          transpileOnly: true,
+          // ref: https://github.com/TypeStrong/ts-loader/blob/fbed24b/src/utils.ts#L23
+          errorFormatter(error, colors) {
+            const messageColor =
+              error.severity === 'warning' ? colors.bold.yellow : colors.bold.red;
+            return (
+              colors.grey('[tsl] ') +
+              messageColor(error.severity.toUpperCase()) +
+              (error.file === ''
+                ? ''
+                : messageColor(' in ') +
+                  colors.bold.cyan(
+                    `${relative(cwd, join(error.context, error.file))}(${
+                      error.line
+                    },${error.character})`,
+                  )) +
+              EOL +
+              messageColor(`      TS${error.code}: ${error.content}`)
+            );
+          },
+          ...(opts.typescript || {}),
+        });
 
   // module -> css
   require('./css').default(webpackConfig, opts);
@@ -219,10 +261,19 @@ export default function(opts) {
     .use(require('webpack/lib/DefinePlugin'), [resolveDefine(opts)]);
 
   // plugins -> progress bar
-  if (!process.env.CI && !process.env.__FROM_UMI_TEST) {
-    webpackConfig
-      .plugin('progress')
-      .use(require('webpackbar'), [{ minimal: false }]);
+  const NO_PROGRESS = process.env.PROGRESS === 'none';
+  if (!process.env.__FROM_UMI_TEST) {
+    if (!process.env.CI && !NO_PROGRESS) {
+      webpackConfig.plugin('progress')
+        .use(require('webpackbar'), [
+          {
+            color: 'green',
+            reporters: ['fancy'],
+          },
+        ]);
+    } else {
+      console.log('Building ...');
+    }
   }
 
   // plugins -> ignore moment locale
@@ -297,11 +348,12 @@ export default function(opts) {
       .use(require('./FilterCSSConflictingWarning').default);
 
     // plugins -> friendly-errors
+    const { CLEAR_CONSOLE = 'none' } = process.env;
     webpackConfig
       .plugin('friendly-errors')
       .use(require('friendly-errors-webpack-plugin'), [
         {
-          clearConsole: process.env.CLEAR_CONSOLE !== 'none',
+          clearConsole: CLEAR_CONSOLE !== 'none',
         },
       ]);
   }

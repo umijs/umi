@@ -1,1 +1,3 @@
-export default from 'ts-jest';
+import { createTransformer } from 'ts-jest';
+
+module.exports = { createTransformer };

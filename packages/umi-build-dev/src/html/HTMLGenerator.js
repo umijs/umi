@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { join, relative, extname } from 'path';
 import { existsSync, readFileSync } from 'fs';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
 import ejs from 'ejs';
 import { minify } from 'html-minifier';
 import { matchRoutes } from 'react-router-config';
@@ -207,10 +207,11 @@ export default class HTMLGenerator {
     let context = {
       route,
       config: this.config,
+      publicPath: this.publicPath,
       ...(this.config.context || {}),
       env: this.env,
     };
-    if (this.modifyContext) context = this.modifyContext(context, route);
+    if (this.modifyContext) context = this.modifyContext(context, { route });
 
     const tplPath = this.getDocumentTplPath(route);
     const relTplPath = relative(cwd, tplPath);
@@ -246,7 +247,10 @@ export default class HTMLGenerator {
     let headScripts = [];
     let chunks = ['umi'];
 
-    if (this.modifyChunks) chunks = this.modifyChunks(chunks);
+    if (this.modifyChunks) chunks = this.modifyChunks(chunks, { route });
+    chunks = chunks.map(chunk => {
+      return isPlainObject(chunk) ? chunk : { name: chunk };
+    });
 
     let routerBaseStr = JSON.stringify(this.config.base || '/');
     const publicPath = this.publicPath || '/';
@@ -256,7 +260,7 @@ export default class HTMLGenerator {
       routerBaseStr = `location.pathname.split('/').slice(0, -${route.path.split(
         '/',
       ).length - 1}).concat('').join('/')`;
-      publicPathStr = 'location.origin + window.routerBase';
+      publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
     }
 
     if (this.modifyRouterBaseStr) {
@@ -275,34 +279,42 @@ export default class HTMLGenerator {
       ].join('\n'),
     });
 
-    chunks.forEach(chunk => {
-      const hashedFileName = this.getHashedFileName(`${chunk}.js`);
+    const getChunkPath = fileName => {
+      const hashedFileName = this.getHashedFileName(fileName);
       if (hashedFileName) {
-        scripts.push({
-          src: `<%= pathToPublicPath %>${hashedFileName}`,
+        return `__PATH_TO_PUBLIC_PATH__${hashedFileName}`;
+      } else {
+        return null;
+      }
+    };
+
+    chunks.forEach(({ name, headScript }) => {
+      const chunkPath = getChunkPath(`${name}.js`);
+      if (chunkPath) {
+        (headScript ? headScripts : scripts).push({
+          src: chunkPath,
         });
       }
     });
 
-    if (this.modifyMetas) metas = this.modifyMetas(metas);
-    if (this.modifyLinks) links = this.modifyLinks(links);
-    if (this.modifyScripts) scripts = this.modifyScripts(scripts);
-    if (this.modifyStyles) styles = this.modifyStyles(styles);
-    if (this.modifyHeadScripts)
-      headScripts = this.modifyHeadScripts(headScripts);
-
-    if (this.env === 'development' || this.chunksMap['umi.css']) {
-      // umi.css should be the last one stylesheet
-      chunks.forEach(chunk => {
-        const hashedFileName = this.getHashedFileName(`${chunk}.css`);
-        if (hashedFileName) {
-          links.push({
-            rel: 'stylesheet',
-            href: `<%= pathToPublicPath %>${hashedFileName}`,
-          });
-        }
-      });
+    if (this.modifyMetas) metas = this.modifyMetas(metas, { route });
+    if (this.modifyLinks) links = this.modifyLinks(links, { route });
+    if (this.modifyScripts) scripts = this.modifyScripts(scripts, { route });
+    if (this.modifyStyles) styles = this.modifyStyles(styles, { route });
+    if (this.modifyHeadScripts) {
+      headScripts = this.modifyHeadScripts(headScripts, { route });
     }
+
+    // umi.css should be the last stylesheet
+    chunks.forEach(({ name }) => {
+      const chunkPath = getChunkPath(`${name}.css`);
+      if (chunkPath) {
+        links.push({
+          rel: 'stylesheet',
+          href: chunkPath,
+        });
+      }
+    });
 
     // insert tags
     html = html.replace(
@@ -334,13 +346,17 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
       exportStatic && exportStatic.dynamicRoot
         ? relPathToPublicPath
         : publicPath;
+
     html = html
-      .replace(/<%= pathToPublicPath %>/g, pathToPublicPath)
+      .replace(/__PATH_TO_PUBLIC_PATH__/g, pathToPublicPath)
       .replace(/<%= PUBLIC_PATH %>/g, pathToPublicPath);
 
     if (this.modifyHTML) {
-      html = this.modifyHTML(html, { route });
+      html = this.modifyHTML(html, { route, getChunkPath });
     }
+
+    // Since this.modifyHTML will produce new __PATH_TO_PUBLIC_PATH__
+    html = html.replace(/__PATH_TO_PUBLIC_PATH__/g, pathToPublicPath);
 
     if (this.minify) {
       html = minify(html, {

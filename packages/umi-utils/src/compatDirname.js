@@ -19,7 +19,10 @@ function findPkg(path, cwd) {
   if (existsSync(pkgPath)) {
     const { dependencies = {} } = require(pkgPath); // eslint-disable-line
     if (dependencies[library]) {
-      return dirname(join(cwd, 'node_modules', path));
+      const pkgPath = dirname(join(cwd, 'node_modules', path));
+      if (existsSync(pkgPath)) {
+        return pkgPath;
+      }
     }
   }
 }

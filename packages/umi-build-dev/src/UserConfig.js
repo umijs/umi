@@ -3,10 +3,10 @@ import { existsSync } from 'fs';
 import requireindex from 'requireindex';
 import chalk from 'chalk';
 import didyoumean from 'didyoumean';
-import clone from 'lodash.clonedeep';
-import flatten from 'lodash.flatten';
+import { cloneDeep, flatten } from 'lodash';
 import extend from 'extend2';
 import { winPath } from 'umi-utils';
+import signale from 'signale';
 import { CONFIG_FILES } from './constants';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
@@ -250,7 +250,7 @@ class UserConfig {
 
     // 配置文件的监听
     this.watchConfigs((event, path) => {
-      console.log(`[DEBUG] [${event}] ${path}`);
+      signale.debug(`[${event}] ${path}`);
       try {
         const newConfig = this.getConfig({
           force: true,
@@ -265,7 +265,7 @@ class UserConfig {
           this.service.refreshBrowser();
         }
 
-        const oldConfig = clone(this.config);
+        const oldConfig = cloneDeep(this.config);
         this.config = newConfig;
 
         for (const plugin of this.plugins) {

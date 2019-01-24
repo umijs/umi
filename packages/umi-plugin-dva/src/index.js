@@ -3,12 +3,12 @@ import { join, dirname, basename, extname } from 'path';
 import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
-import { chunkName, findJSFile, optsToArray, endWithSlash } from './utils';
+import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
 
-  const modelJSPath = findJSFile(cwd, 'model');
+  const modelJSPath = findJS(cwd, 'model');
   if (modelJSPath) {
     return [winPath(modelJSPath)];
   }
@@ -43,18 +43,11 @@ function getModelsWithRoutes(routes, api) {
 
 function getPageModels(cwd, api) {
   let models = [];
-  while (!isPagesPath(cwd, api) && !isSrcPath(cwd, api) && !isRoot(cwd)) {
+  while (!isSrcPath(cwd, api) && !isRoot(cwd)) {
     models = models.concat(getModel(cwd, api));
     cwd = dirname(cwd);
   }
   return models;
-}
-
-function isPagesPath(path, api) {
-  const { paths, winPath } = api;
-  return (
-    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absPagesPath))
-  );
 }
 
 function isSrcPath(path, api) {
@@ -79,11 +72,10 @@ export function getGlobalModels(api, shouldImportDynamic) {
 export default function(api, opts = {}) {
   const { paths, cwd, compatDirname, winPath } = api;
   const isDev = process.env.NODE_ENV === 'development';
-  const isProduction = process.env.NODE_ENV === 'production';
-  const shouldImportDynamic = isProduction && opts.dynamicImport;
+  const shouldImportDynamic = opts.dynamicImport;
 
   function getDvaJS() {
-    const dvaJS = findJSFile(paths.absSrcPath, 'dva');
+    const dvaJS = findJS(paths.absSrcPath, 'dva');
     if (dvaJS) {
       return winPath(dvaJS);
     }
@@ -143,8 +135,14 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  api.onGenerateFiles(() => {
+  function generateDvaContainer() {
     const tpl = join(__dirname, '../template/DvaContainer.js');
+    const tplContent = readFileSync(tpl, 'utf-8');
+    api.writeTmpFile('DvaContainer.js', tplContent);
+  }
+
+  function generateInitDva() {
+    const tpl = join(__dirname, '../template/initDva.js');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
     if (dvaJS) {
@@ -160,7 +158,12 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
-    api.writeTmpFile('DvaContainer.js', tplContent);
+    api.writeTmpFile('initDva.js', tplContent);
+  }
+
+  api.onGenerateFiles(() => {
+    generateDvaContainer();
+    generateInitDva();
   });
 
   api.modifyRouterRootComponent(
@@ -192,7 +195,6 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       if (opts.dynamicImport.webpackChunkName) {
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
-
       let ret = `
 _dvaDynamic({
   <%= MODELS %>
@@ -214,7 +216,10 @@ models: () => [
           opts.dynamicImport.webpackChunkName
             ? `/* webpackChunkName: '${chunkName(paths.cwd, model)}' */`
             : ''
-        }'${model}')`,
+        }'${model}').then(m => { return { namespace: '${basename(
+          model,
+          extname(model),
+        )}',...m.default}})`,
     )
     .join(',\r\n  ')}
 ],
@@ -282,4 +287,10 @@ models: () => [
 
   api.addRuntimePlugin(join(__dirname, './runtime'));
   api.addRuntimePluginKey('dva');
+
+  api.addEntryCodeAhead(
+    `
+require('@tmp/initDva');
+  `.trim(),
+  );
 }

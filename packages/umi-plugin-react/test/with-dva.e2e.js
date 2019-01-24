@@ -21,6 +21,16 @@ describe('normal', () => {
     expect(text).toEqual('cc');
   });
 
+  it('a page', async () => {
+    await page.goto(`http://localhost:${port}/a`, {
+      waitUntil: 'networkidle2',
+    });
+    const text = await page.evaluate(
+      () => document.querySelector('.e2etest-a').innerHTML,
+    );
+    expect(text).toEqual('a page');
+  });
+
   afterAll(() => {
     browser.close();
   });

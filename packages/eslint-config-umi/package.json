@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-umi",
-  "version": "0.1.5",
+  "version": "1.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi/tree/master/packages/eslint-config-umi"
@@ -14,12 +14,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "eslint-config-react-app": "^2.0.0"
+    "eslint-config-react-app": "3.0.6"
   },
   "peerDependencies": {
-    "eslint-plugin-flowtype": "^2.34.1",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0"
+    "eslint-plugin-flowtype": "2.x",
+    "eslint-plugin-import": "2.x",
+    "eslint-plugin-jsx-a11y": "6.x",
+    "eslint-plugin-react": "7.x"
   }
 }

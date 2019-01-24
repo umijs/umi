@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import got from 'got';
 
 describe('normal', () => {
   let browser;
@@ -70,7 +71,14 @@ describe('normal', () => {
     const titleText = await page.evaluate(
       () => document.querySelector('title').innerHTML,
     );
-    expect(titleText).toEqual('testpage');
+    expect(titleText).toEqual('标题测试');
+  });
+
+  it('mock', async () => {
+    const res = await got(`http://localhost:${port}/insidemock`);
+    expect(res.body).toEqual('{"type":"inside"}');
+    const res2 = await got(`http://localhost:${port}/outsidemock`);
+    expect(res2.body).toEqual('{"type":"outside"}');
   });
 
   afterAll(() => {

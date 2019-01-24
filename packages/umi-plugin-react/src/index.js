@@ -1,5 +1,4 @@
-import isPlainObject from 'is-plain-object';
-import isEqual from 'lodash.isequal';
+import { isPlainObject, isEqual } from 'lodash';
 
 function toObject(o) {
   if (!isPlainObject(o)) {
@@ -24,13 +23,19 @@ function diffPlugins(newOption, oldOption) {
 }
 
 export default function(api, option) {
+  const { debug } = api;
+
   api.onOptionChange(newOption => {
+    debug('new option');
+    debug(newOption);
     if (isEqual(getPlugins(newOption), getPlugins(option))) {
       diffPlugins(newOption, option).forEach(key => {
+        debug(`change plugin option: ${key}`);
         api.changePluginOption(getId(key), newOption[key]);
       });
       option = newOption;
     } else {
+      debug('restart');
       api.restart();
     }
   });
@@ -74,8 +79,8 @@ export default function(api, option) {
       }
       if (key === 'dva') {
         opts = {
-          ...toObject(opts),
           dynamicImport: option.dynamicImport,
+          ...toObject(opts),
         };
       }
 

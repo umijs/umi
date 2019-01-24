@@ -2,7 +2,6 @@ import getUserConfigPlugins from 'af-webpack/getUserConfigPlugins';
 import { compatDirname } from 'umi-utils';
 import { join, dirname } from 'path';
 import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
-import defaultBrowsers from '../defaultConfigs/browsers';
 
 const plugins = getUserConfigPlugins();
 
@@ -59,12 +58,18 @@ export default function(api) {
     cwd,
     dirname(require.resolve('react-router-dom/package.json')),
   );
+  const reactRouterConfigDir = compatDirname(
+    'react-router-config/package.json',
+    cwd,
+    dirname(require.resolve('react-router-config/package.json')),
+  );
   api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set('react', reactDir)
       .set('react-dom', reactDOMDir)
       .set('react-router', reactRouterDir)
       .set('react-router-dom', reactRouterDOMDir)
+      .set('react-router-config', reactRouterConfigDir)
       .set(
         'history',
         compatDirname(
@@ -79,6 +84,7 @@ export default function(api) {
       .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic.js'))
       .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink.js'))
       .set('umi/redirect', join(process.env.UMI_DIR, 'lib/redirect.js'))
+      .set('umi/prompt', join(process.env.UMI_DIR, 'lib/prompt.js'))
       .set('umi/router', join(process.env.UMI_DIR, 'lib/router.js'))
       .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter.js'))
       .set(
@@ -106,10 +112,12 @@ export default function(api) {
     `react-router-dom@${
       require(join(reactRouterDOMDir, 'package.json')).version
     } (${reactRouterDOMDir})`,
+    `react-router-config@${
+      require(join(reactRouterConfigDir, 'package.json')).version
+    } (${reactRouterConfigDir})`,
   ]);
 
   api.modifyAFWebpackOpts(memo => {
-    const browserslist = config.browserslist || defaultBrowsers;
     const isDev = process.env.NODE_ENV === 'development';
 
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
@@ -132,6 +140,27 @@ export default function(api) {
           umi: [...(setPublicPath ? [setPublicPathFile] : []), entryScript],
         };
 
+    const targets = {
+      chrome: 49,
+      firefox: 64,
+      safari: 10,
+      edge: 13,
+      ios: 10,
+      ...(config.targets || {}),
+    };
+
+    // Transform targets to browserslist for autoprefixer
+    const browserslist =
+      config.browserslist ||
+      targets.browsers ||
+      Object.keys(targets)
+        .filter(key => {
+          return !['node', 'esmodules'].includes(key);
+        })
+        .map(key => {
+          return `${key} >= ${targets[key]}`;
+        });
+
     return {
       ...memo,
       ...config,
@@ -145,16 +174,10 @@ export default function(api) {
           [
             require.resolve('babel-preset-umi'),
             {
-              targets: {
-                chrome: 49,
-                firefox: 45,
-                safari: 10,
-                edge: 13,
-                ios: 10,
-                ...(config.targets || {}),
-              },
+              targets,
               env: {
                 useBuiltIns: 'entry',
+                ...(config.treeShaking ? { modules: false } : {}),
               },
             },
           ],
@@ -170,7 +193,11 @@ export default function(api) {
         ),
         ...(config.define || {}),
       },
-      publicPath: isDev ? '/' : config.publicPath || '/',
+      publicPath: isDev
+        ? '/'
+        : config.publicPath != null
+        ? config.publicPath
+        : '/',
     };
   });
 }

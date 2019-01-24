@@ -4,7 +4,7 @@ Mock data is indispensable in front-end development process and it is the key li
 
 ## Using the mock feature of umi
 
-Umi agreed that the files under the mock folder are mock files, files export interface definitions, support for real-time refresh based on 'require' dynamic analysis, support for ES6 syntax, and with friendly error messages, see [umijs.org](https://umijs.org/guide/mock-data.html) for more detail.
+Umi agreed that the files under the mock folder or _mock.js in page(s) folder are mock files, files export interface definitions, support for real-time refresh based on 'require' dynamic analysis, support for ES6 syntax, and with friendly error messages, see [mock-data](https://umijs.org/guide/mock-data.html) for more detail.
 
 ```js
 export default {

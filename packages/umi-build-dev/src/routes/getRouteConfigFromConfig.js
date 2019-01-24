@@ -1,11 +1,11 @@
 import assert from 'assert';
-import { join } from 'path';
-import deepclone from 'lodash.clonedeep';
-import { winPath } from 'umi-utils';
+import { join, isAbsolute } from 'path';
+import { cloneDeep } from 'lodash';
+import { winPath, isUrl } from 'umi-utils';
 
 export default (routes, pagesPath = 'src/pages', parentRoutePath = '/') => {
-  // deepclone 是为了避免 patch 多次
-  const clonedRoutes = deepclone(routes);
+  // cloneDeep 是为了避免 patch 多次
+  const clonedRoutes = cloneDeep(routes);
   patchRoutes(clonedRoutes, pagesPath, parentRoutePath);
   return clonedRoutes;
 };
@@ -25,7 +25,11 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 
   // path patch must be before bigfish patch
   if (route.path && route.path.charAt(0) !== '/') {
-    route.path = winPath(join(parentRoutePath, route.path));
+    if (isUrl(route.path)) {
+      route.path = winPath(route.path);
+    } else {
+      route.path = winPath(join(parentRoutePath, route.path));
+    }
   }
 
   // Compatible with bigfish
@@ -56,11 +60,14 @@ function patchRoute(route, pagesPath, parentRoutePath) {
         if (!route.routes) {
           route.routes = [];
         }
-        route.routes.unshift({
+        const parsedRoute = {
+          ...route.indexRoute,
           path: route.path,
           exact: true,
           component: route.indexRoute.component,
-        });
+        };
+        delete parsedRoute.redirect;
+        route.routes.unshift(parsedRoute);
       }
       delete route.indexRoute;
     }
@@ -79,6 +86,9 @@ function patchRoute(route, pagesPath, parentRoutePath) {
 }
 
 function resolveComponent(pagesPath, component) {
+  if (isAbsolute(component)) {
+    return winPath(component);
+  }
   const ret = winPath(join(pagesPath, component));
   if (ret.indexOf('./') !== 0) {
     return `./${ret}`;

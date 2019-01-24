@@ -1,5 +1,7 @@
+import TerserPlugin from 'terser-webpack-plugin';
 import UglifyPlugin from 'uglifyjs-webpack-plugin';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject } from 'lodash';
+import terserOptions from './terserOptions';
 import uglifyOptions from './uglifyOptions';
 
 function mergeConfig(config, userConfig) {
@@ -18,10 +20,7 @@ function mergeConfig(config, userConfig) {
 export default function(webpackConfig, opts) {
   const disableCompress = process.env.COMPRESS === 'none';
 
-  webpackConfig
-    .mode('production')
-    .bail(true)
-    .devtool(opts.devtool);
+  webpackConfig.mode('production').devtool(opts.devtool);
 
   if (disableCompress && !process.env.__FROM_UMI_TEST) {
     webpackConfig.output.pathinfo(true);
@@ -56,16 +55,34 @@ export default function(webpackConfig, opts) {
       .plugin('hash-module-ids')
       .use(require('webpack/lib/HashedModuleIdsPlugin'));
 
-    webpackConfig.optimization.minimizer([
-      new UglifyPlugin(
+    let minimizerName = 'uglifyjs';
+    let minimizerPlugin = UglifyPlugin;
+    let minimizerOptions = [
+      mergeConfig(
+        {
+          ...uglifyOptions,
+          sourceMap: !!opts.devtool,
+        },
+        opts.uglifyJSOptions,
+      ),
+    ];
+
+    if (opts.minimizer === 'terserjs') {
+      minimizerName = 'terserjs';
+      minimizerPlugin = TerserPlugin;
+      minimizerOptions = [
         mergeConfig(
           {
-            ...uglifyOptions,
+            ...terserOptions,
             sourceMap: !!opts.devtool,
           },
-          opts.uglifyJSOptions,
+          opts.terserJSOptions,
         ),
-      ),
-    ]);
+      ];
+    }
+
+    webpackConfig.optimization
+      .minimizer(minimizerName)
+      .use(minimizerPlugin, minimizerOptions);
   }
 }

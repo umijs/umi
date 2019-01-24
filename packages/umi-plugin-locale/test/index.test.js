@@ -1,8 +1,9 @@
 import { join } from 'path';
 import { readFileSync, unlinkSync } from 'fs';
-import localePlugin, { getLocaleFileList } from '../src/index';
+import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 
 const absSrcPath = join(__dirname, '../examples/base/src');
+const absPagesPath = join(__dirname, '../examples/base/src/page');
 
 let wrapperFile;
 
@@ -16,6 +17,7 @@ const api = {
   modifyAFWebpackOpts() {},
   paths: {
     absSrcPath,
+    absPagesPath,
     absTmpDirPath: absSrcPath,
   },
   config: {
@@ -64,20 +66,26 @@ test('antd is false', () => {
 
 describe('test func with singular true', () => {
   test('getLocaleFileList', () => {
-    const list = getLocaleFileList(absSrcPath, true);
+    const list = getLocaleFileList(absSrcPath, absPagesPath, true);
     expect(list).toEqual([
       {
         lang: 'en',
         country: 'US',
         name: 'en-US',
-        path: `${absSrcPath}/locale/en-US.js`,
+        paths: [
+          `${absSrcPath}/locale/en-US.js`,
+          `${absPagesPath}/temp/locale/en-US.js`,
+        ],
         momentLocale: '',
       },
       {
         lang: 'zh',
         country: 'CN',
         name: 'zh-CN',
-        path: `${absSrcPath}/locale/zh-CN.js`,
+        paths: [
+          `${absSrcPath}/locale/zh-CN.js`,
+          `${absPagesPath}/temp/locale/zh-CN.js`,
+        ],
         momentLocale: 'zh-cn',
       },
     ]);
@@ -86,7 +94,54 @@ describe('test func with singular true', () => {
 
 describe('test func with singular false', () => {
   test('getLocaleFileList', () => {
-    const list = getLocaleFileList(absSrcPath, false);
+    const list = getLocaleFileList(absSrcPath, absPagesPath, false);
     expect(list).toEqual([]);
+  });
+});
+
+describe('test utils', () => {
+  test('isNeedPolyfill', () => {
+    expect(isNeedPolyfill()).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        chrome: 24,
+        ios: 9.4,
+      }),
+    ).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        chrome: 24,
+        ios_saf: '9.3',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        chrome: 50,
+        ucandroid: '9.3',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        android: 4.3,
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        android: '4.4',
+      }),
+    ).toEqual(false);
+    expect(
+      isNeedPolyfill({
+        ie: 11,
+        Android: '4.1',
+      }),
+    ).toEqual(true);
+    expect(
+      isNeedPolyfill({
+        OperaMobile: 12,
+      }),
+    ).toEqual(true);
   });
 });

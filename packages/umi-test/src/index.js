@@ -15,29 +15,36 @@ export default function(opts = {}) {
     userJestConfig = require(jestConfigFile); // eslint-disable-line
   }
 
+  const {
+    moduleNameMapper: userModuleNameMapper,
+    ...restUserJestConfig
+  } = userJestConfig;
+
   const config = {
     rootDir: process.cwd(),
     setupFiles: [
       require.resolve('./shim.js'),
       require.resolve('./setupTests.js'),
     ],
+    resolver: require.resolve('jest-pnp-resolver'),
     transform: {
       '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
       '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
+      '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
+    transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupTestFrameworkScriptFile: require.resolve('./jasmine'),
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
+      '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': require.resolve(
+        './fileMock.js',
+      ),
       ...(moduleNameMapper || {}),
+      ...(userModuleNameMapper || {}),
     },
-    globals: {
-      'ts-jest': {
-        useBabelrc: true,
-      },
-    },
-    ...(userJestConfig || {}),
+    ...(restUserJestConfig || {}),
   };
 
   return new Promise((resolve, reject) => {

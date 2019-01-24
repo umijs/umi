@@ -31,7 +31,7 @@ function getWebpackConfig() {
   });
   return getConfig.default({
     entry: {
-      index: './index.ts',
+      index: './index.js',
     },
     ...userConfig,
     cwd,

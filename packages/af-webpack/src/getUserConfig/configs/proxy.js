@@ -1,13 +1,13 @@
 import assert from 'assert';
-import isPlainObject from 'is-plain-object';
+import { isPlainObject, isArrayLikeObject } from 'lodash';
 
 export default function() {
   return {
     name: 'proxy',
     validate(val) {
       assert(
-        isPlainObject(val),
-        `The proxy config must be Plain Object, but got ${val}`,
+        isPlainObject(val) || isArrayLikeObject(val),
+        `The proxy config must be Plain Object or Array-like Object, but got ${val}`,
       );
     },
   };

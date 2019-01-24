@@ -5,6 +5,7 @@ English | [简体中文](./README_zh-CN.md)
 [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🌋 Pluggable enterprise-level react application framework.
 
@@ -58,11 +59,13 @@ $ umi build
 
 ### 钉钉群
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
+<img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="60" />
 
 ### 微信群
 
-群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
+<img src="https://img03.sogoucdn.com/app/a/100520146/3544b6bbdd976ef3caa4f44cd9de38e5" width="60" />
+
+扫码加 `UMI_HELPER`，回复 `umi` 自动加群。
 
 ## License
 

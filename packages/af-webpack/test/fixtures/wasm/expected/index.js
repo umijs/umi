@@ -105,7 +105,6 @@
 /******/ 				promises.push(installedChunkData[2] = promise);
 /******/
 /******/ 				// start chunk loading
-/******/ 				var head = document.getElementsByTagName('head')[0];
 /******/ 				var script = document.createElement('script');
 /******/ 				var onScriptComplete;
 /******/
@@ -137,7 +136,7 @@
 /******/ 					onScriptComplete({ type: 'timeout', target: script });
 /******/ 				}, 120000);
 /******/ 				script.onerror = script.onload = onScriptComplete;
-/******/ 				head.appendChild(script);
+/******/ 				document.head.appendChild(script);
 /******/ 			}
 /******/ 		}
 /******/
@@ -255,9 +254,6 @@ module.exports = __webpack_require__(1);
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 
 __webpack_require__.e(/* import() */ 1).then(__webpack_require__.bind(null, 2)).then(function (popcnt) {
   console.log(popcnt.main(0xF0F));

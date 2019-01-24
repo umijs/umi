@@ -1,42 +1,80 @@
-import { join } from 'path';
+import { readdirSync } from 'fs';
 import assert from 'assert';
+import chalk from 'chalk';
 
 export default function(api) {
-  const { generators } = api.service;
+  const {
+    service: { generators },
+    log,
+  } = api;
 
   function generate(args = {}) {
-    const name = args._[0];
-    assert(name, `Invalid arguments, try to use *umi generate name {args}*`);
-    assert(generators[name], `Generator ${name} not found`);
-    const { Generator, resolved } = generators[name];
-    const generator = new Generator(process.argv.slice(4), {
-      env: {
-        cwd: api.cwd,
-      },
-      resolved: resolved || __dirname,
-    });
-    generator.run(() => {
-      console.log('Done');
-    });
+    try {
+      const name = args._[0];
+      assert(
+        name,
+        `run ${chalk.cyan.underline(
+          'umi help generate',
+        )} to checkout the usage`,
+      );
+      assert(
+        generators[name],
+        `Generator ${chalk.cyan.underline(name)} not found`,
+      );
+      const { Generator, resolved } = generators[name];
+      const generator = new Generator(args._.slice(1), {
+        ...args,
+        env: {
+          cwd: api.cwd,
+        },
+        resolved: resolved || __dirname,
+      });
+      return generator
+        .run()
+        .then(() => {
+          log.success('');
+        })
+        .catch(e => {
+          log.error(e);
+        });
+    } catch (e) {
+      log.error(`Generate failed, ${e.message}`);
+    }
   }
 
-  api.registerCommand(
-    'g',
-    {
-      description: 'generate code snippets quickly (alias for generate)',
-    },
-    generate,
-  );
-  api.registerCommand(
-    'generate',
-    {
-      description: 'generate code snippets quickly',
-    },
-    generate,
-  );
+  function registerCommand(command, description) {
+    const details = `
+Examples:
 
-  api.registerGenerator('page', {
-    Generator: require('./page').default(api),
-    resolved: join(__dirname, './page'),
-  });
+  ${chalk.gray('# generate page users')}
+  umi generate page users
+
+  ${chalk.gray('# g is the alias for generate')}
+  umi g page index
+
+  ${chalk.gray('# generate page with less file')}
+  umi g page index --less
+  `.trim();
+    api.registerCommand(
+      command,
+      {
+        description,
+        usage: `umi ${command} type name [options]`,
+        details,
+      },
+      generate,
+    );
+  }
+
+  registerCommand('g', 'generate code snippets quickly (alias for generate)');
+  registerCommand('generate', 'generate code snippets quickly');
+
+  readdirSync(`${__dirname}/generators`)
+    .filter(f => !f.startsWith('.'))
+    .forEach(f => {
+      api.registerGenerator(f, {
+        Generator: require(`./generators/${f}`).default(api),
+        resolved: `${__dirname}/generators/${f}/index`,
+      });
+    });
 }

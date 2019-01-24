@@ -9,6 +9,7 @@ function getAliasPathWithKey(alias, key) {
 }
 
 export default function(api) {
+  const { debug } = api;
   api.registerCommand(
     'test',
     {
@@ -18,24 +19,30 @@ export default function(api) {
     (args = {}) => {
       const { alias } = api.webpackConfig.resolve;
       const moduleNameMapper = Object.keys(alias).reduce((memo, key) => {
-        if (key !== 'react' && key !== 'react-dom') {
-          const aliasPath = getAliasPathWithKey(alias, key);
-          if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
-            memo[`^${key}/(.*)$`] = `${aliasPath}/$1`;
-            memo[`^${key}$`] = aliasPath;
-          } else {
-            memo[`^${key}$`] = aliasPath;
-          }
+        const aliasPath = getAliasPathWithKey(alias, key);
+        if (existsSync(aliasPath) && statSync(aliasPath).isDirectory()) {
+          memo[`^${key}/(.*)$`] = `${aliasPath}/$1`;
+          memo[`^${key}$`] = aliasPath;
+        } else {
+          memo[`^${key}$`] = aliasPath;
         }
         return memo;
       }, {});
+      debug('moduleNameWrapper');
+      debug(moduleNameMapper);
 
       args._ = args._.slice(1);
-      require('umi-test').default({
-        cwd: api.cwd,
-        moduleNameMapper,
-        ...args,
-      });
+      if (args.w) args.watch = args.w;
+      require('umi-test')
+        .default({
+          cwd: api.cwd,
+          moduleNameMapper,
+          ...args,
+        })
+        .catch(e => {
+          debug(e);
+          process.exit(1);
+        });
     },
   );
 }

@@ -57,7 +57,7 @@ export default (api, opts = {}) => {
   api.addRendererWrapperWithComponent(join(__dirname, './locale.js'));
   api.addRendererWrapperWithComponent(() => {
     if (opts.antd) {
-      return join(__dirnae, './locale-antd.js'));
+      return join(__dirname, './locale-antd.js'));
     }
   });
   // add watcher on locale files
@@ -71,7 +71,7 @@ export default (api, opts = {}) => {
 
 The execution order of the plugins depends on the `plugins` configuration item configured by the user in the configuration file `.umirc.js` or `config config.js`. The dependent plugin umi will check the order of the plugins through the plugin's `dependence` configuration. A warning is issued, but currently umi does not modify the order of the users.
 
-When the plugin calls `api.applyPlugin` to trigger the hooks of the plugin, the execution order of the hooks corresponds to the order of `plugins`. The order in which hooks are concerned is determined by the corresponding hooks.
+When the plugin calls `api.applyPlugins` to trigger the hooks of the plugin, the execution order of the hooks corresponds to the order of `plugins`. The order in which hooks are concerned is determined by the corresponding hooks.
 
 ## Environmental variable
 
@@ -95,6 +95,7 @@ configuration in `.umirc.js` or `config/config.js`.
 - absTmpDirPath
 - absSrcPath
 - cwd: project root
+- absNodeModulesPath
 
 ### routes
 
@@ -153,9 +154,9 @@ The type is a plugin method of `api.API_TYPE.EVENT`, you should pass in a functi
 
 The plugin method of type `api.API_TYPE.MODIFY` returns the modified content.
 
-You can also use `apply` to customize the processing function. Your registered method may be used by multiple plugins. When you call `applyPlugin`, the return value of these plugins will be processed by the reduce function inside umi. The `apply` function you define determines how `applyPlugin` handles the result of multiple plugins as its return value. Usually three types of built-in can meet your needs.
+You can also use `apply` to customize the processing function. Your registered method may be used by multiple plugins. When you call `applyPlugins`, the return value of these plugins will be processed by the reduce function inside umi. The `apply` function you define determines how `applyPlugins` handles the result of multiple plugins as its return value. Usually three types of built-in can meet your needs.
 
-### applyPlugin
+### applyPlugins
 
 Trigger a method registered by the app via `registerMethod`.
 
@@ -163,7 +164,7 @@ Trigger a method registered by the app via `registerMethod`.
 // If the type is api.API_TYPE.ADD wrappers an array of values returned by each plugin
 // EVENT wrapper returns undefined
 // MODIFY returns the last modified value
-const wrappers = api.applyPlugin('wrapDvaRendererWithComponent');
+const wrappers = api.applyPlugins('wrapDvaRendererWithComponent');
 ```
 
 ### restart
@@ -230,7 +231,34 @@ api._registerConfig(() => {
 });
 ```
 
+### \_modifyCommand
+
+Modify command name and args.
+
+```js
+// A demo for modify block npmClient to cnpm:
+api._modifyCommand(({ name, args }) => {
+  if (name === 'block') {
+    args.npmClient = args.npmClient || 'cnpm';
+  }
+  return { name, args };
+});
+```
+
 ## Tool class API
+
+### log
+
+```js
+api.log.success('Done');
+api.log.error('Error');
+api.log.error(new Error('Error'));
+api.log.debug('Hello', 'from', 'L59');
+api.log.pending('Write release notes for %s', '1.2.0');
+api.log.watch('Recursively watching build directory...');
+```
+
+Output various [types](https://github.com/klaussinani/signale/blob/94984998a0e9cb280e68959ddd9db70b49713738/types.js#L4) of logs.
 
 ### winPath
 
@@ -248,7 +276,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
@@ -298,9 +330,7 @@ export default (api, defaultOpts = { immer: false }) => {
 When the `umi build` was successful. Mainly do some processing of the construction products.
 
 ```js
-api.onBuildSuccess({
-  stats,
-} => {
+api.onBuildSuccess(({ stats })=> {
   // handle with stats
 });
 ```
@@ -402,13 +432,26 @@ api.addHTMLScript({
 
 Add a script to the HTML head.
 
-### modifyHTMLChunks
+### modifyHTMLChunks <Badge text="2.1.0+"/>
 
-Modify chunks in HTML.
+Modify chunks in HTML, default `['umi']`.
 
 ### modifyHTMLWithAST
 
 Modify the HTML, based on cheerio.
+
+Options:
+
+* route, current route
+* getChunkPath <Badge text="2.2.0+"/>, get the full path of chunk, including publicPath and hash
+
+e.g.
+
+```js
+api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
+  $('head').append(`<script src="${getChunkPath('a.js')}"></script>`);
+});
+```
 
 ### modifyHTMLContext
 
@@ -428,8 +471,8 @@ api.modifyHTMLContext((memo, { route }) => {
 Modify the routing configuration.
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 
@@ -579,6 +622,22 @@ Added version information, displayed in `umi -v` or `umi version`.
 ### addRuntimePlugin
 
 Add a runtime plugin with parameters as the absolute path to the file.
+
+e.g.
+
+```js
+api.addRuntimePlugin(require.resolve('./app.js'));
+```
+
+Then in `app.js`:
+
+```
+export function render(oldRender) {
+  setTimeout(oldRender, 1000);
+}
+```
+
+This implements a 1 second delayed rendering application.
 
 ### addRuntimePluginKey
 

@@ -59,7 +59,7 @@ e.g.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/mTaaEfxKkkGAQicDOSeb.png" />
 
-升级 node 版本，并确保版本是 8 或以上。
+升级 node 版本，并确保版本是 8.10 或以上。
 
 ### `exports is not defined`
 
@@ -156,7 +156,7 @@ $ npm i node-sass sass-loader --save
 
 ### 如何断点调试
 
-确保 node 在 8 以上，然后执行：
+确保 node 在 8.10 以上，然后执行：
 
 ```bash
 $ node --inspect-brk ./node_modules/.bin/umi test

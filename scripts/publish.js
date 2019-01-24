@@ -33,9 +33,15 @@ if (buildCode === 1) {
   process.exit(1);
 }
 
+const { code: uiBuildCode } = shell.exec('npm run ui:build');
+if (uiBuildCode === 1) {
+  console.error('Failed: npm run ui:build');
+  process.exit(1);
+}
+
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
-  ['publish', '--skip-npm'].concat(process.argv.slice(2)),
+  ['version'].concat(process.argv.slice(2)),
   {
     stdio: 'inherit',
     cwd: process.cwd(),
