@@ -93,7 +93,7 @@ export default function(opts) {
     .exclude
       .add(/\.json$/)
       .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
-      .add(/\.(css|less|scss|sass)$/);
+      .add(/\.(css|less|scss|sass|styl|stylus)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
       rule.add(exclude);

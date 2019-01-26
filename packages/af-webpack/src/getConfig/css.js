@@ -70,7 +70,14 @@ export default function(webpackConfig, opts) {
     hasSassLoader = false;
   }
 
-  function applyCSSRules(rule, { cssModules, less, sass }) {
+  let hasStylusLoader = true;
+  try {
+    require.resolve('stylus-loader');
+  } catch (e) {
+    hasStylusLoader = false;
+  }
+
+  function applyCSSRules(rule, { cssModules, less, sass, stylus }) {
     if (isDev) {
       rule
         .use('css-hot-loader')
@@ -113,6 +120,12 @@ export default function(webpackConfig, opts) {
           .loader(require.resolve('sass-loader'))
           .options(opts.sass);
     }
+    if (stylus && hasStylusLoader) {
+      rule
+        .use('stylus-loader')
+          .loader(require.resolve('stylus-loader'))
+          .options(opts.stylus);
+    }
   }
 
   if (opts.cssModulesExcludes) {
@@ -129,6 +142,7 @@ export default function(webpackConfig, opts) {
       applyCSSRules(config, {
         less: ext === '.less',
         sass: ext === '.sass' || ext === '.scss',
+        stylus: ext === '.styl' || ext === '.stylus',
       });
     });
   }
@@ -154,6 +168,13 @@ export default function(webpackConfig, opts) {
         sass: true,
       },
     );
+    applyCSSRules(
+      webpackConfig.module.rule('.module.stylus').test(/\.module\.(styl|stylus)$/),
+      {
+        cssModules: true,
+        stylus: true,
+      },
+    );
   }
 
   function cssExclude(filePath) {
@@ -161,7 +182,7 @@ export default function(webpackConfig, opts) {
       return true;
     }
     if (opts.cssModulesWithAffix) {
-      if (/\.module\.(css|less|sass|scss)$/.test(filePath)) return true;
+      if (/\.module\.(css|less|sass|scss|styl|stylus)$/.test(filePath)) return true;
     }
     if (opts.cssModulesExcludes) {
       for (const exclude of opts.cssModulesExcludes) {
@@ -235,6 +256,29 @@ export default function(webpackConfig, opts) {
           .end(),
     {
       sass: true,
+    },
+  );
+  applyCSSRules(
+    webpackConfig.module
+      .rule('stylus')
+        .test(/\.(styl|stylus)$/)
+        .exclude
+          .add(cssExclude)
+          .end(),
+    {
+      cssModules: !opts.disableCSSModules,
+      stylus: true,
+    },
+  );
+  applyCSSRules(
+    webpackConfig.module
+      .rule('stylus-in-node_modules')
+        .test(/\.(styl|stylus)$/)
+        .include
+          .add(/node_modules/)
+          .end(),
+    {
+      stylus: true,
     },
   );
 

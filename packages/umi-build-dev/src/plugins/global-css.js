@@ -8,6 +8,8 @@ export default function(api) {
     join(paths.absSrcPath, 'global.scss'),
     join(paths.absSrcPath, 'global.less'),
     join(paths.absSrcPath, 'global.css'),
+    join(paths.absSrcPath, 'global.styl'),
+    join(paths.absSrcPath, 'global.stylus'),
   ];
 
   api.addEntryCode(
