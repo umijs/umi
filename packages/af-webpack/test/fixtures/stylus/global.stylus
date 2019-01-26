@@ -1,0 +1,6 @@
+body {
+  font: 14px/1.5 Helvetica, arial, sans-serif;
+  #logo {
+    border-radius: 5px;
+  }
+}
