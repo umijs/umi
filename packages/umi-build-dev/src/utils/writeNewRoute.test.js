@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { winEOL } from 'umi-utils';
 import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
 import routeNode from './fixtures/routeNode';
 import relativeRouteNode from './fixtures/relativeRouteNode';
@@ -62,7 +63,9 @@ describe('test get route code', () => {
         path: '/demo',
         component: './Demo',
       });
-      expect(code).toEqual(readFileSync(getPath(`${item}.result.js`), 'utf-8'));
+      expect(code).toEqual(
+        winEOL(readFileSync(getPath(`${item}.result.js`), 'utf-8')),
+      );
     });
   });
 
@@ -77,7 +80,7 @@ describe('test get route code', () => {
         null,
       );
       expect(code).toEqual(
-        readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8'),
+        winEOL(readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8')),
       );
     });
   });

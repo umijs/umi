@@ -1,3 +1,4 @@
 export default {
-  hello: 'world', // comment
+  hello: 'world',
+  // comment
 };
