@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { winEOL } from 'umi-utils';
 import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
 import routeNode from './fixtures/routeNode';
 import relativeRouteNode from './fixtures/relativeRouteNode';
@@ -10,16 +11,6 @@ const typeMap = [
   './fixtures/exportsRoutes',
 ];
 const getPath = path => join(__dirname, path);
-
-const isWindows =
-  typeof process !== 'undefined' && process.platform === 'win32';
-
-const winEOL = content => {
-  if (typeof content !== 'string') {
-    return content;
-  }
-  return isWindows ? content.replace(/\r/g, '') : content;
-};
 
 describe('test get config path', () => {
   it('get path in antdpro', () => {
