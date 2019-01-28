@@ -6,17 +6,15 @@ export default [
       {
         path: '/aa/vv',
         name: 'dd',
-        component: 'adad',
+        component: 'adad', // 注释2
       },
-      // 注释2
       {
         path: '/aa/xx',
         name: 'xx',
         component: 'xx',
         routes: [
           {
-            path: '/aa/xx/sdad',
-            //注释3
+            path: '/aa/xx/sdad', //注释3
             name: 'aada',
             component: 'xxx',
             routes: [
