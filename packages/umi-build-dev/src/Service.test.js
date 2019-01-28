@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { winPath } from 'umi-utils';
 import Service from './Service';
 
 process.env.UMI_TEST = true;
@@ -7,7 +8,7 @@ const fixtures = join(__dirname, 'fixtures/Service');
 describe('Service', () => {
   it('resolve plugins from file system', () => {
     const service = new Service({
-      cwd: join(fixtures, 'plugins'),
+      cwd: winPath(join(fixtures, 'plugins')),
     });
     service.plugins = service.plugins.filter(p => p.id.indexOf('user:') === 0);
 
