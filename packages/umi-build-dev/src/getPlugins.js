@@ -1,6 +1,7 @@
 import resolve from 'resolve';
 import assert from 'assert';
 import chalk from 'chalk';
+import { winPath } from 'umi-utils';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 import isEqual from './isEqual';
 import getCodeFrame from './utils/getCodeFrame';
@@ -76,9 +77,9 @@ function pluginToPath(plugins, { cwd }) {
     const [path, opts] = p;
     try {
       return [
-        resolve.sync(path, {
+        winPath(resolve.sync(path, {
           basedir: cwd,
-        }),
+        })),
         opts,
       ];
     } catch (e) {
