@@ -1,6 +1,17 @@
 import { join } from 'path';
 import HTMLGenerator from './HTMLGenerator';
 
+// 在windows环境下，很多工具都会把换行符lf自动改成crlf，修改了一下。
+// https://github.com/cssmagic/blog/issues/22
+const isWindows =
+  typeof process !== 'undefined' && process.platform === 'win32';
+const winEOL = content => {
+  if (typeof content !== 'string') {
+    return content;
+  }
+  return isWindows ? content.replace(/\r/g, '') : content;
+};
+
 describe('HG', () => {
   it('getFlatRoutes', () => {
     const hg = new HTMLGenerator();
@@ -124,7 +135,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -139,7 +150,7 @@ describe('HG', () => {
 <script src="/umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
   });
 
   it('getContent with chunks', () => {
@@ -167,7 +178,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -186,7 +197,7 @@ describe('HG', () => {
 <script src="/c.js"></script>
 </body>
     `.trim(),
-    );
+    ));
   });
 
   it('getContent with publicPath', () => {
@@ -212,7 +223,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -227,7 +238,7 @@ describe('HG', () => {
 <script src="/foo/umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
   });
 
   it('getContent with runtimePublicPath', () => {
@@ -250,7 +261,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -265,7 +276,7 @@ describe('HG', () => {
 <script src="/umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
   });
 
   it('getContent in development', () => {
@@ -286,7 +297,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -300,7 +311,7 @@ describe('HG', () => {
 <script src="/umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
   });
 
   it('getRoute and minify', () => {
@@ -352,7 +363,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -367,7 +378,7 @@ describe('HG', () => {
 <script src="./umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
 
     const c2 = hg.getContent({
       path: '/a',
@@ -407,7 +418,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(winEOL(
       `
 <head>
 
@@ -422,7 +433,7 @@ describe('HG', () => {
 <script src="./umi.js"></script>
 </body>
     `.trim(),
-    );
+    ));
 
     const c2 = hg.getContent({
       path: '/a',
