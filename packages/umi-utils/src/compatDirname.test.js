@@ -1,5 +1,6 @@
 import { relative, join } from 'path';
 import compatDirname from './compatDirname';
+import { winPath } from 'umi-utils';
 
 const fixtures = join(__dirname, 'fixtures', 'compatDirname');
 const FALLBACK = '__fallback__';
@@ -14,7 +15,7 @@ describe('compatDirname', () => {
 
   test('pkg', () => {
     const fixture = join(fixtures, 'have-pkg');
-    expect(relative(fixture, compatDirname('a/package.json', fixture))).toEqual(
+    expect(winPath(relative(fixture, compatDirname('a/package.json', fixture)))).toEqual(
       'node_modules/a',
     );
     expect(compatDirname('b/package.json', fixture)).toEqual(undefined);
