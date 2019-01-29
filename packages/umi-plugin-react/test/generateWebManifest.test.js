@@ -3,6 +3,8 @@ import generateWebManifest, {
   DEFAULT_MANIFEST_FILENAME,
 } from '../src/plugins/pwa/generateWebManifest';
 import { join } from 'path';
+import { winPath } from 'umi-utils';
+import { parse } from 'url';
 
 const APIMock = {
   config: {
@@ -12,7 +14,7 @@ const APIMock = {
     warn: () => {},
   },
   paths: {
-    absSrcPath: join(__dirname, 'pwa'),
+    absSrcPath: winPath(join(__dirname, 'pwa')),
   },
   addHTMLLink: () => {},
   addHTMLHeadScript: () => {},
@@ -30,22 +32,22 @@ describe('generateWebManifest', () => {
   });
 
   it('should use manifest provided by user', () => {
-    const manifestPathProvidedByUser = join(
+    const manifestPathProvidedByUser = winPath(join(
       __dirname,
       'pwa',
       'manifest.webmanifest',
-    );
+    ));
     const { srcPath, outputPath } = generateWebManifest(APIMock, {
       srcPath: manifestPathProvidedByUser,
     });
-    expect(srcPath).toBe(manifestPathProvidedByUser);
+    expect(srcPath).toBe(parse(manifestPathProvidedByUser).pathname);
     expect(outputPath).toBe('manifest.webmanifest');
   });
 
   it('should use a default manifest if not provided by user', () => {
     const { srcPath, outputPath } = generateWebManifest(APIMock);
     expect(srcPath).toBe(
-      join(APIMock.paths.absSrcPath, DEFAULT_MANIFEST_FILENAME),
+      parse(winPath(join(APIMock.paths.absSrcPath, DEFAULT_MANIFEST_FILENAME))).pathname,
     );
     expect(outputPath).toBe(DEFAULT_MANIFEST_FILENAME);
   });
