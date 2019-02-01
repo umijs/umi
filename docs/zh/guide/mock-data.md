@@ -119,9 +119,9 @@ const proxy = {
 export default delay(proxy, 1000);
 ```
 
-## 动态Mock数据
+## 动态 Mock 数据
 
-如果你需要动态生成Mock数据，你应该通过函数进行处理，
+如果你需要动态生成 Mock 数据，你应该通过函数进行处理，
 
 比如：
 
