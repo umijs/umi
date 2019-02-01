@@ -128,7 +128,7 @@ export default delay(proxy, 1000);
 ```js
 // 静态的
 '/api/random': Mock.mock({
-  // random once only
+  // 只随机一次
   'number|1-100': 100,
 }),
 ```
