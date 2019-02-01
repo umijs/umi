@@ -173,12 +173,12 @@ Here's a simple example:
 export default {
   pwa: {
     manifestOptions: {
-      srcPath: 'path/to/manifest.webmanifest')
+      srcPath: 'path/to/manifest.webmanifest'
     },
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       importWorkboxFrom: 'local',
-      swSrc: 'path/to/service-worker.js'),
+      swSrc: 'path/to/service-worker.js',
       swDest: 'my-dest-sw.js'
     }
   }
