@@ -6,6 +6,12 @@ sidebarDepth: 2
 
 ## initialize plugin
 
+You can create a umi plugin scaffold in a simple way with [create-umi](https://github.com/umijs/create-umi):
+
+```shell
+$ yarn create umi --plugin
+```
+
 In umi, the plugin is actually a JS module, you need to define a plugin initialization method and export by default. The following example:
 
 ```js

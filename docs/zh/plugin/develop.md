@@ -6,6 +6,12 @@ sidebarDepth: 2
 
 ## 初始化插件
 
+你可以通过 [create-umi](https://github.com/umijs/create-umi) 直接创建一个 umi 插件的脚手架：
+
+```shell
+$ yarn create umi --plugin
+```
+
 在 umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
 
 ```js
