@@ -90,6 +90,6 @@ export declare function formatHTMLMessage(messageDescriptor: MessageDescriptor, 
 export declare function now(): number;
 export declare function onError(error: string): void;
 
-// umi-plugin-oss
+// umi-plugin-locale
 export declare function setLocale(lang: string): void;
 export declare function getLocale(): string;
