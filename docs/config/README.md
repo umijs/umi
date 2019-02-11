@@ -240,33 +240,6 @@ chainWebpack(config, { webpack }) {
   config.plugins.delete('progress');
 }
 ```
-configure [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)
-```js
-chainWebpack(config, { webpack }) {
-  config.merge({
-    plugin: {
-      install: {
-        plugin: require('uglifyjs-webpack-plugin'),
-        args: [{
-          sourceMap: false,
-          uglifyOptions: {
-            compress: {
-              // remove `console.*`
-              drop_console: true,
-            },
-            output: {
-              // whether to actually beautify the output
-              beautify: false,
-              // remove all comments
-              comments: false,
-            },
-          }
-        }]
-      }
-    }
-  })
-}
-```
 ### theme
 
 The configuration theme is actually equipped with the less variable. Support for both object and string types, the string needs to point to a file that returns the configuration.
@@ -433,6 +406,38 @@ Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options
 - Default: `{ browserslist, flexbox: 'no-2019' }`
 
 If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
+
+### uglifyJSOptions
+
+Configuration for [uglifyjs-webpack-plugin@1.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/version-1) .
+
+- Type: `Object` | `Function`
+- Default: [af-webpack/src/getConfig/uglifyOptions.js](https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/uglifyOptions.js#L6)
+
+If the value is `Object`，it will be shallow merged.
+
+e.g.
+
+```js
+export default {
+  uglifyJSOptions: {
+    parallel: false,
+  },
+};
+```
+
+If you want to modify the deep configuration, you can use the `Function` style.
+
+e.g.
+
+```js
+export default {
+  uglifyJSOptions(opts) {
+    opts.compress.warning = true;
+    return opts;
+  },
+};
+```
 
 ### browserslist <Badge text="deprecated"/>
 
