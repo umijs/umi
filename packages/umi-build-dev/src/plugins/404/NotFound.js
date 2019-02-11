@@ -27,7 +27,7 @@ class NotFound extends React.Component {
 
   renderRoutes(routes) {
     return (
-      <ul className={styles.ul}>
+      <ul>
         {routes.map((route, i) => {
           if (!route.path) return null;
           return (
@@ -45,7 +45,7 @@ class NotFound extends React.Component {
     const { location, pagesPath, hasRoutesInConfig } = this.props;
     const jsFile = guessJSFileFromPath(location.pathname);
     return (
-      <div className={styles.wrapper}>
+      <div className={styles['umi-NotFound-wrapper']}>
         <h1>umi development 404 page</h1>
         <p>
           There's not a page yet at <code>{location.pathname}</code>.
