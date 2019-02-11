@@ -13,10 +13,14 @@ const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
 
 export default function getMockMiddleware(api, errors) {
   const { debug, paths } = api;
-  const { cwd, absPagesPath } = paths;
+  const { cwd, absPagesPath, absSrcPath } = paths;
   const absMockPath = join(cwd, 'mock');
   const absConfigPath = join(cwd, '.umirc.mock.js');
-  api.addBabelRegister([absMockPath, absConfigPath, absPagesPath]);
+  api.addBabelRegister([
+    absMockPath,
+    absConfigPath,
+    basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
+  ]);
 
   let mockData = getConfig();
   watch();

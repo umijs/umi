@@ -1,6 +1,6 @@
 export default {
   'GET /api/users': (req, res) => {
-    res.json({ name: 'cc' });
+    res.json({ name: require('@/cc').default });
   },
   'POST /api/users': (req, res) => {
     res.json({

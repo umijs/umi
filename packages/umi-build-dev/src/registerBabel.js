@@ -1,4 +1,5 @@
 import { join, isAbsolute } from 'path';
+import { existsSync } from 'fs';
 import registerBabel from 'af-webpack/registerBabel';
 import { flatten } from 'lodash';
 import { winPath } from 'umi-utils';
@@ -32,6 +33,12 @@ export default function(opts = {}) {
     const fullPath = isAbsolute(f) ? f : join(cwd, f);
     return winPath(fullPath);
   });
+
+  let absSrcPath = join(cwd, 'src');
+  if (!existsSync(absSrcPath)) {
+    absSrcPath = cwd;
+  }
+
   registerBabel({
     // only suport glob
     // ref: https://babeljs.io/docs/en/next/babel-core.html#configitem-type
@@ -39,6 +46,16 @@ export default function(opts = {}) {
     babelPreset: [
       require.resolve('babel-preset-umi'),
       { transformRuntime: false },
+    ],
+    babelPlugins: [
+      [
+        require.resolve('babel-plugin-module-resolver'),
+        {
+          alias: {
+            '@': absSrcPath,
+          },
+        },
+      ],
     ],
   });
 }
