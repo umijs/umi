@@ -11,7 +11,7 @@
     "express": "^4.16.2"
   },
   "devDependencies": {
-    "now": "^13.0.4",
-    "vuepress": "^0.14.2"
+    "now": "^13.1.3",
+    "vuepress": "^0.14.8"
   }
 }
