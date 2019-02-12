@@ -53,10 +53,11 @@ export default function getMockMiddleware(api, errors) {
       ret = require(absConfigPath); // eslint-disable-line
     } else {
       const mockFiles = glob
-        .sync('**/*.js', {
-          cwd: absMockPath,
+        .sync('mock/**/*.js', {
+          cwd,
+          ignore: (api.config.mock || {}).exclude || [],
         })
-        .map(p => join(absMockPath, p))
+        .map(p => join(cwd, p))
         .concat(
           glob
             .sync('**/_mock.js', {

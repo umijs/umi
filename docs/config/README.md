@@ -223,6 +223,26 @@ If set to `true`, enable the directory for singular mode.
 * src/page
 * model (if umi-plugin-dva plugin is enabled)
 
+### mock.exclude <Badge text="2.4.5+"/>
+
+- Type: `Array` of `String`
+- Default: `[]`
+
+Exclude files that are not mock files in the `mock` directory.
+
+e.g. exclue all files and directorys starts with `_`,
+
+```js
+export default {
+  mock: {
+    exclude: [
+      'mock/**/_*.js',
+      'mock/_*/**/*.js',
+    ],
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack

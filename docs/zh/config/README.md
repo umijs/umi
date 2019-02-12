@@ -221,6 +221,26 @@ export default {
 * src/page
 * model（如果有开启 umi-plugin-dva 插件的话）
 
+### mock.exclude <Badge text="2.4.5+"/>
+
+* 类型：`Array` of `String`
+* 默认值：`[]`
+
+排除 mock 目录下不作 mock 处理的文件。
+
+比如要 exclude 所有 `_` 前缀的文件和文件夹，
+
+```js
+export default {
+  mock: {
+    exclude: [
+      'mock/**/_*.js',
+      'mock/_*/**/*.js',
+    ],
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack

@@ -1,8 +1,27 @@
 import signale from 'signale';
+import { isPlainObject } from 'lodash';
+import assert from 'assert';
 import createMockMiddleware from './createMockMiddleware';
 
 export default function(api) {
   let errors = [];
+
+  api._registerConfig(() => {
+    return api => {
+      return {
+        name: 'mock',
+        validate(val) {
+          assert(
+            isPlainObject(val),
+            `Configure item mock should be Plain Object, but got ${val}.`,
+          );
+        },
+        onChange() {
+          api.service.restart(/* why */ 'Config mock Changed');
+        },
+      };
+    };
+  });
 
   api._beforeServerWithApp(({ app }) => {
     if (process.env.MOCK !== 'none' && process.env.HTTP_MOCK !== 'none') {
