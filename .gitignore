@@ -4,7 +4,7 @@ tmp
 /packages/*/node_modules
 /examples/*/node_modules
 package-lock.json
-/website/build
+/website/dist
 /packages/umi-test/examples/*/node_modules
 /packages/umi-plugin-locale/examples/*/node_modules
 /packages/umi-plugin-react/test/*/node_modules
