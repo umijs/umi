@@ -225,7 +225,7 @@ If set to `true`, enable the directory for singular mode.
 
 ### mock.exclude <Badge text="2.4.5+"/>
 
-- Type: `Array`
+- Type: `Array` of `String`
 - Default: `[]`
 
 Exclude files that are not mock files in the `mock` directory.

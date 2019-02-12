@@ -223,7 +223,7 @@ export default {
 
 ### mock.exclude <Badge text="2.4.5+"/>
 
-* 类型：`Array`
+* 类型：`Array` of `String`
 * 默认值：`[]`
 
 排除 mock 目录下不作 mock 处理的文件。
