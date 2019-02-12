@@ -42,6 +42,12 @@ function getModelsWithRoutes(routes, api) {
 }
 
 function getPageModels(cwd, api) {
+  // 配置式路由为绝对路径时按需加载页面 Model
+  const { paths } = api;
+  if (!isAbsolute(cwd)) {
+    cwd = join(paths.absTmpDirPath, cwd);
+  }
+  
   let models = [];
   while (!isSrcPath(cwd, api) && !isRoot(cwd)) {
     models = models.concat(getModel(cwd, api));
@@ -203,14 +209,7 @@ _dvaDynamic({
 })
       `.trim();
       
-      let models = [];
-      // 配置式路由为绝对路径时按需加载页面 Model
-      if (isAbsolute(importPath)) {
-        const modelPath = findJS(dirname(importPath), 'model');
-        if (modelPath) models = [modelPath];
-      } else {
-        models = getPageModels(join(paths.absTmpDirPath, importPath), api);
-      }
+      const models = getPageModels(join(importPath), api);
       
       if (models && models.length) {
         ret = ret.replace(
