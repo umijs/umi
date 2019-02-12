@@ -1,7 +1,7 @@
 {
   "scripts": {
     "now-build": "echo empty build",
-    "deploy": "vuepress build ../docs --dest ./dist && now"
+    "deploy": "vuepress build ../docs --dest ./dist && now && now alias"
   },
   "devDependencies": {
     "now": "^13.1.3",
