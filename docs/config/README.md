@@ -164,7 +164,7 @@ Whether to enable the hash file suffix.
 * Type: `Object`
 * Default: `{ chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 }`
 
-Configuring the minimum version of browsers you want to compatible with, umi will automatically introduce polyfill and transform grammar. Configuration items will be merged to default values, so there is no need to give a duplicate configuration.
+Configuring the minimum version of browsers you want to compatible with, umi will automatically introduce polyfill and transform grammar. Configuration items will be merged to default values, so there is no need to give any duplicate configuration.
 
 e.g. Compatible with ie 11,
 
