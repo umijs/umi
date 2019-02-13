@@ -1,12 +1,8 @@
 # HTML Template
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
-
 ## Modify the default template
 
-Create a new `src/pages/document.ejs`, umi stipulates that if this file exists, it will be used as the default template. You need to ensure that `<div id="root"></div>` appears.
+Create a new files `src/pages/document.ejs`, umi stipulates that if this file exists, it will be used as the default template. You need to ensure that `<div id="root"></div>` appears.
 
 ```html
 <!doctype html>
@@ -21,47 +17,47 @@ Create a new `src/pages/document.ejs`, umi stipulates that if this file exists, 
 </html>
 ```
 
-## Configure the template
+## Configure template
 
-模板里可通过 `context` 来获取到 umi 提供的变量，context 包含：
+In HTML template, the variables provided by umi can be consumed from `context', which contains:
 
-* `route`，路由对象，包含 path、component 等
-* `config`，用户配置信息
-* `publicPath`<Badge text="2.1.2+"/>，webpack 的 `output.publicPath` 配置
-* `env`，环境变量，值为 development 或 production
-* 其他在路由上通过 context 扩展的配置信息
+* `route`, route object, including attributes such as path and component
+* `config`, configuration information
+* `publicPath`<Badge text="2.1.2+"/>, `output.publicPath` of webpack
+* `env`, environment variable with a value of development or production
+* Other configurations extended from context in the route
 
-模板基于 ejs 渲染，可以参考 [https://github.com/mde/ejs](https://github.com/mde/ejs) 查看具体使用。
+HTML template is rendered based on ejs , you can refer to [https://github.com/mde/ejs](https://github.com/mde/ejs) for specific usage.
 
-比如输出变量，
+For example, escaped output:
 
 ```html
 <link rel="icon" type="image/x-icon" href="<%= context.publicPath %>favicon.png" />
 ```
 
-比如条件判断，
+For example, conditional judgment:
 
 ```html
 <% if(context.env === 'production') { %>
-  <h2>生产环境</h2>
+  <h2>Production environment</h2>
 <% } else {%>
-  <h2>开发环境</h2>
+  <h2>Development environment</h2>
 <% } %>
 ```
 
-## 针对特定页面指定模板
+## Specify templates for specific pages
 
 ::: warning
-此功能需开启 `exportStatic` 配置，否则只会输出一个 html 文件。
+This function needs to turn on the `exportStatic` configuration, otherwise only one index.html file is output by default.
 :::
 
 ::: tip
-优先级是：路由的 document 属性 > src/pages/document.ejs > umi 内置模板
+Priority: `document` of route > src/pages/document.ejs > built-in template of umi
 :::
 
-配置路由的 document 属性。
+Configure the `document` attribute of route.
 
-比如约定式路由可通过注释扩展 `document` 属性，路径从项目根目录开始找，
+For example, conventional routing can extend the `document` attribute in annotations, and the path is relative to the root directory of  project:
 
 ```js
 /**
@@ -69,4 +65,4 @@ Create a new `src/pages/document.ejs`, umi stipulates that if this file exists, 
  */
 ```
 
-然后这个路由就会以 `./src/documents/404.ejs` 为模板输出 HTML。
+Then umi will output HTML for this route with using `./src/documents/404.ejs` as the template.
