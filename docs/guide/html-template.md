@@ -2,7 +2,7 @@
 
 ## Modify the default template
 
-Create a new files `src/pages/document.ejs`, umi stipulates that if this file exists, it will be used as the default template. You need to ensure that `<div id="root"></div>` appears.
+Create a new file `src/pages/document.ejs`, umi stipulates that if this file exists, it will be used as the default template. You need to ensure that `<div id="root"></div>` appears.
 
 ```html
 <!doctype html>
