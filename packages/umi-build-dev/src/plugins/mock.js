@@ -1,7 +1,7 @@
 import signale from 'signale';
 import { isPlainObject } from 'lodash';
 import assert from 'assert';
-import createMockMiddleware from './createMockMiddleware';
+import { createMiddleware } from 'umi-mock';
 
 export default function(api) {
   let errors = [];
@@ -33,7 +33,23 @@ export default function(api) {
       });
 
       beforeMiddlewares.forEach(m => app.use(m));
-      app.use(createMockMiddleware(api, errors));
+      const {
+        cwd,
+        config,
+        paths: { absPagesPath, absSrcPath },
+      } = api;
+      app.use(
+        createMiddleware({
+          cwd,
+          config,
+          absPagesPath,
+          absSrcPath,
+          watch: !process.env.WATCH_FILES,
+          onStart({ paths }) {
+            api.addBabelRegister(paths);
+          },
+        }),
+      );
       afterMiddlewares.forEach(m => app.use(m));
     }
   });
