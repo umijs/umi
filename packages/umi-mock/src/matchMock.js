@@ -7,7 +7,8 @@ function decodeParam(val) {
   } catch (err) {
     if (err instanceof URIError) {
       err.message = `Failed to decode param ' ${val} '`;
-      err.status = err.statusCode = 400;
+      err.status = 400;
+      err.statusCode = 400;
     }
     throw err;
   }

@@ -1,8 +1,9 @@
-import { basename, join } from 'path';
+import { basename } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
 import matchMock from './matchMock';
 import getMockData from './getMockData';
+import getPaths from './getPaths';
 
 const debug = require('debug')('umi-mock:createMiddleware');
 
@@ -10,16 +11,14 @@ function noop() {}
 
 export default function(opts = {}) {
   const { cwd, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
-
-  const absMockPath = join(cwd, 'mock');
-  const absConfigPath = join(cwd, '.umirc.mock.js');
+  const { absMockPath, absConfigPath } = getPaths(cwd);
   const paths = [
     absMockPath,
     absConfigPath,
     basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
   ];
   let mockData = null;
-  let errors = [];
+  const errors = [];
 
   onStart({ paths });
   fetchMockData();
@@ -54,8 +53,6 @@ export default function(opts = {}) {
   function fetchMockData() {
     mockData = getMockData({
       cwd,
-      absMockPath,
-      absConfigPath,
       config,
       absPagesPath,
       onError(e) {

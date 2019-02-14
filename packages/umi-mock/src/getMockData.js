@@ -6,6 +6,7 @@ import multer from 'multer';
 import { join } from 'path';
 import signale from 'signale';
 import glob from 'glob';
+import getPaths from './getPaths';
 
 const debug = require('debug')('umi-mock:getMockData');
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
@@ -81,41 +82,53 @@ function parseKey(key) {
 
 function noop() {}
 
-export function getMockConfig(opts) {
-  const { cwd, absMockPath, absConfigPath, absPagesPath, config } = opts;
+export function getMockFiles(opts) {
+  const { cwd, absPagesPath, config = {} } = opts;
+  const { absMockPath, absConfigPath } = getPaths(cwd);
 
   if (existsSync(absConfigPath)) {
     debug(`Load mock data from ${absConfigPath}`);
-    return require(absConfigPath); // eslint-disable-line
+    return [absConfigPath];
   } else {
-    const mockFiles = glob
+    let mockFiles = glob
       .sync('mock/**/*.js', {
         cwd,
         ignore: (config.mock || {}).exclude || [],
       })
-      .map(p => join(cwd, p))
-      .concat(
+      .map(p => join(cwd, p));
+
+    if (absPagesPath) {
+      mockFiles = mockFiles.concat(
         glob
           .sync('**/_mock.js', {
             cwd: absPagesPath,
           })
           .map(p => join(absPagesPath, p)),
       );
+    }
+
     debug(
       `load mock data from ${absMockPath}, including files ${JSON.stringify(
         mockFiles,
       )}`,
     );
-
-    return mockFiles.reduce((memo, mockFile) => {
-      const m = require(mockFile); // eslint-disable-line
-      memo = {
-        ...memo,
-        ...(m.default || m),
-      };
-      return memo;
-    }, {});
+    return mockFiles;
   }
+}
+
+export function getMockConfigFromFiles(files) {
+  return files.reduce((memo, mockFile) => {
+    const m = require(mockFile); // eslint-disable-line
+    memo = {
+      ...memo,
+      ...(m.default || m),
+    };
+    return memo;
+  }, {});
+}
+
+function getMockConfig(opts) {
+  return getMockConfigFromFiles(getMockFiles(opts));
 }
 
 export default function(opts) {
