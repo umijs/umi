@@ -82,19 +82,11 @@ function parseKey(key) {
 function noop() {}
 
 export function getMockConfig(opts) {
-  const {
-    cwd,
-    absMockPath,
-    absConfigPath,
-    absPagesPath,
-    config,
-    onError = noop,
-  } = opts;
+  const { cwd, absMockPath, absConfigPath, absPagesPath, config } = opts;
 
-  let ret = {};
   if (existsSync(absConfigPath)) {
     debug(`Load mock data from ${absConfigPath}`);
-    ret = require(absConfigPath); // eslint-disable-line
+    return require(absConfigPath); // eslint-disable-line
   } else {
     const mockFiles = glob
       .sync('mock/**/*.js', {
@@ -114,25 +106,26 @@ export function getMockConfig(opts) {
         mockFiles,
       )}`,
     );
-    try {
-      ret = mockFiles.reduce((memo, mockFile) => {
-        const m = require(mockFile); // eslint-disable-line
-        memo = {
-          ...memo,
-          ...(m.default || m),
-        };
-        return memo;
-      }, {});
-    } catch (e) {
-      onError(e);
-      signale.error(`Mock file parse failed`);
-      console.error(e.message);
-    }
-  }
 
-  return ret;
+    return mockFiles.reduce((memo, mockFile) => {
+      const m = require(mockFile); // eslint-disable-line
+      memo = {
+        ...memo,
+        ...(m.default || m),
+      };
+      return memo;
+    }, {});
+  }
 }
 
 export default function(opts) {
-  return normalizeConfig(getMockConfig(opts));
+  const { onError = noop } = opts;
+
+  try {
+    return normalizeConfig(getMockConfig(opts));
+  } catch (e) {
+    onError(e);
+    signale.error(`Mock files parse failed`);
+    console.error(e.message);
+  }
 }

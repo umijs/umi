@@ -34,7 +34,7 @@ export default function(opts = {}) {
       cleanRequireCache();
       fetchMockData();
       if (!errors.length) {
-        signale.success(`Mock file parse success`);
+        signale.success(`Mock files parse success`);
       }
     });
   }

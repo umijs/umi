@@ -19,8 +19,6 @@ export default function(req, mockData) {
 
   for (const mock of mockData) {
     const { method, re, keys } = mock;
-    console.log('method', method, targetMethod);
-    console.log('path', targetPath, re, re.test(targetPath));
     if (method === targetMethod) {
       const match = re.exec(targetPath);
       if (match) {
