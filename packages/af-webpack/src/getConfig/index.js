@@ -387,6 +387,14 @@ export default function(opts) {
     );
     opts.chainConfig(webpackConfig);
   }
-
-  return webpackConfig.toConfig();
+  let config = webpackConfig.toConfig();
+  if (process.env.SPEED_MEASURE) {
+    const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+    const smpOption = process.env.SPEED_MEASURE === 'CONSOLE'
+      ? { outputFormat: 'human', outputTarget: console.log }
+      : { outputFormat: 'json', outputTarget: join(opts.absNodeModulesPath, 'speed-measure.json') };
+    const smp = new SpeedMeasurePlugin(smpOption);
+    config = smp.wrap(config);
+  }
+  return config;
 }
