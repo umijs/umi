@@ -39,12 +39,6 @@ app.listen(port, () => {
 });
 
 function registerBabel(extraFiles = []) {
-  const only = [
-    join(cwd, 'config'),
-    join(cwd, '.umirc.js'),
-  ]
-    .concat(extraFiles)
-    .map(file => winPath(file));
   require('@babel/register')({
     presets: [
       [
@@ -62,7 +56,12 @@ function registerBabel(extraFiles = []) {
         },
       ],
     ],
-    only,
+    only: [
+        join(cwd, 'config'),
+        join(cwd, '.umirc.js'),
+      ]
+      .concat(extraFiles)
+      .map(file => winPath(file)),
     babelrc: false,
     cache: false,
   });
