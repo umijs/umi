@@ -67,6 +67,18 @@ $ APP_ROOT=src/renderer umi dev
 $ ANALYZE=1 umi build
 ```
 
+### SPEED_MEASURE
+
+默认关闭。分析各个 plugin 和 loader 的耗时。比如：
+
+```bash
+# 将分析信息在控制台输出
+$ SPEED_MEASURE=CONSOLE umi build
+
+# 将分析信息保存到 node_modules/speed-measure.json
+$ SPEED_MEASURE=JSON umi build
+```
+
 ### ANALYZE_PORT
 
 ANALYZE 服务器端口，默认 8888。
