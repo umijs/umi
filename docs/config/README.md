@@ -395,7 +395,7 @@ Configure options for [node-sass](https://github.com/sass/node-sass#options). No
 
 ### manifest
 
-After configuration, manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
+After configuration, asset-manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
 such as:
 
 ```markup
