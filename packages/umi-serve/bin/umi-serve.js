@@ -15,6 +15,11 @@ if (args.v || args.version) {
   process.exit(0);
 }
 
+// Notify update when process exits
+const updater = require('update-notifier');
+const pkg = require('../package.json');
+updater({ pkg }).notify({ defer: true });
+
 const express = require('express');
 const { winPath } = require('umi-utils');
 const getUserConfig = require('umi-core/lib/getUserConfig');
