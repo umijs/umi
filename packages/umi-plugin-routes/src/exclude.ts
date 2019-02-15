@@ -21,7 +21,7 @@ export default function(routes, excludes) {
         }
       }
       if (route.routes) {
-        route.routes = exclude(route.routes, excludes);
+        route.routes = exclude(route.routes);
       }
       return true;
     });
