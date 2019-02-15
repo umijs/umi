@@ -17,8 +17,8 @@ if (args.v || args.version) {
 
 const express = require('express');
 const { winPath } = require('umi-utils');
-const getUserConfig = require('umi-core/lib/getUserConfig').default;
-const getPaths = require('umi-core/lib/getPaths').default;
+const getUserConfig = require('umi-core/lib/getUserConfig');
+const getPaths = require('umi-core/lib/getPaths');
 const port = 8001;
 const cwd = process.cwd();
 
@@ -27,8 +27,8 @@ let paths;
 // 获取 config 之前先注册一遍
 registerBabel();
 
-const config = getUserConfig({ cwd });
-paths = getPaths({ cwd, config });
+const config = getUserConfig.default({ cwd });
+paths = getPaths.default({ cwd, config });
 
 const app = express();
 app.use(require('umi-mock').createMiddleware({
@@ -43,7 +43,8 @@ app.use(require('umi-mock').createMiddleware({
 }));
 app.use(require('serve-static')('dist'));
 app.listen(port, () => {
-  console.log(`umi ui listening on port ${port}`);
+  console.log(chalk.green('Serving!'));
+  console.log(`http://localhost:${port}`);
 });
 
 function registerBabel(extraFiles = []) {
