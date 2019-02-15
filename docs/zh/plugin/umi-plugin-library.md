@@ -2,21 +2,21 @@
 
 ## why
 
-组件库的开发需要大量繁琐的配置来搭建开发环境, 生成文档站, 打包部署. 同时, 由于 javascript 技术栈迭代太快, 要开发一个至少不落伍的包更需要大量学习和选型. 
+组件库的开发需要大量繁琐的配置来搭建开发环境，生成文档站，打包部署。同时，由于 javascript 技术栈迭代太快，要开发一个至少不落伍的包更需要大量学习和选型。
 
-所以为了解决这个痛点, 我们将积累的经验和探索的成果进行总结, 开发了这个插件, 旨在方便更多的开发者进行组件库的开发. 如果你在使用中有感到不便, 欢迎提 [issue](https://github.com/umijs/umi-plugin-library/issues). 🤓
+所以为了解决这个痛点，我们将积累的经验和探索的成果进行总结，开发了这个插件，旨在方便更多的开发者进行组件库的开发。如果你在使用中有感到不便，欢迎提 [issue](https://github.com/umijs/umi-plugin-library/issues)。🤓
 
-另外, 这里提到的组件库, 不仅包含类似 antd 这样的 react 组件库, 也可以是 umi-request 这样的工具库.
+另外，这里提到的组件库，不仅包含类似 antd 这样的 react 组件库，也可以是 umi-request 这样的工具库。
 
 ## Features
 
 - ✔︎ 提供开箱即用的组件 (component) 和库 (library) 开发脚手架
-- ✔︎ 基于 docz + umi, 提供一个可以快速开始的组件开发环境
-- ✔︎ 支持 mdx 语法, 可以在 markdown 里写 jsx, 可以很方便的组织组件 demo 与 API 文档
-- ✔︎ 打包基于 rollup, 专注于组件与库的打包, 良好的 tree-shaking 特性可以让你的包更小, 不用插件也能支持按需加载
-- ✔︎ 支持 cjs, esm, umd 三种格式, 让你的包可以适用于各种应用场景
+- ✔︎ 基于 docz + umi，提供一个可以快速开始的组件开发环境
+- ✔︎ 支持 mdx 语法，可以在 markdown 里写 jsx，可以很方便的组织组件 demo 与 API 文档
+- ✔︎ 打包基于 rollup，专注于组件与库的打包，良好的 tree-shaking 特性可以让你的包更小，不用插件也能支持按需加载
+- ✔︎ 支持 cjs，esm，umd 三种格式，让你的包可以适用于各种应用场景
 - ✔︎ cjs 和 esm 格式支持 rollup 和 babel 两种打包方式
-- ✔︎ 支持 lerna 多包管理方式, 允许分包独立发布
+- ✔︎ 支持 lerna 多包管理方式，允许分包独立发布
 - ✔︎ 支持 TypeScript
 
 ## Usage
@@ -25,7 +25,7 @@
 $ # 创建目录
 $ mkdir my-lib && cd my-lib
 
-# 初始化脚手架, 选择 library
+# 初始化脚手架，选择 library
 $ yarn create umi
 
 # 安装依赖
@@ -190,21 +190,21 @@ babel 的浏览器的配置
 
 ### `esm`
 
-es modules 包, 支持 tree shaking, 未来的趋势
+es modules 包，支持 tree shaking，未来的趋势
 
 - Type: `{type: 'rollup' | 'babel', file?: string} | false`
 - Default: `{type: 'rollup', file: ${pkg.modules}}`
 
 ### `cjs`
 
-commonjs 包, 传统的包
+commonjs 包，传统的包
 
 - Type: `{type: 'rollup' | 'babel', file?: string} | false`
 - Default: `{type: 'rollup', file: ${pkg.main}}`
 
 ### `umd`
 
-umd 包, 用于发布到 cdn, 支持浏览器加载, 默认关闭
+umd 包，用于发布到 cdn，支持浏览器加载，默认关闭
 
 - Type: `{globals: {[prop:string]: string}, name: string, file: string} | false`
 
@@ -217,7 +217,7 @@ umd 依赖的外部包在全局中的变量名称
 
 ### `umd.name`
 
-umd 包被浏览器加载后, 可以通过 `window.Foo` 访问的名字
+umd 包被浏览器加载后，可以通过 `window.Foo` 访问的名字
 
 - Type: `string`
 - Default: `camelCase(basename(${pkg.name}))`
@@ -231,7 +231,7 @@ umd 包文件输出路径
 
 ### `external`
 
-指定外部依赖, cjs 和 esm 包默认是 external `dependencies` + `peerDependencies` + external, 而 umd 包只使用 external. 
+指定外部依赖，cjs 和 esm 包默认是 external `dependencies` + `peerDependencies` + external，而 umd 包只使用 external
 
 - Type: `string[]`
 - Default: `['react', 'react-dom', 'antd']`
@@ -243,7 +243,7 @@ umd 包文件输出路径
 
 ### `copy`
 
-build 时拷贝文件, 比如拷贝一个不需要被打包的配置文件到指定目录
+build 时拷贝文件，比如拷贝一个不需要被打包的配置文件到指定目录
 
 - Type: `{files: string[], dest: []}`
 - Default: `undefined`
