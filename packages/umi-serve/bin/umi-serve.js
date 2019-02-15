@@ -62,7 +62,9 @@ app.listen(port, () => {
     '',
     `${chalk.grey('Copied local address to clipboard!')}`,
   ];
-  clipboardy.writeSync(localAddress);
+  if (process.platform !== `linux` || process.env.DISPLAY) {
+    clipboardy.writeSync(localAddress);
+  }
   console.log(boxen(message.join('\n'), {
     padding: 1,
     borderColor: 'green',
