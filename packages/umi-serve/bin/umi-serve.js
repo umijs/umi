@@ -19,6 +19,9 @@ const express = require('express');
 const { winPath } = require('umi-utils');
 const getUserConfig = require('umi-core/lib/getUserConfig');
 const getPaths = require('umi-core/lib/getPaths');
+const boxen = require('boxen');
+const clipboardy = require('clipboardy');
+const os = require('os');
 const port = 8001;
 const cwd = process.cwd();
 
@@ -43,8 +46,23 @@ app.use(require('umi-mock').createMiddleware({
 }));
 app.use(require('serve-static')('dist'));
 app.listen(port, () => {
-  console.log(chalk.green('Serving!'));
-  console.log(`http://localhost:${port}`);
+  const ip = getNetworkAddress();
+  const localAddress = `http://localhost:${port}`;
+  const networkAddress = `http://${ip}:${port}`;
+  const message = [
+    chalk.green('Serving your umi project!'),
+    '',
+    `${chalk.bold(`- Local:`)}            ${localAddress}`,
+    `${chalk.bold('- On Your Network:')}  ${networkAddress}`,
+    '',
+    `${chalk.grey('Copied local address to clipboard!')}`,
+  ];
+  clipboardy.writeSync(localAddress);
+  console.log(boxen(message.join('\n'), {
+    padding: 1,
+    borderColor: 'green',
+    margin: 1
+  }));
 });
 
 function registerBabel(extraFiles = []) {
@@ -74,4 +92,16 @@ function registerBabel(extraFiles = []) {
     babelrc: false,
     cache: false,
   });
+}
+
+function getNetworkAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const interface of interfaces[name]) {
+      const { address, family, internal } = interface;
+      if (family === 'IPv4' && !internal) {
+        return address;
+      }
+    }
+  }
 }
