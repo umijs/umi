@@ -55,6 +55,7 @@
     "sockjs": "0.3.19",
     "stringify-object": "3.3.0",
     "umi-history": "0.1.2",
+    "umi-core": "0.1.0",
     "umi-mock": "0.1.0",
     "umi-notify": "^0.1.1",
     "umi-test": "1.3.3",
