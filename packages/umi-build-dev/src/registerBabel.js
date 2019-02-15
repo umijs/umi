@@ -2,7 +2,7 @@ import { join, isAbsolute } from 'path';
 import { existsSync } from 'fs';
 import registerBabel from 'af-webpack/registerBabel';
 import { winPath } from 'umi-utils';
-import { getConfigPaths } from 'umi-core';
+import { getConfigPaths } from 'umi-core/lib/getUserConfig';
 
 let files = null;
 
