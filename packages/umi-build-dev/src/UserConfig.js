@@ -1,116 +1,27 @@
 import { join } from 'path';
-import { existsSync } from 'fs';
 import requireindex from 'requireindex';
 import chalk from 'chalk';
 import didyoumean from 'didyoumean';
-import { cloneDeep, flatten } from 'lodash';
-import extend from 'extend2';
-import { winPath } from 'umi-utils';
+import { cloneDeep } from 'lodash';
 import signale from 'signale';
-import { CONFIG_FILES } from './constants';
+import getUserConfig, {
+  getConfigPaths,
+  getConfigFile,
+  getConfigByConfigFile,
+  cleanConfigRequireCache,
+} from 'umi-core/lib/getUserConfig';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
-
-function normalizeConfig(config) {
-  config = config.default || config;
-
-  if (config.context && config.pages) {
-    Object.keys(config.pages).forEach(key => {
-      const page = config.pages[key];
-      page.context = {
-        ...config.context,
-        ...page.context,
-      };
-    });
-  }
-
-  // pages 配置补丁
-  // /index -> /index.html
-  // index -> /index.html
-  if (config.pages) {
-    const htmlSuffix = !!(
-      config.exportStatic &&
-      typeof config.exportStatic === 'object' &&
-      config.exportStatic.htmlSuffix
-    );
-    config.pages = Object.keys(config.pages).reduce((memo, key) => {
-      let newKey = key;
-      if (
-        htmlSuffix &&
-        newKey.slice(-1) !== '/' &&
-        newKey.slice(-5) !== '.html'
-      ) {
-        newKey = `${newKey}.html`;
-      }
-      if (newKey.charAt(0) !== '/') {
-        newKey = `/${newKey}`;
-      }
-      memo[newKey] = config.pages[key];
-      return memo;
-    }, {});
-  }
-
-  return config;
-}
-
-function getConfigFile(cwd, service) {
-  const files = CONFIG_FILES.map(file => join(cwd, file)).filter(file =>
-    existsSync(file),
-  );
-
-  if (files.length > 1 && service.printWarn) {
-    service.printWarn([
-      `Muitiple config files ${files.join(', ')} detected, umi will use ${
-        files[0]
-      }.`,
-    ]);
-  }
-
-  return files[0];
-}
-
-function requireFile(filePath, opts = {}) {
-  if (!existsSync(filePath)) {
-    return {};
-  }
-
-  const onError =
-    opts.onError ||
-    function(e) {
-      console.error(e);
-      return {};
-    };
-  try {
-    const config = require(filePath) || {}; // eslint-disable-line
-    return normalizeConfig(config);
-  } catch (e) {
-    return onError(e, filePath);
-  }
-}
 
 class UserConfig {
   static getConfig(opts = {}) {
     const { cwd, service } = opts;
-    const absConfigPath = getConfigFile(cwd, service);
-    const env = process.env.UMI_ENV;
-    const isDev = process.env.NODE_ENV === 'development';
-
-    const defaultConfig = service.applyPlugins('modifyDefaultConfig', {
-      initialValue: {},
+    return getUserConfig({
+      cwd,
+      defaultConfig: service.applyPlugins('modifyDefaultConfig', {
+        initialValue: {},
+      }),
     });
-    if (absConfigPath) {
-      return normalizeConfig(
-        extend(
-          true,
-          defaultConfig,
-          requireFile(absConfigPath),
-          env ? requireFile(absConfigPath.replace(/\.js$/, `.${env}.js`)) : {},
-          isDev ? requireFile(absConfigPath.replace(/\.js$/, '.local.js')) : {},
-        ),
-      );
-    } else {
-      return {};
-    }
   }
 
   constructor(service) {
@@ -140,15 +51,13 @@ class UserConfig {
   }
 
   getConfig(opts = {}) {
-    const env = process.env.UMI_ENV;
-    const isDev = process.env.NODE_ENV === 'development';
     const { paths, cwd } = this.service;
     const { force, setConfig } = opts;
     const defaultConfig = this.service.applyPlugins('modifyDefaultConfig', {
       initialValue: {},
     });
 
-    const file = getConfigFile(paths.cwd, this.service);
+    const file = getConfigFile(cwd);
     this.file = file;
     if (!file) {
       return defaultConfig;
@@ -156,20 +65,7 @@ class UserConfig {
 
     // 强制读取，不走 require 缓存
     if (force) {
-      Object.keys(require.cache).forEach(file => {
-        if (winPath(file).indexOf(winPath(join(paths.cwd, 'config/'))) === 0) {
-          delete require.cache[file];
-        }
-      });
-      CONFIG_FILES.forEach(file => {
-        delete require.cache[join(paths.cwd, file)];
-        delete require.cache[
-          join(paths.cwd, file.replace(/\.js$/, `.${env}.js`))
-        ];
-        delete require.cache[
-          join(paths.cwd, file.replace(/\.js$/, `.local.js`))
-        ];
-      });
+      cleanConfigRequireCache(cwd);
     }
 
     let config = null;
@@ -186,15 +82,10 @@ class UserConfig {
       throw new Error(msg);
     };
 
-    config = normalizeConfig(
-      extend(
-        true,
-        defaultConfig,
-        requireFile(file, { onError }),
-        env ? requireFile(file.replace(/\.js$/, `.${env}.js`)) : {},
-        isDev ? requireFile(file.replace(/\.js$/, '.local.js')) : {},
-      ),
-    );
+    config = getConfigByConfigFile(file, {
+      defaultConfig,
+      onError,
+    });
 
     config = this.service.applyPlugins('_modifyConfig', {
       initialValue: config,
@@ -291,17 +182,8 @@ class UserConfig {
   }
 
   watchConfigs(handler) {
-    const env = process.env.UMI_ENV;
-    const watcher = this.watch(
-      'CONFIG_FILES',
-      flatten(
-        CONFIG_FILES.concat('config/').map(file => [
-          file,
-          env ? [file.replace(/\.js$/, `.${env}.js`)] : [],
-          file.replace(/\.js$/, `.local.js`),
-        ]),
-      ),
-    );
+    const { cwd } = this.service;
+    const watcher = this.watch('CONFIG_FILES', getConfigPaths(cwd));
     if (watcher) {
       watcher.on('all', handler);
     }
