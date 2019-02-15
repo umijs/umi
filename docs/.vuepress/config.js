@@ -61,6 +61,7 @@ module.exports = {
                 'load-on-demand',
                 'runtime-config',
                 'block',
+                'library',
                 'deploy',
               ],
             },
@@ -81,7 +82,7 @@ module.exports = {
             {
               title: 'Offcial Plugins',
               collapsable: false,
-              children: ['umi-plugin-react'],
+              children: ['umi-plugin-react', 'umi-plugin-library'],
             },
             {
               title: 'Develop Plugin',
@@ -129,6 +130,7 @@ module.exports = {
                 'load-on-demand',
                 'runtime-config',
                 'block',
+                'library',
                 'deploy',
               ],
             },
@@ -149,7 +151,7 @@ module.exports = {
             {
               title: '官方插件',
               collapsable: false,
-              children: ['umi-plugin-react'],
+              children: ['umi-plugin-react', 'umi-plugin-library'],
             },
             {
               title: '插件开发',
