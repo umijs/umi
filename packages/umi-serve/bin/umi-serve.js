@@ -17,17 +17,25 @@ if (args.v || args.version) {
 
 const express = require('express');
 const { winPath } = require('umi-utils');
-const cwd = process.cwd();
-const absPagesPath = join(cwd, 'src', 'pages');
-const absSrcPath = join(cwd, 'src');
+const getUserConfig = require('umi-core/lib/getUserConfig').default;
+const getPaths = require('umi-core/lib/getPaths').default;
 const port = 8001;
+const cwd = process.cwd();
+
+let paths;
+
+// 获取 config 之前先注册一遍
+registerBabel();
+
+const config = getUserConfig({ cwd });
+paths = getPaths({ cwd, config });
 
 const app = express();
 app.use(require('umi-mock').createMiddleware({
   cwd,
-  config: {},
-  absPagesPath,
-  absSrcPath,
+  config,
+  absPagesPath: paths.absPagesPath,
+  absSrcPath: paths.absSrcPath,
   watch: false,
   onStart({ paths }) {
     registerBabel(paths);
@@ -46,12 +54,12 @@ function registerBabel(extraFiles = []) {
         { transformRuntime: false },
       ],
     ],
-    plugins: [
+    plugins: paths && [
       [
         require.resolve('babel-plugin-module-resolver'),
         {
           alias: {
-            '@': absSrcPath,
+            '@': paths.absSrcPath,
           },
         },
       ],

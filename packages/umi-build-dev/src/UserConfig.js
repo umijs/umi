@@ -4,13 +4,12 @@ import chalk from 'chalk';
 import didyoumean from 'didyoumean';
 import { cloneDeep } from 'lodash';
 import signale from 'signale';
-import {
-  getUserConfig,
+import getUserConfig, {
   getConfigPaths,
   getConfigFile,
   getConfigByConfigFile,
   cleanConfigRequireCache,
-} from 'umi-core';
+} from 'umi-core/lib/getUserConfig';
 import { watch, unwatch } from './getConfig/watch';
 import isEqual from './isEqual';
 
