@@ -92,7 +92,7 @@ import Button from './'
 In some scenarios, you need to define variables, not directly `const hello = 123`, which needs to be done in the following ways:
 
 - Add `export` when defining, such as `export const hello = 123`.
-- Extract the component demo code into a file such as `demo.jsx`, introduce it and render it directly, and the sample code can be displayed in markdown mode.
+- Extract the component demo code into a file such as `demo.jsx`, import it and render it directly, and the sample code can be displayed in markdown mode.
 - Render components using function in `Playground`.
 
 ```jsx
@@ -108,7 +108,7 @@ In some scenarios, you need to define variables, not directly `const hello = 123
 
 #### How to use state
 
-If the sample component needs to use state, you need to extract the code into a file such as `demo.jsx`, introduce it and render it, and the sample code can be displayed in markdown.
+If the sample component needs to use state, you need to extract the code into a file such as `demo.jsx`, import it and render it, and the sample code can be displayed in markdown.
 
 ### Monorepo
 
