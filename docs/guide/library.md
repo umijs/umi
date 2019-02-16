@@ -1,308 +1,117 @@
-# Develop a component library
+---
+sidebarDepth: 2
+---
 
-## Preparing the environment
+# Component Library
 
-> If you want to get started quickly, you can also use our [scaffolding](https://github.com/umijs/create-umi) directly
+## Why
 
-Initialization project
+The development of the component library requires a lot of cumbersome configuration to build the development environment, generate document stations, package deployment. At the same time, because the javascript technology stack iterates too fast, it takes a lot of learning and selection to develop a package that is at least not outdated.
+
+Therefore, in order to solve this pain point, we have summarized the accumulated experience and the results of the exploration, and developed this plug-in, which is designed to facilitate more developers to develop component libraries. If you are inconvenienced in use, please feel free to [issue](https://github.com/umijs/umi-plugin-library/issues). 🤓
+
+In addition, the component library mentioned here contains not only a react component library like antd, but also a tool library like umi-request.
+
+## Features
+
+- ✔︎ Provide out-of-the-box components and libraries to develop scaffolding
+- ✔︎ Based on docz + umi, provide a component development environment that can be quickly started
+- ✔︎ Support mdx syntax, you can write jsx in markdown, you can easily organize component demo and API documentation
+- ✔︎ Packing is based on rollup, focusing on the packaging of components and libraries. Good tree-shaking features can make your package smaller and support on-demand loading without plugins.
+- ✔︎ Supports cjs, esm, umd formats, so that your package can be applied to various application scenarios.
+- ✔︎ cjs and esm formats support rollup and babel packaging
+- ✔︎ Support lerna multi-package management mode, allowing sub-packages to be released independently
+- ✔︎ Support for TypeScript
+
+## Use
 
 ```bash
-# Create a directory
-$ mkdir umi-library-demo && cd umi-library-demo
+$ # Create directory
+$ mkdir my-lib && cd my-lib
 
-# Initialization
-$ yarn init -y
+# Initialize scaffolding, select library
+$ yarn create umi
 
-#Installation dependency
-$ yarn add umi umi-plugin-library --save-dev
+# Installation dependency
+$ yarn install
+
+# Develop
+$ umi doc dev
+
+# Package
+$ umi lib build [--watch]
+
+# Package document
+$ umi doc build
+
+# Deploy the documentation to username.github.io/repo
+$ umi doc deploy
 ```
 
-Add configuration file `.umirc.js`
+## Configuration
+
+Config it in `.umirc.js` or `config/config.js`,
 
 ```js
 export default {
-    Plugins: [
-        'umi-plugin-library'
-    ]
-}
+  plugins: [
+      ['umi-plugin-library', {}]
+  ],
+};
 ```
 
-Add script to `package.json`:
+## [Configuration Parameters](/config/#component-library)
 
-```diff
-+ "scripts": {
-+ "doc:dev": "umi doc dev"
-+ },
-```
+## Tutorial
 
-At this point, you can already run through the following commands:
+- [Develop a component library](/guide/library-step-by-step.html)
 
-```bash
-$ yarn run doc: dev
-```
+## Common problem
 
-The browser accesses `http://127.0.0.1:8001/`, and you can see our component development environment.
+### Using Typescript
 
-## Development component
+`umi-plugin-library` will check if there is a `tsconfig.json` under the project, and automatic identification does not require additional configuration.
 
-Plan the directory structure, the entry is `src/index.js`, `Foo` is our first component
-
-```bash
-.
-├── .umirc.js # Configuration
-├── package.json
-└── src
-    ├── Foo # Component
-    │ └── index.js
-    └── index.js # entry
-```
-
-The `Foo` component code is as follows:
+It is recommended that developers use `Typescript`, which can be easily generated automatically with `PropsTable`.
 
 ```js
-// src/Foo/index.js
-import * as React from 'react';
+import { Playground, PropsTable } from 'docz'
+import Button from './'
 
-export default function(props) {
-  return (
-    <button
-      style={{
-        fontSize: props.size === 'large' ? 40 : 20,
-      }}
-    >
-      { props.children }
-    </button>
-  );
-}
+# Button
+
+<PropsTable of={Button} />
 ```
 
-Next, run our component and create `index.mdx` in the `src/Foo` directory. Based on `mdx`, you can use `markdown` plus `jsx` syntax to organize the document.
+### Mdx Problem
 
-```markdown
----
-name: Foo
-route: /
----
+#### [Syntax](https://mdxjs.com/syntax)
 
-import { Playground } from 'docz';
-import Foo from './';
+#### How to use variables
 
-# Foo Component
+In some scenarios, you need to define variables, not directly `const hello = 123`, which needs to be done in the following ways:
 
-## Normal Foo
+- Add `export` when defining, such as `export const hello = 123`.
+- Extract the component demo code into a file such as `demo.jsx`, introduce it and render it directly, and the sample code can be displayed in markdown mode.
+- Render components using function in `Playground`.
 
-<Foo>Hi</Foo>
-
-## Large Foo with playground
-
+```jsx
 <Playground>
-    <Foo size="large">Hi</Foo>
+  {
+    () => {
+      Const hello = 123;
+      Return <div>{hello}</div>;
+    }
+  }
 </Playground>
 ```
 
-Look at our development environment, you can see the component effect
-![Screenshot 2019-02-06 23.26.51](https://gitcdn.link/repo/clock157/cdn/master/images/blog_library_1.png)
+#### How to use state
 
-## Component Testing
+If the sample component needs to use state, you need to extract the code into a file such as `demo.jsx`, introduce it and render it, and the sample code can be displayed in markdown.
 
-In order to ensure the quality of the components, we need to introduce component testing, the test solution can be used directly [umi-test](https://github.com/umijs/umi/tree/master/packages/umi-test)
+### Monorepo
 
-```bash
-$ yarn add umi-test --save-dev
-```
+If you use `lerna` to manage subcontracting projects like `react`, `babel`, `umi`, `umi-plugin-library` will be automatically recognized by `lerna.json` under the project.
 
-Create a new test file in the `src/Foo` directory `index.test.js`
-
-```js
-import { shallow } from 'enzyme';
-import Foo from './index.js';
-
-describe('<Foo />', () => {
-    it('render Foo', () => {
-        const wrapper = shallow(<Foo size="large">hello, umi</Foo>);
-        expect(wrapper.prop('style').fontSize).toEqual(40);
-        expect(wrapper.children().text()).toEqual('hello, umi');
-    });
-});
-```
-
-Then add a test command in the `scripts` of `package.json`
-
-```diff
-  "scripts": {
-    "doc:dev": "umi doc dev",
-+   "test": "umi-test"
-  },
-```
-
-Execute test command
-
-```bash
-$ yarn run test
-```
-
-Execution results, test passed!
-
-```bash
- PASS  src/Foo/index.test.js
-  <Foo />
-    ✓ render Foo (39ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       1 passed, 1 total
-Snapshots:   0 total
-Time:        11.701s
-Ran all test suites.
-✨  Done in 15.82s.
-```
-
-## Component Packaging
-
-After the component development test is completed, it needs to be packaged into different products to suit different scenarios. By default, `rollup` is packaged to generate three formats:
-
-- `cjs`: CommonJs, can be used by Node and packaging tools like webpack.
-- `esm`: ES Module, support for static analysis can be tree shaking.
-- `umd`: Universal Module Definition Universal package, can be used like `cjs`, can also be published to cdn, used by the browser by script. If there is no such requirement, you can use `umd: false` to close, avoid Most of the packaging problems.
-
-Modify `package.json`
-
-```diff
--  "main": "index.js",
-+  "main": "dist/index.js",
-+  "module": "dist/index.esm.js",
-+  "unpkg": "dist/index.umd.js",
-   "scripts": {
-    "doc:dev": "umi doc dev",
-+   "dev": "umi lib build --watch",
-+   "build": "umi lib build",
-    "test": "umi-test"
-  },
-```
-
-Use command
-
-```bash
-# Monitoring file changes and packaging
-$ yarn run dev
-
-# build
-$ yarn run build
-```
-
-Package result
-
-```bash
-yarn run v1.12.3
-$ umi lib build
-✔  success   [umi-library-demo] cjs: dist/index.js
-✔  success   [umi-library-demo] esm: dist/index.esm.js
-✔  success   [umi-library-demo] umd: dist/index.umd.development.js
-✔  success   [umi-library-demo] umd: dist/index.umd.js
-✨  Done in 33.38s.
-```
-
-## Verifying the product
-
-In order to verify that our product is available, we can create a small demo based on umi and use it to create a directory `example` under the project.
-
-```bash
-example/
-└── pages
-    └── demo-foo
-        └── index.js
-```
-
-We created the `demo-foo` page and used the `Foo` component with its `index.js` code:
-
-```js
-import { Foo } from '../../../dist';
-
-export default function() {
-    return (
-        <Foo size="large">hello, world</Foo>
-    );
-}
-```
-
-Let's run our code
-
-```bash
-$ cd example
-$ umi dev
-
-# If there is no umi command, please install
-$ yarn global add umi
-```
-
-After booting up, the console will prompt you to access the address. After opening it, visit the page `/demo-foo` and you will see the effect:
-![Component Effects](https://user-images.githubusercontent.com/4002237/52470667-cf6da100-2bc9-11e9-910c-a29e43d1eca2.png)
-
-## Publishing components
-
-The components are developed, published to the npm registry and can be used by everyone, or published to the private registry. If you do not have an npm account, you need to register first, then log in to `yarn login`.
-
-Modify `package.json`, add the release script, execute the test case before publishing, and the package only contains the dist directory:
-
-```diff
-+ "files": ["dist"],
-   "scripts": {
-+ "pub": "yarn run test && yarn publish",
-     "test": "umi-test"
-   },
-```
-
-Excuting an order
-
-```bash
-$ yarn run pub
-```
-
-After the release is successful, you can see [umi-library-demo](https://www.npmjs.com/package/umi-library-demo) at npm
-
-For other users, you can use the following command to install and use this package.
-
-```bash
-# use yarn
-$ yarn add umi-library-demo --save
-
-# use npm
-$ npm install umi-library-demo --save
-```
-
-## Publishing a document
-
-After our components are developed and the documentation is written, we need to package and deploy the documentation for the user to view.
-
-First modify `package.json`, add script:
-
-```diff
-  "scripts": {
-  "doc:dev": "umi doc dev",
-+ "doc:build": "umi doc build",
-+ "doc:deploy": "umi doc deploy",
-  },
-```
-
-Then execute the command:
-
-```bash
-#package document
-$ yarn run doc:build
-
-#Deploy the documentation, the speed depends on the speed of the network
-$ yarn run doc:deploy
-```
-
-The document will be deployed to `github.io`, and the url rule is `https://{username}.github.io/{repo}`. Take this project as an example. The document address is:
-
-[https://clock157.github.io/umi-library-demo/](https://clock157.github.io/umi-library-demo/)
-
-## Conclusion
-
-[example code](https://github.com/clock157/umi-library-demo)
-
-At this point, the process of publishing a component library: build, develop, test, package, verify, publish, document, the whole process will go through, in the actual development process, you may encounter more problems, or you are against this If the tutorial does not understand, you can feedback us.
-
-Dingtalk group
-
-<img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="120" />
+The root directory configuration will be applied to each package. If a package needs to be configured separately, you can create a new `.umirc.library.js` configuration difference in the package. Note that this configuration file uses the es5 syntax `module.exports = {}`.

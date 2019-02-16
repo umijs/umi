@@ -471,3 +471,199 @@ export default {
   ],
 };
 ```
+
+## Component Library
+
+Configured in `.umirc.js` or `config/config.js`
+
+```js
+export default {
+  plugins: [
+      ['umi-plugin-library', {}]
+  ],
+};
+```
+
+### `doc`
+
+Document station related configuration
+
+### `doc.title`
+
+Document station title
+
+- Type: `string`
+- Default: `${pkg.name}`
+
+### `doc.theme`
+
+Document station theme
+
+- Type: `string`
+- Default: `docz-theme-default`
+
+### `doc.themeConfig`
+
+Theme configuration
+
+- Type: `object`
+- Default: [themeConfig](https://github.com/umijs/umi-plugin-library/blob/master/packages/umi-plugin-docz/src/defaultThemeConfig.js)
+
+### `doc.style`
+
+External css url
+
+- Type: `string[]`
+- Default: `[]`
+
+### `doc.script`
+
+External js url
+
+- Type: `string[]`
+- Default: `[]`
+
+### `doc.favicon`
+
+- Type: `string`
+- Default: ``
+
+### `doc.host`
+
+- Type: `string`
+- Default: '127.0.0.1'
+
+### `doc.port`
+
+- Type: `number`
+- Default: `8001`
+
+### `doc.base`
+
+Relative path of static resources in the build product
+
+- Type: `string`
+- Default: `/${pkg.name}/`
+
+### `doc.hashRouter`
+
+Whether to use hash router
+
+- Type: `boolean`
+- Default: `false`
+
+### `watch`
+
+Whether to use observation mode when building
+
+- Type: `boolean`
+- Default: `false`
+
+### `entry`
+
+Build entrance
+
+- Type: `string`
+- Default: `src/index.*`
+
+### `cssModules`
+
+Css modules configuration
+
+- Type: `boolean | { camelCase?: boolean, globalModulePaths?: RegExp[] }`
+- Default: `{globalModulePaths: [/global\.less$/, /global\.css$/, /node_modules/]}`
+
+### `extraBabelPlugins`
+
+Extra babel plugin
+
+- Type: `[string | [string, any?]][]`
+- Default: `[]`
+
+### `extraBabelPresets`
+
+Extra babel preset set
+
+- Type: `[string | [string, any?]][]`
+- Default: `[]`
+
+### `targets`
+
+Babel's browser configuration
+
+- Type: `[prop: string]: string | string[]`
+- Default: `{ ie: 11 }`
+
+### `extraPostCSSPlugins`
+
+Extra post css plugin
+
+- Type: `any[]`
+- Default: `[]`
+
+### `namedExports`
+
+[Error: "[name] is not exported by [module]"](https://rollupjs.org/guide/en#error-name-is-not-exported-by-module-)
+
+- Type: `{[prop:string]: string}`
+- Default: `{}`
+
+### `esm`
+
+Es modules package, support tree shaking, future trends
+
+- Type: `{type: 'rollup' | 'babel', file?: string} | false`
+- Default: `{type: 'rollup', file: ${pkg.modules}}`
+
+### `cjs`
+
+Commonjs package, traditional package
+
+- Type: `{type: 'rollup' | 'babel', file?: string} | false`
+- Default: `{type: 'rollup', file: ${pkg.main}}`
+
+### `umd`
+
+Um package, used to publish to cdn, support browser loading, default off
+
+- Type: `{globals: {[prop:string]: string}, name: string, file: string} | false`
+
+### `umd.globals`
+
+Umd dependent external package variable name in the global
+
+- Type: `{[prop:string]: string}`
+- Default: `{'react': 'React', 'react-dom': 'ReactDom', 'antd': 'antd'}`
+
+### `umd.name`
+
+The name that the umd package can access via `window.Foo` after being loaded by the browser.
+
+- Type: `string`
+- Default: `camelCase(basename(${pkg.name}))`
+
+### `umd.file`
+
+Um package file output path
+
+- Type: `string`
+- Default: `${pkg.unpkg} | 'dist/index.umd.js'`
+
+### `external`
+
+Specify external dependencies. The cjs and esm packages default to external `dependencies` + `peerDependencies` + external, while the umd package only uses external
+
+- Type: `string[]`
+- Default: `['react', 'react-dom', 'antd']`
+
+### `sourcemap`
+
+- Type: `boolean`
+- Default: `false`
+
+### `copy`
+
+Copy files when building, such as copying a configuration file that does not need to be packaged to a specified directory
+
+- Type: `{files: string[], dest: []}`
+- Default: `undefined`

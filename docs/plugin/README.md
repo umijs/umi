@@ -34,6 +34,7 @@ export default {
 - umi-plugin-dll
 - umi-plugin-routes
 - umi-plugin-polyfills
+- [umi-plugin-library](/guide/library.html) (develop library)
 
 ### Community plugins
 

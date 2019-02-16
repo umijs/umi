@@ -34,6 +34,7 @@ export default {
 - umi-plugin-dll
 - umi-plugin-routes
 - umi-plugin-polyfills
+- [umi-plugin-library](/zh/guide/library.html) (组件库开发)
 
 ### 社区插件
 

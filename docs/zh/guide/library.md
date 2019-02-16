@@ -1,308 +1,116 @@
-# 开发一个组件库
+---
+sidebarDepth: 2
+---
+# 组件库
 
-## 准备环境
+## 为什么
 
-> 如果你想快速开始，也可以直接使用我们的[脚手架](https://github.com/umijs/create-umi)
+组件库的开发需要大量繁琐的配置来搭建开发环境，生成文档站，打包部署。同时，由于 javascript 技术栈迭代太快，要开发一个至少不落伍的包更需要大量学习和选型。
 
-初始化项目
+所以为了解决这个痛点，我们将积累的经验和探索的成果进行总结，开发了这个插件，旨在方便更多的开发者进行组件库的开发。如果你在使用中有感到不便，欢迎提 [issue](https://github.com/umijs/umi-plugin-library/issues)。🤓
+
+另外，这里提到的组件库，不仅包含类似 antd 这样的 react 组件库，也可以是 umi-request 这样的工具库。
+
+## 特性
+
+- ✔︎ 提供开箱即用的组件 (component) 和库 (library) 开发脚手架
+- ✔︎ 基于 docz + umi，提供一个可以快速开始的组件开发环境
+- ✔︎ 支持 mdx 语法，可以在 markdown 里写 jsx，可以很方便的组织组件 demo 与 API 文档
+- ✔︎ 打包基于 rollup，专注于组件与库的打包，良好的 tree-shaking 特性可以让你的包更小，不用插件也能支持按需加载
+- ✔︎ 支持 cjs，esm，umd 三种格式，让你的包可以适用于各种应用场景
+- ✔︎ cjs 和 esm 格式支持 rollup 和 babel 两种打包方式
+- ✔︎ 支持 lerna 多包管理方式，允许分包独立发布
+- ✔︎ 支持 TypeScript
+
+## 使用
 
 ```bash
-# 创建目录
-$ mkdir umi-library-demo && cd umi-library-demo
+$ # 创建目录
+$ mkdir my-lib && cd my-lib
 
-# 初始化
-$ yarn init -y
+# 初始化脚手架，选择 library
+$ yarn create umi
 
 # 安装依赖
-$ yarn add umi umi-plugin-library --save-dev
+$ yarn install
+
+# 开发
+$ umi doc dev
+
+# 打包库
+$ umi lib build [--watch]
+
+# 打包文档
+$ umi doc build
+
+# 部署文档到 username.github.io/repo
+$ umi doc deploy
 ```
 
-添加配置文件 `.umirc.js`
+## 配置
+
+Config it in `.umirc.js` or `config/config.js`,
 
 ```js
 export default {
-    plugins: [
-        'umi-plugin-library'
-    ]
-}
+  plugins: [
+      ['umi-plugin-library', {}]
+  ],
+};
 ```
 
-给 `package.json` 添加 script：
+## [配置参数](/zh/config/#组件库)
 
-```diff
-+ "scripts": {
-+    "doc:dev": "umi doc dev"
-+ },
-```
+## 教程
 
-这时，你已经可以通过以下命令跑起来：
+- [开发一个组件库](/zh/guide/library-step-by-step.html)
 
-```bash
-$ yarn run doc:dev
-```
+## 常见问题
 
-浏览器访问 `http://127.0.0.1:8001/`，即可看到我们的组件开发环境。
+### 使用 Typescript
 
-## 开发组件
+`umi-plugin-library` 会检查项目下是否存在 `tsconfig.json`，自动识别不需要额外配置。
 
-规划目录结构，入口为 `src/index.js`，`Foo`为我们的第一个组件
-
-```bash
-.
-├── .umirc.js				# 配置
-├── package.json
-└── src
-    ├── Foo					# 组件
-    │   └── index.js
-    └── index.js			# 入口
-```
-
-`Foo` 组件代码如下：
+推荐开发者使用 `Typescript`, 用 `PropsTable` 可以很方便的自动生成 api 说明。
 
 ```js
-// src/Foo/index.js
-import * as React from 'react';
+import { Playground, PropsTable } from 'docz'
+import Button from './'
 
-export default function(props) {
-  return (
-    <button
-      style={{
-        fontSize: props.size === 'large' ? 40 : 20,
-      }}
-    >
-      { props.children }
-    </button>
-  );
-}
+# Button
+
+<PropsTable of={Button} />
 ```
 
-接下来跑一下我们的组件，在 `src/Foo` 目录下创建 `index.mdx`，基于 `mdx`，你可以使用 `markdown` 加 `jsx` 语法来组织文档。
+### mdx 问题
 
-```markdown
----
-name: Foo
-route: /
----
+#### [语法](https://mdxjs.com/syntax)
 
-import { Playground } from 'docz';
-import Foo from './';
+#### 如何使用变量
 
-# Foo Component
+在某些场景下需要定义变量，不能直接 `const hello = 123`, 需要通过以下几种方式：
 
-## Normal Foo
+- 定义时添加 `export`，如 `export const hello = 123`。
+- 将组件演示代码抽出成一个文件如 `demo.jsx`，引入并直接渲染，示例代码可以用 markdown 的方式展示。
+- 在 `Playground` 中使用 function 的方式渲染组件。
 
-<Foo>Hi</Foo>
-
-## Large Foo with playground
-
+```jsx
 <Playground>
-    <Foo size="large">Hi</Foo>
+  {
+    () => {
+      const hello = 123;
+      return <div>{hello}</div>;
+    }
+  }
 </Playground>
 ```
 
-再看下我们的开发环境，可以看到组件效果
-![屏幕快照 2019-02-06 23.26.51](https://gitcdn.link/repo/clock157/cdn/master/images/blog_library_1.png)
+#### 如何使用 state
 
-## 组件测试
+如果示例组件需要使用 state，需要将代码抽出成一个文件如 `demo.jsx`, 引入并渲染，示例代码可以用 markdown 的方式展示。
 
-为了保证组件质量，我们需要引入组件测试，测试方案可以直接使用 [umi-test](https://github.com/umijs/umi/tree/master/packages/umi-test)
+### 分包
 
-```bash
-$ yarn add umi-test --save-dev
-```
+如果你使用 `lerna` 管理类似 `react`、`babel`、`umi` 这样的分包项目，`umi-plugin-library` 会根据项目下的 `lerna.json` 自动识别。
 
-在 `src/Foo` 目录新建测试文件 `index.test.js`
-
-```js
-import { shallow } from 'enzyme';
-import Foo from './index.js';
-
-describe('<Foo />', () => {
-    it('render Foo', () => {
-        const wrapper = shallow(<Foo size="large">hello, umi</Foo>);
-        expect(wrapper.prop('style').fontSize).toEqual(40);
-        expect(wrapper.children().text()).toEqual('hello, umi');
-    });
-});
-```
-
-然后在 `package.json` 的 `scripts` 添加测试命令
-
-```diff
-  "scripts": {
-    "doc:dev": "umi doc dev",
-+   "test": "umi-test"
-  },
-```
-
-执行测试命令
-
-```bash
-$ yarn run test
-```
-
-执行结果，测试通过！
-
-```bash
- PASS  src/Foo/index.test.js
-  <Foo />
-    ✓ render Foo (39ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       1 passed, 1 total
-Snapshots:   0 total
-Time:        11.701s
-Ran all test suites.
-✨  Done in 15.82s.
-```
-
-## 组件打包
-
-组件开发测试完成后，需要打包成不同的产物以适应不同的场景。默认使用 `rollup` 打包生成三个格式的包：
-
-- `cjs`: CommonJs，能被 Node 和 打包工具如 webpack 使用。
-- `esm`: ES Module，支持静态分析可以 tree shaking。
-- `umd`: Universal Module Definition 通用包，既能像 `cjs` 一样被使用，也可以发布到 cdn，通过 script 的方式被浏览器使用，如果没有这个需求可以通过 `umd: false` 关闭，规避大多的打包问题。
-
-修改 `package.json`
-
-```diff
--  "main": "index.js",
-+  "main": "dist/index.js",
-+  "module": "dist/index.esm.js",
-+  "unpkg": "dist/index.umd.js",
-   "scripts": {
-    "doc:dev": "umi doc dev",
-+   "dev": "umi lib build --watch",
-+   "build": "umi lib build",
-    "test": "umi-test"
-  },
-```
-
-使用命令
-
-```bash
-# 监控文件变化并打包
-$ yarn run dev
-
-# 打包
-$ yarn run build
-```
-
-打包结果
-
-```bash
-yarn run v1.12.3
-$ umi lib build
-✔  success   [umi-library-demo] cjs: dist/index.js
-✔  success   [umi-library-demo] esm: dist/index.esm.js
-✔  success   [umi-library-demo] umd: dist/index.umd.development.js
-✔  success   [umi-library-demo] umd: dist/index.umd.js
-✨  Done in 33.38s.
-```
-
-## 验证产物
-
-为了验证我们的产物是否可用，我们可以基于 umi 创建一个小 demo 使用一下，在项目下创建目录 `example`，目录结构：
-
-```bash
-example/
-└── pages
-    └── demo-foo
-        └── index.js
-```
-
-我们创建了 `demo-foo` 这个页面，并使用 `Foo` 组件，其 `index.js` 代码：
-
-```js
-import { Foo } from '../../../dist';
-
-export default function() {
-    return (
-        <Foo size="large">hello, world</Foo>
-    );
-}
-```
-
-我们跑一下
-
-```bash
-$ cd example
-$ umi dev
-
-# 如果没有 umi 这个命令，请安装
-$ yarn global add umi
-```
-
-启动好以后，console 会提示访问地址，打开后访问页面 `/demo-foo`，就可以看到效果：
-![组件效果](https://user-images.githubusercontent.com/4002237/52470667-cf6da100-2bc9-11e9-910c-a29e43d1eca2.png)
-
-## 发布组件
-
-组件开发好，发布到 npm registry 就可以被大家使用，也可以发布到私有 registry 内部使用。如果没有 npm 账号需要先注册，然后登陆 `yarn login`。
-
-修改 `package.json`，添加发布 script，发布前执行测试用例，并且包里只含 dist 目录：
-
-```diff
-+ "files": ["dist"],
-  "scripts": {
-+   "pub": "yarn run test && yarn publish",
-    "test": "umi-test"
-  },
-```
-
-执行命令
-
-```bash
-$ yarn run pub
-```
-
-发布成功后，你就可以在 npm 看到 [umi-library-demo](https://www.npmjs.com/package/umi-library-demo)
-
-对于其他用户，就可以使用以下命令来安装使用这个包。
-
-```bash
-# 使用 yarn
-$ yarn add umi-library-demo --save
-
-#使用 npm
-$ npm install umi-library-demo --save
-```
-
-## 发布文档
-
-在我们的组件开发完毕，文档相应写完后我们需要打包和部署文档，以便使用者查阅。
-
-首先修改 `package.json`，添加 script：
-
-```diff
-  "scripts": {
-    "doc:dev": "umi doc dev",
-+   "doc:build": "umi doc build",
-+   "doc:deploy": "umi doc deploy",
-  },
-```
-
-接下来执行命令：
-
-```bash
-# 打包文档
-$ yarn run doc:build
-
-# 部署文档，速度取决于网速
-$ yarn run doc:deploy
-```
-
-文档会部署到 `github.io`，url 规则是 `https://{username}.github.io/{repo}`，以这个项目为例，文档地址为：
-
-[https://clock157.github.io/umi-library-demo/](https://clock157.github.io/umi-library-demo/)
-
-## 结语
-
-[示例完整代码](https://github.com/clock157/umi-library-demo)
-
-至此，发布一个组件库的流程：搭建、开发、测试、打包、验证、发布、文档整个流程就走通了，在实际的开发过程中，你可能会遇到更多的问题，或者你对这篇教程有不理解的地方，都可以反馈我们。
-
-钉钉群
-
-<img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="120" />
+根目录配置会应用于每个包，如果某个包需要单独配置，可以在包里新建 `.umirc.library.js` 配置差异项即可。注意这个配置文件请使用 es5 语法 `module.exports = {}`。

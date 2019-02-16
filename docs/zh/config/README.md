@@ -476,3 +476,200 @@ export default {
 
 1. 配置 browserslist 之后，targets 会失效
 2. 不推荐使用 browserslist，推荐用 targets
+
+
+## 组件库
+
+在 `.umirc.js` 或 `config/config.js` 中配置
+
+```js
+export default {
+  plugins: [
+      ['umi-plugin-library', {}]
+  ],
+};
+```
+
+### `doc`
+
+文档站相关配置
+
+### `doc.title`
+
+文档站标题
+
+- Type: `string`
+- Default: `${pkg.name}`
+
+### `doc.theme`
+
+文档站主题
+
+- Type: `string`
+- Default: `docz-theme-default`
+
+### `doc.themeConfig`
+
+主题的细节配置
+
+- Type: `object`
+- Default: [themeConfig](https://github.com/umijs/umi-plugin-library/blob/master/packages/umi-plugin-docz/src/defaultThemeConfig.js)
+
+### `doc.style`
+
+外部 css url
+
+- Type: `string[]`
+- Default: `[]`
+
+### `doc.script`
+
+外部 js url
+
+- Type: `string[]`
+- Default: `[]`
+
+### `doc.favicon`
+
+- Type: `string`
+- Default: ``
+
+### `doc.host`
+
+- Type: `string`
+- Default: '127.0.0.1'
+
+### `doc.port`
+
+- Type: `number`
+- Default: `8001`
+
+### `doc.base`
+
+build 产物里的静态资源相对路径
+
+- Type: `string`
+- Default: `/${pkg.name}/`
+
+### `doc.hashRouter`
+
+是否使用 hash router
+
+- Type: `boolean`
+- Default: `false`
+
+### `watch`
+
+build 时是否采用观察模式
+
+- Type: `boolean`
+- Default: `false`
+
+### `entry`
+
+build 入口
+
+- Type: `string`
+- Default: `src/index.*`
+
+### `cssModules`
+
+css modules 配置
+
+- Type: `boolean | { camelCase?: boolean, globalModulePaths?: RegExp[] }`
+- Default: `{globalModulePaths: [/global\.less$/, /global\.css$/, /node_modules/]}`
+
+### `extraBabelPlugins`
+
+额外的 babel 插件
+
+- Type: `[string | [string, any?]][]`
+- Default: `[]`
+
+### `extraBabelPresets`
+
+额外的 babel 预设集
+
+- Type: `[string | [string, any?]][]`
+- Default: `[]`
+
+### `targets`
+
+babel 的浏览器的配置
+
+- Type: `[prop: string]: string | string[]`
+- Default: `{ ie: 11 }`
+
+### `extraPostCSSPlugins`
+
+额外的 post css 插件
+
+- Type: `any[]`
+- Default: `[]`
+
+### `namedExports`
+
+用于解决 rollup 的 [Error: "[name] is not exported by [module]"](https://rollupjs.org/guide/en#error-name-is-not-exported-by-module-)
+
+- Type: `{[prop:string]: string}`
+- Default: `{}`
+
+### `esm`
+
+es modules 包，支持 tree shaking，未来的趋势
+
+- Type: `{type: 'rollup' | 'babel', file?: string} | false`
+- Default: `{type: 'rollup', file: ${pkg.modules}}`
+
+### `cjs`
+
+commonjs 包，传统的包
+
+- Type: `{type: 'rollup' | 'babel', file?: string} | false`
+- Default: `{type: 'rollup', file: ${pkg.main}}`
+
+### `umd`
+
+umd 包，用于发布到 cdn，支持浏览器加载，默认关闭
+
+- Type: `{globals: {[prop:string]: string}, name: string, file: string} | false`
+
+### `umd.globals`
+
+umd 依赖的外部包在全局中的变量名称
+
+- Type: `{[prop:string]: string}`
+- Default: `{'react': 'React', 'react-dom': 'ReactDom', 'antd': 'antd'}`
+
+### `umd.name`
+
+umd 包被浏览器加载后，可以通过 `window.Foo` 访问的名字
+
+- Type: `string`
+- Default: `camelCase(basename(${pkg.name}))`
+
+### `umd.file`
+
+umd 包文件输出路径
+
+- Type: `string`
+- Default: `${pkg.unpkg} | 'dist/index.umd.js'`
+
+### `external`
+
+指定外部依赖，cjs 和 esm 包默认是 external `dependencies` + `peerDependencies` + external，而 umd 包只使用 external
+
+- Type: `string[]`
+- Default: `['react', 'react-dom', 'antd']`
+
+### `sourcemap`
+
+- Type: `boolean`
+- Default: `false`
+
+### `copy`
+
+build 时拷贝文件，比如拷贝一个不需要被打包的配置文件到指定目录
+
+- Type: `{files: string[], dest: []}`
+- Default: `undefined`
