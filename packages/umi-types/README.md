@@ -1,4 +1,4 @@
-# umi-plugin-types
+# umi-types
 
 Type definitions for umi.
 
