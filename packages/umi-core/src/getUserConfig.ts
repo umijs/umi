@@ -13,7 +13,7 @@ interface IOpts {
 export function getConfigFile(cwd) {
   const files = process.env.UMI_CONFIG_FILE
     ? process.env.UMI_CONFIG_FILE.split(',').filter(v => v && v.trim())
-    : ['.umirc.js', 'config/config.js'];
+    : ['.umirc.ts', '.umirc.js', 'config/config.ts', 'config/config.js'];
   const validFiles = files.filter(f => existsSync(join(cwd, f)));
   assert(
     validFiles.length <= 1,
@@ -73,8 +73,10 @@ export function getConfigPaths(cwd): string[] {
   return [
     join(cwd, 'config/'),
     join(cwd, '.umirc.js'),
+    join(cwd, '.umirc.ts'),
     join(cwd, '.umirc.local.js'),
-    ...(env ? [join(cwd, `.umirc.${env}.js`)] : []),
+    join(cwd, '.umirc.local.ts'),
+    ...(env ? [join(cwd, `.umirc.${env}.js`), join(cwd, `.umirc.${env}.ts`)] : []),
   ];
 }
 

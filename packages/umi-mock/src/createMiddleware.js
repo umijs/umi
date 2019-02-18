@@ -19,8 +19,8 @@ export default function(opts = {}) {
     watch,
     onStart = noop,
   } = opts;
-  const { absMockPath, absConfigPath } = getPaths(cwd);
-  const mockPaths = [absMockPath, absConfigPath];
+  const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
+  const mockPaths = [absMockPath, absConfigPath, absConfigPathWithTS];
   const paths = [
     ...mockPaths,
     basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
@@ -28,13 +28,13 @@ export default function(opts = {}) {
   let mockData = null;
 
   // registerBabel 和 clean require cache 包含整个 src 目录
-  // 而 watch 只包含 pages/**/_mock.js
+  // 而 watch 只包含 pages/**/_mock.[jt]s
   onStart({ paths });
   fetchMockData();
 
   if (watch) {
     const watcher = chokidar.watch(
-      [...mockPaths, join(absPagesPath, '**/_mock.js')],
+      [...mockPaths, join(absPagesPath, '**/_mock.[jt]s')],
       {
         ignoreInitial: true,
       },

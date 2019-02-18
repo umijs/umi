@@ -67,6 +67,13 @@ describe('umi-mock:getMockData', () => {
       });
       expect(stripPrefix(files)).toEqual(['umirc-mock-file/.umirc.mock.js']);
     });
+
+    it('ts', () => {
+      const files = getMockFiles({
+        cwd: `${fixtures}/ts`,
+      });
+      expect(stripPrefix(files)).toEqual(['ts/mock/a.ts']);
+    });
   });
 
   describe('getMockConfigFromFiles', () => {
