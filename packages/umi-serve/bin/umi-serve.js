@@ -75,6 +75,7 @@ app.listen(port, () => {
 function registerBabel(extraFiles = []) {
   require('@babel/register')({
     presets: [
+      require.resolve('@babel/preset-typescript'),
       [
         require.resolve('babel-preset-umi'),
         { transformRuntime: false },
@@ -96,6 +97,7 @@ function registerBabel(extraFiles = []) {
       ]
       .concat(extraFiles)
       .map(file => winPath(file)),
+    extensions: ['.es6', '.es', '.jsx', '.js', '.mjs', '.ts', '.tsx'],
     babelrc: false,
     cache: false,
   });

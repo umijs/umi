@@ -84,14 +84,17 @@ function noop() {}
 
 export function getMockFiles(opts) {
   const { cwd, absPagesPath, config = {} } = opts;
-  const { absMockPath, absConfigPath } = getPaths(cwd);
+  const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
 
-  if (existsSync(absConfigPath)) {
+  if (existsSync(absConfigPathWithTS)) {
+    debug(`Load mock data from ${absConfigPathWithTS}`);
+    return [absConfigPathWithTS];
+  } else if (existsSync(absConfigPath)) {
     debug(`Load mock data from ${absConfigPath}`);
     return [absConfigPath];
   } else {
     let mockFiles = glob
-      .sync('mock/**/*.js', {
+      .sync('mock/**/*.[jt]s', {
         cwd,
         ignore: (config.mock || {}).exclude || [],
       })
@@ -100,7 +103,7 @@ export function getMockFiles(opts) {
     if (absPagesPath) {
       mockFiles = mockFiles.concat(
         glob
-          .sync('**/_mock.js', {
+          .sync('**/_mock.[jt]s', {
             cwd: absPagesPath,
           })
           .map(p => join(absPagesPath, p)),
