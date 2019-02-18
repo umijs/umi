@@ -11,7 +11,7 @@ $ yarn
 Bootstrap every package with yarn. (Need to execute when new package is included)
 
 ```bash
-$ npm run bootstrap -- --npm-client yarn
+$ yarn bootstrap
 ```
 
 Link umi globally.
@@ -26,23 +26,27 @@ $ yarn link
 Monitor file changes and transform with babel.
 
 ```bash
-$ npm run build -- --watch
+$ yarn build --watch
 ```
 
-Run test for a specified package.
+Run test.
 
 ```bash
-$ lerna exec --scope af-webpack -- npm run debug
+# Including e2e test
+$ yarn test
+
+# Unit test only
+$ yarn debug .test.(t|j)s
+
+# Test specified file and watch
+$ yarn debug getMockData.test.js -w
 ```
 
-Run `umi dev` in examples/simple.
+Run `umi dev` in examples/func-test.
 
 ```bash
 $ cd examples/func-test
 $ umi dev
-
-# Specifiy the port
-$ PORT=8001 umi dev
 ```
 
 Then open http://localhost:8000/ in your browser.
@@ -54,7 +58,7 @@ $ cd examples/func-test
 $ umi build
 
 # Build without compress
-$ NO_COMPRESS=true umi build
+$ COMPRESS=none umi build
 ```
 
 Publish to npm.
