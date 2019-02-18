@@ -1,6 +1,8 @@
 import assert from 'assert';
 
-export default function(routes, excludes) {
+type IExclude = Function | RegExp;
+
+export default function(routes, excludes: IExclude[]) {
   function exclude(routes) {
     return routes.filter(route => {
       for (const exclude of excludes) {
