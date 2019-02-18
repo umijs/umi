@@ -4,7 +4,7 @@ import assert from 'assert';
 import { createMiddleware } from 'umi-mock';
 
 export default function(api) {
-  let errors = [];
+  const errors = [];
 
   api._registerConfig(() => {
     return api => {
@@ -42,6 +42,7 @@ export default function(api) {
         createMiddleware({
           cwd,
           config,
+          errors,
           absPagesPath,
           absSrcPath,
           watch: !process.env.WATCH_FILES,

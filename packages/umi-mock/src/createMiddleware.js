@@ -10,7 +10,15 @@ const debug = require('debug')('umi-mock:createMiddleware');
 function noop() {}
 
 export default function(opts = {}) {
-  const { cwd, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
+  const {
+    cwd,
+    errors,
+    config,
+    absPagesPath,
+    absSrcPath,
+    watch,
+    onStart = noop,
+  } = opts;
   const { absMockPath, absConfigPath } = getPaths(cwd);
   const paths = [
     absMockPath,
@@ -18,7 +26,6 @@ export default function(opts = {}) {
     basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
   ];
   let mockData = null;
-  const errors = [];
 
   onStart({ paths });
   fetchMockData();
@@ -62,7 +69,7 @@ export default function(opts = {}) {
   }
 
   return function UMI_MOCK(req, res, next) {
-    const match = matchMock(req, mockData);
+    const match = mockData && matchMock(req, mockData);
     if (match) {
       debug(`mock matched: [${match.method}] ${match.path}`);
       return match.handler(req, res, next);

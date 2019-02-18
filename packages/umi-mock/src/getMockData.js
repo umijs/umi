@@ -118,17 +118,23 @@ export function getMockFiles(opts) {
 
 export function getMockConfigFromFiles(files) {
   return files.reduce((memo, mockFile) => {
-    const m = require(mockFile); // eslint-disable-line
-    memo = {
-      ...memo,
-      ...(m.default || m),
-    };
-    return memo;
+    try {
+      const m = require(mockFile); // eslint-disable-line
+      memo = {
+        ...memo,
+        ...(m.default || m),
+      };
+      return memo;
+    } catch (e) {
+      throw new Error(e.stack);
+    }
   }, {});
 }
 
 function getMockConfig(opts) {
-  return getMockConfigFromFiles(getMockFiles(opts));
+  const files = getMockFiles(opts);
+  debug(`mock files: ${files.join(', ')}`);
+  return getMockConfigFromFiles(files);
 }
 
 export default function(opts) {
@@ -139,6 +145,5 @@ export default function(opts) {
   } catch (e) {
     onError(e);
     signale.error(`Mock files parse failed`);
-    console.error(e.message);
   }
 }
