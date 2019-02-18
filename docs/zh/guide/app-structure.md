@@ -1,6 +1,6 @@
 # 目录及约定
 
-在文件和目录的组织上，umi 尽量选择了约定的方式。
+在文件和目录的组织上，umi 更倾向于选择约定的方式。
 
 一个复杂应用的目录结构如下：
 
@@ -22,6 +22,7 @@
         └── page2.js               // 页面 2，任意命名
     ├── global.css                 // 约定的全局样式文件，自动引入，也可以用 global.less
     ├── global.js                  // 可以在这里加入 polyfill
+    ├── app.js                     // 运行时配置文件
 ├── .umirc.js                      // umi 配置，同 config/config.js，二选一
 ├── .env                           // 环境变量
 └── package.json
@@ -33,11 +34,11 @@
 
 ## dist
 
-默认输出路径，可通过配置 outputPath 修改。
+默认输出路径，可通过配置 [outputPath](/zh/config/#outputpath) 修改。
 
 ## mock
 
-约定 mock 目录里所有的 `.js` 文件会被解析为 mock 文件。
+此目录下所有的 `.js` 文件（包括 `_` 前缀的）都会被解析为 mock 文件。
 
 比如，新建 `mock/users.js`，内容如下：
 
@@ -49,9 +50,11 @@ export default {
 
 然后在浏览器里访问 [http://localhost:8000/api/users](http://localhost:8000/api/users) 就可以看到 `['a', 'b']` 了。
 
+如果想忽略 mock 文件夹下的部分文件，参考 [mock.exclude](/zh/config/#mock-exclude) 配置。
+
 ## src
 
-约定 `src` 为源码目录，但是可选，简单项目可以不加 `src` 这层目录。
+约定 `src` 为源码目录，如果不存在 `src` 目录，则当前目录会被作为源码目录。
 
 比如：下面两种目录结构的效果是一致的。
 
@@ -74,7 +77,9 @@ export default {
 
 ## src/layouts/index.js
 
-全局布局，实际上是在路由外面套了一层。
+> 注：配置式路由下无效。
+
+全局布局，在路由外面套的一层路由。
 
 比如，你的路由是：
 
@@ -85,7 +90,7 @@ export default {
 ]
 ```
 
-如果有 `layouts/index.js`，那么路由则变为：
+如果有 `layouts/index.js`，那么路由就会变为：
 
 ```
 [
@@ -98,7 +103,9 @@ export default {
 
 ## src/pages
 
-约定 pages 下所有的 `(j|t)sx?` 文件即路由。关于更多关于约定式路由的介绍，请前往路由章节。
+> 注：配置式路由下无效。
+
+约定 pages 下所有的 `js`、`jsx`、`ts` 和 `tsx` 文件即路由。关于更多关于约定式路由的介绍，请前往[路由](/zh/guide/router.html)章节。
 
 ## src/pages/404.js
 
@@ -106,7 +113,9 @@ export default {
 
 ## src/pages/document.ejs
 
-有这个文件时，会覆盖默认的 HTML 模板。需至少包含以下代码，
+有这个文件时，会覆盖[默认的 HTML 模板](https://github.com/umijs/umi/blob/master/packages/umi-build-dev/template/document.ejs)。
+
+模板里需至少包含根节点的 HTML 信息，
 
 ```html
 <div id="root"></div>
@@ -118,27 +127,37 @@ export default {
 
 ## src/pages/.umi-production
 
-同 `src/pages/.umi`，但是是在 `umi build` 时生成的，会在 `umi build` 执行完自动删除。
+同 `src/pages/.umi`，但是是在 `umi build` 时生成的，`umi build` 执行完自动删除。
 
 ## .test.js 和 .e2e.js
 
-测试文件，`umi test` 会查找所有的 .(test|e2e).(j|t)s 文件跑测试。
+> 注：支持 TypeScript 文件
 
-## src/global.(j|t)sx?
+测试文件，`umi test` 会查找所有的 `.test.js` 和 `.e2e.js` 文件来跑测试。
 
-在入口文件最前面被自动引入，可以考虑在此加入 polyfill。
+## src/global.js
 
-## src/global.(css|less|sass|scss)
+> 注：支持 TypeScript 文件
 
-这个文件不走 css modules，自动被引入，可以写一些全局样式，或者做一些样式覆盖。
+此文件会在入口文件的最前面被自动引入，可以在这里加载补丁，做一些初始化的操作等。
+
+## src/global.css
+
+此文件不走 css modules，且会自动被引入，可以在这里写全局样式，以及做样式覆盖。
+
+## src/app.js
+
+> 注：支持 TypeScript 文件
+
+运行时配置文件，可以在这里扩展运行时的能力，比如修改路由、修改 render 方法等。
 
 ## .umirc.js 和 config/config.js
 
-umi 的配置文件，二选一。
+编译时配置文件，二选一，不可共存。
 
 ## .env
 
-环境变量，比如：
+环境变量配置文件，比如：
 
 ```
 CLEAR_CONSOLE=none

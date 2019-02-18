@@ -18,14 +18,11 @@
 
 ## Community
 
-[umi-antd-mobile](https://github.com/jinjinwa/umi-antd-mobile)，an umi@2.x + dva mobile version example from @jinjinwa
-
-::: warning
-The following example uses umi@1.x and has not been upgraded to umi@2.
-:::
-
+* [umi-antd-mobile](https://github.com/jinjinwa/umi-antd-mobile)，an umi@2.x + dva mobile version example from @jinjinwa
 * [umi-antd-pro](https://github.com/xiaohuoni/umi-antd-pro), an example of umi + antd-pro from @xiaohuni, the official version of antd-pro already switch to umi in 2.0, [migrate](https://pro.ant.design/docs/upgrade-v2-cn)
+
 * [dva-umi](https://github.com/xiaohuoni/dva-umi), umi + dva scaffolding from @xiaohuni
 * [dva-umi-mobile](https://github.com/xiaohuoni/dva-umi-mobile), umi + dva mobile version scaffolding from @xiaohuni
-* [umi-pro](https://github.com/boxcc/umi-pro), an antd-pro example from @boxcc
+
+
 
