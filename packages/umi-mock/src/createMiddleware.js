@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import { join,basename } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
 import matchMock from './matchMock';
@@ -23,7 +23,7 @@ export default function(opts = {}) {
   const paths = [
     absMockPath,
     absConfigPath,
-    basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
+    join(absPagesPath, '**/_mock.js'),
   ];
   let mockData = null;
 
