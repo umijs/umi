@@ -35,7 +35,7 @@ export default function(opts = {}) {
     transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
     testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
-    setupTestFrameworkScriptFile: require.resolve('./jasmine'),
+    setupFilesAfterEnv: [require.resolve('./jasmine')],
     moduleNameMapper: {
       '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
       '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': require.resolve(

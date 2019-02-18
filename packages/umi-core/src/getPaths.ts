@@ -1,11 +1,18 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
+import { IConfig } from 'umi-types';
 
 function test(path) {
   return existsSync(path) && statSync(path).isDirectory();
 }
 
-export default function({ cwd, config }) {
+interface IOpts {
+  cwd: string,
+  config: IConfig,
+}
+
+export default function(opts: IOpts) {
+  const { cwd, config } = opts;
   const outputPath = config.outputPath || './dist';
 
   let pagesPath = 'pages';

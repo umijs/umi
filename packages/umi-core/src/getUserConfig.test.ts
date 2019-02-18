@@ -1,7 +1,6 @@
 import {
   getConfigFile,
   mergeConfigs,
-  normalizeConfig,
   addAffix,
 } from './getUserConfig';
 
@@ -33,60 +32,6 @@ describe('getUserConfig', () => {
       expect(() => {
         getConfigFile(`${fixtures}/conflicts`);
       }).toThrow(/Multiple config files/);
-    });
-  });
-
-  describe('normalizeConfig', () => {
-    it('merge context', () => {
-      expect(
-        normalizeConfig({
-          context: { foo: 1 },
-          pages: {
-            '/a': {},
-            '/b': { context: { bar: 2 } },
-          },
-        }),
-      ).toEqual({
-        context: { foo: 1 },
-        pages: {
-          '/a': { context: { foo: 1 } },
-          '/b': { context: { bar: 2, foo: 1 } },
-        },
-      });
-    });
-
-    it('add / prefix', () => {
-      expect(
-        normalizeConfig({
-          pages: {
-            a: 1,
-          },
-        }),
-      ).toEqual({
-        pages: {
-          '/a': 1,
-        },
-      });
-    });
-
-    it('add .html affix if exportStatic.htmlSuffix is true', () => {
-      expect(
-        normalizeConfig({
-          pages: {
-            '/a': 1,
-          },
-          exportStatic: {
-            htmlSuffix: true,
-          },
-        }),
-      ).toEqual({
-        pages: {
-          '/a.html': 1,
-        },
-        exportStatic: {
-          htmlSuffix: true,
-        },
-      });
     });
   });
 
