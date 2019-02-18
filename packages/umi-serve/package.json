@@ -1,6 +1,6 @@
 {
   "name": "umi-serve",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bin": {
     "umi-serve": "./bin/umi-serve.js"
   },
@@ -16,8 +16,8 @@
     "clipboardy": "1.2.3",
     "express": "4.16.4",
     "serve-static": "1.13.2",
-    "umi-core": "1.0.0",
-    "umi-mock": "1.0.0",
+    "umi-core": "1.0.1",
+    "umi-mock": "1.0.1",
     "umi-utils": "1.3.1",
     "update-notifier": "2.5.0",
     "yargs-parser": "13.0.0"
