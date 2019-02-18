@@ -1,24 +1,26 @@
 # Contribute
 
+> Notice: `y` is the alias for `yarn`, `n` is the alias for `npm`.
+
 ## Set up
 
 Install dev deps after git clone the repo.
 
 ```bash
-$ yarn
+$ y
 ```
 
 Bootstrap every package with yarn. (Need to execute when new package is included)
 
 ```bash
-$ yarn bootstrap
+$ y bootstrap
 ```
 
 Link umi globally.
 
 ```bash
 $ cd packages/umi
-$ yarn link
+$ y link
 ```
 
 ## Common Tasks
@@ -26,20 +28,20 @@ $ yarn link
 Monitor file changes and transform with babel.
 
 ```bash
-$ yarn build --watch
+$ y build --watch
 ```
 
 Run test.
 
 ```bash
 # Including e2e test
-$ yarn test
+$ y test
 
 # Unit test only
-$ yarn debug .test.(t|j)s
+$ y debug .test.(t|j)s
 
 # Test specified file and watch
-$ yarn debug getMockData.test.js -w
+$ y debug getMockData.test.js -w
 ```
 
 Run `umi dev` in examples/func-test.
@@ -64,5 +66,18 @@ $ COMPRESS=none umi build
 Publish to npm.
 
 ```bash
-$ npm run publish
+# Can't use yarn for this command.
+$ n run publish
+```
+
+Debug doc in local.
+
+```bash
+$ y doc:dev
+```
+
+Deploy doc to [umijs.org](https://umijs.org/).
+
+```bash
+$ y doc:deploy
 ```
