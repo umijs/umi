@@ -10,7 +10,7 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi",
-    "directory": "packages/umi-serve"
+    "directory": "packages/umi-types"
   },
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
