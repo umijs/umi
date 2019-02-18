@@ -4,6 +4,9 @@
   "dependencies": {
     "extend2": "1.0.0"
   },
+  "devDependencies": {
+    "umi-types": "0.1.0"
+  },
   "files": [
     "lib",
     "src"

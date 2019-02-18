@@ -1,4 +1,4 @@
-import { IApi } from 'umi-plugin-types';
+import { IApi } from 'umi-types';
 import assert from 'assert';
 import exclude from './exclude';
 

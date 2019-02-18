@@ -2,6 +2,13 @@ import { join, extname } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import extend from 'extend2';
+import { IConfig } from 'umi-types';
+
+interface IOpts {
+  cwd?: string,
+  defaultConfig?: IConfig,
+  onError?: Function,
+}
 
 export function getConfigFile(cwd) {
   const files = process.env.UMI_CONFIG_FILE
@@ -26,13 +33,13 @@ function defaultOnError(e) {
   console.error(e);
 }
 
-function requireFile(f, opts = {}) {
+function requireFile(f, opts: IOpts = {}) {
   if (!existsSync(f)) {
     return {};
   }
 
   const { onError = defaultOnError } = opts;
-  let ret = {};
+  let ret: any = {};
   try {
     ret = require(f) || {}; // eslint-disable-line
   } catch (e) {
@@ -42,52 +49,11 @@ function requireFile(f, opts = {}) {
   return ret.default || ret;
 }
 
-export function normalizeConfig(config) {
-  // Merge config.context to each page
-  if (config.context && config.pages) {
-    Object.keys(config.pages).forEach(key => {
-      const page = config.pages[key];
-      page.context = {
-        ...config.context,
-        ...page.context,
-      };
-    });
-  }
-
-  // pages 配置补丁
-  // /index -> /index.html
-  // index -> /index.html
-  if (config.pages) {
-    const htmlSuffix = !!(
-      config.exportStatic &&
-      typeof config.exportStatic === 'object' &&
-      config.exportStatic.htmlSuffix
-    );
-    config.pages = Object.keys(config.pages).reduce((memo, key) => {
-      let newKey = key;
-      if (
-        htmlSuffix &&
-        newKey.slice(-1) !== '/' &&
-        newKey.slice(-5) !== '.html'
-      ) {
-        newKey = `${newKey}.html`;
-      }
-      if (newKey.charAt(0) !== '/') {
-        newKey = `/${newKey}`;
-      }
-      memo[newKey] = config.pages[key];
-      return memo;
-    }, {});
-  }
-
-  return config;
-}
-
-export function mergeConfigs(...configs) {
+export function mergeConfigs(...configs): IConfig {
   return extend(true, ...configs);
 }
 
-export function getConfigByConfigFile(configFile, opts = {}) {
+export function getConfigByConfigFile(configFile, opts: IOpts = {}): IConfig {
   const umiEnv = process.env.UMI_ENV;
   const isDev = process.env.NODE_ENV === 'development';
   const { defaultConfig, onError } = opts;
@@ -99,10 +65,10 @@ export function getConfigByConfigFile(configFile, opts = {}) {
     umiEnv && requireFile(addAffix(configFile, umiEnv), requireOpts),
     isDev && requireFile(addAffix(configFile, 'local'), requireOpts),
   ];
-  return normalizeConfig(mergeConfigs(...configs));
+  return mergeConfigs(...configs);
 }
 
-export function getConfigPaths(cwd) {
+export function getConfigPaths(cwd): string[] {
   const env = process.env.UMI_ENV;
   return [
     join(cwd, 'config/'),
@@ -125,7 +91,7 @@ export function cleanConfigRequireCache(cwd) {
   });
 }
 
-export default function(opts = {}) {
+export default function(opts: IOpts = {}): IConfig {
   const { cwd, defaultConfig } = opts;
   const absConfigFile = getConfigFile(cwd);
 

@@ -6,8 +6,8 @@
     "lib",
     "src"
   ],
-  "dependencies": {
-    "umi-plugin-types": "^0.3.2"
+  "devDependencies": {
+    "umi-types": "0.1.0"
   },
   "repository": {
     "type": "git",

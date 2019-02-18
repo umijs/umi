@@ -6,3 +6,4 @@ fixtures/
 website/
 examples/
 bin/
+*.d.ts
