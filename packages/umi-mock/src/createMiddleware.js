@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import { basename, join } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
 import matchMock from './matchMock';
@@ -20,20 +20,25 @@ export default function(opts = {}) {
     onStart = noop,
   } = opts;
   const { absMockPath, absConfigPath } = getPaths(cwd);
+  const mockPaths = [absMockPath, absConfigPath];
   const paths = [
-    absMockPath,
-    absConfigPath,
+    ...mockPaths,
     basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
   ];
   let mockData = null;
 
+  // registerBabel 和 clean require cache 包含整个 src 目录
+  // 而 watch 只包含 pages/**/_mock.js
   onStart({ paths });
   fetchMockData();
 
   if (watch) {
-    const watcher = chokidar.watch(paths, {
-      ignoreInitial: true,
-    });
+    const watcher = chokidar.watch(
+      [...mockPaths, join(absPagesPath, '**/_mock.js')],
+      {
+        ignoreInitial: true,
+      },
+    );
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       errors.splice(0, errors.length);
