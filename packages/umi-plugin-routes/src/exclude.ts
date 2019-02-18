@@ -13,9 +13,10 @@ export default function(routes, excludes) {
           return false;
         }
         if (
-          !route.component.startsWith('() =>') &&
-          exclude instanceof RegExp &&
-          exclude.test(route.component)
+          route.component
+          && !route.component.startsWith('() =>')
+          && exclude instanceof RegExp
+          && exclude.test(route.component)
         ) {
           return false;
         }

@@ -24,6 +24,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^24.0.5",
     "babel-eslint": "10.0.1",
     "chokidar": "2.0.4",
     "coveralls": "3.0.2",
