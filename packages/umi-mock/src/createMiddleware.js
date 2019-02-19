@@ -33,12 +33,15 @@ export default function(opts = {}) {
   fetchMockData();
 
   if (watch) {
-    const watcher = chokidar.watch(
-      [...mockPaths, join(absPagesPath, '**/_mock.[jt]s')],
-      {
-        ignoreInitial: true,
-      },
+    // chokidar 在 windows 下使用反斜杠组成的 glob 无法正确 watch 文件变动
+    // https://github.com/paulmillr/chokidar/issues/777
+    const absPagesGlobPath = join(absPagesPath, '**/_mock.[jt]s').replace(
+      /\\/g,
+      '/',
     );
+    const watcher = chokidar.watch([...mockPaths, absPagesGlobPath], {
+      ignoreInitial: true,
+    });
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       errors.splice(0, errors.length);
