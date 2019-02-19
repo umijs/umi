@@ -1,6 +1,7 @@
 import { basename, join } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
+import { winPath } from 'umi-utils';
 import matchMock from './matchMock';
 import getMockData from './getMockData';
 import getPaths from './getPaths';
@@ -34,11 +35,8 @@ export default function(opts = {}) {
 
   if (watch) {
     // chokidar 在 windows 下使用反斜杠组成的 glob 无法正确 watch 文件变动
-    // https://github.com/paulmillr/chokidar/issues/777
-    const absPagesGlobPath = join(absPagesPath, '**/_mock.[jt]s').replace(
-      /\\/g,
-      '/',
-    );
+    // ref: https://github.com/paulmillr/chokidar/issues/777
+    const absPagesGlobPath = winPath(join(absPagesPath, '**/_mock.[jt]s'));
     const watcher = chokidar.watch([...mockPaths, absPagesGlobPath], {
       ignoreInitial: true,
     });
