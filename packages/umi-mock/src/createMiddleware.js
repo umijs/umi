@@ -34,7 +34,7 @@ export default function(opts = {}) {
 
   if (watch) {
     const watcher = chokidar.watch(
-      [...mockPaths, join(absPagesPath, '**/_mock.[jt]s')],
+      [...mockPaths, join(absPagesPath, '**/_mock.[jt]s').replace(/\\/g, '/')],
       {
         ignoreInitial: true,
       },
