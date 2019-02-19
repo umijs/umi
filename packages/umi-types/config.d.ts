@@ -3,13 +3,21 @@ import { ExternalsElement, Condition } from 'webpack';
 
 export type IPlugin<T = any> = string | [string, T];
 
-export interface IRoute {
-  path: string;
-  component: string;
-  routes?: IRoute[];
-  Routes?: string[];
-  [key: string]: any;
-}
+export type IRoute =
+  | {
+      path: string;
+      component: string;
+      routes?: IRoute[];
+      Routes?: string[];
+      redirect?: never;
+      [key: string]: any;
+    }
+  | {
+      path: string;
+      redirect: string;
+      component?: never;
+      [key: string]: any;
+    };
 
 export interface IExportStaticOpts {
   htmlSuffix?: boolean;

@@ -1,3 +1,4 @@
+import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
 import { Stats, Configuration } from 'webpack';
 
@@ -255,22 +256,6 @@ export interface IAdd<T = any, U = any> {
 
 interface IGetChunkPath {
   (fileName: string): string | null;
-}
-
-interface CheerioStatic extends CheerioSelector {
-  // @types/cheerio/index.d.ts
-  xml(): string;
-  root(): Cheerio;
-  contains(container: CheerioElement, contained: CheerioElement): boolean;
-  parseHTML(
-    data: string,
-    context?: Document,
-    keepScripts?: boolean
-  ): Document[];
-  html(options?: CheerioOptionsInterface): string;
-  html(selector: string, options?: CheerioOptionsInterface): string;
-  html(element: Cheerio, options?: CheerioOptionsInterface): string;
-  html(element: CheerioElement, options?: CheerioOptionsInterface): string;
 }
 
 interface IModifyHTMLWithASTArgs {
