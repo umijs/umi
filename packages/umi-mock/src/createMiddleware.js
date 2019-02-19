@@ -33,7 +33,7 @@ export default function(opts = {}) {
   fetchMockData();
 
   if (watch) {
-    // chokidar在windows下使用反斜杠组成的glob无法正确watch文件变动
+    // chokidar 在 windows 下使用反斜杠组成的 glob 无法正确 watch 文件变动
     // https://github.com/paulmillr/chokidar/issues/777
     const absPagesGlobPath = join(absPagesPath, '**/_mock.[jt]s').replace(
       /\\/g,
