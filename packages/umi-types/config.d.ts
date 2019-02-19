@@ -9,11 +9,13 @@ export type IRoute =
       component: string;
       routes?: IRoute[];
       Routes?: string[];
+      redirect?: never;
       [key: string]: any;
     }
   | {
       path: string;
       redirect: string;
+      component?: never;
       [key: string]: any;
     };
 
