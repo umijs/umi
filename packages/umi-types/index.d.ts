@@ -28,6 +28,10 @@ interface IRegisterPlugin {
   (plugin: IRegisterPluginOpts): void;
 }
 
+interface IRegister {
+  (hook: string, handler: Function): void;
+}
+
 export interface IPluginMethodOpts {
   /**
    * @param args: Come from `applyPlugins(, { args: YOUR_ARGS })`
@@ -288,7 +292,11 @@ interface IModifyRouteComponentArgs {
 
 interface IPkg {
   name: string;
+  version: string;
   dependencies: {
+    [prop: string]: string;
+  };
+  devDependencies: {
     [prop: string]: string;
   };
 }
@@ -320,6 +328,7 @@ export interface IApi {
    * System level API
    * https://umijs.org/plugin/develop.html#system-level-api
    */
+  register: IRegister;
   registerPlugin: IRegisterPlugin;
   registerMethod: IRegisterMethod;
   applyPlugins: IApplyPlugins;
