@@ -128,7 +128,7 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 * Type: `Boolean`
 * Default: `false`
 
-Use the `window.publicPath` specified in the HTML when the value is `true`.
+Use the `window.resourceBaseUrl` specified in the HTML when the value is `true`.
 
 ### cssPublicPath <Badge text="2.2.5+"/>
 

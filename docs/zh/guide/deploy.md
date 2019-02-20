@@ -80,7 +80,7 @@ export default {
 
 ```html
 <script>
-window.publicPath = <%= YOUR PUBLIC_PATH %>
+window.resourceBaseUrl = <%= YOUR PUBLIC_PATH %>
 </script>
 ```
 

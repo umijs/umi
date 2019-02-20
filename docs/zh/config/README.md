@@ -128,7 +128,7 @@ export default {
 * 类型：`Boolean`
 * 默认值：`false`
 
-值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
+值为 `true` 时使用 HTML 里指定的 `window.resourceBaseUrl`。
 
 ### cssPublicPath <Badge text="2.2.5+"/>
 
