@@ -1,9 +1,10 @@
 {
   "changelog": {
     "labels": {
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
-      "documentation": ":book: Documentation"
+      "pr: enhancement": ":rocket: Enhancement",
+      "pr: bug": ":bug: Bug Fix",
+      "pr: documentation": ":book: Documentation",
+      "pr: dependency": ":deciduous_tree: Dependency"
     },
     "repo": "umijs/umi",
     "cacheDir": ".changelog"
