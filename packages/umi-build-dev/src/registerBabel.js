@@ -34,7 +34,10 @@ export default function({ cwd }) {
     only,
     babelPreset: [
       require.resolve('babel-preset-umi'),
-      { transformRuntime: false },
+      {
+        env: { targets: { node: 8 } },
+        transformRuntime: false,
+      },
     ],
     babelPlugins: [
       [
