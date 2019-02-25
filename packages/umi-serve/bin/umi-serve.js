@@ -78,7 +78,10 @@ function registerBabel(extraFiles = []) {
       require.resolve('@babel/preset-typescript'),
       [
         require.resolve('babel-preset-umi'),
-        { transformRuntime: false },
+        {
+          env: { targets: { node: 8 } },
+          transformRuntime: false,
+        },
       ],
     ],
     plugins: paths && [
