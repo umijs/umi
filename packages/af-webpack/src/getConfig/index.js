@@ -264,15 +264,18 @@ export default function(opts) {
   const NO_PROGRESS = process.env.PROGRESS === 'none';
   if (!process.env.__FROM_UMI_TEST) {
     if (!process.env.CI && !NO_PROGRESS) {
-      webpackConfig.plugin('progress')
-        .use(require('webpackbar'), [
-          {
-            color: 'green',
-            reporters: ['fancy'],
-          },
-        ]);
-    } else {
-      console.log('Building ...');
+      if (process.platform === 'win32') {
+        webpackConfig.plugin('progress')
+          .use(require('progress-bar-webpack-plugin'));
+      } else {
+        webpackConfig.plugin('progress')
+          .use(require('webpackbar'), [
+            {
+              color: 'green',
+              reporters: ['fancy'],
+            },
+          ]);
+      }
     }
   }
 
