@@ -4,7 +4,7 @@ import rimraf from 'rimraf';
 import assert from 'assert';
 import signale from 'signale';
 import { IOpts } from './types';
-import babel from "./babel";
+import babel from './babel';
 
 const CONFIG_FILE = '.umirc.library.js';
 const DEFAULT_BUNDLE_OPTS = {
@@ -28,7 +28,7 @@ export function getBundleOpts(opts: IOpts) {
   }
 }
 
-export async function build(opts: IOpts) {
+export async function build(opts: IOpts): Promise {
   const { cwd, watch } = opts;
   const bundleOpts = getBundleOpts(opts);
 
@@ -62,7 +62,7 @@ export async function build(opts: IOpts) {
   }
 }
 
-export async function buildForLerna(opts: IOpts) {
+export async function buildForLerna(opts: IOpts): Promise {
   const pkgs = readdirSync(join(opts.cwd, 'packages'));
   for (const pkg of pkgs) {
     const pkgPath = join(opts.cwd, 'packages', pkg);
@@ -77,7 +77,7 @@ export async function buildForLerna(opts: IOpts) {
   }
 }
 
-export default async function (opts: IOpts) {
+export default async function (opts: IOpts): Promise {
   const useLerna = existsSync(join(opts.cwd, 'lerna.json'));
   if (useLerna && process.env.LERNA !== 'none') {
     await buildForLerna(opts);
