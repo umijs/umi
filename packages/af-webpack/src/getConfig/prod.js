@@ -29,8 +29,8 @@ export default function(webpackConfig, opts) {
 
   if (opts.hash) {
     webpackConfig.output
-      .filename(`[name].[chunkhash:8].js`)
-      .chunkFilename(`[name].[chunkhash:8].async.js`);
+      .filename(`[name].[contenthash:8].js`)
+      .chunkFilename(`[name].[contenthash:8].async.js`);
   }
 
   webpackConfig.performance.hints(false);
