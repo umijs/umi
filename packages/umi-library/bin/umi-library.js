@@ -38,7 +38,7 @@ switch (args._[0]) {
 
 function printHelp() {
   console.log(`
-  Usage: umi-lib <command> [options]
+  Usage: umi-library <command> [options]
 
   Commands:
 
