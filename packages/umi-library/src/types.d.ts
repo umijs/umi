@@ -15,7 +15,7 @@ interface IUmd {
 }
 
 export interface IBundleOptions {
-  entry?: string;
+  entry?: string | string[];
   esm?: IBundleTypeOutput | false;
   cjs?: IBundleTypeOutput | false;
   umd?: IUmd | false;

@@ -4,13 +4,17 @@ import getRollupConfig from "./getRollupConfig";
 
 interface IRollupOpts {
   cwd: string;
-  entry: string;
+  entry: string | string[];
   type: 'esm' | 'cjs' | 'umd';
   target?: 'browser' | 'node',
   watch?: boolean,
 }
 
-export default async function (opts: IRollupOpts) {
+interface IRollupBuildOpts extends IRollupOpts {
+  entry: string;
+}
+
+async function build(opts: IRollupBuildOpts) {
   const { cwd, entry, type, target = 'browser' } = opts;
   const rollupConfigs = getRollupConfig({
     cwd,
@@ -36,8 +40,22 @@ export default async function (opts: IRollupOpts) {
       });
     } else {
       const { output, ...input } = rollupConfig;
-      const bundle = await rollup(input);
-      await bundle.write(output);
+      const bundle = await rollup(input); // eslint-disable-line
+      await bundle.write(output); // eslint-disable-line
     }
+  }
+}
+
+export default async function (opts: IRollupOpts) {
+  if (Array.isArray(opts.entry)) {
+    const { entry: entries, ...moreOpts } = opts;
+    for (const entry of entries) {
+      await build({ // eslint-disable-line
+        ...moreOpts,
+        entry,
+      });
+    }
+  } else {
+    await build(opts as IRollupBuildOpts);
   }
 }
