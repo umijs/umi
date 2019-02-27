@@ -6,19 +6,38 @@ import signale from 'signale';
 import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
 import rollup from './rollup';
+import registerBabel from "./registerBabel";
 
-const CONFIG_FILE = '.umirc.library.js';
 const DEFAULT_BUNDLE_OPTS = {
   entry: 'src/index.js', // TODO: support jsx, ts and tsx
 };
+const CONFIG_FILES = [
+  '.umirc.library.js',
+  '.umirc.library.jsx',
+  '.umirc.library.ts',
+  '.umirc.library.tsx',
+];
+
+function testDefault(obj) {
+  return obj.default || obj;
+}
+
+function getConfigFile(cwd) {
+  for (const file of CONFIG_FILES) {
+    const configFile = join(cwd, file);
+    if (existsSync(configFile)) {
+      return configFile;
+    }
+  }
+}
 
 export function getBundleOpts(opts: IOpts): IBundleOptions {
   const { cwd, buildArgs = {} } = opts;
-  const configFile = join(cwd, CONFIG_FILE);
+  const configFile = getConfigFile(cwd);
   if (existsSync(configFile)) {
     return {
       ...DEFAULT_BUNDLE_OPTS,
-      ...require(configFile), // eslint-disable-line
+      ...testDefault(require(configFile)), // eslint-disable-line
       ...buildArgs,
     };
   } else {
@@ -31,13 +50,21 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
 
 export async function build(opts: IOpts): Promise {
   const { cwd, watch } = opts;
+
+  // register babel for config files
+  registerBabel({
+    cwd,
+    only: CONFIG_FILES,
+  });
+
+  // Get user config
   const bundleOpts = getBundleOpts(opts);
 
-  // clean
+  // Clean dist
   signale.info(`Clean dist directory`);
   rimraf.sync(join(cwd, 'dist'));
 
-  // build umd
+  // Build umd
   if (bundleOpts.umd) {
     signale.info(`Build umd`);
     await rollup({
@@ -48,7 +75,7 @@ export async function build(opts: IOpts): Promise {
     });
   }
 
-  // build cjs
+  // Build cjs
   if (bundleOpts.cjs) {
     signale.info(`Build cjs with ${bundleOpts.cjs.type}`);
     if (bundleOpts.cjs.type === 'babel') {
@@ -63,7 +90,7 @@ export async function build(opts: IOpts): Promise {
     }
   }
 
-  // build esm
+  // Build esm
   if (bundleOpts.esm) {
     signale.info(`Build esm with ${bundleOpts.esm.type}`);
     if (bundleOpts.cjs.type === 'babel') {
