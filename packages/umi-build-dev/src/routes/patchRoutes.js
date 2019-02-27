@@ -62,8 +62,13 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
   }
 
   // /path -> /path.html
-  if (route.path && config.exportStatic && config.exportStatic.htmlSuffix) {
-    route.path = addHtmlSuffix(route.path, !!route.routes);
+  if (route.path && config.exportStatic) {
+    if (config.exportStatic.htmSuffix) {
+      route.path = addHtmlSuffix(route.path, !!route.routes, 'htm');
+    }
+    if (config.exportStatic.htmlSuffix) {
+      route.path = addHtmlSuffix(route.path, !!route.routes, 'html');
+    }
   }
 
   // 权限路由
@@ -89,11 +94,11 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
   }
 }
 
-function addHtmlSuffix(path, hasRoutes) {
+function addHtmlSuffix(path, hasRoutes, suffix = 'html') {
   if (path === '/') return path;
   if (hasRoutes) {
-    return path.endsWith('/') ? path : `${path}(.html)?`;
+    return path.endsWith('/') ? path : `${path}(.${suffix})?`;
   } else {
-    return path.endsWith('/') ? `${path.slice(0, -1)}.html` : `${path}.html`;
+    return path.endsWith('/') ? `${path.slice(0, -1)}.${suffix}` : `${path}.${suffix}`;
   }
 }
