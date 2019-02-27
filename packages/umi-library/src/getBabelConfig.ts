@@ -3,7 +3,7 @@ interface IGetBabelConfigOpts {
   target: 'browser' | 'node';
 }
 
-export default function (opts: IGetBabelConfigOpts = {}) {
+export default function (opts: IGetBabelConfigOpts) {
   const { target } = opts;
   const isBrowser = target === 'browser';
   const targets = isBrowser

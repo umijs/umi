@@ -48,7 +48,7 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
   }
 }
 
-export async function build(opts: IOpts): Promise {
+export async function build(opts: IOpts) {
   const { cwd, watch } = opts;
 
   // register babel for config files
@@ -93,7 +93,7 @@ export async function build(opts: IOpts): Promise {
   // Build esm
   if (bundleOpts.esm) {
     signale.info(`Build esm with ${bundleOpts.esm.type}`);
-    if (bundleOpts.cjs.type === 'babel') {
+    if (bundleOpts.cjs && bundleOpts.cjs.type === 'babel') {
       await babel({ cwd, watch, type: 'esm' });
     } else {
       await rollup({
@@ -106,7 +106,7 @@ export async function build(opts: IOpts): Promise {
   }
 }
 
-export async function buildForLerna(opts: IOpts): Promise {
+export async function buildForLerna(opts: IOpts) {
   const pkgs = readdirSync(join(opts.cwd, 'packages'));
   for (const pkg of pkgs) {
     const pkgPath = join(opts.cwd, 'packages', pkg);
@@ -121,7 +121,7 @@ export async function buildForLerna(opts: IOpts): Promise {
   }
 }
 
-export default async function (opts: IOpts): Promise {
+export default async function (opts: IOpts) {
   const useLerna = existsSync(join(opts.cwd, 'lerna.json'));
   if (useLerna && process.env.LERNA !== 'none') {
     await buildForLerna(opts);

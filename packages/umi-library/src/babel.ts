@@ -23,7 +23,7 @@ interface ITransformOpts {
   },
 }
 
-export default async function (opts: IBabelOpts): Promise {
+export default async function (opts: IBabelOpts) {
   const { cwd, type, target = 'browser', watch } = opts;
   const srcPath = join(cwd, 'src');
   const targetDir = type === 'esm' ? 'es' : 'lib';

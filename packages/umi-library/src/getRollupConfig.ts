@@ -14,11 +14,20 @@ interface IGetRollupConfigOpts {
   target: 'browser' | 'node';
 }
 
+interface IPkg {
+  dependencies?: Object;
+  peerDependencies?: Object;
+}
+
 export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target } = opts;
   const name = basename(entry, extname(entry));
 
-  const pkg = require(join(cwd, 'package.json')); // eslint-disable-line
+  let pkg = {} as IPkg;
+  try {
+    pkg = require(join(cwd, 'package.json')); // eslint-disable-line
+  } catch (e) {
+  }
 
   // rollup configs
   const input = join(cwd, entry);
@@ -56,7 +65,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: `dist/${name}.esm.js`,
+            file: join(cwd, `dist/${name}.esm.js`),
           },
           plugins,
           external,
@@ -69,7 +78,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: `dist/${name}.js`,
+            file: join(cwd, `dist/${name}.js`),
           },
           plugins,
           external,
@@ -92,7 +101,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: `dist/${name}.umd.js`,
+            file: join(cwd, `dist/${name}.umd.js`),
           },
           plugins,
           external,
@@ -101,7 +110,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: `dist/${name}.umd.min.js`,
+            file: join(cwd, `dist/${name}.umd.min.js`),
           },
           plugins: [
             ...plugins,
