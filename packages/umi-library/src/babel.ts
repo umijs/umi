@@ -7,6 +7,7 @@ import through from 'through2';
 import slash from 'slash2';
 import * as chokidar from 'chokidar';
 import * as babel from '@babel/core';
+import getBabelConfig from './getBabelConfig';
 
 interface IBabelOpts {
   cwd: string;
@@ -31,34 +32,11 @@ export default async function (opts: IBabelOpts): Promise {
   signale.info(`Clean ${targetDir} directory`);
   rimraf.sync(targetPath);
 
-  function getBabelConfig() {
-    const isBrowser = target === 'browser';
-    const targets = isBrowser
-      ? { browsers: ['last 2 versions', 'IE 10'] }
-      : { node: 6 };
-
-    return {
-      presets: [
-        require.resolve('@babel/preset-typescript'),
-        [
-          require.resolve('@babel/preset-env'),
-          { targets },
-        ],
-        ...(isBrowser ? [require.resolve('@babel/preset-react')] : []),
-      ],
-      plugins: [
-        require.resolve('@babel/plugin-proposal-export-default-from'),
-        require.resolve('@babel/plugin-proposal-do-expressions'),
-        require.resolve('@babel/plugin-proposal-class-properties'),
-      ],
-    };
-  }
-
   function transform(opts: ITransformOpts) {
     const { file } = opts;
     signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
     return babel.transform(file.contents, {
-      ...getBabelConfig(),
+      ...getBabelConfig({ target }),
       filename: file.path,
     }).code;
   }

@@ -3,15 +3,16 @@ import { join } from 'path';
 import rimraf from 'rimraf';
 import assert from 'assert';
 import signale from 'signale';
-import { IOpts } from './types';
+import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
+import rollup from './rollup';
 
 const CONFIG_FILE = '.umirc.library.js';
 const DEFAULT_BUNDLE_OPTS = {
   entry: 'src/index.js', // TODO: support jsx, ts and tsx
 };
 
-export function getBundleOpts(opts: IOpts) {
+export function getBundleOpts(opts: IOpts): IBundleOptions {
   const { cwd, buildArgs = {} } = opts;
   const configFile = join(cwd, CONFIG_FILE);
   if (existsSync(configFile)) {
@@ -39,6 +40,12 @@ export async function build(opts: IOpts): Promise {
   // build umd
   if (bundleOpts.umd) {
     signale.info(`Build umd`);
+    await rollup({
+      cwd,
+      type: 'umd',
+      entry: bundleOpts.entry,
+      watch,
+    });
   }
 
   // build cjs
@@ -47,7 +54,12 @@ export async function build(opts: IOpts): Promise {
     if (bundleOpts.cjs.type === 'babel') {
       await babel({ cwd, watch, type: 'cjs' });
     } else {
-      // TODO
+      await rollup({
+        cwd,
+        type: 'cjs',
+        entry: bundleOpts.entry,
+        watch,
+      });
     }
   }
 
@@ -57,7 +69,12 @@ export async function build(opts: IOpts): Promise {
     if (bundleOpts.cjs.type === 'babel') {
       await babel({ cwd, watch, type: 'esm' });
     } else {
-      // TODO
+      await rollup({
+        cwd,
+        type: 'esm',
+        entry: bundleOpts.entry,
+        watch,
+      });
     }
   }
 }

@@ -14,7 +14,7 @@ interface IUmd {
   file?: string;
 }
 
-interface IBundleOptions {
+export interface IBundleOptions {
   entry?: string;
   esm?: IBundleTypeOutput | false;
   cjs?: IBundleTypeOutput | false;
