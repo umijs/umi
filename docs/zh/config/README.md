@@ -203,6 +203,13 @@ export default {
 
 启用 `.html` 后缀。
 
+### exportStatic.htmSuffix
+
+* 类型：`Boolean`
+* 默认值：`false`
+
+启用 `.htm` 后缀。
+
 ### exportStatic.dynamicRoot
 
 * 类型：`Boolean`
@@ -253,7 +260,7 @@ export default {
 chainWebpack(config, { webpack }) {
   // 设置 alias
   config.resolve.alias.set('a', 'path/to/a');
-  
+
   // 删除进度条插件
   config.plugins.delete('progress');
 }
@@ -410,7 +417,7 @@ export default {
 
 ### lessLoaderOptions
 
-给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。 
+给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。
 
 ### cssLoaderOptions
 

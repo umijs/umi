@@ -203,6 +203,13 @@ such as:
 
 Enable the `.html` suffix.
 
+### exportStatic.htmSuffix
+
+* Type: `Boolean`
+* Default: `false`
+
+Enable the `.htm` suffix.
+
 ### exportStatic.dynamicRoot
 
 * Type: `Boolean`
@@ -253,7 +260,7 @@ such as:
 chainWebpack(config, { webpack }) {
   // Set alias
   config.resolve.alias.set('a', 'path/to/a');
-  
+
   // Delete progress bar plugin
   config.plugins.delete('progress');
 }
