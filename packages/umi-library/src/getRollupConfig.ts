@@ -51,6 +51,12 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     // 1. commonjs
     ...(isTypeScript ? [typescript({
       cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+      tsconfig: join(cwd, 'tsconfig.json'),
+      tsconfigDefaults: {
+        compilerOptions: {
+          declaration: true,
+        },
+      },
       tsconfigOverride: {
         compilerOptions: {
           target: 'esnext',

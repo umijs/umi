@@ -1,11 +1,6 @@
 
-interface ILibraryConfig {
-  esm?: {
-    type: 'rollup' | 'babel';
-  };
-}
-
 export default {
   entry: ['src/index.ts'],
+  cjs: { type: 'rollup' },
   esm: { type: 'rollup' },
-} as ILibraryConfig;
+};
