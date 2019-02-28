@@ -4,7 +4,8 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import json from 'rollup-plugin-json';
 import nodeResolve from 'rollup-plugin-node-resolve';
-import typescript from "rollup-plugin-typescript2";
+import typescript from 'rollup-plugin-typescript2';
+import commonjs from 'rollup-plugin-commonjs';
 import { RollupOptions } from 'rollup';
 import tempDir from 'temp-dir';
 import getBabelConfig from './getBabelConfig';
@@ -48,7 +49,6 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const plugins = [
     // TODO:
     // 1. postcss
-    // 1. commonjs
     ...(isTypeScript ? [typescript({
       cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
       // TODO: 支持往上找 tsconfig.json
@@ -112,6 +112,10 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
       plugins.push(
         nodeResolve({
           jsnext: true,
+        }),
+        commonjs({
+          // 不 join 下 cwd，非当前目录运行时会报错，比如 test 会过不了
+          include: join(cwd, 'node_modules/**'),
         }),
         replace({
           'process.env.NODE_ENV': JSON.stringify('development'),

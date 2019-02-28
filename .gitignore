@@ -8,6 +8,7 @@ package-lock.json
 /packages/umi-test/examples/*/node_modules
 /packages/umi-plugin-locale/examples/*/node_modules
 /packages/umi-plugin-react/test/*/node_modules
+/packages/**/node_modules/.cache
 lib
 dist
 coverage
