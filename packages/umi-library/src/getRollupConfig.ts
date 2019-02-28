@@ -9,12 +9,14 @@ import commonjs from 'rollup-plugin-commonjs';
 import { RollupOptions } from 'rollup';
 import tempDir from 'temp-dir';
 import getBabelConfig from './getBabelConfig';
+import { IBundleOptions } from './types';
 
 interface IGetRollupConfigOpts {
   cwd: string;
   entry: string;
   type: 'esm' | 'cjs' | 'umd';
   target: 'browser' | 'node';
+  bundleOpts: IBundleOptions;
 }
 
 interface IPkg {
@@ -23,7 +25,8 @@ interface IPkg {
 }
 
 export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
-  const { type, entry, cwd, target } = opts;
+  const { type, entry, cwd, target, bundleOpts } = opts;
+  const { umd } = bundleOpts;
   const entryExt = extname(entry);
   const name = basename(entry, entryExt);
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
@@ -133,25 +136,31 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           plugins,
           external,
         },
-        {
-          input,
-          output: {
-            format,
-            file: join(cwd, `dist/${name}.umd.min.js`),
-          },
-          plugins: [
-            ...plugins,
-            terser({
-              compress: {
-                pure_getters: true,
-                unsafe: true,
-                unsafe_comps: true,
-                warnings: false,
-              },
-            }),
-          ],
-          external,
-        },
+        ...(
+          umd && umd.minFile === false
+            ? []
+            : [
+                {
+                  input,
+                  output: {
+                    format,
+                    file: join(cwd, `dist/${name}.umd.min.js`),
+                  },
+                  plugins: [
+                    ...plugins,
+                    terser({
+                      compress: {
+                        pure_getters: true,
+                        unsafe: true,
+                        unsafe_comps: true,
+                        warnings: false,
+                      },
+                    }),
+                  ],
+                  external,
+                },
+            ]
+        ),
       ];
 
     default:

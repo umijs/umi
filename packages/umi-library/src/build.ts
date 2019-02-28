@@ -83,6 +83,7 @@ export async function build(opts: IOpts) {
       type: 'umd',
       entry: bundleOpts.entry,
       watch,
+      bundleOpts,
     });
   }
 
@@ -97,6 +98,7 @@ export async function build(opts: IOpts) {
         type: 'cjs',
         entry: bundleOpts.entry,
         watch,
+        bundleOpts,
       });
     }
   }
@@ -112,6 +114,7 @@ export async function build(opts: IOpts) {
         type: 'esm',
         entry: bundleOpts.entry,
         watch,
+        bundleOpts,
       });
     }
   }

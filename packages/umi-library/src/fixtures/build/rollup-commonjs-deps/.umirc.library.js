@@ -1,4 +1,6 @@
 
 export default {
-  umd: {},
+  umd: {
+    minFile: false,
+  },
 };

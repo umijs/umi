@@ -1,7 +1,6 @@
 
 interface IBundleTypeOutput {
   type: 'rollup' | 'babel',
-  dir?: string;
 }
 
 interface IStringObject {
@@ -11,7 +10,7 @@ interface IStringObject {
 interface IUmd {
   globals?: IStringObject;
   name?: string;
-  file?: string;
+  minFile?: boolean;
 }
 
 export interface IBundleOptions {
