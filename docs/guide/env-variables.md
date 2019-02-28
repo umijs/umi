@@ -157,3 +157,10 @@ $ HTML=none umi build
  ```bash
 $ FORK_TS_CHECKER=1 umi dev
  ```
+### SOCKET_SERVER
+socket server, default  window.location.host.
+such as:
+```bash
+$ SOCKET_SERVER=http://localhost:8000 umi dev
+```
+
