@@ -132,6 +132,8 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           output: {
             format,
             file: join(cwd, `dist/${name}.umd.js`),
+            globals: umd && umd.globals,
+            name: umd && umd.name,
           },
           plugins,
           external,
