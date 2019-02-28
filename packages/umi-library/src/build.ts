@@ -8,9 +8,6 @@ import babel from './babel';
 import rollup from './rollup';
 import registerBabel from "./registerBabel";
 
-const DEFAULT_BUNDLE_OPTS = {
-  entry: 'src/index.js', // TODO: support jsx, ts and tsx
-};
 const CONFIG_FILES = [
   '.umirc.library.js',
   '.umirc.library.jsx',
@@ -22,27 +19,41 @@ function testDefault(obj) {
   return obj.default || obj;
 }
 
-function getConfigFile(cwd) {
-  for (const file of CONFIG_FILES) {
-    const configFile = join(cwd, file);
-    if (existsSync(configFile)) {
-      return configFile;
+function getExistFile({ cwd, files, returnRelative }) {
+  for (const file of files) {
+    const absFilePath = join(cwd, file);
+    if (existsSync(absFilePath)) {
+      return returnRelative ? file : absFilePath;
     }
   }
 }
 
 export function getBundleOpts(opts: IOpts): IBundleOptions {
   const { cwd, buildArgs = {} } = opts;
-  const configFile = getConfigFile(cwd);
+  const configFile = getExistFile({
+    cwd,
+    files: CONFIG_FILES,
+    returnRelative: false,
+  });
+  const entry = getExistFile({
+    cwd,
+    files: [
+      'src/index.tsx',
+      'src/index.ts',
+      'src/index.jsx',
+      'src/index.js',
+    ],
+    returnRelative: true,
+  });
   if (existsSync(configFile)) {
     return {
-      ...DEFAULT_BUNDLE_OPTS,
+      entry,
       ...testDefault(require(configFile)), // eslint-disable-line
       ...buildArgs,
     };
   } else {
     return {
-      ...DEFAULT_BUNDLE_OPTS,
+      entry,
       ...buildArgs,
     };
   }
