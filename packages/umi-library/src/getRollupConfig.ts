@@ -51,14 +51,18 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     // 1. commonjs
     ...(isTypeScript ? [typescript({
       cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+      // TODO: 支持往上找 tsconfig.json
+      // 比如 lerna 的场景不需要每个 package 有个 tsconfig.json
       tsconfig: join(cwd, 'tsconfig.json'),
       tsconfigDefaults: {
         compilerOptions: {
+          // Generate declaration files by default
           declaration: true,
         },
       },
       tsconfigOverride: {
         compilerOptions: {
+          // Support dynamic import
           target: 'esnext',
         },
       },
