@@ -115,6 +115,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
         }),
         commonjs({
           // 不 join 下 cwd，非当前目录运行时会报错，比如 test 会过不了
+          // TODO: lerna 场景下需验证下会不会有问题
           include: join(cwd, 'node_modules/**'),
         }),
         replace({
