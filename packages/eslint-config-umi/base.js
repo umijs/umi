@@ -1,9 +1,6 @@
-import reactAppConfig from 'eslint-config-react-app';
-
-export default {
-  ...reactAppConfig,
+module.exports = {
+  extends: ['react-app'],
   rules: {
-    ...reactAppConfig.rules,
     strict: [0],
     'no-sequences': [0],
     'no-mixed-operators': [0],

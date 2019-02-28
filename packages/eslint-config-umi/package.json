@@ -12,14 +12,20 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
+  "keywords": ["eslint", "tslint", "lint", "typescript"],
   "license": "MIT",
   "dependencies": {
-    "eslint-config-react-app": "3.0.6"
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "babel-eslint": "^10.0.1",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-react-app": "3.0.7",
+    "eslint-plugin-flowtype": "^2.0.0",
+    "eslint-plugin-import": "^2.0.0",
+    "eslint-plugin-jsx-a11y": "^6.0.0",
+    "eslint-plugin-react": "^7.0.0"
   },
   "peerDependencies": {
-    "eslint-plugin-flowtype": "2.x",
-    "eslint-plugin-import": "2.x",
-    "eslint-plugin-jsx-a11y": "6.x",
-    "eslint-plugin-react": "7.x"
+    "eslint": "^5.14.1"
   }
 }
