@@ -36,7 +36,7 @@ export default async function (opts: IBabelOpts) {
     const { file } = opts;
     signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
     return babel.transform(file.contents, {
-      ...getBabelConfig({ target }),
+      ...getBabelConfig({ target, typescript: true }),
       filename: file.path,
     }).code;
   }

@@ -11,6 +11,7 @@ export default function (opts: IRegisterBabelOpts) {
   const { cwd, only } = opts;
   const babelConfig = getBabelConfig({
     target: 'node',
+    typescript: true,
   });
   require('@babel/register')({
     ...babelConfig,

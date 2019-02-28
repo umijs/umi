@@ -1,10 +1,11 @@
 
 interface IGetBabelConfigOpts {
   target: 'browser' | 'node';
+  typescript: boolean;
 }
 
 export default function (opts: IGetBabelConfigOpts) {
-  const { target } = opts;
+  const { target, typescript } = opts;
   const isBrowser = target === 'browser';
   const targets = isBrowser
     ? { browsers: ['last 2 versions', 'IE 10'] }
@@ -12,7 +13,7 @@ export default function (opts: IGetBabelConfigOpts) {
 
   return {
     presets: [
-      require.resolve('@babel/preset-typescript'),
+      ...(typescript ? [require.resolve('@babel/preset-typescript')] : []),
       [
         require.resolve('@babel/preset-env'),
         { targets },

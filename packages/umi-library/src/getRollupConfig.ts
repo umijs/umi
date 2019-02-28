@@ -4,7 +4,9 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import json from 'rollup-plugin-json';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import typescript from "rollup-plugin-typescript2";
 import { RollupOptions } from 'rollup';
+import tempDir from 'temp-dir';
 import getBabelConfig from './getBabelConfig';
 
 interface IGetRollupConfigOpts {
@@ -21,7 +23,9 @@ interface IPkg {
 
 export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target } = opts;
-  const name = basename(entry, extname(entry));
+  const entryExt = extname(entry);
+  const name = basename(entry, entryExt);
+  const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
 
   let pkg = {} as IPkg;
   try {
@@ -43,12 +47,20 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     ];
   const plugins = [
     // TODO:
-    // 1. typescript
-    // 2. postcss
-    // 3. commonjs
+    // 1. postcss
+    // 1. commonjs
+    ...(isTypeScript ? [typescript({
+      cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+      tsconfigOverride: {
+        compilerOptions: {
+          target: 'esnext',
+        },
+      },
+    })] : []),
     babel({
       ...getBabelConfig({
         target,
+        typescript: false,
       }),
       exclude: 'node_modules/**',
       babelrc: false,
