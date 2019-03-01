@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "./scripts/build.js",
+    "build": "node ./scripts/build.js",
     "changelog": "lerna-changelog",
     "chore:update-deps": "./scripts/update_deps.sh",
     "test": "node scripts/test.js",
