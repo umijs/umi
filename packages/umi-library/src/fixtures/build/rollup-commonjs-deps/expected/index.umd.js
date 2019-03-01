@@ -11,8 +11,10 @@
       return 'b';
     }
   };
+  var foo_1 = foo.a;
+  var foo_2 = foo.b;
 
-  console.log(foo.a());
-  console.log(foo.b());
+  console.log(foo_1());
+  console.log(foo_2());
 
 }));

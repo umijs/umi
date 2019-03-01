@@ -34,6 +34,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     cssModules: modules,
     extraPostCSSPlugins,
     autoprefixer: autoprefixerOpts,
+    namedExports,
   } = bundleOpts;
   const entryExt = extname(entry);
   const name = basename(entry, entryExt);
@@ -139,6 +140,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           // 不 join 下 cwd，非当前目录运行时会报错，比如 test 会过不了
           // TODO: lerna 场景下需验证下会不会有问题
           include: join(cwd, 'node_modules/**'),
+          namedExports,
         }),
         replace({
           'process.env.NODE_ENV': JSON.stringify('development'),

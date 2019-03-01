@@ -7,6 +7,10 @@ interface IStringObject {
   [prop: string]: string;
 }
 
+interface IStringArrayObject {
+  [prop: string]: string[];
+}
+
 interface IUmd {
   globals?: IStringObject;
   name?: string;
@@ -25,6 +29,7 @@ export interface IBundleOptions {
   extraPostCSSPlugins?: any[];
   cssModules?: boolean | Object;
   autoprefixer: Object;
+  namedExports?: IStringArrayObject;
 }
 
 export interface IOpts {
