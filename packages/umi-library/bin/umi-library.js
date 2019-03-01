@@ -64,6 +64,9 @@ function build() {
     cwd: process.cwd(),
     watch: args.w || args.watch,
     buildArgs,
+  }).catch(e => {
+    signale.error(e);
+    process.exit(1);
   });
 }
 
