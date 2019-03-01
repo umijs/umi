@@ -24,6 +24,7 @@ export interface IBundleOptions {
   extraBabelPresets?: BabelOpt[];
   extraPostCSSPlugins?: any[];
   cssModules?: boolean | Object;
+  autoprefixer: Object;
 }
 
 export interface IOpts {

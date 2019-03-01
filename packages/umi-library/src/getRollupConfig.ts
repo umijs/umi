@@ -29,7 +29,12 @@ interface IPkg {
 
 export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target, bundleOpts } = opts;
-  const { umd, cssModules: modules, extraPostCSSPlugins } = bundleOpts;
+  const {
+    umd,
+    cssModules: modules,
+    extraPostCSSPlugins,
+    autoprefixer: autoprefixerOpts,
+  } = bundleOpts;
   const entryExt = extname(entry);
   const name = basename(entry, entryExt);
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
@@ -62,7 +67,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
         }],
       ],
       plugins: [
-        autoprefixer,
+        autoprefixer(autoprefixerOpts),
         ...(extraPostCSSPlugins || []),
       ],
     }),
