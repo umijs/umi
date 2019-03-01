@@ -1,7 +1,8 @@
 export type BundleType = 'rollup' | 'babel';
 
 interface IBundleTypeOutput {
-  type: BundleType,
+  type: BundleType;
+  file?: string;
 }
 
 interface IStringObject {
@@ -16,10 +17,12 @@ interface IUmd {
   globals?: IStringObject;
   name?: string;
   minFile?: boolean;
+  file?: string;
 }
 
 export interface IBundleOptions {
   entry?: string | string[];
+  file?: string;
   esm?: IBundleTypeOutput | false;
   cjs?: IBundleTypeOutput | false;
   umd?: IUmd | false;
@@ -35,7 +38,7 @@ export interface IBundleOptions {
 }
 
 export interface IOpts {
-  cwd: string,
-  watch?: boolean,
-  buildArgs?: IBundleOptions,
+  cwd: string;
+  watch?: boolean;
+  buildArgs?: IBundleOptions;
 }

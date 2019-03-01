@@ -31,6 +31,9 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target, bundleOpts } = opts;
   const {
     umd,
+    esm,
+    cjs,
+    file,
     cssModules: modules,
     extraPostCSSPlugins = [],
     extraBabelPresets = [],
@@ -39,7 +42,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     namedExports,
   } = bundleOpts;
   const entryExt = extname(entry);
-  const name = basename(entry, entryExt);
+  const name = file || basename(entry, entryExt);
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
 
   let pkg = {} as IPkg;
@@ -117,7 +120,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${name}.esm.js`),
+            file: join(cwd, `dist/${esm && esm.file || `${name}.esm`}.js`),
           },
           plugins,
           external,
@@ -130,7 +133,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${name}.js`),
+            file: join(cwd, `dist/${cjs && cjs.file || name}.js`),
           },
           plugins,
           external,
@@ -159,7 +162,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${name}.umd.js`),
+            file: join(cwd, `dist/${umd && umd.file || `${name}.umd`}.js`),
             globals: umd && umd.globals,
             name: umd && umd.name,
           },
@@ -174,7 +177,9 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
                   input,
                   output: {
                     format,
-                    file: join(cwd, `dist/${name}.umd.min.js`),
+                    file: join(cwd, `dist/${umd && umd.file || `${name}.umd`}.min.js`),
+                    globals: umd && umd.globals,
+                    name: umd && umd.name,
                   },
                   plugins: [
                     ...plugins,
