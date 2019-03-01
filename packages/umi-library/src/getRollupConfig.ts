@@ -147,13 +147,8 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           jsnext: true,
         }),
         commonjs({
-          // 不 join 下 cwd，非当前目录运行时会报错，比如 test 会过不了
-          // TODO: lerna 场景下需验证下会不会有问题
-          include: join(cwd, 'node_modules/**'),
+          include: /node_modules/,
           namedExports,
-        }),
-        replace({
-          'process.env.NODE_ENV': JSON.stringify('development'),
         }),
       );
 
@@ -166,7 +161,12 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
             globals: umd && umd.globals,
             name: umd && umd.name,
           },
-          plugins,
+          plugins: [
+            ...plugins,
+            replace({
+              'process.env.NODE_ENV': JSON.stringify('development'),
+            }),
+          ],
           external,
         },
         ...(
@@ -183,6 +183,9 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
                   },
                   plugins: [
                     ...plugins,
+                    replace({
+                      'process.env.NODE_ENV': JSON.stringify('production'),
+                    }),
                     terser({
                       compress: {
                         pure_getters: true,

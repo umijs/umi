@@ -128,6 +128,7 @@ export async function buildForLerna(opts: IOpts) {
       existsSync(join(pkgPath, 'package.json')),
       `package.json not found in packages/${pkg}`,
     );
+    process.chdir(pkgPath);
     await build({  // eslint-disable-line
       ...opts,
       cwd: pkgPath,
