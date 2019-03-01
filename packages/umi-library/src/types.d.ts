@@ -1,6 +1,7 @@
+export type BundleType = 'rollup' | 'babel';
 
 interface IBundleTypeOutput {
-  type: 'rollup' | 'babel',
+  type: BundleType,
 }
 
 interface IStringObject {
@@ -17,18 +18,16 @@ interface IUmd {
   minFile?: boolean;
 }
 
-type BabelOpt = string | [string, object];
-
 export interface IBundleOptions {
   entry?: string | string[];
   esm?: IBundleTypeOutput | false;
   cjs?: IBundleTypeOutput | false;
   umd?: IUmd | false;
-  extraBabelPlugins?: BabelOpt[];
-  extraBabelPresets?: BabelOpt[];
+  extraBabelPlugins?: any[];
+  extraBabelPresets?: any[];
   extraPostCSSPlugins?: any[];
   cssModules?: boolean | Object;
-  autoprefixer: Object;
+  autoprefixer?: Object;
   namedExports?: IStringArrayObject;
 }
 

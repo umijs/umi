@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import rimraf from 'rimraf';
-import assert from 'assert';
+import * as assert from 'assert';
 import signale from 'signale';
 import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
@@ -124,7 +124,7 @@ export async function buildForLerna(opts: IOpts) {
   const pkgs = readdirSync(join(opts.cwd, 'packages'));
   for (const pkg of pkgs) {
     const pkgPath = join(opts.cwd, 'packages', pkg);
-    assert(
+    assert.ok(
       existsSync(join(pkgPath, 'package.json')),
       `package.json not found in packages/${pkg}`,
     );

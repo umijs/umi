@@ -32,7 +32,9 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const {
     umd,
     cssModules: modules,
-    extraPostCSSPlugins,
+    extraPostCSSPlugins = [],
+    extraBabelPresets = [],
+    extraBabelPlugins = [],
     autoprefixer: autoprefixerOpts,
     namedExports,
   } = bundleOpts;
@@ -46,6 +48,19 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   } catch (e) {
   }
 
+  const babelOpts = {
+    ...getBabelConfig({
+      target,
+      typescript: false,
+    }),
+    exclude: 'node_modules/**',
+    babelrc: false,
+    // ref: https://github.com/rollup/rollup-plugin-babel#usage
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'],
+  };
+  babelOpts.presets.push(...extraBabelPresets);
+  babelOpts.plugins.push(...extraBabelPlugins);
+
   // rollup configs
   const input = join(cwd, entry);
   const format = type;
@@ -58,6 +73,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {}),
     ];
+
   const plugins = [
     postcss({
       modules,
@@ -69,7 +85,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
       ],
       plugins: [
         autoprefixer(autoprefixerOpts),
-        ...(extraPostCSSPlugins || []),
+        ...extraPostCSSPlugins,
       ],
     }),
     ...(isTypeScript ? [typescript({
@@ -90,16 +106,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
         },
       },
     })] : []),
-    babel({
-      ...getBabelConfig({
-        target,
-        typescript: false,
-      }),
-      exclude: 'node_modules/**',
-      babelrc: false,
-      // ref: https://github.com/rollup/rollup-plugin-babel#usage
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'],
-    }),
+    babel(babelOpts),
     json(),
   ];
 
