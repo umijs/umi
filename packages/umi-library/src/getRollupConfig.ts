@@ -6,8 +6,11 @@ import json from 'rollup-plugin-json';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
+import postcss from 'rollup-plugin-postcss-umi';
 import { RollupOptions } from 'rollup';
 import tempDir from 'temp-dir';
+import autoprefixer from 'autoprefixer';
+import NpmImport from 'less-plugin-npm-import';
 import getBabelConfig from './getBabelConfig';
 import { IBundleOptions } from './types';
 
@@ -26,7 +29,7 @@ interface IPkg {
 
 export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target, bundleOpts } = opts;
-  const { umd } = bundleOpts;
+  const { umd, cssModules: modules, extraPostCSSPlugins } = bundleOpts;
   const entryExt = extname(entry);
   const name = basename(entry, entryExt);
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
@@ -50,8 +53,19 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
       ...Object.keys(pkg.peerDependencies || {}),
     ];
   const plugins = [
-    // TODO:
-    // 1. postcss
+    postcss({
+      modules,
+      use: [
+        ['less', {
+          plugins: [new NpmImport({ prefix: '~' })],
+          javascriptEnabled: true,
+        }],
+      ],
+      plugins: [
+        autoprefixer,
+        ...(extraPostCSSPlugins || []),
+      ],
+    }),
     ...(isTypeScript ? [typescript({
       cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
       // TODO: 支持往上找 tsconfig.json

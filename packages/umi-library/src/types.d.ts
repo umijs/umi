@@ -13,11 +13,17 @@ interface IUmd {
   minFile?: boolean;
 }
 
+type BabelOpt = string | [string, object];
+
 export interface IBundleOptions {
   entry?: string | string[];
   esm?: IBundleTypeOutput | false;
   cjs?: IBundleTypeOutput | false;
   umd?: IUmd | false;
+  extraBabelPlugins?: BabelOpt[];
+  extraBabelPresets?: BabelOpt[];
+  extraPostCSSPlugins?: any[];
+  cssModules?: boolean | Object;
 }
 
 export interface IOpts {
