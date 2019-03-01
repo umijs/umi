@@ -2,6 +2,7 @@ import { rollup, watch } from 'rollup';
 import signale from 'signale';
 import getRollupConfig from './getRollupConfig';
 import { IBundleOptions } from './types';
+import normalizeBundleOpts from "./normalizeBundleOpts";
 
 interface IRollupOpts {
   cwd: string;
@@ -19,7 +20,7 @@ async function build(entry: string, opts: IRollupOpts) {
     type,
     entry,
     target,
-    bundleOpts,
+    bundleOpts: normalizeBundleOpts(entry, bundleOpts),
   });
 
   for (const rollupConfig of rollupConfigs) {

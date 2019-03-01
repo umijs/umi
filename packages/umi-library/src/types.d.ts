@@ -29,6 +29,9 @@ export interface IBundleOptions {
   cssModules?: boolean | Object;
   autoprefixer?: Object;
   namedExports?: IStringArrayObject;
+  overridesByEntry?: {
+    [entry: string]: any;
+  },
 }
 
 export interface IOpts {
