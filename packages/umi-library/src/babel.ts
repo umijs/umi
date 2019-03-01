@@ -11,16 +11,17 @@ import getBabelConfig from './getBabelConfig';
 
 interface IBabelOpts {
   cwd: string;
-  type: 'esm' | 'cjs',
-  target?: 'browser' | 'node',
-  watch?: boolean,
+  type: 'esm' | 'cjs';
+  target?: 'browser' | 'node';
+  watch?: boolean;
 }
 
 interface ITransformOpts {
   file: {
-    contents: string,
-    path: string,
-  },
+    contents: string;
+    path: string;
+  };
+  type: 'esm' | 'cjs';
 }
 
 export default async function (opts: IBabelOpts) {
@@ -33,10 +34,10 @@ export default async function (opts: IBabelOpts) {
   rimraf.sync(targetPath);
 
   function transform(opts: ITransformOpts) {
-    const { file } = opts;
+    const { file, type } = opts;
     signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
     return babel.transform(file.contents, {
-      ...getBabelConfig({ target, typescript: true }),
+      ...getBabelConfig({ target, type, typescript: true }),
       filename: file.path,
     }).code;
   }
@@ -51,6 +52,7 @@ export default async function (opts: IBabelOpts) {
         file.contents = Buffer.from(
           transform({
             file,
+            type,
           }),
         );
         // .tsx? -> .js
