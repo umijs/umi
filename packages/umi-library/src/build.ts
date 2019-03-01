@@ -2,6 +2,7 @@ import { existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import * as assert from 'assert';
+import { merge } from 'lodash';
 import signale from 'signale';
 import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
@@ -46,16 +47,13 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
     returnRelative: true,
   });
   if (existsSync(configFile)) {
-    return {
+    return merge({
       entry,
-      ...testDefault(require(configFile)), // eslint-disable-line
-      ...buildArgs,
-    };
+    }, testDefault(require(configFile)), buildArgs); // eslint-disable-line
   } else {
-    return {
+    return merge({
       entry,
-      ...buildArgs,
-    };
+    }, buildArgs);
   }
 }
 

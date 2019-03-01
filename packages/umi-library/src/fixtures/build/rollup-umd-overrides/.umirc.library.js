@@ -11,7 +11,6 @@ export default {
   overridesByEntry: {
     'src/fetch.js': {
       umd: {
-        minFile: false,
         name: 'foo.fetch',
       },
     },

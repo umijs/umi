@@ -35,12 +35,12 @@ switch (args._[0]) {
 }
 
 function stripEmptyKeys(obj) {
-  return Object.keys(obj).reduce((memo, key) => {
-    if (!memo[key] || (Array.isArray(memo[key] && !memo[key].length))) {
-      delete memo[key];
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key] || (Array.isArray(obj[key]) && !obj[key].length)) {
+      delete obj[key];
     }
-    return memo;
-  }, {});
+  });
+  return obj;
 }
 
 function build() {

@@ -1,5 +1,4 @@
-import extend from 'extend2';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 import { IBundleOptions } from "./types";
 
 function stripDotSlashPrefix(path) {
@@ -17,7 +16,7 @@ export default function (entry: string, opts: IBundleOptions): IBundleOptions {
       }
     });
     if (clone.overridesByEntry[stripedEntry]) {
-      clone = extend(clone, clone.overridesByEntry[stripedEntry]);
+      clone = merge(clone, clone.overridesByEntry[stripedEntry]);
     }
     delete clone.overridesByEntry;
   }
