@@ -22,10 +22,7 @@ updater({ pkg }).notify({ defer: true });
 
 switch (args._[0]) {
   case 'build':
-    require('../lib/build').default({
-      cwd: process.cwd(),
-      watch: args.w || args.watch,
-    });
+    build();
     break;
   case 'help':
   case undefined:
@@ -34,6 +31,26 @@ switch (args._[0]) {
   default:
     console.error(chalk.red(`Unsupported command ${args._[0]}`));
     process.exit(1);
+}
+
+function build() {
+  // Parse buildArgs from cli
+  const buildArgs = {
+    esm: { type: args.esm === true ? 'rollup' : args.esm },
+    cjs: { type: args.cjs === true ? 'rollup' : args.cjs },
+    umd: args.umd,
+    file: args.file,
+  };
+  // entry should not be undefined
+  if (args._[1]) {
+    buildArgs.entry = args._[1];
+  }
+
+  require('../lib/build').default({
+    cwd: process.cwd(),
+    watch: args.w || args.watch,
+    buildArgs,
+  });
 }
 
 function printHelp() {
