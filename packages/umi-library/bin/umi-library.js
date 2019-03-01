@@ -42,8 +42,9 @@ function build() {
     file: args.file,
   };
   // entry should not be undefined
-  if (args._[1]) {
-    buildArgs.entry = args._[1];
+  const entry = args._.slice(1);
+  if (entry.length) {
+    buildArgs.entry = entry;
   }
 
   require('../lib/build').default({
