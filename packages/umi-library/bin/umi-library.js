@@ -34,19 +34,24 @@ switch (args._[0]) {
     process.exit(1);
 }
 
+function stripEmptyKeys(obj) {
+  return Object.keys(obj).reduce((memo, key) => {
+    if (!memo[key] || (Array.isArray(memo[key] && !memo[key].length))) {
+      delete memo[key];
+    }
+    return memo;
+  }, {});
+}
+
 function build() {
   // Parse buildArgs from cli
-  const buildArgs = {
+  const buildArgs = stripEmptyKeys({
     esm: { type: args.esm === true ? 'rollup' : args.esm },
     cjs: { type: args.cjs === true ? 'rollup' : args.cjs },
     umd: args.umd,
     file: args.file,
-  };
-  // entry should not be undefined
-  const entry = args._.slice(1);
-  if (entry.length) {
-    buildArgs.entry = entry;
-  }
+    entry: args._.slice(1),
+  });
 
   if (buildArgs.file && buildArgs.entry && buildArgs.entry.length > 1) {
     signale.error(new Error(
