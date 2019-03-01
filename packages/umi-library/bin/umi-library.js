@@ -4,6 +4,7 @@ const { existsSync } = require('fs');
 const { join } = require('path');
 const yParser = require('yargs-parser');
 const chalk = require('chalk');
+const signale = require('signale');
 
 // print version and @local
 const args = yParser(process.argv.slice(2));
@@ -45,6 +46,13 @@ function build() {
   const entry = args._.slice(1);
   if (entry.length) {
     buildArgs.entry = entry;
+  }
+
+  if (buildArgs.file && buildArgs.entry && buildArgs.entry.length > 1) {
+    signale.error(new Error(
+      `Cannot specify file when have multiple entries (${buildArgs.entry.join(', ')})`
+    ));
+    process.exit(1);
   }
 
   require('../lib/build').default({
