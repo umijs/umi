@@ -7,7 +7,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss-umi';
-import { RollupOptions } from 'rollup';
+import { ModuleFormat, RollupOptions } from 'rollup';
 import tempDir from 'temp-dir';
 import autoprefixer from 'autoprefixer';
 import NpmImport from 'less-plugin-npm-import';
@@ -17,7 +17,7 @@ import { IBundleOptions } from './types';
 interface IGetRollupConfigOpts {
   cwd: string;
   entry: string;
-  type: 'esm' | 'cjs' | 'umd';
+  type: ModuleFormat;
   target: 'browser' | 'node';
   bundleOpts: IBundleOptions;
 }
@@ -76,16 +76,21 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   // ref: https://rollupjs.org/guide/en#external
   // 潜在问题：引用包的子文件时会报 warning，比如 @babel/runtime/helpers/esm/createClass
   // 解决方案：可以用 function 处理
-  const external = type === 'umd'
-    // umd 只要 external peerDependencies
-    ? [
-      ...Object.keys(pkg.peerDependencies || {}),
-    ]
-    : [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {}),
-    ];
+  const external = [
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {}),
+  ];
+  // umd 只要 external peerDependencies
+  const externalPeerDeps = Object.keys(pkg.peerDependencies || {});
 
+  const terserOpts = {
+    compress: {
+      pure_getters: true,
+      unsafe: true,
+      unsafe_comps: true,
+      warnings: false,
+    },
+  };
   const plugins = [
     postcss({
       modules,
@@ -134,6 +139,26 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           plugins,
           external,
         },
+        ...(esm && esm.mjs ? [
+          {
+            input,
+            output: {
+              format,
+              file: join(cwd, `dist/${esm && esm.file || `${name}`}.mjs`),
+            },
+            plugins: [
+              ...plugins,
+              nodeResolve({
+                jsnext: true,
+              }),
+              replace({
+                'process.env.NODE_ENV': JSON.stringify('production'),
+              }),
+              terser(terserOpts),
+            ],
+            external: externalPeerDeps,
+          },
+        ] : []),
       ];
 
     case 'cjs':
@@ -176,7 +201,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
               'process.env.NODE_ENV': JSON.stringify('development'),
             }),
           ],
-          external,
+          external: externalPeerDeps,
         },
         ...(
           umd && umd.minFile === false
@@ -195,16 +220,9 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
                     replace({
                       'process.env.NODE_ENV': JSON.stringify('production'),
                     }),
-                    terser({
-                      compress: {
-                        pure_getters: true,
-                        unsafe: true,
-                        unsafe_comps: true,
-                        warnings: false,
-                      },
-                    }),
+                    terser(terserOpts),
                   ],
-                  external,
+                  external: externalPeerDeps,
                 },
             ]
         ),

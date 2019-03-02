@@ -1,4 +1,4 @@
-import { rollup, watch } from 'rollup';
+import { ModuleFormat, rollup, watch } from 'rollup';
 import signale from 'signale';
 import getRollupConfig from './getRollupConfig';
 import { IBundleOptions } from './types';
@@ -7,7 +7,7 @@ import normalizeBundleOpts from "./normalizeBundleOpts";
 interface IRollupOpts {
   cwd: string;
   entry: string | string[];
-  type: 'esm' | 'cjs' | 'umd';
+  type: ModuleFormat;
   bundleOpts: IBundleOptions;
   target?: 'browser' | 'node';
   watch?: boolean;

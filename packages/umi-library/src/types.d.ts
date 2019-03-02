@@ -5,6 +5,10 @@ interface IBundleTypeOutput {
   file?: string;
 }
 
+interface IEsm extends IBundleOptions {
+  mjs?: boolean;
+}
+
 interface IStringObject {
   [prop: string]: string;
 }
@@ -23,7 +27,7 @@ interface IUmd {
 export interface IBundleOptions {
   entry?: string | string[];
   file?: string;
-  esm?: IBundleTypeOutput | false;
+  esm?: IEsm | false;
   cjs?: IBundleTypeOutput | false;
   umd?: IUmd | false;
   extraBabelPlugins?: any[];
