@@ -33,13 +33,13 @@ test('ignore ./ prefix in overridesByEntry', () => {
   });
 });
 
-test('shallow merge', () => {
+test('deep merge', () => {
   expect(normalizeBundleOpts('a', {
     umd: { minFile: false, name: 'foo' },
     overridesByEntry: {
       a: { umd: { name: 'bar' } },
     },
   })).toEqual({
-    umd: { name: 'bar' },
+    umd: { minFile: false, name: 'bar' },
   });
 });
