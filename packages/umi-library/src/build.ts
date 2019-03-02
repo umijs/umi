@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from 'fs';
+import {existsSync, readdirSync, readFileSync} from 'fs';
 import { join } from 'path';
 import rimraf from 'rimraf';
 import * as assert from 'assert';
@@ -57,6 +57,21 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
   }
 }
 
+function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
+  if (bundleOpts.runtimeHelpers) {
+    const pkgPath = join(cwd, 'package.json');
+    assert.ok(
+      existsSync(pkgPath),
+      `@babel/runtime dependency is required to use runtimeHelpers`,
+    );
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+    assert.ok(
+      (pkg.dependencies || {})['@babel/runtime'],
+      `@babel/runtime dependency is required to use runtimeHelpers`,
+    );
+  }
+}
+
 export async function build(opts: IOpts) {
   const { cwd, watch } = opts;
 
@@ -68,6 +83,7 @@ export async function build(opts: IOpts) {
 
   // Get user config
   const bundleOpts = getBundleOpts(opts);
+  validateBundleOpts(bundleOpts, { cwd });
 
   // Clean dist
   signale.info(`Clean dist directory`);
@@ -89,7 +105,7 @@ export async function build(opts: IOpts) {
   if (bundleOpts.cjs) {
     signale.info(`Build cjs with ${bundleOpts.cjs.type}`);
     if (bundleOpts.cjs.type === 'babel') {
-      await babel({ cwd, watch, type: 'cjs' });
+      await babel({ cwd, watch, type: 'cjs', bundleOpts });
     } else {
       await rollup({
         cwd,
@@ -105,7 +121,7 @@ export async function build(opts: IOpts) {
   if (bundleOpts.esm) {
     signale.info(`Build esm with ${bundleOpts.esm.type}`);
     if (bundleOpts.cjs && bundleOpts.cjs.type === 'babel') {
-      await babel({ cwd, watch, type: 'esm' });
+      await babel({ cwd, watch, type: 'esm', bundleOpts });
     } else {
       await rollup({
         cwd,

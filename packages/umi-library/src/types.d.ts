@@ -32,6 +32,7 @@ export interface IBundleOptions {
   cssModules?: boolean | Object;
   autoprefixer?: Object;
   namedExports?: IStringArrayObject;
+  runtimeHelpers?: boolean;
   overridesByEntry?: {
     [entry: string]: any;
   },

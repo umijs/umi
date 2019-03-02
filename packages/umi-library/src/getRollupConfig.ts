@@ -40,6 +40,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     extraBabelPlugins = [],
     autoprefixer: autoprefixerOpts,
     namedExports,
+    runtimeHelpers: runtimeHelpersOpts,
   } = bundleOpts;
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
@@ -51,11 +52,15 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   } catch (e) {
   }
 
+  // cjs 不给浏览器用，所以无需 runtimeHelpers
+  const runtimeHelpers = type === 'cjs' ? false : runtimeHelpersOpts;
   const babelOpts = {
     ...getBabelConfig({
       target,
       typescript: false,
+      runtimeHelpers,
     }),
+    runtimeHelpers,
     exclude: 'node_modules/**',
     babelrc: false,
     // ref: https://github.com/rollup/rollup-plugin-babel#usage

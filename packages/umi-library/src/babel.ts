@@ -8,12 +8,14 @@ import slash from 'slash2';
 import * as chokidar from 'chokidar';
 import * as babel from '@babel/core';
 import getBabelConfig from './getBabelConfig';
+import { IBundleOptions } from './types';
 
 interface IBabelOpts {
   cwd: string;
   type: 'esm' | 'cjs';
   target?: 'browser' | 'node';
   watch?: boolean;
+  bundleOpts: IBundleOptions;
 }
 
 interface ITransformOpts {
@@ -25,7 +27,10 @@ interface ITransformOpts {
 }
 
 export default async function (opts: IBabelOpts) {
-  const { cwd, type, target = 'browser', watch } = opts;
+  const {
+    cwd, type, target = 'browser', watch,
+    bundleOpts: { runtimeHelpers },
+  } = opts;
   const srcPath = join(cwd, 'src');
   const targetDir = type === 'esm' ? 'es' : 'lib';
   const targetPath = join(cwd, targetDir);
@@ -37,7 +42,12 @@ export default async function (opts: IBabelOpts) {
     const { file, type } = opts;
     signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
     return babel.transform(file.contents, {
-      ...getBabelConfig({ target, type, typescript: true }),
+      ...getBabelConfig({
+        target,
+        type,
+        typescript: true,
+        runtimeHelpers,
+      }),
       filename: file.path,
     }).code;
   }
