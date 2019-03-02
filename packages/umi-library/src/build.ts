@@ -120,7 +120,7 @@ export async function build(opts: IOpts) {
   // Build esm
   if (bundleOpts.esm) {
     signale.info(`Build esm with ${bundleOpts.esm.type}`);
-    if (bundleOpts.cjs && bundleOpts.cjs.type === 'babel') {
+    if (bundleOpts.esm && bundleOpts.esm.type === 'babel') {
       await babel({ cwd, watch, type: 'esm', bundleOpts });
     } else {
       await rollup({

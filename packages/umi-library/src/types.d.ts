@@ -5,7 +5,7 @@ interface IBundleTypeOutput {
   file?: string;
 }
 
-interface IEsm extends IBundleOptions {
+interface IEsm extends IBundleTypeOutput {
   mjs?: boolean;
 }
 
