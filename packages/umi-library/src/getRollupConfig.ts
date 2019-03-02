@@ -72,6 +72,10 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   // rollup configs
   const input = join(cwd, entry);
   const format = type;
+
+  // ref: https://rollupjs.org/guide/en#external
+  // 潜在问题：引用包的子文件时会报 warning，比如 @babel/runtime/helpers/esm/createClass
+  // 解决方案：可以用 function 处理
   const external = type === 'umd'
     // umd 只要 external peerDependencies
     ? [
