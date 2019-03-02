@@ -1,13 +1,16 @@
-import {existsSync, readdirSync, readFileSync} from 'fs';
-import { join } from 'path';
+import { existsSync, readdirSync, readFileSync } from 'fs';
+import {join, relative} from 'path';
 import rimraf from 'rimraf';
 import * as assert from 'assert';
 import { merge } from 'lodash';
 import signale from 'signale';
+import AJV from 'ajv';
+import slash from 'slash2';
 import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
 import rollup from './rollup';
 import registerBabel from "./registerBabel";
+import schema from "./schema";
 
 const CONFIG_FILES = [
   '.umirc.library.js',
@@ -47,9 +50,22 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
     returnRelative: true,
   });
   if (existsSync(configFile)) {
+    const userConfig = testDefault(require(configFile)); // eslint-disable-line
+    const ajv = new AJV({ allErrors: true });
+    const isValid = ajv.validate(schema, userConfig);
+    if (!isValid) {
+      const errors = ajv.errors.map(({ dataPath, message }, index) => {
+        return `${index + 1}. ${dataPath}${dataPath ? ' ' : ''}${message}`;
+      });
+      throw new Error(`
+Invalid options in ${slash(relative(cwd, configFile))}
+
+${errors.join('\n')}
+`.trim());
+    }
     return merge({
       entry,
-    }, testDefault(require(configFile)), buildArgs); // eslint-disable-line
+    }, userConfig, buildArgs);
   } else {
     return merge({
       entry,
