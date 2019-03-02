@@ -46,8 +46,8 @@ function stripEmptyKeys(obj) {
 function build() {
   // Parse buildArgs from cli
   const buildArgs = stripEmptyKeys({
-    esm: { type: args.esm === true ? 'rollup' : args.esm },
-    cjs: { type: args.cjs === true ? 'rollup' : args.cjs },
+    esm: args.esm && { type: args.esm === true ? 'rollup' : args.esm },
+    cjs: args.cjs && { type: args.cjs === true ? 'rollup' : args.cjs },
     umd: args.umd,
     file: args.file,
     entry: args._.slice(1),
