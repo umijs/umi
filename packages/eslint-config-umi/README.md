@@ -13,7 +13,7 @@ Eslint config for umi projects, support js and ts.
 $ yarn add eslint-config-umi --dev
 ```
 
-## For js project
+## For js and ts project both
 
 `.eslintrc`
 
@@ -26,21 +26,5 @@ $ yarn add eslint-config-umi --dev
 usage
 
 ```bash
-$ eslint src/
-```
-
-## For typescript project
-
-`.eslintrc`
-
-```json
-{
-    "extends": "umi/ts"
-}
-```
-
-usage
-
-```bash
-$ eslint src/ --ext ts,tsx,js,jsx
+$ eslint src/ --ext js,jsx,ts,tsx
 ```

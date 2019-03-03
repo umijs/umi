@@ -1,6 +1,7 @@
 {
   "name": "eslint-config-umi",
   "version": "1.4.0",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi/tree/master/packages/eslint-config-umi"
@@ -12,20 +13,27 @@
   "bugs": {
     "url": "https://github.com/umijs/umi/issues"
   },
-  "keywords": ["eslint", "tslint", "lint", "typescript"],
+  "keywords": [
+    "eslint",
+    "tslint",
+    "lint",
+    "typescript"
+  ],
   "license": "MIT",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "babel-eslint": "^10.0.1",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
-    "eslint-config-react-app": "3.0.7",
-    "eslint-plugin-flowtype": "^2.0.0",
+    "eslint-plugin-compat": "^2.7.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^6.0.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.0.0"
   },
   "peerDependencies": {
-    "eslint": "^5.14.1"
+    "eslint": "^5.14.1",
+    "prettier": "^1.16.4"
   }
 }
