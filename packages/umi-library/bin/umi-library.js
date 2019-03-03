@@ -25,6 +25,17 @@ switch (args._[0]) {
   case 'build':
     build();
     break;
+  case 'doc':
+    require('../lib/doc').default({
+      cwd: process.cwd(),
+      cmd: args._[1],
+      // extra args to docz
+      params: process.argv.slice(4),
+    }).catch(e => {
+      signale.error(e);
+      process.exit(1);
+    });
+    break;
   case 'help':
   case undefined:
     printHelp();

@@ -1,44 +1,18 @@
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import {join, relative} from 'path';
+import { join } from 'path';
 import rimraf from 'rimraf';
 import * as assert from 'assert';
 import { merge } from 'lodash';
 import signale from 'signale';
-import AJV from 'ajv';
-import slash from 'slash2';
 import { IOpts, IBundleOptions } from './types';
 import babel from './babel';
 import rollup from './rollup';
-import registerBabel from "./registerBabel";
-import schema from "./schema";
-
-const CONFIG_FILES = [
-  '.umirc.library.js',
-  '.umirc.library.jsx',
-  '.umirc.library.ts',
-  '.umirc.library.tsx',
-];
-
-function testDefault(obj) {
-  return obj.default || obj;
-}
-
-function getExistFile({ cwd, files, returnRelative }) {
-  for (const file of files) {
-    const absFilePath = join(cwd, file);
-    if (existsSync(absFilePath)) {
-      return returnRelative ? file : absFilePath;
-    }
-  }
-}
+import registerBabel from './registerBabel';
+import { getExistFile } from './utils';
+import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 
 export function getBundleOpts(opts: IOpts): IBundleOptions {
   const { cwd, buildArgs = {} } = opts;
-  const configFile = getExistFile({
-    cwd,
-    files: CONFIG_FILES,
-    returnRelative: false,
-  });
   const entry = getExistFile({
     cwd,
     files: [
@@ -49,28 +23,10 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
     ],
     returnRelative: true,
   });
-  if (existsSync(configFile)) {
-    const userConfig = testDefault(require(configFile)); // eslint-disable-line
-    const ajv = new AJV({ allErrors: true });
-    const isValid = ajv.validate(schema, userConfig);
-    if (!isValid) {
-      const errors = ajv.errors.map(({ dataPath, message }, index) => {
-        return `${index + 1}. ${dataPath}${dataPath ? ' ' : ''}${message}`;
-      });
-      throw new Error(`
-Invalid options in ${slash(relative(cwd, configFile))}
-
-${errors.join('\n')}
-`.trim());
-    }
-    return merge({
-      entry,
-    }, userConfig, buildArgs);
-  } else {
-    return merge({
-      entry,
-    }, buildArgs);
-  }
+  const userConfig = getUserConfig({ cwd });
+  return merge({
+    entry,
+  }, userConfig, buildArgs);
 }
 
 function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
