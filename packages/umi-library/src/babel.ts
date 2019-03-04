@@ -29,7 +29,11 @@ interface ITransformOpts {
 export default async function (opts: IBabelOpts) {
   const {
     cwd, type, target = 'browser', watch,
-    bundleOpts: { runtimeHelpers },
+    bundleOpts: {
+      runtimeHelpers,
+      extraBabelPresets = [],
+      extraBabelPlugins = [],
+    },
   } = opts;
   const srcPath = join(cwd, 'src');
   const targetDir = type === 'esm' ? 'es' : 'lib';
@@ -41,13 +45,18 @@ export default async function (opts: IBabelOpts) {
   function transform(opts: ITransformOpts) {
     const { file, type } = opts;
     signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
+
+    const babelOpts = getBabelConfig({
+      target,
+      type,
+      typescript: true,
+      runtimeHelpers,
+    });
+    babelOpts.presets.push(...extraBabelPresets);
+    babelOpts.plugins.push(...extraBabelPlugins);
+
     return babel.transform(file.contents, {
-      ...getBabelConfig({
-        target,
-        type,
-        typescript: true,
-        runtimeHelpers,
-      }),
+      ...babelOpts,
       filename: file.path,
     }).code;
   }
