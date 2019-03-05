@@ -1665,7 +1665,7 @@ var getConfirmation = exports.getConfirmation = function getConfirmation(message
 var supportsHistory = exports.supportsHistory = function supportsHistory() {
   var ua = window.navigator.userAgent;
 
-  if ((ua.indexOf("Android 2.") !== -1 || ua.indexOf("Android 4.0") !== -1) && ua.indexOf("Mobile Safari") !== -1 && ua.indexOf("Chrome") === -1 && ua.indexOf("Windows Phone") === -1) return false;
+  if ((ua.includes("Android 2.") || ua.includes("Android 4.0")) && ua.includes("Mobile Safari") && !ua.includes("Chrome") && !ua.includes("Windows Phone")) return false;
 
   return window.history && "pushState" in window.history;
 };
@@ -1675,14 +1675,14 @@ var supportsHistory = exports.supportsHistory = function supportsHistory() {
  * IE10 and IE11 do not.
  */
 var supportsPopStateOnHashChange = exports.supportsPopStateOnHashChange = function supportsPopStateOnHashChange() {
-  return window.navigator.userAgent.indexOf("Trident") === -1;
+  return !window.navigator.userAgent.includes("Trident");
 };
 
 /**
  * Returns false if using go(n) with hash history causes a full page reload.
  */
 var supportsGoWithoutReloadUsingHash = exports.supportsGoWithoutReloadUsingHash = function supportsGoWithoutReloadUsingHash() {
-  return window.navigator.userAgent.indexOf("Firefox") === -1;
+  return !window.navigator.userAgent.includes("Firefox");
 };
 
 /**
@@ -1691,7 +1691,7 @@ var supportsGoWithoutReloadUsingHash = exports.supportsGoWithoutReloadUsingHash 
  * containing undefined state when pressing the back button.
  */
 var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
-  return event.state === undefined && navigator.userAgent.indexOf("CriOS") === -1;
+  return event.state === undefined && !navigator.userAgent.includes("CriOS");
 };
 
 /***/ }),
