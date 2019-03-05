@@ -84,5 +84,8 @@ export default {
     overridesByEntry: {
       type: 'object',
     },
+    doc: {
+      type: 'object',
+    },
   },
 };

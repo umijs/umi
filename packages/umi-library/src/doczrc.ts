@@ -11,8 +11,12 @@ const userConfig = JSON.parse(
 );
 
 export default {
-  hashRouter: true,
+  ...userConfig.doc,
   modifyBundlerConfig(config, dev, args) {
+    if (userConfig.modifyBundlerConfig) {
+      config = userConfig.modifyBundlerConfig(config, dev, args);
+    }
+
     // do not generate doc sourcemap
     config.devtool = false;
 
@@ -23,6 +27,8 @@ export default {
     return config;
   },
   plugins: [
+    ...(userConfig.plugins || []),
+
     // .css
     css({
       preprocessor: 'postcss',
@@ -61,5 +67,4 @@ export default {
       },
     }),
   ],
-  ...userConfig.doc,
 };

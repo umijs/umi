@@ -2,9 +2,10 @@ import * as assert from 'assert';
 import { sync as resolveBin } from 'resolve-bin';
 import { fork } from 'child_process';
 import { join } from 'path';
+import { writeFileSync } from 'fs';
+import { sync as mkdirp } from 'mkdirp';
 import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
-import {writeFileSync} from 'fs';
 
 export default function ({ cwd, cmd, params = [] }) {
   assert.ok(
@@ -21,6 +22,7 @@ export default function ({ cwd, cmd, params = [] }) {
   });
 
   const userConfig = getUserConfig({ cwd });
+  mkdirp(join(cwd, '.docz'));
   writeFileSync(
     join(cwd, '.docz', '.umirc.library.json'),
     JSON.stringify(userConfig, null, 2),
@@ -29,14 +31,28 @@ export default function ({ cwd, cmd, params = [] }) {
 
   return new Promise((resolve, reject) => {
     const binPath = resolveBin('docz');
-    if (!params.includes('--config')) {
-      // test 时在 src 下没有 docrc.js
-      if (__dirname.endsWith('src')) {
-        params.push('--config', join(__dirname, '../lib/docrc.js'));
-      } else {
-        params.push('--config', join(__dirname, 'docrc.js'));
-      }
+    assert.ok(
+      !params.includes('--config'),
+      `
+Don't use --config, config under doc in .umirc.library.js
+
+e.g.
+
+export default {
+  doc: {
+    themeConfig: { mode: 'dark' },
+  },
+};
+      `.trim(),
+    );
+
+    // test 时在 src 下没有 docrc.js
+    if (__dirname.endsWith('src')) {
+      params.push('--config', join(__dirname, '../lib/doczrc.js'));
+    } else {
+      params.push('--config', join(__dirname, 'doczrc.js'));
     }
+
     if (!params.includes('--port') && !params.includes('-p')) {
       params.push('--port', '8001');
     }
