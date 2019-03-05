@@ -5,14 +5,15 @@ import { join } from 'path';
 import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
 
-export default function ({ cmd, params = [] }) {
+export default function ({ cwd, cmd, params = [] }) {
   assert.ok(
     ['build', 'dev', 'deploy'].includes(cmd),
     `Invalid subCommand ${cmd}`,
   );
 
+  process.chdir(cwd);
+
   // register babel for config files
-  const cwd = process.cwd();
   registerBabel({
     cwd,
     only: CONFIG_FILES,
@@ -24,7 +25,12 @@ export default function ({ cmd, params = [] }) {
   return new Promise((resolve, reject) => {
     const binPath = resolveBin('docz');
     if (!params.includes('--config')) {
-      params.push('--config', join(__dirname, 'docrc.js'));
+      // test 时在 src 下没有 docrc.js
+      if (__dirname.endsWith('src')) {
+        params.push('--config', join(__dirname, '../lib/docrc.js'));
+      } else {
+        params.push('--config', join(__dirname, 'docrc.js'));
+      }
     }
     if (!params.includes('--port') && !params.includes('-p')) {
       params.push('--port', '8001');

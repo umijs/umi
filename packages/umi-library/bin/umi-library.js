@@ -21,13 +21,15 @@ const updater = require('update-notifier');
 const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
+const cwd = process.cwd();
+
 switch (args._[0]) {
   case 'build':
     build();
     break;
   case 'doc':
     require('../lib/doc').default({
-      cwd: process.cwd(),
+      cwd,
       cmd: args._[1],
       // extra args to docz
       params: process.argv.slice(4),
@@ -72,7 +74,7 @@ function build() {
   }
 
   require('../lib/build').default({
-    cwd: process.cwd(),
+    cwd,
     watch: args.w || args.watch,
     buildArgs,
   }).catch(e => {
