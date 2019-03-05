@@ -1,7 +1,14 @@
 import { css } from 'docz-plugin-css-temp';
+import { join } from 'path';
+import {readFileSync} from "fs";
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
+
+const cwd = process.cwd();
+const userConfig = JSON.parse(
+  readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
+);
 
 export default {
   hashRouter: true,
@@ -54,4 +61,5 @@ export default {
       },
     }),
   ],
+  ...userConfig.doc,
 };

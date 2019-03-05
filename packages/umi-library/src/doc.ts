@@ -4,6 +4,7 @@ import { fork } from 'child_process';
 import { join } from 'path';
 import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
+import {writeFileSync} from 'fs';
 
 export default function ({ cwd, cmd, params = [] }) {
   assert.ok(
@@ -20,7 +21,11 @@ export default function ({ cwd, cmd, params = [] }) {
   });
 
   const userConfig = getUserConfig({ cwd });
-  // console.log(`userConfig`, userConfig);
+  writeFileSync(
+    join(cwd, '.docz', '.umirc.library.json'),
+    JSON.stringify(userConfig, null, 2),
+    'utf-8',
+  );
 
   return new Promise((resolve, reject) => {
     const binPath = resolveBin('docz');

@@ -2,7 +2,7 @@ import { join } from 'path';
 import { existsSync, renameSync } from 'fs';
 import build from './doc';
 
-describe('umi-library doc build', () => {
+xdescribe('umi-library doc build', () => {
   process.env.COMPRESS = 'none';
   require('test-build-result')({
     root: join(__dirname, './fixtures/doc'),
