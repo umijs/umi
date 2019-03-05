@@ -107,6 +107,16 @@ export async function build(opts: IOpts) {
 }
 
 export async function buildForLerna(opts: IOpts) {
+  const { cwd } = opts;
+
+  // register babel for config files
+  registerBabel({
+    cwd,
+    only: CONFIG_FILES,
+  });
+
+  const userConfig = getUserConfig({ cwd });
+
   const pkgs = readdirSync(join(opts.cwd, 'packages'));
   for (const pkg of pkgs) {
     const pkgPath = join(opts.cwd, 'packages', pkg);
@@ -117,6 +127,7 @@ export async function buildForLerna(opts: IOpts) {
     process.chdir(pkgPath);
     await build({  // eslint-disable-line
       ...opts,
+      buildArgs: merge(opts.buildArgs, userConfig),
       cwd: pkgPath,
     });
   }

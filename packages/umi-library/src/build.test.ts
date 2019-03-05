@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, renameSync } from 'fs';
+import {existsSync, readdirSync, renameSync} from 'fs';
 import mkdirp from 'mkdirp';
 import build from './build';
 
@@ -9,6 +9,7 @@ describe('umi-library build', () => {
     build({ cwd }) {
       return build({ cwd })
         .then(() => {
+          // babel
           ['es', 'lib'].forEach(dir => {
             const absDirPath = join(cwd, dir);
             const absDistPath = join(cwd, 'dist');
@@ -17,6 +18,15 @@ describe('umi-library build', () => {
               renameSync(absDirPath, join(absDistPath, dir));
             }
           });
+
+          // lerna
+          if (existsSync(join(cwd, 'lerna.json'))) {
+            mkdirp.sync(join(cwd, 'dist'));
+            const pkgs = readdirSync(join(cwd, 'packages'));
+            for (const pkg of pkgs) {
+              renameSync(join(cwd, 'packages', pkg, 'dist'), join(cwd, 'dist', pkg));
+            }
+          }
         });
     },
   });

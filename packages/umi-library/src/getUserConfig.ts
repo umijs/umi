@@ -4,6 +4,7 @@ import slash from 'slash2';
 import { relative } from 'path';
 import schema from './schema';
 import { getExistFile } from './utils';
+import { IBundleOptions } from './types';
 
 function testDefault(obj) {
   return obj.default || obj;
@@ -16,7 +17,7 @@ export const CONFIG_FILES = [
   '.umirc.library.tsx',
 ];
 
-export default function ({ cwd }) {
+export default function ({ cwd }): IBundleOptions {
   const configFile = getExistFile({
     cwd,
     files: CONFIG_FILES,
