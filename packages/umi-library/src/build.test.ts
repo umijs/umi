@@ -1,12 +1,14 @@
 import { join } from 'path';
-import {existsSync, readdirSync, renameSync} from 'fs';
+import { existsSync, readdirSync, renameSync } from 'fs';
 import mkdirp from 'mkdirp';
+import rimraf from 'rimraf';
 import build from './build';
 
 describe('umi-library build', () => {
   require('test-build-result')({
     root: join(__dirname, './fixtures/build'),
     build({ cwd }) {
+      rimraf.sync(join(cwd, 'dist'));
       return build({ cwd })
         .then(() => {
           // babel

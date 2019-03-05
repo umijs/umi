@@ -27,8 +27,8 @@ function styleInject(css, ref) {
   }
 }
 
-var css = "\n.foo_a__1UnfF { color: green; }\n";
-var styles = {"a":"foo_a__1UnfF"};
+var css = "\n.foo_a__3jZhu { color: green; }\n";
+var styles = {"a":"foo_a__3jZhu"};
 styleInject(css);
 
 console.log('foo', styles.a);
