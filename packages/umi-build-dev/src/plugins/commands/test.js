@@ -35,7 +35,6 @@ export default function(api) {
       if (args.w) args.watch = args.w;
       require('umi-test')
         .default({
-          cwd: api.cwd,
           moduleNameMapper,
           ...args,
         })

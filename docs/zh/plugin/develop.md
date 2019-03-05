@@ -6,6 +6,12 @@ sidebarDepth: 2
 
 ## 初始化插件
 
+你可以通过 [create-umi](https://github.com/umijs/create-umi) 直接创建一个 umi 插件的脚手架：
+
+```shell
+$ yarn create umi --plugin
+```
+
 在 umi 中，插件实际上就是一个 JS 模块，你需要定义一个插件的初始化方法并默认导出。如下示例：
 
 ```js
@@ -95,6 +101,7 @@ export default (api, opts = {}) => {
 - absTmpDirPath: .umi 临时目录的路径（绝对路径）
 - absSrcPath: src 目录的路径（绝对路径），用户缺省 src 时则对应为项目根目录
 - cwd: 项目根目录
+- absNodeModulesPath: node_modules 的绝对路径
 
 ### routes
 
@@ -275,7 +282,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
@@ -467,8 +478,8 @@ api.modifyHTMLContext((memo, { route }) => {
 修改路由配置。
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 

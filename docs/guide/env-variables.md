@@ -61,10 +61,22 @@ $ APP_ROOT=src/renderer umi dev
 
 ### ANALYZE
 
-It is off by default. Analyze the bundle composition, valid when building. such as:
+It is off by default. Analyze the bundle composition, valid when building. Such as:
 
 ```bash
 $ ANALYZE=1 umi build
+```
+
+### SPEED_MEASURE
+
+It is off by default. Analyze every webpack loader and plugin time consuming. Such as:
+
+```bash
+# Output speed measure info to terminal
+$ SPEED_MEASURE=CONSOLE umi build
+
+# Output speed measure info to node_modules/speed-measure.json
+$ SPEED_MEASURE=JSON umi build
 ```
 
 ### ANALYZE_PORT
@@ -145,3 +157,10 @@ $ HTML=none umi build
  ```bash
 $ FORK_TS_CHECKER=1 umi dev
  ```
+### SOCKET_SERVER
+socket server, default  window.location.host.
+such as:
+```bash
+$ SOCKET_SERVER=http://localhost:8000 umi dev
+```
+

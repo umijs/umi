@@ -1,21 +1,21 @@
 {
   "name": "umi-plugin-routes",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes"
-  },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes",
-  "authors": [
-    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
-  ],
-  "bugs": {
-    "url": "https://github.com/umijs/umi/issues"
-  },
-  "license": "MIT",
   "files": [
     "lib",
     "src"
-  ]
+  ],
+  "devDependencies": {
+    "umi-types": "0.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi",
+    "directory": "packages/umi-plugin-routes"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT"
 }

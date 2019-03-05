@@ -263,15 +263,18 @@ export default function(opts) {
   const NO_PROGRESS = process.env.PROGRESS === 'none';
   if (!process.env.__FROM_UMI_TEST) {
     if (!process.env.CI && !NO_PROGRESS) {
-      webpackConfig.plugin('progress')
-        .use(require('webpackbar'), [
-          {
-            color: 'green',
-            reporters: ['fancy'],
-          },
-        ]);
-    } else {
-      console.log('Building ...');
+      if (process.platform === 'win32') {
+        webpackConfig.plugin('progress')
+          .use(require('progress-bar-webpack-plugin'));
+      } else {
+        webpackConfig.plugin('progress')
+          .use(require('webpackbar'), [
+            {
+              color: 'green',
+              reporters: ['fancy'],
+            },
+          ]);
+      }
     }
   }
 
@@ -386,6 +389,14 @@ export default function(opts) {
     );
     opts.chainConfig(webpackConfig);
   }
-
-  return webpackConfig.toConfig();
+  let config = webpackConfig.toConfig();
+  if (process.env.SPEED_MEASURE) {
+    const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+    const smpOption = process.env.SPEED_MEASURE === 'CONSOLE'
+      ? { outputFormat: 'human', outputTarget: console.log }
+      : { outputFormat: 'json', outputTarget: join(process.cwd(), 'speed-measure.json') };
+    const smp = new SpeedMeasurePlugin(smpOption);
+    config = smp.wrap(config);
+  }
+  return config;
 }

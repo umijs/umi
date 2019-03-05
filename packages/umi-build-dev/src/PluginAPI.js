@@ -226,7 +226,9 @@ export default class PluginAPI {
       Array.isArray(files),
       `files for registerBabel must be Array, but got ${files}`,
     );
-    addBabelRegisterFiles(files);
+    addBabelRegisterFiles(files, {
+      cwd: this.service.cwd,
+    });
     registerBabel({
       cwd: this.service.cwd,
     });

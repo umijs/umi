@@ -221,6 +221,26 @@ export default {
 * src/page
 * model（如果有开启 umi-plugin-dva 插件的话）
 
+### mock.exclude <Badge text="2.4.5+"/>
+
+* 类型：`Array` of `String`
+* 默认值：`[]`
+
+排除 mock 目录下不作 mock 处理的文件。
+
+比如要 exclude 所有 `_` 前缀的文件和文件夹，
+
+```js
+export default {
+  mock: {
+    exclude: [
+      'mock/**/_*.js',
+      'mock/_*/**/*.js',
+    ],
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack
@@ -238,35 +258,6 @@ chainWebpack(config, { webpack }) {
   config.plugins.delete('progress');
 }
 ```
-打包优化 [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/) 配置
-```js
-chainWebpack(config, { webpack }) {
-  config.merge({
-    plugin: {
-      install: {
-        plugin: require('uglifyjs-webpack-plugin'),
-        args: [{
-          sourceMap: false,
-          uglifyOptions: {
-            compress: {
-              // 删除所有的 `console` 语句
-              drop_console: true,
-            },
-            output: {
-              // 最紧凑的输出
-              beautify: false,
-              // 删除所有的注释
-              comments: false,
-            },
-          }
-        }]
-      }
-    }
-  })
-}
-
-```
-
 ### theme
 
 配置主题，实际上是配 less 变量。支持对象和字符串两种类型，字符串需要指向一个返回配置的文件。
@@ -404,7 +395,7 @@ export default {
 
 ### manifest
 
-配置后会生成 manifest.json，option 传给 [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin)。
+配置后会生成 asset-manifest.json，option 传给 [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin)。
 比如：
 
 ```markup
@@ -433,6 +424,38 @@ export default {
 * 默认：`{ browserslist, flexbox: 'no-2019' }`
 
 如果你想兼容旧版本 iOS Safari 的 flexbox，应该需要配置上 `flexbox: true`。
+
+### uglifyJSOptions
+
+配置传给 [uglifyjs-webpack-plugin@1.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/version-1) 的配置项。
+
+* 类型：`Object` | `Function`
+* 默认：[af-webpack/src/getConfig/uglifyOptions.js](https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/uglifyOptions.js#L6)
+
+如果值为 `Object`，会做浅合并。
+
+比如：
+
+```js
+export default {
+  uglifyJSOptions: {
+    parallel: false,
+  },
+};
+```
+
+如果要修改深层配置，可以用函数的形式。
+
+比如：
+
+```js
+export default {
+  uglifyJSOptions(opts) {
+    opts.compress.warning = true;
+    return opts;
+  },
+};
+```
 
 ### browserslist <Badge text="deprecated"/>
 

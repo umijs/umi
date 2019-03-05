@@ -6,6 +6,12 @@ sidebarDepth: 2
 
 ## initialize plugin
 
+You can create a umi plugin scaffold in a simple way with [create-umi](https://github.com/umijs/create-umi):
+
+```shell
+$ yarn create umi --plugin
+```
+
 In umi, the plugin is actually a JS module, you need to define a plugin initialization method and export by default. The following example:
 
 ```js
@@ -95,6 +101,7 @@ configuration in `.umirc.js` or `config/config.js`.
 - absTmpDirPath
 - absSrcPath
 - cwd: project root
+- absNodeModulesPath
 
 ### routes
 
@@ -275,7 +282,11 @@ api.debug('msg');
 
 ### findJS
 
-xxx -> xxx.js xxx.ts
+xxx -> xxx.js xxx.ts xxx.jsx xxx.tsx
+
+### findCSS
+
+xxx -> xxx.css xxx.less xxx.scss xxx.sass
 
 ### compatDirname
 
@@ -466,8 +477,8 @@ api.modifyHTMLContext((memo, { route }) => {
 Modify the routing configuration.
 
 ```js
-api.modifyRoutes(({ memo, args}) => {
-  return memo;
+api.modifyRoutes((routes) => {
+  return routes;
 })
 ```
 

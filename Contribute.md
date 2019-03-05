@@ -1,24 +1,26 @@
 # Contribute
 
+> Notice: `y` is the alias for `yarn`, `n` is the alias for `npm`.
+
 ## Set up
 
 Install dev deps after git clone the repo.
 
 ```bash
-$ yarn
+$ y
 ```
 
 Bootstrap every package with yarn. (Need to execute when new package is included)
 
 ```bash
-$ npm run bootstrap -- --npm-client yarn
+$ y bootstrap
 ```
 
 Link umi globally.
 
 ```bash
 $ cd packages/umi
-$ yarn link
+$ y link
 ```
 
 ## Common Tasks
@@ -26,23 +28,27 @@ $ yarn link
 Monitor file changes and transform with babel.
 
 ```bash
-$ npm run build -- --watch
+$ y build --watch
 ```
 
-Run test for a specified package.
+Run test.
 
 ```bash
-$ lerna exec --scope af-webpack -- npm run debug
+# Including e2e test
+$ y test
+
+# Unit test only
+$ y debug .test.(t|j)s
+
+# Test specified file and watch
+$ y debug getMockData.test.js -w
 ```
 
-Run `umi dev` in examples/simple.
+Run `umi dev` in examples/func-test.
 
 ```bash
 $ cd examples/func-test
 $ umi dev
-
-# Specifiy the port
-$ PORT=8001 umi dev
 ```
 
 Then open http://localhost:8000/ in your browser.
@@ -54,11 +60,24 @@ $ cd examples/func-test
 $ umi build
 
 # Build without compress
-$ NO_COMPRESS=true umi build
+$ COMPRESS=none umi build
 ```
 
 Publish to npm.
 
 ```bash
-$ npm run publish
+# Can't use yarn for this command.
+$ n run publish
+```
+
+Debug doc in local.
+
+```bash
+$ y doc:dev
+```
+
+Deploy doc to [umijs.org](https://umijs.org/).
+
+```bash
+$ y doc:deploy
 ```

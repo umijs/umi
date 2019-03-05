@@ -4,6 +4,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "./scripts/build.js",
     "changelog": "lerna-changelog",
+    "chore:update-deps": "./scripts/update_deps.sh",
     "test": "node scripts/test.js",
     "test:coverage": "./packages/umi-test/bin/umi-test.js --coverage",
     "debug": "./packages/umi-test/bin/umi-test.js",
@@ -23,6 +24,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^24.0.5",
     "babel-eslint": "10.0.1",
     "chokidar": "2.0.4",
     "coveralls": "3.0.2",
@@ -44,6 +46,6 @@
     "react-test-renderer": "16.6.3",
     "shelljs": "0.8.3",
     "test-build-result": "^1.0.1",
-    "umi-tools": "^0.3.1"
+    "umi-tools": "^0.4.0"
   }
 }

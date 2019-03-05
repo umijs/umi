@@ -132,9 +132,11 @@ describe('static UserConfig', () => {
 });
 
 describe('instance UserConfig', () => {
+  const cwd = join(base, 'umirc');
   const service = {
+    cwd,
     paths: {
-      cwd: join(base, 'umirc'),
+      cwd,
     },
     applyPlugins(name, { initialValue }) {
       if (name === 'modifyDefaultConfig') {

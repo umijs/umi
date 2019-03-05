@@ -32,7 +32,7 @@ $ umi block add https://github.com/umijs/umi-blocks/tree/master/blank
 
 ### 初始化区块
 
-你可以通过 [craete-umi](https://github.com/umijs/create-umi) 快速创建一个区块的模板：
+你可以通过 [create-umi](https://github.com/umijs/create-umi) 快速创建一个区块的模板：
 
 ```bash
 $ yarn create umi --block

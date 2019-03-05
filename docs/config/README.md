@@ -164,9 +164,7 @@ Whether to enable the hash file suffix.
 * Type: `Object`
 * Default: `{ chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 }`
 
-配置浏览器最低版本，会自动引入 polyfill 和做语法转换，配置的 targets 会和合并到默认值，所以不需要重复配置。
-
-Configuring the minimum version of browsers you want to compatible with.
+Configuring the minimum version of browsers you want to compatible with, umi will automatically introduce polyfill and transform grammar. Configuration items will be merged to default values, so there is no need to give any duplicate configuration.
 
 e.g. Compatible with ie 11,
 
@@ -223,6 +221,26 @@ If set to `true`, enable the directory for singular mode.
 * src/page
 * model (if umi-plugin-dva plugin is enabled)
 
+### mock.exclude <Badge text="2.4.5+"/>
+
+- Type: `Array` of `String`
+- Default: `[]`
+
+Exclude files that are not mock files in the `mock` directory.
+
+e.g. exclue all files and directorys starts with `_`,
+
+```js
+export default {
+  mock: {
+    exclude: [
+      'mock/**/_*.js',
+      'mock/_*/**/*.js',
+    ],
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack
@@ -238,33 +256,6 @@ chainWebpack(config, { webpack }) {
   
   // Delete progress bar plugin
   config.plugins.delete('progress');
-}
-```
-configure [uglifyjs-webpack-plugin](https://webpack.docschina.org/plugins/uglifyjs-webpack-plugin/)
-```js
-chainWebpack(config, { webpack }) {
-  config.merge({
-    plugin: {
-      install: {
-        plugin: require('uglifyjs-webpack-plugin'),
-        args: [{
-          sourceMap: false,
-          uglifyOptions: {
-            compress: {
-              // remove `console.*`
-              drop_console: true,
-            },
-            output: {
-              // whether to actually beautify the output
-              beautify: false,
-              // remove all comments
-              comments: false,
-            },
-          }
-        }]
-      }
-    }
-  })
 }
 ```
 ### theme
@@ -404,7 +395,7 @@ Configure options for [node-sass](https://github.com/sass/node-sass#options). No
 
 ### manifest
 
-After configuration, manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
+After configuration, asset-manifest.json will be generated and the option will be passed to [https://www.npmjs.com/package/webpack-manifest-plugin](https://www.npmjs.com/package/webpack-manifest-plugin).
 such as:
 
 ```markup
@@ -433,6 +424,38 @@ Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options
 - Default: `{ browserslist, flexbox: 'no-2019' }`
 
 If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
+
+### uglifyJSOptions
+
+Configuration for [uglifyjs-webpack-plugin@1.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/version-1) .
+
+- Type: `Object` | `Function`
+- Default: [af-webpack/src/getConfig/uglifyOptions.js](https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/uglifyOptions.js#L6)
+
+If the value is `Object`，it will be shallow merged.
+
+e.g.
+
+```js
+export default {
+  uglifyJSOptions: {
+    parallel: false,
+  },
+};
+```
+
+If you want to modify the deep configuration, you can use the `Function` style.
+
+e.g.
+
+```js
+export default {
+  uglifyJSOptions(opts) {
+    opts.compress.warning = true;
+    return opts;
+  },
+};
+```
 
 ### browserslist <Badge text="deprecated"/>
 

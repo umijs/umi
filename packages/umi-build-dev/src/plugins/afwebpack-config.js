@@ -167,6 +167,7 @@ export default function(api) {
       cwd,
       browserslist,
       entry,
+      absNodeModulesPath: paths.absNodeModulesPath,
       outputPath: paths.absOutputPath,
       disableDynamicImport: true,
       babel: config.babel || {

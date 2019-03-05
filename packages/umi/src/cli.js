@@ -4,7 +4,7 @@ import signale from 'signale';
 import semver from 'semver';
 import buildDevOpts from './buildDevOpts';
 
-let script = process.argv[2];
+const script = process.argv[2];
 const args = yParser(process.argv.slice(3));
 
 // Node version check

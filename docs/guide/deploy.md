@@ -68,7 +68,7 @@ export default {
 
 ## Using the publicPath of Runtime
 
-For scenes that need to manage publicPath in html, such as judging the environment to make different output in html, you can solve it by configuring [runtimePublicPath](/config/#history).
+For scenes that need to manage publicPath in html, such as judging the environment to make different output in html, you can solve it by configuring [runtimePublicPath](/config/#runtimepublicpath).
 
 ```bash
 export default {

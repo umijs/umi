@@ -1,8 +1,10 @@
 {
+  "name": "umijs.org",
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build" }
+  ],
   "alias": [
     "umijs.org"
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }

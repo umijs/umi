@@ -119,6 +119,30 @@ const proxy = {
 export default delay(proxy, 1000);
 ```
 
+## Dynamic mock data
+
+If you want to generate dynamic mock data on every request, you should use functions.
+
+For example:
+
+```js
+// undynamic
+'/api/random': Mock.mock({
+  // random once only
+  'number|1-100': 100,
+}),
+```
+
+```js
+// dynamic
+'/api/random': (req, res) => {
+  res.send(Mock.mock({
+    // random every request
+    'number|1-100': 100,
+  }))
+},
+```
+
 ## Joint debugging
 
 After finishing the local development, if the interface of server-side meets the previous convention, you only need to open the local proxy or redirect the proxy to the target server to access the real server data, which is very convenient.

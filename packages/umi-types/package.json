@@ -1,0 +1,19 @@
+{
+  "name": "umi-types",
+  "version": "0.1.2",
+  "description": "Type definitions for umi.",
+  "types": "index",
+  "dependencies": {
+    "@types/cheerio": "^0.22.10",
+    "@types/webpack": "^4.4.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi",
+    "directory": "packages/umi-types"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT"
+}
