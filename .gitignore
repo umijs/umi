@@ -8,7 +8,9 @@ package-lock.json
 /packages/umi-test/examples/*/node_modules
 /packages/umi-plugin-locale/examples/*/node_modules
 /packages/umi-plugin-react/test/*/node_modules
-lib
+/packages/**/node_modules/.cache
+/packages/**/.docz
+/packages/*/lib
 dist
 coverage
 .nyc_output

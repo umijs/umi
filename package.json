@@ -18,7 +18,7 @@
     "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build"
   },
   "lint-staged": {
-    "*.js": [
+    "*.(t|j)s": [
       "prettier --trailing-comma all --single-quote --write",
       "git add"
     ]
@@ -40,12 +40,13 @@
     "lerna": "3.6.0",
     "lerna-changelog": "0.8.2",
     "lint-staged": "8.1.0",
+    "mkdirp": "^0.5.1",
     "prettier": "1.15.3",
     "puppeteer": "1.11.0",
     "react-router-dom": "4.3.1",
     "react-test-renderer": "16.6.3",
     "shelljs": "0.8.3",
-    "test-build-result": "^1.0.1",
+    "test-build-result": "^1.1.0",
     "umi-tools": "^0.4.0"
   }
 }
