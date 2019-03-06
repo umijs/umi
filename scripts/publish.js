@@ -5,9 +5,9 @@ const { join } = require('path');
 const { fork } = require('child_process');
 
 if (
-  shell
+  !shell
     .exec('npm config get registry')
-    .stdout.indexOf('https://registry.npmjs.org/') === -1
+    .stdout.includes('https://registry.npmjs.org/')
 ) {
   console.error(
     'Failed: set npm registry to https://registry.npmjs.org/ first',

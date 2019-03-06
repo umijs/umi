@@ -15,7 +15,7 @@
 const friendlySyntaxErrorLabel = 'Syntax error:';
 
 function isLikelyASyntaxError(message) {
-  return message.indexOf(friendlySyntaxErrorLabel) !== -1;
+  return message.includes(friendlySyntaxErrorLabel);
 }
 
 // Cleans up webpack error messages.
@@ -33,7 +33,7 @@ function formatMessage(message, isError) {
   // ./~/css-loader!./~/postcss-loader!./src/App.css
   // After:
   // ./src/App.css
-  if (lines[0].lastIndexOf('!') !== -1) {
+  if (lines[0].includes('!')) {
     lines[0] = lines[0].substr(lines[0].lastIndexOf('!') + 1);
   }
 
