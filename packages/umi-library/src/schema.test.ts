@@ -4,13 +4,8 @@ import schema from './schema';
 const ajv = new AJV();
 
 const successValidates = {
-  entry: [
-    'a',
-    ['a'],
-  ],
-  file: [
-    'a',
-  ],
+  entry: ['a', ['a']],
+  file: ['a'],
   esm: [
     false,
     true,
@@ -19,13 +14,7 @@ const successValidates = {
     { file: 'a' },
     { mjs: true },
   ],
-  cjs: [
-    false,
-    true,
-    { type: 'rollup' },
-    { type: 'babel' },
-    { file: 'a' },
-  ],
+  cjs: [false, true, { type: 'rollup' }, { type: 'babel' }, { file: 'a' }],
   umd: [
     { globals: {} },
     { file: 'a' },
@@ -33,41 +22,25 @@ const successValidates = {
     { minFile: false },
     { minFile: true },
   ],
-  extraBabelPlugins: [
-    [],
-  ],
-  extraBabelPresets: [
-    [],
-  ],
-  extraPostCSSPlugins: [
-    [],
-  ],
-  cssModules: [
-    true,
-    false,
-    {},
-  ],
-  autoprefixer: [
-    {},
-  ],
-  namedExports: [
-    {},
-  ],
-  runtimeHelpers: [
-    true,
-    false,
-  ],
-  overridesByEntry: [
-    {},
-  ],
+  extraBabelPlugins: [[]],
+  extraBabelPresets: [[]],
+  extraPostCSSPlugins: [[]],
+  cssModules: [true, false, {}],
+  autoprefixer: [{}],
+  namedExports: [{}],
+  runtimeHelpers: [true, false],
+  overridesByEntry: [{}],
+  doc: [{}],
 };
 
 Object.keys(successValidates).forEach(key => {
   test(key, () => {
     successValidates[key].forEach(item => {
-      expect(ajv.validate(schema, {
-        [key]: item,
-      })).toEqual(true);
+      expect(
+        ajv.validate(schema, {
+          [key]: item,
+        }),
+      ).toEqual(true);
     });
   });
 });

@@ -27,8 +27,8 @@ interface IUmd {
 export interface IBundleOptions {
   entry?: string | string[];
   file?: string;
-  esm?: IEsm | false;
-  cjs?: IBundleTypeOutput | false;
+  esm?: BundleType | IEsm | false;
+  cjs?: BundleType | IBundleTypeOutput | false;
   umd?: IUmd | false;
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
@@ -39,7 +39,7 @@ export interface IBundleOptions {
   runtimeHelpers?: boolean;
   overridesByEntry?: {
     [entry: string]: any;
-  },
+  };
 }
 
 export interface IOpts {

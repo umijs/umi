@@ -4,7 +4,7 @@ import rimraf from 'rimraf';
 import * as assert from 'assert';
 import { merge } from 'lodash';
 import signale from 'signale';
-import { IOpts, IBundleOptions } from './types';
+import { IOpts, IBundleOptions, IBundleTypeOutput, IEsm } from './types';
 import babel from './babel';
 import rollup from './rollup';
 import registerBabel from './registerBabel';
@@ -15,18 +15,27 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
   const { cwd, buildArgs = {} } = opts;
   const entry = getExistFile({
     cwd,
-    files: [
-      'src/index.tsx',
-      'src/index.ts',
-      'src/index.jsx',
-      'src/index.js',
-    ],
+    files: ['src/index.tsx', 'src/index.ts', 'src/index.jsx', 'src/index.js'],
     returnRelative: true,
   });
   const userConfig = getUserConfig({ cwd });
-  return merge({
-    entry,
-  }, userConfig, buildArgs);
+  const bundleOpts = merge(
+    {
+      entry,
+    },
+    userConfig,
+    buildArgs,
+  );
+
+  // Support config esm: 'rollup' and cjs: 'rollup'
+  if (typeof bundleOpts.esm === 'string') {
+    bundleOpts.esm = { type: bundleOpts.esm };
+  }
+  if (typeof bundleOpts.cjs === 'string') {
+    bundleOpts.cjs = { type: bundleOpts.cjs };
+  }
+
+  return bundleOpts;
 }
 
 function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
@@ -75,8 +84,9 @@ export async function build(opts: IOpts) {
 
   // Build cjs
   if (bundleOpts.cjs) {
-    signale.info(`Build cjs with ${bundleOpts.cjs.type}`);
-    if (bundleOpts.cjs.type === 'babel') {
+    const cjs = bundleOpts.cjs as IBundleTypeOutput;
+    signale.info(`Build cjs with ${cjs.type}`);
+    if (cjs.type === 'babel') {
       await babel({ cwd, watch, type: 'cjs', bundleOpts });
     } else {
       await rollup({
@@ -91,8 +101,9 @@ export async function build(opts: IOpts) {
 
   // Build esm
   if (bundleOpts.esm) {
-    signale.info(`Build esm with ${bundleOpts.esm.type}`);
-    if (bundleOpts.esm && bundleOpts.esm.type === 'babel') {
+    const esm = bundleOpts.esm as IEsm;
+    signale.info(`Build esm with ${esm.type}`);
+    if (esm && esm.type === 'babel') {
       await babel({ cwd, watch, type: 'esm', bundleOpts });
     } else {
       await rollup({
@@ -125,7 +136,8 @@ export async function buildForLerna(opts: IOpts) {
       `package.json not found in packages/${pkg}`,
     );
     process.chdir(pkgPath);
-    await build({  // eslint-disable-line
+    await build({
+      // eslint-disable-line
       ...opts,
       buildArgs: merge(opts.buildArgs, userConfig),
       cwd: pkgPath,
@@ -133,7 +145,7 @@ export async function buildForLerna(opts: IOpts) {
   }
 }
 
-export default async function (opts: IOpts) {
+export default async function(opts: IOpts) {
   const useLerna = existsSync(join(opts.cwd, 'lerna.json'));
   if (useLerna && process.env.LERNA !== 'none') {
     await buildForLerna(opts);

@@ -27,7 +27,7 @@ interface IPkg {
   peerDependencies?: Object;
 }
 
-export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
+export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
   const { type, entry, cwd, target, bundleOpts } = opts;
   const {
     umd,
@@ -49,8 +49,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
   let pkg = {} as IPkg;
   try {
     pkg = require(join(cwd, 'package.json')); // eslint-disable-line
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // cjs 不给浏览器用，所以无需 runtimeHelpers
   const runtimeHelpers = type === 'cjs' ? false : runtimeHelpersOpts;
@@ -95,34 +94,38 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
     postcss({
       modules,
       use: [
-        ['less', {
-          plugins: [new NpmImport({ prefix: '~' })],
-          javascriptEnabled: true,
-        }],
+        [
+          'less',
+          {
+            plugins: [new NpmImport({ prefix: '~' })],
+            javascriptEnabled: true,
+          },
+        ],
       ],
-      plugins: [
-        autoprefixer(autoprefixerOpts),
-        ...extraPostCSSPlugins,
-      ],
+      plugins: [autoprefixer(autoprefixerOpts), ...extraPostCSSPlugins],
     }),
-    ...(isTypeScript ? [typescript({
-      cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
-      // TODO: 支持往上找 tsconfig.json
-      // 比如 lerna 的场景不需要每个 package 有个 tsconfig.json
-      tsconfig: join(cwd, 'tsconfig.json'),
-      tsconfigDefaults: {
-        compilerOptions: {
-          // Generate declaration files by default
-          declaration: true,
-        },
-      },
-      tsconfigOverride: {
-        compilerOptions: {
-          // Support dynamic import
-          target: 'esnext',
-        },
-      },
-    })] : []),
+    ...(isTypeScript
+      ? [
+          typescript({
+            cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+            // TODO: 支持往上找 tsconfig.json
+            // 比如 lerna 的场景不需要每个 package 有个 tsconfig.json
+            tsconfig: join(cwd, 'tsconfig.json'),
+            tsconfigDefaults: {
+              compilerOptions: {
+                // Generate declaration files by default
+                declaration: true,
+              },
+            },
+            tsconfigOverride: {
+              compilerOptions: {
+                // Support dynamic import
+                target: 'esnext',
+              },
+            },
+          }),
+        ]
+      : []),
     babel(babelOpts),
     json(),
   ];
@@ -134,31 +137,39 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${esm && esm.file || `${name}.esm`}.js`),
+            file: join(
+              cwd,
+              `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`,
+            ),
           },
           plugins,
           external,
         },
-        ...(esm && esm.mjs ? [
-          {
-            input,
-            output: {
-              format,
-              file: join(cwd, `dist/${esm && esm.file || `${name}`}.mjs`),
-            },
-            plugins: [
-              ...plugins,
-              nodeResolve({
-                jsnext: true,
-              }),
-              replace({
-                'process.env.NODE_ENV': JSON.stringify('production'),
-              }),
-              terser(terserOpts),
-            ],
-            external: externalPeerDeps,
-          },
-        ] : []),
+        ...(esm && (esm as any).mjs
+          ? [
+              {
+                input,
+                output: {
+                  format,
+                  file: join(
+                    cwd,
+                    `dist/${(esm && (esm as any).file) || `${name}`}.mjs`,
+                  ),
+                },
+                plugins: [
+                  ...plugins,
+                  nodeResolve({
+                    jsnext: true,
+                  }),
+                  replace({
+                    'process.env.NODE_ENV': JSON.stringify('production'),
+                  }),
+                  terser(terserOpts),
+                ],
+                external: externalPeerDeps,
+              },
+            ]
+          : []),
       ];
 
     case 'cjs':
@@ -167,7 +178,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${cjs && cjs.file || name}.js`),
+            file: join(cwd, `dist/${(cjs && (cjs as any).file) || name}.js`),
           },
           plugins,
           external,
@@ -191,7 +202,7 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${umd && umd.file || `${name}.umd`}.js`),
+            file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.js`),
             globals: umd && umd.globals,
             name: umd && umd.name,
           },
@@ -203,29 +214,30 @@ export default function (opts: IGetRollupConfigOpts): RollupOptions[] {
           ],
           external: externalPeerDeps,
         },
-        ...(
-          umd && umd.minFile === false
-            ? []
-            : [
-                {
-                  input,
-                  output: {
-                    format,
-                    file: join(cwd, `dist/${umd && umd.file || `${name}.umd`}.min.js`),
-                    globals: umd && umd.globals,
-                    name: umd && umd.name,
-                  },
-                  plugins: [
-                    ...plugins,
-                    replace({
-                      'process.env.NODE_ENV': JSON.stringify('production'),
-                    }),
-                    terser(terserOpts),
-                  ],
-                  external: externalPeerDeps,
+        ...(umd && umd.minFile === false
+          ? []
+          : [
+              {
+                input,
+                output: {
+                  format,
+                  file: join(
+                    cwd,
+                    `dist/${(umd && umd.file) || `${name}.umd`}.min.js`,
+                  ),
+                  globals: umd && umd.globals,
+                  name: umd && umd.name,
                 },
-            ]
-        ),
+                plugins: [
+                  ...plugins,
+                  replace({
+                    'process.env.NODE_ENV': JSON.stringify('production'),
+                  }),
+                  terser(terserOpts),
+                ],
+                external: externalPeerDeps,
+              },
+            ]),
       ];
 
     default:

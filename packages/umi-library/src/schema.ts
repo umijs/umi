@@ -1,4 +1,3 @@
-
 const noEmptyStr = { type: 'string', minLength: 1 };
 
 export default {
@@ -6,23 +5,22 @@ export default {
   additionalProperties: false,
   properties: {
     entry: {
-      oneOf: [
-        noEmptyStr,
-        { type: 'array', items: noEmptyStr },
-      ],
+      oneOf: [noEmptyStr, { type: 'array', items: noEmptyStr }],
     },
     file: { type: 'string' },
     esm: {
       oneOf: [
+        noEmptyStr,
         { type: 'boolean' },
-        { type: 'object',
+        {
+          type: 'object',
           additionalProperties: false,
           properties: {
             type: {
               type: 'string',
               pattern: '^(rollup|babel)$',
             },
-            file: { type: 'string' },
+            file: noEmptyStr,
             mjs: { type: 'boolean' },
           },
         },
@@ -30,15 +28,17 @@ export default {
     },
     cjs: {
       oneOf: [
+        noEmptyStr,
         { type: 'boolean' },
-        { type: 'object',
+        {
+          type: 'object',
           additionalProperties: false,
           properties: {
             type: {
               type: 'string',
               pattern: '^(rollup|babel)$',
             },
-            file: { type: 'string' },
+            file: noEmptyStr,
           },
         },
       ],
@@ -46,12 +46,13 @@ export default {
     umd: {
       oneOf: [
         { type: 'boolean' },
-        { type: 'object',
+        {
+          type: 'object',
           additionalProperties: false,
           properties: {
             globals: { type: 'object' },
-            file: { type: 'string' },
-            name: { type: 'string' },
+            file: noEmptyStr,
+            name: noEmptyStr,
             minFile: { type: 'boolean' },
           },
         },
@@ -67,10 +68,7 @@ export default {
       type: 'array',
     },
     cssModules: {
-      oneOf: [
-        { type: 'boolean' },
-        { type: 'object' },
-      ],
+      oneOf: [{ type: 'boolean' }, { type: 'object' }],
     },
     autoprefixer: {
       type: 'object',
