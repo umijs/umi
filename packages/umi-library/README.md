@@ -80,7 +80,7 @@ $ umi-lib doc deploy
 注：
 
 1. 不能传 `--config` 参数，通过 `--config` 指定的文件内容可全部配置在 `.umirc.library.js` 的 [doc](#doc) 配置里。
-2. 使用 `deploy` 之前请先执行 `build` 命令。文档部署后域名为：`name.github.io/your-repo`。
+2. 使用 `deploy` 之前请先执行 `build` 命令，文档部署后域名为：`https://yourname.github.io/your-repo`。
 
 ## Config
 
@@ -92,7 +92,7 @@ $ umi-lib doc deploy
 export default {
   entry: 'src/foo.js',
   doc: {
-    themeConfig: { mode: 'dark' }
+    themeConfig: { mode: 'dark' },
     base: '/your-repo'
   },
 }

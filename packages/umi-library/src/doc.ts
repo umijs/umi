@@ -2,11 +2,12 @@ import * as assert from 'assert';
 import { sync as resolveBin } from 'resolve-bin';
 import { fork } from 'child_process';
 import { join } from 'path';
-import { writeFileSync } from 'fs';
+import { writeFileSync, existsSync } from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import ghpages from 'gh-pages';
 import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
+import chalk from 'chalk';
 
 export default function({ cwd, cmd, params = [] }) {
   assert.ok(
@@ -82,6 +83,10 @@ export default {
 function deploy(cwd: string, params = {}) {
   return new Promise((resolve, reject) => {
     const distDir = join(cwd, '.docz/dist');
+    assert.ok(
+      existsSync(distDir),
+      `Please run ${chalk.green(`umi-lib doc build`)} first`,
+    );
     ghpages.publish(distDir, params, err => {
       if (err) {
         reject(new Error(`Doc deploy failed. ${err.message}`));

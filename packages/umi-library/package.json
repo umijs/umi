@@ -24,6 +24,7 @@
     "docz-plugin-css-temp": "0.13.1",
     "docz-theme-default": "0.13.7",
     "extend2": "1.0.0",
+    "gh-pages": "^2.0.1",
     "happypack": "5",
     "less": "3.9.0",
     "less-plugin-npm-import": "2.1.0",
