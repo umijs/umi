@@ -37,6 +37,7 @@ export interface IBundleOptions {
   autoprefixer?: Object;
   namedExports?: IStringArrayObject;
   runtimeHelpers?: boolean;
+  target?: 'node' | 'browser';
   overridesByEntry?: {
     [entry: string]: any;
   };

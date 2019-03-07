@@ -1,6 +1,7 @@
 {
   "name": "umi-library",
   "version": "0.1.0",
+  "description": "Library toolkit based on rollup and docz.",
   "main": "lib/index.js",
   "bin": {
     "umi-library": "./bin/umi-library.js",

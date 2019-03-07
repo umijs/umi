@@ -53,8 +53,13 @@ function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
   }
 }
 
-export async function build(opts: IOpts) {
+interface IExtraBuildOpts {
+  pkg?: string;
+}
+
+export async function build(opts: IOpts, extraOpts: IExtraBuildOpts = {}) {
   const { cwd, watch } = opts;
+  const { pkg } = extraOpts;
 
   // register babel for config files
   registerBabel({
@@ -62,17 +67,21 @@ export async function build(opts: IOpts) {
     only: CONFIG_FILES,
   });
 
+  function log(msg) {
+    signale.info(`${pkg ? `[${pkg}] ` : ''}${msg}`);
+  }
+
   // Get user config
   const bundleOpts = getBundleOpts(opts);
   validateBundleOpts(bundleOpts, { cwd });
 
   // Clean dist
-  signale.info(`Clean dist directory`);
+  log(`Clean dist directory`);
   rimraf.sync(join(cwd, 'dist'));
 
   // Build umd
   if (bundleOpts.umd) {
-    signale.info(`Build umd`);
+    log(`Build umd`);
     await rollup({
       cwd,
       type: 'umd',
@@ -85,7 +94,7 @@ export async function build(opts: IOpts) {
   // Build cjs
   if (bundleOpts.cjs) {
     const cjs = bundleOpts.cjs as IBundleTypeOutput;
-    signale.info(`Build cjs with ${cjs.type}`);
+    log(`Build cjs with ${cjs.type}`);
     if (cjs.type === 'babel') {
       await babel({ cwd, watch, type: 'cjs', bundleOpts });
     } else {
@@ -102,7 +111,7 @@ export async function build(opts: IOpts) {
   // Build esm
   if (bundleOpts.esm) {
     const esm = bundleOpts.esm as IEsm;
-    signale.info(`Build esm with ${esm.type}`);
+    log(`Build esm with ${esm.type}`);
     if (esm && esm.type === 'babel') {
       await babel({ cwd, watch, type: 'esm', bundleOpts });
     } else {
@@ -136,12 +145,17 @@ export async function buildForLerna(opts: IOpts) {
       `package.json not found in packages/${pkg}`,
     );
     process.chdir(pkgPath);
-    await build({
-      // eslint-disable-line
-      ...opts,
-      buildArgs: merge(opts.buildArgs, userConfig),
-      cwd: pkgPath,
-    });
+    await build(
+      {
+        // eslint-disable-line
+        ...opts,
+        buildArgs: merge(opts.buildArgs, userConfig),
+        cwd: pkgPath,
+      },
+      {
+        pkg,
+      },
+    );
   }
 }
 
