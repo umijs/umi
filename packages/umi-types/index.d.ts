@@ -9,7 +9,7 @@ import { Stats, Configuration } from 'webpack';
 declare enum API_TYPE {
   ADD,
   MODIFY,
-  EVENT
+  EVENT,
 }
 
 export { IConfig, IPlugin, IRoute };
@@ -168,12 +168,20 @@ interface IBeforeDevServer {
   (fn: IBeforeDevServerFunc): void;
 }
 
+interface IBeforeDevServerAsync {
+  (fn: IBeforeDevServerFunc): Promise<any>;
+}
+
 interface IAfterDevServer {
   (fn: IAfterDevServerFunc): void;
 }
 
 interface IOnStart {
   (fn: () => void): void;
+}
+
+interface IEventAsync {
+  (fn: () => void): Promise<any>;
 }
 
 export interface IOnDevCompileDoneFunc {
@@ -366,8 +374,10 @@ export interface IApi {
    * https://umijs.org/plugin/develop.html#event-class-api
    */
   beforeDevServer: IBeforeDevServer;
+  _beforeDevServerAsync: IBeforeDevServerAsync;
   afterDevServer: IAfterDevServer;
   onStart: IOnStart;
+  onStartAsync: IEventAsync;
   onDevCompileDone: IOnDevCompileDone;
   onOptionChange: IOnOptionChange;
   onBuildSuccess: IOnBuildSuccess;

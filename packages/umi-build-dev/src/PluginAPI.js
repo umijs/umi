@@ -56,6 +56,7 @@ export default class PluginAPI {
         },
       ],
       'onStart',
+      'onStartAsync',
       'onDevCompileDone',
       'onBuildSuccess',
       'onBuildFail',
@@ -213,7 +214,7 @@ export default class PluginAPI {
         });
       } else if (type === this.API_TYPE.EVENT) {
         this.register(name, opts => {
-          args[0](opts.args);
+          return args[0](opts.args);
         });
       } else {
         throw new Error(`unexpected api type ${type}`);
