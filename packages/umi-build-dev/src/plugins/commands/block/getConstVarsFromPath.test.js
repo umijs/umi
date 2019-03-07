@@ -9,5 +9,13 @@ describe('getConstVarsFromPath', () => {
       ['PAGE_NAME_UPPER_CAMEL_CASE', 'FooBarHello'],
       ['PAGE_NAME', 'foo_bar-hello'],
     ]);
+
+    expect(Array.from(getVars('/foo/BAR/FooBarHello').entries())).toEqual([
+      ['ROUTE_PATH', '/foo/bar/foobarhello'],
+      ['BLOCK_NAME_CAMEL_CASE', 'fooBarFooBarHello'],
+      ['BLOCK_NAME', 'foo-bar-foobarhello'],
+      ['PAGE_NAME_UPPER_CAMEL_CASE', 'FooBarHello'],
+      ['PAGE_NAME', 'foobarhello'],
+    ]);
   });
 });
