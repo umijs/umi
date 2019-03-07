@@ -48,6 +48,7 @@
     "yargs-parser": "13.0.0"
   },
   "files": [
+    "bin",
     "lib",
     "src"
   ],
