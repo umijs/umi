@@ -39,6 +39,9 @@ $ umi-lib doc dev
 
 # build doc
 $ umi-lib doc build
+
+# deploy doc to github.io
+$ umi-lib doc deploy
 ```
 
 ## Cli
@@ -69,6 +72,7 @@ doc 包含 dev 和 build 两个子命令。
 ```bash
 $ umi-lib doc dev
 $ umi-lib doc build
+$ umi-lib doc deploy
 ```
 
 所有的命令行参数会透传给 docz，详见 [docz.site#project-configuration](https://www.docz.site/documentation/project-configuration)。
@@ -76,6 +80,7 @@ $ umi-lib doc build
 注：
 
 1. 不能传 `--config` 参数，通过 `--config` 指定的文件内容可全部配置在 `.umirc.library.js` 的 [doc](#doc) 配置里。
+2. 使用 `deploy` 之前请先执行 `build` 命令。文档部署后域名为：`name.github.io/your-repo`。
 
 ## Config
 
@@ -88,6 +93,7 @@ export default {
   entry: 'src/foo.js',
   doc: {
     themeConfig: { mode: 'dark' }
+    base: '/your-repo'
   },
 }
 ```
