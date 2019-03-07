@@ -26,10 +26,13 @@ interface ITransformOpts {
   type: 'esm' | 'cjs';
 }
 
-export default async function (opts: IBabelOpts) {
+export default async function(opts: IBabelOpts) {
   const {
-    cwd, type, target = 'browser', watch,
+    cwd,
+    type,
+    watch,
     bundleOpts: {
+      target = 'browser',
       runtimeHelpers,
       extraBabelPresets = [],
       extraBabelPlugins = [],
@@ -44,7 +47,9 @@ export default async function (opts: IBabelOpts) {
 
   function transform(opts: ITransformOpts) {
     const { file, type } = opts;
-    signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
+    signale.info(
+      `[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`,
+    );
 
     const babelOpts = getBabelConfig({
       target,
@@ -67,43 +72,44 @@ export default async function (opts: IBabelOpts) {
         allowEmpty: true,
         base: srcPath,
       })
-      .pipe(through.obj((file, env, cb) => {
-        file.contents = Buffer.from(
-          transform({
-            file,
-            type,
-          }),
-        );
-        // .tsx? -> .js
-        file.path = file.path.replace(extname(file.path), '.js');
-        cb(null, file);
-      }))
+      .pipe(
+        through.obj((file, env, cb) => {
+          file.contents = Buffer.from(
+            transform({
+              file,
+              type,
+            }),
+          );
+          // .tsx? -> .js
+          file.path = file.path.replace(extname(file.path), '.js');
+          cb(null, file);
+        }),
+      )
       .pipe(vfs.dest(targetPath));
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     createStream([
       join(srcPath, '**/*'),
       `!${join(srcPath, '**/fixtures/**/*')}`,
       `!${join(srcPath, '**/.(test|e2e|spec).(js|jsx|ts|tsx)')}`,
-    ])
-      .on('end', () => {
-        if (watch) {
-          signale.info('Start watch', srcPath);
-          chokidar
-            .watch(srcPath, {
-              ignoreInitial: true,
-            })
-            .on('all', (event, fullPath) => {
-              const relPath = fullPath.replace(srcPath, '');
-              signale.info(`[${event}] ${join(srcPath, relPath)}`);
-              if (!existsSync(fullPath)) return;
-              if (statSync(fullPath).isFile()) {
-                createStream([fullPath]);
-              }
-            });
-        }
-        resolve();
-      });
+    ]).on('end', () => {
+      if (watch) {
+        signale.info('Start watch', srcPath);
+        chokidar
+          .watch(srcPath, {
+            ignoreInitial: true,
+          })
+          .on('all', (event, fullPath) => {
+            const relPath = fullPath.replace(srcPath, '');
+            signale.info(`[${event}] ${join(srcPath, relPath)}`);
+            if (!existsSync(fullPath)) return;
+            if (statSync(fullPath).isFile()) {
+              createStream([fullPath]);
+            }
+          });
+      }
+      resolve();
+    });
   });
 }

@@ -29,6 +29,7 @@ const successValidates = {
   autoprefixer: [{}],
   namedExports: [{}],
   runtimeHelpers: [true, false],
+  target: ['node', 'browser'],
   overridesByEntry: [{}],
   doc: [{}],
 };

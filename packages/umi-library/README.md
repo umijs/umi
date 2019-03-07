@@ -2,7 +2,7 @@
 
 Library toolkit based on rollup and docz.
 
-[![NPM version](https://img.shields.io/npm/v/umi-library.svg?style=flat)](https://npmjs.org/package/umi-plugin-mpa)](https://travis-ci.org/umijs/umi-plugin-mpa)
+[![NPM version](https://img.shields.io/npm/v/umi-library.svg?style=flat)](https://npmjs.org/package/umi-plugin-library)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-library.svg?style=flat)](https://npmjs.org/package/umi-library)
 
 ## Features
