@@ -104,6 +104,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
       ],
       plugins: [autoprefixer(autoprefixerOpts), ...extraPostCSSPlugins],
     }),
+    nodeResolve({
+      jsnext: true,
+    }),
     ...(isTypeScript
       ? [
           typescript({
@@ -158,9 +161,6 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 },
                 plugins: [
                   ...plugins,
-                  nodeResolve({
-                    jsnext: true,
-                  }),
                   replace({
                     'process.env.NODE_ENV': JSON.stringify('production'),
                   }),
@@ -188,9 +188,6 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
     case 'umd':
       // Add umd related plugins
       plugins.push(
-        nodeResolve({
-          jsnext: true,
-        }),
         commonjs({
           include: /node_modules/,
           namedExports,
