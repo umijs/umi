@@ -2,24 +2,22 @@ import { ModuleFormat, rollup, watch } from 'rollup';
 import signale from 'signale';
 import getRollupConfig from './getRollupConfig';
 import { IBundleOptions } from './types';
-import normalizeBundleOpts from "./normalizeBundleOpts";
+import normalizeBundleOpts from './normalizeBundleOpts';
 
 interface IRollupOpts {
   cwd: string;
   entry: string | string[];
   type: ModuleFormat;
   bundleOpts: IBundleOptions;
-  target?: 'browser' | 'node';
   watch?: boolean;
 }
 
 async function build(entry: string, opts: IRollupOpts) {
-  const { cwd, type, target = 'browser', bundleOpts } = opts;
+  const { cwd, type, bundleOpts } = opts;
   const rollupConfigs = getRollupConfig({
     cwd,
     type,
     entry,
-    target,
     bundleOpts: normalizeBundleOpts(entry, bundleOpts),
   });
 
@@ -46,7 +44,7 @@ async function build(entry: string, opts: IRollupOpts) {
   }
 }
 
-export default async function (opts: IRollupOpts) {
+export default async function(opts: IRollupOpts) {
   if (Array.isArray(opts.entry)) {
     const { entry: entries } = opts;
     for (const entry of entries) {

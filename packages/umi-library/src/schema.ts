@@ -82,6 +82,7 @@ export default {
     overridesByEntry: {
       type: 'object',
     },
+    target: noEmptyStr,
     doc: {
       type: 'object',
     },

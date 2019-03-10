@@ -18,7 +18,6 @@ interface IGetRollupConfigOpts {
   cwd: string;
   entry: string;
   type: ModuleFormat;
-  target: 'browser' | 'node';
   bundleOpts: IBundleOptions;
 }
 
@@ -28,12 +27,13 @@ interface IPkg {
 }
 
 export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
-  const { type, entry, cwd, target, bundleOpts } = opts;
+  const { type, entry, cwd, bundleOpts } = opts;
   const {
     umd,
     esm,
     cjs,
     file,
+    target = 'browser',
     cssModules: modules,
     extraPostCSSPlugins = [],
     extraBabelPresets = [],
