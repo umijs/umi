@@ -16,10 +16,23 @@ export default {
     if (typeof userConfig.modifyBabelRc === 'function') {
       babelrc = userConfig.modifyBabelRc(babelrc, args);
     }
+
     // 需放 class-properties 前面
-    // babelrc.plugins.unshift(
-    //   [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-    // );
+    babelrc.plugins.unshift([
+      require.resolve('@babel/plugin-proposal-decorators'),
+      { legacy: true },
+    ]);
+
+    // Support extraBabelPresets and extraBabelPlugins
+    babelrc.presets = [
+      ...babelrc.presets,
+      ...(userConfig.extraBabelPresets || []),
+    ];
+    babelrc.plugins = [
+      ...babelrc.plugins,
+      ...(userConfig.extraBabelPlugins || []),
+    ];
+
     return babelrc;
   },
   modifyBundlerConfig(config, dev, args) {
