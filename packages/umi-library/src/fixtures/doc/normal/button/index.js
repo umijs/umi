@@ -4,6 +4,10 @@ import './b.less';
 import styles from './index.module.css';
 import lStyles from './c.module.less';
 
+function bar(Component) {
+  return Component;
+}
+
 export default function(props) {
   return (
     <button

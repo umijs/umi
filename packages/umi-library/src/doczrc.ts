@@ -1,6 +1,6 @@
 import { css } from 'docz-plugin-css-temp';
 import { join } from 'path';
-import {readFileSync} from "fs";
+import { readFileSync } from 'fs';
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
@@ -12,6 +12,16 @@ const userConfig = JSON.parse(
 
 export default {
   ...userConfig.doc,
+  modifyBabelRc(babelrc, args) {
+    if (typeof userConfig.modifyBabelRc === 'function') {
+      babelrc = userConfig.modifyBabelRc(babelrc, args);
+    }
+    // 需放 class-properties 前面
+    // babelrc.plugins.unshift(
+    //   [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+    // );
+    return babelrc;
+  },
   modifyBundlerConfig(config, dev, args) {
     if (userConfig.modifyBundlerConfig) {
       config = userConfig.modifyBundlerConfig(config, dev, args);
