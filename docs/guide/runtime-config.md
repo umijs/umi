@@ -4,43 +4,39 @@ sidebarDepth: 3
 
 # Runtime Config
 
-::: warning
-This article has not been translated yet. Wan't to help us out? Click the `Edit this page on GitHub` at the end of the page.
-:::
+## Why runtime configuration?
 
-## 为什么有运行时配置？
+We do compile-time configuration via `.umirc.js`. These does cover most of the scenarios, but some are hard to achieve at compile time.
 
-我们通过 `.umirc.js` 做编译时的配置，这能覆盖大量场景，但有一些却是编译时很难触及的。
+Such as：
 
-比如：
+* Display _message_ prompts to the user if error occurs.
+* Show loading states when loading and navigating between routes.
+* Fire request to backend when page is loaded, then modify the routes based on response.
 
-* 在出错时显示个 message 提示用户
-* 在加载和路由切换时显示个 loading
-* 页面载入完成时请求后端，根据响应动态修改路由
+These are difficult or even impossible to handle at compile time.
 
-这些在编译时就很难处理，或者不能处理了。
+## Configuration
 
-## 配置方式
-
-umi 约定 `src` 目录下的 `app.js` 为运行时的配置文件。
+umi convention is that `src/app.js` is the configuration file.
 
 ```bash
 + src
-  - app.js      # 运行时配置文件
+  - app.js      # runtime configuration file
 - package.json
 ```
 
-## 配置列表
+## Available Configurations
 
 ### patchRoutes
 
-用于运行时修改路由。
+Used to modify routes at runtime.
 
-参数：
+Parameters：
 
-* routes: `Array`，路由配置
+* routes: `Array`，routing configuration
 
-e.g. 添加一个 `/foo` 的路由，
+e.g. Add route to `/foo`，
 
 ```js
 export function patchRoutes(routes) {
@@ -51,26 +47,26 @@ export function patchRoutes(routes) {
 }
 ```
 
-可能的场景：
+Usecases:
 
-* 和 `render` 配合使用，请求服务端根据响应动态更新路由
-* 修改全部路由，加上某个前缀
+* Used with `render` to request data from the server and dynamically update the route based on the response.
+* Modify all routes, by adding a prefix.
 * ...
 
-注：
+Note：
 
-1. 同样适用约定式路由
-2. 直接修改 `routes` 就好，不要返回新的路由对象
+1. The same applies to agreed routing. (NOTE not really sure what that means)
+2. Mutate `routes` directly，do note return new route objects
 
 ### render
 
-用于改写把整个应用 render 到 dom 数里的方法。
+Used to override the rendering of entire app to the DOM.
 
-参数：
+Parameters：
 
-* oldRender， `Function`，原始 render 方法，需至少被调用一次
+* oldRender， `Function`，the initial render function，needs to  be called at lease once.
 
-e.g. 延迟 1s 渲染应用，
+e.g. Delay rendering of the app by 1s,
 
 ```js
 export function render(oldRender) {
@@ -78,20 +74,20 @@ export function render(oldRender) {
 }
 ```
 
-可能的场景：
+Usecases：
 
-1. 渲染应用之前做权限校验，不通过则跳转到登录页
+1. Check permissions before rendering the app. Show login if not authorized.
 
 ### onRouteChange
 
-用于在初始加载和路由切换时做一些事情。
+Used on initial load and route changes.
 
-参数：
+Parameters：
 
 * Object
-  * location：`Object`, history 提供的 location 对象
-  * routes: `Array`, 路由配置
-  * action: `PUSH|POP|REPLACE|undefined`，初次加载时为 `undefined`
+  * location：`Object`, provided by `history`
+  * routes: `Array`, routing configuration
+  * action: `PUSH|POP|REPLACE|undefined`，`undefined` on first load.
 
 e.g.
 
@@ -101,21 +97,21 @@ export function onRouteChange({ location, routes, action }) {
 }
 ```
 
-可能的场景：
+Usecases：
 
-1. 埋点统计
+1. Navigation analytics.
 
-注：
+Note：
 
-1. 初次加载时也会执行，但 action 为 `undefined`
+1. Also runs on the first load，but `action` is `undefined`
 
 ### rootContainer
 
-用于封装 root container，可以取一部分，或者外面套一层，等等。
+Used to wrap the root container，you can take a part, or a layer outside and so on.
 
-参数：
+Parameters：
 
-* container，`ReactComponent`，React 应用最上层的根组件
+* container，`ReactComponent`，React application root component
 
 e.g.
 
@@ -126,20 +122,20 @@ export function rootContainer(container) {
 }
 ```
 
-可能的场景：
+Usecases：
 
-1. dva、intl 等需要在外层有个 Provider 的场景
+1. dva、intl, etc. need to have `Provider` in the outer layer.
 
 ### modifyRouteProps
 
-修改传给路由组件的 props。
+Modify the props passed to the routing component
 
-参数：
+Parameters：
 
-* props，`Object`，原始 props
+* props，`Object`，original props
 
 * Object
-  * route，`Object`，当前路由配置
+  * route，`Object`，current routing configuration
 
 e.g.
 
@@ -149,7 +145,7 @@ export function modifyRouteProps(props, { route }) {
 }
 ```
 
-注：
+Note：
 
-1. 需返回新的 props
+1. Has to return new `props`
 
