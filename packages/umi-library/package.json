@@ -21,6 +21,7 @@
     "chalk": "2.4.2",
     "chokidar": "2.1.2",
     "docz": "0.13.7",
+    "docz-core": "0.13.7",
     "docz-plugin-css-temp": "0.13.1",
     "docz-theme-default": "0.13.7",
     "extend2": "1.0.0",

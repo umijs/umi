@@ -1,3 +1,5 @@
+import { Config as IDoczConfig } from 'docz-core';
+
 export type BundleType = 'rollup' | 'babel';
 
 interface IBundleTypeOutput {
@@ -41,6 +43,7 @@ export interface IBundleOptions {
   overridesByEntry?: {
     [entry: string]: any;
   };
+  doc?: IDoczConfig;
 }
 
 export interface IOpts {
