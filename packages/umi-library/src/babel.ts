@@ -74,14 +74,16 @@ export default async function(opts: IBabelOpts) {
       })
       .pipe(
         through.obj((file, env, cb) => {
-          file.contents = Buffer.from(
-            transform({
-              file,
-              type,
-            }),
-          );
-          // .tsx? -> .js
-          file.path = file.path.replace(extname(file.path), '.js');
+          if (/\.(j|t)sx?/.test(extname(file.path))) {
+            file.contents = Buffer.from(
+              transform({
+                file,
+                type,
+              }),
+            );
+            // .tsx? -> .js
+            file.path = file.path.replace(extname(file.path), '.js');
+          }
           cb(null, file);
         }),
       )
