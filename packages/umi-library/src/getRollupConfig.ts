@@ -82,6 +82,21 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
   // umd 只要 external peerDependencies
   const externalPeerDeps = Object.keys(pkg.peerDependencies || {});
 
+  function getPkgNameByid(id) {
+    if (id.charAt(0) === '@') {
+      return id
+        .split('/')
+        .slice(0, 2)
+        .join('/');
+    } else {
+      return id.split('/')[0];
+    }
+  }
+
+  function testExternal(pkgs, id) {
+    return pkgs.includes(getPkgNameByid(id));
+  }
+
   const terserOpts = {
     compress: {
       pure_getters: true,
@@ -103,6 +118,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
         ],
       ],
       plugins: [autoprefixer(autoprefixerOpts), ...extraPostCSSPlugins],
+    }),
+    nodeResolve({
+      jsnext: true,
     }),
     ...(isTypeScript
       ? [
@@ -143,7 +161,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             ),
           },
           plugins,
-          external,
+          external: testExternal.bind(null, external),
         },
         ...(esm && (esm as any).mjs
           ? [
@@ -158,15 +176,12 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 },
                 plugins: [
                   ...plugins,
-                  nodeResolve({
-                    jsnext: true,
-                  }),
                   replace({
                     'process.env.NODE_ENV': JSON.stringify('production'),
                   }),
                   terser(terserOpts),
                 ],
-                external: externalPeerDeps,
+                external: testExternal.bind(null, externalPeerDeps),
               },
             ]
           : []),
@@ -181,16 +196,13 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             file: join(cwd, `dist/${(cjs && (cjs as any).file) || name}.js`),
           },
           plugins,
-          external,
+          external: testExternal.bind(null, external),
         },
       ];
 
     case 'umd':
       // Add umd related plugins
       plugins.push(
-        nodeResolve({
-          jsnext: true,
-        }),
         commonjs({
           include: /node_modules/,
           namedExports,
@@ -212,7 +224,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
               'process.env.NODE_ENV': JSON.stringify('development'),
             }),
           ],
-          external: externalPeerDeps,
+          external: testExternal.bind(null, externalPeerDeps),
         },
         ...(umd && umd.minFile === false
           ? []
@@ -235,7 +247,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                   }),
                   terser(terserOpts),
                 ],
-                external: externalPeerDeps,
+                external: testExternal.bind(null, externalPeerDeps),
               },
             ]),
       ];
