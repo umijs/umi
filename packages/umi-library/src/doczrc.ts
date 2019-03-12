@@ -1,6 +1,6 @@
 import { css } from 'docz-plugin-css-temp';
 import { join } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
@@ -10,7 +10,10 @@ const userConfig = JSON.parse(
   readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
 );
 
+const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
+
 export default {
+  typescript: isTypescript,
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
     if (typeof userConfig.modifyBabelRc === 'function') {
