@@ -352,8 +352,15 @@ export default {
 一些小贴士：
 
 1. 通常只要配置 `esm: "rollup"` 就够了
-2. 如果要考虑 ssr，再配上 `cjs: "rollup"`
-3. `package.json` 里配上 `sideEffects: false | string[]`，会让 webpack 的 tree-shaking 更高效
+2. cjs 和 esm 支持 rollup 和 babel 两种打包方式，rollup 是跟进 entry 把项目依赖打包在一起输出一个文件，babel 是把 src 目录转化成 lib（cjs） 或 es（esm）
+3. 如果要考虑 ssr，再配上 `cjs: "rollup"`
+4. `package.json` 里配上 `sideEffects: false | string[]`，会让 webpack 的 tree-shaking 更高效
+
+### 关于 dependencies、peerDependencies 和 external
+
+1. cjs 和 esm 格式打包方式选 rollup 时有个约定，dependencies 和 peerDependencies 里的内容会被 external
+2. esm.mjs 和 umd 格式，只有 peerDenendencies 会被 external
+3. 打包方式 babel 时无需考虑 external，因为是文件到文件的编译，不处理文件合并
 
 ## LICENSE
 
