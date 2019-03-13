@@ -89,7 +89,7 @@ export default {
 
 ### history
 
-* 类型：`String`
+* 类型：`String | [String, Object]`
 * 默认值：`browser`
 
 指定 history 类型，可选 `browser`、`hash` 和 `memory`。
