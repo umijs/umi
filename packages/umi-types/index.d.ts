@@ -160,12 +160,24 @@ export interface IAfterDevServerFunc {
   (args: { service: any }): void;
 }
 
+export interface IBeforeBlockWritingFunc {
+  (args: {
+    service: any,
+    sourcePath: string,
+    blockPath: string,
+  }): void;
+}
+
 interface IBeforeDevServer {
   (fn: IBeforeDevServerFunc): void;
 }
 
 interface IAfterDevServer {
   (fn: IAfterDevServerFunc): void;
+}
+
+interface IBeforeBlockWriting {
+  (fn: IBeforeBlockWritingFunc): void;
 }
 
 interface IOnStart {
@@ -293,6 +305,21 @@ interface IPkg {
   };
 }
 
+interface IModifyBlockFileArgs {
+  targetPath: string,
+}
+
+interface IModifyBlockTargetArgs {
+  sourceName: string,
+}
+
+export interface IBlockDependencies {
+  conflicts: [string, string, string];
+  lacks: [string, string],
+  devConflicts: [string, string, string];
+  devLacks: [string, string],
+}
+
 export interface IApi {
   /**
    * System level variable
@@ -358,6 +385,7 @@ export interface IApi {
    */
   beforeDevServer: IBeforeDevServer;
   afterDevServer: IAfterDevServer;
+  beforeBlockWriting: IBeforeBlockWriting;
   onStart: IOnStart;
   onDevCompileDone: IOnDevCompileDone;
   onOptionChange: IOnOptionChange;
@@ -405,4 +433,9 @@ export interface IApi {
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
+  _modifyBlockPackageJSONPath: IModify<string>;
+  _modifyBlockDependencies: IModify<IBlockDependencies>;
+  _modifyBlockFile: IModify<string, IModifyBlockFileArgs>;
+  _modifyBlockTarget: IModify<string, IModifyBlockTargetArgs>;
+  _modifyBlockNewRouteConfig: IModify<any>;
 }
