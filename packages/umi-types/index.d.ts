@@ -132,6 +132,20 @@ interface IModifyCommand {
   (fn: IModifyCommandFunc): void;
 }
 
+export interface IModifyHelpInfoOpts {
+  scriptName: string;
+  commands: {
+    [commandName: string]: {
+      opts: {
+        hide: boolean;
+        options: {
+          [key: string]: string;
+        };
+      };
+    };
+  };
+}
+
 /**
  * Tool class API
  * https://umijs.org/plugin/develop.html#tool-class-api
@@ -377,6 +391,7 @@ export interface IApi {
   registerCommand: IRegisterCommand;
   _registerConfig: IRegisterConfig;
   _modifyCommand: IModifyCommand;
+  _modifyHelpInfo: IModify<IModifyHelpInfoOpts>;
 
   /**
    * Tool class API
