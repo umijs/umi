@@ -272,25 +272,25 @@ interface IChangeWebpackConfig {
   (webpackConfig: object): object;
 }
 
-export interface IModifyFunc<T, U = any> {
+export interface IModifyFunc<T, U> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T, args?: U): T | T;
+  (memo: T, args: U): T | T;
 }
 
 export interface IModify<T, U = any> {
   (fn: IModifyFunc<T, U> | T): void;
 }
 
-export interface IAddFunc<T = any, U = any> {
+export interface IAddFunc<T, U> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T[], args?: U): T | T[];
+  (memo: T[], args: U): T | T[];
 }
 
-export interface IAdd<T = any, U = any> {
+export interface IAdd<T, U = any> {
   (fn: IAddFunc<T, U> | T | T[]): void;
 }
 
@@ -350,6 +350,10 @@ export interface IBlockDependencies {
   lacks: [string, string][];
   devConflicts: [string, string, string][];
   devLacks: [string, string][];
+}
+
+export interface IMiddlewareFunction {
+  (req: any, res: any, next: any): void;
 }
 
 export interface IApi {
@@ -462,10 +466,10 @@ export interface IApi {
   modifyWebpackConfig: IModify<Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig;
-  addMiddleware: IAdd;
-  addMiddlewareAhead: IAdd;
-  addMiddlewareBeforeMock: IAdd;
-  addMiddlewareAfterMock: IAdd;
+  addMiddleware: IAdd<IMiddlewareFunction>;
+  addMiddlewareAhead: IAdd<IMiddlewareFunction>;
+  addMiddlewareBeforeMock: IAdd<IMiddlewareFunction>;
+  addMiddlewareAfterMock: IAdd<IMiddlewareFunction>;
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
