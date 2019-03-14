@@ -4,6 +4,7 @@ const { existsSync } = require('fs');
 const { join } = require('path');
 const yParser = require('yargs-parser');
 const chalk = require('chalk');
+const assert = require('assert');
 const signale = require('signale');
 
 // print version and @local
@@ -23,17 +24,38 @@ updater({ pkg }).notify({ defer: true });
 
 const cwd = process.cwd();
 
+async function doc(args) {
+  const cmd = args._[1];
+  assert.ok(
+    ['build', 'dev', 'deploy'].includes(cmd),
+    `Invalid subCommand ${cmd}`,
+  );
+
+  switch (cmd) {
+    case 'build':
+    case 'dev':
+      return await require('../lib/doc')
+        .devOrBuild({
+          cwd,
+          cmd: args._[1],
+          // extra args to docz
+          params: process.argv.slice(4),
+        });
+    case 'deploy':
+      return await require('../lib/doc')
+        .deploy({
+          cwd,
+          args,
+        });
+  }
+}
+
 switch (args._[0]) {
   case 'build':
     build();
     break;
   case 'doc':
-    require('../lib/doc').default({
-      cwd,
-      cmd: args._[1],
-      // extra args to docz
-      params: process.argv.slice(4),
-    }).catch(e => {
+    doc(args).catch(e => {
       signale.error(e);
       process.exit(1);
     });

@@ -5,16 +5,12 @@ import { join } from 'path';
 import { writeFileSync, existsSync } from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import ghpages from 'gh-pages';
+import chalk from 'chalk';
+import { merge } from 'lodash';
 import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
-import chalk from 'chalk';
 
-export default function({ cwd, cmd, params = [] }) {
-  assert.ok(
-    ['build', 'dev', 'deploy'].includes(cmd),
-    `Invalid subCommand ${cmd}`,
-  );
-
+export function devOrBuild({ cwd, cmd, params, docConfig }) {
   process.chdir(cwd);
 
   // register babel for config files
@@ -23,7 +19,9 @@ export default function({ cwd, cmd, params = [] }) {
     only: CONFIG_FILES,
   });
 
+  // get user config and write
   const userConfig = getUserConfig({ cwd });
+  userConfig.doc = merge(userConfig.doc || {}, docConfig || {});
   mkdirp(join(cwd, '.docz'));
   writeFileSync(
     join(cwd, '.docz', '.umirc.library.json'),
@@ -31,14 +29,6 @@ export default function({ cwd, cmd, params = [] }) {
     'utf-8',
   );
 
-  if (cmd === 'deploy') {
-    return deploy(cwd, params);
-  } else {
-    return devOrBuild(cmd, params);
-  }
-}
-
-function devOrBuild(cmd, params) {
   return new Promise((resolve, reject) => {
     const binPath = resolveBin('docz');
     assert.ok(
@@ -56,7 +46,7 @@ export default {
       `.trim(),
     );
 
-    // test 时在 src 下没有 doczrc.js
+    // test 时走 src/doc.ts，这时没有 doczrc.js
     if (__dirname.endsWith('src')) {
       params.push('--config', join(__dirname, '../lib/doczrc.js'));
     } else {
@@ -80,14 +70,14 @@ export default {
   });
 }
 
-function deploy(cwd: string, params = {}) {
+export function deploy({ cwd, args }) {
   return new Promise((resolve, reject) => {
     const distDir = join(cwd, '.docz/dist');
     assert.ok(
       existsSync(distDir),
       `Please run ${chalk.green(`umi-lib doc build`)} first`,
     );
-    ghpages.publish(distDir, params, err => {
+    ghpages.publish(distDir, args, err => {
       if (err) {
         reject(new Error(`Doc deploy failed. ${err.message}`));
       } else {

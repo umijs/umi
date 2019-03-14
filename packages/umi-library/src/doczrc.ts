@@ -42,6 +42,8 @@ export default {
 
     // do not generate doc sourcemap
     config.devtool = false;
+    config.resolve.modules.push(join(__dirname, '../node_modules'));
+    config.resolveLoader.modules.push(join(__dirname, '../node_modules'));
 
     // support disable minimize via process.env.COMPRESS
     if (process.env.COMPRESS === 'none') {

@@ -347,6 +347,34 @@ export default {
 }
 ```
 
+#### doc.htmlContext
+
+此配置在 docz 中没有标明，但是却是支持的，可用于扩展 html 模板。
+
+```js
+export default {
+  doc: {
+    htmlContext: {
+      head: {
+        favicon: '',
+        meta: [],
+        links: [
+          { rel: 'stylesheet', href: 'foo.css' },
+        ],
+        scripts: [
+          { src: 'bar.js' },
+        ],
+      },
+      body: {
+        scripts: [
+          { src: 'hoo.js' },
+        ],
+      },
+    },
+  }
+};
+```
+
 ## Bonus
 
 一些小贴士：
