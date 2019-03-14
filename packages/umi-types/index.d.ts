@@ -279,7 +279,7 @@ export interface IModifyFunc<T, U> {
   (memo: T, args: U): T | T;
 }
 
-export interface IModify<T, U = any> {
+export interface IModify<T, U = {}> {
   (fn: IModifyFunc<T, U> | T): void;
 }
 
@@ -290,7 +290,7 @@ export interface IAddFunc<T, U> {
   (memo: T[], args: U): T | T[];
 }
 
-export interface IAdd<T, U = any> {
+export interface IAdd<T, U = {}> {
   (fn: IAddFunc<T, U> | T | T[]): void;
 }
 
