@@ -32,7 +32,7 @@ export default function(opts = {}) {
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
-    testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
+    testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupFilesAfterEnv: [require.resolve('./jasmine')],
     moduleNameMapper: {
