@@ -132,6 +132,20 @@ interface IModifyCommand {
   (fn: IModifyCommandFunc): void;
 }
 
+export interface IModifyHelpInfoOpts {
+  scriptName: string;
+  commands: {
+    [commandName: string]: {
+      opts: {
+        hide: boolean;
+        options: {
+          [key: string]: string;
+        };
+      };
+    };
+  };
+}
+
 /**
  * Tool class API
  * https://umijs.org/plugin/develop.html#tool-class-api
@@ -258,25 +272,25 @@ interface IChangeWebpackConfig {
   (webpackConfig: object): object;
 }
 
-export interface IModifyFunc<T = any, U = any> {
+export interface IModifyFunc<T, U> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T | undefined, args?: U): T | any;
+  (memo: T, args: U): T | T;
 }
 
-export interface IModify<T = any, U = any> {
+export interface IModify<T, U = {}> {
   (fn: IModifyFunc<T, U> | T): void;
 }
 
-export interface IAddFunc<T = any, U = any> {
+export interface IAddFunc<T, U> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T[] | undefined, args?: U): T | T[];
+  (memo: T[], args: U): T | T[];
 }
 
-export interface IAdd<T = any, U = any> {
+export interface IAdd<T, U = {}> {
   (fn: IAddFunc<T, U> | T | T[]): void;
 }
 
@@ -338,6 +352,10 @@ export interface IBlockDependencies {
   devLacks: [string, string][];
 }
 
+export interface IMiddlewareFunction {
+  (req: any, res: any, next: any): void;
+}
+
 export interface IApi {
   /**
    * System level variable
@@ -377,6 +395,7 @@ export interface IApi {
   registerCommand: IRegisterCommand;
   _registerConfig: IRegisterConfig;
   _modifyCommand: IModifyCommand;
+  _modifyHelpInfo: IModify<IModifyHelpInfoOpts>;
 
   /**
    * Tool class API
@@ -447,10 +466,10 @@ export interface IApi {
   modifyWebpackConfig: IModify<Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig;
-  addMiddleware: IAdd;
-  addMiddlewareAhead: IAdd;
-  addMiddlewareBeforeMock: IAdd;
-  addMiddlewareAfterMock: IAdd;
+  addMiddleware: IAdd<IMiddlewareFunction>;
+  addMiddlewareAhead: IAdd<IMiddlewareFunction>;
+  addMiddlewareBeforeMock: IAdd<IMiddlewareFunction>;
+  addMiddlewareAfterMock: IAdd<IMiddlewareFunction>;
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
