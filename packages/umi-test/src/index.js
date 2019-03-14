@@ -28,12 +28,11 @@ export default function(opts = {}) {
     ],
     resolver: require.resolve('jest-pnp-resolver'),
     transform: {
-      '\\.jsx?$': require.resolve('./transformers/jsTransformer'),
-      '\\.tsx?$': require.resolve('./transformers/tsTransformer'),
+      '\\.(t|j)sx?$': require.resolve('./transformers/jsTransformer'),
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
-    testMatch: ['**/?(*.)(spec|test|e2e).(j|t)s?(x)'],
+    testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupFilesAfterEnv: [require.resolve('./jasmine')],
     moduleNameMapper: {
@@ -44,6 +43,7 @@ export default function(opts = {}) {
       ...(moduleNameMapper || {}),
       ...(userModuleNameMapper || {}),
     },
+    testPathIgnorePatterns: ['/node_modules/'],
     ...(restUserJestConfig || {}),
   };
 
@@ -59,7 +59,6 @@ export default function(opts = {}) {
       .then(result => {
         debug(result);
         const { results } = result;
-        // const success = results.every(result => result.success);
         if (results.success) {
           resolve();
         } else {
