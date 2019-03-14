@@ -1,8 +1,12 @@
 import babelJest from 'babel-jest';
 import { dirname } from 'path';
+import { compatDirname } from 'umi-utils';
+
+const cwd = process.cwd();
 
 module.exports = babelJest.createTransformer({
   presets: [
+    require.resolve('@babel/preset-typescript'),
     [
       require.resolve('babel-preset-umi'),
       {
@@ -15,13 +19,21 @@ module.exports = babelJest.createTransformer({
       require.resolve('babel-plugin-module-resolver'),
       {
         alias: {
-          'ts-jest': require.resolve('ts-jest'),
-          react: dirname(require.resolve('react/package')),
-          'react-dom': dirname(require.resolve('react-dom/package')),
-          enzyme: require.resolve('enzyme'),
+          // Projects don't need to install react, react-dom and enzyme
+          react: compatDirname(
+            'react/package',
+            cwd,
+            dirname(require.resolve('react/package.json')),
+          ),
+          'react-dom': compatDirname(
+            'react-dom/package',
+            cwd,
+            dirname(require.resolve('react-dom/package.json')),
+          ),
+          enzyme: compatDirname('enzyme', cwd, require.resolve('enzyme')),
         },
       },
-      'module-resolver-in-umi-test',
+      'umi-test',
     ],
   ],
 });
