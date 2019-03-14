@@ -165,11 +165,13 @@ export interface IAfterDevServerFunc {
 }
 
 export interface IBeforeBlockWritingFunc {
-  (args: {
-    service: any,
-    sourcePath: string,
-    blockPath: string,
-  }): void;
+  (
+    args: {
+      service: any;
+      sourcePath: string;
+      blockPath: string;
+    },
+  ): void;
 }
 
 interface IBeforeDevServer {
@@ -322,18 +324,18 @@ interface IPkg {
 }
 
 interface IModifyBlockFileArgs {
-  targetPath: string,
+  targetPath: string;
 }
 
 interface IModifyBlockTargetArgs {
-  sourceName: string,
+  sourceName: string;
 }
 
 export interface IBlockDependencies {
-  conflicts: [string, string, string];
-  lacks: [string, string],
-  devConflicts: [string, string, string];
-  devLacks: [string, string],
+  conflicts: [string, string, string][];
+  lacks: [string, string][];
+  devConflicts: [string, string, string][];
+  devLacks: [string, string][];
 }
 
 export interface IApi {
