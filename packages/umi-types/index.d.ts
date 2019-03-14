@@ -272,14 +272,14 @@ interface IChangeWebpackConfig {
   (webpackConfig: object): object;
 }
 
-export interface IModifyFunc<T = any, U = any> {
+export interface IModifyFunc<T, U = any> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T | undefined, args?: U): T | any;
+  (memo: T, args?: U): T | T;
 }
 
-export interface IModify<T = any, U = any> {
+export interface IModify<T, U = any> {
   (fn: IModifyFunc<T, U> | T): void;
 }
 
@@ -287,7 +287,7 @@ export interface IAddFunc<T = any, U = any> {
   /**
    * https://umijs.org/plugin/develop.html#registermethod
    */
-  (memo: T[] | undefined, args?: U): T | T[];
+  (memo: T[], args?: U): T | T[];
 }
 
 export interface IAdd<T = any, U = any> {
