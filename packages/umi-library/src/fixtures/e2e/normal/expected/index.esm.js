@@ -35,17 +35,9 @@ styleInject(css);
 var css$1 = ".b {\n  border: 2px solid #ccc;\n}\n";
 styleInject(css$1);
 
-var css$2 = "\n.index-module_button__5oOpH {\n  color: red;\n}\n";
-var styles = {"button":"index-module_button__5oOpH"};
-styleInject(css$2);
-
-var css$3 = ".c-module_p__Owge1 {\n  padding: 12px;\n}\n";
-var lStyles = {"p":"c-module_p__Owge1"};
-styleInject(css$3);
-
 function index (props) {
   return React.createElement("button", {
-    className: "".concat(styles.button, " g b ").concat(lStyles.p),
+    className: "g b",
     style: {
       fontSize: props.size === 'large' ? 40 : 20
     }
