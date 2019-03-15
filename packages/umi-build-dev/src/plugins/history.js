@@ -1,5 +1,9 @@
 import assert from 'assert';
 
+function getHistoryConfig(val) {
+  return Array.isArray(val) ? val : [val];
+}
+
 export default function(api) {
   const { config } = api.service;
 
@@ -8,9 +12,11 @@ export default function(api) {
       return {
         name: 'history',
         validate(val) {
+          const [historyType] = getHistoryConfig(val);
+
           assert(
-            ['browser', 'hash', 'memory'].includes(val),
-            `history should be browser or hash, but got ${val}`,
+            ['browser', 'hash', 'memory'].includes(historyType),
+            `history should be browser or hash, but got ${historyType}`,
           );
         },
         onChange() {
@@ -21,9 +27,12 @@ export default function(api) {
   });
 
   api.modifyEntryHistory(memo => {
-    if (config.history === 'hash') {
-      return `require('history/createHashHistory').default()`;
-    } else if (config.history === 'memory') {
+    const [historyType, opts] = getHistoryConfig(config.history);
+
+    if (historyType === 'hash') {
+      const hashOpts = JSON.stringify(opts || {});
+      return `require('history/createHashHistory').default(${hashOpts})`;
+    } else if (historyType === 'memory') {
       return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
     }
     return memo;

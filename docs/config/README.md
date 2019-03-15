@@ -89,7 +89,7 @@ export default {
 
 ### history
 
-* Type: `String`
+* Type: `String | [String, Object]`
 * Default: `browser`
 
 Specify the history type, including `browser`, `hash` and `memory`.
