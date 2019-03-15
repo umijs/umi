@@ -17,8 +17,8 @@ function findPkg(path, cwd) {
   const pkgPath = join(cwd, 'package.json');
   const library = path.split('/')[0];
   if (existsSync(pkgPath)) {
-    const { dependencies = {} } = require(pkgPath); // eslint-disable-line
-    if (dependencies[library]) {
+    const { dependencies = {}, devDependencies = {} } = require(pkgPath); // eslint-disable-line
+    if (dependencies[library] || devDependencies[library]) {
       const pkgPath = dirname(join(cwd, 'node_modules', path));
       if (existsSync(pkgPath)) {
         return pkgPath;

@@ -30,7 +30,16 @@ module.exports = babelJest.createTransformer({
             cwd,
             dirname(require.resolve('react-dom/package.json')),
           ),
-          enzyme: compatDirname('enzyme', cwd, require.resolve('enzyme')),
+          enzyme: compatDirname(
+            'enzyme/package.json',
+            cwd,
+            require.resolve('enzyme'),
+          ),
+          'enzyme-adapter-react-16': compatDirname(
+            'enzyme-adapter-react-16/package.json',
+            cwd,
+            require.resolve('enzyme-adapter-react-16'),
+          ),
         },
       },
       'umi-test',
