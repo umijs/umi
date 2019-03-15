@@ -9,7 +9,6 @@ function assertDocz(cwd) {
   expect(existsSync(join(absDirPath))).toEqual(true);
   expect(existsSync(join(absDirPath, 'index.html'))).toEqual(true);
   expect(existsSync(join(absDirPath, 'assets.json'))).toEqual(true);
-  expect(existsSync(join(absDirPath, 'static/js/app.js'))).toEqual(true);
 }
 
 describe('umi-library doc build', () => {
