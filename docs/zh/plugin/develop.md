@@ -341,6 +341,17 @@ api.onBuildSuccess(({ stats }) => {
 });
 ```
 
+### onBuildSuccessAsync
+
+onBuildSuccess 的异步版。
+
+```js
+api.onBuildSuccessAsync(async ({ stats }) => {
+  yield delay(1000);
+  console.log(stats);
+});
+```
+
 ### onBuildFail
 
 在 `umi build` 失败的时候。

@@ -341,6 +341,17 @@ api.onBuildSuccess(({ stats })=> {
 });
 ```
 
+### onBuildSuccessAsync
+
+The async version of onBuildSuccess.
+
+```js
+api.onBuildSuccessAsync(async ({ stats }) => {
+  yield delay(1000);
+  console.log(stats);
+});
+```
+
 ### onBuildFail
 
 When the `umi build` failed.
