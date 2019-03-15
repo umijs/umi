@@ -236,6 +236,10 @@ interface IOnBuildSuccess {
   (fn: IOnBuildSuccessFunc): void;
 }
 
+interface IOnBuildSuccessAsync {
+  (fn: IOnBuildSuccessFunc): Promise<any>;
+}
+
 export interface IOnBuildFailFunc {
   (args: { stats: Stats; err: Error }): void;
 }
@@ -430,6 +434,7 @@ export interface IApi {
   onDevCompileDone: IOnDevCompileDone;
   onOptionChange: IOnOptionChange;
   onBuildSuccess: IOnBuildSuccess;
+  onBuildSuccessAsync: IOnBuildSuccessAsync;
   onBuildFail: IOnBuildFail;
   onHTMLRebuild: IOnHTMLRebuild;
   onGenerateFiles: IOnGenerateFiles;

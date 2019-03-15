@@ -52,13 +52,21 @@ export default function(api) {
                   stats,
                 },
               });
-              debug('Build success end');
+              service
+                ._applyPluginsAsync('onBuildSuccessAsync', {
+                  args: {
+                    stats,
+                  },
+                })
+                .then(() => {
+                  debug('Build success end');
 
-              notify.onBuildComplete(
-                { name: 'umi', version: 2 },
-                { err: null },
-              );
-              resolve();
+                  notify.onBuildComplete(
+                    { name: 'umi', version: 2 },
+                    { err: null },
+                  );
+                  resolve();
+                });
             },
             onFail({ err, stats }) {
               service.applyPlugins('onBuildFail', {
