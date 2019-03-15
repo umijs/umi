@@ -51,5 +51,13 @@ describe('umi-library doc build', () => {
         });
       });
     },
+    replaceContent(content) {
+      return content
+        .replace(
+          /\/\*! ModuleConcatenation bailout:[^\n]+/g,
+          '/*! $ModuleConcatenation bailout$',
+        )
+        .replace(/var imports=\{[^\n]+/g, '$imports$');
+    },
   });
 });
