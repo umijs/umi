@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { fork } from 'child_process';
-import { existsSync, renameSync } from 'fs';
+import { existsSync, readFileSync, renameSync, writeFileSync } from 'fs';
 
 const binPath = join(__dirname, '../bin/umi-library.js');
 
@@ -25,8 +25,25 @@ describe('umi-library doc build', () => {
             expect(code).toEqual(0);
 
             const absDirPath = join(cwd, '.docz/dist');
+            const targetPath = join(cwd, 'dist/docz');
+
             if (existsSync(absDirPath)) {
-              renameSync(absDirPath, join(cwd, 'dist/docz'));
+              renameSync(absDirPath, targetPath);
+              const assetsJSONPath = join(targetPath, 'assets.json');
+              const json = JSON.parse(readFileSync(assetsJSONPath, 'utf-8'));
+              const sortedJSON = Object.keys(json)
+                .sort()
+                .reduce((memo, key) => {
+                  return {
+                    ...memo,
+                    [key]: json[key],
+                  };
+                }, {});
+              writeFileSync(
+                assetsJSONPath,
+                JSON.stringify(sortedJSON, null, 2),
+                'utf-8',
+              );
             } else {
               throw new Error(`.docz/dist not exists`);
             }
