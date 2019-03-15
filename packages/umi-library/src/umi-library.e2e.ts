@@ -1,29 +1,15 @@
 import { join } from 'path';
 import { fork } from 'child_process';
-import { existsSync, readFileSync, renameSync, writeFileSync } from 'fs';
+import { existsSync } from 'fs';
 
 const binPath = join(__dirname, '../bin/umi-library.js');
 
 function assertDocz(cwd) {
   const absDirPath = join(cwd, '.docz/dist');
-  const targetPath = join(cwd, 'dist/docz');
-
-  if (existsSync(absDirPath)) {
-    renameSync(absDirPath, targetPath);
-    const assetsJSONPath = join(targetPath, 'assets.json');
-    const json = JSON.parse(readFileSync(assetsJSONPath, 'utf-8'));
-    const sortedJSON = Object.keys(json)
-      .sort()
-      .reduce((memo, key) => {
-        return {
-          ...memo,
-          [key]: json[key],
-        };
-      }, {});
-    writeFileSync(assetsJSONPath, JSON.stringify(sortedJSON, null, 2), 'utf-8');
-  } else {
-    throw new Error(`.docz/dist not exists`);
-  }
+  expect(existsSync(join(absDirPath))).toEqual(true);
+  expect(existsSync(join(absDirPath, 'index.html'))).toEqual(true);
+  expect(existsSync(join(absDirPath, 'assets.json'))).toEqual(true);
+  expect(existsSync(join(absDirPath, 'static/js/app.js'))).toEqual(true);
 }
 
 describe('umi-library doc build', () => {
@@ -50,14 +36,6 @@ describe('umi-library doc build', () => {
           });
         });
       });
-    },
-    replaceContent(content) {
-      return content
-        .replace(
-          /\/\*! ModuleConcatenation bailout:[^\n]+/g,
-          '/*! $ModuleConcatenation bailout$',
-        )
-        .replace(/var imports=\{[^\n]+/g, '$imports$');
     },
   });
 });
