@@ -1,4 +1,4 @@
-import { css } from 'docz-plugin-css-temp';
+import { css } from 'docz-plugin-umi-css';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 
@@ -9,6 +9,8 @@ const cwd = process.cwd();
 const userConfig = JSON.parse(
   readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
 );
+
+const isTest = process.env.IS_TEST;
 
 export default {
   ...userConfig.doc,
@@ -45,6 +47,11 @@ export default {
     config.resolve.modules.push(join(__dirname, '../node_modules'));
     config.resolveLoader.modules.push(join(__dirname, '../node_modules'));
 
+    if (isTest) {
+      config.output.filename = 'static/js/[name].js';
+      config.output.chunkFilename = 'static/js/[name].js';
+    }
+
     // support disable minimize via process.env.COMPRESS
     if (process.env.COMPRESS === 'none') {
       config.optimization.minimize = false;
@@ -61,6 +68,7 @@ export default {
         exclude: cssModuleRegex,
       },
       cssmodules: false,
+      disableHash: isTest,
     }),
     css({
       preprocessor: 'postcss',
@@ -68,6 +76,7 @@ export default {
         test: cssModuleRegex,
       },
       cssmodules: true,
+      disableHash: isTest,
     }),
 
     // .less
@@ -80,6 +89,7 @@ export default {
       loaderOpts: {
         javascriptEnabled: true,
       },
+      disableHash: isTest,
     }),
     css({
       preprocessor: 'less',
@@ -90,6 +100,7 @@ export default {
       loaderOpts: {
         javascriptEnabled: true,
       },
+      disableHash: isTest,
     }),
   ],
 };

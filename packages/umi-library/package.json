@@ -26,7 +26,7 @@
     "chokidar": "2.1.2",
     "docz": "0.13.7",
     "docz-core": "0.13.7",
-    "docz-plugin-css-temp": "0.13.1",
+    "docz-plugin-umi-css": "0.14.0",
     "docz-theme-default": "0.13.7",
     "extend2": "1.0.0",
     "gh-pages": "2.0.1",

@@ -1,10 +1,10 @@
 {
-  "vendors.js": "/static/js/vendors.b50f0adf.js",
-  "app.js": "/static/js/app.85c60d8f.js",
-  "button-index.css": "/static/css/button-index.e04667b69aa8e1c9a4a5.css",
-  "button-index.js": "/static/js/button-index.2b8e4e1f.js",
-  "readme.js": "/static/js/readme.e87252eb.js",
-  "runtime~app.js": "/static/js/runtime~app.e04667b69aa8e1c9a4a5.js",
-  "static/js/5.37c631f9.js": "/static/js/5.37c631f9.js",
+  "vendors.js": "/static/js/vendors.js",
+  "app.js": "/static/js/app.js",
+  "button-index.css": "/static/css/button-index.css",
+  "button-index.js": "/static/js/button-index.js",
+  "readme.js": "/static/js/readme.js",
+  "runtime~app.js": "/static/js/runtime~app.js",
+  "static/js/5.js": "/static/js/5.js",
   "index.html": "/index.html"
 }

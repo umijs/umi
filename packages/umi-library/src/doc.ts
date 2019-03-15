@@ -59,7 +59,10 @@ export default {
     if (params.includes('-h')) {
       params.push('--help');
     }
-    const child = fork(binPath, [cmd, ...params]);
+    const child = fork(binPath, [cmd, ...params], {
+      cwd,
+      env: process.env,
+    });
     child.on('exit', code => {
       if (code === 1) {
         reject(new Error('Doc build failed'));
