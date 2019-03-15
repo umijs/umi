@@ -19,7 +19,7 @@ Library toolkit based on rollup and docz.
 
 ## Installation
 
-Install umi-library via yarn or npm.
+Install `umi-library` via yarn or npm.
 
 ```bash
 $ yarn add umi-library
@@ -34,7 +34,7 @@ $ umi-library build
 # umi-lib is the alias for umi-library
 $ umi-lib build
 
-# dev the doc
+# dev with doc
 $ umi-lib doc dev
 
 # build doc
