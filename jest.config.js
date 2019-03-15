@@ -12,6 +12,7 @@ module.exports = {
     '/packages/umi-library/src/fixtures',
     '/packages/umi/test/fixtures',
   ],
+  setupFilesAfterEnv: ['./jasmine.js'],
   collectCoverageFrom: ['packages/**/src/**/*.{js,jsx}'],
   coveragePathIgnorePatterns: [
     '/packages/umi-plugin-dva/src/fixtures',

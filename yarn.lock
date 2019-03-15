@@ -9526,10 +9526,10 @@ temp-write@^3.4.0:
     temp-dir "^1.0.0"
     uuid "^3.0.1"
 
-test-build-result@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/test-build-result/-/test-build-result-1.1.0.tgz#ee1f8cce4e32d0d32ac3fdff2c415aea8d049614"
-  integrity sha512-Q+/Pp7xwpPtGCZC8veG73xcv3wlPwITDf9SorApKi/Br8tSmTqd9ILj9zA0llQZU5w4dt05DXGVdbUx15Xq+rA==
+test-build-result@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/test-build-result/-/test-build-result-1.1.1.tgz#7ca5dc2688e0d5c7f6d310d65fa58b9a992fc416"
+  integrity sha512-0DaIQsTOFYX5p9FbH7uWkhMgMnU3v6zotBV981we3jEj1TW42Wzdo69KZMpi3X5jO3smuj/0LnBfcf313hkYxA==
   dependencies:
     fs-extra "^7.0.1"
     glob "^7.1.3"
