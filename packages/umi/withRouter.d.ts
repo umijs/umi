@@ -1,6 +1,8 @@
 import { withRouter, RouteComponentProps, RouteProps, match } from 'react-router-dom';
 
-interface RouteType extends Pick<RouteProps, 'component' | 'exact' | 'path'> {
+type ExcludeRoute = 'component' | 'exact' | 'path';
+
+interface RouteType extends Pick<RouteProps, ExcludeRoute> {
   _title?: string;
   _title_default?: string;
 }
