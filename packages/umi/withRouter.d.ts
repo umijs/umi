@@ -1,13 +1,13 @@
 import { withRouter, RouteComponentProps, RouteProps, match } from 'react-router-dom';
 
-interface RouteTypes extends Pick<RouteProps, 'component' | 'exact' | 'path'> {
+interface RouteType extends Pick<RouteProps, 'component' | 'exact' | 'path'> {
   _title?: string;
   _title_default?: string;
 }
 
 export interface RouterTypes extends RouteComponentProps {
   computedMatch?: match;
-  route?: RouteTypes;
+  route?: RouteType;
 }
 
 export default withRouter;
