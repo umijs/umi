@@ -61,7 +61,7 @@ Object.defineProperty(location, 'reload', {
   },
 });
 
-describe('test umi/locale', () => {
+describe('test umi-plugin-locale', () => {
   test('api exist', () => {
     const wrapper = renderer.create(
       <IntlProvider locale="en">

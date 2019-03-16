@@ -1,6 +1,6 @@
 import React from 'react';
 {{#useLocale}}
-import { formatMessage } from 'umi/locale';
+import { formatMessage } from 'umi-plugin-locale';
 {{/useLocale}}
 
 export default class UmiReactTitle extends React.Component {

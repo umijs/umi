@@ -1,6 +1,6 @@
 
 {{#localeList.length}}
-import { _setIntlObject, addLocaleData, IntlProvider, intlShape } from 'umi/locale';
+import { _setIntlObject, addLocaleData, IntlProvider, intlShape } from 'umi-plugin-locale';
 
 const InjectedWrapper = (() => {
   let sfc = (props, context) => {

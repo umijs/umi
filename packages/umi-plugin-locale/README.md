@@ -75,30 +75,30 @@ export default {
 
 ## 扩展API
 
-当使用本插件后，`umi`项目中会新增一个API: `umi/locale`，你可以通过引入这个新的API，获得关于多语言功能在编程上的便利。
+使用本插件后，你可以从 umi-plugin-locale 引入国际化相关的 API，获得关于多语言功能在编程上的便利。
 
 ```javascript
-import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi/locale'
+import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi-plugin-locale';
 
 // 获取指定文字的多语言版本
 const formatedText = formatMessage({
   id: 'WELCOME_TO_UMI_WORLD'
 }, {
   name: '小伙子',
-})
+});
 
-console.log(formatedText === '小伙子，欢迎光临umi的世界')
+console.log(formatedText === '小伙子，欢迎光临umi的世界');
 
 // 设置为 en-US
-setLocale('en-US')
+setLocale('en-US');
 
 // 获取当前语言
-console.log(getLocale() === 'en-US')
+console.log(getLocale() === 'en-US');
 
 
 // 渲染一个文字标签
 function Example() {
-  return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: '小伙子' }} />
+  return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: '小伙子' }} />;
 }
 ```
 
