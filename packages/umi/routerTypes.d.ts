@@ -2,12 +2,9 @@ import { RouteComponentProps, RouteProps, match } from 'react-router-dom';
 
 type IncludeRoute = 'component' | 'exact' | 'path';
 
-interface RouteType extends Pick<RouteProps, IncludeRoute> {
-  _title?: string;
-  _title_default?: string;
-}
+type RouteType = Pick<RouteProps, IncludeRoute>;
 
-export interface RouterTypes extends RouteComponentProps {
+export default interface RouterTypes extends RouteComponentProps {
   computedMatch?: match;
-  route?: RouteType;
+  route?: Pick<RouteProps, IncludeRoute>;
 }
