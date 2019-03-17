@@ -1,6 +1,7 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
 import { Stats, Configuration } from 'webpack';
+import IWebpackChainConfig from 'webpack-chain';
 
 /**
  * System level variable
@@ -268,12 +269,16 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
+interface IChangeWebpackConfigFunc<T, U> {
+  (webpackConfig: T, AFWebpack: { webpack: U }): T | void;
+}
+
 /**
  * Application class API
  * https://umijs.org/plugin/develop.html#application-class-api
  */
-interface IChangeWebpackConfig {
-  (webpackConfig: object): object;
+export interface IChangeWebpackConfig<T, U> {
+  (fn: IChangeWebpackConfigFunc<T, U>): void;
 }
 
 export interface IModifyFunc<T, U> {
@@ -470,7 +475,7 @@ export interface IApi {
   modifyRouterRootComponent: IModify<string>;
   modifyWebpackConfig: IModify<Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
-  chainWebpackConfig: IChangeWebpackConfig;
+  chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
   addMiddlewareAhead: IAdd<IMiddlewareFunction>;
   addMiddlewareBeforeMock: IAdd<IMiddlewareFunction>;
