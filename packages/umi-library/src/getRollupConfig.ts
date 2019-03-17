@@ -8,6 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss-umi';
 import { ModuleFormat, RollupOptions } from 'rollup';
+import { camelCase } from 'lodash';
 import tempDir from 'temp-dir';
 import autoprefixer from 'autoprefixer';
 import NpmImport from 'less-plugin-npm-import';
@@ -24,6 +25,7 @@ interface IGetRollupConfigOpts {
 interface IPkg {
   dependencies?: Object;
   peerDependencies?: Object;
+  name?: string;
 }
 
 export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
@@ -216,7 +218,8 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             format,
             file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.js`),
             globals: umd && umd.globals,
-            name: umd && umd.name,
+            name:
+              (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
           },
           plugins: [
             ...plugins,
@@ -238,7 +241,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                     `dist/${(umd && umd.file) || `${name}.umd`}.min.js`,
                   ),
                   globals: umd && umd.globals,
-                  name: umd && umd.name,
+                  name:
+                    (umd && umd.name) ||
+                    (pkg.name && camelCase(basename(pkg.name))),
                 },
                 plugins: [
                   ...plugins,

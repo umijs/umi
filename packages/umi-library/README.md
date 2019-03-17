@@ -198,6 +198,9 @@ cjs 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 
 指定 rollup 的 [name](https://rollupjs.org/guide/en#output-name) 配置。
 
+* Type: `string`
+* Default: `${camelCase(basename(pkg.name))}`
+
 #### umd.minFile
 
 是否为 umd 生成压缩后的版本。
