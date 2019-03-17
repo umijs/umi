@@ -4,7 +4,7 @@ type IncludeRoute = 'component' | 'exact' | 'path';
 
 type RouteType = Pick<RouteProps, IncludeRoute>;
 
-export default interface RouterTypes extends RouteComponentProps {
+export default interface RouterTypes<T extends Object = {}> extends RouteComponentProps {
   computedMatch?: match;
-  route?: Pick<RouteProps, IncludeRoute>;
+  route?: RouteType & T;
 }
