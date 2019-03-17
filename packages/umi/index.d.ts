@@ -5,3 +5,5 @@ export {default as Redirect} from './redirect';
 export {default as dynamic} from './dynamic';
 export {default as router} from './router';
 export {default as withRouter} from './withRouter';
+
+export {default as RouterTypes} from './routerTypes';
