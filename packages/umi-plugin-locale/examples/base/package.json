@@ -6,6 +6,7 @@
     "umi": "latest"
   },
   "dependencies": {
-    "antd": "^3.7.3"
+    "antd": "^3.7.3",
+    "umi-plugin-locale": "^2.6.0"
   }
 }

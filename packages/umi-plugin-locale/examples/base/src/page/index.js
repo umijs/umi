@@ -5,7 +5,7 @@ import {
   FormattedMessage,
   formatTime,
   formatDate,
-} from 'umi/locale';
+} from 'umi-plugin-locale';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style';
 
