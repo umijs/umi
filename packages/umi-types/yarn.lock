@@ -29,6 +29,24 @@
   dependencies:
     source-map "^0.6.1"
 
+"@types/webpack-chain@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/webpack-chain/-/webpack-chain-5.0.1.tgz#8a4d7dce119088a2962bf88bda01f3e6f8a3ab57"
+  integrity sha512-/PfLJoqYH8j7Rx2VWyfs+txZl1PpRjEtbDoe2EbB6m6nHg7fORgqaFxS2RbytfV6BBmsLClJ7gWUJA/M+2FQSw==
+  dependencies:
+    "@types/webpack" "*"
+
+"@types/webpack@*":
+  version "4.4.25"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.25.tgz#c8a1eb968a33a3e6da641f529c5add0d44d34809"
+  integrity sha512-YaYVbSK1bC3xiAWFLSgDQyVHdCTNq5cLlcx633basmrwSoUxJiv4SZ0SoT1uoF15zWx98afOcCbqA1YHeCdRYA==
+  dependencies:
+    "@types/anymatch" "*"
+    "@types/node" "*"
+    "@types/tapable" "*"
+    "@types/uglify-js" "*"
+    source-map "^0.6.0"
+
 "@types/webpack@^4.4.23":
   version "4.4.24"
   resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.24.tgz#75bc301176066f566ec54151b6101c2b45abb8b2"
