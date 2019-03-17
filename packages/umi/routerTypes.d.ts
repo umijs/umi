@@ -1,4 +1,4 @@
-import { withRouter, RouteComponentProps, RouteProps, match } from 'react-router-dom';
+import { RouteComponentProps, RouteProps, match } from 'react-router-dom';
 
 type IncludeRoute = 'component' | 'exact' | 'path';
 
