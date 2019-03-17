@@ -112,7 +112,7 @@ export default {
 * Type: `string | string[]`
 * Default：`src/index.js`
 
-注：事实上，我们会依次找 `src/index.tsx`, `src/index.ts`, `src/index.jsx`, `src/index.js`，如果存在，则会作为默认的 entry。
+注：事实上，我们会依次找 `src/index.tsx`, `src/index.ts`, `src/index.jsx`, `src/index.js`，如果存在，则会作为默认的 entry。如果库文件为`typescript`，则需要在根目录配置`tsconfig.json`，否则会编译错误。
 
 #### file
 
@@ -385,7 +385,7 @@ export default {
 1. 通常只要配置 `esm: "rollup"` 就够了
 2. cjs 和 esm 支持 rollup 和 babel 两种打包方式，rollup 是跟进 entry 把项目依赖打包在一起输出一个文件，babel 是把 src 目录转化成 lib（cjs） 或 es（esm）
 3. 如果要考虑 ssr，再配上 `cjs: "rollup"`
-4. `package.json` 里配上 `sideEffects: false | string[]`，会让 webpack 的 tree-shaking 更高效
+4. `package.json` 里配上 `sideEffects: false | string[]`，会让 webpack 的 [tree-shaking](https://webpack.js.org/guides/tree-shaking/) 更高效
 
 ### 关于 dependencies、peerDependencies 和 external
 
