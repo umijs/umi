@@ -54,7 +54,7 @@ module.exports = {
         'import/resolver': {
           node: {
             // Allow import and resolve for *.ts modules.
-            extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'],
+            extensions: ['.d.ts', '.js', '.jsx', '.mjs', '.ts', '.tsx'],
           },
         },
       },
@@ -69,7 +69,7 @@ module.exports = {
           '@typescript-eslint/no-useless-constructor': 'warn',
           /** https://github.com/yannickcr/eslint-plugin-react/issues/2187 */
           'react/prefer-stateless-function': 'off',
-          'react/jsx-filename-extension': [1, { extensions: ['.ts'] }],
+          'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
         },
       ),
     },
