@@ -3634,10 +3634,10 @@ docz-core@0.13.7, docz-core@^0.13.4, docz-core@^0.13.7:
     ws "^6.1.2"
     yargs "^12.0.5"
 
-docz-plugin-css-temp@0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/docz-plugin-css-temp/-/docz-plugin-css-temp-0.13.1.tgz#3b1e0f4ac4e5fcc364b7153146e28ebeda93889d"
-  integrity sha512-uuX9eocSi6by5jrlJKUMS1QtPo4I0hCi+V2hjIhPLSGhR7I+qq3/gt1If9X6lsWQJAW2SDDo1Ui7tj06rx4rfg==
+docz-plugin-umi-css@0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/docz-plugin-umi-css/-/docz-plugin-umi-css-0.14.0.tgz#b59c3d9e5a09d7f05ca953e568bb8c4f313c567a"
+  integrity sha512-XX9mh7OJIW5kswIsDnlUhSID/REIqFjreh7TmIO0c1Pp/WQPeTnU0mkQLjYTLDoZv24Mpg9SDdCVj/yqqpisrg==
   dependencies:
     autoprefixer "^9.1.5"
     css-loader "^1.0.0"

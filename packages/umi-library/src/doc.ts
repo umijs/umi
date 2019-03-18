@@ -6,11 +6,10 @@ import { writeFileSync, existsSync } from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import ghpages from 'gh-pages';
 import chalk from 'chalk';
-import { merge } from 'lodash';
-import getUserConfig, { CONFIG_FILES } from './getUserConfig';
+import { CONFIG_FILES } from './getUserConfig';
 import registerBabel from './registerBabel';
 
-export function devOrBuild({ cwd, cmd, params, docConfig }) {
+export function devOrBuild({ cwd, cmd, params }) {
   process.chdir(cwd);
 
   // register babel for config files
@@ -19,15 +18,7 @@ export function devOrBuild({ cwd, cmd, params, docConfig }) {
     only: CONFIG_FILES,
   });
 
-  // get user config and write
-  const userConfig = getUserConfig({ cwd });
-  userConfig.doc = merge(userConfig.doc || {}, docConfig || {});
   mkdirp(join(cwd, '.docz'));
-  writeFileSync(
-    join(cwd, '.docz', '.umirc.library.json'),
-    JSON.stringify(userConfig, null, 2),
-    'utf-8',
-  );
 
   return new Promise((resolve, reject) => {
     const binPath = resolveBin('docz');
