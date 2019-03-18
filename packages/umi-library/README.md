@@ -112,7 +112,7 @@ export default {
 * Type: `string | string[]`
 * Default：`src/index.js`
 
-注：事实上，我们会依次找 `src/index.tsx`, `src/index.ts`, `src/index.jsx`, `src/index.js`，如果存在，则会作为默认的 entry。如果库文件为`typescript`，则需要在根目录配置`tsconfig.json`，否则会编译错误。
+注：事实上，我们会依次找 `src/index.tsx`, `src/index.ts`, `src/index.jsx`, `src/index.js`，如果存在，则会作为默认的 entry。如果库文件为 `typescript`，则需要在根目录配置`tsconfig.json`，否则会编译错误。
 
 #### file
 
