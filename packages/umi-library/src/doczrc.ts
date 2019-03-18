@@ -57,7 +57,7 @@ export default {
     return config;
   },
   plugins: [
-    ...(userConfig.plugins || []),
+    ...(userConfig.doc.plugins || []),
 
     // .css
     css({
