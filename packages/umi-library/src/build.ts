@@ -139,6 +139,7 @@ export async function buildForLerna(opts: IOpts) {
 
   const pkgs = readdirSync(join(opts.cwd, 'packages'));
   for (const pkg of pkgs) {
+    if (process.env.PACKAGE && pkg !== process.env.PACKAGE) continue;
     const pkgPath = join(opts.cwd, 'packages', pkg);
     assert.ok(
       existsSync(join(pkgPath, 'package.json')),

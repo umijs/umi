@@ -62,7 +62,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
       runtimeHelpers,
     }),
     runtimeHelpers,
-    exclude: 'node_modules/**',
+    exclude: /\/node_modules\//,
     babelrc: false,
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'],
