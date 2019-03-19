@@ -275,6 +275,40 @@ export default () => {
 
 默认是 ['umi']，可修改，比如做了 vendors 依赖提取之后，会需要在 umi.js 之前加载 vendors.js
 
+比如如下配置：
+
+```js
+// .umirc.js or config/config.js
+export default {
+  chainWebpack: function (config, { webpack }) {
+    config.merge({
+      optimization: {
+      minimize: true,
+      splitChunks: {
+        chunks: 'all',
+        minSize: 30000,
+        minChunks: 3,
+        automaticNameDelimiter: '.',
+        cacheGroups: {
+          vendor: {
+            name: 'vendors',
+            test({ resource }) {
+              return /[\\/]node_modules[\\/]/.test(resource);
+            },
+            priority: 10,
+          },
+        },
+      },
+    }
+    });
+  },
+  plugins: [
+    ['umi-plugin-react', {
+        chunks: ['vendors', 'umi']
+    }]
+}
+```
+
 ### scripts
 
 * 类型：`Array(Object)`
