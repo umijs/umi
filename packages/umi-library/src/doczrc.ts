@@ -1,14 +1,16 @@
 import { css } from 'docz-plugin-umi-css';
 import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
+import { merge } from 'lodash';
+import getUserConfig from './getUserConfig';
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
 
 const cwd = process.cwd();
-const userConfig = JSON.parse(
-  readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
-);
+// get user config directly from .umirc.library.js
+const userConfig = getUserConfig({ cwd });
+userConfig.doc = merge(userConfig.doc || {});
 
 if (!userConfig.doc) {
   userConfig.doc = {};
