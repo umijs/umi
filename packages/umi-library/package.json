@@ -53,11 +53,6 @@
     "vinyl-fs": "3.0.3",
     "yargs-parser": "13.0.0"
   },
-  "files": [
-    "bin",
-    "lib",
-    "src"
-  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi",
