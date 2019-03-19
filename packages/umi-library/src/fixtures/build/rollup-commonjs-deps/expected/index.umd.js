@@ -4,12 +4,12 @@
 }(function () { 'use strict';
 
   var foo = {
-    a: function a() {
+    a: function () {
       return 'a';
     },
-    b: function b() {
+    b: function () {
       return 'b';
-    }
+    },
   };
   var foo_1 = foo.a;
   var foo_2 = foo.b;
