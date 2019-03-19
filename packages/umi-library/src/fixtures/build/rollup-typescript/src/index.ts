@@ -1,4 +1,3 @@
-
 interface IOpts {
   foo: boolean;
 }
