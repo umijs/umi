@@ -1,12 +1,10 @@
 import React from 'react';
 
 function styleInject(css, ref) {
-  if (ref === void 0) ref = {};
+  if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
-  if (!css || typeof document === 'undefined') {
-    return;
-  }
+  if (!css || typeof document === 'undefined') { return; }
 
   var head = document.head || document.getElementsByTagName('head')[0];
   var style = document.createElement('style');
