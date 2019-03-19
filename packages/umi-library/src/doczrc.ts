@@ -12,14 +12,18 @@ const cwd = process.cwd();
 const userConfig = getUserConfig({ cwd });
 userConfig.doc = merge(userConfig.doc || {});
 
+if (!userConfig.doc) {
+  userConfig.doc = {};
+}
+
 const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
 
 export default {
   typescript: isTypescript,
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
-    if (typeof userConfig.modifyBabelRc === 'function') {
-      babelrc = userConfig.modifyBabelRc(babelrc, args);
+    if (typeof userConfig.doc.modifyBabelRc === 'function') {
+      babelrc = userConfig.doc.modifyBabelRc(babelrc, args);
     }
 
     // 需放 class-properties 前面
@@ -41,8 +45,8 @@ export default {
     return babelrc;
   },
   modifyBundlerConfig(config, dev, args) {
-    if (userConfig.modifyBundlerConfig) {
-      config = userConfig.modifyBundlerConfig(config, dev, args);
+    if (userConfig.doc.modifyBundlerConfig) {
+      config = userConfig.doc.modifyBundlerConfig(config, dev, args);
     }
 
     // do not generate doc sourcemap
@@ -59,42 +63,84 @@ export default {
   plugins: [
     ...(userConfig.doc.plugins || []),
 
-    // .css
-    css({
-      preprocessor: 'postcss',
-      ruleOpts: {
-        exclude: cssModuleRegex,
-      },
-      cssmodules: false,
-    }),
-    css({
-      preprocessor: 'postcss',
-      ruleOpts: {
-        test: cssModuleRegex,
-      },
-      cssmodules: true,
-    }),
+    ...(userConfig.cssModules
+      ? [
+          // .css
+          css({
+            preprocessor: 'postcss',
+            ruleOpts: {
+              exclude: /node_modules\/.*\.css$/,
+            },
+            cssmodules: true,
+          }),
+          css({
+            preprocessor: 'postcss',
+            ruleOpts: {
+              test: /node_modules\/.*\.css$/,
+            },
+            cssmodules: false,
+          }),
 
-    // .less
-    css({
-      preprocessor: 'less',
-      ruleOpts: {
-        exclude: lessModuleRegex,
-      },
-      cssmodules: false,
-      loaderOpts: {
-        javascriptEnabled: true,
-      },
-    }),
-    css({
-      preprocessor: 'less',
-      ruleOpts: {
-        test: lessModuleRegex,
-      },
-      cssmodules: true,
-      loaderOpts: {
-        javascriptEnabled: true,
-      },
-    }),
+          // .less
+          css({
+            preprocessor: 'less',
+            ruleOpts: {
+              exclude: /node_modules\/.*\.less$/,
+            },
+            cssmodules: true,
+            loaderOpts: {
+              javascriptEnabled: true,
+            },
+          }),
+          css({
+            preprocessor: 'less',
+            ruleOpts: {
+              test: /node_modules\/.*\.less$/,
+            },
+            cssmodules: false,
+            loaderOpts: {
+              javascriptEnabled: true,
+            },
+          }),
+        ]
+      : [
+          // .css
+          css({
+            preprocessor: 'postcss',
+            ruleOpts: {
+              exclude: cssModuleRegex,
+            },
+            cssmodules: false,
+          }),
+          css({
+            preprocessor: 'postcss',
+            ruleOpts: {
+              test: cssModuleRegex,
+            },
+            cssmodules: true,
+          }),
+
+          // .less
+          css({
+            preprocessor: 'less',
+            ruleOpts: {
+              exclude: lessModuleRegex,
+            },
+            cssmodules: false,
+            loaderOpts: {
+              javascriptEnabled: true,
+            },
+          }),
+          css({
+            preprocessor: 'less',
+            ruleOpts: {
+              test: lessModuleRegex,
+            },
+            cssmodules: true,
+            loaderOpts: {
+              javascriptEnabled: true,
+            },
+          }),
+        ]),
   ],
 };
