@@ -313,7 +313,7 @@ export default {
 
 * 类型：`Array(Object)`
 
-放在 `<head>` 里，在 umi.js 之后，可使用 <%= PUBLIC_PATH %> 指向 publicPath
+放在 `<body>` 里，在 umi.js 之后，可使用 <%= PUBLIC_PATH %> 指向 publicPath
 
 ### headScripts
 
