@@ -13,7 +13,6 @@
 	foo.a = function () {
 	  return 'a';
 	};
-
 	foo.b = function () {
 	  return 'b';
 	};
