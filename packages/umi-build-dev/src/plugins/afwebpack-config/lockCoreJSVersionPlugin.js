@@ -7,8 +7,8 @@ export default function() {
     visitor: {
       ImportDeclaration(path, state) {
         if (
-          state.filename.endsWith('.umi/polyfill.js') ||
-          state.filename.endsWith('.umi-production/polyfill.js')
+          state.filename.endsWith('.umi/polyfills.js') ||
+          state.filename.endsWith('.umi-production/polyfills.js')
         ) {
           const { node } = path;
           if (node.source.value.startsWith('core-js/')) {
