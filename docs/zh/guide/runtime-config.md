@@ -60,7 +60,7 @@ export function patchRoutes(routes) {
 
 ### render
 
-用于改写把整个应用 render 到 dom 数里的方法。
+用于改写把整个应用 render 到 dom 树里的方法。
 
 参数：
 
