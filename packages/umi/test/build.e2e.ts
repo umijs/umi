@@ -70,88 +70,38 @@ beforeEach(async () => {
 });
 
 it('simple', async () => {
-  await page.goto(`http://localhost:${servers['simple'].port}/`, {
-    waitUntil: 'networkidle2',
+  await require(join(fixtures, 'simple/test')).default({
+    page,
+    host: `http://localhost:${servers['simple'].port}`,
   });
-  const title = await page.evaluate(
-    () => document.querySelector('h1').innerHTML,
-  );
-  expect(title).toEqual('Index Page');
 });
 
 it('runtime-public-path', async () => {
-  await page.goto(`http://localhost:${servers['runtime-public-path'].port}/`, {
-    waitUntil: 'networkidle2',
+  await require(join(fixtures, 'runtime-public-path/test')).default({
+    page,
+    host: `http://localhost:${servers['runtime-public-path'].port}`,
   });
-  const title = await page.evaluate(
-    () => document.querySelector('h1').innerHTML,
-  );
-  expect(title).toEqual('Index Page');
-  const publicPath = await page.evaluate(() => window.publicPath);
-  expect(publicPath).toEqual('/');
 });
 
 xit('tree-shaking-with-cjs', async () => {
-  await page.goto(
-    `http://localhost:${servers['tree-shaking-with-cjs'].port}/`,
-    {
-      waitUntil: 'networkidle2',
-    },
-  );
-  const title = await page.evaluate(
-    () => document.querySelector('h1').innerHTML,
-  );
-  expect(title).toEqual('Index Page foo');
+  await require(join(fixtures, 'tree-shaking-with-cjs/test')).default({
+    page,
+    host: `http://localhost:${servers['tree-shaking-with-cjs'].port}`,
+  });
 });
 
 it('export-static', async () => {
-  await page.goto(`http://localhost:${servers['export-static'].port}/`, {
-    waitUntil: 'networkidle2',
+  await require(join(fixtures, 'export-static/test')).default({
+    page,
+    host: `http://localhost:${servers['export-static'].port}`,
   });
-  const t1 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t1).toEqual('Index Page');
-
-  await page.evaluate(() => document.querySelector('button').click());
-  const t2 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t2).toEqual('List Page');
-
-  await page.evaluate(() => document.querySelector('button').click());
-  const t3 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t3).toEqual('Index Page');
-
-  await page.goto(`http://localhost:${servers['export-static'].port}/list/`, {
-    waitUntil: 'networkidle2',
-  });
-  const t4 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t4).toEqual('List Page');
 });
 
 it('export-static-htmlSuffix', async () => {
-  await page.goto(
-    `http://localhost:${servers['export-static-htmlSuffix'].port}/`,
-    {
-      waitUntil: 'networkidle2',
-    },
-  );
-  const t1 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t1).toEqual('Index Page');
-
-  await page.evaluate(() => document.querySelector('button').click());
-  const t2 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t2).toEqual('List Page');
-
-  await page.evaluate(() => document.querySelector('button').click());
-  const t3 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t3).toEqual('Index Page');
-
-  await page.goto(
-    `http://localhost:${servers['export-static-htmlSuffix'].port}/list.html`,
-    {
-      waitUntil: 'networkidle2',
-    },
-  );
-  const t4 = await page.evaluate(() => document.querySelector('h1').innerHTML);
-  expect(t4).toEqual('List Page');
+  await require(join(fixtures, 'export-static-htmlSuffix/test')).default({
+    page,
+    host: `http://localhost:${servers['export-static-htmlSuffix'].port}`,
+  });
 });
 
 afterAll(() => {
