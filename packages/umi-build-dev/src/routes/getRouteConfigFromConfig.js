@@ -1,23 +1,24 @@
 import assert from 'assert';
 import { join, isAbsolute } from 'path';
-import { cloneDeep } from 'lodash';
+import { clone } from 'lodash';
 import { winPath, isUrl } from 'umi-utils';
 
 export default (routes, pagesPath = 'src/pages', parentRoutePath = '/') => {
-  // cloneDeep 是为了避免 patch 多次
-  const clonedRoutes = cloneDeep(routes);
-  patchRoutes(clonedRoutes, pagesPath, parentRoutePath);
-  return clonedRoutes;
+  return patchRoutes(routes, pagesPath, parentRoutePath);
 };
 
 function patchRoutes(routes, pagesPath, parentRoutePath) {
   assert(Array.isArray(routes), `routes should be Array, but got ${routes}`);
-  routes.forEach(route => {
-    patchRoute(route, pagesPath, parentRoutePath);
+
+  return routes.map(route => {
+    return patchRoute(route, pagesPath, parentRoutePath);
   });
 }
 
 function patchRoute(route, pagesPath, parentRoutePath) {
+  // clone 是为了避免 patch 多次
+  route = clone(route);
+
   // route.component start from pages
   if (route.component) {
     route.component = resolveComponent(pagesPath, route.component);
@@ -77,7 +78,7 @@ function patchRoute(route, pagesPath, parentRoutePath) {
     route.redirect = winPath(join(parentRoutePath, route.redirect));
   }
   if (route.routes) {
-    patchRoutes(route.routes, pagesPath, route.path);
+    route.routes = patchRoutes(route.routes, pagesPath, route.path);
   } else if (!('exact' in route)) {
     route.exact = true;
   }

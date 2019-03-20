@@ -113,6 +113,49 @@ describe('getRoutesConfigFromConfig', () => {
     ]);
   });
 
+  it('same reference', () => {
+    const commonRoutes = [
+      {
+        path: '/c',
+        component: 'C',
+      },
+    ];
+
+    const routes = getRoute([
+      {
+        path: '/a',
+        routes: commonRoutes,
+      },
+      {
+        path: '/b',
+        routes: commonRoutes,
+      },
+    ]);
+
+    expect(routes).toEqual([
+      {
+        path: '/a',
+        routes: [
+          {
+            path: '/c',
+            component: './src/pages/C',
+            exact: true,
+          },
+        ],
+      },
+      {
+        path: '/b',
+        routes: [
+          {
+            path: '/c',
+            component: './src/pages/C',
+            exact: true,
+          },
+        ],
+      },
+    ]);
+  });
+
   it('bigfish compatibility', () => {
     process.env.BIGFISH_COMPAT = true;
     const routes = getRoute([
