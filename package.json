@@ -45,6 +45,7 @@
     "puppeteer": "1.11.0",
     "react-router-dom": "4.3.1",
     "react-test-renderer": "16.6.3",
+    "serve-handler": "5.0.8",
     "shelljs": "0.8.3",
     "test-build-result": "^1.1.2",
     "umi-tools": "^0.4.0"
