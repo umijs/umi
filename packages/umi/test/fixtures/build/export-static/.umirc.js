@@ -14,7 +14,7 @@ export default {
       .use(
         webpack.IgnorePlugin,
         [
-          /core-js|regenerator-runtime|react-loadable|umi-history/,
+          /regenerator-runtime|react-loadable|umi-history/,
         ],
       );
   },

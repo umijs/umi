@@ -20,5 +20,6 @@ describe('umi build', () => {
     build({ cwd }) {
       return build({ cwd });
     },
+    testExists: true,
   });
 });
