@@ -123,7 +123,7 @@ export default function(api) {
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
     const setPublicPathFile = join(
       __dirname,
-      '../../template/setPublicPath.js',
+      '../../../template/setPublicPath.js',
     );
     const setPublicPath =
       config.runtimePublicPath ||
