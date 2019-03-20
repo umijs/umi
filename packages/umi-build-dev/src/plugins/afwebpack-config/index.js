@@ -183,6 +183,7 @@ export default function(api) {
             },
           ],
         ],
+        plugins: [require.resolve('./lockCoreJSVersionPlugin')],
       },
       define: {
         'process.env.BASE_URL': config.base || '/',
