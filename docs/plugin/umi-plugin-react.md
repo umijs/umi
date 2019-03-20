@@ -259,3 +259,65 @@ export default () => {
 #### customized document.ejs
 
 If you defined `src/pages/document.ejs` by your own, please make sure the snippet `<title><%= context.title %></title>` is added, otherwise the `title.defaultTitle` will not be injected to the generated `index.html`
+
+### chunks
+
+* Type：`Array(String)`
+
+`default`: ['umi'], modifiable，e,g: require to load vendors.js before umi.js if split code into vendor chunk
+
+Example:
+
+```js
+// .umirc.js or config/config.js
+export default {
+  chainWebpack: function (config, { webpack }) {
+    config.merge({
+      optimization: {
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 3,
+          automaticNameDelimiter: '.',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              test({ resource }) {
+                return /[\\/]node_modules[\\/]/.test(resource);
+              },
+              priority: 10,
+            },
+          },
+        },
+      }
+    });
+  },
+  plugins: [
+    ['umi-plugin-react', {
+        chunks: ['vendors', 'umi']
+    }]
+}
+```
+
+### scripts
+
+* Type：`Array(Object)`
+
+Replace in `<body>`, after umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
+
+### headScripts
+
+* Type：`Array(Object)`
+
+Replace in `<head>`, before umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
+
+### metas
+
+* Type：`Array(Object)`
+
+### links
+
+* Type：`Array(Object)`
+
+Use <%= PUBLIC_PATH %> specifies the publicPath
