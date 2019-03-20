@@ -80,4 +80,4 @@ var A = foo(_class = function A() {
 var a$1 = x > 10 ? 'big' : 'small';
 console.log(a$1); // export namespace from
 
-export { Foo, A, a, b };
+export { A, Foo, a, b };
