@@ -8,12 +8,16 @@ const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
 
 const cwd = process.cwd();
-// get user config directly from .umirc.library.js
-const userConfig = getUserConfig({ cwd });
-userConfig.doc = merge(userConfig.doc || {});
-
+const localUserConfig = JSON.parse(
+  readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
+);
+const userConfig = {
+  ...localUserConfig,
+  // get user config directly from .umirc.library.js
+  ...getUserConfig({ cwd }),
+};
 if (!userConfig.doc) {
-  userConfig.doc = {};
+  userConfig.doc = merge(userConfig.doc || {});
 }
 
 const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
