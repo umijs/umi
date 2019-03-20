@@ -13,7 +13,7 @@
     "precommit": "lint-staged",
     "doc:dev": "./website/node_modules/.bin/vuepress dev ./docs",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
-    "publish": "npm test && ./scripts/publish.js",
+    "publish": "./scripts/publish.js",
     "ui:dev": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js dev",
     "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build"
   },
