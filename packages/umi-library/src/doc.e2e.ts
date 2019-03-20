@@ -1,9 +1,8 @@
 import { join } from 'path';
-import handler from 'serve-handler';
+import { fork } from 'child_process';
 import puppeteer from 'puppeteer';
 import http from 'http';
 import { existsSync } from 'fs';
-import { devOrBuild } from './doc';
 
 let port = 12400;
 const servers = {};
@@ -13,23 +12,37 @@ const fixtures = join(__dirname, 'fixtures/doc');
 
 process.env.COMPRESS = 'none';
 
+async function buildDoc(cwd) {
+  const umiLibPath = join(__dirname, '../bin/umi-library.js');
+  return new Promise((resolve, reject) => {
+    const child = fork(umiLibPath, ['doc', 'build'], {
+      cwd,
+      env: {
+        COMPRESS: 'none',
+      },
+    });
+    child.on('exit', code => {
+      if (code === 1) {
+        reject(new Error('Doc build failed'));
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 async function doc(name) {
   const cwd = join(fixtures, name);
   const targetDist = join(cwd, '.docz/dist');
   if (!existsSync(targetDist)) {
-    await devOrBuild({
-      cwd,
-      cmd: 'build',
-      params: [],
-      userConfig: {},
-    });
+    await buildDoc(cwd);
   }
 
   return new Promise(resolve => {
     port += 1;
     servers[name] = { port };
     servers[name].server = http.createServer((request, response) => {
-      return handler(request, response, {
+      return require('serve-handler')(request, response, {
         public: targetDist,
       });
     });
