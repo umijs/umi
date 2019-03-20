@@ -6,4 +6,4 @@ export default function() {
       <h1>Index Page {foo}</h1>
     </div>
   );
-}
+};
