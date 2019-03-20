@@ -33,7 +33,7 @@ async function doc(name) {
         public: targetDist,
       });
     });
-    servers[name].server.listen(servers[name], () => {
+    servers[name].server.listen(servers[name].port, () => {
       console.log(
         `[${name}] Running at http://localhost:${servers[name].port}`,
       );

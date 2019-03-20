@@ -61,7 +61,6 @@ export default {
     const child = fork(binPath, [cmd, ...params], {
       cwd,
       env: process.env,
-      stdio: 'inherit',
     });
     child.on('exit', code => {
       if (code === 1) {
