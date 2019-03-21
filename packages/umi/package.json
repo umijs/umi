@@ -52,7 +52,8 @@
     "prompt.d.ts",
     "redirect.d.ts",
     "router.d.ts",
-    "withRouter.d.ts"
+    "withRouter.d.ts",
+    "routerTypes.d.ts"
   ],
   "umiTools": {
     "browserFiles": [
