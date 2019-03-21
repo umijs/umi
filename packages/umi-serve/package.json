@@ -1,6 +1,6 @@
 {
   "name": "umi-serve",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "bin": {
     "umi-serve": "./bin/umi-serve.js"
   },
@@ -11,14 +11,14 @@
     "@babel/preset-typescript": "7.3.3",
     "@babel/register": "7.0.0",
     "babel-plugin-module-resolver": "3.1.1",
-    "babel-preset-umi": "1.4.0",
+    "babel-preset-umi": "1.4.1",
     "boxen": "2.1.0",
     "chalk": "2.4.1",
     "clipboardy": "1.2.3",
     "express": "4.16.4",
     "serve-static": "1.13.2",
-    "umi-core": "1.2.1",
-    "umi-mock": "1.1.0",
+    "umi-core": "1.2.2",
+    "umi-mock": "1.1.1",
     "umi-utils": "1.4.0",
     "update-notifier": "2.5.0",
     "yargs-parser": "13.0.0"
