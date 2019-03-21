@@ -83,7 +83,7 @@ it('runtime-public-path', async () => {
   });
 });
 
-xit('tree-shaking-with-cjs', async () => {
+it('tree-shaking-with-cjs', async () => {
   await require(join(fixtures, 'tree-shaking-with-cjs/test')).default({
     page,
     host: `http://localhost:${servers['tree-shaking-with-cjs'].port}`,

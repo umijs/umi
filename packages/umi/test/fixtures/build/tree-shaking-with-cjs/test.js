@@ -1,7 +1,7 @@
 
 export default async function ({ page, host }) {
   await page.goto(
-    `http://localhost:${servers['tree-shaking-with-cjs'].port}/`,
+    `${host}/`,
     {
       waitUntil: 'networkidle2',
     },
