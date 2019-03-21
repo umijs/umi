@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "2.6.7",
+  "version": "2.6.8",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
     "@babel/core": "7.2.2",
