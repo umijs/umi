@@ -45,6 +45,7 @@
     "src",
     "bin",
     "index.js",
+    "index.d.ts",
     "babel.js",
     "dynamic.d.ts",
     "link.d.ts",
