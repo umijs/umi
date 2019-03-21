@@ -2,7 +2,7 @@ import { join } from 'path';
 import { fork } from 'child_process';
 import puppeteer from 'puppeteer';
 import http from 'http';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 
 interface IServer {
   [key: string]: {
@@ -16,6 +16,34 @@ const servers = {} as IServer;
 let browser: any;
 let page: any;
 const fixtures = join(__dirname, 'fixtures/build');
+const dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
+
+beforeAll(async () => {
+  for (const dir of dirs) {
+    await buildAndServe(dir);
+  }
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+});
+
+beforeEach(async () => {
+  page = await browser.newPage();
+});
+
+for (const dir of dirs) {
+  it(dir, async () => {
+    await require(join(fixtures, `${dir}/test`)).default({
+      page,
+      host: `http://localhost:${servers[dir].port}`,
+    });
+  });
+}
+
+afterAll(() => {
+  Object.keys(servers).forEach(name => {
+    servers[name].server.close();
+  });
+  browser.close();
+});
 
 async function build(cwd: string) {
   return new Promise((resolve, reject) => {
@@ -55,58 +83,3 @@ async function buildAndServe(name: string) {
     });
   });
 }
-
-beforeAll(async () => {
-  await buildAndServe('simple');
-  await buildAndServe('runtime-public-path');
-  await buildAndServe('tree-shaking-with-cjs');
-  await buildAndServe('export-static');
-  await buildAndServe('export-static-htmlSuffix');
-  browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-});
-
-beforeEach(async () => {
-  page = await browser.newPage();
-});
-
-it('simple', async () => {
-  await require(join(fixtures, 'simple/test')).default({
-    page,
-    host: `http://localhost:${servers['simple'].port}`,
-  });
-});
-
-it('runtime-public-path', async () => {
-  await require(join(fixtures, 'runtime-public-path/test')).default({
-    page,
-    host: `http://localhost:${servers['runtime-public-path'].port}`,
-  });
-});
-
-it('tree-shaking-with-cjs', async () => {
-  await require(join(fixtures, 'tree-shaking-with-cjs/test')).default({
-    page,
-    host: `http://localhost:${servers['tree-shaking-with-cjs'].port}`,
-  });
-});
-
-it('export-static', async () => {
-  await require(join(fixtures, 'export-static/test')).default({
-    page,
-    host: `http://localhost:${servers['export-static'].port}`,
-  });
-});
-
-it('export-static-htmlSuffix', async () => {
-  await require(join(fixtures, 'export-static-htmlSuffix/test')).default({
-    page,
-    host: `http://localhost:${servers['export-static-htmlSuffix'].port}`,
-  });
-});
-
-afterAll(() => {
-  Object.keys(servers).forEach(name => {
-    servers[name].server.close();
-  });
-  browser.close();
-});
