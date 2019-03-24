@@ -4,27 +4,11 @@ import schema from './schema';
 const ajv = new AJV();
 
 const successValidates = {
-  theme: {
-    'primary-color': '#2F54EB',
-  },
   entry: ['a', ['a']],
   file: ['a'],
-  esm: [
-    false,
-    true,
-    { type: 'rollup' },
-    { type: 'babel' },
-    { file: 'a' },
-    { mjs: true },
-  ],
+  esm: [false, true, { type: 'rollup' }, { type: 'babel' }, { file: 'a' }, { mjs: true }],
   cjs: [false, true, { type: 'rollup' }, { type: 'babel' }, { file: 'a' }],
-  umd: [
-    { globals: {} },
-    { file: 'a' },
-    { name: 'a' },
-    { minFile: false },
-    { minFile: true },
-  ],
+  umd: [{ globals: {} }, { file: 'a' }, { name: 'a' }, { minFile: false }, { minFile: true }],
   extraBabelPlugins: [[]],
   extraBabelPresets: [[]],
   extraPostCSSPlugins: [[]],
