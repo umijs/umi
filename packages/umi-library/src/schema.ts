@@ -4,6 +4,7 @@ export default {
   type: 'object',
   additionalProperties: false,
   properties: {
+    theme: { type: 'object' },
     entry: {
       oneOf: [noEmptyStr, { type: 'array', items: noEmptyStr }],
     },

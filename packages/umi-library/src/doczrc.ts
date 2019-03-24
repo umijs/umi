@@ -37,14 +37,8 @@ export default {
     ]);
 
     // Support extraBabelPresets and extraBabelPlugins
-    babelrc.presets = [
-      ...babelrc.presets,
-      ...(userConfig.extraBabelPresets || []),
-    ];
-    babelrc.plugins = [
-      ...babelrc.plugins,
-      ...(userConfig.extraBabelPlugins || []),
-    ];
+    babelrc.presets = [...babelrc.presets, ...(userConfig.extraBabelPresets || [])];
+    babelrc.plugins = [...babelrc.plugins, ...(userConfig.extraBabelPlugins || [])];
 
     return babelrc;
   },
@@ -94,6 +88,7 @@ export default {
             cssmodules: true,
             loaderOpts: {
               javascriptEnabled: true,
+              modifyVars: userConfig.theme || {},
             },
           }),
           css({
@@ -104,6 +99,7 @@ export default {
             cssmodules: false,
             loaderOpts: {
               javascriptEnabled: true,
+              modifyVars: userConfig.theme || {},
             },
           }),
         ]
@@ -133,6 +129,7 @@ export default {
             cssmodules: false,
             loaderOpts: {
               javascriptEnabled: true,
+              modifyVars: userConfig.theme || {},
             },
           }),
           css({
@@ -143,6 +140,7 @@ export default {
             cssmodules: true,
             loaderOpts: {
               javascriptEnabled: true,
+              modifyVars: userConfig.theme || {},
             },
           }),
         ]),
