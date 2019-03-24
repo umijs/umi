@@ -37,8 +37,14 @@ export default {
     ]);
 
     // Support extraBabelPresets and extraBabelPlugins
-    babelrc.presets = [...babelrc.presets, ...(userConfig.extraBabelPresets || [])];
-    babelrc.plugins = [...babelrc.plugins, ...(userConfig.extraBabelPlugins || [])];
+    babelrc.presets = [
+      ...babelrc.presets,
+      ...(userConfig.extraBabelPresets || []),
+    ];
+    babelrc.plugins = [
+      ...babelrc.plugins,
+      ...(userConfig.extraBabelPlugins || []),
+    ];
 
     return babelrc;
   },
