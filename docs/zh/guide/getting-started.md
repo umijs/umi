@@ -172,3 +172,34 @@ $ now ./dist
 ```
 
 然后打开相应的地址就能访问到线上的地址了。
+
+## 测试与配置检查
+
+### 测试
+
+umi 内置了基于 `jest` 的测试工具 umi-test ：
+
+```bash
+$ umi test
+
+Options:
+
+    --coverage            indicates that test coverage information should be collected and reported in the output
+```
+
+### 配置检查
+
+使用 umi inspect 列出配置项的内容用以检查：
+
+```bash
+$ umi inspect
+
+Options:
+
+    --mode                specify env mode (development or production, default is development)
+    --rule <ruleName>     inspect a specific module rule
+    --plugin <pluginName> inspect a specific plugin
+    --rules               list all module rule names
+    --plugins             list all plugin names
+    --verbose             show full function definitions in output
+```
