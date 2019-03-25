@@ -160,3 +160,32 @@ $ now ./dist
 ```
 
 Then open the url to view it online.
+
+## Test and Inspect
+
+### Test
+
+umi-test based on `jest`
+
+```bash
+$ umi test
+
+Options:
+
+    --coverage            indicates that test coverage information should be collected and reported in the output
+```
+
+### Inspect
+
+```bash
+$ umi inspect
+
+Options:
+
+    --mode                specify env mode (development or production, default is development)
+    --rule <ruleName>     inspect a specific module rule
+    --plugin <pluginName> inspect a specific plugin
+    --rules               list all module rule names
+    --plugins             list all plugin names
+    --verbose             show full function definitions in output
+```
