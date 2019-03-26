@@ -4,6 +4,7 @@ import rimraf from 'rimraf';
 import * as assert from 'assert';
 import { merge } from 'lodash';
 import signale from 'signale';
+import chalk from 'chalk';
 import { IOpts, IBundleOptions, IBundleTypeOutput, IEsm } from './types';
 import babel from './babel';
 import rollup from './rollup';
@@ -49,6 +50,15 @@ function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
     assert.ok(
       (pkg.dependencies || {})['@babel/runtime'],
       `@babel/runtime dependency is required to use runtimeHelpers`,
+    );
+  }
+  if (!bundleOpts.esm && !bundleOpts.esm && !bundleOpts.umd) {
+    throw new Error(
+      `
+None format of ${chalk.cyan(
+        'cjs | esm | umd',
+      )} is configured, checkout https://github.com/umijs/umi/tree/master/packages/umi-library for usage details.
+`.trim(),
     );
   }
 }
