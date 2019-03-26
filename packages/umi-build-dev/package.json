@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.3.0",
