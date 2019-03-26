@@ -8,6 +8,10 @@ process.env.NODE_ENV = 'test';
 
 export default function(opts = {}) {
   const { cwd = process.cwd(), moduleNameMapper } = opts;
+  let transformInclude = opts.transformInclude || [];
+  if (typeof transformInclude === 'string') {
+    transformInclude = [transformInclude];
+  }
 
   const jestConfigFile = join(cwd, 'jest.config.js');
   let userJestConfig = {};
@@ -31,7 +35,11 @@ export default function(opts = {}) {
       '\\.(t|j)sx?$': require.resolve('./transformers/jsTransformer'),
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
-    transformIgnorePatterns: ['node_modules/(?!(umi)/)'],
+    transformIgnorePatterns: [
+      `node_modules/(?!(umi|enzyme-adapter-react-16|${transformInclude.join(
+        '|',
+      )})/)`,
+    ],
     testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     setupFilesAfterEnv: [require.resolve('./jasmine')],
@@ -46,6 +54,8 @@ export default function(opts = {}) {
     testPathIgnorePatterns: ['/node_modules/'],
     ...(restUserJestConfig || {}),
   };
+
+  delete opts.transformInclude;
 
   return new Promise((resolve, reject) => {
     jest
