@@ -33,12 +33,12 @@ module.exports = babelJest.createTransformer({
           enzyme: compatDirname(
             'enzyme/package.json',
             cwd,
-            require.resolve('enzyme'),
+            dirname(require.resolve('enzyme/package.json')),
           ),
           'enzyme-adapter-react-16': compatDirname(
             'enzyme-adapter-react-16/package.json',
             cwd,
-            require.resolve('enzyme-adapter-react-16'),
+            dirname(require.resolve('enzyme-adapter-react-16/package.json')),
           ),
         },
       },
