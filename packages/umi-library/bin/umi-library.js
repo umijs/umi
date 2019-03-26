@@ -83,8 +83,9 @@ function build() {
   const buildArgs = stripEmptyKeys({
     esm: args.esm && { type: args.esm === true ? 'rollup' : args.esm },
     cjs: args.cjs && { type: args.cjs === true ? 'rollup' : args.cjs },
-    umd: args.umd,
+    umd: args.umd && { name: args.umd === true ? undefined : args.umd },
     file: args.file,
+    target: args.target,
     entry: args._.slice(1),
   });
 
