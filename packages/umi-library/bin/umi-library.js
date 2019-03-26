@@ -85,6 +85,7 @@ function build() {
     cjs: args.cjs && { type: args.cjs === true ? 'rollup' : args.cjs },
     umd: args.umd,
     file: args.file,
+    target: args.target,
     entry: args._.slice(1),
   });
 
