@@ -8,6 +8,7 @@
     "umi-lib": "./bin/umi-library.js"
   },
   "dependencies": {
+    "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.3.4",
     "@babel/plugin-proposal-decorators": "7.3.0",
     "@babel/plugin-proposal-do-expressions": "7.2.0",
@@ -34,6 +35,8 @@
     "less": "3.9.0",
     "less-plugin-npm-import": "2.1.0",
     "lodash": "4.17.11",
+    "react": "16.8.5",
+    "react-dom": "16.8.5",
     "resolve-bin": "0.4.0",
     "rimraf": "2.6.3",
     "rollup": "1.7.0",
@@ -49,6 +52,7 @@
     "slash2": "2.0.0",
     "temp-dir": "1.0.0",
     "through2": "3.0.0",
+    "typescript": "3.3.4000",
     "update-notifier": "2.5.0",
     "vinyl-fs": "3.0.3",
     "yargs-parser": "13.0.0"
