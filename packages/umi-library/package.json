@@ -7,6 +7,7 @@
     "umi-library": "./bin/umi-library.js",
     "umi-lib": "./bin/umi-library.js"
   },
+  "typings": "./index.d.ts",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.3.4",
