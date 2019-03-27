@@ -45,15 +45,19 @@ afterAll(() => {
   browser.close();
 });
 
-async function build(cwd: string) {
+async function build(cwd: string, name: string) {
   return new Promise((resolve, reject) => {
     const umiPath = join(__dirname, '../bin/umi.js');
+    const env = {
+      COMPRESS: 'none',
+      PROGRESS: 'none',
+    } as any;
+    if (name.includes('app_root')) {
+      env.APP_ROOT = './root';
+    }
     const child = fork(umiPath, ['build'], {
       cwd,
-      env: {
-        COMPRESS: 'none',
-        PROGRESS: 'none',
-      },
+      env,
     });
     child.on('exit', code => {
       if (code === 1) {
@@ -67,9 +71,11 @@ async function build(cwd: string) {
 
 async function buildAndServe(name: string) {
   const cwd = join(fixtures, name);
-  const targetDist = join(cwd, 'dist');
+  const targetDist = name.includes('app_root')
+    ? join(cwd, 'root', 'dist')
+    : join(cwd, 'dist');
   if (!existsSync(targetDist)) {
-    await build(cwd);
+    await build(cwd, name);
   }
   return new Promise(resolve => {
     port += 1;
