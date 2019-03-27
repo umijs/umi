@@ -94,7 +94,8 @@ export default async function(opts: IBabelOpts) {
     createStream([
       join(srcPath, '**/*'),
       `!${join(srcPath, '**/fixtures/**/*')}`,
-      `!${join(srcPath, '**/.(test|e2e|spec).(js|jsx|ts|tsx)')}`,
+      `!${join(srcPath, '**/*.mdx')}`,
+      `!${join(srcPath, '**/*.+(test|e2e|spec).+(js|jsx|ts|tsx)')}`,
     ]).on('end', () => {
       if (watch) {
         signale.info('Start watch', srcPath);
