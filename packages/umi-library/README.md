@@ -393,6 +393,13 @@ export default {
 2. esm.mjs 和 umd 格式，只有 peerDenendencies 会被 external
 3. 打包方式 babel 时无需考虑 external，因为是文件到文件的编译，不处理文件合并
 
+### 关于 babel 模式
+
+babel 模式下一些文件不会被编译到 es 和 lib 下，包含：
+
+* mdx 文件
+* 测试文件，比如 test.js、spec.js、e2e.js，后缀还支持 jsx、ts 和 tsx
+
 ## 环境变量
 
 ### LERNA
