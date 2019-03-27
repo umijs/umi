@@ -52,7 +52,7 @@ function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
       `@babel/runtime dependency is required to use runtimeHelpers`,
     );
   }
-  if (!bundleOpts.esm && !bundleOpts.esm && !bundleOpts.umd) {
+  if (!bundleOpts.esm && !bundleOpts.cjs && !bundleOpts.umd) {
     throw new Error(
       `
 None format of ${chalk.cyan(
