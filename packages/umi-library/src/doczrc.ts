@@ -53,15 +53,19 @@ export default {
       config = userConfig.doc.modifyBundlerConfig(config, dev, args);
     }
 
-    // do not generate doc sourcemap
-    config.devtool = false;
+    if (!dev) {
+      // do not generate doc sourcemap
+      config.devtool = false;
+
+      // support disable minimize via process.env.COMPRESS
+      if (process.env.COMPRESS === 'none') {
+        config.optimization.minimize = false;
+      }
+    }
+
     config.resolve.modules.push(join(__dirname, '../node_modules'));
     config.resolveLoader.modules.push(join(__dirname, '../node_modules'));
 
-    // support disable minimize via process.env.COMPRESS
-    if (process.env.COMPRESS === 'none') {
-      config.optimization.minimize = false;
-    }
     return config;
   },
   plugins: [
