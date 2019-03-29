@@ -14,12 +14,21 @@ const RouteInstanceMap = {
 };
 
 // Support pass props from layout to child routes
-const RouteWithProps = ({ path, exact, strict, render, location, ...rest }) => (
+const RouteWithProps = ({
+  path,
+  exact,
+  strict,
+  render,
+  location,
+  sensitive,
+  ...rest
+}) => (
   <Route
     path={path}
     exact={exact}
     strict={strict}
     location={location}
+    sensitive={sensitive}
     render={props => render({ ...props, ...rest })}
   />
 );
@@ -97,6 +106,7 @@ export default function renderRoutes(
             path={route.path}
             exact={route.exact}
             strict={route.strict}
+            sensitive={route.sensitive}
             render={props => {
               const childRoutes = renderRoutes(
                 route.routes,
