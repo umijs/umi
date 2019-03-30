@@ -6,25 +6,12 @@ const debug = require('debug')('umi-test');
 
 process.env.NODE_ENV = 'test';
 
-export default function(opts = {}) {
-  const { cwd = process.cwd(), moduleNameMapper } = opts;
+export function getJestConfig(opts = {}) {
   let transformInclude = opts.transformInclude || [];
   if (typeof transformInclude === 'string') {
     transformInclude = [transformInclude];
   }
-
-  const jestConfigFile = join(cwd, 'jest.config.js');
-  let userJestConfig = {};
-  if (existsSync(jestConfigFile)) {
-    userJestConfig = require(jestConfigFile); // eslint-disable-line
-  }
-
-  const {
-    moduleNameMapper: userModuleNameMapper,
-    ...restUserJestConfig
-  } = userJestConfig;
-
-  const config = {
+  return {
     rootDir: process.cwd(),
     setupFiles: [
       require.resolve('./shim.js'),
@@ -48,10 +35,32 @@ export default function(opts = {}) {
       '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': require.resolve(
         './fileMock.js',
       ),
-      ...(moduleNameMapper || {}),
-      ...(userModuleNameMapper || {}),
+      ...(opts.moduleNameMapper || {}),
     },
     testPathIgnorePatterns: ['/node_modules/'],
+  };
+}
+
+export default function(opts = {}) {
+  const { cwd = process.cwd() } = opts;
+  const baseJestConfig = getJestConfig(opts);
+  const jestConfigFile = join(cwd, 'jest.config.js');
+  let userJestConfig = {};
+  if (existsSync(jestConfigFile)) {
+    userJestConfig = require(jestConfigFile); // eslint-disable-line
+  }
+
+  const {
+    moduleNameMapper: userModuleNameMapper,
+    ...restUserJestConfig
+  } = userJestConfig;
+
+  const config = {
+    ...baseJestConfig,
+    moduleNameMapper: {
+      ...baseJestConfig.moduleNameMapper,
+      ...(userModuleNameMapper || {}),
+    },
     ...(restUserJestConfig || {}),
   };
 
