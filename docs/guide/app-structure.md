@@ -116,11 +116,11 @@ When this file is available, it overrides the default HTML template. Needs to in
 
 This is a temporary directory produced by umi dev. It contains `umi.js` and `router.js` by default, and some plugins will generate some other temporary files here. You can do some validation here, **but please don't modify the code directly here, umi restart or file modification under pages will regenerate the files in this folder.**
 
-## .test.(js|ts) 和 .e2e.(js|ts)
+## src/pages/.umi-production
 
 Same as `src/pages/.umi`, but generated in `umi build`, it will be automatically deleted after `umi build`.
 
-## .test.js and .e2e.js
+## .test.(js|ts) and .e2e.(js|ts)
 
 The test file, `umi test` will find all the .(test|e2e).(j|t)s files to run the test.
 
