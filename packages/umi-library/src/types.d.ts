@@ -44,6 +44,9 @@ export interface IBundleOptions {
     [entry: string]: any;
   };
   doc?: IDoczConfig;
+  replace?: {
+    [value: string]: any;
+  };
 }
 
 export interface IOpts {

@@ -302,6 +302,28 @@ export default {
 2. 配置了 `runtimeHelpers`，一定要在 dependencies 里有 `@babel/runtime` 依赖
 3. runtimeHelpers 只对 esm 有效，cjs 下无效，因为 cjs 已经不给浏览器用了，只在 ssr 时会用到，无需关心小的尺寸差异
 
+#### replace
+
+配置需要替换的内容，基于 [rollup-plugin-replace](https://github.com/rollup/rollup-plugin-replace)。
+
+* Type: `Object`
+* Default: `{}`
+
+注：
+
+1. babel 模式下暂不支持
+2. 如果要输出字符串，值的部分用 `JSON.stringify()` 转下
+
+比如：
+
+```js
+export default {
+  replace: {
+    VERSION: JSON.stringify(require('./package').version),
+  },
+},
+```
+
 #### overridesByEntry
 
 根据 entry 覆盖配置。
