@@ -129,29 +129,23 @@ export default {
 
 同 `src/pages/.umi`，但是是在 `umi build` 时生成的，`umi build` 执行完自动删除。
 
-## .test.js 和 .e2e.js
-
-> 注：支持 TypeScript 文件
+## .test.(js|ts) 和 .e2e.(js|ts)
 
 测试文件，`umi test` 会查找所有的 `.test.js` 和 `.e2e.js` 文件来跑测试。
 
-## src/global.js
-
-> 注：支持 TypeScript 文件
+## src/global.(js|ts)
 
 此文件会在入口文件的最前面被自动引入，可以在这里加载补丁，做一些初始化的操作等。
 
-## src/global.css
+## src/global.(css|less|sass|scss)
 
 此文件不走 css modules，且会自动被引入，可以在这里写全局样式，以及做样式覆盖。
 
-## src/app.js
-
-> 注：支持 TypeScript 文件
+## src/app.(js|ts)
 
 运行时配置文件，可以在这里扩展运行时的能力，比如修改路由、修改 render 方法等。
 
-## .umirc.js 和 config/config.js
+## .umirc.(js|ts) 和 config/config.(js|ts)
 
 编译时配置文件，二选一，不可共存。
 
