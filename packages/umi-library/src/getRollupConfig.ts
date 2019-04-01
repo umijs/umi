@@ -43,6 +43,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
     autoprefixer: autoprefixerOpts,
     namedExports,
     runtimeHelpers: runtimeHelpersOpts,
+    replace: replaceOpts,
   } = bundleOpts;
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
@@ -121,6 +122,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
       ],
       plugins: [autoprefixer(autoprefixerOpts), ...extraPostCSSPlugins],
     }),
+    ...(replaceOpts && Object.keys(replaceOpts || {}).length
+      ? [replace(replaceOpts)]
+      : []),
     nodeResolve({
       jsnext: true,
     }),

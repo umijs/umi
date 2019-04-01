@@ -86,5 +86,8 @@ export default {
     doc: {
       type: 'object',
     },
+    replace: {
+      type: 'object',
+    },
   },
 };
