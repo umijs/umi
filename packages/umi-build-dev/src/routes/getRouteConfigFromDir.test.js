@@ -8,9 +8,9 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'normal'),
     });
     expect(routes).toEqual([
+      { path: '/c/c', exact: true, component: './c/c.js' },
       { path: '/a', exact: true, component: './a.js' },
       { path: '/b', exact: true, component: './b.js' },
-      { path: '/c/c', exact: true, component: './c/c.js' },
     ]);
   });
 
@@ -20,9 +20,9 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'file-config'),
     });
     expect(routes).toEqual([
+      { path: '/c/c', exact: true, component: './c/c.js', title: ['c', 'd'] },
       { path: '/a', exact: true, component: './a.js', title: 'a' },
       { path: '/b', exact: true, component: './b.js', title: 'b' },
-      { path: '/c/c', exact: true, component: './c/c.js', title: ['c', 'd'] },
     ]);
   });
 
@@ -51,9 +51,9 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'remove-last-index'),
     });
     expect(routes).toEqual([
-      { path: '/a/a', exact: true, component: './a/a/index.js' },
-      { path: '/a', exact: true, component: './a/index.js' },
       { path: '/', exact: true, component: './index.js' },
+      { path: '/a', exact: true, component: './a/index.js' },
+      { path: '/a/a', exact: true, component: './a/a/index.js' },
     ]);
   });
 
@@ -71,9 +71,9 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'dynamic-route'),
     });
     expect(routes).toEqual([
-      { path: '/:d', exact: true, component: './$d/index.js' },
-      { path: '/:b/:c', exact: true, component: './$b/$c.js' },
       { path: '/:a', exact: true, component: './$a.js' },
+      { path: '/:b/:c', exact: true, component: './$b/$c.js' },
+      { path: '/:d', exact: true, component: './$d/index.js' },
     ]);
   });
 
@@ -83,8 +83,8 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'optional-route'),
     });
     expect(routes).toEqual([
-      { path: '/a?', exact: true, component: './a$.js' },
       { path: '/c?/c', exact: true, component: './c$/c.js' },
+      { path: '/a?', exact: true, component: './a$.js' },
       { path: '/:b?', exact: true, component: './$b$.js' },
     ]);
   });
@@ -95,10 +95,6 @@ describe('getRouteConfigFromDir', () => {
       absPagesPath: join(__dirname, 'fixtures', 'dynamic-route-order'),
     });
     expect(routes).toEqual([
-      { path: '/a', exact: true, component: './a.js' },
-      { path: '/c/a', exact: true, component: './c/a.js' },
-      { path: '/c/d', exact: true, component: './c/d.js' },
-      { path: '/c/:c', exact: true, component: './c/$c.js' },
       {
         path: '/e',
         exact: false,
@@ -109,6 +105,10 @@ describe('getRouteConfigFromDir', () => {
           { path: '/e/:c', exact: true, component: './e/$c.js' },
         ],
       },
+      { path: '/c/a', exact: true, component: './c/a.js' },
+      { path: '/c/d', exact: true, component: './c/d.js' },
+      { path: '/c/:c', exact: true, component: './c/$c.js' },
+      { path: '/a', exact: true, component: './a.js' },
       { path: '/:b', exact: true, component: './$b.js' },
     ]);
   });
