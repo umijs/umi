@@ -32,6 +32,9 @@ jobs:
     pool:
       vmImage: "vs2017-win2016"
     steps:
+      - checkout: self
+        clean: false
+        fetchDepth: 1
       - task: NodeTool@0
         inputs:
           versionSpec: "10.x"
@@ -46,6 +49,9 @@ jobs:
     pool:
       vmImage: "macOS-10.13"
     steps:
+      - checkout: self
+        clean: false
+        fetchDepth: 1
       - task: NodeTool@0
         inputs:
           versionSpec: "10.x"
