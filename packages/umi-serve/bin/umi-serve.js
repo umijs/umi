@@ -27,7 +27,7 @@ const getPaths = require('umi-core/lib/getPaths');
 const boxen = require('boxen');
 const clipboardy = require('clipboardy');
 const os = require('os');
-const port = 8001;
+const port = process.env.PORT || 8001;
 const cwd = process.cwd();
 
 let paths;
