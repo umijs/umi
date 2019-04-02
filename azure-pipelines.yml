@@ -8,7 +8,7 @@ trigger:
   - master
 
 jobs:
-  - job: linxu-test
+  - job: linux_test
     pool:
       vmImage: "Ubuntu-16.04"
 
@@ -28,7 +28,7 @@ jobs:
           PROGRESS: none
         displayName: test
 
-  - job: Windows-test
+  - job: windows_test
     pool:
       vmImage: "vs2017-win2016"
     steps:
@@ -42,7 +42,7 @@ jobs:
       - script: yarn run test
         displayName: test
 
-  - job: MacOS
+  - job: MacOS_test
     pool:
       vmImage: "macOS-10.13"
     steps:
