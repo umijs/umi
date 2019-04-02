@@ -2,20 +2,56 @@
 # Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+name: umi
 
 trigger:
   - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+jobs:
+  - job: linxu-test
+    pool:
+      vmImage: "Ubuntu-16.04"
 
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '10.x'
-    displayName: 'Install Node.js'
+    container:
+      image: circleci/node:latest-browsers
+      options: "-u root"
 
-  - script: |
-      npm install
-      npm run build
-    displayName: 'npm install and build'
+    steps:
+      - checkout: self
+        clean: all
+      - script: yarn run build
+        displayName: build
+      - script: yarn run bootstrap
+        displayName: bootstrap
+      - script: yarn run test
+        env:
+          PROGRESS: none
+        displayName: test
+
+  - job: Windows-test
+    pool:
+      vmImage: "vs2017-win2016"
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "10.x"
+      - script: yarn run build
+        displayName: build
+      - script: yarn run bootstrap
+        displayName: bootstrap
+      - script: yarn run test
+        displayName: test
+
+  - job: MacOS
+    pool:
+      vmImage: "macOS-10.13"
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "10.x"
+      - script: yarn run build
+        displayName: build
+      - script: yarn run bootstrap
+        displayName: bootstrap
+      - script: yarn run test
+        displayName: test
