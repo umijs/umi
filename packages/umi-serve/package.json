@@ -15,6 +15,7 @@
     "boxen": "2.1.0",
     "chalk": "2.4.1",
     "clipboardy": "1.2.3",
+    "compression": "^1.7.4",
     "express": "4.16.4",
     "serve-static": "1.13.2",
     "umi-core": "1.2.2",
