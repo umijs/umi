@@ -40,7 +40,7 @@ jobs:
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
-          versionSpec: "11.x"
+          versionSpec: "10.x"
       - script: npm install
         displayName: install
       - script: npm run build
@@ -59,7 +59,7 @@ jobs:
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
-          versionSpec: "11.x"
+          versionSpec: "10.x"
       - script: npm install
         displayName: install
       - script: npm run build
