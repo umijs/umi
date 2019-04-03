@@ -81,3 +81,6 @@ Deploy doc to [umijs.org](https://umijs.org/).
 ```bash
 $ y doc:deploy
 ```
+
+## Tips
+Node v10.*

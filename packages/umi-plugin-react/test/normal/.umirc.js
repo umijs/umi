@@ -9,7 +9,6 @@ export default {
 
         // dev boost
         dll: false,
-        hardSource: false,
 
         // performace
         pwa: {},

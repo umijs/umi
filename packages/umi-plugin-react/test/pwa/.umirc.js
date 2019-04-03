@@ -13,7 +13,6 @@ export default {
         routes: {
           exclude: [],
         },
-        hardSource: false,
         pwa: {
           // manifestOptions: {
           //   srcPath: join(__dirname, 'pages/manifest.json')
