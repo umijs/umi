@@ -233,12 +233,15 @@ export default class HTMLGenerator {
 
     // validate tpl
     const $ = cheerio.load(html);
-    assert(
-      $(`#${this.config.mountElementId}`).length === 1,
-      `Document ${relTplPath} must contain <div id="${
+    if (!this.config.disableMountElementCheck) {
+      assert(
+        $(`#${this.config.mountElementId}`).length === 1,
+        `Document ${relTplPath} must contain <div id="${
         this.config.mountElementId
-      }"></div>`,
-    );
+        }"></div>`,
+      );
+    }
+
 
     let metas = [];
     let links = [];
