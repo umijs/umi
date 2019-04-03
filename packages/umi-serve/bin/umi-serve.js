@@ -21,6 +21,7 @@ const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
 const express = require('express');
+const compression = require('compression');
 const { winPath } = require('umi-utils');
 const getUserConfig = require('umi-core/lib/getUserConfig');
 const getPaths = require('umi-core/lib/getPaths');
@@ -39,6 +40,17 @@ const config = getUserConfig.default({ cwd });
 paths = getPaths.default({ cwd, config });
 
 const app = express();
+
+// Gzip support
+app.use(compression({ filter: (req, res) => {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses with this request header
+    return false;
+  }
+  // fallback to standard filter function
+  return compression.filter(req, res);
+} }));
+
 app.use(require('umi-mock').createMiddleware({
   cwd,
   config,
