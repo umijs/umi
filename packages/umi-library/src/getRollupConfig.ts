@@ -168,7 +168,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
           },
           plugins: [
             ...plugins,
-            ...(esm && (esm as any).min ? [terser(terserOpts)] : []),
+            ...(esm && (esm as any).minify ? [terser(terserOpts)] : []),
           ],
           external: testExternal.bind(null, external),
         },

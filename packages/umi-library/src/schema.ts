@@ -22,7 +22,7 @@ export default {
             },
             file: noEmptyStr,
             mjs: { type: 'boolean' },
-            min: { type: 'boolean' },
+            minify: { type: 'boolean' },
           },
         },
       ],
