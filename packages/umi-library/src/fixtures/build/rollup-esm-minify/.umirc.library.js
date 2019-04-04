@@ -1,4 +1,4 @@
 
 export default {
-  esm: { type: 'rollup', min: true },
+  esm: { type: 'rollup', minify: true },
 };
