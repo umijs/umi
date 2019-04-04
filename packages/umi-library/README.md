@@ -160,6 +160,15 @@ esm 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 
 1. mjs 目前不通用，除非你知道这是什么，否则不要配置。
 
+#### esm.minify
+
+是否压缩 esm 格式。
+
+* Type: `boolean`
+* Default: `false`
+
+通常不需要配置，除非你发布到 npm 的代码需要保密。
+
 #### cjs
 
 是否输出 cjs 格式，以及指定 cjs 格式的打包方式等。
