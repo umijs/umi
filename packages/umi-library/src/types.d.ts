@@ -9,6 +9,7 @@ interface IBundleTypeOutput {
 
 interface IEsm extends IBundleTypeOutput {
   mjs?: boolean;
+  min?: boolean;
 }
 
 interface IStringObject {

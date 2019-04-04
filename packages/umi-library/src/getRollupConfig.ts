@@ -166,7 +166,10 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
               `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`,
             ),
           },
-          plugins,
+          plugins: [
+            ...plugins,
+            ...(esm && (esm as any).min ? [terser(terserOpts)] : []),
+          ],
           external: testExternal.bind(null, external),
         },
         ...(esm && (esm as any).mjs
