@@ -83,4 +83,5 @@ $ y doc:deploy
 ```
 
 ## Tips
-Node v10.*
+
+Please use node@10, node@11 is not supported.
