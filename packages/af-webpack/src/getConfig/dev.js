@@ -13,21 +13,4 @@ export default function(webpackConfig, opts) {
   webpackConfig.when(!!opts.devServer, webpackConfig =>
     webpackConfig.merge({ devServer: opts.devServer }),
   );
-
-  if (process.env.HARD_SOURCE) {
-    const pkgPath = join(opts.cwd, 'package.json');
-    if (!existsSync(pkgPath)) {
-      writeFileSync(pkgPath, '{}', 'utf-8');
-    }
-    webpackConfig
-      .plugin('hard-source')
-      .use(require('hard-source-webpack-plugin'),[{
-        environmentHash: {
-          root: process.cwd(),
-          directories: ['config'],
-          files: ['package-lock.json', 'yarn.lock', '.umirc.js', '.umirc.local.js'],
-        },
-      },
-    ]);
-  }
 }

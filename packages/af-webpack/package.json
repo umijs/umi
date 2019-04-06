@@ -42,7 +42,6 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin": "0.5.2",
     "friendly-errors-webpack-plugin": "1.7.0",
-    "hard-source-webpack-plugin": "0.13.1",
     "inquirer": "6.2.2",
     "is-plain-object": "2.0.4",
     "is-root": "2.0.0",

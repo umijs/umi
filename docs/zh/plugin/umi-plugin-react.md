@@ -37,7 +37,6 @@ export default {
       dll: {
         exclude: [],
       },
-      hardSource: true,
       pwa: true,
       hd: true,
       fastClick: true,
@@ -154,9 +153,7 @@ export default {
 
 ### hardSource
 
-* 类型：`Boolean`
-
-通过 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin) 开启 webpack 缓存，二次启动时间减少 80%。推荐非 windows 电脑使用，windows 下由于大文件 IO 比较慢，可自行决定是否启用。
+hardSource 已经不可用，请在配置文件中移除它。
 
 ### pwa
 
