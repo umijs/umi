@@ -38,7 +38,6 @@
     "lodash": "4.17.11",
     "react": "16.8.5",
     "react-dom": "16.8.5",
-    "resolve-bin": "0.4.0",
     "rimraf": "2.6.3",
     "rollup": "1.7.0",
     "rollup-plugin-babel": "4.3.2",
