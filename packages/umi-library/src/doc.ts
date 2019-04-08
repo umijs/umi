@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { sync as resolveBin } from 'resolve-bin';
 import { fork } from 'child_process';
 import { join } from 'path';
 import { writeFileSync, existsSync } from 'fs';
@@ -29,7 +28,7 @@ export function devOrBuild({ cwd, cmd, params, userConfig = {} }) {
   );
 
   return new Promise((resolve, reject) => {
-    const binPath = resolveBin('docz');
+    const binPath = require.resolve('docz/bin/index.js');
     assert.ok(
       !params.includes('--config'),
       `
