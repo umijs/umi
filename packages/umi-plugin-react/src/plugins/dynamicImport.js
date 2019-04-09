@@ -23,7 +23,7 @@ export default function(api, options) {
     if (options.loadingComponent) {
       if (isReactComponent(options.loadingComponent.trim())) {
         loadingOpts = `, loading: ${options.loadingComponent.trim()}`;
-      } else if(isRelativePath(options.loadingComponent.trim())){
+      } else if (isRelativePath(options.loadingComponent.trim())) {
         loadingOpts = `, loading: require('${winPath(
           join(paths.absSrcPath, options.loadingComponent),
         )}').default`;
