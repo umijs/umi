@@ -174,6 +174,7 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     generateInitDva();
   });
 
+  // dva@2.6 自行处理了 ConnectedRouter
   if (semver.lt(dvaVersion, '2.6.0-beta.1')) {
     api.modifyRouterRootComponent(
       `require('dva/router').routerRedux.ConnectedRouter`,
