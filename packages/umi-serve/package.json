@@ -1,6 +1,6 @@
 {
   "name": "umi-serve",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "bin": {
     "umi-serve": "./bin/umi-serve.js"
   },
