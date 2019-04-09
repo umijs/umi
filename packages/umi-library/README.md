@@ -5,6 +5,8 @@ Library toolkit based on rollup and docz.
 [![NPM version](https://img.shields.io/npm/v/umi-library.svg?style=flat)](https://npmjs.org/package/umi-plugin-library)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-library.svg?style=flat)](https://npmjs.org/package/umi-library)
 
+[视频教程：利用 umi-library 做组件打包](https://www.bilibili.com/video/av47853431)。
+
 ## Features
 
 * ✔︎ 基于 [docz](https://www.docz.site/) 的文档功能
