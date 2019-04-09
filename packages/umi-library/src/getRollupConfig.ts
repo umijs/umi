@@ -48,6 +48,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
+  const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'];
 
   let pkg = {} as IPkg;
   try {
@@ -66,7 +67,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
     exclude: /\/node_modules\//,
     babelrc: false,
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'],
+    extensions,
   };
   babelOpts.presets.push(...extraBabelPresets);
   babelOpts.plugins.push(...extraBabelPlugins);
@@ -127,6 +128,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
       : []),
     nodeResolve({
       jsnext: true,
+      extensions,
     }),
     ...(isTypeScript
       ? [
