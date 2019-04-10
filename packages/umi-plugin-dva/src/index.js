@@ -4,7 +4,6 @@ import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
 import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
-import semver from 'semver';
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
@@ -174,12 +173,9 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     generateInitDva();
   });
 
-  // dva@2.6 自行处理了 ConnectedRouter
-  if (semver.lt(dvaVersion, '2.6.0-beta.1')) {
-    api.modifyRouterRootComponent(
-      `require('dva/router').routerRedux.ConnectedRouter`,
-    );
-  }
+  api.modifyRouterRootComponent(
+    `require('dva/router').routerRedux.ConnectedRouter`,
+  );
 
   if (shouldImportDynamic) {
     api.addRouterImport({
