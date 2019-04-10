@@ -4,6 +4,7 @@ import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
 import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
+import semver from 'semver';
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
@@ -73,6 +74,13 @@ export default function(api, opts = {}) {
   const { paths, cwd, compatDirname, winPath } = api;
   const isDev = process.env.NODE_ENV === 'development';
   const shouldImportDynamic = opts.dynamicImport;
+
+  const dvaDir = compatDirname(
+    'dva/package.json',
+    cwd,
+    dirname(require.resolve('dva/package.json')),
+  );
+  const dvaVersion = require(join(dvaDir, 'package.json')).version;
 
   function getDvaJS() {
     const dvaJS = findJS(paths.absSrcPath, 'dva');
@@ -166,9 +174,12 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     generateInitDva();
   });
 
-  api.modifyRouterRootComponent(
-    `require('dva/router').routerRedux.ConnectedRouter`,
-  );
+  // dva@2.6 自行处理了 ConnectedRouter
+  if (semver.lt(dvaVersion, '2.6.0-beta.1')) {
+    api.modifyRouterRootComponent(
+      `require('dva/router').routerRedux.ConnectedRouter`,
+    );
+  }
 
   if (shouldImportDynamic) {
     api.addRouterImport({
@@ -230,14 +241,8 @@ models: () => [
     });
   }
 
-  const dvaDir = compatDirname(
-    'dva/package.json',
-    cwd,
-    dirname(require.resolve('dva/package.json')),
-  );
-
   api.addVersionInfo([
-    `dva@${require(join(dvaDir, 'package.json')).version} (${dvaDir})`,
+    `dva@${dvaVersion} (${dvaDir})`,
     `dva-loading@${require('dva-loading/package').version}`,
     `dva-immer@${require('dva-immer/package').version}`,
     `path-to-regexp@${require('path-to-regexp/package').version}`,
