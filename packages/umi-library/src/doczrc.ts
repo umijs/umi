@@ -3,6 +3,7 @@ import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { merge } from 'lodash';
 import getUserConfig from './getUserConfig';
+import reactExternal from './docz-plugin-react-externals';
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
@@ -24,6 +25,7 @@ const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
 
 export default {
   typescript: isTypescript,
+  repository: false,
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
     if (typeof userConfig.doc.modifyBabelRc === 'function') {
@@ -70,7 +72,7 @@ export default {
   },
   plugins: [
     ...(userConfig.doc.plugins || []),
-
+    reactExternal(),
     ...(userConfig.cssModules
       ? [
           // .css
