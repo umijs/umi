@@ -80,7 +80,10 @@ test('normal', async () => {
   expect(title).toEqual('hello');
 
   // navigate to /button
-  await page.evaluate(() => document.querySelectorAll('nav a')[0].click());
+  await page.evaluate(() => {
+    document.querySelectorAll('nav a')[0].click();
+  });
+  await delay(300);
 
   // assert /button
   const buttonCls = await page.evaluate(() =>
@@ -107,7 +110,7 @@ test('config-theme', async () => {
     waitUntil: 'networkidle2',
   });
   const favicon = await page.evaluate(
-    () => document.querySelectorAll('link')[1].href,
+    () => document.querySelectorAll('link')[0].href,
   );
   expect(favicon).toEqual(
     'https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/EPkOqxgKmFIsEuPcFBOy.png',
