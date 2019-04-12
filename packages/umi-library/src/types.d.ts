@@ -59,3 +59,7 @@ export interface IOpts {
   watch?: boolean;
   buildArgs?: IBundleOptions;
 }
+
+export interface ITypescriptOptions {
+  abortOnError: boolean;
+}

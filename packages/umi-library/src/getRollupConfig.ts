@@ -13,13 +13,14 @@ import tempDir from 'temp-dir';
 import autoprefixer from 'autoprefixer';
 import NpmImport from 'less-plugin-npm-import';
 import getBabelConfig from './getBabelConfig';
-import { IBundleOptions } from './types';
+import { IBundleOptions, ITypescriptOptions } from './types';
 
 interface IGetRollupConfigOpts {
   cwd: string;
   entry: string;
   type: ModuleFormat;
   bundleOpts: IBundleOptions;
+  typescriptOpts: ITypescriptOptions;
 }
 
 interface IPkg {
@@ -29,7 +30,7 @@ interface IPkg {
 }
 
 export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
-  const { type, entry, cwd, bundleOpts } = opts;
+  const { type, entry, cwd, bundleOpts, typescriptOpts } = opts;
   const {
     umd,
     esm,
@@ -149,6 +150,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 target: 'esnext',
               },
             },
+            ...typescriptOpts,
           }),
         ]
       : []),
