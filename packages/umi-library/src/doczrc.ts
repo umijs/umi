@@ -26,6 +26,7 @@ const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
 export default {
   typescript: isTypescript,
   repository: false,
+  theme: require.resolve('docz-theme-umi'),
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
     if (typeof userConfig.doc.modifyBabelRc === 'function') {
@@ -65,6 +66,11 @@ export default {
       }
     }
 
+    // 确保只有一个版本的 docz，否则 theme 会出错，因为 ComponentProvider 的 context 不是同一个
+    config.resolve.alias = config.resolve.alias || {};
+    config.resolve.alias.docz = require.resolve('docz/dist/index.esm.js');
+
+    // fallback resolve 路径
     config.resolve.modules.push(join(__dirname, '../node_modules'));
     config.resolveLoader.modules.push(join(__dirname, '../node_modules'));
 
