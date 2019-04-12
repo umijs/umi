@@ -23,6 +23,7 @@ interface IGetRollupConfigOpts {
   typescriptOpts: ITypescriptOptions;
 }
 
+
 interface IPkg {
   dependencies?: Object;
   peerDependencies?: Object;
