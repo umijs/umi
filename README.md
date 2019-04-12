@@ -15,15 +15,18 @@ English | [简体中文](./README_zh-CN.md)
 
 ## Features
 
-* 📦 **Out of box**, with built-in support for react, react-router, etc.
+* 📦 **Out of box**, with built-in support for react, react-router, jest, webpack, rollup, etc.
 * 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
-* 🎉 **Complete plugin system**, covering every lifecycle from source code to production
-* 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
-* 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
-* 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) with config
-* 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
+* 🎉 **Plugin system**, covering every lifecycle from source code to production
+* 🚀 **High performance**, including PWA support, route-level code splitting, etc.
+* 💈 **Support for static export**, Suitable for environments without server
+* 🚄 **Fast dev startup**, including [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) support with config etc.
+* 🐠 **Polyfill solution**, add JS and CSS polypill with [targets](https://umijs.org/config/#targets) config, lowest to IE9
 * 🍁 **Support TypeScript**, including d.ts definition and `umi test`
-* 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
+* 🌴 **Deep integration with [dva](https://dvajs.com/)**, including duck directory support, automatic loading of model, code splitting, etc
+* ⛄️ **Support MPA**，based on [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
+
+[And more.](https://www.npmjs.com/search?q=umi-plugin)
 
 ## Getting Started
 
