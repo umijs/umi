@@ -206,7 +206,10 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             format,
             file: join(cwd, `dist/${(cjs && (cjs as any).file) || name}.js`),
           },
-          plugins,
+          plugins: [
+            ...plugins,
+            ...(cjs && (cjs as any).minify ? [terser(terserOpts)] : []),
+          ],
           external: testExternal.bind(null, external),
         },
       ];

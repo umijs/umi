@@ -7,6 +7,10 @@ interface IBundleTypeOutput {
   file?: string;
 }
 
+interface ICjs extends IBundleTypeOutput {
+  minify?: boolean;
+}
+
 interface IEsm extends IBundleTypeOutput {
   mjs?: boolean;
   minify?: boolean;
@@ -31,7 +35,7 @@ export interface IBundleOptions {
   entry?: string | string[];
   file?: string;
   esm?: BundleType | IEsm | false;
-  cjs?: BundleType | IBundleTypeOutput | false;
+  cjs?: BundleType | ICjs | false;
   umd?: IUmd | false;
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];

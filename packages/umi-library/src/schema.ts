@@ -40,6 +40,7 @@ export default {
               pattern: '^(rollup|babel)$',
             },
             file: noEmptyStr,
+            minify: { type: 'boolean' },
           },
         },
       ],

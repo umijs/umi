@@ -194,6 +194,15 @@ cjs 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 - Type: `string`
 - Default: `undefined`
 
+#### cjs.minify
+
+是否压缩 cjs 格式。
+
+* Type: `boolean`
+* Default: `false`
+
+通常不需要配置，除非你发布到 npm 的代码需要保密。
+
 #### umd
 
 是否输出 umd 格式，以及指定 umd 的相关配置。
