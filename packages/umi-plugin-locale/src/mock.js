@@ -1,13 +1,14 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
+export { getLocaleFileList } from './index';
+
 const createMockWrapper = (localeList = [], options = {}) => {
   const { antd = true, baseNavigator = true } = options;
   const defaultLocale = options.default || 'zh-CN';
   const [lang, country] = defaultLocale.split('-');
   const defaultAntdLocale = `${lang}_${country}`;
-  const defaultMomentLocale = (
-    localeList.find(locale => locale.name === defaultLocale) || {}
-  ).momentLocale;
+  const defaultMomentLocale = (localeList.find(locale => locale.name === defaultLocale) || {})
+    .momentLocale;
   const React = require('react');
   return class MockWrapper extends React.Component {
     moment = {};
@@ -40,7 +41,7 @@ const createMockWrapper = (localeList = [], options = {}) => {
         })();
       }
       localeList.forEach(locale => {
-        this.localeList[locale.name] = {
+        this.localeInfo[locale.name] = {
           messages: locale.paths.reduce(
             (prev, curr) => ({ ...prev, ...require(curr).default }),
             {},
@@ -50,9 +51,7 @@ const createMockWrapper = (localeList = [], options = {}) => {
           momentLocale: locale.momentLocale,
         };
         if (antd) {
-          const antdLocalePath = `antd/lib/locale-provider/${locale.lang}_${
-            locale.country
-          }`;
+          const antdLocalePath = `antd/lib/locale-provider/${locale.lang}_${locale.country}`;
           const antdLocale = require(antdLocalePath);
           this.localeList[locale.name].antd = antdLocale.default || antdLocale;
         }
@@ -89,10 +88,7 @@ const createMockWrapper = (localeList = [], options = {}) => {
       let { children: ret } = this.props;
       if (localeList.length) {
         ret = (
-          <IntlProvider
-            locale={this.appLocale.locale}
-            messages={this.appLocale.messages}
-          >
+          <IntlProvider locale={this.appLocale.locale} messages={this.appLocale.messages}>
             <this.InjectedWrapper>{ret}</this.InjectedWrapper>
           </IntlProvider>
         );

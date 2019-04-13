@@ -1,9 +1,10 @@
 import { join } from 'path';
+import { winPath } from 'umi-utils';
 import { readFileSync, unlinkSync } from 'fs';
 import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 
-const absSrcPath = join(__dirname, '../examples/base/src');
-const absPagesPath = join(__dirname, '../examples/base/src/page');
+const absSrcPath = winPath(join(__dirname, '../examples/base/src'));
+const absPagesPath = winPath(join(__dirname, '../examples/base/src/page'));
 
 let wrapperFile;
 
@@ -38,9 +39,7 @@ describe('test plugin', () => {
     expect(ret).toEqual(expect.stringContaining('<LocaleProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-    expect(ret).toEqual(
-      expect.stringContaining('antd/lib/locale-provider/en_US'),
-    );
+    expect(ret).toEqual(expect.stringContaining('antd/lib/locale-provider/en_US'));
     expect(ret).toEqual(expect.stringContaining('moment/locale/zh-cn'));
     unlinkSync(wrapperFile);
   });
@@ -57,9 +56,7 @@ test('antd is false', () => {
 
   expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
   expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
-  expect(ret).not.toEqual(
-    expect.stringContaining('antd/lib/locale-provider/zh_CN'),
-  );
+  expect(ret).not.toEqual(expect.stringContaining('antd/lib/locale-provider/zh_CN'));
   expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
   unlinkSync(wrapperFile);
 });
@@ -72,20 +69,14 @@ describe('test func with singular true', () => {
         lang: 'en',
         country: 'US',
         name: 'en-US',
-        paths: [
-          `${absSrcPath}/locale/en-US.js`,
-          `${absPagesPath}/temp/locale/en-US.js`,
-        ],
+        paths: [`${absSrcPath}/locale/en-US.js`, `${absPagesPath}/temp/locale/en-US.js`],
         momentLocale: '',
       },
       {
         lang: 'zh',
         country: 'CN',
         name: 'zh-CN',
-        paths: [
-          `${absSrcPath}/locale/zh-CN.js`,
-          `${absPagesPath}/temp/locale/zh-CN.js`,
-        ],
+        paths: [`${absSrcPath}/locale/zh-CN.js`, `${absPagesPath}/temp/locale/zh-CN.js`],
         momentLocale: 'zh-cn',
       },
     ]);
