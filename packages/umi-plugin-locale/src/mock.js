@@ -87,17 +87,17 @@ const createMockWrapper = (localeList = [], options = {}) => {
       const { IntlProvider } = this.localePkg;
       let { children: ret } = this.props;
       if (localeList.length) {
-        ret = (
-          <IntlProvider locale={this.appLocale.locale} messages={this.appLocale.messages}>
-            <this.InjectedWrapper>{ret}</this.InjectedWrapper>
-          </IntlProvider>
+        ret = React.createElement(
+          IntlProvider,
+          { locale: this.appLocale.locale, messages: this.appLocale.messages },
+          React.createElement(this.InjectedWrapper, null, ret),
         );
       }
       if (antd) {
-        ret = (
-          <this.LocaleProvider locale={this.appLocale.antd || this.defaultAntd}>
-            {ret}
-          </this.LocaleProvider>
+        ret = React.createElement(
+          this.LocaleProvider,
+          { locale: this.appLocale.antd || this.defaultAntd },
+          ret,
         );
       }
       return ret;
