@@ -6,7 +6,7 @@ export default () => {
   return (
     <Card>
       <div>hello world</div>
-      <Link to="/test">test</Link>
+      <Link to="/list">test</Link>
     </Card>
   );
 };

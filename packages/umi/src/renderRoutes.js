@@ -1,6 +1,8 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import NotLiveRoute from 'react-live-route';
 
+const LiveRoute = withRouter(NotLiveRoute);
 const RouteInstanceMap = {
   get(key) {
     return key._routeInternalComponent;
@@ -21,17 +23,33 @@ const RouteWithProps = ({
   render,
   location,
   sensitive,
+  keepAlive,
   ...rest
-}) => (
-  <Route
-    path={path}
-    exact={exact}
-    strict={strict}
-    location={location}
-    sensitive={sensitive}
-    render={props => render({ ...props, ...rest })}
-  />
-);
+}) => {
+  if (keepAlive) {
+    return (
+      <LiveRoute
+        path={path}
+        exact={exact}
+        strict={strict}
+        location={location}
+        alwaysLive={true}
+        sensitive={sensitive}
+        render={props => render({ ...props, ...rest })}
+      />
+    );
+  }
+  return (
+    <Route
+      path={path || '/umi404'}
+      exact={exact}
+      strict={strict}
+      location={location}
+      sensitive={sensitive}
+      render={props => render({ ...props, ...rest })}
+    />
+  );
+};
 
 function getCompatProps(props) {
   const compatProps = {};
@@ -86,7 +104,7 @@ export default function renderRoutes(
   switchProps = {},
 ) {
   return routes ? (
-    <Switch {...switchProps}>
+    <div {...switchProps}>
       {routes.map((route, i) => {
         if (route.redirect) {
           return (
@@ -107,6 +125,7 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             sensitive={route.sensitive}
+            keepAlive={route.keepAlive}
             render={props => {
               const childRoutes = renderRoutes(
                 route.routes,
@@ -140,6 +159,6 @@ export default function renderRoutes(
           />
         );
       })}
-    </Switch>
+    </div>
   ) : null;
 }
