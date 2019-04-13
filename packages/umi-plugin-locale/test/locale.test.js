@@ -1,5 +1,6 @@
 import { IntlProvider } from 'react-intl';
 import renderer from 'react-test-renderer';
+import { mockLocalStorage } from './utils';
 import {
   formatMessage,
   formatHTMLMessage,
@@ -17,29 +18,11 @@ import {
   _setIntlObject,
 } from '../src/locale';
 
-/* eslint-disable */
-const localStorageMock = (function() {
-  let store = {};
+mockLocalStorage();
 
-  return {
-    // Reference: greasemonkey_api_test.js@chromium
-    getItem: function(key) {
-      if (key in store) {
-        return store[key];
-      }
-      return null;
-    },
-    setItem: function(key, value) {
-      store[key] = value.toString();
-    },
-    clear: function() {
-      store = {};
-    },
-  };
-})();
-
+// eslint-disable-next-line wrap-iife
 const InjectedWrapper = (function() {
-  let sfc = (props, context) => {
+  const sfc = (props, context) => {
     _setIntlObject(context.intl);
     return props.children;
   };
@@ -48,18 +31,6 @@ const InjectedWrapper = (function() {
   };
   return sfc;
 })();
-/* eslint-enable */
-
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
-
-// eslint-disable-next-line
-Object.defineProperty(location, 'reload', {
-  value: () => {
-    window.g_lang = window.localStorage.getItem('umi_locale');
-  },
-});
 
 describe('test umi-plugin-locale', () => {
   test('api exist', () => {

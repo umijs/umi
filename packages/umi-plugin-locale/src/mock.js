@@ -1,7 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-export { getLocaleFileList } from './index';
-
 const createMockWrapper = (localeList = [], options = {}) => {
   const { antd = true, baseNavigator = true } = options;
   const defaultLocale = options.default || 'zh-CN';

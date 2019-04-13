@@ -1,5 +1,7 @@
 /* eslint-disable no-undef, prefer-rest-params */
 const ReactIntl = require('react-intl');
+const { getLocaleFileList } = require('./index');
+const createMockWrapper = require('./mock').default;
 
 function setLocale(lang) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
@@ -58,4 +60,6 @@ module.exports = {
   setLocale,
   getLocale,
   _setIntlObject,
+  createMockWrapper,
+  getLocaleFileList,
 };
