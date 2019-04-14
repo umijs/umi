@@ -353,6 +353,29 @@ Define a list of additional files that need to be babel converted, in the form o
 
 Define additional PostCSS plugins in the format of an array.
 
+Such as use the plugin [postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport) .
+
+First install the plugin with `npm install postcss-px-to-viewport --save-dev`, then config the option extraPostCSSPlugins.
+
+```js
+import pxToViewPort from 'postcss-px-to-viewport';
+
+const config = {
+  ...otherConfig,
+  extraPostCSSPlugins: [
+    pxToViewPort({
+      viewportWidth: 375,
+      viewportHeight: 667,
+      unitPrecision: 5,
+      viewportUnit: 'vw',
+      selectorBlackList: [],
+      minPixelValue: 1,
+      mediaQuery: false,
+    }),
+  ],
+}
+```
+
 ### cssModulesExcludes
 
 The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
