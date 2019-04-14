@@ -1,3 +1,59 @@
+/**
+ * mock `localStorage` and `location.reload` for 'umi_locale'
+ * @returns {(oldGlobalVars?: Partial<Window>) => void} removeMockEffects
+ */
+export const mockGlobalVars = () => {
+  // eslint-disable-next-line wrap-iife
+  const localStorageMock = (function() {
+    return {
+      // Reference: greasemonkey_api_test.js@chromium
+      getItem(key) {
+        return key in this ? this[key] : null;
+      },
+      setItem(key, value) {
+        this[key] = `${value}`;
+      },
+      clear() {
+        Object.entries(this).forEach(item => {
+          if (typeof item[1] === 'string') {
+            this.removeItem(item[0]);
+          }
+        });
+      },
+      removeItem(key) {
+        delete this[key];
+      },
+    };
+  })();
+
+  const defaultOldGlobalVars = {
+    ...window,
+    location: { ...window.location },
+  };
+
+  Object.defineProperty(window, 'localStorage', {
+    writable: true,
+    value: localStorageMock,
+  });
+  Object.defineProperty(window.location, 'reload', {
+    writable: true,
+    value: () => {
+      window.g_lang = window.localStorage.getItem('umi_locale');
+    },
+  });
+
+  return (oldGlobalVars = defaultOldGlobalVars) => {
+    Object.defineProperty(window, 'localStorage', {
+      writable: true,
+      value: oldGlobalVars.localStorage,
+    });
+    Object.defineProperty(window.location, 'reload', {
+      writable: true,
+      value: oldGlobalVars.location.reload,
+    });
+  };
+};
+
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 const createMockWrapper = (localeList = [], options = {}) => {
@@ -51,12 +107,11 @@ const createMockWrapper = (localeList = [], options = {}) => {
         if (antd) {
           const antdLocalePath = `antd/lib/locale-provider/${locale.lang}_${locale.country}`;
           const antdLocale = require(antdLocalePath);
-          this.localeList[locale.name].antd = antdLocale.default || antdLocale;
+          this.localeInfo[locale.name].antd = antdLocale.default || antdLocale;
         }
       });
       if (antd) {
         this.LocaleProvider = require('antd').LocaleProvider;
-        this.moment = require('moment');
         if (defaultMomentLocale) {
           require(`moment/locale/${defaultMomentLocale}`);
         }

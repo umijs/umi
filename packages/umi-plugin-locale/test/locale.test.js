@@ -1,6 +1,6 @@
 import { IntlProvider } from 'react-intl';
 import renderer from 'react-test-renderer';
-import { mockLocalStorage } from './utils';
+import { mockGlobalVars } from '../src/mock';
 import {
   formatMessage,
   formatHTMLMessage,
@@ -18,8 +18,6 @@ import {
   _setIntlObject,
 } from '../src/locale';
 
-mockLocalStorage();
-
 // eslint-disable-next-line wrap-iife
 const InjectedWrapper = (function() {
   const sfc = (props, context) => {
@@ -31,6 +29,9 @@ const InjectedWrapper = (function() {
   };
   return sfc;
 })();
+
+const removeMockEffects = mockGlobalVars();
+afterAll(() => removeMockEffects());
 
 describe('test umi-plugin-locale', () => {
   test('api exist', () => {
