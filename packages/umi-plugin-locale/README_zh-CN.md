@@ -1,6 +1,6 @@
 # umi-plugin-locale
 
-English | [简体中文](https://github.com/umijs/umi/blob/master/packages/umi-plugin-locale/README_zh-CN.md)
+[English](https://github.com/umijs/umi/blob/master/packages/umi-plugin-locale/README.md) | 简体中文
 
 i18n plugin for umi.
 
@@ -10,7 +10,7 @@ Suggest to use together with umi-plugin-react, see our website [umi-plugin-react
 
 ---
 
-## Config
+## 配置
 
 **.umirc.js**
 
@@ -21,9 +21,9 @@ export default {
       'umi-plugin-react',
       {
         locale: {
-          default: 'zh-CN', // default locale
-          baseNavigator: true, // enable use `navigator.language` overwrite default
-          antd: true, // enable `<LocaleProvider />` of antd
+          default: 'zh-CN', // 默认语言 zh-CN
+          baseNavigator: true, // 为 `true` 时，用 `navigator.language` 的值作为默认语言
+          antd: true, // 是否启用 antd 的 <LocaleProvider />
         },
       },
     ],
@@ -31,7 +31,7 @@ export default {
 };
 ```
 
-## Directory convention
+## 目录及约定
 
 ```
 .
@@ -40,7 +40,7 @@ export default {
 └── src/
     ├── layouts/index.js
     ├── pages/
-    └── locales               // The directory where the i18n text files are stored
+    └── locales               // 多语言文件存放目录，里面的文件会被umi自动读取
         ├── zh-CN.js
         └── en-US.js
 ├── .umirc.js
@@ -48,13 +48,13 @@ export default {
 └── package.json
 ```
 
-> If `singular: true` is configured in `.umirc.js`, the `locales` folder should be changed to `locale`.
+> 如果 `.umirc.js` 里配置了 `singular: true`，`locales` 要改成 `locale`
 
-## I18n files convention
+## 多语言文件约定
 
-Naming: `<lang>-<COUNTRY>.js`
+多语言文件的命名规范：`<lang>-<COUNTRY>.js`
 
-Content: key-valued literal, for exmaple:
+多语言文件的内容规范：键-值组成的字面量，如下：
 
 zh-CN.js
 
@@ -72,46 +72,46 @@ export default {
 };
 ```
 
-## Extended API
+## 扩展 API
 
-After using this plugin, you can import i18n-related APIs from umi-plugin-locale (or umi-plugin-react/locale).
+使用本插件后，你可以从 umi-plugin-locale （或 umi-plugin-react/locale） 引入国际化相关的 API，获得关于多语言功能在编程上的便利。
 
 ```javascript
 import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi-plugin-locale';
 
-// format message
+// 获取指定文字的多语言版本
 const formatedText = formatMessage({ id: 'WELCOME_TO_UMI_WORLD' }, { name: '小伙子' });
 
 console.log(formatedText === '小伙子，欢迎光临 umi 的世界');
 
-// set to `'en-US'`
+// 设置为 en-US
 setLocale('en-US');
 
-// get the current language
+// 获取当前语言
 console.log(getLocale() === 'en-US');
 
-// render i18n text as react node
+// 渲染一个文字标签
 function Example() {
   return <FormattedMessage id="WELCOME_TO_UMI_WORLD" values={{ name: '小伙子' }} />;
 }
 ```
 
-## Test
+## 测试
 
-In the unit test, if the component being tested does not wrapped a context provider, the API exported from umi-plugin-locale will not work properly, and the following warning may appear:
+单元测试中，如果被测试的组件没有 context provider 包裹，umi-plugin-locale 中的 API 将无法正常工作，并可能出现如下警告：
 ![image](https://user-images.githubusercontent.com/19199408/54806772-039eac00-4cb6-11e9-919a-1606a1a599f5.png)
-You can choose to mock umi-plugin-locale or use the `createMockWrapper` method provided by umi-plugin-locale to make internationalization work properly in unit tests.
+你可以选择 mock 掉 umi-plugin-locale ，或者使用 umi-plugin-locale 提供的 `createMockWrapper` 方法，以在单元测试中正常使用国际化功能。
 
 ### mock umi-plugin-locale
 
-Take [jest](https://github.com/facebook/jest) as an example, create the `__mocks__` folder in the same level as the test code, and create a new file `umi-plugin-locale.js` (or `.ts` ) in it, add the following code to the file
+以 [jest](https://github.com/facebook/jest) 为例，在测试代码同级目录下创建 `__mocks__` 文件夹，并在其中新建文件 `umi-plugin-locale.js` （或 `.ts` ），在文件中添加代码
 
 ```js
 export const formatMessage = ({ defaultMessage, id }) => defaultMessage || id;
 export const FormattedMessage = ({ defaultMessage, id }) => <span>{defaultMessage || id}</span>;
 ```
 
-Add a line of code before the test code, you can replace the `formatMessage` and `FormattedMessage` methods with the corresponding contents of `__mocks__/umi-plugin-locale.js` during the unit tests, you can mock other APIs in the similar way
+在测试代码之前添加一行代码，即可在单元测试运行过程中将 `formatMessage` 与 `FormattedMessage` 方法替换成 `__mocks__/umi-plugin-locale.js` 中对应的内容，其他 API 的 mock 方法类似
 
 ```diff
 // ./src/pages/index.js
@@ -131,11 +131,11 @@ test('name', () => {
 });
 ```
 
-### Use `createMockWrapper`
+### 使用 `createMockWrapper`
 
-You can also use `createMockWrapper` to provide internationalization capabilities for unit tests. Refer to [this file](https://github.com/umijs/umi/blob/master/packages/umi-plugin-locale/test/mock.test.js) and [configuration item definitions](https://github.com/umijs/umi/blob/dc051635c0855024d46a03fadf4e051d63959784/packages/umi-plugin-locale/index.d.ts#L151-L176) to write test files.
+你也可以使用 `createMockWrapper` 为单元测试提供国际化能力，参考 [此文件](https://github.com/umijs/umi/blob/master/packages/umi-plugin-locale/test/mock.test.js) 与 [配置项定义](https://github.com/umijs/umi/blob/dc051635c0855024d46a03fadf4e051d63959784/packages/umi-plugin-locale/index.d.ts#L151-L176) 来编写测试文件。
 
-> **Tip**: If you need to test if the internationalization feature is working properly, we recommend using the e2e test.
+> **提示**：如果你需要测试国际化功能是否正常运行，建议使用 e2e 测试。
 
 ```js
 import { winPath } from 'umi-utils';
@@ -152,8 +152,8 @@ test('example', () => {
     </Wrapper>,
   );
   /**
-   * Wrapper will default to mock `localStorage` to support `setLocale` after the first rendering,
-   * you can turn this feature off in the configuration
+   * Wrapper 第一次渲染之后会默认 mock 掉 `localStorage` 来支持 `setLocale`，
+   * 你可以在配置中关闭此功能
    */
   setLocale('en-US');
   expect(instance.toJSON().children[1]).toBe('test en locale');
@@ -165,7 +165,7 @@ test('example', () => {
     </Wrapper>,
   );
   expect(instance.toJSON().children[1]).toBe('测试中文 locale');
-  // Unmount the component to remove the side effects of mocking `localStorage`
+  // 卸载组件以移除 mock `localStorage` 带来的副作用
   instance.unmount();
 });
 ```

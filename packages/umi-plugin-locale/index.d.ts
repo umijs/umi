@@ -150,7 +150,7 @@ export interface LocaleFileInfo {
 
 export interface LocaleMockWrapperOptions {
   /**
-   * enable mock locale of antd
+   * enable `<LocaleProvider />` of antd
    * @default true
    */
   antd?: boolean;
@@ -196,7 +196,7 @@ export declare function createMockWrapper(
  * @param singular: enable the directory for singular mode
  *
  * @example
- *   // this is a sample test file located in `./src/pages/tests/`
+ *   // this is a sample test file located in `./src/pages/__tests__/`
  *   import { winPath } from 'umi-utils';
  *   const absSrcPath = winPath(path.join(__dirname, '../../'));
  *   const absPagesPath = winPath(path.join(__dirname, '../'));
