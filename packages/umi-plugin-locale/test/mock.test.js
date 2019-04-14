@@ -1,13 +1,12 @@
 import path from 'path';
 import { winPath } from 'umi-utils';
 import renderer from 'react-test-renderer';
-import createMockWrapper, { mockGlobalVars } from '../src/mock';
+import createMockWrapper from '../src/mock';
 import { getLocaleFileList } from '../src/index';
 
 jest.mock('antd');
 jest.mock('umi-plugin-locale');
 
-const removeMockEffects = mockGlobalVars();
 const { FormattedMessage, formatMessage, setLocale } = require('umi-plugin-locale');
 const absSrcPath = winPath(path.join(__dirname, '../examples/base/src'));
 const absPagesPath = winPath(path.join(__dirname, '../examples/base/src/page'));
@@ -20,41 +19,35 @@ const MyComponent = () => (
   </div>
 );
 
-afterAll(() => removeMockEffects());
-
 describe('test umi-plugin-locale createMockWrapper', () => {
   it('api exists', () => {
     expect(createMockWrapper).toBeTruthy();
     expect(getLocaleFileList).toBeTruthy();
   });
 
-  it('en-US', () => {
+  it('set locale and format message', () => {
+    const wrapperInstance = renderer.create(
+      <Wrapper>
+        <MyComponent />
+      </Wrapper>,
+    );
     setLocale('en-US');
-    const warpperInstance = renderer.create(
-      <Wrapper>
-        <MyComponent />
-      </Wrapper>,
-    );
-    const json = warpperInstance.toJSON();
-    expect(json).toBeTruthy();
-    expect(json.children).toHaveLength(2);
-    expect(json.children[0].type).toBe('span');
-    expect(json.children[0].children[0]).toBe('test en umi');
-    expect(json.children[1]).toBe('test en locale');
-    warpperInstance.unmount();
-  });
-
-  it('zh-CN', () => {
+    const enJSON = wrapperInstance.toJSON();
+    expect(enJSON).toBeTruthy();
+    expect(enJSON.children).toHaveLength(2);
+    expect(enJSON.children[0].type).toBe('span');
+    expect(enJSON.children[0].children[0]).toBe('test en umi');
+    expect(enJSON.children[1]).toBe('test en locale');
     setLocale('zh-CN');
-    const warpperInstance = renderer.create(
+    wrapperInstance.update(
       <Wrapper>
         <MyComponent />
       </Wrapper>,
     );
-    const json = warpperInstance.toJSON();
-    expect(json.children[0].children[0]).toBe('测试中文 umi');
-    expect(json.children[1]).toBe('测试中文 locale');
-    warpperInstance.unmount();
+    const zhJSON = wrapperInstance.toJSON();
+    expect(zhJSON.children[0].children[0]).toBe('测试中文 umi');
+    expect(zhJSON.children[1]).toBe('测试中文 locale');
+    wrapperInstance.unmount();
   });
 
   it('default locale', () => {
@@ -63,14 +56,32 @@ describe('test umi-plugin-locale createMockWrapper', () => {
       antd: false,
       default: 'en-US',
       baseNavigator: false,
+      mockGlobalVars: false,
     });
-    const warpperInstance = renderer.create(
+    const wrapperInstance = renderer.create(
       <LocalWrapper>
         <MyComponent />
       </LocalWrapper>,
     );
-    const json = warpperInstance.toJSON();
+    const json = wrapperInstance.toJSON();
     expect(json.children[1]).toBe('test en locale');
-    warpperInstance.unmount();
+    wrapperInstance.unmount();
+  });
+
+  it('baseNavigator', () => {
+    const LocalWrapper = createMockWrapper(fileList, {
+      antd: false,
+      baseNavigator: true,
+      mockGlobalVars: false,
+    });
+    const wrapperInstance = renderer.create(
+      <LocalWrapper>
+        <MyComponent />
+      </LocalWrapper>,
+    );
+    const json = wrapperInstance.toJSON();
+    const isEN = navigator.language === 'en-US';
+    expect(json.children[1]).toBe(isEN ? 'test en locale' : '测试中文 locale');
+    wrapperInstance.unmount();
   });
 });

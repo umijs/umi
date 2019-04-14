@@ -1,35 +1,41 @@
 /**
  * mock `localStorage` and `location.reload` for 'umi_locale'
+ * @param {Partial<Window>} mockGlobalVars
  * @returns {(oldGlobalVars?: Partial<Window>) => void} removeMockEffects
  */
-export const mockGlobalVars = () => {
-  // eslint-disable-next-line wrap-iife
-  const localStorageMock = (function() {
-    return {
-      // Reference: greasemonkey_api_test.js@chromium
-      getItem(key) {
-        return key in this ? this[key] : null;
-      },
-      setItem(key, value) {
-        this[key] = `${value}`;
-      },
-      clear() {
-        Object.entries(this).forEach(item => {
-          if (typeof item[1] === 'string') {
-            this.removeItem(item[0]);
-          }
-        });
-      },
-      removeItem(key) {
-        delete this[key];
-      },
-    };
-  })();
-
+export const mockGlobalVars = (mockGlobalVars = {}) => {
   const defaultOldGlobalVars = {
     ...window,
     location: { ...window.location },
   };
+
+  // Reference: greasemonkey_api_test.js@chromium
+  const localStorageMock = mockGlobalVars.localStorage || {
+    getItem(key) {
+      return key in this ? this[key] : null;
+    },
+    setItem(key, value) {
+      this[key] = `${value}`;
+    },
+    clear() {
+      Object.entries(this).forEach(item => {
+        if (typeof item[1] === 'string') {
+          this.removeItem(item[0]);
+        }
+      });
+    },
+    removeItem(key) {
+      delete this[key];
+    },
+  };
+
+  const { location: locationMock } = mockGlobalVars;
+  let locationReloadMock = locationMock && locationMock.reload;
+  if (!locationReloadMock) {
+    locationReloadMock = () => {
+      window.g_lang = localStorage.getItem('umi_locale');
+    };
+  }
 
   Object.defineProperty(window, 'localStorage', {
     writable: true,
@@ -37,9 +43,7 @@ export const mockGlobalVars = () => {
   });
   Object.defineProperty(window.location, 'reload', {
     writable: true,
-    value: () => {
-      window.g_lang = window.localStorage.getItem('umi_locale');
-    },
+    value: locationReloadMock,
   });
 
   return (oldGlobalVars = defaultOldGlobalVars) => {
@@ -64,6 +68,7 @@ const createMockWrapper = (localeList = [], options = {}) => {
   const defaultMomentLocale = (localeList.find(locale => locale.name === defaultLocale) || {})
     .momentLocale;
   const React = require('react');
+  let removeMockEffects = () => {};
   return class MockWrapper extends React.Component {
     moment = {};
 
@@ -82,6 +87,11 @@ const createMockWrapper = (localeList = [], options = {}) => {
 
     constructor() {
       super();
+      if (options.mockGlobalVars || options.mockGlobalVars === undefined) {
+        removeMockEffects = mockGlobalVars({
+          location: { reload: () => this.forceUpdate() },
+        });
+      }
       if (localeList.length) {
         this.localePkg = require('umi-plugin-locale');
         const { _setIntlObject, intlShape } = this.localePkg;
@@ -112,12 +122,19 @@ const createMockWrapper = (localeList = [], options = {}) => {
       });
       if (antd) {
         this.LocaleProvider = require('antd').LocaleProvider;
-        if (defaultMomentLocale) {
-          require(`moment/locale/${defaultMomentLocale}`);
-        }
         const defaultAntd = require(`antd/lib/locale-provider/${defaultAntdLocale}`);
         this.defaultAntd = defaultAntd.default || defaultAntd;
       }
+      this.getSnapshotBeforeUpdate();
+    }
+
+    componentDidUpdate() {}
+
+    componentWillUnmount() {
+      removeMockEffects();
+    }
+
+    getSnapshotBeforeUpdate() {
       const umiLocale = localStorage.getItem('umi_locale');
       if (umiLocale && this.localeInfo[umiLocale]) {
         this.appLocale = this.localeInfo[umiLocale];
@@ -126,10 +143,14 @@ const createMockWrapper = (localeList = [], options = {}) => {
       } else {
         this.appLocale = this.localeInfo[defaultLocale] || this.appLocale;
       }
+      if (antd && this.appLocale.momentLocale) {
+        require(`moment/locale/${this.appLocale.momentLocale}`);
+      }
       window.g_lang = this.appLocale.locale;
       if (localeList.length && this.appLocale.data) {
         this.localePkg.addLocaleData(this.appLocale.data);
       }
+      return null;
     }
 
     InjectedWrapper = props => props.children;
