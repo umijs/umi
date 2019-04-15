@@ -344,6 +344,10 @@ export default {
 },
 ```
 
+#### typescript
+
+配置 [rollup-plugin-typescript2](https://github.com/ezolenko/rollup-plugin-typescript2) 的参数，配置遵循该插件的写法。
+
 #### overridesByEntry
 
 根据 entry 覆盖配置。
