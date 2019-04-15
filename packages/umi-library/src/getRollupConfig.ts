@@ -44,6 +44,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
     namedExports,
     runtimeHelpers: runtimeHelpersOpts,
     replace: replaceOpts,
+    typescript: tsRollup2Config,
   } = bundleOpts;
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
@@ -149,6 +150,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 target: 'esnext',
               },
             },
+            ...tsRollup2Config,
           }),
         ]
       : []),

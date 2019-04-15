@@ -1,4 +1,5 @@
 import { Config as IDoczConfig } from 'docz-core';
+import { IOptions } from 'rollup-plugin-typescript2/dist/ioptions';
 
 export type BundleType = 'rollup' | 'babel';
 
@@ -52,6 +53,7 @@ export interface IBundleOptions {
   replace?: {
     [value: string]: any;
   };
+  typescript?: Partial<IOptions>;
 }
 
 export interface IOpts {
