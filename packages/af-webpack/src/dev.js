@@ -95,7 +95,8 @@ export default function dev({
       const serverConfig = {
         disableHostCheck: true,
         compress: true,
-        clientLogLevel: 'none',
+        // clientLogLevel: 'none',
+        port,
         hot: true,
         quiet: true,
         headers: {

@@ -6,12 +6,12 @@ export default function(webpackConfig, opts) {
     .devtool(opts.devtool || 'cheap-module-source-map')
     .output.pathinfo(true);
 
-  webpackConfig
-    .plugin('hmr')
-    .use(require('webpack/lib/HotModuleReplacementPlugin'));
+  // for this issue https://github.com/webpack/webpack-dev-server/issues/87
+  // webpackConfig
+  //   .plugin('hmr')
+  //   .use(require('webpack/lib/HotModuleReplacementPlugin'));
 
-  webpackConfig.when(!!opts.devServer, webpackConfig =>
-    webpackConfig.merge({ devServer: opts.devServer }),
+  webpackConfig.when(!!opts.devServer, webpackConfig => webpackConfig.merge({ devServer: opts.devServer }),
   );
 
   if (process.env.HARD_SOURCE) {
@@ -21,7 +21,7 @@ export default function(webpackConfig, opts) {
     }
     webpackConfig
       .plugin('hard-source')
-      .use(require('hard-source-webpack-plugin'),[{
+      .use(require('hard-source-webpack-plugin'), [{
         environmentHash: {
           root: process.cwd(),
           directories: ['config'],

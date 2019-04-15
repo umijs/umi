@@ -13,6 +13,7 @@ import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
 import getCodeFrame from './utils/getCodeFrame';
+import { getSSRConfig } from 'umi-utils';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -312,13 +313,18 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       signale.error(`Command ${chalk.underline.cyan(name)} does not exists`);
       process.exit(1);
     }
-
     const { fn, opts } = command;
     if (opts.webpack) {
       // webpack config
-      this.webpackConfig = require('./getWebpackConfig').default(this);
+      const defaultWebpackConfig = require('./getWebpackConfig').default(this);
+      this.webpackConfig = rawArgs.ssr
+        ? getSSRConfig(defaultWebpackConfig)
+        : defaultWebpackConfig;
+      if (rawArgs.watch) {
+        this.webpackConfig.devtool = 'eval-source-map';
+        this.webpackConfig.watch = true;
+      }
     }
-
     return fn(args);
   }
 }

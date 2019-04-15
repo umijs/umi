@@ -4,9 +4,9 @@ const { fork } = require('child_process');
 const { join } = require('path');
 
 function runUmiTools(...args) {
-  console.log(['>> umi-tools', ...args].join(' '));
+  console.log(['>> yumi-tools', ...args].join(' '));
   return fork(
-    join(process.cwd(), 'node_modules/.bin/umi-tools'),
+    join(process.cwd(), 'node_modules/.bin/yumi-tools'),
     [...args].concat(process.argv.slice(2)),
     {
       stdio: 'inherit',

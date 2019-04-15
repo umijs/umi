@@ -26,7 +26,7 @@ const RouteWithProps = ({ path, exact, strict, render, location, ...rest }) => (
 
 function getCompatProps(props) {
   const compatProps = {};
-  if (__UMI_BIGFISH_COMPAT) {
+  if (window.__UMI_BIGFISH_COMPAT || __UMI_BIGFISH_COMPAT) {
     if (props.match && props.match.params && !props.params) {
       compatProps.params = props.match.params;
     }
@@ -98,13 +98,9 @@ export default function renderRoutes(
             exact={route.exact}
             strict={route.strict}
             render={props => {
-              const childRoutes = renderRoutes(
-                route.routes,
-                {},
-                {
-                  location: props.location,
-                },
-              );
+              const childRoutes = renderRoutes(route.routes, extraProps, {
+                location: props.location,
+              });
               if (route.component) {
                 const compatProps = getCompatProps({
                   ...props,

@@ -24,7 +24,7 @@ function routeChangeHandler(location, action) {
 window.g_history.listen(routeChangeHandler);
 routeChangeHandler(window.g_history.location);
 
-export default function RouterWrapper() {
+export default function RouterWrapper(props = {}) {
   return (
 {{{ routerContent }}}
   );

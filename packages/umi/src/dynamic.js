@@ -1,5 +1,6 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
+import Loadable from './loadable';
 
 // Thanks to next.js
 // ref: https://github.com/zeit/next.js/blob/canary/lib/dynamic.js

@@ -33,6 +33,7 @@ export default function(api, options) {
     if (options.webpackChunkName) {
       extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
     }
-    return `dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts} })`;
+    return `(__isBrowser__ && ${!process.env
+      .USE_SSR} /* process.env.USE_SSR */)  ? dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts} }) : require('${importPath}').default`;
   });
 }

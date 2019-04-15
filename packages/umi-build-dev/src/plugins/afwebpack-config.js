@@ -1,7 +1,7 @@
 import getUserConfigPlugins from 'af-webpack/getUserConfigPlugins';
 import { compatDirname } from 'umi-utils';
 import { join, dirname } from 'path';
-import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
+// import { webpackHotDevClientPath } from 'af-webpack/react-dev-utils';
 
 const plugins = getUserConfigPlugins();
 
@@ -131,7 +131,7 @@ export default function(api) {
     const entry = isDev
       ? {
           umi: [
-            ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
+            // ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
             ...(setPublicPath ? [setPublicPathFile] : []),
             entryScript,
           ],

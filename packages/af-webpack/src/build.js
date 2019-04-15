@@ -18,7 +18,7 @@ export default function build(opts = {}) {
   debug(
     `Clean output path ${webpackConfig.output.path.replace(`${cwd}/`, '')}`,
   );
-  rimraf.sync(webpackConfig.output.path);
+  // rimraf.sync(webpackConfig.output.path); 每次构建不要删除之前的构建结果
 
   debug('build start');
   webpack(webpackConfig, (err, stats) => {

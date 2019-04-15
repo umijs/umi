@@ -127,13 +127,23 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
+      window.__isBrowser__ = true
+  let props = {}
+  if (window.__useSSR__) {
+    // 如果开启服务端渲染则客户端组件初始化props使用服务端注入的数据
+    props = window.__initialData__
+  } else {
+    const pathname = location.pathname;
+    const activeRoute = findRoute(window.g_routes, pathname) || false;
+    // 如果是用loadable包了一层的组件，获取数据逻辑交由loadable.js内部处理
+    if (activeRoute && (!activeRoute.component.contextTypes || !activeRoute.component.contextTypes.loadable)) {
+      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
+    }
+  }
   const rootContainer = window.g_plugins.apply('rootContainer', {
-    initialValue: React.createElement(require('./router').default),
+    initialValue: React.createElement(router, props),
   });
-  ReactDOM.render(
-    rootContainer,
-    document.getElementById('${this.mountElementId}'),
-  );
+  ReactDOM[window.useSSR ? 'hydrate' : 'render'](rootContainer, document.getElementById('root'));
       `.trim(),
     });
 
@@ -209,9 +219,11 @@ export default class FilesGenerator {
     const { paths } = this.service;
     const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
     const initialHistory = `
-require('umi/_createHistory').default({
-  basename: window.routerBase,
-})
+    window.__isBrowser__ ? 
+      require('umi/_createHistory').default({
+        basename: window.routerBase,
+      }) : require("history").createMemoryHistory({ initialEntries: window.g_initialEntries });
+    
     `.trim();
     const content = Mustache.render(tpl, {
       history: this.service.applyPlugins('modifyEntryHistory', {
@@ -297,7 +309,7 @@ require('umi/_createHistory').default({
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
     <Router history={window.g_history}>
-      { renderRoutes(routes, {}) }
+      { renderRoutes(routes, props) }
     </Router>
     `.trim();
     return rendererWrappers.reduce((memo, wrapper) => {

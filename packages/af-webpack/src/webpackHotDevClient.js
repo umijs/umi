@@ -24,6 +24,7 @@ var formatWebpackMessages = require('./formatWebpackMessages');
 var ErrorOverlay = require('react-error-overlay');
 var socket = require('./socket');
 var stripLastSlash = require('./utils').stripLastSlash;
+var DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 
 ErrorOverlay.setEditorHandler(function editorHandler(errorLocation) {
   // Keep this sync with errorOverlayMiddleware.js
@@ -63,7 +64,8 @@ if (process.env.SOCKET_SERVER !== 'none') {
       : url.format({
           protocol: window.location.protocol,
           hostname: window.location.hostname,
-          port: window.location.port,
+          // port: window.location.port,
+          port: DEFAULT_PORT, // 保证使用umi dev启动的端口
           // Hardcoded in WebpackDevServer
           pathname: '/sockjs-node',
         }),

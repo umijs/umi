@@ -17,7 +17,9 @@ export default function(opts) {
     env[key] = JSON.stringify(env[key]);
   }
 
-  const define = {};
+  const define = {
+    __isBrowser__: true,
+  };
   if (opts.define) {
     for (const key in opts.define) {
       define[key] = JSON.stringify(opts.define[key]);
