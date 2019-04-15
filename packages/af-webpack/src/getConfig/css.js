@@ -71,20 +71,12 @@ export default function(webpackConfig, opts) {
   }
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
-    if (isDev) {
-      rule
-        .use('css-hot-loader')
-          .loader(require.resolve('css-hot-loader'))
-          .options({
-            reloadAll: true,
-          });
-    }
-
     rule
       .use('extract-css-loader')
         .loader(require('mini-css-extract-plugin').loader)
         .options({
           publicPath: isDev ? '/' : opts.cssPublicPath,
+          hmr: isDev,
         });
 
     rule
