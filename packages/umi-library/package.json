@@ -29,7 +29,7 @@
     "docz": "1.0.0",
     "docz-core": "1.0.0",
     "docz-plugin-umi-css": "0.14.0",
-    "docz-theme-umi": "1.0.0",
+    "docz-theme-umi": "^1.1.0",
     "extend2": "1.0.0",
     "gh-pages": "2.0.1",
     "less": "3.9.0",
