@@ -75,7 +75,7 @@ umi@2 不再支持 `webpack.config.js`，改为通过配置 [chainWebpack](/zh/c
 ### 详细的配置项变更
 
 * 不再支持 `hd`，如需开启，装载插件 `umi-plugin-react` 并配置 `hd: {}`
-* 不再支持 `disableServiceWorker`，默认不开启，如需开启，装载插件 `umi-plugin-react` 并配置 `pwa: `
+* 不再支持 `disableServiceWorker`，默认不开启，如需开启，装载插件 `umi-plugin-react` 并配置 `pwa: false`
 * 不再支持 `preact`，如需配置，装载插件 `umi-plugin-react` 并配置 `library: 'preact'`
 * 不再支持 `loading`，如需配置，装载插件 `umi-plugin-react` 并配置 `dynamicImport.loadingComponent`
 * `hashHistory: true` 变更为 `history: 'hash'`
