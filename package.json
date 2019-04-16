@@ -19,7 +19,7 @@
   },
   "lint-staged": {
     "*.(t|j)s": [
-      "prettier --trailing-comma all --single-quote --write",
+      "prettier --write",
       "git add"
     ]
   },
