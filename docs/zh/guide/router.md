@@ -336,7 +336,7 @@ umi 默认是用的 Browser History，如果要用 Hash History，需配置：
 
 ```js
 export default {
-  history: 'hash',
+  hashHistory: true,
 }
 ```
 
