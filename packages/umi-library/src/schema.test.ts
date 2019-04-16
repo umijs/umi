@@ -32,6 +32,13 @@ const successValidates = {
   target: ['node', 'browser'],
   overridesByEntry: [{}],
   doc: [{}],
+  typescript: [
+    {},
+    { abortOnError: false },
+    { include: ['./a', './b'] },
+    { transformers: [() => {}] },
+    { sourceMapCallback: () => {} },
+  ],
 };
 
 Object.keys(successValidates).forEach(key => {

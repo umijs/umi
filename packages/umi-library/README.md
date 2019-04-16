@@ -346,7 +346,21 @@ export default {
 
 #### typescript
 
-配置 [rollup-plugin-typescript2](https://github.com/ezolenko/rollup-plugin-typescript2) 的参数，配置遵循该插件的写法。
+配置 [rollup-plugin-typescript2](https://github.com/ezolenko/rollup-plugin-typescript2) 的参数，配置遵循该插件的写法，详细配置参见[文档](https://github.com/ezolenko/rollup-plugin-typescript2)。
+
+比如禁用 `abortOnError`，在有类型错误时仍然编译出目标文件。
+
+```js
+export default {
+  entry: "src/index.ts",
+  cjs: "rollup",
+  esm: "rollup",
+  typetsscript: {
+    abortOnError: false
+  }
+};
+```
+
 
 #### overridesByEntry
 
