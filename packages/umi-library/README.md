@@ -77,7 +77,7 @@ $ umi-lib doc build
 $ umi-lib doc deploy
 ```
 
-所有的命令行参数会透传给 docz，详见 [docz.site#project-configuration](https://www.docz.site/documentation/project-configuration)。
+所有的命令行参数会透传给 docz，详见 [docz.site#project-configuration](https://www.docz.site/docs/project-configuration)。
 
 注：
 
