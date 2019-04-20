@@ -1,5 +1,4 @@
-import { IApi } from 'umi-types';
-import { join } from 'path';
+import { IConfig, IPkg } from 'umi-types';
 import * as semver from 'semver';
 import autoExternalPackages from 'auto-external-packages';
 import error from './error';
@@ -12,8 +11,10 @@ const EXTERNAL_MAP = autoExternalPackages.reduce((pre, cur) => {
 }, {});
 
 interface IGetExternalDataParams {
-  api: IApi;
+  pkg: IPkg;
+  versionInfos: string[];
   packages: string[] | Boolean;
+  config: IConfig;
   urlTemplate?: string;
 }
 
@@ -24,14 +25,14 @@ function packagesToArray(packages: string[] | Boolean): string[] {
   return autoExternalPackages.map(({ key }) => key);
 }
 
-function configValidate({ api, packages }: IGetExternalDataParams) {
+function configValidate({ config, packages }: IGetExternalDataParams) {
   // 格式校验
   if (!Array.isArray(packages) && typeof packages !== 'boolean') {
     error(`packages only support Array or Boolean!`);
   }
 
   const keys = packagesToArray(packages);
-  const externalConfig = api.config.externals || {};
+  const externalConfig = config.externals || {};
 
   keys.forEach((key: string, index: number) => {
     // 必须是内置的支持的仓库
@@ -63,13 +64,14 @@ function configValidate({ api, packages }: IGetExternalDataParams) {
  * @param keys 所有内置的 library keys
  */
 function getAllKeyVersions(
-  api: IApi,
+  pkg: IPkg,
+  versionInfos: string[],
   keys: string[],
 ): { [key: string]: string } {
   const res = {};
 
   // 获取 umi 中已知的 library name 的版本号
-  const versions = api.applyPlugins('addVersionInfo');
+  const versions = versionInfos;
   versions.forEach((item: string) => {
     const [key, version] = item.replace(/\s.*/, '').split('@');
     res[key] = version;
@@ -80,7 +82,6 @@ function getAllKeyVersions(
     if (res[key]) {
       return;
     }
-    const pkg = require(join(api.paths.cwd, 'package.json'));
     const semverIns = semver.coerce(pkg.dependencies && pkg.dependencies[key]);
     if (!semverIns) {
       error(`Can not find dependencies(${key}) version`);
@@ -150,12 +151,14 @@ function getConfigItem({
 function getExternalData(args: IGetExternalDataParams): IExternalData[] {
   configValidate(args);
 
-  const { api, packages, urlTemplate } = args;
+  const { pkg, versionInfos, packages, urlTemplate } = args;
   const isDevelopment = process.env.NODE_ENV === 'development';
   const externalDependencies = packagesToArray(packages);
-  const allExternalVersions = getAllKeyVersions(api, externalDependencies);
-  api.debug('All dependencies versions: ');
-  api.debug(JSON.stringify(allExternalVersions));
+  const allExternalVersions = getAllKeyVersions(
+    pkg,
+    versionInfos,
+    externalDependencies,
+  );
 
   return sort(packagesToArray(packages), EXTERNAL_MAP).map((key: string) =>
     getConfigItem({

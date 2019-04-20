@@ -1,4 +1,5 @@
 import { IApi } from 'umi-types';
+import { join } from 'path';
 import { IOpts } from './types';
 import { getExternalData, onlineCheck } from './util';
 
@@ -10,8 +11,14 @@ export default function(
     checkOnline = false,
   }: IOpts,
 ) {
-  const { debug } = api;
-  const configs = getExternalData({ api, packages, urlTemplate });
+  const { debug, cwd, config } = api;
+  const configs = getExternalData({
+    pkg: require(join(cwd, 'package.json')),
+    versionInfos: api.applyPlugins('addVersionInfo'),
+    config,
+    packages,
+    urlTemplate,
+  });
 
   debug('User external data:');
   debug(JSON.stringify(configs));
