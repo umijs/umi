@@ -1,4 +1,4 @@
-import { IApi, IWebpackChainConfig } from 'umi-types';
+import { IApi } from 'umi-types';
 import { IOpts } from './types';
 import { getExternalData, onlineCheck } from './util';
 
@@ -10,15 +10,11 @@ export default function(
     checkOnline = false,
   }: IOpts,
 ) {
-  api.onOptionChange(() => {
-    api.restart('auto external config changes');
-  });
-
   const { debug } = api;
   const configs = getExternalData({ api, packages, urlTemplate });
 
   debug('User external data:');
-  debug(configs);
+  debug(JSON.stringify(configs));
 
   if (!configs.length) {
     return;
@@ -31,7 +27,7 @@ export default function(
   }
 
   // 修改 webpack external 配置
-  api.chainWebpackConfig((webpackConfig: IWebpackChainConfig) => {
+  api.chainWebpackConfig(webpackConfig => {
     webpackConfig.externals(getWebpackExternalConfig(configs));
   });
 
@@ -49,9 +45,7 @@ export default function(
   );
   api.addHTMLLink(() =>
     styles.map(href => ({
-      charset: 'utf-8',
       rel: 'stylesheet',
-      type: 'text/css',
       href,
     })),
   );
@@ -62,11 +56,11 @@ export default function(
 function getWebpackExternalConfig(configs) {
   const res = [];
   const objectConfig = {};
-  configs.forEach(({ key, global: root }) => {
-    if (typeof root === 'string') {
-      objectConfig[key] = root;
+  configs.forEach(({ key, global }) => {
+    if (typeof global === 'string') {
+      objectConfig[key] = global;
     } else {
-      res.push(root);
+      res.push(global);
     }
   });
   res.unshift(objectConfig);

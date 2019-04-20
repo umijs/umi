@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "umi-tools build && umi-tools rollup -g dva:dva,antd:antd",
+    "build": "umi-tools build",
     "changelog": "lerna-changelog",
     "chore:update-deps": "./scripts/update_deps.sh",
     "test": "node scripts/test.js",

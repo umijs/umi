@@ -155,7 +155,7 @@ function getExternalData(args: IGetExternalDataParams): IExternalData[] {
   const externalDependencies = packagesToArray(packages);
   const allExternalVersions = getAllKeyVersions(api, externalDependencies);
   api.debug('All dependencies versions: ');
-  api.debug(allExternalVersions);
+  api.debug(JSON.stringify(allExternalVersions));
 
   return sort(packagesToArray(packages), EXTERNAL_MAP).map((key: string) =>
     getConfigItem({

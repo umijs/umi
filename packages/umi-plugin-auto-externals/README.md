@@ -10,7 +10,7 @@ Configured in `.umirc.js`:
 export default {
   plugins: [
     ['umi-plugin-auto-externals', {
-      externals: [ 'react', 'react-dom', 'moment', 'antd', 'jquery' ],
+      packages: [ 'react', 'react-dom', 'moment', 'antd', 'jquery' ],
       urlTemplate: 'https://unpkg.com/{{ library }}@{{ version }}/{{ path }}',
       checkOnline: false,
     }],
