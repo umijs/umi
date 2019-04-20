@@ -20,8 +20,8 @@
   ],
   "dependencies": {
     "auto-external-packages": "^1.0.0",
-    "semver": "^6.0.0",
-    "urllib": "^2.33.3"
+    "semver": "6.0.0",
+    "urllib": "2.33.3"
   },
   "devDependencies": {
     "umi-types": "0.3.2"
