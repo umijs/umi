@@ -15,7 +15,8 @@
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "publish": "./scripts/publish.js",
     "ui:dev": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js dev",
-    "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build"
+    "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build",
+    "postinstall": "opencollective-postinstall"
   },
   "lint-staged": {
     "*.(t|j)s": [
@@ -50,5 +51,13 @@
     "shelljs": "0.8.3",
     "test-build-result": "^1.1.2",
     "umi-tools": "^0.4.0"
+  },
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.2",
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/umi"
   }
 }
