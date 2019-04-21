@@ -2,7 +2,7 @@ English | [简体中文](./README_zh-CN.md)
 
 # umi
 
-[![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
+[![Backers on Open Collective](https://opencollective.com/umi/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/umi/sponsors/badge.svg)](#sponsors) [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
@@ -59,6 +59,36 @@ $ umi build
 | Slack Group                                                  | Github Issue                                            | 钉钉群                                                       | 微信群                                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [sorrycc.slack.com](https://join.slack.com/t/sorrycc/shared_invite/enQtNTUzMTYxNDQ5MzE4LTg1NjEzYWUwNDQzMWU3YjViYjcyM2RkZDdjMzE0NzIxMTg3MzIwMDM2YjUwNTZkNDdhNTY5ZTlhYzc1Nzk2NzI) | [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB13U6aF6DpK1RjSZFrXXa78VXa-752-974.jpg" width="60" /> |
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/umi#backer)]
+
+<a href="https://opencollective.com/umi#backers" target="_blank"><img src="https://opencollective.com/umi/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/umi#sponsor)]
+
+<a href="https://opencollective.com/umi/sponsor/0/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/1/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/2/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/3/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/4/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/5/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/6/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/7/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/8/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/umi/sponsor/9/website" target="_blank"><img src="https://opencollective.com/umi/sponsor/9/avatar.svg"></a>
+
+
 
 ## License
 
