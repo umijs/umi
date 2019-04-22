@@ -1,6 +1,6 @@
 {{{ polyfillImports }}}
-{{{ importsAhead }}}
 import '@tmp/initHistory';
+{{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
 {{{ imports }}}
