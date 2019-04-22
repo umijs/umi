@@ -32,7 +32,6 @@ function configValidate({ config, packages }: IGetExternalDataParams) {
   }
 
   const keys = packagesToArray(packages);
-  const externalConfig = config.externals || {};
 
   keys.forEach((key: string, index: number) => {
     // 必须是内置的支持的仓库
@@ -41,20 +40,23 @@ function configValidate({ config, packages }: IGetExternalDataParams) {
       error(`Not support auto external dependencies: ${key}`);
     }
 
-    // 同一个包不能同时在 autoExternal 和 externals 中配置
-    if (externalConfig[key]) {
-      error(`${key} is is both in external and autoExternals`);
-    }
-
     const { dependencies: keyDependencies } = configItem;
     if (!keyDependencies) {
       return;
     }
     keyDependencies.forEach(dep => {
       if (!keys.includes(dep)) {
-        error(`${key} need ${dep} to be externaled`);
+        keys.push(dep);
       }
     });
+  });
+
+  const externalConfig = config.externals || {};
+  keys.forEach((key: string) => {
+    // 同一个包不能同时在 autoExternal 和 externals 中配置
+    if (externalConfig[key]) {
+      error(`${key} is is both in external and autoExternals`);
+    }
   });
 }
 

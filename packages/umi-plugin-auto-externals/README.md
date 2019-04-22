@@ -1,6 +1,6 @@
 # umi-plugin-auto-externals
 
-Simple way to external in umi.
+A simple way to external in umi.
 
 ## Usage
 
@@ -10,7 +10,7 @@ Configured in `.umirc.js`:
 export default {
   plugins: [
     ['umi-plugin-auto-externals', {
-      packages: [ 'react', 'react-dom', 'moment', 'antd', 'jquery' ],
+      packages: [ 'antd' ],
       urlTemplate: 'https://unpkg.com/{{ library }}@{{ version }}/{{ path }}',
       checkOnline: false,
     }],
@@ -20,7 +20,7 @@ export default {
 
 ## Configuration items
 
-### externals
+### packages
 
 * Type: `Array`
 
@@ -34,17 +34,15 @@ Librarys need to be externaled. Support librarys are:
 
 https://github.com/umijs/auto-external-packages
 
-::: warning
-If you want to external antd, please ensure that react + react-dom + moment are configed in front of antd.
-:::
-
 ### urlTemplate
 
 * Type: `String`
 
-If you want to use your own CDN service, you need to config this.
+If you want to use your own CDN service, you need to config this item.
 
 There will be three variables provided to render this template: library, version, path.
+
+For example: `https://unpkg.com/{{ library }}@{{ version }}/{{ path }}`
 
 ### checkOnline
 
