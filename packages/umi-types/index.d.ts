@@ -269,7 +269,7 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
-interface IChangeWebpackConfigFunc<T, U> {
+export interface IChangeWebpackConfigFunc<T, U> {
   (webpackConfig: T, AFWebpack: { webpack: U }): T | void;
 }
 

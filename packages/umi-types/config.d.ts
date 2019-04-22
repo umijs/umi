@@ -1,5 +1,7 @@
 // https://umijs.org/config/
 import { ExternalsElement, Condition } from 'webpack';
+import IWebpackChainConfig from 'webpack-chain';
+import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
 
@@ -64,7 +66,10 @@ export interface IAFWebpackConfig {
 interface IConfig extends IAFWebpackConfig {
   // basic config
   // sorted by alphabet
-  chainWebpack?: any; // https://github.com/mozilla-neutrino/webpack-chain
+  chainWebpack?: IChangeWebpackConfigFunc<
+    IWebpackChainConfig,
+    IAFWebpackConfig
+  >; // https://github.com/mozilla-neutrino/webpack-chain
   context?: object;
   disableRedirectHoist?: boolean;
   exportStatic?: boolean | IExportStaticOpts;
