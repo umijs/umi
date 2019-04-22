@@ -335,13 +335,13 @@ interface IModifyRouteComponentArgs {
   component: string;
 }
 
-interface IPkg {
-  name: string;
-  version: string;
-  dependencies: {
+export interface IPkg {
+  name?: string;
+  version?: string;
+  dependencies?: {
     [prop: string]: string;
   };
-  devDependencies: {
+  devDependencies?: {
     [prop: string]: string;
   };
 }

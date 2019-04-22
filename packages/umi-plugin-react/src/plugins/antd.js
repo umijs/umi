@@ -1,4 +1,4 @@
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 function importPlugin(key, options) {
   return [
@@ -15,6 +15,14 @@ function importPlugin(key, options) {
 
 export default function(api, options = {}) {
   const { cwd, compatDirname } = api;
+
+  const antdDir = compatDirname(
+    'antd/package.json',
+    cwd,
+    dirname(require.resolve('antd/package.json')),
+  );
+  const antdVersion = require(join(antdDir, 'package.json')).version;
+  api.addVersionInfo([`antd@${antdVersion} (${antdDir})`]);
 
   api.modifyAFWebpackOpts(opts => {
     opts.babel.plugins = [
