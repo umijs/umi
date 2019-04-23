@@ -184,6 +184,7 @@ export default api => {
     } else {
       ctx.routePath = path;
     }
+
     // fix demo => /demo
     if (!/^\//.test(ctx.routePath)) {
       ctx.routePath = `/${ctx.routePath}`;
@@ -302,6 +303,7 @@ export default api => {
     const generator = new BlockGenerator(args._.slice(2), {
       sourcePath: ctx.sourcePath,
       path: ctx.routePath,
+      pkgName: getNameFromPkg(ctx.pkg),
       dryRun,
       env: {
         cwd: api.cwd,

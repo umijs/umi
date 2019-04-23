@@ -13,6 +13,7 @@
     "af-webpack": "1.7.5",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-preset-umi": "1.4.1",
+    "babylon": "6.18.0",
     "chalk": "2.4.1",
     "cheerio": "1.0.0-rc.2",
     "chokidar": "2.0.4",
