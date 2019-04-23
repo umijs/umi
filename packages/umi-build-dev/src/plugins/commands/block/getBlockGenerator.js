@@ -237,6 +237,8 @@ export default api => {
           content: `<${upperCamelCaseBlockName} />\n{/* Keep this comment and new blocks will be added above it */}`,
         });
 
+        debug(`newEntry: ${newEntry}`);
+
         writeFileSync(entryPath, newEntry);
       } else {
         debug(
@@ -268,7 +270,7 @@ export default api => {
           reactPath: process.env.BIGFISH_COMPAT
             ? '@alipay/bigfish/react'
             : 'react',
-          blockEntryName: this.path.slice(1),
+          blockEntryName: `${this.path.slice(1)}Container`,
           blocks,
         };
         const entry = Mustache.render(blockEntryTpl, tplContent);
