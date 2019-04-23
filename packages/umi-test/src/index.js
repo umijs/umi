@@ -21,6 +21,7 @@ export default function(opts = {}) {
 
   const {
     moduleNameMapper: userModuleNameMapper,
+    extraSetupFiles,
     ...restUserJestConfig
   } = userJestConfig;
 
@@ -29,6 +30,7 @@ export default function(opts = {}) {
     setupFiles: [
       require.resolve('./shim.js'),
       require.resolve('./setupTests.js'),
+      ...(extraSetupFiles || []),
     ],
     resolver: require.resolve('jest-pnp-resolver'),
     transform: {
