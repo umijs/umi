@@ -10,11 +10,8 @@ import mkdirp from 'mkdirp';
 import semver from 'semver';
 import crequire from 'crequire';
 import Mustache from 'mustache';
-import upperCamelCase from 'uppercamelcase';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
-import insertImportModule from './insertImportModule';
-import insertAtPlaceholder from './insertAtPlaceholder';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
 
@@ -105,7 +102,11 @@ export default api => {
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.path = opts.path;
-      this.pkgName = opts.pkgName;
+      this.blockName = opts.blockName;
+      this.isPageBlock = opts.isPageBlock;
+      this.needCreateNewRoute = this.isPageBlock;
+      this.blockFolderName = this.blockName;
+      this.entryPath = null;
 
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
@@ -115,15 +116,16 @@ export default api => {
     async writing() {
       let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
-      // check for duplicate path
-      // if there is, prompt for confirmation, otherwise input a new path
-      if (existsSync(targetPath)) {
+      // for old page block check for duplicate path
+      // if there is, prompt for input a new path
+      while (this.isPageBlock && existsSync(targetPath)) {
+        // eslint-disable-next-line no-await-in-loop
         this.path = (await this.prompt({
           type: 'input',
           name: 'path',
           message: `path ${
             this.path
-          } already exist, press Enter to continue or input a new path for it`,
+          } already exist, press input a new path for it`,
           required: true,
           default: this.path,
         })).path;
@@ -151,32 +153,44 @@ export default api => {
 
       // check for duplicate block name under the path
       // if there is, prompt for a new block name
-      let blockFolderName = this.pkgName;
-      while (existsSync(join(targetPath, blockFolderName))) {
-        blockFolderName = (await this.prompt({
+      while (
+        !this.isPageBlock &&
+        existsSync(join(targetPath, this.blockFolderName))
+      ) {
+        // eslint-disable-next-line no-await-in-loop
+        this.blockFolderName = (await this.prompt({
           type: 'input',
           name: 'path',
-          message: `block with name ${blockFolderName} already exist, please input a new name for it`,
+          message: `block with name ${
+            this.blockFolderName
+          } already exist, please input a new name for it`,
           required: true,
-          default: blockFolderName,
+          default: this.blockFolderName,
         })).path;
         // if (!/^\//.test(blockFolderName)) {
         //   blockFolderName = `/${blockFolderName}`;
         // }
         debug(
-          `blockFolderName exist get new blockFolderName ${blockFolderName}`,
+          `blockFolderName exist get new blockFolderName ${
+            this.blockFolderName
+          }`,
         );
       }
 
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       debug('start copy block file to your project...');
       ['src', '@'].forEach(folder => {
+        if (!this.isPageBlock && folder === '@') {
+          // @ folder not support anymore in new specVersion
+          return;
+        }
         const folderPath = join(this.sourcePath, folder);
-        const targetFolder =
-          folder === 'src'
-            ? join(targetPath, blockFolderName)
-            : paths.absSrcPath;
-
+        let targetFolder;
+        if (this.isPageBlock) {
+          targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
+        } else {
+          targetFolder = join(targetPath, this.blockFolderName);
+        }
         const options = {
           process(content, targetPath) {
             content = String(content);
@@ -220,62 +234,24 @@ export default api => {
         }
       });
 
-      const entryPath = join(targetPath, 'index.js');
-      const upperCamelCaseBlockName = upperCamelCase(blockFolderName);
+      this.entryPath = join(targetPath, 'index.js');
 
-      if (existsSync(entryPath)) {
-        debug('start to update the entry file for block(s) under the path...');
-
-        const oldEntry = readFileSync(entryPath, 'utf-8');
-        let newEntry = insertImportModule(oldEntry, {
-          identifier: upperCamelCaseBlockName,
-          modulePath: `./${blockFolderName}`,
-        });
-
-        newEntry = insertAtPlaceholder(newEntry, {
-          placeholder: /\{\/\* Keep this comment and new blocks will be added above it \*\/\}/g,
-          content: `<${upperCamelCaseBlockName} />\n{/* Keep this comment and new blocks will be added above it */}`,
-        });
-
-        debug(`newEntry: ${newEntry}`);
-
-        writeFileSync(entryPath, newEntry);
-      } else {
+      if (!this.isPageBlock && !existsSync(this.entryPath)) {
         debug(
           'start to generate the entry file for block(s) under the path...',
         );
 
-        const blocks = [];
-        if (existsSync(targetPath)) {
-          readdirSync(targetPath).forEach(name => {
-            // ignore hidden folders
-            if (name.charAt(0) === '.') {
-              return;
-            }
-
-            blocks.push({ blockName: upperCamelCase(name), blockPath: name });
-          });
-        }
-
-        blocks.push({
-          blockName: upperCamelCaseBlockName,
-          blockPath: blockFolderName,
-        });
-
+        this.needCreateNewRoute = true;
         const blockEntryTpl = readFileSync(
           paths.defaultBlockEntryPath,
           'utf-8',
         );
         const tplContent = {
-          reactPath: process.env.BIGFISH_COMPAT
-            ? '@alipay/bigfish/react'
-            : 'react',
           blockEntryName: `${this.path.slice(1)}Container`,
-          blocks,
         };
         const entry = Mustache.render(blockEntryTpl, tplContent);
         mkdirp.sync(targetPath);
-        writeFileSync(entryPath, entry);
+        writeFileSync(this.entryPath, entry);
       }
     }
   };
