@@ -21,6 +21,7 @@ export default function(opts = {}) {
 
   const {
     moduleNameMapper: userModuleNameMapper,
+    extraSetupFiles,
     ...restUserJestConfig
   } = userJestConfig;
 
@@ -29,6 +30,7 @@ export default function(opts = {}) {
     setupFiles: [
       require.resolve('./shim.js'),
       require.resolve('./setupTests.js'),
+      ...(extraSetupFiles || []),
     ],
     resolver: require.resolve('jest-pnp-resolver'),
     transform: {
@@ -36,7 +38,9 @@ export default function(opts = {}) {
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     transformIgnorePatterns: [
-      `node_modules/(?!(umi|enzyme-adapter-react-16|${transformInclude.join(
+      // 加 [^/]+? 是为了兼容 tnpm 的目录结构
+      // 比如：_umi-test@1.5.5@umi-test
+      `node_modules/(?!([^/]+?umi|[^/]+?umi-test|[^/]+?enzyme-adapter-react-16|${transformInclude.join(
         '|',
       )})/)`,
     ],

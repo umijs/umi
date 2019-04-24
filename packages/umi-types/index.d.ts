@@ -269,7 +269,7 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
-interface IChangeWebpackConfigFunc<T, U> {
+export interface IChangeWebpackConfigFunc<T, U> {
   (webpackConfig: T, AFWebpack: { webpack: U }): T | void;
 }
 
@@ -335,13 +335,13 @@ interface IModifyRouteComponentArgs {
   component: string;
 }
 
-interface IPkg {
-  name: string;
-  version: string;
-  dependencies: {
+export interface IPkg {
+  name?: string;
+  version?: string;
+  dependencies?: {
     [prop: string]: string;
   };
-  devDependencies: {
+  devDependencies?: {
     [prop: string]: string;
   };
 }

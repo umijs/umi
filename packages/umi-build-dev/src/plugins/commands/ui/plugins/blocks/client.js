@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import model from './model';
 
 const BlocksViewer = connect(state => ({
   blocks: state.blocks,
@@ -31,6 +32,6 @@ export default api => {
     title: 'Blocks Viewer',
     path: '/blocks',
     component: BlocksViewer,
-    models: [require('./model').default],
+    models: [model],
   });
 };

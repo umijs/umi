@@ -16,7 +16,11 @@ const servers = {} as IServer;
 let browser: any;
 let page: any;
 const fixtures = join(__dirname, 'fixtures/build');
-const dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
+let dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
+const testOnly = dirs.some(dir => /-only/.test(dir));
+if (testOnly) {
+  dirs = dirs.filter(dir => /-only/.test(dir));
+}
 
 beforeAll(async () => {
   for (const dir of dirs) {

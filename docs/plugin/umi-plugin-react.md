@@ -37,7 +37,6 @@ export default {
       dll: {
         exclude: [],
       },
-      hardSource: true,
       pwa: true,
       hd: true,
       fastClick: true,
@@ -141,9 +140,7 @@ options include:
 
 ### hardSource
 
-* Type: `Boolean`
-
-Open webpack cache with [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)， 80% increase in speed of the second start. It is recommended to use non-windows computers. Due to the slowness of large file IO under Windows, it is up to you to decide whether to enable it.
+[hardSource] is no longer valid. Please remove it from the configuration file.
 
 ### pwa
 

@@ -11,7 +11,7 @@ umi is the basic front-end framework of [Ant Financial](https://www.antfin.com/)
 * 🎉 **Complete plugin system**, covering every lifecycle from source code to production
 * 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
 * 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
-* 🚄 **Fast dev startup**, support enable [dll](../plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](../plugin/umi-plugin-react.html#hardSource) with config
+* 🚄 **Fast dev startup**, support enable [dll](../plugin/umi-plugin-react.html#dll) with config
 * 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](../plugin/umi-plugin-react.html#polyfills)
 * 🍁 **Support TypeScript**, including d.ts definition and `umi test`
 * 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc

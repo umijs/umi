@@ -62,7 +62,7 @@ export default {
 };
 ```
 
-更多 dll、hardSource、polyfilles、locale、title 等，参考 [umi-plugin-react 文档](/zh/plugin/umi-plugin-react.html)。
+更多 dll、polyfilles、locale、title 等，参考 [umi-plugin-react 文档](/zh/plugin/umi-plugin-react.html)。
 
 ### webpackrc.js
 

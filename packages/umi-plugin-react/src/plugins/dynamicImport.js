@@ -1,5 +1,6 @@
 import { join } from 'path';
 import isReactComponent from '../utils/isReactComponent';
+import isRelativePath from '../utils/isRelativePath';
 
 export default function(api, options) {
   const { paths, winPath } = api;
@@ -22,10 +23,12 @@ export default function(api, options) {
     if (options.loadingComponent) {
       if (isReactComponent(options.loadingComponent.trim())) {
         loadingOpts = `, loading: ${options.loadingComponent.trim()}`;
-      } else {
+      } else if (isRelativePath(options.loadingComponent.trim())) {
         loadingOpts = `, loading: require('${winPath(
           join(paths.absSrcPath, options.loadingComponent),
         )}').default`;
+      } else {
+        loadingOpts = `, loading: require('${options.loadingComponent.trim()}').default`;        
       }
     }
 

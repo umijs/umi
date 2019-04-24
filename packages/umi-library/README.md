@@ -5,6 +5,8 @@ Library toolkit based on rollup and docz.
 [![NPM version](https://img.shields.io/npm/v/umi-library.svg?style=flat)](https://npmjs.org/package/umi-plugin-library)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-library.svg?style=flat)](https://npmjs.org/package/umi-library)
 
+[视频教程：利用 umi-library 做组件打包](https://www.bilibili.com/video/av47853431)。
+
 ## Features
 
 * ✔︎ 基于 [docz](https://www.docz.site/) 的文档功能
@@ -75,7 +77,7 @@ $ umi-lib doc build
 $ umi-lib doc deploy
 ```
 
-所有的命令行参数会透传给 docz，详见 [docz.site#project-configuration](https://www.docz.site/documentation/project-configuration)。
+所有的命令行参数会透传给 docz，详见 [docz.site#project-configuration](https://www.docz.site/docs/project-configuration)。
 
 注：
 
@@ -160,6 +162,15 @@ esm 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 
 1. mjs 目前不通用，除非你知道这是什么，否则不要配置。
 
+#### esm.minify
+
+是否压缩 esm 格式。
+
+* Type: `boolean`
+* Default: `false`
+
+通常不需要配置，除非你发布到 npm 的代码需要保密。
+
 #### cjs
 
 是否输出 cjs 格式，以及指定 cjs 格式的打包方式等。
@@ -182,6 +193,15 @@ cjs 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 
 - Type: `string`
 - Default: `undefined`
+
+#### cjs.minify
+
+是否压缩 cjs 格式。
+
+* Type: `boolean`
+* Default: `false`
+
+通常不需要配置，除非你发布到 npm 的代码需要保密。
 
 #### umd
 

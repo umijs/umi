@@ -1,0 +1,29 @@
+{
+  "name": "umi-plugin-auto-externals",
+  "version": "1.0.1",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-auto-externals"
+  },
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi-plugin-auto-externals",
+  "authors": [
+    "ikobe <ikobe621@gmail.com> (https://github.com/ikobe)"
+  ],
+  "bugs": {
+    "url": "https://github.com/umijs/umi/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "auto-external-packages": "^1.0.0",
+    "semver": "6.0.0",
+    "urllib": "2.33.3"
+  },
+  "devDependencies": {
+    "umi-types": "0.3.3"
+  }
+}

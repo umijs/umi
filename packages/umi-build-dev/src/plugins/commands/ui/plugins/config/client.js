@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Input, Form, Button, Select, Switch } from 'antd';
+import model from './model';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -199,6 +200,6 @@ export default api => {
     title: 'Config Manager',
     path: '/config',
     component: ConfigManager,
-    models: [require('./model').default],
+    models: [model],
   });
 };

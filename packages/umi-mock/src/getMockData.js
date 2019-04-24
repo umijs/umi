@@ -65,8 +65,8 @@ export function normalizeConfig(config) {
 function parseKey(key) {
   let method = 'get';
   let path = key;
-  if (key.indexOf(' ') > -1) {
-    const splited = key.split(' ');
+  if (/\s+/.test(key)) {
+    const splited = key.split(/\s+/);
     method = splited[0].toLowerCase();
     path = splited[1]; // eslint-disable-line
   }

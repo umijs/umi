@@ -2,11 +2,11 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "./scripts/build.js",
+    "build": "umi-tools build",
     "changelog": "lerna-changelog",
     "chore:update-deps": "./scripts/update_deps.sh",
     "test": "node scripts/test.js",
-    "test:coverage": "./packages/umi-test/bin/umi-test.js --coverage",
+    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
     "debug": "./packages/umi-test/bin/umi-test.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint --ext .js packages",
@@ -19,7 +19,7 @@
   },
   "lint-staged": {
     "*.(t|j)s": [
-      "prettier --trailing-comma all --single-quote --write",
+      "prettier --write",
       "git add"
     ]
   },

@@ -1,11 +1,11 @@
 {
   "name": "umi-core",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "dependencies": {
     "extend2": "1.0.0"
   },
   "devDependencies": {
-    "umi-types": "0.3.2"
+    "umi-types": "0.3.3"
   },
   "files": [
     "lib",

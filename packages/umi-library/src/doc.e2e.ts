@@ -9,6 +9,7 @@ const servers = {};
 let browser;
 let page;
 const fixtures = join(__dirname, 'fixtures/doc');
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 process.env.COMPRESS = 'none';
 
@@ -71,14 +72,20 @@ test('normal', async () => {
   await page.goto(`http://localhost:${servers['normal'].port}/`, {
     waitUntil: 'networkidle2',
   });
+
+  // assert /
   const title = await page.evaluate(
     () => document.querySelectorAll('h1')[1].innerHTML,
   );
   expect(title).toEqual('hello');
 
-  await page.goto(`http://localhost:${servers['normal'].port}/#/button`, {
-    waitUntil: 'networkidle2',
+  // navigate to /button
+  await page.evaluate(() => {
+    document.querySelectorAll('nav a')[0].click();
   });
+  await delay(300);
+
+  // assert /button
   const buttonCls = await page.evaluate(() =>
     document.querySelectorAll('button')[1].getAttribute('class'),
   );
@@ -103,7 +110,7 @@ test('config-theme', async () => {
     waitUntil: 'networkidle2',
   });
   const favicon = await page.evaluate(
-    () => document.querySelectorAll('link')[1].href,
+    () => document.querySelectorAll('link')[0].href,
   );
   expect(favicon).toEqual(
     'https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/EPkOqxgKmFIsEuPcFBOy.png',

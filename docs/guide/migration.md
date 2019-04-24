@@ -62,7 +62,7 @@ export default {
 };
 ```
 
-For more dll, hardSource, polyfilles, locale, title, etc., refer to [umi-plugin-react documentation](/plugin/umi-plugin-react.html).
+For more dll, polyfilles, locale, title, etc., refer to [umi-plugin-react documentation](/plugin/umi-plugin-react.html).
 
 ### webpackrc.js
 

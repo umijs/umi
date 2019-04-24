@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Button, Icon, Popconfirm } from 'antd';
 import './client.css';
+import model from './model';
 
 const Routes = connect(state => ({
   routes: state.routes,
@@ -99,6 +100,6 @@ export default api => {
     title: 'Routes Manager',
     path: '/routes',
     component: Routes,
-    models: [require('./model').default],
+    models: [model],
   });
 };

@@ -74,6 +74,13 @@ export default function(api, opts = {}) {
   const isDev = process.env.NODE_ENV === 'development';
   const shouldImportDynamic = opts.dynamicImport;
 
+  const dvaDir = compatDirname(
+    'dva/package.json',
+    cwd,
+    dirname(require.resolve('dva/package.json')),
+  );
+  const dvaVersion = require(join(dvaDir, 'package.json')).version;
+
   function getDvaJS() {
     const dvaJS = findJS(paths.absSrcPath, 'dva');
     if (dvaJS) {
@@ -230,14 +237,8 @@ models: () => [
     });
   }
 
-  const dvaDir = compatDirname(
-    'dva/package.json',
-    cwd,
-    dirname(require.resolve('dva/package.json')),
-  );
-
   api.addVersionInfo([
-    `dva@${require(join(dvaDir, 'package.json')).version} (${dvaDir})`,
+    `dva@${dvaVersion} (${dvaDir})`,
     `dva-loading@${require('dva-loading/package').version}`,
     `dva-immer@${require('dva-immer/package').version}`,
     `path-to-regexp@${require('path-to-regexp/package').version}`,

@@ -15,15 +15,18 @@ English | [简体中文](./README_zh-CN.md)
 
 ## Features
 
-* 📦 **Out of box**, with built-in support for react, react-router, etc.
-* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
-* 🎉 **Complete plugin system**, covering every lifecycle from source code to production
-* 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
-* 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
-* 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
-* 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
-* 🍁 **Support TypeScript**, including d.ts definition and `umi test`
-* 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
+- 📦 **Out of box**, with built-in support for react, react-router, jest, webpack, rollup, etc.
+- 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
+- 🎉 **Plugin system**, covering every lifecycle from source code to production
+- 🚀 **High performance**, including PWA support, route-level code splitting, etc.
+- 💈 **Support for static export**, Suitable for environments without server
+- 🚄 **Fast dev startup**, including [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) support with config etc.
+- 🐠 **Polyfill solution**, add JS and CSS polypill with [targets](https://umijs.org/config/#targets) config, lowest to IE9
+- 🍁 **Support TypeScript**, including d.ts definition and `umi test`
+- 🌴 **Deep integration with [dva](https://dvajs.com/)**, including duck directory support, automatic loading of model, code splitting, etc
+- ⛄️ **Support MPA**，based on [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
+
+[And more.](https://www.npmjs.com/search?q=umi-plugin)
 
 ## Getting Started
 
@@ -48,13 +51,18 @@ $ umi build
 
 ## Examples
 
-* [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
-* [Antd Admin](https://github.com/zuiidea/antd-admin)
+- [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
+- [Antd Admin](https://github.com/zuiidea/antd-admin)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
 
 ## Community
 
-| Slack Group                                                  | Github Issue                                            | 钉钉群                                                       | 微信群                                                       |
-| ------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Slack Group                                                                                                                                                                     | Github Issue                                            | 钉钉群                                                                                       | 微信群                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [sorrycc.slack.com](https://join.slack.com/t/sorrycc/shared_invite/enQtNTUzMTYxNDQ5MzE4LTg1NjEzYWUwNDQzMWU3YjViYjcyM2RkZDdjMzE0NzIxMTg3MzIwMDM2YjUwNTZkNDdhNTY5ZTlhYzc1Nzk2NzI) | [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://gw.alipayobjects.com/zos/rmsportal/jPXcQOlGLnylGMfrKdBz.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB13U6aF6DpK1RjSZFrXXa78VXa-752-974.jpg" width="60" /> |
 
 ## License

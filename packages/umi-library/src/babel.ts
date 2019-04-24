@@ -74,7 +74,10 @@ export default async function(opts: IBabelOpts) {
       })
       .pipe(
         through.obj((file, env, cb) => {
-          if (/\.(j|t)sx?/.test(extname(file.path))) {
+          if (
+            /\.(j|t)sx?/.test(extname(file.path)) &&
+            !/\.d\.ts$/.test(file.path)
+          ) {
             file.contents = Buffer.from(
               transform({
                 file,

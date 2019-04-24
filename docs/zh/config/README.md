@@ -60,7 +60,7 @@ export default {
       component: '../layouts/index',
       routes: [
         { path: '/user', redirect: '/user/login' },
-        { path: '/user/login', redirect: './user/login' },
+        { path: '/user/login', component: './user/login' },
       ],
     },
   ],
@@ -352,6 +352,29 @@ export default {
 ### extraPostCSSPlugins
 
 定义额外的 PostCSS 插件，格式为数组。
+
+以使用 [postcss-px-to-viewport](https://github.com/evrone/postcss-px-to-viewport) 插件为例。
+
+先使用 `npm install postcss-px-to-viewport --save-dev` 安装，然后配置 extraPostCSSPlugins
+
+```js
+import pxToViewPort from 'postcss-px-to-viewport';
+
+const config = {
+  ...otherConfig,
+  extraPostCSSPlugins: [
+    pxToViewPort({
+      viewportWidth: 375,
+      viewportHeight: 667,
+      unitPrecision: 5,
+      viewportUnit: 'vw',
+      selectorBlackList: [],
+      minPixelValue: 1,
+      mediaQuery: false,
+    }),
+  ],
+}
+```
 
 ### cssModulesExcludes
 

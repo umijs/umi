@@ -1,5 +1,6 @@
 module.exports = {
   testPathIgnorePatterns: [
+    '/.git/',
     '/node_modules/',
     '/examples/',
     '/lib/',
