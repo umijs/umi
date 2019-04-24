@@ -6,8 +6,11 @@ function setLocale(lang) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');
   }
-  if (getLocale() !== lang) {
-    window.localStorage.setItem('umi_locale', lang || '');
+
+  window.localStorage.setItem('umi_locale', lang || '');
+  if (window.g_lang === undefined) {
+    window.g_lang = lang || '';
+  } else if (window.g_lang !== lang) {
     window.location.reload();
   }
 }
