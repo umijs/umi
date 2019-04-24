@@ -111,6 +111,21 @@ describe('umi-mock:getMockData', () => {
       expect(typeof config[0].handler).toEqual('function');
     });
 
+    it('with method', () => {
+      const config = normalizeConfig(
+        getMockConfigFromFiles([`${fixtures}/mock-files/with-method.js`]),
+      );
+      expect(config.length).toEqual(4);
+      expect(config[0].method).toEqual('get');
+      expect(config[0].path).toEqual('/api/get');
+      expect(config[1].method).toEqual('get');
+      expect(config[1].path).toEqual('/api/get2');
+      expect(config[2].method).toEqual('post');
+      expect(config[2].path).toEqual('/api/samepath');
+      expect(config[3].method).toEqual('get');
+      expect(config[3].path).toEqual('/api/samepath');
+    });
+
     it('conflicts', () => {
       const config = normalizeConfig(
         getMockConfigFromFiles([
