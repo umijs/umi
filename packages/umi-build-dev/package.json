@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.3.0",
@@ -55,11 +55,11 @@
     "signale": "1.3.0",
     "sockjs": "0.3.19",
     "stringify-object": "3.3.0",
-    "umi-core": "1.2.2",
+    "umi-core": "1.2.3",
     "umi-history": "0.1.2",
     "umi-mock": "1.1.2",
     "umi-notify": "^0.1.1",
-    "umi-test": "1.5.4",
+    "umi-test": "1.5.5",
     "umi-utils": "1.4.1",
     "uppercamelcase": "3.0.0",
     "url-polyfill": "1.1.3",

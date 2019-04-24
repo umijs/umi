@@ -1,6 +1,6 @@
 {
   "name": "umi-serve",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "bin": {
     "umi-serve": "./bin/umi-serve.js"
   },
@@ -18,7 +18,7 @@
     "compression": "^1.7.4",
     "express": "4.16.4",
     "serve-static": "1.13.2",
-    "umi-core": "1.2.2",
+    "umi-core": "1.2.3",
     "umi-mock": "1.1.2",
     "umi-utils": "1.4.1",
     "update-notifier": "2.5.0",
