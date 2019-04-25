@@ -108,6 +108,7 @@ export default function(api, options = {}) {
       source: 'intl',
     });
   }
+  api.addRuntimePluginKey('locale');
 
   api.addPageWatcher(
     join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),

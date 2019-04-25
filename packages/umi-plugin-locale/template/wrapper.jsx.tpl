@@ -55,11 +55,16 @@ let appLocale = {
   data: require('react-intl/locale-data/{{defaultLang}}'),
   momentLocale: '{{defaultMomentLocale}}',
 };
+
+const runtimeLocale = window.g_plugins.mergeConfig('locale') || {};
+
 if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
   appLocale = localeInfo[localStorage.getItem('umi_locale')];
 } else if (localeInfo[navigator.language] && baseNavigator){
   appLocale = localeInfo[navigator.language];
-} else {
+} else if(localeInfo[runtimeLocale.default]){
+  appLocale = localeInfo[runtimeLocale.default];
+}else{
   appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
 }
 window.g_lang = appLocale.locale;
