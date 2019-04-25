@@ -64,7 +64,7 @@ if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localSto
   appLocale = localeInfo[navigator.language];
 } else if(localeInfo[runtimeLocale.default]){
   appLocale = localeInfo[runtimeLocale.default];
-}else{
+} else {
   appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
 }
 window.g_lang = appLocale.locale;
