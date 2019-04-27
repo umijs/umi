@@ -1,5 +1,6 @@
 /* eslint-disable no-undef, prefer-rest-params */
 const ReactIntl = require('react-intl');
+const React = require('react');
 
 function setLocale(lang) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
@@ -16,6 +17,10 @@ function getLocale() {
   return window.g_lang;
 }
 
+const LangContext = React.createContext({
+  lang: window.g_lang,
+});
+
 // init api methods
 let intl;
 const intlApi = {};
@@ -28,6 +33,7 @@ const intlApi = {};
   'formatRelative',
   'formatNumber',
   'formatPlural',
+  'LangContext',
   'now',
   'onError',
 ].forEach(methodName => {
@@ -58,4 +64,5 @@ module.exports = {
   setLocale,
   getLocale,
   _setIntlObject,
+  LangContext,
 };

@@ -1,6 +1,12 @@
 
 {{#localeList.length}}
-import { _setIntlObject, addLocaleData, IntlProvider, intlShape } from 'umi-plugin-locale';
+import {
+  _setIntlObject,
+  addLocaleData,
+  IntlProvider,
+  intlShape,
+  LangContext
+} from 'umi-plugin-locale';
 
 const InjectedWrapper = (() => {
   let sfc = (props, context) => {
@@ -67,17 +73,27 @@ window.g_lang = appLocale.locale;
 appLocale.data && addLocaleData(appLocale.data);
 {{/localeList.length}}
 
-export default function LocaleWrapper(props) {
-  let ret = props.children;
-  {{#localeList.length}}
-  ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
-    <InjectedWrapper>{ret}</InjectedWrapper>
-  </IntlProvider>)
-  {{/localeList.length}}
-  {{#antd}}
-  ret = (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
-    {ret}
-  </LocaleProvider>);
-  {{/antd}}
-  return ret;
+
+class LocaleWrapper extends React.Component{
+  render(){
+    let ret = this.props.children;
+    {{#localeList.length}}
+    ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+      <InjectedWrapper>
+        <LangContext.Provider value={{
+          locale:"{{defaultLocale}}",
+        }}>
+          <LangContext.Consumer>{() => ret}</LangContext.Consumer>
+        </LangContext.Provider>
+      </InjectedWrapper>
+    </IntlProvider>)
+    {{/localeList.length}}
+    {{#antd}}
+    ret = (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+      {ret}
+    </LocaleProvider>);
+    {{/antd}}
+    return ret;
+  }
 }
+export default LocaleWrapper;
