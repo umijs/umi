@@ -1,7 +1,7 @@
 export default {
   plugins: [
     [
-      'umi-plugin-locale',
+      '../../src/index',
       {
         enable: true,
         baseNavigator: false,
