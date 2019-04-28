@@ -13,7 +13,6 @@ const api = {
   },
   addPageWatcher() {},
   onOptionChange() {},
-  addRuntimePluginKey() {},
   rebuildTmpFiles() {},
   modifyAFWebpackOpts() {},
   paths: {
