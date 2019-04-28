@@ -57,13 +57,13 @@ let appLocale = {
 };
 
 const runtimeLocale = window.g_plugins.mergeConfig('locale') || {};
-
+const runtimeLocaleDefault =  typeof runtimeLocale.default === 'function' ? runtimeLocale.default() : runtimeLocale.default;
 if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
   appLocale = localeInfo[localStorage.getItem('umi_locale')];
 } else if (localeInfo[navigator.language] && baseNavigator){
   appLocale = localeInfo[navigator.language];
-} else if(localeInfo[runtimeLocale.default]){
-  appLocale = localeInfo[runtimeLocale.default];
+} else if(localeInfo[runtimeLocaleDefault]){
+  appLocale = localeInfo[runtimeLocaleDefault];
 } else {
   appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
 }

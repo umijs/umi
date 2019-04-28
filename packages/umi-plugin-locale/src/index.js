@@ -136,7 +136,7 @@ export default function(api, options = {}) {
       antd: options.antd === undefined ? true : options.antd,
       baseNavigator:
         options.baseNavigator === undefined ? true : options.baseNavigator,
-      useLocalStorage: true,
+      useLocalStorage: options.useLocalStorage || true,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,
