@@ -1,2 +1,2 @@
 // create history
-window.g_history = {{{ history }}};
+export default {{{ history }}};

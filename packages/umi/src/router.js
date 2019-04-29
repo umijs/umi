@@ -1,23 +1,24 @@
 /* global window */
+import history from '@tmp/history';
 
 export function push(...args) {
-  window.g_history.push(...args);
+  history.push(...args);
 }
 
 export function replace(...args) {
-  window.g_history.replace(...args);
+  history.replace(...args);
 }
 
 export function go(...args) {
-  window.g_history.go(...args);
+  history.go(...args);
 }
 
 export function goBack(...args) {
-  window.g_history.goBack(...args);
+  history.goBack(...args);
 }
 
 export function goForward(...args) {
-  window.g_history.goForward(...args);
+  history.goForward(...args);
 }
 
 export default {

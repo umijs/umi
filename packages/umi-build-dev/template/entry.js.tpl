@@ -1,17 +1,16 @@
 {{{ polyfillImports }}}
-import '@tmp/initHistory';
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
 {{{ imports }}}
 
 // runtime plugins
-window.g_plugins = require('umi/_runtimePlugin');
-window.g_plugins.init({
+const plugins = require('umi/_runtimePlugin');
+plugins.init({
   validKeys: [{{#validKeys}}'{{{ . }}}',{{/validKeys}}],
 });
 {{#plugins}}
-window.g_plugins.use(require('{{{ . }}}'));
+plugins.use(require('{{{ . }}}'));
 {{/plugins}}
 
 {{{ codeAhead }}}
@@ -20,7 +19,7 @@ window.g_plugins.use(require('{{{ . }}}'));
 let oldRender = () => {
   {{{ render }}}
 };
-const render = window.g_plugins.compose('render', { initialValue: oldRender });
+const render = plugins.compose('render', { initialValue: oldRender });
 
 const moduleBeforeRendererPromises = [];
 {{# moduleBeforeRenderer }}

@@ -127,7 +127,7 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
-  const rootContainer = window.g_plugins.apply('rootContainer', {
+  const rootContainer = plugins.apply('rootContainer', {
     initialValue: React.createElement(require('./router').default),
   });
   ReactDOM.render(
@@ -219,7 +219,7 @@ require('umi/_createHistory').default({
       }),
     });
     writeFileSync(
-      join(paths.absTmpDirPath, 'initHistory.js'),
+      join(paths.absTmpDirPath, 'history.js'),
       `${content.trim()}\n`,
       'utf-8',
     );
@@ -296,7 +296,7 @@ require('umi/_createHistory').default({
 
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
-    <Router history={window.g_history}>
+    <Router history={history}>
       { renderRoutes(routes, {}) }
     </Router>
     `.trim();

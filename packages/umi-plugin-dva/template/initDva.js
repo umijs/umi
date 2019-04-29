@@ -1,9 +1,11 @@
 import dva from 'dva';
 import createLoading from 'dva-loading';
+import history from '@tmp/history';
 
-const runtimeDva = window.g_plugins.mergeConfig('dva');
+const plugins = require('umi/_runtimePlugin');
+const runtimeDva = plugins.mergeConfig('dva');
 let app = dva({
-  history: window.g_history,
+  history,
   <%= ExtendDvaConfig %>
   ...(runtimeDva.config || {}),
 });
