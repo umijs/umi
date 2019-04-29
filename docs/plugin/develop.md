@@ -578,6 +578,37 @@ Wrapper a component outside the <App/>.
 
 Excute a module before mount <App/>.
 
+## addUmiExports
+
+import from 'umi'
+
+```js
+// export all
+// genarate:export * from 'dva';
+api.addUmiExports([
+  {
+    exportAll: true,
+    source: 'dva'
+  },
+]);
+// export certain
+// genarate:export { connect } from 'dva';
+api.addUmiExports([
+  {
+    specifiers: ['connect'],
+    source: 'dva',
+  },
+]);
+// support alias
+// genarate:export { default as dva } from 'dva';
+api.addUmiExports([
+  {
+    specifiers: [{ local: 'default', exported: 'dva' }],
+    source: 'dva',
+  },
+]);
+```
+
 ### modifyEntryRender
 
 modifyEntryRender
