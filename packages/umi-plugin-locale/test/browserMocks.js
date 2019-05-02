@@ -1,15 +1,14 @@
 //browserMocks.js
-var localStorageMock = (function() {
-  var store = {};
-
+const localStorageMock = (() => {
+  let store = {};
   return {
-    getItem: function(key) {
+    getItem(key) {
       return store[key] || null;
     },
-    setItem: function(key, value) {
+    setItem(key, value) {
       store[key] = value.toString();
     },
-    clear: function() {
+    clear() {
       store = {};
     },
   };

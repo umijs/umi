@@ -5,7 +5,8 @@ import {
   addLocaleData,
   IntlProvider,
   intlShape,
-  LangContext
+  LangContext,
+  _setLocaleContext
 } from 'umi-plugin-locale';
 
 const InjectedWrapper = (() => {
@@ -55,46 +56,64 @@ const localeInfo = {
   {{/localeList}}
 };
 
-let appLocale = {
-  locale: '{{defaultLocale}}',
-  messages: {},
-  data: require('react-intl/locale-data/{{defaultLang}}'),
-  momentLocale: '{{defaultMomentLocale}}',
-};
-
-const runtimeLocale = window.g_plugins.mergeConfig('locale') || {};
-const runtimeLocaleDefault =  typeof runtimeLocale.default === 'function' ? runtimeLocale.default() : runtimeLocale.default;
-if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
-  appLocale = localeInfo[localStorage.getItem('umi_locale')];
-} else if (localeInfo[navigator.language] && baseNavigator){
-  appLocale = localeInfo[navigator.language];
-} else if(localeInfo[runtimeLocaleDefault]){
-  appLocale = localeInfo[runtimeLocaleDefault];
-} else {
-  appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
-}
-window.g_lang = appLocale.locale;
-{{#localeList.length}}
-appLocale.data && addLocaleData(appLocale.data);
-{{/localeList.length}}
-
-
 class LocaleWrapper extends React.Component{
+  state = {
+    locale: '{{defaultLocale}}',
+  };
+  getAppLocale(){
+    let appLocale = {
+      locale: '{{defaultLocale}}',
+      messages: {},
+      data: require('react-intl/locale-data/{{defaultLang}}'),
+      momentLocale: '{{defaultMomentLocale}}',
+    };
+
+    const runtimeLocale = window.g_plugins.mergeConfig('locale') || {};
+    const runtimeLocaleDefault =  typeof runtimeLocale.default === 'function' ? runtimeLocale.default() : runtimeLocale.default;
+    if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
+      appLocale = localeInfo[localStorage.getItem('umi_locale')];
+    } else if (localeInfo[navigator.language] && baseNavigator){
+      appLocale = localeInfo[navigator.language];
+    } else if(localeInfo[runtimeLocaleDefault]){
+      appLocale = localeInfo[runtimeLocaleDefault];
+    } else {
+      appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
+    }
+    window.g_lang = appLocale.locale;
+    {{#localeList.length}}
+    appLocale.data && addLocaleData(appLocale.data);
+    {{/localeList.length}}
+    return appLocale;
+  };
+
+  reloadAppLocale = () => {
+    const appLocale = this.getAppLocale();
+    this.setState({
+      locale: appLocale.locale,
+    });
+  };
+  
   render(){
+    const appLocale = this.getAppLocale();
+    const LangContextValue = {
+      locale: appLocale.locale,
+      reloadAppLocale: this.reloadAppLocale,
+    };
     let ret = this.props.children;
     {{#localeList.length}}
     ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
       <InjectedWrapper>
-        <LangContext.Provider value={{
-          locale:"{{defaultLocale}}",
-        }}>
-          <LangContext.Consumer>{() => ret}</LangContext.Consumer>
+        <LangContext.Provider value={LangContextValue}>
+          <LangContext.Consumer>{(value) => {
+            _setLocaleContext(value);
+            return this.props.children
+            }}</LangContext.Consumer>
         </LangContext.Provider>
       </InjectedWrapper>
     </IntlProvider>)
     {{/localeList.length}}
     {{#antd}}
-    ret = (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+     return (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
     </LocaleProvider>);
     {{/antd}}

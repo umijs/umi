@@ -2,6 +2,8 @@
 const ReactIntl = require('react-intl');
 const React = require('react');
 
+let localeContext;
+
 function setLocale(lang) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
     // for reset when lang === undefined
@@ -9,7 +11,10 @@ function setLocale(lang) {
   }
   if (getLocale() !== lang) {
     window.localStorage.setItem('umi_locale', lang || '');
-    window.location.reload();
+    // 出发 context 的 reload
+    if (localeContext) {
+      localeContext.reloadAppLocale();
+    }
   }
 }
 
@@ -58,6 +63,14 @@ function _setIntlObject(theIntl) {
   intl = theIntl;
 }
 
+/**
+ * 用于出发 context 的重新渲染 方法。可以实现不刷新进行切换语言
+ * @param {*} context
+ */
+function _setLocaleContext(context) {
+  localeContext = context;
+}
+
 module.exports = {
   ...ReactIntl,
   ...intlApi,
@@ -65,4 +78,5 @@ module.exports = {
   getLocale,
   _setIntlObject,
   LangContext,
+  _setLocaleContext,
 };

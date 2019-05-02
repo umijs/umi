@@ -91,10 +91,8 @@ const polyfillTargets = {
 export function isNeedPolyfill(targets = {}) {
   return (
     Object.keys(targets).find(key => {
-      return (
-        polyfillTargets[key.toLocaleLowerCase()] &&
-        polyfillTargets[key.toLocaleLowerCase()] >= targets[key]
-      );
+      const lowKey = key.toLocaleLowerCase();
+      return polyfillTargets[lowKey] && polyfillTargets[lowKey] >= targets[key];
     }) !== undefined
   );
 }
@@ -144,6 +142,7 @@ export default function(api, options = {}) {
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
     writeFileSync(wrapperPath, wrapperContent, 'utf-8');
+    console.log(wrapperContent);
     return wrapperPath;
   });
 
