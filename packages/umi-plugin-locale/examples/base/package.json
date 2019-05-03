@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "antd": "^3.7.3",
-    "umi-plugin-react": "^1.7.5",
     "umi-plugin-locale": "^2.6.2"
   }
 }
