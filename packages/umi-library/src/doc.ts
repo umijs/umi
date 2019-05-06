@@ -5,20 +5,12 @@ import { writeFileSync, existsSync } from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import ghpages from 'gh-pages';
 import chalk from 'chalk';
-import { CONFIG_FILES } from './getUserConfig';
-import registerBabel from './registerBabel';
 
 // userConfig 是从 Bigfish 过来的，用于传入额外的配置信息
 // 这部分信息需要写入到临时文件，因为在 doczrc.ts 里无法读取到他
 // TODO: userConfig 无法用函数
 export function devOrBuild({ cwd, cmd, params, userConfig = {} }) {
   process.chdir(cwd);
-
-  // register babel for config files
-  registerBabel({
-    cwd,
-    only: CONFIG_FILES,
-  });
 
   mkdirp(join(cwd, '.docz'));
   writeFileSync(

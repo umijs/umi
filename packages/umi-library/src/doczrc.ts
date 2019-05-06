@@ -2,8 +2,9 @@ import { css } from 'docz-plugin-umi-css';
 import { join, dirname } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { merge } from 'lodash';
-import getUserConfig from './getUserConfig';
+import getUserConfig, { CONFIG_FILES } from './getUserConfig';
 import reactExternal from './docz-plugin-react-externals';
+import registerBabel from './registerBabel';
 
 const cssModuleRegex = /\.module\.css$/;
 const lessModuleRegex = /\.module\.less$/;
@@ -12,6 +13,13 @@ const cwd = process.cwd();
 const localUserConfig = JSON.parse(
   readFileSync(join(cwd, '.docz', '.umirc.library.json'), 'utf-8'),
 );
+
+// register babel for config files
+registerBabel({
+  cwd,
+  only: CONFIG_FILES,
+});
+
 const userConfig = {
   ...localUserConfig,
   // get user config directly from .umirc.library.js
@@ -26,7 +34,7 @@ const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
 export default {
   typescript: isTypescript,
   repository: false,
-  theme: require.resolve('docz-theme-umi'),
+  theme: require.resolve('docz-theme-umi').replace(/\\/g, '/'),
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
     if (typeof userConfig.doc.modifyBabelRc === 'function') {
