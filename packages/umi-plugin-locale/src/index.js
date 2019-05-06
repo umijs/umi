@@ -100,6 +100,7 @@ export default function(api, options = {}) {
       source: 'intl',
     });
   }
+  api.addRuntimePluginKey('locale');
 
   api.addPageWatcher(join(paths.absSrcPath, config.singular ? 'locale' : 'locales'));
 
@@ -117,7 +118,7 @@ export default function(api, options = {}) {
       localeList: localeFileList,
       antd: options.antd === undefined ? true : options.antd,
       baseNavigator: options.baseNavigator === undefined ? true : options.baseNavigator,
-      useLocalStorage: true,
+      useLocalStorage: options.useLocalStorage === undefined ? true : options.useLocalStorage,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,

@@ -31,6 +31,16 @@ export default {
 };
 ```
 
+**src/app.js**
+
+```js
+export const locale = {
+  default: 'en-US', // default: zh-CN
+  baseNavigator: false, // enable use `navigator.language` overwrite default
+  antd: true, // enable `<LocaleProvider />` of antd
+};
+```
+
 ## Directory convention
 
 ```

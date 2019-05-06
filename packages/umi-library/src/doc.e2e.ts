@@ -4,7 +4,7 @@ import puppeteer from 'puppeteer';
 import http from 'http';
 import { existsSync } from 'fs';
 
-let port = 12400;
+let port = 12500;
 const servers = {};
 let browser;
 let page;
