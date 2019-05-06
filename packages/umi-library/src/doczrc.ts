@@ -26,7 +26,7 @@ const isTypescript = existsSync(join(cwd, 'tsconfig.json'));
 export default {
   typescript: isTypescript,
   repository: false,
-  theme: require.resolve('docz-theme-umi'),
+  theme: require.resolve('docz-theme-umi').replace(/\\/g, '/'),
   ...userConfig.doc,
   modifyBabelRc(babelrc, args) {
     if (typeof userConfig.doc.modifyBabelRc === 'function') {
