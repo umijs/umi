@@ -1,8 +1,7 @@
 import path from 'path';
 import { winPath } from 'umi-utils';
 import renderer from 'react-test-renderer';
-import createMockWrapper from '../src/mock';
-import { getLocaleFileList } from '../src/index';
+import createMockWrapper, { getLocaleFileList } from '../src/mock';
 
 jest.mock('antd');
 jest.mock('umi-plugin-locale');
@@ -18,6 +17,33 @@ const MyComponent = () => (
     {formatMessage({ id: 'test' }, { name: 'locale' })}
   </div>
 );
+
+describe('test getLocaleFileList', () => {
+  test('singular: true', () => {
+    const list = getLocaleFileList(absSrcPath, absPagesPath, true);
+    expect(list).toEqual([
+      {
+        lang: 'en',
+        country: 'US',
+        name: 'en-US',
+        paths: [`${absSrcPath}/locale/en-US.js`, `${absPagesPath}/temp/locale/en-US.js`],
+        momentLocale: '',
+      },
+      {
+        lang: 'zh',
+        country: 'CN',
+        name: 'zh-CN',
+        paths: [`${absSrcPath}/locale/zh-CN.js`, `${absPagesPath}/temp/locale/zh-CN.js`],
+        momentLocale: 'zh-cn',
+      },
+    ]);
+  });
+
+  test('singular: false', () => {
+    const list = getLocaleFileList(absSrcPath, absPagesPath, false);
+    expect(list).toEqual([]);
+  });
+});
 
 describe('test umi-plugin-locale createMockWrapper', () => {
   it('api exists', () => {

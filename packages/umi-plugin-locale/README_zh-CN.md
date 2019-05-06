@@ -21,13 +21,23 @@ export default {
       'umi-plugin-react',
       {
         locale: {
-          default: 'zh-CN', // 默认语言 zh-CN
+          default: 'zh-CN', // 默认语言
           baseNavigator: true, // 为 `true` 时，用 `navigator.language` 的值作为默认语言
           antd: true, // 是否启用 antd 的 <LocaleProvider />
         },
       },
     ],
   ],
+};
+```
+
+**src/app.js**
+
+```js
+export const locale = {
+  default: 'en-US', // 默认值为 zh-CN
+  baseNavigator: false, // 为 `true` 时，用 `navigator.language` 的值作为默认语言
+  antd: true, // 是否启用 antd 的 <LocaleProvider />
 };
 ```
 
@@ -39,10 +49,14 @@ export default {
 ├── mock/
 └── src/
     ├── layouts/index.js
-    ├── pages/
-    └── locales               // 多语言文件存放目录，里面的文件会被umi自动读取
+    ├── locales               // 多语言文件存放目录，里面的文件会被 umi 自动读取
         ├── zh-CN.js
         └── en-US.js
+    └── pages/
+        └── MyPage/
+            └── locales       // pages 下也支持 locales 目录
+                ├── zh-CN.js
+                └── en-US.js
 ├── .umirc.js
 ├── .env
 └── package.json

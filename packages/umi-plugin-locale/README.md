@@ -35,7 +35,7 @@ export default {
 
 ```js
 export const locale = {
-  default: 'en-US', // default: zh-CN
+  default: 'en-US', // default locale
   baseNavigator: false, // enable use `navigator.language` overwrite default
   antd: true, // enable `<LocaleProvider />` of antd
 };
@@ -49,10 +49,14 @@ export const locale = {
 ├── mock/
 └── src/
     ├── layouts/index.js
-    ├── pages/
-    └── locales               // The directory where the i18n text files are stored
+    ├── locales               // The directory where the i18n text files are stored
         ├── zh-CN.js
         └── en-US.js
+    └── pages/
+        └── MyPage/
+            └── locales       // Local i18n text files
+                ├── zh-CN.js
+                └── en-US.js
 ├── .umirc.js
 ├── .env
 └── package.json

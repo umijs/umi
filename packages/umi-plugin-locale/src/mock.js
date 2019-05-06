@@ -1,3 +1,87 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+const dynamicRequireVars = {
+  existsSync: null,
+  globby: null,
+  groupBy: null,
+  momentLocation: null,
+  path: null,
+  resolved: false,
+  winPath: null,
+};
+
+function checkDynamicRequire() {
+  if (!dynamicRequireVars.resolved) {
+    try {
+      const globby = require('globby');
+      const groupBy = require('lodash.groupby');
+      dynamicRequireVars.globby = globby.default || globby;
+      dynamicRequireVars.groupBy = groupBy.default || groupBy;
+      dynamicRequireVars.path = require('path');
+      dynamicRequireVars.existsSync = require('fs').existsSync;
+      dynamicRequireVars.winPath = require('umi-utils').winPath;
+      dynamicRequireVars.momentLocation = require
+        .resolve('moment/locale/zh-cn')
+        .replace(/zh\-cn\.js$/, '');
+      dynamicRequireVars.resolved = true;
+    } catch {
+      return true;
+    }
+  }
+}
+
+export function getMomentLocale(lang, country) {
+  if (checkDynamicRequire()) return '';
+  const { existsSync, path, momentLocation } = dynamicRequireVars;
+  if (existsSync(path.join(momentLocation, `${lang}-${country.toLocaleLowerCase()}.js`))) {
+    return `${lang}-${country.toLocaleLowerCase()}`;
+  }
+  if (existsSync(path.join(momentLocation, `${lang}.js`))) {
+    return lang;
+  }
+  return '';
+}
+
+// export for test
+export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
+  if (checkDynamicRequire()) return [];
+  const { globby, groupBy, path, winPath } = dynamicRequireVars;
+  const localeFileMath = /^([a-z]{2})-([A-Z]{2})\.(js|ts)$/;
+  const localeFolder = singular ? 'locale' : 'locales';
+  const localeFiles = globby
+    .sync('*.{ts,js}', {
+      cwd: path.join(absSrcPath, localeFolder),
+    })
+    .map(name => path.join(absSrcPath, localeFolder, name))
+    .concat(
+      globby
+        .sync(`**/${localeFolder}/*.{ts,js}`, {
+          cwd: absPagesPath,
+        })
+        .map(name => path.join(absPagesPath, name)),
+    )
+    .filter(p => localeFileMath.test(path.basename(p)))
+    .map(fullname => {
+      const fileName = path.basename(fullname);
+      const fileInfo = localeFileMath.exec(fileName);
+      return {
+        name: `${fileInfo[1]}-${fileInfo[2]}`,
+        path: fullname,
+      };
+    });
+  const groups = groupBy(localeFiles, 'name');
+  return Object.keys(groups).map(name => {
+    const fileInfo = name.split('-');
+    return {
+      lang: fileInfo[0],
+      name,
+      country: fileInfo[1],
+      paths: groups[name].map(item => winPath(item.path)),
+      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1]),
+    };
+  });
+}
+
 /**
  * mock `localStorage` and `location.reload` for 'umi_locale'
  * @param {Partial<Window>} mockGlobalVars
@@ -58,8 +142,6 @@ export const mockGlobalVars = (mockGlobalVars = {}) => {
   };
 };
 
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
 const createMockWrapper = (localeList = [], options = {}) => {
   const { antd = true, baseNavigator = true } = options;
   const defaultLocale = options.default || 'zh-CN';
