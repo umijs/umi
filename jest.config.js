@@ -1,4 +1,7 @@
 module.exports = {
+  moduleNameMapper: {
+    '^umi/_runtimePlugin$': require.resolve('./packages/umi/lib/runtimePlugin'),
+  },
   testPathIgnorePatterns: [
     '/.git/',
     '/node_modules/',
