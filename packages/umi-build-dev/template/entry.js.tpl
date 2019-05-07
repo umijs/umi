@@ -1,4 +1,7 @@
 {{{ polyfillImports }}}
+{{#globalVariables}}
+import '@tmp/history';
+{{/globalVariables}}
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,6 +9,9 @@ import ReactDOM from 'react-dom';
 
 // runtime plugins
 const plugins = require('umi/_runtimePlugin');
+{{#globalVariables}}
+window.g_plugins = plugins;
+{{/globalVariables}}
 plugins.init({
   validKeys: [{{#validKeys}}'{{{ . }}}',{{/validKeys}}],
 });

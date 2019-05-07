@@ -285,6 +285,11 @@ models: () => [
   api.addEntryCodeAhead(
     `
 require('@tmp/dva')._onCreate();
+${
+      api.config.disableGlobalVariables
+        ? ''
+        : `window.g_app = require('@tmp/dva').getApp();`
+    }
   `.trim(),
   );
 }

@@ -172,6 +172,7 @@ export default class FilesGenerator {
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
     const entryContent = Mustache.render(entryTpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       code: this.service
         .applyPlugins('addEntryCode', {
           initialValue: [],
@@ -214,6 +215,7 @@ require('umi/_createHistory').default({
 })
     `.trim();
     const content = Mustache.render(tpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
       }),
