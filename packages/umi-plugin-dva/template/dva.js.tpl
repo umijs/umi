@@ -5,7 +5,7 @@ import history from '@tmp/history';
 
 let app = null;
 
-function _onCreate() {
+export function _onCreate() {
   const plugins = require('umi/_runtimePlugin');
   const runtimeDva = plugins.mergeConfig('dva');
   app = dva({
@@ -27,9 +27,6 @@ export function getApp() {
 }
 
 export class _DvaContainer extends Component {
-  componentWillMount() {
-    _onCreate();
-  }
   render() {
     const app = getApp();
     app.router(() => this.props.children);

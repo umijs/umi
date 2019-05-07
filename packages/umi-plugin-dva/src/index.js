@@ -281,4 +281,10 @@ models: () => [
 
   api.addRuntimePlugin(join(__dirname, './runtime'));
   api.addRuntimePluginKey('dva');
+
+  api.addEntryCodeAhead(
+    `
+require('@tmp/dva')._onCreate();
+  `.trim(),
+  );
 }
