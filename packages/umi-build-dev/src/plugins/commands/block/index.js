@@ -176,11 +176,11 @@ export default api => {
 
     // setup route path
     if (!path) {
-      const pkgName = getNameFromPkg(ctx.pkg);
-      if (!pkgName) {
+      const blockName = getNameFromPkg(ctx.pkg);
+      if (!blockName) {
         return log.error("not find name in block's package.json");
       }
-      ctx.routePath = `/${pkgName}`;
+      ctx.routePath = `/${blockName}`;
     } else {
       ctx.routePath = path;
     }
@@ -303,7 +303,8 @@ export default api => {
     const generator = new BlockGenerator(args._.slice(2), {
       sourcePath: ctx.sourcePath,
       path: ctx.routePath,
-      pkgName: getNameFromPkg(ctx.pkg),
+      blockName: getNameFromPkg(ctx.pkg),
+      blockConfig: ctx.pkg.blockConfig,
       dryRun,
       env: {
         cwd: api.cwd,
