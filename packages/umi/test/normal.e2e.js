@@ -19,8 +19,8 @@ describe('normal', () => {
     await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
 
     // window.g_routes
-    const routes = await page.evaluate(() => window.g_routes);
-    expect(routes[0].path).toEqual('/');
+    // const routes = await page.evaluate(() => window.g_routes);
+    // expect(routes[0].path).toEqual('/');
 
     // app.js -> onRouteChange
     const pathname = await page.evaluate(() => window.g_location_pathname);
