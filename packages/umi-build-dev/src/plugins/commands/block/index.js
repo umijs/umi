@@ -9,6 +9,7 @@ import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies } from './getBlockGenerator';
+import appendBlockToContainer from './appendBlockToContainer';
 
 export default api => {
   const { log, paths, debug, applyPlugins } = api;
@@ -300,11 +301,12 @@ export default api => {
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
+    const isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
     const generator = new BlockGenerator(args._.slice(2), {
       sourcePath: ctx.sourcePath,
       path: ctx.routePath,
       blockName: getNameFromPkg(ctx.pkg),
-      blockConfig: ctx.pkg.blockConfig,
+      isPageBlock,
       dryRun,
       env: {
         cwd: api.cwd,
@@ -320,7 +322,7 @@ export default api => {
     spinner.succeed('Generate files');
 
     // 6. write routes
-    if (api.config.routes && !skipModifyRoutes) {
+    if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
       spinner.start(
         `Write route ${generator.path} to ${api.service.userConfig.file}`,
       );
@@ -343,6 +345,14 @@ export default api => {
         throw new Error(e);
       }
       spinner.succeed();
+    }
+
+    // 6. import block to container
+    if (!generator.isPageBlock) {
+      appendBlockToContainer({
+        entryPath: generator.entryPath,
+        blockFolderName: generator.blockFolderName,
+      });
     }
 
     // Final: show success message
