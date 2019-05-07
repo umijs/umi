@@ -261,6 +261,7 @@ require('umi/_createHistory').default({
 
     const routerContent = this.getRouterContent(rendererWrappers);
     return Mustache.render(routerTpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       imports: importsToStr(
         this.service.applyPlugins('addRouterImport', {
           initialValue: rendererWrappers,

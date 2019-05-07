@@ -6,9 +6,12 @@ import renderRoutes from 'umi/_renderRoutes';
 import history from '@tmp/history';
 {{{ imports }}}
 
-let Router = {{{ RouterRootComponent }}};
+const Router = {{{ RouterRootComponent }}};
 
-let routes = {{{ routes }}};
+const routes = {{{ routes }}};
+{{#globalVariables}}
+window.g_routes = routes;
+{{/globalVariables}}
 const plugins = require('umi/_runtimePlugin');
 plugins.applyForEach('patchRoutes', { initialValue: routes });
 
