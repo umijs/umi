@@ -1,0 +1,38 @@
+import dva from 'dva';
+import { Component } from 'react';
+import createLoading from 'dva-loading';
+import history from '@tmp/history';
+
+let app = null;
+
+function _onCreate() {
+  const plugins = require('umi/_runtimePlugin');
+  const runtimeDva = plugins.mergeConfig('dva');
+  app = dva({
+    history,
+    <%= ExtendDvaConfig %>
+    ...(runtimeDva.config || {}),
+  });
+  <%= EnhanceApp %>
+  app.use(createLoading());
+  (runtimeDva.plugins || []).forEach(plugin => {
+    app.use(plugin);
+  });
+  <%= RegisterPlugins %>
+  <%= RegisterModels %>
+}
+
+export function getApp() {
+  return app;
+}
+
+export class _DvaContainer extends Component {
+  componentWillMount() {
+    _onCreate();
+  }
+  render() {
+    const app = getApp();
+    app.router(() => this.props.children);
+    return app.start()();
+  }
+}
