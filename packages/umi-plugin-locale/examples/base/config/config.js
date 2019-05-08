@@ -1,7 +1,7 @@
 export default {
   plugins: [
     [
-      '../../src/index',
+      '../../../lib/index.js',
       {
         enable: true,
         baseNavigator: false,
