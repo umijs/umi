@@ -24,8 +24,7 @@ function startDevServer(opts = {}) {
 
 function start() {
   const devServers = [
-    [12341, '../packages/umi/test/fixtures/e2e/normal'],
-    [12351, '../packages/umi-plugin-react/test/normal'],
+    [12341, '../packages/umi/test/fixtures/dev/normal'],
     [12352, '../packages/umi-plugin-react/test/with-dva'],
     [12353, '../packages/umi-plugin-react/test/pwa'],
   ];
