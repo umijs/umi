@@ -1,8 +1,8 @@
+import { join } from 'path';
 import generateWebManifest, {
   prependPublicPath,
   DEFAULT_MANIFEST_FILENAME,
-} from '../src/plugins/pwa/generateWebManifest';
-import { join } from 'path';
+} from './generateWebManifest';
 
 const APIMock = {
   config: {

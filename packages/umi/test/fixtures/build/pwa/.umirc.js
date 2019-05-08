@@ -1,9 +1,8 @@
-import { join } from 'path';
 
 export default {
   plugins: [
     [
-      '../../lib',
+      '../../../../../umi-plugin-react/lib/index.js',
       {
         antd: false,
         dva: false,
