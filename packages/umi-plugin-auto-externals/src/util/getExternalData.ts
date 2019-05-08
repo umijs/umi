@@ -16,6 +16,7 @@ interface IGetExternalDataParams {
   packages: string[] | Boolean;
   config: IConfig;
   urlTemplate?: string;
+  publicPath?: string;
 }
 
 function packagesToArray(packages: string[] | Boolean): string[] {
@@ -99,6 +100,7 @@ function renderUrls({
   isDevelopment = false,
   urlTemplate = '',
   version = '',
+  publicPath = '/',
 }) {
   const targetUrls = isDevelopment ? urls.development : urls.production;
   return (targetUrls || []).map(path => {
@@ -106,6 +108,7 @@ function renderUrls({
       library: dependencie,
       path,
       version,
+      publicPath,
     };
     return urlTemplate.replace(/{{ (\w+) }}/g, (str, key) => model[key] || str);
   });
@@ -116,6 +119,7 @@ function getConfigItem({
   urlTemplate,
   version,
   isDevelopment,
+  publicPath,
 }): IExternalData {
   const {
     key,
@@ -130,6 +134,7 @@ function getConfigItem({
     isDevelopment,
     urlTemplate,
     version,
+    publicPath,
   };
 
   const [
@@ -153,7 +158,7 @@ function getConfigItem({
 function getExternalData(args: IGetExternalDataParams): IExternalData[] {
   configValidate(args);
 
-  const { pkg, versionInfos, packages, urlTemplate } = args;
+  const { pkg, versionInfos, packages, urlTemplate, publicPath } = args;
   const isDevelopment = process.env.NODE_ENV === 'development';
   const externalDependencies = packagesToArray(packages);
   const allExternalVersions = getAllKeyVersions(
@@ -168,6 +173,7 @@ function getExternalData(args: IGetExternalDataParams): IExternalData[] {
       urlTemplate,
       version: allExternalVersions[key],
       isDevelopment,
+      publicPath,
     }),
   );
 }
