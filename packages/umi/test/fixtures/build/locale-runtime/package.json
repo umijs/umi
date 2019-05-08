@@ -1,10 +1,5 @@
 {
-  "scripts": {
-    "start": "CLEAR_CONSOLE=none umi dev"
-  },
-  "devDependencies": {
-    "umi": "latest"
-  },
+  "name": "locale-runtime",
   "dependencies": {
     "antd": "^3.7.3"
   }
