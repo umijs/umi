@@ -12,7 +12,7 @@ let page;
 const fixtures = join(__dirname, '../examples/base');
 beforeAll(async () => {
   await buildAndServe();
-  browser = await puppeteer.launch();
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 });
 
 beforeEach(async () => {
@@ -28,8 +28,8 @@ it('locale-runtime', async () => {
 });
 
 afterAll(() => {
-  server.close();
   browser.close();
+  server.close();
 });
 
 async function build(cwd) {
