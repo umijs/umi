@@ -1,13 +1,14 @@
 export function patchRoutes(config) {
-  console.log(config);
+  window.g_patch_routes = config;
 }
 
 export function render(oldRender) {
-  console.log('wait for 1s');
-  setTimeout(() => {
-    console.log('do render');
-    oldRender();
-  }, 1000);
+  const el = document.createElement('h3');
+  el.innerHTML = 'render';
+  document.getElementsByTagName('body')[0].appendChild(
+    el
+  )
+  oldRender();
 }
 
 export function rootContainer(container) {
@@ -15,7 +16,7 @@ export function rootContainer(container) {
   function Provider(props) {
     return (
       <>
-        <h1 id="provider">Provider</h1>
+        <h2>rootContainer</h2>
         <div>{props.children}</div>
       </>
     );

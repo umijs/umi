@@ -142,14 +142,8 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  function generateDvaContainer() {
-    const tpl = join(__dirname, '../template/DvaContainer.js');
-    const tplContent = readFileSync(tpl, 'utf-8');
-    api.writeTmpFile('DvaContainer.js', tplContent);
-  }
-
   function generateInitDva() {
-    const tpl = join(__dirname, '../template/initDva.js');
+    const tpl = join(__dirname, '../template/dva.js.tpl');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
     if (dvaJS) {
@@ -165,11 +159,10 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
-    api.writeTmpFile('initDva.js', tplContent);
+    api.writeTmpFile('dva.js', tplContent);
   }
 
   api.onGenerateFiles(() => {
-    generateDvaContainer();
     generateInitDva();
   });
 
@@ -214,7 +207,7 @@ _dvaDynamic({
         ret = ret.replace(
           '<%= MODELS %>',
           `
-app: window.g_app,
+app: require('@tmp/dva').getApp(),
 models: () => [
   ${models
     .map(
@@ -291,7 +284,12 @@ models: () => [
 
   api.addEntryCodeAhead(
     `
-require('@tmp/initDva');
+require('@tmp/dva')._onCreate();
+${
+      api.config.disableGlobalVariables
+        ? ''
+        : `window.g_app = require('@tmp/dva').getApp();`
+    }
   `.trim(),
   );
 }
