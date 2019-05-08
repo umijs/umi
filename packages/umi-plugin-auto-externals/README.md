@@ -1,6 +1,6 @@
 # umi-plugin-auto-externals
 
-A simple way to external in umi.
+A simple way to [external](https://webpack.js.org/configuration/externals/) packages in umi.
 
 ## Usage
 
@@ -37,6 +37,7 @@ https://github.com/umijs/auto-external-packages
 ### urlTemplate
 
 * Type: `String`
+* Default: `{{ publicPath }}externals/{{ library }}@{{ version }}/{{ path }}`
 
 If you want to use your own CDN service, you need to config this item.
 
@@ -49,3 +50,7 @@ For example: `https://unpkg.com/{{ library }}@{{ version }}/{{ path }}`
 * Type: `Boolean`
 
 If checkOnline is true, we will check all urls if online.
+
+## LICENSE
+
+MIT
