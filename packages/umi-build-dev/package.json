@@ -16,7 +16,7 @@
     "chalk": "2.4.1",
     "cheerio": "1.0.0-rc.2",
     "chokidar": "2.0.4",
-    "clipboardy": "1.2.3",
+    "clipboardy": "2.0.0",
     "core-js": "2.6.5",
     "crequire": "^1.8.1",
     "debug": "4.1.0",

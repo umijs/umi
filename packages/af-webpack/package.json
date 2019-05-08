@@ -22,7 +22,7 @@
     "babel-preset-umi": "1.4.1",
     "chalk": "2.4.2",
     "chokidar": "2.0.4",
-    "clipboardy": "1.2.3",
+    "clipboardy": "2.0.0",
     "copy-webpack-plugin": "5.0.1",
     "css-loader": "1.0.1",
     "cssnano": "4.1.10",
