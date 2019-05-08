@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -32,7 +32,7 @@
     "duplicate-package-checker-webpack-plugin": "3.0.0",
     "es5-imcompatible-versions": "^0.1.25",
     "eslint": "5.13.0",
-    "eslint-config-umi": "1.4.2",
+    "eslint-config-umi": "1.4.3",
     "eslint-loader": "2.1.2",
     "eslint-plugin-flowtype": "2.50.3",
     "eslint-plugin-import": "2.14.0",

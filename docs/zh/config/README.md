@@ -482,7 +482,7 @@ export default {
 
 ### browserslist <Badge text="deprecated"/>
 
-配置 [browserslist](https://github.com/ai/browserslist)，同时作用域 babel-preset-env 和 autoprefixer。
+配置 [browserslist](https://github.com/ai/browserslist)，同时作用于 babel-preset-env 和 autoprefixer。
 
 e.g.
 

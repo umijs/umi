@@ -343,8 +343,8 @@ export default api => {
     }
 
     // Final: show success message
-    const viewUrl = `http://localhost:${process.env.PORT ||
-      '8000'}${generator.path.toLowerCase()}`;
+    const viewUrl = `http://localhost:${process.env.PORT
+      || '8000'}${generator.path.toLowerCase()}`;
     try {
       clipboardy.writeSync(viewUrl);
       log.success(
@@ -389,7 +389,7 @@ Examples:
   umi block add demo --path /foo/bar
 
   ${chalk.gray(`# List all blocks`)}
-  umi list
+  umi block list
   `.trim();
 
   api.registerCommand(

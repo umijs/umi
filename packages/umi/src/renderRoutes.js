@@ -85,6 +85,7 @@ export default function renderRoutes(
   extraProps = {},
   switchProps = {},
 ) {
+  const plugins = require('umi/_runtimePlugin');
   return routes ? (
     <Switch {...switchProps}>
       {routes.map((route, i) => {
@@ -120,7 +121,7 @@ export default function renderRoutes(
                   ...props,
                   ...extraProps,
                 });
-                const newProps = window.g_plugins.apply('modifyRouteProps', {
+                const newProps = plugins.apply('modifyRouteProps', {
                   initialValue: {
                     ...props,
                     ...extraProps,
