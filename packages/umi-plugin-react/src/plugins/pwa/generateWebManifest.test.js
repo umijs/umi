@@ -4,6 +4,7 @@ import generateWebManifest, {
   DEFAULT_MANIFEST_FILENAME,
 } from './generateWebManifest';
 
+const absSrcPath = join(__dirname, '../../../../umi/test/fixtures/build/pwa');
 const APIMock = {
   config: {
     publicPath: '/',
@@ -12,7 +13,7 @@ const APIMock = {
     warn: () => {},
   },
   paths: {
-    absSrcPath: join(__dirname, 'pwa'),
+    absSrcPath,
   },
   addHTMLLink: () => {},
   addHTMLHeadScript: () => {},
@@ -30,11 +31,7 @@ describe('generateWebManifest', () => {
   });
 
   it('should use manifest provided by user', () => {
-    const manifestPathProvidedByUser = join(
-      __dirname,
-      'pwa',
-      'manifest.webmanifest',
-    );
+    const manifestPathProvidedByUser = join(absSrcPath, 'manifest.webmanifest');
     const { srcPath, outputPath } = generateWebManifest(APIMock, {
       srcPath: manifestPathProvidedByUser,
     });
