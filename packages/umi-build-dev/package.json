@@ -14,7 +14,7 @@
     "babel-plugin-module-resolver": "3.1.1",
     "babel-preset-umi": "1.4.1",
     "chalk": "2.4.1",
-    "cheerio": "1.0.0-rc.2",
+    "cheerio": "1.0.0-rc.3",
     "chokidar": "2.0.4",
     "clipboardy": "1.2.3",
     "core-js": "2.6.5",
