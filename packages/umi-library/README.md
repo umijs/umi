@@ -280,7 +280,7 @@ export default {
 ```js
 export default {
   extraBabelPlugins: [
-    ['babel-plugin-import', {
+    ['import', {
       libraryName: 'antd',
       libraryDirectory: 'es',
       style: true,
