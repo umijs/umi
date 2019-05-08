@@ -172,7 +172,9 @@ $ umi test
 
 Options:
 
-    --coverage            indicates that test coverage information should be collected and reported in the output
+    --coverage                    indicates that test coverage information should be collected and reported in the output
+    --collectCoverageFrom=<glob>  a glob pattern relative to matching the files that coverage info needs to be collected from, e.g, --collectCoverageFrom=src/**/*.js
+    --detectLeaks                 debug memory leaks
 ```
 
 ### Inspect
