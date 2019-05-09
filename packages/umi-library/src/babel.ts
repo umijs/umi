@@ -7,6 +7,8 @@ import through from 'through2';
 import slash from 'slash2';
 import * as chokidar from 'chokidar';
 import * as babel from '@babel/core';
+import gulpTs from 'gulp-typescript';
+import gulpIf from 'gulp-if';
 import getBabelConfig from './getBabelConfig';
 import { IBundleOptions } from './types';
 
@@ -73,22 +75,28 @@ export default async function(opts: IBabelOpts) {
         base: srcPath,
       })
       .pipe(
-        through.obj((file, env, cb) => {
-          if (
-            /\.(j|t)sx?/.test(extname(file.path)) &&
-            !/\.d\.ts$/.test(file.path)
-          ) {
+        gulpIf(
+          f => /\.tsx?$/.test(f.path),
+          gulpTs({
+            declaration: true,
+          }),
+        ),
+      )
+      .pipe(
+        gulpIf(
+          f => /\.jsx?$/.test(f.path),
+          through.obj((file, env, cb) => {
             file.contents = Buffer.from(
               transform({
                 file,
                 type,
               }),
             );
-            // .tsx? -> .js
+            // .jsx -> .js
             file.path = file.path.replace(extname(file.path), '.js');
-          }
-          cb(null, file);
-        }),
+            cb(null, file);
+          }),
+        ),
       )
       .pipe(vfs.dest(targetPath));
   }
