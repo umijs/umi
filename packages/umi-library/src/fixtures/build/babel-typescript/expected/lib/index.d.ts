@@ -1,5 +1,5 @@
 interface IOpts {
-  foo: boolean;
+    foo: boolean;
 }
 export default function foo(opts: IOpts): string;
 export {};
