@@ -46,7 +46,7 @@ export function generateExports(item) {
       return `${specifier.local} as ${specifier.exported}`;
     }
   });
-  return `export { ${specifiersStrArr.join(',')} } from '${item.source}';`;
+  return `export { ${specifiersStrArr.join(', ')} } from '${item.source}';`;
 }
 
 export default function(api) {

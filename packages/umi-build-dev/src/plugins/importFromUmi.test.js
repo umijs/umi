@@ -24,6 +24,14 @@ it('export alias', () => {
   expect(exportAlias).toBe("export { default as dva } from 'dva';");
 });
 
+it('multiple', () => {
+  const exportAlias = generateExports({
+    specifiers: ['a', { local: 'default', exported: 'b' }],
+    source: 'dva',
+  });
+  expect(exportAlias).toEqual("export { a, default as b } from 'dva';");
+});
+
 it('reserve library', () => {
   expect(() => {
     generateExports({
