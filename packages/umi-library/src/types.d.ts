@@ -5,6 +5,7 @@ export type BundleType = 'rollup' | 'babel';
 interface IBundleTypeOutput {
   type: BundleType;
   file?: string;
+  preserveModules?: boolean;
 }
 
 interface ICjs extends IBundleTypeOutput {

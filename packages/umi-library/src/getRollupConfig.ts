@@ -163,11 +163,18 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(
-              cwd,
-              `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`,
-            ),
+            ...(esm && (esm as any).preserveModules
+              ? {
+                  dir: join(cwd, 'es'),
+                }
+              : {
+                  file: join(
+                    cwd,
+                    `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`,
+                  ),
+                }),
           },
+          preserveModules: esm && (esm as any).preserveModules,
           plugins: [
             ...plugins,
             ...(esm && (esm as any).minify ? [terser(terserOpts)] : []),
@@ -204,8 +211,18 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(cwd, `dist/${(cjs && (cjs as any).file) || name}.js`),
+            ...(cjs && (cjs as any).preserveModules
+              ? {
+                  dir: join(cwd, 'lib'),
+                }
+              : {
+                  file: join(
+                    cwd,
+                    `dist/${(cjs && (cjs as any).file) || name}.js`,
+                  ),
+                }),
           },
+          preserveModules: cjs && (cjs as any).preserveModules,
           plugins: [
             ...plugins,
             ...(cjs && (cjs as any).minify ? [terser(terserOpts)] : []),

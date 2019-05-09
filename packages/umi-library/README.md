@@ -151,6 +151,13 @@ esm 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 * Type: `string`
 * Default: `undefined`
 
+#### esm.preserveModules
+
+保留模块结构。
+
+* Type: `boolean`
+* Default: `false`
+
 #### esm.mjs
 
 是否同时输出一份给浏览器用的 esm，以 `.mjs` 为后缀。
@@ -193,6 +200,13 @@ cjs 为 `rollup` 或 `babel` 时，等同于配置了 `{ type: "rollup" | "babel
 
 - Type: `string`
 - Default: `undefined`
+
+#### cjs.preserveModules
+
+保留模块结构。
+
+* Type: `boolean`
+* Default: `false`
 
 #### cjs.minify
 
