@@ -142,7 +142,6 @@ export default function(api, options = {}) {
     });
     const wrapperPath = join(paths.absTmpDirPath, './LocaleWrapper.jsx');
     writeFileSync(wrapperPath, wrapperContent, 'utf-8');
-    console.log(wrapperContent);
     return wrapperPath;
   });
 

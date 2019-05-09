@@ -4,16 +4,20 @@ const React = require('react');
 
 let localeContext;
 
-function setLocale(lang) {
+function setLocale(lang, realReload = true) {
   if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');
   }
   if (getLocale() !== lang) {
     window.localStorage.setItem('umi_locale', lang || '');
-    // 出发 context 的 reload
-    if (localeContext) {
+    // 触发 context 的 reload
+    // 如果要刷新 location ，没必要进行 context 的 reload 了
+    if (localeContext && !realReload) {
       localeContext.reloadAppLocale();
+    }
+    if (realReload) {
+      window.location.reload();
     }
   }
 }
