@@ -1,7 +1,7 @@
-import { generateStringsByConfiguration } from '../src/plugins/exports';
+import { generateExports } from './importFromUmi';
 
 it('export all', () => {
-  const exportAll = generateStringsByConfiguration({
+  const exportAll = generateExports({
     exportAll: true,
     source: 'dva',
   });
@@ -9,7 +9,7 @@ it('export all', () => {
 });
 
 it('export specifiers', () => {
-  const exportSpecifiers = generateStringsByConfiguration({
+  const exportSpecifiers = generateExports({
     specifiers: ['connect'],
     source: 'dva',
   });
@@ -17,7 +17,7 @@ it('export specifiers', () => {
 });
 
 it('export alias', () => {
-  const exportAlias = generateStringsByConfiguration({
+  const exportAlias = generateExports({
     specifiers: [{ local: 'default', exported: 'dva' }],
     source: 'dva',
   });
@@ -25,28 +25,33 @@ it('export alias', () => {
 });
 
 it('reserve library', () => {
-  expect(() =>
-    generateStringsByConfiguration({
-      specifiers: [{ local: 'default', exported: 'dva' }],
+  expect(() => {
+    generateExports({
+      specifiers: [
+        {
+          local: 'default',
+          exported: 'dva',
+        },
+      ],
       source: 'umi',
-    }),
-  ).toThrow("umi is reserve library, Please don't use it.");
+    });
+  }).toThrow("umi is reserve library, Please don't use it.");
 });
 
 it('reserve name', () => {
-  expect(() =>
-    generateStringsByConfiguration({
+  expect(() => {
+    generateExports({
       specifiers: ['umi'],
       source: 'dva',
-    }),
-  ).toThrow("umi is reserve name, you can use 'exported' to set alias.");
+    });
+  }).toThrow("umi is reserve name, you can use 'exported' to set alias.");
 });
 
 it('repeated definition', () => {
-  expect(() =>
-    generateStringsByConfiguration({
+  expect(() => {
+    generateExports({
       specifiers: ['connect'],
       source: 'abc',
-    }),
-  ).toThrow("connect is Defined, you can use 'exported' to set alias.");
+    });
+  }).toThrow("connect is Defined, you can use 'exported' to set alias.");
 });

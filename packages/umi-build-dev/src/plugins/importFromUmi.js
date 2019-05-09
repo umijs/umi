@@ -5,7 +5,7 @@ const reserveLibrarys = ['umi']; // reserve library
 const reserveExportsNames = ['umi']; // reserve name
 const umiExportsHook = {}; // repeated definition
 
-export const generateStringsByConfiguration = item => {
+export function generateExports(item) {
   assert(item.source, 'source should be supplied.');
   assert(
     item.exportAll || item.specifiers,
@@ -47,7 +47,7 @@ export const generateStringsByConfiguration = item => {
     }
   });
   return `export { ${specifiersStrArr.join(',')} } from '${item.source}';`;
-};
+}
 
 export default function(api) {
   api.onGenerateFiles(() => {
@@ -59,7 +59,7 @@ export default function(api) {
       .applyPlugins('addUmiExports', {
         initialValue: [],
       })
-      .map(generateStringsByConfiguration);
+      .map(generateExports);
     api.writeTmpFile('umiExports.js', umiExports.join('\n'));
   };
 }

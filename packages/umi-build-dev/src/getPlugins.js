@@ -34,7 +34,7 @@ export default function(opts = {}) {
     './plugins/mountElementId',
     './plugins/404', // 404 must after mock
     './plugins/targets',
-    './plugins/exports',
+    './plugins/importFromUmi',
   ];
 
   const pluginsObj = [
