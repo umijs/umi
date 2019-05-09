@@ -49,10 +49,10 @@ it('reserve library', () => {
 it('reserve name', () => {
   expect(() => {
     generateExports({
-      specifiers: ['umi'],
+      specifiers: ['Link'],
       source: 'dva',
     });
-  }).toThrow("umi is reserve name, you can use 'exported' to set alias.");
+  }).toThrow("Link is reserve name, you can use 'exported' to set alias.");
 });
 
 it('repeated definition', () => {

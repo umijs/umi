@@ -2,7 +2,15 @@ import assert from 'assert';
 import { isPlainObject } from 'lodash';
 
 const reserveLibrarys = ['umi']; // reserve library
-const reserveExportsNames = ['umi']; // reserve name
+const reserveExportsNames = [
+  'Link',
+  'NavLink',
+  'Redirect',
+  'dynamic',
+  'router',
+  'withRouter',
+  'Route',
+]; // reserve name
 const umiExportsHook = {}; // repeated definition
 
 export function generateExports(item) {
