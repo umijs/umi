@@ -1,6 +1,7 @@
 //browserMocks.js
-const localStorageMock = (() => {
+const localStorageMock = () => {
   let store = {};
+
   return {
     getItem(key) {
       return store[key] || null;
@@ -12,8 +13,8 @@ const localStorageMock = (() => {
       store = {};
     },
   };
-})();
+};
 
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
+  value: localStorageMock(),
 });
