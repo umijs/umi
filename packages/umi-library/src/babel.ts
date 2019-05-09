@@ -1,5 +1,5 @@
 import { join, extname } from 'path';
-import { existsSync, statSync } from 'fs';
+import { existsSync, readFileSync, statSync } from 'fs';
 import vfs from 'vinyl-fs';
 import signale from 'signale';
 import rimraf from 'rimraf';
@@ -68,20 +68,24 @@ export default async function(opts: IBabelOpts) {
     }).code;
   }
 
+  function getTSConfig() {
+    const tsconfigPath = join(cwd, 'tsconfig.json');
+    if (existsSync(tsconfigPath)) {
+      return (
+        JSON.parse(readFileSync(tsconfigPath, 'utf-8')).compilerOptions || {}
+      );
+    } else {
+      return {};
+    }
+  }
+
   function createStream(src) {
     return vfs
       .src(src, {
         allowEmpty: true,
         base: srcPath,
       })
-      .pipe(
-        gulpIf(
-          f => /\.tsx?$/.test(f.path),
-          gulpTs({
-            declaration: true,
-          }),
-        ),
-      )
+      .pipe(gulpIf(f => /\.tsx?$/.test(f.path), gulpTs(getTSConfig())))
       .pipe(
         gulpIf(
           f => /\.jsx?$/.test(f.path),
