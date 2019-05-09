@@ -6,7 +6,12 @@ import error from './error';
 async function onlineCheck(configs) {
   let urls = [];
   (configs || []).forEach(({ scripts, styles }) => {
-    urls = urls.concat(scripts).concat(styles);
+    urls = urls
+      .concat(scripts)
+      .concat(styles)
+      .filter(url => {
+        return /^https?:\/\//.test(url);
+      });
   });
   if (!urls.length) {
     return;
