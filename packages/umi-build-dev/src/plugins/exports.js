@@ -1,9 +1,9 @@
 import assert from 'assert';
 import { isPlainObject } from 'lodash';
 
-const reserveLibrarys = ['umi'];
-const reserveExportsNames = ['umi'];
-const umiExportsHook = {};
+const reserveLibrarys = ['umi']; // reserve library
+const reserveExportsNames = ['umi']; // reserve name
+const umiExportsHook = {}; // repeated definition
 
 export const generateStringsByConfiguration = item => {
   assert(item.source, 'source should be supplied.');
@@ -26,11 +26,11 @@ export const generateStringsByConfiguration = item => {
     if (typeof specifier === 'string') {
       assert(
         !reserveExportsNames.includes(specifier),
-        `${specifier} is reserve name, you can use 'exported' to set alias`,
+        `${specifier} is reserve name, you can use 'exported' to set alias.`,
       );
       assert(
         !umiExportsHook[specifier],
-        `${specifier} is Defined, you can use 'exported' to set alias`,
+        `${specifier} is Defined, you can use 'exported' to set alias.`,
       );
       umiExportsHook[specifier] = true;
       return specifier;
