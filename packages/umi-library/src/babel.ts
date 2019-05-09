@@ -1,5 +1,5 @@
 import { join, extname } from 'path';
-import { existsSync, statSync } from 'fs';
+import { existsSync, readFileSync, statSync } from 'fs';
 import vfs from 'vinyl-fs';
 import signale from 'signale';
 import rimraf from 'rimraf';
@@ -7,6 +7,8 @@ import through from 'through2';
 import slash from 'slash2';
 import * as chokidar from 'chokidar';
 import * as babel from '@babel/core';
+import gulpTs from 'gulp-typescript';
+import gulpIf from 'gulp-if';
 import getBabelConfig from './getBabelConfig';
 import { IBundleOptions } from './types';
 
@@ -66,29 +68,39 @@ export default async function(opts: IBabelOpts) {
     }).code;
   }
 
+  function getTSConfig() {
+    const tsconfigPath = join(cwd, 'tsconfig.json');
+    if (existsSync(tsconfigPath)) {
+      return (
+        JSON.parse(readFileSync(tsconfigPath, 'utf-8')).compilerOptions || {}
+      );
+    } else {
+      return {};
+    }
+  }
+
   function createStream(src) {
     return vfs
       .src(src, {
         allowEmpty: true,
         base: srcPath,
       })
+      .pipe(gulpIf(f => /\.tsx?$/.test(f.path), gulpTs(getTSConfig())))
       .pipe(
-        through.obj((file, env, cb) => {
-          if (
-            /\.(j|t)sx?/.test(extname(file.path)) &&
-            !/\.d\.ts$/.test(file.path)
-          ) {
+        gulpIf(
+          f => /\.jsx?$/.test(f.path),
+          through.obj((file, env, cb) => {
             file.contents = Buffer.from(
               transform({
                 file,
                 type,
               }),
             );
-            // .tsx? -> .js
+            // .jsx -> .js
             file.path = file.path.replace(extname(file.path), '.js');
-          }
-          cb(null, file);
-        }),
+            cb(null, file);
+          }),
+        ),
       )
       .pipe(vfs.dest(targetPath));
   }

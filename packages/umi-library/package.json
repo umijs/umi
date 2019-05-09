@@ -32,6 +32,8 @@
     "docz-theme-umi": "^1.1.0",
     "extend2": "1.0.0",
     "gh-pages": "2.0.1",
+    "gulp-if": "2.0.2",
+    "gulp-typescript": "5.0.1",
     "less": "3.9.0",
     "less-plugin-npm-import": "2.1.0",
     "lodash": "4.17.11",
