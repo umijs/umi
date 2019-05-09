@@ -7,3 +7,4 @@ export { default as router } from './router';
 export { default as withRouter } from './withRouter';
 
 export { default as RouterTypes } from './routerTypes';
+export * from '@tmp/umiExports';
