@@ -1,13 +1,15 @@
 export default {
   plugins: [
     [
-      '../../../../../umi-plugin-locale/lib/index.js',
+      '../../../../../umi-plugin-react/lib/index.js',
       {
-        enable: true,
-        baseNavigator: false,
-        default: 'en-US',
-        antd: false,
-      },
+        antd: true,
+        locale:{
+          enable: true,
+          baseNavigator: false,
+          default: 'en-US',
+        },
+      }
     ],
   ],
   singular: true,
