@@ -68,7 +68,7 @@ class LocaleWrapper extends React.Component{
       momentLocale: '{{defaultMomentLocale}}',
     };
 
-    const runtimeLocale = window.g_plugins.mergeConfig('locale') || {};
+    const runtimeLocale = require('umi/_runtimePlugin').mergeConfig('locale') || {};
     const runtimeLocaleDefault =  typeof runtimeLocale.default === 'function' ? runtimeLocale.default() : runtimeLocale.default;
     if (useLocalStorage && localStorage.getItem('umi_locale') && localeInfo[localStorage.getItem('umi_locale')]) {
       appLocale = localeInfo[localStorage.getItem('umi_locale')];
@@ -83,9 +83,9 @@ class LocaleWrapper extends React.Component{
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
+    
     return appLocale;
-  };
-
+  }
   reloadAppLocale = () => {
     const appLocale = this.getAppLocale();
     this.setState({
