@@ -4,5 +4,6 @@ export default {
     ['../../../../../umi-plugin-react/lib/index.js', {
       dva: true,
     }],
+    ['./plugin/index.js'],
   ]
 }
