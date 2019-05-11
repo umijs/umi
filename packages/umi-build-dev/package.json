@@ -34,7 +34,7 @@
     "got": "9.5.0",
     "html-minifier": "3.5.21",
     "http-proxy-middleware": "0.19.1",
-    "js-yaml": "3.12.0",
+    "js-yaml": "3.13.1",
     "lodash": "4.17.11",
     "mkdirp": "0.5.1",
     "mustache": "3.0.1",
