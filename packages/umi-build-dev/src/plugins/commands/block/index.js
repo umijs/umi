@@ -149,6 +149,7 @@ export default api => {
       dryRun,
       skipDependencies,
       skipModifyRoutes,
+      direct,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -301,7 +302,12 @@ export default api => {
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
-    const isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
+    let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
+    if (direct !== undefined) {
+      // when user use `umi block add --direct`
+      isPageBlock = direct !== 'false';
+    }
+    debug(`isPageBlock: ${isPageBlock}`);
     const generator = new BlockGenerator(args._.slice(2), {
       sourcePath: ctx.sourcePath,
       path: ctx.routePath,
@@ -349,10 +355,19 @@ export default api => {
 
     // 6. import block to container
     if (!generator.isPageBlock) {
-      appendBlockToContainer({
-        entryPath: generator.entryPath,
-        blockFolderName: generator.blockFolderName,
-      });
+      spinner.start(
+        `Write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
+      );
+      try {
+        appendBlockToContainer({
+          entryPath: generator.entryPath,
+          blockFolderName: generator.blockFolderName,
+        });
+      } catch (e) {
+        spinner.fail();
+        throw new Error(e);
+      }
+      spinner.succeed();
     }
 
     // Final: show success message

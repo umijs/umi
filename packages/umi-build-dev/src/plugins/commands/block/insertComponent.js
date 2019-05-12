@@ -8,7 +8,7 @@ import { findLastIndex } from 'lodash';
 export default function(content, { relativePath, identifier }) {
   const ast = parser.parse(content, {
     sourceType: 'module',
-    plugins: ['jsx'],
+    plugins: ['jsx', 'decorators-legacy'],
   });
   traverse(ast, {
     Program({ node }) {

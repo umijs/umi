@@ -14,7 +14,5 @@ export default ({ entryPath, blockFolderName }) => {
     relativePath: `./${blockFolderName}`,
   });
 
-  debug(`newEntry: ${newEntry}`);
-
   writeFileSync(entryPath, newEntry);
 };
