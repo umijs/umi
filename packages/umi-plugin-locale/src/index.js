@@ -91,10 +91,8 @@ const polyfillTargets = {
 export function isNeedPolyfill(targets = {}) {
   return (
     Object.keys(targets).find(key => {
-      return (
-        polyfillTargets[key.toLocaleLowerCase()] &&
-        polyfillTargets[key.toLocaleLowerCase()] >= targets[key]
-      );
+      const lowKey = key.toLocaleLowerCase();
+      return polyfillTargets[lowKey] && polyfillTargets[lowKey] >= targets[key];
     }) !== undefined
   );
 }
