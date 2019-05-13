@@ -149,7 +149,7 @@ export default api => {
       dryRun,
       skipDependencies,
       skipModifyRoutes,
-      direct,
+      mode: addMode,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -303,9 +303,9 @@ export default api => {
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
-    if (direct !== undefined) {
+    if (addMode !== undefined) {
       // when user use `umi block add --direct`
-      isPageBlock = direct !== 'false';
+      isPageBlock = addMode === 'dir';
     }
     debug(`isPageBlock: ${isPageBlock}`);
     const generator = new BlockGenerator(args._.slice(2), {
@@ -403,6 +403,7 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
+  ${chalk.green(`--mode              `)} when mode = dir, umi will add the block to a independent directory
 
 Examples:
 
