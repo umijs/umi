@@ -1,8 +1,9 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
-import { parseModule, parse } from 'esprima';
-import escodegen from 'escodegen';
-import esquery from 'esquery';
+import * as parser from '@babel/parser';
+import traverse from '@babel/traverse';
+import generate from '@babel/generator';
+import * as t from '@babel/types';
 import prettier from 'prettier';
 
 const debug = require('debug')('umi-build-dev:writeNewRoute');
@@ -28,45 +29,98 @@ export default function writeNewRoute(newRoute, configPath, absSrcPath) {
  * @param {*} newRoute
  */
 export function getNewRouteCode(configPath, newRoute, absSrcPath) {
-  debug(configPath);
-  const ast = parseModule(readFileSync(configPath, 'utf-8'), {
-    attachComment: true,
+  debug(`find routes in configPath: ${configPath}`);
+  const ast = parser.parse(readFileSync(configPath, 'utf-8'), {
+    sourceType: 'module',
   });
+  let routesNode = null;
+  const importModules = [];
   // 查询当前配置文件是否导出 routes 属性
-  const [routes] = esquery(
-    ast,
-    `ExportDefaultDeclaration > ObjectExpression > [key.name="routes"],\
-  AssignmentExpression[left.object.name="exports"][left.property.name="routes"]`, // like: exports.routes = {}
-  );
+  traverse(ast, {
+    Program({ node }) {
+      // find import
+      const { body } = node;
+      body.forEach(item => {
+        if (t.isImportDeclaration(item)) {
+          const { specifiers } = item;
+          const defaultEpecifier = specifiers.find(s => {
+            return t.isImportDefaultSpecifier(s) && t.isIdentifier(s.local);
+          });
+          if (defaultEpecifier && t.isStringLiteral(item.source)) {
+            importModules.push({
+              identifierName: defaultEpecifier.local.name,
+              modulePath: item.source.value,
+            });
+          }
+        }
+      });
+    },
+    AssignmentExpression({ node }) {
+      // for exports.routes
+      const { left, operator, right } = node;
+      if (
+        operator === '=' &&
+        t.isMemberExpression(left) &&
+        t.isIdentifier(left.object) &&
+        left.object.name === 'exports' &&
+        t.isIdentifier(left.property) &&
+        left.property.name === 'routes'
+      ) {
+        routesNode = right;
+      }
+    },
+    ExportDefaultDeclaration({ node }) {
+      const { declaration } = node;
+      if (t.isArrayExpression(declaration)) {
+        routesNode = declaration;
+      }
+      if (t.isObjectExpression(declaration)) {
+        const { properties } = declaration;
+        properties.forEach(p => {
+          const { key, value } = p;
+          if (
+            t.isObjectProperty(p) &&
+            t.isIdentifier(key) &&
+            key.name === 'routes'
+          ) {
+            routesNode = value;
+          }
+        });
+      }
+    },
+  });
 
-  if (routes) {
-    const routesNode = routes.value || routes.right;
+  if (routesNode) {
     // routes 配置不在当前文件, 需要 load 对应的文件  export default { routes: pageRoutes } case 1
-    if (routesNode.type !== 'ArrayExpression') {
-      const [source] = esquery(
-        ast,
-        `ImportDeclaration:has([local.name="${routesNode.name}"])`,
-      );
+    if (!t.isArrayExpression(routesNode)) {
+      const source = importModules.find(m => {
+        return m.identifierName === routesNode.name;
+      });
       if (source) {
         const newConfigPath = getModulePath(
           configPath,
-          source.source.value,
+          source.modulePath,
           absSrcPath,
         );
         return getNewRouteCode(newConfigPath, newRoute, absSrcPath);
+      } else {
+        throw new Error(`can not find import of ${routesNode.name}`);
       }
     } else {
       // 配置在当前文件 // export default { routes: [] } case 2
       writeRouteNode(routesNode, newRoute);
     }
   } else {
-    // 从其他文件导入 export default [] case 3
-    const [node] = esquery(ast, 'ExportDefaultDeclaration > ArrayExpression');
-    writeRouteNode(node, newRoute);
+    throw new Error('route array config not found.');
   }
   const code = generateCode(ast);
   debug(code, configPath);
   return { code, routesPath: configPath };
+}
+
+function getNewRouteNode(newRoute) {
+  return parser.parse(`(${JSON.stringify(newRoute)})`).program.body[0]
+    .expression;
 }
 
 /**
@@ -74,69 +128,57 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
  * @param {*} node 找到的节点
  * @param {*} newRoute 新的路由配置
  */
-function writeRouteNode(targetNode, newRoute) {
-  const { level, target } = findLayoutNode(targetNode, 0, newRoute.path);
-  debug(target);
-  if (target) {
-    // 如果插入到 layout, 组件地址是否正确
-    const newRouteAst = parse(`(${JSON.stringify(newRoute)})`).body[0]
-      .expression;
-    if (level === 0) {
-      // 如果是第一级那么插入到上面，避免被 / 覆盖
-      // 后面应该做更加智能的判断，如果可能被覆盖就插入到前面。如果可能覆盖别人就插入到后面。
-      target.elements.unshift(newRouteAst);
-    } else {
-      target.elements.push(newRouteAst);
+export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
+  debug(
+    `writeRouteNode currentPath newRoute.path: ${
+      newRoute.path
+    } currentPath: ${currentPath}`,
+  );
+  const { elements } = targetNode;
+  const paths = elements.map(ele => {
+    if (!t.isObjectExpression(ele)) {
+      return false;
     }
+    const { properties } = ele;
+    const pathProp = properties.find(p => {
+      return p.key.name === 'path';
+    });
+    if (!pathProp) {
+      return currentPath;
+    }
+    let fullPath = pathProp.value.value;
+    if (fullPath.indexOf('/') !== 0) {
+      fullPath = join(currentPath, fullPath);
+    }
+    return fullPath;
+  });
+
+  debug('paths', paths);
+
+  const matchedIndex = paths.findIndex(p => {
+    return newRoute.path.indexOf(p) === 0;
+  });
+
+  const newNode = getNewRouteNode(newRoute);
+  if (matchedIndex === -1) {
+    elements.push(newNode);
+    // return container for test
+    return targetNode;
   } else {
-    throw new Error('route path not found.');
-  }
-}
-
-/**
- * 查找 path 是否有 layout 节点 // like: /users/settings/profile
- * 会依次查找 /users/settings /users/ /
- * @param {*} targetNode
- * @param {*} path
- */
-export function findLayoutNode(targetNode, level, path) {
-  debug(path, targetNode);
-  const index = path && path.lastIndexOf('/');
-  if (index !== -1) {
-    path = index === 0 ? '/' : path.slice(0, index).toLowerCase();
-    let query = `[key.name="path"][value.value="${path}"] ~ [key.name="routes"] > ArrayExpression`;
-
-    if (index !== 0) {
-      // 兼容 antd pro 相对路径路由
-      const relativePath = path.split('/').pop();
-      query = `${query},[key.name="path"][value.value="${relativePath}"] ~ [key.name="routes"] > ArrayExpression`;
+    // matched, insert to children routes
+    const matchedEle = elements[matchedIndex];
+    const routesProp = matchedEle.properties.find(p => {
+      return (
+        p.key.name === 'routes' ||
+        (process.env.BIGFISH_COMPAT && p.key.name === 'childRoutes')
+      );
+    });
+    if (!routesProp) {
+      // not find children routes, insert before the matched element
+      elements.splice(matchedIndex, 0, newNode);
+      return targetNode;
     }
-
-    if (process.env.BIGFISH_COMPAT) {
-      query = `${query},${query.replace(/\"routes\"/g, '"childRoutes"')}`;
-    }
-
-    const [layoutNode] = esquery.query(targetNode, query);
-    if (layoutNode) {
-      debug(layoutNode);
-      return {
-        level: level + 1,
-        target: layoutNode,
-      };
-    } else if (index === 0) {
-      // 执行到 / 后跳出
-      return {
-        level,
-        target: targetNode,
-      };
-    } else {
-      return findLayoutNode(targetNode, level + 1, path);
-    }
-  } else {
-    return {
-      level,
-      target: targetNode,
-    };
+    return writeRouteNode(routesProp.value, newRoute, paths[matchedIndex]);
   }
 }
 
@@ -145,14 +187,7 @@ export function findLayoutNode(targetNode, level, path) {
  * @param {*} ast
  */
 function generateCode(ast) {
-  const newCode = escodegen.generate(ast, {
-    format: {
-      indent: {
-        style: '  ',
-      },
-    },
-    comment: true,
-  });
+  const newCode = generate(ast, {}).code;
   return prettier.format(newCode, {
     // format same as ant-design-pro
     singleQuote: true,
