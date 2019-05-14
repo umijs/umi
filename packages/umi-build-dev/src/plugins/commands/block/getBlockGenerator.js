@@ -10,6 +10,7 @@ import mkdirp from 'mkdirp';
 import semver from 'semver';
 import crequire from 'crequire';
 import Mustache from 'mustache';
+import upperCamelCase from 'uppercamelcase';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
 
@@ -105,7 +106,7 @@ export default api => {
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
       this.needCreateNewRoute = this.isPageBlock;
-      this.blockFolderName = this.blockName;
+      this.blockFolderName = upperCamelCase(this.blockName);
       this.entryPath = null;
 
       this.on('error', e => {
@@ -177,6 +178,40 @@ export default api => {
         );
       }
 
+      // create container
+      this.entryPath = join(targetPath, 'index.js');
+
+      if (!this.isPageBlock && !existsSync(this.entryPath)) {
+        const confirmResult = (await this.prompt({
+          type: 'confirm',
+          name: 'needCreate',
+          message: `Not find a exist page file at ${
+            this.path
+          }. Do you want to create it and import this block.`,
+        })).needCreate;
+
+        if (!confirmResult) {
+          throw new Error('You stop it!');
+        }
+
+        debug(
+          'start to generate the entry file for block(s) under the path...',
+        );
+
+        this.needCreateNewRoute = true;
+        const blockEntryTpl = readFileSync(
+          paths.defaultBlockEntryPath,
+          'utf-8',
+        );
+        const tplContent = {
+          blockEntryName: `${this.path.slice(1)}Container`,
+        };
+        const entry = Mustache.render(blockEntryTpl, tplContent);
+        mkdirp.sync(targetPath);
+        writeFileSync(this.entryPath, entry);
+      }
+
+      // copy block to target
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       debug('start copy block file to your project...');
       ['src', '@'].forEach(folder => {
@@ -233,26 +268,6 @@ export default api => {
           });
         }
       });
-
-      this.entryPath = join(targetPath, 'index.js');
-
-      if (!this.isPageBlock && !existsSync(this.entryPath)) {
-        debug(
-          'start to generate the entry file for block(s) under the path...',
-        );
-
-        this.needCreateNewRoute = true;
-        const blockEntryTpl = readFileSync(
-          paths.defaultBlockEntryPath,
-          'utf-8',
-        );
-        const tplContent = {
-          blockEntryName: `${this.path.slice(1)}Container`,
-        };
-        const entry = Mustache.render(blockEntryTpl, tplContent);
-        mkdirp.sync(targetPath);
-        writeFileSync(this.entryPath, entry);
-      }
     }
   };
 };

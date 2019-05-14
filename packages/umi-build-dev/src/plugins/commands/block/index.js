@@ -149,7 +149,7 @@ export default api => {
       dryRun,
       skipDependencies,
       skipModifyRoutes,
-      mode: addMode,
+      wrap: isWrap,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -183,6 +183,7 @@ export default api => {
         return log.error("not find name in block's package.json");
       }
       ctx.routePath = `/${blockName}`;
+      log.info(`Not find --path, use block name '${ctx.routePath}' as the target path.`);
     } else {
       ctx.routePath = path;
     }
@@ -303,9 +304,9 @@ export default api => {
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
-    if (addMode !== undefined) {
+    if (isWrap !== undefined) {
       // when user use `umi block add --direct`
-      isPageBlock = addMode === 'dir';
+      isPageBlock = !isWrap;
     }
     debug(`isPageBlock: ${isPageBlock}`);
     const generator = new BlockGenerator(args._.slice(2), {
