@@ -306,12 +306,12 @@ export default class HTMLGenerator {
     // insert tags
     html = html.replace(
       '<head>',
-      `
+      `${`
 <head>
 ${metas.length ? this.getMetasContent(metas) : ''}
 ${links.length ? this.getLinksContent(links) : ''}
 ${styles.length ? this.getStylesContent(styles) : ''}
-    `.trim() + '\n',
+    `.trim()}\n`,
     );
     html = html.replace(
       '</head>',

@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Input, Form, Button, Select, Switch } from 'antd';
+import { Input, Form, Select, Switch } from 'antd';
 import model from './model';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 function toString(data) {
   if (typeof data === 'string') return data;
@@ -14,20 +14,23 @@ function toString(data) {
 }
 
 function ConfigItem(props) {
+  /* eslint-disable no-unused-expressions */
+  const { name, data } = props;
   return (
-    <>
+    <React.Fragment>
       <li>
-        {props.name}
+        {name}
         {do {
-          if (props.name === 'plugins') {
-            <PluginList data={props.data} />;
+          if (name === 'plugins') {
+            <PluginList data={data} />;
           } else {
             <ConfigPropertyItem {...props} />;
           }
         }}
       </li>
-    </>
+    </React.Fragment>
   );
+  /* eslint-enable no-unused-expressions */
 }
 
 function ConfigPropertyItem({ name, data }) {
@@ -37,18 +40,19 @@ function ConfigPropertyItem({ name, data }) {
   return <Input size="small" defaultValue={toString(data)} onBlur={blurHandler} />;
 }
 
-function PluginList(props) {
+function PluginList({ data }) {
   return (
     <ul>
-      {props.data.map((item, i) => (
+      {data.map((item, i) => (
+        // eslint-disable-next-line react/no-array-index-key
         <PluginItem key={i} data={item} />
       ))}
     </ul>
   );
 }
 
-function PluginItem(props) {
-  const [name, opts] = Array.isArray(props.data) ? props.data : [props.data];
+function PluginItem({ data }) {
+  const [name, opts] = Array.isArray(data) ? data : [data];
   return (
     <li>
       {name}

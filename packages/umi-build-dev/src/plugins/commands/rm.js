@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { statSync, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import { join, relative, dirname, extname, basename } from 'path';
 import rimraf from 'rimraf';
 

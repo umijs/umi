@@ -1,5 +1,5 @@
-import getRoute from './getRouteConfigFromConfigFile';
 import { join } from 'path';
+import getRoute from './getRouteConfigFromConfigFile';
 
 const root = join(__dirname, 'fixtures', 'fromConfigFile');
 

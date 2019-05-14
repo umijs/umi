@@ -56,6 +56,7 @@ function parseOption(option) {
   let format = '{parent}{separator}{current}';
   let separator = ' - ';
   if (typeof option === 'object') {
+    // eslint-disable-next-line prefer-destructuring
     defaultTitle = option.defaultTitle;
     assert(defaultTitle, 'defaultTitle in title option is required.');
     format = option.format || format;

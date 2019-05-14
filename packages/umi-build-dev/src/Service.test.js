@@ -320,6 +320,7 @@ describe('Service', () => {
         id: 'user:a',
         apply: api => {
           api.onOptionChange((...args) => {
+            // eslint-disable-next-line prefer-destructuring
             newOption = args[0];
           });
         },
@@ -404,6 +405,7 @@ describe('Service', () => {
             id: 'a',
             apply(api) {
               api.onOptionChange((...args) => {
+                // eslint-disable-next-line prefer-destructuring
                 newOption = args[0];
               });
             },

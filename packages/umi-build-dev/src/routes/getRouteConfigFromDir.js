@@ -1,4 +1,4 @@
-import { readdirSync, statSync, existsSync, readFileSync } from 'fs';
+import { readdirSync, statSync, readFileSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
 import { winPath, findJS } from 'umi-utils';
 import assert from 'assert';

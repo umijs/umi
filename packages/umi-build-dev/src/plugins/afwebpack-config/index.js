@@ -25,7 +25,7 @@ export default function(api) {
           onChange(newConfig) {
             try {
               debug(`Config ${name} changed to ${JSON.stringify(newConfig[name])}`);
-            } catch (e) {}
+            } catch (e) {} // eslint-disable-line no-empty
             if (name === 'proxy') {
               global.g_umi_reloadProxy(newConfig[name]);
             } else {
@@ -90,6 +90,7 @@ export default function(api) {
       .set('umi/_runtimePlugin', join(process.env.UMI_DIR, 'lib/runtimePlugin.js'));
   });
 
+  /* eslint-disable import/no-dynamic-require */
   api.addVersionInfo([
     `react@${require(join(reactDir, 'package.json')).version} (${reactDir})`,
     `react-dom@${require(join(reactDOMDir, 'package.json')).version} (${reactDOMDir})`,
@@ -101,6 +102,7 @@ export default function(api) {
       require(join(reactRouterConfigDir, 'package.json')).version
     } (${reactRouterConfigDir})`,
   ]);
+  /* eslint-enable import/no-dynamic-require */
 
   api.modifyAFWebpackOpts(memo => {
     const isDev = process.env.NODE_ENV === 'development';

@@ -18,39 +18,39 @@ afterEach(() => {
   jest.unmock('umi/_runtimePlugin');
 });
 
-function Layout(props) {
+function Layout({ children }) {
   return (
-    <>
+    <React.Fragment>
       <h1>Layout</h1>
-      {props.children}
-    </>
+      {children}
+    </React.Fragment>
   );
 }
 
-function IndexPage(props) {
+function IndexPage({ location: { pathname } }) {
   return (
-    <>
+    <React.Fragment>
       <h1>Index Page</h1>
-      {props.location.pathname}
-    </>
+      {pathname}
+    </React.Fragment>
   );
 }
 
-function UsersPage(props) {
+function UsersPage({ match }) {
   return (
-    <>
+    <React.Fragment>
       <h1>Users Page</h1>
-      {props.match.params.userId}
-    </>
+      {match.params.userId}
+    </React.Fragment>
   );
 }
 
-function BigfishParams(props) {
+function BigfishParams({ params }) {
   return (
-    <>
+    <React.Fragment>
       <h1>BigfishParams Page</h1>
-      {props.params.userId}
-    </>
+      {params.userId}
+    </React.Fragment>
   );
 }
 
@@ -60,19 +60,19 @@ function Redirect() {
 
 function NeedLogin({ children }) {
   return (
-    <>
+    <React.Fragment>
       <h1>Need Login</h1>
       {children}
-    </>
+    </React.Fragment>
   );
 }
 
 function NeedConfirm({ children }) {
   return (
-    <>
+    <React.Fragment>
       <h1>Need Confirm</h1>
       {children}
-    </>
+    </React.Fragment>
   );
 }
 
@@ -92,8 +92,8 @@ function PassPropsLayout({ children }) {
   });
 }
 
-function PassPropsRouteComponent(props) {
-  return <h1>PassPropsRouteComponent: {props.test || 'null'}</h1>;
+function PassPropsRouteComponent({ test }) {
+  return <h1>PassPropsRouteComponent: {test || 'null'}</h1>;
 }
 
 function Fallback() {
@@ -102,15 +102,15 @@ function Fallback() {
 
 function BigfishRoute({ children, params }) {
   return (
-    <>
+    <React.Fragment>
       <h1>BigfishRoute: {params.userId}</h1>
       {children}
-    </>
+    </React.Fragment>
   );
 }
 
-function ShowFoo(props) {
-  return <h1>foo: {props.foo || 'null'}</h1>;
+function ShowFoo({ foo }) {
+  return <h1>foo: {foo || 'null'}</h1>;
 }
 
 const routes = [

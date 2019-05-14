@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 const prefixRE = /^UMI_APP_/;
 
 export default function(opts) {

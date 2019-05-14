@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { register } from 'register-service-worker';
 
 // polyfill the CustomEvent in ie9/10/11

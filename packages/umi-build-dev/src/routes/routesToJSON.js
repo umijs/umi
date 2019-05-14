@@ -24,7 +24,7 @@ export default (routes, service) => {
     clonedRoutes,
     (key, value) => {
       switch (key) {
-        case 'component':
+        case 'component': {
           if (value.startsWith('() =>')) {
             return value;
           }
@@ -47,6 +47,7 @@ export default (routes, service) => {
           }
 
           return ret;
+        }
         case 'Routes':
           return `[${value
             .map(

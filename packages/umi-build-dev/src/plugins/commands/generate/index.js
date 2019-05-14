@@ -65,6 +65,7 @@ Examples:
     .filter(f => !f.startsWith('.'))
     .forEach(f => {
       api.registerGenerator(f, {
+        // eslint-disable-next-line import/no-dynamic-require
         Generator: require(`./generators/${f}`).default(api),
         resolved: `${__dirname}/generators/${f}/index`,
       });

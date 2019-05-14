@@ -9,6 +9,7 @@ export default api => {
       description: 'show related versions',
     },
     args => {
+      // eslint-disable-next-line import/no-dynamic-require
       const pkg = require(join(process.env.UMI_DIR, 'package.json'));
       if (args.verbose) {
         const versions = api.applyPlugins('addVersionInfo', {

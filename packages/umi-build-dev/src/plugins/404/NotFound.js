@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import Link from 'umi/link';
 import withRouter from 'umi/withRouter';

@@ -98,6 +98,7 @@ export default api => {
       let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
       while (existsSync(targetPath)) {
+        // eslint-disable-next-line no-await-in-loop
         this.path = (await this.prompt({
           type: 'input',
           name: 'path',

@@ -1,4 +1,5 @@
 import { join } from 'path';
+// eslint-disable-next-line import/named
 import { isGitUrl, parseGitUrl, getPathWithUrl } from './download';
 
 describe('test block download utils', () => {

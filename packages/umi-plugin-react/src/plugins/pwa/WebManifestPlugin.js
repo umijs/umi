@@ -31,6 +31,7 @@ export default class WebManifestPlugin {
         }
       }
 
+      // eslint-disable-next-line no-unused-expressions
       rawManifest.icons &&
         rawManifest.icons.forEach(icon => {
           icon.src = prependPublicPath(publicPath, icon.src);

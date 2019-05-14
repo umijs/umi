@@ -3,12 +3,14 @@ class PluginAPI {
   constructor(service) {
     this.service = service;
   }
+
   addPanel(panel) {
     this.service.panels.push(panel);
   }
 }
 
 // service
+// eslint-disable-next-line no-multi-assign
 const service = (window.g_service = {
   panels: [],
 });

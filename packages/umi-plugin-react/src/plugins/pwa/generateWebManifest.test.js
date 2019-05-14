@@ -19,7 +19,9 @@ const APIMock = {
   addHTMLHeadScript: () => {},
   addPageWatcher: () => {},
   onGenerateFiles: cb => {
-    cb && cb();
+    if (cb) {
+      cb();
+    }
   },
 };
 

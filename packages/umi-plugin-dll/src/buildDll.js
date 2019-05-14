@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 import { join } from 'path';
 import rimraf from 'rimraf';
 import { existsSync, readFileSync, writeFileSync } from 'fs';

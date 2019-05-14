@@ -209,6 +209,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     let memo = opts.initialValue;
     for (const hook of hooks) {
       const { fn } = hook;
+      // eslint-disable-next-line no-await-in-loop
       memo = await fn({
         memo,
         args: opts.args,
@@ -226,6 +227,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
         debug(`load env from ${path}`);
         const parsed = parse(readFileSync(path, 'utf-8'));
         Object.keys(parsed).forEach(key => {
+          // eslint-disable-next-line no-prototype-builtins
           if (!process.env.hasOwnProperty(key)) {
             process.env[key] = parsed[key];
           }

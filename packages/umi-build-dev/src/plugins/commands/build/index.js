@@ -4,7 +4,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug, config, log } = api;
+  const { service, debug, config } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(

@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable prefer-destructuring */
 // Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/commands/help.js
 import chalk from 'chalk';
 import { padEnd } from 'lodash';
@@ -26,7 +28,8 @@ export default api => {
   );
 
   function logMainHelp(helpInfo) {
-    console.log(`\n  Usage: ${helpInfo.scriptName} <command> [options]\n` + `\n  Commands:\n`);
+    console.log(`\n  Usage: ${helpInfo.scriptName} <command> [options]\n`);
+    console.log(`  Commands:\n`);
     const commands = helpInfo.commands;
     const padLength = getPadLength(commands);
     for (const name in commands) {

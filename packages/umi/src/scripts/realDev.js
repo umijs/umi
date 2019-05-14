@@ -10,7 +10,7 @@ process.once('SIGQUIT', () => onSignal('SIGQUIT'));
 // kill(15) default
 process.once('SIGTERM', () => onSignal('SIGTERM'));
 
-function onSignal(signal) {
+function onSignal() {
   if (closed) return;
   closed = true;
   process.exit(0);

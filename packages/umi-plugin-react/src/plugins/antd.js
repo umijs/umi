@@ -20,6 +20,7 @@ export default function(api, options = {}) {
     cwd,
     dirname(require.resolve('antd/package.json')),
   );
+  // eslint-disable-next-line import/no-dynamic-require
   const antdVersion = require(join(antdDir, 'package.json')).version;
   api.addVersionInfo([`antd@${antdVersion} (${antdDir})`]);
 

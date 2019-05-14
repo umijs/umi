@@ -2,8 +2,10 @@ node_modules/
 lib/
 dist/
 template/
+templates/
 fixtures/
 website/
 examples/
 bin/
 *.d.ts
+*.min.js

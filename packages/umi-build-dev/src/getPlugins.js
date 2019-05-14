@@ -42,8 +42,10 @@ export default function(opts = {}) {
     ...builtInPlugins.map(p => {
       let opts;
       if (Array.isArray(p)) {
-        opts = p[1]; // eslint-disable-line
+        /* eslint-disable prefer-destructuring */
+        opts = p[1];
         p = p[0];
+        /* eslint-enable prefer-destructuring */
       }
       const apply = require(p); // eslint-disable-line
       return {
