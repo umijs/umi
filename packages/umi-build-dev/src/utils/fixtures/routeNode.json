@@ -5,35 +5,6 @@
   "elements": [
     {
       "type": "ObjectExpression",
-      "start": 19,
-      "end": 39,
-      "properties": [
-        {
-          "type": "Property",
-          "start": 25,
-          "end": 34,
-          "method": false,
-          "shorthand": false,
-          "computed": false,
-          "key": {
-            "type": "Identifier",
-            "start": 25,
-            "end": 29,
-            "name": "path"
-          },
-          "value": {
-            "type": "Literal",
-            "start": 31,
-            "end": 34,
-            "value": "/",
-            "raw": "'/'"
-          },
-          "kind": "init"
-        }
-      ]
-    },
-    {
-      "type": "ObjectExpression",
       "start": 40,
       "end": 297,
       "properties": [
@@ -208,6 +179,35 @@
                 ]
               }
             ]
+          },
+          "kind": "init"
+        }
+      ]
+    },
+    {
+      "type": "ObjectExpression",
+      "start": 19,
+      "end": 39,
+      "properties": [
+        {
+          "type": "Property",
+          "start": 25,
+          "end": 34,
+          "method": false,
+          "shorthand": false,
+          "computed": false,
+          "key": {
+            "type": "Identifier",
+            "start": 25,
+            "end": 29,
+            "name": "path"
+          },
+          "value": {
+            "type": "Literal",
+            "start": 31,
+            "end": 34,
+            "value": "/",
+            "raw": "'/'"
           },
           "kind": "init"
         }
