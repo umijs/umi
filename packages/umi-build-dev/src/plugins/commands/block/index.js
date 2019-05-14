@@ -326,6 +326,33 @@ export default api => {
       spinner.fail();
       throw new Error(e);
     }
+
+    // write dependencies
+    if (ctx.pkg.blockConfig && ctx.pkg.blockConfig.dependencies) {
+      const subBlocks = ctx.pkg.blockConfig.dependencies;
+      try {
+        await Promise.all(subBlocks.map(block => {
+          const subBlockPath = join(ctx.templateTmpDirPath, block);
+          debug(`subBlockPath: ${subBlockPath}`);
+          const generator = new BlockGenerator(args._.slice(2), {
+            sourcePath: subBlockPath,
+            path: ctx.routePath,
+            // eslint-disable-next-line
+            blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
+            isPageBlock: false,
+            dryRun,
+            env: {
+              cwd: api.cwd,
+            },
+            resolved: __dirname,
+          });
+          return generator.run();
+        }));
+      } catch (e) {
+        spinner.fail();
+        throw new Error(e);
+      }
+    }
     spinner.succeed('Generate files');
 
     // 6. write routes
