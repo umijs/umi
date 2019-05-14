@@ -127,7 +127,7 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
-  const rootContainer = window.g_plugins.apply('rootContainer', {
+  const rootContainer = plugins.apply('rootContainer', {
     initialValue: React.createElement(require('./router').default),
   });
   ReactDOM.render(
@@ -159,19 +159,14 @@ export default class FilesGenerator {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
-      initialValue: [
-        'patchRoutes',
-        'render',
-        'rootContainer',
-        'modifyRouteProps',
-        'onRouteChange',
-      ],
+      initialValue: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps', 'onRouteChange'],
     });
     assert(
       uniq(validKeys).length === validKeys.length,
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
     const entryContent = Mustache.render(entryTpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       code: this.service
         .applyPlugins('addEntryCode', {
           initialValue: [],
@@ -214,15 +209,12 @@ require('umi/_createHistory').default({
 })
     `.trim();
     const content = Mustache.render(tpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       history: this.service.applyPlugins('modifyEntryHistory', {
         initialValue: initialHistory,
       }),
     });
-    writeFileSync(
-      join(paths.absTmpDirPath, 'initHistory.js'),
-      `${content.trim()}\n`,
-      'utf-8',
-    );
+    writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
   }
 
   generateRouterJS() {
@@ -259,6 +251,7 @@ require('umi/_createHistory').default({
 
     const routerContent = this.getRouterContent(rendererWrappers);
     return Mustache.render(routerTpl, {
+      globalVariables: !this.service.config.disableGlobalVariables,
       imports: importsToStr(
         this.service.applyPlugins('addRouterImport', {
           initialValue: rendererWrappers,
@@ -271,12 +264,9 @@ require('umi/_createHistory').default({
       ).join('\n'),
       routes,
       routerContent,
-      RouterRootComponent: this.service.applyPlugins(
-        'modifyRouterRootComponent',
-        {
-          initialValue: 'DefaultRouter',
-        },
-      ),
+      RouterRootComponent: this.service.applyPlugins('modifyRouterRootComponent', {
+        initialValue: 'DefaultRouter',
+      }),
     });
   }
 
@@ -296,7 +286,7 @@ require('umi/_createHistory').default({
 
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
-    <Router history={window.g_history}>
+    <Router history={history}>
       { renderRoutes(routes, {}) }
     </Router>
     `.trim();

@@ -52,9 +52,7 @@ function getPageModels(cwd, api) {
 
 function isSrcPath(path, api) {
   const { paths, winPath } = api;
-  return (
-    endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath))
-  );
+  return endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath));
 }
 
 export function getGlobalModels(api, shouldImportDynamic) {
@@ -108,16 +106,10 @@ export default function(api, opts = {}) {
   }
 
   function getGlobalModelContent() {
-    return exclude(
-      getGlobalModels(api, shouldImportDynamic),
-      optsToArray(opts.exclude),
-    )
+    return exclude(getGlobalModels(api, shouldImportDynamic), optsToArray(opts.exclude))
       .map(path =>
         `
-    app.model({ namespace: '${basename(
-      path,
-      extname(path),
-    )}', ...(require('${path}').default) });
+    app.model({ namespace: '${basename(path, extname(path))}', ...(require('${path}').default) });
   `.trim(),
       )
       .join('\r\n');
@@ -142,14 +134,8 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
     return ret.join('\r\n');
   }
 
-  function generateDvaContainer() {
-    const tpl = join(__dirname, '../template/DvaContainer.js');
-    const tplContent = readFileSync(tpl, 'utf-8');
-    api.writeTmpFile('DvaContainer.js', tplContent);
-  }
-
   function generateInitDva() {
-    const tpl = join(__dirname, '../template/initDva.js');
+    const tpl = join(__dirname, '../template/dva.js.tpl');
     let tplContent = readFileSync(tpl, 'utf-8');
     const dvaJS = getDvaJS();
     if (dvaJS) {
@@ -165,17 +151,14 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
       .replace('<%= EnhanceApp %>', '')
       .replace('<%= RegisterPlugins %>', getPluginContent())
       .replace('<%= RegisterModels %>', getGlobalModelContent());
-    api.writeTmpFile('initDva.js', tplContent);
+    api.writeTmpFile('dva.js', tplContent);
   }
 
   api.onGenerateFiles(() => {
-    generateDvaContainer();
     generateInitDva();
   });
 
-  api.modifyRouterRootComponent(
-    `require('dva/router').routerRedux.ConnectedRouter`,
-  );
+  api.modifyRouterRootComponent(`require('dva/router').routerRedux.ConnectedRouter`);
 
   if (shouldImportDynamic) {
     api.addRouterImport({
@@ -214,7 +197,7 @@ _dvaDynamic({
         ret = ret.replace(
           '<%= MODELS %>',
           `
-app: window.g_app,
+app: require('@tmp/dva').getApp(),
 models: () => [
   ${models
     .map(
@@ -291,7 +274,8 @@ models: () => [
 
   api.addEntryCodeAhead(
     `
-require('@tmp/initDva');
+require('@tmp/dva')._onCreate();
+${api.config.disableGlobalVariables ? '' : `window.g_app = require('@tmp/dva').getApp();`}
   `.trim(),
   );
 }

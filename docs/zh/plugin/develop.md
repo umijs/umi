@@ -579,6 +579,37 @@ api.addEntryCodeAhead(`
 
 在挂载 <App/> 前执行一个 Module，支持异步。
 
+## addUmiExports
+
+支持 `umi` 添加导出
+
+```js
+// export all
+// 生成：export * from 'dva';
+api.addUmiExports([
+  {
+    exportAll: true,
+    source: 'dva'
+  },
+]);
+// export 部分
+// 生成：export { connect } from 'dva';
+api.addUmiExports([
+  {
+    specifiers: ['connect'],
+    source: 'dva',
+  },
+]);
+// 支持更名
+// 生成：export { default as dva } from 'dva';
+api.addUmiExports([
+  {
+    specifiers: [{ local: 'default', exported: 'dva' }],
+    source: 'dva',
+  },
+]);
+```
+
 ### modifyEntryRender
 
 modifyEntryRender

@@ -16,6 +16,7 @@ interface IGetExternalDataParams {
   packages: string[] | Boolean;
   config: IConfig;
   urlTemplate?: string;
+  publicPath?: string;
 }
 
 function packagesToArray(packages: string[] | Boolean): string[] {
@@ -99,6 +100,7 @@ function renderUrls({
   isDevelopment = false,
   urlTemplate = '',
   version = '',
+  publicPath = '/',
 }) {
   const targetUrls = isDevelopment ? urls.development : urls.production;
   return (targetUrls || []).map(path => {
@@ -106,39 +108,27 @@ function renderUrls({
       library: dependencie,
       path,
       version,
+      publicPath,
     };
     return urlTemplate.replace(/{{ (\w+) }}/g, (str, key) => model[key] || str);
   });
 }
 
-function getConfigItem({
-  config,
-  urlTemplate,
-  version,
-  isDevelopment,
-}): IExternalData {
-  const {
-    key,
-    global,
-    polyfillExclude = [],
-    scripts,
-    polyfillUrls,
-    styles,
-  } = config;
+function getConfigItem({ config, urlTemplate, version, isDevelopment, publicPath }): IExternalData {
+  const { key, global, polyfillExclude = [], scripts, polyfillUrls, styles } = config;
   const renderParams = {
     dependencie: key,
     isDevelopment,
     urlTemplate,
     version,
+    publicPath,
   };
 
-  const [
-    dependenciePolyfillUrls,
-    dependencieScriptUrls,
-    dependencieStyleUrls,
-  ] = [polyfillUrls, scripts, styles].map(urls =>
-    renderUrls({ ...renderParams, urls }),
-  );
+  const [dependenciePolyfillUrls, dependencieScriptUrls, dependencieStyleUrls] = [
+    polyfillUrls,
+    scripts,
+    styles,
+  ].map(urls => renderUrls({ ...renderParams, urls }));
 
   return {
     key,
@@ -153,14 +143,10 @@ function getConfigItem({
 function getExternalData(args: IGetExternalDataParams): IExternalData[] {
   configValidate(args);
 
-  const { pkg, versionInfos, packages, urlTemplate } = args;
+  const { pkg, versionInfos, packages, urlTemplate, publicPath } = args;
   const isDevelopment = process.env.NODE_ENV === 'development';
   const externalDependencies = packagesToArray(packages);
-  const allExternalVersions = getAllKeyVersions(
-    pkg,
-    versionInfos,
-    externalDependencies,
-  );
+  const allExternalVersions = getAllKeyVersions(pkg, versionInfos, externalDependencies);
 
   return sort(packagesToArray(packages), EXTERNAL_MAP).map((key: string) =>
     getConfigItem({
@@ -168,6 +154,7 @@ function getExternalData(args: IGetExternalDataParams): IExternalData[] {
       urlTemplate,
       version: allExternalVersions[key],
       isDevelopment,
+      publicPath,
     }),
   );
 }

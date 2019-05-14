@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import { getNewRouteCode, findLayoutNode } from './writeNewRoute';
+import { getNewRouteCode, writeRouteNode } from './writeNewRoute';
 import routeNode from './fixtures/routeNode';
 import relativeRouteNode from './fixtures/relativeRouteNode';
 
@@ -12,8 +12,7 @@ const typeMap = [
 const getPath = path => join(__dirname, path);
 // 在windows环境下，很多工具都会把换行符lf自动改成crlf，修改了一下。
 // https://github.com/cssmagic/blog/issues/22
-const isWindows =
-  typeof process !== 'undefined' && process.platform === 'win32';
+const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
 const winEOL = content => {
   if (typeof content !== 'string') {
     return content;
@@ -21,13 +20,10 @@ const winEOL = content => {
   return isWindows ? content.replace(/\r/g, '') : content;
 };
 
-
 describe('test get config path', () => {
   it('get path in antdpro', () => {
     const configPath = getPath('../fixtures/block/antdpro/config/config.js');
-    const routesPath = getPath(
-      '../fixtures/block/antdpro/config/router.config.js',
-    );
+    const routesPath = getPath('../fixtures/block/antdpro/config/router.config.js');
 
     const { routesPath: path } = getNewRouteCode(
       configPath,
@@ -73,9 +69,7 @@ describe('test get route code', () => {
         path: '/demo',
         component: './Demo',
       });
-      expect(code).toEqual(
-        winEOL(readFileSync(getPath(`${item}.result.js`), 'utf-8')),
-      );
+      expect(code).toEqual(winEOL(readFileSync(getPath(`${item}.result.js`), 'utf-8')));
     });
   });
 
@@ -89,9 +83,7 @@ describe('test get route code', () => {
         },
         null,
       );
-      expect(code).toEqual(
-        winEOL(readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8')),
-      );
+      expect(code).toEqual(winEOL(readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8')));
     });
   });
 
@@ -106,74 +98,83 @@ describe('test get route code', () => {
         null,
       );
     } catch (error) {
-      expect(error.message).toEqual('route path not found.');
+      expect(error.message).toEqual('route array config not found.');
     }
   });
 });
 
 describe('find layout node', () => {
   it('not found, return root', () => {
-    expect(findLayoutNode(routeNode, 0, '/sddd').target.end).toEqual(299);
+    expect(
+      writeRouteNode(routeNode, {
+        path: '/sddd',
+      }).end,
+    ).toEqual(299);
   });
 
-  it('seme as layout, return root', () => {
-    expect(findLayoutNode(routeNode, 0, '/users').target.end).toEqual(299);
+  it('seme as layout', () => {
+    expect(
+      writeRouteNode(routeNode, {
+        path: '/users',
+      }).end,
+    ).toEqual(293);
   });
 
   it('found, return /users', () => {
-    expect(findLayoutNode(routeNode, 0, '/users/hahaha').target.start).toEqual(
-      74,
-    );
+    expect(
+      writeRouteNode(routeNode, {
+        path: '/users/hahaha',
+      }).start,
+    ).toEqual(74);
   });
 
   it('found, return /users/settings', () => {
     expect(
-      findLayoutNode(routeNode, 0, '/users/settings/some').target.start,
+      writeRouteNode(routeNode, {
+        path: '/users/settings/some',
+      }).start,
     ).toEqual(133);
   });
 
   it('found, return /users/settings/help', () => {
     expect(
-      findLayoutNode(routeNode, 0, '/users/settings/help/faq').target.start,
+      writeRouteNode(routeNode, {
+        path: '/users/settings/help/faq',
+      }).start,
     ).toEqual(210);
   });
 
   it('found, return /users/settings', () => {
     expect(
-      findLayoutNode(
-        routeNode,
-        0,
-        '/users/settings/wanted/adad/adadv/adadad/adadadad/adadad',
-      ).target.start,
+      writeRouteNode(routeNode, {
+        path: '/users/settings/wanted/adad/adadv/adadad/adadadad/adadad',
+      }).start,
     ).toEqual(133);
   });
 });
 
 describe('find relative layout node', () => {
   it('not found, return root', () => {
-    expect(findLayoutNode(relativeRouteNode, 0, '/adada').target.start).toEqual(
-      152,
-    );
-    expect(findLayoutNode(relativeRouteNode, 0, '/adada').level).toEqual(1);
+    expect(
+      writeRouteNode(relativeRouteNode, {
+        path: '/adada',
+      }).start,
+    ).toEqual(152);
   });
 
   it('found, return /account/settings', () => {
     expect(
-      findLayoutNode(relativeRouteNode, 0, '/account/settings/base/adadadaad')
-        .target.start,
-    ).toEqual(1113);
-  });
-
-  it('test uppercase, return /account/settings', () => {
-    expect(
-      findLayoutNode(relativeRouteNode, 0, '/Account/Settings/Haha').target
-        .start,
+      writeRouteNode(relativeRouteNode, {
+        path: '/account/settings/base/adadadaad',
+      }).start,
     ).toEqual(1113);
   });
 
   it('found, return /account', () => {
     expect(
-      findLayoutNode(relativeRouteNode, 0, '/account/adada').target.start,
+      writeRouteNode(relativeRouteNode, {
+        path: '/account/adada',
+      }).start,
     ).toEqual(250);
   });
 });

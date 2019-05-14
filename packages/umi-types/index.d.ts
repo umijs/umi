@@ -155,6 +155,10 @@ interface ILog<T = string> {
   (message: T, ...messages: string[]): void;
 }
 
+interface IWriteTmpFile {
+  (file: string, content: string): void;
+}
+
 interface IWinPath {
   (path: string): string;
 }
@@ -422,6 +426,7 @@ export interface IApi {
   };
   winPath: IWinPath;
   debug: ILog;
+  writeTmpFile: IWriteTmpFile;
   findJS: IFind;
   findCSS: IFind;
   compatDirname: ICompatDirname;
@@ -475,10 +480,7 @@ export interface IApi {
   modifyRouterRootComponent: IModify<string>;
   modifyWebpackConfig: IModify<Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
-  chainWebpackConfig: IChangeWebpackConfig<
-    IWebpackChainConfig,
-    IAFWebpackConfig
-  >;
+  chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
   addMiddlewareAhead: IAdd<IMiddlewareFunction>;
   addMiddlewareBeforeMock: IAdd<IMiddlewareFunction>;

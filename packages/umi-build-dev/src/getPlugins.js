@@ -34,6 +34,7 @@ export default function(opts = {}) {
     './plugins/mountElementId',
     './plugins/404', // 404 must after mock
     './plugins/targets',
+    './plugins/importFromUmi',
   ];
 
   const pluginsObj = [
@@ -51,10 +52,7 @@ export default function(opts = {}) {
         opts,
       };
     }),
-    ...getUserPlugins(
-      process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [],
-      { cwd },
-    ),
+    ...getUserPlugins(process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [], { cwd }),
     ...getUserPlugins(plugins, { cwd }),
   ];
 
