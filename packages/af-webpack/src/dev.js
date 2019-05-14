@@ -156,7 +156,7 @@ export default function dev({
         console.log(chalk.cyan('Starting the development server...\n'));
         send({ type: STARTING });
         if (afterServer) {
-          afterServer(server);
+          afterServer(server, port);
         }
       });
     })
