@@ -33,8 +33,8 @@ const polyfillTargets = {
 export function isNeedPolyfill(targets = {}) {
   return (
     Object.keys(targets).find(key => {
-      const target = polyfillTargets[key.toLocaleLowerCase()];
-      return target && target >= targets[key];
+      const lowKey = key.toLocaleLowerCase();
+      return polyfillTargets[lowKey] && polyfillTargets[lowKey] >= targets[key];
     }) !== undefined
   );
 }
