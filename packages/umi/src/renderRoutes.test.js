@@ -139,9 +139,7 @@ const routes = [
   {
     path: '/pass-props-from-layout',
     component: PassPropsLayout,
-    routes: [
-      { path: '/pass-props-from-layout', component: PassPropsRouteComponent },
-    ],
+    routes: [{ path: '/pass-props-from-layout', component: PassPropsRouteComponent }],
   },
   { path: '/g_plugins', component: ShowFoo },
   { component: Fallback },
@@ -160,21 +158,14 @@ test('index page with layout', () => {
 
 test('dynamic route params', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/users/123']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/users/123']}>{renderRoutes(routes)}</MemoryRouter>,
   );
-  expect(tr.toJSON()).toEqual([
-    { type: 'h1', props: {}, children: ['Users Page'] },
-    '123',
-  ]);
+  expect(tr.toJSON()).toEqual([{ type: 'h1', props: {}, children: ['Users Page'] }, '123']);
 });
 
 test('redirect', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/redirect']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/redirect']}>{renderRoutes(routes)}</MemoryRouter>,
   );
   expect(tr.toJSON()).toEqual({
     type: 'h1',
@@ -186,14 +177,9 @@ test('redirect', () => {
 test('bigfish compatible', () => {
   window.__UMI_BIGFISH_COMPAT = true;
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/bigfishParams/123']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/bigfishParams/123']}>{renderRoutes(routes)}</MemoryRouter>,
   );
-  expect(tr.toJSON()).toEqual([
-    { type: 'h1', props: {}, children: ['BigfishParams Page'] },
-    '123',
-  ]);
+  expect(tr.toJSON()).toEqual([{ type: 'h1', props: {}, children: ['BigfishParams Page'] }, '123']);
   window.__UMI_BIGFISH_COMPAT = false;
 });
 
@@ -214,9 +200,7 @@ xtest('bigfish compatible with Routes', () => {
 
 test('Routes', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/test-Routes']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/test-Routes']}>{renderRoutes(routes)}</MemoryRouter>,
   );
   expect(tr.toJSON()).toEqual([
     { type: 'h1', props: {}, children: ['Need Login'] },
@@ -226,9 +210,7 @@ test('Routes', () => {
 
 test('Multiple Routes', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/test-Routes-multiple']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/test-Routes-multiple']}>{renderRoutes(routes)}</MemoryRouter>,
   );
   expect(tr.toJSON()).toEqual([
     { type: 'h1', props: {}, children: ['Need Login'] },
@@ -252,9 +234,7 @@ test('pass props from layout to child routes', () => {
 
 test('fallback routes', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/test-fallback-xxx']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/test-fallback-xxx']}>{renderRoutes(routes)}</MemoryRouter>,
   );
   expect(tr.toJSON()).toEqual({
     type: 'h1',
@@ -265,9 +245,7 @@ test('fallback routes', () => {
 
 xtest('patch with g_plugins', () => {
   const tr = TestRenderer.create(
-    <MemoryRouter initialEntries={['/g_plugins']}>
-      {renderRoutes(routes)}
-    </MemoryRouter>,
+    <MemoryRouter initialEntries={['/g_plugins']}>{renderRoutes(routes)}</MemoryRouter>,
   );
   expect(tr.toJSON()).toEqual({
     type: 'h1',

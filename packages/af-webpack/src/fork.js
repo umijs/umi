@@ -5,9 +5,7 @@ let usedPorts = [];
 
 export default function start(scriptPath) {
   const execArgv = process.execArgv.slice(0);
-  const inspectArgvIndex = execArgv.findIndex(argv =>
-    argv.includes('--inspect-brk'),
-  );
+  const inspectArgvIndex = execArgv.findIndex(argv => argv.includes('--inspect-brk'));
 
   if (inspectArgvIndex > -1) {
     const inspectArgv = execArgv[inspectArgvIndex];

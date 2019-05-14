@@ -192,9 +192,9 @@ export default function getUserConfig(opts = {}) {
 
             if (!isEqual(newConfig[name], config[name])) {
               debug(
-                `Config ${name} changed, from ${JSON.stringify(
-                  config[name],
-                )} to ${JSON.stringify(newConfig[name])}`,
+                `Config ${name} changed, from ${JSON.stringify(config[name])} to ${JSON.stringify(
+                  newConfig[name],
+                )}`,
               );
               (onChange || restart.bind(null, `${name} changed`)).call(null, {
                 name,

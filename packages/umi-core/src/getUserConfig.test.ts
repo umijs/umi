@@ -1,8 +1,4 @@
-import {
-  getConfigFile,
-  mergeConfigs,
-  addAffix,
-} from './getUserConfig';
+import { getConfigFile, mergeConfigs, addAffix } from './getUserConfig';
 
 const fixtures = `${__dirname}/fixtures/getUserConfig`;
 
@@ -17,15 +13,13 @@ describe('getUserConfig', () => {
 
   describe('getConfigFile', () => {
     it('.umirc.js', () => {
-      expect(stripPrefix(getConfigFile(`${fixtures}/umirc`))).toEqual(
-        'umirc/.umirc.js',
-      );
+      expect(stripPrefix(getConfigFile(`${fixtures}/umirc`))).toEqual('umirc/.umirc.js');
     });
 
     it('config/config.js', () => {
-      expect(
-        stripPrefix(getConfigFile(`${fixtures}/config-directory`)),
-      ).toEqual('config-directory/config/config.js');
+      expect(stripPrefix(getConfigFile(`${fixtures}/config-directory`))).toEqual(
+        'config-directory/config/config.js',
+      );
     });
 
     it('conflicts', () => {
@@ -37,18 +31,14 @@ describe('getUserConfig', () => {
 
   describe('mergeConfigs', () => {
     it('shallow', () => {
-      expect(
-        mergeConfigs({ foo: 1 }, { bar: 1 }, undefined, { bar: 2 }),
-      ).toEqual({
+      expect(mergeConfigs({ foo: 1 }, { bar: 1 }, undefined, { bar: 2 })).toEqual({
         foo: 1,
         bar: 2,
       });
     });
 
     it('deep', () => {
-      expect(
-        mergeConfigs({ foo: { bar: 1, haa: 1 } }, { foo: { bar: 2, yaa: 1 } }),
-      ).toEqual({
+      expect(mergeConfigs({ foo: { bar: 1, haa: 1 } }, { foo: { bar: 2, yaa: 1 } })).toEqual({
         foo: {
           bar: 2,
           haa: 1,

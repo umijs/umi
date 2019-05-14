@@ -62,8 +62,7 @@ class NotFound extends React.Component {
               ('');
             }
           }}
-          then this page will automatically refresh to show the new page
-          component you created.
+          then this page will automatically refresh to show the new page component you created.
         </p>
         <h2>Your Routes</h2>
         {do {

@@ -12,8 +12,7 @@ const typeMap = [
 const getPath = path => join(__dirname, path);
 // 在windows环境下，很多工具都会把换行符lf自动改成crlf，修改了一下。
 // https://github.com/cssmagic/blog/issues/22
-const isWindows =
-  typeof process !== 'undefined' && process.platform === 'win32';
+const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
 const winEOL = content => {
   if (typeof content !== 'string') {
     return content;
@@ -24,9 +23,7 @@ const winEOL = content => {
 describe('test get config path', () => {
   it('get path in antdpro', () => {
     const configPath = getPath('../fixtures/block/antdpro/config/config.js');
-    const routesPath = getPath(
-      '../fixtures/block/antdpro/config/router.config.js',
-    );
+    const routesPath = getPath('../fixtures/block/antdpro/config/router.config.js');
 
     const { routesPath: path } = getNewRouteCode(
       configPath,
@@ -72,9 +69,7 @@ describe('test get route code', () => {
         path: '/demo',
         component: './Demo',
       });
-      expect(code).toEqual(
-        winEOL(readFileSync(getPath(`${item}.result.js`), 'utf-8')),
-      );
+      expect(code).toEqual(winEOL(readFileSync(getPath(`${item}.result.js`), 'utf-8')));
     });
   });
 
@@ -88,9 +83,7 @@ describe('test get route code', () => {
         },
         null,
       );
-      expect(code).toEqual(
-        winEOL(readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8')),
-      );
+      expect(code).toEqual(winEOL(readFileSync(getPath(`${item}.resultWithLayout.js`), 'utf-8')));
     });
   });
 

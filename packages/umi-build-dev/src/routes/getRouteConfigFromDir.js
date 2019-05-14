@@ -14,18 +14,12 @@ export default function getRouteConfigFromDir(paths) {
 
   const absLayoutFile = findJS(absPagesPath, '_layout');
   if (absLayoutFile) {
-    throw new Error(
-      'root _layout.js is not supported, use layouts/index.js instead',
-    );
+    throw new Error('root _layout.js is not supported, use layouts/index.js instead');
   }
 
   const routes = files
     .filter(file => {
-      if (
-        file.charAt(0) === '.' ||
-        file.charAt(0) === '_' ||
-        /\.(test|spec)\.(j|t)sx?$/.test(file)
-      )
+      if (file.charAt(0) === '.' || file.charAt(0) === '_' || /\.(test|spec)\.(j|t)sx?$/.test(file))
         return false;
       return true;
     })

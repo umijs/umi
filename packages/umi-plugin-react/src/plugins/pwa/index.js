@@ -14,9 +14,9 @@ export default function(api, options) {
   } = api;
   assert(
     pkg && pkg.name,
-    `You must have ${chalk.underline.cyan(
-      'package.json',
-    )} and configure ${chalk.underline.cyan('name')} in it when enable pwa.`,
+    `You must have ${chalk.underline.cyan('package.json')} and configure ${chalk.underline.cyan(
+      'name',
+    )} in it when enable pwa.`,
   );
 
   // generate webmanifest before workbox generation, so that webmanifest can be added to precached list
@@ -59,9 +59,7 @@ export default function(api, options) {
       'service-worker.js';
 
     api.chainWebpackConfig(webpackConfig => {
-      webpackConfig
-        .plugin('workbox')
-        .use(workboxWebpackPlugin[mode], [workboxConfig]);
+      webpackConfig.plugin('workbox').use(workboxWebpackPlugin[mode], [workboxConfig]);
       webpackConfig.resolve.alias.set(
         'register-service-worker',
         require.resolve('register-service-worker'),
@@ -70,9 +68,7 @@ export default function(api, options) {
 
     api.addEntryCode(
       `
-var registerSW = require('${relativeToTmp(
-        join(__dirname, './registerServiceWorker.js'),
-      )}').default;
+var registerSW = require('${relativeToTmp(join(__dirname, './registerServiceWorker.js'))}').default;
 registerSW('${swDest}');
     `.trim(),
     );

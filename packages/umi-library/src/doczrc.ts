@@ -48,14 +48,8 @@ export default {
     ]);
 
     // Support extraBabelPresets and extraBabelPlugins
-    babelrc.presets = [
-      ...babelrc.presets,
-      ...(userConfig.extraBabelPresets || []),
-    ];
-    babelrc.plugins = [
-      ...babelrc.plugins,
-      ...(userConfig.extraBabelPlugins || []),
-    ];
+    babelrc.presets = [...babelrc.presets, ...(userConfig.extraBabelPresets || [])];
+    babelrc.plugins = [...babelrc.plugins, ...(userConfig.extraBabelPlugins || [])];
 
     return babelrc;
   },
@@ -81,9 +75,7 @@ export default {
     // 透传 BIGFISH_VERSION 环境变量
     config.plugins.push(
       new (require('webpack')).DefinePlugin({
-        'process.env.BIGFISH_VERSION': JSON.stringify(
-          process.env.BIGFISH_VERSION,
-        ),
+        'process.env.BIGFISH_VERSION': JSON.stringify(process.env.BIGFISH_VERSION),
       }),
     );
 

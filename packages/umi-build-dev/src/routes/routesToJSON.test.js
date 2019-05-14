@@ -14,9 +14,7 @@ const service = {
 describe('routesToJSON', () => {
   it('normal', () => {
     const json = routesToJSON([{ component: './pages/A' }], service, {});
-    expect(JSON.parse(json)).toEqual([
-      { component: "require('../A').default" },
-    ]);
+    expect(JSON.parse(json)).toEqual([{ component: "require('../A').default" }]);
   });
 
   it('relative component path', () => {
@@ -39,31 +37,18 @@ describe('routesToJSON', () => {
   });
 
   it('disable dynamicImport by default', () => {
-    const json = routesToJSON(
-      [{ component: './pages/A' }],
-      service,
-      'production',
-    );
-    expect(JSON.parse(json)).toEqual([
-      { component: "require('../A').default" },
-    ]);
+    const json = routesToJSON([{ component: './pages/A' }], service, 'production');
+    expect(JSON.parse(json)).toEqual([{ component: "require('../A').default" }]);
   });
 
   it('component with react function', () => {
-    const json = routesToJSON(
-      [{ component: '() => A', path: '/a' }],
-      service,
-      {},
-    );
+    const json = routesToJSON([{ component: '() => A', path: '/a' }], service, {});
     expect(JSON.parse(json)).toEqual([{ component: '() => A', path: '/a' }]);
   });
 
   it('path with htmlSuffix', () => {
     const json = routesToJSON(
-      [
-        { component: './pages/A', path: '/a(.html)?' },
-        { component: './pages/B', path: '/b' },
-      ],
+      [{ component: './pages/A', path: '/a(.html)?' }, { component: './pages/B', path: '/b' }],
       {
         ...service,
         config: { exportStatic: { htmlSuffix: true } },
@@ -134,8 +119,6 @@ describe('routesToJSON', () => {
 
   it('Routes with winPath', () => {
     const json = routesToJSON([{ Routes: ['routes\\A'] }], service, {});
-    expect(JSON.parse(json)).toEqual([
-      { Routes: "[require('../../routes/A').default]" },
-    ]);
+    expect(JSON.parse(json)).toEqual([{ Routes: "[require('../../routes/A').default]" }]);
   });
 });

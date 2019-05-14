@@ -10,9 +10,7 @@ export default (routes, service) => {
     targetLevel = process.env.CODE_SPLITTING_LEVEL;
   } else {
     targetLevel = 1;
-    const routesHaveChild = routes.filter(
-      route => route.routes && route.routes.length,
-    );
+    const routesHaveChild = routes.filter(route => route.routes && route.routes.length);
     if (routesHaveChild.length) {
       targetLevel = 2;
     }
@@ -54,9 +52,7 @@ export default (routes, service) => {
             .map(
               v =>
                 `require('${winPath(
-                  precedingDot(
-                    relative(paths.absTmpDirPath, join(paths.cwd, v)),
-                  ),
+                  precedingDot(relative(paths.absTmpDirPath, join(paths.cwd, v))),
                 )}').default`,
             )
             .join(', ')}]`;
@@ -96,11 +92,9 @@ function patchRoute(route, webpackChunkName) {
         .replace(/^pages__/, 'p__')
         .replace(/^page__/, 'p__');
     }
-    route.component = [
-      route.component || 'common_component',
-      webpackChunkName,
-      route.path,
-    ].join('^^');
+    route.component = [route.component || 'common_component', webpackChunkName, route.path].join(
+      '^^',
+    );
   }
   if (route.routes) {
     // 只在一级路由做按需编译

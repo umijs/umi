@@ -37,13 +37,8 @@ export default function(opts = {}) {
   const filesInfoFile = join(dllDir, 'filesInfo.json');
 
   if (existsSync(filesInfoFile)) {
-    if (
-      JSON.parse(readFileSync(filesInfoFile, 'utf-8')).join(', ') ===
-      files.join(', ')
-    ) {
-      console.log(
-        `[umi-plugin-dll] File list is equal, don't generate the dll file.`,
-      );
+    if (JSON.parse(readFileSync(filesInfoFile, 'utf-8')).join(', ') === files.join(', ')) {
+      console.log(`[umi-plugin-dll] File list is equal, don't generate the dll file.`);
       return Promise.resolve();
     }
   }
@@ -56,9 +51,7 @@ export default function(opts = {}) {
       babel: {},
     },
   });
-  const afWebpackConfig = require(_resolveDeps('af-webpack/getConfig')).default(
-    afWebpackOpts,
-  );
+  const afWebpackConfig = require(_resolveDeps('af-webpack/getConfig')).default(afWebpackOpts);
   const webpackConfig = {
     ...afWebpackConfig,
     entry: {

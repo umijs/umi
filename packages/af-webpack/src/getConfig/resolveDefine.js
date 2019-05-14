@@ -3,12 +3,7 @@ const prefixRE = /^UMI_APP_/;
 export default function(opts) {
   const env = {};
   Object.keys(process.env).forEach(key => {
-    if (
-      prefixRE.test(key) ||
-      key === 'NODE_ENV' ||
-      key === 'HMR' ||
-      key === 'SOCKET_SERVER'
-    ) {
+    if (prefixRE.test(key) || key === 'NODE_ENV' || key === 'HMR' || key === 'SOCKET_SERVER') {
       env[key] = process.env[key];
     }
   });

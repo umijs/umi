@@ -34,9 +34,7 @@ function ConfigPropertyItem({ name, data }) {
   function blurHandler(e) {
     window.send('config', ['set', name, `${e.target.value}`]);
   }
-  return (
-    <Input size="small" defaultValue={toString(data)} onBlur={blurHandler} />
-  );
+  return <Input size="small" defaultValue={toString(data)} onBlur={blurHandler} />;
 }
 
 function PluginList(props) {
@@ -78,28 +76,17 @@ const ConfigManager = connect(state => ({
     const config = props.config.data;
 
     function onChange(name, value) {
-      window.send('config', [
-        'set',
-        name,
-        `${value.target ? value.target.value : value}`,
-      ]);
+      window.send('config', ['set', name, `${value.target ? value.target.value : value}`]);
     }
 
     return (
       <div>
         <h2>Basic</h2>
-        <FormItem
-          {...formItemLayout}
-          label="history"
-          help="除非知道为什么，否则不要配置为 memory"
-        >
+        <FormItem {...formItemLayout} label="history" help="除非知道为什么，否则不要配置为 memory">
           {getFieldDecorator('history', {
             initialValue: config.history || 'browser',
           })(
-            <Select
-              style={{ width: 160 }}
-              onChange={onChange.bind(null, 'history')}
-            >
+            <Select style={{ width: 160 }} onChange={onChange.bind(null, 'history')}>
               <Option value="hash">hash</Option>
               <Option value="browser">browser</Option>
               <Option value="memory">memory</Option>
@@ -113,12 +100,7 @@ const ConfigManager = connect(state => ({
         >
           {getFieldDecorator('publicPath', {
             initialValue: config.publicPath || '/',
-          })(
-            <Input
-              style={{ width: 160 }}
-              onBlur={onChange.bind(null, 'publicPath')}
-            />,
-          )}
+          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'publicPath')} />)}
         </FormItem>
         <FormItem
           {...formItemLayout}
@@ -127,26 +109,12 @@ const ConfigManager = connect(state => ({
         >
           {getFieldDecorator('base', {
             initialValue: config.base || '/',
-          })(
-            <Input
-              style={{ width: 160 }}
-              onBlur={onChange.bind(null, 'base')}
-            />,
-          )}
+          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'base')} />)}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="outputPath"
-          help="指定构建产物输出路径"
-        >
+        <FormItem {...formItemLayout} label="outputPath" help="指定构建产物输出路径">
           {getFieldDecorator('outputPath', {
             initialValue: config.outputPath || './dist',
-          })(
-            <Input
-              style={{ width: 160 }}
-              onBlur={onChange.bind(null, 'outputPath')}
-            />,
-          )}
+          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'outputPath')} />)}
         </FormItem>
         <FormItem
           {...formItemLayout}
@@ -158,29 +126,16 @@ const ConfigManager = connect(state => ({
             initialValue: config.runtimePublicPath,
           })(<Switch onChange={onChange.bind(null, 'runtimePublicPath')} />)}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="hash"
-          help="指定输出文件是否带上 hash 后缀"
-        >
+        <FormItem {...formItemLayout} label="hash" help="指定输出文件是否带上 hash 后缀">
           {getFieldDecorator('hash', {
             valuePropName: 'checked',
             initialValue: config.hash,
           })(<Switch onChange={onChange.bind(null, 'hash')} />)}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="mountElementId"
-          help="指定页面根节点元素"
-        >
+        <FormItem {...formItemLayout} label="mountElementId" help="指定页面根节点元素">
           {getFieldDecorator('mountElementId', {
             initialValue: config.mountElementId || 'root',
-          })(
-            <Input
-              style={{ width: 160 }}
-              onBlur={onChange.bind(null, 'mountElementId')}
-            />,
-          )}
+          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'mountElementId')} />)}
         </FormItem>
         <h2>Targets</h2>
         <h2>Plugins</h2>

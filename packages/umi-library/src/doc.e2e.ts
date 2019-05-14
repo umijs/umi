@@ -48,9 +48,7 @@ async function doc(name) {
       });
     });
     servers[name].server.listen(servers[name].port, () => {
-      console.log(
-        `[${name}] Running at http://localhost:${servers[name].port}`,
-      );
+      console.log(`[${name}] Running at http://localhost:${servers[name].port}`);
       resolve();
     });
   });
@@ -74,9 +72,7 @@ test('normal', async () => {
   });
 
   // assert /
-  const title = await page.evaluate(
-    () => document.querySelectorAll('h1')[1].innerHTML,
-  );
+  const title = await page.evaluate(() => document.querySelectorAll('h1')[1].innerHTML);
   expect(title).toEqual('hello');
 
   // navigate to /button
@@ -109,26 +105,17 @@ test('config-theme', async () => {
   await page.goto(`http://localhost:${servers['config-theme'].port}/`, {
     waitUntil: 'networkidle2',
   });
-  const favicon = await page.evaluate(
-    () => document.querySelectorAll('link')[0].href,
-  );
+  const favicon = await page.evaluate(() => document.querySelectorAll('link')[0].href);
   expect(favicon).toEqual(
     'https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/EPkOqxgKmFIsEuPcFBOy.png',
   );
 });
 
 test('babel-extra-babel-presets-and-plugins', async () => {
-  await page.goto(
-    `http://localhost:${
-      servers['babel-extra-babel-presets-and-plugins'].port
-    }/`,
-    {
-      waitUntil: 'networkidle2',
-    },
-  );
-  const title = await page.evaluate(
-    () => document.querySelector('.foo').innerHTML,
-  );
+  await page.goto(`http://localhost:${servers['babel-extra-babel-presets-and-plugins'].port}/`, {
+    waitUntil: 'networkidle2',
+  });
+  const title = await page.evaluate(() => document.querySelector('.foo').innerHTML);
   expect(title).toEqual('p1|p2|p1|p2|haha');
 });
 

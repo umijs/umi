@@ -8,12 +8,7 @@ import {
 
 describe('test block generate', () => {
   it('dependenciesConflictCheck', () => {
-    const {
-      conflicts,
-      lacks,
-      devConflicts,
-      devLacks,
-    } = dependenciesConflictCheck(
+    const { conflicts, lacks, devConflicts, devLacks } = dependenciesConflictCheck(
       {
         react: '>=16.0.0',
         antd: '^3.0.0',

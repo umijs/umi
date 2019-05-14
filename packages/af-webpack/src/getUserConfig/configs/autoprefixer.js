@@ -5,10 +5,7 @@ export default function() {
   return {
     name: 'autoprefixer',
     validate(val) {
-      assert(
-        isPlainObject(val),
-        `The autoprefixer config must be Plain Object, but got ${val}`,
-      );
+      assert(isPlainObject(val), `The autoprefixer config must be Plain Object, but got ${val}`);
     },
   };
 }

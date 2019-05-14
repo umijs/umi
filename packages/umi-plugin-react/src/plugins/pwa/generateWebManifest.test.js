@@ -41,9 +41,7 @@ describe('generateWebManifest', () => {
 
   it('should use a default manifest if not provided by user', () => {
     const { srcPath, outputPath } = generateWebManifest(APIMock);
-    expect(srcPath).toBe(
-      join(APIMock.paths.absSrcPath, DEFAULT_MANIFEST_FILENAME),
-    );
+    expect(srcPath).toBe(join(APIMock.paths.absSrcPath, DEFAULT_MANIFEST_FILENAME));
     expect(outputPath).toBe(DEFAULT_MANIFEST_FILENAME);
   });
 

@@ -21,16 +21,12 @@ export default class HTMLGenerator {
       this.env = process.env.NODE_ENV;
     }
     if (!('minify' in this)) {
-      this.minify =
-        this.env === 'production' && process.env.COMPRESS !== 'none';
+      this.minify = this.env === 'production' && process.env.COMPRESS !== 'none';
     }
   }
 
   generate() {
-    assert(
-      this.env === 'production',
-      `HtmlGenerator.generate() should only be used in umi build`,
-    );
+    assert(this.env === 'production', `HtmlGenerator.generate() should only be used in umi build`);
 
     const flatRoutes = this.getFlatRoutes(this.routes);
     assert(flatRoutes.length, 'no valid routes found');
@@ -53,9 +49,7 @@ export default class HTMLGenerator {
   getFlatRoutes(routes) {
     return routes.reduce((memo, route) => {
       if (route.routes) {
-        return memo
-          .concat(this.routeWithoutRoutes(route))
-          .concat(this.getFlatRoutes(route.routes));
+        return memo.concat(this.routeWithoutRoutes(route)).concat(this.getFlatRoutes(route.routes));
       } else {
         if (route.path) {
           memo.push(route);
@@ -67,8 +61,7 @@ export default class HTMLGenerator {
 
   getHtmlPath(path) {
     const { exportStatic } = this.config;
-    const htmlSuffix =
-      exportStatic && isPlainObject(exportStatic) && exportStatic.htmlSuffix;
+    const htmlSuffix = exportStatic && isPlainObject(exportStatic) && exportStatic.htmlSuffix;
 
     if (path === '/') {
       return 'index.html';
@@ -192,9 +185,7 @@ export default class HTMLGenerator {
     if (extname(filename) === '.js') {
       assert(
         this.chunksMap[filename],
-        `file ${filename} don't exists in chunksMap ${JSON.stringify(
-          this.chunksMap,
-        )}`,
+        `file ${filename} don't exists in chunksMap ${JSON.stringify(this.chunksMap)}`,
       );
     }
     return this.chunksMap[filename];
@@ -235,9 +226,7 @@ export default class HTMLGenerator {
     const $ = cheerio.load(html);
     assert(
       $(`#${this.config.mountElementId}`).length === 1,
-      `Document ${relTplPath} must contain <div id="${
-        this.config.mountElementId
-      }"></div>`,
+      `Document ${relTplPath} must contain <div id="${this.config.mountElementId}"></div>`,
     );
 
     let metas = [];
@@ -257,9 +246,8 @@ export default class HTMLGenerator {
     let publicPathStr = JSON.stringify(publicPath);
 
     if (exportStatic && exportStatic.dynamicRoot) {
-      routerBaseStr = `location.pathname.split('/').slice(0, -${route.path.split(
-        '/',
-      ).length - 1}).concat('').join('/')`;
+      routerBaseStr = `location.pathname.split('/').slice(0, -${route.path.split('/').length -
+        1}).concat('').join('/')`;
       publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
     }
 
@@ -270,8 +258,7 @@ export default class HTMLGenerator {
       publicPathStr = this.modifyPublicPathStr(publicPathStr);
     }
 
-    const setPublicPath =
-      runtimePublicPath || (exportStatic && exportStatic.dynamicRoot);
+    const setPublicPath = runtimePublicPath || (exportStatic && exportStatic.dynamicRoot);
     headScripts.push({
       content: [
         `window.routerBase = ${routerBaseStr};`,
@@ -343,9 +330,7 @@ ${scripts.length ? this.getScriptsContent(scripts) : ''}
 
     const relPathToPublicPath = this.getRelPathToPublicPath(route.path);
     const pathToPublicPath =
-      exportStatic && exportStatic.dynamicRoot
-        ? relPathToPublicPath
-        : publicPath;
+      exportStatic && exportStatic.dynamicRoot ? relPathToPublicPath : publicPath;
 
     html = html
       .replace(/__PATH_TO_PUBLIC_PATH__/g, pathToPublicPath)

@@ -34,10 +34,7 @@ export function dependenciesConflictCheck(
   projectPkgAllDeps = {},
 ) {
   const [lacks, conflicts] = checkConflict(blockPkgDeps, projectPkgDeps);
-  const [devLacks, devConflicts] = checkConflict(
-    blockPkgDevDeps,
-    projectPkgAllDeps,
-  );
+  const [devLacks, devConflicts] = checkConflict(blockPkgDevDeps, projectPkgAllDeps);
   return {
     conflicts,
     lacks,
@@ -66,10 +63,7 @@ export function getMockDependencies(mockContent, blockPkg) {
   return deps;
 }
 
-const singularReg = new RegExp(
-  `[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`,
-  'g',
-);
+const singularReg = new RegExp(`[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`, 'g');
 
 export function parseContentToSingular(content) {
   return content.replace(singularReg, (all, prefix, match) => {
@@ -107,9 +101,7 @@ export default api => {
         this.path = (await this.prompt({
           type: 'input',
           name: 'path',
-          message: `path ${
-            this.path
-          } already exist, please input a new path for it`,
+          message: `path ${this.path} already exist, please input a new path for it`,
           required: true,
           default: this.path,
         })).path;

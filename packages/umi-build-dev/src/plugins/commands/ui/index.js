@@ -76,9 +76,7 @@ export default function(api) {
           .map(client => {
             const cssPath = client.replace(/\.js$/, '.css');
             return [
-              existsSync(cssPath)
-                ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>`
-                : '',
+              existsSync(cssPath) ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>` : '',
               `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
             ].join('\r\n');
           })

@@ -42,8 +42,7 @@ export default function(dynamicOptions, options) {
   // Support for `render` when using a mapping,
   // eg: `dynamic({ modules: () => {return {HelloWorld: import('../hello-world')}, render(props, loaded) {} } })
   if (dynamicOptions.render) {
-    loadableOptions.render = (loaded, props) =>
-      dynamicOptions.render(props, loaded);
+    loadableOptions.render = (loaded, props) => dynamicOptions.render(props, loaded);
   }
 
   // Support for `modules` when using a mapping,

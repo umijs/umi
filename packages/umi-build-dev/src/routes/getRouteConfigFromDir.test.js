@@ -40,9 +40,7 @@ describe('getRouteConfigFromDir', () => {
       cwd: join(__dirname, 'fixtures', 'index-index'),
       absPagesPath: join(__dirname, 'fixtures', 'index-index'),
     });
-    expect(routes).toEqual([
-      { path: '/', exact: true, component: './index/index.js' },
-    ]);
+    expect(routes).toEqual([{ path: '/', exact: true, component: './index/index.js' }]);
   });
 
   it('remove last index', () => {
@@ -178,12 +176,7 @@ describe('getRouteConfigFromDir', () => {
     const routes = getRoute({
       cwd: join(__dirname, 'fixtures', 'global-layout-not-found'),
       absPagesPath: join(__dirname, 'fixtures', 'global-layout-not-found'),
-      absSrcPath: join(
-        __dirname,
-        'fixtures',
-        'global-layout-not-found',
-        '_src',
-      ),
+      absSrcPath: join(__dirname, 'fixtures', 'global-layout-not-found', '_src'),
     });
     expect(routes).toEqual([{ path: '/a', exact: true, component: './a.js' }]);
   });
@@ -193,9 +186,7 @@ describe('getRouteConfigFromDir', () => {
       cwd: join(__dirname, 'fixtures', 'route-directory'),
       absPagesPath: join(__dirname, 'fixtures', 'route-directory'),
     });
-    expect(routes).toEqual([
-      { path: '/a', exact: true, component: './a/page.js' },
-    ]);
+    expect(routes).toEqual([{ path: '/a', exact: true, component: './a/page.js' }]);
   });
 
   xit('throw error when route directory conflict', () => {

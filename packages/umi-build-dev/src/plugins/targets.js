@@ -25,18 +25,10 @@ export default function(api) {
   });
 
   function writeTmpFile() {
-    const tpl = readFileSync(
-      join(__dirname, '../../template/polyfills.js.tpl'),
-      'utf-8',
-    );
+    const tpl = readFileSync(join(__dirname, '../../template/polyfills.js.tpl'), 'utf-8');
     const result = api.Mustache.render(tpl, {
-      url:
-        api.config.targets &&
-        api.config.targets.ie &&
-        api.config.targets.ie <= 11,
-      url_polyfill_path: winPath(
-        relative(paths.absTmpDirPath, require.resolve('url-polyfill')),
-      ),
+      url: api.config.targets && api.config.targets.ie && api.config.targets.ie <= 11,
+      url_polyfill_path: winPath(relative(paths.absTmpDirPath, require.resolve('url-polyfill'))),
     });
     api.debug(`write tmp file: polyfills.js, content: ${result}`);
     api.writeTmpFile('polyfills.js', result);
@@ -66,9 +58,6 @@ export default function(api) {
   });
 
   api.chainWebpackConfig(config => {
-    config.resolve.alias.set(
-      '@babel/polyfill',
-      require.resolve('@babel/polyfill'),
-    );
+    config.resolve.alias.set('@babel/polyfill', require.resolve('@babel/polyfill'));
   });
 }

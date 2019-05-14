@@ -15,10 +15,7 @@ const umiExportsHook = {}; // repeated definition
 
 export function generateExports(item) {
   assert(item.source, 'source should be supplied.');
-  assert(
-    item.exportAll || item.specifiers,
-    'exportAll or specifiers should be supplied.',
-  );
+  assert(item.exportAll || item.specifiers, 'exportAll or specifiers should be supplied.');
   assert(
     !reserveLibrarys.includes(item.source),
     `${item.source} is reserve library, Please don't use it.`,
@@ -47,10 +44,7 @@ export function generateExports(item) {
         isPlainObject(specifier),
         `Configure item context should be Plain Object, but got ${specifier}.`,
       );
-      assert(
-        specifier.local && specifier.exported,
-        'local and exported should be supplied.',
-      );
+      assert(specifier.local && specifier.exported, 'local and exported should be supplied.');
       return `${specifier.local} as ${specifier.exported}`;
     }
   });

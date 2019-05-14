@@ -5,10 +5,7 @@ export default function() {
   return {
     name: 'cssModulesExcludes',
     validate(val) {
-      assert(
-        Array.isArray(val),
-        `The cssModulesExcludes config must be Array, but got ${val}`,
-      );
+      assert(Array.isArray(val), `The cssModulesExcludes config must be Array, but got ${val}`);
       val.forEach(file => {
         const ext = extname(file).toLowerCase();
         assert(

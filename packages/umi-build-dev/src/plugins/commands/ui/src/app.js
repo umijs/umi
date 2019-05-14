@@ -27,9 +27,7 @@ export function patchRoutes(routes) {
 
 export function render(oldRender) {
   Object.keys(window.g_umiUIPlugins).forEach(key => {
-    (window.g_umiUIPlugins[key].default || window.g_umiUIPlugins[key])(
-      new PluginAPI(service),
-    );
+    (window.g_umiUIPlugins[key].default || window.g_umiUIPlugins[key])(new PluginAPI(service));
   });
   oldRender();
 }

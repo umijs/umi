@@ -66,10 +66,7 @@ export default {
 export function deploy({ cwd, args }) {
   return new Promise((resolve, reject) => {
     const distDir = join(cwd, '.docz/dist');
-    assert.ok(
-      existsSync(distDir),
-      `Please run ${chalk.green(`umi-lib doc build`)} first`,
-    );
+    assert.ok(existsSync(distDir), `Please run ${chalk.green(`umi-lib doc build`)} first`);
     ghpages.publish(distDir, args, err => {
       if (err) {
         reject(new Error(`Doc deploy failed. ${err.message}`));

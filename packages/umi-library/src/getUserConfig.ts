@@ -17,7 +17,7 @@ export const CONFIG_FILES = [
   '.umirc.library.tsx',
 ];
 
-export default function ({ cwd }): IBundleOptions {
+export default function({ cwd }): IBundleOptions {
   const configFile = getExistFile({
     cwd,
     files: CONFIG_FILES,
@@ -32,11 +32,13 @@ export default function ({ cwd }): IBundleOptions {
       const errors = ajv.errors.map(({ dataPath, message }, index) => {
         return `${index + 1}. ${dataPath}${dataPath ? ' ' : ''}${message}`;
       });
-      throw new Error(`
+      throw new Error(
+        `
 Invalid options in ${slash(relative(cwd, configFile))}
 
 ${errors.join('\n')}
-`.trim());
+`.trim(),
+      );
     }
     return userConfig;
   } else {

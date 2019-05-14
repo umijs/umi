@@ -16,9 +16,7 @@ function svgrLoader(source) {
     });
   };
 
-  const exportMatches = source
-    .toString('utf-8')
-    .match(/^module.exports\s*=\s*(.*)/);
+  const exportMatches = source.toString('utf-8').match(/^module.exports\s*=\s*(.*)/);
   const previousExport = exportMatches ? exportMatches[1] : null;
 
   const pBabelTransform = async jsCode => {
@@ -33,9 +31,7 @@ function svgrLoader(source) {
             require.resolve('@babel/preset-react'),
             [require.resolve('@babel/preset-env'), { modules: false }],
           ],
-          plugins: [
-            require.resolve('@babel/plugin-transform-react-constant-elements'),
-          ],
+          plugins: [require.resolve('@babel/plugin-transform-react-constant-elements')],
         },
         (err, result) => {
           if (err) reject(err);

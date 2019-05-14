@@ -26,11 +26,14 @@ export default function(api, options) {
         )
         .set(
           'create-react-class',
-          join(compatDirname(
-            'preact-compat/lib/create-react-class',
-            cwd,
-            dirname(require.resolve('preact-compat/lib/create-react-class')),
-          ), 'create-react-class'),
+          join(
+            compatDirname(
+              'preact-compat/lib/create-react-class',
+              cwd,
+              dirname(require.resolve('preact-compat/lib/create-react-class')),
+            ),
+            'create-react-class',
+          ),
         );
     }
   });

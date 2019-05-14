@@ -71,10 +71,7 @@ describe('patchRoutes', () => {
     let routes;
 
     routes = patchRoutes(
-      [
-        { path: '/', exact: true, component: './A' },
-        { path: '/b', exact: true, component: './B' },
-      ],
+      [{ path: '/', exact: true, component: './A' }, { path: '/b', exact: true, component: './B' }],
       { exportStatic: false },
       false,
     );
@@ -84,10 +81,7 @@ describe('patchRoutes', () => {
     ]);
 
     routes = patchRoutes(
-      [
-        { path: '/', component: './A' },
-        { path: '/b', exact: true, component: './B' },
-      ],
+      [{ path: '/', component: './A' }, { path: '/b', exact: true, component: './B' }],
       { exportStatic: true },
       false,
     );
@@ -97,10 +91,7 @@ describe('patchRoutes', () => {
     ]);
 
     routes = patchRoutes(
-      [
-        { path: '/', exact: true, component: './A' },
-        { path: '/b', exact: true, component: './B' },
-      ],
+      [{ path: '/', exact: true, component: './A' }, { path: '/b', exact: true, component: './B' }],
       { exportStatic: true },
       false,
     );
@@ -140,15 +131,12 @@ describe('patchRoutes', () => {
   });
 
   it('Route', () => {
-    const routes = patchRoutes(
-      [{ path: '/a' }, { path: '/b' }, { path: '/c', routes: [] }],
-      {
-        pages: {
-          '/a': { Route: './routes/A' },
-          '/c': { Route: './routes/C' },
-        },
+    const routes = patchRoutes([{ path: '/a' }, { path: '/b' }, { path: '/c', routes: [] }], {
+      pages: {
+        '/a': { Route: './routes/A' },
+        '/c': { Route: './routes/C' },
       },
-    );
+    });
     expect(routes).toEqual([
       { path: '/a', Route: './routes/A' },
       { path: '/b' },
@@ -196,11 +184,7 @@ describe('patchRoutes', () => {
     expect(routes).toEqual([
       {
         path: '/b',
-        routes: [
-          { path: '/404', component: './A' },
-          { path: '/c' },
-          { component: './A' },
-        ],
+        routes: [{ path: '/404', component: './A' }, { path: '/c' }, { component: './A' }],
       },
     ]);
   });
@@ -211,10 +195,7 @@ describe('patchRoutes', () => {
       {},
       /* isProduction */ false,
     );
-    expect(routes).toEqual([
-      { path: '/404', component: './A' },
-      { path: '/b' },
-    ]);
+    expect(routes).toEqual([{ path: '/404', component: './A' }, { path: '/b' }]);
   });
 
   it('404 with redirect', () => {
@@ -256,10 +237,7 @@ describe('patchRoutes', () => {
       { path: '/a', component: './A' },
       {
         path: '/c',
-        routes: [
-          { path: '/c/d', component: 'D' },
-          { path: '/c/f', component: 'F' },
-        ],
+        routes: [{ path: '/c/d', component: 'D' }, { path: '/c/f', component: 'F' }],
       },
     ]);
   });

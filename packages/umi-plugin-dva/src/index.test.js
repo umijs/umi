@@ -90,9 +90,7 @@ describe('umi-plugin-dva', () => {
       },
       /* shouldImportDynamic */ true,
     );
-    expect(normalizeModels(models, absSrcPath)).toEqual([
-      '$CWD$/models/global.js',
-    ]);
+    expect(normalizeModels(models, absSrcPath)).toEqual(['$CWD$/models/global.js']);
   });
 
   it('getGlobalModels with shouldImportDynamic=false', () => {

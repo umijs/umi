@@ -7,17 +7,10 @@ export default function(api) {
   return {
     name: 'plugins',
     validate(val) {
-      assert(
-        Array.isArray(val),
-        `Configure item plugins should be Array, but got ${val}.`,
-      );
+      assert(Array.isArray(val), `Configure item plugins should be Array, but got ${val}.`);
     },
     onChange(newConfig, oldConfig) {
-      debug(
-        `plugins changed from ${oldConfig[this.name]} to ${
-          newConfig[this.name]
-        }`,
-      );
+      debug(`plugins changed from ${oldConfig[this.name]} to ${newConfig[this.name]}`);
       const result = diffPlugins(newConfig[this.name], oldConfig[this.name], {
         cwd: api.service.cwd,
       });

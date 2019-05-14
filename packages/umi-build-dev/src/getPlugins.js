@@ -52,10 +52,7 @@ export default function(opts = {}) {
         opts,
       };
     }),
-    ...getUserPlugins(
-      process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [],
-      { cwd },
-    ),
+    ...getUserPlugins(process.env.UMI_PLUGINS ? process.env.UMI_PLUGINS.split(',') : [], { cwd }),
     ...getUserPlugins(plugins, { cwd }),
   ];
 
