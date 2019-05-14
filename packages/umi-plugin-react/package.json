@@ -44,5 +44,8 @@
       "src/plugins/pwa/registerServiceWorker.js",
       "src/plugins/title/TitleWrapper.js"
     ]
+  },
+  "devDependencies": {
+    "umi-types": "^0.3.3"
   }
 }
