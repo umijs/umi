@@ -15,9 +15,10 @@ export default api => {
   const { log, paths, debug, applyPlugins } = api;
 
   async function block(args = {}) {
+    let retCtx;
     switch (args._[0]) {
       case 'add':
-        await add(args);
+      retCtx = await add(args);
         break;
       case 'list':
         await list(args);
@@ -27,6 +28,7 @@ export default api => {
           `Please run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
         );
     }
+    return retCtx; // return for test
   }
 
   function printBlocks(blocks, parentPath = '') {
@@ -69,6 +71,10 @@ export default api => {
         templateTmpDirPath,
         blocksTempPath,
         repoExists: existsSync(templateTmpDirPath),
+      });
+    } else {
+      merge(ctx, {
+        templateTmpDirPath: dirname(url),
       });
     }
 
@@ -414,6 +420,8 @@ export default api => {
       );
       log.error('copy to clipboard failed');
     }
+
+    return ctx; // return ctx for test
   }
 
   const details = `
@@ -457,7 +465,8 @@ Examples:
       details,
     },
     args => {
-      block(args).catch(e => {
+      // reture only for test
+      return block(args).catch(e => {
         log.error(e);
       });
     },
