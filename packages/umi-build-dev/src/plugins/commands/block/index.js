@@ -443,7 +443,7 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
-  ${chalk.green(`--mode              `)} when mode = dir, umi will add the block to a independent directory
+  ${chalk.green(`--no-wrap           `)} add the block to a independent directory
 
 Examples:
 
