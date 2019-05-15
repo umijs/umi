@@ -6,13 +6,17 @@ import execa from 'execa';
 import ora from 'ora';
 import { merge } from 'lodash';
 import clipboardy from 'clipboardy';
+import { isPlainObject } from 'lodash';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 
 export default api => {
-  const { log, paths, debug, applyPlugins } = api;
+  const { log, paths, debug, applyPlugins, config } = api;
+  const blockConfig = config.block || {};
+
+  debug(`blockConfig ${blockConfig}`);
 
   async function block(args = {}) {
     let retCtx;
@@ -60,7 +64,7 @@ export default api => {
   function getCtx(url, args = {}) {
     debug(`get url ${url}`);
 
-    const ctx = getParsedData(url);
+    const ctx = getParsedData(url, blockConfig);
     if (!ctx.isLocal) {
       const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
       const templateTmpDirPath = join(blocksTempPath, ctx.id);
@@ -471,4 +475,18 @@ Examples:
       });
     },
   );
+
+  api._registerConfig(() => {
+    return () => {
+      return {
+        name: 'block',
+        validate(val) {
+          assert(
+            isPlainObject(val),
+            `Configure item block should be Plain Object, but got ${val}.`,
+          );
+        },
+      };
+    }
+  });
 };

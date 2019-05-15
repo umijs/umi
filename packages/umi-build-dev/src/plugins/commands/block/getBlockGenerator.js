@@ -95,6 +95,7 @@ export function getSingularName(name) {
 
 export default api => {
   const { paths, Generator, config, applyPlugins } = api;
+  const blockConfig = config.block || {};
 
   return class BlockGenerator extends Generator {
     constructor(args, opts) {
@@ -200,7 +201,7 @@ export default api => {
 
         this.needCreateNewRoute = true;
         const blockEntryTpl = readFileSync(
-          paths.defaultBlockEntryPath,
+          blockConfig.entryTemplatePath || paths.defaultBlockEntryTplPath,
           'utf-8',
         );
         const tplContent = {
