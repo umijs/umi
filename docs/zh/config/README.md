@@ -474,7 +474,7 @@ export default {
 ```js
 export default {
   uglifyJSOptions(opts) {
-    opts.compress.warning = true;
+    opts.uglifyOptions.compress.warning = true;
     return opts;
   },
 };
