@@ -1,9 +1,11 @@
+import { join } from 'path';
 import {
   dependenciesConflictCheck,
   getNameFromPkg,
   parseContentToSingular,
   getSingularName,
   getMockDependencies,
+  getAllBlockDependencies,
 } from './getBlockGenerator';
 
 describe('test block generate', () => {
@@ -128,5 +130,89 @@ export default {
       moment: '^2.0.0',
       qs: '4.0.0',
     });
+  });
+
+  it('getAllBlockDependencies', () => {
+    expect(
+      getAllBlockDependencies(
+        join(__dirname, '../../../fixtures/block/test-blocks'),
+        {
+          blockConfig: {
+            dependencies: ['demo'],
+          },
+          dependencies: {},
+        },
+      ),
+    ).toEqual({
+      antd: '^3.8.0',
+      'rc-select': '~2.1.0',
+    });
+
+    expect(
+      getAllBlockDependencies(
+        join(__dirname, '../../../fixtures/block/test-blocks'),
+        {
+          dependencies: {
+            moment: '2.3.2',
+          },
+        },
+      ),
+    ).toEqual({
+      moment: '2.3.2',
+    });
+
+    expect(
+      getAllBlockDependencies(
+        join(__dirname, '../../../fixtures/block/test-blocks'),
+        {
+          blockConfig: {
+            dependencies: ['demo', 'demo-with-dependencies'],
+          },
+          dependencies: {
+            moment: '2.3.2',
+          },
+        },
+      ),
+    ).toEqual({
+      moment: '2.3.2',
+      antd: '^3.8.0',
+      'rc-select': '~2.1.0',
+    });
+
+    expect(
+      getAllBlockDependencies(
+        join(__dirname, '../../../fixtures/block/test-blocks'),
+        {
+          blockConfig: {
+            dependencies: ['demo-with-dependencies'],
+          },
+        },
+      ),
+    ).toEqual({
+      antd: '^3.8.0',
+      'rc-select': '~2.1.0',
+    });
+
+    try {
+      expect(
+        getAllBlockDependencies(
+          join(__dirname, '../../../fixtures/block/test-blocks'),
+          {
+            blockConfig: {
+              dependencies: ['demo-with-dependencies'],
+            },
+            dependencies: {
+              antd: '2.0.0',
+            },
+          },
+        ),
+      ).toEqual({
+        antd: '^3.10.0',
+      });
+    } catch (error) {
+      expect(error.message).toContain(
+        '* antd: ^3.8.0 not compatible with 2.0.0',
+      );
+    }
   });
 });

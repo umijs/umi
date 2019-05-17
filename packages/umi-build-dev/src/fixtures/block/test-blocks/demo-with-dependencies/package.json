@@ -5,7 +5,7 @@
     "dev": "umi dev"
   },
   "dependencies": {
-    "antd": "^3.10.9"
+    "antd": "^3.10.0"
   },
   "devDependencies": {
     "umi": "^2.3.0",
