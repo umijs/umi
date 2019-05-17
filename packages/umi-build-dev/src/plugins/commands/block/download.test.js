@@ -1,5 +1,10 @@
 import { join } from 'path';
-import { isGitUrl, parseGitUrl, getPathWithUrl } from './download';
+import {
+  isGitUrl,
+  parseGitUrl,
+  getPathWithUrl,
+  getParsedData,
+} from './download';
 
 describe('test block download utils', () => {
   it('isGitUrl', () => {
@@ -79,47 +84,45 @@ describe('test block download utils', () => {
     });
   });
 
-  xit('getPathWithUrl', () => {
-    const mockLog = {
-      log: () => {},
-      info: () => {},
-      success: () => {},
-    };
+  it('getParsedData', () => {
     expect(
-      getPathWithUrl(
-        'https://github.com/umijs/umi-blocks/tree/master/demo',
-        mockLog,
-        {
-          dryRun: true,
-        },
-      ),
-    ).toEqual('/Users/test/.umi/blocks/github.com/umijs/umi-blocks/demo');
+      getParsedData('https://github.com/test/name/tree/somebranch/demo', {}),
+    ).toEqual({
+      branch: 'somebranch',
+      id: 'github.com/test/name',
+      path: '/demo',
+      repo: 'https://github.com/test/name.git',
+    });
+
+    expect(getParsedData('demo-test', {})).toEqual({
+      branch: 'master',
+      id: 'github.com/umijs/umi-blocks',
+      path: '/demo-test',
+      repo: 'https://github.com/umijs/umi-blocks.git',
+    });
+  });
+
+  it('getParsedData with defaultGitUrl', () => {
     expect(
-      getPathWithUrl('git@github.com:umijs/testblock.git', mockLog, {
-        dryRun: true,
+      getParsedData('https://github.com/test/name/tree/somebranch/demo', {
+        defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
       }),
-    ).toEqual('/Users/test/.umi/blocks/github.com/umijs/testblock/');
+    ).toEqual({
+      branch: 'somebranch',
+      id: 'github.com/test/name',
+      path: '/demo',
+      repo: 'https://github.com/test/name.git',
+    });
+
     expect(
-      getPathWithUrl('demo-test', mockLog, {
-        dryRun: true,
+      getParsedData('demo-test', {
+        defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
       }),
-    ).toEqual('/Users/test/.umi/blocks/github.com/umijs/umi-blocks/demo-test');
-    expect(
-      getPathWithUrl('ant-design-pro/Analysis', mockLog, {
-        dryRun: true,
-      }),
-    ).toEqual(
-      '/Users/test/.umi/blocks/github.com/umijs/umi-blocks/ant-design-pro/Analysis',
-    );
-    expect(
-      getPathWithUrl('/test/test/locale', mockLog, {
-        dryRun: true,
-      }),
-    ).toEqual('/test/test/locale');
-    expect(
-      getPathWithUrl('./locale', mockLog, {
-        dryRun: true,
-      }),
-    ).toEqual(join(process.cwd(), './locale'));
+    ).toEqual({
+      branch: 'master',
+      id: 'github.com/ant-design/pro-blocks',
+      path: '/demo-test',
+      repo: 'https://github.com/ant-design/pro-blocks.git',
+    });
   });
 });

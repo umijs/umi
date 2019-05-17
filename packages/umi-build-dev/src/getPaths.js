@@ -14,5 +14,6 @@ export default function(service) {
     defaultHistoryTplPath: template('history.js.tpl'),
     defaultRegisterSWTplPath: template('registerServiceWorker.js'),
     defaultDocumentPath: template('document.ejs'),
+    defaultBlockEntryTplPath: template('blockEntry.js.tpl'),
   };
 }
