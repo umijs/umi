@@ -4,12 +4,11 @@ import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import execa from 'execa';
 import ora from 'ora';
-import { merge } from 'lodash';
+import { merge, isPlainObject } from 'lodash';
 import clipboardy from 'clipboardy';
-import { isPlainObject } from 'lodash';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
-import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies } from './getBlockGenerator';
+import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies, getAllBlockDependencies } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 
 export default api => {
@@ -225,10 +224,11 @@ export default api => {
       if (existsSync(mockFilePath)) {
         devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
       }
+      const allBlockDependencies = getAllBlockDependencies(ctx.templateTmpDirPath, ctx.pkg);
       // get confilict dependencies and lack dependencies
       const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
         initialValue: dependenciesConflictCheck(
-          ctx.pkg.dependencies,
+          allBlockDependencies,
           projectPkg.dependencies,
           devDependencies,
           {

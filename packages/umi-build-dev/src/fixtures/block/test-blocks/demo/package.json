@@ -5,7 +5,8 @@
     "dev": "umi dev"
   },
   "dependencies": {
-    "antd": "^3.10.9"
+    "antd": "^3.8.0",
+    "rc-select": "~2.1.0"
   },
   "devDependencies": {
     "umi": "^2.3.0",

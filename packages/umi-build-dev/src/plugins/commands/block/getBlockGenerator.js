@@ -36,6 +36,41 @@ function checkConflict(blockDeps, projectDeps) {
   return [lacks, conflicts];
 }
 
+export function getAllBlockDependencies(rootDir, pkg) {
+  const { blockConfig = {}, dependencies = {} } = pkg;
+  const { dependencies: depBlocks = [] } = blockConfig;
+  const allDependencies = {};
+
+  function mergeDependencies(parent, sub) {
+    const [lacks, conflicts] = checkConflict(sub, parent);
+    if (conflicts.length) {
+      throw new Error(`
+      find dependencies conflict between blocks:
+      ${conflicts
+        .map(info => {
+          return `* ${info[0]}: ${info[2]} not compatible with ${info[1]}`;
+        })
+        .join('\n')}`);
+    }
+    lacks.forEach(lack => {
+      const [name, version] = lack;
+      parent[name] = version;
+    });
+    return parent;
+  }
+
+  depBlocks.forEach(block => {
+    const rubBlockDeps = getAllBlockDependencies(
+      rootDir,
+      // eslint-disable-next-line
+      require(join(rootDir, block, 'package.json')),
+    );
+    mergeDependencies(allDependencies, rubBlockDeps);
+  });
+  mergeDependencies(allDependencies, dependencies);
+  return allDependencies;
+}
+
 export function dependenciesConflictCheck(
   blockPkgDeps = {},
   projectPkgDeps = {},
