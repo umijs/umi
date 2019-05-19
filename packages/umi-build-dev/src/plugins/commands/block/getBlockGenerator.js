@@ -216,7 +216,6 @@ export default api => {
 
       // create container
       this.entryPath = findJS(targetPath, 'index');
-      console.log('this.isTypeScript', this.isTypeScript);
       if (!this.entryPath) {
         this.entryPath = join(
           targetPath,
