@@ -26,7 +26,7 @@ function insertComponentToRender(blockStatement, identifier) {
 export default function(content, { relativePath, identifier }) {
   const ast = parser.parse(content, {
     sourceType: 'module',
-    plugins: ['jsx', 'decorators-legacy'],
+    plugins: ['jsx', 'decorators-legacy', 'typescript'],
   });
   traverse(ast, {
     Program({ node }) {
