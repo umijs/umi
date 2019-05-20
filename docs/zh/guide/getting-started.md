@@ -32,6 +32,8 @@ $ yarn global add umi
 $ umi -v
 2.0.0
 ```
+有些同学报错 umi:command not found，[点击这里查看解决方法。](https://yewills.github.io/2019/05/19/dva_umi/)
+
 
 ## 脚手架
 
