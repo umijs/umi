@@ -3,7 +3,7 @@ import insertComponent from './insertComponent';
 
 const debug = require('debug')('umi-build-dev:appendBlockToContainer');
 
-export default ({ entryPath, blockFolderName }) => {
+export default ({ entryPath, blockFolderName, dryRun }) => {
   debug('start to update the entry file for block(s) under the path...');
 
   const oldEntry = readFileSync(entryPath, 'utf-8');
@@ -12,5 +12,7 @@ export default ({ entryPath, blockFolderName }) => {
     relativePath: `./${blockFolderName}`,
   });
 
-  writeFileSync(entryPath, newEntry);
+  if (!dryRun) {
+    writeFileSync(entryPath, newEntry);
+  }
 };

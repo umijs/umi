@@ -32,6 +32,7 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
   debug(`find routes in configPath: ${configPath}`);
   const ast = parser.parse(readFileSync(configPath, 'utf-8'), {
     sourceType: 'module',
+    plugins: ['typescript'],
   });
   let routesNode = null;
   const importModules = [];
@@ -70,23 +71,29 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
       }
     },
     ExportDefaultDeclaration({ node }) {
+      // export default []
       const { declaration } = node;
       if (t.isArrayExpression(declaration)) {
         routesNode = declaration;
       }
-      if (t.isObjectExpression(declaration)) {
-        const { properties } = declaration;
-        properties.forEach(p => {
-          const { key, value } = p;
-          if (
-            t.isObjectProperty(p) &&
-            t.isIdentifier(key) &&
-            key.name === 'routes'
-          ) {
-            routesNode = value;
-          }
-        });
+    },
+    ObjectExpression({ node, parent }) {
+      // find routes on object, like { routes: [] }
+      if (t.isArrayExpression(parent)) {
+        // children routes
+        return;
       }
+      const { properties } = node;
+      properties.forEach(p => {
+        const { key, value } = p;
+        if (
+          t.isObjectProperty(p) &&
+          t.isIdentifier(key) &&
+          key.name === 'routes'
+        ) {
+          routesNode = value;
+        }
+      });
     },
   });
 
@@ -193,7 +200,7 @@ function generateCode(ast) {
     singleQuote: true,
     trailingComma: 'es5',
     printWidth: 100,
-    parser: 'babylon',
+    parser: 'typescript',
   });
 }
 

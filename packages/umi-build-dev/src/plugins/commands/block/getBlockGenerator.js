@@ -129,7 +129,7 @@ export function getSingularName(name) {
 }
 
 export default api => {
-  const { paths, Generator, config, applyPlugins } = api;
+  const { paths, Generator, config, applyPlugins, findJS } = api;
   const blockConfig = config.block || {};
 
   return class BlockGenerator extends Generator {
@@ -215,7 +215,13 @@ export default api => {
       }
 
       // create container
-      this.entryPath = join(targetPath, 'index.js');
+      this.entryPath = findJS(targetPath, 'index');
+      if (!this.entryPath) {
+        this.entryPath = join(
+          targetPath,
+          `index.${this.isTypeScript ? 'tsx' : 'js'}`,
+        );
+      }
 
       if (!this.isPageBlock && !existsSync(this.entryPath)) {
         const confirmResult = (await this.prompt({
