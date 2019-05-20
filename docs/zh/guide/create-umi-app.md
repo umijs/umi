@@ -78,7 +78,7 @@ $ yarn create umi
 然后安装依赖，
 
 ```bash
-$ yarn
+$ yarn install
 ```
 
 最后通过 `yarn start` 启动本地开发，
