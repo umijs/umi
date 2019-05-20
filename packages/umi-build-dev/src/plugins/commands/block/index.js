@@ -399,6 +399,7 @@ export default api => {
         appendBlockToContainer({
           entryPath: generator.entryPath,
           blockFolderName: generator.blockFolderName,
+          dryRun,
         });
       } catch (e) {
         spinner.fail();
@@ -424,7 +425,10 @@ export default api => {
       log.error('copy to clipboard failed');
     }
 
-    return ctx; // return ctx for test
+    return {
+      generator,
+      ctx,
+    }; // return ctx and generator for test
   }
 
   const details = `
