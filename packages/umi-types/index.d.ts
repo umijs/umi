@@ -455,6 +455,7 @@ export interface IApi {
    * https://umijs.org/plugin/develop.html#application-class-api
    */
   modifyDefaultConfig: IModify<object>;
+  addUmiExports: IAdd<object>;
   addPageWatcher: IAdd<string>;
   addHTMLMeta: IAdd<object, { route?: IRoute }>;
   addHTMLLink: IAdd<object, { route?: IRoute }>;

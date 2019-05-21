@@ -304,6 +304,13 @@ dev server 启动之前。
 
 dev server 启动之后。
 
+```js
+api.afterDevServer(({serve, devServerPort}) => {
+  // 你可以在这里取到服务监听的实际端口号
+  console.log(devServerPort);
+});
+```
+
 ### onStart
 
 `umi dev` 或者 `umi build` 开始时触发。
@@ -373,7 +380,7 @@ api.onPatchRoute({ route } => {
   // route:
   // {
   //   path: '/xxx',
-  //   Routes: [] 
+  //   Routes: []
   // }
 })
 ```

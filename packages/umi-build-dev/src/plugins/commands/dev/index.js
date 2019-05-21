@@ -22,6 +22,7 @@ export default function(api) {
       RoutesManager.fetchRoutes();
 
       const { port } = args;
+
       process.env.NODE_ENV = 'development';
       service.applyPlugins('onStart');
       service._applyPluginsAsync('onStartAsync').then(() => {
@@ -110,9 +111,12 @@ export default function(api) {
                   args: { server: devServer },
                 });
               },
-              afterServer(devServer) {
+              afterServer(devServer, devServerPort) {
                 service.applyPlugins('afterDevServer', {
-                  args: { server: devServer },
+                  args: {
+                    server: devServer,
+                    devServerPort,
+                  },
                 });
                 startWatch();
               },

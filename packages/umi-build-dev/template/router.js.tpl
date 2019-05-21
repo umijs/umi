@@ -28,6 +28,8 @@ function routeChangeHandler(location, action) {
 history.listen(routeChangeHandler);
 routeChangeHandler(history.location);
 
+export { routes };
+
 export default function RouterWrapper() {
   return (
 {{{ routerContent }}}

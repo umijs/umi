@@ -11,7 +11,11 @@ const reserveExportsNames = [
   'withRouter',
   'Route',
 ]; // reserve name
-const umiExportsHook = {}; // repeated definition
+let umiExportsHook = {}; // repeated definition
+
+export function cleanCache() {
+  umiExportsHook = {};
+}
 
 export function generateExports(item) {
   assert(item.source, 'source should be supplied.');
@@ -57,6 +61,7 @@ export default function(api) {
   });
 
   const generateUmiExports = () => {
+    cleanCache();
     const umiExports = api
       .applyPlugins('addUmiExports', {
         initialValue: [],

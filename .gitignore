@@ -1,7 +1,7 @@
 .DS_Store
 tmp
 /node_modules
-/packages/*/node_modules
+/packages/**/node_modules
 /examples/*/node_modules
 package-lock.json
 /website/dist
