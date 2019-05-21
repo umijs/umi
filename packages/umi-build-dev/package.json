@@ -90,26 +90,6 @@
       "src/plugins/commands/ui/plugins/config/client.js",
       "src/plugins/commands/ui/plugins/routes/client.js",
       "src/plugins/commands/ui/plugins/blocks/client.js"
-    ],
-    "rollupFiles": [
-      [
-        "lib/plugins/commands/ui/plugins/config/client.js",
-        {
-          "name": "g_umiUIPlugins.config"
-        }
-      ],
-      [
-        "lib/plugins/commands/ui/plugins/blocks/client.js",
-        {
-          "name": "g_umiUIPlugins.blocks"
-        }
-      ],
-      [
-        "lib/plugins/commands/ui/plugins/routes/client.js",
-        {
-          "name": "g_umiUIPlugins.routes"
-        }
-      ]
     ]
   }
 }
