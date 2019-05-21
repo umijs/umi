@@ -1,87 +1,160 @@
-import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
-import mkdirp from 'mkdirp';
-import chokidar from 'chokidar';
+import debug from 'debug';
 import assert from 'assert';
-import chalk from 'chalk';
-import { debounce, uniq } from 'lodash';
+import { relative } from 'path';
+import lodash, { isPlainObject } from 'lodash';
 import Mustache from 'mustache';
-import { winPath, findJS } from 'umi-utils';
-import stripJSONQuote from './routes/stripJSONQuote';
-import routesToJSON from './routes/routesToJSON';
-import importsToStr from './importsToStr';
-import { EXT_LIST } from './constants';
+import { winPath, compatDirname, findJS, findCSS } from 'umi-utils';
+import signale from 'signale';
+import BasicGenerator from './BasicGenerator';
+import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 
-const debug = require('debug')('umi:FilesGenerator');
+export default class PluginAPI {
+  constructor(id, service) {
+    this.id = id;
+    this.service = service;
 
-export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
+    // utils
+    this.debug = debug(`umi-plugin: ${id}`);
+    this.log = signale;
+    this.winPath = winPath;
+    this._ = lodash;
+    this.compatDirname = compatDirname;
+    this.findJS = findJS;
+    this.findCSS = findCSS;
+    this.Mustache = Mustache;
+    this.Generator = BasicGenerator;
 
-export default class FilesGenerator {
-  constructor(opts) {
-    Object.keys(opts).forEach(key => {
-      this[key] = opts[key];
-    });
+    this.API_TYPE = {
+      ADD: Symbol('add'),
+      MODIFY: Symbol('modify'),
+      EVENT: Symbol('event'),
+    };
 
-    this.routesContent = null;
-    this.hasRebuildError = false;
+    this._addMethods();
   }
 
-  generate() {
-    debug('generate');
-    const { paths } = this.service;
-    const { absTmpDirPath, tmpDirPath } = paths;
-    debug(`mkdir tmp dir: ${tmpDirPath}`);
-    mkdirp.sync(absTmpDirPath);
+  relativeToTmp = path => {
+    return this.winPath(relative(this.service.paths.absTmpDirPath, path));
+  };
 
-    this.generateFiles();
+  _resolveDeps(file) {
+    return require.resolve(file);
   }
 
-  createWatcher(path) {
-    const watcher = chokidar.watch(path, {
-      ignored: watcherIgnoreRegExp, // ignore .dotfiles and _mock.js
-      ignoreInitial: true,
+  _addMethods() {
+    [
+      [
+        'chainWebpackConfig',
+        {
+          type: this.API_TYPE.EVENT,
+        },
+      ],
+      [
+        '_registerConfig',
+        {
+          type: this.API_TYPE.ADD,
+        },
+      ],
+      'onStart',
+      'onStartAsync',
+      'onDevCompileDone',
+      'onBuildSuccess',
+      'onBuildSuccessAsync',
+      'onBuildFail',
+      'addPageWatcher',
+      'addEntryCode',
+      'addEntryCodeAhead',
+      'addEntryImport',
+      'addEntryImportAhead',
+      'addEntryPolyfillImports',
+      'addRendererWrapperWithComponent',
+      'addRendererWrapperWithModule',
+      'addRouterImport',
+      'addRouterImportAhead',
+      'addVersionInfo',
+      'addUIPlugin',
+      'modifyAFWebpackOpts',
+      'modifyEntryRender',
+      'modifyEntryHistory',
+      'modifyRouteComponent',
+      'modifyRouterRootComponent',
+      'modifyWebpackConfig',
+      '_beforeServerWithApp',
+      'beforeDevServer',
+      '_beforeDevServerAsync',
+      'afterDevServer',
+      'addMiddlewareAhead',
+      'addMiddleware',
+      'addMiddlewareBeforeMock',
+      'addMiddlewareAfterMock',
+      'modifyRoutes',
+      'onPatchRoute',
+      'modifyHTMLContext',
+      'addHTMLMeta',
+      'addHTMLLink',
+      'addHTMLScript',
+      'addHTMLStyle',
+      'addHTMLHeadScript',
+      'addUmiExports',
+      'modifyHTMLChunks',
+      'onGenerateFiles',
+      'onHTMLRebuild',
+      'modifyDefaultConfig',
+      '_modifyConfig',
+      'modifyHTMLWithAST',
+      '_modifyHelpInfo',
+      'addRuntimePlugin',
+      'addRuntimePluginKey',
+      'beforeBlockWriting',
+      '_modifyBlockPackageJSONPath',
+      '_modifyBlockDependencies',
+      '_modifyBlockFile',
+      '_modifyBlockTarget',
+      '_modifyCommand',
+      '_modifyBlockNewRouteConfig',
+    ].forEach(method => {
+      if (Array.isArray(method)) {
+        this.registerMethod(...method);
+      } else {
+        let type;
+        const isPrivate = method.charAt(0) === '_';
+        const slicedMethod = isPrivate ? method.slice(1) : method;
+        if (slicedMethod.indexOf('modify') === 0) {
+          type = this.API_TYPE.MODIFY;
+        } else if (slicedMethod.indexOf('add') === 0) {
+          type = this.API_TYPE.ADD;
+        } else if (
+          slicedMethod.indexOf('on') === 0 ||
+          slicedMethod.indexOf('before') === 0 ||
+          slicedMethod.indexOf('after') === 0
+        ) {
+          type = this.API_TYPE.EVENT;
+        } else {
+          throw new Error(`unexpected method name ${method}`);
+        }
+        this.registerMethod(method, { type });
+      }
     });
-    watcher.on(
-      'all',
-      debounce((event, path) => {
-        debug(`${event} ${path}`);
-        this.rebuild();
-      }, 100),
+  }
+
+  register(hook, fn) {
+    assert(
+      typeof hook === 'string',
+      `The first argument of api.register() must be string, but got ${hook}`,
     );
-    return watcher;
-  }
-
-  watch() {
-    if (process.env.WATCH_FILES === 'none') return;
-    const {
-      paths,
-      config: { singular },
-    } = this.service;
-
-    const layout = singular ? 'layout' : 'layouts';
-    let pageWatchers = [
-      paths.absPagesPath,
-      ...EXT_LIST.map(ext => join(paths.absSrcPath, `${layout}/index${ext}`)),
-      ...EXT_LIST.map(ext => join(paths.absSrcPath, `app${ext}`)),
-    ];
-    if (this.modifyPageWatcher) {
-      pageWatchers = this.modifyPageWatcher(pageWatchers);
-    }
-
-    this.watchers = pageWatchers.map(p => {
-      return this.createWatcher(p);
-    });
-    process.on('SIGINT', () => {
-      this.unwatch();
+    assert(
+      typeof fn === 'function',
+      `The second argument of api.register() must be function, but got ${fn}`,
+    );
+    const { pluginHooks } = this.service;
+    pluginHooks[hook] = pluginHooks[hook] || [];
+    pluginHooks[hook].push({
+      fn,
     });
   }
 
-  unwatch() {
-    if (this.watchers) {
-      this.watchers.forEach(watcher => {
-        watcher.close();
-      });
-    }
+  registerCommand(name, opts, fn) {
+    this.service.registerCommand(name, opts, fn);
   }
 
   registerGenerator(name, opts) {
@@ -92,91 +165,21 @@ export default class FilesGenerator {
     generators[name] = opts;
   }
 
-  generateFiles() {
-    this.service.applyPlugins('onGenerateFiles');
-    this.generateRouterJS();
-    this.generateEntry();
-    this.generateHistory();
-  }
-
-  generateEntry() {
-    const { paths } = this.service;
-
-    // Generate umi.js
-    const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
-    const initialRender = this.service.applyPlugins('modifyEntryRender', {
-      initialValue: `
-  const rootContainer = plugins.apply('rootContainer', {
-    initialValue: React.createElement(require('./router').default),
-  });
-  ReactDOM.render(
-    rootContainer,
-    document.getElementById('${this.mountElementId}'),
-  );
-      `.trim(),
-    });
-
-    const moduleBeforeRenderer = this.service
-      .applyPlugins('addRendererWrapperWithModule', {
-        initialValue: [],
-      })
-      .map((source, index) => {
-        return {
-          source,
-          specifier: `moduleBeforeRenderer${index}`,
-        };
-      });
-
-    const plugins = this.service
-      .applyPlugins('addRuntimePlugin', {
-        initialValue: [],
-      })
-      .map(plugin => {
-        return winPath(relative(paths.absTmpDirPath, plugin));
-      });
-    if (findJS(paths.absSrcPath, 'app')) {
-      plugins.push('@/app');
-    }
-    const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
-      initialValue: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps', 'onRouteChange'],
-    });
+  registerPlugin(opts) {
+    assert(isPlainObject(opts), `opts should be plain object, but got ${opts}`);
+    const { id, apply } = opts;
+    assert(id && apply, `id and apply must supplied`);
+    assert(typeof id === 'string', `id must be string`);
+    assert(typeof apply === 'function', `apply must be function`);
     assert(
-      uniq(validKeys).length === validKeys.length,
-      `Conflict keys found in [${validKeys.join(', ')}]`,
+      id.indexOf('user:') !== 0 && id.indexOf('built-in:') !== 0,
+      `api.registerPlugin() should not register plugin prefixed with user: and built-in:`,
     );
-    const entryContent = Mustache.render(entryTpl, {
-      globalVariables: !this.service.config.disableGlobalVariables,
-      code: this.service
-        .applyPlugins('addEntryCode', {
-          initialValue: [],
-        })
-        .join('\n\n'),
-      codeAhead: this.service
-        .applyPlugins('addEntryCodeAhead', {
-          initialValue: [],
-        })
-        .join('\n\n'),
-      imports: importsToStr(
-        this.service.applyPlugins('addEntryImport', {
-          initialValue: moduleBeforeRenderer,
-        }),
-      ).join('\n'),
-      importsAhead: importsToStr(
-        this.service.applyPlugins('addEntryImportAhead', {
-          initialValue: [],
-        }),
-      ).join('\n'),
-      polyfillImports: importsToStr(
-        this.service.applyPlugins('addEntryPolyfillImports', {
-          initialValue: [],
-        }),
-      ).join('\n'),
-      moduleBeforeRenderer,
-      render: initialRender,
-      plugins,
-      validKeys,
-    });
-    writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
+    assert(
+      Object.keys(opts).every(key => ['id', 'apply', 'opts'].includes(key)),
+      `Only id, apply and opts is valid plugin properties`,
+    );
+    this.service.extraPlugins.push(opts);
   }
 
   registerMethod(name, opts) {
@@ -216,34 +219,8 @@ export default class FilesGenerator {
     addBabelRegisterFiles(files, {
       cwd: this.service.cwd,
     });
-  }
-
-  fixHtmlSuffix(routes) {
-    routes.forEach(route => {
-      if (route.routes) {
-        route.path = `${route.path}(.html)?`;
-        this.fixHtmlSuffix(route.routes);
-      }
+    registerBabel({
+      cwd: this.service.cwd,
     });
-  }
-
-  getRoutesJSON(opts = {}) {
-    const { env } = opts;
-    return routesToJSON(this.RoutesManager.routes, this.service, env);
-  }
-
-  getRouterContent(rendererWrappers) {
-    const defaultRenderer = `
-    <Router history={history}>
-      { renderRoutes(routes, {}) }
-    </Router>
-    `.trim();
-    return rendererWrappers.reduce((memo, wrapper) => {
-      return `
-        <${wrapper.specifier}>
-          ${memo}
-        </${wrapper.specifier}>
-      `.trim();
-    }, defaultRenderer);
   }
 }
