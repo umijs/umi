@@ -13,10 +13,7 @@ export function use(plugin) {
   Object.keys(plugin).forEach(key => {
     // TODO: remove default
     // default 是为了兼容内部框架内置的一个 babel 插件问题
-    assert(
-      validKeys.concat('default').indexOf(key) > -1,
-      `Invalid key ${key} from plugin`,
-    );
+    assert(validKeys.concat('default').indexOf(key) > -1, `Invalid key ${key} from plugin`);
   });
   plugins.push(plugin);
 }

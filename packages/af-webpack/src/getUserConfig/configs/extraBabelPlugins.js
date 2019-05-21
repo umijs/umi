@@ -4,10 +4,7 @@ export default function() {
   return {
     name: 'extraBabelPlugins',
     validate(val) {
-      assert(
-        Array.isArray(val),
-        `The extraBabelPlugins config must be Array, but got ${val}`,
-      );
+      assert(Array.isArray(val), `The extraBabelPlugins config must be Array, but got ${val}`);
     },
   };
 }

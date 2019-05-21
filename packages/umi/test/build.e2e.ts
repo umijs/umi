@@ -75,9 +75,7 @@ async function build(cwd: string, name: string) {
 
 async function buildAndServe(name: string) {
   const cwd = join(fixtures, name);
-  const targetDist = name.includes('app_root')
-    ? join(cwd, 'root', 'dist')
-    : join(cwd, 'dist');
+  const targetDist = name.includes('app_root') ? join(cwd, 'root', 'dist') : join(cwd, 'dist');
   if (!existsSync(targetDist)) {
     await build(cwd, name);
   }

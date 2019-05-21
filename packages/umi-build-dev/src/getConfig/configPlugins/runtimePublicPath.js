@@ -10,9 +10,7 @@ export default function(api) {
       );
     },
     onChange() {
-      api.service.restart(
-        /* why */ 'Configure item runtimePublicPath Changed.',
-      );
+      api.service.restart(/* why */ 'Configure item runtimePublicPath Changed.');
     },
   };
 }

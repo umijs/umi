@@ -1,27 +1,38 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "plugins": ["prettier"],
+  "extends": ["airbnb", "prettier"],
   "env": {
     "browser": true,
     "jest": true
   },
+  "globals": {
+    "__UMI_BIGFISH_COMPAT": true,
+    "__UMI_HTML_SUFFIX": true
+  },
   "rules": {
     "jsx-a11y/href-no-hash": [0],
     "jsx-a11y/click-events-have-key-events": [0],
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "to" ]
-    }],
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["to"]
+      }
+    ],
     "generator-star-spacing": [0],
     "consistent-return": [0],
+    "radix": [1],
     "react/react-in-jsx-scope": [0],
     "react/forbid-prop-types": [0],
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
-    "global-require": [1],
+    "global-require": [0],
     "import/prefer-default-export": [0],
     "react/jsx-no-bind": [0],
     "react/prop-types": [0],
     "react/prefer-stateless-function": [0],
+    "react/jsx-one-expression-per-line": [0],
+    "react/button-has-type": [0],
     "no-else-return": [0],
     "no-restricted-syntax": [0],
     "import/no-extraneous-dependencies": [0],

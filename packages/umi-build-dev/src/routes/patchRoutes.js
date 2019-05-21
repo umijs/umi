@@ -56,9 +56,7 @@ function patchRoutes(routes, config, isProduction, onPatchRoute) {
 function patchRoute(route, config, isProduction, onPatchRoute) {
   const isDynamicRoute = route.path && route.path.indexOf('/:') > -1;
   if (config.exportStatic && isDynamicRoute) {
-    throw new Error(
-      `you should not use exportStatic with dynamic route: ${route.path}`,
-    );
+    throw new Error(`you should not use exportStatic with dynamic route: ${route.path}`);
   }
 
   // /path -> /path.html
@@ -68,11 +66,7 @@ function patchRoute(route, config, isProduction, onPatchRoute) {
 
   // 权限路由
   // TODO: use config from config.routes
-  if (
-    config.pages &&
-    config.pages[route.path] &&
-    config.pages[route.path].Route
-  ) {
+  if (config.pages && config.pages[route.path] && config.pages[route.path].Route) {
     route.Route = config.pages[route.path].Route;
   }
 

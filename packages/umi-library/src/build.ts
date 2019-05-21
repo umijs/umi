@@ -42,10 +42,7 @@ export function getBundleOpts(opts: IOpts): IBundleOptions {
 function validateBundleOpts(bundleOpts: IBundleOptions, { cwd }) {
   if (bundleOpts.runtimeHelpers) {
     const pkgPath = join(cwd, 'package.json');
-    assert.ok(
-      existsSync(pkgPath),
-      `@babel/runtime dependency is required to use runtimeHelpers`,
-    );
+    assert.ok(existsSync(pkgPath), `@babel/runtime dependency is required to use runtimeHelpers`);
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
     assert.ok(
       (pkg.dependencies || {})['@babel/runtime'],

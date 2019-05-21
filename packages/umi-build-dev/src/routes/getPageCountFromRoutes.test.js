@@ -34,13 +34,7 @@ describe('getPageCountFromRoutes', () => {
     const count = getCount([
       {
         path: '/',
-        routes: [
-          { path: '/a' },
-          { path: '/b' },
-          { path: '/c' },
-          { path: '/d' },
-          { path: '/e' },
-        ],
+        routes: [{ path: '/a' }, { path: '/b' }, { path: '/c' }, { path: '/d' }, { path: '/e' }],
       },
     ]);
     expect(count).toEqual(6);

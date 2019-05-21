@@ -7,8 +7,8 @@ function test(path) {
 }
 
 interface IOpts {
-  cwd: string,
-  config: IConfig,
+  cwd: string;
+  config: IConfig;
 }
 
 export default function(opts: IOpts) {

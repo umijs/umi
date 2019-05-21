@@ -10,10 +10,7 @@ export default function() {
       return config;
     },
     setConfig(config) {
-      const flag =
-        process.env.NODE_ENV === 'development'
-          ? 'development'
-          : 'production.min';
+      const flag = process.env.NODE_ENV === 'development' ? 'development' : 'production.min';
       config.htmlContext.head = config.htmlContext.head || ({} as any);
       config.htmlContext.head.scripts = config.htmlContext.head.scripts || [];
       config.htmlContext.head.scripts.push({

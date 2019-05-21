@@ -1,5 +1,4 @@
-const isWindows =
-  typeof process !== 'undefined' && process.platform === 'win32';
+const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
 const EOL = isWindows ? '\r\n' : '\n';
 
 const hits = {};

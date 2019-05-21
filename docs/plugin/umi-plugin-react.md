@@ -299,13 +299,13 @@ export default {
 
 ### scripts
 
-* Type：`Array(Object)`
+* Type：`Array(Object) or Array(String)`
 
 Replace in `<body>`, after umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
 
 ### headScripts
 
-* Type：`Array(Object)`
+* Type：`Array(Object) or Array(String)`
 
 Replace in `<head>`, before umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
 

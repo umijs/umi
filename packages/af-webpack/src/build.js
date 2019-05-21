@@ -15,9 +15,7 @@ export default function build(opts = {}) {
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
 
-  debug(
-    `Clean output path ${webpackConfig.output.path.replace(`${cwd}/`, '')}`,
-  );
+  debug(`Clean output path ${webpackConfig.output.path.replace(`${cwd}/`, '')}`);
   rimraf.sync(webpackConfig.output.path);
 
   debug('build start');

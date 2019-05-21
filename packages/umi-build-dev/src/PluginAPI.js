@@ -84,33 +84,12 @@ export default class FilesGenerator {
     }
   }
 
-  rebuild() {
-    const { refreshBrowser, printError } = this.service;
-    try {
-      this.service.applyPlugins('onGenerateFiles', {
-        args: {
-          isRebuild: true,
-        },
-      });
-
-      this.generateRouterJS();
-      this.generateEntry();
-      this.generateHistory();
-
-      if (this.hasRebuildError) {
-        refreshBrowser();
-        this.hasRebuildError = false;
-      }
-    } catch (e) {
-      // 向浏览器发送出错信息
-      printError([e.message]);
-
-      this.hasRebuildError = true;
-      this.routesContent = null; // why?
-      debug(`Generate failed: ${e.message}`);
-      debug(e);
-      console.error(chalk.red(e.message));
-    }
+  registerGenerator(name, opts) {
+    const { generators } = this.service;
+    assert(typeof name === 'string', `name should be supplied with a string, but got ${name}`);
+    assert(opts && opts.Generator, `opts.Generator should be supplied`);
+    assert(!(name in generators), `Generator ${name} exists, please select another one.`);
+    generators[name] = opts;
   }
 
   generateFiles() {
@@ -200,73 +179,42 @@ export default class FilesGenerator {
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
 
-  generateHistory() {
-    const { paths } = this.service;
-    const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
-    const initialHistory = `
-require('umi/_createHistory').default({
-  basename: window.routerBase,
-})
-    `.trim();
-    const content = Mustache.render(tpl, {
-      globalVariables: !this.service.config.disableGlobalVariables,
-      history: this.service.applyPlugins('modifyEntryHistory', {
-        initialValue: initialHistory,
-      }),
-    });
-    writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
+  registerMethod(name, opts) {
+    assert(!this[name], `api.${name} exists.`);
+    assert(opts, `opts must supplied`);
+    const { type, apply } = opts;
+    assert(!(type && apply), `Only be one for type and apply.`);
+    assert(type || apply, `One of type and apply must supplied.`);
+
+    this.service.pluginMethods[name] = (...args) => {
+      if (apply) {
+        this.register(name, opts => {
+          return apply(opts, ...args);
+        });
+      } else if (type === this.API_TYPE.ADD) {
+        this.register(name, opts => {
+          return (opts.memo || []).concat(
+            typeof args[0] === 'function' ? args[0](opts.memo, opts.args) : args[0],
+          );
+        });
+      } else if (type === this.API_TYPE.MODIFY) {
+        this.register(name, opts => {
+          return typeof args[0] === 'function' ? args[0](opts.memo, opts.args) : args[0];
+        });
+      } else if (type === this.API_TYPE.EVENT) {
+        this.register(name, opts => {
+          return args[0](opts.args);
+        });
+      } else {
+        throw new Error(`unexpected api type ${type}`);
+      }
+    };
   }
 
-  generateRouterJS() {
-    const { paths } = this.service;
-    const { absRouterJSPath } = paths;
-    this.RoutesManager.fetchRoutes();
-
-    const routesContent = this.getRouterJSContent();
-    // 避免文件写入导致不必要的 webpack 编译
-    if (this.routesContent !== routesContent) {
-      writeFileSync(absRouterJSPath, `${routesContent.trim()}\n`, 'utf-8');
-      this.routesContent = routesContent;
-    }
-  }
-
-  getRouterJSContent() {
-    const { paths } = this.service;
-    const routerTpl = readFileSync(paths.defaultRouterTplPath, 'utf-8');
-    const routes = stripJSONQuote(
-      this.getRoutesJSON({
-        env: process.env.NODE_ENV,
-      }),
-    );
-    const rendererWrappers = this.service
-      .applyPlugins('addRendererWrapperWithComponent', {
-        initialValue: [],
-      })
-      .map((source, index) => {
-        return {
-          source,
-          specifier: `RendererWrapper${index}`,
-        };
-      });
-
-    const routerContent = this.getRouterContent(rendererWrappers);
-    return Mustache.render(routerTpl, {
-      globalVariables: !this.service.config.disableGlobalVariables,
-      imports: importsToStr(
-        this.service.applyPlugins('addRouterImport', {
-          initialValue: rendererWrappers,
-        }),
-      ).join('\n'),
-      importsAhead: importsToStr(
-        this.service.applyPlugins('addRouterImportAhead', {
-          initialValue: [],
-        }),
-      ).join('\n'),
-      routes,
-      routerContent,
-      RouterRootComponent: this.service.applyPlugins('modifyRouterRootComponent', {
-        initialValue: 'DefaultRouter',
-      }),
+  addBabelRegister(files) {
+    assert(Array.isArray(files), `files for registerBabel must be Array, but got ${files}`);
+    addBabelRegisterFiles(files, {
+      cwd: this.service.cwd,
     });
   }
 

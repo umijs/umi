@@ -16,9 +16,7 @@ export default function createRouteMiddleware(service) {
       const htmlGenerator = getHtmlGenerator(service, {
         chunksMap,
       });
-      const content = htmlGenerator.getMatchedContent(
-        normalizePath(path, service.config.base),
-      );
+      const content = htmlGenerator.getMatchedContent(normalizePath(path, service.config.base));
       res.setHeader('Content-Type', 'text/html');
       res.send(content);
     }

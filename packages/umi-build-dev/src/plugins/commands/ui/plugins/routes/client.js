@@ -20,9 +20,7 @@ const Routes = connect(state => ({
 
           function getValue(key) {
             if (key === 'path') {
-              return (
-                <a href={`http://localhost:8000${route[key]}`}>{route[key]}</a>
-              );
+              return <a href={`http://localhost:8000${route[key]}`}>{route[key]}</a>;
             }
             return route[key];
           }
@@ -30,10 +28,7 @@ const Routes = connect(state => ({
           return (
             <li key={route.key || i} className="client-item">
               <div>
-                <Icon
-                  className="client-type"
-                  type={route.routes ? 'folder-open' : 'file'}
-                />
+                <Icon className="client-type" type={route.routes ? 'folder-open' : 'file'} />
                 <span className="client-info">
                   {keys.map((key, i) => {
                     return (

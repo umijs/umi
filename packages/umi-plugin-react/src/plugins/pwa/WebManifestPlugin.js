@@ -25,14 +25,13 @@ export default class WebManifestPlugin {
           rawManifest = JSON.parse(readFileSync(srcPath, 'utf8'));
         } catch (e) {
           compilation.errors.push(
-            new Error(
-              `Please check ${srcPath}, a WebManifest should be a valid JSON file.`,
-            ),
+            new Error(`Please check ${srcPath}, a WebManifest should be a valid JSON file.`),
           );
           return;
         }
       }
 
+      // eslint-disable-next-line no-unused-expressions
       rawManifest.icons &&
         rawManifest.icons.forEach(icon => {
           icon.src = prependPublicPath(publicPath, icon.src);

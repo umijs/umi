@@ -22,6 +22,7 @@ export default function(opts) {
 
   // entry
   if (opts.entry) {
+    // eslint-disable-next-line guard-for-in
     for (const key in opts.entry) {
       const entry = webpackConfig.entry(key);
       makeArray(opts.entry[key]).forEach(file => {
@@ -65,6 +66,7 @@ export default function(opts) {
     ]);
 
   if (opts.alias) {
+    // eslint-disable-next-line guard-for-in
     for (const key in opts.alias) {
       webpackConfig.resolve.alias.set(key, opts.alias[key]);
     }

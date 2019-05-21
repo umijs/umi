@@ -15,10 +15,7 @@ export default function() {
       const { cwd } = this;
       if (typeof val === 'string') {
         const themeFile = isAbsolute(val) ? val : join(cwd, val);
-        assert(
-          existsSync(themeFile),
-          `File ${val} of configure item theme not found.`,
-        );
+        assert(existsSync(themeFile), `File ${val} of configure item theme not found.`);
       }
     },
   };

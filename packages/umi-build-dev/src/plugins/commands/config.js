@@ -54,17 +54,12 @@ export default function(api) {
         set(args._[1], args._[2]);
         break;
       case 'delete':
-        assert(
-          args._[1],
-          `key must supplied, e.g. umi config delete externals`,
-        );
+        assert(args._[1], `key must supplied, e.g. umi config delete externals`);
         rm(args._[1]);
         break;
       default:
         throw new Error(
-          `unsupported action ${
-            args._[0]
-          } for umi config, try list, get, set and delete`,
+          `unsupported action ${args._[0]} for umi config, try list, get, set and delete`,
         );
     }
   }

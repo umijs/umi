@@ -12,15 +12,15 @@ function optsToArray(item) {
 }
 
 interface IOpts {
-  exclude: string[] | string,
-  update: Function,
+  exclude: string[] | string;
+  update: Function;
 }
 
 export default function(api: IApi, opts: IOpts) {
   // disable if routes if configured
   if (api.config.routes) return;
 
-  api.onOptionChange((newOpts) => {
+  api.onOptionChange(newOpts => {
     opts = newOpts;
     api.rebuildTmpFiles();
   });

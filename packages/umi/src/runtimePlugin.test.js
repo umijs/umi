@@ -1,12 +1,4 @@
-import {
-  init,
-  use,
-  getItem,
-  apply,
-  compose,
-  applyForEach,
-  mergeConfig,
-} from './runtimePlugin';
+import { init, use, getItem, apply, compose, applyForEach, mergeConfig } from './runtimePlugin';
 
 describe('runtimePlugin', () => {
   it('getItem', () => {

@@ -22,6 +22,7 @@ export default function(api) {
       RoutesManager.fetchRoutes();
 
       const { port } = args;
+
       process.env.NODE_ENV = 'development';
       service.applyPlugins('onStart');
       service._applyPluginsAsync('onStartAsync').then(() => {
@@ -37,17 +38,11 @@ export default function(api) {
         // Add more service methods.
         service.restart = why => {
           if (!server) {
-            log.debug(
-              `Server is not ready, ${chalk.underline.cyan(
-                'api.restart',
-              )} does not work.`,
-            );
+            log.debug(`Server is not ready, ${chalk.underline.cyan('api.restart')} does not work.`);
             return;
           }
           if (why) {
-            log.pending(
-              `Since ${chalk.cyan.underline(why)}, try to restart server...`,
-            );
+            log.pending(`Since ${chalk.cyan.underline(why)}, try to restart server...`);
           } else {
             log.pending(`Try to restart server...`);
           }
@@ -116,9 +111,12 @@ export default function(api) {
                   args: { server: devServer },
                 });
               },
-              afterServer(devServer) {
+              afterServer(devServer, devServerPort) {
                 service.applyPlugins('afterDevServer', {
-                  args: { server: devServer },
+                  args: {
+                    server: devServer,
+                    devServerPort,
+                  },
                 });
                 startWatch();
               },

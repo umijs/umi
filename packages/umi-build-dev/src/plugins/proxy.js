@@ -62,9 +62,7 @@ export default function(api) {
           .map(context => {
             let proxyOptions;
             // For backwards compatibility reasons.
-            const correctedContext = context
-              .replace(/^\*$/, '**')
-              .replace(/\/\*$/, '');
+            const correctedContext = context.replace(/^\*$/, '**').replace(/\/\*$/, '');
             if (typeof proxy[context] === 'string') {
               proxyOptions = {
                 context: correctedContext,
@@ -149,8 +147,7 @@ export default function(api) {
           }
           const bypass = typeof proxyConfig.bypass === 'function';
           // eslint-disable-next-line
-          const bypassUrl =
-            (bypass && proxyConfig.bypass(req, res, proxyConfig)) || false;
+          const bypassUrl = (bypass && proxyConfig.bypass(req, res, proxyConfig)) || false;
 
           if (bypassUrl) {
             req.url = bypassUrl;

@@ -77,6 +77,7 @@ export default function(api, opts = {}) {
     cwd,
     dirname(require.resolve('dva/package.json')),
   );
+  // eslint-disable-next-line import/no-dynamic-require
   const dvaVersion = require(join(dvaDir, 'package.json')).version;
 
   function getDvaJS() {

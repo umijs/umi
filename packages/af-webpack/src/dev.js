@@ -14,12 +14,8 @@ const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
-const CERT =
-  process.env.HTTPS && process.env.CERT
-    ? fs.readFileSync(process.env.CERT)
-    : '';
-const KEY =
-  process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.KEY) : '';
+const CERT = process.env.HTTPS && process.env.CERT ? fs.readFileSync(process.env.CERT) : '';
+const KEY = process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.KEY) : '';
 const noop = () => {};
 
 process.env.NODE_ENV = 'development';
@@ -156,7 +152,7 @@ export default function dev({
         console.log(chalk.cyan('Starting the development server...\n'));
         send({ type: STARTING });
         if (afterServer) {
-          afterServer(server);
+          afterServer(server, port);
         }
       });
     })

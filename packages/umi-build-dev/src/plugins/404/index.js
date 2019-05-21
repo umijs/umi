@@ -11,9 +11,7 @@ export default function(api) {
         component: `
 () => React.createElement(require('${winPath(
           join(__dirname, 'NotFound.js'),
-        )}').default, { pagesPath: '${
-          paths.pagesPath
-        }', hasRoutesInConfig: ${!!config.routes} })
+        )}').default, { pagesPath: '${paths.pagesPath}', hasRoutesInConfig: ${!!config.routes} })
         `.trim(),
       };
       const routes = cloneDeep(memo);

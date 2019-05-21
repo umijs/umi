@@ -304,6 +304,13 @@ Before dev server start.
 
 After dev server start.
 
+```js
+api.afterDevServer(({serve, devServerPort}) => {
+  // You can get the actual port number of the service monitor here.
+  console.log(devServerPort);
+});
+```
+
 ### onStart
 
 Triggered when `umi dev` or `umi build` start.
@@ -373,7 +380,7 @@ api.onPatchRoute({ route } => {
   // route:
   // {
   //   path: '/xxx',
-  //   Routes: [] 
+  //   Routes: []
   // }
 })
 ```
