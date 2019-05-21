@@ -1,4 +1,3 @@
-import { dirname } from 'path';
 
 export default function(context, opts = {}) {
   const nodeEnv = process.env.NODE_ENV;
@@ -11,9 +10,7 @@ export default function(context, opts = {}) {
   const transformRuntime =
     'transformRuntime' in opts
       ? opts.transformRuntime
-      : {
-          absoluteRuntime: dirname(require.resolve('../package')),
-        };
+      : {};
   const exclude = [
     'transform-typeof-symbol',
     'transform-unicode-regex',
