@@ -1,5 +1,4 @@
-import { join } from 'path';
-import { isGitUrl, parseGitUrl, getPathWithUrl, getParsedData } from './download';
+import { isGitUrl, parseGitUrl, getParsedData } from './download';
 
 describe('test block download utils', () => {
   it('isGitUrl', () => {
