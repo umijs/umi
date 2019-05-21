@@ -32,7 +32,19 @@ $ yarn global add umi
 $ umi -v
 2.0.0
 ```
-有些同学报错 umi:command not found，[点击这里查看解决方法。](https://yewills.github.io/2019/05/19/dva_umi/)
+> FAQ：如果提示 **umi: command not found**，你需要将`yarn global bin`路径配置到环境变量中，方法如下：
+```bash
+# mac系统:
+$ sudo vi ~/.bash_profile
+# 在.bash_profile中添加下面一行：
+export PATH="$PATH:`yarn global bin`"
+
+# windows系统:
+# 获取 global bin 的路径
+$ yarn global bin
+C:\Users\Administrator\AppData\Local\Yarn\bin
+# 复制上面的global bin 的路径，添加到系统环境变量 PATH。
+```
 
 
 ## 脚手架
