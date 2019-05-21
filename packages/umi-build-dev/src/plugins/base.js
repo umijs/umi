@@ -6,10 +6,7 @@ export default function(api) {
       return {
         name: 'base',
         validate(val) {
-          assert(
-            typeof val === 'string',
-            `base should be String, but got ${val}`,
-          );
+          assert(typeof val === 'string', `base should be String, but got ${val}`);
         },
         onChange() {
           api.service.restart(/* why */ 'Config base Changed');

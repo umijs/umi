@@ -8,9 +8,11 @@ export default function(api) {
       this.service = service;
       this.cache = cache;
     }
+
     onRequest(middleware) {
       this.cache.middlewares.push(middleware);
     }
+
     onSocketData(socketDataHandler) {
       this.cache.socketDataHandlers.push(socketDataHandler);
     }
@@ -39,6 +41,7 @@ export default function(api) {
       });
       const clients = [];
       uiPlugins.forEach(({ server, client }) => {
+        // eslint-disable-next-line import/no-dynamic-require
         require(server).default(new PluginAPI(api.service, cache));
         clients.push(client);
       });
@@ -67,6 +70,7 @@ export default function(api) {
                 },
               });
             });
+            // eslint-disable-next-line no-empty
           } catch (e) {}
         });
       });
@@ -76,9 +80,7 @@ export default function(api) {
           .map(client => {
             const cssPath = client.replace(/\.js$/, '.css');
             return [
-              existsSync(cssPath)
-                ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>`
-                : '',
+              existsSync(cssPath) ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>` : '',
               `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
             ].join('\r\n');
           })

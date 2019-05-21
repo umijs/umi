@@ -27,25 +27,17 @@ describe('normal', () => {
     expect(pathname).toEqual('/');
 
     // global.js
-    const text = await page.evaluate(
-      () => document.querySelector('h1').innerHTML,
-    );
+    const text = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(text).toEqual('index');
 
     // layout
-    const layoutLength = await page.evaluate(
-      () => document.querySelectorAll('#layout').length,
-    );
+    const layoutLength = await page.evaluate(() => document.querySelectorAll('#layout').length);
     expect(layoutLength).toEqual(1);
 
     // css modules
-    const h1ClassName = await page.evaluate(
-      () => document.querySelector('h1').className,
-    );
+    const h1ClassName = await page.evaluate(() => document.querySelector('h1').className);
     expect(h1ClassName.indexOf('index__a___')).toEqual(0);
-    const color = await page.evaluate(
-      () => getComputedStyle(document.querySelector('h1')).color,
-    );
+    const color = await page.evaluate(() => getComputedStyle(document.querySelector('h1')).color);
     expect(color).toEqual('rgb(255, 255, 255)');
 
     // global.css
@@ -59,9 +51,7 @@ describe('normal', () => {
     await page.goto(`http://localhost:${port}/404`, {
       waitUntil: 'networkidle2',
     });
-    const text = await page.evaluate(
-      () => document.querySelector('h1').innerHTML,
-    );
+    const text = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(text).toEqual('404');
   });
 
@@ -69,9 +59,7 @@ describe('normal', () => {
     await page.goto(`http://localhost:${port}/page-dont-exists`, {
       waitUntil: 'networkidle2',
     });
-    const text = await page.evaluate(
-      () => document.querySelector('h1').innerHTML,
-    );
+    const text = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(text).toEqual('umi development 404 page');
   });
 
@@ -155,15 +143,11 @@ describe('normal', () => {
     await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle2' });
     await page.click('button');
     await page.waitForSelector('h1');
-    const listText = await page.evaluate(
-      () => document.querySelector('h1').innerHTML,
-    );
+    const listText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(listText).toEqual('list');
     await page.click('button');
     await page.waitForSelector('h1');
-    const indexText = await page.evaluate(
-      () => document.querySelector('h1').innerHTML,
-    );
+    const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(indexText).toEqual('index');
   });
 

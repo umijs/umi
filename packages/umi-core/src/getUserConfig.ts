@@ -5,9 +5,9 @@ import extend from 'extend2';
 import { IConfig } from 'umi-types';
 
 interface IOpts {
-  cwd?: string,
-  defaultConfig?: IConfig,
-  onError?: Function,
+  cwd?: string;
+  defaultConfig?: IConfig;
+  onError?: Function;
 }
 
 export function getConfigFile(cwd) {
@@ -17,9 +17,7 @@ export function getConfigFile(cwd) {
   const validFiles = files.filter(f => existsSync(join(cwd, f)));
   assert(
     validFiles.length <= 1,
-    `Multiple config files (${validFiles.join(
-      ', ',
-    )}) were detected, please keep only one.`,
+    `Multiple config files (${validFiles.join(', ')}) were detected, please keep only one.`,
   );
   return validFiles[0] && join(cwd, validFiles[0]);
 }

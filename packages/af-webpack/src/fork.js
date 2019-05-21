@@ -1,13 +1,11 @@
 import { fork } from 'child_process';
 import send, { RESTART } from './send';
 
-let usedPorts = [];
+const usedPorts = [];
 
 export default function start(scriptPath) {
   const execArgv = process.execArgv.slice(0);
-  const inspectArgvIndex = execArgv.findIndex(argv =>
-    argv.includes('--inspect-brk'),
-  );
+  const inspectArgvIndex = execArgv.findIndex(argv => argv.includes('--inspect-brk'));
 
   if (inspectArgvIndex > -1) {
     const inspectArgv = execArgv[inspectArgvIndex];
@@ -22,7 +20,7 @@ export default function start(scriptPath) {
           port = 9230; // node default inspect port plus 1.
         }
         if (usedPorts.includes(port)) {
-          port++;
+          port += 1;
         }
         usedPorts.push(port);
         return `--inspect-brk=${port}`;

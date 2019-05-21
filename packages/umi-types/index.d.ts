@@ -481,10 +481,7 @@ export interface IApi {
   modifyRouterRootComponent: IModify<string>;
   modifyWebpackConfig: IModify<Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
-  chainWebpackConfig: IChangeWebpackConfig<
-    IWebpackChainConfig,
-    IAFWebpackConfig
-  >;
+  chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
   addMiddlewareAhead: IAdd<IMiddlewareFunction>;
   addMiddlewareBeforeMock: IAdd<IMiddlewareFunction>;

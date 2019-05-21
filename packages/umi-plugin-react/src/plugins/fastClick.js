@@ -5,10 +5,7 @@ export default function(api, options = {}) {
 
   api.addEntryImport(() => {
     return {
-      source: relative(
-        paths.absTmpDirPath,
-        options.libraryPath || require.resolve('fastclick'),
-      ),
+      source: relative(paths.absTmpDirPath, options.libraryPath || require.resolve('fastclick')),
       specifier: 'FastClick',
     };
   });

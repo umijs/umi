@@ -14,10 +14,7 @@ export default function() {
         ) {
           const { node } = path;
           if (node.source.value.startsWith('core-js/')) {
-            node.source.value = node.source.value.replace(
-              'core-js/',
-              `${coreJSPath}/`,
-            );
+            node.source.value = node.source.value.replace('core-js/', `${coreJSPath}/`);
           }
         }
       },

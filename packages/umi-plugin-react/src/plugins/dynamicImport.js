@@ -28,7 +28,7 @@ export default function(api, options) {
           join(paths.absSrcPath, options.loadingComponent),
         )}').default`;
       } else {
-        loadingOpts = `, loading: require('${options.loadingComponent.trim()}').default`;        
+        loadingOpts = `, loading: require('${options.loadingComponent.trim()}').default`;
       }
     }
 

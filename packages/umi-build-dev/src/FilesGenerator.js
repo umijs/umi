@@ -159,13 +159,7 @@ export default class FilesGenerator {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
-      initialValue: [
-        'patchRoutes',
-        'render',
-        'rootContainer',
-        'modifyRouteProps',
-        'onRouteChange',
-      ],
+      initialValue: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps', 'onRouteChange'],
     });
     assert(
       uniq(validKeys).length === validKeys.length,
@@ -220,11 +214,7 @@ require('umi/_createHistory').default({
         initialValue: initialHistory,
       }),
     });
-    writeFileSync(
-      join(paths.absTmpDirPath, 'history.js'),
-      `${content.trim()}\n`,
-      'utf-8',
-    );
+    writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
   }
 
   generateRouterJS() {
@@ -274,12 +264,9 @@ require('umi/_createHistory').default({
       ).join('\n'),
       routes,
       routerContent,
-      RouterRootComponent: this.service.applyPlugins(
-        'modifyRouterRootComponent',
-        {
-          initialValue: 'DefaultRouter',
-        },
-      ),
+      RouterRootComponent: this.service.applyPlugins('modifyRouterRootComponent', {
+        initialValue: 'DefaultRouter',
+      }),
     });
   }
 

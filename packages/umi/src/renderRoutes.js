@@ -14,15 +14,7 @@ const RouteInstanceMap = {
 };
 
 // Support pass props from layout to child routes
-const RouteWithProps = ({
-  path,
-  exact,
-  strict,
-  render,
-  location,
-  sensitive,
-  ...rest
-}) => (
+const RouteWithProps = ({ path, exact, strict, render, location, sensitive, ...rest }) => (
   <Route
     path={path}
     exact={exact}
@@ -80,11 +72,7 @@ function withRoutes(route) {
   return ret;
 }
 
-export default function renderRoutes(
-  routes,
-  extraProps = {},
-  switchProps = {},
-) {
+export default function renderRoutes(routes, extraProps = {}, switchProps = {}) {
   const plugins = require('umi/_runtimePlugin');
   return routes ? (
     <Switch {...switchProps}>

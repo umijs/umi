@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { statSync, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import { join, relative, dirname, extname, basename } from 'path';
 import rimraf from 'rimraf';
 
@@ -40,14 +40,8 @@ export default function(api) {
   }
 
   function rm(args) {
-    assert(
-      !config.routes,
-      `umi rm is not supported now when routes is configured.`,
-    );
-    assert(
-      args._ && args._.length === 2,
-      `Invalid args, checkout umi help rm for more details.`,
-    );
+    assert(!config.routes, `umi rm is not supported now when routes is configured.`);
+    assert(args._ && args._.length === 2, `Invalid args, checkout umi help rm for more details.`);
     const [type, name] = args._;
 
     switch (type) {
@@ -55,9 +49,7 @@ export default function(api) {
         deletePage(name);
         break;
       default:
-        throw new Error(
-          `Type ${type} not supported, checkout umi help rm for more details`,
-        );
+        throw new Error(`Type ${type} not supported, checkout umi help rm for more details`);
     }
 
     console.log('done');

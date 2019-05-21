@@ -38,17 +38,11 @@ export default function(api) {
         // Add more service methods.
         service.restart = why => {
           if (!server) {
-            log.debug(
-              `Server is not ready, ${chalk.underline.cyan(
-                'api.restart',
-              )} does not work.`,
-            );
+            log.debug(`Server is not ready, ${chalk.underline.cyan('api.restart')} does not work.`);
             return;
           }
           if (why) {
-            log.pending(
-              `Since ${chalk.cyan.underline(why)}, try to restart server...`,
-            );
+            log.pending(`Since ${chalk.cyan.underline(why)}, try to restart server...`);
           } else {
             log.pending(`Try to restart server...`);
           }

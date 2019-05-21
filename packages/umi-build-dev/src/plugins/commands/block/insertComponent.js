@@ -57,10 +57,7 @@ export default function(content, { relativePath, identifier }) {
     ExportDefaultDeclaration({ node }) {
       // for purefunction component
       const { declaration } = node;
-      if (
-        t.isArrowFunctionExpression(declaration) ||
-        t.isFunctionDeclaration(declaration)
-      ) {
+      if (t.isArrowFunctionExpression(declaration) || t.isFunctionDeclaration(declaration)) {
         if (t.isBlockStatement(declaration.body)) {
           insertComponentToRender(declaration.body, identifier);
         }

@@ -51,9 +51,7 @@ export function update({ key, value, content }) {
           }
         }
         if (!hasFound) {
-          properties.push(
-            t.objectProperty(t.identifier(key), buildExpression(value)),
-          );
+          properties.push(t.objectProperty(t.identifier(key), buildExpression(value)));
         }
       }
     },

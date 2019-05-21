@@ -11,21 +11,10 @@ const debug = require('debug')('umi-mock:createMiddleware');
 function noop() {}
 
 export default function(opts = {}) {
-  const {
-    cwd,
-    errors,
-    config,
-    absPagesPath,
-    absSrcPath,
-    watch,
-    onStart = noop,
-  } = opts;
+  const { cwd, errors, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
   const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
   const mockPaths = [absMockPath, absConfigPath, absConfigPathWithTS];
-  const paths = [
-    ...mockPaths,
-    basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath,
-  ];
+  const paths = [...mockPaths, basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath];
   let mockData = null;
 
   // registerBabel 和 clean require cache 包含整个 src 目录

@@ -1,10 +1,4 @@
-import {
-  existsSync,
-  readdirSync,
-  statSync,
-  readFileSync,
-  writeFileSync,
-} from 'fs';
+import { existsSync, readdirSync, statSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import mkdirp from 'mkdirp';
 import semver from 'semver';
@@ -78,10 +72,7 @@ export function dependenciesConflictCheck(
   projectPkgAllDeps = {},
 ) {
   const [lacks, conflicts] = checkConflict(blockPkgDeps, projectPkgDeps);
-  const [devLacks, devConflicts] = checkConflict(
-    blockPkgDevDeps,
-    projectPkgAllDeps,
-  );
+  const [devLacks, devConflicts] = checkConflict(blockPkgDevDeps, projectPkgAllDeps);
   return {
     conflicts,
     lacks,
@@ -110,10 +101,7 @@ export function getMockDependencies(mockContent, blockPkg) {
   return deps;
 }
 
-const singularReg = new RegExp(
-  `[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`,
-  'g',
-);
+const singularReg = new RegExp(`[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`, 'g');
 
 export function parseContentToSingular(content) {
   return content.replace(singularReg, (all, prefix, match) => {
@@ -160,9 +148,7 @@ export default api => {
         this.path = (await this.prompt({
           type: 'input',
           name: 'path',
-          message: `path ${
-            this.path
-          } already exist, press input a new path for it`,
+          message: `path ${this.path} already exist, press input a new path for it`,
           required: true,
           default: this.path,
         })).path;
@@ -190,10 +176,7 @@ export default api => {
 
       // check for duplicate block name under the path
       // if there is, prompt for a new block name
-      while (
-        !this.isPageBlock &&
-        existsSync(join(targetPath, this.blockFolderName))
-      ) {
+      while (!this.isPageBlock && existsSync(join(targetPath, this.blockFolderName))) {
         // eslint-disable-next-line no-await-in-loop
         this.blockFolderName = (await this.prompt({
           type: 'input',
@@ -207,20 +190,13 @@ export default api => {
         // if (!/^\//.test(blockFolderName)) {
         //   blockFolderName = `/${blockFolderName}`;
         // }
-        debug(
-          `blockFolderName exist get new blockFolderName ${
-            this.blockFolderName
-          }`,
-        );
+        debug(`blockFolderName exist get new blockFolderName ${this.blockFolderName}`);
       }
 
       // create container
       this.entryPath = findJS(targetPath, 'index');
       if (!this.entryPath) {
-        this.entryPath = join(
-          targetPath,
-          `index.${this.isTypeScript ? 'tsx' : 'js'}`,
-        );
+        this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
 
       if (!this.isPageBlock && !existsSync(this.entryPath)) {
@@ -236,9 +212,7 @@ export default api => {
           throw new Error('You stop it!');
         }
 
-        debug(
-          'start to generate the entry file for block(s) under the path...',
-        );
+        debug('start to generate the entry file for block(s) under the path...');
 
         this.needCreateNewRoute = true;
         const blockEntryTpl = readFileSync(

@@ -77,9 +77,7 @@ describe('Service', () => {
     ];
     expect(() => {
       service.initPlugins();
-    }).toThrow(
-      /The first argument for api.onOptionChange should be function in/,
-    );
+    }).toThrow(/The first argument for api.onOptionChange should be function in/);
   });
 
   it('applyPlugins and register', () => {
@@ -256,9 +254,7 @@ describe('Service', () => {
                 memo +
                 args +
                 1 +
-                (typeof userArgs[0] === 'function'
-                  ? userArgs[0]({ memo, args })
-                  : userArgs[0])
+                (typeof userArgs[0] === 'function' ? userArgs[0]({ memo, args }) : userArgs[0])
               );
             },
           });
@@ -324,6 +320,7 @@ describe('Service', () => {
         id: 'user:a',
         apply: api => {
           api.onOptionChange((...args) => {
+            // eslint-disable-next-line prefer-destructuring
             newOption = args[0];
           });
         },
@@ -408,6 +405,7 @@ describe('Service', () => {
             id: 'a',
             apply(api) {
               api.onOptionChange((...args) => {
+                // eslint-disable-next-line prefer-destructuring
                 newOption = args[0];
               });
             },

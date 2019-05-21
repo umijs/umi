@@ -7,10 +7,7 @@ class MockGenerator {
   }
 
   run() {
-    this.entryPath = join(
-      __dirname,
-      '../../../fixtures/block/antdpro/pages/index.js',
-    );
+    this.entryPath = join(__dirname, '../../../fixtures/block/antdpro/pages/index.js');
     this.blockFolderName = 'DemoTest';
   }
 
@@ -51,13 +48,7 @@ describe('umi block', () => {
       path: 'Test/NewPage',
       wrap: false,
       dryRun: true,
-      _: [
-        'add',
-        join(
-          __dirname,
-          '../../../fixtures/block/test-blocks/demo-with-dependencies',
-        ),
-      ],
+      _: ['add', join(__dirname, '../../../fixtures/block/test-blocks/demo-with-dependencies')],
     });
     expect(ctx.isLocal).toEqual(true);
     expect(ctx.routePath).toEqual('/Test/NewPage');
@@ -67,13 +58,7 @@ describe('umi block', () => {
     const { ctx: ctx2, generator: generator2 } = await commandHandler({
       path: 'Test/NewPage',
       dryRun: true,
-      _: [
-        'add',
-        join(
-          __dirname,
-          '../../../fixtures/block/test-blocks/demo-with-dependencies',
-        ),
-      ],
+      _: ['add', join(__dirname, '../../../fixtures/block/test-blocks/demo-with-dependencies')],
     });
     expect(ctx2.isLocal).toEqual(true);
     expect(ctx2.routePath).toEqual('/Test/NewPage');

@@ -8,8 +8,7 @@ export default function(api) {
       description: 'inspect internal webpack config',
       usage: 'umi inspect [options]',
       options: {
-        '--mode':
-          'specify env mode (development or production, default is development)',
+        '--mode': 'specify env mode (development or production, default is development)',
         '--rule <ruleName>': 'inspect a specific module rule',
         '--plugin <pluginName>': 'inspect a specific plugin',
         '--rules': 'list all module rule names',

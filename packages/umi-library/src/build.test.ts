@@ -25,10 +25,7 @@ describe('umi-library build', () => {
           mkdirp.sync(join(cwd, 'dist'));
           const pkgs = readdirSync(join(cwd, 'packages'));
           for (const pkg of pkgs) {
-            renameSync(
-              join(cwd, 'packages', pkg, 'dist'),
-              join(cwd, 'dist', pkg),
-            );
+            renameSync(join(cwd, 'packages', pkg, 'dist'), join(cwd, 'dist', pkg));
           }
         }
       });

@@ -65,10 +65,7 @@ describe('build', () => {
       });
     },
     replaceContent(content) {
-      return content.replace(
-        /\/\/ EXTERNAL MODULE[^\n]+/g,
-        '// $EXTERNAL_MODULE$',
-      );
+      return content.replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$');
     },
   });
 });

@@ -10,12 +10,7 @@ import {
 
 describe('test block generate', () => {
   it('dependenciesConflictCheck', () => {
-    const {
-      conflicts,
-      lacks,
-      devConflicts,
-      devLacks,
-    } = dependenciesConflictCheck(
+    const { conflicts, lacks, devConflicts, devLacks } = dependenciesConflictCheck(
       {
         react: '>=16.0.0',
         antd: '^3.0.0',
@@ -134,45 +129,36 @@ export default {
 
   it('getAllBlockDependencies', () => {
     expect(
-      getAllBlockDependencies(
-        join(__dirname, '../../../fixtures/block/test-blocks'),
-        {
-          blockConfig: {
-            dependencies: ['demo'],
-          },
-          dependencies: {},
+      getAllBlockDependencies(join(__dirname, '../../../fixtures/block/test-blocks'), {
+        blockConfig: {
+          dependencies: ['demo'],
         },
-      ),
+        dependencies: {},
+      }),
     ).toEqual({
       antd: '^3.8.0',
       'rc-select': '~2.1.0',
     });
 
     expect(
-      getAllBlockDependencies(
-        join(__dirname, '../../../fixtures/block/test-blocks'),
-        {
-          dependencies: {
-            moment: '2.3.2',
-          },
+      getAllBlockDependencies(join(__dirname, '../../../fixtures/block/test-blocks'), {
+        dependencies: {
+          moment: '2.3.2',
         },
-      ),
+      }),
     ).toEqual({
       moment: '2.3.2',
     });
 
     expect(
-      getAllBlockDependencies(
-        join(__dirname, '../../../fixtures/block/test-blocks'),
-        {
-          blockConfig: {
-            dependencies: ['demo', 'demo-with-dependencies'],
-          },
-          dependencies: {
-            moment: '2.3.2',
-          },
+      getAllBlockDependencies(join(__dirname, '../../../fixtures/block/test-blocks'), {
+        blockConfig: {
+          dependencies: ['demo', 'demo-with-dependencies'],
         },
-      ),
+        dependencies: {
+          moment: '2.3.2',
+        },
+      }),
     ).toEqual({
       moment: '2.3.2',
       antd: '^3.8.0',
@@ -180,14 +166,11 @@ export default {
     });
 
     expect(
-      getAllBlockDependencies(
-        join(__dirname, '../../../fixtures/block/test-blocks'),
-        {
-          blockConfig: {
-            dependencies: ['demo-with-dependencies'],
-          },
+      getAllBlockDependencies(join(__dirname, '../../../fixtures/block/test-blocks'), {
+        blockConfig: {
+          dependencies: ['demo-with-dependencies'],
         },
-      ),
+      }),
     ).toEqual({
       antd: '^3.8.0',
       'rc-select': '~2.1.0',
@@ -195,24 +178,19 @@ export default {
 
     try {
       expect(
-        getAllBlockDependencies(
-          join(__dirname, '../../../fixtures/block/test-blocks'),
-          {
-            blockConfig: {
-              dependencies: ['demo-with-dependencies'],
-            },
-            dependencies: {
-              antd: '2.0.0',
-            },
+        getAllBlockDependencies(join(__dirname, '../../../fixtures/block/test-blocks'), {
+          blockConfig: {
+            dependencies: ['demo-with-dependencies'],
           },
-        ),
+          dependencies: {
+            antd: '2.0.0',
+          },
+        }),
       ).toEqual({
         antd: '^3.10.0',
       });
     } catch (error) {
-      expect(error.message).toContain(
-        '* antd: ^3.8.0 not compatible with 2.0.0',
-      );
+      expect(error.message).toContain('* antd: ^3.8.0 not compatible with 2.0.0');
     }
   });
 });

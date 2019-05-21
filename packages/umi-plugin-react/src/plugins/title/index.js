@@ -36,19 +36,13 @@ export default (api, option) => {
   api.onPatchRoute(({ route }) => {
     if (option && (!route.routes || !route.routes.length) && route.title) {
       // only open this plugin when option exist
-      route.Routes = [
-        ...(route.Routes || []),
-        relative(paths.cwd, wrapperPath),
-      ];
+      route.Routes = [...(route.Routes || []), relative(paths.cwd, wrapperPath)];
     }
   });
 };
 
 function writeTitleWrapper(targetPath, useLocale, option) {
-  const wrapperTpl = readFileSync(
-    join(__dirname, './template/TitleWrapper.js.tpl'),
-    'utf-8',
-  );
+  const wrapperTpl = readFileSync(join(__dirname, './template/TitleWrapper.js.tpl'), 'utf-8');
   const wrapperContent = Mustache.render(wrapperTpl, {
     useLocale,
     option,
@@ -62,6 +56,7 @@ function parseOption(option) {
   let format = '{parent}{separator}{current}';
   let separator = ' - ';
   if (typeof option === 'object') {
+    // eslint-disable-next-line prefer-destructuring
     defaultTitle = option.defaultTitle;
     assert(defaultTitle, 'defaultTitle in title option is required.');
     format = option.format || format;

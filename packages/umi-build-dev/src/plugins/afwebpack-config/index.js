@@ -24,10 +24,8 @@ export default function(api) {
           validate,
           onChange(newConfig) {
             try {
-              debug(
-                `Config ${name} changed to ${JSON.stringify(newConfig[name])}`,
-              );
-            } catch (e) {}
+              debug(`Config ${name} changed to ${JSON.stringify(newConfig[name])}`);
+            } catch (e) {} // eslint-disable-line no-empty
             if (name === 'proxy') {
               global.g_umi_reloadProxy(newConfig[name]);
             } else {
@@ -87,28 +85,16 @@ export default function(api) {
       .set('umi/prompt', join(process.env.UMI_DIR, 'lib/prompt.js'))
       .set('umi/router', join(process.env.UMI_DIR, 'lib/router.js'))
       .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter.js'))
-      .set(
-        'umi/_renderRoutes',
-        join(process.env.UMI_DIR, 'lib/renderRoutes.js'),
-      )
-      .set(
-        'umi/_createHistory',
-        join(process.env.UMI_DIR, 'lib/createHistory.js'),
-      )
-      .set(
-        'umi/_runtimePlugin',
-        join(process.env.UMI_DIR, 'lib/runtimePlugin.js'),
-      );
+      .set('umi/_renderRoutes', join(process.env.UMI_DIR, 'lib/renderRoutes.js'))
+      .set('umi/_createHistory', join(process.env.UMI_DIR, 'lib/createHistory.js'))
+      .set('umi/_runtimePlugin', join(process.env.UMI_DIR, 'lib/runtimePlugin.js'));
   });
 
+  /* eslint-disable import/no-dynamic-require */
   api.addVersionInfo([
     `react@${require(join(reactDir, 'package.json')).version} (${reactDir})`,
-    `react-dom@${
-      require(join(reactDOMDir, 'package.json')).version
-    } (${reactDOMDir})`,
-    `react-router@${
-      require(join(reactRouterDir, 'package.json')).version
-    } (${reactRouterDir})`,
+    `react-dom@${require(join(reactDOMDir, 'package.json')).version} (${reactDOMDir})`,
+    `react-router@${require(join(reactRouterDir, 'package.json')).version} (${reactRouterDir})`,
     `react-router-dom@${
       require(join(reactRouterDOMDir, 'package.json')).version
     } (${reactRouterDOMDir})`,
@@ -116,18 +102,15 @@ export default function(api) {
       require(join(reactRouterConfigDir, 'package.json')).version
     } (${reactRouterConfigDir})`,
   ]);
+  /* eslint-enable import/no-dynamic-require */
 
   api.modifyAFWebpackOpts(memo => {
     const isDev = process.env.NODE_ENV === 'development';
 
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
-    const setPublicPathFile = join(
-      __dirname,
-      '../../../template/setPublicPath.js',
-    );
+    const setPublicPathFile = join(__dirname, '../../../template/setPublicPath.js');
     const setPublicPath =
-      config.runtimePublicPath ||
-      (config.exportStatic && config.exportStatic.dynamicRoot);
+      config.runtimePublicPath || (config.exportStatic && config.exportStatic.dynamicRoot);
     const entry = isDev
       ? {
           umi: [
@@ -195,11 +178,7 @@ export default function(api) {
         ),
         ...(config.define || {}),
       },
-      publicPath: isDev
-        ? '/'
-        : config.publicPath != null
-        ? config.publicPath
-        : '/',
+      publicPath: isDev ? '/' : config.publicPath != null ? config.publicPath : '/',
     };
   });
 }
