@@ -81,7 +81,11 @@ export default function(webpackConfig, opts) {
 
     rule
       .use('css-loader')
-        .loader(require.resolve('css-loader'))
+        .loader(
+          opts.cssLoaderVersion === 2
+            ? require.resolve('css-loader')
+            : require.resolve('css-loader-1')
+        )
         .options({
           ...cssOpts,
           ...(cssModules ? cssModulesConfig : {}),

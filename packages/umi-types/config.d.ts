@@ -39,6 +39,7 @@ export interface IAFWebpackConfig {
   disableCSSSourceMap?: boolean;
   disableDynamicImport?: boolean;
   disableGlobalVariables?: boolean;
+  cssLoaderVersion?: 1 | 2;
   entry?: any;
   env?: object;
   es5ImcompatibleVersions?: boolean;
