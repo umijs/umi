@@ -30,7 +30,7 @@ export default function(api) {
     const [historyType, opts] = getHistoryConfig(config.history);
 
     if (historyType === 'hash') {
-      const hashOpts = JSON.stringify(opts || {});
+      const hashOpts = JSON.stringify({ basename: config.base || '/', ...opts } || {});
       return `require('history/createHashHistory').default(${hashOpts})`;
     } else if (historyType === 'memory') {
       return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
