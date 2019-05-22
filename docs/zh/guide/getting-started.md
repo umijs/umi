@@ -47,7 +47,6 @@ C:\Users\Administrator\AppData\Local\Yarn\bin
 # 复制上面的 global bin 的路径，添加到系统环境变量 PATH。
 ```
 
-
 ## 脚手架
 
 先找个地方建个空目录。
