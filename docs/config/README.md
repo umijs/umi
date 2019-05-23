@@ -448,7 +448,7 @@ If you want to be compatible with older versions of iOS Safari's flexbox, try to
 
 ### uglifyJSOptions
 
-Configuration for [uglifyjs-webpack-plugin@1.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/version-1) .
+Configuration for [uglifyjs-webpack-plugin@2.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/master) .
 
 - Type: `Object` | `Function`
 - Default: [af-webpack/src/getConfig/uglifyOptions.js](https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/uglifyOptions.js#L6)
