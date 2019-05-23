@@ -43,6 +43,17 @@ describe('getRouteConfigFromDir', () => {
     expect(routes).toEqual([{ path: '/', exact: true, component: './index/index.js' }]);
   });
 
+  it('xxxx/index/index', () => {
+    const routes = getRoute({
+      cwd: join(__dirname, 'fixtures', 'xxxx-index-index'),
+      absPagesPath: join(__dirname, 'fixtures', 'xxxx-index-index'),
+    });
+    expect(routes).toEqual([
+      { path: '/jiuyue', exact: true, component: './jiuyue/index/index.js' },
+      { path: '/jiuyue/list', exact: true, component: './jiuyue/index/list.js' },
+    ]);
+  });
+
   it('remove last index', () => {
     const routes = getRoute({
       cwd: join(__dirname, 'fixtures', 'remove-last-index'),

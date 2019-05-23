@@ -21,6 +21,15 @@ umi 会根据 `pages` 目录自动生成路由配置。
   + users/
     - index.js
     - list.js
+  + jobs/
+    + index
+      - index.js
+      - list.js
+  + works/
+    + index
+      + index
+        - index.js
+        - list.js
   - index.js
 ```
 
@@ -31,6 +40,10 @@ umi 会根据 `pages` 目录自动生成路由配置。
   { path: '/', component: './pages/index.js' },
   { path: '/users/', component: './pages/users/index.js' },
   { path: '/users/list', component: './pages/users/list.js' },
+  { path: '/jobs/', component: './pages/jobs/index/index.js' },
+  { path: '/jobs/list', component: './pages/jobs/index/list.js' },
+  { path: '/works/', component: './pages/works/index/index/index.js' },
+  { path: '/works/list', component: './pages/works/index//index/list.js' },
 ]
 ```
 

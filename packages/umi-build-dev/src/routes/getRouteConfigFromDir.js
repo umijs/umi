@@ -131,8 +131,14 @@ function normalizePath(path) {
   if (newPath === '/index/index') {
     newPath = '/';
   }
-  // /xxxx/index -> /xxxx/
+  // /xxxx/index -> /xxxx
+  // /xxxx/index/index -> /xxxx
+  // /xxxx/index/list -> /xxxx/list
+  // /xxxx/index/index/index -> /xxxx
+  // /xxxx/index/index/list -> /xxxx/list
+
   newPath = newPath.replace(/\/index$/, '/');
+  newPath = newPath.replace(/\/index/g, '');
 
   // remove the last slash
   // e.g. /abc/ -> /abc
