@@ -168,7 +168,7 @@ hardSource 已经不可用，请在配置文件中移除它。
   * `srcPath` manifest 的文件路径，类型：`String`，默认值为 `src/manifest.json`（如果 `src` 不存在，为项目根目录）
 * `workboxPluginMode` Workbox 模式，类型：`String`，默认值为 `GenerateSW` 即生成全新 Service Worker ；也可选填 `InjectManifest` 即向已有 Service Worker 注入代码，适合需要配置复杂缓存规则的场景
 * `workboxOptions` Workbox [配置对象](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config)，其中部分重要属性如下:
-  * `swSrc` 类型：`String`，默认值为 `src/manifest.json`，只有选择了 `InjectManifest` 模式才需要配置
+  * `swSrc` 类型：`String`，默认值为 `src/service-worker.js`，只有选择了 `InjectManifest` 模式才需要配置
   * `swDest` 类型：`String`，最终输出的文件名，默认值为 `service-worker.js` 或者等于 `swSrc` 中的文件名
   * `importWorkboxFrom` 类型：`String`，默认从 Google CDN 加载 Workbox 代码，可选值 `'local'` 适合国内无法访问的环境
 

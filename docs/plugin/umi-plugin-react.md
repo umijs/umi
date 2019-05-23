@@ -156,8 +156,8 @@ options include:
 * `manifestOptions` Type: `Object`, includes following options:
   * `srcPath` path of manifest, Type: `String`, Default `src/manifest.json`
 * `workboxPluginMode` Workbox mode, Type: `String`, Default `GenerateSW`(generate a brand new Service Worker); or `InjectManifest`(inject code to existed Service Worker)
-* `workboxOptions` Workbox [Config](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config)，some important options:
-  * `swSrc` Type: `String`, Default `src/manifest.json`, only in `InjectManifest` mode
+* `workboxOptions` Check Workbox [Config](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config) for advanced usage. Few important options:
+  * `swSrc` Type: `String`, Default `src/service-worker.js`, applicable only in `InjectManifest` mode
   * `swDest` Type: `String`, Defaults to `service-worker.js` or the same with basename in `swSrc` if provided
   * `importWorkboxFrom` Type: `String`，Workbox loads from Google CDN by default, you can choose to `'local'` mode which will let Workbox loads from local copies
 
