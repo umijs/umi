@@ -5,6 +5,10 @@ export default {
       component: 'aa',
       routes: [
         {
+          path: '/aa',
+          redirect: '/testredirect',
+        },
+        {
           path: '/aa/vv',
           name: 'dd',
           component: 'adad', // 注释2
