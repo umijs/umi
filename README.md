@@ -21,7 +21,7 @@ English | [简体中文](./README_zh-CN.md)
 - 🚀 **High performance**, including PWA support, route-level code splitting, etc.
 - 💈 **Support for static export**, Suitable for environments without server
 - 🚄 **Fast dev startup**, including [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) support with config etc.
-- 🐠 **Polyfill solution**, add JS and CSS polypill with [targets](https://umijs.org/config/#targets) config, lowest to IE9
+- 🐠 **Polyfill solution**, add JS and CSS polyfill with [targets](https://umijs.org/config/#targets) config, lowest to IE9
 - 🍁 **Support TypeScript**, including d.ts definition and `umi test`
 - 🌴 **Deep integration with [dva](https://dvajs.com/)**, including duck directory support, automatic loading of model, code splitting, etc
 - ⛄️ **Support MPA**，based on [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
