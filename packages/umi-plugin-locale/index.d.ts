@@ -5,6 +5,7 @@
  *   - expose interfaces from `IntlShape`
  */
 import * as React from 'react';
+import zh_CN from '@/locales/zh-CN';
 // Basic types and interfaces
 export declare type DateSource = Date | string | number;
 export declare type MessageValue = string | number | boolean | Date | null | undefined;
@@ -12,7 +13,7 @@ export declare interface DateTimeFormatProps extends Intl.DateTimeFormatOptions 
   format?: string;
 }
 export interface MessageDescriptor {
-  id: string;
+  id: keyof typeof zh_CN;
   description?: string;
   defaultMessage?: string;
 }
