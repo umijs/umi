@@ -149,7 +149,7 @@ export default api => {
     );
 
     const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
+    const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
     const {
