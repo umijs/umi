@@ -13,7 +13,7 @@ export declare interface DateTimeFormatProps extends Intl.DateTimeFormatOptions 
   format?: string;
 }
 export interface MessageDescriptor {
-  id: keyof typeof zh_CN;
+  id: typeof zh_CN extends object ? keyof typeof zh_CN : string;
   description?: string;
   defaultMessage?: string;
 }
