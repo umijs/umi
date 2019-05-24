@@ -380,11 +380,13 @@ export default api => {
         },
       });
       try {
-        writeNewRoute(
-          newRouteConfig,
-          api.service.userConfig.file,
-          paths.absSrcPath,
-        );
+        if (!dryRun) {
+          writeNewRoute(
+            newRouteConfig,
+            api.service.userConfig.file,
+            paths.absSrcPath,
+          );
+        }
       } catch (e) {
         spinner.fail();
         throw new Error(e);
