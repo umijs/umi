@@ -5,8 +5,10 @@
  *   - expose interfaces from `IntlShape`
  */
 import * as React from 'react';
-import locales_zh_CN from '@/locales/zh-CN';
-import locale_zh_CN from '@/locale/zh-CN';
+// @ts-ignore
+import locales_zh_CN from '../../src/locales/zh-CN';
+// @ts-ignore
+import locale_zh_CN from '../../src/locale/zh-CN';
 // Basic types and interfaces
 export declare type DateSource = Date | string | number;
 export declare type MessageValue = string | number | boolean | Date | null | undefined;
