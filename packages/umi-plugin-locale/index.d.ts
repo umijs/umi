@@ -14,10 +14,9 @@ export declare interface DateTimeFormatProps extends Intl.DateTimeFormatOptions 
   format?: string;
 }
 
-type LiteralBase = undefined | null | boolean | number | string;
 type zh_CN = (keyof typeof locales_zh_CN) & (keyof typeof locale_zh_CN);
 export interface MessageDescriptor {
-  id: zh_CN extends LiteralBase ? zh_CN : string;
+  id: zh_CN extends string ? zh_CN : string;
   description?: string;
   defaultMessage?: string;
 }
