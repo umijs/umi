@@ -2,15 +2,12 @@ import slash from 'slash';
 import clonedeep from 'lodash.clonedeep';
 import rimraf from 'rimraf';
 import copy from 'copy';
-import { join, extname } from 'path';
+import { join } from 'path';
 
 import SafariNoModulePlugin, { safariFix } from './SafariNoModulePlugin';
 import RecordChunks from './RecordChunksMap';
 
-export default function(
-  api,
-  { isModernBuild = true, unsafeInline = false } = {},
-) {
+export default function(api, { isModernBuild = true, unsafeInline = false } = {}) {
   // Only suitable for production mode
   if (process.env.NODE_ENV !== 'production' || !isModernBuild) {
     return;
@@ -41,11 +38,9 @@ export default function(
           leagcyChunksMap = require(_resolveDeps(
             'umi-build-dev/lib/html/formatChunksMap.js',
           )).default(chunksToMap); //eslint-disable-line
-          //writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
           resolve();
         },
         onFail({ err }) {
-          //rimraf.sync(dllDir);
           reject(err);
         },
       });
@@ -86,9 +81,7 @@ export default function(
     leagcyWebpackConfig.plugins = plugins;
     // fix minimizer
     if (minimizer === 'uglifyjs') {
-      const dftUOpt = require(_resolveDeps(
-        'af-webpack/lib/getConfig/uglifyOptions.js',
-      )).default; //eslint-disable-line
+      const dftUOpt = require(_resolveDeps('af-webpack/lib/getConfig/uglifyOptions.js')).default; //eslint-disable-line
       const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
       uglifyJSOptions = {
         ...uglifyJSOptions,
@@ -107,27 +100,17 @@ export default function(
       const uses = rule.use || [];
       if (uses.length === 0) return;
       uses.forEach((item, itemIndex) => {
-        if (
-          slash(item.loader).indexOf(
-            'node_modules/babel-loader/lib/index.js',
-          ) >= 0
-        ) {
+        if (slash(item.loader).indexOf('node_modules/babel-loader/lib/index.js') >= 0) {
           const { presets = [] } = item.options;
           if (presets.length === 0) return;
           presets.forEach((preset, presetIndex) => {
             const [presetPath, options] = preset;
-            if (
-              slash(presetPath).indexOf(
-                'node_modules/babel-preset-umi/lib/index.js',
-              ) >= 0
-            ) {
+            if (slash(presetPath).indexOf('node_modules/babel-preset-umi/lib/index.js') >= 0) {
               delete options.targets.esmodules;
               if (!leagcyBabelModules) {
                 options.env.modules = 'commonjs';
               }
-              rules[ruleIndex].use[itemIndex].options.presets[
-                presetIndex
-              ].options = options;
+              rules[ruleIndex].use[itemIndex].options.presets[presetIndex].options = options;
             }
           });
         }
@@ -136,15 +119,12 @@ export default function(
 
     leagcyWebpackConfig.module.rules = rules;
 
-    leagcyWebpackConfig.entry = Object.keys(leagcyWebpackConfig.entry).reduce(
-      (prev, i) => {
-        return {
-          ...prev,
-          [`${i}-leagcy`]: leagcyWebpackConfig.entry[i],
-        };
-      },
-      {},
-    );
+    leagcyWebpackConfig.entry = Object.keys(leagcyWebpackConfig.entry).reduce((prev, i) => {
+      return {
+        ...prev,
+        [`${i}-leagcy`]: leagcyWebpackConfig.entry[i],
+      };
+    }, {});
 
     leagcyWebpackConfig.output.path = leagcyOutputPath;
 
