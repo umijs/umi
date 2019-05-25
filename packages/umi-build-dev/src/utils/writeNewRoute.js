@@ -130,6 +130,12 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
       return false;
     }
     const { properties } = ele;
+    const redirect = properties.find(p => {
+      return p.key.name === 'redirect';
+    });
+    if (redirect) {
+      return false;
+    }
     const pathProp = properties.find(p => {
       return p.key.name === 'path';
     });
@@ -146,7 +152,7 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
   debug('paths', paths);
 
   const matchedIndex = paths.findIndex(p => {
-    return newRoute.path.indexOf(p) === 0;
+    return p && newRoute.path.indexOf(p) === 0;
   });
 
   const newNode = getNewRouteNode(newRoute);
