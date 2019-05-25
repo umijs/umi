@@ -38,46 +38,48 @@ export default function(api) {
             // which listen to `emit` event can detect assets
             service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
           }
-          require('af-webpack/build').default({
-            cwd,
-            webpackConfig: service.webpackConfig,
-            onSuccess({ stats }) {
-              debug('Build success');
-              if (process.env.RM_TMPDIR !== 'none') {
-                debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
-                rimraf.sync(paths.absTmpDirPath);
-              }
-              service.applyPlugins('onBuildSuccess', {
-                args: {
-                  stats,
-                },
-              });
-              service
-                ._applyPluginsAsync('onBuildSuccessAsync', {
+          service._applyPluginsAsync('beforeProdCompileAsync').then(() => {
+            require('af-webpack/build').default({
+              cwd,
+              webpackConfig: service.webpackConfig,
+              onSuccess({ stats }) {
+                debug('Build success');
+                if (process.env.RM_TMPDIR !== 'none') {
+                  debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
+                  rimraf.sync(paths.absTmpDirPath);
+                }
+                service.applyPlugins('onBuildSuccess', {
                   args: {
                     stats,
                   },
-                })
-                .then(() => {
-                  debug('Build success end');
-
-                  notify.onBuildComplete(
-                    { name: 'umi', version: 2 },
-                    { err: null },
-                  );
-                  resolve();
                 });
-            },
-            onFail({ err, stats }) {
-              service.applyPlugins('onBuildFail', {
-                args: {
-                  err,
-                  stats,
-                },
-              });
-              notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
-              reject(err);
-            },
+                service
+                  ._applyPluginsAsync('onBuildSuccessAsync', {
+                    args: {
+                      stats,
+                    },
+                  })
+                  .then(() => {
+                    debug('Build success end');
+
+                    notify.onBuildComplete(
+                      { name: 'umi', version: 2 },
+                      { err: null },
+                    );
+                    resolve();
+                  });
+              },
+              onFail({ err, stats }) {
+                service.applyPlugins('onBuildFail', {
+                  args: {
+                    err,
+                    stats,
+                  },
+                });
+                notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
+                reject(err);
+              },
+            });
           });
         });
       });
