@@ -3,9 +3,7 @@ import getScripts from './getScripts';
 describe('scripts plugin', () => {
   it('getScripts string', () => {
     const option1 = [];
-    const option2 = [
-      'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
-    ];
+    const option2 = ['https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js'];
     const option3 = [`console.log(1);`];
     const option4 = [
       'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
@@ -15,8 +13,7 @@ describe('scripts plugin', () => {
     expect(getScripts(option1)).toEqual([]);
     expect(getScripts(option2)).toEqual([
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       },
     ]);
     expect(getScripts(option3)).toEqual([
@@ -26,8 +23,7 @@ describe('scripts plugin', () => {
     ]);
     expect(getScripts(option4)).toEqual([
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       },
       {
         content: 'alert(1);',
@@ -38,8 +34,7 @@ describe('scripts plugin', () => {
   it('getScripts object', () => {
     const option2 = [
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
         crossOrigin: 'anonymous',
       },
       'alert(1);',
@@ -48,16 +43,14 @@ describe('scripts plugin', () => {
 
     expect(getScripts(option2)).toEqual([
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
         crossOrigin: 'anonymous',
       },
       {
         content: 'alert(1);',
       },
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       },
     ]);
   });
@@ -77,8 +70,7 @@ describe('scripts plugin', () => {
         content: 'console.log(1);',
       },
       {
-        src:
-          'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
+        src: 'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
       },
     ]);
   });

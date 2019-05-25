@@ -9,6 +9,7 @@ export default connect(state => ({
     <div className={styles.normal}>
       <div className={styles.header}>
         <img
+          alt="logo"
           className={styles.logo}
           src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
         />
@@ -20,6 +21,7 @@ export default connect(state => ({
           <ul>
             {props.service.panels.map((panel, i) => {
               return (
+                // eslint-disable-next-line react/no-array-index-key
                 <li key={i}>
                   <NavLink activeClassName={styles.active} to={panel.path}>
                     {panel.title}

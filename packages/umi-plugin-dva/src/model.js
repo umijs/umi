@@ -13,10 +13,7 @@ export default api => {
 
       const models = config.singular ? 'model' : 'models';
       const name = this.args[0].toString();
-      assert(
-        !name.includes('/'),
-        `model name should not contains /, bug got ${name}`,
-      );
+      assert(!name.includes('/'), `model name should not contains /, bug got ${name}`);
 
       this.fs.copyTpl(
         join(absTemplatePath, 'model.js'),

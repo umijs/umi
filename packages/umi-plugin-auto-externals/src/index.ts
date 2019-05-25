@@ -45,17 +45,11 @@ export default function(
   });
 
   // 修改 script 标签
-  const scripts = configs.reduce(
-    (accumulator, current) => accumulator.concat(current.scripts),
-    [],
-  );
+  const scripts = configs.reduce((accumulator, current) => accumulator.concat(current.scripts), []);
   api.addHTMLHeadScript(() => scripts.map(src => ({ src, crossorigin: true })));
 
   // 添加 style
-  const styles = configs.reduce(
-    (accumulator, current) => accumulator.concat(current.styles),
-    [],
-  );
+  const styles = configs.reduce((accumulator, current) => accumulator.concat(current.styles), []);
   api.addHTMLLink(() => {
     return styles.map(href => ({
       rel: 'stylesheet',
@@ -73,9 +67,7 @@ export default function(
         `urlTemplate config should includes {{ library }}@{{ version }}`,
       );
       const copyConfig = scripts.concat(styles).map(path => {
-        const [nameVersion, ...relPathArr] = path
-          .split(`${PATH_KEY}/`)[1]
-          .split('/');
+        const [nameVersion, ...relPathArr] = path.split(`${PATH_KEY}/`)[1].split('/');
         const relPath = relPathArr.join('/');
         const [name] = nameVersion.split('@');
         return {
@@ -104,10 +96,7 @@ function getRealPath({ name, relPath, alias, cwd }) {
   } else {
     realPath = join(cwd, 'node_modules', name, relPath);
   }
-  assert(
-    existsSync(realPath),
-    `Copy to output path failed: ${realPath} not exists`,
-  );
+  assert(existsSync(realPath), `Copy to output path failed: ${realPath} not exists`);
   return realPath;
 }
 

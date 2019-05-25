@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { register } from 'register-service-worker';
 
 // polyfill the CustomEvent in ie9/10/11
@@ -8,12 +9,7 @@ import { register } from 'register-service-worker';
   function CustomEvent(event, params) {
     params = params || { bubbles: false, cancelable: false, detail: undefined };
     var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(
-      event,
-      params.bubbles,
-      params.cancelable,
-      params.detail,
-    );
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return evt;
   }
 

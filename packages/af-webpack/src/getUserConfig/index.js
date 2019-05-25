@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 import assert from 'assert';
 import stripJsonComments from 'strip-json-comments';
 import didyoumean from 'didyoumean';
@@ -192,9 +192,9 @@ export default function getUserConfig(opts = {}) {
 
             if (!isEqual(newConfig[name], config[name])) {
               debug(
-                `Config ${name} changed, from ${JSON.stringify(
-                  config[name],
-                )} to ${JSON.stringify(newConfig[name])}`,
+                `Config ${name} changed, from ${JSON.stringify(config[name])} to ${JSON.stringify(
+                  newConfig[name],
+                )}`,
               );
               (onChange || restart.bind(null, `${name} changed`)).call(null, {
                 name,

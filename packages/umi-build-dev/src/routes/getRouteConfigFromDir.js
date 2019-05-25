@@ -1,4 +1,4 @@
-import { readdirSync, statSync, existsSync, readFileSync } from 'fs';
+import { readdirSync, statSync, readFileSync } from 'fs';
 import { join, extname, basename, relative } from 'path';
 import { winPath, findJS } from 'umi-utils';
 import assert from 'assert';
@@ -14,18 +14,12 @@ export default function getRouteConfigFromDir(paths) {
 
   const absLayoutFile = findJS(absPagesPath, '_layout');
   if (absLayoutFile) {
-    throw new Error(
-      'root _layout.js is not supported, use layouts/index.js instead',
-    );
+    throw new Error('root _layout.js is not supported, use layouts/index.js instead');
   }
 
   const routes = files
     .filter(file => {
-      if (
-        file.charAt(0) === '.' ||
-        file.charAt(0) === '_' ||
-        /\.(test|spec)\.(j|t)sx?$/.test(file)
-      )
+      if (file.charAt(0) === '.' || file.charAt(0) === '_' || /\.(test|spec)\.(j|t)sx?$/.test(file))
         return false;
       return true;
     })

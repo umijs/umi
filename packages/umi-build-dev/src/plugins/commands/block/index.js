@@ -4,19 +4,24 @@ import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import execa from 'execa';
 import ora from 'ora';
-import { merge } from 'lodash';
+import { merge, isPlainObject } from 'lodash';
 import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
-import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies } from './getBlockGenerator';
+import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies, getAllBlockDependencies } from './getBlockGenerator';
+import appendBlockToContainer from './appendBlockToContainer';
 
 export default api => {
-  const { log, paths, debug, applyPlugins } = api;
+  const { log, paths, debug, applyPlugins, config } = api;
+  const blockConfig = config.block || {};
+
+  debug(`blockConfig ${blockConfig}`);
 
   async function block(args = {}) {
+    let retCtx;
     switch (args._[0]) {
       case 'add':
-        await add(args);
+      retCtx = await add(args);
         break;
       case 'list':
         await list(args);
@@ -26,6 +31,7 @@ export default api => {
           `Please run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
         );
     }
+    return retCtx; // return for test
   }
 
   function printBlocks(blocks, parentPath = '') {
@@ -57,7 +63,7 @@ export default api => {
   function getCtx(url, args = {}) {
     debug(`get url ${url}`);
 
-    const ctx = getParsedData(url);
+    const ctx = getParsedData(url, blockConfig);
     if (!ctx.isLocal) {
       const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
       const templateTmpDirPath = join(blocksTempPath, ctx.id);
@@ -68,6 +74,10 @@ export default api => {
         templateTmpDirPath,
         blocksTempPath,
         repoExists: existsSync(templateTmpDirPath),
+      });
+    } else {
+      merge(ctx, {
+        templateTmpDirPath: dirname(url),
       });
     }
 
@@ -139,7 +149,7 @@ export default api => {
     );
 
     const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
+    const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
     const {
@@ -148,6 +158,8 @@ export default api => {
       dryRun,
       skipDependencies,
       skipModifyRoutes,
+      wrap: isWrap,
+      layout: isLayout,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -176,14 +188,16 @@ export default api => {
 
     // setup route path
     if (!path) {
-      const pkgName = getNameFromPkg(ctx.pkg);
-      if (!pkgName) {
+      const blockName = getNameFromPkg(ctx.pkg);
+      if (!blockName) {
         return log.error("not find name in block's package.json");
       }
-      ctx.routePath = `/${pkgName}`;
+      ctx.routePath = `/${blockName}`;
+      log.info(`Not find --path, use block name '${ctx.routePath}' as the target path.`);
     } else {
       ctx.routePath = path;
     }
+
     // fix demo => /demo
     if (!/^\//.test(ctx.routePath)) {
       ctx.routePath = `/${ctx.routePath}`;
@@ -211,10 +225,11 @@ export default api => {
       if (existsSync(mockFilePath)) {
         devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
       }
+      const allBlockDependencies = getAllBlockDependencies(ctx.templateTmpDirPath, ctx.pkg);
       // get confilict dependencies and lack dependencies
       const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
         initialValue: dependenciesConflictCheck(
-          ctx.pkg.dependencies,
+          allBlockDependencies,
           projectPkg.dependencies,
           devDependencies,
           {
@@ -299,9 +314,17 @@ export default api => {
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
+    let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
+    if (isWrap !== undefined) {
+      // when user use `umi block add --direct`
+      isPageBlock = !isWrap;
+    }
+    debug(`isPageBlock: ${isPageBlock}`);
     const generator = new BlockGenerator(args._.slice(2), {
       sourcePath: ctx.sourcePath,
       path: ctx.routePath,
+      blockName: getNameFromPkg(ctx.pkg),
+      isPageBlock,
       dryRun,
       env: {
         cwd: api.cwd,
@@ -314,10 +337,36 @@ export default api => {
       spinner.fail();
       throw new Error(e);
     }
+
+    // write dependencies
+    if (ctx.pkg.blockConfig && ctx.pkg.blockConfig.dependencies) {
+      const subBlocks = ctx.pkg.blockConfig.dependencies;
+      try {
+        await Promise.all(subBlocks.map(block => {
+          const subBlockPath = join(ctx.templateTmpDirPath, block);
+          debug(`subBlockPath: ${subBlockPath}`);
+          return new BlockGenerator(args._.slice(2), {
+            sourcePath: subBlockPath,
+            path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
+            // eslint-disable-next-line
+            blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
+            isPageBlock: false,
+            dryRun,
+            env: {
+              cwd: api.cwd,
+            },
+            resolved: __dirname,
+          }).run();
+        }));
+      } catch (e) {
+        spinner.fail();
+        throw new Error(e);
+      }
+    }
     spinner.succeed('Generate files');
 
     // 6. write routes
-    if (api.config.routes && !skipModifyRoutes) {
+    if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
       spinner.start(
         `Write route ${generator.path} to ${api.service.userConfig.file}`,
       );
@@ -327,14 +376,35 @@ export default api => {
         initialValue: {
           path: generator.path.toLowerCase(),
           component: `.${generator.path}`,
+          ...(isLayout ? { routes: [] } : {}),
         },
       });
       try {
-        writeNewRoute(
-          newRouteConfig,
-          api.service.userConfig.file,
-          paths.absSrcPath,
-        );
+        if (!dryRun) {
+          writeNewRoute(
+            newRouteConfig,
+            api.service.userConfig.file,
+            paths.absSrcPath,
+          );
+        }
+      } catch (e) {
+        spinner.fail();
+        throw new Error(e);
+      }
+      spinner.succeed();
+    }
+
+    // 6. import block to container
+    if (!generator.isPageBlock) {
+      spinner.start(
+        `Write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
+      );
+      try {
+        appendBlockToContainer({
+          entryPath: generator.entryPath,
+          blockFolderName: generator.blockFolderName,
+          dryRun,
+        });
       } catch (e) {
         spinner.fail();
         throw new Error(e);
@@ -358,6 +428,11 @@ export default api => {
       );
       log.error('copy to clipboard failed');
     }
+
+    return {
+      generator,
+      ctx,
+    }; // return ctx and generator for test
   }
 
   const details = `
@@ -375,6 +450,8 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
+  ${chalk.green(`--no-wrap           `)} add the block to a independent directory
+  ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
 
 Examples:
 
@@ -400,9 +477,24 @@ Examples:
       details,
     },
     args => {
-      block(args).catch(e => {
+      // reture only for test
+      return block(args).catch(e => {
         log.error(e);
       });
     },
   );
+
+  api._registerConfig(() => {
+    return () => {
+      return {
+        name: 'block',
+        validate(val) {
+          assert(
+            isPlainObject(val),
+            `Configure item block should be Plain Object, but got ${val}.`,
+          );
+        },
+      };
+    }
+  });
 };

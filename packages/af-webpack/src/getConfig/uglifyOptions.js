@@ -5,11 +5,8 @@
  */
 export default {
   uglifyOptions: {
-    parse: {
-      ecma: 8,
-    },
+    parse: {},
     compress: {
-      ecma: 5,
       warnings: false,
 
       // turn off flags with small gains to speed up minification
@@ -42,11 +39,8 @@ export default {
       dead_code: true,
       evaluate: true,
     },
-    mangle: {
-      safari10: true,
-    },
+    mangle: {},
     output: {
-      ecma: 5,
       comments: false,
       ascii_only: true,
     },

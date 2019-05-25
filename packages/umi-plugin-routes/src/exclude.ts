@@ -15,10 +15,10 @@ export default function(routes, excludes: IExclude[]) {
           return false;
         }
         if (
-          route.component
-          && !route.component.startsWith('() =>')
-          && exclude instanceof RegExp
-          && exclude.test(route.component)
+          route.component &&
+          !route.component.startsWith('() =>') &&
+          exclude instanceof RegExp &&
+          exclude.test(route.component)
         ) {
           return false;
         }

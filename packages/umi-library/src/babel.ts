@@ -49,9 +49,7 @@ export default async function(opts: IBabelOpts) {
 
   function transform(opts: ITransformOpts) {
     const { file, type } = opts;
-    signale.info(
-      `[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`,
-    );
+    signale.info(`[${type}] Transform: ${slash(file.path).replace(`${cwd}/`, '')}`);
 
     const babelOpts = getBabelConfig({
       target,
@@ -71,9 +69,7 @@ export default async function(opts: IBabelOpts) {
   function getTSConfig() {
     const tsconfigPath = join(cwd, 'tsconfig.json');
     if (existsSync(tsconfigPath)) {
-      return (
-        JSON.parse(readFileSync(tsconfigPath, 'utf-8')).compilerOptions || {}
-      );
+      return JSON.parse(readFileSync(tsconfigPath, 'utf-8')).compilerOptions || {};
     } else {
       return {};
     }

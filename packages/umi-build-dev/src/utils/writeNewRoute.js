@@ -15,11 +15,7 @@ const debug = require('debug')('umi-build-dev:writeNewRoute');
  * @param {*} absSrcPath 代码路径
  */
 export default function writeNewRoute(newRoute, configPath, absSrcPath) {
-  const { code, routesPath } = getNewRouteCode(
-    configPath,
-    newRoute,
-    absSrcPath,
-  );
+  const { code, routesPath } = getNewRouteCode(configPath, newRoute, absSrcPath);
   writeFileSync(routesPath, code, 'utf-8');
 }
 
@@ -32,6 +28,7 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
   debug(`find routes in configPath: ${configPath}`);
   const ast = parser.parse(readFileSync(configPath, 'utf-8'), {
     sourceType: 'module',
+    plugins: ['typescript'],
   });
   let routesNode = null;
   const importModules = [];
@@ -70,23 +67,25 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
       }
     },
     ExportDefaultDeclaration({ node }) {
+      // export default []
       const { declaration } = node;
       if (t.isArrayExpression(declaration)) {
         routesNode = declaration;
       }
-      if (t.isObjectExpression(declaration)) {
-        const { properties } = declaration;
-        properties.forEach(p => {
-          const { key, value } = p;
-          if (
-            t.isObjectProperty(p) &&
-            t.isIdentifier(key) &&
-            key.name === 'routes'
-          ) {
-            routesNode = value;
-          }
-        });
+    },
+    ObjectExpression({ node, parent }) {
+      // find routes on object, like { routes: [] }
+      if (t.isArrayExpression(parent)) {
+        // children routes
+        return;
       }
+      const { properties } = node;
+      properties.forEach(p => {
+        const { key, value } = p;
+        if (t.isObjectProperty(p) && t.isIdentifier(key) && key.name === 'routes') {
+          routesNode = value;
+        }
+      });
     },
   });
 
@@ -97,11 +96,7 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
         return m.identifierName === routesNode.name;
       });
       if (source) {
-        const newConfigPath = getModulePath(
-          configPath,
-          source.modulePath,
-          absSrcPath,
-        );
+        const newConfigPath = getModulePath(configPath, source.modulePath, absSrcPath);
         return getNewRouteCode(newConfigPath, newRoute, absSrcPath);
       } else {
         throw new Error(`can not find import of ${routesNode.name}`);
@@ -119,8 +114,7 @@ export function getNewRouteCode(configPath, newRoute, absSrcPath) {
 }
 
 function getNewRouteNode(newRoute) {
-  return parser.parse(`(${JSON.stringify(newRoute)})`).program.body[0]
-    .expression;
+  return parser.parse(`(${JSON.stringify(newRoute)})`).program.body[0].expression;
 }
 
 /**
@@ -129,17 +123,19 @@ function getNewRouteNode(newRoute) {
  * @param {*} newRoute 新的路由配置
  */
 export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
-  debug(
-    `writeRouteNode currentPath newRoute.path: ${
-      newRoute.path
-    } currentPath: ${currentPath}`,
-  );
+  debug(`writeRouteNode currentPath newRoute.path: ${newRoute.path} currentPath: ${currentPath}`);
   const { elements } = targetNode;
   const paths = elements.map(ele => {
     if (!t.isObjectExpression(ele)) {
       return false;
     }
     const { properties } = ele;
+    const redirect = properties.find(p => {
+      return p.key.name === 'redirect';
+    });
+    if (redirect) {
+      return false;
+    }
     const pathProp = properties.find(p => {
       return p.key.name === 'path';
     });
@@ -156,7 +152,7 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
   debug('paths', paths);
 
   const matchedIndex = paths.findIndex(p => {
-    return newRoute.path.indexOf(p) === 0;
+    return p && newRoute.path.indexOf(p) === 0;
   });
 
   const newNode = getNewRouteNode(newRoute);
@@ -169,8 +165,7 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
     const matchedEle = elements[matchedIndex];
     const routesProp = matchedEle.properties.find(p => {
       return (
-        p.key.name === 'routes' ||
-        (process.env.BIGFISH_COMPAT && p.key.name === 'childRoutes')
+        p.key.name === 'routes' || (process.env.BIGFISH_COMPAT && p.key.name === 'childRoutes')
       );
     });
     if (!routesProp) {
@@ -193,7 +188,7 @@ function generateCode(ast) {
     singleQuote: true,
     trailingComma: 'es5',
     printWidth: 100,
-    parser: 'babylon',
+    parser: 'typescript',
   });
 }
 

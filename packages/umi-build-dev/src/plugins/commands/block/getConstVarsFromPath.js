@@ -4,6 +4,8 @@ import upperCamelCase from 'uppercamelcase';
 function stripFirstSlash(path) {
   if (path.charAt(0) === '/') {
     return path.slice(1);
+  } else {
+    return path;
   }
 }
 

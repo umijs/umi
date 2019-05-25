@@ -11,10 +11,7 @@ export default function(api) {
       return {
         name: 'mock',
         validate(val) {
-          assert(
-            isPlainObject(val),
-            `Configure item mock should be Plain Object, but got ${val}.`,
-          );
+          assert(isPlainObject(val), `Configure item mock should be Plain Object, but got ${val}.`);
         },
         onChange() {
           api.service.restart(/* why */ 'Config mock Changed');

@@ -4,7 +4,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug, config, log } = api;
+  const { service, debug, config } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(
@@ -30,9 +30,7 @@ export default function(api) {
           filesGenerator.generate();
 
           if (process.env.HTML !== 'none') {
-            const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(
-              service,
-            );
+            const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(service);
             // move html-webpack-plugin to the head, so that
             // other plugins (like workbox-webpack-plugin)
             // which listen to `emit` event can detect assets
@@ -62,10 +60,7 @@ export default function(api) {
                   .then(() => {
                     debug('Build success end');
 
-                    notify.onBuildComplete(
-                      { name: 'umi', version: 2 },
-                      { err: null },
-                    );
+                    notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
                     resolve();
                   });
               },

@@ -68,7 +68,7 @@ function _setIntlObject(theIntl) {
 }
 
 /**
- * 用于出发 context 的重新渲染 方法。可以实现不刷新进行切换语言
+ * 用于触发 context 的重新渲染 方法。可以实现不刷新进行切换语言
  * @param {*} context
  */
 function _setLocaleContext(context) {

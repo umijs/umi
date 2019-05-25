@@ -20,9 +20,9 @@ describe('getPlugins', () => {
   });
 
   it('diffPlugins isEqual with options', () => {
-    expect(
-      diffPlugins([['./a', { a: 1 }]], [['./a', { a: 1 }]], { cwd }),
-    ).toEqual({ optionChanged: [] });
+    expect(diffPlugins([['./a', { a: 1 }]], [['./a', { a: 1 }]], { cwd })).toEqual({
+      optionChanged: [],
+    });
   });
 
   it('diffPlugins isEqual with functions', () => {

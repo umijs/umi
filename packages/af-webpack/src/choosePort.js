@@ -51,10 +51,7 @@ export default function choosePort(defaultPort) {
       }),
     err => {
       throw new Error(
-        chalk.red(
-          `Could not find an open port.\nNetwork error message: ${err.message ||
-            err}\n`,
-        ),
+        chalk.red(`Could not find an open port.\nNetwork error message: ${err.message || err}\n`),
       );
     },
   );

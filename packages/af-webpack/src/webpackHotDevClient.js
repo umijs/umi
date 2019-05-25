@@ -69,13 +69,8 @@ if (process.env.SOCKET_SERVER !== 'none') {
         }),
     {
       onclose() {
-        if (
-          typeof console !== 'undefined' &&
-          typeof console.info === 'function'
-        ) {
-          console.info(
-            'The development server has disconnected.\nRefresh the page if necessary.',
-          );
+        if (typeof console !== 'undefined' && typeof console.info === 'function') {
+          console.info('The development server has disconnected.\nRefresh the page if necessary.');
         }
       },
       onmessage(e) {

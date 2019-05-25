@@ -241,6 +241,20 @@ export default {
 }
 ```
 
+### block <Badge text="2.7.0+"/>
+
+- Type: `Object`
+- Default: `{ defaultGitUrl: "https://github.com/umijs/umi-blocks" }`
+
+```js
+export default {
+  block: {
+    defaultGitUrl: "https://github.com/ant-design/pro-blocks",
+    npmClient: "cnpm", // 优先级低于 umi block add [block] --npm-client
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack
@@ -450,7 +464,7 @@ const config = {
 
 ### uglifyJSOptions
 
-配置传给 [uglifyjs-webpack-plugin@1.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/version-1) 的配置项。
+配置传给 [uglifyjs-webpack-plugin@2.x](https://github.com/webpack-contrib/uglifyjs-webpack-plugin/tree/master) 的配置项。
 
 * 类型：`Object` | `Function`
 * 默认：[af-webpack/src/getConfig/uglifyOptions.js](https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/uglifyOptions.js#L6)

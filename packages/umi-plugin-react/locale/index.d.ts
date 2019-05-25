@@ -1,3 +1,3 @@
-import * as locale from "umi-plugin-locale";
+import * as locale from 'umi-plugin-locale';
 
 export = locale;

@@ -123,9 +123,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
       ],
       plugins: [autoprefixer(autoprefixerOpts), ...extraPostCSSPlugins],
     }),
-    ...(replaceOpts && Object.keys(replaceOpts || {}).length
-      ? [replace(replaceOpts)]
-      : []),
+    ...(replaceOpts && Object.keys(replaceOpts || {}).length ? [replace(replaceOpts)] : []),
     nodeResolve({
       jsnext: true,
       extensions,
@@ -163,15 +161,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
           input,
           output: {
             format,
-            file: join(
-              cwd,
-              `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`,
-            ),
+            file: join(cwd, `dist/${(esm && (esm as any).file) || `${name}.esm`}.js`),
           },
-          plugins: [
-            ...plugins,
-            ...(esm && (esm as any).minify ? [terser(terserOpts)] : []),
-          ],
+          plugins: [...plugins, ...(esm && (esm as any).minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external),
         },
         ...(esm && (esm as any).mjs
@@ -180,10 +172,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 input,
                 output: {
                   format,
-                  file: join(
-                    cwd,
-                    `dist/${(esm && (esm as any).file) || `${name}`}.mjs`,
-                  ),
+                  file: join(cwd, `dist/${(esm && (esm as any).file) || `${name}`}.mjs`),
                 },
                 plugins: [
                   ...plugins,
@@ -206,10 +195,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             format,
             file: join(cwd, `dist/${(cjs && (cjs as any).file) || name}.js`),
           },
-          plugins: [
-            ...plugins,
-            ...(cjs && (cjs as any).minify ? [terser(terserOpts)] : []),
-          ],
+          plugins: [...plugins, ...(cjs && (cjs as any).minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external),
         },
       ];
@@ -230,8 +216,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
             format,
             file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.js`),
             globals: umd && umd.globals,
-            name:
-              (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
+            name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
           },
           plugins: [
             ...plugins,
@@ -248,14 +233,9 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
                 input,
                 output: {
                   format,
-                  file: join(
-                    cwd,
-                    `dist/${(umd && umd.file) || `${name}.umd`}.min.js`,
-                  ),
+                  file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.min.js`),
                   globals: umd && umd.globals,
-                  name:
-                    (umd && umd.name) ||
-                    (pkg.name && camelCase(basename(pkg.name))),
+                  name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
                 },
                 plugins: [
                   ...plugins,

@@ -6,10 +6,7 @@ export default function(api) {
       return {
         name: 'mountElementId',
         validate(val) {
-          assert(
-            typeof val === 'string',
-            `mountElementId should be String, but got ${val}`,
-          );
+          assert(typeof val === 'string', `mountElementId should be String, but got ${val}`);
         },
         onChange() {
           api.restart();

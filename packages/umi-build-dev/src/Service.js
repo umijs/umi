@@ -54,9 +54,9 @@ export default class Service {
     try {
       assert(
         Array.isArray(this.config.plugins || []),
-        `Configure item ${chalk.underline.cyan(
-          'plugins',
-        )} should be Array, but got ${chalk.red(typeof this.config.plugins)}`,
+        `Configure item ${chalk.underline.cyan('plugins')} should be Array, but got ${chalk.red(
+          typeof this.config.plugins,
+        )}`,
       );
       return getPlugins({
         cwd: this.cwd,
@@ -168,16 +168,9 @@ ${getCodeFrame(e, { cwd: this.cwd })}
 
     // Throw error for methods that can't be called after plugins is initialized
     this.plugins.forEach(plugin => {
-      [
-        'onOptionChange',
-        'register',
-        'registerMethod',
-        'registerPlugin',
-      ].forEach(method => {
+      ['onOptionChange', 'register', 'registerMethod', 'registerPlugin'].forEach(method => {
         plugin._api[method] = () => {
-          throw new Error(
-            `api.${method}() should not be called after plugin is initialized.`,
-          );
+          throw new Error(`api.${method}() should not be called after plugin is initialized.`);
         };
       });
     });
@@ -216,6 +209,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     let memo = opts.initialValue;
     for (const hook of hooks) {
       const { fn } = hook;
+      // eslint-disable-next-line no-await-in-loop
       memo = await fn({
         memo,
         args: opts.args,
@@ -233,6 +227,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
         debug(`load env from ${path}`);
         const parsed = parse(readFileSync(path, 'utf-8'));
         Object.keys(parsed).forEach(key => {
+          // eslint-disable-next-line no-prototype-builtins
           if (!process.env.hasOwnProperty(key)) {
             process.env[key] = parsed[key];
           }
@@ -285,10 +280,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       opts = null;
     }
     opts = opts || {};
-    assert(
-      !(name in this.commands),
-      `Command ${name} exists, please select another one.`,
-    );
+    assert(!(name in this.commands), `Command ${name} exists, please select another one.`);
     this.commands[name] = { fn, opts };
   }
 

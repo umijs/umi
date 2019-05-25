@@ -50,10 +50,7 @@ export default api => {
       }
 
       const path = this.args[0];
-      assert(
-        typeof path === 'string',
-        `You should specify the path, e.g. umi g layout abc`,
-      );
+      assert(typeof path === 'string', `You should specify the path, e.g. umi g layout abc`);
       this.fs.copyTpl(
         this.templatePath('layout.js'),
         join(paths.absPagesPath, path, `_layout.${jsxExt}`),

@@ -26,12 +26,10 @@ export default {
         headScripts: [
           { content: 'window.g_umiUIPlugins = [];' },
           {
-            src:
-              'https://unpkg.com/react@16.7.0-alpha.2/umd/react.development.js',
+            src: 'https://unpkg.com/react@16.7.0-alpha.2/umd/react.development.js',
           },
           {
-            src:
-              'https://unpkg.com/react-dom@16.7.0-alpha.2/umd/react-dom.development.js',
+            src: 'https://unpkg.com/react-dom@16.7.0-alpha.2/umd/react-dom.development.js',
           },
           {
             src: 'https://unpkg.com/moment@2.22.2/min/moment.min.js',

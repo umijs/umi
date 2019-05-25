@@ -39,6 +39,7 @@ export interface IAFWebpackConfig {
   disableCSSSourceMap?: boolean;
   disableDynamicImport?: boolean;
   disableGlobalVariables?: boolean;
+  cssLoaderVersion?: 1 | 2;
   entry?: any;
   env?: object;
   es5ImcompatibleVersions?: boolean;
@@ -67,10 +68,7 @@ export interface IAFWebpackConfig {
 interface IConfig extends IAFWebpackConfig {
   // basic config
   // sorted by alphabet
-  chainWebpack?: IChangeWebpackConfigFunc<
-    IWebpackChainConfig,
-    IAFWebpackConfig
-  >; // https://github.com/mozilla-neutrino/webpack-chain
+  chainWebpack?: IChangeWebpackConfigFunc<IWebpackChainConfig, IAFWebpackConfig>; // https://github.com/mozilla-neutrino/webpack-chain
   context?: object;
   disableRedirectHoist?: boolean;
   exportStatic?: boolean | IExportStaticOpts;

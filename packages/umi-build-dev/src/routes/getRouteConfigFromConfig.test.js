@@ -12,22 +12,13 @@ describe('getRoutesConfigFromConfig', () => {
   });
 
   it("don't set exact if it' supplied", () => {
-    const routes = getRoute([
-      { path: '/a', exact: true },
-      { path: '/b', exact: false },
-    ]);
-    expect(routes).toEqual([
-      { path: '/a', exact: true },
-      { path: '/b', exact: false },
-    ]);
+    const routes = getRoute([{ path: '/a', exact: true }, { path: '/b', exact: false }]);
+    expect(routes).toEqual([{ path: '/a', exact: true }, { path: '/b', exact: false }]);
   });
 
   it("don't set exact if have routes", () => {
     const routes = getRoute([{ path: '/a' }, { path: '/b', routes: [] }]);
-    expect(routes).toEqual([
-      { path: '/a', exact: true },
-      { path: '/b', routes: [] },
-    ]);
+    expect(routes).toEqual([{ path: '/a', exact: true }, { path: '/b', routes: [] }]);
   });
 
   it('throw error if not Array', () => {
@@ -48,10 +39,7 @@ describe('getRoutesConfigFromConfig', () => {
       {
         path: '/b',
         component: 'B',
-        routes: [
-          { path: '/b/c', component: 'C' },
-          { path: '/b/d', component: 'D' },
-        ],
+        routes: [{ path: '/b/c', component: 'C' }, { path: '/b/d', component: 'D' }],
       },
     ]);
     expect(routes).toEqual([
@@ -108,9 +96,7 @@ describe('getRoutesConfigFromConfig', () => {
 
   it('customize pagesPath', () => {
     const routes = getRoute([{ path: '/a', component: 'A' }], 'src/new-pages');
-    expect(routes).toEqual([
-      { path: '/a', component: './src/new-pages/A', exact: true },
-    ]);
+    expect(routes).toEqual([{ path: '/a', component: './src/new-pages/A', exact: true }]);
   });
 
   it('bigfish compatibility', () => {
@@ -127,9 +113,7 @@ describe('getRoutesConfigFromConfig', () => {
       { path: '/b', indexRoute: { redirect: '/a', component: 'B', test: 123 } },
       {
         path: '/c',
-        childRoutes: [
-          { path: 'e', indexRoute: { component: 'A', title: 'title' } },
-        ],
+        childRoutes: [{ path: 'e', indexRoute: { component: 'A', title: 'title' } }],
       },
       { path: '/d', indexRoute: { redirect: '/a' } },
       { path: '/e', indexRoute: { redirect: 'b' } },

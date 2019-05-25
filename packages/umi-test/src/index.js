@@ -38,9 +38,9 @@ export default function(opts = {}) {
       '\\.svg$': require.resolve('./transformers/fileTransformer'),
     },
     transformIgnorePatterns: [
-      // 加 [^/]+? 是为了兼容 tnpm 的目录结构
+      // 加 [^/]*? 是为了兼容 tnpm 的目录结构
       // 比如：_umi-test@1.5.5@umi-test
-      `node_modules/(?!([^/]+?umi|[^/]+?umi-test|[^/]+?enzyme-adapter-react-16|${transformInclude.join(
+      `node_modules/(?!([^/]*?umi|[^/]*?umi-test|[^/]*?enzyme-adapter-react-16|${transformInclude.join(
         '|',
       )})/)`,
     ],

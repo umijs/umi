@@ -1,6 +1,6 @@
 import { join } from 'path';
-import dvaPlugin, { getGlobalModels, getModel } from './index';
 import { winPath } from 'umi-utils';
+import dvaPlugin, { getGlobalModels, getModel } from './index';
 
 const fixtures = join(__dirname, 'fixtures');
 const base = join(fixtures, 'getModel');
@@ -90,9 +90,7 @@ describe('umi-plugin-dva', () => {
       },
       /* shouldImportDynamic */ true,
     );
-    expect(normalizeModels(models, absSrcPath)).toEqual([
-      '$CWD$/models/global.js',
-    ]);
+    expect(normalizeModels(models, absSrcPath)).toEqual(['$CWD$/models/global.js']);
   });
 
   it('getGlobalModels with shouldImportDynamic=false', () => {
