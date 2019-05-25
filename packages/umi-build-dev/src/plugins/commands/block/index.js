@@ -149,7 +149,7 @@ export default api => {
     );
 
     const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
-    const defaultNpmClient = useYarn ? 'yarn' : 'npm';
+    const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
     const {
@@ -159,6 +159,7 @@ export default api => {
       skipDependencies,
       skipModifyRoutes,
       wrap: isWrap,
+      layout: isLayout,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -375,14 +376,17 @@ export default api => {
         initialValue: {
           path: generator.path.toLowerCase(),
           component: `.${generator.path}`,
+          ...(isLayout ? { routes: [] } : {}),
         },
       });
       try {
-        writeNewRoute(
-          newRouteConfig,
-          api.service.userConfig.file,
-          paths.absSrcPath,
-        );
+        if (!dryRun) {
+          writeNewRoute(
+            newRouteConfig,
+            api.service.userConfig.file,
+            paths.absSrcPath,
+          );
+        }
       } catch (e) {
         spinner.fail();
         throw new Error(e);
@@ -447,6 +451,7 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
   ${chalk.green(`--no-wrap           `)} add the block to a independent directory
+  ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
 
 Examples:
 

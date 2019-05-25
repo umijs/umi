@@ -239,6 +239,20 @@ export default {
 }
 ```
 
+### block <Badge text="2.7.0+"/>
+
+- Type: `Object`
+- Default: `{ defaultGitUrl: "https://github.com/umijs/umi-blocks" }`
+
+```js
+export default {
+  block: {
+    defaultGitUrl: "https://github.com/ant-design/pro-blocks",
+    npmClient: "cnpm",
+  }
+}
+```
+
 ## webpack
 
 ### chainWebpack

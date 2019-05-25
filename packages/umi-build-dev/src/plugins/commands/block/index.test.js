@@ -17,9 +17,17 @@ class MockGenerator {
 describe('umi block', () => {
   it('run block command right', async () => {
     const commandFn = jest.fn();
+    const routeConfigFn = jest.fn();
     let commandHandler = null;
     const mockApi = {
-      config: {},
+      service: {
+        userConfig: {
+          file: '/testpath',
+        },
+      },
+      config: {
+        routes: [],
+      },
       log: {
         error: e => {
           console.error(e);
@@ -27,6 +35,9 @@ describe('umi block', () => {
         success: () => {},
       },
       applyPlugins: (name, { initialValue }) => {
+        if (name === '_modifyBlockNewRouteConfig') {
+          routeConfigFn(initialValue);
+        }
         return initialValue;
       },
       Generator: MockGenerator,
@@ -47,6 +58,7 @@ describe('umi block', () => {
     const { ctx, generator } = await commandHandler({
       path: 'Test/NewPage',
       wrap: false,
+      layout: true,
       dryRun: true,
       _: ['add', join(__dirname, '../../../fixtures/block/test-blocks/demo-with-dependencies')],
     });
@@ -54,6 +66,11 @@ describe('umi block', () => {
     expect(ctx.routePath).toEqual('/Test/NewPage');
     expect(ctx.pkg.name).toEqual('@umi-blocks/DemoWithDependencies');
     expect(generator._opts.isPageBlock).toEqual(true);
+    expect(routeConfigFn).toBeCalledWith({
+      component: './Test/NewPage',
+      path: '/test/newpage',
+      routes: [],
+    });
 
     const { ctx: ctx2, generator: generator2 } = await commandHandler({
       path: 'Test/NewPage',
