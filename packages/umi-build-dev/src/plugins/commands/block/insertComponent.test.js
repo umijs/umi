@@ -128,4 +128,29 @@ export default (props: TestPageProps) => {
 };
 `);
   });
+
+  it('can insert with component with return redirectly', () => {
+    const code = `import React from 'react';
+import Demo1 from './Demo1';
+export default () => (
+  <React.Fragment>
+    <Demo />
+  </React.Fragment>
+);
+`;
+    const result = insert(code, {
+      relativePath: './Demo2',
+      identifier: 'DemoName',
+    });
+    expect(result).toEqual(`import React from 'react';
+import Demo1 from './Demo1';
+import DemoName from './Demo2';
+export default () => (
+  <React.Fragment>
+    <Demo />
+    <DemoName />
+  </React.Fragment>
+);
+`);
+  });
 });
