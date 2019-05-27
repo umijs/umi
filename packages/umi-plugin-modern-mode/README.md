@@ -19,7 +19,12 @@ export default {
 
 ## Options
 
-TODO
+```
+{ isModernBuild = true, unsafeInline = false } = Options
+```
+isModernBuild: modern mode
+
+unsafeInline: inline safari nomodule pollyfill
 
 ## LICENSE
 

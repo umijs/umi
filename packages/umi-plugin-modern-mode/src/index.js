@@ -26,15 +26,17 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
     rimraf.sync(leagcyOutputPath);
     const webpackConfig = leagcyWebpackConfig;
     return new Promise((resolve, reject) => {
+      // eslint-disable-next-line
       require(_resolveDeps('af-webpack/build')).default({
-        // eslint-disable-line
         webpackConfig,
         onSuccess() {
           console.log('[Leagcy] Build done');
           console.log();
+          // eslint-disable-next-line
           const chunksToMap = require(_resolveDeps(
             'umi-build-dev/lib/plugins/commands/build/chunksToMap.js',
-          )).default(record.chunks); //eslint-disable-line
+          )).default(record.chunks);
+          // eslint-disable-next-line
           leagcyChunksMap = require(_resolveDeps(
             'umi-build-dev/lib/html/formatChunksMap.js',
           )).default(chunksToMap); //eslint-disable-line
