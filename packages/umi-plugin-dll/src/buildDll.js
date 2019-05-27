@@ -17,7 +17,7 @@ export default function(opts = {}) {
     uniq(Object.keys(pkg.dependencies || {}).concat(include || [])),
     exclude,
   ).filter(dep => {
-    return dep !== 'umi' && !dep.startsWith('umi-plugin-');
+    return dep !== 'umi' && !dep.startsWith('umi-plugin-') && !dep.startsWith('@types/');
   });
   const webpack = require(_resolveDeps('af-webpack/webpack'));
   const files = uniq([
