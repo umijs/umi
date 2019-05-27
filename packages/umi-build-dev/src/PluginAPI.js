@@ -112,7 +112,7 @@ export default class PluginAPI {
       '_modifyBlockTarget',
       '_modifyCommand',
       '_modifyBlockNewRouteConfig',
-      'beforeProdCompileAsync',
+      'beforeBuildCompileAsync',
     ].forEach(method => {
       if (Array.isArray(method)) {
         this.registerMethod(...method);

@@ -36,7 +36,7 @@ export default function(api) {
             // which listen to `emit` event can detect assets
             service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
           }
-          service._applyPluginsAsync('beforeProdCompileAsync').then(() => {
+          service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
               webpackConfig: service.webpackConfig,
