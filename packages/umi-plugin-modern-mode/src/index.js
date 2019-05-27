@@ -22,7 +22,7 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
   const leagcyOutputPath = join(paths.cwd, './.leagcy-dist');
 
   // run leagcy build before modern build
-  api.beforeProdCompileAsync(() => {
+  api.beforeBuildCompileAsync(() => {
     rimraf.sync(leagcyOutputPath);
     const webpackConfig = leagcyWebpackConfig;
     return new Promise((resolve, reject) => {
@@ -89,7 +89,7 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
         ...uglifyJSOptions,
         ...dftUOpt,
       };
-      const buildinMini = optimization.minimizer;
+      const buildinMini = optimization.minimizer || [];
       // todo validate
       buildinMini.pop();
       buildinMini.push(new UglifyJsPlugin(uglifyJSOptions));
