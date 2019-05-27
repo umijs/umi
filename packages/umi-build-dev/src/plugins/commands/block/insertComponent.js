@@ -12,15 +12,19 @@ function insertComponentToRender(blockStatement, identifier) {
     return t.isReturnStatement(b);
   });
   if (t.isJSXElement(returnBlock.argument)) {
-    // https://babeljs.io/docs/en/babel-types#jsxelement
-    const newElement = t.jsxElement(
-      t.jsxOpeningElement(t.jsxIdentifier(identifier), [], true),
-      null,
-      [],
-      true,
-    );
-    returnBlock.argument.children.push(newElement);
+    insertComponentToElement(returnBlock.argument, identifier);
   }
+}
+
+function insertComponentToElement(element, identifier) {
+  // https://babeljs.io/docs/en/babel-types#jsxelement
+  const newElement = t.jsxElement(
+    t.jsxOpeningElement(t.jsxIdentifier(identifier), [], true),
+    null,
+    [],
+    true,
+  );
+  element.children.push(newElement);
 }
 
 export default function(content, { relativePath, identifier }) {
@@ -60,6 +64,8 @@ export default function(content, { relativePath, identifier }) {
       if (t.isArrowFunctionExpression(declaration) || t.isFunctionDeclaration(declaration)) {
         if (t.isBlockStatement(declaration.body)) {
           insertComponentToRender(declaration.body, identifier);
+        } else if (t.isJSXElement(declaration.body)) {
+          insertComponentToElement(declaration.body, identifier);
         }
       }
     },
