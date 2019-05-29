@@ -36,6 +36,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
     cjs,
     file,
     target = 'browser',
+    extractCSS = false,
     cssModules: modules,
     extraPostCSSPlugins = [],
     extraBabelPresets = [],
@@ -111,6 +112,7 @@ export default function(opts: IGetRollupConfigOpts): RollupOptions[] {
   };
   const plugins = [
     postcss({
+      extract: extractCSS,
       modules,
       use: [
         [
