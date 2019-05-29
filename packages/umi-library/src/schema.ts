@@ -72,6 +72,9 @@ export default {
     cssModules: {
       oneOf: [{ type: 'boolean' }, { type: 'object' }],
     },
+    extractCSS: {
+      type: 'boolean',
+    },
     autoprefixer: {
       type: 'object',
     },
