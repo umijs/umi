@@ -86,15 +86,20 @@ export default async function(opts: IBabelOpts) {
         gulpIf(
           f => /\.jsx?$/.test(f.path),
           through.obj((file, env, cb) => {
-            file.contents = Buffer.from(
-              transform({
-                file,
-                type,
-              }),
-            );
-            // .jsx -> .js
-            file.path = file.path.replace(extname(file.path), '.js');
-            cb(null, file);
+            try {
+              file.contents = Buffer.from(
+                transform({
+                  file,
+                  type,
+                }),
+              );
+              // .jsx -> .js
+              file.path = file.path.replace(extname(file.path), '.js');
+              cb(null, file);
+            } catch (e) {
+              signale.error(`Compiled faild: ${file.path}`);
+              cb(null);
+            }
           }),
         ),
       )
