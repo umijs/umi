@@ -37,7 +37,6 @@ export default function(api) {
             service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
           }
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
-            console.log('haha');
             require('af-webpack/build').default({
               cwd,
               webpackConfig: service.webpackConfig,
