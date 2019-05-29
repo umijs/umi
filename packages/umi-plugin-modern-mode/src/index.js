@@ -3,6 +3,7 @@ import clonedeep from 'lodash.clonedeep';
 import rimraf from 'rimraf';
 import copy from 'copy';
 import { join } from 'path';
+import assert from 'assert';
 
 import SafariNoModulePlugin, { safariFix } from './SafariNoModulePlugin';
 import RecordChunks from './RecordChunksMap';
@@ -12,14 +13,25 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
   if (process.env.NODE_ENV !== 'production' || !isModernBuild) {
     return;
   }
+
   let leagcyWebpackConfig = null;
   let leagcyBabelModules = null;
-  let minimizer = null;
-  let uglifyJSOptions = {};
   let record = null;
   let leagcyChunksMap = null;
   const { paths, _resolveDeps } = api;
   const leagcyOutputPath = join(paths.cwd, './.leagcy-dist');
+
+  api.onStart(() => {
+    const { treeShaking, minimizer } = api.config;
+    assert(
+      treeShaking === true,
+      `treeShaking must be set to true when using umi-plugin-modern-mode`,
+    );
+    assert(
+      minimizer === 'terserjs',
+      `minimizer must be set to terserjs when using umi-plugin-modern-mode`,
+    );
+  });
 
   // run leagcy build before modern build
   api.beforeBuildCompileAsync(() => {
@@ -51,20 +63,15 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
   // 2. get leagcy webpack config
   api.modifyDefaultConfig(memo => {
     leagcyBabelModules = !!memo.treeShaking;
-    minimizer = memo.minimizer || 'uglifyjs';
-    if (memo.minimizer !== 'terserjs') {
-      uglifyJSOptions = memo.uglifyJSOptions || {};
-    }
 
     return {
       ...memo,
       targets: {
         esmodules: true,
       },
-      treeShaking: true,
-      minimizer: 'terserjs',
     };
   });
+
   // add SafariNoModulePlugin
   api.chainWebpackConfig(config => {
     config.plugin('modern').use(SafariNoModulePlugin);
@@ -73,26 +80,14 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
   api.modifyWebpackConfig(config => {
     leagcyWebpackConfig = clonedeep(config);
 
-    const { plugins, module, optimization } = leagcyWebpackConfig;
+    const { plugins, module } = leagcyWebpackConfig;
+
     // remove SafariNoModulePlugin
     plugins.pop();
     record = new RecordChunks();
     plugins.push(record);
     leagcyWebpackConfig.plugins = plugins;
-    // fix minimizer
-    // if (minimizer === 'uglifyjs') {
-    //   const dftUOpt = require(_resolveDeps('af-webpack/lib/getConfig/uglifyOptions.js')).default; //eslint-disable-line
-    //   const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-    //   uglifyJSOptions = {
-    //     ...uglifyJSOptions,
-    //     ...dftUOpt,
-    //   };
-    //   const buildinMini = optimization.minimizer || [];
-    //   // todo validate
-    //   buildinMini.pop();
-    //   buildinMini.push(new UglifyJsPlugin(uglifyJSOptions));
-    //   leagcyWebpackConfig.optimization.minimizer = buildinMini;
-    // }
+
     // fix babel
     const { rules = [] } = module;
     if (rules.length === 0) return;
