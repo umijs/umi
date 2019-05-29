@@ -7,6 +7,35 @@ import getYamlConfig from './getYamlConfig';
 const debug = require('debug')('umi-build-dev:getRouteConfigFromDir');
 const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
 
+export function sortRoutes(routes) {
+  const paramsRoutes = [];
+  const exactRoutes = [];
+  const layoutRoutes = [];
+
+  routes.forEach(route => {
+    const { _isParamsRoute, exact } = route;
+    if (_isParamsRoute) {
+      paramsRoutes.push(route);
+    } else if (exact) {
+      exactRoutes.push(route);
+    } else {
+      layoutRoutes.push(route);
+    }
+  });
+
+  assert(paramsRoutes.length <= 1, `We should not have multiple dynamic routes under a directory.`);
+
+  return [...exactRoutes, ...layoutRoutes, ...paramsRoutes].reduce((memo, route) => {
+    if (route._toMerge) {
+      memo = memo.concat(route.routes);
+    } else {
+      delete route._isParamsRoute;
+      memo.push(route);
+    }
+    return memo;
+  }, []);
+}
+
 export default function getRouteConfigFromDir(paths) {
   const { cwd, absPagesPath, absSrcPath, dirPath = '' } = paths;
   const absPath = join(absPagesPath, dirPath);
@@ -17,28 +46,19 @@ export default function getRouteConfigFromDir(paths) {
     throw new Error('root _layout.js is not supported, use layouts/index.js instead');
   }
 
-  const routes = files
-    .filter(file => {
-      if (file.charAt(0) === '.' || file.charAt(0) === '_' || /\.(test|spec)\.(j|t)sx?$/.test(file))
-        return false;
-      return true;
-    })
-    .sort(a => (a.charAt(0) === '$' ? 1 : -1))
-    .reduce(handleFile.bind(null, paths, absPath), [])
-    .sort((a, b) => {
-      if (a._sorted || b._sorted) return 0;
-      if (a.isParamsRoute !== b.isParamsRoute) return a.isParamsRoute ? 1 : -1;
-      if (a.exact !== b.exact) return !a.exact ? 1 : -1;
-      if (a.path && b.path) {
-        return a.path > b.path ? 1 : -1;
-      }
-      return 0;
-    })
-    .map(a => {
-      delete a._sorted;
-      delete a.isParamsRoute;
-      return a;
-    });
+  const routes = sortRoutes(
+    files
+      .filter(file => {
+        if (
+          file.charAt(0) === '.' ||
+          file.charAt(0) === '_' ||
+          /\.(test|spec)\.(j|t)sx?$/.test(file)
+        )
+          return false;
+        return true;
+      })
+      .reduce(handleFile.bind(null, paths, absPath), []),
+  );
 
   if (dirPath === '' && absSrcPath) {
     const globalLayoutFile =
@@ -85,21 +105,20 @@ function handleFile(paths, absPath, memo, file) {
           exact: false,
           component: `./${winPath(relative(cwd, absLayoutFile))}`,
           routes,
-          isParamsRoute,
+          _isParamsRoute: isParamsRoute,
         },
         {
           componentFile: absLayoutFile,
         },
       );
     } else {
-      memo = memo.concat(
-        routes.map(route => {
-          return {
-            ...route,
-            _sorted: true,
-          };
-        }),
-      );
+      memo.push({
+        _toMerge: true,
+        path: normalizePath(newDirPath),
+        exact: true,
+        _isParamsRoute: isParamsRoute,
+        routes,
+      });
     }
   } else if (stats.isFile() && isValidJS(file)) {
     const bName = basename(file, extname(file));
@@ -110,7 +129,7 @@ function handleFile(paths, absPath, memo, file) {
         path,
         exact: true,
         component: `./${winPath(relative(cwd, absFilePath))}`,
-        isParamsRoute,
+        _isParamsRoute: isParamsRoute,
       },
       {
         componentFile: absFilePath,
