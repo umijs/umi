@@ -34,12 +34,10 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
           console.log();
           // eslint-disable-next-line
           const chunksToMap = require(_resolveDeps(
-            'umi-build-dev/lib/plugins/commands/build/chunksToMap.js',
+            './plugins/commands/build/chunksToMap.js',
           )).default(record.chunks);
           // eslint-disable-next-line
-          leagcyChunksMap = require(_resolveDeps(
-            'umi-build-dev/lib/html/formatChunksMap.js',
-          )).default(chunksToMap); //eslint-disable-line
+          leagcyChunksMap = require(_resolveDeps('./html/formatChunksMap.js')).default(chunksToMap); //eslint-disable-line
           resolve();
         },
         onFail({ err }) {
@@ -82,19 +80,19 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
     plugins.push(record);
     leagcyWebpackConfig.plugins = plugins;
     // fix minimizer
-    if (minimizer === 'uglifyjs') {
-      const dftUOpt = require(_resolveDeps('af-webpack/lib/getConfig/uglifyOptions.js')).default; //eslint-disable-line
-      const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-      uglifyJSOptions = {
-        ...uglifyJSOptions,
-        ...dftUOpt,
-      };
-      const buildinMini = optimization.minimizer || [];
-      // todo validate
-      buildinMini.pop();
-      buildinMini.push(new UglifyJsPlugin(uglifyJSOptions));
-      leagcyWebpackConfig.optimization.minimizer = buildinMini;
-    }
+    // if (minimizer === 'uglifyjs') {
+    //   const dftUOpt = require(_resolveDeps('af-webpack/lib/getConfig/uglifyOptions.js')).default; //eslint-disable-line
+    //   const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+    //   uglifyJSOptions = {
+    //     ...uglifyJSOptions,
+    //     ...dftUOpt,
+    //   };
+    //   const buildinMini = optimization.minimizer || [];
+    //   // todo validate
+    //   buildinMini.pop();
+    //   buildinMini.push(new UglifyJsPlugin(uglifyJSOptions));
+    //   leagcyWebpackConfig.optimization.minimizer = buildinMini;
+    // }
     // fix babel
     const { rules = [] } = module;
     if (rules.length === 0) return;
