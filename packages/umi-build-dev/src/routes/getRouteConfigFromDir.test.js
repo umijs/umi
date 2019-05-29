@@ -63,16 +63,13 @@ describe('getRouteConfigFromDir', () => {
     expect(routes).toEqual([{ path: '/a', exact: true, component: './a.js' }]);
   });
 
-  it('dynamic route', () => {
-    const routes = getRoute({
-      cwd: join(__dirname, 'fixtures', 'dynamic-route'),
-      absPagesPath: join(__dirname, 'fixtures', 'dynamic-route'),
-    });
-    expect(routes).toEqual([
-      { path: '/:d', exact: true, component: './$d/index.js' },
-      { path: '/:b/:c', exact: true, component: './$b/$c.js' },
-      { path: '/:a', exact: true, component: './$a.js' },
-    ]);
+  it('multiple dynamic route error', () => {
+    expect(() => {
+      getRoute({
+        cwd: join(__dirname, 'fixtures', 'multiple-dynamic-route-error'),
+        absPagesPath: join(__dirname, 'fixtures', 'multiple-dynamic-route-error'),
+      });
+    }).toThrow(/We should not have multiple dynamic routes under a directory./);
   });
 
   it('optional route', () => {
