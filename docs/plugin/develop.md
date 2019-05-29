@@ -338,6 +338,16 @@ export default (api, defaultOpts = { immer: false }) => {
 };
 ```
 
+### beforeBuildCompileAsync
+
+Before Umi call `af-webpack/build` for a compilation
+
+```js
+api.beforeBuildCompileAsync(async () => {
+  yield delay(1000);
+});
+```
+
 ### onBuildSuccess
 
 When the `umi build` was successful. Mainly do some processing of the construction products.

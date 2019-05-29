@@ -2,6 +2,7 @@
 tmp
 /node_modules
 /packages/**/node_modules
+/packages/**/.leagcy-dist
 /examples/*/node_modules
 package-lock.json
 /website/dist

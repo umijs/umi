@@ -1,0 +1,29 @@
+{
+  "name": "umi-plugin-umi-plugin-modern-mode",
+  "version": "0.0.1",
+  "description": "A plugin for modern mode",
+  "authors": {
+    "name": "pigcan",
+    "email": "jiangjay818@gmail.com"
+  },
+  "repository": "https://github.com/umijs/umi-plugin-modern-mode",
+  "peerDependencies": {
+    "umi": "2.x"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "umi-tools build",
+    "prepublishOnly": "npm run build && np --no-cleanup --yolo --no-publish"
+  },
+  "dependencies": {
+    "copy": "^0.3.2",
+    "lodash.clonedeep": "^4.5.0",
+    "rimraf": "^2.6.3",
+    "slash": "^3.0.0"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "MIT"
+}

@@ -338,6 +338,16 @@ export default (api, defaultOpts = { immer: false }) => {
 };
 ```
 
+### beforeBuildCompileAsync
+
+在 Umi 调用 `af-webpack/build` 进行一次构建之前
+
+  ```js
+api.beforeBuildCompileAsync(async () => {
+  yield delay(1000);
+});
+```
+
 ### onBuildSuccess
 
 在 `umi build` 成功时候。主要做一些构建产物的处理。
