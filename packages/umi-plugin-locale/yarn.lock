@@ -45,9 +45,9 @@ fs.realpath@^1.0.0:
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 glob@^7.1.2:
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.3.tgz#3960832d3f1574108342dafd3a67b332c0969df1"
-  integrity sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
+  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -92,9 +92,9 @@ inherits@2:
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 intl-format-cache@^2.0.5:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.1.0.tgz#04a369fecbfad6da6005bae1f14333332dcf9316"
-  integrity sha1-BKNp/sv61tpgBbrh8UMzMy3PkxY=
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.2.4.tgz#b160a5f3dda9aaa9c5ba9916b8f467473a47ee10"
+  integrity sha512-LJngHGYj435bODDvjIaZ0PYQDi5gqxBN2exQAlfndcC2V+Q2p0iFyUwfblBoZdoVoguVjcC9vzdiLbn3uwyrng==
 
 intl-messageformat-parser@1.4.0:
   version "1.4.0"
@@ -109,9 +109,9 @@ intl-messageformat@^2.0.0, intl-messageformat@^2.1.0:
     intl-messageformat-parser "1.4.0"
 
 intl-relativeformat@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-2.1.0.tgz#010f1105802251f40ac47d0e3e1a201348a255df"
-  integrity sha1-AQ8RBYAiUfQKxH0OPhogE0iiVd8=
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-2.1.3.tgz#eb1fa75db7fc01d1747d5e5835876d61b2c5ba24"
+  integrity sha512-ByrNB0IcqD5Y61xrxb/JRUKRiEQEyY2GDaNfEi6CEcuVV1leuJRNytlpJzTtsEYPFi93GKXG8AdmJeAt5lJfYg==
   dependencies:
     intl-messageformat "^2.0.0"
 

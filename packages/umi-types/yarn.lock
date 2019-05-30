@@ -15,9 +15,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "11.11.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.11.4.tgz#8808bd5a82bbf6f5d412eff1c228d178e7c24bb3"
-  integrity sha512-02tIL+QIi/RW4E5xILdoAMjeJ9kYq5t5S2vciUdFPXv/ikFTb0zK8q9vXkg4+WAJuYXGiVT1H28AkD2C+IkXVw==
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.3.tgz#5d8d24e0033fc6393efadc85cb59c1f638095c9a"
+  integrity sha512-zkOxCS/fA+3SsdA+9Yun0iANxzhQRiNwTvJSr6N95JhuJ/x27z9G2URx1Jpt3zYFfCGUXZGL5UDxt5eyLE7wgw==
 
 "@types/tapable@*":
   version "1.0.4"
@@ -32,16 +32,16 @@
     source-map "^0.6.1"
 
 "@types/webpack-chain@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/webpack-chain/-/webpack-chain-5.0.1.tgz#8a4d7dce119088a2962bf88bda01f3e6f8a3ab57"
-  integrity sha512-/PfLJoqYH8j7Rx2VWyfs+txZl1PpRjEtbDoe2EbB6m6nHg7fORgqaFxS2RbytfV6BBmsLClJ7gWUJA/M+2FQSw==
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack-chain/-/webpack-chain-5.2.0.tgz#ccd2d75d57e962ad7372077701ce2c711fc985c6"
+  integrity sha512-/DhcbcUcN593BvM7g/o6JWNiJ7bBSdk8g0kynUc2jktjGTHeVVANn5rGfnC1QW5bbiupj82pSQpmhFLKIfrFbw==
   dependencies:
-    "@types/webpack" "*"
+    webpack-chain "*"
 
-"@types/webpack@*", "@types/webpack@^4.4.23":
-  version "4.4.26"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.26.tgz#b52f605351f2ed60e6ce24fa7df39ab7abd03470"
-  integrity sha512-vs8LjgEZUQTBxotXbMf8s4jgykozkqjv6P0JRi+1BLh0n7LQUkMXfvsoPb5U/dBL1ay5Lu0c46G6FRmAZBhAUA==
+"@types/webpack@^4.4.23":
+  version "4.4.32"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.32.tgz#2d460cd33a15e568e93f38de5e628cf846396c51"
+  integrity sha512-mNARoaSJTzbiHxtZbf9NULFilu2frqD+g9Iyl9V2jPYJWXi+AC3Hz8lQWPZ5LLtgUm7iF4SDDMB/1bPrbRQgFw==
   dependencies:
     "@types/anymatch" "*"
     "@types/node" "*"
@@ -49,7 +49,25 @@
     "@types/uglify-js" "*"
     source-map "^0.6.0"
 
+deepmerge@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.2.tgz#10499d868844cdad4fee0842df8c7f6f0c95a753"
+  integrity sha512-95k0GDqvBjZavkuvzx/YqVLv/6YYa17fz6ILMSf7neqQITCPbnfEnQvEgMPNjH4kgobe7+WIL0yJEHku+H3qtQ==
+
+javascript-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/javascript-stringify/-/javascript-stringify-2.0.0.tgz#ef750216ae66504ffd670b68c8b8aa07bdf7b588"
+  integrity sha512-zzK8+ByrzvOL6N92hRewwUKL0wN0TOaIuUjX0Jj8lraxWvr5wHYs2YTjaj2lstF+8qMv5cmPPef47va8NT8lDw==
+
 source-map@^0.6.0, source-map@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+
+webpack-chain@*:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/webpack-chain/-/webpack-chain-6.0.0.tgz#9c36525a1271a54e7bfd1791199b395f400ae4f1"
+  integrity sha512-NK62XgJOOSmYs4kaXFIKKeClpuOVHY7m6e4XwxbVX/2HAUboH6xFCTVXMVv8+jB6K8o/UGjlo1Cv3XXOyNAAGw==
+  dependencies:
+    deepmerge "^1.5.2"
+    javascript-stringify "^2.0.0"
