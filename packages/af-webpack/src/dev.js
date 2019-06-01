@@ -14,6 +14,8 @@ const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
+// get the history type
+const HISTORY = process.env.HISTORY ? process.env.HISTORY.split(',')[0] : 'browser';
 const CERT = process.env.HTTPS && process.env.CERT ? fs.readFileSync(process.env.CERT) : '';
 const KEY = process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.KEY) : '';
 const noop = () => {};
@@ -46,7 +48,7 @@ export default function dev({
       let isFirstCompile = true;
       const IS_CI = !!process.env.CI;
       const SILENT = !!process.env.SILENT;
-      const urls = prepareUrls(PROTOCOL, HOST, port, base);
+      const urls = prepareUrls(PROTOCOL, HOST, port, base, HISTORY);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
           // make sound

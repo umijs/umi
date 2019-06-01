@@ -48,6 +48,8 @@ export default class Service {
 
     // resolve paths
     this.paths = getPaths(this);
+    // put the history type into env
+    process.env.HISTORY = this.config.history;
   }
 
   resolvePlugins() {
