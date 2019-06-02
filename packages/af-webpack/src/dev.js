@@ -31,6 +31,7 @@ export default function dev({
   onCompileDone = noop,
   proxy,
   port,
+  history,
   base,
   serverConfig: serverConfigFromOpts = {},
 }) {
@@ -46,7 +47,7 @@ export default function dev({
       let isFirstCompile = true;
       const IS_CI = !!process.env.CI;
       const SILENT = !!process.env.SILENT;
-      const urls = prepareUrls(PROTOCOL, HOST, port, base);
+      const urls = prepareUrls(PROTOCOL, HOST, port, base, history);
       compiler.hooks.done.tap('af-webpack dev', stats => {
         if (stats.hasErrors()) {
           // make sound

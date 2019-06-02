@@ -84,9 +84,11 @@ export default function(api) {
           ._applyPluginsAsync('_beforeDevServerAsync')
           .then(() => {
             debug('start dev server with af-webpack/dev');
+            const { history = 'browser' } = service.config;
             require('af-webpack/dev').default({
               cwd,
               port,
+              history: typeof history === 'string' ? history : history[0],
               base: service.config.base,
               webpackConfig: service.webpackConfig,
               proxy: service.config.proxy || {},
