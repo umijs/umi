@@ -39,12 +39,6 @@
     "webpack": "4.28.4",
     "workbox-webpack-plugin": "3.6.3"
   },
-  "umiTools": {
-    "browserFiles": [
-      "src/plugins/pwa/registerServiceWorker.js",
-      "src/plugins/title/TitleWrapper.js"
-    ]
-  },
   "devDependencies": {
     "umi-types": "0.3.5"
   }
