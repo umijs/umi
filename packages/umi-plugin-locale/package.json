@@ -36,10 +36,5 @@
     "prop-types": "15.6.2",
     "react-intl": "2.7.2",
     "umi-utils": "1.4.2"
-  },
-  "umiTools": {
-    "browserFiles": [
-      "src/locale.js"
-    ]
   }
 }

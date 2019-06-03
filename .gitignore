@@ -12,6 +12,7 @@ package-lock.json
 /packages/**/node_modules/.cache
 /packages/**/.docz
 /packages/*/lib
+/packages/*/dist
 dist
 coverage
 .nyc_output

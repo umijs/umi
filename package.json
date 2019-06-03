@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "umi-tools build",
+    "build": "father build",
     "changelog": "lerna-changelog",
     "chore:update-deps": "./scripts/update_deps.sh",
     "test": "node scripts/test.js",
@@ -36,6 +36,7 @@
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "7.11.1",
+    "father": "^2.3.0",
     "form-data": "^2.3.3",
     "got": "9.3.2",
     "husky": "1.2.0",
@@ -51,7 +52,6 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "test-build-result": "^1.1.2",
-    "umi-tools": "^0.4.0"
+    "test-build-result": "^1.1.2"
   }
 }
