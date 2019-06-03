@@ -37,12 +37,12 @@ export default api => {
           `You don't need to specify the path with --global, e.g. umi g layout --global`,
         );
         this.fs.copyTpl(
-          this.templatePath('layout.js'),
+          this.templatePath('layout.js.tpl'),
           join(paths.absSrcPath, `layouts`, `index.${jsxExt}`),
           context,
         );
         this.fs.copyTpl(
-          this.templatePath('layout.css'),
+          this.templatePath('layout.css.tpl'),
           join(paths.absSrcPath, `layouts`, `index.${cssExt}`),
           context,
         );
@@ -52,7 +52,7 @@ export default api => {
       const path = this.args[0];
       assert(typeof path === 'string', `You should specify the path, e.g. umi g layout abc`);
       this.fs.copyTpl(
-        this.templatePath('layout.js'),
+        this.templatePath('layout.js.tpl'),
         join(paths.absPagesPath, path, `_layout.${jsxExt}`),
         {
           ...context,
@@ -61,7 +61,7 @@ export default api => {
         },
       );
       this.fs.copyTpl(
-        this.templatePath('layout.css'),
+        this.templatePath('layout.css.tpl'),
         join(paths.absPagesPath, path, `_layout.${cssExt}`),
         context,
       );

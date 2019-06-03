@@ -41,12 +41,12 @@ Example:
         jsxExt,
       };
       this.fs.copyTpl(
-        this.templatePath('page.js'),
+        this.templatePath('page.js.tpl'),
         join(paths.absPagesPath, `${path}.${jsxExt}`),
         context,
       );
       this.fs.copyTpl(
-        this.templatePath('page.css'),
+        this.templatePath('page.css.tpl'),
         join(paths.absPagesPath, `${path}.${cssExt}`),
         context,
       );
