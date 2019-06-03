@@ -1,6 +1,6 @@
 export default {
   target: 'node',
-  cjs: 'babel',
+  cjs: { type: 'babel' },
   browserFiles: [
     'src/webpackHotDevClient.js',
     'src/utils.js',

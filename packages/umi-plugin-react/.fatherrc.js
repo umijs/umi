@@ -1,6 +1,6 @@
 export default {
   target: 'node',
-  cjs: 'babel',
+  cjs: { type: 'babel' },
   disableTypeCheck: true,
   browserFiles: ['src/plugins/pwa/registerServiceWorker.js', 'src/plugins/title/TitleWrapper.js'],
 };
