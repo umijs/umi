@@ -158,7 +158,7 @@ export default api => {
       dryRun,
       skipDependencies,
       skipModifyRoutes,
-      wrap: isWrap,
+      page: isPage,
       layout: isLayout,
     } = args;
     const ctx = getCtx(url);
@@ -315,9 +315,9 @@ export default api => {
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
-    if (isWrap !== undefined) {
-      // when user use `umi block add --direct`
-      isPageBlock = !isWrap;
+    if (isPage !== undefined) {
+      // when user use `umi block add --page`
+      isPageBlock = isPage;
     }
     debug(`isPageBlock: ${isPageBlock}`);
     const generator = new BlockGenerator(args._.slice(2), {
@@ -450,7 +450,7 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--skip-dependencies `)} don't install dependencies
   ${chalk.green(`--skip-modify-routes`)} don't modify the routes
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
-  ${chalk.green(`--no-wrap           `)} add the block to a independent directory
+  ${chalk.green(`--page              `)} add the block to a independent directory as a page
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
 
 Examples:

@@ -57,7 +57,7 @@ describe('umi block', () => {
 
     const { ctx, generator } = await commandHandler({
       path: 'Test/NewPage',
-      wrap: false,
+      page: true,
       layout: true,
       dryRun: true,
       _: ['add', join(__dirname, '../../../fixtures/block/test-blocks/demo-with-dependencies')],
