@@ -110,14 +110,5 @@
     "registerBabel.js",
     "webpack-chain.js",
     "webpack.js"
-  ],
-  "umiTools": {
-    "browserFiles": [
-      "src/webpackHotDevClient.js",
-      "src/utils.js",
-      "src/formatWebpackMessages.js",
-      "src/socket.js",
-      "src/patchConnection.js"
-    ]
-  }
+  ]
 }

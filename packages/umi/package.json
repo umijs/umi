@@ -21,7 +21,7 @@
     "update-notifier": "2.5.0",
     "yargs-parser": "13.0.0"
   },
-  "module": "index.js",
+  "module": "dist/index.esm.js",
   "sideEffects": [
     "./lib/renderRoutes.js"
   ],
@@ -41,6 +41,7 @@
     "url": "https://github.com/umijs/umi/issues"
   },
   "files": [
+    "dist",
     "lib",
     "src",
     "bin",
@@ -55,21 +56,5 @@
     "router.d.ts",
     "withRouter.d.ts",
     "routerTypes.d.ts"
-  ],
-  "umiTools": {
-    "browserFiles": [
-      "src/createHistory.js",
-      "src/dynamic.js",
-      "src/link.js",
-      "src/navlink.js",
-      "src/prompt.js",
-      "src/redirect.js",
-      "src/renderRoutes.js",
-      "src/Route.js",
-      "src/router.js",
-      "src/runtimePlugin.js",
-      "src/utils.js",
-      "src/withRouter.js"
-    ]
-  }
+  ]
 }
