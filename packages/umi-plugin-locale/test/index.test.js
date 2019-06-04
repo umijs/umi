@@ -11,6 +11,7 @@ const api = {
   addRendererWrapperWithComponent(func) {
     wrapperFile = func();
   },
+  addUmiExports() {},
   addPageWatcher() {},
   onOptionChange() {},
   addRuntimePluginKey() {},
