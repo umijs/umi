@@ -105,7 +105,7 @@ export default function(api) {
     const entry = isDev
       ? {
           umi: [
-            ...(process.env.HMR === 'none' && !ssr ? [] : [webpackHotDevClientPath]),
+            ...(process.env.HMR === 'none' || ssr ? [] : [webpackHotDevClientPath]),
             ...(setPublicPath ? [setPublicPathFile] : []),
             entryScript,
           ],
@@ -163,6 +163,7 @@ export default function(api) {
       },
       define: {
         'process.env.BASE_URL': config.base || '/',
+        __IS_BROWSER: !ssr,
         __UMI_BIGFISH_COMPAT: process.env.BIGFISH_COMPAT,
         __UMI_HTML_SUFFIX: !!(
           config.exportStatic &&

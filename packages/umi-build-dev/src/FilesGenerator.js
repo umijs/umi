@@ -127,10 +127,23 @@ export default class FilesGenerator {
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
+  window.g_isBrowser = true;
+  let props = {};
+  // Both support SSR and CSR
+  if (window.g_useSSR) {
+    // 如果开启服务端渲染则客户端组件初始化 props 使用服务端注入的数据
+    props = window.g_initialData;
+  } else {
+    const pathname = location.pathname;
+    const activeRoute = findRoute(require('@tmp/router').routes, pathname);
+    if (activeRoute) {
+      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
+    }
+  }
   const rootContainer = plugins.apply('rootContainer', {
-    initialValue: React.createElement(require('./router').default),
+    initialValue: React.createElement(require('./router').default, props),
   });
-  ReactDOM.render(
+  ReactDOM[window.__useSSR__ ? 'hydrate' : 'render'](
     rootContainer,
     document.getElementById('${this.mountElementId}'),
   );
@@ -201,18 +214,24 @@ export default class FilesGenerator {
   }
 
   generateHistory() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
     const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
     const initialHistory = `
 require('umi/lib/createHistory').default({
   basename: window.routerBase,
 })
     `.trim();
+    let history = this.service.applyPlugins('modifyEntryHistory', {
+      initialValue: initialHistory,
+    });
+    if (config.ssr) {
+      history = `
+window.g_isBrowser ? ${initialHistory} : require('history/createMemoryHistory').default({})
+      `.trim();
+    }
     const content = Mustache.render(tpl, {
       globalVariables: !this.service.config.disableGlobalVariables,
-      history: this.service.applyPlugins('modifyEntryHistory', {
-        initialValue: initialHistory,
-      }),
+      history,
     });
     writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
   }
