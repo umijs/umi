@@ -68,7 +68,7 @@ if (!__IS_BROWSER) {
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     props = activeRoute && activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
     const rootContainer = plugins.apply('rootContainer', {
-      initialValue: React.createElement(require('./router'), props),
+      initialValue: React.createElement(require('./router').default, props),
     });
     return rootContainer;
   }
