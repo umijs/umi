@@ -41,16 +41,16 @@ export const locale = {
 
 ```
 .
-├── dist/                          
-├── mock/                         
-└── src/                          
-    ├── layouts/index.js          
-    ├── pages/                    
+├── dist/
+├── mock/
+└── src/
+    ├── layouts/index.js
+    ├── pages/
     └── locales               // 多语言文件存放目录，里面的文件会被umi自动读取
         ├── zh-CN.js
-        └── en-US.js               
-├── .umirc.js                     
-├── .env                          
+        └── en-US.js
+├── .umirc.js
+├── .env
 └── package.json
 ```
 
@@ -87,6 +87,7 @@ export default {
 
 ```javascript
 import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi-plugin-locale';
+// import { formatMessage, setLocale, getLocale, FormattedMessage } from 'umi';
 
 // 获取指定文字的多语言版本
 const formatedText = formatMessage({
