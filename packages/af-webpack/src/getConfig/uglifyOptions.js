@@ -6,8 +6,9 @@
 export default {
   uglifyOptions: {
     parse: {},
-    warnings: false,
     compress: {
+      warnings: false,
+
       // turn off flags with small gains to speed up minification
       arrows: false,
       collapse_vars: false, // 0.3kb
