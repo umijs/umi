@@ -77,17 +77,7 @@ export default function(api) {
         ),
       )
       .set('@', paths.absSrcPath)
-      .set('@tmp', paths.absTmpDirPath)
-      .set('umi/link', join(process.env.UMI_DIR, 'lib/link.js'))
-      .set('umi/dynamic', join(process.env.UMI_DIR, 'lib/dynamic.js'))
-      .set('umi/navlink', join(process.env.UMI_DIR, 'lib/navlink.js'))
-      .set('umi/redirect', join(process.env.UMI_DIR, 'lib/redirect.js'))
-      .set('umi/prompt', join(process.env.UMI_DIR, 'lib/prompt.js'))
-      .set('umi/router', join(process.env.UMI_DIR, 'lib/router.js'))
-      .set('umi/withRouter', join(process.env.UMI_DIR, 'lib/withRouter.js'))
-      .set('umi/_renderRoutes', join(process.env.UMI_DIR, 'lib/renderRoutes.js'))
-      .set('umi/_createHistory', join(process.env.UMI_DIR, 'lib/createHistory.js'))
-      .set('umi/_runtimePlugin', join(process.env.UMI_DIR, 'lib/runtimePlugin.js'));
+      .set('@tmp', paths.absTmpDirPath);
   });
 
   /* eslint-disable import/no-dynamic-require */

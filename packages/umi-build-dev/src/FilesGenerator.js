@@ -204,7 +204,7 @@ export default class FilesGenerator {
     const { paths } = this.service;
     const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
     const initialHistory = `
-require('umi/_createHistory').default({
+require('umi/lib/createHistory').default({
   basename: window.routerBase,
 })
     `.trim();
