@@ -94,7 +94,8 @@ export default function(api) {
   ]);
   /* eslint-enable import/no-dynamic-require */
 
-  api.modifyAFWebpackOpts(memo => {
+  api.modifyAFWebpackOpts((memo, args) => {
+    const { ssr } = args;
     const isDev = process.env.NODE_ENV === 'development';
 
     const entryScript = join(cwd, `./${paths.tmpDirPath}/umi.js`);
@@ -104,7 +105,7 @@ export default function(api) {
     const entry = isDev
       ? {
           umi: [
-            ...(process.env.HMR === 'none' ? [] : [webpackHotDevClientPath]),
+            ...(process.env.HMR === 'none' && !ssr ? [] : [webpackHotDevClientPath]),
             ...(setPublicPath ? [setPublicPathFile] : []),
             entryScript,
           ],
@@ -113,14 +114,16 @@ export default function(api) {
           umi: [...(setPublicPath ? [setPublicPathFile] : []), entryScript],
         };
 
-    const targets = {
-      chrome: 49,
-      firefox: 64,
-      safari: 10,
-      edge: 13,
-      ios: 10,
-      ...(config.targets || {}),
-    };
+    const targets = ssr
+      ? { node: true }
+      : {
+          chrome: 49,
+          firefox: 64,
+          safari: 10,
+          edge: 13,
+          ios: 10,
+          ...(config.targets || {}),
+        };
 
     // Transform targets to browserslist for autoprefixer
     const browserslist =

@@ -39,7 +39,10 @@ export default function(api) {
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
-              webpackConfig: service.webpackConfig,
+              webpackConfig: [
+                service.webpackConfig,
+                ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
+              ],
               onSuccess({ stats }) {
                 debug('Build success');
                 if (process.env.RM_TMPDIR !== 'none') {

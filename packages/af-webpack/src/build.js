@@ -10,13 +10,22 @@ const debug = require('debug')('af-webpack:build');
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
+function getOutputPath(webpackConfig) {
+  return Array.isArray(webpackConfig) ? webpackConfig[0].output.path : webpackConfig.output.path;
+}
+
 export default function build(opts = {}) {
   const { webpackConfig, cwd = process.cwd(), onSuccess, onFail } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
-  assert(isPlainObject(webpackConfig), 'webpackConfig should be plain object.');
+  assert(
+    isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
+    'webpackConfig should be plain object or array.',
+  );
 
-  debug(`Clean output path ${webpackConfig.output.path.replace(`${cwd}/`, '')}`);
-  rimraf.sync(webpackConfig.output.path);
+  // 清理 output path
+  const outputPath = getOutputPath(webpackConfig);
+  debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
+  rimraf.sync(outputPath);
 
   debug('build start');
   webpack(webpackConfig, (err, stats) => {
@@ -35,10 +44,10 @@ export default function build(opts = {}) {
     printFileSizesAfterBuild(
       stats,
       {
-        root: webpackConfig.output.path,
+        root: outputPath,
         sizes: {},
       },
-      webpackConfig.output.path,
+      outputPath,
       WARN_AFTER_BUNDLE_GZIP_SIZE,
       WARN_AFTER_CHUNK_GZIP_SIZE,
     );
