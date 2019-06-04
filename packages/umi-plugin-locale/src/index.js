@@ -100,6 +100,14 @@ export default function(api, options = {}) {
       source: 'intl',
     });
   }
+
+  api.addUmiExports([
+    {
+      exportAll: true,
+      source: 'umi-plugin-locale/locale',
+    },
+  ]);
+
   api.addRuntimePluginKey('locale');
 
   api.addPageWatcher(join(paths.absSrcPath, config.singular ? 'locale' : 'locales'));
