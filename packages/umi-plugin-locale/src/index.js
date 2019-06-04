@@ -104,7 +104,7 @@ export default function(api, options = {}) {
   api.addUmiExports([
     {
       exportAll: true,
-      source: 'umi-plugin-locale/locale',
+      source: 'umi-plugin-locale',
     },
   ]);
 
