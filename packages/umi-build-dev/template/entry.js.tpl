@@ -1,6 +1,6 @@
 {{{ polyfillImports }}}
 {{#globalVariables}}
-import './history';
+import history from './history';
 {{/globalVariables}}
 {{{ importsAhead }}}
 import React from 'react';
@@ -64,6 +64,7 @@ let serverRender;
 if (!__IS_BROWSER) {
   serverRender = async (ctx) => {
     const pathname = ctx.req.url;
+    history.push(pathname);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     props = activeRoute && activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
