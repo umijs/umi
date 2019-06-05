@@ -303,6 +303,19 @@ export default function(opts) {
       ]);
   }
 
+  // plugins -> analyze report
+  if (process.env.ANALYZE_REPORT) {
+    webpackConfig.plugin('bundle-analyzer-reporter')
+      .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
+        {
+          analyzerMode: 'disabled',  // 关闭 analyzer server
+          generateReportFile: true,  // 开启报告生成功能
+          reportDepth: 2,            // 裁剪深度 2
+          statsFilename: process.env.ANALYZE_DUMP || 'bundlestats.json' // 默认生成到 bundlestats.json
+        }
+    ]);
+  }
+
   if (process.env.DUPLICATE_CHECKER) {
     webpackConfig
       .plugin('duplicate-package-checker')
