@@ -3,7 +3,7 @@ import HtmlGenerator from '../../html/HTMLGenerator';
 
 export default (service, opts = {}) => {
   const { config, paths, webpackConfig, routes } = service;
-  const { chunksMap } = opts;
+  const { chunksMap, headScripts } = opts;
   return new HtmlGenerator({
     config,
     paths,
@@ -61,7 +61,7 @@ export default (service, opts = {}) => {
     modifyHeadScripts(memo, opts = {}) {
       const { route } = opts;
       return service.applyPlugins('addHTMLHeadScript', {
-        initialValue: memo,
+        initialValue: [...(headScripts || []), ...memo],
         args: { route },
       });
     },

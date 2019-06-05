@@ -30,7 +30,7 @@ routeChangeHandler(history.location);
 
 export { routes };
 
-export default function RouterWrapper() {
+export default function RouterWrapper(props = {}) {
   return (
 {{{ routerContent }}}
   );

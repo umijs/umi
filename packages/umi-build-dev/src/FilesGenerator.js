@@ -145,7 +145,7 @@ export default class FilesGenerator {
   const rootContainer = plugins.apply('rootContainer', {
     initialValue: React.createElement(require('./router').default, props),
   });
-  ReactDOM[window.__useSSR__ ? 'hydrate' : 'render'](
+  ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
     rootContainer,
     document.getElementById('${config.mountElementId}'),
   );
@@ -187,6 +187,16 @@ export default class FilesGenerator {
         chunksMap: {
           umi: ['umi.js', 'umi.css'],
         },
+        headScripts: [
+          {
+            content: `
+window.g_useSSR=true;
+window.g_initialData = \${require('${require.resolve('serialize-javascript')}')({
+  data: props.data,
+})};
+            `.trim(),
+          },
+        ],
       });
       const content = hg.getMatchedContent('/');
       ssrHtml = htmlToJSX(content).replace(
@@ -324,7 +334,7 @@ window.g_isBrowser ? ${initialHistory} : require('history/createMemoryHistory').
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
     <Router history={history}>
-      { renderRoutes(routes, {}) }
+      { renderRoutes(routes, props) }
     </Router>
     `.trim();
     return rendererWrappers.reduce((memo, wrapper) => {

@@ -97,13 +97,9 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
-              const childRoutes = renderRoutes(
-                route.routes,
-                {},
-                {
-                  location: props.location,
-                },
-              );
+              const childRoutes = renderRoutes(route.routes, extraProps, {
+                location: props.location,
+              });
               if (route.component) {
                 const compatProps = getCompatProps({
                   ...props,
