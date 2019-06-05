@@ -28,11 +28,12 @@ function setLocale(lang, realReload = true) {
 }
 
 function getLocale() {
-  return window.g_lang;
+  const lang = window.localStorage.getItem('umi_locale');
+  return lang || window.g_lang;
 }
 
 const LangContext = React.createContext({
-  lang: window.g_lang,
+  lang: getLocale(),
 });
 
 // init api methods
