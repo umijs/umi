@@ -291,7 +291,7 @@ export default function(opts) {
   if (process.env.ANALYZE) {
     webpackConfig
       .plugin('bundle-analyzer')
-      .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [
+      .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
         {
           analyzerMode: 'server',
           analyzerPort: process.env.ANALYZE_PORT || 8888,
