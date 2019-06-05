@@ -72,6 +72,35 @@ function withRoutes(route) {
   return ret;
 }
 
+function wrapWithInitialProps(WrappedComponent) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        extraProps: {},
+      };
+    }
+    async componentDidMount() {
+      const extraProps = await WrappedComponent.getInitialProps();
+      this.setState({
+        extraProps,
+      });
+    }
+    render() {
+      return (
+        <div>
+          <WrappedComponent
+            {...{
+              ...this.props,
+              ...this.state.extraProps,
+            }}
+          />
+        </div>
+      );
+    }
+  };
+}
+
 export default function renderRoutes(routes, extraProps = {}, switchProps = {}) {
   const plugins = require('umi/_runtimePlugin');
   return routes ? (
@@ -113,10 +142,14 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   },
                   args: { route },
                 });
+                let { component: Component } = route;
+                if (__IS_BROWSER && Component.getInitialProps) {
+                  Component = wrapWithInitialProps(Component);
+                }
                 return (
-                  <route.component {...newProps} route={route}>
+                  <Component {...newProps} route={route}>
                     {childRoutes}
-                  </route.component>
+                  </Component>
                 );
               } else {
                 return childRoutes;
