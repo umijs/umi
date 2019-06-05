@@ -19,6 +19,11 @@ function setLocale(lang, realReload = true) {
     if (realReload) {
       window.location.reload();
     }
+    // chrome 不支持这个事件。所以人肉触发一下
+    if (window.dispatchEvent) {
+      const event = new Event('languagechange');
+      window.dispatchEvent(event);
+    }
   }
 }
 
