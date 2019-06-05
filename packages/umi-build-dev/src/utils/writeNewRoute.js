@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
@@ -203,8 +203,12 @@ function getModulePath(configPath, modulePath, absSrcPath) {
   } else {
     modulePath = join(dirname(configPath), modulePath);
   }
-  if (!/\.js$/.test(modulePath)) {
-    modulePath = `${modulePath}.js`;
+  if (!/\.[j|t]s$/.test(modulePath)) {
+    if (existsSync(`${modulePath}.js`)) {
+      modulePath = `${modulePath}.js`;
+    } else {
+      modulePath = `${modulePath}.ts`;
+    }
   }
   return modulePath;
 }
