@@ -172,7 +172,7 @@ export default function(api) {
         ),
         ...(config.define || {}),
       },
-      publicPath: isDev ? '/' : config.publicPath != null ? config.publicPath : '/',
+      publicPath: isDev && !config.ssr ? '/' : config.publicPath != null ? config.publicPath : '/',
     };
   });
 }

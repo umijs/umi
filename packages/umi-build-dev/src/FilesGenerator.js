@@ -11,6 +11,8 @@ import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
 import { EXT_LIST } from './constants';
+import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
+import htmlToJSX from './htmlToJSX';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -121,7 +123,7 @@ export default class FilesGenerator {
   }
 
   generateEntry() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
 
     // Generate umi.js
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
@@ -145,7 +147,7 @@ export default class FilesGenerator {
   });
   ReactDOM[window.__useSSR__ ? 'hydrate' : 'render'](
     rootContainer,
-    document.getElementById('${this.mountElementId}'),
+    document.getElementById('${config.mountElementId}'),
   );
       `.trim(),
     });
@@ -178,6 +180,21 @@ export default class FilesGenerator {
       uniq(validKeys).length === validKeys.length,
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
+
+    let ssrHtml = '';
+    if (config.ssr) {
+      const hg = getHtmlGenerator(this.service, {
+        chunksMap: {
+          umi: ['umi.js', 'umi.css'],
+        },
+      });
+      const content = hg.getMatchedContent('/');
+      ssrHtml = htmlToJSX(content).replace(
+        `<div id="${config.mountElementId || 'root'}"></div>`,
+        `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
+      );
+    }
+
     const entryContent = Mustache.render(entryTpl, {
       globalVariables: !this.service.config.disableGlobalVariables,
       code: this.service
@@ -209,6 +226,7 @@ export default class FilesGenerator {
       render: initialRender,
       plugins,
       validKeys,
+      ssrHtml,
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
