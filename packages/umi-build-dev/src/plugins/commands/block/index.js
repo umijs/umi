@@ -5,11 +5,13 @@ import { dirname, join } from 'path';
 import execa from 'execa';
 import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
+import getNpmRegistry from 'getnpmregistry'
 import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies, getAllBlockDependencies } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
+
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -267,11 +269,12 @@ export default api => {
             `Install additional dependencies ${deps.join(',')} with ${npmClient}`,
           );
           try {
+            const registryUrl = await getNpmRegistry()
             await execa(
               npmClient,
               npmClient.includes('yarn')
-                ? ['add', ...deps]
-                : ['install', ...deps, '--save'],
+                ? ['add', ...deps,`--registry=${registryUrl}`]
+                : ['install', ...deps, '--save',`--registry=${registryUrl}`],
               {
                 cwd: dirname(projectPkgPath),
               },
