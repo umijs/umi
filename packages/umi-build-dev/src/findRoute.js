@@ -1,11 +1,19 @@
 export default function findRoute(routes, path) {
-  let activeRoute;
-  routes.map(route => {
-    if (route.routes) {
-      activeRoute = findRoute(route.routes, path);
-    } else if (require('react-router-dom').matchPath(path, route)) {
-      activeRoute = route;
+  const flatRoutes = [];
+  const getFlatRoutes = list => {
+    if (!list) {
+      return;
     }
-  });
-  return activeRoute;
+    list.forEach(item => {
+      if (item.routes) {
+        getFlatRoutes(item.routes);
+      }
+      if (item.path && !flatRoutes.includes(item.path)) {
+        const { routes, ...itemRest } = item;
+        flatRoutes.push(itemRest);
+      }
+    });
+  };
+  getFlatRoutes(routes);
+  return flatRoutes.find(route => require('react-router-dom').matchPath(path, route));
 }
