@@ -4,7 +4,9 @@ import launchEditorEndpoint from 'react-dev-utils/launchEditorEndpoint';
 export default function createLaunchEditorMiddleware() {
   return function launchEditorMiddleware(req, res, next) {
     if (req.url.startsWith(launchEditorEndpoint)) {
-      launchEditor(req.query.fileName, req.query.lineNumber);
+      const lineNumber = parseInt(req.query.lineNumber, 10) || 1;
+
+      launchEditor(req.query.fileName, lineNumber);
       res.end();
     } else {
       next();
