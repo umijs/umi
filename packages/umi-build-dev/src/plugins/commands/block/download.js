@@ -101,7 +101,7 @@ export function getParsedData(url, blockConfig) {
   } else if (/^[\w]+[\w\-\/]*$/.test(url)) {
     realUrl = `${defaultGitUrl}/tree/master/${url}`;
     debug(`will use ${realUrl} as the block url`);
-  } else if (/^[\.\/]/.test(url)) {
+  } else if (/^[\.\/]|^[a-zA-Z]:/.test(url)) {
     // locale path for test
     const sourcePath = resolve(process.cwd(), url);
     debug(`will use ${sourcePath} as the block url`);
