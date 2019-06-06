@@ -80,11 +80,20 @@ function wrapWithInitialProps(WrappedComponent) {
         extraProps: {},
       };
     }
-    async componentDidMount() {
+    async getInitialProps() {
       const extraProps = await WrappedComponent.getInitialProps();
       this.setState({
         extraProps,
       });
+    }
+    async componentDidMount() {
+      const { history } = this.props;
+      window.onpopstate = () => {
+        this.getInitialProps();
+      };
+      if (!window.g_useSSR || history.action !== 'POP') {
+        this.getInitialProps();
+      }
     }
     render() {
       return (
