@@ -8,7 +8,7 @@ export default function findRoute(routes, path) {
       if (item.routes) {
         getFlatRoutes(item.routes);
       }
-      if (item.path && !flatRoutes.includes(item.path)) {
+      if (item.path && !flatRoutes.find(r => r.path === item.path)) {
         const { routes, ...itemRest } = item;
         flatRoutes.push(itemRest);
       }
