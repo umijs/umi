@@ -191,9 +191,7 @@ export default class FilesGenerator {
           {
             content: `
 window.g_useSSR=true;
-window.g_initialData = \${require('${require.resolve('serialize-javascript')}')({
-  data: props.data,
-})};
+window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(props)};.
             `.trim(),
           },
         ],
