@@ -1,3 +1,5 @@
+// ref: https://github.com/littlehaker/html-to-jsx/blob/master/index.js
+
 export default function(html) {
   html = html
     .replace(/\sclass=/g, ' className=')
