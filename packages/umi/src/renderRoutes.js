@@ -91,7 +91,7 @@ function wrapWithInitialProps(WrappedComponent) {
       window.onpopstate = () => {
         this.getInitialProps();
       };
-      if (!window.g_useSSR || history.action !== 'POP') {
+      if (history.action !== 'POP') {
         this.getInitialProps();
       }
     }
