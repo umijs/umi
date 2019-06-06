@@ -181,7 +181,7 @@ export default class FilesGenerator {
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
 
-    let ssrHtml = '';
+    let ssrHtml = '<></>';
     if (config.ssr) {
       const hg = getHtmlGenerator(this.service, {
         chunksMap: {
