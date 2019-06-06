@@ -52,7 +52,7 @@ let serverRender;
 if (!__IS_BROWSER) {
   serverRender = async (ctx) => {
     const pathname = ctx.req.url;
-    history.push(pathname);
+    require('@tmp/history').default.push(pathname);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component.getInitialProps) {
