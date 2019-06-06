@@ -237,6 +237,7 @@ window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(
       plugins,
       validKeys,
       ssrHtml,
+      findRoutePath: require.resolve('./findRoute'),
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }

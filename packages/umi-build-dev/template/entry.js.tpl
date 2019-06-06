@@ -5,6 +5,7 @@ import history from './history';
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
+import findRoute from '{{{ findRoutePath }}}';
 {{{ imports }}}
 
 // runtime plugins
@@ -20,19 +21,6 @@ plugins.use(require('{{{ . }}}'));
 {{/plugins}}
 
 {{{ codeAhead }}}
-
-// utils
-function findRoute(routes, path) {
-  let activeRoute;
-  routes.map(route => {
-    if (route.routes) {
-      activeRoute = findRoute(route.routes, path);
-    } else if (require('react-router-dom').matchPath(path, route)) {
-      activeRoute = route;
-    }
-  });
-  return activeRoute;
-}
 
 // render
 let clientRender = async () => {
