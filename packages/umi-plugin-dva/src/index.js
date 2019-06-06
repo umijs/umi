@@ -275,8 +275,9 @@ models: () => [
 
   api.addEntryCodeAhead(
     `
-require('@tmp/dva')._onCreate();
-${api.config.disableGlobalVariables ? '' : `window.g_app = require('@tmp/dva').getApp();`}
+const app = require('@tmp/dva')._onCreate();
+${api.config.disableGlobalVariables ? '' : `window.g_app = app;`}
+${api.config.ssr ? `app.router(() => <div />);\napp.start();` : ''}
   `.trim(),
   );
 }

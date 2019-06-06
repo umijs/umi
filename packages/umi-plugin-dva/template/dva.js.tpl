@@ -12,6 +12,7 @@ export function _onCreate() {
     history,
     <%= ExtendDvaConfig %>
     ...(runtimeDva.config || {}),
+    ...(window.g_useSSR ? { initialState: window.g_initialData } : {}),
   });
   <%= EnhanceApp %>
   app.use(createLoading());
@@ -20,6 +21,7 @@ export function _onCreate() {
   });
   <%= RegisterPlugins %>
   <%= RegisterModels %>
+  return app;
 }
 
 export function getApp() {
