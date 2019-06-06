@@ -67,6 +67,19 @@ $ APP_ROOT=src/renderer umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_REPORT
+
+默认关闭。分析 bundle 构成并生成报告文件 (默认 bundlestats.json )，供手工分析或可视化用。比如：
+
+```bash
+$ ANALYZE_REPORT=1 umi build
+```
+
+与开启 `ANALYZE` 并指定 `ANALYZE_DUMP` 后生成的 stat 文件不同，ANALYZE 会直接将 [
+[Webpack Stat](https://webpack.js.org/configuration/stats/) 数据转存成目标文件，而 `ANALYZE_REPORT` 会先对 Webpack Stat 进行解析与裁剪，把可以直接用于分析与可视化的报告数据生成报告文件。
+
+这样做的好处是，我们可以得到更小（仅有 stat 文件 1% 大小）的数据文件。
+
 ### SPEED_MEASURE
 
 默认关闭。分析各个 plugin 和 loader 的耗时。比如：

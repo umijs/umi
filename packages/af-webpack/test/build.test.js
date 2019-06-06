@@ -69,3 +69,30 @@ describe('build', () => {
     },
   });
 });
+
+describe('analyze report', () => {
+  beforeAll(() => {
+    process.env.ANALYZE_REPORT = true;
+  });
+
+  afterAll(() => {
+    process.env.ANALYZE_REPORT = false;
+  });
+
+  it('should generate analyze report file', done => {
+    const root = join(__dirname, './fixtures/typescript');
+    build(
+      {
+        cwd: root,
+        outputPath: join(root, 'dist'),
+      },
+      err => {
+        if (err) {
+          done(err);
+        }
+        expect(existsSync(join(root, 'dist/bundlestats.json')));
+        done();
+      },
+    );
+  });
+});
