@@ -1,17 +1,16 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync } from 'fs';
 import { dirname, join } from 'path';
-import execa from 'execa';
 import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
-import getNpmRegistry from 'getnpmregistry'
 import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
-import { dependenciesConflictCheck, getNameFromPkg, getMockDependencies, getAllBlockDependencies } from './getBlockGenerator';
+import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 
+import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -23,10 +22,10 @@ export default api => {
     let retCtx;
     switch (args._[0]) {
       case 'add':
-      retCtx = await add(args);
+        retCtx = await add(args);
         break;
       case 'list':
-        await list(args);
+        await getDefaultBlockList(args);
         break;
       default:
         throw new Error(
@@ -34,32 +33,6 @@ export default api => {
         );
     }
     return retCtx; // return for test
-  }
-
-  function printBlocks(blocks, parentPath = '') {
-    blocks.forEach(block => {
-      if (block.type === 'block') {
-        console.log(`    ${chalk.cyan(join(parentPath, block.path))}`);
-      }
-      if (block.type === 'dir') {
-        printBlocks(block.blocks, block.path);
-      }
-    });
-  }
-
-  async function list() {
-    const got = require('got');
-    const { body } = await got(`http://blocks.umijs.org/api/blocks`);
-    const { status, error, data } = JSON.parse(body);
-    if (status === 'success') {
-      console.log(``);
-      console.log(`  Blocks:`);
-      console.log(``);
-      printBlocks(data);
-      console.log(``);
-    } else {
-      throw new Error(error);
-    }
   }
 
   function getCtx(url, args = {}) {
@@ -86,69 +59,13 @@ export default api => {
     return ctx;
   }
 
-  async function gitUpdate(ctx, spinner) {
-    spinner.start('Git fetch');
-    try {
-      await execa(`git`, ['fetch'], {
-        cwd: ctx.templateTmpDirPath,
-      });
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-
-    spinner.start(`Git checkout ${ctx.branch}`);
-    try {
-      await execa(`git`, ['checkout', ctx.branch], {
-        cwd: ctx.templateTmpDirPath,
-      });
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-
-    spinner.start('Git pull');
-    try {
-      await execa(`git`, [`pull`], {
-        cwd: ctx.templateTmpDirPath,
-      });
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-  }
-
-  async function gitClone(ctx, spinner) {
-    spinner.start('Clone git repo');
-    try {
-      await execa(
-        `git`,
-        [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch],
-        {
-          cwd: ctx.blocksTempPath,
-          env: process.env,
-        },
-      );
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-  }
-
   async function add(args = {}) {
     const spinner = ora();
 
     // 1. parse url and args
     spinner.start('Parse url and args');
     const url = args._[1];
-    assert(
-      url,
-      `run ${chalk.cyan.underline('umi help block')} to checkout the usage`,
-    );
+    assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
 
     const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
     const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
@@ -210,107 +127,10 @@ export default api => {
     if (skipDependencies) {
       debug('skip dependencies');
     } else {
-      // read project package.json
-      const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
-        initialValue: join(paths.cwd, 'package.json'),
-      });
-      assert(
-        existsSync(projectPkgPath),
-        `No package.json found in your project`,
-      );
-      // eslint-disable-next-line
-      const projectPkg = require(projectPkgPath);
-
-      // get _mock.js dependencie
-      let devDependencies = {};
-      const mockFilePath = join(ctx.sourcePath, 'src/_mock.js');
-      if (existsSync(mockFilePath)) {
-        devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
-      }
-      const allBlockDependencies = getAllBlockDependencies(ctx.templateTmpDirPath, ctx.pkg);
-      // get confilict dependencies and lack dependencies
-      const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
-        initialValue: dependenciesConflictCheck(
-          allBlockDependencies,
-          projectPkg.dependencies,
-          devDependencies,
-          {
-            ...projectPkg.devDependencies,
-            ...projectPkg.dependencies,
-          },
-        ),
-      });
-      debug(`conflictDeps ${conflicts}, lackDeps ${lacks}`, `devConflictDeps ${devConflicts}, devLackDeps ${devLacks}`);
-
-      // find confilict dependencies throw error
-      const allConflicts = [
-        ...conflicts,
-        ...devConflicts,
-      ];
-      if (allConflicts.length) {
-        throw new Error(`
-  find dependencies conflict between block and your project:
-  ${allConflicts
-    .map(info => {
-      return `* ${info[0]}: ${info[2]}(your project) not compatible with ${
-        info[1]
-      }(block)`;
-    })
-    .join('\n')}`);
-      }
-
-      // find lack confilict, auto install
-      if (dryRun) {
-        debug('dryRun is true, skip install dependencies');
-      } else {
-        if (lacks.length) {
-          const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
-          spinner.start(
-            `Install additional dependencies ${deps.join(',')} with ${npmClient}`,
-          );
-          try {
-            const registryUrl = await getNpmRegistry()
-            await execa(
-              npmClient,
-              npmClient.includes('yarn')
-                ? ['add', ...deps,`--registry=${registryUrl}`]
-                : ['install', ...deps, '--save',`--registry=${registryUrl}`],
-              {
-                cwd: dirname(projectPkgPath),
-              },
-            );
-          } catch (e) {
-            spinner.fail();
-            throw new Error(e);
-          }
-          spinner.succeed();
-        }
-
-        if (devLacks.length) {
-          // need skip devDependency which already install in dependencies
-          const devDeps = devLacks
-            .filter(dep => !lacks.find(item => item[0] === dep[0]))
-            .map(dep => `${dep[0]}@${dep[1]}`);
-          spinner.start(
-            `Install additional devDependencies ${devDeps.join(',')} with ${npmClient}`,
-          );
-          try {
-            await execa(
-              npmClient,
-              npmClient.includes('yarn')
-                ? ['add', ...devDeps, '--dev']
-                : ['install', ...devDeps, '--save-dev'],
-              {
-                cwd: dirname(projectPkgPath),
-              },
-            );
-          } catch (e) {
-            spinner.fail();
-            throw new Error(e);
-          }
-          spinner.succeed();
-        }
-      }
+      // install
+      spinner.start(`install dependencies package`);
+      await installDependencies({ npmClient, applyPlugins, paths, debug, dryRun, spinner }, ctx);
+      spinner.stopAndPersist();
     }
 
     // 5. run generator
@@ -345,22 +165,24 @@ export default api => {
     if (ctx.pkg.blockConfig && ctx.pkg.blockConfig.dependencies) {
       const subBlocks = ctx.pkg.blockConfig.dependencies;
       try {
-        await Promise.all(subBlocks.map(block => {
-          const subBlockPath = join(ctx.templateTmpDirPath, block);
-          debug(`subBlockPath: ${subBlockPath}`);
-          return new BlockGenerator(args._.slice(2), {
-            sourcePath: subBlockPath,
-            path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
-            // eslint-disable-next-line
-            blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
-            isPageBlock: false,
-            dryRun,
-            env: {
-              cwd: api.cwd,
-            },
-            resolved: __dirname,
-          }).run();
-        }));
+        await Promise.all(
+          subBlocks.map(block => {
+            const subBlockPath = join(ctx.templateTmpDirPath, block);
+            debug(`subBlockPath: ${subBlockPath}`);
+            return new BlockGenerator(args._.slice(2), {
+              sourcePath: subBlockPath,
+              path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
+              // eslint-disable-next-line
+              blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
+              isPageBlock: false,
+              dryRun,
+              env: {
+                cwd: api.cwd,
+              },
+              resolved: __dirname,
+            }).run();
+          }),
+        );
       } catch (e) {
         spinner.fail();
         throw new Error(e);
@@ -370,9 +192,7 @@ export default api => {
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-      spinner.start(
-        `Write route ${generator.path} to ${api.service.userConfig.file}`,
-      );
+      spinner.start(`Write route ${generator.path} to ${api.service.userConfig.file}`);
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
@@ -384,11 +204,7 @@ export default api => {
       });
       try {
         if (!dryRun) {
-          writeNewRoute(
-            newRouteConfig,
-            api.service.userConfig.file,
-            paths.absSrcPath,
-          );
+          writeNewRoute(newRouteConfig, api.service.userConfig.file, paths.absSrcPath);
         }
       } catch (e) {
         spinner.fail();
@@ -416,8 +232,7 @@ export default api => {
     }
 
     // Final: show success message
-    const viewUrl = `http://localhost:${process.env.PORT
-      || '8000'}${generator.path.toLowerCase()}`;
+    const viewUrl = `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`;
     try {
       clipboardy.writeSync(viewUrl);
       log.success(
@@ -426,9 +241,7 @@ export default api => {
         )} for view the block.`,
       );
     } catch (e) {
-      log.success(
-        `probable url ${chalk.cyan(viewUrl)} for view the block.`,
-      );
+      log.success(`probable url ${chalk.cyan(viewUrl)} for view the block.`);
       log.error('copy to clipboard failed');
     }
 
@@ -498,6 +311,6 @@ Examples:
           );
         },
       };
-    }
+    };
   });
 };

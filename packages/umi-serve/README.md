@@ -4,7 +4,7 @@
 
 ```bash
 $ yarn add umi-serve
-``` 
+```
 
 ## Usage
 

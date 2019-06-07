@@ -2,9 +2,7 @@
 
 Type definitions for umi.
 
-[![NPM version](https://img.shields.io/npm/v/umi-types.svg?style=flat)](https://npmjs.org/package/umi-types)
-[![Build Status](https://img.shields.io/travis/umijs/umi-types.svg?style=flat)](https://travis-ci.org/umijs/umi-types)
-[![NPM downloads](http://img.shields.io/npm/dm/umi-types.svg?style=flat)](https://npmjs.org/package/umi-types)
+[![NPM version](https://img.shields.io/npm/v/umi-types.svg?style=flat)](https://npmjs.org/package/umi-types) [![Build Status](https://img.shields.io/travis/umijs/umi-types.svg?style=flat)](https://travis-ci.org/umijs/umi-types) [![NPM downloads](http://img.shields.io/npm/dm/umi-types.svg?style=flat)](https://npmjs.org/package/umi-types)
 
 ## Why
 

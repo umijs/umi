@@ -20,9 +20,7 @@ Configure it in the `.umirc.js`.
 
 ```js
 export default {
-  plugins: [
-    ['umi-plugin-routes', option],
-  ],
+  plugins: [['umi-plugin-routes', option]],
 };
 ```
 
