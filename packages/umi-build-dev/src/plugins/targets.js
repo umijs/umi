@@ -38,26 +38,25 @@ export default function(api) {
     writeTmpFile();
   });
 
-  api.addEntryPolyfillImports(() => {
-    if (process.env.BABEL_POLYFILL !== 'none') {
+  if (process.env.BABEL_POLYFILL !== 'none') {
+    api.addEntryPolyfillImports(() => {
       return [
         {
           source: './polyfills',
         },
       ];
-    } else {
-      log.warn(
-        chalk.yellow(
-          `Since you have configured the environment variable ${chalk.bold(
-            'BABEL_POLYFILL',
-          )} to none, no patches will be included.`,
-        ),
-      );
-      return [];
-    }
-  });
+    });
 
-  api.chainWebpackConfig(config => {
-    config.resolve.alias.set('@babel/polyfill', require.resolve('@babel/polyfill'));
-  });
+    api.chainWebpackConfig(config => {
+      config.resolve.alias.set('@babel/polyfill', require.resolve('@babel/polyfill'));
+    });
+  } else {
+    log.warn(
+      chalk.yellow(
+        `Since you have configured the environment variable ${chalk.bold(
+          'BABEL_POLYFILL',
+        )} to none, no patches will be included.`,
+      ),
+    );
+  }
 }
