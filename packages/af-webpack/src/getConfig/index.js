@@ -94,6 +94,7 @@ export default function(opts) {
     .exclude
       .add(/\.json$/)
       .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
+      .add(/\.(graphql|gql)$/)
       .add(/\.(css|less|scss|sass)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
@@ -252,6 +253,16 @@ export default function(opts) {
           },
           ...(opts.typescript || {}),
         });
+
+  // module -> gql, graphql
+  webpackConfig.module
+  .rule('graphql')
+    .test(/\.(graphql|gql)$/)
+    .exclude
+      .add(/node_modules/)
+      .end()
+    .use('graphql-tag-loader')
+    .loader('graphql-tag/loader');
 
   // module -> css
   require('./css').default(webpackConfig, opts);
