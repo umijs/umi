@@ -50,6 +50,7 @@ module.exports = {
                 'navigate-between-pages',
                 'config',
                 'html-template',
+                'module-processor',
               ],
             },
             {
@@ -118,6 +119,7 @@ module.exports = {
                 'navigate-between-pages',
                 'config',
                 'html-template',
+                'module-processor',
               ],
             },
             {
