@@ -267,7 +267,7 @@ export default {
 chainWebpack(config, { webpack }) {
   // 设置 alias
   config.resolve.alias.set('a', 'path/to/a');
-  
+
   // 删除进度条插件
   config.plugins.delete('progress');
 }
@@ -447,7 +447,7 @@ const config = {
 
 ### lessLoaderOptions
 
-给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。 
+给 [less-loader](https://github.com/webpack-contrib/less-loader) 的额外配置项。
 
 ### cssLoaderOptions
 
@@ -458,7 +458,7 @@ const config = {
 配置传给 [autoprefixer](https://github.com/postcss/autoprefixer#options) 的配置项。
 
 * 类型：`Object`
-* 默认：`{ browserslist, flexbox: 'no-2019' }`
+* 默认：`{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2019' }`
 
 如果你想兼容旧版本 iOS Safari 的 flexbox，应该需要配置上 `flexbox: true`。
 

@@ -137,6 +137,11 @@ export default function(api) {
           return `${key} >= ${targets[key]}`;
         });
 
+    const plugins = [];
+    if (process.env.BABEL_POLYFILL !== 'none') {
+      plugins.push(require.resolve('./lockCoreJSVersionPlugin'));
+    }
+
     return {
       ...memo,
       ...config,
@@ -159,7 +164,7 @@ export default function(api) {
             },
           ],
         ],
-        plugins: [require.resolve('./lockCoreJSVersionPlugin')],
+        plugins,
       },
       define: {
         'process.env.BASE_URL': config.base || '/',

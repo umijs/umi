@@ -1,4 +1,4 @@
-
+import React from 'react';
 {{#localeList.length}}
 import {
   _setIntlObject,
@@ -83,7 +83,7 @@ class LocaleWrapper extends React.Component{
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
-    
+
     return appLocale;
   }
   reloadAppLocale = () => {
@@ -92,7 +92,7 @@ class LocaleWrapper extends React.Component{
       locale: appLocale.locale,
     });
   };
-  
+
   render(){
     const appLocale = this.getAppLocale();
     const LangContextValue = {

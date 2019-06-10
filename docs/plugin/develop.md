@@ -364,7 +364,7 @@ The async version of onBuildSuccess.
 
 ```js
 api.onBuildSuccessAsync(async ({ stats }) => {
-  yield delay(1000);
+  await delay(1000);
   console.log(stats);
 });
 ```

@@ -265,7 +265,7 @@ such as:
 chainWebpack(config, { webpack }) {
   // Set alias
   config.resolve.alias.set('a', 'path/to/a');
-  
+
   // Delete progress bar plugin
   config.plugins.delete('progress');
 }
@@ -456,7 +456,7 @@ Additional configuration items for [css-loader](https://github.com/webpack-contr
 Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options) .
 
 - Type: `Object`
-- Default: `{ browserslist, flexbox: 'no-2019' }`
+- Default: `{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2019' }`
 
 If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
 

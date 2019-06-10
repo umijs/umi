@@ -19,15 +19,21 @@ function setLocale(lang, realReload = true) {
     if (realReload) {
       window.location.reload();
     }
+    // chrome 不支持这个事件。所以人肉触发一下
+    if (window.dispatchEvent) {
+      const event = new Event('languagechange');
+      window.dispatchEvent(event);
+    }
   }
 }
 
 function getLocale() {
-  return window.g_lang;
+  const lang = window.localStorage.getItem('umi_locale');
+  return lang || window.g_lang;
 }
 
 const LangContext = React.createContext({
-  lang: window.g_lang,
+  lang: getLocale(),
 });
 
 // init api methods
