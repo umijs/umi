@@ -54,6 +54,7 @@
     "prompt.d.ts",
     "redirect.d.ts",
     "router.d.ts",
+    "Route.d.ts",
     "withRouter.d.ts",
     "routerTypes.d.ts"
   ]
