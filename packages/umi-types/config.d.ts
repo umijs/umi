@@ -68,6 +68,7 @@ export interface IAFWebpackConfig {
 interface IConfig extends IAFWebpackConfig {
   // basic config
   // sorted by alphabet
+  block?: object;
   chainWebpack?: IChangeWebpackConfigFunc<IWebpackChainConfig, IAFWebpackConfig>; // https://github.com/mozilla-neutrino/webpack-chain
   context?: object;
   disableRedirectHoist?: boolean;
