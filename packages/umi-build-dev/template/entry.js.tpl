@@ -64,9 +64,10 @@ if (!__IS_BROWSER) {
     const rootContainer = plugins.apply('rootContainer', {
       initialValue: React.createElement(require('./router').default, props),
     });
-    return (
-      {{{ ssrHtml }}}
-    );
+    return {
+      ssrHtml: {{{ ssrHtml }}},
+      rootContainer,
+    };
   }
 }
 export default __IS_BROWSER ? null : serverRender;
