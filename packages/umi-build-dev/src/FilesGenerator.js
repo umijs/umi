@@ -13,6 +13,7 @@ import importsToStr from './importsToStr';
 import { EXT_LIST } from './constants';
 import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
 import htmlToJSX from './htmlToJSX';
+import getRoutePaths from './routes/getRoutePaths';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -188,26 +189,32 @@ export default class FilesGenerator {
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
 
-    let ssrHtml = '<></>';
+    const htmlTemplateMap = [];
     if (config.ssr) {
-      const hg = getHtmlGenerator(this.service, {
-        chunksMap: {
-          umi: ['umi.js', 'umi.css'],
-        },
-        headScripts: [
-          {
-            content: `
+      const routePaths = getRoutePaths(this.RoutesManager.routes);
+      routePaths.forEach(routePath => {
+        let ssrHtml = '<></>';
+        const hg = getHtmlGenerator(this.service, {
+          // TODO: read from assets.json
+          chunksMap: {
+            umi: ['umi.js', 'umi.css'],
+          },
+          headScripts: [
+            {
+              content: `
 window.g_useSSR=true;
 window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(props)};
-            `.trim(),
-          },
-        ],
+              `.trim(),
+            },
+          ],
+        });
+        const content = hg.getMatchedContent(routePath);
+        ssrHtml = htmlToJSX(content).replace(
+          `<div id="${config.mountElementId || 'root'}"></div>`,
+          `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
+        );
+        htmlTemplateMap.push(`'${routePath}': (${ssrHtml}),`);
       });
-      const content = hg.getMatchedContent('/');
-      ssrHtml = htmlToJSX(content).replace(
-        `<div id="${config.mountElementId || 'root'}"></div>`,
-        `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
-      );
     }
 
     const entryContent = Mustache.render(entryTpl, {
@@ -241,7 +248,7 @@ window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(
       render: initialRender,
       plugins,
       validKeys,
-      ssrHtml,
+      htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: require.resolve('./findRoute'),
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
