@@ -13,6 +13,7 @@ package-lock.json
 /packages/**/.docz
 /packages/*/lib
 /packages/*/dist
+
 dist
 coverage
 .nyc_output
