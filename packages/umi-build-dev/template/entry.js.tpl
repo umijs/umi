@@ -65,7 +65,7 @@ if (!__IS_BROWSER) {
       initialValue: React.createElement(require('./router').default, props),
     });
     return {
-      ssrHtml: {{{ ssrHtml }}},
+      htmlElement: {{{ ssrHtml }}},
       rootContainer,
     };
   }
