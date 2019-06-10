@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
+import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
@@ -71,6 +72,8 @@ export default api => {
     const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
+    const registryUrl = await getNpmRegistry();
+
     const {
       path,
       npmClient = defaultNpmClient,
@@ -79,6 +82,7 @@ export default api => {
       skipModifyRoutes,
       page: isPage,
       layout: isLayout,
+      registry = registryUrl,
     } = args;
     const ctx = getCtx(url);
     spinner.succeed();
@@ -129,7 +133,10 @@ export default api => {
     } else {
       // install
       spinner.start(`install dependencies package`);
-      await installDependencies({ npmClient, applyPlugins, paths, debug, dryRun, spinner }, ctx);
+      await installDependencies(
+        { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
+        ctx,
+      );
       spinner.stopAndPersist();
     }
 

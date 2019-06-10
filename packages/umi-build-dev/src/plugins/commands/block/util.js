@@ -3,7 +3,6 @@ import { dirname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import execa from 'execa';
 import assert from 'assert';
-import getNpmRegistry from 'getnpmregistry';
 
 import {
   dependenciesConflictCheck,
@@ -104,7 +103,7 @@ export async function gitClone(ctx, spinner) {
  * @param {*} ctx
  */
 export async function installDependencies(
-  { npmClient, applyPlugins, paths, debug, dryRun, spinner },
+  { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
   ctx,
 ) {
   // read project package.json
@@ -151,7 +150,6 @@ export async function installDependencies(
   if (allConflicts.length) {
     throw new Error(`find dependencies conflict between block and your project:${ErrorInfo}`);
   }
-
   // find lack confilict, auto install
   if (dryRun) {
     debug('dryRun is true, skip install dependencies');
@@ -160,9 +158,8 @@ export async function installDependencies(
       const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
       spinner.start(`Install additional dependencies ${deps.join(',')} with ${npmClient}`);
       try {
-        const registryUrl = await getNpmRegistry();
         let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
-        npmArgs = [...npmArgs, ...deps, `--registry=${registryUrl}`];
+        npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
         await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
           cwd: dirname(projectPkgPath),
         });
@@ -180,15 +177,11 @@ export async function installDependencies(
         .map(dep => `${dep[0]}@${dep[1]}`);
       spinner.start(`Install additional devDependencies ${devDeps.join(',')} with ${npmClient}`);
       try {
-        await execa(
-          npmClient,
-          npmClient.includes('yarn')
-            ? ['add', ...devDeps, '--dev']
-            : ['install', ...devDeps, '--save-dev'],
-          {
-            cwd: dirname(projectPkgPath),
-          },
-        );
+        let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
+        npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
+        await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
+          cwd: dirname(projectPkgPath),
+        });
       } catch (e) {
         spinner.fail();
         throw new Error(e);
