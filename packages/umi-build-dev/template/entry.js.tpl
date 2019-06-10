@@ -67,7 +67,10 @@ if (!__IS_BROWSER) {
     const htmlTemplateMap = {
       {{{ htmlTemplateMap }}}
     };
-    return htmlTemplateMap[pathname];
+    return {
+      htmlElement: htmlTemplateMap[pathname],
+      rootContainer,
+    };
   }
 }
 export default __IS_BROWSER ? null : serverRender;
