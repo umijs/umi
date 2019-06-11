@@ -1,6 +1,7 @@
 import vw from 'umi-hd/lib/vw';
 import flex from 'umi-hd/lib/flex';
 
+// Fix document undefined when ssr. #2571
 if (typeof document !== 'undefined') {
   if (document.documentElement.clientWidth >= 750) {
     vw(100, 750);
