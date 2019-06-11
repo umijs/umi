@@ -267,7 +267,7 @@ require('umi/lib/createHistory').default({
     });
     if (config.ssr) {
       history = `
-__IS_BROWSER ? ${initialHistory} : require('history/createMemoryHistory').default()
+__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       `.trim();
     }
     const content = Mustache.render(tpl, {
