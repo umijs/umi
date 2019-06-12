@@ -187,11 +187,13 @@ app.use(require('${winPath(require.resolve('dva-immer'))}').default());
         extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
       }
       let ret = `
-_dvaDynamic({
-  <%= MODELS %>
-  component: () => import(${extendStr}'${importPath}'),
-  ${loadingOpts}
-})
+  __IS_BROWSER
+    ? _dvaDynamic({
+      <%= MODELS %>
+      component: () => import(${extendStr}'${importPath}'),
+      ${loadingOpts}
+    })
+    : require('${importPath}').default
       `.trim();
       const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
       if (models && models.length) {
