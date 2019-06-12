@@ -8,4 +8,6 @@ export { default as Route } from './Route';
 export { default as withRouter } from './withRouter';
 
 export { default as RouterTypes } from './routerTypes';
+
+// @ts-ignore
 export * from '@tmp/umiExports';
