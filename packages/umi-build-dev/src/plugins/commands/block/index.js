@@ -10,8 +10,8 @@ import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
-
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
+import tsTojs from './tsTojs';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -72,6 +72,8 @@ export default api => {
     const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
+
+    // get faster registry url
     const registryUrl = await getNpmRegistry();
 
     const {
@@ -83,7 +85,9 @@ export default api => {
       page: isPage,
       layout: isLayout,
       registry = registryUrl,
+      js,
     } = args;
+
     const ctx = getCtx(url);
     spinner.succeed();
 
@@ -139,7 +143,9 @@ export default api => {
       );
       spinner.stopAndPersist();
     }
-
+    if (js) {
+      tsTojs(ctx.sourcePath);
+    }
     // 5. run generator
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
