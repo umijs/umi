@@ -1,0 +1,35 @@
+{
+  "name": "umi-plugin-pre-render",
+  "version": "0.0.1",
+  "description": "A plugin for pre render",
+  "authors": {
+    "name": "ycjcl868",
+    "email": "45808948@qq.com"
+  },
+  "repository": "https://github.com/umijs/umi-plugin-pre-render",
+  "peerDependencies": {
+    "umi": "2.x"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "umi-tools build",
+    "prepublishOnly": "npm run build && np --no-cleanup --yolo --no-publish"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
+    "history": "^4.7.2",
+    "dva-loading": "^3.0.5",
+    "lodash": "^4.17.11",
+    "react": "16.8.6",
+    "umi-types": "^0.3.8"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "MIT"
+}
