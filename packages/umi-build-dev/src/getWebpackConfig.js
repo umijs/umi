@@ -33,7 +33,7 @@ export default function(service, opts = {}) {
   const webpackConfig = service.applyPlugins('modifyWebpackConfig', {
     initialValue: getConfig({
       ...afWebpackOpts,
-      ssr: true,
+      ssr,
     }),
   });
 
