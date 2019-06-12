@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.3.0",
@@ -10,7 +10,7 @@
     "@babel/template": "7.2.2",
     "@babel/traverse": "7.2.3",
     "@babel/types": "7.3.0",
-    "af-webpack": "1.8.3",
+    "af-webpack": "1.8.4",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-preset-umi": "1.5.0",
     "chalk": "2.4.1",
@@ -27,6 +27,7 @@
     "execa": "1.0.0",
     "express": "4.16.4",
     "extend2": "1.0.0",
+    "getnpmregistry": "1.0.1",
     "glob": "7.1.3",
     "got": "9.5.0",
     "html-minifier": "3.5.21",
@@ -52,18 +53,17 @@
     "signale": "1.3.0",
     "sockjs": "0.3.19",
     "stringify-object": "3.3.0",
-    "umi-core": "1.3.0",
+    "umi-core": "1.3.1",
     "umi-history": "0.1.2",
     "umi-mock": "1.2.0",
     "umi-notify": "^0.1.1",
-    "umi-test": "1.5.10",
+    "umi-test": "1.5.11",
     "umi-utils": "1.4.4",
     "uppercamelcase": "3.0.0",
     "url-polyfill": "1.1.3",
     "user-home": "2.0.0",
     "whatwg-fetch": "3.0.0",
-    "yeoman-generator": "3.1.1",
-    "getnpmregistry": "1.0.1"
+    "yeoman-generator": "3.1.1"
   },
   "repository": {
     "type": "git",
