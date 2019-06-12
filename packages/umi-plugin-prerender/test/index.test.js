@@ -15,7 +15,7 @@ const api = {
     absOutputPath,
   },
   config: {
-    singular: true,
+    ssr: true,
   },
   routes: [
     {
@@ -53,17 +53,35 @@ describe('test plugin', () => {
   const indexPath = join(absOutputPath, 'index.html');
   const userPath = join(absOutputPath, 'users', 'index.html');
 
+  const cleanDist = () => {
+    if (existsSync(indexPath)) {
+      unlinkSync(indexPath);
+    }
+    if (existsSync(userPath)) {
+      unlinkSync(userPath);
+    }
+  };
+
+  describe('throw error when not config ssr', () => {
+    afterAll(() => {
+      cleanDist();
+    });
+    test('throw error when not using ssr', async () => {
+      expect(() => {
+        preRenderPlugin({
+          ...api,
+          config: {},
+        });
+      }).toThrowError(/ssr config/);
+    });
+  });
+
   describe('normal', () => {
     beforeEach(() => {
       preRenderPlugin(api);
     });
     afterEach(() => {
-      if (existsSync(indexPath)) {
-        unlinkSync(indexPath);
-      }
-      if (existsSync(userPath)) {
-        unlinkSync(userPath);
-      }
+      cleanDist();
     });
     test('render into dist normal', async () => {
       const indexHtml = readFileSync(indexPath, 'utf-8');
@@ -85,12 +103,7 @@ describe('test plugin', () => {
       });
     });
     afterEach(() => {
-      if (existsSync(indexPath)) {
-        unlinkSync(indexPath);
-      }
-      if (existsSync(userPath)) {
-        unlinkSync(userPath);
-      }
+      cleanDist();
     });
     test('render into dist normal', async () => {
       const indexHtml = readFileSync(indexPath, 'utf-8');
