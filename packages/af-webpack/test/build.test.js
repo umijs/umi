@@ -90,7 +90,9 @@ describe('analyze report', () => {
         if (err) {
           done(err);
         }
-        expect(existsSync(join(root, 'dist/bundlestats.json')));
+        const statsFile = join(process.cwd(), 'bundlestats.json');
+        expect(existsSync(statsFile)).toBeTruthy();
+        rimraf.sync(statsFile);
         done();
       },
     );
