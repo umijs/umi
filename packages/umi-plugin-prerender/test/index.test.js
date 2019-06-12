@@ -2,7 +2,7 @@ import { join } from 'path';
 import { readFileSync, existsSync, unlinkSync } from 'fs';
 import preRenderPlugin from '../src/index';
 
-const uniq = require('lodash/uniq');
+const uniq = require('lodash.uniq');
 
 const absOutputPath = join(__dirname, 'examples');
 

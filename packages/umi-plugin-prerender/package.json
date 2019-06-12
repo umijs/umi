@@ -17,9 +17,9 @@
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
-    "history": "^4.7.2",
     "dva-loading": "^3.0.5",
-    "lodash": "^4.17.11",
+    "history": "^4.7.2",
+    "lodash.uniq": "^4.5.0",
     "react": "16.8.6",
     "umi-types": "^0.3.8"
   },
