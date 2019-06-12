@@ -24,17 +24,12 @@ export interface IOpts {
 }
 
 export default (api: IApi, opts: IOpts) => {
-  const { paths, debug } = api;
+  const { paths, debug, config } = api;
   const { exclude = [] } = opts || {};
   const { absOutputPath } = paths;
-
-  // modify config using ssr: true
-  (api as any)._modifyConfig(memo => {
-    return {
-      ...memo,
-      ssr: true,
-    };
-  });
+  if (!(config as any).ssr) {
+    throw new Error('ssr config must be true when using umi preRender plugin');
+  }
 
   // onBuildSuccess hook
   api.onBuildSuccessAsync(async () => {
