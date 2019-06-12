@@ -1,12 +1,12 @@
 {
-  "name": "umi-plugin-pre-render",
+  "name": "umi-plugin-prerender",
   "version": "0.0.1",
-  "description": "A plugin for pre render",
+  "description": "A plugin for preRender",
   "authors": {
     "name": "ycjcl868",
     "email": "45808948@qq.com"
   },
-  "repository": "https://github.com/umijs/umi-plugin-pre-render",
+  "repository": "https://github.com/umijs/umi-plugin-prerender",
   "peerDependencies": {
     "umi": "2.x"
   },
