@@ -8,9 +8,7 @@
   },
   "repository": "https://github.com/umijs/umi-plugin-prerender",
   "peerDependencies": {
-    "umi": "2.x",
-    "react": ">=16.0.0",
-    "react-dom": ">=16.0.0"
+    "umi": "2.x"
   },
   "main": "lib/index.js",
   "dependencies": {
