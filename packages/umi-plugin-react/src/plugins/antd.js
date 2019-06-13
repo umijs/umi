@@ -24,23 +24,26 @@ export default function(api, options = {}) {
   const antdVersion = require(join(antdDir, 'package.json')).version;
   api.addVersionInfo([`antd@${antdVersion} (${antdDir})`]);
 
-  api.modifyAFWebpackOpts(opts => {
-    opts.babel.plugins = [
-      ...(opts.babel.plugins || []),
-      importPlugin('antd', options),
-      importPlugin('antd-mobile', options),
-      [
-        require.resolve('babel-plugin-import'),
-        {
-          libraryName: 'ant-design-pro',
-          libraryDirectory: 'lib',
-          style: true,
-          camel2DashComponentName: false,
-        },
-        'ant-design-pro',
-      ],
-    ];
-    return opts;
+  api.modifyAFWebpackOpts((memo, opts) => {
+    // antd ssr not enabled
+    if (!opts.ssr) {
+      memo.babel.plugins = [
+        ...(memo.babel.plugins || []),
+        importPlugin('antd', options),
+        importPlugin('antd-mobile', options),
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: 'ant-design-pro',
+            libraryDirectory: 'lib',
+            style: true,
+            camel2DashComponentName: false,
+          },
+          'ant-design-pro',
+        ],
+      ];
+    }
+    return memo;
   });
 
   api.chainWebpackConfig(webpackConfig => {
