@@ -1,5 +1,6 @@
 import rimraf from 'rimraf';
 import notify from 'umi-notify';
+import { UmiError, printUmiError } from 'umi-utils/lib/umiError';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
@@ -72,6 +73,16 @@ export default function(api) {
                   },
                 });
                 notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
+                printUmiError(
+                  new UmiError({
+                    message: err && err.message,
+                    context: {
+                      err,
+                      stats,
+                    },
+                  }),
+                  { tipsOnly: true },
+                );
                 reject(err);
               },
             });
