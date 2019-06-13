@@ -24,7 +24,7 @@ export interface IOpts {
 }
 
 export default (api: IApi, opts: IOpts) => {
-  const { paths, debug, config } = api;
+  const { paths, debug, config, findJS } = api;
   const { exclude = [] } = opts || {};
   const { absOutputPath } = paths;
   if (!(config as any).ssr) {
@@ -45,7 +45,10 @@ export default (api: IApi, opts: IOpts) => {
     (global as any).window = {};
 
     // require serverRender function
-    const umiServerFile = path.resolve(absOutputPath, 'umi.server.js');
+    const umiServerFile = findJS(absOutputPath, 'umi.server');
+    if (!umiServerFile) {
+      throw new Error(`can't find umi.server.js file`);
+    }
     const serverRender = require(umiServerFile);
 
     const routePaths: string[] = getRoutePaths(_, routes);
