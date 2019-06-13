@@ -33,13 +33,6 @@ export default (api: IApi, opts: IOpts) => {
 
   // onBuildSuccess hook
   api.onBuildSuccessAsync(async () => {
-    // using project react-dom version
-    // https://github.com/facebook/react/issues/13991
-    const { renderToString } = require(path.join(
-      process.cwd(),
-      'node_modules',
-      'react-dom/server',
-    ));
     const { routes, _ } = api as any;
     // mock window
     (global as any).window = {};
@@ -64,8 +57,8 @@ export default (api: IApi, opts: IOpts) => {
         },
       };
       try {
-        const { htmlElement } = await serverRender.default(ctx);
-        const ssrHtml = renderToString(htmlElement);
+        const { htmlElement, ReactDOMServer } = await serverRender.default(ctx);
+        const ssrHtml = ReactDOMServer.renderToString(htmlElement);
         // write html file
         const outputRoutePath = path.join(absOutputPath, url);
         mkdirp.sync(outputRoutePath);

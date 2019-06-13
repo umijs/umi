@@ -51,6 +51,9 @@ if (__IS_BROWSER) {
 let serverRender;
 if (!__IS_BROWSER) {
   serverRender = async (ctx) => {
+    // using project react-dom version
+    // https://github.com/facebook/react/issues/13991
+    const ReactDOMServer = require('react-dom/server');
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);
     let props = {};
@@ -70,6 +73,7 @@ if (!__IS_BROWSER) {
     return {
       htmlElement: htmlTemplateMap[pathname],
       rootContainer,
+      ReactDOMServer,
     };
   }
 }
