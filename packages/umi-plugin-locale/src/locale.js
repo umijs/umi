@@ -10,7 +10,6 @@ function setLocale(lang, realReload = true) {
     throw new Error('setLocale lang format error');
   }
   if (getLocale() !== lang) {
-    window.navigator = lang;
     window.g_lang = lang;
     window.localStorage.setItem('umi_locale', lang || '');
     // 触发 context 的 reload
