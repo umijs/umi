@@ -29,6 +29,7 @@ export default function dev({
   afterServer,
   contentBase,
   onCompileDone = noop,
+  onFail = noop,
   proxy,
   port,
   history,
@@ -55,6 +56,7 @@ export default function dev({
           if (process.env.SYSTEM_BELL !== 'none') {
             process.stdout.write('\x07');
           }
+          onFail({ stats });
           return;
         }
 

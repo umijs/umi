@@ -1,4 +1,3 @@
-import errorMap from 'umi-error-map';
 import chalk from 'chalk';
 
 export class UmiError extends Error {
@@ -16,33 +15,37 @@ export function printUmiError(e, opts = {}) {
     throw new Error('Invalid error type, UmiError instance needed.');
   }
 
-  const { tipsOnly } = opts;
+  const { detailsOnly } = opts;
   const { context } = e;
   let { code } = e;
+  // 支持内部框架扩展 error code map
+  const errorCodeMap = require(process.env.ERROR_CODE_MAP_PATH || '@umijs/error-code-map');
 
-  if (!e.code) {
-    for (const c of Object.keys(errorMap)) {
-      const { test } = errorMap[c];
+  if (!code) {
+    for (const c of Object.keys(errorCodeMap)) {
+      const { test } = errorCodeMap[c];
       if (test({ error: e, context })) {
         code = c;
       }
     }
   }
 
-  const { message, tip, tip_zh_CN } = errorMap[code];
+  if (!code) return;
+
+  const { message, details } = errorCodeMap[code];
   console.error(`\n${chalk.bgRed.black(' ERROR CODE ')} ${chalk.red(code)}`);
 
-  if (!tipsOnly) {
+  if (!detailsOnly) {
     console.error(`\n${chalk.bgRed.black(' ERROR ')} ${chalk.red(e.message || message)}`);
   }
 
   if (process.env.LANG.includes('zh_CN')) {
-    console.error(`\n${chalk.bgMagenta.black(' TIPS ')}\n\n${tip_zh_CN}`);
+    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${details['zh-CN']}`);
   } else {
-    console.error(`\n${chalk.bgMagenta.black(' TIPS ')}\n\n${tip}`);
+    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${details.en}`);
   }
 
-  if (!tipsOnly && e.stack) {
+  if (!detailsOnly && e.stack) {
     console.error(
       `\n${chalk.bgRed.black(' STACK ')}\n${e.stack
         .split('\n')

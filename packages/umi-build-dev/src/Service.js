@@ -7,6 +7,7 @@ import { assign, cloneDeep } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
 import { deprecate } from 'umi-utils';
+import { UmiError, printUmiError } from 'umi-core/lib/error';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
 import PluginAPI from './PluginAPI';
@@ -33,6 +34,8 @@ export default class Service {
     this.pluginHooks = {};
     this.pluginMethods = {};
     this.generators = {};
+    this.UmiError = UmiError;
+    this.printUmiError = printUmiError;
 
     // resolve user config
     this.config = UserConfig.getConfig({
@@ -48,6 +51,16 @@ export default class Service {
 
     // resolve paths
     this.paths = getPaths(this);
+  }
+
+  printUmiError(error, opts) {
+    this.applyPlugins('onPrintUmiError', {
+      args: {
+        error,
+        opts,
+      },
+    });
+    printUmiError(error, opts);
   }
 
   resolvePlugins() {
@@ -104,6 +117,9 @@ plugin must export a function, e.g.
               'pkg',
               'paths',
               'routes',
+              // error handler
+              'UmiError',
+              'printUmiError',
               // dev methods
               'restart',
               'printError',

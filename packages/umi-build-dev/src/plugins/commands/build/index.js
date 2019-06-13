@@ -1,11 +1,10 @@
 import rimraf from 'rimraf';
 import notify from 'umi-notify';
-import { UmiError, printUmiError } from 'umi-utils/lib/umiError';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug, config } = api;
+  const { service, debug, config, UmiError, printUmiError } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(
@@ -81,7 +80,7 @@ export default function(api) {
                       stats,
                     },
                   }),
-                  { tipsOnly: true },
+                  { detailsOnly: true },
                 );
                 reject(err);
               },
