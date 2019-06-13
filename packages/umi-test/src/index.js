@@ -1,4 +1,5 @@
 import jest from 'jest';
+import { options as CliOptions } from 'jest-cli/build/cli/args';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
@@ -6,7 +7,8 @@ const debug = require('debug')('umi-test');
 
 process.env.NODE_ENV = 'test';
 
-export default function(opts = {}) {
+export default function(originOpts = {}) {
+  const opts = { ...originOpts };
   const { cwd = process.cwd(), moduleNameMapper } = opts;
   let transformInclude = opts.transformInclude || [];
   if (typeof transformInclude === 'string') {
@@ -60,6 +62,15 @@ export default function(opts = {}) {
   };
 
   delete opts.transformInclude;
+
+  // Convert alias option into real one
+  Object.keys(CliOptions).forEach(name => {
+    const { alias } = CliOptions[name] || {};
+    if (alias && opts[alias]) {
+      opts[name] = opts[alias];
+      delete opts[alias];
+    }
+  });
 
   return new Promise((resolve, reject) => {
     jest
