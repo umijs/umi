@@ -11,6 +11,7 @@ const findRoute = pathname => {
 };
 
 const serverRender = ctx => {
+  const ReactDOMServer = require('react-dom/server');
   const pathname = ctx.req.url;
   const activeRoute = findRoute(pathname) || false;
   let props = {};
@@ -20,6 +21,7 @@ const serverRender = ctx => {
   return {
     htmlElement: React.createElement(activeRoute, props),
     rootContainer: React.createElement(activeRoute, props),
+    ReactDOMServer,
   };
 };
 
