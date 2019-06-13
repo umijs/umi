@@ -48,7 +48,7 @@ if (__IS_BROWSER) {
 }
 
 // export server render
-let serverRender;
+let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
   serverRender = async (ctx) => {
     const pathname = ctx.req.url;
@@ -72,7 +72,12 @@ if (!__IS_BROWSER) {
       rootContainer,
     };
   }
+  // using project react-dom version
+  // https://github.com/facebook/react/issues/13991
+  ReactDOMServer = require('react-dom/server');
 }
+
+export { ReactDOMServer };
 export default __IS_BROWSER ? null : serverRender;
 
 {{{ code }}}

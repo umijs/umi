@@ -23,7 +23,7 @@ export default (api, option) => {
       const { defaultTitle } = parseOption(option);
       return {
         ...memo,
-        title: config.exportStatic ? route._title : defaultTitle,
+        title: config.exportStatic || config.ssr ? route._title : defaultTitle,
       };
     }
     return memo;
