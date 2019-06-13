@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { findJS } from 'umi-utils';
 import { readFileSync, existsSync, unlinkSync } from 'fs';
 import preRenderPlugin from '../src/index';
 
@@ -10,6 +11,7 @@ const api = {
   onBuildSuccessAsync(fn) {
     fn();
   },
+  findJS,
   _modifyConfig() {},
   paths: {
     absOutputPath,
