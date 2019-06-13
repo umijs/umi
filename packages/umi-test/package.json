@@ -35,6 +35,7 @@
     "enzyme-adapter-react-16": "1.9.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "24.1.0",
+    "jest-cli": "24.1.0",
     "jest-pnp-resolver": "1.1.0",
     "jest-resolve": "24.1.0",
     "react": "^16.8.6",
