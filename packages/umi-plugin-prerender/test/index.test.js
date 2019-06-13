@@ -48,7 +48,9 @@ const api = {
   _: {
     uniq,
   },
-  debug: () => {},
+  debug: info => {
+    console.debug(info);
+  },
 };
 
 describe('test plugin', () => {

@@ -48,7 +48,7 @@ export default (api: IApi, opts: IOpts) => {
 
     // exclude render paths
     const renderPaths = routePaths.filter(path => !exclude.includes(path));
-    debug(`renderPaths: `, renderPaths.join(','));
+    debug(`renderPaths: ${renderPaths.join(',')}`);
     // loop routes
     for (const url of renderPaths) {
       const ctx = {
@@ -57,7 +57,9 @@ export default (api: IApi, opts: IOpts) => {
         },
       };
       try {
-        const { htmlElement, ReactDOMServer } = await serverRender.default(ctx);
+        const { ReactDOMServer } = serverRender;
+        debug(`react-dom version: ${ReactDOMServer.version}`);
+        const { htmlElement } = await serverRender.default(ctx);
         const ssrHtml = ReactDOMServer.renderToString(htmlElement);
         // write html file
         const outputRoutePath = path.join(absOutputPath, url);

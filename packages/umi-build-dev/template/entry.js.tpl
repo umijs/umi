@@ -48,12 +48,9 @@ if (__IS_BROWSER) {
 }
 
 // export server render
-let serverRender;
+let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
   serverRender = async (ctx) => {
-    // using project react-dom version
-    // https://github.com/facebook/react/issues/13991
-    const ReactDOMServer = require('react-dom/server');
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);
     let props = {};
@@ -73,10 +70,14 @@ if (!__IS_BROWSER) {
     return {
       htmlElement: htmlTemplateMap[pathname],
       rootContainer,
-      ReactDOMServer,
     };
   }
+  // using project react-dom version
+  // https://github.com/facebook/react/issues/13991
+  ReactDOMServer = require('react-dom/server');
 }
+
+export { ReactDOMServer };
 export default __IS_BROWSER ? null : serverRender;
 
 {{{ code }}}
