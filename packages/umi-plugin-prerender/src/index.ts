@@ -28,12 +28,18 @@ export default (api: IApi, opts: IOpts) => {
   const { exclude = [] } = opts || {};
   const { absOutputPath } = paths;
   if (!(config as any).ssr) {
-    throw new Error('ssr config must be true when using umi preRender plugin');
+    throw new Error('config must use { ssr: true } when using umi preRender plugin');
   }
 
   // onBuildSuccess hook
   api.onBuildSuccessAsync(async () => {
-    const { renderToString } = require('react-dom/server');
+    // using project react-dom version
+    // https://github.com/facebook/react/issues/13991
+    const { renderToString } = require(path.join(
+      process.cwd(),
+      'node_modules',
+      'react-dom/server',
+    ));
     const { routes, _ } = api as any;
     // mock window
     (global as any).window = {};

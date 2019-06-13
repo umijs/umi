@@ -8,18 +8,20 @@
   },
   "repository": "https://github.com/umijs/umi-plugin-prerender",
   "peerDependencies": {
-    "umi": "2.x"
+    "umi": "2.x",
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
   },
   "main": "lib/index.js",
   "dependencies": {
-    "mkdirp": "^0.5.1",
-    "react-dom": "16.8.6"
+    "mkdirp": "^0.5.1"
   },
   "devDependencies": {
     "@types/mkdirp": "^0.5.2",
     "lodash.uniq": "^4.5.0",
-    "react": "16.8.6",
-    "umi-types": "^0.3.8"
+    "umi-types": "^0.3.8",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "files": [
     "lib",

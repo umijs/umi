@@ -72,7 +72,7 @@ describe('test plugin', () => {
           ...api,
           config: {},
         });
-      }).toThrowError(/ssr config/);
+      }).toThrowError(/config must use { ssr: true } when using umi preRender plugin/);
     });
   });
 
