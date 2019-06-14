@@ -40,7 +40,7 @@
     "jest-resolve": "~24.8.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "typescript": "3.3.3",
+    "typescript": "~3.5.2",
     "umi-utils": "1.4.4",
     "yargs-parser": "13.0.0"
   }
