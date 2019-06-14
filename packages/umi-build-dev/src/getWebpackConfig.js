@@ -42,7 +42,7 @@ export default function(service, opts = {}) {
     // ssr in beta hint
     console.warn(
       chalk.keyword('orange')(
-        'WARNING: umijs SSR is still in beta and you can open issues or PRs in https://github.com/umijs/umi',
+        `WARNING: Umijs SSR is still in beta, you can open issues or PRs in https://github.com/umijs/umi`,
       ),
     );
     webpackConfig.externals = nodeExternals({
