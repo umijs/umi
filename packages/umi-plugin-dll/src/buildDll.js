@@ -87,6 +87,7 @@ export default function(opts = {}) {
   };
 
   return new Promise((resolve, reject) => {
+    console.log('Building dll...');
     require(_resolveDeps('af-webpack/build')).default({
       webpackConfig,
       onSuccess() {

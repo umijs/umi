@@ -1,4 +1,10 @@
 import chalk from 'chalk';
+import marked from 'marked';
+import TerminalRenderer from 'marked-terminal';
+
+marked.setOptions({
+  renderer: new TerminalRenderer(),
+});
 
 export class UmiError extends Error {
   constructor(opts, ...params) {
@@ -39,10 +45,10 @@ export function printUmiError(e, opts = {}) {
     console.error(`\n${chalk.bgRed.black(' ERROR ')} ${chalk.red(e.message || message)}`);
   }
 
-  if (process.env.LANG.includes('zh_CN')) {
-    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${details['zh-CN']}`);
+  if (process.env.LANG.includes('xzh_CN')) {
+    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details['zh-CN'])}`);
   } else {
-    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${details.en}`);
+    console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details.en)}`);
   }
 
   if (!detailsOnly && e.stack) {
