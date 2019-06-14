@@ -41,6 +41,7 @@ export default class FilesGenerator {
 
   createWatcher(path) {
     const watcher = chokidar.watch(path, {
+      cwd: this.service.cwd,
       ignored: watcherIgnoreRegExp, // ignore .dotfiles and _mock.js
       ignoreInitial: true,
     });

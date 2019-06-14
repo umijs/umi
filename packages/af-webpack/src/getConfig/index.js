@@ -322,6 +322,7 @@ export default function(opts) {
           analyzerMode: 'disabled',  // 关闭 analyzer server
           generateReportFile: true,  // 开启报告生成功能
           reportDepth: 2,            // 裁剪深度 2
+          reportDir: process.cwd(),
           statsFilename: process.env.ANALYZE_DUMP || 'bundlestats.json' // 默认生成到 bundlestats.json
         }
     ]);

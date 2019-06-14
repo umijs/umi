@@ -1,6 +1,6 @@
 {
   "name": "umi-test",
-  "version": "1.5.10",
+  "version": "1.5.11",
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },
@@ -35,10 +35,11 @@
     "enzyme-adapter-react-16": "1.9.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "24.1.0",
+    "jest-cli": "24.1.0",
     "jest-pnp-resolver": "1.1.0",
     "jest-resolve": "24.1.0",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "typescript": "3.3.3",
     "umi-utils": "1.4.4",
     "yargs-parser": "13.0.0"
