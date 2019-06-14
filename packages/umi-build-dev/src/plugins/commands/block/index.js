@@ -143,9 +143,7 @@ export default api => {
       );
       spinner.stopAndPersist();
     }
-    if (js) {
-      tsTojs(ctx.sourcePath);
-    }
+
     // 5. run generator
     spinner.start(`Generate files`);
     spinner.stopAndPersist();
@@ -202,6 +200,13 @@ export default api => {
       }
     }
     spinner.succeed('Generate files');
+
+    if (js) {
+      spinner.start('ts to js');
+      const targetPath = join(paths.absPagesPath, ctx.routePath);
+      tsTojs(targetPath);
+      spinner.succeed('ts to js');
+    }
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
