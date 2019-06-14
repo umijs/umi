@@ -11,7 +11,7 @@ import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
-import tsTojs from './tsTojs';
+import tsToJs from './tsToJs';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -202,10 +202,10 @@ export default api => {
     spinner.succeed('Generate files');
 
     if (js) {
-      spinner.start('ts to js');
+      spinner.start('TypeScript to JavaScript');
       const targetPath = join(paths.absPagesPath, ctx.routePath);
-      tsTojs(targetPath);
-      spinner.succeed('ts to js');
+      await tsToJs(targetPath);
+      spinner.succeed('TypeScript to JavaScript');
     }
 
     // 6. write routes
