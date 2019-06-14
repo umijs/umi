@@ -311,7 +311,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       this.webpackConfig = require('./getWebpackConfig').default(this);
       if (this.config.ssr) {
         this.ssrWebpackConfig = require('./getWebpackConfig').default(this, {
-          ssr: true,
+          ssr: this.config.ssr,
         });
       }
     }

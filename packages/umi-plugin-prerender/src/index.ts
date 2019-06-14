@@ -21,6 +21,8 @@ export interface IOpts {
   exclude?: string[];
   // TODO just use seo, not displaym avoid flashing
   visible?: boolean;
+  // TODO mock window, enable will mock window, document, ... DOM api
+  runInMockContext?: boolean;
 }
 
 export default (api: IApi, opts: IOpts) => {
