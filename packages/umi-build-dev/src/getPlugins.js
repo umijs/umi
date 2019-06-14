@@ -107,7 +107,7 @@ function getUserPlugins(plugins, { cwd }) {
       apply = require(path); // eslint-disable-line
     } catch (e) {
       throw new UmiError({
-        code: 'ERR_CORE_PLUGIN_EXECUTE_FAILED',
+        code: 'ERR_CORE_PLUGIN_INITIALIZE_FAILED',
         message: `Plugin ${chalk.cyan.underline(path)} execute failed\n\n${chalk.white(
           getCodeFrame(e, { cwd }),
         )}`,
