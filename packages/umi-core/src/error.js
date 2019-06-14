@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import signale from 'signale';
 import marked from 'marked';
 import TerminalRenderer from 'marked-terminal';
 
@@ -8,17 +9,17 @@ marked.setOptions({
 
 export class UmiError extends Error {
   constructor(opts, ...params) {
-    const { message, tip, code, context } = opts;
+    const { message, code, context } = opts;
     super(message, ...params);
     this.code = code;
-    this.tip = tip;
     this.context = context || {};
   }
 }
 
 export function printUmiError(e, opts = {}) {
   if (!(e instanceof UmiError)) {
-    throw new Error('Invalid error type, UmiError instance needed.');
+    signale.error(e);
+    return;
   }
 
   const { detailsOnly } = opts;
@@ -45,7 +46,7 @@ export function printUmiError(e, opts = {}) {
     console.error(`\n${chalk.bgRed.black(' ERROR ')} ${chalk.red(e.message || message)}`);
   }
 
-  if (process.env.LANG.includes('xzh_CN')) {
+  if (process.env.LANG.includes('zh_CN')) {
     console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details['zh-CN'])}`);
   } else {
     console.error(`\n${chalk.bgMagenta.black(' DETAILS ')}\n\n${marked(details.en)}`);
@@ -53,7 +54,7 @@ export function printUmiError(e, opts = {}) {
 
   if (!detailsOnly && e.stack) {
     console.error(
-      `\n${chalk.bgRed.black(' STACK ')}\n${e.stack
+      `${chalk.bgRed.black(' STACK ')}\n\n${e.stack
         .split('\n')
         .slice(1)
         .join('\n')}`,
