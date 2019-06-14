@@ -9,14 +9,13 @@ function globList(patternList, options) {
 
   return fileList;
 }
-export default async cwd => {
+export default cwd => {
   const tsFiles = globList(['**/*.tsx', '**/*.ts'], {
     cwd,
     ignore: ['**/*.d.ts'],
   });
-  sylvanas(tsFiles, {
+  return sylvanas(tsFiles, {
     cwd,
     action: 'overwrite',
   });
-  return true;
 };

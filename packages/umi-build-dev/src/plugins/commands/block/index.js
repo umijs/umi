@@ -204,7 +204,7 @@ export default api => {
     if (js) {
       spinner.start('TypeScript to JavaScript');
       const targetPath = join(paths.absPagesPath, ctx.routePath);
-      await tsToJs(targetPath);
+      tsToJs(targetPath);
       spinner.succeed('TypeScript to JavaScript');
     }
 
