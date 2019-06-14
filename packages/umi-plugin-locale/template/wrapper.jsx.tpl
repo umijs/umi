@@ -81,7 +81,7 @@ class LocaleWrapper extends React.Component{
       typeof navigator !== 'undefined'
       && localeInfo[navigator.language]
       && baseNavigator
-    ){
+    ) {
       appLocale = localeInfo[navigator.language];
     } else if(localeInfo[runtimeLocaleDefault]){
       appLocale = localeInfo[runtimeLocaleDefault];
