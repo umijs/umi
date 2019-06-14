@@ -1,5 +1,6 @@
 import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
+import chalk from 'chalk';
 import nodeExternals from 'webpack-node-externals';
 
 export default function(service, opts = {}) {
@@ -38,6 +39,12 @@ export default function(service, opts = {}) {
   });
 
   if (ssr) {
+    // ssr in beta hint
+    console.warn(
+      chalk.keyword('orange')(
+        'WARNING: umijs SSR is still in beta and you can open issues or PRs in https://github.com/umijs/umi',
+      ),
+    );
     webpackConfig.externals = nodeExternals({
       whitelist: [/\.(css|less|sass|scss)$/, /^umi(\/.*)?$/],
     });
