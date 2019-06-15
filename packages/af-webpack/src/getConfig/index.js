@@ -199,8 +199,7 @@ export default function(opts) {
 
   // module -> extraBabelIncludes
   // suport es5ImcompatibleVersions
-  const extraBabelIncludes = opts.extraBabelIncludes || [];
-  extraBabelIncludes.push(a => {
+  const extraBabelIncludes = (opts.extraBabelIncludes || []).concat(a => {
     if (!a.includes('node_modules')) return false;
     const pkgPath = getPkgPath(a);
     return shouldTransform(pkgPath);
