@@ -56,19 +56,15 @@ export default (api: IApi, opts: IOpts) => {
           url,
         },
       };
-      try {
-        const { ReactDOMServer } = serverRender;
-        debug(`react-dom version: ${ReactDOMServer.version}`);
-        const { htmlElement } = await serverRender.default(ctx);
-        const ssrHtml = ReactDOMServer.renderToString(htmlElement);
-        // write html file
-        const outputRoutePath = path.join(absOutputPath, url);
-        mkdirp.sync(outputRoutePath);
-        fs.writeFileSync(path.join(outputRoutePath, 'index.html'), ssrHtml);
-      } catch (e) {
-        // handle error
-        throw new Error(e);
-      }
+      // throw umi.server.js error stack, not catch
+      const { ReactDOMServer } = serverRender;
+      debug(`react-dom version: ${ReactDOMServer.version}`);
+      const { htmlElement } = await serverRender.default(ctx);
+      const ssrHtml = ReactDOMServer.renderToString(htmlElement);
+      // write html file
+      const outputRoutePath = path.join(absOutputPath, url);
+      mkdirp.sync(outputRoutePath);
+      fs.writeFileSync(path.join(outputRoutePath, 'index.html'), ssrHtml);
     }
   });
 };
