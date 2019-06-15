@@ -14,12 +14,18 @@ The plugin can be an npm package or a JS module that located with a path. You ca
 // .umirc.js
 export default {
   plugins: [
-    ['umi-plugin-dva', {
-      immer: true,
-    }],
-    ['./src/plugins/customPlugin.js', {
-      // plugin config
-    }]
+    [
+      'umi-plugin-dva',
+      {
+        immer: true,
+      },
+    ],
+    [
+      './src/plugins/customPlugin.js',
+      {
+        // plugin config
+      },
+    ],
   ],
 };
 ```
@@ -34,7 +40,8 @@ export default {
 - umi-plugin-dll
 - umi-plugin-routes
 - umi-plugin-polyfills
+- [umi-plugin-prerender](/plugin/umi-plugin-prerender.html)
 
 ### Community plugins
 
-- [umi-plugin-*](https://www.npmjs.com/search?q=umi-plugin-)
+- [umi-plugin-\*](https://www.npmjs.com/search?q=umi-plugin-)
