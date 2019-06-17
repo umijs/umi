@@ -203,7 +203,7 @@ export default api => {
 
     if (js) {
       spinner.start('TypeScript to JavaScript');
-      const targetPath = join(paths.absPagesPath, ctx.routePath);
+      const targetPath = join(paths.absPagesPath, generator.blockFolderName);
       tsToJs(targetPath);
       spinner.succeed();
     }
