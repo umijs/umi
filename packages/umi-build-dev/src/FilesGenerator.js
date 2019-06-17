@@ -192,13 +192,18 @@ export default class FilesGenerator {
 
     const htmlTemplateMap = [];
     if (config.ssr) {
+      assert(config.manifest, `manifest must be config when using ssr`);
+      const isProd = process.env.NODE_ENV === 'production';
       const routePaths = getRoutePaths(this.RoutesManager.routes);
       routePaths.forEach(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
-          // TODO: read from assets.json
           chunksMap: {
-            umi: ['umi.js', 'umi.css'],
+            // placeholder waiting manifest
+            umi: [
+              isProd ? '__UMI_SERVER__.js' : 'umi.js',
+              isProd ? '__UMI_SERVER__.css' : 'umi.css',
+            ],
           },
           headScripts: [
             {
