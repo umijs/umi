@@ -200,11 +200,9 @@ export default api => {
       }
     }
     spinner.succeed('Generate files');
-
     if (js) {
       spinner.start('TypeScript to JavaScript');
-      const targetPath = join(paths.absPagesPath, generator.blockFolderName);
-      tsToJs(targetPath);
+      tsToJs(generator.blockFolderPath);
       spinner.succeed();
     }
 
