@@ -53,7 +53,6 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "sylvanas": "^0.0.5",
     "test-build-result": "^1.1.2"
   }
 }
