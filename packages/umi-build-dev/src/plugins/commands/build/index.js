@@ -27,7 +27,6 @@ export default function(api) {
             RoutesManager,
             mountElementId: config.mountElementId,
           });
-          filesGenerator.generate();
 
           if (process.env.HTML !== 'none') {
             const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(service);
@@ -36,47 +35,70 @@ export default function(api) {
             // which listen to `emit` event can detect assets
             service.webpackConfig.plugins.unshift(new HtmlGeneratorPlugin());
           }
+
+          const onSuccess = ({ stats }) => {
+            if (process.env.RM_TMPDIR !== 'none') {
+              debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
+              rimraf.sync(paths.absTmpDirPath);
+            }
+            service.applyPlugins('onBuildSuccess', {
+              args: {
+                stats,
+              },
+            });
+            service
+              ._applyPluginsAsync('onBuildSuccessAsync', {
+                args: {
+                  stats,
+                },
+              })
+              .then(() => {
+                debug('Build success end');
+
+                notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
+                resolve();
+              });
+          };
+          const onFail = ({ err, stats }) => {
+            service.applyPlugins('onBuildFail', {
+              args: {
+                err,
+                stats,
+              },
+            });
+            notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
+            reject(err);
+          };
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
+            const webpackConfigs = [
+              service.webpackConfig,
+              ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
+            ];
+            filesGenerator.generate();
+            // client build
             require('af-webpack/build').default({
               cwd,
-              webpackConfig: [
-                service.webpackConfig,
-                ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
-              ],
+              webpackConfig: webpackConfigs[0],
               onSuccess({ stats }) {
-                debug('Build success');
-                if (process.env.RM_TMPDIR !== 'none') {
-                  debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
-                  rimraf.sync(paths.absTmpDirPath);
-                }
-                service.applyPlugins('onBuildSuccess', {
-                  args: {
-                    stats,
-                  },
-                });
-                service
-                  ._applyPluginsAsync('onBuildSuccessAsync', {
-                    args: {
-                      stats,
+                debug('Client Build success');
+                // server build
+                if (webpackConfigs[1]) {
+                  filesGenerator.generate(true);
+                  require('af-webpack/build').default({
+                    cwd,
+                    webpackConfig: webpackConfigs[1],
+                    isServer: true,
+                    onSuccess() {
+                      onSuccess({ stats });
                     },
-                  })
-                  .then(() => {
-                    debug('Build success end');
-
-                    notify.onBuildComplete({ name: 'umi', version: 2 }, { err: null });
-                    resolve();
+                    onFail,
                   });
+                } else {
+                  debug('Server Build success');
+                  onSuccess({ stats });
+                }
               },
-              onFail({ err, stats }) {
-                service.applyPlugins('onBuildFail', {
-                  args: {
-                    err,
-                    stats,
-                  },
-                });
-                notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
-                reject(err);
-              },
+              onFail,
             });
           });
         });

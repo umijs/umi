@@ -1,5 +1,5 @@
 import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
@@ -29,14 +29,14 @@ export default class FilesGenerator {
     this.hasRebuildError = false;
   }
 
-  generate() {
+  generate(isServer = false) {
     debug('generate');
     const { paths } = this.service;
     const { absTmpDirPath, tmpDirPath } = paths;
     debug(`mkdir tmp dir: ${tmpDirPath}`);
     mkdirp.sync(absTmpDirPath);
 
-    this.generateFiles();
+    this.generateFiles(isServer);
   }
 
   createWatcher(path) {
@@ -117,14 +117,34 @@ export default class FilesGenerator {
     }
   }
 
-  generateFiles() {
+  generateFiles(isServer = false) {
     this.service.applyPlugins('onGenerateFiles');
     this.generateRouterJS();
-    this.generateEntry();
+    this.generateEntry(isServer);
     this.generateHistory();
   }
 
-  generateEntry() {
+  stripFirstSlash(path) {
+    if (path.charAt(0) === '/') {
+      return path.slice(1);
+    } else {
+      return path;
+    }
+  }
+
+  getAssetsManifest() {
+    const { paths, config } = this.service;
+    const { fileName = 'asset-manifest.json' } = config.manifest;
+    const { absOutputPath } = paths;
+    const manifestPath = join(absOutputPath, fileName);
+    if (existsSync(manifestPath)) {
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+      return manifest;
+    }
+    return {};
+  }
+
+  generateEntry(isServer) {
     const { paths, config } = this.service;
 
     // Generate umi.js
@@ -190,15 +210,21 @@ export default class FilesGenerator {
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
 
+    assert(config.ssr ? config.manifest : true, `manifest must be config when using ssr`);
+
     const htmlTemplateMap = [];
-    if (config.ssr) {
+    if (isServer) {
       const routePaths = getRoutePaths(this.RoutesManager.routes);
+      const manifest = this.getAssetsManifest();
       routePaths.forEach(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
           // TODO: read from assets.json
           chunksMap: {
-            umi: ['umi.js', 'umi.css'],
+            umi: [
+              this.stripFirstSlash(manifest['umi.js']) || 'umi.js',
+              this.stripFirstSlash(manifest['umi.css']) || 'umi.css',
+            ],
           },
           headScripts: [
             {

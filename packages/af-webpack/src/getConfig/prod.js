@@ -34,8 +34,8 @@ export default function(webpackConfig, opts) {
   }
 
   webpackConfig.performance.hints(false);
-
-  if (opts.manifest) {
+  // server build not generate manifest
+  if (opts.manifest && !opts.ssr) {
     webpackConfig.plugin('manifest').use(require('webpack-manifest-plugin'), [
       {
         fileName: 'asset-manifest.json',

@@ -15,17 +15,19 @@ function getOutputPath(webpackConfig) {
 }
 
 export default function build(opts = {}) {
-  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail } = opts;
+  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail, isServer = false } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(
     isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
     'webpackConfig should be plain object or array.',
   );
 
-  // 清理 output path
+  // client build 清理 output path
   const outputPath = getOutputPath(webpackConfig);
-  debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
-  rimraf.sync(outputPath);
+  if (!isServer) {
+    debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
+    rimraf.sync(outputPath);
+  }
 
   debug('build start');
   webpack(webpackConfig, (err, stats) => {
