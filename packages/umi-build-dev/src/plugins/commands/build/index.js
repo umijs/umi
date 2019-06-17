@@ -4,7 +4,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, debug, config } = api;
+  const { service, debug, config, UmiError, printUmiError } = api;
   const { cwd, paths } = service;
 
   api.registerCommand(
@@ -72,6 +72,16 @@ export default function(api) {
                   },
                 });
                 notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
+                printUmiError(
+                  new UmiError({
+                    message: err && err.message,
+                    context: {
+                      err,
+                      stats,
+                    },
+                  }),
+                  { detailsOnly: true },
+                );
                 reject(err);
               },
             });

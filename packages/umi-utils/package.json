@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "chalk": "2.4.2",
     "is-url": "1.2.4",
     "slash2": "2.0.0"
   }

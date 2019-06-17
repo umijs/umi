@@ -1,6 +1,7 @@
 import resolve from 'resolve';
 import assert from 'assert';
 import chalk from 'chalk';
+import { UmiError } from 'umi-core/lib/error';
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 import isEqual from './isEqual';
 import getCodeFrame from './utils/getCodeFrame';
@@ -80,20 +81,10 @@ function pluginToPath(plugins, { cwd }) {
         opts,
       ];
     } catch (e) {
-      throw new Error(
-        `
-Plugin ${chalk.underline.cyan(path)} can't be resolved
-
-   Please try the following solutions:
-
-     1. checkout the plugins config in your config file (.umirc.js or config/config.js)
-     ${
-       path.charAt(0) !== '.' && path.charAt(0) !== '/'
-         ? `2. install ${chalk.underline.cyan(path)} via npm/yarn`
-         : ''
-     }
-`.trim(),
-      );
+      throw new UmiError({
+        code: 'ERR_CORE_PLUGIN_RESOLVE_FAILED',
+        message: `Plugin ${chalk.underline.cyan(path)} can't be resolved`,
+      });
     }
   });
 }
@@ -115,13 +106,12 @@ function getUserPlugins(plugins, { cwd }) {
     try {
       apply = require(path); // eslint-disable-line
     } catch (e) {
-      throw new Error(
-        `
-Plugin ${chalk.cyan.underline(path)} require failed
-
-${getCodeFrame(e)}
-      `.trim(),
-      );
+      throw new UmiError({
+        code: 'ERR_CORE_PLUGIN_INITIALIZE_FAILED',
+        message: `Plugin ${chalk.cyan.underline(path)} execute failed\n\n${chalk.white(
+          getCodeFrame(e, { cwd }),
+        )}`,
+      });
     }
     return {
       id: path.replace(makesureLastSlash(cwd), 'user:'),

@@ -213,6 +213,10 @@ interface IOnStart {
   (fn: () => void): void;
 }
 
+interface onPrintUmiError {
+  (args: { error: any; opts: object }): void;
+}
+
 interface IEventAsync {
   (fn: () => void): Promise<any>;
 }
@@ -430,6 +434,7 @@ export interface IApi {
   findJS: IFind;
   findCSS: IFind;
   compatDirname: ICompatDirname;
+  UmiError: any;
 
   /**
    * Event class API
@@ -440,6 +445,7 @@ export interface IApi {
   afterDevServer: IAfterDevServer;
   beforeBlockWriting: IBeforeBlockWriting;
   onStart: IOnStart;
+  onPrintUmiError: onPrintUmiError;
   onStartAsync: IEventAsync;
   onDevCompileDone: IOnDevCompileDone;
   onOptionChange: IOnOptionChange;

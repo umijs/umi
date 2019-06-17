@@ -6,7 +6,7 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 
 export default function(api) {
-  const { service, config, log, debug } = api;
+  const { service, config, log, debug, printUmiError, UmiError } = api;
   const { cwd } = service;
 
   api.registerCommand(
@@ -121,6 +121,16 @@ export default function(api) {
                   },
                 });
                 startWatch();
+              },
+              onFail({ stats }) {
+                printUmiError(
+                  new UmiError({
+                    context: {
+                      stats,
+                    },
+                  }),
+                  { detailsOnly: true },
+                );
               },
               onCompileDone({ isFirstCompile, stats }) {
                 service.__chunks = stats.compilation.chunks;
