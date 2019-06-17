@@ -82,7 +82,7 @@ export async function gitUpdate(ctx, spinner) {
  * @param {*} spinner
  */
 export async function gitClone(ctx, spinner) {
-  spinner.start('Clone git repo');
+  spinner.start(`Clone git repo from ${ctx.repo}`);
   try {
     await execa(`git`, [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch], {
       cwd: ctx.blocksTempPath,
@@ -156,7 +156,11 @@ export async function installDependencies(
   } else {
     if (lacks.length) {
       const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
-      spinner.start(`Install additional dependencies ${deps.join(',')} with ${npmClient}`);
+      spinner.start(
+        `Install additional dependencies ${deps.join(
+          ',',
+        )} with ${npmClient} --registry ${registry}`,
+      );
       try {
         let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
         npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
@@ -175,7 +179,11 @@ export async function installDependencies(
       const devDeps = devLacks
         .filter(dep => !lacks.find(item => item[0] === dep[0]))
         .map(dep => `${dep[0]}@${dep[1]}`);
-      spinner.start(`Install additional devDependencies ${devDeps.join(',')} with ${npmClient}`);
+      spinner.start(
+        `Install additional devDependencies ${devDeps.join(
+          ',',
+        )} with ${npmClient}  --registry ${registry}`,
+      );
       try {
         let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
         npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
