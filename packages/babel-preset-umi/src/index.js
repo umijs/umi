@@ -49,6 +49,7 @@ export default function(context, opts = {}) {
     require.resolve('@babel/plugin-proposal-do-expressions'),
     require.resolve('@babel/plugin-proposal-function-bind'),
     require.resolve('babel-plugin-macros'),
+    [require.resolve('@babel/plugin-transform-destructuring'), { loose: false }],
   ];
 
   if (nodeEnv !== 'test' && transformRuntime) {
