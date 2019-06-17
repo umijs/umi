@@ -8001,10 +8001,10 @@ umi-url-pnp-loader@1.1.2:
     mime "^2.0.3"
     schema-utils "^1.0.0"
 
-umi-webpack-bundle-analyzer@3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.2.tgz#764d904dff34e040e68a2d9ce8c84db8f5d15451"
-  integrity sha512-jYYKxRUDTGP7CJesv9OXpBZeYh5CycsUoLlYQASj8Fu4DoAFv15sMerOUUPLTrNFUs4tmkBnmO11jistz4HhrQ==
+umi-webpack-bundle-analyzer@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.3.tgz#79080fd34f2d5d319b24e074426fd47643a43c6c"
+  integrity sha512-U1S5Naukk+RKG9sdy5qt2EQ7kBU4I36Ht5kcKNuUPNvbxE589bBCHLUiAYb/n7dL5kcGol7paIdZ3IBAj/9jXg==
   dependencies:
     acorn "^6.0.7"
     acorn-walk "^6.1.1"
