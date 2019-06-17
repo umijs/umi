@@ -131,8 +131,10 @@ export default api => {
       this.isPageBlock = opts.isPageBlock;
       this.needCreateNewRoute = this.isPageBlock;
       this.blockFolderName = upperCamelCase(this.blockName);
+      // 这个参数是区块的 index.tsx | js
       this.entryPath = null;
-
+      // 这个参数是当前区块的目录
+      this.blockFolderPath = join(paths.absPagesPath, this.path);
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
       });
@@ -159,7 +161,7 @@ export default api => {
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
-
+      this.blockFolderPath = targetPath;
       const blockPath = this.path;
 
       applyPlugins('beforeBlockWriting', {

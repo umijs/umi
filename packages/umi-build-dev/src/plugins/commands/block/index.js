@@ -10,8 +10,8 @@ import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
-
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
+import tsToJs from './tsToJs';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -72,6 +72,8 @@ export default api => {
     const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
     debug(`defaultNpmClient: ${defaultNpmClient}`);
     debug(`args: ${JSON.stringify(args)}`);
+
+    // get faster registry url
     const registryUrl = await getNpmRegistry();
 
     const {
@@ -83,7 +85,9 @@ export default api => {
       page: isPage,
       layout: isLayout,
       registry = registryUrl,
+      js,
     } = args;
+
     const ctx = getCtx(url);
     spinner.succeed();
 
@@ -196,6 +200,11 @@ export default api => {
       }
     }
     spinner.succeed('Generate files');
+    if (js) {
+      spinner.start('TypeScript to JavaScript');
+      tsToJs(generator.blockFolderPath);
+      spinner.succeed();
+    }
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
