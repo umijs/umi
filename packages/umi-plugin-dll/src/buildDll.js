@@ -10,6 +10,8 @@ export default function(opts = {}) {
     paths,
     _resolveDeps,
     _: { pullAll, uniq },
+    UmiError,
+    printUmiError,
   } = api;
   const pkgFile = join(paths.cwd, 'package.json');
   const pkg = existsSync(pkgFile) ? require(pkgFile) : {}; // eslint-disable-line
@@ -85,6 +87,7 @@ export default function(opts = {}) {
   };
 
   return new Promise((resolve, reject) => {
+    console.log('Building dll...');
     require(_resolveDeps('af-webpack/build')).default({
       webpackConfig,
       onSuccess() {
@@ -92,8 +95,19 @@ export default function(opts = {}) {
         writeFileSync(filesInfoFile, JSON.stringify(files), 'utf-8');
         resolve();
       },
-      onFail({ err }) {
+      onFail({ err, stats }) {
         rimraf.sync(dllDir);
+        printUmiError(
+          new UmiError({
+            message: err && err.message,
+            context: {
+              err,
+              stats,
+              dll: true,
+            },
+          }),
+          { detailsOnly: true },
+        );
         reject(err);
       },
     });

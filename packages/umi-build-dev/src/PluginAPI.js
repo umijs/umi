@@ -61,6 +61,7 @@ export default class PluginAPI {
       'onBuildSuccess',
       'onBuildSuccessAsync',
       'onBuildFail',
+      'onPrintUmiError',
       'addPageWatcher',
       'addEntryCode',
       'addEntryCodeAhead',

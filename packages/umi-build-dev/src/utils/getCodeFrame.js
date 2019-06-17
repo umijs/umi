@@ -11,7 +11,6 @@ export default function({ stack, message }, options = {}) {
     return message;
   }
 
-  // console.log(stack);
   const re = /at[^(]+\(([^:]+):(\d+):(\d+)\)/;
   const m = stack.match(re);
   if (m) {
