@@ -3,4 +3,10 @@
 const resolveCwd = require('resolve-cwd');
 
 const localCLI = resolveCwd.silent('umi/bin/umi');
-require('../lib/cli');
+if (localCLI && localCLI !== __filename) {
+  const debug = require('debug')('umi');
+  debug('Using local install of umi');
+  require(localCLI);
+} else {
+  require('../lib/cli');
+}
