@@ -15,7 +15,7 @@ class MockGenerator {
 }
 
 describe('umi block', () => {
-  it('run block command right', async () => {
+  xit('run block command right', async () => {
     const commandFn = jest.fn();
     const routeConfigFn = jest.fn();
     let commandHandler = null;
