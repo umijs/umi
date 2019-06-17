@@ -30,8 +30,8 @@ export default (service, opts = {}) => {
   const umiServer = getServerContent(umiServerPath);
 
   const result = umiServer
-    .replace(/\/__UMI_SERVER__\.js/g, manifest['umi.js'])
-    .replace(/\/__UMI_SERVER__\.css/g, manifest['umi.css']);
+    .replace(/__UMI_SERVER__\.js/g, manifest['umi.js'].split('/').pop())
+    .replace(/__UMI_SERVER__\.css/g, manifest['umi.css'].split('/').pop());
 
   writeFileSync(umiServerPath, result, 'utf-8');
 };
