@@ -190,15 +190,20 @@ export default class FilesGenerator {
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
 
-    const htmlTemplateMap = [];
+    let htmlTemplateMap = [];
     if (config.ssr) {
+      assert(config.manifest, `manifest must be config when using ssr`);
+      const isProd = process.env.NODE_ENV === 'production';
       const routePaths = getRoutePaths(this.RoutesManager.routes);
-      routePaths.forEach(routePath => {
+      htmlTemplateMap = routePaths.map(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
-          // TODO: read from assets.json
           chunksMap: {
-            umi: ['umi.js', 'umi.css'],
+            // placeholder waiting manifest
+            umi: [
+              isProd ? '__UMI_SERVER__.js' : 'umi.js',
+              isProd ? '__UMI_SERVER__.css' : 'umi.css',
+            ],
           },
           headScripts: [
             {
@@ -214,7 +219,7 @@ window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(
           `<div id="${config.mountElementId || 'root'}"></div>`,
           `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
         );
-        htmlTemplateMap.push(`'${routePath}': (${ssrHtml}),`);
+        return `'${routePath}': (${ssrHtml}),`;
       });
     }
 

@@ -2,6 +2,7 @@ import rimraf from 'rimraf';
 import notify from 'umi-notify';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
+import replaceChunkMaps from '../replaceChunkMaps';
 
 export default function(api) {
   const { service, debug, config, UmiError, printUmiError } = api;
@@ -48,6 +49,11 @@ export default function(api) {
                 if (process.env.RM_TMPDIR !== 'none') {
                   debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
                   rimraf.sync(paths.absTmpDirPath);
+                }
+                if (service.ssrWebpackConfig) {
+                  // replace using manifest
+                  // __UMI_SERVER__.js/css => umi.${hash}.js/css
+                  replaceChunkMaps(service);
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {

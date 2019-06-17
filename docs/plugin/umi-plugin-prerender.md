@@ -19,6 +19,7 @@ Configured in `.umirc.js`:
 ```js
 export default {
   ssr: true,
+  manifest: {},
   plugins: [['umi-plugin-prerender']],
 };
 ```

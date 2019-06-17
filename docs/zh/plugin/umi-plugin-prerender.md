@@ -19,6 +19,7 @@ $ yarn add umi-plugin-prerender --dev
 ```js
 export default {
   ssr: true,
+  manifest: {},
   plugins: [['umi-plugin-prerender']],
 };
 ```
