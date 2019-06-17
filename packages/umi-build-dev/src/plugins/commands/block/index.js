@@ -11,7 +11,7 @@ import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
-import tsToJs from './tsToJs';
+import tsToJs from './tsTojs';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
