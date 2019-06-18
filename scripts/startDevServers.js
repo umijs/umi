@@ -6,11 +6,12 @@ const DEV_SCRIPT = join(__dirname, '../packages/umi/bin/umi.js');
 function startDevServer(opts = {}) {
   const { port, cwd } = opts;
   return new Promise(resolve => {
+    console.log(`Start dev server for ${cwd}`);
     const child = fork(DEV_SCRIPT, ['dev', '--port', port, '--cwd', cwd], {
       env: {
         ...process.env,
-        CLEAR_CONSOLE: 'none',
         BROWSER: 'none',
+        PROGRESS: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
       },
     });

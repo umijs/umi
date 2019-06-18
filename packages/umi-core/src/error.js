@@ -31,7 +31,7 @@ export function printUmiError(e, opts = {}) {
   if (!code) {
     for (const c of Object.keys(errorCodeMap)) {
       const { test } = errorCodeMap[c];
-      if (test({ error: e, context })) {
+      if (test && test({ error: e, context })) {
         code = c;
       }
     }
