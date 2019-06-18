@@ -1,28 +1,30 @@
 {
-	"name": "umi-plugin-prerender",
-	"version": "0.0.1",
-	"description": "A plugin for preRender",
-	"authors": {
-		"name": "ycjcl868",
-		"email": "45808948@qq.com"
-	},
-	"repository": "https://github.com/umijs/umi-plugin-prerender",
-	"peerDependencies": {
-		"umi": "2.x"
-	},
-	"main": "lib/index.js",
-	"dependencies": {
-		"mkdirp": "^0.5.1"
-	},
-	"devDependencies": {
-		"@types/mkdirp": "^0.5.2",
-		"lodash.uniq": "^4.5.0",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6"
-	},
-	"files": [
-		"lib",
-		"src"
-	],
-	"license": "MIT"
+  "name": "umi-plugin-prerender",
+  "version": "0.0.1",
+  "description": "A plugin for preRender",
+  "authors": {
+    "name": "ycjcl868",
+    "email": "45808948@qq.com"
+  },
+  "repository": "https://github.com/umijs/umi-plugin-prerender",
+  "peerDependencies": {
+    "umi": "2.x"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
+    "lodash.uniq": "^4.5.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "umi-types": "^0.3.8",
+    "umi-utils": "^1.4.4"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "MIT"
 }
