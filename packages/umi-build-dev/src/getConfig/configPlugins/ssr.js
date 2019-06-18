@@ -1,12 +1,13 @@
 import assert from 'assert';
+import { isPlainObject } from 'lodash';
 
 export default function(api) {
   return {
     name: 'ssr',
     validate(val) {
       assert(
-        val === true || val === false,
-        `Configure item ssr should be true or false, but got ${val}.`,
+        isPlainObject(val) || typeof val === 'boolean',
+        `Configure item ssr should be true, false or Plain Object, but got ${val}.`,
       );
     },
     onChange() {
