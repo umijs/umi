@@ -1,4 +1,4 @@
-import * as urllib from 'urllib';
+import got from 'got';
 import getExternalData from './getExternalData';
 import error from './error';
 
@@ -20,7 +20,6 @@ async function onlineCheck(configs) {
   const options = {
     method: 'HEAD',
     retry: 3, // any
-    retryDelay: 1500,
   } as any;
 
   await Promise.all(
@@ -28,7 +27,8 @@ async function onlineCheck(configs) {
       if (!url) {
         return;
       }
-      const res = await urllib.request(url, options);
+
+      const res = await got(url, options);
       if (res.status !== 200) {
         error(`${url} is not online!`);
       }
