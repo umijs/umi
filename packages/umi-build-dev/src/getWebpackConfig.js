@@ -25,7 +25,11 @@ export default function(service) {
     }
   };
 
+  const webpackConfig = getConfig(afWebpackOpts);
+  webpackConfig.cache = {
+    type: 'filesystem',
+  };
   return service.applyPlugins('modifyWebpackConfig', {
-    initialValue: getConfig(afWebpackOpts),
+    initialValue: webpackConfig,
   });
 }

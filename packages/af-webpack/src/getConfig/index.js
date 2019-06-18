@@ -392,15 +392,15 @@ export default function(opts) {
   }
 
   // node
-  webpackConfig.node.merge({
-    setImmediate: false,
-    process: 'mock',
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
-  });
+  // webpackConfig.node.merge({
+  //   setImmediate: false,
+  //   process: 'mock',
+  //   dgram: 'empty',
+  //   fs: 'empty',
+  //   net: 'empty',
+  //   tls: 'empty',
+  //   child_process: 'empty',
+  // });
 
   if (isDev) {
     require('./dev').default(webpackConfig, opts);

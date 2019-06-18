@@ -71,13 +71,13 @@ export default function(webpackConfig, opts) {
   }
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
-    rule
-      .use('extract-css-loader')
-        .loader(require('mini-css-extract-plugin').loader)
-        .options({
-          publicPath: isDev ? '/' : opts.cssPublicPath,
-          hmr: isDev,
-        });
+    // rule
+    //   .use('extract-css-loader')
+    //     .loader(require('mini-css-extract-plugin').loader)
+    //     .options({
+    //       publicPath: isDev ? '/' : opts.cssPublicPath,
+    //       hmr: isDev,
+    //     });
 
     rule
       .use('css-loader')
@@ -236,10 +236,10 @@ export default function(webpackConfig, opts) {
 
   const hash = !isDev && opts.hash ? '.[contenthash:8]' : '';
 
-  webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
-    {
-      filename: `[name]${hash}.css`,
-      chunkFilename: `[name]${hash}.chunk.css`,
-    },
-  ]);
+  // webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
+  //   {
+  //     filename: `[name]${hash}.css`,
+  //     chunkFilename: `[name]${hash}.chunk.css`,
+  //   },
+  // ]);
 }
