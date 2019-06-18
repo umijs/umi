@@ -86,7 +86,7 @@ describe('normal', () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: 'a=b',
+      body: { a: 'b' },
       form: true,
     });
     expect(res.body).toEqual('{"body":{"a":"b"}}');
