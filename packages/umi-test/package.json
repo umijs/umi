@@ -23,8 +23,8 @@
     "src"
   ],
   "dependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/polyfill": "7.2.5",
+    "@babel/core": "7.4.5",
+    "@babel/polyfill": "7.4.4",
     "@babel/preset-typescript": "7.3.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
@@ -42,6 +42,6 @@
     "react-dom": "^16.8.6",
     "typescript": "^3.5.2",
     "umi-utils": "1.4.4",
-    "yargs-parser": "13.0.0"
+    "yargs-parser": "13.1.1"
   }
 }

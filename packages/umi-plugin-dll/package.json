@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "rimraf": "2.6.2",
-    "serve-static": "1.13.2"
+    "rimraf": "2.6.3",
+    "serve-static": "1.14.1"
   }
 }
