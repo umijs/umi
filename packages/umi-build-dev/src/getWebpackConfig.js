@@ -46,7 +46,7 @@ export default function(service, opts = {}) {
       ),
     );
     webpackConfig.externals = nodeExternals({
-      whitelist: [/\.(css|less|sass|scss)$/, /^umi(\/.*)?$/, /^core-js(\/.*)?$/],
+      whitelist: [/\.(css|less|sass|scss)$/, /^umi(\/.*)?$/],
     });
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
