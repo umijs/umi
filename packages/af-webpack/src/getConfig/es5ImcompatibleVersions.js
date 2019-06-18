@@ -11,7 +11,7 @@ const {
 export function getPkgPath(filePath) {
   const dir = dirname(filePath);
   if (dir in pkgPathCache) return pkgPathCache[dir];
-  pkgPathCache[dir] = pkgUp.sync(filePath);
+  pkgPathCache[dir] = pkgUp.sync({ cwd: filePath });
   return pkgPathCache[dir];
 }
 

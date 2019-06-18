@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js';
+import 'regenerator-runtime/runtime';
 
 {{#url}}
 // Include this seperatly since it's not included in core-js

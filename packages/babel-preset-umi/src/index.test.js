@@ -241,7 +241,7 @@ test('pipeline operator', () => {
     `
 "use strict";
 
-var _b, _ref;
+var _ref, _b;
 
 const a = (_ref = (_b = b, c(_b)), d(_ref));
   `.trim(),
