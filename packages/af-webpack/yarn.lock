@@ -2917,6 +2917,11 @@ eslint-plugin-jsx-a11y@6.1.2:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
 
+eslint-plugin-react-hooks@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.5.0.tgz#cdd958cfff55bd5fa4f84db90d1490fb5ca4ae2b"
+  integrity sha512-iwDuWR2ReRgvJsNm8fXPtTKdg78IVQF8I4+am3ntztPf/+nPnWZfArFu6aXpaC75/iCYRrkqI8nPCYkxJstmpA==
+
 eslint-plugin-react@7.12.3:
   version "7.12.3"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.12.3.tgz#b9ca4cd7cd3f5d927db418a1950366a12d4568fd"
@@ -8001,10 +8006,10 @@ umi-url-pnp-loader@1.1.2:
     mime "^2.0.3"
     schema-utils "^1.0.0"
 
-umi-webpack-bundle-analyzer@3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.2.tgz#764d904dff34e040e68a2d9ce8c84db8f5d15451"
-  integrity sha512-jYYKxRUDTGP7CJesv9OXpBZeYh5CycsUoLlYQASj8Fu4DoAFv15sMerOUUPLTrNFUs4tmkBnmO11jistz4HhrQ==
+umi-webpack-bundle-analyzer@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.3.tgz#79080fd34f2d5d319b24e074426fd47643a43c6c"
+  integrity sha512-U1S5Naukk+RKG9sdy5qt2EQ7kBU4I36Ht5kcKNuUPNvbxE589bBCHLUiAYb/n7dL5kcGol7paIdZ3IBAj/9jXg==
   dependencies:
     acorn "^6.0.7"
     acorn-walk "^6.1.1"
