@@ -1,5 +1,83 @@
 // ref: https://github.com/littlehaker/html-to-jsx/blob/master/index.js
 
+class StyleParser {
+  constructor(rawStyle) {
+    this.parse(rawStyle);
+  }
+
+  parse(rawStyle) {
+    this.styles = {};
+    rawStyle.split(';').forEach(style => {
+      style = style.trim();
+      const firstColon = style.indexOf(':');
+      const key = style.substr(0, firstColon);
+      const value = style.substr(firstColon + 1).trim();
+      if (key !== '') {
+        this.styles[key] = value;
+      }
+    });
+  }
+
+  /**
+   * Convert the style information represented by this parser into a JSX
+   * string
+   *
+   * @return {string}
+   */
+  toJSXString() {
+    const output = Object.keys(this.styles).map(key => {
+      return `${this.toJSXKey(key)}: ${this.toJSXValue(this.styles[key])}`;
+    });
+    return output.join(', ');
+  }
+
+  /**
+   * Convert a hyphenated string to camelCase.
+   */
+  hyphenToCamelCase(string) {
+    return string.replace(/-(.)/g, function(match, chr) {
+      return chr.toUpperCase();
+    });
+  }
+
+  /**
+   * Determines if the specified string consists entirely of numeric characters.
+   */
+  isNumeric(input) {
+    return (
+      input !== undefined &&
+      input !== null &&
+      (typeof input === 'number' || parseInt(input, 10) === input)
+    );
+  }
+
+  /**
+   * Convert the CSS style key to a JSX style key
+   *
+   * @param {string} key CSS style key
+   * @return {string} JSX style key
+   */
+  toJSXKey(key) {
+    return this.hyphenToCamelCase(key);
+  }
+
+  /**
+   * Convert the CSS style value to a JSX style value
+   *
+   * @param {string} value CSS style value
+   * @return {string} JSX style value
+   */
+  toJSXValue(value) {
+    if (this.isNumeric(value)) {
+      // If numeric, no quotes
+      return value;
+    } else {
+      // Proably a string, wrap it in quotes
+      return `\'${value.replace(/'/g, '"')}\'`;
+    }
+  }
+}
+
 export default function(html) {
   html = html
     .replace(/\sclass=/g, ' className=')
@@ -164,6 +242,12 @@ export default function(html) {
     const originAttr = attr.toLowerCase();
     const regex = new RegExp(`\\s${originAttr}=`, 'g');
     html = html.replace(regex, ` ${attr}=`);
+  });
+
+  // replace styles
+  html = html.replace(/\sstyle="(.+?)"/g, function(attr, styles) {
+    const jsxStyles = new StyleParser(styles).toJSXString();
+    return ` style={{${jsxStyles}}}`;
   });
 
   return html;

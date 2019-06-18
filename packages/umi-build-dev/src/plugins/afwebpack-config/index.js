@@ -115,7 +115,8 @@ export default function(api) {
         };
 
     const targets = ssr
-      ? { node: true }
+      ? // current running node
+        { node: true }
       : {
           chrome: 49,
           firefox: 64,
@@ -157,11 +158,13 @@ export default function(api) {
             require.resolve('babel-preset-umi'),
             {
               targets,
-              env: {
-                useBuiltIns: 'entry',
-                corejs: 3,
-                ...(config.treeShaking ? { modules: false } : {}),
-              },
+              env: ssr
+                ? {}
+                : {
+                    useBuiltIns: 'entry',
+                    corejs: 3,
+                    ...(config.treeShaking ? { modules: false } : {}),
+                  },
             },
           ],
         ],

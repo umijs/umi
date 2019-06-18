@@ -13,6 +13,7 @@ package-lock.json
 /packages/**/.docz
 /packages/*/lib
 /packages/*/dist
+/packages/af-webpack/test/bundlestats.json
 
 dist
 coverage
