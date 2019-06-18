@@ -21,7 +21,7 @@ export const getServerContent = umiServerPath => {
   return '';
 };
 
-export default (service, opts = {}) => {
+export default service => {
   const { paths } = service;
   const { absOutputPath } = paths;
   const manifest = getAssetsManifest(service);
