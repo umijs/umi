@@ -571,4 +571,49 @@ describe('HG', () => {
     expect(c1.includes('"/umi.js"') && c1.includes('"/umi.css"')).toEqual(true);
     expect(c1.includes('<title>')).toEqual(false);
   });
+
+  it('getMatchedContent with ssr and context', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      minify: false,
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
+      config: {
+        ssr: true,
+        mountElementId: 'root',
+      },
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(__dirname, 'fixtures/custom-doc-with-context.ejs'),
+      },
+      routes: [
+        { path: '/a' },
+        {
+          path: '/b',
+          routes: [
+            {
+              path: '/b/c',
+              title: 'bctitle',
+            },
+          ],
+        },
+      ],
+      modifyContext: (context, { route }) => {
+        return {
+          ...context,
+          path: route.path,
+          title: route.title || 'defaultTitle',
+        };
+      },
+    });
+
+    const c1 = hg.getMatchedContent('/a');
+    expect(c1.includes('"/umi.js"') && c1.includes('"/umi.css"')).toEqual(true);
+    expect(c1.includes('<title>defaultTitle-/a</title>')).toEqual(true);
+    const c2 = hg.getMatchedContent('/b/c');
+    expect(c2.includes('"/umi.js"') && c2.includes('"/umi.css"')).toEqual(true);
+    expect(c2.includes('<title>bctitle-/b/c</title>')).toEqual(true);
+  });
 });
