@@ -4,7 +4,8 @@ export default {
   manifest: {},
   plugins:  [
     ['../../../../../umi-plugin-react/lib/index.js', {
-      dva: true,
+      dva: false,
+      antd: false,
       title: {
         defaultTitle: 'my ssr app',
       },

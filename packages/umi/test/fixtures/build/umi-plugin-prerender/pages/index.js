@@ -6,8 +6,8 @@ import styles from './index.css';
 function Page(props) {
   return (
     <div className={styles.normal}>
-      <h1>Page index</h1>
-      <h2>csr: {props.data && props.data.csr}</h2>
+      <h2>Page index</h2>
+      <h3>{props.data && props.data.csr}</h3>
     </div>
   );
 }
