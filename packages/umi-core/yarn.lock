@@ -2,57 +2,10 @@
 # yarn lockfile v1
 
 
-"@types/anymatch@*":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
-  integrity sha512-/+CRPXpBDpo2RK9C68N3b2cOvO0Cf5B9aPijHsoDQTHivnGSObdOF2BRQOYjojWTDy6nQvMjmqRXIxH55VjxxA==
-
-"@types/cheerio@^0.22.10":
-  version "0.22.11"
-  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.11.tgz#61c0facf9636d14ba5f77fc65ed8913aa845d717"
-  integrity sha512-x0X3kPbholdJZng9wDMhb2swvUi3UYRNAuWAmIPIWlfgAJZp//cql/qblE7181Mg7SjWVwq6ldCPCLn5AY/e7w==
-  dependencies:
-    "@types/node" "*"
-
-"@types/node@*":
-  version "12.0.8"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.8.tgz#551466be11b2adc3f3d47156758f610bd9f6b1d8"
-  integrity sha512-b8bbUOTwzIY3V5vDTY1fIJ+ePKDUBqt2hC2woVGotdQQhG/2Sh62HOKHrT7ab+VerXAcPyAiTEipPu/FsreUtg==
-
-"@types/tapable@*":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.4.tgz#b4ffc7dc97b498c969b360a41eee247f82616370"
-  integrity sha512-78AdXtlhpCHT0K3EytMpn4JNxaf5tbqbLcbIRoQIHzpTIyjpxLQKRoxU55ujBXAtg3Nl2h/XWvfDa9dsMOd0pQ==
-
-"@types/uglify-js@*":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.0.4.tgz#96beae23df6f561862a830b4288a49e86baac082"
-  integrity sha512-SudIN9TRJ+v8g5pTG8RRCqfqTMNqgWCKKd3vtynhGzkIIjxaicNAMuY5TRadJ6tzDu3Dotf3ngaMILtmOdmWEQ==
-  dependencies:
-    source-map "^0.6.1"
-
-"@types/webpack-chain@^5.0.1":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@types/webpack-chain/-/webpack-chain-5.2.0.tgz#ccd2d75d57e962ad7372077701ce2c711fc985c6"
-  integrity sha512-/DhcbcUcN593BvM7g/o6JWNiJ7bBSdk8g0kynUc2jktjGTHeVVANn5rGfnC1QW5bbiupj82pSQpmhFLKIfrFbw==
-  dependencies:
-    webpack-chain "*"
-
-"@types/webpack@^4.4.23":
-  version "4.4.32"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.32.tgz#2d460cd33a15e568e93f38de5e628cf846396c51"
-  integrity sha512-mNARoaSJTzbiHxtZbf9NULFilu2frqD+g9Iyl9V2jPYJWXi+AC3Hz8lQWPZ5LLtgUm7iF4SDDMB/1bPrbRQgFw==
-  dependencies:
-    "@types/anymatch" "*"
-    "@types/node" "*"
-    "@types/tapable" "*"
-    "@types/uglify-js" "*"
-    source-map "^0.6.0"
-
-"@umijs/error-code-map@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@umijs/error-code-map/-/error-code-map-0.0.1.tgz#724434d775726fba45bee6d6e100d16c91aa2043"
-  integrity sha512-2NNliFIUlN8/3fRwoGAfLoA0165JzUhT7ZDKUYJAXQMoTEFDXTMnFpbgGOQF4L7CxnfhOcNCbXJTeyLo7dFbSg==
+"@umijs/error-code-map@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@umijs/error-code-map/-/error-code-map-1.0.0.tgz#c61fd8479cd72ba4d03e9989b4f163c49740a8a2"
+  integrity sha512-khf7JwDNY4E8MTK81nekZyYzbh+wjj7HqCG3xX2ftp4eRuN6tMfPdAorzFNRRV8izh9zCl1LpJq0VXu1Pfkt6Q==
 
 ansi-escapes@^3.1.0:
   version "3.2.0"
@@ -79,7 +32,7 @@ cardinal@^2.1.1:
     ansicolors "~0.3.2"
     redeyed "~2.1.0"
 
-chalk@^2.3.2, chalk@^2.4.1, chalk@^2.4.2:
+chalk@2.4.2, chalk@^2.3.2, chalk@^2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
@@ -111,11 +64,6 @@ colors@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
   integrity sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
-
-deepmerge@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.2.tgz#10499d868844cdad4fee0842df8c7f6f0c95a753"
-  integrity sha512-95k0GDqvBjZavkuvzx/YqVLv/6YYa17fz6ILMSf7neqQITCPbnfEnQvEgMPNjH4kgobe7+WIL0yJEHku+H3qtQ==
 
 error-ex@^1.3.1:
   version "1.3.2"
@@ -172,11 +120,6 @@ is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
   integrity sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=
-
-javascript-stringify@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/javascript-stringify/-/javascript-stringify-2.0.0.tgz#ef750216ae66504ffd670b68c8b8aa07bdf7b588"
-  integrity sha512-zzK8+ByrzvOL6N92hRewwUKL0wN0TOaIuUjX0Jj8lraxWvr5wHYs2YTjaj2lstF+8qMv5cmPPef47va8NT8lDw==
 
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
@@ -291,11 +234,6 @@ signale@1.4.0:
     figures "^2.0.0"
     pkg-conf "^2.1.0"
 
-source-map@^0.6.0, source-map@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
-  integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
-
 strip-bom@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/strip-bom/-/strip-bom-3.0.0.tgz#2334c18e9c759f7bdd56fdef7e9ae3d588e68ed3"
@@ -315,20 +253,3 @@ supports-hyperlinks@^1.0.1:
   dependencies:
     has-flag "^2.0.0"
     supports-color "^5.0.0"
-
-umi-types@0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/umi-types/-/umi-types-0.3.8.tgz#ebb194f1856e0d6964e2949ca54c853676ef4a91"
-  integrity sha512-db+1gGcCrUchMQwMO47RiRfs3kGr8U5Q9SGwrWvzFvlXIJDHeG/37j7Y+0mIprFZKHMbpcUUhe80WozPdW8uIQ==
-  dependencies:
-    "@types/cheerio" "^0.22.10"
-    "@types/webpack" "^4.4.23"
-    "@types/webpack-chain" "^5.0.1"
-
-webpack-chain@*:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/webpack-chain/-/webpack-chain-6.0.0.tgz#9c36525a1271a54e7bfd1791199b395f400ae4f1"
-  integrity sha512-NK62XgJOOSmYs4kaXFIKKeClpuOVHY7m6e4XwxbVX/2HAUboH6xFCTVXMVv8+jB6K8o/UGjlo1Cv3XXOyNAAGw==
-  dependencies:
-    deepmerge "^1.5.2"
-    javascript-stringify "^2.0.0"

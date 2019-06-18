@@ -21,8 +21,8 @@
   "dependencies": {
     "auto-external-packages": "^1.0.0",
     "copy-webpack-plugin": "5.0.3",
-    "semver": "6.0.0",
-    "urllib": "2.33.3"
+    "semver": "6.1.1",
+    "urllib": "2.34.0"
   },
   "devDependencies": {
     "umi-types": "0.3.8"

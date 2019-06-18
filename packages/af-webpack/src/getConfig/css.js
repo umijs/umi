@@ -25,7 +25,7 @@ export default function(webpackConfig, opts) {
     plugins: () => [
       require('postcss-flexbugs-fixes'), // eslint-disable-line
       autoprefixer({
-        browsers: opts.browserslist || DEFAULT_BROWSERS,
+        overrideBrowserslist: opts.browserslist || DEFAULT_BROWSERS,
         flexbox: 'no-2009',
         ...(opts.autoprefixer || {}),
       }),
