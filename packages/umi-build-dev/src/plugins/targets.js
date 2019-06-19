@@ -1,4 +1,4 @@
-import { join, relative } from 'path';
+import { join, relative, dirname } from 'path';
 import { readFileSync } from 'fs';
 import chalk from 'chalk';
 import { isPlainObject } from 'lodash';
@@ -48,7 +48,10 @@ export default function(api) {
     });
 
     api.chainWebpackConfig(config => {
-      config.resolve.alias.set('@babel/polyfill', require.resolve('@babel/polyfill'));
+      config.resolve.alias.set(
+        'regenerator-runtime',
+        dirname(require.resolve('regenerator-runtime/package')),
+      );
     });
   } else {
     log.warn(

@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 /* eslint-disable import/first */
 global.requestAnimationFrame =
