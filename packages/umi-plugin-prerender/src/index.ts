@@ -3,13 +3,15 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 
-const getRoutePaths = (_, routes) => {
+// for test
+export const getStaticRoutePaths = (_, routes) => {
   return _.uniq(
     routes.reduce((memo, route) => {
-      if (route.path) {
+      // filter dynamic Routing like /news/:id, etc.
+      if (route.path && route.path.indexOf(':') === -1) {
         memo.push(route.path);
         if (route.routes) {
-          memo = memo.concat(getRoutePaths(_, route.routes));
+          memo = memo.concat(getStaticRoutePaths(_, route.routes));
         }
       }
       return memo;
@@ -46,7 +48,7 @@ export default (api: IApi, opts: IOpts) => {
     }
     const serverRender = require(umiServerFile);
 
-    const routePaths: string[] = getRoutePaths(_, routes);
+    const routePaths: string[] = getStaticRoutePaths(_, routes);
 
     // exclude render paths
     const renderPaths = routePaths.filter(path => !exclude.includes(path));
@@ -54,7 +56,11 @@ export default (api: IApi, opts: IOpts) => {
     // loop routes
     for (const url of renderPaths) {
       const ctx = {
+        url,
         req: {
+          url,
+        },
+        request: {
           url,
         },
       };

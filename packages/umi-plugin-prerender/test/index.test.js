@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { findJS } from 'umi-utils';
 import { readFileSync, existsSync, unlinkSync } from 'fs';
-import preRenderPlugin from '../src/index';
+import preRenderPlugin, { getStaticRoutePaths } from '../src/index';
 
 const uniq = require('lodash.uniq');
 
@@ -52,6 +52,45 @@ const api = {
     console.debug(info);
   },
 };
+
+describe('test getStaticRoutePaths', () => {
+  test('normal', async () => {
+    const routes = [
+      {
+        path: '/',
+        component: './src/layout.js',
+        routes: [
+          {
+            path: '/',
+            exact: true,
+            component: './src/pages/index.js',
+            title: 'test page',
+            Routes: ['src/pages/.umi-production/TitleWrapper.jsx'],
+            _title: 'Index Page',
+            _title_default: 'defaultPage',
+          },
+          {
+            path: '/users/:id',
+            exact: true,
+            component: './src/pages/users.js',
+            _title: 'Users Page',
+            _title_default: 'defaultPage',
+          },
+          {
+            path: '/users',
+            exact: true,
+            component: './src/pages/users.js',
+            _title: 'Users Page',
+            _title_default: 'defaultPage',
+          },
+        ],
+        _title: 'defaultPage',
+        _title_default: 'defaultPage',
+      },
+    ];
+    expect(getStaticRoutePaths(api._, routes)).toEqual(['/', '/users']);
+  });
+});
 
 describe('test plugin', () => {
   const indexPath = join(absOutputPath, 'index.html');
