@@ -48,6 +48,7 @@
     "moment": "^2.24.0",
     "prettier": "1.15.3",
     "puppeteer": "1.11.0",
+    "react": "^16.8.6",
     "react-router-dom": "4.3.1",
     "react-test-renderer": "16.6.3",
     "serve-handler": "5.0.8",
