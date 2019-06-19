@@ -10,6 +10,11 @@ import {
   getAllBlockDependencies,
 } from './getBlockGenerator';
 
+/**
+ * 判断是不是一个 gitmodules 的仓库
+ */
+const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
+
 export function printBlocks(blocks, parentPath = '') {
   blocks.forEach(block => {
     if (block.type === 'block') {
@@ -42,7 +47,7 @@ export async function getDefaultBlockList() {
  * @param {*} spinner
  */
 export async function gitUpdate(ctx, spinner) {
-  spinner.start('Git fetch');
+  spinner.start('🚒 Git fetch');
   try {
     await execa(`git`, ['fetch'], {
       cwd: ctx.templateTmpDirPath,
@@ -53,7 +58,7 @@ export async function gitUpdate(ctx, spinner) {
   }
   spinner.succeed();
 
-  spinner.start(`Git checkout ${ctx.branch}`);
+  spinner.start(`🚪 Git checkout ${ctx.branch}`);
   try {
     await execa(`git`, ['checkout', ctx.branch], {
       cwd: ctx.templateTmpDirPath,
@@ -64,11 +69,28 @@ export async function gitUpdate(ctx, spinner) {
   }
   spinner.succeed();
 
-  spinner.start('Git pull');
+  spinner.start('🚀 Git pull');
   try {
     await execa(`git`, [`pull`], {
       cwd: ctx.templateTmpDirPath,
     });
+    // 如果是 git pull 之后有了
+    // git module 只能通过这种办法来初始化一下
+    if (isSubmodule(ctx.templateTmpDirPath)) {
+      // 结束  git pull 的 spinner
+      spinner.succeed();
+
+      //如果是分支切换过来，可能没有初始化，初始化一下
+      await execa(`git`, ['submodule', 'init'], {
+        cwd: ctx.templateTmpDirPath,
+        env: process.env,
+      });
+
+      spinner.start(`👀 update submodule`);
+      await execa(`git`, ['submodule', 'update', '--recursive'], {
+        cwd: ctx.templateTmpDirPath,
+      });
+    }
   } catch (e) {
     spinner.fail();
     throw new Error(e);
@@ -82,12 +104,16 @@ export async function gitUpdate(ctx, spinner) {
  * @param {*} spinner
  */
 export async function gitClone(ctx, spinner) {
-  spinner.start(`Clone git repo from ${ctx.repo}`);
+  spinner.start(`🔍 Clone git repo from ${ctx.repo}`);
   try {
-    await execa(`git`, [`clone`, ctx.repo, ctx.id, `--single-branch`, `-b`, ctx.branch], {
-      cwd: ctx.blocksTempPath,
-      env: process.env,
-    });
+    await execa(
+      `git`,
+      [`clone`, ctx.repo, ctx.id, `--single-branch`, `--recurse-submodules`, `-b`, ctx.branch],
+      {
+        cwd: ctx.blocksTempPath,
+        env: process.env,
+      },
+    );
   } catch (e) {
     spinner.fail();
     throw new Error(e);

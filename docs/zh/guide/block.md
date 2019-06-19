@@ -46,6 +46,20 @@ $ umi block add https://github.com/umijs/umi-blocks/tree/master/demo
 npx umi block add DashboardAnalysis --js
 ```
 
+### 使用其他包管理工具
+
+区块支持通过参数自定义包安装工具，默认使用 npm ，如果你的项目中有 yarn.lock 文件，我们将会使用 yarn 。如果你想使用 cnpm 或者 tnpm 可以通过如下命令使用
+
+```bash
+npx umi block add DashboardAnalysis --npm-client cnpm
+```
+
+在某些时候可能访问 npm 的官方源速度会很慢，block 会默认切换 官方源和淘宝源。保证最后的速度，如果你要使用自定义源可以这样使用
+
+```bash
+ npx umi block add DashboardAnalysis  --registry myregistryUrl
+```
+
 > 注：在 umi 2.7 之前，同一个路径下只能添加一个区块，区块会作为整个页面的代码添加到你的项目中。在 2.7 及它之后我们支持重复添加区块，或者添加到当前项目中已有的页面中。对于原因的区块你可以通过在区块的 `package.json` 中配置 `blockConfig.specVersion` 为 `0.1` 来兼容或者通过 `--mode` 来指定添加的方式。
 
 ## 区块开发
