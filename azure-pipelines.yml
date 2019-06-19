@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - checkout: self
-        clean: false
+        clean: all
         fetchDepth: 1
       - script: npm install
         displayName: install
@@ -36,7 +36,7 @@ jobs:
       vmImage: "vs2017-win2016"
     steps:
       - checkout: self
-        clean: false
+        clean: all
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
@@ -55,7 +55,7 @@ jobs:
       vmImage: "macOS-10.13"
     steps:
       - checkout: self
-        clean: false
+        clean: all
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
