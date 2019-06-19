@@ -267,6 +267,8 @@ export default {
 ```js
 // 根据 ctx.req.url 路径，返回渲染后的 html 片段
 async function UmiServerRender(ctx) {
+  // mock 一个 window 对象
+  global.window = {};
   // 引入模块
   const serverRender = require('./dist/umi.server');
   // 提供 react-dom/server，避免 React hooks ssr 报错
@@ -285,7 +287,7 @@ async function UmiServerRender(ctx) {
 }
 ```
 
-[预渲染（Pre-Rendering）使用](/zh/plugin/umi-plugin-prerender.html)
+[预渲染（Pre-Rendering）使用](/zh/plugin/umi-plugin-prerender.html)，[umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 
 ## webpack
 

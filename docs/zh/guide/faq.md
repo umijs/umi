@@ -49,7 +49,8 @@ import '@babel/polyfill';
 ### 如何动态修改 title ？
 
 可以通过 [react-helmet](https://github.com/nfl/react-helmet) 动态修改 title 。
-> 注意：在混合应用中，ios端web容器内，使用react-helmet失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
+
+> 注意：在混合应用中，ios 端 web 容器内，使用 react-helmet 失效的话，可以尝试使用[react-document-title](https://github.com/gaearon/react-document-title)。
 
 ## 报错
 
@@ -105,12 +106,13 @@ export default {
   urlLoaderExcludes: [/.svg$/],
   // 添加 loader
   chainWebpack(config) {
-    config.module.rule('svg-with-file')
+    config.module
+      .rule('svg-with-file')
       .test(/.svg$/)
       .use('svg-with-file-loader')
-      .loader('file-loader')
+      .loader('file-loader');
   },
-}
+};
 ```
 
 ## CSS
@@ -121,8 +123,8 @@ umi 默认是开启 css modules 的，请按照 css modules 的方式进行书�
 
 参考：
 
-* [css-modules/css-modules](https://github.com/css-modules/css-modules)
-* [CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
+- [css-modules/css-modules](https://github.com/css-modules/css-modules)
+- [CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 
 ### 如何禁用 css modules ？
 
@@ -130,7 +132,7 @@ umi 默认是开启 css modules 的，请按照 css modules 的方式进行书�
 
 ```json
 {
- "disableCSSModules": true
+  "disableCSSModules": true
 }
 ```
 
@@ -148,7 +150,7 @@ $ npm i node-sass sass-loader --save
 
 ```json
 {
- "sass": {}
+  "sass": {}
 }
 ```
 
@@ -170,11 +172,11 @@ $ node --inspect-brk ./node_modules/.bin/umi test
 
 几个方案供选择：
 
-* 改用 hashHistory，在 `.umirc.js` 里配 `history: 'hash'`
-* 静态化，在 `.umirc.js` 里配 `exportStatic: true`
-* 服务端配置路由 fallback 到 index.html
+- 改用 hashHistory，在 `.umirc.js` 里配 `history: 'hash'`
+- 静态化，在 `.umirc.js` 里配 `exportStatic: true`
+- 服务端配置路由 fallback 到 index.html
 
-### build之后图片丢失？
+### build 之后图片丢失？
 
 可能是图片没有正确引用，可以参考一下代码，正确引入图片。
 
@@ -190,9 +192,10 @@ function Header() {
 }
 
 export default Header;
-
 ```
-在css中使用，注意不要使用绝对路径
+
+在 css 中使用，注意不要使用绝对路径
+
 ```css
 .Logo {
   background-image: url(./logo.png);
@@ -200,3 +203,12 @@ export default Header;
 ```
 
 > 注意：图片大小小于 10 k 时会走 base64。即不会被拷贝到 public 文件夹下，而是以 base64 的资源存在。
+
+## SSR
+
+### document is not defined, navigator is not defined, \* is not not defined
+
+原因：umiJS SSR 先执行服务端代码，再执行客户端。`document`、`navigator` 等对象只在客户端使用。解决方案：
+
+1. 建议将使用到客户端对象的代码，放在 `componentDidMount`、`useEffect` 中（服务端不会执行），避免过多副作用代码影响服务端渲染。
+1. 在这些对象前加上判断 `typeof navigator !== 'undefined'` 或 `typeof document !== 'undefined'`

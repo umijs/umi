@@ -27,6 +27,13 @@ export interface IOpts {
   runInMockContext?: boolean;
 }
 
+const nodePolyfill = () => {
+  (global as any).window = {};
+  (global as any).document = window.document;
+  (global as any).navigator = window.navigator;
+  (global as any).localStorage = window.localStorage;
+};
+
 export default (api: IApi, opts: IOpts) => {
   const { paths, debug, config, findJS } = api;
   const { exclude = [] } = opts || {};
@@ -39,7 +46,7 @@ export default (api: IApi, opts: IOpts) => {
   api.onBuildSuccessAsync(async () => {
     const { routes, _ } = api as any;
     // mock window
-    (global as any).window = {};
+    nodePolyfill();
 
     // require serverRender function
     const umiServerFile = findJS(absOutputPath, 'umi.server');

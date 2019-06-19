@@ -198,6 +198,7 @@ export default class FilesGenerator {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
           chunksMap: {
+            // TODO, for manifest
             // placeholder waiting manifest
             umi: [
               isProd ? '__UMI_SERVER__.js' : 'umi.js',

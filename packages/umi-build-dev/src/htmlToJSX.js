@@ -1,4 +1,5 @@
 // ref: https://github.com/littlehaker/html-to-jsx/blob/master/index.js
+// ref: https://github.com/reactjs/react-magic/blob/master/test/htmltojsx-test.js
 
 class StyleParser {
   constructor(rawStyle) {
@@ -90,6 +91,10 @@ export default function(html) {
 
   html = html.replace(/<script>([\s\S]+?)<\/script>/g, (a, b) => {
     return `<script dangerouslySetInnerHTML={{ __html: \`${b.trim()}\` }} />`;
+  });
+
+  html = html.replace(/<style>([\s\S]+?)<\/style>/g, (a, b) => {
+    return `<style dangerouslySetInnerHTML={{ __html: \`${b.trim()}\` }} />`;
   });
 
   [
