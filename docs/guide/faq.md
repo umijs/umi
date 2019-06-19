@@ -49,6 +49,7 @@ import '@babel/polyfill';
 ### How to dynamically modify the title?
 
 The title can be dynamically modified via [react-helmet](https://github.com/nfl/react-helmet).
+
 > Note: In a hybrid application, if you use react-helmet in the ios web container, you can try [react-document-title](https://github.com/gaearon/react-document-title).
 
 ## Reporting Error
@@ -105,12 +106,13 @@ export default {
   urlLoaderExcludes: [/.svg$/],
   // Add loader
   chainWebpack(config) {
-    config.module.rule('svg-with-file')
+    config.module
+      .rule('svg-with-file')
       .test(/.svg$/)
       .use('svg-with-file-loader')
-      .loader('file-loader')
+      .loader('file-loader');
   },
-}
+};
 ```
 
 ## CSS
@@ -121,8 +123,8 @@ umi use css modules by default, please write your css as css modules.
 
 Ref:
 
-* [css-modules/css-modules](https://github.com/css-modules/css-modules)
-* [CSS Modules usage tutorial](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
+- [css-modules/css-modules](https://github.com/css-modules/css-modules)
+- [CSS Modules usage tutorial](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 
 ### How to disable CSS modules?
 
@@ -130,7 +132,7 @@ Modify `.umirc.js`:
 
 ```json
 {
- "disableCSSModules": true
+  "disableCSSModules": true
 }
 ```
 
@@ -148,7 +150,7 @@ Then modify `.umirc.js`:
 
 ```json
 {
- "sass": {}
+  "sass": {}
 }
 ```
 
@@ -170,9 +172,9 @@ Then open chrome://inspect/#devices in the browser for inspect and breakpoints.
 
 Several options are available:
 
-* Use `hashHistory` instead of `history: 'hash' in `.umirc.js`
-* Static, with `exportStatic: true` in `.umirc.js`
-* The server configures the route fallback to index.html
+- Use `hashHistory` instead of `history: 'hash' in`.umirc.js`
+- Static, with `exportStatic: true` in `.umirc.js`
+- The server configures the route fallback to index.html
 
 ### After the build, the picture is lost?
 
@@ -190,9 +192,10 @@ function header() {
 }
 
 export default Header;
-
 ```
+
 Use in css, be careful not to use absolute paths
+
 ```css
 .Logo {
   background-image: url(./logo.png);
@@ -200,3 +203,12 @@ Use in css, be careful not to use absolute paths
 ```
 
 > Note: base64 will be taken when the image size is less than 10 k. That is, it will not be copied to the public folder, but will be stored as a base64 resource.
+
+## SSR
+
+### document is not defined, navigator is not defined, \* is not not defined
+
+Why: umiJS SSR executes code first server-side, then client-side. The `document`, `navigator` object is only present client-side. Solution:
+
+1. you absolutely need to have access to it in some React component, you should put that code in `componentDidMount` or `useEffect`. This lifecycle method will only be executed on the client.
+1. add the judgment with something like `typeof navigator !== 'undefined'` or `typeof document !== 'undefined'`
