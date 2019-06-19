@@ -40,10 +40,10 @@ export default api => {
     debug(`get url ${url}`);
 
     const ctx = getParsedData(url, blockConfig);
+
     if (!ctx.isLocal) {
       const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
       const templateTmpDirPath = join(blocksTempPath, ctx.id);
-
       merge(ctx, {
         sourcePath: join(templateTmpDirPath, ctx.path),
         branch: args.branch || ctx.branch,
@@ -64,7 +64,7 @@ export default api => {
     const spinner = ora();
 
     // 1. parse url and args
-    spinner.start('Parse url and args');
+    spinner.start('😁 Parse url and args');
     const url = args._[1];
     assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
 
@@ -88,7 +88,8 @@ export default api => {
       js,
     } = args;
 
-    const ctx = getCtx(url);
+    const ctx = getCtx(url, args);
+
     spinner.succeed();
 
     // 2. clone git repo
@@ -136,7 +137,7 @@ export default api => {
       debug('skip dependencies');
     } else {
       // install
-      spinner.start(`install dependencies package`);
+      spinner.start(`📦 install dependencies package`);
       await installDependencies(
         { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
         ctx,
@@ -145,7 +146,7 @@ export default api => {
     }
 
     // 5. run generator
-    spinner.start(`Generate files`);
+    spinner.start(`🔥 Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
@@ -199,16 +200,18 @@ export default api => {
         throw new Error(e);
       }
     }
-    spinner.succeed('Generate files');
+    spinner.succeed();
+
+    // 调用 sylvanas 转化 ts
     if (js) {
-      spinner.start('TypeScript to JavaScript');
+      spinner.start('🤔 TypeScript to JavaScript');
       tsToJs(generator.blockFolderPath);
       spinner.succeed();
     }
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-      spinner.start(`Write route ${generator.path} to ${api.service.userConfig.file}`);
+      spinner.start(`🧐  Write route ${generator.path} to ${api.service.userConfig.file}`);
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
