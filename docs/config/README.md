@@ -265,6 +265,8 @@ When enabled, `umi.server.js` file is also generated when the client static file
 ```js
 // Return the rendered html fragment according to the ctx.req.url
 async function UmiServerRender(ctx) {
+  // mock a window object
+  global.window = {};
   // require module
   const serverRender = require('./dist/umi.server');
   // export react-dom/server to avoid React hooks ssr error
