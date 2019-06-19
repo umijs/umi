@@ -285,7 +285,7 @@ async function UmiServerRender(ctx) {
 }
 ```
 
-[using Pre-Rendering](/plugin/umi-plugin-prerender.html)
+[using Pre-Rendering](/plugin/umi-plugin-prerender.html), [umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 
 ## webpack
 
