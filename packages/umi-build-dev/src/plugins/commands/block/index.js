@@ -287,6 +287,8 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
   ${chalk.green(`--page              `)} add the block to a independent directory as a page
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
+  ${chalk.green(`--js            `)} If the block is typescript, convert to js
+  ${chalk.green(`--registry            `)} set up npm installation using the registry
 
 Examples:
 
