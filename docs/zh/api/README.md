@@ -61,7 +61,7 @@ router.push({
 
 #### router.replace(path)
 
-替换当前页面，参数和 [router.push()](#router.push\(path\)) 相同。
+替换当前页面，参数和 [router.push()](<#router.push(path)>) 相同。
 
 #### router.go(n)
 
@@ -99,7 +99,7 @@ router.goBack();
 
 ```js
 import Redirect from 'umi/redirect';
-<Redirect to="/login" />
+<Redirect to="/login" />;
 ```
 
 详见：[https://reacttraining.com/react-router/web/api/Redirect](https://reacttraining.com/react-router/web/api/Redirect)
@@ -117,13 +117,13 @@ export default () => {
       <h1>Prompt</h1>
       <Prompt
         when={true}
-        message={(location) => {
+        message={location => {
           return window.confirm(`confirm to leave to ${location.pathname}?`);
         }}
       />
     </>
   );
-}
+};
 ```
 
 详见：[https://reacttraining.com/react-router/web/api/Prompt](https://reacttraining.com/react-router/web/api/Prompt)
@@ -131,6 +131,81 @@ export default () => {
 ### umi/withRouter
 
 详见：[https://reacttraining.com/react-router/web/api/withRouter](https://reacttraining.com/react-router/web/api/withRouter)
+
+## Locale
+
+### umi-plugin-locale
+
+> 无需单独引入 `umi-plugin-locale` 依赖，当你使用 `umi-plugin-react` 时，就已经被自动引入了。
+
+#### setLocale(lang, realReload = true)
+
+指定当前使用语言，`realReload = false` 时，可以无刷新更新多语言设置。
+
+举例:
+
+```js
+import { setLocale } from 'umi-plugin-locale';
+
+// 十秒后设置当前语言为en-US
+setTimeout(() => {
+  setLocale('en-US');
+}, 10000);
+```
+
+#### getLocale()
+
+获取当前使用语言
+
+举例:
+
+```js
+import { getLocale } from 'umi-plugin-locale';
+
+// 打印当前使用语言
+console.log(getLocale());
+```
+
+#### 使用 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) 提供的组件
+
+你可以直接从 `umi-plugin-locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) 提供的如下组件：
+
+```js
+import {
+  FormattedDate,
+  FormattedTime,
+  FormattedRelative,
+  FormattedNumber,
+  FormattedPlural,
+  FormattedMessage,
+  FormattedHTMLMessage,
+} from 'umi-plugin-locale';
+
+export default () => {
+  return <FormattedMessage id="TEST_TITLE" />;
+};
+```
+
+#### 使用 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) 提供的方法
+
+你可以直接从 `umi-plugin-locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) 提供的如下方法：
+
+```js
+import {
+  formatDate,
+  formatTime,
+  formatRelative,
+  formatNumber,
+  formatPlural,
+  formatMessage,
+  formatHTMLMessage
+} from 'umi-plugin-locale';
+
+
+export default () => {
+  return <p>{formatMessage({ id="TEST_TITLE" })}</p>;
+}
+```
 
 ## 性能
 
