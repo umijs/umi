@@ -22,16 +22,17 @@ export const getServerContent = umiServerPath => {
 };
 
 export default service => {
-  const { paths } = service;
+  const { paths, config } = service;
   const { absOutputPath } = paths;
+  const { basePath = '' } = config.manifest;
   const manifest = getAssetsManifest(service);
 
   const umiServerPath = join(absOutputPath, 'umi.server.js');
   const umiServer = getServerContent(umiServerPath);
 
   const result = umiServer
-    .replace(/__UMI_SERVER__\.js/g, manifest['umi.js'].split('/').pop())
-    .replace(/__UMI_SERVER__\.css/g, manifest['umi.css'].split('/').pop());
+    .replace(/__UMI_SERVER__\.js/g, manifest[`${basePath}umi.js`].split('/').pop())
+    .replace(/__UMI_SERVER__\.css/g, manifest[`${basePath}umi.css`].split('/').pop());
 
   writeFileSync(umiServerPath, result, 'utf-8');
 };

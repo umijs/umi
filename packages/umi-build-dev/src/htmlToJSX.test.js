@@ -39,28 +39,8 @@ describe('htmlToJSX', () => {
     });
 
     test('style tag', () => {
-      expect(
-        htmlToJSX(
-          `<style>
-        .page-loading-warp {
-          padding: 120px;
-          display: flex;
-          justify-content: center;
-          -webkit-font-feature-settings: 'tnum';
-          align-items: center;
-        }
-        </style>`,
-        ),
-      ).toEqual(
-        `<style>
-        .page-loading-warp {
-          padding: 120px;
-          display: flex;
-          justify-content: center;
-          -webkit-font-feature-settings: 'tnum';
-          align-items: center;
-        }
-        </style>`,
+      expect(htmlToJSX(`<style>h1 {background: url(\'http://foo.bar/img.jpg\';}</style>`)).toEqual(
+        "<style dangerouslySetInnerHTML={{ __html: `h1 {background: url('http://foo.bar/img.jpg';}` }} />",
       );
     });
   });
