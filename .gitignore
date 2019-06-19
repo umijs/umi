@@ -6,6 +6,7 @@ tmp
 /examples/*/node_modules
 /examples/eggjs-umi-ssr/.idea
 /examples/eggjs-umi-ssr/run/**
+/examples/eggjs-umi-ssr/config/manifest.json
 /examples/eggjs-umi-ssr/logs/**
 /examples/eggjs-umi-ssr/app/public/**
 package-lock.json
