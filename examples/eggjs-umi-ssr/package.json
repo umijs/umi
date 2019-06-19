@@ -1,0 +1,57 @@
+{
+  "name": "egg-umi-ssr-demo",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "start": "egg-scripts start --daemon --env prod",
+    "stop": "egg-scripts stop",
+    "dev": "egg-bin dev",
+    "debug": "egg-bin debug",
+    "build": "RM_TMPDIR=none COMPRESS=none  npm run umi:build",
+    "prerender": "UMI_ENV=prerender umi build",
+    "umi:dev": "umi dev",
+    "umi:build": "UMI_ENV=prod CI=true umi build",
+    "test": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod"
+  },
+  "dependencies": {
+    "antd-mobile": "^2.2.6",
+    "egg": "^2.12.0",
+    "egg-scripts": "^2.10.0",
+    "egg-view-assets": "^1.3.0",
+    "egg-view-nunjucks": "^2.2.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.0",
+    "react-sticky": "^6.0.3"
+  },
+  "devDependencies": {
+    "antd-mobile": "^2.2.6",
+    "autod": "^3.0.1",
+    "autod-egg": "^1.0.0",
+    "babel-plugin-dva-hmr": "^0.4.0",
+    "babel-plugin-import": "^1.1.0",
+    "egg-bin": "^4.9.0",
+    "egg-mock": "^3.20.1",
+    "eslint": "^5.8.0",
+    "eslint-config-egg": "^7.1.0",
+    "redbox-react": "^1.5.0",
+    "umi-plugin-ecma5-validator": "^0.1.0",
+    "webstorm-disable-index": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "ci": {
+    "version": "8"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "MIT"
+}

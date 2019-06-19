@@ -4,6 +4,10 @@ tmp
 /packages/**/node_modules
 /packages/**/.leagcy-dist
 /examples/*/node_modules
+/examples/eggjs-umi-ssr/.idea
+/examples/eggjs-umi-ssr/run/**
+/examples/eggjs-umi-ssr/logs/**
+/examples/eggjs-umi-ssr/app/public/**
 package-lock.json
 /website/dist
 /packages/umi-test/examples/*/node_modules
