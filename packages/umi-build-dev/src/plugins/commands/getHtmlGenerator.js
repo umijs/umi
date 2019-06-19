@@ -3,7 +3,7 @@ import HtmlGenerator from '../../html/HTMLGenerator';
 
 export default (service, opts = {}) => {
   const { config, paths, webpackConfig, routes } = service;
-  const { chunksMap } = opts;
+  const { chunksMap, headScripts } = opts;
   return new HtmlGenerator({
     config,
     paths,
@@ -61,13 +61,13 @@ export default (service, opts = {}) => {
     modifyHeadScripts(memo, opts = {}) {
       const { route } = opts;
       return service.applyPlugins('addHTMLHeadScript', {
-        initialValue: memo,
+        initialValue: [...(headScripts || []), ...memo],
         args: { route },
       });
     },
     modifyHTML(memo, opts = {}) {
       const { route, getChunkPath } = opts;
-      const $ = cheerio.load(memo, { decodeEntities: false });
+      const $ = cheerio.load(memo, { decodeEntities: false, recognizeSelfClosing: true });
       service.applyPlugins('modifyHTMLWithAST', {
         initialValue: $,
         args: {

@@ -11,6 +11,9 @@ import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
 import { EXT_LIST } from './constants';
+import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
+import htmlToJSX from './htmlToJSX';
+import getRoutePaths from './routes/getRoutePaths';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -121,18 +124,31 @@ export default class FilesGenerator {
   }
 
   generateEntry() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
 
     // Generate umi.js
     const entryTpl = readFileSync(paths.defaultEntryTplPath, 'utf-8');
     const initialRender = this.service.applyPlugins('modifyEntryRender', {
       initialValue: `
+  window.g_isBrowser = true;
+  let props = {};
+  // Both support SSR and CSR
+  if (window.g_useSSR) {
+    // 如果开启服务端渲染则客户端组件初始化 props 使用服务端注入的数据
+    props = window.g_initialData;
+  } else {
+    const pathname = location.pathname;
+    const activeRoute = findRoute(require('@tmp/router').routes, pathname);
+    if (activeRoute) {
+      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
+    }
+  }
   const rootContainer = plugins.apply('rootContainer', {
-    initialValue: React.createElement(require('./router').default),
+    initialValue: React.createElement(require('./router').default, props),
   });
-  ReactDOM.render(
+  ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
     rootContainer,
-    document.getElementById('${this.mountElementId}'),
+    document.getElementById('${config.mountElementId}'),
   );
       `.trim(),
     });
@@ -159,12 +175,54 @@ export default class FilesGenerator {
       plugins.push('@/app');
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
-      initialValue: ['patchRoutes', 'render', 'rootContainer', 'modifyRouteProps', 'onRouteChange'],
+      initialValue: [
+        'patchRoutes',
+        'render',
+        'rootContainer',
+        'modifyRouteProps',
+        'onRouteChange',
+        'initialProps',
+      ],
     });
     assert(
       uniq(validKeys).length === validKeys.length,
       `Conflict keys found in [${validKeys.join(', ')}]`,
     );
+
+    let htmlTemplateMap = [];
+    if (config.ssr) {
+      assert(config.manifest, `manifest must be config when using ssr`);
+      const isProd = process.env.NODE_ENV === 'production';
+      const routePaths = getRoutePaths(this.RoutesManager.routes);
+      htmlTemplateMap = routePaths.map(routePath => {
+        let ssrHtml = '<></>';
+        const hg = getHtmlGenerator(this.service, {
+          chunksMap: {
+            // TODO, for manifest
+            // placeholder waiting manifest
+            umi: [
+              isProd ? '__UMI_SERVER__.js' : 'umi.js',
+              isProd ? '__UMI_SERVER__.css' : 'umi.css',
+            ],
+          },
+          headScripts: [
+            {
+              content: `
+window.g_useSSR=true;
+window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(props)};
+              `.trim(),
+            },
+          ],
+        });
+        const content = hg.getMatchedContent(routePath);
+        ssrHtml = htmlToJSX(content).replace(
+          `<div id="${config.mountElementId || 'root'}"></div>`,
+          `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
+        );
+        return `'${routePath}': (${ssrHtml}),`;
+      });
+    }
+
     const entryContent = Mustache.render(entryTpl, {
       globalVariables: !this.service.config.disableGlobalVariables,
       code: this.service
@@ -196,23 +254,31 @@ export default class FilesGenerator {
       render: initialRender,
       plugins,
       validKeys,
+      htmlTemplateMap: htmlTemplateMap.join('\n'),
+      findRoutePath: require.resolve('./findRoute'),
     });
     writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
   }
 
   generateHistory() {
-    const { paths } = this.service;
+    const { paths, config } = this.service;
     const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
     const initialHistory = `
-require('umi/_createHistory').default({
+require('umi/lib/createHistory').default({
   basename: window.routerBase,
 })
     `.trim();
+    let history = this.service.applyPlugins('modifyEntryHistory', {
+      initialValue: initialHistory,
+    });
+    if (config.ssr) {
+      history = `
+__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
+      `.trim();
+    }
     const content = Mustache.render(tpl, {
       globalVariables: !this.service.config.disableGlobalVariables,
-      history: this.service.applyPlugins('modifyEntryHistory', {
-        initialValue: initialHistory,
-      }),
+      history,
     });
     writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
   }
@@ -287,7 +353,7 @@ require('umi/_createHistory').default({
   getRouterContent(rendererWrappers) {
     const defaultRenderer = `
     <Router history={history}>
-      { renderRoutes(routes, {}) }
+      { renderRoutes(routes, props) }
     </Router>
     `.trim();
     return rendererWrappers.reduce((memo, wrapper) => {

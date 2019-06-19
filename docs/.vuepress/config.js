@@ -151,7 +151,7 @@ module.exports = {
             {
               title: '官方插件',
               collapsable: false,
-              children: ['umi-plugin-react'],
+              children: ['umi-plugin-react', 'umi-plugin-prerender'],
             },
             {
               title: '插件开发',

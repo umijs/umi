@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import renderRoutes from './renderRoutes';
 
 window.__UMI_BIGFISH_COMPAT = false;
+window.__IS_BROWSER = true;
 
 beforeEach(() => {
   jest.mock('umi/_runtimePlugin', () => ({

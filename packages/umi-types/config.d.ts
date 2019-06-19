@@ -87,6 +87,7 @@ interface IConfig extends IAFWebpackConfig {
   targets?: {
     [key: string]: number;
   };
+  ssr?: boolean | object;
 }
 
 export default IConfig;

@@ -71,21 +71,32 @@ export default function(webpackConfig, opts) {
   }
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
-    rule
-      .use('extract-css-loader')
-        .loader(require('mini-css-extract-plugin').loader)
-        .options({
-          publicPath: isDev ? '/' : opts.cssPublicPath,
-          hmr: isDev,
-        });
+    if (!opts.ssr) {
+      rule
+        .use('extract-css-loader')
+          .loader(require('mini-css-extract-plugin').loader)
+          .options({
+            publicPath: isDev ? '/' : opts.cssPublicPath,
+            hmr: isDev,
+          });
+    }
+    // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
+    let cssLoader = opts.cssLoaderVersion === 2
+      ? (opts.ssr
+          ? 'css-loader/locals'
+          : 'css-loader'
+        )
+      : (opts.ssr
+          ? 'css-loader-1/locals'
+          : 'css-loader-1'
+        )
+    if (opts.ssr && !cssModules) {
+      cssLoader = 'null-loader';
+    }
 
     rule
       .use('css-loader')
-        .loader(
-          opts.cssLoaderVersion === 2
-            ? require.resolve('css-loader')
-            : require.resolve('css-loader-1')
-        )
+        .loader(require.resolve(cssLoader))
         .options({
           ...cssOpts,
           ...(cssModules ? cssModulesConfig : {}),
@@ -235,11 +246,12 @@ export default function(webpackConfig, opts) {
   );
 
   const hash = !isDev && opts.hash ? '.[contenthash:8]' : '';
-
-  webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
-    {
-      filename: `[name]${hash}.css`,
-      chunkFilename: `[name]${hash}.chunk.css`,
-    },
-  ]);
+  if (!opts.ssr) {
+    webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
+      {
+        filename: `[name]${hash}.css`,
+        chunkFilename: `[name]${hash}.chunk.css`,
+      },
+    ]);
+  }
 }

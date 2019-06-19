@@ -9,6 +9,7 @@ import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, DONE } from './send';
 import choosePort from './choosePort';
+import { isPlainObject } from 'lodash';
 
 const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
@@ -19,6 +20,10 @@ const KEY = process.env.HTTPS && process.env.KEY ? fs.readFileSync(process.env.K
 const noop = () => {};
 
 process.env.NODE_ENV = 'development';
+
+function getWebpackConfig(webpackConfig) {
+  return Array.isArray(webpackConfig) ? webpackConfig[0] : webpackConfig;
+}
 
 export default function dev({
   webpackConfig,
@@ -36,7 +41,11 @@ export default function dev({
   base,
   serverConfig: serverConfigFromOpts = {},
 }) {
-  assert(webpackConfig, 'webpackConfig must be supplied');
+  assert(webpackConfig, 'webpackConfig should be supplied.');
+  assert(
+    isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
+    'webpackConfig should be plain object or array.',
+  );
   choosePort(port || DEFAULT_PORT)
     .then(port => {
       if (port === null) {
@@ -100,7 +109,7 @@ export default function dev({
         headers: {
           'access-control-allow-origin': '*',
         },
-        publicPath: webpackConfig.output.publicPath,
+        publicPath: getWebpackConfig(webpackConfig).output.publicPath,
         watchOptions: {
           ignored: /node_modules/,
         },
@@ -128,7 +137,7 @@ export default function dev({
           });
         },
         ...serverConfigFromOpts,
-        ...(webpackConfig.devServer || {}),
+        ...(getWebpackConfig(webpackConfig).devServer || {}),
       };
       const server = new WebpackDevServer(compiler, serverConfig);
 

@@ -325,6 +325,11 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     if (opts.webpack) {
       // webpack config
       this.webpackConfig = require('./getWebpackConfig').default(this);
+      if (this.config.ssr) {
+        this.ssrWebpackConfig = require('./getWebpackConfig').default(this, {
+          ssr: this.config.ssr,
+        });
+      }
     }
 
     return fn(args);

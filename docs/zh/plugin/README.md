@@ -14,12 +14,18 @@ umi 区别于其他前端开发框架和工具的核心就是它的插件机制�
 // .umirc.js
 export default {
   plugins: [
-    ['umi-plugin-dva', {
-      immer: true,
-    }],
-    ['./src/plugins/customPlugin.js', {
-      // plugin config
-    }]
+    [
+      'umi-plugin-dva',
+      {
+        immer: true,
+      },
+    ],
+    [
+      './src/plugins/customPlugin.js',
+      {
+        // plugin config
+      },
+    ],
   ],
 };
 ```
@@ -34,7 +40,8 @@ export default {
 - umi-plugin-dll
 - umi-plugin-routes
 - umi-plugin-polyfills
+- [umi-plugin-prerender](/zh/plugin/umi-plugin-prerender.html)
 
 ### 社区插件
 
-- [umi-plugin-*](https://www.npmjs.com/search?q=umi-plugin-)
+- [umi-plugin-\*](https://www.npmjs.com/search?q=umi-plugin-)
