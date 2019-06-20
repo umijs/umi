@@ -260,7 +260,17 @@ export default {
 
 Configure whether to enable Server-Side Render, which is off by default.
 
-When enabled, `umi.server.js` file is also generated when the client static file is generated. Use the following in Node.js:
+When enabled, `umi.server.js` file is also generated when the client static file is generated.
+
+```js
+export default {
+  ssr: true,
+  // 需要开启
+  manifest: {},
+};
+```
+
+Use the following in Node.js:
 
 ```js
 // Return the rendered html fragment according to the ctx.req.url

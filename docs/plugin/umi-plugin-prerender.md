@@ -2,14 +2,14 @@
 sidebarDepth: 3
 ---
 
-# umi-plugin-prerender
+# @umijs/plugin-prerender
 
 This is a Pre-Rendering plugin.
 
 ## Install
 
 ```bash
-$ yarn add umi-plugin-prerender --dev
+$ yarn add @umijs/plugin-prerender --dev
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ Configured in `.umirc.js`:
 export default {
   ssr: true,
   manifest: {},
-  plugins: [['umi-plugin-prerender']],
+  plugins: [['@umijs/plugin-prerender']],
 };
 ```
 
