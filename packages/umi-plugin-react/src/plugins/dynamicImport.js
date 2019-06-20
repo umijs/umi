@@ -12,7 +12,7 @@ export default function(api, options) {
   api.modifyAFWebpackOpts((memo, opts) => {
     return {
       ...memo,
-      disableDynamicImport: !!(opts && opts.ssr),
+      disableDynamicImport: !!opts.ssr,
     };
   });
 
