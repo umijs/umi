@@ -1,5 +1,5 @@
 {
-  "name": "umi-plugin-prerender",
+  "name": "@umijs/plugin-prerender",
   "version": "1.0.0",
   "description": "A plugin for preRender",
   "authors": {
@@ -26,5 +26,8 @@
     "lib",
     "src"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }
