@@ -29,6 +29,7 @@ export interface IOpts {
 
 const nodePolyfill = () => {
   (global as any).window = {};
+  (global as any).self = window;
   (global as any).document = window.document;
   (global as any).navigator = window.navigator;
   (global as any).localStorage = window.localStorage;
