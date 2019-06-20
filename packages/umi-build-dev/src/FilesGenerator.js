@@ -139,7 +139,7 @@ export default class FilesGenerator {
   } else {
     const pathname = location.pathname;
     const activeRoute = findRoute(require('@tmp/router').routes, pathname);
-    if (activeRoute) {
+    if (activeRoute && activeRoute.component) {
       props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
     }
   }

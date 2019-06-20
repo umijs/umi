@@ -94,7 +94,7 @@ export default function(api) {
   ]);
   /* eslint-enable import/no-dynamic-require */
 
-  api.modifyAFWebpackOpts((memo, args) => {
+  api.modifyAFWebpackOpts((memo, args = {}) => {
     const { ssr } = args;
     const isDev = process.env.NODE_ENV === 'development';
 

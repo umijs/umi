@@ -9,7 +9,7 @@ export default function(api, options) {
     process.env.CODE_SPLITTING_LEVEL = options.level;
   }
 
-  api.modifyAFWebpackOpts((memo, opts) => {
+  api.modifyAFWebpackOpts((memo, opts = {}) => {
     return {
       ...memo,
       disableDynamicImport: !!opts.ssr,

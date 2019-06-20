@@ -24,7 +24,7 @@ export default function(api, options = {}) {
   const antdVersion = require(join(antdDir, 'package.json')).version;
   api.addVersionInfo([`antd@${antdVersion} (${antdDir})`]);
 
-  api.modifyAFWebpackOpts((memo, opts) => {
+  api.modifyAFWebpackOpts((memo, opts = {}) => {
     // antd ssr not enabled
     if (!opts.ssr) {
       memo.babel.plugins = [
