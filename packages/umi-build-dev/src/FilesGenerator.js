@@ -209,7 +209,7 @@ export default class FilesGenerator {
             {
               content: `
 window.g_useSSR=true;
-window.g_initialData = \${require('${require.resolve('serialize-javascript')}')(props)};
+window.g_initialData = \${require('${winPath(require.resolve('serialize-javascript'))}')(props)};
               `.trim(),
             },
           ],
