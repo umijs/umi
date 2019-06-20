@@ -162,7 +162,7 @@ export default function(api) {
                 ? {}
                 : {
                     useBuiltIns: 'entry',
-                    corejs: 3,
+                    corejs: 2,
                     ...(config.treeShaking ? { modules: false } : {}),
                   },
             },
