@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-auto-externals",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -22,11 +22,11 @@
     "auto-external-packages": "^1.0.0",
     "chalk": "2.4.2",
     "copy-webpack-plugin": "5.0.3",
-    "semver": "6.1.1",
-    "got": "9.6.0"
+    "got": "9.6.0",
+    "semver": "6.1.1"
   },
   "devDependencies": {
     "@types/got": "9.6.0",
-    "umi-types": "0.3.8"
+    "umi-types": "0.3.9"
   }
 }
