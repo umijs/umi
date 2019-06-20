@@ -1,6 +1,6 @@
-# umi-plugin-prerender
+# @umijs/plugin-prerender
 
-[![NPM version](https://img.shields.io/npm/v/umi-plugin-prerender.svg?style=flat)](https://npmjs.org/package/umi-plugin-prerender) [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-prerender.svg?style=flat)](https://npmjs.org/package/umi-plugin-prerender)
+[![NPM version](https://img.shields.io/npm/v/@umijs/plugin-prerender.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-prerender) [![NPM downloads](http://img.shields.io/npm/dm/@umijs/plugin-prerender.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-prerender)
 
 A plugin for pre render
 
@@ -10,7 +10,7 @@ Configure in `.umirc.js`,
 
 ```js
 export default {
-  plugins: [['umi-plugin-prerender', options]],
+  plugins: [['@umijs/plugin-prerender', options]],
 };
 ```
 

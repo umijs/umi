@@ -40,7 +40,7 @@ export default {
 - umi-plugin-dll
 - umi-plugin-routes
 - umi-plugin-polyfills
-- [umi-plugin-prerender](/plugin/umi-plugin-prerender.html)
+- [@umijs/plugin-prerender](/plugin/umi-plugin-prerender.html)
 
 ### Community plugins
 

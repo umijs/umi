@@ -262,7 +262,17 @@ export default {
 
 用于服务端渲染（Server-Side Render）。
 
-开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 文件。在 Node.js 中使用如下：
+开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 文件。
+
+```js
+export default {
+  ssr: true,
+  // need enable
+  manifest: {},
+};
+```
+
+在 Node.js 中使用如下：
 
 ```js
 // 根据 ctx.req.url 路径，返回渲染后的 html 片段

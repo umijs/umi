@@ -2,14 +2,14 @@
 sidebarDepth: 3
 ---
 
-# umi-plugin-prerender
+# @umijs/plugin-prerender
 
 预渲染插件
 
 ## 安装
 
 ```bash
-$ yarn add umi-plugin-prerender --dev
+$ yarn add @umijs/plugin-prerender --dev
 ```
 
 ## 使用
@@ -20,7 +20,7 @@ $ yarn add umi-plugin-prerender --dev
 export default {
   ssr: true,
   manifest: {},
-  plugins: [['umi-plugin-prerender']],
+  plugins: [['@umijs/plugin-prerender']],
 };
 ```
 
