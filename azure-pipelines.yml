@@ -10,11 +10,11 @@ trigger:
 jobs:
   - job: linux_test
     pool:
-      vmImage: "Ubuntu-16.04"
+      vmImage: 'Ubuntu-16.04'
 
     container:
       image: circleci/node:latest-browsers
-      options: "-u root"
+      options: '-u root'
 
     steps:
       - checkout: self
@@ -22,10 +22,10 @@ jobs:
         fetchDepth: 1
       - script: npm install
         displayName: install
-      - script: npm run build
-        displayName: build
       - script: npm run bootstrap
         displayName: bootstrap
+      - script: npm run build
+        displayName: build
       - script: npm run test
         env:
           PROGRESS: none
@@ -33,38 +33,38 @@ jobs:
 
   - job: windows_test
     pool:
-      vmImage: "vs2017-win2016"
+      vmImage: 'vs2017-win2016'
     steps:
       - checkout: self
         clean: all
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
-          versionSpec: "10.x"
+          versionSpec: '10.x'
       - script: npm install
         displayName: install
-      - script: npm run build
-        displayName: build
       - script: npm run bootstrap
         displayName: bootstrap
+      - script: npm run build
+        displayName: build
       - script: npm run test
         displayName: test
 
   - job: MacOS_test
     pool:
-      vmImage: "macOS-10.13"
+      vmImage: 'macOS-10.13'
     steps:
       - checkout: self
         clean: all
         fetchDepth: 1
       - task: NodeTool@0
         inputs:
-          versionSpec: "10.x"
+          versionSpec: '10.x'
       - script: npm install
         displayName: install
-      - script: npm run build
-        displayName: build
       - script: npm run bootstrap
         displayName: bootstrap
+      - script: npm run build
+        displayName: build
       - script: npm run test
         displayName: test
