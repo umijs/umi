@@ -28,9 +28,9 @@ let clientRender = async () => {
 };
 const render = plugins.compose('render', { initialValue: clientRender });
 
+const moduleBeforeRendererPromises = [];
 // client render
 if (__IS_BROWSER) {
-  const moduleBeforeRendererPromises = [];
   {{# moduleBeforeRenderer }}
   if (typeof {{ specifier }} === 'function') {
     const promiseOf{{ specifier }} = {{ specifier }}();
