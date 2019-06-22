@@ -190,8 +190,15 @@ export async function installDependencies(
       try {
         let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
         npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
+
+        // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
+        // 加个环境变量规避一下
         await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
           cwd: dirname(projectPkgPath),
+          env: {
+            ...process.env,
+            PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
+          },
         });
       } catch (e) {
         spinner.fail();
