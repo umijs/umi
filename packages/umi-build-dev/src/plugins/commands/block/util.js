@@ -183,7 +183,7 @@ export async function installDependencies(
     if (lacks.length) {
       const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
       spinner.start(
-        `Install additional dependencies ${deps.join(
+        `📦  Install additional dependencies ${deps.join(
           ',',
         )} with ${npmClient} --registry ${registry}`,
       );

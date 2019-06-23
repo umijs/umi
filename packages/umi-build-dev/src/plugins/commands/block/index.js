@@ -64,7 +64,7 @@ export default api => {
     const spinner = ora();
 
     // 1. parse url and args
-    spinner.start('😁 Parse url and args');
+    spinner.start('😁  Parse url and args');
     const url = args._[1];
     assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
 
@@ -137,7 +137,7 @@ export default api => {
       debug('skip dependencies');
     } else {
       // install
-      spinner.start(`📦 install dependencies package`);
+      spinner.start(`📦  install dependencies package`);
       await installDependencies(
         { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
         ctx,
@@ -146,7 +146,7 @@ export default api => {
     }
 
     // 5. run generator
-    spinner.start(`🔥 Generate files`);
+    spinner.start(`🔥  Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
     let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
@@ -204,7 +204,7 @@ export default api => {
 
     // 调用 sylvanas 转化 ts
     if (js) {
-      spinner.start('🤔 TypeScript to JavaScript');
+      spinner.start('🤔  TypeScript to JavaScript');
       tsToJs(generator.blockFolderPath);
       spinner.succeed();
     }
