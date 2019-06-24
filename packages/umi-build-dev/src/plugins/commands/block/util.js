@@ -3,6 +3,7 @@ import { dirname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import execa from 'execa';
 import assert from 'assert';
+import GitUrlParse from 'git-url-parse';
 
 import {
   dependenciesConflictCheck,
@@ -18,7 +19,7 @@ const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.
 export function printBlocks(blocks, parentPath = '') {
   blocks.forEach(block => {
     if (block.type === 'block') {
-      console.log(`    ${chalk.cyan(join(parentPath, block.path))}`);
+      console.log(`    📦  ${chalk.cyan(join(parentPath, block.path))}`);
     }
     if (block.type === 'dir') {
       printBlocks(block.blocks, block.path);
@@ -26,8 +27,26 @@ export function printBlocks(blocks, parentPath = '') {
   });
 }
 
-export async function getDefaultBlockList() {
+export async function getDefaultBlockList(_, blockConfig = {}) {
   const got = require('got');
+
+  const { defaultGitUrl } = blockConfig;
+
+  // 如果存在 defaultGitUrl 的配置，就从 defaultGitUrl 配置中拿区块列表
+  if (defaultGitUrl) {
+    const ignoreFile = ['_scripts'];
+    const { name, owner } = GitUrlParse(defaultGitUrl);
+    console.log(`🔍  find block list form ${chalk.yellow(defaultGitUrl)}`);
+    const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
+    const files = JSON.parse(body)
+      .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
+      .map(({ path }) => ({
+        type: 'block',
+        path,
+      }));
+    printBlocks(files);
+    return;
+  }
   const { body } = await got(`http://blocks.umijs.org/api/blocks`);
   const { status, error, data } = JSON.parse(body);
   if (status === 'success') {

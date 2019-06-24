@@ -26,7 +26,7 @@ export default api => {
         retCtx = await add(args);
         break;
       case 'list':
-        await getDefaultBlockList(args);
+        await getDefaultBlockList(args, blockConfig);
         break;
       default:
         throw new Error(
