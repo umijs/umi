@@ -52,6 +52,9 @@ export default function(opts = {}) {
       disableBabelTransform: true,
       alias: {},
       babel: {},
+      styleLoader: {
+        base: 1000,
+      },
     },
   });
   const afWebpackConfig = require(_resolveDeps('af-webpack/getConfig')).default(afWebpackOpts);
