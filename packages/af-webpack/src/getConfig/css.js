@@ -72,13 +72,23 @@ export default function(webpackConfig, opts) {
 
   function applyCSSRules(rule, { cssModules, less, sass }) {
     if (!opts.ssr) {
-      rule
-        .use('extract-css-loader')
-          .loader(require('mini-css-extract-plugin').loader)
+      if (opts.styleLoader) {
+        rule
+          .use('style-loader')
+          .loader(require.resolve('style-loader'))
           .options({
-            publicPath: isDev ? '/' : opts.cssPublicPath,
-            hmr: isDev,
+            base: opts.styleLoader.base || 0,
+            convertToAbsoluteUrls: true,
           });
+      } else {
+        rule
+          .use('extract-css-loader')
+            .loader(require('mini-css-extract-plugin').loader)
+            .options({
+              publicPath: isDev ? '/' : opts.cssPublicPath,
+              hmr: isDev,
+            });
+      }
     }
     // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
     let cssLoader = opts.cssLoaderVersion === 2
@@ -246,7 +256,7 @@ export default function(webpackConfig, opts) {
   );
 
   const hash = !isDev && opts.hash ? '.[contenthash:8]' : '';
-  if (!opts.ssr) {
+  if (!opts.ssr && !opts.styleLoader) {
     webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [
       {
         filename: `[name]${hash}.css`,
