@@ -1,9 +1,12 @@
 import { join } from 'path';
 import pick from 'lodash/pick';
+import { winPath } from 'umi-utils';
+
 import Service from './Service';
 
 process.env.UMI_TEST = true;
-const fixtures = join(__dirname, 'fixtures/Service');
+
+const fixtures = winPath(join(__dirname, 'fixtures/Service'));
 
 describe('Service', () => {
   it('resolve plugins from file system', () => {
