@@ -1,10 +1,13 @@
 import { join } from 'path';
+import { winPath } from 'umi-utils';
+
 import generateWebManifest, {
   prependPublicPath,
   DEFAULT_MANIFEST_FILENAME,
 } from './generateWebManifest';
 
-const absSrcPath = join(__dirname, '../../../../umi/test/fixtures/build/pwa');
+const absSrcPath = winPath(join(__dirname, '../../../../umi/test/fixtures/build/pwa'));
+
 const APIMock = {
   config: {
     publicPath: '/',
@@ -37,6 +40,7 @@ describe('generateWebManifest', () => {
     const { srcPath, outputPath } = generateWebManifest(APIMock, {
       srcPath: manifestPathProvidedByUser,
     });
+    console.log(srcPath, manifestPathProvidedByUser);
     expect(srcPath).toBe(manifestPathProvidedByUser);
     expect(outputPath).toBe('manifest.webmanifest');
   });

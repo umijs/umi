@@ -6,6 +6,7 @@
     "chalk": "2.4.2",
     "extend2": "1.0.0",
     "marked": "0.6.2",
+    "umi-utils": "1.5.0",
     "marked-terminal": "3.2.0",
     "signale": "1.4.0"
   },

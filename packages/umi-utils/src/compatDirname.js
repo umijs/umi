@@ -1,5 +1,6 @@
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import winPath from './winPath';
 
 export default function(path, cwd, fallback) {
   const pkg = findPkg(path, cwd);
@@ -21,7 +22,7 @@ function findPkg(path, cwd) {
     if (dependencies[library] || devDependencies[library]) {
       const pkgPath = dirname(join(cwd, 'node_modules', path));
       if (existsSync(pkgPath)) {
-        return pkgPath;
+        return winPath(pkgPath);
       }
     }
   }

@@ -2,6 +2,7 @@ import { join, extname } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
 import extend from 'extend2';
+import { winPath } from 'umi-utils';
 import { IConfig } from 'umi-types';
 
 interface IOpts {
@@ -19,7 +20,9 @@ export function getConfigFile(cwd) {
     validFiles.length <= 1,
     `Multiple config files (${validFiles.join(', ')}) were detected, please keep only one.`,
   );
-  return validFiles[0] && join(cwd, validFiles[0]);
+  if (validFiles[0]) {
+    return winPath(join(cwd, validFiles[0]));
+  }
 }
 
 export function addAffix(file, affix) {
