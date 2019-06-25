@@ -20,7 +20,7 @@ const debug = require('debug')('umi-build-dev:Service');
 export default class Service {
   constructor({ cwd }) {
     //  用户传入的 cmd 不可信任 转化一下
-    this.cwd = winPath(cwd || process.cwd());
+    this.cwd = cwd || process.cwd();
 
     try {
       this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
@@ -74,7 +74,7 @@ export default class Service {
         )}`,
       );
       return getPlugins({
-        cwd: this.cwd,
+        cwd: winPath(this.cwd),
         plugins: this.config.plugins || [],
       });
     } catch (e) {
