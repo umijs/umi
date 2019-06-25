@@ -4,6 +4,7 @@ import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
+import { winPath } from 'umi-utils';
 import prettier from 'prettier';
 
 const debug = require('debug')('umi-build-dev:writeNewRoute');
@@ -148,11 +149,10 @@ export function writeRouteNode(targetNode, newRoute, currentPath = '/') {
     }
     return fullPath;
   });
-
   debug('paths', paths);
 
   const matchedIndex = paths.findIndex(p => {
-    return p && newRoute.path.indexOf(p) === 0;
+    return p && newRoute.path.indexOf(winPath(p)) === 0;
   });
 
   const newNode = getNewRouteNode(newRoute);
