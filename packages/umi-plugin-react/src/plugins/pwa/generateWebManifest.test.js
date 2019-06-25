@@ -40,7 +40,6 @@ describe('generateWebManifest', () => {
     const { srcPath, outputPath } = generateWebManifest(APIMock, {
       srcPath: manifestPathProvidedByUser,
     });
-    console.log(srcPath, manifestPathProvidedByUser);
     expect(srcPath).toBe(manifestPathProvidedByUser);
     expect(outputPath).toBe('manifest.webmanifest');
   });
