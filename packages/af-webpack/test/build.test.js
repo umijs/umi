@@ -15,13 +15,11 @@ process.env.__FROM_UMI_TEST = true;
  * af-webpack中没有依赖 umi-utils
  * 先不使用 utils 里的方法
  */
-const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
-
 const winEOL = content => {
   if (typeof content !== 'string') {
     return content;
   }
-  return isWindows ? content.replace(/\r/g, '') : content;
+  return content.replace(/\r/g, '');
 };
 
 function getEntry(cwd) {
