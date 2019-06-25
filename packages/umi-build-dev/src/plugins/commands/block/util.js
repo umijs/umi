@@ -197,6 +197,7 @@ export async function installDependencies(
           cwd: dirname(projectPkgPath),
           env: {
             ...process.env,
+            // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
             PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
           },
         });
