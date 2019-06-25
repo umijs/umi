@@ -19,7 +19,8 @@
     "umi-build-dev": "1.10.6",
     "umi-utils": "1.5.1",
     "update-notifier": "3.0.0",
-    "yargs-parser": "13.1.1"
+    "yargs-parser": "13.1.1",
+    "ora":"^3.4.0"
   },
   "module": "dist/index.esm.js",
   "sideEffects": [

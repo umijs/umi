@@ -67,14 +67,14 @@ export async function selectInstallBlockArgs(blockArray) {
         {
           type: 'list',
           name: 'block',
-          message: `请选择区块（共${blockArray.length} 个 )`,
+          message: `⛰  请选择区块（共 ${blockArray.length} 个 )`,
           choices: blockArray,
         },
-        { type: 'input', name: 'path', message: '请输入输出安装区块的路径' },
+        { type: 'input', name: 'path', message: '🏗  请输入输出安装区块的路径' },
         {
           type: 'confirm',
           name: 'js',
-          message: '将区块转化为 js?',
+          message: '🤔  将 Typescript 区块转化为 js?',
           default: false,
         },
       ])
