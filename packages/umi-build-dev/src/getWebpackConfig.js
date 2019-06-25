@@ -51,7 +51,11 @@ export default function(service, opts = {}) {
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';
-    webpackConfig.plugins.push(new (require('write-file-webpack-plugin'))());
+    webpackConfig.plugins.push(
+      new (require('write-file-webpack-plugin'))({
+        test: /umi\.server\.js/,
+      }),
+    );
   }
 
   return webpackConfig;
