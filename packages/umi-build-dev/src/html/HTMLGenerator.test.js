@@ -348,7 +348,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(
       `
 <head>
 
@@ -399,7 +399,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(
       `
 <head>
 
