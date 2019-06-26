@@ -19,7 +19,7 @@ const winEOL = content => {
   if (typeof content !== 'string') {
     return content;
   }
-  return content.replace(/\r/g, '');
+  return content.replace(/\r/g, '').replace(/\\r/g, '');
 };
 
 function getEntry(cwd) {
