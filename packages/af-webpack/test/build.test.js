@@ -19,7 +19,15 @@ const winEOL = content => {
   if (typeof content !== 'string') {
     return content;
   }
-  return content.replace(/\r/g, '').replace(/\\r/g, '');
+  return (
+    content
+      // 删除 win 换行符
+      .replace(/\r/g, '')
+      // 删除字符串 win 换行符
+      .replace(/\\r/g, '')
+      //loc 可能有问题，替换他为空
+      .replace(/\"loc\":\{(.*)\}/g, 'loc":{}')
+  );
 };
 
 function getEntry(cwd) {
