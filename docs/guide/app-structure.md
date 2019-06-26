@@ -44,7 +44,7 @@ For example, create a new `mock/users.js` with the following contents:
 ```js
 export default {
   '/api/users': ['a', 'b'],
-}
+};
 ```
 
 Then visit [http://localhost:8000/api/users](http://localhost:8000/api/users) in your browser to see `['a', 'b']`.
@@ -148,3 +148,9 @@ Environment variables, such as:
 CLEAR_CONSOLE=none
 BROWSER=none
 ```
+
+> The variables defined will be used through the `umi` lifecycle
+
+## .env.local
+
+Local environment variables, will be loaded after `.env`. Which means if you have defined a variable with the same name in both two files, the one in `.env.local` will be used.
