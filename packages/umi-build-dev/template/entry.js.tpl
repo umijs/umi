@@ -5,6 +5,7 @@ import history from './history';
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
+import findRoute from '{{{ findRoutePath }}}';
 {{{ imports }}}
 
 // runtime plugins
@@ -53,7 +54,7 @@ if (!__IS_BROWSER) {
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);
     let props = {};
-    const activeRoute = require('{{{ findRoutePath }}}').default(require('./router').routes, pathname) || false;
+    const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component.getInitialProps) {
       props = await activeRoute.component.getInitialProps(ctx);
       props = plugins.apply('initialProps', {
