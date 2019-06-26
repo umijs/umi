@@ -52,6 +52,9 @@ export default function dev({
         return;
       }
 
+      // Send message to parent process when port choosed
+      process.send({ type: 'UPDATE_PORT', port });
+
       const compiler = webpack(webpackConfig);
 
       let isFirstCompile = true;
