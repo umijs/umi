@@ -13,7 +13,7 @@ declare enum API_TYPE {
   EVENT,
 }
 
-export { IConfig, IPlugin, IRoute };
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig };
 
 /**
  * System level API
