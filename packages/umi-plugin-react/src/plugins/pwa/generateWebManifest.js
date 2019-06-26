@@ -1,6 +1,7 @@
 import { existsSync } from 'fs';
 import { basename, join } from 'path';
 import { resolve, parse } from 'url';
+import { isUrl } from 'umi-utils';
 
 export const PWACOMPAT_PATH = 'pwacompat.min.js';
 export const DEFAULT_MANIFEST_FILENAME = 'manifest.json';
@@ -27,11 +28,13 @@ export default function generateWebManifest(api, options) {
     ...defaultWebManifestOptions,
     ...options,
   };
+
   let manifestFilename = basename(srcPath);
 
   // remove path query
-  srcPath = parse(srcPath).pathname;
-
+  if (isUrl(srcPath)) {
+    srcPath = parse(srcPath).pathname;
+  }
   if (existsSync(srcPath)) {
     // watch manifest on DEV mode
     if (process.env.NODE_ENV === 'development') {

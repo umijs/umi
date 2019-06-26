@@ -1,6 +1,7 @@
+import { winPath } from 'umi-utils';
 import getMockData, { normalizeConfig, getMockFiles, getMockConfigFromFiles } from './getMockData';
 
-const fixtures = `${__dirname}/fixtures`;
+const fixtures = winPath(`${__dirname}/fixtures`);
 
 function stripPrefix(files) {
   return files.map(file => file.replace(`${fixtures}/`, ''));
@@ -21,6 +22,7 @@ describe('umi-mock:getMockData', () => {
       const files = getMockFiles({
         cwd: `${fixtures}/normal`,
       });
+
       expect(stripPrefix(files)).toEqual([
         'normal/mock/_c.js',
         'normal/mock/a.js',

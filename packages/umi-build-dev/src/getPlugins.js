@@ -2,6 +2,8 @@ import resolve from 'resolve';
 import assert from 'assert';
 import chalk from 'chalk';
 import { UmiError } from 'umi-core/lib/error';
+import { winPath } from 'umi-utils';
+
 import registerBabel, { addBabelRegisterFiles } from './registerBabel';
 import isEqual from './isEqual';
 import getCodeFrame from './utils/getCodeFrame';
@@ -75,9 +77,11 @@ function pluginToPath(plugins, { cwd }) {
     const [path, opts] = p;
     try {
       return [
-        resolve.sync(path, {
-          basedir: cwd,
-        }),
+        winPath(
+          resolve.sync(path, {
+            basedir: cwd,
+          }),
+        ),
         opts,
       ];
     } catch (e) {
@@ -144,7 +148,7 @@ export function diffPlugins(newOption, oldOption, { cwd }) {
     return { pluginsChanged: true };
   } else {
     return {
-      optionChanged: newPlugins.filter((p, index) => {
+      optionChanged: newPlugins.filter((_, index) => {
         return !isEqual(newPlugins[index].opts, oldPlugins[index].opts);
       }),
     };

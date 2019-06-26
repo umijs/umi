@@ -2,20 +2,69 @@
 # Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+name: umi
 
 trigger:
   - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+jobs:
+  - job: linux_test
+    pool:
+      vmImage: 'Ubuntu-16.04'
 
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '10.x'
-    displayName: 'Install Node.js'
+    container:
+      image: circleci/node:latest-browsers
+      options: '-u root'
 
-  - script: |
-      npm install
-      npm run build
-    displayName: 'npm install and build'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - script: npm install
+        displayName: install
+      - script: npm run bootstrap
+        displayName: bootstrap
+      - script: npm run build
+        displayName: build
+      - script: npm run test
+        env:
+          PROGRESS: none
+        displayName: test
+
+  - job: windows_test
+    pool:
+      vmImage: 'vs2017-win2016'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - script: npm install
+        displayName: install
+      - script: npm run bootstrap
+        displayName: bootstrap
+      - script: npm run build
+        displayName: build
+      - script: npm run test
+        displayName: test
+
+  - job: MacOS_test
+    pool:
+      vmImage: 'macOS-10.13'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - script: npm install
+        displayName: install
+      - script: npm run bootstrap
+        displayName: bootstrap
+      - script: npm run build
+        displayName: build
+      - script: npm run test
+        displayName: test

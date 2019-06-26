@@ -76,6 +76,6 @@ export default function(content, { relativePath, identifier }) {
     singleQuote: true,
     trailingComma: 'es5',
     printWidth: 100,
-    parser: 'babylon',
+    parser: 'babel',
   });
 }

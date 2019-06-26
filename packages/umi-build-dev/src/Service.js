@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp';
 import { assign, cloneDeep } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
-import { deprecate } from 'umi-utils';
+import { deprecate, winPath } from 'umi-utils';
 import { UmiError, printUmiError } from 'umi-core/lib/error';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
@@ -19,7 +19,9 @@ const debug = require('debug')('umi-build-dev:Service');
 
 export default class Service {
   constructor({ cwd }) {
+    //  用户传入的 cmd 不可信任 转化一下
     this.cwd = cwd || process.cwd();
+
     try {
       this.pkg = require(join(this.cwd, 'package.json')); // eslint-disable-line
     } catch (e) {
@@ -72,7 +74,7 @@ export default class Service {
         )}`,
       );
       return getPlugins({
-        cwd: this.cwd,
+        cwd: winPath(this.cwd),
         plugins: this.config.plugins || [],
       });
     } catch (e) {

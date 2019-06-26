@@ -4,6 +4,7 @@ import assert from 'assert';
 import pathToRegexp from 'path-to-regexp';
 import multer from 'multer';
 import { join } from 'path';
+import { winPath } from 'umi-utils';
 import signale from 'signale';
 import glob from 'glob';
 import getPaths from './getPaths';
@@ -105,6 +106,9 @@ export function getMockFiles(opts) {
           .map(p => join(absPagesPath, p)),
       );
     }
+
+    // 处理一下路径，不然在 win 下面会报错
+    mockFiles = mockFiles.map(p => winPath(p));
 
     debug(`load mock data from ${absMockPath}, including files ${JSON.stringify(mockFiles)}`);
     return mockFiles;

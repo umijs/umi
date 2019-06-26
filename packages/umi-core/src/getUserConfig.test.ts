@@ -1,6 +1,7 @@
+import { winPath } from 'umi-utils';
 import { getConfigFile, mergeConfigs, addAffix } from './getUserConfig';
 
-const fixtures = `${__dirname}/fixtures/getUserConfig`;
+const fixtures = winPath(`${__dirname}/fixtures/getUserConfig`);
 
 function stripPrefix(file) {
   return file.replace(`${fixtures}/`, '');

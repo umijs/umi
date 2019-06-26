@@ -1,9 +1,11 @@
 import { join } from 'path';
 import { readFileSync, unlinkSync } from 'fs';
+import { winPath } from 'umi-utils';
+
 import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 
-const absSrcPath = join(__dirname, '../examples/base/src');
-const absPagesPath = join(__dirname, '../examples/base/src/page');
+const absSrcPath = winPath(join(__dirname, '../examples/base/src'));
+const absPagesPath = winPath(join(__dirname, '../examples/base/src/page'));
 
 let wrapperFile;
 

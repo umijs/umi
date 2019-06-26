@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { winEOL } from 'umi-utils';
 import HTMLGenerator from './HTMLGenerator';
 
 describe('HG', () => {
@@ -122,7 +123,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head>
 
@@ -165,7 +166,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head>
 
@@ -207,7 +208,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head>
 
@@ -245,7 +246,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head>
 
@@ -281,7 +282,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head>
 
@@ -317,7 +318,7 @@ describe('HG', () => {
     const content = hg.getContent({
       path: '/',
     });
-    expect(content.trim()).toEqual(
+    expect(winEOL(content.trim())).toEqual(
       `
 <head><link rel="stylesheet" href="/umi.css"><script>window.routerBase = "/";</script></head><body><div id="documenttestid"></div><script src="/umi.js"></script></body>
     `.trim(),
@@ -347,7 +348,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(
       `
 <head>
 
@@ -398,7 +399,7 @@ describe('HG', () => {
     const c1 = hg.getContent({
       path: '/',
     });
-    expect(c1.trim()).toEqual(
+    expect(winEOL(c1.trim())).toEqual(
       `
 <head>
 

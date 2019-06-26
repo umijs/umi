@@ -1,8 +1,9 @@
 import { join } from 'path';
+import { winPath } from 'umi-utils';
 import { diffPlugins } from './getPlugins';
 
 describe('getPlugins', () => {
-  const cwd = join(__dirname, 'fixtures/Service/plugins-diff');
+  const cwd = winPath(join(__dirname, 'fixtures/Service/plugins-diff'));
 
   it('diffPlugins pluginsChanged', () => {
     expect(diffPlugins(['./a'], ['./b'], { cwd })).toEqual({

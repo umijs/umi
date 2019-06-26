@@ -10,6 +10,25 @@ process.env.NODE_ENV = 'production';
 process.env.COMPRESS = 'none';
 process.env.__FROM_UMI_TEST = true;
 
+/**
+ * af-webpack中没有依赖 umi-utils
+ * 先不使用 utils 里的方法
+ */
+const winEOL = content => {
+  if (typeof content !== 'string') {
+    return content;
+  }
+  return (
+    content
+      // 删除 win 换行符
+      .replace(/\r/g, '')
+      // 删除字符串 win 换行符
+      .replace(/\\r/g, '')
+      //loc 可能有问题，替换他为空
+      .replace(/\"loc\":\{(.*)\}/g, 'loc":{}')
+  );
+};
+
 function getEntry(cwd) {
   if (existsSync(join(cwd, 'index.ts'))) {
     return join(cwd, 'index.ts');
@@ -100,7 +119,7 @@ describe('build', () => {
       });
     },
     replaceContent(content) {
-      return content.replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$');
+      return winEOL(content.replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$'));
     },
   });
 });
@@ -144,7 +163,7 @@ describe('ssr build', () => {
       },
       err => {
         if (err) {
-          reject(err);
+          done(err);
         }
         const clientJS = join(root, 'dist', 'index.js');
         const serverJS = join(root, 'dist', 'index.server.js');
