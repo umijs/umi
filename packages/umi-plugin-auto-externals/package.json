@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-auto-externals",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "@types/got": "9.6.0",
-    "umi-types": "0.3.9"
+    "umi-types": "0.3.10"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-dva",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "main": "./lib/index.js",
   "dependencies": {
     "babel-plugin-dva-hmr": "0.4.2",
@@ -12,7 +12,7 @@
     "object-assign": "4.1.1",
     "path-is-root": "0.1.0",
     "path-to-regexp": "1.7.0",
-    "umi-utils": "1.5.0"
+    "umi-utils": "1.5.1"
   },
   "repository": {
     "type": "git",
