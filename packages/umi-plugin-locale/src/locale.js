@@ -30,7 +30,7 @@ function setLocale(lang, realReload = true) {
 
 function getLocale() {
   const lang = window.localStorage.getItem('umi_locale');
-  return lang || window.g_lang;
+  return lang || window.g_lang || navigator.language;
 }
 
 const LangContext = React.createContext({
