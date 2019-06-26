@@ -2,6 +2,7 @@ import { fork } from 'child_process';
 import send, { RESTART } from './send';
 
 const usedPorts = [];
+let CURRENT_PORT = undefined;
 
 export default function start(scriptPath) {
   const execArgv = process.execArgv.slice(0);
@@ -27,7 +28,10 @@ export default function start(scriptPath) {
       }),
     );
   }
-
+  // set port to env when current port has value
+  if (CURRENT_PORT) {
+    process.env.PORT = CURRENT_PORT;
+  }
   const child = fork(scriptPath, process.argv.slice(2), { execArgv });
 
   child.on('message', data => {
@@ -35,6 +39,9 @@ export default function start(scriptPath) {
     if (type === RESTART) {
       child.kill();
       start(scriptPath);
+    } else if (type === 'UPDATE_PORT') {
+      // set current used port
+      CURRENT_PORT = data.port;
     }
     send(data);
   });
