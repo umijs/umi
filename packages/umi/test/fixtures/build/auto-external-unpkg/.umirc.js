@@ -4,7 +4,7 @@ export default {
       '../../../../../umi-plugin-auto-externals/lib/index.js',
       {
         packages: ['antd'],
-        urlTemplate: `https://unpkg.com/{{ library }}@{{ version }}/{{ path }}`,
+        urlTemplate: `https://unpkg.alibaba-inc.com/{{ library }}@{{ version }}/{{ path }}`,
       },
     ],
   ],
