@@ -2,7 +2,6 @@ import webpack from 'webpack';
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import { cloneDeep } from 'lodash';
-
 import rimraf from 'rimraf';
 import getUserConfig from '../src/getUserConfig';
 import getConfig from '../src/getConfig';
@@ -164,7 +163,7 @@ describe('ssr build', () => {
       },
       err => {
         if (err) {
-          return err;
+          done(err);
         }
         const clientJS = join(root, 'dist', 'index.js');
         const serverJS = join(root, 'dist', 'index.server.js');
