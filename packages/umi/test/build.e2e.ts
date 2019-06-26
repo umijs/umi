@@ -21,6 +21,7 @@ const testOnly = dirs.some(dir => /-only/.test(dir));
 if (testOnly) {
   dirs = dirs.filter(dir => /-only/.test(dir));
 }
+dirs = dirs.filter(dir => !/^x-/.test(dir));
 
 beforeAll(async () => {
   for (const dir of dirs) {
