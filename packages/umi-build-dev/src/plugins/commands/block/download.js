@@ -61,7 +61,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
 // or http://gitlab.alitest-inc.com/bigfish/testblocks
 // or https://github.com/umijs/umi-blocks/tree/master/demo
 // or https://github.com/alibaba/ice/tree/master/react-blocks/blocks/AbilityIntroduction
-const gitSiteParser = /^(https\:\/\/|http\:\/\/|git\@)((github|gitlab)[\.\w\-]+)(\/|\:)([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?(.git)?$/;
+const gitSiteParser = /^(https\:\/\/|http\:\/\/|git\@)((github|gitlab)[\.\w\-]+|(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))(\/|\:)([\w\-]+)\/([\w\-]+)(\/tree\/([\w\.\-]+)([\w\-\/]+))?(.git)?$/;
 export function isGitUrl(url) {
   return gitSiteParser.test(url);
 }

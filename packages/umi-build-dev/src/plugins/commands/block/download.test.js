@@ -11,6 +11,9 @@ describe('test block download utils', () => {
     expect(
       isGitUrl('http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/master/demo'),
     ).toEqual(true);
+    expect(
+      isGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo'),
+    ).toEqual(true);
   });
 
   it('parseGitUrl', () => {
@@ -59,6 +62,14 @@ describe('test block download utils', () => {
       branch: 'master',
       path: '/',
       id: 'github.com/umijs/umi-blocks',
+    });
+    expect(
+      parseGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo'),
+    ).toEqual({
+      repo: 'http://192.169.3.19/YYJay/test-umi-block.git',
+      branch: 'master',
+      path: '/demo',
+      id: '192.169.3.19/YYJay/test-umi-block',
     });
   });
 
