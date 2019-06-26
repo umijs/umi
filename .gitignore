@@ -14,7 +14,7 @@ package-lock.json
 /packages/*/lib
 /packages/*/dist
 /packages/af-webpack/test/bundlestats.json
-
+/bundlestats.json
 dist
 coverage
 .nyc_output
