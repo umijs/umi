@@ -201,7 +201,7 @@ A route configuration is generated:
 
 ## Configuration Routing
 
-If you prefer to use a configured route, you can configure `routes`, **this configuration item will not be parsed for the `src/pages` directory**.
+If you prefer to use a configured route, you can configure `routes` in the configuration file either `.umirc.(ts|js)` or `config/config.(ts|js)`, **this configuration item will not be parsed for the `src/pages` directory**.
 
 Example:
 

@@ -201,7 +201,7 @@ export default () => {
 
 ## 配置式路由
 
-如果你倾向于使用配置式的路由，可以配置 `routes` ，**此配置项存在时则不会对 `src/pages` 目录做约定式的解析**。
+如果你倾向于使用配置式的路由，可以配置 `.umirc.(ts|js)` 或者 `config/config.(ts|js)` [配置文件](https://umijs.org/zh/guide/app-structure.html#umirc-js-ts-%E5%92%8C-config-config-js-ts)中的  `routes` 属性，**此配置项存在时则不会对 `src/pages` 目录做约定式的解析**。
 
 比如：
 
