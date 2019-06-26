@@ -45,7 +45,7 @@
 ```js
 export default {
   '/api/users': ['a', 'b'],
-}
+};
 ```
 
 然后在浏览器里访问 [http://localhost:8000/api/users](http://localhost:8000/api/users) 就可以看到 `['a', 'b']` 了。
@@ -157,3 +157,9 @@ export default {
 CLEAR_CONSOLE=none
 BROWSER=none
 ```
+
+> 这里定义的系统环境变量在整个`umi-build-dev`的生命周期里都可以被使用
+
+## .env.local
+
+本地化的系统环境变量，该文件通常不用提交到代码仓库。本地启动时， 相同内容 `.env.local` 会覆盖 `.env` 。
