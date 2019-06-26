@@ -183,15 +183,23 @@ export async function installDependencies(
     if (lacks.length) {
       const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
       spinner.start(
-        `Install additional dependencies ${deps.join(
+        `📦  Install additional dependencies ${deps.join(
           ',',
         )} with ${npmClient} --registry ${registry}`,
       );
       try {
         let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
         npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
+
+        // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
+        // 加个环境变量规避一下
         await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
           cwd: dirname(projectPkgPath),
+          env: {
+            ...process.env,
+            // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
+            PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
+          },
         });
       } catch (e) {
         spinner.fail();
