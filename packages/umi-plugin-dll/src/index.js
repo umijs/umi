@@ -3,7 +3,7 @@ import serveStatic from 'serve-static';
 import buildDll from './buildDll';
 
 export default function(api, opts = {}) {
-  if (process.env.NODE_ENV !== 'development') return;
+  if (process.env.NODE_ENV !== 'development' || api.config.ssr) return;
 
   const { debug, paths } = api;
 
