@@ -46,7 +46,7 @@ const localeInfo = {
   {{#localeList}}
   '{{name}}': {
     messages: {
-      {{#paths}}...require('{{{.}}}').default,{{/paths}}
+      {{#paths}}...((locale) => locale.__esModule ? locale.default : locale)(require('{{{.}}}')),{{/paths}}
     },
     locale: '{{name}}',
     {{#antd}}antd: require('antd/lib/locale-provider/{{lang}}_{{country}}'),{{/antd}}
