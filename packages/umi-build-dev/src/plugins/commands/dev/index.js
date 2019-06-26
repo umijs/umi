@@ -102,16 +102,7 @@ export default function(api) {
                 service.applyPlugins('_beforeServerWithApp', { args: { app } });
               },
               beforeMiddlewares: service.applyPlugins('addMiddlewareAhead', {
-                initialValue: [
-                  ...(service.ssrWebpackConfig
-                    ? [
-                        require('webpack-dev-middleware')(
-                          require('af-webpack/webpack')(service.ssrWebpackConfig),
-                          {},
-                        ),
-                      ]
-                    : []),
-                ],
+                initialValue: [],
               }),
               afterMiddlewares: service.applyPlugins('addMiddleware', {
                 initialValue: [

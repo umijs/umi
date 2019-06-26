@@ -64,7 +64,6 @@
     "uppercamelcase": "3.0.0",
     "url-polyfill": "1.1.5",
     "user-home": "2.0.0",
-    "webpack-dev-middleware": "3.7.0",
     "webpack-node-externals": "1.7.2",
     "whatwg-fetch": "3.0.0",
     "write-file-webpack-plugin": "4.5.0",
