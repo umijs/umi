@@ -27,6 +27,18 @@ describe('test get config path', () => {
     expect(path).toEqual(routesPath);
   });
 
+  it('get path in antdpro ts', () => {
+    const configPath = getPath('../fixtures/block/antdprots/config/config.ts');
+    const routesPath = getPath('../fixtures/block/antdprots/config/router.config.ts');
+
+    const { routesPath: path } = getNewRouteCode(
+      configPath,
+      { path: '/demo', component: './demo' },
+      '../fixtures/block/antdprots',
+    );
+    expect(path).toEqual(routesPath);
+  });
+
   it('get path in simple demo', () => {
     const configPath = getPath('../fixtures/block/simple/.umirc.js');
 
