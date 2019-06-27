@@ -46,21 +46,9 @@ export default function(api) {
     cwd,
     dirname(require.resolve('react-dom/package.json')),
   );
-  const reactRouterDir = compatDirname(
-    'react-router/package.json',
-    cwd,
-    dirname(require.resolve('react-router/package.json')),
-  );
-  const reactRouterDOMDir = compatDirname(
-    'react-router-dom/package.json',
-    cwd,
-    dirname(require.resolve('react-router-dom/package.json')),
-  );
-  const reactRouterConfigDir = compatDirname(
-    'react-router-config/package.json',
-    cwd,
-    dirname(require.resolve('react-router-config/package.json')),
-  );
+  const reactRouterDir = dirname(require.resolve('react-router/package.json'));
+  const reactRouterDOMDir = dirname(require.resolve('react-router-dom/package.json'));
+  const reactRouterConfigDir = dirname(require.resolve('react-router-config/package.json'));
   api.chainWebpackConfig(webpackConfig => {
     webpackConfig.resolve.alias
       .set('react', reactDir)
