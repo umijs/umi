@@ -3,7 +3,10 @@ import { dirname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import execa from 'execa';
 import assert from 'assert';
-
+import ora from 'ora';
+import GitUrlParse from 'git-url-parse';
+import terminalLink from 'terminal-link';
+import inquirer from 'inquirer';
 import {
   dependenciesConflictCheck,
   getMockDependencies,
@@ -15,30 +18,135 @@ import {
  */
 const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
 
-export function printBlocks(blocks, parentPath = '') {
-  blocks.forEach(block => {
-    if (block.type === 'block') {
-      console.log(`    ${chalk.cyan(join(parentPath, block.path))}`);
-    }
-    if (block.type === 'dir') {
-      printBlocks(block.blocks, block.path);
-    }
+/**
+ * 将区块转化为 inquirer 能用的数组
+ * @param {*} blocks
+ * @returns {[
+ *  name:string;
+ *  value:string;
+ *  key:string;
+ * ]} blockArray
+ */
+export function printBlocks(blocks, hasLink) {
+  const blockArray = [];
+
+  const loopBlocks = (blocks, parentPath = '') => {
+    blocks.forEach(block => {
+      if (block.type === 'block') {
+        const blockName = join(parentPath, block.path);
+
+        let name = `📦  ${chalk.cyan(blockName)}  `;
+        if (hasLink) {
+          // 链接到 pro 的预览界面
+          // AccountCenter -> account/center
+          const previewPath = blockName
+            .match(/[A-Z]?[a-z]+|[0-9]+/g)
+            .map(p => p.toLowerCase())
+            .join('/');
+          const link = terminalLink('预览', `https://preview.pro.ant.design/${previewPath}`);
+          // 增加一个预览的界面
+          name += link;
+        }
+        blockArray.push({
+          name,
+          value: blockName,
+          key: blockName,
+        });
+      }
+      if (block.type === 'dir') {
+        return loopBlocks(block.blocks, block.path);
+      }
+      return null;
+    });
+  };
+  loopBlocks(blocks);
+  return blockArray;
+}
+
+/**
+ * 交互型区块选择
+ * - 选择区块名
+ * - 输入路径
+ * - 选择是否转化 js
+ * @param {[
+ *  name:string;
+ *  value:string;
+ *  key:string;
+ * ]} blockArray
+ * @returns Promise<{args}>
+ */
+export async function selectInstallBlockArgs(blockArray) {
+  return new Promise(resolve => {
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'block',
+          message: `⛰  请选择区块（共 ${blockArray.length} 个 )`,
+          choices: blockArray,
+        },
+        { type: 'input', name: 'path', message: '🏗  请输入输出安装区块的路径' },
+        {
+          type: 'confirm',
+          name: 'js',
+          message: '🤔  将 Typescript 区块转化为 js?',
+          default: false,
+        },
+      ])
+      .then(async ({ block, path, js }) => {
+        resolve({ _: ['add', block], path: path || block, js });
+      });
   });
 }
 
-export async function getDefaultBlockList() {
+/**
+ * 获取区块列表，默认会从  http://blocks.umijs.org/api/blocks 拉
+ * 如果配置 defaultGitUrl ，会从 defaultGitUrl 去找
+ * @param {*} _
+ * @param {*} blockConfig
+ * @param {*} addBlock
+ */
+export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
+  const spinner = ora();
   const got = require('got');
-  const { body } = await got(`http://blocks.umijs.org/api/blocks`);
-  const { status, error, data } = JSON.parse(body);
-  if (status === 'success') {
-    console.log(``);
-    console.log(`  Blocks:`);
-    console.log(``);
-    printBlocks(data);
-    console.log(``);
+  let blockArray = [];
+  const { defaultGitUrl } = blockConfig;
+
+  spinner.start('🚣 fetch block list');
+
+  // 如果存在 defaultGitUrl 的配置，就从 defaultGitUrl 配置中拿区块列表
+  if (defaultGitUrl) {
+    const ignoreFile = ['_scripts'];
+    const { name, owner } = GitUrlParse(defaultGitUrl);
+    spinner.succeed();
+    spinner.start(`🔍 find block list form ${chalk.yellow(defaultGitUrl)}`);
+
+    // 一个 github 的 api,可以获得文件树
+    const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
+    const files = JSON.parse(body)
+      .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
+      .map(({ path }) => ({
+        type: 'block',
+        path,
+      }));
+    blockArray = printBlocks(files, 'link');
   } else {
-    throw new Error(error);
+    const { body } = await got(`http://blocks.umijs.org/api/blocks`);
+    const { status, error, data } = JSON.parse(body);
+    if (status === 'success') {
+      blockArray = printBlocks(data);
+    } else {
+      throw new Error(error);
+    }
   }
+
+  spinner.succeed();
+
+  if (blockArray.length > 0) {
+    const args = await selectInstallBlockArgs(blockArray);
+    return addBlock(args);
+  }
+  return new Error('No block found');
 }
 
 /**
@@ -59,6 +167,7 @@ export async function gitUpdate(ctx, spinner) {
   spinner.succeed();
 
   spinner.start(`🚪 Git checkout ${ctx.branch}`);
+
   try {
     await execa(`git`, ['checkout', ctx.branch], {
       cwd: ctx.templateTmpDirPath,
