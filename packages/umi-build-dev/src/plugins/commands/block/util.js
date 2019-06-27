@@ -167,7 +167,7 @@ export async function gitUpdate(ctx, spinner) {
   spinner.succeed();
 
   spinner.start(`🚪 Git checkout ${ctx.branch}`);
-  console.log(ctx.templateTmpDirPath);
+
   try {
     await execa(`git`, ['checkout', ctx.branch], {
       cwd: ctx.templateTmpDirPath,
