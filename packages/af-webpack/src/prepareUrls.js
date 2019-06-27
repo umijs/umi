@@ -3,16 +3,10 @@ import address from 'address';
 import url from 'url';
 import chalk from 'chalk';
 
-export default function prepareUrls(protocol, host, port, pathname, history) {
-
-  // if history type is hash, add the base to hash part rather than pathname.
-  const baseInfo = history === 'hash' ? {
+export default function prepareUrls(protocol, host, port, base, history) {
+  const baseInfo = {
     protocol,
-    pathname: '/',
-    hash: pathname || '',
-  } : {
-    protocol,
-    pathname: pathname || '/',
+    pathname: base || '/',
   };
 
   const formatUrl = hostname =>
