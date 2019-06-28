@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-react",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "preact-compat": "3.19.0",
     "register-service-worker": "1.6.2",
     "umi-plugin-dll": "1.5.2",
-    "umi-plugin-dva": "1.7.2",
+    "umi-plugin-dva": "1.7.3",
     "umi-plugin-hd": "1.6.0",
     "umi-plugin-locale": "2.9.3",
     "umi-plugin-polyfills": "1.4.2",
