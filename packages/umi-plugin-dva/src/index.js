@@ -75,7 +75,7 @@ export default function(api, opts = {}) {
   const dvaDir = compatDirname(
     'dva/package.json',
     cwd,
-    dirname(require.resolve('dva/package.json')),
+    process.env.DEFAULT_DVA_DIR || dirname(require.resolve('dva/package.json')),
   );
   // eslint-disable-next-line import/no-dynamic-require
   const dvaVersion = require(join(dvaDir, 'package.json')).version;
