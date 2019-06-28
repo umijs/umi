@@ -7,8 +7,6 @@ import { assign, cloneDeep } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
 import { deprecate, winPath } from 'umi-utils';
-// import ora from 'ora';
-
 import { UmiError, printUmiError } from 'umi-core/lib/error';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
@@ -19,7 +17,6 @@ import getCodeFrame from './utils/getCodeFrame';
 
 const debug = require('debug')('umi-build-dev:Service');
 
-// const spinner = ora();
 export default class Service {
   constructor({ cwd }) {
     //  用户传入的 cmd 不可信任 转化一下
@@ -42,21 +39,17 @@ export default class Service {
     this.UmiError = UmiError;
     this.printUmiError = printUmiError;
 
-    // spinner.start('🧞  get user config');
     // resolve user config
     this.config = UserConfig.getConfig({
       cwd: this.cwd,
       service: this,
     });
     debug(`user config: ${JSON.stringify(this.config)}`);
-    // spinner.succeed();
 
-    // spinner.start('💥 resolve plugins');
     // resolve plugins
     this.plugins = this.resolvePlugins();
     this.extraPlugins = [];
     debug(`plugins: ${this.plugins.map(p => p.id).join(' | ')}`);
-    // spinner.succeed();
 
     // resolve paths
     this.paths = getPaths(this);
