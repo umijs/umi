@@ -91,10 +91,6 @@ export default function(api) {
               history: typeof history === 'string' ? history : history[0],
               base: service.config.base,
               webpackConfig: service.webpackConfig,
-              // webpackConfig: [
-              //   service.webpackConfig,
-              //   ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
-              // ],
               proxy: service.config.proxy || {},
               contentBase: './path-do-not-exists',
               _beforeServerWithApp(app) {
@@ -102,7 +98,16 @@ export default function(api) {
                 service.applyPlugins('_beforeServerWithApp', { args: { app } });
               },
               beforeMiddlewares: service.applyPlugins('addMiddlewareAhead', {
-                initialValue: [],
+                initialValue: [
+                  ...(service.ssrWebpackConfig
+                    ? [
+                        require('af-webpack/webpack-dev-middleware')(
+                          require('af-webpack/webpack')(service.ssrWebpackConfig),
+                          {},
+                        ),
+                      ]
+                    : []),
+                ],
               }),
               afterMiddlewares: service.applyPlugins('addMiddleware', {
                 initialValue: [
