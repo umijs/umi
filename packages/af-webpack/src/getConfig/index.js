@@ -12,7 +12,7 @@ function makeArray(item) {
 }
 
 export default function(opts) {
-  const { cwd } = opts;
+  const { cwd } = opts || {};
   const isDev = process.env.NODE_ENV === 'development';
 
   const webpackConfig = new Config();
@@ -416,7 +416,7 @@ export default function(opts) {
     opts.chainConfig(webpackConfig);
   }
   let config = webpackConfig.toConfig();
-  if (process.env.SPEED_MEASURE) {
+  if (process.env.SPEED_MEASURE && !opts.ssr) {
     const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
     const smpOption = process.env.SPEED_MEASURE === 'CONSOLE'
       ? { outputFormat: 'human', outputTarget: console.log }
