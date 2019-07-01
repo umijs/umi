@@ -266,7 +266,10 @@ export default {
 
 ```js
 export default {
-  ssr: true,
+  ssr: {
+    // https://github.com/liady/webpack-node-externals#optionswhitelist-
+    externalWhitelist: [],
+  },
   // need enable
   manifest: {},
 };

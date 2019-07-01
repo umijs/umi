@@ -449,4 +449,31 @@ describe('Service', () => {
       chunkFilename: '[name].server.async.js',
     });
   });
+
+  it('runCommand ssr externalWhitelist', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugin-ssr', 'externalWhitelist'),
+    });
+    const callback = jest.fn(() => {});
+    service.registerCommand(
+      'build',
+      {
+        webpack: {},
+      },
+      callback,
+    );
+    service.runCommand('build');
+
+    expect(service.config.ssr.externalWhitelist).toEqual(
+      expect.arrayContaining([/^@alipay\/bigfish(\/.*)?$/, 'antd-mobile']),
+    );
+    expect(service.webpackConfig).toBeTruthy();
+    expect(
+      pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
+    ).toEqual({
+      libraryTarget: 'commonjs2',
+      filename: '[name].server.js',
+      chunkFilename: '[name].server.async.js',
+    });
+  });
 });

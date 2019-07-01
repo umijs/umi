@@ -3,6 +3,8 @@ import assert from 'assert';
 import chalk from 'chalk';
 import nodeExternals from 'webpack-node-externals';
 
+const debug = require('debug')('umi-build-dev:getWebpackConfig');
+
 export default function(service, opts = {}) {
   const { ssr } = opts;
   const { config } = service;
@@ -45,8 +47,14 @@ export default function(service, opts = {}) {
         `WARNING: UmiJS SSR is still in beta, you can open issues or PRs in https://github.com/umijs/umi`,
       ),
     );
+    const externalWhitelist = [
+      /\.(css|less|sass|scss)$/,
+      /^umi(\/.*)?$/,
+      ...(ssr.externalWhitelist || []),
+    ];
+    debug(`externalWhitelist:`, externalWhitelist);
     webpackConfig.externals = nodeExternals({
-      whitelist: [/\.(css|less|sass|scss)$/, /^umi(\/.*)?$/],
+      externalWhitelist,
     });
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';

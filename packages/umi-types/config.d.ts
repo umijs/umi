@@ -65,6 +65,11 @@ export interface IAFWebpackConfig {
   urlLoaderExcludes?: Condition[];
 }
 
+type WhitelistOption = string | RegExp;
+export interface IExportSSROpts {
+  externalWhitelist?: WhitelistOption[];
+}
+
 interface IConfig extends IAFWebpackConfig {
   // basic config
   // sorted by alphabet
@@ -87,7 +92,7 @@ interface IConfig extends IAFWebpackConfig {
   targets?: {
     [key: string]: number;
   };
-  ssr?: boolean | object;
+  ssr?: boolean | IExportSSROpts;
 }
 
 export default IConfig;
