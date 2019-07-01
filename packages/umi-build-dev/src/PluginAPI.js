@@ -65,6 +65,7 @@ export default class PluginAPI {
       'addPageWatcher',
       'addEntryCode',
       'addEntryCodeAhead',
+      'addServerRenderAhead',
       'addEntryImport',
       'addEntryImportAhead',
       'addEntryPolyfillImports',
