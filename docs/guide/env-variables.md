@@ -67,6 +67,18 @@ It is off by default. Analyze the bundle composition, valid when building. Such 
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_MODE
+
+Default is server. If you open ANALYZE, server mode will start HTTP server to show bundle report, disabled mode will just generate webpack stats file. Such as:
+
+```bash
+# Generate stats file to dist
+$ ANALYZE=1 ANALYZE_MODE=disabled umi build
+
+# Start http server to show bundle report
+$ ANALYZE=1 ANALYZE_MODE=server umi build
+```
+
 ### ANALYZE_REPORT
 
 It is off by default. Analyze the bundle composition and generate report json file (default `bundlestats.json` ) for manual analysis and visualization. Such as:
@@ -176,4 +188,3 @@ such as:
 ```bash
 $ SOCKET_SERVER=http://localhost:8000 umi dev
 ```
-
