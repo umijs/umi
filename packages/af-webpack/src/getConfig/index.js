@@ -303,7 +303,7 @@ export default function(opts) {
       .plugin('bundle-analyzer')
       .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
         {
-          analyzerMode: 'server',
+          analyzerMode: process.env.ANALYZE_MODE || 'server',
           analyzerPort: process.env.ANALYZE_PORT || 8888,
           openAnalyzer: true,
           // generate stats file while ANALYZE_DUMP exist

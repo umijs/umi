@@ -67,6 +67,18 @@ $ APP_ROOT=src/renderer umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_MODE
+
+默认为 server. 若开启 ANALYZE，且选择了 server 模式，会启动一个 HTTP server 展示 webpack bundle 报告。如果是 disabled，只会生成 stats 文件
+
+```bash
+# 只生成 stats 文件
+$ ANALYZE=1 ANALYZE_MODE=disabled umi build
+
+# 启动 HTTP 服务展示 webpack bundle 报告
+$ ANALYZE=1 ANALYZE_MODE=server umi build
+```
+
 ### ANALYZE_REPORT
 
 默认关闭。分析 bundle 构成并生成报告文件 (默认 bundlestats.json )，供手工分析或可视化用。比如：
