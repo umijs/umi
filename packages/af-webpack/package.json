@@ -114,6 +114,7 @@
     "getUserConfigPlugins.js",
     "react-dev-utils.js",
     "registerBabel.js",
+    "webpack-dev-middleware.js",
     "webpack-chain.js",
     "webpack.js"
   ]
