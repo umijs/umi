@@ -264,7 +264,10 @@ When enabled, `umi.server.js` file is also generated when the client static file
 
 ```js
 export default {
-  ssr: true,
+  ssr: {
+    // https://github.com/liady/webpack-node-externals#optionswhitelist-
+    externalWhitelist: [],
+  },
   // 需要开启
   manifest: {},
 };
