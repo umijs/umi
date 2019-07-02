@@ -47,15 +47,11 @@ export default function(service, opts = {}) {
         `WARNING: UmiJS SSR is still in beta, you can open issues or PRs in https://github.com/umijs/umi`,
       ),
     );
-    const externalWhitelist = [
-      /\.(css|less|sass|scss)$/,
-      /^umi(\/.*)?$/,
-      ...(ssr.externalWhitelist || []),
-    ];
-    debug(`externalWhitelist:`, externalWhitelist);
-    webpackConfig.externals = nodeExternals({
-      externalWhitelist,
-    });
+    const nodeExternalOpts = {
+      whitelist: [/\.(css|less|sass|scss)$/, /^umi(\/.*)?$/, ...(ssr.externalWhitelist || [])],
+    };
+    debug(`nodeExternalOpts:`, nodeExternalOpts);
+    webpackConfig.externals = nodeExternals(nodeExternalOpts);
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';
