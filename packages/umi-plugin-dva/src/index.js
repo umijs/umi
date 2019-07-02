@@ -281,7 +281,7 @@ const app = require('@tmp/dva')._onCreate();
 ${api.config.disableGlobalVariables ? '' : `window.g_app = app;`}
 ${
       api.config.ssr
-        ? `app.router(() => <div />);\napp.start();\nif(global)}{\nglobal.window = { app };\n}`
+        ? `app.router(() => <div />);\napp.start();\nif(global){\nglobal.window = { app };\n}`
         : ''
     }
   `.trim(),
