@@ -50,7 +50,6 @@ if (__IS_BROWSER) {
 // export server render
 let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
-  {{{ serverRenderAhead }}}
   serverRender = async (ctx) => {
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);

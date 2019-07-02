@@ -279,17 +279,11 @@ models: () => [
     `
 const app = require('@tmp/dva')._onCreate();
 ${api.config.disableGlobalVariables ? '' : `window.g_app = app;`}
-${api.config.ssr ? `app.router(() => <div />);\napp.start();` : ''}
-  `.trim(),
-  );
-  api.addServerRenderAhead(
-    `
 ${
       api.config.ssr
-        ? `const app = require('@tmp/dva')._onCreate();\napp.router(() => <div />);\napp.start();`
+        ? `app.router(() => <div />);\napp.start();\nif(global)}{\nglobal.window = { app };\n}`
         : ''
     }
-${api.config.ssr ? `if(global) {global.window = {};\nglobal.window.app = app;};` : ''}
   `.trim(),
   );
 }

@@ -250,11 +250,6 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
           initialValue: [],
         }),
       ).join('\n'),
-      serverRenderAhead: this.service
-        .applyPlugins('addServerRenderAhead', {
-          initialValue: [],
-        })
-        .join('\n'),
       moduleBeforeRenderer,
       render: initialRender,
       plugins,
