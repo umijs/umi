@@ -72,7 +72,7 @@ function withRoutes(route) {
   return ret;
 }
 
-function wrapWithInitialProps(WrappedComponent) {
+function wrapWithInitialProps(WrappedComponent, initialProps) {
   return class extends React.Component {
     constructor(props) {
       super(props);
@@ -93,13 +93,12 @@ function wrapWithInitialProps(WrappedComponent) {
 
     // 前端路由切换时，也需要执行 getInitialProps
     async getInitialProps() {
-      const dva = require('@tmp/dva');
       // the values may be different with findRoute.js
       const { match } = this.props;
       const extraProps = await WrappedComponent.getInitialProps({
-        store: dva.getApp()._store,
         isServer: false,
         route: match,
+        ...initialProps,
       });
       this.setState({
         extraProps,
@@ -164,7 +163,10 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                 });
                 let { component: Component } = route;
                 if (__IS_BROWSER && Component.getInitialProps) {
-                  Component = wrapWithInitialProps(Component);
+                  const initialProps = plugins.apply('getInitialProps', {
+                    initialValue: {},
+                  });
+                  Component = wrapWithInitialProps(Component, initialProps);
                 }
                 return (
                   <Component {...newProps} route={route}>

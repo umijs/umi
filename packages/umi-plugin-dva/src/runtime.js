@@ -15,3 +15,12 @@ export function initialProps(props) {
     return memo;
   }, {});
 }
+
+export function getInitialProps(value) {
+  if (value) {
+    return {
+      store: getApp()._store,
+    };
+  }
+  return {};
+}

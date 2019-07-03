@@ -56,15 +56,19 @@ if (!__IS_BROWSER) {
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component.getInitialProps) {
-      const dva = require('@tmp/dva');
+      const initialProps = plugins.apply('getInitialProps', {
+        initialValue: {},
+      });
+      console.log('initialProps', initialProps);
       props = await activeRoute.component.getInitialProps({
-        store: dva.getApp()._store,
         route: activeRoute,
         isServer: true,
+        ...initialProps,
       });
       props = plugins.apply('initialProps', {
          initialValue: props,
       });
+      console.log('----props-', props);
     } else {
       // message activeRoute not found
       console.log(`${pathname} activeRoute not found`);

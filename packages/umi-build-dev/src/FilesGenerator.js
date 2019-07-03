@@ -142,11 +142,13 @@ export default class FilesGenerator {
     // 在客户端渲染前，执行 getInitialProps 方法
     // 拿到初始数据
     if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
-      const dva = require('@tmp/dva');
+      const initialProps = plugins.apply('getInitialProps', {
+        initialValue: {},
+      });
       props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
-        store: dva.getApp()._store,
         route: activeRoute,
         isServer: false,
+        ...initialProps,
       }) : {};
     }
   }
@@ -188,6 +190,7 @@ export default class FilesGenerator {
         'rootContainer',
         'modifyRouteProps',
         'onRouteChange',
+        'getInitialProps',
         'initialProps',
       ],
     });
