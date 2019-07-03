@@ -71,6 +71,10 @@
     "write-file-webpack-plugin": "4.5.0",
     "yeoman-generator": "4.0.1"
   },
+  "devDependencies": {
+    "@types/webpack-node-externals": "1.6.3",
+    "umi-types": "0.3.11"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi/tree/master/packages/umi-build-dev"
