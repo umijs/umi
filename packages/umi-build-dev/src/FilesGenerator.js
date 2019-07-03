@@ -139,8 +139,15 @@ export default class FilesGenerator {
   } else {
     const pathname = location.pathname;
     const activeRoute = findRoute(require('@tmp/router').routes, pathname);
-    if (activeRoute && activeRoute.component) {
-      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps() : {};
+    // 在客户端渲染前，执行 getInitialProps 方法
+    // 拿到初始数据
+    if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
+      const dva = require('@tmp/dva');
+      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
+        store: dva.getApp()._store,
+        route: activeRoute,
+        isServer: false,
+      }) : {};
     }
   }
   const rootContainer = plugins.apply('rootContainer', {

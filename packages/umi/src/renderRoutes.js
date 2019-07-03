@@ -80,12 +80,7 @@ function wrapWithInitialProps(WrappedComponent) {
         extraProps: {},
       };
     }
-    async getInitialProps() {
-      const extraProps = await WrappedComponent.getInitialProps();
-      this.setState({
-        extraProps,
-      });
-    }
+
     async componentDidMount() {
       const { history } = this.props;
       window.onpopstate = () => {
@@ -95,6 +90,22 @@ function wrapWithInitialProps(WrappedComponent) {
         this.getInitialProps();
       }
     }
+
+    // 前端路由切换时，也需要执行 getInitialProps
+    async getInitialProps() {
+      const dva = require('@tmp/dva');
+      // the values may be different with findRoute.js
+      const { match } = this.props;
+      const extraProps = await WrappedComponent.getInitialProps({
+        store: dva.getApp()._store,
+        isServer: false,
+        route: match,
+      });
+      this.setState({
+        extraProps,
+      });
+    }
+
     render() {
       return (
         <div>

@@ -120,5 +120,8 @@ test('dynamic routes', () => {
     component: 'AboutDetail',
     path: '/about/:id',
     exact: true,
+    params: {
+      id: 1,
+    },
   });
 });
