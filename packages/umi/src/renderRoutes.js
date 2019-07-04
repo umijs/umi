@@ -163,7 +163,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                 });
                 let { component: Component } = route;
                 if (__IS_BROWSER && Component.getInitialProps) {
-                  const initialProps = plugins.apply('getInitialProps', {
+                  const initialProps = plugins.apply('modifyInitialProps', {
                     initialValue: {},
                   });
                   Component = wrapWithInitialProps(Component, initialProps);

@@ -142,7 +142,7 @@ export default class FilesGenerator {
     // 在客户端渲染前，执行 getInitialProps 方法
     // 拿到初始数据
     if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
-      const initialProps = plugins.apply('getInitialProps', {
+      const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
       props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
@@ -190,7 +190,7 @@ export default class FilesGenerator {
         'rootContainer',
         'modifyRouteProps',
         'onRouteChange',
-        'getInitialProps',
+        'modifyInitialProps',
         'initialProps',
       ],
     });

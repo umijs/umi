@@ -16,7 +16,7 @@ export function initialProps(props) {
   }, {});
 }
 
-export function getInitialProps(value) {
+export function modifyInitialProps(value) {
   if (value) {
     return {
       store: getApp()._store,
