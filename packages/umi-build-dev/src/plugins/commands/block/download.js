@@ -2,11 +2,12 @@ import { join, resolve } from 'path';
 import { existsSync } from 'fs';
 import { spawnSync } from 'child_process';
 import mkdirp from 'mkdirp';
+import { homedir } from 'os';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 
 export function makeSureMaterialsTempPathExist(dryRun) {
-  const userHome = process.env.NODE_ENV === 'test' ? '/Users/test' : require('user-home');
+  const userHome = process.env.NODE_ENV === 'test' ? '/Users/test' : homedir();
   const blocksTempPath = join(userHome, '.umi/blocks');
   if (dryRun) {
     return blocksTempPath;

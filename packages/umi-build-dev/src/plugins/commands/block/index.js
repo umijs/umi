@@ -11,6 +11,7 @@ import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
+import clearGitCache from './clearGitCache';
 import tsToJs from './tsTojs';
 
 export default api => {
@@ -22,6 +23,9 @@ export default api => {
   async function block(args = {}) {
     let retCtx;
     switch (args._[0]) {
+      case 'clear':
+        await clearGitCache(args);
+        break;
       case 'add':
         retCtx = await add(args);
         break;
@@ -276,6 +280,8 @@ Commands:
 
   ${chalk.cyan(`add `)}     add a block to your project
   ${chalk.cyan(`list`)}     list all blocks
+  ${chalk.cyan(`clear `)}   clear all git cache
+
 
 Options for the ${chalk.cyan(`add`)} command:
 
