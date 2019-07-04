@@ -68,7 +68,6 @@ if (!__IS_BROWSER) {
       props = plugins.apply('initialProps', {
          initialValue: props,
       });
-      console.log('----props-', props);
     } else {
       // message activeRoute not found
       console.log(`${pathname} activeRoute not found`);
