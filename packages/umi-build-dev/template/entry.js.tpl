@@ -59,7 +59,6 @@ if (!__IS_BROWSER) {
       const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
-      console.log('initialProps', initialProps);
       props = await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: true,
