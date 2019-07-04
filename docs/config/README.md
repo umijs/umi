@@ -277,6 +277,12 @@ Use the following in Node.js:
 
 ```js
 // Return the rendered html fragment according to the ctx.req.url
+/**
+ *
+ * @param {*}
+ * ctx (server context, `serverRender` get current active route according to `ctx.req.url`)
+ * @return html fragment string
+ */
 async function UmiServerRender(ctx) {
   // mock a window object
   global.window = {};
@@ -297,6 +303,53 @@ async function UmiServerRender(ctx) {
   return ssrHtml;
 }
 ```
+
+Page Data Pre-Fetching:
+
+```js
+// pages/news/$id.jsx
+const News = props => {
+  const { id, name, count } = props || {};
+
+  return (
+    <div>
+      <p>
+        {id}-{name}
+      </p>
+    </div>
+  );
+};
+
+/**
+ *
+ * @param {*}
+ * {
+ *  route (current active route)
+ *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
+ *  isServer (whether run in Server)
+ * }
+ */
+News.getInitialProps = async ({ route, store, isServer }) => {
+  const { id } = route.params;
+  const data = [
+    {
+      id: 0,
+      name: 'zero',
+    },
+    {
+      id: 1,
+      name: 'hello',
+    },
+    {
+      id: 2,
+      name: 'world',
+    },
+  ];
+  return Promise.resolve(data[id] || data[0]);
+};
+```
+
+> in data pre-fetching, we can move the method of fetching data using the `componentDidMount` or `React.useEffect` lifecycles into `getInitialProps`.
 
 [using Pre-Rendering](/plugin/umi-plugin-prerender.html), [umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 
