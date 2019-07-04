@@ -295,7 +295,7 @@ async function UmiServerRender(ctx) {
   const {
     // 当前路由元素
     rootContainer,
-    // 文档 html 元素 = 路由元素 + html 模板元素
+    // 页面模板
     htmlElement,
   } = await serverRender.default(ctx);
 

@@ -294,7 +294,7 @@ async function UmiServerRender(ctx) {
   const {
     // Current root container element
     rootContainer,
-    // Document html Element = rootContainer + template Element
+    // page template
     htmlElement,
   } = await serverRender.default(ctx);
 
