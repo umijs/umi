@@ -6,6 +6,7 @@ import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
 import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
+import { winPath } from 'umi-utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
@@ -24,7 +25,7 @@ export default api => {
     let retCtx;
     switch (args._[0]) {
       case 'clear':
-        await clearGitCache(args);
+        await clearGitCache(args, api);
         break;
       case 'add':
         retCtx = await add(args);
@@ -127,7 +128,7 @@ export default api => {
       ctx.routePath = `/${blockName}`;
       log.info(`Not find --path, use block name '${ctx.routePath}' as the target path.`);
     } else {
-      ctx.routePath = path;
+      ctx.routePath = winPath(path);
     }
 
     // fix demo => /demo
@@ -168,7 +169,7 @@ export default api => {
       env: {
         cwd: api.cwd,
       },
-      resolved: __dirname,
+      resolved: winPath(__dirname),
     });
     try {
       await generator.run();
@@ -195,7 +196,7 @@ export default api => {
               env: {
                 cwd: api.cwd,
               },
-              resolved: __dirname,
+              resolved: winPath(__dirname),
             }).run();
           }),
         );

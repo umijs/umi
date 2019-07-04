@@ -3,14 +3,19 @@ import ora from 'ora';
 
 import { makeSureMaterialsTempPathExist } from './download';
 
-export function clearGitCache(args) {
+/**
+ * 清理 git 缓存目录
+ * @param {*} args
+ * @param {*} log
+ */
+export function clearGitCache(args, { log }) {
   const spinner = ora();
   const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
 
-  spinner.start(`start clear：${blocksTempPath}`);
+  spinner.start(`🗑  start clear: ${blocksTempPath}`);
   rimraf(blocksTempPath, error => {
     if (error) {
-      console.log(error);
+      log.error(error);
       spinner.stop();
       return;
     }
