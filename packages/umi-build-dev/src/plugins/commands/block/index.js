@@ -1,6 +1,6 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
@@ -111,7 +111,7 @@ export default api => {
       throw new Error(`not find package.json in ${this.sourcePath}`);
     } else {
       // eslint-disable-next-line
-      ctx.pkg = require(pkgPath);
+      ctx.pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
     }
 
     // setup route path

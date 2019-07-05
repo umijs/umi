@@ -20,6 +20,7 @@
     "crequire": "1.8.1",
     "debug": "4.1.1",
     "didyoumean": "1.2.1",
+    "decamelize": "3.2.0",
     "dotenv": "8.0.0",
     "ejs": "2.6.2",
     "esprima-extract-comments": "1.1.0",

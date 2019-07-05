@@ -1,5 +1,6 @@
 import NavLink from 'umi/navlink';
 import styles from './index.less';
+import Terminal from './Terminal';
 
 export default props => {
   return (
@@ -16,7 +17,7 @@ export default props => {
       <div className={styles.wrapper}>
         <div className={styles.sidebar}>
           <ul>
-            <li key="999999">
+            <li key="-1">
               <NavLink activeClassName={styles.active} exact to="/">
                 首页
               </NavLink>
@@ -34,6 +35,9 @@ export default props => {
           </ul>
         </div>
         <div className={styles.main}>{props.children}</div>
+      </div>
+      <div className={styles.footer}>
+        <Terminal />
       </div>
     </div>
   );

@@ -26,7 +26,9 @@ export async function render(oldRender) {
     await initSocket({
       onMessage({ type, payload }) {
         if (type === '@@core/log') {
-          console.log(`[LOG] ${payload}`);
+          if (window.xterm) {
+            window.xterm.write(`\x1b[32m[LOG]\x1b[0m ${payload}\r\n`);
+          }
         }
       },
     });

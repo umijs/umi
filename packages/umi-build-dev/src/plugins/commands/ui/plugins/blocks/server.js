@@ -1,14 +1,35 @@
+import getRouteManager from '../../../getRouteManager';
+
+export function routeExists(path, routes) {
+  for (const route of routes) {
+    if (route.routes && routeExists(path, route.routes)) {
+      return true;
+    }
+    if (path === route.path) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export default function(api) {
+  function getRoutes() {
+    const RoutesManager = getRouteManager(api.service);
+    RoutesManager.fetchRoutes();
+    return RoutesManager.routes;
+  }
+
   function getBlocks() {
+    // TODO: read from server
     return [
       'AccountCenter',
       'AccountSettings',
       'DashboardAnalysis',
       'DashboardMonitor',
       'DashboardWorkplace',
-      // 'EditorFlow',
-      // 'EditorKoni',
-      // 'EditorMind',
+      'EditorFlow',
+      'EditorKoni',
+      'EditorMind',
       'Exception403',
       'Exception404',
       'Exception500',
@@ -42,31 +63,28 @@ export default function(api) {
         break;
       case 'blocks/add':
         log('Adding...');
-        const { name, path } = payload;
+        const { name } = payload;
         api.service
           .runCommand('block', {
-            _: ['add', name, '--path', path],
+            _: ['add', name, '--path', payload.path],
           })
           .then(() => {
-            log('Done');
             send({
               type: `${type}/success`,
             });
+            log('Done');
           })
           .catch(e => {
             log('Failed');
           });
         break;
-      case 'blocks/runCommand':
-        console.log('run command: block', payload);
-        api.service
-          .runCommand('block', {
-            _: payload,
-          })
-          .then(() => {
-            console.log('blocks done');
-            send('blocks/save', getConfig());
-          });
+      case 'blocks/checkExists':
+        const { path } = payload;
+        const routes = getRoutes();
+        send({
+          type: `${type}/success`,
+          payload: routeExists(path, routes),
+        });
         break;
       default:
         send({

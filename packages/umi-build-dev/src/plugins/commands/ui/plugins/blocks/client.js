@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Spin } from 'antd';
+import decamelize from 'decamelize';
 import styles from './client.module.less';
 
 const { Search } = Input;
+
+function nameToPath(name) {
+  return `/${decamelize(name, '-')}`;
+}
 
 const BlocksViewer = props => {
   const [blockAdding, setBlockAdding] = useState(null);
@@ -22,12 +27,39 @@ const BlocksViewer = props => {
 
   function addHandler(name) {
     (async () => {
+      let path = nameToPath(name);
+      const blockExists = await window.callRemote({
+        type: 'blocks/checkExists',
+        payload: {
+          path,
+        },
+      });
+
+      // block 存在时加数字后缀找一个不存在的
+      if (blockExists) {
+        let count = 2;
+        while (true) {
+          const blockExists = await window.callRemote({
+            type: 'blocks/checkExists',
+            payload: {
+              path: `${path}-${count}`,
+            },
+          });
+          if (blockExists) {
+            count += 1;
+          } else {
+            path = `${path}-${count}`;
+            break;
+          }
+        }
+      }
+
       setBlockAdding(name);
       await window.callRemote({
         type: 'blocks/add',
         payload: {
           name,
-          path: '/form/basic-form',
+          path,
         },
       });
       setBlockAdding(null);
