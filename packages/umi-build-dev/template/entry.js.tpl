@@ -55,7 +55,7 @@ if (!__IS_BROWSER) {
     require('@tmp/history').default.push(pathname);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
-    if (activeRoute && activeRoute.component.getInitialProps) {
+    if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
       const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
