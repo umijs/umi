@@ -1,27 +1,26 @@
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync } from 'fs';
+import getClientScript from './getClientScript';
 
 export default function(api) {
   const { log } = api;
 
-  class PluginAPI {
-    constructor(service, cache) {
-      this.service = service;
-      this.cache = cache;
+  api.onUISocket(({ action, send }) => {
+    if (action.type === '@@core/getInfo') {
+      const uiPlugins = api.applyPlugins('addUIPlugin', {
+        initialValue: [],
+      });
+      const script = getClientScript(uiPlugins);
+      send({
+        type: `${action.type}/success`,
+        payload: {
+          script,
+        },
+      });
     }
+  });
 
-    onRequest(middleware) {
-      this.cache.middlewares.push(middleware);
-    }
-
-    onSocketData(socketDataHandler) {
-      this.cache.socketDataHandlers.push(socketDataHandler);
-    }
-  }
-
-  const cache = {
-    middlewares: [],
-    socketDataHandlers: [],
-  };
+  api.addUIPlugin(require.resolve('./plugins/blocks/dist/client.umd'));
+  require('./plugins/blocks/server').default(api);
 
   api.registerCommand(
     'ui',
@@ -36,21 +35,8 @@ export default function(api) {
       const express = require('express');
       const serveStatic = require('serve-static');
 
-      const uiPlugins = api.applyPlugins('addUIPlugin', {
-        initialValue: [],
-      });
-      const clients = [];
-      uiPlugins.forEach(({ server, client }) => {
-        // eslint-disable-next-line import/no-dynamic-require
-        require(server).default(new PluginAPI(api.service, cache));
-        clients.push(client);
-      });
-
       const app = express();
-      app.use(serveStatic('dist'));
-      cache.middlewares.forEach(middleware => {
-        app.use(middleware);
-      });
+      // app.use(serveStatic('dist'));
 
       const sockjs = require('sockjs', {
         sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js',
@@ -62,13 +48,22 @@ export default function(api) {
           try {
             const { type, payload } = JSON.parse(message);
             log.debug('GET Socket:', message);
-            cache.socketDataHandlers.forEach(socketDataHandler => {
-              socketDataHandler(type, payload, {
-                send(type, payload) {
-                  console.log('send', type, payload);
-                  conn.write(JSON.stringify({ type, payload }));
+            api.applyPlugins('onUISocket', {
+              args: {
+                action: { type, payload },
+                send(action) {
+                  console.log('send', JSON.stringify(action));
+                  conn.write(JSON.stringify(action));
                 },
-              });
+                log(message) {
+                  conn.write(
+                    JSON.stringify({
+                      type: '@@core/log',
+                      payload: message,
+                    }),
+                  );
+                },
+              },
             });
             // eslint-disable-next-line no-empty
           } catch (e) {}
@@ -76,31 +71,20 @@ export default function(api) {
       });
 
       app.get('/', (req, res) => {
-        const clientsHtml = clients
-          .map(client => {
-            const cssPath = client.replace(/\.js$/, '.css');
-            return [
-              existsSync(cssPath) ? `<style>\n${readFileSync(cssPath, 'utf-8')}\n</style>` : '',
-              `<script>\n${readFileSync(client, 'utf-8')}\n</script>`,
-            ].join('\r\n');
-          })
-          .join('\n');
+        console.log(1);
         res.type('html');
         const htmlFile = process.env.LOCAL_DEBUG
           ? `${__dirname}/index-debug.html`
           : `${__dirname}/dist/index.html`;
-        res.send(
-          readFileSync(htmlFile, 'utf-8').replace(
-            '<div id="root"></div>',
-            `<div id="root"></div>\r\n\r\n${clientsHtml}`,
-          ),
-        );
+        console.log(2, htmlFile);
+        res.send(readFileSync(htmlFile, 'utf-8'));
       });
-      app.use(require('serve-static')(`${__dirname}/dist/`));
+      // app.use(require('serve-static')(`${__dirname}/dist/`));
 
       const port = process.env.PORT || args.port || 8001;
       const server = app.listen(port, () => {
         log.success(`umi ui listening on port ${port}`);
+        log.success(`http://localhost:${port}/`);
       });
 
       ss.installHandlers(server, {
@@ -108,17 +92,4 @@ export default function(api) {
       });
     },
   );
-
-  api.addUIPlugin({
-    client: require.resolve('./plugins/routes/client.umd'),
-    server: require.resolve('./plugins/routes/server'),
-  });
-  api.addUIPlugin({
-    client: require.resolve('./plugins/config/client.umd'),
-    server: require.resolve('./plugins/config/server'),
-  });
-  api.addUIPlugin({
-    client: require.resolve('./plugins/blocks/client.umd'),
-    server: require.resolve('./plugins/blocks/server'),
-  });
 }

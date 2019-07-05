@@ -24,7 +24,7 @@ export default function(opts = {}) {
     './plugins/commands/rm',
     './plugins/commands/config',
     './plugins/commands/block',
-    // './plugins/commands/ui',
+    './plugins/commands/ui',
     './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',
