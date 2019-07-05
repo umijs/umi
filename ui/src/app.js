@@ -27,7 +27,7 @@ export async function render(oldRender) {
       onMessage({ type, payload }) {
         if (type === '@@core/log') {
           if (window.xterm) {
-            window.xterm.write(`\x1b[32m[LOG]\x1b[0m ${payload}\r\n`);
+            window.xterm.writeln(`\x1b[90m[LOG]\x1b[0m ${payload}`);
           }
         }
       },

@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -62,21 +63,27 @@ export default function(api) {
         });
         break;
       case 'blocks/add':
-        log('Adding...');
-        const { name } = payload;
-        api.service
-          .runCommand('block', {
-            _: ['add', name, '--path', payload.path],
-          })
-          .then(() => {
+        (async () => {
+          const { name, path } = payload;
+          log(`Adding block ${chalk.magenta(name)} as ${path} ...`);
+          try {
+            await api.service.runCommand(
+              'block',
+              {
+                _: ['add', name, '--path', payload.path],
+              },
+              message => {
+                log(`${chalk.gray('[umi block add]')} ${message}`);
+              },
+            );
             send({
               type: `${type}/success`,
             });
-            log('Done');
-          })
-          .catch(e => {
-            log('Failed');
-          });
+            log(chalk.green('Add success'));
+          } catch (e) {
+            log(chalk.red('Add failed'));
+          }
+        })();
         break;
       case 'blocks/checkExists':
         const { path } = payload;

@@ -9,7 +9,7 @@ function nameToPath(name) {
   return `/${decamelize(name, '-')}`;
 }
 
-const BlocksViewer = props => {
+const BlocksViewer = () => {
   const [blockAdding, setBlockAdding] = useState(null);
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const BlocksViewer = props => {
 
 export default api => {
   api.addPanel({
-    title: 'Blocks Viewer',
+    title: '区块管理',
     path: '/blocks',
     component: BlocksViewer,
   });

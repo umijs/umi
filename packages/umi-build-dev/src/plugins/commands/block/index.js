@@ -19,11 +19,11 @@ export default api => {
 
   debug(`blockConfig ${blockConfig}`);
 
-  async function block(args = {}) {
+  async function block(args = {}, opts = {}) {
     let retCtx;
     switch (args._[0]) {
       case 'add':
-        retCtx = await add(args);
+        retCtx = await add(args, opts);
         break;
       case 'list':
         retCtx = await getDefaultBlockList(args, blockConfig, add);
@@ -60,7 +60,7 @@ export default api => {
     return ctx;
   }
 
-  async function add(args = {}) {
+  async function add(args = {}, opts = {}) {
     const spinner = ora();
 
     // 1. parse url and args
@@ -94,11 +94,13 @@ export default api => {
 
     // 2. clone git repo
     if (!ctx.isLocal && !ctx.repoExists) {
+      opts.remoteLog('Clone the git repo');
       await gitClone(ctx, spinner);
     }
 
     // 3. update git repo
     if (!ctx.isLocal && ctx.repoExists) {
+      opts.remoteLog('Update the git repo');
       await gitUpdate(ctx, spinner);
     }
 
@@ -137,6 +139,7 @@ export default api => {
       debug('skip dependencies');
     } else {
       // install
+      opts.remoteLog('Install extra dependencies');
       spinner.start(`📦  install dependencies package`);
       await installDependencies(
         { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
@@ -146,6 +149,7 @@ export default api => {
     }
 
     // 5. run generator
+    opts.remoteLog('Generate files');
     spinner.start(`🔥  Generate files`);
     spinner.stopAndPersist();
     const BlockGenerator = require('./getBlockGenerator').default(api);
@@ -204,6 +208,7 @@ export default api => {
 
     // 调用 sylvanas 转化 ts
     if (js) {
+      opts.remoteLog('TypeScript to JavaScript');
       spinner.start('🤔  TypeScript to JavaScript');
       tsToJs(generator.blockFolderPath);
       spinner.succeed();
@@ -211,6 +216,7 @@ export default api => {
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
+      opts.remoteLog('Write route');
       spinner.start(`🧐  Write route ${generator.path} to ${api.service.userConfig.file}`);
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
@@ -313,9 +319,9 @@ Examples:
       usage: `umi block <command>`,
       details,
     },
-    args => {
+    (args, opts) => {
       // reture only for test
-      return block(args).catch(e => {
+      return block(args, opts).catch(e => {
         log.error(e);
       });
     },

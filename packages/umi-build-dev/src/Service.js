@@ -307,7 +307,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     return this.runCommand(name, args);
   }
 
-  runCommand(rawName, rawArgs) {
+  runCommand(rawName, rawArgs, remoteLog) {
     debug(`raw command name: ${rawName}, args: ${JSON.stringify(rawArgs)}`);
     const { name, args } = this.applyPlugins('_modifyCommand', {
       initialValue: {
@@ -334,7 +334,9 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       }
     }
 
-    return fn(args);
+    return fn(args, {
+      remoteLog,
+    });
   }
 }
 
