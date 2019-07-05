@@ -104,7 +104,11 @@ export default api => {
 
     // 3. update git repo
     if (!ctx.isLocal && ctx.repoExists) {
-      await gitUpdate(ctx, spinner);
+      try {
+        await gitUpdate(ctx, spinner);
+      } catch (error) {
+        log.info('发生错误，请尝试 `umi block clear`');
+      }
     }
 
     // make sure sourcePath exists
@@ -281,7 +285,7 @@ Commands:
 
   ${chalk.cyan(`add `)}     add a block to your project
   ${chalk.cyan(`list`)}     list all blocks
-  ${chalk.cyan(`clear `)}   clear all git cache
+  ${chalk.cyan(`clear`)}    clear all git cache
 
 
 Options for the ${chalk.cyan(`add`)} command:
@@ -294,8 +298,8 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
   ${chalk.green(`--page              `)} add the block to a independent directory as a page
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
-  ${chalk.green(`--js            `)} If the block is typescript, convert to js
-  ${chalk.green(`--registry            `)} set up npm installation using the registry
+  ${chalk.green(`--js                `)} If the block is typescript, convert to js
+  ${chalk.green(`--registry          `)} set up npm installation using the registry
 
 Examples:
 

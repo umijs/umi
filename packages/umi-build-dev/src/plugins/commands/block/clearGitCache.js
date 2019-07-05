@@ -8,7 +8,7 @@ import { makeSureMaterialsTempPathExist } from './download';
  * @param {*} args
  * @param {*} log
  */
-export function clearGitCache(args, { log }) {
+export default function clearGitCache(args, { log }) {
   const spinner = ora();
   const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
 
