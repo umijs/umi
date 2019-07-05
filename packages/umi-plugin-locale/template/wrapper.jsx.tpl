@@ -110,7 +110,7 @@ class LocaleWrapper extends React.Component{
     };
     let ret = this.props.children;
     {{#localeList.length}}
-    ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+    ret = (<IntlProvider locale={appLocale.locale} key={appLocale.locale} messages={appLocale.messages}>
       <InjectedWrapper>
         <LangContext.Provider value={LangContextValue}>
           <LangContext.Consumer>{(value) => {
