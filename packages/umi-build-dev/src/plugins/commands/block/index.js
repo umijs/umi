@@ -225,6 +225,7 @@ export default api => {
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
         initialValue: {
+          icon: 'smile',
           path: generator.path.toLowerCase(),
           component: `.${generator.path}`,
           ...(isLayout ? { routes: [] } : {}),
