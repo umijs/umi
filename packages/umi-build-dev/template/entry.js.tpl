@@ -56,7 +56,14 @@ if (!__IS_BROWSER) {
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component.getInitialProps) {
-      props = await activeRoute.component.getInitialProps(ctx);
+      const initialProps = plugins.apply('modifyInitialProps', {
+        initialValue: {},
+      });
+      props = await activeRoute.component.getInitialProps({
+        route: activeRoute,
+        isServer: true,
+        ...initialProps,
+      });
       props = plugins.apply('initialProps', {
          initialValue: props,
       });

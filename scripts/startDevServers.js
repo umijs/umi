@@ -24,7 +24,10 @@ function startDevServer(opts = {}) {
 }
 
 function start() {
-  const devServers = [[12341, '../packages/umi/test/fixtures/dev/normal']];
+  const devServers = [
+    [12341, '../packages/umi/test/fixtures/dev/normal'],
+    [12342, '../packages/umi/test/fixtures/dev/ssr'],
+  ];
 
   return Promise.all(
     devServers.map(([port, cwd]) => {

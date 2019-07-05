@@ -19,6 +19,7 @@ test('normal', () => {
     path: '/users',
     exact: true,
     component: 'Users',
+    params: {},
   });
 });
 
@@ -67,6 +68,7 @@ test('exacted routes', () => {
     path: '/about',
     exact: true,
     component: 'AboutIndex',
+    params: {},
   });
 });
 
@@ -120,5 +122,8 @@ test('dynamic routes', () => {
     component: 'AboutDetail',
     path: '/about/:id',
     exact: true,
+    params: {
+      id: '1',
+    },
   });
 });

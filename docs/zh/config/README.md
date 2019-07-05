@@ -270,7 +270,7 @@ export default {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
   },
-  // need enable
+  // 需要开启
   manifest: {},
 };
 ```
@@ -278,7 +278,12 @@ export default {
 在 Node.js 中使用如下：
 
 ```js
-// 根据 ctx.req.url 路径，返回渲染后的 html 片段
+/**
+ *
+ * @param {*}
+ * ctx（server 执行上下文，`serverRender` 通过 `ctx.req.url` 获取当前路由）
+ * @return html 片段
+ */
 async function UmiServerRender(ctx) {
   // mock 一个 window 对象
   global.window = {};
@@ -290,7 +295,7 @@ async function UmiServerRender(ctx) {
   const {
     // 当前路由元素
     rootContainer,
-    // 文档 html 元素 = 路由元素 + html 模板元素
+    // 页面模板
     htmlElement,
   } = await serverRender.default(ctx);
 
@@ -299,6 +304,53 @@ async function UmiServerRender(ctx) {
   return ssrHtml;
 }
 ```
+
+页面进行数据预取：
+
+```js
+// pages/news/$id.jsx
+const News = props => {
+  const { id, name, count } = props || {};
+
+  return (
+    <div>
+      <p>
+        {id}-{name}
+      </p>
+    </div>
+  );
+};
+
+/**
+ *
+ * @param {*}
+ * {
+ *  route （当前路由信息）
+ *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
+ *  isServer (是否为服务端执行环境)
+ * }
+ */
+News.getInitialProps = async ({ route, store, isServer }) => {
+  const { id } = route.params;
+  const data = [
+    {
+      id: 0,
+      name: 'zero',
+    },
+    {
+      id: 1,
+      name: 'hello',
+    },
+    {
+      id: 2,
+      name: 'world',
+    },
+  ];
+  return Promise.resolve(data[id] || data[0]);
+};
+```
+
+> 数据预取可将之前使用 `componentDidMount` 或 `React.useEffect` 时机获取数据的方法，移至 `getInitialProps`。
 
 [预渲染（Pre-Rendering）使用](/zh/plugin/umi-plugin-prerender.html)，[umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 
