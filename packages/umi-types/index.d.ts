@@ -1,7 +1,7 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
 import { Stats, Configuration } from 'webpack';
-import IWebpackChainConfig from 'webpack-chain';
+import * as IWebpackChainConfig from 'webpack-chain';
 
 /**
  * System level variable

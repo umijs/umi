@@ -8,7 +8,7 @@ import nodeExternals from 'webpack-node-externals';
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
 interface IOpts {
-  ssr?: boolean | IExportSSROpts;
+  ssr?: IExportSSROpts;
 }
 
 export default function(service: IApi, opts: IOpts = {}) {
