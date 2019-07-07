@@ -66,11 +66,9 @@ export interface IAFWebpackConfig {
 }
 
 type WhitelistOption = string | RegExp;
-export type IExportSSROpts =
-  | {
-      externalWhitelist?: WhitelistOption[];
-    }
-  | boolean;
+export type IExportSSROpts = {
+  externalWhitelist?: WhitelistOption[];
+} | boolean;
 
 interface IConfig extends IAFWebpackConfig {
   // basic config
