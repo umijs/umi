@@ -68,8 +68,12 @@ if (!__IS_BROWSER) {
          initialValue: props,
       });
     } else {
-      // message getInitialProps not found
-      console.log(`${pathname} getInitialProps function not found`);
+      // message activeRoute or getInitialProps not found
+      console.log(
+        !activeRoute
+          ? `${pathname} activeRoute not found`
+          : `${pathname} activeRoute's getInitialProps function not found`
+      );
     }
     const rootContainer = plugins.apply('rootContainer', {
       initialValue: React.createElement(require('./router').default, props),
