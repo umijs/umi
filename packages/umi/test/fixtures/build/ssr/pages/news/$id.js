@@ -4,7 +4,7 @@ const News = (props) => {
   const { id, name } = props || {};
 
   return (
-    <div>
+    <div className="newsWrapper">
       <p>{id}_{name}</p>
     </div>
 
