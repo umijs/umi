@@ -78,7 +78,7 @@ if (!__IS_BROWSER) {
       {{{ htmlTemplateMap }}}
     };
     return {
-      htmlElement: htmlTemplateMap[pathname],
+      htmlElement: htmlTemplateMap[activeRoute.path],
       rootContainer,
     };
   }
