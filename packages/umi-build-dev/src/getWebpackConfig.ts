@@ -57,6 +57,7 @@ export default function(service: IApi, opts: IOpts = {}) {
       whitelist: [
         /\.(css|less|sass|scss)$/,
         /^umi(\/.*)?$/,
+        'umi-plugin-locale',
         ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
       ],
     };
