@@ -127,6 +127,33 @@ $ yarn create umi --block
 - PAGE_NAME_UPPER_CAMEL_CASE `HelloBlock`
 - BLOCK_NAME_CAMEL_CASE `testHelloHelloBlock`
 
+### 区块配置
+
+在区块的 `package.json` 中你可以添加一些配置来指定一些特殊的逻辑，该字段通常是可以缺省的。
+
+配置示例说明：
+
+```json
+{
+  "name": "youblockname",
+  "blockConfig": {
+    // 区块标准版本，默认是 1，当它为 0.1 时默认会把区块当做页面级区块添加
+    // 未来不再推荐配置该字段，添加区块是你可以通过 --page 参数来实现作为页面添加
+    "specVersion": "0.1",
+    // 区块可以依赖其它区块，通常用于小的区块组成页面级的区块时使用
+    // dependencies 中的路径相对于区块 git 仓库根目录
+    // 添加依赖配置后你可以在区块中使用类似 `import SubBlock1 from SubBlock1` 的方式来引用其它区块
+    "dependencies": ["path/to/subBlock1", "path/to/SubBlock2"]
+  },
+  "dependencies": {
+    // 区块的依赖，在添加区块时会自动检测依赖冲突和安装缺少的依赖
+    "antd": "^3.0.0"
+  }
+}
+```
+
+你可以参考 umi 的官方示例 [demo-with-dependencies](https://github.com/umijs/umi-blocks/tree/master/demo-with-dependencies) 了解更多。
+
 ### 区块调试
 
 区块调试基于 [umi-plugin-block-dev](https://github.com/umijs/umi-plugin-block-dev) 这个插件，基于该插件你就可以把区块当做一个普通的 umi 项目来调试了。如下所示，在区块的根目录下添加 `.umirc.js` 文件（通过 `create-umi` 创建的区块脚手架会自带该文件）。
