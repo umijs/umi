@@ -50,11 +50,12 @@ if (__IS_BROWSER) {
 // export server render
 let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
-  serverRender = async (ctx) => {
+  serverRender = async (ctx = {}) => {
     // koa use ctx.req.pathname || ctx.request.path
     // express use ctx.req.path
     // Break Change, Please not use ctx.req.url, now compatible with ctx.req.url
-    const path = ctx.request.path || ctx.req.path || ctx.req.url;
+    ctx.req = ctx.request ? ctx.request : ctx.req;
+    const path = ctx.req.path || ctx.req.url;
     // stripLastSlash
     const pathname = typeof path === 'string' && path.slice(-1) === '/'
       ? path.slice(0, -1)
