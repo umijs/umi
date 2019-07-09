@@ -22,7 +22,7 @@
     "babel-plugin-named-asset-import": "0.3.2",
     "babel-preset-umi": "1.6.0",
     "chalk": "2.4.2",
-    "chokidar": "3.0.1",
+    "chokidar": "3.0.2",
     "clipboardy": "2.1.0",
     "copy-webpack-plugin": "5.0.3",
     "css-loader": "2.1.1",

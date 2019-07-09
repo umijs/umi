@@ -14,7 +14,7 @@
     "babel-preset-umi": "1.6.0",
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.3",
-    "chokidar": "3.0.1",
+    "chokidar": "3.0.2",
     "clipboardy": "2.1.0",
     "core-js": "2.6.9",
     "crequire": "1.8.1",
