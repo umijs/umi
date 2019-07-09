@@ -107,14 +107,12 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
 
     render() {
       return (
-        <div>
-          <WrappedComponent
-            {...{
-              ...this.props,
-              ...this.state.extraProps,
-            }}
-          />
-        </div>
+        <WrappedComponent
+          {...{
+            ...this.props,
+            ...this.state.extraProps,
+          }}
+        />
       );
     }
   };

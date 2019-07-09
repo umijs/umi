@@ -68,8 +68,12 @@ if (!__IS_BROWSER) {
          initialValue: props,
       });
     } else {
-      // message activeRoute not found
-      console.log(`${pathname} activeRoute not found`);
+      // message activeRoute or getInitialProps not found
+      console.log(
+        !activeRoute
+          ? `${pathname} activeRoute not found`
+          : `${pathname} activeRoute's getInitialProps function not found`
+      );
     }
     const rootContainer = plugins.apply('rootContainer', {
       initialValue: React.createElement(require('./router').default, props),
@@ -78,7 +82,7 @@ if (!__IS_BROWSER) {
       {{{ htmlTemplateMap }}}
     };
     return {
-      htmlElement: htmlTemplateMap[pathname],
+      htmlElement: activeRoute && activeRoute.path ? htmlTemplateMap[activeRoute.path] : '',
       rootContainer,
     };
   }

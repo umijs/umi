@@ -9,7 +9,7 @@ const Home = (props) => {
     setCount(count => count + 1);
   }
   return (
-    <div>
+    <div className="wrapper">
       <h1>Hello UmiJS SSR</h1>
       {Array.isArray(list) && list.length > 0 &&
         <ul>
