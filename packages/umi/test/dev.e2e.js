@@ -175,7 +175,7 @@ describe('ssr', () => {
 
     const ctx = {
       req: {
-        url: '/',
+        path: '/',
       },
     };
 
