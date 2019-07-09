@@ -4,6 +4,12 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 import replaceChunkMaps from '../replaceChunkMaps';
 
+// for unit test cases
+export const getClientStats = stats => {
+  const clientState = Array.isArray(stats) ? stats[0] : stats;
+  return clientState || {};
+};
+
 export default function(api) {
   const { service, debug, config, UmiError, printUmiError } = api;
   const { cwd, paths } = service;
@@ -57,13 +63,13 @@ export default function(api) {
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {
-                    stats,
+                    stats: getClientStats(stats),
                   },
                 });
                 service
                   ._applyPluginsAsync('onBuildSuccessAsync', {
                     args: {
-                      stats,
+                      stats: getClientStats(stats),
                     },
                   })
                   .then(() => {
@@ -77,7 +83,7 @@ export default function(api) {
                 service.applyPlugins('onBuildFail', {
                   args: {
                     err,
-                    stats,
+                    stats: getClientStats(stats),
                   },
                 });
                 notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
@@ -86,7 +92,7 @@ export default function(api) {
                     message: err && err.message,
                     context: {
                       err,
-                      stats,
+                      stats: getClientStats(stats),
                     },
                   }),
                   { detailsOnly: true },
