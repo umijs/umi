@@ -1,6 +1,6 @@
 {
   "name": "umi-core",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "dependencies": {
     "@umijs/error-code-map": "^1.0.0",
     "chalk": "2.4.2",
@@ -12,7 +12,7 @@
     "umi-utils": "1.5.1"
   },
   "devDependencies": {
-    "umi-types": "0.3.11"
+    "umi-types": "0.3.12"
   },
   "files": [
     "lib",
