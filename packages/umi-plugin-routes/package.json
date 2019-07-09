@@ -1,13 +1,13 @@
 {
   "name": "umi-plugin-routes",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "main": "./lib/index.js",
   "files": [
     "lib",
     "src"
   ],
   "devDependencies": {
-    "umi-types": "0.3.11"
+    "umi-types": "0.3.12"
   },
   "repository": {
     "type": "git",
