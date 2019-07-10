@@ -1,37 +1,38 @@
-.normal {
+:global {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
-.header {
-  height: 50px;
-  font-size: 30px;
-  padding: 0 20px;
-  background: #fdf9f3;
-  border-bottom: 1px solid #aaa7a3;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
-  margin-bottom: 40px;
+.normal {
+  height: 100%;
   display: flex;
-  align-items: center;
-
-  .logo {
-    margin-right: 12px;
-    width: 30px;
-    height: 30px;
-  }
-
-  sup {
-    margin-left: 6px;
-    font-size: 16px;
-  }
+  flex-direction: column;
 }
 
 .wrapper {
+  flex: auto 1 1;
+  overflow: hidden;
+  height: 100%;
   display: flex;
-  padding: 0 20px;
 }
 
 .sidebar {
   width: 210px;
-  margin-right: 30px;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+
+  .logo {
+    text-align: center;
+    padding: 20px 0;
+    img {
+      width: 50px;
+    }
+  }
 
   ul {
     list-style: none;
@@ -54,13 +55,56 @@
 
 .main {
   flex: 1;
+  overflow: auto;
+  background: #fbeeb4;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 300;
+    background: #fbdf88;
+    padding: 10px 20px;
+  }
+
+  .content {
+    padding: 10px 20px;
+  }
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #ccc;
+  flex: auto 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  //position: fixed;
+  //left: 0;
+  //bottom: 0;
+  //width: 100%;
+  //background: #fff;
+  //border-top: 1px solid #ccc;
+}
+
+.statusBar {
+  background: #1d2935;
+  color: #fff;
+  height: 28px;
+  line-height: 28px;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+
+  .section {
+    flex: auto 0 0;
+    padding: 0 8px;
+    cursor: default;
+    height: 100%;
+  }
+  .section.action {
+    cursor: pointer;
+    user-select: none;
+  }
+  .section.log {
+    width: 0;
+    flex: 100% 1 1;
+  }
+  .section:hover {
+    background: #2c3e51;
+  }
 }

@@ -43,12 +43,12 @@ export default function() {
 
   return (
     <div className={`${styles.normal} ${minimized ? styles.minimize : ''}`}>
-      <div className={styles.header}>
-        Terminal
-        <button onClick={fit}>fit</button>
-        <button onClick={minimize}>minimize</button>
-        <button onClick={maximize}>maximize</button>
-      </div>
+      {/*<div className={styles.header}>*/}
+      {/*  Terminal*/}
+      {/*  <button onClick={fit}>fit</button>*/}
+      {/*  <button onClick={minimize}>minimize</button>*/}
+      {/*  <button onClick={maximize}>maximize</button>*/}
+      {/*</div>*/}
       <div className={styles.main} ref={containerEl} />
     </div>
   );

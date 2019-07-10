@@ -92,6 +92,7 @@ export default api => {
   api.addPanel({
     title: '区块管理',
     path: '/blocks',
+    icon: 'environment',
     component: BlocksViewer,
   });
 };

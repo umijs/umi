@@ -1,44 +1,81 @@
-import NavLink from 'umi/navlink';
+import { useState } from 'react';
+import { NavLink, withRouter } from 'umi';
+import { Menu, Icon } from 'antd';
 import styles from './index.less';
 import Terminal from './Terminal';
 
-export default props => {
+function getActivePanel(pathname) {
+  for (const panel of window.g_service.panels) {
+    if (panel.path === pathname) {
+      return panel;
+    }
+  }
+  return null;
+}
+
+export default withRouter(props => {
+  const { pathname } = props.location;
+  const activePanel = getActivePanel(pathname);
+  const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   return (
     <div className={styles.normal}>
-      <div className={styles.header}>
-        <img
-          alt="logo"
-          className={styles.logo}
-          src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
-        />
-        umi ui
-        <sup>alpha</sup>
-      </div>
       <div className={styles.wrapper}>
         <div className={styles.sidebar}>
-          <ul>
-            <li key="-1">
-              <NavLink activeClassName={styles.active} exact to="/">
+          <div className={styles.logo}>
+            <img
+              alt="logo"
+              className={styles.logo}
+              src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
+            />
+          </div>
+          <Menu
+            selectedKeys={selectedKeys}
+            onClick={({ key }) => {
+              setSelectedKeys([key]);
+            }}
+            style={{
+              border: 0,
+            }}
+          >
+            <Menu.Item key="/">
+              <Icon type="home" />
+              首页
+              <NavLink exact to="/">
                 首页
               </NavLink>
-            </li>
-            {window.g_service.panels.map((panel, i) => {
+            </Menu.Item>
+            {window.g_service.panels.map(panel => {
               return (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={i}>
-                  <NavLink activeClassName={styles.active} exact to={panel.path}>
+                <Menu.Item key={panel.path}>
+                  <Icon type={panel.icon} />
+                  {panel.title}
+                  <NavLink exact to={panel.path}>
                     {panel.title}
                   </NavLink>
-                </li>
+                </Menu.Item>
               );
             })}
-          </ul>
+          </Menu>
         </div>
-        <div className={styles.main}>{props.children}</div>
+        <div className={styles.main}>
+          <h1>{activePanel ? activePanel.title : '首页'}</h1>
+          <div className={styles.content}>{props.children}</div>
+        </div>
       </div>
       <div className={styles.footer}>
         <Terminal />
+        <div className={styles.statusBar}>
+          <div className={styles.section}>
+            <Icon type="folder" /> 当前位置
+          </div>
+          <div className={`${styles.section} ${styles.action} ${styles.log}`}>
+            <Icon type="profile" /> 日志
+          </div>
+          <div className={styles.section}>
+            <Icon type="bug" /> bbb
+          </div>
+        </div>
       </div>
     </div>
   );
-};
+});

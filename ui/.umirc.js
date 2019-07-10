@@ -7,6 +7,9 @@ export default {
     'react-dom': 'window.ReactDOM',
     antd: 'window.antd',
   },
+  theme: {
+    'primary-color': '#fba008',
+  },
   plugins: [
     [
       join(__dirname, '../packages/umi-plugin-react/lib/index.js'),
