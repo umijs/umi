@@ -82,6 +82,11 @@ Deploy doc to [umijs.org](https://umijs.org/).
 $ y doc:deploy
 ```
 
-## Tips
+Debug `umi ui` in local.
 
-Please use node@10, node@11 is not supported.
+```bash
+$ y ui:dev
+
+# Then run umi ui under a umi project.
+$ LOCAL_DEBUG=1 umi ui
+```
