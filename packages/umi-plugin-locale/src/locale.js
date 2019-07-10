@@ -30,7 +30,7 @@ function setLocale(lang, realReload = true) {
 
 function getLocale() {
   // support SSR
-  if (typeof window.localStorage !== 'undefined' && typeof navigator !== 'undefined') {
+  if (typeof localStorage !== 'undefined' && typeof navigator !== 'undefined') {
     // client render
     const lang = window.localStorage.getItem('umi_locale');
     return lang || window.g_lang || navigator.language;
