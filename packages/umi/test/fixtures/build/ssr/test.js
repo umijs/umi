@@ -2,7 +2,7 @@
 import { existsSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
-const getServerRender = async (path) => {
+const getServerRender = async (url) => {
 
   const serverRender = require('./dist/umi.server');
   // export react-dom/server to avoid React hooks ssr error
@@ -10,7 +10,7 @@ const getServerRender = async (path) => {
 
   const ctx = {
     req: {
-      path,
+      url,
     },
   };
 
@@ -39,7 +39,7 @@ export default async function ({ page, host }) {
 
 
   // dynamic render
-  const { ssrHtml: newsHtml, ssrHtmlElement: newsHtmlElement } = await getServerRender('/news/1?locale=zh-CN');
+  const { ssrHtml: newsHtml, ssrHtmlElement: newsHtmlElement } = await getServerRender('/news/1');
 
   expect(newsHtml).toContain(`<div class=\"newsWrapper\" data-reactroot=\"\"><p>1<!-- -->_<!-- -->hello</p></div>`);
   expect(newsHtmlElement).toContain(`<script>window.g_useSSR=true;
