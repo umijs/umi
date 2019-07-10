@@ -4,12 +4,6 @@ import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
 import replaceChunkMaps from '../replaceChunkMaps';
 
-// for unit test cases
-export const getClientStats = stats => {
-  const clientState = Array.isArray(stats) ? stats[0] : stats;
-  return clientState || {};
-};
-
 export default function(api) {
   const { service, debug, config, UmiError, printUmiError } = api;
   const { cwd, paths } = service;
@@ -46,10 +40,9 @@ export default function(api) {
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
-              webpackConfig: [
-                service.webpackConfig,
-                ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
-              ],
+              webpackConfig: service.ssrWebpackConfig
+                ? [service.webpackConfig, service.ssrWebpackConfig]
+                : service.webpackConfig,
               onSuccess({ stats }) {
                 debug('Build success');
                 if (process.env.RM_TMPDIR !== 'none') {
@@ -63,13 +56,13 @@ export default function(api) {
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {
-                    stats: getClientStats(stats),
+                    stats,
                   },
                 });
                 service
                   ._applyPluginsAsync('onBuildSuccessAsync', {
                     args: {
-                      stats: getClientStats(stats),
+                      stats,
                     },
                   })
                   .then(() => {
@@ -83,7 +76,7 @@ export default function(api) {
                 service.applyPlugins('onBuildFail', {
                   args: {
                     err,
-                    stats: getClientStats(stats),
+                    stats,
                   },
                 });
                 notify.onBuildComplete({ name: 'umi', version: 2 }, { err });
@@ -92,7 +85,7 @@ export default function(api) {
                     message: err && err.message,
                     context: {
                       err,
-                      stats: getClientStats(stats),
+                      stats,
                     },
                   }),
                   { detailsOnly: true },
