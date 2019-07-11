@@ -40,10 +40,14 @@ export default function(api) {
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
+              // before: service.webpackConfig
+              // now: [ service.webpackConfig, ... ] , for ssr or more configs
               webpackConfig: [
                 service.webpackConfig,
                 ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
               ],
+              // stats now is Array MultiStats
+              // [ clientStats, ...otherStats ]
               onSuccess({ stats }) {
                 debug('Build success');
                 if (process.env.RM_TMPDIR !== 'none') {
@@ -73,6 +77,8 @@ export default function(api) {
                     resolve();
                   });
               },
+              // stats now is Array MultiStats
+              // [ clientStats, ...otherStats ]
               onFail({ err, stats }) {
                 service.applyPlugins('onBuildFail', {
                   args: {
