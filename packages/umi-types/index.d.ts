@@ -238,7 +238,7 @@ interface IOnOptionChange {
 }
 
 export interface IOnBuildSuccessFunc {
-  (args: { stats: Stats }): void;
+  (args: { stats: Stats[] }): void;
 }
 
 interface IOnBuildSuccess {
@@ -250,7 +250,7 @@ interface IOnBuildSuccessAsync {
 }
 
 export interface IOnBuildFailFunc {
-  (args: { stats: Stats; err: Error }): void;
+  (args: { stats: Stats[]; err: Error }): void;
 }
 
 interface IOnBuildFail {
