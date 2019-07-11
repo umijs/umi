@@ -6,7 +6,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 import { debounce, uniq } from 'lodash';
 import Mustache from 'mustache';
-import { winPath, findJS } from 'umi-utils';
+import { winPath, findJS, prettierFile } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -267,7 +267,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
       htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: winPath(require.resolve('./findRoute')),
     });
-    writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
+    writeFileSync(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`), 'utf-8');
   }
 
   generateHistory() {
@@ -290,7 +290,11 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       globalVariables: !this.service.config.disableGlobalVariables,
       history,
     });
-    writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
+    writeFileSync(
+      join(paths.absTmpDirPath, 'history.js'),
+      prettierFile(`${content.trim()}\n`),
+      'utf-8',
+    );
   }
 
   generateRouterJS() {
@@ -301,7 +305,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
     if (this.routesContent !== routesContent) {
-      writeFileSync(absRouterJSPath, `${routesContent.trim()}\n`, 'utf-8');
+      writeFileSync(absRouterJSPath, prettierFile(`${routesContent.trim()}\n`), 'utf-8');
       this.routesContent = routesContent;
     }
   }

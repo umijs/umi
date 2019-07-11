@@ -21,6 +21,7 @@
   "dependencies": {
     "chalk": "2.4.2",
     "is-url": "1.2.4",
+    "prettier": "1.15.3",
     "slash2": "2.0.0"
   }
 }
