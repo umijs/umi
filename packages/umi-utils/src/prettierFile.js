@@ -8,7 +8,7 @@ export default function(fileContent, parser = 'typescript') {
       singleQuote: true,
     });
   } catch (e) {
-    console.error(`代码格式化报错！${e.toString()}\n代码为：${fileContent}`);
+    console.error(`prettier error！${e.toString()}\n code：${fileContent}`);
     return fileContent;
   }
 }
