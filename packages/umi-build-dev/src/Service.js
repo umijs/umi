@@ -326,7 +326,9 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const { fn, opts } = command;
     if (opts.webpack) {
       // webpack config
-      this.webpackConfig = require('./getWebpackConfig').default(this);
+      this.webpackConfig = require('./getWebpackConfig').default(this, {
+        watch: rawArgs.w || rawArgs.watch,
+      });
       if (this.config.ssr) {
         this.ssrWebpackConfig = require('./getWebpackConfig').default(this, {
           ssr: this.config.ssr,

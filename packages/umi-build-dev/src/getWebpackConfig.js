@@ -6,7 +6,7 @@ import nodeExternals from 'webpack-node-externals';
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
 export default function(service, opts = {}) {
-  const { ssr } = opts;
+  const { ssr, watch } = opts;
   const { config } = service;
 
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
@@ -64,6 +64,12 @@ export default function(service, opts = {}) {
         test: /umi\.server\.js/,
       }),
     );
+  }
+
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!isDev && watch) {
+    webpackConfig.devtool = 'eval-source-map';
+    webpackConfig.watch = true;
   }
 
   return webpackConfig;
