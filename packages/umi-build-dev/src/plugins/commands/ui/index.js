@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { join } from 'path';
 import getClientScript from './getClientScript';
 
 export default function(api) {
@@ -36,7 +36,7 @@ export default function(api) {
       const serveStatic = require('serve-static');
 
       const app = express();
-      // app.use(serveStatic('dist'));
+      app.use(serveStatic(join(__dirname, '../../../../../../ui/dist')));
 
       const sockjs = require('sockjs', {
         sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js',
@@ -69,17 +69,6 @@ export default function(api) {
           } catch (e) {}
         });
       });
-
-      app.get('/', (req, res) => {
-        console.log(1);
-        res.type('html');
-        const htmlFile = process.env.LOCAL_DEBUG
-          ? `${__dirname}/index-debug.html`
-          : `${__dirname}/dist/index.html`;
-        console.log(2, htmlFile);
-        res.send(readFileSync(htmlFile, 'utf-8'));
-      });
-      // app.use(require('serve-static')(`${__dirname}/dist/`));
 
       const port = process.env.PORT || args.port || 8001;
       const server = app.listen(port, () => {

@@ -88,8 +88,11 @@ $ y doc:deploy
 Debug `umi ui` in local.
 
 ```bash
-$ y ui:dev
+$ y ui:build --watch
 
 # Then run umi ui under a umi project.
-$ LOCAL_DEBUG=1 umi ui
+$ umi ui
+
+# Or
+$ umi dev --ui
 ```

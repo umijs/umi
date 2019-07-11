@@ -15,8 +15,7 @@
     "publish": "./scripts/publish.js",
     "test": "node scripts/test.js",
     "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
-    "ui:build": "node ./scripts/ui.js",
-    "ui:dev": "node ./scripts/ui.js --dev"
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
