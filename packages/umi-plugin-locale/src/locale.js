@@ -30,10 +30,9 @@ function setLocale(lang, realReload = true) {
 
 function getLocale() {
   // support SSR
-  const lang =
-    typeof window.localStorage !== 'undefined' ? window.localStorage.getItem('umi_locale') : '';
-  // ssr 时可规定一个参数 global.window = { g_lang: '' }
-  return lang || window.g_lang || navigator.language;
+  const lang = typeof localStorage !== 'undefined' ? window.localStorage.getItem('umi_locale') : '';
+  const browserLang = typeof navigator !== 'undefined' ? navigator.language : '';
+  return lang || window.g_lang || browserLang;
 }
 
 const LangContext = React.createContext({
