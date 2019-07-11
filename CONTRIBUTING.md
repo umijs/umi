@@ -66,7 +66,10 @@ $ COMPRESS=none umi build
 Publish to npm.
 
 ```bash
-# Can't use yarn for this command.
+# Generator the changelog first.
+$ y changelog
+
+# Do not use yarn for this command.
 $ n run publish
 ```
 
