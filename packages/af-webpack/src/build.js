@@ -15,7 +15,7 @@ function getOutputPath(webpackConfig) {
 }
 
 export default function build(opts = {}) {
-  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail } = opts;
+  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail, watch } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(
     isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
@@ -35,7 +35,7 @@ export default function build(opts = {}) {
       if (onFail) {
         onFail({ err, stats });
       }
-      if (!process.env.UMI_TEST) {
+      if (!process.env.UMI_TEST && !watch) {
         process.exit(1);
       }
     }
