@@ -19,6 +19,13 @@ const debug = require('debug')('umi:FilesGenerator');
 
 export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
 
+function normalizePath(path, base = '/') {
+  if (path.startsWith(base)) {
+    path = path.replace(base, '/');
+  }
+  return path;
+}
+
 export default class FilesGenerator {
   constructor(opts) {
     Object.keys(opts).forEach(key => {
@@ -201,14 +208,13 @@ export default class FilesGenerator {
 
     let htmlTemplateMap = [];
     if (config.ssr) {
-      assert(config.manifest, `manifest must be config when using ssr`);
       const isProd = process.env.NODE_ENV === 'production';
       const routePaths = getRoutePaths(this.RoutesManager.routes);
       htmlTemplateMap = routePaths.map(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
           chunksMap: {
-            // TODO, for manifest
+            // TODO, for dynamic chunks
             // placeholder waiting manifest
             umi: [
               isProd ? '__UMI_SERVER__.js' : 'umi.js',
@@ -224,7 +230,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
             },
           ],
         });
-        const content = hg.getMatchedContent(routePath);
+        const content = hg.getMatchedContent(normalizePath(routePath, config.base));
         ssrHtml = htmlToJSX(content).replace(
           `<div id="${config.mountElementId || 'root'}"></div>`,
           `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,

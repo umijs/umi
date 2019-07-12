@@ -13,7 +13,13 @@ declare enum API_TYPE {
   EVENT,
 }
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig };
+// for multiStats, multiply webpack configs
+export interface MultiStats {
+  stats: Stats[];
+  hash: string;
+}
+
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, Stats };
 
 /**
  * System level API
