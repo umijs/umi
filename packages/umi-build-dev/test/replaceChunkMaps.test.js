@@ -21,7 +21,7 @@ describe('replaceChunkMaps', () => {
     spy.mockRestore();
   });
 
-  it('replace umi.js, umi.css', () => {
+  it('common umi.js, umi.css', () => {
     const service = {
       paths: {
         absOutputPath: join(__dirname, 'fixtures/chunkMaps'),
@@ -30,8 +30,22 @@ describe('replaceChunkMaps', () => {
         ssr: true,
       },
     };
-    replaceChunkMaps(service);
-    expect(result).toMatch(/\/umiPublic\/umi\.fa5ee7b5\.css/);
-    expect(result).toMatch(/\/umiPublic\/umi\.42682148\.js/);
+    const clientStat = {
+      compilation: {
+        chunkGroups: [
+          {
+            name: 'umi',
+            chunks: [
+              {
+                files: ['umi.baa67d11.css', 'umi.6791e2ab.js'],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    replaceChunkMaps(service, clientStat);
+    expect(result).toMatch(/\/umiPublic\/umi\.baa67d11\.css/);
+    expect(result).toMatch(/\/umiPublic\/umi\.6791e2ab\.js/);
   });
 });
