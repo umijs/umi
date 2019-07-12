@@ -66,7 +66,6 @@ export default (service: IApi, clientStat: Stats) => {
       name: chunkGroup.name,
       chunks: flatten(
         chunkGroup.chunks.map((chunk: IChunk) => {
-          console.log('--chunk.files--', chunk.files);
           return chunk.files
             .filter(file => !/(\.map$)|(hot\-update\.js)/.test(file))
             .map(file => {
