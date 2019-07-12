@@ -1,11 +1,11 @@
 import { join } from 'path';
 import { readFileSync, existsSync, writeFileSync } from 'fs';
-import flatten from 'lodash/flatten';
-import uniq from 'lodash/uniq';
 import { Stats, IApi } from 'umi-types';
 import { normalizeEntry } from '../../routes/routesToJSON';
+const uniq = require('lodash/uniq');
+const flatten = require('lodash/flatten');
 
-export const getServerContent = umiServerPath => {
+export const getServerContent = (umiServerPath: string): string => {
   if (existsSync(umiServerPath)) {
     const content = readFileSync(umiServerPath, 'utf-8');
     return content;
@@ -13,11 +13,29 @@ export const getServerContent = umiServerPath => {
   return '';
 };
 
-function getPreloadKey(route) {
+function getPreloadKey(route: any): string {
   return route.preloadKey || route.path || '__404'; // __404 是为了配置路由的情况下的 404 页面
 }
 
-function patchDataWithRoutes(preloadMap, routes = [], chunkGroupData, parentChunks = []) {
+interface IPreloadMap {
+  [key: string]: string[];
+}
+
+interface IChunkGroup {
+  name?: string;
+  chunks?: string[];
+}
+
+interface IChunk {
+  files: string[];
+}
+
+function patchDataWithRoutes(
+  preloadMap: IPreloadMap,
+  routes: any[] = [],
+  chunkGroupData: IChunkGroup[],
+  parentChunks: string[] = [],
+) {
   routes.forEach(route => {
     const key = getPreloadKey(route);
     preloadMap[key] = preloadMap[key] || [];
@@ -41,11 +59,11 @@ export default (service: IApi, clientStat: Stats) => {
 
   const { chunkGroups } = clientStat.compilation;
   const preloadMap = {};
-  const chunkGroupData = chunkGroups.map(chunkGroup => {
+  const chunkGroupData: IChunkGroup[] = chunkGroups.map(chunkGroup => {
     return {
       name: chunkGroup.name,
       chunks: flatten(
-        chunkGroup.chunks.map(chunk => {
+        chunkGroup.chunks.map((chunk: IChunk) => {
           return chunk.files
             .filter(file => !/(\.map$)|(hot\-update\.js)/.test(file))
             .map(file => {
@@ -57,7 +75,7 @@ export default (service: IApi, clientStat: Stats) => {
   });
 
   // get umi.js / umi.css
-  const { chunks: umiChunk } = chunkGroupData.find(chunk => chunk.name === 'umi');
+  const { chunks: umiChunk = [] } = chunkGroupData.find(chunk => chunk.name === 'umi') || {};
   // TODO: preloadMap for dynamic chunks
   patchDataWithRoutes(preloadMap, routes, chunkGroupData, umiChunk);
 
