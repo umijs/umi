@@ -28,7 +28,6 @@ describe('replaceChunkMaps', () => {
       },
       config: {
         ssr: true,
-        manifest: {},
       },
     };
     replaceChunkMaps(service);

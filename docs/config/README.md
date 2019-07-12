@@ -268,8 +268,6 @@ export default {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
   },
-  // need enable
-  manifest: {},
 };
 ```
 
