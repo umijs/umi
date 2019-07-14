@@ -25,7 +25,7 @@
     "antd-mobile": "2.x",
     "babel-plugin-import": "1.x",
     "fastclick": "1.0.6",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "mustache": "3.0.1",
     "preact": "8.4.2",
     "preact-compat": "3.19.0",
