@@ -1,9 +1,11 @@
 // https://umijs.org/config/
-import { ExternalsElement, Condition } from 'webpack';
+import { ExternalsElement, Condition, Configuration } from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
+
+export { Configuration as IWebpackConfig };
 
 export interface IRoute {
   path?: string;
@@ -66,9 +68,11 @@ export interface IAFWebpackConfig {
 }
 
 type WhitelistOption = string | RegExp;
-export type IExportSSROpts = {
-  externalWhitelist?: WhitelistOption[];
-} | boolean;
+export type IExportSSROpts =
+  | {
+      externalWhitelist?: WhitelistOption[];
+    }
+  | boolean;
 
 interface IConfig extends IAFWebpackConfig {
   // basic config

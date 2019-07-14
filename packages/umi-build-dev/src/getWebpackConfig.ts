@@ -1,7 +1,7 @@
 import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 import chalk from 'chalk';
-import { IExportSSROpts } from 'umi-types/config';
+import { IExportSSROpts, IWebpackConfig } from 'umi-types/config';
 import { IApi } from 'umi-types';
 import nodeExternals from 'webpack-node-externals';
 
@@ -39,7 +39,7 @@ export default function(service: IApi, opts: IOpts = {}) {
     }
   };
 
-  const webpackConfig = service.applyPlugins('modifyWebpackConfig', {
+  const webpackConfig: IWebpackConfig = service.applyPlugins('modifyWebpackConfig', {
     initialValue: getConfig({
       ...afWebpackOpts,
       ssr,
