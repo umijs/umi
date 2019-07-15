@@ -72,10 +72,13 @@ export default (service: IApi, clientStat: Stats) => {
   const { chunkGroups } = clientStat.compilation;
   const dynamicMap = {};
   const chunkGroupData: IChunkGroup[] = chunkGroups.map(chunkGroup => {
+    console.log('chunkGroup.name', chunkGroup.name);
+    // console.log('-chunkGroup.chunks', chunkGroup.chunks);
     return {
       name: chunkGroup.name,
       chunks: flatten(
         chunkGroup.chunks.map((chunk: IChunk) => {
+          console.log('--chunk.files--', chunk.files);
           return chunk.files
             .filter(file => !/(\.map$)|(hot\-update\.js)/.test(file))
             .map(file => {
