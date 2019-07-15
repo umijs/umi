@@ -33,7 +33,7 @@
     "html-minifier": "4.0.0",
     "http-proxy-middleware": "0.19.1",
     "js-yaml": "3.13.1",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "mkdirp": "0.5.1",
     "mustache": "3.0.1",
     "ora": "3.4.0",
