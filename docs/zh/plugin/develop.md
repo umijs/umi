@@ -596,7 +596,7 @@ api.addEntryCodeAhead(`
 
 在挂载 <App/> 前执行一个 Module，支持异步。
 
-## addUmiExports
+### addUmiExports
 
 支持 `umi` 添加导出
 
@@ -643,9 +643,9 @@ modifyRouteComponent
 
 modifyRouterRootComponent
 
-### modifyWebpackConfig
+### chainWebpackConfig
 
-修改 webpack 配置。
+通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 修改 Webpack 配置。
 
 ```js
 // 示例

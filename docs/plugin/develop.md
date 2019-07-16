@@ -595,7 +595,7 @@ Wrapper a component outside the <App/>.
 
 Excute a module before mount <App/>.
 
-## addUmiExports
+### addUmiExports
 
 import from 'umi'
 
@@ -642,9 +642,9 @@ modifyRouteComponent
 
 modifyRouterRootComponent
 
-### modifyWebpackConfig
+### chainWebpackConfig
 
-modify webpack Configuration.
+Modify webpack configuration via [webpack-chain](https://github.com/neutrinojs/webpack-chain).
 
 ```js
 // demo
