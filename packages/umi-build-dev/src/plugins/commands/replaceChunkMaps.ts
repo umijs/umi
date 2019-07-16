@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readFileSync, existsSync, writeFileSync } from 'fs';
-import { Stats, IApi } from 'umi-types';
+import { IWebpack, IApi } from 'umi-types';
 import { normalizeEntry } from '../../routes/routesToJSON';
 const uniq = require('lodash/uniq');
 const flatten = require('lodash/flatten');
@@ -65,7 +65,7 @@ function patchDataWithRoutes(
   });
 }
 
-export default (service: IApi, clientStat: Stats) => {
+export default (service: IApi, clientStat: IWebpack.Stats) => {
   const { paths, routes } = service;
   const { absOutputPath } = paths;
 
