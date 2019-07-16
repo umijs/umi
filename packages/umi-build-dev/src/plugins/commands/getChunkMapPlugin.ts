@@ -9,6 +9,7 @@ import {
 } from '../../utils/getChunkMap';
 
 export default (service: IApi) => {
+  const isDev = process.env.NODE_ENV === 'development';
   return class {
     apply(compiler: IWebpack.Compiler) {
       compiler.hooks.emit.tap('generate-ssr-client-manifest', compilation => {
@@ -38,9 +39,12 @@ export default (service: IApi) => {
             source: () => content,
             size: () => content.length,
           };
-          writeFileSync(resolve(outputPath, manifestFileName), content);
         } catch (e) {
           compilation.errors.push(e);
+        }
+
+        if (isDev) {
+          writeFileSync(resolve(outputPath, manifestFileName), content);
         }
       });
     }
