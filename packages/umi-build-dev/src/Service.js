@@ -328,6 +328,11 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       // webpack config
       this.webpackConfig = require('./getWebpackConfig').default(this);
       if (this.config.ssr) {
+        // when use ssr, push client-manifest plugin into client webpackConfig
+        this.webpackConfig.plugins.push(
+          new (require('./plugins/commands/getChunkMapPlugin').default(this))(),
+        );
+        // server webpack config
         this.ssrWebpackConfig = require('./getWebpackConfig').default(this, {
           ssr: this.config.ssr,
         });
