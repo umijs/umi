@@ -54,11 +54,5 @@ describe('replaceChunkMaps', () => {
 
     expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.baa67d11\.css/);
     expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.6791e2ab\.js/);
-    expect(JSON.parse(result['ssr-client-mainifest.json'])).toEqual({
-      '/': {
-        js: ['umi.6791e2ab.js'],
-        css: ['umi.baa67d11.css'],
-      },
-    });
   });
 });

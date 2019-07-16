@@ -167,7 +167,16 @@ describe('ssr', () => {
 
   it('routes', async () => {
     const ssrFile = join(__dirname, 'fixtures', 'dev', 'ssr', 'dist', 'umi.server.js');
+    const manifestFile = join(
+      __dirname,
+      'fixtures',
+      'dev',
+      'ssr',
+      'dist',
+      'ssr-client-mainifest.json',
+    );
     expect(existsSync(ssrFile)).toBeTruthy();
+    expect(existsSync(manifestFile)).toBeTruthy();
 
     const serverRender = require('./fixtures/dev/ssr/dist/umi.server');
     // export react-dom/server to avoid React hooks ssr error
