@@ -262,15 +262,47 @@ export default {
 
 用于服务端渲染（Server-Side Render）。
 
-开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 文件。
+开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 和 `ssr-client-mainifest.json` 文件。
 
 ```js
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
+    manifestFileName: 'ssr-client-mainifest.json',
   },
 };
+```
+
+其中 `ssr-client-mainifest.json` 是按路由级别的资源映射文件，例如：
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 在 Node.js 中使用如下：

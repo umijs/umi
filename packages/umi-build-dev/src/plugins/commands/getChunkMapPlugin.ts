@@ -1,4 +1,6 @@
-import { IWebpack } from 'umi-types';
+import { IWebpack, IApi } from 'umi-types';
+import { writeFileSync } from 'fs';
+import { resolve } from 'path';
 import {
   IChunkGroup,
   getChunkGroupData,
@@ -6,12 +8,23 @@ import {
   getChunkAssetsMaps,
 } from '../../utils/getChunkMap';
 
-export default service => {
+export default (service: IApi) => {
   return class {
     apply(compiler: IWebpack.Compiler) {
-      const { routes } = service;
       compiler.hooks.emit.tap('generate-ssr-client-manifest', compilation => {
-        const { chunkGroups } = compilation;
+        const { routes, config } = service;
+        const {
+          chunkGroups,
+          compiler: {
+            options: {
+              output: { path: outputPath },
+            },
+          },
+        } = compilation;
+        const manifestFileName =
+          typeof config.ssr === 'object' && config.ssr.manifestFileName
+            ? config.ssr.manifestFileName
+            : 'ssr-client-mainifest.json';
         const dynamicMap = {};
         const chunkGroupData: IChunkGroup[] = getChunkGroupData(chunkGroups);
         const { chunks: umiChunk = [] } = chunkGroupData.find(chunk => chunk.name === 'umi') || {};
@@ -21,10 +34,11 @@ export default service => {
         const content = JSON.stringify(chunkAssetsMaps, null, 2);
 
         try {
-          compilation.assets['ssr-client-mainifest.json'] = {
+          compilation.assets[manifestFileName] = {
             source: () => content,
             size: () => content.length,
           };
+          writeFileSync(resolve(outputPath, manifestFileName), content);
         } catch (e) {
           compilation.errors.push(e);
         }

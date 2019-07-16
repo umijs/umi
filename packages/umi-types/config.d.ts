@@ -70,7 +70,10 @@ export interface IAFWebpackConfig {
 type WhitelistOption = string | RegExp;
 export type IExportSSROpts =
   | {
+      /** not external library */
       externalWhitelist?: WhitelistOption[];
+      /** client manifest, default: ssr-client-mainifest.json */
+      manifestFileName?: string;
     }
   | boolean;
 
