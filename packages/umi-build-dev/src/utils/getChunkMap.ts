@@ -1,5 +1,5 @@
-import flatten from 'lodash/flatten';
-import uniq from 'lodash/uniq';
+import { IRoute } from 'umi-types';
+import { uniq, flatten } from 'lodash';
 import { normalizeEntry } from '../routes/routesToJSON';
 
 export interface IChunk {
@@ -8,22 +8,49 @@ export interface IChunk {
 
 export interface IChunkGroup {
   name?: string;
-  chunks?: string[];
+  chunks?: any[];
+}
+
+export interface IChunkAssets {
+  /** js chunks */
+  js?: string[];
+  /** css chunks */
+  css?: string[];
+  /** other chunks */
+  [key: string]: string[];
 }
 
 export interface IDynamicMap {
   [key: string]: string[];
 }
 
-export function getDynamicKey(route: any): string {
-  return route.preloadKey || route.path || '__404'; // __404 是为了配置路由的情况下的 404 页面
+export interface IDynamicMapAssets {
+  [key: string]: IChunkAssets;
 }
 
-export const patchDataWithRoutes = (
+export function getDynamicKey(route: IRoute): string {
+  return route.path || '__404'; // __404 是为了配置路由的情况下的 404 页面
+}
+
+type IPatchDataWithRoutes = (
   dynamicMap: IDynamicMap,
-  routes: any[] = [],
+  routes: IRoute[],
   chunkGroupData: IChunkGroup[],
-  parentChunks: string[] = [],
+  parentChunks: string[],
+) => void;
+
+/**
+ * Patch chunkMap static resources according to routes
+ * @param dynamicMap
+ * @param routes
+ * @param chunkGroupData
+ * @param parentChunks
+ */
+export const patchDataWithRoutes: IPatchDataWithRoutes = (
+  dynamicMap,
+  routes = [],
+  chunkGroupData,
+  parentChunks = [],
 ) => {
   routes.forEach(route => {
     const key = getDynamicKey(route);
@@ -36,25 +63,41 @@ export const patchDataWithRoutes = (
     const chunks = flatten(
       chunkGroupData.filter(group => group.name === webpackChunkName).map(group => group.chunks),
     );
-
     dynamicMap[key] = uniq(dynamicMap[key].concat(parentChunks).concat(chunks));
     patchDataWithRoutes(dynamicMap, route.routes, chunkGroupData, dynamicMap[key]);
   });
 };
 
-export const isAssetsType = (type: 'js' | 'css', filename: string): boolean => {
+/**
+ * is current assets Type?
+ * @param type
+ * @param filename
+ */
+export const isAssetsType = <T>(
+  type: T | 'js' | 'css',
+  filename: string,
+  customRule?: RegExp,
+): boolean => {
+  // for type convert
+  const userType: any = type;
   const regexpMap = {
     js: /\.js$/,
     css: /\.css$/,
+    [userType]: customRule,
   };
-  const expType = regexpMap[type];
+  const expType = regexpMap[userType];
   if (!expType) {
     return false;
   }
   return expType.test(filename);
 };
 
-export const getChunkAssetsMaps = dynamicMaps =>
+/**
+ * classify assets type
+ *  { '/': ['.css', '.js'] } => { '/': js: [], css: [] }
+ * @param dynamicMaps
+ */
+export const getChunkAssetsMaps = (dynamicMaps: IDynamicMap): IDynamicMapAssets =>
   Object.entries(dynamicMaps).reduce((prev, curr) => {
     const [route, chunks] = curr;
     if (route) {
@@ -74,17 +117,19 @@ export const getChunkAssetsMaps = dynamicMaps =>
     return prev;
   }, {});
 
-export const getChunkGroupData = chunkGroups =>
+/**
+ * make route chunks into group
+ * @param chunkGroups
+ */
+export const getChunkGroupData = (chunkGroups: IChunkGroup[]): IChunkGroup[] =>
   chunkGroups.map(chunkGroup => {
     return {
       name: chunkGroup.name,
       chunks: flatten(
-        chunkGroup.chunks.map((chunk: IChunk) => {
+        chunkGroup.chunks.map(chunk => {
           return chunk.files
             .filter(file => !/(\.map$)|(hot\-update\.js)/.test(file))
-            .map(file => {
-              return file;
-            });
+            .map(file => file);
         }),
       ),
     };

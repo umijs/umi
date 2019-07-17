@@ -29,7 +29,6 @@ export default (service: IApi) => {
         const dynamicMap = {};
         const chunkGroupData: IChunkGroup[] = getChunkGroupData(chunkGroups);
         const { chunks: umiChunk = [] } = chunkGroupData.find(chunk => chunk.name === 'umi') || {};
-        console.log('-plugin umiChunk', umiChunk);
         patchDataWithRoutes(dynamicMap, routes, chunkGroupData, umiChunk);
         const chunkAssetsMaps = getChunkAssetsMaps(dynamicMap);
         const content = JSON.stringify(chunkAssetsMaps, null, 2);
