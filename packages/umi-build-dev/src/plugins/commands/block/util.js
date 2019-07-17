@@ -18,6 +18,11 @@ import {
  */
 const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
 
+const genBlockName = name =>
+  name
+    .match(/[A-Z]?[a-z]+|[0-9]+/g)
+    .map(p => p.toLowerCase())
+    .join('/');
 /**
  * 将区块转化为 inquirer 能用的数组
  * @param {*} blocks
@@ -39,10 +44,7 @@ export function printBlocks(blocks, hasLink) {
         if (hasLink) {
           // 链接到 pro 的预览界面
           // AccountCenter -> account/center
-          const previewPath = blockName
-            .match(/[A-Z]?[a-z]+|[0-9]+/g)
-            .map(p => p.toLowerCase())
-            .join('/');
+          const previewPath = genBlockName(blockName);
           const link = terminalLink('预览', `https://preview.pro.ant.design/${previewPath}`);
           // 增加一个预览的界面
           name += link;
@@ -76,26 +78,49 @@ export function printBlocks(blocks, hasLink) {
  * @returns Promise<{args}>
  */
 export async function selectInstallBlockArgs(blockArray) {
-  return new Promise(resolve => {
-    inquirer
-      .prompt([
+  return new Promise(async resolve => {
+    let locale = false;
+    const { block, path, js, uni18n } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'block',
+        message: `⛰  请选择区块（共 ${blockArray.length} 个 )`,
+        choices: blockArray,
+      },
+      { type: 'input', name: 'path', message: '🏗  请输入输出安装区块的路径' },
+      {
+        type: 'confirm',
+        name: 'js',
+        message: '🤔  将 Typescript 区块转化为 js?',
+        default: false,
+      },
+      {
+        type: 'confirm',
+        name: 'uni18n',
+        message: '🌎  删除 i18n 代码? ',
+        default: false,
+      },
+    ]);
+    if (uni18n) {
+      const { region } = await inquirer.prompt([
         {
-          type: 'list',
-          name: 'block',
-          message: `⛰  请选择区块（共 ${blockArray.length} 个 )`,
-          choices: blockArray,
+          type: 'input',
+          name: 'region',
+          message: '🌎  请输入你的选择的语言? ',
+          default: 'zh-CN',
         },
-        { type: 'input', name: 'path', message: '🏗  请输入输出安装区块的路径' },
-        {
-          type: 'confirm',
-          name: 'js',
-          message: '🤔  将 Typescript 区块转化为 js?',
-          default: false,
-        },
-      ])
-      .then(async ({ block, path, js }) => {
-        resolve({ _: ['add', block], path: path || block, js });
-      });
+      ]);
+      locale = region;
+    }
+
+    const blockPath = path || genBlockName(block);
+
+    resolve({
+      _: ['add', block],
+      path: blockPath,
+      js,
+      uni18n: locale,
+    });
   });
 }
 
@@ -112,14 +137,14 @@ export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
   let blockArray = [];
   const { defaultGitUrl } = blockConfig;
 
-  spinner.start('🚣 fetch block list');
+  spinner.start('🚣  fetch block list');
 
   // 如果存在 defaultGitUrl 的配置，就从 defaultGitUrl 配置中拿区块列表
   if (defaultGitUrl) {
-    const ignoreFile = ['_scripts'];
+    const ignoreFile = ['_scripts', 'tests'];
     const { name, owner } = GitUrlParse(defaultGitUrl);
     spinner.succeed();
-    spinner.start(`🔍 find block list form ${chalk.yellow(defaultGitUrl)}`);
+    spinner.start(`🔍  find block list form ${chalk.yellow(defaultGitUrl)}`);
 
     // 一个 github 的 api,可以获得文件树
     const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
@@ -155,7 +180,7 @@ export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
  * @param {*} spinner
  */
 export async function gitUpdate(ctx, spinner) {
-  spinner.start('🚒 Git fetch');
+  spinner.start('🚒  Git fetch');
   try {
     await execa(`git`, ['fetch'], {
       cwd: ctx.templateTmpDirPath,
@@ -166,7 +191,7 @@ export async function gitUpdate(ctx, spinner) {
   }
   spinner.succeed();
 
-  spinner.start(`🚪 Git checkout ${ctx.branch}`);
+  spinner.start(`🚛  Git checkout ${ctx.branch}`);
 
   try {
     await execa(`git`, ['checkout', ctx.branch], {
@@ -178,7 +203,7 @@ export async function gitUpdate(ctx, spinner) {
   }
   spinner.succeed();
 
-  spinner.start('🚀 Git pull');
+  spinner.start('🚀  Git pull');
   try {
     await execa(`git`, [`pull`], {
       cwd: ctx.templateTmpDirPath,
@@ -213,7 +238,7 @@ export async function gitUpdate(ctx, spinner) {
  * @param {*} spinner
  */
 export async function gitClone(ctx, spinner) {
-  spinner.start(`🔍 Clone git repo from ${ctx.repo}`);
+  spinner.start(`🔍  lone git repo from ${ctx.repo}`);
   try {
     await execa(
       `git`,
