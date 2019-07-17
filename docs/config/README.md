@@ -326,6 +326,8 @@ async function UmiServerRender(ctx) {
     rootContainer,
     // page template
     htmlElement,
+    // match router path, like /user/:id
+    matchPath,
   } = await serverRender.default(ctx);
 
   // Render the element into html

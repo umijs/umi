@@ -327,6 +327,8 @@ async function UmiServerRender(ctx) {
     rootContainer,
     // 页面模板
     htmlElement,
+    // 匹配成功的前端路由，比如 /user/:id
+    matchPath,
   } = await serverRender.default(ctx);
 
   // 元素渲染成 html
