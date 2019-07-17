@@ -28,19 +28,22 @@ export interface IDynamicMapAssets {
   [key: string]: IChunkAssets;
 }
 
+type IPatchDataWithRoutes = (
+  dynamicMap: IDynamicMap,
+  /** routes info */
+  routes: IRoute[],
+  chunkGroupData: IChunkGroup[],
+  /** chunks will insert into every route */
+  parentChunks?: string[],
+) => void;
+
 export function getDynamicKey(route: IRoute): string {
   return route.path || '__404'; // __404 是为了配置路由的情况下的 404 页面
 }
 
-type IPatchDataWithRoutes = (
-  dynamicMap: IDynamicMap,
-  routes: IRoute[],
-  chunkGroupData: IChunkGroup[],
-  parentChunks: string[],
-) => void;
-
 /**
  * Patch chunkMap static resources according to routes
+ *  {} => { '/': ['.css', '.js', ...], '/bar': ['.js', '.css'] }
  * @param dynamicMap
  * @param routes
  * @param chunkGroupData
@@ -61,7 +64,9 @@ export const patchDataWithRoutes: IPatchDataWithRoutes = (
       .replace(/^page__/, 'p__');
 
     const chunks = flatten(
-      chunkGroupData.filter(group => group.name === webpackChunkName).map(group => group.chunks),
+      chunkGroupData
+        .filter(group => group.name === webpackChunkName || group.name === 'umi')
+        .map(group => group.chunks),
     );
     dynamicMap[key] = uniq(dynamicMap[key].concat(parentChunks).concat(chunks));
     patchDataWithRoutes(dynamicMap, route.routes, chunkGroupData, dynamicMap[key]);
@@ -73,19 +78,14 @@ export const patchDataWithRoutes: IPatchDataWithRoutes = (
  * @param type
  * @param filename
  */
-export const isAssetsType = <T>(
-  type: T | 'js' | 'css',
-  filename: string,
-  customRule?: RegExp,
-): boolean => {
+export const isAssetsType = (type: RegExp | 'js' | 'css', filename: string): boolean => {
   // for type convert
-  const userType: any = type;
   const regexpMap = {
     js: /\.js$/,
     css: /\.css$/,
-    [userType]: customRule,
   };
-  const expType = regexpMap[userType];
+  const expType = typeof type === 'string' ? regexpMap[type] : type;
+
   if (!expType) {
     return false;
   }
@@ -119,6 +119,7 @@ export const getChunkAssetsMaps = (dynamicMaps: IDynamicMap): IDynamicMapAssets 
 
 /**
  * make route chunks into group
+ * chunks => [{ name: 'umi', chunks: ['.css', '.js']* }, { name: 'p_bar', chunks: ['.css', '.js'] }]
  * @param chunkGroups
  */
 export const getChunkGroupData = (chunkGroups: IChunkGroup[]): IChunkGroup[] =>

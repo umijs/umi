@@ -17,13 +17,11 @@ export default (service: IApi, clientStat: IWebpack.Stats) => {
 
   const { chunkGroups } = clientStat.compilation;
   const chunkGroupData: IChunkGroup[] = getChunkGroupData(chunkGroups);
-
   // get umi.js / umi.css
   const { chunks: umiChunk = [] } = chunkGroupData.find(chunk => chunk.name === 'umi') || {};
 
   const umiServerPath = join(absOutputPath, 'umi.server.js');
   const umiServer = getContent(umiServerPath);
-
   const result = umiServer
     .replace(/__UMI_SERVER__\.js/g, umiChunk.find(chunk => isAssetsType('js', chunk)) || '')
     .replace(
