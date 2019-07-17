@@ -159,14 +159,18 @@ app.use(require('${winPath(require.resolve('dva-immer'))}')());
     generateInitDva();
   });
 
-  api.modifyRouterRootComponent(`require('dva/router').routerRedux.ConnectedRouter`);
+  const importFromDva = ['routerRedux'];
 
   if (shouldImportDynamic) {
-    api.addRouterImport({
-      source: 'dva/dynamic',
-      specifier: '_dvaDynamic',
-    });
+    importFromDva.push('dynamic as _dvaDynamic');
   }
+
+  api.addRouterImport({
+    source: 'dva',
+    specifier: `{ ${importFromDva.join(', ')} }`,
+  });
+
+  api.modifyRouterRootComponent(`routerRedux.ConnectedRouter`);
 
   if (shouldImportDynamic) {
     api.modifyRouteComponent((memo, args) => {
