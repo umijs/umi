@@ -1,6 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import IWebpack from 'webpack';
+import * as IWebpack from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 
 /**
