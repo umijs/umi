@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import { spawnSync } from 'child_process';
 import mkdirp from 'mkdirp';
 import { homedir } from 'os';
+import GitUrlParse from 'git-url-parse';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 
@@ -68,27 +69,13 @@ export function isGitUrl(url) {
 }
 
 export function parseGitUrl(url) {
-  // (http|s)://(host)/(group)/(name)/tree/(branch)/(path)
-  const [
-    // eslint-disable-next-line
-    all,
-    protocol,
-    host,
-    // eslint-disable-next-line
-    site,
-    divide, // : or /
-    group,
-    name,
-    // eslint-disable-next-line
-    allpath,
-    branch = 'master',
-    path = '/',
-  ] = gitSiteParser.exec(url);
+  const args = GitUrlParse(url);
+  const { ref, filepath, resource, full_name: fullName } = args;
   return {
-    repo: `${protocol}${host}${divide}${group}/${name}.git`,
-    branch,
-    path,
-    id: `${host}/${group}/${name}`, // 唯一标识一个 git 仓库
+    repo: `${args.toString()}`,
+    branch: ref || 'master',
+    path: `/${filepath}`,
+    id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库
   };
 }
 

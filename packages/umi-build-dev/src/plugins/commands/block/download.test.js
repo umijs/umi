@@ -11,9 +11,7 @@ describe('test block download utils', () => {
     expect(
       isGitUrl('http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/master/demo'),
     ).toEqual(true);
-    expect(
-      isGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo'),
-    ).toEqual(true);
+    expect(isGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo')).toEqual(true);
   });
 
   it('parseGitUrl', () => {
@@ -30,7 +28,7 @@ describe('test block download utils', () => {
       id: 'gitlab.alitest-inc.com/bigfish/bigfish',
     });
     expect(parseGitUrl('https://github.com/umijs/umi-blocks/tree/master/demo')).toEqual({
-      repo: 'https://github.com/umijs/umi-blocks.git',
+      repo: 'https://github.com/umijs/umi-blocks',
       branch: 'master',
       path: '/demo',
       id: 'github.com/umijs/umi-blocks',
@@ -38,7 +36,7 @@ describe('test block download utils', () => {
     expect(
       parseGitUrl('https://github.com/umijs/umi-blocks/tree/master/ant-design-pro/Analysis'),
     ).toEqual({
-      repo: 'https://github.com/umijs/umi-blocks.git',
+      repo: 'https://github.com/umijs/umi-blocks',
       branch: 'master',
       path: '/ant-design-pro/Analysis',
       id: 'github.com/umijs/umi-blocks',
@@ -46,27 +44,25 @@ describe('test block download utils', () => {
     expect(
       parseGitUrl('http://gitlab.alitest-inc.com/bigfish/bigfish-blocks/tree/1.x/demo/test'),
     ).toEqual({
-      repo: 'http://gitlab.alitest-inc.com/bigfish/bigfish-blocks.git',
+      repo: 'http://gitlab.alitest-inc.com/bigfish/bigfish-blocks',
       branch: '1.x',
       path: '/demo/test',
       id: 'gitlab.alitest-inc.com/bigfish/bigfish-blocks',
     });
     expect(parseGitUrl('http://gitlab.alitest-inc.com/bigfish/hello')).toEqual({
-      repo: 'http://gitlab.alitest-inc.com/bigfish/hello.git',
+      repo: 'http://gitlab.alitest-inc.com/bigfish/hello',
       branch: 'master',
       path: '/',
       id: 'gitlab.alitest-inc.com/bigfish/hello',
     });
     expect(parseGitUrl('https://github.com/umijs/umi-blocks')).toEqual({
-      repo: 'https://github.com/umijs/umi-blocks.git',
+      repo: 'https://github.com/umijs/umi-blocks',
       branch: 'master',
       path: '/',
       id: 'github.com/umijs/umi-blocks',
     });
-    expect(
-      parseGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo'),
-    ).toEqual({
-      repo: 'http://192.169.3.19/YYJay/test-umi-block.git',
+    expect(parseGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo')).toEqual({
+      repo: 'http://192.169.3.19/YYJay/test-umi-block',
       branch: 'master',
       path: '/demo',
       id: '192.169.3.19/YYJay/test-umi-block',
@@ -78,14 +74,14 @@ describe('test block download utils', () => {
       branch: 'somebranch',
       id: 'github.com/test/name',
       path: '/demo',
-      repo: 'https://github.com/test/name.git',
+      repo: 'https://github.com/test/name',
     });
 
     expect(getParsedData('demo-test', {})).toEqual({
       branch: 'master',
       id: 'github.com/umijs/umi-blocks',
       path: '/demo-test',
-      repo: 'https://github.com/umijs/umi-blocks.git',
+      repo: 'https://github.com/umijs/umi-blocks',
     });
   });
 
@@ -98,7 +94,7 @@ describe('test block download utils', () => {
       branch: 'somebranch',
       id: 'github.com/test/name',
       path: '/demo',
-      repo: 'https://github.com/test/name.git',
+      repo: 'https://github.com/test/name',
     });
 
     expect(
@@ -109,7 +105,7 @@ describe('test block download utils', () => {
       branch: 'master',
       id: 'github.com/ant-design/pro-blocks',
       path: '/demo-test',
-      repo: 'https://github.com/ant-design/pro-blocks.git',
+      repo: 'https://github.com/ant-design/pro-blocks',
     });
   });
 });

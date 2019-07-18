@@ -14,6 +14,7 @@ import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
 import clearGitCache from './clearGitCache';
 import tsToJs from './tsTojs';
+import removeLocale from './remove-locale';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -91,6 +92,7 @@ export default api => {
       layout: isLayout,
       registry = registryUrl,
       js,
+      uni18n,
     } = args;
 
     const ctx = getCtx(url, args);
@@ -218,9 +220,15 @@ export default api => {
       spinner.succeed();
     }
 
+    if (uni18n) {
+      spinner.start('🌎  remove i18n code');
+      removeLocale(generator.blockFolderPath, uni18n);
+      spinner.succeed();
+    }
+
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-      spinner.start(`🧐  Write route ${generator.path} to ${api.service.userConfig.file}`);
+      spinner.start(`⛱  Write route ${generator.path} to ${api.service.userConfig.file}`);
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
@@ -300,6 +308,7 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
   ${chalk.green(`--js                `)} If the block is typescript, convert to js
   ${chalk.green(`--registry          `)} set up npm installation using the registry
+  ${chalk.green(`--uni18n          `)}   remove umi-plugin-locale formatMessage
 
 Examples:
 

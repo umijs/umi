@@ -1,14 +1,47 @@
-import { existsSync, readdirSync, statSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, lstatSync, statSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import mkdirp from 'mkdirp';
 import semver from 'semver';
 import crequire from 'crequire';
 import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
+import rimraf from 'rimraf';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
+
+/**
+ * 判断一个路径是否为空
+ * 只要有一个文件就算非空
+ * @param {*} path
+ */
+export const isEmptyFolder = path => {
+  let isEmpty = true;
+
+  if (!existsSync(path)) {
+    return true;
+  }
+  if (lstatSync(path).isFile()) {
+    return false;
+  }
+
+  const files = readdirSync(path);
+  files.forEach(file => {
+    if (!isEmpty) {
+      return;
+    }
+    const stat = lstatSync(join(path, file));
+    if (stat.isFile()) {
+      isEmpty = false;
+      return;
+    }
+    if (stat.isDirectory()) {
+      isEmpty = isEmptyFolder(join(path, file));
+    }
+  });
+  return isEmpty;
+};
 
 export function getNameFromPkg(pkg) {
   if (!pkg.name) {
@@ -143,8 +176,13 @@ export default api => {
     async writing() {
       let targetPath = join(paths.absPagesPath, this.path);
       debug(`get targetPath ${targetPath}`);
+
       // for old page block check for duplicate path
       // if there is, prompt for input a new path
+      if (isEmptyFolder(targetPath)) {
+        rimraf.sync(targetPath);
+      }
+
       while (this.isPageBlock && existsSync(targetPath)) {
         // eslint-disable-next-line no-await-in-loop
         this.path = (await this.prompt({
