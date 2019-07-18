@@ -5,7 +5,7 @@ const React = require('react');
 let localeContext;
 
 function setLocale(lang, realReload = true) {
-  if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
+  if (lang !== undefined && !/^([a-z]{2})(-([A-Z]{2})|)$/.test(lang)) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');
   }
