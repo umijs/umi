@@ -1,21 +1,21 @@
-import { join } from 'path';
+import { join, basename } from 'path';
 import replaceChunkMaps from '../src/plugins/commands/replaceChunkMaps';
 const fs = require('fs');
 
 describe('replaceChunkMaps', () => {
-  let result = '';
+  let result = {};
   let spy;
 
   beforeAll(() => {
     spy = jest.spyOn(fs, 'writeFileSync').mockImplementation((filePath, data) => {
-      result = data;
+      result[basename(filePath)] = data;
     });
   });
   beforeEach(() => {
-    result = '';
+    result = {};
   });
   afterEach(() => {
-    result = '';
+    result = {};
   });
   afterAll(() => {
     spy.mockRestore();
@@ -29,6 +29,12 @@ describe('replaceChunkMaps', () => {
       config: {
         ssr: true,
       },
+      routes: [
+        {
+          path: '/',
+          routes: [],
+        },
+      ],
     };
     const clientStat = {
       compilation: {
@@ -45,7 +51,14 @@ describe('replaceChunkMaps', () => {
       },
     };
     replaceChunkMaps(service, clientStat);
-    expect(result).toMatch(/\/umiPublic\/umi\.baa67d11\.css/);
-    expect(result).toMatch(/\/umiPublic\/umi\.6791e2ab\.js/);
+
+    expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.baa67d11\.css/);
+    expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.6791e2ab\.js/);
+    expect(JSON.parse(result['ssr-client-mainifest.json'])).toEqual({
+      '/': {
+        js: ['umi.6791e2ab.js'],
+        css: ['umi.baa67d11.css'],
+      },
+    });
   });
 });
