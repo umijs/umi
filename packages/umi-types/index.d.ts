@@ -1,6 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import { Stats, Configuration } from 'webpack';
+import * as IWebpack from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 
 /**
@@ -13,7 +13,13 @@ declare enum API_TYPE {
   EVENT,
 }
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig };
+// for multiStats, multiply webpack configs
+export interface MultiStats {
+  stats: IWebpack.Stats[];
+  hash: string;
+}
+
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack };
 
 /**
  * System level API
@@ -222,7 +228,7 @@ interface IEventAsync {
 }
 
 export interface IOnDevCompileDoneFunc {
-  (args: { isFirstCompile: boolean; stats: Stats }): void;
+  (args: { isFirstCompile: boolean; stats: IWebpack.Stats }): void;
 }
 
 interface IOnDevCompileDone {
@@ -238,7 +244,7 @@ interface IOnOptionChange {
 }
 
 export interface IOnBuildSuccessFunc {
-  (args: { stats: Stats[] }): void;
+  (args: { stats: IWebpack.Stats[] }): void;
 }
 
 interface IOnBuildSuccess {
@@ -250,7 +256,7 @@ interface IOnBuildSuccessAsync {
 }
 
 export interface IOnBuildFailFunc {
-  (args: { stats: Stats[]; err: Error }): void;
+  (args: { stats: IWebpack.Stats[]; err: Error }): void;
 }
 
 interface IOnBuildFail {
@@ -382,7 +388,7 @@ export interface IApi {
   config: IConfig;
   cwd: string;
   pkg: IPkg;
-  webpackConfig: Configuration;
+  webpackConfig: IWebpack.Configuration;
   paths: {
     cwd: string;
     outputPath: string;

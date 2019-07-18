@@ -66,9 +66,14 @@ export interface IAFWebpackConfig {
 }
 
 type WhitelistOption = string | RegExp;
-export type IExportSSROpts = {
-  externalWhitelist?: WhitelistOption[];
-} | boolean;
+export type IExportSSROpts =
+  | {
+      /** not external library */
+      externalWhitelist?: WhitelistOption[];
+      /** client manifest, default: ssr-client-mainifest.json */
+      manifestFileName?: string;
+    }
+  | boolean;
 
 interface IConfig extends IAFWebpackConfig {
   // basic config

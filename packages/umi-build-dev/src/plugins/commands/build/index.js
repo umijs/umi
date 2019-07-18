@@ -57,7 +57,10 @@ export default function(api) {
                 if (service.ssrWebpackConfig) {
                   // replace using manifest
                   // __UMI_SERVER__.js/css => umi.${hash}.js/css
-                  replaceChunkMaps(service);
+                  const clientStat = Array.isArray(stats.stats) ? stats.stats[0] : stats;
+                  if (clientStat) {
+                    replaceChunkMaps(service, clientStat);
+                  }
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {
