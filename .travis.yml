@@ -11,6 +11,20 @@ before_script:
 
 after_success:
   - npm run coveralls
+  language: node_js
+
+  node_js:
+    - '8'
+    - '10'
+    - '12'
+
+  before_script:
+    - yarn run build
+    - yarn run bootstrap
+  cache:
+    yarn: true
+    directories:
+      - node_modules
 
 cache:
   directories:
