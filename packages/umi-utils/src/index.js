@@ -8,3 +8,4 @@ export { default as isUrl } from './isUrl';
 export { default as deprecate } from './deprecate';
 export { default as winEOL } from './winEOL';
 export { default as prettierFile } from './prettierFile';
+export { default as getFastGithub } from './getFastGithub';

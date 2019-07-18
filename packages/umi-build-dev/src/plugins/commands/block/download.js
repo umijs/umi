@@ -4,6 +4,7 @@ import { spawnSync } from 'child_process';
 import mkdirp from 'mkdirp';
 import { homedir } from 'os';
 import GitUrlParse from 'git-url-parse';
+import { getFastGithub } from 'umi-utils';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
 
@@ -68,18 +69,26 @@ export function isGitUrl(url) {
   return gitSiteParser.test(url);
 }
 
-export function parseGitUrl(url) {
+export async function parseGitUrl(url, closeFastGithub) {
   const args = GitUrlParse(url);
   const { ref, filepath, resource, full_name: fullName } = args;
+  const fastGithub = await getFastGithub();
+
+  // 如果是 github 并且 autoFastGithub =true 使用
+  // 因为自动转化只支持 github 也可以需要关掉
+  const repo =
+    resource === 'github.com' && !closeFastGithub
+      ? args.toString().replace(`${resource}`, fastGithub)
+      : args.toString();
   return {
-    repo: `${args.toString()}`,
+    repo,
     branch: ref || 'master',
     path: `/${filepath}`,
     id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库
   };
 }
 
-export function getParsedData(url, blockConfig) {
+export async function getParsedData(url, blockConfig) {
   debug(`url: ${url}`);
   let realUrl;
   const defaultGitUrl = blockConfig.defaultGitUrl || 'https://github.com/umijs/umi-blocks';
@@ -101,5 +110,6 @@ export function getParsedData(url, blockConfig) {
   } else {
     throw new Error(`${url} can't match any pattern`);
   }
-  return parseGitUrl(realUrl);
+  const args = await parseGitUrl(realUrl, blockConfig.closeFastGithub);
+  return args;
 }
