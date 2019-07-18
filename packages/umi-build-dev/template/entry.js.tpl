@@ -85,6 +85,7 @@ if (!__IS_BROWSER) {
       htmlElement: activeRoute && activeRoute.path ? htmlTemplateMap[activeRoute.path] : '',
       rootContainer,
       matchPath: activeRoute && activeRoute.path,
+      g_initialData: props,
     };
   }
   // using project react-dom version

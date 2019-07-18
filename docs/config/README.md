@@ -328,6 +328,8 @@ async function UmiServerRender(ctx) {
     htmlElement,
     // match router path, like /user/:id
     matchPath,
+    // initial store data when you use dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // Render the element into html

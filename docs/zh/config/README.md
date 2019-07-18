@@ -329,6 +329,8 @@ async function UmiServerRender(ctx) {
     htmlElement,
     // 匹配成功的前端路由，比如 /user/:id
     matchPath,
+    // 初始化 store 数据，若使用 dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // 元素渲染成 html
