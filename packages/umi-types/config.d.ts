@@ -1,11 +1,9 @@
 // https://umijs.org/config/
-import { ExternalsElement, Condition, Configuration } from 'webpack';
+import { ExternalsElement, Condition } from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
-
-export { Configuration as IWebpackConfig };
 
 export interface IRoute {
   path?: string;
