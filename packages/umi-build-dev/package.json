@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.10.11",
+  "version": "1.10.12",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.4.4",
@@ -9,7 +9,7 @@
     "@babel/template": "7.4.4",
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
-    "af-webpack": "1.9.5",
+    "af-webpack": "1.9.6",
     "babel-plugin-module-resolver": "3.2.0",
     "babel-preset-umi": "1.6.0",
     "chalk": "2.4.2",
@@ -57,16 +57,16 @@
     "stringify-object": "3.3.0",
     "sylvanas": "^0.4.0",
     "terminal-link": "1.3.0",
-    "umi-core": "1.4.4",
+    "umi-core": "1.4.5",
     "umi-history": "0.1.2",
-    "umi-mock": "1.3.2",
+    "umi-mock": "1.3.3",
     "umi-notify": "^0.1.1",
-    "umi-test": "1.6.1",
-    "umi-utils": "1.5.1",
+    "umi-test": "1.6.2",
+    "umi-uni18n": "^1.0.2",
+    "umi-utils": "1.5.2",
     "uppercamelcase": "3.0.0",
     "url-polyfill": "1.1.5",
     "user-home": "2.0.0",
-    "umi-uni18n":"^1.0.2",
     "webpack-node-externals": "1.7.2",
     "whatwg-fetch": "3.0.0",
     "write-file-webpack-plugin": "4.5.0",
@@ -75,7 +75,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@types/webpack-node-externals": "1.6.3",
-    "umi-types": "0.3.13"
+    "umi-types": "0.3.14"
   },
   "repository": {
     "type": "git",
