@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8
+      - image: circleci/node:8.12.0-browsers
     branches:
       ignore:
         - gh-pages # list of branches to ignore
