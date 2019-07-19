@@ -55,6 +55,46 @@ function isSrcPath(path, api) {
   return endWithSlash(winPath(path)) === endWithSlash(winPath(paths.absSrcPath));
 }
 
+// 简单判断当前 dva 版本是否是 esm 规范版本
+function isEsmVersion(version) {
+  /**
+   * dva@2.6 beta 全部走 esm
+   *
+   * @see https://github.com/umijs/umi/issues/2672#issuecomment-505759031
+   */
+  const versionItems = String(version).split('.');
+
+  return [2, 6].every((item, index) => Number(versionItems[index]) >= item);
+}
+
+function handleDvaDependencyImport(api, { dvaVersion, shouldImportDynamic }) {
+  let modifyRouterRootComponentValue = `require('dva/router').routerRedux.ConnectedRouter`;
+  let addRouterImportValue = {
+    source: 'dva/dynamic',
+    specifier: '_dvaDynamic',
+  };
+
+  // esm 版本
+  if (isEsmVersion(dvaVersion)) {
+    const importFromDva = ['routerRedux'];
+
+    if (shouldImportDynamic) {
+      importFromDva.push('dynamic as _dvaDynamic');
+    }
+
+    addRouterImportValue = {
+      source: 'dva',
+      specifier: `{ ${importFromDva.join(', ')} }`,
+    };
+
+    modifyRouterRootComponentValue = `routerRedux.ConnectedRouter`;
+  }
+
+  api.addRouterImport(addRouterImportValue);
+
+  api.modifyRouterRootComponent(modifyRouterRootComponentValue);
+}
+
 export function getGlobalModels(api, shouldImportDynamic) {
   const { paths, routes } = api;
   let models = getModel(paths.absSrcPath, api);
@@ -159,18 +199,7 @@ app.use(require('${winPath(require.resolve('dva-immer'))}')());
     generateInitDva();
   });
 
-  const importFromDva = ['routerRedux'];
-
-  if (shouldImportDynamic) {
-    importFromDva.push('dynamic as _dvaDynamic');
-  }
-
-  api.addRouterImport({
-    source: 'dva',
-    specifier: `{ ${importFromDva.join(', ')} }`,
-  });
-
-  api.modifyRouterRootComponent(`routerRedux.ConnectedRouter`);
+  handleDvaDependencyImport(api, { dvaVersion, shouldImportDynamic });
 
   if (shouldImportDynamic) {
     api.modifyRouteComponent((memo, args) => {
