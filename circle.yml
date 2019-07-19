@@ -8,6 +8,10 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8
+    branches:
+      ignore:
+        - gh-pages # list of branches to ignore
+        - /release\/.*/ # or ignore regexes
     working_directory: ~/umi
 
     steps:
