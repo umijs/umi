@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - run: sudo npm install -g cnpm
-      - run: cnpm install
-      - run: cnpm run bootstrap
+      - run: cnpm install --registry=https://registry.npmjs.org
+      - run: cnpm run bootstrap -- --npm-client=cnpm
       - run: cnpm run build
       - run: cnpm test
