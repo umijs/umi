@@ -20,4 +20,4 @@ jobs:
       - run: cnpm install --registry=https://registry.npmjs.org
       - run: cnpm run bootstrap -- --npm-client=cnpm
       - run: cnpm run build
-      - run: cnpm test -- --maxWorkers=1 --runInBand
+      - run: cnpm run test:coverage -- --maxWorkers=1 --runInBand
