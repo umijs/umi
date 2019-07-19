@@ -37,6 +37,7 @@ beforeAll(async () => {
       '--no-first-run',
       '--no-zygote',
       '--no-sandbox',
+      '--disable-setuid-sandbox',
     ],
   });
 });
