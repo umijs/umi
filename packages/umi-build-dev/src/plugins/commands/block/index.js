@@ -42,10 +42,10 @@ export default api => {
     return retCtx; // return for test
   }
 
-  function getCtx(url, args = {}) {
+  async function getCtx(url, args = {}) {
     debug(`get url ${url}`);
 
-    const ctx = getParsedData(url, blockConfig);
+    const ctx = await getParsedData(url, { ...blockConfig, ...args });
 
     if (!ctx.isLocal) {
       const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -95,7 +95,7 @@ export default api => {
       uni18n,
     } = args;
 
-    const ctx = getCtx(url, args);
+    const ctx = await getCtx(url, args);
 
     spinner.succeed();
 

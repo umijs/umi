@@ -238,7 +238,7 @@ export async function gitUpdate(ctx, spinner) {
  * @param {*} spinner
  */
 export async function gitClone(ctx, spinner) {
-  spinner.start(`🔍  lone git repo from ${ctx.repo}`);
+  spinner.start(`🔍  clone git repo from ${ctx.repo}`);
   try {
     await execa(
       `git`,
