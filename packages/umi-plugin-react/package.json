@@ -37,7 +37,7 @@
     "umi-plugin-polyfills": "1.4.2",
     "umi-plugin-routes": "1.4.4",
     "umi-utils": "1.5.1",
-    "webpack": "4.35.0",
+    "webpack": "4.36.1",
     "workbox-webpack-plugin": "3.6.3"
   },
   "devDependencies": {
