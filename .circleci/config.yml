@@ -1,0 +1,19 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8
+    working_directory: ~/umi
+
+    steps:
+      - checkout
+      - run: npm install -g cnpm --registry=https://registry.npm.taobao.org
+      - run: cnpm install
+      - run: cnpm run bootstrap
+      - run: cnpm run build
+      - run: cnpm test
