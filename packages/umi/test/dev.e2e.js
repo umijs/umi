@@ -11,7 +11,7 @@ describe('normal', () => {
   const port = 12341;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   });
 
   beforeEach(async () => {
