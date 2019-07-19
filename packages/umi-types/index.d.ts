@@ -491,7 +491,7 @@ export interface IApi {
   modifyEntryHistory: IModify<string>;
   modifyRouteComponent: IModify<string, IModifyRouteComponentArgs>;
   modifyRouterRootComponent: IModify<string>;
-  modifyWebpackConfig: IModify<Configuration>;
+  modifyWebpackConfig: IModify<IWebpack.Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
