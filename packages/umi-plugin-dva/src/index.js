@@ -69,10 +69,12 @@ function isEsmVersion(version) {
 
 function handleDvaDependencyImport(api, { dvaVersion, shouldImportDynamic }) {
   let modifyRouterRootComponentValue = `require('dva/router').routerRedux.ConnectedRouter`;
-  let addRouterImportValue = {
-    source: 'dva/dynamic',
-    specifier: '_dvaDynamic',
-  };
+  let addRouterImportValue = shouldImportDynamic
+    ? {
+        source: 'dva/dynamic',
+        specifier: '_dvaDynamic',
+      }
+    : null;
 
   // esm 版本
   if (isEsmVersion(dvaVersion)) {
@@ -90,7 +92,9 @@ function handleDvaDependencyImport(api, { dvaVersion, shouldImportDynamic }) {
     modifyRouterRootComponentValue = `routerRedux.ConnectedRouter`;
   }
 
-  api.addRouterImport(addRouterImportValue);
+  if (addRouterImportValue) {
+    api.addRouterImport(addRouterImportValue);
+  }
 
   api.modifyRouterRootComponent(modifyRouterRootComponentValue);
 }
