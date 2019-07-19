@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo npm install -g cnpm --registry=https://registry.npm.taobao.org
+      - run: sudo npm install -g cnpm
       - run: cnpm install
       - run: cnpm run bootstrap
       - run: cnpm run build
