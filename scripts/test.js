@@ -5,7 +5,7 @@ startDevServers()
   .then(devServers => {
     const testCmd = spawn(
       /^win/.test(process.platform) ? 'npm.cmd' : 'npm',
-      ['run', 'test:coverage'],
+      ['run', 'test:coverage', '--'].concat(process.argv.slice(2)),
       {
         stdio: 'inherit',
       },
