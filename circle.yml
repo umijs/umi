@@ -8,6 +8,9 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:latest-browsers
+    environment:
+      NPM_CONFIG_LOGLEVEL: error
+      JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
     branches:
       ignore:
         - gh-pages # list of branches to ignore
@@ -16,8 +19,14 @@ jobs:
 
     steps:
       - checkout
+      - restore_cache:
+          key: node-modules-{{ checksum "package.json" }}
       - run: sudo npm install -g cnpm
       - run: cnpm install --registry=https://registry.npmjs.org
       - run: cnpm run bootstrap -- --npm-client=cnpm
       - run: cnpm run build
       - run: cnpm run test:coverage -- --maxWorkers=1 --runInBand
+      - save_cache:
+          key: node-modules-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
