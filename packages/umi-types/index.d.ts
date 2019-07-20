@@ -1,5 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
+import { DefaultMethods } from 'signale';
 import * as IWebpack from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 
@@ -424,16 +425,7 @@ export interface IApi {
    * Tool class API
    * https://umijs.org/plugin/develop.html#tool-class-api
    */
-  log: {
-    info: ILog;
-    warn: ILog;
-    error: ILog<string | Error>;
-    fatal: ILog;
-    success: ILog;
-    complete: ILog;
-    pending: ILog;
-    log: ILog;
-  };
+  log: { [key in DefaultMethods]: ILog<any> };
   winPath: IWinPath;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
