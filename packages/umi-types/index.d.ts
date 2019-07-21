@@ -1,5 +1,7 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
+import { DefaultMethods } from 'signale';
+import * as lodash from 'lodash';
 import * as IWebpack from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 
@@ -424,16 +426,8 @@ export interface IApi {
    * Tool class API
    * https://umijs.org/plugin/develop.html#tool-class-api
    */
-  log: {
-    info: ILog;
-    warn: ILog;
-    error: ILog<string | Error>;
-    fatal: ILog;
-    success: ILog;
-    complete: ILog;
-    pending: ILog;
-    log: ILog;
-  };
+  log: { [key in DefaultMethods]: ILog<any> };
+  _: typeof lodash;
   winPath: IWinPath;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
@@ -491,7 +485,7 @@ export interface IApi {
   modifyEntryHistory: IModify<string>;
   modifyRouteComponent: IModify<string, IModifyRouteComponentArgs>;
   modifyRouterRootComponent: IModify<string>;
-  modifyWebpackConfig: IModify<Configuration>;
+  modifyWebpackConfig: IModify<IWebpack.Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
