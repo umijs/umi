@@ -111,7 +111,6 @@ export default function(api, options = {}) {
 
   api.addRendererWrapperWithComponent(() => {
     const localeFileList = getLocaleFileList(paths.absSrcPath, paths.absPagesPath, config.singular);
-    console.log('umi locale options', options);
     const wrapperTpl = readFileSync(join(__dirname, '../template/wrapper.jsx.tpl'), 'utf-8');
     const defaultLocale = options.default || 'zh-CN';
     const [lang, country] = defaultLocale.split('-');
