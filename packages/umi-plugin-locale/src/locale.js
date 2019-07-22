@@ -91,5 +91,6 @@ module.exports = {
   getLocale,
   _setIntlObject,
   LangContext,
+  localeContext,
   _setLocaleContext,
 };
