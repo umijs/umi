@@ -12,7 +12,7 @@ umi 通过 [create-umi](https://github.com/umijs/create-umi) 提供脚手架能�
 
 ## 创建 umi 项目
 
-> 你可以通过 `yarn create umi` 或 `npm create umi` 使用 create-umi。推荐使用 `yarn create` 命令，能确保每次使用最新的脚手架。
+> 你可以通过 `yarn create umi` 或 `npx create-umi` 使用 create-umi。推荐使用 `yarn create` 命令，能确保每次使用最新的脚手架。
 
 首先，在新目录下使用 `yarn create umi`，
 
