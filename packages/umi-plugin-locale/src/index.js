@@ -118,7 +118,7 @@ export default function(api, options = {}) {
       localeList: localeFileList,
       antd: options.antd === undefined ? true : options.antd,
       baseNavigator: options.baseNavigator === undefined ? true : options.baseNavigator,
-      useLocalStorage: options.useLocalStorage || true,
+      useLocalStorage: options.useLocalStorage !== false,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,
