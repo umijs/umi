@@ -111,13 +111,14 @@ export default function(api, options = {}) {
 
   api.addRendererWrapperWithComponent(() => {
     const localeFileList = getLocaleFileList(paths.absSrcPath, paths.absPagesPath, config.singular);
+    console.log('umi locale options', options);
     const wrapperTpl = readFileSync(join(__dirname, '../template/wrapper.jsx.tpl'), 'utf-8');
     const defaultLocale = options.default || 'zh-CN';
     const [lang, country] = defaultLocale.split('-');
     const wrapperContent = Mustache.render(wrapperTpl, {
       localeList: localeFileList,
-      antd: options.antd === undefined ? true : options.antd,
-      baseNavigator: options.baseNavigator === undefined ? true : options.baseNavigator,
+      antd: options.antd !== false,
+      baseNavigator: options.baseNavigator !== false,
       useLocalStorage: options.useLocalStorage !== false,
       defaultLocale,
       defaultLang: lang,
