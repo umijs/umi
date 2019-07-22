@@ -277,6 +277,19 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
+interface IAction {
+  type: string;
+  payload?: any;
+}
+
+export interface IOnUISocketFunc {
+  (args: { action: IAction; send: any }): void;
+}
+
+interface IOnUISocket {
+  (fn: IOnUISocketFunc): void;
+}
+
 export interface IChangeWebpackConfigFunc<T, U> {
   (webpackConfig: T, AFWebpack: { webpack: U }): T | void;
 }
@@ -419,6 +432,7 @@ export interface IApi {
    * https://umijs.org/plugin/develop.html#tool-class-api
    */
   log: {
+    debug: ILog;
     info: ILog;
     warn: ILog;
     error: ILog<string | Error>;
@@ -455,6 +469,7 @@ export interface IApi {
   onHTMLRebuild: IOnHTMLRebuild;
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
+  onUISocket: IOnUISocket;
 
   /**
    * Application class API
@@ -477,6 +492,7 @@ export interface IApi {
   addEntryImport: IAdd<IAddImportOpts>;
   addEntryCodeAhead: IAdd<string>;
   addEntryCode: IAdd<string>;
+  addUIPlugin: IAdd<string>;
   addRouterImport: IAdd<IAddImportOpts>;
   addRouterImportAhead: IAdd<IAddImportOpts>;
   addRendererWrapperWithComponent: IAdd<IAddImportOpts>;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Spin } from 'antd';
 import decamelize from 'decamelize';
-import styles from './client.module.less';
+import styles from './ui.module.less';
 
 const { Search } = Input;
 

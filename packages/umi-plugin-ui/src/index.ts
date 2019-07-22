@@ -1,7 +1,8 @@
 import { join } from 'path';
+import { IApi } from 'umi-types';
 import getClientScript from './getClientScript';
 
-export default function(api) {
+export default function(api: IApi) {
   const { log } = api;
 
   api.onUISocket(({ action, send }) => {
@@ -19,8 +20,8 @@ export default function(api) {
     }
   });
 
-  api.addUIPlugin(require.resolve('./plugins/blocks/dist/client.umd'));
-  require('./plugins/blocks/server').default(api);
+  api.addUIPlugin(require.resolve('./plugins/blocks/dist/ui.umd'));
+  require('./plugins/blocks/index').default(api);
 
   api.registerCommand(
     'ui',
@@ -38,9 +39,7 @@ export default function(api) {
       const app = express();
       app.use(serveStatic(join(__dirname, '../../../../../../ui/dist')));
 
-      const sockjs = require('sockjs', {
-        sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js',
-      });
+      const sockjs = require('sockjs');
       const ss = sockjs.createServer();
       ss.on('connection', conn => {
         conn.on('close', () => {});

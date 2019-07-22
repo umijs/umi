@@ -1,0 +1,26 @@
+{
+  "name": "umi-plugin-ui",
+  "version": "0.0.1-alpha.1",
+  "main": "./lib/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "devDependencies": {
+    "umi-types": "0.3.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi",
+    "directory": "packages/umi-plugin-ui"
+  },
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "serve-static": "^1.14.1",
+    "sockjs": "^0.3.19"
+  }
+}

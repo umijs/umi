@@ -1,5 +1,5 @@
 export default {
-  entry: 'client.js',
+  entry: 'ui.js',
   umd: {
     name: 'blocks',
     minFile: false,
