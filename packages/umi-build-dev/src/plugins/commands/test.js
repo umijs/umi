@@ -1,4 +1,6 @@
 import { statSync, existsSync } from 'fs';
+import getRouteManager from './getRouteManager';
+import getFilesGenerator from './getFilesGenerator';
 
 function getAliasPathWithKey(alias, key) {
   const thePath = alias[key];
@@ -8,8 +10,21 @@ function getAliasPathWithKey(alias, key) {
   return thePath;
 }
 
+function genTmpDir(service, config, debug) {
+  debug('test required to generate absTmpDirPath');
+  const RoutesManager = getRouteManager(service);
+  RoutesManager.fetchRoutes();
+
+  const filesGenerator = getFilesGenerator(service, {
+    RoutesManager,
+    mountElementId: config.mountElementId,
+  });
+  debug('generate files');
+  filesGenerator.generate();
+}
+
 export default function(api) {
-  const { debug } = api;
+  const { service, config, paths, debug } = api;
   api.registerCommand(
     'test',
     {
@@ -30,6 +45,10 @@ export default function(api) {
       }, {});
       debug('moduleNameWrapper');
       debug(moduleNameMapper);
+
+      if (!existsSync(paths.absTmpDirPath)) {
+        genTmpDir(service, config, debug);
+      }
 
       args._ = args._.slice(1);
       if (args.w) args.watch = args.w;
