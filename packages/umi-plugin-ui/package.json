@@ -7,7 +7,8 @@
     "src"
   ],
   "devDependencies": {
-    "umi-types": "0.3.11"
+    "umi-types": "0.3.11",
+    "decamelize": "3.2.0"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,5 @@
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.1",
-    "serve-static": "^1.14.1",
-    "sockjs": "^0.3.19"
-  }
+  "license": "MIT"
 }

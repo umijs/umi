@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import getRouteManager from '../../../getRouteManager';
+// import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
   for (const route of routes) {
@@ -15,9 +15,10 @@ export function routeExists(path, routes) {
 
 export default function(api) {
   function getRoutes() {
-    const RoutesManager = getRouteManager(api.service);
-    RoutesManager.fetchRoutes();
-    return RoutesManager.routes;
+    return [];
+    // const RoutesManager = getRouteManager(api.service);
+    // RoutesManager.fetchRoutes();
+    // return RoutesManager.routes;
   }
 
   function getBlocks() {

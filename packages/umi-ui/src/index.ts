@@ -46,7 +46,7 @@ export default function(api: IApi) {
         conn.on('data', message => {
           try {
             const { type, payload } = JSON.parse(message);
-            log.debug('GET Socket:', message);
+            log.debug('>> GET Socket Message:', message);
             api.applyPlugins('onUISocket', {
               args: {
                 action: { type, payload },

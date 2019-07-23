@@ -12,7 +12,7 @@ export default {
   },
   plugins: [
     [
-      join(__dirname, '../packages/umi-plugin-react/lib/index.js'),
+      join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
         antd: true,
         links: [

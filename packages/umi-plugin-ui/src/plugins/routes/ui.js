@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Button, Icon, Popconfirm } from 'antd';
-import './client.css';
+import './ui.css';
 import model from './model';
 
 const Routes = connect(state => ({

@@ -7,7 +7,7 @@ const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
 function buildUIApp(opts = {}) {
   console.log(`Build ui app`);
   const { watch } = opts;
-  fork(UMI_BIN, ['build', '--cwd', './ui', ...(watch ? ['--watch'] : [])]);
+  fork(UMI_BIN, ['build', '--cwd', './packages/umi-ui/client', ...(watch ? ['--watch'] : [])]);
 }
 
 function buildPlugins(root, opts = {}) {
@@ -22,7 +22,7 @@ function buildPlugins(root, opts = {}) {
   buildUIApp({
     watch,
   });
-  buildPlugins('packages/umi-build-dev/src/plugins/commands/ui/plugins/blocks', {
+  buildPlugins('packages/umi-plugin-ui/src/plugins/blocks', {
     watch,
   });
 })();

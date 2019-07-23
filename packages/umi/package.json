@@ -17,6 +17,7 @@
     "semver": "6.1.1",
     "signale": "1.4.0",
     "umi-build-dev": "1.10.8",
+    "umi-ui": "0.0.1-alpha.1",
     "umi-utils": "1.5.1",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
