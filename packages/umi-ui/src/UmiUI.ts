@@ -119,8 +119,10 @@ export default class UmiUI {
   async start() {
     return new Promise((resolve, reject) => {
       const express = require('express');
+      const compression = require('compression');
       const serveStatic = require('serve-static');
       const app = express();
+      app.use(compression());
       app.use(serveStatic(join(__dirname, '../client/dist')));
 
       const sockjs = require('sockjs');
