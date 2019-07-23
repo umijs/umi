@@ -12,7 +12,7 @@ Umi provides scaffolding through [create-umi](https://github.com/umijs/create-um
 
 ## Create umi project
 
->  You can use create-umi via `yarn create umi` or `npx create-umi`. Recommend to use `yarn create`, to make sure use the latest boilerplate everytime.
+>  You can use create-umi via `yarn create umi` or `npm create umi` (use `npx create-umi` if node version less than 10). Recommend to use `yarn create`, to make sure use the latest boilerplate everytime.
 
 First, use `yarn create umi` in the new directory.
 
