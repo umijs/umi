@@ -34,9 +34,11 @@ export default function(api: IApi) {
     },
     (args = {}) => {
       const express = require('express');
+      const compression = require('compression');
       const serveStatic = require('serve-static');
 
       const app = express();
+      app.use(compression());
       app.use(serveStatic(join(__dirname, '../../../../../../ui/dist')));
 
       const sockjs = require('sockjs');
