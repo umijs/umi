@@ -24,7 +24,7 @@ jobs:
         displayName: install
       - script: npm run bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: COVERAGE=1 npm run build
         displayName: build
       - script: npm run test
         env:
@@ -45,7 +45,7 @@ jobs:
         displayName: install
       - script: npm run bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: COVERAGE=1 npm run build
         displayName: build
       - script: npm run test
         displayName: test
@@ -64,7 +64,7 @@ jobs:
         displayName: install
       - script: npm run bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: COVERAGE=1 npm run build
         displayName: build
       - script: npm run test
         displayName: test

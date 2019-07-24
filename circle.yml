@@ -24,7 +24,7 @@ jobs:
       - run: sudo npm install -g cnpm
       - run: cnpm install --registry=https://registry.npmjs.org
       - run: cnpm run bootstrap -- --npm-client=cnpm
-      - run: cnpm run build
+      - run: COVERAGE=1 cnpm run build
       - run: npm run test -- --maxWorkers=1 --runInBand
       - save_cache:
           key: node-modules-{{ checksum "package.json" }}

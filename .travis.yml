@@ -6,10 +6,11 @@ node_js:
   - '12'
 
 before_script:
-  - npm run build
   - npm run bootstrap
+  - COVERAGE=1 npm run build
 
 after_success:
+  - CODECOV_TOKEN="38b18ad2-deb9-4008-aa11-817605984656" npm run codecov
   - npm run coveralls
 
 cache:

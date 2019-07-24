@@ -42,6 +42,9 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  if (!browser) {
+    return;
+  }
   page = await browser.newPage();
 });
 
@@ -69,6 +72,7 @@ async function build(cwd: string, name: string) {
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
+      COVERAGE: '1', // 生成覆盖率报告
     } as any;
     if (name.includes('app_root')) {
       env.APP_ROOT = './root';
@@ -89,10 +93,8 @@ async function build(cwd: string, name: string) {
 
 async function buildAndServe(name: string) {
   const cwd = join(fixtures, name);
+  await build(cwd, name);
   const targetDist = name.includes('app_root') ? join(cwd, 'root', 'dist') : join(cwd, 'dist');
-  if (!existsSync(targetDist)) {
-    await build(cwd, name);
-  }
   return new Promise(resolve => {
     port += 1;
     servers[name] = { port };

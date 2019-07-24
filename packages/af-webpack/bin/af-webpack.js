@@ -1,10 +1,16 @@
 #!/usr/bin/env node
 
+const { coverageReport } = require('umi-test');
 const getConfig = require('../getConfig');
 const getUserConfig = require('../lib/getUserConfig');
 
 const cwd = process.cwd();
 const webpackConfig = getWebpackConfig();
+
+coverageReport({
+  targetDir: join(__dirname, '../../../node_modules'),
+  fileName: 'af-webpack',
+});
 
 switch (process.argv[2]) {
   case 'dev':
@@ -27,7 +33,7 @@ switch (process.argv[2]) {
 function getWebpackConfig() {
   const { config: userConfig } = getUserConfig.default({
     cwd,
-    configFile: process.env.AF_CONFIG_FILE || '.webpackrc'
+    configFile: process.env.AF_CONFIG_FILE || '.webpackrc',
   });
   return getConfig.default({
     entry: {

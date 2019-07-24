@@ -2,12 +2,12 @@ import jest from 'jest';
 import { options as CliOptions } from 'jest-cli/build/cli/args';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import coverageReport from './coverageReport';
 
 const debug = require('debug')('umi-test');
 
-process.env.NODE_ENV = 'test';
-
 export default function(originOpts = {}) {
+  process.env.NODE_ENV = 'test';
   const opts = { ...originOpts };
   const { cwd = process.cwd(), moduleNameMapper } = opts;
   let transformInclude = opts.transformInclude || [];
@@ -95,3 +95,5 @@ export default function(originOpts = {}) {
       });
   });
 }
+
+export { coverageReport };

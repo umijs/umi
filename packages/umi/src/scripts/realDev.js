@@ -1,5 +1,12 @@
 import yParser from 'yargs-parser';
+import { join } from 'path';
+import { coverageReport } from 'umi-test';
 import buildDevOpts from '../buildDevOpts';
+
+coverageReport({
+  targetDir: join(__dirname, '../../../../node_modules'),
+  fileName: 'realDev',
+});
 
 let closed = false;
 

@@ -13,6 +13,7 @@ function startDevServer(opts = {}) {
         BROWSER: 'none',
         PROGRESS: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
+        COVERAGE: '1', // 生成 lib 文件的覆盖率数据
       },
     });
     child.on('message', args => {

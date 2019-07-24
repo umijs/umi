@@ -4,12 +4,12 @@ import webpack from 'webpack';
 import assert from 'assert';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import { isPlainObject } from 'lodash';
 import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, DONE } from './send';
 import choosePort from './choosePort';
-import { isPlainObject } from 'lodash';
 
 const isInteractive = process.stdout.isTTY;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
@@ -95,7 +95,6 @@ export default function dev({
           isFirstCompile,
           stats,
         });
-
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);

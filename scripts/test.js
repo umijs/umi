@@ -1,6 +1,8 @@
 const { spawn } = require('child_process');
 const startDevServers = require('./startDevServers');
 
+process.env.COVERAGE = '1';
+
 startDevServers()
   .then(devServers => {
     const argv = process.argv.slice(2) || [];

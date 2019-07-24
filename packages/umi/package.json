@@ -18,6 +18,7 @@
     "signale": "1.4.0",
     "umi-build-dev": "1.10.15",
     "umi-utils": "1.5.4",
+    "umi-test": "1.7.0",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
   },
