@@ -260,23 +260,59 @@ export default {
 
 Configure whether to enable Server-Side Render, which is off by default.
 
-When enabled, `umi.server.js` file is also generated when the client static file is generated.
+When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also generated when the client static file is generated.
 
 ```js
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // client chunkMaps manifest, default: ssr-client-mainifest.json
+    manifestFileName: 'ssr-client-mainifest.json',
   },
-  // 需要开启
-  manifest: {},
 };
+```
+
+`ssr-client-mainifest.json` is a resource mapping file by routing level, for example:
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 Use the following in Node.js:
 
 ```js
 // Return the rendered html fragment according to the ctx.req.url
+/**
+ *
+ * @param {*}
+ * ctx (server context, `serverRender` get current active route according to `ctx.req.url`)
+ * @return html fragment string
+ */
 async function UmiServerRender(ctx) {
   // mock a window object
   global.window = {};
@@ -288,8 +324,12 @@ async function UmiServerRender(ctx) {
   const {
     // Current root container element
     rootContainer,
-    // Document html Element = rootContainer + template Element
+    // page template
     htmlElement,
+    // match router path, like /user/:id
+    matchPath,
+    // initial store data when you use dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // Render the element into html
@@ -297,6 +337,53 @@ async function UmiServerRender(ctx) {
   return ssrHtml;
 }
 ```
+
+Page Data Pre-Fetching:
+
+```js
+// pages/news/$id.jsx
+const News = props => {
+  const { id, name, count } = props || {};
+
+  return (
+    <div>
+      <p>
+        {id}-{name}
+      </p>
+    </div>
+  );
+};
+
+/**
+ *
+ * @param {*}
+ * {
+ *  route (current active route)
+ *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
+ *  isServer (whether run in Server)
+ * }
+ */
+News.getInitialProps = async ({ route, store, isServer }) => {
+  const { id } = route.params;
+  const data = [
+    {
+      id: 0,
+      name: 'zero',
+    },
+    {
+      id: 1,
+      name: 'hello',
+    },
+    {
+      id: 2,
+      name: 'world',
+    },
+  ];
+  return Promise.resolve(data[id] || data[0]);
+};
+```
+
+> in data pre-fetching, we can move the method of fetching data using the `componentDidMount` or `React.useEffect` lifecycles into `getInitialProps`.
 
 [using Pre-Rendering](/plugin/umi-plugin-prerender.html), [umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 

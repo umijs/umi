@@ -116,9 +116,9 @@ export default function(api, options = {}) {
     const [lang, country] = defaultLocale.split('-');
     const wrapperContent = Mustache.render(wrapperTpl, {
       localeList: localeFileList,
-      antd: options.antd === undefined ? true : options.antd,
-      baseNavigator: options.baseNavigator === undefined ? true : options.baseNavigator,
-      useLocalStorage: options.useLocalStorage || true,
+      antd: options.antd !== false,
+      baseNavigator: options.baseNavigator !== false,
+      useLocalStorage: options.useLocalStorage !== false,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,

@@ -262,23 +262,58 @@ export default {
 
 用于服务端渲染（Server-Side Render）。
 
-开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 文件。
+开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 和 `ssr-client-mainifest.json` 文件。
 
 ```js
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
+    manifestFileName: 'ssr-client-mainifest.json',
   },
-  // need enable
-  manifest: {},
 };
+```
+
+其中 `ssr-client-mainifest.json` 是按路由级别的资源映射文件，例如：
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 在 Node.js 中使用如下：
 
 ```js
-// 根据 ctx.req.url 路径，返回渲染后的 html 片段
+/**
+ *
+ * @param {*}
+ * ctx（server 执行上下文，`serverRender` 通过 `ctx.req.url` 获取当前路由）
+ * @return html 片段
+ */
 async function UmiServerRender(ctx) {
   // mock 一个 window 对象
   global.window = {};
@@ -290,8 +325,12 @@ async function UmiServerRender(ctx) {
   const {
     // 当前路由元素
     rootContainer,
-    // 文档 html 元素 = 路由元素 + html 模板元素
+    // 页面模板
     htmlElement,
+    // 匹配成功的前端路由，比如 /user/:id
+    matchPath,
+    // 初始化 store 数据，若使用 dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // 元素渲染成 html
@@ -299,6 +338,53 @@ async function UmiServerRender(ctx) {
   return ssrHtml;
 }
 ```
+
+页面进行数据预取：
+
+```js
+// pages/news/$id.jsx
+const News = props => {
+  const { id, name, count } = props || {};
+
+  return (
+    <div>
+      <p>
+        {id}-{name}
+      </p>
+    </div>
+  );
+};
+
+/**
+ *
+ * @param {*}
+ * {
+ *  route （当前路由信息）
+ *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
+ *  isServer (是否为服务端执行环境)
+ * }
+ */
+News.getInitialProps = async ({ route, store, isServer }) => {
+  const { id } = route.params;
+  const data = [
+    {
+      id: 0,
+      name: 'zero',
+    },
+    {
+      id: 1,
+      name: 'hello',
+    },
+    {
+      id: 2,
+      name: 'world',
+    },
+  ];
+  return Promise.resolve(data[id] || data[0]);
+};
+```
+
+> 数据预取可将之前使用 `componentDidMount` 或 `React.useEffect` 时机获取数据的方法，移至 `getInitialProps`。
 
 [预渲染（Pre-Rendering）使用](/zh/plugin/umi-plugin-prerender.html)，[umi-example-ssr-with-egg](https://github.com/umijs/umi-example-ssr-with-egg)
 

@@ -6,12 +6,13 @@ import ora from 'ora';
 import { merge, isPlainObject } from 'lodash';
 import getNpmRegistry from 'getnpmregistry';
 import clipboardy from 'clipboardy';
+import { winPath } from 'umi-utils';
 import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
-import tsToJs from './tsTojs';
+import clearGitCache from './clearGitCache';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -22,6 +23,9 @@ export default api => {
   async function block(args = {}, opts = {}) {
     let retCtx;
     switch (args._[0]) {
+      case 'clear':
+        await clearGitCache(args, api);
+        break;
       case 'add':
         retCtx = await add(args, opts);
         break;
@@ -36,10 +40,10 @@ export default api => {
     return retCtx; // return for test
   }
 
-  function getCtx(url, args = {}) {
+  async function getCtx(url, args = {}) {
     debug(`get url ${url}`);
 
-    const ctx = getParsedData(url, blockConfig);
+    const ctx = await getParsedData(url, { ...blockConfig, ...args });
 
     if (!ctx.isLocal) {
       const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -86,9 +90,10 @@ export default api => {
       layout: isLayout,
       registry = registryUrl,
       js,
+      uni18n,
     } = args;
 
-    const ctx = getCtx(url, args);
+    const ctx = await getCtx(url, args);
 
     spinner.succeed();
 
@@ -100,8 +105,12 @@ export default api => {
 
     // 3. update git repo
     if (!ctx.isLocal && ctx.repoExists) {
-      opts.remoteLog('Update the git repo');
-      await gitUpdate(ctx, spinner);
+      try {
+        opts.remoteLog('Update the git repo');
+        await gitUpdate(ctx, spinner);
+      } catch (error) {
+        log.info('发生错误，请尝试 `umi block clear`');
+      }
     }
 
     // make sure sourcePath exists
@@ -125,7 +134,7 @@ export default api => {
       ctx.routePath = `/${blockName}`;
       log.info(`Not find --path, use block name '${ctx.routePath}' as the target path.`);
     } else {
-      ctx.routePath = path;
+      ctx.routePath = winPath(path);
     }
 
     // fix demo => /demo
@@ -168,7 +177,7 @@ export default api => {
       env: {
         cwd: api.cwd,
       },
-      resolved: __dirname,
+      resolved: winPath(__dirname),
     });
     try {
       await generator.run();
@@ -195,7 +204,7 @@ export default api => {
               env: {
                 cwd: api.cwd,
               },
-              resolved: __dirname,
+              resolved: winPath(__dirname),
             }).run();
           }),
         );
@@ -210,14 +219,20 @@ export default api => {
     if (js) {
       opts.remoteLog('TypeScript to JavaScript');
       spinner.start('🤔  TypeScript to JavaScript');
-      tsToJs(generator.blockFolderPath);
+      require('./tsTojs').default(generator.blockFolderPath);
+      spinner.succeed();
+    }
+
+    if (uni18n) {
+      spinner.start('🌎  remove i18n code');
+      require('./remove-locale').default(generator.blockFolderPath, uni18n);
       spinner.succeed();
     }
 
     // 6. write routes
     if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
       opts.remoteLog('Write route');
-      spinner.start(`🧐  Write route ${generator.path} to ${api.service.userConfig.file}`);
+      spinner.start(`⛱  Write route ${generator.path} to ${api.service.userConfig.file}`);
       // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
       // 未来可以做下自动写入注释配置，支持约定式路由
       const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
@@ -282,6 +297,8 @@ Commands:
 
   ${chalk.cyan(`add `)}     add a block to your project
   ${chalk.cyan(`list`)}     list all blocks
+  ${chalk.cyan(`clear`)}    clear all git cache
+
 
 Options for the ${chalk.cyan(`add`)} command:
 
@@ -293,8 +310,9 @@ Options for the ${chalk.cyan(`add`)} command:
   ${chalk.green(`--dry-run           `)} for test, don't install dependencies and download
   ${chalk.green(`--page              `)} add the block to a independent directory as a page
   ${chalk.green(`--layout            `)} add as a layout block (add route with empty children)
-  ${chalk.green(`--js            `)} If the block is typescript, convert to js
-  ${chalk.green(`--registry            `)} set up npm installation using the registry
+  ${chalk.green(`--js                `)} If the block is typescript, convert to js
+  ${chalk.green(`--registry          `)} set up npm installation using the registry
+  ${chalk.green(`--uni18n          `)}   remove umi-plugin-locale formatMessage
 
 Examples:
 

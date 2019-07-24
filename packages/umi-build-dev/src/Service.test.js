@@ -439,7 +439,7 @@ describe('Service', () => {
     );
     service.runCommand('build');
 
-    expect(service.config).toEqual({ ssr: true, manifest: {} });
+    expect(service.config).toEqual({ ssr: true });
     expect(service.webpackConfig).toBeTruthy();
     expect(
       pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),

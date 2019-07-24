@@ -72,7 +72,7 @@ function withRoutes(route) {
   return ret;
 }
 
-function wrapWithInitialProps(WrappedComponent) {
+function wrapWithInitialProps(WrappedComponent, initialProps) {
   return class extends React.Component {
     constructor(props) {
       super(props);
@@ -80,12 +80,7 @@ function wrapWithInitialProps(WrappedComponent) {
         extraProps: {},
       };
     }
-    async getInitialProps() {
-      const extraProps = await WrappedComponent.getInitialProps();
-      this.setState({
-        extraProps,
-      });
-    }
+
     async componentDidMount() {
       const { history } = this.props;
       window.onpopstate = () => {
@@ -95,16 +90,29 @@ function wrapWithInitialProps(WrappedComponent) {
         this.getInitialProps();
       }
     }
+
+    // 前端路由切换时，也需要执行 getInitialProps
+    async getInitialProps() {
+      // the values may be different with findRoute.js
+      const { match } = this.props;
+      const extraProps = await WrappedComponent.getInitialProps({
+        isServer: false,
+        route: match,
+        ...initialProps,
+      });
+      this.setState({
+        extraProps,
+      });
+    }
+
     render() {
       return (
-        <div>
-          <WrappedComponent
-            {...{
-              ...this.props,
-              ...this.state.extraProps,
-            }}
-          />
-        </div>
+        <WrappedComponent
+          {...{
+            ...this.props,
+            ...this.state.extraProps,
+          }}
+        />
       );
     }
   };
@@ -153,7 +161,10 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                 });
                 let { component: Component } = route;
                 if (__IS_BROWSER && Component.getInitialProps) {
-                  Component = wrapWithInitialProps(Component);
+                  const initialProps = plugins.apply('modifyInitialProps', {
+                    initialValue: {},
+                  });
+                  Component = wrapWithInitialProps(Component, initialProps);
                 }
                 return (
                   <Component {...newProps} route={route}>

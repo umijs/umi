@@ -1,11 +1,18 @@
 import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 import chalk from 'chalk';
+import { IExportSSROpts } from 'umi-types/config';
+import { IApi, IWebpack } from 'umi-types';
 import nodeExternals from 'webpack-node-externals';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
-export default function(service, opts = {}) {
+interface IOpts {
+  ssr?: IExportSSROpts;
+  watch?: boolean;
+}
+
+export default function(service: IApi, opts: IOpts = {}) {
   const { ssr, watch } = opts;
   const { config } = service;
 
@@ -33,7 +40,7 @@ export default function(service, opts = {}) {
     }
   };
 
-  const webpackConfig = service.applyPlugins('modifyWebpackConfig', {
+  const webpackConfig: IWebpack.Configuration = service.applyPlugins('modifyWebpackConfig', {
     initialValue: getConfig({
       ...afWebpackOpts,
       ssr,
@@ -47,15 +54,16 @@ export default function(service, opts = {}) {
         `WARNING: UmiJS SSR is still in beta, you can open issues or PRs in https://github.com/umijs/umi`,
       ),
     );
-    const externalWhitelist = [
-      /\.(css|less|sass|scss)$/,
-      /^umi(\/.*)?$/,
-      ...(ssr.externalWhitelist || []),
-    ];
-    debug(`externalWhitelist:`, externalWhitelist);
-    webpackConfig.externals = nodeExternals({
-      externalWhitelist,
-    });
+    const nodeExternalsOpts = {
+      whitelist: [
+        /\.(css|less|sass|scss)$/,
+        /^umi(\/.*)?$/,
+        'umi-plugin-locale',
+        ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
+      ],
+    };
+    debug(`nodeExternalOpts:`, nodeExternalsOpts);
+    webpackConfig.externals = nodeExternals(nodeExternalsOpts);
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';

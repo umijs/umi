@@ -24,5 +24,7 @@ module.exports = {
     '/packages/umi-build-dev/src/plugins/commands/generate/generators',
     '/packages/umi-utils/src/fixtures',
     '/packages/umi/test/fixtures',
+    '/packages/umi-build-dev/src/utils/fixtures',
+    '/packages/umi-mock/src/fixtures',
   ],
 };

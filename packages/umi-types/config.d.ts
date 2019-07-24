@@ -1,6 +1,6 @@
 // https://umijs.org/config/
 import { ExternalsElement, Condition } from 'webpack';
-import IWebpackChainConfig from 'webpack-chain';
+import * as IWebpackChainConfig from 'webpack-chain';
 import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
@@ -66,9 +66,14 @@ export interface IAFWebpackConfig {
 }
 
 type WhitelistOption = string | RegExp;
-export interface IExportSSROpts {
-  externalWhitelist?: WhitelistOption[];
-}
+export type IExportSSROpts =
+  | {
+      /** not external library */
+      externalWhitelist?: WhitelistOption[];
+      /** client manifest, default: ssr-client-mainifest.json */
+      manifestFileName?: string;
+    }
+  | boolean;
 
 interface IConfig extends IAFWebpackConfig {
   // basic config
@@ -92,7 +97,7 @@ interface IConfig extends IAFWebpackConfig {
   targets?: {
     [key: string]: number;
   };
-  ssr?: boolean | IExportSSROpts;
+  ssr?: IExportSSROpts;
 }
 
 export default IConfig;

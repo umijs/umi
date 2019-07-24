@@ -19,6 +19,7 @@ test('normal', () => {
     path: '/users',
     exact: true,
     component: 'Users',
+    params: {},
   });
 });
 
@@ -67,6 +68,7 @@ test('exacted routes', () => {
     path: '/about',
     exact: true,
     component: 'AboutIndex',
+    params: {},
   });
 });
 
@@ -120,5 +122,66 @@ test('dynamic routes', () => {
     component: 'AboutDetail',
     path: '/about/:id',
     exact: true,
+    params: {
+      id: '1',
+    },
+  });
+});
+
+test('nested routes', () => {
+  expect(
+    findRoute(
+      [
+        {
+          path: '/',
+          routes: [
+            {
+              path: '/index.html',
+              name: 'welcome',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              path: '/',
+              name: 'welcome',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              path: '/user(.html)?',
+              name: 'User',
+              icon: 'smile',
+              routes: [
+                {
+                  name: 'aaa',
+                  path: '/user/aaa.html',
+                  icon: 'smile',
+                  exact: true,
+                },
+              ],
+            },
+            {
+              name: 'count',
+              path: '/count.html',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              exact: true,
+            },
+          ],
+        },
+        {
+          exact: true,
+        },
+      ],
+      '/count.html',
+    ),
+  ).toEqual({
+    name: 'count',
+    path: '/count.html',
+    icon: 'smile',
+    exact: true,
+    params: {},
   });
 });

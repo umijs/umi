@@ -44,7 +44,7 @@ export default (api, opts) => {
   api.onOptionChange(() => {
     api.rebuildTmpFiles();
   });
-}
+};
 ```
 
 ## Plugin demo
@@ -108,10 +108,12 @@ configuration in `.umirc.js` or `config/config.js`.
 umi processed routing information. The format is as follows:
 
 ```js
-const routes = [{
-  path: '/xxx/xxx',
-  component: '',
-}];
+const routes = [
+  {
+    path: '/xxx/xxx',
+    component: '',
+  },
+];
 ```
 
 ## System level API
@@ -146,11 +148,22 @@ api.registerMethod('addDvaRendererWrapperWithComponent', {
 For plugin methods of type `api.API_TYPE.ADD`, you should return an item or return a multiple of the array, or you can return an empty array, such as:
 
 ```js
-api.addHTMLMeta({ /* ... */ });
-api.addHTMLMeta([{ /* ... */ }, { /* ... */ }]);
+api.addHTMLMeta({
+  /* ... */
+});
+api.addHTMLMeta([
+  {
+    /* ... */
+  },
+  {
+    /* ... */
+  },
+]);
 api.addHTMLMeta(() => {
   if (opt === 'h5') {
-    return { /* ... */ };
+    return {
+      /* ... */
+    };
   }
   return [];
 });
@@ -203,7 +216,7 @@ Set the options of the plugin, such as when you need to pass the dva configurati
 
 ```js
 api.changePluginOption('dva-plugin-id', {
-  immer: true
+  immer: true,
 });
 ```
 
@@ -212,11 +225,15 @@ api.changePluginOption('dva-plugin-id', {
 Register the umi xxx command line, as in the umi internal help command.
 
 ```js
-api.registerCommand('help', {
-  hide: true
-}, args => {
-  // more code...
-});
+api.registerCommand(
+  'help',
+  {
+    hide: true,
+  },
+  args => {
+    // more code...
+  },
+);
 ```
 
 ### \_registerConfig
@@ -231,9 +248,9 @@ api._registerConfig(() => {
       validate: validate,
       onChange(newConfig, oldConfig) {
         api.setPluginDefaultConfig('umi-plugin-dva', config);
-      }
+      },
     };
-  }
+  };
 });
 ```
 
@@ -305,7 +322,7 @@ Before dev server start.
 After dev server start.
 
 ```js
-api.afterDevServer(({serve, devServerPort}) => {
+api.afterDevServer(({ serve, devServerPort }) => {
   // You can get the actual port number of the service monitor here.
   console.log(devServerPort);
 });
@@ -320,8 +337,7 @@ Triggered when `umi dev` or `umi build` start.
 Triggered after `umi dev` compilation is complete.
 
 ```js
-api.onDevCompileDone(({ isFirstCompile, stats }) => {
-});
+api.onDevCompileDone(({ isFirstCompile, stats }) => {});
 ```
 
 ### onOptionChange
@@ -331,9 +347,9 @@ Triggered when the configuration of the plugin changes.
 ```js
 export default (api, defaultOpts = { immer: false }) => {
   let opts = defaultOpts;
-  api.onOptionChange((newOpts) => {
+  api.onOptionChange(newOpts => {
     opts = newOpts;
-  	api.rebuildFiles();
+    api.rebuildFiles();
   });
 };
 ```
@@ -353,7 +369,7 @@ api.beforeBuildCompileAsync(async () => {
 When the `umi build` was successful. Mainly do some processing of the construction products.
 
 ```js
-api.onBuildSuccess(({ stats })=> {
+api.onBuildSuccess(({ stats }) => {
   // handle with stats
 });
 ```
@@ -426,7 +442,7 @@ api.modifyDefaultConfig(memo => {
   return {
     ...memo,
     singular: true,
-  }
+  };
 });
 ```
 
@@ -476,8 +492,8 @@ Modify the HTML, based on cheerio.
 
 Options:
 
-* route, current route
-* getChunkPath <Badge text="2.2.0+"/>, get the full path of chunk, including publicPath and hash
+- route, current route
+- getChunkPath <Badge text="2.2.0+"/>, get the full path of chunk, including publicPath and hash
 
 e.g.
 
@@ -505,9 +521,9 @@ api.modifyHTMLContext((memo, { route }) => {
 Modify the routing configuration.
 
 ```js
-api.modifyRoutes((routes) => {
+api.modifyRoutes(routes => {
   return routes;
-})
+});
 ```
 
 The format of the route configuration is as follows:
@@ -517,14 +533,16 @@ const route = {
   path: '/xxx',
   component: '/path/to/component',
   Routes: ['/permissionControl.js'],
-}
+};
 ```
 
 ```js
-exports.routes = [{
-  path: '/xxx',
-  workspace: false,
-}];
+exports.routes = [
+  {
+    path: '/xxx',
+    workspace: false,
+  },
+];
 ```
 
 ```js
@@ -595,7 +613,7 @@ Wrapper a component outside the <App/>.
 
 Excute a module before mount <App/>.
 
-## addUmiExports
+### addUmiExports
 
 import from 'umi'
 
@@ -605,7 +623,7 @@ import from 'umi'
 api.addUmiExports([
   {
     exportAll: true,
-    source: 'dva'
+    source: 'dva',
   },
 ]);
 // export certain
@@ -642,13 +660,13 @@ modifyRouteComponent
 
 modifyRouterRootComponent
 
-### modifyWebpackConfig
+### chainWebpackConfig
 
-modify webpack Configuration.
+Modify webpack configuration via [webpack-chain](https://github.com/neutrinojs/webpack-chain).
 
 ```js
 // demo
-api.chainWebpackConfig((memo) => {
+api.chainWebpackConfig(memo => {
   return memo;
 });
 ```
@@ -659,7 +677,7 @@ Modify the af-webpack configuration.
 
 ```js
 // demo
-api.modifyAFWebpackOpts((memo) => {
+api.modifyAFWebpackOpts(memo => {
   return memo;
 });
 ```

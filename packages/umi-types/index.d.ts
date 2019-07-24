@@ -1,7 +1,9 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import { Stats, Configuration } from 'webpack';
-import IWebpackChainConfig from 'webpack-chain';
+import { DefaultMethods } from 'signale';
+import * as lodash from 'lodash';
+import * as IWebpack from 'webpack';
+import * as IWebpackChainConfig from 'webpack-chain';
 
 /**
  * System level variable
@@ -13,7 +15,13 @@ declare enum API_TYPE {
   EVENT,
 }
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig };
+// for multiStats, multiply webpack configs
+export interface MultiStats {
+  stats: IWebpack.Stats[];
+  hash: string;
+}
+
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack };
 
 /**
  * System level API
@@ -222,7 +230,7 @@ interface IEventAsync {
 }
 
 export interface IOnDevCompileDoneFunc {
-  (args: { isFirstCompile: boolean; stats: Stats }): void;
+  (args: { isFirstCompile: boolean; stats: IWebpack.Stats }): void;
 }
 
 interface IOnDevCompileDone {
@@ -238,7 +246,7 @@ interface IOnOptionChange {
 }
 
 export interface IOnBuildSuccessFunc {
-  (args: { stats: Stats }): void;
+  (args: { stats: IWebpack.Stats[] }): void;
 }
 
 interface IOnBuildSuccess {
@@ -250,7 +258,7 @@ interface IOnBuildSuccessAsync {
 }
 
 export interface IOnBuildFailFunc {
-  (args: { stats: Stats; err: Error }): void;
+  (args: { stats: IWebpack.Stats[]; err: Error }): void;
 }
 
 interface IOnBuildFail {
@@ -395,7 +403,7 @@ export interface IApi {
   config: IConfig;
   cwd: string;
   pkg: IPkg;
-  webpackConfig: Configuration;
+  webpackConfig: IWebpack.Configuration;
   paths: {
     cwd: string;
     outputPath: string;
@@ -431,17 +439,8 @@ export interface IApi {
    * Tool class API
    * https://umijs.org/plugin/develop.html#tool-class-api
    */
-  log: {
-    debug: ILog;
-    info: ILog;
-    warn: ILog;
-    error: ILog<string | Error>;
-    fatal: ILog;
-    success: ILog;
-    complete: ILog;
-    pending: ILog;
-    log: ILog;
-  };
+  log: { [key in DefaultMethods]: ILog<any> };
+  _: typeof lodash;
   winPath: IWinPath;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
@@ -501,7 +500,7 @@ export interface IApi {
   modifyEntryHistory: IModify<string>;
   modifyRouteComponent: IModify<string, IModifyRouteComponentArgs>;
   modifyRouterRootComponent: IModify<string>;
-  modifyWebpackConfig: IModify<Configuration>;
+  modifyWebpackConfig: IModify<IWebpack.Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
