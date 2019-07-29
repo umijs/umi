@@ -1,6 +1,7 @@
 import { join } from 'path';
+import { IConfig } from 'umi-types';
 
-export default {
+const config: IConfig = {
   history: 'hash',
   externals: {
     react: 'window.React',
@@ -21,6 +22,13 @@ export default {
             href: 'https://unpkg.com/antd@3.11.0/dist/antd.min.css',
           },
         ],
+        dynamicImport: {
+          webpackChunkName: true,
+          loadingComponent: null,
+        },
+        dva: {
+          immer: true,
+        },
         headScripts: [
           {
             src: 'https://unpkg.com/react@16.7.0-alpha.2/umd/react.development.js',
@@ -40,3 +48,5 @@ export default {
     ],
   ],
 };
+
+export default config;
