@@ -1,12 +1,13 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
 import styles from './Terminal.less';
 
-export default function() {
+export default () => {
   const [minimized, setMinimized] = useState(false);
   const containerEl = useRef(null);
 
   const { xterm } = window;
+
   webLinks.webLinksInit(xterm, handleLink);
 
   useEffect(
@@ -43,13 +44,13 @@ export default function() {
 
   return (
     <div className={`${styles.normal} ${minimized ? styles.minimize : ''}`}>
-      {/*<div className={styles.header}>*/}
-      {/*  Terminal*/}
-      {/*  <button onClick={fit}>fit</button>*/}
-      {/*  <button onClick={minimize}>minimize</button>*/}
-      {/*  <button onClick={maximize}>maximize</button>*/}
-      {/*</div>*/}
+      {/* <div className={styles.header}> */}
+      {/*  Terminal */}
+      {/*  <button onClick={fit}>fit</button> */}
+      {/*  <button onClick={minimize}>minimize</button> */}
+      {/*  <button onClick={maximize}>maximize</button> */}
+      {/* </div> */}
       <div className={styles.main} ref={containerEl} />
     </div>
   );
-}
+};

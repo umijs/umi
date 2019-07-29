@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "xterm": "^3.14.4"
+  },
+  "devDependencies": {
+    "@umijs/fabric": "^1.1.9",
+    "stylelint": "^10.1.0",
+    "stylelint-config-css-modules": "^1.4.0",
+    "stylelint-config-prettier": "^5.2.0",
+    "stylelint-config-recommended": "^2.2.0",
+    "umi-types": "0.3.11"
   }
 }
