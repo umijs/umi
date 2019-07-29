@@ -4,6 +4,8 @@ import { join } from 'path';
 import Config from './Config';
 import getClientScript from './getClientScript';
 
+const debug = require('debug')('umiui:UmiUI');
+
 export default class UmiUI {
   servicesByKey: any;
 
@@ -28,15 +30,15 @@ export default class UmiUI {
       this.servicesByKey[key] = service;
     } else if (!this.servicesByKey[key]) {
       // Attach Service
-      console.log(`attach service for ${key}`);
+      debug(`Attach service for ${key}`);
       try {
         const Service = require('umi-build-dev/lib/Service').default;
         const service = new Service({
           cwd: project.path,
         });
-        console.log(`attach service for ${key} after new and before init()`);
+        debug(`Attach service for ${key} after new and before init()`);
         service.init();
-        console.log(`attach service for ${key} SUCCESS`);
+        debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {
         console.error(chalk.red(`attach service for ${key} FAILED`));
@@ -129,8 +131,9 @@ export default class UmiUI {
       const ss = sockjs.createServer();
       ss.on('connection', conn => {
         function send(action) {
-          console.log('send', JSON.stringify(action));
-          conn.write(JSON.stringify(action));
+          const message = JSON.stringify(action);
+          console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
+          conn.write(message);
         }
         function log(message) {
           conn.write(
@@ -140,12 +143,18 @@ export default class UmiUI {
             }),
           );
         }
+        function formatLogMessage(message) {
+          let ret =
+            message.length > 500 ? `${message.slice(0, 500)} ${chalk.gray('...')}` : message;
+          ret = ret.replace(/{"type":"(.+?)"/, `{"type":"${chalk.magenta.bold('$1')}"`);
+          return ret;
+        }
 
         conn.on('close', () => {});
         conn.on('data', message => {
           try {
             const { type, payload } = JSON.parse(message);
-            console.log('>> GET Socket Message:', message);
+            console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData({ type, payload }, { log, send });
             } else if (this.config.data.currentProject) {
