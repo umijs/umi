@@ -31,19 +31,14 @@ export default class UmiUI {
     } else if (!this.servicesByKey[key]) {
       // Attach Service
       debug(`Attach service for ${key}`);
-      try {
-        const Service = require('umi-build-dev/lib/Service').default;
-        const service = new Service({
-          cwd: project.path,
-        });
-        debug(`Attach service for ${key} after new and before init()`);
-        service.init();
-        debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
-        this.servicesByKey[key] = service;
-      } catch (e) {
-        console.error(chalk.red(`attach service for ${key} FAILED`));
-        console.error(e);
-      }
+      const Service = require('umi-build-dev/lib/Service').default;
+      const service = new Service({
+        cwd: project.path,
+      });
+      debug(`Attach service for ${key} after new and before init()`);
+      service.init();
+      debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
+      this.servicesByKey[key] = service;
     }
 
     this.config.setCurrentProject(key);
@@ -92,10 +87,19 @@ export default class UmiUI {
         });
         break;
       case '@@project/open':
-        this.activeProject(payload.key);
-        send({
-          type: `${type}/success`,
-        });
+        try {
+          this.activeProject(payload.key);
+          send({
+            type: `${type}/success`,
+          });
+        } catch (e) {
+          console.error(chalk.red(`Attach service for ${payload.key} FAILED`));
+          console.error(e);
+          send({
+            type: `${type}/failure`,
+            payload: { message: e.message },
+          });
+        }
         break;
       case '@@project/edit':
         // 只支持改名

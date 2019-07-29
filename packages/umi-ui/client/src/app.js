@@ -42,10 +42,6 @@ export async function render(oldRender) {
   if (history.location.pathname === '/') {
     const { data } = await callRemote({ type: '@@project/list' });
     if (data.currentProject) {
-      await callRemote({
-        type: '@@project/open',
-        payload: { key: data.currentProject },
-      });
       history.replace('/dashboard');
     } else {
       history.replace('/project/select');
@@ -64,11 +60,15 @@ export async function render(oldRender) {
     const { data } = await callRemote({ type: '@@project/list' });
     if (data.currentProject) {
       document.getElementById('root').innerHTML = '正在打开项目...';
-      await callRemote({
-        type: '@@project/open',
-        payload: { key: data.currentProject },
-      });
-      // history.replace('/dashboard');
+      try {
+        await callRemote({
+          type: '@@project/open',
+          payload: { key: data.currentProject },
+        });
+      } catch (e) {
+        document.getElementById('root').innerHTML = `打开项目失败...\n后端消息：${e.message}`;
+        return;
+      }
 
       // Get script and style from server, and run
       const { script } = await callRemote({ type: '@@project/getExtraAssets' });
