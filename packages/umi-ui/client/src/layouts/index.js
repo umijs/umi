@@ -44,7 +44,7 @@ export default withRouter(props => {
               <Menu.Item key="/">
                 <Icon type="home" />
                 首页
-                <NavLink exact to="/">
+                <NavLink exact to="/dashboard">
                   首页
                 </NavLink>
               </Menu.Item>

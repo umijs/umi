@@ -61,20 +61,30 @@ export async function render(oldRender) {
 
   // Project View
   else {
-    // TODO
-    // Get script and style from server, and run
-    const { script } = await callRemote({ type: '@@project/getExtraAssets' });
-    try {
-      geval(`;(function(window){;${script}\n})(window);`);
-    } catch (e) {
-      console.error(`Error occurs while executing script from plugins`);
-      console.error(e);
-    }
+    const { data } = await callRemote({ type: '@@project/list' });
+    if (data.currentProject) {
+      await callRemote({
+        type: '@@project/open',
+        payload: { key: data.currentProject },
+      });
+      // history.replace('/dashboard');
 
-    // Init the plugins
-    window.g_uiPlugins.forEach(uiPlugin => {
-      uiPlugin(new PluginAPI(service));
-    });
+      // Get script and style from server, and run
+      const { script } = await callRemote({ type: '@@project/getExtraAssets' });
+      try {
+        geval(`;(function(window){;${script}\n})(window);`);
+      } catch (e) {
+        console.error(`Error occurs while executing script from plugins`);
+        console.error(e);
+      }
+
+      // Init the plugins
+      window.g_uiPlugins.forEach(uiPlugin => {
+        uiPlugin(new PluginAPI(service));
+      });
+    } else {
+      history.replace('/project/select');
+    }
   }
 
   // Do render

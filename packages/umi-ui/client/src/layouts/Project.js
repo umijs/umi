@@ -49,7 +49,7 @@ export default () => {
   async function openProject(key) {
     try {
       await callRemote({
-        type: '@@project/open',
+        type: '@@project/setCurrentProject',
         payload: {
           key,
         },
