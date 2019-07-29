@@ -55,6 +55,7 @@ export default () => {
         },
       });
       router.push('/dashboard');
+      document.getElementById('root').innerHTML = '正在跳转到项目页...';
       window.location.reload();
     } catch (e) {
       // TODO: handle add failed

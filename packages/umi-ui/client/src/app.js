@@ -63,6 +63,7 @@ export async function render(oldRender) {
   else {
     const { data } = await callRemote({ type: '@@project/list' });
     if (data.currentProject) {
+      document.getElementById('root').innerHTML = '正在打开项目...';
       await callRemote({
         type: '@@project/open',
         payload: { key: data.currentProject },
