@@ -1,9 +1,9 @@
 import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 import chalk from 'chalk';
+import { deprecate } from 'umi-utils';
 import { IExportSSROpts } from 'umi-types/config';
 import { IApi, IWebpack } from 'umi-types';
-import nodeExternals from 'webpack-node-externals';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
@@ -53,16 +53,10 @@ export default function(service: IApi, opts: IOpts = {}) {
         `WARNING: UmiJS SSR is still in beta, you can open issues or PRs in https://github.com/umijs/umi`,
       ),
     );
-    const nodeExternalsOpts = {
-      whitelist: [
-        /\.(css|less|sass|scss)$/,
-        /^umi(\/.*)?$/,
-        'umi-plugin-locale',
-        ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
-      ],
-    };
-    debug(`nodeExternalOpts:`, nodeExternalsOpts);
-    webpackConfig.externals = nodeExternals(nodeExternalsOpts);
+    if (typeof ssr === 'object' && ssr.externalWhitelist) {
+      deprecate('ssr.externalWhitelist');
+    }
+    webpackConfig.externals = (typeof ssr === 'object' && ssr.externals) || {};
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';

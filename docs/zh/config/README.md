@@ -267,10 +267,13 @@ export default {
 ```js
 export default {
   ssr: {
-    // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
+    // 需要 external 的模块，配置与 umi config.externals 一致。
+    // ssr 默认不会 external，
+    externals: {},
     // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
+    // 废弃 api
+    externalWhitelist: [],
   },
 };
 ```

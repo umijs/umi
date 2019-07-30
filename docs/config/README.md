@@ -265,10 +265,13 @@ When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also gen
 ```js
 export default {
   ssr: {
-    // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
+    // same as umi config.externals
+    // ssr not external by default
+    externals: {},
     // client chunkMaps manifest, default: ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
+    // Deprecated
+    externalWhitelist: [],
   },
 };
 ```

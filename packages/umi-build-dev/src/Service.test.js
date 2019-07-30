@@ -450,9 +450,9 @@ describe('Service', () => {
     });
   });
 
-  it('runCommand ssr externalWhitelist', () => {
+  it('runCommand ssr externals', () => {
     const service = new Service({
-      cwd: join(fixtures, 'plugin-ssr', 'externalWhitelist'),
+      cwd: join(fixtures, 'plugin-ssr', 'externals'),
     });
     const callback = jest.fn(() => {});
     service.registerCommand(
@@ -464,9 +464,10 @@ describe('Service', () => {
     );
     service.runCommand('build');
 
-    expect(service.config.ssr.externalWhitelist).toEqual(
-      expect.arrayContaining([/^@alipay\/bigfish(\/.*)?$/, 'antd-mobile']),
-    );
+    expect(service.config.ssr.externals).toEqual({
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    });
     expect(service.webpackConfig).toBeTruthy();
     expect(
       pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
