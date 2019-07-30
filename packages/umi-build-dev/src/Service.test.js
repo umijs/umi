@@ -476,4 +476,29 @@ describe('Service', () => {
       chunkFilename: '[name].server.async.js',
     });
   });
+
+  it('runCommand ssr disableExternal', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugin-ssr', 'disableExternal'),
+    });
+    const callback = jest.fn(() => {});
+    service.registerCommand(
+      'build',
+      {
+        webpack: {},
+      },
+      callback,
+    );
+    service.runCommand('build');
+
+    expect(service.config.ssr.disableExternal).toEqual([]);
+    expect(service.webpackConfig).toBeTruthy();
+    expect(
+      pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
+    ).toEqual({
+      libraryTarget: 'commonjs2',
+      filename: '[name].server.js',
+      chunkFilename: '[name].server.async.js',
+    });
+  });
 });
