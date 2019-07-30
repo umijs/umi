@@ -491,7 +491,7 @@ describe('Service', () => {
     );
     service.runCommand('build');
 
-    expect(service.config.ssr.disableExternal).toEqual([]);
+    expect(service.ssrWebpackConfig.externals).toEqual([]);
     expect(service.webpackConfig).toBeTruthy();
     expect(
       pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
