@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { router } from 'umi';
 import { callRemote } from '@/socket';
-import styles from './Project.less';
+import styles from './Test.less';
 
 export default () => {
   const [data, setData] = useState({});
+  const [cwd, setCwd] = useState();
+  const [files, setFiles] = useState([]);
 
   const pathInput = useRef();
   const nameInput = useRef();
@@ -15,7 +17,20 @@ export default () => {
   }
 
   useEffect(() => {
-    fetchProject().catch(e => {});
+    (async () => {
+      await fetchProject();
+
+      const { cwd } = await callRemote({ type: '@@fs/getCwd' });
+      setCwd(cwd);
+
+      const { data } = await callRemote({
+        type: '@@fs/listDirectory',
+        payload: {
+          dirPath: cwd,
+        },
+      });
+      setFiles(data);
+    })();
   }, []);
 
   const { projectsByKey = {}, currentProject } = data;
@@ -106,6 +121,18 @@ export default () => {
       <button onClick={importProject}>Import Project</button>
       <h2>当前项目</h2>
       <div>{currentProject || '无'}</div>
+      <h2>当前路径</h2>
+      <div>{cwd || '无'}</div>
+      <h2>文件列表</h2>
+      <ul>
+        {files.map(f => {
+          return (
+            <li key={f.fileName}>
+              [{f.type}] {f.fileName}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };

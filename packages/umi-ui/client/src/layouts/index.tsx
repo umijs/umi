@@ -3,7 +3,7 @@ import { NavLink, withRouter } from 'umi';
 import { Menu, Icon } from 'antd';
 import styles from './index.less';
 import Terminal from './Terminal';
-import Project from './Project';
+import Test from './Test';
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -17,7 +17,7 @@ function getActivePanel(pathname) {
 export default withRouter(props => {
   const { pathname } = props.location;
   if (pathname.startsWith('/project/')) {
-    return <Project />;
+    return <Test />;
   } else {
     const activePanel = getActivePanel(pathname);
     const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);

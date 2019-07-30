@@ -3,10 +3,13 @@ import chalk from 'chalk';
 import { join } from 'path';
 import Config from './Config';
 import getClientScript from './getClientScript';
+import listDirectory from './listDirectory';
 
 const debug = require('debug')('umiui:UmiUI');
 
 export default class UmiUI {
+  cwd: string;
+
   servicesByKey: any;
 
   server: any;
@@ -16,6 +19,7 @@ export default class UmiUI {
   config: Config;
 
   constructor() {
+    this.cwd = process.cwd();
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -57,47 +61,34 @@ export default class UmiUI {
 
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload }, { log, send }) {
+  handleCoreData({ type, payload }, { log, send, success, failure }) {
     switch (type) {
       case '@@project/getExtraAssets':
-        send({
-          type: `${type}/success`,
-          payload: this.getExtraAssets(),
-        });
+        success(this.getExtraAssets());
         break;
       case '@@project/list':
-        send({
-          type: `${type}/success`,
-          payload: {
-            data: this.config.data,
-          },
+        success({
+          data: this.config.data,
         });
         break;
       case '@@project/add':
         // TODO: 检验是否 umi 项目，不是则抛错给客户端
         this.config.addProject(payload.path, payload.name);
-        send({
-          type: `${type}/success`,
-        });
+        success();
         break;
       case '@@project/delete':
         this.config.deleteProject(payload.key);
-        send({
-          type: `${type}/success`,
-        });
+        success();
         break;
       case '@@project/open':
         try {
           this.activeProject(payload.key);
-          send({
-            type: `${type}/success`,
-          });
+          success();
         } catch (e) {
           console.error(chalk.red(`Error: Attach service for ${payload.key} FAILED`));
           console.error(e);
-          send({
-            type: `${type}/failure`,
-            payload: { message: e.message },
+          failure({
+            message: e.message,
           });
         }
         break;
@@ -106,14 +97,20 @@ export default class UmiUI {
         this.config.editProject(payload.key, {
           name: payload.name,
         });
-        send({
-          type: `${type}/success`,
-        });
+        success();
         break;
       case '@@project/setCurrentProject':
         this.config.setCurrentProject(payload.key);
-        send({
-          type: `${type}/success`,
+        success();
+        break;
+      case '@@fs/getCwd':
+        success({
+          cwd: this.cwd,
+        });
+        break;
+      case '@@fs/listDirectory':
+        success({
+          data: listDirectory(payload.dirPath),
         });
         break;
       default:
@@ -139,6 +136,12 @@ export default class UmiUI {
           console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
           conn.write(message);
         }
+        function success(type, payload) {
+          send({ type: `${type}/success`, payload });
+        }
+        function failure(type, payload) {
+          send({ type: `${type}/failure`, payload });
+        }
         function log(message) {
           conn.write(
             JSON.stringify({
@@ -160,14 +163,24 @@ export default class UmiUI {
             const { type, payload } = JSON.parse(message);
             console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
-              this.handleCoreData({ type, payload }, { log, send });
+              this.handleCoreData(
+                { type, payload },
+                {
+                  log,
+                  send,
+                  success: success.bind(this, type),
+                  failure: failure.bind(this, type),
+                },
+              );
             } else if (this.config.data.currentProject) {
               const service = this.servicesByKey[this.config.data.currentProject];
               service.applyPlugins('onUISocket', {
                 args: {
                   action: { type, payload },
-                  send,
                   log,
+                  send,
+                  success: success.bind(this, type),
+                  failure: failure.bind(this, type),
                 },
               });
             }
