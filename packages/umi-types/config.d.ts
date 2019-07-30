@@ -72,6 +72,8 @@ export type IExportSSROpts =
       externalWhitelist?: WhitelistOption[];
       /** client manifest, default: ssr-client-mainifest.json */
       manifestFileName?: string;
+      /** disable ssr external */
+      disableExternal?: boolean;
     }
   | boolean;
 
