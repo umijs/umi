@@ -95,6 +95,21 @@ export default () => {
     // TODO
   }
 
+  async function editProject(key) {
+    try {
+      await callRemote({
+        type: '@@project/edit',
+        payload: {
+          key,
+          name: 'ABC',
+        },
+      });
+      await fetchProject();
+    } catch (e) {
+      // TODO: handle edit failed
+    }
+  }
+
   return (
     <div className={styles.normal}>
       <h1>UmiJS 项目管理器</h1>
@@ -106,6 +121,7 @@ export default () => {
               <span>{p.name}</span>
               <button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</button>
               <button onClick={openProject.bind(null, p.key)}>打开</button>
+              <button onClick={editProject.bind(null, p.key)}>重命名为 ABC</button>
               <button onClick={deleteProject.bind(null, p.key)}>删除</button>
             </li>
           );
