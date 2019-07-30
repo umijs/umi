@@ -25,3 +25,13 @@ test('show hidden', () => {
     { type: 'file', fileName: '.f' },
   ]);
 });
+
+test('directory only', () => {
+  const res = listDirectory(join(__dirname, 'fixtures/listDirectory/normal'), {
+    directoryOnly: true,
+  });
+  expect(res).toEqual([
+    { type: 'directory', fileName: 'b' },
+    { type: 'directory', fileName: 'e.js' },
+  ]);
+});

@@ -121,7 +121,9 @@ export default class UmiUI {
         break;
       case '@@fs/listDirectory':
         success({
-          data: listDirectory(payload.dirPath),
+          data: listDirectory(payload.dirPath, {
+            directoryOnly: true,
+          }),
         });
         break;
       default:

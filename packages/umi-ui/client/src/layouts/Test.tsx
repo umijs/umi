@@ -148,7 +148,7 @@ export default () => {
       <div>{currentProject || '无'}</div>
       <h2>当前路径</h2>
       <div>{cwd || '无'}</div>
-      <h2>文件列表</h2>
+      <h2>目录列表</h2>
       <ul>
         {files.map(f => {
           return (
