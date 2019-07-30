@@ -31,10 +31,9 @@ export default function generateWebManifest(api, options) {
 
   let manifestFilename = basename(srcPath);
 
-  // remove path query
-  if (isUrl(srcPath)) {
-    srcPath = parse(srcPath).pathname;
-  }
+  // remove local path query
+  srcPath = parse(srcPath).pathname;
+
   if (existsSync(srcPath)) {
     // watch manifest on DEV mode
     if (process.env.NODE_ENV === 'development') {
