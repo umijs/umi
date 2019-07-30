@@ -5,6 +5,7 @@ import launchEditor from 'react-dev-utils/launchEditor';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
+import installCreator from './installCreator';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -66,6 +67,46 @@ export default class UmiUI {
     };
   }
 
+  async createProject(opts = {}, { onSuccess }) {
+    const { type, npmClient, baseDir, name, typescript } = opts;
+
+    // 步骤：
+    //
+    // 1. 检查目标目录是否为空或不存在
+    // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
+    // 3. 安装 create-umi 或更新他
+    // 4. create-umi 创建
+    //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
+    // 5. 安装依赖
+    //
+    // 结束后打开项目。
+
+    console.log(type, npmClient, baseDir, name, typescript);
+
+    // 1
+
+    // 2
+
+    // 3
+    // const creatorPath = await installCreator({});
+    const creatorPath = '/Users/chencheng/code/github.com/umijs/create-umi/index.js';
+
+    // 4
+    await require(creatorPath).run({
+      // eslint-disable-line
+      cwd: join(baseDir, name),
+      type: 'ant-design-pro',
+      args: {
+        language: 'TypeScript',
+      },
+    });
+
+    // 5
+    // TODO: 安装依赖
+
+    onSuccess();
+  }
+
   reloadProject(key: string) {}
 
   handleCoreData({ type, payload }, { log, send, success, failure }) {
@@ -113,6 +154,11 @@ export default class UmiUI {
       case '@@project/setCurrentProject':
         this.config.setCurrentProject(payload.key);
         success();
+        break;
+      case '@@project/create':
+        this.createProject(payload, {
+          onSuccess: success,
+        });
         break;
       case '@@fs/getCwd':
         success({

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { Button } from 'antd';
 import { router } from 'umi';
 import { callRemote } from '@/socket';
 import styles from './Test.less';
@@ -119,6 +120,24 @@ export default () => {
     }
   }
 
+  async function createProject() {
+    try {
+      await callRemote({
+        type: '@@project/create',
+        payload: {
+          type: 'app',
+          npmClient: 'ayarn',
+          baseDir: '/private/tmp',
+          name: 'hello-umi',
+          typescript: true,
+        },
+      });
+      alert('创建成功');
+    } catch (e) {
+      // TODO: handle edit failed
+    }
+  }
+
   return (
     <div className={styles.normal}>
       <h1>UmiJS 项目管理器</h1>
@@ -128,14 +147,18 @@ export default () => {
           return (
             <li key={p.key} className={styles.projectItem}>
               <span>{p.name}</span>
-              <button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</button>
-              <button onClick={openProject.bind(null, p.key)}>打开</button>
-              <button onClick={editProject.bind(null, p.key)}>重命名为 ABC</button>
-              <button onClick={deleteProject.bind(null, p.key)}>删除</button>
+              <Button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</Button>
+              <Button onClick={openProject.bind(null, p.key)}>打开</Button>
+              <Button onClick={editProject.bind(null, p.key)}>重命名为 ABC</Button>
+              <Button onClick={deleteProject.bind(null, p.key)}>删除</Button>
             </li>
           );
         })}
       </ul>
+      <h2>创建项目</h2>
+      <Button type="primary" onClick={createProject}>
+        在 /private/tmp 下创建 hello-umi 项目
+      </Button>
       <h2>导入</h2>
       <div>
         Path: <input ref={pathInput} defaultValue="/tmp/hahaha" />
@@ -143,7 +166,9 @@ export default () => {
       <div>
         Name: <input ref={nameInput} defaultValue="hahaha" />
       </div>
-      <button onClick={importProject}>Import Project</button>
+      <Button type="primary" onClick={importProject}>
+        Import Project
+      </Button>
       <h2>当前项目</h2>
       <div>{currentProject || '无'}</div>
       <h2>当前路径</h2>
