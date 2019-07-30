@@ -93,7 +93,7 @@ export default class UmiUI {
             type: `${type}/success`,
           });
         } catch (e) {
-          console.error(chalk.red(`Attach service for ${payload.key} FAILED`));
+          console.error(chalk.red(`Error: Attach service for ${payload.key} FAILED`));
           console.error(e);
           send({
             type: `${type}/failure`,

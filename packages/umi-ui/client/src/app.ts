@@ -5,6 +5,7 @@ import { init as initSocket, callRemote } from './socket';
 class PluginAPI {
   constructor(service) {
     this.service = service;
+    this.callRemote = callRemote;
   }
 
   addPanel(panel) {
