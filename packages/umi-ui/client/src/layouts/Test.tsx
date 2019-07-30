@@ -92,7 +92,16 @@ export default () => {
   }
 
   async function openProjectInEditor(key) {
-    // TODO
+    try {
+      await callRemote({
+        type: '@@project/openInEditor',
+        payload: {
+          key,
+        },
+      });
+    } catch (e) {
+      // TODO: handle open project in editor failed
+    }
   }
 
   async function editProject(key) {

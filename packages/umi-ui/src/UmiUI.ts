@@ -1,6 +1,7 @@
 import assert from 'assert';
 import chalk from 'chalk';
 import { join } from 'path';
+import launchEditor from 'react-dev-utils/launchEditor';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
@@ -48,6 +49,12 @@ export default class UmiUI {
     this.config.setCurrentProject(key);
   }
 
+  openProjectInEditor(key: string) {
+    const project = this.config.data.projectsByKey[key];
+    assert(project, `project of key ${key} not exists`);
+    launchEditor(project.path, 1);
+  }
+
   getExtraAssets() {
     const service = this.servicesByKey[this.config.data.currentProject];
     const uiPlugins = service.applyPlugins('addUIPlugin', {
@@ -91,6 +98,10 @@ export default class UmiUI {
             message: e.message,
           });
         }
+        break;
+      case '@@project/openInEditor':
+        this.openProjectInEditor(payload.key);
+        success();
         break;
       case '@@project/edit':
         // 只支持改名
