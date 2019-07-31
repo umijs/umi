@@ -85,6 +85,39 @@ test('deleteProject', () => {
   });
 });
 
+test('set creating progress', () => {
+  config.setCreatingProgress('43def0', {
+    a: 1,
+    b: 1,
+  });
+  expect(config.data).toEqual({
+    projectsByKey: {
+      '43def0': {
+        path: '/tmp/foo',
+        name: 'foo',
+        creatingProgress: {
+          a: 1,
+          b: 1,
+        },
+      },
+    },
+    currentProject: '43def0',
+  });
+});
+
+test('set creating progress done', () => {
+  config.setCreatingProgressDone('43def0');
+  expect(config.data).toEqual({
+    projectsByKey: {
+      '43def0': {
+        path: '/tmp/foo',
+        name: 'foo',
+      },
+    },
+    currentProject: '43def0',
+  });
+});
+
 test('deleteProject for currentProject', () => {
   config.deleteProject('43def0');
   expect(config.data).toEqual({

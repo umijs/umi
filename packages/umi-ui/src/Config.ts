@@ -54,6 +54,7 @@ export default class Config {
       };
       this.save();
     }
+    return key;
   }
 
   deleteProject(key) {
@@ -72,8 +73,30 @@ export default class Config {
     this.save();
   }
 
+  setCreatingProgress(key, args) {
+    // KEY
+    // step: 1,
+    // stepStatus: 'loading',
+    // steps: [''],
+    this.data.projectsByKey[key].creatingProgress = {
+      ...this.data.projectsByKey[key].creatingProgress,
+      ...args,
+    };
+    this.save();
+  }
+
+  setCreatingProgressDone(key) {
+    delete this.data.projectsByKey[key].creatingProgress;
+    console.log('test', this.data.projectsByKey[key]);
+    this.save();
+  }
+
   setCurrentProject(key) {
     assert(this.data.projectsByKey[key], `project of key ${key} not found`);
+    assert(
+      !this.data.projectsByKey[key].creatingProgress,
+      `project of key ${key} is still creating`,
+    );
     this.data.currentProject = key;
     this.save();
   }

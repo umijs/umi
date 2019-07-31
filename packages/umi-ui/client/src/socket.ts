@@ -84,6 +84,9 @@ export function callRemote(action) {
       if (type === `${action.type}/failure`) {
         reject(payload);
       }
+      if (type === `${action.type}/progress` && action.onProgress) {
+        action.onProgress(payload);
+      }
     });
     sock.send(JSON.stringify(action));
   });

@@ -6,6 +6,7 @@ import styles from './Test.less';
 
 export default () => {
   const [data, setData] = useState({});
+  const [progress, setProgress] = useState({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
@@ -131,10 +132,18 @@ export default () => {
           name: 'hello-umi',
           typescript: true,
         },
+        onProgress: async progress => {
+          setProgress(progress);
+          await fetchProject();
+        },
       });
-      alert('创建成功');
+      setProgress({
+        success: true,
+      });
     } catch (e) {
-      // TODO: handle edit failed
+      setProgress({
+        failure: e,
+      });
     }
   }
 
@@ -146,6 +155,8 @@ export default () => {
         {projects.map(p => {
           return (
             <li key={p.key} className={styles.projectItem}>
+              {p.key === currentProject ? <span>[当前打开项目]</span> : null}
+              {p.creatingProgress ? <span>[创建中]</span> : null}
               <span>{p.name}</span>
               <Button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</Button>
               <Button onClick={openProject.bind(null, p.key)}>打开</Button>
@@ -159,6 +170,11 @@ export default () => {
       <Button type="primary" onClick={createProject}>
         在 /private/tmp 下创建 hello-umi 项目
       </Button>
+      {progress.steps ? (
+        <div>
+          步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
+        </div>
+      ) : null}
       <h2>导入</h2>
       <div>
         Path: <input ref={pathInput} defaultValue="/tmp/hahaha" />

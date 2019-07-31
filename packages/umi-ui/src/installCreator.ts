@@ -11,7 +11,7 @@ interface IOpts {
   baseDir?: string;
 }
 
-async function executeCommand(npmClient, args, targetDir) {
+export async function executeCommand(npmClient, args, targetDir) {
   return new Promise((resolve, reject) => {
     const child = execa(npmClient, args, {
       cwd: targetDir,

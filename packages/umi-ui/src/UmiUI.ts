@@ -1,11 +1,13 @@
 import assert from 'assert';
 import chalk from 'chalk';
+import emptyDir from 'empty-dir';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
+import { existsSync } from 'fs';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -67,55 +69,112 @@ export default class UmiUI {
     };
   }
 
-  async createProject(opts = {}, { onSuccess }) {
+  async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
     const { type, npmClient, baseDir, name, typescript } = opts;
+    let key;
 
-    // 步骤：
-    //
-    // 1. 校验
-    //      a) 比如检查目标目录是否为空或不存在
-    // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
-    // 3. 安装 create-umi 或更新他
-    // 4. create-umi 创建
-    //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
-    // 5. 安装依赖
-    //
-    // 结束后打开项目。
+    const setProgress = args => {
+      assert(key, `key is not initialized.`);
+      this.config.setCreatingProgress(key, args);
+      onProgress(this.config.data.projectsByKey[key].creatingProgress);
+    };
 
-    console.log(type, npmClient, baseDir, name, typescript);
+    try {
+      // 步骤：
+      //
+      // 1. 校验
+      //      a) 比如检查目标目录是否为空或不存在
+      // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
+      // 3. 安装 create-umi 或更新他
+      // 4. create-umi 创建
+      //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
+      // 5. 安装依赖
+      //
+      // 项目步骤：
+      // 1. 校验参数
+      // 2. 安装/更新 create-umi
+      // 3. 使用 create-umi 初始化项目
+      // 4. 安装依赖
+      //
+      // 结束后打开项目。
+      assert(baseDir, `baseDir must be supplied`);
+      assert(name, `name must be supplied`);
+      assert(type, `type must be supplied`);
+      const targetDir = join(baseDir, name);
 
-    // 1
-    assert(existsSync);
+      // 1
+      assert(
+        !existsSync(targetDir) || emptyDir.sync(targetDir),
+        `target dir ${targetDir} exists and not empty`,
+      );
 
-    // 2
+      // 2
+      key = this.config.addProject(targetDir, name);
+      setProgress({
+        // 表示第几个 step，从 0 开始
+        step: 1,
+        // 0: 未开始
+        // 1: 执行中
+        // 2: 执行完成
+        // 3: 执行失败
+        stepStatus: 0,
+        steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
+      });
 
-    // 3
-    // const creatorPath = await installCreator({});
-    const creatorPath = '/Users/chencheng/code/github.com/umijs/create-umi/index.js';
+      // 3
+      setProgress({
+        step: 1,
+        stepStatus: 1,
+      });
+      const creatorPath = await installCreator({});
+      setProgress({
+        stepStatus: 2,
+      });
 
-    // 4
-    await require(creatorPath).run({
-      cwd: join(baseDir, name),
-      // type: 'ant-design-pro',
-      // args: {
-      //   language: 'TypeScript',
-      // },
-      type: 'app',
-      args: {
-        isTypeScript: true,
-        reactFeatures: ['antd', 'dva'],
-      },
-    });
+      // 4
+      setProgress({
+        step: 2,
+        stepStatus: 1,
+      });
+      await require(creatorPath).run({
+        cwd: targetDir,
+        type: 'ant-design-pro',
+        args: {
+          language: 'TypeScript',
+        },
+        // type: 'app',
+        // args: {
+        //   isTypeScript: true,
+        //   reactFeatures: ['antd', 'dva'],
+        // },
+      });
+      setProgress({
+        stepStatus: 2,
+      });
 
-    // 5
-    // TODO: 安装依赖
+      // 5
+      setProgress({
+        step: 3,
+        stepStatus: 1,
+      });
+      // TODO: 安装依赖
+      setProgress({
+        stepStatus: 2,
+      });
+      this.config.setCreatingProgressDone(key);
 
-    onSuccess();
+      onSuccess();
+    } catch (e) {
+      this.config.setCreatingProgress(key, {
+        stepStatus: 3,
+      });
+      onFailure(e);
+    }
   }
 
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload }, { log, send, success, failure }) {
+  handleCoreData({ type, payload }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
         success(this.getExtraAssets());
@@ -164,6 +223,12 @@ export default class UmiUI {
       case '@@project/create':
         this.createProject(payload, {
           onSuccess: success,
+          onFailure(e) {
+            failure({
+              message: e.message,
+            });
+          },
+          onProgress: progress,
         });
         break;
       case '@@fs/getCwd':
@@ -207,6 +272,9 @@ export default class UmiUI {
         function failure(type, payload) {
           send({ type: `${type}/failure`, payload });
         }
+        function progress(type, payload) {
+          send({ type: `${type}/progress`, payload });
+        }
         function log(message) {
           conn.write(
             JSON.stringify({
@@ -235,6 +303,7 @@ export default class UmiUI {
                   send,
                   success: success.bind(this, type),
                   failure: failure.bind(this, type),
+                  progress: progress.bind(this, type),
                 },
               );
             } else if (this.config.data.currentProject) {
@@ -246,6 +315,7 @@ export default class UmiUI {
                   send,
                   success: success.bind(this, type),
                   failure: failure.bind(this, type),
+                  progress: progress.bind(this, type),
                 },
               });
             }
