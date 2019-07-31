@@ -72,7 +72,8 @@ export default class UmiUI {
 
     // 步骤：
     //
-    // 1. 检查目标目录是否为空或不存在
+    // 1. 校验
+    //      a) 比如检查目标目录是否为空或不存在
     // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
     // 3. 安装 create-umi 或更新他
     // 4. create-umi 创建
@@ -84,6 +85,7 @@ export default class UmiUI {
     console.log(type, npmClient, baseDir, name, typescript);
 
     // 1
+    assert(existsSync);
 
     // 2
 
@@ -93,11 +95,15 @@ export default class UmiUI {
 
     // 4
     await require(creatorPath).run({
-      // eslint-disable-line
       cwd: join(baseDir, name),
-      type: 'ant-design-pro',
+      // type: 'ant-design-pro',
+      // args: {
+      //   language: 'TypeScript',
+      // },
+      type: 'app',
       args: {
-        language: 'TypeScript',
+        isTypeScript: true,
+        reactFeatures: ['antd', 'dva'],
       },
     });
 

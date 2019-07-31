@@ -29,7 +29,7 @@
     "resolve-from": "5.0.0",
     "serve-static": "1.14.1",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.10.15",
+    "umi-build-dev": "1.10.16",
     "user-home": "2.0.0"
   }
 }
