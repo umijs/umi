@@ -2,7 +2,7 @@ import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 import chalk from 'chalk';
 import { IExportSSROpts } from 'umi-types/config';
-import { IApi } from 'umi-types';
+import { IApi, IWebpack } from 'umi-types';
 import nodeExternals from 'webpack-node-externals';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
@@ -39,7 +39,7 @@ export default function(service: IApi, opts: IOpts = {}) {
     }
   };
 
-  const webpackConfig = service.applyPlugins('modifyWebpackConfig', {
+  const webpackConfig: IWebpack.Configuration = service.applyPlugins('modifyWebpackConfig', {
     initialValue: getConfig({
       ...afWebpackOpts,
       ssr,
@@ -57,6 +57,7 @@ export default function(service: IApi, opts: IOpts = {}) {
       whitelist: [
         /\.(css|less|sass|scss)$/,
         /^umi(\/.*)?$/,
+        'umi-plugin-locale',
         ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
       ],
     };

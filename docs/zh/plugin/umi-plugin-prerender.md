@@ -19,7 +19,6 @@ $ yarn add @umijs/plugin-prerender --dev
 ```js
 export default {
   ssr: true,
-  manifest: {},
   plugins: [['@umijs/plugin-prerender']],
 };
 ```

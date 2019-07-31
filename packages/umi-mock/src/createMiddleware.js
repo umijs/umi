@@ -2,6 +2,7 @@ import { basename, join } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
 import { winPath } from 'umi-utils';
+import clearModule from 'clear-module';
 import matchMock from './matchMock';
 import getMockData from './getMockData';
 import getPaths from './getPaths';
@@ -32,22 +33,10 @@ export default function(opts = {}) {
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       errors.splice(0, errors.length);
-      cleanRequireCache();
+      clearModule(file);
       fetchMockData();
       if (!errors.length) {
         signale.success(`Mock files parse success`);
-      }
-    });
-  }
-
-  function cleanRequireCache() {
-    Object.keys(require.cache).forEach(file => {
-      if (
-        paths.some(path => {
-          return file.indexOf(path) > -1;
-        })
-      ) {
-        delete require.cache[file];
       }
     });
   }

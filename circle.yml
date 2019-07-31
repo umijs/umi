@@ -1,0 +1,32 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.0
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:latest-browsers
+    environment:
+      NPM_CONFIG_LOGLEVEL: error
+      JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
+    branches:
+      ignore:
+        - gh-pages # list of branches to ignore
+        - /release\/.*/ # or ignore regexes
+    working_directory: ~/umi
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-modules-{{ checksum "package.json" }}
+      - run: sudo npm install -g cnpm
+      - run: cnpm install --registry=https://registry.npmjs.org
+      - run: cnpm run bootstrap -- --npm-client=cnpm
+      - run: cnpm run build
+      - run: npm run test -- --maxWorkers=1 --runInBand
+      - save_cache:
+          key: node-modules-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules

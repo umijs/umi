@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "2.8.10",
+  "version": "2.8.16",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
     "@babel/core": "7.4.5",
@@ -11,13 +11,13 @@
     "debug": "4.1.1",
     "dotenv": "8.0.0",
     "is-windows": "1.0.2",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "react-loadable": "5.5.0",
     "resolve-cwd": "3.0.0",
     "semver": "6.1.1",
     "signale": "1.4.0",
-    "umi-build-dev": "1.10.10",
-    "umi-utils": "1.5.1",
+    "umi-build-dev": "1.10.16",
+    "umi-utils": "1.5.4",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
   },

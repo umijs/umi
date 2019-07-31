@@ -138,7 +138,6 @@ class UserConfig {
 
     // 配置文件的监听
     this.watchConfigs((event, path) => {
-      console.log('TESTTEST', event, path);
       signale.debug(`[${event}] ${path}`);
       try {
         const newConfig = this.getConfig({

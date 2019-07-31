@@ -40,10 +40,14 @@ export default function(api) {
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
+              // before: service.webpackConfig
+              // now: [ service.webpackConfig, ... ] , for ssr or more configs
               webpackConfig: [
                 service.webpackConfig,
                 ...(service.ssrWebpackConfig ? [service.ssrWebpackConfig] : []),
               ],
+              // stats now is Array MultiStats
+              // [ clientStats, ...otherStats ]
               onSuccess({ stats }) {
                 debug('Build success');
                 if (process.env.RM_TMPDIR !== 'none') {
@@ -53,7 +57,10 @@ export default function(api) {
                 if (service.ssrWebpackConfig) {
                   // replace using manifest
                   // __UMI_SERVER__.js/css => umi.${hash}.js/css
-                  replaceChunkMaps(service);
+                  const clientStat = Array.isArray(stats.stats) ? stats.stats[0] : stats;
+                  if (clientStat) {
+                    replaceChunkMaps(service, clientStat);
+                  }
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {
@@ -73,6 +80,8 @@ export default function(api) {
                     resolve();
                   });
               },
+              // stats now is Array MultiStats
+              // [ clientStats, ...otherStats ]
               onFail({ err, stats }) {
                 service.applyPlugins('onBuildFail', {
                   args: {

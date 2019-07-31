@@ -6,7 +6,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 import { debounce, uniq } from 'lodash';
 import Mustache from 'mustache';
-import { winPath, findJS } from 'umi-utils';
+import { winPath, findJS, prettierFile } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
 import routesToJSON from './routes/routesToJSON';
 import importsToStr from './importsToStr';
@@ -18,6 +18,13 @@ import getRoutePaths from './routes/getRoutePaths';
 const debug = require('debug')('umi:FilesGenerator');
 
 export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
+
+function normalizePath(path, base = '/') {
+  if (path.startsWith(base)) {
+    path = path.replace(base, '/');
+  }
+  return path;
+}
 
 export default class FilesGenerator {
   constructor(opts) {
@@ -201,14 +208,13 @@ export default class FilesGenerator {
 
     let htmlTemplateMap = [];
     if (config.ssr) {
-      assert(config.manifest, `manifest must be config when using ssr`);
       const isProd = process.env.NODE_ENV === 'production';
       const routePaths = getRoutePaths(this.RoutesManager.routes);
       htmlTemplateMap = routePaths.map(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
           chunksMap: {
-            // TODO, for manifest
+            // TODO, for dynamic chunks
             // placeholder waiting manifest
             umi: [
               isProd ? '__UMI_SERVER__.js' : 'umi.js',
@@ -224,7 +230,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
             },
           ],
         });
-        const content = hg.getMatchedContent(routePath);
+        const content = hg.getMatchedContent(normalizePath(routePath, config.base));
         ssrHtml = htmlToJSX(content).replace(
           `<div id="${config.mountElementId || 'root'}"></div>`,
           `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
@@ -267,7 +273,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
       htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: winPath(require.resolve('./findRoute')),
     });
-    writeFileSync(paths.absLibraryJSPath, `${entryContent.trim()}\n`, 'utf-8');
+    writeFileSync(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`), 'utf-8');
   }
 
   generateHistory() {
@@ -290,7 +296,11 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       globalVariables: !this.service.config.disableGlobalVariables,
       history,
     });
-    writeFileSync(join(paths.absTmpDirPath, 'history.js'), `${content.trim()}\n`, 'utf-8');
+    writeFileSync(
+      join(paths.absTmpDirPath, 'history.js'),
+      prettierFile(`${content.trim()}\n`),
+      'utf-8',
+    );
   }
 
   generateRouterJS() {
@@ -301,7 +311,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
     const routesContent = this.getRouterJSContent();
     // 避免文件写入导致不必要的 webpack 编译
     if (this.routesContent !== routesContent) {
-      writeFileSync(absRouterJSPath, `${routesContent.trim()}\n`, 'utf-8');
+      writeFileSync(absRouterJSPath, prettierFile(`${routesContent.trim()}\n`), 'utf-8');
       this.routesContent = routesContent;
     }
   }

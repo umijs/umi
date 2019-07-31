@@ -19,7 +19,6 @@ Configured in `.umirc.js`:
 ```js
 export default {
   ssr: true,
-  manifest: {},
   plugins: [['@umijs/plugin-prerender']],
 };
 ```

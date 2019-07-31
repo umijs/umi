@@ -50,7 +50,7 @@ if (__IS_BROWSER) {
 // export server render
 let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
-  serverRender = async (ctx) => {
+  serverRender = async (ctx = {}) => {
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);
     let props = {};
@@ -84,6 +84,8 @@ if (!__IS_BROWSER) {
     return {
       htmlElement: activeRoute && activeRoute.path ? htmlTemplateMap[activeRoute.path] : '',
       rootContainer,
+      matchPath: activeRoute && activeRoute.path,
+      g_initialData: props,
     };
   }
   // using project react-dom version

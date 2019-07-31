@@ -3,9 +3,13 @@ const startDevServers = require('./startDevServers');
 
 startDevServers()
   .then(devServers => {
+    const argv = process.argv.slice(2) || [];
     const testCmd = spawn(
       /^win/.test(process.platform) ? 'npm.cmd' : 'npm',
-      ['run', 'test:coverage'],
+      ['run', 'test:coverage'].concat(
+        // argv pass down into jest
+        argv.length > 0 ? ['--', ...argv] : [],
+      ),
       {
         stdio: 'inherit',
       },

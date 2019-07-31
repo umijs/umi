@@ -260,17 +260,47 @@ export default {
 
 Configure whether to enable Server-Side Render, which is off by default.
 
-When enabled, `umi.server.js` file is also generated when the client static file is generated.
+When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also generated when the client static file is generated.
 
 ```js
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // client chunkMaps manifest, default: ssr-client-mainifest.json
+    manifestFileName: 'ssr-client-mainifest.json',
   },
-  // need enable
-  manifest: {},
 };
+```
+
+`ssr-client-mainifest.json` is a resource mapping file by routing level, for example:
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 Use the following in Node.js:
@@ -296,6 +326,10 @@ async function UmiServerRender(ctx) {
     rootContainer,
     // page template
     htmlElement,
+    // match router path, like /user/:id
+    matchPath,
+    // initial store data when you use dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // Render the element into html

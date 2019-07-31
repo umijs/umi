@@ -1,6 +1,8 @@
 
-import { existsSync, unlinkSync } from 'fs';
+import { existsSync } from 'fs';
 import { join } from 'path';
+import { winPath } from 'umi-utils'
+import rimraf from 'rimraf';
 
 const getServerRender = async (url) => {
 
@@ -15,23 +17,41 @@ const getServerRender = async (url) => {
   };
 
   global.window = {};
-  const { rootContainer, htmlElement } = await serverRender.default(ctx);
+  const { rootContainer, htmlElement, matchPath } = await serverRender.default(ctx);
   const ssrHtml = ReactDOMServer.renderToString(rootContainer);
   const ssrHtmlElement = ReactDOMServer.renderToString(htmlElement);
 
   return {
     ssrHtml,
     ssrHtmlElement,
+    matchPath,
   }
 }
 
 export default async function ({ page, host }) {
 
-  const ssrFile = join(__dirname, 'dist', 'umi.server.js');
+  const ssrFile = join(winPath(__dirname), 'dist', 'umi.server.js');
+  const manifestFile = join(winPath(__dirname), 'dist', 'ssr-client-mainifest.json');
+  const manifest = require('./dist/ssr-client-mainifest.json');
   expect(existsSync(ssrFile)).toBeTruthy();
+  expect(existsSync(manifestFile)).toBeTruthy();
+  expect(manifest).toEqual({
+    "/": {
+      "css": [],
+      "js": [
+        "umi.js",
+      ],
+    },
+    "/news/:id": {
+      "css": [],
+      "js": [
+        "umi.js",
+      ],
+    },
+  });
 
-  const { ssrHtml, ssrHtmlElement } = await getServerRender('/');
-
+  const { ssrHtml, ssrHtmlElement, matchPath } = await getServerRender('/');
+  expect(matchPath).toBe('/');
   expect(ssrHtml).toContain(`<div class=\"wrapper\" data-reactroot=\"\"><h1>Hello UmiJS SSR</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>`);
 
   expect(ssrHtmlElement).toContain(`<script>window.g_useSSR=true;
@@ -39,7 +59,9 @@ export default async function ({ page, host }) {
 
 
   // dynamic render
-  const { ssrHtml: newsHtml, ssrHtmlElement: newsHtmlElement } = await getServerRender('/news/1');
+  const { ssrHtml: newsHtml, ssrHtmlElement: newsHtmlElement, matchPath: newsMatchPath } = await getServerRender('/news/1');
+
+  expect(newsMatchPath).toBe('/news/:id')
 
   expect(newsHtml).toContain(`<div class=\"newsWrapper\" data-reactroot=\"\"><p>1<!-- -->_<!-- -->hello</p></div>`);
   expect(newsHtmlElement).toContain(`<script>window.g_useSSR=true;
@@ -51,6 +73,6 @@ export default async function ({ page, host }) {
   expect(newsHtmlElement2).toContain(`<script>window.g_useSSR=true;
   window.g_initialData = {\"id\":2,\"name\":\"world\"};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"newsWrapper\"><p>2<!-- -->_<!-- -->world</p></div></div><script src=\"/umi.js\"></script>`);
 
-  unlinkSync(ssrFile);
+  rimraf.sync(join(winPath(__dirname), 'dist/'))
 
 };

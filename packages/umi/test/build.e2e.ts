@@ -3,6 +3,7 @@ import { fork } from 'child_process';
 import puppeteer from 'puppeteer';
 import http from 'http';
 import { existsSync, readdirSync } from 'fs';
+import { winPath } from 'umi-utils';
 
 interface IServer {
   [key: string]: {
@@ -15,7 +16,7 @@ let port = 12400;
 const servers = {} as IServer;
 let browser: any;
 let page: any;
-const fixtures = join(__dirname, 'fixtures/build');
+const fixtures = join(winPath(__dirname), 'fixtures/build');
 let dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
 const testOnly = dirs.some(dir => /-only/.test(dir));
 if (testOnly) {
@@ -23,11 +24,21 @@ if (testOnly) {
 }
 dirs = dirs.filter(dir => !/^x-/.test(dir));
 
+jest.setTimeout(2000000);
+
 beforeAll(async () => {
   for (const dir of dirs) {
     await buildAndServe(dir);
   }
-  browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+  browser = await puppeteer.launch({
+    args: [
+      '--disable-gpu',
+      '--disable-dev-shm-usage',
+      '--no-first-run',
+      '--no-zygote',
+      '--no-sandbox',
+    ],
+  });
 });
 
 beforeEach(async () => {
@@ -47,12 +58,14 @@ afterAll(() => {
   Object.keys(servers).forEach(name => {
     servers[name].server.close();
   });
-  browser.close();
+  if (browser) {
+    browser.close();
+  }
 });
 
 async function build(cwd: string, name: string) {
   return new Promise((resolve, reject) => {
-    const umiPath = join(__dirname, '../bin/umi.js');
+    const umiPath = join(winPath(__dirname), '../bin/umi.js');
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
