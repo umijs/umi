@@ -126,11 +126,18 @@ export default () => {
       await callRemote({
         type: '@@project/create',
         payload: {
-          type: 'app',
-          npmClient: 'ayarn',
+          npmClient: 'tnpm',
           baseDir: '/private/tmp',
           name: 'hello-umi',
-          typescript: true,
+          // type: 'ant-design-pro',
+          // args: {
+          //   language: 'TypeScript',
+          // },
+          type: 'app',
+          args: {
+            isTypeScript: true,
+            reactFeatures: ['antd', 'dva'],
+          },
         },
         onProgress: async progress => {
           setProgress(progress);

@@ -4,30 +4,12 @@ import userHome from 'user-home';
 import resolveFrom from 'resolve-from';
 import { join } from 'path';
 import { existsSync, writeFileSync } from 'fs';
+import { executeCommand } from './npmClient';
 
 interface IOpts {
   npmClient?: string;
   packageName?: string;
   baseDir?: string;
-}
-
-export async function executeCommand(npmClient, args, targetDir) {
-  return new Promise((resolve, reject) => {
-    const child = execa(npmClient, args, {
-      cwd: targetDir,
-      stdio: ['inherit', 'pipe', 'inherit'],
-    });
-    child.stdout.on('data', buffer => {
-      process.stdout.write(buffer);
-    });
-    child.on('close', code => {
-      if (code !== 0) {
-        reject(new Error(`command failed: ${npmClient} ${args.join(' ')}`));
-        return;
-      }
-      resolve();
-    });
-  });
 }
 
 export default async function(opts: IOpts) {
@@ -44,7 +26,7 @@ export default async function(opts: IOpts) {
     // 更新时使用安装时用的 npmClient，否则会导致不可预知的问题
     await executeCommand(
       require(pkgPath).npmClient, // eslint-disable-line
-      ['update', '--registry=https://registry.npm.taobao.org'],
+      ['update'],
       baseDir,
     );
   } else {

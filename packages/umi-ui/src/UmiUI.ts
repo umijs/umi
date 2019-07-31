@@ -9,6 +9,7 @@ import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
+import { installDeps } from './npmClient';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -71,7 +72,7 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
-    const { type, npmClient, baseDir, name, typescript } = opts;
+    const { type, npmClient, baseDir, name, args } = opts;
     let key;
 
     const setProgress = args => {
@@ -140,15 +141,8 @@ export default class UmiUI {
       clearModule(creatorPath);
       await require(creatorPath).run({
         cwd: targetDir,
-        type: 'ant-design-pro',
-        args: {
-          language: 'TypeScript',
-        },
-        // type: 'app',
-        // args: {
-        //   isTypeScript: true,
-        //   reactFeatures: ['antd', 'dva'],
-        // },
+        type,
+        args,
       });
       setProgress({
         stepStatus: 2,
@@ -159,7 +153,7 @@ export default class UmiUI {
         step: 3,
         stepStatus: 1,
       });
-      // TODO: 安装依赖
+      await installDeps(npmClient, targetDir);
       setProgress({
         stepStatus: 2,
       });
