@@ -95,14 +95,12 @@ class LocaleWrapper extends React.Component{
 
     // support dynamic add messages for umi ui
     // { 'zh-CN': { key: value }, 'en-US': { key: value } }
-    if (typeof runtimeLocale.messages === 'object') {
-      const runtimeMessage = runtimeLocale.messages[appLocale.locale] || {};
-      console.log('runtimeMessage', runtimeMessage, appLocale.locale);
-      Object.assign(appLocale.messages, runtimeMessage);
-    } else if (typeof runtimeLocale.messages === 'function') {
-      const messages = runtimeLocale.messages() || {};
-      const runtimeMessage = messages[appLocale.locale] || {};
-      Object.assign(appLocale.messages, runtimeMessage);
+    const runtimeLocaleMessagesType = typeof runtimeLocale.messages;
+    if (runtimeLocaleMessagesType === 'object' || runtimeLocaleMessagesType === 'function') {
+      const runtimeMessage = runtimeLocaleMessagesType === 'object'
+        ? runtimeLocale.messages[appLocale.locale]
+        : runtimeLocale.messages()[appLocale.locale];
+      Object.assign(appLocale.messages, runtimeMessage || {});
     }
 
     return appLocale;

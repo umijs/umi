@@ -97,7 +97,7 @@ export default api => {
       </div>
     );
   };
-  api.addLocale({
+  api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
   });

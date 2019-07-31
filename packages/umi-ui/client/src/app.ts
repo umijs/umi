@@ -20,7 +20,7 @@ class PluginAPI {
     this.service.panels.push(panel);
   }
 
-  public addLocale(locale: ILocale) {
+  public addLocales(locale: ILocale) {
     this.service.locales.push(locale);
   }
 }

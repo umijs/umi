@@ -84,7 +84,11 @@ export default withRouter(props => {
               </Menu>
             </div>
             <div className={styles.main}>
-              <h1>{activePanel ? activePanel.title : '首页'}</h1>
+              <h1>
+                {activePanel
+                  ? formatMessage({ id: activePanel.title })
+                  : formatMessage({ id: 'home' })}
+              </h1>
               <div className={styles.content}>{props.children}</div>
             </div>
           </div>
