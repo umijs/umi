@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useReducer, useState, useMemo, useRef } from 'react';
 import { Button } from 'antd';
 import { router } from 'umi';
-import { callRemote } from '@/socket';
+import { callRemote, listenRemote } from '@/socket';
 import styles from './Test.less';
 
 export default () => {
@@ -9,6 +9,14 @@ export default () => {
   const [progress, setProgress] = useState({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
+  const [logs, dispatch] = useReducer((state, action) => {
+    if (action.type === 'add') {
+      return [...state, action.payload];
+    }
+    if (action.type === 'setHistory') {
+      return action.payload;
+    }
+  }, []);
 
   const pathInput = useRef();
   const nameInput = useRef();
@@ -25,13 +33,30 @@ export default () => {
       const { cwd } = await callRemote({ type: '@@fs/getCwd' });
       setCwd(cwd);
 
-      const { data } = await callRemote({
+      const { data: files } = await callRemote({
         type: '@@fs/listDirectory',
         payload: {
           dirPath: cwd,
         },
       });
-      setFiles(data);
+      setFiles(files);
+
+      const { data: historyLogs } = await callRemote({
+        type: '@@log/getHistory',
+      });
+      dispatch({
+        type: 'setHistory',
+        payload: historyLogs,
+      });
+      listenRemote({
+        type: '@@log/message',
+        onMessage(log) {
+          dispatch({
+            type: 'add',
+            payload: log,
+          });
+        },
+      });
     })();
   }, []);
 
@@ -194,6 +219,16 @@ export default () => {
       <Button type="primary" onClick={importProject}>
         Import Project
       </Button>
+      <h2>日志</h2>
+      <ul>
+        {logs.map(log => {
+          return (
+            <li key={log.date}>
+              [{log.type}] [{log.date}] {log.message}
+            </li>
+          );
+        })}
+      </ul>
       <h2>当前项目</h2>
       <div>{currentProject || '无'}</div>
       <h2>当前路径</h2>

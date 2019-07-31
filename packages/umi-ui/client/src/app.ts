@@ -1,11 +1,13 @@
 import history from '@tmp/history';
-import { init as initSocket, callRemote } from './socket';
+import { init as initSocket, send, callRemote, listenRemote } from './socket';
 
 // PluginAPI
 class PluginAPI {
   constructor(service) {
     this.service = service;
     this.callRemote = callRemote;
+    this.listenRemote = listenRemote;
+    this.send = send;
   }
 
   addPanel(panel) {

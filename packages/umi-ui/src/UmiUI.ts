@@ -22,6 +22,8 @@ export default class UmiUI {
 
   socketServer: any;
 
+  logs: any;
+
   config: Config;
 
   constructor() {
@@ -30,6 +32,7 @@ export default class UmiUI {
     this.server = null;
     this.socketServer = null;
     this.config = new Config();
+    this.logs = [];
   }
 
   activeProject(key: string, service?: any) {
@@ -178,20 +181,24 @@ export default class UmiUI {
         success(this.getExtraAssets());
         break;
       case '@@project/list':
+        log('info', 'list project');
         success({
           data: this.config.data,
         });
         break;
       case '@@project/add':
         // TODO: 检验是否 umi 项目，不是则抛错给客户端
+        log('info', `add project ${payload.path} with name ${payload.name}`);
         this.config.addProject(payload.path, payload.name);
         success();
         break;
       case '@@project/delete':
+        log('info', `delete project`);
         this.config.deleteProject(payload.key);
         success();
         break;
       case '@@project/open':
+        log('info', `open project`);
         try {
           this.activeProject(payload.key);
           success();
@@ -204,10 +211,12 @@ export default class UmiUI {
         }
         break;
       case '@@project/openInEditor':
+        log('info', `open project in editor`);
         this.openProjectInEditor(payload.key);
         success();
         break;
       case '@@project/edit':
+        log('info', `edit project`);
         // 只支持改名
         this.config.editProject(payload.key, {
           name: payload.name,
@@ -215,10 +224,12 @@ export default class UmiUI {
         success();
         break;
       case '@@project/setCurrentProject':
+        log('info', `set current project`);
         this.config.setCurrentProject(payload.key);
         success();
         break;
       case '@@project/create':
+        log('info', `create project`);
         this.createProject(payload, {
           onSuccess: success,
           onFailure(e) {
@@ -241,8 +252,13 @@ export default class UmiUI {
           }),
         });
         break;
+      case '@@log/getHistory':
+        success({
+          data: this.logs,
+        });
+        break;
       default:
-        console.error(chalk.red(`Unhandled message type ${type}`));
+        log('error', chalk.red(`Unhandled message type ${type}`));
         break;
     }
   }
@@ -273,14 +289,19 @@ export default class UmiUI {
         function progress(type, payload) {
           send({ type: `${type}/progress`, payload });
         }
-        function log(message) {
-          conn.write(
-            JSON.stringify({
-              type: '@@core/log',
-              payload: message,
-            }),
-          );
-        }
+        const log = (type, message) => {
+          const payload = {
+            date: +new Date(),
+            type,
+            message,
+          };
+          console[type === 'error' ? 'error' : 'log'](`${chalk.gray(`[${type}]`)} ${message}`);
+          this.logs.push(payload);
+          send({
+            type: '@@log/message',
+            payload,
+          });
+        };
         function formatLogMessage(message) {
           let ret =
             message.length > 500 ? `${message.slice(0, 500)} ${chalk.gray('...')}` : message;

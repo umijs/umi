@@ -92,5 +92,10 @@ export function callRemote(action) {
   });
 }
 
-window.send = send;
-window.callRemote = callRemote;
+export function listenRemote(action) {
+  messageHandlers.push(({ type, payload }) => {
+    if (type === action.type) {
+      action.onMessage(payload);
+    }
+  });
+}
