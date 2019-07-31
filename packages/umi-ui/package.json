@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "2.4.2",
+    "clear-module": "4.0.0",
     "debug": "4.1.1",
     "empty-dir": "2.0.0",
     "execa": "2.0.3",

@@ -1,13 +1,14 @@
 import assert from 'assert';
 import chalk from 'chalk';
 import emptyDir from 'empty-dir';
+import clearModule from 'clear-module';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
+import { existsSync } from 'fs';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
-import { existsSync } from 'fs';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -136,6 +137,7 @@ export default class UmiUI {
         step: 2,
         stepStatus: 1,
       });
+      clearModule(creatorPath);
       await require(creatorPath).run({
         cwd: targetDir,
         type: 'ant-design-pro',

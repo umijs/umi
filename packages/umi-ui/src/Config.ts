@@ -87,7 +87,6 @@ export default class Config {
 
   setCreatingProgressDone(key) {
     delete this.data.projectsByKey[key].creatingProgress;
-    console.log('test', this.data.projectsByKey[key]);
     this.save();
   }
 
