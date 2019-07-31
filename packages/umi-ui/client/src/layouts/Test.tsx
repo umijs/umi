@@ -175,6 +175,8 @@ export default () => {
           步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
         </div>
       ) : null}
+      {progress.success ? <div>创建成功</div> : null}
+      {progress.failure ? <div>创建失败：{progress.failure.message}</div> : null}
       <h2>导入</h2>
       <div>
         Path: <input ref={pathInput} defaultValue="/tmp/hahaha" />

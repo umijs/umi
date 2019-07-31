@@ -165,9 +165,11 @@ export default class UmiUI {
 
       onSuccess();
     } catch (e) {
-      this.config.setCreatingProgress(key, {
-        stepStatus: 3,
-      });
+      if (key) {
+        this.config.setCreatingProgress(key, {
+          stepStatus: 3,
+        });
+      }
       onFailure(e);
     }
   }
