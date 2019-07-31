@@ -123,6 +123,7 @@ export const locale = {
       const localeGroup = Object.entries(acc);
       localeGroup.forEach(group => {
         const [lang, message] = group;
+        // TODO, message key conflict
         curr[lang] = { ...curr[lang], ...message };
       });
       return curr;
