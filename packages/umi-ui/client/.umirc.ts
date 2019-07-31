@@ -13,29 +13,35 @@ const config: IConfig = {
   },
   plugins: [
     [
-      join(__dirname, '../../umi-plugin-react/lib/index.js'),
+      'umi-plugin-react',
       {
         antd: true,
+        locale: {
+          default: 'zh-CN',
+          baseNavigator: false,
+        },
         links: [
           {
             rel: 'stylesheet',
-            href: 'https://unpkg.com/antd@3.11.0/dist/antd.min.css',
+            href: 'https://gw.alipayobjects.com/os/lib/antd/3.20.7/dist/antd.min.css',
           },
         ],
         headScripts: [
           {
-            src: 'https://unpkg.com/react@16.7.0-alpha.2/umd/react.development.js',
+            src:
+              'https://gw.alipayobjects.com/os/lib/react/16.7.0-alpha.2/umd/react.development.js',
           },
           {
-            src: 'https://unpkg.com/react-dom@16.7.0-alpha.2/umd/react-dom.development.js',
+            src:
+              'https://gw.alipayobjects.com/os/lib/react-dom/16.7.0-alpha.2/umd/react-dom.development.js',
           },
           {
-            src: 'https://unpkg.com/moment@2.22.2/min/moment.min.js',
+            src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: 'https://unpkg.com/antd@3.11.0/dist/antd.min.js',
+            src: 'https://gw.alipayobjects.com/os/lib/antd/3.20.7/dist/antd.min.js',
           },
-          { src: 'https://unpkg.com/sockjs-client@1.3.0/dist/sockjs.min.js' },
+          { src: 'https://gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
         ],
       },
     ],

@@ -1,24 +1,37 @@
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
+import { ILocale, IService, ICallRemove, IPanel, IListenRemote, ISend } from './typings';
 
 // PluginAPI
 class PluginAPI {
-  constructor(service) {
+  public callRemote: ICallRemove;
+  public service: IService;
+  public listenRemote: IListenRemote;
+  public send: ISend;
+
+  constructor(service: IService) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
     this.send = send;
   }
 
-  addPanel(panel) {
+  public addPanel(panel: IPanel) {
     this.service.panels.push(panel);
   }
+
+  public addLocale(locale: ILocale) {
+    this.service.locales.push(locale);
+  }
 }
+// for developer use api.*
+export type IApi = InstanceType<typeof PluginAPI>;
 
 // Service for Plugin API
 // eslint-disable-next-line no-multi-assign
 const service = (window.g_service = {
   panels: [],
+  locales: [],
 });
 
 // Avoid scope problem
@@ -103,3 +116,18 @@ export function patchRoutes(routes) {
     });
   });
 }
+
+export const locale = {
+  messages: () => {
+    const msg = service.locales.reduce((curr, acc) => {
+      const localeGroup = Object.entries(acc);
+      localeGroup.forEach(group => {
+        const [lang, message] = group;
+        curr[lang] = { ...curr[lang], ...message };
+      });
+      return curr;
+    }, {});
+    console.log('all message locales', msg);
+    return msg;
+  },
+};

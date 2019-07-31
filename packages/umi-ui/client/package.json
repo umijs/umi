@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "lodash": "^4.17.15",
+    "umi-plugin-react": "^1.9.14",
     "xterm": "^3.14.4"
   },
   "private": true,

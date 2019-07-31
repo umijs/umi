@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Input, Spin } from 'antd';
 import decamelize from 'decamelize';
+import zhCN from './locales/zh-CN';
+import enUS from './locales/en-US';
 import styles from './ui.module.less';
 
 const { Search } = Input;
@@ -16,6 +18,8 @@ export default api => {
     const [blockAdding, setBlockAdding] = useState(null);
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { locale, formatMessage } = useContext(window.g_uiContext);
+    console.log('locale', locale);
 
     useEffect(() => {
       (async () => {
@@ -71,7 +75,10 @@ export default api => {
 
     return (
       <div className={styles.normal}>
-        <Search placeholder="输入要搜索的区块名" onSearch={value => console.log(value)} />
+        <Search
+          placeholder={formatMessage({ id: 'search_block' })}
+          onSearch={value => console.log(value)}
+        />
         <div>{loading ? 'Fetching blocks...' : ''}</div>
         <div className={styles.blocklist}>
           {blocks.map((block, key) => {
@@ -90,9 +97,12 @@ export default api => {
       </div>
     );
   };
-
+  api.addLocale({
+    'zh-CN': zhCN,
+    'en-US': enUS,
+  });
   api.addPanel({
-    title: '区块管理',
+    title: 'blocks_title',
     path: '/blocks',
     icon: 'environment',
     component: BlocksViewer,
