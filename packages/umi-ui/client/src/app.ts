@@ -1,17 +1,12 @@
 import lodash from 'lodash';
+import { IUi } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
-import { ILocale, IService, ICallRemove, IPanel, IListenRemote, ISend } from './typings';
 
-// PluginAPI
-class PluginAPI {
-  public callRemote: ICallRemove;
-  public service: IService;
-  public listenRemote: IListenRemote;
-  public send: ISend;
-  public _: typeof lodash;
-
-  constructor(service: IService) {
+// PluginAPI, extends for type
+class PluginAPI extends IUi.IApiClass {
+  constructor(service: IUi.IService) {
+    super(service);
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
@@ -19,7 +14,7 @@ class PluginAPI {
     this._ = lodash;
   }
 
-  private getDuplicateKeys(locales: ILocale[]): string[] {
+  private getDuplicateKeys(locales: IUi.ILocale[]): string[] {
     if (!Array.isArray(locales)) return [];
     const allLocaleKeys = locales.reduce(
       (curr, acc) => {
@@ -44,11 +39,11 @@ class PluginAPI {
     );
   }
 
-  public addPanel(panel: IPanel) {
+  public addPanel(panel: IUi.IPanel) {
     this.service.panels.push(panel);
   }
 
-  public addLocales(locale: ILocale) {
+  public addLocales(locale: IUi.ILocale) {
     const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
@@ -59,8 +54,6 @@ class PluginAPI {
     this.service.locales.push(locale);
   }
 }
-// for developer use api.*
-export type IApi = InstanceType<typeof PluginAPI>;
 
 // Service for Plugin API
 // eslint-disable-next-line no-multi-assign

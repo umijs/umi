@@ -2,11 +2,16 @@ import { Icon, Menu, Select } from 'antd';
 import React, { useState } from 'react';
 import { NavLink, withRouter } from 'umi';
 import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-locale';
-import { LOCALES, ILang } from '../typings';
+import { IUi } from 'umi-types';
 import Context from './Context';
 import styles from './index.less';
 import Terminal from './Terminal';
 import Test from './Test';
+
+enum LOCALES {
+  'zh-CN' = '中文',
+  'en-US' = 'English',
+}
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -29,7 +34,7 @@ export default withRouter(props => {
   console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
-  const onLocaleChange = (value: ILang) => {
+  const onLocaleChange = (value: IUi.ILang) => {
     setLocale(value);
   };
 

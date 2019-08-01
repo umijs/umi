@@ -1,5 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
+import IUi from './ui';
 import { DefaultMethods } from 'signale';
 import * as lodash from 'lodash';
 import * as IWebpack from 'webpack';
@@ -21,7 +22,7 @@ export interface MultiStats {
   hash: string;
 }
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack };
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi };
 
 /**
  * System level API

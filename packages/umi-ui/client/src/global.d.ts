@@ -3,7 +3,7 @@ declare module '*.less';
 declare module '*.css';
 
 import { Context } from 'react';
-import { IContext, ILocale, IService } from './typings';
+import { IUi } from 'umi-types';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
@@ -11,9 +11,9 @@ declare global {
   interface Window {
     xterm: any;
     g_uiPlugins?: any[];
-    g_uiContext?: Context<IContext>;
-    g_uiLocales: ILocale[];
-    g_service: IService;
+    g_uiContext?: Context<IUi.IContext>;
+    g_uiLocales: IUi.ILocale;
+    g_service: IUi.IService;
   }
 }
 
