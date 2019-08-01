@@ -1,3 +1,4 @@
+import lodash from 'lodash';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 import { ILocale, IService, ICallRemove, IPanel, IListenRemote, ISend } from './typings';
@@ -8,12 +9,39 @@ class PluginAPI {
   public service: IService;
   public listenRemote: IListenRemote;
   public send: ISend;
+  public _: typeof lodash;
 
   constructor(service: IService) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
     this.send = send;
+    this._ = lodash;
+  }
+
+  private getDuplicateKeys(locales: ILocale[]): string[] {
+    if (!Array.isArray(locales)) return [];
+    const allLocaleKeys = locales.reduce(
+      (curr, acc) => {
+        // { key: value, key2, value }
+        const localeObj = Object.values(acc).reduce(
+          (c, locale) => ({
+            ...c,
+            ...locale,
+          }),
+          {},
+        );
+        const localeKeys = Object.keys(localeObj);
+        return curr.concat(localeKeys);
+      },
+      [] as string[],
+    );
+
+    const _seen = new Set();
+    const _store: string[] = [];
+    return allLocaleKeys.filter(
+      item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
+    );
   }
 
   public addPanel(panel: IPanel) {
@@ -21,6 +49,13 @@ class PluginAPI {
   }
 
   public addLocales(locale: ILocale) {
+    const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
+    if (duplicateKeys.length > 0) {
+      const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
+      document.getElementById('root').innerHTML = errorMsg;
+      throw new Error(errorMsg);
+    }
+
     this.service.locales.push(locale);
   }
 }

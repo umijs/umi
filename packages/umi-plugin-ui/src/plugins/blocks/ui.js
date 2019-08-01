@@ -102,6 +102,7 @@ export default api => {
     'zh-CN': zhCN,
     'en-US': enUS,
   });
+
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',

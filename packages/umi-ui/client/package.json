@@ -1,10 +1,12 @@
 {
   "dependencies": {
+    "lodash": "^4.17.15",
     "umi-plugin-react": "^1.9.14",
     "xterm": "^3.14.4"
   },
   "private": true,
   "devDependencies": {
+    "@types/lodash": "^4.14.136",
     "@umijs/fabric": "^1.1.9",
     "stylelint": "^10.1.0",
     "stylelint-config-css-modules": "^1.4.0",
