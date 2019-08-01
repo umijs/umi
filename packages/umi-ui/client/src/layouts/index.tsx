@@ -6,7 +6,6 @@ import { IUi } from 'umi-types';
 import Context from './Context';
 import styles from './index.less';
 import Terminal from '@/components/Terminal';
-import Test from './Test';
 
 enum LOCALES {
   'zh-CN' = '中文',
@@ -26,9 +25,6 @@ export default withRouter(props => {
   const { pathname } = props.location;
   const locale = getLocale();
   window.g_uiContext = Context;
-  if (pathname.startsWith('/project/')) {
-    return <Test />;
-  }
 
   const activePanel = getActivePanel(pathname);
   console.log('activePanel.path', activePanel && activePanel.path);
