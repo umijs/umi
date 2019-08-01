@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Input, Form, Select, Switch } from 'antd';
-import model from './model';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -72,6 +70,7 @@ const formItemLayout = {
   },
 };
 
+/*
 const ConfigManager = connect(state => ({
   config: state.config,
 }))(
@@ -153,12 +152,17 @@ const ConfigManager = connect(state => ({
     );
   }),
 );
+ */
+
+function ConfigManager() {
+  return <div>配置管理内容</div>;
+}
 
 export default api => {
   api.addPanel({
-    title: 'Config Manager',
-    path: '/config',
+    title: '配置管理',
+    path: '/configuration',
+    icon: 'environment',
     component: ConfigManager,
-    models: [model],
   });
 };

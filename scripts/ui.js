@@ -10,11 +10,12 @@ function buildUIApp(opts = {}) {
   fork(UMI_BIN, ['build', '--cwd', './packages/umi-ui/client', ...(watch ? ['--watch'] : [])]);
 }
 
-function buildPlugins(root, opts = {}) {
-  console.log(`Build for ${root}`);
-  const { watch } = opts;
-  process.chdir(root);
-  fork(FATHER_BUILD_BIN, watch ? ['--watch'] : []);
+function buildPlugins(roots, opts = {}) {
+  roots.forEach(root => {
+    console.log(`Build for ${root}`);
+    const { watch } = opts;
+    fork(FATHER_BUILD_BIN, ['--root', join(__dirname, '..', root), ...(watch ? ['--watch'] : [])]);
+  });
 }
 
 (async () => {
@@ -22,7 +23,13 @@ function buildPlugins(root, opts = {}) {
   buildUIApp({
     watch,
   });
-  buildPlugins('packages/umi-plugin-ui/src/plugins/blocks', {
-    watch,
-  });
+  buildPlugins(
+    [
+      'packages/umi-plugin-ui/src/plugins/blocks',
+      'packages/umi-plugin-ui/src/plugins/configuration',
+    ],
+    {
+      watch,
+    },
+  );
 })();

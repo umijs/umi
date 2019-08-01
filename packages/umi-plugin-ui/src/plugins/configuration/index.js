@@ -8,9 +8,18 @@ export default function(api) {
     return config;
   }
 
+  api.addUIPlugin(require.resolve('./dist/ui.umd'));
+
+  api.onUISocket(({ action: { type, payload }, send, log }) => {
+    switch (type) {
+      default:
+        break;
+    }
+  });
+
+  /*
   api.onSocketData((type, payload, { send }) => {
     console.log(`[LOG] ${type} ${JSON.stringify(payload)}`);
-
     switch (type) {
       case 'config':
         api.service
@@ -29,4 +38,5 @@ export default function(api) {
         break;
     }
   });
+ */
 }
