@@ -76,7 +76,7 @@ export default api => {
     return (
       <div className={styles.normal}>
         <Search
-          placeholder={formatMessage({ id: 'search_block' })}
+          placeholder={formatMessage({ id: 'org.umi.ui.blocks.content.search_block' })}
           onSearch={value => console.log(value)}
         />
         <div>{loading ? 'Fetching blocks...' : ''}</div>
@@ -97,12 +97,13 @@ export default api => {
       </div>
     );
   };
+
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
   });
   api.addPanel({
-    title: 'blocks_title',
+    title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
     icon: 'environment',
     component: BlocksViewer,

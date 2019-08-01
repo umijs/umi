@@ -52,7 +52,7 @@ export default withRouter(props => {
                 src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
               />
               <div>
-                切换语言{' '}
+                <FormattedMessage id="org.umi.ui.global.panel.lang" />{' '}
                 <Select onChange={onLocaleChange} defaultValue={locale}>
                   {Object.keys(LOCALES).map(lang => (
                     <Select.Option key={lang} value={lang}>
@@ -73,9 +73,9 @@ export default withRouter(props => {
             >
               <Menu.Item key="/">
                 <Icon type="home" />
-                <FormattedMessage id="home" />
+                <FormattedMessage id="org.umi.ui.global.panel.home" />
                 <NavLink exact to="/dashboard">
-                  <FormattedMessage id="home" />
+                  <FormattedMessage id="org.umi.ui.global.panel.home" />
                 </NavLink>
               </Menu.Item>
               {window.g_service.panels.map(panel => {
@@ -95,7 +95,7 @@ export default withRouter(props => {
             <h1>
               {activePanel
                 ? formatMessage({ id: activePanel.title })
-                : formatMessage({ id: 'home' })}
+                : formatMessage({ id: 'org.umi.ui.global.panel.home' })}
             </h1>
             <div className={styles.content}>{props.children}</div>
           </div>

@@ -1,4 +1,5 @@
 export default {
-  home: '首页',
-  helloParent: '你好',
+  'org.umi.ui.global.panel.home': '首页',
+  'org.umi.ui.global.panel.lang': '语言',
+  'org.umi.ui.global.content.hello': '你好',
 };

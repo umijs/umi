@@ -1,5 +1,5 @@
 export default {
-  blocks: 'Blocks',
-  blocks_title: 'Block Manage',
-  search_block: 'Please search your block name',
+  'org.umi.ui.blocks.panel': 'Blocks',
+  'org.umi.ui.blocks.content.title': 'Block Manage',
+  'org.umi.ui.blocks.content.search_block': 'Please search your block name',
 };
