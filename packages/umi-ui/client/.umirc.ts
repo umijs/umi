@@ -13,7 +13,7 @@ const config: IConfig = {
   },
   plugins: [
     [
-      'umi-plugin-react',
+      join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
         antd: true,
         locale: {
@@ -23,7 +23,7 @@ const config: IConfig = {
         links: [
           {
             rel: 'stylesheet',
-            href: 'https://gw.alipayobjects.com/os/lib/antd/3.20.7/dist/antd.min.css',
+            href: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.0/dist/antd.min.css',
           },
         ],
         headScripts: [
@@ -39,7 +39,7 @@ const config: IConfig = {
             src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: 'https://gw.alipayobjects.com/os/lib/antd/3.20.7/dist/antd.min.js',
+            src: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.0/dist/antd.min.js',
           },
           { src: 'https://gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
         ],
