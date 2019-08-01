@@ -33,6 +33,10 @@ export default class UmiUI {
     this.socketServer = null;
     this.config = new Config();
     this.logs = [];
+
+    if (process.env.CURRENT_PROJECT) {
+      this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
+    }
   }
 
   activeProject(key: string, service?: any) {

@@ -40,7 +40,7 @@ export default class Config {
     writeFileSync(this.dbPath, JSON.stringify(this.data, null, 2), 'utf-8');
   }
 
-  addProject(path: string, name?: string) {
+  addProject(path: string, name?: string): string {
     name = name || basename(path);
     const str = `${path}____${name}`;
     const key = createHash('md5')
@@ -98,5 +98,13 @@ export default class Config {
     );
     this.data.currentProject = key;
     this.save();
+  }
+
+  addProjectAndSetCurrent(projectPath: string) {
+    const absProjectPath = join(process.cwd(), projectPath);
+    const pathArray = absProjectPath.split('/');
+    const projectName = pathArray[pathArray.length - 1];
+    const key = this.addProject(absProjectPath, projectName);
+    this.setCurrentProject(key);
   }
 }
