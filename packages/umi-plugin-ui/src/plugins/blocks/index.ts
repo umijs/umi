@@ -1,3 +1,4 @@
+import { IUiApi } from 'umi-types';
 import chalk from 'chalk';
 // import getRouteManager from '../../../getRouteManager';
 
@@ -13,7 +14,7 @@ export function routeExists(path, routes) {
   return false;
 }
 
-export default function(api) {
+export default function(api: IUiApi) {
   function getRoutes() {
     return [];
     // const RoutesManager = getRouteManager(api.service);

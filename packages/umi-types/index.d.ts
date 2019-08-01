@@ -21,8 +21,10 @@ export interface MultiStats {
   stats: IWebpack.Stats[];
   hash: string;
 }
+// for ui plugin developer
+type IUiApi = IUi.IApi;
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi };
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi, IUiApi };
 
 /**
  * System level API
