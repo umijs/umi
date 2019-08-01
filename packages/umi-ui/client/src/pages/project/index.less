@@ -1,16 +1,21 @@
-.normal {
+.project {
   padding: 40px 100px;
   height: 100%;
   overflow: auto;
-
+  &-title {
+    color: @heading-color;
+    font-size: 24px;
+    line-height: 33px;
+  }
+  &-list {
+    border: 1px solid #e8e8e8;
+    &-item {
+      padding: 16px;
+    }
+  }
   h1 {
     border-bottom: 1px solid #ccc;
     margin-bottom: 40px;
-  }
-
-  h2 {
-    margin-top: 40px;
-    color: blue;
   }
 
   .projectItem {

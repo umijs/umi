@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@umijs/fabric": "^1.1.9",
+    "antd": "4.0.0-alpha.0",
     "stylelint": "^10.1.0",
     "stylelint-config-css-modules": "^1.4.0",
     "stylelint-config-prettier": "^5.2.0",

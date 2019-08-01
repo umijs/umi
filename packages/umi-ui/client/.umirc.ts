@@ -11,6 +11,8 @@ const config: IConfig = {
   },
   theme: {
     'primary-color': '#fba008',
+    'link-color': 'rgba(0, 0, 0, 45)',
+    'heading-color': 'rgba(0, 0, 0, 85)',
   },
   routes: [
     {
@@ -42,6 +44,9 @@ const config: IConfig = {
         locale: {
           default: 'zh-CN',
           baseNavigator: false,
+        },
+        routes: {
+          exclude: [/models\//, /component\//, /components\//],
         },
         links: [
           {

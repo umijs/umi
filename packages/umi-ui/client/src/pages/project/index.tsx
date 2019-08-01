@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState, useMemo, useRef } from 'react';
-import { Button } from 'antd';
+import { Button, List, Skeleton, Badge, Spin, Popconfirm } from 'antd';
 import { router } from 'umi';
 import { callRemote, listenRemote } from '@/socket';
 import { formatMessage, getLocale, setLocale } from 'umi-plugin-locale';
@@ -181,10 +181,55 @@ export default () => {
     }
   }
 
+  const ProjectStatus = props => {
+    if (props.item.creatingProgress) {
+      return <Spin />;
+    }
+    if (props.item.key === currentProject) {
+      return <Badge status="success" />;
+    }
+    return null;
+  };
+
   return (
-    <div className={styles.normal}>
-      <h2>项目</h2>
-      <ul>
+    <div className={styles.project}>
+      <h2 className={styles['project-title']}>项目列表</h2>
+      <List
+        className={styles['project-list']}
+        dataSource={projects}
+        renderItem={item => (
+          <List.Item
+            className={styles['project-list-item']}
+            actions={[
+              <a onClick={openProjectInEditor.bind(null, item.key)}>在编辑器中打开</a>,
+              <a onClick={openProject.bind(null, item.key)}>打开</a>,
+              <a onClick={editProject.bind(null, item.key)}>重命名</a>,
+              <Popconfirm
+                title="是否删除项目？"
+                onConfirm={deleteProject.bind(null, item.key)}
+                onCancel={() => {}}
+                okText="是"
+                cancelText="否"
+              >
+                <a>删除</a>
+              </Popconfirm>,
+            ]}
+          >
+            <Skeleton title={false} loading={item.loading} active>
+              <List.Item.Meta
+                title={
+                  <h3>
+                    <ProjectStatus item={item} />
+                    {item.name}
+                  </h3>
+                }
+                description={item.path}
+              />
+            </Skeleton>
+          </List.Item>
+        )}
+      />
+      {/* <ul>
         {projects.map(p => {
           return (
             <li key={p.key} className={styles.projectItem}>
@@ -198,7 +243,7 @@ export default () => {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
       <h2>创建项目</h2>
       <Button type="primary" onClick={createProject}>
         在 /private/tmp 下创建 hello-umi 项目
