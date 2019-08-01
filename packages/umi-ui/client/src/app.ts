@@ -58,8 +58,10 @@ class PluginAPI {
     const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
-      document.getElementById('root').innerHTML = errorMsg;
-      throw new Error(errorMsg);
+      // 不影响渲染主流程
+      console.error(errorMsg);
+      // document.getElementById('root').innerHTML = errorMsg;
+      // throw new Error(errorMsg);
     }
 
     this.service.locales.push(locale);
