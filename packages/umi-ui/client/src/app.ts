@@ -3,7 +3,7 @@ import { IUi } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 
-// PluginAPI, extends for type
+// PluginAPI
 class PluginAPI {
   public service: IUi.IService;
   /** lodash */
@@ -164,7 +164,6 @@ export const locale = {
       const localeGroup = Object.entries(acc);
       localeGroup.forEach(group => {
         const [lang, message] = group;
-        // TODO, message key conflict
         curr[lang] = { ...curr[lang], ...message };
       });
       return curr;

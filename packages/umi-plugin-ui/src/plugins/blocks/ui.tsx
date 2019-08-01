@@ -22,7 +22,6 @@ export default (api: IUiApi) => {
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
     const { locale, formatMessage } = useContext(getContext());
-    console.log('locale', locale);
 
     useEffect(() => {
       (async () => {
