@@ -12,13 +12,13 @@ function nameToPath(name) {
 }
 
 export default api => {
-  const { callRemote } = api;
+  const { callRemote, getContext } = api;
 
   const BlocksViewer = () => {
     const [blockAdding, setBlockAdding] = useState(null);
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { locale, formatMessage } = useContext(window.g_uiContext);
+    const { locale, formatMessage } = useContext(getContext());
     console.log('locale', locale);
 
     useEffect(() => {

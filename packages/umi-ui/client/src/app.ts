@@ -14,6 +14,10 @@ class PluginAPI extends IUi.IApiClass {
     this._ = lodash;
   }
 
+  getContext() {
+    return window.g_uiContext;
+  }
+
   private getDuplicateKeys(locales: IUi.ILocale[]): string[] {
     if (!Array.isArray(locales)) return [];
     const allLocaleKeys = locales.reduce(

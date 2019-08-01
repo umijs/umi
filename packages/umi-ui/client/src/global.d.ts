@@ -11,7 +11,7 @@ declare global {
   interface Window {
     xterm: any;
     g_uiPlugins?: any[];
-    g_uiContext?: Context<IUi.IContext>;
+    g_uiContext: Context<IUi.IContext>;
     g_uiLocales: IUi.ILocale;
     g_service: IUi.IService;
   }

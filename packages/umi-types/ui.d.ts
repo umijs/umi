@@ -1,4 +1,6 @@
 import * as lodash from 'lodash';
+import { Context } from 'react';
+import { formatMessage, FormattedMessage } from './locale';
 import { IRoute } from './';
 
 declare enum LOCALES {
@@ -11,6 +13,8 @@ declare namespace IUI {
 
   interface IContext {
     locale?: ILang;
+    formatMessage: typeof formatMessage;
+    FormattedMessage: typeof FormattedMessage;
   }
 
   type ILocale = { [x in ILang]: { [key in string]: string } };
@@ -30,6 +34,8 @@ declare namespace IUI {
     /** lodash */
     _: typeof lodash;
 
+    /** react component context */
+    getContext(): Context<IContext>;
     callRemote: IApiActionFactory<{}, object>;
     listenRemote: IApiActionFactory<{ onMessage: (p: any) => void }>;
     send: IApiActionFactory<{ onProgress: (p: any) => void }>;
