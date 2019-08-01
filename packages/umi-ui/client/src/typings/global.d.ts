@@ -1,10 +1,8 @@
-declare module '@tmp/history';
-declare module '*.less';
-declare module '*.css';
-
 import { Context } from 'react';
 import { IUi } from 'umi-types';
+// @ts-ignore
 import zhCN from './locales/zh-CN';
+// @ts-ignore
 import enUS from './locales/en-US';
 
 declare global {

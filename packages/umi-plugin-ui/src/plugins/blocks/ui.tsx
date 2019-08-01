@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-// @ts-ignore
 import { Input, Spin } from 'antd';
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';

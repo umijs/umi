@@ -1,5 +1,6 @@
-import { createContext } from 'react';
+import { createContext, Context } from 'react';
+import { IUi } from 'umi-types';
 
-const Context = createContext(null);
+const UIContext = createContext({} as IUi.IContext);
 
-export default Context;
+export default UIContext;

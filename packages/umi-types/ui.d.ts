@@ -1,6 +1,6 @@
 import * as lodash from 'lodash';
 import { Context } from 'react';
-import { formatMessage, FormattedMessage } from './locale';
+import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
 declare namespace IUI {
@@ -15,6 +15,7 @@ declare namespace IUI {
     locale?: ILang;
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
+    setLocale: typeof setLocale;
   }
 
   type ILocale = { [x in ILang]: { [key in string]: string } };

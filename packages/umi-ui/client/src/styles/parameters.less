@@ -1,0 +1,21 @@
+@screen-xl: 1208px;
+@screen-lg: 1024px;
+@screen-md: 768px;
+// 移动
+@screen-sm: 767.9px;
+// 超小屏
+@screen-xs: 375px;
+// PC 宽度 >= 1208
+@pc: ~'only screen and (min-width: @{screen-xl})';
+// 桌面 >= 1024 =< 1208
+@desktop: ~'screen and (min-width:@{screen-lg}) and (max-width:@{screen-xl})';
+// 平板 >= 768 <= 1024
+@tablet: ~'screen and (min-width: @{screen-md}) and (max-width:@{screen-lg})';
+// 移动端 <= 767.9
+@mobile: ~'only screen and (max-width: @{screen-sm})';
+// 超小移动端 <= 375
+@smallMobile: ~'only screen and (max-width: @{screen-xs})';
+// ipad 横向
+@ipad-landscape: ~'only screen and (min-device-width: 768px)and (max-device-width : 1024px) and (orientation: landscape)';
+// ipad 纵向
+@ipad-port: ~'only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)';

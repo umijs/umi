@@ -5,7 +5,7 @@ import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugi
 import { IUi } from 'umi-types';
 import Context from './Context';
 import styles from './index.less';
-import Terminal from './Terminal';
+import Terminal from '@/components/Terminal';
 import Test from './Test';
 
 enum LOCALES {

@@ -1,4 +1,5 @@
 import { join } from 'path';
+import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 
 const config: IConfig = {
@@ -11,6 +12,28 @@ const config: IConfig = {
   theme: {
     'primary-color': '#fba008',
   },
+  routes: [
+    {
+      path: '/project',
+      component: '../layouts/Project',
+      routes: [
+        {
+          path: '/project/select',
+          component: '../pages/project',
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: '../layouts',
+      routes: [
+        {
+          path: '/',
+          component: '../pages/index',
+        },
+      ],
+    },
+  ],
   plugins: [
     [
       join(__dirname, '../../umi-plugin-react/lib/index.js'),
@@ -46,6 +69,13 @@ const config: IConfig = {
       },
     ],
   ],
+  chainWebpack(config, { webpack }) {
+    config.plugin('webpack-less-theme').use(
+      new LessThemePlugin({
+        theme: join(__dirname, './src/styles/parameters.less'),
+      }),
+    );
+  },
 };
 
 export default config;

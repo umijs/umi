@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { router } from 'umi';
 import { callRemote, listenRemote } from '@/socket';
 import { formatMessage, getLocale, setLocale } from 'umi-plugin-locale';
-import styles from '../pages/Project/index.less';
+import styles from './index.less';
 
 export default () => {
   const [data, setData] = useState({});
@@ -183,8 +183,6 @@ export default () => {
 
   return (
     <div className={styles.normal}>
-      <h1>UmiJS 项目管理器</h1>
-      <div>当前语言：{formatMessage({ id: 'hello' })}</div>
       <h2>项目</h2>
       <ul>
         {projects.map(p => {
