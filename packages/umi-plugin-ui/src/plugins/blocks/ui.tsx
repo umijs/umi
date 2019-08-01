@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+// @ts-ignore
 import { Input, Spin } from 'antd';
+import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
+// @ts-ignore
 import styles from './ui.module.less';
 
 const { Search } = Input;
@@ -11,7 +14,7 @@ function nameToPath(name) {
   return `/${decamelize(name, '-')}`;
 }
 
-export default api => {
+export default (api: IUiApi) => {
   const { callRemote, getContext } = api;
 
   const BlocksViewer = () => {
