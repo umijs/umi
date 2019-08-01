@@ -3,12 +3,12 @@ import { Context } from 'react';
 import { formatMessage, FormattedMessage } from './locale';
 import { IRoute } from './';
 
-declare enum LOCALES {
-  'zh-CN' = '中文',
-  'en-US' = 'English',
-}
-
 declare namespace IUI {
+  export enum LOCALES {
+    'zh-CN' = '中文',
+    'en-US' = 'English',
+  }
+
   type ILang = keyof typeof LOCALES;
 
   interface IContext {
@@ -28,17 +28,24 @@ declare namespace IUI {
 
   type IApiActionFactory<P = {}, K = void> = (action: { type: string } & P) => K;
 
+  type ICallRemove = IApiActionFactory<{}, object>;
+  type IListenRemote = IApiActionFactory<{ onMessage: (p: any) => void }>;
+  type ISend = IApiActionFactory<{ onProgress: (p: any) => void }>;
+
   class IApiClass {
     constructor(service: IService);
     service: IService;
     /** lodash */
-    _: typeof lodash;
+    readonly _: typeof lodash;
 
+    /** add plugin Panel */
+    addPanel(panel: IPanel): void;
+    addLocales(locale: ILocale): void;
     /** react component context */
     getContext(): Context<IContext>;
-    callRemote: IApiActionFactory<{}, object>;
-    listenRemote: IApiActionFactory<{ onMessage: (p: any) => void }>;
-    send: IApiActionFactory<{ onProgress: (p: any) => void }>;
+    callRemote: ICallRemove;
+    listenRemote: IListenRemote;
+    send: ISend;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

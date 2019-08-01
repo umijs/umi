@@ -1,6 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import IUi from './ui';
+import * as IUi from './ui';
 import { DefaultMethods } from 'signale';
 import * as lodash from 'lodash';
 import * as IWebpack from 'webpack';

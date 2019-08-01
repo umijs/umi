@@ -4,9 +4,16 @@ import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 
 // PluginAPI, extends for type
-class PluginAPI extends IUi.IApiClass {
+class PluginAPI {
+  public service: IUi.IService;
+  /** lodash */
+  readonly _: typeof lodash;
+  /** react component context */
+  callRemote: IUi.ICallRemove;
+  listenRemote: IUi.IListenRemote;
+  send: IUi.ISend;
+
   constructor(service: IUi.IService) {
-    super(service);
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
