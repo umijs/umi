@@ -27,6 +27,7 @@ function start() {
   const devServers = [
     [12341, '../packages/umi/test/fixtures/dev/normal'],
     [12342, '../packages/umi/test/fixtures/dev/ssr'],
+    [12343, '../packages/umi/test/fixtures/dev/ssr-styles'],
   ];
 
   return Promise.all(
