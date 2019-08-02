@@ -45,7 +45,9 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
           {current !== 'list' && (
             <PageHeader
               title={formatMessage({ id: `org.umi.ui.global.project.${current}.title` })}
-              onBack={() => {}}
+              onBack={() => {
+                this.setCurrent('list');
+              }}
             />
           )}
           <div>{this.props.children}</div>

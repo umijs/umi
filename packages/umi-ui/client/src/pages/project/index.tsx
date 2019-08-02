@@ -1,13 +1,15 @@
-import React, { useEffect, useReducer, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useReducer, useState, useMemo, useRef, useContext } from 'react';
 import { Button, List, Skeleton, Badge, Spin, Popconfirm, Row, Col } from 'antd';
 import { router } from 'umi';
+import ProjectContext from '@/layouts/ProjectContext';
 import { callRemote, listenRemote } from '@/socket';
+import CreateProject from './components/create';
+import ImportProject from './components/import';
 import { formatMessage, getLocale, setLocale } from 'umi-plugin-locale';
 import styles from './index.less';
 
 export default props => {
   const [data, setData] = useState({});
-  const [progress, setProgress] = useState({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -19,8 +21,7 @@ export default props => {
     }
   }, []);
 
-  const pathInput = useRef();
-  const nameInput = useRef();
+  const { setCurrent, current } = useContext(ProjectContext);
   const locale = getLocale();
 
   async function fetchProject() {
@@ -74,21 +75,6 @@ export default props => {
     },
     [data],
   );
-
-  async function importProject() {
-    try {
-      await callRemote({
-        type: '@@project/add',
-        payload: {
-          path: pathInput.current.value,
-          name: nameInput.current.value,
-        },
-      });
-      await fetchProject();
-    } catch (e) {
-      // TODO: handle add failed
-    }
-  }
 
   async function openProject(key) {
     try {
@@ -148,39 +134,6 @@ export default props => {
     }
   }
 
-  async function createProject() {
-    try {
-      await callRemote({
-        type: '@@project/create',
-        payload: {
-          npmClient: 'tnpm',
-          baseDir: '/private/tmp',
-          name: 'hello-umi',
-          // type: 'ant-design-pro',
-          // args: {
-          //   language: 'TypeScript',
-          // },
-          type: 'app',
-          args: {
-            isTypeScript: true,
-            reactFeatures: ['antd', 'dva'],
-          },
-        },
-        onProgress: async progress => {
-          setProgress(progress);
-          await fetchProject();
-        },
-      });
-      setProgress({
-        success: true,
-      });
-    } catch (e) {
-      setProgress({
-        failure: e,
-      });
-    }
-  }
-
   const ProjectStatus = props => {
     if (props.item.creatingProgress) {
       return <Spin />;
@@ -191,16 +144,32 @@ export default props => {
     return null;
   };
 
+  if (current === 'create') {
+    return <CreateProject fetchProject={fetchProject} />;
+  } else if (current === 'import') {
+    return (
+      <ImportProject
+        cwd={cwd}
+        currentProject={currentProject}
+        files={files}
+        logs={logs}
+        fetchProject={fetchProject}
+      />
+    );
+  }
+
   return (
-    <div className={stylesproject}>
+    <div className={styles.project}>
       <Row type="flex" justify="space-between">
         <Col>
           <h2 className={styles['project-title']}>项目列表</h2>
         </Col>
         <Col>
           <div className={styles['project-action']}>
-            <Button>导入项目</Button>
-            <Button type="primary">创建项目</Button>
+            <Button onClick={() => setCurrent('import')}>导入项目</Button>
+            <Button type="primary" onClick={() => setCurrent('create')}>
+              创建项目
+            </Button>
           </div>
         </Col>
       </Row>
@@ -240,42 +209,6 @@ export default props => {
           </List.Item>
         )}
       />
-      {/* <ul>
-        {projects.map(p => {
-          return (
-            <li key={p.key} className={styles.projectItem}>
-              {p.key === currentProject ? <span>[当前打开项目]</span> : null}
-              {p.creatingProgress ? <span>[创建中]</span> : null}
-              <span>{p.name}</span>
-              <Button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</Button>
-              <Button onClick={openProject.bind(null, p.key)}>打开</Button>
-              <Button onClick={editProject.bind(null, p.key)}>重命名为 ABC</Button>
-              <Button onClick={deleteProject.bind(null, p.key)}>删除</Button>
-            </li>
-          );
-        })}
-      </ul> */}
-      <h2>创建项目</h2>
-      <Button type="primary" onClick={createProject}>
-        在 /private/tmp 下创建 hello-umi 项目
-      </Button>
-      {progress.steps ? (
-        <div>
-          步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
-        </div>
-      ) : null}
-      {progress.success ? <div>创建成功</div> : null}
-      {progress.failure ? <div>创建失败：{progress.failure.message}</div> : null}
-      <h2>导入</h2>
-      <div>
-        Path: <input ref={pathInput} defaultValue="/tmp/hahaha" />
-      </div>
-      <div>
-        Name: <input ref={nameInput} defaultValue="hahaha" />
-      </div>
-      <Button type="primary" onClick={importProject}>
-        Import Project
-      </Button>
       <h2>日志</h2>
       <ul>
         {logs.map(log => {
@@ -300,6 +233,21 @@ export default props => {
           );
         })}
       </ul>
+      {/* <ul>
+        {projects.map(p => {
+          return (
+            <li key={p.key} className={styles.projectItem}>
+              {p.key === currentProject ? <span>[当前打开项目]</span> : null}
+              {p.creatingProgress ? <span>[创建中]</span> : null}
+              <span>{p.name}</span>
+              <Button onClick={openProjectInEditor.bind(null, p.key)}>在编辑器里打开</Button>
+              <Button onClick={openProject.bind(null, p.key)}>打开</Button>
+              <Button onClick={editProject.bind(null, p.key)}>重命名为 ABC</Button>
+              <Button onClick={deleteProject.bind(null, p.key)}>删除</Button>
+            </li>
+          );
+        })}
+      </ul> */}
     </div>
   );
 };
