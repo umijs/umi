@@ -26,6 +26,8 @@ const config: IConfig = {
       ],
     },
     {
+      // for plugins to patch routes into dashboard identification
+      key: 'dashboard',
       path: '/',
       component: '../layouts',
       routes: [

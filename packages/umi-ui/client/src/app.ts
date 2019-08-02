@@ -1,5 +1,5 @@
 import lodash from 'lodash';
-import { IUi } from 'umi-types';
+import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 
@@ -149,13 +149,17 @@ export async function render(oldRender) {
   oldRender();
 }
 
-export function patchRoutes(routes) {
-  service.panels.forEach(panel => {
-    routes[0].routes.unshift({
-      exact: true,
-      ...panel,
+export function patchRoutes(routes: IRoute[]) {
+  const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
+  if (dashboardIndex > -1) {
+    service.panels.forEach(panel => {
+      console.log('panel', panel);
+      routes[dashboardIndex].routes.unshift({
+        exact: true,
+        ...panel,
+      });
     });
-  });
+  }
 }
 
 export const locale = {
