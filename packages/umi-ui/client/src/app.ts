@@ -1,17 +1,70 @@
+import lodash from 'lodash';
+import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 
 // PluginAPI
 class PluginAPI {
-  constructor(service) {
+  public service: IUi.IService;
+  /** lodash */
+  readonly _: typeof lodash;
+  /** react component context */
+  callRemote: IUi.ICallRemove;
+  listenRemote: IUi.IListenRemote;
+  send: IUi.ISend;
+
+  constructor(service: IUi.IService) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
     this.send = send;
+    this._ = lodash;
   }
 
-  addPanel(panel) {
+  getContext() {
+    return window.g_uiContext;
+  }
+
+  private getDuplicateKeys(locales: IUi.ILocale[]): string[] {
+    if (!Array.isArray(locales)) return [];
+    const allLocaleKeys = locales.reduce(
+      (curr, acc) => {
+        // { key: value, key2, value }
+        const localeObj = Object.values(acc).reduce(
+          (c, locale) => ({
+            ...c,
+            ...locale,
+          }),
+          {},
+        );
+        const localeKeys = Object.keys(localeObj);
+        return curr.concat(localeKeys);
+      },
+      [] as string[],
+    );
+
+    const _seen = new Set();
+    const _store: string[] = [];
+    return allLocaleKeys.filter(
+      item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
+    );
+  }
+
+  public addPanel(panel: IUi.IPanel) {
     this.service.panels.push(panel);
+  }
+
+  public addLocales(locale: IUi.ILocale) {
+    const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
+    if (duplicateKeys.length > 0) {
+      const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
+      // 不影响渲染主流程
+      console.error(errorMsg);
+      // document.getElementById('root').innerHTML = errorMsg;
+      // throw new Error(errorMsg);
+    }
+
+    this.service.locales.push(locale);
   }
 }
 
@@ -19,6 +72,7 @@ class PluginAPI {
 // eslint-disable-next-line no-multi-assign
 const service = (window.g_service = {
   panels: [],
+  locales: [],
 });
 
 // Avoid scope problem
@@ -95,11 +149,30 @@ export async function render(oldRender) {
   oldRender();
 }
 
-export function patchRoutes(routes) {
-  service.panels.forEach(panel => {
-    routes[0].routes.unshift({
-      exact: true,
-      ...panel,
+export function patchRoutes(routes: IRoute[]) {
+  const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
+  if (dashboardIndex > -1) {
+    service.panels.forEach(panel => {
+      console.log('panel', panel);
+      routes[dashboardIndex].routes.unshift({
+        exact: true,
+        ...panel,
+      });
     });
-  });
+  }
 }
+
+export const locale = {
+  messages: () => {
+    const msg = service.locales.reduce((curr, acc) => {
+      const localeGroup = Object.entries(acc);
+      localeGroup.forEach(group => {
+        const [lang, message] = group;
+        curr[lang] = { ...curr[lang], ...message };
+      });
+      return curr;
+    }, {});
+    console.log('all message locales', msg);
+    return msg;
+  },
+};

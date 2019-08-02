@@ -1,9 +1,16 @@
-import { useState } from 'react';
+import { Icon, Menu, Select } from 'antd';
+import React, { useState } from 'react';
 import { NavLink, withRouter } from 'umi';
-import { Menu, Icon } from 'antd';
+import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-locale';
+import { IUi } from 'umi-types';
+import Context from './Context';
 import styles from './index.less';
-import Terminal from './Terminal';
-import Test from './Test';
+import Terminal from '@/components/Terminal';
+
+enum LOCALES {
+  'zh-CN' = '中文',
+  'en-US' = 'English',
+}
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -16,12 +23,26 @@ function getActivePanel(pathname) {
 
 export default withRouter(props => {
   const { pathname } = props.location;
-  if (pathname.startsWith('/project/')) {
-    return <Test />;
-  } else {
-    const activePanel = getActivePanel(pathname);
-    const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
-    return (
+  const locale = getLocale();
+  window.g_uiContext = Context;
+
+  const activePanel = getActivePanel(pathname);
+  console.log('activePanel.path', activePanel && activePanel.path);
+  const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
+
+  const onLocaleChange = (value: IUi.ILang) => {
+    setLocale(value);
+  };
+
+  return (
+    <Context.Provider
+      value={{
+        locale,
+        formatMessage,
+        setLocale,
+        FormattedMessage,
+      }}
+    >
       <div className={styles.normal}>
         <div className={styles.wrapper}>
           <div className={styles.sidebar}>
@@ -31,6 +52,16 @@ export default withRouter(props => {
                 className={styles.logo}
                 src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
               />
+              <div>
+                <FormattedMessage id="org.umi.ui.global.panel.lang" />{' '}
+                <Select onChange={onLocaleChange} defaultValue={locale}>
+                  {Object.keys(LOCALES).map(lang => (
+                    <Select.Option key={lang} value={lang}>
+                      {LOCALES[lang]}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </div>
             </div>
             <Menu
               selectedKeys={selectedKeys}
@@ -43,18 +74,18 @@ export default withRouter(props => {
             >
               <Menu.Item key="/">
                 <Icon type="home" />
-                首页
+                <FormattedMessage id="org.umi.ui.global.panel.home" />
                 <NavLink exact to="/dashboard">
-                  首页
+                  <FormattedMessage id="org.umi.ui.global.panel.home" />
                 </NavLink>
               </Menu.Item>
               {window.g_service.panels.map(panel => {
                 return (
                   <Menu.Item key={panel.path}>
                     <Icon type={panel.icon} />
-                    {panel.title}
+                    <FormattedMessage id={panel.title} />
                     <NavLink exact to={panel.path}>
-                      {panel.title}
+                      <FormattedMessage id={panel.title} />
                     </NavLink>
                   </Menu.Item>
                 );
@@ -62,7 +93,11 @@ export default withRouter(props => {
             </Menu>
           </div>
           <div className={styles.main}>
-            <h1>{activePanel ? activePanel.title : '首页'}</h1>
+            <h1>
+              {activePanel
+                ? formatMessage({ id: activePanel.title })
+                : formatMessage({ id: 'org.umi.ui.global.panel.home' })}
+            </h1>
             <div className={styles.content}>{props.children}</div>
           </div>
         </div>
@@ -81,6 +116,6 @@ export default withRouter(props => {
           </div>
         </div>
       </div>
-    );
-  }
+    </Context.Provider>
+  );
 });

@@ -1,14 +1,19 @@
 {
   "dependencies": {
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15",
     "xterm": "^3.14.4"
   },
   "private": true,
   "devDependencies": {
+    "@types/lodash": "^4.14.136",
     "@umijs/fabric": "^1.1.9",
+    "antd": "4.0.0-alpha.0",
     "stylelint": "^10.1.0",
     "stylelint-config-css-modules": "^1.4.0",
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-recommended": "^2.2.0",
-    "umi-types": "0.3.11"
+    "umi-types": "0.3.15",
+    "webpack-less-theme-plugin": "^2.1.0"
   }
 }

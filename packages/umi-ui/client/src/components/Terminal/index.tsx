@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
-import styles from './Terminal.less';
+import styles from './index.less';
 
 export default () => {
   const [minimized, setMinimized] = useState(false);

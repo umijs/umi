@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Input, Spin } from 'antd';
+import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
+import zhCN from './locales/zh-CN';
+import enUS from './locales/en-US';
+// @ts-ignore
 import styles from './ui.module.less';
 
 const { Search } = Input;
@@ -9,13 +13,14 @@ function nameToPath(name) {
   return `/${decamelize(name, '-')}`;
 }
 
-export default api => {
-  const { callRemote } = api;
+export default (api: IUiApi) => {
+  const { callRemote, getContext } = api;
 
   const BlocksViewer = () => {
     const [blockAdding, setBlockAdding] = useState(null);
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { locale, formatMessage } = useContext(getContext());
 
     useEffect(() => {
       (async () => {
@@ -71,7 +76,10 @@ export default api => {
 
     return (
       <div className={styles.normal}>
-        <Search placeholder="输入要搜索的区块名" onSearch={value => console.log(value)} />
+        <Search
+          placeholder={formatMessage({ id: 'org.umi.ui.blocks.content.search_block' })}
+          onSearch={value => console.log(value)}
+        />
         <div>{loading ? 'Fetching blocks...' : ''}</div>
         <div className={styles.blocklist}>
           {blocks.map((block, key) => {
@@ -91,8 +99,13 @@ export default api => {
     );
   };
 
+  api.addLocales({
+    'zh-CN': zhCN,
+    'en-US': enUS,
+  });
+
   api.addPanel({
-    title: '区块管理',
+    title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
     icon: 'environment',
     component: BlocksViewer,

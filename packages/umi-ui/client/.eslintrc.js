@@ -10,6 +10,9 @@ module.exports = {
     'react/button-has-type': [0],
     'lines-between-class-members': [0],
     'no-param-reassign': [0],
+    'class-methods-use-this': [0],
+    'no-underscore-dangle': [0],
+    'constructor-super': [0],
     'eslint-comments/no-unlimited-disable': [0],
   },
 };

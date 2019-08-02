@@ -93,6 +93,16 @@ class LocaleWrapper extends React.Component{
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
 
+    // support dynamic add messages for umi ui
+    // { 'zh-CN': { key: value }, 'en-US': { key: value } }
+    const runtimeLocaleMessagesType = typeof runtimeLocale.messages;
+    if (runtimeLocaleMessagesType === 'object' || runtimeLocaleMessagesType === 'function') {
+      const runtimeMessage = runtimeLocaleMessagesType === 'object'
+        ? runtimeLocale.messages[appLocale.locale]
+        : runtimeLocale.messages()[appLocale.locale];
+      Object.assign(appLocale.messages, runtimeMessage || {});
+    }
+
     return appLocale;
   }
   reloadAppLocale = () => {
