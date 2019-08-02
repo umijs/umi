@@ -62,7 +62,11 @@ export default function(service: IApi, opts: IOpts = {}) {
       ],
     };
     debug(`nodeExternalOpts:`, nodeExternalsOpts);
-    webpackConfig.externals = nodeExternals(nodeExternalsOpts);
+    const defaultExternals = webpackConfig.externals || [];
+    webpackConfig.externals =
+      typeof ssr === 'object' && ssr.disableExternal
+        ? defaultExternals
+        : nodeExternals(nodeExternalsOpts);
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';

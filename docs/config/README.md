@@ -267,6 +267,8 @@ export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // disable ssr external, build all modules in `umi.server.js`
+    disableExternal: false,
     // client chunkMaps manifest, default: ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
   },
