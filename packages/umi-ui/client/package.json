@@ -6,6 +6,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.136",
     "@umijs/fabric": "^1.1.9",
     "antd": "4.0.0-alpha.0",

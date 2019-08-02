@@ -58,12 +58,11 @@ const config: IConfig = {
         ],
         headScripts: [
           {
-            src:
-              'https://gw.alipayobjects.com/os/lib/react/16.7.0-alpha.2/umd/react.development.js',
+            src: 'https://gw.alipayobjects.com/os/lib/react/16.8.6/umd/react.development.js',
           },
           {
             src:
-              'https://gw.alipayobjects.com/os/lib/react-dom/16.7.0-alpha.2/umd/react-dom.development.js',
+              'https://gw.alipayobjects.com/os/lib/react-dom/16.8.6/umd/react-dom.development.js',
           },
           {
             src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',

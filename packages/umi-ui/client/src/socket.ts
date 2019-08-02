@@ -99,7 +99,7 @@ export function send(action) {
   sock.send(JSON.stringify(action));
 }
 
-export function callRemote(action) {
+export function callRemote(action): Promise<{ data: any }> {
   return new Promise((resolve, reject) => {
     messageHandlers.push(({ type, payload }) => {
       if (type === `${action.type}/success`) {

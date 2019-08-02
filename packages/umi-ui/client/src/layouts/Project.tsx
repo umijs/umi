@@ -2,6 +2,7 @@ import React from 'react';
 import { Divider, PageHeader } from 'antd';
 import { formatMessage, FormattedMessage } from 'umi-plugin-locale';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
+import Logs from './Logs';
 import ProjectContext from './ProjectContext';
 import styles from './Project.less';
 
@@ -51,6 +52,10 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
             />
           )}
           <div>{this.props.children}</div>
+          <div className="logs">
+            <h2>日志</h2>
+            <Logs />
+          </div>
         </div>
       </ProjectContext.Provider>
     );

@@ -1,22 +1,23 @@
 import React from 'react';
 import { Button } from 'antd';
-import { callRemote, listenRemote } from '@/socket';
 import cls from 'classnames';
+import ProjectContext from '@/layouts/ProjectContext';
+import { createProject } from '@/services/project';
 
-import styles from './index.less';
+import common from './common.less';
 
-const { useState, useEffect } = React;
+const { useState, useContext } = React;
 
 interface CreateProjectProps {}
 
 const CreateProject: React.SFC<CreateProjectProps> = props => {
-  const { fetchProject } = props;
   const [progress, setProgress] = useState({});
-  const createProject = async () => {
+  const { setCurrent } = useContext(ProjectContext);
+
+  const handleClick = async () => {
     try {
-      await callRemote({
-        type: '@@project/create',
-        payload: {
+      await createProject(
+        {
           npmClient: 'tnpm',
           baseDir: '/private/tmp',
           name: 'hello-umi',
@@ -30,14 +31,16 @@ const CreateProject: React.SFC<CreateProjectProps> = props => {
             reactFeatures: ['antd', 'dva'],
           },
         },
-        onProgress: async progress => {
-          setProgress(progress);
-          await fetchProject();
+        {
+          onProgress: async progress => {
+            setProgress(progress);
+          },
         },
-      });
+      );
       setProgress({
         success: true,
       });
+      setCurrent('list');
     } catch (e) {
       setProgress({
         failure: e,
@@ -46,9 +49,9 @@ const CreateProject: React.SFC<CreateProjectProps> = props => {
   };
 
   return (
-    <section>
+    <section className={common.section}>
       <h2>创建项目</h2>
-      <Button type="primary" onClick={createProject}>
+      <Button type="primary" onClick={handleClick}>
         在 /private/tmp 下创建 hello-umi 项目
       </Button>
       {progress.steps ? (
