@@ -1,11 +1,11 @@
 import React, { useEffect, useReducer, useState, useMemo, useRef } from 'react';
-import { Button, List, Skeleton, Badge, Spin, Popconfirm } from 'antd';
+import { Button, List, Skeleton, Badge, Spin, Popconfirm, Row, Col } from 'antd';
 import { router } from 'umi';
 import { callRemote, listenRemote } from '@/socket';
 import { formatMessage, getLocale, setLocale } from 'umi-plugin-locale';
 import styles from './index.less';
 
-export default () => {
+export default props => {
   const [data, setData] = useState({});
   const [progress, setProgress] = useState({});
   const [cwd, setCwd] = useState();
@@ -192,8 +192,19 @@ export default () => {
   };
 
   return (
-    <div className={styles.project}>
-      <h2 className={styles['project-title']}>项目列表</h2>
+    <div className={stylesproject}>
+      <Row type="flex" justify="space-between">
+        <Col>
+          <h2 className={styles['project-title']}>项目列表</h2>
+        </Col>
+        <Col>
+          <div className={styles['project-action']}>
+            <Button>导入项目</Button>
+            <Button type="primary">创建项目</Button>
+          </div>
+        </Col>
+      </Row>
+
       <List
         className={styles['project-list']}
         dataSource={projects}

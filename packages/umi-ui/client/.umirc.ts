@@ -20,7 +20,7 @@ const config: IConfig = {
       component: '../layouts/Project',
       routes: [
         {
-          path: '/project/select',
+          path: '/project',
           component: '../pages/project',
         },
       ],

@@ -101,7 +101,7 @@ export async function render(oldRender) {
     if (data.currentProject) {
       history.replace('/dashboard');
     } else {
-      history.replace('/project/select');
+      history.replace('/project');
     }
     window.location.reload();
     return;
@@ -141,7 +141,7 @@ export async function render(oldRender) {
         uiPlugin(new PluginAPI(service));
       });
     } else {
-      history.replace('/project/select');
+      history.replace('/project');
     }
   }
 
