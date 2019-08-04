@@ -26,6 +26,8 @@ export default props => {
       const { data: files } = await listDirectory({
         dirPath: cwd,
       });
+      console.log('cwd', cwd);
+      console.log('files', files);
       setFiles(files);
     })();
   }, []);

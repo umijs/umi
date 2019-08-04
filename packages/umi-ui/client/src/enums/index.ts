@@ -13,3 +13,8 @@ export enum PROJECT_STATUS {
 }
 
 export type IProjectStatus = keyof typeof PROJECT_STATUS;
+
+export enum IDirectoryType {
+  'directory' = 'directory',
+  'file' = 'file',
+}

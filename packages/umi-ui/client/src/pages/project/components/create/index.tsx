@@ -71,9 +71,9 @@ const CreateProject: React.SFC<IProjectProps> = props => {
           <Step title={formatMessage({ id: step.title })} />
         ))}
       </Steps> */}
-      <Button type="primary" onClick={handleSubmit}>
+      {/* <Button type="primary" onClick={handleSubmit}>
         在 {cwd} 下创建 hello-umi 项目
-      </Button>
+      </Button> */}
       <StepForm onFinish={handleSubmit}>
         {PROJECT_STEPS.map((step, i) => {
           const FormChild = step.children;

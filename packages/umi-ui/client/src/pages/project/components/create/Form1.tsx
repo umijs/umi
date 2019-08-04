@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Form, Input, Button } from 'antd';
 import cls from 'classnames';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
+import DirectoryForm from '@/components/DirectoryForm';
 import { isValidFolderName } from '@/utils/isValid';
 import ProjectContext from '@/layouts/ProjectContext';
 
@@ -9,9 +10,31 @@ const { useState, useEffect, useContext, forwardRef } = React;
 
 const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const { cwd, goNext, goPrev, style } = props;
-  const [path, setPath] = useState<string>(cwd);
   const { formatMessage } = useContext(ProjectContext);
+  const [baseDir, setBaseDir] = useState<string>(cwd);
   const [form] = Form.useForm();
+
+  const handleBaseDirChange = (value: string) => {
+    const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
+    const dir = `${value.endsWith('/') ? value : `${value}/`}${name}`;
+    form.setFieldsValue({
+      baseDir: dir,
+    });
+    setBaseDir(dir);
+  };
+
+  const handleProjectName = e => {
+    const basename = baseDir
+      .split('/')
+      .slice(0, -1)
+      .join('/');
+    const dir = `${basename.endsWith('/') ? basename : `${basename}/`}${e.target.value}`;
+    form.setFieldsValue({
+      baseDir: dir,
+    });
+    debugger;
+    setBaseDir(dir);
+  };
 
   return (
     <Form
@@ -21,8 +44,13 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       layout="vertical"
       name="form_create_project"
       onFinish={() => goNext()}
-      initialValues={{}}
+      initialValues={{
+        _directory: cwd,
+      }}
     >
+      <Form.Item label={null}>
+        <DirectoryForm onChange={handleBaseDirChange} />
+      </Form.Item>
       <Form.Item
         name="name"
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
@@ -37,14 +65,10 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           },
         ]}
       >
-        <Input
-          onChange={e => {
-            setPath(`${cwd}/${e.target.value}`);
-          }}
-        />
+        <Input onChange={handleProjectName} />
       </Form.Item>
-      <Form.Item>
-        <p>{path}</p>
+      <Form.Item name="baseDir">
+        <p>{baseDir}</p>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
