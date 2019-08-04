@@ -1,8 +1,7 @@
 import React, { useEffect, useReducer, useState, useMemo, useRef, useContext } from 'react';
 import ProjectContext from '@/layouts/ProjectContext';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
-import ProjectMap from './components';
-import { getLocale } from 'umi-plugin-locale';
+import * as ProjectMap from './components';
 import styles from './index.less';
 
 export default props => {
@@ -10,8 +9,7 @@ export default props => {
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
-  const { setCurrent, current } = useContext(ProjectContext);
-  const locale = getLocale();
+  const { setCurrent, current, locale } = useContext(ProjectContext);
 
   async function getProject() {
     const { data } = await fetchProject();

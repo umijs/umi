@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { importProject } from '@/services/project';
+import { IProjectProps } from '../index';
 import cls from 'classnames';
 
 import common from '../common.less';
@@ -9,9 +10,7 @@ import styles from './index.less';
 
 const { useState, useEffect, useContext } = React;
 
-interface ImportProjectProps {}
-
-const ImportProject: React.SFC<ImportProjectProps> = props => {
+const ImportProject: React.SFC<IProjectProps> = props => {
   const { currentProject, cwd, files, logs, fetchProject } = props;
   const { setCurrent } = useContext(ProjectContext);
 
