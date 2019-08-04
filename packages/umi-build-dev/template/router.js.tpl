@@ -1,5 +1,5 @@
 {{{ importsAhead }}}
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
@@ -15,37 +15,28 @@ window.g_routes = routes;
 const plugins = require('umi/_runtimePlugin');
 plugins.applyForEach('patchRoutes', { initialValue: routes });
 
+// route change handler
+function routeChangeHandler(location, action) {
+  plugins.applyForEach('onRouteChange', {
+    initialValue: {
+      routes,
+      location,
+      action,
+    },
+  });
+}
+const unListen = history.listen(routeChangeHandler);
+routeChangeHandler(history.location);
+
 export { routes };
 
-export default class RouterWrapper extends React.Component {
-
-  unListen = () => {};
-
-  constructor(props) {
-    super(props);
-
-    // route change handler
-    function routeChangeHandler(location, action) {
-      plugins.applyForEach('onRouteChange', {
-        initialValue: {
-          routes,
-          location,
-          action,
-        },
-      });
-    }
-    this.unListen = history.listen(routeChangeHandler);
-    routeChangeHandler(history.location);
-  }
-
-  componentWillUnmount() {
-    this.unListen();
-  }
-
-  render() {
-    const props = this.props || {};
-    return (
-      {{{ routerContent }}}
-    );
-  }
+export default function RouterWrapper(props = {}) {
+  useEffect(() => {
+    return () => {
+     unListen()
+    };
+  });
+  return (
+    {{{ routerContent }}}
+  );
 }
