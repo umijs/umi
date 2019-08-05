@@ -5,12 +5,9 @@ node_js:
   - '10'
   - '12'
 
-install:
-  - npm install
-
 before_script:
   - npm run build
-  - npm run bootstrap -- --npm-client=npm
+  - npm run bootstrap
 
 after_success:
   - npm run coveralls
