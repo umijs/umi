@@ -7,7 +7,7 @@ node_js:
 
 before_script:
   - npm run build
-  - node_modules/.bin/lerna exec yarn install
+  - npm run bootstrap -- --network-timeout 100000
 
 after_success:
   - npm run coveralls
