@@ -7,7 +7,7 @@ node_js:
 
 before_script:
   - npm run build
-  - npm run bootstrap -- --network-timeout 100000
+  - npm run bootstrap -- --silent
 
 after_success:
   - npm run coveralls
