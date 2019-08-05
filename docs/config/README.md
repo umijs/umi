@@ -363,8 +363,8 @@ const News = props => {
  *  route (current active route)
  *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
  *  isServer (whether run in Server)
- *  req (server Request object, only exist in Server)
- *  res (server Response object, only exist in Server)
+ *  req (HTTP server Request object, only exist in Server)
+ *  res (HTTP server Response object, only exist in Server)
  * }
  */
 News.getInitialProps = async ({ route, store, isServer, req, res }) => {

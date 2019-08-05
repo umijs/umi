@@ -364,8 +364,8 @@ const News = props => {
  *  route （当前路由信息）
  *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
  *  isServer (是否为服务端执行环境)
- *  req (Request 对象，只存在于 Server 端)
- *  res (Response 对象，只存在于 Server 端)
+ *  req (HTTP Request 对象，只存在于 Server 端)
+ *  res (HTTP Response 对象，只存在于 Server 端)
  * }
  */
 News.getInitialProps = async ({ route, store, isServer, req, res }) => {
