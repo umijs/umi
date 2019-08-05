@@ -32,7 +32,6 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
     form.setFieldsValue({
       baseDir: dir,
     });
-    debugger;
     setBaseDir(dir);
   };
 
