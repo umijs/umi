@@ -31,8 +31,9 @@ export default function generateWebManifest(api, options) {
 
   let manifestFilename = basename(srcPath);
 
-  // remove local path query
-  srcPath = parse(srcPath).pathname;
+  const urlObj = parse(srcPath);
+  // remove search
+  srcPath = srcPath.replace(urlObj.search, '');
 
   if (existsSync(srcPath)) {
     // watch manifest on DEV mode
