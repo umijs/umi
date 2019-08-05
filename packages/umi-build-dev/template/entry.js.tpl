@@ -62,6 +62,9 @@ if (!__IS_BROWSER) {
       props = await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: true,
+        // only exist in server
+        req: ctx.req || {},
+        res: ctx.res || {},
         ...initialProps,
       });
       props = plugins.apply('initialProps', {
