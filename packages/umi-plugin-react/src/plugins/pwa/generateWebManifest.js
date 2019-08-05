@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { basename, join } from 'path';
 import { resolve, parse } from 'url';
-import { isUrl, winPath } from 'umi-utils';
+import { winPath } from 'umi-utils';
 
 export const PWACOMPAT_PATH = 'pwacompat.min.js';
 export const DEFAULT_MANIFEST_FILENAME = 'manifest.json';
@@ -22,7 +22,7 @@ export default function generateWebManifest(api, options) {
   } = api;
 
   const defaultWebManifestOptions = {
-    srcPath: join(absSrcPath, DEFAULT_MANIFEST_FILENAME),
+    srcPath: join(winPath(absSrcPath), DEFAULT_MANIFEST_FILENAME),
   };
   let { srcPath } = {
     ...defaultWebManifestOptions,
@@ -62,7 +62,7 @@ export default function generateWebManifest(api, options) {
   });
 
   return {
-    srcPath: isUrl(srcPath) ? srcPath : winPath(srcPath),
+    srcPath,
     outputPath: manifestFilename,
   };
 }
