@@ -12,5 +12,9 @@ export default function(api) {
     onChange() {
       api.service.restart(/* why */ 'Configure item treeShaking Changed.');
     },
+    default: false,
+    type: 'boolean',
+    group: 'webpack',
+    description: 'Whether to enable treeShaking.',
   };
 }

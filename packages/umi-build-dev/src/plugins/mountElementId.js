@@ -11,6 +11,7 @@ export default function(api) {
         onChange() {
           api.restart();
         },
+        default: 'root',
       };
     };
   });

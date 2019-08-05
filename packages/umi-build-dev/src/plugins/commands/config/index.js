@@ -25,8 +25,6 @@ export default function(api) {
   }
 
   function set(key, value) {
-    console.log('set', key, value);
-    console.log('file', service.userConfig.file);
     setConfig({
       key,
       value,

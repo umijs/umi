@@ -20,6 +20,16 @@ export default function(api) {
         onChange() {
           api.service.restart(/* why */ 'Config targets Changed');
         },
+        type: 'object',
+        default: {
+          chrome: 49,
+          firefox: 64,
+          safari: 10,
+          edge: 13,
+          ios: 10,
+        },
+        group: 'basic',
+        description: 'The minimum version of browsers you want to compatible with.',
       };
     };
   });

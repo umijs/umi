@@ -12,5 +12,9 @@ export default function(api) {
     onChange() {
       api.service.restart(/* why */ 'Configure item runtimePublicPath Changed.');
     },
+    default: false,
+    type: 'boolean',
+    group: 'basic',
+    description: 'Whether to use the window.publicPath specified in the HTML.',
   };
 }
