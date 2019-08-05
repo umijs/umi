@@ -1,9 +1,10 @@
 import assert from 'assert';
 import stringifyObject from 'stringify-object';
-import setConfig from '../../utils/setConfig';
+import { join } from 'path';
+import setConfig from './setConfig';
 
 export default function(api) {
-  const { service } = api;
+  const { service, cwd } = api;
 
   function list() {
     console.log(
@@ -29,7 +30,7 @@ export default function(api) {
     setConfig({
       key,
       value,
-      file: service.userConfig.file,
+      file: service.userConfig.file || join(cwd, '.umirc.js'),
     });
   }
 
