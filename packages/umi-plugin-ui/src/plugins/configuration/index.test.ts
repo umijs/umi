@@ -13,9 +13,9 @@ test('org.umi.config.list', async () => {
     service.applyPlugins('onUISocket', {
       args: {
         action: { type: 'org.umi.config.list' },
-        success(message) {
-          expect(Array.isArray(message)).toEqual(true);
-          expect(message.length > 1).toEqual(true);
+        success({ data }) {
+          expect(Array.isArray(data)).toEqual(true);
+          expect(data.length > 1).toEqual(true);
           resolve();
         },
         failure(e) {

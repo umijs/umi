@@ -344,7 +344,7 @@ export default class UmiUI {
             }
             // eslint-disable-next-line no-empty
           } catch (e) {
-            console.error(chalk.red(e));
+            console.error(chalk.red(e.stack));
           }
         });
       });

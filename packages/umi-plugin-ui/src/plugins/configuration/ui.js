@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Form, Select, Switch } from 'antd';
+import styles from './ui.module.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -154,11 +155,105 @@ const ConfigManager = connect(state => ({
 );
  */
 
-function ConfigManager() {
-  return <div>配置管理内容</div>;
-}
-
 export default api => {
+  const { callRemote, getContext } = api;
+
+  function ConfigItem(props) {
+    const { item } = props;
+    let value = item.default;
+    if ('value' in item) {
+      value = item.value;
+    }
+
+    function blurHandler(name, e) {
+      props.editHandler(name, e.target.value);
+    }
+
+    return (
+      <div className={styles.configItem}>
+        <h3>{item.name}</h3>
+        {do {
+          if (item.type === 'list') {
+            <div>
+              <Select value={value} onChange={props.editHandler.bind(null, item.name)}>
+                {item.choices.map(choice => {
+                  return (
+                    <Option key={choice} value={choice}>
+                      {choice}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </div>;
+          } else if (item.type === 'string') {
+            <div>
+              <Input defaultValue={value} onBlur={blurHandler.bind(null, item.name)} />
+            </div>;
+          } else if (item.type === 'boolean') {
+            <div>
+              <Switch checked={value} onChange={props.editHandler.bind(null, item.name)} />
+            </div>;
+          } else if (item.type === 'object') {
+            <div>object</div>;
+          } else {
+            <div>Unsupport type {item.type}</div>;
+          }
+        }}
+        <div>{item.description}</div>
+      </div>
+    );
+  }
+
+  function ConfigManager() {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+      (async () => {
+        await updateData();
+      })();
+    }, []);
+
+    async function updateData() {
+      const { data } = await callRemote({
+        type: 'org.umi.config.list',
+      });
+      setData(data);
+    }
+
+    async function editHandler(name, value) {
+      await callRemote({
+        type: 'org.umi.config.edit',
+        payload: {
+          key: name,
+          value: value.toString(),
+        },
+      });
+      await updateData();
+    }
+
+    const groupedData = {};
+    data.forEach(item => {
+      if (!groupedData[item.group]) {
+        groupedData[item.group] = [];
+      }
+      groupedData[item.group].push(item);
+    });
+
+    return (
+      <div>
+        {Object.keys(groupedData).map(group => {
+          return (
+            <div key={group}>
+              <h2>{group}</h2>
+              {groupedData[group].map(item => {
+                return <ConfigItem key={item.name} item={item} editHandler={editHandler} />;
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   api.addPanel({
     title: '配置管理',
     path: '/configuration',

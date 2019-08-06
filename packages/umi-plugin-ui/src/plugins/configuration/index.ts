@@ -27,7 +27,9 @@ export default function(api: IApi) {
     const { type, payload } = action;
     switch (type) {
       case 'org.umi.config.list':
-        success(getConfig());
+        success({
+          data: getConfig(),
+        });
         break;
       case 'org.umi.config.edit':
         (api as any).service.runCommand('config', {
@@ -39,27 +41,4 @@ export default function(api: IApi) {
         break;
     }
   });
-
-  /*
-  api.onSocketData((type, payload, { send }) => {
-    console.log(`[LOG] ${type} ${JSON.stringify(payload)}`);
-    switch (type) {
-      case 'config':
-        api.service
-          .runCommand('config', {
-            _: payload,
-          })
-          .then(() => {
-            console.log('config done');
-            send('config/save', getConfig());
-          });
-        break;
-      case 'config/fetch':
-        send('config/save', getConfig());
-        break;
-      default:
-        break;
-    }
-  });
- */
 }
