@@ -49,9 +49,7 @@ $ PORT=8001 umi dev
 
 ### APP_ROOT
 
-::: warning
-APP_ROOT 不能配在 .env 里。
-:::
+::: warning APP_ROOT 不能配在 .env 里。 :::
 
 指定项目根目录。比如：
 
@@ -65,6 +63,14 @@ $ APP_ROOT=src/renderer umi dev
 
 ```bash
 $ ANALYZE=1 umi build
+```
+
+### ANALYZE_SSR
+
+默认关闭。分析 `umi.server.js` 构成，ssr build 时有效。比如：
+
+```bash
+$ ANALYZE_SSR=1 umi build
 ```
 
 ### ANALYZE_MODE
@@ -87,8 +93,7 @@ $ ANALYZE=1 ANALYZE_MODE=server umi build
 $ ANALYZE_REPORT=1 umi build
 ```
 
-与开启 `ANALYZE` 并指定 `ANALYZE_DUMP` 后生成的 stat 文件不同，ANALYZE 会直接将 [
-[Webpack Stat](https://webpack.js.org/configuration/stats/) 数据转存成目标文件，而 `ANALYZE_REPORT` 会先对 Webpack Stat 进行解析与裁剪，把可以直接用于分析与可视化的报告数据生成报告文件。
+与开启 `ANALYZE` 并指定 `ANALYZE_DUMP` 后生成的 stat 文件不同，ANALYZE 会直接将 [ [Webpack Stat](https://webpack.js.org/configuration/stats/) 数据转存成目标文件，而 `ANALYZE_REPORT` 会先对 Webpack Stat 进行解析与裁剪，把可以直接用于分析与可视化的报告数据生成报告文件。
 
 这样做的好处是，我们可以得到更小（仅有 stat 文件 1% 大小）的数据文件。
 
@@ -177,7 +182,8 @@ $ HTML=none umi build
 ### RM_TMPDIR
 
 ### FORK_TS_CHECKER
-默认不开启TypeScript检查，值为1时启用。比如：
+
+默认不开启 TypeScript 检查，值为 1 时启用。比如：
 
 ```bash
 $ FORK_TS_CHECKER=1 umi dev
