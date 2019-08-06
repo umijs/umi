@@ -10,6 +10,7 @@ function startDevServer(opts = {}) {
     const child = fork(DEV_SCRIPT, ['dev', '--port', port, '--cwd', cwd], {
       env: {
         ...process.env,
+        // https://github.com/webpack/webpack-dev-server/issues/128
         UV_THREADPOOL_SIZE: '100',
         BROWSER: 'none',
         PROGRESS: 'none',
