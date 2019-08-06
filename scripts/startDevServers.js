@@ -10,6 +10,7 @@ function startDevServer(opts = {}) {
     const child = fork(DEV_SCRIPT, ['dev', '--port', port, '--cwd', cwd], {
       env: {
         ...process.env,
+        UV_THREADPOOL_SIZE: '100',
         BROWSER: 'none',
         PROGRESS: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
