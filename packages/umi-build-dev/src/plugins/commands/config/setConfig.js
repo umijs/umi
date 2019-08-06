@@ -35,27 +35,50 @@ export function update(content, key, value) {
   traverse(ast, {
     ExportDefaultDeclaration(path) {
       let node = path.node.declaration;
+
+      // export default {} as IConfig;
       if (node.type === 'TSAsExpression') {
         node = node.expression;
       }
+
+      // const a;
+      // export default a;
+      if (t.isIdentifier(node) && path.scope.hasBinding(node.name)) {
+        const bindingNode = path.scope.getBinding(node.name).path.node;
+        if (t.isVariableDeclarator(bindingNode)) {
+          node = bindingNode.init;
+        }
+      }
+
       assert(t.isObjectExpression(node), `config file must export default a Plain Object`);
       if (t.isObjectExpression(node)) {
         const { properties } = node;
-        let hasFound;
-        for (const property of properties) {
-          if (
-            t.isIdentifier(property.key, {
-              name: key,
-            })
-          ) {
-            property.value = buildExpression(value);
-            hasFound = true;
-            break;
+
+        let obj = key;
+        if (typeof key === 'string') {
+          obj = {
+            [key]: value,
+          };
+        }
+
+        Object.keys(obj).forEach(key => {
+          const value = obj[key];
+          let hasFound;
+          for (const property of properties) {
+            if (
+              t.isIdentifier(property.key, {
+                name: key,
+              })
+            ) {
+              property.value = buildExpression(value);
+              hasFound = true;
+              break;
+            }
           }
-        }
-        if (!hasFound) {
-          properties.push(t.objectProperty(t.identifier(key), buildExpression(value)));
-        }
+          if (!hasFound) {
+            properties.push(t.objectProperty(t.identifier(key), buildExpression(value)));
+          }
+        });
       }
     },
   });

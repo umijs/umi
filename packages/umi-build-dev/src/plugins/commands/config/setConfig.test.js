@@ -149,3 +149,68 @@ export default {
     `.trim(),
   );
 });
+
+test('export default reference', () => {
+  expect(
+    update(
+      `
+const a = {
+};
+export default a;
+      `,
+      'history',
+      'hash',
+    ).trim(),
+  ).toEqual(
+    `
+const a = {
+  history: 'hash',
+};
+export default a;
+    `.trim(),
+  );
+});
+
+test('export default reference (typescript)', () => {
+  expect(
+    update(
+      `
+import { IConfig } from 'umi-types';
+const a: IConfig = {
+};
+export default a;
+      `,
+      'history',
+      'hash',
+    ).trim(),
+  ).toEqual(
+    `
+import { IConfig } from 'umi-types';
+const a: IConfig = {
+  history: 'hash',
+};
+export default a;
+    `.trim(),
+  );
+});
+
+test('batch update', () => {
+  expect(
+    update(
+      `
+export default {};
+      `,
+      {
+        history: 'hash',
+        runtimePublicPath: 'true',
+      },
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  history: 'hash',
+  runtimePublicPath: true,
+};
+    `.trim(),
+  );
+});
