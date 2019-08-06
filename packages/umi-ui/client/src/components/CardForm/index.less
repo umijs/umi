@@ -1,0 +1,24 @@
+.cardForm {
+  &-col {
+    margin-bottom: 16px;
+  }
+  &-card {
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s @ease-in;
+    &:hover {
+      background: @primary-5;
+    }
+    &-active {
+      &::after {
+        position: absolute;
+        background: url('./corner.svg');
+        content: '';
+        width: 20px;
+        height: 20px;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}

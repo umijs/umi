@@ -1,7 +1,28 @@
 .project {
   &-list {
     &-layout {
-      & > * {
+      min-height: 100vh;
+      &-sider {
+        padding: 40px 0;
+        text-align: center;
+        color: #fff;
+        h1 {
+          font-size: 14px;
+          margin-bottom: 24px;
+          font-weight: 500;
+        }
+        &-item {
+          text-align: center;
+          user-select: none;
+          i {
+            font-size: 20px;
+          }
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+      &-content {
         padding: 40px 32px;
       }
     }
@@ -17,7 +38,7 @@
     }
   }
   &-list {
-    border: 1px solid #e8e8e8;
+    border: 1px solid @border-color-split;
     &-item {
       padding: 16px;
       &-title {

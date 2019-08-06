@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon, Button } from 'antd';
+import { Icon, Button, Empty } from 'antd';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
@@ -17,7 +17,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const { value, onChange } = props;
 
   const [dirPath, setDirPath] = useState<string>(value || '');
-  const [directories, setDirectories] = useState<DirectoryItemProps[]>([]);
+  const [directories, setDirectories] = useState<DirectoryItemProps[]>();
   const triggerChangeValue = (path: string) => {
     if (onChange) {
       onChange(path);
@@ -88,11 +88,17 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           <Icon type="reload" />
         </Button>
       </div>
-      <div className={styles['directoryForm-list']}>
-        {directories.map(item => (
-          <DirectoryItem key={item.fileName} {...item} onClick={handleDirectoryClick} />
-        ))}
-      </div>
+      {Array.isArray(directories) && (
+        <div className={styles['directoryForm-list']}>
+          {directories.length > 0 ? (
+            directories.map(item => (
+              <DirectoryItem key={item.fileName} {...item} onClick={handleDirectoryClick} />
+            ))
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -32,7 +32,8 @@ export async function openProjectInEditor(payload) {
   });
 }
 
-export async function createProject(payload, ...params) {
+export async function createProject(payload, params) {
+  console.log('paramsparamsparams', params);
   return callRemote({
     type: '@@project/create',
     payload,

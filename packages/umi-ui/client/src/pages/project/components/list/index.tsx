@@ -1,6 +1,20 @@
 import * as React from 'react';
-import { Button, List, Skeleton, Badge, Spin, Popconfirm, Row, Col, message, Layout } from 'antd';
+import {
+  Button,
+  List,
+  Skeleton,
+  Badge,
+  Spin,
+  Popconfirm,
+  Row,
+  Col,
+  message,
+  Layout,
+  Icon,
+  Menu,
+} from 'antd';
 import { router } from 'umi';
+import get from 'lodash/get';
 import {
   fetchProject,
   setCurrentProject,
@@ -28,8 +42,10 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
   const [data, setData] = useState({});
 
   const ProjectStatus = props => {
-    if (props.item.creatingProgress) {
-      return <Spin />;
+    const step = get(props, 'item.creatingProgress.step');
+    const steps = get(props, 'item.creatingProgress.steps');
+    if (steps && step && step < steps.length - 1) {
+      return <Spin style={{ marginRight: 8 }} />;
     }
     if (props.item.key === currentProject) {
       return <Badge status="success" />;
@@ -82,8 +98,14 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
 
   return (
     <Layout className={styles['project-list-layout']}>
-      <Sider>Sider</Sider>
-      <Content>
+      <Sider trigger={null} width={72} className={styles['project-list-layout-sider']}>
+        <h1 style={{ textAlign: 'center' }}>Umi Ui</h1>
+        <div className={styles['project-list-layout-sider-item']}>
+          <Icon type="appstore" />
+          <p>项目</p>
+        </div>
+      </Sider>
+      <Content className={styles['project-list-layout-content']}>
         <Row type="flex" justify="space-between">
           <Col>
             <h2 className={styles['project-title']}>项目列表</h2>
@@ -124,10 +146,10 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
               <Skeleton title={false} loading={item.loading} active>
                 <List.Item.Meta
                   title={
-                    <p className={styles['project-list-item-title']}>
+                    <div className={styles['project-list-item-title']}>
                       <ProjectStatus item={item} />
                       {item.name}
-                    </p>
+                    </div>
                   }
                   description={item.path}
                 />

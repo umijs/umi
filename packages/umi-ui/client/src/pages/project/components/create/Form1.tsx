@@ -11,28 +11,28 @@ const { useState, useEffect, useContext, forwardRef } = React;
 const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const { cwd, goNext, goPrev, style } = props;
   const { formatMessage } = useContext(ProjectContext);
-  const [baseDir, setBaseDir] = useState<string>(cwd);
+  const [fullPath, setFullPath] = useState<string>(cwd);
   const [form] = Form.useForm();
 
   const handleBaseDirChange = (value: string) => {
     const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
     const dir = `${value.endsWith('/') ? value : `${value}/`}${name}`;
     form.setFieldsValue({
-      baseDir: dir,
+      fullPath: dir,
     });
-    setBaseDir(dir);
+    setFullPath(dir);
   };
 
   const handleProjectName = e => {
-    const basename = baseDir
+    const basename = fullPath
       .split('/')
       .slice(0, -1)
       .join('/');
     const dir = `${basename.endsWith('/') ? basename : `${basename}/`}${e.target.value}`;
     form.setFieldsValue({
-      baseDir: dir,
+      fullPath: dir,
     });
-    setBaseDir(dir);
+    setFullPath(dir);
   };
 
   return (
@@ -43,11 +43,9 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       layout="vertical"
       name="form_create_project"
       onFinish={() => goNext()}
-      initialValues={{
-        _directory: cwd,
-      }}
+      initialValues={{}}
     >
-      <Form.Item label={null}>
+      <Form.Item label={null} name="baseDir">
         <DirectoryForm onChange={handleBaseDirChange} />
       </Form.Item>
       <Form.Item
@@ -66,8 +64,8 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       >
         <Input onChange={handleProjectName} />
       </Form.Item>
-      <Form.Item name="baseDir">
-        <p>{baseDir}</p>
+      <Form.Item>
+        <p>{fullPath}</p>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">

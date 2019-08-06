@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
-import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-locale';
+import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Context from './Context';
 import Terminal from '@/components/Terminal';

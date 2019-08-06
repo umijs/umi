@@ -18,3 +18,20 @@ export enum IDirectoryType {
   'directory' = 'directory',
   'file' = 'file',
 }
+
+export type APP_TYPE = 'ant-design-pro' | 'app';
+
+export type APP_LANGUAGE = 'TypeScript' | 'JavaScript';
+
+export enum REACT_FEATURES {
+  antd = 'antd',
+  dva = 'dva',
+}
+
+export interface ICreateProgress {
+  step: number;
+  stepStatus: number;
+  steps: string[];
+  success?: boolean;
+  failure?: Error;
+}

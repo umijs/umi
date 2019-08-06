@@ -49,7 +49,7 @@ const StepForm: React.SFC<InternalStepFormProps> = props => {
 
   return (
     <div>
-      <Steps current={currentStep}>
+      <Steps current={currentStep} style={{ marginBottom: 16 }}>
         {React.Children.map(children, (element: any, i) => {
           const { type } = element;
           if (!(type && type.__STEP_FORM_ITEM)) {

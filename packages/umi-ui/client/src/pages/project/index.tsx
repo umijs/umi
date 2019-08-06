@@ -41,7 +41,7 @@ export default props => {
 
   return (
     <Layout className={styles.project}>
-      <Content>
+      <Content className={styles['project-content']}>
         <Project cwd={cwd} files={files} currentProject={currentProject} />
       </Content>
     </Layout>
