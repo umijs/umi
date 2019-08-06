@@ -193,9 +193,21 @@ export default class UmiUI {
         break;
       case '@@project/add':
         // TODO: 检验是否 umi 项目，不是则抛错给客户端
-        log('info', `add project ${payload.path} with name ${payload.name}`);
-        this.config.addProject(payload.path, payload.name);
-        success();
+        try {
+          assert(
+            existsSync(payload.path),
+            `Add project failed, since path ${payload.path} don't exists.`,
+          );
+          log('info', `add project ${payload.path} with name ${payload.name}`);
+          this.config.addProject(payload.path, payload.name);
+          success();
+        } catch (e) {
+          console.error(chalk.red(`Error: Add project FAILED`));
+          console.error(e);
+          failure({
+            message: e.message,
+          });
+        }
         break;
       case '@@project/delete':
         log('info', `delete project`);
