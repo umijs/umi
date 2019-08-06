@@ -1,8 +1,5 @@
 import * as React from 'react';
 import flatten from 'lodash/flatten';
-import cls from 'classnames';
-
-import styles from './index.less';
 
 const { useState, useCallback } = React;
 

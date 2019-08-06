@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { Icon, Row, Col, Button } from 'antd';
-import cls from 'classnames';
-import useLoading from '@/components/hooks/useLoading';
+import { Icon, Button } from 'antd';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
@@ -17,7 +15,6 @@ interface DirectoryFormProps {
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const { value, onChange } = props;
-  const { getLoading, setLoading } = useLoading(['reload']);
 
   const [dirPath, setDirPath] = useState<string>(value || '');
   const [directories, setDirectories] = useState<DirectoryItemProps[]>([]);
@@ -67,12 +64,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   };
 
   const handleReload = async () => {
-    setLoading('reload', true);
     await changeDirectories(dirPath);
-    // just test
-    setTimeout(() => {
-      setLoading('reload', false);
-    }, 1500);
   };
 
   return (
@@ -92,8 +84,8 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         <Button>
           <Icon type="edit" />
         </Button>
-        <Button loading={getLoading('reload')} onClick={handleReload}>
-          {!getLoading('reload') && <Icon type="reload" />}
+        <Button onClick={handleReload}>
+          <Icon type="reload" />
         </Button>
       </div>
       <div className={styles['directoryForm-list']}>

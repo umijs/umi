@@ -1,8 +1,11 @@
 import React, { useEffect, useReducer, useState, useMemo, useRef, useContext } from 'react';
+import { Layout } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
 import * as ProjectMap from './components';
 import styles from './index.less';
+
+const { Content } = Layout;
 
 export default props => {
   const [data, setData] = useState({});
@@ -37,9 +40,11 @@ export default props => {
   const Project = ProjectMap[current];
 
   return (
-    <div className={styles.project}>
-      <Project cwd={cwd} files={files} currentProject={currentProject} />
-    </div>
+    <Layout className={styles.project}>
+      <Content>
+        <Project cwd={cwd} files={files} currentProject={currentProject} />
+      </Content>
+    </Layout>
   );
 
   // return (

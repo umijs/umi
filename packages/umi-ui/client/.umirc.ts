@@ -9,11 +9,7 @@ const config: IConfig = {
     'react-dom': 'window.ReactDOM',
     antd: 'window.antd',
   },
-  theme: {
-    'primary-color': '#fba008',
-    'link-color': 'rgba(0, 0, 0, 45)',
-    'heading-color': 'rgba(0, 0, 0, 85)',
-  },
+  theme: './src/styles/theme.js',
   routes: [
     {
       path: '/project',
