@@ -7,7 +7,7 @@ function buildUIApp(opts = {}) {
   console.log(`Build ui app`);
   const { watch } = opts;
   const child = fork(UMI_BIN, [
-    'build',
+    watch ? 'dev' : 'build',
     '--cwd',
     './packages/umi-ui/client',
     ...(watch ? ['--watch'] : []),

@@ -26,6 +26,7 @@
     "execa": "2.0.3",
     "express": "4.17.1",
     "compression": "1.7.4",
+    "got": "9.6.0",
     "mkdirp": "0.5.1",
     "react-dev-utils": "9.0.1",
     "resolve-from": "5.0.0",

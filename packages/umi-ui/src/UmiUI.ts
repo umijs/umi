@@ -5,6 +5,7 @@ import clearModule from 'clear-module';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import { existsSync } from 'fs';
+import got from 'got';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
@@ -274,7 +275,22 @@ export default class UmiUI {
       const serveStatic = require('serve-static');
       const app = express();
       app.use(compression());
-      app.use(serveStatic(join(__dirname, '../client/dist')));
+      if (process.env.LOCAL_DEBUG) {
+        app.use((req, res) => {
+          if (['/'].includes(req.path)) {
+            got(`http://localhost:8002${req.path}`)
+              .then(({ body }) => {
+                res.set('Content-Type', 'text/html');
+                res.send(body);
+              })
+              .catch(e => {
+                console.error(e);
+              });
+          }
+        });
+      } else {
+        app.use(serveStatic(join(__dirname, '../client/dist')));
+      }
 
       const sockjs = require('sockjs');
       const ss = sockjs.createServer();
