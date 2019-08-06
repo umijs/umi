@@ -38,7 +38,7 @@ describe('test plugin', () => {
 
     const ret = readFileSync(wrapperFile, 'utf-8');
 
-    expect(ret).toEqual(expect.stringContaining('<LocaleProvider'));
+    expect(ret).toEqual(expect.stringContaining('<ConfigProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('antd/lib/locale-provider/en_US'));
@@ -56,7 +56,7 @@ test('antd is false', () => {
 
   const ret = readFileSync(wrapperFile, 'utf-8');
 
-  expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
+  expect(ret).not.toEqual(expect.stringContaining('<ConfigProvider'));
   expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
   expect(ret).not.toEqual(expect.stringContaining('antd/lib/locale-provider/zh_CN'));
   expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
