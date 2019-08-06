@@ -27,13 +27,12 @@ function start() {
   const devServers = [
     [12341, '../packages/umi/test/fixtures/dev/normal'],
     [12342, '../packages/umi/test/fixtures/dev/ssr'],
-  ];
+    [12343, '../packages/umi/test/fixtures/dev/ssr-styles'],
+  ].map(([port, cwd]) => {
+    return startDevServer({ port, cwd: join(__dirname, cwd) });
+  });
 
-  return Promise.all(
-    devServers.map(([port, cwd]) => {
-      return startDevServer({ port, cwd: join(__dirname, cwd) });
-    }),
-  );
+  return Promise.all(devServers);
 }
 
 module.exports = start;

@@ -269,6 +269,8 @@ export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
     externalWhitelist: [],
+    // 关闭 ssr external，全量打入 umi.server.js
+    disableExternal: false,
     // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
   },

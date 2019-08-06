@@ -153,4 +153,29 @@ export default () => (
 );
 `);
   });
+
+  it('insert with upperCamelCase identifier', () => {
+    const code = `import React from 'react';
+import Demo1 from './Demo1';
+export default () => (
+  <React.Fragment>
+    <Demo />
+  </React.Fragment>
+);
+`;
+    const result = insert(code, {
+      relativePath: './folder-name',
+      identifier: 'folder-name',
+    });
+    expect(result).toEqual(`import React from 'react';
+import Demo1 from './Demo1';
+import FolderName from './folder-name';
+export default () => (
+  <React.Fragment>
+    <Demo />
+    <FolderName />
+  </React.Fragment>
+);
+`);
+  });
 });
