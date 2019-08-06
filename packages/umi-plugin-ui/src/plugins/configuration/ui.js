@@ -158,6 +158,26 @@ const ConfigManager = connect(state => ({
 export default api => {
   const { callRemote, getContext } = api;
 
+  function ConfigTargets(props) {
+    const { default: defaultValue, value } = props.item;
+    const mergedValue = {
+      ...defaultValue,
+      ...value,
+    };
+    return (
+      <div>
+        {Object.keys(mergedValue).map(key => {
+          return (
+            <div key={key}>
+              <h4>{key}</h4>
+              <Input defaultValue={mergedValue[key]} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   function ConfigItem(props) {
     const { item } = props;
     let value = item.default;
@@ -193,6 +213,8 @@ export default api => {
             <div>
               <Switch checked={value} onChange={props.editHandler.bind(null, item.name)} />
             </div>;
+          } else if (item.name === 'targets') {
+            <ConfigTargets {...props} />;
           } else if (item.type === 'object') {
             <div>object</div>;
           } else {
