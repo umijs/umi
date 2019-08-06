@@ -33,7 +33,7 @@ const baseNavigator = {{{baseNavigator}}};
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
-import { LocaleProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
@@ -122,9 +122,9 @@ class LocaleWrapper extends React.Component{
     </IntlProvider>)
     {{/localeList.length}}
     {{#antd}}
-     return (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+     return (<ConfigProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
-    </LocaleProvider>);
+    </ConfigProvider>);
     {{/antd}}
     return ret;
   }
