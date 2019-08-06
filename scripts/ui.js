@@ -31,18 +31,22 @@ function buildPlugins(roots, opts = {}) {
 
 (async () => {
   const watch = process.argv.includes('-w') || process.argv.includes('--watch');
-  await Promise.all(
-    buildPlugins(
-      [
-        'packages/umi-plugin-ui/src/plugins/blocks',
-        'packages/umi-plugin-ui/src/plugins/configuration',
-        'packages/umi-plugin-ui/src/plugins/tasks',
-      ],
-      {
-        watch,
-      },
-    ),
-  );
+  try {
+    await Promise.all(
+      buildPlugins(
+        [
+          'packages/umi-plugin-ui/src/plugins/blocks',
+          'packages/umi-plugin-ui/src/plugins/configuration',
+          'packages/umi-plugin-ui/src/plugins/tasks',
+        ],
+        {
+          watch,
+        },
+      ),
+    );
+  } catch (e) {
+    console.error('Build plugins failed', e);
+  }
   console.log('Build for plugins done');
   buildUIApp({
     watch,
