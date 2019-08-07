@@ -7,8 +7,8 @@ node_js:
 
 before_script:
   - npm run build
-  - npm run ui:build
   - npm run bootstrap
+  - npm run ui:build
 
 after_success:
   - npm run coveralls
