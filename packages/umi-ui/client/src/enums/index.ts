@@ -35,3 +35,16 @@ export interface ICreateProgress {
   success?: boolean;
   failure?: Error;
 }
+
+export interface IProjectItem {
+  name: string;
+  path: string;
+  creatingProgress?: ICreateProgress;
+}
+
+export interface IProjectList {
+  currentProject: string;
+  projectsByKey: {
+    [key: string]: IProjectItem;
+  };
+}

@@ -16,7 +16,6 @@ import {
 import { router } from 'umi';
 import get from 'lodash/get';
 import {
-  fetchProject,
   setCurrentProject,
   openProjectInEditor,
   editProject,
@@ -24,6 +23,7 @@ import {
 } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
+import { IProjectChildProps } from '@/pages/project';
 
 import styles from './index.less';
 
@@ -32,14 +32,11 @@ const { useState, useEffect, useContext, useMemo } = React;
 
 type IAction = 'editor' | 'open' | 'edit' | 'delete';
 
-interface ProjectListProps {}
-
-const ProjectList: React.SFC<ProjectListProps> = props => {
-  const { currentProject } = props;
+const ProjectList: React.SFC<IProjectChildProps> = props => {
+  const { projectList } = props;
   const { setCurrent, current } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [data, setData] = useState({});
 
   const ProjectStatus = props => {
     const step = get(props, 'item.creatingProgress.step');
@@ -47,24 +44,17 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
     if (steps && step && step < steps.length - 1) {
       return <Spin style={{ marginRight: 8 }} />;
     }
-    if (props.item.key === currentProject) {
+    if (props.item.key === projectList.currentProject) {
       return <Badge status="success" />;
     }
     return null;
   };
 
-  const getProjects = async () => {
-    const { data } = await fetchProject();
-    setData(data);
-  };
-
-  useEffect(() => {
-    getProjects();
-  }, []);
+  console.log('projectList', projectList);
 
   const projects = useMemo(
     () => {
-      const { projectsByKey = {}, currentProject } = data;
+      const { projectsByKey = {} } = projectList;
       return Object.keys(projectsByKey).map(key => {
         return {
           ...projectsByKey[key],
@@ -72,7 +62,7 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
         };
       });
     },
-    [data],
+    [projectList],
   );
 
   const handleOnAction = async (action: IAction, payload: { key?: string; [key: string]: any }) => {
@@ -85,7 +75,6 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
     if (action === 'delete') {
       await deleteProject(payload);
       message.success('删除成功');
-      getProjects();
     }
     if (action === 'editor') {
       await openProjectInEditor(payload);
@@ -123,6 +112,7 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
         <List
           className={styles['project-list']}
           dataSource={projects}
+          loading={!projects.length}
           renderItem={item => (
             <List.Item
               className={styles['project-list-item']}
@@ -166,7 +156,6 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
             setModalVisible(false);
             await editProject(payload);
             message.success('修改成功');
-            getProjects();
           }}
         />
       )}

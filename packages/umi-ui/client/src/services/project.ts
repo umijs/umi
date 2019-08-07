@@ -1,7 +1,10 @@
-import { callRemote, listenRemote } from '@/socket';
+import { callRemote, listenRemote, ICallRemoveAction } from '@/socket';
+import { IProjectList } from '@/enums';
 
-export async function fetchProject() {
-  return callRemote({ type: '@@project/list' });
+export async function fetchProject(
+  action?: Pick<ICallRemoveAction<object, IProjectList>, 'onProgress'>,
+) {
+  return callRemote<object, IProjectList>({ type: '@@project/list', ...action });
 }
 
 export async function importProject(payload) {

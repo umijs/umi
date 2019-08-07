@@ -1,27 +1,41 @@
 import React, { useEffect, useReducer, useState, useMemo, useRef, useContext } from 'react';
 import { Layout } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
+import { IProjectList } from '@/enums';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
 import * as ProjectMap from './components';
 import styles from './index.less';
 
 const { Content } = Layout;
 
+export interface IProjectChildProps {
+  cwd: string;
+  files: string[];
+  projectList: IProjectList;
+}
+
 export default props => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
-  const { setCurrent, current, locale } = useContext(ProjectContext);
+  const { current } = useContext(ProjectContext);
 
   async function getProject() {
-    const { data } = await fetchProject();
+    const { data } = await fetchProject({
+      onProgress: async res => {
+        // listen change
+        console.log('listen projects', res);
+        setData(res);
+      },
+    });
     setData(data);
   }
 
   useEffect(() => {
     (async () => {
       await getProject();
+      console.log('getProjectgetProjectgetProject');
 
       const { cwd } = await getCwd();
       setCwd(cwd);
@@ -35,14 +49,12 @@ export default props => {
     })();
   }, []);
 
-  const { projectsByKey = {}, currentProject } = data;
-
   const Project = ProjectMap[current];
 
   return (
     <Layout className={styles.project}>
       <Content className={styles['project-content']}>
-        <Project cwd={cwd} files={files} currentProject={currentProject} />
+        <Project cwd={cwd} files={files} projectList={data} />
       </Content>
     </Layout>
   );

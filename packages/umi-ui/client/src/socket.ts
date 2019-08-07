@@ -99,7 +99,15 @@ export function send(action) {
   sock.send(JSON.stringify(action));
 }
 
-export function callRemote(action): Promise<{ data: any }> {
+export interface ICallRemoveAction<T = object, K = object> {
+  type: string;
+  payload?: T;
+  onProgress?: (data: K) => Promise<void>;
+}
+
+export function callRemote<T = object, K = object>(
+  action: ICallRemoveAction<T, K>,
+): Promise<{ data: K }> {
   return new Promise((resolve, reject) => {
     messageHandlers.push(({ type, payload }) => {
       if (type === `${action.type}/success`) {
