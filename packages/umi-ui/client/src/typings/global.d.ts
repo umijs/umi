@@ -1,9 +1,6 @@
 import { Context } from 'react';
 import { IUi } from 'umi-types';
-// @ts-ignore
-import zhCN from './locales/zh-CN';
-// @ts-ignore
-import enUS from './locales/en-US';
+import zhCN from '../locales/zh-CN';
 
 declare global {
   interface Window {
@@ -15,9 +12,9 @@ declare global {
   }
 }
 
-type lang = (keyof typeof zhCN) & (keyof typeof enUS);
+type lang = keyof typeof zhCN;
 
-declare module 'umi-plugin-locale' {
+declare module 'umi-plugin-react/locale' {
   export default interface MessageDescriptor {
     id: lang extends string ? lang : string;
   }

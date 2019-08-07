@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
+import { get } from 'lodash';
 import { basename, dirname, join } from 'path';
 import userHome from 'user-home';
 import mkdirp from 'mkdirp';
@@ -98,7 +99,8 @@ export default class Config {
   setCurrentProject(key) {
     assert(this.data.projectsByKey[key], `project of key ${key} not found`);
     assert(
-      !this.data.projectsByKey[key].creatingProgress,
+      get(this.data, `projectsByKey.${key}.creatingProgress.success`) ||
+        !get(this.data, `projectsByKey.${key}.creatingProgress`),
       `project of key ${key} is still creating`,
     );
     this.data.currentProject = key;

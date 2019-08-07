@@ -9,11 +9,7 @@ const config: IConfig = {
     'react-dom': 'window.ReactDOM',
     antd: 'window.antd',
   },
-  theme: {
-    'primary-color': '#fba008',
-    'link-color': 'rgba(0, 0, 0, 45)',
-    'heading-color': 'rgba(0, 0, 0, 85)',
-  },
+  theme: './src/styles/theme.js',
   routes: [
     {
       path: '/project',
@@ -29,7 +25,7 @@ const config: IConfig = {
       // for plugins to patch routes into dashboard identification
       key: 'dashboard',
       path: '/',
-      component: '../layouts',
+      component: '../layouts/Dashboard',
       routes: [
         {
           path: '/',
@@ -58,12 +54,11 @@ const config: IConfig = {
         ],
         headScripts: [
           {
-            src:
-              'https://gw.alipayobjects.com/os/lib/react/16.7.0-alpha.2/umd/react.development.js',
+            src: 'https://gw.alipayobjects.com/os/lib/react/16.8.6/umd/react.development.js',
           },
           {
             src:
-              'https://gw.alipayobjects.com/os/lib/react-dom/16.7.0-alpha.2/umd/react-dom.development.js',
+              'https://gw.alipayobjects.com/os/lib/react-dom/16.8.6/umd/react-dom.development.js',
           },
           {
             src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',

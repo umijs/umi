@@ -128,9 +128,30 @@ export default class UmiUI {
         !existsSync(targetDir) || emptyDir.sync(targetDir),
         `target dir ${targetDir} exists and not empty`,
       );
-
       // 2
       key = this.config.addProject(targetDir, name);
+
+      // get create key
+      onSuccess({
+        key,
+      });
+
+      // catch exit
+      process.on('SIGINT', () => {
+        console.log('siginint');
+        if (key) {
+          try {
+            this.config.setCreatingProgress(key, {
+              stepStatus: 3,
+              failure: {
+                message: 'exit UmiUi server',
+              },
+            });
+          } catch (e) {}
+        }
+        process.exit();
+      });
+
       setProgress({
         // 表示第几个 step，从 0 开始
         step: 1,
@@ -139,7 +160,7 @@ export default class UmiUI {
         // 2: 执行完成
         // 3: 执行失败
         stepStatus: 0,
-        steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
+        steps: ['校验参数', '安装或更新', '初始化项目', '安装依赖'],
       });
 
       // 3
@@ -176,16 +197,23 @@ export default class UmiUI {
       setProgress({
         stepStatus: 2,
       });
-      this.config.setCreatingProgressDone(key);
-
-      onSuccess();
+      setProgress({
+        success: true,
+      });
+      // this.config.setCreatingProgressDone(key);
+      // onSuccess();
     } catch (e) {
       if (key) {
         this.config.setCreatingProgress(key, {
           stepStatus: 3,
+          failure: e,
         });
       }
       onFailure(e);
+    } finally {
+      process.removeListener('SIGINT', () => {
+        console.log('success remove sigint');
+      });
     }
   }
 
@@ -317,6 +345,7 @@ export default class UmiUI {
 
       const sockjs = require('sockjs');
       const ss = sockjs.createServer();
+
       ss.on('connection', conn => {
         function send(action) {
           const message = JSON.stringify(action);

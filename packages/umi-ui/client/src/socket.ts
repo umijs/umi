@@ -1,4 +1,5 @@
 import { Terminal } from 'xterm';
+import { IUi } from 'umi-types';
 import * as fit from 'xterm/dist/addons/fit/fit';
 import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
 import 'xterm/dist/xterm.css';
@@ -99,7 +100,9 @@ export function send(action) {
   sock.send(JSON.stringify(action));
 }
 
-export function callRemote(action) {
+export function callRemote<T = object, K = object>(
+  action: IUi.IAction<T, K>,
+): Promise<{ data: K }> {
   return new Promise((resolve, reject) => {
     messageHandlers.push(({ type, payload }) => {
       if (type === `${action.type}/success`) {

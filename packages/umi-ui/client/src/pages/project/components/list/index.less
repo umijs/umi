@@ -1,0 +1,63 @@
+.project {
+  &-list {
+    &-layout {
+      min-height: 100vh;
+      &-sider {
+        padding: 40px 0;
+        text-align: center;
+        color: #fff;
+        h1 {
+          font-size: 14px;
+          margin-bottom: 24px;
+          font-weight: 500;
+        }
+        &-item {
+          text-align: center;
+          user-select: none;
+          i {
+            font-size: 20px;
+          }
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+      &-content {
+        padding: 40px 32px;
+      }
+    }
+  }
+  &-title {
+    color: @heading-color;
+    font-size: 24px;
+    line-height: 33px;
+  }
+  &-action {
+    button {
+      margin-left: 8px;
+    }
+  }
+  &-list {
+    border: 1px solid @border-color-split;
+    &-item {
+      padding: 16px;
+      &-title {
+        font-size: 16px;
+      }
+    }
+  }
+  h1 {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 40px;
+  }
+
+  .projectItem {
+    span {
+      margin-right: 12px;
+      font-weight: bold;
+    }
+    button {
+      margin-right: 6px;
+    }
+  }
+}

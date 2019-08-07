@@ -27,11 +27,18 @@ declare namespace IUI {
     locales: ILocale[];
   }
 
-  type IApiActionFactory<P = {}, K = void> = (action: { type: string } & P) => K;
+  interface IAction<T = object, K = void> {
+    type: string;
+    payload?: T;
+    onProgress?: (data: K) => Promise<K>;
+    onMessage?: (data: any) => Promise<K>;
+  }
 
-  type ICallRemove = IApiActionFactory<{}, object>;
-  type IListenRemote = IApiActionFactory<{ onMessage: (p: any) => void }>;
-  type ISend = IApiActionFactory<{ onProgress: (p: any) => void }>;
+  type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
+
+  type ICallRemove = IApiActionFactory;
+  type IListenRemote = IApiActionFactory<{}, void>;
+  type ISend = IApiActionFactory<{}, void>;
 
   class IApiClass {
     constructor(service: IService);
