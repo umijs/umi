@@ -21,7 +21,6 @@ function buildPlugins(roots, opts = {}) {
   return roots.map(root => {
     console.log(`Build for ${root}`);
     const { watch } = opts;
-    console.log(require('father-build/lib/build').build);
     return require('father-build/lib/build').build({
       cwd: join(__dirname, '..', root),
       watch,
@@ -35,6 +34,7 @@ function buildPlugins(roots, opts = {}) {
     await Promise.all(
       buildPlugins(
         [
+          'packages/umi-plugin-ui/src/plugins/dashboard',
           'packages/umi-plugin-ui/src/plugins/blocks',
           'packages/umi-plugin-ui/src/plugins/configuration',
           'packages/umi-plugin-ui/src/plugins/tasks',

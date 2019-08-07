@@ -72,13 +72,6 @@ export default withRouter(props => {
                 border: 0,
               }}
             >
-              <Menu.Item key="/">
-                <Icon type="home" />
-                <FormattedMessage id="org.umi.ui.global.panel.home" />
-                <NavLink exact to="/dashboard">
-                  <FormattedMessage id="org.umi.ui.global.panel.home" />
-                </NavLink>
-              </Menu.Item>
               {window.g_service.panels.map(panel => {
                 return (
                   <Menu.Item key={panel.path}>
