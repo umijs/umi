@@ -21,7 +21,7 @@ export default function(api: IApi) {
       });
   }
 
-  api.addUIPlugin(require.resolve('./dist/ui.umd'));
+  api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
 
   api.onUISocket(({ action, success }) => {
     const { type, payload } = action;
