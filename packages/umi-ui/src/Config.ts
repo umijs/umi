@@ -7,6 +7,7 @@ import assert from 'assert';
 
 interface IOpts {
   dbPath?: string;
+  onSave?: any;
 }
 
 export default class Config {
@@ -17,9 +18,12 @@ export default class Config {
     currentProject?: string;
   };
 
+  onSave: any;
+
   constructor(opts: IOpts = {}) {
-    const { dbPath } = opts;
+    const { dbPath, onSave } = opts;
     this.dbPath = dbPath || join(userHome, '.umi/ui/data.json');
+    this.onSave = onSave;
     mkdirp.sync(dirname(this.dbPath));
     this.load();
   }
@@ -38,6 +42,7 @@ export default class Config {
 
   save() {
     writeFileSync(this.dbPath, JSON.stringify(this.data, null, 2), 'utf-8');
+    if (this.onSave) this.onSave(this.data);
   }
 
   addProject(path: string, name?: string): string {

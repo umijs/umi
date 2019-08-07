@@ -27,12 +27,23 @@ export default class UmiUI {
 
   config: Config;
 
+  send: any;
+
   constructor() {
     this.cwd = process.cwd();
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
-    this.config = new Config();
+    this.config = new Config({
+      onSave: data => {
+        if (this.send) {
+          this.send({
+            type: '@@project/list/progress',
+            payload: data,
+          });
+        }
+      },
+    });
     this.logs = [];
 
     if (process.env.CURRENT_PROJECT) {
@@ -321,6 +332,9 @@ export default class UmiUI {
         function progress(type, payload) {
           send({ type: `${type}/progress`, payload });
         }
+
+        this.send = send;
+
         const log = (type, message) => {
           const payload = {
             date: +new Date(),
