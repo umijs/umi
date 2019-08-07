@@ -45,26 +45,50 @@ const xterm = new Terminal({
 window.xterm = xterm;
 
 let sock;
+let retries = 0;
 const messageHandlers = [];
 
 export async function init(opts = {}) {
   const { onMessage } = opts;
   return new Promise(resolve => {
-    sock = new window.SockJS('/umiui');
-    sock.onopen = () => {
-      xterm.writeln('\x1b[32mSOCKET READY\x1b[0m');
-      resolve();
-    };
-    sock.onmessage = e => {
+    function handler(e) {
       const { type, payload } = JSON.parse(e.data);
       onMessage({ type, payload });
       messageHandlers.forEach(h => {
         h({ type, payload });
       });
-    };
-    sock.onclose = () => {
-      xterm.writeln('\x1b[31mSOCKET CLOSED\x1b[0m');
-    };
+    }
+
+    function hideErrorMessage() {
+      console.log('HIDE ERROR MESSAGE');
+    }
+
+    function showErrorMessage() {
+      console.log('SHOW ERROR MESSAGE');
+    }
+
+    function initSocket() {
+      sock = new window.SockJS('/umiui');
+      sock.onopen = () => {
+        retries = 0;
+        hideErrorMessage();
+        resolve();
+      };
+      sock.onmessage = handler;
+      sock.onclose = () => {
+        sock = null;
+        if (retries === 0) showErrorMessage();
+        if (retries <= 10) {
+          const retryInMs = 1000 * Math.pow(2, retries) + Math.random() * 100;
+          retries += 1;
+          setTimeout(() => {
+            initSocket();
+          }, retryInMs);
+        }
+      };
+    }
+
+    initSocket();
   });
 }
 
