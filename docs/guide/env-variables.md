@@ -49,7 +49,9 @@ When ESLINT is set, the basic eslint check is done by [eslint-config-umi](https:
 
 ### APP_ROOT
 
-::: warning APP_ROOT cannot be included in .env. :::
+::: warning
+APP_ROOT cannot be included in .env.
+:::
 
 Specify the project root directory. such as:
 
