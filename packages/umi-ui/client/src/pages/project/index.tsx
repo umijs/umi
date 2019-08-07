@@ -8,18 +8,12 @@ import styles from './index.less';
 
 const { Content } = Layout;
 
-export interface IProjectChildProps {
-  cwd: string;
-  files: string[];
-  projectList: IProjectList;
-}
-
 export default props => {
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
-  const { current } = useContext(ProjectContext);
+  const { current, currentData } = useContext(ProjectContext);
 
   async function getProject() {
     const { data } = await fetchProject({
@@ -54,7 +48,7 @@ export default props => {
   return (
     <Layout className={styles.project}>
       <Content className={styles['project-content']}>
-        <Project cwd={cwd} files={files} projectList={data} />
+        <Project cwd={cwd} currentData={currentData} files={files} projectList={data} />
       </Content>
     </Layout>
   );

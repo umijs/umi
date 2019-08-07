@@ -4,7 +4,8 @@ import { IProjectStatus } from '@/enums';
 
 export interface IProjectContext extends IUi.IContext {
   current: IProjectStatus;
-  setCurrent: (current: IProjectStatus) => void;
+  currentData?: object;
+  setCurrent: (current: IProjectStatus, payload?: object) => void;
 }
 
 const ProjectContext = createContext({} as IProjectContext);

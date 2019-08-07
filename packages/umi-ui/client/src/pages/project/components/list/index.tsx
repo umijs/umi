@@ -13,7 +13,6 @@ import {
   Icon,
   Menu,
 } from 'antd';
-import { router } from 'umi';
 import get from 'lodash/get';
 import {
   setCurrentProject,
@@ -23,28 +22,37 @@ import {
 } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
-import { IProjectChildProps } from '@/pages/project';
+import { IProjectItem } from '@/enums';
+import { IProjectProps } from '../index';
 
 import styles from './index.less';
 
 const { Sider, Content } = Layout;
-const { useState, useEffect, useContext, useMemo } = React;
+const { useState, useContext, useMemo } = React;
 
-type IAction = 'editor' | 'open' | 'edit' | 'delete';
+type IAction = 'editor' | 'open' | 'edit' | 'delete' | 'progress';
+interface IProjectListItem extends IProjectItem {
+  key: string;
+}
 
-const ProjectList: React.SFC<IProjectChildProps> = props => {
+const ProjectList: React.SFC<IProjectProps> = props => {
   const { projectList } = props;
-  const { setCurrent, current } = useContext(ProjectContext);
+  console.log('projectList', projectList);
+  const { currentProject, projectsByKey = {} } = projectList;
+  const { setCurrent } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const ProjectStatus = props => {
-    const step = get(props, 'item.creatingProgress.step');
-    const steps = get(props, 'item.creatingProgress.steps');
-    if (steps && step && step < steps.length - 1) {
+  const isProgress = (item: IProjectListItem) => {
+    if (get(item, 'creatingProgress.success')) return false;
+    return !!item.creatingProgress;
+  };
+
+  const ProjectStatus = ({ item }: { item: IProjectListItem }) => {
+    if (isProgress(item)) {
       return <Spin style={{ marginRight: 8 }} />;
     }
-    if (props.item.key === projectList.currentProject) {
+    if (item.key === currentProject) {
       return <Badge status="success" />;
     }
     return null;
@@ -54,7 +62,6 @@ const ProjectList: React.SFC<IProjectChildProps> = props => {
 
   const projects = useMemo(
     () => {
-      const { projectsByKey = {} } = projectList;
       return Object.keys(projectsByKey).map(key => {
         return {
           ...projectsByKey[key],
@@ -67,10 +74,7 @@ const ProjectList: React.SFC<IProjectChildProps> = props => {
 
   const handleOnAction = async (action: IAction, payload: { key?: string; [key: string]: any }) => {
     if (action === 'open') {
-      await setCurrentProject(payload);
-      router.push('/dashboard');
-      document.getElementById('root').innerHTML = '正在跳转到项目页...';
-      window.location.reload();
+      await setCurrentProject(payload as any);
     }
     if (action === 'delete') {
       await deleteProject(payload);
@@ -82,6 +86,18 @@ const ProjectList: React.SFC<IProjectChildProps> = props => {
     if (action === 'edit') {
       setModalVisible(true);
       setInitiaValues(payload);
+    }
+    // onProgress
+    if (action === 'progress') {
+      setCurrent('progress', payload);
+    }
+  };
+
+  const handleTitleClick = async (item: IProjectListItem) => {
+    if (isProgress(item)) {
+      await handleOnAction('progress', { key: item.key });
+    } else {
+      await handleOnAction('open', { key: item.key });
     }
   };
 
@@ -138,7 +154,7 @@ const ProjectList: React.SFC<IProjectChildProps> = props => {
                   title={
                     <div className={styles['project-list-item-title']}>
                       <ProjectStatus item={item} />
-                      {item.name}
+                      <a onClick={() => handleTitleClick(item)}>{item.name}</a>
                     </div>
                   }
                   description={item.path}

@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
-import { Button, Form, Input, message } from 'antd';
+import React from 'react';
+import { Button, Form, message, Input } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { importProject } from '@/services/project';
+import DirectoryForm from '@/components/DirectoryForm';
 import { IProjectProps } from '../index';
+import { getBasename } from '@/utils';
 import cls from 'classnames';
 
 import common from '../common.less';
@@ -11,52 +13,52 @@ import styles from './index.less';
 const { useState, useEffect, useContext } = React;
 
 const ImportProject: React.SFC<IProjectProps> = props => {
-  const { currentProject, cwd, files, logs, fetchProject } = props;
+  const { cwd, files } = props;
+  const [fullPath, setFullPath] = useState<string>(cwd);
+  const { formatMessage } = useContext(ProjectContext);
+  const [form] = Form.useForm();
   const { setCurrent } = useContext(ProjectContext);
 
-  const layout = {
-    wrapperCol: { span: 16 },
-  };
-  const tailLayout = {
-    wrapperCol: { span: 16 },
-  };
-
-  const handleClick = async values => {
-    const { path, name } = values;
+  const handleFinish = async values => {
+    console.log('import projects', values);
     try {
-      await importProject({
-        path,
-        name,
-      });
+      await importProject(values);
+      debugger;
       setCurrent('list');
     } catch (e) {
       message.error('导入项目失败');
     }
   };
 
+  console.log('fullPath', fullPath);
+
   return (
     <section className={common.section}>
       <h2>导入</h2>
       <Form
-        {...layout}
-        name="basic"
-        initialValues={{
-          path: cwd,
-          name: 'hahaha',
+        form={form}
+        layout="vertical"
+        name="form_create_project"
+        onFinish={handleFinish}
+        onValuesChange={(changedValue, { path }) => {
+          setFullPath(path);
+          form.setFieldsValue({
+            name: getBasename(path),
+          });
         }}
-        onFinish={handleClick}
       >
-        <Form.Item label="路径" name="path" rules={[{ required: true }]}>
-          <Input />
+        <Form.Item label={null} name="path" rules={[{ required: true }]}>
+          <DirectoryForm />
         </Form.Item>
-
-        <Form.Item label="名称" name="name" rules={[{ required: true }]}>
-          <Input />
+        <Form.Item label={null} shouldUpdate name="name" noStyle rules={[{ required: true }]}>
+          <p />
         </Form.Item>
-
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
-            Import Project
+        <Form.Item style={{ marginTop: 16 }}>
+          <p>{fullPath}</p>
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit" type="primary">
+            {formatMessage({ id: '确定' })}
           </Button>
         </Form.Item>
       </Form>

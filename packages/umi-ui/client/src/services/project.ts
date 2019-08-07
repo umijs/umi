@@ -1,3 +1,5 @@
+import { router } from 'umi';
+import { message } from 'antd';
 import { callRemote, listenRemote, ICallRemoveAction } from '@/socket';
 import { IProjectList } from '@/enums';
 
@@ -14,11 +16,18 @@ export async function importProject(payload) {
   });
 }
 
-export async function setCurrentProject(payload) {
-  return callRemote({
-    type: '@@project/setCurrentProject',
-    payload,
-  });
+export async function setCurrentProject(payload: { key: string }) {
+  try {
+    await callRemote({
+      type: '@@project/setCurrentProject',
+      payload,
+    });
+    router.push('/dashboard');
+    document.getElementById('root').innerHTML = '正在跳转到项目页...';
+    window.location.reload();
+  } catch (e) {
+    message.error(e.message);
+  }
 }
 
 export async function deleteProject(payload) {
@@ -35,7 +44,7 @@ export async function openProjectInEditor(payload) {
   });
 }
 
-export async function createProject(payload, params) {
+export async function createProject(payload, params?: object) {
   console.log('paramsparamsparams', params);
   return callRemote({
     type: '@@project/create',

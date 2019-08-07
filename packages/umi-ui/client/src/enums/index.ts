@@ -10,6 +10,8 @@ export enum PROJECT_STATUS {
   import = 'import',
   /** 创建项目 */
   create = 'create',
+  /** 步骤进度 */
+  progress = 'progress',
 }
 
 export type IProjectStatus = keyof typeof PROJECT_STATUS;

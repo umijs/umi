@@ -89,7 +89,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
           <Option value="yarn">yarn</Option>
         </Select>
       </Form.Item>
-      <Form.Item>
+      <Form.Item style={{ marginTop: 16 }}>
         <>
           <Button onClick={() => goPrev()}>{formatMessage({ id: '上一步' })}</Button>
           <Button htmlType="submit" type="primary" style={{ marginLeft: 8 }}>

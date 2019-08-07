@@ -14,26 +14,26 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const [fullPath, setFullPath] = useState<string>(cwd);
   const [form] = Form.useForm();
 
-  const handleBaseDirChange = (value: string) => {
-    const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
-    const dir = `${value.endsWith('/') ? value : `${value}/`}${name}`;
-    form.setFieldsValue({
-      fullPath: dir,
-    });
-    setFullPath(dir);
-  };
+  // const handleBaseDirChange = (value: string) => {
+  //   const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
+  //   const dir = `${value.endsWith('/') ? value : `${value}/`}${name}`;
+  //   form.setFieldsValue({
+  //     fullPath: dir,
+  //   });
+  //   setFullPath(dir);
+  // };
 
-  const handleProjectName = e => {
-    const basename = fullPath
-      .split('/')
-      .slice(0, -1)
-      .join('/');
-    const dir = `${basename.endsWith('/') ? basename : `${basename}/`}${e.target.value}`;
-    form.setFieldsValue({
-      fullPath: dir,
-    });
-    setFullPath(dir);
-  };
+  // const handleProjectName = e => {
+  //   const basename = fullPath
+  //     .split('/')
+  //     .slice(0, -1)
+  //     .join('/');
+  //   const dir = `${basename.endsWith('/') ? basename : `${basename}/`}${e.target.value}`;
+  //   form.setFieldsValue({
+  //     fullPath: dir,
+  //   });
+  //   setFullPath(dir);
+  // };
 
   return (
     <Form
@@ -44,9 +44,16 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       name="form_create_project"
       onFinish={() => goNext()}
       initialValues={{}}
+      onValuesChange={(changed, { baseDir, name }) => {
+        const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
+        form.setFieldsValue({
+          fullPath: dir,
+        });
+        setFullPath(dir);
+      }}
     >
       <Form.Item label={null} name="baseDir">
-        <DirectoryForm onChange={handleBaseDirChange} />
+        <DirectoryForm />
       </Form.Item>
       <Form.Item
         name="name"
@@ -62,7 +69,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           },
         ]}
       >
-        <Input onChange={handleProjectName} />
+        <Input />
       </Form.Item>
       <Form.Item>
         <p>{fullPath}</p>

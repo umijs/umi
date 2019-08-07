@@ -53,7 +53,11 @@ const CardForm: React.SFC<CardFormProps> = props => {
     return (
       <p>
         {description}
-        {link && <a href={link}>查看详情</a>}
+        {link && (
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            查看详情
+          </a>
+        )}
       </p>
     );
   };

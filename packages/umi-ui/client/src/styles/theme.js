@@ -31,7 +31,7 @@ module.exports = {
   '@background-color-light': `fade(${blue[5]}, 40%)`,
   '@collapse-header-bg': '#262629',
   '@info-color': '#313133',
-  '@primary-color': '#0A53B0',
+  '@primary-color': '#1890FF',
   '@highlight-color': red[7],
   '@warning-color': gold[9],
 };

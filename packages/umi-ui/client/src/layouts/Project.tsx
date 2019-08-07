@@ -5,6 +5,7 @@ import Layout from './Layout';
 import Context from './Context';
 import Logs from './Logs';
 import ProjectContext from './ProjectContext';
+import scrollTop from '@/utils/scrollTop';
 import styles from './Project.less';
 
 interface IProjectProps {}
@@ -12,6 +13,8 @@ interface IProjectProps {}
 interface IProjectState {
   /** current step in project */
   current: IProjectStatus;
+  /** step data */
+  currentData?: object;
 }
 
 class Project extends React.PureComponent<IProjectProps, IProjectState> {
@@ -21,10 +24,13 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
       current: PROJECT_STATUS.list,
     };
   }
-  setCurrent = (current: IProjectStatus) => {
+  setCurrent = (current: IProjectStatus, currentData?: object) => {
     this.setState({
       current,
+      currentData,
     });
+    // scrollTop
+    scrollTop();
   };
   handleBackClick = () => {
     const { current } = this.state;
@@ -33,7 +39,7 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
     }
   };
   render() {
-    const { current } = this.state;
+    const { current, currentData } = this.state;
     return (
       <Layout>
         <Context.Consumer>
@@ -42,6 +48,7 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
               value={{
                 ...context,
                 current,
+                currentData,
                 setCurrent: this.setCurrent,
               }}
             >
@@ -49,7 +56,9 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
                 {current !== 'list' && (
                   <PageHeader
                     title={context.formatMessage({
-                      id: `org.umi.ui.global.project.${current}.title`,
+                      id: `org.umi.ui.global.project.${
+                        current === 'progress' ? 'create' : current
+                      }.title`,
                     })}
                     onBack={() => {
                       this.setCurrent('list');
