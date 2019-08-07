@@ -23,7 +23,6 @@ const ImportProject: React.SFC<IProjectProps> = props => {
     console.log('import projects', values);
     try {
       await importProject(values);
-      debugger;
       setCurrent('list');
     } catch (e) {
       message.error('导入项目失败');
