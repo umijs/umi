@@ -20,7 +20,7 @@ const config: IConfig = {
       component: '../layouts/Project',
       routes: [
         {
-          path: '/project',
+          path: '/project/select',
           component: '../pages/project',
         },
       ],
@@ -29,7 +29,7 @@ const config: IConfig = {
       // for plugins to patch routes into dashboard identification
       key: 'dashboard',
       path: '/',
-      component: '../layouts',
+      component: '../layouts/Dashboard',
       routes: [
         {
           path: '/',

@@ -1,16 +1,20 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Steps } from 'antd';
 import cls from 'classnames';
+import { formatMessage } from 'umi-plugin-locale';
 import ProjectContext from '@/layouts/ProjectContext';
 import { createProject } from '@/services/project';
 
-import common from './common.less';
+import common from '../common.less';
 
 const { useState, useContext } = React;
+
+const { Step } = Steps;
 
 interface CreateProjectProps {}
 
 const CreateProject: React.SFC<CreateProjectProps> = props => {
+  const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState({});
   const { setCurrent } = useContext(ProjectContext);
 
@@ -48,9 +52,14 @@ const CreateProject: React.SFC<CreateProjectProps> = props => {
     }
   };
 
+  console.log('progress', progress);
+
   return (
     <section className={common.section}>
-      <h2>创建项目</h2>
+      <Steps current={currentStep}>
+        <Step title={formatMessage({ id: 'org.umi.ui.global.project.create.steps.select' })} />
+        <Step title={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input' })} />
+      </Steps>
       <Button type="primary" onClick={handleClick}>
         在 /private/tmp 下创建 hello-umi 项目
       </Button>

@@ -35,12 +35,12 @@ const Logs: React.SFC<LogsProps> = props => {
       });
     })();
   }, []);
-
+  console.log('logs', logs);
   return (
     <ul>
-      {logs.map(log => {
+      {logs.map((log, i) => {
         return (
-          <li key={log.date}>
+          <li key={`${i}`}>
             [{log.type}] [{log.date}] {log.message}
           </li>
         );

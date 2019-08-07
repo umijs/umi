@@ -4,7 +4,7 @@ import ProjectContext from '@/layouts/ProjectContext';
 import { importProject } from '@/services/project';
 import cls from 'classnames';
 
-import common from './common.less';
+import common from '../common.less';
 import styles from './index.less';
 
 const { useState, useEffect, useContext } = React;

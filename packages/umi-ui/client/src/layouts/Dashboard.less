@@ -1,11 +1,3 @@
-:global {
-  html,
-  body,
-  #root {
-    height: 100%;
-  }
-}
-
 .normal {
   height: 100%;
   display: flex;
@@ -66,44 +58,5 @@
 
   .content {
     padding: 10px 20px;
-  }
-}
-
-.footer {
-  flex: auto 0 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  //position: fixed;
-  //left: 0;
-  //bottom: 0;
-  //width: 100%;
-  //background: #fff;
-  //border-top: 1px solid #ccc;
-}
-
-.statusBar {
-  background: #1d2935;
-  color: #fff;
-  height: 28px;
-  line-height: 28px;
-  display: flex;
-  flex-direction: row;
-  font-size: 12px;
-
-  .section {
-    flex: auto 0 0;
-    padding: 0 8px;
-    cursor: default;
-    height: 100%;
-  }
-  .section.action {
-    cursor: pointer;
-    user-select: none;
-  }
-  .section.log {
-    width: 0;
-    flex: 100% 1 1;
-  }
-  .section:hover {
-    background: #2c3e51;
   }
 }

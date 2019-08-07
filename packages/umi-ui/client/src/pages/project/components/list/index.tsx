@@ -12,7 +12,7 @@ import {
 } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 
-import styles from './list.less';
+import styles from './index.less';
 
 const { useState, useEffect, useContext, useMemo } = React;
 
@@ -118,12 +118,12 @@ const ProjectList: React.SFC<ProjectListProps> = props => {
             <Skeleton title={false} loading={item.loading} active>
               <List.Item.Meta
                 title={
-                  <h3>
+                  <p className={styles['project-list-item-title']}>
                     <ProjectStatus item={item} />
                     <EditItem onClick={name => handleOnAction('rename', { key: item.key, name })}>
                       {item.name}
                     </EditItem>
-                  </h3>
+                  </p>
                 }
                 description={item.path}
               />

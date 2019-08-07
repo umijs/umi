@@ -1,3 +1,8 @@
+export enum LOCALES {
+  'zh-CN' = '中文',
+  'en-US' = 'English',
+}
+
 export enum PROJECT_STATUS {
   /** 项目列表 */
   list = 'list',
