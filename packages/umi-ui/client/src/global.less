@@ -1,3 +1,5 @@
+@import '~antd/es/style/themes/default.less';
+
 html,
 body,
 #root {
@@ -14,13 +16,35 @@ ul,
 ol {
   list-style: none;
 }
+h1,
+h2,
+h3 {
+  color: @heading-color;
+}
+h1,
+h2,
+h3,
+p,
+a {
+  font-weight: 400;
+}
+h1 {
+  font-size: 20px;
+}
+h2 {
+  font-size: @font-size-lg;
+}
+h3 {
+  font-size: @font-size-base;
+}
 p {
   margin: 0;
+  color: @text-color;
 }
 
 .bigTitle {
   font-size: calc(40px + 1vw);
 }
 
-@media (max-width: @mobile) {
+@media @mobile {
 }

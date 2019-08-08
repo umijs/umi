@@ -23,12 +23,11 @@
         }
       }
       &-content {
-        padding: 40px 32px;
+        padding: 26px 32px;
       }
     }
   }
   &-title {
-    color: @heading-color;
     font-size: 24px;
     line-height: 33px;
   }
@@ -42,7 +41,13 @@
     &-item {
       padding: 16px;
       &-title {
-        font-size: 16px;
+        a {
+          color: @heading-color;
+          font-size: @font-size-lg;
+          &:hover {
+            color: @primary-5;
+          }
+        }
       }
     }
   }
