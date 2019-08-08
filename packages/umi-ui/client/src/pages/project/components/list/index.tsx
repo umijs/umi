@@ -13,6 +13,7 @@ import {
   Icon,
   Menu,
 } from 'antd';
+import iconSvg from '@/assets/umi.svg';
 import get from 'lodash/get';
 import {
   setCurrentProject,
@@ -104,7 +105,10 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
-        <h1 style={{ textAlign: 'center' }}>Umi Ui</h1>
+        <div className={styles['project-list-layout-sider-title']}>
+          <img src={iconSvg} alt="UmiUi" />
+          <h1>Umi Ui</h1>
+        </div>
         <div className={styles['project-list-layout-sider-item']}>
           <Icon theme="filled" type="appstore" />
           <p>项目</p>
@@ -129,6 +133,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           dataSource={projects}
           loading={!projects.length}
           split={false}
+          className={styles['project-list']}
           renderItem={item => (
             <List.Item
               className={styles['project-list-item']}

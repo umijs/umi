@@ -1,15 +1,20 @@
 .project {
   &-list {
+    max-height: calc(~'100vh - 140px');
+    overflow-x: hidden;
     &-layout {
       min-height: 100vh;
       &-sider {
         padding: 40px 0;
         text-align: center;
-        color: #fff;
-        h1 {
-          font-size: 14px;
-          margin-bottom: 24px;
-          font-weight: 500;
+        color: @light;
+        &-title {
+          h1 {
+            font-size: @font-size-base;
+            line-height: 22px;
+            margin-bottom: 24px;
+            font-weight: 500;
+          }
         }
         &-item {
           text-align: center;

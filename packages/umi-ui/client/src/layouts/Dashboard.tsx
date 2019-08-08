@@ -1,10 +1,13 @@
-import { Icon, Menu, Select } from 'antd';
+import { Icon, Menu, Select, Layout } from 'antd';
 import React, { useState } from 'react';
 import { NavLink, withRouter } from 'umi';
 import { LOCALES } from '@/enums';
+import iconSvg from '@/assets/umi.svg';
 import Context from './Context';
-import Layout from './Layout';
+import UiLayout from './Layout';
 import styles from './Dashboard.less';
+
+const { Content, Sider } = Layout;
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -22,18 +25,14 @@ export default withRouter(props => {
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
   return (
-    <Layout>
+    <UiLayout>
       <Context.Consumer>
         {({ locale, FormattedMessage, formatMessage, setLocale }) => (
-          <div className={styles.normal}>
+          <Layout className={styles.normal}>
             <div className={styles.wrapper}>
-              <div className={styles.sidebar}>
+              <Sider className={styles.sidebar}>
                 <div className={styles.logo}>
-                  <img
-                    alt="logo"
-                    className={styles.logo}
-                    src="https://gw.alipayobjects.com/zos/rmsportal/lbZMwLpvYYkvMUiqbWfd.png"
-                  />
+                  <img alt="logo" className={styles.logo} src={iconSvg} />
                   <div>
                     <FormattedMessage id="org.umi.ui.global.panel.lang" />{' '}
                     <Select onChange={setLocale} defaultValue={locale}>
@@ -66,15 +65,15 @@ export default withRouter(props => {
                     );
                   })}
                 </Menu>
-              </div>
-              <div className={styles.main}>
+              </Sider>
+              <Content className={styles.main}>
                 <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
                 <div className={styles.content}>{props.children}</div>
-              </div>
+              </Content>
             </div>
-          </div>
+          </Layout>
         )}
       </Context.Consumer>
-    </Layout>
+    </UiLayout>
   );
 });

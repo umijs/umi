@@ -1,10 +1,10 @@
 // color
-@heading-color: fade(#fff, 85);
-// @heading-color-dark: fade(#000, 85);
-@text-color: fade(#fff, 65);
-// @text-color-dark: fade(#000, 65);
-@text-color-secondary: fade(#fff, 45);
-@disabled-color: fade(#fff, 25%);
+@heading-color: fade(@light, 85);
+// @heading-color-dark: fade(@dark, 85);
+@text-color: fade(@light, 65);
+// @text-color-dark: fade(@dark, 65);
+@text-color-secondary: fade(@light, 45);
+@disabled-color: fade(@light, 25%);
 @primary-5: #40a9ff;
 @primary-color: #1890ff;
 @outline-color: @primary-color;
@@ -16,7 +16,7 @@
 @input-color: @text-color;
 @input-bg: #3b3b4d;
 @input-placeholder-color: @text-color-secondary;
-@input-hover-border-color: fade(#fff, 10);
+@input-hover-border-color: fade(@light, 10);
 @select-border-color: #3b3b4d;
 @border-color-split: #1d1d26;
 @card-background: #30303d;
@@ -52,18 +52,18 @@
 // @border-color-split: #363636;
 // @heading-color: #e3e3e3;
 // @text-color: #e3e3e3;
-// @text-color-secondary: fade(#fff, 65%);
+// @text-color-secondary: fade(@light, 65%);
 // @table-selected-row-bg: #3a3a3a;
 // @table-expanded-row-bg: #3b3b3b;
 // @table-header-bg: #3a3a3b;
 // @table-row-hover-bg: #3a3a3b;
-// @layout-trigger-color: fade(#fff, 80%);
+// @layout-trigger-color: fade(@light, 80%);
 // @layout-trigger-background: #313232;
-// @alert-message-color: fade(#000, 67%);
+// @alert-message-color: fade(@dark, 67%);
 // @disabled-color: rgba(179, 32, 32, 0.25);
 // @tag-default-bg: #262628;
 // @popover-bg: #262629;
-// @wait-icon-color: fade(#fff, 64%);
+// @wait-icon-color: fade(@light, 64%);
 // @collapse-header-bg: #262629;
 // @info-color: #313133;
 // @primary-color: #1890ff;
@@ -97,18 +97,20 @@
 @screen-xs: 375px;
 
 /** custom */
+@light: #fff;
+@dark: #000;
 @duration: 0.45s;
 @duration-slow: 0.6s;
 @duration-fast: 0.3s;
 
 @btn-default-hover-bg: #3b3b47;
 @btn-default-active-bg: #272733;
-@btn-primary-color: #fff;
+@btn-primary-color: @light;
 @btn-primary-hover-bg: #40a9ff;
 @btn-primary-active-bg: #096dd9;
 
-@ui-modal-shadow: 0 2px 8px fade(#000, 25);
-@ui-log-shadow: 0 -4px 12px fade(#000, 12);
+@ui-modal-shadow: 0 2px 8px fade(@dark, 25);
+@ui-log-shadow: 0 -4px 12px fade(@dark, 12);
 @ui-scroll-bg: #3b3b47;
 
 // PC 宽度 >= 1208
