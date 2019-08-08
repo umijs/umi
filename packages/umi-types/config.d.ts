@@ -32,6 +32,7 @@ export interface IAFWebpackConfig {
   cssModulesWithAffix?: boolean;
   cssnano?: object;
   cssPublicPath?: string;
+  generateCssModulesTypings?: boolean;
   define?: object;
   devServer?: object; // https://webpack.js.org/configuration/dev-server/#devserver
   devtool?: string | false; // https://webpack.js.org/configuration/devtool/

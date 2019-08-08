@@ -527,6 +527,10 @@ const config = {
 
 指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
 
+### generateCssModulesTypings
+
+开启针对在 typescript 文件中引用的 css modules 文件，自动生成对应的.d.ts 文件，支持 css, less, sass 格式.
+
 ### copy
 
 定义需要单纯做复制的文件列表，格式为数组，项的格式参考 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin) 的配置。
