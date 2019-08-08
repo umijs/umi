@@ -47,6 +47,7 @@ window.xterm = xterm;
 
 let sock;
 let retries = 0;
+let el;
 const messageHandlers = [];
 
 export async function init(opts = {}) {
@@ -61,11 +62,31 @@ export async function init(opts = {}) {
     }
 
     function hideErrorMessage() {
-      console.log('HIDE ERROR MESSAGE');
+      if (el) {
+        el.style.display = 'none';
+      }
     }
 
     function showErrorMessage() {
-      console.log('SHOW ERROR MESSAGE');
+      if (!el) {
+        el = document.createElement('div');
+        el.style.position = 'absolute';
+        el.style.left = 0;
+        el.style.top = 0;
+        el.style.width = '100%';
+        el.style.background = 'red';
+        el.style.zIndex = 2147483647000000;
+        el.style.color = '#ffffff';
+        el.style.textAlign = 'center';
+        el.style.fontSize = '18px';
+        el.style.fontFamily = 'Consolas, Menlo, Courier, monospace';
+        el.style.padding = '8px 0';
+        el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';
+        el.innerHTML = 'Disconnected from the devServer, trying to reconnect...';
+        document.body.appendChild(el);
+      } else {
+        el.style.display = 'block';
+      }
     }
 
     function initSocket() {
