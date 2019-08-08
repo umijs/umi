@@ -103,15 +103,15 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   return (
     <Layout className={styles['project-list-layout']}>
-      <Sider trigger={null} width={72} className={styles['project-list-layout-sider']}>
+      <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
         <h1 style={{ textAlign: 'center' }}>Umi Ui</h1>
         <div className={styles['project-list-layout-sider-item']}>
-          <Icon type="appstore" />
+          <Icon theme="filled" type="appstore" />
           <p>项目</p>
         </div>
       </Sider>
       <Content className={styles['project-list-layout-content']}>
-        <Row type="flex" justify="space-between">
+        <Row type="flex" justify="space-between" style={{ marginBottom: 26 }}>
           <Col>
             <h2 className={styles['project-title']}>项目列表</h2>
           </Col>
@@ -126,15 +126,17 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </Row>
 
         <List
-          className={styles['project-list']}
           dataSource={projects}
           loading={!projects.length}
+          split={false}
           renderItem={item => (
             <List.Item
               className={styles['project-list-item']}
               actions={[
-                <a onClick={() => handleOnAction('editor', { key: item.key })}>在编辑器中打开</a>,
-                <a onClick={() => handleOnAction('open', { key: item.key })}>打开</a>,
+                <a onClick={() => handleOnAction('editor', { key: item.key })}>
+                  <Icon type="export" />
+                  在编辑器中打开
+                </a>,
                 <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
                   重命名
                 </a>,
@@ -167,6 +169,9 @@ const ProjectList: React.SFC<IProjectProps> = props => {
       {modalVisible && (
         <ModalForm
           onCancel={() => setModalVisible(false)}
+          restModelProps={{
+            title: '重命名',
+          }}
           initialValues={initialValues}
           onOk={async (formKey, payload) => {
             setModalVisible(false);

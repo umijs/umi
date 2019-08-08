@@ -37,9 +37,29 @@
     }
   }
   &-list {
-    border: 1px solid @border-color-split;
     &-item {
-      padding: 16px;
+      padding: 24px;
+      margin-bottom: 12px;
+      background-color: @card-background;
+      border-radius: @border-radius-base;
+      transition: background-color @duration-fast @ease-in;
+      &:hover {
+        background-color: @card-hover-border;
+      }
+      ul li {
+        a {
+          color: @text-color;
+          i {
+            margin: 8px;
+          }
+          &:hover {
+            color: @primary-5;
+          }
+        }
+        em {
+          display: none;
+        }
+      }
       &-title {
         a {
           color: @heading-color;

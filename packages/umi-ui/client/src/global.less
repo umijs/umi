@@ -10,6 +10,34 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  .ant-btn {
+    &:hover,
+    &:focus {
+      color: @text-color;
+      background-color: @btn-default-hover-bg;
+      border-color: @btn-default-hover-bg;
+    }
+    &:active,
+    &.active {
+      color: @text-color;
+      background-color: @btn-default-active-bg;
+      border-color: @btn-default-active-bg;
+    }
+  }
+  .ant-btn-primary {
+    &:hover,
+    &:focus {
+      color: @btn-primary-color;
+      background-color: @btn-primary-hover-bg;
+      border-color: @btn-primary-hover-bg;
+    }
+    &:active,
+    &.active {
+      color: @btn-primary-color;
+      background-color: @btn-primary-active-bg;
+      border-color: @btn-primary-active-bg;
+    }
+  }
 }
 
 ul,
@@ -33,6 +61,7 @@ h1 {
 }
 h2 {
   font-size: @font-size-lg;
+  margin: 0;
 }
 h3 {
   font-size: @font-size-base;
@@ -40,6 +69,22 @@ h3 {
 p {
   margin: 0;
   color: @text-color;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: @ui-scroll-bg;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background: 0 0;
 }
 
 .bigTitle {

@@ -1,13 +1,24 @@
 // color
+@heading-color: fade(#fff, 85);
+// @heading-color-dark: fade(#000, 85);
+@text-color: fade(#fff, 65);
+// @text-color-dark: fade(#000, 65);
+@text-color-secondary: fade(#fff, 45);
+@disabled-color: fade(#fff, 25%);
 @primary-5: #40a9ff;
 @primary-color: #1890ff;
+@outline-color: @primary-color;
 @primary-6: #096dd9;
-@btn-default-color: #444457;
-@input-color: #3b3b4d;
-@input-hover-border-color: #272733;
+@border-color-base: transparent;
+@btn-default-color: @text-color;
+@btn-default-bg: #444457;
+@btn-default-border: #444457;
+@input-color: @text-color;
+@input-bg: #3b3b4d;
+@input-placeholder-color: @text-color-secondary;
+@input-hover-border-color: fade(#fff, 10);
 @select-border-color: #3b3b4d;
 @border-color-split: #1d1d26;
-@btn-default-border: #3b3b47;
 @card-background: #30303d;
 @card-hover-border: #2e2e3a;
 @body-background: #23232e;
@@ -15,15 +26,9 @@
 @layout-sider-background: #30303d;
 @layout-body-background: #23232e;
 @success-color: #00a854;
-@info-color: #1890ff;
+@info-color: @primary-color;
 @warning-color: #ffbf00;
 @error-color: #f04134;
-@heading-color: fade(#fff, 85);
-// @heading-color-dark: fade(#000, 85);
-@text-color: fade(#fff, 65);
-// @text-color-dark: fade(#000, 65);
-@text-color-secondary: fade(#fff, 45);
-@disabled-color: fade(#fff, 25%);
 
 // family
 // @code-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;;
@@ -91,9 +96,20 @@
 // 超小屏
 @screen-xs: 375px;
 
-// custom
+/** custom */
+@duration: 0.45s;
+@duration-slow: 0.6s;
+@duration-fast: 0.3s;
+
+@btn-default-hover-bg: #3b3b47;
+@btn-default-active-bg: #272733;
+@btn-primary-color: #fff;
+@btn-primary-hover-bg: #40a9ff;
+@btn-primary-active-bg: #096dd9;
+
 @ui-modal-shadow: 0 2px 8px fade(#000, 25);
 @ui-log-shadow: 0 -4px 12px fade(#000, 12);
+@ui-scroll-bg: #3b3b47;
 
 // PC 宽度 >= 1208
 @pc: ~'only screen and (min-width: @{screen-xl})';

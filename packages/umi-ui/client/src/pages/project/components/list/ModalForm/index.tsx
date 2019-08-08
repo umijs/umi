@@ -50,8 +50,8 @@ const ModalForm: React.FC<IModalFormProps> = ({
         initialValues={initialValues}
         name={formName}
       >
-        <Form.Item name="name" label="应用名" rules={[{ required: true }]}>
-          <Input />
+        <Form.Item name="name" label="应用名" rules={[{ required: true, message: '请输入应用名' }]}>
+          <Input placeholder="wefqwefqwef" />
         </Form.Item>
         <Form.Item name="key" noStyle>
           <span />

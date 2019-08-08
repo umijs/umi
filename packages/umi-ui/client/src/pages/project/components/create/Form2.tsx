@@ -55,7 +55,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         <Form.Item
           name={['args', 'reactFeatures']}
           label="技术栈"
-          rules={[{ required: true, type: 'array', message: formatMessage({ id: '请选择特性' }) }]}
+          rules={[{ type: 'array', message: formatMessage({ id: '请选择特性' }) }]}
         >
           <Checkbox.Group style={{ width: '100%' }}>
             <Row>

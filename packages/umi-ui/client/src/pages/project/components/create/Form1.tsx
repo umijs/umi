@@ -5,6 +5,7 @@ import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
 import { isValidFolderName } from '@/utils/isValid';
 import ProjectContext from '@/layouts/ProjectContext';
+import styles from './index.less';
 
 const { useState, useEffect, useContext, forwardRef } = React;
 
@@ -69,10 +70,10 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="请输入应用名" />
       </Form.Item>
       <Form.Item>
-        <p>{fullPath}</p>
+        <p className={styles.fullPath}>{fullPath}</p>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
