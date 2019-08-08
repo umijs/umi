@@ -4,6 +4,7 @@ import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
+import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync } from 'fs';
 import got from 'got';
 import Config from './Config';
@@ -426,8 +427,10 @@ export default class UmiUI {
         if (err) {
           reject(err);
         } else {
+          const url = `http://localhost:${port}/`;
           console.log(`umi ui listening on port ${port}`);
-          console.log(`http://localhost:${port}/`);
+          console.log(url);
+          openBrowser(url);
           resolve();
         }
       });
