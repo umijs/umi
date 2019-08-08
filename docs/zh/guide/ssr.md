@@ -8,7 +8,9 @@
 
 ### 什么是服务端渲染
 
-@startuml Bob -> Alice : hello @enduml
+@startuml
+Bob -> Alice : hello
+@enduml
 
 ### 为什么使用服务端渲染
 
