@@ -69,3 +69,10 @@ export async function listDirectory(payload) {
     payload,
   });
 }
+
+export async function checkDirValid(payload: { dir: string }) {
+  return callRemote({
+    type: '@@project/checkDirValid',
+    payload,
+  });
+}

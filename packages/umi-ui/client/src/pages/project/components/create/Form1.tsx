@@ -3,6 +3,7 @@ import { Form, Input, Button } from 'antd';
 import cls from 'classnames';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
+import { checkDirValid } from '@/services/project';
 import { isValidFolderName } from '@/utils/isValid';
 import ProjectContext from '@/layouts/ProjectContext';
 import styles from './index.less';
@@ -72,7 +73,20 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       >
         <Input placeholder="请输入应用名" />
       </Form.Item>
-      <Form.Item>
+      <Form.Item
+        name="fullPath"
+        rules={[
+          {
+            validator: async (rule, value) => {
+              try {
+                await checkDirValid({ dir: value });
+              } catch (e) {
+                throw new Error(e.message);
+              }
+            },
+          },
+        ]}
+      >
         <p className={styles.fullPath}>{fullPath}</p>
       </Form.Item>
       <Form.Item>

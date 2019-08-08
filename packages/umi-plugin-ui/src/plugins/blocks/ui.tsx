@@ -16,7 +16,7 @@ function nameToPath(name) {
 export default (api: IUiApi) => {
   const { callRemote, getContext } = api;
 
-  const BlocksViewer = () => {
+  const BlocksViewer: React.SFC<{}> = () => {
     const [blockAdding, setBlockAdding] = useState(null);
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
