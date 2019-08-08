@@ -72,7 +72,6 @@ const config: IConfig = {
     ],
   ],
   chainWebpack(config, { webpack }) {
-    config.output.publicPath('http://localhost:8002/');
     config.plugin('webpack-less-theme').use(
       new LessThemePlugin({
         theme: join(__dirname, './src/styles/parameters.less'),
