@@ -7,6 +7,7 @@ import launchEditor from 'react-dev-utils/launchEditor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync } from 'fs';
 import got from 'got';
+import portfinder from 'portfinder';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
@@ -321,7 +322,7 @@ export default class UmiUI {
   }
 
   async start() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const express = require('express');
       const compression = require('compression');
       const serveStatic = require('serve-static');
@@ -422,7 +423,9 @@ export default class UmiUI {
       });
 
       // TODO: 端口冲突时自动换个可用的
-      const port = process.env.PORT || 8001;
+      portfinder.basePort = 3000;
+      portfinder.highestPort = 3333;
+      const port = process.env.PORT || (await portfinder.getPortPromise());
       const server = app.listen(port, err => {
         if (err) {
           reject(err);
