@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Form, Checkbox, Button, Select, Row, Col } from 'antd';
+import { getNpmClients } from '@/services/project';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import CardForm, { IOption } from '@/components/CardForm';
 import { APP_TYPE, REACT_FEATURES } from '@/enums';
@@ -9,10 +10,20 @@ const { useState, useEffect, useContext } = React;
 const { Option } = Select;
 
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
-  const { goNext, goPrev, handleFinish, style } = props;
+  const { goPrev, handleFinish, style } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [appType, setAppType] = useState<APP_TYPE>();
+  const [npmClient, setNpmClient] = useState<string[]>([]);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    (async () => {
+      const { data: clients } = await getNpmClients();
+      if (Array.isArray(clients) && clients.length) {
+        setNpmClient(clients);
+      }
+    })();
+  }, []);
 
   // tmp options, real from server
   const options: IOption[] = [
@@ -84,9 +95,9 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
       >
         <Select placeholder="请选择包管理器">
-          <Option value="tnpm">tnpm</Option>
-          <Option value="npm">npm</Option>
-          <Option value="yarn">yarn</Option>
+          {npmClient.map(client => (
+            <Option value={client}>{client}</Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item style={{ marginTop: 16 }}>

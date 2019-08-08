@@ -76,3 +76,9 @@ export async function checkDirValid(payload: { dir: string }) {
     payload,
   });
 }
+
+export async function getNpmClients(): Promise<{ data: string[] }> {
+  return callRemote({
+    type: '@@project/getNpmClients',
+  });
+}

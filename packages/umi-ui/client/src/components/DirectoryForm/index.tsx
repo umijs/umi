@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon, Button, Empty } from 'antd';
+import { Icon, Button, Empty, Spin } from 'antd';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
@@ -88,7 +88,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           <Icon type="reload" />
         </Button>
       </div>
-      {Array.isArray(directories) && (
+      {Array.isArray(directories) ? (
         <div className={styles['directoryForm-list']}>
           {directories.length > 0 ? (
             directories.map(item => (
@@ -97,6 +97,10 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
           )}
+        </div>
+      ) : (
+        <div style={{ textAlign: 'center' }}>
+          <Spin />
         </div>
       )}
     </div>
