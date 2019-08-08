@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
 import styles from './index.less';
 
-export default () => {
+export default props => {
+  const { logs } = props;
   const [minimized, setMinimized] = useState(false);
   const containerEl = useRef(null);
 
@@ -13,12 +14,19 @@ export default () => {
   useEffect(
     () => {
       initXTerm();
+      xterm.on('key', (key, ev) => {
+        if (key.charCodeAt(0) == 13) {
+          xterm.write('\n');
+        }
+        xterm.write(key);
+      });
     },
     [minimized],
   );
 
   function initXTerm() {
     xterm.open(containerEl.current);
+    xterm.write(logs);
   }
 
   function handleLink(e, uri) {

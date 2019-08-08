@@ -16,6 +16,8 @@ declare namespace IUI {
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
     setLocale: typeof setLocale;
+    openLog: () => void;
+    hideLog: () => void;
   }
 
   type ILocale = { [x in ILang]: { [key in string]: string } };

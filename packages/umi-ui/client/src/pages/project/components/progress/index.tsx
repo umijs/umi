@@ -3,17 +3,19 @@ import cls from 'classnames';
 import { Steps, Icon } from 'antd';
 import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
+import ProjectContext from '@/layouts/ProjectContext';
 import { setCurrentProject } from '@/services/project';
 import styles from './index.less';
 import { IProjectProps } from '../index';
 
-const { useState, useEffect } = React;
+const { useContext } = React;
 
 const { Step } = Steps;
 
 const ProgressStage: React.SFC<IProjectProps> = props => {
   console.log('ProgressStage props', props);
   const { currentData, projectList } = props;
+  const { openLog } = useContext(ProjectContext);
   const key = get(currentData, 'key');
   const progress: ICreateProgress =
     get(projectList, `projectsByKey.${get(currentData, 'key')}.creatingProgress`) || {};
@@ -70,7 +72,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
       {progress.failure && (
         <div className={styles['project-progress-fail']}>
           <p>{progress.failure.message}</p>
-          <a href="">查看日志</a>
+          <a onClick={() => openLog()}>查看日志</a>
         </div>
       )}
     </div>

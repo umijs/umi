@@ -3,7 +3,6 @@ import { PageHeader } from 'antd';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import Layout from './Layout';
 import Context from './Context';
-import Logs from './Logs';
 import ProjectContext from './ProjectContext';
 import scrollTop from '@/utils/scrollTop';
 import styles from './Project.less';
@@ -67,10 +66,6 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
                   />
                 )}
                 <div>{this.props.children}</div>
-                <div className="logs">
-                  <h2>日志</h2>
-                  <Logs />
-                </div>
               </div>
             </ProjectContext.Provider>
           )}
