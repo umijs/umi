@@ -13,7 +13,6 @@ const { useState, useEffect, useContext, forwardRef } = React;
 const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const { cwd, goNext, goPrev, style } = props;
   const { formatMessage } = useContext(ProjectContext);
-  const [fullPath, setFullPath] = useState<string>(cwd);
   const [form] = Form.useForm();
 
   // const handleBaseDirChange = (value: string) => {
@@ -37,6 +36,16 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   //   setFullPath(dir);
   // };
 
+  const getFullPath = (fields = {}) => {
+    const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
+    const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
+    return dir;
+  };
+
+  const renderFullPath = () => {
+    return <p className={styles.fullPath}>{getFullPath()}</p>;
+  };
+
   return (
     <Form
       form={form}
@@ -45,13 +54,8 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       layout="vertical"
       name="form_create_project"
       onFinish={() => goNext()}
-      initialValues={{}}
-      onValuesChange={(changed, { baseDir, name }) => {
-        const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
-        form.setFieldsValue({
-          fullPath: dir,
-        });
-        setFullPath(dir);
+      initialValues={{
+        baseDir: cwd,
       }}
     >
       <Form.Item label={null} name="baseDir">
@@ -59,13 +63,19 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       </Form.Item>
       <Form.Item
         name="name"
+        dependencies={['baseDir']}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
         rules={[
           { required: true, message: formatMessage({ id: '请输入应用名' }) },
           {
             validator: async (rule, value) => {
+              if (!value) {
+                return;
+              }
               if (!isValidFolderName(value)) {
                 throw new Error(formatMessage({ id: '文件名无效' }));
+              } else {
+                await checkDirValid({ dir: getFullPath({ name: value }) });
               }
             },
           },
@@ -73,22 +83,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       >
         <Input placeholder="请输入应用名" />
       </Form.Item>
-      <Form.Item
-        name="fullPath"
-        rules={[
-          {
-            validator: async (rule, value) => {
-              try {
-                await checkDirValid({ dir: value });
-              } catch (e) {
-                throw new Error(e.message);
-              }
-            },
-          },
-        ]}
-      >
-        <p className={styles.fullPath}>{fullPath}</p>
-      </Form.Item>
+      <Form.Item shouldUpdate>{renderFullPath}</Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
           {formatMessage({ id: '下一步' })}
