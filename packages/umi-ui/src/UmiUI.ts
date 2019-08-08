@@ -328,6 +328,21 @@ export default class UmiUI {
           },
         });
         break;
+      case '@@project/createTemplateList':
+        success({
+          data: [
+            {
+              title: 'Ant Design Pro',
+              description: 'A layout-only ant-design-pro boilerplate, use together with umi block',
+              url: 'https://preview.pro.ant.design/',
+            },
+            {
+              title: 'Basic Template',
+              description: 'A simple boilerplate, support typescript.',
+            },
+          ],
+        });
+        break;
       case '@@fs/getCwd':
         success({
           cwd: this.cwd,
