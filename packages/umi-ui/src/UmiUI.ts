@@ -5,7 +5,7 @@ import clearModule from 'clear-module';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import openBrowser from 'react-dev-utils/openBrowser';
-import { existsSync } from 'fs';
+import { existsSync, statSync } from 'fs';
 import got from 'got';
 import portfinder from 'portfinder';
 import Config from './Config';
@@ -219,9 +219,29 @@ export default class UmiUI {
     }
   }
 
+  checkDirValid({ dir }, { onSuccess, onFailure }) {
+    try {
+      // 入参校验
+      assert(dir, `payload.dir must be supplied`);
+
+      if (!existsSync(dir)) {
+        return onSuccess();
+      }
+
+      // 非目录判断和权限校验
+      const stat = statSync(dir);
+      assert(stat.isDirectory(), `target directory must be a directory`);
+
+      // 费空目录判断
+      assert(emptyDir.sync(dir), `target directory must be empty`);
+    } catch (e) {
+      onFailure(e);
+    }
+  }
+
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload }, { log, send, success, failure, progress }) {
+  handleCoreData({ type, payload }, { log, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
         success(this.getExtraAssets());
@@ -296,6 +316,16 @@ export default class UmiUI {
             });
           },
           onProgress: progress,
+        });
+        break;
+      case '@@project/checkDirValid':
+        this.checkDirValid(payload, {
+          onSuccess: success,
+          onFailure(e) {
+            failure({
+              message: e.message,
+            });
+          },
         });
         break;
       case '@@fs/getCwd':
