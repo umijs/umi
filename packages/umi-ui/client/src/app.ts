@@ -112,6 +112,11 @@ export async function render(oldRender) {
     console.log("It's Project Manager");
   }
 
+  // Project Manager
+  else if (history.location.pathname.startsWith('/test')) {
+    console.log('Test Only');
+  }
+
   // Project View
   else {
     const { data } = await callRemote({ type: '@@project/list' });

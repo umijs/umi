@@ -6,6 +6,7 @@ import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, statSync } from 'fs';
+import { execSync } from 'child_process';
 import got from 'got';
 import portfinder from 'portfinder';
 import Config from './Config';
@@ -239,9 +240,40 @@ export default class UmiUI {
     }
   }
 
+  getNpmClients() {
+    const ret = [];
+
+    try {
+      execSync('tnpm --version', { stdio: 'ignore' });
+      ret.push('tnpm');
+    } catch (e) {}
+    try {
+      execSync('cnpm --version', { stdio: 'ignore' });
+      ret.push('cnpm');
+    } catch (e) {}
+    try {
+      execSync('npm --version', { stdio: 'ignore' });
+      ret.push('npm');
+    } catch (e) {}
+    try {
+      execSync('ayarn --version', { stdio: 'ignore' });
+      ret.push('ayarn');
+    } catch (e) {}
+    try {
+      execSync('yarn --version', { stdio: 'ignore' });
+      ret.push('yarn');
+    } catch (e) {}
+    try {
+      execSync('pnpm --version', { stdio: 'ignore' });
+      ret.push('pnpm');
+    } catch (e) {}
+
+    return ret;
+  }
+
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload }, { log, success, failure, progress }) {
+  handleCoreData({ type, payload }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
         success(this.getExtraAssets());
@@ -341,6 +373,11 @@ export default class UmiUI {
               description: 'A simple boilerplate, support typescript.',
             },
           ],
+        });
+        break;
+      case '@@project/getNpmClients':
+        success({
+          data: this.getNpmClients(),
         });
         break;
       case '@@fs/getCwd':
@@ -467,7 +504,6 @@ export default class UmiUI {
         });
       });
 
-      // TODO: 端口冲突时自动换个可用的
       portfinder.basePort = 3000;
       portfinder.highestPort = 3333;
       const port = process.env.PORT || (await portfinder.getPortPromise());

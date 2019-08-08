@@ -12,6 +12,10 @@ const config: IConfig = {
   theme: './src/styles/theme.js',
   routes: [
     {
+      path: '/test',
+      component: '../layouts/Test',
+    },
+    {
       path: '/project',
       component: '../layouts/Project',
       routes: [
