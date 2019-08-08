@@ -32,6 +32,8 @@ export default class UmiUI {
 
   send: any;
 
+  developMode: boolean = false;
+
   constructor() {
     this.cwd = process.cwd();
     this.servicesByKey = {};
@@ -48,6 +50,7 @@ export default class UmiUI {
       },
     });
     this.logs = [];
+    this.developMode = !!process.env.DEVELOP_MODE;
 
     if (process.env.CURRENT_PROJECT) {
       this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
@@ -58,7 +61,7 @@ export default class UmiUI {
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
 
-    if (service) {
+    if (!this.developMode && service) {
       this.servicesByKey[key] = service;
     } else if (!this.servicesByKey[key]) {
       // Attach Service
