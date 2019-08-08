@@ -49,6 +49,8 @@ jobs:
         displayName: bootstrap
       - script: npm run build
         displayName: build
+      - script: npm run ui:build
+        displayName: ui:build
       - script: npm run test
         displayName: test
 
@@ -68,5 +70,7 @@ jobs:
         displayName: bootstrap
       - script: npm run build
         displayName: build
+      - script: npm run ui:build
+        displayName: ui:build
       - script: npm run test
         displayName: test

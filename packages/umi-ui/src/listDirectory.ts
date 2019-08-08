@@ -11,7 +11,7 @@ export default function(dirPath, opts: IOpts = {}) {
   const { showHidden, directoryOnly } = opts;
   assert(statSync(dirPath).isDirectory(), `path ${dirPath} is not a directory`);
 
-  return readdirSync(dirPath)
+  const items = readdirSync(dirPath)
     .filter(fileName => {
       if (showHidden) {
         return true;
@@ -25,15 +25,28 @@ export default function(dirPath, opts: IOpts = {}) {
         type,
         fileName,
       };
-    })
-    .sort(a => {
-      return a.type === 'directory' ? -1 : 1;
-    })
-    .filter(f => {
-      if (directoryOnly) {
-        return f.type === 'directory';
-      } else {
-        return true;
-      }
     });
+
+  let dirs = [];
+  let files = [];
+  items.forEach(item => {
+    if (item.type === 'directory') {
+      dirs.push(item);
+    } else {
+      files.push(item);
+    }
+  });
+
+  dirs = dirs.sort((a, b) => {
+    return a - b;
+  });
+  files = files.sort((a, b) => {
+    return a - b;
+  });
+
+  if (directoryOnly) {
+    return dirs;
+  } else {
+    return dirs.concat(files);
+  }
 }

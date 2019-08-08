@@ -6,9 +6,9 @@ test('normal', () => {
   expect(res).toEqual([
     { type: 'directory', fileName: 'b' },
     { type: 'directory', fileName: 'e.js' },
-    { type: 'file', fileName: 'd.css' },
-    { type: 'file', fileName: 'c.js' },
     { type: 'file', fileName: 'a' },
+    { type: 'file', fileName: 'c.js' },
+    { type: 'file', fileName: 'd.css' },
   ]);
 });
 
@@ -19,10 +19,10 @@ test('show hidden', () => {
   expect(res).toEqual([
     { type: 'directory', fileName: 'b' },
     { type: 'directory', fileName: 'e.js' },
-    { type: 'file', fileName: 'd.css' },
-    { type: 'file', fileName: 'c.js' },
-    { type: 'file', fileName: 'a' },
     { type: 'file', fileName: '.f' },
+    { type: 'file', fileName: 'a' },
+    { type: 'file', fileName: 'c.js' },
+    { type: 'file', fileName: 'd.css' },
   ]);
 });
 
