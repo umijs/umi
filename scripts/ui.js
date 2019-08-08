@@ -6,12 +6,12 @@ const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
 function buildUIApp(opts = {}) {
   console.log(`Build ui app`);
   const { watch } = opts;
-  const child = fork(UMI_BIN, [
-    watch ? 'dev' : 'build',
-    '--cwd',
-    './packages/umi-ui/client',
-    ...(watch ? ['--watch'] : []),
-  ]);
+  const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
+    env: {
+      APP_ROOT: './packages/umi-ui/client',
+      UMI_UI: 'none',
+    },
+  });
   process.on('SIGINT', () => {
     child.kill('SIGINT');
   });
