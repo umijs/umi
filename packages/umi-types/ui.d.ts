@@ -30,8 +30,8 @@ declare namespace IUI {
   interface IAction<T = object, K = void> {
     type: string;
     payload?: T;
-    onProgress?: (data: K) => Promise<K>;
-    onMessage?: (data: any) => Promise<K>;
+    onProgress?: (data: K) => void;
+    onMessage?: (data: any) => void;
   }
 
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
