@@ -1,5 +1,5 @@
 import * as lodash from 'lodash';
-import { Context } from 'react';
+import { Context, ReactNode } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
@@ -16,7 +16,7 @@ declare namespace IUI {
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
     setLocale: typeof setLocale;
-    openLog: () => void;
+    showLog: () => void;
     hideLog: () => void;
   }
 
@@ -54,7 +54,9 @@ declare namespace IUI {
     /** react component context */
     getContext(): Context<IContext>;
     callRemote: ICallRemove;
+    TwoColumnPanel: ReactNode;
     listenRemote: IListenRemote;
+    showLog: () => void;
     send: ISend;
   }
 

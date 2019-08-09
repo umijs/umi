@@ -20,7 +20,27 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       logVisible: false,
     };
   }
-  openLog = () => {
+  componentDidMount() {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.on('SHOW_LOG', () => {
+        this.setState({
+          logVisible: true,
+        });
+      });
+      window.g_uiEventEmitter.on('HIDE_LOG', () => {
+        this.setState({
+          logVisible: false,
+        });
+      });
+    }
+  }
+  componentWillUnmount() {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
+      window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
+    }
+  }
+  showLog = () => {
     this.setState({
       logVisible: true,
     });
@@ -40,14 +60,14 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
         value={{
           locale,
           formatMessage,
-          openLog: this.openLog,
+          showLog: this.showLog,
           hideLog: this.hideLog,
           setLocale,
           FormattedMessage,
         }}
       >
         {this.props.children}
-        <Footer logVisible={logVisible} openLog={this.openLog} hideLog={this.hideLog} />
+        <Footer logVisible={logVisible} showLog={this.showLog} hideLog={this.hideLog} />
       </Context.Provider>
     );
   }

@@ -103,29 +103,20 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     }
   };
 
-  const actionsMap = {
-    progress: (item: IProjectListItem) => [
+  const actionsMap: { [key: string]: (item: IProjectItem) => React.ReactNode[] } = {
+    progress: item => [
       <p style={{ cursor: 'auto' }}>
         <Spin style={{ marginRight: 8 }} />
         创建中
       </p>,
     ],
-    failure: (item: IProjectItem) => [],
-    success: (item: IProjectItem) => [
+    failure: item => [],
+    success: item => [
       <a onClick={() => handleOnAction('editor', { key: item.key })}>
         <Icon type="export" />
         在编辑器中打开
       </a>,
       <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>重命名</a>,
-      <Popconfirm
-        title="是否删除项目？"
-        onConfirm={() => handleOnAction('delete', { key: item.key })}
-        onCancel={() => {}}
-        okText="是"
-        cancelText="否"
-      >
-        <a>删除</a>
-      </Popconfirm>,
     ],
   };
 
@@ -157,17 +148,26 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </Row>
 
         <List
-          dataSource={projects.reverse()}
+          dataSource={projects}
           loading={!projects.length}
           split={false}
           className={styles['project-list']}
           renderItem={item => {
             const status = getProjectStatus(item);
-            return (
-              <List.Item
-                className={styles['project-list-item']}
-                actions={actionsMap[status] ? actionsMap[status](item) : []}
+            const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+              <Popconfirm
+                title="是否删除项目？"
+                onConfirm={() => handleOnAction('delete', { key: item.key })}
+                onCancel={() => {}}
+                okText="是"
+                cancelText="否"
               >
+                <a>删除</a>
+              </Popconfirm>,
+            );
+
+            return (
+              <List.Item className={styles['project-list-item']} actions={actions}>
                 <Skeleton title={false} loading={item.loading} active>
                   <List.Item.Meta
                     title={

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Checkbox, Button, Select, Row, Col } from 'antd';
+import { Form, Checkbox, Button, Select, Row, Col, Radio } from 'antd';
 import { getNpmClients } from '@/services/project';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import CardForm, { IOption } from '@/components/CardForm';
@@ -53,7 +53,11 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       layout="vertical"
       name="form_create_project"
       onFinish={handleFinish}
-      initialValues={{}}
+      initialValues={{
+        args: {
+          language: 'JavaScript',
+        },
+      }}
     >
       <Form.Item
         name="type"
@@ -84,10 +88,10 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         label="语言"
         rules={[{ required: true, message: formatMessage({ id: '请选择语言' }) }]}
       >
-        <Select placeholder="请选择语言">
-          <Option value="JavaScript">JavaScript</Option>
-          <Option value="TypeScript">TypeScript</Option>
-        </Select>
+        <Radio.Group>
+          <Radio value="JavaScript">JavaScript</Radio>
+          <Radio value="TypeScript">TypeScript</Radio>
+        </Radio.Group>
       </Form.Item>
       <Form.Item
         name="npmClient"

@@ -15,7 +15,7 @@ const { Step } = Steps;
 const ProgressStage: React.SFC<IProjectProps> = props => {
   console.log('ProgressStage props', props);
   const { currentData, projectList } = props;
-  const { openLog } = useContext(ProjectContext);
+  const { showLog } = useContext(ProjectContext);
   const key = get(currentData, 'key');
   const progress: ICreateProgress =
     get(projectList, `projectsByKey.${get(currentData, 'key')}.creatingProgress`) || {};
@@ -72,7 +72,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
       {progress.failure && (
         <div className={styles['project-progress-fail']}>
           <p>{progress.failure.message}</p>
-          <a onClick={() => openLog()}>查看日志</a>
+          <a onClick={() => showLog()}>查看日志</a>
         </div>
       )}
     </div>

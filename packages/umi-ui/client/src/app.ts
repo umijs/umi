@@ -1,8 +1,17 @@
 import lodash from 'lodash';
+import { ReactNode } from 'react';
+import EventEmitter from 'events';
 import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
+
+// register event
+if (!window.g_uiEventEmitter) {
+  window.g_uiEventEmitter = new EventEmitter();
+  // avoid oom
+  window.g_uiEventEmitter.setMaxListeners(10);
+}
 
 // PluginAPI
 class PluginAPI {
@@ -13,7 +22,9 @@ class PluginAPI {
   callRemote: IUi.ICallRemove;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
-  TwoColumnPanel: any;
+  TwoColumnPanel: ReactNode;
+  showLog: () => void;
+  hideLog: () => void;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -21,6 +32,16 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
+    this.showLog = () => {
+      if (window.g_uiEventEmitter) {
+        window.g_uiEventEmitter.emit('SHOW_LOG');
+      }
+    };
+    this.hideLog = () => {
+      if (window.g_uiEventEmitter) {
+        window.g_uiEventEmitter.emit('HIDE_LOG');
+      }
+    };
     this.TwoColumnPanel = TwoColumnPanel;
   }
 

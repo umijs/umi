@@ -1,4 +1,6 @@
+import EventEmitter from 'events';
 import { Context } from 'react';
+
 import { IUi } from 'umi-types';
 import zhCN from '../locales/zh-CN';
 
@@ -9,6 +11,7 @@ declare global {
     g_uiContext: Context<IUi.IContext>;
     g_uiLocales: IUi.ILocale;
     g_service: IUi.IService;
+    g_uiEventEmitter: EventEmitter;
   }
 }
 
