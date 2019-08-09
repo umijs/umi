@@ -6,7 +6,8 @@ export default api => {
     return (
       <div>
         任务管理内容
-        <Button onClick={() => api.showLog()}>open log</Button>
+        <Button onClick={() => api.showLogPanel()}>open log</Button>
+        <Button onClick={() => api.hideLogPanel()}>close log</Button>
       </div>
     );
   }

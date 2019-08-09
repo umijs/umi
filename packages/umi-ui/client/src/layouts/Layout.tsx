@@ -40,12 +40,12 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
     }
   }
-  showLog = () => {
+  showLogPanel = () => {
     this.setState({
       logVisible: true,
     });
   };
-  hideLog = () => {
+  hideLogPanel = () => {
     this.setState({
       logVisible: false,
     });
@@ -60,14 +60,18 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
         value={{
           locale,
           formatMessage,
-          showLog: this.showLog,
-          hideLog: this.hideLog,
+          showLogPanel: this.showLogPanel,
+          hideLogPanel: this.hideLogPanel,
           setLocale,
           FormattedMessage,
         }}
       >
         {this.props.children}
-        <Footer logVisible={logVisible} showLog={this.showLog} hideLog={this.hideLog} />
+        <Footer
+          logVisible={logVisible}
+          showLogPanel={this.showLogPanel}
+          hideLogPanel={this.hideLogPanel}
+        />
       </Context.Provider>
     );
   }

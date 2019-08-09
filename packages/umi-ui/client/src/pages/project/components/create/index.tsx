@@ -42,12 +42,11 @@ const CreateProject: React.SFC<IProjectProps> = props => {
   const { formatMessage, setCurrent } = useContext(ProjectContext);
 
   const handleSubmit = async (values: ICreaetProjectValue) => {
-    console.log('params', values);
-    const { fullPath, ...restValues } = values;
-    const params = p(restValues, draft => {
+    const params = p(values, draft => {
       // temp compatible with create-umi
       draft.args.isTypeScript = draft.args.language === 'TypeScript';
     });
+    console.log('params', params);
     try {
       const data = await createProject(params);
       console.log('project have create', data);

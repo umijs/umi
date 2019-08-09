@@ -16,8 +16,8 @@ declare namespace IUI {
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
     setLocale: typeof setLocale;
-    showLog: () => void;
-    hideLog: () => void;
+    showLogPanel: () => void;
+    hideLogPanel: () => void;
   }
 
   type ILocale = { [x in ILang]: { [key in string]: string } };
@@ -56,7 +56,7 @@ declare namespace IUI {
     callRemote: ICallRemove;
     TwoColumnPanel: ReactNode;
     listenRemote: IListenRemote;
-    showLog: () => void;
+    showLogPanel: () => void;
     send: ISend;
   }
 

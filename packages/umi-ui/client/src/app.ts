@@ -23,8 +23,8 @@ class PluginAPI {
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
-  showLog: () => void;
-  hideLog: () => void;
+  showLogPanel: () => void;
+  hideLogPanel: () => void;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -32,12 +32,12 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.showLog = () => {
+    this.showLogPanel = () => {
       if (window.g_uiEventEmitter) {
         window.g_uiEventEmitter.emit('SHOW_LOG');
       }
     };
-    this.hideLog = () => {
+    this.hideLogPanel = () => {
       if (window.g_uiEventEmitter) {
         window.g_uiEventEmitter.emit('HIDE_LOG');
       }

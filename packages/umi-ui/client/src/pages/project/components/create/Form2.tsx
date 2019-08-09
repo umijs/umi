@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Checkbox, Button, Select, Row, Col, Radio } from 'antd';
+import { Form, Checkbox, Button, Select, Row, Col, Radio, message } from 'antd';
 import { getNpmClients } from '@/services/project';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import CardForm, { IOption } from '@/components/CardForm';
@@ -12,18 +12,10 @@ const { Option } = Select;
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const { goPrev, handleFinish, style } = props;
   const { formatMessage } = useContext(ProjectContext);
+  const [loading, setLoading] = useState<boolean>(false);
   const [appType, setAppType] = useState<APP_TYPE>();
   const [npmClient, setNpmClient] = useState<string[]>([]);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    (async () => {
-      const { data: clients } = await getNpmClients();
-      if (Array.isArray(clients) && clients.length) {
-        setNpmClient(clients);
-      }
-    })();
-  }, []);
 
   // tmp options, real from server
   const options: IOption[] = [
@@ -43,6 +35,22 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
 
   const handleTypeOnChange = (type: APP_TYPE): void => {
     setAppType(type);
+  };
+
+  const handleFocusClients = async () => {
+    const loadingIns = message.loading('包管理器获取中', 0);
+    setLoading(true);
+    try {
+      const { data: clients } = await getNpmClients();
+      if (Array.isArray(clients) && clients.length) {
+        setNpmClient(clients);
+      }
+    } catch (e) {
+      message.error(e && e.message ? e.message : '包管理器获取失败');
+    } finally {
+      loadingIns();
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,9 +106,11 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         label="包管理"
         rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
       >
-        <Select placeholder="请选择包管理器">
+        <Select placeholder="请选择包管理器" onFocus={handleFocusClients} loading={loading}>
           {npmClient.map(client => (
-            <Option value={client}>{client}</Option>
+            <Option key={client} value={client}>
+              {client}
+            </Option>
           ))}
         </Select>
       </Form.Item>

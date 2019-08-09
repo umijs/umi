@@ -10,12 +10,12 @@ const { useState, useEffect, useReducer } = React;
 
 interface LogsProps {
   logVisible: boolean;
-  showLog: () => void;
-  hideLog: () => void;
+  showLogPanel: () => void;
+  hideLogPanel: () => void;
 }
 
 const Logs: React.SFC<LogsProps> = props => {
-  const { logVisible, showLog, hideLog } = props;
+  const { logVisible, showLogPanel, hideLogPanel } = props;
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
       return [...state, action.payload];
@@ -51,7 +51,7 @@ const Logs: React.SFC<LogsProps> = props => {
           <Icon type="folder" /> 当前位置
         </div>
         <div
-          onClick={() => showLog()}
+          onClick={() => showLogPanel()}
           className={`${styles.section} ${styles.action} ${styles.log}`}
         >
           <Icon type="profile" /> 日志
@@ -67,7 +67,7 @@ const Logs: React.SFC<LogsProps> = props => {
         mask={false}
         className={styles.logs}
         height={300}
-        onClose={() => hideLog()}
+        onClose={() => hideLogPanel()}
       >
         <Terminal logs={logsFormat} />
       </Drawer>
