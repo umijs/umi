@@ -126,6 +126,7 @@ class LocaleWrapper extends React.Component{
      // antd 3.21.0 use ConfigProvider not LocaleProvider
      const isConfigProvider = Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
      const AntdProvider = isConfigProvider ? ConfigProvider : LocaleProvider;
+
      return (<AntdProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
     </AntdProvider>);
