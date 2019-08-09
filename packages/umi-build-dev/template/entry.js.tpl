@@ -51,8 +51,9 @@ if (__IS_BROWSER) {
 let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
   serverRender = async (ctx = {}) => {
-    const pathname = ctx.req.url;
-    require('@tmp/history').default.push(pathname);
+    // ctx.req.url may be `/bar?locale=en-US`
+    const [pathname] = (ctx.req.url || '').split('?');
+    require('@tmp/history').default.push(ctx.req.url);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
