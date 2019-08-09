@@ -12,8 +12,8 @@ export default async function ({ page, host }) {
     () =>
     document.head.querySelectorAll('script')[2].src
   );
-  const script1SrcExp = new RegExp(`${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.profiling\\.min\\.js$`);
-  const script2SrcExp = new RegExp(`${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.production\\.min\\.js$`);
+  const script1SrcExp = new RegExp(`^${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.profiling\\.min\\.js$`);
+  const script2SrcExp = new RegExp(`^${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.production\\.min\\.js$`);
 
   expect(script1Src).toMatch(script1SrcExp);
   expect(script2Src).toMatch(script2SrcExp);
