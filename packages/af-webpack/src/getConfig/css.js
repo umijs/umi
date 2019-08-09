@@ -101,7 +101,7 @@ export default function(webpackConfig, opts) {
           : 'css-loader-1'
         )
 
-    if (cssModules && opts.generateCssModulesTypings) {
+    if (isDev && cssModules && opts.generateCssModulesTypings) {
       rule
         .use('css-modules-typescript-loader')
         .loader(require.resolve('css-modules-typescript-loader'))
