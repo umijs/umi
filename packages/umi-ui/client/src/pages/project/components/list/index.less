@@ -4,6 +4,22 @@
     overflow-x: hidden;
     &-layout {
       min-height: 100vh;
+      .tag {
+        display: inline-block;
+        border-radius: 4px;
+        vertical-align: top;
+        margin-left: 8px;
+        &-progress {
+          color: @primary-color;
+          background-color: fade(@primary-color, 10);
+          border-color: fade(@primary-color, 45);
+        }
+        &-error {
+          color: @ui-tag-error-color;
+          background-color: fade(@ui-tag-error-color, 10);
+          border-color: fade(@ui-tag-error-color, 45);
+        }
+      }
       &-sider {
         padding: 40px 0;
         text-align: center;

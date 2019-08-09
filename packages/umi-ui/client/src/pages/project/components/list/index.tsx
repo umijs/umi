@@ -4,6 +4,7 @@ import {
   List,
   Skeleton,
   Badge,
+  Tag,
   Spin,
   Popconfirm,
   Row,
@@ -44,21 +45,22 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  const getProjectStatus = (
+    item: IProjectListItem,
+  ): 'success' | 'failure' | 'progress' | 'active' => {
+    if (get(item, 'creatingProgress.success')) return 'success';
+    if (get(item, 'creatingProgress.failure')) return 'failure';
+    if (item.creatingProgress) return 'progress';
+    if (item.key === currentProject) return 'active';
+    return 'success';
+  };
+
   const isProgress = (item: IProjectListItem) => {
     if (get(item, 'creatingProgress.success')) return false;
     return !!item.creatingProgress;
   };
 
   console.log('projectList', projectList);
-  const ProjectStatus = ({ item }: { item: IProjectListItem }) => {
-    if (isProgress(item)) {
-      return <Spin style={{ marginRight: 8 }} />;
-    }
-    if (item.key === currentProject) {
-      return <Badge status="success" />;
-    }
-    return null;
-  };
 
   const projects = useMemo(
     () => {
@@ -101,6 +103,32 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     }
   };
 
+  const actionsMap = {
+    progress: (item: IProjectListItem) => [
+      <p style={{ cursor: 'auto' }}>
+        <Spin style={{ marginRight: 8 }} />
+        创建中
+      </p>,
+    ],
+    failure: (item: IProjectItem) => [],
+    success: (item: IProjectItem) => [
+      <a onClick={() => handleOnAction('editor', { key: item.key })}>
+        <Icon type="export" />
+        在编辑器中打开
+      </a>,
+      <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>重命名</a>,
+      <Popconfirm
+        title="是否删除项目？"
+        onConfirm={() => handleOnAction('delete', { key: item.key })}
+        onCancel={() => {}}
+        okText="是"
+        cancelText="否"
+      >
+        <a>删除</a>
+      </Popconfirm>,
+    ],
+  };
+
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
@@ -133,50 +161,33 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           loading={!projects.length}
           split={false}
           className={styles['project-list']}
-          renderItem={item => (
-            <List.Item
-              className={styles['project-list-item']}
-              actions={
-                isProgress(item)
-                  ? [
-                      <p>
-                        <Spin style={{ marginRight: 8 }} />
-                        创建中
-                      </p>,
-                    ]
-                  : [
-                      <a onClick={() => handleOnAction('editor', { key: item.key })}>
-                        <Icon type="export" />
-                        在编辑器中打开
-                      </a>,
-                      <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
-                        重命名
-                      </a>,
-                      <Popconfirm
-                        title="是否删除项目？"
-                        onConfirm={() => handleOnAction('delete', { key: item.key })}
-                        onCancel={() => {}}
-                        okText="是"
-                        cancelText="否"
-                      >
-                        <a>删除</a>
-                      </Popconfirm>,
-                    ]
-              }
-            >
-              <Skeleton title={false} loading={item.loading} active>
-                <List.Item.Meta
-                  title={
-                    <div className={styles['project-list-item-title']}>
-                      <ProjectStatus item={item} />
-                      <a onClick={() => handleTitleClick(item)}>{item.name}</a>
-                    </div>
-                  }
-                  description={item.path}
-                />
-              </Skeleton>
-            </List.Item>
-          )}
+          renderItem={item => {
+            const status = getProjectStatus(item);
+            return (
+              <List.Item
+                className={styles['project-list-item']}
+                actions={actionsMap[status] ? actionsMap[status](item) : []}
+              >
+                <Skeleton title={false} loading={item.loading} active>
+                  <List.Item.Meta
+                    title={
+                      <div className={styles['project-list-item-title']}>
+                        {status === 'active' && <Badge status="success" />}
+                        <a onClick={() => handleTitleClick(item)}>{item.name}</a>
+                        {status === 'progress' && (
+                          <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
+                        )}
+                        {status === 'failure' && (
+                          <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
+                        )}
+                      </div>
+                    }
+                    description={item.path}
+                  />
+                </Skeleton>
+              </List.Item>
+            );
+          }}
         />
       </Content>
       {modalVisible && (
