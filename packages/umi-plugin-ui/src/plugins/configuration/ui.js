@@ -156,7 +156,7 @@ const ConfigManager = connect(state => ({
  */
 
 export default api => {
-  const { callRemote, getContext } = api;
+  const { callRemote, getContext, TwoColumnPanel } = api;
 
   function ConfigTargets(props) {
     const { default: defaultValue, value } = props.item;
@@ -226,7 +226,7 @@ export default api => {
     );
   }
 
-  function ConfigManager() {
+  function BasicConfig() {
     const [data, setData] = useState([]);
     useEffect(() => {
       (async () => {
@@ -261,10 +261,10 @@ export default api => {
     });
 
     return (
-      <div>
+      <div className={styles.basicConfig}>
         {Object.keys(groupedData).map(group => {
           return (
-            <div key={group}>
+            <div className={styles.group} key={group}>
               <h2>{group}</h2>
               {groupedData[group].map(item => {
                 return <ConfigItem key={item.name} item={item} editHandler={editHandler} />;
@@ -273,6 +273,26 @@ export default api => {
           );
         })}
       </div>
+    );
+  }
+
+  function Test() {
+    return <div>TEST</div>;
+  }
+
+  function ConfigManager() {
+    return (
+      <TwoColumnPanel
+        sections={[
+          { title: '项目配置', icon: 'plus-circle', description: 'ABC', component: BasicConfig },
+          {
+            title: 'umi-plugin-react 配置',
+            icon: 'pause-circle',
+            description: 'BCD',
+            component: Test,
+          },
+        ]}
+      />
     );
   }
 

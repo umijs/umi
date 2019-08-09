@@ -2,6 +2,7 @@ import lodash from 'lodash';
 import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
+import TwoColumnPanel from './components/TwoColumnPanel';
 
 // PluginAPI
 class PluginAPI {
@@ -12,6 +13,7 @@ class PluginAPI {
   callRemote: IUi.ICallRemove;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
+  TwoColumnPanel: any;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -19,6 +21,7 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
+    this.TwoColumnPanel = TwoColumnPanel;
   }
 
   getContext() {
