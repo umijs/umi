@@ -2,5 +2,5 @@
   "name": "umijs.org",
   "version": 2,
   "builds": [{ "src": "package.json", "use": "@now/static-build" }],
-  "alias": ["umijs.org", "umijs.now.sh"]
+  "alias": ["umijs.org"]
 }
