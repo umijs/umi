@@ -57,5 +57,10 @@ end note
 @enduml
 
 ### 与预渲染的区别
+预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。
+
+无需使用 web 服务器实时动态编译 HTML，**适用于静态站点**。
+
+你可以参考 umi 的官方示例 [umi-example-ssr](https://github.com/umijs/umi-example-ssr) 了解更多。
 
 ## 参考
