@@ -5,15 +5,14 @@ workflow "deploy site" {
 
 # Filter for master branch
 action "master-branch-filter" {
-#  needs = "alias"
+  #  needs = "alias"
   uses = "actions/bin/filter@master"
   args = "branch master"
 }
 
-
 action "release" {
-# needs = "master-branch-filter"
+  # needs = "master-branch-filter"
   uses = "actions/zeit-now@master"
-  secrets = ["ZEIT_TOKEN"]
   args = "alias --local-config=./website/now.json"
+  secrets = ["ZEIT_TOKEN"]
 }
