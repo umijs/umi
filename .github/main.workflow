@@ -1,11 +1,19 @@
 workflow "deploy site" {
   on = "push"
-  resolves = ["GitHub Action for Zeit"]
+  resolves = ["release"]
 }
 
-action "GitHub Action for Zeit" {
-  uses = "actions/zeit-now@5c51b26db987d15a0133e4c760924896b4f1512f"
-  env = {
-    aaa = "aaa"
-  }
+# Filter for master branch
+action "master-branch-filter" {
+#  needs = "alias"
+  uses = "actions/bin/filter@master"
+  args = "branch master"
+}
+
+
+action "release" {
+# needs = "master-branch-filter"
+  uses = "actions/zeit-now@master"
+  secrets = ["ZEIT_TOKEN"]
+  args = "alias --local-config=./website/now.json"
 }
