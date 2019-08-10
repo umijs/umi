@@ -35,7 +35,7 @@ export default withRouter(props => {
                   <img alt="logo" className={styles.logo} src={iconSvg} />
                   <div>
                     <FormattedMessage id="org.umi.ui.global.panel.lang" />{' '}
-                    <Select onChange={setLocale} defaultActiveFirstOption>
+                    <Select onChange={setLocale} defaultValue={locale}>
                       {Object.keys(LOCALES).map(lang => (
                         <Select.Option key={lang} value={lang}>
                           {LOCALES[lang]}
