@@ -75,6 +75,13 @@ describe('test func with singular true', () => {
         momentLocale: '',
       },
       {
+        lang: 'sk',
+        country: 'SK',
+        name: 'sk',
+        paths: [`${absSrcPath}/locale/sk.js`, `${absPagesPath}/temp/locale/sk.js`],
+        momentLocale: 'sk',
+      },
+      {
         lang: 'zh',
         country: 'CN',
         name: 'zh-CN',
