@@ -14,7 +14,7 @@ interface LogsProps {
   hideLogPanel: () => void;
 }
 
-const Logs: React.SFC<LogsProps> = props => {
+const Footer: React.SFC<LogsProps> = props => {
   const { logVisible, showLogPanel, hideLogPanel } = props;
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
@@ -42,8 +42,7 @@ const Logs: React.SFC<LogsProps> = props => {
       });
     })();
   }, []);
-  const logsFormat = logs.map(log => `[${log.type}]-[${log.date}]: ${log.message}`).join('\\n');
-  console.log('logsFormat', logsFormat);
+
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
@@ -51,7 +50,7 @@ const Logs: React.SFC<LogsProps> = props => {
           <Icon type="folder" /> 当前位置
         </div>
         <div
-          onClick={() => showLogPanel()}
+          onClick={() => (logVisible ? hideLogPanel() : showLogPanel())}
           className={`${styles.section} ${styles.action} ${styles.log}`}
         >
           <Icon type="profile" /> 日志
@@ -69,10 +68,10 @@ const Logs: React.SFC<LogsProps> = props => {
         height={300}
         onClose={() => hideLogPanel()}
       >
-        <Terminal logs={logsFormat} />
+        <Terminal logs={logs} />
       </Drawer>
     </div>
   );
 };
 
-export default Logs;
+export default Footer;

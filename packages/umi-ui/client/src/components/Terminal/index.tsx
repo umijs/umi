@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
 import styles from './index.less';
 
 export default props => {
@@ -7,48 +6,44 @@ export default props => {
   const [minimized, setMinimized] = useState(false);
   const containerEl = useRef(null);
 
-  const { xterm } = window;
+  // useEffect(
+  //   () => {
+  //     initXTerm();
+  //     xterm.on('key', (key, ev) => {
+  //       if (key.charCodeAt(0) == 13) {
+  //         xterm.write('\n');
+  //       }
+  //       xterm.write(key);
+  //     });
+  //   },
+  //   [minimized],
+  // );
 
-  webLinks.webLinksInit(xterm, handleLink);
+  // function initXTerm() {
+  //   xterm.open(containerEl.current);
+  //   xterm.write(logs);
+  // }
 
-  useEffect(
-    () => {
-      initXTerm();
-      xterm.on('key', (key, ev) => {
-        if (key.charCodeAt(0) == 13) {
-          xterm.write('\n');
-        }
-        xterm.write(key);
-      });
-    },
-    [minimized],
-  );
+  // function handleLink(e, uri) {
+  //   window.open(uri, '_blank');
+  // }
 
-  function initXTerm() {
-    xterm.open(containerEl.current);
-    xterm.write(logs);
-  }
+  // function fit() {
+  //   xterm.element.style.display = 'none';
+  //   setTimeout(() => {
+  //     xterm.fit();
+  //     xterm.element.style.display = '';
+  //     xterm.refresh(0, xterm.rows - 1);
+  //   });
+  // }
 
-  function handleLink(e, uri) {
-    window.open(uri, '_blank');
-  }
+  // function minimize() {
+  //   setMinimized(true);
+  // }
 
-  function fit() {
-    xterm.element.style.display = 'none';
-    setTimeout(() => {
-      xterm.fit();
-      xterm.element.style.display = '';
-      xterm.refresh(0, xterm.rows - 1);
-    });
-  }
-
-  function minimize() {
-    setMinimized(true);
-  }
-
-  function maximize() {
-    setMinimized(false);
-  }
+  // function maximize() {
+  //   setMinimized(false);
+  // }
 
   return (
     <div className={`${styles.normal} ${minimized ? styles.minimize : ''}`}>
@@ -58,6 +53,13 @@ export default props => {
       {/*  <button onClick={minimize}>minimize</button> */}
       {/*  <button onClick={maximize}>maximize</button> */}
       {/* </div> */}
+      <ul>
+        {logs.map(log => (
+          <li>
+            [{log.type}]-[{log.date}]: {log.message}
+          </li>
+        ))}
+      </ul>
       <div className={styles.main} ref={containerEl} />
     </div>
   );
