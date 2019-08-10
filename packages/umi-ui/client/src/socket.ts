@@ -1,11 +1,11 @@
-import { Terminal } from 'xterm';
+// import { Terminal } from 'xterm';
 import { IUi } from 'umi-types';
-import * as fit from 'xterm/dist/addons/fit/fit';
-import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
-import 'xterm/dist/xterm.css';
+// import * as fit from 'xterm/dist/addons/fit/fit';
+// import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
+// import 'xterm/dist/xterm.css';
 
-Terminal.applyAddon(fit);
-Terminal.applyAddon(webLinks);
+// Terminal.applyAddon(fit);
+// Terminal.applyAddon(webLinks);
 
 const defaultTheme = {
   foreground: '#2c3e50',
@@ -39,11 +39,11 @@ const darkTheme = {
   magenta: '#e83030',
   brightMagenta: '#e83030',
 };
-const xterm = new Terminal({
-  theme: darkTheme,
-  rows: 10,
-});
-window.xterm = xterm;
+// const xterm = new Terminal({
+//   theme: darkTheme,
+//   rows: 10,
+// });
+// window.xterm = xterm;
 
 let sock;
 let retries = 0;
