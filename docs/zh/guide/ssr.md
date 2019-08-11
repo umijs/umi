@@ -1,3 +1,7 @@
+---
+sidebarDepth: 3
+---
+
 # 服务端渲染（SSR）
 
 <Badge text="Support in 2.8.0+"/>
@@ -55,6 +59,14 @@ SSR：
 - **更友好的 SEO**：爬虫可以直接抓取渲染之后的页面，CSR 首次返回的 HTML 文档中，是空节点（root），不包含内容。而 SSR 返回渲染之后的 HTML 片段，内容完整，所以能更好地被爬虫分析与索引。
 - **更快的首屏加载速度**：无需等待 JavaScript 完成下载且执行才显示内容，更快速地看到完整渲染的页面。有更好的用户体验。
 - 需要服务端支持：Umijs 主要关注是应用 **UI 层渲染**，完成 SSR 需要服务端（例如：Node.js）支持。
+
+### Umi SSR 特性
+
+- [x] 支持 CSS Modules
+- [x] 支持 TypeScript
+- [x] 支持本地开发 HMR
+- [x] 支持 dva
+- [ ] 支持 Serverless
 
 ## 使用
 

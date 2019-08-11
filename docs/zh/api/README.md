@@ -287,3 +287,12 @@ const App = dynamic({
 ### umi/babel
 
 让用户可基于 umi 的 babel 配置进行扩展。
+
+
+## 服务器端渲染
+
+### umi-server
+
+```bash
+$ npm install umi-server -S
+```
