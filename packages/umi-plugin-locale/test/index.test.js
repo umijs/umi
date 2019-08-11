@@ -38,7 +38,7 @@ describe('test plugin', () => {
 
     const ret = readFileSync(wrapperFile, 'utf-8');
 
-    expect(ret).toEqual(expect.stringContaining('<ConfigProvider'));
+    expect(ret).toEqual(expect.stringContaining('<AntdProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('antd/lib/locale-provider/en_US'));
