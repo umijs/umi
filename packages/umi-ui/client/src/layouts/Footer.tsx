@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Drawer, Icon } from 'antd';
 import cls from 'classnames';
 import Terminal from '@/components/Terminal';
+import Logs from '@/components/Logs';
 import { getHistory, listenMessage } from '@/services/logs';
 
 import styles from './Footer.less';
@@ -68,7 +69,12 @@ const Footer: React.SFC<LogsProps> = props => {
         height={300}
         onClose={() => hideLogPanel()}
       >
-        <Terminal logs={logs} />
+        <Logs
+          logs={logs}
+          style={{
+            height: 225,
+          }}
+        />
       </Drawer>
     </div>
   );
