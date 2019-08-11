@@ -5,12 +5,13 @@ import { IUi } from 'umi-types';
 import Context from './Context';
 import Footer from './Footer';
 import styles from './Layout.less';
-import { PROJECT_STATUS, IProjectStatus, LOCALES } from '@/enums';
+import { PROJECT_STATUS, IProjectStatus, LOCALES, THEME } from '@/enums';
 
 interface ILayoutProps {}
 
 interface ILayoutState {
   logVisible: boolean;
+  theme: IUi.ITheme;
 }
 
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
@@ -18,8 +19,10 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     super(props);
     this.state = {
       logVisible: false,
+      theme: 'dark',
     };
   }
+
   componentDidMount() {
     if (window.g_uiEventEmitter) {
       window.g_uiEventEmitter.on('SHOW_LOG', () => {
@@ -34,34 +37,48 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       });
     }
   }
+
   componentWillUnmount() {
     if (window.g_uiEventEmitter) {
       window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
       window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
     }
   }
+
+  setTheme = (theme: IUi.ITheme) => {
+    if (Object.keys(THEME).includes(theme)) {
+      this.setState({
+        theme,
+      });
+    }
+  };
+
   showLogPanel = () => {
     this.setState({
       logVisible: true,
     });
   };
+
   hideLogPanel = () => {
     this.setState({
       logVisible: false,
     });
   };
+
   render() {
     const locale = getLocale();
-    const { logVisible } = this.state;
+    const { logVisible, theme } = this.state;
     window.g_uiContext = Context;
 
     return (
       <Context.Provider
         value={{
           locale,
+          theme,
           formatMessage,
           showLogPanel: this.showLogPanel,
           hideLogPanel: this.hideLogPanel,
+          setTheme: this.setTheme,
           setLocale,
           FormattedMessage,
         }}

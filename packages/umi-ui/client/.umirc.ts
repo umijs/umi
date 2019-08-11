@@ -9,6 +9,7 @@ const config: IConfig = {
     'react-dom': 'window.ReactDOM',
     antd: 'window.antd',
     xterm: 'window.Terminal',
+    'xterm/lib/addons/fit/fit': 'window.fit',
   },
   theme: './src/styles/theme.js',
   routes: [
@@ -56,6 +57,10 @@ const config: IConfig = {
             rel: 'stylesheet',
             href: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.0/dist/antd.min.css',
           },
+          {
+            rel: 'stylesheet',
+            href: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.css',
+          },
         ],
         headScripts: [
           {
@@ -72,7 +77,8 @@ const config: IConfig = {
             src: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.0/dist/antd.min.js',
           },
           { src: 'https://gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
-          { src: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.0/dist/xterm.js' },
+          { src: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },
+          { src: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/addons/fit/fit.js' },
         ],
       },
     ],

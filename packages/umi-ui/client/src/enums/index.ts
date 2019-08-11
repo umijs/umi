@@ -1,3 +1,8 @@
+export enum THEME {
+  'dark' = 'dark',
+  'light' = 'light',
+}
+
 export enum LOCALES {
   'zh-CN' = '中文',
   'en-US' = 'English',

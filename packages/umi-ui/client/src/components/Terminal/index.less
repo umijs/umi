@@ -1,10 +1,15 @@
 .normal {
-  height: 246px;
+  height: 246px - @ui-status-bar-height;
   overflow: hidden;
   ul {
     height: 100%;
     overflow: auto;
   }
+}
+
+.terminal {
+  padding: 0 24px;
+  height: 100%;
 }
 
 .header {

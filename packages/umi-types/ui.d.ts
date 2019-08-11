@@ -9,13 +9,21 @@ declare namespace IUI {
     'en-US' = 'English',
   }
 
+  export enum THEME {
+    'dark' = 'dark',
+    'light' = 'light',
+  }
+
   type ILang = keyof typeof LOCALES;
+  type ITheme = keyof typeof THEME;
 
   interface IContext {
-    locale?: ILang;
+    theme: ITheme;
+    locale: ILang;
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
     setLocale: typeof setLocale;
+    setTheme: (theme: ITheme) => void;
     showLogPanel: () => void;
     hideLogPanel: () => void;
   }

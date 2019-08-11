@@ -5,7 +5,8 @@
     "lodash": "^4.17.15",
     "nanoid": "^2.0.3",
     "react-resize-observer": "^1.1.1",
-    "xterm": "^3.14.4"
+    "xterm": "^3.14.4",
+    "xterm-addon-web-links": "^0.1.0"
   },
   "private": true,
   "devDependencies": {
