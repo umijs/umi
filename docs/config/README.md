@@ -528,6 +528,10 @@ const config = {
 
 The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
 
+### generateCssModulesTypings
+
+Enable generate .d.ts fils for css/less/sass file when use css modules with typescript.
+
 ### copy
 
 Define a list of files that need to be copied simply. The format is an array. The format of the item refers to the configuration of [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin).
