@@ -30,6 +30,7 @@ import 'moment/locale/{{momentLocale}}';
 {{/localeList}}
 
 const baseNavigator = {{{baseNavigator}}};
+const baseSeparator = {{{baseSeparator}}};
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
@@ -88,7 +89,9 @@ class LocaleWrapper extends React.Component{
     } else {
       appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
     }
+    appLocale.locale = typeof appLocale.locale === 'string' ? appLocale.locale.split(baseSeparator).join(baseSeparator) : '';
     window.g_lang = appLocale.locale;
+    window.g_langSeparator = baseSeparator || '-';
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
