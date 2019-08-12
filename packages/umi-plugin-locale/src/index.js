@@ -25,7 +25,7 @@ function getMomentLocale(lang, country) {
 
 // export for test
 export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
-  const localeFileMath = /^([a-z]{2})-([A-Z]{2})\.(js|ts)$/;
+  const localeFileMath = /^([a-z]{2})-?([A-Z]{2})?\.(js|ts)$/;
   const localeFolder = singular ? 'locale' : 'locales';
   const localeFiles = globby
     .sync('*.{ts,js}', {
@@ -42,9 +42,12 @@ export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
     .filter(p => localeFileMath.test(basename(p)))
     .map(fullname => {
       const fileName = basename(fullname);
-      const fileInfo = localeFileMath.exec(fileName);
+      const fileInfo = localeFileMath
+        .exec(fileName)
+        .slice(1, 3)
+        .filter(Boolean);
       return {
-        name: `${fileInfo[1]}-${fileInfo[2]}`,
+        name: fileInfo.join('-'),
         path: fullname,
       };
     });
@@ -54,9 +57,9 @@ export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
     return {
       lang: fileInfo[0],
       name,
-      country: fileInfo[1],
+      country: fileInfo[1] || fileInfo[0].toUpperCase(),
       paths: groups[name].map(item => winPath(item.path)),
-      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1]),
+      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1] || ''),
     };
   });
 }
