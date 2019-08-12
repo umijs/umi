@@ -19,17 +19,11 @@ if (!window.g_uiEventEmitter) {
 // PluginAPI
 class PluginAPI {
   public service: IUi.IService;
-  /** lodash */
-  readonly _: typeof lodash;
-  /** react component context */
+  public _: IUi.ILodash;
   callRemote: IUi.ICallRemove;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
-  notify: IUi.INotify;
-  showLogPanel: () => void;
-  hideLogPanel: () => void;
-  intl: (key: string) => string;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -37,52 +31,53 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-
-    this.intl = (key: string | undefined) => {
-      const locale = window.g_lang;
-      if (typeof key !== 'string') return '';
-      if (key in (localeMessages[locale] || {})) {
-        return formatMessage({
-          id: key,
-        });
-      }
-      return key;
-    };
-
-    this.notify = async payload => {
-      const { title, message, subtitle, ...restPayload } = payload;
-
-      // need intl text
-      const intlParams = {
-        title: this.intl(title),
-        message: this.intl(message),
-        subtitle: this.intl(subtitle),
-      };
-
-      try {
-        await callRemote({
-          type: '@@app/notify',
-          payload: {
-            ...intlParams,
-            ...restPayload,
-          },
-        });
-      } catch (e) {
-        console.error('notify error', e);
-      }
-    };
-    this.showLogPanel = () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.emit('SHOW_LOG');
-      }
-    };
-    this.hideLogPanel = () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.emit('HIDE_LOG');
-      }
-    };
     this.TwoColumnPanel = TwoColumnPanel;
   }
+
+  showLogPanel: IUi.IShowLogPanel = () => {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.emit('SHOW_LOG');
+    }
+  };
+  hideLogPanel: IUi.IHideLogPanel = () => {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.emit('HIDE_LOG');
+    }
+  };
+
+  intl: IUi.IIntl = key => {
+    const locale = window.g_lang;
+    if (typeof key !== 'string') return '';
+    if (key in (localeMessages[locale] || {})) {
+      return formatMessage({
+        id: key,
+      });
+    }
+    return key;
+  };
+
+  notify: IUi.INotify = async payload => {
+    const { title, message, subtitle, ...restPayload } = payload;
+
+    // need intl text
+    const intlParams = {
+      title: this.intl(title),
+      message: this.intl(message),
+      subtitle: this.intl(subtitle),
+    };
+
+    try {
+      await callRemote({
+        type: '@@app/notify',
+        payload: {
+          ...intlParams,
+          ...restPayload,
+        },
+      });
+    } catch (e) {
+      console.error('notify error', e);
+    }
+  };
 
   getContext() {
     return window.g_uiContext;
@@ -113,11 +108,11 @@ class PluginAPI {
     );
   }
 
-  public addPanel(panel: IUi.IPanel) {
+  addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
-  }
+  };
 
-  public addLocales(locale: IUi.ILocale) {
+  addLocales: IUi.IAddLocales = locale => {
     const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
@@ -128,7 +123,7 @@ class PluginAPI {
     }
 
     this.service.locales.push(locale);
-  }
+  };
 }
 
 // Service for Plugin API
