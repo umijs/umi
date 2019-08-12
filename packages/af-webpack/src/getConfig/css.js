@@ -145,6 +145,7 @@ export default function(webpackConfig, opts) {
           return filePath.indexOf(exclude) > -1;
         }
       });
+      exclude = exclude.toString();
       const ext = extname(exclude).toLowerCase();
       applyCSSRules(config, {
         less: ext === '.less',
