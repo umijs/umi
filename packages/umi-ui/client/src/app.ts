@@ -1,10 +1,13 @@
 import lodash from 'lodash';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { ReactNode } from 'react';
 import EventEmitter from 'events';
 import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
+
+let localeMessages = {};
 
 // register event
 if (!window.g_uiEventEmitter) {
@@ -23,8 +26,10 @@ class PluginAPI {
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
+  notify: IUi.INotify;
   showLogPanel: () => void;
   hideLogPanel: () => void;
+  intl: (key: string) => string;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -32,6 +37,36 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
+
+    this.intl = (key: string | undefined) => {
+      const locale = window.g_lang;
+      if (typeof key !== 'string') return '';
+      if (key in (localeMessages[locale] || {})) {
+        return formatMessage({
+          id: key,
+        });
+      }
+      return key;
+    };
+
+    this.notify = async payload => {
+      const title = this.intl(payload.title);
+      const message = this.intl(payload.message);
+      const subtitle = this.intl(payload.subtitle);
+      try {
+        await callRemote({
+          type: '@@app/notify',
+          payload: {
+            title,
+            subtitle,
+            message,
+            ...lodash.omit(payload, ['title', 'message', 'subtitle']),
+          },
+        });
+      } catch (e) {
+        console.error('notify error', e);
+      }
+    };
     this.showLogPanel = () => {
       if (window.g_uiEventEmitter) {
         window.g_uiEventEmitter.emit('SHOW_LOG');
@@ -193,7 +228,7 @@ export function patchRoutes(routes: IRoute[]) {
 
 export const locale = {
   messages: () => {
-    const msg = service.locales.reduce((curr, acc) => {
+    localeMessages = service.locales.reduce((curr, acc) => {
       const localeGroup = Object.entries(acc);
       localeGroup.forEach(group => {
         const [lang, message] = group;
@@ -201,7 +236,7 @@ export const locale = {
       });
       return curr;
     }, {});
-    console.log('all message locales', msg);
-    return msg;
+    console.log('all message locales', localeMessages);
+    return localeMessages;
   },
 };

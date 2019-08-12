@@ -1,5 +1,6 @@
 import assert from 'assert';
 import chalk from 'chalk';
+import * as path from 'path';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
 import { join } from 'path';
@@ -399,6 +400,29 @@ export default class UmiUI {
         success({
           data: this.logs,
         });
+        break;
+      case '@@app/notify':
+        try {
+          const notifier = require('node-notifier');
+          const buildInImages = {
+            error: path.resolve(__dirname, 'assets', 'error.png'),
+            info: path.resolve(__dirname, 'assets', 'info.png'),
+            success: path.resolve(__dirname, 'assets', 'success.png'),
+            warning: path.resolve(__dirname, 'assets', 'warning.png'),
+          };
+          const { type, ...restPayload } = payload;
+          const noticeConfig = {
+            ...restPayload,
+            contentImage: path.resolve(__dirname, 'assets', 'umi.png'),
+            icon: buildInImages[type] || buildInImages.info,
+            sound: true,
+          };
+          notifier.notify(noticeConfig);
+          success();
+        } catch (e) {
+          console.error('eeee', e);
+          failure(e);
+        }
         break;
       default:
         log('error', chalk.red(`Unhandled message type ${type}`));

@@ -1,4 +1,5 @@
 import * as lodash from 'lodash';
+
 import { Context, ReactNode } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
@@ -50,17 +51,36 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, void>;
   type ISend = IApiActionFactory<{}, void>;
 
+  interface INotifyParams {
+    title: string;
+    message: string;
+    subtitle?: string;
+    /** URL to open on click */
+    open?: string;
+    /**
+     * The amount of seconds before the notification closes.
+     * Takes precedence over wait if both are defined.
+     */
+    timeout?: number;
+    /** notify type, default info */
+    type?: 'error' | 'info' | 'warning' | 'success';
+  }
+  type INotify = (params: INotifyParams) => Promise<void>;
+
   class IApiClass {
     constructor(service: IService);
     service: IService;
     /** lodash */
     readonly _: typeof lodash;
 
+    /** intl */
+    intl(key: string): string;
     /** add plugin Panel */
     addPanel(panel: IPanel): void;
     addLocales(locale: ILocale): void;
     /** react component context */
     getContext(): Context<IContext>;
+    notify: INotify;
     callRemote: ICallRemove;
     TwoColumnPanel: ReactNode;
     listenRemote: IListenRemote;
