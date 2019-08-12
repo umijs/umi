@@ -10,7 +10,7 @@ declare global {
     g_lang: IUi.ILang;
     g_uiPlugins?: any[];
     g_uiContext: Context<IUi.IContext>;
-    g_uiLocales: IUi.ILocale;
+    g_uiLocales: Partial<IUi.ILocale>;
     g_service: IUi.IService;
     g_uiEventEmitter: EventEmitter;
   }
