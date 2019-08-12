@@ -50,17 +50,21 @@ class PluginAPI {
     };
 
     this.notify = async payload => {
-      const title = this.intl(payload.title);
-      const message = this.intl(payload.message);
-      const subtitle = this.intl(payload.subtitle);
+      const { title, message, subtitle, ...restPayload } = payload;
+
+      // need intl text
+      const intlParams = {
+        title: this.intl(title),
+        message: this.intl(message),
+        subtitle: this.intl(subtitle),
+      };
+
       try {
         await callRemote({
           type: '@@app/notify',
           payload: {
-            title,
-            subtitle,
-            message,
-            ...lodash.omit(payload, ['title', 'message', 'subtitle']),
+            ...intlParams,
+            ...restPayload,
           },
         });
       } catch (e) {
