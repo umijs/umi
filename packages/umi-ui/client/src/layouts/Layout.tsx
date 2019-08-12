@@ -1,11 +1,9 @@
 import React from 'react';
-import { Icon } from 'antd';
 import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Context from './Context';
 import Footer from './Footer';
-import styles from './Layout.less';
-import { PROJECT_STATUS, IProjectStatus, LOCALES, THEME } from '@/enums';
+import { THEME } from '@/enums';
 
 interface ILayoutProps {}
 

@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import EventEmitter from 'events';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
@@ -52,8 +54,7 @@ export async function render(oldRender) {
     return;
   }
 
-  // Project Manager
-  else if (history.location.pathname.startsWith('/project/')) {
+  if (history.location.pathname.startsWith('/project/')) {
     console.log("It's Project Manager");
   }
 
@@ -65,15 +66,25 @@ export async function render(oldRender) {
   // Project View
   else {
     const { data } = await callRemote({ type: '@@project/list' });
+    const props = {
+      data,
+    };
     if (data.currentProject) {
-      document.getElementById('root').innerHTML = '正在打开项目...';
       try {
         await callRemote({
           type: '@@project/open',
           payload: { key: data.currentProject },
         });
       } catch (e) {
-        document.getElementById('root').innerHTML = `打开项目失败...\n后端消息：${e.message}`;
+        props.error = e;
+      }
+
+      ReactDOM.render(
+        React.createElement(require('./pages/loading').default, props),
+        document.getElementById('root'),
+      );
+
+      if (props.error) {
         return;
       }
 
