@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Input, Spin } from 'antd';
+import { Input, Spin, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 import zhCN from './locales/zh-CN';
@@ -14,13 +14,15 @@ function nameToPath(name) {
 }
 
 export default (api: IUiApi) => {
-  const { callRemote, getContext } = api;
+  const { callRemote, getContext, intl } = api;
+
+  console.log('intl', intl('org.umi.ui.blocks.panel'));
 
   const BlocksViewer: React.SFC<{}> = () => {
     const [blockAdding, setBlockAdding] = useState(null);
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { locale, formatMessage } = useContext(getContext());
+    // const { locale, formatMessage } = useContext(getContext());
 
     useEffect(() => {
       (async () => {
@@ -74,10 +76,19 @@ export default (api: IUiApi) => {
       })();
     }
 
+    const handleNotify = async () => {
+      await api.notify({
+        title: 'org.umi.ui.blocks.notify.title',
+        message: 'org.umi.ui.blocks.notify.message',
+        type: 'success',
+      });
+    };
+
     return (
       <div className={styles.normal}>
+        <Button onClick={handleNotify}>全局通知栏</Button>
         <Search
-          placeholder={formatMessage({ id: 'org.umi.ui.blocks.content.search_block' })}
+          placeholder={intl('org.umi.ui.blocks.content.search_block')}
           onSearch={value => console.log(value)}
         />
         <div>{loading ? 'Fetching blocks...' : ''}</div>

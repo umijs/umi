@@ -1,10 +1,13 @@
 import lodash from 'lodash';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { ReactNode } from 'react';
 import EventEmitter from 'events';
 import { IUi, IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
+
+let localeMessages = {};
 
 // register event
 if (!window.g_uiEventEmitter) {
@@ -16,15 +19,11 @@ if (!window.g_uiEventEmitter) {
 // PluginAPI
 class PluginAPI {
   public service: IUi.IService;
-  /** lodash */
-  readonly _: typeof lodash;
-  /** react component context */
+  public _: IUi.ILodash;
   callRemote: IUi.ICallRemove;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
-  showLogPanel: () => void;
-  hideLogPanel: () => void;
 
   constructor(service: IUi.IService) {
     this.service = service;
@@ -32,18 +31,53 @@ class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.showLogPanel = () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.emit('SHOW_LOG');
-      }
-    };
-    this.hideLogPanel = () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.emit('HIDE_LOG');
-      }
-    };
     this.TwoColumnPanel = TwoColumnPanel;
   }
+
+  showLogPanel: IUi.IShowLogPanel = () => {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.emit('SHOW_LOG');
+    }
+  };
+  hideLogPanel: IUi.IHideLogPanel = () => {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.emit('HIDE_LOG');
+    }
+  };
+
+  intl: IUi.IIntl = key => {
+    const locale = window.g_lang;
+    if (typeof key !== 'string') return '';
+    if (key in (localeMessages[locale] || {})) {
+      return formatMessage({
+        id: key,
+      });
+    }
+    return key;
+  };
+
+  notify: IUi.INotify = async payload => {
+    const { title, message, subtitle, ...restPayload } = payload;
+
+    // need intl text
+    const intlParams = {
+      title: this.intl(title),
+      message: this.intl(message),
+      subtitle: this.intl(subtitle),
+    };
+
+    try {
+      await callRemote({
+        type: '@@app/notify',
+        payload: {
+          ...intlParams,
+          ...restPayload,
+        },
+      });
+    } catch (e) {
+      console.error('notify error', e);
+    }
+  };
 
   getContext() {
     return window.g_uiContext;
@@ -74,11 +108,11 @@ class PluginAPI {
     );
   }
 
-  public addPanel(panel: IUi.IPanel) {
+  addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
-  }
+  };
 
-  public addLocales(locale: IUi.ILocale) {
+  addLocales: IUi.IAddLocales = locale => {
     const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
@@ -89,7 +123,7 @@ class PluginAPI {
     }
 
     this.service.locales.push(locale);
-  }
+  };
 }
 
 // Service for Plugin API
@@ -193,7 +227,7 @@ export function patchRoutes(routes: IRoute[]) {
 
 export const locale = {
   messages: () => {
-    const msg = service.locales.reduce((curr, acc) => {
+    localeMessages = service.locales.reduce((curr, acc) => {
       const localeGroup = Object.entries(acc);
       localeGroup.forEach(group => {
         const [lang, message] = group;
@@ -201,7 +235,7 @@ export const locale = {
       });
       return curr;
     }, {});
-    console.log('all message locales', msg);
-    return msg;
+    console.log('all message locales', localeMessages);
+    return localeMessages;
   },
 };

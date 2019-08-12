@@ -7,6 +7,7 @@ import zhCN from '../locales/zh-CN';
 declare global {
   interface Window {
     xterm: any;
+    g_lang: IUi.ILang;
     g_uiPlugins?: any[];
     g_uiContext: Context<IUi.IContext>;
     g_uiLocales: IUi.ILocale;

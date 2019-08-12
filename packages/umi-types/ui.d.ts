@@ -1,4 +1,5 @@
-import * as lodash from 'lodash';
+import lodash from 'lodash';
+
 import { Context, ReactNode } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
@@ -49,22 +50,53 @@ declare namespace IUI {
   type ICallRemove = IApiActionFactory;
   type IListenRemote = IApiActionFactory<{}, void>;
   type ISend = IApiActionFactory<{}, void>;
+  type IIntl = (key: string | undefined) => string;
+
+  interface INotifyParams {
+    title: string;
+    message: string;
+    subtitle?: string;
+    /** URL to open on click */
+    open?: string;
+    /**
+     * The amount of seconds before the notification closes.
+     * Takes precedence over wait if both are defined.
+     */
+    timeout?: number;
+    /** notify type, default info */
+    type?: 'error' | 'info' | 'warning' | 'success';
+  }
+  type INotify = (params: INotifyParams) => Promise<void>;
+  type IAddPanel = (panel: IPanel) => void;
+  type IAddLocales = (locale: ILocale) => void;
+  type IShowLogPanel = () => void;
+  type IHideLogPanel = () => void;
+  type ILodash = typeof lodash;
 
   class IApiClass {
     constructor(service: IService);
     service: IService;
     /** lodash */
-    readonly _: typeof lodash;
+    readonly _: ILodash;
 
+    /** intl */
+    intl: IIntl;
     /** add plugin Panel */
-    addPanel(panel: IPanel): void;
-    addLocales(locale: ILocale): void;
+    addPanel: IAddPanel;
+    /** add plugin locales { zh-CN: {}, en-US: {} } */
+    addLocales: IAddLocales;
     /** react component context */
     getContext(): Context<IContext>;
+    /** system notify */
+    notify: INotify;
     callRemote: ICallRemove;
+    /** React Two Column Panel Layout */
     TwoColumnPanel: ReactNode;
     listenRemote: IListenRemote;
-    showLogPanel: () => void;
+    /** open footer log panel */
+    showLogPanel: IShowLogPanel;
+    /** close footer log panel */
+    hideLogPanel: IHideLogPanel;
     send: ISend;
   }
 

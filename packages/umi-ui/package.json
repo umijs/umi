@@ -7,6 +7,7 @@
     "src"
   ],
   "devDependencies": {
+    "@types/node-notifier": "^5.4.0",
     "umi-types": "0.3.11"
   },
   "repository": {
@@ -29,6 +30,7 @@
     "got": "9.6.0",
     "lodash": "^4.17.15",
     "mkdirp": "0.5.1",
+    "node-notifier": "^5.4.1",
     "portfinder": "1.0.21",
     "react-dev-utils": "9.0.1",
     "resolve-from": "5.0.0",
