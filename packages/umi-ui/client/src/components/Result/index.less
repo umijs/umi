@@ -1,0 +1,55 @@
+.result {
+  margin: 0 auto;
+  text-align: center;
+  @media @smallMobile {
+    width: 100%;
+  }
+
+  .icon {
+    margin-bottom: 24px;
+    font-size: 72px;
+    line-height: 72px;
+
+    & > .success {
+      color: @success-color;
+    }
+
+    & > .error {
+      color: @error-color;
+    }
+  }
+
+  .title {
+    margin-bottom: 16px;
+    color: @heading-color;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .description {
+    margin-bottom: 24px;
+    color: @text-color-secondary;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .extra {
+    padding: 24px 40px;
+    text-align: left;
+    background: #fafafa;
+    border-radius: @border-radius-base;
+
+    @media @smallMobile {
+      padding: 18px 20px;
+    }
+  }
+
+  .actions {
+    margin-top: 32px;
+
+    button:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}
