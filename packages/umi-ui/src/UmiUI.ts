@@ -420,7 +420,7 @@ export default class UmiUI {
           notifier.notify(noticeConfig);
           success();
         } catch (e) {
-          console.error('eeee', e);
+          console.error(chalk.red(`Error: Notify for ${e.message} FAILED`));
           failure(e);
         }
         break;
