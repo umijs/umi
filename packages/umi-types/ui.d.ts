@@ -90,10 +90,12 @@ declare namespace IUI {
     /** system notify */
     notify: INotify;
     callRemote: ICallRemove;
+    /** React Two Column Panel Layout */
     TwoColumnPanel: ReactNode;
     listenRemote: IListenRemote;
-    /** open */
+    /** open footer log panel */
     showLogPanel: IShowLogPanel;
+    /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     send: ISend;
   }
