@@ -265,12 +265,17 @@ When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also gen
 ```js
 export default {
   ssr: {
-    // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
-    // disable ssr external, build all modules in `umi.server.js`
-    disableExternal: false,
+    // not external library, https://github.com/liady/webpack-node-externals#optionswhitelist
+    externalWhitelist?: [];
+    // webpack-node-externals config, exclude whiteList
+    nodeExternalsOpts?: {};
     // client chunkMaps manifest, default: ssr-client-mainifest.json
-    manifestFileName: 'ssr-client-mainifest.json',
+    manifestFileName?: 'ssr-client-mainifest.json';
+    // disable ssr external, build all modules in `umi.server.js`
+    disableExternal?: false;
+    // disable ssr external whiteList module
+    // you can use this for `react-helmet`, `react-document-title`
+    disableExternalWhiteList?: string[] | object;
   },
 };
 ```
