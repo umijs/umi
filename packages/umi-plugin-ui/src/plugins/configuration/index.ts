@@ -1,24 +1,50 @@
 import { IApi } from 'umi-types';
 
+const KEYS = ['name', 'default', 'group', 'type', 'choices', 'description', 'value'];
+
+export function formatConfigs(configs) {
+  return configs.reduce((memo, config) => {
+    (config.configs || [config]).forEach(config => {
+      if (config.type) {
+        memo.push(
+          Object.keys(config).reduce((memo, key) => {
+            if (KEYS.includes(key)) {
+              memo[key] = config[key];
+            }
+            return memo;
+          }, {}),
+        );
+      }
+    });
+    return memo;
+  }, []);
+}
+
+export function useConfigKey(config, key) {
+  const keys = key.split('.');
+  let i = 0;
+  while (keys[i] in config) {
+    const newConfig = config[keys[i]];
+    if (i === keys.length - 1) {
+      return [true, newConfig];
+    }
+    config = newConfig;
+    i += 1;
+  }
+  return [false];
+}
+
 export default function(api: IApi) {
   function getConfig() {
     const { userConfig } = (api as any).service;
     const config = userConfig.getConfig({ force: true });
-    return userConfig.plugins
-      .filter(p => p.type)
-      .map(p => {
-        if (p.name in config) {
-          p.value = config[p.name];
-        }
-        return Object.keys(p).reduce((memo, key) => {
-          if (
-            ['name', 'default', 'group', 'type', 'choices', 'description', 'value'].includes(key)
-          ) {
-            memo[key] = p[key];
-          }
-          return memo;
-        }, {});
-      });
+    return formatConfigs(userConfig.plugins).map(p => {
+      const [haveKey, value] = useConfigKey(config, p.name);
+      if (haveKey) {
+        p.value = value;
+      }
+      return p;
+    });
   }
 
   api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));

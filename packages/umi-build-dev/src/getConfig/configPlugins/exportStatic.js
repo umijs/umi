@@ -13,5 +13,19 @@ export default function(api) {
     onChange() {
       api.service.restart(/* why */ 'Config exportStatic Changed');
     },
+    configs: [
+      {
+        group: 'basic',
+        name: 'exportStatic.htmlSuffix',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        group: 'basic',
+        name: 'exportStatic.dynamicRoot',
+        type: 'boolean',
+        default: false,
+      },
+    ],
   };
 }

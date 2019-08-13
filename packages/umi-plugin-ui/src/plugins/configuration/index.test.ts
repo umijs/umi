@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
 import Service from '../../../../umi-build-dev/src/Service';
+import { formatConfigs, useConfigKey } from './index';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -60,4 +61,87 @@ export default {
       },
     });
   });
+});
+
+test('useConfigKey', () => {
+  expect(
+    useConfigKey(
+      {
+        a: 'b',
+      },
+      'a',
+    ),
+  ).toEqual([true, 'b']);
+});
+
+test('useConfigKey a.b.c', () => {
+  expect(
+    useConfigKey(
+      {
+        a: { b: { c: 'd' } },
+      },
+      'a.b.c',
+    ),
+  ).toEqual([true, 'd']);
+});
+
+test('useConfigKey a.b', () => {
+  expect(
+    useConfigKey(
+      {
+        a: { b: { c: 'd' } },
+      },
+      'a.b',
+    ),
+  ).toEqual([true, { c: 'd' }]);
+});
+
+test('useConfigKey not found a.b.d', () => {
+  expect(
+    useConfigKey(
+      {
+        a: { b: { c: 'd' } },
+      },
+      'a.b.d',
+    ),
+  ).toEqual([false]);
+});
+
+test('useConfigKey not found', () => {
+  expect(
+    useConfigKey(
+      {
+        a: 'b',
+      },
+      'b',
+    ),
+  ).toEqual([false]);
+});
+
+test('formatConfigs', () => {
+  expect(formatConfigs([{ name: 'a' }])).toEqual([]);
+});
+
+test('formatConfigs match with type', () => {
+  expect(formatConfigs([{ name: 'a', type: 'string' }])).toEqual([{ name: 'a', type: 'string' }]);
+});
+
+test('formatConfigs match filter props', () => {
+  expect(formatConfigs([{ name: 'a', type: 'string', foo: 'bar' }])).toEqual([
+    { name: 'a', type: 'string' },
+  ]);
+});
+
+test('formatConfigs match with type (multiple)', () => {
+  expect(
+    formatConfigs([{ name: 'a', type: 'foo' }, { name: 'b', type: 'bar' }, { name: 'c' }]),
+  ).toEqual([{ name: 'a', type: 'foo' }, { name: 'b', type: 'bar' }]);
+});
+
+test('formatConfigs child configs', () => {
+  expect(
+    formatConfigs([
+      { name: 'a', configs: [{ name: 'a.b', type: 'foo' }, { name: 'a.c', type: 'bar' }] },
+    ]),
+  ).toEqual([{ name: 'a.b', type: 'foo' }, { name: 'a.c', type: 'bar' }]);
 });
