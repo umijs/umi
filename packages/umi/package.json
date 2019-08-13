@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/core": "7.4.5",
     "@babel/runtime": "7.4.5",
-    "@types/react": "~16.8.1",
+    "@types/react": "~16.9.1",
     "@types/react-router-dom": "~4.3.4",
     "babel-preset-umi": "1.6.1",
     "debug": "4.1.1",
