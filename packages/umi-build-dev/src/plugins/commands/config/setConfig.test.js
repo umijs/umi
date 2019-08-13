@@ -298,6 +298,7 @@ export default {};
       {
         history: 'hash',
         runtimePublicPath: 'true',
+        'a.b': 'c',
       },
     ).trim(),
   ).toEqual(
@@ -305,6 +306,9 @@ export default {};
 export default {
   history: 'hash',
   runtimePublicPath: true,
+  a: {
+    b: 'c',
+  },
 };
     `.trim(),
   );
