@@ -180,10 +180,10 @@ export default () => {
 如果 `pages/index.js` 里包含：
 
 ```js
-/**
+/** #最好放在当前文件最顶上
  * title: Index Page
  * Routes:
- *   - ./src/routes/a.js
+ *   - ./src/routes/a.js#相对于项目根目录的路径
  *   - ./src/routes/b.js
  */
 ```
