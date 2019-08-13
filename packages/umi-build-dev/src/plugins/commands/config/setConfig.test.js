@@ -130,6 +130,101 @@ export default {
   );
 });
 
+test('update sub object', () => {
+  expect(
+    update(
+      `
+export default {
+  a: {
+    b: true,
+  },
+};
+      `,
+      'a.b',
+      'false',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  a: {
+    b: false,
+  },
+};
+    `.trim(),
+  );
+});
+
+test('update sub object not found', () => {
+  expect(
+    update(
+      `
+export default {
+};
+      `,
+      'a.b.c.d',
+      'false',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  a: {
+    b: {
+      c: {
+        d: false,
+      },
+    },
+  },
+};
+    `.trim(),
+  );
+});
+
+test('update sub object partly not found', () => {
+  expect(
+    update(
+      `
+export default {
+  a: {
+    foo: 'bar',
+  },
+};
+      `,
+      'a.b.c.d',
+      'false',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  a: {
+    foo: 'bar',
+    b: {
+      c: {
+        d: false,
+      },
+    },
+  },
+};
+    `.trim(),
+  );
+});
+
+test('update sub object failed when is not object expression', () => {
+  expect(() => {
+    update(
+      `
+export default {
+  a: {
+    foo: 'bar',
+    b: '',
+  },
+};
+      `,
+      'a.b.c.d',
+      'false',
+    );
+  }).toThrow(/is not object expression/);
+});
+
 test('typescript', () => {
   expect(
     update(

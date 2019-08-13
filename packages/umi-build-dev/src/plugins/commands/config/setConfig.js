@@ -16,7 +16,7 @@ export default function({ key, value, file }) {
   writeFileSync(file, `${newContent}\n`, 'utf-8');
 }
 
-function buildExpression(str) {
+function buildExpression(keys, str) {
   if (str.startsWith('{') || str.startsWith('[')) {
     // do nothing
   } else if (str === 'true' || str === 'false') {
@@ -24,7 +24,16 @@ function buildExpression(str) {
   } else {
     str = `'${str}'`;
   }
-  return template(`(${str})`)().expression;
+  let exp = template(`(${str})`)().expression;
+
+  let i = 0;
+  keys = keys.reverse();
+  while (i < keys.length) {
+    exp = t.objectExpression([t.objectProperty(t.identifier(keys[i]), exp)]);
+    i += 1;
+  }
+
+  return exp;
 }
 
 export function update(content, key, value) {
@@ -52,7 +61,7 @@ export function update(content, key, value) {
 
       assert(t.isObjectExpression(node), `config file must export default a Plain Object`);
       if (t.isObjectExpression(node)) {
-        const { properties } = node;
+        let { properties } = node;
 
         let obj = key;
         if (typeof key === 'string') {
@@ -63,20 +72,37 @@ export function update(content, key, value) {
 
         Object.keys(obj).forEach(key => {
           const value = obj[key];
-          let hasFound;
-          for (const property of properties) {
-            if (
-              t.isIdentifier(property.key, {
-                name: key,
-              })
-            ) {
-              property.value = buildExpression(value);
-              hasFound = true;
-              break;
+          const keys = key.split('.');
+          let i = 0;
+          while (i < keys.length) {
+            let hasFound;
+            for (const property of properties) {
+              if (
+                t.isIdentifier(property.key, {
+                  name: keys[i],
+                })
+              ) {
+                if (i === keys.length - 1) {
+                  property.value = buildExpression([], value);
+                } else {
+                  assert(
+                    t.isObjectExpression(property.value),
+                    `property of ${keys.slice(0, i + 1).join('.')} is not object expression`,
+                  );
+                  properties = property.value.properties;
+                }
+                hasFound = true;
+                break;
+              }
             }
-          }
-          if (!hasFound) {
-            properties.push(t.objectProperty(t.identifier(key), buildExpression(value)));
+            if (!hasFound) {
+              properties.push(
+                t.objectProperty(t.identifier(keys[i]), buildExpression(keys.slice(i + 1), value)),
+              );
+              break;
+            } else {
+              i += 1;
+            }
           }
         });
       }
