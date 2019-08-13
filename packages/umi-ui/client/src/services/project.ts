@@ -22,7 +22,7 @@ export async function setCurrentProject(payload: { key: string }) {
       payload,
     });
     router.push('/dashboard');
-    document.getElementById('root').innerHTML = '正在跳转到项目页...';
+    document.getElementById('root').innerHTML = '';
     window.location.reload();
   } catch (e) {
     message.error(e.message);
