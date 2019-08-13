@@ -268,11 +268,16 @@ export default {
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
-    // 关闭 ssr external，全量打入 umi.server.js
-    disableExternal: false,
+    externalWhitelist?: [];
+    // webpack-node-externals 配置，排除 whiteList
+    nodeExternalsOpts?: {};
     // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
+    // 关闭 ssr external，全量打入 umi.server.js
+    disableExternal: false,
+    // 关闭 ssr external 时，白名单模块将进入 externa
+    // 可用于 react-helmet, react-document-title
+    disableExternalWhiteList?: string[] | object;
   },
 };
 ```
