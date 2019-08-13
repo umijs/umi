@@ -30,7 +30,7 @@ import 'moment/locale/{{momentLocale}}';
 {{/localeList}}
 
 const baseNavigator = {{{baseNavigator}}};
-const baseSeparator = {{{baseSeparator}}};
+const baseSeparator = '{{{baseSeparator}}}';
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
