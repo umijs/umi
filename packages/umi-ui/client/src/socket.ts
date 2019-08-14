@@ -1,49 +1,4 @@
-// import { Terminal } from 'xterm';
 import { IUi } from 'umi-types';
-// import * as fit from 'xterm/dist/addons/fit/fit';
-// import * as webLinks from 'xterm/dist/addons/webLinks/webLinks';
-// import 'xterm/dist/xterm.css';
-
-// Terminal.applyAddon(fit);
-// Terminal.applyAddon(webLinks);
-
-const defaultTheme = {
-  foreground: '#2c3e50',
-  background: '#fff',
-  cursor: 'rgba(0, 0, 0, .4)',
-  selection: 'rgba(0, 0, 0, 0.3)',
-  black: '#000000',
-  red: '#e83030',
-  brightRed: '#e83030',
-  green: '#42b983',
-  brightGreen: '#42b983',
-  brightYellow: '#ea6e00',
-  yellow: '#ea6e00',
-  magenta: '#e83030',
-  brightMagenta: '#e83030',
-  cyan: '#03c2e6',
-  brightBlue: '#03c2e6',
-  brightCyan: '#03c2e6',
-  blue: '#03c2e6',
-  white: '#d0d0d0',
-  brightBlack: '#808080',
-  brightWhite: '#ffffff',
-};
-
-const darkTheme = {
-  ...defaultTheme,
-  foreground: '#fff',
-  background: '#1d2935',
-  cursor: 'rgba(255, 255, 255, .4)',
-  selection: 'rgba(255, 255, 255, 0.3)',
-  magenta: '#e83030',
-  brightMagenta: '#e83030',
-};
-// const xterm = new Terminal({
-//   theme: darkTheme,
-//   rows: 10,
-// });
-// window.xterm = xterm;
 
 let sock;
 let retries = 0;
