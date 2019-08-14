@@ -45,13 +45,10 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const getProjectStatus = (
-    item: IProjectListItem,
-  ): 'success' | 'failure' | 'progress' | 'active' => {
+  const getProjectStatus = (item: IProjectListItem): 'success' | 'failure' | 'progress' => {
     if (get(item, 'creatingProgress.success')) return 'success';
     if (get(item, 'creatingProgress.failure')) return 'failure';
     if (item.creatingProgress) return 'progress';
-    if (item.key === currentProject) return 'active';
     return 'success';
   };
 
@@ -172,7 +169,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                   <List.Item.Meta
                     title={
                       <div className={styles['project-list-item-title']}>
-                        {status === 'active' && <Badge status="success" />}
+                        {item.key === currentProject && <Badge status="success" />}
                         <a onClick={() => handleTitleClick(item)}>{item.name}</a>
                         {status === 'progress' && (
                           <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
