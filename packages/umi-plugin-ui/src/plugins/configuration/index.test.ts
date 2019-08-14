@@ -132,6 +132,24 @@ test('formatConfigs match filter props', () => {
   ]);
 });
 
+test('formatConfigs match with lang', () => {
+  expect(
+    formatConfigs(
+      [
+        {
+          name: 'a',
+          type: 'string',
+          title: {
+            'zh-CN': 'abc',
+            'en-US': 'cde',
+          },
+        },
+      ],
+      'zh-CN',
+    ),
+  ).toEqual([{ name: 'a', type: 'string', title: 'abc' }]);
+});
+
 test('formatConfigs match with type (multiple)', () => {
   expect(
     formatConfigs([{ name: 'a', type: 'foo' }, { name: 'b', type: 'bar' }, { name: 'c' }]),
