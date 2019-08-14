@@ -180,7 +180,7 @@ Example:
 If `pages/index.js` contains:
 
 ```js
-/** #you'd better add this on the top of the file
+/** you'd better add this on the top of the file
  * title: Index Page
  * Routes:
  *   - ./src/routes/a.js #it's relative to the root directory
