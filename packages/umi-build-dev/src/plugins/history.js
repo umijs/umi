@@ -22,10 +22,17 @@ export default function(api) {
           api.service.restart(/* why */ 'Config history Changed');
         },
         default: 'browser',
-        group: 'basic',
+        group: 'route',
+        title: {
+          'zh-CN': 'History 类型',
+          'en-US': 'History Type',
+        },
         type: 'list',
         choices: ['browser', 'hash', 'memory'],
-        description: 'The history type, including browser, hash and memory.',
+        description: {
+          'zh-CN': 'History 类型，可选 browser、hash 和 memory。',
+          'en-US': 'The history type, including browser, hash and memory.',
+        },
       };
     };
   });

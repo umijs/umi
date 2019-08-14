@@ -209,7 +209,7 @@ export default {
 });
 
 test('update sub object failed when is not object expression', () => {
-  expect(() => {
+  expect(
     update(
       `
 export default {
@@ -221,8 +221,21 @@ export default {
       `,
       'a.b.c.d',
       'false',
-    );
-  }).toThrow(/is not object expression/);
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  a: {
+    foo: 'bar',
+    b: {
+      c: {
+        d: false,
+      },
+    },
+  },
+};
+    `.trim(),
+  );
 });
 
 test('typescript', () => {

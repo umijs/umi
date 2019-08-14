@@ -82,13 +82,10 @@ export function update(content, key, value) {
                   name: keys[i],
                 })
               ) {
-                if (i === keys.length - 1) {
-                  property.value = buildExpression([], value);
+                if (i === keys.length - 1 || !t.isObjectExpression(property.value)) {
+                  property.value = buildExpression(keys.slice(i + 1), value);
+                  return;
                 } else {
-                  assert(
-                    t.isObjectExpression(property.value),
-                    `property of ${keys.slice(0, i + 1).join('.')} is not object expression`,
-                  );
                   properties = property.value.properties;
                 }
                 hasFound = true;

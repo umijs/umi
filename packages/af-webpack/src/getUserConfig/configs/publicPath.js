@@ -8,7 +8,10 @@ export default function() {
     },
     default: '/',
     type: 'string',
-    group: 'basic',
-    description: 'The publicPath of your assets.',
+    group: 'deploy',
+    description: {
+      'zh-CN': '指定 webpack 的 publicPath 配置，指向发布后的静态资源位置，dev 时无效。',
+      'en-US': 'The publicPath of your assets.',
+    },
   };
 }

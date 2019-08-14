@@ -10,6 +10,14 @@ const groupMap = {
     'zh-CN': '基础配置',
     'en-US': 'Basic Configuration',
   },
+  route: {
+    'zh-CN': '路由配置',
+    'en-US': 'Route Configuration',
+  },
+  deploy: {
+    'zh-CN': '部署配置',
+    'en-US': 'Deploy Configuration',
+  },
 };
 
 function getTextByLang(text, lang) {
@@ -56,7 +64,7 @@ export function formatConfigs(configs, lang = 'en-US') {
 export function useConfigKey(config, key) {
   const keys = key.split('.');
   let i = 0;
-  while (keys[i] in config) {
+  while (typeof config === 'object' && keys[i] in config) {
     const newConfig = config[keys[i]];
     if (i === keys.length - 1) {
       return [true, newConfig];
