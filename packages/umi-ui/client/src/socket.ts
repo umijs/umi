@@ -74,15 +74,18 @@ export async function init(opts = {}) {
         el.style.left = 0;
         el.style.top = 0;
         el.style.width = '100%';
-        el.style.background = 'red';
+        el.style.background = '#f04134';
         el.style.zIndex = 2147483647000000;
         el.style.color = '#ffffff';
         el.style.textAlign = 'center';
         el.style.fontSize = '18px';
-        el.style.fontFamily = 'Consolas, Menlo, Courier, monospace';
+        el.style.fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`;
         el.style.padding = '8px 0';
         el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';
-        el.innerHTML = 'Disconnected from the devServer, trying to reconnect...';
+        el.innerHTML =
+          window.g_lang === 'zh-CN'
+            ? '已和 umi ui 服务器断开连接，正在尝试重连...'
+            : 'Disconnected from the umi ui server, trying to reconnect...';
         document.body.appendChild(el);
       } else {
         el.style.display = 'block';
