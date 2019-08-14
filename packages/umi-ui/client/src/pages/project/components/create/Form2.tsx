@@ -17,6 +17,25 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const [npmClient, setNpmClient] = useState<string[]>();
   const [form] = Form.useForm();
 
+  const getMpmClients = async () => {
+    if (!npmClient) {
+      try {
+        const { data: clients } = await getNpmClients();
+        if (Array.isArray(clients) && clients.length) {
+          setNpmClient(clients);
+        }
+      } catch (e) {
+        message.error(e && e.message ? e.message : '包管理器获取失败');
+      }
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getMpmClients();
+    })();
+  }, []);
+
   // tmp options, real from server
   const options: IOption[] = [
     {
@@ -35,22 +54,6 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
 
   const handleTypeOnChange = (type: APP_TYPE): void => {
     setAppType(type);
-  };
-
-  const handleFocusClients = async () => {
-    if (!npmClient) {
-      setLoading(true);
-      try {
-        const { data: clients } = await getNpmClients();
-        if (Array.isArray(clients) && clients.length) {
-          setNpmClient(clients);
-        }
-      } catch (e) {
-        message.error(e && e.message ? e.message : '包管理器获取失败');
-      } finally {
-        setLoading(false);
-      }
-    }
   };
 
   return (
@@ -106,12 +109,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         label="包管理"
         rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
       >
-        <Select
-          placeholder="请选择包管理器"
-          onFocus={handleFocusClients}
-          loading={loading}
-          notFoundContent={!npmClient && <Spin size="small" />}
-        >
+        <Select placeholder="请选择包管理器" notFoundContent={!npmClient && <Spin size="small" />}>
           {Array.isArray(npmClient) &&
             npmClient.map(client => (
               <Option key={client} value={client}>

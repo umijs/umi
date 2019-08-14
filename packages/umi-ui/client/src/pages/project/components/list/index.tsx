@@ -146,7 +146,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
         <List
           dataSource={projects}
-          loading={!projects.length}
+          loading={!projectList.projectsByKey}
           split={false}
           className={styles['project-list']}
           renderItem={item => {

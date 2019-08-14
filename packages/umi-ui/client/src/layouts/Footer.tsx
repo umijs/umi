@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Drawer, Icon } from 'antd';
+import { Drawer } from 'antd';
+import { Folder, Profile, Bug } from '@ant-design/icons';
 import cls from 'classnames';
 import Terminal from '@/components/Terminal';
 import Logs from '@/components/Logs';
@@ -48,16 +49,16 @@ const Footer: React.SFC<LogsProps> = props => {
     <div className={styles.footer}>
       <div className={styles.statusBar}>
         <div className={styles.section}>
-          <Icon type="folder" /> 当前位置
+          <Folder /> 当前位置
         </div>
         <div
           onClick={() => (logVisible ? hideLogPanel() : showLogPanel())}
           className={`${styles.section} ${styles.action} ${styles.log}`}
         >
-          <Icon type="profile" /> 日志
+          <Profile /> 日志
         </div>
         <div className={styles.section}>
-          <Icon type="bug" /> bbb
+          <Bug /> bbb
         </div>
       </div>
       <Drawer
