@@ -147,6 +147,10 @@ $ BROWSER=none umi dev
 
 默认清屏，值为 none 时不清屏。
 
+### CLEAR_OUTPUT
+
+默认情况下，输出目录会在每次构建之前被清除，当此值为 `none` 时则不会执行此操作。
+
 ### HMR
 
 默认开启 HMR，值为 none 时禁用，值为 reload 时文件有变化时刷新浏览器。
