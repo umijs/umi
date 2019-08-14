@@ -47,7 +47,6 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   };
 
   const handleDebounceInput = debounce(() => {
-    console.log('666');
     form.validateFields();
   }, 500);
 
