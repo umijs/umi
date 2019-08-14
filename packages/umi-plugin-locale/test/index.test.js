@@ -56,7 +56,7 @@ test('antd is false', () => {
 
   const ret = readFileSync(wrapperFile, 'utf-8');
 
-  expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
+  expect(ret).not.toEqual(expect.stringContaining('<AntdProvider'));
   expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
   expect(ret).not.toEqual(expect.stringContaining('antd/lib/locale-provider/zh_CN'));
   expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
