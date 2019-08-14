@@ -28,8 +28,15 @@ export default function(api) {
           edge: 13,
           ios: 10,
         },
-        group: 'basic',
-        description: 'The minimum version of browsers you want to compatible with.',
+        group: 'webpack',
+        title: {
+          'zh-CN': '浏览器兼容性',
+          'en-US': 'Browser Compatibility',
+        },
+        description: {
+          'zh-CN': '选择需要兼容的浏览器最低版本，会自动引入 Polyfill 和做语法转换。',
+          'en-US': 'The minimum version of browsers you want to compatible with.',
+        },
       };
     };
   });

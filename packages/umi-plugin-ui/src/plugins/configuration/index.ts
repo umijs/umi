@@ -18,6 +18,10 @@ const groupMap = {
     'zh-CN': '部署配置',
     'en-US': 'Deploy Configuration',
   },
+  webpack: {
+    'zh-CN': 'Webpack 配置',
+    'en-US': 'Webpack Configuration',
+  },
 };
 
 function getTextByLang(text, lang) {
