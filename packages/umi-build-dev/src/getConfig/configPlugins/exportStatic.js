@@ -17,6 +17,10 @@ export default function(api) {
       {
         group: 'basic',
         name: 'exportStatic.htmlSuffix',
+        title: {
+          'zh-CN': '启用 .html 后缀',
+          'en-US': 'Enable .html Suffix',
+        },
         type: 'boolean',
         default: false,
       },

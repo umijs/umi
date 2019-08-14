@@ -46,6 +46,10 @@ export default class PluginAPI {
     return key;
   };
 
+  getLocale = () => {
+    return window.g_lang;
+  };
+
   notify: IUi.INotify = async payload => {
     const { title, message, subtitle, ...restPayload } = payload;
 

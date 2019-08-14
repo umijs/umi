@@ -156,7 +156,7 @@ const ConfigManager = connect(state => ({
  */
 
 export default api => {
-  const { callRemote, getContext, TwoColumnPanel } = api;
+  const { callRemote, getContext, TwoColumnPanel, getLocale } = api;
 
   function ConfigTargets(props) {
     const { default: defaultValue, value } = props.item;
@@ -191,7 +191,7 @@ export default api => {
 
     return (
       <div className={styles.configItem}>
-        <h3>{item.name}</h3>
+        <h3>{item.title || item.name}</h3>
         {do {
           if (item.type === 'list') {
             <div>
@@ -237,6 +237,9 @@ export default api => {
     async function updateData() {
       const { data } = await callRemote({
         type: 'org.umi.config.list',
+        payload: {
+          lang: getLocale(),
+        },
       });
       setData(data);
     }
@@ -254,10 +257,11 @@ export default api => {
 
     const groupedData = {};
     data.forEach(item => {
-      if (!groupedData[item.group]) {
-        groupedData[item.group] = [];
+      const { group } = item;
+      if (!groupedData[group]) {
+        groupedData[group] = [];
       }
-      groupedData[item.group].push(item);
+      groupedData[group].push(item);
     });
 
     return (

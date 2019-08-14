@@ -70,6 +70,11 @@ export async function render(oldRender) {
       data,
     };
     if (data.currentProject) {
+      ReactDOM.render(
+        React.createElement(require('./pages/loading').default, props),
+        document.getElementById('root'),
+      );
+
       try {
         await callRemote({
           type: '@@project/open',
@@ -78,11 +83,6 @@ export async function render(oldRender) {
       } catch (e) {
         props.error = e;
       }
-
-      ReactDOM.render(
-        React.createElement(require('./pages/loading').default, props),
-        document.getElementById('root'),
-      );
 
       if (props.error) {
         return;
