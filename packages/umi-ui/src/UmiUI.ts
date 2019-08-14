@@ -61,6 +61,7 @@ export default class UmiUI {
   activeProject(key: string, service?: any) {
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
+    assert(existsSync(project.path), `project path ${project.path} don't exists.`);
 
     if (!this.developMode && service) {
       this.servicesByKey[key] = service;
@@ -457,12 +458,24 @@ export default class UmiUI {
       const sockjs = require('sockjs');
       const ss = sockjs.createServer();
 
+      let conns = {};
+
+      function send(action) {
+        const message = JSON.stringify(action);
+        console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
+        Object.keys(conns).forEach(id => {
+          conns[id].write(message);
+        });
+      }
+
+      function formatLogMessage(message) {
+        let ret = message.length > 500 ? `${message.slice(0, 500)} ${chalk.gray('...')}` : message;
+        ret = ret.replace(/{"type":"(.+?)"/, `{"type":"${chalk.magenta.bold('$1')}"`);
+        return ret;
+      }
+
       ss.on('connection', conn => {
-        function send(action) {
-          const message = JSON.stringify(action);
-          console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
-          conn.write(message);
-        }
+        conns[conn.id] = conn;
         function success(type, payload) {
           send({ type: `${type}/success`, payload });
         }
@@ -488,14 +501,10 @@ export default class UmiUI {
             payload,
           });
         };
-        function formatLogMessage(message) {
-          let ret =
-            message.length > 500 ? `${message.slice(0, 500)} ${chalk.gray('...')}` : message;
-          ret = ret.replace(/{"type":"(.+?)"/, `{"type":"${chalk.magenta.bold('$1')}"`);
-          return ret;
-        }
 
-        conn.on('close', () => {});
+        conn.on('close', () => {
+          delete conns[conn.id];
+        });
         conn.on('data', message => {
           try {
             const { type, payload } = JSON.parse(message);
