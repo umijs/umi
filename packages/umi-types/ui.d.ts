@@ -1,6 +1,5 @@
 import lodash from 'lodash';
-
-import { Context, ReactNode } from 'react';
+import { Context, FC, FunctionComponent } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
@@ -43,6 +42,15 @@ declare namespace IUI {
     payload?: T;
     onProgress?: (data: K) => void;
     onMessage?: (data: any) => void;
+  }
+
+  interface ITwoColumnPanel {
+    sections: Array<{
+      title: string;
+      icon: string;
+      description: string;
+      component: FunctionComponent<any>;
+    }>;
   }
 
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
@@ -91,7 +99,7 @@ declare namespace IUI {
     notify: INotify;
     callRemote: ICallRemove;
     /** React Two Column Panel Layout */
-    TwoColumnPanel: ReactNode;
+    TwoColumnPanel: FC<ITwoColumnPanel>;
     listenRemote: IListenRemote;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;
