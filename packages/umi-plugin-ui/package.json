@@ -8,7 +8,8 @@
   ],
   "devDependencies": {
     "umi-types": "0.3.15",
-    "decamelize": "3.2.0"
+    "decamelize": "3.2.0",
+    "serialize-javascript": "^1.7.0"
   },
   "repository": {
     "type": "git",

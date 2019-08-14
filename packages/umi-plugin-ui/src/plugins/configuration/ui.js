@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Form, Select, Switch } from 'antd';
+import { Input, Form, Select, Switch, Button } from 'antd';
+import serialize from 'serialize-javascript';
 import styles from './ui.module.less';
 
 const FormItem = Form.Item;
@@ -249,7 +250,7 @@ export default api => {
         type: 'org.umi.config.edit',
         payload: {
           key: name,
-          value: value.toString(),
+          value: serialize(value),
         },
       });
       await updateData();
@@ -276,6 +277,33 @@ export default api => {
             </div>
           );
         })}
+        <div>
+          <h2>Test</h2>
+          <Button
+            type="primary"
+            onClick={editHandler.bind(null, 'mock.exclude', ['aaa', 'bbb'])}
+          >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
+          <Button
+            type="primary"
+            onClick={editHandler.bind(null, 'mock.exclude', [])}
+          >{`清空 mock.exclude`}</Button>
+          <br />
+          <br />
+          <Button
+            type="primary"
+            onClick={editHandler.bind(
+              null,
+              {
+                base: '/foo/',
+                publicPath: '/foo/',
+              },
+              '',
+            )}
+          >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
+          <br />
+          <br />
+          <br />
+        </div>
       </div>
     );
   }
