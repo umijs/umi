@@ -6,7 +6,7 @@ import clearModule from 'clear-module';
 import { join } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import openBrowser from 'react-dev-utils/openBrowser';
-import { existsSync, statSync } from 'fs';
+import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
 import portfinder from 'portfinder';
@@ -438,21 +438,44 @@ export default class UmiUI {
       const serveStatic = require('serve-static');
       const app = express();
       app.use(compression());
-      if (process.env.LOCAL_DEBUG) {
-        app.use((req, res) => {
-          if (['/'].includes(req.path)) {
+
+      // Index Page
+      let content = null;
+      app.use((req, res) => {
+        if (['/'].includes(req.path)) {
+          if (process.env.LOCAL_DEBUG) {
             got(`http://localhost:8002${req.path}`)
               .then(({ body }) => {
                 res.set('Content-Type', 'text/html');
-                res.send(body);
+                res.send(normalizeHtml(body));
               })
               .catch(e => {
                 console.error(e);
               });
+          } else {
+            if (!content) {
+              content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+            }
+            res.send(normalizeHtml(content));
           }
-        });
-      } else {
+        }
+      });
+
+      // Serve Static (Production Only)
+      if (!process.env.LOCAL_DEBUG) {
         app.use(serveStatic(join(__dirname, '../client/dist')));
+      }
+
+      // 添加埋点脚本
+      // TODO: 内外不同
+      function normalizeHtml(html) {
+        if (process.env.BIGFISH_COMPAT) {
+          html = html.replace('<body>', '<body>\n<script>window.g_bigfish = {};</script>');
+        }
+        const baconScript = process.env.BIGFISH_COMPAT
+          ? `console.log('bacon for bigfish');`
+          : `console.log('bacon for umi');`;
+        return html.replace('</body>', `<script>${baconScript}</script>\n</body>`);
       }
 
       const sockjs = require('sockjs');
