@@ -30,6 +30,7 @@ import 'moment/locale/{{momentLocale}}';
 {{/localeList}}
 
 const baseNavigator = {{{baseNavigator}}};
+const baseSeparator = '{{{baseSeparator}}}';
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
@@ -89,10 +90,11 @@ class LocaleWrapper extends React.Component{
       appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
     }
     window.g_lang = appLocale.locale;
+    window.g_langSeparator = baseSeparator || '-';
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
-
+    console.log('appLocaleappLocale', appLocale);
     return appLocale;
   }
   reloadAppLocale = () => {
@@ -104,13 +106,16 @@ class LocaleWrapper extends React.Component{
 
   render(){
     const appLocale = this.getAppLocale();
+    // react-intl must use `-` separator
+    const reactIntlLocale = appLocale.locale.split(baseSeparator).join('-');
     const LangContextValue = {
-      locale: appLocale.locale,
+      locale: reactIntlLocale,
       reloadAppLocale: this.reloadAppLocale,
     };
+    console.log('LangContextValue', LangContextValue);
     let ret = this.props.children;
     {{#localeList.length}}
-    ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+    ret = (<IntlProvider locale={reactIntlLocale} messages={appLocale.messages}>
       <InjectedWrapper>
         <LangContext.Provider value={LangContextValue}>
           <LangContext.Consumer>{(value) => {
