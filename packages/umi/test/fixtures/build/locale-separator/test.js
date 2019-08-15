@@ -62,5 +62,5 @@ export default async function({ page, host }) {
   );
   expect(text_sk.innerHTML).toEqual('test sk antd');
   expect(text_sk.g_lang).toEqual('sk');
-  expect(text_sk.g_langSeparator).toEqual('-');
+  expect(text_sk.g_langSeparator).toEqual('_');
 }
