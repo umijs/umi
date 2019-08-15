@@ -6,7 +6,6 @@ export default {
     'src/plugins/configuration/ui/index.tsx',
     'src/plugins/routes/ui.js',
     'src/plugins/blocks/ui.tsx',
-    'src/plugins/tasks/ui.js',
   ],
   disableTypeCheck: true,
 };

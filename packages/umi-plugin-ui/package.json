@@ -6,6 +6,9 @@
     "lib",
     "src"
   ],
+  "dependencies": {
+    "umi-ui-tasks": "0.0.1"
+  },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
     "decamelize": "3.2.0",
