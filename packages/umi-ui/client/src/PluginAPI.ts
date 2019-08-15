@@ -11,7 +11,7 @@ import TwoColumnPanel from './components/TwoColumnPanel';
 export default class PluginAPI {
   public service: IUi.IService;
   public _: IUi.ILodash;
-  callRemote: IUi.ICallRemove;
+  callRemote: IUi.ICallRemote;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
