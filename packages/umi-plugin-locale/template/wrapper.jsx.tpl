@@ -95,7 +95,7 @@ class LocaleWrapper extends React.Component{
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
-
+    console.log('appLocaleappLocale', appLocale);
     return appLocale;
   }
   reloadAppLocale = () => {

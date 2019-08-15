@@ -121,7 +121,8 @@ export default function(api, options = {}) {
       baseSeparator,
     );
     const wrapperTpl = readFileSync(join(__dirname, '../template/wrapper.jsx.tpl'), 'utf-8');
-    const defaultLocale = options.default || 'zh-CN';
+    const defaultLocale = options.default || `zh${baseSeparator}CN`;
+    console.log('defaultLocale', defaultLocale);
     const [lang, country] = defaultLocale.split(baseSeparator);
     const wrapperContent = Mustache.render(wrapperTpl, {
       baseSeparator,
