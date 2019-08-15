@@ -24,6 +24,7 @@ export default () => {
   );
   return (
     <div style={{ margin: 16, lineHeight: 2 }}>
+      <p id="locale">{getLocale()}</p>
       <button
         style={{ marginRight: 8 }}
         id="btn_en"
@@ -31,7 +32,7 @@ export default () => {
           setLocale('en_US');
         }}
       >
-        en-US
+        en_US
       </button>
       <button
         id="btn_cn"
@@ -39,7 +40,7 @@ export default () => {
           setLocale('zh_CN');
         }}
       >
-        zh-CN
+        zh_CN
       </button>
       <br />
       <FormattedMessage id="test" values={{ name: 'antd' }} />

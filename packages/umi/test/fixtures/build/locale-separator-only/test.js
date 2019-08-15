@@ -5,11 +5,13 @@ export default async function({ page, host }) {
   const text = await page.evaluate(
     () => ({
       innerHTML: document.querySelector('span').innerHTML,
+      locale: document.getElementById('locale').innerText,
       g_lang: window.g_lang,
+      awefwaefae: window.aweffawefewf,
       g_langSeparator: window.g_langSeparator,
     })
   );
-  console.log('text', text);
+  console.log('texttexttexttext', text);
   expect(text.innerHTML).toEqual('测试中文 antd');
   expect(text.g_lang).toEqual('zh_CN');
   expect(text.g_langSeparator).toEqual('_');
@@ -19,6 +21,7 @@ export default async function({ page, host }) {
   const text_en = await page.evaluate(
     () => ({
       innerHTML: document.querySelector('span').innerHTML,
+      locale: document.innerHTML,
       g_lang: window.g_lang,
       g_langSeparator: window.g_langSeparator,
     })
