@@ -7,6 +7,9 @@ import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 const absSrcPath = winPath(join(__dirname, '../examples/base/src'));
 const absPagesPath = winPath(join(__dirname, '../examples/base/src/page'));
 
+const absSeparatorSrcPath = winPath(join(__dirname, '../examples/base-separator/src'));
+const absSeparatorPagesPath = winPath(join(__dirname, '../examples/base-separator/src/page'));
+
 let wrapperFile;
 
 const api = {
@@ -86,6 +89,44 @@ describe('test func with singular true', () => {
         country: 'CN',
         name: 'zh-CN',
         paths: [`${absSrcPath}/locale/zh-CN.js`, `${absPagesPath}/temp/locale/zh-CN.js`],
+        momentLocale: 'zh-cn',
+      },
+    ]);
+  });
+});
+
+describe('test func with baseSeparator', () => {
+  test('getLocaleFileList', () => {
+    const list = getLocaleFileList(absSeparatorSrcPath, absSeparatorPagesPath, false, '_');
+    expect(list).toEqual([
+      {
+        lang: 'en',
+        country: 'US',
+        name: 'en_US',
+        paths: [
+          `${absSeparatorSrcPath}/locales/en_US.js`,
+          `${absSeparatorPagesPath}/temp/locales/en_US.js`,
+        ],
+        momentLocale: '',
+      },
+      {
+        lang: 'sk',
+        country: 'SK',
+        name: 'sk',
+        paths: [
+          `${absSeparatorSrcPath}/locales/sk.js`,
+          `${absSeparatorPagesPath}/temp/locales/sk.js`,
+        ],
+        momentLocale: 'sk',
+      },
+      {
+        lang: 'zh',
+        country: 'CN',
+        name: 'zh_CN',
+        paths: [
+          `${absSeparatorSrcPath}/locales/zh_CN.js`,
+          `${absSeparatorPagesPath}/temp/locales/zh_CN.js`,
+        ],
         momentLocale: 'zh-cn',
       },
     ]);
