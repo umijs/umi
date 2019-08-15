@@ -436,8 +436,8 @@ export default class UmiUI {
           const { type, ...restPayload } = payload;
           const noticeConfig = {
             ...restPayload,
-            contentImage: path.resolve(__dirname, 'assets', 'umi.png'),
-            icon: buildInImages[type] || buildInImages.info,
+            contentImage: buildInImages[type] || buildInImages.info,
+            icon: path.resolve(__dirname, 'assets', 'umi.png'),
             sound: true,
           };
           notifier.notify(noticeConfig);
