@@ -565,7 +565,7 @@ export default class UmiUI {
       portfinder.basePort = 3000;
       portfinder.highestPort = 3333;
       const port = process.env.PORT || (await portfinder.getPortPromise());
-      const server = app.listen(port, '127.0.0.1', err => {
+      const server = app.listen(port, process.env.HOST || '127.0.0.1', err => {
         if (err) {
           reject(err);
         } else {
