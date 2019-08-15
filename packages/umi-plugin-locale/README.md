@@ -19,9 +19,10 @@ export default {
       'umi-plugin-react',
       {
         locale: {
-          default: 'zh-CN', //默认语言 zh-CN
+          default: 'zh-CN', //默认语言 zh-CN，如果 baseSeparator 设置为 _，则默认为 zh_CN
           baseNavigator: true, // 为true时，用navigator.language的值作为默认语言
           antd: true, // 是否启用antd的<LocaleProvider />
+          baseSeparator: '-', // 语言默认分割符 -
         },
       },
     ],
@@ -33,7 +34,7 @@ Other: You can setDefaultLocal in `src/app.js`
 
 ```js
 export const locale = {
-  default: 'en-US', //默认语言 zh-CN
+  default: 'en-US', //默认语言 zh-CN，如果 baseSeparator 设置为 _，则默认为 zh_CN
 };
 ```
 
@@ -58,7 +59,7 @@ export const locale = {
 
 ## 多语言文件约定
 
-多语言文件的命名规范：`<lang>-<COUNTRY>.js`
+多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.js`
 
 多语言文件的内容规范：键-值组成的字面量，如下：
 
