@@ -33,7 +33,7 @@ const baseNavigator = {{{baseNavigator}}};
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
-import { LocaleProvider } from 'antd';
+import { LocaleProvider, version } from 'antd';
 import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
@@ -122,9 +122,20 @@ class LocaleWrapper extends React.Component{
     </IntlProvider>)
     {{/localeList.length}}
     {{#antd}}
-     return (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+     // avoid antd ConfigProvider not found
+     let AntdProvider = LocaleProvider;
+     const [major, minor] = `${version || ''}`.split('.');
+     // antd 3.21.0 use ConfigProvider not LocaleProvider
+     const isConfigProvider = Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
+     if (isConfigProvider) {
+       try {
+         AntdProvider = require('antd/lib/config-provider').default;
+       } catch (e) {}
+     }
+
+     return (<AntdProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
-    </LocaleProvider>);
+    </AntdProvider>);
     {{/antd}}
     return ret;
   }
