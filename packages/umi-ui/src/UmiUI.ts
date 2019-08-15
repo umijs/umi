@@ -481,8 +481,7 @@ export default class UmiUI {
       const sockjs = require('sockjs');
       const ss = sockjs.createServer();
 
-      let conns = {};
-
+      const conns = {};
       function send(action) {
         const message = JSON.stringify(action);
         console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
