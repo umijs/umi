@@ -89,7 +89,7 @@ class LocaleWrapper extends React.Component{
     } else {
       appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
     }
-    appLocale.locale = typeof appLocale.locale === 'string' ? appLocale.locale.split(baseSeparator).join(baseSeparator) : '';
+    appLocale.locale = appLocale.locale.split(baseSeparator).join(baseSeparator);
     window.g_lang = appLocale.locale;
     window.g_langSeparator = baseSeparator || '-';
     {{#localeList.length}}
