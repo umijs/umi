@@ -34,7 +34,7 @@ const baseSeparator = '{{{baseSeparator}}}';
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
-import { ConfigProvider, LocaleProvider, version } from 'antd';
+import { LocaleProvider } from 'antd';
 import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
@@ -89,7 +89,7 @@ class LocaleWrapper extends React.Component{
     } else {
       appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
     }
-    appLocale.locale = typeof appLocale.locale === 'string' ? appLocale.locale.split(baseSeparator).join(baseSeparator) : '';
+    appLocale.locale = appLocale.locale.split(baseSeparator).join(baseSeparator);
     window.g_lang = appLocale.locale;
     window.g_langSeparator = baseSeparator || '-';
     {{#localeList.length}}
@@ -125,14 +125,9 @@ class LocaleWrapper extends React.Component{
     </IntlProvider>)
     {{/localeList.length}}
     {{#antd}}
-     const [major, minor] = `${version || ''}`.split('.');
-     // antd 3.21.0 use ConfigProvider not LocaleProvider
-     const isConfigProvider = Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
-     const AntdProvider = isConfigProvider ? ConfigProvider : LocaleProvider;
-
-     return (<AntdProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+     return (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
-    </AntdProvider>);
+    </LocaleProvider>);
     {{/antd}}
     return ret;
   }

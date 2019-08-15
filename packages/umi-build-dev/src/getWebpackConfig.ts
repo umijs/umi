@@ -60,13 +60,17 @@ export default function(service: IApi, opts: IOpts = {}) {
         'umi-plugin-locale',
         ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
       ],
+      // for unit test
+      ...(typeof ssr === 'object' && ssr.nodeExternalsOpts ? ssr.nodeExternalsOpts : {}),
     };
+
     debug(`nodeExternalOpts:`, nodeExternalsOpts);
-    const defaultExternals = webpackConfig.externals || [];
+    const defaultExternals =
+      (typeof ssr === 'object' && ssr.disableExternalWhiteList) || webpackConfig.externals || [];
     webpackConfig.externals =
       typeof ssr === 'object' && ssr.disableExternal
         ? defaultExternals
-        : nodeExternals(nodeExternalsOpts);
+        : [nodeExternals(nodeExternalsOpts)];
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';
