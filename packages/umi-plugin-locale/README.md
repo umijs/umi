@@ -34,7 +34,7 @@ Other: You can setDefaultLocal in `src/app.js`
 
 ```js
 export const locale = {
-  default: 'en-US', //默认语言 zh-CN
+  default: 'en-US', //默认语言 zh-CN，如果 baseSeparator 设置为 _，则默认为 zh_CN
 };
 ```
 
