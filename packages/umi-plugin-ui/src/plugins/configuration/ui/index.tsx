@@ -3,7 +3,7 @@ import { IUiApi } from 'umi-types';
 import { Input, Form, Select, Switch, Button } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from './Context';
-import styles from './ui.module.less';
+import styles from './index.module.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
