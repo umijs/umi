@@ -137,9 +137,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>导入项目</Button>
-              <Button type="primary" onClick={() => setCurrent('create')}>
-                创建项目
-              </Button>
+              {window.g_bigfish ? null : (
+                <Button type="primary" onClick={() => setCurrent('create')}>
+                  创建项目
+                </Button>
+              )}
             </div>
           </Col>
         </Row>
