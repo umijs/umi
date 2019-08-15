@@ -35,7 +35,7 @@ export default () => {
         en_US
       </button>
       <button
-        id="btn_cn"
+        id="btn_zh"
         onClick={() => {
           setLocale('zh_CN');
         }}

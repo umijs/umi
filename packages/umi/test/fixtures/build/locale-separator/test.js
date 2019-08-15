@@ -27,7 +27,7 @@ export default async function({ page, host }) {
       g_langSeparator: window.g_langSeparator,
     })
   );
-  console.log('text_en', text_en);
+
   expect(text_en.innerHTML).toEqual('test en antd');
   expect(text_en.g_lang).toEqual('en_US');
   expect(text_en.g_langSeparator).toEqual('_');
@@ -44,6 +44,7 @@ export default async function({ page, host }) {
       g_langSeparator: window.g_langSeparator,
     })
   );
+
   expect(text_zh.innerHTML).toEqual('测试中文 antd');
   expect(text_zh.g_lang).toEqual('zh_CN');
   expect(text_zh.g_langSeparator).toEqual('_');
