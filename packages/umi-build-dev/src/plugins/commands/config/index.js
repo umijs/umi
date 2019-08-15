@@ -46,10 +46,7 @@ export default function(api) {
         get(args._[1]);
         break;
       case 'set':
-        assert(
-          args._[1] && args._[2],
-          `key and value must supplied, e.g. umi config set mountElementId root`,
-        );
+        assert(args._[1], `key, e.g. umi config set mountElementId root`);
         set(args._[1], args._[2]);
         break;
       case 'delete':

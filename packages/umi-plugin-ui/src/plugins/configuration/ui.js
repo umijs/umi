@@ -245,12 +245,24 @@ export default api => {
       setData(data);
     }
 
+    function formatValue(value) {
+      if (value) {
+        if (typeof value === 'object') {
+          return serialize(value);
+        } else {
+          return value.toString();
+        }
+      } else {
+        return value;
+      }
+    }
+
     async function editHandler(name, value) {
       await callRemote({
         type: 'org.umi.config.edit',
         payload: {
           key: name,
-          value: serialize(value),
+          value: formatValue(value),
         },
       });
       await updateData();
