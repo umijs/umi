@@ -1,0 +1,32 @@
+{
+  "name": "umi-ui-tasks",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 umi ui\"",
+    "build": "node scripts/build.js",
+    "lint": "eslint --ext .ts,.tsx src"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "devDependencies": {
+    "antd": "4.0.0-alpha.0",
+    "concurrently": "^4.1.1",
+    "eslint": "^6.1.0",
+    "father-build": "^1.4.0",
+    "umi": "^2.8.16",
+    "umi-types": "^0.3.17",
+    "xterm": "^3.14.5",
+    "@umijs/fabric": "^1.1.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi",
+    "directory": "packages/umi-plugin-ui"
+  },
+  "author": "ikobe",
+  "license": "MIT"
+}
