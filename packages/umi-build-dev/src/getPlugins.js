@@ -24,9 +24,7 @@ export default function(opts = {}) {
     './plugins/commands/rm',
     './plugins/commands/config',
     './plugins/commands/block',
-    ...(process.env.UMI_UI === 'none'
-      ? []
-      : [require.resolve('umi-plugin-ui'), require.resolve('umi-ui-tasks')]),
+    ...(process.env.UMI_UI === 'none' ? [] : [require.resolve('umi-plugin-ui')]),
     './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',

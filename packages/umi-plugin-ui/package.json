@@ -6,6 +6,9 @@
     "lib",
     "src"
   ],
+  "dependencies": {
+    "umi-ui-tasks": "0.0.1"
+  },
   "devDependencies": {
     "umi-types": "0.3.15",
     "decamelize": "3.2.0",
