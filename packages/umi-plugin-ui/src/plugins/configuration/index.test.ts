@@ -145,7 +145,9 @@ test('formatConfigs match with lang', () => {
           },
         },
       ],
-      'zh-CN',
+      {
+        lang: 'zh-CN',
+      },
     ),
   ).toEqual([{ name: 'a', type: 'string', title: 'abc' }]);
 });

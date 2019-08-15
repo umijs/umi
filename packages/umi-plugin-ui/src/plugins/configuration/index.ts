@@ -2,10 +2,8 @@ import assert from 'assert';
 import { IApi } from 'umi-types';
 
 const KEYS = ['group', 'name', 'title', 'default', 'type', 'choices', 'description', 'value'];
-
 const KEYS_WITH_LANG = ['title', 'description'];
-
-const groupMap = {
+const DEFAULT_GROUP_MAP = {
   basic: {
     'zh-CN': '基础配置',
     'en-US': 'Basic Configuration',
@@ -36,7 +34,13 @@ function getTextByLang(text, lang) {
   }
 }
 
-export function formatConfigs(configs, lang = 'en-US') {
+interface IFormatConfigOpts {
+  lang?: 'string';
+  groupMap?: any;
+}
+
+export function formatConfigs(configs, opts: IFormatConfigOpts = {}) {
+  const { lang = 'en-US', groupMap = DEFAULT_GROUP_MAP } = opts;
   return configs.reduce((memo, config) => {
     (config.configs || [config]).forEach(config => {
       if (config.type) {
@@ -83,7 +87,12 @@ export default function(api: IApi) {
   function getConfig(lang) {
     const { userConfig } = (api as any).service;
     const config = userConfig.getConfig({ force: true });
-    return formatConfigs(userConfig.plugins, lang).map(p => {
+    return formatConfigs(userConfig.plugins, {
+      lang,
+      groupMap: api.applyPlugins('modeifyUIConfigurationGroupMap', {
+        initialValue: DEFAULT_GROUP_MAP,
+      }),
+    }).map(p => {
       const [haveKey, value] = useConfigKey(config, p.name);
       if (haveKey) {
         p.value = value;
