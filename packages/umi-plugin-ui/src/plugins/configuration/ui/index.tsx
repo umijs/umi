@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { IUiApi } from 'umi-types';
 import { Input, Form, Select, Switch, Button } from 'antd';
 import serialize from 'serialize-javascript';
+import Context from './Context';
 import styles from './ui.module.less';
 
 const FormItem = Form.Item;
@@ -13,25 +15,20 @@ function toString(data) {
   else throw new Error(`unsupport data type: ${typeof data}`);
 }
 
-function ConfigItem(props) {
-  /* eslint-disable no-unused-expressions */
-  const { name, data } = props;
-  return (
-    <React.Fragment>
-      <li>
-        {name}
-        {do {
-          if (name === 'plugins') {
-            <PluginList data={data} />;
-          } else {
-            <ConfigPropertyItem {...props} />;
-          }
-        }}
-      </li>
-    </React.Fragment>
-  );
-  /* eslint-enable no-unused-expressions */
-}
+// function ConfigItem(props) {
+//   /* eslint-disable no-unused-expressions */
+//   const { name, data } = props;
+//   return (
+//     <React.Fragment>
+//       <li>
+//         {name}
+//         {name === 'plugins' ? <PluginList data={data} /> : <ConfigPropertyItem {...props} />}
+//         }}
+//       </li>
+//     </React.Fragment>
+//   );
+//   /* eslint-enable no-unused-expressions */
+// }
 
 function ConfigPropertyItem({ name, data }) {
   function blurHandler(e) {
@@ -72,263 +69,181 @@ const formItemLayout = {
   },
 };
 
-/*
-const ConfigManager = connect(state => ({
-  config: state.config,
-}))(
-  Form.create()(props => {
-    const { getFieldDecorator } = props.form;
-    const config = props.config.data;
+function ConfigTargets(props) {
+  const { default: defaultValue, value } = props.item;
+  const mergedValue = {
+    ...defaultValue,
+    ...value,
+  };
+  return (
+    <div>
+      {Object.keys(mergedValue).map(key => {
+        return (
+          <div key={key}>
+            <h4>{key}</h4>
+            <Input defaultValue={mergedValue[key]} />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
-    function onChange(name, value) {
-      window.send('config', ['set', name, `${value.target ? value.target.value : value}`]);
-    }
-
-    return (
-      <div>
-        <h2>Basic</h2>
-        <FormItem {...formItemLayout} label="history" help="除非知道为什么，否则不要配置为 memory">
-          {getFieldDecorator('history', {
-            initialValue: config.history || 'browser',
-          })(
-            <Select style={{ width: 160 }} onChange={onChange.bind(null, 'history')}>
-              <Option value="hash">hash</Option>
-              <Option value="browser">browser</Option>
-              <Option value="memory">memory</Option>
-            </Select>,
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="publicPath"
-          help="指定 webpack 的 publicPath 配置，部署静态文件到非根目录时需要配置"
-        >
-          {getFieldDecorator('publicPath', {
-            initialValue: config.publicPath || '/',
-          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'publicPath')} />)}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="base"
-          help="指定路由的 base 路径，部署到非根目录时需要配置"
-        >
-          {getFieldDecorator('base', {
-            initialValue: config.base || '/',
-          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'base')} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="outputPath" help="指定构建产物输出路径">
-          {getFieldDecorator('outputPath', {
-            initialValue: config.outputPath || './dist',
-          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'outputPath')} />)}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="runtimePublicPath"
-          help="启用运行时 publicPath，对 JavaScript 有效"
-        >
-          {getFieldDecorator('runtimePublicPath', {
-            valuePropName: 'checked',
-            initialValue: config.runtimePublicPath,
-          })(<Switch onChange={onChange.bind(null, 'runtimePublicPath')} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="hash" help="指定输出文件是否带上 hash 后缀">
-          {getFieldDecorator('hash', {
-            valuePropName: 'checked',
-            initialValue: config.hash,
-          })(<Switch onChange={onChange.bind(null, 'hash')} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="mountElementId" help="指定页面根节点元素">
-          {getFieldDecorator('mountElementId', {
-            initialValue: config.mountElementId || 'root',
-          })(<Input style={{ width: 160 }} onBlur={onChange.bind(null, 'mountElementId')} />)}
-        </FormItem>
-        <h2>Targets</h2>
-        <h2>Plugins</h2>
-        <h2>Webpack</h2>
-        <ul>
-          {Object.keys(props.config.data).map(key => (
-            <ConfigItem key={key} name={key} data={props.config.data[key]} />
-          ))}
-        </ul>
-      </div>
-    );
-  }),
-);
- */
-
-export default api => {
-  const { callRemote, getContext, TwoColumnPanel, getLocale } = api;
-
-  function ConfigTargets(props) {
-    const { default: defaultValue, value } = props.item;
-    const mergedValue = {
-      ...defaultValue,
-      ...value,
-    };
-    return (
-      <div>
-        {Object.keys(mergedValue).map(key => {
-          return (
-            <div key={key}>
-              <h4>{key}</h4>
-              <Input defaultValue={mergedValue[key]} />
-            </div>
-          );
-        })}
-      </div>
-    );
+function ConfigItem(props) {
+  const { item, editHandler } = props;
+  let value = item.default;
+  if ('value' in item) {
+    value = item.value;
   }
 
-  function ConfigItem(props) {
-    const { item } = props;
-    let value = item.default;
-    if ('value' in item) {
-      value = item.value;
-    }
-
-    function blurHandler(name, e) {
-      props.editHandler(name, e.target.value);
-    }
-
-    return (
-      <div className={styles.configItem}>
-        <h3>{item.title || item.name}</h3>
-        {do {
-          if (item.type === 'list') {
-            <div>
-              <Select value={value} onChange={props.editHandler.bind(null, item.name)}>
-                {item.choices.map(choice => {
-                  return (
-                    <Option key={choice} value={choice}>
-                      {choice}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </div>;
-          } else if (item.type === 'string') {
-            <div>
-              <Input defaultValue={value} onBlur={blurHandler.bind(null, item.name)} />
-            </div>;
-          } else if (item.type === 'boolean') {
-            <div>
-              <Switch checked={value} onChange={props.editHandler.bind(null, item.name)} />
-            </div>;
-          } else if (item.name === 'targets') {
-            <ConfigTargets {...props} />;
-          } else if (item.type === 'object') {
-            <div>object</div>;
-          } else {
-            <div>Unsupport type {item.type}</div>;
-          }
-        }}
-        <div>{item.description}</div>
-      </div>
-    );
-  }
-
-  function BasicConfig() {
-    const [data, setData] = useState([]);
-    useEffect(() => {
-      (async () => {
-        await updateData();
-      })();
-    }, []);
-
-    async function updateData() {
-      const { data } = await callRemote({
-        type: 'org.umi.config.list',
-        payload: {
-          lang: getLocale(),
-        },
-      });
-      setData(data);
-    }
-
-    function formatValue(value) {
-      if (value) {
-        if (typeof value === 'object') {
-          return serialize(value);
-        } else {
-          return value.toString();
-        }
-      } else {
-        return value;
-      }
-    }
-
-    async function editHandler(name, value) {
-      await callRemote({
-        type: 'org.umi.config.edit',
-        payload: {
-          key: name,
-          value: formatValue(value),
-        },
-      });
-      await updateData();
-    }
-
-    const groupedData = {};
-    data.forEach(item => {
-      const { group } = item;
-      if (!groupedData[group]) {
-        groupedData[group] = [];
-      }
-      groupedData[group].push(item);
-    });
-
-    return (
-      <div className={styles.basicConfig}>
-        {Object.keys(groupedData).map(group => {
-          return (
-            <div className={styles.group} key={group}>
-              <h2>{group}</h2>
-              {groupedData[group].map(item => {
-                return <ConfigItem key={item.name} item={item} editHandler={editHandler} />;
-              })}
-            </div>
-          );
-        })}
+  return (
+    <div className={styles.configItem}>
+      <h3>{item.title || item.name}</h3>
+      {item.type === 'list' && (
         <div>
-          <h2>Test</h2>
-          <Button
-            type="primary"
-            onClick={editHandler.bind(null, 'mock.exclude', ['aaa', 'bbb'])}
-          >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
-          <Button
-            type="primary"
-            onClick={editHandler.bind(null, 'mock.exclude', [])}
-          >{`清空 mock.exclude`}</Button>
-          <br />
-          <br />
-          <Button
-            type="primary"
-            onClick={editHandler.bind(
-              null,
-              {
-                base: '/foo/',
-                publicPath: '/foo/',
-              },
-              '',
-            )}
-          >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
-          <br />
-          <br />
-          <br />
+          <Select value={value} onChange={v => editHandler(item.name, v)}>
+            {item.choices.map(choice => {
+              return (
+                <Option key={choice} value={choice}>
+                  {choice}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
+      )}
+      {item.type === 'string' && (
+        <div>
+          <Input defaultValue={value} onBlur={e => editHandler(item.name, e.target.value)} />
+        </div>
+      )}
+      {item.type === 'boolean' && (
+        <div>
+          <Switch checked={value} onChange={vv => editHandler(item.name, toString(vv))} />
+        </div>
+      )}
+      {item.type === 'object' && <div>object</div>}
+      <div>{item.description}</div>
+    </div>
+  );
+}
+
+function BasicConfig() {
+  const [data, setData] = useState([]);
+  const { api } = useContext(Context);
+  useEffect(() => {
+    (async () => {
+      await updateData();
+    })();
+  }, []);
+
+  async function updateData() {
+    const { data } = await api.callRemote({
+      type: 'org.umi.config.list',
+      payload: {
+        lang: api.getLocale(),
+      },
+    });
+    setData(data);
+  }
+
+  function formatValue(value) {
+    if (value) {
+      if (typeof value === 'object') {
+        return serialize(value);
+      }
+      return value.toString();
+    }
+    return value;
+  }
+
+  async function editHandler(name, value) {
+    await api.callRemote({
+      type: 'org.umi.config.edit',
+      payload: {
+        key: name,
+        value: formatValue(value),
+      },
+    });
+    await updateData();
+  }
+
+  const groupedData = {};
+  data.forEach(item => {
+    const { group } = item;
+    if (!groupedData[group]) {
+      groupedData[group] = [];
+    }
+    groupedData[group].push(item);
+  });
+
+  return (
+    <div className={styles.basicConfig}>
+      {Object.keys(groupedData).map(group => {
+        return (
+          <div className={styles.group} key={group}>
+            <h2>{group}</h2>
+            {groupedData[group].map(item => {
+              return <ConfigItem key={item.name} item={item} editHandler={editHandler} />;
+            })}
+          </div>
+        );
+      })}
+      <div>
+        <h2>Test</h2>
+        <Button
+          type="primary"
+          onClick={editHandler.bind(null, 'mock.exclude', ['aaa', 'bbb'])}
+        >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
+        <Button
+          type="primary"
+          onClick={editHandler.bind(null, 'mock.exclude', [])}
+        >{`清空 mock.exclude`}</Button>
+        <br />
+        <br />
+        <Button
+          type="primary"
+          onClick={editHandler.bind(
+            null,
+            {
+              base: '/foo/',
+              publicPath: '/foo/',
+            },
+            '',
+          )}
+        >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
+        <br />
+        <br />
+        <br />
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  function Test() {
-    return <div>TEST</div>;
-  }
+function Test() {
+  return <div>TEST</div>;
+}
 
-  function ConfigManager() {
-    return (
+interface IConfigManager {
+  api: IUiApi;
+}
+
+const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
+  const { TwoColumnPanel } = api;
+  return (
+    <Context.Provider
+      value={{
+        api,
+      }}
+    >
       <TwoColumnPanel
         sections={[
-          { title: '项目配置', icon: 'plus-circle', description: 'ABC', component: BasicConfig },
+          {
+            title: '项目配置',
+            icon: 'plus-circle',
+            description: 'ABC',
+            component: BasicConfig,
+          },
           {
             title: 'umi-plugin-react 配置',
             icon: 'pause-circle',
@@ -337,13 +252,8 @@ export default api => {
           },
         ]}
       />
-    );
-  }
-
-  api.addPanel({
-    title: '配置管理',
-    path: '/configuration',
-    icon: 'environment',
-    component: ConfigManager,
-  });
+    </Context.Provider>
+  );
 };
+
+export default ConfigManager;
