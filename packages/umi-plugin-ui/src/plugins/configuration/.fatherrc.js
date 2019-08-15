@@ -1,5 +1,5 @@
 export default {
-  entry: 'ui.js',
+  entry: 'ui/index.tsx',
   umd: {
     name: 'configuration',
     minFile: false,
