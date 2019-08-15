@@ -6,7 +6,7 @@ let localeContext;
 
 function setLocale(lang, realReload = true) {
   const { g_langSeparator = '-' } = window;
-  const localeExp = new RegExp(`^([a-z]{2})${g_langSeparator}?([A-Z]{2})$`);
+  const localeExp = new RegExp(`^([a-z]{2})${g_langSeparator}?([A-Z]{2})?$`);
   if (lang !== undefined && !localeExp.test(lang)) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');

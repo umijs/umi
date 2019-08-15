@@ -40,6 +40,14 @@ export default () => {
       >
         zh-CN
       </button>
+      <button
+        id="btn_sk"
+        onClick={() => {
+          setLocale('sk');
+        }}
+      >
+        sk
+      </button>
       <br />
       <FormattedMessage id="test" values={{ name: 'antd' }} />
       <br />

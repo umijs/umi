@@ -48,4 +48,19 @@ export default async function({ page, host }) {
   expect(text_zh.innerHTML).toEqual('测试中文 antd');
   expect(text_zh.g_lang).toEqual('zh_CN');
   expect(text_zh.g_langSeparator).toEqual('_');
+
+  await Promise.all([
+    page.click('button[id=btn_sk]'),
+    page.waitForNavigation()
+  ]);
+  const text_sk = await page.evaluate(
+    () => ({
+      innerHTML: document.querySelector('span').innerHTML,
+      g_lang: window.g_lang,
+      g_langSeparator: window.g_langSeparator,
+    })
+  );
+  expect(text_sk.innerHTML).toEqual('test sk antd');
+  expect(text_sk.g_lang).toEqual('sk');
+  expect(text_sk.g_langSeparator).toEqual('-');
 }

@@ -59,7 +59,7 @@ export const locale = {
 
 ## 多语言文件约定
 
-多语言文件的命名规范：`<lang>-<COUNTRY>.js`
+多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.js`
 
 多语言文件的内容规范：键-值组成的字面量，如下：
 
