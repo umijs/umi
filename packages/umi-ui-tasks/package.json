@@ -16,7 +16,6 @@
     "antd": "4.0.0-alpha.0",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
-    "father-build": "^1.4.0",
     "umi": "2.8.16",
     "umi-types": "0.3.15",
     "xterm": "^3.14.5",

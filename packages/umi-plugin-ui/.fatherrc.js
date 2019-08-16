@@ -1,6 +1,6 @@
 export default {
   target: 'node',
-  cjs: { type: 'babel' },
+  cjs: { type: 'babel', lazy: true },
   browserFiles: [
     'src/plugins/dashboard/ui.js',
     'src/plugins/configuration/ui/index.tsx',

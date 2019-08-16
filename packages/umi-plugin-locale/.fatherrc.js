@@ -1,5 +1,5 @@
 export default {
   target: 'node',
-  cjs: { type: 'babel' },
+  cjs: { type: 'babel', lazy: true },
   browserFiles: ['src/locale.js'],
 };
