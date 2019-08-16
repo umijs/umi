@@ -22,10 +22,13 @@ export default function build(opts = {}) {
     'webpackConfig should be plain object or array.',
   );
 
-  // 清理 output path
   const outputPath = getOutputPath(webpackConfig);
-  debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
-  rimraf.sync(outputPath);
+
+  // 清理 output path
+  if (process.env.CLEAR_OUTPUT !== 'none') {
+    debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
+    rimraf.sync(outputPath);
+  }
 
   debug('build start');
   webpack(webpackConfig, (err, stats) => {

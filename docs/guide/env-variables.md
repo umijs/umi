@@ -149,6 +149,10 @@ $ BROWSER=none umi dev
 
 The default is cleared. If the value is none, the screen is not cleared.
 
+### CLEAR_OUTPUT
+
+The output directory will be removed by default before each build, you can set it to `"none"` to avoid it to be removed.
+
 ### HMR
 
 The HMR is enabled by default, the value is disabled when none, and the value is refreshed when the file changes when reload.
