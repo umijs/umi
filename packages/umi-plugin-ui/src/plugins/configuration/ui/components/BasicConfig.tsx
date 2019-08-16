@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import cls from 'classnames';
-import { Button, Form, Input, Spin, Switch } from 'antd';
+import { Button, Form, Input, Spin, Switch, message } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
+import ObjectItemField from './ConfigItem/fields/ObjectItemField';
 import configMapping from './ConfigItem';
 import Toc from './common/Toc';
 import { getToc } from './ConfigItem/utils';
@@ -70,7 +71,7 @@ const BasicConfig = () => {
   const initialValues = data.reduce(
     (prev, curr) => ({
       ...prev,
-      [curr.name]: curr.default,
+      [curr.name]: curr.value || curr.default,
     }),
     {},
   );
@@ -78,10 +79,30 @@ const BasicConfig = () => {
   if (loading) {
     return <Spin />;
   }
-  const handleFinish = values => {
+  const handleFinish = async values => {
     console.log('valuesvalues', values);
     const changedValues = getDiffItems(initialValues, values);
     console.log('changedValues', changedValues);
+    const PromiseArr = [];
+    Object.keys(changedValues).forEach(name => {
+      PromiseArr.push(
+        api.callRemote({
+          type: 'org.umi.config.edit',
+          payload: {
+            key: name,
+            value: formatValue(changedValues[name]),
+          },
+        }),
+      );
+    });
+
+    console.log('PromiseArr', PromiseArr);
+
+    Promise.all(PromiseArr);
+
+    await updateData();
+
+    message.success('修改成功');
   };
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
@@ -97,14 +118,14 @@ const BasicConfig = () => {
             onFinish={handleFinish}
             initialValues={initialValues}
             onValuesChange={(changedValues, allValues) => {
-              console.log('allValues', allValues);
+              // console.log('allValues', allValues);
             }}
           >
             {Object.keys(groupedData).map(group => {
               return (
                 <div className={styles.group} key={group}>
-                  <h2>{group}</h2>
-                  {groupedData[group].slice(0, 3).map(item => {
+                  <h2 id={group}>{group}</h2>
+                  {groupedData[group].map(item => {
                     const ConfigItem = configMapping[item.type];
                     return <ConfigItem key={item.name} {...item} form={form} />;
                   })}
@@ -147,7 +168,11 @@ const BasicConfig = () => {
           </div>
         </div>
       )}
-      <Toc className={styles.toc} anchors={tocAnchors} />
+      <Toc
+        className={styles.toc}
+        anchors={tocAnchors}
+        getContainer={() => document.getElementById('two-column-panel-right')}
+      />
     </div>
   );
 };

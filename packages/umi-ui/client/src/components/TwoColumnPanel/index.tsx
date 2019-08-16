@@ -16,7 +16,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   return (
     <div className={styles.normal}>
-      <div className={styles.left}>
+      <div className={styles.left} id="two-column-panel-left">
         {sections.map((s, index) => {
           const triggerCls = cls({
             [styles.trigger]: true,
@@ -40,7 +40,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
           );
         })}
       </div>
-      <div className={styles.right}>
+      <div className={styles.right} id="two-column-panel-right">
         <Component />
       </div>
     </div>

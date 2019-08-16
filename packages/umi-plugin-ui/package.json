@@ -7,6 +7,8 @@
     "src"
   ],
   "dependencies": {
+    "@ant-design/icons": "^4.0.0-alpha.7",
+    "@ant-design/icons-svg": "^4.0.0-alpha.0",
     "classnames": "^2.2.6",
     "umi-ui-tasks": "0.0.1"
   },

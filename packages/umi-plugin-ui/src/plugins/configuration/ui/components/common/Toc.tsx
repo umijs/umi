@@ -19,7 +19,7 @@ export interface UiTocProps {
 }
 
 const UiToc: React.SFC<UiTocProps> = React.memo(props => {
-  const { anchors, className } = props;
+  const { anchors, className, getContainer } = props;
   const anchorRef = React.useRef(null);
   const { theme } = React.useContext(Context);
   const anchorCls = cls(styles['ui-toc'], styles[`ui-toc-${theme}`], className);
@@ -38,10 +38,15 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
   return (
     Array.isArray(anchors) &&
     anchors.length > 0 && (
-      <Anchor ref={anchorRef} onClick={handleClick} className={anchorCls}>
+      <Anchor
+        ref={anchorRef}
+        onClick={handleClick}
+        className={anchorCls}
+        getContainer={getContainer}
+      >
         {anchors.map((anchor, i) => {
           const linkCls = cls([styles['ui-toc-link']], anchor.className, {
-            [`ui-toc-link-${anchor.level || 0}`]: true,
+            [styles[`ui-toc-link-${anchor.level || 0}`]]: true,
           });
           return (
             <Anchor.Link
