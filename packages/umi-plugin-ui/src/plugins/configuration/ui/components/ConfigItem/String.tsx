@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Input } from 'antd';
 import { ICompProps } from './index';
+import Label from './label';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<ICompProps> = props => {
@@ -8,12 +9,13 @@ const StringComp: React.SFC<ICompProps> = props => {
   const { parentConfig } = getFormItemShow(name, form);
   const basicItem = {
     name,
-    label: name,
-    help: description,
+    label: <Label name={name} description={description} />,
   };
 
+  const formControl = <Input style={{ maxWidth: 320 }} />;
+
   return parentConfig ? (
-    <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
+    <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>
       {({ getFieldValue }) => {
         console.log(
           'children field update',
@@ -25,16 +27,14 @@ const StringComp: React.SFC<ICompProps> = props => {
         return (
           !!getFieldValue(parentConfig) && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
-              <Input />
+              {formControl}
             </Form.Item>
           )
         );
       }}
     </Form.Item>
   ) : (
-    <Form.Item {...basicItem}>
-      <Input />
-    </Form.Item>
+    <Form.Item {...basicItem}>{formControl}</Form.Item>
   );
 };
 

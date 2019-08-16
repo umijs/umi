@@ -1,5 +1,6 @@
 export default {
   entry: 'ui.tsx',
+  cssModules: true,
   typescriptOpts: {
     check: false,
   },

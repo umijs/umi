@@ -96,11 +96,13 @@ interface IConfigManager {
 }
 
 const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
-  const { TwoColumnPanel } = api;
+  const { TwoColumnPanel, getContext } = api;
+  const { theme } = useContext(getContext());
   return (
     <Context.Provider
       value={{
         api,
+        theme,
       }}
     >
       <TwoColumnPanel

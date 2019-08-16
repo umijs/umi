@@ -7,6 +7,7 @@
     "src"
   ],
   "dependencies": {
+    "classnames": "^2.2.6",
     "umi-ui-tasks": "0.0.1"
   },
   "devDependencies": {

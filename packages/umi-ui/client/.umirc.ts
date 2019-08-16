@@ -55,10 +55,6 @@ const config: IConfig = {
         links: [
           {
             rel: 'stylesheet',
-            href: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.0/dist/antd.min.css',
-          },
-          {
-            rel: 'stylesheet',
             href: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.css',
           },
         ],
