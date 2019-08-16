@@ -1,4 +1,5 @@
 import { IApi } from 'umi-types';
+import { join } from 'path';
 import { ChildProcess, SpawnOptions } from 'child_process';
 import { EventEmitter } from 'events';
 import { TaskState, TaskEventType, TaskType } from '../enums';
@@ -10,10 +11,14 @@ export class BaseTask extends EventEmitter {
   public type: TaskType;
 
   protected api: IApi;
+  protected pkgPath: string;
+  protected isBigfishProject: boolean;
 
   constructor({ api }: { api: IApi }) {
     super();
     this.api = api;
+    this.pkgPath = join(api.cwd, 'package.json');
+    this.isBigfishProject = !!process.env.BIGFISH_COMPAT;
   }
 
   public async run() {

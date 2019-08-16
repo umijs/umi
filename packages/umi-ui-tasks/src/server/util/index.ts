@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { existsSync } from 'fs';
 import { spawn, SpawnOptions } from 'child_process';
 
 const error = (msg: string, name = 'TaskError') => {
@@ -33,6 +34,19 @@ const runCommand = (script: string, options: SpawnOptions = {}) => {
 
   const proc = spawn(sh, [shFlag, script], options);
   return proc;
+};
+
+export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
+  if (!existsSync(pkgPath)) {
+    return false;
+  }
+  let pkg = {} as any;
+  try {
+    pkg = require(pkgPath);
+  } catch (_) {
+    return false;
+  }
+  return !!(pkg.scripts && pkg.scripts[key]);
 };
 
 export { error, runCommand };
