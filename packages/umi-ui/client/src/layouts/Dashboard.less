@@ -44,8 +44,8 @@
 
 .main {
   flex: 1;
-  overflow: auto;
-
+  overflow: hidden;
+  max-height: 100%;
   h1 {
     font-size: 28px;
     font-weight: 300;
@@ -54,5 +54,6 @@
 
   .content {
     padding: 10px 20px;
+    height: calc(~'100% - @{ui-status-bar-height}');
   }
 }
