@@ -59,6 +59,7 @@ const BasicConfig = () => {
   return (
     <div className={styles.basicConfig}>
       {Object.keys(groupedData).map(group => {
+        console.log('groupedData[group]', groupedData[group]);
         return (
           <div className={styles.group} key={group}>
             <h2>{group}</h2>
@@ -69,6 +70,7 @@ const BasicConfig = () => {
             >
               {groupedData[group].slice(0, 1).map(item => {
                 const ConfigItem = configMapping[item.type];
+                console.log('ConfigItem', ConfigItem);
                 return <ConfigItem key={item.name} {...item} form={form} />;
               })}
             </Form>

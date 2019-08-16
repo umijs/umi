@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
 import { ICompProps } from './index';
+import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<ICompProps> = props => {
   const { name, description, default: defaultValue, form } = props;
-  // exportStatic.htmlSuffix => exportStatic
-  const [parentConfig] = name.split('.');
-  const parentValue = form.getFieldValue(parentConfig);
   const defaultChecked = !!(defaultValue as string);
+  const [shouldShow, parentConfig] = getFormItemShow(name, form);
+
   return (
-    parentConfig &&
-    !!parentValue && (
+    shouldShow && (
       <Form.Item
         name={name}
         label={name}

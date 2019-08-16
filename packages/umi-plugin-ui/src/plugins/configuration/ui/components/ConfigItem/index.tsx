@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { FormInstance } from 'antd/lib/form/util';
-import StringComp from './StringComp';
+import StringComp from './String';
 import StringArrayComp from './StringArray';
 import BooleanComp from './Boolean';
 import ObjectComp from './Object';
