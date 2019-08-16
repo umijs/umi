@@ -8,5 +8,5 @@ export default {
   target: 'node',
   cjs: { type: 'babel', lazy: true },
   disableTypeCheck: true,
-  browserFiles: files.map(filePath => join(src, filePath)),
+  browserFiles: files.map(filePath => join('src', filePath)),
 };
