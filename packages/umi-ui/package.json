@@ -34,6 +34,7 @@
     "portfinder": "1.0.21",
     "react-dev-utils": "9.0.1",
     "resolve-from": "5.0.0",
+    "resolve-cwd": "3.0.0",
     "serve-static": "1.14.1",
     "sockjs": "0.3.19",
     "umi-build-dev": "1.10.16",

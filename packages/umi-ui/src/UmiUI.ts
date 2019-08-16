@@ -10,6 +10,7 @@ import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
 import portfinder from 'portfinder';
+import resolveFrom from 'resolve-from';
 import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
@@ -68,7 +69,28 @@ export default class UmiUI {
     } else if (!this.servicesByKey[key]) {
       // Attach Service
       debug(`Attach service for ${key}`);
-      const Service = require('umi-build-dev/lib/Service').default;
+
+      // Use local service and detect version compatibility
+      const serviceModule = process.env.BIGFISH_COMPAT
+        ? '@alipay/bigfish/_Service'
+        : 'umi/_Service';
+      const binModule = process.env.BIGFISH_COMPAT ? '@alipay/bigfish/bin/bigfish' : 'umi/bin/umi';
+      const cwd = project.path;
+      const localService = resolveFrom.silent(cwd, serviceModule);
+      const localBin = resolveFrom.silent(cwd, binModule);
+      if (false && localBin && !localService) {
+        // 有 Bin 但没 Service，说明版本不够
+        throw new Error(
+          (process.env.BIGFISH_COMPAT
+            ? `Bigfish 版本过低，请升级到 @alipay/bigfish@2.20 或以上。`
+            : `Umi 版本过低，请升级到 umi@2.9 或以上。`
+          ).trim(),
+        );
+      }
+      const servicePath = localService || 'umi-build-dev/lib/Service';
+      debug(`Service path: ${servicePath}`);
+      const Service = require(servicePath).default;
+
       const service = new Service({
         cwd: project.path,
       });
