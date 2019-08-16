@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
+    "antd": "4.0.0-alpha.0",
     "decamelize": "3.2.0",
     "serialize-javascript": "^1.7.0",
     "umi-types": "0.3.15"

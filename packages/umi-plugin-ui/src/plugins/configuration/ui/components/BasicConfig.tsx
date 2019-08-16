@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button, Form } from 'antd';
+import { Button, Form, Input, Spin, Switch } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
 import configMapping from './ConfigItem';
@@ -7,12 +7,20 @@ import styles from './BasicConfig.less';
 
 const BasicConfig = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const { api } = useContext(Context);
+  const { _ } = api;
+
+  const getDiffItems = (prev: object, curr: object): object =>
+    _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
+
   useEffect(() => {
+    setLoading(true);
     (async () => {
       await updateData();
     })();
+    setLoading(false);
   }, []);
 
   async function updateData() {
@@ -56,27 +64,54 @@ const BasicConfig = () => {
     groupedData[group].push(item);
   });
 
+  console.log('groupedData', groupedData);
+
+  const initialValues = data.reduce(
+    (prev, curr) => ({
+      ...prev,
+      [curr.name]: curr.default,
+    }),
+    {},
+  );
+  console.log('initialValues', initialValues);
+  if (loading) {
+    return <Spin />;
+  }
+  const handleFinish = values => {
+    console.log('valuesvalues', values);
+    const changedValues = getDiffItems(initialValues, values);
+    console.log('changedValues', changedValues);
+  };
   return (
     <div className={styles.basicConfig}>
-      {Object.keys(groupedData).map(group => {
-        console.log('groupedData[group]', groupedData[group]);
-        return (
-          <div className={styles.group} key={group}>
-            <h2>{group}</h2>
-            <Form
-              onFinish={values => {
-                console.log('valuesvaluesvalues', values);
-              }}
-            >
-              {groupedData[group].slice(0, 1).map(item => {
-                const ConfigItem = configMapping[item.type];
-                console.log('ConfigItem', ConfigItem);
-                return <ConfigItem key={item.name} {...item} form={form} />;
-              })}
-            </Form>
-          </div>
-        );
-      })}
+      {data.length > 0 && (
+        <Form
+          layout="vertical"
+          onFinish={handleFinish}
+          initialValues={initialValues}
+          onValuesChange={(changedValues, allValues) => {
+            console.log('allValues', allValues);
+          }}
+        >
+          {Object.keys(groupedData).map(group => {
+            return (
+              <div className={styles.group} key={group}>
+                <h2>{group}</h2>
+                {groupedData[group].slice(0, 3).map(item => {
+                  const ConfigItem = configMapping[item.type];
+                  return <ConfigItem key={item.name} {...item} form={form} />;
+                })}
+              </div>
+            );
+          })}
+          <Form.Item shouldUpdate>
+            {({ getFieldsValue }) => {
+              return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
+            }}
+          </Form.Item>
+          <Button htmlType="submit">保存</Button>
+        </Form>
+      )}
       <div>
         <h2>Test</h2>
         <Button
