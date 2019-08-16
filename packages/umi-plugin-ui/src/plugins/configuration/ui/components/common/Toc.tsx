@@ -14,18 +14,31 @@ export interface IToc {
 
 export interface UiTocProps {
   anchors: IToc[];
+  getContainer?: () => HTMLElement | Window;
   className?: string;
 }
 
 const UiToc: React.SFC<UiTocProps> = React.memo(props => {
   const { anchors, className } = props;
+  const anchorRef = React.useRef(null);
   const { theme } = React.useContext(Context);
   const anchorCls = cls(styles['ui-toc'], styles[`ui-toc-${theme}`], className);
+
+  const getAnchorHref = href => {
+    return href.startsWith('#') ? href : `#${href}`;
+  };
+
+  const handleClick = (e, { href }) => {
+    e.preventDefault();
+    if (anchorRef.current) {
+      anchorRef.current.handleScrollTo(href);
+    }
+  };
 
   return (
     Array.isArray(anchors) &&
     anchors.length > 0 && (
-      <Anchor className={anchorCls}>
+      <Anchor ref={anchorRef} onClick={handleClick} className={anchorCls}>
         {anchors.map((anchor, i) => {
           const linkCls = cls([styles['ui-toc-link']], anchor.className, {
             [`ui-toc-link-${anchor.level || 0}`]: true,
@@ -33,7 +46,7 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
           return (
             <Anchor.Link
               key={i}
-              href={anchor.href.startsWith('#') ? anchor.href : `#${anchor.href}`}
+              href={getAnchorHref(anchor.href)}
               title={anchor.title}
               className={linkCls}
             />

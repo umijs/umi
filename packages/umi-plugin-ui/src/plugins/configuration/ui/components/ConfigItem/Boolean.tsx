@@ -9,7 +9,7 @@ const BooleanComp: React.SFC<ICompProps> = props => {
   const { parentConfig } = getFormItemShow(name, form);
   const basicItem = {
     name,
-    label: <Label name={title} description={description} />,
+    label: <Label name={name} title={title} description={description} />,
     valuePropName: 'checked',
   };
   return parentConfig ? (
