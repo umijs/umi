@@ -5,6 +5,7 @@ import serialize from 'serialize-javascript';
 import Context from '../Context';
 import configMapping from './ConfigItem';
 import Toc from './common/Toc';
+import { getToc } from './ConfigItem/utils';
 import styles from './BasicConfig.module.less';
 
 const BasicConfig = () => {
@@ -66,8 +67,6 @@ const BasicConfig = () => {
     groupedData[group].push(item);
   });
 
-  console.log('groupedData', groupedData);
-
   const initialValues = data.reduce(
     (prev, curr) => ({
       ...prev,
@@ -85,6 +84,9 @@ const BasicConfig = () => {
     console.log('changedValues', changedValues);
   };
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
+
+  console.log('groupedData', groupedData);
+  const tocAnchors = React.useMemo(() => getToc(groupedData), [groupedData]);
 
   return (
     <div className={themeCls}>
@@ -145,10 +147,7 @@ const BasicConfig = () => {
           </div>
         </div>
       )}
-      <Toc
-        className={styles.toc}
-        anchors={[{ title: 'aaa', href: 'wefwe' }, { title: 'aaab', href: 'wefweb' }]}
-      />
+      <Toc className={styles.toc} anchors={tocAnchors} />
     </div>
   );
 };

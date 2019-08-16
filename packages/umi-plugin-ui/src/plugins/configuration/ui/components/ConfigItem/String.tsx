@@ -5,11 +5,11 @@ import Label from './label';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<ICompProps> = props => {
-  const { name, description, form } = props;
+  const { name, description, form, title } = props;
   const { parentConfig } = getFormItemShow(name, form);
   const basicItem = {
     name,
-    label: <Label name={name} description={description} />,
+    label: <Label name={title} description={description} />,
   };
 
   const formControl = <Input style={{ maxWidth: 320 }} />;

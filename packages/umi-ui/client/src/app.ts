@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'antd/dist/antd.less';
 import EventEmitter from 'events';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';

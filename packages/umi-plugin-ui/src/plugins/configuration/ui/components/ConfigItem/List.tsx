@@ -7,16 +7,21 @@ import { getFormItemShow } from './utils';
 const { Option } = Select;
 
 const ListComp: React.SFC<ICompProps> = props => {
-  const { name, description, form, choices } = props;
+  const { name, description, form, title, choices } = props;
   const { parentConfig } = getFormItemShow(name, form);
   const basicItem = {
     name,
-    label: <Label name={name} description={description} />,
+    label: <Label name={title} description={description} />,
   };
 
   const formControl = (
     <Select style={{ maxWidth: 320 }}>
-      {Array.isArray(choices) && choices.map(choice => <Option value={choice}>{choice}</Option>)}
+      {Array.isArray(choices) &&
+        choices.map(choice => (
+          <Option key={choice} value={choice}>
+            {choice}
+          </Option>
+        ))}
     </Select>
   );
 

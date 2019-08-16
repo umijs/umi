@@ -5,7 +5,7 @@ import Context from '../../Context';
 // import { AnchorProps } from 'antd/lib/anchor';
 import styles from './Toc.module.less';
 
-export interface IAntToc {
+export interface IToc {
   href: string;
   title: string;
   className?: string;
@@ -13,7 +13,7 @@ export interface IAntToc {
 }
 
 export interface UiTocProps {
-  anchors: IAntToc[];
+  anchors: IToc[];
   className?: string;
 }
 
@@ -31,7 +31,12 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
             [`ui-toc-link-${anchor.level || 0}`]: true,
           });
           return (
-            <Anchor.Link key={i} href={anchor.href} title={anchor.title} className={linkCls} />
+            <Anchor.Link
+              key={i}
+              href={anchor.href.startsWith('#') ? anchor.href : `#${anchor.href}`}
+              title={anchor.title}
+              className={linkCls}
+            />
           );
         })}
       </Anchor>
