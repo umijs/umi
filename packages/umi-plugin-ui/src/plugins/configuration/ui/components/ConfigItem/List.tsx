@@ -15,7 +15,7 @@ const ListComp: React.SFC<ICompProps> = props => {
   };
 
   const formControl = (
-    <Select style={{ maxWidth: 320 }}>
+    <Select style={{ maxWidth: 320 }} getPopupContainer={triggerNode => triggerNode.parentNode}>
       {Array.isArray(choices) &&
         choices.map(choice => (
           <Option key={choice} value={choice}>

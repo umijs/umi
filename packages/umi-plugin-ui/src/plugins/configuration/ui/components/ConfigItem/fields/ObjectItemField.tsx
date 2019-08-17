@@ -61,7 +61,12 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
 
   return (
     <InputGroup compact style={{ marginBottom: 8, display: 'flex' }} className={className}>
-      <Select style={{ minWidth: 120 }} value={k} onChange={handleSelect}>
+      <Select
+        style={{ minWidth: 120 }}
+        value={k}
+        getPopupContainer={triggerNode => triggerNode.parentNode}
+        onChange={handleSelect}
+      >
         {Array.isArray(options) &&
           options.map(option => (
             <Option value={option.value} disabled={'disabled' in option ? option.disabled : false}>
