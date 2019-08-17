@@ -1,12 +1,11 @@
 import React from 'react';
-import { Input, Select, Button } from 'antd';
+import { Button } from 'antd';
 import { MinusCircle, Plus } from '@ant-design/icons';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 
 import styles from './styles.module.less';
 
 const { useState } = React;
-const { Option } = Select;
 
 const objToArray = (v: IValue): IValue[] => {
   return Object.keys(v).map(k => ({ [k]: v[k] }));
@@ -76,7 +75,6 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
         return (
           <div className={styles.itemField} key={i.toString()}>
             <ObjectItemField
-              key={i}
               className={styles['itemField-obj']}
               value={field}
               onChange={v => handleChange(v, i)}
@@ -88,7 +86,15 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           </div>
         );
       })}
-      <Button type="dashed" ghost block onClick={handleAdd}>
+      <Button
+        type="dashed"
+        ghost
+        block
+        onClick={handleAdd}
+        style={{
+          width: 'calc(100% - 22px)',
+        }}
+      >
         <Plus /> 添加一列
       </Button>
     </span>

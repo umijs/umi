@@ -83,6 +83,7 @@ const BasicConfig = () => {
     console.log('valuesvalues', values);
     const changedValues = getDiffItems(initialValues, values);
     console.log('changedValues', changedValues);
+    const loadingMsg = message.loading('正在保存配置', 0);
     const PromiseArr = [];
     Object.keys(changedValues).forEach(name => {
       PromiseArr.push(
@@ -97,12 +98,16 @@ const BasicConfig = () => {
     });
 
     console.log('PromiseArr', PromiseArr);
-
-    Promise.all(PromiseArr);
-
+    try {
+      Promise.all(PromiseArr);
+    } catch (e) {
+      message.error('配置修改失败');
+      console.error('配置修改失败', e);
+    } finally {
+      loadingMsg();
+    }
     await updateData();
-
-    message.success('修改成功');
+    message.success('配置修改成功');
   };
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 

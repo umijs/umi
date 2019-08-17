@@ -8,10 +8,8 @@
   .group {
     margin-bottom: 30px;
     max-width: 416px;
-    :global {
-      .ant-form-item {
-        margin-bottom: 32px;
-      }
+    & > :global(.ant-form-item) {
+      margin-bottom: 32px;
     }
   }
   h2 {

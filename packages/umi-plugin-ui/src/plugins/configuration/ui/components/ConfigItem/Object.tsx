@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
-import { MinusCircle, Plus } from '@ant-design/icons';
+import { Form } from 'antd';
 import { ICompProps } from './index';
 import Label from './label';
 import ObjectField from './fields/ObjectField';
