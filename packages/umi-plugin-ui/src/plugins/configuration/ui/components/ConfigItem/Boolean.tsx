@@ -22,8 +22,11 @@ const BooleanComp: React.SFC<ICompProps> = props => {
           getFieldValue(name),
           getFieldValue(parentConfig),
         );
+        const parentValue = getFieldValue(parentConfig);
+        const isShow =
+          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
         return (
-          !!getFieldValue(parentConfig) && (
+          isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
               <Switch />
             </Form.Item>
