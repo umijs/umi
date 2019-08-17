@@ -4,7 +4,6 @@ module.exports = {
   ...fabric.default,
   rules: {
     ...fabric.default.rules,
-    'jsx-a11y/label-has-for': [0],
     '@typescript-eslint/interface-name-prefix': [0],
     'jsx-a11y/alt-text': [0],
     'global-require': [0],
