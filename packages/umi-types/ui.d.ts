@@ -47,7 +47,7 @@ declare namespace IUI {
   interface ITwoColumnPanel {
     sections: Array<{
       title: string;
-      icon: string;
+      icon: string | React.ReactNode;
       description: string;
       component: FunctionComponent<any>;
     }>;
@@ -55,7 +55,7 @@ declare namespace IUI {
 
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
 
-  type ICallRemove = IApiActionFactory;
+  type ICallRemote = IApiActionFactory;
   type IListenRemote = IApiActionFactory<{}, void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = (key: string | undefined) => string;
@@ -97,7 +97,7 @@ declare namespace IUI {
     getContext(): Context<IContext>;
     /** system notify */
     notify: INotify;
-    callRemote: ICallRemove;
+    callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;
     listenRemote: IListenRemote;

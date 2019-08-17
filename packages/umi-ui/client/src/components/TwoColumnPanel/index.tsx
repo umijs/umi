@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { IUi } from 'umi-types';
 import { Icon } from 'antd';
 import cls from 'classnames';
 import styles from './index.less';
 
-export default function(props) {
+const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const { sections } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -15,7 +16,7 @@ export default function(props) {
 
   return (
     <div className={styles.normal}>
-      <div className={styles.left}>
+      <div className={styles.left} id="two-column-panel-left">
         {sections.map((s, index) => {
           const triggerCls = cls({
             [styles.trigger]: true,
@@ -28,7 +29,8 @@ export default function(props) {
               onClick={toggleSectionHandler.bind(this, index)}
             >
               <div className={styles.icon}>
-                <Icon type={s.icon} />
+                {typeof s.icon === 'string' && <Icon type={s.icon} />}
+                {React.isValidElement(s.icon) && s.icon}
               </div>
               <div className={styles.title_desc}>
                 <div className={styles.title}>{s.title}</div>
@@ -38,9 +40,11 @@ export default function(props) {
           );
         })}
       </div>
-      <div className={styles.right}>
+      <div className={styles.right} id="two-column-panel-right">
         <Component />
       </div>
     </div>
   );
-}
+};
+
+export default TwoColumnPanel;

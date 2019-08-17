@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import lodash from 'lodash';
 // eslint-disable-next-line no-multi-assign
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -10,7 +11,7 @@ import TwoColumnPanel from './components/TwoColumnPanel';
 export default class PluginAPI {
   public service: IUi.IService;
   public _: IUi.ILodash;
-  callRemote: IUi.ICallRemove;
+  callRemote: IUi.ICallRemote;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   TwoColumnPanel: ReactNode;
@@ -60,6 +61,22 @@ export default class PluginAPI {
       subtitle: this.intl(subtitle),
     };
 
+    if (document.hasFocus()) {
+      // focus use antd Notification
+      try {
+        notification[payload.type]({
+          message: intlParams.title,
+          description: intlParams.message,
+          duration: payload.timeout || 4.5,
+        });
+        // prevent system notify
+        return false;
+      } catch (e) {
+        console.error('UI notification  error', e);
+      }
+    }
+
+    // else use system Notification
     try {
       await callRemote({
         type: '@@app/notify',
@@ -69,7 +86,7 @@ export default class PluginAPI {
         },
       });
     } catch (e) {
-      console.error('notify error', e);
+      console.error('System notification error', e);
     }
   };
 
