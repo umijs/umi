@@ -8,6 +8,12 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /** overwrite ua input bg */
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: @input-bg;
+  }
   .ant-switch-loading-icon,
   .ant-switch::after {
     background-color: @light;

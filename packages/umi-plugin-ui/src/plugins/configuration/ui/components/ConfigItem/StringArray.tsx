@@ -15,7 +15,7 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
     return (
       <Form.Item label={label}>
         {fields.map((field, index) => (
-          <Form.Item key={field.key} required={false}>
+          <Form.Item key={field.key} required={false} style={{ marginBottom: 8 }}>
             <Form.Item
               {...field}
               validateTrigger={['onChange', 'onBlur']}

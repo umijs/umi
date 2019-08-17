@@ -13,6 +13,8 @@ const BasicConfig = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  // const [submitLoading, setSubmitLoading] = useState(false);
+  // const [disabled, setDisabled] = useState(true);
   const { api, theme } = useContext(Context);
   const { _ } = api;
 
@@ -79,10 +81,22 @@ const BasicConfig = () => {
   if (loading) {
     return <Spin />;
   }
+
+  const getChangedValue = React.useCallback(
+    vv => {
+      return getDiffItems(initialValues, vv);
+    },
+    [initialValues],
+  );
+
   const handleFinish = async values => {
     console.log('valuesvalues', values);
-    const changedValues = getDiffItems(initialValues, values);
+    const changedValues = getChangedValue(values);
     console.log('changedValues', changedValues);
+    if (!Object.keys(changedValues).length) {
+      // no edit config
+      return false;
+    }
     const loadingMsg = message.loading('正在保存配置', 0);
     const PromiseArr = [];
     Object.keys(changedValues).forEach(name => {
@@ -105,10 +119,18 @@ const BasicConfig = () => {
       console.error('配置修改失败', e);
     } finally {
       loadingMsg();
+      // setSubmitLoading(false);
     }
     await updateData();
     message.success('配置修改成功');
   };
+
+  const handleFinishFailed = ({ errorFields }) => {
+    const [firstErrorField] = errorFields;
+    const [firstErrorFieldName] = firstErrorField.name;
+    form.scrollToField(firstErrorFieldName);
+  };
+
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
   console.log('groupedData', groupedData);
@@ -121,9 +143,12 @@ const BasicConfig = () => {
           <Form
             layout="vertical"
             onFinish={handleFinish}
+            onFinishFailed={handleFinishFailed}
             initialValues={initialValues}
             onValuesChange={(changedValues, allValues) => {
               // console.log('allValues', allValues);
+              const changed = getChangedValue(allValues);
+              // setDisabled(Object.keys(changed).length === 0);
             }}
           >
             {Object.keys(groupedData).map(group => {
