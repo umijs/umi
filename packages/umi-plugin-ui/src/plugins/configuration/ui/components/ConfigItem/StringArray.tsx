@@ -11,7 +11,6 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
   const label = <Label name={name} title={title} description={description} />;
 
   const formControl = (fields, { add, remove }) => {
-    console.log('field', fields);
     return (
       <Form.Item label={label}>
         {fields.map((field, index) => (

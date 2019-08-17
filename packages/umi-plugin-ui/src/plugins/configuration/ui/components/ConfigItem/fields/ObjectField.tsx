@@ -49,7 +49,6 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   };
 
   console.log('fieldsValue', fieldsValue);
-  console.log('options', options);
 
   const handleAdd = () => {
     setFieldsValue(field => {

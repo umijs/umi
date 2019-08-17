@@ -147,7 +147,6 @@ const BasicConfig = () => {
             initialValues={initialValues}
             onValuesChange={(changedValues, allValues) => {
               // console.log('allValues', allValues);
-              const changed = getChangedValue(allValues);
               // setDisabled(Object.keys(changed).length === 0);
             }}
           >
