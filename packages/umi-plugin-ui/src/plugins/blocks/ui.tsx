@@ -86,6 +86,7 @@ export default (api: IUiApi) => {
 
     return (
       <div className={styles.normal}>
+        <Button onClick={() => api.showLogPanel()}>打开日志</Button>
         <Button onClick={handleNotify}>全局通知栏（当前窗口）</Button>
         <Button style={{ marginLeft: 8 }} onClick={() => setTimeout(handleNotify, 2000)}>
           全局通知栏（延迟 2 s，非当前窗口）

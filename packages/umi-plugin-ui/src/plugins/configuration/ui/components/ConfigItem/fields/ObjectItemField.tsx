@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Input, Select, InputNumber } from 'antd';
+import { Input, Select, InputNumber, Divider } from 'antd';
+import { Plus } from '@ant-design/icons';
 import styles from './styles.module.less';
 
 const InputGroup = Input.Group;
@@ -21,6 +22,8 @@ export interface IOption {
 export interface ObjectItemFieldProps {
   value: IValue;
   options: IOption[];
+  disableOptionsExtend?: boolean;
+  setOptions?: () => void;
   onChange: (value: IValue) => void;
   className?: string;
 }
@@ -33,7 +36,7 @@ const iconMappings = {
 };
 
 const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
-  const { options, value, onChange, className } = props;
+  const { options, value, onChange, className, disableOptionsExtend = true } = props;
   const [fieldValue, setFieldValue] = useState<IValue>(value);
   const [[k, v]] = Object.entries(fieldValue);
 
@@ -58,6 +61,18 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
     setFieldValue(val);
     triggerChange(val);
   };
+
+  const dropdownRender = disableOptionsExtend
+    ? menu => (
+        <div>
+          {menu}
+          <Divider style={{ margin: '4px 0' }} />
+          <div onClick={} style={{ padding: '8px', cursor: 'pointer' }}>
+            <Plus /> 添加
+          </div>
+        </div>
+      )
+    : null;
 
   return (
     <InputGroup compact style={{ marginBottom: 8, display: 'flex' }} className={className}>

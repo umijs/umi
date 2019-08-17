@@ -79,6 +79,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               value={field}
               onChange={v => handleChange(v, i)}
               options={options}
+              setOptions={setOptions}
             />
             {fieldsValue.length > 1 && (
               <MinusCircle className={styles['itemField-icon']} onClick={() => handleRemove(i)} />

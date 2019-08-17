@@ -10,14 +10,8 @@ import styles from './Footer.less';
 
 const { useState, useEffect, useReducer } = React;
 
-interface LogsProps {
-  logVisible: boolean;
-  showLogPanel: () => void;
-  hideLogPanel: () => void;
-}
-
-const Footer: React.SFC<LogsProps> = props => {
-  const { logVisible, showLogPanel, hideLogPanel } = props;
+const Footer: React.SFC<{}> = props => {
+  const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
       return [...state, action.payload];
@@ -26,6 +20,14 @@ const Footer: React.SFC<LogsProps> = props => {
       return action.payload;
     }
   }, []);
+
+  const showLogPanel = () => {
+    setLogVisible(true);
+  };
+
+  const hideLogPanel = () => {
+    setLogVisible(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -43,6 +45,21 @@ const Footer: React.SFC<LogsProps> = props => {
         },
       });
     })();
+
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.on('SHOW_LOG', () => {
+        setLogVisible(true);
+      });
+      window.g_uiEventEmitter.on('HIDE_LOG', () => {
+        setLogVisible(false);
+      });
+    }
+    return () => {
+      if (window.g_uiEventEmitter) {
+        window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
+        window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
+      }
+    };
   }, []);
 
   return (
