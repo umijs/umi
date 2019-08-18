@@ -491,13 +491,29 @@ export default class UmiUI {
       // 添加埋点脚本
       // TODO: 内外不同
       function normalizeHtml(html) {
+        const ga = `
+          <!-- Global site tag (gtag.js) - Google Analytics -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145890626-1"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-145890626-1');
+          </script>
+        `;
         if (process.env.BIGFISH_COMPAT) {
           html = html.replace('<body>', '<body>\n<script>window.g_bigfish = {};</script>');
         }
-        const baconScript = process.env.BIGFISH_COMPAT
-          ? `console.log('bacon for bigfish');`
-          : `console.log('bacon for umi');`;
-        return html.replace('</body>', `<script>${baconScript}</script>\n</body>`);
+        // DISABLE_UMI_UI_ANALYTICS=true => close ga/deer
+        // LOCAL_DEBUG ? disable ?
+        if (!process.env.DISABLE_UMI_UI_ANALYTICS) {
+          const baconScript = process.env.BIGFISH_COMPAT
+            ? `<script>console.log('bacon for bigfish');</script>`
+            : ga;
+          html = html.replace('</head>', `${baconScript}\n</head>`);
+        }
+        return html;
       }
 
       const sockjs = require('sockjs');
