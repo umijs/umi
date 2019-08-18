@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
 import EventEmitter from 'events';
+import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
 import { init as initSocket, callRemote } from './socket';
@@ -75,6 +76,8 @@ export async function render(oldRender) {
       data,
     };
     if (data.currentProject) {
+      const currentProject = get(data, `projectsByKey.${data.currentProject}`, {});
+      window.g_uiCurrentProject = currentProject;
       try {
         await callRemote({
           type: '@@project/open',
@@ -103,7 +106,7 @@ export async function render(oldRender) {
 
       // Init the plugins
       window.g_uiPlugins.forEach(uiPlugin => {
-        uiPlugin(new PluginAPI(service));
+        uiPlugin(new PluginAPI(service, currentProject));
       });
     } else {
       history.replace('/project/select');

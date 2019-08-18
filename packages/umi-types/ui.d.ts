@@ -80,6 +80,10 @@ declare namespace IUI {
   type IShowLogPanel = () => void;
   type IHideLogPanel = () => void;
   type ILodash = typeof lodash;
+  interface ICurrentProject {
+    name?: string;
+    path?: string;
+  }
   type IRedirect = (url: string) => void;
 
   class IApiClass {
@@ -88,6 +92,8 @@ declare namespace IUI {
     /** lodash */
     readonly _: ILodash;
 
+    /** currentProject  */
+    currentProject: ICurrentProject;
     /** intl */
     intl: IIntl;
     /** add plugin Panel */

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Drawer } from 'antd';
-import { Folder, Profile, Bug } from '@ant-design/icons';
+import { Folder, Profile, Bug, Home } from '@ant-design/icons';
 import cls from 'classnames';
+import history from '@tmp/history';
 import Terminal from '@/components/Terminal';
 import Logs from '@/components/Logs';
 import { getHistory, listenMessage } from '@/services/logs';
@@ -10,7 +11,13 @@ import styles from './Footer.less';
 
 const { useState, useEffect, useReducer } = React;
 
-const Footer: React.SFC<{}> = props => {
+export interface IFooterProps {
+  type: 'list' | 'detail';
+}
+
+const Footer: React.SFC<IFooterProps> = props => {
+  const { type } = props;
+  const { path, name } = window.g_uiCurrentProject;
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
@@ -27,6 +34,10 @@ const Footer: React.SFC<{}> = props => {
 
   const hideLogPanel = () => {
     setLogVisible(false);
+  };
+
+  const redirect = (url: string) => {
+    history.replace(url);
   };
 
   useEffect(() => {
@@ -62,16 +73,23 @@ const Footer: React.SFC<{}> = props => {
     };
   }, []);
 
+  const actionCls = cls(styles.section, styles.action);
+  const logCls = cls(actionCls, styles.log);
+
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        <div className={styles.section}>
-          <Folder /> 当前位置
-        </div>
-        <div
-          onClick={() => (logVisible ? hideLogPanel() : showLogPanel())}
-          className={`${styles.section} ${styles.action} ${styles.log}`}
-        >
+        {type === 'detail' && (
+          <>
+            <div onClick={() => redirect('/project/select')} className={actionCls}>
+              <Home style={{ marginRight: 4 }} /> {name}
+            </div>
+            <div className={styles.section}>
+              <Folder style={{ marginRight: 4 }} /> {path}
+            </div>
+          </>
+        )}
+        <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
           <Profile /> 日志
         </div>
         <div className={styles.section}>

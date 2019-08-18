@@ -22,8 +22,8 @@
 }
 
 .statusBar {
-  background: #1d2935;
-  color: #fff;
+  background: @ui-status-bar-background;
+  color: @ui-status-bar-color;
   height: @ui-status-bar-height;
   line-height: @ui-status-bar-height;
   display: flex;
@@ -31,7 +31,8 @@
   font-size: 12px;
 
   .section {
-    flex: auto 0 0;
+    flex: auto 1;
+    flex-shrink: 0;
     padding: 0 8px;
     cursor: default;
     height: 100%;
@@ -39,12 +40,12 @@
   .section.action {
     cursor: pointer;
     user-select: none;
+    &:hover {
+      background: #2c3e51;
+    }
   }
   .section.log {
     width: 0;
     flex: 100% 1 1;
-  }
-  .section:hover {
-    background: #2c3e51;
   }
 }

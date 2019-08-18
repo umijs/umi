@@ -5,14 +5,17 @@ import Context from './Context';
 import Footer from './Footer';
 import { THEME } from '@/enums';
 
-interface ILayoutProps {}
+interface ILayoutProps {
+  /** Layout 类型（项目列表、项目详情） */
+  type: 'detail' | 'list';
+}
 
 interface ILayoutState {
   theme: IUi.ITheme;
 }
 
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
-  constructor(props) {
+  constructor(props: ILayoutProps) {
     super(props);
     this.state = {
       theme: 'dark',
@@ -42,6 +45,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   render() {
     const locale = getLocale();
     const { theme } = this.state;
+    const { type } = this.props;
     window.g_uiContext = Context;
 
     return (
@@ -58,7 +62,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
         }}
       >
         {this.props.children}
-        <Footer />
+        <Footer type={type} />
       </Context.Provider>
     );
   }

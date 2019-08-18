@@ -15,14 +15,19 @@ export default class PluginAPI {
   callRemote: IUi.ICallRemote;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
+  currentProject: IUi.ICurrentProject;
   TwoColumnPanel: ReactNode;
 
-  constructor(service: IUi.IService) {
+  constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
     this.callRemote = callRemote;
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
+    this.currentProject =
+      {
+        ...currentProject
+      } || {};
     this.TwoColumnPanel = TwoColumnPanel;
   }
 

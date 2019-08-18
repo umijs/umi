@@ -40,7 +40,7 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
   render() {
     const { current, currentData } = this.state;
     return (
-      <Layout>
+      <Layout type="list">
         <Context.Consumer>
           {context => (
             <ProjectContext.Provider

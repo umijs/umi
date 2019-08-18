@@ -25,7 +25,7 @@ export default withRouter(props => {
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
   return (
-    <UiLayout>
+    <UiLayout type="detail">
       <Context.Consumer>
         {({ locale, FormattedMessage, formatMessage, setLocale }) => (
           <Layout className={styles.normal}>
