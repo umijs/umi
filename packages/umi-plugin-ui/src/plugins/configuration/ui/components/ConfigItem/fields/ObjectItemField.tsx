@@ -3,7 +3,7 @@ import { Input, Select, InputNumber, Divider } from 'antd';
 import { Plus } from '@ant-design/icons';
 import styles from './styles.module.less';
 
-const InputGroup = Input.Group;
+const { Group: InputGroup } = Input;
 const { Option } = Select;
 
 const { useState } = React;
@@ -67,7 +67,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
         <div>
           {menu}
           <Divider style={{ margin: '4px 0' }} />
-          <div onClick={} style={{ padding: '8px', cursor: 'pointer' }}>
+          <div style={{ padding: '8px', cursor: 'pointer' }}>
             <Plus /> 添加
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
+import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import { formatMessage } from 'umi-plugin-react/locale';
 import { ReactNode } from 'react';
@@ -24,6 +25,11 @@ export default class PluginAPI {
     this._ = lodash;
     this.TwoColumnPanel = TwoColumnPanel;
   }
+
+  redirect: IUi.IRedirect = url => {
+    history.replace(url);
+    window.location.reload();
+  };
 
   showLogPanel: IUi.IShowLogPanel = () => {
     if (window.g_uiEventEmitter) {

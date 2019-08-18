@@ -80,6 +80,7 @@ declare namespace IUI {
   type IShowLogPanel = () => void;
   type IHideLogPanel = () => void;
   type ILodash = typeof lodash;
+  type IRedirect = (url: string) => void;
 
   class IApiClass {
     constructor(service: IService);
@@ -97,6 +98,8 @@ declare namespace IUI {
     getContext(): Context<IContext>;
     /** system notify */
     notify: INotify;
+    /** redirect */
+    redirect: IRedirect;
     callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;

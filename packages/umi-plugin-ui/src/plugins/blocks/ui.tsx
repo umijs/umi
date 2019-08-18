@@ -91,6 +91,8 @@ export default (api: IUiApi) => {
         <Button style={{ marginLeft: 8 }} onClick={() => setTimeout(handleNotify, 2000)}>
           全局通知栏（延迟 2 s，非当前窗口）
         </Button>
+
+        <Button onClick={() => api.redirect('/project/select')}>跳转至项目列表</Button>
         <Search
           placeholder={intl('org.umi.ui.blocks.content.search_block')}
           onSearch={value => console.log(value)}

@@ -1,7 +1,7 @@
 import { ICompProps } from './index';
 import { IToc } from '../common/Toc';
 
-export const getFormItemShow = (name: string, form) => {
+export const getFormItemShow = (name: string) => {
   const configs = name.split('.');
   const parentConfig = configs.length > 1 ? configs[0] : '';
   return {
