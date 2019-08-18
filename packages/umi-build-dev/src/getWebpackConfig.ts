@@ -76,7 +76,7 @@ export default function(service: IApi, opts: IOpts = {}) {
     webpackConfig.output.chunkFilename = '[name].server.async.js';
     webpackConfig.plugins.push(
       new (require('write-file-webpack-plugin'))({
-        test: /umi\.server\.js/,
+        test: /\.server\.js/,
       }),
     );
   }
