@@ -28,7 +28,7 @@ export default class PluginAPI {
 
   redirect: IUi.IRedirect = url => {
     history.replace(url);
-    window.location.reload();
+    // window.location.reload();
   };
 
   showLogPanel: IUi.IShowLogPanel = () => {

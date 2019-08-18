@@ -1,5 +1,5 @@
 export default {
-  entry: 'ui.js',
+  entry: 'ui.jsx',
   umd: {
     name: 'dashboard',
     minFile: false,
