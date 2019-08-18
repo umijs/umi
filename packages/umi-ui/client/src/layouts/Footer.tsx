@@ -17,7 +17,7 @@ export interface IFooterProps {
 
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
-  const { path, name } = window.g_uiCurrentProject;
+  const { path, name } = window.g_uiCurrentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
@@ -79,7 +79,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        {type === 'detail' && (
+        {type === 'detail' && path && name && (
           <>
             <div onClick={() => redirect('/project/select')} className={actionCls}>
               <Home style={{ marginRight: 4 }} /> {name}

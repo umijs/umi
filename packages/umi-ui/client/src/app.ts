@@ -77,7 +77,8 @@ export async function render(oldRender) {
     };
     if (data.currentProject) {
       const currentProject = get(data, `projectsByKey.${data.currentProject}`, {});
-      window.g_uiCurrentProject = currentProject;
+      console.log('currentProject', currentProject);
+      window.g_uiCurrentProject = currentProject || {};
       try {
         await callRemote({
           type: '@@project/open',
