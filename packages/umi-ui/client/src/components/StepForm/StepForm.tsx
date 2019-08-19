@@ -64,6 +64,7 @@ const StepForm: React.SFC<InternalStepFormProps> = props => {
           currentStep,
           handleCurrentStep,
           handleFinish,
+          active: currentStep === j,
           index: j,
           saveFormRef: saveFormRef(j),
         }),

@@ -69,7 +69,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const handleParentDirectory = async () => {
     if (pathArr.length > 0) {
       const currDirPath = pathArr.slice(0, -1).join('/');
-      await changeDirectories(currDirPath);
+      await changeDirectories(currDirPath || '/');
     }
   };
 

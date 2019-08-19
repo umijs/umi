@@ -6,6 +6,7 @@ export interface IStepItemForm {
   goNext: () => void;
   goPrev: () => void;
   index: number;
+  active: boolean;
   [key: string]: any;
 }
 
@@ -22,6 +23,7 @@ const StepItem: React.SFC<StepItemProps> = props => {
     saveFormRef,
     index,
     currentStep,
+    active,
     handleFinish,
   } = props;
   const goNext = () => {
@@ -37,6 +39,7 @@ const StepItem: React.SFC<StepItemProps> = props => {
     goNext,
     goPrev,
     index,
+    active,
     style: {
       display: index === currentStep ? 'block' : 'none',
     },

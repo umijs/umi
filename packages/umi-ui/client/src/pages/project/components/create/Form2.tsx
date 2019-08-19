@@ -10,9 +10,8 @@ const { useState, useEffect, useContext } = React;
 const { Option } = Select;
 
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
-  const { goPrev, handleFinish, style } = props;
+  const { goPrev, handleFinish, style, active } = props;
   const { formatMessage } = useContext(ProjectContext);
-  const [loading, setLoading] = useState<boolean>(false);
   const [appType, setAppType] = useState<APP_TYPE>();
   const [npmClient, setNpmClient] = useState<string[]>();
   const [form] = Form.useForm();
@@ -30,11 +29,16 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      await getMpmClients();
-    })();
-  }, []);
+  useEffect(
+    () => {
+      if (active) {
+        (async () => {
+          await getMpmClients();
+        })();
+      }
+    },
+    [active],
+  );
 
   // tmp options, real from server
   const options: IOption[] = [
