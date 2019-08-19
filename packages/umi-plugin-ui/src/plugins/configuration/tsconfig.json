@@ -12,7 +12,8 @@
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "declaration": false
   },
   "exclude": [
     "node_modules",

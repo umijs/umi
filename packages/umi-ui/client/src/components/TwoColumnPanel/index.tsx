@@ -29,7 +29,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
               onClick={toggleSectionHandler.bind(this, index)}
             >
               <div className={styles.icon}>
-                {typeof s.icon === 'string' && <Icon type={s.icon} />}
+                {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
                 {React.isValidElement(s.icon) && s.icon}
               </div>
               <div className={styles.title_desc}>
