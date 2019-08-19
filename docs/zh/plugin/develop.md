@@ -720,3 +720,11 @@ export function render(oldRender) {
 ### addRuntimePluginKey
 
 添加运行时可配置项。
+
+### writeTmpFile
+
+增加一个文件到"pages/.umi"下
+
+```
+api.writeTmpFile('dva.js', tplContent);
+```

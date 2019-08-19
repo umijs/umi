@@ -725,3 +725,11 @@ This implements a 1 second delayed rendering application.
 ### addRuntimePluginKey
 
 Add a runtime configurable item.
+
+### writeTmpFile
+
+add a file to pages/.umi
+
+```
+api.writeTmpFile('dva.js', tplContent);
+```
