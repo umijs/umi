@@ -7,6 +7,7 @@ export default function() {
       assert(typeof val === 'string', `The publicPath config must be String, but got ${val}`);
     },
     default: '/',
+    title: 'publicPath',
     type: 'string',
     group: 'deploy',
     description: {
