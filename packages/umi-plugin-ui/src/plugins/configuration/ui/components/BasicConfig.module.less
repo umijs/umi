@@ -1,9 +1,42 @@
 .basicConfig {
   display: flex;
+  height: 100%;
+  padding-top: 16px;
   &-header {
     margin-bottom: 16px;
+    position: relative;
+    & > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &-searchIcon {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      color: fade(#fff, 85);
+      &-hide {
+        display: none;
+      }
+      &:hover {
+        color: #fff;
+      }
+    }
     h2 {
       font-size: 16px;
+      margin-right: 24px;
+    }
+    &-input {
+      display: inline-block;
+      margin-left: -11.5px;
+      vertical-align: middle;
+      width: 0;
+      opacity: 0;
+      transition: width 0.4s, opacity 0.4s;
+      &-active {
+        width: 230px;
+        opacity: 1;
+      }
     }
   }
   .form {

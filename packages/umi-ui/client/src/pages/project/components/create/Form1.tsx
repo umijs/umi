@@ -14,6 +14,15 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const { cwd, goNext, goPrev, style } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [form] = Form.useForm();
+  const handleDebounceInput = debounce(() => {
+    form.validateFields();
+  }, 500);
+
+  useEffect(() => {
+    return () => {
+      handleDebounceInput.cancel();
+    };
+  }, []);
 
   // const handleBaseDirChange = (value: string) => {
   //   const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
@@ -45,10 +54,6 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const renderFullPath = () => {
     return <p className={styles.fullPath}>{getFullPath()}</p>;
   };
-
-  const handleDebounceInput = debounce(() => {
-    form.validateFields();
-  }, 500);
 
   return (
     <Form

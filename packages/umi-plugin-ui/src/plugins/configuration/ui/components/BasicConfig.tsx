@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
+import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
 import { Button, Form, Input, Spin, Switch, message, Anchor } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
+import useToggle from './common/useToggle';
 import configMapping from './ConfigItem';
 import Toc from './common/Toc';
 import { getToc } from './ConfigItem/utils';
@@ -14,6 +16,8 @@ const BasicConfig = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [search, setSearch] = useState<string>('');
+  const searchInputRef = useRef();
+  const [showSearch, toggleSearch] = useToggle(false);
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
   const { api, theme } = useContext(Context);
@@ -22,12 +26,33 @@ const BasicConfig = () => {
   const getDiffItems = (prev: object, curr: object): object =>
     _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
 
+  const handleSearch = (vv = '') => {
+    setSearch(vv);
+  };
+  const handleSearchDebounce = _.debounce(handleSearch, 150);
+  const resetSearch = () => {
+    toggleSearch(false);
+    setSearch('');
+    if (searchInputRef.current) {
+      searchInputRef.current.handleReset();
+    }
+  };
+  const handleSearchShow = () => {
+    toggleSearch();
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     (async () => {
       await updateData();
     })();
     setLoading(false);
+    return () => {
+      handleSearchDebounce.cancel();
+    };
   }, []);
 
   async function updateData() {
@@ -61,15 +86,21 @@ const BasicConfig = () => {
     await updateData();
   }
 
-  const searchData = React.useMemo(
-    () => {
-      const fuse = new Fuse(data, {
+  const fuse = React.useMemo(
+    () =>
+      new Fuse(data, {
         caseSensitive: true,
         shouldSort: false,
         threshold: 0.6,
         keys: ['name', 'title', 'description', 'group'],
-      });
-      const result = fuse.search('');
+      }),
+    [data],
+  );
+
+  const searchData = React.useMemo(
+    () => {
+      console.log('searchsearchsearch', search);
+      const result = fuse.search(search);
       console.log('resultresultresult', result);
       if (result.length > 0) {
         return result;
@@ -126,7 +157,6 @@ const BasicConfig = () => {
   );
 
   const handleFinish = async values => {
-    console.log('valuesvalues', values);
     const changedValues = getChangedValue(values);
     console.log('changedValues', changedValues);
     if (!Object.keys(changedValues).length) {
@@ -167,12 +197,31 @@ const BasicConfig = () => {
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
   const tocAnchors = getToc(groupedData, allValues || initialValues);
+  const searchIconCls = cls(styles['basicConfig-header-searchIcon'], {
+    [styles['basicConfig-header-searchIcon-hide']]: !!showSearch,
+  });
+  const inputCls = cls(styles['basicConfig-header-input'], {
+    [styles['basicConfig-header-input-active']]: !!showSearch,
+  });
+
+  console.log('searchsearchsearchsearch', search);
 
   return (
     <div className={themeCls}>
       <div className={styles.form}>
         <div className={styles['basicConfig-header']}>
           <h2>项目配置</h2>
+          <span className={searchIconCls}>
+            <SearchIcon onClick={handleSearchShow} />
+          </span>
+          <Input
+            prefix={<SearchIcon />}
+            ref={searchInputRef}
+            suffix={search && <CloseCircleFilled onClick={resetSearch} />}
+            placeholder="搜索"
+            className={inputCls}
+            onChange={e => handleSearchDebounce(e.target.value)}
+          />
         </div>
         {searchData.length > 0 && (
           <div>
@@ -183,9 +232,7 @@ const BasicConfig = () => {
               onFinishFailed={handleFinishFailed}
               initialValues={initialValues}
               onValuesChange={(changedValues, allValues) => {
-                console.log('allValues', allValues);
                 setAllValues(allValues);
-                // setDisabled(Object.keys(changed).length === 0);
               }}
             >
               {Object.keys(groupedData).map(group => {
@@ -199,14 +246,14 @@ const BasicConfig = () => {
                   </div>
                 );
               })}
-              <Form.Item shouldUpdate>
+              {/* <Form.Item shouldUpdate>
                 {({ getFieldsValue }) => {
                   return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
                 }}
-              </Form.Item>
+              </Form.Item> */}
               <Button htmlType="submit">保存</Button>
             </Form>
-            <div>
+            {/* <div>
               <h2>Test</h2>
               <Button
                 type="primary"
@@ -232,7 +279,7 @@ const BasicConfig = () => {
               <br />
               <br />
               <br />
-            </div>
+            </div> */}
           </div>
         )}
       </div>
