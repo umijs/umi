@@ -1,5 +1,5 @@
 import { Icon, Menu, Select, Layout } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, withRouter } from 'umi';
 import { LOCALES } from '@/enums';
 import iconSvg from '@/assets/umi.svg';
@@ -23,6 +23,14 @@ export default withRouter(props => {
   const activePanel = getActivePanel(pathname);
   console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
+
+  useEffect(
+    () => {
+      const currPanel = getActivePanel(pathname);
+      setSelectedKeys([currPanel ? currPanel.path : '/']);
+    },
+    [pathname],
+  );
 
   return (
     <UiLayout type="detail">
