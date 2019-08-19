@@ -111,9 +111,16 @@ api.addUIPlugin(require.resolve('./dist/ui'));
 
 调服务端接口，并等待 type 加上 `/success` 或 `/failure` 消息的返回。如果有进度的返回，可通过 `onProgress` 处理回调。
 
-### `api.listenRemote({ type, onMessage })`
+### `api.listenRemote({ type, onMessage }): unlisten`
 
 监听 socket 请求，有消息时通过 `onMessage` 处理回调。
+
+返回一个 unlisten 函数，用于取消监听。
+
+```js
+const unlisten = api.listenRemote({ type, onMessage });
+unlisten();
+```
 
 ### `api.send({ type, payload })`
 

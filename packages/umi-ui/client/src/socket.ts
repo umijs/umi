@@ -99,9 +99,18 @@ export function callRemote<T = object, K = object>(
 }
 
 export function listenRemote(action) {
-  messageHandlers.push(({ type, payload }) => {
+  function handler({ type, payload }) {
     if (type === action.type) {
       action.onMessage(payload);
     }
-  });
+  }
+  messageHandlers.push(handler);
+  return () => {
+    for (const [i, h] of messageHandlers.entries()) {
+      if (h === handler) {
+        messageHandlers.splice(i, 1);
+        break;
+      }
+    }
+  };
 }
