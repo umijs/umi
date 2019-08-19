@@ -15,7 +15,7 @@ interface DirectoryFormProps {
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const { value, onChange } = props;
-
+  const [clicked, setClicked] = useState<number>(-1);
   const [dirPath, setDirPath] = useState<string>(value || '');
   const [directories, setDirectories] = useState<DirectoryItemProps[]>();
   const triggerChangeValue = (path: string) => {
@@ -33,6 +33,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     triggerChangeValue(path);
     setDirPath(path);
     setDirectories(files);
+    setClicked(-1);
   };
 
   useEffect(() => {
@@ -48,6 +49,20 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       // TODO windows Path format
       const currDirPath = `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`;
       await changeDirectories(currDirPath);
+    }
+  };
+
+  const handleDirectorySelect = (folderName: string, i: number) => {
+    if (folderName) {
+      const currDirPath = !(clicked > -1)
+        ? `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`
+        : dirPath
+            .split('/')
+            .slice(0, -1)
+            .concat(folderName)
+            .join('/');
+      triggerChangeValue(currDirPath);
+      setClicked(i);
     }
   };
 
@@ -91,8 +106,14 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       {Array.isArray(directories) ? (
         <div className={styles['directoryForm-list']}>
           {directories.length > 0 ? (
-            directories.map(item => (
-              <DirectoryItem key={item.fileName} {...item} onClick={handleDirectoryClick} />
+            directories.map((item, i) => (
+              <DirectoryItem
+                {...item}
+                key={`${item.fileName}_${i}`}
+                clicked={i === clicked}
+                onDoubleClick={handleDirectoryClick}
+                onClick={folderName => handleDirectorySelect(folderName, i)}
+              />
             ))
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />

@@ -5,11 +5,13 @@
   &-card {
     cursor: pointer;
     position: relative;
-    transition: background 0.3s @ease-in;
+    transition: all 0.3s @ease-in;
+    border: 1px solid transparent;
     &:hover {
-      background: @primary-5;
+      border-color: fade(@light, 10);
     }
     &-active {
+      border-color: @primary-color;
       &::after {
         position: absolute;
         background: url('./corner.svg');

@@ -1,32 +1,45 @@
 import * as React from 'react';
-import { Icon } from 'antd';
+import { FolderFilled, Check } from '@ant-design/icons';
 import cls from 'classnames';
 import { IDirectoryType } from '@/enums';
 
 import styles from './index.less';
 
-const { useState, useEffect } = React;
-
 export interface DirectoryItemProps {
   fileName: string;
   type: keyof typeof IDirectoryType;
+  clicked?: boolean;
   onClick: (name: string) => void;
+  onDoubleClick: (name: string) => void;
 }
 
 const DirectoryItem: React.SFC<DirectoryItemProps> = props => {
-  const { onClick } = props;
+  const { onClick, fileName, onDoubleClick, clicked } = props;
+  const itemCls = cls(styles['directoryForm-list-item'], {
+    [styles['directoryForm-list-item-active']]: !!clicked,
+  });
   const foldIconCls = cls(
     styles['directoryForm-list-item-icon'],
     styles['directoryForm-item-icon-folder'],
   );
+
+  const iconCls = cls(styles['directoryForm-list-item-checked-icon'], {
+    [styles['checked-icon-active']]: !!clicked,
+  });
+  // Double Click
+  const handleDoubleClick = () => {
+    console.log('directory', fileName);
+    onDoubleClick(fileName);
+  };
+  // onClick
   const handleClick = () => {
-    console.log('directory', props.fileName);
-    onClick(props.fileName);
+    onClick(fileName);
   };
   return (
-    <div className={styles['directoryForm-list-item']} onClick={handleClick}>
-      <Icon className={foldIconCls} type="folder" />
-      <div className={styles['directoryForm-list-item-name']}>{props.fileName}</div>
+    <div className={itemCls} onDoubleClick={handleDoubleClick} onClick={handleClick}>
+      <FolderFilled className={foldIconCls} />
+      <div className={styles['directoryForm-list-item-name']}>{fileName}</div>
+      <Check className={iconCls} />
     </div>
   );
 };
