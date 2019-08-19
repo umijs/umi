@@ -174,3 +174,77 @@ api.addPanel({
   component: Configuration,
 });
 ```
+
+## `api.notify(params: INotifyParams) => void`
+
+调用系统通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd Notification，否则样式为系统原生通知栏。
+
+其中 `INotifyParams` 是，其中 `title`, `message`, `subTitle` 支持国际化：
+
+```js
+{
+  title: string;
+  message: string;
+  /** notify type, default info */
+  type?: 'error' | 'info' | 'warning' | 'success';
+  subtitle?: string;
+  /** URL to open on click */
+  open?: string;
+  /**
+   * The amount of seconds before the notification closes.
+   * Takes precedence over wait if both are defined.
+   */
+  timeout?: number;
+}
+```
+
+比如：
+
+```js
+const { notify } = api;
+
+notify({
+  /** 前提已经调用过 api.addLocales 添加 key */
+  title: 'org.umi.ui.blocks.notify.title',
+  message: '可以不使用国际化',
+  type: 'success',
+});
+```
+
+## `api.redirect(url: string)`
+
+应用内路由跳转
+
+例如：
+
+```js
+const { redirect } = api;
+
+export default () => <Button onClick={() => redirect('/project/select')}>跳转到项目列表</Button>;
+```
+
+## `api.currentProject`
+
+获取当前项目基本信息，信息包括：
+
+```js
+{
+  // 应用名
+  name?: string;
+  // 应用路径
+  path?: string;
+}
+```
+
+例如：
+
+```js
+const { currentProject } = api;
+
+export default () => (
+  <div>
+    <p>当前应用名：{currentProject.name}</p>
+    <p>当前路径：{currentProject.path}</p>
+  </div>
+);
+```

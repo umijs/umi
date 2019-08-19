@@ -76,8 +76,8 @@ export default (api: IUiApi) => {
       })();
     }
 
-    const handleNotify = async () => {
-      await api.notify({
+    const handleNotify = () => {
+      api.notify({
         title: 'org.umi.ui.blocks.notify.title',
         message: 'org.umi.ui.blocks.notify.message',
         type: 'success',
