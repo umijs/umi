@@ -8,8 +8,8 @@ import { getFormItemShow } from './utils';
 const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
 
 const ObjectComp: React.SFC<ICompProps> = props => {
-  const { name, description, form, title, choices, default: defaultValue } = props;
-  const { parentConfig } = getFormItemShow(name, form);
+  const { name, description, title, choices, default: defaultValue } = props;
+  const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     label: <Label name={name} title={title} description={description} />,
@@ -23,7 +23,7 @@ const ObjectComp: React.SFC<ICompProps> = props => {
     ? choices.map(choice => ({ name: choice, value: choice, icon: getIcon(choice) }))
     : Object.keys(defaultValue).map(v => ({ name: v, value: v, icon: getIcon(v) }));
 
-  const formControl = <ObjectField options={options} />;
+  const formControl = <ObjectField options={options} defaultValue={defaultValue} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>

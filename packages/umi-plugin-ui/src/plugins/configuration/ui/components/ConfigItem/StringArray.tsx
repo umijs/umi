@@ -6,8 +6,8 @@ import Label from './label';
 import { getFormItemShow } from './utils';
 
 const StringArrayComp: React.SFC<ICompProps> = props => {
-  const { name, description, form, title } = props;
-  const { parentConfig } = getFormItemShow(name, form);
+  const { name, description, title } = props;
+  const { parentConfig } = getFormItemShow(name);
   const label = <Label name={name} title={title} description={description} />;
 
   const formControl = (fields, { add, remove }) => {

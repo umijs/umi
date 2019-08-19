@@ -22,6 +22,8 @@ export interface IOption {
 export interface ObjectItemFieldProps {
   value: IValue;
   options: IOption[];
+  disabled?: boolean;
+  defaultValue?: IValue;
   disableOptionsExtend?: boolean;
   setOptions?: () => void;
   onChange: (value: IValue) => void;
@@ -36,7 +38,7 @@ const iconMappings = {
 };
 
 const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
-  const { options, value, onChange, className, disableOptionsExtend = true } = props;
+  const { options, value, onChange, className, disableOptionsExtend = true, disabled } = props;
   const [fieldValue, setFieldValue] = useState<IValue>(value);
   const [[k, v]] = Object.entries(fieldValue);
 
@@ -78,9 +80,11 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
     <InputGroup compact style={{ marginBottom: 8, display: 'flex' }} className={className}>
       <Select
         style={{ minWidth: 120 }}
-        value={k}
+        value={options.find(option => k === option.value) ? k : undefined}
+        disabled={disabled}
         getPopupContainer={triggerNode => triggerNode.parentNode}
         onChange={handleSelect}
+        placeholder="请选择"
       >
         {Array.isArray(options) &&
           options.map(option => (

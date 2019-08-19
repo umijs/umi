@@ -1,8 +1,18 @@
 .itemField {
   display: flex;
   align-items: center;
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
   .itemField-obj {
     flex: 100% 1 1;
+    &-required {
+      .itemField-field-value {
+        & > :global(.ant-input-number) {
+          width: calc(~'100% - 22px');
+        }
+      }
+    }
   }
   &-icon {
     margin-left: 8px;

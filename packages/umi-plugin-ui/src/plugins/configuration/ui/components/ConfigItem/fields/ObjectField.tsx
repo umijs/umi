@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import cls from 'classnames';
 import { MinusCircle, Plus } from '@ant-design/icons';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 
@@ -22,7 +23,7 @@ const arrayToObj = (arr: IValue[]): IValue => {
 };
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
-  const { value, onChange, options: originOptions } = props;
+  const { value, onChange, options: originOptions, defaultValue } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     return originOptions.map(option => ({
@@ -52,8 +53,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
 
   const handleAdd = () => {
     setFieldsValue(field => {
-      const lastField = field[field.length - 1];
-      field[field.length] = lastField;
+      field[field.length] = { undefined: 0 };
       return field;
     });
     triggerChange({});
@@ -71,16 +71,23 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   return (
     <span>
       {fieldsValue.map((field, i) => {
+        const [fieldKey] = Object.keys(field);
+        console.log('fieldKey in defaultValue', fieldKey in defaultValue);
+        const isRequired = fieldKey in defaultValue;
+        const fieldObjCls = cls(styles['itemField-obj'], {
+          [styles['itemField-obj-required']]: isRequired,
+        });
         return (
-          <div className={styles.itemField} key={i.toString()}>
+          <div className={styles.itemField} key={fieldKey}>
             <ObjectItemField
-              className={styles['itemField-obj']}
+              className={fieldObjCls}
               value={field}
+              disabled={isRequired}
               onChange={v => handleChange(v, i)}
               options={options}
               setOptions={setOptions}
             />
-            {fieldsValue.length > 1 && (
+            {!isRequired && (
               <MinusCircle className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
             )}
           </div>
