@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
 import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
-import { Button, Form, Input, Spin, Switch, message, Anchor } from 'antd';
+import { Button, Form, Input, Spin, message } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
 import useToggle from './common/useToggle';
@@ -66,31 +66,17 @@ const BasicConfig = () => {
   }
 
   function formatValue(value) {
-    if (value) {
-      if (typeof value === 'object') {
-        return serialize(value);
-      }
-      return value.toString();
+    if (typeof value === 'object') {
+      return serialize(value);
     }
-    return value;
-  }
-
-  async function editHandler(name, value) {
-    await api.callRemote({
-      type: 'org.umi.config.edit',
-      payload: {
-        key: name,
-        value: formatValue(value),
-      },
-    });
-    await updateData();
+    return value.toString();
   }
 
   const fuse = React.useMemo(
     () =>
       new Fuse(data, {
         caseSensitive: true,
-        shouldSort: false,
+        shouldSort: true,
         threshold: 0.6,
         keys: ['name', 'title', 'description', 'group'],
       }),
@@ -132,28 +118,31 @@ const BasicConfig = () => {
     return value || defaultValue;
   };
 
-  const initialValues = searchData.reduce(
-    (prev, curr) => ({
-      ...prev,
-      [curr.name]: getInitialValue({
-        value: curr.value,
-        default: curr.default,
+  const arrayToObject = arr => {
+    return arr.reduce(
+      (prev, curr) => ({
+        ...prev,
+        [curr.name]: getInitialValue({
+          value: curr.value,
+          default: curr.default,
+        }),
       }),
-    }),
-    {},
-  );
+      {},
+    );
+  };
+
+  const initialValues = arrayToObject(searchData);
   const [allValues, setAllValues] = useState();
 
-  console.log('initialValues', initialValues);
   if (loading) {
     return <Spin />;
   }
 
   const getChangedValue = React.useCallback(
     vv => {
-      return getDiffItems(initialValues, vv);
+      return getDiffItems(arrayToObject(data), vv);
     },
-    [initialValues],
+    [data],
   );
 
   const handleFinish = async values => {
@@ -168,6 +157,8 @@ const BasicConfig = () => {
     Object.keys(changedValues).forEach(name => {
       changedValues[name] = formatValue(changedValues[name]);
     });
+
+    console.log('after changedValues', changedValues);
 
     try {
       await api.callRemote({
@@ -203,8 +194,6 @@ const BasicConfig = () => {
   const inputCls = cls(styles['basicConfig-header-input'], {
     [styles['basicConfig-header-input-active']]: !!showSearch,
   });
-
-  console.log('searchsearchsearchsearch', search);
 
   return (
     <div className={themeCls}>
