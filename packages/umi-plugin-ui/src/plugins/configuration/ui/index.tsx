@@ -109,8 +109,14 @@ const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
         sections={[
           {
             title: '项目配置',
-            icon: 'plus-circle',
-            description: 'ABC',
+            icon: (
+              <img
+                src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
+                width={32}
+                height={32}
+              />
+            ),
+            description: '这是一段项目配置的描述。',
             component: BasicConfig,
           },
           {

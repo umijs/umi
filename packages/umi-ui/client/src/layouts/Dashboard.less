@@ -49,14 +49,15 @@
   .header {
     height: @ui-header-title-height;
     h1 {
-      font-size: 28px;
-      font-weight: 300;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 40px;
       padding: 10px 20px;
     }
+    border-bottom: 1px solid #000;
   }
 
   .content {
-    padding: 10px 20px;
     height: calc(~'100% - @{ui-status-bar-height} - @{ui-header-title-height}');
   }
 }

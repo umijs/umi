@@ -56,7 +56,7 @@ declare namespace IUI {
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
 
   type ICallRemote = IApiActionFactory;
-  type IListenRemote = IApiActionFactory<{}, void>;
+  type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = (key: string | undefined) => string;
 

@@ -4,11 +4,11 @@
 }
 
 .left {
-  width: 260px;
-  background: rgba(100, 100, 100, 0.1);
+  width: 255px;
   margin-right: 20px;
   height: 100%;
   overflow: auto;
+  border-right: 1px solid #000;
 }
 
 .right {
@@ -23,19 +23,32 @@
   display: flex;
 
   .icon {
-    width: 30px;
+    width: 44px;
+    height: 32px;
+    margin-left: 8px;
+    margin-top: 4px;
   }
   .title_desc {
     flex: 1;
+    font-size: 12px;
   }
   .title {
-    font-size: 16px;
-    color: #fff;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 4px;
+  }
+  .description {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
   }
 }
 
 .triggerActive {
-  .title {
-    color: #1890ff;
+  background: rgba(255, 255, 255, 0.04);
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
   }
 }
