@@ -74,7 +74,7 @@ declare namespace IUI {
     /** notify type, default info */
     type?: 'error' | 'info' | 'warning' | 'success';
   }
-  type INotify = (params: INotifyParams) => Promise<void>;
+  type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;
