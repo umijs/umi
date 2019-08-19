@@ -3,7 +3,6 @@ import cls from 'classnames';
 import { Button, Form, Input, Spin, Switch, message } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
-import ObjectItemField from './ConfigItem/fields/ObjectItemField';
 import configMapping from './ConfigItem';
 import Toc from './common/Toc';
 import { getToc } from './ConfigItem/utils';
@@ -70,10 +69,23 @@ const BasicConfig = () => {
     groupedData[group].push(item);
   });
 
+  const getInitialValue = ({ value, default: defaultValue }) => {
+    if (_.isPlainObject(value) && _.isPlainObject(defaultValue)) {
+      return _.merge(defaultValue, value);
+    }
+    if (Array.isArray(value) && Array.isArray(defaultValue)) {
+      return _.uniq(defaultValue.concat(value));
+    }
+    return value || defaultValue;
+  };
+
   const initialValues = data.reduce(
     (prev, curr) => ({
       ...prev,
-      [curr.name]: curr.value || curr.default,
+      [curr.name]: getInitialValue({
+        value: curr.value,
+        default: curr.default,
+      }),
     }),
     {},
   );
@@ -98,22 +110,20 @@ const BasicConfig = () => {
       return false;
     }
     const loadingMsg = message.loading('正在保存配置', 0);
-    const PromiseArr = [];
+
     Object.keys(changedValues).forEach(name => {
-      PromiseArr.push(
-        api.callRemote({
-          type: 'org.umi.config.edit',
-          payload: {
-            key: name,
-            value: formatValue(changedValues[name]),
-          },
-        }),
-      );
+      changedValues[name] = formatValue(changedValues[name]);
     });
 
-    console.log('PromiseArr', PromiseArr);
+    console.log('changedValues format', changedValues);
     try {
-      Promise.all(PromiseArr);
+      await api.callRemote({
+        type: 'org.umi.config.edit',
+        payload: {
+          key: changedValues,
+          value: '',
+        },
+      });
     } catch (e) {
       message.error('配置修改失败');
       console.error('配置修改失败', e);
