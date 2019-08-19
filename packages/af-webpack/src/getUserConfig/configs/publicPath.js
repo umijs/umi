@@ -5,6 +5,7 @@ export default function() {
     name: 'publicPath',
     validate(val) {
       assert(typeof val === 'string', `The publicPath config must be String, but got ${val}`);
+      assert(val.endsWith('/'), `The publicPath config ends with /`);
     },
     default: '/',
     title: 'publicPath',

@@ -101,9 +101,29 @@ export default function(api: IApi) {
     });
   }
 
+  // TODO: 支持子项的 validate
+  function validateConfig(config) {
+    let errors = {};
+    const { userConfig } = (api as any).service;
+    userConfig.plugins.forEach(p => {
+      if (p.name in config && p.validate) {
+        try {
+          p.validate(config[p.name]);
+        } catch (e) {
+          errors[p.name] = e.message;
+        }
+      }
+    });
+    if (Object.keys(errors).length) {
+      const e = new Error('Config validate failed');
+      e.errors = errors;
+      throw e;
+    }
+  }
+
   api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
 
-  api.onUISocket(({ action, success }) => {
+  api.onUISocket(({ action, failure, success }) => {
     const { type, payload } = action;
     switch (type) {
       case 'org.umi.config.list':
@@ -112,10 +132,22 @@ export default function(api: IApi) {
         });
         break;
       case 'org.umi.config.edit':
-        (api as any).service.runCommand('config', {
-          _: ['set', payload.key, payload.value],
-        });
-        success();
+        let config = payload.key;
+        if (typeof payload.key === 'string') {
+          config[payload.key] = payload.value;
+        }
+        try {
+          validateConfig(config);
+          (api as any).service.runCommand('config', {
+            _: ['set', config],
+          });
+          success();
+        } catch (e) {
+          failure({
+            message: e.message,
+            errors: e.errors,
+          });
+        }
         break;
       default:
         break;
