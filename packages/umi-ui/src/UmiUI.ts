@@ -545,6 +545,7 @@ export default class UmiUI {
 
       ss.on('connection', conn => {
         conns[conn.id] = conn;
+        console.log(`😀 ${chalk.green('建立连接')}: ${conn.id}`);
         function success(type, payload) {
           send({ type: `${type}/success`, payload });
         }
@@ -572,6 +573,7 @@ export default class UmiUI {
         };
 
         conn.on('close', () => {
+          console.log(`😭 ${chalk.red('断开连接')}: ${conn.id}`);
           delete conns[conn.id];
         });
         conn.on('data', message => {
