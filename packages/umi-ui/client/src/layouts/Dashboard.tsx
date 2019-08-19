@@ -67,7 +67,9 @@ export default withRouter(props => {
                 </Menu>
               </Sider>
               <Content className={styles.main}>
-                <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
+                <div className={styles.header}>
+                  <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
+                </div>
                 <div className={styles.content}>{props.children}</div>
               </Content>
             </div>

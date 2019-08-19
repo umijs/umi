@@ -46,14 +46,17 @@
   flex: 1;
   overflow: hidden;
   max-height: 100%;
-  h1 {
-    font-size: 28px;
-    font-weight: 300;
-    padding: 10px 20px;
+  .header {
+    height: @ui-header-title-height;
+    h1 {
+      font-size: 28px;
+      font-weight: 300;
+      padding: 10px 20px;
+    }
   }
 
   .content {
     padding: 10px 20px;
-    height: calc(~'100% - @{ui-status-bar-height}');
+    height: calc(~'100% - @{ui-status-bar-height} - @{ui-header-title-height}');
   }
 }
