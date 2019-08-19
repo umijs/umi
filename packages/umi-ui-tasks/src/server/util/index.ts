@@ -9,7 +9,12 @@ const error = (msg: string, name = 'TaskError') => {
 };
 
 const runCommand = (script: string, options: SpawnOptions = {}) => {
-  options.env = options.env || Object.create(process.env);
+  options.env = {
+    ...process.env,
+    ...options.env,
+    FORCE_COLOR: '1',
+  };
+
   options.cwd = options.cwd || process.cwd();
   options.stdio = options.stdio || 'pipe';
 

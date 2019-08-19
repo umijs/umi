@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col, Button, Spin } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Spin, Radio } from 'antd';
 import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
@@ -16,39 +16,48 @@ const taskType = TaskType.DEV;
 
 const DevComponent: React.FC<IProps> = ({ api }) => {
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType });
-  const { loading } = useTaskDetail(taskType);
+  const [loading, setLoading] = useState(true);
 
-  api.listenRemote({
-    type: 'org.umi.task.state',
-    onMessage: ({ detail, taskType: type }) => {
-      if (!isCaredEvent(type, taskType)) {
-        return;
-      }
-      setTaskDetail(detail);
+  // Mount: 获取 task detail
+  const { loading: detailLoading, detail } = useTaskDetail(taskType);
+  useEffect(
+    () => {
+      setLoading(detailLoading);
+      setTaskDetail(detail as any);
     },
-  });
+    [detail],
+  );
 
-  if (loading) {
-    return <Spin />;
-  }
+  // Mount: 监听 task state 改变
+  useEffect(
+    () => {
+      const unsubscribe = api.listenRemote({
+        type: 'org.umi.task.state',
+        onMessage: ({ detail: result, taskType: type }) => {
+          if (!isCaredEvent(type, taskType)) {
+            return null;
+          }
+          if (result) {
+            setTaskDetail(result);
+          }
+        },
+      });
+      return () => {
+        unsubscribe && unsubscribe();
+      };
+    },
+    [detail],
+  );
 
   async function dev() {
-    const { triggerState, errMsg, result } = await exec(taskType);
+    const { triggerState, errMsg } = await exec(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
         title: '执行启动失败',
         message: errMsg,
       });
-      return;
     }
-    setTaskDetail(result);
-    const { state } = result;
-    api.notify({
-      type: state === TaskState.SUCCESS ? 'success' : 'error',
-      title: state === TaskState.SUCCESS ? '启动成功' : '启动失败',
-      message: '',
-    });
   }
 
   async function cancelDev() {
@@ -58,30 +67,33 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
         title: '取消启动失败',
         message: errMsg,
       });
-      return;
     }
-    setTaskDetail(result);
   }
 
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1>本地开发</h1>
-      <div className={styles.container}>
-        <Row>
-          <Col span={23} className={styles.actions}>
-            <Button onClick={isTaskRunning ? cancelDev : dev} loading={loading}>
-              {isTaskRunning ? '停止' : '启动'}
-            </Button>
-          </Col>
-          <Col span={1}>
-            <span className={styles.output}>输出</span>
-          </Col>
-        </Row>
-        <Row>
-          <Terminal terminal={getTerminalIns(taskType)} />
-        </Row>
-      </div>
+      {loading ? (
+        <Spin />
+      ) : (
+        <>
+          <Row>
+            <Col span={8} className={styles.buttonGroup}>
+              <Button type="primary" onClick={isTaskRunning ? cancelDev : dev} loading={loading}>
+                {isTaskRunning ? '停止' : '启动'}
+              </Button>
+            </Col>
+            {/* <Col span={4} offset={12} className={styles.formatGroup}>
+              <Radio.Group defaultValue="log" buttonStyle="solid">
+                <Radio.Button value="log">输出</Radio.Button>
+              </Radio.Group>
+            </Col> */}
+          </Row>
+          <div className={styles.logContainer}>
+            <Terminal terminal={getTerminalIns(taskType)} />
+          </div>
+        </>
+      )}
     </>
   );
 };

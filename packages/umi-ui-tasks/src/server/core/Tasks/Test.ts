@@ -1,5 +1,5 @@
 import { BaseTask } from './Base';
-import { TaskType } from '../enums';
+import { TaskType, TaskState, TaskEventType } from '../enums';
 import { ITaskOpts } from '../types';
 import { isScriptKeyExit } from '../../util';
 
@@ -9,7 +9,9 @@ export class TestTask extends BaseTask {
     this.type = TaskType.TEST;
   }
 
-  public async run() {
+  public async run(env: any = {}) {
+    await super.run();
+
     const { cwd } = this.api;
     let command = 'npm run test';
 
@@ -20,6 +22,20 @@ export class TestTask extends BaseTask {
 
     await this.runCommand(command, {
       cwd,
+      env,
+    });
+
+    const { proc } = this;
+    proc.on('close', (code, signal) => {
+      if (signal === 'SIGTERM') {
+        // 用户取消任务
+        this.state = TaskState.INIT;
+      } else {
+        // 自然退出
+        this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
+      }
+      // 触发事件
+      this.emit(TaskEventType.STATE_EVENT, this.state);
     });
   }
 }

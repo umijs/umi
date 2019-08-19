@@ -4,8 +4,10 @@ import Dev from './ui/components/Dev';
 import Build from './ui/components/Build';
 import Lint from './ui/components/Lint';
 import Test from './ui/components/Test';
-import { initApiToGloal, getTerminalIns } from './ui/util';
-import { TaskType } from './server/core/enums';
+import { initApiToGloal, getTerminalIns, getNoticeMessage } from './ui/util';
+import { TaskType, TaskState } from './server/core/enums';
+
+const { useState, useRef, useEffect } = React;
 
 export default (api: IUiApi) => {
   initApiToGloal(api);
@@ -60,6 +62,18 @@ export default (api: IUiApi) => {
       data.split('\n').forEach((msg: string) => {
         terminal.writeln(msg);
       });
+    },
+  });
+
+  // 全局通知
+  api.listenRemote({
+    type: 'org.umi.task.state',
+    onMessage: ({ detail: result, taskType: type }) => {
+      const { state } = result;
+      if ([TaskState.INIT, TaskState.ING].indexOf(state) > -1) {
+        return;
+      }
+      api.notify(getNoticeMessage(type, state));
     },
   });
 

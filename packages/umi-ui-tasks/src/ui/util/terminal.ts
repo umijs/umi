@@ -11,7 +11,16 @@ const { Terminal, fit } = window;
 
 function initTerminal() {
   (Terminal as any).applyAddon(fit);
-  const terminal = new (Terminal as any)();
+  const terminal = new (Terminal as any)({
+    allowTransparency: true,
+    theme: {
+      background: '#15171C',
+      foreground: '#ffffff73',
+    },
+    cursorBlink: false,
+    cursorStyle: 'bar',
+    disableStdin: true,
+  });
   return terminal;
 }
 

@@ -1,7 +1,14 @@
 import TaskManager from '../core/TaskManger';
 import { TaskEventType, LogType, TaskType } from '../core/enums';
 
+let init: boolean = false;
+
 function subscribeTaskEvent(taskManger: TaskManager, send) {
+  if (init) {
+    return;
+  }
+  init = true;
+
   taskManger.getAllTasks().forEach(({ type, task }) => {
     task.on(TaskEventType.STD_OUT_DATA, data => {
       send({
@@ -36,4 +43,16 @@ function subscribeTaskEvent(taskManger: TaskManager, send) {
   });
 }
 
-export { subscribeTaskEvent };
+function formatEnv(env: object): object {
+  const res = {} as any;
+  Object.keys(env).forEach(key => {
+    if (typeof env[key] === 'boolean') {
+      res[key] = env[key] ? '1' : 'none';
+    } else {
+      res[key] = env[key];
+    }
+  });
+  return res;
+}
+
+export { subscribeTaskEvent, formatEnv };

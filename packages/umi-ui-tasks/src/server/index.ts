@@ -1,6 +1,6 @@
 import { IApi } from 'umi-types';
 import TaskManager from './core/TaskManger';
-import { subscribeTaskEvent } from './util';
+import { subscribeTaskEvent, formatEnv } from './util';
 
 export default (api: IApi) => {
   const taskManger: TaskManager = new TaskManager(api);
@@ -28,7 +28,7 @@ export default (api: IApi) => {
       case 'tasks/run':
         (async () => {
           const task = taskManger.getTask(payload.type);
-          await task.run();
+          await task.run(formatEnv(payload.env));
           send({
             type: 'tasks/run/success',
             payload: {

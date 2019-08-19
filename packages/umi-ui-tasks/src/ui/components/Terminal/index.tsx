@@ -1,3 +1,4 @@
+import { Row, Col, Icon } from 'antd';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
 import { useTerminal } from '../../hooks';
@@ -24,16 +25,16 @@ const TerminalComponent: React.FC<IProps> = ({ terminal }) => {
   };
 
   return (
-    <div>
-      <div className={styles.actionContainer}>
-        <div className={styles.titleWrapper}>
-          <span>日志</span>
-        </div>
-        <div className={styles.actionWrapper}>
-          <span onClick={clear}>清除</span>
-          <span onClick={toBottom}>至底部</span>
-        </div>
-      </div>
+    <div className={styles.wrapper}>
+      <Row className={styles.titleWrapper}>
+        <Col span={8} className={styles.formmatGroup}>
+          输出
+        </Col>
+        <Col span={4} offset={12} className={styles.actionGroup}>
+          <Icon onClick={clear} type="delete" />
+          <Icon onClick={toBottom} type="enter" />
+        </Col>
+      </Row>
       <div ref={domContainer} className={styles.logContainer} />
     </div>
   );
