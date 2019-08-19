@@ -80,7 +80,10 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: '任务管理',
     path: '/tasks',
-    icon: 'environment',
+    icon: {
+      type: 'project',
+      theme: 'filled',
+    },
     component: TasksView,
   });
 };

@@ -5,7 +5,10 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: '配置管理',
     path: '/configuration',
-    icon: 'environment',
+    icon: {
+      type: 'control',
+      theme: 'filled',
+    },
     component: () => <ConfigManager api={api} />,
   });
 };

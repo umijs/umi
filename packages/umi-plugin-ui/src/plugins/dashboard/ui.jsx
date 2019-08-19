@@ -8,7 +8,10 @@ export default api => {
   api.addPanel({
     title: '项目仪表盘',
     path: '/dashboard',
-    icon: 'environment',
+    icon: {
+      type: 'dashboard',
+      theme: 'filled',
+    },
     component: Dashboard,
   });
 };

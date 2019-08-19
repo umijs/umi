@@ -62,9 +62,10 @@ export default withRouter(props => {
                   }}
                 >
                   {window.g_service.panels.map(panel => {
+                    const icon = typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
                     return (
                       <Menu.Item key={panel.path}>
-                        <Icon type={panel.icon} />
+                        <Icon {...icon} />
                         <FormattedMessage id={panel.title} />
                         <NavLink exact to={panel.path}>
                           <FormattedMessage id={panel.title} />

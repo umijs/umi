@@ -34,10 +34,26 @@
     a {
       padding-left: 5px;
       display: block;
-      color: #0a0a0a;
     }
-    a.active {
-      background: #cfd7ff;
+    position: relative;
+    &:global(.ant-menu-item) {
+      padding-left: 24px;
+      &::before {
+        height: 100%;
+        width: 6px;
+        background-color: @primary-color;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        content: '';
+        transition: height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      }
+    }
+    &:global(.ant-menu-item-selected) {
+      &::before {
+        opacity: 1;
+      }
     }
   }
 }

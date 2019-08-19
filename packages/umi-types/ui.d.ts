@@ -30,7 +30,16 @@ declare namespace IUI {
 
   type ILocale = { [x in ILang]: { [key in string]: string } };
 
-  type IPanel = IRoute;
+  interface IconType {
+    type: string;
+    theme?: 'filled' | 'outlined' | 'twoTone';
+    rotate?: number;
+    twoToneColor?: string;
+  }
+
+  interface IPanel extends IRoute {
+    icon: IconType | string;
+  }
 
   interface IService {
     panels: IPanel[];
