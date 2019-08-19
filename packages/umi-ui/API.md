@@ -177,7 +177,7 @@ api.addPanel({
 
 ## `api.notify(params: INotifyParams) => void`
 
-调用系统通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd Notification，否则样式为系统原生通知栏。
+调用系统通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd [Notification](https://ant.design/components/notification-cn)，否则样式为系统原生通知栏。
 
 其中 `INotifyParams` 是，其中 `title`, `message`, `subTitle` 支持国际化：
 
