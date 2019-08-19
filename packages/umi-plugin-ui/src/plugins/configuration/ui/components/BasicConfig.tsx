@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import cls from 'classnames';
-import { Button, Form, Input, Spin, Switch, message } from 'antd';
+import Fuse from 'fuse.js';
+import { Button, Form, Input, Spin, Switch, message, Anchor } from 'antd';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
 import configMapping from './ConfigItem';
@@ -12,6 +13,7 @@ const BasicConfig = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const [search, setSearch] = useState<string>('');
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
   const { api, theme } = useContext(Context);
@@ -59,9 +61,29 @@ const BasicConfig = () => {
     await updateData();
   }
 
+  const searchData = React.useMemo(
+    () => {
+      const fuse = new Fuse(data, {
+        caseSensitive: true,
+        shouldSort: false,
+        threshold: 0.6,
+        keys: ['name', 'title', 'description', 'group'],
+      });
+      const result = fuse.search('');
+      console.log('resultresultresult', result);
+      if (result.length > 0) {
+        return result;
+      }
+      return data;
+    },
+    [search, data],
+  );
+
+  console.log('searchData', searchData);
+
   const groupedData = {};
   console.log('data', data);
-  data.forEach(item => {
+  searchData.forEach(item => {
     const { group } = item;
     if (!groupedData[group]) {
       groupedData[group] = [];
@@ -79,7 +101,7 @@ const BasicConfig = () => {
     return value || defaultValue;
   };
 
-  const initialValues = data.reduce(
+  const initialValues = searchData.reduce(
     (prev, curr) => ({
       ...prev,
       [curr.name]: getInitialValue({
@@ -89,6 +111,8 @@ const BasicConfig = () => {
     }),
     {},
   );
+  const [allValues, setAllValues] = useState();
+
   console.log('initialValues', initialValues);
   if (loading) {
     return <Spin />;
@@ -115,7 +139,6 @@ const BasicConfig = () => {
       changedValues[name] = formatValue(changedValues[name]);
     });
 
-    console.log('changedValues format', changedValues);
     try {
       await api.callRemote({
         type: 'org.umi.config.edit',
@@ -143,70 +166,76 @@ const BasicConfig = () => {
 
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
-  console.log('groupedData', groupedData);
-  const tocAnchors = React.useMemo(() => getToc(groupedData), [groupedData]);
+  const tocAnchors = getToc(groupedData, allValues || initialValues);
 
   return (
     <div className={themeCls}>
-      {data.length > 0 && (
-        <div className={styles.form}>
-          <Form
-            layout="vertical"
-            onFinish={handleFinish}
-            onFinishFailed={handleFinishFailed}
-            initialValues={initialValues}
-            onValuesChange={(changedValues, allValues) => {
-              // console.log('allValues', allValues);
-              // setDisabled(Object.keys(changed).length === 0);
-            }}
-          >
-            {Object.keys(groupedData).map(group => {
-              return (
-                <div className={styles.group} key={group}>
-                  <h2 id={group}>{group}</h2>
-                  {groupedData[group].map(item => {
-                    const ConfigItem = configMapping[item.type];
-                    return <ConfigItem key={item.name} {...item} form={form} />;
-                  })}
-                </div>
-              );
-            })}
-            <Form.Item shouldUpdate>
-              {({ getFieldsValue }) => {
-                return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
-              }}
-            </Form.Item>
-            <Button htmlType="submit">保存</Button>
-          </Form>
-          <div>
-            <h2>Test</h2>
-            <Button
-              type="primary"
-              onClick={editHandler.bind(null, 'mock.exclude', ['aaa', 'bbb'])}
-            >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
-            <Button
-              type="primary"
-              onClick={editHandler.bind(null, 'mock.exclude', [])}
-            >{`清空 mock.exclude`}</Button>
-            <br />
-            <br />
-            <Button
-              type="primary"
-              onClick={editHandler.bind(
-                null,
-                {
-                  base: '/foo/',
-                  publicPath: '/foo/',
-                },
-                '',
-              )}
-            >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
-            <br />
-            <br />
-            <br />
-          </div>
+      <div className={styles.form}>
+        <div className={styles['basicConfig-header']}>
+          <h2>项目配置</h2>
         </div>
-      )}
+        {searchData.length > 0 && (
+          <div>
+            <Form
+              layout="vertical"
+              form={form}
+              onFinish={handleFinish}
+              onFinishFailed={handleFinishFailed}
+              initialValues={initialValues}
+              onValuesChange={(changedValues, allValues) => {
+                console.log('allValues', allValues);
+                setAllValues(allValues);
+                // setDisabled(Object.keys(changed).length === 0);
+              }}
+            >
+              {Object.keys(groupedData).map(group => {
+                return (
+                  <div className={styles.group} key={group}>
+                    <h2 id={group}>{group}</h2>
+                    {groupedData[group].map(item => {
+                      const ConfigItem = configMapping[item.type];
+                      return <ConfigItem key={item.name} {...item} form={form} />;
+                    })}
+                  </div>
+                );
+              })}
+              <Form.Item shouldUpdate>
+                {({ getFieldsValue }) => {
+                  return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
+                }}
+              </Form.Item>
+              <Button htmlType="submit">保存</Button>
+            </Form>
+            <div>
+              <h2>Test</h2>
+              <Button
+                type="primary"
+                onClick={() => console.log('wefwefewf', form.getFieldsValue())}
+              >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
+              <Button
+                type="primary"
+                onClick={editHandler.bind(null, 'mock.exclude', [])}
+              >{`清空 mock.exclude`}</Button>
+              <br />
+              <br />
+              <Button
+                type="primary"
+                onClick={editHandler.bind(
+                  null,
+                  {
+                    base: '/foo/',
+                    publicPath: '/foo/',
+                  },
+                  '',
+                )}
+              >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
+              <br />
+              <br />
+              <br />
+            </div>
+          </div>
+        )}
+      </div>
       <Toc
         className={styles.toc}
         anchors={tocAnchors}

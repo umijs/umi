@@ -10,6 +10,7 @@
     "@ant-design/icons": "^4.0.0-alpha.7",
     "@ant-design/icons-svg": "^4.0.0-alpha.0",
     "classnames": "^2.2.6",
+    "fuse.js": "^3.4.5",
     "umi-ui-tasks": "0.0.1"
   },
   "devDependencies": {

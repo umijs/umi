@@ -13,7 +13,7 @@ interface IGroup {
   [K: string]: ICompProps[];
 }
 
-export const getToc = (group: IGroup): IToc[] => {
+export const getToc = (group: IGroup, data: IGroup): IToc[] => {
   return Object.keys(group).reduce((prev, curr) => {
     if (group[curr].length > 0) {
       prev.push({
@@ -22,11 +22,17 @@ export const getToc = (group: IGroup): IToc[] => {
         level: 0,
       });
       (group[curr] || []).forEach(item => {
-        prev.push({
-          href: item.name,
-          title: item.title,
-          level: 1,
-        });
+        const { parentConfig } = getFormItemShow(item.name);
+        const parentValue = data[parentConfig];
+        const isShow =
+          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
+        if (isShow) {
+          prev.push({
+            href: item.name,
+            title: item.title,
+            level: 1,
+          });
+        }
       });
     }
     return prev;
