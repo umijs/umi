@@ -134,7 +134,9 @@ export default function(api: IApi) {
       case 'org.umi.config.edit':
         let config = payload.key;
         if (typeof payload.key === 'string') {
-          config[payload.key] = payload.value;
+          config = {
+            [payload.key]: payload.value,
+          };
         }
         try {
           validateConfig(config);
