@@ -28,5 +28,22 @@ export const ReInstallDependencyAction = {
   },
   handler: {
     type: '@@actions/reInstallDependencies',
+    payload: {
+      npmClient: true,
+      projectPath: true,
+    },
+  },
+};
+
+export const OpenConfigFileAction = {
+  title: {
+    'zh-CN': '打开配置文件',
+    'en-US': 'Open Configuration File',
+  },
+  handler: {
+    type: '@@actions/openConfigFile',
+    payload: {
+      projectPath: true,
+    },
   },
 };

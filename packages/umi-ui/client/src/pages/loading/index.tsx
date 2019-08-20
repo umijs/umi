@@ -82,10 +82,44 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
             </Button>
           );
         })}
-        <Button onClick={this.handleInstallDeps} loading={actionLoading} type="primary">
-          {actionLoading ? '依赖安装中...' : '安装依赖'}
-        </Button>
-        <Button onClick={this.BACK_TO_HOME}>返回列表</Button>
+        <div>
+          <br />
+          <br />
+          <h2>测试按钮</h2>
+          <br />
+          <Button onClick={this.handleInstallDeps} loading={actionLoading} type="primary">
+            {actionLoading ? '依赖安装中...' : '在 /private/tmp/foooo 下安装依赖'}
+          </Button>
+          <Button
+            onClick={async () => {
+              await callRemote({
+                type: '@@actions/reInstallDependencies',
+                payload: {
+                  npmClient: 'yarn',
+                  projectPath: '/private/tmp/foooo',
+                },
+                onProgress(data) {
+                  console.log(`Reinstall: ${data.install}`);
+                },
+              });
+            }}
+          >
+            重新安装依赖
+          </Button>
+          <Button
+            onClick={async () => {
+              await callRemote({
+                type: '@@actions/openConfigFile',
+                payload: {
+                  projectPath: '/private/tmp/foooo',
+                },
+              });
+            }}
+          >
+            打开配置文件
+          </Button>
+          <Button onClick={async () => {}}>..</Button>
+        </div>
       </div>
     ) : null;
 

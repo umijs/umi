@@ -15,10 +15,14 @@ import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
-import { executeCommand, installDeps } from './npmClient';
+import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
-import { BackToHomeAction, InstallDependencyAction, ReInstallDependencyAction } from './Actions';
-import { installDependencies } from 'umi-build-dev/src/plugins/commands/block/util';
+import {
+  BackToHomeAction,
+  InstallDependencyAction,
+  OpenConfigFileAction,
+  ReInstallDependencyAction,
+} from './Actions';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -73,7 +77,12 @@ export default class UmiUI {
           'en-US': `Project ${project.path} not exists.`,
         },
         lang,
-        actions: [BackToHomeAction, InstallDependencyAction, ReInstallDependencyAction],
+        actions: [
+          BackToHomeAction,
+          InstallDependencyAction,
+          ReInstallDependencyAction,
+          OpenConfigFileAction,
+        ],
       });
     }
     assert(existsSync(project.path), `project path ${project.path} don't exists.`);
@@ -121,6 +130,19 @@ export default class UmiUI {
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
     launchEditor(project.path, 1);
+  }
+
+  openFileInEditor(projectPath: string) {
+    let configFile;
+    const configFiles = ['.umirc.js', '.umirc.ts', 'config/config.js', 'config/config.ts'];
+    for (const file of configFiles) {
+      if (existsSync(join(projectPath, file))) {
+        configFile = join(projectPath, file);
+        break;
+      }
+    }
+    assert(configFile, `configFile not exists`);
+    launchEditor(configFile, 1);
   }
 
   getExtraAssets() {
@@ -457,6 +479,10 @@ export default class UmiUI {
               message: e.message,
             });
           });
+        break;
+      case '@@actions/openConfigFile':
+        this.openFileInEditor(payload.projectPath);
+        success();
         break;
       case '@@app/notify':
         try {
