@@ -118,6 +118,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
           )}
+          <p className={styles['directoryForm-tip']}>友情提示：单击选择，双击进入</p>
         </div>
       ) : (
         <div style={{ textAlign: 'center' }}>

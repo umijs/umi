@@ -40,6 +40,9 @@ export type APP_LANGUAGE = 'TypeScript' | 'JavaScript';
 export enum REACT_FEATURES {
   antd = 'antd',
   dva = 'dva',
+  'code splitting' = 'dynamicImport',
+  dll = 'dll',
+  internationalization = 'locale',
 }
 
 export interface ICreateProgress {

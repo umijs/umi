@@ -14,7 +14,6 @@ const { useState, useEffect, useContext } = React;
 
 const ImportProject: React.SFC<IProjectProps> = props => {
   const { cwd, files } = props;
-  const [fullPath, setFullPath] = useState<string>(cwd);
   const { formatMessage } = useContext(ProjectContext);
   const [form] = Form.useForm();
   const { setCurrent } = useContext(ProjectContext);
@@ -29,8 +28,6 @@ const ImportProject: React.SFC<IProjectProps> = props => {
     }
   };
 
-  console.log('fullPath', fullPath);
-
   return (
     <section className={common.section}>
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
@@ -41,7 +38,6 @@ const ImportProject: React.SFC<IProjectProps> = props => {
           name="form_create_project"
           onFinish={handleFinish}
           onValuesChange={(changedValue, { path }) => {
-            setFullPath(path);
             form.setFieldsValue({
               name: getBasename(path),
             });
@@ -53,8 +49,8 @@ const ImportProject: React.SFC<IProjectProps> = props => {
           <Form.Item label={null} shouldUpdate name="name" noStyle rules={[{ required: true }]}>
             <p />
           </Form.Item>
-          <Form.Item style={{ marginTop: 16 }}>
-            <p>{fullPath}</p>
+          <Form.Item shouldUpdate style={{ marginTop: 16 }}>
+            {({ getFieldValue }) => <p>{getFieldValue('path')}</p>}
           </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">
