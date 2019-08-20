@@ -459,6 +459,20 @@ export default {
 }
 ```
 
+如果你的 `umi` 项目是基于 `TypeScript` 创建的，可以在 `plugin.config.ts` 文件中这样设置:
+
+```ts
+config.plugin('define').tap((args: any) => {
+  args[0]['process.env'] = {
+    ...args[0]['process.env'],
+    TEST: 1,
+    USE_COMMA: 2
+  }
+
+  return args
+})
+```
+
 ### externals
 
 配置 webpack 的?[externals](https://webpack.js.org/configuration/externals/)?属性。比如：
