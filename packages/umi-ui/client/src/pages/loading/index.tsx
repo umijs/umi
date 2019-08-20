@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import { Spin, Button } from 'antd';
 import { callRemote } from '@/socket';
+import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import locales from './locales';
 import styles from './index.less';
 import Fail from './fail';
 
@@ -39,8 +41,10 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   render() {
+    const locale = getLocale();
     const { error } = this.props;
     const { actionLoading } = this.state;
+    const messages = locales[locale] || locales['zh-CN'];
 
     const actionsDeps = (
       <div>
@@ -59,7 +63,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           <Fragment>
             <div className={styles['loading-spin']}>
               <Spin size="large" />
-              <p>正在打开项目</p>
+              <p>{messages['org.umi.ui.loading.open']}</p>
             </div>
           </Fragment>
         )}

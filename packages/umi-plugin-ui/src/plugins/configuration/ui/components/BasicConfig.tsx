@@ -243,7 +243,9 @@ const BasicConfig = () => {
                   return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
                 }}
               </Form.Item> */}
-              <Button htmlType="submit">保存</Button>
+              <div className={styles['basicConfig-submit']}>
+                <Button htmlType="submit">保存</Button>
+              </div>
             </Form>
             {/* <div>
               <h2>Test</h2>

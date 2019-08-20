@@ -1,4 +1,5 @@
 import { IUi } from 'umi-types';
+import { getLocale } from 'umi-plugin-react/locale';
 
 let sock;
 let retries = 0;
@@ -94,10 +95,11 @@ export function callRemote<T = object, K = object>(
         action.onProgress(payload);
       }
     });
+    const lang = getLocale();
     sock.send(
       JSON.stringify({
         ...action,
-        lang: window.g_lang,
+        lang,
       }),
     );
   });
