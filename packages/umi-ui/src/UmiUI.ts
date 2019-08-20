@@ -21,8 +21,10 @@ import {
   BackToHomeAction,
   InstallDependencyAction,
   OpenConfigFileAction,
+  OpenProjectAction,
   ReInstallDependencyAction,
 } from './Actions';
+import { isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -70,6 +72,8 @@ export default class UmiUI {
     const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
+
+    // Check exists.
     if (!existsSync(project.path)) {
       throw new ActiveProjectError({
         message: {
@@ -85,7 +89,18 @@ export default class UmiUI {
         ],
       });
     }
-    assert(existsSync(project.path), `project path ${project.path} don't exists.`);
+
+    // Check umi valid.
+    if (!isUmiProject(project.path)) {
+      throw new ActiveProjectError({
+        message: {
+          'zh-CN': `项目 ${project.path} 不是 Umi 项目。`,
+          'en-US': `Project ${project.path} is not a valid Umi project.`,
+        },
+        lang,
+        actions: [BackToHomeAction],
+      });
+    }
 
     if (!this.developMode && service) {
       this.servicesByKey[key] = service;
@@ -103,12 +118,14 @@ export default class UmiUI {
       const localBin = resolveFrom.silent(cwd, binModule);
       if (false && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
-        throw new Error(
-          (process.env.BIGFISH_COMPAT
+        throw new ActiveProjectError({
+          message: (process.env.BIGFISH_COMPAT
             ? `Bigfish 版本过低，请升级到 @alipay/bigfish@2.20 或以上。`
             : `Umi 版本过低，请升级到 umi@2.9 或以上。`
           ).trim(),
-        );
+          lang,
+          actions: [OpenProjectAction],
+        });
       }
       const servicePath = localService || 'umi-build-dev/lib/Service';
       debug(`Service path: ${servicePath}`);
@@ -127,12 +144,16 @@ export default class UmiUI {
   }
 
   openProjectInEditor(key: string) {
-    const project = this.config.data.projectsByKey[key];
-    assert(project, `project of key ${key} not exists`);
-    launchEditor(project.path, 1);
+    if (key.startsWith('/') && existsSync(key)) {
+      launchEditor(key, 1);
+    } else {
+      const project = this.config.data.projectsByKey[key];
+      assert(project, `project of key ${key} not exists`);
+      launchEditor(project.path, 1);
+    }
   }
 
-  openFileInEditor(projectPath: string) {
+  openConfigFileInEditor(projectPath: string) {
     let configFile;
     const configFiles = ['.umirc.js', '.umirc.ts', 'config/config.js', 'config/config.ts'];
     for (const file of configFiles) {
@@ -141,6 +162,7 @@ export default class UmiUI {
         break;
       }
     }
+
     assert(configFile, `configFile not exists`);
     launchEditor(configFile, 1);
   }
@@ -488,7 +510,11 @@ export default class UmiUI {
         });
         break;
       case '@@actions/openConfigFile':
-        this.openFileInEditor(payload.projectPath);
+        this.openConfigFileInEditor(payload.projectPath);
+        success();
+        break;
+      case '@@actions/openProjectInEditor':
+        this.openProjectInEditor(payload.projectPath);
         success();
         break;
       case '@@app/notify':

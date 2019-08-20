@@ -47,3 +47,16 @@ export const OpenConfigFileAction = {
     },
   },
 };
+
+export const OpenProjectAction = {
+  title: {
+    'zh-CN': '在编辑器中打开项目',
+    'en-US': 'Open Project In Editor',
+  },
+  handler: {
+    type: '@@actions/openProjectInEditor',
+    payload: {
+      projectPath: true,
+    },
+  },
+};
