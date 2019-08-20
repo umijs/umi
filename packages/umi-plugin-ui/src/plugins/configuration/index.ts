@@ -103,18 +103,21 @@ export default function(api: IApi) {
 
   // TODO: 支持子项的 validate
   function validateConfig(config) {
-    let errors = {};
+    let errors = [];
     const { userConfig } = (api as any).service;
     userConfig.plugins.forEach(p => {
       if (p.name in config && p.validate) {
         try {
           p.validate(config[p.name]);
         } catch (e) {
-          errors[p.name] = e.message;
+          errors.push({
+            name: p.name,
+            errors: [e.message],
+          });
         }
       }
     });
-    if (Object.keys(errors).length) {
+    if (errors.length) {
       const e = new Error('Config validate failed');
       e.errors = errors;
       throw e;
