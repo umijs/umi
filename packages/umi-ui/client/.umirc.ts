@@ -25,6 +25,9 @@ const config: IConfig = {
           path: '/project/select',
           component: '../pages/project',
         },
+        {
+          component: '404',
+        },
       ],
     },
     {
@@ -37,7 +40,13 @@ const config: IConfig = {
           path: '/',
           component: '../pages/index',
         },
+        {
+          component: '404',
+        },
       ],
+    },
+    {
+      component: '404',
     },
   ],
   plugins: [
