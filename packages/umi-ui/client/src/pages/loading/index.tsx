@@ -23,21 +23,40 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   state = {
     actionLoading: false,
   };
-  handleInstallDeps = () => {
+  handleInstallDeps = async () => {
     this.setState({
       actionLoading: true,
     });
-    setTimeout(() => {
-      // TODO
-      this.setState({
-        actionLoading: false,
-      });
-    }, 3000);
+    await callRemote({
+      type: '@@actions/installDependencies',
+      payload: {
+        npmClient: 'yarn',
+        projectPath: '/private/tmp/foooo',
+      },
+      onProgress(data) {
+        console.log(`Install: ${data.install}`);
+      },
+    });
+    this.setState({
+      actionLoading: false,
+    });
   };
 
-  handleBackProjectList = () => {
+  BACK_TO_HOME = () => {
     history.replace('/project/select');
     window.location.reload();
+  };
+
+  actionHandler = (handler: any) => {
+    console.log('HANDLER', handler);
+    callRemote(handler)
+      .then(() => {
+        alert('DONE');
+      })
+      .catch(e => {
+        alert('FAILED');
+        console.error(e);
+      });
   };
 
   render() {
@@ -46,14 +65,29 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
-    const actionsDeps = (
+    const actionsDeps = error ? (
       <div>
+        {(error.actions || []).map((action, index) => {
+          return (
+            <Button
+              key={index}
+              type={action.buttonType}
+              onClick={
+                action.browserHandler
+                  ? this[action.browserHandler]
+                  : this.actionHandler.bind(null, action.handler)
+              }
+            >
+              {action.title}
+            </Button>
+          );
+        })}
         <Button onClick={this.handleInstallDeps} loading={actionLoading} type="primary">
           {actionLoading ? '依赖安装中...' : '安装依赖'}
         </Button>
-        <Button onClick={this.handleBackProjectList}>返回列表</Button>
+        <Button onClick={this.BACK_TO_HOME}>返回列表</Button>
       </div>
-    );
+    ) : null;
 
     return (
       <div className={styles.loading}>

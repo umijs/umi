@@ -15,7 +15,10 @@ import Config from './Config';
 import getClientScript from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
-import { installDeps } from './npmClient';
+import { executeCommand, installDeps } from './npmClient';
+import ActiveProjectError from './ActiveProjectError';
+import { BackToHomeAction, InstallDependencyAction, ReInstallDependencyAction } from './Actions';
+import { installDependencies } from 'umi-build-dev/src/plugins/commands/block/util';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -59,9 +62,20 @@ export default class UmiUI {
     }
   }
 
-  activeProject(key: string, service?: any) {
+  activeProject(key: string, service?: any, opts?: any) {
+    const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
+    if (!existsSync(project.path)) {
+      throw new ActiveProjectError({
+        message: {
+          'zh-CN': `项目 ${project.path} 路径不存在。`,
+          'en-US': `Project ${project.path} not exists.`,
+        },
+        lang,
+        actions: [BackToHomeAction, InstallDependencyAction, ReInstallDependencyAction],
+      });
+    }
     assert(existsSync(project.path), `project path ${project.path} don't exists.`);
 
     if (!this.developMode && service) {
@@ -336,13 +350,17 @@ export default class UmiUI {
       case '@@project/open':
         log('info', `open project`);
         try {
-          this.activeProject(payload.key);
+          this.activeProject(payload.key, null, {
+            lang,
+          });
           success();
         } catch (e) {
           console.error(chalk.red(`Error: Attach service for ${payload.key} FAILED`));
           console.error(e);
           failure({
             message: e.message,
+            stack: e.stack,
+            actions: e.actions,
           });
         }
         break;
@@ -422,6 +440,23 @@ export default class UmiUI {
         success({
           data: this.logs,
         });
+        break;
+      case '@@actions/installDependencies':
+        installDeps(payload.npmClient, payload.projectPath, {
+          onData(data) {
+            progress({
+              install: data,
+            });
+          },
+        })
+          .then(() => {
+            success();
+          })
+          .catch(e => {
+            failure({
+              message: e.message,
+            });
+          });
         break;
       case '@@app/notify':
         try {

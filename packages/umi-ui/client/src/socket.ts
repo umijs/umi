@@ -84,17 +84,28 @@ export function callRemote<T = object, K = object>(
   action: IUi.IAction<T, K>,
 ): Promise<{ data: K }> {
   return new Promise((resolve, reject) => {
-    messageHandlers.push(({ type, payload }) => {
+    function handler({ type, payload }) {
       if (type === `${action.type}/success`) {
+        removeHandler();
         resolve(payload);
       }
       if (type === `${action.type}/failure`) {
+        removeHandler();
         reject(payload);
       }
       if (type === `${action.type}/progress` && action.onProgress) {
         action.onProgress(payload);
       }
-    });
+    }
+    function removeHandler() {
+      for (const [i, h] of messageHandlers.entries()) {
+        if (h === handler) {
+          messageHandlers.splice(i, 1);
+          break;
+        }
+      }
+    }
+    messageHandlers.push(handler);
     const lang = getLocale();
     sock.send(
       JSON.stringify({
