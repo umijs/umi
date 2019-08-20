@@ -248,11 +248,11 @@ const BasicConfig = () => {
                     </div>
                   );
                 })}
-                {/* <Form.Item shouldUpdate>
+                <Form.Item shouldUpdate>
                   {({ getFieldsValue }) => {
-                    return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
+                    console.log('Form values', JSON.stringify(getFieldsValue(), null, 2));
                   }}
-                </Form.Item> */}
+                </Form.Item>
               </Form>
               {/* <div>
                 <h2>Test</h2>
