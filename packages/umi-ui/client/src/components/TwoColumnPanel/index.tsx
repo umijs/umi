@@ -5,7 +5,7 @@ import cls from 'classnames';
 import styles from './index.less';
 
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
-  const { sections } = props;
+  const { sections, disableRightOverflow = false, disableLeftOverflow = false, className } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const Component = sections[currentIndex].component;
@@ -14,9 +14,18 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
     setCurrentIndex(index);
   }
 
+  const leftCls = cls(styles.left, {
+    [styles['left-scroll']]: !disableLeftOverflow,
+  });
+  const rightCls = cls(styles.right, {
+    [styles['right-scroll']]: !disableRightOverflow,
+  });
+
+  const panelCls = cls(styles.normal, className);
+
   return (
-    <div className={styles.normal}>
-      <div className={styles.left} id="two-column-panel-left">
+    <div className={panelCls}>
+      <div className={leftCls} id="two-column-panel-left">
         {sections.map((s, index) => {
           const triggerCls = cls({
             [styles.trigger]: true,
@@ -40,7 +49,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
           );
         })}
       </div>
-      <div className={styles.right} id="two-column-panel-right">
+      <div className={rightCls} id="two-column-panel-right">
         <Component />
       </div>
     </div>

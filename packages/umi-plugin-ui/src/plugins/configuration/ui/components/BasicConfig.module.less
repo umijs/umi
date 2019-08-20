@@ -1,7 +1,10 @@
 .basicConfig {
   display: flex;
   height: 100%;
+  overflow: auto;
   padding-top: 16px;
+  position: relative;
+  padding-left: 20px;
   &-header {
     margin-bottom: 16px;
     position: relative;
@@ -40,19 +43,24 @@
     }
   }
   &-submit {
-    position: fixed;
-    left: auto;
-    bottom: 32px;
+    position: relative;
+    padding: 8px 0;
+    right: 0;
+    bottom: 48px;
     width: 100%;
-    background: #23232e;
+    text-align: right;
     border-top: 1px solid #15171c;
-    transform: translateX(-20px);
+    background: #23232e;
     z-index: 11;
+    button {
+      margin-right: 8px;
+    }
   }
   .form {
     flex: 100% 1 1;
   }
   .toc {
+    min-width: 168px;
   }
   .group {
     margin-bottom: 30px;

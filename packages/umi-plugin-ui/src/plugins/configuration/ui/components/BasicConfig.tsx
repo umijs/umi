@@ -12,6 +12,7 @@ import { getToc } from './ConfigItem/utils';
 import styles from './BasicConfig.module.less';
 
 const BasicConfig = () => {
+  const containerRef = useRef();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -188,6 +189,14 @@ const BasicConfig = () => {
     form.scrollToField(firstErrorFieldName);
   };
 
+  const handleReset = () => {
+    form.resetFields();
+  };
+
+  const handleSubmit = () => {
+    form.submit();
+  };
+
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
   const tocAnchors = getToc(groupedData, allValues || initialValues);
@@ -199,90 +208,95 @@ const BasicConfig = () => {
   });
 
   return (
-    <div className={themeCls}>
-      <div className={styles.form}>
-        <div className={styles['basicConfig-header']}>
-          <h2>项目配置</h2>
-          <span className={searchIconCls}>
-            <SearchIcon onClick={handleSearchShow} />
-          </span>
-          <Input
-            prefix={<SearchIcon />}
-            ref={searchInputRef}
-            suffix={search && <CloseCircleFilled onClick={resetSearch} />}
-            placeholder="搜索"
-            className={inputCls}
-            onChange={e => handleSearchDebounce(e.target.value)}
-          />
-        </div>
-        {searchData.length > 0 && (
-          <div>
-            <Form
-              layout="vertical"
-              form={form}
-              onFinish={handleFinish}
-              onFinishFailed={handleFinishFailed}
-              initialValues={initialValues}
-              onValuesChange={(changedValues, allValues) => {
-                setAllValues(allValues);
-              }}
-            >
-              {Object.keys(groupedData).map(group => {
-                return (
-                  <div className={styles.group} key={group}>
-                    <h2 id={group}>{group}</h2>
-                    {groupedData[group].map(item => {
-                      const ConfigItem = configMapping[item.type];
-                      return <ConfigItem key={item.name} {...item} form={form} />;
-                    })}
-                  </div>
-                );
-              })}
-              {/* <Form.Item shouldUpdate>
-                {({ getFieldsValue }) => {
-                  return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
-                }}
-              </Form.Item> */}
-              <div className={styles['basicConfig-submit']}>
-                <Button htmlType="submit">保存</Button>
-              </div>
-            </Form>
-            {/* <div>
-              <h2>Test</h2>
-              <Button
-                type="primary"
-                onClick={() => console.log('wefwefewf', form.getFieldsValue())}
-              >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
-              <Button
-                type="primary"
-                onClick={editHandler.bind(null, 'mock.exclude', [])}
-              >{`清空 mock.exclude`}</Button>
-              <br />
-              <br />
-              <Button
-                type="primary"
-                onClick={editHandler.bind(
-                  null,
-                  {
-                    base: '/foo/',
-                    publicPath: '/foo/',
-                  },
-                  '',
-                )}
-              >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
-              <br />
-              <br />
-              <br />
-            </div> */}
+    <>
+      <div className={themeCls} ref={containerRef}>
+        <div className={styles.form}>
+          <div className={styles['basicConfig-header']}>
+            <h2>项目配置</h2>
+            <span className={searchIconCls}>
+              <SearchIcon onClick={handleSearchShow} />
+            </span>
+            <Input
+              prefix={<SearchIcon />}
+              ref={searchInputRef}
+              suffix={search && <CloseCircleFilled onClick={resetSearch} />}
+              placeholder="搜索"
+              className={inputCls}
+              onChange={e => handleSearchDebounce(e.target.value)}
+            />
           </div>
-        )}
+          {searchData.length > 0 && (
+            <div>
+              <Form
+                layout="vertical"
+                form={form}
+                onFinish={handleFinish}
+                onFinishFailed={handleFinishFailed}
+                initialValues={initialValues}
+                onValuesChange={(changedValues, allValues) => {
+                  setAllValues(allValues);
+                }}
+              >
+                {Object.keys(groupedData).map(group => {
+                  return (
+                    <div className={styles.group} key={group}>
+                      <h2 id={group}>{group}</h2>
+                      {groupedData[group].map(item => {
+                        const ConfigItem = configMapping[item.type];
+                        return <ConfigItem key={item.name} {...item} form={form} />;
+                      })}
+                    </div>
+                  );
+                })}
+                {/* <Form.Item shouldUpdate>
+                  {({ getFieldsValue }) => {
+                    return <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>;
+                  }}
+                </Form.Item> */}
+              </Form>
+              {/* <div>
+                <h2>Test</h2>
+                <Button
+                  type="primary"
+                  onClick={() => console.log('wefwefewf', form.getFieldsValue())}
+                >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
+                <Button
+                  type="primary"
+                  onClick={editHandler.bind(null, 'mock.exclude', [])}
+                >{`清空 mock.exclude`}</Button>
+                <br />
+                <br />
+                <Button
+                  type="primary"
+                  onClick={editHandler.bind(
+                    null,
+                    {
+                      base: '/foo/',
+                      publicPath: '/foo/',
+                    },
+                    '',
+                  )}
+                >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
+                <br />
+                <br />
+                <br />
+              </div> */}
+            </div>
+          )}
+        </div>
+        <Toc
+          className={styles.toc}
+          anchors={tocAnchors}
+          getContainer={() => containerRef && containerRef.current}
+        />
       </div>
-      <Toc
-        className={styles.toc}
-        anchors={tocAnchors}
-        getContainer={() => document.getElementById('two-column-panel-right')}
-      />
-    </div>
+      <div className={styles['basicConfig-submit']}>
+        <Button onClick={handleReset}>重置</Button>
+        <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
+          保存
+        </Button>
+      </div>
+    </>
   );
 };
 

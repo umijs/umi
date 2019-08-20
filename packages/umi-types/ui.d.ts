@@ -54,12 +54,15 @@ declare namespace IUI {
   }
 
   interface ITwoColumnPanel {
+    className?: string;
     sections: Array<{
       title: string;
       icon: string | React.ReactNode;
       description: string;
       component: FunctionComponent<any>;
     }>;
+    disableLeftOverflow?: boolean;
+    disableRightOverflow?: boolean;
   }
 
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;

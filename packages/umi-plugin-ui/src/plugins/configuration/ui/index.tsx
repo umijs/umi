@@ -106,6 +106,8 @@ const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
       }}
     >
       <TwoColumnPanel
+        disableRightOverflow
+        className={styles.configuration}
         sections={[
           {
             title: '项目配置',
