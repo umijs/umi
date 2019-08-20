@@ -10,7 +10,8 @@
     &:hover {
       border-color: fade(@light, 10);
     }
-    &-active {
+    &.active {
+      transition: none;
       border-color: @primary-color;
       &::after {
         position: absolute;

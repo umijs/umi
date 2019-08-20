@@ -33,34 +33,36 @@ const ImportProject: React.SFC<IProjectProps> = props => {
 
   return (
     <section className={common.section}>
-      <h2>导入</h2>
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_create_project"
-        onFinish={handleFinish}
-        onValuesChange={(changedValue, { path }) => {
-          setFullPath(path);
-          form.setFieldsValue({
-            name: getBasename(path),
-          });
-        }}
-      >
-        <Form.Item label={null} name="path" rules={[{ required: true }]}>
-          <DirectoryForm />
-        </Form.Item>
-        <Form.Item label={null} shouldUpdate name="name" noStyle rules={[{ required: true }]}>
-          <p />
-        </Form.Item>
-        <Form.Item style={{ marginTop: 16 }}>
-          <p>{fullPath}</p>
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" type="primary">
-            {formatMessage({ id: '确定' })}
-          </Button>
-        </Form.Item>
-      </Form>
+      <div style={{ maxWidth: 600, margin: '0 auto' }}>
+        <h2>导入</h2>
+        <Form
+          form={form}
+          layout="vertical"
+          name="form_create_project"
+          onFinish={handleFinish}
+          onValuesChange={(changedValue, { path }) => {
+            setFullPath(path);
+            form.setFieldsValue({
+              name: getBasename(path),
+            });
+          }}
+        >
+          <Form.Item label={null} name="path" rules={[{ required: true }]}>
+            <DirectoryForm />
+          </Form.Item>
+          <Form.Item label={null} shouldUpdate name="name" noStyle rules={[{ required: true }]}>
+            <p />
+          </Form.Item>
+          <Form.Item style={{ marginTop: 16 }}>
+            <p>{fullPath}</p>
+          </Form.Item>
+          <Form.Item>
+            <Button htmlType="submit" type="primary">
+              {formatMessage({ id: '确定' })}
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </section>
   );
 };

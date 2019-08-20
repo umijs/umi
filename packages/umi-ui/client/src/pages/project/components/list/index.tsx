@@ -8,11 +8,12 @@ import {
   Spin,
   Popconfirm,
   Row,
+  ConfigProvider,
   Col,
   message,
   Layout,
+  Empty,
   Icon,
-  Menu,
 } from 'antd';
 import iconSvg from '@/assets/umi.svg';
 import get from 'lodash/get';
@@ -145,49 +146,65 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             </div>
           </Col>
         </Row>
+        <ConfigProvider
+          renderEmpty={() => (
+            <Empty
+              imageStyle={{
+                height: 150,
+                opacity: 0.1,
+                marginBottom: 24,
+              }}
+              style={{
+                paddingTop: 187,
+              }}
+              image={iconSvg}
+              description="一直如此，便是对的？"
+            />
+          )}
+        >
+          <List
+            dataSource={projects}
+            loading={!projectList.projectsByKey}
+            split={false}
+            className={styles['project-list']}
+            renderItem={item => {
+              const status = getProjectStatus(item);
+              const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+                <Popconfirm
+                  title="是否删除项目？"
+                  onConfirm={() => handleOnAction('delete', { key: item.key })}
+                  onCancel={() => {}}
+                  okText="是"
+                  cancelText="否"
+                >
+                  <a>删除</a>
+                </Popconfirm>,
+              );
 
-        <List
-          dataSource={projects}
-          loading={!projectList.projectsByKey}
-          split={false}
-          className={styles['project-list']}
-          renderItem={item => {
-            const status = getProjectStatus(item);
-            const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
-              <Popconfirm
-                title="是否删除项目？"
-                onConfirm={() => handleOnAction('delete', { key: item.key })}
-                onCancel={() => {}}
-                okText="是"
-                cancelText="否"
-              >
-                <a>删除</a>
-              </Popconfirm>,
-            );
-
-            return (
-              <List.Item className={styles['project-list-item']} actions={actions}>
-                <Skeleton title={false} loading={item.loading} active>
-                  <List.Item.Meta
-                    title={
-                      <div className={styles['project-list-item-title']}>
-                        {item.key === currentProject && <Badge status="success" />}
-                        <a onClick={() => handleTitleClick(item)}>{item.name}</a>
-                        {status === 'progress' && (
-                          <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
-                        )}
-                        {status === 'failure' && (
-                          <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
-                        )}
-                      </div>
-                    }
-                    description={item.path}
-                  />
-                </Skeleton>
-              </List.Item>
-            );
-          }}
-        />
+              return (
+                <List.Item className={styles['project-list-item']} actions={actions}>
+                  <Skeleton title={false} loading={item.loading} active>
+                    <List.Item.Meta
+                      title={
+                        <div className={styles['project-list-item-title']}>
+                          {item.key === currentProject && <Badge status="success" />}
+                          <a onClick={() => handleTitleClick(item)}>{item.name}</a>
+                          {status === 'progress' && (
+                            <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
+                          )}
+                          {status === 'failure' && (
+                            <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
+                          )}
+                        </div>
+                      }
+                      description={item.path}
+                    />
+                  </Skeleton>
+                </List.Item>
+              );
+            }}
+          />
+        </ConfigProvider>
       </Content>
       {modalVisible && (
         <ModalForm

@@ -74,7 +74,7 @@ const CardForm: React.SFC<CardFormProps> = props => {
       {Array.isArray(options) &&
         options.map(option => {
           const cardCls = cls(styles['cardForm-card'], {
-            [styles['cardForm-card-active']]: option.value === cardValue,
+            [styles.active]: option.value === cardValue,
           });
           return (
             <Col span={span} key={option.value} className={styles['cardForm-col']}>

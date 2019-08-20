@@ -91,7 +91,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           },
         ]}
       >
-        <Input placeholder="请输入应用名" onChange={handleDebounceInput} />
+        <Input placeholder="请输入应用名" onChange={handleDebounceInput} autoComplete="off" />
       </Form.Item>
       <Form.Item shouldUpdate>{renderFullPath}</Form.Item>
       <Form.Item>
