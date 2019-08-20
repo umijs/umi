@@ -15,7 +15,9 @@ import {
   Empty,
   Icon,
 } from 'antd';
-import iconSvg from '@/assets/umi.svg';
+// TODO from server
+import umiIconSvg from '@/assets/umi.svg';
+import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
 import {
   setCurrentProject,
@@ -39,6 +41,7 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
+  const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
   console.log('projectList', projectList);
   const { currentProject, projectsByKey = {} } = projectList;
@@ -122,8 +125,8 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
         <div className={styles['project-list-layout-sider-title']}>
-          <img src={iconSvg} alt="UmiUi" />
-          <h1>Umi Ui</h1>
+          <img src={iconSvg} alt="logo" />
+          <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
         <div className={styles['project-list-layout-sider-item']}>
           <Icon theme="filled" type="appstore" />
@@ -153,6 +156,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 height: 150,
                 opacity: 0.1,
                 marginBottom: 24,
+                userSelect: 'none',
               }}
               style={{
                 paddingTop: 187,

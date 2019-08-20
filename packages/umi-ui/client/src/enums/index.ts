@@ -8,6 +8,13 @@ export enum LOCALES {
   'en-US' = 'English',
 }
 
+export type ILocale = keyof typeof LOCALES;
+
+export enum LOCALES_ICON {
+  'zh-CN' = '🇨🇳',
+  'en-US' = '🇳🇿',
+}
+
 export enum PROJECT_STATUS {
   /** 项目列表 */
   list = 'list',

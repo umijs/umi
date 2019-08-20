@@ -10,6 +10,7 @@ declare global {
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiPlugins?: any[];
+    g_bigfish?: boolean;
     g_uiContext: Context<IUi.IContext>;
     g_uiLocales: Partial<IUi.ILocale>;
     g_service: IUi.IService;

@@ -62,7 +62,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
         }}
       >
         {this.props.children}
-        <Footer type={type} />
+        <Footer type={type} locale={locale} setLocale={setLocale} />
       </Context.Provider>
     );
   }
