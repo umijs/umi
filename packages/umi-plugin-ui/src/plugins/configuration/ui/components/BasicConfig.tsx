@@ -58,9 +58,6 @@ const BasicConfig = () => {
   async function updateData() {
     const { data } = await api.callRemote({
       type: 'org.umi.config.list',
-      payload: {
-        lang: api.getLocale(),
-      },
     });
     setData(data);
   }

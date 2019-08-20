@@ -299,7 +299,7 @@ export default class UmiUI {
 
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload }, { log, send, success, failure, progress }) {
+  handleCoreData({ type, payload, lang }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
         success(this.getExtraAssets());
@@ -578,11 +578,11 @@ export default class UmiUI {
         });
         conn.on('data', message => {
           try {
-            const { type, payload } = JSON.parse(message);
+            const { type, payload, lang } = JSON.parse(message);
             console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData(
-                { type, payload },
+                { type, payload, lang },
                 {
                   log,
                   send,
@@ -595,7 +595,7 @@ export default class UmiUI {
               const service = this.servicesByKey[this.config.data.currentProject];
               service.applyPlugins('onUISocket', {
                 args: {
-                  action: { type, payload },
+                  action: { type, payload, lang },
                   log,
                   send,
                   success: success.bind(this, type),
