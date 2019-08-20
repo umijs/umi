@@ -94,7 +94,12 @@ export function callRemote<T = object, K = object>(
         action.onProgress(payload);
       }
     });
-    sock.send(JSON.stringify(action));
+    sock.send(
+      JSON.stringify({
+        ...action,
+        lang: window.g_lang,
+      }),
+    );
   });
 }
 

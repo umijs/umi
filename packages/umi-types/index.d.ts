@@ -291,10 +291,11 @@ interface IOnPatchRoute {
 interface IAction {
   type: string;
   payload?: any;
+  lang?: string;
 }
 
 export interface IOnUISocketFunc {
-  (args: { action: IAction; send: any }): void;
+  (args: { action: IAction; send: any; success: any; failure: any }): void;
 }
 
 interface IOnUISocket {

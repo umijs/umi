@@ -127,11 +127,11 @@ export default function(api: IApi) {
   api.addUIPlugin(require.resolve('../../../src/plugins/configuration/dist/ui.umd'));
 
   api.onUISocket(({ action, failure, success }) => {
-    const { type, payload } = action;
+    const { type, payload, lang } = action;
     switch (type) {
       case 'org.umi.config.list':
         success({
-          data: getConfig(payload && payload.lang),
+          data: getConfig(lang),
         });
         break;
       case 'org.umi.config.edit':
