@@ -89,7 +89,7 @@ export default function(api: IApi) {
     const config = userConfig.getConfig({ force: true });
     return formatConfigs(userConfig.plugins, {
       lang,
-      groupMap: api.applyPlugins('modeifyUIConfigurationGroupMap', {
+      groupMap: api.applyPlugins('modifyUIConfigurationGroupMap', {
         initialValue: DEFAULT_GROUP_MAP,
       }),
     }).map(p => {
