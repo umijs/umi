@@ -168,15 +168,21 @@ const BasicConfig = () => {
           value: '',
         },
       });
+      await updateData();
+      message.success('配置修改成功');
     } catch (e) {
-      message.error('配置修改失败');
-      console.error('配置修改失败', e);
+      loadingMsg();
+      message.error(e.message);
+      console.error(e.message, e);
+      if (Array.isArray(e.errors) && e.errors.length > 0) {
+        const [firstField] = e.errors;
+        form.setFields(e.errors);
+        form.scrollToField(firstField.name);
+      }
     } finally {
       loadingMsg();
       // setSubmitLoading(false);
     }
-    await updateData();
-    message.success('配置修改成功');
   };
 
   const handleFinishFailed = ({ errorFields }) => {
