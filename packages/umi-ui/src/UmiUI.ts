@@ -1,14 +1,14 @@
 import assert from 'assert';
 import chalk from 'chalk';
-import * as path from 'path';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import launchEditor from 'react-dev-utils/launchEditor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
+import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import Config from './Config';
@@ -156,6 +156,17 @@ export default class UmiUI {
     };
   }
 
+  async installDeps(npmClient, projectPath, { onProgress, onSuccess }) {
+    await installDeps(npmClient, projectPath, {
+      onData(data) {
+        onProgress({
+          install: data,
+        });
+      },
+    });
+    onSuccess();
+  }
+
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
     const { type, npmClient, baseDir, name, args } = opts;
     let key;
@@ -258,7 +269,7 @@ export default class UmiUI {
         step: 3,
         stepStatus: 1,
       });
-      await installDeps(npmClient, targetDir);
+      await installDeps(npmClient, targetDir, {});
       setProgress({
         stepStatus: 2,
       });
@@ -464,21 +475,17 @@ export default class UmiUI {
         });
         break;
       case '@@actions/installDependencies':
-        installDeps(payload.npmClient, payload.projectPath, {
-          onData(data) {
-            progress({
-              install: data,
-            });
-          },
-        })
-          .then(() => {
-            success();
-          })
-          .catch(e => {
-            failure({
-              message: e.message,
-            });
-          });
+        this.installDeps(payload.npmClient, payload.projectPath, {
+          onProgress: progress,
+          onSuccess: success,
+        });
+        break;
+      case '@@actions/reInstallDependencies':
+        rimraf.sync(join(payload.projectPath, 'node_modules'));
+        this.installDeps(payload.npmClient, payload.projectPath, {
+          onProgress: progress,
+          onSuccess: success,
+        });
         break;
       case '@@actions/openConfigFile':
         this.openFileInEditor(payload.projectPath);
@@ -488,16 +495,16 @@ export default class UmiUI {
         try {
           const notifier = require('node-notifier');
           const buildInImages = {
-            error: path.resolve(__dirname, 'assets', 'error.png'),
-            info: path.resolve(__dirname, 'assets', 'info.png'),
-            success: path.resolve(__dirname, 'assets', 'success.png'),
-            warning: path.resolve(__dirname, 'assets', 'warning.png'),
+            error: resolve(__dirname, 'assets', 'error.png'),
+            info: resolve(__dirname, 'assets', 'info.png'),
+            success: resolve(__dirname, 'assets', 'success.png'),
+            warning: resolve(__dirname, 'assets', 'warning.png'),
           };
           const { type, ...restPayload } = payload;
           const noticeConfig = {
             ...restPayload,
             contentImage: buildInImages[type] || buildInImages.info,
-            icon: path.resolve(__dirname, 'assets', 'umi.png'),
+            icon: resolve(__dirname, 'assets', 'umi.png'),
             sound: true,
           };
           notifier.notify(noticeConfig);
