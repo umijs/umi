@@ -4,8 +4,5 @@
     "react-dom": "16.8.6",
     "antd": "4.0.0-alpha.0",
     "xterm": "3.14.5"
-  },
-  "dependencies": {
-    "xterm-addon-web-links": "^0.1.0"
   }
 }

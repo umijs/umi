@@ -12,6 +12,9 @@
     "lib",
     "src"
   ],
+  "dependencies": {
+    "xterm-addon-web-links": "^0.1.0"
+  },
   "devDependencies": {
     "antd": "4.0.0-alpha.0",
     "concurrently": "^4.1.1",
