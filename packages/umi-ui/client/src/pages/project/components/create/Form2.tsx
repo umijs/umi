@@ -63,7 +63,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
           <Checkbox.Group style={{ width: '100%' }}>
             <Row>
               {Object.keys(REACT_FEATURES).map((feature: any) => (
-                <Col key={feature} span={8}>
+                <Col key={feature} span={8} style={{ marginBottom: 16 }}>
                   <Checkbox value={feature}>{REACT_FEATURES[feature]}</Checkbox>
                 </Col>
               ))}
