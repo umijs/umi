@@ -24,7 +24,7 @@ import {
   OpenProjectAction,
   ReInstallDependencyAction,
 } from './Actions';
-import { isUmiProject } from './checkProject';
+import { isDepLost, isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
 
@@ -107,7 +107,6 @@ export default class UmiUI {
     } else if (!this.servicesByKey[key]) {
       // Attach Service
       debug(`Attach service for ${key}`);
-
       // Use local service and detect version compatibility
       const serviceModule = process.env.BIGFISH_COMPAT
         ? '@alipay/bigfish/_Service'
@@ -135,14 +134,31 @@ export default class UmiUI {
         const servicePath = localService || 'umi-build-dev/lib/Service';
         debug(`Service path: ${servicePath}`);
         const Service = require(servicePath).default;
-
         const service = new Service({
           cwd: project.path,
         });
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
       } catch (e) {
-        console.log(e);
+        if (isDepLost(e)) {
+          throw new ActiveProjectError({
+            message: {
+              'zh-CN': `依赖文件没找到。`,
+              'en-US': 'Dependency file not found.',
+            },
+            lang,
+            actions: [ReInstallDependencyAction, BackToHomeAction],
+          });
+        } else {
+          throw new ActiveProjectError({
+            message: {
+              'zh-CN': '其他错误',
+              'en-US': 'Other Errors',
+            },
+            lang,
+            actions: [BackToHomeAction],
+          });
+        }
       }
       debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
       this.servicesByKey[key] = service;
@@ -418,7 +434,7 @@ export default class UmiUI {
           });
           success();
         } catch (e) {
-          console.error(chalk.red(`Error: Attach service for ${payload.key} FAILED`));
+          console.error(chalk.red(`Error: Attach Project of key ${payload.key} FAILED`));
           console.error(e);
           failure({
             message: e.message,
