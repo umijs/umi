@@ -1,22 +1,17 @@
 import * as React from 'react';
 import { Form, Checkbox, Button, Select, Row, Col, Radio, message, Spin } from 'antd';
-import { getNpmClients } from '@/services/project';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
+import NpmClientForm from '@/components/NpmClientForm';
 import CardForm, { IOption } from '@/components/CardForm';
-import useNpmClients from '@/components/hooks/useNpmClients';
 import { APP_TYPE, REACT_FEATURES } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 
 const { useState, useContext } = React;
-const { Option } = Select;
 
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const { goPrev, handleFinish, style, active } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [appType, setAppType] = useState<APP_TYPE>();
-  const { npmClient, error: clientError, loading: clientLoading } = useNpmClients({
-    active,
-  });
   const [form] = Form.useForm();
   // tmp options, real from server
   const options: IOption[] = [
@@ -86,29 +81,15 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
           <Radio value="TypeScript">TypeScript</Radio>
         </Radio.Group>
       </Form.Item>
-      <Form.Item
-        name="npmClient"
-        label="包管理"
-        rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
-      >
-        <Select
-          placeholder="请选择包管理器"
-          notFoundContent={
-            clientLoading ? <Spin size="small" /> : !npmClient.length && <p>没有包管理器</p>
-          }
+      {active && (
+        <Form.Item
+          name="npmClient"
+          label="包管理"
+          rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
         >
-          {clientError ? (
-            <p>获取包管理器错误</p>
-          ) : (
-            Array.isArray(npmClient) &&
-            npmClient.map(client => (
-              <Option key={client} value={client}>
-                {client}
-              </Option>
-            ))
-          )}
-        </Select>
-      </Form.Item>
+          <NpmClientForm />
+        </Form.Item>
+      )}
       <Form.Item style={{ marginTop: 16 }}>
         <>
           <Button onClick={() => goPrev()}>{formatMessage({ id: '上一步' })}</Button>

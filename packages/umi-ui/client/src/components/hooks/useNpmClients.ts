@@ -14,7 +14,7 @@ interface IResult {
   npmClient: string[];
 }
 
-const useNpmClients = (params: IParams): IResult => {
+const useNpmClients = (params: IParams = {}): IResult => {
   const { active = true } = params;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState();
