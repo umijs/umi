@@ -11,11 +11,29 @@ interface IOpts {
   onSave?: any;
 }
 
+export interface ICreateProgress {
+  step: number;
+  stepStatus: number;
+  steps: string[];
+  success?: boolean;
+  failure?: Error;
+}
+
+export interface IProjectItem {
+  name: string;
+  path: string;
+  creatingProgress?: ICreateProgress;
+}
+
+interface IProjectsByKey {
+  [key: string]: IProjectItem;
+}
+
 export default class Config {
   dbPath: string;
 
   data: {
-    projectsByKey?: any;
+    projectsByKey?: IProjectsByKey;
     currentProject?: string;
   };
 

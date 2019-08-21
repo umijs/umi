@@ -7,8 +7,8 @@ import Footer from './Footer';
 import { THEME } from '@/enums';
 
 interface ILayoutProps {
-  /** Layout 类型（项目列表、项目详情） */
-  type: 'detail' | 'list';
+  /** Layout 类型（项目列表、项目详情，loading 页） */
+  type: 'detail' | 'list' | 'loading';
   className?: string;
 }
 

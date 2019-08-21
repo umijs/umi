@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
-import { Card } from 'antd';
-import Result, { IResultProps } from '@/components/Result';
+import { Card, Result } from 'antd';
+import { ResultProps } from 'antd/lib/result';
+import { InfoCircle } from '@ant-design/icons';
+import styles from './index.less';
 
-const Fail: React.SFC<IResultProps> = props => (
-  <Card bordered={false}>
-    <Result type="error" style={{ marginTop: 48, marginBottom: 16 }} {...props} />
+const Fail: React.SFC<ResultProps> = props => (
+  <Card bordered={false} className={styles.result}>
+    <Result icon={<InfoCircle />} style={{ marginTop: 48, marginBottom: 16 }} {...props} />
   </Card>
 );
 

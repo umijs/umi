@@ -51,7 +51,7 @@ const ModalForm: React.FC<IModalFormProps> = ({
         name={formName}
       >
         <Form.Item name="name" label="应用名" rules={[{ required: true, message: '请输入应用名' }]}>
-          <Input placeholder="wefqwefqwef" />
+          <Input placeholder="请输入用户名" onPressEnter={handleOnOk} />
         </Form.Item>
         <Form.Item name="key" noStyle>
           <span />

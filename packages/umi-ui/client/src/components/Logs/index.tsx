@@ -28,7 +28,9 @@ export const Log = logItem => {
   const formatDate = moment(date).isValid() ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
   return (
     <li className={styles.log}>
-      <Tag {...TAG_MAP[type]}>{typeof type === 'string' ? type.toLocaleUpperCase() : 'UNKNOW'}</Tag>
+      <Tag className={styles['log-tag']} {...TAG_MAP[type]}>
+        {typeof type === 'string' ? type.toLocaleUpperCase() : 'UNKNOW'}
+      </Tag>
       <span>{formatDate}</span>
       <span>: {message}</span>
     </li>

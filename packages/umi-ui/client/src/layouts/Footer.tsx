@@ -14,7 +14,7 @@ import styles from './Footer.less';
 const { useState, useEffect, useReducer } = React;
 
 export interface IFooterProps {
-  type: 'list' | 'detail';
+  type: 'list' | 'detail' | 'loading';
   setLocale: (locale: ILocale) => void;
   locale: ILocale;
 }
@@ -109,6 +109,17 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
+        {type === 'loading' && (
+          <div
+            onClick={() => {
+              redirect('/project/select');
+              window.location.reload();
+            }}
+            className={actionCls}
+          >
+            <Home style={{ marginRight: 4 }} /> 返回列表
+          </div>
+        )}
         {type === 'detail' && path && name && (
           <>
             <div onClick={() => redirect('/project/select')} className={actionCls}>

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Spin, Button } from 'antd';
 import { callRemote } from '@/socket';
+import Layout from '@/layouts/Layout';
 import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
 import locales from './locales';
@@ -62,15 +63,27 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   render() {
     const locale = getLocale();
     const { error } = this.props;
+    console.log('loading error', error);
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
     const actionsDeps = error ? (
       <div>
+        <pre
+          style={{
+            maxWidth: 577,
+            textAlign: 'left',
+          }}
+        >
+          {error.stack}
+        </pre>
         {(error.actions || []).map((action, index) => {
           return (
             <Button
               key={index}
+              style={{
+                marginRight: 16,
+              }}
               type={action.buttonType}
               onClick={
                 action.browserHandler
@@ -124,18 +137,20 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     ) : null;
 
     return (
-      <div className={styles.loading}>
-        {error ? (
-          <Fail title="打开项目失败" description={error.message || ''} actions={actionsDeps} />
-        ) : (
-          <Fragment>
-            <div className={styles['loading-spin']}>
-              <Spin size="large" />
-              <p>{messages['org.umi.ui.loading.open']}</p>
-            </div>
-          </Fragment>
-        )}
-      </div>
+      <Layout type="loading">
+        <div className={styles.loading}>
+          {error ? (
+            <Fail title="加载失败" subTitle={error.message || ''} extra={actionsDeps} />
+          ) : (
+            <Fragment>
+              <div className={styles['loading-spin']}>
+                <Spin size="large" />
+                <p>{messages['org.umi.ui.loading.open']}</p>
+              </div>
+            </Fragment>
+          )}
+        </div>
+      </Layout>
     );
   }
 }
