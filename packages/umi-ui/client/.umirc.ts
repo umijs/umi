@@ -2,8 +2,22 @@ import { join } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 
+const uglifyJSOptions =
+  process.env.NODE_ENV === 'production'
+    ? {
+        uglifyOptions: {
+          // remove console.* except console.error
+          compress: {
+            drop_console: true,
+            pure_funcs: ['console.error', 'console.warn'],
+          },
+        },
+      }
+    : {};
+
 const config: IConfig = {
   history: 'hash',
+  uglifyJSOptions,
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
@@ -13,10 +27,6 @@ const config: IConfig = {
   },
   theme: './src/styles/theme.js',
   routes: [
-    {
-      path: '/test',
-      component: '../layouts/Test',
-    },
     {
       path: '/project',
       component: '../layouts/Project',
