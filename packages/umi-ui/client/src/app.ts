@@ -69,7 +69,7 @@ export async function render(oldRender) {
   else {
     ReactDOM.render(
       React.createElement(require('./pages/loading').default, {}),
-      document.getElementById('loading'),
+      document.getElementById('root'),
     );
     const { data } = await callRemote({ type: '@@project/list' });
     const props = {
@@ -84,14 +84,13 @@ export async function render(oldRender) {
           type: '@@project/open',
           payload: { key: data.currentProject },
         });
-        document.getElementById('loading').innerHTML = '';
       } catch (e) {
         props.error = e;
       }
       if (props.error) {
         ReactDOM.render(
           React.createElement(require('./pages/loading').default, props),
-          document.getElementById('loading'),
+          document.getElementById('root'),
         );
         return;
       }

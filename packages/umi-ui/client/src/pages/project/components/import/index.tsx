@@ -24,7 +24,7 @@ const ImportProject: React.SFC<IProjectProps> = props => {
       await importProject(values);
       setCurrent('list');
     } catch (e) {
-      message.error('导入项目失败');
+      message.error(e.message || '导入项目失败');
     }
   };
 
