@@ -78,6 +78,12 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
   handleSuccess = () => {
     console.log('success');
+    window.location.reload();
+  };
+
+  handleFailure = () => {
+    // TODO if install failed
+    console.log('failed');
   };
 
   handleInstallProgress = (data: object) => {
@@ -88,7 +94,6 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       this.logs = '';
       this.xterm.clear();
     }
-    console.log('handleInstallProgress data', data);
     this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
     this.logs.split('\n').forEach((msg: string) => {
       if (!msg) {
@@ -121,22 +126,25 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
             defaultValue={error.stack}
           />
         </div>
-        {(error.actions || []).map((action, index) => {
-          const actionType = get(action, 'handler.type');
-          const actionPayload = get(action, 'handler.payload');
-          const Action = actions[actionType];
-          if (!Action) {
-            return null;
-          }
-          return (
-            <Action
-              key={index}
-              payload={actionPayload}
-              onSuccess={this.handleSuccess}
-              onProgress={this.handleInstallProgress}
-            />
-          );
-        })}
+        <div className={styles['loading-error-action']}>
+          {(error.actions || []).map((action, index) => {
+            const actionType = get(action, 'handler.type');
+            const actionPayload = get(action, 'handler.payload');
+            const Action = actions[actionType];
+            if (!Action) {
+              return null;
+            }
+            return (
+              <Action
+                key={index}
+                payload={actionPayload}
+                onSuccess={this.handleSuccess}
+                onFailure={this.handleFailure}
+                onProgress={this.handleInstallProgress}
+              />
+            );
+          })}
+        </div>
         <div>
           <br />
           <br />

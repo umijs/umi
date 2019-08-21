@@ -11,6 +11,7 @@ export interface DepsInstallProps {
   path?: string;
   payload?: object;
   onProgress?: (data: any) => void;
+  onFailure?: () => void;
   onSuccess?: () => void;
   children: any;
 }
@@ -22,6 +23,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     path,
     onClick,
     payload,
+    onFailure,
     onProgress,
     onSuccess,
     ...restProps
@@ -49,18 +51,14 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     try {
       await action(actionPayload, {
         onProgress,
-        onSuccess: () => {
-          setLoading(false);
-          if (onSuccess) {
-            onSuccess();
-          }
-        },
-        onFailure: () => {
-          setLoading(false);
-        },
       });
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (e) {
-      console.error('install error', e);
+      if (onFailure) {
+        onFailure();
+      }
     } finally {
       setLoading(false);
     }

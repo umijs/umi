@@ -89,6 +89,7 @@ interface IDepsPayload {
 }
 
 export async function reInstallDependencies(payload: IDepsPayload, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/reInstallDependencies',
     payload,

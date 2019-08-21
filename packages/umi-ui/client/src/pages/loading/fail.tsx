@@ -6,7 +6,7 @@ import styles from './index.less';
 
 const Fail: React.SFC<ResultProps> = props => (
   <Card bordered={false} className={styles.result}>
-    <Result icon={<InfoCircle />} style={{ marginTop: 48, marginBottom: 16 }} {...props} />
+    <Result icon={<InfoCircle />} style={{ marginTop: 0, marginBottom: 16 }} {...props} />
   </Card>
 );
 
