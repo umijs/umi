@@ -4,6 +4,7 @@ import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import { findProjectPath } from '@/utils';
 import locales from './locales';
 import styles from './index.less';
 import Fail from './fail';
@@ -49,8 +50,15 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   actionHandler = (handler: any) => {
+    const { data } = this.props;
+    const path = findProjectPath(data);
     console.log('HANDLER', handler);
-    callRemote(handler)
+    callRemote({
+      ...handler,
+      onProgress(data) {
+        console.log('Reinstall: ', data);
+      },
+    })
       .then(() => {
         alert('DONE');
       })
@@ -62,8 +70,8 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
   render() {
     const locale = getLocale();
-    const { error } = this.props;
-    console.log('loading error', error);
+    const { error, data } = this.props;
+
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
