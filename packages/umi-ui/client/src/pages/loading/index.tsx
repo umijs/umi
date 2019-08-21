@@ -5,6 +5,7 @@ import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
 import actions from './actions';
 import { findProjectPath } from '@/utils';
@@ -22,14 +23,15 @@ interface ILoadingProps {
 
 interface ILoadingState {
   actionLoading?: boolean;
-  logs: string;
+  isClear?: boolean;
 }
 
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
-  terminal = null;
   logs = '';
+  private xterm: XTerminal;
   state = {
     actionLoading: false,
+    isClear: false,
   };
   handleInstallDeps = async () => {
     this.setState({
@@ -79,16 +81,21 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   handleInstallProgress = (data: object) => {
+    if (!this.state.isClear) {
+      this.setState({
+        isClear: true,
+      });
+      this.logs = '';
+      this.xterm.clear();
+    }
     console.log('handleInstallProgress data', data);
     this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
-    this.terminal.writeln(this.logs);
-  };
-
-  handleInstallClick = () => {
-    this.logs = '';
-    if (this.terminal) {
-      this.terminal.clear();
-    }
+    this.logs.split('\n').forEach((msg: string) => {
+      if (!msg) {
+        return;
+      }
+      this.xterm.writeln(msg);
+    });
   };
 
   render() {
@@ -99,21 +106,19 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
-    console.log('errorerrorerrorerror', error);
-
     const actionsDeps = error ? (
       <div>
         <div
           style={{
-            maxWidth: 577,
+            maxWidth: 650,
             textAlign: 'left',
           }}
         >
           <Terminal
-            getTerminalIns={t => {
-              this.terminal = t;
+            getIns={t => {
+              this.xterm = t;
             }}
-            log={error.stack}
+            defaultValue={error.stack}
           />
         </div>
         {(error.actions || []).map((action, index) => {
@@ -128,7 +133,6 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
               key={index}
               payload={actionPayload}
               onSuccess={this.handleSuccess}
-              onClick={this.handleInstallClick}
               onProgress={this.handleInstallProgress}
             />
           );

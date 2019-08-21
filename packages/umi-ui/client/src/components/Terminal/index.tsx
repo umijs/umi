@@ -2,67 +2,71 @@ import { Row, Col } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
-import React, { useRef, useState, useEffect } from 'react';
+import cls from 'classnames';
+import React, { useRef, useEffect } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import styles from './index.module.less';
 
 const { Terminal } = window;
 
-export interface IProps {
-  log?: string;
-  onClear?: any;
-  getTerminalIns?: (ref: typeof XTerminal) => void;
+export interface ITerminalProps {
+  className?: string;
+  defaultValue?: string;
+  getIns?: (ins: XTerminal) => void;
+  terminalConfig?: object;
+  [key: string]: any;
 }
 
-const TerminalComponent: React.FC<IProps> = ({ log, onClear, getTerminalIns }) => {
-  let term: typeof XTerminal = null;
-  const domContainer = useRef<HTMLDivElement>();
+const TerminalComponent: React.SFC<ITerminalProps> = (props = {}) => {
+  const domContainer = useRef<HTMLDivElement>(null);
+  const { className, defaultValue, getIns, terminalConfig = {} } = props;
+
+  const xterm: XTerminal = new (Terminal as typeof XTerminal)({
+    allowTransparency: true,
+    theme: {
+      background: '#15171C',
+      foreground: '#ffffff73',
+    },
+    cursorBlink: false,
+    cursorStyle: 'bar',
+    disableStdin: true,
+    ...terminalConfig,
+  });
 
   useEffect(
     () => {
       if (domContainer.current) {
-        term = new (Terminal as typeof XTerminal)({
-          allowTransparency: true,
-          theme: {
-            background: '#15171C',
-            foreground: '#ffffff73',
-          },
-          cursorBlink: false,
-          cursorStyle: 'bar',
-          disableStdin: true,
-        });
-        if (getTerminalIns) {
-          getTerminalIns(term);
+        xterm.loadAddon(new WebLinksAddon());
+        xterm.open(domContainer.current);
+        if (getIns) {
+          getIns(xterm);
         }
-        term.loadAddon(new WebLinksAddon());
-        term.open(domContainer.current);
-        fit(term);
-
-        if (log) {
-          log.split('\n').forEach((msg: string) => {
-            term.writeln(msg);
+        fit(xterm);
+        if (defaultValue) {
+          defaultValue.split('\n').forEach((msg: string) => {
+            if (!msg) {
+              return;
+            }
+            xterm.writeln(msg);
           });
         }
       }
     },
-    [log, domContainer],
+    [domContainer],
   );
 
   const clear = () => {
-    term.clear();
-    if (onClear) {
-      onClear();
-    }
+    xterm.clear();
   };
 
   const toBottom = () => {
-    term.scrollToBottom();
+    xterm.scrollToBottom();
   };
 
-  console.log('terminal', term);
+  const wrapperCls = cls(styles.wrapper, className);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={wrapperCls}>
       <Row className={styles.titleWrapper}>
         <Col span={8} className={styles.formmatGroup}>
           输出
