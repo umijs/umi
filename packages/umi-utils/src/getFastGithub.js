@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const registryMap = {
   'github.com': 'https://github.com/ant-design/ant-design.git',
-  'github.com.cnpmjs.org': 'https://github.com.cnpmjs.org/ant-design/ant-design.git',
+  'gitee.com': 'https://gitee.com/ant-design/pro-blocks',
 };
 
 const getFastGithub = async () => {
@@ -13,6 +13,7 @@ const getFastGithub = async () => {
   });
   try {
     const url = await Promise.race(promiseList);
+    console.log(url);
     return url;
   } catch (e) {
     return 'github.com';
