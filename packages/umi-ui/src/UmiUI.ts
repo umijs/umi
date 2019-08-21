@@ -139,7 +139,10 @@ export default class UmiUI {
         });
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
+        debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
+        this.servicesByKey[key] = service;
       } catch (e) {
+        console.error('service eee', e);
         if (isDepLost(e)) {
           throw new ActiveProjectError({
             message: {
@@ -160,8 +163,6 @@ export default class UmiUI {
           });
         }
       }
-      debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
-      this.servicesByKey[key] = service;
     }
 
     this.config.setCurrentProject(key);
