@@ -521,6 +521,10 @@ export default class UmiUI {
           data: this.logs,
         });
         break;
+      case '@@log/clear':
+        this.logs = [];
+        success();
+        break;
       case '@@actions/installDependencies':
         this.installDeps(payload.npmClient, payload.projectPath, {
           onProgress: progress,
