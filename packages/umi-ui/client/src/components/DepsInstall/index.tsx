@@ -11,11 +11,21 @@ export interface DepsInstallProps {
   path?: string;
   payload?: object;
   onProgress?: (data: any) => void;
+  onSuccess?: () => void;
   children: any;
 }
 
 const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
-  const { children, installType, path, onClick, payload, onProgress, ...restProps } = props;
+  const {
+    children,
+    installType,
+    path,
+    onClick,
+    payload,
+    onProgress,
+    onSuccess,
+    ...restProps
+  } = props;
   const { npmClient } = payload;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,6 +51,9 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
         onProgress,
         onSuccess: () => {
           setLoading(false);
+          if (onSuccess) {
+            onSuccess();
+          }
         },
         onFailure: () => {
           setLoading(false);
@@ -67,6 +80,9 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       // show modal
       setModalVisible(true);
       return false;
+    }
+    if (onClick) {
+      onClick();
     }
     await doInstallDeps();
   };

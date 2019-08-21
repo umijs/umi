@@ -1,19 +1,19 @@
 import { TaskType } from '../../server/core/enums';
 import { WebLinksAddon } from 'xterm-addon-web-links';
+import { Terminal as XTerminal } from 'xterm';
 
 declare global {
   interface Window {
-    Terminal: any;
     fit: any;
     webLinks: any;
   }
 }
 
-const { Terminal, fit, webLinks } = window;
+const { fit, webLinks, Terminal } = window;
 
 function initTerminal() {
-  (Terminal as any).applyAddon(fit);
-  const terminal = new (Terminal as any)({
+  Terminal.applyAddon(fit);
+  const terminal = new (Terminal as typeof XTerminal)({
     allowTransparency: true,
     theme: {
       background: '#15171C',

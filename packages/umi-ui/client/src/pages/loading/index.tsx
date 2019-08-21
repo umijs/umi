@@ -5,6 +5,7 @@ import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import Terminal from '@/components/Terminal';
 import actions from './actions';
 import { findProjectPath } from '@/utils';
 import locales from './locales';
@@ -21,9 +22,12 @@ interface ILoadingProps {
 
 interface ILoadingState {
   actionLoading?: boolean;
+  logs: string;
 }
 
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
+  terminal = null;
+  logs = '';
   state = {
     actionLoading: false,
   };
@@ -70,28 +74,48 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       });
   };
 
-  handleInstallProgress = data => {
+  handleSuccess = () => {
+    console.log('success');
+  };
+
+  handleInstallProgress = (data: object) => {
     console.log('handleInstallProgress data', data);
+    this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
+    this.terminal.writeln(this.logs);
+  };
+
+  handleInstallClick = () => {
+    this.logs = '';
+    if (this.terminal) {
+      this.terminal.clear();
+    }
   };
 
   render() {
     const locale = getLocale();
-    const { error, data } = this.props;
+    const { error } = this.props;
     console.log('loading this.props', this.props);
 
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
+    console.log('errorerrorerrorerror', error);
+
     const actionsDeps = error ? (
       <div>
-        <pre
+        <div
           style={{
             maxWidth: 577,
             textAlign: 'left',
           }}
         >
-          {error.stack}
-        </pre>
+          <Terminal
+            getTerminalIns={t => {
+              this.terminal = t;
+            }}
+            log={error.stack}
+          />
+        </div>
         {(error.actions || []).map((action, index) => {
           const actionType = get(action, 'handler.type');
           const actionPayload = get(action, 'handler.payload');
@@ -100,7 +124,13 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
             return null;
           }
           return (
-            <Action key={index} payload={actionPayload} onProgress={this.handleInstallProgress} />
+            <Action
+              key={index}
+              payload={actionPayload}
+              onSuccess={this.handleSuccess}
+              onClick={this.handleInstallClick}
+              onProgress={this.handleInstallProgress}
+            />
           );
         })}
         <div>

@@ -1,80 +1,80 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { Row, Col } from 'antd';
+import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
-import cls from 'classnames';
-import moment from 'moment';
 import { fit } from 'xterm/lib/addons/fit/fit';
+import React, { useRef, useState, useEffect } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
-import Context from '@/layouts/Context';
-import logConverter from './logConverter';
-import xtermTheme from './theme';
-import styles from './index.less';
+import styles from './index.module.less';
 
-const Terminal = require('xterm');
+const { Terminal } = window;
 
-export interface IUiTerminal {
-  className?: string;
-  wrapperClassName?: string;
-  write: (terminal: InstanceType<typeof XTerminal>) => void;
+export interface IProps {
+  log?: string;
+  onClear?: any;
+  getTerminalIns?: (ref: typeof XTerminal) => void;
 }
 
-const UiTerminal: React.FC<IUiTerminal> = props => {
-  const { write, wrapperClassName, className } = props;
-  const { theme, setTheme } = React.useContext(Context);
-  const [isInit, setInit] = useState(false);
+const TerminalComponent: React.FC<IProps> = ({ log, onClear, getTerminalIns }) => {
+  let term: typeof XTerminal = null;
+  const domContainer = useRef<HTMLDivElement>();
 
-  const xterm = new (Terminal as typeof XTerminal)({
-    theme: xtermTheme[theme],
-    cursorBlink: false,
-    cursorStyle: 'bar',
-    fontFamily: 'Consolas, "Liberation Mono", Menlo, Courier, monospace',
-    disableStdin: true,
-  });
+  useEffect(
+    () => {
+      if (domContainer.current) {
+        term = new (Terminal as typeof XTerminal)({
+          allowTransparency: true,
+          theme: {
+            background: '#15171C',
+            foreground: '#ffffff73',
+          },
+          cursorBlink: false,
+          cursorStyle: 'bar',
+          disableStdin: true,
+        });
+        if (getTerminalIns) {
+          getTerminalIns(term);
+        }
+        term.loadAddon(new WebLinksAddon());
+        term.open(domContainer.current);
+        fit(term);
 
-  xterm.loadAddon(new WebLinksAddon());
-
-  const xtermRef = useRef<HTMLDivElement>();
-
-  useEffect(() => {
-    if (xtermRef.current) {
-      if (!isInit) {
-        xterm.open(xtermRef.current);
-        fit(xterm);
-        setInit(true);
+        if (log) {
+          log.split('\n').forEach((msg: string) => {
+            term.writeln(msg);
+          });
+        }
       }
-      // const BUFFER_LINES = 10;
-      // xterm.scrollLines(logs.length + BUFFER_LINES);
-      // xterm.writeln('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
-      // xterm.writeln('https://umijs.org');
-      xterm.writeln('');
-      if (write) {
-        write(xterm);
-      }
-      // logs.forEach(log => {
-      //   const { type, date, message } = log;
-      //   const typeFormat =
-      //     type === 'error' ? logConverter.error(` ${type} `) : logConverter.info(` ${type} `);
-      //   const formatDate = moment(date).isValid()
-      //     ? moment(date).format('YYYY-MM-DD HH:mm:ss')
-      //     : '';
-      //   xterm.writeln(`${typeFormat} ${formatDate}: ${message}`);
-      //   xterm.writeln('');
-      // });
+    },
+    [log, domContainer],
+  );
+
+  const clear = () => {
+    term.clear();
+    if (onClear) {
+      onClear();
     }
-    // xterm.on('key', (key, ev) => {
-    //   if (key.charCodeAt(0) == 13) {
-    //     xterm.write('\n');
-    //   }
-    //   xterm.write(key);
-    // });
-  }, []);
+  };
 
-  const wrapCls = cls(styles.normal, wrapperClassName);
-  const terminalCls = cls(styles.terminal, className);
+  const toBottom = () => {
+    term.scrollToBottom();
+  };
+
+  console.log('terminal', term);
+
   return (
-    <div className={wrapCls}>
-      <div className={terminalCls} ref={xtermRef} />
+    <div className={styles.wrapper}>
+      <Row className={styles.titleWrapper}>
+        <Col span={8} className={styles.formmatGroup}>
+          输出
+        </Col>
+        <Col span={4} offset={12} className={styles.actionGroup}>
+          <Delete onClick={clear} />
+          <Enter onClick={toBottom} />
+        </Col>
+      </Row>
+      <div ref={domContainer} className={styles.logContainer} />
     </div>
   );
 };
 
-export default UiTerminal;
+export default TerminalComponent;

@@ -2,11 +2,14 @@ import EventEmitter from 'events';
 import { Context } from 'react';
 
 import { IUi } from 'umi-types';
+import { Terminal } from 'xterm';
 import zhCN from '../locales/zh-CN';
 
 declare global {
   interface Window {
     xterm: any;
+    Terminal?: typeof Terminal;
+    fit?: any;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiPlugins?: any[];
