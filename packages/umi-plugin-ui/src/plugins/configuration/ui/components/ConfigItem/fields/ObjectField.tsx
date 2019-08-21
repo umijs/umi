@@ -93,17 +93,19 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           </div>
         );
       })}
-      <Button
-        type="dashed"
-        ghost
-        block
-        onClick={handleAdd}
-        style={{
-          width: 'calc(100% - 22px)',
-        }}
-      >
-        <Plus /> 添加一列
-      </Button>
+      {fieldsValue.length < options.length && (
+        <Button
+          type="dashed"
+          ghost
+          block
+          onClick={handleAdd}
+          style={{
+            width: 'calc(100% - 22px)',
+          }}
+        >
+          <Plus /> 添加一列
+        </Button>
+      )}
     </span>
   );
 };
