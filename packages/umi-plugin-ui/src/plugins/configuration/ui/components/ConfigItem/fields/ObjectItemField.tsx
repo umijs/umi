@@ -88,11 +88,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
       >
         {Array.isArray(options) &&
           options.map(option => (
-            <Option
-              key={`${option.value}`}
-              value={option.value}
-              disabled={'disabled' in option ? option.disabled : false}
-            >
+            <Option key={`${option.value}`} value={option.value} disabled={option.disabled}>
               {option.icon && <img src={iconMappings[option.icon]} style={{ marginRight: 4 }} />}
               {option.name}
             </Option>
