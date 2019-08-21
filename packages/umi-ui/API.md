@@ -241,6 +241,8 @@ export default () => <Button onClick={() => redirect('/project/select')}>跳转�
 
 ```js
 {
+  // KEY
+  key?: string;
   // 应用名
   name?: string;
   // 应用路径

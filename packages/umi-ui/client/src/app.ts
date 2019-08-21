@@ -76,7 +76,10 @@ export async function render(oldRender) {
       data,
     };
     if (data.currentProject) {
-      const currentProject = get(data, `projectsByKey.${data.currentProject}`, {});
+      const currentProject = {
+        key: data.currentProject,
+        ...get(data, `projectsByKey.${data.currentProject}`, {}),
+      };
       console.log('currentProject', currentProject);
       window.g_uiCurrentProject = currentProject || {};
       try {
