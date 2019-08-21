@@ -28,6 +28,7 @@ export default function(api) {
           edge: 13,
           ios: 10,
         },
+        choices: ['chrome', 'opera', 'edge', 'firefox', 'safari', 'ie', 'ios', 'android'],
         group: 'webpack',
         title: {
           'zh-CN': '浏览器兼容性',
