@@ -107,13 +107,14 @@ api.addUIPlugin(require.resolve('./dist/ui'));
 
 ## 客户端接口
 
-### `api.callRemote({ type, payload, onProgress })`
+### `api.callRemote({ type, payload, onProgress, keep })`
 
 调服务端接口，并等待 type 加上 `/success` 或 `/failure` 消息的返回。如果有进度的返回，可通过 `onProgress` 处理回调。
 
 注：
 
 1. callRemote 会自动带上 `lang` 属性，供服务端区分语言
+2. 有 keep 属性，则不会在 success 或 failure 后清除掉
 
 ### `api.listenRemote({ type, onMessage }): unlisten`
 

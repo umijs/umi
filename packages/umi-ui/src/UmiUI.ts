@@ -116,26 +116,34 @@ export default class UmiUI {
       const cwd = project.path;
       const localService = resolveFrom.silent(cwd, serviceModule);
       const localBin = resolveFrom.silent(cwd, binModule);
+      // TODO: 上线前删除 false 判断
       if (false && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
         throw new ActiveProjectError({
-          message: (process.env.BIGFISH_COMPAT
+          message: process.env.BIGFISH_COMPAT
             ? `Bigfish 版本过低，请升级到 @alipay/bigfish@2.20 或以上。`
-            : `Umi 版本过低，请升级到 umi@2.9 或以上。`
-          ).trim(),
+            : {
+                'zh-CN': `Umi 版本过低，请升级到 umi@2.9 或以上。`,
+                'en-US': `Umi version is too low, please upgrade to umi@2.9 or above.`,
+              },
           lang,
-          actions: [OpenProjectAction],
+          actions: [BackToHomeAction, OpenProjectAction],
         });
       }
-      const servicePath = localService || 'umi-build-dev/lib/Service';
-      debug(`Service path: ${servicePath}`);
-      const Service = require(servicePath).default;
 
-      const service = new Service({
-        cwd: project.path,
-      });
-      debug(`Attach service for ${key} after new and before init()`);
-      service.init();
+      try {
+        const servicePath = localService || 'umi-build-dev/lib/Service';
+        debug(`Service path: ${servicePath}`);
+        const Service = require(servicePath).default;
+
+        const service = new Service({
+          cwd: project.path,
+        });
+        debug(`Attach service for ${key} after new and before init()`);
+        service.init();
+      } catch (e) {
+        console.log(e);
+      }
       debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
       this.servicesByKey[key] = service;
     }

@@ -51,6 +51,7 @@ declare namespace IUI {
     payload?: T;
     onProgress?: (data: K) => void;
     onMessage?: (data: any) => void;
+    keep?: boolean;
   }
 
   interface ITwoColumnPanel {

@@ -5,7 +5,7 @@ import { callRemote, listenRemote } from '@/socket';
 import { IProjectList } from '@/enums';
 
 export async function fetchProject(action?: Pick<IUi.IAction<object, IProjectList>, 'onProgress'>) {
-  return callRemote({ type: '@@project/list', ...action });
+  return callRemote({ type: '@@project/list', keep: true, ...action });
 }
 
 export async function importProject(payload) {

@@ -86,11 +86,11 @@ export function callRemote<T = object, K = object>(
   return new Promise((resolve, reject) => {
     function handler({ type, payload }) {
       if (type === `${action.type}/success`) {
-        removeHandler();
+        if (!action.keep) removeHandler();
         resolve(payload);
       }
       if (type === `${action.type}/failure`) {
-        removeHandler();
+        if (!action.keep) removeHandler();
         reject(payload);
       }
       if (type === `${action.type}/progress` && action.onProgress) {
