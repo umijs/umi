@@ -1,5 +1,5 @@
 import { IApi } from 'umi-types';
-import { BuildTask, DevTask, LintTask, TestTask, BaseTask } from './Tasks';
+import { BuildTask, DevTask, LintTask, TestTask, BaseTask, InstallTask } from './Tasks';
 import { TaskType } from './enums';
 import { ITasks, ITaskDetail } from './types';
 
@@ -15,6 +15,7 @@ class TaskManager {
       [TaskType.DEV]: new DevTask(opts),
       [TaskType.LINT]: new LintTask(opts),
       [TaskType.TEST]: new TestTask(opts),
+      [TaskType.INSTALL]: new InstallTask(opts),
     };
   }
 

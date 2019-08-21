@@ -9,7 +9,12 @@ const error = (msg: string, name = 'TaskError') => {
 };
 
 const runCommand = (script: string, options: SpawnOptions = {}) => {
-  options.env = options.env || Object.create(process.env);
+  options.env = {
+    ...process.env,
+    ...options.env,
+    FORCE_COLOR: '1',
+  };
+
   options.cwd = options.cwd || process.cwd();
   options.stdio = options.stdio || 'pipe';
 
@@ -36,7 +41,7 @@ const runCommand = (script: string, options: SpawnOptions = {}) => {
   return proc;
 };
 
-export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
+export const isScriptKeyExist = (pkgPath: string, key: string): boolean => {
   if (!existsSync(pkgPath)) {
     return false;
   }
@@ -44,6 +49,7 @@ export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
   try {
     pkg = require(pkgPath);
   } catch (_) {
+    console.log(_.stack);
     return false;
   }
   return !!(pkg.scripts && pkg.scripts[key]);
@@ -52,3 +58,7 @@ export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
 export { error, runCommand };
 
 export * from './task_event';
+
+export function formatLog(log: string): string {
+  return log;
+}

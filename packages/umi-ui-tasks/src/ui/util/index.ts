@@ -21,6 +21,69 @@ export const isCaredEvent = (taskType: TaskType, caredTaskType: TaskType): boole
   return true;
 };
 
+const NOTICE_MESSAGE_MAP = {
+  [TaskType.BUILD]: {
+    [TaskState.SUCCESS]: {
+      title: '构建成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '构建失败',
+      message: '失败',
+    },
+  },
+  [TaskType.DEV]: {
+    [TaskState.SUCCESS]: {
+      title: '启动成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '启动失败',
+      message: '失败',
+    },
+  },
+  [TaskType.TEST]: {
+    [TaskState.SUCCESS]: {
+      title: '测试成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '测试失败',
+      message: '失败',
+    },
+  },
+  [TaskType.LINT]: {
+    [TaskState.SUCCESS]: {
+      title: '代码风格检查成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '执行代码风格检查失败',
+      message: '失败',
+    },
+  },
+  [TaskType.INSTALL]: {
+    [TaskState.SUCCESS]: {
+      title: '安装依赖成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '安装依赖失败',
+      message: '失败',
+    },
+  },
+};
+
+export function getNoticeMessage(
+  taskType: TaskType,
+  state: TaskState,
+): { type: any; title: string; message: string } {
+  return {
+    type: state === TaskState.SUCCESS ? 'success' : 'error',
+    ...NOTICE_MESSAGE_MAP[taskType][state],
+  };
+}
+
 let callRemote;
 export function initApiToGloal(api: IUiApi) {
   callRemote = api.callRemote; // eslint-disable-line

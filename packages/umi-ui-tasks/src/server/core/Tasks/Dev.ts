@@ -1,7 +1,7 @@
 import { BaseTask } from './Base';
 import { TaskType } from '../enums';
 import { ITaskOpts } from '../types';
-import { isScriptKeyExit } from '../../util';
+import { isScriptKeyExist } from '../../util';
 
 export class DevTask extends BaseTask {
   constructor(opts: ITaskOpts) {
@@ -9,17 +9,25 @@ export class DevTask extends BaseTask {
     this.type = TaskType.DEV;
   }
 
-  public async run() {
+  public async run(env: any = {}) {
     const { cwd } = this.api;
-    let command = 'npm run dev';
+    await super.run();
 
-    // 如果 dev 脚本不存在，使用全局的 umi 进行构建
-    if (!isScriptKeyExit(this.pkgPath, 'dev')) {
+    await this.runCommand(this.getScript(), {
+      cwd,
+      env,
+    });
+  }
+
+  private getScript(): string {
+    let command = '';
+    if (isScriptKeyExist(this.pkgPath, 'start')) {
+      command = 'npm start';
+    } else if (isScriptKeyExist(this.pkgPath, 'dev')) {
+      command = 'npm run dev';
+    } else {
       command = this.isBigfishProject ? 'bigfish dev' : 'umi dev';
     }
-
-    await this.runCommand(command, {
-      cwd,
-    });
+    return command;
   }
 }

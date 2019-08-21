@@ -1,5 +1,8 @@
 export default {
-  entry: 'ui.jsx',
+  entry: 'ui.tsx',
+  typescriptOpts: {
+    check: false,
+  },
   umd: {
     name: 'dashboard',
     minFile: false,

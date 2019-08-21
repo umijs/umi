@@ -21,9 +21,9 @@ export class BaseTask extends EventEmitter {
     this.isBigfishProject = !!process.env.BIGFISH_COMPAT;
   }
 
-  public async run() {
-    error('Not implement');
-    return null;
+  public async run(_: any = {}) {
+    this.state = TaskState.ING;
+    this.emit(TaskEventType.STATE_EVENT, this.state);
   }
 
   public async cancel() {
@@ -39,15 +39,14 @@ export class BaseTask extends EventEmitter {
 
     this.state = TaskState.INIT;
     // 杀掉子进程
-    this.proc.kill('SIGTERM');
+    proc.kill('SIGTERM');
   }
 
-  protected async runCommand(script: string, opts?: SpawnOptions): Promise<ChildProcess> {
+  protected async runCommand(script: string, opts?: SpawnOptions) {
     if (!script) {
       error('script can not be empty');
     }
 
-    this.state = TaskState.ING;
     this.proc = runCommand(script, opts);
     const { proc } = this;
 
@@ -62,16 +61,19 @@ export class BaseTask extends EventEmitter {
       this.state = TaskState.FAIL;
     });
 
-    proc.on('close', (code, signal) => {
+    const exitHandler = (code, signal) => {
       if (signal === 'SIGTERM') {
         // 用户取消任务
         this.state = TaskState.INIT;
       } else {
+        // 自然退出
         this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
       }
-
+      // 触发事件
       this.emit(TaskEventType.STATE_EVENT, this.state);
-    });
-    return proc;
+    };
+
+    proc.on('close', exitHandler);
+    proc.on('exit', exitHandler);
   }
 }

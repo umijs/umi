@@ -1,12 +1,10 @@
 import React from 'react';
-
-function Dashboard() {
-  return <div>项目仪表盘</div>;
-}
+// import { IUiApi } from 'umi-types';
+import Dashboard from './ui/index';
 
 export default api => {
   api.addPanel({
-    title: '项目仪表盘',
+    title: '总览',
     path: '/dashboard',
     icon: {
       type: 'dashboard',

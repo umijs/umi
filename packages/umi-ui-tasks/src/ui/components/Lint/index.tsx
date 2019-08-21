@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Spin } from 'antd';
 import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
@@ -15,79 +15,86 @@ interface IProps {
 const taskType = TaskType.LINT;
 
 const LintComponent: React.FC<IProps> = ({ api }) => {
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType });
-  const { loading } = useTaskDetail(taskType);
+  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
+  const [loading, setLoading] = useState(true);
 
-  api.listenRemote({
-    type: 'org.umi.task.state',
-    onMessage: ({ detail, taskType: type }) => {
-      if (!isCaredEvent(type, taskType)) {
-        return;
-      }
-      setTaskDetail(detail);
-      const { state } = detail;
-      api.notify({
-        type: state === TaskState.SUCCESS ? 'success' : 'error',
-        title: state === TaskState.SUCCESS ? 'Lint 成功' : 'Lint 失败',
-        message: '',
-      });
+  // Mount: 获取 task detail
+  const { loading: detailLoading, detail } = useTaskDetail(taskType);
+  useEffect(
+    () => {
+      setLoading(detailLoading);
+      setTaskDetail(detail as any);
     },
-  });
+    [detail],
+  );
 
-  if (loading) {
-    return <Spin />;
-  }
+  // Mount: 监听 task state 改变
+  useEffect(
+    () => {
+      const unsubscribe = api.listenRemote({
+        type: 'org.umi.task.state',
+        onMessage: ({ detail: result, taskType: type }) => {
+          if (!isCaredEvent(type, taskType)) {
+            return null;
+          }
+          if (result) {
+            setTaskDetail(result);
+          }
+        },
+      });
+      return () => {
+        unsubscribe && unsubscribe();
+      };
+    },
+    [detail],
+  );
 
   async function lint() {
-    const { triggerState, errMsg, result } = await exec(taskType);
+    const { triggerState, errMsg } = await exec(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行 Lint 失败',
+        title: '执行代码风格检查失败',
         message: errMsg,
       });
-      return;
     }
-    setTaskDetail(result);
-    const { state } = result;
-    api.notify({
-      type: state === TaskState.SUCCESS ? 'success' : 'error',
-      title: state === TaskState.SUCCESS ? 'Lint 成功' : 'Lint 失败',
-      message: '',
-    });
   }
 
   async function cancelLint() {
-    const { triggerState, errMsg, result } = await cancel(taskType);
+    const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消启动失败',
+        title: '取消代码风格检查失败',
         message: errMsg,
       });
-      return;
     }
-    setTaskDetail(result);
   }
 
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1>代码风格校验</h1>
-      <div className={styles.container}>
-        <Row>
-          <Col span={23} className={styles.actions}>
-            <Button onClick={isTaskRunning ? cancelLint : lint} loading={loading}>
-              {isTaskRunning ? '停止' : 'LINT'}
-            </Button>
-          </Col>
-          <Col span={1}>
-            <span className={styles.output}>输出</span>
-          </Col>
-        </Row>
-        <Row>
-          <Terminal terminal={getTerminalIns(taskType)} />
-        </Row>
-      </div>
+      <h1 className={styles.title}>代码风格检查</h1>
+      {loading ? (
+        <Spin />
+      ) : (
+        <>
+          <Row>
+            <Col span={8} className={styles.buttonGroup}>
+              <Button type="primary" onClick={isTaskRunning ? cancelLint : lint} loading={loading}>
+                {isTaskRunning ? '停止' : '执行'}
+              </Button>
+            </Col>
+            {/* <Col span={4} offset={12} className={styles.formatGroup}>
+              <Radio.Group defaultValue="log" buttonStyle="solid">
+                <Radio.Button value="log">输出</Radio.Button>
+              </Radio.Group>
+            </Col> */}
+          </Row>
+          <div className={styles.logContainer}>
+            <Terminal terminal={getTerminalIns(taskType)} log={taskDetail.log} />
+          </div>
+        </>
+      )}
     </>
   );
 };
