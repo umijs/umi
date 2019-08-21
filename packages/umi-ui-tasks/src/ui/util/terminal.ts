@@ -1,13 +1,15 @@
 import { TaskType } from '../../server/core/enums';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 
 declare global {
   interface Window {
     Terminal: any;
     fit: any;
+    webLinks: any;
   }
 }
 
-const { Terminal, fit } = window;
+const { Terminal, fit, webLinks } = window;
 
 function initTerminal() {
   (Terminal as any).applyAddon(fit);
@@ -21,10 +23,11 @@ function initTerminal() {
     cursorStyle: 'bar',
     disableStdin: true,
   });
+  terminal.loadAddon(new WebLinksAddon());
   return terminal;
 }
 
-const TASKS = [TaskType.BUILD, TaskType.DEV, TaskType.LINT, TaskType.TEST];
+const TASKS = [TaskType.BUILD, TaskType.DEV, TaskType.LINT, TaskType.TEST, TaskType.INSTALL];
 
 const TERMINAL_MAPS = {};
 

@@ -1,7 +1,7 @@
 import { BaseTask } from './Base';
-import { TaskType, TaskState, TaskEventType } from '../enums';
+import { TaskType } from '../enums';
 import { ITaskOpts } from '../types';
-import { isScriptKeyExit } from '../../util';
+import { isScriptKeyExist } from '../../util';
 
 export class BuildTask extends BaseTask {
   constructor(opts: ITaskOpts) {
@@ -16,26 +16,13 @@ export class BuildTask extends BaseTask {
     let command = 'npm run build';
 
     // 如果 build 脚本不存在，使用全局的 umi 进行构建
-    if (!isScriptKeyExit(this.pkgPath, 'build')) {
+    if (!isScriptKeyExist(this.pkgPath, 'build')) {
       command = this.isBigfishProject ? 'bigfish build' : 'umi build';
     }
 
     await this.runCommand(command, {
       cwd,
       env,
-    });
-
-    const { proc } = this;
-    proc.on('close', (code, signal) => {
-      if (signal === 'SIGTERM') {
-        // 用户取消任务
-        this.state = TaskState.INIT;
-      } else {
-        // 自然退出
-        this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
-      }
-      // 触发事件
-      this.emit(TaskEventType.STATE_EVENT, this.state);
     });
   }
 }

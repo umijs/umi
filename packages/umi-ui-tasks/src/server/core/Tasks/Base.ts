@@ -39,10 +39,10 @@ export class BaseTask extends EventEmitter {
 
     this.state = TaskState.INIT;
     // 杀掉子进程
-    this.proc.kill('SIGTERM');
+    proc.kill('SIGTERM');
   }
 
-  protected async runCommand(script: string, opts?: SpawnOptions): Promise<ChildProcess> {
+  protected async runCommand(script: string, opts?: SpawnOptions) {
     if (!script) {
       error('script can not be empty');
     }
@@ -61,6 +61,19 @@ export class BaseTask extends EventEmitter {
       this.state = TaskState.FAIL;
     });
 
-    return proc;
+    const exitHandler = (code, signal) => {
+      if (signal === 'SIGTERM') {
+        // 用户取消任务
+        this.state = TaskState.INIT;
+      } else {
+        // 自然退出
+        this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
+      }
+      // 触发事件
+      this.emit(TaskEventType.STATE_EVENT, this.state);
+    };
+
+    proc.on('close', exitHandler);
+    proc.on('exit', exitHandler);
   }
 }

@@ -1,7 +1,7 @@
 import { BaseTask } from './Base';
-import { TaskType, TaskState, TaskEventType } from '../enums';
+import { TaskType } from '../enums';
 import { ITaskOpts } from '../types';
-import { isScriptKeyExit } from '../../util';
+import { isScriptKeyExist } from '../../util';
 
 export class DevTask extends BaseTask {
   constructor(opts: ITaskOpts) {
@@ -10,32 +10,24 @@ export class DevTask extends BaseTask {
   }
 
   public async run(env: any = {}) {
+    const { cwd } = this.api;
     await super.run();
 
-    const { cwd } = this.api;
-    let command = 'npm run dev';
-
-    // 如果 dev 脚本不存在，使用全局的 umi 进行构建
-    if (!isScriptKeyExit(this.pkgPath, 'dev')) {
-      command = this.isBigfishProject ? 'bigfish dev' : 'umi dev';
-    }
-
-    await this.runCommand(command, {
+    await this.runCommand(this.getScript(), {
       cwd,
       env,
     });
+  }
 
-    const { proc } = this;
-    proc.on('close', (code, signal) => {
-      if (signal === 'SIGTERM') {
-        // 用户取消任务
-        this.state = TaskState.INIT;
-      } else {
-        // 自然退出
-        this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
-      }
-      // 触发事件
-      this.emit(TaskEventType.STATE_EVENT, this.state);
-    });
+  private getScript(): string {
+    let command = '';
+    if (isScriptKeyExist(this.pkgPath, 'start')) {
+      command = 'npm start';
+    } else if (isScriptKeyExist(this.pkgPath, 'dev')) {
+      command = 'npm run dev';
+    } else {
+      command = this.isBigfishProject ? 'bigfish dev' : 'umi dev';
+    }
+    return command;
   }
 }

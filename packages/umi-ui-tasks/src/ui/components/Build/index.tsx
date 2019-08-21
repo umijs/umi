@@ -17,12 +17,15 @@ interface IProps {
 const taskType = TaskType.BUILD;
 
 const BuildComponent: React.FC<IProps> = ({ api }) => {
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType });
+  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [env, setEnv] = useState({
     COMPRESS: true,
+    CSS_COMPRESS: true,
+    HTML: true,
+    FORK_TS_CHECKER: false,
   });
 
   // Mount: 获取 task detail
@@ -108,6 +111,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
+      <h1 className={styles.title}>构建</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -128,8 +132,51 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                 onOk={handleOk}
                 onCancel={handleCancel}
               >
-                <Form name="buildEnv" form={form} initialValues={env}>
-                  <Form.Item label="是否压缩" name="COMPRESS" valuePropName="checked">
+                <Form name="buildEnv" form={form} initialValues={env} layout="vertical">
+                  <Form.Item label="JS 是否压缩" name="COMPRESS" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item label="CSS 是否压缩" name="CSS_COMPRESS" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item
+                    label="是否引入 @babel/polyfill"
+                    name="BABEL_POLYFILL"
+                    valuePropName="checked"
+                  >
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item label="是否开启热更新" name="HMR" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item
+                    label="是否开启 babel cache"
+                    name="BABEL_CACHE"
+                    valuePropName="checked"
+                  >
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item label="是否开启 mock" name="MOCK" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item
+                    label="是否启动后自动打开浏览器"
+                    name="BROWSER"
+                    valuePropName="checked"
+                  >
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item label="是否清屏" name="CLEAR_CONSOLE" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item label="是否打包 HTML 文件" name="HTML" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
+                  <Form.Item
+                    label="是否开启 TS 检查"
+                    name="FORK_TS_CHECKER"
+                    valuePropName="checked"
+                  >
                     <Switch />
                   </Form.Item>
                 </Form>
@@ -142,7 +189,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
             </Col> */}
           </Row>
           <div className={styles.logContainer}>
-            <Terminal terminal={getTerminalIns(taskType)} />
+            <Terminal terminal={getTerminalIns(taskType)} log={taskDetail.log} />
           </div>
         </>
       )}

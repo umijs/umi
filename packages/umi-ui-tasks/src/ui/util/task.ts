@@ -117,6 +117,15 @@ const cancel = async (taskType: TaskType): Promise<IExecResult> => {
   };
 };
 
+const clearLog = async (taskType: TaskType) => {
+  await callRemote({
+    type: 'tasks/clearLog',
+    payload: {
+      type: taskType,
+    },
+  });
+};
+
 export {
   // base
   runTask,
@@ -124,4 +133,5 @@ export {
   getTaskDetail,
   exec,
   cancel,
+  clearLog,
 };

@@ -10,6 +10,7 @@ export enum TaskType {
   DEV = 'DEV',
   TEST = 'TEST',
   LINT = 'LINT',
+  INSTALL = 'INSTALL',
 }
 
 export enum TaskEventType {

@@ -15,7 +15,7 @@ interface IProps {
 const taskType = TaskType.LINT;
 
 const LintComponent: React.FC<IProps> = ({ api }) => {
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType });
+  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
 
   // Mount: 获取 task detail
@@ -54,17 +54,17 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行 Lint 失败',
+        title: '执行代码风格检查失败',
         message: errMsg,
       });
     }
   }
 
   async function cancelLint() {
-    const { triggerState, errMsg, result } = await cancel(taskType);
+    const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消 Lint 失败',
+        title: '取消代码风格检查失败',
         message: errMsg,
       });
     }
@@ -73,6 +73,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
+      <h1 className={styles.title}>代码风格检查</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -90,7 +91,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
             </Col> */}
           </Row>
           <div className={styles.logContainer}>
-            <Terminal terminal={getTerminalIns(taskType)} />
+            <Terminal terminal={getTerminalIns(taskType)} log={taskDetail.log} />
           </div>
         </>
       )}

@@ -41,7 +41,7 @@ const runCommand = (script: string, options: SpawnOptions = {}) => {
   return proc;
 };
 
-export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
+export const isScriptKeyExist = (pkgPath: string, key: string): boolean => {
   if (!existsSync(pkgPath)) {
     return false;
   }
@@ -49,6 +49,7 @@ export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
   try {
     pkg = require(pkgPath);
   } catch (_) {
+    console.log(_.stack);
     return false;
   }
   return !!(pkg.scripts && pkg.scripts[key]);
@@ -57,3 +58,7 @@ export const isScriptKeyExit = (pkgPath: string, key: string): boolean => {
 export { error, runCommand };
 
 export * from './task_event';
+
+export function formatLog(log: string): string {
+  return log;
+}

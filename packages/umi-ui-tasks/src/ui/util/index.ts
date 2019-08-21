@@ -54,11 +54,21 @@ const NOTICE_MESSAGE_MAP = {
   },
   [TaskType.LINT]: {
     [TaskState.SUCCESS]: {
-      title: 'Lint 成功',
+      title: '代码风格检查成功',
       message: '成功',
     },
     [TaskState.FAIL]: {
-      title: 'Lint 失败',
+      title: '执行代码风格检查失败',
+      message: '失败',
+    },
+  },
+  [TaskType.INSTALL]: {
+    [TaskState.SUCCESS]: {
+      title: '安装依赖成功',
+      message: '成功',
+    },
+    [TaskState.FAIL]: {
+      title: '安装依赖失败',
       message: '失败',
     },
   },

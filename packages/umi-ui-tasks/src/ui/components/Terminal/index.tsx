@@ -6,18 +6,31 @@ import styles from './index.module.less';
 
 export interface IProps {
   terminal: Terminal;
+  log?: string;
+  onClear?: any;
 }
 
-const TerminalComponent: React.FC<IProps> = ({ terminal }) => {
+const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear }) => {
   const domContainer = useRef();
   const [, setInit] = useState(false);
   useEffect(() => {
     setInit(true);
   }, []);
   useTerminal({ terminal, ref: domContainer.current });
+  useEffect(
+    () => {
+      if (log) {
+        log.split('\n').forEach((msg: string) => {
+          terminal.writeln(msg);
+        });
+      }
+    },
+    [log],
+  );
 
   const clear = () => {
     terminal.clear();
+    onClear && onClear();
   };
 
   const toBottom = () => {
