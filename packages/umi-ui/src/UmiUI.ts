@@ -283,7 +283,7 @@ export default class UmiUI {
         // 2: 执行完成
         // 3: 执行失败
         stepStatus: 0,
-        steps: ['校验参数', '安装或更新', '初始化项目文件', '安装依赖'],
+        steps: ['校验参数', '安装或更新 create-umi', '初始化项目文件', '安装依赖'],
       });
 
       // 3
