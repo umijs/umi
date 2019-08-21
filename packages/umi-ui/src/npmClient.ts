@@ -2,7 +2,7 @@ import execa from 'execa';
 
 export async function executeCommand(npmClient, args, targetDir, opts = {}) {
   return new Promise((resolve, reject) => {
-    args.push('--registry=https://registry.npm.taobao.org');
+    // args.push('--registry=https://registry.npm.taobao.org');
     const child = execa(npmClient, args, {
       cwd: targetDir,
       stdio: ['inherit', 'pipe', 'pipe'],

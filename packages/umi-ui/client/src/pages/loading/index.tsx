@@ -2,8 +2,10 @@ import React, { Fragment } from 'react';
 import { Spin, Button } from 'antd';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
+import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import actions from './actions';
 import { findProjectPath } from '@/utils';
 import locales from './locales';
 import styles from './index.less';
@@ -68,9 +70,14 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       });
   };
 
+  handleInstallProgress = data => {
+    console.log('handleInstallProgress data', data);
+  };
+
   render() {
     const locale = getLocale();
     const { error, data } = this.props;
+    console.log('loading this.props', this.props);
 
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
@@ -86,21 +93,14 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           {error.stack}
         </pre>
         {(error.actions || []).map((action, index) => {
+          const actionType = get(action, 'handler.type');
+          const actionPayload = get(action, 'handler.payload');
+          const Action = actions[actionType];
+          if (!Action) {
+            return null;
+          }
           return (
-            <Button
-              key={index}
-              style={{
-                marginRight: 16,
-              }}
-              type={action.buttonType}
-              onClick={
-                action.browserHandler
-                  ? this[action.browserHandler]
-                  : this.actionHandler.bind(null, action.handler)
-              }
-            >
-              {action.title}
-            </Button>
+            <Action key={index} payload={actionPayload} onProgress={this.handleInstallProgress} />
           );
         })}
         <div>

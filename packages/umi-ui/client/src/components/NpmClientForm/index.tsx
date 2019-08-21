@@ -9,6 +9,7 @@ export interface INpmClientFormProps {
   loadingComponent?: React.ReactNode;
   notFoundComponent?: React.ReactNode;
   errorComponent?: React.ReactNode;
+  [key: string]: any;
 }
 
 const NpmClientForm: React.SFC<INpmClientFormProps> = (props = {}) => {
@@ -17,10 +18,12 @@ const NpmClientForm: React.SFC<INpmClientFormProps> = (props = {}) => {
     loadingComponent = <Spin size="small" />,
     notFoundComponent = <p>没有包管理器</p>,
     errorComponent = <p>获取包管理器错误</p>,
+    ...restProps
   } = props;
   const { npmClient, error, loading } = useNpmClients();
   return (
     <Select
+      {...restProps}
       placeholder={placeholder}
       notFoundContent={loading ? loadingComponent : !npmClient.length && notFoundComponent}
     >

@@ -82,3 +82,16 @@ export async function getNpmClients(): Promise<{ data: string[] }> {
     type: '@@project/getNpmClients',
   });
 }
+
+interface IDepsPayload {
+  npmClient?: string;
+  projectPath: string;
+}
+
+export async function reInstallDependencies(payload: IDepsPayload, params = {}): Promise<any> {
+  return callRemote({
+    type: '@@actions/reInstallDependencies',
+    payload,
+    ...params,
+  });
+}
