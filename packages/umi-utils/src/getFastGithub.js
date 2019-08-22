@@ -13,7 +13,6 @@ const getFastGithub = async () => {
   });
   try {
     const url = await Promise.race(promiseList);
-    console.log(url);
     return url;
   } catch (e) {
     return 'github.com';
