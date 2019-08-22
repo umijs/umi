@@ -57,6 +57,14 @@ export default async function ({ page, host }) {
   expect(ssrHtmlElement).toContain(`<script>window.g_useSSR=true;
   window.g_initialData = {\"list\":[{\"name\":\"Alice\"},{\"name\":\"Jack\"},{\"name\":\"Tony\"}]};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"wrapper\"><h1>Hello UmiJS SSR</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div></div><script src=\"/umi.js\"></script>`);
 
+  const { ssrHtml: ssrHtmlSearch, ssrHtmlElement: ssrHtmlElementSearch, matchPath: matchSearchPath } = await getServerRender('/?locale=en-US');
+  expect(matchSearchPath).toBe('/');
+  expect(ssrHtmlSearch).toContain(`<div class=\"wrapper\" data-reactroot=\"\"><h1>Hello UmiJS SSR</h1><p>searchPath: <!-- -->?locale=en-US</p><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>`);
+
+  expect(ssrHtmlElementSearch).toContain(`<script>window.g_useSSR=true;
+  window.g_initialData = {\"list\":[{\"name\":\"Alice\"},{\"name\":\"Jack\"},{\"name\":\"Tony\"}]};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"wrapper\"><h1>Hello UmiJS SSR</h1><p>searchPath: <!-- -->?locale=en-US</p><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div></div><script src=\"/umi.js\"></script>`);
+
+
 
   // dynamic render
   const { ssrHtml: newsHtml, ssrHtmlElement: newsHtmlElement, matchPath: newsMatchPath } = await getServerRender('/news/1');

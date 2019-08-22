@@ -4,6 +4,7 @@ import generate from '@babel/generator';
 import * as t from '@babel/types';
 import prettier from 'prettier';
 import { findLastIndex } from 'lodash';
+import upperCamelCase from 'uppercamelcase';
 
 function insertComponentToRender(blockStatement, identifier) {
   // blockStatement: https://babeljs.io/docs/en/babel-types#blockstatement
@@ -17,9 +18,10 @@ function insertComponentToRender(blockStatement, identifier) {
 }
 
 function insertComponentToElement(element, identifier) {
+  // why use upperCamelCase: a react component name must be upperCamelCase
   // https://babeljs.io/docs/en/babel-types#jsxelement
   const newElement = t.jsxElement(
-    t.jsxOpeningElement(t.jsxIdentifier(identifier), [], true),
+    t.jsxOpeningElement(t.jsxIdentifier(upperCamelCase(identifier)), [], true),
     null,
     [],
     true,
@@ -40,7 +42,7 @@ export default function(content, { relativePath, identifier }) {
         return t.isImportDeclaration(item);
       });
       const newImport = t.ImportDeclaration(
-        [t.ImportDefaultSpecifier(t.identifier(identifier))],
+        [t.ImportDefaultSpecifier(t.identifier(upperCamelCase(identifier)))],
         t.stringLiteral(relativePath),
       );
       body.splice(lastImportSit + 1, 0, newImport);

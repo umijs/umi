@@ -91,7 +91,7 @@ export default function(webpackConfig, opts) {
       }
     }
     // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
-    let cssLoader = opts.cssLoaderVersion === 2
+    const cssLoader = opts.cssLoaderVersion === 2
       ? (opts.ssr
           ? 'css-loader/locals'
           : 'css-loader'
@@ -100,8 +100,11 @@ export default function(webpackConfig, opts) {
           ? 'css-loader-1/locals'
           : 'css-loader-1'
         )
-    if (opts.ssr && !cssModules) {
-      cssLoader = 'null-loader';
+
+    if (isDev && cssModules && opts.generateCssModulesTypings) {
+      rule
+        .use('css-modules-typescript-loader')
+        .loader(require.resolve('css-modules-typescript-loader'))
     }
 
     rule

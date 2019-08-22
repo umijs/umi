@@ -69,6 +69,17 @@ export function isGitUrl(url) {
   return gitSiteParser.test(url);
 }
 
+/**
+ * gitlab 不加 .git 会将用户重定向到登录
+ * @param {*} url
+ */
+export const urlAddGit = url => {
+  if (/\.git$/.test(url)) {
+    return url;
+  }
+  return `${url}.git`;
+};
+
 export async function parseGitUrl(url, closeFastGithub) {
   const args = GitUrlParse(url);
   const { ref, filepath, resource, full_name: fullName } = args;
@@ -80,8 +91,9 @@ export async function parseGitUrl(url, closeFastGithub) {
     resource === 'github.com' && !closeFastGithub
       ? args.toString().replace(`${resource}`, fastGithub)
       : args.toString();
+
   return {
-    repo,
+    repo: urlAddGit(repo),
     branch: ref || 'master',
     path: `/${filepath}`,
     id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库

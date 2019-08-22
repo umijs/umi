@@ -22,10 +22,13 @@ export default function build(opts = {}) {
     'webpackConfig should be plain object or array.',
   );
 
-  // 清理 output path
   const outputPath = getOutputPath(webpackConfig);
-  debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
-  rimraf.sync(outputPath);
+
+  // 清理 output path
+  if (process.env.CLEAR_OUTPUT !== 'none') {
+    debug(`Clean output path ${outputPath.replace(`${cwd}/`, '')}`);
+    rimraf.sync(outputPath);
+  }
 
   debug('build start');
   webpack(webpackConfig, (err, stats) => {
@@ -35,7 +38,12 @@ export default function build(opts = {}) {
       if (onFail) {
         onFail({ err, stats });
       }
-      if (!process.env.UMI_TEST) {
+      
+      const isWatch = isPlainObject(webpackConfig)
+        ? webpackConfig.watch
+        : webpackConfig.some(config => config.watch) /* array */
+
+      if (!process.env.UMI_TEST && !isWatch) {
         process.exit(1);
       }
     }

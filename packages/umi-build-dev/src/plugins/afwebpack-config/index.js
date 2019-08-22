@@ -65,7 +65,8 @@ export default function(api) {
         ),
       )
       .set('@', paths.absSrcPath)
-      .set('@tmp', paths.absTmpDirPath);
+      .set('@tmp', paths.absTmpDirPath)
+      .set('umi', process.env.UMI_DIR);
   });
 
   /* eslint-disable import/no-dynamic-require */

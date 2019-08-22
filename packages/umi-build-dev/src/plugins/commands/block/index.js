@@ -13,8 +13,6 @@ import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
 import clearGitCache from './clearGitCache';
-import tsToJs from './tsTojs';
-import removeLocale from './remove-locale';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -216,13 +214,13 @@ export default api => {
     // 调用 sylvanas 转化 ts
     if (js) {
       spinner.start('🤔  TypeScript to JavaScript');
-      tsToJs(generator.blockFolderPath);
+      require('./tsTojs').default(generator.blockFolderPath);
       spinner.succeed();
     }
 
     if (uni18n) {
       spinner.start('🌎  remove i18n code');
-      removeLocale(generator.blockFolderPath, uni18n);
+      require('./remove-locale').default(generator.blockFolderPath, uni18n);
       spinner.succeed();
     }
 

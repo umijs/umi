@@ -24,8 +24,8 @@ function getMomentLocale(lang, country) {
 }
 
 // export for test
-export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
-  const localeFileMath = /^([a-z]{2})-([A-Z]{2})\.(js|ts)$/;
+export function getLocaleFileList(absSrcPath, absPagesPath, singular, separator = '-') {
+  const localeFileMath = new RegExp(`^([a-z]{2})${separator}?([A-Z]{2})?\.(js|ts)$`);
   const localeFolder = singular ? 'locale' : 'locales';
   const localeFiles = globby
     .sync('*.{ts,js}', {
@@ -42,21 +42,24 @@ export function getLocaleFileList(absSrcPath, absPagesPath, singular) {
     .filter(p => localeFileMath.test(basename(p)))
     .map(fullname => {
       const fileName = basename(fullname);
-      const fileInfo = localeFileMath.exec(fileName);
+      const fileInfo = localeFileMath
+        .exec(fileName)
+        .slice(1, 3)
+        .filter(Boolean);
       return {
-        name: `${fileInfo[1]}-${fileInfo[2]}`,
+        name: fileInfo.join(separator),
         path: fullname,
       };
     });
   const groups = groupBy(localeFiles, 'name');
   return Object.keys(groups).map(name => {
-    const fileInfo = name.split('-');
+    const fileInfo = name.split(separator);
     return {
       lang: fileInfo[0],
       name,
-      country: fileInfo[1],
+      country: fileInfo[1] || fileInfo[0].toUpperCase(),
       paths: groups[name].map(item => winPath(item.path)),
-      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1]),
+      momentLocale: getMomentLocale(fileInfo[0], fileInfo[1] || ''),
     };
   });
 }
@@ -110,15 +113,22 @@ export default function(api, options = {}) {
   });
 
   api.addRendererWrapperWithComponent(() => {
-    const localeFileList = getLocaleFileList(paths.absSrcPath, paths.absPagesPath, config.singular);
+    const baseSeparator = options.baseSeparator || '-';
+    const localeFileList = getLocaleFileList(
+      paths.absSrcPath,
+      paths.absPagesPath,
+      config.singular,
+      baseSeparator,
+    );
     const wrapperTpl = readFileSync(join(__dirname, '../template/wrapper.jsx.tpl'), 'utf-8');
-    const defaultLocale = options.default || 'zh-CN';
-    const [lang, country] = defaultLocale.split('-');
+    const defaultLocale = options.default || `zh${baseSeparator}CN`;
+    const [lang, country] = defaultLocale.split(baseSeparator);
     const wrapperContent = Mustache.render(wrapperTpl, {
+      baseSeparator,
       localeList: localeFileList,
-      antd: options.antd === undefined ? true : options.antd,
-      baseNavigator: options.baseNavigator === undefined ? true : options.baseNavigator,
-      useLocalStorage: options.useLocalStorage || true,
+      antd: options.antd !== false,
+      baseNavigator: options.baseNavigator !== false,
+      useLocalStorage: options.useLocalStorage !== false,
       defaultLocale,
       defaultLang: lang,
       defaultAntdLocale: `${lang}_${country}`,

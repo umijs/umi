@@ -268,9 +268,16 @@ export default {
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
+    externalWhitelist?: [];
+    // webpack-node-externals 配置，排除 whiteList
+    nodeExternalsOpts?: {};
     // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
     manifestFileName: 'ssr-client-mainifest.json',
+    // 关闭 ssr external，全量打入 umi.server.js
+    disableExternal: false,
+    // 关闭 ssr external 时，白名单模块将进入 externa
+    // 可用于 react-helmet, react-document-title
+    disableExternalWhiteList?: string[] | object;
   },
 };
 ```
@@ -362,9 +369,11 @@ const News = props => {
  *  route （当前路由信息）
  *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
  *  isServer (是否为服务端执行环境)
+ *  req (HTTP Request 对象，只存在于 Server 端)
+ *  res (HTTP Response 对象，只存在于 Server 端)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer }) => {
+News.getInitialProps = async ({ route, store, isServer, req, res }) => {
   const { id } = route.params;
   const data = [
     {
@@ -524,6 +533,10 @@ const config = {
 ### cssModulesExcludes
 
 指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
+
+### generateCssModulesTypings
+
+开启针对在 typescript 文件中引用的 css modules 文件，自动生成对应的.d.ts 文件，支持 css, less, sass 格式.
 
 ### copy
 

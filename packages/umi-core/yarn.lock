@@ -3,9 +3,9 @@
 
 
 "@umijs/error-code-map@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umijs/error-code-map/-/error-code-map-1.0.0.tgz#c61fd8479cd72ba4d03e9989b4f163c49740a8a2"
-  integrity sha512-khf7JwDNY4E8MTK81nekZyYzbh+wjj7HqCG3xX2ftp4eRuN6tMfPdAorzFNRRV8izh9zCl1LpJq0VXu1Pfkt6Q==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@umijs/error-code-map/-/error-code-map-1.0.1.tgz#2a2dd7b4bcd11869e968264ff3dabacfabe8b874"
+  integrity sha512-Q0KSpQYKTF2XWOlAxJO/SRbRhIGAp1GK1spWFbzwv3h0WvfX7pPeA05Y3p0hut7Vcjhdocnx5NduuApF4R1lGQ==
 
 ansi-escapes@^3.1.0:
   version "3.2.0"
@@ -140,9 +140,9 @@ get-stream@^4.0.0:
     pump "^3.0.0"
 
 graceful-fs@^4.1.2:
-  version "4.1.15"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
-  integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.1.tgz#1c1f0c364882c868f5bff6512146328336a11b1d"
+  integrity sha512-b9usnbDGnD928gJB3LrCmxoibr3VE4U2SMo5PBuBnokWyDADTqDPXg4YpwKF1trpH+UbGp7QLicO3+aWEy0+mw==
 
 has-flag@^2.0.0:
   version "2.0.0"

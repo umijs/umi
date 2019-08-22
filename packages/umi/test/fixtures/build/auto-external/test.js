@@ -12,8 +12,11 @@ export default async function ({ page, host }) {
     () =>
     document.head.querySelectorAll('script')[2].src
   );
-  expect(script1Src).toEqual(`${host}/externals/react@16.8.6/umd/react.profiling.min.js`);
-  expect(script2Src).toEqual(`${host}/externals/react@16.8.6/umd/react.production.min.js`);
+  const script1SrcExp = new RegExp(`^${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.profiling\\.min\\.js$`);
+  const script2SrcExp = new RegExp(`^${host}\\/externals\\/react@(([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?)\\/umd\\/react\\.production\\.min\\.js$`);
+
+  expect(script1Src).toMatch(script1SrcExp);
+  expect(script2Src).toMatch(script2SrcExp);
 
   const title = await page.evaluate(() => document.querySelector('.ant-card-head-title').innerHTML);
   expect(title).toEqual('卡片标题');

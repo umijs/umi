@@ -1,19 +1,22 @@
 import fetch from 'node-fetch';
 
 const registryMap = {
-  'github.com': 'https://github.com/ant-design/pro-blocks.git',
-  'github.com.cnpmjs.org': ' https://github.com.cnpmjs.org/ant-design/pro-blocks.git',
+  'github.com': 'https://github.com/ant-design/ant-design.git',
+  'gitee.com': 'https://gitee.com/ant-design/pro-blocks',
 };
 
 const getFastGithub = async () => {
-  return new Promise(resolve => {
-    Object.keys(registryMap).forEach(async key => {
-      await fetch(registryMap[key]).then(msg => {
-        return msg;
-      });
-      resolve(key);
-    });
+  const promiseList = Object.keys(registryMap).map(async key => {
+    return fetch(registryMap[key])
+      .catch(() => null)
+      .then(() => Promise.resolve(key));
   });
+  try {
+    const url = await Promise.race(promiseList);
+    return url;
+  } catch (e) {
+    return 'github.com';
+  }
 };
 
 export default getFastGithub;

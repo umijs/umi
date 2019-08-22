@@ -44,7 +44,7 @@ export default (api, opts) => {
   api.onOptionChange(() => {
     api.rebuildTmpFiles();
   });
-}
+};
 ```
 
 ## 插件示例
@@ -55,7 +55,7 @@ export default (api, opts) => {
 export default (api, opts = {}) => {
   const { paths } = api;
   // 监听插件配置变化
-  api.onOptionChange((newOpts) => {
+  api.onOptionChange(newOpts => {
     opts = newOpts;
     api.rebuildTmpFiles();
   });
@@ -67,9 +67,7 @@ export default (api, opts = {}) => {
     }
   });
   // 添加对 locale 文件的 watch
-  api.addPageWatcher(
-    join(paths.absSrcPath, config.singular ? 'locale' : 'locales'),
-  );
+  api.addPageWatcher(join(paths.absSrcPath, config.singular ? 'locale' : 'locales'));
 };
 ```
 
@@ -108,10 +106,12 @@ export default (api, opts = {}) => {
 umi 处理过后的路由信息。格式如下：
 
 ```js
-const routes = [{
-  path: '/xxx/xxx',
-  component: '',
-}];
+const routes = [
+  {
+    path: '/xxx/xxx',
+    component: '',
+  },
+];
 ```
 
 ## 系统级 API
@@ -146,11 +146,22 @@ api.registerMethod('addDvaRendererWrapperWithComponent', {
 对于类型是 `api.API_TYPE.ADD` 的插件方法，你应该返回一项或者通过数组返回多项，也可以返回一个空数组，比如：
 
 ```js
-api.addHTMLMeta({ /* ... */ });
-api.addHTMLMeta([{ /* ... */ }, { /* ... */ }]);
+api.addHTMLMeta({
+  /* ... */
+});
+api.addHTMLMeta([
+  {
+    /* ... */
+  },
+  {
+    /* ... */
+  },
+]);
 api.addHTMLMeta(() => {
   if (opt === 'h5') {
-    return { /* ... */ };
+    return {
+      /* ... */
+    };
   }
   return [];
 });
@@ -203,7 +214,7 @@ api.rebuildTmpFiles('config dva changed');
 
 ```js
 api.changePluginOption('dva-plugin-id', {
-  immer: true
+  immer: true,
 });
 ```
 
@@ -231,9 +242,9 @@ api._registerConfig(() => {
       validate: validate,
       onChange(newConfig, oldConfig) {
         api.setPluginDefaultConfig('umi-plugin-dva', config);
-      }
+      },
     };
-  }
+  };
 });
 ```
 
@@ -305,7 +316,7 @@ dev server 启动之前。
 dev server 启动之后。
 
 ```js
-api.afterDevServer(({serve, devServerPort}) => {
+api.afterDevServer(({ serve, devServerPort }) => {
   // 你可以在这里取到服务监听的实际端口号
   console.log(devServerPort);
 });
@@ -320,8 +331,7 @@ api.afterDevServer(({serve, devServerPort}) => {
 `umi dev` 编译完成后触发。
 
 ```js
-api.onDevCompileDone(({ isFirstCompile, stats }) => {
-});
+api.onDevCompileDone(({ isFirstCompile, stats }) => {});
 ```
 
 ### onOptionChange
@@ -331,9 +341,9 @@ api.onDevCompileDone(({ isFirstCompile, stats }) => {
 ```js
 export default (api, defaultOpts = { immer: false }) => {
   let opts = defaultOpts;
-  api.onOptionChange((newOpts) => {
+  api.onOptionChange(newOpts => {
     opts = newOpts;
-  	api.rebuildFiles();
+    api.rebuildFiles();
   });
 };
 ```
@@ -342,9 +352,9 @@ export default (api, defaultOpts = { immer: false }) => {
 
 在 Umi 调用 `af-webpack/build` 进行一次构建之前
 
-  ```js
+```js
 api.beforeBuildCompileAsync(async () => {
-  yield delay(1000);
+yield delay(1000);
 });
 ```
 
@@ -427,7 +437,7 @@ api.modifyDefaultConfig(memo => {
     // 默认使用单数目录
     ...memo,
     singular: true,
-  }
+  };
 });
 ```
 
@@ -477,8 +487,8 @@ api.addHTMLScript({
 
 参数：
 
-* route，当前路由
-* getChunkPath <Badge text="2.2.0+"/>，获取 chunk 的完整路径，包含 publicPath 和 hash 信息
+- route，当前路由
+- getChunkPath <Badge text="2.2.0+"/>，获取 chunk 的完整路径，包含 publicPath 和 hash 信息
 
 例子：
 
@@ -506,9 +516,9 @@ api.modifyHTMLContext((memo, { route }) => {
 修改路由配置。
 
 ```js
-api.modifyRoutes((routes) => {
+api.modifyRoutes(routes => {
   return routes;
-})
+});
 ```
 
 路由配置的格式如下：
@@ -518,14 +528,16 @@ const route = {
   path: '/xxx',
   component: '/path/to/component',
   Routes: ['/permissionControl.js'],
-}
+};
 ```
 
 ```js
-exports.routes = [{
-  path: '/xxx',
-  workspace: false,
-}];
+exports.routes = [
+  {
+    path: '/xxx',
+    workspace: false,
+  },
+];
 ```
 
 ```js
@@ -606,7 +618,7 @@ api.addEntryCodeAhead(`
 api.addUmiExports([
   {
     exportAll: true,
-    source: 'dva'
+    source: 'dva',
   },
 ]);
 // export 部分
@@ -649,7 +661,7 @@ modifyRouterRootComponent
 
 ```js
 // 示例
-api.chainWebpackConfig((memo) => {
+api.chainWebpackConfig(memo => {
   return memo;
 });
 ```
@@ -660,7 +672,7 @@ api.chainWebpackConfig((memo) => {
 
 ```js
 // 示例
-api.modifyAFWebpackOpts((memo) => {
+api.modifyAFWebpackOpts(memo => {
   return memo;
 });
 ```
@@ -708,3 +720,11 @@ export function render(oldRender) {
 ### addRuntimePluginKey
 
 添加运行时可配置项。
+
+### writeTmpFile
+
+增加一个文件到"pages/.umi"下
+
+```
+api.writeTmpFile('dva.js', tplContent);
+```

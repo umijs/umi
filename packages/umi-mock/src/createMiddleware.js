@@ -14,7 +14,7 @@ export default function(opts = {}) {
   const { cwd, errors, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
   const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
   const mockPaths = [absMockPath, absConfigPath, absConfigPathWithTS];
-  const paths = [...mockPaths, basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath];
+  const paths = [...mockPaths, winPath(basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath)];
   let mockData = null;
 
   // registerBabel 和 clean require cache 包含整个 src 目录
@@ -44,7 +44,7 @@ export default function(opts = {}) {
     Object.keys(require.cache).forEach(file => {
       if (
         paths.some(path => {
-          return file.indexOf(path) > -1;
+          return winPath(file).indexOf(path) > -1;
         })
       ) {
         delete require.cache[file];
