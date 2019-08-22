@@ -123,7 +123,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         {type === 'detail' && path && name && (
           <>
             <div onClick={() => redirect('/project/select')} className={actionCls}>
-              <Home style={{ marginRight: 4 }} /> {name}
+              <Home style={{ marginRight: 4 }} />
             </div>
             <div className={styles.section}>
               <Folder style={{ marginRight: 4 }} /> {path}
