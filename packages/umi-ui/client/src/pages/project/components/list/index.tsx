@@ -162,7 +162,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 paddingTop: 187,
               }}
               image={iconSvg}
-              description="一直如此，便是对的？"
+              description="一直如此，便是对的么？"
             />
           )}
         >
