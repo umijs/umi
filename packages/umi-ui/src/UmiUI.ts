@@ -81,12 +81,7 @@ export default class UmiUI {
           'en-US': `Project ${project.path} not exists.`,
         },
         lang,
-        actions: [
-          BackToHomeAction,
-          InstallDependencyAction,
-          ReInstallDependencyAction,
-          OpenConfigFileAction,
-        ],
+        actions: [BackToHomeAction],
       });
     }
 
