@@ -28,7 +28,9 @@ declare namespace IUI {
     hideLogPanel: () => void;
   }
 
-  type ILocale = { [x in ILang]: { [key in string]: string } };
+  type Locale = { [key in string]: string };
+
+  type ILocale = { [x in ILang]: Locale };
 
   interface IconType {
     type: string;

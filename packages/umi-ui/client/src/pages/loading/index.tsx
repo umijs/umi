@@ -7,6 +7,7 @@ import { getLocale } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
+import { DINGTALK_MEMBERS } from '@/enums';
 import actions from './actions';
 import { findProjectPath } from '@/utils';
 import locales from './locales';
@@ -111,7 +112,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
-    console.log('error.actions', error && error.actions);
+    console.log('error', error);
 
     const actionsDeps = error ? (
       <div>
@@ -156,11 +157,27 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       </div>
     ) : null;
 
+    const renderSubTitle = error => (
+      <div className={styles['loading-subTitle']}>
+        <p>{error.message}</p>
+        {error.exception && (
+          <div>
+            联系{' '}
+            {Object.keys(DINGTALK_MEMBERS).map((member: string) => (
+              <a target="_blank" href={DINGTALK_MEMBERS[member]}>
+                @{member}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+
     return (
       <Layout type="loading">
         <div className={styles.loading}>
           {error ? (
-            <Fail title="加载失败" subTitle={error.message || ''} extra={actionsDeps} />
+            <Fail title="加载失败" subTitle={renderSubTitle(error)} extra={actionsDeps} />
           ) : (
             <Fragment>
               <div className={styles['loading-spin']}>

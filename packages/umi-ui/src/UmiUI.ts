@@ -8,6 +8,7 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
+import { pick } from 'lodash';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
@@ -154,6 +155,8 @@ export default class UmiUI {
               'en-US': 'Other Errors',
             },
             lang,
+            // exception tag
+            exception: true,
             actions: [BackToHomeAction],
           });
         }
@@ -435,11 +438,7 @@ export default class UmiUI {
         } catch (e) {
           console.error(chalk.red(`Error: Attach Project of key ${payload.key} FAILED`));
           console.error(e);
-          failure({
-            message: e.message,
-            stack: e.stack,
-            actions: e.actions,
-          });
+          failure(pick(e, ['message', 'stack', 'actions', 'exception']));
         }
         break;
       case '@@project/openInEditor':

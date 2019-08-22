@@ -150,7 +150,7 @@ export default function(api: IApi) {
           };
         }
         try {
-          // validateConfig(config);
+          validateConfig(config);
           (api as any).service.runCommand('config', {
             _: ['set', config],
           });

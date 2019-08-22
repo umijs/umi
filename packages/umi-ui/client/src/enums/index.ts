@@ -8,6 +8,12 @@ export enum LOCALES {
   'en-US' = 'English',
 }
 
+export enum DINGTALK_MEMBERS {
+  '云谦' = 'dingtalk://dingtalkclient/action/sendmsg?dingtalk_id=mlc11tv',
+  '啸生' = 'dingtalk://dingtalkclient/action/sendmsg?dingtalk_id=ikobe621',
+  '宜鑫' = 'dingtalk://dingtalkclient/action/sendmsg?dingtalk_id=ycjcl868',
+}
+
 export type ILocale = keyof typeof LOCALES;
 
 export enum LOCALES_ICON {

@@ -8,7 +8,7 @@
   ],
   "devDependencies": {
     "@types/node-notifier": "^5.4.0",
-    "umi-types": "0.3.11"
+    "umi-types": "0.3.15"
   },
   "repository": {
     "type": "git",
