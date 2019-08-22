@@ -94,7 +94,6 @@ class LocaleWrapper extends React.Component{
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
-    console.log('appLocaleappLocale', appLocale);
     return appLocale;
   }
   reloadAppLocale = () => {
@@ -112,7 +111,6 @@ class LocaleWrapper extends React.Component{
       locale: reactIntlLocale,
       reloadAppLocale: this.reloadAppLocale,
     };
-    console.log('LangContextValue', LangContextValue);
     let ret = this.props.children;
     {{#localeList.length}}
     ret = (<IntlProvider locale={reactIntlLocale} messages={appLocale.messages}>
