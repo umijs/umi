@@ -36,7 +36,7 @@ export async function deleteProject(payload) {
   });
 }
 
-export async function openProjectInEditor(payload) {
+export async function openInEditor(payload: IOpenConfigFile) {
   return callRemote({
     type: '@@project/openInEditor',
     payload,
@@ -86,6 +86,35 @@ export async function getNpmClients(): Promise<{ data: string[] }> {
 interface IDepsPayload {
   npmClient?: string;
   projectPath: string;
+}
+
+interface IOpenConfigFile {
+  projectPath: string;
+}
+
+export async function openConfigFile(payload: IOpenConfigFile, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/openConfigFile',
+    payload,
+  });
+}
+
+export async function openProjectInEditor(payload: IOpenConfigFile, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/openProjectInEditor',
+    payload,
+  });
+}
+
+export async function installDependencies(payload: IDepsPayload, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/installDependencies',
+    payload,
+    ...params,
+  });
 }
 
 export async function reInstallDependencies(payload: IDepsPayload, params = {}): Promise<any> {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Modal, Form } from 'antd';
 import { ButtonProps } from 'antd/lib/button';
 import NpmClientForm from '@/components/NpmClientForm';
-import { reInstallDependencies } from '@/services/project';
+import { reInstallDependencies, installDependencies } from '@/services/project';
 
 const { useState, useEffect } = React;
 
@@ -14,6 +14,7 @@ export interface DepsInstallProps {
   onFailure?: () => void;
   onSuccess?: () => void;
   children: any;
+  loadingChild?: any;
 }
 
 const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
@@ -23,6 +24,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     path,
     onClick,
     payload,
+    loadingChild,
     onFailure,
     onProgress,
     onSuccess,
@@ -40,7 +42,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
   };
 
   const doInstallDeps = async () => {
-    const action = installType === 'install' ? reInstallDependencies : reInstallDependencies;
+    const action = installType === 'install' ? installDependencies : reInstallDependencies;
     const actionPayload = npmClient
       ? {
           npmClient: currNpmClient,
@@ -92,7 +94,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
   return (
     <>
       <Button {...restProps} onClick={handleClick} loading={loading}>
-        {children}
+        {loading && loadingChild ? loadingChild : children}
       </Button>
       <Modal visible={modalVisible} onOk={onOk} maskClosable={false} onCancel={closeModal}>
         <Form form={form} layout="vertical" onFinish={handleFinish}>

@@ -111,6 +111,8 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
 
+    console.log('error.actions', error && error.actions);
+
     const actionsDeps = error ? (
       <div>
         <div
@@ -128,60 +130,28 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
         </div>
         <div className={styles['loading-error-action']}>
           {(error.actions || []).map((action, index) => {
-            const actionType = get(action, 'handler.type');
+            const browserType = get(action, 'browserHandler');
+            const handlerType = get(action, 'handler.type');
+            const type = browserType || handlerType;
             const actionPayload = get(action, 'handler.payload');
-            const Action = actions[actionType];
+            const Action = actions[type];
             if (!Action) {
               return null;
             }
+
             return (
               <Action
                 key={index}
+                type={index % 2 === 0 ? 'primary' : 'default'}
                 payload={actionPayload}
                 onSuccess={this.handleSuccess}
                 onFailure={this.handleFailure}
                 onProgress={this.handleInstallProgress}
-              />
+              >
+                {action.title}
+              </Action>
             );
           })}
-        </div>
-        <div>
-          <br />
-          <br />
-          <h2>测试按钮</h2>
-          <br />
-          <Button onClick={this.handleInstallDeps} loading={actionLoading} type="primary">
-            {actionLoading ? '依赖安装中...' : '在 /private/tmp/foooo 下安装依赖'}
-          </Button>
-          <Button
-            onClick={async () => {
-              await callRemote({
-                type: '@@actions/reInstallDependencies',
-                payload: {
-                  npmClient: 'yarn',
-                  projectPath: '/private/tmp/foooo',
-                },
-                onProgress(data) {
-                  console.log(`Reinstall: ${data.install}`);
-                },
-              });
-            }}
-          >
-            重新安装依赖
-          </Button>
-          <Button
-            onClick={async () => {
-              await callRemote({
-                type: '@@actions/openConfigFile',
-                payload: {
-                  projectPath: '/private/tmp/foooo',
-                },
-              });
-            }}
-          >
-            打开配置文件
-          </Button>
-          <Button onClick={async () => {}}>..</Button>
         </div>
       </div>
     ) : null;
