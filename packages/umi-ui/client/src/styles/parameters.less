@@ -4,7 +4,7 @@
 @text-color: fade(@light, 65);
 // @text-color-dark: fade(@dark, 65);
 @text-color-secondary: fade(@light, 45);
-@disabled-color: fade(@light, 25%);
+@disabled-color: fade(@light, 25);
 @primary-5: #40a9ff;
 @primary-color: #1890ff;
 @outline-color: @primary-color;
@@ -145,6 +145,9 @@
 @ui-header-title-height: 62px;
 @ui-status-bar-background: #17171f;
 @ui-status-bar-color: fade(@light, 85);
+@ui-sidebar-menu-bg: #343345;
+@ui-sidebar-menu-divider-color: fade(@light, 10);
+@ui-sidebar-menu-hover-bg: #4c4c61;
 
 // PC 宽度 >= 1208
 @pc: ~'only screen and (min-width: @{screen-xl})';
@@ -160,3 +163,9 @@
 @ipad-landscape: ~'only screen and (min-device-width: 768px)and (max-device-width : 1024px) and (orientation: landscape)';
 // ipad 纵向
 @ipad-port: ~'only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)';
+
+.omit() {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

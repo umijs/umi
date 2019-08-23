@@ -12,6 +12,7 @@ declare global {
     fit?: any;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
+    g_uiProjects?: { [key: string]: IUi.ICurrentProject };
     g_uiPlugins?: any[];
     g_bigfish?: boolean;
     g_uiContext: Context<IUi.IContext>;

@@ -20,6 +20,7 @@ declare namespace IUI {
   interface IContext {
     theme: ITheme;
     locale: ILang;
+    currentProject?: ICurrentProject;
     formatMessage: typeof formatMessage;
     FormattedMessage: typeof FormattedMessage;
     setLocale: typeof setLocale;
@@ -96,8 +97,11 @@ declare namespace IUI {
   type IHideLogPanel = () => void;
   type ILodash = typeof lodash;
   interface ICurrentProject {
+    key?: string;
     name?: string;
     path?: string;
+    created_at?: number;
+    opened_at?: number;
   }
   type IRedirect = (url: string) => void;
 

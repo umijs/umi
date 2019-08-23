@@ -4,19 +4,18 @@ import { Folder, Profile, Swap, Home, QuestionCircle, Message } from '@ant-desig
 import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
-import { LOCALES, LOCALES_ICON, ILocale } from '@/enums';
-import Terminal from '@/components/Terminal';
+import { LOCALES, LOCALES_ICON } from '@/enums';
+import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
+import { handleBack } from '@/utils';
 import { getHistory, listenMessage } from '@/services/logs';
 
 import styles from './Footer.less';
 
-const { useState, useEffect, useReducer } = React;
+const { useState, useEffect, useReducer, useContext } = React;
 
 export interface IFooterProps {
   type: 'list' | 'detail' | 'loading';
-  setLocale: (locale: ILocale) => void;
-  locale: ILocale;
 }
 
 const FOOTER_RIGHT = [
@@ -25,8 +24,9 @@ const FOOTER_RIGHT = [
 ];
 
 const Footer: React.SFC<IFooterProps> = props => {
-  const { type, locale, setLocale } = props;
-  const { path, name } = window.g_uiCurrentProject || {};
+  const { type } = props;
+  const { locale, setLocale, currentProject } = useContext(Context);
+  const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
     if (action.type === 'add') {
@@ -110,19 +110,13 @@ const Footer: React.SFC<IFooterProps> = props => {
     <div className={styles.footer}>
       <div className={styles.statusBar}>
         {type === 'loading' && (
-          <div
-            onClick={() => {
-              redirect('/project/select');
-              window.location.reload();
-            }}
-            className={actionCls}
-          >
+          <div onClick={() => handleBack()} className={actionCls}>
             <Home style={{ marginRight: 4 }} /> 返回列表
           </div>
         )}
         {type === 'detail' && path && name && (
           <>
-            <div onClick={() => redirect('/project/select')} className={actionCls}>
+            <div onClick={() => handleBack(false)} className={actionCls}>
               <Home style={{ marginRight: 4 }} />
             </div>
             <div className={styles.section}>

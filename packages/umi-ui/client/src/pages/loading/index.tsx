@@ -53,11 +53,6 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     });
   };
 
-  BACK_TO_HOME = () => {
-    history.replace('/project/select');
-    window.location.reload();
-  };
-
   actionHandler = (handler: any) => {
     const { data } = this.props;
     const path = findProjectPath(data);

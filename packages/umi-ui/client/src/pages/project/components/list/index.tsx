@@ -19,12 +19,7 @@ import {
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
-import {
-  setCurrentProject,
-  openProjectInEditor,
-  editProject,
-  deleteProject,
-} from '@/services/project';
+import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
@@ -84,7 +79,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
       message.success('删除成功');
     }
     if (action === 'editor') {
-      await openProjectInEditor(payload);
+      await openInEditor(payload);
     }
     if (action === 'edit') {
       setModalVisible(true);

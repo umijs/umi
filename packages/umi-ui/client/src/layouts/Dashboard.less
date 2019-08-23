@@ -14,7 +14,27 @@
 .sidebar {
   width: 210px;
   z-index: 2;
-
+  &-recentMenu {
+    width: 144px;
+    background-color: @ui-sidebar-menu-bg;
+    :global(.ant-dropdown-menu-item-divider) {
+      background-color: @ui-sidebar-menu-divider-color;
+    }
+    :global(.ant-dropdown-menu-item-group-list) {
+      padding-left: 0;
+    }
+    :global(.ant-dropdown-menu-item-group-title) {
+      color: @disabled-color;
+    }
+    :global(.ant-dropdown-menu-item) {
+      p {
+        .omit;
+      }
+      &:hover {
+        background-color: @ui-sidebar-menu-hover-bg;
+      }
+    }
+  }
   .logo {
     text-align: center;
     padding: 20px 0;
@@ -22,7 +42,42 @@
       width: 50px;
     }
   }
-
+  &-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0 30px;
+    width: 144px;
+    margin: 0 auto;
+    &-back svg,
+    &-dropdown > * {
+      font-weight: bold;
+      color: @heading-color;
+    }
+    &-back {
+      margin-right: 12px;
+      cursor: pointer;
+      svg {
+        transition: color 0.3s;
+      }
+      &:hover svg {
+        color: @primary-5;
+      }
+    }
+    &-dropdown {
+      cursor: pointer;
+      flex: 100% 1 1;
+      display: flex;
+      align-items: center;
+      p {
+        width: 94px;
+        .omit;
+      }
+    }
+    &-expand-icon {
+      margin-left: 8px;
+    }
+  }
   ul {
     list-style: none;
     padding: 0;

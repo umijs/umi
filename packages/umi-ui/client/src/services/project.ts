@@ -36,7 +36,7 @@ export async function deleteProject(payload) {
   });
 }
 
-export async function openInEditor(payload: IOpenConfigFile) {
+export async function openInEditor(payload: { key: string }) {
   return callRemote({
     type: '@@project/openInEditor',
     payload,
@@ -88,11 +88,12 @@ interface IDepsPayload {
   projectPath: string;
 }
 
-interface IOpenConfigFile {
-  projectPath: string;
-}
-
-export async function openConfigFile(payload: IOpenConfigFile, params = {}): Promise<any> {
+export async function openConfigFile(
+  payload: {
+    projectPath: string;
+  },
+  params = {},
+): Promise<any> {
   console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/openConfigFile',
@@ -100,7 +101,12 @@ export async function openConfigFile(payload: IOpenConfigFile, params = {}): Pro
   });
 }
 
-export async function openProjectInEditor(payload: IOpenConfigFile, params = {}): Promise<any> {
+export async function openProjectInEditor(
+  payload: {
+    projectPath: string;
+  },
+  params = {},
+): Promise<any> {
   console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/openProjectInEditor',

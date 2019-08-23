@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import history from '@tmp/history';
 import { IProjectList } from '@/enums';
 
 export const getBasename = (path: string): string => {
@@ -17,4 +18,11 @@ export const findProjectPath = (data: IProjectList) => {
   }
 
   return path;
+};
+
+export const handleBack = (reload = true, url = '/project/select') => {
+  history.replace(url);
+  if (reload) {
+    window.location.reload();
+  }
 };

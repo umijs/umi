@@ -80,8 +80,15 @@ export async function render(oldRender) {
         key: data.currentProject,
         ...get(data, `projectsByKey.${data.currentProject}`, {}),
       };
-      console.log('currentProject', currentProject);
-      window.g_uiCurrentProject = currentProject || {};
+      console.log('apps data', data);
+      window.g_uiCurrentProject =
+        {
+          ...currentProject,
+          key: data.currentProject,
+        } || {};
+      console.log('window.g_uiCurrentProject', window.g_uiCurrentProject);
+      // types 和 api 上先不透露
+      window.g_uiProjects = data.projectsByKey || {};
       try {
         await callRemote({
           type: '@@project/open',
