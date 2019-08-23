@@ -67,6 +67,11 @@ export default withRouter(props => {
                 {currentProject &&
                   Object.keys(projectMaps)
                     .filter(p => p !== currentProject.key)
+                    .sort(
+                      (a, b) =>
+                        get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -
+                        get(projectMaps, `${a}.opened_at`, new Date('2002').getTime()),
+                    )
                     .map(project => (
                       <Menu.Item key={project} onClick={changeProject}>
                         <p>{get(projectMaps, `${project}.name`, '未命名')}</p>
@@ -87,6 +92,7 @@ export default withRouter(props => {
                     />
                     <Dropdown
                       placement="bottomRight"
+                      trigger={['click']}
                       overlay={recentMenu}
                       className={styles['sidebar-name-dropdown']}
                     >

@@ -60,12 +60,15 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const projects = useMemo(
     () => {
-      return Object.keys(projectsByKey).map(key => {
-        return {
-          ...projectsByKey[key],
-          key,
-        };
-      });
+      return Object.keys(projectsByKey)
+        .map(key => {
+          return {
+            ...projectsByKey[key],
+            key,
+            created_at: get(projectsByKey, `${key}.created_at`, new Date('2002').getTime()),
+          };
+        })
+        .sort((a, b) => b.created_at - a.created_at);
     },
     [projectList],
   );

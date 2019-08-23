@@ -8,7 +8,7 @@ import { setCurrentProject } from '@/services/project';
 import styles from './index.less';
 import { IProjectProps } from '../index';
 
-const { useContext } = React;
+const { useContext, useEffect } = React;
 
 const { Step } = Steps;
 
@@ -20,6 +20,16 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
   const progress: ICreateProgress =
     get(projectList, `projectsByKey.${get(currentData, 'key')}.creatingProgress`) || {};
   console.log('progressprogressprogress', progress);
+  useEffect(
+    () => {
+      if (progress.success && key) {
+        (async () => {
+          await setCurrentProject({ key });
+        })();
+      }
+    },
+    [progress.success],
+  );
   const getStepStatus = (): 'error' | 'finish' => {
     if (progress.success) {
       return 'finish';
@@ -31,11 +41,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
 
   const getTitle = () => {
     if (progress.success) {
-      return (
-        <p>
-          项目创建成功，<a onClick={() => key && setCurrentProject({ key })}>点击进入</a>
-        </p>
-      );
+      return <p>项目创建成功</p>;
     }
     if (progress.failure) {
       return '项目创建失败';
