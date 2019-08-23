@@ -1,4 +1,4 @@
-import findRoute from './findRoute';
+import findRoute, { getUrlQuery } from './findRoute';
 
 test('normal', () => {
   expect(
@@ -184,4 +184,20 @@ test('nested routes', () => {
     exact: true,
     params: {},
   });
+});
+
+test('test getUrlQuery', () => {
+  expect(getUrlQuery('?locale=zh-CN')).toEqual({
+    locale: 'zh-CN',
+  });
+
+  expect(getUrlQuery('?locale=zh-CN&username=umi')).toEqual({
+    locale: 'zh-CN',
+    username: 'umi',
+  });
+
+  expect(getUrlQuery('?')).toEqual({});
+  expect(getUrlQuery('')).toEqual({});
+  expect(getUrlQuery(undefined)).toEqual({});
+  expect(getUrlQuery(null)).toEqual({});
 });

@@ -155,6 +155,7 @@ export default class FilesGenerator {
       props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: false,
+        location,
         ...initialProps,
       }) : {};
     }

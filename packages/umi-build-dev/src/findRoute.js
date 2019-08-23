@@ -15,3 +15,16 @@ export default function findRoute(routes, path) {
     }
   }
 }
+
+export const getUrlQuery = url => {
+  if (typeof url === 'string' && url.indexOf('?') > -1) {
+    const params = url.slice(1).split('&');
+    if (Array.isArray(params) && params.length > 0) {
+      return params.reduce((acc, curr) => {
+        const [key, value] = curr.split('=');
+        return { ...acc, [key]: value };
+      }, {});
+    }
+  }
+  return {};
+};

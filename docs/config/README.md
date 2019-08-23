@@ -366,14 +366,17 @@ const News = props => {
  * @param {*}
  * {
  *  route (current active route)
+ *  location (history object with location, query, ...)
  *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
  *  isServer (whether run in Server)
  *  req (HTTP server Request object, only exist in Server)
  *  res (HTTP server Response object, only exist in Server)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer, req, res }) => {
+News.getInitialProps = async ({ route, store, isServer, req, res, location }) => {
   const { id } = route.params;
+  // ?locale=en-US => query: { locale: 'en-US' }
+  const { query } = location;
   const data = [
     {
       id: 0,
