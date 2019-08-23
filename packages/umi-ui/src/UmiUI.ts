@@ -576,12 +576,17 @@ export default class UmiUI {
     return new Promise(async (resolve, reject) => {
       const express = require('express');
       const compression = require('compression');
-      const serveStatic = require('serve-static');
       const app = express();
       app.use(compression());
 
       // Index Page
       let content = null;
+
+      // Serve Static (Production Only)
+      if (!process.env.LOCAL_DEBUG) {
+        app.use(express.static(join(__dirname, '../client/dist')));
+      }
+
       app.use((req, res) => {
         if (['/'].includes(req.path)) {
           if (process.env.LOCAL_DEBUG) {
@@ -601,11 +606,6 @@ export default class UmiUI {
           }
         }
       });
-
-      // Serve Static (Production Only)
-      if (!process.env.LOCAL_DEBUG) {
-        app.use(serveStatic(join(__dirname, '../client/dist')));
-      }
 
       // 添加埋点脚本
       function normalizeHtml(html) {
