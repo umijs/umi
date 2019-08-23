@@ -2,7 +2,6 @@ import { basename, join } from 'path';
 import chokidar from 'chokidar';
 import signale from 'signale';
 import { winPath } from 'umi-utils';
-import clearModule from 'clear-module';
 import matchMock from './matchMock';
 import getMockData from './getMockData';
 import getPaths from './getPaths';
@@ -15,7 +14,7 @@ export default function(opts = {}) {
   const { cwd, errors, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
   const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
   const mockPaths = [absMockPath, absConfigPath, absConfigPathWithTS];
-  const paths = [...mockPaths, basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath];
+  const paths = [...mockPaths, winPath(basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath)];
   let mockData = null;
 
   // registerBabel 和 clean require cache 包含整个 src 目录
@@ -33,10 +32,22 @@ export default function(opts = {}) {
     watcher.on('all', (event, file) => {
       debug(`[${event}] ${file}, reload mock data`);
       errors.splice(0, errors.length);
-      clearModule(file);
+      cleanRequireCache();
       fetchMockData();
       if (!errors.length) {
         signale.success(`Mock files parse success`);
+      }
+    });
+  }
+
+  function cleanRequireCache() {
+    Object.keys(require.cache).forEach(file => {
+      if (
+        paths.some(path => {
+          return winPath(file).indexOf(path) > -1;
+        })
+      ) {
+        delete require.cache[file];
       }
     });
   }

@@ -16,3 +16,7 @@ export function normalizePath(path) {
     pathname: addHtmlAffix(path.pathname),
   };
 }
+
+export function isPromiseLike(obj) {
+  return !!obj && typeof obj === 'object' && typeof obj.then === 'function';
+}

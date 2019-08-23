@@ -298,7 +298,7 @@ export default function(opts) {
   }
 
   // plugins -> analyze
-  if (process.env.ANALYZE) {
+  if ((process.env.ANALYZE && !opts.ssr) || (process.env.ANALYZE_SSR && opts.ssr)) {
     webpackConfig
       .plugin('bundle-analyzer')
       .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [
