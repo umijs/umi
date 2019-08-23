@@ -1,6 +1,6 @@
 {
   "name": "umi-ui-tasks",
-  "version": "0.0.1",
+  "version": "0.0.1-beta.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -16,13 +16,13 @@
     "xterm-addon-web-links": "^0.1.0"
   },
   "devDependencies": {
+    "@umijs/fabric": "^1.1.9",
     "antd": "4.0.0-alpha.0",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
-    "umi": "2.8.20",
-    "umi-types": "0.3.17",
-    "xterm": "^3.14.5",
-    "@umijs/fabric": "^1.1.9"
+    "umi": "2.9.0-beta.1",
+    "umi-types": "0.4.0-beta.1",
+    "xterm": "^3.14.5"
   },
   "repository": {
     "type": "git",
