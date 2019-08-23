@@ -63,7 +63,6 @@ if (!__IS_BROWSER) {
       });
       // patch query object
       const location = history.location ? { ...history.location, query: getUrlQuery(history.location.search) } : {};
-      console.log('locationlocationlocation', location);
       props = await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: true,
