@@ -5,7 +5,7 @@ import history from './history';
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import findRoute from '{{{ findRoutePath }}}';
+import findRoute, { getUrlQuery } from '{{{ findRoutePath }}}';
 {{{ imports }}}
 
 // runtime plugins
@@ -61,10 +61,13 @@ if (!__IS_BROWSER) {
       const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
+      // patch query object
+      const location = history.location ? { ...history.location, query: getUrlQuery(history.location.search) } : {};
+      console.log('locationlocationlocation', location);
       props = await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: true,
-        location: history.location || {},
+        location,
         // only exist in server
         req: ctx.req || {},
         res: ctx.res || {},
