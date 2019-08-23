@@ -5,10 +5,20 @@ import Config from './Config';
 const dbPath = join(__dirname, 'fixtures/Config/normal.json');
 let config;
 
+let spy;
+
 beforeAll(() => {
   config = new Config({
     dbPath,
   });
+});
+beforeEach(() => {
+  const mockDate = new Date('2019-05-14T11:01:58.135Z');
+  spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+});
+
+afterEach(() => {
+  spy.mockRestore();
 });
 
 afterAll(() => {
@@ -23,6 +33,7 @@ test('addProject', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'bar',
+        created_at: 1557831718135,
       },
     },
   });
@@ -37,6 +48,7 @@ test('editProject', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
       },
     },
   });
@@ -49,6 +61,7 @@ test('setCurrentProject', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
       },
     },
     currentProject: '43def0',
@@ -62,10 +75,12 @@ test('addProject without name', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
       },
       '9c7eb9': {
         path: '/tmp/bar',
         name: 'bar',
+        created_at: 1557831718135,
       },
     },
     currentProject: '43def0',
@@ -79,6 +94,7 @@ test('deleteProject', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
       },
     },
     currentProject: '43def0',
@@ -95,6 +111,7 @@ test('set creating progress', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
         creatingProgress: {
           a: 1,
           b: 1,
@@ -112,6 +129,7 @@ test('set creating progress done', () => {
       '43def0': {
         path: '/tmp/foo',
         name: 'foo',
+        created_at: 1557831718135,
       },
     },
     currentProject: '43def0',

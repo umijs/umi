@@ -8,7 +8,7 @@
   ],
   "devDependencies": {
     "@types/node-notifier": "^5.4.0",
-    "umi-types": "0.3.15"
+    "umi-types": "0.3.17"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "resolve-cwd": "3.0.0",
     "rimraf": "3.0.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.10.16",
+    "umi-build-dev": "1.10.20",
     "user-home": "2.0.0"
   }
 }
