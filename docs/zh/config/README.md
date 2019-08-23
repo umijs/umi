@@ -367,6 +367,7 @@ const News = props => {
  * @param {*}
  * {
  *  route （当前路由信息）
+ *  location (history 对象有 location, query, ...)
  *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
  *  isServer (是否为服务端执行环境)
  *  req (HTTP Request 对象，只存在于 Server 端)
@@ -375,6 +376,8 @@ const News = props => {
  */
 News.getInitialProps = async ({ route, store, isServer, req, res }) => {
   const { id } = route.params;
+  // ?locale=en-US => query: { locale: 'en-US' }
+  const { query } = location;
   const data = [
     {
       id: 0,
