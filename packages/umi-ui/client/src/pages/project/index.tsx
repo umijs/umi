@@ -1,5 +1,6 @@
-import React, { useEffect, useReducer, useState, useMemo, useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Layout } from 'antd';
+import TweenOne from 'rc-tween-one';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
@@ -7,8 +8,9 @@ import * as ProjectMap from './components';
 import styles from './index.less';
 
 const { Content } = Layout;
+const { TweenOneGroup } = TweenOne;
 
-export default props => {
+const Project: React.FC<{}> = () => {
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
@@ -43,12 +45,18 @@ export default props => {
     })();
   }, []);
 
-  const Project = ProjectMap[current];
+  const ProjectComp = ProjectMap[current];
 
   return (
     <Layout className={styles.project}>
       <Content className={styles['project-content']}>
-        <Project cwd={cwd} currentData={currentData} files={files} projectList={data} />
+        <ProjectComp
+          key={current}
+          cwd={cwd}
+          currentData={currentData}
+          files={files}
+          projectList={data}
+        />
       </Content>
     </Layout>
   );
@@ -88,3 +96,5 @@ export default props => {
   //   </div>
   // );
 };
+
+export default Project;

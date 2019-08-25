@@ -5,6 +5,7 @@ import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
 import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
+
 import { useTaskDetail } from '../../hooks';
 import Terminal from '../Terminal';
 

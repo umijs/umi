@@ -1,4 +1,5 @@
 import * as React from 'react';
+import TweenOne from 'rc-tween-one';
 import {
   Button,
   List,
@@ -19,12 +20,7 @@ import {
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
-import {
-  setCurrentProject,
-  openProjectInEditor,
-  editProject,
-  deleteProject,
-} from '@/services/project';
+import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
@@ -65,12 +61,15 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const projects = useMemo(
     () => {
-      return Object.keys(projectsByKey).map(key => {
-        return {
-          ...projectsByKey[key],
-          key,
-        };
-      });
+      return Object.keys(projectsByKey)
+        .map(key => {
+          return {
+            ...projectsByKey[key],
+            key,
+            created_at: get(projectsByKey, `${key}.created_at`, new Date('2002').getTime()),
+          };
+        })
+        .sort((a, b) => b.created_at - a.created_at);
     },
     [projectList],
   );
@@ -84,7 +83,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
       message.success('删除成功');
     }
     if (action === 'editor') {
-      await openProjectInEditor(payload);
+      await openInEditor(payload);
     }
     if (action === 'edit') {
       setModalVisible(true);
@@ -134,7 +133,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </div>
       </Sider>
       <Content className={styles['project-list-layout-content']}>
-        <Row type="flex" justify="space-between" style={{ marginBottom: 26 }}>
+        <Row
+          type="flex"
+          justify="space-between"
+          className={styles['project-list-layout-content-header']}
+        >
           <Col>
             <h2 className={styles['project-title']}>项目列表</h2>
           </Col>
@@ -162,50 +165,65 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 paddingTop: 187,
               }}
               image={iconSvg}
-              description="一直如此，便是对的？"
+              description="一直如此，便是对的么？"
             />
           )}
         >
-          <List
-            dataSource={projects}
-            loading={!projectList.projectsByKey}
-            split={false}
-            className={styles['project-list']}
-            renderItem={item => {
-              const status = getProjectStatus(item);
-              const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
-                <Popconfirm
-                  title="是否删除项目？"
-                  onConfirm={() => handleOnAction('delete', { key: item.key })}
-                  onCancel={() => {}}
-                  okText="是"
-                  cancelText="否"
-                >
-                  <a>删除</a>
-                </Popconfirm>,
-              );
+          <TweenOne
+            className={styles['project-transition']}
+            animation={{
+              y: 30,
+              opacity: 0,
+              type: 'from',
+            }}
+            component={List}
+            componentProps={{
+              dataSource: projects,
+              loading: !projectList.projectsByKey,
+              split: false,
+              className: styles['project-list'],
+              renderItem: (item, i) => {
+                const status = getProjectStatus(item);
+                const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+                  <Popconfirm
+                    title="是否删除项目？"
+                    onConfirm={() => handleOnAction('delete', { key: item.key })}
+                    onCancel={() => {}}
+                    okText="是"
+                    cancelText="否"
+                  >
+                    <a>删除</a>
+                  </Popconfirm>,
+                );
 
-              return (
-                <List.Item className={styles['project-list-item']} actions={actions}>
-                  <Skeleton title={false} loading={item.loading} active>
-                    <List.Item.Meta
-                      title={
-                        <div className={styles['project-list-item-title']}>
-                          {item.key === currentProject && <Badge status="success" />}
-                          <a onClick={() => handleTitleClick(item)}>{item.name}</a>
-                          {status === 'progress' && (
-                            <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
-                          )}
-                          {status === 'failure' && (
-                            <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
-                          )}
-                        </div>
-                      }
-                      description={item.path}
-                    />
-                  </Skeleton>
-                </List.Item>
-              );
+                return (
+                  <List.Item
+                    key={item.key}
+                    className={styles['project-list-item']}
+                    actions={actions}
+                  >
+                    <Skeleton title={false} loading={item.loading} active>
+                      <List.Item.Meta
+                        title={
+                          <div className={styles['project-list-item-title']}>
+                            {item.key === currentProject && <Badge status="success" />}
+                            <a onClick={() => handleTitleClick(item)}>{item.name}</a>
+                            {status === 'progress' && (
+                              <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
+                                创建中
+                              </Tag>
+                            )}
+                            {status === 'failure' && (
+                              <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
+                            )}
+                          </div>
+                        }
+                        description={item.path}
+                      />
+                    </Skeleton>
+                  </List.Item>
+                );
+              },
             }}
           />
         </ConfigProvider>

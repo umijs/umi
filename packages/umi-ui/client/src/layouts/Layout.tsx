@@ -48,6 +48,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     const locale = getLocale();
     const { theme } = this.state;
     const { type, className } = this.props;
+    const currentProject = window.g_uiCurrentProject || {};
     const layoutCls = cls(locale, 'ui-layout', className);
     window.g_uiContext = Context;
 
@@ -58,6 +59,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             locale,
             theme,
             formatMessage,
+            currentProject,
             showLogPanel: this.showLogPanel,
             hideLogPanel: this.hideLogPanel,
             setTheme: this.setTheme,
@@ -66,7 +68,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
           }}
         >
           {this.props.children}
-          <Footer type={type} locale={locale} setLocale={setLocale} />
+          <Footer type={type} />
         </Context.Provider>
       </div>
     );

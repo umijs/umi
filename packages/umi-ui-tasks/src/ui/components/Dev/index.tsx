@@ -62,7 +62,6 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     },
     [detail],
   );
-
   // UnMount: reset form
   useEffect(() => {
     return () => {

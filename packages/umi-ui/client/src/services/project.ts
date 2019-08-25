@@ -36,7 +36,7 @@ export async function deleteProject(payload) {
   });
 }
 
-export async function openProjectInEditor(payload) {
+export async function openInEditor(payload: { key: string }) {
   return callRemote({
     type: '@@project/openInEditor',
     payload,
@@ -59,7 +59,7 @@ export async function editProject(payload) {
   });
 }
 
-export async function getCwd() {
+export async function getCwd(): { cwd: string } {
   return callRemote({ type: '@@fs/getCwd' });
 }
 
@@ -88,7 +88,43 @@ interface IDepsPayload {
   projectPath: string;
 }
 
+export async function openConfigFile(
+  payload: {
+    projectPath: string;
+  },
+  params = {},
+): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/openConfigFile',
+    payload,
+  });
+}
+
+export async function openProjectInEditor(
+  payload: {
+    projectPath: string;
+  },
+  params = {},
+): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/openProjectInEditor',
+    payload,
+  });
+}
+
+export async function installDependencies(payload: IDepsPayload, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
+  return callRemote({
+    type: '@@actions/installDependencies',
+    payload,
+    ...params,
+  });
+}
+
 export async function reInstallDependencies(payload: IDepsPayload, params = {}): Promise<any> {
+  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/reInstallDependencies',
     payload,

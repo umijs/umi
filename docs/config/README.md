@@ -265,12 +265,17 @@ When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also gen
 ```js
 export default {
   ssr: {
-    // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
-    // disable ssr external, build all modules in `umi.server.js`
-    disableExternal: false,
+    // not external library, https://github.com/liady/webpack-node-externals#optionswhitelist
+    externalWhitelist?: [];
+    // webpack-node-externals config, exclude whiteList
+    nodeExternalsOpts?: {};
     // client chunkMaps manifest, default: ssr-client-mainifest.json
-    manifestFileName: 'ssr-client-mainifest.json',
+    manifestFileName?: 'ssr-client-mainifest.json';
+    // disable ssr external, build all modules in `umi.server.js`
+    disableExternal?: false;
+    // disable ssr external whiteList module
+    // you can use this for `react-helmet`, `react-document-title`
+    disableExternalWhiteList?: string[] | object;
   },
 };
 ```
@@ -361,12 +366,17 @@ const News = props => {
  * @param {*}
  * {
  *  route (current active route)
+ *  location (history object with location, query, ...)
  *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
  *  isServer (whether run in Server)
+ *  req (HTTP server Request object, only exist in Server)
+ *  res (HTTP server Response object, only exist in Server)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer }) => {
+News.getInitialProps = async ({ route, store, isServer, req, res, location }) => {
   const { id } = route.params;
+  // ?locale=en-US => query: { locale: 'en-US' }
+  const { query } = location;
   const data = [
     {
       id: 0,
@@ -525,6 +535,10 @@ const config = {
 ### cssModulesExcludes
 
 The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
+
+### generateCssModulesTypings
+
+Enable generate .d.ts fils for css/less/sass file when use css modules with typescript.
 
 ### copy
 

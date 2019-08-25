@@ -3,13 +3,13 @@ import { WebLinksAddon } from 'xterm-addon-web-links';
 
 declare global {
   interface Window {
-    Terminal: any;
     fit: any;
     webLinks: any;
+    Terminal: any;
   }
 }
 
-const { Terminal, fit } = window;
+const { fit, Terminal } = window;
 
 function initTerminal() {
   (Terminal as any).applyAddon(fit);

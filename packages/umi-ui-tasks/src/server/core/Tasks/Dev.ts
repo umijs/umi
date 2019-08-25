@@ -1,6 +1,5 @@
 import { BaseTask, ITaskOptions } from './Base';
 import { TaskType } from '../enums';
-// import { ITaskOpts } from '../types';
 import { isScriptKeyExist, runCommand } from '../../util';
 
 export class DevTask extends BaseTask {

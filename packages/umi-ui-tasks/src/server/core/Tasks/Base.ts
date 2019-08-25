@@ -133,6 +133,7 @@ export class BaseTask extends EventEmitter {
       this.emit(TaskEventType.STATE_EVENT, this.state);
     });
 
+    // TODO: 这儿缺少信号
     process.on('exit', () => {
       proc.kill();
     });

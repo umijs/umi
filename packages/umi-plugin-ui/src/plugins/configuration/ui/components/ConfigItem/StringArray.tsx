@@ -27,7 +27,7 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
               ]}
               noStyle
             >
-              <Input defaultValue="" style={{ width: 320, marginRight: 8 }} />
+              <Input autoComplete="off" defaultValue="" style={{ width: 320, marginRight: 8 }} />
             </Form.Item>
             {fields.length > 0 ? (
               <MinusCircle

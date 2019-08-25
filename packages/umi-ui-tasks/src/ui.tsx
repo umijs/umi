@@ -103,6 +103,18 @@ export default (api: IUiApi) => {
     },
   });
 
+  // 全局通知
+  api.listenRemote({
+    type: 'org.umi.task.state',
+    onMessage: ({ detail: result, taskType: type }) => {
+      const { state } = result;
+      if ([TaskState.INIT, TaskState.ING].indexOf(state) > -1) {
+        return;
+      }
+      api.notify(getNoticeMessage(type, state));
+    },
+  });
+
   const TasksView = () => (
     <TwoColumnPanel
       sections={Object.keys(SCRIPTS).map((taskType: string) => {

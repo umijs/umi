@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.9.7",
+  "version": "1.10.0-beta.1",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -20,13 +20,14 @@
     "babel-loader": "8.0.6",
     "babel-plugin-dynamic-import-node": "2.2.0",
     "babel-plugin-named-asset-import": "0.3.2",
-    "babel-preset-umi": "1.6.0",
-    "chalk": "2.4.1",
+    "babel-preset-umi": "1.7.0-beta.1",
+    "chalk": "2.4.2",
     "chokidar": "3.0.2",
     "clipboardy": "2.1.0",
     "copy-webpack-plugin": "5.0.3",
     "css-loader": "2.1.1",
     "css-loader-1": "2.0.0",
+    "css-modules-typescript-loader": "2.0.4",
     "cssnano": "4.1.10",
     "debug": "4.1.1",
     "didyoumean": "1.2.1",

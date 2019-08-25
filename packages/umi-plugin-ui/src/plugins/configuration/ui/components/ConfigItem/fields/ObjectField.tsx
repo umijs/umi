@@ -26,10 +26,12 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const { value, onChange, options: originOptions, defaultValue } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
-    return originOptions.map(option => ({
+    const newOptions = originOptions.map(option => ({
       ...option,
       disabled: !!arrayToObj(fieldsValue)[option.value],
     }));
+    console.log('newOptions', newOptions);
+    return newOptions;
   };
   const [options, setOptions] = useState<IOption[]>(getOptionalOptions());
 
@@ -71,6 +73,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   return (
     <span>
       {fieldsValue.map((field, i) => {
+        console.log('valvalueue', value);
         const [fieldKey] = Object.keys(field);
         console.log('fieldKey in defaultValue', fieldKey in defaultValue);
         const isRequired = fieldKey in defaultValue;
@@ -84,7 +87,10 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               value={field}
               disabled={isRequired}
               onChange={v => handleChange(v, i)}
-              options={options}
+              options={options.map(option => ({
+                ...option,
+                disabled: Object.keys(value).includes(option.value),
+              }))}
               setOptions={setOptions}
             />
             {!isRequired && (

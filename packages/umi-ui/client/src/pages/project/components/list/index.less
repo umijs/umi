@@ -1,7 +1,12 @@
 .project {
+  &-transition {
+    position: relative;
+  }
   &-list {
     max-height: calc(~'100vh - 140px');
     overflow-x: hidden;
+    width: 100%;
+    position: relative;
     &-layout {
       min-height: 100vh;
       .tag {
@@ -45,6 +50,12 @@
       }
       &-content {
         padding: 26px 32px;
+        overflow: auto;
+        &-header {
+          margin-bottom: 26px;
+          width: 100%;
+          position: relative;
+        }
       }
     }
   }
@@ -53,6 +64,7 @@
     line-height: 33px;
   }
   &-action {
+    text-align: right;
     button {
       margin-left: 8px;
     }
@@ -63,7 +75,7 @@
       margin-bottom: 12px;
       background-color: @card-background;
       border-radius: @border-radius-base;
-      transition: background-color @duration-fast @ease-in;
+      transition: background-color 0.15 @ease-in;
       &:hover {
         background-color: @card-hover-border;
       }

@@ -1,5 +1,4 @@
 import { IApi } from 'umi-types';
-import { EventEmitter } from 'events';
 import { BuildTask, DevTask, LintTask, TestTask, BaseTask, InstallTask } from './Tasks';
 import { TaskType } from './enums';
 import { ITasks, ICollectorData, ITaskDetail } from './types';
@@ -7,7 +6,7 @@ import { ITasks, ICollectorData, ITaskDetail } from './types';
 /**
  * Tasks 管理，根据 cwd 做区分
  */
-class TaskManager extends EventEmitter {
+class TaskManager {
   public api: IApi;
   private tasks: ITasks = {};
   private currentCwd: string = '';

@@ -23,6 +23,7 @@ export interface IProjectItem {
   name: string;
   path: string;
   creatingProgress?: ICreateProgress;
+  created_at?: number;
 }
 
 interface IProjectsByKey {
@@ -75,6 +76,7 @@ export default class Config {
       this.data.projectsByKey[key] = {
         path,
         name,
+        created_at: +new Date(),
       };
       this.save();
     }

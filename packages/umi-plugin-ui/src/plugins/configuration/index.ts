@@ -101,6 +101,14 @@ export default function(api: IApi) {
     });
   }
 
+  function parseString(str) {
+    if (str.startsWith('{') || str.startsWith('[') || str === 'true' || str === 'false') {
+      return JSON.parse(str);
+    } else {
+      return str;
+    }
+  }
+
   // TODO: 支持子项的 validate
   function validateConfig(config) {
     let errors = [];
@@ -108,7 +116,7 @@ export default function(api: IApi) {
     userConfig.plugins.forEach(p => {
       if (p.name in config && p.validate) {
         try {
-          p.validate(config[p.name]);
+          p.validate(parseString(config[p.name]));
         } catch (e) {
           errors.push({
             name: p.name,

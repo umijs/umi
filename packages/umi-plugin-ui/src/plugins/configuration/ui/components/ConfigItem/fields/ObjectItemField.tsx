@@ -88,11 +88,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
       >
         {Array.isArray(options) &&
           options.map(option => (
-            <Option
-              key={`${option.value}`}
-              value={option.value}
-              disabled={'disabled' in option ? option.disabled : false}
-            >
+            <Option key={`${option.value}`} value={option.value} disabled={option.disabled}>
               {option.icon && <img src={iconMappings[option.icon]} style={{ marginRight: 4 }} />}
               {option.name}
             </Option>
@@ -100,7 +96,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
       </Select>
       <div className={styles['itemField-field-value']}>
         {typeof v === 'string' && (
-          <Input onChange={e => handleInput(e.target.value)} defaultValue={v} />
+          <Input autoComplete="off" onChange={e => handleInput(e.target.value)} defaultValue={v} />
         )}
         {typeof v === 'number' && <InputNumber onChange={v => handleInput(v)} defaultValue={v} />}
       </div>

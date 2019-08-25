@@ -16,7 +16,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
   // tmp options, real from server
   const options: IOption[] = [
     {
-      title: 'Bigfish-Ant Design Pro 模板',
+      title: 'Ant Design Pro 模板',
       description: '选择一个由流程编排提供的典型用户案例，',
       link: 'http://preview.pro.ant.design',
       value: 'ant-design-pro',
