@@ -65,6 +65,10 @@ const config: IConfig = {
       join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
         antd: false,
+        dynamicImport: {
+          webpackChunkName: true,
+          loadingComponent: './components/Loading',
+        },
         locale: {
           default: 'zh-CN',
           baseNavigator: false,
