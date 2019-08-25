@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "analyze": "ANALYZE=1 umi build"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.0.0-alpha.7",
     "@ant-design/icons-svg": "^4.0.0-alpha.0",

@@ -63,7 +63,7 @@ const config: IConfig = {
     [
       join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
-        antd: true,
+        antd: false,
         locale: {
           default: 'zh-CN',
           baseNavigator: false,
