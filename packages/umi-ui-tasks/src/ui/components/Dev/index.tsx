@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin, Radio, Form, Switch, Input, Modal } from 'antd';
+import { Row, Col, Button, Spin, Form, Switch, Input, Modal } from 'antd';
 import { IUiApi } from 'umi-types';
+import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
 import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
@@ -12,6 +13,7 @@ interface IProps {
   state?: TaskState;
 }
 
+const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
 const DevComponent: React.FC<IProps> = ({ api }) => {
@@ -60,6 +62,15 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     },
     [detail],
   );
+
+  // UnMount: reset form
+  useEffect(() => {
+    return () => {
+      form.resetFields();
+      const terminal = getTerminalIns(taskType);
+      terminal && terminal.clear();
+    };
+  }, []);
 
   async function dev() {
     const { triggerState, errMsg } = await exec(taskType, env);
@@ -171,13 +182,18 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
             </Col> */}
           </Row>
           <div className={styles.logContainer}>
-            <Terminal
-              terminal={getTerminalIns(taskType)}
-              log={taskDetail.log}
-              onClear={() => {
-                clearLog(taskType);
-              }}
-            />
+            <SizeMe monitorWidth monitorHeight>
+              {({ size }) => (
+                <Terminal
+                  size={size}
+                  terminal={getTerminalIns(taskType)}
+                  log={taskDetail.log}
+                  onClear={() => {
+                    clearLog(taskType);
+                  }}
+                />
+              )}
+            </SizeMe>
           </div>
         </>
       )}

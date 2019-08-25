@@ -7,9 +7,7 @@ child.on('message', data => {
   }
 });
 child.on('exit', code => {
-  if (code === 1) {
-    process.exit(code);
-  }
+  process.exit(code);
 });
 
 process.on('SIGINT', () => {

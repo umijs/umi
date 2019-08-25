@@ -2,13 +2,13 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import { spawn, SpawnOptions } from 'child_process';
 
-const error = (msg: string, name = 'TaskError') => {
+export const error = (msg: string, name = 'TaskError') => {
   const err = new Error(msg);
   err.name = name;
   throw err;
 };
 
-const runCommand = (script: string, options: SpawnOptions = {}) => {
+export const runCommand = (script: string, options: SpawnOptions = {}) => {
   options.env = {
     ...process.env,
     ...options.env,
@@ -55,10 +55,18 @@ export const isScriptKeyExist = (pkgPath: string, key: string): boolean => {
   return !!(pkg.scripts && pkg.scripts[key]);
 };
 
-export { error, runCommand };
-
-export * from './task_event';
-
 export function formatLog(log: string): string {
   return log;
+}
+
+export function formatEnv(env: object): object {
+  const res = {} as any;
+  Object.keys(env).forEach(key => {
+    if (typeof env[key] === 'boolean') {
+      res[key] = env[key] ? '1' : 'none';
+    } else {
+      res[key] = env[key];
+    }
+  });
+  return res;
 }

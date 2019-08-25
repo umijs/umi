@@ -83,17 +83,11 @@ export default (api: IUiApi) => {
 
   api.listenRemote({
     type: 'org.umi.task.log',
-    onMessage: ({ data = '', taskType }: { data: string; taskType: TaskType }) => {
-      if (!data) {
+    onMessage: ({ log = '', taskType }: { log: string; taskType: TaskType }) => {
+      if (!log) {
         return;
       }
-      const terminal = getTerminalIns(taskType);
-      data.split('\n').forEach((msg: string) => {
-        if (!msg) {
-          return;
-        }
-        terminal.writeln(msg);
-      });
+      getTerminalIns(taskType).write(log.replace(/\n/g, '\r\n'));
     },
   });
 

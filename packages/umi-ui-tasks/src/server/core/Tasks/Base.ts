@@ -1,24 +1,83 @@
-import { IApi } from 'umi-types';
 import { join } from 'path';
-import { ChildProcess, SpawnOptions } from 'child_process';
 import { EventEmitter } from 'events';
 import { TaskState, TaskEventType, TaskType } from '../enums';
-import { error, runCommand } from '../../util';
+import { ITaskDetail } from '../types';
+import { ChildProcess } from 'child_process';
 
+export interface ITaskOptions {
+  cwd: string;
+}
+/**
+ * BaseTask
+ *  1. 状态管理
+ *  2. 日志管理
+ *  3. 进程管理
+ */
 export class BaseTask extends EventEmitter {
+  public cwd: string = '';
   public state: TaskState = TaskState.INIT;
-  public proc: ChildProcess;
   public type: TaskType;
+  public log: string = ''; // 日志
+  public proc: ChildProcess; // 当前进程
+  private subscribeInitFlag: boolean = false;
 
-  protected api: IApi;
-  protected pkgPath: string;
-  protected isBigfishProject: boolean;
+  protected pkgPath: string = '';
+  protected isBigfishProject: boolean = false;
 
-  constructor({ api }: { api: IApi }) {
+  constructor({ cwd }: ITaskOptions) {
     super();
-    this.api = api;
-    this.pkgPath = join(api.cwd, 'package.json');
+    this.cwd = cwd;
+    this.pkgPath = join(cwd, 'package.json');
     this.isBigfishProject = !!process.env.BIGFISH_COMPAT;
+  }
+
+  public async init(collector) {
+    if (this.subscribeInitFlag) {
+      return;
+    }
+    this.subscribeInitFlag = true;
+    this.on(TaskEventType.STD_OUT_DATA, data => {
+      this.log = `${this.log}${data}`;
+      collector({
+        cwd: this.cwd,
+        type: 'org.umi.task.log',
+        payload: {
+          taskType: this.type,
+          log: data,
+        },
+      });
+    });
+
+    this.on(TaskEventType.STD_ERR_DATA, data => {
+      this.log = `${this.log}${data}`;
+      collector({
+        cwd: this.cwd,
+        type: 'org.umi.task.log',
+        payload: {
+          taskType: this.type,
+          log: data,
+        },
+      });
+    });
+
+    this.on(TaskEventType.STATE_EVENT, () => {
+      collector({
+        cwd: this.cwd,
+        type: 'org.umi.task.state',
+        payload: {
+          taskType: this.type,
+          detail: this.getDetail(),
+        },
+      });
+    });
+  }
+
+  public clearLog() {
+    this.log = '';
+  }
+
+  public getLog() {
+    return this.log;
   }
 
   public async run(_: any = {}) {
@@ -39,17 +98,17 @@ export class BaseTask extends EventEmitter {
 
     this.state = TaskState.INIT;
     // 杀掉子进程
-    proc.kill('SIGTERM');
+    proc.kill('SIGINT');
   }
 
-  protected async runCommand(script: string, opts?: SpawnOptions) {
-    if (!script) {
-      error('script can not be empty');
-    }
+  public getDetail(): ITaskDetail {
+    return {
+      state: this.state,
+      type: this.type,
+    };
+  }
 
-    this.proc = runCommand(script, opts);
-    const { proc } = this;
-
+  protected handleChildProcess(proc: ChildProcess) {
     proc.stdout.on('data', buf => {
       this.emit(TaskEventType.STD_OUT_DATA, buf.toString());
     });
@@ -59,10 +118,11 @@ export class BaseTask extends EventEmitter {
 
     proc.on('error', () => {
       this.state = TaskState.FAIL;
+      this.emit(TaskEventType.STATE_EVENT, this.state);
     });
 
-    const exitHandler = (code, signal) => {
-      if (signal === 'SIGTERM') {
+    proc.on('exit', (code, signal) => {
+      if (signal === 'SIGINT') {
         // 用户取消任务
         this.state = TaskState.INIT;
       } else {
@@ -71,9 +131,10 @@ export class BaseTask extends EventEmitter {
       }
       // 触发事件
       this.emit(TaskEventType.STATE_EVENT, this.state);
-    };
+    });
 
-    proc.on('close', exitHandler);
-    proc.on('exit', exitHandler);
+    process.on('exit', () => {
+      proc.kill();
+    });
   }
 }

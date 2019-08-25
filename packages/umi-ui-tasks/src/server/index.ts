@@ -1,13 +1,19 @@
 import { IApi } from 'umi-types';
 import TaskManager from './core/TaskManger';
-import { subscribeTaskEvent, formatEnv, getLog, clearLog } from './util';
+import { formatEnv } from './util';
 
+const taskManger: TaskManager = new TaskManager();
 export default (api: IApi) => {
-  const taskManger: TaskManager = new TaskManager(api);
   api.onUISocket(({ action: { type, payload }, send }) => {
     switch (type) {
       case 'plugin/init':
-        subscribeTaskEvent(taskManger, send);
+        (async () => {
+          await taskManger.init(api.cwd, send);
+          send({
+            type: `${type}/success`,
+            payload: {},
+          });
+        })();
         break;
       case 'tasks':
         (async () => {
@@ -19,11 +25,13 @@ export default (api: IApi) => {
         break;
       case 'tasks/detail': // 初始化操作
         (async () => {
+          const task = taskManger.getTask(payload.type);
           send({
             type: 'tasks/detail/success',
             payload: {
               ...taskManger.getTaskDetail(payload.type),
-              log: getLog(payload.type),
+              ...task.getDetail(),
+              log: task.getLog(),
             },
           });
         })();
@@ -53,7 +61,8 @@ export default (api: IApi) => {
         })();
         break;
       case 'tasks/clearLog':
-        clearLog(payload.type);
+        const task = taskManger.getTask(payload.type);
+        task.clearLog();
         send({
           type: 'tasks/clearLog/success',
           payload: {},

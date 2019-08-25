@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-const { Terminal, fit, webLinks } = window;
+const { Terminal, fit } = window;
 
 function initTerminal() {
   (Terminal as any).applyAddon(fit);

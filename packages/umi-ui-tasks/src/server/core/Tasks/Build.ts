@@ -1,28 +1,34 @@
-import { BaseTask } from './Base';
+import { BaseTask, ITaskOptions } from './Base';
 import { TaskType } from '../enums';
-import { ITaskOpts } from '../types';
-import { isScriptKeyExist } from '../../util';
+import { isScriptKeyExist, runCommand } from '../../util';
 
 export class BuildTask extends BaseTask {
-  constructor(opts: ITaskOpts) {
+  constructor(opts: ITaskOptions) {
     super(opts);
     this.type = TaskType.BUILD;
   }
 
   public async run(env: any = {}) {
     await super.run();
+    this.proc = runCommand(this.getScript(), {
+      cwd: this.cwd,
+      env, // 前端传入的 env
+    });
 
-    const { cwd } = this.api;
-    let command = 'npm run build';
+    this.handleChildProcess(this.proc);
+  }
 
-    // 如果 build 脚本不存在，使用全局的 umi 进行构建
-    if (!isScriptKeyExist(this.pkgPath, 'build')) {
-      command = this.isBigfishProject ? 'bigfish build' : 'umi build';
+  private getScript() {
+    let command = '';
+
+    if (isScriptKeyExist(this.pkgPath, 'build')) {
+      command = 'npm run build';
+    } else if (this.isBigfishProject) {
+      command = 'bigfish build'; // TODO: 优先使用 node_modules 中的命令？
+    } else {
+      command = 'umi build'; // TODO: 优先使用 node_modules 中的命令？
     }
 
-    await this.runCommand(command, {
-      cwd,
-      env,
-    });
+    return command;
   }
 }
