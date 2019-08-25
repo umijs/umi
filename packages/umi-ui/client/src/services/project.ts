@@ -59,7 +59,7 @@ export async function editProject(payload) {
   });
 }
 
-export async function getCwd() {
+export async function getCwd(): { cwd: string } {
   return callRemote({ type: '@@fs/getCwd' });
 }
 

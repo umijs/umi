@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon, Button, Empty, Spin } from 'antd';
+import { Icon, Button, Empty, Spin, Input } from 'antd';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
@@ -15,6 +15,7 @@ interface DirectoryFormProps {
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const { value, onChange } = props;
+  const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
   const [clicked, setClicked] = useState<number>(-1);
   const [dirPath, setDirPath] = useState<string>(value || '');
   const [directories, setDirectories] = useState<DirectoryItemProps[]>();
@@ -23,6 +24,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       onChange(path);
     }
   };
+
   console.log('dirPath', dirPath);
   const pathArr = dirPath === '/' ? [''] : dirPath.split('/');
 
@@ -73,14 +75,27 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     }
   };
 
-  const handleBreadDirChange = async (i: number) => {
-    const currDirPath = pathArr.slice(0, i + 1).join('/') || '/';
-    await changeDirectories(currDirPath);
+  const dirPathArr = dirPath === '/' ? ['/'] : dirPath.split('/');
+
+  const handleBreadDirChange = async (path: string) => {
+    // TODO: validate Path
+    if (path) {
+      await changeDirectories(path);
+    }
   };
 
   const handleReload = async () => {
     await changeDirectories(dirPath);
   };
+
+  const handleInputDirPath = async (e: any) => {
+    // TODO: validate Path
+    if (e.target.value) {
+      await changeDirectories(e.target.value);
+    }
+  };
+
+  console.log('dirPathArr', dirPathArr);
 
   return (
     <div className={styles.directoryForm}>
@@ -88,7 +103,22 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         <Button className={styles['directoryForm-toolbar-back']} onClick={handleParentDirectory}>
           <Icon type="arrow-left" onClick={handleParentDirectory} />
         </Button>
-        <div className={styles['directoryForm-toolbar-bread']}>{dirPath}</div>
+        <div className={styles['directoryForm-toolbar-bread']}>
+          {dirPathEdit ? (
+            <Input defaultValue={dirPath} onBlur={handleInputDirPath} />
+          ) : (
+            dirPathArr.map((path, j) => (
+              <Button
+                key={path}
+                onClick={() =>
+                  handleBreadDirChange(j === 0 ? '/' : dirPathArr.slice(0, j + 1).join('/'))
+                }
+              >
+                {j === 0 ? '/' : path}
+              </Button>
+            ))
+          )}
+        </div>
         {/* <Row type="flex" className={styles['directoryForm-toolbar-bread']}>
           {pathArr.map((path, i) => (
             <Col key={path} onClick={() => handleBreadDirChange(i)}>
@@ -96,30 +126,36 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
             </Col>
           ))}
         </Row> */}
-        <Button>
-          <Icon type="edit" />
-        </Button>
-        <Button onClick={handleReload}>
-          <Icon type="reload" />
-        </Button>
+        <div className={styles.edit}>
+          <Button onClick={() => setDirPathEdit(isDirPathEdit => !isDirPathEdit)}>
+            <Icon type="edit" />
+          </Button>
+        </div>
+        <div className={styles.refresh}>
+          <Button onClick={handleReload}>
+            <Icon type="reload" />
+          </Button>
+        </div>
       </div>
       {Array.isArray(directories) ? (
-        <div className={styles['directoryForm-list']}>
-          {directories.length > 0 ? (
-            directories.map((item, i) => (
-              <DirectoryItem
-                {...item}
-                key={`${item.fileName}_${i}`}
-                clicked={i === clicked}
-                onDoubleClick={handleDirectoryClick}
-                onClick={folderName => handleDirectorySelect(folderName, i)}
-              />
-            ))
-          ) : (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
-          )}
+        <>
+          <div className={styles['directoryForm-list']}>
+            {directories.length > 0 ? (
+              directories.map((item, i) => (
+                <DirectoryItem
+                  {...item}
+                  key={`${item.fileName}_${i}`}
+                  clicked={i === clicked}
+                  onDoubleClick={handleDirectoryClick}
+                  onClick={folderName => handleDirectorySelect(folderName, i)}
+                />
+              ))
+            ) : (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
+            )}
+          </div>
           <p className={styles['directoryForm-tip']}>友情提示：单击选择，双击进入</p>
-        </div>
+        </>
       ) : (
         <div style={{ textAlign: 'center' }}>
           <Spin />

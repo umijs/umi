@@ -1,5 +1,4 @@
 import * as React from 'react';
-import cls from 'classnames';
 import { Steps, Icon } from 'antd';
 import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
