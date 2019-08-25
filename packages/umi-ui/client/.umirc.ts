@@ -17,6 +17,7 @@ const uglifyJSOptions =
 
 const config: IConfig = {
   history: 'hash',
+  treeShaking: true,
   uglifyJSOptions,
   externals: {
     react: 'window.React',
