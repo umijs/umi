@@ -133,7 +133,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </div>
       </Sider>
       <Content className={styles['project-list-layout-content']}>
-        <Row type="flex" justify="space-between" style={{ marginBottom: 26 }}>
+        <Row
+          type="flex"
+          justify="space-between"
+          className={styles['project-list-layout-content-header']}
+        >
           <Col>
             <h2 className={styles['project-title']}>项目列表</h2>
           </Col>
@@ -166,19 +170,19 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           )}
         >
           <TweenOne
+            className={styles['project-transition']}
             animation={{
               y: 30,
               opacity: 0,
               type: 'from',
             }}
-          >
-            <List
-              dataSource={projects}
-              loading={!projectList.projectsByKey}
-              split={false}
-              className={styles['project-list']}
-              renderItem={(item, i) => {
-                console.log('iiii', i);
+            component={List}
+            componentProps={{
+              dataSource: projects,
+              loading: !projectList.projectsByKey,
+              split: false,
+              className: styles['project-list'],
+              renderItem: (item, i) => {
                 const status = getProjectStatus(item);
                 const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
                   <Popconfirm
@@ -193,7 +197,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 );
 
                 return (
-                  <List.Item className={styles['project-list-item']} actions={actions}>
+                  <List.Item
+                    key={item.key}
+                    className={styles['project-list-item']}
+                    actions={actions}
+                  >
                     <Skeleton title={false} loading={item.loading} active>
                       <List.Item.Meta
                         title={
@@ -215,9 +223,9 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                     </Skeleton>
                   </List.Item>
                 );
-              }}
-            />
-          </TweenOne>
+              },
+            }}
+          />
         </ConfigProvider>
       </Content>
       {modalVisible && (

@@ -8,7 +8,7 @@ export { default as progress } from './progress';
 export interface IProjectProps {
   cwd?: string;
   files: string[];
-  current: IProjectStatus;
+  current?: IProjectStatus;
   currentData?: object;
   projectList: IProjectList;
 }
