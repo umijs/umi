@@ -49,9 +49,7 @@ $ PORT=8001 umi dev
 
 ### APP_ROOT
 
-::: warning
-APP_ROOT 不能配在 .env 里。
-:::
+::: warning APP_ROOT 不能配在 .env 里。 :::
 
 指定项目根目录。比如：
 

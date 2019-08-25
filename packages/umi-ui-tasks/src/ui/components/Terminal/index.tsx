@@ -1,16 +1,17 @@
 import { Row, Col, Icon } from 'antd';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
-import { useTerminal } from '../../hooks';
+import { useTerminal, usePrevious } from '../../hooks';
 import styles from './index.module.less';
 
 export interface IProps {
   terminal: Terminal;
   log?: string;
   onClear?: any;
+  size?: any;
 }
 
-const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear }) => {
+const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size }) => {
   const domContainer = useRef();
   const [, setInit] = useState(false);
   useEffect(() => {
@@ -20,13 +21,22 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear }) => {
   useEffect(
     () => {
       if (log) {
-        log.split('\n').forEach((msg: string) => {
-          terminal.writeln(msg);
-        });
+        terminal.write(log.replace(/\n/g, '\r\n'));
       }
     },
     [log],
   );
+
+  // mount or updated
+  const prevSize = usePrevious(size);
+  useEffect(() => {
+    if (prevSize) {
+      if (prevSize.width !== size.width || prevSize.height !== size.height) {
+        terminal.fit();
+        console.log(terminal.fit);
+      }
+    }
+  });
 
   const clear = () => {
     terminal.clear();

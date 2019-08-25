@@ -41,7 +41,7 @@ export default function build(opts = {}) {
 
       const isWatch = isPlainObject(webpackConfig)
         ? webpackConfig.watch
-        : webpackConfig.some(config => config.watch) /* array */
+        : webpackConfig.some(config => config.watch); /* array */
 
       if (!process.env.UMI_TEST && !isWatch) {
         process.exit(1);

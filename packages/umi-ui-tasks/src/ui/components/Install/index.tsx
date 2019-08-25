@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin, Radio } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
 import { IUiApi } from 'umi-types';
+import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
-import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState } from '../../util';
+import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
+
 import { useTaskDetail } from '../../hooks';
 import Terminal from '../Terminal';
 
@@ -12,6 +14,7 @@ interface IProps {
   state?: TaskState;
 }
 
+const { SizeMe } = withSize;
 const taskType = TaskType.INSTALL;
 
 const InstallComponent: React.FC<IProps> = ({ api }) => {
@@ -48,6 +51,14 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     },
     [detail],
   );
+
+  // UnMount: reset form
+  useEffect(() => {
+    return () => {
+      const terminal = getTerminalIns(taskType);
+      terminal && terminal.clear();
+    };
+  }, []);
 
   async function install() {
     const { triggerState, errMsg } = await exec(taskType);
@@ -95,7 +106,18 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             </Col> */}
           </Row>
           <div className={styles.logContainer}>
-            <Terminal terminal={getTerminalIns(taskType)} log={taskDetail.log} />
+            <SizeMe monitorWidth monitorHeight>
+              {({ size }) => (
+                <Terminal
+                  size={size}
+                  terminal={getTerminalIns(taskType)}
+                  log={taskDetail.log}
+                  onClear={() => {
+                    clearLog(taskType);
+                  }}
+                />
+              )}
+            </SizeMe>
           </div>
         </>
       )}

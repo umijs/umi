@@ -1,20 +1,24 @@
-import { BaseTask } from './Base';
+import { BaseTask, ITaskOptions } from './Base';
 import { TaskType } from '../enums';
-import { ITaskOpts } from '../types';
+import { runCommand } from '../../util';
 
 export class LintTask extends BaseTask {
-  constructor(opts: ITaskOpts) {
+  constructor(opts: ITaskOptions) {
     super(opts);
     this.type = TaskType.LINT;
   }
 
   public async run(env: any = {}) {
     await super.run();
-
-    const { cwd } = this.api;
-    await this.runCommand('npm run lint', {
-      cwd,
-      env,
+    this.proc = runCommand(this.getScript(), {
+      cwd: this.cwd,
+      env, // 前端传入的 env
     });
+
+    this.handleChildProcess(this.proc);
+  }
+
+  private getScript() {
+    return 'npm run lint';
   }
 }
