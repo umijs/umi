@@ -65,7 +65,7 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
                     className={styles['project-l-header']}
                   />
                 )}
-                <div>{this.props.children}</div>
+                {this.props.children}
               </div>
             </ProjectContext.Provider>
           )}

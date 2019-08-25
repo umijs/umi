@@ -1,5 +1,6 @@
 import { Icon, Menu, Layout, Dropdown } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
+import TweenOne from 'rc-tween-one';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
@@ -10,6 +11,7 @@ import UiLayout from './Layout';
 import styles from './Dashboard.less';
 
 const { Content, Sider } = Layout;
+const { TweenOneGroup } = TweenOne;
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -130,7 +132,16 @@ export default withRouter(props => {
                   <div className={styles.header}>
                     <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
                   </div>
-                  <div className={styles.content}>{props.children}</div>
+                  <TweenOneGroup
+                    enter={{ y: 15, type: 'from', opacity: 0 }}
+                    leave={{ y: 15, opacity: 0 }}
+                    className={styles['ui-dashboard-transition']}
+                  >
+                    {/* key pathname change transition will crash  */}
+                    <div key={activePanel.path || '/'} className={styles.content}>
+                      {props.children}
+                    </div>
+                  </TweenOneGroup>
                 </Content>
               </div>
             </Layout>

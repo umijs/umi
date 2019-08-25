@@ -1,4 +1,5 @@
 import * as React from 'react';
+import TweenOne from 'rc-tween-one';
 import {
   Button,
   List,
@@ -164,48 +165,59 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             />
           )}
         >
-          <List
-            dataSource={projects}
-            loading={!projectList.projectsByKey}
-            split={false}
-            className={styles['project-list']}
-            renderItem={item => {
-              const status = getProjectStatus(item);
-              const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
-                <Popconfirm
-                  title="是否删除项目？"
-                  onConfirm={() => handleOnAction('delete', { key: item.key })}
-                  onCancel={() => {}}
-                  okText="是"
-                  cancelText="否"
-                >
-                  <a>删除</a>
-                </Popconfirm>,
-              );
-
-              return (
-                <List.Item className={styles['project-list-item']} actions={actions}>
-                  <Skeleton title={false} loading={item.loading} active>
-                    <List.Item.Meta
-                      title={
-                        <div className={styles['project-list-item-title']}>
-                          {item.key === currentProject && <Badge status="success" />}
-                          <a onClick={() => handleTitleClick(item)}>{item.name}</a>
-                          {status === 'progress' && (
-                            <Tag className={`${styles.tag} ${styles['tag-progress']}`}>创建中</Tag>
-                          )}
-                          {status === 'failure' && (
-                            <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
-                          )}
-                        </div>
-                      }
-                      description={item.path}
-                    />
-                  </Skeleton>
-                </List.Item>
-              );
+          <TweenOne
+            animation={{
+              y: 30,
+              opacity: 0,
+              type: 'from',
             }}
-          />
+          >
+            <List
+              dataSource={projects}
+              loading={!projectList.projectsByKey}
+              split={false}
+              className={styles['project-list']}
+              renderItem={(item, i) => {
+                console.log('iiii', i);
+                const status = getProjectStatus(item);
+                const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+                  <Popconfirm
+                    title="是否删除项目？"
+                    onConfirm={() => handleOnAction('delete', { key: item.key })}
+                    onCancel={() => {}}
+                    okText="是"
+                    cancelText="否"
+                  >
+                    <a>删除</a>
+                  </Popconfirm>,
+                );
+
+                return (
+                  <List.Item className={styles['project-list-item']} actions={actions}>
+                    <Skeleton title={false} loading={item.loading} active>
+                      <List.Item.Meta
+                        title={
+                          <div className={styles['project-list-item-title']}>
+                            {item.key === currentProject && <Badge status="success" />}
+                            <a onClick={() => handleTitleClick(item)}>{item.name}</a>
+                            {status === 'progress' && (
+                              <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
+                                创建中
+                              </Tag>
+                            )}
+                            {status === 'failure' && (
+                              <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
+                            )}
+                          </div>
+                        }
+                        description={item.path}
+                      />
+                    </Skeleton>
+                  </List.Item>
+                );
+              }}
+            />
+          </TweenOne>
         </ConfigProvider>
       </Content>
       {modalVisible && (
