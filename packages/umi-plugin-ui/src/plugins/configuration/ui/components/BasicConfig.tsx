@@ -215,7 +215,7 @@ const BasicConfig = () => {
 
   const ResetTitle = (
     <div className={styles.resetTitle}>
-      <p>你确定要重置惟上配置吗？</p>
+      <p>你确定要重置以上配置吗？</p>
       <span>
         {changedValueArr.length > 0
           ? `当前配置 ${changedValueArr.join('、')} 已被修改`
