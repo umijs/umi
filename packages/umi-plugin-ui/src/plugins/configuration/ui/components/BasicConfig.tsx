@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
 import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
-import { Button, Form, Input, Spin, message } from 'antd';
+import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
+import isEmpty from 'lodash/isEmpty';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
 import useToggle from './common/useToggle';
@@ -191,6 +192,7 @@ const BasicConfig = () => {
 
   const handleReset = () => {
     form.resetFields();
+    setAllValues({});
   };
 
   const handleSubmit = () => {
@@ -199,13 +201,28 @@ const BasicConfig = () => {
 
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
-  const tocAnchors = getToc(groupedData, allValues || initialValues);
+  const tocAnchors = getToc(groupedData, isEmpty(allValues) ? initialValues : allValues);
   const searchIconCls = cls(styles['basicConfig-header-searchIcon'], {
     [styles['basicConfig-header-searchIcon-hide']]: !!showSearch,
   });
   const inputCls = cls(styles['basicConfig-header-input'], {
     [styles['basicConfig-header-input-active']]: !!showSearch,
   });
+
+  console.log('getChangedValue(allValues)', getChangedValue(allValues));
+
+  const changedValueArr = Object.keys(getChangedValue(allValues));
+
+  const ResetTitle = (
+    <div className={styles.resetTitle}>
+      <p>你确定要重置惟上配置吗？</p>
+      <span>
+        {changedValueArr.length > 0
+          ? `当前配置 ${changedValueArr.join('、')} 已被修改`
+          : '配置没有修改'}
+      </span>
+    </div>
+  );
 
   return (
     <>
@@ -254,33 +271,6 @@ const BasicConfig = () => {
                   }}
                 </Form.Item>
               </Form>
-              {/* <div>
-                <h2>Test</h2>
-                <Button
-                  type="primary"
-                  onClick={() => console.log('wefwefewf', form.getFieldsValue())}
-                >{`保存 mock.exclude 为 ['aaa', 'bbb']`}</Button>
-                <Button
-                  type="primary"
-                  onClick={editHandler.bind(null, 'mock.exclude', [])}
-                >{`清空 mock.exclude`}</Button>
-                <br />
-                <br />
-                <Button
-                  type="primary"
-                  onClick={editHandler.bind(
-                    null,
-                    {
-                      base: '/foo/',
-                      publicPath: '/foo/',
-                    },
-                    '',
-                  )}
-                >{`同时保存 base 和 publicPath 为 /foo/`}</Button>
-                <br />
-                <br />
-                <br />
-              </div> */}
             </div>
           )}
         </div>
@@ -291,7 +281,15 @@ const BasicConfig = () => {
         />
       </div>
       <div className={styles['basicConfig-submit']}>
-        <Button onClick={handleReset}>重置</Button>
+        <Popconfirm
+          title={ResetTitle}
+          onConfirm={handleReset}
+          onCancel={() => {}}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Button>重置</Button>
+        </Popconfirm>
         <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
           保存
         </Button>
