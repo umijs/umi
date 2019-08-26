@@ -15,6 +15,9 @@
   padding-top: 16px;
   position: relative;
   padding-left: 20px;
+  :global(.ant-affix) {
+    top: 0 !important;
+  }
   &-header {
     margin-bottom: 16px;
     position: relative;
@@ -70,8 +73,14 @@
     flex: 100% 1 1;
   }
   .toc {
-    min-width: 168px;
-    margin-top: 60px;
+    width: 168px;
+    margin-top: 32px;
+    max-height: 560px !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    &:hover {
+      overflow-y: auto;
+    }
   }
   .group {
     margin-bottom: 30px;
