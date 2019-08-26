@@ -1,5 +1,6 @@
 import * as React from 'react';
 import TweenOne from 'rc-tween-one';
+import { formatMessage } from 'umi-plugin-react/locale';
 import {
   Button,
   List,
@@ -114,9 +115,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     success: item => [
       <a onClick={() => handleOnAction('editor', { key: item.key })}>
         <Icon type="export" />
-        在编辑器中打开
+        {formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
       </a>,
-      <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>重命名</a>,
+      <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
+        {formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}
+      </a>,
     ],
   };
 
@@ -129,7 +132,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </div>
         <div className={styles['project-list-layout-sider-item']}>
           <Icon theme="filled" type="appstore" />
-          <p>项目</p>
+          <p>{formatMessage({ id: 'org.umi.ui.global.project.siderbar.title' })}</p>
         </div>
       </Sider>
       <Content className={styles['project-list-layout-content']}>
@@ -139,14 +142,22 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           className={styles['project-list-layout-content-header']}
         >
           <Col>
-            <h2 className={styles['project-title']}>项目列表</h2>
+            <h2 className={styles['project-title']}>
+              {formatMessage({
+                id: 'org.umi.ui.global.project.list.title',
+              })}
+            </h2>
           </Col>
           <Col>
             <div className={styles['project-action']}>
-              <Button onClick={() => setCurrent('import')}>导入项目</Button>
+              <Button onClick={() => setCurrent('import')}>
+                {formatMessage({
+                  id: 'org.umi.ui.global.project.import.title',
+                })}
+              </Button>
               {window.g_bigfish ? null : (
                 <Button type="primary" onClick={() => setCurrent('create')}>
-                  创建项目
+                  {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
                 </Button>
               )}
             </div>
@@ -165,7 +176,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 paddingTop: 187,
               }}
               image={iconSvg}
-              description="一直如此，便是对的么？"
+              description={formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}
             />
           )}
         >
@@ -186,13 +197,13 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 const status = getProjectStatus(item);
                 const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
                   <Popconfirm
-                    title="是否删除项目？"
+                    title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
                     onConfirm={() => handleOnAction('delete', { key: item.key })}
                     onCancel={() => {}}
-                    okText="是"
-                    cancelText="否"
+                    okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+                    cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
                   >
-                    <a>删除</a>
+                    <a>{formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}</a>
                   </Popconfirm>,
                 );
 
@@ -210,11 +221,17 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                             <a onClick={() => handleTitleClick(item)}>{item.name}</a>
                             {status === 'progress' && (
                               <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
-                                创建中
+                                {formatMessage({
+                                  id: 'org.umi.ui.global.project.list.create.loading',
+                                })}
                               </Tag>
                             )}
                             {status === 'failure' && (
-                              <Tag className={`${styles.tag} ${styles['tag-error']}`}>创建失败</Tag>
+                              <Tag className={`${styles.tag} ${styles['tag-error']}`}>
+                                {formatMessage({
+                                  id: 'org.umi.ui.global.project.list.create.error',
+                                })}
+                              </Tag>
                             )}
                           </div>
                         }
@@ -232,13 +249,13 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         <ModalForm
           onCancel={() => setModalVisible(false)}
           restModelProps={{
-            title: '重命名',
+            title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
           }}
           initialValues={initialValues}
           onOk={async (formKey, payload) => {
             setModalVisible(false);
             await editProject(payload);
-            message.success('修改成功');
+            message.success(formatMessage({ id: 'org.umi.ui.global.edit.success' }));
           }}
         />
       )}
