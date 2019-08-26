@@ -584,26 +584,28 @@ export default class UmiUI {
 
       // Serve Static (Production Only)
       if (!process.env.LOCAL_DEBUG) {
-        app.use(express.static(join(__dirname, '../client/dist')));
+        app.use(
+          express.static(join(__dirname, '../client/dist'), {
+            index: false,
+          }),
+        );
       }
 
-      app.use((req, res) => {
-        if (['/'].includes(req.path)) {
-          if (process.env.LOCAL_DEBUG) {
-            got(`http://localhost:8002${req.path}`)
-              .then(({ body }) => {
-                res.set('Content-Type', 'text/html');
-                res.send(normalizeHtml(body));
-              })
-              .catch(e => {
-                console.error(e);
-              });
-          } else {
-            if (!content) {
-              content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
-            }
-            res.send(normalizeHtml(content));
+      app.use('/*', (req, res) => {
+        if (process.env.LOCAL_DEBUG) {
+          got(`http://localhost:8002${req.path}`)
+            .then(({ body }) => {
+              res.set('Content-Type', 'text/html');
+              res.send(normalizeHtml(body));
+            })
+            .catch(e => {
+              console.error(e);
+            });
+        } else {
+          if (!content) {
+            content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
           }
+          res.send(normalizeHtml(content));
         }
       });
 
