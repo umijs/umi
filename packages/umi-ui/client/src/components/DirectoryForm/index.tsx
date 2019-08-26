@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Icon, Button, Empty, Spin, Input } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
@@ -166,7 +167,9 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
             )}
           </div>
-          <p className={styles['directoryForm-tip']}>友情提示：单击选择，双击进入</p>
+          <p className={styles['directoryForm-tip']}>
+            {formatMessage({ id: 'org.umi.ui.global.project.directory.tip' })}
+          </p>
         </>
       ) : (
         <div style={{ textAlign: 'center' }}>

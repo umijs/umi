@@ -75,7 +75,12 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
         dependencies={['baseDir']}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
         rules={[
-          { required: true, message: formatMessage({ id: '请输入应用名' }) },
+          {
+            required: true,
+            message: formatMessage({
+              id: 'org.umi.ui.global.project.create.steps.input.placeholder',
+            }),
+          },
           {
             validateTrigger: 'onBlur',
             validator: async (rule, value) => {
@@ -83,7 +88,9 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
                 return;
               }
               if (!isValidFolderName(value)) {
-                throw new Error(formatMessage({ id: '文件名无效' }));
+                throw new Error(
+                  formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.error' }),
+                );
               } else {
                 await checkDirValid({ dir: getFullPath({ name: value }) });
               }
@@ -91,12 +98,18 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           },
         ]}
       >
-        <Input placeholder="请输入应用名" onChange={handleDebounceInput} autoComplete="off" />
+        <Input
+          placeholder={formatMessage({
+            id: 'org.umi.ui.global.project.create.steps.input.placeholder',
+          })}
+          onChange={handleDebounceInput}
+          autoComplete="off"
+        />
       </Form.Item>
       <Form.Item shouldUpdate>{renderFullPath}</Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
-          {formatMessage({ id: '下一步' })}
+          {formatMessage({ id: 'org.umi.ui.global.steps.next' })}
         </Button>
       </Form.Item>
     </Form>

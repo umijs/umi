@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Modal, Input, InputNumber, Form } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import flatten from 'lodash/flatten';
 import nanoid from 'nanoid';
 
@@ -50,8 +51,23 @@ const ModalForm: React.FC<IModalFormProps> = ({
         initialValues={initialValues}
         name={formName}
       >
-        <Form.Item name="name" label="应用名" rules={[{ required: true, message: '请输入应用名' }]}>
-          <Input placeholder="请输入用户名" />
+        <Form.Item
+          name="name"
+          label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
+          rules={[
+            {
+              required: true,
+              message: formatMessage({
+                id: 'org.umi.ui.global.project.create.steps.input.placeholder',
+              }),
+            },
+          ]}
+        >
+          <Input
+            placeholder={formatMessage({
+              id: 'org.umi.ui.global.project.create.steps.input.placeholder',
+            })}
+          />
         </Form.Item>
         <Form.Item name="key" noStyle>
           <span />
