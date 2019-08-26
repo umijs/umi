@@ -288,14 +288,20 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
-interface IAction {
+interface IAction<T = object> {
   type: string;
-  payload?: any;
+  payload?: T;
   lang?: string;
 }
 
+type ISend = (action: IAction<{}>) => void;
+type ISuccess<T = object> = (payload: T) => void;
+type IFailure<T = object> = (payload: T) => void;
+type IUiLogType = 'error' | 'info';
+type IUiLog = (type: IUiLogType, payload: string) => void;
+
 export interface IOnUISocketFunc {
-  (args: { action: IAction; send: any; success: any; failure: any }): void;
+  (args: { action: IAction; send: ISend; success: ISuccess; failure: IFailure; log: IUiLog }): void;
 }
 
 interface IOnUISocket {
