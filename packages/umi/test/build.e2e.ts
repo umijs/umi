@@ -24,8 +24,6 @@ if (testOnly) {
 }
 dirs = dirs.filter(dir => !/^x-/.test(dir));
 
-jest.setTimeout(2000000);
-
 beforeAll(async () => {
   for (const dir of dirs) {
     await buildAndServe(dir);
@@ -46,12 +44,16 @@ beforeEach(async () => {
 });
 
 for (const dir of dirs) {
-  it(dir, async () => {
-    await require(join(fixtures, `${dir}/test`)).default({
-      page,
-      host: `http://localhost:${servers[dir].port}`,
-    });
-  });
+  it(
+    dir,
+    async () => {
+      await require(join(fixtures, `${dir}/test`)).default({
+        page,
+        host: `http://localhost:${servers[dir].port}`,
+      });
+    },
+    15000,
+  );
 }
 
 afterAll(() => {

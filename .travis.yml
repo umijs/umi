@@ -11,7 +11,7 @@ before_script:
   - npm run ui:build
 
 script:
-  - npm run test -- --forceExit --maxWorkers=1 --runInBand
+  - npm run test -- --forceExit
 
 after_success:
   - npm run coveralls
