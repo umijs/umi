@@ -5,7 +5,7 @@ import DirectoryItem, { DirectoryItemProps } from './item';
 
 import styles from './index.less';
 
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 interface DirectoryFormProps {
   /** path / cwd */
@@ -16,6 +16,7 @@ interface DirectoryFormProps {
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const { value, onChange } = props;
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
+  const dirPathEditRef = useRef<HTMLInputElement>();
   const [clicked, setClicked] = useState<number>(-1);
   const [dirPath, setDirPath] = useState<string>(value || '');
   const [directories, setDirectories] = useState<DirectoryItemProps[]>();
@@ -93,6 +94,17 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     if (e.target.value) {
       await changeDirectories(e.target.value);
     }
+    setDirPathEdit(false);
+  };
+
+  const handleEdit = () => {
+    setDirPathEdit(isDirPathEdit => !isDirPathEdit);
+    // 延迟执行，拿到 ref
+    setTimeout(() => {
+      if (dirPathEditRef.current) {
+        dirPathEditRef.current.focus();
+      }
+    }, 0);
   };
 
   console.log('dirPathArr', dirPathArr);
@@ -105,11 +117,11 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         </Button>
         <div className={styles['directoryForm-toolbar-bread']}>
           {dirPathEdit ? (
-            <Input defaultValue={dirPath} onBlur={handleInputDirPath} />
+            <Input ref={dirPathEditRef} defaultValue={dirPath} onBlur={handleInputDirPath} />
           ) : (
             dirPathArr.map((path, j) => (
               <Button
-                key={path}
+                key={`${path}_${j}`}
                 onClick={() =>
                   handleBreadDirChange(j === 0 ? '/' : dirPathArr.slice(0, j + 1).join('/'))
                 }
@@ -127,7 +139,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           ))}
         </Row> */}
         <div className={styles.edit}>
-          <Button onClick={() => setDirPathEdit(isDirPathEdit => !isDirPathEdit)}>
+          <Button onClick={handleEdit}>
             <Icon type="edit" />
           </Button>
         </div>
