@@ -19,7 +19,7 @@
     "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
-    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+    "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"
     ]
