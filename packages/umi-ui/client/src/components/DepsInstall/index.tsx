@@ -4,7 +4,7 @@ import { ButtonProps } from 'antd/lib/button';
 import NpmClientForm from '@/components/NpmClientForm';
 import { reInstallDependencies, installDependencies } from '@/services/project';
 
-const { useState, useEffect } = React;
+const { useState } = React;
 
 export interface DepsInstallProps {
   installType?: 'install' | 'reinstall';
@@ -67,6 +67,9 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
   };
 
   const onOk = async () => {
+    if (onClick) {
+      onClick();
+    }
     form.submit();
   };
 
@@ -75,14 +78,14 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     await doInstallDeps();
   };
 
-  const handleClick = async () => {
+  const handleClick = async e => {
     if (npmClient && !currNpmClient) {
       // show modal
       setModalVisible(true);
       return false;
     }
     if (onClick) {
-      onClick();
+      onClick(e);
     }
     await doInstallDeps();
   };

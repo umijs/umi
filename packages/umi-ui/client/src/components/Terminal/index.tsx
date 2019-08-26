@@ -52,12 +52,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
         }
         fit(xterm);
         if (defaultValue) {
-          defaultValue.split('\n').forEach((msg: string) => {
-            if (!msg) {
-              return;
-            }
-            xterm.writeln(msg);
-          });
+          xterm.writeln(defaultValue.replace(/\n/g, '\r\n'));
         }
       }
     },

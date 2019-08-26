@@ -1,13 +1,28 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Card, Result } from 'antd';
+import cls from 'classnames';
 import { ResultProps } from 'antd/lib/result';
-import { InfoCircle } from '@ant-design/icons';
+import { InfoCircle, Loading } from '@ant-design/icons';
 import styles from './index.less';
 
-const Fail: React.SFC<Partial<ResultProps>> = props => (
-  <Card bordered={false} className={styles.result}>
-    <Result icon={<InfoCircle />} style={{ marginTop: 0, marginBottom: 16 }} {...props} />
-  </Card>
-);
+interface IFailProps extends ResultProps {
+  loading?: boolean;
+}
+
+const Fail: React.SFC<Partial<IFailProps>> = props => {
+  const { icon, loading, ...restProps } = props;
+  const resultCls = cls(styles.result, {
+    [styles['result-loading']]: !!loading,
+  });
+  return (
+    <Card bordered={false} className={resultCls}>
+      <Result
+        icon={loading ? <Loading /> : <InfoCircle />}
+        style={{ marginTop: 0, marginBottom: 16 }}
+        {...restProps}
+      />
+    </Card>
+  );
+};
 
 export default Fail;

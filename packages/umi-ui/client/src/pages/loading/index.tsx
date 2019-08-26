@@ -1,15 +1,13 @@
 import React, { Fragment } from 'react';
-import { Spin, Button } from 'antd';
+import { Spin } from 'antd';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
-import history from '@tmp/history';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
 import { DINGTALK_MEMBERS } from '@/enums';
 import actions from './actions';
-import { findProjectPath } from '@/utils';
 import locales from './locales';
 import styles from './index.less';
 import Fail from './fail';
@@ -53,33 +51,26 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     });
   };
 
-  actionHandler = (handler: any) => {
-    const { data } = this.props;
-    const path = findProjectPath(data);
-    console.log('HANDLER', handler);
-    callRemote({
-      ...handler,
-      onProgress(data) {
-        console.log('Reinstall: ', data);
-      },
-    })
-      .then(() => {
-        alert('DONE');
-      })
-      .catch(e => {
-        alert('FAILED');
-        console.error(e);
-      });
-  };
-
   handleSuccess = () => {
     console.log('success');
+    this.setState({
+      actionLoading: false,
+    });
     window.location.reload();
   };
 
   handleFailure = () => {
     // TODO if install failed
     console.log('failed');
+    this.setState({
+      actionLoading: false,
+    });
+  };
+
+  handleClick = () => {
+    this.setState({
+      actionLoading: true,
+    });
   };
 
   handleInstallProgress = (data: object) => {
@@ -91,12 +82,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       this.xterm.clear();
     }
     this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
-    this.logs.split('\n').forEach((msg: string) => {
-      if (!msg) {
-        return;
-      }
-      this.xterm.writeln(msg);
-    });
+    this.xterm.writeln(this.logs.replace(/\n/g, '\r\n'));
   };
 
   render() {
@@ -139,6 +125,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
               <Action
                 key={index}
                 type={index % 2 === 0 ? 'primary' : 'default'}
+                onClick={this.handleClick}
                 payload={actionPayload}
                 onSuccess={this.handleSuccess}
                 onFailure={this.handleFailure}
@@ -172,7 +159,12 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <Layout type="loading">
         <div className={styles.loading}>
           {error ? (
-            <Fail title="加载失败" subTitle={renderSubTitle(error)} extra={actionsDeps} />
+            <Fail
+              title={actionLoading ? '执行中' : '加载失败'}
+              loading={actionLoading}
+              subTitle={renderSubTitle(error)}
+              extra={actionsDeps}
+            />
           ) : (
             <Fragment>
               <div className={styles['loading-spin']}>
