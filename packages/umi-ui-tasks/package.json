@@ -13,7 +13,9 @@
     "src"
   ],
   "dependencies": {
-    "xterm-addon-web-links": "^0.1.0"
+    "xterm-addon-web-links": "^0.1.0",
+    "react-sizeme": "^2.6.7",
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
