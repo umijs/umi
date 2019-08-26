@@ -60,6 +60,7 @@ declare namespace IUI {
   interface ITwoColumnPanel {
     className?: string;
     sections: Array<{
+      key?: string;
       title: string;
       icon: string | React.ReactNode;
       description: string;
@@ -102,6 +103,7 @@ declare namespace IUI {
     path?: string;
     created_at?: number;
     opened_at?: number;
+    npmClient?: string;
   }
   type IRedirect = (url: string) => void;
 

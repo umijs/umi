@@ -6,6 +6,8 @@ import userHome from 'user-home';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 
+let count = 0;
+
 interface IOpts {
   dbPath?: string;
   onSave?: any;
@@ -24,6 +26,7 @@ export interface IProjectItem {
   path: string;
   creatingProgress?: ICreateProgress;
   created_at?: number;
+  npmClient?: string;
 }
 
 interface IProjectsByKey {
@@ -65,7 +68,15 @@ export default class Config {
     if (this.onSave) this.onSave(this.data);
   }
 
-  addProject(path: string, name?: string): string {
+  addProject({
+    name,
+    path,
+    npmClient,
+  }: {
+    path: string;
+    name: string;
+    npmClient?: string;
+  }): string {
     name = name || basename(path);
     const str = `${path}____${name}`;
     const key = createHash('md5')
@@ -77,6 +88,7 @@ export default class Config {
         path,
         name,
         created_at: +new Date(),
+        npmClient,
       };
       this.save();
     }
@@ -127,11 +139,16 @@ export default class Config {
     this.save();
   }
 
+  setProjectNpmClient({ npmClient, key }: { npmClient: string; key: string }) {
+    this.data.projectsByKey[key].npmClient = npmClient;
+    this.save();
+  }
+
   addProjectAndSetCurrent(projectPath: string) {
     const absProjectPath = join(process.cwd(), projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
-    const key = this.addProject(absProjectPath, projectName);
+    const key = this.addProject({ name: projectName, path: absProjectPath });
     this.setCurrentProject(key);
   }
 }

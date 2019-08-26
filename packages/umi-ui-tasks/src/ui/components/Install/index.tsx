@@ -18,6 +18,7 @@ const { SizeMe } = withSize;
 const taskType = TaskType.INSTALL;
 
 const InstallComponent: React.FC<IProps> = ({ api }) => {
+  const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
 
@@ -61,11 +62,13 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   }, []);
 
   async function install() {
-    const { triggerState, errMsg } = await exec(taskType);
+    const { triggerState, errMsg } = await exec(taskType, {
+      NPM_CLIENT: api.currentProject.npmClient,
+    });
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行安装依赖失败',
+        title: intl('org.umi.ui.tasks.install.execError'),
         message: errMsg,
       });
     }
@@ -75,7 +78,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消安装依赖失败',
+        title: intl('org.umi.ui.tasks.install.cancelError'),
         message: errMsg,
       });
     }
@@ -84,7 +87,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>重装依赖</h1>
+      <h1 className={styles.title}>{intl('org.umi.ui.tasks.install')}</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -96,7 +99,9 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                 onClick={isTaskRunning ? cancelInstall : install}
                 loading={loading}
               >
-                {isTaskRunning ? '停止' : '执行'}
+                {isTaskRunning
+                  ? intl('org.umi.ui.tasks.install.cancel')
+                  : intl('org.umi.ui.tasks.install.start')}
               </Button>
             </Col>
             {/* <Col span={4} offset={12} className={styles.formatGroup}>
@@ -109,6 +114,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             <SizeMe monitorWidth monitorHeight>
               {({ size }) => (
                 <Terminal
+                  api={api}
                   size={size}
                   terminal={getTerminalIns(taskType)}
                   log={taskDetail.log}

@@ -23,3 +23,12 @@ export enum LogType {
   STD_OUT = 'STD_OUT',
   STD_ERR = 'STD_ERR',
 }
+
+export enum NpmClient {
+  tnpm = 'tnpm',
+  cnpm = 'cnpm',
+  npm = 'npm',
+  ayarn = 'ayarn',
+  yarn = 'yarn',
+  pnpm = 'pnpm',
+}

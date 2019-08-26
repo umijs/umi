@@ -35,6 +35,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currNpmClient, setCurrNpmClient] = useState<string>('');
   const projectPath = path || window.g_uiCurrentProject.path || '';
+  const projectKey = window.g_uiCurrentProject.key || '';
   const [form] = Form.useForm();
 
   const closeModal = () => {
@@ -47,8 +48,9 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       ? {
           npmClient: currNpmClient,
           projectPath,
+          key: projectKey,
         }
-      : { projectPath };
+      : { projectPath, key: projectKey };
     setLoading(true);
     try {
       await action(actionPayload, {

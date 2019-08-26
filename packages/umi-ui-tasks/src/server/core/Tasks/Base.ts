@@ -98,7 +98,7 @@ export class BaseTask extends EventEmitter {
 
     this.state = TaskState.INIT;
     // 杀掉子进程
-    proc.kill('SIGINT');
+    proc.kill('SIGTERM');
   }
 
   public getDetail(): ITaskDetail {
@@ -115,14 +115,8 @@ export class BaseTask extends EventEmitter {
     proc.stderr.on('data', buf => {
       this.emit(TaskEventType.STD_ERR_DATA, buf.toString());
     });
-
-    proc.on('error', () => {
-      this.state = TaskState.FAIL;
-      this.emit(TaskEventType.STATE_EVENT, this.state);
-    });
-
     proc.on('exit', (code, signal) => {
-      if (signal === 'SIGINT') {
+      if (signal === 'SIGTERM' || signal === 'SIGINT' || code === 130) {
         // 用户取消任务
         this.state = TaskState.INIT;
       } else {

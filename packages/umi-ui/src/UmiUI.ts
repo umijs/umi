@@ -254,7 +254,11 @@ export default class UmiUI {
         `target dir ${targetDir} exists and not empty`,
       );
       // 2
-      key = this.config.addProject(targetDir, name);
+      this.config.addProject({
+        path: targetDir,
+        name,
+        npmClient,
+      });
 
       // get create key
       onSuccess({
@@ -413,7 +417,10 @@ export default class UmiUI {
             `Add project failed, since path ${payload.path} don't exists.`,
           );
           log('info', `add project ${payload.path} with name ${payload.name}`);
-          this.config.addProject(payload.path, payload.name);
+          this.config.addProject({
+            path: payloat.path,
+            name: payload.name,
+          });
           success();
         } catch (e) {
           console.error(chalk.red(`Error: Add project FAILED`));
@@ -523,12 +530,14 @@ export default class UmiUI {
         success();
         break;
       case '@@actions/installDependencies':
+        this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         this.installDeps(payload.npmClient, payload.projectPath, {
           onProgress: progress,
           onSuccess: success,
         });
         break;
       case '@@actions/reInstallDependencies':
+        this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         rimraf.sync(join(payload.projectPath, 'node_modules'));
         this.installDeps(payload.npmClient, payload.projectPath, {
           onProgress: progress,

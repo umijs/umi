@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IUi } from 'umi-types';
 import { Icon } from 'antd';
 import cls from 'classnames';
+import { formatMessage } from 'umi-plugin-react/locale';
+import history from '@tmp/history';
 import styles from './index.less';
 
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const { sections, disableRightOverflow = false, disableLeftOverflow = false, className } = props;
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const keys = sections.map(({ key }) => key);
+  let activeIndex = 0;
+  if (history.location.query.active) {
+    const index = keys.indexOf(history.location.query.active);
+    activeIndex = index === -1 ? 0 : index;
+  }
+
+  const [currentIndex, setCurrentIndex] = useState(activeIndex);
+
+  useEffect(
+    () => {
+      setCurrentIndex(activeIndex);
+    },
+    [activeIndex],
+  );
 
   const Component = sections[currentIndex].component;
 
-  function toggleSectionHandler(index) {
-    setCurrentIndex(index);
+  function toggleSectionHandler(key) {
+    history.replace(`${history.location.pathname}?active=${key}`);
   }
 
   const leftCls = cls(styles.left, {
@@ -35,15 +52,23 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
             <div
               className={triggerCls}
               key={s.title}
-              onClick={toggleSectionHandler.bind(this, index)}
+              onClick={toggleSectionHandler.bind(this, keys[index])}
             >
               <div className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
                 {React.isValidElement(s.icon) && s.icon}
               </div>
               <div className={styles.title_desc}>
-                <div className={styles.title}>{s.title}</div>
-                <div className={styles.description}>{s.description}</div>
+                <div className={styles.title}>
+                  {formatMessage({
+                    id: s.title,
+                  })}
+                </div>
+                <div className={styles.description}>
+                  {formatMessage({
+                    id: s.description,
+                  })}
+                </div>
               </div>
             </div>
           );

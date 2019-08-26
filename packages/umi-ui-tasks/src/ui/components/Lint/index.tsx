@@ -17,6 +17,7 @@ const { SizeMe } = withSize;
 const taskType = TaskType.LINT;
 
 const LintComponent: React.FC<IProps> = ({ api }) => {
+  const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +65,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行代码风格检查失败',
+        title: intl('org.umi.ui.tasks.lint.execError'),
         message: errMsg,
       });
     }
@@ -74,7 +75,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消代码风格检查失败',
+        title: intl('org.umi.ui.tasks.lint.cancelError'),
         message: errMsg,
       });
     }
@@ -83,7 +84,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>代码风格检查</h1>
+      <h1 className={styles.title}>{intl('org.umi.ui.tasks.lint')}</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -91,7 +92,9 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
           <Row>
             <Col span={8} className={styles.buttonGroup}>
               <Button type="primary" onClick={isTaskRunning ? cancelLint : lint} loading={loading}>
-                {isTaskRunning ? '停止' : '执行'}
+                {isTaskRunning
+                  ? intl('org.umi.ui.tasks.lint.cancel')
+                  : intl('org.umi.ui.tasks.lint.start')}
               </Button>
             </Col>
             {/* <Col span={4} offset={12} className={styles.formatGroup}>
@@ -104,6 +107,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
             <SizeMe monitorWidth monitorHeight>
               {({ size }) => (
                 <Terminal
+                  api={api}
                   size={size}
                   terminal={getTerminalIns(taskType)}
                   log={taskDetail.log}

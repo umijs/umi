@@ -3,15 +3,18 @@ import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
 import { useTerminal, usePrevious } from '../../hooks';
 import styles from './index.module.less';
+import { IUiApi } from 'umi-types';
 
 export interface IProps {
+  api: IUiApi;
   terminal: Terminal;
   log?: string;
   onClear?: any;
   size?: any;
 }
 
-const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {} }) => {
+const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}, api }) => {
+  const { intl } = api;
   const domContainer = useRef();
   const [, setInit] = useState(false);
   useEffect(() => {
@@ -34,7 +37,6 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
       if (prevSize) {
         if (prevSize.width !== size.width || prevSize.height !== size.height) {
           terminal.fit();
-          console.log(terminal.fit);
         }
       }
     },
@@ -54,7 +56,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
     <div className={styles.wrapper}>
       <Row className={styles.titleWrapper}>
         <Col span={8} className={styles.formmatGroup}>
-          输出
+          {intl('org.umi.ui.tasks.log.title')}
         </Col>
         <Col span={4} offset={12} className={styles.actionGroup}>
           <Icon onClick={clear} type="delete" />

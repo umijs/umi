@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { spawn, SpawnOptions } from 'child_process';
+import { spawn, SpawnOptions, execSync } from 'child_process';
+import { NpmClient } from '../core/enums';
 
 export const error = (msg: string, name = 'TaskError') => {
   const err = new Error(msg);
@@ -62,6 +63,9 @@ export function formatLog(log: string): string {
 export function formatEnv(env: object): object {
   const res = {} as any;
   Object.keys(env).forEach(key => {
+    if (env[key] === null) {
+      return;
+    }
     if (typeof env[key] === 'boolean') {
       res[key] = env[key] ? '1' : 'none';
     } else {
@@ -69,4 +73,33 @@ export function formatEnv(env: object): object {
     }
   });
   return res;
+}
+
+export function getNpmClient(): NpmClient {
+  try {
+    execSync('tnpm --version', { stdio: 'ignore' });
+    return NpmClient.tnpm;
+  } catch (e) {}
+  try {
+    execSync('cnpm --version', { stdio: 'ignore' });
+    return NpmClient.cnpm;
+  } catch (e) {}
+  try {
+    execSync('npm --version', { stdio: 'ignore' });
+    return NpmClient.npm;
+  } catch (e) {}
+  try {
+    execSync('ayarn --version', { stdio: 'ignore' });
+    return NpmClient.ayayn;
+  } catch (e) {}
+  try {
+    execSync('yarn --version', { stdio: 'ignore' });
+    return NpmClient.yarn;
+  } catch (e) {}
+  try {
+    execSync('pnpm --version', { stdio: 'ignore' });
+    return NpmClient.pnpm;
+  } catch (e) {}
+
+  return NpmClient.npm;
 }
