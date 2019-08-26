@@ -28,7 +28,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test
+      - script: npm run test -- --forceExit --maxWorkers=1 --runInBand
         env:
           PROGRESS: none
         displayName: test
@@ -51,7 +51,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test
+      - script: npm run test -- --forceExit --maxWorkers=1 --runInBand
         displayName: test
 
   - job: MacOS_test
@@ -72,5 +72,5 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test
+      - script: npm run test -- --forceExit --maxWorkers=1 --runInBand
         displayName: test

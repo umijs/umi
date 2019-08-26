@@ -10,6 +10,9 @@ before_script:
   - npm run build
   - npm run ui:build
 
+script:
+  - npm run test -- --forceExit --maxWorkers=1 --runInBand
+
 after_success:
   - npm run coveralls
 
