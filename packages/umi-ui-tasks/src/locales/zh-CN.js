@@ -1,0 +1,55 @@
+export default {
+  'org.umi.ui.tasks.title': '任务管理',
+  'org.umi.ui.tasks.dev': '本地开发',
+  'org.umi.ui.tasks.build': '构建',
+  'org.umi.ui.tasks.test': '代码风格检查',
+  'org.umi.ui.tasks.lint': '测试',
+  'org.umi.ui.tasks.install': '重装依赖',
+  'org.umi.ui.tasks.dev.desc': '启动本地服务器',
+  'org.umi.ui.tasks.build.desc': '项目构建',
+  'org.umi.ui.tasks.lint.desc': '代码风格校验',
+  'org.umi.ui.tasks.test.desc': '项目测试',
+  'org.umi.ui.tasks.install.desc': '重装项目依赖',
+
+  // dev
+  'org.umi.ui.tasks.dev.startError': '启动项目失败',
+  'org.umi.ui.tasks.dev.cancelError': '取消启动失败',
+  'org.umi.ui.tasks.dev.start': '启动',
+  'org.umi.ui.tasks.dev.cancel': '停止',
+  'org.umi.ui.tasks.dev.envs': '环境变量',
+  'org.umi.ui.tasks.dev.envs.port': '端口号',
+  'org.umi.ui.tasks.dev.envs.babelPolyfill': '@babel/polyfill',
+  'org.umi.ui.tasks.dev.envs.hmr': 'HMR',
+  'org.umi.ui.tasks.dev.envs.babelCache': 'BABEL_CACHE',
+  'org.umi.ui.tasks.dev.envs.mock': 'MOCK',
+  'org.umi.ui.tasks.dev.envs.BROWSER': '自动打开浏览器',
+  'org.umi.ui.tasks.dev.envs.clear': '日志清屏',
+  'org.umi.ui.tasks.dev.envs.tsCheck': 'TS 类型检查',
+  // build
+  'org.umi.ui.tasks.build.buildError': '执行构建失败',
+  'org.umi.ui.tasks.build.cancelError': '取消构建失败',
+  'org.umi.ui.tasks.build.start': '构建',
+  'org.umi.ui.tasks.build.cancel': '停止',
+  'org.umi.ui.tasks.build.envs': '环境变量',
+  'org.umi.ui.tasks.build.envs.compress': '压缩',
+  'org.umi.ui.tasks.build.envs.cssCompress': 'CSS 压缩',
+  'org.umi.ui.tasks.build.envs.html': '生成 HTML',
+  // test
+  'org.umi.ui.tasks.test.testError': '执行测试失败',
+  'org.umi.ui.tasks.test.cancelError': '取消测试失败',
+  'org.umi.ui.tasks.test.start': '执行',
+  'org.umi.ui.tasks.test.cancel': '停止',
+  // lint
+  'org.umi.ui.tasks.lint.execError': '执行代码规范检查失败',
+  'org.umi.ui.tasks.lint.cancelError': '取消代码检查失败',
+  'org.umi.ui.tasks.lint.start': '执行',
+  'org.umi.ui.tasks.lint.cancel': '停止',
+  // install
+  'org.umi.ui.tasks.install.execError': '安装依赖失败',
+  'org.umi.ui.tasks.install.cancelError': '取消安装依赖失败',
+  'org.umi.ui.tasks.install.start': '安装',
+  'org.umi.ui.tasks.install.cancel': '停止',
+
+  // log
+  'org.umi.ui.tasks.log.title': '输出',
+};

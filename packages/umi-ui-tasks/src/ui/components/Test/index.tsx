@@ -17,6 +17,7 @@ const { SizeMe } = withSize;
 const taskType = TaskType.TEST;
 
 const TestComponent: React.FC<IProps> = ({ api }) => {
+  const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +65,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行测试失败',
+        title: intl('org.umi.ui.tasks.test.testError'),
         message: errMsg,
       });
     }
@@ -74,7 +75,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消测试失败',
+        title: intl('org.umi.ui.tasks.test.cancelError'),
         message: errMsg,
       });
       return;
@@ -84,7 +85,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>测试</h1>
+      <h1 className={styles.title}>{intl('org.umi.ui.tasks.test')}</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -92,7 +93,9 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
           <Row>
             <Col span={8} className={styles.buttonGroup}>
               <Button type="primary" onClick={isTaskRunning ? cancelTest : test} loading={loading}>
-                {isTaskRunning ? '停止' : '测试'}
+                {isTaskRunning
+                  ? intl('org.umi.ui.tasks.test.cancel')
+                  : intl('org.umi.ui.tasks.test.start')}
               </Button>
             </Col>
           </Row>
@@ -100,6 +103,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
             <SizeMe monitorWidth monitorHeight>
               {({ size }) => (
                 <Terminal
+                  api={api}
                   size={size}
                   terminal={getTerminalIns(taskType)}
                   log={taskDetail.log}

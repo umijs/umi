@@ -5,7 +5,6 @@ export async function executeCommand(npmClient, args, targetDir, opts = {}) {
     // args.push('--registry=https://registry.npm.taobao.org');
     const child = execa(npmClient, args, {
       cwd: targetDir,
-      stdio: ['inherit', 'pipe', 'pipe'],
     });
     child.stdout.on('data', buffer => {
       process.stdout.write(buffer);
@@ -26,7 +25,13 @@ export async function executeCommand(npmClient, args, targetDir, opts = {}) {
 }
 
 export async function installDeps(npmClient, targetDir, opts) {
-  const yarnClients = ['yarn', 'ayarn', 'tyarn'];
-  const args = yarnClients.includes(npmClient) ? [] : ['install'];
+  let args = [];
+
+  if (['yarn', 'ayarn', 'pnpm'].includes(npmClient)) {
+    args = [];
+  } else if (['tnpm', 'npm', 'cnpm'].includes(npmClient)) {
+    args = ['install', '-d'];
+  }
+
   await executeCommand(npmClient, args, targetDir, opts);
 }

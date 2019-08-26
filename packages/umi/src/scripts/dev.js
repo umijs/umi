@@ -8,10 +8,15 @@ child.on('message', data => {
 });
 child.on('exit', code => {
   if (code === 1) {
-    process.exit(code);
+    process.exit(1);
   }
 });
 
 process.on('SIGINT', () => {
   child.kill('SIGINT');
+});
+
+process.on('SIGTERM', () => {
+  child.kill('SIGTERM');
+  process.exit(130);
 });

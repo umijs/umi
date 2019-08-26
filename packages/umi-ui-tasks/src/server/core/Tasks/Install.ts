@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { BaseTask, ITaskOptions } from './Base';
-import { TaskType, TaskEventType } from '../enums';
-import { runCommand } from '../../util';
+import { TaskType, TaskEventType, NpmClient, TaskState } from '../enums';
+import { runCommand, getNpmClient } from '../../util';
 import rimraf from 'rimraf';
 
 export class InstallTask extends BaseTask {
@@ -10,12 +10,11 @@ export class InstallTask extends BaseTask {
     this.type = TaskType.INSTALL;
   }
 
-  public async run() {
+  public async run(env: any = {}) {
     await super.run();
-
     // 执行删除的日志需要自己处理
     try {
-      this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules...');
+      this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules...\n');
       await this.cleanNodeModules();
       this.emit(TaskEventType.STD_OUT_DATA, 'Cleaning node_modules success.\n');
     } catch (e) {
@@ -23,11 +22,29 @@ export class InstallTask extends BaseTask {
       this.emit(TaskEventType.STD_OUT_DATA, e.message + '\n');
     }
 
-    this.proc = runCommand(this.getScript(), {
+    const script = this.getScript(env);
+    this.emit(TaskEventType.STD_OUT_DATA, `Executing ${script}... \n`);
+    this.proc = runCommand(script, {
       cwd: this.cwd,
     });
 
     this.handleChildProcess(this.proc);
+  }
+
+  public async cancel() {
+    const { proc } = this;
+    if (!proc) {
+      return;
+    }
+
+    // 子任务执行结束
+    if ([TaskState.FAIL, TaskState.SUCCESS].indexOf(this.state) > -1) {
+      return;
+    }
+
+    this.state = TaskState.INIT;
+    // 杀掉子进程
+    proc.kill('SIGINT');
   }
 
   public async cleanNodeModules() {
@@ -43,8 +60,36 @@ export class InstallTask extends BaseTask {
     });
   }
 
-  // TODO: 根据不同的 npm client 选择不同的命令
-  private getScript(): string {
-    return 'tnpm install -d';
+  private getScript({ NPM_CLIENT }: any = {}): string {
+    const client = this.getNpmClient(NPM_CLIENT);
+    let script = '';
+    switch (client) {
+      case NpmClient.tnpm:
+        script = 'tnpm install -d';
+        break;
+      case NpmClient.cnpm:
+        script = 'cnpm install -d';
+        break;
+      case NpmClient.npm:
+        script = 'npm install -d';
+        break;
+      case NpmClient.ayarn:
+        script = 'ayarn';
+        break;
+      case NpmClient.yarn:
+        script = 'yarn';
+        break;
+      case NpmClient.pnpm:
+        script = 'pnpm';
+        break;
+    }
+    return script;
+  }
+
+  private getNpmClient(client?: string): NpmClient {
+    if (client) {
+      return NpmClient[client];
+    }
+    return getNpmClient();
   }
 }

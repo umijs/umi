@@ -17,6 +17,7 @@ const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
 const DevComponent: React.FC<IProps> = ({ api }) => {
+  const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
@@ -76,7 +77,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: '执行启动失败',
+        title: intl('org.umi.ui.tasks.dev.startError'),
         message: errMsg,
       });
     }
@@ -86,7 +87,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: '取消启动失败',
+        title: intl('org.umi.ui.tasks.dev.cancelError'),
         message: errMsg,
       });
     }
@@ -113,7 +114,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>本地启动</h1>
+      <h1 className={styles.title}>{intl('org.umi.ui.tasks.dev')}</h1>
       {loading ? (
         <Spin />
       ) : (
@@ -121,51 +122,65 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
           <Row>
             <Col span={8} className={styles.buttonGroup}>
               <Button type="primary" onClick={isTaskRunning ? cancelDev : dev} loading={loading}>
-                {isTaskRunning ? '停止' : '启动'}
+                {isTaskRunning
+                  ? intl('org.umi.ui.tasks.dev.cancel')
+                  : intl('org.umi.ui.tasks.dev.start')}
               </Button>
-              <Button onClick={openModal}>变量管理</Button>
+              <Button onClick={openModal}>{intl('org.umi.ui.tasks.dev.envs')}</Button>
               <Modal
                 visible={modalVisible}
-                title="构建环境变量"
+                title={intl('org.umi.ui.tasks.dev.envs')}
                 onOk={handleOk}
                 onCancel={handleCancel}
               >
                 <Form name="devEnv" form={form} initialValues={env} layout="vertical">
-                  <Form.Item label="端口号" name="PORT">
+                  <Form.Item label={intl('org.umi.ui.tasks.dev.envs.port')} name="PORT">
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    label="是否引入 @babel/polyfill"
+                    label={intl('org.umi.ui.tasks.dev.envs.babelPolyfill')}
                     name="BABEL_POLYFILL"
                     valuePropName="checked"
                   >
                     <Switch />
                   </Form.Item>
-                  <Form.Item label="是否开启热更新" name="HMR" valuePropName="checked">
+                  <Form.Item
+                    label={intl('org.umi.ui.tasks.dev.envs.hmr')}
+                    name="HMR"
+                    valuePropName="checked"
+                  >
                     <Switch />
                   </Form.Item>
                   <Form.Item
-                    label="是否开启 babel cache"
+                    label={intl('org.umi.ui.tasks.dev.envs.babelCache')}
                     name="BABEL_CACHE"
                     valuePropName="checked"
                   >
                     <Switch />
                   </Form.Item>
-                  <Form.Item label="是否开启 mock" name="MOCK" valuePropName="checked">
+                  <Form.Item
+                    label={intl('org.umi.ui.tasks.dev.envs.mock')}
+                    name="MOCK"
+                    valuePropName="checked"
+                  >
                     <Switch />
                   </Form.Item>
                   <Form.Item
-                    label="是否启动后自动打开浏览器"
+                    label={intl('org.umi.ui.tasks.dev.envs.BROWSER')}
                     name="BROWSER"
                     valuePropName="checked"
                   >
                     <Switch />
                   </Form.Item>
-                  <Form.Item label="是否清屏" name="CLEAR_CONSOLE" valuePropName="checked">
+                  <Form.Item
+                    label={intl('org.umi.ui.tasks.dev.envs.clear')}
+                    name="CLEAR_CONSOLE"
+                    valuePropName="checked"
+                  >
                     <Switch />
                   </Form.Item>
                   <Form.Item
-                    label="是否开启 TS 检查"
+                    label={intl('org.umi.ui.tasks.dev.envs.tsCheck')}
                     name="FORK_TS_CHECKER"
                     valuePropName="checked"
                   >
@@ -184,6 +199,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
             <SizeMe monitorWidth monitorHeight>
               {({ size }) => (
                 <Terminal
+                  api={api}
                   size={size}
                   terminal={getTerminalIns(taskType)}
                   log={taskDetail.log}
