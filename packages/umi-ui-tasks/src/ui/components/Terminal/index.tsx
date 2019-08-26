@@ -11,7 +11,7 @@ export interface IProps {
   size?: any;
 }
 
-const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size }) => {
+const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {} }) => {
   const domContainer = useRef();
   const [, setInit] = useState(false);
   useEffect(() => {
@@ -29,14 +29,17 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size }) =
 
   // mount or updated
   const prevSize = usePrevious(size);
-  useEffect(() => {
-    if (prevSize) {
-      if (prevSize.width !== size.width || prevSize.height !== size.height) {
-        terminal.fit();
-        console.log(terminal.fit);
+  useEffect(
+    () => {
+      if (prevSize) {
+        if (prevSize.width !== size.width || prevSize.height !== size.height) {
+          terminal.fit();
+          console.log(terminal.fit);
+        }
       }
-    }
-  });
+    },
+    [size.width, size.height],
+  );
 
   const clear = () => {
     terminal.clear();

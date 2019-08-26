@@ -5,6 +5,7 @@ import { fit } from 'xterm/lib/addons/fit/fit';
 import cls from 'classnames';
 import React, { useRef, useEffect, useState } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
+import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
 
 const { Terminal } = window;
@@ -22,10 +23,13 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
   const { className, defaultValue, getIns, terminalConfig = {} } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
+  const size = useWindowSize();
+
   useEffect(() => {
     setXterm(
       new (Terminal as typeof XTerminal)({
         allowTransparency: true,
+        fontSize: 14,
         theme: {
           background: '#15171C',
           foreground: '#ffffff73',
@@ -58,6 +62,15 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       }
     },
     [domContainer, xterm],
+  );
+
+  useEffect(
+    () => {
+      if (xterm) {
+        fit(xterm);
+      }
+    },
+    [size.width, size.height],
   );
 
   const clear = () => {
