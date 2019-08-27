@@ -139,13 +139,14 @@ export default withRouter(props => {
                         {activePanel.actions.map((panelAction, j) => {
                           const { title, action, onClick, ...btnProps } = panelAction;
                           const handleClick = async () => {
+                            // TODO: try catch handler
                             await callRemote(action);
                             if (onClick) {
                               onClick();
                             }
                           };
                           return (
-                            <Button key={j} onClick={handleClick} {...btnProps}>
+                            <Button key={j.toString()} onClick={handleClick} {...btnProps}>
                               {formatMessage({ id: title })}
                             </Button>
                           );
