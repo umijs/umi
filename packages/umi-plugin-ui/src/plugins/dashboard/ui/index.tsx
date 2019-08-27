@@ -1,12 +1,13 @@
 import React from 'react';
 import cls from 'classnames';
-import { Card, Icon } from 'antd';
+import { Close, Smile } from '@ant-design/icons';
+import { Card } from 'antd';
 import styles from './ui.module.less';
 
 export default () => (
   <div className={styles.container}>
     <div className={cls(styles.card, styles.welcome)}>
-      <Card size="small" extra={<Icon type="close" />}>
+      <Card size="small" extra={<Close />}>
         <h2>Hi, XXX</h2>
         <p>欢迎来到 Hello World 项目</p>
         <div>
@@ -41,7 +42,7 @@ export default () => (
       <Card>
         <div className={styles.future}>
           <div>
-            <Icon type="smile" />
+            <Smile />
           </div>
           <p>敬请期待</p>
         </div>

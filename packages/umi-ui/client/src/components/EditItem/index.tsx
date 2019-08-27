@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Icon, Tooltip, Input } from 'antd';
+import { Icon } from '@ant-design/compatible';
+import { Tooltip, Input } from 'antd';
 import cls from 'classnames';
 
 import styles from './index.less';

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Steps, Icon } from 'antd';
+import { Loading } from '@ant-design/icons';
+import { Steps } from 'antd';
 import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
@@ -64,7 +65,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
               <Step
                 key={i.toString()}
                 title={step}
-                icon={progress.stepStatus === 1 && progress.step === i && <Icon type="loading" />}
+                icon={progress.stepStatus === 1 && progress.step === i && <Loading />}
               />
             );
           })}

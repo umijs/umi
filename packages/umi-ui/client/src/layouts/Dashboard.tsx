@@ -1,4 +1,5 @@
-import { Icon, Menu, Layout, Dropdown, Button } from 'antd';
+import { Icon } from '@ant-design/compatible';
+import { Menu, Layout, Dropdown, Button } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
 import TweenOne from 'rc-tween-one';
 import React, { useState, useEffect, useContext } from 'react';

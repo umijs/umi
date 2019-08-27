@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Icon, Popconfirm } from 'antd';
+import { FolderOpen, File, DeleteFilled } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
 import './ui.css';
 import model from './model';
 
@@ -28,26 +29,28 @@ const Routes = connect(state => ({
           return (
             <li key={route.key || i} className="client-item">
               <div>
-                <Icon className="client-type" type={route.routes ? 'folder-open' : 'file'} />
+                {route.routes ? (
+                  <FolderOpen className="client-type" />
+                ) : (
+                  <File className="client-type" />
+                )}
                 <span className="client-info">
-                  {keys.map((key, i) => {
-                    return (
-                      <span key={key}>
-                        <strong>{key}: </strong>
-                        <code>{getValue(key)}</code>
-                        {i === keys.length - 1 ? '' : <strong>, </strong>}
-                      </span>
-                    );
-                  })}
+                  {keys.map((key, i) => (
+                    <span key={key}>
+                      <strong>{key}: </strong>
+                      <code>{getValue(key)}</code>
+                      {i === keys.length - 1 ? '' : <strong>, </strong>}
+                    </span>
+                  ))}
                 </span>
-                {/*<Icon className="client-icon" type="edit" theme="filled" />*/}
+                {/*<Icon className="client-icon" type="edit" theme="filled" /> */}
                 <Popconfirm
                   title="Are you sure delete this component?"
                   onConfirm={(route => {
                     window.send('rm', ['page', route.component]);
                   }).bind(null, route)}
                 >
-                  <Icon className="client-icon" type="delete" theme="filled" />
+                  <DeleteFilled className="client-icon" />
                 </Popconfirm>
               </div>
               {route.routes ? renderRoutes(route.routes) : null}
@@ -64,7 +67,7 @@ const Routes = connect(state => ({
         <Button
           type="primary"
           onClick={() => {
-            const name = window.prompt(`What's your page name?`);
+            const name = window.prompt("What's your page name?");
             if (name) {
               window.send('generate', ['page', name]);
             }
@@ -76,7 +79,7 @@ const Routes = connect(state => ({
         <Button
           type="primary"
           onClick={() => {
-            const name = window.prompt(`What's your layout name?`);
+            const name = window.prompt("What's your layout name?");
             if (name) {
               window.send('generate', ['layout', name]);
             }
