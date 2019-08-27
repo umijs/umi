@@ -27,7 +27,10 @@ afterAll(() => {
 
 test('addProject', () => {
   expect(config.data).toEqual({ projectsByKey: {} });
-  config.addProject('/tmp/foo', 'bar');
+  config.addProject({
+    name: 'bar',
+    path: '/tmp/foo',
+  });
   expect(config.data).toEqual({
     projectsByKey: {
       '43def0': {
@@ -69,7 +72,9 @@ test('setCurrentProject', () => {
 });
 
 test('addProject without name', () => {
-  config.addProject('/tmp/bar');
+  config.addProject({
+    path: '/tmp/bar',
+  });
   expect(config.data).toEqual({
     projectsByKey: {
       '43def0': {
