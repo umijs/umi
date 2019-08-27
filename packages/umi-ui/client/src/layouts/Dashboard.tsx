@@ -1,10 +1,11 @@
-import { Icon, Menu, Layout, Dropdown } from 'antd';
+import { Icon, Menu, Layout, Dropdown, Button } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
 import TweenOne from 'rc-tween-one';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
+import { callRemote } from '@/socket';
 import { handleBack } from '@/utils';
 import Context from './Context';
 import UiLayout from './Layout';
@@ -131,6 +132,25 @@ export default withRouter(props => {
                 <Content className={styles.main}>
                   <div className={styles.header}>
                     <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
+                    {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
+                      <div className={styles['header-actions']}>
+                        {activePanel.actions.map((panelAction, j) => {
+                          const { title, action, onClick, ...btnProps } = panelAction;
+                          const handleClick = async () => {
+                            // TODO: try catch handler
+                            await callRemote(action);
+                            if (onClick) {
+                              onClick();
+                            }
+                          };
+                          return (
+                            <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                              {formatMessage({ id: title })}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                   <TweenOneGroup
                     enter={{ y: 15, type: 'from', opacity: 0 }}

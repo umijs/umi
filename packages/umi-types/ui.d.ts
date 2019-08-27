@@ -40,8 +40,16 @@ declare namespace IUI {
     twoToneColor?: string;
   }
 
+  interface IPanelAction {
+    title: string;
+    type?: 'default' | 'primary';
+    action?: IAction;
+    onClick?: () => void;
+  }
+
   interface IPanel extends IRoute {
     icon: IconType | string;
+    actions?: IPanelAction[];
   }
 
   interface IService {

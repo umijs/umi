@@ -39,6 +39,22 @@ export default api => {
     icon: 'home',
     path: '/blocks',
     component: Blocks,
+    // 顶部右侧按钮
+    actions: [
+      {
+        title: '打开配置文件',
+        // antd Button type
+        type: 'default',
+        // 点击后的 action
+        action: {
+          type: '@@actions/openConfigFile',
+          payload: {
+            projectPath: api.currentProject.path,
+          }
+        },
+        onClick: () => {},
+      },
+    ],
   });
   // 添加尾部的 tab，可添加类似 vscode 的 Output、Terminal、Problems 等功能
   api.addFooterTab();
