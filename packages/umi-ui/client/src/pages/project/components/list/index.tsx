@@ -25,7 +25,7 @@ import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/s
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
-import { getProjectStatus } from '@/utils';
+import { getProjectStatus, sortProjectList } from '@/utils';
 import { IProjectProps } from '../index';
 
 import styles from './index.less';
@@ -56,15 +56,20 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const projects = useMemo(
     () => {
-      return Object.keys(projectsByKey)
-        .map(key => {
-          return {
-            ...projectsByKey[key],
-            key,
-            created_at: get(projectsByKey, `${key}.created_at`, new Date('2002').getTime()),
-          };
-        })
-        .sort((a, b) => b.created_at - a.created_at);
+      const projectListMap = Object.keys(projectsByKey).map(key => {
+        const created_at = get(
+          projectsByKey,
+          `${key}.created_at`,
+          new Date('2002').getTime(),
+        ) as number;
+        return {
+          ...projectsByKey[key],
+          key,
+          active: key === currentProject,
+          created_at,
+        };
+      });
+      return sortProjectList(projectListMap);
     },
     [projectList],
   );
