@@ -3,7 +3,7 @@ import { IUiApi } from 'umi-types';
 import { Input, Form, Select, Switch, Button } from 'antd';
 import serialize from 'serialize-javascript';
 import BasicConfig from './components/BasicConfig';
-import InstallConfig from './components/InstallConfig';
+import UIConfig from './components/UIConfig';
 import PluginConfig from './components/PluginConfig';
 import Context from './Context';
 import styles from './index.module.less';
@@ -135,7 +135,7 @@ function getSections(api) {
         />
       ),
       description: 'UI 配置',
-      component: InstallConfig,
+      component: UIConfig,
     });
   }
 

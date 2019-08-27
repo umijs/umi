@@ -176,15 +176,6 @@ export default function(api: IApi) {
           });
         }
         break;
-      case 'org.umi.config.project':
-        success({
-          data: getUiConfig(),
-        });
-        break;
-      case 'org.umi.config.project.edit':
-        // TODO: 将这些信息存入文件
-        success({});
-        break;
       default:
         break;
     }

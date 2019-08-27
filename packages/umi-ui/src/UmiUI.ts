@@ -408,6 +408,11 @@ export default class UmiUI {
           data: this.config.data,
         });
         break;
+      case '@@project/detail':
+        success({
+          data: this.config.data.projectsByKey[payload.key],
+        });
+        break;
       case '@@project/add':
         // TODO: 检验是否 umi 项目，不是则抛错给客户端
         try {
@@ -458,6 +463,7 @@ export default class UmiUI {
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
         this.config.editProject(payload.key, {
           name: payload.name,
+          taobaoSpeedUp: payload.taobaoSpeedUp,
         });
         success();
         break;

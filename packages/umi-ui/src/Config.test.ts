@@ -28,6 +28,8 @@ afterAll(() => {
 test('addProject', () => {
   expect(config.data).toEqual({ projectsByKey: {} });
   config.addProject({
+    npmClient: 'npm',
+    taobaoSpeedUp: false,
     name: 'bar',
     path: '/tmp/foo',
   });
@@ -37,6 +39,8 @@ test('addProject', () => {
         path: '/tmp/foo',
         name: 'bar',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
     },
   });
@@ -52,6 +56,8 @@ test('editProject', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
     },
   });
@@ -65,6 +71,8 @@ test('setCurrentProject', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -81,11 +89,14 @@ test('addProject without name', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
       '9c7eb9': {
         path: '/tmp/bar',
         name: 'bar',
         created_at: 1557831718135,
+        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -100,6 +111,8 @@ test('deleteProject', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -117,6 +130,8 @@ test('set creating progress', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
         creatingProgress: {
           a: 1,
           b: 1,
@@ -135,6 +150,8 @@ test('set creating progress done', () => {
         path: '/tmp/foo',
         name: 'foo',
         created_at: 1557831718135,
+        npmClient: 'npm',
+        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
