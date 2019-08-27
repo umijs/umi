@@ -29,8 +29,6 @@ export default withRouter(props => {
   console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
-  console.log('activePanel', activePanel);
-
   useEffect(
     () => {
       const currPanel = getActivePanel(pathname);
