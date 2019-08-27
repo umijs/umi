@@ -175,7 +175,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       <Drawer
         title={
           <div className={styles['section-drawer-title']}>
-            <h1> </h1>
+            <h1>日志</h1>
             <div className={styles['section-drawer-title-action']}>
               <Popconfirm
                 title="是否清除日志？"

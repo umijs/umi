@@ -43,7 +43,13 @@ const Logs: React.SFC<LogProps> = props => {
 
   return (
     <div className={logsCls} style={style}>
-      <ul>{Array.isArray(logs) && logs.map((log, i) => <Log {...log} key={i} />)}</ul>
+      <ul>
+        {Array.isArray(logs) && logs.length > 0 ? (
+          logs.map((log, i) => <Log {...log} key={i} />)
+        ) : (
+          <li>日志为空</li>
+        )}
+      </ul>
     </div>
   );
 };

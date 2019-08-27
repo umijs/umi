@@ -34,17 +34,23 @@
             font-size: @font-size-base;
             line-height: 22px;
             margin-bottom: 24px;
-            font-weight: 500;
+            font-weight: bold;
+            margin-top: 2px;
           }
         }
         &-item {
           text-align: center;
           user-select: none;
+          svg {
+            color: @text-color;
+          }
           i {
             font-size: 20px;
           }
           p {
             font-size: 14px;
+            line-height: 22px;
+            margin-top: 6px;
           }
         }
       }
@@ -80,7 +86,8 @@
       &:hover {
         background-color: @card-hover-border;
       }
-      ul li {
+      ul > li {
+        padding: 0 16px;
         a {
           color: @text-color;
           i {

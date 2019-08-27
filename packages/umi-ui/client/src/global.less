@@ -49,8 +49,7 @@ body {
     transition: all @duration-fast @ease-base-out;
   }
   .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
-    color: @primary-color;
-    background-color: @select-dropdown-bg;
+    background-color: @select-dropdown-hover-bg;
   }
   .ant-select-dropdown-menu-item-active:hover:not(.ant-select-dropdown-menu-item-disabled) {
     background-color: @select-dropdown-active-bg;
@@ -59,13 +58,13 @@ body {
   .ant-btn {
     &:hover,
     &:focus {
-      color: @text-color;
+      color: @heading-color;
       background-color: @btn-default-hover-bg;
       border-color: @btn-default-hover-bg;
     }
     &:active,
     &.active {
-      color: @text-color;
+      color: @heading-color;
       background-color: @btn-default-active-bg;
       border-color: @btn-default-active-bg;
     }
