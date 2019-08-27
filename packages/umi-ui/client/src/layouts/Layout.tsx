@@ -1,7 +1,6 @@
 import React from 'react';
 import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
-import { Beforeunload } from 'react-beforeunload';
 import cls from 'classnames';
 import Context from './Context';
 import Footer from './Footer';
@@ -54,30 +53,24 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     window.g_uiContext = Context;
 
     return (
-      <Beforeunload
-        onBeforeunload={() => {
-          return process.env.NODE_ENV === 'production' && "You'll loose your data";
-        }}
-      >
-        <div className={layoutCls}>
-          <Context.Provider
-            value={{
-              locale,
-              theme,
-              formatMessage,
-              currentProject,
-              showLogPanel: this.showLogPanel,
-              hideLogPanel: this.hideLogPanel,
-              setTheme: this.setTheme,
-              setLocale,
-              FormattedMessage,
-            }}
-          >
-            {this.props.children}
-            <Footer type={type} />
-          </Context.Provider>
-        </div>
-      </Beforeunload>
+      <div className={layoutCls}>
+        <Context.Provider
+          value={{
+            locale,
+            theme,
+            formatMessage,
+            currentProject,
+            showLogPanel: this.showLogPanel,
+            hideLogPanel: this.hideLogPanel,
+            setTheme: this.setTheme,
+            setLocale,
+            FormattedMessage,
+          }}
+        >
+          {this.props.children}
+          <Footer type={type} />
+        </Context.Provider>
+      </div>
     );
   }
 }
