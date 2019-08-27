@@ -417,7 +417,7 @@ export default class UmiUI {
           );
           log('info', `Add project ${payload.path} with name ${payload.name}`);
           this.config.addProject({
-            path: payloat.path,
+            path: payload.path,
             name: payload.name,
           });
           success();
