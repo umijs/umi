@@ -4,7 +4,7 @@ import { formatEnv } from './util';
 
 const taskManger: TaskManager = new TaskManager();
 export default (api: IApi) => {
-  api.onUISocket(({ action: { type, payload }, send }) => {
+  api.onUISocket(({ action: { type, payload }, send, log }) => {
     switch (type) {
       case 'plugin/init':
         (async () => {
@@ -38,6 +38,7 @@ export default (api: IApi) => {
         break;
       case 'tasks/run':
         (async () => {
+          log('info', `Run task: ${payload.type} `);
           const task = taskManger.getTask(payload.type);
           await task.run(formatEnv(payload.env));
           send({
@@ -50,6 +51,7 @@ export default (api: IApi) => {
         break;
       case 'tasks/cancel':
         (async () => {
+          log('info', `Cancel task: ${payload.type} `);
           const task = taskManger.getTask(payload.type);
           await task.cancel();
           send({
