@@ -1,4 +1,3 @@
-import { router } from 'umi';
 import { message } from 'antd';
 import { IUi } from 'umi-types';
 import { callRemote, listenRemote } from '@/socket';
@@ -17,13 +16,11 @@ export async function importProject(payload) {
 
 export async function setCurrentProject(payload: { key: string }) {
   try {
+    // for active immediately, set active asynchronous
     await callRemote({
       type: '@@project/setCurrentProject',
       payload,
     });
-    router.push('/dashboard');
-    document.getElementById('root').innerHTML = '';
-    window.location.reload();
   } catch (e) {
     message.error(e.message);
   }

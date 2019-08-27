@@ -22,10 +22,13 @@ export const findProjectPath = (data: IProjectList) => {
 };
 
 export const handleBack = (reload = true, url = '/project/select') => {
-  history.replace(url);
-  if (reload) {
-    window.location.reload();
-  }
+  return new Promise(resolve => {
+    history.replace(url);
+    if (reload) {
+      window.location.reload();
+    }
+    resolve();
+  });
 };
 
 interface IProjectListItem extends IProjectItem {

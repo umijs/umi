@@ -43,6 +43,7 @@ export default withRouter(props => {
 
   const changeProject = async ({ key }) => {
     if (key) {
+      await handleBack(true, '/dashboard');
       await setCurrentProject({
         key,
       });

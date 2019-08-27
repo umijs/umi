@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import TweenOne from 'rc-tween-one';
 import { formatMessage } from 'umi-plugin-react/locale';
 import {
@@ -23,9 +24,10 @@ import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
+import Loading from '@/pages/loading';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
-import { getProjectStatus, sortProjectList } from '@/utils';
+import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
 import { IProjectProps } from '../index';
 
 import styles from './index.less';
@@ -76,6 +78,9 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const handleOnAction = async (action: IAction, payload: { key?: string; [key: string]: any }) => {
     if (action === 'open') {
+      await handleBack(true, '/dashboard');
+      // for flash dashboard
+      ReactDOM.render(React.createElement(<Loading />, {}), document.getElementById('root'));
       await setCurrentProject(payload as any);
     }
     if (action === 'delete') {
