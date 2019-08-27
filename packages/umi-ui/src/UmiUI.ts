@@ -200,8 +200,9 @@ export default class UmiUI {
     };
   }
 
-  async installDeps(npmClient, projectPath, { onProgress, onSuccess }) {
+  async installDeps(npmClient, projectPath, { onProgress, onSuccess, taobaoSpeedUp }) {
     await installDeps(npmClient, projectPath, {
+      taobaoSpeedUp,
       onData(data) {
         onProgress({
           install: data,
@@ -212,7 +213,7 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
-    const { type, npmClient, baseDir, name, args } = opts;
+    const { type, npmClient, baseDir, name, args, taobaoSpeedUp } = opts;
     let key;
 
     const setProgress = args => {
@@ -254,6 +255,7 @@ export default class UmiUI {
         path: targetDir,
         name,
         npmClient,
+        taobaoSpeedUp,
       });
 
       // get create key
@@ -317,7 +319,9 @@ export default class UmiUI {
         step: 3,
         stepStatus: 1,
       });
-      await installDeps(npmClient, targetDir, {});
+      await installDeps(npmClient, targetDir, {
+        taobaoSpeedUp: this.hasTaobaoSpeedUp(key),
+      });
       setProgress({
         stepStatus: 2,
       });
@@ -527,6 +531,7 @@ export default class UmiUI {
       case '@@actions/installDependencies':
         this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         this.installDeps(payload.npmClient, payload.projectPath, {
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(payload.key),
           onProgress: progress,
           onSuccess: success,
         });
@@ -535,6 +540,7 @@ export default class UmiUI {
         this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         rimraf.sync(join(payload.projectPath, 'node_modules'));
         this.installDeps(payload.npmClient, payload.projectPath, {
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(payload.key),
           onProgress: progress,
           onSuccess: success,
         });
@@ -772,5 +778,20 @@ export default class UmiUI {
       return key;
     }
     return project.name;
+  }
+
+  /**
+   * 是否使用淘宝加速
+   * @param key project key
+   */
+  hasTaobaoSpeedUp(key: string): boolean {
+    if (!key) {
+      return false;
+    }
+    const project = this.config.data.projectsByKey[key];
+    if (!project) {
+      return false;
+    }
+    return project.taobaoSpeedUp;
   }
 }

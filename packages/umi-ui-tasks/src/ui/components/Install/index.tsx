@@ -58,6 +58,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   async function install() {
     const { triggerState, errMsg } = await exec(taskType, {
       NPM_CLIENT: api.currentProject.npmClient,
+      TAOBAO_SPEED_UP: api.currentProject.taobaoSpeedUp,
     });
     if (triggerState === TriggerState.FAIL) {
       api.notify({

@@ -3,6 +3,7 @@ import { IUiApi } from 'umi-types';
 import { Input, Form, Select, Switch, Button } from 'antd';
 import serialize from 'serialize-javascript';
 import BasicConfig from './components/BasicConfig';
+import InstallConfig from './components/InstallConfig';
 import PluginConfig from './components/PluginConfig';
 import Context from './Context';
 import styles from './index.module.less';
@@ -95,6 +96,49 @@ interface IConfigManager {
   api: IUiApi;
 }
 
+function getSections(api) {
+  const sections = [
+    {
+      key: 'project',
+      title: '项目配置',
+      icon: (
+        <img
+          src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
+          width={32}
+          height={32}
+        />
+      ),
+      description: '这是一段项目配置的描述。',
+      component: BasicConfig,
+    },
+    {
+      key: 'react',
+      title: 'umi-plugin-react 配置',
+      icon: 'pause-circle',
+      description: 'BCD',
+      component: PluginConfig,
+    },
+  ];
+  const { npmClient } = api.currentProject;
+  if (['npm', 'yarn', 'pnpm'].indexOf(npmClient) > -1) {
+    sections.push({
+      key: 'install',
+      title: 'UI 配置',
+      icon: (
+        <img
+          src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
+          width={32}
+          height={32}
+        />
+      ),
+      description: 'UI 配置',
+      component: InstallConfig,
+    });
+  }
+
+  return sections;
+}
+
 const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
   const { TwoColumnPanel, getContext } = api;
   const { theme } = useContext(getContext());
@@ -108,26 +152,7 @@ const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
       <TwoColumnPanel
         disableRightOverflow
         className={styles.configuration}
-        sections={[
-          {
-            title: '项目配置',
-            icon: (
-              <img
-                src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
-                width={32}
-                height={32}
-              />
-            ),
-            description: '这是一段项目配置的描述。',
-            component: BasicConfig,
-          },
-          {
-            title: 'umi-plugin-react 配置',
-            icon: 'pause-circle',
-            description: 'BCD',
-            component: PluginConfig,
-          },
-        ]}
+        sections={getSections(api)}
       />
     </Context.Provider>
   );
