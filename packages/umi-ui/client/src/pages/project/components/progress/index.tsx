@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import { setCurrentProject } from '@/services/project';
+import { handleBack } from '@/utils';
 import styles from './index.less';
 import { IProjectProps } from '../index';
 
@@ -24,6 +25,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
     () => {
       if (progress.success && key) {
         (async () => {
+          await handleBack(true, '/dashboard');
           await setCurrentProject({ key });
         })();
       }
