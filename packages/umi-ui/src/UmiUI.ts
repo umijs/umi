@@ -18,13 +18,7 @@ import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
-import {
-  BackToHomeAction,
-  InstallDependencyAction,
-  OpenConfigFileAction,
-  OpenProjectAction,
-  ReInstallDependencyAction,
-} from './Actions';
+import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
 import { isDepLost, isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
@@ -406,7 +400,6 @@ export default class UmiUI {
         success(this.getExtraAssets());
         break;
       case '@@project/list':
-        log('info', 'list project');
         success({
           data: this.config.data,
         });
@@ -418,7 +411,7 @@ export default class UmiUI {
             existsSync(payload.path),
             `Add project failed, since path ${payload.path} don't exists.`,
           );
-          log('info', `add project ${payload.path} with name ${payload.name}`);
+          log('info', `Add project ${payload.path} with name ${payload.name}`);
           this.config.addProject({
             path: payloat.path,
             name: payload.name,
@@ -433,13 +426,15 @@ export default class UmiUI {
         }
         break;
       case '@@project/delete':
-        log('info', `delete project`);
-        this.config.deleteProject(payload.key);
-        success();
+        if (this.config.data.projectsByKey[payload.key]) {
+          log('info', `Delete project: ${this.getProjectName(payload.key)}`);
+          this.config.deleteProject(payload.key);
+          success();
+        }
         break;
       case '@@project/open':
-        log('info', `open project`);
         try {
+          log('info', `Open project: ${this.getProjectName(payload.key)}`);
           this.activeProject(payload.key, null, {
             lang,
           });
@@ -451,25 +446,23 @@ export default class UmiUI {
         }
         break;
       case '@@project/openInEditor':
-        log('info', `open project in editor`);
+        log('info', `Open in editor: ${this.getProjectName(payload.key)}`);
         this.openProjectInEditor(payload.key);
         success();
         break;
       case '@@project/edit':
-        log('info', `edit project`);
-        // 只支持改名
+        log('info', `Edit project: ${this.getProjectName(payload.key)}`);
         this.config.editProject(payload.key, {
           name: payload.name,
         });
         success();
         break;
       case '@@project/setCurrentProject':
-        log('info', `set current project`);
         this.config.setCurrentProject(payload.key);
         success();
         break;
       case '@@project/create':
-        log('info', `create project`);
+        log('info', `Create project: ${this.getProjectName(payload.key)}`);
         this.createProject(payload, {
           onSuccess: success,
           onFailure(e) {
@@ -764,5 +757,20 @@ export default class UmiUI {
       this.socketServer = ss;
       this.server = server;
     });
+  }
+
+  /**
+   * 返回 projcet name，如果 project 不存在，则返回 key
+   * @param key project key
+   */
+  getProjectName(key: string): string {
+    if (!key) {
+      return '';
+    }
+    const project = this.config.data.projectsByKey[key];
+    if (!project) {
+      return key;
+    }
+    return project.name;
   }
 }

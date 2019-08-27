@@ -7,8 +7,8 @@ import Test from './ui/components/Test';
 import Install from './ui/components/Install';
 import { initApiToGloal, getTerminalIns, getNoticeMessage } from './ui/util';
 import { TaskType, TaskState } from './server/core/enums';
-import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
+import zhCN from './locales/zh-CN';
 
 export default (api: IUiApi) => {
   initApiToGloal(api);
