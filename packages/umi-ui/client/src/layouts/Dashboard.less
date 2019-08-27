@@ -123,6 +123,15 @@
   max-height: 100%;
   .header {
     height: @ui-header-title-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &-actions {
+      padding-right: 24px;
+      & > button {
+        margin-left: 16px;
+      }
+    }
     h1 {
       font-size: 20px;
       font-weight: 400;

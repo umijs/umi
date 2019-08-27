@@ -10,6 +10,18 @@ export default (api: IUiApi) => {
   });
   api.addPanel({
     title: 'org.umi.ui.configuration.panel',
+    actions: [
+      {
+        title: 'org.umi.ui.configuration.actions.open.config',
+        type: 'default',
+        action: {
+          type: '@@actions/openConfigFile',
+          payload: {
+            projectPath: api.currentProject.path,
+          },
+        },
+      },
+    ],
     path: '/configuration',
     icon: {
       type: 'control',
