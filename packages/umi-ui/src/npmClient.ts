@@ -5,6 +5,10 @@ export async function executeCommand(npmClient, args, targetDir, opts = {}) {
     // args.push('--registry=https://registry.npm.taobao.org');
     const child = execa(npmClient, args, {
       cwd: targetDir,
+      env: {
+        ...process.env,
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true, // TODO: 这部分需要给用户选择的
+      },
     });
     child.stdout.on('data', buffer => {
       process.stdout.write(buffer);
