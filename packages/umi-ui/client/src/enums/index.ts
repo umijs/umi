@@ -21,6 +21,11 @@ export enum LOCALES_ICON {
   'en-US' = '🇳🇿',
 }
 
+export enum SPEEDUP_CLIENTS {
+  'npm' = 'npm',
+  'yarn' = 'yarn',
+}
+
 export enum PROJECT_STATUS {
   /** 项目列表 */
   list = 'list',

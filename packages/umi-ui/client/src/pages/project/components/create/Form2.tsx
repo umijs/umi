@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Form, Checkbox, Button, Select, Row, Col, Radio, message, Spin } from 'antd';
+import { QuestionCircle } from '@ant-design/icons';
+import { Form, Checkbox, Button, Select, Row, Col, Radio, message, Switch, Tooltip } from 'antd';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import NpmClientForm from '@/components/NpmClientForm';
 import CardForm, { IOption } from '@/components/CardForm';
-import { APP_TYPE, REACT_FEATURES } from '@/enums';
+import { REACT_FEATURES, SPEEDUP_CLIENTS } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 
-const { useState, useContext } = React;
+const { useContext } = React;
 
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const { goPrev, handleFinish, style, active } = props;
   const { formatMessage } = useContext(ProjectContext);
-  const [appType, setAppType] = useState<APP_TYPE>();
   const [form] = Form.useForm();
   // tmp options, real from server
   const options: IOption[] = [
@@ -29,10 +29,6 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     },
   ];
 
-  const handleTypeOnChange = (type: APP_TYPE): void => {
-    setAppType(type);
-  };
-
   return (
     <Form
       style={style}
@@ -45,6 +41,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         args: {
           language: 'JavaScript',
         },
+        taobaoSpeedUp: true,
       }}
     >
       <Form.Item
@@ -52,25 +49,36 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         label="模板"
         rules={[{ required: true, message: formatMessage({ id: '请选择模板' }) }]}
       >
-        <CardForm options={options} onChange={handleTypeOnChange} />
+        <CardForm options={options} />
       </Form.Item>
-      {appType === 'app' && (
-        <Form.Item
-          name={['args', 'reactFeatures']}
-          label="技术栈"
-          rules={[{ type: 'array', message: formatMessage({ id: '请选择特性' }) }]}
-        >
-          <Checkbox.Group style={{ width: '100%' }}>
-            <Row>
-              {Object.keys(REACT_FEATURES).map((feature: any) => (
-                <Col key={feature} span={8} style={{ marginBottom: 16 }}>
-                  <Checkbox value={feature}>{REACT_FEATURES[feature]}</Checkbox>
-                </Col>
-              ))}
-            </Row>
-          </Checkbox.Group>
-        </Form.Item>
-      )}
+      <Form.Item
+        shouldUpdate={(prevValues, curValues) => prevValues.type !== curValues.type}
+        style={{ marginBottom: 0 }}
+      >
+        {({ getFieldValue }) => {
+          const isShow = getFieldValue('type') === 'app';
+          return (
+            isShow && (
+              <Form.Item
+                name={['args', 'reactFeatures']}
+                label="技术栈"
+                rules={[{ type: 'array', message: formatMessage({ id: '请选择特性' }) }]}
+                style={{ marginBottom: 0 }}
+              >
+                <Checkbox.Group style={{ width: '100%' }}>
+                  <Row>
+                    {Object.keys(REACT_FEATURES).map((feature: any) => (
+                      <Col key={feature} span={8} style={{ marginBottom: 8 }}>
+                        <Checkbox value={feature}>{REACT_FEATURES[feature]}</Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+            )
+          );
+        }}
+      </Form.Item>
       <Form.Item
         name={['args', 'language']}
         label="语言"
@@ -90,6 +98,32 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
           <NpmClientForm />
         </Form.Item>
       )}
+      <Form.Item
+        noStyle
+        shouldUpdate={(prevValues, curValues) => prevValues.npmClient !== curValues.npmClient}
+      >
+        {({ getFieldValue }) => {
+          const client = getFieldValue('npmClient') as string;
+          const shouldSpeedUp = Object.keys(SPEEDUP_CLIENTS).includes(client);
+          return (
+            shouldSpeedUp && (
+              <Form.Item
+                name="taobaoSpeedUp"
+                label={
+                  <span>
+                    淘宝源加速&nbsp;
+                    <Tooltip title="国内用户使用淘宝源可以更快速地安装模块">
+                      <QuestionCircle />
+                    </Tooltip>
+                  </span>
+                }
+              >
+                <Switch defaultChecked />
+              </Form.Item>
+            )
+          );
+        }}
+      </Form.Item>
       <Form.Item style={{ marginTop: 16 }}>
         <>
           <Button onClick={() => goPrev()}>{formatMessage({ id: '上一步' })}</Button>
