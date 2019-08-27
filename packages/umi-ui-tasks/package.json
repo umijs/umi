@@ -15,6 +15,9 @@
   "dependencies": {
     "xterm-addon-web-links": "^0.1.0",
     "react-sizeme": "^2.6.7",
+    "@ant-design/compatible": "^0.0.1-alpha.1",
+    "@ant-design/icons": "^4.0.0-alpha.7",
+    "@ant-design/icons-svg": "^4.0.0-alpha.0",
     "rimraf": "^3.0.0"
   },
   "devDependencies": {

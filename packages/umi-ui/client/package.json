@@ -3,6 +3,7 @@
     "analyze": "ANALYZE=1 umi build"
   },
   "dependencies": {
+    "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.7",
     "@ant-design/icons-svg": "^4.0.0-alpha.0",
     "classnames": "^2.2.6",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IUi } from 'umi-types';
-import { Icon } from 'antd';
+import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { formatMessage } from 'umi-plugin-react/locale';
 import history from '@tmp/history';

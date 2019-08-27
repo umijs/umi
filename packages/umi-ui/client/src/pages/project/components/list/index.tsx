@@ -15,8 +15,8 @@ import {
   message,
   Layout,
   Empty,
-  Icon,
 } from 'antd';
+import { Export, AppstoreFilled } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
@@ -113,7 +113,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     failure: item => [],
     success: item => [
       <a onClick={() => handleOnAction('editor', { key: item.key })}>
-        <Icon type="export" />
+        <Export className={styles.exportIcon} />
         {formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
       </a>,
       <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
@@ -130,7 +130,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
         <div className={styles['project-list-layout-sider-item']}>
-          <Icon theme="filled" type="appstore" />
+          <AppstoreFilled />
           <p>{formatMessage({ id: 'org.umi.ui.global.project.siderbar.title' })}</p>
         </div>
       </Sider>
