@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
-    "antd": "4.0.0-alpha.0",
+    "antd": "^4.0.0-alpha.0",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
     "umi": "2.9.0-beta.2",
