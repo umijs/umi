@@ -73,7 +73,7 @@ export default class Config {
     name,
     path,
     npmClient,
-    taobaoSpeedUp,
+    taobaoSpeedUp = false,
   }: {
     path: string;
     name: string;

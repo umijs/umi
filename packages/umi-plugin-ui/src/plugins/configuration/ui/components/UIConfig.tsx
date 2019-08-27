@@ -5,17 +5,20 @@ import Context from '../Context';
 import configMapping from './ConfigItem';
 import styles from './BasicConfig.module.less';
 
-const InstallConfig = () => {
+const UIConfig = () => {
   const containerRef = useRef();
   const { api, theme } = useContext(Context);
   const { _ } = api;
-  const [formData, setFormData] = useState([]);
+  const [formData, setFormData] = useState({});
   const [form] = Form.useForm();
   const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
 
   const updateFormData = async () => {
     const { data } = await api.callRemote({
-      type: 'org.umi.config.project',
+      type: '@@project/detail',
+      payload: {
+        key: api.currentProject.key,
+      },
     });
     setFormData(data);
   };
@@ -33,14 +36,31 @@ const InstallConfig = () => {
       return;
     }
     await api.callRemote({
-      type: 'org.umi.config.project.edit',
-      payload: values,
+      type: '@@project/edit',
+      payload: {
+        key: api.currentProject.key,
+        taobaoSpeedUp: values.taobaoSpeedUp,
+      },
     });
     message.success('配置修改成功');
   };
 
+  const installKey = '安装配置';
+  const arrayData = [];
+  if (formData.hasOwnProperty('taobaoSpeedUp')) {
+    arrayData.push({
+      name: 'taobaoSpeedUp',
+      group: installKey,
+      type: 'boolean',
+      default: formData.taobaoSpeedUp,
+      title: '安装加速',
+      description: '使用 npm/yarn 时开启国内加速',
+      value: true,
+    });
+  }
+
   const groupedData = {};
-  formData.forEach(item => {
+  arrayData.forEach(item => {
     const { group } = item;
     if (!groupedData[group]) {
       groupedData[group] = [];
@@ -71,7 +91,7 @@ const InstallConfig = () => {
     );
   };
 
-  const initialValues = arrayToObject(formData);
+  const initialValues = arrayToObject(arrayData);
 
   return (
     <>
@@ -114,4 +134,4 @@ const InstallConfig = () => {
   );
 };
 
-export default InstallConfig;
+export default UIConfig;
