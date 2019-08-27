@@ -25,6 +25,7 @@ import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/s
 import ProjectContext from '@/layouts/ProjectContext';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
+import { getProjectStatus } from '@/utils';
 import { IProjectProps } from '../index';
 
 import styles from './index.less';
@@ -45,13 +46,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const { setCurrent } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const getProjectStatus = (item: IProjectListItem): 'success' | 'failure' | 'progress' => {
-    if (get(item, 'creatingProgress.success')) return 'success';
-    if (get(item, 'creatingProgress.failure')) return 'failure';
-    if (item.creatingProgress) return 'progress';
-    return 'success';
-  };
 
   const isProgress = (item: IProjectListItem) => {
     if (get(item, 'creatingProgress.success')) return false;

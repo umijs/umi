@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { callRemote } from '@/socket';
-import { handleBack } from '@/utils';
+import { handleBack, getProjectStatus } from '@/utils';
 import Context from './Context';
 import UiLayout from './Layout';
 import styles from './Dashboard.less';
@@ -69,7 +69,10 @@ export default withRouter(props => {
               <Menu.ItemGroup key="projects" title="最近打开">
                 {currentProject &&
                   Object.keys(projectMaps)
-                    .filter(p => p !== currentProject.key)
+                    .filter(
+                      p =>
+                        p !== currentProject.key && getProjectStatus(currentProject) === 'success',
+                    )
                     .sort(
                       (a, b) =>
                         get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -

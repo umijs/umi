@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import history from '@tmp/history';
-import { IProjectList } from '@/enums';
+import { IProjectList, IProjectItem } from '@/enums';
 
 export const getBasename = (path: string): string => {
   return path
@@ -25,4 +25,15 @@ export const handleBack = (reload = true, url = '/project/select') => {
   if (reload) {
     window.location.reload();
   }
+};
+
+interface IProjectListItem extends IProjectItem {
+  key: string;
+}
+
+export const getProjectStatus = (item: IProjectListItem): 'success' | 'failure' | 'progress' => {
+  if (get(item, 'creatingProgress.success')) return 'success';
+  if (get(item, 'creatingProgress.failure')) return 'failure';
+  if (item.creatingProgress) return 'progress';
+  return 'success';
 };
