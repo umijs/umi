@@ -23,17 +23,12 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
 
   // Mount: 获取 task detail
   const { loading: detailLoading, detail } = useTaskDetail(taskType);
-  useEffect(
-    () => {
-      setLoading(detailLoading);
-      setTaskDetail(detail as any);
-    },
-    [detail],
-  );
 
   // Mount: 监听 task state 改变
   useEffect(
     () => {
+      setLoading(detailLoading);
+      setTaskDetail(detail as any);
       const unsubscribe = api.listenRemote({
         type: 'org.umi.task.state',
         onMessage: ({ detail: result, taskType: type }) => {
