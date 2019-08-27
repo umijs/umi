@@ -164,15 +164,19 @@ export default class UmiUI {
   }
 
   openProjectInEditor(key: string) {
-    if (key.startsWith('/') && existsSync(key)) {
-      // react-dev-utils sublime not open project just file
-      launchEditor(key);
-    } else {
+    let launchPath = key;
+    if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
       console.log('project.path', project.path);
-      launchEditor(project.path);
+      launchPath = project.path;
     }
+    launchEditor(launchPath, (fileName, errorMsg) => {
+      // log error if any
+      if (errorMsg && errorMsg === 'spawn code ENOENT.') {
+        console.log("you can open VS Code, and run >Shell Command: Install 'code' command in Path");
+      }
+    });
   }
 
   openConfigFileInEditor(projectPath: string) {
