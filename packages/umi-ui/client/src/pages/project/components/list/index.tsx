@@ -80,6 +80,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     if (action === 'open') {
       await handleBack(true, '/dashboard');
       // for flash dashboard
+      document.getElementById('root').innerHTML = '';
       ReactDOM.render(React.createElement(<Loading />, {}), document.getElementById('root'));
       await setCurrentProject(payload as any);
     }
