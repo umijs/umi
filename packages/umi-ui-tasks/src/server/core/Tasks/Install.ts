@@ -26,6 +26,10 @@ export class InstallTask extends BaseTask {
     this.emit(TaskEventType.STD_OUT_DATA, `Executing ${script}... \n`);
     this.proc = runCommand(script, {
       cwd: this.cwd,
+      env: {
+        ...process.env,
+        ...this.getSpeedUpEnv(env.TAOBAO_SPEED_UP),
+      },
     });
 
     this.handleChildProcess(this.proc);
@@ -91,5 +95,27 @@ export class InstallTask extends BaseTask {
       return NpmClient[client];
     }
     return getNpmClient();
+  }
+
+  private getSpeedUpEnv(taobaoSpeedUp: boolean) {
+    if (!taobaoSpeedUp) {
+      return {};
+    }
+    const registry = 'https://registry.npm.taobao.org';
+    const MIRROR_URL = 'https://npm.taobao.org/mirrors';
+    return {
+      NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
+      NVM_NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
+      NVM_IOJS_ORG_MIRROR: `${MIRROR_URL}/iojs`,
+      PHANTOMJS_CDNURL: `${MIRROR_URL}/phantomjs`,
+      CHROMEDRIVER_CDNURL: 'http://tnpm-hz.oss-cn-hangzhou.aliyuncs.com/dist/chromedriver',
+      OPERADRIVER_CDNURL: `${MIRROR_URL}/operadriver`,
+      ELECTRON_MIRROR: `${MIRROR_URL}/electron/`,
+      SASS_BINARY_SITE: `${MIRROR_URL}/node-sass`,
+      PUPPETEER_DOWNLOAD_HOST: MIRROR_URL,
+      FLOW_BINARY_MIRROR: 'https://github.com/facebook/flow/releases/download/v',
+      npm_config_registry: registry,
+      yarn_registry: registry,
+    };
   }
 }

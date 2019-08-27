@@ -27,6 +27,7 @@ export interface IProjectItem {
   creatingProgress?: ICreateProgress;
   created_at?: number;
   npmClient?: string;
+  taobaoSpeedUp?: boolean;
 }
 
 interface IProjectsByKey {
@@ -72,10 +73,12 @@ export default class Config {
     name,
     path,
     npmClient,
+    taobaoSpeedUp,
   }: {
     path: string;
     name: string;
     npmClient?: string;
+    taobaoSpeedUp?: boolean;
   }): string {
     name = name || basename(path);
     const str = `${path}____${name}`;
@@ -89,6 +92,7 @@ export default class Config {
         name,
         created_at: +new Date(),
         npmClient,
+        taobaoSpeedUp,
       };
       this.save();
     }

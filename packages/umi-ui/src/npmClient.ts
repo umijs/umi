@@ -1,13 +1,36 @@
 import execa from 'execa';
 
-export async function executeCommand(npmClient, args, targetDir, opts = {}) {
+const getSpeedUpEnv = (taobaoSpeedUp: boolean) => {
+  if (!taobaoSpeedUp) {
+    return {};
+  }
+  const registry = 'https://registry.npm.taobao.org';
+  const MIRROR_URL = 'https://npm.taobao.org/mirrors';
+  return {
+    NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
+    NVM_NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
+    NVM_IOJS_ORG_MIRROR: `${MIRROR_URL}/iojs`,
+    PHANTOMJS_CDNURL: `${MIRROR_URL}/phantomjs`,
+    CHROMEDRIVER_CDNURL: 'http://tnpm-hz.oss-cn-hangzhou.aliyuncs.com/dist/chromedriver',
+    OPERADRIVER_CDNURL: `${MIRROR_URL}/operadriver`,
+    ELECTRON_MIRROR: `${MIRROR_URL}/electron/`,
+    SASS_BINARY_SITE: `${MIRROR_URL}/node-sass`,
+    PUPPETEER_DOWNLOAD_HOST: MIRROR_URL,
+    FLOW_BINARY_MIRROR: 'https://github.com/facebook/flow/releases/download/v',
+    npm_config_registry: registry,
+    yarn_registry: registry,
+  };
+};
+
+export async function executeCommand(npmClient, args, targetDir, opts = { taobaoSpeedUp: true }) {
+  const extraEnv = getSpeedUpEnv(opts.taobaoSpeedUp);
   return new Promise((resolve, reject) => {
     // args.push('--registry=https://registry.npm.taobao.org');
     const child = execa(npmClient, args, {
       cwd: targetDir,
       env: {
         ...process.env,
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true, // TODO: 这部分需要给用户选择的
+        ...extraEnv,
       },
     });
     child.stdout.on('data', buffer => {

@@ -112,6 +112,7 @@ declare namespace IUI {
     created_at?: number;
     opened_at?: number;
     npmClient?: string;
+    taobaoSpeedUp?: boolean;
   }
   type IRedirect = (url: string) => void;
 
