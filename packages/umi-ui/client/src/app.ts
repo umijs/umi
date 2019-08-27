@@ -29,7 +29,6 @@ const geval = eval; // eslint-disable-line
 
 export async function render(oldRender) {
   // Init Socket Connection
-  debugger;
   try {
     await initSocket({
       onMessage({ type, payload }) {
@@ -44,7 +43,6 @@ export async function render(oldRender) {
   } catch (e) {
     console.error('Init socket failed', e);
   }
-  debugger;
   ReactDOM.render(
     React.createElement(require('./pages/loading').default, {}),
     document.getElementById('root'),
