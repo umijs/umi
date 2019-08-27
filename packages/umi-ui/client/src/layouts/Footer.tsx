@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { Drawer, Dropdown, Menu } from 'antd';
-import { Folder, Profile, Swap, Home, QuestionCircle, Message } from '@ant-design/icons';
+import { message, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
+import {
+  Folder,
+  Profile,
+  Swap,
+  Home,
+  QuestionCircle,
+  Message,
+  Close,
+  Enter,
+  Delete,
+} from '@ant-design/icons';
 import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
@@ -8,7 +18,7 @@ import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
-import { getHistory, listenMessage } from '@/services/logs';
+import { getHistory, listenMessage, clearLog } from '@/services/logs';
 
 import styles from './Footer.less';
 
@@ -37,6 +47,8 @@ const Footer: React.SFC<IFooterProps> = props => {
     }
   }, []);
 
+  console.log('logslogslogs', logs);
+
   const showLogPanel = () => {
     setLogVisible(true);
   };
@@ -49,13 +61,18 @@ const Footer: React.SFC<IFooterProps> = props => {
     history.replace(url);
   };
 
+  const getLogs = async () => {
+    const { data: historyLogs } = await getHistory();
+    console.log('historyLogshistoryLogs', historyLogs);
+    dispatch({
+      type: 'setHistory',
+      payload: historyLogs,
+    });
+  };
+
   useEffect(() => {
     (async () => {
-      const { data: historyLogs } = await getHistory();
-      dispatch({
-        type: 'setHistory',
-        payload: historyLogs,
-      });
+      await getLogs();
       listenMessage({
         onMessage(log) {
           dispatch({
@@ -106,6 +123,16 @@ const Footer: React.SFC<IFooterProps> = props => {
     </Menu>
   );
 
+  const handleClearLog = async () => {
+    try {
+      await clearLog();
+    } catch (e) {
+      message.error('清除日志失败');
+    } finally {
+      await getLogs();
+    }
+  };
+
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
@@ -146,13 +173,30 @@ const Footer: React.SFC<IFooterProps> = props => {
         </div>
       </div>
       <Drawer
-        title="日志"
+        title={
+          <div className={styles['section-drawer-title']}>
+            <h1> </h1>
+            <div className={styles['section-drawer-title-action']}>
+              <Popconfirm
+                title="是否清除日志？"
+                onConfirm={handleClearLog}
+                okText="是"
+                cancelText="否"
+              >
+                <Delete />
+              </Popconfirm>
+              <Enter />
+              <Divider type="vertical" />
+              <Close onClick={hideLogPanel} />
+            </div>
+          </div>
+        }
+        closable={false}
         visible={logVisible}
         placement="bottom"
         mask={false}
         className={styles.logs}
         height={300}
-        onClose={() => hideLogPanel()}
       >
         <Logs
           logs={logs}

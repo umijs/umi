@@ -2,8 +2,10 @@ import { join } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 
+const { NODE_ENV } = process.env;
+
 const uglifyJSOptions =
-  process.env.NODE_ENV === 'production'
+  NODE_ENV === 'production'
     ? {
         uglifyOptions: {
           // remove console.* except console.error
@@ -17,6 +19,7 @@ const uglifyJSOptions =
 
 const config: IConfig = {
   history: 'hash',
+  hash: NODE_ENV === 'production',
   treeShaking: true,
   uglifyJSOptions,
   externals: {
@@ -84,11 +87,11 @@ const config: IConfig = {
         ],
         headScripts: [
           {
-            src: 'https://gw.alipayobjects.com/os/lib/react/16.8.6/umd/react.development.js',
-          },
-          {
-            src:
-              'https://gw.alipayobjects.com/os/lib/react-dom/16.8.6/umd/react-dom.development.js',
+            src: `//gw.alipayobjects.com/os/lib/??react/16.8.1/umd/react.${
+              NODE_ENV === 'development' ? 'development' : 'production.min'
+            }.js,react-dom/16.8.6/umd/react-dom.${
+              NODE_ENV === 'development' ? 'development' : 'production.min'
+            }.js`,
           },
           {
             src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
@@ -104,7 +107,7 @@ const config: IConfig = {
     ],
   ],
   chainWebpack(config, { webpack }) {
-    if (process.env.NODE_ENV === 'development') {
+    if (NODE_ENV === 'development') {
       config.output.publicPath('http://localhost:8002/');
     }
     config.plugin('webpack-less-theme').use(

@@ -58,3 +58,35 @@
     flex: 100% 1 1;
   }
 }
+
+.section {
+  &-drawer {
+    &-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h1 {
+        flex: 100% 1 1;
+      }
+      &-action {
+        flex: auto 1 1;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        :global(.ant-divider) {
+          color: @ui-footer-actions-divider-color;
+          margin: 0 4px;
+        }
+        :global(.anticon) {
+          cursor: pointer;
+          margin: 0 8px;
+          color: fade(@light, 70);
+          transition: color 0.3s;
+          &:hover {
+            color: fade(@light, 100);
+          }
+        }
+      }
+    }
+  }
+}

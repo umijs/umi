@@ -44,6 +44,11 @@ export async function render(oldRender) {
     console.error('Init socket failed', e);
   }
 
+  ReactDOM.render(
+    React.createElement(require('./pages/loading').default, {}),
+    document.getElementById('root'),
+  );
+
   // 不同路由在渲染前的初始化逻辑
   if (history.location.pathname === '/') {
     const { data } = await callRemote({ type: '@@project/list' });
@@ -67,10 +72,6 @@ export async function render(oldRender) {
 
   // Project View
   else {
-    ReactDOM.render(
-      React.createElement(require('./pages/loading').default, {}),
-      document.getElementById('root'),
-    );
     const { data } = await callRemote({ type: '@@project/list' });
     const props = {
       data,
