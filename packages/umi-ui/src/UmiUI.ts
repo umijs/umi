@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
 import { join, resolve } from 'path';
-import launchEditor from 'react-dev-utils/launchEditor';
+import launchEditor from 'launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
@@ -171,11 +171,13 @@ export default class UmiUI {
 
   openProjectInEditor(key: string) {
     if (key.startsWith('/') && existsSync(key)) {
-      launchEditor(key, 1);
+      // react-dev-utils sublime not open project just file
+      launchEditor(key);
     } else {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
-      launchEditor(project.path, 1);
+      console.log('project.path', project.path);
+      launchEditor(project.path);
     }
   }
 
@@ -190,7 +192,7 @@ export default class UmiUI {
     }
 
     assert(configFile, `configFile not exists`);
-    launchEditor(configFile, 1);
+    launchEditor(configFile);
   }
 
   getExtraAssets() {

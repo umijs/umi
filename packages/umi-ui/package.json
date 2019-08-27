@@ -29,6 +29,7 @@
     "execa": "2.0.3",
     "express": "4.17.1",
     "got": "9.6.0",
+    "launch-editor": "^2.2.1",
     "lodash": "^4.17.15",
     "mkdirp": "0.5.1",
     "node-notifier": "^5.4.1",

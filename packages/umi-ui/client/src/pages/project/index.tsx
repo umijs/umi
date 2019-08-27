@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Layout } from 'antd';
-import TweenOne from 'rc-tween-one';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
@@ -8,7 +7,6 @@ import * as ProjectMap from './components';
 import styles from './index.less';
 
 const { Content } = Layout;
-const { TweenOneGroup } = TweenOne;
 
 const Project: React.FC<{}> = () => {
   const [data, setData] = useState<IProjectList>({});

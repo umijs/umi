@@ -11,6 +11,7 @@
     "nanoid": "^2.0.3",
     "nprogress": "^0.2.0",
     "rc-tween-one": "^2.6.0",
+    "react-beforeunload": "^2.1.0",
     "react-resize-observer": "^1.1.1",
     "react-transition-group": "^4.2.2",
     "xterm": "^3.14.4",
