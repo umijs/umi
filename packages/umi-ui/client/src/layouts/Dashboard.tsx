@@ -132,7 +132,7 @@ export default withRouter(props => {
                 <Content className={styles.main}>
                   <div className={styles.header}>
                     <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
-                    {Array.isArray(activePanel.actions) && (
+                    {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
                       <div className={styles['header-actions']}>
                         {activePanel.actions.map((panelAction, j) => {
                           const { title, action, onClick, ...btnProps } = panelAction;
