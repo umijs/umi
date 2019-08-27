@@ -43,6 +43,10 @@ export async function render(oldRender) {
   } catch (e) {
     console.error('Init socket failed', e);
   }
+  ReactDOM.render(
+    React.createElement(require('./pages/loading').default, {}),
+    document.getElementById('root'),
+  );
 
   // 不同路由在渲染前的初始化逻辑
   if (history.location.pathname === '/') {
