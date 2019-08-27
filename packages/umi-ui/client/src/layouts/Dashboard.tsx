@@ -25,7 +25,7 @@ function getActivePanel(pathname) {
 
 export default withRouter(props => {
   const { pathname } = props.location;
-  const activePanel = getActivePanel(pathname);
+  const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
