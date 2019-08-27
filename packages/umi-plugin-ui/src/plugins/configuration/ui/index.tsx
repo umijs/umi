@@ -111,14 +111,17 @@ function getSections(api) {
       description: '这是一段项目配置的描述。',
       component: BasicConfig,
     },
-    {
+  ];
+  const isBigfish = !!window.g_bigfish;
+  if (!isBigfish) {
+    sections.push({
       key: 'react',
       title: 'umi-plugin-react 配置',
       icon: 'pause-circle',
       description: 'BCD',
       component: PluginConfig,
-    },
-  ];
+    });
+  }
   const { npmClient } = api.currentProject;
   if (['npm', 'yarn', 'pnpm'].indexOf(npmClient) > -1) {
     sections.push({
