@@ -66,9 +66,19 @@ export interface ICreateProgress {
   failure?: Error;
 }
 
+export interface IProjectItem extends IUi.ICurrentProject {
+  creatingProgress?: {
+    step: number;
+    stepStatus: number;
+    steps: string[];
+    success?: boolean;
+    failure?: Error;
+  };
+}
+
 export interface IProjectList {
   currentProject: string;
   projectsByKey: {
-    [key: string]: IUi.ICurrentProject;
+    [key: string]: IProjectItem;
   };
 }

@@ -47,7 +47,10 @@ interface IListItem extends IUi.ICurrentProject {
 /**
  *
  * @param list 列表
- * 列表排序：优先排 active
+ * 列表排序：
+ * 1. 优先排 active
+ * 2. 失败的排最后
+ * 3. 最新创建的排前面
  */
 export const sortProjectList = (list: IListItem[]): IListItem[] => {
   return list.sort((prev, next) => {
