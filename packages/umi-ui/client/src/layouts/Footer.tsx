@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { message, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
 import {
-  Folder,
-  Profile,
+  FolderFilled,
+  ProfileFilled,
   Swap,
-  Home,
+  HomeFilled,
   QuestionCircle,
   Message,
   Close,
@@ -16,6 +16,8 @@ import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
+import zhCN from '@/locales/zh-CN';
+import enUS from '@/locales/en-US';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
@@ -45,6 +47,8 @@ const FOOTER_RIGHT = [
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
+  console.log('localelocalelocale', locale);
+  const message = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -121,7 +125,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     <Menu
       theme="dark"
       onClick={({ key }) => {
-        setLocale(key, false);
+        setLocale(key, type === 'loading');
       }}
     >
       {Object.keys(omit(LOCALES, locale)).map((lang: any) => (
@@ -147,26 +151,31 @@ const Footer: React.SFC<IFooterProps> = props => {
       <div className={styles.statusBar}>
         {type === 'loading' && (
           <div onClick={() => handleBack()} className={actionCls}>
-            <Home style={{ marginRight: 4 }} /> {formatMessage({ id: 'org.umi.ui.global.home' })}
+            <HomeFilled style={{ marginRight: 4 }} />{' '}
+            {formatMessage({ id: 'org.umi.ui.global.home' })}
           </div>
         )}
         {type === 'detail' && path && name && (
           <>
             <div onClick={() => handleBack(false)} className={actionCls}>
-              <Home style={{ marginRight: 4 }} />
+              <HomeFilled style={{ marginRight: 4 }} />
             </div>
             <div className={styles.section}>
-              <Folder style={{ marginRight: 4 }} /> {path}
+              <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <Profile /> {formatMessage({ id: 'org.umi.ui.global.log' })}
+          <ProfileFilled />{' '}
+          {type === 'loading'
+            ? message['org.umi.ui.global.log']
+            : formatMessage({ id: 'org.umi.ui.global.log' })}
         </div>
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon} {formatMessage({ id: item.title })}
+              {item.icon}{' '}
+              {type === 'loading' ? message[item.title] : formatMessage({ id: item.title })}
             </a>
           </div>
         ))}
@@ -184,7 +193,11 @@ const Footer: React.SFC<IFooterProps> = props => {
       <Drawer
         title={
           <div className={styles['section-drawer-title']}>
-            <h1>{formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
+            <h1>
+              {type === 'loading'
+                ? message['org.umi.ui.global.log.upperCase']
+                : formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
+            </h1>
             <div className={styles['section-drawer-title-action']}>
               <Popconfirm
                 title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
@@ -209,6 +222,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       >
         <Logs
           logs={logs}
+          type={type}
           style={{
             height: 225,
           }}
