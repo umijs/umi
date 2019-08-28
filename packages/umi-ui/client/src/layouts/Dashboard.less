@@ -18,6 +18,17 @@
 .sidebar {
   width: 210px;
   z-index: 2;
+  :global {
+    // strange why vars not working
+    // @menu-item-vertical-margin: 0px;
+    // @menu-item-boundary-margin: 0px;
+    .ant-menu {
+      .ant-menu-item {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
   &-recentMenu {
     width: 144px;
     background-color: @ui-sidebar-menu-bg;

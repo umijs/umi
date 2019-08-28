@@ -109,6 +109,7 @@ export default withRouter(props => {
                     </Dropdown>
                   </div>
                   <Menu
+                    theme="light"
                     selectedKeys={selectedKeys}
                     onClick={({ key }) => {
                       setSelectedKeys([key]);
