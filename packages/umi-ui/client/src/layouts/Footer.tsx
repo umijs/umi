@@ -33,7 +33,7 @@ const FOOTER_RIGHT = [
   {
     title: 'org.umi.ui.global.feedback',
     icon: <Message />,
-    href: 'https://umijs.org',
+    href: 'https://github.com/umijs/umi/issues/new/choose',
   },
   {
     title: 'org.umi.ui.global.help',
