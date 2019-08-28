@@ -251,7 +251,7 @@ export default class UmiUI {
         `target dir ${targetDir} exists and not empty`,
       );
       // 2
-      this.config.addProject({
+      key = this.config.addProject({
         path: targetDir,
         name,
         npmClient,
