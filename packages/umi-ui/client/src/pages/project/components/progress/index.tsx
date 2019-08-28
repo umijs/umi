@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Steps, Icon } from 'antd';
+import { Loading } from '@ant-design/icons';
+import { Steps } from 'antd';
 import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import { setCurrentProject } from '@/services/project';
+import { handleBack } from '@/utils';
 import styles from './index.less';
 import { IProjectProps } from '../index';
 
@@ -23,6 +25,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
     () => {
       if (progress.success && key) {
         (async () => {
+          await handleBack(true, '/dashboard');
           await setCurrentProject({ key });
         })();
       }
@@ -64,7 +67,7 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
               <Step
                 key={i.toString()}
                 title={step}
-                icon={progress.stepStatus === 1 && progress.step === i && <Icon type="loading" />}
+                icon={progress.stepStatus === 1 && progress.step === i && <Loading />}
               />
             );
           })}

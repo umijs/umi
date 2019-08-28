@@ -255,7 +255,7 @@ export default class UmiUI {
         `target dir ${targetDir} exists and not empty`,
       );
       // 2
-      this.config.addProject({
+      key = this.config.addProject({
         path: targetDir,
         name,
         npmClient,
@@ -290,7 +290,7 @@ export default class UmiUI {
         // 2: 执行完成
         // 3: 执行失败
         stepStatus: 0,
-        steps: ['校验参数', '安装或更新 create-umi', '初始化项目文件', '安装依赖'],
+        steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
       });
 
       // 3
@@ -412,6 +412,11 @@ export default class UmiUI {
           data: this.config.data,
         });
         break;
+      case '@@project/detail':
+        success({
+          data: this.config.data.projectsByKey[payload.key],
+        });
+        break;
       case '@@project/add':
         // TODO: 检验是否 umi 项目，不是则抛错给客户端
         try {
@@ -462,6 +467,7 @@ export default class UmiUI {
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
         this.config.editProject(payload.key, {
           name: payload.name,
+          taobaoSpeedUp: payload.taobaoSpeedUp,
         });
         success();
         break;

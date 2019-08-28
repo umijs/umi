@@ -1,4 +1,5 @@
-import { Row, Col, Icon } from 'antd';
+import { Row, Col } from 'antd';
+import { Delete, Enter } from '@ant-design/icons';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
 import { useTerminal, usePrevious } from '../../hooks';
@@ -59,8 +60,8 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
           {intl('org.umi.ui.tasks.log.title')}
         </Col>
         <Col span={4} offset={12} className={styles.actionGroup}>
-          <Icon onClick={clear} type="delete" />
-          <Icon onClick={toBottom} type="enter" />
+          <Delete onClick={clear} />
+          <Enter onClick={toBottom} />
         </Col>
       </Row>
       <div ref={domContainer} className={styles.logContainer} />

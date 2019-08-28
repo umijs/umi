@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Col, Row, Card, Icon } from 'antd';
+import { Icon } from '@ant-design/compatible';
+import { Col, Row, Card } from 'antd';
 import cls from 'classnames';
 
 import styles from './index.less';

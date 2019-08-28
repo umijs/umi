@@ -3,7 +3,7 @@ import { IUiApi } from 'umi-types';
 import { Input, Form, Select, Switch, Button } from 'antd';
 import serialize from 'serialize-javascript';
 import BasicConfig from './components/BasicConfig';
-import InstallConfig from './components/InstallConfig';
+import UIConfig from './components/UIConfig';
 import PluginConfig from './components/PluginConfig';
 import Context from './Context';
 import styles from './index.module.less';
@@ -111,14 +111,17 @@ function getSections(api) {
       description: '这是一段项目配置的描述。',
       component: BasicConfig,
     },
-    {
+  ];
+  const isBigfish = !!window.g_bigfish;
+  if (!isBigfish) {
+    sections.push({
       key: 'react',
       title: 'umi-plugin-react 配置',
       icon: 'pause-circle',
       description: 'BCD',
       component: PluginConfig,
-    },
-  ];
+    });
+  }
   const { npmClient } = api.currentProject;
   if (['npm', 'yarn', 'pnpm'].indexOf(npmClient) > -1) {
     sections.push({
@@ -132,7 +135,7 @@ function getSections(api) {
         />
       ),
       description: 'UI 配置',
-      component: InstallConfig,
+      component: UIConfig,
     });
   }
 

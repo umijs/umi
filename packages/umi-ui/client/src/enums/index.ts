@@ -1,3 +1,5 @@
+import { IUi } from 'umi-types';
+
 export enum THEME {
   'dark' = 'dark',
   'light' = 'light',
@@ -64,10 +66,14 @@ export interface ICreateProgress {
   failure?: Error;
 }
 
-export interface IProjectItem {
-  name: string;
-  path: string;
-  creatingProgress?: ICreateProgress;
+export interface IProjectItem extends IUi.ICurrentProject {
+  creatingProgress?: {
+    step: number;
+    stepStatus: number;
+    steps: string[];
+    success?: boolean;
+    failure?: Error;
+  };
 }
 
 export interface IProjectList {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Icon, Button, Empty, Spin, Input } from 'antd';
+import { Icon } from '@ant-design/compatible';
+import { Button, Empty, Spin, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';

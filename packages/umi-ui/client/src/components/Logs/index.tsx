@@ -1,5 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
+import { formatDate } from 'umi-plugin-react/locale';
+import Ansi from 'ansi-to-react';
 import { Tag } from 'antd';
 import cls from 'classnames';
 
@@ -25,14 +27,33 @@ const TAG_MAP = {
 export const Log = logItem => {
   const { type, date, message } = logItem;
 
-  const formatDate = moment(date).isValid() ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
+  // const formatDate = moment(date).isValid() ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
+  const messageGroup = message.split('\n');
   return (
     <li className={styles.log}>
       <Tag className={styles['log-tag']} {...TAG_MAP[type]}>
         {typeof type === 'string' ? type.toLocaleUpperCase() : 'UNKNOW'}
       </Tag>
-      <span>{formatDate}</span>
-      <span>: {message}</span>
+      <p className={styles['log-date']}>
+        {formatDate(date, {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        })}
+        &nbsp;&nbsp;
+      </p>
+      <div className={styles['log-desc']}>
+        {messageGroup.map((msg, i) => (
+          <p>
+            <Ansi key={i.toString()} linkify>
+              {msg}
+            </Ansi>
+          </p>
+        ))}
+      </div>
     </li>
   );
 };

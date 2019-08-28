@@ -3,23 +3,20 @@
     "analyze": "ANALYZE=1 umi build"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.0.0-alpha.7",
-    "@ant-design/icons-svg": "^4.0.0-alpha.0",
+    "@ant-design/compatible": "^0.0.1-alpha.1",
+    "@ant-design/icons": "^4.0.0-alpha.8",
+    "ansi-to-react": "^5.0.0",
     "classnames": "^2.2.6",
     "immer": "^3.2.0",
     "lodash": "^4.17.15",
     "nanoid": "^2.0.3",
     "nprogress": "^0.2.0",
     "rc-tween-one": "^2.6.0",
-    "react-beforeunload": "^2.1.0",
-    "react-resize-observer": "^1.1.1",
-    "react-transition-group": "^4.2.2",
     "xterm": "^3.14.4",
     "xterm-addon-web-links": "^0.1.0"
   },
   "private": true,
   "devDependencies": {
-    "umi-plugin-react": "^1.10.0-beta.1",
     "@ant-design/colors": "^3.1.0",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.136",
@@ -32,6 +29,7 @@
     "stylelint-config-css-modules": "^1.4.0",
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-recommended": "^2.2.0",
+    "umi-plugin-react": "^1.10.0-beta.1",
     "umi-types": "0.4.0-beta.1",
     "webpack-less-theme-plugin": "^2.1.0"
   }

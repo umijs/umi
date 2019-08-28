@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import TweenOne from 'rc-tween-one';
 import { formatMessage } from 'umi-plugin-react/locale';
 import {
@@ -15,17 +16,18 @@ import {
   message,
   Layout,
   Empty,
-  Icon,
 } from 'antd';
+import { Export, AppstoreFilled } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
+import Loading from '@/pages/loading';
 import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
-import { getProjectStatus } from '@/utils';
+import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
 import { IProjectProps } from '../index';
 
 import styles from './index.less';
@@ -56,21 +58,30 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const projects = useMemo(
     () => {
-      return Object.keys(projectsByKey)
-        .map(key => {
-          return {
-            ...projectsByKey[key],
-            key,
-            created_at: get(projectsByKey, `${key}.created_at`, new Date('2002').getTime()),
-          };
-        })
-        .sort((a, b) => b.created_at - a.created_at);
+      const projectListMap = Object.keys(projectsByKey).map(key => {
+        const created_at = get(
+          projectsByKey,
+          `${key}.created_at`,
+          new Date('2002').getTime(),
+        ) as number;
+        return {
+          ...projectsByKey[key],
+          key,
+          active: key === currentProject,
+          created_at,
+        };
+      });
+      return sortProjectList(projectListMap);
     },
     [projectList],
   );
 
   const handleOnAction = async (action: IAction, payload: { key?: string; [key: string]: any }) => {
     if (action === 'open') {
+      await handleBack(true, '/dashboard');
+      // for flash dashboard
+      document.getElementById('root').innerHTML = '';
+      ReactDOM.render(React.createElement(<Loading />, {}), document.getElementById('root'));
       await setCurrentProject(payload as any);
     }
     if (action === 'delete') {
@@ -108,7 +119,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     failure: item => [],
     success: item => [
       <a onClick={() => handleOnAction('editor', { key: item.key })}>
-        <Icon type="export" />
+        <Export className={styles.exportIcon} />
         {formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
       </a>,
       <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
@@ -125,7 +136,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
         <div className={styles['project-list-layout-sider-item']}>
-          <Icon theme="filled" type="appstore" />
+          <AppstoreFilled />
           <p>{formatMessage({ id: 'org.umi.ui.global.project.siderbar.title' })}</p>
         </div>
       </Sider>
