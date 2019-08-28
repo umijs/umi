@@ -14,10 +14,12 @@ body {
   select:-webkit-autofill {
     -webkit-text-fill-color: @input-bg;
   }
+  .anticon {
+    transition: color 0.3s;
+    color: @icon-color;
+  }
   a {
     .anticon {
-      transition: color 0.3s;
-      color: @icon-color;
       &:hover {
         color: @icon-color-hover;
       }

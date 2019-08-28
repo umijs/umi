@@ -16,7 +16,7 @@
   position: relative;
   padding-left: 20px;
   &-header {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     position: relative;
     & > * {
       display: inline-block;
@@ -82,13 +82,18 @@
   .group {
     margin-bottom: 30px;
     max-width: 416px;
+    :global(.ant-form-item-label) {
+      padding-bottom: 12px;
+    }
     h2 {
-      font-size: 14px;
-      color: fade(#fff, 65);
-      margin-bottom: 8px;
+      font-size: 16px;
+      color: fade(#fff, 85);
+      font-weight: 500;
+      margin-bottom: 16px;
+      line-height: 22px;
     }
     & > :global(.ant-form-item) {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
   }
 }

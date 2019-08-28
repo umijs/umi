@@ -88,20 +88,22 @@
       cursor: pointer;
       // width: 100%;
       margin-bottom: 32px;
-      :global(.ant-card) {
-        border-color: transparent;
+      :global {
+        .ant-card {
+          border-color: transparent;
+          .ant-card-meta-title {
+            margin-bottom: 2px;
+          }
+          .ant-card-actions {
+            background-color: inherit;
+            & > li {
+              border-color: transparent;
+            }
+          }
+        }
       }
       &:hover :global(.ant-card) {
         background-color: @card-hover-border;
-      }
-      ant-card :global(.ant-card-actions) > li {
-        border-color: transparent;
-      }
-      :global(.ant-card-meta-title) {
-        margin-bottom: 2px;
-      }
-      :global(.ant-card-actions) {
-        background-color: inherit;
       }
       @media @mobile {
         width: 100%;

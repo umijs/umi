@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import cls from 'classnames';
-import { MinusCircle, Plus } from '@ant-design/icons';
+import { Delete, Plus } from '@ant-design/icons';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 
 import styles from './styles.module.less';
@@ -94,7 +94,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               setOptions={setOptions}
             />
             {!isRequired && (
-              <MinusCircle className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
+              <Delete className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
             )}
           </div>
         );
@@ -104,6 +104,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           type="dashed"
           ghost
           block
+          className={styles.addBtn}
           onClick={handleAdd}
           style={{
             width: 'calc(100% - 22px)',

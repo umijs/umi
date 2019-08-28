@@ -81,6 +81,7 @@ export default withRouter(props => {
                         get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -
                         get(projectMaps, `${a}.opened_at`, new Date('2002').getTime()),
                     )
+                    .slice(0, 5)
                     .map(project => (
                       <Menu.Item key={project} onClick={changeProject}>
                         <p>{get(projectMaps, `${project}.name`, '未命名')}</p>
