@@ -86,16 +86,15 @@ export default class Config {
       .update(str)
       .digest('hex')
       .slice(0, 6);
-    if (!this.data.projectsByKey[key]) {
-      this.data.projectsByKey[key] = {
-        path,
-        name,
-        created_at: +new Date(),
-        npmClient,
-        taobaoSpeedUp,
-      };
-      this.save();
-    }
+    assert(!this.data.projectsByKey[key], `Key of path ${path} exists, please try another one.`);
+    this.data.projectsByKey[key] = {
+      path,
+      name,
+      created_at: +new Date(),
+      npmClient,
+      taobaoSpeedUp,
+    };
+    this.save();
     return key;
   }
 
