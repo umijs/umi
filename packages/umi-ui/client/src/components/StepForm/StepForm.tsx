@@ -8,6 +8,7 @@ const { Step } = Steps;
 
 export interface InternalStepFormProps {
   onFinish: (values: object) => void;
+  className?: string;
   children: React.ReactElement<IStepItemForm>[];
 }
 
@@ -15,7 +16,7 @@ const StepForm: React.SFC<InternalStepFormProps> = props => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const forms: FormInstance[] = [];
 
-  const { children, onFinish } = props;
+  const { children, onFinish, className } = props;
   const count = React.Children.count(children);
 
   const handleCurrentStep = (step: number) => {
@@ -49,7 +50,7 @@ const StepForm: React.SFC<InternalStepFormProps> = props => {
 
   return (
     <div>
-      <Steps current={currentStep} style={{ marginBottom: 16 }}>
+      <Steps current={currentStep} style={{ marginBottom: 16 }} className={className}>
         {React.Children.map(children, (element: any, i) => {
           const { type } = element;
           if (!(type && type.__STEP_FORM_ITEM)) {

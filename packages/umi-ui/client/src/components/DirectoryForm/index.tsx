@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon } from '@ant-design/compatible';
+import { Left, Edit, Reload } from '@ant-design/icons';
 import { Button, Empty, Spin, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
@@ -121,7 +121,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     <div className={styles.directoryForm}>
       <div className={styles['directoryForm-toolbar']}>
         <Button className={styles['directoryForm-toolbar-back']} onClick={handleParentDirectory}>
-          <Icon type="arrow-left" onClick={handleParentDirectory} />
+          <Left onClick={handleParentDirectory} />
         </Button>
         <div className={styles['directoryForm-toolbar-bread']}>
           {dirPathEdit ? (
@@ -153,12 +153,12 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         </Row> */}
         <div className={styles.edit}>
           <Button onClick={handleEdit}>
-            <Icon type="edit" />
+            <Edit />
           </Button>
         </div>
         <div className={styles.refresh}>
           <Button onClick={handleReload}>
-            <Icon type="reload" />
+            <Reload />
           </Button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import p from 'immer';
 import ProjectContext from '@/layouts/ProjectContext';
 import StepForm from '@/components/StepForm';
 import { message } from 'antd';
+import cls from 'classnames';
 import { APP_LANGUAGE, APP_TYPE } from '@/enums';
 import { IProjectProps } from '../index';
 import Form1 from './Form1';
@@ -39,7 +40,7 @@ export interface ICreaetProjectValue {
 
 const CreateProject: React.SFC<IProjectProps> = props => {
   const { cwd } = props;
-  const { formatMessage, setCurrent } = useContext(ProjectContext);
+  const { formatMessage, setCurrent, current } = useContext(ProjectContext);
 
   const handleSubmit = async (values: ICreaetProjectValue) => {
     const params = p(values, draft => {
@@ -60,10 +61,12 @@ const CreateProject: React.SFC<IProjectProps> = props => {
     }
   };
 
+  const stepCls = cls(common.steps, common[`steps-${current}`]);
+
   return (
     <section className={common.section}>
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <StepForm onFinish={handleSubmit}>
+        <StepForm onFinish={handleSubmit} className={stepCls}>
           {PROJECT_STEPS.map((step, i) => {
             const FormChild = step.children;
             return (

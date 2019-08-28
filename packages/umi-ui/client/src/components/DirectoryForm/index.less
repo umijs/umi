@@ -17,6 +17,10 @@
     .refresh button {
       width: 32px;
       padding: 0 8px;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-radius: unset;
     }
     .edit,
     .refresh {
@@ -43,6 +47,10 @@
       &,
       button {
         background-color: @input-bg;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        border-radius: unset;
       }
       button {
         &:hover {
@@ -61,13 +69,13 @@
     max-height: 360px;
     overflow-x: hidden;
     overflow-y: auto;
-    margin-top: 16px;
+    margin-top: 12px;
     &-item {
-      padding: 8px;
+      padding: 12px 8px;
       display: flex;
       cursor: pointer;
       position: relative;
-      align-content: center;
+      align-items: center;
       user-select: none;
       transition: all 0.3s, border 0s;
       &-checked-icon {
@@ -92,7 +100,7 @@
       }
 
       &-icon {
-        font-size: 20px;
+        font-size: 16px;
       }
       &-name {
         margin-left: 8px;

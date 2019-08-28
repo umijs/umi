@@ -1,6 +1,7 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
@@ -48,10 +49,12 @@ export default withRouter(props => {
     }
   };
 
+  const title = formatMessage({ id: activePanel.title });
+
   return (
-    <UiLayout type="detail">
+    <UiLayout type="detail" title={title}>
       <Context.Consumer>
-        {({ FormattedMessage, formatMessage, currentProject, theme }) => {
+        {({ currentProject, theme }) => {
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -135,7 +138,7 @@ export default withRouter(props => {
                 </Sider>
                 <Content className={styles.main}>
                   <div className={styles.header}>
-                    <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
+                    <h1>{activePanel && title}</h1>
                     {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
                       <div className={styles['header-actions']}>
                         {activePanel.actions.map((panelAction, j) => {

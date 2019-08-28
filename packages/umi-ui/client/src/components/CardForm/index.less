@@ -1,6 +1,7 @@
 .cardForm {
   &-col {
-    margin-bottom: 16px;
+    // TODO: 超过多行
+    margin-bottom: 0;
   }
   &-card {
     cursor: pointer;
@@ -9,6 +10,13 @@
     border: 1px solid transparent;
     &:hover {
       border-color: fade(@light, 10);
+    }
+    :global {
+      .ant-card-meta-description {
+        p {
+          color: @text-color-secondary;
+        }
+      }
     }
     &.active {
       transition: none;

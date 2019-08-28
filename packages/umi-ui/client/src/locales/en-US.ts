@@ -3,6 +3,7 @@ export default {
   'org.umi.ui.global.cancelText': 'No',
   'org.umi.ui.global.edit.success': 'Edit success',
   'org.umi.ui.global.panel.lang': 'Language',
+  'org.umi.ui.global.project.title': 'Project Manager',
   'org.umi.ui.global.project.editor.open': 'Open in the editor',
   'org.umi.ui.global.project.directory.tip': 'Tips: Click to select, double click to enter',
   'org.umi.ui.global.content.hello': 'Hello',
