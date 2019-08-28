@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Button, Modal, Form } from 'antd';
+import { Button, Modal, Form, Select, Spin } from 'antd';
 import { ButtonProps } from 'antd/lib/button';
-import NpmClientForm from '@/components/NpmClientForm';
+import useNpmClients from '@/components/hooks/useNpmClients';
 import { reInstallDependencies, installDependencies } from '@/services/project';
 
-const { useState } = React;
+const { useState, useEffect } = React;
+const { Option } = Select;
 
 export interface DepsInstallProps {
   installType?: 'install' | 'reinstall';
@@ -30,13 +31,24 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     onSuccess,
     ...restProps
   } = props;
-  const { npmClient } = payload;
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { npmClient: needNpmClient } = payload;
+  const { npmClient, error } = useNpmClients();
   const [loading, setLoading] = useState<boolean>(false);
-  const [currNpmClient, setCurrNpmClient] = useState<string>('');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const projectPath = path || window.g_uiCurrentProject.path || '';
   const projectKey = window.g_uiCurrentProject.key || '';
   const [form] = Form.useForm();
+
+  useEffect(
+    () => {
+      if (Array.isArray(npmClient) && npmClient.length > 0) {
+        form.setFieldsValue({
+          npmClient: npmClient[0],
+        });
+      }
+    },
+    [npmClient],
+  );
 
   const closeModal = () => {
     setModalVisible(false);
@@ -44,15 +56,16 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
 
   const doInstallDeps = async () => {
     const action = installType === 'install' ? installDependencies : reInstallDependencies;
-    const actionPayload = npmClient
+    const currentNpmClient = form.getFieldValue('npmClient');
+    const actionPayload = needNpmClient
       ? {
-          npmClient: currNpmClient,
+          npmClient: currentNpmClient,
           projectPath,
           key: projectKey,
         }
       : { projectPath, key: projectKey };
-    setLoading(true);
     try {
+      setLoading(true);
       await action(actionPayload, {
         onProgress,
       });
@@ -81,7 +94,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
   };
 
   const handleClick = async e => {
-    if (npmClient && !currNpmClient) {
+    if (needNpmClient) {
       // show modal
       setModalVisible(true);
       return false;
@@ -90,10 +103,6 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       onClick(e);
     }
     await doInstallDeps();
-  };
-
-  const handleSelectNpmClient = (client: string) => {
-    setCurrNpmClient(client);
   };
 
   return (
@@ -108,7 +117,19 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
             name="npmClient"
             rules={[{ required: true, message: '请选择包管理器' }]}
           >
-            <NpmClientForm onChange={handleSelectNpmClient} />
+            <Select
+              placeholder="请选择包管理器"
+              notFoundContent={
+                loading ? <Spin size="small" /> : !npmClient.length && <p>未找到包管理器</p>
+              }
+            >
+              {Array.isArray(npmClient) &&
+                npmClient.map(client => (
+                  <Option key={client} value={client}>
+                    {client}
+                  </Option>
+                ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>

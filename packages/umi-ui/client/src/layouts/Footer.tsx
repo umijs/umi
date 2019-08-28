@@ -112,7 +112,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     <Menu
       theme="dark"
       onClick={({ key }) => {
-        setLocale(key);
+        setLocale(key, false);
       }}
     >
       {Object.keys(omit(LOCALES, locale)).map((lang: any) => (
