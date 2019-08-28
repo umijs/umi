@@ -1,6 +1,7 @@
 .project {
   &-list {
-    max-height: calc(~'100vh - 140px');
+    max-height: calc(~'100vh - 110px');
+    padding: 0 24px;
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
@@ -59,11 +60,13 @@
         }
       }
       &-content {
-        padding: 24px;
+        padding: 0;
         overflow: auto;
         width: calc(~'100% - 72px');
         &-header {
           margin-bottom: 26px;
+          padding: 24px;
+          padding-bottom: 0;
           width: 100%;
           position: relative;
         }
