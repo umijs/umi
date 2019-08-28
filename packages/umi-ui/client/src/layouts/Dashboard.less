@@ -34,9 +34,6 @@
       p {
         .omit;
       }
-      &:hover {
-        background-color: @ui-sidebar-menu-hover-bg;
-      }
     }
   }
   .logo {
@@ -96,10 +93,8 @@
         background-color: @primary-color;
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0;
         content: '';
-        transition: height 0.4s @ease-in-out-quad, opacity 0.4s @ease-in-out-quad;
       }
     }
     &:global(.ant-menu-item-selected) {

@@ -1,7 +1,7 @@
 .project {
   &-list {
     max-height: calc(~'100vh - 110px');
-    padding: 0 24px;
+    padding: 0 12px 0 24px;
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
@@ -85,6 +85,7 @@
   }
   &-list {
     &-item {
+      cursor: pointer;
       padding: 24px;
       padding-right: 8px;
       margin-bottom: 12px;
@@ -103,7 +104,7 @@
           }
           &:hover,
           &:hover :global(.anticon) {
-            color: @primary-5;
+            color: @heading-color;
           }
         }
         em {
@@ -114,9 +115,6 @@
         a {
           color: @heading-color;
           font-size: @font-size-lg;
-          &:hover {
-            color: @primary-5;
-          }
         }
       }
     }
