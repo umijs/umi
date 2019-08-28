@@ -8,7 +8,7 @@ export default {
   'org.umi.ui.global.content.hello': 'Hello',
   'org.umi.ui.global.project.siderbar.title': 'Project',
   'org.umi.ui.global.project.list.empty': 'Is this always true, is it right?',
-  'org.umi.ui.global.project.list.title': 'Project list',
+  'org.umi.ui.global.project.list.title': 'Project List',
   'org.umi.ui.global.project.list.editor.open': 'Open in the editor',
   'org.umi.ui.global.project.list.edit.name': 'Rename',
   'org.umi.ui.global.project.list.delete': 'Delete',
