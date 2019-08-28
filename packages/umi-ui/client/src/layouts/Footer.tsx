@@ -149,17 +149,11 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        {type === 'loading' && (
-          <div onClick={() => handleBack()} className={actionCls}>
-            <HomeFilled style={{ marginRight: 4 }} />{' '}
-            {formatMessage({ id: 'org.umi.ui.global.home' })}
-          </div>
-        )}
+        <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
+          <HomeFilled style={{ marginRight: 4 }} />
+        </div>
         {type === 'detail' && path && name && (
           <>
-            <div onClick={() => handleBack(false)} className={actionCls}>
-              <HomeFilled style={{ marginRight: 4 }} />
-            </div>
             <div className={styles.section}>
               <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>

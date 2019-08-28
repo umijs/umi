@@ -28,7 +28,7 @@ const BooleanComp: React.SFC<ICompProps> = props => {
         return (
           isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
-              <Switch />
+              <Switch size="small" />
             </Form.Item>
           )
         );
@@ -36,7 +36,7 @@ const BooleanComp: React.SFC<ICompProps> = props => {
     </Form.Item>
   ) : (
     <Form.Item {...basicItem}>
-      <Switch />
+      <Switch size="small" />
     </Form.Item>
   );
 };
