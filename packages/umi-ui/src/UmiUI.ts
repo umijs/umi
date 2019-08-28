@@ -218,7 +218,6 @@ export default class UmiUI {
     const setProgress = args => {
       assert(key, `key is not initialized.`);
       this.config.setCreatingProgress(key, args);
-      onProgress(this.config.data.projectsByKey[key].creatingProgress);
     };
 
     try {
@@ -320,6 +319,11 @@ export default class UmiUI {
       });
       await installDeps(npmClient, targetDir, {
         taobaoSpeedUp: this.hasTaobaoSpeedUp(key),
+        onData(data) {
+          onProgress({
+            install: data,
+          });
+        },
       });
       setProgress({
         stepStatus: 2,

@@ -103,7 +103,7 @@ function getSections(api: IUiApi) {
       title: api.intl('org.umi.ui.configuration.project.config.title'),
       icon: (
         <img
-          src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
+          src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
           width={32}
           height={32}
         />
