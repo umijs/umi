@@ -47,7 +47,7 @@ export const Log = logItem => {
       </p>
       <div className={styles['log-desc']}>
         {messageGroup.map((msg, i) => (
-          <p>
+          <p key={i.toString()}>
             <Ansi key={i.toString()} linkify>
               {msg}
             </Ansi>

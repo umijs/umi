@@ -20,7 +20,7 @@ const DashboardUI: React.FC<IProps> = props => {
   const [containerWidth, setContainerWidth] = useState<number>();
   const containerRef = useRef();
   const { api } = props;
-  const { redirect, currentProject, _ } = api;
+  const { redirect, currentProject, _, intl } = api;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
 
@@ -52,7 +52,7 @@ const DashboardUI: React.FC<IProps> = props => {
     };
   };
 
-  const style = { width: 282, height: 150 };
+  const style = { width: 300, height: 150 };
 
   const actionCards = [
     {
@@ -62,12 +62,16 @@ const DashboardUI: React.FC<IProps> = props => {
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.build)} />
           <div className={styles.info}>
-            <h4>构建</h4>
-            <p>这是一段构建的描述信息</p>
+            <h4>{intl('org.umi.ui.dashboard.panel.build.title')}</h4>
+            <p>{intl('org.umi.ui.dashboard.panel.build.desc')}</p>
           </div>
         </div>
       ),
-      body: <div onClick={() => redirect('/tasks?active=build')}>前往任务页面</div>,
+      body: (
+        <div onClick={() => redirect('/tasks?active=build')}>
+          {intl('org.umi.ui.dashboard.panel.goto.task')}
+        </div>
+      ),
     },
     {
       className: actionCardCls,
@@ -76,12 +80,14 @@ const DashboardUI: React.FC<IProps> = props => {
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.dev)} />
           <div className={styles.info}>
-            <h4>本地启动</h4>
-            <p>这是一段本地启动的描述信息</p>
+            <h4>{intl('org.umi.ui.dashboard.panel.dev.title')}</h4>
+            <p>{intl('org.umi.ui.dashboard.panel.dev.desc')}</p>
           </div>
         </div>
       ),
-      body: <div onClick={() => redirect('/tasks')}>前往任务页面</div>,
+      body: (
+        <div onClick={() => redirect('/tasks')}>{intl('org.umi.ui.dashboard.panel.goto.task')}</div>
+      ),
     },
     {
       className: actionCardCls,
@@ -91,7 +97,7 @@ const DashboardUI: React.FC<IProps> = props => {
           <div>
             <Smile />
           </div>
-          <p>敬请期待</p>
+          <p>{intl('org.umi.ui.dashboard.panel.coming.soon')}</p>
         </div>
       ),
     },
@@ -100,8 +106,8 @@ const DashboardUI: React.FC<IProps> = props => {
   if (!closed) {
     actionCards.unshift({
       style: {
-        width: 282,
-        height: 325,
+        width: 300,
+        height: 360,
       },
       className: welcomeCardCls,
       size: 'small',
@@ -109,11 +115,12 @@ const DashboardUI: React.FC<IProps> = props => {
       body: (
         <div>
           <h2>Hi</h2>
-          <p>欢迎来到 {currentProject.name} 项目</p>
-          <div>
-            UmiUI 是蚂蚁金服全新一代 GUI 开发方式，通过 web
-            交互的方式对项目进行开发、管理，达到提升研发效率的目的。
-          </div>
+          <p>
+            {intl('org.umi.ui.dashboard.panel.welcome.title', {
+              name: currentProject.name,
+            })}
+          </p>
+          <div>{intl('org.umi.ui.dashboard.panel.welcome.desc')}</div>
         </div>
       ),
     });

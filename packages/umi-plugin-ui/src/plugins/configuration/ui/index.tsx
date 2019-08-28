@@ -96,11 +96,11 @@ interface IConfigManager {
   api: IUiApi;
 }
 
-function getSections(api) {
+function getSections(api: IUiApi) {
   const sections = [
     {
       key: 'project',
-      title: '项目配置',
+      title: api.intl('org.umi.ui.configuration.project.config.title'),
       icon: (
         <img
           src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
