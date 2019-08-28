@@ -7,7 +7,7 @@ import styles from './ui.module.less';
 export default () => (
   <div className={styles.container}>
     <div className={cls(styles.card, styles.welcome)}>
-      <Card size="small" extra={<Close />}>
+      <Card bordered={false} hoverable={false} size="small" extra={<Close />}>
         <h2>Hi, XXX</h2>
         <p>欢迎来到 Hello World 项目</p>
         <div>
@@ -17,7 +17,7 @@ export default () => (
       </Card>
     </div>
     <div className={styles.card}>
-      <Card actions={[<div>前往任务页面</div>]}>
+      <Card bordered={false} hoverable={false} actions={[<div>前往任务页面</div>]}>
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.build)} />
           <div className={styles.info}>
@@ -28,7 +28,7 @@ export default () => (
       </Card>
     </div>
     <div className={styles.card}>
-      <Card actions={[<div>前往任务页面</div>]}>
+      <Card bordered={false} hoverable={false} actions={[<div>前往任务页面</div>]}>
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.dev)} />
           <div className={styles.info}>
@@ -39,7 +39,7 @@ export default () => (
       </Card>
     </div>
     <div className={styles.card}>
-      <Card>
+      <Card bordered={false} hoverable={false}>
         <div className={styles.future}>
           <div>
             <Smile />
