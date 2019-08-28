@@ -39,6 +39,7 @@ export interface ICreaetProjectValue {
 }
 
 const CreateProject: React.SFC<IProjectProps> = props => {
+  const _log = window.g_uiDebug.extend('CreateProject');
   const { cwd } = props;
   const { formatMessage, setCurrent, current } = useContext(ProjectContext);
 
