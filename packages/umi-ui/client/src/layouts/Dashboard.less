@@ -18,6 +18,17 @@
 .sidebar {
   width: 210px;
   z-index: 2;
+  :global {
+    // strange why vars not working
+    // @menu-item-vertical-margin: 0px;
+    // @menu-item-boundary-margin: 0px;
+    .ant-menu {
+      .ant-menu-item {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
   &-recentMenu {
     width: 144px;
     background-color: @ui-sidebar-menu-bg;
@@ -33,9 +44,6 @@
     :global(.ant-dropdown-menu-item) {
       p {
         .omit;
-      }
-      &:hover {
-        background-color: @ui-sidebar-menu-hover-bg;
       }
     }
   }
@@ -96,10 +104,8 @@
         background-color: @primary-color;
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0;
         content: '';
-        transition: height 0.4s @ease-in-out-quad, opacity 0.4s @ease-in-out-quad;
       }
     }
     &:global(.ant-menu-item-selected) {

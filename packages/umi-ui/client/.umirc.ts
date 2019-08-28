@@ -75,6 +75,7 @@ const config: IConfig = {
         },
         locale: {
           default: 'zh-CN',
+          antd: true,
           baseNavigator: false,
         },
         routes: {

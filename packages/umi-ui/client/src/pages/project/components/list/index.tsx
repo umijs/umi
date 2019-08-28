@@ -122,11 +122,21 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     ],
     failure: item => [],
     success: item => [
-      <a onClick={() => handleOnAction('editor', { key: item.key })}>
+      <a
+        onClick={e => {
+          e.stopPropagation();
+          handleOnAction('editor', { key: item.key });
+        }}
+      >
         <Export className={styles.exportIcon} />
         {formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
       </a>,
-      <a onClick={() => handleOnAction('edit', { key: item.key, name: item.name })}>
+      <a
+        onClick={e => {
+          e.stopPropagation();
+          handleOnAction('edit', { key: item.key, name: item.name });
+        }}
+      >
         {formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}
       </a>,
     ],
@@ -205,15 +215,19 @@ const ProjectList: React.SFC<IProjectProps> = props => {
               renderItem: (item, i) => {
                 const status = getProjectStatus(item);
                 const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
-                  <Popconfirm
-                    title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
-                    onConfirm={() => handleOnAction('delete', { key: item.key })}
-                    onCancel={() => {}}
-                    okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-                    cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
-                  >
-                    <a>{formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}</a>
-                  </Popconfirm>,
+                  <div onClick={e => e.stopPropagation()}>
+                    <Popconfirm
+                      title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
+                      onConfirm={() => {
+                        handleOnAction('delete', { key: item.key });
+                      }}
+                      onCancel={() => {}}
+                      okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+                      cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
+                    >
+                      <a>{formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}</a>
+                    </Popconfirm>
+                  </div>,
                 );
 
                 return (
@@ -221,13 +235,14 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                     key={item.key}
                     className={styles['project-list-item']}
                     actions={actions}
+                    onClick={() => handleTitleClick(item)}
                   >
                     <Skeleton title={false} loading={item.loading} active>
                       <List.Item.Meta
                         title={
                           <div className={styles['project-list-item-title']}>
                             {item.key === currentProject && <Badge status="success" />}
-                            <a onClick={() => handleTitleClick(item)}>{item.name}</a>
+                            <a>{item.name}</a>
                             {status === 'progress' && (
                               <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
                                 {formatMessage({
