@@ -20,12 +20,18 @@ export default function(dirPath, opts: IOpts = {}) {
       }
     })
     .map(fileName => {
-      const type = statSync(join(dirPath, fileName)).isDirectory() ? 'directory' : 'file';
-      return {
-        type,
-        fileName,
-      };
-    });
+      // 如果文件无权访问，返回一个空，筛掉他们
+      try {
+        const type = statSync(join(dirPath, fileName)).isDirectory() ? 'directory' : 'file';
+        return {
+          type,
+          fileName,
+        };
+      } catch (error) {
+        return null;
+      }
+    })
+    .filter(item => item);
 
   let dirs = [];
   let files = [];
