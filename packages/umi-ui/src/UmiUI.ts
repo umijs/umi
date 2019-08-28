@@ -163,7 +163,7 @@ export default class UmiUI {
     });
   }
 
-  openProjectInEditor(key: string) {
+  openProjectInEditor(key: string, callback = {}, lang = 'zh-CN') {
     let launchPath = key;
     if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
@@ -171,10 +171,23 @@ export default class UmiUI {
       console.log('project.path', project.path);
       launchPath = project.path;
     }
-    launchEditor(launchPath, (fileName, errorMsg) => {
+    launchEditor(launchPath, 'code', (fileName, errorMsg) => {
+      console.log('fileName, errorMsg', fileName, errorMsg);
       // log error if any
       if (errorMsg && errorMsg === 'spawn code ENOENT.') {
-        console.log("you can open VS Code, and run >Shell Command: Install 'code' command in Path");
+        if (callback.failure) {
+          const msg = {
+            'zh-CN': `打开编辑器失败 ${launchPath}`,
+            'en-US': `Open Editor Failure, ${launchPath}`,
+          };
+          console.error(chalk.red(msg[lang]));
+          callback.failure({
+            message: msg[lang],
+          });
+        }
+        if (callback.success) {
+          callback.success();
+        }
       }
     });
   }
@@ -460,8 +473,14 @@ export default class UmiUI {
         break;
       case '@@project/openInEditor':
         log('info', `Open in editor: ${this.getProjectName(payload.key)}`);
-        this.openProjectInEditor(payload.key);
-        success();
+        this.openProjectInEditor(
+          payload.key,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@project/edit':
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
@@ -560,8 +579,14 @@ export default class UmiUI {
         success();
         break;
       case '@@actions/openProjectInEditor':
-        this.openProjectInEditor(payload.projectPath);
-        success();
+        this.openProjectInEditor(
+          payload.projectPath,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@app/notify':
         try {
