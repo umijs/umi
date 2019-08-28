@@ -1,3 +1,4 @@
+import React from 'react';
 import { IUiApi } from 'umi-types';
 import Dashboard from './ui/index';
 import zhCN from './locales/zh-CN';
@@ -16,6 +17,6 @@ export default (api: IUiApi) => {
       type: 'dashboard',
       theme: 'filled',
     },
-    component: Dashboard,
+    component: () => <Dashboard api={api} />,
   });
 };
