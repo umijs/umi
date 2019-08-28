@@ -6,8 +6,6 @@ import userHome from 'user-home';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 
-let count = 0;
-
 interface IOpts {
   dbPath?: string;
   onSave?: any;
