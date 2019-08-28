@@ -13,11 +13,12 @@
     "src"
   ],
   "dependencies": {
-    "xterm-addon-web-links": "^0.1.0",
-    "react-sizeme": "^2.6.7",
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
-    "rimraf": "^3.0.0"
+    "binary-mirror-config": "1.20.3",
+    "react-sizeme": "^2.6.7",
+    "rimraf": "^3.0.0",
+    "xterm-addon-web-links": "^0.1.0"
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
