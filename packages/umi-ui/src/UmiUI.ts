@@ -213,125 +213,143 @@ export default class UmiUI {
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
     const { type, npmClient, baseDir, name, args } = opts;
-    let key;
+    let key = opts.key;
+    let retryFrom = opts.retryFrom;
+
+    if (key) {
+      assert(retryFrom in opts, `key 和 retryFrom 必须同时提供。`);
+    }
 
     const setProgress = args => {
       assert(key, `key is not initialized.`);
       this.config.setCreatingProgress(key, args);
     };
 
+    const sigintHandler = () => {
+      if (key) {
+        this.config.setCreatingProgress(key, {
+          stepStatus: 3,
+          failure: {
+            message: 'exit UmiUi server',
+          },
+        });
+      }
+      process.exit();
+    };
+
     try {
-      // 步骤：
-      //
-      // 1. 校验
-      //      a) 比如检查目标目录是否为空或不存在
-      // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
-      // 3. 安装 create-umi 或更新他
-      // 4. create-umi 创建
-      //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
-      // 5. 安装依赖
-      //
-      // 项目步骤：
-      // 1. 校验参数
-      // 2. 安装/更新 create-umi
-      // 3. 使用 create-umi 初始化项目
-      // 4. 安装依赖
-      //
-      // 结束后打开项目。
       assert(baseDir, `baseDir must be supplied`);
       assert(name, `name must be supplied`);
       assert(type, `type must be supplied`);
       const targetDir = join(baseDir, name);
 
-      // 1
-      assert(
-        !existsSync(targetDir) || emptyDir.sync(targetDir),
-        `target dir ${targetDir} exists and not empty`,
-      );
-      // 2
-      key = this.config.addProject({
-        path: targetDir,
-        name,
-        npmClient,
-      });
+      if (!retryFrom) {
+        // 步骤：
+        //
+        // 1. 校验
+        //      a) 比如检查目标目录是否为空或不存在
+        // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
+        // 3. 安装 create-umi 或更新他
+        // 4. create-umi 创建
+        //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
+        // 5. 安装依赖
+        //
+        // 项目步骤：
+        // 1. 校验参数
+        // 2. 安装/更新 create-umi
+        // 3. 使用 create-umi 初始化项目
+        // 4. 安装依赖
+        //
+        // 结束后打开项目。
 
-      // get create key
-      onSuccess({
-        key,
-      });
+        // 0
+        assert(
+          !existsSync(targetDir) || emptyDir.sync(targetDir),
+          `target dir ${targetDir} exists and not empty`,
+        );
+
+        // 1
+        key = this.config.addProject({
+          path: targetDir,
+          name,
+          npmClient,
+        });
+
+        // get create key
+        onSuccess({
+          key,
+        });
+
+        setProgress({
+          // 表示第几个 step，从 0 开始
+          step: 1,
+          // 0: 未开始
+          // 1: 执行中
+          // 2: 执行完成
+          // 3: 执行失败
+          stepStatus: 0,
+          steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
+        });
+      }
 
       // catch exit
-      process.on('SIGINT', () => {
-        if (key) {
-          try {
-            this.config.setCreatingProgress(key, {
-              stepStatus: 3,
-              failure: {
-                message: 'exit UmiUi server',
-              },
-            });
-          } catch (e) {}
-        }
-        process.exit();
-      });
+      process.on('SIGINT', sigintHandler);
 
-      setProgress({
-        // 表示第几个 step，从 0 开始
-        step: 1,
-        // 0: 未开始
-        // 1: 执行中
-        // 2: 执行完成
-        // 3: 执行失败
-        stepStatus: 0,
-        steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
-      });
+      // 1
+      let creatorPath;
+      // step 2 依赖 step 1
+      if (retryFrom === 2) {
+        retryFrom = 1;
+      }
+      if (!retryFrom || retryFrom <= 1) {
+        setProgress({
+          step: 1,
+          stepStatus: 1,
+        });
+        creatorPath = await installCreator({});
+        setProgress({
+          stepStatus: 2,
+        });
+      }
+
+      // 2
+      if (!retryFrom || retryFrom <= 2) {
+        setProgress({
+          step: 2,
+          stepStatus: 1,
+        });
+        clearModule(creatorPath);
+        await require(creatorPath).run({
+          cwd: targetDir,
+          type,
+          args,
+        });
+        setProgress({
+          stepStatus: 2,
+        });
+      }
 
       // 3
-      setProgress({
-        step: 1,
-        stepStatus: 1,
-      });
-      const creatorPath = await installCreator({});
-      setProgress({
-        stepStatus: 2,
-      });
-
-      // 4
-      setProgress({
-        step: 2,
-        stepStatus: 1,
-      });
-      clearModule(creatorPath);
-      await require(creatorPath).run({
-        cwd: targetDir,
-        type,
-        args,
-      });
-      setProgress({
-        stepStatus: 2,
-      });
-
-      // 5
-      setProgress({
-        step: 3,
-        stepStatus: 1,
-      });
-      await installDeps(npmClient, targetDir, {
-        taobaoSpeedUp: this.hasTaobaoSpeedUp(),
-        onData(data) {
-          onProgress({
-            install: data,
-          });
-        },
-      });
-      setProgress({
-        stepStatus: 2,
-      });
-      setProgress({
-        success: true,
-      });
-      // this.config.setCreatingProgressDone(key);
-      // onSuccess();
+      if (!retryFrom || retryFrom <= 3) {
+        setProgress({
+          step: 3,
+          stepStatus: 1,
+        });
+        await installDeps(npmClient, targetDir, {
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(),
+          onData(data) {
+            onProgress({
+              install: data,
+            });
+          },
+        });
+        setProgress({
+          stepStatus: 2,
+        });
+        setProgress({
+          success: true,
+        });
+      }
     } catch (e) {
       if (key) {
         this.config.setCreatingProgress(key, {
@@ -341,9 +359,7 @@ export default class UmiUI {
       }
       onFailure(e);
     } finally {
-      process.removeListener('SIGINT', () => {
-        console.log('success remove sigint');
-      });
+      process.removeListener('SIGINT', sigintHandler);
     }
   }
 
