@@ -78,11 +78,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const handleOnAction = async (action: IAction, payload: { key?: string; [key: string]: any }) => {
     if (action === 'open') {
+      await setCurrentProject(payload as any);
       await handleBack(true, '/dashboard');
       // for flash dashboard
       document.getElementById('root').innerHTML = '';
       ReactDOM.render(React.createElement(<Loading />, {}), document.getElementById('root'));
-      await setCurrentProject(payload as any);
     }
     if (action === 'delete') {
       await deleteProject(payload);

@@ -209,8 +209,6 @@ const BasicConfig = () => {
     [styles['basicConfig-header-input-active']]: !!showSearch,
   });
 
-  console.log('getChangedValue(allValues)', getChangedValue(allValues));
-
   const changedValueArr = Object.keys(getChangedValue(allValues));
 
   const ResetTitle = (
