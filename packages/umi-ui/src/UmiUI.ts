@@ -132,7 +132,6 @@ export default class UmiUI {
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {
-        console.error('service eee', e);
         if (isDepLost(e)) {
           throw new ActiveProjectError({
             message: {
