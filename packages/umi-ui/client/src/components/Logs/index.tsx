@@ -1,18 +1,18 @@
 import * as React from 'react';
-import moment from 'moment';
-import { formatDate, formatMessage } from 'umi-plugin-react/locale';
+import { formatDate, formatMessage, getLocale } from 'umi-plugin-react/locale';
+import zhCN from '@/locales/zh-CN';
+import enUS from '@/locales/en-US';
 import Ansi from 'ansi-to-react';
 import { Tag } from 'antd';
 import cls from 'classnames';
 
 import styles from './index.less';
 
-const { useState, useEffect } = React;
-
 interface LogProps {
   logs?: object[];
   style?: React.CSSProperties;
   className?: string;
+  type?: string;
 }
 
 const TAG_MAP = {
@@ -59,8 +59,9 @@ export const Log = logItem => {
 };
 
 const Logs: React.SFC<LogProps> = props => {
-  const { logs, style, className } = props;
+  const { logs, style, className, type } = props;
   const logsCls = cls(styles.logs, className);
+  const localeMessages = getLocale() === 'zh-CN' ? zhCN : enUS;
 
   return (
     <div className={logsCls} style={style}>
@@ -68,7 +69,11 @@ const Logs: React.SFC<LogProps> = props => {
         {Array.isArray(logs) && logs.length > 0 ? (
           logs.map((log, i) => <Log {...log} key={i} />)
         ) : (
-          <li>{formatMessage({ id: 'org.umi.ui.global.log.empty' })}</li>
+          <li>
+            {type === 'loading'
+              ? localeMessages['org.umi.ui.global.log.empty']
+              : formatMessage({ id: 'org.umi.ui.global.log.empty' })}
+          </li>
         )}
       </ul>
     </div>

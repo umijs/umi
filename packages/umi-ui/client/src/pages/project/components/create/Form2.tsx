@@ -56,7 +56,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         args: {
           language: 'JavaScript',
         },
-        taobaoSpeedUp: true,
+        // taobaoSpeedUp: true,
       }}
     >
       <Form.Item
@@ -123,33 +123,33 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
             ))}
         </Select>
       </Form.Item>
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, curValues) => prevValues.npmClient !== curValues.npmClient}
-      >
-        {({ getFieldValue }) => {
-          const client = getFieldValue('npmClient') as string;
-          const shouldSpeedUp = Object.keys(SPEEDUP_CLIENTS).includes(client);
-          return (
-            shouldSpeedUp && (
-              <Form.Item
-                name="taobaoSpeedUp"
-                valuePropName="checked"
-                label={
-                  <span>
-                    淘宝源加速&nbsp;
-                    <Tooltip title="使用 npm/yarn 时开启国内加速  ">
-                      <QuestionCircle />
-                    </Tooltip>
-                  </span>
-                }
-              >
-                <Switch />
-              </Form.Item>
-            )
-          );
-        }}
-      </Form.Item>
+      {/*<Form.Item*/}
+      {/*  noStyle*/}
+      {/*  shouldUpdate={(prevValues, curValues) => prevValues.npmClient !== curValues.npmClient}*/}
+      {/*>*/}
+      {/*  {({ getFieldValue }) => {*/}
+      {/*    const client = getFieldValue('npmClient') as string;*/}
+      {/*    const shouldSpeedUp = Object.keys(SPEEDUP_CLIENTS).includes(client);*/}
+      {/*    return (*/}
+      {/*      shouldSpeedUp && (*/}
+      {/*        <Form.Item*/}
+      {/*          name="taobaoSpeedUp"*/}
+      {/*          valuePropName="checked"*/}
+      {/*          label={*/}
+      {/*            <span>*/}
+      {/*              淘宝源加速&nbsp;*/}
+      {/*              <Tooltip title="使用 npm/yarn 时开启国内加速  ">*/}
+      {/*                <QuestionCircle />*/}
+      {/*              </Tooltip>*/}
+      {/*            </span>*/}
+      {/*          }*/}
+      {/*        >*/}
+      {/*          <Switch />*/}
+      {/*        </Form.Item>*/}
+      {/*      )*/}
+      {/*    );*/}
+      {/*  }}*/}
+      {/*</Form.Item>*/}
       <Form.Item style={{ marginTop: 16 }}>
         <>
           <Button onClick={() => goPrev()}>{formatMessage({ id: '上一步' })}</Button>
