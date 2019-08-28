@@ -95,10 +95,10 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
           ))}
       </Select>
       <div className={styles['itemField-field-value']}>
-        {typeof v === 'string' && (
+        {/* {typeof v === 'string' && (
           <Input autoComplete="off" onChange={e => handleInput(e.target.value)} defaultValue={v} />
-        )}
-        {typeof v === 'number' && <InputNumber onChange={v => handleInput(v)} defaultValue={v} />}
+        )} */}
+        <InputNumber onChange={v => handleInput(v)} defaultValue={v} />
       </div>
     </InputGroup>
   );

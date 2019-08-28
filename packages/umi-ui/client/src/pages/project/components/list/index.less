@@ -88,10 +88,13 @@
       cursor: pointer;
       // width: 100%;
       margin-bottom: 32px;
+      :global(.ant-card) {
+        border-color: transparent;
+      }
       &:hover :global(.ant-card) {
         background-color: @card-hover-border;
       }
-      :global(.ant-card-actions) > li {
+      ant-card :global(.ant-card-actions) > li {
         border-color: transparent;
       }
       :global(.ant-card-meta-title) {
