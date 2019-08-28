@@ -42,8 +42,12 @@ export async function installDeps(npmClient, targetDir, opts) {
 
   if (['yarn', 'ayarn', 'pnpm'].includes(npmClient)) {
     args = [];
-  } else if (['tnpm', 'npm', 'cnpm'].includes(npmClient)) {
-    args = ['install', '-d'];
+  } else if (['tnpm', 'npm', 'cnpm', 'pnpm'].includes(npmClient)) {
+    args = ['install'];
+    if (npmClient !== 'pnpm') {
+      // Detail logs.
+      args.push('-d');
+    }
   }
 
   await executeCommand(npmClient, args, targetDir, opts);
