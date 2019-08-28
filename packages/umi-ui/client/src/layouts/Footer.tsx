@@ -11,6 +11,7 @@ import {
   Enter,
   Delete,
 } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
@@ -29,8 +30,16 @@ export interface IFooterProps {
 }
 
 const FOOTER_RIGHT = [
-  { title: '反馈', icon: <Message />, href: 'https://umijs.org' },
-  { title: '帮助', icon: <QuestionCircle />, href: 'https://umijs.org' },
+  {
+    title: 'org.umi.ui.global.feedback',
+    icon: <Message />,
+    href: 'https://umijs.org',
+  },
+  {
+    title: 'org.umi.ui.global.help',
+    icon: <QuestionCircle />,
+    href: 'https://umijs.org',
+  },
 ];
 
 const Footer: React.SFC<IFooterProps> = props => {
@@ -127,7 +136,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     try {
       await clearLog();
     } catch (e) {
-      message.error('清除日志失败');
+      message.error(formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
     } finally {
       await getLogs();
     }
@@ -138,7 +147,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       <div className={styles.statusBar}>
         {type === 'loading' && (
           <div onClick={() => handleBack()} className={actionCls}>
-            <Home style={{ marginRight: 4 }} /> 返回列表
+            <Home style={{ marginRight: 4 }} /> {formatMessage({ id: 'org.umi.ui.global.home' })}
           </div>
         )}
         {type === 'detail' && path && name && (
@@ -152,12 +161,12 @@ const Footer: React.SFC<IFooterProps> = props => {
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <Profile /> 日志
+          <Profile /> {formatMessage({ id: 'org.umi.ui.global.log' })}
         </div>
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon} {item.title}
+              {item.icon} {formatMessage({ id: item.title })}
             </a>
           </div>
         ))}
@@ -175,13 +184,13 @@ const Footer: React.SFC<IFooterProps> = props => {
       <Drawer
         title={
           <div className={styles['section-drawer-title']}>
-            <h1>日志</h1>
+            <h1>{formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
             <div className={styles['section-drawer-title-action']}>
               <Popconfirm
-                title="是否清除日志？"
+                title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
                 onConfirm={handleClearLog}
-                okText="是"
-                cancelText="否"
+                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Delete />
               </Popconfirm>
