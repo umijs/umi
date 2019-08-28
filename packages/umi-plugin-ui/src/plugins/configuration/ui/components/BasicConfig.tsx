@@ -284,11 +284,17 @@ const BasicConfig = () => {
           onConfirm={handleReset}
           onCancel={() => {}}
           okText="确定"
+          disabled={!changedValueArr.length}
           cancelText="取消"
         >
-          <Button>重置</Button>
+          <Button disabled={!changedValueArr.length}>重置</Button>
         </Popconfirm>
-        <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
+        <Button
+          disabled={!changedValueArr.length}
+          onClick={handleSubmit}
+          style={{ marginRight: 24 }}
+          type="primary"
+        >
           保存
         </Button>
       </div>
