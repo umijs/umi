@@ -83,7 +83,7 @@ declare namespace IUI {
   type ICallRemote = IApiActionFactory;
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
-  type IIntl = (key: string | undefined) => string;
+  type IIntl = (key: string | undefined, message?: object) => string;
 
   interface INotifyParams {
     title: string;

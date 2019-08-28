@@ -18,7 +18,7 @@ export default {
   ),
   BACK_TO_HOME: props => (
     <Button onClick={() => handleBack()} type={props.type}>
-      返回首页
+      {props.children}
     </Button>
   ),
   '@@actions/openConfigFile': OpenFile,

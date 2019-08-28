@@ -1,37 +1,38 @@
 .container {
-  padding: 17px 24px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  padding: 20px 16px;
+}
+
+.close {
+  transition: all 0.3s;
+  &:hover {
+    color: #40a9ff;
+  }
 }
 
 .card {
-  flex-basis: 24%;
-  transition-duration: 4ms;
-
-  &:hover {
-    background: #30303d;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  }
-
   :global {
     .ant-card {
       background-color: #30303d;
+      height: 100%;
     }
     .ant-card-head {
       border-bottom: none;
     }
-    .ant-card-actions {
-      background-color: unset;
-      height: 54px;
-      > li {
-        margin: 14px 0;
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.65);
+  }
+  &-action {
+    :global {
+      .ant-card-head-title {
+        padding: 26px 0;
+      }
+      .ant-card-body {
+        border-top: 1px solid #1d1d26;
         text-align: center;
-        line-height: 22px;
-        > span:hover {
-          color: rgba(255, 255, 255, 0.65);
+        padding: 12px;
+        cursor: pointer;
+        color: fade(#fff, 65);
+        transition: all 0.3s;
+        &:hover {
+          background-color: #383847;
         }
       }
     }
@@ -40,6 +41,9 @@
 
 .main {
   display: flex;
+  p {
+    font-size: 12px;
+  }
 }
 
 .icon {
@@ -67,7 +71,6 @@
 }
 
 .future {
-  width: 56px;
   margin: 26px auto;
   text-align: center;
   div {
@@ -95,7 +98,7 @@
         font-size: 24px;
         color: #fff;
         line-height: 32px;
-        margin-bottom: 61px;
+        margin-bottom: 56px;
       }
       div {
         font-size: 14px;

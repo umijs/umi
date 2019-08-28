@@ -155,26 +155,24 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       </div>
     );
 
-    return (
+    return error ? (
       <Layout type="loading">
         <div className={styles.loading}>
-          {error ? (
-            <Fail
-              title={actionLoading ? '执行中' : '加载失败'}
-              loading={actionLoading}
-              subTitle={renderSubTitle(error)}
-              extra={actionsDeps}
-            />
-          ) : (
-            <Fragment>
-              <div className={styles['loading-spin']}>
-                <Spin size="large" />
-                <p>{messages['org.umi.ui.loading.open']}</p>
-              </div>
-            </Fragment>
-          )}
+          <Fail
+            title={actionLoading ? '执行中' : '加载失败'}
+            loading={actionLoading}
+            subTitle={renderSubTitle(error)}
+            extra={actionsDeps}
+          />
         </div>
       </Layout>
+    ) : (
+      <div className={styles.loading}>
+        <div className={styles['loading-spin']}>
+          <Spin size="large" />
+          <p>{messages['org.umi.ui.loading.open']}</p>
+        </div>
+      </div>
     );
   }
 }

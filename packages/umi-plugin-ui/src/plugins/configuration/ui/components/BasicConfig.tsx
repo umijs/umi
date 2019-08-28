@@ -23,7 +23,7 @@ const BasicConfig = () => {
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
   const { api, theme } = useContext(Context);
-  const { _ } = api;
+  const { _, intl } = api;
 
   const getDiffItems = (prev: object, curr: object): object =>
     _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
@@ -209,8 +209,6 @@ const BasicConfig = () => {
     [styles['basicConfig-header-input-active']]: !!showSearch,
   });
 
-  console.log('getChangedValue(allValues)', getChangedValue(allValues));
-
   const changedValueArr = Object.keys(getChangedValue(allValues));
 
   const ResetTitle = (
@@ -229,7 +227,7 @@ const BasicConfig = () => {
       <div className={themeCls} ref={containerRef}>
         <div className={styles.form}>
           <div className={styles['basicConfig-header']}>
-            <h2>项目配置</h2>
+            <h2>{intl('org.umi.ui.configuration.project.config.title')}</h2>
             <span className={searchIconCls}>
               <SearchIcon onClick={handleSearchShow} />
             </span>
@@ -237,7 +235,7 @@ const BasicConfig = () => {
               prefix={<SearchIcon />}
               ref={searchInputRef}
               suffix={search && <CloseCircleFilled onClick={resetSearch} />}
-              placeholder="搜索"
+              placeholder={intl('org.umi.ui.configuration.search.placeholder')}
               className={inputCls}
               onChange={e => handleSearchDebounce(e.target.value)}
             />
@@ -286,11 +284,17 @@ const BasicConfig = () => {
           onConfirm={handleReset}
           onCancel={() => {}}
           okText="确定"
+          disabled={!changedValueArr.length}
           cancelText="取消"
         >
-          <Button>重置</Button>
+          <Button disabled={!changedValueArr.length}>重置</Button>
         </Popconfirm>
-        <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
+        <Button
+          disabled={!changedValueArr.length}
+          onClick={handleSubmit}
+          style={{ marginRight: 24 }}
+          type="primary"
+        >
           保存
         </Button>
       </div>

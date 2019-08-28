@@ -1,4 +1,5 @@
 import { join } from 'path';
+import BinaryMirrorConfig from 'binary-mirror-config';
 import { BaseTask, ITaskOptions } from './Base';
 import { TaskType, TaskEventType, NpmClient, TaskState } from '../enums';
 import { runCommand, getNpmClient } from '../../util';
@@ -101,21 +102,6 @@ export class InstallTask extends BaseTask {
     if (!taobaoSpeedUp) {
       return {};
     }
-    const registry = 'https://registry.npm.taobao.org';
-    const MIRROR_URL = 'https://npm.taobao.org/mirrors';
-    return {
-      NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
-      NVM_NODEJS_ORG_MIRROR: `${MIRROR_URL}/node`,
-      NVM_IOJS_ORG_MIRROR: `${MIRROR_URL}/iojs`,
-      PHANTOMJS_CDNURL: `${MIRROR_URL}/phantomjs`,
-      CHROMEDRIVER_CDNURL: 'http://tnpm-hz.oss-cn-hangzhou.aliyuncs.com/dist/chromedriver',
-      OPERADRIVER_CDNURL: `${MIRROR_URL}/operadriver`,
-      ELECTRON_MIRROR: `${MIRROR_URL}/electron/`,
-      SASS_BINARY_SITE: `${MIRROR_URL}/node-sass`,
-      PUPPETEER_DOWNLOAD_HOST: MIRROR_URL,
-      FLOW_BINARY_MIRROR: 'https://github.com/facebook/flow/releases/download/v',
-      npm_config_registry: registry,
-      yarn_registry: registry,
-    };
+    return BinaryMirrorConfig.china.ENVS;
   }
 }

@@ -67,6 +67,7 @@ const config: IConfig = {
     [
       join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
+        dva: false,
         antd: false,
         dynamicImport: {
           webpackChunkName: true,
@@ -82,10 +83,15 @@ const config: IConfig = {
         links: [
           {
             rel: 'stylesheet',
-            href: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.css',
+            href: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.css',
           },
         ],
         headScripts: [
+          // polyfill
+          {
+            src:
+              '//polyfill.alicdn.com/polyfill.min.js?features=default,es2015,es2016,es2017,RegeneratorRuntime,IntersectionObserver,NodeList.prototype.forEach',
+          },
           {
             src: `//gw.alipayobjects.com/os/lib/??react/16.8.1/umd/react.${
               NODE_ENV === 'development' ? 'development' : 'production.min'
@@ -94,14 +100,14 @@ const config: IConfig = {
             }.js`,
           },
           {
-            src: 'https://gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
+            src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: 'https://gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.2/dist/antd.min.js',
+            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.2/dist/antd.min.js',
           },
-          { src: 'https://gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
-          { src: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },
-          { src: 'https://gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/addons/fit/fit.js' },
+          { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
+          { src: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },
+          { src: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/addons/fit/fit.js' },
         ],
       },
     ],

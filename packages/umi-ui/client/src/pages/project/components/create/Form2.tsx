@@ -51,6 +51,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       layout="vertical"
       name="form_create_project"
       onFinish={handleFinish}
+      onKeyDown={e => (e.keyCode === 13 ? e.preventDefault() : '')}
       initialValues={{
         args: {
           language: 'JavaScript',

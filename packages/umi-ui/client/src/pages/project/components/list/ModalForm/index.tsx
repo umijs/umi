@@ -10,14 +10,17 @@ interface IModalFormProps {
   onCancel?: () => void;
   name?: string;
   onOk?: (name: string, values: object) => void;
+  visible?: boolean;
   restModelProps?: object;
   initialValues?: any;
   restFormProps?: object;
+  [key: string]: any;
 }
 
 const ModalForm: React.FC<IModalFormProps> = ({
   onCancel,
   onOk,
+  visible,
   name,
   initialValues,
   restModelProps,
@@ -28,11 +31,15 @@ const ModalForm: React.FC<IModalFormProps> = ({
 
   console.log('initialValues', initialValues);
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(
+    () => {
       form.resetFields();
-    };
-  }, []);
+      return () => {
+        form.resetFields();
+      };
+    },
+    [visible],
+  );
 
   const handleOnOk = () => {
     const values = form.getFieldsValue();
@@ -43,7 +50,7 @@ const ModalForm: React.FC<IModalFormProps> = ({
   };
 
   return (
-    <Modal {...restModelProps} visible onOk={handleOnOk} onCancel={onCancel}>
+    <Modal {...restModelProps} visible={visible} onOk={handleOnOk} onCancel={onCancel}>
       <Form
         layout="vertical"
         {...restFormProps}

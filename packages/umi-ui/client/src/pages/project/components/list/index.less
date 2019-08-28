@@ -1,18 +1,16 @@
-.exportIcon {
-  margin-right: 8px;
-  display: inline-block;
-  vertical-align: middle;
-}
 .project {
-  &-transition {
-    position: relative;
-  }
   &-list {
     max-height: calc(~'100vh - 140px');
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
     position: relative;
+    .exportIcon {
+      margin-right: 8px;
+      margin-bottom: 1px;
+      display: inline-block;
+      vertical-align: middle;
+    }
     &-layout {
       min-height: 100vh;
       .tag {
@@ -61,7 +59,7 @@
         }
       }
       &-content {
-        padding: 26px 32px;
+        padding: 24px;
         overflow: auto;
         width: calc(~'100% - 72px');
         &-header {
@@ -85,10 +83,11 @@
   &-list {
     &-item {
       padding: 24px;
+      padding-right: 8px;
       margin-bottom: 12px;
       background-color: @card-background;
       border-radius: @border-radius-base;
-      transition: background-color 0.15 @ease-in;
+      transition: all 0.3s;
       &:hover {
         background-color: @card-hover-border;
       }
@@ -99,7 +98,8 @@
           i {
             margin: 8px;
           }
-          &:hover {
+          &:hover,
+          &:hover :global(.anticon) {
             color: @primary-5;
           }
         }

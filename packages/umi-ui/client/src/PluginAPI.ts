@@ -47,13 +47,16 @@ export default class PluginAPI {
     }
   };
 
-  intl: IUi.IIntl = key => {
+  intl: IUi.IIntl = (key, message = {}) => {
     const { g_lang: locale, g_uiLocales: localeMessages } = window;
     if (typeof key !== 'string') return '';
     if (key in (localeMessages[locale] || {})) {
-      return formatMessage({
-        id: key,
-      });
+      return formatMessage(
+        {
+          id: key,
+        },
+        message,
+      );
     }
     return key;
   };
