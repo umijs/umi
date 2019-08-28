@@ -2,6 +2,9 @@
   padding: 20px 16px;
 }
 
+.card {
+  margin-bottom: 16px;
+}
 .close {
   transition: all 0.3s;
   &:hover {
@@ -11,10 +14,6 @@
 
 .card {
   :global {
-    .ant-card {
-      background-color: #30303d;
-      height: 100%;
-    }
     .ant-card-head {
       border-bottom: none;
     }
@@ -27,12 +26,15 @@
       .ant-card-body {
         border-top: 1px solid #1d1d26;
         text-align: center;
-        padding: 12px;
+        padding: 0;
         cursor: pointer;
         color: fade(#fff, 65);
         transition: all 0.3s;
         &:hover {
           background-color: #383847;
+        }
+        & > div {
+          padding: 16px 0;
         }
       }
     }
@@ -71,7 +73,6 @@
 }
 
 .future {
-  width: 56px;
   margin: 26px auto;
   text-align: center;
   div {
@@ -99,7 +100,7 @@
         font-size: 24px;
         color: #fff;
         line-height: 32px;
-        margin-bottom: 61px;
+        margin-bottom: 56px;
       }
       div {
         font-size: 14px;

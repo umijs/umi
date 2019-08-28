@@ -9,7 +9,6 @@
   "dependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
-    "autoresponsive-react": "^1.1.31",
     "classnames": "^2.2.6",
     "fuse.js": "^3.4.5",
     "umi-ui-tasks": "0.0.1-beta.2"

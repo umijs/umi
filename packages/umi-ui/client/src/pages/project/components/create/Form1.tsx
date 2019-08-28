@@ -60,6 +60,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       form={form}
       ref={ref}
       style={style}
+      onKeyDown={e => (e.keyCode === 13 ? e.preventDefault() : '')}
       layout="vertical"
       name="form_create_project"
       onFinish={() => goNext()}

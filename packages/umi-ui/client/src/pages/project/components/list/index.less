@@ -1,15 +1,17 @@
-.exportIcon {
-  margin-right: 8px;
-  display: inline-block;
-  vertical-align: middle;
-}
 .project {
   &-list {
-    max-height: calc(~'100vh - 140px');
+    max-height: calc(~'100vh - 110px');
+    padding-left: 24px;
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
     position: relative;
+    .exportIcon {
+      margin-right: 8px;
+      margin-bottom: 1px;
+      display: inline-block;
+      vertical-align: middle;
+    }
     &-layout {
       min-height: 100vh;
       .tag {
@@ -58,11 +60,13 @@
         }
       }
       &-content {
-        padding: 26px 32px;
+        padding: 0;
         overflow: auto;
         width: calc(~'100% - 72px');
         &-header {
           margin-bottom: 26px;
+          padding: 24px;
+          padding-bottom: 0;
           width: 100%;
           position: relative;
         }
@@ -81,37 +85,34 @@
   }
   &-list {
     &-item {
-      padding: 24px;
-      margin-bottom: 12px;
-      background-color: @card-background;
-      border-radius: @border-radius-base;
-      transition: background-color 0.15 @ease-in;
-      &:hover {
+      cursor: pointer;
+      // width: 100%;
+      margin-bottom: 32px;
+      &:hover :global(.ant-card) {
         background-color: @card-hover-border;
       }
-      ul > li {
-        padding: 0 16px;
-        a {
-          color: @text-color;
-          i {
-            margin: 8px;
-          }
-          &:hover {
-            color: @primary-5;
-          }
-        }
-        em {
-          display: none;
-        }
+      :global(.ant-card-actions) > li {
+        border-color: transparent;
+      }
+      :global(.ant-card-meta-title) {
+        margin-bottom: 2px;
+      }
+      :global(.ant-card-actions) {
+        background-color: inherit;
+      }
+      @media @mobile {
+        width: 100%;
       }
       &-title {
         a {
           color: @heading-color;
           font-size: @font-size-lg;
-          &:hover {
-            color: @primary-5;
-          }
         }
+      }
+      &-desc {
+        margin-bottom: 0;
+        color: @text-color-secondary;
+        height: 66px;
       }
     }
   }

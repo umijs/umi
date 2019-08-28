@@ -29,16 +29,12 @@ const Project: React.FC<{}> = () => {
   useEffect(() => {
     (async () => {
       await getProject();
-      console.log('getProjectgetProjectgetProject');
-
       const { cwd } = await getCwd();
       setCwd(cwd);
 
       const { data: files } = await listDirectory({
         dirPath: cwd,
       });
-      console.log('cwd', cwd);
-      console.log('files', files);
       setFiles(files);
     })();
   }, []);

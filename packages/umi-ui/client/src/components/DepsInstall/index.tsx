@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Button, Modal, Form, Select, Spin } from 'antd';
+import { getLocale } from 'umi-plugin-react/locale';
 import { ButtonProps } from 'antd/lib/button';
 import useNpmClients from '@/components/hooks/useNpmClients';
+import zhCN from '@/locales/zh-CN';
+import enUS from '@/locales/en-US';
 import { reInstallDependencies, installDependencies } from '@/services/project';
 
 const { useState, useEffect } = React;
@@ -31,6 +34,8 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     onSuccess,
     ...restProps
   } = props;
+  const locale = getLocale();
+  const messages = locale === 'zh-CN' ? zhCN : enUS;
   const { npmClient: needNpmClient } = payload;
   const { npmClient, error } = useNpmClients();
   const [loading, setLoading] = useState<boolean>(false);
@@ -110,11 +115,21 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       <Button {...restProps} onClick={handleClick} loading={loading}>
         {loading && loadingChild ? loadingChild : children}
       </Button>
-      <Modal visible={modalVisible} onOk={onOk} maskClosable={false} onCancel={closeModal}>
+      <Modal
+        visible={modalVisible}
+        onOk={onOk}
+        maskClosable={false}
+        okText={messages['org.umi.ui.global.okText']}
+        cancelText={messages['org.umi.ui.global.cancelText']}
+        onCancel={closeModal}
+      >
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
             label="选择包管理器"
             name="npmClient"
+            style={{
+              marginBottom: 0,
+            }}
             rules={[{ required: true, message: '请选择包管理器' }]}
           >
             <Select

@@ -16,6 +16,7 @@ interface DirectoryFormProps {
 }
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
+  const _log = g_uiDebug.extend('DirectoryForm');
   const { value, onChange } = props;
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
   const dirPathEditRef = useRef<HTMLInputElement>();
@@ -35,6 +36,8 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     const { data: files } = await listDirectory({
       dirPath: path,
     });
+    _log('changeDirectories path:', path);
+    _log('changeDirectories files:', files);
     triggerChangeValue(path);
     setDirPath(path);
     setDirectories(files);
@@ -49,23 +52,28 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     })();
   }, []);
 
+  const dirPathArr = dirPath === '/' ? ['/'] : dirPath.split('/');
+
+  // double click
   const handleDirectoryClick = async (folderName?: string) => {
+    _log(`doubleClick: ${folderName}`);
     if (folderName) {
       // TODO windows Path format
       const currDirPath = `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`;
+      _log(`doubleClick: currDirPath ${currDirPath}`);
       await changeDirectories(currDirPath);
     }
   };
 
+  // single click
   const handleDirectorySelect = (folderName: string, i: number) => {
+    _log(`singleClick: ${folderName}`);
     if (folderName) {
+      _log(`dirPath: ${dirPath}`);
       const currDirPath = !(clicked > -1)
         ? `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`
-        : dirPath
-            .split('/')
-            .slice(0, -1)
-            .concat(folderName)
-            .join('/');
+        : dirPathArr.concat(folderName).join('/');
+      _log(`singleClick: currDirPath ${currDirPath}`);
       triggerChangeValue(currDirPath);
       setClicked(i);
     }
@@ -77,8 +85,6 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       await changeDirectories(currDirPath || '/');
     }
   };
-
-  const dirPathArr = dirPath === '/' ? ['/'] : dirPath.split('/');
 
   const handleBreadDirChange = async (path: string) => {
     // TODO: validate Path
@@ -109,7 +115,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     }, 0);
   };
 
-  console.log('dirPathArr', dirPathArr);
+  _log('dirPathArr:', dirPathArr);
 
   return (
     <div className={styles.directoryForm}>
@@ -119,7 +125,12 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         </Button>
         <div className={styles['directoryForm-toolbar-bread']}>
           {dirPathEdit ? (
-            <Input ref={dirPathEditRef} defaultValue={dirPath} onBlur={handleInputDirPath} />
+            <Input
+              ref={dirPathEditRef}
+              defaultValue={dirPath}
+              onBlur={handleInputDirPath}
+              onPressEnter={handleInputDirPath}
+            />
           ) : (
             dirPathArr.map((path, j) => (
               <Button

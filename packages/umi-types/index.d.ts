@@ -294,14 +294,22 @@ interface IAction<T = object> {
   lang?: string;
 }
 
-type ISend = (action: IAction<{}>) => void;
-type ISuccess<T = object> = (payload: T) => void;
-type IFailure<T = object> = (payload: T) => void;
+export type ISend = (action: IAction<{}>) => void;
+export type ISuccess<T = object> = (payload: T) => void;
+export type IFailure<T = object> = (payload: T) => void;
 type IUiLogType = 'error' | 'info';
-type IUiLog = (type: IUiLogType, payload: string) => void;
+export type IUiLog = (type: IUiLogType, payload: string) => void;
 
 export interface IOnUISocketFunc {
-  (args: { action: IAction; send: ISend; success: ISuccess; failure: IFailure; log: IUiLog }): void;
+  (
+    args: {
+      action: IAction;
+      send: ISend;
+      success: ISuccess<{}>;
+      failure: IFailure<{}>;
+      log: IUiLog;
+    },
+  ): void;
 }
 
 interface IOnUISocket {

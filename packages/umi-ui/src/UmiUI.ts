@@ -132,7 +132,6 @@ export default class UmiUI {
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {
-        console.error('service eee', e);
         if (isDepLost(e)) {
           throw new ActiveProjectError({
             message: {
@@ -163,15 +162,58 @@ export default class UmiUI {
     });
   }
 
-  openProjectInEditor(key: string) {
-    if (key.startsWith('/') && existsSync(key)) {
-      // react-dev-utils sublime not open project just file
-      launchEditor(key);
-    } else {
+  openProjectInEditor(
+    key: string,
+    callback: { failure?: (any) => void; success?: () => void } = {},
+    lang: string = 'zh-CN',
+  ) {
+    let launchPath = key;
+    if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
       console.log('project.path', project.path);
-      launchEditor(project.path);
+      launchPath = project.path;
+    }
+    console.log(launchPath);
+    if (!existsSync(launchPath)) {
+      if (callback.failure) {
+        let msg = {
+          'zh-CN': `打开编辑器失败 ${launchPath}，项目不存在`,
+          'en-US': `Open Editor Failure, ${launchPath}, project does not exist`,
+        };
+        console.error(chalk.red(msg[lang]));
+        callback.failure({
+          message: msg[lang],
+        });
+      }
+      if (callback.success) {
+        callback.success();
+      }
+    } else {
+      launchEditor(launchPath, (fileName, errorMsg) => {
+        console.log('fileName, errorMsg', fileName, errorMsg);
+        // log error if any
+        if (!errorMsg) return;
+        let msg = {
+          'zh-CN': `打开编辑器失败 ${launchPath}`,
+          'en-US': `Open Editor Failure, ${launchPath}`,
+        };
+        if (errorMsg === 'spawn code ENOENT.') {
+          msg = {
+            'zh-CN': `打开编辑器失败，需要全局安装'code'，你可以打开VS Code，然后运行Shell Command: Install 'code' command in Path`,
+            'en-US': `Open Editor Failure, need install 'code' command in Path. you can open VS Code, and run >Shell Command: Install 'code' command in Path`,
+          };
+        }
+        if (callback.failure) {
+          console.error(chalk.red(msg[lang]));
+          callback.failure({
+            message: msg[lang],
+          });
+        }
+        if (callback.success) {
+          callback.success();
+        }
+      });
     }
   }
 
@@ -213,123 +255,144 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
-    const { type, npmClient, baseDir, name, args, taobaoSpeedUp } = opts;
-    let key;
+    const { type, npmClient, baseDir, name, args } = opts;
+    let key = opts.key;
+    let retryFrom = opts.retryFrom;
+
+    if (key) {
+      assert(retryFrom in opts, `key 和 retryFrom 必须同时提供。`);
+    }
 
     const setProgress = args => {
       assert(key, `key is not initialized.`);
       this.config.setCreatingProgress(key, args);
-      onProgress(this.config.data.projectsByKey[key].creatingProgress);
+    };
+
+    const sigintHandler = () => {
+      if (key) {
+        this.config.setCreatingProgress(key, {
+          stepStatus: 3,
+          failure: {
+            message: 'exit UmiUi server',
+          },
+        });
+      }
+      process.exit();
     };
 
     try {
-      // 步骤：
-      //
-      // 1. 校验
-      //      a) 比如检查目标目录是否为空或不存在
-      // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
-      // 3. 安装 create-umi 或更新他
-      // 4. create-umi 创建
-      //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
-      // 5. 安装依赖
-      //
-      // 项目步骤：
-      // 1. 校验参数
-      // 2. 安装/更新 create-umi
-      // 3. 使用 create-umi 初始化项目
-      // 4. 安装依赖
-      //
-      // 结束后打开项目。
       assert(baseDir, `baseDir must be supplied`);
       assert(name, `name must be supplied`);
       assert(type, `type must be supplied`);
       const targetDir = join(baseDir, name);
 
-      // 1
-      assert(
-        !existsSync(targetDir) || emptyDir.sync(targetDir),
-        `target dir ${targetDir} exists and not empty`,
-      );
-      // 2
-      key = this.config.addProject({
-        path: targetDir,
-        name,
-        npmClient,
-        taobaoSpeedUp,
-      });
+      if (!retryFrom) {
+        // 步骤：
+        //
+        // 1. 校验
+        //      a) 比如检查目标目录是否为空或不存在
+        // 2. 添加项目状态到本地存储，后面每一步都更新状态到存储
+        // 3. 安装 create-umi 或更新他
+        // 4. create-umi 创建
+        //    如果是 ant-design-pro，还需要拆几步出来，比如 git clone
+        // 5. 安装依赖
+        //
+        // 项目步骤：
+        // 1. 校验参数
+        // 2. 安装/更新 create-umi
+        // 3. 使用 create-umi 初始化项目
+        // 4. 安装依赖
+        //
+        // 结束后打开项目。
 
-      // get create key
-      onSuccess({
-        key,
-      });
+        // 0
+        assert(
+          !existsSync(targetDir) || emptyDir.sync(targetDir),
+          `target dir ${targetDir} exists and not empty`,
+        );
+
+        // 1
+        key = this.config.addProject({
+          path: targetDir,
+          name,
+          npmClient,
+        });
+
+        // get create key
+        onSuccess({
+          key,
+        });
+
+        setProgress({
+          // 表示第几个 step，从 0 开始
+          step: 1,
+          // 0: 未开始
+          // 1: 执行中
+          // 2: 执行完成
+          // 3: 执行失败
+          stepStatus: 0,
+          steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
+        });
+      }
 
       // catch exit
-      process.on('SIGINT', () => {
-        if (key) {
-          try {
-            this.config.setCreatingProgress(key, {
-              stepStatus: 3,
-              failure: {
-                message: 'exit UmiUi server',
-              },
-            });
-          } catch (e) {}
-        }
-        process.exit();
-      });
+      process.on('SIGINT', sigintHandler);
 
-      setProgress({
-        // 表示第几个 step，从 0 开始
-        step: 1,
-        // 0: 未开始
-        // 1: 执行中
-        // 2: 执行完成
-        // 3: 执行失败
-        stepStatus: 0,
-        steps: ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
-      });
+      // 1
+      let creatorPath;
+      // step 2 依赖 step 1
+      if (retryFrom === 2) {
+        retryFrom = 1;
+      }
+      if (!retryFrom || retryFrom <= 1) {
+        setProgress({
+          step: 1,
+          stepStatus: 1,
+        });
+        creatorPath = await installCreator({});
+        setProgress({
+          stepStatus: 2,
+        });
+      }
+
+      // 2
+      if (!retryFrom || retryFrom <= 2) {
+        setProgress({
+          step: 2,
+          stepStatus: 1,
+        });
+        clearModule(creatorPath);
+        await require(creatorPath).run({
+          cwd: targetDir,
+          type,
+          args,
+        });
+        setProgress({
+          stepStatus: 2,
+        });
+      }
 
       // 3
-      setProgress({
-        step: 1,
-        stepStatus: 1,
-      });
-      const creatorPath = await installCreator({});
-      setProgress({
-        stepStatus: 2,
-      });
-
-      // 4
-      setProgress({
-        step: 2,
-        stepStatus: 1,
-      });
-      clearModule(creatorPath);
-      await require(creatorPath).run({
-        cwd: targetDir,
-        type,
-        args,
-      });
-      setProgress({
-        stepStatus: 2,
-      });
-
-      // 5
-      setProgress({
-        step: 3,
-        stepStatus: 1,
-      });
-      await installDeps(npmClient, targetDir, {
-        taobaoSpeedUp: this.hasTaobaoSpeedUp(key),
-      });
-      setProgress({
-        stepStatus: 2,
-      });
-      setProgress({
-        success: true,
-      });
-      // this.config.setCreatingProgressDone(key);
-      // onSuccess();
+      if (!retryFrom || retryFrom <= 3) {
+        setProgress({
+          step: 3,
+          stepStatus: 1,
+        });
+        await installDeps(npmClient, targetDir, {
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(),
+          onData(data) {
+            onProgress({
+              install: data,
+            });
+          },
+        });
+        setProgress({
+          stepStatus: 2,
+        });
+        setProgress({
+          success: true,
+        });
+      }
     } catch (e) {
       if (key) {
         this.config.setCreatingProgress(key, {
@@ -339,9 +402,7 @@ export default class UmiUI {
       }
       onFailure(e);
     } finally {
-      process.removeListener('SIGINT', () => {
-        console.log('success remove sigint');
-      });
+      process.removeListener('SIGINT', sigintHandler);
     }
   }
 
@@ -456,14 +517,19 @@ export default class UmiUI {
         break;
       case '@@project/openInEditor':
         log('info', `Open in editor: ${this.getProjectName(payload.key)}`);
-        this.openProjectInEditor(payload.key);
-        success();
+        this.openProjectInEditor(
+          payload.key,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@project/edit':
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
         this.config.editProject(payload.key, {
           name: payload.name,
-          taobaoSpeedUp: payload.taobaoSpeedUp,
         });
         success();
         break;
@@ -537,7 +603,7 @@ export default class UmiUI {
       case '@@actions/installDependencies':
         this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         this.installDeps(payload.npmClient, payload.projectPath, {
-          taobaoSpeedUp: this.hasTaobaoSpeedUp(payload.key),
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(),
           onProgress: progress,
           onSuccess: success,
         });
@@ -546,7 +612,7 @@ export default class UmiUI {
         this.config.setProjectNpmClient({ key: payload.key, npmClient: payload.npmClient });
         rimraf.sync(join(payload.projectPath, 'node_modules'));
         this.installDeps(payload.npmClient, payload.projectPath, {
-          taobaoSpeedUp: this.hasTaobaoSpeedUp(payload.key),
+          taobaoSpeedUp: this.hasTaobaoSpeedUp(),
           onProgress: progress,
           onSuccess: success,
         });
@@ -556,8 +622,14 @@ export default class UmiUI {
         success();
         break;
       case '@@actions/openProjectInEditor':
-        this.openProjectInEditor(payload.projectPath);
-        success();
+        this.openProjectInEditor(
+          payload.projectPath,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@app/notify':
         try {
@@ -790,14 +862,8 @@ export default class UmiUI {
    * 是否使用淘宝加速
    * @param key project key
    */
-  hasTaobaoSpeedUp(key: string): boolean {
-    if (!key) {
-      return false;
-    }
-    const project = this.config.data.projectsByKey[key];
-    if (!project) {
-      return false;
-    }
-    return project.taobaoSpeedUp;
+  hasTaobaoSpeedUp(): boolean {
+    // 一期默认开启，二期走全局配置。
+    return true;
   }
 }

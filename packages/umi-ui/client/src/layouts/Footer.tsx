@@ -1,20 +1,23 @@
 import * as React from 'react';
 import { message, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
 import {
-  Folder,
-  Profile,
+  FolderFilled,
+  ProfileFilled,
   Swap,
-  Home,
+  HomeFilled,
   QuestionCircle,
   Message,
   Close,
   Enter,
   Delete,
 } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
+import zhCN from '@/locales/zh-CN';
+import enUS from '@/locales/en-US';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
@@ -29,13 +32,22 @@ export interface IFooterProps {
 }
 
 const FOOTER_RIGHT = [
-  { title: '反馈', icon: <Message />, href: 'https://umijs.org' },
-  { title: '帮助', icon: <QuestionCircle />, href: 'https://umijs.org' },
+  {
+    title: 'org.umi.ui.global.feedback',
+    icon: <Message />,
+    href: 'https://github.com/umijs/umi/issues/new/choose',
+  },
+  {
+    title: 'org.umi.ui.global.help',
+    icon: <QuestionCircle />,
+    href: 'https://umijs.org',
+  },
 ];
 
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
+  const message = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -46,8 +58,6 @@ const Footer: React.SFC<IFooterProps> = props => {
       return action.payload;
     }
   }, []);
-
-  console.log('logslogslogs', logs);
 
   const showLogPanel = () => {
     setLogVisible(true);
@@ -63,7 +73,6 @@ const Footer: React.SFC<IFooterProps> = props => {
 
   const getLogs = async () => {
     const { data: historyLogs } = await getHistory();
-    console.log('historyLogshistoryLogs', historyLogs);
     dispatch({
       type: 'setHistory',
       payload: historyLogs,
@@ -112,7 +121,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     <Menu
       theme="dark"
       onClick={({ key }) => {
-        setLocale(key, false);
+        setLocale(key, type === 'loading');
       }}
     >
       {Object.keys(omit(LOCALES, locale)).map((lang: any) => (
@@ -127,7 +136,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     try {
       await clearLog();
     } catch (e) {
-      message.error('清除日志失败');
+      message.error(formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
     } finally {
       await getLogs();
     }
@@ -136,28 +145,27 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        {type === 'loading' && (
-          <div onClick={() => handleBack()} className={actionCls}>
-            <Home style={{ marginRight: 4 }} /> 返回列表
-          </div>
-        )}
+        <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
+          <HomeFilled style={{ marginRight: 4 }} />
+        </div>
         {type === 'detail' && path && name && (
           <>
-            <div onClick={() => handleBack(false)} className={actionCls}>
-              <Home style={{ marginRight: 4 }} />
-            </div>
             <div className={styles.section}>
-              <Folder style={{ marginRight: 4 }} /> {path}
+              <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <Profile /> 日志
+          <ProfileFilled />{' '}
+          {type === 'loading'
+            ? message['org.umi.ui.global.log']
+            : formatMessage({ id: 'org.umi.ui.global.log' })}
         </div>
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon} {item.title}
+              {item.icon}{' '}
+              {type === 'loading' ? message[item.title] : formatMessage({ id: item.title })}
             </a>
           </div>
         ))}
@@ -175,13 +183,17 @@ const Footer: React.SFC<IFooterProps> = props => {
       <Drawer
         title={
           <div className={styles['section-drawer-title']}>
-            <h1>日志</h1>
+            <h1>
+              {type === 'loading'
+                ? message['org.umi.ui.global.log.upperCase']
+                : formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
+            </h1>
             <div className={styles['section-drawer-title-action']}>
               <Popconfirm
-                title="是否清除日志？"
+                title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
                 onConfirm={handleClearLog}
-                okText="是"
-                cancelText="否"
+                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Delete />
               </Popconfirm>
@@ -200,6 +212,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       >
         <Logs
           logs={logs}
+          type={type}
           style={{
             height: 225,
           }}

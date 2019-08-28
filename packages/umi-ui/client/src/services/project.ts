@@ -41,7 +41,6 @@ export async function openInEditor(payload: { key: string }) {
 }
 
 export async function createProject(payload, params?: object) {
-  console.log('paramsparamsparams', params);
   return callRemote({
     type: '@@project/create',
     payload,
@@ -91,7 +90,6 @@ export async function openConfigFile(
   },
   params = {},
 ): Promise<any> {
-  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/openConfigFile',
     payload,
@@ -104,7 +102,6 @@ export async function openProjectInEditor(
   },
   params = {},
 ): Promise<any> {
-  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/openProjectInEditor',
     payload,
@@ -112,7 +109,6 @@ export async function openProjectInEditor(
 }
 
 export async function installDependencies(payload: IDepsPayload, params = {}): Promise<any> {
-  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/installDependencies',
     payload,
@@ -121,7 +117,6 @@ export async function installDependencies(payload: IDepsPayload, params = {}): P
 }
 
 export async function reInstallDependencies(payload: IDepsPayload, params = {}): Promise<any> {
-  console.log('payloadpayload', payload, params);
   return callRemote({
     type: '@@actions/reInstallDependencies',
     payload,

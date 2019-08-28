@@ -1,15 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { IUiApi } from 'umi-types';
-import { Input, Form, Select, Switch, Button } from 'antd';
-import serialize from 'serialize-javascript';
+import { Input } from 'antd';
 import BasicConfig from './components/BasicConfig';
-import UIConfig from './components/UIConfig';
 import PluginConfig from './components/PluginConfig';
 import Context from './Context';
 import styles from './index.module.less';
-
-const FormItem = Form.Item;
-const { Option } = Select;
 
 function toString(data) {
   if (typeof data === 'string') return data;
@@ -96,14 +91,14 @@ interface IConfigManager {
   api: IUiApi;
 }
 
-function getSections(api) {
+function getSections(api: IUiApi) {
   const sections = [
     {
       key: 'project',
-      title: '项目配置',
+      title: api.intl('org.umi.ui.configuration.project.config.title'),
       icon: (
         <img
-          src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
+          src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
           width={32}
           height={32}
         />
@@ -122,23 +117,6 @@ function getSections(api) {
       component: PluginConfig,
     });
   }
-  const { npmClient } = api.currentProject;
-  if (['npm', 'yarn', 'pnpm'].indexOf(npmClient) > -1) {
-    sections.push({
-      key: 'install',
-      title: 'UI 配置',
-      icon: (
-        <img
-          src="https://img.alicdn.com/tfs/TB1cEkUdq67gK0jSZFHXXa9jVXa-64-64.png"
-          width={32}
-          height={32}
-        />
-      ),
-      description: 'UI 配置',
-      component: UIConfig,
-    });
-  }
-
   return sections;
 }
 

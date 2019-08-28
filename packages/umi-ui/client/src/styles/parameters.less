@@ -8,6 +8,8 @@
 @primary-5: #40a9ff;
 @primary-color: #1890ff;
 @outline-color: @primary-color;
+@icon-color: fade(@light, 65);
+@icon-color-hover: fade(@light, 85);
 @primary-6: #096dd9;
 @border-color-base: transparent;
 @btn-default-color: @heading-color;
@@ -24,16 +26,15 @@
 @checkbox-color: @primary-color;
 @select-border-color: #3b3b4d;
 @item-active-bg: #272733;
-@border-color-split: #1d1d26;
-@card-background: #30303d;
-@card-hover-border: #2e2e3a;
+@border-color-split: #17171f;
+@menu-dark-bg: #3b3b4d;
 @body-background: #23232e;
 @component-background: #23232e;
 @layout-sider-background: #30303d;
 @layout-body-background: #23232e;
-@tooltip-bg: fade(@dark, 75);
-@popover-bg: fade(@dark, 75);
-@tooltip-arrow-color: fade(@dark, 75);
+@tooltip-bg: #191922;
+@tooltip-arrow-color: #191922;
+@popover-bg: #2d2d3b;
 @success-color: #00a854;
 @info-color: @primary-color;
 @warning-color: #ffbf00;
@@ -41,6 +42,9 @@
 @menu-bg: #30303d;
 @menu-item-active-bg: fade(@light, 5);
 @menu-highlight-color: #fffcfc;
+@card-background: #30303d;
+@card-hover-border: #383847;
+@card-actions-background: #30303d;
 
 // family
 // @code-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;;
@@ -50,6 +54,11 @@
 
 // width
 @anchor-border-width: 1px;
+
+// margin
+@form-item-margin-bottom: 24px;
+@menu-item-vertical-margin: 0px;
+@menu-item-boundary-margin: 0px;
 
 // shadow
 
@@ -86,9 +95,6 @@
 @font-size-base: 14px;
 @font-size-lg: 16px;
 
-// margin
-@form-item-margin-bottom: 24px;
-
 // animation
 @ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
 @ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
@@ -124,7 +130,7 @@
 @btn-disable-bg: transparent;
 @btn-disable-color: fade(@light, 25);
 @btn-disable-border: fade(@light, 10);
-@btn-default-hover-bg: #3b3b47;
+@btn-default-hover-bg: #4c4c61;
 @btn-default-active-bg: #272733;
 @btn-primary-color: @light;
 @btn-primary-hover-bg: #40a9ff;
@@ -138,6 +144,9 @@
 @checkbox-check-inner-color: @light;
 @anchor-border-color: fade(@light, 15);
 
+@modal-footer-border-color-split: #17171f;
+@card-bg-color: #30303d;
+
 @ui-directory-list-item-hover-bg: #2d2d3b;
 @ui-directory-list-item-checked-icon-color: #61616c;
 @ui-modal-shadow: 0 2px 8px fade(@dark, 25);
@@ -146,7 +155,8 @@
 @ui-tag-error-color: #f5222d;
 @ui-status-bar-height: 28px;
 @ui-header-title-height: 62px;
-@ui-status-bar-background: #17171f;
+@ui-status-bar-bg: #17171f;
+@ui-footer-bar-hover-bg: #2d2d3b;
 @ui-status-bar-color: fade(@light, 85);
 @ui-sidebar-menu-bg: #343345;
 @ui-directory-split-color: fade(@light, 10);
@@ -160,8 +170,8 @@
 @desktop: ~'screen and (min-width:@{screen-lg}) and (max-width:@{screen-xl})';
 // 平板 >= 768 <= 1024
 @tablet: ~'screen and (min-width: @{screen-md}) and (max-width:@{screen-lg})';
-// 移动端 <= 767.9
-@mobile: ~'only screen and (max-width: @{screen-sm})';
+// 移动端 <= 768
+@mobile: ~'only screen and (max-width: @{screen-md})';
 // 超小移动端 <= 375
 @smallMobile: ~'only screen and (max-width: @{screen-xs})';
 // ipad 横向

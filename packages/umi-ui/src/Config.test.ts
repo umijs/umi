@@ -29,7 +29,6 @@ test('addProject', () => {
   expect(config.data).toEqual({ projectsByKey: {} });
   config.addProject({
     npmClient: 'npm',
-    taobaoSpeedUp: false,
     name: 'bar',
     path: '/tmp/foo',
   });
@@ -40,7 +39,6 @@ test('addProject', () => {
         name: 'bar',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
     },
   });
@@ -57,7 +55,6 @@ test('editProject', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
     },
   });
@@ -72,7 +69,6 @@ test('setCurrentProject', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -90,13 +86,11 @@ test('addProject without name', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
       '9c7eb9': {
         path: '/tmp/bar',
         name: 'bar',
         created_at: 1557831718135,
-        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -112,7 +106,6 @@ test('deleteProject', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',
@@ -131,7 +124,6 @@ test('set creating progress', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
         creatingProgress: {
           a: 1,
           b: 1,
@@ -151,7 +143,6 @@ test('set creating progress done', () => {
         name: 'foo',
         created_at: 1557831718135,
         npmClient: 'npm',
-        taobaoSpeedUp: false,
       },
     },
     currentProject: '43def0',

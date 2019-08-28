@@ -14,6 +14,16 @@ body {
   select:-webkit-autofill {
     -webkit-text-fill-color: @input-bg;
   }
+  a {
+    .anticon {
+      transition: color 0.3s;
+      color: @icon-color;
+      &:hover {
+        color: @icon-color-hover;
+      }
+    }
+  }
+
   .ui-layout {
     height: 100%;
   }
@@ -23,6 +33,19 @@ body {
     font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
       'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  }
+  .ant-card {
+    background-color: @card-bg-color;
+  }
+  .ant-tooltip-placement-top .ant-tooltip-arrow {
+    border-right-color: @tooltip-arrow-color;
+    border-bottom-color: @tooltip-arrow-color;
+  }
+  .ant-card-head {
+    border-bottom: none;
+  }
+  .ant-modal-footer {
+    border-color: @modal-footer-border-color-split;
   }
   .ant-checkbox-checked .ant-checkbox-inner::after {
     border-color: @checkbox-check-inner-color;
@@ -45,6 +68,13 @@ body {
   .ant-select-dropdown-menu-item-selected {
     background-color: @select-item-selected-bg;
   }
+  .ant-dropdown-menu-dark {
+    .ant-dropdown-menu-item:hover {
+      background-color: @ui-sidebar-menu-hover-bg;
+      color: @text-color;
+    }
+  }
+
   .ant-select-dropdown-menu-item {
     transition: all @duration-fast @ease-base-out;
   }

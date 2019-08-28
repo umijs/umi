@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import { Context } from 'react';
+import { Debugger } from 'debug';
 
 import { IUi } from 'umi-types';
 import { Terminal } from 'xterm';
@@ -13,6 +14,7 @@ declare global {
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };
+    g_uiDebug: Debugger;
     g_uiPlugins?: any[];
     g_bigfish?: boolean;
     g_uiContext: Context<IUi.IContext>;

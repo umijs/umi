@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, Modal, Select } from 'antd';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -16,11 +16,13 @@ interface IProps {
 
 const { SizeMe } = withSize;
 const taskType = TaskType.INSTALL;
+const { Option } = Select;
 
 const InstallComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Mount: 获取 task detail
   const { loading: detailLoading, detail } = useTaskDetail(taskType);
@@ -79,6 +81,18 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     }
   }
 
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleOk = () => {
+    install();
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
@@ -91,13 +105,30 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             <Col span={8} className={styles.buttonGroup}>
               <Button
                 type="primary"
-                onClick={isTaskRunning ? cancelInstall : install}
+                onClick={isTaskRunning ? cancelInstall : openModal}
                 loading={loading}
               >
                 {isTaskRunning
                   ? intl('org.umi.ui.tasks.install.cancel')
                   : intl('org.umi.ui.tasks.install.start')}
               </Button>
+              <Modal
+                visible={modalVisible}
+                title={intl('org.umi.ui.tasks.install')}
+                onOk={handleOk}
+                onCancel={handleCancel}
+              >
+                <div>
+                  TODO: 确认样式
+                  {/* <span>使用</span>
+                  <Select defaultValue="tnpm" style={{ width: 120 }}>
+                    <Option value="tnpm">tnpm</Option>
+                    <Option value="cnpm">cnpm</Option>
+                    <Option value="yarn">yarn</Option>
+                  </Select>
+                  <span>依赖么？</span> */}
+                </div>
+              </Modal>
             </Col>
             {/* <Col span={4} offset={12} className={styles.formatGroup}>
               <Radio.Group defaultValue="log" buttonStyle="solid">
