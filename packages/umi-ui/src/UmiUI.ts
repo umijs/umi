@@ -162,15 +162,58 @@ export default class UmiUI {
     });
   }
 
-  openProjectInEditor(key: string) {
-    if (key.startsWith('/') && existsSync(key)) {
-      // react-dev-utils sublime not open project just file
-      launchEditor(key);
-    } else {
+  openProjectInEditor(
+    key: string,
+    callback: { failure?: (any) => void; success?: () => void } = {},
+    lang: string = 'zh-CN',
+  ) {
+    let launchPath = key;
+    if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
       console.log('project.path', project.path);
-      launchEditor(project.path);
+      launchPath = project.path;
+    }
+    console.log(launchPath);
+    if (!existsSync(launchPath)) {
+      if (callback.failure) {
+        let msg = {
+          'zh-CN': `打开编辑器失败 ${launchPath}，项目不存在`,
+          'en-US': `Open Editor Failure, ${launchPath}, project does not exist`,
+        };
+        console.error(chalk.red(msg[lang]));
+        callback.failure({
+          message: msg[lang],
+        });
+      }
+      if (callback.success) {
+        callback.success();
+      }
+    } else {
+      launchEditor(launchPath, (fileName, errorMsg) => {
+        console.log('fileName, errorMsg', fileName, errorMsg);
+        // log error if any
+        if (!errorMsg) return;
+        let msg = {
+          'zh-CN': `打开编辑器失败 ${launchPath}`,
+          'en-US': `Open Editor Failure, ${launchPath}`,
+        };
+        if (errorMsg === 'spawn code ENOENT.') {
+          msg = {
+            'zh-CN': `打开编辑器失败，需要全局安装'code'，你可以打开VS Code，然后运行Shell Command: Install 'code' command in Path`,
+            'en-US': `Open Editor Failure, need install 'code' command in Path. you can open VS Code, and run >Shell Command: Install 'code' command in Path`,
+          };
+        }
+        if (callback.failure) {
+          console.error(chalk.red(msg[lang]));
+          callback.failure({
+            message: msg[lang],
+          });
+        }
+        if (callback.success) {
+          callback.success();
+        }
+      });
     }
   }
 
@@ -474,8 +517,14 @@ export default class UmiUI {
         break;
       case '@@project/openInEditor':
         log('info', `Open in editor: ${this.getProjectName(payload.key)}`);
-        this.openProjectInEditor(payload.key);
-        success();
+        this.openProjectInEditor(
+          payload.key,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@project/edit':
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
@@ -573,8 +622,14 @@ export default class UmiUI {
         success();
         break;
       case '@@actions/openProjectInEditor':
-        this.openProjectInEditor(payload.projectPath);
-        success();
+        this.openProjectInEditor(
+          payload.projectPath,
+          {
+            success,
+            failure,
+          },
+          lang,
+        );
         break;
       case '@@app/notify':
         try {

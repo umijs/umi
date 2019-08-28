@@ -89,7 +89,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
       message.success('删除成功');
     }
     if (action === 'editor') {
-      await openInEditor(payload);
+      try {
+        await openInEditor(payload);
+      } catch (e) {
+        message.error(e && e.message ? e.message : '编辑器打开失败');
+      }
     }
     if (action === 'edit') {
       setModalVisible(true);
