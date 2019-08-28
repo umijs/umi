@@ -31,7 +31,7 @@ const ImportProject: React.SFC<IProjectProps> = props => {
   return (
     <section className={common.section}>
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <h2>导入</h2>
+        <h2> {formatMessage({ id: 'org.umi.ui.global.project.import.title' })} </h2>
         <Form
           form={form}
           layout="vertical"
@@ -54,7 +54,7 @@ const ImportProject: React.SFC<IProjectProps> = props => {
           </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">
-              {formatMessage({ id: '确定' })}
+              {formatMessage({ id: 'org.umi.ui.global.okText' })}
             </Button>
           </Form.Item>
         </Form>
