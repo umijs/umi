@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { formatDate } from 'umi-plugin-react/locale';
+import { formatDate, formatMessage } from 'umi-plugin-react/locale';
 import Ansi from 'ansi-to-react';
 import { Tag } from 'antd';
 import cls from 'classnames';
@@ -68,7 +68,7 @@ const Logs: React.SFC<LogProps> = props => {
         {Array.isArray(logs) && logs.length > 0 ? (
           logs.map((log, i) => <Log {...log} key={i} />)
         ) : (
-          <li>日志为空</li>
+          <li>{formatMessage({ id: 'org.umi.ui.global.log.empty' })}</li>
         )}
       </ul>
     </div>

@@ -24,4 +24,13 @@ export default {
   'org.umi.ui.global.project.create.steps.input.placeholder': 'Please input an app name',
   'org.umi.ui.global.project.create.steps.input.error': 'Invalid filename',
   'org.umi.ui.global.project.import.title': 'Import Project',
+
+  'org.umi.ui.global.feedback': 'Feedback',
+  'org.umi.ui.global.help': 'Help',
+  'org.umi.ui.global.log.clear.error': 'Clear log failed',
+  'org.umi.ui.global.home': 'Home',
+  'org.umi.ui.global.log': 'Log',
+  'org.umi.ui.global.log.empty': 'Log Empty',
+  'org.umi.ui.global.log.upperCase': 'LOG',
+  'org.umi.ui.global.log.clear.confirm': 'Clear log ?',
 };
