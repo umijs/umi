@@ -47,7 +47,6 @@ const FOOTER_RIGHT = [
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
-  console.log('localelocalelocale', locale);
   const message = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
@@ -59,8 +58,6 @@ const Footer: React.SFC<IFooterProps> = props => {
       return action.payload;
     }
   }, []);
-
-  console.log('logslogslogs', logs);
 
   const showLogPanel = () => {
     setLogVisible(true);
@@ -76,7 +73,6 @@ const Footer: React.SFC<IFooterProps> = props => {
 
   const getLogs = async () => {
     const { data: historyLogs } = await getHistory();
-    console.log('historyLogshistoryLogs', historyLogs);
     dispatch({
       type: 'setHistory',
       payload: historyLogs,

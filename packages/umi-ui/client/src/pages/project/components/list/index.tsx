@@ -58,7 +58,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     return !!item.creatingProgress;
   };
 
-  console.log('projectList', projectList);
+  g_uiDebug.extend('projectList')('projectList', projectList);
 
   const projects = useMemo(
     () => {

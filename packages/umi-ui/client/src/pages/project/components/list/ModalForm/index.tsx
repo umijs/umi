@@ -29,8 +29,6 @@ const ModalForm: React.FC<IModalFormProps> = ({
   const [form] = Form.useForm();
   const formName = name || nanoid();
 
-  console.log('initialValues', initialValues);
-
   React.useEffect(
     () => {
       form.resetFields();

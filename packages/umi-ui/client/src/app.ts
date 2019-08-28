@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import debug from 'debug';
 import 'antd/dist/antd.less';
 import EventEmitter from 'events';
 import get from 'lodash/get';
@@ -9,6 +10,9 @@ import { init as initSocket, callRemote } from './socket';
 import PluginAPI from './PluginAPI';
 
 window.g_uiLocales = {};
+// TODO pluginAPI add debug('plugin:${key}') for developer
+window.g_uiDebug = debug('BaseUI');
+const _log = window.g_uiDebug.extend('init');
 
 // register event
 if (!window.g_uiEventEmitter) {
@@ -61,7 +65,7 @@ export async function render(oldRender) {
   }
 
   if (history.location.pathname.startsWith('/project/')) {
-    console.log("It's Project Manager");
+    // console.log("It's Project Manager");
   }
 
   // Project Manager
@@ -80,13 +84,13 @@ export async function render(oldRender) {
         key: data.currentProject,
         ...get(data, `projectsByKey.${data.currentProject}`, {}),
       };
-      console.log('apps data', data);
+      _log('apps data', data);
       window.g_uiCurrentProject =
         {
           ...currentProject,
           key: data.currentProject,
         } || {};
-      console.log('window.g_uiCurrentProject', window.g_uiCurrentProject);
+      _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
       // types 和 api 上先不透露
       window.g_uiProjects = data.projectsByKey || {};
       try {
@@ -131,7 +135,7 @@ export function patchRoutes(routes: IRoute[]) {
   const dashboardIndex = routes.findIndex(route => route.key === 'dashboard');
   if (dashboardIndex > -1) {
     service.panels.forEach(panel => {
-      console.log('panel', panel);
+      _log('panel', panel);
       routes[dashboardIndex].routes.unshift({
         exact: true,
         ...panel,
@@ -151,7 +155,7 @@ export const locale = {
       return curr;
     }, {});
     window.g_uiLocales = messages;
-    console.log('all message locales', window.g_uiLocales);
+    _log('locale messages', window.g_uiLocales);
     return window.g_uiLocales;
   },
 };

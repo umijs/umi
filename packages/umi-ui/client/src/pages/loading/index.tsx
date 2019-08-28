@@ -88,12 +88,9 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   render() {
     const locale = getLocale();
     const { error } = this.props;
-    console.log('loading this.props', this.props);
 
     const { actionLoading } = this.state;
     const messages = locales[locale] || locales['zh-CN'];
-
-    console.log('error', error);
 
     const actionsDeps = error ? (
       <div>
