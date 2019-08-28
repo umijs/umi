@@ -119,7 +119,12 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
         </Button>
         <div className={styles['directoryForm-toolbar-bread']}>
           {dirPathEdit ? (
-            <Input ref={dirPathEditRef} defaultValue={dirPath} onBlur={handleInputDirPath} />
+            <Input
+              ref={dirPathEditRef}
+              defaultValue={dirPath}
+              onBlur={handleInputDirPath}
+              onPressEnter={handleInputDirPath}
+            />
           ) : (
             dirPathArr.map((path, j) => (
               <Button

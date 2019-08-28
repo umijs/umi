@@ -250,20 +250,21 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           />
         </ConfigProvider>
       </Content>
-      {modalVisible && (
-        <ModalForm
-          onCancel={() => setModalVisible(false)}
-          restModelProps={{
-            title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
-          }}
-          initialValues={initialValues}
-          onOk={async (formKey, payload) => {
-            setModalVisible(false);
-            await editProject(payload);
-            message.success(formatMessage({ id: 'org.umi.ui.global.edit.success' }));
-          }}
-        />
-      )}
+      <ModalForm
+        onCancel={() => setModalVisible(false)}
+        visible={modalVisible}
+        restModelProps={{
+          title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
+          okText: formatMessage({ id: 'org.umi.ui.global.okText' }),
+          cancelText: formatMessage({ id: 'org.umi.ui.global.cancelText' }),
+        }}
+        initialValues={initialValues}
+        onOk={async (formKey, payload) => {
+          setModalVisible(false);
+          await editProject(payload);
+          message.success(formatMessage({ id: 'org.umi.ui.global.edit.success' }));
+        }}
+      />
     </Layout>
   );
 };

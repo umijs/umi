@@ -22,7 +22,7 @@
 }
 
 .statusBar {
-  background: @ui-status-bar-background;
+  background: @ui-status-bar-bg;
   color: @ui-status-bar-color;
   height: @ui-status-bar-height;
   line-height: @ui-status-bar-height;
@@ -36,22 +36,20 @@
     padding: 0 8px;
     cursor: default;
     height: 100%;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: @ui-footer-bar-hover-bg;
+    }
     p {
       color: @heading-color;
     }
     a {
       color: @heading-color;
-      &:hover {
-        color: @primary-5;
-      }
     }
   }
   .section.action {
     cursor: pointer;
     user-select: none;
-    &:hover {
-      background: #2c3e51;
-    }
   }
   .section.log {
     width: 0;

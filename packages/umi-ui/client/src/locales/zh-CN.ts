@@ -1,6 +1,6 @@
 export default {
-  'org.umi.ui.global.okText': '是',
-  'org.umi.ui.global.cancelText': '否',
+  'org.umi.ui.global.okText': '确定',
+  'org.umi.ui.global.cancelText': '取消',
   'org.umi.ui.global.edit.success': '编辑成功',
   'org.umi.ui.global.panel.lang': '语言',
   'org.umi.ui.global.project.editor.open': '在编辑器中打开',
