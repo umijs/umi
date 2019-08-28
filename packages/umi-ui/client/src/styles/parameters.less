@@ -26,17 +26,15 @@
 @checkbox-color: @primary-color;
 @select-border-color: #3b3b4d;
 @item-active-bg: #272733;
-@border-color-split: #1d1d26;
-@card-background: #30303d;
-@card-hover-border: #383847;
+@border-color-split: #17171f;
 @menu-dark-bg: #3b3b4d;
 @body-background: #23232e;
 @component-background: #23232e;
 @layout-sider-background: #30303d;
 @layout-body-background: #23232e;
-@tooltip-bg: #2d2d3b;
+@tooltip-bg: #191922;
+@tooltip-arrow-color: #191922;
 @popover-bg: #2d2d3b;
-@tooltip-arrow-color: #2d2d3b;
 @success-color: #00a854;
 @info-color: @primary-color;
 @warning-color: #ffbf00;
@@ -44,6 +42,9 @@
 @menu-bg: #30303d;
 @menu-item-active-bg: fade(@light, 5);
 @menu-highlight-color: #fffcfc;
+@card-background: #30303d;
+@card-hover-border: #383847;
+@card-actions-background: #30303d;
 
 // family
 // @code-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;;
@@ -144,6 +145,7 @@
 @anchor-border-color: fade(@light, 15);
 
 @modal-footer-border-color-split: #17171f;
+@card-bg-color: #30303d;
 
 @ui-directory-list-item-hover-bg: #2d2d3b;
 @ui-directory-list-item-checked-icon-color: #61616c;
@@ -168,8 +170,8 @@
 @desktop: ~'screen and (min-width:@{screen-lg}) and (max-width:@{screen-xl})';
 // 平板 >= 768 <= 1024
 @tablet: ~'screen and (min-width: @{screen-md}) and (max-width:@{screen-lg})';
-// 移动端 <= 767.9
-@mobile: ~'only screen and (max-width: @{screen-sm})';
+// 移动端 <= 768
+@mobile: ~'only screen and (max-width: @{screen-md})';
 // 超小移动端 <= 375
 @smallMobile: ~'only screen and (max-width: @{screen-xs})';
 // ipad 横向

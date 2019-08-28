@@ -15,13 +15,13 @@ const Fail: React.SFC<Partial<IFailProps>> = props => {
     [styles['result-loading']]: !!loading,
   });
   return (
-    <Card bordered={false} className={resultCls}>
+    <div className={resultCls}>
       <Result
         icon={loading ? <Loading /> : <InfoCircle />}
         style={{ marginTop: 0, marginBottom: 16 }}
         {...restProps}
       />
-    </Card>
+    </div>
   );
 };
 

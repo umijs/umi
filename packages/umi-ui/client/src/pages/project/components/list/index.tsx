@@ -4,8 +4,10 @@ import TweenOne from 'rc-tween-one';
 import { formatMessage } from 'umi-plugin-react/locale';
 import {
   Button,
-  List,
+  Tooltip,
+  Card,
   Skeleton,
+  Typography,
   Badge,
   Tag,
   Spin,
@@ -17,11 +19,12 @@ import {
   Layout,
   Empty,
 } from 'antd';
-import { Export, AppstoreFilled } from '@ant-design/icons';
+import { Export, AppstoreFilled, Edit, Delete } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
@@ -33,6 +36,8 @@ import { IProjectProps } from '../index';
 import styles from './index.less';
 
 const { Sider, Content } = Layout;
+const { Meta } = Card;
+const { Paragraph } = Typography;
 const { useState, useContext, useMemo } = React;
 
 type IAction = 'editor' | 'open' | 'edit' | 'delete' | 'progress';
@@ -43,7 +48,6 @@ interface IProjectListItem extends IProjectItem {
 const ProjectList: React.SFC<IProjectProps> = props => {
   const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
-  console.log('projectList', projectList);
   const { currentProject, projectsByKey = {} } = projectList;
   const { setCurrent } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
@@ -122,24 +126,90 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     ],
     failure: item => [],
     success: item => [
-      <a
-        onClick={e => {
-          e.stopPropagation();
-          handleOnAction('editor', { key: item.key });
-        }}
-      >
-        <Export className={styles.exportIcon} />
-        {formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}
-      </a>,
-      <a
-        onClick={e => {
-          e.stopPropagation();
-          handleOnAction('edit', { key: item.key, name: item.name });
-        }}
-      >
-        {formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}
-      </a>,
+      <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
+        <a
+          onClick={e => {
+            e.stopPropagation();
+            handleOnAction('editor', { key: item.key });
+          }}
+        >
+          <Export className={styles.exportIcon} />
+        </a>
+      </Tooltip>,
+      <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}>
+        <a
+          onClick={e => {
+            e.stopPropagation();
+            handleOnAction('edit', { key: item.key, name: item.name });
+          }}
+        >
+          <Edit />
+        </a>
+      </Tooltip>,
     ],
+  };
+
+  const renderItem = item => {
+    const status = getProjectStatus(item);
+    const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+      <div onClick={e => e.stopPropagation()}>
+        <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
+          <Popconfirm
+            title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
+            onConfirm={() => {
+              handleOnAction('delete', { key: item.key });
+            }}
+            onCancel={() => {}}
+            okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+            cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
+          >
+            <a>
+              <Delete />
+            </a>
+          </Popconfirm>
+        </Tooltip>
+      </div>,
+    );
+
+    return (
+      <Col key={item.key} className={styles['project-list-item']} md={12} lg={8} xl={6}>
+        <Card actions={actions} onClick={() => handleTitleClick(item)}>
+          <Skeleton title={false} loading={!projectList.projectsByKey} active>
+            <Meta
+              title={
+                <div className={styles['project-list-item-title']}>
+                  {item.key === currentProject && <Badge status="success" />}
+                  <a>{item.name}</a>
+                  {status === 'progress' && (
+                    <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
+                      {formatMessage({
+                        id: 'org.umi.ui.global.project.list.create.loading',
+                      })}
+                    </Tag>
+                  )}
+                  {status === 'failure' && (
+                    <Tag className={`${styles.tag} ${styles['tag-error']}`}>
+                      {formatMessage({
+                        id: 'org.umi.ui.global.project.list.create.error',
+                      })}
+                    </Tag>
+                  )}
+                </div>
+              }
+              description={
+                <Paragraph
+                  className={styles['project-list-item-desc']}
+                  style={{ marginBottom: 0 }}
+                  ellipsis={{ rows: 3, expandable: true }}
+                >
+                  {item.path}
+                </Paragraph>
+              }
+            />
+          </Skeleton>
+        </Card>
+      </Col>
+    );
   };
 
   return (
@@ -182,92 +252,25 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             </div>
           </Col>
         </Row>
-        <ConfigProvider
-          renderEmpty={() => (
-            <Empty
-              imageStyle={{
-                height: 150,
-                opacity: 0.1,
-                marginBottom: 24,
-                userSelect: 'none',
-              }}
-              style={{
-                paddingTop: 187,
-              }}
-              image={iconSvg}
-              description={formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}
-            />
-          )}
-        >
-          <TweenOne
-            className={styles['project-transition']}
-            animation={{
-              y: 30,
-              opacity: 0,
-              type: 'from',
+        {projectList.projectsByKey && !projects.length ? (
+          <Empty
+            imageStyle={{
+              height: 150,
+              opacity: 0.1,
+              marginBottom: 24,
+              userSelect: 'none',
             }}
-            component={List}
-            componentProps={{
-              dataSource: projects,
-              loading: !projectList.projectsByKey,
-              split: false,
-              className: styles['project-list'],
-              renderItem: (item, i) => {
-                const status = getProjectStatus(item);
-                const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
-                  <div onClick={e => e.stopPropagation()}>
-                    <Popconfirm
-                      title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
-                      onConfirm={() => {
-                        handleOnAction('delete', { key: item.key });
-                      }}
-                      onCancel={() => {}}
-                      okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-                      cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
-                    >
-                      <a>{formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}</a>
-                    </Popconfirm>
-                  </div>,
-                );
-
-                return (
-                  <List.Item
-                    key={item.key}
-                    className={styles['project-list-item']}
-                    actions={actions}
-                    onClick={() => handleTitleClick(item)}
-                  >
-                    <Skeleton title={false} loading={item.loading} active>
-                      <List.Item.Meta
-                        title={
-                          <div className={styles['project-list-item-title']}>
-                            {item.key === currentProject && <Badge status="success" />}
-                            <a>{item.name}</a>
-                            {status === 'progress' && (
-                              <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
-                                {formatMessage({
-                                  id: 'org.umi.ui.global.project.list.create.loading',
-                                })}
-                              </Tag>
-                            )}
-                            {status === 'failure' && (
-                              <Tag className={`${styles.tag} ${styles['tag-error']}`}>
-                                {formatMessage({
-                                  id: 'org.umi.ui.global.project.list.create.error',
-                                })}
-                              </Tag>
-                            )}
-                          </div>
-                        }
-                        description={item.path}
-                      />
-                    </Skeleton>
-                  </List.Item>
-                );
-              },
+            style={{
+              paddingTop: 187,
             }}
+            image={iconSvg}
+            description={formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}
           />
-        </ConfigProvider>
+        ) : (
+          <Row className={styles['project-list']} type="flex" gutter={24}>
+            {projects.map((item, j) => renderItem(item))}
+          </Row>
+        )}
       </Content>
       <ModalForm
         onCancel={() => setModalVisible(false)}

@@ -1,7 +1,7 @@
 .project {
   &-list {
     max-height: calc(~'100vh - 110px');
-    padding: 0 12px 0 24px;
+    padding-left: 24px;
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
@@ -86,36 +86,33 @@
   &-list {
     &-item {
       cursor: pointer;
-      padding: 24px;
-      padding-right: 8px;
-      margin-bottom: 12px;
-      background-color: @card-background;
-      border-radius: @border-radius-base;
-      transition: all 0.3s;
-      &:hover {
+      // width: 100%;
+      margin-bottom: 32px;
+      &:hover :global(.ant-card) {
         background-color: @card-hover-border;
       }
-      ul > li {
-        padding: 0 16px;
-        a {
-          color: @text-color;
-          i {
-            margin: 8px;
-          }
-          &:hover,
-          &:hover :global(.anticon) {
-            color: @heading-color;
-          }
-        }
-        em {
-          display: none;
-        }
+      :global(.ant-card-actions) > li {
+        border-color: transparent;
+      }
+      :global(.ant-card-meta-title) {
+        margin-bottom: 2px;
+      }
+      :global(.ant-card-actions) {
+        background-color: inherit;
+      }
+      @media @mobile {
+        width: 100%;
       }
       &-title {
         a {
           color: @heading-color;
           font-size: @font-size-lg;
         }
+      }
+      &-desc {
+        margin-bottom: 0;
+        color: @text-color-secondary;
+        height: 66px;
       }
     }
   }
