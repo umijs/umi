@@ -82,7 +82,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       this.xterm.clear();
     }
     this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
-    this.xterm.writeln(this.logs.replace(/\n/g, '\r\n'));
+    this.xterm.write(this.logs.replace(/\n/g, '\r\n'));
   };
 
   render() {

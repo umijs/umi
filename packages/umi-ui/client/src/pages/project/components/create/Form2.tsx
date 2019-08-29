@@ -55,6 +55,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       initialValues={{
         args: {
           language: 'JavaScript',
+          reactFeatures: [],
         },
         // taobaoSpeedUp: true,
       }}

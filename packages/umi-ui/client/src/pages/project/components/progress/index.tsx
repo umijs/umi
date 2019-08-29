@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Loading } from '@ant-design/icons';
-import { Steps, Button } from 'antd';
+import { Steps, Button, message } from 'antd';
 import get from 'lodash/get';
-import { Terminal as XTerminal } from 'xterm';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal from '@/components/Terminal';
@@ -17,10 +16,9 @@ const { Step } = Steps;
 
 const ProgressStage: React.FC<IProjectProps> = props => {
   const _log = window.g_uiDebug.extend('ProgressStage');
-  let xterm: XTerminal = null;
   _log('ProgressStage props', props);
-  // const [logs, setLogs] = useState<string>();
   const { currentData, projectList } = props;
+  const [logs, setLogs] = useState<string>('');
   const { showLogPanel } = useContext(ProjectContext);
   const [retryLoading, setRetryLoading] = useState<boolean>(false);
   const key = get(currentData, 'key');
@@ -36,16 +34,14 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         })();
       }
       if (progress.failure) {
-        if (xterm) {
-          xterm.writeln(progress.failure.message.replace(/\n/g, '\r\n'));
-        }
+        setLogs(progress.failure.message);
       }
 
       const unsubscribe = listenCreateProject({
         onMessage: data => {
           _log('listen createProject', data);
-          if (xterm && data.install) {
-            xterm.writeln(data.install.replace(/\n/g, '\r\n'));
+          if (data.install) {
+            setLogs(logs => (logs += `${data.install}`));
           }
         },
       });
@@ -61,7 +57,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
     if (progress.success) {
       return 'finish';
     }
-    if (progress.failure) {
+    if (progress.failure && !retryLoading) {
       return 'error';
     }
   };
@@ -79,12 +75,23 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   const progressSteps = Array.isArray(progress.steps) ? progress.steps.concat(['创建成功']) : [];
 
   const handleRetry = async () => {
-    const data = await createProject({
-      key,
-      retryFrom: progress.step,
-    });
-    _log('handleRetry', data);
+    setRetryLoading(true);
+    try {
+      const data = await createProject({
+        key,
+        retryFrom: progress.step,
+      });
+      debugger;
+      _log('handleRetry', data);
+    } catch (e) {
+      message.error(e && e.message ? e.message : '重试失败');
+    } finally {
+      setRetryLoading(false);
+    }
   };
+
+  const status = getStepStatus();
+  _log('status', status);
 
   return (
     <div className={styles['project-progress']}>
@@ -92,7 +99,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
       {progress && (
         <Steps
           current={progress.success ? progressSteps.length - 1 : progress.step}
-          status={getStepStatus()}
+          status={status}
           labelPlacement="vertical"
         >
           {progressSteps.map((step, i) => {
@@ -110,21 +117,14 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         // </div>
       )}
       {/* {progress.success ? <div>创建成功</div> : null} */}
-      <div style={{ marginTop: 16 }}>
-        <Terminal
-          getIns={t => {
-            xterm = t;
-          }}
-        />
-      </div>
+      {logs && (
+        <div style={{ marginTop: 16 }}>
+          <Terminal terminalClassName={styles.terminal} defaultValue={logs} />
+        </div>
+      )}
       {progress.failure && (
         <div className={styles['project-progress-fail']}>
-          <Button
-            loading={retryLoading}
-            disabled={retryLoading}
-            type="primary"
-            onClick={handleRetry}
-          >
+          <Button loading={retryLoading} type="primary" onClick={handleRetry}>
             重试
           </Button>
         </div>

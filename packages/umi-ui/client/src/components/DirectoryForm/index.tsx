@@ -19,7 +19,7 @@ interface DirectoryFormProps {
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const _log = g_uiDebug.extend('DirectoryForm');
   const { value: originValue, onChange } = props;
-  const value = slash2(originValue);
+  const value = slash2(originValue || '');
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
   const dirPathEditRef = useRef<HTMLInputElement>();
   const [clicked, setClicked] = useState<number>(-1);
