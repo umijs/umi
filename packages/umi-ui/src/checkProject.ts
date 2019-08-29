@@ -26,7 +26,10 @@ export function isUmiProject(targetDir) {
 }
 
 export function isDepLost(e) {
-  const re = /Cannot find module '(.+)'/;
-  const m = e.message.match(re);
+  const m = e.message.match(/Cannot find module '(.+)'/);
   return m && !m[1].startsWith('.');
+}
+
+export function isPluginLost(e) {
+  return e.message.match(/Plugin .+? can't be resolved/);
 }

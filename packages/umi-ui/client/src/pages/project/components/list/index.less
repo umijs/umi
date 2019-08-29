@@ -88,17 +88,26 @@
       cursor: pointer;
       // width: 100%;
       margin-bottom: 32px;
+      :global {
+        .ant-spin-dot-item {
+          width: 9px;
+        }
+        .ant-card {
+          border-color: transparent;
+          .ant-card-meta-title {
+            margin-bottom: 2px;
+          }
+          .ant-card-actions {
+            background-color: inherit;
+            & > li {
+              cursor: pointer;
+              border-color: transparent;
+            }
+          }
+        }
+      }
       &:hover :global(.ant-card) {
         background-color: @card-hover-border;
-      }
-      :global(.ant-card-actions) > li {
-        border-color: transparent;
-      }
-      :global(.ant-card-meta-title) {
-        margin-bottom: 2px;
-      }
-      :global(.ant-card-actions) {
-        background-color: inherit;
       }
       @media @mobile {
         width: 100%;

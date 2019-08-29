@@ -26,7 +26,7 @@ export async function init(opts = {}) {
     function showErrorMessage() {
       if (!el) {
         el = document.createElement('div');
-        el.style.position = 'absolute';
+        el.style.position = 'fixed';
         el.style.left = 0;
         el.style.top = 0;
         el.style.width = '100%';
@@ -34,7 +34,7 @@ export async function init(opts = {}) {
         el.style.zIndex = 2147483647000000;
         el.style.color = '#ffffff';
         el.style.textAlign = 'center';
-        el.style.fontSize = '18px';
+        el.style.fontSize = '16px';
         el.style.fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`;
         el.style.padding = '8px 0';
         el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';

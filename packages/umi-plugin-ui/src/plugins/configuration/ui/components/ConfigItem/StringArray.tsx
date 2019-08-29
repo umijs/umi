@@ -1,12 +1,16 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { MinusCircle, Plus } from '@ant-design/icons';
+import Context from '../../Context';
 import { ICompProps } from './index';
 import Label from './label';
 import { getFormItemShow } from './utils';
 
+const { useContext } = React;
+
 const StringArrayComp: React.SFC<ICompProps> = props => {
   const { name, description, title } = props;
+  const { debug: _log } = useContext(Context);
   const { parentConfig } = getFormItemShow(name);
   const label = <Label name={name} title={title} description={description} />;
 
@@ -57,14 +61,14 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>
       {({ getFieldValue }) => {
-        console.log(
+        _log(
           'children field update',
           name,
           parentConfig,
           getFieldValue(name),
           getFieldValue(parentConfig),
         );
-        console.log('getFieldValue(parentConfig', getFieldValue(parentConfig));
+        _log('getFieldValue(parentConfig', getFieldValue(parentConfig));
         const parentValue = getFieldValue(parentConfig);
         const isShow =
           typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);

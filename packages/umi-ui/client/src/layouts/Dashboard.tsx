@@ -1,6 +1,7 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
@@ -23,9 +24,9 @@ function getActivePanel(pathname) {
 }
 
 export default withRouter(props => {
+  const _log = window.g_uiDebug.extend('Dashboard');
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
-  console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
   useEffect(
@@ -37,7 +38,8 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  console.log('projectsprojects', projectMaps);
+
+  _log('projectsprojects', projectMaps);
 
   const changeProject = async ({ key }) => {
     if (key) {
@@ -48,10 +50,12 @@ export default withRouter(props => {
     }
   };
 
+  const title = formatMessage({ id: activePanel.title });
+
   return (
-    <UiLayout type="detail">
+    <UiLayout type="detail" title={title}>
       <Context.Consumer>
-        {({ FormattedMessage, formatMessage, currentProject, theme }) => {
+        {({ currentProject, theme }) => {
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -78,6 +82,7 @@ export default withRouter(props => {
                         get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -
                         get(projectMaps, `${a}.opened_at`, new Date('2002').getTime()),
                     )
+                    .slice(0, 5)
                     .map(project => (
                       <Menu.Item key={project} onClick={changeProject}>
                         <p>{get(projectMaps, `${project}.name`, '未命名')}</p>
@@ -135,7 +140,7 @@ export default withRouter(props => {
                 </Sider>
                 <Content className={styles.main}>
                   <div className={styles.header}>
-                    <h1>{activePanel && formatMessage({ id: activePanel.title })}</h1>
+                    <h1>{activePanel && title}</h1>
                     {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
                       <div className={styles['header-actions']}>
                         {activePanel.actions.map((panelAction, j) => {

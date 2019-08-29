@@ -65,7 +65,8 @@ const Logs: React.SFC<LogProps> = props => {
 
   return (
     <div className={logsCls} style={style}>
-      <ul>
+      {/* TODO: for ref */}
+      <ul id="ui-footer-logs">
         {Array.isArray(logs) && logs.length > 0 ? (
           logs.map((log, i) => <Log {...log} key={i} />)
         ) : (

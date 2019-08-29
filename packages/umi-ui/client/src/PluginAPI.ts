@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
+import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -12,6 +13,7 @@ import TwoColumnPanel from './components/TwoColumnPanel';
 export default class PluginAPI {
   public service: IUi.IService;
   public _: IUi.ILodash;
+  public debug: IUi.IDebug;
   callRemote: IUi.ICallRemote;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
@@ -24,6 +26,7 @@ export default class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
+    this.debug = debug('UIPlugin');
     this.currentProject =
       {
         ...currentProject

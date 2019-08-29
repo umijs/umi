@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button } from 'antd';
 import cls from 'classnames';
-import { MinusCircle, Plus } from '@ant-design/icons';
+import { Delete, Plus } from '@ant-design/icons';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
+import Context from '../../../Context';
 
 import styles from './styles.module.less';
 
-const { useState } = React;
+const { useState, useContext } = React;
 
 const objToArray = (v: IValue): IValue[] => {
   return Object.keys(v).map(k => ({ [k]: v[k] }));
@@ -24,20 +25,21 @@ const arrayToObj = (arr: IValue[]): IValue => {
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const { value, onChange, options: originOptions, defaultValue } = props;
+  const { debug: _log } = useContext(Context);
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
       ...option,
       disabled: !!arrayToObj(fieldsValue)[option.value],
     }));
-    console.log('newOptions', newOptions);
+    _log('newOptions', newOptions);
     return newOptions;
   };
   const [options, setOptions] = useState<IOption[]>(getOptionalOptions());
 
   const triggerChange = changedValue => {
     if (onChange) {
-      console.log('changedValue', changedValue);
+      _log('changedValue', changedValue);
       onChange({ ...arrayToObj(fieldsValue), ...changedValue });
     }
   };
@@ -51,7 +53,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
     triggerChange(v);
   };
 
-  console.log('fieldsValue', fieldsValue);
+  _log('fieldsValue', fieldsValue);
 
   const handleAdd = () => {
     setFieldsValue(field => {
@@ -73,9 +75,9 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   return (
     <span>
       {fieldsValue.map((field, i) => {
-        console.log('valvalueue', value);
+        _log('valvalueue', value);
         const [fieldKey] = Object.keys(field);
-        console.log('fieldKey in defaultValue', fieldKey in defaultValue);
+        _log('fieldKey in defaultValue', fieldKey in defaultValue);
         const isRequired = fieldKey in defaultValue;
         const fieldObjCls = cls(styles['itemField-obj'], {
           [styles['itemField-obj-required']]: isRequired,
@@ -94,7 +96,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               setOptions={setOptions}
             />
             {!isRequired && (
-              <MinusCircle className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
+              <Delete className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
             )}
           </div>
         );
@@ -104,6 +106,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           type="dashed"
           ghost
           block
+          className={styles.addBtn}
           onClick={handleAdd}
           style={{
             width: 'calc(100% - 22px)',

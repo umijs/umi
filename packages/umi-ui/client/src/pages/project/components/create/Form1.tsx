@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Form, Input, Button } from 'antd';
 import debounce from 'lodash/debounce';
+import slash2 from 'slash2';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
 import { checkDirValid } from '@/services/project';
@@ -48,11 +49,15 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const getFullPath = (fields = {}) => {
     const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
     const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
-    return dir;
+    return slash2(dir || '');
   };
 
   const renderFullPath = () => {
     return <p className={styles.fullPath}>{getFullPath()}</p>;
+  };
+
+  const handlePressEnter = () => {
+    form.submit();
   };
 
   return (
@@ -74,6 +79,9 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
       <Form.Item
         name="name"
         dependencies={['baseDir']}
+        style={{
+          marginBottom: 2,
+        }}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
         rules={[
           {
@@ -104,6 +112,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
             id: 'org.umi.ui.global.project.create.steps.input.placeholder',
           })}
           onChange={handleDebounceInput}
+          onPressEnter={handlePressEnter}
           autoComplete="off"
         />
       </Form.Item>

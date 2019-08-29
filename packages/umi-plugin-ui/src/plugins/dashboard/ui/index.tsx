@@ -76,7 +76,7 @@ const DashboardUI: React.FC<IProps> = props => {
     actionCards.unshift({
       className: welcomeCardCls,
       size: 'small',
-      extra: <Close onClick={handleClose} />,
+      extra: <Close className={styles.close} onClick={handleClose} />,
       body: (
         <div>
           <h2>Hi</h2>
@@ -97,7 +97,7 @@ const DashboardUI: React.FC<IProps> = props => {
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;
           return (
-            <Col key={i} className={className} md={12} lg={8} xl={6}>
+            <Col key={i} className={className} xs={24} sm={24} md={24} lg={8} xl={6}>
               <Card
                 className={styles.card}
                 bordered={false}

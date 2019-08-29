@@ -48,6 +48,13 @@ export async function createProject(payload, params?: object) {
   });
 }
 
+export function listenCreateProject(params) {
+  return listenRemote({
+    type: '@@project/create/progress',
+    ...params,
+  });
+}
+
 export async function editProject(payload) {
   return callRemote({
     type: '@@project/edit',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageHeader } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
 import Layout from './Layout';
 import Context from './Context';
@@ -40,7 +41,7 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
   render() {
     const { current, currentData } = this.state;
     return (
-      <Layout type="list">
+      <Layout type="list" title={formatMessage({ id: 'org.umi.ui.global.project.title' })}>
         <Context.Consumer>
           {context => (
             <ProjectContext.Provider

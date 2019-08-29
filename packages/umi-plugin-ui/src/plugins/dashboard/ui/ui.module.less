@@ -1,14 +1,15 @@
 .container {
   padding: 20px 16px;
+  .card {
+    margin-bottom: 16px;
+    min-width: 282px;
+  }
 }
 
-.card {
-  margin-bottom: 16px;
-}
 .close {
   transition: all 0.3s;
   &:hover {
-    color: #40a9ff;
+    color: fade(#fff, 85);
   }
 }
 
@@ -65,10 +66,14 @@
     line-height: 20px;
   }
   &.build {
-    background: url('https://gw-office.alipayobjects.com/basement_prod/198c25e3-6f1e-4023-8bb8-024e474cde29.svg');
+    background: url('https://gw.alipayobjects.com/zos/basement_prod/c5c1ced2-ac8c-4979-b725-e7d094364597.svg');
+    background-size: contain;
+    background-position: center;
   }
   &.dev {
-    background: url('https://gw-office.alipayobjects.com/basement_prod/ba026d51-b07b-4fb8-a95c-a04c5a4dc6b9.svg');
+    background: url('https://gw.alipayobjects.com/zos/basement_prod/c5c1ced2-ac8c-4979-b725-e7d094364597.svg');
+    background-size: contain;
+    background-position: center;
   }
 }
 

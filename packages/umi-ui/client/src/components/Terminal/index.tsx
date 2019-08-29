@@ -12,6 +12,7 @@ const { Terminal } = window;
 
 export interface ITerminalProps {
   className?: string;
+  terminalClassName?: string;
   defaultValue?: string;
   getIns?: (ins: XTerminal) => void;
   terminalConfig?: object;
@@ -20,7 +21,7 @@ export interface ITerminalProps {
 
 const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
   const domContainer = useRef<HTMLDivElement>(null);
-  const { className, defaultValue, getIns, terminalConfig = {} } = props;
+  const { className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
@@ -51,9 +52,6 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
           getIns(xterm);
         }
         fit(xterm);
-        if (defaultValue) {
-          xterm.writeln(defaultValue.replace(/\n/g, '\r\n'));
-        }
       }
     },
     [domContainer, xterm],
@@ -66,6 +64,15 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       }
     },
     [size.width, size.height],
+  );
+
+  useEffect(
+    () => {
+      if (xterm && defaultValue) {
+        xterm.write(defaultValue.replace(/\n/g, '\r\n'));
+      }
+    },
+    [defaultValue, xterm],
   );
 
   const clear = () => {
@@ -81,8 +88,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
   };
 
   const wrapperCls = cls(styles.wrapper, className);
-
-  console.log('xterm', xterm, domContainer.current);
+  const terminalCls = cls(styles.logContainer, terminalClassName);
 
   return (
     <div className={wrapperCls}>
@@ -101,7 +107,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
           <Spin size="small" />
         </div>
       )}
-      <div ref={domContainer} className={styles.logContainer} />
+      <div ref={domContainer} className={terminalCls} />
     </div>
   );
 };

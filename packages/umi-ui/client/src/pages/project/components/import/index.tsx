@@ -13,13 +13,14 @@ import styles from './index.less';
 const { useState, useEffect, useContext } = React;
 
 const ImportProject: React.SFC<IProjectProps> = props => {
+  const _log = window.g_uiDebug.extend('ImportProject');
   const { cwd, files } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [form] = Form.useForm();
   const { setCurrent } = useContext(ProjectContext);
 
   const handleFinish = async values => {
-    console.log('import projects', values);
+    _log('import projects', values);
     try {
       await importProject(values);
       setCurrent('list');

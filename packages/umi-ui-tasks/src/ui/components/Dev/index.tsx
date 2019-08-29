@@ -111,6 +111,13 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     setModalVisible(false);
   };
 
+  const EnvLabel = props => (
+    <div>
+      <div className={styles.modleLableTitle}>{intl(props.title)}</div>
+      <div className={styles.modleLableDesc}>{intl(props.desc)}</div>
+    </div>
+  );
+
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
@@ -126,67 +133,104 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                   ? intl('org.umi.ui.tasks.dev.cancel')
                   : intl('org.umi.ui.tasks.dev.start')}
               </Button>
-              <Button onClick={openModal}>{intl('org.umi.ui.tasks.dev.envs')}</Button>
+              <Button onClick={openModal}>{intl('org.umi.ui.tasks.envs')}</Button>
               <Modal
                 visible={modalVisible}
-                title={intl('org.umi.ui.tasks.dev.envs')}
+                title={intl('org.umi.ui.tasks.envs')}
                 onOk={handleOk}
                 onCancel={handleCancel}
               >
-                <Form name="devEnv" form={form} initialValues={env} layout="vertical">
-                  <Form.Item label={intl('org.umi.ui.tasks.dev.envs.port')} name="PORT">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.babelPolyfill')}
-                    name="BABEL_POLYFILL"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.hmr')}
-                    name="HMR"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.babelCache')}
-                    name="BABEL_CACHE"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.mock')}
-                    name="MOCK"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.BROWSER')}
-                    name="BROWSER"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.clear')}
-                    name="CLEAR_CONSOLE"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                  <Form.Item
-                    label={intl('org.umi.ui.tasks.dev.envs.tsCheck')}
-                    name="FORK_TS_CHECKER"
-                    valuePropName="checked"
-                  >
-                    <Switch />
-                  </Form.Item>
-                </Form>
+                <div className={styles.modalContainer}>
+                  <Form name="devEnv" form={form} initialValues={env} layout="vertical">
+                    <Form.Item label={intl('org.umi.ui.tasks.envs.port')} name="PORT">
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.babelPolyfill"
+                          desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
+                        />
+                      }
+                      name="BABEL_POLYFILL"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.hmr"
+                          desc="org.umi.ui.tasks.envs.hmr.desc"
+                        />
+                      }
+                      name="HMR"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.babelCache"
+                          desc="org.umi.ui.tasks.envs.babelCache.desc"
+                        />
+                      }
+                      name="BABEL_CACHE"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.mock"
+                          desc="org.umi.ui.tasks.envs.mock.desc"
+                        />
+                      }
+                      name="MOCK"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.BROWSER"
+                          desc="org.umi.ui.tasks.envs.BROWSER.desc"
+                        />
+                      }
+                      name="BROWSER"
+                      valuePropName="checked"
+                    >
+                      <Switch />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.clear"
+                          desc="org.umi.ui.tasks.envs.clear.desc"
+                        />
+                      }
+                      name="CLEAR_CONSOLE"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.tsCheck"
+                          desc="org.umi.ui.tasks.envs.tsCheck.desc"
+                        />
+                      }
+                      name="FORK_TS_CHECKER"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                  </Form>
+                </div>
               </Modal>
             </Col>
             {/* <Col span={4} offset={12} className={styles.formatGroup}>

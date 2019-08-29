@@ -1,4 +1,5 @@
 import lodash from 'lodash';
+import { Debugger } from 'debug';
 import { Context, FC, FunctionComponent } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
@@ -115,13 +116,15 @@ declare namespace IUI {
     taobaoSpeedUp?: boolean;
   }
   type IRedirect = (url: string) => void;
+  type IDebug = Debugger;
 
   class IApiClass {
     constructor(service: IService);
     service: IService;
     /** lodash */
     readonly _: ILodash;
-
+    /** debug for client */
+    readonly debug: IDebug;
     /** currentProject  */
     currentProject: ICurrentProject;
     /** intl */

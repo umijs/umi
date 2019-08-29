@@ -43,7 +43,6 @@ export default class ActiveProjectError extends Error {
     super(getLangStr(message, lang));
     if (stack) this.stack = stack;
     if (exception) {
-      console.log('exception', this.exception);
       this.exception = exception;
     }
     if (actions)

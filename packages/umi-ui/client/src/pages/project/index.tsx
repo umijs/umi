@@ -9,6 +9,7 @@ import styles from './index.less';
 const { Content } = Layout;
 
 const Project: React.FC<{}> = () => {
+  const _log = window.g_uiDebug.extend('Project');
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
@@ -19,12 +20,41 @@ const Project: React.FC<{}> = () => {
     const { data } = await fetchProject({
       onProgress: async res => {
         // listen change
-        console.log('listen projects', res);
+        _log('listen projects', res);
         setData(res);
       },
     });
     setData(data);
   }
+
+  const getComponentProps = curr => {
+    let projectProps = {};
+    switch (current) {
+      case 'list':
+        projectProps = {
+          projectList: data,
+        };
+        break;
+      case 'create':
+        projectProps = {
+          cwd,
+        };
+        break;
+      case 'import':
+        projectProps = {
+          cwd,
+          files,
+        };
+        break;
+      case 'progress':
+        projectProps = {
+          currentData,
+          projectList: data,
+        };
+        break;
+    }
+    return projectProps;
+  };
 
   useEffect(() => {
     (async () => {
@@ -40,17 +70,12 @@ const Project: React.FC<{}> = () => {
   }, []);
 
   const ProjectComp = ProjectMap[current];
+  const projectProps = getComponentProps(current);
 
   return (
     <Layout className={styles.project}>
       <Content className={styles['project-content']}>
-        <ProjectComp
-          key={current}
-          cwd={cwd}
-          currentData={currentData}
-          files={files}
-          projectList={data}
-        />
+        <ProjectComp key={current} {...projectProps} />
       </Content>
     </Layout>
   );

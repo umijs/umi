@@ -19,9 +19,10 @@ import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
 import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
-import { isDepLost, isUmiProject } from './checkProject';
+import { isDepLost, isPluginLost, isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
+process.env.UMI_UI = 'true';
 
 export default class UmiUI {
   cwd: string;
@@ -39,6 +40,8 @@ export default class UmiUI {
   send: any;
 
   developMode: boolean = false;
+
+  npmClients: string[] = [];
 
   constructor() {
     this.cwd = process.cwd();
@@ -61,6 +64,10 @@ export default class UmiUI {
     if (process.env.CURRENT_PROJECT) {
       this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
     }
+
+    process.nextTick(() => {
+      this.initNpmClients();
+    });
   }
 
   activeProject(key: string, service?: any, opts?: any) {
@@ -132,7 +139,7 @@ export default class UmiUI {
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {
-        if (isDepLost(e)) {
+        if (isDepLost(e) || isPluginLost(e)) {
           throw new ActiveProjectError({
             message: {
               'zh-CN': `依赖文件没找到。`,
@@ -171,10 +178,8 @@ export default class UmiUI {
     if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
-      console.log('project.path', project.path);
       launchPath = project.path;
     }
-    console.log(launchPath);
     if (!existsSync(launchPath)) {
       if (callback.failure) {
         let msg = {
@@ -191,7 +196,6 @@ export default class UmiUI {
       }
     } else {
       launchEditor(launchPath, (fileName, errorMsg) => {
-        console.log('fileName, errorMsg', fileName, errorMsg);
         // log error if any
         if (!errorMsg) return;
         let msg = {
@@ -255,12 +259,14 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
-    const { type, npmClient, baseDir, name, args } = opts;
     let key = opts.key;
     let retryFrom = opts.retryFrom;
 
+    let createOpts = opts;
     if (key) {
-      assert(retryFrom in opts, `key 和 retryFrom 必须同时提供。`);
+      assert('retryFrom' in opts, `key 和 retryFrom 必须同时提供。`);
+      // eslint-disable-next-line prefer-destructuring
+      createOpts = this.config.data.projectsByKey[key].createOpts;
     }
 
     const setProgress = args => {
@@ -281,10 +287,10 @@ export default class UmiUI {
     };
 
     try {
-      assert(baseDir, `baseDir must be supplied`);
-      assert(name, `name must be supplied`);
-      assert(type, `type must be supplied`);
-      const targetDir = join(baseDir, name);
+      assert(createOpts.baseDir, `baseDir must be supplied`);
+      assert(createOpts.name, `name must be supplied`);
+      assert(createOpts.type, `type must be supplied`);
+      const targetDir = join(createOpts.baseDir, createOpts.name);
 
       if (!retryFrom) {
         // 步骤：
@@ -314,8 +320,9 @@ export default class UmiUI {
         // 1
         key = this.config.addProject({
           path: targetDir,
-          name,
-          npmClient,
+          name: createOpts.name,
+          npmClient: createOpts.npmClient,
+          createOpts,
         });
 
         // get create key
@@ -364,8 +371,8 @@ export default class UmiUI {
         clearModule(creatorPath);
         await require(creatorPath).run({
           cwd: targetDir,
-          type,
-          args,
+          type: createOpts.type,
+          args: createOpts.args,
         });
         setProgress({
           stepStatus: 2,
@@ -378,7 +385,11 @@ export default class UmiUI {
           step: 3,
           stepStatus: 1,
         });
-        await installDeps(npmClient, targetDir, {
+        // 重装 node_modules 时先清空，否则可能会失败
+        if (retryFrom === 3) {
+          rimraf.sync(join(targetDir, 'node_modules'));
+        }
+        await installDeps(createOpts.npmClient, targetDir, {
           taobaoSpeedUp: this.hasTaobaoSpeedUp(),
           onData(data) {
             onProgress({
@@ -426,9 +437,8 @@ export default class UmiUI {
     }
   }
 
-  getNpmClients() {
+  initNpmClients() {
     const ret = [];
-
     try {
       execSync('tnpm --version', { stdio: 'ignore' });
       ret.push('tnpm');
@@ -454,7 +464,11 @@ export default class UmiUI {
       ret.push('pnpm');
     } catch (e) {}
 
-    return ret;
+    this.npmClients = ret;
+  }
+
+  getNpmClients() {
+    return this.npmClients;
   }
 
   reloadProject(key: string) {}
