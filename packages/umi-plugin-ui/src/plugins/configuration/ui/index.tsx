@@ -103,7 +103,7 @@ function getSections(api: IUiApi) {
           height={32}
         />
       ),
-      description: '这是一段项目配置的描述。',
+      description: api.intl('org.umi.ui.configuration.project.config.desc'),
       component: () => <BasicConfig api={api} />,
     },
   ];
@@ -111,7 +111,7 @@ function getSections(api: IUiApi) {
   if (!isBigfish) {
     sections.push({
       key: 'react',
-      title: 'umi-plugin-react 配置',
+      title: api.intl('org.umi.ui.configuration.project.config.react.title'),
       icon: 'pause-circle',
       description: 'BCD',
       component: () => <PluginConfig api={api} />,

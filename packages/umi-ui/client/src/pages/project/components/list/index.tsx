@@ -46,6 +46,7 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
+  const _log = g_uiDebug.extend('projectList');
   const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
@@ -58,7 +59,10 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     return !!item.creatingProgress;
   };
 
-  g_uiDebug.extend('projectList')('projectList', projectList);
+  _log('projectList', projectList);
+
+  const loading = !projectList.projectsByKey;
+  _log('loading', loading);
 
   const projects = useMemo(
     () => {
@@ -174,39 +178,37 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     return (
       <Col key={item.key} className={styles['project-list-item']} md={12} lg={8} xl={6}>
         <Card actions={actions} onClick={() => handleTitleClick(item)}>
-          <Skeleton title={false} loading={!projectList.projectsByKey} active>
-            <Meta
-              title={
-                <div className={styles['project-list-item-title']}>
-                  {item.key === currentProject && <Badge status="success" />}
-                  <a>{item.name}</a>
-                  {status === 'progress' && (
-                    <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
-                      {formatMessage({
-                        id: 'org.umi.ui.global.project.list.create.loading',
-                      })}
-                    </Tag>
-                  )}
-                  {status === 'failure' && (
-                    <Tag className={`${styles.tag} ${styles['tag-error']}`}>
-                      {formatMessage({
-                        id: 'org.umi.ui.global.project.list.create.error',
-                      })}
-                    </Tag>
-                  )}
-                </div>
-              }
-              description={
-                <Paragraph
-                  className={styles['project-list-item-desc']}
-                  style={{ marginBottom: 0 }}
-                  ellipsis={{ rows: 3, expandable: true }}
-                >
-                  {item.path}
-                </Paragraph>
-              }
-            />
-          </Skeleton>
+          <Meta
+            title={
+              <div className={styles['project-list-item-title']}>
+                {item.key === currentProject && <Badge status="success" />}
+                <a>{item.name}</a>
+                {status === 'progress' && (
+                  <Tag className={`${styles.tag} ${styles['tag-progress']}`}>
+                    {formatMessage({
+                      id: 'org.umi.ui.global.project.list.create.loading',
+                    })}
+                  </Tag>
+                )}
+                {status === 'failure' && (
+                  <Tag className={`${styles.tag} ${styles['tag-error']}`}>
+                    {formatMessage({
+                      id: 'org.umi.ui.global.project.list.create.error',
+                    })}
+                  </Tag>
+                )}
+              </div>
+            }
+            description={
+              <Paragraph
+                className={styles['project-list-item-desc']}
+                style={{ marginBottom: 0 }}
+                ellipsis={{ rows: 3, expandable: true }}
+              >
+                {item.path}
+              </Paragraph>
+            }
+          />
         </Card>
       </Col>
     );
@@ -266,6 +268,10 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             image={iconSvg}
             description={formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}
           />
+        ) : loading ? (
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <Spin size="large" />
+          </div>
         ) : (
           <Row className={styles['project-list']} type="flex" gutter={24}>
             {projects.map((item, j) => renderItem(item))}
