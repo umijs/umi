@@ -56,6 +56,10 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
     return <p className={styles.fullPath}>{getFullPath()}</p>;
   };
 
+  const handlePressEnter = () => {
+    form.submit();
+  };
+
   return (
     <Form
       form={form}
@@ -108,6 +112,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
             id: 'org.umi.ui.global.project.create.steps.input.placeholder',
           })}
           onChange={handleDebounceInput}
+          onPressEnter={handlePressEnter}
           autoComplete="off"
         />
       </Form.Item>

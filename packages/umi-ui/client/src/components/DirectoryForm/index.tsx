@@ -107,7 +107,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const handleInputDirPath = async (e: any) => {
     // TODO: validate Path
     if (e.target.value) {
-      await changeDirectories(e.target.value);
+      await changeDirectories(e.target.value.replace(/\/$/, ''));
     }
     setDirPathEdit(false);
   };
