@@ -259,12 +259,14 @@ export default class UmiUI {
   }
 
   async createProject(opts = {}, { onSuccess, onFailure, onProgress }) {
-    const { type, npmClient, baseDir, name, args } = opts;
     let key = opts.key;
     let retryFrom = opts.retryFrom;
 
+    let createOpts = opts;
     if (key) {
       assert('retryFrom' in opts, `key 和 retryFrom 必须同时提供。`);
+      // eslint-disable-next-line prefer-destructuring
+      createOpts = this.config.data.projectsByKey[key].createOpts;
     }
 
     const setProgress = args => {
@@ -285,10 +287,10 @@ export default class UmiUI {
     };
 
     try {
-      assert(baseDir, `baseDir must be supplied`);
-      assert(name, `name must be supplied`);
-      assert(type, `type must be supplied`);
-      const targetDir = join(baseDir, name);
+      assert(createOpts.baseDir, `baseDir must be supplied`);
+      assert(createOpts.name, `name must be supplied`);
+      assert(createOpts.type, `type must be supplied`);
+      const targetDir = join(createOpts.baseDir, createOpts.name);
 
       if (!retryFrom) {
         // 步骤：
@@ -318,8 +320,9 @@ export default class UmiUI {
         // 1
         key = this.config.addProject({
           path: targetDir,
-          name,
-          npmClient,
+          name: createOpts.name,
+          npmClient: createOpts.npmClient,
+          createOpts,
         });
 
         // get create key
@@ -368,8 +371,8 @@ export default class UmiUI {
         clearModule(creatorPath);
         await require(creatorPath).run({
           cwd: targetDir,
-          type,
-          args,
+          type: createOpts.type,
+          args: createOpts.args,
         });
         setProgress({
           stepStatus: 2,
@@ -382,7 +385,7 @@ export default class UmiUI {
           step: 3,
           stepStatus: 1,
         });
-        await installDeps(npmClient, targetDir, {
+        await installDeps(createOpts.npmClient, targetDir, {
           taobaoSpeedUp: this.hasTaobaoSpeedUp(),
           onData(data) {
             onProgress({
