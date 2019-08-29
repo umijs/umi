@@ -70,11 +70,16 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   // single click
   const handleDirectorySelect = (folderName: string, i: number) => {
     _log(`singleClick: ${folderName}`);
+    _log('dirPathArr', dirPathArr);
     if (folderName) {
+      _log('clicked', !(clicked > -1));
       _log(`dirPath: ${dirPath}`);
       const currDirPath = !(clicked > -1)
         ? `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`
-        : dirPathArr.concat(folderName).join('/');
+        : dirPathArr
+            .concat(folderName)
+            .join('/')
+            .replace(/\/\//, '/');
       _log(`singleClick: currDirPath ${currDirPath}`);
       triggerChangeValue(currDirPath);
       setClicked(i);
@@ -102,7 +107,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const handleInputDirPath = async (e: any) => {
     // TODO: validate Path
     if (e.target.value) {
-      await changeDirectories(e.target.value);
+      await changeDirectories(e.target.value.replace(/\/$/, ''));
     }
     setDirPathEdit(false);
   };

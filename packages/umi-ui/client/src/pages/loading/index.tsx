@@ -27,6 +27,7 @@ interface ILoadingState {
 
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
   logs = '';
+  _log = window.g_uiDebug.extend('Loading');
   private xterm: XTerminal;
   state = {
     actionLoading: false,
@@ -43,7 +44,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
         projectPath: '/private/tmp/foooo',
       },
       onProgress(data) {
-        console.log(`Install: ${data.install}`);
+        _log(`Install: ${data.install}`);
       },
     });
     this.setState({
@@ -52,7 +53,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   handleSuccess = () => {
-    console.log('success');
+    _log('success');
     this.setState({
       actionLoading: false,
     });
@@ -61,7 +62,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
   handleFailure = () => {
     // TODO if install failed
-    console.log('failed');
+    _log('failed');
     this.setState({
       actionLoading: false,
     });
