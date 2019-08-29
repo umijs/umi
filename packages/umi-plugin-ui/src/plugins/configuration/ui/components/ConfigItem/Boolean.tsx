@@ -2,11 +2,13 @@ import * as React from 'react';
 import { Form, Switch } from 'antd';
 import { ICompProps } from './index';
 import Label from './label';
+import Context from '../../Context';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<ICompProps> = props => {
-  const { name, description, title, form } = props;
-  const { parentConfig } = getFormItemShow(name, form);
+  const { name, description, title } = props;
+  const { debug: _log } = React.useContext(Context);
+  const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     label: <Label name={name} title={title} description={description} />,
@@ -15,7 +17,7 @@ const BooleanComp: React.SFC<ICompProps> = props => {
   return parentConfig ? (
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
       {({ getFieldValue }) => {
-        console.log(
+        _log(
           'children field update',
           name,
           parentConfig,

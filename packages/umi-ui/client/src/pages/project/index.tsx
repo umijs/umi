@@ -9,6 +9,7 @@ import styles from './index.less';
 const { Content } = Layout;
 
 const Project: React.FC<{}> = () => {
+  const _log = window.g_uiDebug.extend('Project');
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
@@ -19,7 +20,7 @@ const Project: React.FC<{}> = () => {
     const { data } = await fetchProject({
       onProgress: async res => {
         // listen change
-        console.log('listen projects', res);
+        _log('listen projects', res);
         setData(res);
       },
     });

@@ -8,7 +8,7 @@ import styles from './404.less';
 
 const NotFound: React.SFC<{}> = props => {
   const { theme } = React.useContext(Context);
-  console.log('themethemetheme', theme);
+
   return (
     <Result
       className={styles.notFound}

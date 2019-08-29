@@ -43,7 +43,7 @@ export async function render(oldRender) {
         }
       },
     });
-    console.log('Init socket success');
+    _log('Init socket success');
   } catch (e) {
     console.error('Init socket failed', e);
   }
@@ -70,7 +70,7 @@ export async function render(oldRender) {
 
   // Project Manager
   else if (history.location.pathname.startsWith('/test')) {
-    console.log('Test Only');
+    _log('Test Only');
   }
 
   // Project View

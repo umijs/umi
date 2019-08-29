@@ -14,6 +14,7 @@ export interface DirectoryItemProps {
 }
 
 const DirectoryItem: React.SFC<DirectoryItemProps> = props => {
+  const _log = window.g_uiDebug.extend('DirectoryItem');
   const { onClick, fileName, onDoubleClick, clicked } = props;
   const itemCls = cls(styles['directoryForm-list-item'], {
     [styles['directoryForm-list-item-active']]: !!clicked,
@@ -28,7 +29,7 @@ const DirectoryItem: React.SFC<DirectoryItemProps> = props => {
   });
   // Double Click
   const handleDoubleClick = () => {
-    console.log('directory', fileName);
+    _log('handleDoubleClick fileName', fileName);
     onDoubleClick(fileName);
   };
   // onClick

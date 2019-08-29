@@ -48,10 +48,10 @@ const CreateProject: React.SFC<IProjectProps> = props => {
       // temp compatible with create-umi
       draft.args.isTypeScript = draft.args.language === 'TypeScript';
     });
-    console.log('params', params);
+    _log('params', params);
     try {
       const data = await createProject(params);
-      console.log('project have create', data);
+      _log('project have create', data);
       if (data && data.key) {
         setCurrent('progress', data);
       } else {
