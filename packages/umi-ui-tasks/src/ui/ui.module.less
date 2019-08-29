@@ -44,9 +44,28 @@
   margin-bottom: 8px;
 }
 
-.modelContainer {
-  padding: 24px;
-}
 .confirmMessage {
   margin-bottom: 24px;
+}
+.modalContainer {
+  :global {
+    .ant-form-vertical {
+      .ant-form-item-label {
+        padding: 0 0 12px;
+      }
+    }
+  }
+}
+
+.modleLableTitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 22px;
+  margin-bottom: 2px;
+}
+
+.modleLableDesc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 22px;
 }
