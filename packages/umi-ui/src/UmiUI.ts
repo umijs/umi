@@ -385,6 +385,10 @@ export default class UmiUI {
           step: 3,
           stepStatus: 1,
         });
+        // 重装 node_modules 时先清空，否则可能会失败
+        if (retryFrom === 3) {
+          rimraf.sync(join(targetDir, 'node_modules'));
+        }
         await installDeps(createOpts.npmClient, targetDir, {
           taobaoSpeedUp: this.hasTaobaoSpeedUp(),
           onData(data) {
