@@ -1,9 +1,10 @@
 import glob from 'glob';
+import { winPath } from 'umi-utils';
 import { join } from 'path';
 
-const src = join(__dirname, './src/plugins');
-const files = glob.sync('**/*.@(tsx|jsx)', { cwd: src });
-const browserFiles = files.map(filePath => join('src', 'plugins', filePath));
+const src = join(winPath(__dirname), 'src', 'plugins');
+const files = glob.sync('**/*.@(tsx|jsx)', { cwd: winPath(src) });
+const browserFiles = files.map(filePath => join('src', 'plugins', withPath(filePath)));
 
 export default {
   target: 'node',
