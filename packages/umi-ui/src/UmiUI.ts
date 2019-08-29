@@ -264,7 +264,7 @@ export default class UmiUI {
     let retryFrom = opts.retryFrom;
 
     if (key) {
-      assert(retryFrom in opts, `key 和 retryFrom 必须同时提供。`);
+      assert('retryFrom' in opts, `key 和 retryFrom 必须同时提供。`);
     }
 
     const setProgress = args => {
