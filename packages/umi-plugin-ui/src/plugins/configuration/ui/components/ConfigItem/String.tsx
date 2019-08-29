@@ -5,13 +5,13 @@ import Label from './label';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<ICompProps> = props => {
-  const { name, description, title } = props;
+  const { name, description, title, default: defaultValue } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     required: false,
     label: <Label name={name} title={title} description={description} />,
-    rules: [{ required: true, message: `请输入${title}` }],
+    rules: [{ required: !!defaultValue, message: `请输入${title}` }],
   };
 
   const formControl = <Input autoComplete="off" style={{ maxWidth: 320 }} />;
