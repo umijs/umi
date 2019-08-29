@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Loading } from '@ant-design/icons';
-import { Steps } from 'antd';
+import { Steps, Button } from 'antd';
 import get from 'lodash/get';
 import { Terminal as XTerminal } from 'xterm';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal from '@/components/Terminal';
-import { listenCreateProject, setCurrentProject } from '@/services/project';
+import { listenCreateProject, setCurrentProject, createProject } from '@/services/project';
 import { handleBack } from '@/utils';
 import styles from './index.less';
 import { IProjectProps } from '../index';
@@ -15,17 +15,18 @@ const { useContext, useEffect, useState } = React;
 
 const { Step } = Steps;
 
-const ProgressStage: React.SFC<IProjectProps> = props => {
+const ProgressStage: React.FC<IProjectProps> = props => {
   const _log = window.g_uiDebug.extend('ProgressStage');
   let xterm: XTerminal = null;
-  console.log('ProgressStage props', props);
+  _log('ProgressStage props', props);
   // const [logs, setLogs] = useState<string>();
   const { currentData, projectList } = props;
   const { showLogPanel } = useContext(ProjectContext);
+  const [retryLoading, setRetryLoading] = useState<boolean>(false);
   const key = get(currentData, 'key');
   const progress: ICreateProgress =
     get(projectList, `projectsByKey.${get(currentData, 'key')}.creatingProgress`) || {};
-  console.log('progressprogressprogress', progress);
+  _log('progress', progress);
   useEffect(
     () => {
       if (progress.success && key) {
@@ -77,6 +78,14 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
 
   const progressSteps = Array.isArray(progress.steps) ? progress.steps.concat(['创建成功']) : [];
 
+  const handleRetry = async () => {
+    const data = await createProject({
+      key,
+      retryFrom: progress.step,
+    });
+    _log('handleRetry', data);
+  };
+
   return (
     <div className={styles['project-progress']}>
       <h3>{getTitle()}</h3>
@@ -101,12 +110,6 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
         // </div>
       )}
       {/* {progress.success ? <div>创建成功</div> : null} */}
-      {/* {progress.failure && (
-        <div className={styles['project-progress-fail']}>
-          <p>{progress.failure.message}</p>
-          <a onClick={() => showLogPanel()}>查看日志</a>
-        </div>
-      )} */}
       <div style={{ marginTop: 16 }}>
         <Terminal
           getIns={t => {
@@ -114,6 +117,18 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
           }}
         />
       </div>
+      {progress.failure && (
+        <div className={styles['project-progress-fail']}>
+          <Button
+            loading={retryLoading}
+            disabled={retryLoading}
+            type="primary"
+            onClick={handleRetry}
+          >
+            重试
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

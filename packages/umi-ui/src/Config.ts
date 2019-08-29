@@ -25,6 +25,7 @@ export interface IProjectItem {
   creatingProgress?: ICreateProgress;
   created_at?: number;
   npmClient?: string;
+  createOpts?: any;
 }
 
 interface IProjectsByKey {
@@ -70,10 +71,12 @@ export default class Config {
     name,
     path,
     npmClient,
+    createOpts,
   }: {
     path: string;
     name: string;
     npmClient?: string;
+    createOpts?: any;
   }): string {
     name = name || basename(path);
     const str = `${path}____${name}`;
@@ -87,6 +90,7 @@ export default class Config {
       name,
       created_at: +new Date(),
       npmClient,
+      createOpts,
     };
     this.save();
     return key;

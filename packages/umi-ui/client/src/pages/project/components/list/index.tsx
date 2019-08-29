@@ -121,7 +121,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     progress: item => [
       <p style={{ cursor: 'auto' }}>
         <Spin style={{ marginRight: 8 }} />
-        创建中
+        {formatMessage({ id: 'org.umi.ui.global.project.list.creating' })}
       </p>,
     ],
     failure: item => [],

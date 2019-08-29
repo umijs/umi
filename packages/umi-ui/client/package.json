@@ -14,6 +14,7 @@
     "nprogress": "^0.2.0",
     "rc-tween-one": "^2.6.0",
     "react-helmet": "^5.2.1",
+    "slash2": "2.0.0",
     "xterm": "^3.14.4",
     "xterm-addon-web-links": "^0.1.0"
   },

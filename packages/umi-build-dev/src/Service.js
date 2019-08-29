@@ -78,7 +78,7 @@ export default class Service {
         plugins: this.config.plugins || [],
       });
     } catch (e) {
-      if (process.env.UMI_TEST) {
+      if (process.env.UMI_TEST || process.env.UMI_UI) {
         throw new Error(e);
       } else {
         this.printUmiError(e);

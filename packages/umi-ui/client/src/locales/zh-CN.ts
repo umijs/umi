@@ -8,6 +8,7 @@ export default {
   'org.umi.ui.global.project.directory.tip': '友情提示：单击选择，双击进入',
   'org.umi.ui.global.content.hello': '你好',
   'org.umi.ui.global.project.siderbar.title': '项目',
+  'org.umi.ui.global.project.list.creating': '创建中',
   'org.umi.ui.global.project.list.empty': '一直如此，便是对的么？',
   'org.umi.ui.global.project.list.title': '项目列表',
   'org.umi.ui.global.project.list.editor.open': '在编辑器中打开',
