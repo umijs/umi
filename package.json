@@ -55,5 +55,8 @@
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
     "test-build-result": "^1.1.2"
+  },
+  "engines": {
+    "node": ">= 8.9.0"
   }
 }
