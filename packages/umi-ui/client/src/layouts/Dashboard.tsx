@@ -24,9 +24,9 @@ function getActivePanel(pathname) {
 }
 
 export default withRouter(props => {
+  const _log = window.g_uiDebug.extend('Dashboard');
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
-  console.log('activePanel.path', activePanel && activePanel.path);
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
 
   useEffect(
@@ -38,7 +38,8 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  console.log('projectsprojects', projectMaps);
+
+  _log('projectsprojects', projectMaps);
 
   const changeProject = async ({ key }) => {
     if (key) {

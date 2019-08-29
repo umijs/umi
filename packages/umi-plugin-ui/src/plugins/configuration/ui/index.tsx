@@ -104,7 +104,7 @@ function getSections(api: IUiApi) {
         />
       ),
       description: '这是一段项目配置的描述。',
-      component: BasicConfig,
+      component: () => <BasicConfig api={api} />,
     },
   ];
   const isBigfish = !!window.g_bigfish;
@@ -114,7 +114,7 @@ function getSections(api: IUiApi) {
       title: 'umi-plugin-react 配置',
       icon: 'pause-circle',
       description: 'BCD',
-      component: PluginConfig,
+      component: () => <PluginConfig api={api} />,
     });
   }
   return sections;
