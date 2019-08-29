@@ -1,6 +1,6 @@
 {
   "name": "umi-ui",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -9,7 +9,7 @@
   ],
   "devDependencies": {
     "@types/node-notifier": "^5.4.0",
-    "umi-types": "0.4.0-beta.1"
+    "umi-types": "0.4.0-beta.2"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "resolve-from": "5.0.0",
     "rimraf": "3.0.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.11.0-beta.2",
+    "umi-build-dev": "1.11.0-beta.3",
     "user-home": "2.0.0"
   }
 }
