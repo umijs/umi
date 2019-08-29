@@ -49,6 +49,10 @@ export default {
   'org.umi.ui.tasks.install.cancelError': '取消安装依赖失败',
   'org.umi.ui.tasks.install.start': '安装',
   'org.umi.ui.tasks.install.cancel': '停止',
+  'org.umi.ui.tasks.install.tip': '确认重新安装依赖么?',
+  'org.umi.ui.tasks.install.npmClient': '使用客户端',
+  'org.umi.ui.tasks.install.okText': '确认',
+  'org.umi.ui.tasks.install.cancelText': '取消',
 
   // log
   'org.umi.ui.tasks.log.title': '输出',

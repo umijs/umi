@@ -50,6 +50,11 @@ export default {
   'org.umi.ui.tasks.install.cancelError': 'Cancel install error',
   'org.umi.ui.tasks.install.start': 'INSTALL',
   'org.umi.ui.tasks.install.cancel': 'STOP',
+  'org.umi.ui.tasks.install.tip': 'Reinstall dependences?',
+  'org.umi.ui.tasks.install.npmClient': 'Npm Client',
+
+  'org.umi.ui.tasks.install.okText': 'OK',
+  'org.umi.ui.tasks.install.cancelText': 'Cancel',
 
   // log
   'org.umi.ui.tasks.log.title': 'OUTPUT',

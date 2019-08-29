@@ -60,8 +60,12 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
           {intl('org.umi.ui.tasks.log.title')}
         </Col>
         <Col span={4} offset={12} className={styles.actionGroup}>
-          <Delete onClick={clear} />
-          <Enter onClick={toBottom} />
+          <span className={styles.icon}>
+            <Delete onClick={clear} />
+          </span>
+          <span className={styles.icon}>
+            <Enter onClick={toBottom} />
+          </span>
         </Col>
       </Row>
       <div ref={domContainer} className={styles.logContainer} />

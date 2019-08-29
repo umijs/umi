@@ -29,7 +29,7 @@ export class InstallTask extends BaseTask {
       cwd: this.cwd,
       env: {
         ...process.env,
-        ...this.getSpeedUpEnv(env.TAOBAO_SPEED_UP),
+        ...this.getSpeedUpEnv(),
       },
     });
 
@@ -98,10 +98,8 @@ export class InstallTask extends BaseTask {
     return getNpmClient();
   }
 
-  private getSpeedUpEnv(taobaoSpeedUp: boolean) {
-    if (!taobaoSpeedUp) {
-      return {};
-    }
+  // TODO：默认全部开启加速，二期要对这部分做修改
+  private getSpeedUpEnv() {
     return BinaryMirrorConfig.china.ENVS;
   }
 }

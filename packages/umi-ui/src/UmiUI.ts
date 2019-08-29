@@ -40,6 +40,8 @@ export default class UmiUI {
 
   developMode: boolean = false;
 
+  npmClients: string[] = [];
+
   constructor() {
     this.cwd = process.cwd();
     this.servicesByKey = {};
@@ -61,6 +63,10 @@ export default class UmiUI {
     if (process.env.CURRENT_PROJECT) {
       this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
     }
+
+    process.nextTick(() => {
+      this.initNpmClients();
+    });
   }
 
   activeProject(key: string, service?: any, opts?: any) {
@@ -426,9 +432,8 @@ export default class UmiUI {
     }
   }
 
-  getNpmClients() {
+  initNpmClients() {
     const ret = [];
-
     try {
       execSync('tnpm --version', { stdio: 'ignore' });
       ret.push('tnpm');
@@ -454,7 +459,11 @@ export default class UmiUI {
       ret.push('pnpm');
     } catch (e) {}
 
-    return ret;
+    this.npmClients = ret;
+  }
+
+  getNpmClients() {
+    return this.npmClients;
   }
 
   reloadProject(key: string) {}
