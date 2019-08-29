@@ -3,6 +3,7 @@ import cls from 'classnames';
 import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
+import { IUiApi } from 'umi-types';
 import isEmpty from 'lodash/isEmpty';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
@@ -12,9 +13,13 @@ import Toc from './common/Toc';
 import { getToc } from './ConfigItem/utils';
 import styles from './BasicConfig.module.less';
 
-const BasicConfig = () => {
+interface IBasicConfigProps {
+  api: IUiApi;
+}
+
+const BasicConfig: React.FC<IBasicConfigProps> = props => {
   const containerRef = useRef();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<object[] | undefined>();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [search, setSearch] = useState<string>('');
@@ -23,7 +28,8 @@ const BasicConfig = () => {
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
   const { api, theme } = useContext(Context);
-  const { _, intl } = api;
+  const { _, intl, debug } = api;
+  const _log = debug.extend('configuration');
 
   const getDiffItems = (prev: object, curr: object): object =>
     _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
@@ -73,7 +79,7 @@ const BasicConfig = () => {
 
   const fuse = React.useMemo(
     () =>
-      new Fuse(data, {
+      new Fuse(data || [], {
         caseSensitive: true,
         shouldSort: true,
         threshold: 0.6,
@@ -84,21 +90,21 @@ const BasicConfig = () => {
 
   const searchData = React.useMemo(
     () => {
-      console.log('searchsearchsearch', search);
+      _log('searchsearchsearch', search);
       const result = fuse.search(search);
-      console.log('resultresultresult', result);
+      _log('resultresultresult', result);
       if (result.length > 0) {
         return result;
       }
-      return data;
+      return data || [];
     },
     [search, data],
   );
 
-  console.log('searchData', searchData);
+  _log('searchData', searchData);
 
   const groupedData = {};
-  console.log('data', data);
+  _log('data', data);
   searchData.forEach(item => {
     const { group } = item;
     if (!groupedData[group]) {
@@ -118,7 +124,7 @@ const BasicConfig = () => {
   };
 
   const arrayToObject = arr => {
-    return arr.reduce(
+    return (arr || []).reduce(
       (prev, curr) => ({
         ...prev,
         [curr.name]: getInitialValue({
@@ -146,7 +152,7 @@ const BasicConfig = () => {
 
   const handleFinish = async values => {
     const changedValues = getChangedValue(values);
-    console.log('changedValues', changedValues);
+    _log('changedValues', changedValues);
     if (!Object.keys(changedValues).length) {
       // no edit config
       return false;
@@ -157,7 +163,7 @@ const BasicConfig = () => {
       changedValues[name] = formatValue(changedValues[name]);
     });
 
-    console.log('after changedValues', changedValues);
+    _log('after changedValues', changedValues);
 
     try {
       await api.callRemote({
@@ -222,6 +228,9 @@ const BasicConfig = () => {
     </div>
   );
 
+  _log('searchData', searchData);
+  _log('datadata', data);
+
   return (
     <>
       <div className={themeCls} ref={containerRef}>
@@ -240,36 +249,40 @@ const BasicConfig = () => {
               onChange={e => handleSearchDebounce(e.target.value)}
             />
           </div>
-          {searchData.length > 0 && (
-            <div>
-              <Form
-                layout="vertical"
-                form={form}
-                onFinish={handleFinish}
-                onFinishFailed={handleFinishFailed}
-                initialValues={initialValues}
-                onValuesChange={(changedValues, allValues) => {
-                  setAllValues(allValues);
-                }}
-              >
-                {Object.keys(groupedData).map(group => {
-                  return (
-                    <div className={styles.group} key={group}>
-                      <h2 id={group}>{group}</h2>
-                      {groupedData[group].map(item => {
-                        const ConfigItem = configMapping[item.type];
-                        return <ConfigItem key={item.name} {...item} form={form} />;
-                      })}
-                    </div>
-                  );
-                })}
-                <Form.Item shouldUpdate>
-                  {({ getFieldsValue }) => {
-                    console.log('Form values', JSON.stringify(getFieldsValue(), null, 2));
+          {!data ? (
+            <Spin />
+          ) : (
+            searchData.length > 0 && (
+              <div>
+                <Form
+                  layout="vertical"
+                  form={form}
+                  onFinish={handleFinish}
+                  onFinishFailed={handleFinishFailed}
+                  initialValues={initialValues}
+                  onValuesChange={(changedValues, allValues) => {
+                    setAllValues(allValues);
                   }}
-                </Form.Item>
-              </Form>
-            </div>
+                >
+                  {Object.keys(groupedData).map(group => {
+                    return (
+                      <div className={styles.group} key={group}>
+                        <h2 id={group}>{group}</h2>
+                        {groupedData[group].map(item => {
+                          const ConfigItem = configMapping[item.type];
+                          return <ConfigItem key={item.name} {...item} form={form} />;
+                        })}
+                      </div>
+                    );
+                  })}
+                  <Form.Item shouldUpdate>
+                    {({ getFieldsValue }) => {
+                      console.log('Form values', JSON.stringify(getFieldsValue(), null, 2));
+                    }}
+                  </Form.Item>
+                </Form>
+              </div>
+            )
           )}
         </div>
         <Toc
