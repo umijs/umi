@@ -20,7 +20,6 @@ export class BaseTask extends EventEmitter {
   public log: string = ''; // 日志
   public proc: ChildProcess; // 当前进程
   private subscribeInitFlag: boolean = false;
-  private api: any;
 
   protected pkgPath: string = '';
   protected isBigfishProject: boolean = false;
@@ -98,7 +97,6 @@ export class BaseTask extends EventEmitter {
     }
 
     this.state = TaskState.INIT;
-    // 杀掉子进程
     proc.kill('SIGTERM');
   }
 
