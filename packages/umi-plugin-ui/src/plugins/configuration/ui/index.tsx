@@ -121,12 +121,13 @@ function getSections(api: IUiApi) {
 }
 
 const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
-  const { TwoColumnPanel, getContext } = api;
+  const { TwoColumnPanel, getContext, debug } = api;
   const { theme } = useContext(getContext());
   return (
     <Context.Provider
       value={{
         api,
+        debug: debug.extend('configuration'),
         theme,
       }}
     >

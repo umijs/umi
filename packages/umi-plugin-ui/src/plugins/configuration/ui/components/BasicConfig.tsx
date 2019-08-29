@@ -27,9 +27,8 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   const [showSearch, toggleSearch] = useToggle(false);
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
-  const { api, theme } = useContext(Context);
-  const { _, intl, debug } = api;
-  const _log = debug.extend('configuration');
+  const { api, theme, debug: _log } = useContext(Context);
+  const { _, intl } = api;
 
   const getDiffItems = (prev: object, curr: object): object =>
     _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
@@ -277,7 +276,8 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                   })}
                   <Form.Item shouldUpdate>
                     {({ getFieldsValue }) => {
-                      console.log('Form values', JSON.stringify(getFieldsValue(), null, 2));
+                      // TODO: remove before publish
+                      _log('Form values', JSON.stringify(getFieldsValue(), null, 2));
                     }}
                   </Form.Item>
                 </Form>
