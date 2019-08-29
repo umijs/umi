@@ -14,9 +14,6 @@ export default (api: IUiApi) => {
   initApiToGloal(api);
   const { TwoColumnPanel, callRemote } = api;
   const imgProperty = {
-    style: {
-      backgroundColor: '#fff',
-    },
     width: '32',
     height: '32',
   };
@@ -28,7 +25,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/zos/basement_prod/14f00c22-7720-41c9-82cc-acf9c47c2c56.svg"
+          src="https://gw.alipayobjects.com/zos/basement_prod/c5c1ced2-ac8c-4979-b725-e7d094364597.svg"
         />
       ),
       description: 'org.umi.ui.tasks.dev.desc',
@@ -40,7 +37,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/zos/basement_prod/14f00c22-7720-41c9-82cc-acf9c47c2c56.svg"
+          src="https://gw.alipayobjects.com/zos/basement_prod/c5c1ced2-ac8c-4979-b725-e7d094364597.svg"
         />
       ),
       description: 'org.umi.ui.tasks.build.desc',
@@ -64,7 +61,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/zos/basement_prod/b6825efe-9e51-4ed8-a624-97676bf2daf3.svg"
+          src="https://gw.alipayobjects.com/zos/basement_prod/fb3b6fab-253e-41fc-981a-8bfc5dc4fede.svg"
         />
       ),
       description: 'org.umi.ui.tasks.test.desc',
@@ -76,7 +73,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/mdn/rms_38b4e4/afts/img/A*o7rAS63dOUEAAAAAAAAAAABkARQnAQ"
+          src="https://gw.alipayobjects.com/zos/basement_prod/d9fbc2fa-5bb6-46f4-bd15-385a94bc6d1c.svg"
         />
       ),
       description: 'org.umi.ui.tasks.install.desc',
