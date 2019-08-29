@@ -26,7 +26,7 @@ export async function init(opts = {}) {
     function showErrorMessage() {
       if (!el) {
         el = document.createElement('div');
-        el.style.position = 'absolute';
+        el.style.position = 'fixed';
         el.style.left = 0;
         el.style.top = 0;
         el.style.width = '100%';
