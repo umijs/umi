@@ -4,9 +4,19 @@ import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
+import { path2Arr, arr2Path, trimSlash } from './pathUtils';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
 import styles from './index.less';
+
+/**
+ * Windows:
+ * C:/Users/jcl => ['C:', 'Users', 'jcl']
+ *
+ * OS X || Linux:
+ * /Users/jcl/ => ['/', 'Users', 'jcl'] => '/Users/jcl'
+ *
+ */
 
 const { useState, useEffect, useRef } = React;
 
@@ -32,7 +42,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   };
 
   _log('dirPath', dirPath);
-  const pathArr = dirPath === '/' ? [''] : dirPath.split('/');
+  const pathArr = path2Arr(dirPath);
 
   const changeDirectories = async (path: string): Promise<void> => {
     try {
@@ -58,7 +68,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     })();
   }, []);
 
-  const dirPathArr = dirPath === '/' ? ['/'] : dirPath.split('/');
+  const dirPathArr = path2Arr(dirPath);
 
   // double click
   const handleDirectoryClick = async (folderName?: string) => {
@@ -80,10 +90,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       _log(`dirPath: ${dirPath}`);
       const currDirPath = !(clicked > -1)
         ? `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`
-        : dirPathArr
-            .concat(folderName)
-            .join('/')
-            .replace(/\/\//, '/');
+        : arr2Path(dirPathArr.concat(folderName));
       _log(`singleClick: currDirPath ${currDirPath}`);
       triggerChangeValue(currDirPath);
       setClicked(i);
@@ -92,8 +99,8 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
 
   const handleParentDirectory = async () => {
     if (pathArr.length > 0) {
-      const currDirPath = pathArr.slice(0, -1).join('/');
-      await changeDirectories(currDirPath || '/');
+      const currDirPath = arr2Path(pathArr.slice(0, -1));
+      await changeDirectories(currDirPath);
     }
   };
 
@@ -111,7 +118,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const handleInputDirPath = async (e: any) => {
     // TODO: validate Path
     if (e.target.value) {
-      await changeDirectories(e.target.value.replace(/\/$/, ''));
+      await changeDirectories(trimSlash(e.target.value));
     }
     setDirPathEdit(false);
   };
@@ -146,11 +153,9 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
             dirPathArr.map((path, j) => (
               <Button
                 key={`${path}_${j}`}
-                onClick={() =>
-                  handleBreadDirChange(j === 0 ? '/' : dirPathArr.slice(0, j + 1).join('/'))
-                }
+                onClick={() => handleBreadDirChange(arr2Path(dirPathArr.slice(0, j + 1)))}
               >
-                {j === 0 ? '/' : path}
+                {path}
               </Button>
             ))
           )}
