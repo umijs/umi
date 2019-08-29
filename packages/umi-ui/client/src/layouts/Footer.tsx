@@ -142,6 +142,13 @@ const Footer: React.SFC<IFooterProps> = props => {
     }
   };
 
+  const handleScorllBottom = () => {
+    const container = document.getElementById('ui-footer-logs');
+    if (container) {
+      container.scrollIntoView({ block: 'end' });
+    }
+  };
+
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
@@ -197,7 +204,7 @@ const Footer: React.SFC<IFooterProps> = props => {
               >
                 <Delete />
               </Popconfirm>
-              <Enter />
+              <Enter onClick={handleScorllBottom} />
               <Divider type="vertical" />
               <Close onClick={hideLogPanel} />
             </div>
