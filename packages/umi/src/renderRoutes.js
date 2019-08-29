@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
 
 const RouteInstanceMap = {
   get(key) {
@@ -14,16 +15,40 @@ const RouteInstanceMap = {
 };
 
 // Support pass props from layout to child routes
-const RouteWithProps = ({ path, exact, strict, render, location, sensitive, ...rest }) => (
-  <Route
-    path={path}
-    exact={exact}
-    strict={strict}
-    location={location}
-    sensitive={sensitive}
-    render={props => render({ ...props, ...rest })}
-  />
-);
+const RouteWithProps = ({
+  path,
+  exact,
+  strict,
+  render,
+  location,
+  sensitive,
+  keepAlive,
+  ...rest
+}) => {
+  if (keepAlive) {
+    return (
+      <CacheRoute
+        when="always"
+        path={path}
+        exact={exact}
+        strict={strict}
+        location={location}
+        sensitive={sensitive}
+        render={props => render({ ...props, ...rest })}
+      />
+    );
+  }
+  return (
+    <Route
+      path={path}
+      exact={exact}
+      strict={strict}
+      location={location}
+      sensitive={sensitive}
+      render={props => render({ ...props, ...rest })}
+    />
+  );
+};
 
 function getCompatProps(props) {
   const compatProps = {};
@@ -122,7 +147,7 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
 export default function renderRoutes(routes, extraProps = {}, switchProps = {}) {
   const plugins = require('umi/_runtimePlugin');
   return routes ? (
-    <Switch {...switchProps}>
+    <CacheSwitch {...switchProps}>
       {routes.map((route, i) => {
         if (route.redirect) {
           return (
@@ -143,6 +168,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             exact={route.exact}
             strict={route.strict}
             sensitive={route.sensitive}
+            keepAlive={route.keepAlive}
             render={props => {
               const childRoutes = renderRoutes(route.routes, extraProps, {
                 location: props.location,
@@ -179,6 +205,6 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
           />
         );
       })}
-    </Switch>
+    </CacheSwitch>
   ) : null;
 }

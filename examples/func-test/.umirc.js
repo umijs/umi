@@ -11,5 +11,20 @@ export default {
       },
     ],
   ],
+  routes: [
+    {
+      path: '/',
+      component: './index',
+    },
+    {
+      path: '/list',
+      component: './list',
+      keepAlive: true,
+    },
+    {
+      path: '/test',
+      component: './test',
+    },
+  ],
   exportStatic: true,
 };
