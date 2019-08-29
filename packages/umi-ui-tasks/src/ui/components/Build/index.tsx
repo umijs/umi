@@ -155,7 +155,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="COMPRESS"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -167,7 +167,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="CSS_COMPRESS"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -179,7 +179,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="BABEL_POLYFILL"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -191,7 +191,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="BABEL_CACHE"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -203,7 +203,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="HTML"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -215,7 +215,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       name="FORK_TS_CHECKER"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                   </Form>
                 </div>

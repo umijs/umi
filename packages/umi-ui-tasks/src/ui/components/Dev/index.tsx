@@ -155,7 +155,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="BABEL_POLYFILL"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -167,7 +167,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="HMR"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -179,7 +179,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="BABEL_CACHE"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -191,7 +191,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="MOCK"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -215,7 +215,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="CLEAR_CONSOLE"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                     <Form.Item
                       label={
@@ -227,7 +227,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
                       name="FORK_TS_CHECKER"
                       valuePropName="checked"
                     >
-                      <Switch />
+                      <Switch size="small" />
                     </Form.Item>
                   </Form>
                 </div>
