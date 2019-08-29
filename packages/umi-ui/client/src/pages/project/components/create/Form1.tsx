@@ -49,7 +49,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const getFullPath = (fields = {}) => {
     const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
     const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
-    return slash2(dir);
+    return slash2(dir || '');
   };
 
   const renderFullPath = () => {
