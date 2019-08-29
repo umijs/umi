@@ -1,4 +1,4 @@
-import execa from 'execa';
+import { spawn } from 'child_process';
 import BinaryMirrorConfig from 'binary-mirror-config';
 
 const getSpeedUpEnv = () => {
@@ -9,7 +9,7 @@ export async function executeCommand(npmClient, args, targetDir, opts = { taobao
   const extraEnv = getSpeedUpEnv();
   return new Promise((resolve, reject) => {
     // args.push('--registry=https://registry.npm.taobao.org');
-    const child = execa(npmClient, args, {
+    const child = spawn(npmClient, args, {
       cwd: targetDir,
       env: {
         ...process.env,
