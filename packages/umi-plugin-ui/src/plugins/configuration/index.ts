@@ -1,7 +1,17 @@
 import assert from 'assert';
 import { IApi } from 'umi-types';
 
-const KEYS = ['group', 'name', 'title', 'default', 'type', 'choices', 'description', 'value'];
+const KEYS = [
+  'group',
+  'name',
+  'title',
+  'default',
+  'type',
+  'choices',
+  'description',
+  'value',
+  'transforms',
+];
 const KEYS_WITH_LANG = ['title', 'description'];
 const DEFAULT_GROUP_MAP = {
   basic: {
@@ -96,6 +106,9 @@ export default function(api: IApi) {
       const [haveKey, value] = useConfigKey(config, p.name);
       if (haveKey) {
         p.value = value;
+        if (p.transforms) {
+          p.value = p.transforms[0](p.value);
+        }
       }
       return p;
     });
@@ -128,14 +141,19 @@ export default function(api: IApi) {
     let errors = [];
     const { userConfig } = (api as any).service;
     userConfig.plugins.forEach(p => {
-      if (p.name in config && p.validate) {
-        try {
-          p.validate(parseString(config[p.name]));
-        } catch (e) {
-          errors.push({
-            name: p.name,
-            errors: [e.message],
-          });
+      if (p.name in config) {
+        if (p.validate) {
+          try {
+            p.validate(parseString(config[p.name]));
+            if (p.transforms) {
+              config[p.name] = JSON.stringify(p.transforms[1](config[p.name]));
+            }
+          } catch (e) {
+            errors.push({
+              name: p.name,
+              errors: [e.message],
+            });
+          }
         }
       }
     });
