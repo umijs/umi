@@ -142,18 +142,18 @@ export default function(api: IApi) {
     const { userConfig } = (api as any).service;
     userConfig.plugins.forEach(p => {
       if (p.name in config) {
-        if (p.validate) {
-          try {
-            p.validate(parseString(config[p.name]));
-            if (p.transforms) {
-              config[p.name] = JSON.stringify(p.transforms[1](config[p.name]));
-            }
-          } catch (e) {
-            errors.push({
-              name: p.name,
-              errors: [e.message],
-            });
+        try {
+          if (p.transforms) {
+            config[p.name] = JSON.stringify(p.transforms[1](config[p.name]));
           }
+          if (p.validate) {
+            p.validate(parseString(config[p.name]));
+          }
+        } catch (e) {
+          errors.push({
+            name: p.name,
+            errors: [e.message],
+          });
         }
       }
     });
