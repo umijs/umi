@@ -76,7 +76,7 @@ const DashboardUI: React.FC<IProps> = props => {
     actionCards.unshift({
       className: welcomeCardCls,
       size: 'small',
-      extra: <Close onClick={handleClose} />,
+      extra: <Close className={styles.close} onClick={handleClose} />,
       body: (
         <div>
           <h2>Hi</h2>

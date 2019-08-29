@@ -94,7 +94,7 @@ const config: IConfig = {
               '//polyfill.alicdn.com/polyfill.min.js?features=default,es2015,es2016,es2017,RegeneratorRuntime,IntersectionObserver,NodeList.prototype.forEach',
           },
           {
-            src: `//gw.alipayobjects.com/os/lib/??react/16.8.1/umd/react.${
+            src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${
               NODE_ENV === 'development' ? 'development' : 'production.min'
             }.js,react-dom/16.8.6/umd/react-dom.${
               NODE_ENV === 'development' ? 'development' : 'production.min'

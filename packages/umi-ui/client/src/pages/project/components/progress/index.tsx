@@ -2,19 +2,24 @@ import * as React from 'react';
 import { Loading } from '@ant-design/icons';
 import { Steps } from 'antd';
 import get from 'lodash/get';
+import { Terminal as XTerminal } from 'xterm';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
-import { setCurrentProject } from '@/services/project';
+import Terminal from '@/components/Terminal';
+import { listenCreateProject, setCurrentProject } from '@/services/project';
 import { handleBack } from '@/utils';
 import styles from './index.less';
 import { IProjectProps } from '../index';
 
-const { useContext, useEffect } = React;
+const { useContext, useEffect, useState } = React;
 
 const { Step } = Steps;
 
 const ProgressStage: React.SFC<IProjectProps> = props => {
+  const _log = window.g_uiDebug.extend('ProgressStage');
+  let xterm: XTerminal = null;
   console.log('ProgressStage props', props);
+  // const [logs, setLogs] = useState<string>();
   const { currentData, projectList } = props;
   const { showLogPanel } = useContext(ProjectContext);
   const key = get(currentData, 'key');
@@ -29,8 +34,27 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
           await setCurrentProject({ key });
         })();
       }
+      if (progress.failure) {
+        if (xterm) {
+          xterm.writeln(progress.failure.message.replace(/\n/g, '\r\n'));
+        }
+      }
+
+      const unsubscribe = listenCreateProject({
+        onMessage: data => {
+          _log('listen createProject', data);
+          if (xterm && data.install) {
+            xterm.writeln(data.install.replace(/\n/g, '\r\n'));
+          }
+        },
+      });
+      return () => {
+        if (unsubscribe) {
+          unsubscribe();
+        }
+      };
     },
-    [progress.success],
+    [progress.success, progress.failure],
   );
   const getStepStatus = (): 'error' | 'finish' => {
     if (progress.success) {
@@ -77,12 +101,19 @@ const ProgressStage: React.SFC<IProjectProps> = props => {
         // </div>
       )}
       {/* {progress.success ? <div>创建成功</div> : null} */}
-      {progress.failure && (
+      {/* {progress.failure && (
         <div className={styles['project-progress-fail']}>
           <p>{progress.failure.message}</p>
           <a onClick={() => showLogPanel()}>查看日志</a>
         </div>
-      )}
+      )} */}
+      <div style={{ marginTop: 16 }}>
+        <Terminal
+          getIns={t => {
+            xterm = t;
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -82,8 +82,6 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
 
   const wrapperCls = cls(styles.wrapper, className);
 
-  console.log('xterm', xterm, domContainer.current);
-
   return (
     <div className={wrapperCls}>
       {xterm ? (

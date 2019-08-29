@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
+import Helmet from 'react-helmet';
 import cls from 'classnames';
 import Context from './Context';
 import Footer from './Footer';
@@ -10,6 +11,7 @@ interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
   type: 'detail' | 'list' | 'loading';
   className?: string;
+  title?: string;
 }
 
 interface ILayoutState {
@@ -47,7 +49,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   render() {
     const locale = getLocale();
     const { theme } = this.state;
-    const { type, className } = this.props;
+    const { type, className, title } = this.props;
     const currentProject = window.g_uiCurrentProject || {};
     const layoutCls = cls(locale, 'ui-layout', className);
     window.g_uiContext = Context;
@@ -67,6 +69,9 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             FormattedMessage,
           }}
         >
+          <Helmet>
+            <title>{title || 'UmiUI'}</title>
+          </Helmet>
           {this.props.children}
           <Footer type={type} />
         </Context.Provider>
