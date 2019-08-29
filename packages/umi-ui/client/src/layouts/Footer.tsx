@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { message, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
+import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
 import {
   FolderFilled,
   ProfileFilled,
@@ -32,11 +32,6 @@ export interface IFooterProps {
 }
 
 const FOOTER_RIGHT = [
-  {
-    title: 'org.umi.ui.global.feedback',
-    icon: <Message />,
-    href: 'https://github.com/umijs/umi/issues/new/choose',
-  },
   {
     title: 'org.umi.ui.global.help',
     icon: <QuestionCircle />,
@@ -168,6 +163,35 @@ const Footer: React.SFC<IFooterProps> = props => {
             ? message['org.umi.ui.global.log']
             : formatMessage({ id: 'org.umi.ui.global.log' })}
         </div>
+
+        <div className={styles.section}>
+          {/* TODO: register with framework, bigfish use office network */}
+          <Popover
+            title={null}
+            placement="top"
+            content={
+              <div className={styles.feedback}>
+                <img
+                  width={150}
+                  height={200}
+                  src={
+                    window.g_bigfish
+                      ? '//gw-office.alipayobjects.com/basement_prod/bd018d14-7cfd-4410-97dc-84bfd7bb6a8c.jpg'
+                      : '//gw.alipayobjects.com/zos/antfincdn/30ktM0fuXZ/fe121f6c-154e-45e1-aa00-e60164cf8739.png'
+                  }
+                />
+              </div>
+            }
+          >
+            <a>
+              <Message />{' '}
+              {type === 'loading'
+                ? message['org.umi.ui.global.feedback']
+                : formatMessage({ id: 'org.umi.ui.global.feedback' })}
+            </a>
+          </Popover>
+        </div>
+
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
