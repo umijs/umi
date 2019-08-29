@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
+import slash2 from 'slash2';
 import { Button, Empty, Spin, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
@@ -17,7 +18,8 @@ interface DirectoryFormProps {
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const _log = g_uiDebug.extend('DirectoryForm');
-  const { value, onChange } = props;
+  const { value: originValue, onChange } = props;
+  const value = slash2(originValue);
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);
   const dirPathEditRef = useRef<HTMLInputElement>();
   const [clicked, setClicked] = useState<number>(-1);
@@ -29,7 +31,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     }
   };
 
-  console.log('dirPath', dirPath);
+  _log('dirPath', dirPath);
   const pathArr = dirPath === '/' ? [''] : dirPath.split('/');
 
   const changeDirectories = async (path: string): Promise<void> => {
