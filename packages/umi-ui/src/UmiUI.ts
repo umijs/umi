@@ -19,7 +19,7 @@ import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
 import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
-import { isDepLost, isUmiProject } from './checkProject';
+import { isDepLost, isPluginLost, isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
 process.env.UMI_UI = 'true';
@@ -139,7 +139,7 @@ export default class UmiUI {
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
         this.servicesByKey[key] = service;
       } catch (e) {
-        if (isDepLost(e)) {
+        if (isDepLost(e) || isPluginLost(e)) {
           throw new ActiveProjectError({
             message: {
               'zh-CN': `依赖文件没找到。`,
