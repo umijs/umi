@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin, Modal, Select } from 'antd';
+import { Row, Col, Button, Spin, Modal, Select, Form } from 'antd';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -22,7 +22,9 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [loading, setLoading] = useState(true);
+  const [npmClients, setNpmClients] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   // Mount: 获取 task detail
   const { loading: detailLoading, detail } = useTaskDetail(taskType);
@@ -49,18 +51,27 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     [detail],
   );
 
+  useEffect(() => {
+    (async () => {
+      const { data } = await api.callRemote({
+        type: '@@project/getNpmClients',
+      });
+      setNpmClients(data);
+    })();
+  }, []);
+
   // UnMount: reset form
   useEffect(() => {
     return () => {
+      form.resetFields();
       const terminal = getTerminalIns(taskType);
       terminal && terminal.clear();
     };
   }, []);
 
-  async function install() {
+  async function install(npmClient) {
     const { triggerState, errMsg } = await exec(taskType, {
-      NPM_CLIENT: api.currentProject.npmClient,
-      TAOBAO_SPEED_UP: api.currentProject.taobaoSpeedUp,
+      NPM_CLIENT: npmClient,
     });
     if (triggerState === TriggerState.FAIL) {
       api.notify({
@@ -86,7 +97,13 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   };
 
   const handleOk = () => {
-    install();
+    form
+      .validateFields()
+      .then(values => {
+        install(values.npmClient);
+        setModalVisible(false);
+      })
+      .catch(_ => {});
   };
 
   const handleCancel = () => {
@@ -115,26 +132,29 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
               <Modal
                 visible={modalVisible}
                 title={intl('org.umi.ui.tasks.install')}
+                okText={intl('org.umi.ui.tasks.install.okText')}
+                cancelText={intl('org.umi.ui.tasks.install.cancelText')}
                 onOk={handleOk}
                 onCancel={handleCancel}
               >
-                <div>
-                  TODO: 确认样式
-                  {/* <span>使用</span>
-                  <Select defaultValue="tnpm" style={{ width: 120 }}>
-                    <Option value="tnpm">tnpm</Option>
-                    <Option value="cnpm">cnpm</Option>
-                    <Option value="yarn">yarn</Option>
-                  </Select>
-                  <span>依赖么？</span> */}
+                <div className={styles.modalContainer}>
+                  <div className={styles.confirmMessage}>
+                    {intl('org.umi.ui.tasks.install.tip')}
+                  </div>
+                  <Form name="intasllEnv" form={form} layout="vertical">
+                    <Form.Item label={intl('org.umi.ui.tasks.install.npmClient')} name="npmClient">
+                      <Select defaultValue={npmClients[0]} style={{ width: 120 }}>
+                        {npmClients.map(key => (
+                          <Option key={key} value={key}>
+                            {key}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Form>
                 </div>
               </Modal>
             </Col>
-            {/* <Col span={4} offset={12} className={styles.formatGroup}>
-              <Radio.Group defaultValue="log" buttonStyle="solid">
-                <Radio.Button value="log">输出</Radio.Button>
-              </Radio.Group>
-            </Col> */}
           </Row>
           <div className={styles.logContainer}>
             <SizeMe monitorWidth monitorHeight>
