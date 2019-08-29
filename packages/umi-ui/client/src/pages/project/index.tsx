@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
@@ -52,6 +52,14 @@ const Project: React.FC<{}> = () => {
           projectList: data,
         };
         break;
+      default:
+        projectProps = {
+          currentData,
+          projectList: data,
+          cwd,
+          files,
+        };
+        break;
     }
     return projectProps;
   };
@@ -61,11 +69,14 @@ const Project: React.FC<{}> = () => {
       await getProject();
       const { cwd } = await getCwd();
       setCwd(cwd);
-
-      const { data: files } = await listDirectory({
-        dirPath: cwd,
-      });
-      setFiles(files);
+      try {
+        const { data: files } = await listDirectory({
+          dirPath: cwd,
+        });
+        setFiles(files);
+      } catch (e) {
+        message.error(e && e.message ? e.message : '目录选择错误');
+      }
     })();
   }, []);
 

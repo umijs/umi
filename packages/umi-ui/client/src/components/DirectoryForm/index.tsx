@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
 import slash2 from 'slash2';
-import { Button, Empty, Spin, Input } from 'antd';
+import { Button, Empty, Spin, Input, message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import DirectoryItem, { DirectoryItemProps } from './item';
@@ -35,15 +35,19 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const pathArr = dirPath === '/' ? [''] : dirPath.split('/');
 
   const changeDirectories = async (path: string): Promise<void> => {
-    const { data: files } = await listDirectory({
-      dirPath: path,
-    });
-    _log('changeDirectories path:', path);
-    _log('changeDirectories files:', files);
-    triggerChangeValue(path);
-    setDirPath(path);
-    setDirectories(files);
-    setClicked(-1);
+    try {
+      const { data: files } = await listDirectory({
+        dirPath: path,
+      });
+      _log('changeDirectories path:', path);
+      _log('changeDirectories files:', files);
+      triggerChangeValue(path);
+      setDirPath(path);
+      setDirectories(files);
+      setClicked(-1);
+    } catch (e) {
+      message.error(e && e.message ? e.message : '目录选择出错');
+    }
   };
 
   useEffect(() => {

@@ -10,7 +10,7 @@ interface IOpts {
 export default function(dirPath, opts: IOpts = {}) {
   const { showHidden, directoryOnly } = opts;
   assert(statSync(dirPath).isDirectory(), `path ${dirPath} is not a directory`);
-
+  // Windows dir may have no rights, will throw error "not permitted"
   const items = readdirSync(dirPath)
     .filter(fileName => {
       if (showHidden) {
