@@ -22,6 +22,7 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isUmiProject } from './checkProject';
 
 const debug = require('debug')('umiui:UmiUI');
+process.env.UMI_UI = 'true';
 
 export default class UmiUI {
   cwd: string;
@@ -177,10 +178,8 @@ export default class UmiUI {
     if (!(key.startsWith('/') && existsSync(key))) {
       const project = this.config.data.projectsByKey[key];
       assert(project, `project of key ${key} not exists`);
-      console.log('project.path', project.path);
       launchPath = project.path;
     }
-    console.log(launchPath);
     if (!existsSync(launchPath)) {
       if (callback.failure) {
         let msg = {
@@ -197,7 +196,6 @@ export default class UmiUI {
       }
     } else {
       launchEditor(launchPath, (fileName, errorMsg) => {
-        console.log('fileName, errorMsg', fileName, errorMsg);
         // log error if any
         if (!errorMsg) return;
         let msg = {
