@@ -11,12 +11,12 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
 const { useContext } = React;
 
 const ObjectComp: React.SFC<ICompProps> = props => {
-  const { name, description, title, choices, default: defaultValue } = props;
+  const { name, description, title, choices, default: defaultValue, link } = props;
   const { debug: _log } = useContext(Context);
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} />,
+    label: <Label name={name} title={title} description={description} link={link} />,
   };
   _log('choices', choices);
 

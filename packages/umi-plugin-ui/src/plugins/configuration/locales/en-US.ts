@@ -5,4 +5,5 @@ export default {
   'org.umi.ui.configuration.project.config.desc': 'Configuration',
   'org.umi.ui.configuration.project.config.react.title': 'umi-plugin-react',
   'org.umi.ui.configuration.search.placeholder': 'Search',
+  'org.umi.ui.configuration.detail': 'View Detail',
 };

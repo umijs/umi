@@ -6,12 +6,12 @@ import Context from '../../Context';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<ICompProps> = props => {
-  const { name, description, title } = props;
+  const { name, description, title, link } = props;
   const { debug: _log } = React.useContext(Context);
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} />,
+    label: <Label name={name} title={title} description={description} link={link} />,
     valuePropName: 'checked',
   };
   return parentConfig ? (

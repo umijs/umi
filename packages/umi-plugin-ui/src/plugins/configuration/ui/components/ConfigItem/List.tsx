@@ -7,11 +7,11 @@ import { getFormItemShow } from './utils';
 const { Option } = Select;
 
 const ListComp: React.SFC<ICompProps> = props => {
-  const { name, description, form, title, choices } = props;
+  const { name, description, form, title, choices, link } = props;
   const { parentConfig } = getFormItemShow(name, form);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} />,
+    label: <Label name={name} title={title} description={description} link={link} />,
   };
 
   const formControl = (
