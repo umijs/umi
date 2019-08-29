@@ -49,7 +49,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/zos/basement_prod/45bdf48e-3063-4a81-b2c3-49bfe67141c1.svg"
+          src="https://gw.alipayobjects.com/zos/basement_prod/fb3b6fab-253e-41fc-981a-8bfc5dc4fede.svg"
         />
       ),
       description: 'org.umi.ui.tasks.lint.desc',
@@ -61,7 +61,7 @@ export default (api: IUiApi) => {
       icon: (
         <img
           {...imgProperty}
-          src="https://gw.alipayobjects.com/zos/basement_prod/fb3b6fab-253e-41fc-981a-8bfc5dc4fede.svg"
+          src="https://gw.alipayobjects.com/zos/basement_prod/f0d64a31-1767-4ab7-a7f9-eea044d92ce3.svg"
         />
       ),
       description: 'org.umi.ui.tasks.test.desc',
