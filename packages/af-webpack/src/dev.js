@@ -99,7 +99,13 @@ export default function dev({
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);
-          send({ type: DONE });
+          send({
+            type: DONE,
+            urls: {
+              local: urls.localUrlForTerminal,
+              lan: urls.lanUrlForTerminal,
+            },
+          });
         }
       });
 

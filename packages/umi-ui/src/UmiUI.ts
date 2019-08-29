@@ -764,7 +764,7 @@ export default class UmiUI {
       const conns = {};
       function send(action) {
         const message = JSON.stringify(action);
-        console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
+        // console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
         Object.keys(conns).forEach(id => {
           conns[id].write(message);
         });

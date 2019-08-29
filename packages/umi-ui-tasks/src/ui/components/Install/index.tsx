@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin, Modal, Select, Form } from 'antd';
+import { Row, Col, Button, Modal, Select, Form } from 'antd';
+import { PlayCircle, PauseCircle } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -21,17 +22,15 @@ const { Option } = Select;
 const InstallComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
-  const [loading, setLoading] = useState(true);
   const [npmClients, setNpmClients] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   // Mount: 获取 task detail
-  const { loading: detailLoading, detail } = useTaskDetail(taskType);
+  const { detail } = useTaskDetail(taskType);
   // Mount: 监听 task state 改变
   useEffect(
     () => {
-      setLoading(detailLoading);
       setTaskDetail(detail as any);
       const unsubscribe = api.listenRemote({
         type: 'org.umi.task.state',
@@ -114,65 +113,61 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   return (
     <>
       <h1 className={styles.title}>{intl('org.umi.ui.tasks.install')}</h1>
-      {loading ? (
-        <Spin />
-      ) : (
-        <>
-          <Row>
-            <Col span={8} className={styles.buttonGroup}>
-              <Button
-                type="primary"
-                onClick={isTaskRunning ? cancelInstall : openModal}
-                loading={loading}
-              >
-                {isTaskRunning
-                  ? intl('org.umi.ui.tasks.install.cancel')
-                  : intl('org.umi.ui.tasks.install.start')}
-              </Button>
-              <Modal
-                visible={modalVisible}
-                title={intl('org.umi.ui.tasks.install')}
-                okText={intl('org.umi.ui.tasks.install.okText')}
-                cancelText={intl('org.umi.ui.tasks.install.cancelText')}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                <div className={styles.modalContainer}>
-                  <div className={styles.confirmMessage}>
-                    {intl('org.umi.ui.tasks.install.tip')}
-                  </div>
-                  <Form name="intasllEnv" form={form} layout="vertical">
-                    <Form.Item label={intl('org.umi.ui.tasks.install.npmClient')} name="npmClient">
-                      <Select defaultValue={npmClients[0]} style={{ width: 120 }}>
-                        {npmClients.map(key => (
-                          <Option key={key} value={key}>
-                            {key}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Form>
-                </div>
-              </Modal>
-            </Col>
-          </Row>
-          <div className={styles.logContainer}>
-            <SizeMe monitorWidth monitorHeight>
-              {({ size }) => (
-                <Terminal
-                  api={api}
-                  size={size}
-                  terminal={getTerminalIns(taskType)}
-                  log={taskDetail.log}
-                  onClear={() => {
-                    clearLog(taskType);
-                  }}
-                />
+      <>
+        <Row>
+          <Col span={8} className={styles.buttonGroup}>
+            <Button type="primary" onClick={isTaskRunning ? cancelInstall : openModal}>
+              {isTaskRunning ? (
+                <>
+                  <PauseCircle /> {intl('org.umi.ui.tasks.install.cancel')}
+                </>
+              ) : (
+                <>
+                  <PlayCircle /> {intl('org.umi.ui.tasks.install.start')}
+                </>
               )}
-            </SizeMe>
-          </div>
-        </>
-      )}
+            </Button>
+            <Modal
+              visible={modalVisible}
+              title={intl('org.umi.ui.tasks.install')}
+              okText={intl('org.umi.ui.tasks.install.okText')}
+              cancelText={intl('org.umi.ui.tasks.install.cancelText')}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <div className={styles.modalContainer}>
+                <div className={styles.confirmMessage}>{intl('org.umi.ui.tasks.install.tip')}</div>
+                <Form name="intasllEnv" form={form} layout="vertical">
+                  <Form.Item label={intl('org.umi.ui.tasks.install.npmClient')} name="npmClient">
+                    <Select defaultValue={npmClients[0]} style={{ width: 120 }}>
+                      {npmClients.map(key => (
+                        <Option key={key} value={key}>
+                          {key}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Form>
+              </div>
+            </Modal>
+          </Col>
+        </Row>
+        <div className={styles.logContainer}>
+          <SizeMe monitorWidth monitorHeight>
+            {({ size }) => (
+              <Terminal
+                api={api}
+                size={size}
+                terminal={getTerminalIns(taskType)}
+                log={taskDetail.log}
+                onClear={() => {
+                  clearLog(taskType);
+                }}
+              />
+            )}
+          </SizeMe>
+        </div>
+      </>
     </>
   );
 };
