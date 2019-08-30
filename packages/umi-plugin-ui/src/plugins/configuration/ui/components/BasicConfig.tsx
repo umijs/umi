@@ -300,22 +300,15 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
       <div className={styles['basicConfig-submit']}>
         <Popconfirm
           title={ResetTitle}
+          placement="topRight"
           onConfirm={handleReset}
           onCancel={() => {}}
           okText={intl({ id: 'org.umi.ui.configuration.okText' })}
-          disabled={!changedValueArr.length}
           cancelText={intl({ id: 'org.umi.ui.configuration.cancelText' })}
         >
-          <Button disabled={!changedValueArr.length}>
-            {intl({ id: 'org.umi.ui.configuration.reset' })}
-          </Button>
+          <Button>{intl({ id: 'org.umi.ui.configuration.reset' })}</Button>
         </Popconfirm>
-        <Button
-          disabled={!changedValueArr.length}
-          onClick={handleSubmit}
-          style={{ marginRight: 24 }}
-          type="primary"
-        >
+        <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
           {intl({ id: 'org.umi.ui.configuration.save' })}
         </Button>
       </div>
