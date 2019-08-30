@@ -13,4 +13,5 @@ export default {
   'org.umi.ui.configuration.reset.tooltip': '你确定要重置以上配置吗',
   'org.umi.ui.configuration.reset.tooltip.desc': '当前配置 {value} 已被修改',
   'org.umi.ui.configuration.reset.tooltip.desc.empty': '配置没有修改',
+  'org.umi.ui.configuration.add.column': '添加一列',
 };

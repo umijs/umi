@@ -25,7 +25,7 @@ const arrayToObj = (arr: IValue[]): IValue => {
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const { value, onChange, options: originOptions, defaultValue } = props;
-  const { debug: _log } = useContext(Context);
+  const { debug: _log, api } = useContext(Context);
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -112,7 +112,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             width: 'calc(100% - 22px)',
           }}
         >
-          <Plus /> 添加一列
+          <Plus /> {api.intl({ id: 'org.umi.ui.configuration.add.column' })}
         </Button>
       )}
     </span>

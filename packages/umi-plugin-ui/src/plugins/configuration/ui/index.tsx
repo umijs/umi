@@ -35,7 +35,7 @@ function getSections(api: IUiApi) {
 }
 
 const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
-  const { TwoColumnPanel, getContext, debug } = api;
+  const { TwoColumnPanel, getContext, debug, intl } = api;
   const { theme } = useContext(getContext());
   return (
     <Context.Provider

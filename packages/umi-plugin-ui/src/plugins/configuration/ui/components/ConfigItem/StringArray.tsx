@@ -10,7 +10,7 @@ const { useContext } = React;
 
 const StringArrayComp: React.SFC<ICompProps> = props => {
   const { name, description, title, link } = props;
-  const { debug: _log } = useContext(Context);
+  const { debug: _log, api } = useContext(Context);
   const { parentConfig } = getFormItemShow(name);
   const label = <Label name={name} title={title} description={description} link={link} />;
 
@@ -51,7 +51,7 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
             }}
             style={{ width: 320 }}
           >
-            <Plus /> 添加一列
+            <Plus /> {api.intl({ id: 'org.umi.ui.configuration.add.column' })}
           </Button>
         </Form.Item>
       </Form.Item>
