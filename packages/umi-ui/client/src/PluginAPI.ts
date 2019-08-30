@@ -78,8 +78,6 @@ export default class PluginAPI {
       subtitle: this.intl({ id: subtitle }),
     };
 
-    debugger;
-
     if (document.hasFocus()) {
       // focus use antd Notification
       try {
