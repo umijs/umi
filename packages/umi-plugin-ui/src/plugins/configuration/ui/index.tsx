@@ -20,7 +20,14 @@ function getSections(api: IUiApi) {
           height={32}
         />
       ),
-      description: api.intl({ id: 'org.umi.ui.configuration.project.config.desc' }),
+      description: api.intl(
+        {
+          id: 'org.umi.ui.configuration.project.config.desc',
+        },
+        {
+          library: window.g_bigfish ? 'Bigfish' : 'Umi',
+        },
+      ),
       component: () => <BasicConfig api={api} />,
     },
   ];

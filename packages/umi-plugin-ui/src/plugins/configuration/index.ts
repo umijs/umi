@@ -120,20 +120,6 @@ export default function(api: IApi) {
     });
   }
 
-  function getUiConfig() {
-    return [
-      {
-        name: 'taobaoSpeedUp',
-        group: '安装配置',
-        type: 'boolean',
-        default: false,
-        title: '使用 npm/yarn 时开启国内加速',
-        description: '使用淘宝源、镜像地址等',
-        value: true,
-      },
-    ];
-  }
-
   function parseString(str) {
     if (str.startsWith('{') || str.startsWith('[') || str === 'true' || str === 'false') {
       return JSON.parse(str);
