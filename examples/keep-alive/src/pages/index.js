@@ -1,12 +1,11 @@
 import { Card } from 'antd';
-import history from 'umi/router';
 import Link from 'umi/link';
 
 export default () => {
   return (
     <Card>
       <div>hello world</div>
-      <Link to="/test">test</Link>
+      <Link to="/list">go to list</Link>
     </Card>
   );
 };
