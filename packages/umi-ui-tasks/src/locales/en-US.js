@@ -73,4 +73,30 @@ export default {
 
   // log
   'org.umi.ui.tasks.log.title': 'LOG',
+
+  // notify
+  'org.umi.ui.tasks.notify.build.success.title': 'Build Success',
+  'org.umi.ui.tasks.notify.build.success.message': 'Success',
+  'org.umi.ui.tasks.notify.build.fail.title': 'Build Fail',
+  'org.umi.ui.tasks.notify.build.fail.message': 'Fail',
+
+  'org.umi.ui.tasks.notify.dev.success.title': 'Dev Success',
+  'org.umi.ui.tasks.notify.dev.success.message': 'Success',
+  'org.umi.ui.tasks.notify.dev.fail.title': 'Dev Fail',
+  'org.umi.ui.tasks.notify.dev.fail.message': 'Fail',
+
+  'org.umi.ui.tasks.notify.test.success.title': 'Test Success',
+  'org.umi.ui.tasks.notify.test.success.message': 'Success',
+  'org.umi.ui.tasks.notify.test.fail.title': 'Test Fail',
+  'org.umi.ui.tasks.notify.test.fail.message': 'Fail',
+
+  'org.umi.ui.tasks.notify.lint.success.title': 'Lint Success',
+  'org.umi.ui.tasks.notify.lint.success.message': 'Success',
+  'org.umi.ui.tasks.notify.lint.fail.title': 'Lint Fail',
+  'org.umi.ui.tasks.notify.lint.fail.message': 'Fail',
+
+  'org.umi.ui.tasks.notify.install.success.title': 'Install Success',
+  'org.umi.ui.tasks.notify.install.success.message': 'Success',
+  'org.umi.ui.tasks.notify.install.fail.title': 'Install Fail',
+  'org.umi.ui.tasks.notify.install.fail.message': 'Fail',
 };

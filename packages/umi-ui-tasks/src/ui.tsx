@@ -13,6 +13,7 @@ import zhCN from './locales/zh-CN';
 
 export default (api: IUiApi) => {
   initApiToGloal(api);
+  const { intl } = api;
   const { TwoColumnPanel, callRemote } = api;
   const imgProperty = {
     width: '32',
@@ -105,7 +106,12 @@ export default (api: IUiApi) => {
       if ([TaskState.INIT, TaskState.ING].indexOf(state) > -1) {
         return;
       }
-      api.notify(getNoticeMessage(type, state));
+      const { title, message, ...rest } = getNoticeMessage(type, state);
+      api.notify({
+        title: intl({ id: title }),
+        message: intl({ id: message }),
+        ...rest,
+      });
     },
   });
 

@@ -1,19 +1,6 @@
 import { IUiApi } from 'umi-types';
 import { TaskState, TaskType } from '../../server/core/enums';
 
-export const TASK_TYPE_TEXT_MAP = {
-  [TaskType.BUILD]: '构建',
-  [TaskType.DEV]: '本地开发',
-  [TaskType.LINT]: 'LINT',
-  [TaskType.TEST]: '测试',
-};
-export const TASK_STATE_TEXT_MAP = {
-  [TaskState.INIT]: '初始化',
-  [TaskState.ING]: '执行中',
-  [TaskState.SUCCESS]: '执行成功',
-  [TaskState.FAIL]: '执行失败',
-};
-
 export const isCaredEvent = (taskType: TaskType, caredTaskType: TaskType): boolean => {
   if (!taskType || taskType !== caredTaskType) {
     return false;
@@ -24,52 +11,52 @@ export const isCaredEvent = (taskType: TaskType, caredTaskType: TaskType): boole
 const NOTICE_MESSAGE_MAP = {
   [TaskType.BUILD]: {
     [TaskState.SUCCESS]: {
-      title: '构建成功',
-      message: '成功',
+      title: 'org.umi.ui.tasks.notify.build.success.title',
+      message: 'org.umi.ui.tasks.notify.build.success.message',
     },
     [TaskState.FAIL]: {
-      title: '构建失败',
-      message: '失败',
+      title: 'org.umi.ui.tasks.notify.build.fail.title',
+      message: 'org.umi.ui.tasks.notify.build.fail.message',
     },
   },
   [TaskType.DEV]: {
     [TaskState.SUCCESS]: {
-      title: '启动成功',
-      message: '成功',
+      title: 'org.umi.ui.tasks.notify.dev.success.title',
+      message: 'org.umi.ui.tasks.notify.dev.success.message',
     },
     [TaskState.FAIL]: {
-      title: '启动失败',
-      message: '失败',
+      title: 'org.umi.ui.tasks.notify.dev.fail.title',
+      message: 'org.umi.ui.tasks.notify.dev.fail.message',
     },
   },
   [TaskType.TEST]: {
     [TaskState.SUCCESS]: {
-      title: '测试成功',
-      message: '成功',
+      title: 'org.umi.ui.tasks.notify.test.success.title',
+      message: 'org.umi.ui.tasks.notify.test.success.message',
     },
     [TaskState.FAIL]: {
-      title: '测试失败',
-      message: '失败',
+      title: 'org.umi.ui.tasks.notify.test.fail.title',
+      message: 'org.umi.ui.tasks.notify.test.fail.message',
     },
   },
   [TaskType.LINT]: {
     [TaskState.SUCCESS]: {
-      title: '代码风格检查成功',
-      message: '成功',
+      title: 'org.umi.ui.tasks.notify.lint.success.title',
+      message: 'org.umi.ui.tasks.notify.lint.success.message',
     },
     [TaskState.FAIL]: {
-      title: '执行代码风格检查失败',
-      message: '失败',
+      title: 'org.umi.ui.tasks.notify.lint.fail.title',
+      message: 'org.umi.ui.tasks.notify.lint.fail.message',
     },
   },
   [TaskType.INSTALL]: {
     [TaskState.SUCCESS]: {
-      title: '安装依赖成功',
-      message: '成功',
+      title: 'org.umi.ui.tasks.notify.intasll.success.title',
+      message: 'org.umi.ui.tasks.notify.intasll.success.message',
     },
     [TaskState.FAIL]: {
-      title: '安装依赖失败',
-      message: '失败',
+      title: 'org.umi.ui.tasks.notify.intasll.fail.title',
+      message: 'org.umi.ui.tasks.notify.intasll.fail.message',
     },
   },
 };
