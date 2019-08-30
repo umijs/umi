@@ -46,6 +46,7 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
       >
         {anchors.map((anchor, i) => {
           const linkCls = cls([styles['ui-toc-link']], anchor.className, {
+            [styles['ui-toc-link']]: true,
             [styles[`ui-toc-link-${anchor.level || 0}`]]: true,
           });
           return (

@@ -274,7 +274,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                       <div className={styles.group} key={group}>
                         <h2 id={group}>{group}</h2>
                         {groupedData[group].map(item => {
-                          const ConfigItem = configMapping[item.type];
+                          const ConfigItem = configMapping[item.type] || configMapping.any;
                           return <ConfigItem key={item.name} {...item} form={form} />;
                         })}
                       </div>

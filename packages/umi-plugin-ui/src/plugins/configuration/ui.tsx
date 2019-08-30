@@ -28,6 +28,6 @@ export default (api: IUiApi) => {
       type: 'control',
       theme: 'filled',
     },
-    component: () => <ConfigManager api={api} />,
+    component: () => <ConfigManager api={api} openConfigAction={openConfigAction} />,
   });
 };

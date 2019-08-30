@@ -6,6 +6,8 @@ import BooleanComp from './Boolean';
 import ObjectComp from './Object';
 import ObjectArrayComp from './ObjectArray';
 import ListComp from './List';
+import TextAreaComp from './TextArea';
+import AnyComp from './Any';
 
 export enum CONFIG_TYPES {
   'string' = 'string',
@@ -14,6 +16,8 @@ export enum CONFIG_TYPES {
   'object' = 'object',
   'object[]' = 'object[]',
   'list' = 'list',
+  'textarea' = 'textarea',
+  'any' = 'any',
 }
 
 type IValue = string | object | boolean | string[] | object[];
@@ -43,6 +47,8 @@ const configTypeMapping: IConfigTypeMapping = {
   object: ObjectComp,
   'object[]': ObjectArrayComp,
   list: ListComp,
+  textarea: TextAreaComp,
+  any: AnyComp,
 };
 
 export default configTypeMapping;

@@ -14,4 +14,6 @@ export default {
   'org.umi.ui.configuration.reset.tooltip.desc': '当前配置 {value} 已被修改',
   'org.umi.ui.configuration.reset.tooltip.desc.empty': '配置没有修改',
   'org.umi.ui.configuration.add.column': '添加一列',
+  'org.umi.ui.configuration.edit.in.editor': '在编辑器中编辑',
+  'org.umi.ui.configuration.open.editor.failure': '打开编辑器失败',
 };

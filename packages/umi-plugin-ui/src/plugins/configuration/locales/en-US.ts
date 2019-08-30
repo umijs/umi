@@ -15,4 +15,6 @@ export default {
   'org.umi.ui.configuration.reset.tooltip.desc': 'Current configuration {value} have been modified',
   'org.umi.ui.configuration.reset.tooltip.desc.empty': 'Configuration has not been modified',
   'org.umi.ui.configuration.add.column': 'Add a column',
+  'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
+  'org.umi.ui.configuration.open.editor.failure': 'Open editor failure',
 };

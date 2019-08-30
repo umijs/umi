@@ -1,14 +1,16 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { ICompProps } from './index';
-import Label from './label';
 import Context from '../../Context';
+import Label from './label';
 import { getFormItemShow } from './utils';
 
-const StringComp: React.SFC<ICompProps> = props => {
+const { TextArea } = Input;
+
+const TextAreaComp: React.SFC<ICompProps> = props => {
   const { name, description, title, default: defaultValue, link } = props;
-  const { debug: _log } = React.useContext(Context);
   const { parentConfig } = getFormItemShow(name);
+  const { debug: _log } = React.useContext(Context);
   const basicItem = {
     name,
     required: false,
@@ -16,7 +18,7 @@ const StringComp: React.SFC<ICompProps> = props => {
     rules: [{ required: !!defaultValue, message: `请输入${title}` }],
   };
 
-  const formControl = <Input autoComplete="off" style={{ maxWidth: 320 }} />;
+  const formControl = <TextArea autoComplete="off" rows={4} style={{ maxWidth: 320 }} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>
@@ -45,4 +47,4 @@ const StringComp: React.SFC<ICompProps> = props => {
   );
 };
 
-export default StringComp;
+export default TextAreaComp;
