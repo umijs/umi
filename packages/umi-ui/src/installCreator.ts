@@ -1,4 +1,3 @@
-import execa from 'execa';
 import mkdirp from 'mkdirp';
 import userHome from 'user-home';
 import resolveFrom from 'resolve-from';
@@ -10,10 +9,11 @@ interface IOpts {
   npmClient?: string;
   packageName?: string;
   baseDir?: string;
+  onData?: () => {};
 }
 
 export default async function(opts: IOpts) {
-  const { npmClient = 'npm', packageName = 'create-umi' } = opts;
+  const { npmClient = 'npm', packageName = 'create-umi', onData } = opts;
 
   console.log('opts', opts);
 
@@ -27,16 +27,14 @@ export default async function(opts: IOpts) {
   if (existsSync(pkgPath)) {
     // 更新
     // 更新时使用安装时用的 npmClient，否则会导致不可预知的问题
-    console.log('pkgPath', pkgPath, require(pkgPath).npmClient);
-    try {
-      await executeCommand(
-        require(pkgPath).npmClient, // eslint-disable-line
-        ['update'],
-        baseDir,
-      );
-    } catch (e) {
-      console.log('eeeee', e);
-    }
+    await executeCommand(
+      require(pkgPath).npmClient, // eslint-disable-line
+      ['update'],
+      baseDir,
+      {
+        onData,
+      },
+    );
   } else {
     // 写 package.json
     writeFileSync(
@@ -59,6 +57,9 @@ export default async function(opts: IOpts) {
       npmClient,
       ['install', '--registry=https://registry.npm.taobao.org'],
       baseDir,
+      {
+        onData,
+      },
     );
   }
 

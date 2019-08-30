@@ -364,7 +364,14 @@ export default class UmiUI {
           step: 1,
           stepStatus: 1,
         });
-        creatorPath = await installCreator({});
+        creatorPath = await installCreator({
+          npmClient: createOpts.npmClient,
+          onData(data) {
+            onProgress({
+              install: data,
+            });
+          },
+        });
         setProgress({
           stepStatus: 2,
         });

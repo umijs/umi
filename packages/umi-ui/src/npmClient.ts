@@ -5,10 +5,20 @@ const getSpeedUpEnv = () => {
   return BinaryMirrorConfig.china.ENVS;
 };
 
-export async function executeCommand(npmClient, args, targetDir, opts = { taobaoSpeedUp: true }) {
+export async function executeCommand(
+  npmClient,
+  args,
+  targetDir,
+  opts = {
+    taobaoSpeedUp: true,
+  },
+) {
   const extraEnv = getSpeedUpEnv();
   return new Promise((resolve, reject) => {
-    // args.push('--registry=https://registry.npm.taobao.org');
+    // 详细日志
+    if (['tnpm', 'npm', 'cnpm'].includes(npmClient)) {
+      args.push('-d');
+    }
     const child = spawn(npmClient, args, {
       cwd: targetDir,
       env: {
@@ -41,10 +51,6 @@ export async function installDeps(npmClient, targetDir, opts) {
     args = [];
   } else if (['tnpm', 'npm', 'cnpm', 'pnpm'].includes(npmClient)) {
     args = ['install'];
-    if (npmClient !== 'pnpm') {
-      // Detail logs.
-      args.push('-d');
-    }
   }
 
   await executeCommand(npmClient, args, targetDir, opts);
