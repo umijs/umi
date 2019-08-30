@@ -29,6 +29,10 @@
 }
 
 .result {
+  min-width: 700px;
+  @media @mobile {
+    min-width: unset;
+  }
   :global(.ant-result-title) {
     font-size: 16px;
     line-height: 24px;

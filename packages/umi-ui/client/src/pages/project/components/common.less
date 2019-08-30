@@ -11,4 +11,18 @@
 .steps {
   max-width: 358px;
   margin: 0 auto;
+  :global {
+    .ant-steps-item-finish
+      > .ant-steps-item-container
+      > .ant-steps-item-content
+      > .ant-steps-item-title::after {
+      background-color: @primary-color;
+    }
+    .ant-steps-item-error
+      > .ant-steps-item-container
+      > .ant-steps-item-content
+      > .ant-steps-item-title::after {
+      background-color: @error-color;
+    }
+  }
 }

@@ -41,7 +41,7 @@ export default {
   'org.umi.ui.global.feedback': 'Feedback',
   'org.umi.ui.global.help': 'Help',
   'org.umi.ui.global.log.clear.error': 'Clear log failed',
-  'org.umi.ui.global.home': 'Back to Project List',
+  'org.umi.ui.global.home': 'Back to Home',
   'org.umi.ui.global.log': 'Log',
   'org.umi.ui.global.log.empty': 'Log Empty',
   'org.umi.ui.global.log.upperCase': 'LOG',
