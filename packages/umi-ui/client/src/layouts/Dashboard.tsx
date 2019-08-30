@@ -50,7 +50,7 @@ export default withRouter(props => {
     }
   };
 
-  const title = formatMessage({ id: activePanel.title });
+  const title = activePanel.title ? formatMessage({ id: activePanel.title }) : '';
 
   return (
     <UiLayout type="detail" title={title}>
