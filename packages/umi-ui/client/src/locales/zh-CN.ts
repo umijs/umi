@@ -26,7 +26,6 @@ export default {
   'org.umi.ui.global.project.create.steps.input.placeholder': '请输入应用名',
   'org.umi.ui.global.project.create.steps.input.error': '文件名无效',
   'org.umi.ui.global.project.import.title': '导入项目',
-
   'org.umi.ui.global.feedback': '反馈',
   'org.umi.ui.global.help': '帮助',
   'org.umi.ui.global.log.clear.error': '清除日志失败',
@@ -35,4 +34,6 @@ export default {
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
   'org.umi.ui.global.log.clear.confirm': '是否清除日志？',
+  'org.umi.ui.global.readdir.code.EPERM': '{path} 读取没有权限',
+  'org.umi.ui.global.readdir.code.other': '读取失败',
 };

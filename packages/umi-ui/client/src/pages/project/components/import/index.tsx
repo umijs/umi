@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Form, message, Input } from 'antd';
+import slash2 from 'slash2';
 import ProjectContext from '@/layouts/ProjectContext';
 import { importProject } from '@/services/project';
+import { trimSlash, validateDirPath, getBasename } from '@/components/DirectoryForm/pathUtils';
 import DirectoryForm from '@/components/DirectoryForm';
 import { IProjectProps } from '../index';
-import { getBasename } from '@/utils';
 import cls from 'classnames';
-
 import common from '../common.less';
 import styles from './index.less';
 
@@ -38,20 +38,34 @@ const ImportProject: React.SFC<IProjectProps> = props => {
           layout="vertical"
           name="form_create_project"
           onFinish={handleFinish}
+          initialValues={{
+            path: cwd,
+          }}
           onValuesChange={(changedValue, { path }) => {
             form.setFieldsValue({
-              name: getBasename(path),
+              name: getBasename(trimSlash(path)),
             });
           }}
         >
-          <Form.Item label={null} name="path" rules={[{ required: true }]}>
+          <Form.Item
+            label={null}
+            name="path"
+            rules={[
+              { required: true },
+              {
+                validator: async (rule, value) => {
+                  await validateDirPath(value);
+                },
+              },
+            ]}
+          >
             <DirectoryForm />
           </Form.Item>
           <Form.Item label={null} shouldUpdate name="name" noStyle rules={[{ required: true }]}>
             <p />
           </Form.Item>
           <Form.Item shouldUpdate style={{ marginTop: 16 }}>
-            {({ getFieldValue }) => <p>{getFieldValue('path')}</p>}
+            {({ getFieldValue }) => <p>{trimSlash(getFieldValue('path'))}</p>}
           </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">

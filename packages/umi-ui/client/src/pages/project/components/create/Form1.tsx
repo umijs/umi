@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Input, Button } from 'antd';
 import debounce from 'lodash/debounce';
-import slash2 from 'slash2';
+import { trimSlash, validateDirPath } from '@/components/DirectoryForm/pathUtils';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
 import { checkDirValid } from '@/services/project';
@@ -49,7 +49,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
   const getFullPath = (fields = {}) => {
     const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
     const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
-    return slash2(dir || '');
+    return trimSlash(dir || '');
   };
 
   const renderFullPath = () => {
@@ -73,7 +73,17 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
         baseDir: cwd,
       }}
     >
-      <Form.Item label={null} name="baseDir">
+      <Form.Item
+        label={null}
+        name="baseDir"
+        rules={[
+          {
+            validator: async (rule, value) => {
+              await validateDirPath(value);
+            },
+          },
+        ]}
+      >
         <DirectoryForm />
       </Form.Item>
       <Form.Item

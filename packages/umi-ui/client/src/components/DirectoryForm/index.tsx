@@ -1,22 +1,13 @@
 import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
 import slash2 from 'slash2';
-import { Button, Empty, Spin, Input, message } from 'antd';
+import { Button, Empty, Spin, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import { path2Arr, arr2Path, trimSlash } from './pathUtils';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
 import styles from './index.less';
-
-/**
- * Windows:
- * C:/Users/jcl => ['C:', 'Users', 'jcl']
- *
- * OS X || Linux:
- * /Users/jcl/ => ['/', 'Users', 'jcl'] => '/Users/jcl'
- *
- */
 
 const { useState, useEffect, useRef } = React;
 
@@ -56,7 +47,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       setDirectories(files);
       setClicked(-1);
     } catch (e) {
-      message.error(e && e.message ? e.message : '目录选择出错');
+      _log('changeDirectories error', e);
     }
   };
 
@@ -75,7 +66,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     _log(`doubleClick: ${folderName}`);
     if (folderName) {
       // TODO windows Path format
-      const currDirPath = `${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`;
+      const currDirPath = trimSlash(`${dirPath === '/' ? dirPath : `${dirPath}/`}${folderName}`);
       _log(`doubleClick: currDirPath ${currDirPath}`);
       await changeDirectories(currDirPath);
     }

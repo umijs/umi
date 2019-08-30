@@ -15,8 +15,11 @@ interface IOpts {
 export default async function(opts: IOpts) {
   const { npmClient = 'npm', packageName = 'create-umi' } = opts;
 
+  console.log('opts', opts);
+
   // 创建目录
   const baseDir = opts.baseDir || join(userHome, `.umi/creator/${packageName}`);
+  console.log('baseDir', baseDir);
   mkdirp.sync(baseDir);
 
   // 创建 package.json
@@ -24,11 +27,16 @@ export default async function(opts: IOpts) {
   if (existsSync(pkgPath)) {
     // 更新
     // 更新时使用安装时用的 npmClient，否则会导致不可预知的问题
-    await executeCommand(
-      require(pkgPath).npmClient, // eslint-disable-line
-      ['update'],
-      baseDir,
-    );
+    console.log('pkgPath', pkgPath, require(pkgPath).npmClient);
+    try {
+      await executeCommand(
+        require(pkgPath).npmClient, // eslint-disable-line
+        ['update'],
+        baseDir,
+      );
+    } catch (e) {
+      console.log('eeeee', e);
+    }
   } else {
     // 写 package.json
     writeFileSync(
@@ -45,7 +53,7 @@ export default async function(opts: IOpts) {
       ),
       'utf-8',
     );
-
+    console.log('npmClient', npmClient);
     // 安装依赖
     await executeCommand(
       npmClient,
