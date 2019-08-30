@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import spawn from 'cross-spawn';
 import BinaryMirrorConfig from 'binary-mirror-config';
 
 const getSpeedUpEnv = () => {
