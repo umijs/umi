@@ -1,6 +1,7 @@
 import * as React from 'react';
 import get from 'lodash/get';
 import { Result, Typography } from 'antd';
+import cls from 'classnames';
 import { CloseCircle } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './index.less';
@@ -22,6 +23,7 @@ interface IState {
 }
 
 export interface IProps {
+  className?: string;
   /** 是否开启，默认 true */
   enable?: boolean;
   /** 发生错误后的回调（可做一些错误日志上报，打点等） */
@@ -30,9 +32,9 @@ export interface IProps {
   ErrorComponent?: (error: IError) => React.ReactElement<any>;
 }
 
-const defaultFallbackComponent = ({ componentStack, error }) => (
+const defaultFallbackComponent = ({ componentStack, error, className }) => (
   <Result
-    className={styles.result}
+    className={cls(styles.result, className)}
     status="error"
     title={formatMessage({ id: 'org.umi.ui.global.error.title' })}
     subTitle={error.toString()}
