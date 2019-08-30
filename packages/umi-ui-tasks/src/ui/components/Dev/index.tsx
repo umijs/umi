@@ -18,6 +18,7 @@ const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
 const DevComponent: React.FC<IProps> = ({ api }) => {
+  console.log('aaaaa');
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
@@ -113,14 +114,15 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
 
   const stopEventPop = e => {
     e && e.stopPropagation();
-    e.preventDefault();
+    e && e.preventDefault();
   };
-
   const EnvLabel = props => (
-    <div onClick={stopEventPop}>
-      <div className={styles.modleLableTitle}>{intl(props.title)}</div>
+    <div>
+      <div onClick={stopEventPop} className={styles.modleLableTitle}>
+        {intl(props.title)}
+      </div>
       <div className={styles.modleLableDesc}>
-        <span>{intl(props.desc)}</span>
+        <span onClick={stopEventPop}>{intl(props.desc)}</span>
         <a
           className={styles.modleLablelDescIcon}
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
