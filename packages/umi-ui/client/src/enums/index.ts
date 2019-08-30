@@ -25,7 +25,7 @@ export type ILocale = keyof typeof LOCALES;
 
 export enum LOCALES_ICON {
   'zh-CN' = '🇨🇳',
-  'en-US' = '🇳🇿',
+  'en-US' = '🇺🇸',
 }
 
 export enum SPEEDUP_CLIENTS {
