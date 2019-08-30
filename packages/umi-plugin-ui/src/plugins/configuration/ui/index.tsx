@@ -12,7 +12,7 @@ function getSections(api: IUiApi) {
   const sections = [
     {
       key: 'project',
-      title: api.intl('org.umi.ui.configuration.project.config.title'),
+      title: api.intl({ id: 'org.umi.ui.configuration.project.config.title' }),
       icon: (
         <img
           src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
@@ -20,7 +20,7 @@ function getSections(api: IUiApi) {
           height={32}
         />
       ),
-      description: api.intl('org.umi.ui.configuration.project.config.desc'),
+      description: api.intl({ id: 'org.umi.ui.configuration.project.config.desc' }),
       component: () => <BasicConfig api={api} />,
     },
   ];

@@ -24,7 +24,7 @@ const Label: React.SFC<ILabelProps> = ({ name, title, description, link }) => {
           {description}{' '}
           {link && (
             <a href={link} target="_blank">
-              {intl('org.umi.ui.configuration.detail')}
+              {intl({ id: 'org.umi.ui.configuration.detail' })}
             </a>
           )}
         </p>

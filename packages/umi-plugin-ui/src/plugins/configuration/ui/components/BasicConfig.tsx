@@ -219,11 +219,16 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
   const ResetTitle = (
     <div className={styles.resetTitle}>
-      <p>你确定要重置以上配置吗？</p>
+      <p>{intl({ id: 'org.umi.ui.configuration.reset.tooltip' })}</p>
       <span>
         {changedValueArr.length > 0
-          ? `当前配置 ${changedValueArr.join('、')} 已被修改`
-          : '配置没有修改'}
+          ? intl(
+              { id: 'org.umi.ui.configuration.reset.tooltip.desc' },
+              {
+                value: changedValueArr.join('、'),
+              },
+            )
+          : intl({ id: 'org.umi.ui.configuration.reset.tooltip.desc.empty' })}
       </span>
     </div>
   );
@@ -236,7 +241,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
       <div className={themeCls} ref={containerRef}>
         <div className={styles.form}>
           <div className={styles['basicConfig-header']}>
-            <h2>{intl('org.umi.ui.configuration.project.config.title')}</h2>
+            <h2>{intl({ id: 'org.umi.ui.configuration.project.config.title' })}</h2>
             <span className={searchIconCls}>
               <SearchIcon onClick={handleSearchShow} />
             </span>
@@ -244,7 +249,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
               prefix={<SearchIcon />}
               ref={searchInputRef}
               suffix={search && <CloseCircleFilled onClick={resetSearch} />}
-              placeholder={intl('org.umi.ui.configuration.search.placeholder')}
+              placeholder={intl({ id: 'org.umi.ui.configuration.search.placeholder' })}
               className={inputCls}
               onChange={e => handleSearchDebounce(e.target.value)}
             />
@@ -297,11 +302,13 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
           title={ResetTitle}
           onConfirm={handleReset}
           onCancel={() => {}}
-          okText="确定"
+          okText={intl({ id: 'org.umi.ui.configuration.okText' })}
           disabled={!changedValueArr.length}
-          cancelText="取消"
+          cancelText={intl({ id: 'org.umi.ui.configuration.cancelText' })}
         >
-          <Button disabled={!changedValueArr.length}>重置</Button>
+          <Button disabled={!changedValueArr.length}>
+            {intl({ id: 'org.umi.ui.configuration.reset' })}
+          </Button>
         </Popconfirm>
         <Button
           disabled={!changedValueArr.length}
@@ -309,7 +316,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
           style={{ marginRight: 24 }}
           type="primary"
         >
-          保存
+          {intl({ id: 'org.umi.ui.configuration.save' })}
         </Button>
       </div>
     </>

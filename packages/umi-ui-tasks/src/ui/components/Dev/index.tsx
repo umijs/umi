@@ -78,7 +78,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl('org.umi.ui.tasks.dev.startError'),
+        title: intl({ id: 'org.umi.ui.tasks.dev.startError' }),
         message: errMsg,
       });
     }
@@ -88,7 +88,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl('org.umi.ui.tasks.dev.cancelError'),
+        title: intl({ id: 'org.umi.ui.tasks.dev.cancelError' }),
         message: errMsg,
       });
     }
@@ -119,16 +119,16 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
   const EnvLabel = props => (
     <div>
       <div onClick={stopEventPop} className={styles.modleLableTitle}>
-        {intl(props.title)}
+        {intl({ id: props.title })}
       </div>
       <div className={styles.modleLableDesc}>
-        <span onClick={stopEventPop}>{intl(props.desc)}</span>
+        <span onClick={stopEventPop}>{intl({ id: props.desc })}</span>
         <a
           className={styles.modleLablelDescIcon}
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
           target="_blank"
         >
-          {intl('org.umi.ui.tasks.env.detail')}
+          {intl({ id: 'org.umi.ui.tasks.env.detail' })}
         </a>
       </div>
     </div>
@@ -143,13 +143,13 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     const map = {
       [TaskState.ING]: {
         status: 'processing',
-        text: <span>{intl('org.umi.ui.tasks.dev.state.starting')}</span>,
+        text: <span>{intl({ id: 'org.umi.ui.tasks.dev.state.starting' })}</span>,
       },
       [TaskState.SUCCESS]: {
         status: 'success',
         text: (
           <span>
-            {intl('org.umi.ui.tasks.dev.state.success')}
+            {intl({ id: 'org.umi.ui.tasks.dev.state.success' })}
             <a href={localUrl} target="_blank">
               {localUrl}
             </a>
@@ -158,7 +158,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
       },
       [TaskState.FAIL]: {
         status: 'error',
-        text: <span>{intl('org.umi.ui.tasks.dev.state.fail')}</span>,
+        text: <span>{intl({ id: 'org.umi.ui.tasks.dev.state.fail' })}</span>,
       },
     };
     return (
@@ -170,7 +170,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
   };
   return (
     <>
-      <h1 className={styles.title}>{intl('org.umi.ui.tasks.dev')}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.dev' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
@@ -178,26 +178,26 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
               {isTaskRunning ? (
                 <>
                   <PauseCircleFilled />
-                  <span className={styles.runningText}> {intl('org.umi.ui.tasks.dev.cancel')}</span>
+                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.dev.cancel' })}</span>
                 </>
               ) : (
                 <>
                   <PlayCircleFilled />
-                  <span className={styles.runningText}> {intl('org.umi.ui.tasks.dev.start')}</span>
+                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.dev.start' })}</span>
                 </>
               )}
             </Button>
-            <Button onClick={openModal}>{intl('org.umi.ui.tasks.envs')}</Button>
+            <Button onClick={openModal}>{intl({ id: 'org.umi.ui.tasks.envs' })}</Button>
             {outputRunningInfo(taskDetail)}
             <Modal
               visible={modalVisible}
-              title={intl('org.umi.ui.tasks.envs')}
+              title={intl({ id: 'org.umi.ui.tasks.envs' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <div className={styles.modalContainer}>
                 <Form name="devEnv" form={form} initialValues={env} layout="vertical">
-                  <Form.Item label={intl('org.umi.ui.tasks.envs.port')} name="PORT">
+                  <Form.Item label={intl({ id: 'org.umi.ui.tasks.envs.port' })} name="PORT">
                     <Input />
                   </Form.Item>
                   <Form.Item

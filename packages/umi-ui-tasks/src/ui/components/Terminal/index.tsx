@@ -57,7 +57,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
     <div className={styles.wrapper}>
       <Row className={styles.titleWrapper}>
         <Col span={8} className={styles.formmatGroup}>
-          {intl('org.umi.ui.tasks.log.title')}
+          {intl({ id: 'org.umi.ui.tasks.log.title' })}
         </Col>
         <Col span={4} offset={12} className={styles.actionGroup}>
           <span className={styles.icon}>

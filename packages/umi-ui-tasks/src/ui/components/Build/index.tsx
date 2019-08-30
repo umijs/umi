@@ -73,7 +73,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl('org.umi.ui.tasks.build.buildError'),
+        title: intl({ id: 'org.umi.ui.tasks.build.buildError' }),
         message: errMsg,
       });
     }
@@ -83,7 +83,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl('org.umi.ui.tasks.build.cancelError'),
+        title: intl({ id: 'org.umi.ui.tasks.build.cancelError' }),
         message: errMsg,
       });
       return;
@@ -115,12 +115,19 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     e && e.preventDefault();
   };
   const EnvLabel = props => (
+<<<<<<< ours
     <div>
       <div onClick={stopEventPop} className={styles.modleLableTitle}>
         {intl(props.title)}
       </div>
       <div className={styles.modleLableDesc}>
         <span onClick={stopEventPop}>{intl(props.desc)}</span>
+=======
+    <div onClick={stopEventPop}>
+      <div className={styles.modleLableTitle}>{intl({ id: props.title })}</div>
+      <div className={styles.modleLableDesc}>
+        <span>{intl({ id: props.desc })}</span>
+>>>>>>> theirs
         <a
           className={styles.modleLablelDescIcon}
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
@@ -135,7 +142,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>{intl('org.umi.ui.tasks.build')}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.build' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
@@ -145,7 +152,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                   <PauseCircleFilled />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl('org.umi.ui.tasks.build.cancel')}
+                    {intl({ id: 'org.umi.ui.tasks.build.cancel' })}
                   </span>
                 </>
               ) : (
@@ -153,15 +160,15 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                   <PlayCircleFilled />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl('org.umi.ui.tasks.build.start')}
+                    {intl({ id: 'org.umi.ui.tasks.build.start' })}
                   </span>
                 </>
               )}
             </Button>
-            <Button onClick={openModal}>{intl('org.umi.ui.tasks.envs')}</Button>
+            <Button onClick={openModal}>{intl({ id: 'org.umi.ui.tasks.envs' })}</Button>
             <Modal
               visible={modalVisible}
-              title={intl('org.umi.ui.tasks.envs')}
+              title={intl({ id: 'org.umi.ui.tasks.envs' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >

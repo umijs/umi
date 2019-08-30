@@ -16,7 +16,7 @@ function nameToPath(name) {
 export default (api: IUiApi) => {
   const { callRemote, getContext, intl } = api;
 
-  console.log('intl', intl('org.umi.ui.blocks.panel'));
+  console.log('intl', intl({ id: 'org.umi.ui.blocks.panel' }));
 
   const BlocksViewer: React.SFC<{}> = () => {
     const [blockAdding, setBlockAdding] = useState(null);
@@ -99,7 +99,7 @@ export default (api: IUiApi) => {
 
         <Button onClick={() => api.redirect('/configuration')}>跳转至配置页</Button>
         <Search
-          placeholder={intl('org.umi.ui.blocks.content.search_block')}
+          placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
           onSearch={value => console.log(value)}
         />
         <div>{loading ? 'Fetching blocks...' : ''}</div>

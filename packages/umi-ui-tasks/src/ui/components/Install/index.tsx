@@ -78,7 +78,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl('org.umi.ui.tasks.install.execError'),
+        title: intl({ id: 'org.umi.ui.tasks.install.execError' }),
         message: errMsg,
       });
     }
@@ -88,7 +88,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl('org.umi.ui.tasks.install.cancelError'),
+        title: intl({ id: 'org.umi.ui.tasks.install.cancelError' }),
         message: errMsg,
       });
     }
@@ -115,7 +115,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>{intl('org.umi.ui.tasks.install')}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.install' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
@@ -125,7 +125,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                   <PauseCircleFilled />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl('org.umi.ui.tasks.install.cancel')}
+                    {intl({ id: 'org.umi.ui.tasks.install.cancel' })}
                   </span>
                 </>
               ) : (
@@ -133,23 +133,25 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                   <PlayCircleFilled />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl('org.umi.ui.tasks.install.start')}
+                    {intl({ id: 'org.umi.ui.tasks.install.start' })}
                   </span>
                 </>
               )}
             </Button>
             <Modal
               visible={modalVisible}
-              title={intl('org.umi.ui.tasks.install')}
-              okText={intl('org.umi.ui.tasks.install.okText')}
-              cancelText={intl('org.umi.ui.tasks.install.cancelText')}
+              title={intl({ id: 'org.umi.ui.tasks.install' })}
+              okText={intl({ id: 'org.umi.ui.tasks.install.okText' })}
+              cancelText={intl({ id: 'org.umi.ui.tasks.install.cancelText' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <div className={styles.modalContainer}>
-                <div className={styles.confirmMessage}>{intl('org.umi.ui.tasks.install.tip')}</div>
+                <div className={styles.confirmMessage}>
+                  {intl({ id: 'org.umi.ui.tasks.install.tip' })}
+                </div>
                 <Form name="intasllEnv" form={form} layout="vertical">
-                  <Form.Item label={intl('org.umi.ui.tasks.install.npmClient')} name="npmClient">
+                  <Form.Item label={intl({ id: 'org.umi.ui.tasks.install.npmClient' })} name="npmClient">
                     <Select style={{ width: 120 }}>
                       {npmClients.map(key => (
                         <Option key={key} value={key}>

@@ -33,14 +33,14 @@ const DashboardUI: React.FC<IProps> = props => {
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.build)} />
           <div className={styles.info}>
-            <h4>{intl('org.umi.ui.dashboard.panel.build.title')}</h4>
-            <p>{intl('org.umi.ui.dashboard.panel.build.desc')}</p>
+            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.build.title' })}</h4>
+            <p>{intl({ id: 'org.umi.ui.dashboard.panel.build.desc' })}</p>
           </div>
         </div>
       ),
       body: (
         <div onClick={() => redirect('/tasks?active=build')}>
-          {intl('org.umi.ui.dashboard.panel.goto.task')}
+          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
         </div>
       ),
     },
@@ -50,13 +50,15 @@ const DashboardUI: React.FC<IProps> = props => {
         <div className={styles.main}>
           <div className={cls(styles.icon, styles.dev)} />
           <div className={styles.info}>
-            <h4>{intl('org.umi.ui.dashboard.panel.dev.title')}</h4>
-            <p>{intl('org.umi.ui.dashboard.panel.dev.desc')}</p>
+            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.dev.title' })}</h4>
+            <p>{intl({ id: 'org.umi.ui.dashboard.panel.dev.desc' })}</p>
           </div>
         </div>
       ),
       body: (
-        <div onClick={() => redirect('/tasks')}>{intl('org.umi.ui.dashboard.panel.goto.task')}</div>
+        <div onClick={() => redirect('/tasks')}>
+          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
+        </div>
       ),
     },
     {
@@ -66,7 +68,7 @@ const DashboardUI: React.FC<IProps> = props => {
           <div>
             <Smile />
           </div>
-          <p>{intl('org.umi.ui.dashboard.panel.coming.soon')}</p>
+          <p>{intl({ id: 'org.umi.ui.dashboard.panel.coming.soon' })}</p>
         </div>
       ),
     },
@@ -81,11 +83,16 @@ const DashboardUI: React.FC<IProps> = props => {
         <div>
           <h2>Hi</h2>
           <p>
-            {intl('org.umi.ui.dashboard.panel.welcome.title', {
-              name: currentProject.name,
-            })}
+            {intl(
+              {
+                id: 'org.umi.ui.dashboard.panel.welcome.title',
+              },
+              {
+                name: currentProject.name,
+              },
+            )}
           </p>
-          <div>{intl('org.umi.ui.dashboard.panel.welcome.desc')}</div>
+          <div>{intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}</div>
         </div>
       ),
     });

@@ -59,7 +59,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl('org.umi.ui.tasks.lint.execError'),
+        title: intl({ id: 'org.umi.ui.tasks.lint.execError' }),
         message: errMsg,
       });
     }
@@ -69,7 +69,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl('org.umi.ui.tasks.lint.cancelError'),
+        title: intl({ id: 'org.umi.ui.tasks.lint.cancelError' }),
         message: errMsg,
       });
     }
@@ -78,7 +78,7 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>{intl('org.umi.ui.tasks.lint')}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.lint' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
@@ -88,13 +88,13 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
                   <PauseCircleFilled />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl('org.umi.ui.tasks.lint.cancel')}
+                    {intl({ id: 'org.umi.ui.tasks.lint.cancel' })}
                   </span>
                 </>
               ) : (
                 <>
                   <PlayCircleFilled />
-                  <span className={styles.runningText}> {intl('org.umi.ui.tasks.lint.start')}</span>
+                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.lint.start' })}</span>
                 </>
               )}
             </Button>

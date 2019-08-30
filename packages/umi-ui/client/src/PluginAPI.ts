@@ -63,9 +63,9 @@ export default class PluginAPI {
 
     // need intl text
     const intlParams = {
-      title: this.intl({ id: intl(title) }),
-      message: this.intl({ id: intl(message) }),
-      subtitle: this.intl({ id: intl(subtitle) }),
+      title: this.intl({ id: title }),
+      message: this.intl({ id: message }),
+      subtitle: this.intl({ id: subtitle }),
     };
 
     if (document.hasFocus()) {
