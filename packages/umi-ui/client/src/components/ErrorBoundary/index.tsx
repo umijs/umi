@@ -46,7 +46,7 @@ const defaultFallbackComponent = ({ componentStack, error, className }) => (
   </Result>
 );
 
-class AnttechError extends React.Component<IProps, IState> {
+class UmiErrorBoundary extends React.Component<IProps, IState> {
   static defaultProps = {
     ErrorComponent: defaultFallbackComponent,
     onError: null,
@@ -92,4 +92,4 @@ class AnttechError extends React.Component<IProps, IState> {
   }
 }
 
-export default AnttechError;
+export default UmiErrorBoundary;
