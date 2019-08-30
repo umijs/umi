@@ -37,9 +37,9 @@ const defaultFallbackComponent = ({ componentStack, error }) => (
     title={formatMessage({ id: 'org.umi.ui.global.error.title' })}
     subTitle={error.toString()}
   >
-    <Paragraph>
-      <CloseCircle style={{ color: 'red' }} />{' '}
-      {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：<pre>{componentStack}</pre>
+    <Paragraph className={styles.stack}>
+      <CloseCircle /> {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：
+      <pre>{componentStack}</pre>
     </Paragraph>
   </Result>
 );

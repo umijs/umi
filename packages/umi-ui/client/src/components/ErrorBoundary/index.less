@@ -2,6 +2,14 @@
   max-width: 577px;
   margin: 0 auto;
   padding-top: 105px;
+  .stack {
+    padding: 16px;
+    background-color: @card-bg-color;
+    border-radius: @border-radius-base;
+    & > :global(.anticon) {
+      color: @error-color;
+    }
+  }
   :global {
     .ant-result-icon {
       margin-bottom: 8px;
