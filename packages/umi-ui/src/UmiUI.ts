@@ -700,6 +700,8 @@ export default class UmiUI {
 
   async start() {
     return new Promise(async (resolve, reject) => {
+      console.log(`🚀 Starting Umi UI...`);
+
       const express = require('express');
       const compression = require('compression');
       const app = express();
@@ -779,7 +781,7 @@ export default class UmiUI {
       const conns = {};
       function send(action) {
         const message = JSON.stringify(action);
-        // console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
+        console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
         Object.keys(conns).forEach(id => {
           conns[id].write(message);
         });
@@ -867,14 +869,14 @@ export default class UmiUI {
           reject(err);
         } else {
           const url = `http://localhost:${port}/`;
-          console.log(`umi ui listening on port ${port}`);
-          console.log(url);
+          console.log(`🧨  Ready on ${url}`);
           openBrowser(url);
           resolve();
         }
       });
       ss.installHandlers(server, {
         prefix: '/umiui',
+        log: () => {},
       });
       this.socketServer = ss;
       this.server = server;
