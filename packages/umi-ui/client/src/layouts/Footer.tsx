@@ -55,6 +55,9 @@ const Footer: React.SFC<IFooterProps> = props => {
       return action.payload;
     }
   }, []);
+  const intl = (obj, value = {}) => {
+    return formatMessage(obj, value) || messages[obj.id];
+  };
 
   const showLogPanel = () => {
     setLogVisible(true);
@@ -145,7 +148,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     try {
       await clearLog();
     } catch (e) {
-      message.error(formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
+      message.error(intl({ id: 'org.umi.ui.global.log.clear.error' }));
     } finally {
       await getLogs();
     }
@@ -162,7 +165,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     <div className={styles.footer}>
       <div className={styles.statusBar}>
         <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
-          <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
+          <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
         </div>
@@ -174,10 +177,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <ProfileFilled />{' '}
-          {type === 'loading'
-            ? messages['org.umi.ui.global.log']
-            : formatMessage({ id: 'org.umi.ui.global.log' })}
+          <ProfileFilled /> {intl({ id: 'org.umi.ui.global.log' })}
         </div>
 
         <div className={styles.section}>
@@ -230,17 +230,13 @@ const Footer: React.SFC<IFooterProps> = props => {
       <Drawer
         title={
           <div className={styles['section-drawer-title']}>
-            <h1>
-              {type === 'loading'
-                ? messages['org.umi.ui.global.log.upperCase']
-                : formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
-            </h1>
+            <h1>{intl({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
             <div className={styles['section-drawer-title-action']}>
               <Popconfirm
-                title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
+                title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
                 onConfirm={handleClearLog}
-                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
+                okText={intl({ id: 'org.umi.ui.global.okText' })}
+                cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Delete />
               </Popconfirm>
