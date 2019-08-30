@@ -41,7 +41,7 @@ export default {
   'org.umi.ui.global.feedback': 'Feedback',
   'org.umi.ui.global.help': 'Help',
   'org.umi.ui.global.log.clear.error': 'Clear log failed',
-  'org.umi.ui.global.home': 'Home',
+  'org.umi.ui.global.home': 'Back to Project List',
   'org.umi.ui.global.log': 'Log',
   'org.umi.ui.global.log.empty': 'Log Empty',
   'org.umi.ui.global.log.upperCase': 'LOG',
@@ -54,4 +54,6 @@ export default {
   'org.umi.ui.global.progress.create.loading': 'Project Creating',
   'org.umi.ui.global.progress.retry': 'Retry',
   'org.umi.ui.global.progress.retry.failure': 'Retry Failure',
+  'org.umi.ui.global.copy.failure': 'Copy path failure',
+  'org.umi.ui.global.copy.success': 'Copy path success',
 };

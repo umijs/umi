@@ -40,7 +40,7 @@ export default {
   'org.umi.ui.global.feedback': '反馈',
   'org.umi.ui.global.help': '帮助',
   'org.umi.ui.global.log.clear.error': '清除日志失败',
-  'org.umi.ui.global.home': '返回列表',
+  'org.umi.ui.global.home': '返回列表页',
   'org.umi.ui.global.log': '日志',
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
@@ -53,4 +53,6 @@ export default {
   'org.umi.ui.global.progress.create.loading': '项目创建中，可能会需要几分钟',
   'org.umi.ui.global.progress.retry': '重试',
   'org.umi.ui.global.progress.retry.failure': '重试失败',
+  'org.umi.ui.global.copy.failure': '复制路径失败',
+  'org.umi.ui.global.copy.success': '复制路径成功',
 };

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm } from 'antd';
+import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
+import copy from 'copy-to-clipboard';
+import debounce from 'lodash/debounce';
 import {
   FolderFilled,
   ProfileFilled,
@@ -42,7 +44,7 @@ const FOOTER_RIGHT = [
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
-  const message = locale === 'en-US' ? enUS : zhCN;
+  const messages = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -74,6 +76,17 @@ const Footer: React.SFC<IFooterProps> = props => {
     });
   };
 
+  const handleCopyPathDebounce = debounce((p: string) => {
+    if (p) {
+      try {
+        copy(p);
+        message.success(formatMessage({ id: 'org.umi.ui.global.copy.success' }));
+      } catch (e) {
+        message.error(formatMessage({ id: 'org.umi.ui.global.copy.failure' }));
+      }
+    }
+  }, 300);
+
   useEffect(() => {
     (async () => {
       await getLogs();
@@ -100,6 +113,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
         window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
       }
+      handleCopyPathDebounce.cancel();
     };
   }, []);
 
@@ -148,11 +162,13 @@ const Footer: React.SFC<IFooterProps> = props => {
     <div className={styles.footer}>
       <div className={styles.statusBar}>
         <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
-          <HomeFilled style={{ marginRight: 4 }} />
+          <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
+            <HomeFilled style={{ marginRight: 4 }} />
+          </Tooltip>
         </div>
         {type === 'detail' && path && name && (
           <>
-            <div className={styles.section}>
+            <div className={actionCls} onClick={() => handleCopyPathDebounce(path)}>
               <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>
           </>
@@ -160,7 +176,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
           <ProfileFilled />{' '}
           {type === 'loading'
-            ? message['org.umi.ui.global.log']
+            ? messages['org.umi.ui.global.log']
             : formatMessage({ id: 'org.umi.ui.global.log' })}
         </div>
 
@@ -186,7 +202,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             <a>
               <Message />{' '}
               {type === 'loading'
-                ? message['org.umi.ui.global.feedback']
+                ? messages['org.umi.ui.global.feedback']
                 : formatMessage({ id: 'org.umi.ui.global.feedback' })}
             </a>
           </Popover>
@@ -196,7 +212,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
               {item.icon}{' '}
-              {type === 'loading' ? message[item.title] : formatMessage({ id: item.title })}
+              {type === 'loading' ? messages[item.title] : formatMessage({ id: item.title })}
             </a>
           </div>
         ))}
@@ -216,7 +232,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <div className={styles['section-drawer-title']}>
             <h1>
               {type === 'loading'
-                ? message['org.umi.ui.global.log.upperCase']
+                ? messages['org.umi.ui.global.log.upperCase']
                 : formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
             </h1>
             <div className={styles['section-drawer-title-action']}>
