@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Select, Form } from 'antd';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -122,7 +122,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelInstall : openModal}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircleFilled />
+                  <Pause />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.install.cancel' })}
@@ -130,7 +130,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                 </>
               ) : (
                 <>
-                  <PlayCircleFilled />
+                  <CaretRight />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.install.start' })}
@@ -151,7 +151,10 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                   {intl({ id: 'org.umi.ui.tasks.install.tip' })}
                 </div>
                 <Form name="intasllEnv" form={form} layout="vertical">
-                  <Form.Item label={intl({ id: 'org.umi.ui.tasks.install.npmClient' })} name="npmClient">
+                  <Form.Item
+                    label={intl({ id: 'org.umi.ui.tasks.install.npmClient' })}
+                    name="npmClient"
+                  >
                     <Select style={{ width: 120 }}>
                       {npmClients.map(key => (
                         <Option key={key} value={key}>

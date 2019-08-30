@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Form, Switch, Input, Modal, Badge } from 'antd';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -18,7 +18,6 @@ const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
 const DevComponent: React.FC<IProps> = ({ api }) => {
-  console.log('aaaaa');
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
@@ -177,13 +176,19 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelDev : dev}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircleFilled />
-                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.dev.cancel' })}</span>
+                  <Pause />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.dev.cancel' })}
+                  </span>
                 </>
               ) : (
                 <>
-                  <PlayCircleFilled />
-                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.dev.start' })}</span>
+                  <CaretRight />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.dev.start' })}
+                  </span>
                 </>
               )}
             </Button>

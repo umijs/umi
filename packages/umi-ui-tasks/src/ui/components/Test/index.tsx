@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -86,7 +86,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelTest : test}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircleFilled />
+                  <Pause />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.test.cancel' })}
@@ -94,8 +94,11 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
                 </>
               ) : (
                 <>
-                  <PlayCircleFilled />
-                  <span className={styles.runningText}> {intl({ id: 'org.umi.ui.tasks.test.start' })}</span>
+                  <CaretRight />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl({ id: 'org.umi.ui.tasks.test.start' })}
+                  </span>
                 </>
               )}
             </Button>

@@ -74,4 +74,30 @@ export default {
 
   // log
   'org.umi.ui.tasks.log.title': '输出',
+
+  // notify
+  'org.umi.ui.tasks.notify.build.success.title': '构建成功',
+  'org.umi.ui.tasks.notify.build.success.message': '成功',
+  'org.umi.ui.tasks.notify.build.fail.title': '构建失败',
+  'org.umi.ui.tasks.notify.build.fail.message': '失败',
+
+  'org.umi.ui.tasks.notify.dev.success.title': '启动成功',
+  'org.umi.ui.tasks.notify.dev.success.message': '成功',
+  'org.umi.ui.tasks.notify.dev.fail.title': '启动失败',
+  'org.umi.ui.tasks.notify.dev.fail.message': '失败',
+
+  'org.umi.ui.tasks.notify.test.success.title': '测试成果',
+  'org.umi.ui.tasks.notify.test.success.message': '成功',
+  'org.umi.ui.tasks.notify.test.fail.title': '测试失败',
+  'org.umi.ui.tasks.notify.test.fail.message': '失败',
+
+  'org.umi.ui.tasks.notify.lint.success.title': '代码规范检查成功',
+  'org.umi.ui.tasks.notify.lint.success.message': '成功',
+  'org.umi.ui.tasks.notify.lint.fail.title': '代码规范检查失败',
+  'org.umi.ui.tasks.notify.lint.fail.message': '失败',
+
+  'org.umi.ui.tasks.notify.install.success.title': '安装依赖成功',
+  'org.umi.ui.tasks.notify.install.success.message': '成功',
+  'org.umi.ui.tasks.notify.install.fail.title': '安装依赖失败',
+  'org.umi.ui.tasks.notify.install.fail.message': '失败',
 };

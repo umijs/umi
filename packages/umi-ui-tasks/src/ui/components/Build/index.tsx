@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Form, Switch } from 'antd';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -126,7 +126,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
           target="_blank"
         >
-          {intl('org.umi.ui.tasks.env.detail')}
+          {intl({ id: 'org.umi.ui.tasks.env.detail' })}
         </a>
       </div>
     </div>
@@ -142,7 +142,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelBuild : build}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircleFilled />
+                  <Pause />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.build.cancel' })}
@@ -150,7 +150,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                 </>
               ) : (
                 <>
-                  <PlayCircleFilled />
+                  <CaretRight />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.build.start' })}
