@@ -1,8 +1,25 @@
 .result {
-  max-width: 600px;
+  max-width: 577px;
   margin: 0 auto;
-  :global(.ant-result-content) {
-    background-color: @component-background;
-    padding: 16px;
+  padding-top: 105px;
+  :global {
+    .ant-result-icon {
+      margin-bottom: 8px;
+      & > .anticon {
+        font-size: 32px;
+      }
+    }
+    .ant-result-title {
+      font-size: @font-size-lg;
+      color: @heading-color;
+      padding: 0 16px;
+      line-height: 22px;
+      margin-bottom: 16px;
+    }
+    .ant-result-content {
+      margin-top: 12px;
+      background-color: @component-background;
+      padding: 0 16px;
+    }
   }
 }
