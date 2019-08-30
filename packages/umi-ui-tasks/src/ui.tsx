@@ -7,6 +7,7 @@ import Test from './ui/components/Test';
 import Install from './ui/components/Install';
 import { initApiToGloal, getTerminalIns, getNoticeMessage } from './ui/util';
 import { TaskType, TaskState } from './server/core/enums';
+import styles from './ui/ui.module.less';
 import enUS from './locales/en-US';
 import zhCN from './locales/zh-CN';
 
@@ -117,7 +118,11 @@ export default (api: IUiApi) => {
           title,
           icon,
           description,
-          component: () => <Component api={api} />,
+          component: () => (
+            <div className={styles.section}>
+              <Component api={api} />
+            </div>
+          ),
         };
       })}
     />
