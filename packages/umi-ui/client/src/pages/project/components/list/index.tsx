@@ -94,13 +94,17 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     }
     if (action === 'delete') {
       await deleteProject(payload);
-      message.success('删除成功');
+      message.success(formatMessage({ id: 'org.umi.ui.global.delete.success' }));
     }
     if (action === 'editor') {
       try {
         await openInEditor(payload);
       } catch (e) {
-        message.error(e && e.message ? e.message : '编辑器打开失败');
+        message.error(
+          e && e.message
+            ? e.message
+            : formatMessage({ id: 'org.umi.ui.global.project.editor.failure' }),
+        );
       }
     }
     if (action === 'edit') {

@@ -1,10 +1,13 @@
 export default {
+  'org.umi.ui.global.delete.success': '删除成功',
+  'org.umi.ui.global.delete.failure': '删除失败',
   'org.umi.ui.global.okText': '确定',
   'org.umi.ui.global.cancelText': '取消',
   'org.umi.ui.global.edit.success': '编辑成功',
   'org.umi.ui.global.project.title': '项目管理',
   'org.umi.ui.global.panel.lang': '语言',
   'org.umi.ui.global.project.editor.open': '在编辑器中打开',
+  'org.umi.ui.global.project.editor.failure': '编辑器打开失败',
   'org.umi.ui.global.project.directory.tip': '友情提示：单击选择，双击进入',
   'org.umi.ui.global.content.hello': '你好',
   'org.umi.ui.global.project.siderbar.title': '项目',
