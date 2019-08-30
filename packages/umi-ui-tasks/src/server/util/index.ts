@@ -89,7 +89,7 @@ export function getNpmClient(): NpmClient {
   return NpmClient.npm;
 }
 
-// 默认开启的环境变量，
+// 默认关闭的环境变量，
 const DEFAULT_CLOSE_ENV = ['ANALYZE', 'ANALYZE_REPORT', 'SPEED_MEASURE', 'FORK_TS_CHECKER'];
 
 export function formatEnv(env: object): object {
@@ -99,14 +99,16 @@ export function formatEnv(env: object): object {
       return;
     }
     if (typeof env[key] === 'boolean') {
-      if (DEFAULT_CLOSE_ENV.indexOf(key) > -1) {
+      if (DEFAULT_CLOSE_ENV.includes(key)) {
         // 默认关闭的环境变量，用户打开时才设置
         if (env[key]) {
           res[key] = '1';
         }
       } else {
-        // 默认开启的，通过 1 或者 none 控制是否开启
-        res[key] = env[key] ? '1' : 'none';
+        // 默认开启的，不开启时才能 none
+        if (!env[key]) {
+          res[key] = 'none';
+        }
       }
     } else {
       res[key] = env[key];
