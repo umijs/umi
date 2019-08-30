@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Select, Form } from 'antd';
-import { PlayCircle, PauseCircle } from '@ant-design/icons';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -56,6 +56,9 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
         type: '@@project/getNpmClients',
       });
       setNpmClients(data);
+      form.setFieldsValue({
+        npmClient: data[0],
+      });
     })();
   }, []);
 
@@ -119,11 +122,19 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelInstall : openModal}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircle /> {intl('org.umi.ui.tasks.install.cancel')}
+                  <PauseCircleFilled />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl('org.umi.ui.tasks.install.cancel')}
+                  </span>
                 </>
               ) : (
                 <>
-                  <PlayCircle /> {intl('org.umi.ui.tasks.install.start')}
+                  <PlayCircleFilled />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl('org.umi.ui.tasks.install.start')}
+                  </span>
                 </>
               )}
             </Button>
@@ -139,7 +150,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
                 <div className={styles.confirmMessage}>{intl('org.umi.ui.tasks.install.tip')}</div>
                 <Form name="intasllEnv" form={form} layout="vertical">
                   <Form.Item label={intl('org.umi.ui.tasks.install.npmClient')} name="npmClient">
-                    <Select defaultValue={npmClients[0]} style={{ width: 120 }}>
+                    <Select style={{ width: 120 }}>
                       {npmClients.map(key => (
                         <Option key={key} value={key}>
                           {key}

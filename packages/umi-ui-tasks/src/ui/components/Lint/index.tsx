@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
-import { PlayCircle, PauseCircle } from '@ant-design/icons';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -85,11 +85,16 @@ const LintComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelLint : lint}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircle /> {intl('org.umi.ui.tasks.lint.cancel')}
+                  <PauseCircleFilled />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl('org.umi.ui.tasks.lint.cancel')}
+                  </span>
                 </>
               ) : (
                 <>
-                  <PlayCircle /> {intl('org.umi.ui.tasks.lint.start')}
+                  <PlayCircleFilled />
+                  <span className={styles.runningText}> {intl('org.umi.ui.tasks.lint.start')}</span>
                 </>
               )}
             </Button>
