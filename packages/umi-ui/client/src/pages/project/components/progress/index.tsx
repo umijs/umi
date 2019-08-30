@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal from '@/components/Terminal';
+import LoadingPage from '@/components/Loading';
 import { listenCreateProject, setCurrentProject, createProject } from '@/services/project';
 import { handleBack } from '@/utils';
 import styles from './index.less';
@@ -19,7 +20,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   _log('ProgressStage props', props);
   const { currentData, projectList } = props;
   const [logs, setLogs] = useState<string>('');
-  const { showLogPanel } = useContext(ProjectContext);
+  const { formatMessage } = useContext(ProjectContext);
   const [retryLoading, setRetryLoading] = useState<boolean>(false);
   const key = get(currentData, 'key');
   const progress: ICreateProgress =
@@ -30,6 +31,12 @@ const ProgressStage: React.FC<IProjectProps> = props => {
       if (progress.success && key) {
         (async () => {
           await handleBack(true, '/dashboard');
+          // for flash dashboard
+          document.getElementById('root').innerHTML = '';
+          ReactDOM.render(
+            React.createElement(<LoadingPage />, {}),
+            document.getElementById('root'),
+          );
           await setCurrentProject({ key });
         })();
       }
@@ -64,15 +71,17 @@ const ProgressStage: React.FC<IProjectProps> = props => {
 
   const getTitle = () => {
     if (progress.success) {
-      return <p>项目创建成功</p>;
+      return <p>{formatMessage({ id: 'org.umi.ui.global.progress.create.success' })}</p>;
     }
     if (progress.failure) {
-      return '项目创建失败';
+      return formatMessage({ id: 'org.umi.ui.global.progress.create.failure' });
     }
-    return '项目创建中，可能会需要几分钟';
+    return formatMessage({ id: 'org.umi.ui.global.progress.create.loading' });
   };
 
-  const progressSteps = Array.isArray(progress.steps) ? progress.steps.concat(['创建成功']) : [];
+  const progressSteps = Array.isArray(progress.steps)
+    ? progress.steps.concat([formatMessage({ id: 'org.umi.ui.global.progress.create.success' })])
+    : [];
 
   const handleRetry = async () => {
     setRetryLoading(true);
@@ -83,7 +92,11 @@ const ProgressStage: React.FC<IProjectProps> = props => {
       });
       _log('handleRetry', data);
     } catch (e) {
-      message.error(e && e.message ? e.message : '重试失败');
+      message.error(
+        e && e.message
+          ? e.message
+          : formatMessage({ id: 'org.umi.ui.global.progress.retry.failure' }),
+      );
     } finally {
       setRetryLoading(false);
     }
@@ -124,7 +137,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
       {progress.failure && (
         <div className={styles['project-progress-fail']}>
           <Button loading={retryLoading} type="primary" onClick={handleRetry}>
-            重试
+            {formatMessage({ id: 'org.umi.ui.global.progress.retry' })}
           </Button>
         </div>
       )}

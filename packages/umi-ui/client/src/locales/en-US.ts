@@ -49,4 +49,9 @@ export default {
   'org.umi.ui.global.dirform.input.required': 'Please input the right project path',
   'org.umi.ui.global.readdir.code.EPERM': '{path} no right to read',
   'org.umi.ui.global.readdir.code.other': 'read dir error',
+  'org.umi.ui.global.progress.create.success': 'Project Create Success',
+  'org.umi.ui.global.progress.create.failure': 'Project Create Failure',
+  'org.umi.ui.global.progress.create.loading': 'Project Creating',
+  'org.umi.ui.global.progress.retry': 'Retry',
+  'org.umi.ui.global.progress.retry.failure': 'Retry Failure',
 };

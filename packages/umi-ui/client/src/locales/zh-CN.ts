@@ -48,4 +48,9 @@ export default {
   'org.umi.ui.global.dirform.input.required': '请输入正确的路径',
   'org.umi.ui.global.readdir.code.EPERM': '{path} 读取没有权限',
   'org.umi.ui.global.readdir.code.other': '读取失败',
+  'org.umi.ui.global.progress.create.success': '项目创建成功',
+  'org.umi.ui.global.progress.create.failure': '项目创建失败',
+  'org.umi.ui.global.progress.create.loading': '项目创建中，可能会需要几分钟',
+  'org.umi.ui.global.progress.retry': '重试',
+  'org.umi.ui.global.progress.retry.failure': '重试失败',
 };
