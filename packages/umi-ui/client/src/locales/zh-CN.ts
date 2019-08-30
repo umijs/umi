@@ -34,6 +34,7 @@ export default {
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
   'org.umi.ui.global.log.clear.confirm': '是否清除日志？',
+  'org.umi.ui.global.dirform.input.required': '请输入路径',
   'org.umi.ui.global.readdir.code.EPERM': '{path} 读取没有权限',
   'org.umi.ui.global.readdir.code.other': '读取失败',
 };

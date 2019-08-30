@@ -4,7 +4,7 @@ import slash2 from 'slash2';
 import { Button, Empty, Spin, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
-import { path2Arr, arr2Path, trimSlash } from './pathUtils';
+import { path2Arr, arr2Path, trimSlash, validateDirPath } from './pathUtils';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
 import styles from './index.less';
@@ -35,7 +35,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   _log('dirPath', dirPath);
   const pathArr = path2Arr(dirPath);
 
-  const changeDirectories = async (path: string): Promise<void> => {
+  const changeDirectories = async (path: string): Promise<boolean> => {
     try {
       const { data: files } = await listDirectory({
         dirPath: path,
@@ -46,8 +46,10 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
       setDirPath(path);
       setDirectories(files);
       setClicked(-1);
+      return true;
     } catch (e) {
       _log('changeDirectories error', e);
+      return false;
     }
   };
 
@@ -109,7 +111,8 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
   const handleInputDirPath = async (e: any) => {
     // TODO: validate Path
     if (e.target.value) {
-      await changeDirectories(trimSlash(e.target.value));
+      const inputValue = trimSlash(e.target.value);
+      await changeDirectories(inputValue);
     }
     setDirPathEdit(false);
   };

@@ -34,6 +34,7 @@ export default {
   'org.umi.ui.global.log.empty': 'Log Empty',
   'org.umi.ui.global.log.upperCase': 'LOG',
   'org.umi.ui.global.log.clear.confirm': 'Clear log ?',
+  'org.umi.ui.global.dirform.input.required': 'Please input the project path',
   'org.umi.ui.global.readdir.code.EPERM': '{path} no right to read',
   'org.umi.ui.global.readdir.code.other': 'read dir error',
 };

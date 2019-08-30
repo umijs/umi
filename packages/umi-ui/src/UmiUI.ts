@@ -607,7 +607,9 @@ export default class UmiUI {
             data,
           });
         } catch (e) {
-          failure(e);
+          failure({
+            message: e.message,
+          });
         }
         break;
       }
