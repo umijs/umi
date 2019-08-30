@@ -56,4 +56,7 @@ export default {
   'org.umi.ui.global.progress.retry.failure': 'Retry Failure',
   'org.umi.ui.global.copy.failure': 'Copy path failure',
   'org.umi.ui.global.copy.success': 'Copy path success',
+  'org.umi.ui.global.error.title':
+    'Something wrong, click on the bottom right corner to give us feedback',
+  'org.umi.ui.global.error.stack': 'Error stack',
 };

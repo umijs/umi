@@ -55,4 +55,6 @@ export default {
   'org.umi.ui.global.progress.retry.failure': '重试失败',
   'org.umi.ui.global.copy.failure': '复制路径失败',
   'org.umi.ui.global.copy.success': '复制路径成功',
+  'org.umi.ui.global.error.title': '出错了，可点击右下角进行反馈',
+  'org.umi.ui.global.error.stack': '错误堆栈',
 };
