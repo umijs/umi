@@ -48,7 +48,6 @@ export default async function(opts: IOpts) {
       ),
       'utf-8',
     );
-
     // 安装依赖
     await executeCommand(
       npmClient,

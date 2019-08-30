@@ -614,13 +614,21 @@ export default class UmiUI {
           cwd: this.cwd,
         });
         break;
-      case '@@fs/listDirectory':
-        success({
-          data: listDirectory(payload.dirPath, {
+      case '@@fs/listDirectory': {
+        try {
+          const data = listDirectory(payload.dirPath, {
             directoryOnly: true,
-          }),
-        });
+          });
+          success({
+            data,
+          });
+        } catch (e) {
+          failure({
+            message: e.message,
+          });
+        }
         break;
+      }
       case '@@log/getHistory':
         success({
           data: this.logs,

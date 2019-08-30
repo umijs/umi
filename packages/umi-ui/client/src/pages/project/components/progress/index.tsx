@@ -81,7 +81,6 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         key,
         retryFrom: progress.step,
       });
-      debugger;
       _log('handleRetry', data);
     } catch (e) {
       message.error(e && e.message ? e.message : '重试失败');

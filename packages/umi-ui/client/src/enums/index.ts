@@ -1,5 +1,10 @@
 import { IUi } from 'umi-types';
 
+export enum DIR_ERROR_CODE {
+  // https://nodejs.org/api/errors.html#errors_common_system_errors
+  'EPERM' = 'EPERM',
+}
+
 export enum THEME {
   'dark' = 'dark',
   'light' = 'light',
