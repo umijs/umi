@@ -19,7 +19,7 @@ import {
   Layout,
   Empty,
 } from 'antd';
-import { Export, AppstoreFilled, Edit, Delete } from '@ant-design/icons';
+import { Export, AppstoreFilled, Edit, Delete, Plus, Upload } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
@@ -233,13 +233,19 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>
-                {formatMessage({
-                  id: 'org.umi.ui.global.project.import.title',
-                })}
+                <Upload />
+                <span className={styles['project-add']}>
+                  {formatMessage({
+                    id: 'org.umi.ui.global.project.import.title',
+                  })}
+                </span>
               </Button>
               {window.g_bigfish ? null : (
                 <Button type="primary" onClick={() => setCurrent('create')}>
-                  {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
+                  <Plus />
+                  <span className={styles['project-add']}>
+                    {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
+                  </span>
                 </Button>
               )}
             </div>
