@@ -102,8 +102,19 @@
             & > li {
               cursor: pointer;
               border-color: transparent;
+              a:hover {
+                color: @text-color;
+              }
             }
           }
+        }
+      }
+      a.disabled {
+        color: @disabled-color;
+        cursor: not-allowed;
+        &:hover :global(.anticon),
+        :global(.anticon):hover {
+          color: @disabled-color;
         }
       }
       &:hover :global(.ant-card) {

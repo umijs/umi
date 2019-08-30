@@ -121,41 +121,32 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     }
   };
 
-  const actionsMap: { [key: string]: (item: IProjectItem) => React.ReactNode[] } = {
-    progress: item => [
-      <p style={{ cursor: 'auto' }}>
-        <Spin style={{ marginRight: 8 }} />
-        {formatMessage({ id: 'org.umi.ui.global.project.list.creating' })}
-      </p>,
-    ],
-    failure: item => [],
-    success: item => [
-      <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
-        <a
-          onClick={e => {
-            e.stopPropagation();
-            handleOnAction('editor', { key: item.key });
-          }}
-        >
-          <Export className={styles.exportIcon} />
-        </a>
-      </Tooltip>,
-      <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}>
-        <a
-          onClick={e => {
-            e.stopPropagation();
-            handleOnAction('edit', { key: item.key, name: item.name });
-          }}
-        >
-          <Edit />
-        </a>
-      </Tooltip>,
-    ],
-  };
-
   const renderItem = item => {
     const status = getProjectStatus(item);
-    const actions = (actionsMap[status] ? actionsMap[status](item) : []).concat(
+    // const isSuccess = status === 'success';
+    // const isDisabledCls = isSuccess ? '' : styles.disabled;
+
+    const actions = [
+      <a
+        onClick={e => {
+          e.stopPropagation();
+          handleOnAction('editor', { key: item.key });
+        }}
+      >
+        <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
+          <Export className={styles.exportIcon} />
+        </Tooltip>
+      </a>,
+      <a
+        onClick={e => {
+          e.stopPropagation();
+          handleOnAction('edit', { key: item.key, name: item.name });
+        }}
+      >
+        <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}>
+          <Edit />
+        </Tooltip>
+      </a>,
       <div onClick={e => e.stopPropagation()}>
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
           <Popconfirm
@@ -173,7 +164,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           </Popconfirm>
         </Tooltip>
       </div>,
-    );
+    ];
 
     return (
       <Col key={item.key} className={styles['project-list-item']} md={12} lg={8} xl={6}>

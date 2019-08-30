@@ -238,12 +238,13 @@ const Footer: React.SFC<IFooterProps> = props => {
         visible={logVisible}
         placement="bottom"
         mask={false}
-        className={styles.logs}
+        className={styles['section-drawer']}
         height={300}
       >
         <Logs
           logs={logs}
           type={type}
+          className={styles['section-drawer-logs']}
           style={{
             height: 225,
           }}

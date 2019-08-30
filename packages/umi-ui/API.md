@@ -283,7 +283,7 @@ export default () => (
 
 `debug` [API](https://github.com/visionmedia/debug#browser-support)。
 
-调试插件的时候，`localStorage` 修改为 `debug: UIPlugin*`。就可以看到所有插件的 debug 信息。
+调试插件的时候，`localStorage` 修改为 `debug: umiui:UIPlugin*`。就可以看到所有插件的 debug 信息。
 
 使用（以配置管理插件为例）：
 
@@ -296,6 +296,6 @@ export default () => {
 }
 ```
 
-![image](https://user-images.githubusercontent.com/13595509/63904284-02329600-ca43-11e9-8374-ddc58585e276.png)
+![image](https://user-images.githubusercontent.com/13595509/63997643-aa268d00-cb31-11e9-9d42-117abd7267c9.png)
 
 > 不建议在插件里使用 `console.log` 调用。

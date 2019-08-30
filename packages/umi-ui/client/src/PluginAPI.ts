@@ -9,6 +9,8 @@ import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
 
+const _debug = debug('umiui');
+
 // PluginAPI
 export default class PluginAPI {
   public service: IUi.IService;
@@ -26,7 +28,7 @@ export default class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.debug = debug('UIPlugin');
+    this.debug = _debug.extend('UIPlugin');
     this.currentProject =
       {
         ...currentProject

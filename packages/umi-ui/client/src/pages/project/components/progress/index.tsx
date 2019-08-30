@@ -91,7 +91,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
 
   const status = getStepStatus();
   _log('status', status);
-
+  _log('progressSteps', progressSteps);
   return (
     <div className={styles['project-progress']}>
       <h3>{getTitle()}</h3>

@@ -9,9 +9,11 @@ import history from '@tmp/history';
 import { init as initSocket, callRemote } from './socket';
 import PluginAPI from './PluginAPI';
 
+const _debug = debug('umiui');
+
 window.g_uiLocales = {};
 // TODO pluginAPI add debug('plugin:${key}') for developer
-window.g_uiDebug = debug('BaseUI');
+window.g_uiDebug = _debug.extend('BaseUI');
 const _log = window.g_uiDebug.extend('init');
 
 // register event

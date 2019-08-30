@@ -13,17 +13,6 @@
   //background: #fff;
   //border-top: 1px solid #ccc;
 }
-.logs {
-  :global {
-    .ant-drawer-body {
-      padding: 0;
-    }
-    .ant-drawer-header {
-      padding: 8px 16px;
-      border-bottom-color: @ui-footer-actions-divider-color;
-    }
-  }
-}
 
 .statusBar {
   background: @ui-status-bar-bg;
@@ -63,6 +52,25 @@
 
 .section {
   &-drawer {
+    &-logs {
+      ul {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+    :global {
+      .ant-drawer-body {
+        padding: 0;
+      }
+      .ant-drawer-content {
+        background-color: @drawer-content-bg;
+      }
+      .ant-drawer-header {
+        padding: 8px 16px;
+        background-color: @drawer-header-bg;
+        border-bottom-color: @ui-footer-actions-divider-color;
+      }
+    }
     &-title {
       display: flex;
       justify-content: space-between;
@@ -82,6 +90,7 @@
         }
         :global(.anticon) {
           cursor: pointer;
+          font-size: @font-size-base;
           margin: 0 8px;
           color: fade(@light, 70);
           transition: color 0.3s;

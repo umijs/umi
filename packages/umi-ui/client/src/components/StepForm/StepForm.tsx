@@ -47,7 +47,6 @@ const StepForm: React.SFC<InternalStepFormProps> = props => {
       onFinish(values);
     }
   };
-
   return (
     <div>
       <Steps current={currentStep} style={{ marginBottom: 16 }} className={className}>
