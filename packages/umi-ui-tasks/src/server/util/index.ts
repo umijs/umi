@@ -17,7 +17,7 @@ export const runCommand = (script: string, options: SpawnOptions = {}) => {
   };
 
   options.cwd = options.cwd || process.cwd();
-  options.stdio = options.stdio || 'pipe';
+  options.stdio = 'pipe';
 
   let sh = 'sh';
   let shFlag = '-c';

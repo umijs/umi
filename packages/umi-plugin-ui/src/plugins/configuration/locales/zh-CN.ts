@@ -5,4 +5,5 @@ export default {
   'org.umi.ui.configuration.project.config.desc': '配置',
   'org.umi.ui.configuration.project.config.react.title': 'umi-plugin-react',
   'org.umi.ui.configuration.search.placeholder': '搜索',
+  'org.umi.ui.configuration.detail': '查看详情',
 };

@@ -150,6 +150,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   );
 
   const handleFinish = async values => {
+    _log('handleFinish values', values);
     const changedValues = getChangedValue(values);
     _log('changedValues', changedValues);
     if (!Object.keys(changedValues).length) {

@@ -11,8 +11,9 @@ const KEYS = [
   'description',
   'value',
   'transforms',
+  'link',
 ];
-const KEYS_WITH_LANG = ['title', 'description'];
+const KEYS_WITH_LANG = ['title', 'description', 'link'];
 const DEFAULT_GROUP_MAP = {
   basic: {
     'zh-CN': '基础配置',
@@ -109,6 +110,11 @@ export default function(api: IApi) {
         if (p.transforms) {
           p.value = p.transforms[0](p.value);
         }
+      }
+      if (!p.link) {
+        const baseUrl =
+          lang === 'zh-CN' ? 'https://umijs.org/zh/config/' : 'https://umijs.org/config/';
+        p.link = `${baseUrl}#${p.name.toLowerCase().replace(/\./g, '-')}`;
       }
       return p;
     });

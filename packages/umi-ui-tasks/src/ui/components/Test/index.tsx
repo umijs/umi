@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PlayCircle, PauseCircle } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -19,15 +20,13 @@ const taskType = TaskType.TEST;
 const TestComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
-  const [loading, setLoading] = useState(true);
 
   // Mount: 获取 task detail
-  const { loading: detailLoading, detail } = useTaskDetail(taskType);
+  const { detail } = useTaskDetail(taskType);
 
   // Mount: 监听 task state 改变
   useEffect(
     () => {
-      setLoading(detailLoading);
       setTaskDetail(detail as any);
       const unsubscribe = api.listenRemote({
         type: 'org.umi.task.state',
@@ -81,36 +80,38 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
   return (
     <>
       <h1 className={styles.title}>{intl('org.umi.ui.tasks.test')}</h1>
-      {loading ? (
-        <Spin />
-      ) : (
-        <>
-          <Row>
-            <Col span={8} className={styles.buttonGroup}>
-              <Button type="primary" onClick={isTaskRunning ? cancelTest : test} loading={loading}>
-                {isTaskRunning
-                  ? intl('org.umi.ui.tasks.test.cancel')
-                  : intl('org.umi.ui.tasks.test.start')}
-              </Button>
-            </Col>
-          </Row>
-          <div className={styles.logContainer}>
-            <SizeMe monitorWidth monitorHeight>
-              {({ size }) => (
-                <Terminal
-                  api={api}
-                  size={size}
-                  terminal={getTerminalIns(taskType)}
-                  log={taskDetail.log}
-                  onClear={() => {
-                    clearLog(taskType);
-                  }}
-                />
+      <>
+        <Row>
+          <Col span={8} className={styles.buttonGroup}>
+            <Button type="primary" onClick={isTaskRunning ? cancelTest : test}>
+              {isTaskRunning ? (
+                <>
+                  <PauseCircle /> {intl('org.umi.ui.tasks.test.cancel')}
+                </>
+              ) : (
+                <>
+                  <PlayCircle /> {intl('org.umi.ui.tasks.test.start')}
+                </>
               )}
-            </SizeMe>
-          </div>
-        </>
-      )}
+            </Button>
+          </Col>
+        </Row>
+        <div className={styles.logContainer}>
+          <SizeMe monitorWidth monitorHeight>
+            {({ size }) => (
+              <Terminal
+                api={api}
+                size={size}
+                terminal={getTerminalIns(taskType)}
+                log={taskDetail.log}
+                onClear={() => {
+                  clearLog(taskType);
+                }}
+              />
+            )}
+          </SizeMe>
+        </div>
+      </>
     </>
   );
 };

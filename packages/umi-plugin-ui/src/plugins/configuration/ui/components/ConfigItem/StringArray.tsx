@@ -9,10 +9,10 @@ import { getFormItemShow } from './utils';
 const { useContext } = React;
 
 const StringArrayComp: React.SFC<ICompProps> = props => {
-  const { name, description, title } = props;
+  const { name, description, title, link } = props;
   const { debug: _log } = useContext(Context);
   const { parentConfig } = getFormItemShow(name);
-  const label = <Label name={name} title={title} description={description} />;
+  const label = <Label name={name} title={title} description={description} link={link} />;
 
   const formControl = (fields, { add, remove }) => {
     return (

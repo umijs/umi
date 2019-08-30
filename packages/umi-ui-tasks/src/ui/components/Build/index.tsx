@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Spin, Modal, Form, Switch } from 'antd';
+import { Row, Col, Button, Modal, Form, Switch } from 'antd';
+import { PlayCircle, PauseCircle, Link } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -20,8 +21,8 @@ const taskType = TaskType.BUILD;
 
 const BuildComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
+  const isEnglish = api.getLocale() === 'en-US';
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
-  const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [env, setEnv] = useState({
@@ -34,12 +35,11 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
   });
 
   // Mount: 获取 task detail
-  const { loading: detailLoading, detail } = useTaskDetail(taskType);
+  const { detail } = useTaskDetail(taskType);
 
   // Mount: 监听 task state 改变
   useEffect(
     () => {
-      setLoading(detailLoading);
       setTaskDetail(detail as any);
       const unsubscribe = api.listenRemote({
         type: 'org.umi.task.state',
@@ -110,10 +110,24 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     setModalVisible(false);
   };
 
+  const stopEventPop = e => {
+    e && e.stopPropagation();
+    e.preventDefault();
+  };
+
   const EnvLabel = props => (
-    <div>
+    <div onClick={stopEventPop}>
       <div className={styles.modleLableTitle}>{intl(props.title)}</div>
-      <div className={styles.modleLableDesc}>{intl(props.desc)}</div>
+      <div className={styles.modleLableDesc}>
+        <span>{intl(props.desc)}</span>
+        <a
+          className={styles.modleLablelDescIcon}
+          href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
+          target="_blank"
+        >
+          <Link />
+        </a>
+      </div>
     </div>
   );
 
@@ -121,129 +135,133 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
   return (
     <>
       <h1 className={styles.title}>{intl('org.umi.ui.tasks.build')}</h1>
-      {loading ? (
-        <Spin />
-      ) : (
-        <>
-          <Row>
-            <Col span={8} className={styles.buttonGroup}>
-              <Button
-                type="primary"
-                onClick={isTaskRunning ? cancelBuild : build}
-                loading={loading}
-              >
-                {isTaskRunning
-                  ? intl('org.umi.ui.tasks.build.cancel')
-                  : intl('org.umi.ui.tasks.build.start')}
-              </Button>
-              <Button onClick={openModal}>{intl('org.umi.ui.tasks.envs')}</Button>
-              <Modal
-                visible={modalVisible}
-                title={intl('org.umi.ui.tasks.envs')}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                <div className={styles.modalContainer}>
-                  <Form name="buildEnv" form={form} initialValues={env} layout="vertical">
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.compress"
-                          desc="org.umi.ui.tasks.envs.compress.desc"
-                        />
-                      }
-                      name="COMPRESS"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.cssCompress"
-                          desc="org.umi.ui.tasks.envs.cssCompress.desc"
-                        />
-                      }
-                      name="CSS_COMPRESS"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.babelPolyfill"
-                          desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
-                        />
-                      }
-                      name="BABEL_POLYFILL"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.babelCache"
-                          desc="org.umi.ui.tasks.envs.babelCache.desc"
-                        />
-                      }
-                      name="BABEL_CACHE"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.html"
-                          desc="org.umi.ui.tasks.envs.html.desc"
-                        />
-                      }
-                      name="HTML"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                    <Form.Item
-                      label={
-                        <EnvLabel
-                          title="org.umi.ui.tasks.envs.tsCheck"
-                          desc="org.umi.ui.tasks.envs.tsCheck.desc"
-                        />
-                      }
-                      name="FORK_TS_CHECKER"
-                      valuePropName="checked"
-                    >
-                      <Switch size="small" />
-                    </Form.Item>
-                  </Form>
-                </div>
-              </Modal>
-            </Col>
-            {/* <Col span={4} offset={12} className={styles.formatGroup}>
-              <Radio.Group defaultValue="log" buttonStyle="solid">
-                <Radio.Button value="log">输出</Radio.Button>
-              </Radio.Group>
-            </Col> */}
-          </Row>
-          <div className={styles.logContainer}>
-            <SizeMe monitorWidth monitorHeight>
-              {({ size }) => (
-                <Terminal
-                  api={api}
-                  size={size}
-                  terminal={getTerminalIns(taskType)}
-                  log={taskDetail.log}
-                  onClear={() => {
-                    clearLog(taskType);
-                  }}
-                />
+      <>
+        <Row>
+          <Col span={8} className={styles.buttonGroup}>
+            <Button type="primary" onClick={isTaskRunning ? cancelBuild : build}>
+              {isTaskRunning ? (
+                <>
+                  <PauseCircle /> {intl('org.umi.ui.tasks.build.cancel')}
+                </>
+              ) : (
+                <>
+                  <PlayCircle /> {intl('org.umi.ui.tasks.build.start')}
+                </>
               )}
-            </SizeMe>
-          </div>
-        </>
-      )}
+            </Button>
+            <Button onClick={openModal}>{intl('org.umi.ui.tasks.envs')}</Button>
+            <Modal
+              visible={modalVisible}
+              title={intl('org.umi.ui.tasks.envs')}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <div className={styles.modalContainer}>
+                <Form name="buildEnv" form={form} initialValues={env} layout="vertical">
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.compress"
+                        desc="org.umi.ui.tasks.envs.compress.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#compress"
+                      />
+                    }
+                    name="COMPRESS"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.cssCompress"
+                        desc="org.umi.ui.tasks.envs.cssCompress.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#css-compress"
+                      />
+                    }
+                    name="CSS_COMPRESS"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.babelPolyfill"
+                        desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#babel-polyfill"
+                      />
+                    }
+                    name="BABEL_POLYFILL"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.babelCache"
+                        desc="org.umi.ui.tasks.envs.babelCache.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#babel-cache"
+                      />
+                    }
+                    name="BABEL_CACHE"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.html"
+                        desc="org.umi.ui.tasks.envs.html.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#html"
+                      />
+                    }
+                    name="HTML"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.tsCheck"
+                        desc="org.umi.ui.tasks.envs.tsCheck.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#fork-ts-checker"
+                      />
+                    }
+                    name="FORK_TS_CHECKER"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                </Form>
+              </div>
+            </Modal>
+          </Col>
+          {/* <Col span={4} offset={12} className={styles.formatGroup}>
+            <Radio.Group defaultValue="log" buttonStyle="solid">
+              <Radio.Button value="log">输出</Radio.Button>
+            </Radio.Group>
+          </Col> */}
+        </Row>
+        <div className={styles.logContainer}>
+          <SizeMe monitorWidth monitorHeight>
+            {({ size }) => (
+              <Terminal
+                api={api}
+                size={size}
+                terminal={getTerminalIns(taskType)}
+                log={taskDetail.log}
+                onClear={() => {
+                  clearLog(taskType);
+                }}
+              />
+            )}
+          </SizeMe>
+        </div>
+      </>
     </>
   );
 };

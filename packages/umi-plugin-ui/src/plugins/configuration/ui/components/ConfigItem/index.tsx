@@ -27,6 +27,7 @@ export interface ICompProps {
   default: IValue;
   choices?: string[];
   value: IValue;
+  link?: string;
   /** form ins */
   form: FormInstance;
 }
