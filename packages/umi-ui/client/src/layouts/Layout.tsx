@@ -75,7 +75,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
           }}
         >
           <Helmet>
-            <title>{`${title} - ${framework}` || framework}</title>
+            <title>{title ? `${title} - ${framework}` : framework}</title>
             <link rel="shortcut icon" href={icon} type="image/x-icon" />
           </Helmet>
           {this.props.children}
