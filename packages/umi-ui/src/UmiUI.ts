@@ -748,7 +748,7 @@ export default class UmiUI {
         if (process.env.BIGFISH_COMPAT) {
           html = html.replace('<body>', '<body>\n<script>window.g_bigfish = {};</script>');
         }
-        if (process.env.LOCAL_DEBUG) {
+        if (!process.env.LOCAL_DEBUG) {
           const headScript = process.env.BIGFISH_COMPAT
             ? bigfishScripts.head.join('\n')
             : umiScripts.head.join('\n');
