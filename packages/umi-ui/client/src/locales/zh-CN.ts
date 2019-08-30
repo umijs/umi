@@ -40,7 +40,7 @@ export default {
   'org.umi.ui.global.feedback': '反馈',
   'org.umi.ui.global.help': '帮助',
   'org.umi.ui.global.log.clear.error': '清除日志失败',
-  'org.umi.ui.global.home': '返回首页',
+  'org.umi.ui.global.home': '返回主页',
   'org.umi.ui.global.log': '日志',
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
