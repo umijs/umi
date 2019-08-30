@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Form, Switch } from 'antd';
-import { PlayCircle, PauseCircle, Link } from '@ant-design/icons';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -110,11 +110,6 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     setModalVisible(false);
   };
 
-  // const stopEventPop = e => {
-  //   console.log('aaaaa');
-  //   e && e.stopPropagation();
-  // };
-
   const stopEventPop = e => {
     e && e.stopPropagation();
     e && e.preventDefault();
@@ -131,7 +126,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
           target="_blank"
         >
-          <Link />
+          {intl('org.umi.ui.tasks.env.detail')}
         </a>
       </div>
     </div>
@@ -147,11 +142,19 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
             <Button type="primary" onClick={isTaskRunning ? cancelBuild : build}>
               {isTaskRunning ? (
                 <>
-                  <PauseCircle /> {intl('org.umi.ui.tasks.build.cancel')}
+                  <PauseCircleFilled />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl('org.umi.ui.tasks.build.cancel')}
+                  </span>
                 </>
               ) : (
                 <>
-                  <PlayCircle /> {intl('org.umi.ui.tasks.build.start')}
+                  <PlayCircleFilled />
+                  <span className={styles.runningText}>
+                    {' '}
+                    {intl('org.umi.ui.tasks.build.start')}
+                  </span>
                 </>
               )}
             </Button>
