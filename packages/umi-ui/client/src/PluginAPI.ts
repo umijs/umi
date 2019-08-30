@@ -52,19 +52,7 @@ export default class PluginAPI {
     }
   };
 
-  intl: IUi.IIntl = (key, message = {}) => {
-    const { g_lang: locale, g_uiLocales: localeMessages } = window;
-    if (typeof key !== 'string') return '';
-    if (key in (localeMessages[locale] || {})) {
-      return formatMessage(
-        {
-          id: key,
-        },
-        message,
-      );
-    }
-    return key;
-  };
+  intl: IUi.IIntl = formatMessage;
 
   getLocale = () => {
     return window.g_lang;
@@ -75,9 +63,9 @@ export default class PluginAPI {
 
     // need intl text
     const intlParams = {
-      title: this.intl(title),
-      message: this.intl(message),
-      subtitle: this.intl(subtitle),
+      title: this.intl({ id: intl(title) }),
+      message: this.intl({ id: intl(message) }),
+      subtitle: this.intl({ id: intl(subtitle) }),
     };
 
     if (document.hasFocus()) {
