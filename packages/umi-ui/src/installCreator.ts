@@ -1,4 +1,3 @@
-import execa from 'execa';
 import mkdirp from 'mkdirp';
 import userHome from 'user-home';
 import resolveFrom from 'resolve-from';
@@ -10,10 +9,11 @@ interface IOpts {
   npmClient?: string;
   packageName?: string;
   baseDir?: string;
+  onData?: () => {};
 }
 
 export default async function(opts: IOpts) {
-  const { npmClient = 'npm', packageName = 'create-umi' } = opts;
+  const { npmClient = 'npm', packageName = 'create-umi', onData } = opts;
 
   // 创建目录
   const baseDir = opts.baseDir || join(userHome, `.umi/creator/${packageName}`);
@@ -28,6 +28,9 @@ export default async function(opts: IOpts) {
       require(pkgPath).npmClient, // eslint-disable-line
       ['update'],
       baseDir,
+      {
+        onData,
+      },
     );
   } else {
     // 写 package.json
@@ -51,6 +54,9 @@ export default async function(opts: IOpts) {
       npmClient,
       ['install', '--registry=https://registry.npm.taobao.org'],
       baseDir,
+      {
+        onData,
+      },
     );
   }
 
