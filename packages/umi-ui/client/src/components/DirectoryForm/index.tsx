@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
 import slash2 from 'slash2';
-import { Button, Empty, Spin, Input } from 'antd';
+import { Button, Empty, Spin, Input, message } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import { path2Arr, arr2Path, trimSlash, validateDirPath } from './pathUtils';
@@ -112,9 +112,13 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     // TODO: validate Path
     if (e.target.value) {
       const inputValue = trimSlash(e.target.value);
-      await changeDirectories(inputValue);
+      const isValid = await changeDirectories(inputValue);
+      if (isValid) {
+        setDirPathEdit(false);
+      } else {
+        message.error(formatMessage({ id: 'org.umi.ui.global.dirform.input.required' }));
+      }
     }
-    setDirPathEdit(false);
   };
 
   const handleEdit = () => {
