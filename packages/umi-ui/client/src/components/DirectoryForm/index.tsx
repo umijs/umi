@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
 import slash2 from 'slash2';
-import { Button, Empty, Spin, Input, message } from 'antd';
+import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
-import { path2Arr, arr2Path, trimSlash, validateDirPath } from './pathUtils';
+import { path2Arr, arr2Path, trimSlash } from './pathUtils';
+import emptyImg from './emptyImg.png';
 import DirectoryItem, { DirectoryItemProps } from './item';
 
 import styles from './index.less';
@@ -149,12 +150,14 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
             />
           ) : (
             dirPathArr.map((path, j) => (
-              <Button
-                key={`${path}_${j}`}
-                onClick={() => handleBreadDirChange(arr2Path(dirPathArr.slice(0, j + 1)))}
-              >
-                {path}
-              </Button>
+              <Tooltip title={dirPathArr.length > 7 ? path : null}>
+                <Button
+                  key={`${path}_${j}`}
+                  onClick={() => handleBreadDirChange(arr2Path(dirPathArr.slice(0, j + 1)))}
+                >
+                  {path}
+                </Button>
+              </Tooltip>
             ))
           )}
         </div>
@@ -190,7 +193,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
                 />
               ))
             ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="空目录列表" />
+              <Empty image={emptyImg} description="空目录" />
             )}
           </div>
           <p className={styles['directoryForm-tip']}>

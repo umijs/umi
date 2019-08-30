@@ -48,7 +48,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
 
   const getFullPath = (fields = {}) => {
     const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
-    const dir = `${baseDir.endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
+    const dir = `${(baseDir || '').endsWith('/') ? baseDir : `${baseDir}/`}${name || ''}`;
     return trimSlash(dir || '');
   };
 

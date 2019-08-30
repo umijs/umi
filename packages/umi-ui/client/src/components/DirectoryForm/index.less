@@ -57,6 +57,7 @@
         border-bottom-color: transparent;
         border-left-color: transparent;
         border-radius: unset;
+        .omit;
       }
       button {
         &:hover {
@@ -76,6 +77,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     margin-top: 12px;
+    :global(.ant-empty-image) {
+      margin: 8px 0;
+      height: 50px;
+    }
     &-item {
       padding: 12px 8px;
       display: flex;
