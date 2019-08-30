@@ -114,7 +114,10 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
   const getInitialValue = ({ value, default: defaultValue }) => {
     if (_.isPlainObject(value) && _.isPlainObject(defaultValue)) {
-      return _.merge(defaultValue, value);
+      return {
+        ...defaultValue,
+        ...value,
+      };
     }
     if (Array.isArray(value) && Array.isArray(defaultValue)) {
       return _.uniq(defaultValue.concat(value));

@@ -70,8 +70,7 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
         );
         _log('getFieldValue(parentConfig', getFieldValue(parentConfig));
         const parentValue = getFieldValue(parentConfig);
-        const isShow =
-          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
+        const isShow = typeof parentValue === 'undefined' || !!parentValue;
         return isShow && <Form.List name={name}>{formControl}</Form.List>;
       }}
     </Form.Item>

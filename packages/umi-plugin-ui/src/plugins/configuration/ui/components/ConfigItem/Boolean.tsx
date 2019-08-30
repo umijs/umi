@@ -18,15 +18,14 @@ const BooleanComp: React.SFC<ICompProps> = props => {
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
       {({ getFieldValue }) => {
         _log(
-          'children field update',
+          'BooleanComp children field update',
           name,
           parentConfig,
           getFieldValue(name),
           getFieldValue(parentConfig),
         );
         const parentValue = getFieldValue(parentConfig);
-        const isShow =
-          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
+        const isShow = typeof parentValue === 'undefined' || !!parentValue;
         return (
           isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>

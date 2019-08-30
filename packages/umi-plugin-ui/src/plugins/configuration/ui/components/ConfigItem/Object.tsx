@@ -40,8 +40,7 @@ const ObjectComp: React.SFC<ICompProps> = props => {
           getFieldValue(parentConfig),
         );
         const parentValue = getFieldValue(parentConfig);
-        const isShow =
-          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
+        const isShow = typeof parentValue === 'undefined' || !!parentValue;
         return (
           isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
