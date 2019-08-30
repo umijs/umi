@@ -15,11 +15,8 @@ interface IOpts {
 export default async function(opts: IOpts) {
   const { npmClient = 'npm', packageName = 'create-umi', onData } = opts;
 
-  console.log('opts', opts);
-
   // 创建目录
   const baseDir = opts.baseDir || join(userHome, `.umi/creator/${packageName}`);
-  console.log('baseDir', baseDir);
   mkdirp.sync(baseDir);
 
   // 创建 package.json
@@ -51,7 +48,6 @@ export default async function(opts: IOpts) {
       ),
       'utf-8',
     );
-    console.log('npmClient', npmClient);
     // 安装依赖
     await executeCommand(
       npmClient,
