@@ -52,7 +52,17 @@ export default class PluginAPI {
     }
   };
 
-  intl: IUi.IIntl = formatMessage;
+  intl: IUi.IIntl = (messageDescriptor, values? = {}) => {
+    const { g_lang: locale, g_uiLocales: localeMessages } = window;
+    if ('id' in messageDescriptor) {
+      if (messageDescriptor.id in (localeMessages[locale] || {})) {
+        return formatMessage(messageDescriptor, values);
+      }
+      return messageDescriptor.id;
+    }
+    // string
+    return messageDescriptor;
+  };
 
   getLocale = () => {
     return window.g_lang;
@@ -67,6 +77,8 @@ export default class PluginAPI {
       message: this.intl({ id: message }),
       subtitle: this.intl({ id: subtitle }),
     };
+
+    debugger;
 
     if (document.hasFocus()) {
       // focus use antd Notification
