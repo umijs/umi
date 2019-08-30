@@ -1,5 +1,6 @@
 import { formatMessage } from 'umi-plugin-react/locale';
 import slash from 'slash2';
+import p from 'immer';
 import { DIR_ERROR_CODE } from '@/enums';
 import { listDirectory } from '@/services/project';
 
@@ -57,7 +58,11 @@ export const trimSlash = (path: string): string => slash(path || '').replace(/\/
  * / => ['/']
  */
 export const path2Arr = (path: string): string[] => {
-  const splitArr = path === '/' ? ['/'] : path.split('/');
+  const splitArr = p(path.split('/'), (p: string[]) => {
+    if (p[0] === '') {
+      p[0] = '/';
+    }
+  });
   return splitArr
     .map((p, i) => {
       if (isWindows(splitArr)) {
