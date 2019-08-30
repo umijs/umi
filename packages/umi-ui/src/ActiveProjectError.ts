@@ -25,6 +25,7 @@ interface IAction {
 }
 
 interface IOpts {
+  title: IUi.Locale;
   lang: IUi.ILang;
   actions?: IAction[];
   exception?: boolean;
@@ -37,10 +38,12 @@ export default class ActiveProjectError extends Error {
 
   exception: boolean;
 
+  title: string;
+
   constructor(opts: IOpts) {
-    const { message, stack, actions, lang, exception } = opts;
-    console.log('optsopts', opts);
+    const { title, message, stack, actions, lang, exception } = opts;
     super(getLangStr(message, lang));
+    if (title) this.title = getLangStr(title, lang);
     if (stack) this.stack = stack;
     if (exception) {
       this.exception = exception;

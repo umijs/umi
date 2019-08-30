@@ -139,7 +139,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
     const renderSubTitle = error => (
       <div className={styles['loading-subTitle']}>
-        <p>{error.message}</p>
+        <p>{error.title}</p>
         {error.exception && (
           <div>
             联系{' '}

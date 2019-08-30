@@ -78,7 +78,7 @@ export default class UmiUI {
     // Check exists.
     if (!existsSync(project.path)) {
       throw new ActiveProjectError({
-        message: {
+        title: {
           'zh-CN': `项目 ${project.path} 路径不存在。`,
           'en-US': `Project ${project.path} not exists.`,
         },
@@ -90,7 +90,7 @@ export default class UmiUI {
     // Check umi valid.
     if (!isUmiProject(project.path)) {
       throw new ActiveProjectError({
-        message: {
+        title: {
           'zh-CN': `项目 ${project.path} 不是 Umi 项目。`,
           'en-US': `Project ${project.path} is not a valid Umi project.`,
         },
@@ -116,7 +116,7 @@ export default class UmiUI {
       if (false && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
         throw new ActiveProjectError({
-          message: process.env.BIGFISH_COMPAT
+          title: process.env.BIGFISH_COMPAT
             ? `Bigfish 版本过低，请升级到 @alipay/bigfish@2.20 或以上。`
             : {
                 'zh-CN': `Umi 版本过低，请升级到 umi@2.9 或以上。`,
@@ -141,19 +141,23 @@ export default class UmiUI {
       } catch (e) {
         if (isDepLost(e) || isPluginLost(e)) {
           throw new ActiveProjectError({
-            message: {
+            title: {
               'zh-CN': `依赖文件没找到。`,
               'en-US': 'Dependency file not found.',
             },
+            message: e.message,
+            stack: e.stack,
             lang,
             actions: [ReInstallDependencyAction, BackToHomeAction],
           });
         } else {
           throw new ActiveProjectError({
-            message: {
+            title: {
               'zh-CN': '其他错误',
               'en-US': 'Other Errors',
             },
+            message: e.message,
+            stack: e.stack,
             lang,
             // exception tag
             exception: true,
@@ -541,7 +545,7 @@ export default class UmiUI {
         } catch (e) {
           console.error(chalk.red(`Error: Attach Project of key ${payload.key} FAILED`));
           console.error(e);
-          failure(pick(e, ['message', 'stack', 'actions', 'exception']));
+          failure(pick(e, ['title', 'message', 'stack', 'actions', 'exception']));
         }
         break;
       case '@@project/openInEditor':
