@@ -115,19 +115,12 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     e && e.preventDefault();
   };
   const EnvLabel = props => (
-<<<<<<< ours
     <div>
       <div onClick={stopEventPop} className={styles.modleLableTitle}>
-        {intl(props.title)}
+        {intl({ id: props.title })}
       </div>
       <div className={styles.modleLableDesc}>
-        <span onClick={stopEventPop}>{intl(props.desc)}</span>
-=======
-    <div onClick={stopEventPop}>
-      <div className={styles.modleLableTitle}>{intl({ id: props.title })}</div>
-      <div className={styles.modleLableDesc}>
-        <span>{intl({ id: props.desc })}</span>
->>>>>>> theirs
+        <span onClick={stopEventPop}>{intl({ id: props.desc })}</span>
         <a
           className={styles.modleLablelDescIcon}
           href={isEnglish ? props.link.replace(/\/zh\//, '/') : props.link}
