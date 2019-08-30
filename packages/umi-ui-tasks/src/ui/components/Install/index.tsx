@@ -115,7 +115,7 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
       <h1 className={styles.title}>{intl('org.umi.ui.tasks.install')}</h1>
       <>
         <Row>
-          <Col span={8} className={styles.buttonGroup}>
+          <Col span={24} className={styles.buttonGroup}>
             <Button type="primary" onClick={isTaskRunning ? cancelInstall : openModal}>
               {isTaskRunning ? (
                 <>

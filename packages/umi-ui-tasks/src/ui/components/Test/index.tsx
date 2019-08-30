@@ -82,7 +82,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
       <h1 className={styles.title}>{intl('org.umi.ui.tasks.test')}</h1>
       <>
         <Row>
-          <Col span={8} className={styles.buttonGroup}>
+          <Col span={24} className={styles.buttonGroup}>
             <Button type="primary" onClick={isTaskRunning ? cancelTest : test}>
               {isTaskRunning ? (
                 <>
