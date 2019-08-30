@@ -8,6 +8,7 @@ import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { callRemote } from '@/socket';
 import { handleBack, getProjectStatus } from '@/utils';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
 import UiLayout from './Layout';
 import styles from './Dashboard.less';
@@ -163,7 +164,9 @@ export default withRouter(props => {
                   </div>
                   {/* key pathname change transition will crash  */}
                   <div key={activePanel.path || '/'} className={styles.content}>
-                    {props.children}
+                    <ErrorBoundary className={styles['dashboard-error-boundary']}>
+                      {props.children}
+                    </ErrorBoundary>
                   </div>
                 </Content>
               </div>

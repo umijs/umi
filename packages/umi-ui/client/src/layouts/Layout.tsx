@@ -3,6 +3,7 @@ import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugi
 import { IUi } from 'umi-types';
 import Helmet from 'react-helmet';
 import cls from 'classnames';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
 import Footer from './Footer';
 import { THEME } from '@/enums';
@@ -78,8 +79,10 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             <title>{title ? `${title} - ${framework}` : framework}</title>
             <link rel="shortcut icon" href={icon} type="image/x-icon" />
           </Helmet>
-          {this.props.children}
-          <Footer type={type} />
+          <ErrorBoundary>{this.props.children}</ErrorBoundary>
+          <ErrorBoundary>
+            <Footer type={type} />
+          </ErrorBoundary>
         </Context.Provider>
       </div>
     );
