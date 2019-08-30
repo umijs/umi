@@ -12,7 +12,7 @@ const { Option } = Select;
 
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const { goPrev, handleFinish, style, active } = props;
-  const { formatMessage } = useContext(ProjectContext);
+  const { formatMessage, locale } = useContext(ProjectContext);
   const { npmClient, error, loading } = useNpmClients({
     active,
   });
@@ -27,17 +27,23 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     },
     [npmClient],
   );
-  // tmp options, real from server
+  // TODO: tmp options, real from server
   const options: IOption[] = [
     {
-      title: 'Ant Design Pro 模板',
-      description: '选择一个由流程编排提供的典型用户案例，',
+      title: locale === 'zh-CN' ? 'Ant Design Pro 模板' : 'Ant Design Pro Template',
+      description:
+        locale === 'zh-CN'
+          ? '选择一个由流程编排提供的典型用户案例，'
+          : 'Choose a typical user case provided by process orchestration',
       link: 'http://preview.pro.ant.design',
       value: 'ant-design-pro',
     },
     {
-      title: '基础模板',
-      description: '选择一个由流程编排提供的典型用户案例，',
+      title: locale === 'zh-CN' ? '基础模板' : 'Basic template',
+      description:
+        locale === 'zh-CN'
+          ? '选择一个由流程编排提供的典型用户案例，'
+          : 'Choose a typical user case provided by process orchestration',
       link: 'http://preview.pro.ant.design',
       value: 'app',
     },
@@ -62,8 +68,15 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     >
       <Form.Item
         name="type"
-        label="模板"
-        rules={[{ required: true, message: formatMessage({ id: '请选择模板' }) }]}
+        label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template' })}
+        rules={[
+          {
+            required: true,
+            message: formatMessage({
+              id: 'org.umi.ui.global.project.create.steps.info.template.required',
+            }),
+          },
+        ]}
       >
         <CardForm options={options} />
       </Form.Item>
@@ -77,8 +90,17 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
             isShow && (
               <Form.Item
                 name={['args', 'reactFeatures']}
-                label="技术栈"
-                rules={[{ type: 'array', message: formatMessage({ id: '请选择特性' }) }]}
+                label={formatMessage({
+                  id: 'org.umi.ui.global.project.create.steps.info.reactFeatures',
+                })}
+                rules={[
+                  {
+                    type: 'array',
+                    message: formatMessage({
+                      id: 'org.umi.ui.global.project.create.steps.info.reactFeatures.required',
+                    }),
+                  },
+                ]}
                 style={{ marginBottom: 0 }}
               >
                 <Checkbox.Group style={{ width: '100%' }}>
@@ -97,8 +119,15 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       </Form.Item>
       <Form.Item
         name={['args', 'language']}
-        label="语言"
-        rules={[{ required: true, message: formatMessage({ id: '请选择语言' }) }]}
+        label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.lang' })}
+        rules={[
+          {
+            required: true,
+            message: formatMessage({
+              id: 'org.umi.ui.global.project.create.steps.info.lang.required',
+            }),
+          },
+        ]}
       >
         <Radio.Group>
           <Radio value="JavaScript">JavaScript</Radio>
@@ -107,13 +136,30 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       </Form.Item>
       <Form.Item
         name="npmClient"
-        label="包管理"
-        rules={[{ required: true, message: formatMessage({ id: '请选择包管理器' }) }]}
+        label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
+        rules={[
+          {
+            required: true,
+            message: formatMessage({
+              id: 'org.umi.ui.global.project.create.steps.info.npmClient.required',
+            }),
+          },
+        ]}
       >
         <Select
-          placeholder="请选择包管理器"
+          placeholder="org.umi.ui.global.project.create.steps.info.npmClient.required"
           notFoundContent={
-            loading ? <Spin size="small" /> : !npmClient.length && <p>未找到包管理器</p>
+            loading ? (
+              <Spin size="small" />
+            ) : (
+              !npmClient.length && (
+                <p>
+                  {formatMessage({
+                    id: 'org.umi.ui.global.project.create.steps.info.npmClient.empty',
+                  })}
+                </p>
+              )
+            )
           }
         >
           {Array.isArray(npmClient) &&
@@ -153,9 +199,11 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       {/*</Form.Item>*/}
       <Form.Item style={{ marginTop: 16 }}>
         <>
-          <Button onClick={() => goPrev()}>{formatMessage({ id: '上一步' })}</Button>
+          <Button onClick={() => goPrev()}>
+            {formatMessage({ id: 'org.umi.ui.global.steps.prev' })}
+          </Button>
           <Button htmlType="submit" type="primary" style={{ marginLeft: 8 }}>
-            {formatMessage({ id: '完成' })}
+            {formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.finish' })}
           </Button>
         </>
       </Form.Item>

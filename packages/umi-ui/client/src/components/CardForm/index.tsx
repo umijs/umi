@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Icon } from '@ant-design/compatible';
+import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
 import { Col, Row, Card } from 'antd';
 import cls from 'classnames';
 
@@ -56,7 +57,7 @@ const CardForm: React.SFC<CardFormProps> = props => {
         {description}
         {link && (
           <a href={link} target="_blank" rel="noopener noreferrer">
-            查看详情
+            {formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template.detail' })}
           </a>
         )}
       </p>
