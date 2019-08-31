@@ -28,7 +28,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const Component = sections[currentIndex].component;
 
   function toggleSectionHandler(key) {
-    history.replace(`${history.location.pathname}?active=${key}`);
+    history.push(`${history.location.pathname}?active=${key}`);
   }
 
   const leftCls = cls(styles.left, {

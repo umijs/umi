@@ -62,7 +62,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   };
 
   const redirect = (url: string) => {
-    history.replace(url);
+    history.push(url);
   };
 
   const getLogs = async () => {
