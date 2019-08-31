@@ -45,7 +45,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
         projectPath: '/private/tmp/foooo',
       },
       onProgress(data) {
-        _log(`Install: ${data.install}`);
+        this._log(`Install: ${data.install}`);
       },
     });
     this.setState({
@@ -54,7 +54,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   handleSuccess = () => {
-    _log('success');
+    this._log('success');
     this.setState({
       actionLoading: false,
     });
@@ -63,7 +63,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
   handleFailure = () => {
     // TODO if install failed
-    _log('failed');
+    this._log('failed');
     this.setState({
       actionLoading: false,
     });
@@ -83,7 +83,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       this.logs = '';
       this.xterm.clear();
     }
-    this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
+    this.logs = `${this.logs}${data && data.install ? data.install : ''}`;
     this.xterm.write(this.logs.replace(/\n/g, '\r\n'));
   };
 
