@@ -147,7 +147,7 @@ export default class UmiUI {
       const cwd = project.path;
       const localService = resolveFrom.silent(cwd, serviceModule);
       const localBin = resolveFrom.silent(cwd, binModule);
-      if (localBin && !localService) {
+      if (process.env.UI_CHECK_LOCAL !== 'none' && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
         throw new ActiveProjectError({
           title: process.env.BIGFISH_COMPAT
