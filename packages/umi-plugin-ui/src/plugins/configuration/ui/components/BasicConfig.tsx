@@ -11,6 +11,7 @@ import useToggle from './common/useToggle';
 import configMapping from './ConfigItem';
 import Toc from './common/Toc';
 import { getToc } from './ConfigItem/utils';
+import { getDiffItems, arrayToObject, getChangedDiff } from './utils';
 import styles from './BasicConfig.module.less';
 
 interface IBasicConfigProps {
@@ -29,9 +30,6 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   // const [disabled, setDisabled] = useState(true);
   const { api, theme, debug: _log } = useContext(Context);
   const { _, intl } = api;
-
-  const getDiffItems = (prev: object, curr: object): object =>
-    _.omitBy(curr, (v, k) => _.isEqual(prev[k], v));
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
@@ -112,32 +110,6 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
     groupedData[group].push(item);
   });
 
-  const getInitialValue = ({ value, default: defaultValue }) => {
-    if (_.isPlainObject(value) && _.isPlainObject(defaultValue)) {
-      return {
-        ...defaultValue,
-        ...value,
-      };
-    }
-    if (Array.isArray(value) && Array.isArray(defaultValue)) {
-      return _.uniq(defaultValue.concat(value));
-    }
-    return value || defaultValue;
-  };
-
-  const arrayToObject = arr => {
-    return (arr || []).reduce(
-      (prev, curr) => ({
-        ...prev,
-        [curr.name]: getInitialValue({
-          value: curr.value,
-          default: curr.default,
-        }),
-      }),
-      {},
-    );
-  };
-
   const initialValues = arrayToObject(searchData);
   const [allValues, setAllValues] = useState();
 
@@ -147,7 +119,14 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
   const getChangedValue = React.useCallback(
     vv => {
-      return getDiffItems(arrayToObject(data), vv);
+      return getDiffItems(vv, arrayToObject(data, false));
+    },
+    [data],
+  );
+
+  const getResetChangedValue = React.useCallback(
+    vv => {
+      return getChangedDiff(arrayToObject(data), vv);
     },
     [data],
   );
@@ -155,7 +134,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   const handleFinish = async values => {
     _log('handleFinish values', values);
     const changedValues = getChangedValue(values);
-    _log('changedValues', changedValues);
+    _log('before changedValues', changedValues);
     if (!Object.keys(changedValues).length) {
       // no edit config
       return false;
@@ -218,7 +197,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
     [styles['basicConfig-header-input-active']]: !!showSearch,
   });
 
-  const changedValueArr = Object.keys(getChangedValue(allValues));
+  const changedValueArr = Object.keys(getResetChangedValue(allValues));
 
   const ResetTitle = (
     <div className={styles.resetTitle}>
