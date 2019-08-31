@@ -83,9 +83,9 @@ const Footer: React.SFC<IFooterProps> = props => {
     if (p) {
       try {
         copy(p);
-        message.success(formatMessage({ id: 'org.umi.ui.global.copy.success' }));
+        message.success(intl({ id: 'org.umi.ui.global.copy.success' }));
       } catch (e) {
-        message.error(formatMessage({ id: 'org.umi.ui.global.copy.failure' }));
+        message.error(intl({ id: 'org.umi.ui.global.copy.failure' }));
       }
     }
   }, 300);
@@ -169,7 +169,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
         </div>
-        {type === 'detail' && path && name && (
+        {path && name && (
           <>
             <div className={actionCls} onClick={() => handleCopyPathDebounce(path)}>
               <FolderFilled style={{ marginRight: 4 }} /> {path}
