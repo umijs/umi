@@ -36,7 +36,7 @@ export class DevTask extends BaseTask {
     }
 
     this.state = TaskState.INIT;
-    proc.kill();
+    proc.kill('SIGINT');
   }
 
   public getDetail() {
@@ -59,16 +59,7 @@ export class DevTask extends BaseTask {
       this.emit(TaskEventType.STD_ERR_DATA, log);
     });
     proc.on('exit', (code, signal) => {
-      if (signal === 'SIGTERM' || signal === 'SIGINT' || code === 130) {
-        // 用户取消任务
-        this.state = TaskState.INIT;
-      } else {
-        // 自然退出
-        if (code! == 0) {
-          this.state = TaskState.FAIL;
-        }
-      }
-      // 触发事件
+      this.state = code === 1 ? TaskState.FAIL : TaskState.INIT;
       this.emit(TaskEventType.STATE_EVENT, this.state);
     });
 
