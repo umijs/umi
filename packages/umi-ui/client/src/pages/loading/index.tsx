@@ -6,8 +6,7 @@ import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
-import zhCN from '@/locales/zh-CN';
-import enUS from '@/locales/en-US';
+import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
 import actions from './actions';
 import styles from './index.less';
@@ -88,11 +87,9 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   render() {
-    const locale = getLocale();
     const { error } = this.props;
 
     const { actionLoading } = this.state;
-    const messages = locale === 'en-US' ? enUS : zhCN;
 
     const actionsDeps = error ? (
       <div>
@@ -161,8 +158,8 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           <Fail
             title={
               actionLoading
-                ? messages['org.umi.ui.loading.onloading']
-                : messages['org.umi.ui.loading.error']
+                ? intl({ id: 'org.umi.ui.loading.onloading' })
+                : intl({ id: 'org.umi.ui.loading.error' })
             }
             loading={actionLoading}
             subTitle={renderSubTitle(error)}
@@ -174,7 +171,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <div className={styles.loading}>
         <div className={styles['loading-spin']}>
           <Spin size="large" />
-          <p>{messages['org.umi.ui.loading.open']}</p>
+          <p>{intl({ id: 'org.umi.ui.loading.open' })}</p>
         </div>
       </div>
     );

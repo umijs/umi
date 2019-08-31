@@ -3,8 +3,7 @@ import { Button, Modal, Form, Select, Spin } from 'antd';
 import { getLocale } from 'umi-plugin-react/locale';
 import { ButtonProps } from 'antd/lib/button';
 import useNpmClients from '@/components/hooks/useNpmClients';
-import zhCN from '@/locales/zh-CN';
-import enUS from '@/locales/en-US';
+import intl from '@/utils/intl';
 import { reInstallDependencies, installDependencies } from '@/services/project';
 
 const { useState, useEffect } = React;
@@ -35,7 +34,6 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
     ...restProps
   } = props;
   const locale = getLocale();
-  const messages = locale === 'zh-CN' ? zhCN : enUS;
   const { npmClient: needNpmClient } = payload;
   const { npmClient, error } = useNpmClients();
   const [loading, setLoading] = useState<boolean>(false);
@@ -119,23 +117,40 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
         visible={modalVisible}
         onOk={onOk}
         maskClosable={false}
-        okText={messages['org.umi.ui.global.okText']}
-        cancelText={messages['org.umi.ui.global.cancelText']}
+        okText={intl({ id: 'org.umi.ui.global.okText' })}
+        cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
         onCancel={closeModal}
       >
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
-            label="选择包管理器"
+            label={intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
             name="npmClient"
             style={{
               marginBottom: 0,
             }}
-            rules={[{ required: true, message: '请选择包管理器' }]}
+            rules={[
+              {
+                required: true,
+                message: intl({
+                  id: 'org.umi.ui.global.project.create.steps.info.npmClient.required',
+                }),
+              },
+            ]}
           >
             <Select
-              placeholder="请选择包管理器"
+              placeholder={intl({
+                id: 'org.umi.ui.global.project.create.steps.info.npmClient.required',
+              })}
               notFoundContent={
-                loading ? <Spin size="small" /> : !npmClient.length && <p>未找到包管理器</p>
+                loading ? (
+                  <Spin size="small" />
+                ) : (
+                  !npmClient.length && (
+                    <p>
+                      {intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient.empty' })}
+                    </p>
+                  )
+                )
               }
             >
               {Array.isArray(npmClient) &&

@@ -17,8 +17,7 @@ import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
-import zhCN from '@/locales/zh-CN';
-import enUS from '@/locales/en-US';
+import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
@@ -43,7 +42,6 @@ const FOOTER_RIGHT = [
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
-  const messages = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -54,9 +52,6 @@ const Footer: React.SFC<IFooterProps> = props => {
       return action.payload;
     }
   }, []);
-  const intl = (obj, value = {}) => {
-    return formatMessage(obj, value) || messages[obj.id];
-  };
 
   const showLogPanel = () => {
     setLogVisible(true);
@@ -201,8 +196,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             <a>
               <Message />{' '}
               {type === 'loading'
-                ? messages['org.umi.ui.global.feedback']
-                : formatMessage({ id: 'org.umi.ui.global.feedback' })}
+                ? intl({ id: 'org.umi.ui.global.feedback' })
+                : intl({ id: 'org.umi.ui.global.feedback' })}
             </a>
           </Popover>
         </div>
@@ -210,8 +205,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon}{' '}
-              {type === 'loading' ? messages[item.title] : formatMessage({ id: item.title })}
+              {item.icon} {intl({ id: item.title })}
             </a>
           </div>
         ))}
