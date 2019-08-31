@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QuestionCircle } from '@ant-design/icons';
+import { QuestionCircle, Check as CheckIcon } from '@ant-design/icons';
 import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Switch, Tooltip } from 'antd';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import useNpmClients from '@/components/hooks/useNpmClients';
@@ -44,7 +44,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         locale === 'zh-CN'
           ? '选择一个由流程编排提供的典型用户案例，'
           : 'Choose a typical user case provided by process orchestration',
-      link: 'http://preview.pro.ant.design',
+      link: 'https://github.com/umijs/create-umi/tree/master/lib/generators/app/readme.md',
       value: 'app',
     },
   ];
@@ -133,8 +133,8 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         ]}
       >
         <Radio.Group>
-          <Radio value="JavaScript">JavaScript</Radio>
-          <Radio value="TypeScript">TypeScript</Radio>
+          <Radio.Button value="JavaScript">JavaScript</Radio.Button>
+          <Radio.Button value="TypeScript">TypeScript</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item
