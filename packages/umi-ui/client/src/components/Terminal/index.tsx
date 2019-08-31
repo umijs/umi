@@ -2,6 +2,7 @@ import { Row, Col, Spin } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
+import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import React, { useRef, useEffect, useState } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
@@ -95,11 +96,17 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       {xterm ? (
         <Row className={styles.titleWrapper}>
           <Col span={8} className={styles.formmatGroup}>
-            输出
+            {formatMessage({
+              id: 'org.umi.ui.global.log',
+            })}
           </Col>
           <Col span={4} offset={12} className={styles.actionGroup}>
-            <Delete onClick={clear} />
-            <Enter onClick={toBottom} />
+            <span className={styles.icon}>
+              <Delete onClick={clear} />
+            </span>
+            <span className={styles.icon}>
+              <Enter onClick={toBottom} />
+            </span>
           </Col>
         </Row>
       ) : (

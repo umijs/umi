@@ -51,12 +51,12 @@ const NOTICE_MESSAGE_MAP = {
   },
   [TaskType.INSTALL]: {
     [TaskState.SUCCESS]: {
-      title: 'org.umi.ui.tasks.notify.intasll.success.title',
-      message: 'org.umi.ui.tasks.notify.intasll.success.message',
+      title: 'org.umi.ui.tasks.notify.install.success.title',
+      message: 'org.umi.ui.tasks.notify.install.success.message',
     },
     [TaskState.FAIL]: {
-      title: 'org.umi.ui.tasks.notify.intasll.fail.title',
-      message: 'org.umi.ui.tasks.notify.intasll.fail.message',
+      title: 'org.umi.ui.tasks.notify.install.fail.title',
+      message: 'org.umi.ui.tasks.notify.install.fail.message',
     },
   },
 };
