@@ -37,7 +37,7 @@ export default class PluginAPI {
   }
 
   redirect: IUi.IRedirect = url => {
-    history.replace(url);
+    history.push(url);
     // window.location.reload();
   };
 

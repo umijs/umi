@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { QuestionCircle } from '@ant-design/icons';
+import { QuestionCircle, Check as CheckIcon } from '@ant-design/icons';
 import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Switch, Tooltip } from 'antd';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import CardForm, { IOption } from '@/components/CardForm';
-import { REACT_FEATURES, SPEEDUP_CLIENTS } from '@/enums';
+import { REACT_FEATURES, SPEEDUP_CLIENTS, REACT_FEATURES_TIP } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 
 const { useContext, useEffect } = React;
@@ -44,7 +44,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         locale === 'zh-CN'
           ? '选择一个由流程编排提供的典型用户案例，'
           : 'Choose a typical user case provided by process orchestration',
-      link: 'http://preview.pro.ant.design',
+      link: 'https://github.com/umijs/create-umi/tree/master/lib/generators/app',
       value: 'app',
     },
   ];
@@ -68,6 +68,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     >
       <Form.Item
         name="type"
+        required={false}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template' })}
         rules={[
           {
@@ -93,6 +94,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                 label={formatMessage({
                   id: 'org.umi.ui.global.project.create.steps.info.reactFeatures',
                 })}
+                required={false}
                 rules={[
                   {
                     type: 'array',
@@ -107,7 +109,12 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                   <Row>
                     {Object.keys(REACT_FEATURES).map((feature: any) => (
                       <Col key={feature} span={8} style={{ marginBottom: 8 }}>
-                        <Checkbox value={feature}>{REACT_FEATURES[feature]}</Checkbox>
+                        <Checkbox value={feature}>
+                          {REACT_FEATURES[feature]}&nbsp;
+                          <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
+                            <QuestionCircle />
+                          </Tooltip>
+                        </Checkbox>
                       </Col>
                     ))}
                   </Row>
@@ -120,6 +127,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       <Form.Item
         name={['args', 'language']}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.lang' })}
+        required={false}
         rules={[
           {
             required: true,
@@ -130,13 +138,14 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         ]}
       >
         <Radio.Group>
-          <Radio value="JavaScript">JavaScript</Radio>
-          <Radio value="TypeScript">TypeScript</Radio>
+          <Radio.Button value="JavaScript">JavaScript</Radio.Button>
+          <Radio.Button value="TypeScript">TypeScript</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item
         name="npmClient"
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
+        required={false}
         rules={[
           {
             required: true,

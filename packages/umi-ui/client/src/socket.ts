@@ -40,8 +40,8 @@ export async function init(opts = {}) {
         el.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';
         el.innerHTML =
           window.g_lang === 'zh-CN'
-            ? '已和 umi ui 服务器断开连接，正在尝试重连...'
-            : 'Disconnected from the umi ui server, trying to reconnect...';
+            ? '已和 Umi UI 服务器断开连接，正在尝试重连...'
+            : 'Disconnected from the Umi UI server, trying to reconnect...';
         document.body.appendChild(el);
       } else {
         el.style.display = 'block';

@@ -23,7 +23,7 @@ export const findProjectPath = (data: IProjectList) => {
 
 export const handleBack = (reload = true, url = '/project/select') => {
   return new Promise(resolve => {
-    history.replace(url);
+    history.push(url);
     if (reload) {
       window.location.reload();
     }

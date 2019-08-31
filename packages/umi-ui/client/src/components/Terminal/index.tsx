@@ -1,11 +1,11 @@
-import { Row, Col, Spin } from 'antd';
+import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
-import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import React, { useRef, useEffect, useState } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
+import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
 
@@ -96,16 +96,27 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       {xterm ? (
         <Row className={styles.titleWrapper}>
           <Col span={8} className={styles.formmatGroup}>
-            {formatMessage({
+            {intl({
               id: 'org.umi.ui.global.log',
             })}
           </Col>
           <Col span={4} offset={12} className={styles.actionGroup}>
             <span className={styles.icon}>
-              <Delete onClick={clear} />
+              <Popconfirm
+                title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
+                onConfirm={clear}
+                okText={intl({ id: 'org.umi.ui.global.okText' })}
+                cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
+              >
+                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
+                  <Delete />
+                </Tooltip>
+              </Popconfirm>
             </span>
             <span className={styles.icon}>
-              <Enter onClick={toBottom} />
+              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
+                <Enter onClick={toBottom} />
+              </Tooltip>
             </span>
           </Col>
         </Row>

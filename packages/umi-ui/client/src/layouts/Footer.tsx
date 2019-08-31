@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
+import { Check as CheckIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 import debounce from 'lodash/debounce';
 import {
   FolderFilled,
   ProfileFilled,
-  Swap,
   HomeFilled,
   QuestionCircle,
   Message,
@@ -18,8 +18,7 @@ import cls from 'classnames';
 import history from '@tmp/history';
 import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
-import zhCN from '@/locales/zh-CN';
-import enUS from '@/locales/en-US';
+import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
@@ -44,7 +43,6 @@ const FOOTER_RIGHT = [
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject } = useContext(Context);
-  const messages = locale === 'en-US' ? enUS : zhCN;
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -55,9 +53,6 @@ const Footer: React.SFC<IFooterProps> = props => {
       return action.payload;
     }
   }, []);
-  const intl = (obj, value = {}) => {
-    return formatMessage(obj, value) || messages[obj.id];
-  };
 
   const showLogPanel = () => {
     setLogVisible(true);
@@ -68,7 +63,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   };
 
   const redirect = (url: string) => {
-    history.replace(url);
+    history.push(url);
   };
 
   const getLogs = async () => {
@@ -123,8 +118,11 @@ const Footer: React.SFC<IFooterProps> = props => {
   const actionCls = cls(styles.section, styles.action);
   const logCls = cls(actionCls, styles.log);
 
-  const LocaleText = ({ locale: textLocale }) => (
-    <span>
+  const LocaleText = ({ locale: textLocale, checked, style }) => (
+    <span style={style}>
+      {typeof checked !== 'undefined' && (
+        <CheckIcon style={{ marginRight: 8, opacity: checked ? 1 : 0 }} />
+      )}
       {LOCALES_ICON[textLocale]} {LOCALES[textLocale]}
     </span>
   );
@@ -136,9 +134,9 @@ const Footer: React.SFC<IFooterProps> = props => {
         setLocale(key, type === 'loading');
       }}
     >
-      {Object.keys(omit(LOCALES, locale)).map((lang: any) => (
+      {Object.keys(LOCALES).map((lang: any) => (
         <Menu.Item key={lang}>
-          <LocaleText locale={lang} />
+          <LocaleText locale={lang} checked={locale === lang} />
         </Menu.Item>
       ))}
     </Menu>
@@ -164,7 +162,12 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
+        <div
+          onClick={() => {
+            handleBack(type === 'loading');
+          }}
+          className={actionCls}
+        >
           <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
@@ -202,8 +205,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             <a>
               <Message />{' '}
               {type === 'loading'
-                ? messages['org.umi.ui.global.feedback']
-                : formatMessage({ id: 'org.umi.ui.global.feedback' })}
+                ? intl({ id: 'org.umi.ui.global.feedback' })
+                : intl({ id: 'org.umi.ui.global.feedback' })}
             </a>
           </Popover>
         </div>
@@ -211,8 +214,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         {FOOTER_RIGHT.map((item, i) => (
           <div className={styles.section} key={i.toString()}>
             <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon}{' '}
-              {type === 'loading' ? messages[item.title] : formatMessage({ id: item.title })}
+              {item.icon} {intl({ id: item.title })}
             </a>
           </div>
         ))}
@@ -220,9 +222,9 @@ const Footer: React.SFC<IFooterProps> = props => {
           <Dropdown overlay={menu} placement="topRight">
             <p>
               <LocaleText locale={locale} />
-              <span style={{ marginLeft: 8 }}>
+              {/* <span style={{ marginLeft: 8 }}>
                 <Swap />
-              </span>
+              </span> */}
             </p>
           </Dropdown>
         </div>
@@ -238,9 +240,13 @@ const Footer: React.SFC<IFooterProps> = props => {
                 okText={intl({ id: 'org.umi.ui.global.okText' })}
                 cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
-                <Delete />
+                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
+                  <Delete />
+                </Tooltip>
               </Popconfirm>
-              <Enter onClick={handleScorllBottom} />
+              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
+                <Enter onClick={handleScorllBottom} />
+              </Tooltip>
               <Divider type="vertical" />
               <Close onClick={hideLogPanel} />
             </div>

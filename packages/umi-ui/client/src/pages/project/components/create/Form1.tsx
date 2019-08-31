@@ -92,6 +92,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
         style={{
           marginBottom: 2,
         }}
+        required={false}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.input.name' })}
         rules={[
           {

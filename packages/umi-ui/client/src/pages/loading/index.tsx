@@ -6,9 +6,9 @@ import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
+import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
 import actions from './actions';
-import locales from './locales';
 import styles from './index.less';
 import Fail from './fail';
 
@@ -44,7 +44,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
         projectPath: '/private/tmp/foooo',
       },
       onProgress(data) {
-        _log(`Install: ${data.install}`);
+        this._log(`Install: ${data.install}`);
       },
     });
     this.setState({
@@ -53,7 +53,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
   };
 
   handleSuccess = () => {
-    _log('success');
+    this._log('success');
     this.setState({
       actionLoading: false,
     });
@@ -62,7 +62,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
   handleFailure = () => {
     // TODO if install failed
-    _log('failed');
+    this._log('failed');
     this.setState({
       actionLoading: false,
     });
@@ -82,16 +82,14 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       this.logs = '';
       this.xterm.clear();
     }
-    this.logs = `${this.logs}\n${data && data.install ? data.install : ''}`;
+    this.logs = `${this.logs}${data && data.install ? data.install : ''}`;
     this.xterm.write(this.logs.replace(/\n/g, '\r\n'));
   };
 
   render() {
-    const locale = getLocale();
     const { error } = this.props;
 
     const { actionLoading } = this.state;
-    const messages = locales[locale] || locales['zh-CN'];
 
     const actionsDeps = error ? (
       <div>
@@ -158,7 +156,11 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <Layout type="loading">
         <div className={styles.loading}>
           <Fail
-            title={actionLoading ? '执行中' : '加载失败'}
+            title={
+              actionLoading
+                ? intl({ id: 'org.umi.ui.loading.onloading' })
+                : intl({ id: 'org.umi.ui.loading.error' })
+            }
             loading={actionLoading}
             subTitle={renderSubTitle(error)}
             extra={actionsDeps}
@@ -169,7 +171,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <div className={styles.loading}>
         <div className={styles['loading-spin']}>
           <Spin size="large" />
-          <p>{messages['org.umi.ui.loading.open']}</p>
+          <p>{intl({ id: 'org.umi.ui.loading.open' })}</p>
         </div>
       </div>
     );

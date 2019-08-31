@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import TweenOne from 'rc-tween-one';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import {
   Button,
   Tooltip,
@@ -19,7 +18,14 @@ import {
   Layout,
   Empty,
 } from 'antd';
-import { Export, AppstoreFilled, Edit, Delete, Plus, Upload } from '@ant-design/icons';
+import {
+  Export,
+  AppstoreFilled,
+  Edit,
+  Delete,
+  Plus,
+  Upload as UploadIcon,
+} from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
@@ -152,21 +158,21 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         </Tooltip>
       </a>,
       <div onClick={e => e.stopPropagation()}>
-        <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
-          <Popconfirm
-            title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
-            onConfirm={() => {
-              handleOnAction('delete', { key: item.key });
-            }}
-            onCancel={() => {}}
-            okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-            cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
-          >
-            <a>
+        <Popconfirm
+          title={formatMessage({ id: 'org.umi.ui.global.project.list.delete.confirm' })}
+          onConfirm={() => {
+            handleOnAction('delete', { key: item.key });
+          }}
+          onCancel={() => {}}
+          okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+          cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
+        >
+          <a>
+            <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
               <Delete />
-            </a>
-          </Popconfirm>
-        </Tooltip>
+            </Tooltip>
+          </a>
+        </Popconfirm>
       </div>,
     ];
 
@@ -209,6 +215,37 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     );
   };
 
+  const LoadComponent = loading ? (
+    <div style={{ textAlign: 'center', marginTop: 16 }}>
+      <Spin size="large" />
+    </div>
+  ) : (
+    <Row className={styles['project-list']} type="flex" gutter={24}>
+      {projects.map((item, j) => renderItem(item))}
+    </Row>
+  );
+
+  const EmptyDescription = (
+    <div>
+      <FormattedMessage
+        id="org.umi.ui.global.project.list.empty.tip"
+        values={{
+          import: (
+            <a onClick={() => setCurrent('import')}>
+              {formatMessage({ id: 'org.umi.ui.global.project.list.empty.tip.import' })}
+            </a>
+          ),
+          create: (
+            <a onClick={() => setCurrent('create')}>
+              {formatMessage({ id: 'org.umi.ui.global.project.list.empty.tip.create' })}
+            </a>
+          ),
+        }}
+      />
+      <p>{formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}</p>
+    </div>
+  );
+
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
@@ -237,7 +274,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>
-                <Upload />
+                <UploadIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
                     id: 'org.umi.ui.global.project.import.title',
@@ -267,16 +304,10 @@ const ProjectList: React.SFC<IProjectProps> = props => {
               paddingTop: 187,
             }}
             image={iconSvg}
-            description={formatMessage({ id: 'org.umi.ui.global.project.list.empty' })}
+            description={EmptyDescription}
           />
-        ) : loading ? (
-          <div style={{ textAlign: 'center', marginTop: 16 }}>
-            <Spin size="large" />
-          </div>
         ) : (
-          <Row className={styles['project-list']} type="flex" gutter={24}>
-            {projects.map((item, j) => renderItem(item))}
-          </Row>
+          LoadComponent
         )}
       </Content>
       <ModalForm

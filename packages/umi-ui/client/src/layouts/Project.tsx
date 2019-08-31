@@ -2,6 +2,7 @@ import React from 'react';
 import { PageHeader } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
+import get from 'lodash/get';
 import Layout from './Layout';
 import Context from './Context';
 import ProjectContext from './ProjectContext';

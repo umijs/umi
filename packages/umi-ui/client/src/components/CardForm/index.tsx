@@ -54,7 +54,7 @@ const CardForm: React.SFC<CardFormProps> = props => {
   const Description = ({ description, link }) => {
     return (
       <p>
-        {description}
+        {description}&nbsp;
         {link && (
           <a href={link} target="_blank" rel="noopener noreferrer">
             {formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template.detail' })}
