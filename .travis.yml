@@ -17,7 +17,7 @@ before_script:
   - npm run ui:build
 
 script:
-  - npm run test -- --forceExit --runInBand
+  - npm run test -- --forceExit --detectOpenHandles --runInBand
 
 after_success:
   - npm run coveralls
