@@ -22,5 +22,6 @@ export default {
     </Button>
   ),
   '@@actions/openConfigFile': OpenFile,
+  '@@actions/openProjectInEditor': OpenFile,
   '@@project/openInEditor': OpenFile,
 };

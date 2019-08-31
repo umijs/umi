@@ -18,7 +18,12 @@ import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
-import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
+import {
+  BackToHomeAction,
+  OpenConfigFileAction,
+  OpenProjectAction,
+  ReInstallDependencyAction,
+} from './Actions';
 import {
   isBigfishProject,
   isDepLost,
@@ -152,7 +157,7 @@ export default class UmiUI {
                 'en-US': `Umi version is too low, please upgrade to umi@2.9 or above.`,
               },
           lang,
-          actions: [BackToHomeAction, OpenProjectAction],
+          actions: [OpenProjectAction, BackToHomeAction],
         });
       }
 

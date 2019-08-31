@@ -3,7 +3,6 @@ export const BackToHomeAction = {
     'zh-CN': '返回主页',
     'en-US': 'Back To Home',
   },
-  buttonType: 'primary',
   browserHandler: 'BACK_TO_HOME',
 };
 

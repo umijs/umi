@@ -123,6 +123,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
               <Action
                 key={index}
                 type={index % 2 === 0 ? 'primary' : 'default'}
+                actionType={handlerType}
                 onClick={this.handleClick}
                 payload={actionPayload}
                 onSuccess={this.handleSuccess}
