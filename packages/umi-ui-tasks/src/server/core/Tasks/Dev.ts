@@ -1,5 +1,6 @@
 import { ChildProcess } from 'child_process';
 import stripAnsi from 'strip-ansi';
+import iconv from 'iconv-lite';
 import { BaseTask, ITaskOptions } from './Base';
 import { TaskState, TaskEventType, TaskType } from '../enums';
 import { isScriptKeyExist, runCommand } from '../../util';
@@ -49,13 +50,18 @@ export class DevTask extends BaseTask {
   }
 
   protected handleChildProcess(proc: ChildProcess) {
-    proc.stdout.on('data', buf => {
-      const log = buf.toString();
+    const stdoutSream = iconv.decodeStream('utf8');
+    proc.stdout.pipe(stdoutSream);
+
+    stdoutSream.on('data', log => {
       this.emit(TaskEventType.STD_OUT_DATA, log);
       this.guessStart(log);
     });
-    proc.stderr.on('data', buf => {
-      const log = buf.toString();
+
+    const stderrStream = iconv.decodeStream('utf8');
+    proc.stderr.pipe(stderrStream);
+
+    stderrStream.on('data', log => {
       this.emit(TaskEventType.STD_ERR_DATA, log);
     });
     proc.on('exit', (code, signal) => {
