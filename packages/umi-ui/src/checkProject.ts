@@ -26,12 +26,16 @@ export function isUmiProject(targetDir) {
 }
 
 export function isUsingBigfish(targetDir) {
-  const pkgStr = readFileSync(join(targetDir, 'package.json'), 'utf-8');
+  const pkgPath = join(targetDir, 'package.json');
+  if (!existsSync(pkgPath)) return false;
+  const pkgStr = readFileSync(pkgPath, 'utf-8');
   return pkgStr.includes('"@alipay/bigfish"');
 }
 
 export function isUsingUmi(targetDir) {
-  const pkgStr = readFileSync(join(targetDir, 'package.json'), 'utf-8');
+  const pkgPath = join(targetDir, 'package.json');
+  if (!existsSync(pkgPath)) return false;
+  const pkgStr = readFileSync(pkgPath, 'utf-8');
   return pkgStr.includes('"umi"') && !isUsingBigfish(targetDir);
 }
 
