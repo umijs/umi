@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 
 const configFiles = ['.umirc.js', '.umirc.ts', 'config/config.js', 'config/config.ts'];
 
@@ -23,6 +23,16 @@ export function isUmiProject(targetDir) {
   if (existFile('src') || existFile('pages') || existFile('page')) {
     return true;
   }
+}
+
+export function isUsingBigfish(targetDir) {
+  const pkgStr = readFileSync(join(targetDir, 'package.json'), 'utf-8');
+  return pkgStr.includes('"@alipay/bigfish"');
+}
+
+export function isUsingUmi(targetDir) {
+  const pkgStr = readFileSync(join(targetDir, 'package.json'), 'utf-8');
+  return pkgStr.includes('"umi"') && !isUsingBigfish(targetDir);
 }
 
 export function isDepLost(e) {

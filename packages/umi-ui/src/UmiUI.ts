@@ -19,7 +19,14 @@ import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
 import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
-import { isDepLost, isPluginLost, isUmiProject } from './checkProject';
+import {
+  isBigfishProject,
+  isDepLost,
+  isPluginLost,
+  isUmiProject,
+  isUsingBigfish,
+  isUsingUmi,
+} from './checkProject';
 import { bigfishScripts, umiScripts } from './scripts';
 
 const debug = require('debug')('umiui:UmiUI');
@@ -94,6 +101,28 @@ export default class UmiUI {
         title: {
           'zh-CN': `项目 ${project.path} 不是 Umi 项目。`,
           'en-US': `Project ${project.path} is not a valid Umi project.`,
+        },
+        lang,
+        actions: [BackToHomeAction],
+      });
+    }
+
+    if (process.env.BIGFISH_COMPAT && isUsingUmi(project.path)) {
+      throw new ActiveProjectError({
+        title: {
+          'zh-CN': `项目 ${project.path} 是 Umi 项目，不能使用 Bigfish 打开。`,
+          'en-US': `Project ${project.path} is Umi Project, don't open it with Bigfish.`,
+        },
+        lang,
+        actions: [BackToHomeAction],
+      });
+    }
+
+    if (!process.env.BIGFISH_COMPAT && isUsingBigfish(project.path)) {
+      throw new ActiveProjectError({
+        title: {
+          'zh-CN': `项目 ${project.path} 是 Bigfish 项目，不能使用 Umi 打开。`,
+          'en-US': `Project ${project.path} is Bigfish Project, don't open it with Umi.`,
         },
         lang,
         actions: [BackToHomeAction],
