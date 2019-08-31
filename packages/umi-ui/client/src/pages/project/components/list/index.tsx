@@ -24,7 +24,7 @@ import {
   Edit,
   Delete,
   Plus,
-  Import as ImportIcon,
+  Upload as UploadIcon,
 } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
@@ -274,7 +274,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>
-                <ImportIcon />
+                <UploadIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
                     id: 'org.umi.ui.global.project.import.title',

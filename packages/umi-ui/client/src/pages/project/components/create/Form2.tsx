@@ -44,7 +44,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
         locale === 'zh-CN'
           ? '选择一个由流程编排提供的典型用户案例，'
           : 'Choose a typical user case provided by process orchestration',
-      link: 'https://github.com/umijs/create-umi/tree/master/lib/generators/app/readme.md',
+      link: 'https://github.com/umijs/create-umi/tree/master/lib/generators/app',
       value: 'app',
     },
   ];

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
+import { Check as CheckIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 import debounce from 'lodash/debounce';
 import {
@@ -117,8 +118,11 @@ const Footer: React.SFC<IFooterProps> = props => {
   const actionCls = cls(styles.section, styles.action);
   const logCls = cls(actionCls, styles.log);
 
-  const LocaleText = ({ locale: textLocale }) => (
-    <span>
+  const LocaleText = ({ locale: textLocale, checked, style }) => (
+    <span style={style}>
+      {typeof checked !== 'undefined' && (
+        <CheckIcon style={{ marginRight: 8, opacity: checked ? 1 : 0 }} />
+      )}
       {LOCALES_ICON[textLocale]} {LOCALES[textLocale]}
     </span>
   );
@@ -130,9 +134,9 @@ const Footer: React.SFC<IFooterProps> = props => {
         setLocale(key, type === 'loading');
       }}
     >
-      {Object.keys(omit(LOCALES, locale)).map((lang: any) => (
+      {Object.keys(LOCALES).map((lang: any) => (
         <Menu.Item key={lang}>
-          <LocaleText locale={lang} />
+          <LocaleText locale={lang} checked={locale === lang} />
         </Menu.Item>
       ))}
     </Menu>
@@ -158,7 +162,12 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        <div onClick={() => handleBack(type === 'loading')} className={actionCls}>
+        <div
+          onClick={() => {
+            handleBack(type === 'loading');
+          }}
+          className={actionCls}
+        >
           <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
