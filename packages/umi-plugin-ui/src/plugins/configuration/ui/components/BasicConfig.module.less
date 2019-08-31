@@ -1,0 +1,100 @@
+.resetTitle {
+  margin-bottom: 16px;
+  p {
+    margin-bottom: 4px;
+    color: fade(#fff, 65);
+  }
+  span {
+    color: fade(#fff, 45);
+  }
+}
+.basicConfig {
+  display: flex;
+  height: 100%;
+  overflow: auto;
+  padding-top: 16px;
+  position: relative;
+  padding: 16px 24px;
+  &-header {
+    margin-bottom: 24px;
+    position: relative;
+    & > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &-searchIcon {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      color: fade(#fff, 85);
+      &-hide {
+        display: none;
+      }
+      &:hover {
+        color: #fff;
+      }
+    }
+    h2 {
+      font-size: 16px;
+      margin-right: 24px;
+    }
+    &-input {
+      display: inline-block;
+      margin-left: -11.5px;
+      vertical-align: middle;
+      width: 0;
+      opacity: 0;
+      transition: width 0.4s, opacity 0.4s;
+      &-active {
+        width: 230px;
+        opacity: 1;
+      }
+    }
+  }
+  &-submit {
+    position: relative;
+    padding: 8px 0;
+    right: 0;
+    bottom: 48px;
+    width: 100%;
+    text-align: right;
+    border-top: 1px solid #15171c;
+    background: #23232e;
+    z-index: 11;
+    button {
+      margin-right: 8px;
+    }
+  }
+  .form {
+    flex: 100% 1 1;
+  }
+  .toc {
+    width: 168px;
+    margin-top: 32px;
+    margin-right: 24px;
+    max-height: 560px !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    &:hover {
+      overflow-y: auto;
+    }
+  }
+  .group {
+    margin-bottom: 30px;
+    max-width: 416px;
+    :global(.ant-form-item-label) {
+      padding-bottom: 12px;
+    }
+    h2 {
+      font-size: 16px;
+      color: fade(#fff, 85);
+      font-weight: 500;
+      margin-bottom: 16px;
+      line-height: 22px;
+    }
+    & > :global(.ant-form-item) {
+      margin-bottom: 24px;
+    }
+  }
+}

@@ -25,9 +25,10 @@ jobs:
       - run: cnpm install --registry=https://registry.npmjs.org
       - run: cnpm run bootstrap -- --npm-client=cnpm
       - run: cnpm run build
+      - run: cnpm run ui:build
       - run:
-          command: npm run test -- --maxWorkers=1 --runInBand
-          no_output_timeout: 30m
+          command: npm run test -- --forceExit --maxWorkers=1 --runInBand
+          no_output_timeout: 300m
       - save_cache:
           key: node-modules-{{ checksum "package.json" }}
           paths:

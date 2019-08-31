@@ -10,7 +10,7 @@
     "repo": "umijs/umi",
     "cacheDir": ".changelog"
   },
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "packages/umi-ui/client"],
   "command": {
     "version": {
       "exact": true

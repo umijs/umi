@@ -272,7 +272,7 @@ export async function installDependencies(
   });
   assert(existsSync(projectPkgPath), `No package.json found in your project`);
   // eslint-disable-next-line
-  const projectPkg = require(projectPkgPath);
+  const projectPkg = JSON.parse(readFileSync(projectPkgPath, 'utf-8'));
 
   // get _mock.js dependencie
   let devDependencies = {};

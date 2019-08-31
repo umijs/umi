@@ -547,7 +547,7 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     babel-plugin-dynamic-import-node "^2.3.0"
 
-"@babel/plugin-transform-modules-commonjs@^7.4.4", "@babel/plugin-transform-modules-commonjs@^7.5.0":
+"@babel/plugin-transform-modules-commonjs@7.5.0", "@babel/plugin-transform-modules-commonjs@^7.4.4", "@babel/plugin-transform-modules-commonjs@^7.5.0":
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-modules-commonjs/-/plugin-transform-modules-commonjs-7.5.0.tgz#425127e6045231360858eeaa47a71d75eded7a74"
   integrity sha512-xmHq0B+ytyrWJvQTc5OWAC4ii6Dhr0s22STOoydokG51JjWhyYo5mRPXoi+ZmtHQhZZwuXNN+GG5jy5UZZJxIQ==
@@ -4325,10 +4325,10 @@ fastparse@^1.1.1:
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
   integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
 
-father-build@^1.1.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.5.1.tgz#05787e9ea54b2a5106e6eba207fcdf1eb8d08b33"
-  integrity sha512-gMx+ajvcx6kDM6JLuAbJ4W1NCgTKgow47dMQN7xP+z46NikxE6yaoa5cxWk8JgsqgS/5/5KHyDlaXRA8zvwgPg==
+father-build@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.6.1.tgz#03e5c7b497f314afb24e64be3cd7c5278f2bba98"
+  integrity sha512-FZdiW0BCLl2yfzjwhvrgWfy6izSAv181U1bSRReIYmx1BTX9s5ubxZ5sL5FGLoxCfih53tTnF3zmDg5B/GhjPg==
   dependencies:
     "@babel/core" "7.4.5"
     "@babel/plugin-proposal-class-properties" "7.4.4"
@@ -4337,6 +4337,7 @@ father-build@^1.1.1:
     "@babel/plugin-proposal-export-default-from" "7.2.0"
     "@babel/plugin-proposal-export-namespace-from" "7.2.0"
     "@babel/plugin-syntax-dynamic-import" "7.2.0"
+    "@babel/plugin-transform-modules-commonjs" "7.5.0"
     "@babel/plugin-transform-runtime" "7.4.4"
     "@babel/preset-env" "7.4.5"
     "@babel/preset-react" "7.0.0"

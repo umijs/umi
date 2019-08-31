@@ -3,17 +3,17 @@ import { existsSync } from 'fs';
 import registerBabel from 'af-webpack/registerBabel';
 import { winPath } from 'umi-utils';
 import { getConfigPaths } from 'umi-core/lib/getUserConfig';
+import { uniq } from 'lodash';
 
-let files = null;
+let files = [];
 
 function initFiles(cwd) {
-  if (files) return;
-  files = getConfigPaths(cwd);
+  files = uniq(files.concat(getConfigPaths(cwd)));
 }
 
 export function addBabelRegisterFiles(extraFiles, { cwd }) {
   initFiles(cwd);
-  files.push(...extraFiles);
+  files = uniq(files.concat(extraFiles));
 }
 
 export default function({ cwd }) {

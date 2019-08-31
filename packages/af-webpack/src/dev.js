@@ -8,11 +8,11 @@ import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, DONE } from './send';
-import choosePort from './choosePort';
+import getPort from './getPort';
 import { isPlainObject } from 'lodash';
 
 const isInteractive = process.stdout.isTTY;
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
+
 const HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
 const CERT = process.env.HTTPS && process.env.CERT ? fs.readFileSync(process.env.CERT) : '';
@@ -46,7 +46,7 @@ export default function dev({
     isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
     'webpackConfig should be plain object or array.',
   );
-  choosePort(port || DEFAULT_PORT)
+  getPort(port)
     .then(port => {
       if (port === null) {
         return;
@@ -99,7 +99,13 @@ export default function dev({
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);
-          send({ type: DONE });
+          send({
+            type: DONE,
+            urls: {
+              local: urls.localUrlForTerminal,
+              lan: urls.lanUrlForTerminal,
+            },
+          });
         }
       });
 

@@ -1,0 +1,58 @@
+.normal {
+  display: flex;
+  height: 100%;
+}
+
+.left {
+  width: 255px;
+  margin-right: 20px;
+  height: 100%;
+  border-right: 1px solid #000;
+  &-scroll {
+    overflow: auto;
+  }
+}
+
+.right {
+  flex: 1;
+  height: 100%;
+  &-scroll {
+    overflow: auto;
+  }
+}
+
+.trigger {
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+
+  .icon {
+    width: 44px;
+    height: 32px;
+    margin-left: 8px;
+    margin-top: 4px;
+  }
+  .title_desc {
+    flex: 1;
+    font-size: 12px;
+  }
+  .title {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 4px;
+  }
+  .description {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.triggerActive {
+  background: rgba(255, 255, 255, 0.04);
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}

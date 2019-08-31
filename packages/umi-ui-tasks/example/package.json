@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "test": "umi test",
+    "lint": "umi lint"
+  }
+}

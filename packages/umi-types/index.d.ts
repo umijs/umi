@@ -1,5 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
+import * as IUi from './ui';
 import { DefaultMethods } from 'signale';
 import * as lodash from 'lodash';
 import * as IWebpack from 'webpack';
@@ -20,8 +21,10 @@ export interface MultiStats {
   stats: IWebpack.Stats[];
   hash: string;
 }
+// for ui plugin developer
+type IUiApi = IUi.IApi;
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack };
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi, IUiApi };
 
 /**
  * System level API
@@ -285,6 +288,34 @@ interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
 }
 
+interface IAction<T = object> {
+  type: string;
+  payload?: T;
+  lang?: string;
+}
+
+export type ISend = (action: IAction<{}>) => void;
+export type ISuccess<T = object> = (payload: T) => void;
+export type IFailure<T = object> = (payload: T) => void;
+type IUiLogType = 'error' | 'info';
+export type IUiLog = (type: IUiLogType, payload: string) => void;
+
+export interface IOnUISocketFunc {
+  (
+    args: {
+      action: IAction;
+      send: ISend;
+      success: ISuccess<{}>;
+      failure: IFailure<{}>;
+      log: IUiLog;
+    },
+  ): void;
+}
+
+interface IOnUISocket {
+  (fn: IOnUISocketFunc): void;
+}
+
 export interface IChangeWebpackConfigFunc<T, U> {
   (webpackConfig: T, AFWebpack: { webpack: U }): T | void;
 }
@@ -455,6 +486,7 @@ export interface IApi {
   onHTMLRebuild: IOnHTMLRebuild;
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
+  onUISocket: IOnUISocket;
 
   /**
    * Application class API
@@ -477,6 +509,7 @@ export interface IApi {
   addEntryImport: IAdd<IAddImportOpts>;
   addEntryCodeAhead: IAdd<string>;
   addEntryCode: IAdd<string>;
+  addUIPlugin: IAdd<string>;
   addRouterImport: IAdd<IAddImportOpts>;
   addRouterImportAhead: IAdd<IAddImportOpts>;
   addRendererWrapperWithComponent: IAdd<IAddImportOpts>;

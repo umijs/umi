@@ -16,11 +16,10 @@
     "publish": "./scripts/publish.js",
     "test": "node scripts/test.js",
     "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
-    "ui:build": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js build",
-    "ui:dev": "APP_ROOT=packages/umi-build-dev/src/plugins/commands/ui ./packages/umi/bin/umi.js dev"
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
-    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+    "**/*.{js,jsx,tsx,ts,less,json}": [
       "prettier --write",
       "git add"
     ]
@@ -38,7 +37,7 @@
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "7.11.1",
-    "father-build": "^1.1.1",
+    "father-build": "^1.6.1",
     "form-data": "^2.3.3",
     "got": "9.3.2",
     "husky": "1.2.0",
@@ -56,5 +55,8 @@
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
     "test-build-result": "^1.1.2"
+  },
+  "engines": {
+    "node": ">= 8.9.0"
   }
 }

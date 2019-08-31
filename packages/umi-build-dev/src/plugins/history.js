@@ -15,7 +15,6 @@ export default function(api) {
         name: 'history',
         validate(val) {
           const [historyType] = getHistoryConfig(val);
-
           assert(
             ['browser', 'hash', 'memory'].includes(historyType),
             `history should be browser or hash, but got ${historyType}`,
@@ -29,6 +28,18 @@ export default function(api) {
           }
 
           api.service.restart(/* why */ 'Config history Changed');
+        },
+        default: 'browser',
+        group: 'route',
+        title: {
+          'zh-CN': 'History 类型',
+          'en-US': 'History Type',
+        },
+        type: 'list',
+        choices: ['browser', 'hash', 'memory'],
+        description: {
+          'zh-CN': 'History 类型，可选 browser、hash 和 memory。',
+          'en-US': 'The history type, including browser, hash and memory.',
         },
       };
     };
