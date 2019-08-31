@@ -52,22 +52,7 @@ export default class PluginAPI {
     }
   };
 
-  /**
-   * intl({ id: 'not.existed' }) => not.existed
-   * intl({ id: 'existed' }) => existed
-   * intl('aaaa') => aaaa
-   */
-  intl: IUi.IIntl = (messageDescriptor, values? = {}) => {
-    const { id = '', ...restParms } = messageDescriptor;
-    const text = formatMessage(
-      {
-        id,
-        ...restParms,
-      },
-      values,
-    );
-    return text;
-  };
+  intl: IUi.IIntl = formatMessage;
 
   getLocale = () => {
     return window.g_lang;
