@@ -14,7 +14,7 @@
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "./scripts/publish.js",
-    "test": "node scripts/test.js",
+    "test": "node --stack-size=1000 scripts/test.js",
     "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
     "ui:build": "node ./scripts/ui.js"
   },
