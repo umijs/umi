@@ -127,7 +127,12 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
     // 延迟执行，拿到 ref
     setTimeout(() => {
       if (dirPathEditRef.current) {
-        dirPathEditRef.current.focus();
+        if (dirPathEdit) {
+          // editable => not editable
+          dirPathEditRef.current.focus();
+        } else {
+          dirPathEditRef.current.blur();
+        }
       }
     }, 0);
   };
@@ -169,15 +174,19 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
           ))}
         </Row> */}
         <div className={styles.edit}>
-          <Button onClick={handleEdit}>
-            <Edit />
-          </Button>
+          <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.directory.edit' })}>
+            <Button onClick={handleEdit}>
+              <Edit />
+            </Button>
+          </Tooltip>
         </div>
-        <div className={styles.refresh}>
-          <Button onClick={handleReload}>
-            <Reload />
-          </Button>
-        </div>
+        <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.directory.refresh' })}>
+          <div className={styles.refresh}>
+            <Button onClick={handleReload}>
+              <Reload />
+            </Button>
+          </div>
+        </Tooltip>
       </div>
       {Array.isArray(directories) ? (
         <>

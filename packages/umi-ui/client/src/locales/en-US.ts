@@ -13,6 +13,8 @@ export default {
   'org.umi.ui.global.project.editor.open': 'Open in the editor',
   'org.umi.ui.global.project.editor.failure': 'Open failed in the editor ',
   'org.umi.ui.global.project.directory.tip': 'Tips: Click to select, double click to enter',
+  'org.umi.ui.global.project.directory.edit': 'Edit path',
+  'org.umi.ui.global.project.directory.refresh': 'Refresh',
   'org.umi.ui.global.content.hello': 'Hello',
   'org.umi.ui.global.project.siderbar.title': 'Project',
   'org.umi.ui.global.project.list.creating': 'Creating',

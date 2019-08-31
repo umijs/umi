@@ -13,6 +13,8 @@ export default {
   'org.umi.ui.global.project.editor.open': '在编辑器中打开',
   'org.umi.ui.global.project.editor.failure': '编辑器打开失败',
   'org.umi.ui.global.project.directory.tip': '单击选择，双击进入',
+  'org.umi.ui.global.project.directory.edit': '编辑路径',
+  'org.umi.ui.global.project.directory.refresh': '刷新',
   'org.umi.ui.global.content.hello': '你好',
   'org.umi.ui.global.project.siderbar.title': '项目',
   'org.umi.ui.global.project.list.creating': '创建中',
