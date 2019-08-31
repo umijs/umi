@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Loading } from '@ant-design/icons';
 import { Steps, Button, message } from 'antd';
 import get from 'lodash/get';
+import { Beforeunload } from 'react-beforeunload';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal from '@/components/Terminal';
@@ -106,42 +107,44 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   _log('status', status);
   _log('progressSteps', progressSteps);
   return (
-    <div className={styles['project-progress']}>
-      <h3>{getTitle()}</h3>
-      {progress && (
-        <Steps
-          current={progress.success ? progressSteps.length - 1 : progress.step}
-          status={status}
-          labelPlacement="vertical"
-        >
-          {progressSteps.map((step, i) => {
-            return (
-              <Step
-                key={i.toString()}
-                title={step}
-                icon={progress.stepStatus === 1 && progress.step === i && <Loading />}
-              />
-            );
-          })}
-        </Steps>
-        // <div>
-        //   步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
-        // </div>
-      )}
-      {/* {progress.success ? <div>创建成功</div> : null} */}
-      {logs && (
-        <div style={{ marginTop: 16 }}>
-          <Terminal terminalClassName={styles.terminal} defaultValue={logs} />
-        </div>
-      )}
-      {progress.failure && (
-        <div className={styles['project-progress-fail']}>
-          <Button loading={retryLoading} type="primary" onClick={handleRetry}>
-            {formatMessage({ id: 'org.umi.ui.global.progress.retry' })}
-          </Button>
-        </div>
-      )}
-    </div>
+    <Beforeunload onBeforeunload={() => 'You will lose data'}>
+      <div className={styles['project-progress']}>
+        <h3>{getTitle()}</h3>
+        {progress && (
+          <Steps
+            current={progress.success ? progressSteps.length - 1 : progress.step}
+            status={status}
+            labelPlacement="vertical"
+          >
+            {progressSteps.map((step, i) => {
+              return (
+                <Step
+                  key={i.toString()}
+                  title={step}
+                  icon={progress.stepStatus === 1 && progress.step === i && <Loading />}
+                />
+              );
+            })}
+          </Steps>
+          // <div>
+          //   步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
+          // </div>
+        )}
+        {/* {progress.success ? <div>创建成功</div> : null} */}
+        {logs && (
+          <div style={{ marginTop: 16 }}>
+            <Terminal terminalClassName={styles.terminal} defaultValue={logs} />
+          </div>
+        )}
+        {progress.failure && (
+          <div className={styles['project-progress-fail']}>
+            <Button loading={retryLoading} type="primary" onClick={handleRetry}>
+              {formatMessage({ id: 'org.umi.ui.global.progress.retry' })}
+            </Button>
+          </div>
+        )}
+      </div>
+    </Beforeunload>
   );
 };
 
