@@ -11,7 +11,7 @@ before_script:
   - npm run ui:build
 
 script:
-  - npm run test -- --forceExit
+  - npm run test
 
 after_success:
   - npm run coveralls

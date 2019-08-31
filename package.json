@@ -14,9 +14,9 @@
     "precommit": "lint-staged",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "./scripts/publish.js",
-    "test": "node --stack-size=1000 scripts/test.js",
-    "test:coverage": "node --stack-size=1000 ./packages/umi-test/bin/umi-test.js --coverage",
-    "ui:build": "node --stack-size=1000 ./scripts/ui.js"
+    "test": "node scripts/test.js",
+    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --forceExit --runInBand --coverage",
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,json}": [
@@ -29,6 +29,7 @@
     "babel-eslint": "10.0.1",
     "chokidar": "3.0.1",
     "coveralls": "3.0.2",
+    "cross-spawn": "^6.0.5",
     "dva": "2.4.1",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",

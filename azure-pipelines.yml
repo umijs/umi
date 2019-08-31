@@ -28,7 +28,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit
+      - script: npm run test
         env:
           PROGRESS: none
         displayName: test
@@ -51,7 +51,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit
+      - script: npm run test
         displayName: test
 
   - job: MacOS_test
@@ -72,5 +72,5 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit
+      - script: npm run test
         displayName: test
