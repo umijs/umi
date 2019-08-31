@@ -30,6 +30,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
     () => {
       if (progress.success && key) {
         (async () => {
+          await setCurrentProject({ key });
           await handleBack(true, '/dashboard');
           // for flash dashboard
           document.getElementById('root').innerHTML = '';
@@ -37,7 +38,6 @@ const ProgressStage: React.FC<IProjectProps> = props => {
             React.createElement(<LoadingPage />, {}),
             document.getElementById('root'),
           );
-          await setCurrentProject({ key });
         })();
       }
       if (progress.failure) {

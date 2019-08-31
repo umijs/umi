@@ -54,7 +54,7 @@ export default class PluginAPI {
 
   intl: IUi.IIntl = (messageDescriptor, values? = {}) => {
     const { g_lang: locale, g_uiLocales: localeMessages } = window;
-    if ('id' in messageDescriptor) {
+    if (messageDescriptor.id) {
       if (messageDescriptor.id in (localeMessages[locale] || {})) {
         return formatMessage(messageDescriptor, values);
       }
