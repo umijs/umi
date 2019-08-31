@@ -42,7 +42,7 @@ export default class ActiveProjectError extends Error {
 
   constructor(opts: IOpts) {
     const { title, message, stack, actions, lang, exception } = opts;
-    super(getLangStr(message, lang));
+    super(getLangStr(message || '', lang));
     if (title) this.title = getLangStr(title, lang);
     if (stack) this.stack = stack;
     if (exception) {
