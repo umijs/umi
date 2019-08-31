@@ -20,6 +20,7 @@ export class BaseTask extends EventEmitter {
   public log: string = ''; // 日志
   public proc: ChildProcess; // 当前进程
   private subscribeInitFlag: boolean = false;
+  private isCancel: boolean = false;
 
   protected pkgPath: string = '';
   protected isBigfishProject: boolean = false;
@@ -97,6 +98,7 @@ export class BaseTask extends EventEmitter {
     }
 
     this.state = TaskState.INIT;
+    this.isCancel = true;
     proc.kill('SIGINT');
   }
 
@@ -119,8 +121,12 @@ export class BaseTask extends EventEmitter {
         // 用户取消任务
         this.state = TaskState.INIT;
       } else {
-        // 自然退出
-        this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
+        if (this.isCancel) {
+          this.state = TaskState.INIT;
+          this.isCancel = false;
+        } else {
+          this.state = code !== 0 ? TaskState.FAIL : TaskState.SUCCESS;
+        }
       }
       // 触发事件
       this.emit(TaskEventType.STATE_EVENT, this.state);
