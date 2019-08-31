@@ -237,10 +237,7 @@ const Footer: React.SFC<IFooterProps> = props => {
                 okText={intl({ id: 'org.umi.ui.global.okText' })}
                 cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
-                <Tooltip
-                  getPopupContainer={trigger => trigger.parentNode}
-                  title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}
-                >
+                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
                   <Delete />
                 </Tooltip>
               </Popconfirm>

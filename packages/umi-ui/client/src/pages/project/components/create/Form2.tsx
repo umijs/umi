@@ -68,6 +68,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
     >
       <Form.Item
         name="type"
+        required={false}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.template' })}
         rules={[
           {
@@ -93,6 +94,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                 label={formatMessage({
                   id: 'org.umi.ui.global.project.create.steps.info.reactFeatures',
                 })}
+                required={false}
                 rules={[
                   {
                     type: 'array',
@@ -120,6 +122,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       <Form.Item
         name={['args', 'language']}
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.lang' })}
+        required={false}
         rules={[
           {
             required: true,
@@ -137,6 +140,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
       <Form.Item
         name="npmClient"
         label={formatMessage({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}
+        required={false}
         rules={[
           {
             required: true,

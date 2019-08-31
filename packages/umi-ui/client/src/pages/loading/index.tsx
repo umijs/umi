@@ -6,9 +6,10 @@ import get from 'lodash/get';
 import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
+import zhCN from '@/locales/zh-CN';
+import enUS from '@/locales/en-US';
 import { DINGTALK_MEMBERS } from '@/enums';
 import actions from './actions';
-import locales from './locales';
 import styles from './index.less';
 import Fail from './fail';
 
@@ -91,7 +92,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     const { error } = this.props;
 
     const { actionLoading } = this.state;
-    const messages = locales[locale] || locales['zh-CN'];
+    const messages = locale === 'en-US' ? enUS : zhCN;
 
     const actionsDeps = error ? (
       <div>
@@ -158,7 +159,11 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
       <Layout type="loading">
         <div className={styles.loading}>
           <Fail
-            title={actionLoading ? '执行中' : '加载失败'}
+            title={
+              actionLoading
+                ? messages['org.umi.ui.loading.onloading']
+                : messages['org.umi.ui.loading.error']
+            }
             loading={actionLoading}
             subTitle={renderSubTitle(error)}
             extra={actionsDeps}
