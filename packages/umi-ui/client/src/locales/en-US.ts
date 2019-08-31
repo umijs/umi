@@ -43,6 +43,14 @@ export default {
   'org.umi.ui.global.project.create.steps.info.template.required': 'Please select a template',
   'org.umi.ui.global.project.create.steps.info.reactFeatures': 'Tech Stack',
   'org.umi.ui.global.project.create.steps.info.reactFeatures.required': 'Please select tech stack',
+  'org.umi.ui.global.project.create.steps.info.reactFeatures.antd.tip': 'Enable antd',
+  'org.umi.ui.global.project.create.steps.info.reactFeatures.dva.tip': 'Enable dva',
+  'org.umi.ui.global.project.create.steps.info.reactFeatures.dynamicImport.tip':
+    'Enable dynamicImport',
+  'org.umi.ui.global.project.create.steps.info.reactFeatures.dll.tip':
+    'Enable dll speed up your local development',
+  'org.umi.ui.global.project.create.steps.info.reactFeatures.locale.tip':
+    'Enable internationalization',
   'org.umi.ui.global.project.create.steps.info.lang': 'Language',
   'org.umi.ui.global.project.create.steps.info.lang.required': 'Please select a language',
   'org.umi.ui.global.project.create.steps.info.npmClient': 'Package Manager',

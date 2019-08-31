@@ -4,7 +4,7 @@ import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Switch, Tooltip 
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import CardForm, { IOption } from '@/components/CardForm';
-import { REACT_FEATURES, SPEEDUP_CLIENTS } from '@/enums';
+import { REACT_FEATURES, SPEEDUP_CLIENTS, REACT_FEATURES_TIP } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 
 const { useContext, useEffect } = React;
@@ -109,7 +109,12 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                   <Row>
                     {Object.keys(REACT_FEATURES).map((feature: any) => (
                       <Col key={feature} span={8} style={{ marginBottom: 8 }}>
-                        <Checkbox value={feature}>{REACT_FEATURES[feature]}</Checkbox>
+                        <Checkbox value={feature}>
+                          {REACT_FEATURES[feature]}&nbsp;
+                          <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
+                            <QuestionCircle />
+                          </Tooltip>
+                        </Checkbox>
                       </Col>
                     ))}
                   </Row>

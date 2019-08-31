@@ -63,6 +63,14 @@ export enum REACT_FEATURES {
   internationalization = 'locale',
 }
 
+export enum REACT_FEATURES_TIP {
+  antd = 'org.umi.ui.global.project.create.steps.info.reactFeatures.antd.tip',
+  dva = 'org.umi.ui.global.project.create.steps.info.reactFeatures.dva.tip',
+  'code splitting' = 'org.umi.ui.global.project.create.steps.info.reactFeatures.dynamicImport.tip',
+  dll = 'org.umi.ui.global.project.create.steps.info.reactFeatures.dll.tip',
+  internationalization = 'org.umi.ui.global.project.create.steps.info.reactFeatures.locale.tip',
+}
+
 export interface ICreateProgress {
   step: number;
   stepStatus: number;
