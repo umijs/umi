@@ -15,8 +15,3 @@ child.on('exit', code => {
 process.on('SIGINT', () => {
   child.kill('SIGINT');
 });
-
-process.on('SIGTERM', () => {
-  child.kill('SIGTERM');
-  process.exit(130);
-});
