@@ -52,16 +52,21 @@ export default class PluginAPI {
     }
   };
 
+  /**
+   * intl({ id: 'not.existed' }) => not.existed
+   * intl({ id: 'existed' }) => existed
+   * intl('aaaa') => aaaa
+   */
   intl: IUi.IIntl = (messageDescriptor, values? = {}) => {
-    const { g_lang: locale, g_uiLocales: localeMessages } = window;
-    if (messageDescriptor.id) {
-      if (messageDescriptor.id in (localeMessages[locale] || {})) {
-        return formatMessage(messageDescriptor, values);
-      }
-      return messageDescriptor.id;
-    }
-    // string
-    return messageDescriptor;
+    const { id = '', ...restParms } = messageDescriptor;
+    const text = formatMessage(
+      {
+        id,
+        ...restParms,
+      },
+      values,
+    );
+    return text;
   };
 
   getLocale = () => {
@@ -70,12 +75,11 @@ export default class PluginAPI {
 
   notify: IUi.INotify = async payload => {
     const { title, message, subtitle, ...restPayload } = payload;
-
     // need intl text
     const intlParams = {
-      title: this.intl({ id: title }),
-      message: this.intl({ id: message }),
-      subtitle: this.intl({ id: subtitle }),
+      title: title ? this.intl({ id: title }) : '',
+      message: message ? this.intl({ id: message }) : '',
+      subtitle: subtitle ? this.intl({ id: subtitle }) : '',
     };
 
     if (document.hasFocus()) {
