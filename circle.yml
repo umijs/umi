@@ -9,6 +9,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:latest-browsers
     environment:
+      CI: true
       NPM_CONFIG_LOGLEVEL: error
       JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
     branches:
