@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-umi",
-  "version": "1.5.0",
+  "version": "1.6.0-beta.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/umijs/umi/tree/master/packages/eslint-config-umi"
