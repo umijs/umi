@@ -55,7 +55,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     const layoutCls = cls(locale, 'ui-layout', className);
     window.g_uiContext = Context;
     // TODO: using config plugin register
-    const framework = window.g_bigfish ? 'Bigfish' : 'UmiUI';
+    const framework = window.g_bigfish ? 'Bigfish UI' : 'Umi UI';
     const icon = window.g_bigfish
       ? '//gw.alipayobjects.com/zos/antfincdn/hGDyUOjsDS/430be478-0a70-4e82-99cc-b2ec526bfff2.png'
       : '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
