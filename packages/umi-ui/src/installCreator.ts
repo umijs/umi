@@ -26,7 +26,7 @@ export default async function(opts: IOpts) {
     // 更新时使用安装时用的 npmClient，否则会导致不可预知的问题
     await executeCommand(
       require(pkgPath).npmClient, // eslint-disable-line
-      ['update'],
+      ['update', '--registry=https://registry.npm.taobao.org'],
       baseDir,
       {
         onData,
