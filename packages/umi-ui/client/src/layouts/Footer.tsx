@@ -5,7 +5,6 @@ import debounce from 'lodash/debounce';
 import {
   FolderFilled,
   ProfileFilled,
-  Swap,
   HomeFilled,
   QuestionCircle,
   Message,
@@ -220,9 +219,9 @@ const Footer: React.SFC<IFooterProps> = props => {
           <Dropdown overlay={menu} placement="topRight">
             <p>
               <LocaleText locale={locale} />
-              <span style={{ marginLeft: 8 }}>
+              {/* <span style={{ marginLeft: 8 }}>
                 <Swap />
-              </span>
+              </span> */}
             </p>
           </Dropdown>
         </div>
@@ -238,9 +237,16 @@ const Footer: React.SFC<IFooterProps> = props => {
                 okText={intl({ id: 'org.umi.ui.global.okText' })}
                 cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
-                <Delete />
+                <Tooltip
+                  getPopupContainer={trigger => trigger.parentNode}
+                  title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}
+                >
+                  <Delete />
+                </Tooltip>
               </Popconfirm>
-              <Enter onClick={handleScorllBottom} />
+              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
+                <Enter onClick={handleScorllBottom} />
+              </Tooltip>
               <Divider type="vertical" />
               <Close onClick={hideLogPanel} />
             </div>

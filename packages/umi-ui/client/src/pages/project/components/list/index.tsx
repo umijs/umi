@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import TweenOne from 'rc-tween-one';
 import { formatMessage } from 'umi-plugin-react/locale';
 import {
   Button,
@@ -19,7 +18,14 @@ import {
   Layout,
   Empty,
 } from 'antd';
-import { Export, AppstoreFilled, Edit, Delete, Plus, Upload } from '@ant-design/icons';
+import {
+  Export,
+  AppstoreFilled,
+  Edit,
+  Delete,
+  Plus,
+  Import as ImportIcon,
+} from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
@@ -237,7 +243,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>
-                <Upload />
+                <ImportIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
                     id: 'org.umi.ui.global.project.import.title',
