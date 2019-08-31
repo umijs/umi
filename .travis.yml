@@ -1,5 +1,10 @@
+sudo: required
 language: node_js
-
+addons:
+  chrome: stable
+env:
+  global:
+    - HEADLESS=false
 node_js:
   - '8'
   - '10'
