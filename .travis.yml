@@ -22,7 +22,7 @@ before_script:
   - yarn ui:build
 
 script:
-  - yarn test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+  - yarn test -- --forceExit --detectOpenHandles --runInBand
 
 after_success:
   - yarn coveralls
