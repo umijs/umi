@@ -75,7 +75,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   };
 
   // debounce will lead alert in Firefox
-  const handleCopyPathDebounce = (p: string) => {
+  const handleCopyPath = (p: string) => {
     if (p) {
       try {
         copy(p || '');
@@ -112,7 +112,6 @@ const Footer: React.SFC<IFooterProps> = props => {
         window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
         window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
       }
-      handleCopyPathDebounce.cancel();
     };
   }, []);
 
@@ -173,9 +172,9 @@ const Footer: React.SFC<IFooterProps> = props => {
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
         </div>
-        {path && name && (
+        {type !== 'list' && path && name && (
           <>
-            <div className={actionCls} onClick={() => handleCopyPathDebounce(path)}>
+            <div className={actionCls} onClick={() => handleCopyPath(path)}>
               <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>
           </>
