@@ -301,7 +301,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
               userSelect: 'none',
             }}
             style={{
-              paddingTop: 187,
+              paddingTop: '20vh',
             }}
             image={iconSvg}
             description={EmptyDescription}

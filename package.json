@@ -15,7 +15,7 @@
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "./scripts/publish.js",
     "test": "node scripts/test.js",
-    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
+    "test:coverage": " node ./packages/umi-test/bin/umi-test.js --coverage",
     "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
@@ -29,6 +29,7 @@
     "babel-eslint": "10.0.1",
     "chokidar": "3.0.1",
     "coveralls": "3.0.2",
+    "cross-spawn": "^6.0.5",
     "dva": "2.4.1",
     "eslint": "5.10.0",
     "eslint-config-airbnb": "17.1.0",
@@ -54,9 +55,7 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "test-build-result": "^1.1.2"
-  },
-  "engines": {
-    "node": ">= 8.9.0"
+    "test-build-result": "^1.1.2",
+    "cross-port-killer": "^1.1.1"
   }
 }

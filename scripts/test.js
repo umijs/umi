@@ -1,11 +1,12 @@
-const { spawn } = require('child_process');
+const spawn = require('cross-spawn');
+const { killer } = require('cross-port-killer');
 const startDevServers = require('./startDevServers');
 
 startDevServers()
   .then(devServers => {
     const argv = process.argv.slice(2) || [];
     const testCmd = spawn(
-      /^win/.test(process.platform) ? 'npm.cmd' : 'npm',
+      'npm',
       ['run', 'test:coverage'].concat(
         // argv pass down into jest
         argv.length > 0 ? ['--', ...argv] : [],
@@ -15,10 +16,16 @@ startDevServers()
       },
     );
     testCmd.on('exit', code => {
-      devServers.forEach(devServer => devServer && devServer.kill('SIGINT'));
+      devServers.forEach(devServer => {
+        killer.killByPid(devServer.pid);
+        if (devServer) {
+          devServer.kill('SIGINT');
+        }
+      });
+      console.log('testCmd exit', code);
       process.exit(code);
     });
   })
   .catch(e => {
-    console.log(e);
+    console.log('startDevServer error', e);
   });
