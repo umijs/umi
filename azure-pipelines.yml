@@ -53,6 +53,9 @@ jobs:
       - script: npm run ui:build
         displayName: ui:build
       - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+        env:
+          PROGRESS: none
+          CI: true
         displayName: test
 
   - job: MacOS_test
@@ -74,4 +77,7 @@ jobs:
       - script: npm run ui:build
         displayName: ui:build
       - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+        env:
+          PROGRESS: none
+          CI: true
         displayName: test
