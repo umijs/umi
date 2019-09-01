@@ -16,7 +16,6 @@ startDevServers()
       },
     );
     testCmd.on('exit', code => {
-      console.log('codecode', code);
       devServers.forEach(devServer => {
         killer.killByPid(devServer.pid);
         if (devServer) {
