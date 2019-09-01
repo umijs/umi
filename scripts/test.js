@@ -1,6 +1,10 @@
 const spawn = require('cross-spawn');
-const { killer } = require('cross-port-killer');
+const { killer, kill } = require('cross-port-killer');
 const startDevServers = require('./startDevServers');
+
+kill(12341);
+kill(12342);
+kill(12343);
 
 startDevServers()
   .then(devServers => {
@@ -16,6 +20,7 @@ startDevServers()
       },
     );
     testCmd.on('exit', code => {
+      console.log('codecode', code);
       devServers.forEach(devServer => {
         killer.killByPid(devServer.pid);
         if (devServer) {
