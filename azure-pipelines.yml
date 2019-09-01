@@ -9,7 +9,7 @@ trigger:
 
 jobs:
   - job: linux_test
-    timeoutInMinutes: 20
+    timeoutInMinutes: 30
     pool:
       vmImage: 'Ubuntu-16.04'
 
@@ -29,14 +29,14 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
         displayName: test
 
   - job: windows_test
-    timeoutInMinutes: 20
+    timeoutInMinutes: 30
     pool:
       vmImage: 'vs2017-win2016'
     steps:
@@ -54,14 +54,14 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
         displayName: test
 
   - job: MacOS_test
-    timeoutInMinutes: 20
+    timeoutInMinutes: 30
     pool:
       vmImage: 'macOS-10.13'
     steps:
@@ -79,7 +79,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
