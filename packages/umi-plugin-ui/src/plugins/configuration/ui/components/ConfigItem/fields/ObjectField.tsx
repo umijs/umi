@@ -83,7 +83,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           [styles['itemField-obj-required']]: isRequired,
         });
         return (
-          <div className={styles.itemField} key={fieldKey}>
+          <div className={styles.itemField} key={i.toString()}>
             <ObjectItemField
               className={fieldObjCls}
               value={field}
