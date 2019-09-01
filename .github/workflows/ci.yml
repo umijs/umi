@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node_version: [8.x, 10.x, 12.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
@@ -17,14 +17,14 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        version: ${{ matrix.node_version }}
     - name: npm install, build, and test
       run: |
         npm install
         npm run bootstrap
         npm run build
         npm run ui:build
-        npm run test -- --forceExit --detectOpenHandles --runInBand
+        npm run test -- --forceExit
       env:
         CI: true
         HEADLESS: false
