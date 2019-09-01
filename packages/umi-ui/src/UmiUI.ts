@@ -32,7 +32,8 @@ import {
   isUsingBigfish,
   isUsingUmi,
 } from './checkProject';
-import { bigfishScripts, umiScripts } from './scripts';
+
+import getScripts from './scripts';
 
 const debug = require('debug')('umiui:UmiUI');
 process.env.UMI_UI = 'true';
@@ -758,25 +759,28 @@ export default class UmiUI {
       }
 
       app.use('/*', (req, res) => {
-        if (process.env.LOCAL_DEBUG) {
-          got(`http://localhost:8002${req.path}`)
-            .then(({ body }) => {
-              res.set('Content-Type', 'text/html');
-              res.send(normalizeHtml(body));
-            })
-            .catch(e => {
-              console.error(e);
-            });
-        } else {
-          if (!content) {
-            content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+        getScripts().then(scripts => {
+          if (process.env.LOCAL_DEBUG) {
+            got(`http://localhost:8002${req.path}`)
+              .then(({ body }) => {
+                res.set('Content-Type', 'text/html');
+                res.send(normalizeHtml(body, scripts));
+              })
+              .catch(e => {
+                console.error(e);
+              });
+          } else {
+            if (!content) {
+              content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+            }
+            res.send(normalizeHtml(content, scripts));
           }
-          res.send(normalizeHtml(content));
-        }
+        });
       });
 
       // 添加埋点脚本
-      function normalizeHtml(html) {
+      function normalizeHtml(html, scripts) {
+        const { bigfishScripts, umiScripts } = scripts;
         // basementMonitor
         html = html.replace(
           '<head>',

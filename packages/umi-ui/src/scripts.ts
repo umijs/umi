@@ -1,3 +1,18 @@
+import macaddress from 'macaddress';
+
+let macId = '';
+const getMacId = async () => {
+  if (macId) {
+    return macId;
+  }
+  return new Promise(resolve => {
+    macaddress.one((err, mac) => {
+      macId = err ? '' : mac;
+      resolve(macId);
+    });
+  });
+};
+
 const monitorOptions = JSON.stringify({
   autoCapture: false,
 });
@@ -20,6 +35,7 @@ window._to = {
   autoLogPv: false,
   monitorOptions: ${monitorOptions},
   debug: ${process.env.NODE_ENV === 'development'},
+  roleId: '{{ roleId }}'
 };
 </script>
 <script src="https://gw.alipayobjects.com/as/g/component/tracert/3.2.0-monitor.8/index.js"></script>
@@ -34,7 +50,9 @@ const ga = `
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-145890626-1');
+  gtag('config', 'UA-145890626-1', {
+    'user_id': '{{ roleId }}'
+  });
 </script>
 <!-- Google Analytics End -->
 `;
@@ -53,17 +71,34 @@ const deer = `
   }(window,document,'script','https://ur.alipay.com/tracert_a1613.js','Tracert');
   Tracert.start({
     monitorOptions: ${monitorOptions},
+    roleId: '{{ roleId }}'
   });
 </script>
 <!-- deer End -->
 `;
 
-export const bigfishScripts = {
-  head: [bmMonitorBase, deer],
-  foot: [],
+const render = (template: string, model: Object): string => {
+  return template.replace(/{{ (\w+) }}/g, (str, key) => model[key]);
 };
 
-export const umiScripts = {
-  head: [bmMonitorBase, bmMonitor],
-  foot: [ga],
+const getScripts = async () => {
+  const macAddress = await getMacId();
+
+  const modal = { roleId: macAddress };
+  const deerScript = render(deer, modal);
+  const bmMonitorScript = render(bmMonitor, modal);
+  const gaScript = render(ga, modal);
+
+  return {
+    bigfishScripts: {
+      head: [bmMonitorBase, deerScript],
+      foot: [],
+    },
+    umiScripts: {
+      head: [bmMonitorBase, bmMonitorScript],
+      foot: [gaScript],
+    },
+  };
 };
+
+export default getScripts;
