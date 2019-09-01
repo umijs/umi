@@ -60,6 +60,17 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       ? '//gw.alipayobjects.com/zos/antfincdn/hGDyUOjsDS/430be478-0a70-4e82-99cc-b2ec526bfff2.png'
       : '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
+    const getTitle = () => {
+      if (title) {
+        // dashboard plugin title
+        if (currentProject.name) {
+          return `${title} - ${currentProject.name}`;
+        }
+        return `${title} - ${framework}`;
+      }
+      return framework;
+    };
+
     return (
       <div className={layoutCls}>
         <Context.Provider
@@ -76,7 +87,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
           }}
         >
           <Helmet>
-            <title>{title ? `${title} - ${framework}` : framework}</title>
+            <title>{getTitle()}</title>
             <link rel="shortcut icon" href={icon} type="image/x-icon" />
           </Helmet>
           <ErrorBoundary>{this.props.children}</ErrorBoundary>

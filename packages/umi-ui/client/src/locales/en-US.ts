@@ -9,6 +9,8 @@ export default {
   'org.umi.ui.global.cancelText': 'No',
   'org.umi.ui.global.edit.success': 'Edit success',
   'org.umi.ui.global.panel.lang': 'Language',
+  'org.umi.ui.global.panel.recent.open': 'Recently Open',
+  'org.umi.ui.global.panel.recent.open.empty': 'No recent project',
   'org.umi.ui.global.project.title': 'Project Manager',
   'org.umi.ui.global.project.editor.open': 'Open in the editor',
   'org.umi.ui.global.project.editor.failure': 'Open failed in the editor ',

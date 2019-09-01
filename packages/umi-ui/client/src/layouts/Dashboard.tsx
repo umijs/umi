@@ -65,15 +65,24 @@ export default withRouter(props => {
             }
           };
 
+          const projects = Object.keys(projectMaps);
+
           const recentMenu = (
             <Menu theme={theme} className={styles['sidebar-recentMenu']}>
               <Menu.Item key="openInEdit" onClick={openEditor}>
-                <p>在编辑器打开</p>
+                <p>{formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}</p>
               </Menu.Item>
-              {Object.keys(projectMaps).length > 0 && <Menu.Divider />}
-              <Menu.ItemGroup key="projects" title="最近打开">
+              {projects.length > 0 && <Menu.Divider />}
+              <Menu.ItemGroup
+                key="projects"
+                title={
+                  projects.length > 1
+                    ? formatMessage({ id: 'org.umi.ui.global.panel.recent.open' })
+                    : formatMessage({ id: 'org.umi.ui.global.panel.recent.open.empty' })
+                }
+              >
                 {currentProject &&
-                  Object.keys(projectMaps)
+                  projects
                     .filter(
                       p =>
                         p !== currentProject.key && getProjectStatus(currentProject) === 'success',
