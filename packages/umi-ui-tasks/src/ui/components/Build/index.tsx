@@ -73,7 +73,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl({ id: 'org.umi.ui.tasks.build.buildError' }),
+        title: `${api.currentProject.name} ${intl({ id: 'org.umi.ui.tasks.build.buildError' })}`,
         message: errMsg,
       });
     }
@@ -83,7 +83,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl({ id: 'org.umi.ui.tasks.build.cancelError' }),
+        title: `${api.currentProject.name} ${intl({ id: 'org.umi.ui.tasks.build.cancelError' })}`,
         message: errMsg,
       });
       return;

@@ -108,7 +108,7 @@ export default (api: IUiApi) => {
       }
       const { title, message, ...rest } = getNoticeMessage(type, state);
       api.notify({
-        title: intl({ id: title }),
+        title: `${api.currentProject.name} ${intl({ id: title })}`,
         message: intl({ id: message }),
         ...rest,
       });
