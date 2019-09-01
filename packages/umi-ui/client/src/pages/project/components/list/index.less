@@ -46,7 +46,8 @@
         &-item {
           text-align: center;
           user-select: none;
-          svg {
+          svg,
+          p {
             color: @text-color;
           }
           i {
@@ -56,6 +57,12 @@
             font-size: 14px;
             line-height: 22px;
             margin-top: 6px;
+          }
+          &-active {
+            svg,
+            p {
+              color: @light;
+            }
           }
         }
       }
