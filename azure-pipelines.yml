@@ -9,6 +9,7 @@ trigger:
 
 jobs:
   - job: linux_test
+    timeoutInMinutes: 10
     pool:
       vmImage: 'Ubuntu-16.04'
 
@@ -35,6 +36,7 @@ jobs:
         displayName: test
 
   - job: windows_test
+    timeoutInMinutes: 10
     pool:
       vmImage: 'vs2017-win2016'
     steps:
@@ -59,6 +61,7 @@ jobs:
         displayName: test
 
   - job: MacOS_test
+    timeoutInMinutes: 10
     pool:
       vmImage: 'macOS-10.13'
     steps:
