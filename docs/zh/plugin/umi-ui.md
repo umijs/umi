@@ -182,7 +182,7 @@ export default (props) => {
 1. `callRemote` 会自动带上 `lang` 属性，供服务端区分语言
 2. 有 `keep` 属性，则不会在 success 或 failure 后清除掉
 
-### api.listenRemote
+### api.listenRemote()
 
 监听 `socket` 请求，有消息时通过 `onMessage` 处理回调。
 
