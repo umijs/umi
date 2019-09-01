@@ -742,7 +742,7 @@ export default class UmiUI {
 
   async start() {
     return new Promise(async (resolve, reject) => {
-      console.log(`🚀 Starting Umi UI...`);
+      console.log(`🚀 Starting Umi UI version ${process.env.UMI_VERSION} ...`);
 
       const express = require('express');
       const compression = require('compression');
