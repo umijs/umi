@@ -47,6 +47,7 @@
     "src",
     "bin",
     "_runtimePlugin.js",
+    "_Service.js",
     "babel.js",
     "dynamic.d.ts",
     "dynamic.js",
