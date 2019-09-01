@@ -49,7 +49,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         onMessage: data => {
           _log('listen createProject', data);
           if (data.install) {
-            setLogs(logs => (logs += `${data.install}`));
+            setLogs(data.install);
           }
         },
       });
