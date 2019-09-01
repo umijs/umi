@@ -1,5 +1,5 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button } from 'antd';
+import { Menu, Layout, Dropdown, Button, message } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
@@ -157,9 +157,13 @@ export default withRouter(props => {
                           const { title, action, onClick, ...btnProps } = panelAction;
                           const handleClick = async () => {
                             // TODO: try catch handler
-                            await callRemote(action);
-                            if (onClick) {
-                              onClick();
+                            try {
+                              await callRemote(action);
+                              if (onClick) {
+                                onClick();
+                              }
+                            } catch (e) {
+                              message.error(e && e.message ? e.message : 'error');
                             }
                           };
                           return (

@@ -220,7 +220,7 @@ export default class UmiUI {
     }
     if (!existsSync(launchPath)) {
       if (callback.failure) {
-        let msg = {
+        const msg = {
           'zh-CN': `打开编辑器失败 ${launchPath}，项目不存在`,
           'en-US': `Open Editor Failure, ${launchPath}, project does not exist`,
         };
