@@ -74,16 +74,17 @@ const Footer: React.SFC<IFooterProps> = props => {
     });
   };
 
-  const handleCopyPathDebounce = debounce((p: string) => {
+  // debounce will lead alert in Firefox
+  const handleCopyPathDebounce = (p: string) => {
     if (p) {
       try {
-        copy(p);
+        copy(p || '');
         message.success(intl({ id: 'org.umi.ui.global.copy.success' }));
       } catch (e) {
         message.error(intl({ id: 'org.umi.ui.global.copy.failure' }));
       }
     }
-  }, 300);
+  };
 
   useEffect(() => {
     (async () => {
