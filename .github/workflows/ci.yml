@@ -17,14 +17,12 @@ jobs:
     - name: Use Node.js ${{ matrix.node_version }}
       uses: actions/setup-node@v1
       with:
-        version: ${{ matrix.node_version }}
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run bootstrap
-        npm run build
-        npm run ui:build
-        npm run test -- --forceExit
+        node-version: ${{ matrix.node_version }}
+    - run: npm install
+    - run: npm run bootstrap
+    - run: npm run build
+    - run: npm run ui:build
+    - run: npm run test -- --forceExit
       env:
         CI: true
         HEADLESS: false
