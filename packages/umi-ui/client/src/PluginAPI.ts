@@ -52,6 +52,13 @@ export default class PluginAPI {
     }
   };
 
+  getCwd: IUi.IGetCwd = async () => {
+    const { cwd } = await callRemote({
+      type: '@@fs/getCwd',
+    });
+    return cwd;
+  };
+
   intl: IUi.IIntl = formatMessage;
 
   getLocale = () => {
