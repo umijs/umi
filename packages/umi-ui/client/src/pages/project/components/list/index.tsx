@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import cls from 'classnames';
 import {
   Button,
   Tooltip,
@@ -246,6 +247,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     </div>
   );
 
+  const itemCls = cls(styles['project-list-layout-sider-item'], {
+    // TODO: tmp use active
+    [styles['project-list-layout-sider-item-active']]: true,
+  });
+
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
@@ -253,7 +259,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <img src={iconSvg} alt="logo" />
           <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
-        <div className={styles['project-list-layout-sider-item']}>
+        <div className={itemCls}>
           <AppstoreFilled />
           <p>{formatMessage({ id: 'org.umi.ui.global.project.siderbar.title' })}</p>
         </div>

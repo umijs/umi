@@ -9,10 +9,12 @@ import styles from './index.less';
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const { sections, disableRightOverflow = false, disableLeftOverflow = false, className } = props;
 
+  const { pathname, query } = history.location;
+
   const keys = sections.map(({ key }) => key);
   let activeIndex = 0;
-  if (history.location.query.active) {
-    const index = keys.indexOf(history.location.query.active);
+  if (query.active) {
+    const index = keys.indexOf(query.active);
     activeIndex = index === -1 ? 0 : index;
   }
 
@@ -27,9 +29,11 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const Component = sections[currentIndex].component;
 
-  function toggleSectionHandler(key) {
-    history.push(`${history.location.pathname}?active=${key}`);
-  }
+  const toggleSectionHandler = key => {
+    if (key !== query.active) {
+      history.push(`${pathname}?active=${key}`);
+    }
+  };
 
   const leftCls = cls(styles.left, {
     [styles['left-scroll']]: !disableLeftOverflow,
@@ -52,7 +56,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
             <div
               className={triggerCls}
               key={s.title}
-              onClick={toggleSectionHandler.bind(this, keys[index])}
+              onClick={() => toggleSectionHandler(keys[index])}
             >
               <div className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}

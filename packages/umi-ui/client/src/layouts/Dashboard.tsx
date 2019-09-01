@@ -1,5 +1,5 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button } from 'antd';
+import { Menu, Layout, Dropdown, Button, message } from 'antd';
 import { Left, CaretDown } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
@@ -65,15 +65,24 @@ export default withRouter(props => {
             }
           };
 
+          const projects = Object.keys(projectMaps);
+
           const recentMenu = (
             <Menu theme={theme} className={styles['sidebar-recentMenu']}>
               <Menu.Item key="openInEdit" onClick={openEditor}>
-                <p>在编辑器打开</p>
+                <p>{formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}</p>
               </Menu.Item>
-              {Object.keys(projectMaps).length > 0 && <Menu.Divider />}
-              <Menu.ItemGroup key="projects" title="最近打开">
+              {projects.length > 0 && <Menu.Divider />}
+              <Menu.ItemGroup
+                key="projects"
+                title={
+                  projects.length > 1
+                    ? formatMessage({ id: 'org.umi.ui.global.panel.recent.open' })
+                    : formatMessage({ id: 'org.umi.ui.global.panel.recent.open.empty' })
+                }
+              >
                 {currentProject &&
-                  Object.keys(projectMaps)
+                  projects
                     .filter(
                       p =>
                         p !== currentProject.key && getProjectStatus(currentProject) === 'success',
@@ -148,9 +157,13 @@ export default withRouter(props => {
                           const { title, action, onClick, ...btnProps } = panelAction;
                           const handleClick = async () => {
                             // TODO: try catch handler
-                            await callRemote(action);
-                            if (onClick) {
-                              onClick();
+                            try {
+                              await callRemote(action);
+                              if (onClick) {
+                                onClick();
+                              }
+                            } catch (e) {
+                              message.error(e && e.message ? e.message : 'error');
                             }
                           };
                           return (

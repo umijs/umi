@@ -74,16 +74,17 @@ const Footer: React.SFC<IFooterProps> = props => {
     });
   };
 
-  const handleCopyPathDebounce = debounce((p: string) => {
+  // debounce will lead alert in Firefox
+  const handleCopyPath = (p: string) => {
     if (p) {
       try {
-        copy(p);
+        copy(p || '');
         message.success(intl({ id: 'org.umi.ui.global.copy.success' }));
       } catch (e) {
         message.error(intl({ id: 'org.umi.ui.global.copy.failure' }));
       }
     }
-  }, 300);
+  };
 
   useEffect(() => {
     (async () => {
@@ -111,7 +112,6 @@ const Footer: React.SFC<IFooterProps> = props => {
         window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
         window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
       }
-      handleCopyPathDebounce.cancel();
     };
   }, []);
 
@@ -172,9 +172,9 @@ const Footer: React.SFC<IFooterProps> = props => {
             <HomeFilled style={{ marginRight: 4 }} />
           </Tooltip>
         </div>
-        {path && name && (
+        {type !== 'list' && path && name && (
           <>
-            <div className={actionCls} onClick={() => handleCopyPathDebounce(path)}>
+            <div className={actionCls} onClick={() => handleCopyPath(path)}>
               <FolderFilled style={{ marginRight: 4 }} /> {path}
             </div>
           </>
