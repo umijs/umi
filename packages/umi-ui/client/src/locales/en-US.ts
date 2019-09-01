@@ -84,4 +84,6 @@ export default {
   'org.umi.ui.global.error.title':
     'Something wrong, click on the bottom right corner to give us feedback',
   'org.umi.ui.global.error.stack': 'Error stack',
+  'org.umi.ui.configuration.basic.config.object.error': 'Config parameter is not correct',
+  'org.umi.ui.configuration.basic.config.object.select.error': 'Please select an option',
 };

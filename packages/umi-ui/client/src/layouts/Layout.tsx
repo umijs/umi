@@ -63,7 +63,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     const getTitle = () => {
       if (title) {
         // dashboard plugin title
-        if (currentProject.name) {
+        if (currentProject.name && type !== 'list') {
           return `${title} - ${currentProject.name}`;
         }
         return `${title} - ${framework}`;
