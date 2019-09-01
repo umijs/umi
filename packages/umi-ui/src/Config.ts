@@ -72,11 +72,13 @@ export default class Config {
     path,
     npmClient,
     createOpts,
+    ignoreExistsCheck,
   }: {
     path: string;
     name: string;
     npmClient?: string;
     createOpts?: any;
+    ignoreExistsCheck?: boolean;
   }): string {
     name = name || basename(path);
     const str = `${path}____${name}`;
@@ -84,7 +86,9 @@ export default class Config {
       .update(str)
       .digest('hex')
       .slice(0, 6);
-    assert(!this.data.projectsByKey[key], `Key of path ${path} exists, please try another one.`);
+    if (!ignoreExistsCheck) {
+      assert(!this.data.projectsByKey[key], `Key of path ${path} exists, please try another one.`);
+    }
     this.data.projectsByKey[key] = {
       path,
       name,
@@ -149,7 +153,11 @@ export default class Config {
     const absProjectPath = join(process.cwd(), projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
-    const key = this.addProject({ name: projectName, path: absProjectPath });
+    const key = this.addProject({
+      name: projectName,
+      path: absProjectPath,
+      ignoreExistsCheck: true,
+    });
     this.setCurrentProject(key);
   }
 }
