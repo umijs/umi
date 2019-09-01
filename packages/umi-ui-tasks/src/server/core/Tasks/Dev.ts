@@ -105,6 +105,9 @@ export class DevTask extends BaseTask {
   }
 
   private parseUrl(str: string) {
+    if (!str) {
+      return '';
+    }
     const hIndex = str.indexOf('h');
     const slashIndex = str.lastIndexOf('/');
     return str.substr(hIndex, slashIndex - hIndex);

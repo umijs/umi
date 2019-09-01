@@ -20,7 +20,7 @@ function initTerminal() {
       foreground: '#ffffff73',
     },
     cursorBlink: false,
-    cursorStyle: 'bar',
+    cursorStyle: 'underline',
     disableStdin: true,
   });
   terminal.loadAddon(new WebLinksAddon());

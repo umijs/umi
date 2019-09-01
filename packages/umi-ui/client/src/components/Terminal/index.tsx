@@ -37,7 +37,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
           foreground: '#ffffff73',
         },
         cursorBlink: false,
-        cursorStyle: 'bar',
+        cursorStyle: 'underline',
         disableStdin: true,
         ...terminalConfig,
       }),

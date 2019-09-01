@@ -31,23 +31,6 @@ const DashboardUI: React.FC<IProps> = props => {
       className: actionCardCls,
       title: (
         <div className={styles.main}>
-          <div className={cls(styles.icon, styles.build)} />
-          <div className={styles.info}>
-            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.build.title' })}</h4>
-            <p>{intl({ id: 'org.umi.ui.dashboard.panel.build.desc' })}</p>
-          </div>
-        </div>
-      ),
-      body: (
-        <div onClick={() => redirect('/tasks?active=build')}>
-          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
-        </div>
-      ),
-    },
-    {
-      className: actionCardCls,
-      title: (
-        <div className={styles.main}>
           <div className={cls(styles.icon, styles.dev)} />
           <div className={styles.info}>
             <h4>{intl({ id: 'org.umi.ui.dashboard.panel.dev.title' })}</h4>
@@ -57,6 +40,23 @@ const DashboardUI: React.FC<IProps> = props => {
       ),
       body: (
         <div onClick={() => redirect('/tasks')}>
+          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
+        </div>
+      ),
+    },
+    {
+      className: actionCardCls,
+      title: (
+        <div className={styles.main}>
+          <div className={cls(styles.icon, styles.build)} />
+          <div className={styles.info}>
+            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.build.title' })}</h4>
+            <p>{intl({ id: 'org.umi.ui.dashboard.panel.build.desc' })}</p>
+          </div>
+        </div>
+      ),
+      body: (
+        <div onClick={() => redirect('/tasks?active=build')}>
           {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
         </div>
       ),

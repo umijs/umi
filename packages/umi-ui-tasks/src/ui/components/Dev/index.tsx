@@ -148,10 +148,14 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
         status: 'success',
         text: (
           <span>
-            {intl({ id: 'org.umi.ui.tasks.dev.state.success' })}
-            <a href={localUrl} target="_blank">
-              {localUrl}
-            </a>
+            {localUrl ? (
+              <>
+                {intl({ id: 'org.umi.ui.tasks.dev.state.success' })}
+                <a href={localUrl} target="_blank">
+                  {localUrl}
+                </a>
+              </>
+            ) : null}
           </span>
         ),
       },
