@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "2.9.0-beta.6",
+  "version": "2.9.0-beta.7",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
     "@babel/core": "7.4.5",
@@ -16,8 +16,8 @@
     "resolve-cwd": "3.0.0",
     "semver": "6.1.1",
     "signale": "1.4.0",
-    "umi-build-dev": "1.11.0-beta.6",
-    "umi-ui": "1.0.0-beta.3",
+    "umi-build-dev": "1.11.0-beta.7",
+    "umi-ui": "1.0.0-beta.4",
     "umi-utils": "1.6.0-beta.2",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
@@ -47,6 +47,7 @@
     "src",
     "bin",
     "_runtimePlugin.js",
+    "_Service.js",
     "babel.js",
     "dynamic.d.ts",
     "dynamic.js",

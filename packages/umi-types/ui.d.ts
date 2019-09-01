@@ -1,6 +1,6 @@
 import lodash from 'lodash';
 import { Debugger } from 'debug';
-import { Context, FC, FunctionComponent } from 'react';
+import { ReactNode, Context, FC, FunctionComponent } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
@@ -49,6 +49,8 @@ declare namespace IUI {
   }
 
   interface IPanel extends IRoute {
+    path: string;
+    component: ReactNode;
     icon: IconType | string;
     actions?: IPanelAction[];
   }
@@ -85,6 +87,7 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = typeof formatMessage;
+  type IGetCwd = () => string;
 
   interface INotifyParams {
     title: string;
@@ -127,6 +130,7 @@ declare namespace IUI {
     readonly debug: IDebug;
     /** currentProject  */
     currentProject: ICurrentProject;
+    getCwd: IGetCwd;
     /** intl */
     intl: IIntl;
     /** add plugin Panel */

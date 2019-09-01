@@ -34,6 +34,7 @@ import {
 } from './checkProject';
 
 import getScripts from './scripts';
+import isDepFileExists from './utils/isDepFileExists';
 
 const debug = require('debug')('umiui:UmiUI');
 process.env.UMI_UI = 'true';
@@ -142,12 +143,14 @@ export default class UmiUI {
       debug(`Attach service for ${key}`);
       // Use local service and detect version compatibility
       const serviceModule = process.env.BIGFISH_COMPAT
-        ? '@alipay/bigfish/_Service'
-        : 'umi/_Service';
-      const binModule = process.env.BIGFISH_COMPAT ? '@alipay/bigfish/bin/bigfish' : 'umi/bin/umi';
+        ? '@alipay/bigfish/_Service.js'
+        : 'umi/_Service.js';
+      const binModule = process.env.BIGFISH_COMPAT
+        ? '@alipay/bigfish/bin/bigfish.js'
+        : 'umi/bin/umi.js';
       const cwd = project.path;
-      const localService = resolveFrom.silent(cwd, serviceModule);
-      const localBin = resolveFrom.silent(cwd, binModule);
+      const localService = isDepFileExists(cwd, serviceModule);
+      const localBin = isDepFileExists(cwd, binModule);
       if (process.env.UI_CHECK_LOCAL !== 'none' && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
         throw new ActiveProjectError({
@@ -163,7 +166,7 @@ export default class UmiUI {
       }
 
       try {
-        const servicePath = localService || 'umi-build-dev/lib/Service';
+        const servicePath = resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
         debug(`Service path: ${servicePath}`);
         const Service = require(servicePath).default;
         const service = new Service({
@@ -739,7 +742,7 @@ export default class UmiUI {
 
   async start() {
     return new Promise(async (resolve, reject) => {
-      console.log(`🚀 Starting Umi UI...`);
+      console.log(`🚀 Starting Umi UI version ${process.env.UMI_VERSION} ...`);
 
       const express = require('express');
       const compression = require('compression');
