@@ -360,7 +360,7 @@ api.addPanel({
 });
 ```
 
-### api.notify
+### api.notify()
 
 调用 Umi UI 通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd [Notification](https://ant.design/components/notification-cn)，否则为系统原生通知栏。
 
@@ -402,7 +402,7 @@ notify({
 });
 ```
 
-### api.redirect
+### api.redirect()
 
 项目详情内的路由跳转，在不同插件之间进行跳转。
 
@@ -448,7 +448,7 @@ export default () => (
 );
 ```
 
-### api.debug
+### api.debug()
 
 `debug` [API](https://github.com/visionmedia/debug#browser-support)。
 
@@ -470,7 +470,7 @@ export default () => {
 > 不建议在插件里使用 `console.log` 调用。
 
 
-### api.getCwd
+### api.getCwd()
 
 获取 Umi UI 启动时的路径。
 
