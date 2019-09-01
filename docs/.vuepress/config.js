@@ -87,7 +87,7 @@ module.exports = {
             {
               title: 'Develop Plugin',
               collapsable: false,
-              children: ['develop'],
+              children: ['develop', 'umi-ui'],
             },
           ],
         },
@@ -156,7 +156,7 @@ module.exports = {
             {
               title: '插件开发',
               collapsable: false,
-              children: ['develop'],
+              children: ['develop', 'umi-ui'],
             },
           ],
         },
