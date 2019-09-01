@@ -4,10 +4,11 @@ language: node_js
 addons:
   chrome: stable
 env:
-  - YARN_GPG=no
-  - HEADLESS=false
-  - CI=true
-  - PROGRESS=none
+  global:
+    - YARN_GPG=no
+    - HEADLESS=false
+    - CI=true
+    - PROGRESS=none
 
 matrix:
   include:
