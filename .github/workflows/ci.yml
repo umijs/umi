@@ -24,9 +24,9 @@ jobs:
         npm run bootstrap
         npm run build
         npm run ui:build
-        npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+        npm run test -- --forceExit --detectOpenHandles --runInBand
       env:
         CI: true
         HEADLESS: false
         PROGRESS: none
-        
+
