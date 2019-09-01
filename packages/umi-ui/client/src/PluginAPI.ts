@@ -67,32 +67,37 @@ export default class PluginAPI {
       subtitle: subtitle ? this.intl({ id: subtitle }) : '',
     };
 
-    if (document.hasFocus()) {
-      // focus use antd Notification
-      try {
-        notification[payload.type]({
+    try {
+      if (document.hasFocus()) {
+        // focus use antd Notification
+        notification[payload.type || 'info']({
           message: intlParams.title,
           description: intlParams.message,
           duration: payload.timeout || 4.5,
         });
-        // prevent system notify
-        return false;
-      } catch (e) {
-        console.error('UI notification  error', e);
+      } else {
+        // use system Notification
+        await callRemote({
+          type: '@@app/notify',
+          payload: {
+            ...intlParams,
+            ...restPayload,
+          },
+        });
       }
-    }
-
-    // else use system Notification
-    try {
-      await callRemote({
-        type: '@@app/notify',
-        payload: {
-          ...intlParams,
-          ...restPayload,
-        },
-      });
     } catch (e) {
-      console.error('System notification error', e);
+      console.error('UI notification  error', e);
+      if (this._.get(window, 'Tracert.logError')) {
+        if (e && e.message) {
+          e.message = `${window.g_bigfish ? 'Bigfish' : 'Umi'}: params: ${JSON.stringify(
+            payload,
+          )} ${e.message}`;
+        }
+        window.Tracert.logError(e, {
+          // framework use umi ui
+          d1: window.g_bigfish ? 'Bigfish' : 'Umi',
+        });
+      }
     }
   };
 
