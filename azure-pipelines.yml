@@ -21,15 +21,15 @@ jobs:
       - checkout: self
         clean: all
         fetchDepth: 1
-      - script: npm install
+      - script: yarn install
         displayName: install
-      - script: npm run bootstrap
+      - script: yarn bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: yarn build
         displayName: build
-      - script: npm run ui:build
+      - script: yarn ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
@@ -46,15 +46,15 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: '10.x'
-      - script: npm install
+      - script: yarn install
         displayName: install
-      - script: npm run bootstrap
+      - script: yarn bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: yarn build
         displayName: build
-      - script: npm run ui:build
+      - script: yarn ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
@@ -71,15 +71,15 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: '10.x'
-      - script: npm install
+      - script: yarn install
         displayName: install
-      - script: npm run bootstrap
+      - script: yarn bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: yarn build
         displayName: build
-      - script: npm run ui:build
+      - script: yarn ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
