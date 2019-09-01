@@ -28,7 +28,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
         env:
           PROGRESS: none
           CI: true
@@ -52,7 +52,7 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
         displayName: test
 
   - job: MacOS_test
@@ -73,5 +73,5 @@ jobs:
         displayName: build
       - script: npm run ui:build
         displayName: ui:build
-      - script: npm run test -- --forceExit --detectOpenHandles --runInBand
+      - script: npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
         displayName: test

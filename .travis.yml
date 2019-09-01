@@ -6,6 +6,7 @@ env:
   global:
     - HEADLESS=false
     - CI=true
+    - PROGRESS=none
 node_js:
   - '8'
   - '10'
@@ -17,7 +18,7 @@ before_script:
   - npm run ui:build
 
 script:
-  - npm run test -- --forceExit --detectOpenHandles --runInBand
+  - npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
 
 after_success:
   - npm run coveralls
