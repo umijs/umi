@@ -22,6 +22,7 @@ startDevServers()
           devServer.kill('SIGINT');
         }
       });
+      console.log('testCmd exit', code);
       process.exit(code);
     });
   })
