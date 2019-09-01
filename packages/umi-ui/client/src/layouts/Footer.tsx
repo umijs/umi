@@ -191,12 +191,12 @@ const Footer: React.SFC<IFooterProps> = props => {
             content={
               <div className={styles.feedback}>
                 <img
-                  width={150}
-                  height={200}
+                  width={window.g_bigfish ? 150 : 230}
+                  height={window.g_bigfish ? 200 : 150}
                   src={
                     window.g_bigfish
                       ? '//gw-office.alipayobjects.com/basement_prod/bd018d14-7cfd-4410-97dc-84bfd7bb6a8c.jpg'
-                      : '//gw.alipayobjects.com/zos/antfincdn/30ktM0fuXZ/fe121f6c-154e-45e1-aa00-e60164cf8739.png'
+                      : '//img.alicdn.com/tfs/TB1n__6eFP7gK0jSZFjXXc5aXXa-737-479.png'
                   }
                 />
               </div>
