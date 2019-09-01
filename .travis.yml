@@ -4,10 +4,10 @@ language: node_js
 addons:
   chrome: stable
 env:
-  global:
-    - HEADLESS=false
-    - CI=true
-    - PROGRESS=none
+  - YARN_GPG=no
+  - HEADLESS=false
+  - CI=true
+  - PROGRESS=none
 
 matrix:
   include:
@@ -16,15 +16,15 @@ matrix:
     - node_js: "12"
 
 before_script:
-  - npm run bootstrap
-  - npm run build
-  - npm run ui:build
+  - yarn bootstrap
+  - yarn build
+  - yarn ui:build
 
 script:
-  - npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+  - yarn test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
 
 after_success:
-  - npm run coveralls
+  - yarn coveralls
 
 cache:
   directories:
