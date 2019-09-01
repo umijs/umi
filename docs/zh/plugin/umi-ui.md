@@ -1,3 +1,7 @@
+---
+sidebarDepth: 2
+---
+
 # Umi UI 插件开发
 
 ## 示例
@@ -56,8 +60,6 @@ export default api => {
       },
     ],
   });
-  // 添加尾部的 tab，可添加类似 vscode 的 Output、Terminal、Problems 等功能
-  api.addFooterTab();
   // 更多功能...
 };
 ```
@@ -71,8 +73,8 @@ export default api => {
 处理 socket 数据相关，比如：
 
 ```bash
-api.onUISocket(({ type, payload }, { log, send, success, failure }) => {
-  if (type === 'config/fetch') {
+api.onUISocket(({ action, log, send, success, failure }) => {
+  if (action.type === 'config/fetch') {
     send({ type: `${type}/success`, payload: getConfig() });
   }
 });
