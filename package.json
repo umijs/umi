@@ -55,6 +55,7 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
-    "test-build-result": "^1.1.2"
+    "test-build-result": "^1.1.2",
+    "cross-port-killer": "^1.1.1"
   }
 }
