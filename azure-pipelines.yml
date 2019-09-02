@@ -87,13 +87,6 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: '10.x'
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.OS)
-            $(Build.SourcesDirectory)/yarn.lock
-          path: $(Pipeline.Workspace)/.cache/yarn
-        displayName: 'Cache yarn'
       - script: yarn install
         displayName: install
       - script: yarn bootstrap
