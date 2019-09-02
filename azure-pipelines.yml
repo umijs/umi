@@ -23,13 +23,6 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: '10.x'
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.OS)
-            $(Build.SourcesDirectory)/yarn.lock
-          path: $(Pipeline.Workspace)/.cache/yarn
-        displayName: 'Cache yarn'
       - script: yarn install
         displayName: install
       - script: yarn bootstrap
@@ -52,16 +45,6 @@ jobs:
       - checkout: self
         clean: all
         fetchDepth: 1
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.OS)
-            $(Build.SourcesDirectory)/yarn.lock
-          path: $(Pipeline.Workspace)/.cache/yarn
-        displayName: 'Cache yarn'
       - script: yarn install
         displayName: install
       - script: yarn bootstrap
@@ -95,7 +78,7 @@ jobs:
         displayName: build
       - script: yarn ui:build
         displayName: ui:build
-      - script: yarn test -- --forceExit
+      - script: yarn test -- --forceExit --maxWorkers=1
         env:
           PROGRESS: none
           CI: true
