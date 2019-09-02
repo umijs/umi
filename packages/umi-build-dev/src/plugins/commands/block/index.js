@@ -67,6 +67,10 @@ export default api => {
   async function add(args = {}, opts = {}) {
     const spinner = ora();
 
+    if (!opts.remoteLog) {
+      opts.remoteLog = () => {};
+    }
+
     // 1. parse url and args
     spinner.start('😁  Parse url and args');
     const url = args._[1];
