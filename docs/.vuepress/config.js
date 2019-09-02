@@ -63,6 +63,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'ui-plugin',
               ],
             },
             {
@@ -132,6 +133,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'ui-plugin',
               ],
             },
             {

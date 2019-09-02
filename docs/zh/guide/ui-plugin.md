@@ -1,8 +1,33 @@
-# 区块
+---
+sidebarDepth: 3
+---
 
-<Badge text="2.3.0+ 中支持"/>
+# UI 插件开发
 
-在 umi 中，区块是快速搭建页面的代码片段。umi 定义了一个区块的规范，你可以开发自己的区块，也可以使用其它来源的区块。通过 umi 你能够快速简单的在你的项目中添加 umi 区块，用于快速初始化代码。
+<Badge text="2.9.0+ 中支持"/>
+
+### 初始化插件
+
+你可以通过 [create-umi](https://github.com/umijs/create-umi) 快速创建一个 UI 插件：
+
+```bash
+$ yarn create umi --type=plugin
+```
+
+在最后一步 `是否有 Umi UI` 选项中选择 `Y`，就创建了一个有 UI 交互的 umi 插件。
+
+UI 插件的目录结构如下：
+
+```
+- root
+  - src              // 服务端 / Node 端代码
+    - index.js       // 插件入口
+    - _mock.js       // 约定的 mock 文件
+  - package.json     // 区块依赖等信息
+  - .umirc.js        // 基于 umi 开发区块时的配置
+  - thumb.[png|jpg]  // 区块的缩略图
+```
+
 
 ## 使用区块
 
@@ -63,26 +88,6 @@ npx umi block add DashboardAnalysis --npm-client cnpm
 > 注：在 umi 2.7 之前，同一个路径下只能添加一个区块，区块会作为整个页面的代码添加到你的项目中。在 2.7 及它之后我们支持重复添加区块，或者添加到当前项目中已有的页面中。对于原因的区块你可以通过在区块的 `package.json` 中配置 `blockConfig.specVersion` 为 `0.1` 来兼容或者通过 `--page` 来指定添加的方式。
 
 ## 区块开发
-
-### 初始化区块
-
-你可以通过 [create-umi](https://github.com/umijs/create-umi) 快速创建一个区块的模板：
-
-```bash
-$ yarn create umi --type=block
-```
-
-区块的目录结构如下：
-
-```
-- root
-  - src              // 区块的代码
-    - index.js       // 区块入口，需要默认导出一个 React 组件
-    - _mock.js       // 约定的 mock 文件
-  - package.json     // 区块依赖等信息
-  - .umirc.js        // 基于 umi 开发区块时的配置
-  - thumb.[png|jpg]  // 区块的缩略图
-```
 
 其中 package.json 文件相关内容如下：
 
