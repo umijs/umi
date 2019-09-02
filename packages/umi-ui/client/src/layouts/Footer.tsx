@@ -188,6 +188,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <Popover
             title={null}
             placement="top"
+            overlayClassName={styles.help}
             content={
               <div className={styles.feedback}>
                 <img
