@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
 import { Check as CheckIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
-import debounce from 'lodash/debounce';
+import get from 'lodash/get';
 import {
   FolderFilled,
   ProfileFilled,
   HomeFilled,
+  Tag as TagIcon,
   QuestionCircle,
   Message,
   Close,
@@ -16,7 +17,6 @@ import {
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
-import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
@@ -226,7 +226,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </div>
         ))}
         <div className={styles.section} style={{ cursor: 'pointer' }}>
-          <Dropdown overlay={menu} placement="topRight">
+          <Dropdown overlay={menu} placement="topCenter">
             <p>
               <LocaleText locale={locale} />
               {/* <span style={{ marginLeft: 8 }}>
@@ -234,6 +234,13 @@ const Footer: React.SFC<IFooterProps> = props => {
               </span> */}
             </p>
           </Dropdown>
+        </div>
+        <div className={styles.version}>
+          <span>
+            <TagIcon />
+            &nbsp;{intl({ id: 'org.umi.ui.version' })}:{' '}
+            {window.g_bigfish ? get(window, 'g_bigfish.version') : get(window, 'g_umi.version')}
+          </span>
         </div>
       </div>
       <Drawer

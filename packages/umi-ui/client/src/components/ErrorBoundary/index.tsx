@@ -76,10 +76,17 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
       if (error && error.message) {
         error.message = `${window.g_bigfish ? 'Bigfish' : 'Umi'}: ${error.message}`;
       }
-      window.Tracert.logError(error, {
+      const umiVersion = get(window, 'g_umi.version', '');
+      const bigfishVersion = get(window, 'g_bigfish.version', '');
+      const logParams = {
         // framework use umi ui
         d1: window.g_bigfish ? 'Bigfish' : 'Umi',
-      });
+        // framework version
+        d2: window.g_bigfish
+          ? `bigfish: ${bigfishVersion}, umi: ${umiVersion}`
+          : `umi: ${umiVersion}`,
+      };
+      window.Tracert.logError(error, logParams);
     }
   }
   render() {

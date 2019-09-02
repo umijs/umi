@@ -1,4 +1,5 @@
 export default {
+  'org.umi.ui.version': 'Version',
   'org.umi.ui.loading.open': 'Loading',
   'org.umi.ui.loading.onloading': 'Running',
   'org.umi.ui.loading.error': 'Failed to load',
