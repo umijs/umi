@@ -51,7 +51,7 @@ module.exports = {
                 'config',
                 'html-template',
                 'module-processor',
-                'umi-ui',
+                'develop-umi-ui-plugin',
               ],
             },
             {
@@ -122,7 +122,7 @@ module.exports = {
                 'config',
                 'html-template',
                 'module-processor',
-                'umi-ui',
+                'develop-umi-ui-plugin',
               ],
             },
             {
