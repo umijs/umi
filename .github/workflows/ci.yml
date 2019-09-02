@@ -22,7 +22,7 @@ jobs:
     - run: npm run bootstrap
     - run: npm run build
     - run: npm run ui:build
-    - run: npm run test -- --detectOpenHandles --runInBand --forceExit
+    - run: npm run test -- --detectOpenHandles --runInBand --forceExit --maxWorkers=2
       env:
         CI: true
         HEADLESS: false

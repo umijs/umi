@@ -15,6 +15,7 @@ matrix:
     - node_js: "8"
     - node_js: "10"
     - node_js: "12"
+  fast_finish: true
 
 before_script:
   - yarn bootstrap
@@ -22,7 +23,7 @@ before_script:
   - yarn ui:build
 
 script:
-  - yarn test -- --forceExit --detectOpenHandles --runInBand
+  - yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
 
 after_success:
   - yarn coveralls
