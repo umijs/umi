@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Tooltip } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
@@ -61,10 +61,14 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
         </Col>
         <Col span={4} offset={12} className={styles.actionGroup}>
           <span className={styles.icon}>
-            <Delete onClick={clear} />
+            <Tooltip title={intl({ id: 'org.umi.ui.tasks.terminal.clear' })}>
+              <Delete onClick={clear} />
+            </Tooltip>
           </span>
           <span className={styles.icon}>
-            <Enter onClick={toBottom} />
+            <Tooltip title={intl({ id: 'org.umi.ui.tasks.terminal.bottom' })}>
+              <Enter onClick={toBottom} />
+            </Tooltip>
           </span>
         </Col>
       </Row>
