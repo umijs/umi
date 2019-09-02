@@ -12,13 +12,7 @@ describe('normal', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      args: [
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--no-first-run',
-        '--no-zygote',
-        '--no-sandbox',
-      ],
+      args: ['--no-sandbox'],
     });
   });
 
