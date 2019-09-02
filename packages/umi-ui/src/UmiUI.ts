@@ -380,15 +380,15 @@ export default class UmiUI {
           // 2: 执行完成
           // 3: 执行失败
           stepStatus: 0,
-          steps:
-            lang === 'zh-CN'
-              ? ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖']
-              : [
-                  'Validate Params',
-                  'Install or Update create-umi',
-                  'Initialize Project',
-                  'Install Dependency',
-                ],
+          steps: {
+            'zh-CN': ['校验参数', '安装或更新 create-umi', '初始化项目', '安装依赖'],
+            'en-US': [
+              'Validate Params',
+              'Install or Update create-umi',
+              'Initialize Project',
+              'Install Dependency',
+            ],
+          },
         });
       }
 
