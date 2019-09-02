@@ -64,6 +64,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'develop-umi-ui-plugin',
               ],
             },
             {
@@ -134,6 +135,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'develop-umi-ui-plugin',
               ],
             },
             {
