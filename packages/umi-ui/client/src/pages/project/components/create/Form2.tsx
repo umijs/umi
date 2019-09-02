@@ -109,12 +109,10 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                   <Row>
                     {Object.keys(REACT_FEATURES).map((feature: any) => (
                       <Col key={feature} span={8} style={{ marginBottom: 8 }}>
-                        <Checkbox value={feature}>
-                          {REACT_FEATURES[feature]}&nbsp;
-                          <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
-                            <QuestionCircle />
-                          </Tooltip>
-                        </Checkbox>
+                        <Checkbox value={feature}>{REACT_FEATURES[feature]}&nbsp;</Checkbox>
+                        <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
+                          <QuestionCircle style={{ cursor: 'pointer' }} />
+                        </Tooltip>
                       </Col>
                     ))}
                   </Row>
