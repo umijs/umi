@@ -789,8 +789,16 @@ export default class UmiUI {
           '<head>',
           '<head><meta name="bm_app_id" content="5d68ffc1d46d8743e5445b68">',
         );
+        html = html.replace(
+          '<body>',
+          `<body>\n<script>window.g_umi = { version: "${process.env.UMI_VERSION || ''}"};</script>`,
+        );
         if (process.env.BIGFISH_COMPAT) {
-          html = html.replace('<body>', '<body>\n<script>window.g_bigfish = {};</script>');
+          html = html.replace(
+            '<body>',
+            `<body>\n<script>window.g_bigfish = { version: "${process.env.BIGFISH_VERSION ||
+              ''}" };</script>`,
+          );
         }
         if (!process.env.LOCAL_DEBUG) {
           const headScript = process.env.BIGFISH_COMPAT

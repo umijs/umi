@@ -1,4 +1,5 @@
 export default {
+  'org.umi.ui.version': '版本',
   'org.umi.ui.loading.open': '正在打开项目',
   'org.umi.ui.loading.onloading': '执行中',
   'org.umi.ui.loading.error': '加载失败',
