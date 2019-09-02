@@ -1,0 +1,109 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+name: umi
+
+trigger:
+  - master
+
+jobs:
+  - job: linux_test
+    timeoutInMinutes: 30
+    pool:
+      vmImage: 'Ubuntu-16.04'
+
+    container:
+      image: circleci/node:latest-browsers
+      options: '-u root'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - task: CacheBeta@0
+        inputs:
+          key: |
+            $(Agent.OS)
+            $(Build.SourcesDirectory)/yarn.lock
+          path: $(Pipeline.Workspace)/.cache/yarn
+        displayName: 'Cache yarn'
+      - script: yarn install
+        displayName: install
+      - script: yarn bootstrap
+        displayName: bootstrap
+      - script: yarn build
+        displayName: build
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test -- --forceExit
+        env:
+          PROGRESS: none
+          CI: true
+        displayName: test
+
+  - job: windows_test
+    timeoutInMinutes: 30
+    pool:
+      vmImage: 'vs2017-win2016'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - task: CacheBeta@0
+        inputs:
+          key: |
+            $(Agent.OS)
+            $(Build.SourcesDirectory)/yarn.lock
+          path: $(Pipeline.Workspace)/.cache/yarn
+        displayName: 'Cache yarn'
+      - script: yarn install
+        displayName: install
+      - script: yarn bootstrap
+        displayName: bootstrap
+      - script: yarn build
+        displayName: build
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test -- --forceExit
+        env:
+          PROGRESS: none
+          CI: true
+        displayName: test
+
+  - job: MacOS_test
+    timeoutInMinutes: 30
+    pool:
+      vmImage: 'macOS-10.13'
+    steps:
+      - checkout: self
+        clean: all
+        fetchDepth: 1
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - task: CacheBeta@0
+        inputs:
+          key: |
+            $(Agent.OS)
+            $(Build.SourcesDirectory)/yarn.lock
+          path: $(Pipeline.Workspace)/.cache/yarn
+        displayName: 'Cache yarn'
+      - script: yarn install
+        displayName: install
+      - script: yarn bootstrap
+        displayName: bootstrap
+      - script: yarn build
+        displayName: build
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test -- --forceExit
+        env:
+          PROGRESS: none
+          CI: true
+        displayName: test
