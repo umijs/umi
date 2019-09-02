@@ -58,28 +58,3 @@ jobs:
           PROGRESS: none
           CI: true
         displayName: test
-
-  - job: MacOS_test
-    timeoutInMinutes: 30
-    pool:
-      vmImage: 'macOS-10.13'
-    steps:
-      - checkout: self
-        clean: all
-        fetchDepth: 1
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-      - script: yarn install
-        displayName: install
-      - script: yarn bootstrap
-        displayName: bootstrap
-      - script: yarn build
-        displayName: build
-      - script: yarn ui:build
-        displayName: ui:build
-      - script: yarn test -- --forceExit --maxWorkers=1
-        env:
-          PROGRESS: none
-          CI: true
-        displayName: test
