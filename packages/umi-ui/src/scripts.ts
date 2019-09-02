@@ -52,6 +52,8 @@ const ga = `
 
   gtag('config', 'UA-145890626-1', {
     'user_id': '{{ roleId }}',
+  });
+  gtag('set', {
     'version': '{{ version }}',
     'type': '{{ type }}',
   });
