@@ -23,7 +23,7 @@ before_script:
   - yarn ui:build
 
 script:
-  - yarn test
+  - yarn test -- --forceExit
 
 after_success:
   - yarn coveralls
