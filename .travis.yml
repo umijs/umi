@@ -30,6 +30,8 @@ after_success:
 
 cache:
   yarn: true
+  directories:
+    - node_modules
 
 git:
   depth: 5
