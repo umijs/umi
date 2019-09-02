@@ -10,6 +10,8 @@ jobs:
       - image: circleci/node:latest-browsers
     environment:
       CI: true
+      NODE_ENV: test
+      NODE_OPTIONS: --max_old_space_size=4096
       NPM_CONFIG_LOGLEVEL: error
       JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
     branches:
@@ -28,7 +30,7 @@ jobs:
       - run: cnpm run build
       - run: cnpm run ui:build
       - run:
-          command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=1
+          command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - save_cache:
           key: node-modules-{{ checksum "package.json" }}

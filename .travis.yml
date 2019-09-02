@@ -5,6 +5,7 @@ addons:
   chrome: stable
 env:
   global:
+    - YARN_GPG=no
     - HEADLESS=false
     - CI=true
     - PROGRESS=none
@@ -14,19 +15,21 @@ matrix:
     - node_js: "8"
     - node_js: "10"
     - node_js: "12"
+  fast_finish: true
 
 before_script:
-  - npm run bootstrap
-  - npm run build
-  - npm run ui:build
+  - yarn bootstrap
+  - yarn build
+  - yarn ui:build
 
 script:
-  - npm run test -- --forceExit --detectOpenHandles --runInBand  --maxWorkers=1
+  - yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
 
 after_success:
-  - npm run coveralls
+  - yarn coveralls
 
 cache:
+  yarn: true
   directories:
     - node_modules
 

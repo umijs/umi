@@ -11,11 +11,19 @@ describe('normal', () => {
   const port = 12341;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox'],
+    });
   });
 
   beforeEach(async () => {
     page = await browser.newPage();
+  });
+
+  afterAll(() => {
+    if (browser) {
+      browser.close();
+    }
   });
 
   it('index page', async () => {
@@ -152,10 +160,6 @@ describe('normal', () => {
     await page.waitForSelector('h1');
     const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(indexText).toEqual('index');
-  });
-
-  afterAll(() => {
-    browser.close();
   });
 });
 
