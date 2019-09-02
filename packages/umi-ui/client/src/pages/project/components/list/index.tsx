@@ -6,32 +6,23 @@ import {
   Button,
   Tooltip,
   Card,
-  Skeleton,
   Typography,
   Badge,
   Tag,
   Spin,
   Popconfirm,
   Row,
-  ConfigProvider,
   Col,
   message,
   Layout,
   Empty,
 } from 'antd';
-import {
-  Export,
-  AppstoreFilled,
-  Edit,
-  Delete,
-  Plus,
-  Upload as UploadIcon,
-} from '@ant-design/icons';
+import { AppstoreFilled, Edit, Delete, Plus, Import as ImportIcon } from '@ant-design/icons';
 // TODO from server
 import umiIconSvg from '@/assets/umi.svg';
 import bigfishIconSvg from '@/assets/bigfish.svg';
+import editorSvg from '@/assets/code.svg';
 import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
@@ -145,7 +136,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         }}
       >
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
-          <Export className={styles.exportIcon} />
+          <img src={editorSvg} className={styles['project-list-item-editor-icon']} />
         </Tooltip>
       </a>,
       <a
@@ -255,7 +246,9 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
-        <div className={styles['project-list-layout-sider-title']}>
+        <div
+          className={styles[`project-list-layout-sider-title${window.g_bigfish ? '-bigfish' : ''}`]}
+        >
           <img src={iconSvg} alt="logo" />
           <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
@@ -280,7 +273,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button onClick={() => setCurrent('import')}>
-                <UploadIcon />
+                <ImportIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
                     id: 'org.umi.ui.global.project.import.title',

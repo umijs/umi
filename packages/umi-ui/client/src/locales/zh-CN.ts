@@ -1,4 +1,5 @@
 export default {
+  'org.umi.ui.version': '版本',
   'org.umi.ui.loading.open': '正在打开项目',
   'org.umi.ui.loading.onloading': '执行中',
   'org.umi.ui.loading.error': '加载失败',
@@ -20,7 +21,7 @@ export default {
   'org.umi.ui.global.content.hello': '你好',
   'org.umi.ui.global.project.siderbar.title': '项目',
   'org.umi.ui.global.project.list.creating': '创建中',
-  'org.umi.ui.global.project.list.empty.tip': '项目列表为空，试试 {create} 或 {import} 一个项目',
+  'org.umi.ui.global.project.list.empty.tip': '项目列表为空，试试 {create} 或 {import} 一个项目。',
   'org.umi.ui.global.project.list.empty.tip.create': '创建',
   'org.umi.ui.global.project.list.empty.tip.import': '导入',
   'org.umi.ui.global.project.list.empty': '从来如此，便对么？',
@@ -57,6 +58,7 @@ export default {
   'org.umi.ui.global.project.create.steps.info.npmClient.required': '请选择包管理器',
   'org.umi.ui.global.project.create.steps.info.npmClient.empty': '未找到包管理器',
   'org.umi.ui.global.project.create.steps.info.finish': '完成',
+  'org.umi.ui.global.project.create.steps.info.empty': '空目录',
   'org.umi.ui.global.project.import.title': '导入项目',
   'org.umi.ui.global.feedback': '反馈',
   'org.umi.ui.global.help': '帮助',

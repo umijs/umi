@@ -1,4 +1,5 @@
 export default {
+  'org.umi.ui.version': 'Version',
   'org.umi.ui.loading.open': 'Loading',
   'org.umi.ui.loading.onloading': 'Running',
   'org.umi.ui.loading.error': 'Failed to load',
@@ -21,7 +22,7 @@ export default {
   'org.umi.ui.global.project.siderbar.title': 'Project',
   'org.umi.ui.global.project.list.creating': 'Creating',
   'org.umi.ui.global.project.list.empty': 'Is this always true, is it right?',
-  'org.umi.ui.global.project.list.empty.tip': 'No projects, try {create} or {import} a project',
+  'org.umi.ui.global.project.list.empty.tip': 'No projects, try {create} or {import} a project.',
   'org.umi.ui.global.project.list.empty.tip.create': 'Create',
   'org.umi.ui.global.project.list.empty.tip.import': 'Import',
   'org.umi.ui.global.project.list.title': 'Project List',
@@ -60,6 +61,7 @@ export default {
     'Please select a package management',
   'org.umi.ui.global.project.create.steps.info.npmClient.empty': 'package management not found',
   'org.umi.ui.global.project.create.steps.info.finish': 'Finish',
+  'org.umi.ui.global.project.create.steps.info.empty': 'Empty directory',
   'org.umi.ui.global.project.import.title': 'Import Project',
   'org.umi.ui.global.feedback': 'Feedback',
   'org.umi.ui.global.help': 'Help',
@@ -84,4 +86,6 @@ export default {
   'org.umi.ui.global.error.title':
     'Something wrong, click on the bottom right corner to give us feedback',
   'org.umi.ui.global.error.stack': 'Error stack',
+  'org.umi.ui.configuration.basic.config.object.error': 'Config parameter is not correct',
+  'org.umi.ui.configuration.basic.config.object.select.error': 'Please select an option',
 };

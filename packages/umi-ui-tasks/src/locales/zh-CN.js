@@ -12,6 +12,8 @@ export default {
   'org.umi.ui.tasks.install.desc': '重装项目依赖',
 
   'org.umi.ui.tasks.env.detail': '查看详情',
+  'org.umi.ui.tasks.terminal.clear': '清空日志 ',
+  'org.umi.ui.tasks.terminal.bottom': '至底部',
 
   // dev
   'org.umi.ui.tasks.dev.startError': '启动项目失败',

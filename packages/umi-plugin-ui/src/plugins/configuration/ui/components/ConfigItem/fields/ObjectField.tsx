@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
 import { Delete, Plus } from '@ant-design/icons';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
@@ -26,6 +26,7 @@ const arrayToObj = (arr: IValue[]): IValue => {
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const { value, onChange, options: originOptions, defaultValue } = props;
   const { debug: _log, api } = useContext(Context);
+  const { intl } = api;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -83,7 +84,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           [styles['itemField-obj-required']]: isRequired,
         });
         return (
-          <div className={styles.itemField} key={fieldKey}>
+          <div className={styles.itemField} key={i.toString()}>
             <ObjectItemField
               className={fieldObjCls}
               value={field}
@@ -96,7 +97,18 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               setOptions={setOptions}
             />
             {!isRequired && (
-              <Delete className={styles['itemField-icon']} onClick={() => handleRemove(i)} />
+              <Popconfirm
+                title={intl({ id: 'org.umi.ui.configuration.object.item.delete.confirm' })}
+                onConfirm={() => handleRemove(i)}
+                okText={intl({ id: 'org.umi.ui.configuration.okText' })}
+                cancelText={intl({ id: 'org.umi.ui.configuration.cancelText' })}
+              >
+                <Tooltip
+                  title={intl({ id: 'org.umi.ui.configuration.object.item.delete.tooltip' })}
+                >
+                  <Delete className={styles['itemField-icon']} />
+                </Tooltip>
+              </Popconfirm>
             )}
           </div>
         );

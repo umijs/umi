@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
 import { Check as CheckIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
-import debounce from 'lodash/debounce';
+import get from 'lodash/get';
 import {
   FolderFilled,
   ProfileFilled,
   HomeFilled,
+  Tag as TagIcon,
   QuestionCircle,
   Message,
   Close,
@@ -16,7 +17,6 @@ import {
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
-import omit from 'lodash/omit';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
@@ -35,8 +35,14 @@ export interface IFooterProps {
 const FOOTER_RIGHT = [
   {
     title: 'org.umi.ui.global.help',
-    icon: <QuestionCircle />,
-    href: 'https://umijs.org',
+    icon: <QuestionCircle style={{ marginRight: 4 }} />,
+    href:
+      // TODO: refactor
+      window.g_bigfish
+        ? 'https://bigfish.antfin-inc.com/doc/nt1c4v'
+        : window.g_lang === 'zh-CN'
+        ? 'https://umijs.org/zh/guide/umi-ui.html'
+        : 'https://umijs.org/guide/umi-ui.html',
   },
 ];
 
@@ -180,7 +186,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <ProfileFilled /> {intl({ id: 'org.umi.ui.global.log' })}
+          <ProfileFilled style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.log' })}
         </div>
 
         <div className={styles.section}>
@@ -188,6 +194,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <Popover
             title={null}
             placement="top"
+            overlayClassName={styles.help}
             content={
               <div className={styles.feedback}>
                 <img
@@ -203,7 +210,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             }
           >
             <a>
-              <Message />{' '}
+              <Message style={{ marginRight: 4 }} />{' '}
               {type === 'loading'
                 ? intl({ id: 'org.umi.ui.global.feedback' })
                 : intl({ id: 'org.umi.ui.global.feedback' })}
@@ -219,7 +226,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </div>
         ))}
         <div className={styles.section} style={{ cursor: 'pointer' }}>
-          <Dropdown overlay={menu} placement="topRight">
+          <Dropdown overlay={menu} placement="topCenter">
             <p>
               <LocaleText locale={locale} />
               {/* <span style={{ marginLeft: 8 }}>
@@ -227,6 +234,12 @@ const Footer: React.SFC<IFooterProps> = props => {
               </span> */}
             </p>
           </Dropdown>
+        </div>
+        <div className={styles.version}>
+          <span>
+            <TagIcon style={{ marginRight: 4 }} />
+            {window.g_bigfish ? get(window, 'g_bigfish.version') : get(window, 'g_umi.version')}
+          </span>
         </div>
       </div>
       <Drawer

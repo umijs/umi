@@ -12,11 +12,30 @@ const { useContext } = React;
 
 const ObjectComp: React.SFC<ICompProps> = props => {
   const { name, description, title, choices, default: defaultValue, link } = props;
-  const { debug: _log } = useContext(Context);
+  const { debug: _log, api } = useContext(Context);
+  const { _, intl } = api;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     label: <Label name={name} title={title} description={description} link={link} />,
+    rules: [
+      {
+        validateTrigger: 'onSubmit',
+        validator: async (rule, value) => {
+          // should be object-number
+          const isObject = _.isPlainObject(value);
+          if (!isObject) {
+            throw new Error(intl({ id: 'org.umi.ui.configuration.basic.config.object.error' }));
+          }
+          if (Object.keys(value).some(v => v === 'undefined')) {
+            // { 'undefined':  }
+            throw new Error(
+              intl({ id: 'org.umi.ui.configuration.basic.config.object.select.error' }),
+            );
+          }
+        },
+      },
+    ],
   };
   _log('choices', choices);
 

@@ -92,7 +92,11 @@ const DashboardUI: React.FC<IProps> = props => {
               },
             )}
           </p>
-          <div>{intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}</div>
+          <div>
+            {window.g_bigfish
+              ? intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })
+              : intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
+          </div>
         </div>
       ),
     });

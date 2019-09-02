@@ -42,6 +42,19 @@
             font-weight: bold;
             margin-top: 4px;
           }
+          &-bigfish {
+            h1 {
+              line-height: 22px;
+              margin-bottom: 24px;
+              font-weight: bold;
+              margin-top: 4px;
+              font-size: 12px;
+            }
+            img {
+              width: 32px;
+              height: 32px;
+            }
+          }
         }
         &-item {
           text-align: center;
@@ -113,6 +126,10 @@
             & > li {
               cursor: pointer;
               border-color: transparent;
+              &,
+              a {
+                user-select: none;
+              }
               a:hover {
                 color: @text-color;
               }
@@ -144,6 +161,16 @@
         margin-bottom: 0;
         color: @text-color-secondary;
         height: 66px;
+      }
+      &-editor {
+        &-icon {
+          width: 14px;
+          height: 14px;
+          opacity: 0.45;
+          &:hover {
+            opacity: 0.85;
+          }
+        }
       }
     }
   }
