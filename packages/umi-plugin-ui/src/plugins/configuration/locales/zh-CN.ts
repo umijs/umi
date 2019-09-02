@@ -1,4 +1,6 @@
 export default {
+  'org.umi.ui.configuration.object.item.delete.confirm': '确认删除？',
+  'org.umi.ui.configuration.object.item.delete.tooltip': '删除一项',
   'org.umi.ui.configuration.panel': '配置',
   'org.umi.ui.configuration.actions.open.config': '打开配置文件',
   'org.umi.ui.configuration.project.config.title': '项目配置',

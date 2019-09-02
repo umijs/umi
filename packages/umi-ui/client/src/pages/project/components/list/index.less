@@ -113,6 +113,10 @@
             & > li {
               cursor: pointer;
               border-color: transparent;
+              &,
+              a {
+                user-select: none;
+              }
               a:hover {
                 color: @text-color;
               }

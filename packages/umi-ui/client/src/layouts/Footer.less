@@ -13,6 +13,11 @@
   //background: #fff;
   //border-top: 1px solid #ccc;
 }
+.help {
+  :global(.ant-popover-inner-content) {
+    padding: 12px;
+  }
+}
 
 .statusBar {
   background: @ui-status-bar-bg;
@@ -40,6 +45,14 @@
       color: @heading-color;
     }
   }
+  .version {
+    flex: auto 1;
+    flex-shrink: 0;
+    padding: 0 8px;
+    cursor: default;
+    height: 100%;
+    transition: background-color 0.3s;
+  }
   .section.action {
     cursor: pointer;
     user-select: none;
@@ -66,7 +79,7 @@
         background-color: @drawer-content-bg;
       }
       .ant-drawer-header {
-        padding: 8px 16px;
+        padding: 8px 8px 8px 16px;
         background-color: @drawer-header-bg;
         border-bottom-color: @ui-footer-actions-divider-color;
       }
