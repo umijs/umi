@@ -60,6 +60,7 @@ export default {
     'Please select a package management',
   'org.umi.ui.global.project.create.steps.info.npmClient.empty': 'package management not found',
   'org.umi.ui.global.project.create.steps.info.finish': 'Finish',
+  'org.umi.ui.global.project.create.steps.info.empty': 'Empty directory',
   'org.umi.ui.global.project.import.title': 'Import Project',
   'org.umi.ui.global.feedback': 'Feedback',
   'org.umi.ui.global.help': 'Help',

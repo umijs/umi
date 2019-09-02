@@ -202,7 +202,14 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
                 />
               ))
             ) : (
-              <Empty image={emptyImg} description="空目录" />
+              <div className={styles.empty}>
+                <Empty
+                  image={emptyImg}
+                  description={formatMessage({
+                    id: 'org.umi.ui.global.project.create.steps.info.empty',
+                  })}
+                />
+              </div>
             )}
           </div>
           <p className={styles['directoryForm-tip']}>

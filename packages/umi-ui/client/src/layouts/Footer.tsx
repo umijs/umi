@@ -36,7 +36,13 @@ const FOOTER_RIGHT = [
   {
     title: 'org.umi.ui.global.help',
     icon: <QuestionCircle />,
-    href: 'https://umijs.org',
+    href:
+      // TODO: refactor
+      window.g_bigfish
+        ? 'https://bigfish.antfin-inc.com/doc/nt1c4v'
+        : window.g_lang === 'zh-CN'
+        ? 'https://umijs.org/zh/guide/umi-ui.html'
+        : 'https://umijs.org/guide/umi-ui.html',
   },
 ];
 
@@ -188,6 +194,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           <Popover
             title={null}
             placement="top"
+            overlayClassName={styles.help}
             content={
               <div className={styles.feedback}>
                 <img

@@ -57,6 +57,7 @@ export default {
   'org.umi.ui.global.project.create.steps.info.npmClient.required': '请选择包管理器',
   'org.umi.ui.global.project.create.steps.info.npmClient.empty': '未找到包管理器',
   'org.umi.ui.global.project.create.steps.info.finish': '完成',
+  'org.umi.ui.global.project.create.steps.info.empty': '空目录',
   'org.umi.ui.global.project.import.title': '导入项目',
   'org.umi.ui.global.feedback': '反馈',
   'org.umi.ui.global.help': '帮助',

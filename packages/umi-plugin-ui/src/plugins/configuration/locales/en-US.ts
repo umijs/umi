@@ -1,4 +1,6 @@
 export default {
+  'org.umi.ui.configuration.object.item.delete.confirm': 'Confirm delete?',
+  'org.umi.ui.configuration.object.item.delete.tooltip': 'Delete an item',
   'org.umi.ui.configuration.panel': 'Configuration',
   'org.umi.ui.configuration.actions.open.config': 'Open Config File',
   'org.umi.ui.configuration.project.config.title': 'Project Configuration',

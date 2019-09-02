@@ -12,6 +12,8 @@ export default {
   'org.umi.ui.tasks.install.desc': 'Install local project',
 
   'org.umi.ui.tasks.env.detail': 'View Detail',
+  'org.umi.ui.tasks.terminal.clear': 'Clear Logs',
+  'org.umi.ui.tasks.terminal.bottom': 'Scroll Bottom',
 
   // dev
   'org.umi.ui.tasks.dev.startError': 'Start project error',

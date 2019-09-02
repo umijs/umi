@@ -3,6 +3,14 @@
   align-items: center;
   .addBtn {
   }
+  :global {
+    .ant-select:not(.ant-select-disabled) {
+      &,
+      .ant-select-selection--single {
+        border-right: 1px solid fade(#fff, 10);
+      }
+    }
+  }
   :global(.ant-form-item) {
     margin-bottom: 0;
   }
