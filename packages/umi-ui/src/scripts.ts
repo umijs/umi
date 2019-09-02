@@ -51,7 +51,9 @@ const ga = `
   gtag('js', new Date());
 
   gtag('config', 'UA-145890626-1', {
-    'user_id': '{{ roleId }}'
+    'user_id': '{{ roleId }}',
+    'version': '{{ version }}',
+    'type': '{{ type }}',
   });
 </script>
 <!-- Google Analytics End -->
@@ -84,7 +86,11 @@ const render = (template: string, model: Object): string => {
 const getScripts = async () => {
   const macAddress = await getMacId();
 
-  const modal = { roleId: macAddress };
+  const modal = {
+    roleId: macAddress,
+    version: process.env.BIGFISH_VERSION || process.env.UMI_VERSION || '',
+    type: process.env.BIGFISH_COMPAT ? 'bigfish' : 'umi',
+  };
   const deerScript = render(deer, modal);
   const bmMonitorScript = render(bmMonitor, modal);
   const gaScript = render(ga, modal);

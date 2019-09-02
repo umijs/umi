@@ -35,7 +35,7 @@ export interface IFooterProps {
 const FOOTER_RIGHT = [
   {
     title: 'org.umi.ui.global.help',
-    icon: <QuestionCircle />,
+    icon: <QuestionCircle style={{ marginRight: 4 }} />,
     href:
       // TODO: refactor
       window.g_bigfish
@@ -186,7 +186,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </>
         )}
         <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <ProfileFilled /> {intl({ id: 'org.umi.ui.global.log' })}
+          <ProfileFilled style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.log' })}
         </div>
 
         <div className={styles.section}>
@@ -210,7 +210,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             }
           >
             <a>
-              <Message />{' '}
+              <Message style={{ marginRight: 4 }} />{' '}
               {type === 'loading'
                 ? intl({ id: 'org.umi.ui.global.feedback' })
                 : intl({ id: 'org.umi.ui.global.feedback' })}
@@ -237,8 +237,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         </div>
         <div className={styles.version}>
           <span>
-            <TagIcon />
-            &nbsp;{intl({ id: 'org.umi.ui.version' })}:{' '}
+            <TagIcon style={{ marginRight: 4 }} />
             {window.g_bigfish ? get(window, 'g_bigfish.version') : get(window, 'g_umi.version')}
           </span>
         </div>
