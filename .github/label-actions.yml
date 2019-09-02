@@ -10,3 +10,10 @@ actions:
     close: true
   -Need Reproduce:
     open: true
+  pkg(umi-request):
+    comment: >
+      @chenjsh36 请看下。
+  pkg(umi-plugin-qiankun):
+    comment: >
+      @kuitos 请看下。
+
