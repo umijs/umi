@@ -246,7 +246,9 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
-        <div className={styles['project-list-layout-sider-title']}>
+        <div
+          className={styles[`project-list-layout-sider-title${window.g_bigfish ? '-bigfish' : ''}`]}
+        >
           <img src={iconSvg} alt="logo" />
           <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
         </div>
