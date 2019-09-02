@@ -29,8 +29,7 @@ after_success:
   - yarn coveralls
 
 cache:
-  directories:
-    - node_modules
+  yarn: true
 
 git:
   depth: 5
