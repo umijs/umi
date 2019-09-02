@@ -36,7 +36,10 @@ const FOOTER_RIGHT = [
   {
     title: 'org.umi.ui.global.help',
     icon: <QuestionCircle />,
-    href: 'https://umijs.org',
+    href:
+      window.g_lang === 'zh-CN'
+        ? 'https://umijs.org/zh/guide/umi-ui.html'
+        : 'https://umijs.org/guide/umi-ui.html',
   },
 ];
 
