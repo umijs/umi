@@ -215,12 +215,11 @@ export default Header;
 
 ## UMI UI
 
-### Umi/Bigfish 版本过低，请升级到最新
+### Umi 版本过低，请升级到最新
 
-Umi UI 需要 umi@2.9 或以上（内部 Bigfish 需 bigfish@2.20 或以上），如果本地项目的版本不匹配，会报这个错误。
+Umi UI 需要 umi@2.9 或以上，如果本地项目的版本不匹配，会报这个错误。
 
 解决方案就是升级到最新版。
 
-* 如果 package.json 中的 umi 或 bigfish 依赖是能自动匹配到最新版的，比如 `^2.9` 或者 `2.x`，删除 `node_modules` 重装依赖即可
-* 如果 package.json 中的 umi 或 bigfish 依赖不能匹配到最新版，比如 `~2.8` 或者 `2.8.0-beta.1`，那么需改成 `2.x` 或其他能匹配到最新版的写法，然后删除 `node_modules` 再重装依赖
-
+* 如果 package.json 中的 umi 依赖是能自动匹配到最新版的，比如 `^2.9` 或者 `2.x`，删除 `node_modules` 重装依赖即可
+* 如果 package.json 中的 umi 依赖不能匹配到最新版，比如 `~2.8` 或者 `2.8.0-beta.1`，那么需改成 `^2.9` 或其他能匹配到最新版的写法，然后删除 `node_modules` 再重装依赖
