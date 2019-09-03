@@ -5,6 +5,9 @@
     "lib": ["esnext", "dom"],
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

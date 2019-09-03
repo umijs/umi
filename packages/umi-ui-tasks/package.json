@@ -12,6 +12,12 @@
     "lib",
     "src"
   ],
+  "peerDependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "antd": "^4.0.0-alpha.0",
+    "xterm": "3.14.5"
+  },
   "dependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
@@ -23,6 +29,7 @@
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
+    "@types/node": "^12.6.9",
     "antd": "4.0.0-alpha.2",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",

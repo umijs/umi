@@ -1,5 +1,5 @@
 import { IUiApi } from 'umi-types';
-import { TaskState, TaskType } from '../../server/core/enums';
+import { TaskState, TaskType } from '@/src/server/core/enums';
 
 export const isCaredEvent = (taskType: TaskType, caredTaskType: TaskType): boolean => {
   if (!taskType || taskType !== caredTaskType) {

@@ -1,5 +1,5 @@
-import { ITaskDetail } from '../../server/core/types';
-import { TaskType } from '../../server/core/enums';
+import { ITaskDetail } from '@/src/server/core/types';
+import { TaskType } from '@/src/server/core/enums';
 import { callRemote } from './index';
 
 export enum TriggerState {

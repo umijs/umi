@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TaskType } from '../../server/core/enums';
+import { TaskType } from '@/src/server/core/enums';
 import { getTaskDetail } from '../util';
 
 const useTaskDetail = (taskType: TaskType) => {

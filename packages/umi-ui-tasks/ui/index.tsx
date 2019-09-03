@@ -1,15 +1,15 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
-import Dev from './ui/components/Dev';
-import Build from './ui/components/Build';
-import Lint from './ui/components/Lint';
-import Test from './ui/components/Test';
-import Install from './ui/components/Install';
-import { initApiToGloal, getTerminalIns, getNoticeMessage } from './ui/util';
-import { TaskType, TaskState } from './server/core/enums';
-import styles from './ui/ui.module.less';
-import enUS from './locales/en-US';
-import zhCN from './locales/zh-CN';
+import Dev from './components/Dev';
+import Build from './components/Build';
+import Lint from './components/Lint';
+import Test from './components/Test';
+import Install from './components/Install';
+import { initApiToGloal, getTerminalIns, getNoticeMessage } from './util';
+import { TaskType, TaskState } from '@/src/core/enums';
+import styles from './ui.module.less';
+import enUS from '../locales/en-US';
+import zhCN from '../locales/zh-CN';
 
 export default (api: IUiApi) => {
   initApiToGloal(api);

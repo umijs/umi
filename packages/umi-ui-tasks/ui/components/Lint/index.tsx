@@ -4,7 +4,7 @@ import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
-import { TaskType, TaskState } from '../../../server/core/enums';
+import { TaskType, TaskState } from '@/src/server/core/enums';
 import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
 import { useTaskDetail } from '../../hooks';
 import Terminal from '../Terminal';
@@ -15,9 +15,9 @@ interface IProps {
 }
 
 const { SizeMe } = withSize;
-const taskType = TaskType.TEST;
+const taskType = TaskType.LINT;
 
-const TestComponent: React.FC<IProps> = ({ api }) => {
+const LintComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
 
@@ -54,42 +54,41 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
     };
   }, []);
 
-  async function test() {
+  async function lint() {
     const { triggerState, errMsg } = await exec(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
         type: 'error',
-        title: intl({ id: 'org.umi.ui.tasks.test.testError' }),
+        title: intl({ id: 'org.umi.ui.tasks.lint.execError' }),
         message: errMsg,
       });
     }
   }
 
-  async function cancelTest() {
+  async function cancelLint() {
     const { triggerState, errMsg } = await cancel(taskType);
     if (triggerState === TriggerState.FAIL) {
       api.notify({
-        title: intl({ id: 'org.umi.ui.tasks.test.cancelError' }),
+        title: intl({ id: 'org.umi.ui.tasks.lint.cancelError' }),
         message: errMsg,
       });
-      return;
     }
   }
 
   const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
   return (
     <>
-      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.test' })}</h1>
+      <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.lint' })}</h1>
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelTest : test}>
+            <Button type="primary" onClick={isTaskRunning ? cancelLint : lint}>
               {isTaskRunning ? (
                 <>
                   <Pause />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl({ id: 'org.umi.ui.tasks.test.cancel' })}
+                    {intl({ id: 'org.umi.ui.tasks.lint.cancel' })}
                   </span>
                 </>
               ) : (
@@ -97,12 +96,17 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
                   <CaretRight />
                   <span className={styles.runningText}>
                     {' '}
-                    {intl({ id: 'org.umi.ui.tasks.test.start' })}
+                    {intl({ id: 'org.umi.ui.tasks.lint.start' })}
                   </span>
                 </>
               )}
             </Button>
           </Col>
+          {/* <Col span={4} offset={12} className={styles.formatGroup}>
+            <Radio.Group defaultValue="log" buttonStyle="solid">
+              <Radio.Button value="log">输出</Radio.Button>
+            </Radio.Group>
+          </Col> */}
         </Row>
         <div className={styles.logContainer}>
           <SizeMe monitorWidth monitorHeight>
@@ -124,4 +128,4 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
   );
 };
 
-export default TestComponent;
+export default LintComponent;

@@ -4,7 +4,7 @@ import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
-import { TaskType, TaskState } from '../../../server/core/enums';
+import { TaskType, TaskState } from '@/src/server/core/enums';
 import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
 
 import { useTaskDetail } from '../../hooks';

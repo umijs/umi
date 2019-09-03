@@ -1,4 +1,4 @@
-import { TaskType } from '../../server/core/enums';
+import { TaskType } from '@/src/server/core/enums';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 
 declare global {
