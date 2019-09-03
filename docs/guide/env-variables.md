@@ -39,6 +39,14 @@ Specify the port number. The default is `8000`. such as:
 $ PORT=8001 umi dev
 ```
 
+### BASE_PORT
+
+Specify the base port number, umi will find available port to start dev server. The default is `8000`. such as:
+
+```bash
+$ BASE_PORT=8001 umi dev
+```
+
 ### HOST
 
 The default is `0.0.0.0`.
