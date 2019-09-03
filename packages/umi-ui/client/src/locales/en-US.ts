@@ -23,6 +23,7 @@ export default {
   'org.umi.ui.global.project.list.creating': 'Creating',
   'org.umi.ui.global.project.list.empty': 'Is this always true, is it right?',
   'org.umi.ui.global.project.list.empty.tip': 'No projects, try {create} or {import} a project.',
+  'org.umi.ui.global.project.list.empty.tip.bigfish': 'No projects, try {import} a project.',
   'org.umi.ui.global.project.list.empty.tip.create': 'Create',
   'org.umi.ui.global.project.list.empty.tip.import': 'Import',
   'org.umi.ui.global.project.list.title': 'Project List',
