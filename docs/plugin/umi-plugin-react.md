@@ -65,7 +65,9 @@ Configuration items includes:
 - `dynamicImport`, Whether to enable dynamic import, options same as [#dynamicImport](#dynamicImport), and if you configure it in [#dynamicImport](#dynamicImport), the options items will be inherited into dva
 - `hmr`, Whether to enable dva hmr
 
-::: warning If there is a dva dependency in the project, the dependencies in the project are prioritized. :::
+::: warning
+If there is a dva dependency in the project, the dependencies in the project are prioritized.
+:::
 
 ### antd
 
@@ -73,7 +75,9 @@ Configuration items includes:
 
 Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd, antd-mobile and antd-pro, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
 
-::: warning If there is an ant or antd-mobile dependency in the project, the dependencies in the project are prioritized. :::
+::: warning
+If there is an ant or antd-mobile dependency in the project, the dependencies in the project are prioritized.
+:::
 
 ### routes
 
