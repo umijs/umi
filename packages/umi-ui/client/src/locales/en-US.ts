@@ -2,7 +2,7 @@ export default {
   'org.umi.ui.version': 'Version',
   'org.umi.ui.loading.open': 'Loading',
   'org.umi.ui.loading.onloading': 'Running',
-  'org.umi.ui.loading.error': 'Failed to load',
+  'org.umi.ui.loading.error': 'Failed to Open Project',
   'org.umi.ui.loading.deps.installing': 'Installing',
   'org.umi.ui.global.delete.success': 'Delete success',
   'org.umi.ui.global.delete.failure': 'Delete failed',

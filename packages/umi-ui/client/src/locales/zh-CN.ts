@@ -2,7 +2,7 @@ export default {
   'org.umi.ui.version': '版本',
   'org.umi.ui.loading.open': '正在打开项目',
   'org.umi.ui.loading.onloading': '执行中',
-  'org.umi.ui.loading.error': '加载失败',
+  'org.umi.ui.loading.error': '项目打开失败',
   'org.umi.ui.loading.deps.installing': '依赖安装中',
   'org.umi.ui.global.delete.success': '删除成功',
   'org.umi.ui.global.delete.failure': '删除失败',
