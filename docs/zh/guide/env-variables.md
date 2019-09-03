@@ -39,6 +39,14 @@ $ echo PORT=3000 > .env
 $ PORT=8001 umi dev
 ```
 
+### BASE_PORT
+
+指定基础端口号，umi 会基于这个值去寻找可用的端口号，默认是 `8000`。比如：
+
+```bash
+$ BASE_PORT=8001 umi dev
+```
+
 ### HOST
 
 默认是 `0.0.0.0`。
