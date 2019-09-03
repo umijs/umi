@@ -35,7 +35,7 @@ function getLocale() {
   const { g_langSeparator = '-', g_lang } = window;
   const lang = typeof localStorage !== 'undefined' ? window.localStorage.getItem('umi_locale') : '';
   const browserLang =
-    typeof navigator !== 'undefined' ? navigator.language.split('-').join(g_langSeparator) : '';
+    typeof navigator.language !== 'undefined' ? navigator.language.split('-').join(g_langSeparator) : '';
   return lang || g_lang || browserLang;
 }
 
