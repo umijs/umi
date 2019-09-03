@@ -74,7 +74,7 @@ export enum REACT_FEATURES_TIP {
 export interface ICreateProgress {
   step: number;
   stepStatus: number;
-  steps: string[];
+  steps: { [key in ILocale]: string[] };
   success?: boolean;
   failure?: Error;
 }

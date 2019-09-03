@@ -21,7 +21,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   _log('ProgressStage props', props);
   const { currentData, projectList } = props;
   const [logs, setLogs] = useState<string>('');
-  const { formatMessage } = useContext(ProjectContext);
+  const { formatMessage, locale } = useContext(ProjectContext);
   const [retryLoading, setRetryLoading] = useState<boolean>(false);
   const key = get(currentData, 'key');
   const progress: ICreateProgress =
@@ -80,8 +80,10 @@ const ProgressStage: React.FC<IProjectProps> = props => {
     return formatMessage({ id: 'org.umi.ui.global.progress.create.loading' });
   };
 
-  const progressSteps = Array.isArray(progress.steps)
-    ? progress.steps.concat([formatMessage({ id: 'org.umi.ui.global.progress.create.success' })])
+  const steps = progress.steps ? progress.steps[locale] : [];
+
+  const progressSteps = Array.isArray(steps)
+    ? steps.concat([formatMessage({ id: 'org.umi.ui.global.progress.create.success' })])
     : [];
 
   const handleRetry = async () => {
@@ -126,9 +128,6 @@ const ProgressStage: React.FC<IProjectProps> = props => {
               );
             })}
           </Steps>
-          // <div>
-          //   步骤为 {progress.steps[progress.step]}，状态为 {progress.stepStatus}
-          // </div>
         )}
         {/* {progress.success ? <div>创建成功</div> : null} */}
         {logs && (
