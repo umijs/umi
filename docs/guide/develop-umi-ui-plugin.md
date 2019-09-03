@@ -56,7 +56,7 @@ $ yarn build && yarn start
 `ui/index.js` 负责 UI 插件的展示，你可以使用 [Umi UI 客户端 API](https://umijs.org/plugin/umi-ui.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%8F%A3) ，开发插件。
 
 ::: warning
-Umi UI uses antd 4.x for development and external for antd. Please refer to [antd 4.x documentation](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) when developing plugin UI too develop.
+Umi UI uses **antd 4.x** for development and external for antd. Please refer to [antd 4.x documentation](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) when developing plugin UI too develop.
 :::
 
 ```js
