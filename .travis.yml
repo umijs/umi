@@ -24,8 +24,6 @@ before_script:
 
 script:
   - yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
-
-after_success:
   - yarn coveralls
 
 cache:
