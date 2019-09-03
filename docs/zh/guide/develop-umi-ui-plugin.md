@@ -55,6 +55,12 @@ $ yarn build && yarn start
 
 `ui/index.js` 负责 UI 插件的展示，你可以使用 [Umi UI 客户端 API](https://umijs.org/plugin/umi-ui.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A5%E5%8F%A3) ，开发插件。
 
+::: warning
+Umi UI 使用 **antd 4.x** 进行开发，并对 antd 进行 `external`。
+
+开发插件 UI 时请参阅 [antd 4.x 文档](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) 进行开发。
+:::
+
 ```js
 import { Button } from 'antd';
 
