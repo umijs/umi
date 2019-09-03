@@ -148,17 +148,21 @@ export default class UmiUI {
       const binModule = process.env.BIGFISH_COMPAT
         ? '@alipay/bigfish/bin/bigfish.js'
         : 'umi/bin/umi.js';
+      const pkgModule = process.env.BIGFISH_COMPAT
+        ? '@alipay/bigfish/package.json'
+        : 'umi/package.json';
       const cwd = project.path;
       const localService = isDepFileExists(cwd, serviceModule);
       const localBin = isDepFileExists(cwd, binModule);
       if (process.env.UI_CHECK_LOCAL !== 'none' && localBin && !localService) {
         // 有 Bin 但没 Service，说明版本不够
+        const { version } = JSON.parse(readFileSync(join(cwd, 'node_modules', pkgModule), 'utf-8'));
         throw new ActiveProjectError({
           title: process.env.BIGFISH_COMPAT
-            ? `Bigfish 版本过低，请升级到 @alipay/bigfish@2.20 或以上。`
+            ? `本地项目的 Bigfish 版本（${version}）过低，请升级到 @alipay/bigfish@2.20 或以上，<a target="_blank" href="https://yuque.antfin-inc.com/bigfish/doc/uzfwoc#ff1deb63">查看详情</a>。`
             : {
-                'zh-CN': `Umi 版本过低，请升级到 umi@2.9 或以上。`,
-                'en-US': `Umi version is too low, please upgrade to umi@2.9 or above.`,
+                'zh-CN': `本地项目的 Umi 版本（${version}）过低，请升级到 umi@2.9 或以上，<a target="_blank" href="https://umijs.org/zh/guide/faq.html#umi-%E7%89%88%E6%9C%AC%E8%BF%87%E4%BD%8E%EF%BC%8C%E8%AF%B7%E5%8D%87%E7%BA%A7%E5%88%B0%E6%9C%80%E6%96%B0">查看详情</a>。`,
+                'en-US': `Umi version (${version}) of the project is too low, please upgrade to umi@2.9 or above, <a target="_blank" href="https://umijs.org/guide/faq.html#umi-version-is-too-low-please-upgrade-to-umi-2-9-or-above">view details</a>.`,
               },
           lang,
           actions: [ReInstallDependencyAction, OpenProjectAction, BackToHomeAction],
