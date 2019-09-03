@@ -161,7 +161,7 @@ export default class UmiUI {
                 'en-US': `Umi version is too low, please upgrade to umi@2.9 or above.`,
               },
           lang,
-          actions: [OpenProjectAction, BackToHomeAction],
+          actions: [ReInstallDependencyAction, OpenProjectAction, BackToHomeAction],
         });
       }
 
