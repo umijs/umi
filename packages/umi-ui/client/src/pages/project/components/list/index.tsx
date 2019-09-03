@@ -220,7 +220,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const EmptyDescription = (
     <div>
       <FormattedMessage
-        id="org.umi.ui.global.project.list.empty.tip"
+        id={
+          window.g_bigfish
+            ? 'org.umi.ui.global.project.list.empty.tip.bigfish'
+            : 'org.umi.ui.global.project.list.empty.tip'
+        }
         values={{
           import: (
             <a onClick={() => setCurrent('import')}>
