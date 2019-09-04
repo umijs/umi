@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -11,7 +11,7 @@
     "@ant-design/icons": "^4.0.0-alpha.8",
     "classnames": "^2.2.6",
     "fuse.js": "^3.4.5",
-    "umi-ui-tasks": "1.0.2"
+    "umi-ui-tasks": "1.0.3"
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
