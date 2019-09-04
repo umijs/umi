@@ -6,9 +6,16 @@ import { runCommand, getNpmClient } from '../../util';
 import rimraf from 'rimraf';
 
 export class InstallTask extends BaseTask {
+  private speedUpEnv;
+
   constructor(opts: ITaskOptions) {
     super(opts);
     this.type = TaskType.INSTALL;
+  }
+
+  public async init(collector) {
+    await super.init(collector);
+    this.speedUpEnv = this.getSpeedUpEnv();
   }
 
   public async run(env: any = {}) {
@@ -29,7 +36,7 @@ export class InstallTask extends BaseTask {
       cwd: this.cwd,
       env: {
         ...process.env,
-        ...this.getSpeedUpEnv(),
+        ...this.speedUpEnv,
       },
     });
 
