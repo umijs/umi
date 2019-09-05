@@ -25,7 +25,6 @@ const config: IConfig = {
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
-    moment: 'moment',
     antd: 'window.antd',
     xterm: 'window.Terminal',
     'xterm/lib/addons/fit/fit': 'window.fit',
