@@ -217,9 +217,16 @@ Why: umiJS SSR executes code first server-side, then client-side. The `document`
 
 ### Umi version is too low, please upgrade to umi@2.9 or above
 
-Umi UI 需要 umi@2.9 或以上，如果本地项目的版本不匹配，会报这个错误。
+Umi UI requires umi@2.9 or above, and this error will be reported if the version of the local project does not match.
 
-解决方案就是升级到最新版。
+The solution is to upgrade to the latest version.
 
-* 如果 package.json 中的 umi 依赖是能自动匹配到最新版的，比如 `^2.9` 或者 `2.x`，删除 `node_modules` 重装依赖即可
-* 如果 package.json 中的 umi 依赖不能匹配到最新版，比如 `~2.8` 或者 `2.8.0-beta.1`，那么需改成 `^2.9` 或其他能匹配到最新版的写法，然后删除 `node_modules` 再重装依赖
+* If the umi dependency in package.json is automatically matched to the latest version, such as `^ 2.9` or `2.x`, delete the `node_modules` reload dependency.
+* If the umi dependency in package.json does not match the latest version, such as `~2.8` or `2.8.0-beta.1`, then it needs to be changed to `^ 2.9` or other matching to the latest version, then Remove `node_modules` and reload dependencies
+
+
+### EACCES: permission denied create-umi
+
+Umi UI needs to have permission to create projects.
+
+The solution is to raise the prompted path permissions and give execute permissions.。
