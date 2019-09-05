@@ -29,6 +29,7 @@ export default async function(opts: IOpts) {
       ['update', '--registry=https://registry.npm.taobao.org'],
       baseDir,
       {
+        unsafePerm: true,
         onData,
       },
     );
@@ -54,6 +55,7 @@ export default async function(opts: IOpts) {
       ['install', '--registry=https://registry.npm.taobao.org'],
       baseDir,
       {
+        unsafePerm: true,
         onData,
       },
     );

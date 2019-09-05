@@ -9,8 +9,9 @@ export async function executeCommand(
   npmClient,
   args,
   targetDir,
-  opts = {
-    taobaoSpeedUp: true,
+  opts: {
+    unsafePerm: false;
+    taobaoSpeedUp: true;
   },
 ) {
   const extraEnv = getSpeedUpEnv();
@@ -24,6 +25,7 @@ export async function executeCommand(
       env: {
         ...process.env,
         ...extraEnv,
+        ...(opts && opts.unsafePerm ? { npm_config_unsafe_perm: true } : {}),
       },
     });
     child.stdout.on('data', buffer => {

@@ -223,3 +223,9 @@ Umi UI 需要 umi@2.9 或以上，如果本地项目的版本不匹配，会报�
 
 * 如果 package.json 中的 umi 依赖是能自动匹配到最新版的，比如 `^2.9` 或者 `2.x`，删除 `node_modules` 重装依赖即可
 * 如果 package.json 中的 umi 依赖不能匹配到最新版，比如 `~2.8` 或者 `2.8.0-beta.1`，那么需改成 `^2.9` 或其他能匹配到最新版的写法，然后删除 `node_modules` 再重装依赖
+
+### EACCES: permission denied create-umi
+
+Umi UI 创建项目需要有执行的权限。
+
+解决方案是将提示的路径权限提升，给予执行权限。

@@ -42,7 +42,22 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         })();
       }
       if (progress.failure) {
-        setLogs(progress.failure.message);
+        const { code: errorCode, message: errorMsg, path: errorPath } = progress.failure;
+        if (progress.failure.code === 'EACCES') {
+          setLogs(
+            formatMessage(
+              {
+                id: 'org.umi.ui.global.project.create.steps.EACCES',
+              },
+              {
+                path: errorPath,
+                code: errorCode,
+              },
+            ),
+          );
+        } else {
+          setLogs(errorMsg);
+        }
       }
 
       const unsubscribe = listenCreateProject({

@@ -155,7 +155,7 @@ const DirectoryForm: React.FC<DirectoryFormProps> = props => {
             />
           ) : (
             dirPathArr.map((path, j) => (
-              <Tooltip title={dirPathArr.length > 7 ? path : null}>
+              <Tooltip title={dirPathArr.length > 7 ? path : null} key={j.toString()}>
                 <Button
                   key={`${path}_${j}`}
                   onClick={() => handleBreadDirChange(arr2Path(dirPathArr.slice(0, j + 1)))}
