@@ -170,7 +170,9 @@ export default class UmiUI {
       }
 
       try {
-        const servicePath = resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+        const servicePath = process.env.LOCAL_DEBUG
+          ? 'umi-build-dev/lib/Service'
+          : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
         debug(`Service path: ${servicePath}`);
         const Service = require(servicePath).default;
         const service = new Service({

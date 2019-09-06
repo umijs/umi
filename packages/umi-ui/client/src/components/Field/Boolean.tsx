@@ -6,7 +6,6 @@ import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<ICompProps> = props => {
   const _log = g_uiDebug.extend('Field:BooleanComp');
-  debugger;
   const { name, description, title, link } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
