@@ -9,7 +9,11 @@ import { getFormItemShow } from './utils';
 
 const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
 
-const ObjectComp: React.SFC<ICompProps> = props => {
+/**
+ * TDDO: 使用 Form.List ，需要增加 api， format , 将 object => object[]
+ *       保存的时候再将 object[] => object
+ */
+const ObjectComp: React.FC<ICompProps> = props => {
   const _log = g_uiDebug.extend('Field:ObjectComp');
   const { name, description, title, choices, default: defaultValue, link } = props;
   const { parentConfig } = getFormItemShow(name);
@@ -27,7 +31,8 @@ const ObjectComp: React.SFC<ICompProps> = props => {
               formatMessage({ id: 'org.umi.ui.configuration.basic.config.object.error' }),
             );
           }
-          if (Object.keys(value).some(v => v === 'undefined')) {
+          const isUndefined = Object.keys(value).some(v => v === 'undefined');
+          if (isUndefined) {
             // { 'undefined':  }
             throw new Error(
               formatMessage({ id: 'org.umi.ui.configuration.basic.config.object.select.error' }),
