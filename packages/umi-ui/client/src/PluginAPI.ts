@@ -4,7 +4,7 @@ import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import { formatMessage } from 'umi-plugin-react/locale';
-import { ReactNode } from 'react';
+import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
@@ -21,8 +21,8 @@ export default class PluginAPI {
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
-  TwoColumnPanel: ReactNode;
-  Field: any;
+  TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  Field: FC<IUi.IFieldProps>;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
