@@ -1,16 +1,15 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { MinusCircle, Plus } from '@ant-design/icons';
-import Context from '../../Context';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { ICompProps } from './index';
 import Label from './label';
 import { getFormItemShow } from './utils';
 
-const { useContext } = React;
-
 const StringArrayComp: React.SFC<ICompProps> = props => {
+  const _log = g_uiDebug.extend('Field:StringArrayComp');
   const { name, description, title, link } = props;
-  const { debug: _log, api } = useContext(Context);
+
   const { parentConfig } = getFormItemShow(name);
   const label = <Label name={name} title={title} description={description} link={link} />;
 
@@ -51,7 +50,7 @@ const StringArrayComp: React.SFC<ICompProps> = props => {
             }}
             style={{ width: 320 }}
           >
-            <Plus /> {api.intl({ id: 'org.umi.ui.configuration.add.column' })}
+            <Plus /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
           </Button>
         </Form.Item>
       </Form.Item>

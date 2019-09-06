@@ -8,6 +8,7 @@ import { ReactNode } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
+import Field from './components/Field';
 
 const _debug = debug('umiui');
 
@@ -21,6 +22,7 @@ export default class PluginAPI {
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: ReactNode;
+  Field: any;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -34,6 +36,7 @@ export default class PluginAPI {
         ...currentProject
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
+    this.Field = Field;
   }
 
   redirect: IUi.IRedirect = url => {

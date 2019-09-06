@@ -7,13 +7,13 @@
   }
   &-dark {
     span {
-      color: fade(#fff, 85);
+      color: @heading-color;
       line-height: 22px;
       font-size: 14px;
       margin-bottom: 2px;
     }
     p {
-      color: fade(#fff, 45);
+      color: @text-color-secondary;
       font-size: 14px;
       line-height: 22px;
     }
@@ -24,9 +24,9 @@
 
 .any-field {
   // TODO: use umi-ui-theme
-  color: #1890ff;
+  color: @primary-color;
   &:hover {
-    color: #40a9ff;
+    color: @primary-5;
   }
   a {
     margin-left: 4px;

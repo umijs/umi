@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FormInstance } from 'antd/lib/form/util';
 import StringComp from './String';
 import StringArrayComp from './StringArray';
@@ -51,4 +51,9 @@ const configTypeMapping: IConfigTypeMapping = {
   any: AnyComp,
 };
 
-export default configTypeMapping;
+const Field: React.SFC<ICompProps> = ({ type, ...restProps }) => {
+  const ConfigItem = configTypeMapping[type] || configTypeMapping.any;
+  return <ConfigItem {...restProps} />;
+};
+
+export default Field;

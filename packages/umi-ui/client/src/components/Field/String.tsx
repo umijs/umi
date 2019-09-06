@@ -2,12 +2,11 @@ import React from 'react';
 import { Form, Input } from 'antd';
 import { ICompProps } from './index';
 import Label from './label';
-import Context from '../../Context';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<ICompProps> = props => {
+  const _log = g_uiDebug.extend('Field:StringComp');
   const { name, description, title, default: defaultValue, link } = props;
-  const { debug: _log } = React.useContext(Context);
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,

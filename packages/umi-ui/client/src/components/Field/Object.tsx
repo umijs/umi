@@ -1,19 +1,17 @@
 import React from 'react';
 import { Form } from 'antd';
+import isPlainObject from 'lodash/isPlainObject';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { ICompProps } from './index';
 import Label from './label';
-import Context from '../../Context';
 import ObjectField from './fields/ObjectField';
 import { getFormItemShow } from './utils';
 
 const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
 
-const { useContext } = React;
-
 const ObjectComp: React.SFC<ICompProps> = props => {
+  const _log = g_uiDebug.extend('Field:ObjectComp');
   const { name, description, title, choices, default: defaultValue, link } = props;
-  const { debug: _log, api } = useContext(Context);
-  const { _, intl } = api;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -23,14 +21,16 @@ const ObjectComp: React.SFC<ICompProps> = props => {
         validateTrigger: 'onSubmit',
         validator: async (rule, value) => {
           // should be object-number
-          const isObject = _.isPlainObject(value);
+          const isObject = isPlainObject(value);
           if (!isObject) {
-            throw new Error(intl({ id: 'org.umi.ui.configuration.basic.config.object.error' }));
+            throw new Error(
+              formatMessage({ id: 'org.umi.ui.configuration.basic.config.object.error' }),
+            );
           }
           if (Object.keys(value).some(v => v === 'undefined')) {
             // { 'undefined':  }
             throw new Error(
-              intl({ id: 'org.umi.ui.configuration.basic.config.object.select.error' }),
+              formatMessage({ id: 'org.umi.ui.configuration.basic.config.object.select.error' }),
             );
           }
         },

@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
 import { Delete, Plus } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
-import Context from '../../../Context';
 
 import styles from './styles.module.less';
 
-const { useState, useContext } = React;
+const { useState } = React;
 
 const objToArray = (v: IValue): IValue[] => {
   return Object.keys(v).map(k => ({ [k]: v[k] }));
@@ -24,9 +24,8 @@ const arrayToObj = (arr: IValue[]): IValue => {
 };
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
+  const _log = g_uiDebug.extend('Field:ObjectField');
   const { value, onChange, options: originOptions, defaultValue } = props;
-  const { debug: _log, api } = useContext(Context);
-  const { intl } = api;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -98,13 +97,15 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             />
             {!isRequired && (
               <Popconfirm
-                title={intl({ id: 'org.umi.ui.configuration.object.item.delete.confirm' })}
+                title={formatMessage({ id: 'org.umi.ui.configuration.object.item.delete.confirm' })}
                 onConfirm={() => handleRemove(i)}
-                okText={intl({ id: 'org.umi.ui.configuration.okText' })}
-                cancelText={intl({ id: 'org.umi.ui.configuration.cancelText' })}
+                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
+                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Tooltip
-                  title={intl({ id: 'org.umi.ui.configuration.object.item.delete.tooltip' })}
+                  title={formatMessage({
+                    id: 'org.umi.ui.configuration.object.item.delete.tooltip',
+                  })}
                 >
                   <Delete className={styles['itemField-icon']} />
                 </Tooltip>
@@ -124,7 +125,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             width: 'calc(100% - 22px)',
           }}
         >
-          <Plus /> {api.intl({ id: 'org.umi.ui.configuration.add.column' })}
+          <Plus /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
         </Button>
       )}
     </span>
