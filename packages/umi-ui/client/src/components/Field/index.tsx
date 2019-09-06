@@ -9,37 +9,9 @@ import ObjectArrayComp from './ObjectArray';
 import ListComp from './List';
 import TextAreaComp from './TextArea';
 import AnyComp from './Any';
+import Label from './label';
 
-export enum CONFIG_TYPES {
-  'string' = 'string',
-  'string[]' = 'string[]',
-  'boolean' = 'boolean',
-  'object' = 'object',
-  'object[]' = 'object[]',
-  'list' = 'list',
-  'textarea' = 'textarea',
-  'any' = 'any',
-}
-
-type IValue = string | object | boolean | string[] | object[];
-
-export interface ICompProps {
-  group: string;
-  name: string;
-  title: string;
-  description: string;
-  type: IConfigTypes;
-  default: IValue;
-  choices?: string[];
-  value: IValue;
-  link?: string;
-  /** form ins */
-  form: FormInstance;
-}
-
-export type IConfigTypes = keyof typeof CONFIG_TYPES;
-
-export type IConfigTypeMapping = { [x in IConfigTypes]: any };
+export type IConfigTypeMapping = { [x in IUi.IConfigTypes]: any };
 
 const configTypeMapping: IConfigTypeMapping = {
   string: StringComp,
@@ -52,9 +24,10 @@ const configTypeMapping: IConfigTypeMapping = {
   any: AnyComp,
 };
 
-const Field: React.SFC<IUi.IFieldProps> = ({ type, ...restProps }) => {
+const Field: React.SFC<IUi.IFieldProps> = ({ type, label, ...restProps }) => {
   const ConfigItem = configTypeMapping[type] || configTypeMapping.any;
-  return <ConfigItem {...restProps} />;
+  const fieldLabel = typeof label === 'object' ? <Label {...label} /> : label;
+  return <ConfigItem label={fieldLabel} {...restProps} />;
 };
 
 export default Field;

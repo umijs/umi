@@ -253,9 +253,32 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                     return (
                       <div className={styles.group} key={group}>
                         <h2 id={group}>{group}</h2>
-                        {groupedData[group].map(item => {
-                          return <Field key={item.name} {...item} form={form} />;
-                        })}
+                        {groupedData[group].map(
+                          ({
+                            default: defaultValue,
+                            name,
+                            title,
+                            description,
+                            link,
+                            ...restItemProps
+                          }) => {
+                            const label = {
+                              title,
+                              description,
+                              link,
+                            };
+                            return (
+                              <Field
+                                key={name}
+                                label={label}
+                                name={name}
+                                defaultValue={defaultValue}
+                                {...restItemProps}
+                                form={form}
+                              />
+                            );
+                          },
+                        )}
                       </div>
                     );
                   })}

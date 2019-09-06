@@ -1,18 +1,26 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
-import { ICompProps } from './index';
+import { IUi } from 'umi-types';
 import Label from './label';
 import { getFormItemShow } from './utils';
 
-const BooleanComp: React.SFC<ICompProps> = props => {
+const BooleanComp: React.SFC<IUi.IFieldProps> = props => {
   const _log = g_uiDebug.extend('Field:BooleanComp');
-  const { name, description, title, link } = props;
+  const { name, form, value, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} link={link} />,
     valuePropName: 'checked',
+    ...restFormItemProps,
   };
+
+  React.useEffect(() => {
+    // 4.0 form Switch 不设置 initValue 为 undefined
+    // 所以 monuted 时给一个 boolean
+    form.setFieldsValue({
+      [name]: value === true,
+    });
+  }, []);
 
   return parentConfig ? (
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>

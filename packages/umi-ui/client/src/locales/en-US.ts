@@ -97,4 +97,5 @@ export default {
   'org.umi.ui.configuration.open.editor.failure': 'Open editor failed',
   'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
   'org.umi.ui.configuration.detail': 'View Detail',
+  'org.umi.ui.configuration.string.required': 'Please input value',
 };

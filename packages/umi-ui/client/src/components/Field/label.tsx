@@ -5,18 +5,17 @@ import Context from '@/layouts/Context';
 import styles from './styles.module.less';
 
 interface ILabelProps {
-  name: string;
   title: string;
   description?: string;
   link?: string;
 }
 
-const Label: React.SFC<ILabelProps> = ({ name, title, description, link }) => {
+const FieldLabel: React.SFC<ILabelProps> = ({ description, link, title }) => {
   const { theme } = React.useContext(Context);
   const wrapCls = cls(styles.label, styles[`label-${theme}`]);
 
-  return (
-    <div className={wrapCls} id={name}>
+  return title && description ? (
+    <div className={wrapCls}>
       <span>{title}</span>
       {(description || link) && (
         <p>
@@ -29,7 +28,9 @@ const Label: React.SFC<ILabelProps> = ({ name, title, description, link }) => {
         </p>
       )}
     </div>
+  ) : (
+    title
   );
 };
 
-export default Label;
+export default FieldLabel;

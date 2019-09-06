@@ -8,14 +8,13 @@ import { getFormItemShow } from './utils';
 
 const StringArrayComp: React.SFC<ICompProps> = props => {
   const _log = g_uiDebug.extend('Field:StringArrayComp');
-  const { name, description, title, link } = props;
+  const { name, ...restFormItemProps } = props;
 
   const { parentConfig } = getFormItemShow(name);
-  const label = <Label name={name} title={title} description={description} link={link} />;
 
   const formControl = (fields, { add, remove }) => {
     return (
-      <Form.Item label={label}>
+      <Form.Item {...restFormItemProps}>
         {fields.map((field, index) => (
           <Form.Item key={field.key} required={false} style={{ marginBottom: 8 }}>
             <Form.Item

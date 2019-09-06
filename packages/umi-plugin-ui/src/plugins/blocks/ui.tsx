@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Input, Spin, Button } from 'antd';
-import { IUiApi } from 'umi-types';
+import { Input, Spin, Button, Form } from 'antd';
+import { IUiApi, IUi } from 'umi-types';
 import decamelize from 'decamelize';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
@@ -14,7 +14,7 @@ function nameToPath(name) {
 }
 
 export default (api: IUiApi) => {
-  const { callRemote, getContext, intl } = api;
+  const { callRemote, getContext, intl, Field } = api;
 
   console.log('intl', intl({ id: 'org.umi.ui.blocks.panel' }));
 
@@ -84,39 +84,24 @@ export default (api: IUiApi) => {
       });
     };
 
+    const [form] = Form.useForm();
+
+    // const data: IUi.IFieldProps[] = [
+    //   { ti }
+    // ]
+
     return (
       <div className={styles.normal}>
-        {/* <p>
-          <pre>
-            currentProject: {JSON.stringify(api.currentProject, null, 2)}
-          </pre>
-        </p> */}
-        <Button onClick={() => api.showLogPanel()}>打开日志</Button>
-        <Button onClick={handleNotify}>全局通知栏（当前窗口）</Button>
-        <Button style={{ marginLeft: 8 }} onClick={() => setTimeout(handleNotify, 2000)}>
-          全局通知栏（延迟 2 s，非当前窗口）
-        </Button>
-
-        <Button onClick={() => api.redirect('/configuration')}>跳转至配置页</Button>
-        <Search
-          placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
-          onSearch={value => console.log(value)}
-        />
-        <div>{loading ? 'Fetching blocks...' : ''}</div>
-        <div className={styles.blocklist}>
-          {blocks.map((block, key) => {
-            return (
-              <div key={key} className={styles.block} onClick={addHandler.bind(null, block)}>
-                {block === blockAdding ? <Spin className={styles.spin} tip="Adding..." /> : <div />}
-                <div className={styles.blockTitle}>{block}</div>
-                <img
-                  src={`https://raw.githubusercontent.com/ant-design/pro-blocks/master/${block}/snapshot.png`}
-                  width="200"
-                />
-              </div>
-            );
-          })}
-        </div>
+        <Form
+          form={form}
+          onFinish={values => {
+            console.log('valuesvalues', values);
+          }}
+        >
+          <Field form={form} name="hello" label="测试" type="boolean" />
+          <Field form={form} name="hello.child" label="测试-子集" type="string" />
+          <Button htmlType="submit">Submit</Button>
+        </Form>
       </div>
     );
   };

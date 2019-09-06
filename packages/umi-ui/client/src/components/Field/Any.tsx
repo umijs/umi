@@ -10,7 +10,7 @@ import styles from './styles.module.less';
 
 const AnyComp: React.SFC<ICompProps> = props => {
   const _log = g_uiDebug.extend('Field:AnyComp');
-  const { name, description, title, link } = props;
+  const { name, ...restFormItemProps } = props;
   const { currentProject } = React.useContext(Context);
   const openConfigAction = {
     title: 'org.umi.ui.configuration.actions.open.config',
@@ -25,8 +25,8 @@ const AnyComp: React.SFC<ICompProps> = props => {
   const { action } = openConfigAction;
   const basicItem = {
     name,
-    label: <Label title={title} description={description} link={link} />,
     valuePropName: 'checked',
+    ...restFormItemProps,
   };
 
   const handleClick = async () => {

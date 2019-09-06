@@ -81,28 +81,34 @@ declare namespace IUI {
 
   type IValue = string | object | boolean | string[] | object[];
 
+  interface IFieldLabel {
+    /** label title */
+    title: string;
+    /** label description */
+    description: string;
+    /** description detail link */
+    link: string;
+  }
+
   export interface IFieldProps {
     /** formItem type */
     type: IConfigTypes;
     /** form field name */
     name: string;
-    /** label title */
-    title: string;
-    /** description */
-    description?: string;
-    /** description detail link */
-    link?: string;
     /** defaultValue  */
     defaultValue?: IValue;
     /** Array Select options */
     choices?: string[];
     /** currentValue */
-    value: IValue;
+    value?: IValue;
     /** antd form ins */
     form: object;
+    /** antd label, if object using <Label /> */
+    label: string | ReactNode | IFieldLabel;
+    [key: string]: any;
   }
 
-  export type IConfigTypes = keyof typeof CONFIG_TYPES;
+  type IConfigTypes = keyof typeof CONFIG_TYPES;
 
   interface ITwoColumnPanel {
     className?: string;

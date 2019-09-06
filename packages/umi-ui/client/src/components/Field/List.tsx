@@ -8,11 +8,11 @@ const { Option } = Select;
 
 const ListComp: React.SFC<ICompProps> = props => {
   const _log = g_uiDebug.extend('Field:ListComp');
-  const { name, description, form, title, choices, link } = props;
+  const { name, form, choices, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} link={link} />,
+    ...restFormItemProps,
   };
 
   const formControl = (

@@ -91,6 +91,7 @@ export default {
   'org.umi.ui.configuration.open.editor.failure': '打开编辑器失败',
   'org.umi.ui.configuration.edit.in.editor': '在编辑器中编辑',
   'org.umi.ui.configuration.detail': '查看详情',
+  'org.umi.ui.configuration.string.required': '请输入值',
   'org.umi.ui.configuration.basic.config.object.error': '配置参数不正确',
   'org.umi.ui.configuration.basic.config.object.select.error': '请选择相应的配置',
 };

@@ -1,18 +1,25 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { ICompProps } from './index';
+import { formatMessage } from 'umi-plugin-react/locale';
+import { IUi } from 'umi-types';
 import Label from './label';
 import { getFormItemShow } from './utils';
 
-const StringComp: React.SFC<ICompProps> = props => {
+const StringComp: React.SFC<IUi.IFieldProps> = props => {
   const _log = g_uiDebug.extend('Field:StringComp');
-  const { name, description, title, default: defaultValue, link } = props;
+  const { name, defaultValue, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     required: false,
-    label: <Label name={name} title={title} description={description} link={link} />,
-    rules: [{ required: !!defaultValue, message: `请输入${title}` }],
+    rules: [
+      {
+        // 没有 defaultValue 非必填
+        required: !!defaultValue,
+        message: formatMessage({ id: 'org.umi.ui.configuration.string.required' }),
+      },
+    ],
+    ...restFormItemProps,
   };
 
   const formControl = <Input autoComplete="off" style={{ maxWidth: 320 }} />;
