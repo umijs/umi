@@ -1,6 +1,7 @@
 import { join } from 'path';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
+import { dark } from 'umi-ui-theme';
 
 const { NODE_ENV } = process.env;
 
@@ -29,7 +30,7 @@ const config: IConfig = {
     xterm: 'window.Terminal',
     'xterm/lib/addons/fit/fit': 'window.fit',
   },
-  theme: './src/styles/theme.js',
+  theme: dark,
   routes: [
     {
       path: '/project',
