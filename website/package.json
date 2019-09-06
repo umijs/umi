@@ -1,8 +1,8 @@
 {
   "scripts": {
     "now-build": "echo empty build",
-    "build": "vuepress build ../docs --dest ./dist",
-    "deploy": "npm run build && now && now alias"
+    "deploy": "npm run build && now && now alias",
+    "build": "vuepress build ../docs --dest ./dist"
   },
   "devDependencies": {
     "vuepress": "^0.14.8"
