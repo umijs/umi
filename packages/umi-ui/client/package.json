@@ -2,6 +2,10 @@
   "scripts": {
     "analyze": "ANALYZE=1 umi build"
   },
+  "peerDependencies": {
+    "umi-types": "^0.4.0-beta.4",
+    "umi-ui-theme": "^1.0.0-beta.1"
+  },
   "dependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
