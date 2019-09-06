@@ -37,7 +37,6 @@
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-recommended": "^2.2.0",
     "umi-plugin-react": "^1.10.0-beta.1",
-    "umi-types": "0.4.0-beta.3",
     "webpack-less-theme-plugin": "^2.1.0"
   }
 }
