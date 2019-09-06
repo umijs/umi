@@ -93,3 +93,33 @@ export default (api) => {
 ```
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/tos3ooP0Dy/e985c7e0-09b7-49e1-965c-d2032a4783c5.png)
+
+
+### Use Umi UI theme
+
+Umi UI provides a set of antd theme variables that third-party component libraries can use to develop plug-ins in non-Umi UI runtime environments.
+
+#### Usage
+
+Install the `umi-ui-theme` theme pack, now only the `dark` dark theme is available.
+
+```js
+// .umirc.js
+import { dark, light } from 'umi-ui-theme';
+
+{
+  theme: dark
+}
+```
+
+Introduced in the less file, you can use the less variable inside.
+
+```less
+// dark
+@import "~@umi-ui-theme/dark.less";
+
+// light
+@import "~@umi-ui-theme/light.less";
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/z6VWQcplHx/9c78b96e-5ca9-407c-83d7-2caf5801c7ea.png)

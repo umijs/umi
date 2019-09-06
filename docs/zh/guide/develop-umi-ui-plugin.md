@@ -120,3 +120,6 @@ import { dark, light } from 'umi-ui-theme';
 // light
 @import "~@umi-ui-theme/light.less";
 ```
+
+
+![](https://gw.alipayobjects.com/zos/antfincdn/z6VWQcplHx/9c78b96e-5ca9-407c-83d7-2caf5801c7ea.png)
