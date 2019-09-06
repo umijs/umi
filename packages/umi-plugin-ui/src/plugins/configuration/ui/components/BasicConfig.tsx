@@ -8,10 +8,8 @@ import isEmpty from 'lodash/isEmpty';
 import serialize from 'serialize-javascript';
 import Context from '../Context';
 import useToggle from './common/useToggle';
-import configMapping from './ConfigItem';
 import Toc from './common/Toc';
-import { getToc } from './ConfigItem/utils';
-import { getDiffItems, arrayToObject, getChangedDiff } from './utils';
+import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
 import styles from './BasicConfig.module.less';
 
 interface IBasicConfigProps {
@@ -29,7 +27,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   // const [submitLoading, setSubmitLoading] = useState(false);
   // const [disabled, setDisabled] = useState(true);
   const { api, theme, debug: _log } = useContext(Context);
-  const { _, intl } = api;
+  const { _, intl, Field } = api;
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
@@ -255,10 +253,34 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                     return (
                       <div className={styles.group} key={group}>
                         <h2 id={group}>{group}</h2>
-                        {groupedData[group].map(item => {
-                          const ConfigItem = configMapping[item.type] || configMapping.any;
-                          return <ConfigItem key={item.name} {...item} form={form} />;
-                        })}
+                        {groupedData[group].map(
+                          ({
+                            default: defaultValue,
+                            name,
+                            title,
+                            choices = [],
+                            description,
+                            link,
+                            ...restItemProps
+                          }) => {
+                            const label = {
+                              title,
+                              description,
+                              link,
+                            };
+                            return (
+                              <Field
+                                key={name}
+                                label={label}
+                                options={choices}
+                                name={name}
+                                defaultValue={defaultValue}
+                                {...restItemProps}
+                                form={form}
+                              />
+                            );
+                          },
+                        )}
                       </div>
                     );
                   })}

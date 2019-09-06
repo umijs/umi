@@ -91,4 +91,11 @@ export default {
   'org.umi.ui.global.error.stack': 'Error stack',
   'org.umi.ui.configuration.basic.config.object.error': 'Config parameter is not correct',
   'org.umi.ui.configuration.basic.config.object.select.error': 'Please select an option',
+  'org.umi.ui.configuration.add.column': 'Add a column',
+  'org.umi.ui.configuration.object.item.delete.confirm': 'Confirm delete?',
+  'org.umi.ui.configuration.object.item.delete.tooltip': 'Delete an item',
+  'org.umi.ui.configuration.open.editor.failure': 'Open editor failed',
+  'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
+  'org.umi.ui.configuration.detail': 'View Detail',
+  'org.umi.ui.configuration.string.required': 'Please input value',
 };

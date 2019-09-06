@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Input, Select, InputNumber, Divider } from 'antd';
+import { Input, Select, InputNumber, Divider, Form } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 import { Plus } from '@ant-design/icons';
 import styles from './styles.module.less';
 
@@ -78,22 +79,40 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
 
   return (
     <InputGroup compact style={{ marginBottom: 8, display: 'flex' }} className={className}>
-      <Select
-        style={{ minWidth: 120 }}
-        value={options.find(option => k === option.value) ? k : undefined}
-        disabled={disabled}
-        getPopupContainer={triggerNode => triggerNode.parentNode}
-        onChange={handleSelect}
-        placeholder="请选择"
+      <Form.Item
+        rules={[
+          {
+            validateTrigger: 'onSubmit',
+            validator: async (rule, value) => {
+              if (value === 'undefined') {
+                // { 'undefined':  }
+                throw new Error(
+                  formatMessage({
+                    id: 'org.umi.ui.configuration.basic.config.object.select.error',
+                  }),
+                );
+              }
+            },
+          },
+        ]}
       >
-        {Array.isArray(options) &&
-          options.map(option => (
-            <Option key={`${option.value}`} value={option.value} disabled={option.disabled}>
-              {option.icon && <img src={iconMappings[option.icon]} style={{ marginRight: 4 }} />}
-              {option.name}
-            </Option>
-          ))}
-      </Select>
+        <Select
+          style={{ minWidth: 120 }}
+          value={options.find(option => k === option.value) ? k : undefined}
+          disabled={disabled}
+          getPopupContainer={triggerNode => triggerNode.parentNode}
+          onChange={handleSelect}
+          placeholder="请选择"
+        >
+          {Array.isArray(options) &&
+            options.map(option => (
+              <Option key={`${option.value}`} value={option.value} disabled={option.disabled}>
+                {option.icon && <img src={iconMappings[option.icon]} style={{ marginRight: 4 }} />}
+                {option.name}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
       <div className={styles['itemField-field-value']}>
         {/* {typeof v === 'string' && (
           <Input autoComplete="off" onChange={e => handleInput(e.target.value)} defaultValue={v} />
