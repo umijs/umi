@@ -1,12 +1,11 @@
 import React from 'react';
 import { Form, Select } from 'antd';
-import { ICompProps } from './index';
-import Label from './label';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const { Option } = Select;
 
-const ListComp: React.SFC<ICompProps> = props => {
+const ListComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:ListComp');
   const { name, form, choices, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);

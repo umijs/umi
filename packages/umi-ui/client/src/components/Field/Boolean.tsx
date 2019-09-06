@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
-import { IUi } from 'umi-types';
-import Label from './label';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const BooleanComp: React.SFC<IUi.IFieldProps> = props => {
+const BooleanComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:BooleanComp');
   const { name, form, value, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);

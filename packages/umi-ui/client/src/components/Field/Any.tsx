@@ -2,13 +2,12 @@ import * as React from 'react';
 import { Export } from '@ant-design/icons';
 import { message, Form } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
-import Label from './label';
 import Context from '@/layouts/Context';
 import { callRemote } from '@/socket';
-import { ICompProps } from './index';
+import { FieldProps } from './index';
 import styles from './styles.module.less';
 
-const AnyComp: React.SFC<ICompProps> = props => {
+const AnyComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:AnyComp');
   const { name, ...restFormItemProps } = props;
   const { currentProject } = React.useContext(Context);

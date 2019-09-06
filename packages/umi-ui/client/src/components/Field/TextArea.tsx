@@ -1,13 +1,11 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
-import { ICompProps } from './index';
-import Label from './label';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const { TextArea } = Input;
 
-const TextAreaComp: React.SFC<ICompProps> = props => {
+const TextAreaComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:TextAreaComp');
   const { name, defaultValue, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);

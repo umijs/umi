@@ -1,11 +1,10 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { IUi } from 'umi-types';
-import Label from './label';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const StringComp: React.SFC<IUi.IFieldProps> = props => {
+const StringComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:StringComp');
   const { name, defaultValue, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);

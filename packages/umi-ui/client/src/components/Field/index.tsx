@@ -24,7 +24,11 @@ const configTypeMapping: IConfigTypeMapping = {
   any: AnyComp,
 };
 
-const Field: React.SFC<IUi.IFieldProps> = ({ type, label, ...restProps }) => {
+export interface FieldProps extends IUi.IFieldProps {
+  form: FormInstance;
+}
+
+const Field: React.SFC<FieldProps> = ({ type, label, ...restProps }) => {
   const ConfigItem = configTypeMapping[type] || configTypeMapping.any;
   const fieldLabel = typeof label === 'object' ? <Label {...label} /> : label;
   return <ConfigItem label={fieldLabel} {...restProps} />;

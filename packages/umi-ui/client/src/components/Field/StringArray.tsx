@@ -2,11 +2,10 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { MinusCircle, Plus } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { ICompProps } from './index';
-import Label from './label';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const StringArrayComp: React.SFC<ICompProps> = props => {
+const StringArrayComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:StringArrayComp');
   const { name, ...restFormItemProps } = props;
 

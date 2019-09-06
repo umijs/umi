@@ -2,8 +2,7 @@ import React from 'react';
 import { Form } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { IUi } from 'umi-types';
-import Label from './label';
+import { FieldProps } from './index';
 import ObjectField from './fields/ObjectField';
 import { getFormItemShow } from './utils';
 
@@ -13,7 +12,7 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
  * TDDO: 使用 Form.List ，需要增加 api， format , 将 object => object[]
  *       保存的时候再将 object[] => object
  */
-const ObjectComp: React.FC<IUi.IFieldProps> = props => {
+const ObjectComp: React.FC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:ObjectComp');
   const { name, choices, defaultValue, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
