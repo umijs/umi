@@ -17,6 +17,8 @@ $ yarn create umi --type=plugin
 
 在最后一步 `是否有 Umi UI` 选项中选择 `Y`，就创建了一个有 UI 交互的 umi 插件。
 
+> 如果是 TypeScript 用户，创建时在 TypeScript 选项输入 Y
+
 初始化 UI 插件后，目录结构如下：
 
 ```
@@ -92,76 +94,29 @@ export default (api) => {
 }
 ```
 
-### 使用 TypeScript
+### 使用 Umi UI 主题
 
-如果是 TypeScript 用户，需将 `ui/index.js` 换成 `ui/index.tsx`。
+Umi UI 提供了一套 antd 主题变量，可供第三方组件库在非 Umi UI 运行环境下，开发插件。
 
-同时修改 `.fatherrc.js` 配置文件：
+#### 使用方式
 
-```diff
-- entry: 'ui/index.js',
-+ entry: 'ui/index.tsx',
-+ typescriptOpts: {
-+   check: false,
-+ },
-```
+安装 `umi-ui-theme` 主题包，现只提供了 `dark` 暗色主题。
 
-在项目目录下增加 `tsconfig.json`：
+```js
+// .umirc.js
+import { dark, light } from 'umi-ui-theme';
 
-```json
 {
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
-    "sourceMap": true,
-    "baseUrl": ".",
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true,
-    "declaration": false
-  }
+  theme: dark
 }
 ```
 
-在 `ui/index.tsx` 中引入 `umi-types` 类型，就可以有相关类型提示：
+在 less 文件中引入，可使用里面的 less 变量。
 
-```diff
-import { Button } from 'antd';
-+ import { IUiApi } from 'umi-types';
+```less
+// dark
+@import "~@umi-ui-theme/dark.less";
 
-- export default (api) => {
-+ export default (api: IUiApi) => {
-  const { callRemote } = api;
-
-  function PluginPanel() {
-    return (
-      <div style={{ padding: 20 }}>
-        <Button
-          type="primary"
-          onClick={async () => {
-            const { data } = await callRemote({
-              type: 'org..umi-dev.test',
-            });
-            alert(data);
-          }}
-        >Test</Button>
-      </div>
-    );
-  }
-
-  api.addPanel({
-    title: 'umi-dev',
-    path: '/umi-dev',
-    icon: 'home',
-    component: PluginPanel,
-  });
-}
+// light
+@import "~@umi-ui-theme/light.less";
 ```
-
-![](https://gw.alipayobjects.com/zos/antfincdn/tos3ooP0Dy/e985c7e0-09b7-49e1-965c-d2032a4783c5.png)
