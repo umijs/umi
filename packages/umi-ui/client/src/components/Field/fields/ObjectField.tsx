@@ -4,28 +4,15 @@ import cls from 'classnames';
 import { Delete, Plus } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
+import { objToArray, arrayToObj } from '../utils';
 
 import styles from './styles.module.less';
 
 const { useState } = React;
 
-const objToArray = (v: IValue): IValue[] => {
-  return Object.keys(v).map(k => ({ [k]: v[k] }));
-};
-
-const arrayToObj = (arr: IValue[]): IValue => {
-  return arr.reduce(
-    (acc, curr) => ({
-      ...acc,
-      ...curr,
-    }),
-    {},
-  );
-};
-
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const _log = g_uiDebug.extend('Field:ObjectField');
-  const { value, onChange, options: originOptions, defaultValue } = props;
+  const { value = {}, onChange, options: originOptions, defaultValue } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -123,6 +110,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           onClick={handleAdd}
           style={{
             width: 'calc(100% - 22px)',
+            minWidth: fieldsValue.length === 0 ? '100%' : 'unset',
           }}
         >
           <Plus /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}

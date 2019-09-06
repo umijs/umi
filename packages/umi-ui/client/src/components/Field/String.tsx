@@ -6,7 +6,7 @@ import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:StringComp');
-  const { name, defaultValue, ...restFormItemProps } = props;
+  const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -14,7 +14,7 @@ const StringComp: React.SFC<FieldProps> = props => {
     rules: [
       {
         // 没有 defaultValue 非必填
-        required: !!defaultValue,
+        required: !!form.getFieldValue(name),
         message: formatMessage({ id: 'org.umi.ui.configuration.string.required' }),
       },
     ],

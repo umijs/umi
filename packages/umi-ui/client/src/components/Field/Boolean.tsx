@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
+import isPlainObject from 'lodash/isPlainObject';
 import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:BooleanComp');
-  const { name, form, value, ...restFormItemProps } = props;
+  const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -16,8 +17,9 @@ const BooleanComp: React.SFC<FieldProps> = props => {
   React.useEffect(() => {
     // 4.0 form Switch 不设置 initValue 为 undefined
     // 所以 monuted 时给一个 boolean
+    const initVal = form.getFieldValue(name);
     form.setFieldsValue({
-      [name]: value === true,
+      [name]: initVal === true || !!isPlainObject(initVal),
     });
   }, []);
 

@@ -14,7 +14,7 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
  */
 const ObjectComp: React.FC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:ObjectComp');
-  const { name, choices, defaultValue, ...restFormItemProps } = props;
+  const { name, options, defaultValue = {}, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -41,16 +41,16 @@ const ObjectComp: React.FC<FieldProps> = props => {
     ],
     ...restFormItemProps,
   };
-  _log('choices', choices);
+  _log('options', options);
 
   const getIcon = vv =>
     name === 'targets' ? (COMMON_BROWSER.includes(vv) ? vv : 'default') : null;
 
-  const options = choices
-    ? choices.map(choice => ({ name: choice, value: choice, icon: getIcon(choice) }))
+  const fieldOptions = options
+    ? options.map(choice => ({ name: choice, value: choice, icon: getIcon(choice) }))
     : Object.keys(defaultValue).map(v => ({ name: v, value: v, icon: getIcon(v) }));
 
-  const formControl = <ObjectField options={options} defaultValue={defaultValue} />;
+  const formControl = <ObjectField options={fieldOptions} defaultValue={defaultValue} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>

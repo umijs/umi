@@ -95,16 +95,15 @@ declare namespace IUI {
     type: IConfigTypes;
     /** form field name */
     name: string;
-    /** defaultValue  */
+    /** defaultValue（only using in `object` field type）  */
     defaultValue?: IValue;
     /** Array Select options */
-    choices?: string[];
-    /** currentValue */
-    value?: IValue;
+    options?: string[];
     /** antd form ins */
     form: object;
     /** antd label, if object using <Label /> */
     label: string | ReactNode | IFieldLabel;
+    /** same as antd Form.Item props */
     [key: string]: any;
   }
 

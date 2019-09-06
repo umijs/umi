@@ -258,6 +258,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                             default: defaultValue,
                             name,
                             title,
+                            choices = [],
                             description,
                             link,
                             ...restItemProps
@@ -271,6 +272,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
                               <Field
                                 key={name}
                                 label={label}
+                                options={choices}
                                 name={name}
                                 defaultValue={defaultValue}
                                 {...restItemProps}

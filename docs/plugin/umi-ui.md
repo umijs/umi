@@ -362,6 +362,94 @@ api.addPanel({
 
 ### api.Field
 
+Configure form components, used in combination with [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) to simplify form components and generate forms using profiles .
+
+`api.Field` parameters are as follows：
+
+```ts
+ interface IFieldProps {
+  /** Form type */
+  /** Specific types: "string" | "boolean" | "object" | "string[]" | "object[]" | "list" | "textarea" | "any" */
+  type: IConfigTypes;
+  /** Form field name, Determine the linkage between fields by `.`  */
+  name: string;
+  /** optional list using it as required  */
+  defaultValue?: IValue;
+  /** Mainly used for array form types, providing an optional list of values */
+  options?: string[];
+  /** antd 4.x form instance */
+  form: object;
+  /** antd label, if it is object, use the built-in <Label /> component */
+  /** object params { title: string, description: string, link?: string } */
+  label: string | ReactNode | IFieldLabel;
+  /** Other types are consistent with Form.Item */
+  [key: string]: any;
+}
+```
+
+For example, the linkage example:
+
+
+```js
+import { Form } from 'antd'
+const { TwoColumnPanel } = api;
+
+function Configuration() {
+  const [form] = Form.useForm();
+
+  return (
+    <Form
+      form={form}
+      onFinish={values => {
+        console.log('valuesvalues', values);
+      }}
+      initialValues={{
+        'parent.child2': ['**/a.js', '**/b.js'],
+        'parent.child3': '<script>alert("Hello")</script>',
+        'parent2.child': 'Method1',
+      }}
+    >
+      <Field form={form} name="parent" label="SpeedUp-boolean" type="boolean" />
+        <Field form={form} name="parent.child" label="Speed-string" type="string" />
+        <Field
+          form={form}
+          name="parent.child2"
+          label="Speed-string[]"
+          type="string[]"
+        />
+        <Field form={form} name="parent.child3" label="Speed-textarea" type="textarea" />
+        <Field form={form} name="parent.child4" label="Speed-any" type="any" />
+
+      <Field form={form} name="parent2" label="Config-boolean" type="boolean" />
+        <Field
+          form={form}
+          name="parent2.child"
+          label="SpeedUp-list"
+          type="list"
+          options={['Method1', 'Method2']}
+        />
+        <Field
+          form={form}
+          name="parent2.child2"
+          label="SpeedUp-list"
+          type="object"
+          options={['Target1', 'Target2']}
+        />
+
+      <Form.Item shouldUpdate>
+        {({ getFieldsValue }) => <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>}
+      </Form.Item>
+      <Button htmlType="submit">Submit</Button>
+    </Form>
+  );
+}
+
+api.addPanel({
+  component: Configuration,
+});
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/TLGcWEtkc9/ef073709-c2cd-4900-b551-13d96080f3aa.png)
 
 
 ### api.notify

@@ -7,12 +7,12 @@ const { TextArea } = Input;
 
 const TextAreaComp: React.SFC<FieldProps> = props => {
   const _log = g_uiDebug.extend('Field:TextAreaComp');
-  const { name, defaultValue, ...restFormItemProps } = props;
+  const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     required: false,
-    rules: [{ required: !!defaultValue, message: '请输入' }],
+    rules: [{ required: !!form.getFieldValue(name), message: '请输入' }],
     ...restFormItemProps,
   };
 

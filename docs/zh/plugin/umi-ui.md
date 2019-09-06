@@ -360,6 +360,100 @@ api.addPanel({
 });
 ```
 
+
+### api.Field
+
+配置表单组件，结合 [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) 一起使用，简化表单组件，使用配置式生成表单。
+
+`api.Field` 参数如下：
+
+```ts
+ interface IFieldProps {
+  /** 表单类型 */
+  /** 具体类型有："string" | "boolean" | "object" | "string[]" | "object[]" | "list" | "textarea" | "any" */
+  type: IConfigTypes;
+  /** 表单 字段名，通过 `.` 来确定字段之间的联动关系  */
+  name: string;
+  /** 可选列表，只用在 type 为 object  */
+  defaultValue?: IValue;
+  /** 主要用于数组表单类型，提供可选值列表 */
+  options?: string[];
+  /** antd 4.x form 实例 */
+  form: object;
+  /** antd label, 如果是 object，则使用内置的 <Label /> 组件 */
+  /** object 参数有 { title: string, description: string, link?: string } */
+  label: string | ReactNode | IFieldLabel;
+  /** 其它类型与 Form.Item 一致 */
+  [key: string]: any;
+}
+```
+
+例如，联动示例 ：
+
+
+```js
+import { Form } from 'antd'
+const { TwoColumnPanel } = api;
+
+function Configuration() {
+  const [form] = Form.useForm();
+
+  return (
+    <Form
+      form={form}
+      onFinish={values => {
+        console.log('valuesvalues', values);
+      }}
+      initialValues={{
+        'parent.child2': ['**/a.js', '**/b.js'],
+        'parent.child3': '<script>alert("Hello")</script>',
+        'parent2.child': 'Method1',
+      }}
+    >
+      <Field form={form} name="parent" label="SpeedUp-boolean" type="boolean" />
+        <Field form={form} name="parent.child" label="Speed-string" type="string" />
+        <Field
+          form={form}
+          name="parent.child2"
+          label="Speed-string[]"
+          type="string[]"
+        />
+        <Field form={form} name="parent.child3" label="Speed-textarea" type="textarea" />
+        <Field form={form} name="parent.child4" label="Speed-any" type="any" />
+
+      <Field form={form} name="parent2" label="Config-boolean" type="boolean" />
+        <Field
+          form={form}
+          name="parent2.child"
+          label="SpeedUp-list"
+          type="list"
+          options={['Method1', 'Method2']}
+        />
+        <Field
+          form={form}
+          name="parent2.child2"
+          label="SpeedUp-list"
+          type="object"
+          options={['Target1', 'Target2']}
+        />
+
+      <Form.Item shouldUpdate>
+        {({ getFieldsValue }) => <pre>{JSON.stringify(getFieldsValue(), null, 2)}</pre>}
+      </Form.Item>
+      <Button htmlType="submit">Submit</Button>
+    </Form>
+  );
+}
+
+api.addPanel({
+  component: Configuration,
+});
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/TLGcWEtkc9/ef073709-c2cd-4900-b551-13d96080f3aa.png)
+
+
+
 ### api.notify()
 
 调用 Umi UI 通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd [Notification](https://ant.design/components/notification-cn)，否则为系统原生通知栏。
