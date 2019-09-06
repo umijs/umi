@@ -425,14 +425,14 @@ function Configuration() {
         <Field
           form={form}
           name="parent2.child"
-          label="SpeedUp-list"
+          label="Config-list"
           type="list"
           options={['Method1', 'Method2']}
         />
         <Field
           form={form}
           name="parent2.child2"
-          label="SpeedUp-list"
+          label="Config-list"
           type="object"
           options={['Target1', 'Target2']}
         />
@@ -450,7 +450,7 @@ api.addPanel({
 });
 ```
 
-![](https://gw.alipayobjects.com/zos/antfincdn/TLGcWEtkc9/ef073709-c2cd-4900-b551-13d96080f3aa.png)
+![](https://gw.alipayobjects.com/zos/antfincdn/ynwTwNrNjv/6af464b4-742b-4ce8-9ee2-92c826f2e51b.png)
 
 
 
