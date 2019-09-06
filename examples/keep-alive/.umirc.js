@@ -1,5 +1,4 @@
 export default {
-  keepAlive: true,
   plugins: [
     [
       '../../packages/umi-plugin-react/lib/index.js',
@@ -15,16 +14,22 @@ export default {
   routes: [
     {
       path: '/',
-      component: './index',
-    },
-    {
-      path: '/list',
-      component: './list',
-      keepAlive: true,
-    },
-    {
-      path: '/test',
-      component: './test',
+      component: '../layouts/index',
+      routes: [
+        {
+          path: '/',
+          component: './index',
+        },
+        {
+          path: '/list',
+          component: './list',
+          keepAlive: true,
+        },
+        {
+          path: '/item',
+          component: './item',
+        },
+      ],
     },
   ],
   exportStatic: true,

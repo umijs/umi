@@ -29,6 +29,7 @@ const RouteWithProps = ({
     return (
       <CacheRoute
         when="always"
+        cacheKey={path}
         path={path}
         exact={exact}
         strict={strict}
@@ -132,11 +133,12 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
     }
 
     render() {
+      const { extraProps } = this.state;
       return (
         <WrappedComponent
           {...{
             ...this.props,
-            ...this.state.extraProps,
+            ...extraProps,
           }}
         />
       );
@@ -147,7 +149,7 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
 export default function renderRoutes(routes, extraProps = {}, switchProps = {}) {
   const plugins = require('umi/_runtimePlugin');
   return routes ? (
-    <CacheSwitch {...switchProps}>
+    <CacheSwitch {...switchProps} which={element => element.props.keepAlive}>
       {routes.map((route, i) => {
         if (route.redirect) {
           return (
@@ -187,6 +189,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   args: { route },
                 });
                 let { component: Component } = route;
+                // eslint-disable-next-line no-undef
                 if (__IS_BROWSER && Component.getInitialProps) {
                   const initialProps = plugins.apply('modifyInitialProps', {
                     initialValue: {},
