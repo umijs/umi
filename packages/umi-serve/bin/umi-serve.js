@@ -42,25 +42,34 @@ paths = getPaths.default({ cwd, config });
 const app = express();
 
 // Gzip support
-app.use(compression({ filter: (req, res) => {
-  if (req.headers['x-no-compression']) {
-    // don't compress responses with this request header
-    return false;
-  }
-  // fallback to standard filter function
-  return compression.filter(req, res);
-} }));
+app.use(
+  compression({
+    filter: (req, res) => {
+      if (req.headers['x-no-compression']) {
+        // don't compress responses with this request header
+        return false;
+      }
+      // fallback to standard filter function
+      return compression.filter(req, res);
+    },
+  }),
+);
 
-app.use(require('umi-mock').createMiddleware({
-  cwd,
-  config,
-  absPagesPath: paths.absPagesPath,
-  absSrcPath: paths.absSrcPath,
-  watch: false,
-  onStart({ paths }) {
-    registerBabel(paths);
-  },
-}));
+app.use(
+  require('umi-mock').createMiddleware({
+    cwd,
+    config,
+    absPagesPath: paths.absPagesPath,
+    absSrcPath: paths.absSrcPath,
+    watch: false,
+    onStart({ paths }) {
+      registerBabel(paths);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  }),
+);
 app.use(require('serve-static')('dist'));
 app.listen(port, () => {
   const ip = getNetworkAddress();
@@ -77,11 +86,13 @@ app.listen(port, () => {
   if (process.platform !== `linux` || process.env.DISPLAY) {
     clipboardy.writeSync(localAddress);
   }
-  console.log(boxen(message.join('\n'), {
-    padding: 1,
-    borderColor: 'green',
-    margin: 1
-  }));
+  console.log(
+    boxen(message.join('\n'), {
+      padding: 1,
+      borderColor: 'green',
+      margin: 1,
+    }),
+  );
 });
 
 function registerBabel(extraFiles = []) {
@@ -106,10 +117,7 @@ function registerBabel(extraFiles = []) {
         },
       ],
     ],
-    only: [
-        join(cwd, 'config'),
-        join(cwd, '.umirc.js'),
-      ]
+    only: [join(cwd, 'config'), join(cwd, '.umirc.js')]
       .concat(extraFiles)
       .map(file => winPath(file)),
     extensions: ['.es6', '.es', '.jsx', '.js', '.mjs', '.ts', '.tsx'],
