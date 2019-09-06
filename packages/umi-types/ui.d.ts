@@ -15,6 +15,17 @@ declare namespace IUI {
     'light' = 'light',
   }
 
+  export enum CONFIG_TYPES {
+    'string' = 'string',
+    'string[]' = 'string[]',
+    'boolean' = 'boolean',
+    'object' = 'object',
+    'object[]' = 'object[]',
+    'list' = 'list',
+    'textarea' = 'textarea',
+    'any' = 'any',
+  }
+
   type ILang = keyof typeof LOCALES;
   type ITheme = keyof typeof THEME;
 
@@ -67,6 +78,31 @@ declare namespace IUI {
     onMessage?: (data: any) => void;
     keep?: boolean;
   }
+
+  type IValue = string | object | boolean | string[] | object[];
+
+  export interface IFieldProps {
+    /** formItem type */
+    type: IConfigTypes;
+    /** form field name */
+    name: string;
+    /** label title */
+    title: string;
+    /** description */
+    description?: string;
+    /** description detail link */
+    link?: string;
+    /** defaultValue  */
+    defaultValue?: IValue;
+    /** Array Select options */
+    choices?: string[];
+    /** currentValue */
+    value: IValue;
+    /** antd form ins */
+    form: object;
+  }
+
+  export type IConfigTypes = keyof typeof CONFIG_TYPES;
 
   interface ITwoColumnPanel {
     className?: string;
@@ -146,6 +182,8 @@ declare namespace IUI {
     callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;
+    /** Antd Form Field */
+    Field: FC<IFieldProps>;
     listenRemote: IListenRemote;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;

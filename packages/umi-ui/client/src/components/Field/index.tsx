@@ -1,4 +1,5 @@
 import React from 'react';
+import { IUi } from 'umi-types';
 import { FormInstance } from 'antd/lib/form/util';
 import StringComp from './String';
 import StringArrayComp from './StringArray';
@@ -51,7 +52,7 @@ const configTypeMapping: IConfigTypeMapping = {
   any: AnyComp,
 };
 
-const Field: React.SFC<ICompProps> = ({ type, ...restProps }) => {
+const Field: React.SFC<IUi.IFieldProps> = ({ type, ...restProps }) => {
   const ConfigItem = configTypeMapping[type] || configTypeMapping.any;
   return <ConfigItem {...restProps} />;
 };
