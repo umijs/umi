@@ -1,18 +1,33 @@
+sudo: required
+dist: trusty
 language: node_js
+addons:
+  chrome: stable
+env:
+  global:
+    - YARN_GPG=no
+    - HEADLESS=false
+    - CI=true
+    - PROGRESS=none
 
-node_js:
-  - '8'
-  - '10'
-  - '12'
+matrix:
+  include:
+    - node_js: "8"
+    - node_js: "10"
+    - node_js: "12"
+  fast_finish: true
 
 before_script:
-  - npm run build
-  - npm run bootstrap
+  - yarn bootstrap
+  - yarn build
+  - yarn ui:build
 
-after_success:
-  - npm run coveralls
+script:
+  - yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+  - yarn coveralls
 
 cache:
+  yarn: true
   directories:
     - node_modules
 

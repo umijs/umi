@@ -16,6 +16,21 @@ export default function(api) {
         onChange() {
           api.service.restart(/* why */ 'Config mock Changed');
         },
+        configs: [
+          {
+            group: 'basic',
+            name: 'mock.exclude',
+            type: 'string[]',
+            title: {
+              'zh-CN': 'Mock 忽略文件',
+              'en-US': 'Ignored Mock Files',
+            },
+            description: {
+              'zh-CN': '指定需要忽略的文件列表，支持 glob 格式。',
+              'en-US': 'Support glob pattern.',
+            },
+          },
+        ],
       };
     };
   });

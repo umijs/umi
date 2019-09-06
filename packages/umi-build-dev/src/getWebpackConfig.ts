@@ -9,10 +9,11 @@ const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
 interface IOpts {
   ssr?: IExportSSROpts;
+  watch?: boolean;
 }
 
 export default function(service: IApi, opts: IOpts = {}) {
-  const { ssr } = opts;
+  const { ssr, watch } = opts;
   const { config } = service;
 
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
@@ -81,6 +82,12 @@ export default function(service: IApi, opts: IOpts = {}) {
         test: /\.server\.js/,
       }),
     );
+  }
+
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!isDev && watch) {
+    webpackConfig.devtool = 'eval-source-map';
+    webpackConfig.watch = true;
   }
 
   return webpackConfig;

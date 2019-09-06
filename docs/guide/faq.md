@@ -212,3 +212,21 @@ Why: umiJS SSR executes code first server-side, then client-side. The `document`
 
 1. you absolutely need to have access to it in some React component, you should put that code in `componentDidMount` or `useEffect`. This lifecycle method will only be executed on the client.
 1. add the judgment with something like `typeof navigator !== 'undefined'` or `typeof document !== 'undefined'`
+
+## UMI UI
+
+### Umi version is too low, please upgrade to umi@2.9 or above
+
+Umi UI requires umi@2.9 or above, and this error will be reported if the version of the local project does not match.
+
+The solution is to upgrade to the latest version.
+
+* If the umi dependency in package.json is automatically matched to the latest version, such as `^ 2.9` or `2.x`, delete the `node_modules` reload dependency.
+* If the umi dependency in package.json does not match the latest version, such as `~2.8` or `2.8.0-beta.1`, then it needs to be changed to `^ 2.9` or other matching to the latest version, then Remove `node_modules` and reload dependencies
+
+
+### EACCES: permission denied create-umi
+
+Umi UI needs to have permission to create projects.
+
+The solution is to raise the prompted path permissions and give execute permissions.。

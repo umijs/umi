@@ -74,7 +74,9 @@ export default {
 - `dynamicImport`，是否启用按需加载，配置项同 [#dynamicImport](#dynamicImport)，并且如果在 [#dynamicImport](#dynamicImport) 有配置，配置项会继承到 dva 中
 - `hmr`，是否启用 dva 的 hmr
 
-::: warning 如果项目中有 dva 依赖，则优先使用项目中的依赖。 :::
+::: warning
+如果项目中有 dva 依赖，则优先使用项目中的依赖。
+:::
 
 ### antd
 
@@ -82,7 +84,9 @@ export default {
 
 启用后自动配置 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 实现 antd, antd-mobile 和 antd-pro 的按需编译，并且内置 antd, antd-mobile 依赖，无需手动在项目中安装。
 
-::: warning 如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。 :::
+::: warning
+如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。
+:::
 
 ### routes
 

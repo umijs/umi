@@ -1,4 +1,4 @@
 export default {
   target: 'node',
-  cjs: { type: 'babel' },
+  cjs: { type: 'babel', lazy: true },
 };

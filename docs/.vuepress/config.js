@@ -51,6 +51,7 @@ module.exports = {
                 'config',
                 'html-template',
                 'module-processor',
+                'umi-ui',
               ],
             },
             {
@@ -63,6 +64,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'develop-umi-ui-plugin',
               ],
             },
             {
@@ -87,7 +89,7 @@ module.exports = {
             {
               title: 'Develop Plugin',
               collapsable: false,
-              children: ['develop'],
+              children: ['develop', 'umi-ui'],
             },
           ],
         },
@@ -101,7 +103,7 @@ module.exports = {
           { text: '配置', link: '/zh/config/' },
           { text: 'API', link: '/zh/api/' },
           { text: '插件', link: '/zh/plugin/' },
-          { text: 'v1', link: 'https://v1.umijs.org/' },
+          { text: 'v1', link: 'https://github.com/umijs/umi/tree/1.x/docs' },
           { text: '发布日志', link: 'https://github.com/umijs/umi/releases' },
         ],
         sidebar: {
@@ -120,6 +122,7 @@ module.exports = {
                 'config',
                 'html-template',
                 'module-processor',
+                'umi-ui',
               ],
             },
             {
@@ -132,6 +135,7 @@ module.exports = {
                 'runtime-config',
                 'block',
                 'deploy',
+                'develop-umi-ui-plugin',
               ],
             },
             {
@@ -156,7 +160,7 @@ module.exports = {
             {
               title: '插件开发',
               collapsable: false,
-              children: ['develop'],
+              children: ['develop', 'umi-ui'],
             },
           ],
         },

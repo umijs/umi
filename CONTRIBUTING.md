@@ -66,7 +66,10 @@ $ COMPRESS=none umi build
 Publish to npm.
 
 ```bash
-# Can't use yarn for this command.
+# Generator the changelog first.
+$ y changelog
+
+# Do not use yarn for this command.
 $ n run publish
 ```
 
@@ -82,6 +85,14 @@ Deploy doc to [umijs.org](https://umijs.org/).
 $ y doc:deploy
 ```
 
-## Tips
+Debug `umi ui` in local.
 
-Please use node@10, node@11 is not supported.
+```bash
+$ y ui:build --watch
+
+# Then run umi ui under a umi project.
+$ umi ui
+
+# Or
+$ umi dev --ui
+```

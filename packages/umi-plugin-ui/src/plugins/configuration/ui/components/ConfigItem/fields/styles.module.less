@@ -1,0 +1,64 @@
+.itemField {
+  display: flex;
+  align-items: center;
+  .addBtn {
+  }
+  :global {
+    .ant-select:not(.ant-select-disabled) {
+      &,
+      .ant-select-selection--single {
+        border-right: 1px solid fade(#fff, 10);
+      }
+    }
+  }
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
+  .itemField-obj {
+    flex: 100% 1 1;
+    &-required {
+      .itemField-field-value {
+        & > :global(.ant-input-number) {
+          width: calc(~'100% - 22px');
+        }
+      }
+    }
+  }
+  &-icon {
+    margin-left: 8px;
+    margin-bottom: 8px;
+    color: fade(#fff, 65);
+    transition: color 0.3s;
+    &:hover {
+      color: fade(#fff, 85);
+    }
+  }
+  &-field-value {
+    flex: 100% 1 1;
+    :global {
+      .ant-input-number {
+        .ant-input-number-handler-wrap {
+          background: transparent;
+          border-color: fade(#fff, 10);
+          .ant-input-number-handler {
+            &:hover {
+              .anticon {
+                color: fade(#fff, 85);
+              }
+            }
+            .anticon {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .ant-input-number-handler-up {
+        border-bottom: 1px solid fade(#fff, 10);
+      }
+    }
+    & > * {
+      width: 100%;
+    }
+  }
+}

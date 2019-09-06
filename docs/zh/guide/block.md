@@ -69,7 +69,7 @@ npx umi block add DashboardAnalysis --npm-client cnpm
 你可以通过 [create-umi](https://github.com/umijs/create-umi) 快速创建一个区块的模板：
 
 ```bash
-$ yarn create umi --block
+$ yarn create umi --type=block
 ```
 
 区块的目录结构如下：

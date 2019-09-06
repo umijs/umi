@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-modern-mode",
-  "version": "0.0.6",
+  "version": "0.1.0-beta.2",
   "description": "A plugin for modern mode",
   "authors": {
     "name": "pigcan",
@@ -11,10 +11,6 @@
     "umi": "2.x"
   },
   "main": "lib/index.js",
-  "scripts": {
-    "build": "umi-tools build",
-    "prepublishOnly": "npm run build && np --no-cleanup --yolo --no-publish"
-  },
   "dependencies": {
     "copy": "^0.3.2",
     "lodash.clonedeep": "^4.5.0",

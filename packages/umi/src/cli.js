@@ -34,6 +34,7 @@ switch (script) {
   case 'dev':
   case 'test':
   case 'inspect':
+  case 'ui':
     // eslint-disable-next-line import/no-dynamic-require
     require(`./scripts/${script}`);
     break;

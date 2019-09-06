@@ -1,0 +1,204 @@
+html,
+body,
+#root {
+  height: 100%;
+  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /** overwrite ua input bg */
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: @input-bg;
+  }
+  .ant-select-selection {
+    // TODO: antd less
+    background-color: @select-background;
+  }
+  .ant-message-notice-content {
+    background-color: @message-background;
+  }
+  .ant-notification-notice {
+    background-color: @notification-background;
+  }
+  .ant-radio-button-wrapper:first-child {
+    border-left-color: @radio-button-border-color;
+  }
+  .ant-radio-button-wrapper {
+    border-color: @radio-button-border-color;
+  }
+  .anticon {
+    transition: color 0.3s;
+  }
+  a {
+    .anticon {
+      &:hover {
+        color: @icon-color-hover;
+      }
+    }
+  }
+
+  .ui-layout {
+    height: 100%;
+  }
+  .zh-CN {
+  }
+  .en-US {
+    font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+      'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  }
+  .ant-card {
+    background-color: @card-bg-color;
+  }
+  .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title::after {
+    background-color: @process-tail-color;
+  }
+  .ant-tooltip-placement-top .ant-tooltip-arrow {
+    border-right-color: @tooltip-arrow-color;
+    border-bottom-color: @tooltip-arrow-color;
+  }
+  .ant-card-head {
+    border-bottom: none;
+  }
+  .ant-modal-footer {
+    border-color: @modal-footer-border-color-split;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: @checkbox-check-inner-color;
+  }
+  .ant-switch-loading-icon,
+  .ant-switch::after {
+    background-color: @light;
+  }
+  .ant-anchor-ink {
+    &::before {
+      background-color: @anchor-border-color;
+    }
+    .ant-anchor-ink-ball {
+      display: none;
+    }
+  }
+  .ant-select-dropdown {
+    background-color: @select-dropdown-bg;
+  }
+  .ant-select-dropdown-menu-item-selected {
+    background-color: @select-item-selected-bg;
+  }
+  .ant-dropdown-menu-dark {
+    .ant-dropdown-menu-item:hover {
+      background-color: @ui-sidebar-menu-hover-bg;
+      color: @text-color;
+    }
+  }
+
+  .ant-select-dropdown-menu-item {
+    transition: all @duration-fast @ease-base-out;
+  }
+  .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
+    background-color: @select-dropdown-hover-bg;
+  }
+  .ant-select-dropdown-menu-item-active:hover:not(.ant-select-dropdown-menu-item-disabled) {
+    background-color: @select-dropdown-active-bg;
+  }
+
+  .ant-btn {
+    &:hover,
+    &:focus {
+      color: @heading-color;
+      background-color: @btn-default-hover-bg;
+      border-color: @btn-default-hover-bg;
+    }
+    &:active,
+    &.active {
+      color: @heading-color;
+      background-color: @btn-default-active-bg;
+      border-color: @btn-default-active-bg;
+    }
+  }
+  .ant-btn-dashed {
+    &:hover,
+    &:focus {
+      border-color: @btn-ghost-hover-border;
+    }
+  }
+  .ant-btn-background-ghost {
+    color: @btn-ghost-color;
+    border-color: @btn-ghost-border;
+  }
+  .ant-btn-primary {
+    &:hover,
+    &:focus {
+      color: @btn-primary-color;
+      background-color: @btn-primary-hover-bg;
+      border-color: @btn-primary-hover-bg;
+    }
+    &:active,
+    &.active {
+      color: @btn-primary-color;
+      background-color: @btn-primary-active-bg;
+      border-color: @btn-primary-active-bg;
+    }
+  }
+}
+
+ul,
+ol {
+  list-style: none;
+}
+h1,
+h2,
+h3 {
+  color: @heading-color;
+}
+h1,
+h2,
+h3,
+p,
+a {
+  font-weight: 400;
+}
+h1 {
+  font-size: 20px;
+  margin: 0;
+}
+h2 {
+  font-size: @font-size-lg;
+  margin: 0;
+}
+h3 {
+  font-size: @font-size-base;
+}
+p {
+  margin: 0;
+  color: @text-color;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: @ui-scroll-bg;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background: 0 0;
+}
+
+.bigTitle {
+  font-size: calc(40px + 1vw);
+}
+
+@media @mobile {
+}

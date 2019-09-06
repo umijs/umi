@@ -18,7 +18,7 @@ export default function(api) {
   api._registerConfig(() => {
     return plugins
       .filter(p => !excludes.includes(p.name))
-      .map(({ name, validate = noop }) => {
+      .map(({ name, validate = noop, ...extraOpts }) => {
         return api => ({
           name,
           validate,
@@ -32,6 +32,7 @@ export default function(api) {
               api.service.restart(`${name} changed`);
             }
           },
+          ...extraOpts,
         });
       });
   });

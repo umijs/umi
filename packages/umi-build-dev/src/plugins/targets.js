@@ -20,6 +20,24 @@ export default function(api) {
         onChange() {
           api.service.restart(/* why */ 'Config targets Changed');
         },
+        type: 'object',
+        default: {
+          chrome: 49,
+          firefox: 64,
+          safari: 10,
+          edge: 13,
+          ios: 10,
+        },
+        choices: ['chrome', 'opera', 'edge', 'firefox', 'safari', 'ie', 'ios', 'android'],
+        group: 'webpack',
+        title: {
+          'zh-CN': '浏览器兼容性',
+          'en-US': 'Browser Compatibility',
+        },
+        description: {
+          'zh-CN': '选择需要兼容的浏览器最低版本，会自动引入 Polyfill 和做语法转换。',
+          'en-US': 'The minimum version of browsers you want to compatible with.',
+        },
       };
     };
   });

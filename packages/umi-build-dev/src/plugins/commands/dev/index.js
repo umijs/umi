@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import chalk from 'chalk';
 import notify from 'umi-notify';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -8,6 +9,16 @@ import getFilesGenerator from '../getFilesGenerator';
 export default function(api) {
   const { service, config, log, debug, printUmiError, UmiError } = api;
   const { cwd } = service;
+
+  let hasUIArg = false;
+
+  api.addHTMLHeadScript(() => {
+    return hasUIArg
+      ? {
+          content: readFileSync(require.resolve('./injectUI'), 'utf-8'),
+        }
+      : [];
+  });
 
   api.registerCommand(
     'dev',
@@ -21,7 +32,10 @@ export default function(api) {
       const RoutesManager = getRouteManager(service);
       RoutesManager.fetchRoutes();
 
-      const { port } = args;
+      const { port, ui } = args;
+      if (ui) {
+        hasUIArg = true;
+      }
 
       process.env.NODE_ENV = 'development';
       service.applyPlugins('onStart');

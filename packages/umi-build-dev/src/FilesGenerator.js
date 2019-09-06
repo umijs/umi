@@ -96,6 +96,7 @@ export default class FilesGenerator {
 
   rebuild() {
     const { refreshBrowser, printError } = this.service;
+    const isDev = process.env.NODE_ENV === 'development';
     try {
       this.service.applyPlugins('onGenerateFiles', {
         args: {
@@ -108,12 +109,12 @@ export default class FilesGenerator {
       this.generateHistory();
 
       if (this.hasRebuildError) {
-        refreshBrowser();
+        if (isDev) refreshBrowser();
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      printError([e.message]);
+      if (isDev) printError([e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?

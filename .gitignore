@@ -1,5 +1,7 @@
 .DS_Store
 tmp
+/ui/node_modules
+/ui/yarn.lock
 /node_modules
 /packages/**/node_modules
 /packages/**/.leagcy-dist

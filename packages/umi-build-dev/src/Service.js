@@ -78,7 +78,7 @@ export default class Service {
         plugins: this.config.plugins || [],
       });
     } catch (e) {
-      if (process.env.UMI_TEST) {
+      if (process.env.UMI_TEST || process.env.UMI_UI) {
         throw new Error(e);
       } else {
         this.printUmiError(e);
@@ -307,7 +307,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     return this.runCommand(name, args);
   }
 
-  runCommand(rawName, rawArgs) {
+  runCommand(rawName, rawArgs = {}, remoteLog) {
     debug(`raw command name: ${rawName}, args: ${JSON.stringify(rawArgs)}`);
     const { name, args } = this.applyPlugins('_modifyCommand', {
       initialValue: {
@@ -326,7 +326,9 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const { fn, opts } = command;
     if (opts.webpack) {
       // webpack config
-      this.webpackConfig = require('./getWebpackConfig').default(this);
+      this.webpackConfig = require('./getWebpackConfig').default(this, {
+        watch: rawArgs.w || rawArgs.watch,
+      });
       if (this.config.ssr) {
         // when use ssr, push client-manifest plugin into client webpackConfig
         this.webpackConfig.plugins.push(
@@ -339,7 +341,9 @@ ${getCodeFrame(e, { cwd: this.cwd })}
       }
     }
 
-    return fn(args);
+    return fn(args, {
+      remoteLog,
+    });
   }
 }
 

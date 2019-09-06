@@ -1,0 +1,210 @@
+// color
+@heading-color: fade(@light, 85);
+// @heading-color-dark: fade(@dark, 85);
+@text-color: fade(@light, 65);
+// @text-color-dark: fade(@dark, 65);
+@text-color-secondary: fade(@light, 45);
+@disabled-color: fade(@light, 25);
+@primary-5: #40a9ff;
+@primary-color: #1890ff;
+@outline-color: @primary-color;
+@icon-color: fade(@light, 65);
+@icon-color-hover: fade(@light, 85);
+@primary-6: #096dd9;
+@border-color-base: transparent;
+@btn-default-color: @heading-color;
+@btn-default-bg: #444457;
+@btn-default-border: #444457;
+@btn-ghost-color: fade(@light, 45);
+@btn-ghost-border: fade(@light, 45);
+@input-color: @text-color;
+@input-bg: #3b3b4d;
+@input-disabled-bg: #4c4c61;
+@input-placeholder-color: @text-color-secondary;
+@input-hover-border-color: fade(@light, 10);
+@checkbox-check-color: #3b3b4d;
+@checkbox-color: @primary-color;
+@select-border-color: #3b3b4d;
+@item-active-bg: #272733;
+@border-color-split: #17171f;
+@menu-dark-bg: #3b3b4d;
+@body-background: #23232e;
+@component-background: #23232e;
+@layout-sider-background: #30303d;
+@layout-body-background: #23232e;
+@tooltip-bg: #191922;
+@tooltip-arrow-color: #191922;
+@popover-bg: #2d2d3b;
+@success-color: #00a854;
+@info-color: @primary-color;
+@warning-color: #ffbf00;
+@error-color: #f04134;
+@menu-bg: #30303d;
+@menu-item-active-bg: fade(@light, 5);
+@menu-highlight-color: @light;
+@card-background: #30303d;
+@card-hover-border: #383847;
+@card-actions-background: #30303d;
+@tail-color: fade(@light, 10);
+@radio-button-bg: transparent;
+@radio-button-checked-bg: transparent;
+@radio-dot-color: @primary-color;
+
+// family
+// @code-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;;
+
+// shadow
+@box-shadow-base: 0 2px 20px 0 fade(@dark, 45);
+@shadow-2: @box-shadow-base;
+// drawer shadow
+@shadow-1-right: 0 -4px 12px 0 fade(@dark, 12);
+
+// radius
+@border-radius-base: 2px;
+
+// zIndex: notification > popover > tooltip
+@zindex-notification: 1063;
+@zindex-popover: 1061;
+@zindex-tooltip: 1060;
+
+// width
+@anchor-border-width: 1px;
+
+// margin
+@form-item-margin-bottom: 24px;
+@menu-item-vertical-margin: 0px;
+@menu-item-boundary-margin: 0px;
+
+// shadow
+
+// @layout-body-background: #171717;
+// @background-color-base: #262626;
+// @background-color-base: #23232E;
+
+// @layout-sider-background: #171f22;
+// @component-background: #171f22;
+// @layout-header-background: #171f22;
+// @menu-dark-submenu-bg: #171f22;
+// @input-bg: #313133;
+// @btn-default-bg: #262626;
+// @border-color-base: rgba(255, 255, 255, 0.25);
+// @border-color-split: #363636;
+// @heading-color: #e3e3e3;
+// @text-color: #e3e3e3;
+// @text-color-secondary: fade(@light, 65%);
+// @table-selected-row-bg: #3a3a3a;
+// @table-expanded-row-bg: #3b3b3b;
+// @table-header-bg: #3a3a3b;
+// @table-row-hover-bg: #3a3a3b;
+// @layout-trigger-color: fade(@light, 80%);
+// @layout-trigger-background: #313232;
+// @alert-message-color: fade(@dark, 67%);
+// @disabled-color: rgba(179, 32, 32, 0.25);
+// @tag-default-bg: #262628;
+// @wait-icon-color: fade(@light, 64%);
+// @collapse-header-bg: #262629;
+// @info-color: #313133;
+// @primary-color: #1890ff;
+
+// size
+@font-size-base: 14px;
+@font-size-lg: 16px;
+
+// animation
+@ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
+@ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
+@ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+@ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+@ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+@ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+@ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+@ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+@ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+@ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+@ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+@ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+@ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+@ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+@ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+@screen-xl: 1208px;
+@screen-lg: 1024px;
+@screen-md: 768px;
+// 移动
+@screen-sm: 767.9px;
+// 超小屏
+@screen-xs: 375px;
+
+/** custom */
+@light: #fff;
+@dark: #000;
+@duration: 0.45s;
+@duration-slow: 0.6s;
+@duration-fast: 0.3s;
+
+@btn-disable-bg: transparent;
+@btn-disable-color: fade(@light, 25);
+@btn-disable-border: fade(@light, 10);
+@btn-default-hover-bg: #4c4c61;
+@btn-default-active-bg: #272733;
+@btn-primary-color: @light;
+@btn-primary-hover-bg: #40a9ff;
+@btn-primary-active-bg: #096dd9;
+@btn-ghost-hover-border: fade(@light, 65);
+
+// for project
+@select-background: #3b3b4d;
+@select-dropdown-bg: #3b3b4d;
+@select-dropdown-hover-bg: #4c4c61;
+@select-dropdown-active-bg: #4c4c61;
+@select-item-selected-bg: #272733;
+@checkbox-check-inner-color: @light;
+@anchor-border-color: fade(@light, 15);
+
+@modal-footer-border-color-split: #17171f;
+@card-bg-color: #30303d;
+@process-tail-color: fade(@light, 10);
+// drawer background-color
+@drawer-content-bg: #2d2d3b;
+@drawer-header-bg: #2d2d3b;
+@radio-button-border-color: #86868c;
+@message-background: #2d2d3b;
+@notification-background: #2d2d3b;
+
+@ui-directory-list-item-hover-bg: #2d2d3b;
+@ui-directory-list-item-checked-icon-color: #61616c;
+@ui-modal-shadow: 0 2px 8px fade(@dark, 25);
+@ui-log-shadow: 0 -4px 12px fade(@dark, 12);
+@ui-scroll-bg: #3b3b47;
+@ui-tag-error-color: #f5222d;
+@ui-status-bar-height: 28px;
+@ui-header-title-height: 62px;
+@ui-status-bar-bg: #17171f;
+@ui-footer-bar-hover-bg: #2d2d3b;
+@ui-status-bar-color: fade(@light, 85);
+@ui-sidebar-menu-bg: #343345;
+@ui-directory-split-color: fade(@light, 10);
+@ui-sidebar-menu-divider-color: fade(@light, 10);
+@ui-sidebar-menu-hover-bg: #4c4c61;
+@ui-footer-actions-divider-color: #15171c;
+
+// PC 宽度 >= 1208
+@pc: ~'only screen and (min-width: @{screen-xl})';
+// 桌面 >= 1024 =< 1208
+@desktop: ~'screen and (min-width:@{screen-lg}) and (max-width:@{screen-xl})';
+// 平板 >= 768 <= 1024
+@tablet: ~'screen and (min-width: @{screen-md}) and (max-width:@{screen-lg})';
+// 移动端 <= 768
+@mobile: ~'only screen and (max-width: @{screen-md})';
+// 超小移动端 <= 375
+@smallMobile: ~'only screen and (max-width: @{screen-xs})';
+// ipad 横向
+@ipad-landscape: ~'only screen and (min-device-width: 768px)and (max-device-width : 1024px) and (orientation: landscape)';
+// ipad 纵向
+@ipad-port: ~'only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)';
+
+.omit() {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

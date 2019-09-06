@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.9.10",
+  "version": "1.10.1",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
@@ -20,7 +20,7 @@
     "babel-loader": "8.0.6",
     "babel-plugin-dynamic-import-node": "2.2.0",
     "babel-plugin-named-asset-import": "0.3.2",
-    "babel-preset-umi": "1.6.1",
+    "babel-preset-umi": "1.7.0-beta.2",
     "chalk": "2.4.2",
     "chokidar": "3.0.2",
     "clipboardy": "2.1.0",
@@ -30,12 +30,11 @@
     "css-modules-typescript-loader": "2.0.4",
     "cssnano": "4.1.10",
     "debug": "4.1.1",
-    "detect-port": "1.3.0",
     "didyoumean": "1.2.1",
     "duplicate-package-checker-webpack-plugin": "3.0.0",
     "es5-imcompatible-versions": "^0.1.37",
     "eslint": "5.16.0",
-    "eslint-config-umi": "1.5.0",
+    "eslint-config-umi": "1.6.0-beta.1",
     "eslint-loader": "2.1.2",
     "eslint-plugin-flowtype": "2.50.3",
     "eslint-plugin-import": "2.17.3",
@@ -56,6 +55,7 @@
     "lodash": "4.17.13",
     "mini-css-extract-plugin": "0.7.0",
     "pkg-up": "3.1.0",
+    "portfinder": "1.0.21",
     "postcss": "7.0.17",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",

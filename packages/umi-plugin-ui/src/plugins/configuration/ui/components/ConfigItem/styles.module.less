@@ -1,0 +1,35 @@
+.label {
+  span,
+  p {
+    line-height: 22px;
+  }
+  p {
+  }
+  &-dark {
+    span {
+      color: fade(#fff, 85);
+      line-height: 22px;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    p {
+      color: fade(#fff, 45);
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+  &-light {
+  }
+}
+
+.any-field {
+  // TODO: use umi-ui-theme
+  color: #1890ff;
+  &:hover {
+    color: #40a9ff;
+  }
+  a {
+    margin-left: 4px;
+    text-decoration: underline;
+  }
+}

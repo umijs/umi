@@ -9,62 +9,52 @@ trigger:
 
 jobs:
   - job: linux_test
+    timeoutInMinutes: 30
     pool:
       vmImage: 'Ubuntu-16.04'
 
     container:
       image: circleci/node:latest-browsers
       options: '-u root'
-
     steps:
       - checkout: self
         clean: all
         fetchDepth: 1
-      - script: npm install
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+      - script: yarn install
         displayName: install
-      - script: npm run bootstrap
+      - script: yarn bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: yarn build
         displayName: build
-      - script: npm run test
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test -- --forceExit
         env:
           PROGRESS: none
+          CI: true
         displayName: test
 
   - job: windows_test
+    timeoutInMinutes: 30
     pool:
       vmImage: 'vs2017-win2016'
     steps:
       - checkout: self
         clean: all
         fetchDepth: 1
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-      - script: npm install
+      - script: yarn install
         displayName: install
-      - script: npm run bootstrap
+      - script: yarn bootstrap
         displayName: bootstrap
-      - script: npm run build
+      - script: yarn build
         displayName: build
-      - script: npm run test
-        displayName: test
-
-  - job: MacOS_test
-    pool:
-      vmImage: 'macOS-10.13'
-    steps:
-      - checkout: self
-        clean: all
-        fetchDepth: 1
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-      - script: npm install
-        displayName: install
-      - script: npm run bootstrap
-        displayName: bootstrap
-      - script: npm run build
-        displayName: build
-      - script: npm run test
+      - script: yarn ui:build
+        displayName: ui:build
+      - script: yarn test -- --forceExit
+        env:
+          PROGRESS: none
+          CI: true
         displayName: test

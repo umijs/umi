@@ -24,7 +24,7 @@ export default function(opts = {}) {
     './plugins/commands/rm',
     './plugins/commands/config',
     './plugins/commands/block',
-    // './plugins/commands/ui',
+    ...(process.env.UMI_UI === 'none' ? [] : [require.resolve('umi-plugin-ui')]),
     './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',
@@ -34,7 +34,6 @@ export default function(opts = {}) {
     './plugins/proxy',
     './plugins/history',
     './plugins/afwebpack-config',
-    './plugins/mountElementId',
     './plugins/404', // 404 must after mock
     './plugins/targets',
     './plugins/importFromUmi',

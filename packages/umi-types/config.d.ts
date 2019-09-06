@@ -1,13 +1,14 @@
 // https://umijs.org/config/
 import { ExternalsElement, Condition } from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
+import { ReactNode } from 'react';
 import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
 
 export interface IRoute {
   path?: string;
-  component?: string;
+  component?: ReactNode;
   routes?: IRoute[];
   Routes?: string[];
   redirect?: string;

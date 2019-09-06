@@ -18,6 +18,16 @@ export default api => {
           commands: api.service.commands,
         },
       });
+      helpInfo.commands = {
+        ui: {
+          opts: {
+            usage: 'umi ui',
+            description: 'visual assist tool for umi project',
+            options: {},
+          },
+        },
+        ...helpInfo.commands,
+      };
       const command = args._[0];
       if (!command) {
         logMainHelp(helpInfo);
@@ -30,7 +40,7 @@ export default api => {
   function logMainHelp(helpInfo) {
     console.log(`\n  Usage: ${helpInfo.scriptName} <command> [options]\n`);
     console.log(`  Commands:\n`);
-    const commands = helpInfo.commands;
+    const { commands } = helpInfo;
     const padLength = getPadLength(commands);
     for (const name in commands) {
       const opts = commands[name].opts || {};
