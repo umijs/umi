@@ -9,8 +9,10 @@ import zhCN from '../locales/zh-CN';
 declare global {
   interface Window {
     xterm: any;
+    gtag?: any;
     Terminal?: typeof Terminal;
     fit?: any;
+    g_uiUserId?: string;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };

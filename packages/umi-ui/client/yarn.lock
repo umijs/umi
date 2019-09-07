@@ -5042,12 +5042,13 @@ ua-parser-js@^0.7.18:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.20.tgz#7527178b82f6a62a0f243d1f94fd30e3e3c21098"
   integrity sha512-8OaIKfzL5cpx8eCMAhhvTlft8GYF8b2eQr6JkCyVdrgjcytyOmPCXrqXFcUnhonRpLlh5yxEZVohm6mzaowUOw==
 
-umi-types@0.4.0-beta.1:
-  version "0.4.0-beta.1"
-  resolved "https://registry.yarnpkg.com/umi-types/-/umi-types-0.4.0-beta.1.tgz#62ecc310f822f86cd3522dfe07cb55d200fb14db"
-  integrity sha512-Eq36NLmrkwkN3JB5pEZta7sNu6mPDy2KhIaKhNBDp58LB6iwNIXw+J4vMsttD6l63/M35WCYfUfy80X0TTFchQ==
+umi-types@0.4.0-beta.3:
+  version "0.4.0-beta.3"
+  resolved "https://registry.yarnpkg.com/umi-types/-/umi-types-0.4.0-beta.3.tgz#7fa77e33925afbf3247e2d7884b73f0722fc1570"
+  integrity sha512-Au7+T6+qFMklssPO0TaQpEQwTAy/l4XeDfHZbCExzRJrpWPRQXdN7nL/SGrV9iAn5Ui2Q1mOM31FJKb6N+rTqA==
   dependencies:
     "@types/cheerio" "^0.22.10"
+    "@types/debug" "^4.1.5"
     "@types/lodash" "^4.14.136"
     "@types/react" "^16.8.25"
     "@types/signale" "^1.2.1"
