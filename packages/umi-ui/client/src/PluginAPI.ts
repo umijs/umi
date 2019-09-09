@@ -25,7 +25,7 @@ export default class PluginAPI {
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Field: FC<IUi.IFieldProps>;
   registerModel: IUi.registerModel;
-  connect: typeof connect;
+  connect: iUi.connect;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
