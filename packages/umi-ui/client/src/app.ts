@@ -161,3 +161,14 @@ export const locale = {
     return window.g_uiLocales;
   },
 };
+
+// for ga analyse
+export const onRouteChange = params => {
+  const { location } = params;
+  const { pathname } = location;
+  if (window.gtag && pathname) {
+    window.gtag('config', 'UA-145890626-1', {
+      page_path: pathname,
+    });
+  }
+};

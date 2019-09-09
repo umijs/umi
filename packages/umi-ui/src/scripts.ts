@@ -51,9 +51,11 @@ const ga = `
   gtag('js', new Date());
 
   gtag('config', 'UA-145890626-1', {
+    'send_page_view': false,
     'user_id': '{{ roleId }}',
   });
   gtag('set', {
+    'user_id': '{{ roleId }}',
     'version': '{{ version }}',
     'type': '{{ type }}',
   });
