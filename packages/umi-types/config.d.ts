@@ -83,6 +83,10 @@ export type IExportSSROpts =
     }
   | boolean;
 
+export interface IMockOpts {
+  exclude?: string[] | string;
+}
+
 interface IConfig extends IAFWebpackConfig {
   // basic config
   // sorted by alphabet
@@ -96,6 +100,8 @@ interface IConfig extends IAFWebpackConfig {
   routes?: IRoute[] | null;
   runtimePublicPath?: boolean;
   singular?: boolean;
+  mock?: IMockOpts;
+
   treeShaking?: boolean;
 
   // implemented in plugins
