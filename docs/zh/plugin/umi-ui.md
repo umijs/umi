@@ -577,7 +577,7 @@ export default () => {
   useEffect(() => {
     (async () => {
       const cwd = await getCwd();
-      // set
+      // state
     })
   }, []);
 };
