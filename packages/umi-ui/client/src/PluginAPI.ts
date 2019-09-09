@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import { connect } from 'dva';
 import lodash from 'lodash';
 import debug from 'debug';
 import history from '@tmp/history';
@@ -23,6 +24,8 @@ export default class PluginAPI {
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Field: FC<IUi.IFieldProps>;
+  registerModel: IUi.registerModel;
+  connect: iUi.connect;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -37,6 +40,10 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Field = Field;
+    this.registerModel = model => {
+      window.g_app.model(model);
+    };
+    this.connect = connect;
   }
 
   redirect: IUi.IRedirect = url => {
