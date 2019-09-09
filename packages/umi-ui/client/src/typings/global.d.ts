@@ -10,6 +10,7 @@ declare global {
   interface Window {
     xterm: any;
     gtag?: any;
+    Tracert?: any;
     Terminal?: typeof Terminal;
     fit?: any;
     g_uiUserId?: string;
