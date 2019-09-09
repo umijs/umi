@@ -1,4 +1,5 @@
 import lodash from 'lodash';
+import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
@@ -146,6 +147,7 @@ declare namespace IUI {
   }
   type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
+  type IRegisterModel = (model: any) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;
   type IHideLogPanel = () => void;
@@ -176,6 +178,8 @@ declare namespace IUI {
     intl: IIntl;
     /** add plugin Panel */
     addPanel: IAddPanel;
+    /** register dva model Panel */
+    registerModel: IRegisterModel;
     /** add plugin locales { zh-CN: {}, en-US: {} } */
     addLocales: IAddLocales;
     /** react component context */
@@ -195,6 +199,7 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     send: ISend;
+    connect: typeof connect;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

@@ -68,7 +68,7 @@ const config: IConfig = {
     [
       join(__dirname, '../../umi-plugin-react/lib/index.js'),
       {
-        dva: false,
+        dva: true,
         antd: false,
         dynamicImport: {
           webpackChunkName: true,
