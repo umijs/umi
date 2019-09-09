@@ -4,6 +4,7 @@
     "target": "esnext",
     "lib": ["esnext", "dom"],
     "sourceMap": true,
+    "importHelpers": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
@@ -17,14 +18,5 @@
     "noUnusedLocals": true,
     "experimentalDecorators": true,
     "declaration": false
-  },
-  "exclude": [
-    "node_modules",
-    "scripts",
-    "webpack",
-    "jest",
-    "src/setupTests.ts",
-    "tslint:latest",
-    "tslint-config-prettier"
-  ]
+  }
 }

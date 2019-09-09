@@ -4,8 +4,6 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 umi ui\"",
-    "build": "node scripts/build.js",
     "lint": "eslint --ext .ts,.tsx src"
   },
   "files": [
@@ -28,8 +26,8 @@
     "xterm-addon-web-links": "^0.1.0"
   },
   "devDependencies": {
-    "@umijs/fabric": "^1.1.9",
     "@types/node": "^12.6.9",
+    "@umijs/fabric": "^1.1.9",
     "antd": "4.0.0-alpha.2",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
