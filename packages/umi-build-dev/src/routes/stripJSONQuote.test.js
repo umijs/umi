@@ -63,3 +63,33 @@ it('Routes', () => {
 }
   `);
 });
+
+it('arrow function field', () => {
+  const striped = stripJSONQuote(`
+{
+  "a": "aaa",
+  "authority": "(() => false)"
+}
+  `);
+  expect(striped).toEqual(`
+{
+  "a": "aaa",
+  "authority": () => false
+}
+  `);
+});
+
+it('normal function field', () => {
+  const striped = stripJSONQuote(`
+{
+  "a": "aaa",
+  "authority": "(function test(a) { return a;})"
+}
+  `);
+  expect(striped).toEqual(`
+{
+  "a": "aaa",
+  "authority": function test(a) { return a;}
+}
+  `);
+});

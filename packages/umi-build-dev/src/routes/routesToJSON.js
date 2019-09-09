@@ -58,7 +58,9 @@ export default (routes, service) => {
             )
             .join(', ')}]`;
         default:
-          return value;
+          return typeof value === 'function'
+            ? `(${value.toString().replace(/[\r\n]*/g, '')})`
+            : value;
       }
     },
     2,
