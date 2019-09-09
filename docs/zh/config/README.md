@@ -374,7 +374,7 @@ const News = props => {
  *  res (HTTP Response 对象，只存在于 Server 端)
  * }
  */
-News.getInitialProps = async ({ route, store, location isServer, req, res }) => {
+News.getInitialProps = async ({ route, location, store, isServer, req, res }) => {
   const { id } = route.params;
   // ?locale=en-US => query: { locale: 'en-US' }
   const { query } = location;
