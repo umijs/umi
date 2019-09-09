@@ -101,7 +101,6 @@ interface IConfig extends IAFWebpackConfig {
   runtimePublicPath?: boolean;
   singular?: boolean;
   mock?: IMockOpts;
-
   treeShaking?: boolean;
 
   // implemented in plugins
