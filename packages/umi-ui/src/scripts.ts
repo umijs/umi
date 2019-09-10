@@ -79,6 +79,11 @@ const deer = `
     monitorOptions: ${monitorOptions},
     roleId: '{{ roleId }}'
   });
+  Tracert.call('before', 'logPv', function() {
+    Tracert.set({
+      fullURL: 'http://ui.bigfish.com/' + location.hash,
+    });
+  });
 </script>
 <!-- deer End -->
 `;
