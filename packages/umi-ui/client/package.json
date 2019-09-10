@@ -2,6 +2,10 @@
   "scripts": {
     "analyze": "ANALYZE=1 umi build"
   },
+  "peerDependencies": {
+    "umi-types": "^0.4.0-beta.4",
+    "umi-ui-theme": "^1.0.0-beta.2"
+  },
   "dependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
@@ -37,7 +41,6 @@
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-recommended": "^2.2.0",
     "umi-plugin-react": "^1.10.0-beta.1",
-    "umi-types": "0.4.0-beta.3",
     "webpack-less-theme-plugin": "^2.1.0"
   }
 }

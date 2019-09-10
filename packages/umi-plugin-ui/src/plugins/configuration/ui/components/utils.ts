@@ -3,6 +3,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import uniq from 'lodash/uniq';
 import omitBy from 'lodash/omitBy';
 import reduce from 'lodash/reduce';
+import { IToc } from './common/Toc';
 
 export const getInitialValue = ({ value, default: defaultValue }, merged = true) => {
   if (isPlainObject(value) && isPlainObject(defaultValue)) {
@@ -62,4 +63,42 @@ export const getDiffItems = (curr, prev) => {
     },
     {},
   );
+};
+
+interface IGroup {
+  [K: string]: any[];
+}
+
+export const getFormItemShow = (name: string) => {
+  const configs = name.split('.');
+  const parentConfig = configs.length > 1 ? configs[0] : '';
+  return {
+    parentConfig,
+  };
+};
+
+export const getToc = (group: IGroup, data: IGroup): IToc[] => {
+  return Object.keys(group).reduce((prev, curr) => {
+    if (group[curr].length > 0) {
+      prev.push({
+        href: curr,
+        title: curr,
+        level: 0,
+      });
+      (group[curr] || []).forEach(item => {
+        const { parentConfig } = getFormItemShow(item.name);
+        const parentValue = data[parentConfig];
+        const isShow =
+          typeof parentValue === 'undefined' || (typeof parentValue === 'boolean' && !!parentValue);
+        if (isShow) {
+          prev.push({
+            href: item.name,
+            title: item.title,
+            level: 1,
+          });
+        }
+      });
+    }
+    return prev;
+  }, []);
 };

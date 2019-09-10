@@ -51,9 +51,11 @@ const ga = `
   gtag('js', new Date());
 
   gtag('config', 'UA-145890626-1', {
+    'send_page_view': false,
     'user_id': '{{ roleId }}',
   });
   gtag('set', {
+    'user_id': '{{ roleId }}',
     'version': '{{ version }}',
     'type': '{{ type }}',
   });
@@ -76,6 +78,11 @@ const deer = `
   Tracert.start({
     monitorOptions: ${monitorOptions},
     roleId: '{{ roleId }}'
+  });
+  Tracert.call('before', 'logPv', function() {
+    Tracert.set({
+      fullURL: 'http://ui.bigfish.com/' + location.hash,
+    });
   });
 </script>
 <!-- deer End -->

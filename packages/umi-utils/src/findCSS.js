@@ -4,12 +4,15 @@ import { existsSync } from 'fs';
 const CSS_EXTNAMES = ['.css', '.less', '.scss', '.sass'];
 
 export default function(baseDir, fileNameWithoutExtname) {
-  for (const extname of CSS_EXTNAMES) {
+  let i = 0;
+  while (i < CSS_EXTNAMES.length) {
+    const extname = CSS_EXTNAMES[i];
     const fileName = `${fileNameWithoutExtname}${extname}`;
     const absFilePath = join(baseDir, fileName);
     if (existsSync(absFilePath)) {
       return absFilePath;
     }
+    i += 1;
   }
   return null;
 }

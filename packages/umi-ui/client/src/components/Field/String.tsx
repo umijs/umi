@@ -1,34 +1,32 @@
 import React from 'react';
-import { Form, Select } from 'antd';
-import { ICompProps } from './index';
-import Label from './label';
+import { Form, Input } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const { Option } = Select;
-
-const ListComp: React.SFC<ICompProps> = props => {
-  const { name, description, form, title, choices, link } = props;
-  const { parentConfig } = getFormItemShow(name, form);
+const StringComp: React.SFC<FieldProps> = props => {
+  const _log = g_uiDebug.extend('Field:StringComp');
+  const { name, form, ...restFormItemProps } = props;
+  const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} link={link} />,
+    required: false,
+    rules: [
+      {
+        // 没有 defaultValue 非必填
+        required: !!form.getFieldValue(name),
+        message: formatMessage({ id: 'org.umi.ui.configuration.string.required' }),
+      },
+    ],
+    ...restFormItemProps,
   };
 
-  const formControl = (
-    <Select style={{ maxWidth: 320 }} getPopupContainer={triggerNode => triggerNode.parentNode}>
-      {Array.isArray(choices) &&
-        choices.map(choice => (
-          <Option key={choice} value={choice}>
-            {choice}
-          </Option>
-        ))}
-    </Select>
-  );
+  const formControl = <Input autoComplete="off" style={{ maxWidth: 320 }} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>
       {({ getFieldValue }) => {
-        console.log(
+        _log(
           'children field update',
           name,
           parentConfig,
@@ -51,4 +49,4 @@ const ListComp: React.SFC<ICompProps> = props => {
   );
 };
 
-export default ListComp;
+export default StringComp;

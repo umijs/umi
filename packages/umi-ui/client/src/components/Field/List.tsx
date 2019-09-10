@@ -1,24 +1,29 @@
 import React from 'react';
-import { Form, Input } from 'antd';
-import { ICompProps } from './index';
-import Context from '../../Context';
-import Label from './label';
+import { Form, Select } from 'antd';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const { TextArea } = Input;
+const { Option } = Select;
 
-const TextAreaComp: React.SFC<ICompProps> = props => {
-  const { name, description, title, default: defaultValue, link } = props;
+const ListComp: React.SFC<FieldProps> = props => {
+  const _log = g_uiDebug.extend('Field:ListComp');
+  const { name, form, options, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
-  const { debug: _log } = React.useContext(Context);
   const basicItem = {
     name,
-    required: false,
-    label: <Label name={name} title={title} description={description} link={link} />,
-    rules: [{ required: !!defaultValue, message: `请输入${title}` }],
+    ...restFormItemProps,
   };
 
-  const formControl = <TextArea autoComplete="off" rows={4} style={{ maxWidth: 320 }} />;
+  const formControl = (
+    <Select style={{ maxWidth: 320 }} getPopupContainer={triggerNode => triggerNode.parentNode}>
+      {Array.isArray(options) &&
+        options.map(opt => (
+          <Option key={opt} value={opt}>
+            {opt}
+          </Option>
+        ))}
+    </Select>
+  );
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>
@@ -46,4 +51,4 @@ const TextAreaComp: React.SFC<ICompProps> = props => {
   );
 };
 
-export default TextAreaComp;
+export default ListComp;

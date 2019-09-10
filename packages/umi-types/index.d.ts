@@ -187,11 +187,16 @@ interface ICompatDirname<T = any> {
  * https://umijs.org/plugin/develop.html#event-class-api
  */
 export interface IBeforeDevServerFunc {
-  (args: { service: any }): void;
+  (args: { server: any }): void;
 }
 
 export interface IAfterDevServerFunc {
-  (args: { service: any }): void;
+  (
+    args: {
+      server: any;
+      devServerPort: number;
+    },
+  ): void;
 }
 
 export interface IBeforeBlockWritingFunc {

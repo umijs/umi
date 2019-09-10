@@ -1,4 +1,5 @@
 import lodash from 'lodash';
+import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent } from 'react';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
@@ -13,6 +14,17 @@ declare namespace IUI {
   export enum THEME {
     'dark' = 'dark',
     'light' = 'light',
+  }
+
+  export enum CONFIG_TYPES {
+    'string' = 'string',
+    'string[]' = 'string[]',
+    'boolean' = 'boolean',
+    'object' = 'object',
+    'object[]' = 'object[]',
+    'list' = 'list',
+    'textarea' = 'textarea',
+    'any' = 'any',
   }
 
   type ILang = keyof typeof LOCALES;
@@ -68,6 +80,36 @@ declare namespace IUI {
     keep?: boolean;
   }
 
+  type IValue = string | object | boolean | string[] | object[];
+
+  interface IFieldLabel {
+    /** label title */
+    title: string;
+    /** label description */
+    description: string;
+    /** description detail link */
+    link: string;
+  }
+
+  export interface IFieldProps {
+    /** formItem type */
+    type: IConfigTypes;
+    /** form field name */
+    name: string;
+    /** defaultValue（only using in `object` field type）  */
+    defaultValue?: IValue;
+    /** Array Select options */
+    options?: string[];
+    /** antd form ins */
+    form: object;
+    /** antd label, if object using <Label /> */
+    label: string | ReactNode | IFieldLabel;
+    /** same as antd Form.Item props */
+    [key: string]: any;
+  }
+
+  type IConfigTypes = keyof typeof CONFIG_TYPES;
+
   interface ITwoColumnPanel {
     className?: string;
     sections: Array<{
@@ -105,6 +147,7 @@ declare namespace IUI {
   }
   type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
+  type IRegisterModel = (model: any) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;
   type IHideLogPanel = () => void;
@@ -135,6 +178,8 @@ declare namespace IUI {
     intl: IIntl;
     /** add plugin Panel */
     addPanel: IAddPanel;
+    /** register dva model Panel */
+    registerModel: IRegisterModel;
     /** add plugin locales { zh-CN: {}, en-US: {} } */
     addLocales: IAddLocales;
     /** react component context */
@@ -146,12 +191,15 @@ declare namespace IUI {
     callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;
+    /** Antd Form Field */
+    Field: FC<IFieldProps>;
     listenRemote: IListenRemote;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     send: ISend;
+    connect: typeof connect;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

@@ -1,13 +1,10 @@
 export default {
-  'org.umi.ui.configuration.object.item.delete.confirm': 'Confirm delete?',
-  'org.umi.ui.configuration.object.item.delete.tooltip': 'Delete an item',
   'org.umi.ui.configuration.panel': 'Configuration',
   'org.umi.ui.configuration.actions.open.config': 'Open Config File',
   'org.umi.ui.configuration.project.config.title': 'Project Configuration',
   'org.umi.ui.configuration.project.config.desc': 'Configuration {library} Project',
   'org.umi.ui.configuration.project.config.react.title': 'umi-plugin-react',
   'org.umi.ui.configuration.search.placeholder': 'Search',
-  'org.umi.ui.configuration.detail': 'View Detail',
   'org.umi.ui.configuration.okText': 'Yes',
   'org.umi.ui.configuration.cancelText': 'No',
   'org.umi.ui.configuration.save': 'Save',
@@ -16,7 +13,4 @@ export default {
     'Are you sure you want to reset the above configuration？',
   'org.umi.ui.configuration.reset.tooltip.desc': 'Current configuration {value} have been modified',
   'org.umi.ui.configuration.reset.tooltip.desc.empty': 'Configuration has not been modified',
-  'org.umi.ui.configuration.add.column': 'Add a column',
-  'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
-  'org.umi.ui.configuration.open.editor.failure': 'Open editor failed',
 };

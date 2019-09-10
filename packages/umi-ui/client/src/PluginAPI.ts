@@ -1,13 +1,15 @@
 import { notification } from 'antd';
+import { connect } from 'dva';
 import lodash from 'lodash';
 import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import { formatMessage } from 'umi-plugin-react/locale';
-import { ReactNode } from 'react';
+import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
+import Field from './components/Field';
 
 const _debug = debug('umiui');
 
@@ -20,7 +22,10 @@ export default class PluginAPI {
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
-  TwoColumnPanel: ReactNode;
+  TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  Field: FC<IUi.IFieldProps>;
+  registerModel: IUi.registerModel;
+  connect: iUi.connect;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -34,6 +39,11 @@ export default class PluginAPI {
         ...currentProject
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
+    this.Field = Field;
+    this.registerModel = model => {
+      window.g_app.model(model);
+    };
+    this.connect = connect;
   }
 
   redirect: IUi.IRedirect = url => {

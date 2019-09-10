@@ -9,7 +9,8 @@
   ],
   "devDependencies": {
     "@types/node-notifier": "^5.4.0",
-    "umi-types": "0.4.0-beta.4"
+    "umi-types": "0.4.0-beta.4",
+    "umi-ui-theme": "^1.0.0-beta.2"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "umi-ui-theme": "1.0.0-beta.2",
     "binary-mirror-config": "1.20.3",
     "chalk": "2.4.2",
     "clear-module": "4.0.0",

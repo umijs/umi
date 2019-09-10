@@ -1,19 +1,28 @@
 import * as React from 'react';
 import { Form, Switch } from 'antd';
-import { ICompProps } from './index';
-import Label from './label';
-import Context from '../../Context';
+import isPlainObject from 'lodash/isPlainObject';
+import { FieldProps } from './index';
 import { getFormItemShow } from './utils';
 
-const BooleanComp: React.SFC<ICompProps> = props => {
-  const { name, description, title, link } = props;
-  const { debug: _log } = React.useContext(Context);
+const BooleanComp: React.SFC<FieldProps> = props => {
+  const _log = g_uiDebug.extend('Field:BooleanComp');
+  const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
-    label: <Label name={name} title={title} description={description} link={link} />,
     valuePropName: 'checked',
+    ...restFormItemProps,
   };
+
+  React.useEffect(() => {
+    // 4.0 form Switch 不设置 initValue 为 undefined
+    // 所以 monuted 时给一个 boolean
+    const initVal = form.getFieldValue(name);
+    form.setFieldsValue({
+      [name]: initVal === true || !!isPlainObject(initVal),
+    });
+  }, []);
+
   return parentConfig ? (
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
       {({ getFieldValue }) => {

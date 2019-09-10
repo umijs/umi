@@ -11,7 +11,16 @@ const debug = require('debug')('umi-mock:createMiddleware');
 function noop() {}
 
 export default function(opts = {}) {
-  const { cwd, errors, config, absPagesPath, absSrcPath, watch, onStart = noop } = opts;
+  const {
+    cwd,
+    errors = [],
+    config,
+    absPagesPath,
+    absSrcPath,
+    watch,
+    onStart = noop,
+    onError = noop,
+  } = opts;
   const { absMockPath, absConfigPath, absConfigPathWithTS } = getPaths(cwd);
   const mockPaths = [absMockPath, absConfigPath, absConfigPathWithTS];
   const paths = [...mockPaths, winPath(basename(absSrcPath) === 'src' ? absSrcPath : absPagesPath)];
@@ -58,6 +67,7 @@ export default function(opts = {}) {
       config,
       absPagesPath,
       onError(e) {
+        onError(e);
         errors.push(e);
       },
     });

@@ -156,7 +156,7 @@ Foo.c = 'd';
   );
 });
 
-test('export namespace from', () => {
+xtest('export namespace from', () => {
   const { code } = transform(`export * as ns from 'mod';`, {
     presets: [[require.resolve('./index'), { targets: { chrome: 75 } }]],
   });

@@ -92,76 +92,34 @@ export default (api) => {
 }
 ```
 
-### 使用 TypeScript
-
-如果是 TypeScript 用户，需将 `ui/index.js` 换成 `ui/index.tsx`。
-
-同时修改 `.fatherrc.js` 配置文件：
-
-```diff
-- entry: 'ui/index.js',
-+ entry: 'ui/index.tsx',
-+ typescriptOpts: {
-+   check: false,
-+ },
-```
-
-在项目目录下增加 `tsconfig.json`：
-
-```json
-{
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
-    "sourceMap": true,
-    "baseUrl": ".",
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true,
-    "declaration": false
-  }
-}
-```
-
-在 `ui/index.tsx` 中引入 `umi-types` 类型，就可以有相关类型提示：
-
-```diff
-import { Button } from 'antd';
-+ import { IUiApi } from 'umi-types';
-
-- export default (api) => {
-+ export default (api: IUiApi) => {
-  const { callRemote } = api;
-
-  function PluginPanel() {
-    return (
-      <div style={{ padding: 20 }}>
-        <Button
-          type="primary"
-          onClick={async () => {
-            const { data } = await callRemote({
-              type: 'org..umi-dev.test',
-            });
-            alert(data);
-          }}
-        >Test</Button>
-      </div>
-    );
-  }
-
-  api.addPanel({
-    title: 'umi-dev',
-    path: '/umi-dev',
-    icon: 'home',
-    component: PluginPanel,
-  });
-}
-```
-
 ![](https://gw.alipayobjects.com/zos/antfincdn/tos3ooP0Dy/e985c7e0-09b7-49e1-965c-d2032a4783c5.png)
+
+
+### Use Umi UI theme
+
+Umi UI provides a set of antd theme variables that third-party component libraries can use to develop plug-ins in non-Umi UI runtime environments.
+
+#### Usage
+
+Install the `umi-ui-theme` theme pack, now only the `dark` dark theme is available.
+
+```js
+// .umirc.js
+import { dark, light } from 'umi-ui-theme';
+
+{
+  theme: dark
+}
+```
+
+Introduced in the less file, you can use the less variable inside.
+
+```less
+// dark
+@import "~@umi-ui-theme/dark.less";
+
+// light
+@import "~@umi-ui-theme/light.less";
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/z6VWQcplHx/9c78b96e-5ca9-407c-83d7-2caf5801c7ea.png)
