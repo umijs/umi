@@ -58,31 +58,31 @@ export default async function ({ page, host }) {
 
   const homeServer = await getServerRender('/');
   expect(homeServer.matchPath).toBe('/');
-  expect(homeServer.ssrHtml).toContain(`<div class=\"wrapper\" data-reactroot=\"\"><h1>Hello UmiJS SSR</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>`);
+  expect(homeServer.ssrHtml).toContain(`<div class=\"wrapper\"><h1>Hello UmiJS SSR</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>`);
 
   expect(homeServer.ssrHtmlElement).toContain(`<script>window.g_useSSR=true;
   window.g_initialData = {\"list\":[{\"name\":\"Alice\"},{\"name\":\"Jack\"},{\"name\":\"Tony\"}]};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"wrapper\"><h1>Hello UmiJS SSR</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div></div><script src=\"/umi.js\"></script>`);
 
   const localeServer = await getServerRender('/locale?locale=en-US');
   expect(localeServer.matchPath).toBe('/locale');
-  expect(localeServer.ssrHtml).toContain(`<div class=\"wrapper\" data-reactroot=\"\">This is test</div>`);
+  expect(localeServer.ssrHtml).toContain(`<div class=\"wrapper\">This is test</div>`);
 
   const localeServerCN = await getServerRender('/locale?locale=zh-CN');
   expect(localeServerCN.matchPath).toBe('/locale');
-  expect(localeServerCN.ssrHtml).toContain(`<div class=\"wrapper\" data-reactroot=\"\">这是测试</div>`);
+  expect(localeServerCN.ssrHtml).toContain(`<div class=\"wrapper\">这是测试</div>`);
 
   // dynamic render
   const newsServer = await getServerRender('/news/1');
 
   expect(newsServer.matchPath).toBe('/news/:id')
 
-  expect(newsServer.ssrHtml).toContain(`<div class=\"newsWrapper\" data-reactroot=\"\"><p>1<!-- -->_<!-- -->hello</p></div>`);
+  expect(newsServer.ssrHtml).toContain(`<div class=\"newsWrapper\"><p>1<!-- -->_<!-- -->hello</p></div>`);
   expect(newsServer.ssrHtmlElement).toContain(`<script>window.g_useSSR=true;
   window.g_initialData = {\"id\":1,\"name\":\"hello\"};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"newsWrapper\"><p>1<!-- -->_<!-- -->hello</p></div></div><script src=\"/umi.js\"></script>`);
 
   const newsDetailServer = await getServerRender('/news/2');
 
-  expect(newsDetailServer.ssrHtml).toContain(`<div class=\"newsWrapper\" data-reactroot=\"\"><p>2<!-- -->_<!-- -->world</p></div>`);
+  expect(newsDetailServer.ssrHtml).toContain(`<div class=\"newsWrapper\"><p>2<!-- -->_<!-- -->world</p></div>`);
   expect(newsDetailServer.ssrHtmlElement).toContain(`<script>window.g_useSSR=true;
   window.g_initialData = {\"id\":2,\"name\":\"world\"};</script><script>window.routerBase = \"/\";</script></head><body><div id=\"root\"><div class=\"newsWrapper\"><p>2<!-- -->_<!-- -->world</p></div></div><script src=\"/umi.js\"></script>`);
 

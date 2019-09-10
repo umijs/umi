@@ -261,7 +261,7 @@ describe('ssr', () => {
       const ssrHtml = ReactDOMServer.renderToString(rootContainer);
 
       expect(ssrHtml).toEqual(
-        '<div class="wrapper" data-reactroot=""><h1>Hello UmiJS SSR Styles</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>',
+        '<div class="wrapper"><h1>Hello UmiJS SSR Styles</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>',
       );
 
       const ctx2 = {
@@ -273,9 +273,7 @@ describe('ssr', () => {
       const { rootContainer: rootContainerNews } = await serverRender.default(ctx2);
       const ssrHtmlNews = ReactDOMServer.renderToString(rootContainerNews);
 
-      expect(ssrHtmlNews).toContain(
-        '<div class="news" data-reactroot=""><h1>Hello UmiJS SSR Styles</h1></div>',
-      );
+      expect(ssrHtmlNews).toContain('<div class="news"><h1>Hello UmiJS SSR Styles</h1></div>');
     });
   });
 });
