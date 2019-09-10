@@ -373,7 +373,7 @@ const News = props => {
  *  res (HTTP server Response object, only exist in Server)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer, req, res, location }) => {
+News.getInitialProps = async ({ route, location, store, isServer, req, res }) => {
   const { id } = route.params;
   // ?locale=en-US => query: { locale: 'en-US' }
   const { query } = location;
