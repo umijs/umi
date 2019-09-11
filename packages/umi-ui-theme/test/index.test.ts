@@ -172,6 +172,8 @@ describe('theme', () => {
       'screen-md': '768px',
       'screen-sm': '767.9px',
       'screen-xs': '375px',
+      'table-row-hover-bg': '#383847',
+      'tabs-horizontal-padding': '12px 0',
     });
   });
 });
