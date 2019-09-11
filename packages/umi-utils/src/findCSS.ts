@@ -3,7 +3,12 @@ import { existsSync } from 'fs';
 
 const CSS_EXTNAMES = ['.css', '.less', '.scss', '.sass'];
 
-export default function(baseDir, fileNameWithoutExtname) {
+/**
+ * Find the real CSS file. Automatic completion of suffixes
+ * @param {*} baseDir
+ * @param {*} fileNameWithoutExtname
+ */
+export default function(baseDir: string, fileNameWithoutExtname: string) {
   let i = 0;
   while (i < CSS_EXTNAMES.length) {
     const extname = CSS_EXTNAMES[i];

@@ -2,6 +2,7 @@
   "name": "umi-utils",
   "version": "1.6.0-beta.2",
   "main": "./lib/index.js",
+  "typings": "./src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi/tree/master/packages/umi-utils"
