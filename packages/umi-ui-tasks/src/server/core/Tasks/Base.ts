@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { EventEmitter } from 'events';
-import iconv from 'iconv-lite';
 import { TaskState, TaskEventType, TaskType } from '../enums';
 import { ITaskDetail } from '../types';
 import { ChildProcess } from 'child_process';
@@ -111,20 +110,14 @@ export class BaseTask extends EventEmitter {
   }
 
   protected handleChildProcess(proc: ChildProcess) {
-    var stdoutSream = iconv.decodeStream('utf8');
-    proc.stdout.pipe(stdoutSream);
-
-    stdoutSream.on('data', log => {
+    proc.stdout.setEncoding('utf8');
+    proc.stdout.on('data', log => {
       this.emit(TaskEventType.STD_OUT_DATA, log);
     });
-
-    var stderrStream = iconv.decodeStream('utf8');
-    proc.stderr.pipe(stderrStream);
-
-    stderrStream.on('data', log => {
+    proc.stderr.setEncoding('utf8');
+    proc.stderr.on('data', log => {
       this.emit(TaskEventType.STD_ERR_DATA, log);
     });
-
     proc.on('exit', (code, signal) => {
       if (signal === 'SIGINT') {
         // 用户取消任务
