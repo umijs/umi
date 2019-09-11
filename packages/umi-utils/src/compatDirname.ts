@@ -2,7 +2,13 @@ import { dirname, join } from 'path';
 import { existsSync } from 'fs';
 import winPath from './winPath';
 
-export default function(path, cwd, fallback) {
+/**
+ * Find module path
+ * @param path module name
+ * @param cwd process cwd
+ * @param fallback
+ */
+export default function(path: string, cwd: string, fallback?: any) {
   const pkg = findPkg(path, cwd);
   if (pkg) return pkg;
 
@@ -14,7 +20,12 @@ export default function(path, cwd, fallback) {
   return fallback;
 }
 
-function findPkg(path, cwd) {
+/**
+ * Find module path
+ * @param path module name
+ * @param cwd
+ */
+function findPkg(path: string, cwd: string) {
   const pkgPath = join(cwd, 'package.json');
   const library = path.split('/')[0];
   if (existsSync(pkgPath)) {

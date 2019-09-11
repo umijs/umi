@@ -5,6 +5,9 @@ const registryMap = {
   'gitee.com': 'https://gitee.com/ant-design/pro-blocks',
 };
 
+/**
+ * Get the fast registry Url(github.com or gitee.com)
+ */
 const getFastGithub = async () => {
   const promiseList = Object.keys(registryMap).map(async key => {
     return fetch(registryMap[key])

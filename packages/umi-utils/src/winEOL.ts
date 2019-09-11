@@ -4,7 +4,11 @@ const isWindows = typeof process !== 'undefined' && process.platform === 'win32'
 // 为了测试精准需要将换行符转化一下
 // https://github.com/cssmagic/blog/issues/22
 
-export default content => {
+/**
+ * Convert Windows crlf to lf (\r\n to \n)
+ * @param content
+ */
+export default (content: any) => {
   if (typeof content !== 'string') {
     return content;
   }
