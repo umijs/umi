@@ -1,6 +1,6 @@
 import winPath from './winPath';
 
-function stripFirstSlash(path) {
+function stripFirstSlash(path: string) {
   if (path.charAt(0) === '/') {
     return path.slice(1);
   } else {
@@ -8,7 +8,12 @@ function stripFirstSlash(path) {
   }
 }
 
-export default function chunkName(cwd, path) {
+/**
+ * Get Relative Path
+ * @param cwd
+ * @param path
+ */
+export default function chunkName(cwd: string, path: string) {
   return stripFirstSlash(winPath(path).replace(winPath(cwd), ''))
     .replace(/\//g, '__')
     .replace(/^src__/, '')

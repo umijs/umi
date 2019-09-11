@@ -1,6 +1,11 @@
 import * as prettier from 'prettier';
 
-export default function(fileContent, parser = 'typescript') {
+/**
+ * prettier code
+ * @param fileContent file flow string
+ * @param parser default typescript
+ */
+export default function(fileContent: string, parser: string = 'typescript') {
   try {
     return prettier.format(fileContent, {
       parser,

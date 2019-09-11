@@ -1,8 +1,14 @@
 const isWindows = typeof process !== 'undefined' && process.platform === 'win32';
 const EOL = isWindows ? '\r\n' : '\n';
 
-const hits = {};
-export default function deprecate(methodName, ...args) {
+const hits = new Set<string>();
+
+/**
+ * Output the "discarded" warning to the standard error stream and only one warning to the same `methodName'.
+ * @param methodName
+ * @param args
+ */
+export default function deprecate(methodName: string, ...args) {
   if (hits[methodName]) return;
   hits[methodName] = true;
   const stream = process.stderr;
