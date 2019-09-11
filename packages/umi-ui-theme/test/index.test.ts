@@ -93,10 +93,12 @@ describe('theme', () => {
         font: @screen-md;
         font: @screen-sm;
         font: @screen-xs;
+        font: @table-row-hover-bg;
+        font: @tabs-horizontal-padding;
       }
     `);
     expect(css).toBe(
-      `.a{font:#000;font:rgba(255,255,255,.25);font:#40a9ff;font:#096dd9;font:rgba(255,255,255,.85);font:#444457;font:rgba(255,255,255,.65);font:#4c4c61;font:rgba(255,255,255,.45);font:#272733;font:#17171f;font:#3b3b4d;font:#23232e;font:#191922;font:#2d2d3b;font:#00a854;font:#ffbf00;font:#f04134;font:rgba(255,255,255,.05);font:#fff;font:#383847;font:#30303d;font:rgba(255,255,255,.1);font:transparent;font:#1890ff;font:0 2px 20px 0 rgba(0,0,0,.45);font:0 -4px 12px 0 rgba(0,0,0,.12);font:2px;font:1063;font:1061;font:1060;font:1px;font:24px;font:0;font:14px;font:16px;font:1208px;font:1024px;font:768px;font:767.9px;font:375px}`,
+      `.a{font:#000;font:rgba(255,255,255,.25);font:#40a9ff;font:#096dd9;font:rgba(255,255,255,.85);font:#444457;font:rgba(255,255,255,.65);font:#4c4c61;font:rgba(255,255,255,.45);font:#272733;font:#17171f;font:#3b3b4d;font:#23232e;font:#191922;font:#2d2d3b;font:#00a854;font:#ffbf00;font:#f04134;font:rgba(255,255,255,.05);font:#fff;font:#383847;font:#30303d;font:rgba(255,255,255,.1);font:transparent;font:#1890ff;font:0 2px 20px 0 rgba(0,0,0,.45);font:0 -4px 12px 0 rgba(0,0,0,.12);font:2px;font:1063;font:1061;font:1060;font:1px;font:24px;font:0;font:14px;font:16px;font:1208px;font:1024px;font:768px;font:767.9px;font:375px;font:#383847;font:12px 0;}`,
     );
   });
 
