@@ -27,8 +27,6 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
     setCurrentIndex(activeIndex);
   }, []);
 
-  const Component = sections[currentIndex].component;
-
   const toggleSectionHandler = index => {
     setCurrentIndex(index);
     if (keys[index] !== query.active) {
@@ -49,6 +47,8 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   });
 
   const panelCls = cls(styles.normal, className);
+
+  const renderComponent = sections[currentIndex].component;
 
   return (
     <div className={panelCls}>
@@ -86,7 +86,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
         })}
       </div>
       <div className={rightCls} id="two-column-panel-right">
-        <Component />
+        {renderComponent(props)}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { isPlainObject } from 'lodash';
 import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
-import send, { STARTING, DONE } from './send';
+import send, { STARTING, DONE, ERROR, STATS } from './send';
 import getPort from './getPort';
 
 const isInteractive = process.stdout.isTTY;
@@ -69,6 +69,9 @@ export default function dev({
           if (process.env.SYSTEM_BELL !== 'none') {
             process.stdout.write('\x07');
           }
+          send({
+            type: ERROR,
+          });
           onFail({ stats });
           return;
         }
@@ -107,6 +110,8 @@ export default function dev({
             urls: {
               local: urls.localUrlForTerminal,
               lan: urls.lanUrlForTerminal,
+              rawLocal: urls.localUrlForBrowser,
+              rawLanUrl: urls.rawLanUrl,
             },
           });
         }

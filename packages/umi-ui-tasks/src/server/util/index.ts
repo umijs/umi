@@ -17,7 +17,7 @@ export const runCommand = (script: string, options: SpawnOptions = {}) => {
   };
 
   options.cwd = options.cwd || process.cwd();
-  options.stdio = 'pipe';
+  options.stdio = [null, null, null, 'ipc'];
 
   let sh = 'sh';
   let shFlag = '-c';
@@ -116,3 +116,97 @@ export function formatEnv(env: object): object {
   });
   return res;
 }
+
+interface IParseKeyScriptRes {
+  succes: boolean;
+  errMsg?: string;
+  envs?: object;
+  bin?: string;
+  args?: string[];
+}
+
+// TODO: args 增加参数校验
+function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
+  const result = {
+    succes: false,
+    errMsg: '',
+    envs: [],
+    bin: '',
+    args: [],
+  };
+
+  if (/\&\&|\|\|/.test(script)) {
+    return {
+      ...result,
+      errMsg: 'Script contains && or || is not allowed',
+    };
+  }
+  if (!/bigfish|umi/.test(script)) {
+    return {
+      ...result,
+      errMsg: 'Not umi',
+    };
+  }
+
+  try {
+    const bin = /bigfish/.test(script) ? 'bigfish' : 'umi';
+    const envs = {};
+    const args = []; // TODO: args 应该取 bin 之后的
+    script.split(' ').forEach(item => {
+      if (/=/.test(item)) {
+        const [envKey, envValue] = item.split('=');
+        envs[envKey] = envValue;
+      } else {
+        args.push(item);
+      }
+    });
+    return {
+      ...result,
+      succes: true,
+      bin,
+      envs,
+    };
+  } catch (e) {
+    return {
+      ...result,
+      errMsg: `Parse ${key} script error. ${e.message}`,
+    };
+  }
+}
+
+interface IParseScriptsRes extends IParseKeyScriptRes {
+  exist: boolean;
+}
+
+export function parseScripts(opts: { pkgPath: string; key: string }): IParseScriptsRes {
+  const result = {
+    succes: false,
+    exist: false,
+  };
+  const { pkgPath, key } = opts;
+  if (!existsSync(pkgPath)) {
+    return result;
+  }
+  let pkg;
+  try {
+    pkg = require(pkgPath);
+  } catch (_) {
+    pkg = null;
+  }
+
+  const script = pkg.scripts && pkg.scripts[key];
+  if (!script) {
+    return {
+      ...result,
+      exist: false,
+    };
+  }
+
+  const scriptConfig = parseKeyScript(key, script);
+  return {
+    exist: true,
+    ...scriptConfig,
+  };
+}
+
+export * from './stats';

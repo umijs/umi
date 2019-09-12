@@ -1,82 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
-import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
-import { useTaskDetail } from '../../hooks';
+import { getTerminalIns, clearLog } from '../../util';
 import Terminal from '../Terminal';
+import { ITaskDetail } from '../../../server/core/types';
+import { namespace } from '../../model';
+import { useInit } from '../../hooks';
 
 interface IProps {
   api: IUiApi;
-  state?: TaskState;
+  detail: ITaskDetail;
+  dispatch: any;
 }
 
 const { SizeMe } = withSize;
 const taskType = TaskType.TEST;
 
-const TestComponent: React.FC<IProps> = ({ api }) => {
+const TestComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
   const { intl } = api;
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
+  const [log, setLog] = useState('');
+  const [init] = useInit(detail);
 
-  // Mount: 获取 task detail
-  const { detail } = useTaskDetail(taskType);
-
-  // Mount: 监听 task state 改变
+  // UnMount: reset form
   useEffect(
     () => {
-      setTaskDetail(detail as any);
-      const unsubscribe = api.listenRemote({
-        type: 'org.umi.task.state',
-        onMessage: ({ detail: result, taskType: type }) => {
-          if (!isCaredEvent(type, taskType)) {
-            return null;
-          }
-          if (result) {
-            setTaskDetail(result);
-          }
+      if (!init) {
+        return () => {};
+      }
+      dispatch({
+        type: `${namespace}/getTaskDetail`,
+        payload: {
+          taskType,
+          callback: ({ log }) => {
+            setLog(log);
+          },
         },
       });
       return () => {
-        unsubscribe && unsubscribe();
+        const terminal = getTerminalIns(taskType);
+        terminal && terminal.clear();
       };
     },
-    [detail],
+    [init],
   );
 
-  // UnMount: reset form
-  useEffect(() => {
-    return () => {
-      const terminal = getTerminalIns(taskType);
-      terminal && terminal.clear();
-    };
-  }, []);
-
   async function test() {
-    const { triggerState, errMsg } = await exec(taskType);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        type: 'error',
-        title: intl({ id: 'org.umi.ui.tasks.test.testError' }),
-        message: errMsg,
-      });
-    }
+    dispatch({
+      type: `${namespace}/exec`,
+      payload: {
+        taskType,
+      },
+    });
   }
 
   async function cancelTest() {
-    const { triggerState, errMsg } = await cancel(taskType);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        title: intl({ id: 'org.umi.ui.tasks.test.cancelError' }),
-        message: errMsg,
-      });
-      return;
-    }
+    dispatch({
+      type: `${namespace}/exec`,
+      payload: {
+        taskType,
+      },
+    });
   }
 
-  const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
+  const isTaskRunning = detail && detail.state === TaskState.ING;
   return (
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.test' })}</h1>
@@ -111,7 +101,7 @@ const TestComponent: React.FC<IProps> = ({ api }) => {
                 api={api}
                 size={size}
                 terminal={getTerminalIns(taskType)}
-                log={taskDetail.log}
+                log={log}
                 onClear={() => {
                   clearLog(taskType);
                 }}

@@ -18,7 +18,7 @@ export class InstallTask extends BaseTask {
     this.speedUpEnv = this.getSpeedUpEnv();
   }
 
-  public async run(env: any = {}) {
+  public async run(args = {}, env: any = {}) {
     await super.run();
     // 执行删除的日志需要自己处理
     try {

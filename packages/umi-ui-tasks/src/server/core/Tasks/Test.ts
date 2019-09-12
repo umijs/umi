@@ -1,6 +1,6 @@
 import { BaseTask, ITaskOptions } from './Base';
 import { TaskType } from '../enums';
-import { isScriptKeyExist, runCommand } from '../../util';
+import { parseScripts, runCommand } from '../../util';
 
 export class TestTask extends BaseTask {
   constructor(opts: ITaskOptions) {
@@ -8,27 +8,38 @@ export class TestTask extends BaseTask {
     this.type = TaskType.TEST;
   }
 
-  public async run(env: any = {}) {
+  public async run(args = {}, env: any = {}) {
     await super.run();
-    this.proc = runCommand(this.getScript(), {
+    const { script, envs: scriptEnvs } = this.getScript();
+    this.proc = runCommand(script, {
       cwd: this.cwd,
-      env, // 前端传入的 env
+      env: {
+        ...env,
+        ...scriptEnvs,
+      }, // 前端传入的 env
     });
 
     this.handleChildProcess(this.proc);
   }
 
-  private getScript() {
-    let command = '';
+  private getScript(): { script: string; envs: object } {
+    const { succes, exist, errMsg, envs, bin } = parseScripts({
+      pkgPath: this.pkgPath,
+      key: 'test',
+    });
 
-    if (isScriptKeyExist(this.pkgPath, 'test')) {
-      command = 'npm run test';
-    } else if (this.isBigfishProject) {
-      command = 'bigfish test'; // TODO: 优先使用 node_modules 中的命令？
-    } else {
-      command = 'umi test'; // TODO: 优先使用 node_modules 中的命令？
+    if (!exist) {
+      return {
+        script: this.isBigfishProject ? 'bigfish test' : 'umi test',
+        envs: [],
+      };
     }
-
-    return command;
+    if (!succes) {
+      this.error(errMsg);
+    }
+    return {
+      script: `${bin} test`,
+      envs,
+    };
   }
 }

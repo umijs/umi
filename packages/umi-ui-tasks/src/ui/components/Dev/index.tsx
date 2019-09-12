@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Form, Switch, Input, Modal, Badge } from 'antd';
+import { Row, Col, Button, Form, Switch, Input, Modal, Badge, Radio } from 'antd';
 import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
-import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
-import { useTaskDetail } from '../../hooks';
+import { getTerminalIns, clearLog } from '../../util';
+import { useInit } from '../../hooks';
 import Terminal from '../Terminal';
+import { ITaskDetail } from '../../../server/core/types';
+import { namespace } from '../../model';
+import Analyze from '../Analyze';
 
 interface IProps {
   api: IUiApi;
-  state?: TaskState;
+  detail: ITaskDetail;
+  dispatch: any;
+  dbPath: string;
 }
 
 const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
-const DevComponent: React.FC<IProps> = ({ api }) => {
+const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) => {
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
+  const [log, setLog] = useState('');
+  const [view, setView] = useState('log');
   const [env, setEnv] = useState({
     UMI_UI_SERVER: 'none',
     UMI_UI_PORT: window.location.port,
@@ -35,64 +41,55 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     PORT: null,
     FORK_TS_CHECKER: false,
   });
+  const [init] = useInit(detail);
 
-  // Mount: 获取 task detail
-  const { detail } = useTaskDetail(taskType);
   useEffect(
     () => {
-      setTaskDetail(detail as any);
-    },
-    [detail],
-  );
-
-  // Mount: 监听 task state 改变
-  useEffect(
-    () => {
-      const unsubscribe = api.listenRemote({
-        type: 'org.umi.task.state',
-        onMessage: ({ detail: result, taskType: type }) => {
-          if (!isCaredEvent(type, taskType)) {
-            return null;
-          }
-          if (result) {
-            setTaskDetail(result);
-          }
+      if (!init) {
+        return () => {};
+      }
+      dispatch({
+        type: `${namespace}/getTaskDetail`,
+        payload: {
+          taskType,
+          log: true,
+          dbPath,
+          callback: ({ log, stats }) => {
+            setLog(log);
+          },
         },
       });
+      // UnMount: reset form
       return () => {
-        unsubscribe && unsubscribe();
+        form.resetFields();
+        const terminal = getTerminalIns(taskType);
+        terminal && terminal.clear();
       };
     },
-    [detail],
+    [init],
   );
-  // UnMount: reset form
-  useEffect(() => {
-    return () => {
-      form.resetFields();
-      const terminal = getTerminalIns(taskType);
-      terminal && terminal.clear();
-    };
-  }, []);
 
   async function dev() {
-    const { triggerState, errMsg } = await exec(taskType, env);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        type: 'error',
-        title: intl({ id: 'org.umi.ui.tasks.dev.startError' }),
-        message: errMsg,
-      });
-    }
+    dispatch({
+      type: `${namespace}/exec`,
+      payload: {
+        taskType,
+        args: {
+          analyze: true,
+          dbPath,
+        },
+        env,
+      },
+    });
   }
 
   async function cancelDev() {
-    const { triggerState, errMsg } = await cancel(taskType);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        title: intl({ id: 'org.umi.ui.tasks.dev.cancelError' }),
-        message: errMsg,
-      });
-    }
+    dispatch({
+      type: `${namespace}/cancel`,
+      payload: {
+        taskType,
+      },
+    });
   }
 
   const openModal = () => {
@@ -111,6 +108,11 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
 
   const handleCancel = () => {
     setModalVisible(false);
+  };
+
+  const toggleView = e => {
+    const { value } = e.target;
+    setView(value);
   };
 
   const stopEventPop = e => {
@@ -135,16 +137,23 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
     </div>
   );
 
-  const isTaskRunning =
-    taskDetail && [TaskState.ING, TaskState.SUCCESS].indexOf(taskDetail.state) > -1;
-  const outputRunningInfo = ({ state, localUrl }) => {
+  const isTaskRunning = detail && [TaskState.ING, TaskState.SUCCESS].indexOf(detail.state) > -1;
+  const outputRunningInfo = ({ state, localUrl, hasError }) => {
     if (!state || state === TaskState.INIT) {
       return null;
     }
     const map = {
       [TaskState.ING]: {
         status: 'processing',
-        text: <span>{intl({ id: 'org.umi.ui.tasks.dev.state.starting' })}</span>,
+        text: (
+          <span>
+            {intl({
+              id: hasError
+                ? 'org.umi.ui.tasks.dev.state.starting.error'
+                : 'org.umi.ui.tasks.dev.state.starting',
+            })}
+          </span>
+        ),
       },
       [TaskState.SUCCESS]: {
         status: 'success',
@@ -173,12 +182,13 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
       </div>
     );
   };
+
   return (
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.dev' })}</h1>
       <>
         <Row>
-          <Col span={24} className={styles.buttonGroup}>
+          <Col span={20} className={styles.buttonGroup}>
             <Button type="primary" onClick={isTaskRunning ? cancelDev : dev}>
               {isTaskRunning ? (
                 <>
@@ -199,7 +209,7 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
               )}
             </Button>
             <Button onClick={openModal}>{intl({ id: 'org.umi.ui.tasks.envs' })}</Button>
-            {outputRunningInfo(taskDetail)}
+            {outputRunningInfo(detail)}
             <Modal
               visible={modalVisible}
               title={intl({ id: 'org.umi.ui.tasks.envs' })}
@@ -306,25 +316,35 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
               </div>
             </Modal>
           </Col>
-          {/* <Col span={4} offset={12} className={styles.formatGroup}>
-            <Radio.Group defaultValue="log" buttonStyle="solid">
-              <Radio.Button value="log">输出</Radio.Button>
+          <Col span={4} className={styles.formatGroup}>
+            <Radio.Group defaultValue="log" value={view} buttonStyle="solid" onChange={toggleView}>
+              <Radio.Button value="log">{intl({ id: 'org.umi.ui.tasks.log' })}</Radio.Button>
+              <Radio.Button value="analyze">
+                {intl({ id: 'org.umi.ui.tasks.analyze' })}
+              </Radio.Button>
             </Radio.Group>
-          </Col> */}
+          </Col>
         </Row>
         <div className={styles.logContainer}>
           <SizeMe monitorWidth monitorHeight>
-            {({ size }) => (
-              <Terminal
-                api={api}
-                size={size}
-                terminal={getTerminalIns(taskType)}
-                log={taskDetail.log}
-                onClear={() => {
-                  clearLog(taskType);
-                }}
-              />
-            )}
+            {({ size }) =>
+              view === 'log' ? (
+                <Terminal
+                  api={api}
+                  size={size}
+                  terminal={getTerminalIns(taskType)}
+                  log={log}
+                  onClear={() => {
+                    clearLog(taskType);
+                  }}
+                />
+              ) : (
+                <Analyze
+                  api={api}
+                  src={detail.analyzePort ? `http://127.0.0.1:${detail.analyzePort}` : null}
+                />
+              )
+            }
           </SizeMe>
         </div>
       </>

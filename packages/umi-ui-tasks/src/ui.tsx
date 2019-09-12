@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IUiApi } from 'umi-types';
 import Dev from './ui/components/Dev';
 import Build from './ui/components/Build';
 import Lint from './ui/components/Lint';
 import Test from './ui/components/Test';
 import Install from './ui/components/Install';
-import { initApiToGloal, getTerminalIns, getNoticeMessage } from './ui/util';
-import { TaskType, TaskState } from './server/core/enums';
+import { initApiToGloal } from './ui/util';
+import { TaskType } from './server/core/enums';
 import styles from './ui/ui.module.less';
 import enUS from './locales/en-US';
 import zhCN from './locales/zh-CN';
+import model from './ui/model';
 
 export default (api: IUiApi) => {
   initApiToGloal(api);
-  const { intl } = api;
-  const { TwoColumnPanel, callRemote } = api;
+
+  const { TwoColumnPanel } = api;
   const imgProperty = {
     width: '32',
     height: '32',
@@ -83,56 +84,43 @@ export default (api: IUiApi) => {
     },
   };
 
-  // 插件初始化
-  callRemote({
-    type: 'plugin/init',
-  });
-
-  api.listenRemote({
-    type: 'org.umi.task.log',
-    onMessage: ({ log = '', taskType }: { log: string; taskType: TaskType }) => {
-      if (!log) {
-        return;
-      }
-      getTerminalIns(taskType).write(log.replace(/\n/g, '\r\n'));
-    },
-  });
-
-  // 全局通知
-  api.listenRemote({
-    type: 'org.umi.task.state',
-    onMessage: ({ detail: result, taskType: type }) => {
-      const { state } = result;
-      if ([TaskState.INIT, TaskState.ING].indexOf(state) > -1) {
-        return;
-      }
-      const { title, message, ...rest } = getNoticeMessage(type, state);
-      api.notify({
-        title: `${api.currentProject.name} ${intl({ id: title })}`,
-        message: intl({ id: message }),
-        ...rest,
+  const TasksView = ({ taskManager, dispatch }) => {
+    // 初始化 taskManager dva model
+    useEffect(() => {
+      dispatch({
+        type: `${model.namespace}/init`,
+        payload: {
+          currentProject: api.currentProject,
+          getSharedDataDir: api.getSharedDataDir,
+        },
       });
-    },
-  });
+    }, []);
+    return (
+      <TwoColumnPanel
+        sections={Object.keys(SCRIPTS).map((taskType: string) => {
+          const { key, title, icon, description, Component } = SCRIPTS[taskType];
+          const currentProjectKey = api.currentProject.path;
+          const detail =
+            taskManager.tasks[currentProjectKey] && taskManager.tasks[currentProjectKey][taskType];
+          const dbPath = taskManager.dbPath[currentProjectKey];
+          return {
+            key,
+            title,
+            icon,
+            description,
+            component: () => (
+              <div className={styles.section}>
+                <Component api={api} detail={detail} dispatch={dispatch} dbPath={dbPath} />
+              </div>
+            ),
+          };
+        })}
+      />
+    );
+  };
 
-  const TasksView = () => (
-    <TwoColumnPanel
-      sections={Object.keys(SCRIPTS).map((taskType: string) => {
-        const { key, title, icon, description, Component } = SCRIPTS[taskType];
-        return {
-          key,
-          title,
-          icon,
-          description,
-          component: () => (
-            <div className={styles.section}>
-              <Component api={api} />
-            </div>
-          ),
-        };
-      })}
-    />
-  );
+  // 注册 model
+  api.registerModel(model);
 
   api.addLocales({
     'zh-CN': zhCN,
@@ -146,6 +134,6 @@ export default (api: IUiApi) => {
       type: 'project',
       theme: 'filled',
     },
-    component: TasksView,
+    component: api.connect(state => ({ taskManager: state[model.namespace] }))(TasksView),
   });
 };

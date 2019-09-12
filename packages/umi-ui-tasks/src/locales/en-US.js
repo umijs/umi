@@ -15,12 +15,16 @@ export default {
   'org.umi.ui.tasks.terminal.clear': 'Clear Logs',
   'org.umi.ui.tasks.terminal.bottom': 'Scroll Bottom',
 
+  'org.umi.ui.tasks.log': 'Log',
+  'org.umi.ui.tasks.analyze': 'Analyze',
+
   // dev
   'org.umi.ui.tasks.dev.startError': 'Start project error',
   'org.umi.ui.tasks.dev.cancelError': 'Cancel start error',
   'org.umi.ui.tasks.dev.start': 'START',
   'org.umi.ui.tasks.dev.cancel': 'STOP',
   'org.umi.ui.tasks.dev.state.starting': 'Starting...',
+  'org.umi.ui.tasks.dev.state.starting.error': 'Compile error',
   'org.umi.ui.tasks.dev.state.success': 'Started at: ',
   'org.umi.ui.tasks.dev.state.fail': 'Started failed',
   'org.umi.ui.tasks.envs': 'ENVS',
@@ -101,4 +105,7 @@ export default {
   'org.umi.ui.tasks.notify.install.success.message': 'Success',
   'org.umi.ui.tasks.notify.install.fail.title': 'Install Fail',
   'org.umi.ui.tasks.notify.install.fail.message': 'Fail',
+
+  // analyze
+  'org.umi.ui.tasks.analyze.empty': 'Show after task success...',
 };
