@@ -8,7 +8,7 @@ const CSS_EXTNAMES = ['.css', '.less', '.scss', '.sass'];
  * @param {*} baseDir
  * @param {*} fileNameWithoutExtname
  */
-export default function(baseDir: string, fileNameWithoutExtname: string) {
+export default function(baseDir: string, fileNameWithoutExtname: string): string {
   let i = 0;
   while (i < CSS_EXTNAMES.length) {
     const extname = CSS_EXTNAMES[i];

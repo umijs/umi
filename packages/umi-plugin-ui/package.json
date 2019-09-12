@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-ui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -11,13 +11,13 @@
     "@ant-design/icons": "^4.0.0-alpha.8",
     "classnames": "^2.2.6",
     "fuse.js": "^3.4.5",
-    "umi-ui-tasks": "1.0.3"
+    "umi-ui-tasks": "1.0.4"
   },
   "devDependencies": {
     "@umijs/fabric": "^1.1.9",
     "decamelize": "3.2.0",
     "serialize-javascript": "^1.7.0",
-    "umi-types": "0.4.0-beta.4"
+    "umi-types": "0.4.0"
   },
   "repository": {
     "type": "git",

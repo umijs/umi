@@ -8,7 +8,7 @@ import winPath from './winPath';
  * @param cwd process cwd
  * @param fallback
  */
-export default function(path: string, cwd: string, fallback?: any) {
+export default function(path: string, cwd: string, fallback?: any): any {
   const pkg = findPkg(path, cwd);
   if (pkg) return pkg;
 
@@ -25,7 +25,7 @@ export default function(path: string, cwd: string, fallback?: any) {
  * @param path module name
  * @param cwd
  */
-function findPkg(path: string, cwd: string) {
+function findPkg(path: string, cwd: string): string {
   const pkgPath = join(cwd, 'package.json');
   const library = path.split('/')[0];
   if (existsSync(pkgPath)) {
