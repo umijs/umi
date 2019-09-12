@@ -8,7 +8,7 @@ const hits = new Set<string>();
  * @param methodName
  * @param args
  */
-export default function deprecate(methodName: string, ...args) {
+export default function deprecate(methodName: string, ...args): void {
   if (hits[methodName]) return;
   hits[methodName] = true;
   const stream = process.stderr;
