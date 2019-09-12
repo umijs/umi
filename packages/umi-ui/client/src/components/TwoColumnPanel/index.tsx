@@ -20,18 +20,16 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const [currentIndex, setCurrentIndex] = useState(activeIndex);
 
-  useEffect(
-    () => {
-      setCurrentIndex(activeIndex);
-    },
-    [activeIndex],
-  );
+  useEffect(() => {
+    setCurrentIndex(activeIndex);
+  }, []);
 
   const Component = sections[currentIndex].component;
 
-  const toggleSectionHandler = key => {
-    if (key !== query.active) {
-      history.push(`${pathname}?active=${key}`);
+  const toggleSectionHandler = index => {
+    setCurrentIndex(index);
+    if (keys[index] !== query.active) {
+      history.push(`${pathname}?active=${keys[index]}`);
     }
   };
 
@@ -53,11 +51,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
             [styles.triggerActive]: index === currentIndex,
           });
           return (
-            <div
-              className={triggerCls}
-              key={s.title}
-              onClick={() => toggleSectionHandler(keys[index])}
-            >
+            <div className={triggerCls} key={s.title} onClick={() => toggleSectionHandler(index)}>
               <div className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
                 {React.isValidElement(s.icon) && s.icon}
