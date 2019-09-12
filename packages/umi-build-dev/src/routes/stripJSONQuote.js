@@ -6,8 +6,10 @@ export default function(jsonStr) {
         if (m1 !== 'component' && typeof eval(m3) === 'function') {
           return `"${m1}": ${m3.slice(1, -1)}`;
         }
-      } catch {} //eslint-disable-line
-      return `"${m1}": ${m2}`;
+      } catch (error) {
+        console.log(error);
+      }
+      return global;
     })
     .replace(/\"component\": (\"(.+?)\")/g, (global, m1, m2) => {
       return `"component": ${m2.replace(/\^/g, '"')}`;
