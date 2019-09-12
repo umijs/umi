@@ -26,7 +26,7 @@ beforeAll(async () => {
         config: {},
         absPagesPath: join(cwd, 'pages'),
         absSrcPath: cwd,
-        watch: true,
+        watch: false,
         onError(e) {
           watchError = e;
         },
@@ -75,7 +75,7 @@ test('params', async () => {
   expect(body).toEqual(`{"a":1}`);
 });
 
-test('watch', async () => {
+xtest('watch', async () => {
   const absTmpFile = join(cwd, 'mock/tmp.js');
   writeFileSync(absTmpFile, `export default {'/api/tmp': {tmp:1}}`, 'utf-8');
   await delay(500);
@@ -84,7 +84,7 @@ test('watch', async () => {
   rimraf.sync(absTmpFile);
 });
 
-test('watch with error', async () => {
+xtest('watch with error', async () => {
   const absTmpFile = join(cwd, 'mock/tmp2.js');
   writeFileSync(absTmpFile, `export defaul;`, 'utf-8');
   await delay(500);
