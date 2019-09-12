@@ -21,6 +21,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const [currentIndex, setCurrentIndex] = useState(activeIndex);
 
   useEffect(() => {
+    // first render set query active panel
     setCurrentIndex(activeIndex);
   }, []);
 
