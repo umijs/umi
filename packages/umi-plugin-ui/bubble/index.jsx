@@ -44,7 +44,7 @@ const Bubble = styled('div')`
   }
 `;
 
-const App = () => {
+const App = ({ port }) => {
   const ref = React.useRef();
   const [hide, setHide] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -78,7 +78,7 @@ const App = () => {
       <Modal visible={open} onMaskClick={closeModal}>
         <iframe
           style={{ width: '100%', minHeight: '80vh' }}
-          src="http://localhost:8000"
+          src={`http://localhost:${port}`}
           frameBorder="0"
           title="iframe_umi_ui"
         />
@@ -91,7 +91,7 @@ const doc = window.document;
 const node = doc.createElement('div');
 doc.body.appendChild(node);
 
-export default function ({ port }) {
+export default function({ port }) {
   console.log('umi ui port', port);
-  ReactDOM.render(<App />, node);
+  ReactDOM.render(<App port={port} />, node);
 }
