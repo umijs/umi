@@ -41,7 +41,7 @@ const Bubble = styled('div')`
 
 const App = () => {
   const ref = React.useRef();
-  const [hide, setHide] = React.useState<boolean>(false);
+  const [hide, setHide] = React.useState(false);
 
   const toggleBubble = () => {
     setHide(s => !s);
@@ -62,4 +62,7 @@ const doc = window.document;
 const node = doc.createElement('div');
 doc.body.appendChild(node);
 
-ReactDOM.render(<App />, node);
+export default function({ port }) {
+  console.log('umi ui port', port);
+  ReactDOM.render(<App />, node);
+}
