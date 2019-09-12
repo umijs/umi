@@ -42,6 +42,15 @@ $ y debug .test.(t|j)s
 
 # Test specified file and watch
 $ y debug getMockData.test.js -w
+
+# Test specified package
+$ PACKAGE=umi-mock y debug
+
+# Don't run e2e test
+$ E2E=none y debug
+
+# Generate coverage
+$ y debug --coverage
 ```
 
 Run `umi dev` in examples/func-test.
