@@ -1,6 +1,6 @@
 {
   "name": "umi-utils",
-  "version": "1.6.0-beta.2",
+  "version": "1.6.0",
   "main": "./lib/index.js",
   "typings": "./src/index.d.ts",
   "repository": {
