@@ -18,20 +18,8 @@ import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
-import {
-  BackToHomeAction,
-  OpenConfigFileAction,
-  OpenProjectAction,
-  ReInstallDependencyAction,
-} from './Actions';
-import {
-  isBigfishProject,
-  isDepLost,
-  isPluginLost,
-  isUmiProject,
-  isUsingBigfish,
-  isUsingUmi,
-} from './checkProject';
+import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
+import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
@@ -906,17 +894,23 @@ export default class UmiUI {
         });
       });
 
-      portfinder.basePort = 3000;
-      portfinder.highestPort = 3333;
-      const port = process.env.PORT || (await portfinder.getPortPromise());
+      const port =
+        process.env.PORT ||
+        (await portfinder.getPortPromise({
+          port: 3000,
+        }));
       const server = app.listen(port, process.env.HOST || '127.0.0.1', err => {
         if (err) {
           reject(err);
         } else {
           const url = `http://localhost:${port}/`;
           console.log(`🧨  Ready on ${url}`);
-          openBrowser(url);
-          resolve();
+          if (process.env.UMI_UI_BROWSER !== 'none') {
+            openBrowser(url);
+          }
+          resolve({
+            port,
+          });
         }
       });
       ss.installHandlers(server, {
