@@ -8,7 +8,7 @@ const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
  * @param baseDir base path
  * @param fileNameWithoutExtname file name
  */
-export default function(baseDir: string, fileNameWithoutExtname: string) {
+export default function(baseDir: string, fileNameWithoutExtname: string): string {
   let i = 0;
   while (i < JS_EXTNAMES.length) {
     const extname = JS_EXTNAMES[i];
