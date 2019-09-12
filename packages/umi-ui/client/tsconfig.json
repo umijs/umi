@@ -18,13 +18,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "scripts",
-    "webpack",
-    "jest",
-    "src/setupTests.ts",
-    "tslint:latest",
-    "tslint-config-prettier"
-  ]
+  "exclude": ["node_modules"]
 }
