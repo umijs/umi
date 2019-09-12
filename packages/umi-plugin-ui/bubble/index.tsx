@@ -1,22 +1,60 @@
 import React from 'react';
-import styled from 'styled-components';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
+import Logo from './Logo';
+
+const BubbleWrapper = styled('div')`
+  position: fixed;
+  bottom: 10px;
+  right: 0px;
+  padding-right: 26px;
+  transition: transform 0.1s ease-in-out;
+  ${props =>
+    props.hide &&
+    `
+    transform: translateX(76%);
+  `}
+`;
 
 const Bubble = styled('div')`
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 50px;
-  height: 50px;
+  background-color: rgb(48, 85, 234);
+  height: 60px;
+  cursor: pointer;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 60px;
+  position: relative;
+  box-shadow: rgba(14, 39, 140, 0.3) 0px 4px 10px 0px;
+  user-select: none;
+  opacity: 0.8;
+  border-radius: 30px;
+  padding: 8px;
+  transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
+  &:hover {
+    background-color: rgb(21, 59, 210);
+    opacity: 1;
+  }
 `;
 
 const App = () => {
-  const [aa, setAA] = React.useState(0);
-  console.log('aaaaaa', aa);
+  const ref = React.useRef();
+  const [hide, setHide] = React.useState<boolean>(false);
+
+  const toggleBubble = () => {
+    setHide(s => !s);
+  };
+
+  React.useEffect(() => {}, []);
+
   return (
-    <Bubble>
-      <button onClick={() => setAA(aa + 1)}>Click {aa}</button>
-    </Bubble>
+    <BubbleWrapper hide={hide} ref={ref} onClick={toggleBubble}>
+      <Bubble>
+        <Logo />
+      </Bubble>
+    </BubbleWrapper>
   );
 };
 
