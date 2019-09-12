@@ -17,8 +17,7 @@ interface IProps {
 const { SizeMe } = withSize;
 const taskType = TaskType.DEV;
 
-const DevComponent: React.FC<IProps> = props => {
-  const { api } = props;
+const DevComponent: React.FC<IProps> = ({ api }) => {
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
   const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
