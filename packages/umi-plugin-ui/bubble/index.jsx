@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Logo from './Logo';
+import Close, { CloseWrapper } from './Close';
+import Modal from './Modal';
 
 const BubbleWrapper = styled('div')`
   position: fixed;
@@ -14,6 +16,9 @@ const BubbleWrapper = styled('div')`
     `
     transform: translateX(76%);
   `}
+  &:hover ${CloseWrapper} {
+    opacity: 1;
+  }
 `;
 
 const Bubble = styled('div')`
@@ -42,18 +47,42 @@ const Bubble = styled('div')`
 const App = () => {
   const ref = React.useRef();
   const [hide, setHide] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
-  const toggleBubble = () => {
+  const toggleBubble = e => {
+    e.preventDefault();
+    e.stopPropagation();
     setHide(s => !s);
   };
 
-  React.useEffect(() => {}, []);
+  const openModal = () => {
+    if (hide) {
+      setHide(false);
+    } else {
+      // open modal
+      setOpen(true);
+    }
+  };
+
+  const closeModal = e => {
+    e.stopPropagation();
+    setOpen(false);
+  };
 
   return (
-    <BubbleWrapper hide={hide} ref={ref} onClick={toggleBubble}>
+    <BubbleWrapper hide={hide} ref={ref} onClick={openModal}>
       <Bubble>
         <Logo />
       </Bubble>
+      <Close onClick={toggleBubble} />
+      <Modal visible={open} onMaskClick={closeModal}>
+        <iframe
+          style={{ width: '100%', minHeight: '80vh' }}
+          src="http://localhost:8000"
+          frameBorder="0"
+          title="iframe_umi_ui"
+        />
+      </Modal>
     </BubbleWrapper>
   );
 };
@@ -62,7 +91,7 @@ const doc = window.document;
 const node = doc.createElement('div');
 doc.body.appendChild(node);
 
-export default function({ port }) {
+export default function ({ port }) {
   console.log('umi ui port', port);
   ReactDOM.render(<App />, node);
 }
