@@ -6,6 +6,7 @@ import EventEmitter from 'events';
 import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
+import querystring from 'querystring';
 import { init as initSocket, callRemote } from './socket';
 import PluginAPI from './PluginAPI';
 
@@ -81,16 +82,22 @@ export async function render(oldRender) {
     const props = {
       data,
     };
-    if (data.currentProject) {
+    let key = data.currentProject;
+    const qs = querystring.parse(location.search.slice(1));
+    const isMini = 'mini' in qs;
+    if (isMini && qs.key) {
+      key = qs.key;
+    }
+    if (key) {
       const currentProject = {
-        key: data.currentProject,
-        ...get(data, `projectsByKey.${data.currentProject}`, {}),
+        key,
+        ...get(data, `projectsByKey.${key}`, {}),
       };
       _log('apps data', data);
       window.g_uiCurrentProject =
         {
           ...currentProject,
-          key: data.currentProject,
+          key,
         } || {};
       _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
       // types 和 api 上先不透露
@@ -98,8 +105,14 @@ export async function render(oldRender) {
       try {
         await callRemote({
           type: '@@project/open',
-          payload: { key: data.currentProject },
+          payload: { key },
         });
+        if (!isMini) {
+          await callRemote({
+            type: '@@project/setCurrentProject',
+            payload: { key },
+          });
+        }
       } catch (e) {
         props.error = e;
       }

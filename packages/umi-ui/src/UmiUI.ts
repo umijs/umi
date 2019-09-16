@@ -201,7 +201,6 @@ export default class UmiUI {
       }
     }
 
-    this.config.setCurrentProject(key);
     this.config.editProject(key, {
       opened_at: +new Date(),
     });

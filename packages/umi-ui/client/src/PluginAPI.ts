@@ -48,7 +48,7 @@ export default class PluginAPI {
   };
 
   isMini = () => {
-    return querystring.parse(location.search).mini;
+    return 'mini' in querystring.parse(location.search.slice(1));
   };
 
   redirect: IUi.IRedirect = url => {
