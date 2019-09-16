@@ -23,19 +23,19 @@ const BubbleWrapper = styled('div')`
 
 const Bubble = styled('div')`
   background-color: rgb(48, 85, 234);
-  height: 60px;
+  height: 48px;
+  width: 48px;
   cursor: pointer;
   display: flex;
   -webkit-box-pack: center;
   justify-content: center;
   -webkit-box-align: center;
   align-items: center;
-  width: 60px;
   position: relative;
   box-shadow: rgba(14, 39, 140, 0.3) 0px 4px 10px 0px;
   user-select: none;
   opacity: 0.8;
-  border-radius: 30px;
+  border-radius: 50%;
   padding: 8px;
   transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
   &:hover {
