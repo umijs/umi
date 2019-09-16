@@ -45,7 +45,6 @@ export default class Draggable extends React.Component {
   handleMouseMove = ({ clientX, clientY }) => {
     const { isDragging } = this.state;
     const { onDrag, hide } = this.props;
-    console.log('isDragging', isDragging);
     if (!isDragging || !!hide) {
       return;
     }

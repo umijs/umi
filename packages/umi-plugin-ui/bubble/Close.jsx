@@ -31,7 +31,7 @@ export const CloseIcon = styled('div')`
 `;
 
 export default ({ onClick }) => (
-  <CloseWrapper onClick={onClick}>
+  <CloseWrapper id="ui-bubble-close" onClick={onClick}>
     <CloseIcon />
   </CloseWrapper>
 );
