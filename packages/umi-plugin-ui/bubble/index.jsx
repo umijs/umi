@@ -89,7 +89,7 @@ class App extends React.Component {
           <iframe
             style={{ width: '100%', minHeight: '80vh' }}
             // localhost maybe hard code
-            src={`http://localhost:${port}`}
+            src={`http://localhost:${port}/?mini`}
             frameBorder="0"
             title="iframe_umi_ui"
           />
@@ -104,6 +104,5 @@ const node = doc.createElement('div');
 doc.body.appendChild(node);
 
 export default ({ port }) => {
-  console.log('umi ui port', port);
   ReactDOM.render(<App port={port} />, node);
 };

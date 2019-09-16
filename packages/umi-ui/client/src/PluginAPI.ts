@@ -7,6 +7,7 @@ import history from '@tmp/history';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
+import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import Field from './components/Field';
@@ -44,6 +45,7 @@ export default class PluginAPI {
       window.g_app.model(model);
     };
     this.connect = connect;
+    this.isMini = () => querystring.parse(location.search).mini;
   }
 
   redirect: IUi.IRedirect = url => {

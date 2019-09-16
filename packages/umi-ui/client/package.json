@@ -17,6 +17,7 @@
     "lodash": "^4.17.15",
     "nanoid": "^2.0.3",
     "nprogress": "^0.2.0",
+    "querystring": "^0.2.0",
     "rc-tween-one": "^2.6.0",
     "react-beforeunload": "^2.1.0",
     "react-helmet": "^5.2.1",
