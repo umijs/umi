@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import assert from 'assert';
 import chalk from 'chalk';
 import emptyDir from 'empty-dir';

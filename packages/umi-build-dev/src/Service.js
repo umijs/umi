@@ -14,6 +14,7 @@ import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
 import getCodeFrame from './utils/getCodeFrame';
+import getRouteManager from './plugins/commands/getRouteManager';
 
 const debug = require('debug')('umi-build-dev:Service');
 
@@ -112,6 +113,7 @@ plugin must export a function, e.g.
               'applyPlugins',
               '_applyPluginsAsync',
               'writeTmpFile',
+              'getRoutes',
               // properties
               'cwd',
               'config',
@@ -262,6 +264,12 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const path = join(paths.absTmpDirPath, file);
     mkdirp.sync(dirname(path));
     writeFileSync(path, content, 'utf-8');
+  }
+
+  getRoutes() {
+    const RoutesManager = getRouteManager(this);
+    RoutesManager.fetchRoutes();
+    return RoutesManager.routes;
   }
 
   init() {
