@@ -1,6 +1,8 @@
 import { join } from 'path';
 import pick from 'lodash/pick';
 import { winPath } from 'umi-utils';
+import { writeFileSync } from 'fs';
+import rimraf from 'rimraf';
 
 import Service from './Service';
 
@@ -500,5 +502,23 @@ describe('Service', () => {
       filename: '[name].server.js',
       chunkFilename: '[name].server.async.js',
     });
+  });
+
+  it('getRoutes', () => {
+    const cwd = join(fixtures, 'get-routes');
+    const service = new Service({
+      cwd,
+    });
+    service.init();
+    expect(service.getRoutes()).toEqual([
+      { path: '/', exact: true, component: './pages/index.js' },
+    ]);
+    const usersPagePath = join(cwd, 'pages', 'users.js');
+    writeFileSync(usersPagePath, '.keep', 'utf-8');
+    expect(service.getRoutes()).toEqual([
+      { path: '/', exact: true, component: './pages/index.js' },
+      { path: '/users', exact: true, component: './pages/users.js' },
+    ]);
+    rimraf.sync(usersPagePath);
   });
 });
