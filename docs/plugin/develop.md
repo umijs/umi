@@ -728,8 +728,16 @@ Add a runtime configurable item.
 
 ### writeTmpFile
 
-add a file to pages/.umi
+Add a file to the tmp directory `pages/.umi`.
 
-```
+```js
 api.writeTmpFile('dva.js', tplContent);
+```
+
+### getRoutes
+
+Get the latest routes.
+
+```js
+api.getRoutes();
 ```

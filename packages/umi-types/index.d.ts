@@ -170,6 +170,10 @@ interface IWriteTmpFile {
   (file: string, content: string): void;
 }
 
+interface IGetRoutes {
+  (): IRoute[];
+}
+
 interface IWinPath {
   (path: string): string;
 }
@@ -467,6 +471,7 @@ export interface IApi {
   winPath: IWinPath;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
+  getRoutes: IGetRoutes;
   findJS: IFind;
   findCSS: IFind;
   compatDirname: ICompatDirname;
