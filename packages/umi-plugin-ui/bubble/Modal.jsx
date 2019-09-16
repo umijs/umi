@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-
-const { useState, useEffect } = React;
+import { Portal } from 'react-portal';
 
 const ModalWrapper = styled('div')`
   position: fixed;
@@ -29,15 +27,9 @@ const Mask = styled('div')`
 
 const Modal = props => {
   const { children, onMaskClick, visible } = props;
-  // for ssr
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
-    mounted &&
-    ReactDOM.createPortal(
+    <Portal>
       <ModalWrapper visible={!!visible}>
         {React.cloneElement(children, {
           style: {
@@ -47,9 +39,8 @@ const Modal = props => {
           },
         })}
         <Mask onClick={onMaskClick} />
-      </ModalWrapper>,
-      document.body,
-    )
+      </ModalWrapper>
+    </Portal>
   );
 };
 

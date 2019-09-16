@@ -44,54 +44,66 @@ const Bubble = styled('div')`
   }
 `;
 
-const App = ({ port }) => {
-  const ref = React.useRef();
-  const [hide, setHide] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hide: false,
+      open: false,
+    };
+  }
 
-  const toggleBubble = e => {
+  toggleBubble = e => {
     e.preventDefault();
     e.stopPropagation();
-    setHide(s => !s);
+    this.setState(state => ({
+      hide: !state.hide,
+    }));
   };
 
-  const openModal = () => {
-    if (hide) {
-      setHide(false);
-    } else {
-      // open modal
-      setOpen(true);
-    }
+  openModal = () => {
+    this.setState(state => ({
+      hide: state.hide === false,
+      open: state.hide === false,
+    }));
   };
 
-  const closeModal = e => {
+  closeModal = e => {
     e.stopPropagation();
-    setOpen(false);
+    this.setState({
+      open: false,
+    });
   };
 
-  return (
-    <BubbleWrapper hide={hide} ref={ref} onClick={openModal}>
-      <Bubble>
-        <Logo />
-      </Bubble>
-      <Close onClick={toggleBubble} />
-      <Modal visible={open} onMaskClick={closeModal}>
-        <iframe
-          style={{ width: '100%', minHeight: '80vh' }}
-          src={`http://localhost:${port}`}
-          frameBorder="0"
-          title="iframe_umi_ui"
-        />
-      </Modal>
-    </BubbleWrapper>
-  );
-};
+  render() {
+    const { hide, open } = this.state;
+    const { port } = this.props;
+
+    return (
+      <BubbleWrapper hide={hide} onClick={this.openModal}>
+        <Bubble>
+          <Logo />
+        </Bubble>
+        <Close onClick={this.toggleBubble} />
+        <Modal visible={open} onMaskClick={this.closeModal}>
+          <iframe
+            style={{ width: '100%', minHeight: '80vh' }}
+            // localhost maybe hard code
+            src={`http://localhost:${port}`}
+            frameBorder="0"
+            title="iframe_umi_ui"
+          />
+        </Modal>
+      </BubbleWrapper>
+    );
+  }
+}
 
 const doc = window.document;
 const node = doc.createElement('div');
 doc.body.appendChild(node);
 
-export default function({ port }) {
+export default ({ port }) => {
   console.log('umi ui port', port);
   ReactDOM.render(<App port={port} />, node);
-}
+};
