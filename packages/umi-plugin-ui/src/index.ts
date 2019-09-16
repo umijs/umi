@@ -7,6 +7,8 @@ export default (api: IApi) => {
 // Umi UI Bubble
 require('${join(__dirname, '../bubble')}').default({
   port: ${process.env.UMI_UI_PORT},
+  path: '${api.cwd}',
+  currentProject: '${process.env.UMI_UI_CURRENT_PROJECT || ''}',
 });
   `);
 
