@@ -28,6 +28,7 @@
     "umi"
   ],
   "dependencies": {
+    "@ant-design/create-react-context": "0.2.4",
     "globby": "7.1.1",
     "intl": "1.2.5",
     "lodash.groupby": "4.6.0",
