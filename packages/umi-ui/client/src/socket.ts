@@ -106,11 +106,11 @@ export function callRemote<T = object, K = object>(
       }
     }
     messageHandlers.push(handler);
-    const lang = getLocale();
     sock.send(
       JSON.stringify({
         ...action,
-        lang,
+        $lang: getLocale(),
+        $key: window.g_currentProject ? window.g_currentProject.key : '',
       }),
     );
   });

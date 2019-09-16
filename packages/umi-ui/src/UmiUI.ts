@@ -868,7 +868,7 @@ export default class UmiUI {
         });
         conn.on('data', message => {
           try {
-            const { type, payload, lang } = JSON.parse(message);
+            const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData(
@@ -881,8 +881,9 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
-            } else if (this.config.data.currentProject) {
-              const service = this.servicesByKey[this.config.data.currentProject];
+            } else {
+              assert(this.servicesByKey[key], `service of key ${key} not exists.`);
+              const service = this.servicesByKey[key];
               service.applyPlugins('onUISocket', {
                 args: {
                   action: { type, payload, lang },
