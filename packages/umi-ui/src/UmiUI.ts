@@ -66,7 +66,8 @@ export default class UmiUI {
     this.developMode = !!process.env.DEVELOP_MODE;
 
     if (process.env.CURRENT_PROJECT) {
-      this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
+      const key = this.config.addProjectWithPath(process.env.CURRENT_PROJECT);
+      this.config.setCurrentProject(key);
     }
 
     process.nextTick(() => {
@@ -74,7 +75,7 @@ export default class UmiUI {
     });
   }
 
-  activeProject(key: string, service?: any, opts?: any) {
+  openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
@@ -568,10 +569,15 @@ export default class UmiUI {
           success();
         }
         break;
+      case '@@project/getKeyOrAddWithPath':
+        success({
+          key: this.config.getKeyOrAddWithPath(payload.path),
+        });
+        break;
       case '@@project/open':
         try {
           log('info', `Open project: ${this.getProjectName(payload.key)}`);
-          this.activeProject(payload.key, null, {
+          this.openProject(payload.key, null, {
             lang,
           });
           success();

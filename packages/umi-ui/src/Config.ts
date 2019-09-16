@@ -149,15 +149,22 @@ export default class Config {
     this.save();
   }
 
-  addProjectAndSetCurrent(projectPath: string) {
+  addProjectWithPath(projectPath: string) {
     const absProjectPath = join(process.cwd(), projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
-    const key = this.addProject({
+    return this.addProject({
       name: projectName,
       path: absProjectPath,
       ignoreExistsCheck: true,
     });
-    this.setCurrentProject(key);
+  }
+
+  getKeyOrAddWithPath(projectPath: string) {
+    const keys = Object.keys(this.data.projectsByKey);
+    for (const key of keys) {
+      if (this.data.projectsByKey[key].path === projectPath) {
+      }
+    }
   }
 }
