@@ -30,16 +30,18 @@ const Modal = props => {
 
   return (
     <Portal>
-      <ModalWrapper visible={!!visible}>
-        {React.cloneElement(children, {
-          style: {
-            zIndex: 9999,
-            position: 'relative',
-            ...(children.props.style ? children.props.style : {}),
-          },
-        })}
-        <Mask onClick={onMaskClick} />
-      </ModalWrapper>
+      {visible && (
+        <ModalWrapper visible={!!visible}>
+          {React.cloneElement(children, {
+            style: {
+              zIndex: 9999,
+              position: 'relative',
+              ...(children.props.style ? children.props.style : {}),
+            },
+          })}
+          <Mask onClick={onMaskClick} />
+        </ModalWrapper>
+      )}
     </Portal>
   );
 };

@@ -5,11 +5,12 @@ export const CloseWrapper = styled('div')`
   opacity: 0;
   position: absolute;
   top: 0px;
-  right: 6px;
+  right: -16px;
   width: 20px;
   height: 20px;
   cursor: pointer;
   display: flex;
+  z-index: 999;
   -webkit-box-pack: center;
   justify-content: center;
   -webkit-box-align: center;
@@ -29,10 +30,8 @@ export const CloseIcon = styled('div')`
   border-radius: 4px;
 `;
 
-export default ({ onClick }) => {
-  return (
-    <CloseWrapper onClick={onClick}>
-      <CloseIcon />
-    </CloseWrapper>
-  );
-};
+export default ({ onClick }) => (
+  <CloseWrapper onClick={onClick}>
+    <CloseIcon />
+  </CloseWrapper>
+);

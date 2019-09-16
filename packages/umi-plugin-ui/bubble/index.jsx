@@ -2,29 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Logo from './Logo';
-import Close, { CloseWrapper } from './Close';
+import Close from './Close';
+import Dragger from './Dragger';
 import Modal from './Modal';
-
-const BubbleWrapper = styled('div')`
-  position: fixed;
-  bottom: 10px;
-  right: 0px;
-  padding-right: 26px;
-  transition: transform 0.1s ease-in-out;
-  ${props =>
-    props.hide &&
-    `
-    transform: translateX(76%);
-  `}
-  &:hover ${CloseWrapper} {
-    opacity: 1;
-  }
-`;
 
 const Bubble = styled('div')`
   background-color: rgb(48, 85, 234);
   height: 48px;
   width: 48px;
+  pointer-events: none;
   cursor: pointer;
   display: flex;
   -webkit-box-pack: center;
@@ -37,7 +23,7 @@ const Bubble = styled('div')`
   opacity: 0.8;
   border-radius: 50%;
   padding: 8px;
-  transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s;
+  transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s, transform 0.2s ease 0s;
   &:hover {
     background-color: rgb(21, 59, 210);
     opacity: 1;
@@ -54,7 +40,6 @@ class App extends React.Component {
   }
 
   toggleBubble = e => {
-    e.preventDefault();
     e.stopPropagation();
     this.setState(state => ({
       hide: !state.hide,
@@ -62,10 +47,15 @@ class App extends React.Component {
   };
 
   openModal = () => {
-    this.setState(state => ({
-      hide: state.hide === false,
-      open: state.hide === false,
-    }));
+    if (this.state.hide) {
+      this.setState({
+        hide: false,
+      });
+    } else {
+      this.setState(state => ({
+        open: state.hide === false,
+      }));
+    }
   };
 
   closeModal = e => {
@@ -80,7 +70,7 @@ class App extends React.Component {
     const { port } = this.props;
 
     return (
-      <BubbleWrapper hide={hide} onClick={this.openModal}>
+      <Dragger hide={hide} onClick={this.openModal}>
         <Bubble>
           <Logo />
         </Bubble>
@@ -94,7 +84,7 @@ class App extends React.Component {
             title="iframe_umi_ui"
           />
         </Modal>
-      </BubbleWrapper>
+      </Dragger>
     );
   }
 }
