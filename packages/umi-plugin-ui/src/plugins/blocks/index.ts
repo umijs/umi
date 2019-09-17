@@ -75,7 +75,8 @@ export default function(api: IApi) {
       // TODO 支持扩展或者自定义
       id: 'ant-design-pro',
       name: 'Ant Design Pro',
-      type: 'git',
+      resourceType: 'github',
+      blockType: 'template',
       url: 'https://github.com/ant-design/pro-blocks',
     },
   ];
@@ -83,6 +84,10 @@ export default function(api: IApi) {
   api.onUISocket(({ action, failure, success }) => {
     const { type, payload, lang } = action;
     switch (type) {
+      case 'org.umi.block.routes':
+        success({
+          data: [],
+        });
       case 'org.umi.block.resource':
         success({
           data: reources,

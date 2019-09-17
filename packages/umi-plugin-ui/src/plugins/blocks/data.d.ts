@@ -3,7 +3,6 @@ export interface Block {
   name: string;
   description: string;
   img: string;
-  isPage: boolean;
   defaultPath: string;
   tags: string[];
 }
@@ -12,12 +11,18 @@ export interface BlockData {
   data: Block[];
 }
 
+export interface RequestParams {
+  keyword?: string;
+  current: number;
+}
+
 export interface Resource {
   id: string;
   name: string;
-  type: 'git' | 'custom';
+  blockType: 'template' | 'block';
+  resourceType: 'github' | 'custom';
   url?: string;
-  handler?: () => BlockData;
+  getData?: (params: RequestParams) => BlockData;
 }
 
 export interface AddBlockParams {
