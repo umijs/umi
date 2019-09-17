@@ -25,7 +25,7 @@ export default class PluginAPI {
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Field: FC<IUi.IFieldProps>;
-  connect: iUi.connect;
+  connect: IUi.IConnect;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -40,15 +40,15 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Field = Field;
-    this.connect = connect;
+    this.connect = connect as IUi.IConnect;
   }
 
   registerModel = model => {
     window.g_app.model(model);
   };
 
-  isMini = () => {
-    return 'mini' in querystring.parse(location.search.slice(1));
+  isMini: IUi.IMini = () => {
+    return 'mini' in querystring.parse(window.location.search.slice(1));
   };
 
   redirect: IUi.IRedirect = url => {

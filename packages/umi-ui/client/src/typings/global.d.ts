@@ -11,6 +11,7 @@ declare global {
     xterm: any;
     gtag?: any;
     Tracert?: any;
+    g_app?: any;
     Terminal?: typeof Terminal;
     fit?: any;
     g_uiUserId?: string;
