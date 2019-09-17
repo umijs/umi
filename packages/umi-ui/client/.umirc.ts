@@ -19,7 +19,7 @@ const uglifyJSOptions =
     : {};
 
 const config: IConfig = {
-  history: 'hash',
+  history: 'browser',
   hash: NODE_ENV === 'production',
   treeShaking: true,
   uglifyJSOptions,
