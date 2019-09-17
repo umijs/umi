@@ -767,6 +767,7 @@ export default class UmiUI {
 
       app.get('/', async (req, res) => {
         const isMini = 'mini' in req.query;
+        debug('isMini', isMini);
         const { data } = this.config;
         if (isMini || data.currentProject) {
           return res.status(302).redirect('/dashboard');
