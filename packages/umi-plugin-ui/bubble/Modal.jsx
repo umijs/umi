@@ -30,7 +30,7 @@ const Modal = props => {
 
   return (
     <Portal>
-      {visible && (
+      {typeof visible === 'boolean' && (
         <ModalWrapper visible={!!visible}>
           {React.cloneElement(children, {
             style: {
