@@ -68,7 +68,7 @@ app.use(
     onError(e) {
       console.log(e.message);
     },
-  }),
+  }).middleware,
 );
 app.use(require('serve-static')('dist'));
 app.listen(port, () => {

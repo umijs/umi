@@ -13,25 +13,26 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 let watchError = null;
 
 const HOME_PAGE = 'homepage';
+let watcher = null;
 
 beforeAll(async () => {
   portfinder.basePort = 3000;
   portfinder.highestPort = 8000;
   port = await portfinder.getPortPromise();
+  const ret = createMiddleware({
+    cwd,
+    config: {},
+    absPagesPath: join(cwd, 'pages'),
+    absSrcPath: cwd,
+    watch: true,
+    onError(e) {
+      watchError = e;
+    },
+  });
+  watcher = ret.watcher;
   return new Promise((resolve, reject) => {
     const app = express();
-    app.use(
-      createMiddleware({
-        cwd,
-        config: {},
-        absPagesPath: join(cwd, 'pages'),
-        absSrcPath: cwd,
-        watch: true,
-        onError(e) {
-          watchError = e;
-        },
-      }),
-    );
+    app.use(ret.middleware);
     app.use((req, res, next) => {
       if (req.path === '/') {
         res.end(HOME_PAGE);
@@ -46,6 +47,10 @@ beforeAll(async () => {
       resolve();
     });
   });
+});
+
+afterAll(() => {
+  if (watcher) watcher.close();
 });
 
 test('get', async () => {
