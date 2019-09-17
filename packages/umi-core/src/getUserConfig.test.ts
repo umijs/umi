@@ -1,5 +1,6 @@
 import { winPath } from 'umi-utils';
-import { getConfigFile, mergeConfigs, addAffix } from './getUserConfig';
+import { join } from 'path';
+import getUserConfig, { getConfigFile, mergeConfigs, addAffix } from './getUserConfig';
 
 const fixtures = winPath(`${__dirname}/fixtures/getUserConfig`);
 
@@ -48,4 +49,31 @@ describe('getUserConfig', () => {
       });
     });
   });
+});
+
+test('config with empty directory', () => {
+  const config = getUserConfig({
+    cwd: join(fixtures, 'normal'),
+  });
+  expect(config).toEqual({});
+});
+
+test('config with .umirc.js', () => {
+  const config = getUserConfig({
+    cwd: join(fixtures, 'config-umirc'),
+  });
+  expect(config).toEqual({
+    history: 'hash',
+  });
+});
+
+test('config with UMI_CONFIG_FILE env', () => {
+  process.env.UMI_CONFIG_FILE = 'foo.js';
+  const config = getUserConfig({
+    cwd: join(fixtures, 'config-UMI_CONFIG_FILE'),
+  });
+  expect(config).toEqual({
+    history: 'hash',
+  });
+  process.env.UMI_CONFIG_FILE = '';
 });
