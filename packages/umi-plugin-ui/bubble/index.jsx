@@ -70,8 +70,7 @@ class App extends React.Component {
       this.setState({
         hide: false,
       });
-    }
-    if (this.state.connected) {
+    } else if (this.state.connected) {
       // open iframe UmiUI
       if (!currentProject.key) {
         const res = await callRemote({
