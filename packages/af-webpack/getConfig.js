@@ -1,1 +1,1 @@
-module.exports = require('./lib/getConfig');
+module.exports = require('./lib/getWebpackConfig');

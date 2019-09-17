@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'fs';
 import { cloneDeep } from 'lodash';
 import rimraf from 'rimraf';
 import getUserConfig from '../src/getUserConfig';
-import getConfig from '../src/getConfig';
+import getConfig from '../src/getWebpackConfig';
 
 process.env.NODE_ENV = 'production';
 process.env.COMPRESS = 'none';
