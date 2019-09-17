@@ -1,4 +1,6 @@
 import chalk from 'chalk';
+import { IApi } from 'umi-types';
+import { Resource, Block, AddBlockParams } from 'data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -13,7 +15,9 @@ export function routeExists(path, routes) {
   return false;
 }
 
-export default function(api) {
+export default function(api: IApi) {
+  const log = api.log.log;
+
   function getRoutes() {
     return [];
     // const RoutesManager = getRouteManager(api.service);
@@ -21,10 +25,9 @@ export default function(api) {
     // return RoutesManager.routes;
   }
 
-  function getBlocks() {
+  function getBlocks(): Block[] {
     // TODO: read from server
     return [
-      'AccountCenter',
       'AccountSettings',
       'DashboardAnalysis',
       'DashboardMonitor',
@@ -52,54 +55,75 @@ export default function(api) {
       'UserLogin',
       'UserRegister',
       'UserRegisterResult',
-    ];
+    ].map(name => {
+      return {
+        name: name,
+        description: name,
+        url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
+        isPage: true,
+        defaultPath: `/${name}`,
+        img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
+        tags: [],
+      };
+    });
   }
 
   api.addUIPlugin(require.resolve('../../../src/plugins/blocks/dist/ui.umd'));
 
-  api.onUISocket(({ action: { type, payload }, send, log }) => {
+  const reources: Resource[] = [
+    {
+      // TODO 支持扩展或者自定义
+      id: 'ant-design-pro',
+      name: 'Ant Design Pro',
+      type: 'git',
+      url: 'https://github.com/ant-design/pro-blocks',
+    },
+  ];
+
+  api.onUISocket(({ action, failure, success }) => {
+    const { type, payload, lang } = action;
     switch (type) {
-      case 'blocks/fetch':
-        send({
-          type: `${type}/success`,
-          payload: getBlocks(),
+      case 'org.umi.block.resource':
+        success({
+          data: reources,
         });
         break;
-      case 'blocks/add':
+      case 'org.umi.block.list':
+        success({
+          data: getBlocks(),
+        });
+        break;
+      case 'org.umi.block.add':
         (async () => {
-          const { name, path } = payload;
-          log(`Adding block ${chalk.magenta(name)} as ${path} ...`);
+          const { url, path } = payload as AddBlockParams;
+          log(`Adding block ${chalk.magenta(url)} as ${path} ...`);
           try {
             await api.service.runCommand(
               'block',
               {
-                _: ['add', name, '--path', payload.path],
+                _: ['add', url, '--path', path],
               },
               message => {
                 log(`${chalk.gray('[umi block add]')} ${message}`);
               },
             );
-            send({
-              type: `${type}/success`,
-            });
+            success();
             log(chalk.green('Add success'));
           } catch (e) {
             log(chalk.red('Add failed'));
           }
         })();
         break;
-      case 'blocks/checkExists':
+      case 'org.umi.block.checkexist':
         const { path } = payload;
         const routes = getRoutes();
-        send({
-          type: `${type}/success`,
-          payload: routeExists(path, routes),
+        success({
+          exists: routeExists(path, routes),
         });
         break;
       default:
-        send({
-          type: `${type}/failure`,
-          payload: `unhandled type: ${type}`,
+        failure({
+          message: `unhandled type: ${type}`,
         });
         break;
     }

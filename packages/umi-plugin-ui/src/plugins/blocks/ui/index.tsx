@@ -26,35 +26,36 @@ const BlocksViewer: React.FC<Props> = props => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const blocks = await callRemote({
-        type: 'blocks/fetch',
+      const { data } = await callRemote({
+        type: 'org.umi.block.list',
       });
-      setBlocks(blocks);
+      setBlocks(data);
       setLoading(false);
     })();
   }, []);
 
-  function addHandler(name) {
+  function addHandler(block) {
     (async () => {
-      let path = nameToPath(name);
-      const blockExists = await callRemote({
-        type: 'blocks/checkExists',
+      const { defaultPath, url } = block;
+      let path = defaultPath;
+      const { exists } = await callRemote({
+        type: 'org.umi.block.checkexist',
         payload: {
           path,
         },
       });
 
       // block 存在时加数字后缀找一个不存在的
-      if (blockExists) {
+      if (exists) {
         let count = 2;
         while (true) {
-          const blockExists = await callRemote({
-            type: 'blocks/checkExists',
+          const { exists } = await callRemote({
+            type: 'org.umi.block.checkexist',
             payload: {
               path: `${path}-${count}`,
             },
           });
-          if (blockExists) {
+          if (exists) {
             count += 1;
           } else {
             path = `${path}-${count}`;
@@ -63,11 +64,11 @@ const BlocksViewer: React.FC<Props> = props => {
         }
       }
 
-      setBlockAdding(name);
+      setBlockAdding(url);
       await callRemote({
-        type: 'blocks/add',
+        type: 'org.umi.block.add',
         payload: {
-          name,
+          url,
           path,
         },
       });
@@ -106,12 +107,13 @@ const BlocksViewer: React.FC<Props> = props => {
         {blocks.map((block, key) => {
           return (
             <div key={key} className={styles.block} onClick={addHandler.bind(null, block)}>
-              {block === blockAdding ? <Spin className={styles.spin} tip="Adding..." /> : <div />}
-              <div className={styles.blockTitle}>{block}</div>
-              <img
-                src={`https://raw.githubusercontent.com/ant-design/pro-blocks/master/${block}/snapshot.png`}
-                width="200"
-              />
+              {block.url === blockAdding ? (
+                <Spin className={styles.spin} tip="Adding..." />
+              ) : (
+                <div />
+              )}
+              <div className={styles.blockTitle}>{block.name}</div>
+              <img src={block.img} width="200" />
             </div>
           );
         })}
