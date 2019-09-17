@@ -47,6 +47,9 @@ export default function(opts = {}) {
         signale.success(`Mock files parse success`);
       }
     });
+    process.once('SIGINT', () => {
+      watcher.close();
+    });
   }
 
   function cleanRequireCache() {
