@@ -34,7 +34,6 @@ const Bubble = styled('div')`
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.sock = null;
     this.state = {
       hide: false,
       open: false,
