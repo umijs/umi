@@ -56,28 +56,33 @@ export default function(api) {
     writeTmpFile();
   });
 
-  if (process.env.BABEL_POLYFILL !== 'none') {
-    api.addEntryPolyfillImports(() => {
+  api.addEntryPolyfillImports(() => {
+    // BABEL_POLYFILL 的判断得放里面，允许插件里通过此环境变量禁用内置的补丁方案
+    if (process.env.BABEL_POLYFILL !== 'none') {
       return [
         {
           source: './polyfills',
         },
       ];
-    });
+    } else {
+      log.warn(
+        chalk.yellow(
+          `Since you have configured the environment variable ${chalk.bold(
+            'BABEL_POLYFILL',
+          )} to none, no patches will be included.`,
+        ),
+      );
+      return [];
+    }
+  });
 
-    api.chainWebpackConfig(config => {
+  api.chainWebpackConfig(config => {
+    if (process.env.BABEL_POLYFILL !== 'none') {
+      // 不启用 BABEL_POLYFILL 时不锁 regenerator-runtime
       config.resolve.alias.set(
         'regenerator-runtime',
         dirname(require.resolve('regenerator-runtime/package')),
       );
-    });
-  } else {
-    log.warn(
-      chalk.yellow(
-        `Since you have configured the environment variable ${chalk.bold(
-          'BABEL_POLYFILL',
-        )} to none, no patches will be included.`,
-      ),
-    );
-  }
+    }
+  });
 }
