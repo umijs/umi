@@ -272,8 +272,8 @@ export default class UmiUI {
     launchEditor(configFile);
   }
 
-  getExtraAssets() {
-    const service = this.servicesByKey[this.config.data.currentProject];
+  getExtraAssets({ key }) {
+    const service = this.servicesByKey[key];
     const uiPlugins = service.applyPlugins('addUIPlugin', {
       initialValue: [],
     });
@@ -525,10 +525,14 @@ export default class UmiUI {
 
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload, lang }, { log, send, success, failure, progress }) {
+  handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
-        success(this.getExtraAssets());
+        success(
+          this.getExtraAssets({
+            key,
+          }),
+        );
         break;
       case '@@project/list':
         success({
@@ -871,7 +875,7 @@ export default class UmiUI {
             console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData(
-                { type, payload, lang },
+                { type, payload, lang, key },
                 {
                   log,
                   send,

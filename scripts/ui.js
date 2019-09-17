@@ -10,6 +10,7 @@ function buildUIApp(opts = {}) {
     env: {
       APP_ROOT: './packages/umi-ui/client',
       UMI_UI: 'none',
+      UMI_UI_SERVER: 'none',
     },
   });
   process.on('SIGINT', () => {

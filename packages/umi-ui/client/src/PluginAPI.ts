@@ -34,7 +34,7 @@ export default class PluginAPI {
     this.send = send;
     this._ = lodash;
     this.debug = _debug.extend('UIPlugin');
-    window.g_currentProject = this.currentProject =
+    this.currentProject =
       {
         ...currentProject
       } || {};

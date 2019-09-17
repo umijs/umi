@@ -55,10 +55,19 @@ export async function render(oldRender) {
     document.getElementById('root'),
   );
 
+  // mini 模式下允许通过加 key 的参数打开
+  // 比如: ?mini&key=xxx
+  let miniKey = null;
+  const qs = querystring.parse(location.search.slice(1));
+  const isMini = 'mini' in qs;
+  if (isMini && qs.key) {
+    miniKey = qs.key;
+  }
+
   // 不同路由在渲染前的初始化逻辑
   if (history.location.pathname === '/') {
     const { data } = await callRemote({ type: '@@project/list' });
-    if (data.currentProject) {
+    if (miniKey || data.currentProject) {
       history.replace('/dashboard');
     } else {
       history.replace('/project/select');
@@ -82,13 +91,10 @@ export async function render(oldRender) {
     const props = {
       data,
     };
-    let key = data.currentProject;
-    const qs = querystring.parse(location.search.slice(1));
-    const isMini = 'mini' in qs;
-    if (isMini && qs.key) {
-      key = qs.key;
-    }
+    let key = miniKey || data.currentProject;
     if (key) {
+      // 在 callRemote 里使用
+      window.g_currentProject = key;
       const currentProject = {
         key,
         ...get(data, `projectsByKey.${key}`, {}),

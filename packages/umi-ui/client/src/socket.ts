@@ -110,7 +110,7 @@ export function callRemote<T = object, K = object>(
       JSON.stringify({
         ...action,
         $lang: getLocale(),
-        $key: window.g_currentProject ? window.g_currentProject.key : '',
+        $key: window.g_currentProject,
       }),
     );
   });
