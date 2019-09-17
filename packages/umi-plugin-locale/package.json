@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-locale",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
   "browser": {
