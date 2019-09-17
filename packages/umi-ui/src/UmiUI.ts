@@ -66,7 +66,7 @@ export default class UmiUI {
     this.developMode = !!process.env.DEVELOP_MODE;
 
     if (process.env.CURRENT_PROJECT) {
-      const key = this.config.addProjectWithPath(process.env.CURRENT_PROJECT);
+      const key = this.config.addProjectWithPath(join(process.cwd(), process.env.CURRENT_PROJECT));
       this.config.setCurrentProject(key);
     }
 

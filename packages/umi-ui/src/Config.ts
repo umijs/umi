@@ -150,7 +150,7 @@ export default class Config {
   }
 
   addProjectWithPath(projectPath: string) {
-    const absProjectPath = join(process.cwd(), projectPath);
+    const absProjectPath = join(projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
     return this.addProject({

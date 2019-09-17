@@ -36,29 +36,17 @@ class App extends React.Component {
     super(props);
     this.state = {
       hide: false,
-      open: false,
+      open: undefined,
       connected: false,
       currentProject: props.currentProject,
     };
   }
 
   async componentDidMount() {
-    const { currentProject, path, port } = this.props;
+    const { path, port, currentProject = {} } = this.props;
     try {
       await initSocket(`http://localhost:${port}/umiui`);
-      console.log('currentProject', currentProject);
-      let key = currentProject;
-      if (!currentProject) {
-        const res = await callRemote({
-          type: '@@project/getKeyOrAddWithPath',
-          payload: {
-            path,
-          },
-        });
-        key = res.key;
-      }
       this.setState({
-        ...(key ? { currentProject } : {}),
         connected: true,
       });
     } catch (e) {
@@ -76,13 +64,26 @@ class App extends React.Component {
     }));
   };
 
-  openModal = () => {
+  openModal = async () => {
+    const { currentProject, path } = this.props;
     if (this.state.hide) {
       this.setState({
         hide: false,
       });
     }
     if (this.state.connected) {
+      // open iframe UmiUI
+      if (!currentProject.key) {
+        const res = await callRemote({
+          type: '@@project/getKeyOrAddWithPath',
+          payload: {
+            path,
+          },
+        });
+        this.setState({
+          currentProject: res,
+        });
+      }
       this.setState(state => ({
         open: state.hide === false,
       }));
@@ -116,7 +117,9 @@ class App extends React.Component {
           <iframe
             style={{ width: '100%', minHeight: '80vh' }}
             // localhost maybe hard code
-            src={`http://localhost:${port}/?mini&key=${currentProject}`}
+            src={`http://localhost:${port}/?mini${
+              currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
+            }`}
             frameBorder="0"
             title="iframe_umi_ui"
           />
