@@ -64,18 +64,6 @@ export async function render(oldRender) {
     miniKey = qs.key;
   }
 
-  // 不同路由在渲染前的初始化逻辑
-  if (history.location.pathname === '/') {
-    const { data } = await callRemote({ type: '@@project/list' });
-    if (miniKey || data.currentProject) {
-      history.replace('/dashboard');
-    } else {
-      history.replace('/project/select');
-    }
-    window.location.reload();
-    return;
-  }
-
   if (history.location.pathname.startsWith('/project/')) {
     // console.log("It's Project Manager");
   }

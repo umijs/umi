@@ -765,24 +765,34 @@ export default class UmiUI {
         );
       }
 
-      app.use('/*', (req, res) => {
-        getScripts().then(scripts => {
-          if (process.env.LOCAL_DEBUG) {
-            got(`http://localhost:8002${req.path}`)
-              .then(({ body }) => {
-                res.set('Content-Type', 'text/html');
-                res.send(normalizeHtml(body, scripts));
-              })
-              .catch(e => {
-                console.error(e);
-              });
-          } else {
-            if (!content) {
-              content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
-            }
-            res.send(normalizeHtml(content, scripts));
+      app.all('/', async (req, res) => {
+        const isMini = !!req.query.mini;
+        console.log('isMini', isMini);
+        console.log('req.path', req.path);
+        const { data } = this.config;
+        if (isMini || data.currentProject) {
+          return res.status(302).redirect('/dashboard');
+        } else {
+          return res.status(302).redirect('/project/select');
+        }
+      });
+
+      app.use('/*', async (req, res) => {
+        const scripts = await getScripts();
+        if (process.env.LOCAL_DEBUG) {
+          try {
+            const { body } = await got(`http://localhost:8002${req.path}`);
+            res.set('Content-Type', 'text/html');
+            res.send(normalizeHtml(body, scripts));
+          } catch (e) {
+            console.error(e);
           }
-        });
+        } else {
+          if (!content) {
+            content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+          }
+          res.send(normalizeHtml(content, scripts));
+        }
       });
 
       // 添加埋点脚本
