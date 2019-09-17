@@ -31,6 +31,11 @@ const Bubble = styled('div')`
   }
 `;
 
+const IframeWrapper = styled('div')`
+  position: relative;
+  z-index: 1001;
+`;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -38,12 +43,13 @@ class App extends React.Component {
       hide: false,
       open: undefined,
       connected: false,
+      loading: false,
       currentProject: props.currentProject,
     };
   }
 
   async componentDidMount() {
-    const { path, port, currentProject = {} } = this.props;
+    const { port } = this.props;
     try {
       await initSocket(`http://localhost:${port}/umiui`);
       this.setState({
@@ -99,6 +105,10 @@ class App extends React.Component {
     });
   };
 
+  onIframeLoad = () => {
+    console.log('iframe loaded');
+  };
+
   render() {
     const { hide, open, currentProject, connected } = this.state;
     const { port } = this.props;
@@ -113,15 +123,18 @@ class App extends React.Component {
         </Bubble>
         <Close onClick={this.toggleBubble} />
         <Modal visible={open} onMaskClick={this.closeModal}>
-          <iframe
-            style={{ width: '100%', minHeight: '80vh' }}
-            // localhost maybe hard code
-            src={`http://localhost:${port}/?mini${
-              currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
-            }`}
-            frameBorder="0"
-            title="iframe_umi_ui"
-          />
+          <IframeWrapper>
+            <iframe
+              onLoad={this.onIframeLoad}
+              style={{ width: '100%', minHeight: '80vh' }}
+              // localhost maybe hard code
+              src={`http://localhost:${port}/?mini${
+                currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
+              }`}
+              frameBorder="0"
+              title="iframe_umi_ui"
+            />
+          </IframeWrapper>
         </Modal>
       </Dragger>
     );

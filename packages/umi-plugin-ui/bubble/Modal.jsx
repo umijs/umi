@@ -27,23 +27,26 @@ const Mask = styled('div')`
 
 const Modal = props => {
   const { children, onMaskClick, visible } = props;
-
-  return (
-    <Portal>
-      {typeof visible === 'boolean' && (
-        <ModalWrapper visible={!!visible}>
-          {React.cloneElement(children, {
-            style: {
-              zIndex: 9999,
-              position: 'relative',
-              ...(children.props.style ? children.props.style : {}),
-            },
-          })}
-          <Mask onClick={onMaskClick} />
-        </ModalWrapper>
-      )}
-    </Portal>
-  );
+  if (React.isValidElement(children) && React.Children.count(children) === 1) {
+    return (
+      <Portal>
+        {typeof visible === 'boolean' && (
+          <ModalWrapper visible={!!visible}>
+            {React.Children.only(children, {
+              style: {
+                zIndex: 9999,
+                position: 'relative',
+                ...(children.props.style ? children.props.style : {}),
+              },
+            })}
+            <Mask onClick={onMaskClick} />
+          </ModalWrapper>
+        )}
+      </Portal>
+    );
+  }
+  console.warn('Modal children must be one child');
+  return null;
 };
 
 export default Modal;
