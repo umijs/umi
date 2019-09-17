@@ -765,10 +765,8 @@ export default class UmiUI {
         );
       }
 
-      app.all('/', async (req, res) => {
+      app.get('/', async (req, res) => {
         const isMini = !!req.query.mini;
-        console.log('isMini', isMini);
-        console.log('req.path', req.path);
         const { data } = this.config;
         if (isMini || data.currentProject) {
           return res.status(302).redirect('/dashboard');
