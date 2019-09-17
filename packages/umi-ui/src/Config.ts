@@ -164,7 +164,9 @@ export default class Config {
     const keys = Object.keys(this.data.projectsByKey);
     for (const key of keys) {
       if (this.data.projectsByKey[key].path === projectPath) {
+        return key;
       }
     }
+    return this.addProjectWithPath(projectPath);
   }
 }
