@@ -66,17 +66,18 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseUp = e => {
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+
     if (
       this.state.lastTranslateX === this.state.translateX &&
       this.state.lastTranslateY === this.state.translateY &&
       this.props.onClick &&
+      !this.props.open &&
       e.target.id !== 'ui-bubble-close'
     ) {
       this.props.onClick(e);
     }
-    window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mouseup', this.handleMouseUp);
-    console.log('handleMouseUp', this.state.isDragging);
     this.setState(
       {
         originalX: 0,

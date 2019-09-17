@@ -108,7 +108,7 @@ class App extends React.Component {
     console.log('connected', connected);
 
     return (
-      <Dragger hide={hide} onClick={this.openModal}>
+      <Dragger open={open} hide={hide} onClick={this.openModal}>
         <Bubble>
           <Logo />
         </Bubble>
