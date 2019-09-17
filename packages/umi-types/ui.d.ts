@@ -40,6 +40,7 @@ declare namespace IUI {
     setTheme: (theme: ITheme) => void;
     showLogPanel: () => void;
     hideLogPanel: () => void;
+    isMini: boolean;
   }
 
   type Locale = { [key in string]: string };

@@ -3,6 +3,7 @@ import { IUi } from 'umi-types';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { formatMessage } from 'umi-plugin-react/locale';
+import { stringify, parse } from 'qs';
 import history from '@tmp/history';
 import styles from './index.less';
 
@@ -30,7 +31,12 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const toggleSectionHandler = index => {
     setCurrentIndex(index);
     if (keys[index] !== query.active) {
-      history.push(`${pathname}?active=${keys[index]}`);
+      const search = stringify({
+        ...(parse(window.location.search, { ignoreQueryPrefix: true }) || {}),
+        active: keys[index],
+      });
+      console.log('search', search);
+      history.push(`${pathname}?${search}`);
     }
   };
 

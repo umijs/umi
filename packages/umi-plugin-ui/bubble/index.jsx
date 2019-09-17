@@ -43,7 +43,6 @@ class App extends React.Component {
       hide: false,
       open: undefined,
       connected: false,
-      loading: false,
       currentProject: props.currentProject,
     };
   }

@@ -39,12 +39,13 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
+  const { search } = window.location;
 
   _log('projectsprojects', projectMaps);
 
   const changeProject = async ({ key }) => {
     if (key) {
-      await handleBack(true, '/dashboard');
+      await handleBack(true, `/dashboard${search}`);
       await setCurrentProject({
         key,
       });
@@ -140,7 +141,7 @@ export default withRouter(props => {
                         <Menu.Item key={panel.path}>
                           <Icon {...icon} />
                           <FormattedMessage id={panel.title} />
-                          <NavLink exact to={panel.path}>
+                          <NavLink exact to={`${panel.path}${search}`}>
                             <FormattedMessage id={panel.title} />
                           </NavLink>
                         </Menu.Item>

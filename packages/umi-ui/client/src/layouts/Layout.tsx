@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
+import { isMiniUI } from '@/utils/index';
 import Footer from './Footer';
 import { THEME } from '@/enums';
 
@@ -71,12 +72,15 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       return framework;
     };
 
+    const isMini = isMiniUI();
+
     return (
       <div className={layoutCls}>
         <Context.Provider
           value={{
             locale,
             theme,
+            isMini,
             formatMessage,
             currentProject,
             showLogPanel: this.showLogPanel,

@@ -748,6 +748,7 @@ export default class UmiUI {
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
+      const url = require('url');
       const express = require('express');
       const compression = require('compression');
       const app = express();
@@ -770,9 +771,19 @@ export default class UmiUI {
         debug('isMini', isMini);
         const { data } = this.config;
         if (isMini || data.currentProject) {
-          return res.status(302).redirect('/dashboard');
+          return res.status(302).redirect(
+            url.format({
+              pathname: '/dashboard',
+              query: req.query,
+            }),
+          );
         } else {
-          return res.status(302).redirect('/project/select');
+          return res.status(302).redirect(
+            url.format({
+              pathname: '/project/select',
+              query: req.query,
+            }),
+          );
         }
       });
 
