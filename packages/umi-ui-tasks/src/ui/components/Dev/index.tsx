@@ -24,6 +24,8 @@ const DevComponent: React.FC<IProps> = ({ api }) => {
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [env, setEnv] = useState({
+    UMI_UI_SERVER: 'none',
+    UMI_UI_PORT: window.location.port,
     BABEL_POLYFILL: true,
     HMR: true,
     BABEL_CACHE: true,

@@ -19,7 +19,7 @@ function onSignal() {
 
 (async () => {
   // Start umi ui
-  if (process.env.UMI_UI !== 'none') {
+  if (process.env.UMI_UI_SERVER !== 'none') {
     process.env.UMI_UI_BROWSER = 'none';
     const umiui = new UmiUI();
     const { port } = await umiui.start();
