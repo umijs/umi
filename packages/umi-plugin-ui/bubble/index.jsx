@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { callRemote, init as initSocket } from './socket';
 import Logo from './Logo';
 import Close from './Close';
 import Dragger from './Dragger';
@@ -33,10 +34,40 @@ const Bubble = styled('div')`
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.sock = null;
     this.state = {
       hide: false,
       open: false,
+      connected: false,
+      currentProject: props.currentProject,
     };
+  }
+
+  async componentDidMount() {
+    const { currentProject, path, port } = this.props;
+    try {
+      await initSocket(`http://localhost:${port}/umiui`);
+      console.log('currentProject', currentProject);
+      let key = currentProject;
+      if (!currentProject) {
+        const res = await callRemote({
+          type: '@@project/getKeyOrAddWithPath',
+          payload: {
+            path,
+          },
+        });
+        key = res.key;
+      }
+      this.setState({
+        ...(key ? { currentProject } : {}),
+        connected: true,
+      });
+    } catch (e) {
+      console.error('Init socket failed', e);
+      this.setState({
+        connected: false,
+      });
+    }
   }
 
   toggleBubble = e => {
@@ -51,10 +82,14 @@ class App extends React.Component {
       this.setState({
         hide: false,
       });
-    } else {
+    }
+    if (this.state.connected) {
       this.setState(state => ({
         open: state.hide === false,
       }));
+    } else {
+      // TODO: message.error
+      alert('未连接 UI socket');
     }
   };
 
@@ -66,8 +101,11 @@ class App extends React.Component {
   };
 
   render() {
-    const { hide, open } = this.state;
+    const { hide, open, currentProject, connected } = this.state;
     const { port } = this.props;
+
+    console.log('currentProject', currentProject);
+    console.log('connected', connected);
 
     return (
       <Dragger hide={hide} onClick={this.openModal}>
@@ -79,7 +117,7 @@ class App extends React.Component {
           <iframe
             style={{ width: '100%', minHeight: '80vh' }}
             // localhost maybe hard code
-            src={`http://localhost:${port}/?mini`}
+            src={`http://localhost:${port}/?mini&key=${currentProject}`}
             frameBorder="0"
             title="iframe_umi_ui"
           />
@@ -93,6 +131,6 @@ const doc = window.document;
 const node = doc.createElement('div');
 doc.body.appendChild(node);
 
-export default ({ port }) => {
-  ReactDOM.render(<App port={port} />, node);
+export default props => {
+  ReactDOM.render(<App {...props} />, node);
 };
