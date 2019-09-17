@@ -96,12 +96,12 @@ export default function(api) {
           payload: routeExists(path, routes),
         });
         break;
-      // default:
-      //   send({
-      //     type: `${type}/failure`,
-      //     payload: `unhandled type: ${type}`,
-      //   });
-      //   break;
+      default:
+        send({
+          type: `${type}/failure`,
+          payload: `unhandled type: ${type}`,
+        });
+        break;
     }
   });
 }
