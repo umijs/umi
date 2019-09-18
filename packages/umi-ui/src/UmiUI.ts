@@ -3,7 +3,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import launchEditor from 'launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
@@ -653,6 +653,11 @@ export default class UmiUI {
       case '@@project/getNpmClients':
         success({
           data: this.getNpmClients(),
+        });
+        break;
+      case '@@project/getSharedDataDir':
+        success({
+          tmpDir: join(dirname(this.config.dbPath), 'shared-data', key),
         });
         break;
       case '@@fs/getCwd':

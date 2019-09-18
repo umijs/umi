@@ -67,6 +67,13 @@ export default class PluginAPI {
     }
   };
 
+  getSharedDataDir = async () => {
+    const { tmpDir } = await callRemote({
+      type: '@@project/getSharedDataDir',
+    });
+    return tmpDir;
+  };
+
   getCwd: IUi.IGetCwd = async () => {
     const { cwd } = await callRemote({
       type: '@@fs/getCwd',
