@@ -64,6 +64,15 @@ test('ESLINT env', () => {
   );
 });
 
+test('COMPRESS env', () => {
+  process.env.COMPRESS = 'none';
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+  });
+  process.env.COMPRESS = '';
+  expect(config.output.pathinfo).toEqual(true);
+});
+
 test('opts.extraBabelIncludes', () => {
   const config = getWebpackConfig({
     cwd: join(fixtures, 'normal'),
@@ -221,10 +230,78 @@ test('opts.cssModulesWithAffix', () => {
   ).toEqual(1);
 });
 
+test('opts.hash', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    hash: true,
+  });
+  expect(config.output.filename).toContain('contenthash');
+});
+
+test('opts.minimizer', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    minimizer: 'terserjs',
+  });
+  expect(stringify(config.optimization.minimizer)).toContain('terserOptions');
+});
+
+test('opts.uglifyJSOptions', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    uglifyJSOptions: {
+      parallel: false,
+    },
+  });
+  expect(stringify(config.optimization.minimizer)).toContain('parallel: false');
+});
+
+test('opts.uglifyJSOptions with function', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    uglifyJSOptions: config => {
+      return {
+        ...config,
+        parallel: false,
+      };
+    },
+  });
+  expect(stringify(config.optimization.minimizer)).toContain('parallel: false');
+});
+
+test('opts.define', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    define: {
+      foooo: true,
+      barrr: 1,
+      hoooo: 'c',
+    },
+  });
+  const p = config.plugins.filter(p => {
+    return p instanceof require('webpack/lib/DefinePlugin');
+  });
+  const stringifiedP = stringify(p);
+  expect(stringifiedP).toContain(`foooo: 'true'`);
+  expect(stringifiedP).toContain(`barrr: '1'`);
+  expect(stringifiedP).toContain(`hoooo: '"c"'`);
+});
+
 test('opts.isDev', () => {
   const config = getWebpackConfig({
     cwd: join(fixtures, 'normal'),
     isDev: true,
   });
   expect(config.mode).toEqual('development');
+});
+
+test('opts.isDev && opts.devServer', () => {
+  const config = getWebpackConfig({
+    cwd: join(fixtures, 'normal'),
+    isDev: true,
+    devServer: {
+      host: '1.1.1.1',
+    },
+  });
+  expect(config.devServer.host).toEqual('1.1.1.1');
 });
