@@ -57,9 +57,7 @@ export default function(webpackConfig, opts) {
   if (disableCompress || process.env.__FROM_UMI_TEST) {
     webpackConfig.optimization.minimize(false);
   } else {
-    webpackConfig
-      .plugin('hash-module-ids')
-      .use(require('webpack/lib/HashedModuleIdsPlugin'));
+    webpackConfig.plugin('hash-module-ids').use(require('webpack/lib/HashedModuleIdsPlugin'));
 
     let minimizerName = 'uglifyjs';
     let minimizerPlugin = UglifyPlugin;
@@ -87,8 +85,6 @@ export default function(webpackConfig, opts) {
       ];
     }
 
-    webpackConfig.optimization
-      .minimizer(minimizerName)
-      .use(minimizerPlugin, minimizerOptions);
+    webpackConfig.optimization.minimizer(minimizerName).use(minimizerPlugin, minimizerOptions);
   }
 }
