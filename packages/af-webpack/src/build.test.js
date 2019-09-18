@@ -5,7 +5,7 @@ import getWebpackConfig from './getWebpackConfig';
 
 const fixtures = join(__dirname, 'fixtures');
 
-test('normal', async () => {
+xtest('normal', async () => {
   process.env.UMI_TEST = true;
   const cwd = join(fixtures, 'normal');
   return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-const testMatchPrefix = process.env.PACKAGE ? `**/packages/${process.env.PACKAGE}/**` : '**';
+const testMatchPrefix = process.env.PACKAGE ? `**/packages/${process.env.PACKAGE}/src/**` : '**';
 const collectCoveragePrefix = process.env.PACKAGE ? process.env.PACKAGE : '**';
 
 module.exports = {
@@ -42,6 +42,11 @@ module.exports = {
     '/packages/af-webpack/src/socket.js',
     '/packages/af-webpack/src/svgr.js',
     '/packages/af-webpack/src/webpackHotDevClient.js',
+    '/packages/umi/src/cli.js',
+    '/packages/umi/src/createHistory.js',
+    '/packages/umi/src/router.js',
+    '/packages/babel-preset-umi/src/webpack-overrides.js',
+    '/packages/eslint-config-umi',
     '/packages/umi-plugin-auto-externals/src/types',
     '/packages/umi-ui/client',
     '/packages/umi-test',
