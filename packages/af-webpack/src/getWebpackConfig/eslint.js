@@ -13,14 +13,13 @@ export default function(webpackConfig, opts) {
 
   webpackConfig.module
     .rule('eslint')
-      .test(/\.(js|jsx)$/)
-      .include.add(opts.cwd)
-      .end()
-    .exclude
-      .add(/node_modules/)
-      .end()
+    .test(/\.(js|jsx)$/)
+    .include.add(opts.cwd)
+    .end()
+    .exclude.add(/node_modules/)
+    .end()
     .enforce('pre')
     .use('eslint-loader')
-      .loader(require.resolve('eslint-loader'))
-      .options(eslintOptions);
+    .loader(require.resolve('eslint-loader'))
+    .options(eslintOptions);
 }

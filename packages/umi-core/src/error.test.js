@@ -1,6 +1,6 @@
 import { UmiError, printUmiError } from './error';
 
-it('ERR_CORE_PLUGIN_RESOLVE_FAILED', () => {
+test('ERR_CORE_PLUGIN_RESOLVE_FAILED', () => {
   const error = new UmiError({
     code: 'ERR_CORE_PLUGIN_RESOLVE_FAILED',
     message: "Plugin test can't be resolved",
@@ -9,7 +9,7 @@ it('ERR_CORE_PLUGIN_RESOLVE_FAILED', () => {
   expect(error.message).toEqual("Plugin test can't be resolved");
 });
 
-it('ModuleNotFoundError', () => {
+test('ModuleNotFoundError', () => {
   const webpackError = new Error('ModuleNotFoundError');
   const error = new UmiError({
     message: webpackError.message,
@@ -26,7 +26,7 @@ it('ModuleNotFoundError', () => {
   expect(error.code).toEqual('ERR_WEBPACK_DLL_MODULE_NOT_FOUND');
 });
 
-it('ERR_WEBPACK_MODULE_NOT_FOUND', () => {
+test('ERR_WEBPACK_MODULE_NOT_FOUND', () => {
   const webpackError = new Error('ModuleNotFoundError');
   const error = new UmiError({
     message: webpackError.message,
@@ -42,4 +42,8 @@ it('ERR_WEBPACK_MODULE_NOT_FOUND', () => {
   });
   expect(error.code).toEqual('ERR_WEBPACK_MODULE_NOT_FOUND');
   printUmiError(error);
+});
+
+test('not UmiError instance', () => {
+  printUmiError(new Error('foooo'));
 });

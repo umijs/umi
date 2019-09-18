@@ -31,11 +31,12 @@ export default function(opts = {}) {
   onStart({ paths });
   fetchMockData();
 
+  let watcher = null;
   if (watch) {
     // chokidar 在 windows 下使用反斜杠组成的 glob 无法正确 watch 文件变动
     // ref: https://github.com/paulmillr/chokidar/issues/777
     const absPagesGlobPath = winPath(join(absPagesPath, '**/_mock.[jt]s'));
-    const watcher = chokidar.watch([...mockPaths, absPagesGlobPath], {
+    watcher = chokidar.watch([...mockPaths, absPagesGlobPath], {
       ignoreInitial: true,
     });
     watcher.on('all', (event, file) => {
@@ -46,6 +47,9 @@ export default function(opts = {}) {
       if (!errors.length) {
         signale.success(`Mock files parse success`);
       }
+    });
+    process.once('SIGINT', () => {
+      watcher.close();
     });
   }
 
@@ -73,13 +77,16 @@ export default function(opts = {}) {
     });
   }
 
-  return function UMI_MOCK(req, res, next) {
-    const match = mockData && matchMock(req, mockData);
-    if (match) {
-      debug(`mock matched: [${match.method}] ${match.path}`);
-      return match.handler(req, res, next);
-    } else {
-      return next();
-    }
+  return {
+    middleware: function UMI_MOCK(req, res, next) {
+      const match = mockData && matchMock(req, mockData);
+      if (match) {
+        debug(`mock matched: [${match.method}] ${match.path}`);
+        return match.handler(req, res, next);
+      } else {
+        return next();
+      }
+    },
+    watcher,
   };
 }

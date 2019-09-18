@@ -114,6 +114,20 @@ function ShowFoo({ foo }) {
   return <h1>foo: {foo || 'null'}</h1>;
 }
 
+function GetInitialProps({ foo }) {
+  return <h1>{foo}</h1>;
+}
+
+GetInitialProps.getInitialProps = async () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        foo: 'bar',
+      });
+    }, 500);
+  });
+};
+
 const routes = [
   {
     path: '/',
@@ -143,6 +157,11 @@ const routes = [
     routes: [{ path: '/pass-props-from-layout', component: PassPropsRouteComponent }],
   },
   { path: '/g_plugins', component: ShowFoo },
+  { path: '/get-initial-props', component: GetInitialProps },
+  {
+    path: '/layout-no-component',
+    routes: [{ path: '/layout-no-component/foo', component: IndexPage }],
+  },
   { component: Fallback },
 ];
 
@@ -154,6 +173,18 @@ test('index page with layout', () => {
     { type: 'h1', props: {}, children: ['Layout'] },
     { type: 'h1', props: {}, children: ['Index Page'] },
     '/',
+  ]);
+});
+
+test('layout no component', () => {
+  const tr = TestRenderer.create(
+    <MemoryRouter initialEntries={['/layout-no-component/foo']}>
+      {renderRoutes(routes)}
+    </MemoryRouter>,
+  );
+  expect(tr.toJSON()).toEqual([
+    { type: 'h1', props: {}, children: ['Index Page'] },
+    '/layout-no-component/foo',
   ]);
 });
 
@@ -252,5 +283,17 @@ xtest('patch with g_plugins', () => {
     type: 'h1',
     props: {},
     children: ['foo: ', 'bar'],
+  });
+});
+
+// TODO: 验证 initial props
+test('get intiial props', async () => {
+  const tr = TestRenderer.create(
+    <MemoryRouter initialEntries={['/get-initial-props']}>{renderRoutes(routes)}</MemoryRouter>,
+  );
+  expect(tr.toJSON()).toEqual({
+    type: 'h1',
+    props: {},
+    children: null,
   });
 });
