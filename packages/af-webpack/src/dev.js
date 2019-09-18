@@ -4,12 +4,12 @@ import webpack from 'webpack';
 import assert from 'assert';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import { isPlainObject } from 'lodash';
 import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
 import send, { STARTING, DONE } from './send';
 import getPort from './getPort';
-import { isPlainObject } from 'lodash';
 
 const isInteractive = process.stdout.isTTY;
 
@@ -92,6 +92,7 @@ export default function dev({
         }
 
         onCompileDone({
+          port,
           isFirstCompile,
           stats,
         });
