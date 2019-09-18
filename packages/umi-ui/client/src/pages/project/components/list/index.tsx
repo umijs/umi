@@ -156,8 +156,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             handleOnAction('delete', { key: item.key });
           }}
           onCancel={() => {}}
-          okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-          cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
         >
           <a>
             <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
@@ -318,8 +316,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         visible={modalVisible}
         restModelProps={{
           title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
-          okText: formatMessage({ id: 'org.umi.ui.global.okText' }),
-          cancelText: formatMessage({ id: 'org.umi.ui.global.cancelText' }),
         }}
         initialValues={initialValues}
         onOk={async (formKey, payload) => {

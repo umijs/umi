@@ -307,8 +307,6 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
           placement="topRight"
           onConfirm={handleReset}
           onCancel={() => {}}
-          okText={intl({ id: 'org.umi.ui.configuration.okText' })}
-          cancelText={intl({ id: 'org.umi.ui.configuration.cancelText' })}
         >
           <Button>{intl({ id: 'org.umi.ui.configuration.reset' })}</Button>
         </Popconfirm>

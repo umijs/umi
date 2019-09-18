@@ -86,8 +86,6 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               <Popconfirm
                 title={formatMessage({ id: 'org.umi.ui.configuration.object.item.delete.confirm' })}
                 onConfirm={() => handleRemove(i)}
-                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Tooltip
                   title={formatMessage({
