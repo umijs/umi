@@ -45,7 +45,7 @@ module.exports = {
     '/packages/umi/src/cli.js',
     '/packages/umi/src/createHistory.js',
     '/packages/umi/src/router.js',
-    '/packages/umi/scripts',
+    '/packages/umi/src/scripts',
     '/packages/babel-preset-umi/src/webpack-overrides.js',
     '/packages/eslint-config-umi',
     '/packages/umi-plugin-auto-externals/src/types',
