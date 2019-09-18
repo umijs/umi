@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Input, Spin, Button } from 'antd';
+import { Input, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 
+import BlockList from './BlockList';
 import styles from './index.module.less';
 
 const { Search } = Input;
@@ -17,11 +18,10 @@ interface Props {
 
 const BlocksViewer: React.FC<Props> = props => {
   const { api } = props;
-  const { callRemote, getContext, intl } = api;
+  const { callRemote, intl } = api;
   const [blockAdding, setBlockAdding] = useState(null);
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const { locale, formatMessage } = useContext(getContext());
 
   useEffect(() => {
     (async () => {
@@ -76,47 +76,22 @@ const BlocksViewer: React.FC<Props> = props => {
     })();
   }
 
-  const handleNotify = () => {
-    api.notify({
-      title: 'org.umi.ui.blocks.notify.title',
-      message: 'org.umi.ui.blocks.notify.message',
-      type: 'success',
-    });
-  };
-
   return (
-    <div className={styles.normal}>
-      {/* <p>
-        <pre>
-          currentProject: {JSON.stringify(api.currentProject, null, 2)}
-        </pre>
-      </p> */}
-      <Button onClick={() => api.showLogPanel()}>打开日志</Button>
-      <Button onClick={handleNotify}>全局通知栏（当前窗口）</Button>
-      <Button style={{ marginLeft: 8 }} onClick={() => setTimeout(handleNotify, 2000)}>
-        全局通知栏（延迟 2 s，非当前窗口）
-      </Button>
-
-      <Button onClick={() => api.redirect('/configuration')}>跳转至配置页</Button>
+    <div className={styles.container}>
       <Search
         placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
         onSearch={value => console.log(value)}
       />
-      <div>{loading ? 'Fetching blocks...' : ''}</div>
       <div className={styles.blocklist}>
-        {blocks.map((block, key) => {
-          return (
-            <div key={key} className={styles.block} onClick={addHandler.bind(null, block)}>
-              {block.url === blockAdding ? (
-                <Spin className={styles.spin} tip="Adding..." />
-              ) : (
-                <div />
-              )}
-              <div className={styles.blockTitle}>{block.name}</div>
-              <img src={block.img} width="200" />
-            </div>
-          );
-        })}
+        <BlockList
+          loading={loading}
+          type="block"
+          addingBlock={blockAdding}
+          list={blocks}
+          onAdd={block => {
+            addHandler(block);
+          }}
+        />
       </div>
     </div>
   );
