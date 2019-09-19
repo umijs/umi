@@ -34,14 +34,14 @@ const fadeOutDown = keyframes`
 const IframeWrapper = styled('div')`
   position: absolute;
   z-index: 1001;
-  bottom: 66px;
+  bottom: 72px;
   right: 0;
   width: 50vw;
+  height: 60vh;
   display: ${props => (props.visible ? 'block' : 'none')};
   animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
   opacity: ${props => (props.visible ? 1 : 0)};
   & > div {
-    display: ${props => (props.visible ? 'block' : 'none')};
     animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
     opacity: ${props => (props.visible ? 1 : 0)};
   }
@@ -159,13 +159,11 @@ class App extends React.Component {
     console.log('connected', connected);
 
     return (
-      <div>
-        <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open} />
-        {/* <Modal visible={open} onMaskClick={this.closeModal}> */}
+      <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
         <IframeWrapper visible={open}>
           <iframe
             onLoad={this.onIframeLoad}
-            style={{ width: '100%', minHeight: '80vh' }}
+            style={{ width: '100%', height: '100%' }}
             // localhost maybe hard code
             src={`http://localhost:${port}/?mini${
               currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
@@ -176,8 +174,7 @@ class App extends React.Component {
             title="iframe_umi_ui"
           />
         </IframeWrapper>
-        {/* </Modal> */}
-      </div>
+      </Bubble>
     );
   }
 }

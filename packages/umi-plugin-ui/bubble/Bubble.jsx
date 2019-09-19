@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import Dragger from './Dragger';
+import Hide from './Hide';
+import { UmiLogo, BigfishLogo } from './Logo';
 import Close from './Close';
 
 const BubbleWrapper = styled('div')`
-  background-color: rgb(48, 85, 234);
-  height: 48px;
-  width: 48px;
+  background-color: ${props => (props.open ? '#30303D' : '#454550')};
+  height: 28px;
+  width: 28px;
   pointer-events: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  box-shadow: rgba(14, 39, 140, 0.3) 0px 4px 10px 0px;
   user-select: none;
-  opacity: 0.8;
   border-radius: 50%;
-  padding: 8px;
+  box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
+  padding: 16px;
   transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s, transform 0.2s ease 0s;
   &:hover {
     background-color: rgb(21, 59, 210);
@@ -25,9 +26,16 @@ const BubbleWrapper = styled('div')`
   }
 `;
 
-const Logo = styled('img')`
-  width: 100%;
+const CloseComponent = styled(Close)`
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
   user-select: none;
+  transform: ${props =>
+    props.open ? 'translateY(-50%)' : 'translateY(-50%) scale(0.4) rotate(-45deg);'};
+  opacity: ${props => (props.open ? 1 : 0)};
+  transition: all 0.3s ease;
 `;
 
 class Bubble extends React.Component {
@@ -58,22 +66,30 @@ class Bubble extends React.Component {
   };
 
   render() {
-    const { isBigfish, open } = this.props;
+    const { isBigfish, open, children } = this.props;
     const { hide } = this.state;
 
-    const img = isBigfish
-      ? 'https://gw.alipayobjects.com/zos/antfincdn/Sgm%24iyiAT2/bigfish.svg'
-      : 'https://gw.alipayobjects.com/zos/antfincdn/2MEHoVcklV/umi.svg';
+    const Logo = styled(isBigfish ? BigfishLogo : UmiLogo)`
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      top: 50%;
+      user-select: none;
+      transform: ${props =>
+        props.open ? 'translateY(-50%) scale(0.4) rotate(45deg)' : 'translateY(-50%)'};
+      opacity: ${props => (props.open ? 0 : 1)};
+      transition: all 0.3s ease;
+    `;
 
     return (
-      <Dragger open={open} hide={hide}>
-        <div onClick={this.showBubble}>
-          <BubbleWrapper>
-            <Logo src={img} />
-          </BubbleWrapper>
+      <Dragger open={open} hide={hide} onClick={this.showBubble}>
+        <BubbleWrapper open={open}>
+          <Logo open={open} />
+          <CloseComponent open={open} />
+        </BubbleWrapper>
 
-          <Close onClick={this.hideBubble} />
-        </div>
+        {!open && <Hide onClick={this.hideBubble} />}
+        {children}
       </Dragger>
     );
   }

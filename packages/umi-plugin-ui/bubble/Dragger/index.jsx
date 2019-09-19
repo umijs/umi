@@ -1,10 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
-import { CloseWrapper } from '../Close';
+import Hide, { HideWrapper } from '../Hide';
 
 export default class Draggable extends React.Component {
   constructor(props) {
     super(props);
+    this.intervalStart = 0;
+
     this.state = {
       isDragging: false,
 
@@ -27,6 +30,7 @@ export default class Draggable extends React.Component {
   handleMouseDown = e => {
     e.preventDefault();
     e.stopPropagation();
+    this.intervalStart = new Date().getTime();
     const { clientX, clientY } = e;
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
@@ -68,15 +72,10 @@ export default class Draggable extends React.Component {
   handleMouseUp = e => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
-
-    if (
-      this.state.lastTranslateX === this.state.translateX &&
-      this.state.lastTranslateY === this.state.translateY &&
-      this.props.onClick &&
-      !this.props.open &&
-      e.target.id !== 'ui-bubble-close'
-    ) {
+    const interval = new Date().getTime() - this.intervalStart;
+    if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);
+      return;
     }
 
     this.setState(
@@ -97,7 +96,7 @@ export default class Draggable extends React.Component {
   };
 
   render() {
-    const { children, hide } = this.props;
+    const { children, hide, open } = this.props;
     const { translateX, translateY, isDragging } = this.state;
     console.log('render isDragging', isDragging);
 
@@ -107,6 +106,7 @@ export default class Draggable extends React.Component {
         x={hide ? 50 : translateX}
         y={translateY}
         isDragging={isDragging}
+        open={open}
         onClick={this.onClick}
       >
         {children}
@@ -120,18 +120,18 @@ const Container = styled.div.attrs({
     transform: `translate(${x}px, ${y}px)`,
   }),
 })`
-  cursor: grab;
+  cursor: ${props => (props.open ? 'pointer' : 'grab')};
   position: fixed;
   right: 16px;
   bottom: 16px;
 
-  ${({ isDragging }) =>
+  ${({ isDragging, open }) =>
     isDragging &&
+    !open &&
     css`
-      opacity: 0.8;
       cursor: grabbing;
     `};
-  &:hover ${CloseWrapper} {
+  &:hover ${HideWrapper} {
     opacity: 1;
   }
 `;
