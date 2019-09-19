@@ -14,7 +14,6 @@
   width: 100%;
   cursor: pointer;
   margin-bottom: 32px;
-  background: #30303d;
   position: relative;
   top: 0;
   transition: all 0.3s;
@@ -23,7 +22,7 @@
 
   .demo {
     padding: 12px;
-    border-bottom: 1px #e3e6e8 solid;
+    background: #30303d;
     overflow: hidden;
     position: relative;
     box-sizing: border-box;
@@ -61,22 +60,23 @@
   .content {
     font-size: 14px;
     padding: 8px 12px;
+    background: #30303d;
+    margin-top: 2px;
 
     .title {
       overflow: hidden;
       text-overflow: ellipsis;
-      // text-align: center;
       white-space: nowrap;
       max-width: 180px;
       font-size: 14px;
       line-height: 22px;
-      color: rgba(0, 0, 0, 0.85);
+      color: fade(#fff, 85);
     }
 
     .description {
       margin-top: 4px;
       font-size: 12px;
-      color: rgba(0, 0, 0, 0.45);
+      color: fade(#fff, 45);
       letter-spacing: 0;
       line-height: 20px;
       height: 40px;
