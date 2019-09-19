@@ -21,8 +21,10 @@ interface ILayoutState {
 }
 
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
+  public isMini: boolean;
   constructor(props: ILayoutProps) {
     super(props);
+    this.isMini = isMiniUI();
     this.state = {
       theme: 'dark',
     };
@@ -72,15 +74,13 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       return framework;
     };
 
-    const isMini = isMiniUI();
-
     return (
       <div className={layoutCls}>
         <Context.Provider
           value={{
             locale,
             theme,
-            isMini,
+            isMini: this.isMini,
             formatMessage,
             currentProject,
             showLogPanel: this.showLogPanel,

@@ -45,7 +45,33 @@ class App extends React.Component {
       connected: false,
       currentProject: props.currentProject,
     };
+    window.addEventListener('message', this.handleMessage, false);
   }
+
+  handleMessage = event => {
+    try {
+      const { action, data } = JSON.parse(event.data);
+      switch (action) {
+        // 显示 mini
+        case 'umi.ui.showMini': {
+          this.setState({
+            open: true,
+          });
+          break;
+        }
+        // 隐藏 mini
+        case 'umi.ui.hideMini': {
+          this.setState({
+            open: false,
+          });
+          break;
+        }
+        default: {
+        }
+      }
+    } catch (_) {}
+    return false;
+  };
 
   async componentDidMount() {
     const { port } = this.props;

@@ -51,6 +51,28 @@ export default class PluginAPI {
     return 'mini' in querystring.parse(window.location.search.slice(1));
   };
 
+  showMini: IUi.IShowMini = () => {
+    if (this.isMini) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.showMini',
+        }),
+        '*',
+      );
+    }
+  };
+
+  hideMini: IUi.IHideMini = () => {
+    if (this.isMini) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.hideMini',
+        }),
+        '*',
+      );
+    }
+  };
+
   redirect: IUi.IRedirect = url => {
     history.push(url);
     // window.location.reload();

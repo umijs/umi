@@ -585,3 +585,24 @@ const cwd = await api.getCwd();
 const dir = await api.getSharedDataDir();
 // "/Users/xxxxx/.umi/ui/shared-data/5bc6bd"
 ```
+
+### api.isMini()
+
+获取当前环境是否是 Umi UI mini。
+
+示例：
+
+```js
+const isMini = api.isMini();  // true / false
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65216522-c2ac1680-dae3-11e9-868a-80ec7bd32e1d.png)
+
+### api.showMini()
+
+打开 Umi UI mini 窗口（mini 环境下启用）。
+
+
+### api.hideMini()
+
+关闭 Umi UI mini 窗口（mini 环境下启用）。
