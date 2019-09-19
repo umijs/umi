@@ -78,6 +78,7 @@ export default class Draggable extends React.Component {
     ) {
       this.props.onClick(e);
     }
+
     this.setState(
       {
         originalX: 0,
@@ -123,7 +124,6 @@ const Container = styled.div.attrs({
   position: fixed;
   right: 16px;
   bottom: 16px;
-  transition: transform 0.1s ease-out;
 
   ${({ isDragging }) =>
     isDragging &&

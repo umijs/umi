@@ -1,39 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { callRemote, init as initSocket } from './socket';
-import Logo from './Logo';
-import Close from './Close';
-import Dragger from './Dragger';
-import Modal from './Modal';
+import Bubble from './Bubble';
 
-const Bubble = styled('div')`
-  background-color: rgb(48, 85, 234);
-  height: 48px;
-  width: 48px;
-  pointer-events: none;
-  cursor: pointer;
-  display: flex;
-  -webkit-box-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  align-items: center;
-  position: relative;
-  box-shadow: rgba(14, 39, 140, 0.3) 0px 4px 10px 0px;
-  user-select: none;
-  opacity: 0.8;
-  border-radius: 50%;
-  padding: 8px;
-  transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s, transform 0.2s ease 0s;
-  &:hover {
-    background-color: rgb(21, 59, 210);
+/**
+ * Bubble (show/hide)
+ * Icon (logo/close <= open/close)
+ * iframe (loaded => open/close, connected/disconnected)
+ *
+ */
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
     opacity: 1;
   }
 `;
 
+const fadeOutDown = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+`;
+
 const IframeWrapper = styled('div')`
-  position: relative;
+  position: absolute;
   z-index: 1001;
+  bottom: 66px;
+  right: 0;
+  width: 50vw;
+  display: ${props => (props.visible ? 'block' : 'none')};
+  animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
+  opacity: ${props => (props.visible ? 1 : 0)};
+  & > div {
+    display: ${props => (props.visible ? 'block' : 'none')};
+    animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
+    opacity: ${props => (props.visible ? 1 : 0)};
+  }
 `;
 
 class App extends React.Component {
@@ -95,7 +106,7 @@ class App extends React.Component {
     }));
   };
 
-  openModal = async () => {
+  toggleModal = async () => {
     const { currentProject, path } = this.props;
     if (this.state.hide) {
       this.setState({
@@ -115,7 +126,7 @@ class App extends React.Component {
         });
       }
       this.setState(state => ({
-        open: state.hide === false,
+        open: !state.open,
       }));
     } else {
       // TODO: message.error
@@ -134,34 +145,39 @@ class App extends React.Component {
     console.log('iframe loaded');
   };
 
+  toggleMiniOpen = () => {
+    this.setState(prevState => ({
+      open: !prevState.open,
+    }));
+  };
+
   render() {
     const { hide, open, currentProject, connected } = this.state;
-    const { port } = this.props;
+    const { port, isBigfish = false } = this.props;
 
     console.log('currentProject', currentProject);
     console.log('connected', connected);
 
     return (
-      <Dragger open={open} hide={hide} onClick={this.openModal}>
-        <Bubble>
-          <Logo />
-        </Bubble>
-        <Close onClick={this.toggleBubble} />
-        <Modal visible={open} onMaskClick={this.closeModal}>
-          <IframeWrapper>
-            <iframe
-              onLoad={this.onIframeLoad}
-              style={{ width: '100%', minHeight: '80vh' }}
-              // localhost maybe hard code
-              src={`http://localhost:${port}/?mini${
-                currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
-              }`}
-              frameBorder="0"
-              title="iframe_umi_ui"
-            />
-          </IframeWrapper>
-        </Modal>
-      </Dragger>
+      <div>
+        <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open} />
+        {/* <Modal visible={open} onMaskClick={this.closeModal}> */}
+        <IframeWrapper visible={open}>
+          <iframe
+            onLoad={this.onIframeLoad}
+            style={{ width: '100%', minHeight: '80vh' }}
+            // localhost maybe hard code
+            src={`http://localhost:${port}/?mini${
+              currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
+            }`}
+            frameBorder="0"
+            scrolling="no"
+            seamless="seamless"
+            title="iframe_umi_ui"
+          />
+        </IframeWrapper>
+        {/* </Modal> */}
+      </div>
     );
   }
 }
