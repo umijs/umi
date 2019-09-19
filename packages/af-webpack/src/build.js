@@ -36,7 +36,7 @@ export default function build(opts = {}) {
 
     if (err || stats.hasErrors()) {
       if (onFail) {
-        onFail({ err, stats });
+        onFail(getErrorInfo(err, stats));
       }
 
       const isWatch = isPlainObject(webpackConfig)
@@ -65,4 +65,22 @@ export default function build(opts = {}) {
       onSuccess({ stats });
     }
   });
+}
+
+function getErrorInfo(err, stats) {
+  if (!stats.stats) {
+    return {
+      err: err || (stats.compilation && stats.compilation.errors && stats.compilation.errors[0]),
+      stats,
+      rawStats: stats,
+    };
+  }
+  const [curStats] = stats.stats;
+  return {
+    err:
+      err ||
+      (curStats.compilation && curStats.compilation.errors && curStats.compilation.errors[0]),
+    stats: curStats,
+    rawStats: stats,
+  };
 }
