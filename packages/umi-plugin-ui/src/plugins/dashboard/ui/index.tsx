@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import cls from 'classnames';
 import { IUiApi } from 'umi-types';
 import { Close, Smile } from '@ant-design/icons';

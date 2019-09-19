@@ -166,6 +166,8 @@ declare namespace IUI {
   type IDebug = Debugger;
   type IConnect = typeof connect;
   type IMini = () => boolean;
+  type IShowMini = () => void;
+  type IHideMini = () => void;
 
   class IApiClass {
     constructor(service: IService);
@@ -201,6 +203,10 @@ declare namespace IUI {
     showLogPanel: IShowLogPanel;
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
+    /** show Mini Modal */
+    showMini: IShowMini;
+    /** hide Mini Modal */
+    hideMini: IHideMini;
     send: ISend;
     connect: IConnect;
   }
