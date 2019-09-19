@@ -1,5 +1,6 @@
 import { join } from 'path';
 import stringify from 'stringify-object';
+import slash2 from 'slash2';
 import getWebpackConfig from './index';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -50,7 +51,9 @@ test('opts.disableDynamicImport', () => {
     cwd: join(fixtures, 'normal'),
     disableDynamicImport: true,
   });
-  expect(stringify(config.module.rules)).toContain('babel-plugin-dynamic-import-node/lib/index.js');
+  expect(slash2(stringify(config.module.rules))).toContain(
+    'babel-plugin-dynamic-import-node/lib/index.js',
+  );
 });
 
 test('ESLINT env', () => {
@@ -59,7 +62,7 @@ test('ESLINT env', () => {
     cwd: join(fixtures, 'normal'),
   });
   process.env.ESLINT = 'none';
-  expect(stringify(config.module.rules.filter(r => r.enforce === 'pre'))).toContain(
+  expect(slash2(stringify(config.module.rules.filter(r => r.enforce === 'pre')))).toContain(
     'eslint-loader/index.js',
   );
 });
