@@ -6,6 +6,7 @@ import EventEmitter from 'events';
 import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
+import querystring from 'querystring';
 import { init as initSocket, callRemote } from './socket';
 import PluginAPI from './PluginAPI';
 
@@ -54,16 +55,13 @@ export async function render(oldRender) {
     document.getElementById('root'),
   );
 
-  // 不同路由在渲染前的初始化逻辑
-  if (history.location.pathname === '/') {
-    const { data } = await callRemote({ type: '@@project/list' });
-    if (data.currentProject) {
-      history.replace('/dashboard');
-    } else {
-      history.replace('/project/select');
-    }
-    window.location.reload();
-    return;
+  // mini 模式下允许通过加 key 的参数打开
+  // 比如: ?mini&key=xxx
+  let miniKey = null;
+  const qs = querystring.parse(location.search.slice(1));
+  const isMini = 'mini' in qs;
+  if (isMini && qs.key) {
+    miniKey = qs.key;
   }
 
   if (history.location.pathname.startsWith('/project/')) {
@@ -81,16 +79,19 @@ export async function render(oldRender) {
     const props = {
       data,
     };
-    if (data.currentProject) {
+    let key = miniKey || data.currentProject;
+    if (key) {
+      // 在 callRemote 里使用
+      window.g_currentProject = key;
       const currentProject = {
-        key: data.currentProject,
-        ...get(data, `projectsByKey.${data.currentProject}`, {}),
+        key,
+        ...get(data, `projectsByKey.${key}`, {}),
       };
       _log('apps data', data);
       window.g_uiCurrentProject =
         {
           ...currentProject,
-          key: data.currentProject,
+          key,
         } || {};
       _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
       // types 和 api 上先不透露
@@ -98,8 +99,14 @@ export async function render(oldRender) {
       try {
         await callRemote({
           type: '@@project/open',
-          payload: { key: data.currentProject },
+          payload: { key },
         });
+        if (!isMini) {
+          await callRemote({
+            type: '@@project/setCurrentProject',
+            payload: { key },
+          });
+        }
       } catch (e) {
         props.error = e;
       }

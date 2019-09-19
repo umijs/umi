@@ -569,14 +569,17 @@ export default () => {
 示例：
 
 ```js
-const { getCwd } = api;
+const cwd = await api.getCwd();
+// "/private/tmp/xxxx"
+```
 
-export default () => {
-  useEffect(() => {
-    (async () => {
-      const cwd = await getCwd();
-      // set
-    })
-  }, []);
-};
+### api.getSharedDataDir
+
+获取当前项目的临时目录。
+
+示例：
+
+```js
+const dir = await api.getSharedDataDir();
+// "/Users/xxxxx/.umi/ui/shared-data/5bc6bd"
 ```

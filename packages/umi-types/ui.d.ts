@@ -40,6 +40,7 @@ declare namespace IUI {
     setTheme: (theme: ITheme) => void;
     showLogPanel: () => void;
     hideLogPanel: () => void;
+    isMini: boolean;
   }
 
   type Locale = { [key in string]: string };
@@ -129,7 +130,7 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = typeof formatMessage;
-  type IGetCwd = () => string;
+  type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
     title: string;
@@ -163,6 +164,8 @@ declare namespace IUI {
   }
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
+  type IConnect = typeof connect;
+  type IMini = () => boolean;
 
   class IApiClass {
     constructor(service: IService);
@@ -199,7 +202,7 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     send: ISend;
-    connect: typeof connect;
+    connect: IConnect;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

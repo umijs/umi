@@ -7,6 +7,7 @@ import history from '@tmp/history';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
+import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import Field from './components/Field';
@@ -24,8 +25,7 @@ export default class PluginAPI {
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Field: FC<IUi.IFieldProps>;
-  registerModel: IUi.registerModel;
-  connect: iUi.connect;
+  connect: IUi.IConnect;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -40,11 +40,16 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Field = Field;
-    this.registerModel = model => {
-      window.g_app.model(model);
-    };
-    this.connect = connect;
+    this.connect = connect as IUi.IConnect;
   }
+
+  registerModel = model => {
+    window.g_app.model(model);
+  };
+
+  isMini: IUi.IMini = () => {
+    return 'mini' in querystring.parse(window.location.search.slice(1));
+  };
 
   redirect: IUi.IRedirect = url => {
     history.push(url);
@@ -60,6 +65,13 @@ export default class PluginAPI {
     if (window.g_uiEventEmitter) {
       window.g_uiEventEmitter.emit('HIDE_LOG');
     }
+  };
+
+  getSharedDataDir = async () => {
+    const { tmpDir } = await callRemote({
+      type: '@@project/getSharedDataDir',
+    });
+    return tmpDir;
   };
 
   getCwd: IUi.IGetCwd = async () => {

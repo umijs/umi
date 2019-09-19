@@ -61,7 +61,7 @@ export default function(api) {
           onStart({ paths }) {
             api.addBabelRegister(paths);
           },
-        }),
+        }).middleware,
       );
       afterMiddlewares.forEach(m => app.use(m));
     }

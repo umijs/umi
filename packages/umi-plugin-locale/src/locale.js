@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, prefer-rest-params */
 const ReactIntl = require('react-intl');
-const React = require('react');
+const createContext = require('@ant-design/create-react-context');
 
 let localeContext;
 
@@ -42,7 +42,7 @@ function getLocale() {
   return lang || g_lang || browserLang;
 }
 
-const LangContext = React.createContext({
+const LangContext = createContext({
   lang: getLocale(),
 });
 

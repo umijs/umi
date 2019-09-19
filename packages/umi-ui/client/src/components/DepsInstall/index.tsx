@@ -113,14 +113,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       <Button {...restProps} onClick={handleClick} loading={loading}>
         {loading && loadingChild ? loadingChild : children}
       </Button>
-      <Modal
-        visible={modalVisible}
-        onOk={onOk}
-        maskClosable={false}
-        okText={intl({ id: 'org.umi.ui.global.okText' })}
-        cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
-        onCancel={closeModal}
-      >
+      <Modal visible={modalVisible} onOk={onOk} maskClosable={false} onCancel={closeModal}>
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
             label={intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}

@@ -19,7 +19,7 @@ const uglifyJSOptions =
     : {};
 
 const config: IConfig = {
-  history: 'hash',
+  history: 'browser',
   hash: NODE_ENV === 'production',
   treeShaking: true,
   uglifyJSOptions,
@@ -105,7 +105,7 @@ const config: IConfig = {
             src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.3/dist/antd.min.js',
+            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.4/dist/antd.min.js',
           },
           { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
           { src: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },

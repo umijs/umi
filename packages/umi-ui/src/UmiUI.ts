@@ -3,7 +3,7 @@ import assert from 'assert';
 import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import launchEditor from 'launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
@@ -19,20 +19,8 @@ import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
 import ActiveProjectError from './ActiveProjectError';
-import {
-  BackToHomeAction,
-  OpenConfigFileAction,
-  OpenProjectAction,
-  ReInstallDependencyAction,
-} from './Actions';
-import {
-  isBigfishProject,
-  isDepLost,
-  isPluginLost,
-  isUmiProject,
-  isUsingBigfish,
-  isUsingUmi,
-} from './checkProject';
+import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from './Actions';
+import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
@@ -78,7 +66,8 @@ export default class UmiUI {
     this.developMode = !!process.env.DEVELOP_MODE;
 
     if (process.env.CURRENT_PROJECT) {
-      this.config.addProjectAndSetCurrent(process.env.CURRENT_PROJECT);
+      const key = this.config.addProjectWithPath(join(process.cwd(), process.env.CURRENT_PROJECT));
+      this.config.setCurrentProject(key);
     }
 
     process.nextTick(() => {
@@ -86,7 +75,7 @@ export default class UmiUI {
     });
   }
 
-  activeProject(key: string, service?: any, opts?: any) {
+  openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
     assert(project, `project of key ${key} not exists`);
@@ -212,7 +201,6 @@ export default class UmiUI {
       }
     }
 
-    this.config.setCurrentProject(key);
     this.config.editProject(key, {
       opened_at: +new Date(),
     });
@@ -284,8 +272,8 @@ export default class UmiUI {
     launchEditor(configFile);
   }
 
-  getExtraAssets() {
-    const service = this.servicesByKey[this.config.data.currentProject];
+  getExtraAssets({ key }) {
+    const service = this.servicesByKey[key];
     const uiPlugins = service.applyPlugins('addUIPlugin', {
       initialValue: [],
     });
@@ -537,10 +525,14 @@ export default class UmiUI {
 
   reloadProject(key: string) {}
 
-  handleCoreData({ type, payload, lang }, { log, send, success, failure, progress }) {
+  handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
       case '@@project/getExtraAssets':
-        success(this.getExtraAssets());
+        success(
+          this.getExtraAssets({
+            key,
+          }),
+        );
         break;
       case '@@project/list':
         success({
@@ -580,10 +572,15 @@ export default class UmiUI {
           success();
         }
         break;
+      case '@@project/getKeyOrAddWithPath':
+        success({
+          key: this.config.getKeyOrAddWithPath(payload.path),
+        });
+        break;
       case '@@project/open':
         try {
           log('info', `Open project: ${this.getProjectName(payload.key)}`);
-          this.activeProject(payload.key, null, {
+          this.openProject(payload.key, null, {
             lang,
           });
           success();
@@ -656,6 +653,11 @@ export default class UmiUI {
       case '@@project/getNpmClients':
         success({
           data: this.getNpmClients(),
+        });
+        break;
+      case '@@project/getSharedDataDir':
+        success({
+          tmpDir: join(dirname(this.config.dbPath), 'shared-data', key),
         });
         break;
       case '@@fs/getCwd':
@@ -751,6 +753,7 @@ export default class UmiUI {
     return new Promise(async (resolve, reject) => {
       console.log(`🚀 Starting Umi UI using umi@${process.env.UMI_VERSION}...`);
 
+      const url = require('url');
       const express = require('express');
       const compression = require('compression');
       const app = express();
@@ -768,24 +771,43 @@ export default class UmiUI {
         );
       }
 
-      app.use('/*', (req, res) => {
-        getScripts().then(scripts => {
-          if (process.env.LOCAL_DEBUG) {
-            got(`http://localhost:8002${req.path}`)
-              .then(({ body }) => {
-                res.set('Content-Type', 'text/html');
-                res.send(normalizeHtml(body, scripts));
-              })
-              .catch(e => {
-                console.error(e);
-              });
-          } else {
-            if (!content) {
-              content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
-            }
-            res.send(normalizeHtml(content, scripts));
+      app.get('/', async (req, res) => {
+        const isMini = 'mini' in req.query;
+        debug('isMini', isMini);
+        const { data } = this.config;
+        if (isMini || data.currentProject) {
+          return res.status(302).redirect(
+            url.format({
+              pathname: '/dashboard',
+              query: req.query,
+            }),
+          );
+        } else {
+          return res.status(302).redirect(
+            url.format({
+              pathname: '/project/select',
+              query: req.query,
+            }),
+          );
+        }
+      });
+
+      app.use('/*', async (req, res) => {
+        const scripts = await getScripts();
+        if (process.env.LOCAL_DEBUG) {
+          try {
+            const { body } = await got(`http://localhost:8002${req.path}`);
+            res.set('Content-Type', 'text/html');
+            res.send(normalizeHtml(body, scripts));
+          } catch (e) {
+            console.error(e);
           }
-        });
+        } else {
+          if (!content) {
+            content = readFileSync(join(__dirname, '../client/dist/index.html'), 'utf-8');
+          }
+          res.send(normalizeHtml(content, scripts));
+        }
       });
 
       // 添加埋点脚本
@@ -874,11 +896,11 @@ export default class UmiUI {
         });
         conn.on('data', message => {
           try {
-            const { type, payload, lang } = JSON.parse(message);
+            const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData(
-                { type, payload, lang },
+                { type, payload, lang, key },
                 {
                   log,
                   send,
@@ -887,8 +909,9 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
-            } else if (this.config.data.currentProject) {
-              const service = this.servicesByKey[this.config.data.currentProject];
+            } else {
+              assert(this.servicesByKey[key], `service of key ${key} not exists.`);
+              const service = this.servicesByKey[key];
               service.applyPlugins('onUISocket', {
                 args: {
                   action: { type, payload, lang },
@@ -907,17 +930,23 @@ export default class UmiUI {
         });
       });
 
-      portfinder.basePort = 3000;
-      portfinder.highestPort = 3333;
-      const port = process.env.PORT || (await portfinder.getPortPromise());
+      const port =
+        process.env.UMI_PORT ||
+        (await portfinder.getPortPromise({
+          port: 3000,
+        }));
       const server = app.listen(port, process.env.HOST || '127.0.0.1', err => {
         if (err) {
           reject(err);
         } else {
           const url = `http://localhost:${port}/`;
           console.log(`🧨  Ready on ${url}`);
-          openBrowser(url);
-          resolve();
+          if (process.env.UMI_UI_BROWSER !== 'none') {
+            openBrowser(url);
+          }
+          resolve({
+            port,
+          });
         }
       });
       ss.installHandlers(server, {

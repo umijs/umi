@@ -141,8 +141,6 @@ const InstallComponent: React.FC<IProps> = ({ api }) => {
             <Modal
               visible={modalVisible}
               title={intl({ id: 'org.umi.ui.tasks.install' })}
-              okText={intl({ id: 'org.umi.ui.tasks.install.okText' })}
-              cancelText={intl({ id: 'org.umi.ui.tasks.install.cancelText' })}
               onOk={handleOk}
               onCancel={handleCancel}
             >

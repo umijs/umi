@@ -105,8 +105,6 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
               <Popconfirm
                 title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
                 onConfirm={clear}
-                okText={intl({ id: 'org.umi.ui.global.okText' })}
-                cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
                   <Delete />

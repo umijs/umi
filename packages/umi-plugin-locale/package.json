@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-locale",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "A umi plugin for provide internationalization function.",
   "main": "./lib/index.js",
   "browser": {
@@ -28,6 +28,7 @@
     "umi"
   ],
   "dependencies": {
+    "@ant-design/create-react-context": "0.2.4",
     "globby": "7.1.1",
     "intl": "1.2.5",
     "lodash.groupby": "4.6.0",
