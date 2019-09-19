@@ -58,6 +58,7 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
+    "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2"
   }
