@@ -11,8 +11,6 @@ export default (api: IUiApi) => {
     'en-US': enUS,
   });
 
-  console.log('api.addPanel');
-
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',

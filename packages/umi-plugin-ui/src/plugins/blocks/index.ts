@@ -127,9 +127,6 @@ export default function(api: IApi) {
         });
         break;
       default:
-        failure({
-          message: `unhandled type: ${type}`,
-        });
         break;
     }
   });
