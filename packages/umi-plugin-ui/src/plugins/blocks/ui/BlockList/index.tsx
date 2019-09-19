@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
-import { Button, Col, Empty, Row, Skeleton, Typography, Spin } from 'antd';
+import React, { useMemo, useState } from 'react';
+import { Button, Col, Empty, Row, Spin, Typography, Tag } from 'antd';
+import uniq from 'lodash/uniq';
+import flatten from 'lodash/flatten';
+
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import { Block } from '../../data.d';
+
+const { CheckableTag } = Tag;
 
 interface BlockListProps {
   name?: string;
@@ -12,10 +17,6 @@ interface BlockListProps {
   onAdd: (block: Block) => void;
   loading?: boolean;
   keyword?: string;
-}
-
-interface BlockListState {
-  showAll: boolean;
 }
 
 const renderMetas = (item: any, keyword?: string) => (
@@ -31,43 +32,40 @@ const renderMetas = (item: any, keyword?: string) => (
   </div>
 );
 
-class BlockList extends Component<BlockListProps, BlockListState> {
-  constructor(props: BlockListProps) {
-    super(props);
-    this.state = {
-      showAll: false,
-    };
-  }
+const BlockList: React.FC<BlockListProps> = props => {
+  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd } = props;
+  const tags: string[] = useMemo<string[]>(
+    () => {
+      return uniq(flatten(list.map(item => item.tags)));
+    },
+    [list],
+  );
+  const [selectedTag, setSelectedTag] = useState<string>('');
 
-  handleShowAll = () => {
-    this.setState({
-      showAll: !this.state.showAll,
-    });
-  };
+  const isEmpty = !list || list.length === 0;
 
-  render() {
-    const { list = [], type = 'block', addingBlock, loading, keyword, onAdd } = this.props;
+  let contents;
 
-    const isEmpty = !list || list.length === 0;
-
-    let contents;
-
-    if (loading) {
-      contents = (
-        <div className={styles.emptyWrapper}>
-          <Skeleton active />
-        </div>
-      );
-    } else if (isEmpty) {
-      contents = (
-        <div className={styles.emptyWrapper}>
-          <Empty />
-        </div>
-      );
-    } else {
-      contents = (
-        <Row gutter={20} type="flex">
-          {list.map(item => (
+  if (loading) {
+    contents = (
+      <div className={styles.emptyWrapper}>
+        <Spin />
+      </div>
+    );
+  } else if (isEmpty) {
+    contents = (
+      <div className={styles.emptyWrapper}>
+        <Empty />
+      </div>
+    );
+  } else {
+    contents = (
+      <Row gutter={20} type="flex">
+        {list
+          .filter(item => {
+            return !selectedTag || item.tags.includes(selectedTag);
+          })
+          .map(item => (
             <Col
               style={{
                 flex: `0 1 ${type === 'block' ? '20%' : '25%'}`,
@@ -112,12 +110,41 @@ class BlockList extends Component<BlockListProps, BlockListState> {
               </div>
             </Col>
           ))}
-        </Row>
-      );
-    }
-
-    return contents;
+      </Row>
+    );
   }
-}
+
+  return (
+    <>
+      <div className={styles.tagContainer}>
+        <CheckableTag
+          checked={selectedTag === ''}
+          onChange={() => {
+            setSelectedTag('');
+          }}
+        >
+          全部
+        </CheckableTag>
+        {tags.map(tag => {
+          return (
+            <CheckableTag
+              checked={selectedTag === tag}
+              onChange={checked => {
+                if (checked) {
+                  setSelectedTag(tag);
+                } else {
+                  setSelectedTag('');
+                }
+              }}
+            >
+              {tag}
+            </CheckableTag>
+          );
+        })}
+      </div>
+      {contents}
+    </>
+  );
+};
 
 export default BlockList;

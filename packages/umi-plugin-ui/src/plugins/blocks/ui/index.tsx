@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Input, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, Tabs, Spin } from 'antd';
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 
+import { Resource } from '../../blocks/data.d';
 import BlockList from './BlockList';
 import styles from './index.module.less';
 
 const { Search } = Input;
+const { TabPane } = Tabs;
 
 function nameToPath(name) {
   return `/${decamelize(name, '-')}`;
@@ -21,15 +23,38 @@ const BlocksViewer: React.FC<Props> = props => {
   const { callRemote, intl } = api;
   const [blockAdding, setBlockAdding] = useState(null);
   const [blocks, setBlocks] = useState([]);
+  const [current, setCurrent] = useState<Resource>(null);
   const [loading, setLoading] = useState(false);
+  const [resources, setResources] = useState<Resource[]>([]);
+
+  useEffect(
+    () => {
+      if (!current) {
+        return;
+      }
+      (async () => {
+        setLoading(true);
+        const { data } = await callRemote({
+          type: 'org.umi.block.list',
+          payload: {
+            reources: current.id,
+          },
+        });
+        setBlocks(data);
+        setLoading(false);
+      })();
+    },
+    [current],
+  );
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       const { data } = await callRemote({
-        type: 'org.umi.block.list',
+        type: 'org.umi.block.resource',
       });
-      setBlocks(data);
+      setResources(data);
+      setCurrent(data[0]);
       setLoading(false);
     })();
   }, []);
@@ -82,17 +107,33 @@ const BlocksViewer: React.FC<Props> = props => {
         placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
         onSearch={value => console.log(value)}
       />
-      <div className={styles.blocklist}>
-        <BlockList
-          loading={loading}
-          type="block"
-          addingBlock={blockAdding}
-          list={blocks}
-          onAdd={block => {
-            addHandler(block);
-          }}
-        />
-      </div>
+      {current ? (
+        <div className={styles.blocklist}>
+          <Tabs
+            activeKey={current.id}
+            onChange={activeKey => {
+              setCurrent(resources.find(r => r.id === activeKey));
+            }}
+          >
+            {resources.map(r => {
+              return <TabPane tab={r.name} key={r.id} />;
+            })}
+          </Tabs>
+          <BlockList
+            loading={loading}
+            type="block"
+            addingBlock={blockAdding}
+            list={blocks}
+            onAdd={block => {
+              addHandler(block);
+            }}
+          />
+        </div>
+      ) : (
+        <div className={styles.loading}>
+          <Spin />
+        </div>
+      )}
     </div>
   );
 };
