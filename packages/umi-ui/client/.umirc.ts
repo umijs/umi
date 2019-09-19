@@ -11,8 +11,7 @@ const uglifyJSOptions =
         uglifyOptions: {
           // remove console.* except console.error
           compress: {
-            drop_console: true,
-            pure_funcs: ['console.error', 'console.warn'],
+            pure_funcs: ['console.log', 'console.info'],
           },
         },
       }
