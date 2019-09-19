@@ -182,12 +182,12 @@ export default (api: IApiBlock) => {
 (() => {
   // Runtime block add component
   window.GUmiUIFlag = require('${require.resolve('./flagBabelPlugin/GUmiUIFlag')}').default;
-  
+
   // Enable/Disable block add edit mode
   const el = document.createElement('style');
   el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
   document.querySelector('head').appendChild(el);
-  
+
   window.g_enableUmiUIBlockAddEditMode = function() {
     el.innerHTML = '';
   };
