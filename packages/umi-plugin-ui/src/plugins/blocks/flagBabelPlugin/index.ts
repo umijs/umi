@@ -63,30 +63,51 @@ export default function({ types: t }) {
     }
   }
 
+  function findExportDefaultDeclaration(node) {
+    for (const n of node.body) {
+      if (t.isExportDefaultDeclaration(n)) {
+        return n.declaration;
+      }
+    }
+  }
+
   return {
     visitor: {
-      ExportDefaultDeclaration(path, state) {
-        const { filename, opts = {} } = state;
-        assert(opts.doTransform, `opts.doTransform must supplied`);
+      Program: {
+        enter(path, state) {
+          const { filename, opts = {} } = state;
+          assert(opts.doTransform, `opts.doTransform must supplied`);
 
-        if (opts.doTransform(filename)) {
-          const { node } = path;
-          const d = node.declaration;
-          let retNode;
+          if (opts.doTransform(filename)) {
+            const { node } = path;
 
-          if (t.isArrowFunctionExpression(d) || t.isFunctionDeclaration(d)) {
-            retNode = findReturnNode(d.body);
-          }
-          if (t.isClassDeclaration(d)) {
-            retNode = findReturnNode(findRenderStatement(d.body));
-          }
+            let d = findExportDefaultDeclaration(node);
+            let retNode;
 
-          if (retNode) {
-            addUmiUIFlag(retNode, {
-              filename,
-            });
+            if (t.isIdentifier(d)) {
+              d = path.scope.getBinding(d.name).path.node;
+              if (t.isVariableDeclarator(d)) {
+                d = d.init;
+              }
+            }
+
+            if (
+              t.isArrowFunctionExpression(d) ||
+              t.isFunctionDeclaration(d) ||
+              t.isFunctionExpression(d)
+            ) {
+              retNode = findReturnNode(d.body);
+            } else if (t.isClassDeclaration(d)) {
+              retNode = findReturnNode(findRenderStatement(d.body));
+            }
+
+            if (retNode) {
+              addUmiUIFlag(retNode, {
+                filename,
+              });
+            }
           }
-        }
+        },
       },
     },
   };
