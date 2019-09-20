@@ -114,6 +114,8 @@ const routes = [
 ];
 ```
 
+> 建议在插件事件周期中进行调用 `api.routes` ，因为初始化得到的路由信息，可能与周期内返回的不同。
+
 ## 系统级 API
 
 ### registerPlugin
@@ -286,6 +288,8 @@ api.winPath('/path/to.js');
 将文件路径转换为兼容 window 的路径，用于在代码中添加 `require('/xxx/xxx.js')` 之类的代码。
 
 ### debug
+
+同 [debug](https://github.com/visionmedia/debug)，查看所有插件日志可加上环境变量 `DEBUG=umi-plugin: *`，可根据插件文件路径再做进一步 debug 。
 
 ```js
 api.debug('msg');
