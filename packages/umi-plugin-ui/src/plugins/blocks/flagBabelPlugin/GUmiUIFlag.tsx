@@ -1,6 +1,18 @@
 export default function({ filename, index }) {
   function clickHandler() {
-    alert(`filename: ${filename}, index: ${index}`);
+    const el = document.getElementById('umi-ui-bubble');
+    if (el && el.contentWindow) {
+      el.contentWindow.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.block.addBlock',
+          payload: {
+            filename,
+            index,
+          },
+        }),
+        '*',
+      );
+    }
   }
 
   return (

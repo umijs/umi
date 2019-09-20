@@ -152,6 +152,7 @@ class App extends React.Component {
       <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
         <IframeWrapper visible={open}>
           <iframe
+            id="umi-ui-bubble"
             onLoad={this.onIframeLoad}
             style={{ width: '100%', height: '100%' }}
             // localhost maybe hard code
