@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Dragger from './Dragger';
 import Hide from './Hide';
 import { UmiLogo, BigfishLogo } from './Logo';
+import * as ENUM from './enum';
 import Close from './Close';
 
 const BubbleWrapper = styled('div')`
@@ -41,24 +42,36 @@ const CloseComponent = styled(Close)`
 class Bubble extends React.Component {
   constructor(props) {
     super(props);
+    const hide = window.localStorage.getItem(ENUM.STORE_BUBBLE_HIDE) === 'true';
+
     this.state = {
-      hide: false,
+      hide,
     };
   }
 
   hideBubble = () => {
-    this.setState({
-      hide: true,
-    });
+    this.setState(
+      {
+        hide: true,
+      },
+      () => {
+        window.localStorage.setItem(ENUM.STORE_BUBBLE_HIDE, 'true');
+      },
+    );
   };
 
   showBubble = () => {
     const { toggleMiniOpen } = this.props;
     if (this.state.hide) {
       // isHide
-      this.setState({
-        hide: false,
-      });
+      this.setState(
+        {
+          hide: false,
+        },
+        () => {
+          window.localStorage.removeItem(ENUM.STORE_BUBBLE_HIDE);
+        },
+      );
     } else {
       // not hide, show iframe
       toggleMiniOpen();

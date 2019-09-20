@@ -2,14 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { callRemote, init as initSocket } from './socket';
+import * as ENUM from './enum';
 import Bubble from './Bubble';
-
-/**
- * Bubble (show/hide)
- * Icon (logo/close <= open/close)
- * iframe (loaded => open/close, connected/disconnected)
- *
- */
 
 const fadeInUp = keyframes`
   from {
@@ -51,12 +45,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hide: false,
-      open: undefined,
+      open: false,
       connected: false,
       currentProject: props.currentProject,
     };
     window.addEventListener('message', this.handleMessage, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('message', this.handleMessage, false);
   }
 
   handleMessage = event => {
@@ -98,13 +95,6 @@ class App extends React.Component {
       });
     }
   }
-
-  toggleBubble = e => {
-    e.stopPropagation();
-    this.setState(state => ({
-      hide: !state.hide,
-    }));
-  };
 
   toggleModal = async () => {
     const { currentProject, path } = this.props;
@@ -152,7 +142,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { hide, open, currentProject, connected } = this.state;
+    const { open, currentProject, connected } = this.state;
     const { port, isBigfish = false } = this.props;
 
     console.log('currentProject', currentProject);
