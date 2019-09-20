@@ -1,6 +1,6 @@
 {
   "name": "umi-ui-tasks",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "antd": "4.0.0-alpha.2",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
-    "umi": "2.9.5",
+    "umi": "2.9.6",
     "umi-types": "0.4.1",
     "xterm": "^3.14.5"
   },

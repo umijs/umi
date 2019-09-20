@@ -116,6 +116,8 @@ const routes = [
 ];
 ```
 
+> It is recommended to call `api.routes` in the Event class, because the routes information obtained by initialization may be different from that returned in the Event class.
+
 ## System level API
 
 ### registerPlugin
@@ -292,6 +294,8 @@ api.winPath('/path/to.js');
 Convert the file path to a path compatible with window to add code such as `require('/xxx/xxx.js')`.
 
 ### debug
+
+Same as [debug](https://github.com/visionmedia/debug), to view all plug-in logs, add the environment variable `DEBUG=umi-plugin: *`, and detailed debug can be done according to the plugin file path.
 
 ```js
 api.debug('msg');

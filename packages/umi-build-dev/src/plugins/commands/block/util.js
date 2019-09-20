@@ -1,17 +1,36 @@
 import chalk from 'chalk';
 import { dirname, join } from 'path';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import execa from 'execa';
 import assert from 'assert';
 import ora from 'ora';
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
 import inquirer from 'inquirer';
+import sortPackageJson from 'sort-package-json';
+
 import {
   dependenciesConflictCheck,
   getMockDependencies,
   getAllBlockDependencies,
 } from './getBlockGenerator';
+
+/**
+ *
+ * @param {*} templateTmpDirPath
+ */
+
+const depsArrayToObject = loc =>
+  loc
+    .map(dep => {
+      return { [dep[0]]: dep[1] };
+    })
+    .reduce((pre, next) => {
+      return {
+        ...pre,
+        ...next,
+      };
+    }, {});
 
 /**
  * 判断是不是一个 gitmodules 的仓库
@@ -263,16 +282,19 @@ export async function gitClone(ctx, spinner) {
  * @param {*} ctx
  */
 export async function installDependencies(
-  { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
+  { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
   ctx,
 ) {
   // read project package.json
   const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
     initialValue: join(paths.cwd, 'package.json'),
   });
+
+  // 判断 package.json 是否存在
   assert(existsSync(projectPkgPath), `No package.json found in your project`);
+
   // eslint-disable-next-line
-  const projectPkg = JSON.parse(readFileSync(projectPkgPath, 'utf-8'));
+  const projectPkg = require(projectPkgPath);
 
   // get _mock.js dependencie
   let devDependencies = {};
@@ -291,7 +313,7 @@ export async function installDependencies(
       ...projectPkg.dependencies,
     },
   );
-  // get confilict dependencies and lack dependencies
+  // get conflict dependencies and lack dependencies
   const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
     initialValue,
   });
@@ -300,69 +322,95 @@ export async function installDependencies(
     `devConflictDeps ${devConflicts}, devLackDeps ${devLacks}`,
   );
 
-  // find confilict dependencies throw error
+  // find conflict dependencies throw error
   const allConflicts = [...conflicts, ...devConflicts];
   const ErrorInfo = allConflicts
     .map(info => {
       return `* ${info[0]}: ${info[2]}(your project) not compatible with ${info[1]}(block)`;
     })
     .join('\n');
+  // 如果有冲突，抛出错误流程结束。
   if (allConflicts.length) {
     throw new Error(`find dependencies conflict between block and your project:${ErrorInfo}`);
   }
-  // find lack confilict, auto install
+
+  // find lack conflict, auto install
   if (dryRun) {
     debug('dryRun is true, skip install dependencies');
-  } else {
-    if (lacks.length) {
-      const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
-      spinner.start(
-        `📦  Install additional dependencies ${deps.join(
-          ',',
-        )} with ${npmClient} --registry ${registry}`,
-      );
-      try {
-        let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
-        npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
+    return;
+  }
 
-        // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
-        // 加个环境变量规避一下
-        await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
-          cwd: dirname(projectPkgPath),
-          env: {
-            ...process.env,
-            // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
-            PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
-          },
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
-    }
+  if (skipDependencies) {
+    // 中间层转化
+    // [["react","16.5"]] => {"react":16.5}
+    const dependencies = depsArrayToObject(lacks);
+    const devDependencies = depsArrayToObject(devLacks);
 
-    if (devLacks.length) {
-      // need skip devDependency which already install in dependencies
-      const devDeps = devLacks
-        .filter(dep => !lacks.find(item => item[0] === dep[0]))
-        .map(dep => `${dep[0]}@${dep[1]}`);
-      spinner.start(
-        `Install additional devDependencies ${devDeps.join(
-          ',',
-        )} with ${npmClient}  --registry ${registry}`,
-      );
-      try {
-        let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
-        npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
-        await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
-          cwd: dirname(projectPkgPath),
-        });
-      } catch (e) {
-        spinner.fail();
-        throw new Error(e);
-      }
-      spinner.succeed();
+    // 格式化 package.json
+    const content = JSON.stringify(
+      sortPackageJson({
+        ...projectPkg,
+        dependencies: { ...dependencies, ...projectPkg.dependencies },
+        devDependencies: { ...devDependencies, ...projectPkg.devDependencies },
+      }),
+      null,
+      2,
+    );
+    // 写入文件
+    writeFileSync(projectPkgPath, content);
+    return;
+  }
+
+  // 安装依赖
+  if (lacks.length) {
+    const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
+    spinner.start(
+      `📦  Install additional dependencies ${deps.join(
+        ',',
+      )} with ${npmClient} --registry ${registry}`,
+    );
+    try {
+      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
+      npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
+
+      // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
+      // 加个环境变量规避一下
+      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
+        cwd: dirname(projectPkgPath),
+        env: {
+          ...process.env,
+          // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
+        },
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
     }
+    spinner.succeed();
+  }
+
+  // 安装 dev 依赖
+  if (devLacks.length) {
+    // need skip devDependency which already install in dependencies
+    const devDeps = devLacks
+      .filter(dep => !lacks.find(item => item[0] === dep[0]))
+      .map(dep => `${dep[0]}@${dep[1]}`);
+    spinner.start(
+      `Install additional devDependencies ${devDeps.join(
+        ',',
+      )} with ${npmClient}  --registry ${registry}`,
+    );
+    try {
+      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
+      npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
+      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
+        cwd: dirname(projectPkgPath),
+      });
+    } catch (e) {
+      spinner.fail();
+      throw new Error(e);
+    }
+    spinner.succeed();
   }
 }
