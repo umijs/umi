@@ -1,11 +1,12 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button, message } from 'antd';
-import { Left, CaretDown } from '@ant-design/icons';
+import { Menu, Layout, Dropdown, Button, message, Tooltip } from 'antd';
+import { Left, CaretDown, Export } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
+import { Redirect } from '@/components/icons';
 import { callRemote } from '@/socket';
 import { handleBack, getProjectStatus } from '@/utils';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -13,7 +14,7 @@ import Context from './Context';
 import UiLayout from './Layout';
 import styles from './Dashboard.less';
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -57,7 +58,7 @@ export default withRouter(props => {
   return (
     <UiLayout type="detail" title={title}>
       <Context.Consumer>
-        {({ currentProject, theme }) => {
+        {({ currentProject, theme, isMini }) => {
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -104,87 +105,118 @@ export default withRouter(props => {
           );
 
           return (
-            <Layout className={styles.normal}>
-              <div className={styles.wrapper}>
-                <Sider className={styles.sidebar}>
-                  <div className={styles['sidebar-name']}>
-                    <Left
-                      onClick={() => handleBack(false)}
-                      className={styles['sidebar-name-back']}
-                    />
-                    <Dropdown
-                      placement="bottomRight"
-                      trigger={['click']}
-                      overlay={recentMenu}
-                      className={styles['sidebar-name-dropdown']}
-                    >
-                      <div>
-                        <p>{currentProject ? currentProject.name : ''}</p>
-                        <CaretDown className={styles['sidebar-name-expand-icon']} />
-                      </div>
-                    </Dropdown>
+            <div className={styles.normal}>
+              {isMini && (
+                <div className={styles['mini-header']}>
+                  <div>
+                    <p className={styles['mini-header-name']}>
+                      {currentProject ? currentProject.name : ''}
+                    </p>
+                    <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
+                      <Export onClick={openEditor} />
+                    </Tooltip>
                   </div>
-                  <Menu
-                    theme="light"
-                    selectedKeys={selectedKeys}
-                    onClick={({ key }) => {
-                      setSelectedKeys([key]);
-                    }}
-                    style={{
-                      border: 0,
-                    }}
-                  >
-                    {window.g_service.panels.map(panel => {
-                      const icon =
-                        typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
-                      return (
-                        <Menu.Item key={panel.path}>
-                          <Icon {...icon} />
-                          <FormattedMessage id={panel.title} />
-                          <NavLink exact to={`${panel.path}${search}`}>
-                            <FormattedMessage id={panel.title} />
-                          </NavLink>
-                        </Menu.Item>
-                      );
-                    })}
-                  </Menu>
-                </Sider>
-                <Content className={styles.main}>
-                  <div className={styles.header}>
-                    <h1>{activePanel && title}</h1>
-                    {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
-                      <div className={styles['header-actions']}>
-                        {activePanel.actions.map((panelAction, j) => {
-                          const { title, action, onClick, ...btnProps } = panelAction;
-                          const handleClick = async () => {
-                            // TODO: try catch handler
-                            try {
-                              await callRemote(action);
-                              if (onClick) {
-                                onClick();
-                              }
-                            } catch (e) {
-                              message.error(e && e.message ? e.message : 'error');
-                            }
-                          };
-                          return (
-                            <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                              {formatMessage({ id: title })}
-                            </Button>
-                          );
-                        })}
+                  <div className={styles.gotoUi}>
+                    <a target="_blank" rel="noopener noreferrer" href={window.location.origin}>
+                      <Redirect />
+                      <span>进入完整版</span>
+                    </a>
+                  </div>
+                </div>
+              )}
+              <Layout>
+                <div className={styles.wrapper}>
+                  <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
+                    {!isMini && (
+                      <div className={styles['sidebar-name']}>
+                        <Left
+                          onClick={() => handleBack(false)}
+                          className={styles['sidebar-name-back']}
+                        />
+                        <Dropdown
+                          placement="bottomRight"
+                          trigger={['click']}
+                          overlay={recentMenu}
+                          className={styles['sidebar-name-dropdown']}
+                        >
+                          <div>
+                            <p>{currentProject ? currentProject.name : ''}</p>
+                            <CaretDown className={styles['sidebar-name-expand-icon']} />
+                          </div>
+                        </Dropdown>
                       </div>
                     )}
-                  </div>
-                  {/* key pathname change transition will crash  */}
-                  <div key={activePanel.path || '/'} className={styles.content}>
-                    <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                      {props.children}
-                    </ErrorBoundary>
-                  </div>
-                </Content>
-              </div>
-            </Layout>
+                    <Menu
+                      theme="light"
+                      selectedKeys={selectedKeys}
+                      onClick={({ key }) => {
+                        setSelectedKeys([key]);
+                      }}
+                      style={{
+                        border: 0,
+                      }}
+                      mode="inline"
+                    >
+                      {window.g_service.panels.map(panel => {
+                        const icon =
+                          typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
+                        return (
+                          <Menu.Item key={panel.path}>
+                            <NavLink exact to={`${panel.path}${search}`}>
+                              <Icon className={styles.menuIcon} {...icon} />
+                              {isMini ? (
+                                <p className={styles.menuItem}>
+                                  {' '}
+                                  <FormattedMessage id={panel.title} />
+                                </p>
+                              ) : (
+                                <span className={styles.menuItem}>
+                                  <FormattedMessage id={panel.title} />
+                                </span>
+                              )}
+                            </NavLink>
+                          </Menu.Item>
+                        );
+                      })}
+                    </Menu>
+                  </Sider>
+                  <Content className={styles.main}>
+                    <div className={styles.header}>
+                      <h1>{activePanel && title}</h1>
+                      {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
+                        <div className={styles['header-actions']}>
+                          {activePanel.actions.map((panelAction, j) => {
+                            const { title, action, onClick, ...btnProps } = panelAction;
+                            const handleClick = async () => {
+                              // TODO: try catch handler
+                              try {
+                                await callRemote(action);
+                                if (onClick) {
+                                  onClick();
+                                }
+                              } catch (e) {
+                                message.error(e && e.message ? e.message : 'error');
+                              }
+                            };
+                            return (
+                              <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                {formatMessage({ id: title })}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                    {/* key pathname change transition will crash  */}
+                    <div key={activePanel.path || '/'} className={styles.content}>
+                      <ErrorBoundary className={styles['dashboard-error-boundary']}>
+                        {props.children}
+                      </ErrorBoundary>
+                    </div>
+                  </Content>
+                </div>
+              </Layout>
+            </div>
           );
         }}
       </Context.Consumer>

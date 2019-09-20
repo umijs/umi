@@ -98,4 +98,5 @@ export default {
   'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
   'org.umi.ui.configuration.detail': 'View Detail',
   'org.umi.ui.configuration.string.required': 'Please input value',
+  'org.umi.ui.global.dashboard.mini.full': 'Go to the full app',
 };

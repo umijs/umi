@@ -94,4 +94,5 @@ export default {
   'org.umi.ui.configuration.string.required': '请输入值',
   'org.umi.ui.configuration.basic.config.object.error': '配置参数不正确',
   'org.umi.ui.configuration.basic.config.object.select.error': '请选择相应的配置',
+  'org.umi.ui.global.dashboard.mini.full': '进入完整版',
 };

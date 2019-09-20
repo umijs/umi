@@ -55,7 +55,14 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     const { theme } = this.state;
     const { type, className, title } = this.props;
     const currentProject = window.g_uiCurrentProject || {};
-    const layoutCls = cls(locale, 'ui-layout', className);
+    const layoutCls = cls(
+      locale,
+      'ui-layout',
+      {
+        isMini: !!this.isMini,
+      },
+      className,
+    );
     window.g_uiContext = Context;
     // TODO: using config plugin register
     const framework = window.g_bigfish ? 'Bigfish UI' : 'Umi UI';

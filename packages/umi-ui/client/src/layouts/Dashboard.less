@@ -1,3 +1,67 @@
+.mini-header {
+  background-color: @layout-sider-background;
+  margin-bottom: 1px;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  &-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .gotoUi {
+    &:hover a::before {
+      width: 100%;
+    }
+    a {
+      font-size: 12px;
+      color: @text-color;
+      position: relative;
+      &::before {
+        position: absolute;
+        transition: width 0.3s ease-in;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 1px;
+        background-color: @text-color;
+        content: '';
+      }
+      svg {
+        font-size: 14px;
+        padding-right: 4px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+:global(.isMini) .sidebar {
+  li {
+    &:global(.ant-menu-item) {
+      margin-top: 16px;
+      margin-bottom: 24px;
+      &::before {
+        background-color: transparent;
+      }
+    }
+    &:global(.ant-menu-item) .menuIcon {
+      font-size: 20px;
+    }
+    &:global(.ant-menu-item-selected) {
+      background-color: transparent;
+      span,
+      svg {
+        color: @light;
+        font-weight: 500;
+      }
+    }
+  }
+}
 .normal {
   height: 100%;
   display: flex;
@@ -101,10 +165,16 @@
   li {
     margin-bottom: 6px;
     a {
-      padding-left: 5px;
-      display: block;
+      display: inline-block;
+    }
+    .menuIcon {
+      margin-right: 12px;
+    }
+    .menuItem a {
+      color: @text-color;
     }
     position: relative;
+
     &:global(.ant-menu-item) {
       padding-left: 24px;
       &::before {
@@ -119,6 +189,11 @@
     }
     &:global(.ant-menu-item-selected) {
       font-weight: 500;
+      span,
+      svg {
+        color: @heading-color;
+        font-weight: 500;
+      }
       &::before {
         height: 100%;
       }

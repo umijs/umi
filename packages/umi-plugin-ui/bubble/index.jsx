@@ -30,6 +30,7 @@ const IframeWrapper = styled('div')`
   z-index: 1001;
   bottom: 72px;
   right: 0;
+  box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
   width: 50vw;
   height: 60vh;
   display: ${props => (props.visible ? 'block' : 'none')};
