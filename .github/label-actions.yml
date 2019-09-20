@@ -12,6 +12,9 @@ actions:
     close: true
   -Need Reproduce:
     open: true
+  type(ssr):
+    comment: >
+      @ycjcl868 请看下。
   pkg(umi-request):
     comment: >
       @chenjsh36 请看下。

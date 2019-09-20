@@ -602,7 +602,7 @@ Additional configuration items for [css-loader](https://github.com/webpack-contr
 Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options) .
 
 - Type: `Object`
-- Default: `{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2019' }`
+- Default: `{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2009' }`
 
 If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
 

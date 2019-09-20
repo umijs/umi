@@ -15,7 +15,7 @@ function getOutputPath(webpackConfig) {
 }
 
 export default function build(opts = {}) {
-  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail, watch } = opts;
+  const { webpackConfig, cwd = process.cwd(), onSuccess, onFail } = opts;
   assert(webpackConfig, 'webpackConfig should be supplied.');
   assert(
     isPlainObject(webpackConfig) || Array.isArray(webpackConfig),

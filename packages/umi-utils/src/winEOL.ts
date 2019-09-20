@@ -8,7 +8,7 @@ const isWindows = typeof process !== 'undefined' && process.platform === 'win32'
  * Convert Windows crlf to lf (\r\n to \n)
  * @param content
  */
-export default (content: any) => {
+export default (content: string | undefined) => {
   if (typeof content !== 'string') {
     return content;
   }

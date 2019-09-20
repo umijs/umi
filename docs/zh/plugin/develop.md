@@ -723,8 +723,16 @@ export function render(oldRender) {
 
 ### writeTmpFile
 
-增加一个文件到"pages/.umi"下
+增加一个文件到临时目录 `pages/.umi` 下。
 
-```
+```js
 api.writeTmpFile('dva.js', tplContent);
+```
+
+### getRoutes
+
+获取最新路由。
+
+```js
+api.getRoutes();
 ```

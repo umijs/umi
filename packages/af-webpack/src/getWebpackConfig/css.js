@@ -53,9 +53,7 @@ export default function(webpackConfig, opts) {
     modules: true,
     localIdentName:
       cssOpts.localIdentName ||
-      (isDev
-        ? '[name]__[local]___[hash:base64:5]'
-        : '[local]___[hash:base64:5]'),
+      (isDev ? '[name]__[local]___[hash:base64:5]' : '[local]___[hash:base64:5]'),
   };
   const lessOptions = {
     modifyVars: theme,
@@ -83,55 +81,54 @@ export default function(webpackConfig, opts) {
       } else {
         rule
           .use('extract-css-loader')
-            .loader(require('mini-css-extract-plugin').loader)
-            .options({
-              publicPath: isDev ? '/' : opts.cssPublicPath,
-              hmr: isDev,
-            });
+          .loader(require('mini-css-extract-plugin').loader)
+          .options({
+            publicPath: isDev ? '/' : opts.cssPublicPath,
+            hmr: isDev,
+          });
       }
     }
     // https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
-    const cssLoader = opts.cssLoaderVersion === 2
-      ? (opts.ssr
+    const cssLoader =
+      opts.cssLoaderVersion === 2
+        ? opts.ssr
           ? 'css-loader/locals'
           : 'css-loader'
-        )
-      : (opts.ssr
-          ? 'css-loader-1/locals'
-          : 'css-loader-1'
-        )
+        : opts.ssr
+        ? 'css-loader-1/locals'
+        : 'css-loader-1';
 
     if (isDev && cssModules && opts.generateCssModulesTypings) {
       rule
         .use('css-modules-typescript-loader')
-        .loader(require.resolve('css-modules-typescript-loader'))
+        .loader(require.resolve('css-modules-typescript-loader'));
     }
 
     rule
       .use('css-loader')
-        .loader(require.resolve(cssLoader))
-        .options({
-          ...cssOpts,
-          ...(cssModules ? cssModulesConfig : {}),
-        });
+      .loader(require.resolve(cssLoader))
+      .options({
+        ...cssOpts,
+        ...(cssModules ? cssModulesConfig : {}),
+      });
 
     rule
       .use('postcss-loader')
-        .loader(require.resolve('postcss-loader'))
-        .options(postcssOptions);
+      .loader(require.resolve('postcss-loader'))
+      .options(postcssOptions);
 
     if (less) {
       rule
         .use('less-loader')
-          .loader(require.resolve('less-loader'))
-          .options(lessOptions);
+        .loader(require.resolve('less-loader'))
+        .options(lessOptions);
     }
 
     if (sass && hasSassLoader) {
       rule
         .use('sass-loader')
-          .loader(require.resolve('sass-loader'))
-          .options(opts.sass);
+        .loader(require.resolve('sass-loader'))
+        .options(opts.sass);
     }
   }
 
@@ -154,26 +151,17 @@ export default function(webpackConfig, opts) {
   }
 
   if (opts.cssModulesWithAffix) {
-    applyCSSRules(
-      webpackConfig.module.rule('.module.css').test(/\.module\.css$/),
-      {
-        cssModules: true,
-      },
-    );
-    applyCSSRules(
-      webpackConfig.module.rule('.module.less').test(/\.module\.less$/),
-      {
-        cssModules: true,
-        less: true,
-      },
-    );
-    applyCSSRules(
-      webpackConfig.module.rule('.module.sass').test(/\.module\.(sass|scss)$/),
-      {
-        cssModules: true,
-        sass: true,
-      },
-    );
+    applyCSSRules(webpackConfig.module.rule('.module.css').test(/\.module\.css$/), {
+      cssModules: true,
+    });
+    applyCSSRules(webpackConfig.module.rule('.module.less').test(/\.module\.less$/), {
+      cssModules: true,
+      less: true,
+    });
+    applyCSSRules(webpackConfig.module.rule('.module.sass').test(/\.module\.(sass|scss)$/), {
+      cssModules: true,
+      sass: true,
+    });
   }
 
   function cssExclude(filePath) {
@@ -194,10 +182,9 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css')
-        .test(/\.css$/)
-        .exclude
-          .add(cssExclude)
-          .end(),
+      .test(/\.css$/)
+      .exclude.add(cssExclude)
+      .end(),
     {
       cssModules: !opts.disableCSSModules,
     },
@@ -205,19 +192,17 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('css-in-node_modules')
-        .test(/\.css$/)
-        .include
-          .add(/node_modules/)
-          .end(),
+      .test(/\.css$/)
+      .include.add(/node_modules/)
+      .end(),
     {},
   );
   applyCSSRules(
     webpackConfig.module
       .rule('less')
-        .test(/\.less$/)
-        .exclude
-          .add(cssExclude)
-          .end(),
+      .test(/\.less$/)
+      .exclude.add(cssExclude)
+      .end(),
     {
       cssModules: !opts.disableCSSModules,
       less: true,
@@ -226,10 +211,9 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('less-in-node_modules')
-        .test(/\.less$/)
-        .include
-          .add(/node_modules/)
-          .end(),
+      .test(/\.less$/)
+      .include.add(/node_modules/)
+      .end(),
     {
       less: true,
     },
@@ -237,10 +221,9 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('sass')
-        .test(/\.(sass|scss)$/)
-        .exclude
-          .add(cssExclude)
-          .end(),
+      .test(/\.(sass|scss)$/)
+      .exclude.add(cssExclude)
+      .end(),
     {
       cssModules: !opts.disableCSSModules,
       sass: true,
@@ -249,10 +232,9 @@ export default function(webpackConfig, opts) {
   applyCSSRules(
     webpackConfig.module
       .rule('sass-in-node_modules')
-        .test(/\.(sass|scss)$/)
-        .include
-          .add(/node_modules/)
-          .end(),
+      .test(/\.(sass|scss)$/)
+      .include.add(/node_modules/)
+      .end(),
     {
       sass: true,
     },

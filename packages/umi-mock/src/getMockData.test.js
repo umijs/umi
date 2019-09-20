@@ -132,4 +132,15 @@ describe('umi-mock:getMockData', () => {
       expect(config[0].keys.map(key => key.name)).toEqual(['users', 'posts']);
     });
   });
+
+  test('getMockData parse failed', () => {
+    let parseFailed = false;
+    getMockData({
+      cwd: `${fixtures}/parse-failed`,
+      onError(e) {
+        parseFailed = true;
+      },
+    });
+    expect(parseFailed).toEqual(true);
+  });
 });
