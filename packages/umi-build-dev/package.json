@@ -72,7 +72,8 @@
     "webpack-node-externals": "1.7.2",
     "whatwg-fetch": "3.0.0",
     "write-file-webpack-plugin": "4.5.0",
-    "yeoman-generator": "4.0.1"
+    "yeoman-generator": "4.0.1",
+    "sort-package-json": "^1.22.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.136",

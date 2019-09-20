@@ -50,6 +50,11 @@ export function getNameFromPkg(pkg) {
   return pkg.name.split('/').pop();
 }
 
+/**
+ * 检查两个依赖之间的冲突
+ * @param {*} blockDeps
+ * @param {*} projectDeps
+ */
 function checkConflict(blockDeps, projectDeps) {
   const lacks = [];
   const conflicts = [];
@@ -61,6 +66,33 @@ function checkConflict(blockDeps, projectDeps) {
     }
   });
   return [lacks, conflicts];
+}
+
+/**
+ * 删除重复依赖，projectDeps 中的依赖从 blockDeps 中删除
+ * @param {*} blockDeps
+ * @param {*} projectDeps
+ */
+export function filterDependenciesRepeat(blockDeps, projectDeps) {
+  const filterDependencies = {};
+  Object.keys(blockDeps).forEach(key => {
+    if (!projectDeps[key]) {
+      filterDependencies[key] = blockDeps[key];
+    }
+  });
+  return filterDependencies;
+}
+
+/**
+ * 合并重复依赖
+ * @param {*} blockDeps
+ * @param {*} projectDeps
+ */
+export function mergeDependencies(blockDeps, projectDeps) {
+  return {
+    ...blockDeps,
+    ...projectDeps,
+  };
 }
 
 export function getAllBlockDependencies(rootDir, pkg) {
@@ -98,6 +130,13 @@ export function getAllBlockDependencies(rootDir, pkg) {
   return allDependencies;
 }
 
+/**
+ * 检查依赖项之间的冲突
+ * @param {*}} blockPkgDeps
+ * @param {*} projectPkgDeps
+ * @param {*} blockPkgDevDeps
+ * @param {*} projectPkgAllDeps
+ */
 export function dependenciesConflictCheck(
   blockPkgDeps = {},
   projectPkgDeps = {},
@@ -114,6 +153,11 @@ export function dependenciesConflictCheck(
   };
 }
 
+/**
+ * 获取 mock 的依赖
+ * @param {*} mockContent
+ * @param {*} blockPkg
+ */
 export function getMockDependencies(mockContent, blockPkg) {
   const allDependencies = {
     ...blockPkg.devDependencies,

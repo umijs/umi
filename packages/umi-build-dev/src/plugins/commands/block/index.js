@@ -148,18 +148,14 @@ export default api => {
 
     // 4. install additional dependencies
     // check dependencies conflict and install dependencies
-    if (skipDependencies) {
-      debug('skip dependencies');
-    } else {
-      // install
-      opts.remoteLog('Install extra dependencies');
-      spinner.start(`📦  install dependencies package`);
-      await installDependencies(
-        { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner },
-        ctx,
-      );
-      spinner.stopAndPersist();
-    }
+    // install
+    opts.remoteLog('Install extra dependencies');
+    spinner.start(`📦  install dependencies package`);
+    await installDependencies(
+      { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
+      ctx,
+    );
+    spinner.stopAndPersist();
 
     // 5. run generator
     opts.remoteLog('Generate files');
