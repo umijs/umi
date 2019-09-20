@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const HideWrapper = styled('div')`
   opacity: 0;
   position: absolute;
+  transform: scale(0);
   top: 0px;
   right: -22px;
   width: 20px;
@@ -13,7 +14,7 @@ export const HideWrapper = styled('div')`
   z-index: 999;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: all 0.2s ease;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 20px;
   &:hover {

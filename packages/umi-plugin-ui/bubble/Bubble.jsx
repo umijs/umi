@@ -20,7 +20,7 @@ const BubbleWrapper = styled('div')`
   border-radius: 50%;
   box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
   padding: 16px;
-  transition: background-color 0.2s ease 0s, opacity 0.2s ease 0s, transform 0.2s ease 0s;
+  transition: background-color 0.2s ease 0.1s, opacity 0.2s ease 0s, transform 0.2s ease 0.1s;
   &:hover {
     background-color: rgb(21, 59, 210);
     opacity: 1;
@@ -36,7 +36,7 @@ const CloseComponent = styled(Close)`
   transform: ${props =>
     props.open ? 'translateY(-50%)' : 'translateY(-50%) scale(0.4) rotate(-45deg);'};
   opacity: ${props => (props.open ? 1 : 0)};
-  transition: all 0.3s ease;
+  transition: all 0.3s ease 0.1s;
 `;
 
 class Bubble extends React.Component {
@@ -91,7 +91,7 @@ class Bubble extends React.Component {
       transform: ${props =>
         props.open ? 'translateY(-50%) scale(0.4) rotate(45deg)' : 'translateY(-50%)'};
       opacity: ${props => (props.open ? 0 : 1)};
-      transition: all 0.3s ease;
+      transition: all 0.3s ease 0.3s;
     `;
 
     return (

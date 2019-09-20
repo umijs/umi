@@ -3,10 +3,34 @@ import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 import Hide, { HideWrapper } from '../Hide';
 
+const Container = styled.div.attrs({
+  style: ({ x, y }) => ({
+    transform: `translate(${x}px, ${y}px)`,
+  }),
+})`
+  cursor: ${({ open }) => (open ? 'pointer' : 'grab')};
+  position: fixed;
+  right: 12px;
+  bottom: 28px;
+
+  ${({ isDragging, open }) =>
+    isDragging &&
+    !open &&
+    css`
+      cursor: grabbing;
+    `};
+  &:hover ${HideWrapper} {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
 export default class Draggable extends React.Component {
   constructor(props) {
     super(props);
     this.intervalStart = 0;
+    this.resizeX = null;
+    this.resizeY = null;
 
     this.state = {
       isDragging: false,
@@ -22,18 +46,53 @@ export default class Draggable extends React.Component {
     };
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mouseup', this.handleMouseUp);
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize, false);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove, false);
+    window.removeEventListener('mouseup', this.handleMouseUp, false);
+    window.removeEventListener('resize', this.handleResize, false);
+  }
+
+  handleResize = () => {
+    const node = ReactDOM.findDOMNode(this);
+    const { left, top } = node.getBoundingClientRect();
+    const { translateX, translateY } = this.state;
+    // if (left <= 0) {
+    //   // remember translateX
+    //   if (this.resizeX === null) {
+    //     this.resizeX = translateX;
+    //   }
+    //   this.setState(prev => ({
+    //     translateX: prev.translateX - left,
+    //   }))
+    // }
+    // if (top <= 0) {
+    //   // remember translateY
+    //   if (this.resizeY === null) {
+    //     this.resizeY = translateY;
+    //   }
+    //   this.setState(prev => ({
+    //     translateY: prev.translateY - top,
+    //   }))
+    // }
+
+    // console.log('node.getBoundingClientRect()', node.getBoundingClientRect());
+    // console.log('left', left);
+    // console.log('top', top);
+    // console.log('translateX', translateX);
+    // console.log('translateY', translateY);
+  };
 
   handleMouseDown = e => {
     e.preventDefault();
     e.stopPropagation();
     this.intervalStart = new Date().getTime();
     const { clientX, clientY } = e;
-    window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mouseup', this.handleMouseUp);
+    window.addEventListener('mousemove', this.handleMouseMove, false);
+    window.addEventListener('mouseup', this.handleMouseUp, false);
 
     if (this.props.onDragStart) {
       this.props.onDragStart();
@@ -114,24 +173,3 @@ export default class Draggable extends React.Component {
     );
   }
 }
-
-const Container = styled.div.attrs({
-  style: ({ x, y }) => ({
-    transform: `translate(${x}px, ${y}px)`,
-  }),
-})`
-  cursor: ${props => (props.open ? 'pointer' : 'grab')};
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-
-  ${({ isDragging, open }) =>
-    isDragging &&
-    !open &&
-    css`
-      cursor: grabbing;
-    `};
-  &:hover ${HideWrapper} {
-    opacity: 1;
-  }
-`;
