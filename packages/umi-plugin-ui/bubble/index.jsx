@@ -46,7 +46,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      open: undefined,
       connected: false,
       currentProject: props.currentProject,
     };
@@ -151,21 +151,23 @@ class App extends React.Component {
 
     return (
       <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
-        <IframeWrapper visible={open}>
-          <iframe
-            id="umi-ui-bubble"
-            onLoad={this.onIframeLoad}
-            style={{ width: '100%', height: '100%' }}
-            // localhost maybe hard code
-            src={`http://localhost:${port}/?mini${
-              currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
-            }`}
-            frameBorder="0"
-            scrolling="no"
-            seamless="seamless"
-            title="iframe_umi_ui"
-          />
-        </IframeWrapper>
+        {open !== undefined && (
+          <IframeWrapper visible={open}>
+            <iframe
+              id="umi-ui-bubble"
+              onLoad={this.onIframeLoad}
+              style={{ width: '100%', height: '100%' }}
+              // localhost maybe hard code
+              src={`http://localhost:${port}/?mini${
+                currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
+              }`}
+              frameBorder="0"
+              scrolling="no"
+              seamless="seamless"
+              title="iframe_umi_ui"
+            />
+          </IframeWrapper>
+        )}
       </Bubble>
     );
   }
