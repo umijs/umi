@@ -22,11 +22,11 @@ export default function({ types: t }) {
       i,
       0,
       t.JSXElement(
-        t.JSXOpeningElement(t.JSXIdentifier('g_UmiUIFlag'), [
+        t.JSXOpeningElement(t.JSXIdentifier('GUmiUIFlag'), [
           t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral('' + filename)),
           t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral('' + index)),
         ]),
-        t.JSXClosingElement(t.JSXIdentifier('g_UmiUIFlag')),
+        t.JSXClosingElement(t.JSXIdentifier('GUmiUIFlag')),
         [],
       ),
     );
@@ -59,13 +59,16 @@ export default function({ types: t }) {
   return {
     visitor: {
       ExportDefaultDeclaration(path, state) {
-        const { filename } = state;
-        const { node } = path;
-        if (t.isArrowFunctionExpression(node.declaration)) {
-          const retNode = findReturnStatement(node.declaration.body);
-          addUmiUIFlag(retNode, {
-            filename,
-          });
+        const { filename, opts = {} } = state;
+        assert(opts.doTransform, `opts.doTransform must supplied`);
+        if (opts.doTransform(filename)) {
+          const { node } = path;
+          if (t.isArrowFunctionExpression(node.declaration)) {
+            const retNode = findReturnStatement(node.declaration.body);
+            addUmiUIFlag(retNode, {
+              filename,
+            });
+          }
         }
       },
     },

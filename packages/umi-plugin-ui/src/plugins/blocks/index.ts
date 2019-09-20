@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { Resource, Block, AddBlockParams } from './data.d';
+import { join } from 'path';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -136,4 +137,56 @@ export default function(api: IApi) {
         break;
     }
   });
+
+  function getRouteComponents(routes) {
+    return routes.reduce((memo, route) => {
+      if (route.component && !route.component.startsWith('()')) {
+        memo.push(api.winPath(join(api.cwd, route.component)));
+      }
+      if (route.routes) {
+        memo = memo.concat(getRouteComponents(route.routes));
+      }
+      return memo;
+    }, []);
+  }
+
+  api.modifyAFWebpackOpts(memo => {
+    // TODO: 处理路由的热更新
+    const routes = api.getRoutes();
+    const routeComponents = getRouteComponents(routes);
+
+    memo.extraBabelPlugins = [
+      ...(memo.extraBabelPlugins || []),
+      [
+        require.resolve('./flagBabelPlugin'),
+        {
+          doTransform(filename) {
+            return routeComponents.includes(api.winPath(filename));
+          },
+        },
+      ],
+    ];
+    return memo;
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    api.addEntryCode(`
+(() => {
+  // Runtime block add component
+  window.GUmiUIFlag = require('${require.resolve('./flagBabelPlugin/GUmiUIFlag')}').default;
+  
+  // Enable/Disable block add edit mode
+  const el = document.createElement('style');
+  el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
+  document.querySelector('head').appendChild(el);
+  
+  window.g_enableUmiUIBlockAddEditMode = function() {
+    el.innerHTML = '';
+  };
+  window.g_disableUmiUIBlockAddEditMode = function() {
+    el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
+  };
+})();
+    `);
+  }
 }
