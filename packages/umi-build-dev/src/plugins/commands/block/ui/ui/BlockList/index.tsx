@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Col, Empty, Row, Spin, Typography, Tag } from 'antd';
+import { Col, Empty, Row, Spin, Typography, Tag } from 'antd';
 import uniq from 'lodash/uniq';
 import flatten from 'lodash/flatten';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
-import { Block } from '../../../data.d';
+import Adder from '../Adder';
+import { Block, AddBlockParams } from '../../data.d';
 
 const { CheckableTag } = Tag;
 
@@ -14,7 +15,7 @@ interface BlockListProps {
   type: string;
   list: Block[];
   addingBlock: string;
-  onAdd: (block: Block) => void;
+  onAdd: (params: AddBlockParams) => void;
   loading?: boolean;
   keyword?: string;
 }
@@ -78,16 +79,9 @@ const BlockList: React.FC<BlockListProps> = props => {
                     <Spin className={styles.spin} tip="Adding..." />
                   ) : (
                     <div className={styles.addProject}>
-                      <Button
-                        type="primary"
-                        onClick={e => {
-                          onAdd(item);
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
+                      <Adder block={item} onAdded={onAdd}>
                         添加到项目
-                      </Button>
+                      </Adder>
                     </div>
                   )}
                   <img src={item.img} alt={item.url} />
