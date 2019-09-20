@@ -1,5 +1,6 @@
 .emptyWrapper {
   margin: 120px auto;
+  text-align: center;
 }
 :global {
   .ant-empty {
@@ -7,6 +8,10 @@
       display: block;
     }
   }
+}
+
+.tagContainer {
+  margin-bottom: 16px;
 }
 
 .blockCard,
@@ -90,12 +95,12 @@
       margin-top: 20px;
 
       .tags {
-        color: rgba(0, 0, 0, 0.45);
+        color: fade(#fff, 45);
         font-size: 12px;
         line-height: 22px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 120px;
+        max-width: 160px;
         height: 20px;
         overflow: hidden;
 

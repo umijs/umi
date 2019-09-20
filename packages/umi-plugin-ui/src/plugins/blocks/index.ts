@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
-import { Resource, Block, AddBlockParams } from 'data.d';
+import { Resource, Block, AddBlockParams } from './data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -63,7 +63,7 @@ export default function(api: IApi) {
         isPage: true,
         defaultPath: `/${name}`,
         img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
-        tags: [],
+        tags: ['Ant Design Pro', '测试标签'],
       };
     });
   }
@@ -72,12 +72,18 @@ export default function(api: IApi) {
 
   const reources: Resource[] = [
     {
-      // TODO 支持扩展或者自定义
       id: 'ant-design-pro',
       name: 'Ant Design Pro',
       resourceType: 'github',
       blockType: 'template',
       url: 'https://github.com/ant-design/pro-blocks',
+    },
+    {
+      id: 'umijs',
+      name: 'UmiJS Official',
+      resourceType: 'github',
+      blockType: 'template',
+      url: 'https://github.com/umijs/umi-blocks',
     },
   ];
 
