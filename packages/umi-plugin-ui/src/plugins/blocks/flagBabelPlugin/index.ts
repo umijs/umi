@@ -1,20 +1,27 @@
 import assert from 'assert';
 
 export default function({ types: t }) {
-  function findReturnStatement(node) {
+  function findReturnNode(node) {
     if (t.isJSXElement(node)) {
       return node;
     }
-
     if (t.isBlockStatement(node)) {
       for (const n of node.body) {
         if (t.isReturnStatement(n)) {
-          return n;
+          return n.argument;
         }
       }
     }
-
     throw new Error(`Find return statement failed, unsupported node type ${node.type}.`);
+  }
+
+  function findRenderStatement(node) {
+    for (const n of node.body) {
+      if (t.isClassMethod(n) && t.isIdentifier(n.key) && n.key.name === 'render') {
+        return n.body;
+      }
+    }
+    throw new Error(`Find render statement failed`);
   }
 
   function addFlagToIndex(nodes, i, { index, filename }) {
@@ -61,10 +68,20 @@ export default function({ types: t }) {
       ExportDefaultDeclaration(path, state) {
         const { filename, opts = {} } = state;
         assert(opts.doTransform, `opts.doTransform must supplied`);
+
         if (opts.doTransform(filename)) {
           const { node } = path;
-          if (t.isArrowFunctionExpression(node.declaration)) {
-            const retNode = findReturnStatement(node.declaration.body);
+          const d = node.declaration;
+          let retNode;
+
+          if (t.isArrowFunctionExpression(d) || t.isFunctionDeclaration(d)) {
+            retNode = findReturnNode(d.body);
+          }
+          if (t.isClassDeclaration(d)) {
+            retNode = findReturnNode(findRenderStatement(d.body));
+          }
+
+          if (retNode) {
             addUmiUIFlag(retNode, {
               filename,
             });
