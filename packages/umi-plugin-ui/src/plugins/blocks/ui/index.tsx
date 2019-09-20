@@ -59,43 +59,40 @@ const BlocksViewer: React.FC<Props> = props => {
     })();
   }, []);
 
-  function addHandler(block) {
+  function addHandler(params) {
     (async () => {
-      const { defaultPath, url } = block;
-      let path = defaultPath;
-      const { exists } = await callRemote({
-        type: 'org.umi.block.checkexist',
-        payload: {
-          path,
-        },
-      });
+      const { url } = params;
+      // let path = defaultPath;
+      // const { exists } = await callRemote({
+      //   type: 'org.umi.block.checkexist',
+      //   payload: {
+      //     path,
+      //   },
+      // });
 
       // block 存在时加数字后缀找一个不存在的
-      if (exists) {
-        let count = 2;
-        while (true) {
-          const { exists } = await callRemote({
-            type: 'org.umi.block.checkexist',
-            payload: {
-              path: `${path}-${count}`,
-            },
-          });
-          if (exists) {
-            count += 1;
-          } else {
-            path = `${path}-${count}`;
-            break;
-          }
-        }
-      }
+      // if (exists) {
+      //   let count = 2;
+      //   while (true) {
+      //     const { exists } = await callRemote({
+      //       type: 'org.umi.block.checkexist',
+      //       payload: {
+      //         path: `${path}-${count}`,
+      //       },
+      //     });
+      //     if (exists) {
+      //       count += 1;
+      //     } else {
+      //       path = `${path}-${count}`;
+      //       break;
+      //     }
+      //   }
+      // }
 
       setBlockAdding(url);
       await callRemote({
         type: 'org.umi.block.add',
-        payload: {
-          url,
-          path,
-        },
+        payload: params,
       });
       setBlockAdding(null);
     })();
@@ -124,8 +121,8 @@ const BlocksViewer: React.FC<Props> = props => {
             type="block"
             addingBlock={blockAdding}
             list={blocks}
-            onAdd={block => {
-              addHandler(block);
+            onAdd={params => {
+              addHandler(params);
             }}
           />
         </div>
