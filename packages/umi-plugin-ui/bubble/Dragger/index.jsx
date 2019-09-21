@@ -13,6 +13,9 @@ const Container = styled.div.attrs({
   right: 12px;
   bottom: 28px;
 
+  * {
+    box-sizing: border-box;
+  }
   ${({ isDragging, open }) =>
     isDragging &&
     !open &&

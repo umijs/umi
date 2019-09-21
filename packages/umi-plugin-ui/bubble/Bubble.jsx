@@ -8,8 +8,8 @@ import Close from './Close';
 
 const BubbleWrapper = styled('div')`
   background-color: ${props => (props.open ? '#30303D' : '#454550')};
-  height: 28px;
-  width: 28px;
+  height: 60px;
+  width: 60px;
   pointer-events: none;
   cursor: pointer;
   display: flex;

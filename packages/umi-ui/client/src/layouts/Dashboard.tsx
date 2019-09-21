@@ -1,5 +1,5 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button, message, Tooltip } from 'antd';
+import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { Left, CaretDown, Export } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
@@ -107,25 +107,30 @@ export default withRouter(props => {
           return (
             <div className={styles.normal}>
               {isMini && (
-                <div className={styles['mini-header']}>
-                  <div>
+                <Row
+                  type="flex"
+                  align="middle"
+                  justify="space-between"
+                  className={styles['mini-header']}
+                >
+                  <Col>
                     <p className={styles['mini-header-name']}>
                       {currentProject ? currentProject.name : ''}
                     </p>
                     <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
                       <Export onClick={openEditor} />
                     </Tooltip>
-                  </div>
-                  <div className={styles.gotoUi}>
+                  </Col>
+                  <Col className={styles.gotoUi}>
                     <a target="_blank" rel="noopener noreferrer" href={window.location.origin}>
                       <Redirect />
                       <span>进入完整版</span>
                     </a>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
               )}
               <Layout>
-                <div className={styles.wrapper}>
+                <Row type="flex" className={styles.wrapper}>
                   <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
                     {!isMini && (
                       <div className={styles['sidebar-name']}>
@@ -214,7 +219,7 @@ export default withRouter(props => {
                       </ErrorBoundary>
                     </div>
                   </Content>
-                </div>
+                </Row>
               </Layout>
             </div>
           );
