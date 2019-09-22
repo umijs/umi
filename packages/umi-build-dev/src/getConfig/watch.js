@@ -4,7 +4,7 @@ import { join, isAbsolute } from 'path';
 // 按 key 存，值为数组
 const watchers = {};
 
-function toAbsolute(p) {
+export function toAbsolute(p) {
   if (isAbsolute(p)) {
     return p;
   }

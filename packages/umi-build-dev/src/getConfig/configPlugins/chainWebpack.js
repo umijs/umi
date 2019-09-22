@@ -6,7 +6,7 @@ export default function(api) {
     validate(val) {
       assert(
         typeof val === 'function',
-        `Configure item outputPath should be Function, but got ${val}.`,
+        `Configure item chainWebpack should be Function, but got ${val}.`,
       );
     },
     onChange() {

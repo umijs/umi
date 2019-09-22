@@ -2,6 +2,7 @@ import { winPath } from 'umi-utils';
 import { join } from 'path';
 import { writeFileSync } from 'fs';
 import rimraf from 'rimraf';
+import slash2 from 'slash2';
 import getUserConfig, {
   requireFile,
   getConfigFile,
@@ -88,7 +89,10 @@ test('config with UMI_CONFIG_FILE env', () => {
 });
 
 test('getConfigPaths', () => {
-  expect(getConfigPaths('foo')).toEqual([
+  function winPathFiles(files) {
+    return files.map(f => slash2(f));
+  }
+  expect(winPathFiles(getConfigPaths('foo'))).toEqual([
     'foo/config/',
     'foo/.umirc.js',
     'foo/.umirc.ts',
@@ -96,7 +100,7 @@ test('getConfigPaths', () => {
     'foo/.umirc.local.ts',
   ]);
   process.env.UMI_ENV = 'cloud';
-  expect(getConfigPaths('foo')).toEqual([
+  expect(winPathFiles(getConfigPaths('foo'))).toEqual([
     'foo/config/',
     'foo/.umirc.js',
     'foo/.umirc.ts',

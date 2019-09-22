@@ -37,9 +37,11 @@ class UserConfig {
 
   initConfigPlugins() {
     const map = requireindex(join(__dirname, 'getConfig/configPlugins'));
-    let plugins = Object.keys(map).map(key => {
-      return map[key].default;
-    });
+    let plugins = Object.keys(map)
+      .filter(key => !key.includes('.test.'))
+      .map(key => {
+        return map[key].default;
+      });
     plugins = this.service.applyPlugins('_registerConfig', {
       initialValue: plugins,
     });
