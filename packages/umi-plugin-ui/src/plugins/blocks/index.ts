@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
-import { Resource, Block, AddBlockParams } from './data.d';
 import { join } from 'path';
+
+import { Resource, Block, AddBlockParams } from './data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -16,8 +17,8 @@ export function routeExists(path, routes) {
   return false;
 }
 
-export default function(api: IApi) {
-  const log = api.log.log;
+export default (api: IApi) => {
+  const { log } = api.log;
 
   function getRoutes() {
     return [];
@@ -58,7 +59,7 @@ export default function(api: IApi) {
       'UserRegisterResult',
     ].map(name => {
       return {
-        name: name,
+        name,
         description: name,
         url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
         isPage: true,
@@ -89,25 +90,35 @@ export default function(api: IApi) {
   ];
 
   api.onUISocket(({ action, failure, success }) => {
+    const { path } = payload;
+    const routes = getRoutes();
     const { type, payload, lang } = action;
     switch (type) {
+      // 区块获得项目的路由
       case 'org.umi.block.routes':
         success({
           data: [],
         });
+        break;
+
+      // 区块获得数据源
       case 'org.umi.block.resource':
         success({
           data: reources,
         });
         break;
+
+      // 获取区块列表
       case 'org.umi.block.list':
         success({
           data: getBlocks(),
         });
         break;
+
+      // 区块添加
       case 'org.umi.block.add':
         (async () => {
-          const { url, path } = payload as AddBlockParams;
+          const { url } = payload as AddBlockParams;
           log(`Adding block ${chalk.magenta(url)} as ${path} ...`);
           try {
             await api.service.runCommand(
@@ -126,9 +137,9 @@ export default function(api: IApi) {
           }
         })();
         break;
+
+      // 检查路由是否存在
       case 'org.umi.block.checkexist':
-        const { path } = payload;
-        const routes = getRoutes();
         success({
           exists: routeExists(path, routes),
         });
@@ -189,4 +200,4 @@ export default function(api: IApi) {
 })();
     `);
   }
-}
+};
