@@ -132,6 +132,7 @@ export default withRouter(props => {
               <Layout>
                 <Row type="flex" className={styles.wrapper}>
                   <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
+                    {/* Projects Switch */}
                     {!isMini && (
                       <div className={styles['sidebar-name']}>
                         <Left
@@ -170,8 +171,7 @@ export default withRouter(props => {
                             <NavLink exact to={`${panel.path}${search}`}>
                               <Icon className={styles.menuIcon} {...icon} />
                               {isMini ? (
-                                <p className={styles.menuItem}>
-                                  {' '}
+                                <p>
                                   <FormattedMessage id={panel.title} />
                                 </p>
                               ) : (

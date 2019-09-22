@@ -40,14 +40,27 @@
 :global(.isMini) .sidebar {
   li {
     &:global(.ant-menu-item) {
-      margin-top: 16px;
+      &:first-child {
+        margin-top: 16px;
+      }
       margin-bottom: 24px;
+      height: auto;
+      overflow: inherit;
+      padding: 0 14px !important;
+      text-align: center;
+      & > a {
+        line-height: 1.5;
+        & > p {
+          white-space: pre-wrap;
+        }
+      }
       &::before {
         background-color: transparent;
       }
     }
     &:global(.ant-menu-item) .menuIcon {
-      font-size: 20px;
+      font-size: 16px;
+      line-height: inherit;
     }
     &:global(.ant-menu-item-selected) {
       background-color: transparent;
