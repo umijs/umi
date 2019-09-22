@@ -191,6 +191,12 @@ export default withRouter(props => {
                       {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
                         <div className={styles['header-actions']}>
                           {activePanel.actions.map((panelAction, j) => {
+                            if (
+                              typeof panelAction === 'function' &&
+                              React.isValidElement(panelAction())
+                            ) {
+                              return panelAction();
+                            }
                             const { title, action, onClick, ...btnProps } = panelAction;
                             const handleClick = async () => {
                               // TODO: try catch handler
@@ -204,9 +210,11 @@ export default withRouter(props => {
                               }
                             };
                             return (
-                              <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                {formatMessage({ id: title })}
-                              </Button>
+                              title && (
+                                <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                  {formatMessage({ id: title })}
+                                </Button>
+                              )
                             );
                           })}
                         </div>

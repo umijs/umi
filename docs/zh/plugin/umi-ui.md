@@ -222,7 +222,7 @@ api.addPanel({
   // 图标，同 antd icon
   icon: IconType | string;
   // 全局操作按钮，位于插件面板右上角
-  actions?: {
+  actions?: ReactNode[] | {
     // 标题
     title: string;
     // 按钮样式
