@@ -1,4 +1,44 @@
-import { update } from './setConfig';
+import rimraf from 'rimraf';
+import { writeFileSync, readFileSync } from 'fs';
+import { join } from 'path';
+import setConfig, { update } from './setConfig';
+
+const fixture = join(__dirname, 'fixtures', 'setConfig');
+
+test('setConfig', () => {
+  const file = join(fixture, 'a.js');
+  writeFileSync(file, `export default { hash: true }`, 'utf-8');
+  setConfig({
+    key: 'hash',
+    value: 'false',
+    file,
+  });
+  expect(readFileSync(file, 'utf-8').trim()).toEqual(
+    `
+export default {
+  hash: false,
+};
+  `.trim(),
+  );
+  rimraf.sync(file);
+});
+
+test('setConfig file not exist', () => {
+  const file = join(fixture, 'b.js');
+  setConfig({
+    key: 'hash',
+    value: 'false',
+    file,
+  });
+  expect(readFileSync(file, 'utf-8').trim()).toEqual(
+    `
+export default {
+  hash: false,
+};
+  `.trim(),
+  );
+  rimraf.sync(file);
+});
 
 test('update list', () => {
   expect(
