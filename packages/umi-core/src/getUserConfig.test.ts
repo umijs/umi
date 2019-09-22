@@ -1,6 +1,15 @@
 import { winPath } from 'umi-utils';
 import { join } from 'path';
-import getUserConfig, { getConfigFile, mergeConfigs, addAffix } from './getUserConfig';
+import { writeFileSync } from 'fs';
+import rimraf from 'rimraf';
+import getUserConfig, {
+  requireFile,
+  getConfigFile,
+  mergeConfigs,
+  addAffix,
+  getConfigPaths,
+  cleanConfigRequireCache,
+} from './getUserConfig';
 
 const fixtures = winPath(`${__dirname}/fixtures/getUserConfig`);
 
@@ -76,4 +85,59 @@ test('config with UMI_CONFIG_FILE env', () => {
     history: 'hash',
   });
   process.env.UMI_CONFIG_FILE = '';
+});
+
+test('getConfigPaths', () => {
+  expect(getConfigPaths('foo')).toEqual([
+    'foo/config/',
+    'foo/.umirc.js',
+    'foo/.umirc.ts',
+    'foo/.umirc.local.js',
+    'foo/.umirc.local.ts',
+  ]);
+  process.env.UMI_ENV = 'cloud';
+  expect(getConfigPaths('foo')).toEqual([
+    'foo/config/',
+    'foo/.umirc.js',
+    'foo/.umirc.ts',
+    'foo/.umirc.local.js',
+    'foo/.umirc.local.ts',
+    'foo/.umirc.cloud.js',
+    'foo/.umirc.cloud.ts',
+  ]);
+  process.env.UMI_ENV = '';
+});
+
+test('requireFile', () => {
+  expect(requireFile('/file/not/exists')).toEqual({});
+});
+
+test('requireFile with syntax error', () => {
+  let error;
+  requireFile(join(fixtures, 'requireFile', 'syntaxError.js'), {
+    onError(e) {
+      error = e;
+    },
+  });
+  expect(error.message).toEqual('a is not defined');
+});
+
+// Why xtest this: require.cache in jest in always empty ([])
+xtest('cleanConfigRequireCache', () => {
+  const cwd = join(fixtures, 'cleanConfigRequireCache');
+  const configPath = join(cwd, '.umirc.js');
+  writeFileSync(configPath, `export default { foo: 'bar' };`, 'utf-8');
+  expect(
+    getUserConfig({
+      cwd,
+    }),
+  ).toEqual({ foo: 'bar' });
+  cleanConfigRequireCache(cwd);
+  writeFileSync(configPath, `export default { bar: 'foo' };`, 'utf-8');
+  expect(
+    getUserConfig({
+      cwd,
+    }),
+  ).toEqual({ bar: 'foo' });
+  rimraf.sync(configPath);
 });
