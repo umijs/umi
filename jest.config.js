@@ -2,7 +2,7 @@ const testMatchPrefix = process.env.PACKAGE ? `**/packages/${process.env.PACKAGE
 const collectCoveragePrefix = process.env.PACKAGE ? process.env.PACKAGE : '**';
 
 module.exports = {
-  testEnvironment: 'node',
+  // testEnvironment: 'node',
   testMatch:
     process.env.E2E === 'none'
       ? [`${testMatchPrefix}/?*.(spec|test).(j|t)s?(x)`]

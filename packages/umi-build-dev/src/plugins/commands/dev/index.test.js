@@ -28,7 +28,7 @@ afterAll(() => {
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-test('dev', async () => {
+xtest('dev', async () => {
   const { port, server } = await s.runCommand('dev', {
     _: [],
   });
