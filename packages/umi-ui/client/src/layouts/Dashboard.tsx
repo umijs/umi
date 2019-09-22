@@ -189,7 +189,7 @@ export default withRouter(props => {
                     <div className={styles.header}>
                       <h1>{activePanel && title}</h1>
                       {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
-                        <div className={styles['header-actions']}>
+                        <Row type="flex" className={styles['header-actions']}>
                           {activePanel.actions.map((panelAction, j) => {
                             if (
                               typeof panelAction === 'function' &&
@@ -217,7 +217,7 @@ export default withRouter(props => {
                               )
                             );
                           })}
-                        </div>
+                        </Row>
                       )}
                     </div>
                     {/* key pathname change transition will crash  */}

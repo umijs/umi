@@ -253,6 +253,41 @@ export default (api) => {
 };
 ```
 
+添加插件全局操作区：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+import Template from './ui/index';
+
+export default (api) => {
+  const ActionComp = () => (
+    <Input.Search />
+  )
+
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    actions: [ActionComp, {
+      title: '打开编辑器',
+      type: 'default',
+      action: {
+        // 通过 api.onUISocket 定义
+        type: '@@actions/openConfigFile',
+        payload: {
+          projectPath: api.currentProject.path,
+        },
+      }
+    }]
+    // api 透传至组件
+    component: () => <Template api={api} />,
+  });
+};
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65385510-0b710300-dd62-11e9-8f92-99c3eff45833.png)
+
 ### api.addLocales()
 
 添加全局国际化信息。
