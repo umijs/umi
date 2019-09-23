@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Col, Empty, Row, Spin, Typography, Tag } from 'antd';
-import uniq from 'lodash/uniq';
-import flatten from 'lodash/flatten';
+import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -11,6 +10,7 @@ import { Block, AddBlockParams } from '../../data.d';
 const { CheckableTag } = Tag;
 
 interface BlockListProps {
+  _: IUiApi['_'];
   name?: string;
   type: string;
   list: Block[];
@@ -34,7 +34,8 @@ const renderMetas = (item: any, keyword?: string) => (
 );
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd } = props;
+  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd, _ } = props;
+  const { uniq, flatten } = _;
   const tags: string[] = useMemo<string[]>(
     () => {
       return uniq(flatten(list.map(item => item.tags)));
@@ -123,6 +124,7 @@ const BlockList: React.FC<BlockListProps> = props => {
           return (
             <CheckableTag
               checked={selectedTag === tag}
+              key={tag}
               onChange={checked => {
                 if (checked) {
                   setSelectedTag(tag);
