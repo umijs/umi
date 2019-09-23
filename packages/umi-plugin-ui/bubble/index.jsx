@@ -4,6 +4,8 @@ import styled, { keyframes } from 'styled-components';
 import { callRemote, init as initSocket } from './socket';
 import * as ENUM from './enum';
 import Bubble from './Bubble';
+import Loading from './Loading';
+import Error from './Error';
 
 const fadeInUp = keyframes`
   from {
@@ -25,20 +27,36 @@ const fadeOutDown = keyframes`
   }
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #fff;
+  height: 100%;
+`;
+
 const IframeWrapper = styled('div')`
   position: absolute;
   z-index: 1001;
   bottom: 72px;
   right: 0;
   box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
+  background: #23232d;
   width: 68vw;
   height: 80vh;
   display: ${props => (props.visible ? 'block' : 'none')};
   animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
   opacity: ${props => (props.visible ? 1 : 0)};
-  & > div {
+  & > * {
     animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
     opacity: ${props => (props.visible ? 1 : 0)};
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
 `;
 
@@ -48,6 +66,8 @@ class App extends React.Component {
     this.state = {
       open: undefined,
       connected: false,
+      uiLoaded: false,
+      errMsg: '',
       currentProject: props.currentProject,
     };
     window.addEventListener('message', this.handleMessage, false);
@@ -56,6 +76,14 @@ class App extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('message', this.handleMessage, false);
   }
+
+  getMiniUrl = () => {
+    const { port } = this.props;
+    const { currentProject } = this.state;
+    return `http://localhost:${port}/?mini${
+      currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
+    }`;
+  };
 
   handleMessage = event => {
     try {
@@ -85,7 +113,13 @@ class App extends React.Component {
   async componentDidMount() {
     const { port } = this.props;
     try {
-      await initSocket(`http://localhost:${port}/umiui`);
+      await initSocket(`http://localhost:${port}/umiui`, {
+        onError: e => {
+          this.setState({
+            connected: false,
+          });
+        },
+      });
       this.setState({
         connected: true,
       });
@@ -113,9 +147,6 @@ class App extends React.Component {
           currentProject: res,
         });
       }
-    } else {
-      // TODO: message.error
-      alert('未连接 UI socket');
     }
   };
 
@@ -127,7 +158,9 @@ class App extends React.Component {
   };
 
   onIframeLoad = () => {
-    console.log('iframe loaded');
+    this.setState({
+      uiLoaded: true,
+    });
   };
 
   toggleMiniOpen = () => {
@@ -140,26 +173,35 @@ class App extends React.Component {
   };
 
   render() {
-    const { open, currentProject, connected } = this.state;
+    const { open, currentProject, connected, uiLoaded, errMsg } = this.state;
     const { port, isBigfish = false } = this.props;
+    const miniUrl = this.getMiniUrl();
 
     return (
       <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
         {open !== undefined && (
           <IframeWrapper visible={open}>
-            <iframe
-              id="umi-ui-bubble"
-              onLoad={this.onIframeLoad}
-              style={{ width: '100%', height: '100%' }}
-              // localhost maybe hard code
-              src={`http://localhost:${port}/?mini${
-                currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
-              }`}
-              frameBorder="0"
-              scrolling="no"
-              seamless="seamless"
-              title="iframe_umi_ui"
-            />
+            {!uiLoaded && (
+              <LoadingWrapper>
+                <Loading />
+                <p style={{ marginTop: 8 }}>加载中</p>
+              </LoadingWrapper>
+            )}
+            {!connected ? (
+              <Error isBigfish={isBigfish} />
+            ) : (
+              <iframe
+                id="umi-ui-bubble"
+                onLoad={this.onIframeLoad}
+                style={{ width: '100%', height: '100%' }}
+                // localhost maybe hard code
+                src={miniUrl}
+                frameBorder="0"
+                scrolling="no"
+                seamless="seamless"
+                title="iframe_umi_ui"
+              />
+            )}
           </IframeWrapper>
         )}
       </Bubble>
