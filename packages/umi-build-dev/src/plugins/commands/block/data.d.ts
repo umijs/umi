@@ -28,6 +28,7 @@ export interface Resource {
 
 export interface AddBlockParams {
   url: string;
+  routePath: string;
   name?: string;
   path?: string;
   isPage?: boolean;

@@ -91,6 +91,16 @@ export default (api: IApiBlock) => {
         });
         break;
 
+      // 获得项目 page 下的目录结构
+      case 'org.umi.block.pageFolders':
+        log(`🕵️‍ get pageFolders from ${chalk.yellow(api.cwd)}`);
+        uiLog('info', `🕵️‍ get pageFolders from ${chalk.yellow(api.cwd)}`);
+
+        success({
+          data: genRouterToTreeData(api.config.routes),
+        });
+        break;
+
       // 清空缓存
       case 'org.umi.block.clear':
         log('block: clear cache');

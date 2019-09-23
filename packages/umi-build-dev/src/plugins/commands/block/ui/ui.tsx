@@ -28,6 +28,15 @@ export default (api: IUiApi) => {
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
     icon: 'environment',
+    actions: [
+      {
+        title: '清除缓存',
+        type: 'default',
+        action: {
+          type: 'org.umi.block.clear',
+        },
+      },
+    ],
     component: () => <BlocksViewer api={api} />,
   });
 };

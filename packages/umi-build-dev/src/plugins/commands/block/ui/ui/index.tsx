@@ -1,80 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Button, Tabs, Spin, Radio } from 'antd';
+import React, { useState } from 'react';
+import { Input, Tabs, Spin, Radio } from 'antd';
 import { IUiApi } from 'umi-types';
-import decamelize from 'decamelize';
 
 import { Resource, Block } from '../../data.d';
 import BlockList from './BlockList';
+import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-function nameToPath(name) {
-  return `/${decamelize(name, '-')}`;
-}
-
 interface Props {
   api: IUiApi;
 }
-
-const clearCache = async (api: IUiApi) =>
-  api.callRemote({
-    type: 'org.umi.block.clear',
-  });
 
 const BlocksViewer: React.FC<Props> = props => {
   const { api } = props;
   const { callRemote, intl } = api;
   const [blockAdding, setBlockAdding] = useState(null);
-  const [blocks, setBlocks] = useState([]);
   const [type, setType] = useState<Resource['blockType']>('block');
-  const [current, setCurrent] = useState<Resource>(null);
-  const [loading, setLoading] = useState(false);
-  const [resources, setResources] = useState<Resource[]>([]);
-  useEffect(() => {
-    (async () => {
-      const { data } = (await callRemote({
-        type: 'org.umi.block.routes',
-      })) as {
-        data: any[];
-      };
-      console.log(data);
-    })();
-  }, []);
-  useEffect(
+  const [activeResource, setActiveResource] = useState<Resource>(null);
+
+  const { data: resources } = useCallData<Resource[]>(
     () => {
-      if (!current) {
-        return;
-      }
-      (async () => {
-        setLoading(true);
-        const { data } = (await callRemote({
-          type: 'org.umi.block.list',
-          payload: {
-            reources: current.id,
-          },
-        })) as { data: Block[] };
-        setBlocks(data);
-        setLoading(false);
-      })();
+      return callRemote({
+        type: 'org.umi.block.resource',
+      }) as any;
     },
-    [current],
+    [],
+    {
+      defaultData: [],
+    },
   );
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const { data } = (await callRemote({
-        type: 'org.umi.block.resource',
-      })) as {
-        data: Resource[];
-      };
-      setResources(data);
-      setCurrent(data[0]);
-      setLoading(false);
-    })();
-  }, []);
+  const current: Resource | undefined = activeResource || resources[0];
+
+  const { data: blocks, loading } = useCallData<Block[]>(
+    () => {
+      if (!current) {
+        return [];
+      }
+      return callRemote({
+        type: 'org.umi.block.list',
+        payload: {
+          reources: current.id,
+        },
+      }) as any;
+    },
+    [current],
+    {
+      defaultData: [],
+    },
+  );
 
   function addHandler(params) {
     (async () => {
@@ -124,13 +101,6 @@ const BlocksViewer: React.FC<Props> = props => {
         placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
         onSearch={value => console.log(value)}
       />
-      <Button
-        onClick={() => {
-          clearCache(api);
-        }}
-      >
-        清除
-      </Button>
       {current ? (
         <div className={styles.blocklist}>
           <Tabs activeKey={type} onChange={setType}>
@@ -141,7 +111,7 @@ const BlocksViewer: React.FC<Props> = props => {
             <Radio.Group
               value={current.id}
               onChange={e => {
-                setCurrent(matchedResources.find(r => r.id === e.target.value));
+                setActiveResource(matchedResources.find(r => r.id === e.target.value));
               }}
             >
               {matchedResources.map(r => {
@@ -156,7 +126,7 @@ const BlocksViewer: React.FC<Props> = props => {
           {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
           {matchedResources.length > 0 ? (
             <BlockList
-              _={api._}
+              api={api}
               loading={loading}
               type={type}
               addingBlock={blockAdding}
