@@ -28,7 +28,6 @@ export default function(opts = {}) {
     './plugins/commands/version',
     './plugins/global-js',
     './plugins/global-css',
-    './plugins/base',
     './plugins/mountElementId',
     './plugins/mock',
     './plugins/proxy',

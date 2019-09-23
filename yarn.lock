@@ -4418,10 +4418,10 @@ fastparse@^1.1.1:
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
   integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
 
-father-build@^1.6.1:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.8.0.tgz#b3fe083dc8d615651d47a37581ab8795eee4311d"
-  integrity sha512-nn7thyGKLaUzyyWPHKyXdmNC1dgffxqc9QBHkua3cdI4i24CaT/3foAC0qkOzYn5Vl15HkrAG5RhArVgJthXAg==
+father-build@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.9.4.tgz#86970338e1d013f49446d0e123a89e62405bd07d"
+  integrity sha512-de4xr1A5eg82p5yQOip90xJhaWT6H6O6l2BAJ17TPjMQICz0JDmiSmXuqFxR9OvNFctw3/bYDm2gPmpPpfu+4A==
   dependencies:
     "@babel/core" "7.4.5"
     "@babel/plugin-proposal-class-properties" "7.4.4"
@@ -4453,6 +4453,7 @@ father-build@^1.6.1:
     rollup "1.15.1"
     rollup-plugin-babel "4.3.2"
     rollup-plugin-commonjs "10.0.0"
+    rollup-plugin-inject "3.0.1"
     rollup-plugin-json "4.0.0"
     rollup-plugin-node-resolve "5.0.1"
     rollup-plugin-postcss-umi "2.0.3"
@@ -6672,7 +6673,7 @@ macos-release@^2.2.0:
   resolved "https://registry.yarnpkg.com/macos-release/-/macos-release-2.3.0.tgz#eb1930b036c0800adebccd5f17bc4c12de8bb71f"
   integrity sha512-OHhSbtcviqMPt7yfw5ef5aghS2jzFVKEFyCJndQt2YpSQ9qRVSEv2axSJI1paVThEu+FFGs584h/1YhxjVqajA==
 
-magic-string@^0.25.2:
+magic-string@^0.25.2, magic-string@^0.25.3:
   version "0.25.3"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.3.tgz#34b8d2a2c7fec9d9bdf9929a3fd81d271ef35be9"
   integrity sha512-6QK0OpF/phMz0Q2AxILkX2mFhi7m+WMwTRg0LQKq/WBB0cDP4rYH3Wp4/d3OTXlrPLVJT/RFqj8tFeAR4nk8AA==
@@ -9192,6 +9193,15 @@ rollup-plugin-commonjs@10.0.0:
     magic-string "^0.25.2"
     resolve "^1.10.1"
     rollup-pluginutils "^2.7.0"
+
+rollup-plugin-inject@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-inject/-/rollup-plugin-inject-3.0.1.tgz#62b619d28988aca60eb17ccfbf553e25feb8c0f9"
+  integrity sha512-zF0jOuSpBxdLwAeDsS/+zGYgseaoH9LwqRNsByuzmE3bxfQ4Pg2gDoXGGWiia7iFyA8nLT+6iHrAqQYtH3Olow==
+  dependencies:
+    estree-walker "^0.6.1"
+    magic-string "^0.25.3"
+    rollup-pluginutils "^2.8.1"
 
 rollup-plugin-json@4.0.0:
   version "4.0.0"

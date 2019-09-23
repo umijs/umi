@@ -10,6 +10,7 @@ const Container = styled.div.attrs({
 })`
   cursor: ${({ open }) => (open ? 'pointer' : 'grab')};
   position: fixed;
+  z-index: 999;
   right: 12px;
   bottom: 28px;
 

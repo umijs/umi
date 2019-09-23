@@ -54,12 +54,14 @@ declare namespace IUI {
     twoToneColor?: string;
   }
 
-  interface IPanelAction {
+  interface IPanelConfigAction {
     title: string;
     type?: 'default' | 'primary';
     action?: IAction;
     onClick?: () => void;
   }
+
+  type IPanelAction = IPanelConfigAction | ReactNode;
 
   interface IPanel extends IRoute {
     path: string;

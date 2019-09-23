@@ -97,13 +97,10 @@ class App extends React.Component {
     }
   }
 
-  toggleModal = async () => {
+  initUIService = async () => {
     const { currentProject, path } = this.props;
-    if (this.state.hide) {
-      this.setState({
-        hide: false,
-      });
-    } else if (this.state.connected) {
+    console.log('currentProject', currentProject);
+    if (this.state.connected) {
       // open iframe UmiUI
       if (!currentProject.key) {
         const res = await callRemote({
@@ -116,9 +113,6 @@ class App extends React.Component {
           currentProject: res,
         });
       }
-      this.setState(state => ({
-        open: !state.open,
-      }));
     } else {
       // TODO: message.error
       alert('未连接 UI socket');
@@ -137,6 +131,9 @@ class App extends React.Component {
   };
 
   toggleMiniOpen = () => {
+    if (typeof this.state.open === 'undefined') {
+      this.initUIService();
+    }
     this.setState(prevState => ({
       open: !prevState.open,
     }));
@@ -145,9 +142,6 @@ class App extends React.Component {
   render() {
     const { open, currentProject, connected } = this.state;
     const { port, isBigfish = false } = this.props;
-
-    console.log('currentProject', currentProject);
-    console.log('connected', connected);
 
     return (
       <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
