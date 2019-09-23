@@ -10,13 +10,19 @@ export interface TreeData {
 }
 
 export const genRouterToTreeData = (routes: IConfig['routes']): TreeData[] =>
-  routes.map(item => ({
-    ...item,
-    title: item.path,
-    value: item.path,
-    key: item.path,
-    children: genRouterToTreeData(item.routes || []),
-  }));
+  routes
+    .map(item =>
+      item.path
+        ? {
+            ...item,
+            title: item.path,
+            value: item.path,
+            key: item.path,
+            children: genRouterToTreeData(item.routes || []),
+          }
+        : undefined,
+    )
+    .filter(obj => obj);
 
 /**
  * 遍历文件地址
