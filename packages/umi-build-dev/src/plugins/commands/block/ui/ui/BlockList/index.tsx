@@ -5,14 +5,14 @@ import { IUiApi } from 'umi-types';
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import Adder from '../Adder';
-import { Block, AddBlockParams } from '../../data.d';
+import { Block, AddBlockParams, Resource } from '../../../data.d';
 
 const { CheckableTag } = Tag;
 
 interface BlockListProps {
-  _: IUiApi['_'];
+  api: IUiApi;
   name?: string;
-  type: string;
+  type: Resource['blockType'];
   list: Block[];
   addingBlock: string;
   onAdd: (params: AddBlockParams) => void;
@@ -34,8 +34,8 @@ const renderMetas = (item: any, keyword?: string) => (
 );
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd, _ } = props;
-  const { uniq, flatten } = _;
+  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd, api } = props;
+  const { uniq, flatten } = api._;
   const tags: string[] = useMemo<string[]>(
     () => {
       return uniq(flatten(list.map(item => item.tags)));
@@ -79,7 +79,7 @@ const BlockList: React.FC<BlockListProps> = props => {
                     <Spin className={styles.spin} tip="Adding..." />
                   ) : (
                     <div className={styles.addProject}>
-                      <Adder block={item} onAdded={onAdd}>
+                      <Adder api={api} blockType={type} block={item} onAdded={onAdd}>
                         添加到项目
                       </Adder>
                       {item.previewUrl && (
