@@ -3,42 +3,47 @@ const startDevServers = require('./startDevServers');
 const startUiServers = require('./startUiServers');
 
 const killServerProcess = (servers, code) => {
-  servers.forEach(({ child }) => {
+  servers.forEach(child => {
     if (child) {
-      child.kill('SIGINT');
+      try {
+        child.kill('SIGINT');
+      } catch (e) {
+        console.error('server child kill error', e);
+      }
     }
   });
   process.exit(code);
 };
 
-startDevServers()
-  .then(devServers => {
-    startUiServers()
-      .then(uiServers => {
-        const argv = process.argv.slice(2) || [];
-        const testCmd = spawn(
-          'npm',
-          ['run', 'test:coverage'].concat(
-            // argv pass down into jest
-            argv.length > 0 ? ['--', ...argv] : [],
-          ),
-          {
-            stdio: 'inherit',
-          },
-        );
-        const servers = devServers.concat(uiServers);
+(async () => {
+  try {
+    const serverRes = await Promise.all([startUiServers(), startDevServers()]);
+    const argv = process.argv.slice(2) || [];
+    const testCmd = spawn(
+      'npm',
+      ['run', 'test:coverage'].concat(
+        // argv pass down into jest
+        argv.length > 0 ? ['--', ...argv] : [],
+      ),
+      {
+        stdio: 'inherit',
+      },
+    );
 
-        testCmd.on('error', code => {
-          killServerProcess(servers, code);
-        });
-        testCmd.on('exit', code => {
-          killServerProcess(servers, code);
-        });
-      })
-      .catch(e => {
-        console.log('startUIServer error', e);
-      });
-  })
-  .catch(e => {
-    console.log('startDevServer error', e);
-  });
+    const servers = serverRes
+      .reduce((acc, curr) => [...acc, ...curr], [])
+      .map(({ child }) => child)
+      .filter(item => item);
+
+    console.log('servers', servers, servers.length);
+    testCmd.on('error', code => {
+      killServerProcess(servers, code);
+    });
+    testCmd.on('exit', code => {
+      console.log('code', code);
+      killServerProcess(servers, code);
+    });
+  } catch (e) {
+    console.error('startServer error', e);
+  }
+})();
