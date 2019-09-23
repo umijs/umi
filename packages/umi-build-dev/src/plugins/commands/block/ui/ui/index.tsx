@@ -142,6 +142,7 @@ const BlocksViewer: React.FC<Props> = props => {
             })}
           </Tabs>
           <BlockList
+            _={api._}
             loading={loading}
             type="block"
             addingBlock={blockAdding}
