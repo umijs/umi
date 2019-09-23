@@ -366,3 +366,209 @@ export default {
     `.trim(),
   );
 });
+
+test('config plugin', () => {
+  expect(
+    update(
+      `
+export default {
+  plugins: [
+    ['umi-plugin-react', {}],
+  ],
+};
+      `,
+      {
+        history: 'hash',
+        runtimePublicPath: 'true',
+        'a.b': 'c',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        history: 'hash',
+        runtimePublicPath: true,
+        a: {
+          b: 'c',
+        },
+      },
+    ],
+  ],
+};
+    `.trim(),
+  );
+});
+
+test('config plugin without plugin config', () => {
+  expect(
+    update(
+      `
+export default {
+  plugins: [
+    ['umi-plugin-react'],
+  ],
+};
+      `,
+      {
+        a: 'b',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        a: 'b',
+      },
+    ],
+  ],
+};
+    `.trim(),
+  );
+});
+
+test('config plugin with string plugin', () => {
+  expect(
+    update(
+      `
+export default {
+  plugins: [
+    'umi-plugin-react',
+  ],
+};
+      `,
+      {
+        a: 'b',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  plugins: [
+    [
+      'umi-plugin-react',
+      {
+        a: 'b',
+      },
+    ],
+  ],
+};
+    `.trim(),
+  );
+});
+
+test('config plugin with plugins identifier', () => {
+  expect(
+    update(
+      `
+const p = [
+  [
+    'umi-plugin-react',
+  ],
+];
+export default {
+  plugins: p,
+};
+      `,
+      {
+        a: 'b',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+const p = [
+  [
+    'umi-plugin-react',
+    {
+      a: 'b',
+    },
+  ],
+];
+export default {
+  plugins: p,
+};
+    `.trim(),
+  );
+});
+
+test('config plugin with plugin identifier', () => {
+  expect(
+    update(
+      `
+const p = [
+  'umi-plugin-react'
+];
+export default {
+  plugins: [
+    p
+  ],
+};
+      `,
+      {
+        a: 'b',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+const p = [
+  'umi-plugin-react',
+  {
+    a: 'b',
+  },
+];
+export default {
+  plugins: [p],
+};
+    `.trim(),
+  );
+});
+
+test('config plugin with plugin config identifier', () => {
+  expect(
+    update(
+      `
+const pConfig = {};
+const p = [
+  'umi-plugin-react',
+  pConfig,
+];
+export default {
+  plugins: [
+    p
+  ],
+};
+      `,
+      {
+        a: 'b',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+const pConfig = {
+  a: 'b',
+};
+const p = ['umi-plugin-react', pConfig];
+export default {
+  plugins: [p],
+};
+    `.trim(),
+  );
+});
