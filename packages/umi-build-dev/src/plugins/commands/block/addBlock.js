@@ -39,24 +39,25 @@ export async function getCtx(url, args = {}, api = {}) {
   return ctx;
 }
 
-const getSpinner = uiLog => {
-  const spinner = ora();
-  return {
-    ...spinner,
-    succeed: info => spinner.succeed(info),
-    start: info => {
-      spinner.start(info);
-      if (uiLog) {
-        uiLog('info', info);
-      }
-    },
-    stopAndPersist: (...rest) => spinner.stopAndPersist(rest),
-  };
-};
-
 async function add(args = {}, opts = {}, api = {}) {
   const { log, paths, debug, config, applyPlugins, uiLog } = api;
   const blockConfig = config.block || {};
+  const addLogs = [];
+  const getSpinner = uiLog => {
+    const spinner = ora();
+    return {
+      ...spinner,
+      succeed: info => spinner.succeed(info),
+      start: info => {
+        spinner.start(info);
+        addLogs.push(info);
+        if (uiLog) {
+          uiLog('info', info);
+        }
+      },
+      stopAndPersist: (...rest) => spinner.stopAndPersist(rest),
+    };
+  };
 
   const spinner = getSpinner(uiLog);
   if (!opts.remoteLog) {
@@ -280,6 +281,7 @@ async function add(args = {}, opts = {}, api = {}) {
   return {
     generator,
     ctx,
+    logs: addLogs,
   }; // return ctx and generator for test
 }
 

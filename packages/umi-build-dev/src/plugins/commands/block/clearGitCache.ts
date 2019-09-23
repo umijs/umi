@@ -6,22 +6,17 @@ import { makeSureMaterialsTempPathExist } from './download';
 
 /**
  * 清理 git 缓存目录
- * @param {*} args
- * @param {*} log
+ * @param args
+ * @param param1
  */
-export default function clearGitCache(args, { log, uiLog }) {
+export default function clearGitCache(args: { dryRun?: boolean }, { log }: { log?: any }) {
   const spinner = ora();
   const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
 
   const info = `🗑  start clear: ${chalk.yellow(blocksTempPath)}`;
   spinner.start(info);
 
-  // umi ui 的日志
-  if (uiLog) {
-    uiLog('info', info);
-  }
-
-  rimraf(blocksTempPath, error => {
+  rimraf.sync(blocksTempPath, error => {
     if (error) {
       log.error(error);
       spinner.stop();
@@ -29,4 +24,6 @@ export default function clearGitCache(args, { log, uiLog }) {
     }
     spinner.succeed();
   });
+
+  return info;
 }

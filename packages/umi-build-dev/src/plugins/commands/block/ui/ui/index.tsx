@@ -35,7 +35,7 @@ const BlocksViewer: React.FC<Props> = props => {
   useEffect(() => {
     (async () => {
       const { data } = (await callRemote({
-        type: 'org.umi.block.routes',
+        type: 'org.umi.block.pageFolders',
       })) as {
         data: any[];
       };
@@ -108,10 +108,11 @@ const BlocksViewer: React.FC<Props> = props => {
       // }
 
       setBlockAdding(url);
-      await callRemote({
+      const msg = await callRemote({
         type: 'org.umi.block.add',
         payload: params,
       });
+      console.log(msg);
       setBlockAdding(null);
     })();
   }
