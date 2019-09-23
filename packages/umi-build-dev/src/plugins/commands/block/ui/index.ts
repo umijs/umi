@@ -133,7 +133,10 @@ export default (api: IApiBlock) => {
           try {
             const addInfo = await addBlock({ ...payload, url }, {}, api);
             success({
-              data: addInfo,
+              data: {
+                log: addInfo.log,
+                message: '🎊 Adding block is success',
+              },
               success: true,
             });
             uiLog('info', '🎊 Adding block is success');
@@ -142,7 +145,7 @@ export default (api: IApiBlock) => {
               message: error.message,
               success: false,
             } as any);
-            log('error', `Adding block is fail ${error.message}`);
+            log('error', `😰  Adding block is fail ${error.message}`);
             console.log(error);
           }
         })();
@@ -151,6 +154,7 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.checkexist':
         success({
           exists: routeExists((payload as AddBlockParams).path, routes),
+          success: true,
         });
         break;
       default:
