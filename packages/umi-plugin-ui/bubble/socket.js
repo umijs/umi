@@ -4,7 +4,7 @@ let sock = null;
 const messageHandlers = [];
 
 export async function init(url, opts = {}) {
-  const { onMessage } = opts;
+  const { onMessage, onError } = opts;
   return new Promise((resolve, reject) => {
     function handler(e) {
       const { type, payload } = JSON.parse(e.data);
@@ -16,18 +16,16 @@ export async function init(url, opts = {}) {
       });
     }
 
-    function initSocket() {
-      sock = new SockJS(url);
-      sock.onopen = () => {
-        resolve();
-      };
-      sock.onmessage = handler;
-      sock.onclose = () => {
-        sock = null;
-      };
-    }
-
-    initSocket();
+    sock = new SockJS(url);
+    sock.onopen = () => {
+      resolve();
+    };
+    sock.onmessage = handler;
+    sock.onclose = e => {
+      console.error('ui socket init', e);
+      sock = null;
+      onError(e);
+    };
   });
 }
 

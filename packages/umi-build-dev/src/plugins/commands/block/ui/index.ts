@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
 import { getBlockListFromGit } from '../util';
-import { genRouterToTreeData } from './util';
+import { genRouterToTreeData, getFolderTreeData } from './util';
 import { Resource, Block, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
@@ -78,23 +78,37 @@ export default (api: IApiBlock) => {
     const uiLog = (logType: 'error' | 'info', info: string) =>
       rest.log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
 
-    api.uiLog = uiLog;
-
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-        uiLog('info', `🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-
         success({
           data: genRouterToTreeData(api.config.routes),
+          success: true,
+        });
+        break;
+
+      // 获取 pages 文件列表
+      case 'org.umi.block.pageFolders':
+        success({
+          data: getFolderTreeData(api.paths.pagesPath),
+          success: true,
         });
         break;
 
       // 清空缓存
       case 'org.umi.block.clear':
         log('block: clear cache');
-        clearGitCache(payload, api);
+
+        uiLog(
+          'info',
+          clearGitCache(
+            payload as {
+              dryRun?: boolean;
+            },
+            api,
+          ),
+        );
         success({
           message: 'clear success',
           success: true,
@@ -123,11 +137,15 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.add':
         (async () => {
           const { url, path } = payload as AddBlockParams;
-          log(`Adding block ${chalk.magenta(url || path)} as ${path} ...`);
+
+          uiLog('info', `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`);
           try {
-            await addBlock({ ...payload, url }, {}, api);
+            const addInfo = await addBlock({ ...payload, url }, {}, api);
             success({
-              data: true,
+              data: {
+                log: addInfo.log,
+                message: '🎊 Adding block is success',
+              },
               success: true,
             });
             uiLog('info', '🎊 Adding block is success');
@@ -136,8 +154,7 @@ export default (api: IApiBlock) => {
               message: error.message,
               success: false,
             } as any);
-            uiLog('error', error.message);
-            log('Adding block is fail');
+            log('error', `😰  Adding block is fail ${error.message}`);
             console.log(error);
           }
         })();
@@ -146,6 +163,7 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.checkexist':
         success({
           exists: routeExists((payload as AddBlockParams).path, routes),
+          success: true,
         });
         break;
       default:
