@@ -13,7 +13,7 @@ import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
 import styles from './BasicConfig.module.less';
 
 interface IBasicConfigProps {
-  api: IUiApi;
+  title: string;
   list: string;
   edit: string;
   /** Search fuzz options */
@@ -228,7 +228,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
       <div className={themeCls} ref={containerRef}>
         <div className={styles.form}>
           <div className={styles['basicConfig-header']}>
-            <h2>{intl({ id: 'org.umi.ui.configuration.project.config.title' })}</h2>
+            <h2>{intl({ id: props.title })}</h2>
             <span className={searchIconCls}>
               <SearchIcon onClick={handleSearchShow} />
             </span>

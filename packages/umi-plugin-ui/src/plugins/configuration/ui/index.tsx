@@ -30,7 +30,11 @@ function getSections(api: IUiApi) {
         },
       ),
       component: () => (
-        <BasicConfig list="org.umi.config.list" edit="org.umi.config.edit" api={api} />
+        <BasicConfig
+          title="org.umi.ui.configuration.project.config.title"
+          list="org.umi.config.list"
+          edit="org.umi.config.edit"
+        />
       ),
     },
     ...api.service.configSections,
