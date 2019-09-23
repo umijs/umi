@@ -172,6 +172,7 @@ describe('theme', () => {
       'menu-item-boundary-margin': '0px',
       'font-size-base': '14px',
       'font-size-lg': '16px',
+      'font-size-sm': '12px',
       'screen-xl': '1208px',
       'screen-lg': '1024px',
       'screen-md': '768px',
