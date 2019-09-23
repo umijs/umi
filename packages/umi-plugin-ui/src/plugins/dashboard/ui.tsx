@@ -9,7 +9,6 @@ export default (api: IUiApi) => {
     'zh-CN': zhCN,
     'en-US': enUS,
   });
-
   api.addPanel({
     title: 'org.umi.ui.dashboard.panel',
     path: '/dashboard',
