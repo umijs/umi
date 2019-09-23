@@ -173,10 +173,11 @@ export const locale = {
 // for ga analyse
 export const onRouteChange = params => {
   const { location } = params;
-  const { pathname } = location;
+  const { pathname, search = '' } = location;
   if (window.gtag && pathname) {
+    const isMini = search.indexOf('mini') > -1 ? '?mini' : '';
     window.gtag('config', 'UA-145890626-1', {
-      page_path: pathname,
+      page_path: `${pathname}${isMini}`,
     });
   }
 };
