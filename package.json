@@ -4,7 +4,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "father-build",
     "changelog": "lerna-changelog",
-    "chore:update-deps": "./scripts/update_deps.sh",
+    "chore:update-deps": "sh ./scripts/reinstall_deps.sh",
     "clean": "lerna clean -y",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "debug": "./packages/umi-test/bin/umi-test.js",
