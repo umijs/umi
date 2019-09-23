@@ -34,7 +34,7 @@ export default function(context, opts = {}) {
 
     // 下面两个的顺序的配置都不能动
     [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-    // [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
+    [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
 
     require.resolve('@babel/plugin-proposal-export-namespace-from'),
     require.resolve('@babel/plugin-proposal-export-default-from'),

@@ -4,7 +4,6 @@ import chokidar from 'chokidar';
 const watchers = {};
 
 export function watch(key, files) {
-  console.log(`watch`, process.env.WATCH_FILES);
   if (process.env.WATCH_FILES === 'none') return;
   if (!watchers[key]) {
     watchers[key] = [];

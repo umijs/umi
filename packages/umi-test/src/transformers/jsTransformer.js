@@ -11,7 +11,7 @@ module.exports = babelJest.createTransformer({
       require.resolve('babel-preset-umi'),
       {
         transformRuntime: false,
-        ...(process.env.TARGETS === 'node' ? { targets: { node: 8 } } : {}),
+        // ...(process.env.TARGETS === 'node' ? { targets: { node: 8 } } : {}),
       },
     ],
   ],
