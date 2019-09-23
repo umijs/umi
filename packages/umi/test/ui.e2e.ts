@@ -22,7 +22,6 @@ describe('Umi UI e2e', () => {
   });
 
   it('project list page', async () => {
-    console.log('port', port);
     await page.goto(`http://localhost:${port}/project/select`, { waitUntil: 'networkidle2' });
 
     // global.js
