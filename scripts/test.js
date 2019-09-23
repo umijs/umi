@@ -35,7 +35,6 @@ const killServerProcess = (servers, code) => {
       .map(({ child }) => child)
       .filter(item => item);
 
-    console.log('servers', servers, servers.length);
     testCmd.on('error', code => {
       killServerProcess(servers, code);
     });
