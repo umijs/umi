@@ -78,14 +78,10 @@ export default (api: IApiBlock) => {
     const uiLog = (logType: 'error' | 'info', info: string) =>
       rest.log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
 
-    api.uiLog = uiLog;
-
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-        uiLog('info', `🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-
         success({
           data: genRouterToTreeData(api.config.routes),
         });
@@ -94,7 +90,16 @@ export default (api: IApiBlock) => {
       // 清空缓存
       case 'org.umi.block.clear':
         log('block: clear cache');
-        clearGitCache(payload, api);
+
+        uiLog(
+          'info',
+          clearGitCache(
+            payload as {
+              dryRun?: boolean;
+            },
+            api,
+          ),
+        );
         success({
           message: 'clear success',
           success: true,
