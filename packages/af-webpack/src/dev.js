@@ -56,6 +56,7 @@ export default function dev({
       process.send({ type: 'UPDATE_PORT', port });
 
       const compiler = webpack(webpackConfig);
+      let server = null;
 
       let isFirstCompile = true;
       const IS_CI = !!process.env.CI;
@@ -95,6 +96,7 @@ export default function dev({
           port,
           isFirstCompile,
           stats,
+          server,
         });
 
         if (isFirstCompile) {
@@ -149,7 +151,7 @@ export default function dev({
         ...serverConfigFromOpts,
         ...(getWebpackConfig(webpackConfig).devServer || {}),
       };
-      const server = new WebpackDevServer(compiler, serverConfig);
+      server = new WebpackDevServer(compiler, serverConfig);
 
       ['SIGINT', 'SIGTERM'].forEach(signal => {
         process.on(signal, () => {

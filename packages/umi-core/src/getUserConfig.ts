@@ -34,7 +34,7 @@ function defaultOnError(e) {
   console.error(e);
 }
 
-function requireFile(f, opts: IOpts = {}) {
+export function requireFile(f, opts: IOpts = {}) {
   if (!existsSync(f)) {
     return {};
   }

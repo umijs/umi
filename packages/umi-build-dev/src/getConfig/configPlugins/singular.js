@@ -6,7 +6,7 @@ export default function(api) {
     validate(val) {
       assert(
         val === true || val === false,
-        `Configure item singular should be true or false, but got ${val}.`,
+        `Configure item singular should be Boolean, but got ${val}.`,
       );
     },
     onChange() {
