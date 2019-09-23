@@ -94,5 +94,7 @@ export default function(api: IApi, option) {
   });
 
   // umi ui
-  api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+  if (process.env.UMI_UI !== 'none') {
+    api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+  }
 }

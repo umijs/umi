@@ -17,7 +17,9 @@ import installDependencies from './installDependencies';
 
 export default api => {
   // 注册 区块的 ui
-  require('./ui/index').default(api);
+  if (process.env.UMI_UI !== 'none') {
+    require('./ui/index').default(api);
+  }
 
   const { log, paths, debug, applyPlugins, config } = api;
   const blockConfig = config.block || {};
