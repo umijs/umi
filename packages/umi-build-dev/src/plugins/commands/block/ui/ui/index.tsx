@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Tabs, Spin } from 'antd';
+import { Input, Button, Tabs, Spin } from 'antd';
+
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 
@@ -18,6 +19,11 @@ interface Props {
   api: IUiApi;
 }
 
+const clearCache = async (api: IUiApi) =>
+  api.callRemote({
+    type: 'org.umi.block.clear',
+  });
+
 const BlocksViewer: React.FC<Props> = props => {
   const { api } = props;
   const { callRemote, intl } = api;
@@ -26,7 +32,16 @@ const BlocksViewer: React.FC<Props> = props => {
   const [current, setCurrent] = useState<Resource>(null);
   const [loading, setLoading] = useState(false);
   const [resources, setResources] = useState<Resource[]>([]);
-
+  useEffect(() => {
+    (async () => {
+      const { data } = (await callRemote({
+        type: 'org.umi.block.routes',
+      })) as {
+        data: any[];
+      };
+      console.log(data);
+    })();
+  }, []);
   useEffect(
     () => {
       if (!current) {
@@ -63,11 +78,12 @@ const BlocksViewer: React.FC<Props> = props => {
 
   function addHandler(block) {
     (async () => {
-      const { defaultPath, url } = block;
+      const { defaultPath, url, name } = block;
       let path = defaultPath;
       const { exists } = (await callRemote({
         type: 'org.umi.block.checkexist',
         payload: {
+          url: url || name,
           path,
         },
       })) as {
@@ -78,15 +94,15 @@ const BlocksViewer: React.FC<Props> = props => {
       if (exists) {
         let count = 2;
         while (true) {
-          const { exists } = (await callRemote({
+          const data = callRemote({
             type: 'org.umi.block.checkexist',
             payload: {
               path: `${path}-${count}`,
             },
-          })) as {
+          }) as {
             exists: boolean;
           };
-          if (exists) {
+          if (data.exists) {
             count += 1;
           } else {
             path = `${path}-${count}`;
@@ -94,12 +110,11 @@ const BlocksViewer: React.FC<Props> = props => {
           }
         }
       }
-
       setBlockAdding(url);
       await callRemote({
         type: 'org.umi.block.add',
         payload: {
-          url,
+          url: url || name,
           path,
         },
       });
@@ -113,6 +128,13 @@ const BlocksViewer: React.FC<Props> = props => {
         placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
         onSearch={value => console.log(value)}
       />
+      <Button
+        onClick={() => {
+          clearCache(api);
+        }}
+      >
+        清除
+      </Button>
       {current ? (
         <div className={styles.blocklist}>
           <Tabs
