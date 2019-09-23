@@ -8,10 +8,7 @@ function startDevServer(opts = {}) {
     const child = fork(DEV_SCRIPT, ['ui'], {
       env: {
         ...process.env,
-        // https://github.com/webpack/webpack-dev-server/issues/128
-        UV_THREADPOOL_SIZE: '100',
         BROWSER: 'none',
-        PROGRESS: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
       },
     });
