@@ -2,8 +2,15 @@ import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
 import { getBlockListFromGit } from '../util';
+import { genRouterToTreeData } from './util';
 import { Resource, Block, AddBlockParams } from '../data.d';
+import clearGitCache from '../clearGitCache';
+import addBlock from '../addBlock';
 // import getRouteManager from '../../../getRouteManager';
+
+export interface IApiBlock extends IApi {
+  uiLog: (logType: 'error' | 'info', info: string) => void;
+}
 
 export function routeExists(path, routes) {
   // eslint-disable-next-line no-restricted-syntax
@@ -18,20 +25,19 @@ export function routeExists(path, routes) {
   return false;
 }
 
-export default (api: IApi) => {
-  const { log } = api.log;
+const getBlocks = async (api: IApiBlock): Promise<Block[]> => {
+  const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
+  return blocks;
+};
 
+export default (api: IApiBlock) => {
+  const { log } = api.log;
   function getRoutes() {
     return [];
     // const RoutesManager = getRouteManager(api.service);
     // RoutesManager.fetchRoutes();
     // return RoutesManager.routes;
   }
-
-  const getBlocks = async (): Promise<Block[]> => {
-    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
-    return blocks;
-  };
 
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
@@ -52,14 +58,39 @@ export default (api: IApi) => {
     },
   ];
 
-  api.onUISocket(({ action, failure, success }) => {
+  api.onUISocket(({ action, failure, success, send, ...rest }) => {
     const routes = getRoutes();
     const { type, payload = {} } = action;
+
+    /**
+     * 初始化一些特殊的 function
+     * 这个 方法可以快速的 log，并且带有 block 的前缀
+     * @param logType
+     * @param info
+     */
+    const uiLog = (logType: 'error' | 'info', info: string) =>
+      rest.log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
+
+    api.uiLog = uiLog;
+
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
+        log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
+        uiLog('info', `🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
+
         success({
-          data: [],
+          data: genRouterToTreeData(api.config.routes),
+        });
+        break;
+
+      // 清空缓存
+      case 'org.umi.block.clear':
+        log('block: clear cache');
+        clearGitCache(payload, api);
+        success({
+          message: 'clear success',
+          success: true,
         });
         break;
 
@@ -67,14 +98,16 @@ export default (api: IApi) => {
       case 'org.umi.block.resource':
         success({
           data: reources,
+          success: true,
         });
         break;
 
       // 获取区块列表
       case 'org.umi.block.list':
-        getBlocks().then(blocks =>
+        getBlocks(api).then(blocks =>
           success({
             data: blocks,
+            success: true,
           }),
         );
         break;
@@ -83,40 +116,31 @@ export default (api: IApi) => {
       case 'org.umi.block.add':
         (async () => {
           const { url, path } = payload as AddBlockParams;
-
-          log(`Adding block ${chalk.magenta(url)} as ${path} ...`);
+          log(`Adding block ${chalk.magenta(url || path)} as ${path} ...`);
           try {
-            await api.service.runCommand(
-              'block',
-              {
-                _: ['add', url, '--path', path],
-              },
-              message => {
-                log(`${chalk.gray('[umi block add]')} ${message}`);
-              },
-            );
-            success({ message: 'add block success' });
-            log(chalk.green('Add success'));
-          } catch (e) {
-            log(chalk.red('Add failed'));
+            await addBlock({ ...payload, url }, {}, api);
+            success({
+              data: true,
+              success: true,
+            });
+            uiLog('info', '🎊 Adding block is success');
+          } catch (error) {
+            send({
+              message: error.message,
+              success: false,
+            } as any);
+            uiLog('error', error.message);
+            log('Adding block is fail');
+            console.log(error);
           }
         })();
         break;
-
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
         success({
           exists: routeExists((payload as AddBlockParams).path, routes),
         });
         break;
-
-      // 检查路由是否存在
-      case 'org.umi.block.getRoutes':
-        success({
-          routes: [{}],
-        });
-        break;
-
       default:
         break;
     }

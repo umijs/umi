@@ -5,7 +5,6 @@ import execa from 'execa';
 import ora from 'ora';
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
-import inquirer from 'inquirer';
 
 /**
  * 全局使用的 loading
@@ -22,7 +21,7 @@ const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.
  * 从文件数组映射为 pro 的路由
  * @param {*} name
  */
-const genBlockName = name =>
+export const genBlockName = name =>
   name
     .match(/[A-Z]?[a-z]+|[0-9]+/g)
     .map(p => p.toLowerCase())
@@ -68,65 +67,6 @@ export function printBlocks(blocks, hasLink) {
   return blockArray;
 }
 
-/**
- * 交互型区块选择
- * - 选择区块名
- * - 输入路径
- * - 选择是否转化 js
- * @param {[
- *  name:string;
- *  value:string;
- *  key:string;
- * ]} blockArray
- * @returns Promise<{args}>
- */
-export async function selectInstallBlockArgs(blockArray) {
-  return new Promise(async resolve => {
-    let locale = false;
-    const { block, path, js, uni18n } = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'block',
-        message: `⛰  请选择区块（共 ${blockArray.length} 个 )`,
-        choices: blockArray,
-      },
-      { type: 'input', name: 'path', message: '🏗  请输入输出安装区块的路径' },
-      {
-        type: 'confirm',
-        name: 'js',
-        message: '🤔  将 Typescript 区块转化为 js?',
-        default: false,
-      },
-      {
-        type: 'confirm',
-        name: 'uni18n',
-        message: '🌎  删除 i18n 代码? ',
-        default: false,
-      },
-    ]);
-    if (uni18n) {
-      const { region } = await inquirer.prompt([
-        {
-          type: 'input',
-          name: 'region',
-          message: '🌎  请输入你的选择的语言? ',
-          default: 'zh-CN',
-        },
-      ]);
-      locale = region;
-    }
-
-    const blockPath = path || genBlockName(block);
-
-    resolve({
-      _: ['add', block],
-      path: blockPath,
-      js,
-      uni18n: locale,
-    });
-  });
-}
-
 export const getBlockListFromGit = async gitUrl => {
   const got = require('got');
   const ignoreFile = ['_scripts', 'tests'];
@@ -153,44 +93,6 @@ export const getBlockListFromGit = async gitUrl => {
   spinner.succeed();
   return files;
 };
-
-/**
- * 获取区块列表，默认会从  http://blocks.umijs.org/api/blocks 拉
- * 如果配置 defaultGitUrl ，会从 defaultGitUrl 去找
- * @param {*} _
- * @param {*} blockConfig
- * @param {*} addBlock
- */
-export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
-  const got = require('got');
-  let blockArray = [];
-  const { defaultGitUrl } = blockConfig;
-
-  spinner.start('🚣  fetch block list');
-
-  // 如果存在 defaultGitUrl 的配置，就从 defaultGitUrl 配置中拿区块列表
-  if (defaultGitUrl) {
-    // 一个 github 的 api,可以获得文件树
-    const files = await getBlockListFromGit(defaultGitUrl);
-    blockArray = printBlocks(files, 'link');
-  } else {
-    const { body } = await got(`http://blocks.umijs.org/api/blocks`);
-    const { status, error, data } = JSON.parse(body);
-    if (status === 'success') {
-      blockArray = printBlocks(data);
-    } else {
-      throw new Error(error);
-    }
-  }
-
-  spinner.succeed();
-
-  if (blockArray.length > 0) {
-    const args = await selectInstallBlockArgs(blockArray);
-    return addBlock(args);
-  }
-  return new Error('No block found');
-}
 
 /**
  * clone 下来的 git 会缓存。这个方法可以更新缓存
@@ -238,7 +140,7 @@ export async function gitUpdate(ctx, spinner) {
         env: process.env,
       });
 
-      spinner.start(`👀 update submodule`);
+      spinner.start(`👀  update submodule`);
       await execa(`git`, ['submodule', 'update', '--recursive'], {
         cwd: ctx.templateTmpDirPath,
       });

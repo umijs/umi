@@ -64,9 +64,7 @@ const BlockList: React.FC<BlockListProps> = props => {
     contents = (
       <Row gutter={20} type="flex">
         {list
-          .filter(item => {
-            return !selectedTag || item.tags.includes(selectedTag);
-          })
+          .filter(item => !selectedTag || item.tags.includes(selectedTag))
           .map(item => (
             <Col
               style={{
@@ -92,7 +90,7 @@ const BlockList: React.FC<BlockListProps> = props => {
                       </Button>
                     </div>
                   )}
-                  <img src={item.img} alt={item.name} />
+                  <img src={item.img} alt={item.url} />
                 </div>
 
                 <div className={styles.content}>

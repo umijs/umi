@@ -1,5 +1,6 @@
 import rimraf from 'rimraf';
 import ora from 'ora';
+import chalk from 'chalk';
 
 import { makeSureMaterialsTempPathExist } from './download';
 
@@ -8,11 +9,18 @@ import { makeSureMaterialsTempPathExist } from './download';
  * @param {*} args
  * @param {*} log
  */
-export default function clearGitCache(args, { log }) {
+export default function clearGitCache(args, { log, uiLog }) {
   const spinner = ora();
   const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
 
-  spinner.start(`🗑  start clear: ${blocksTempPath}`);
+  const info = `🗑  start clear: ${chalk.yellow(blocksTempPath)}`;
+  spinner.start(info);
+
+  // umi ui 的日志
+  if (uiLog) {
+    uiLog('info', info);
+  }
+
   rimraf(blocksTempPath, error => {
     if (error) {
       log.error(error);
