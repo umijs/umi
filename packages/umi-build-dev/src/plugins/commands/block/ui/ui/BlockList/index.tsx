@@ -5,7 +5,7 @@ import { IUiApi } from 'umi-types';
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import Adder from '../Adder';
-import { Block, AddBlockParams } from '../../data.d';
+import { Block, AddBlockParams } from '../../../data.d';
 
 const { CheckableTag } = Tag;
 
