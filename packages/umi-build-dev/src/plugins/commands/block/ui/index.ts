@@ -50,10 +50,17 @@ export default (api: IApiBlock) => {
       url: 'https://github.com/ant-design/pro-blocks',
     },
     {
-      id: 'umijs',
+      id: 'umijs-template',
       name: 'UmiJS Official',
       resourceType: 'github',
       blockType: 'template',
+      url: 'https://github.com/umijs/umi-blocks',
+    },
+    {
+      id: 'umijs-block',
+      name: 'UmiJS Official',
+      resourceType: 'github',
+      blockType: 'block',
       url: 'https://github.com/umijs/umi-blocks',
     },
   ];
@@ -182,12 +189,12 @@ export default (api: IApiBlock) => {
 (() => {
   // Runtime block add component
   window.GUmiUIFlag = require('${require.resolve('./flagBabelPlugin/GUmiUIFlag')}').default;
-  
+
   // Enable/Disable block add edit mode
   const el = document.createElement('style');
   el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
   document.querySelector('head').appendChild(el);
-  
+
   window.g_enableUmiUIBlockAddEditMode = function() {
     el.innerHTML = '';
   };

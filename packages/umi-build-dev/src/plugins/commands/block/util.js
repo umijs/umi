@@ -80,6 +80,7 @@ export const getBlockListFromGit = async gitUrl => {
     .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
     .map(({ path }) => {
       return {
+        url: `${gitUrl}/tree/master/${path}`,
         type: 'block',
         path,
         isPage: true,

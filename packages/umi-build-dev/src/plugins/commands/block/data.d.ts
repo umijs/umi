@@ -5,6 +5,7 @@ export interface Block {
   img: string;
   defaultPath: string;
   tags: string[];
+  previewUrl?: string;
 }
 
 export interface BlockData {
@@ -27,7 +28,9 @@ export interface Resource {
 
 export interface AddBlockParams {
   url: string;
+  name?: string;
   path?: string;
   isPage?: boolean;
   transformJS?: boolean;
+  removeLocale?: boolean;
 }

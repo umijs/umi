@@ -12,6 +12,21 @@
 
 .tagContainer {
   margin-bottom: 16px;
+  float: right;
+  margin-right: -8px;
+  max-width: 60%;
+  margin-top: -8px;
+  :global {
+    .ant-tag:not(.ant-tag-checkable-checked) {
+      border: 1px solid fade(#ffffff, 15);
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+  }
+}
+
+.cardContainer {
+  clear: both;
 }
 
 .blockCard,
@@ -50,9 +65,18 @@
       top: 0;
       opacity: 0;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       transition: all ease-in-out 0.3s;
+      .previewBtn {
+        margin-top: 8px;
+        width: 102px;
+      }
+    }
+
+    .spin {
+      position: absolute;
     }
 
     &:hover {
@@ -134,7 +158,6 @@
 .templateCard {
   .demo {
     height: 24vh;
-    background-color: #f7fafc;
     padding: 18px 24px;
   }
 
