@@ -7,7 +7,7 @@ const fixtures = join(__dirname, 'fixtures');
 function testTransform(dir) {
   const origin = readFileSync(join(fixtures, dir, 'origin.js'), 'utf-8');
   const { code } = transform(origin, {
-    presets: [[require.resolve('../../../../../babel-preset-umi/src/index.js')]],
+    presets: [require.resolve('babel-preset-umi')],
     plugins: [
       [
         require.resolve('./index'),
