@@ -108,7 +108,7 @@ const BlocksViewer: React.FC<Props> = props => {
       // }
 
       setBlockAdding(url);
-      await callRemote({
+      const msg = (await callRemote({
         type: 'org.umi.block.add',
         payload: params,
       });

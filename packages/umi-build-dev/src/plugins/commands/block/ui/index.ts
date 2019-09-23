@@ -128,11 +128,12 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.add':
         (async () => {
           const { url, path } = payload as AddBlockParams;
-          log(`Adding block ${chalk.magenta(url || path)} as ${path} ...`);
+
+          uiLog('info', `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`);
           try {
-            await addBlock({ ...payload, url }, {}, api);
+            const addInfo = await addBlock({ ...payload, url }, {}, api);
             success({
-              data: true,
+              data: addInfo,
               success: true,
             });
             uiLog('info', '🎊 Adding block is success');
@@ -141,8 +142,7 @@ export default (api: IApiBlock) => {
               message: error.message,
               success: false,
             } as any);
-            uiLog('error', error.message);
-            log('Adding block is fail');
+            log('error', `Adding block is fail ${error.message}`);
             console.log(error);
           }
         })();
