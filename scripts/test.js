@@ -1,29 +1,43 @@
 const spawn = require('cross-spawn');
 const startDevServers = require('./startDevServers');
+const startUiServers = require('./startUiServers');
+
+const killServerProcess = (servers, code) => {
+  servers.forEach(({ child }) => {
+    if (child) {
+      child.kill('SIGINT');
+    }
+  });
+  process.exit(code);
+};
 
 startDevServers()
   .then(devServers => {
-    const argv = process.argv.slice(2) || [];
-    const testCmd = spawn(
-      'npm',
-      ['run', 'test:coverage'].concat(
-        // argv pass down into jest
-        argv.length > 0 ? ['--', ...argv] : [],
-      ),
-      {
-        stdio: 'inherit',
-      },
-    );
-    testCmd.on('exit', code => {
-      devServers.forEach(devServer => {
-        if (devServer) {
-          devServer.kill('SIGINT');
-        }
-      });
+    startUiServers()
+      .then(uiServers => {
+        const argv = process.argv.slice(2) || [];
+        const testCmd = spawn(
+          'npm',
+          ['run', 'test:coverage'].concat(
+            // argv pass down into jest
+            argv.length > 0 ? ['--', ...argv] : [],
+          ),
+          {
+            stdio: 'inherit',
+          },
+        );
+        const servers = devServers.concat(uiServers);
 
-      console.log('testCmd exit', code);
-      process.exit(code);
-    });
+        testCmd.on('error', code => {
+          killServerProcess(servers, code);
+        });
+        testCmd.on('exit', code => {
+          killServerProcess(servers, code);
+        });
+      })
+      .catch(e => {
+        console.log('startUIServer error', e);
+      });
   })
   .catch(e => {
     console.log('startDevServer error', e);
