@@ -159,7 +159,7 @@ export default withRouter(props => {
                   <Col className={styles.gotoUi}>
                     <a target="_blank" rel="noopener noreferrer" href={window.location.origin}>
                       <Redirect />
-                      <span>进入完整版</span>
+                      <FormattedMessage id="org.umi.ui.global.dashboard.mini.full" />
                     </a>
                   </Col>
                 </Row>
@@ -220,7 +220,9 @@ export default withRouter(props => {
                               title={
                                 <span>
                                   <ExperimentFilled className={styles.menuIcon} />
-                                  <p>实验室</p>
+                                  <p>
+                                    <FormattedMessage id="org.umi.ui.global.dashboard.lab" />
+                                  </p>
                                 </span>
                               }
                             >
@@ -254,7 +256,9 @@ export default withRouter(props => {
                             >
                               <Menu.Item>
                                 <ExperimentFilled className={styles.menuIcon} />
-                                <span className={styles.menuItem}>实验室</span>
+                                <span className={styles.menuItem}>
+                                  <FormattedMessage id="org.umi.ui.global.dashboard.lab" />
+                                </span>
                               </Menu.Item>
                             </Menu>
                           </Dropdown>
