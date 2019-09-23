@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Col, Empty, Row, Spin, Typography, Tag } from 'antd';
+import { Col, Empty, Row, Spin, Typography, Tag, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
@@ -83,6 +83,15 @@ const BlockList: React.FC<BlockListProps> = props => {
                       <Adder block={item} onAdded={onAdd}>
                         添加到项目
                       </Adder>
+                      {item.previewUrl && (
+                        <Button
+                          className={styles.previewBtn}
+                          target="_blank"
+                          href={item.previewUrl}
+                        >
+                          预览
+                        </Button>
+                      )}
                     </div>
                   )}
                   <img src={item.img} />
@@ -138,7 +147,7 @@ const BlockList: React.FC<BlockListProps> = props => {
           );
         })}
       </div>
-      {contents}
+      <div className={styles.cardContainer}>{contents}</div>
     </>
   );
 };

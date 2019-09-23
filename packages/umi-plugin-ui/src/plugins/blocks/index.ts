@@ -64,7 +64,8 @@ export default function(api: IApi) {
         isPage: true,
         defaultPath: `/${name}`,
         img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
-        tags: ['Ant Design Pro', '测试标签'],
+        tags: ['Ant Design Pro', '测试标签', name],
+        previewUrl: `https://preview.pro.ant.design`,
       };
     });
   }
@@ -80,10 +81,17 @@ export default function(api: IApi) {
       url: 'https://github.com/ant-design/pro-blocks',
     },
     {
-      id: 'umijs',
+      id: 'umijs-template',
       name: 'UmiJS Official',
       resourceType: 'github',
       blockType: 'template',
+      url: 'https://github.com/umijs/umi-blocks',
+    },
+    {
+      id: 'umijs-block',
+      name: 'UmiJS Official',
+      resourceType: 'github',
+      blockType: 'block',
       url: 'https://github.com/umijs/umi-blocks',
     },
   ];
