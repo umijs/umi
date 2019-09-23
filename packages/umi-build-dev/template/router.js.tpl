@@ -19,7 +19,7 @@ export { routes };
 
 export default class RouterWrapper extends React.Component {
 
-  unListen = () => {};
+  unListen() {}
 
   constructor(props) {
     super(props);

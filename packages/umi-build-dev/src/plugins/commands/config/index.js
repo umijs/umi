@@ -12,6 +12,7 @@ export default function(api) {
         indent: '  ',
       }),
     );
+    return api.config;
   }
 
   function get(key) {
@@ -21,11 +22,12 @@ export default function(api) {
           indent: '  ',
         }),
       );
+      return api.config[key];
     }
   }
 
   function set(key, value) {
-    setConfig({
+    return setConfig({
       key,
       value,
       file: service.userConfig.file || join(cwd, '.umirc.js'),
@@ -39,20 +41,16 @@ export default function(api) {
   function configHandler(args) {
     switch (args._[0]) {
       case 'list':
-        list();
-        break;
+        return list();
       case 'get':
         assert(args._[1], `key must supplied, e.g. umi config get routes`);
-        get(args._[1]);
-        break;
+        return get(args._[1]);
       case 'set':
         assert(args._[1], `key, e.g. umi config set mountElementId root`);
-        set(args._[1], args._[2]);
-        break;
+        return set(args._[1], args._[2]);
       case 'delete':
         assert(args._[1], `key must supplied, e.g. umi config delete externals`);
-        rm(args._[1]);
-        break;
+        return rm(args._[1]);
       default:
         throw new Error(
           `unsupported action ${args._[0]} for umi config, try list, get, set and delete`,

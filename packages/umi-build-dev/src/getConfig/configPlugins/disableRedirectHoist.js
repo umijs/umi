@@ -6,7 +6,7 @@ export default function(api) {
     validate(val) {
       assert(
         typeof val === 'boolean',
-        `disableRedirectHoist should be Boolean, but got ${val.toString()}.`,
+        `Configure item disableRedirectHoist should be Boolean, but got ${val.toString()}.`,
       );
     },
     onChange() {
