@@ -27,7 +27,7 @@ function startDevServer(opts = {}) {
 }
 
 function start() {
-  return Promise.all([startDevServer()]);
+  return startDevServer();
 }
 
 module.exports = start;

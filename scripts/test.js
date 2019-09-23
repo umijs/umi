@@ -31,7 +31,7 @@ const killServerProcess = (servers, code) => {
     );
 
     const servers = serverRes
-      .reduce((acc, curr) => [...acc, ...curr], [])
+      .reduce((acc, curr) => [...acc, ...(Array.isArray(curr) ? curr : [curr])], [])
       .map(({ child }) => child)
       .filter(item => item);
 
