@@ -16,6 +16,9 @@ import clearGitCache from './clearGitCache';
 import installDependencies from './installDependencies';
 
 export default api => {
+  // 注册 区块的 ui
+  require('./ui/index').default(api);
+
   const { log, paths, debug, applyPlugins, config } = api;
   const blockConfig = config.block || {};
 

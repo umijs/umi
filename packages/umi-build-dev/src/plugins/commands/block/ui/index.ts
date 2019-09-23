@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
-
-import { Resource, Block, AddBlockParams } from './data.d';
+import { getBlockListFromGit } from '../util';
+import { Resource, Block, AddBlockParams } from '../data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
@@ -28,49 +28,11 @@ export default (api: IApi) => {
     // return RoutesManager.routes;
   }
 
-  function getBlocks(): Block[] {
-    // TODO: read from server
-    return [
-      'AccountSettings',
-      'DashboardAnalysis',
-      'DashboardMonitor',
-      'DashboardWorkplace',
-      'EditorFlow',
-      'EditorKoni',
-      'EditorMind',
-      'Exception403',
-      'Exception404',
-      'Exception500',
-      'FormAdvancedForm',
-      'FormBasicForm',
-      'FormStepForm',
-      'ListBasicList',
-      'ListCardList',
-      'ListSearch',
-      'ListSearchApplications',
-      'ListSearchArticles',
-      'ListSearchProjects',
-      'ListTableList',
-      'ProfileAdvanced',
-      'ProfileBasic',
-      'ResultFail',
-      'ResultSuccess',
-      'UserLogin',
-      'UserRegister',
-      'UserRegisterResult',
-    ].map(name => ({
-      name,
-      description: name,
-      url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
-      isPage: true,
-      defaultPath: `/${name}`,
-      img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
-      tags: ['Ant Design Pro', '测试标签'],
-      previewUrl: '',
-    }));
-  }
+  const getBlocks = async (): Promise<Block[]> => {
+    return await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+  };
 
-  api.addUIPlugin(require.resolve('../../../src/plugins/blocks/dist/ui.umd'));
+  api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
   const reources: Resource[] = [
     {
@@ -91,8 +53,7 @@ export default (api: IApi) => {
 
   api.onUISocket(({ action, failure, success }) => {
     const routes = getRoutes();
-    const { type, payload, lang } = action;
-    const { path } = payload as { path: string };
+    const { type, payload = {}, lang } = action;
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
@@ -110,15 +71,18 @@ export default (api: IApi) => {
 
       // 获取区块列表
       case 'org.umi.block.list':
-        success({
-          data: getBlocks(),
-        });
+        getBlocks().then(blocks =>
+          success({
+            data: blocks,
+          }),
+        );
         break;
 
       // 区块添加
       case 'org.umi.block.add':
         (async () => {
-          const { url } = payload as AddBlockParams;
+          const { url, path } = payload as AddBlockParams;
+
           log(`Adding block ${chalk.magenta(url)} as ${path} ...`);
           try {
             await api.service.runCommand(
@@ -140,6 +104,7 @@ export default (api: IApi) => {
 
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
+        const { path } = payload as AddBlockParams;
         success({
           exists: routeExists(path, routes),
         });

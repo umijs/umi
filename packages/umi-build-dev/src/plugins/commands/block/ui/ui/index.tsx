@@ -3,7 +3,7 @@ import { Input, Tabs, Spin } from 'antd';
 import { IUiApi } from 'umi-types';
 import decamelize from 'decamelize';
 
-import { Resource } from '../../blocks/data.d';
+import { Resource, Block } from '../../data.d';
 import BlockList from './BlockList';
 import styles from './index.module.less';
 
@@ -34,12 +34,12 @@ const BlocksViewer: React.FC<Props> = props => {
       }
       (async () => {
         setLoading(true);
-        const { data } = await callRemote({
+        const { data } = (await callRemote({
           type: 'org.umi.block.list',
           payload: {
             reources: current.id,
           },
-        });
+        })) as { data: Block[] };
         setBlocks(data);
         setLoading(false);
       })();
@@ -50,9 +50,11 @@ const BlocksViewer: React.FC<Props> = props => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await callRemote({
+      const { data } = (await callRemote({
         type: 'org.umi.block.resource',
-      });
+      })) as {
+        data: Resource[];
+      };
       setResources(data);
       setCurrent(data[0]);
       setLoading(false);
@@ -63,23 +65,27 @@ const BlocksViewer: React.FC<Props> = props => {
     (async () => {
       const { defaultPath, url } = block;
       let path = defaultPath;
-      const { exists } = await callRemote({
+      const { exists } = (await callRemote({
         type: 'org.umi.block.checkexist',
         payload: {
           path,
         },
-      });
+      })) as {
+        exists: boolean;
+      };
 
       // block 存在时加数字后缀找一个不存在的
       if (exists) {
         let count = 2;
         while (true) {
-          const { exists } = await callRemote({
+          const { exists } = (await callRemote({
             type: 'org.umi.block.checkexist',
             payload: {
               path: `${path}-${count}`,
             },
-          });
+          })) as {
+            exists: boolean;
+          };
           if (exists) {
             count += 1;
           } else {
