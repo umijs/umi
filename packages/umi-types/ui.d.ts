@@ -68,6 +68,7 @@ declare namespace IUI {
     component: ReactNode;
     icon: IconType | string;
     actions?: IPanelAction[];
+    beta?: boolean;
   }
 
   interface IService {
