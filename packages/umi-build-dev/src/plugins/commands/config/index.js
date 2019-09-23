@@ -26,11 +26,12 @@ export default function(api) {
     }
   }
 
-  function set(key, value) {
+  function set(key, value, plugin) {
     return setConfig({
       key,
       value,
       file: service.userConfig.file || join(cwd, '.umirc.js'),
+      plugin,
     });
   }
 
@@ -47,7 +48,7 @@ export default function(api) {
         return get(args._[1]);
       case 'set':
         assert(args._[1], `key, e.g. umi config set mountElementId root`);
-        return set(args._[1], args._[2]);
+        return set(args._[1], args._[2], args.plugin);
       case 'delete':
         assert(args._[1], `key must supplied, e.g. umi config delete externals`);
         return rm(args._[1]);
@@ -61,7 +62,7 @@ export default function(api) {
   api.registerCommand(
     'config',
     {
-      description: '[alpha] update config via cli',
+      description: 'update config via cli',
       options: {},
     },
     configHandler,

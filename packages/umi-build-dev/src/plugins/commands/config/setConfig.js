@@ -7,12 +7,12 @@ import * as t from '@babel/types';
 import assert from 'assert';
 import prettier from 'prettier';
 
-export default function({ key, value, file }) {
+export default function({ key, value, file, plugin }) {
   let content = `export default {}`;
   if (existsSync(file)) {
     content = readFileSync(file, 'utf-8');
   }
-  const newContent = update(content, key, value);
+  const newContent = update(content, key, value, plugin);
   writeFileSync(file, `${newContent}\n`, 'utf-8');
 }
 
