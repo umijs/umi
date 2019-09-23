@@ -11,8 +11,9 @@ import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
-import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
+import { gitClone, gitUpdate, getDefaultBlockList } from './util';
 import clearGitCache from './clearGitCache';
+import installDependencies from './installDependencies';
 
 export default api => {
   const { log, paths, debug, applyPlugins, config } = api;
@@ -155,7 +156,7 @@ export default api => {
       { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
       ctx,
     );
-    spinner.stopAndPersist();
+    spinner.succeed();
 
     // 5. run generator
     opts.remoteLog('Generate files');

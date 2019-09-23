@@ -66,6 +66,7 @@ export default (api: IApi) => {
       defaultPath: `/${name}`,
       img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
       tags: ['Ant Design Pro', '测试标签'],
+      previewUrl: '',
     }));
   }
 
