@@ -1,6 +1,6 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
-import { Left, CaretDown, Export } from '@ant-design/icons';
+import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col, Dropdown } from 'antd';
+import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
@@ -58,6 +58,9 @@ export default withRouter(props => {
   };
 
   const title = activePanel.title ? formatMessage({ id: activePanel.title }) : '';
+  const { panels } = window.g_service;
+  const normalPanels = panels.filter(panel => !panel.beta);
+  const betaPanels = panels.filter(panel => panel.beta);
 
   return (
     <UiLayout type="detail" title={title}>
@@ -108,6 +111,34 @@ export default withRouter(props => {
             </Menu>
           );
 
+          const MenuItem = ({ panel, ...restProps }) => {
+            const icon = typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
+            return (
+              <Menu.Item key={panel.path} {...restProps}>
+                <NavLink exact to={`${panel.path}${search}`}>
+                  <Icon className={styles.menuIcon} {...icon} />
+                  {isMini ? (
+                    <p>
+                      <FormattedMessage id={panel.title} />
+                    </p>
+                  ) : (
+                    <span className={styles.menuItem}>
+                      <FormattedMessage id={panel.title} />
+                    </span>
+                  )}
+                </NavLink>
+              </Menu.Item>
+            );
+          };
+
+          const getBetaMenu = () => (
+            <Menu>
+              {betaPanels.map((panel, i) => (
+                <MenuItem panel={panel} key={panel.key} />
+              ))}
+            </Menu>
+          );
+
           return (
             <div className={styles.normal}>
               {isMini && (
@@ -137,57 +168,99 @@ export default withRouter(props => {
                 <Row type="flex" className={styles.wrapper}>
                   <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
                     {/* Projects Switch */}
-                    {!isMini && (
-                      <div className={styles['sidebar-name']}>
-                        <Left
-                          onClick={() => handleBack(false)}
-                          className={styles['sidebar-name-back']}
-                        />
-                        <Dropdown
-                          placement="bottomRight"
-                          trigger={['click']}
-                          overlay={recentMenu}
-                          className={styles['sidebar-name-dropdown']}
-                        >
-                          <div>
-                            <p>{currentProject ? currentProject.name : ''}</p>
-                            <CaretDown className={styles['sidebar-name-expand-icon']} />
-                          </div>
-                        </Dropdown>
+                    <div className={styles['sidebar-top']}>
+                      {!isMini && (
+                        <div className={styles['sidebar-name']}>
+                          <Left
+                            onClick={() => handleBack(false)}
+                            className={styles['sidebar-name-back']}
+                          />
+                          <Dropdown
+                            placement="bottomRight"
+                            trigger={['click']}
+                            overlay={recentMenu}
+                            className={styles['sidebar-name-dropdown']}
+                          >
+                            <div>
+                              <p>{currentProject ? currentProject.name : ''}</p>
+                              <CaretDown className={styles['sidebar-name-expand-icon']} />
+                            </div>
+                          </Dropdown>
+                        </div>
+                      )}
+                      <Menu
+                        theme="light"
+                        selectedKeys={selectedKeys}
+                        onClick={({ key }) => {
+                          setSelectedKeys([key]);
+                        }}
+                        style={{
+                          border: 0,
+                        }}
+                        mode="inline"
+                      >
+                        {normalPanels.map(panel => (
+                          <MenuItem panel={panel} />
+                        ))}
+                      </Menu>
+                    </div>
+                    {Array.isArray(betaPanels) && betaPanels.length > 0 && (
+                      <div className={styles['sidebar-lab']}>
+                        {isMini ? (
+                          <Menu
+                            theme="light"
+                            style={{
+                              border: 0,
+                            }}
+                            selectable={false}
+                            mode="inline"
+                          >
+                            <Menu.SubMenu
+                              key="sub1"
+                              title={
+                                <span>
+                                  <ExperimentFilled className={styles.menuIcon} />
+                                  <p>实验室</p>
+                                </span>
+                              }
+                            >
+                              {betaPanels.map((panel, i) => {
+                                const icon =
+                                  typeof panel.icon === 'object'
+                                    ? panel.icon
+                                    : { type: panel.icon };
+                                return (
+                                  <Menu.Item key={panel.key}>
+                                    <NavLink exact to={`${panel.path}${search}`}>
+                                      <Icon className={styles.menuIcon} {...icon} />
+                                      <span className={styles.menuItem}>
+                                        <FormattedMessage id={panel.title} />
+                                      </span>
+                                    </NavLink>
+                                  </Menu.Item>
+                                );
+                              })}
+                            </Menu.SubMenu>
+                          </Menu>
+                        ) : (
+                          <Dropdown overlay={getBetaMenu()} placement="topLeft">
+                            <Menu
+                              theme="light"
+                              style={{
+                                border: 0,
+                              }}
+                              selectable={false}
+                              mode="inline"
+                            >
+                              <Menu.Item>
+                                <ExperimentFilled className={styles.menuIcon} />
+                                <span className={styles.menuItem}>实验室</span>
+                              </Menu.Item>
+                            </Menu>
+                          </Dropdown>
+                        )}
                       </div>
                     )}
-                    <Menu
-                      theme="light"
-                      selectedKeys={selectedKeys}
-                      onClick={({ key }) => {
-                        setSelectedKeys([key]);
-                      }}
-                      style={{
-                        border: 0,
-                      }}
-                      mode="inline"
-                    >
-                      {window.g_service.panels.map(panel => {
-                        const icon =
-                          typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
-                        return (
-                          <Menu.Item key={panel.path}>
-                            <NavLink exact to={`${panel.path}${search}`}>
-                              <Icon className={styles.menuIcon} {...icon} />
-                              {isMini ? (
-                                <p>
-                                  <FormattedMessage id={panel.title} />
-                                </p>
-                              ) : (
-                                <span className={styles.menuItem}>
-                                  <FormattedMessage id={panel.title} />
-                                </span>
-                              )}
-                            </NavLink>
-                          </Menu.Item>
-                        );
-                      })}
-                    </Menu>
                   </Sider>
                   <Content className={styles.main}>
                     <div className={styles.header}>

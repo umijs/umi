@@ -232,6 +232,8 @@ api.addPanel({
     // 额外的点击事件
     onClick?: () => void;
   }[];
+  // 实验室插件，开启后插件会加入到实验室中，默认 false
+  beta?: boolean;
 });
 ```
 
