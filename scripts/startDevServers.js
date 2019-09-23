@@ -21,7 +21,9 @@ function startDevServer(opts = {}) {
     });
     child.on('message', args => {
       if (args.type === 'DONE') {
-        resolve(child);
+        resolve({
+          child,
+        });
       }
     });
   });

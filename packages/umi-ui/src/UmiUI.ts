@@ -947,6 +947,18 @@ export default class UmiUI {
           resolve({
             port,
           });
+          // just TEST or ALL ?
+          if (process.send) {
+            const message = {
+              type: 'UI_SERVER_DONE',
+              data: {
+                port,
+                url,
+              },
+            };
+            debug(`send ${JSON.stringify(message)}`);
+            process.send(message);
+          }
         }
       });
       ss.installHandlers(server, {
