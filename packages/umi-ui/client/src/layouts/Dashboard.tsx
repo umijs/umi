@@ -189,8 +189,14 @@ export default withRouter(props => {
                     <div className={styles.header}>
                       <h1>{activePanel && title}</h1>
                       {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
-                        <div className={styles['header-actions']}>
+                        <Row type="flex" className={styles['header-actions']}>
                           {activePanel.actions.map((panelAction, j) => {
+                            if (
+                              typeof panelAction === 'function' &&
+                              React.isValidElement(panelAction())
+                            ) {
+                              return panelAction();
+                            }
                             const { title, action, onClick, ...btnProps } = panelAction;
                             const handleClick = async () => {
                               // TODO: try catch handler
@@ -204,12 +210,14 @@ export default withRouter(props => {
                               }
                             };
                             return (
-                              <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                {formatMessage({ id: title })}
-                              </Button>
+                              title && (
+                                <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                  {formatMessage({ id: title })}
+                                </Button>
+                              )
                             );
                           })}
-                        </div>
+                        </Row>
                       )}
                     </div>
                     {/* key pathname change transition will crash  */}
