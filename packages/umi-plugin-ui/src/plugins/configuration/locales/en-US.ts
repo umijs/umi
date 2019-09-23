@@ -13,4 +13,6 @@ export default {
     'Are you sure you want to reset the above configuration？',
   'org.umi.ui.configuration.reset.tooltip.desc': 'Current configuration {value} have been modified',
   'org.umi.ui.configuration.reset.tooltip.desc.empty': 'Configuration has not been modified',
+  'org.umi.ui.configuration.edit.success': 'Edit Success',
+  'org.umi.ui.configuration.edit.loading': 'Editing',
 };

@@ -14,6 +14,10 @@ import styles from './BasicConfig.module.less';
 
 interface IBasicConfigProps {
   api: IUiApi;
+  list: string;
+  edit: string;
+  /** Search fuzz options */
+  fuseOpts?: Fuse.FuseOptions<number>;
 }
 
 const BasicConfig: React.FC<IBasicConfigProps> = props => {
@@ -60,7 +64,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
   async function updateData() {
     const { data } = await api.callRemote({
-      type: 'org.umi.config.list',
+      type: props.list,
     });
     setData(data);
   }
@@ -74,12 +78,15 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
   const fuse = React.useMemo(
     () =>
-      new Fuse(data || [], {
-        caseSensitive: true,
-        shouldSort: true,
-        threshold: 0.6,
-        keys: ['name', 'title', 'description', 'group'],
-      }),
+      new Fuse(
+        data || [],
+        props.fuseOpts || {
+          caseSensitive: true,
+          shouldSort: true,
+          threshold: 0.6,
+          keys: ['name', 'title', 'description', 'group'],
+        },
+      ),
     [data],
   );
 
@@ -137,7 +144,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
       // no edit config
       return false;
     }
-    const loadingMsg = message.loading('正在保存配置', 0);
+    const loadingMsg = message.loading(intl({ id: 'org.umi.ui.configuration.edit.loading' }), 0);
 
     Object.keys(changedValues).forEach(name => {
       changedValues[name] = formatValue(changedValues[name]);
@@ -147,14 +154,14 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
 
     try {
       await api.callRemote({
-        type: 'org.umi.config.edit',
+        type: props.edit,
         payload: {
           key: changedValues,
           value: '',
         },
       });
       await updateData();
-      message.success('配置修改成功');
+      message.success(intl({ id: 'org.umi.ui.configuration.edit.success' }));
     } catch (e) {
       loadingMsg();
       message.error(e.message);

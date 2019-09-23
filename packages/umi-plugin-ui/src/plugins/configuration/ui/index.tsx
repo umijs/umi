@@ -29,7 +29,9 @@ function getSections(api: IUiApi) {
           library: window.g_bigfish ? 'Bigfish' : 'Umi',
         },
       ),
-      component: () => <BasicConfig api={api} />,
+      component: () => (
+        <BasicConfig list="org.umi.config.list" edit="org.umi.config.edit" api={api} />
+      ),
     },
     ...api.service.configSections,
   ];
