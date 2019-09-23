@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const UmiLogo = props => (
   <svg width="1em" height="1em" viewBox="0 0 30 29" {...props}>
@@ -88,3 +89,16 @@ const BigfishLogo = props => (
 );
 
 export { UmiLogo, BigfishLogo };
+
+export default ({ isBigfish }) =>
+  styled(isBigfish ? BigfishLogo : UmiLogo)`
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    top: 50%;
+    user-select: none;
+    transform: ${props =>
+      props.open ? 'translateY(-50%) scale(0.4) rotate(45deg)' : 'translateY(-50%)'};
+    opacity: ${props => (props.open ? 0 : 1)};
+    transition: all 0.3s linear;
+  `;

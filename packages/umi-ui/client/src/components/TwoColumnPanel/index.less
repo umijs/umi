@@ -3,11 +3,19 @@
   height: 100%;
 }
 
+:global(.isMini) .left {
+  width: 204px;
+}
+
 .left {
   width: 255px;
   margin-right: 20px;
   height: 100%;
-  border-right: 1px solid #000;
+  border-right: 1px solid @dark;
+  transition: width 0.3s;
+  @media @mobile {
+    width: 204px;
+  }
   &-scroll {
     overflow: auto;
   }
@@ -24,7 +32,7 @@
 .trigger {
   cursor: pointer;
   padding: 12px;
-  display: flex;
+  flex-wrap: wrap;
 
   .icon {
     width: 44px;
@@ -35,6 +43,7 @@
   .title_desc {
     flex: 1;
     font-size: 12px;
+    margin: 4px 0;
   }
   .title {
     font-size: 14px;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Dragger from './Dragger';
 import Hide from './Hide';
-import { UmiLogo, BigfishLogo } from './Logo';
+import logoDecorator from './Logo';
 import * as ENUM from './enum';
 import Close from './Close';
 
@@ -33,10 +33,11 @@ const CloseComponent = styled(Close)`
   height: 20px;
   top: 50%;
   user-select: none;
+  color: #fff;
   transform: ${props =>
     props.open ? 'translateY(-50%)' : 'translateY(-50%) scale(0.4) rotate(-45deg);'};
   opacity: ${props => (props.open ? 1 : 0)};
-  transition: all 0.3s ease 0.1s;
+  transition: all 0.3s linear;
 `;
 
 class Bubble extends React.Component {
@@ -82,17 +83,7 @@ class Bubble extends React.Component {
     const { isBigfish, open, children } = this.props;
     const { hide } = this.state;
 
-    const Logo = styled(isBigfish ? BigfishLogo : UmiLogo)`
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      top: 50%;
-      user-select: none;
-      transform: ${props =>
-        props.open ? 'translateY(-50%) scale(0.4) rotate(45deg)' : 'translateY(-50%)'};
-      opacity: ${props => (props.open ? 0 : 1)};
-      transition: all 0.3s ease 0.3s;
-    `;
+    const Logo = logoDecorator({ isBigfish });
 
     return (
       <Dragger open={open} hide={hide} onClick={this.showBubble}>

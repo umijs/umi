@@ -98,6 +98,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
           }}
         >
           <Helmet>
+            <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
             <title>{getTitle()}</title>
             <link rel="shortcut icon" href={icon} type="image/x-icon" />
           </Helmet>

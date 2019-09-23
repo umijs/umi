@@ -214,6 +214,15 @@
   }
 }
 
+:global(.isMini) .main {
+  .header {
+    height: @ui-min-header-title-height;
+  }
+  .content {
+    height: calc(~'100% - @{ui-status-bar-height} - @{ui-min-header-title-height}');
+  }
+}
+
 .main {
   flex: 1;
   overflow: hidden;
@@ -230,7 +239,6 @@
       }
     }
     h1 {
-      font-size: 20px;
       font-weight: 400;
       line-height: 40px;
       padding: 10px 20px;

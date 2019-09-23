@@ -160,6 +160,36 @@ h2,
 h3 {
   color: @heading-color;
 }
+.isMini {
+  h1 {
+    font-size: @ui-min-heading-1-size;
+  }
+  h2 {
+    font-size: @font-size-lg;
+  }
+  h3 {
+    font-size: @font-size-base;
+  }
+  p {
+    font-size: @font-size-sm;
+  }
+  span:not(.ant-spin-dot) {
+    font-size: @font-size-sm;
+  }
+  button {
+    &.ant-btn {
+      font-size: @font-size-sm;
+      height: 24px;
+      padding: 0 12px;
+      &.ant-btn-lg {
+        font-size: @font-size-base;
+      }
+      &.ant-btn-sm {
+        font-size: @font-size-sm;
+      }
+    }
+  }
+}
 h1,
 h2,
 h3,
@@ -168,7 +198,7 @@ a {
   font-weight: 400;
 }
 h1 {
-  font-size: 20px;
+  font-size: @ui-heading-1-size;
   margin: 0;
 }
 h2 {

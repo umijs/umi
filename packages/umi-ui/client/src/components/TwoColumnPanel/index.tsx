@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IUi } from 'umi-types';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
+import { Row, Col } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { stringify, parse } from 'qs';
 import history from '@tmp/history';
@@ -58,12 +59,17 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
             [styles.triggerActive]: index === currentIndex,
           });
           return (
-            <div className={triggerCls} key={s.title} onClick={() => toggleSectionHandler(index)}>
-              <div className={styles.icon}>
+            <Row
+              className={triggerCls}
+              key={s.title}
+              type="flex"
+              onClick={() => toggleSectionHandler(index)}
+            >
+              <Col className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
                 {React.isValidElement(s.icon) && s.icon}
-              </div>
-              <div className={styles.title_desc}>
+              </Col>
+              <Col className={styles.title_desc}>
                 <div className={styles.title}>
                   {formatMessage({
                     id: s.title,
@@ -74,8 +80,8 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
                     id: s.description,
                   })}
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
           );
         })}
       </div>

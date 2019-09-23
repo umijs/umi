@@ -4,6 +4,7 @@ import { Left, CaretDown, Export } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
+import { stringify, parse } from 'qs';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { Redirect } from '@/components/icons';
@@ -40,7 +41,10 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  const { search } = window.location;
+  const { active, ...restSearchParams } = parse(window.location.search, {
+    ignoreQueryPrefix: true,
+  });
+  const search = Object.keys(restSearchParams).length > 0 ? `?${stringify(restSearchParams)}` : '';
 
   _log('projectsprojects', projectMaps);
 

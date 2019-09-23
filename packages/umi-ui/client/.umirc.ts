@@ -1,4 +1,5 @@
 import { join } from 'path';
+import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 import { dark } from 'umi-ui-theme';
@@ -113,6 +114,35 @@ const config: IConfig = {
       },
     ],
   ],
+  cssLoaderOptions: {
+    modules: true,
+    getLocalIdent: (
+      context: {
+        resourcePath: string;
+      },
+      _: string,
+      localName: string,
+    ) => {
+      if (
+        context.resourcePath.includes('node_modules') ||
+        context.resourcePath.includes('global.less')
+      ) {
+        return localName;
+      }
+      const match = context.resourcePath.match(/src(.*)/);
+
+      if (match && match[1]) {
+        const umiUiPath = match[1].replace('.less', '');
+        const arr = slash(umiUiPath)
+          .split('/')
+          .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
+          .map((a: string) => a.toLowerCase());
+        return `umi-ui${arr.join('-')}_${localName}`.replace(/--/g, '-');
+      }
+
+      return localName;
+    },
+  },
   chainWebpack(config, { webpack }) {
     if (NODE_ENV === 'development') {
       config.output.publicPath('http://localhost:8002/');

@@ -48,7 +48,7 @@ const FOOTER_RIGHT = [
 
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
-  const { locale, setLocale, currentProject } = useContext(Context);
+  const { locale, setLocale, currentProject, isMini } = useContext(Context);
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -168,16 +168,18 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        <div
-          onClick={() => {
-            handleBack(type === 'loading');
-          }}
-          className={actionCls}
-        >
-          <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
-            <HomeFilled style={{ marginRight: 4 }} />
-          </Tooltip>
-        </div>
+        {!isMini && (
+          <div
+            onClick={() => {
+              handleBack(type === 'loading');
+            }}
+            className={actionCls}
+          >
+            <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
+              <HomeFilled style={{ marginRight: 4 }} />
+            </Tooltip>
+          </div>
+        )}
         {type !== 'list' && path && name && (
           <>
             <div className={actionCls} onClick={() => handleCopyPath(path)}>
