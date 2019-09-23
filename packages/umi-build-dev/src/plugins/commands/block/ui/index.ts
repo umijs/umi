@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
 import { getBlockListFromGit } from '../util';
-import { genRouterToTreeData } from './util';
+import { genRouterToTreeData, getFolderTreeData } from './util';
 import { Resource, Block, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
@@ -84,6 +84,15 @@ export default (api: IApiBlock) => {
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
         success({
           data: genRouterToTreeData(api.config.routes),
+          success: true,
+        });
+        break;
+
+      // 获取 pages 文件列表
+      case 'org.umi.block.pageFolders':
+        success({
+          data: getFolderTreeData(api.paths.pagesPath),
+          success: true,
         });
         break;
 

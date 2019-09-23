@@ -35,7 +35,7 @@ const BlocksViewer: React.FC<Props> = props => {
   useEffect(() => {
     (async () => {
       const { data } = (await callRemote({
-        type: 'org.umi.block.routes',
+        type: 'org.umi.block.pageFolders',
       })) as {
         data: any[];
       };
