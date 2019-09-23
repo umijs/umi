@@ -29,7 +29,8 @@ export default (api: IApi) => {
   }
 
   const getBlocks = async (): Promise<Block[]> => {
-    return await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+    return blocks;
   };
 
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
@@ -53,7 +54,7 @@ export default (api: IApi) => {
 
   api.onUISocket(({ action, failure, success }) => {
     const routes = getRoutes();
-    const { type, payload = {}, lang } = action;
+    const { type, payload = {} } = action;
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
@@ -104,11 +105,18 @@ export default (api: IApi) => {
 
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
-        const { path } = payload as AddBlockParams;
         success({
-          exists: routeExists(path, routes),
+          exists: routeExists((payload as AddBlockParams).path, routes),
         });
         break;
+
+      // 检查路由是否存在
+      case 'org.umi.block.getRoutes':
+        success({
+          routes: [{}],
+        });
+        break;
+
       default:
         break;
     }

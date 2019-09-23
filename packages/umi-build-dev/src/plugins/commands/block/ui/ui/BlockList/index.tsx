@@ -5,7 +5,7 @@ import flatten from 'lodash/flatten';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
-import { Block } from '../../data.d';
+import { Block } from '../../../data.d';
 
 const { CheckableTag } = Tag;
 
@@ -34,12 +34,14 @@ const renderMetas = (item: any, keyword?: string) => (
 
 const BlockList: React.FC<BlockListProps> = props => {
   const { list = [], type = 'block', addingBlock, loading, keyword, onAdd } = props;
-  const tags: string[] = useMemo<string[]>(
+
+  const tags: string[] = useMemo(
     () => {
       return uniq(flatten(list.map(item => item.tags)));
     },
     [list],
   );
+
   const [selectedTag, setSelectedTag] = useState<string>('');
 
   const isEmpty = !list || list.length === 0;
@@ -90,7 +92,7 @@ const BlockList: React.FC<BlockListProps> = props => {
                       </Button>
                     </div>
                   )}
-                  <img src={item.img} />
+                  <img src={item.img} alt={item.name} />
                 </div>
 
                 <div className={styles.content}>

@@ -78,15 +78,15 @@ const BlocksViewer: React.FC<Props> = props => {
       if (exists) {
         let count = 2;
         while (true) {
-          const { exists } = (await callRemote({
+          const data = callRemote({
             type: 'org.umi.block.checkexist',
             payload: {
               path: `${path}-${count}`,
             },
-          })) as {
+          }) as {
             exists: boolean;
           };
-          if (exists) {
+          if (data.exists) {
             count += 1;
           } else {
             path = `${path}-${count}`;
