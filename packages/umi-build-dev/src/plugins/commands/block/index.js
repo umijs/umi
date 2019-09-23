@@ -11,10 +11,14 @@ import { getParsedData, makeSureMaterialsTempPathExist } from './download';
 import writeNewRoute from '../../../utils/writeNewRoute';
 import { getNameFromPkg } from './getBlockGenerator';
 import appendBlockToContainer from './appendBlockToContainer';
-import { gitClone, gitUpdate, getDefaultBlockList, installDependencies } from './util';
+import { gitClone, gitUpdate, getDefaultBlockList } from './util';
 import clearGitCache from './clearGitCache';
+import installDependencies from './installDependencies';
 
 export default api => {
+  // 注册 区块的 ui
+  require('./ui/index').default(api);
+
   const { log, paths, debug, applyPlugins, config } = api;
   const blockConfig = config.block || {};
 
@@ -155,7 +159,7 @@ export default api => {
       { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
       ctx,
     );
-    spinner.stopAndPersist();
+    spinner.succeed();
 
     // 5. run generator
     opts.remoteLog('Generate files');

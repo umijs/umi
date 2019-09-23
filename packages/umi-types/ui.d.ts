@@ -128,7 +128,7 @@ declare namespace IUI {
 
   type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
 
-  type ICallRemote = IApiActionFactory;
+  type ICallRemote<T = unknown, P = unknown> = IApiActionFactory<T, P>;
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = typeof formatMessage;

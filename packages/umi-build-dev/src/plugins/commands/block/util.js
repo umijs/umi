@@ -1,47 +1,33 @@
 import chalk from 'chalk';
-import { dirname, join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import { existsSync } from 'fs';
 import execa from 'execa';
-import assert from 'assert';
 import ora from 'ora';
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
 import inquirer from 'inquirer';
-import sortPackageJson from 'sort-package-json';
-
-import {
-  dependenciesConflictCheck,
-  getMockDependencies,
-  getAllBlockDependencies,
-} from './getBlockGenerator';
 
 /**
- *
- * @param {*} templateTmpDirPath
+ * 全局使用的 loading
  */
-
-const depsArrayToObject = loc =>
-  loc
-    .map(dep => {
-      return { [dep[0]]: dep[1] };
-    })
-    .reduce((pre, next) => {
-      return {
-        ...pre,
-        ...next,
-      };
-    }, {});
+const spinner = ora();
 
 /**
  * 判断是不是一个 gitmodules 的仓库
  */
 const isSubmodule = templateTmpDirPath => existsSync(join(templateTmpDirPath, '.gitmodules'));
 
+/**
+ * * 预览专用 *
+ * 从文件数组映射为 pro 的路由
+ * @param {*} name
+ */
 const genBlockName = name =>
   name
     .match(/[A-Z]?[a-z]+|[0-9]+/g)
     .map(p => p.toLowerCase())
     .join('/');
+
 /**
  * 将区块转化为 inquirer 能用的数组
  * @param {*} blocks
@@ -53,18 +39,16 @@ const genBlockName = name =>
  */
 export function printBlocks(blocks, hasLink) {
   const blockArray = [];
-
   const loopBlocks = (blocks, parentPath = '') => {
     blocks.forEach(block => {
       if (block.type === 'block') {
         const blockName = join(parentPath, block.path);
-
+        const { previewUrl } = block;
         let name = `📦  ${chalk.cyan(blockName)}  `;
         if (hasLink) {
           // 链接到 pro 的预览界面
           // AccountCenter -> account/center
-          const previewPath = genBlockName(blockName);
-          const link = terminalLink('预览', `https://preview.pro.ant.design/${previewPath}`);
+          const link = terminalLink('预览', `https://preview.pro.ant.design/${previewUrl}`);
           // 增加一个预览的界面
           name += link;
         }
@@ -143,6 +127,33 @@ export async function selectInstallBlockArgs(blockArray) {
   });
 }
 
+export const getBlockListFromGit = async gitUrl => {
+  const got = require('got');
+  const ignoreFile = ['_scripts', 'tests'];
+  const { name, owner } = GitUrlParse(gitUrl);
+  spinner.succeed();
+  spinner.start(`🔍  find block list form ${chalk.yellow(gitUrl)}`);
+
+  // 一个 github 的 api,可以获得文件树
+  const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
+  const files = JSON.parse(body)
+    .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
+    .map(({ path }) => {
+      return {
+        type: 'block',
+        path,
+        isPage: true,
+        defaultPath: `/${path}`,
+        img: `https://github.com/ant-design/pro-blocks/raw/master/${path}/snapshot.png`,
+        tags: ['Ant Design Pro'],
+        name: path,
+        previewUrl: `https://preview.pro.ant.design/${genBlockName(path)}`,
+      };
+    });
+  spinner.succeed();
+  return files;
+};
+
 /**
  * 获取区块列表，默认会从  http://blocks.umijs.org/api/blocks 拉
  * 如果配置 defaultGitUrl ，会从 defaultGitUrl 去找
@@ -151,7 +162,6 @@ export async function selectInstallBlockArgs(blockArray) {
  * @param {*} addBlock
  */
 export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
-  const spinner = ora();
   const got = require('got');
   let blockArray = [];
   const { defaultGitUrl } = blockConfig;
@@ -160,19 +170,8 @@ export async function getDefaultBlockList(_, blockConfig = {}, addBlock) {
 
   // 如果存在 defaultGitUrl 的配置，就从 defaultGitUrl 配置中拿区块列表
   if (defaultGitUrl) {
-    const ignoreFile = ['_scripts', 'tests'];
-    const { name, owner } = GitUrlParse(defaultGitUrl);
-    spinner.succeed();
-    spinner.start(`🔍  find block list form ${chalk.yellow(defaultGitUrl)}`);
-
     // 一个 github 的 api,可以获得文件树
-    const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
-    const files = JSON.parse(body)
-      .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
-      .map(({ path }) => ({
-        type: 'block',
-        path,
-      }));
+    const files = await getBlockListFromGit(defaultGitUrl);
     blockArray = printBlocks(files, 'link');
   } else {
     const { body } = await got(`http://blocks.umijs.org/api/blocks`);
@@ -272,145 +271,4 @@ export async function gitClone(ctx, spinner) {
     throw new Error(e);
   }
   spinner.succeed();
-}
-/**
- * 安装依赖包
- * - 获取项目路径
- * - 递归获得依赖项。
- * - 调用 npm 来合并安装依赖项
- * @param {*} param0
- * @param {*} ctx
- */
-export async function installDependencies(
-  { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
-  ctx,
-) {
-  // read project package.json
-  const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
-    initialValue: join(paths.cwd, 'package.json'),
-  });
-
-  // 判断 package.json 是否存在
-  assert(existsSync(projectPkgPath), `No package.json found in your project`);
-
-  // eslint-disable-next-line
-  const projectPkg = require(projectPkgPath);
-
-  // get _mock.js dependencie
-  let devDependencies = {};
-  const mockFilePath = join(ctx.sourcePath, 'src/_mock.js');
-  if (existsSync(mockFilePath)) {
-    devDependencies = getMockDependencies(readFileSync(mockFilePath, 'utf-8'), ctx.pkg);
-  }
-  const allBlockDependencies = getAllBlockDependencies(ctx.templateTmpDirPath, ctx.pkg);
-  // 构造 _modifyBlockDependencies 的执行参数
-  const initialValue = dependenciesConflictCheck(
-    allBlockDependencies,
-    projectPkg.dependencies,
-    devDependencies,
-    {
-      ...projectPkg.devDependencies,
-      ...projectPkg.dependencies,
-    },
-  );
-  // get conflict dependencies and lack dependencies
-  const { conflicts, lacks, devConflicts, devLacks } = applyPlugins('_modifyBlockDependencies', {
-    initialValue,
-  });
-  debug(
-    `conflictDeps ${conflicts}, lackDeps ${lacks}`,
-    `devConflictDeps ${devConflicts}, devLackDeps ${devLacks}`,
-  );
-
-  // find conflict dependencies throw error
-  const allConflicts = [...conflicts, ...devConflicts];
-  const ErrorInfo = allConflicts
-    .map(info => {
-      return `* ${info[0]}: ${info[2]}(your project) not compatible with ${info[1]}(block)`;
-    })
-    .join('\n');
-  // 如果有冲突，抛出错误流程结束。
-  if (allConflicts.length) {
-    throw new Error(`find dependencies conflict between block and your project:${ErrorInfo}`);
-  }
-
-  // find lack conflict, auto install
-  if (dryRun) {
-    debug('dryRun is true, skip install dependencies');
-    return;
-  }
-
-  if (skipDependencies) {
-    // 中间层转化
-    // [["react","16.5"]] => {"react":16.5}
-    const dependencies = depsArrayToObject(lacks);
-    const devDependencies = depsArrayToObject(devLacks);
-
-    // 格式化 package.json
-    const content = JSON.stringify(
-      sortPackageJson({
-        ...projectPkg,
-        dependencies: { ...dependencies, ...projectPkg.dependencies },
-        devDependencies: { ...devDependencies, ...projectPkg.devDependencies },
-      }),
-      null,
-      2,
-    );
-    // 写入文件
-    writeFileSync(projectPkgPath, content);
-    return;
-  }
-
-  // 安装依赖
-  if (lacks.length) {
-    const deps = lacks.map(dep => `${dep[0]}@${dep[1]}`);
-    spinner.start(
-      `📦  Install additional dependencies ${deps.join(
-        ',',
-      )} with ${npmClient} --registry ${registry}`,
-    );
-    try {
-      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
-      npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
-
-      // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
-      // 加个环境变量规避一下
-      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
-        cwd: dirname(projectPkgPath),
-        env: {
-          ...process.env,
-          // ref  https://github.com/GoogleChrome/puppeteer/blob/411347cd7bb03edacf0854760712d32b0d9ba68f/docs/api.md#environment-variables
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
-        },
-      });
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-  }
-
-  // 安装 dev 依赖
-  if (devLacks.length) {
-    // need skip devDependency which already install in dependencies
-    const devDeps = devLacks
-      .filter(dep => !lacks.find(item => item[0] === dep[0]))
-      .map(dep => `${dep[0]}@${dep[1]}`);
-    spinner.start(
-      `Install additional devDependencies ${devDeps.join(
-        ',',
-      )} with ${npmClient}  --registry ${registry}`,
-    );
-    try {
-      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
-      npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
-      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
-        cwd: dirname(projectPkgPath),
-      });
-    } catch (e) {
-      spinner.fail();
-      throw new Error(e);
-    }
-    spinner.succeed();
-  }
 }

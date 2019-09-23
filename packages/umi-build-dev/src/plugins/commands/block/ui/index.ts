@@ -1,10 +1,12 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
-import { Resource, Block, AddBlockParams } from './data.d';
 import { join } from 'path';
+import { getBlockListFromGit } from '../util';
+import { Resource, Block, AddBlockParams } from '../data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
+  // eslint-disable-next-line no-restricted-syntax
   for (const route of routes) {
     if (route.routes && routeExists(path, route.routes)) {
       return true;
@@ -16,8 +18,8 @@ export function routeExists(path, routes) {
   return false;
 }
 
-export default function(api: IApi) {
-  const log = api.log.log;
+export default (api: IApi) => {
+  const { log } = api.log;
 
   function getRoutes() {
     return [];
@@ -26,50 +28,11 @@ export default function(api: IApi) {
     // return RoutesManager.routes;
   }
 
-  function getBlocks(): Block[] {
-    // TODO: read from server
-    return [
-      'AccountSettings',
-      'DashboardAnalysis',
-      'DashboardMonitor',
-      'DashboardWorkplace',
-      'EditorFlow',
-      'EditorKoni',
-      'EditorMind',
-      'Exception403',
-      'Exception404',
-      'Exception500',
-      'FormAdvancedForm',
-      'FormBasicForm',
-      'FormStepForm',
-      'ListBasicList',
-      'ListCardList',
-      'ListSearch',
-      'ListSearchApplications',
-      'ListSearchArticles',
-      'ListSearchProjects',
-      'ListTableList',
-      'ProfileAdvanced',
-      'ProfileBasic',
-      'ResultFail',
-      'ResultSuccess',
-      'UserLogin',
-      'UserRegister',
-      'UserRegisterResult',
-    ].map(name => {
-      return {
-        name: name,
-        description: name,
-        url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
-        isPage: true,
-        defaultPath: `/${name}`,
-        img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
-        tags: ['Ant Design Pro', '测试标签'],
-      };
-    });
-  }
+  const getBlocks = async (): Promise<Block[]> => {
+    return await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+  };
 
-  api.addUIPlugin(require.resolve('../../../src/plugins/blocks/dist/ui.umd'));
+  api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
   const reources: Resource[] = [
     {
@@ -89,25 +52,37 @@ export default function(api: IApi) {
   ];
 
   api.onUISocket(({ action, failure, success }) => {
-    const { type, payload, lang } = action;
+    const routes = getRoutes();
+    const { type, payload = {}, lang } = action;
     switch (type) {
+      // 区块获得项目的路由
       case 'org.umi.block.routes':
         success({
           data: [],
         });
+        break;
+
+      // 区块获得数据源
       case 'org.umi.block.resource':
         success({
           data: reources,
         });
         break;
+
+      // 获取区块列表
       case 'org.umi.block.list':
-        success({
-          data: getBlocks(),
-        });
+        getBlocks().then(blocks =>
+          success({
+            data: blocks,
+          }),
+        );
         break;
+
+      // 区块添加
       case 'org.umi.block.add':
         (async () => {
           const { url, path } = payload as AddBlockParams;
+
           log(`Adding block ${chalk.magenta(url)} as ${path} ...`);
           try {
             await api.service.runCommand(
@@ -119,16 +94,17 @@ export default function(api: IApi) {
                 log(`${chalk.gray('[umi block add]')} ${message}`);
               },
             );
-            success();
+            success({ message: 'add block success' });
             log(chalk.green('Add success'));
           } catch (e) {
             log(chalk.red('Add failed'));
           }
         })();
         break;
+
+      // 检查路由是否存在
       case 'org.umi.block.checkexist':
-        const { path } = payload;
-        const routes = getRoutes();
+        const { path } = payload as AddBlockParams;
         success({
           exists: routeExists(path, routes),
         });
@@ -189,4 +165,4 @@ export default function(api: IApi) {
 })();
     `);
   }
-}
+};
