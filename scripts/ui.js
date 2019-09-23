@@ -39,6 +39,7 @@ function buildPlugins(roots, opts = {}) {
           'packages/umi-plugin-ui/src/plugins/configuration',
           'packages/umi-ui-tasks/src',
           'packages/umi-build-dev/src/plugins/commands/block/ui',
+          'packages/umi-plugin-react/ui',
         ],
         {
           watch,

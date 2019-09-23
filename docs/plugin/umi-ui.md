@@ -619,6 +619,28 @@ const dir = await api.getSharedDataDir();
 // "/Users/xxxxx/.umi/ui/shared-data/5bc6bd"
 ```
 
+### api.addConfigSection()
+
+添加配置区块。
+
+示例：
+
+```js
+api.addConfigSection({
+  key: 'umi-plugin-react',
+  title: 'umi-plugin-react 配置',
+  description: '配置 dva、antd、按需加载、国际化等',
+  icon: (
+    <img
+      src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
+      width={32}
+      height={32}
+    />
+  ),
+  component: () => <div>TODO</div>,
+});
+```
+
 ### api.isMini()
 
 Get whether the current environment is Umi UI mini.

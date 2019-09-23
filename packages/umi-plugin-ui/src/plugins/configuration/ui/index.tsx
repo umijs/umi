@@ -31,6 +31,7 @@ function getSections(api: IUiApi) {
       ),
       component: () => <BasicConfig api={api} />,
     },
+    ...api.service.configSections,
   ];
   return sections;
 }

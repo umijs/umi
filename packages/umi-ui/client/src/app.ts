@@ -29,6 +29,7 @@ if (!window.g_uiEventEmitter) {
 const service = (window.g_service = {
   panels: [],
   locales: [],
+  configSections: [],
 });
 
 // Avoid scope problem

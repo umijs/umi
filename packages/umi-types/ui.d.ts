@@ -73,6 +73,7 @@ declare namespace IUI {
   interface IService {
     panels: IPanel[];
     locales: ILocale[];
+    configSections: any[];
   }
 
   interface IAction<T = object, K = void> {

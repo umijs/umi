@@ -43,6 +43,10 @@ export default class PluginAPI {
     this.connect = connect as IUi.IConnect;
   }
 
+  addConfigSection(section) {
+    this.service.configSections.push(section);
+  }
+
   registerModel = model => {
     window.g_app.model(model);
   };
