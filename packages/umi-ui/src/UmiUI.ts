@@ -950,7 +950,7 @@ export default class UmiUI {
           // just TEST or ALL ?
           if (process.send) {
             const message = {
-              type: 'UI_DONE',
+              type: 'UI_SERVER_DONE',
               data: {
                 port,
                 url,

@@ -16,7 +16,7 @@ function startDevServer(opts = {}) {
       },
     });
     child.on('message', args => {
-      if (args.type === 'UI_DONE') {
+      if (args.type === 'UI_SERVER_DONE') {
         resolve({
           child,
           data: args.data,
