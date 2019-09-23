@@ -6,6 +6,7 @@ import { Resource, Block, AddBlockParams } from './data.d';
 // import getRouteManager from '../../../getRouteManager';
 
 export function routeExists(path, routes) {
+  // eslint-disable-next-line no-restricted-syntax
   for (const route of routes) {
     if (route.routes && routeExists(path, route.routes)) {
       return true;
@@ -57,17 +58,15 @@ export default (api: IApi) => {
       'UserLogin',
       'UserRegister',
       'UserRegisterResult',
-    ].map(name => {
-      return {
-        name,
-        description: name,
-        url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
-        isPage: true,
-        defaultPath: `/${name}`,
-        img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
-        tags: ['Ant Design Pro', '测试标签'],
-      };
-    });
+    ].map(name => ({
+      name,
+      description: name,
+      url: `https://github.com/ant-design/pro-blocks/tree/master/${name}`,
+      isPage: true,
+      defaultPath: `/${name}`,
+      img: `https://github.com/ant-design/pro-blocks/raw/master/${name}/snapshot.png`,
+      tags: ['Ant Design Pro', '测试标签'],
+    }));
   }
 
   api.addUIPlugin(require.resolve('../../../src/plugins/blocks/dist/ui.umd'));
@@ -90,9 +89,9 @@ export default (api: IApi) => {
   ];
 
   api.onUISocket(({ action, failure, success }) => {
-    const { path } = payload;
     const routes = getRoutes();
     const { type, payload, lang } = action;
+    const { path } = payload as { path: string };
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
@@ -130,7 +129,7 @@ export default (api: IApi) => {
                 log(`${chalk.gray('[umi block add]')} ${message}`);
               },
             );
-            success();
+            success({ message: 'add block success' });
             log(chalk.green('Add success'));
           } catch (e) {
             log(chalk.red('Add failed'));
