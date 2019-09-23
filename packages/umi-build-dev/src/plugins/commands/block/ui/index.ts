@@ -50,10 +50,17 @@ export default (api: IApiBlock) => {
       url: 'https://github.com/ant-design/pro-blocks',
     },
     {
-      id: 'umijs',
+      id: 'umijs-template',
       name: 'UmiJS Official',
       resourceType: 'github',
       blockType: 'template',
+      url: 'https://github.com/umijs/umi-blocks',
+    },
+    {
+      id: 'umijs-block',
+      name: 'UmiJS Official',
+      resourceType: 'github',
+      blockType: 'block',
       url: 'https://github.com/umijs/umi-blocks',
     },
   ];

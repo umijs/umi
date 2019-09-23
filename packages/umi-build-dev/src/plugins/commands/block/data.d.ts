@@ -5,6 +5,7 @@ export interface Block {
   img: string;
   defaultPath: string;
   tags: string[];
+  previewUrl?: string;
 }
 
 export interface BlockData {
