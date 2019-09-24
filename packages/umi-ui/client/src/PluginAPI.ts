@@ -9,6 +9,7 @@ import { FC } from 'react';
 import { IUi } from 'umi-types';
 import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
+import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import Field from './components/Field';
 
@@ -24,6 +25,7 @@ export default class PluginAPI {
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
 
@@ -40,6 +42,7 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Field = Field;
+    this.ConfigForm = ConfigForm;
     this.connect = connect as IUi.IConnect;
   }
 

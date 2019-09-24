@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Anchor } from 'antd';
 import cls from 'classnames';
-import Context from '../../Context';
+import Context from '@/layouts/Context';
 // import { AnchorProps } from 'antd/lib/anchor';
-import styles from './Toc.module.less';
+import styles from './Toc.less';
 
 export interface IToc {
   href: string;

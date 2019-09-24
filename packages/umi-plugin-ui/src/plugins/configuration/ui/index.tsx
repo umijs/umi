@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { IUiApi } from 'umi-types';
-import BasicConfig from './components/BasicConfig';
 import Context from './Context';
 import styles from './index.module.less';
 
@@ -10,6 +9,7 @@ interface IConfigManager {
 }
 
 function getSections(api: IUiApi) {
+  const { ConfigForm } = api;
   const sections = [
     {
       key: 'project',
@@ -30,7 +30,7 @@ function getSections(api: IUiApi) {
         },
       ),
       component: () => (
-        <BasicConfig
+        <ConfigForm
           title="org.umi.ui.configuration.project.config.title"
           list="org.umi.config.list"
           edit="org.umi.config.edit"
