@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Tree, Select } from 'antd';
 import { TreeProps } from 'antd/es/tree';
 
+import styles from './index.module.less';
+
 interface Props extends TreeProps {
   value?: string;
   placeholder?: string;
+  onChange?: (value: string) => void;
 }
 
 const TreeSelect: React.FC<Props> = props => {
-  const { value, placeholder } = props;
+  const { value, placeholder, onChange } = props;
   const [open, setOpen] = useState<boolean>(false);
   return (
     <Select
@@ -19,7 +22,15 @@ const TreeSelect: React.FC<Props> = props => {
       open={open}
       dropdownRender={() => {
         return (
-          <Tree onClick={() => setOpen(false)} {...props} selectedKeys={value ? [value] : []} />
+          <Tree
+            className={styles.tree}
+            onClick={() => setOpen(false)}
+            selectedKeys={value ? [value] : []}
+            onSelect={selectedKeys => {
+              onChange && onChange(selectedKeys[0]);
+            }}
+            {...props}
+          />
         );
       }}
     />

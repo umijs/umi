@@ -32,7 +32,7 @@ export default (api: IUiApi) => {
     icon: 'block',
     actions: [
       {
-        title: '清除缓存',
+        title: 'org.umi.ui.blocks.actions.clear',
         type: 'default',
         action: {
           type: 'org.umi.block.clear',
