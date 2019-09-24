@@ -6,18 +6,20 @@ import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
 export default (api: IUiApi) => {
-  window.addEventListener('message', e => {
-    console.log(`[Block] Received message`, e.data);
-    try {
-      const { action, payload } = JSON.parse(e.data);
-      if (action === 'umi.ui.block.addBlock') {
-        // TODO:
-        // 1. show mini
-        // 2. center mini iframe
-        // 3. add block with payload.filename and payload.index
-      }
-    } catch (e) {}
-  });
+  if (api.isMini()) {
+    window.addEventListener('message', e => {
+      console.log(`[Block] Received message`, e.data);
+      try {
+        const { action, payload } = JSON.parse(e.data);
+        if (action === 'umi.ui.block.addBlock') {
+          // TODO:
+          // 1. show mini
+          // 2. center mini iframe
+          // 3. add block with payload.filename and payload.index
+        }
+      } catch (e) {}
+    });
+  }
 
   api.addLocales({
     'zh-CN': zhCN,
