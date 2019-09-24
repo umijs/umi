@@ -1,6 +1,8 @@
 import React from 'react';
 
 export default api => {
+  const { ConfigForm } = api;
+
   api.addConfigSection({
     key: 'umi-plugin-react',
     title: 'umi-plugin-react 配置',
@@ -12,6 +14,12 @@ export default api => {
         height={32}
       />
     ),
-    component: () => <div>TODO</div>,
+    component: () => (
+      <ConfigForm
+        title="umi-plugin-react 配置"
+        list="org.umi.umi-plugin-react.config.list"
+        edit="org.umi.umi-plugin-react.config.edit"
+      />
+    ),
   });
 };

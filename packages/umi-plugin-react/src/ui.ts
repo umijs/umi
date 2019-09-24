@@ -1,6 +1,6 @@
 import { IApi } from 'umi-types';
 import { formatConfigs, useConfigKey } from 'umi-plugin-ui/lib/plugins/configuration';
-import { configs } from './config';
+import { configs, groupMap } from './config';
 
 export function getPluginConfig(plugins, name) {
   for (const plugin of plugins) {
@@ -27,7 +27,7 @@ export default (api: IApi) => {
     const pluginConfig = getPluginConfig(plugins, 'umi-plugin-react');
     return formatConfigs(configs, {
       lang,
-      groupMap: {},
+      groupMap,
     }).map(p => {
       const [haveKey, value] = useConfigKey(pluginConfig, p.name);
       if (haveKey) {
@@ -49,7 +49,7 @@ export default (api: IApi) => {
           data: getConfig(lang),
         });
         break;
-      case 'org.umi.umi-plugin-react.config.set':
+      case 'org.umi.umi-plugin-react.config.edit':
         let config = payload.key;
         if (typeof payload.key === 'string') {
           config = {
