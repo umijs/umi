@@ -10,6 +10,8 @@ export interface Block {
 
 export interface BlockData {
   data: Block[];
+  success: boolean;
+  message?: string;
 }
 
 export interface RequestParams {
@@ -23,7 +25,7 @@ export interface Resource {
   blockType: 'template' | 'block';
   resourceType: 'github' | 'custom';
   url?: string;
-  getData?: (params: RequestParams) => BlockData;
+  getData?: (params?: RequestParams) => Promise<BlockData>;
 }
 
 export interface AddBlockParams {

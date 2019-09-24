@@ -27,7 +27,7 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
-    icon: 'environment',
+    icon: 'block',
     actions: [
       {
         title: '清除缓存',
