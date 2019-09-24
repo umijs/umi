@@ -24,8 +24,17 @@ describe('Umi UI e2e', () => {
   it('project list page', async () => {
     await page.goto(`http://localhost:${port}/project/select`, { waitUntil: 'networkidle2' });
 
-    // global.js
-    const text = await page.evaluate(() => document.querySelector('h2').innerHTML);
+    const text = await page.evaluate(
+      () =>
+        document.querySelector('.umi-ui-pages-project-components-list-index_project-title')
+          .innerHTML,
+    );
+    const gaScript = await page.evaluate(() => {
+      const ga = document.querySelector('script[src*=analytics]');
+      return ga && ga.src;
+    });
+
     expect(text).toEqual('项目列表');
+    expect(gaScript).toBeNull();
   });
 });

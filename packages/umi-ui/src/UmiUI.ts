@@ -829,7 +829,9 @@ export default class UmiUI {
               ''}" };</script>`,
           );
         }
-        if (!process.env.LOCAL_DEBUG) {
+
+        // not local dev and not test env
+        if (!process.env.LOCAL_DEBUG && !process.env.UMI_UI_TEST) {
           const headScript = process.env.BIGFISH_COMPAT
             ? bigfishScripts.head.join('\n')
             : umiScripts.head.join('\n');

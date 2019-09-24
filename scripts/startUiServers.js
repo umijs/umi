@@ -10,6 +10,7 @@ function startDevServer(opts = {}) {
         ...process.env,
         BROWSER: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
+        UMI_UI_TEST: '1',
       },
     });
     child.on('message', args => {
