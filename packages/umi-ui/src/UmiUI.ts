@@ -943,12 +943,15 @@ export default class UmiUI {
         } else {
           const url = `http://localhost:${port}/`;
           console.log(`🧨  Ready on ${url}`);
-          if (process.env.UMI_UI_BROWSER !== 'none') {
-            openBrowser(url);
-          }
           resolve({
             port,
           });
+          // not block main thread
+          if (process.env.UMI_UI_BROWSER !== 'none') {
+            setTimeout(() => {
+              openBrowser(url);
+            }, 0);
+          }
           // just TEST or ALL ?
           if (process.send) {
             const message = {
