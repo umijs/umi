@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
 import { getBlockListFromGit } from '../util';
-import { genRouterToTreeData, getFolderTreeData } from './util';
+import { getFolderTreeData, depthRouterConfig } from './util';
 import { Resource, BlockData, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
@@ -99,8 +99,15 @@ export default (api: IApiBlock) => {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
+        // eslint-disable-next-line
+        const routers = depthRouterConfig(api.config.routes);
+        routers.unshift({
+          title: '/',
+          value: '/',
+          key: '/',
+        });
         success({
-          data: genRouterToTreeData(api.config.routes),
+          data: routers,
           success: true,
         });
         break;

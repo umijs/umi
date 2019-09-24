@@ -10,12 +10,11 @@ export interface TreeData {
   children?: TreeData[];
 }
 
-export const genRouterToTreeData = (routes: IConfig['routes']): TreeData[] =>
+export const genRouterToTreeData = (routes: IConfig['routes']) =>
   routes
     .map(item =>
       item.path
         ? {
-            ...item,
             title: item.path,
             value: item.path,
             key: item.path,
@@ -23,7 +22,69 @@ export const genRouterToTreeData = (routes: IConfig['routes']): TreeData[] =>
           }
         : undefined,
     )
-    .filter(obj => obj);
+    .filter(item => item);
+
+/**
+ * 打平 children
+ * {
+ *    path:"/user",
+ *    children:[{ path: "/user/list" }]
+ *  }
+ *  --->
+ *  /user /user/list
+ * @param treeData
+ */
+const reduceData = treeData =>
+  treeData.reduce((pre, current) => {
+    const router = pre[current.key];
+    let childrenKeys = {};
+    if (current && current.children) {
+      childrenKeys = reduceData(current.children);
+    }
+
+    if (!router) {
+      pre[current.key] = current;
+    }
+
+    return {
+      ...pre,
+      ...childrenKeys,
+    };
+  }, {});
+
+/**
+ *  转化一下
+ *  /user /user/list /user/list/item
+ *  ---->
+ *  {
+ *    path:"/user",
+ *    children:[{ path: "/user/list" }]
+ *  }
+ * @param routes
+ */
+export const depthRouterConfig = (routes: IConfig['routes']) => {
+  const routerConfig = reduceData(genRouterToTreeData(routes));
+  /**
+   * 这里可以拼接可以减少一次循环
+   */
+  return (
+    Object.keys(routerConfig)
+      .map(key => {
+        key
+          .split('/')
+          .filter(routerKey => routerKey)
+          .forEach((_, index, array) => {
+            const routerKey = array.slice(0, index).join('/');
+            if (routerKey) {
+              routerConfig[`/${routerKey}`] = routerConfig[key];
+            }
+          });
+        return routerConfig[key];
+      })
+      // 删除没有 children 的数据
+      .filter(item => item && item.children && item.children.length)
+  );
+};
 
 /**
  * 遍历文件地址
