@@ -16,14 +16,13 @@ export default function clearGitCache(args: { dryRun?: boolean }, { log }: { log
   const info = `🗑  start clear: ${chalk.yellow(blocksTempPath)}`;
   spinner.start(info);
 
-  rimraf.sync(blocksTempPath, error => {
-    if (error) {
-      log.error(error);
-      spinner.stop();
-      return;
-    }
+  try {
+    rimraf.sync(blocksTempPath);
     spinner.succeed();
-  });
+  } catch (error) {
+    log.error(error);
+    spinner.stop();
+  }
 
   return info;
 }
