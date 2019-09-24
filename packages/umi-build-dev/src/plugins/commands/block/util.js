@@ -73,11 +73,20 @@ export const getBlockListFromGit = async gitUrl => {
   const { name, owner } = GitUrlParse(gitUrl);
   spinner.succeed();
   spinner.start(`🔍  find block list form ${chalk.yellow(gitUrl)}`);
-
+  if (name === 'pro-blocks' && owner === 'ant-design') {
+    const { body } = await got(
+      'https://raw.githubusercontent.com/ant-design/pro-blocks/master/blockList.json',
+    );
+    spinner.succeed();
+    return JSON.parse(body);
+  }
   // 一个 github 的 api,可以获得文件树
   const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
-  const files = JSON.parse(body)
-    .tree.filter(file => file.type === 'tree' && !ignoreFile.includes(file.path))
+  const filesTree = JSON.parse(body)
+    .tree.filter(
+      file =>
+        file.type === 'tree' && !ignoreFile.includes(file.path) && file.path.indexOf('.') !== 0,
+    )
     .map(({ path }) => {
       return {
         url: `${gitUrl}/tree/master/${path}`,
@@ -92,7 +101,7 @@ export const getBlockListFromGit = async gitUrl => {
       };
     });
   spinner.succeed();
-  return files;
+  return filesTree;
 };
 
 /**
