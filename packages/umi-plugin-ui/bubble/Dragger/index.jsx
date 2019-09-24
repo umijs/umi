@@ -14,6 +14,10 @@ const Container = styled.div.attrs({
   right: 12px;
   bottom: 28px;
 
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+
   * {
     box-sizing: border-box;
   }
