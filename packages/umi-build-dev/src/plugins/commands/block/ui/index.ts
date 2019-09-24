@@ -101,7 +101,7 @@ export default (api: IApiBlock) => {
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
         // eslint-disable-next-line
         const routers = depthRouterConfig(api.config.routes);
-        routers.unshift({
+        routers.push({
           title: '/',
           value: '/',
           key: '/',
@@ -115,8 +115,15 @@ export default (api: IApiBlock) => {
       // 获得项目 page 下的目录结构
       case 'org.umi.block.pageFolders':
         log(`🕵️‍ get pageFolders from ${chalk.yellow(api.paths.absPagesPath)}`);
+        // eslint-disable-next-line
+        const folderTreeData = getFolderTreeData(api.paths.absPagesPath);
+        folderTreeData.push({
+          title: '/',
+          value: '/',
+          key: '/',
+        });
         success({
-          data: getFolderTreeData(api.paths.absPagesPath),
+          data: folderTreeData,
         });
         break;
 
