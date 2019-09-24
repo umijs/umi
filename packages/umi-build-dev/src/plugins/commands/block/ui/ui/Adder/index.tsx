@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Input, Switch, TreeSelect } from 'antd';
+import { Modal, Button, Input, Switch } from 'antd';
 
+// antd 4.0 not support TreeSelect now.
+import TreeSelect from '../TreeSelect';
 import useCallData from '../hooks/useCallData';
 import { AddBlockParams, Block, Resource } from '../../../data.d';
 import styles from './index.module.less';
@@ -19,7 +21,7 @@ const Adder: React.FC<Props> = props => {
 
   const [visible, setVisible] = useState<boolean>(false);
   const [path, setPath] = useState<string>(block.defaultPath);
-  const [routePath, setRoutePath] = useState<string>(block.defaultPath);
+  const [routePath, setRoutePath] = useState<string>(block.defaultPath.toLocaleLowerCase());
   const [name, setName] = useState<string>(block.url.split('/').pop());
   const [transformJS, setTransformJS] = useState<boolean>(false);
   const [removeLocale, setRemoveLocale] = useState<boolean>(false);
@@ -36,7 +38,17 @@ const Adder: React.FC<Props> = props => {
     },
   );
 
-  console.log(routePathTreeData);
+  const { data: pageFoldersTreeData } = useCallData(
+    () => {
+      return callRemote({
+        type: 'org.umi.block.pageFolders',
+      }) as any;
+    },
+    [],
+    {
+      defaultData: [],
+    },
+  );
 
   return (
     <>
@@ -70,19 +82,24 @@ const Adder: React.FC<Props> = props => {
           <div>
             <div className={styles.label}>选择路由</div>
             <TreeSelect
-              treeDataSimpleMode
               value={routePath}
               placeholder="请选择路由"
-              onChange={setRoutePath}
-              treeData={[
-                {
-                  value: '1213',
-                  key: '323',
-                },
-              ]}
+              selectable
+              onSelect={selectedKeys => {
+                setRoutePath(selectedKeys[0]);
+              }}
+              treeData={routePathTreeData}
             />
             <div className={styles.label}>选择安装路径</div>
-            <Input value={path} onChange={e => setPath(e.target.value)} />
+            <TreeSelect
+              value={path}
+              placeholder="请选择安装路径"
+              selectable
+              onSelect={selectedKeys => {
+                setPath(selectedKeys[0]);
+              }}
+              treeData={pageFoldersTreeData}
+            />
             {blockType === 'block' && (
               <>
                 <div className={styles.label}>区块名称</div>
@@ -90,9 +107,9 @@ const Adder: React.FC<Props> = props => {
               </>
             )}
             <div className={styles.label}>编译为 JS</div>
-            <Switch value={transformJS} onChange={setTransformJS} />
+            <Switch checked={transformJS} onChange={setTransformJS} />
             <div className={styles.label}>移除国际化</div>
-            <Switch value={removeLocale} onChange={setRemoveLocale} />
+            <Switch checked={removeLocale} onChange={setRemoveLocale} />
           </div>
         </Modal>
       )}
