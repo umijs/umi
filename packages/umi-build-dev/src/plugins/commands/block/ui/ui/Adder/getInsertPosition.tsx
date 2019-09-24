@@ -5,8 +5,15 @@ export interface PositionData {
 }
 
 export default api => {
+  api.hideMini();
+  window.parent.postMessage(
+    JSON.stringify({
+      action: 'umi.ui.enableBlockEditMode',
+    }),
+    '*',
+  );
+
   return new Promise((resolve, reject) => {
-    api.hideMini();
     const messageHandler = info => {
       const data: any = JSON.stringify(info);
       console.log('get postmessage data', data);
@@ -18,6 +25,5 @@ export default api => {
       }
     };
     window.parent.addEventListener('message', messageHandler, false);
-    window.parent.g_enableUmiUIBlockAddEditMode();
   });
 };
