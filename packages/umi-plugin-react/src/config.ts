@@ -11,6 +11,10 @@ export const groupMap = {
     'zh-CN': '国际化',
     'en-US': 'i18n',
   },
+  performance: {
+    'zh-CN': '性能优化',
+    'en-US': 'Performance',
+  },
   other: {
     'zh-CN': '其他',
     'en-US': 'Other',
@@ -115,6 +119,51 @@ export const configs = [
   {
     configs: [
       {
+        group: 'performance',
+        name: 'dynamicImport',
+        type: 'boolean',
+        default: false,
+        title: '开启按需加载',
+        description: '实现路由级的动态加载（code splitting），可按需指定哪一级的按需加载。',
+      },
+      {
+        group: 'performance',
+        name: 'dynamicImport.webpackChunkName',
+        type: 'boolean',
+        default: false,
+        title: '使用有意义的异步 chunk 文件名。',
+        description: '是否通过 webpackChunkName 实现有意义的异步文件名。',
+      },
+      {
+        group: 'performance',
+        name: 'dynamicImport.loadingComponent',
+        type: 'string',
+        default: '',
+        title: '加载组件路径',
+        description: '指定加载时的 loading 组件路径。',
+      },
+      {
+        group: 'performance',
+        name: 'dynamicImport.level',
+        type: 'string',
+        default: '',
+        title: '路由等级',
+        description: '指定按需加载的路由等级。',
+      },
+      {
+        group: 'performance',
+        name: 'library',
+        type: 'list',
+        choices: ['preact', 'react'],
+        default: 'react',
+        title: '切换 react 库',
+        description: '切换到 preact 可以减少打包尺寸，但需注意兼容问题。',
+      },
+    ],
+  },
+  {
+    configs: [
+      {
         group: 'other',
         name: 'hd',
         type: 'boolean',
@@ -147,6 +196,21 @@ export const configs = [
           'zh-CN': '指定 FastClick 路径',
           'en-US': 'Specify then the FastClick library is from',
         },
+      },
+    ],
+  },
+  {
+    configs: [
+      {
+        group: 'other',
+        name: 'dll',
+        type: 'boolean',
+        default: false,
+        title: {
+          'zh-CN': '开启 Dll 方案',
+          'en-US': 'Enable Dll',
+        },
+        description: '通过 webpack 的 dll 插件预打包一份 dll 文件来达到二次启动提速的目的。',
       },
     ],
   },
