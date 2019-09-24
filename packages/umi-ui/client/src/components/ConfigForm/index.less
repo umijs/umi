@@ -2,28 +2,28 @@
   margin-bottom: 16px;
   p {
     margin-bottom: 4px;
-    color: fade(#fff, 65);
+    color: @text-color;
   }
   span {
-    color: fade(#fff, 45);
+    color: @text-color-secondary;
   }
 }
 :global(.isMini) {
-  .basicConfig-submit {
+  .configForm-submit {
     bottom: 41px;
     height: 41px;
   }
-  .basicConfig {
+  .configForm {
     padding: 12px 20px;
   }
-  @media screen and (max-width: 767.9px) {
+  @media @mobile {
     .toc {
       display: none;
     }
   }
 }
 
-.basicConfig {
+.configForm {
   display: flex;
   height: 100%;
   overflow: auto;
@@ -42,7 +42,7 @@
       z-index: 1;
       top: 50%;
       transform: translateY(-50%);
-      color: fade(#fff, 85);
+      color: @heading-color;
       &-hide {
         display: none;
       }
@@ -75,8 +75,8 @@
     height: 48px;
     width: 100%;
     text-align: right;
-    border-top: 1px solid #15171c;
-    background: #23232e;
+    border-top: 1px solid #15161b;
+    background: @body-background;
     z-index: 11;
     button {
       margin-right: 8px;
@@ -104,7 +104,7 @@
     }
     h2 {
       font-size: 16px;
-      color: fade(#fff, 85);
+      color: @heading-color;
       font-weight: 500;
       margin-bottom: 16px;
       line-height: 22px;

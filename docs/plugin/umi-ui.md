@@ -489,6 +489,120 @@ api.addPanel({
 ![](https://gw.alipayobjects.com/zos/antfincdn/ynwTwNrNjv/6af464b4-742b-4ce8-9ee2-92c826f2e51b.png)
 
 
+
+### api.ConfigForm
+
+配置表单页面，对 [api.Field](#api-field) 的上层封装，增加查询、修改接口即可生成表单页面：
+
+
+`api.ConfigForm` 参数如下：
+
+```js
+interface IConfigFormProps {
+  /** config title in the top */
+  title: string;
+  /** list config interface */
+  list: string;
+  /** edit config interface */
+  edit: string;
+  /** enable Toc, default false */
+  enableToc?: boolean;
+  /** Search fuse options, detail in https://github.com/krisk/Fuse */
+  fuseOpts?: FuseOptions<number>;
+}
+```
+
+使用示例：
+
+服务端
+
+```js
+// server
+export default (api) => {
+  // more options in `api.Field` IFieldProps
+  const data = [
+    {
+      "name": "base",
+      "group": "Group1",
+      "type": "string",
+      "default": "/",
+      "title": "group1",
+      "description": "description1",
+    },
+    {
+      "group": "Group2",
+      "name": "group2",
+      "title": "title2",
+      "description": "description2",
+      "type": "boolean",
+      "default": false,
+    },
+    {
+      "group": "Group2",
+      // if you want link parent config, use `.` dot split
+      "name": "group2.bar",
+      "title": "title3",
+      "description": "description3",
+      "type": "boolean",
+      "default": false,
+    },
+  ]
+
+  api.onUISocket(({ action, failure, success }) => {
+    const { type, payload, lang } = action;
+    switch (type) {
+      case 'org.umi.plugin.bar.config.list':
+        success({
+          data,
+        });
+        break;
+      case 'org.umi.plugin.bar.config.edit':
+        let config = payload.key;
+        if (typeof payload.key === 'string') {
+          config = {
+            [payload.key]: payload.value,
+          };
+        }
+        try {
+          // your validate function
+          // validateConfig(config);
+          // (api as any).service.runCommand('config', {
+          //   _: ['set', config],
+          // });
+          success();
+        } catch (e) {
+          failure({
+            message: e.message,
+            errors: e.errors,
+          });
+        }
+        break;
+      default:
+        break;
+    }
+  });
+}
+```
+
+客户端
+
+```jsx
+// client
+const { ConfigForm } = api;
+
+api.addPanel({
+  component: (
+    <ConfigForm
+      title="title Config"
+      list="org.umi.plugin.bar.config.list"
+      edit="org.umi.plugin.bar.config.edit"
+    />
+  ),
+});
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65481497-2fe6ef80-dec8-11e9-946f-7a8097c1e05e.png)
+
 ### api.notify
 
 调用 Umi UI 通知栏，若用户停留在当前浏览器窗口，通知栏样式为 antd [Notification](https://ant.design/components/notification-cn)，否则为系统原生通知栏。

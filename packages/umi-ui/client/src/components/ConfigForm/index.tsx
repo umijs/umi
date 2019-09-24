@@ -2,25 +2,23 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
 import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
+import { IUi } from 'umi-types';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
-import { IUiApi } from 'umi-types';
 import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
+import { formatMessage } from 'umi-plugin-react/locale';
 import serialize from 'serialize-javascript';
-import Context from '../Context';
+import Context from '@/layouts/Context';
+import { callRemote } from '@/socket';
+import Field from '@/components/Field';
 import useToggle from './common/useToggle';
 import Toc from './common/Toc';
 import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
-import styles from './BasicConfig.module.less';
+import styles from './index.less';
 
-interface IBasicConfigProps {
-  title: string;
-  list: string;
-  edit: string;
-  /** Search fuzz options */
-  fuseOpts?: Fuse.FuseOptions<number>;
-}
-
-const BasicConfig: React.FC<IBasicConfigProps> = props => {
+const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
+  const _log = g_uiDebug.extend('ConfigForm');
+  const { enableToc = true } = props;
   const containerRef = useRef();
   const [data, setData] = useState<object[] | undefined>();
   const [loading, setLoading] = useState(false);
@@ -28,15 +26,12 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   const [search, setSearch] = useState<string>('');
   const searchInputRef = useRef();
   const [showSearch, toggleSearch] = useToggle(false);
-  // const [submitLoading, setSubmitLoading] = useState(false);
-  // const [disabled, setDisabled] = useState(true);
-  const { api, theme, debug: _log } = useContext(Context);
-  const { _, intl, Field } = api;
+  const { theme } = useContext(Context);
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
   };
-  const handleSearchDebounce = _.debounce(handleSearch, 150);
+  const handleSearchDebounce = debounce(handleSearch, 150);
   const resetSearch = () => {
     toggleSearch(false);
     setSearch('');
@@ -63,7 +58,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
   }, []);
 
   async function updateData() {
-    const { data } = await api.callRemote({
+    const { data } = await callRemote({
       type: props.list,
     });
     setData(data);
@@ -144,7 +139,10 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
       // no edit config
       return false;
     }
-    const loadingMsg = message.loading(intl({ id: 'org.umi.ui.configuration.edit.loading' }), 0);
+    const loadingMsg = message.loading(
+      formatMessage({ id: 'org.umi.ui.configuration.edit.loading' }),
+      0,
+    );
 
     Object.keys(changedValues).forEach(name => {
       changedValues[name] = formatValue(changedValues[name]);
@@ -153,7 +151,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
     _log('after changedValues', changedValues);
 
     try {
-      await api.callRemote({
+      await callRemote({
         type: props.edit,
         payload: {
           key: changedValues,
@@ -161,7 +159,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
         },
       });
       await updateData();
-      message.success(intl({ id: 'org.umi.ui.configuration.edit.success' }));
+      message.success(formatMessage({ id: 'org.umi.ui.configuration.edit.success' }));
     } catch (e) {
       loadingMsg();
       message.error(e.message);
@@ -192,30 +190,30 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
     form.submit();
   };
 
-  const themeCls = cls(styles.basicConfig, styles[`basicConfig-${theme}`]);
+  const themeCls = cls(styles.configForm, styles[`configForm-${theme}`]);
 
   const tocAnchors = getToc(groupedData, isEmpty(allValues) ? initialValues : allValues);
-  const searchIconCls = cls(styles['basicConfig-header-searchIcon'], {
-    [styles['basicConfig-header-searchIcon-hide']]: !!showSearch,
+  const searchIconCls = cls(styles['configForm-header-searchIcon'], {
+    [styles['configForm-header-searchIcon-hide']]: !!showSearch,
   });
-  const inputCls = cls(styles['basicConfig-header-input'], {
-    [styles['basicConfig-header-input-active']]: !!showSearch,
+  const inputCls = cls(styles['configForm-header-input'], {
+    [styles['configForm-header-input-active']]: !!showSearch,
   });
 
   const changedValueArr = Object.keys(getResetChangedValue(allValues));
 
   const ResetTitle = (
     <div className={styles.resetTitle}>
-      <p>{intl({ id: 'org.umi.ui.configuration.reset.tooltip' })}</p>
+      <p>{formatMessage({ id: 'org.umi.ui.configuration.reset.tooltip' })}</p>
       <span>
         {changedValueArr.length > 0
-          ? intl(
+          ? formatMessage(
               { id: 'org.umi.ui.configuration.reset.tooltip.desc' },
               {
                 value: changedValueArr.join('、'),
               },
             )
-          : intl({ id: 'org.umi.ui.configuration.reset.tooltip.desc.empty' })}
+          : formatMessage({ id: 'org.umi.ui.configuration.reset.tooltip.desc.empty' })}
       </span>
     </div>
   );
@@ -227,8 +225,8 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
     <>
       <div className={themeCls} ref={containerRef}>
         <div className={styles.form}>
-          <div className={styles['basicConfig-header']}>
-            <h2>{intl({ id: props.title })}</h2>
+          <div className={styles['configForm-header']}>
+            <h2>{formatMessage({ id: props.title })}</h2>
             <span className={searchIconCls}>
               <SearchIcon onClick={handleSearchShow} />
             </span>
@@ -236,7 +234,7 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
               prefix={<SearchIcon />}
               ref={searchInputRef}
               suffix={search && <CloseCircleFilled onClick={resetSearch} />}
-              placeholder={intl({ id: 'org.umi.ui.configuration.search.placeholder' })}
+              placeholder={formatMessage({ id: 'org.umi.ui.configuration.search.placeholder' })}
               className={inputCls}
               onChange={e => handleSearchDebounce(e.target.value)}
             />
@@ -302,27 +300,29 @@ const BasicConfig: React.FC<IBasicConfigProps> = props => {
             )
           )}
         </div>
-        <Toc
-          className={styles.toc}
-          anchors={tocAnchors}
-          getContainer={() => containerRef && containerRef.current}
-        />
+        {enableToc && (
+          <Toc
+            className={styles.toc}
+            anchors={tocAnchors}
+            getContainer={() => containerRef && containerRef.current}
+          />
+        )}
       </div>
-      <div className={styles['basicConfig-submit']}>
+      <div className={styles['configForm-submit']}>
         <Popconfirm
           title={ResetTitle}
           placement="topRight"
           onConfirm={handleReset}
           onCancel={() => {}}
         >
-          <Button>{intl({ id: 'org.umi.ui.configuration.reset' })}</Button>
+          <Button>{formatMessage({ id: 'org.umi.ui.configuration.reset' })}</Button>
         </Popconfirm>
         <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
-          {intl({ id: 'org.umi.ui.configuration.save' })}
+          {formatMessage({ id: 'org.umi.ui.configuration.save' })}
         </Button>
       </div>
     </>
   );
 };
 
-export default BasicConfig;
+export default ConfigForm;
