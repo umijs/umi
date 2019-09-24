@@ -13,15 +13,26 @@ import Label from './label';
 
 export type IConfigTypeMapping = { [x in IUi.IConfigTypes]: any };
 
+export enum TYPES {
+  string = 'string',
+  stringArr = 'string[]',
+  boolean = 'boolean',
+  object = 'object',
+  objectArr = 'object[]',
+  list = 'list',
+  textarea = 'textarea',
+  any = 'any',
+}
+
 const configTypeMapping: IConfigTypeMapping = {
-  string: StringComp,
-  'string[]': StringArrayComp,
-  boolean: BooleanComp,
-  object: ObjectComp,
-  'object[]': ObjectArrayComp,
-  list: ListComp,
-  textarea: TextAreaComp,
-  any: AnyComp,
+  [TYPES.string]: StringComp,
+  [TYPES.stringArr]: StringArrayComp,
+  [TYPES.boolean]: BooleanComp,
+  [TYPES.object]: ObjectComp,
+  [TYPES.objectArr]: ObjectArrayComp,
+  [TYPES.list]: ListComp,
+  [TYPES.textarea]: TextAreaComp,
+  [TYPES.any]: AnyComp,
 };
 
 export interface FieldProps extends IUi.IFieldProps {

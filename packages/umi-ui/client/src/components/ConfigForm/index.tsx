@@ -118,12 +118,13 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   }
 
   const getChangedValue = vv => {
-    return getDiffItems(vv, arrayToObject(data, false));
+    return getDiffItems(vv, arrayToObject(data, false), data);
   };
 
   const getResetChangedValue = React.useCallback(
     vv => {
-      return getChangedDiff(arrayToObject(data), vv);
+      const dataObj = arrayToObject(data);
+      return getChangedDiff(dataObj, vv);
     },
     [data],
   );

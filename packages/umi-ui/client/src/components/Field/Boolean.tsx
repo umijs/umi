@@ -11,6 +11,7 @@ const BooleanComp: React.SFC<FieldProps> = props => {
   const basicItem = {
     name,
     valuePropName: 'checked',
+    normalize: (value: boolean | object) => !!value,
     ...restFormItemProps,
   };
 

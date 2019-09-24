@@ -4,6 +4,7 @@ import uniq from 'lodash/uniq';
 import omitBy from 'lodash/omitBy';
 import reduce from 'lodash/reduce';
 import { IToc } from './common/Toc';
+import { TYPES } from '@/components/Field';
 
 export const getInitialValue = ({ value, default: defaultValue }, merged = true) => {
   if (isPlainObject(value) && isPlainObject(defaultValue)) {
@@ -45,18 +46,20 @@ export const getChangedDiff = (prev: object, curr: object): object =>
 /**
  *
  * @param curr { targets: { a: 1, b: 2 }, outputPath: './public' }
- * @param prev { targets: { a: 1 }, outputPath: './dist' }
+ * @param prev(initValue) { targets: { a: 1 }, outputPath: './dist' }
  * @returns { targets: { b: 2 }, outputPath: './public' }
  */
-export const getDiffItems = (curr, prev) => {
+export const getDiffItems = (curr, prev, data) => {
   return reduce(
     curr,
     (result, value, key) => {
+      const { type } = data.find(item => item.name === key) || {};
+      const initVal = type === TYPES.boolean ? !!prev[key] : prev[key];
       if (isPlainObject(value)) {
-        if (!isEqual(value, prev[key])) {
-          result[key] = getDiffItems(value, prev[key]);
+        if (!isEqual(value, initVal)) {
+          result[key] = getDiffItems(value, initVal, data);
         }
-      } else if (!isEqual(value, prev[key])) {
+      } else if (!isEqual(value, initVal)) {
         result[key] = value;
       }
       return result;
