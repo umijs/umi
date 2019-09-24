@@ -33,7 +33,8 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
-  const current: Resource | undefined = activeResource || resources[0];
+  const current: Resource | undefined =
+    activeResource || resources.filter(item => item.blockType === type)[0];
 
   const { data: blocks, loading } = useCallData<Block[]>(
     () => {
@@ -43,7 +44,7 @@ const BlocksViewer: React.FC<Props> = props => {
       return callRemote({
         type: 'org.umi.block.list',
         payload: {
-          reources: current.id,
+          reource: current.id,
         },
       }) as any;
     },
@@ -56,40 +57,11 @@ const BlocksViewer: React.FC<Props> = props => {
   function addHandler(params) {
     (async () => {
       const { url } = params;
-      // TODO check exists
-      // let path = defaultPath;
-      // const { exists } = await callRemote({
-      //   type: 'org.umi.block.checkexist',
-      //   payload: {
-      //     path,
-      //   },
-      // });
-
-      // block 存在时加数字后缀找一个不存在的
-      // if (exists) {
-      //   let count = 2;
-      //   while (true) {
-      //     const { exists } = await callRemote({
-      //       type: 'org.umi.block.checkexist',
-      //       payload: {
-      //         path: `${path}-${count}`,
-      //       },
-      //     });
-      //     if (exists) {
-      //       count += 1;
-      //     } else {
-      //       path = `${path}-${count}`;
-      //       break;
-      //     }
-      //   }
-      // }
-
       setBlockAdding(url);
-      const msg = await callRemote({
+      await callRemote({
         type: 'org.umi.block.add',
         payload: params,
       });
-      console.log(msg);
       setBlockAdding(null);
     })();
   }

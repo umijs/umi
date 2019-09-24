@@ -26,6 +26,34 @@ const Adder: React.FC<Props> = props => {
   const [transformJS, setTransformJS] = useState<boolean>(false);
   const [removeLocale, setRemoveLocale] = useState<boolean>(false);
 
+  // TODO check exists
+  // let path = defaultPath;
+  // const { exists } = await callRemote({
+  //   type: 'org.umi.block.checkexist',
+  //   payload: {
+  //     path,
+  //   },
+  // });
+
+  // block 存在时加数字后缀找一个不存在的
+  // if (exists) {
+  //   let count = 2;
+  //   while (true) {
+  //     const { exists } = await callRemote({
+  //       type: 'org.umi.block.checkexist',
+  //       payload: {
+  //         path: `${path}-${count}`,
+  //       },
+  //     });
+  //     if (exists) {
+  //       count += 1;
+  //     } else {
+  //       path = `${path}-${count}`;
+  //       break;
+  //     }
+  //   }
+  // }
+
   const { data: routePathTreeData } = useCallData(
     () => {
       return callRemote({
