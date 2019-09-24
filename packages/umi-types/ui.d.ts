@@ -30,19 +30,6 @@ declare namespace IUI {
   type ILang = keyof typeof LOCALES;
   type ITheme = keyof typeof THEME;
 
-  interface IContext {
-    theme: ITheme;
-    locale: ILang;
-    currentProject?: ICurrentProject;
-    formatMessage: typeof formatMessage;
-    FormattedMessage: typeof FormattedMessage;
-    setLocale: typeof setLocale;
-    setTheme: (theme: ITheme) => void;
-    showLogPanel: () => void;
-    hideLogPanel: () => void;
-    isMini: boolean;
-  }
-
   type Locale = { [key in string]: string };
 
   type ILocale = { [x in ILang]: Locale };
@@ -207,6 +194,22 @@ declare namespace IUI {
   type IMini = () => boolean;
   type IShowMini = () => void;
   type IHideMini = () => void;
+  type IGetLocale = () => ILang;
+
+  interface IContext {
+    theme: ITheme;
+    locale: ILang;
+    currentProject?: ICurrentProject;
+    formatMessage: typeof formatMessage;
+    FormattedMessage: typeof FormattedMessage;
+    setLocale: typeof setLocale;
+    setTheme: (theme: ITheme) => void;
+    /** open footer log panel */
+    showLogPanel: IShowLogPanel;
+    /** close footer log panel */
+    hideLogPanel: IHideLogPanel;
+    isMini: boolean;
+  }
 
   class IApiClass {
     constructor(service: IService);
@@ -217,7 +220,11 @@ declare namespace IUI {
     readonly debug: IDebug;
     /** currentProject  */
     currentProject: ICurrentProject;
+    /** get current locale: zh-CN or en-US */
+    getLocale: IGetLocale;
     getCwd: IGetCwd;
+    /** current is in Mini version */
+    isMini: boolean;
     /** intl */
     intl: IIntl;
     /** add plugin Panel */

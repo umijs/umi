@@ -112,7 +112,7 @@ export default class PluginAPI {
 
   intl: IUi.IIntl = formatMessage;
 
-  getLocale = () => {
+  getLocale: IUi.IGetLocale = () => {
     return window.g_lang;
   };
 
