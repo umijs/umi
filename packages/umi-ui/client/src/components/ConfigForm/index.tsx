@@ -117,12 +117,9 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
     return <Spin />;
   }
 
-  const getChangedValue = React.useCallback(
-    vv => {
-      return getDiffItems(vv, arrayToObject(data, false));
-    },
-    [data],
-  );
+  const getChangedValue = vv => {
+    return getDiffItems(vv, arrayToObject(data, false));
+  };
 
   const getResetChangedValue = React.useCallback(
     vv => {
@@ -148,7 +145,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
       changedValues[name] = formatValue(changedValues[name]);
     });
 
-    _log('after changedValues', changedValues);
+    _log('after changedValues: really submit', changedValues);
 
     try {
       await callRemote({
@@ -220,6 +217,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
 
   _log('searchData', searchData);
   _log('datadata', data);
+  _log('initialValues', initialValues);
 
   return (
     <>
@@ -289,12 +287,6 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
                       </div>
                     );
                   })}
-                  <Form.Item shouldUpdate>
-                    {({ getFieldsValue }) => {
-                      // TODO: remove before publish
-                      _log('Form values', JSON.stringify(getFieldsValue(), null, 2));
-                    }}
-                  </Form.Item>
                 </Form>
               </div>
             )
