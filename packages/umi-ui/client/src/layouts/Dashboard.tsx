@@ -132,9 +132,9 @@ export default withRouter(props => {
           };
 
           const getBetaMenu = () => (
-            <Menu>
+            <Menu selectedKeys={selectedKeys}>
               {betaPanels.map((panel, i) => (
-                <MenuItem panel={panel} key={panel.key} />
+                <MenuItem panel={panel} key={panel.path} />
               ))}
             </Menu>
           );
@@ -200,7 +200,7 @@ export default withRouter(props => {
                         mode="inline"
                       >
                         {normalPanels.map(panel => (
-                          <MenuItem panel={panel} />
+                          <MenuItem key={panel.path} panel={panel} />
                         ))}
                       </Menu>
                     </div>
@@ -209,6 +209,7 @@ export default withRouter(props => {
                         {isMini ? (
                           <Menu
                             theme="light"
+                            selectedKeys={selectedKeys}
                             style={{
                               border: 0,
                             }}
@@ -216,7 +217,7 @@ export default withRouter(props => {
                             mode="inline"
                           >
                             <Menu.SubMenu
-                              key="sub1"
+                              key="lab_subMenu"
                               title={
                                 <span>
                                   <ExperimentFilled className={styles.menuIcon} />
@@ -232,7 +233,7 @@ export default withRouter(props => {
                                     ? panel.icon
                                     : { type: panel.icon };
                                 return (
-                                  <Menu.Item key={panel.key}>
+                                  <Menu.Item key={panel.path}>
                                     <NavLink exact to={`${panel.path}${search}`}>
                                       <Icon className={styles.menuIcon} {...icon} />
                                       <span className={styles.menuItem}>
@@ -245,7 +246,11 @@ export default withRouter(props => {
                             </Menu.SubMenu>
                           </Menu>
                         ) : (
-                          <Dropdown overlay={getBetaMenu()} placement="topLeft">
+                          <Dropdown
+                            overlay={getBetaMenu()}
+                            placement="topLeft"
+                            getPopupContainer={node => node.parentNode}
+                          >
                             <Menu
                               theme="light"
                               style={{

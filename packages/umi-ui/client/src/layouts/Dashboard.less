@@ -150,6 +150,25 @@
       left: 50%;
       transform: translateX(-50%);
     }
+    :global(.ant-dropdown-menu-item) {
+      color: @text-color;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 0;
+      a {
+        width: 100%;
+        background-color: transparent;
+      }
+      &:hover {
+        background-color: @menu-item-active-bg;
+      }
+    }
+    :global(.ant-dropdown-menu-item-selected) {
+      &,
+      a {
+        color: @heading-color;
+      }
+    }
   }
   &-recentMenu {
     width: 144px;
