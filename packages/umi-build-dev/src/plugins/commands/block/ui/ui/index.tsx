@@ -104,7 +104,12 @@ const BlocksViewer: React.FC<Props> = props => {
       />
       {current ? (
         <div className={styles.blocklist}>
-          <Tabs activeKey={type} onChange={setType}>
+          <Tabs
+            activeKey={type}
+            onChange={activeKey => {
+              setType(activeKey as Resource['blockType']);
+            }}
+          >
             <TabPane tab="区块" key="block" />
             <TabPane tab="模板" key="template" />
           </Tabs>
