@@ -13,6 +13,42 @@ const Container = styled.div.attrs({
   z-index: 999;
   right: 12px;
   bottom: 28px;
+  &:before {
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.75);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.18s ease-out 0.18s;
+    content: '';
+    position: absolute;
+    z-index: 10;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, 4px);
+    transform-origin: top;
+  }
+  &:after {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.18s ease-out 0.18s;
+    text-indent: 0;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    color: #fff;
+    content: '此图标只在 dev 环境下展现';
+    padding: 0.5em 1em;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 10;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 10px;
+    transform: translate(-50%, 4px);
+    transform-origin: top;
+  }
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -27,9 +63,17 @@ const Container = styled.div.attrs({
     css`
       cursor: grabbing;
     `};
-  &:hover ${HideWrapper} {
-    opacity: 1;
-    transform: scale(1);
+  &:hover {
+    ${HideWrapper} {
+      opacity: 1;
+      transform: scale(1);
+    }
+    &:before,
+    &:after {
+      opacity: ${({ open, hide }) => (open || hide ? 0 : 1)};
+      pointer-events: none;
+      transform: translate(-50%, 0);
+    }
   }
 `;
 
@@ -174,6 +218,7 @@ export default class Draggable extends React.Component {
         y={translateY}
         isDragging={isDragging}
         open={open}
+        hide={hide}
         onClick={this.onClick}
       >
         {children}

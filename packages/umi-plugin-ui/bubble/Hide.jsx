@@ -14,7 +14,7 @@ export const HideWrapper = styled('div')`
   z-index: 999;
   justify-content: center;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease-out 0.18s;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 20px;
   &:hover {
