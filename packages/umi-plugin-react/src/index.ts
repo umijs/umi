@@ -1,5 +1,6 @@
 import { IApi } from 'umi-types';
 import { isPlainObject, isEqual } from 'lodash';
+import ui from './ui';
 
 function toObject(o) {
   if (!isPlainObject(o)) {
@@ -94,7 +95,5 @@ export default function(api: IApi, option) {
   });
 
   // umi ui
-  if (process.env.UMI_UI !== 'none') {
-    api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
-  }
+  ui(api);
 }

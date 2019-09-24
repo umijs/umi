@@ -137,6 +137,8 @@ export async function render(oldRender) {
     }
   }
 
+  window.g_callRemote = callRemote;
+
   // Do render
   oldRender();
 }
