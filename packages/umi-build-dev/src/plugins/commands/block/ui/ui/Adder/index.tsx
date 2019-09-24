@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
 import { Modal, message, Button, Input, Switch } from 'antd';
 
+import getInsertPosition from './getInsertPosition';
 // antd 4.0 not support TreeSelect now.
 import TreeSelect from '../TreeSelect';
 import useCallData from '../hooks/useCallData';
@@ -20,8 +21,10 @@ const Adder: React.FC<Props> = props => {
   const { callRemote } = api;
 
   const [visible, setVisible] = useState<boolean>(false);
-  const [path, setPath] = useState<string>(block.defaultPath);
-  const [routePath, setRoutePath] = useState<string>(block.defaultPath.toLocaleLowerCase());
+  const [path, setPath] = useState<string>('/');
+  const [routePath, setRoutePath] = useState<string>(
+    blockType === 'template' ? block.defaultPath.toLocaleLowerCase() : '',
+  );
   const [name, setName] = useState<string>(block.url.split('/').pop());
   const [transformJS, setTransformJS] = useState<boolean>(false);
   const [removeLocale, setRemoveLocale] = useState<boolean>(false);
@@ -81,7 +84,11 @@ const Adder: React.FC<Props> = props => {
       <Button
         type="primary"
         onClick={() => {
-          setVisible(true);
+          if (api.isMini() && blockType === 'block') {
+            getInsertPosition(api).then(() => {});
+          } else {
+            setVisible(true);
+          }
         }}
       >
         {children}
@@ -139,12 +146,8 @@ const Adder: React.FC<Props> = props => {
               }}
               treeData={pageFoldersTreeData}
             />
-            {blockType === 'block' && (
-              <>
-                <div className={styles.label}>区块名称</div>
-                <Input value={name} onChange={e => setName(e.target.value)} />
-              </>
-            )}
+            <div className={styles.label}>名称</div>
+            <Input value={name} onChange={e => setName(e.target.value)} />
             <div className={styles.label}>编译为 JS</div>
             <Switch checked={transformJS} onChange={setTransformJS} />
             <div className={styles.label}>移除国际化</div>
