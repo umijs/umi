@@ -1,5 +1,5 @@
 import mkdirp from 'mkdirp';
-import userHome from 'user-home';
+import { homedir } from 'os';
 import resolveFrom from 'resolve-from';
 import { join } from 'path';
 import { existsSync, writeFileSync } from 'fs';
@@ -16,7 +16,7 @@ export default async function(opts: IOpts) {
   const { npmClient = 'npm', packageName = 'create-umi', onData } = opts;
 
   // 创建目录
-  const baseDir = opts.baseDir || join(userHome, `.umi/creator/${packageName}`);
+  const baseDir = opts.baseDir || join(homedir(), `.umi/creator/${packageName}`);
   mkdirp.sync(baseDir);
 
   // 创建 package.json

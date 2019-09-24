@@ -1,7 +1,7 @@
 {
   "name": "umi-ui",
   "version": "1.0.6",
-  "main": "./lib/index.js",
+  "main": "./lib/UmiUI.js",
   "files": [
     "lib",
     "client/dist",
