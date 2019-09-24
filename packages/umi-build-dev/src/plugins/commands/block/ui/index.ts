@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
 import { getBlockListFromGit } from '../util';
-import { getFolderTreeData, depthRouterConfig } from './util';
+import { getFolderTreeData, depthRouterConfig, routeExists } from './util';
 import { Resource, BlockData, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
@@ -12,35 +12,30 @@ export interface IApiBlock extends IApi {
   uiLog: (logType: 'error' | 'info', info: string) => void;
 }
 
-export function routeExists(path, routes) {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const route of routes) {
-    if (route.routes && routeExists(path, route.routes)) {
-      return true;
-    }
-    if (path === route.path) {
-      return true;
-    }
-  }
-  return false;
-}
-
+/**
+ * 获取区块列表
+ * https://github.com/ant-design/pro-blocks 是 pro 的官方区块
+ */
 const getBlocks = async (api: IApiBlock): Promise<BlockData> => {
-  const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
-  return {
-    data: blocks,
-  };
+  try {
+    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
+    return {
+      data: blocks,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
 };
 
 export default (api: IApiBlock) => {
   const { log } = api.log;
-  function getRoutes() {
-    return [];
-    // const RoutesManager = getRouteManager(api.service);
-    // RoutesManager.fetchRoutes();
-    // return RoutesManager.routes;
-  }
 
+  // 这么写有点hack，临时方案
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
   const reources: Resource[] = [
@@ -83,7 +78,6 @@ export default (api: IApiBlock) => {
   ];
 
   api.onUISocket(({ action, failure, success, send, ...rest }) => {
-    const routes = getRoutes();
     const { type, payload = {} } = action;
 
     /**
@@ -206,7 +200,7 @@ export default (api: IApiBlock) => {
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
         success({
-          exists: routeExists((payload as AddBlockParams).path, routes),
+          exists: routeExists((payload as AddBlockParams).path, api.config.routes),
           success: true,
         });
         break;

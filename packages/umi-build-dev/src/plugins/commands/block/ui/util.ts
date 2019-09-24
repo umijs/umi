@@ -118,3 +118,11 @@ export const getFolderTreeData = (
     })
     .filter(obj => obj);
 };
+
+export function routeExists(path, routes) {
+  const routerConfig = reduceData(genRouterToTreeData(routes));
+  if (routerConfig[path]) {
+    return true;
+  }
+  return false;
+}

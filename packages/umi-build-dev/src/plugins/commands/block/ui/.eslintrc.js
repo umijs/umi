@@ -18,6 +18,7 @@ module.exports = {
     'no-confusing-arrow': [0],
     '@typescript-eslint/no-object-literal-type-assertion': [0],
     'eslint-comments/no-unlimited-disable': [0],
+    'no-case-declarations': 0,
   },
   globals: {
     g_uiDebug: true,

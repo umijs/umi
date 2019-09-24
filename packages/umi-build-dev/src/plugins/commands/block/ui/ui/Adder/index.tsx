@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Input, Switch } from 'antd';
+import { Modal, message, Button, Input, Switch } from 'antd';
 
 // antd 4.0 not support TreeSelect now.
 import TreeSelect from '../TreeSelect';
@@ -55,11 +55,10 @@ const Adder: React.FC<Props> = props => {
   // }
 
   const { data: routePathTreeData } = useCallData(
-    () => {
-      return callRemote({
+    () =>
+      callRemote({
         type: 'org.umi.block.routes',
-      }) as any;
-    },
+      }) as any,
     [],
     {
       defaultData: [],
@@ -67,11 +66,10 @@ const Adder: React.FC<Props> = props => {
   );
 
   const { data: pageFoldersTreeData } = useCallData(
-    () => {
-      return callRemote({
+    () =>
+      callRemote({
         type: 'org.umi.block.pageFolders',
-      }) as any;
-    },
+      }) as any,
     [],
     {
       defaultData: [],
@@ -113,8 +111,21 @@ const Adder: React.FC<Props> = props => {
               value={routePath}
               placeholder="请选择路由"
               selectable
-              onSelect={selectedKeys => {
-                setRoutePath(selectedKeys[0]);
+              onSelect={async selectedKeys => {
+                const routerPath = selectedKeys[0];
+                const { exists } = (await callRemote({
+                  type: 'org.umi.block.checkexist',
+                  payload: {
+                    path: routerPath,
+                  },
+                })) as {
+                  exists: boolean;
+                };
+                if (!exists) {
+                  setRoutePath(routerPath);
+                } else {
+                  message.warning('路由已存在！');
+                }
               }}
               treeData={routePathTreeData}
             />

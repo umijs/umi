@@ -22,11 +22,10 @@ const BlocksViewer: React.FC<Props> = props => {
   const [activeResource, setActiveResource] = useState<Resource>(null);
 
   const { data: resources } = useCallData<Resource[]>(
-    () => {
-      return callRemote({
+    () =>
+      callRemote({
         type: 'org.umi.block.resource',
-      }) as any;
-    },
+      }) as any,
     [],
     {
       defaultData: [],
@@ -92,13 +91,11 @@ const BlocksViewer: React.FC<Props> = props => {
                 setActiveResource(matchedResources.find(r => r.id === e.target.value));
               }}
             >
-              {matchedResources.map(r => {
-                return (
-                  <Radio.Button key={r.id} value={r.id}>
-                    {r.name}
-                  </Radio.Button>
-                );
-              })}
+              {matchedResources.map(r => (
+                <Radio.Button key={r.id} value={r.id}>
+                  {r.name}
+                </Radio.Button>
+              ))}
             </Radio.Group>
           )}
           {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
