@@ -194,6 +194,33 @@ export default {
   );
 });
 
+test('update sub object and object', () => {
+  expect(
+    update(
+      `
+export default {
+};
+      `,
+      {
+        'a.b': 'b',
+        'a.c': 'c',
+        d: 'd',
+      },
+      null,
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  a: {
+    b: 'b',
+    c: 'c',
+  },
+  d: 'd',
+};
+    `.trim(),
+  );
+});
+
 test('update sub object not found', () => {
   expect(
     update(
@@ -495,6 +522,48 @@ const p = [
     'umi-plugin-react',
     {
       a: 'b',
+    },
+  ],
+];
+export default {
+  plugins: p,
+};
+    `.trim(),
+  );
+});
+
+xtest('config plugin with plugins identifier XX', () => {
+  expect(
+    update(
+      `
+const p = [
+  [
+    'umi-plugin-react',
+  ],
+];
+export default {
+  plugins: p,
+};
+      `,
+      {
+        'a.b': 'b',
+        'a.c': 'c',
+        d: 'd',
+      },
+      null,
+      'umi-plugin-react',
+    ).trim(),
+  ).toEqual(
+    `
+const p = [
+  [
+    'umi-plugin-react',
+    {
+      a: {
+        b: 'b',
+        c: 'c',
+      },
+      d: 'd',
     },
   ],
 ];

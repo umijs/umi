@@ -111,9 +111,10 @@ export function update(content, key, value, plugin) {
         const value = obj[key];
         const keys = key.split('.');
         let i = 0;
+        let ps = properties;
         while (i < keys.length) {
           let hasFound;
-          for (const property of properties) {
+          for (const property of ps) {
             if (
               t.isIdentifier(property.key, {
                 name: keys[i],
@@ -123,14 +124,14 @@ export function update(content, key, value, plugin) {
                 property.value = buildExpression(keys.slice(i + 1), value);
                 return;
               } else {
-                properties = property.value.properties;
+                ps = property.value.properties;
               }
               hasFound = true;
               break;
             }
           }
           if (!hasFound) {
-            properties.push(
+            ps.push(
               t.objectProperty(t.identifier(keys[i]), buildExpression(keys.slice(i + 1), value)),
             );
             break;
