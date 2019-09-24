@@ -251,12 +251,21 @@ export default (api: IApiBlock) => {
   el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
   document.querySelector('head').appendChild(el);
 
-  window.g_enableUmiUIBlockAddEditMode = function() {
-    el.innerHTML = '';
-  };
-  window.g_disableUmiUIBlockAddEditMode = function() {
-    el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
-  };
+  window.addEventListener('message', (event) => {
+    try {
+      const { action, data } = JSON.parse(event.data);
+      switch (action) {
+        case 'umi.ui.enableBlockEditMode':
+          el.innerHTML = '';
+          break;
+        case 'umi.ui.disableBlockEditMode':
+          el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
+          break;
+        default:
+          break;
+      }
+    } catch(e) {}
+  }, false);
 })();
     `);
   }
