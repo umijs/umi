@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
 import { get } from 'lodash';
 import { basename, dirname, join } from 'path';
-import userHome from 'user-home';
+import { homedir } from 'os';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 
@@ -44,7 +44,7 @@ export default class Config {
 
   constructor(opts: IOpts = {}) {
     const { dbPath, onSave } = opts;
-    this.dbPath = dbPath || join(userHome, '.umi/ui/data.json');
+    this.dbPath = dbPath || join(homedir(), '.umi/ui/data.json');
     this.onSave = onSave;
     mkdirp.sync(dirname(this.dbPath));
     this.load();
