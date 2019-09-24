@@ -8,7 +8,6 @@ const files = glob.sync('**/*.@(tsx|jsx)', { cwd: src });
 const browserFiles = files.map(filePath =>
   slash(join('src', 'plugins', 'commands', 'block', 'ui', filePath)),
 );
-console.log(browserFiles);
 export default {
   target: 'node',
   cjs: { type: 'babel', lazy: true },
