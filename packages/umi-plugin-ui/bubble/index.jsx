@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
+import isMobile from 'is-mobile';
 import { callRemote, init as initSocket } from './socket';
 import * as ENUM from './enum';
 import Bubble from './Bubble';
@@ -214,5 +215,7 @@ const node = doc.createElement('div');
 doc.body.appendChild(node);
 
 export default props => {
-  ReactDOM.render(<App {...props} />, node);
+  if (!isMobile(navigator.userAgent)) {
+    ReactDOM.render(<App {...props} />, node);
+  }
 };
