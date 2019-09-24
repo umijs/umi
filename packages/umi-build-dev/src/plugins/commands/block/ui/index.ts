@@ -90,9 +90,7 @@ export default (api: IApiBlock) => {
 
       // 获得项目 page 下的目录结构
       case 'org.umi.block.pageFolders':
-        log(`🕵️‍ get pageFolders from ${chalk.yellow(api.cwd)}`);
-        uiLog('info', `🕵️‍ get pageFolders from ${chalk.yellow(api.cwd)}`);
-
+        log(`🕵️‍ get pageFolders from ${chalk.yellow(api.paths.pagesPath)}`);
         success({
           data: getFolderTreeData(api.paths.pagesPath),
         });
