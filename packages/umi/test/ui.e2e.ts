@@ -4,6 +4,7 @@ describe('Umi UI e2e', () => {
   let browser;
   let page;
   const port = process.env.UMI_UI_PORT || 3000;
+  const url = `http://localhost:${port}`;
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
@@ -21,20 +22,20 @@ describe('Umi UI e2e', () => {
     }
   });
 
-  it('project list page', async () => {
-    await page.goto(`http://localhost:${port}/project/select`, { waitUntil: 'networkidle2' });
+  describe('project manager page', () => {
+    it('project list normal', async () => {
+      await page.goto(`${url}/project/select`, { waitUntil: 'networkidle2' });
 
-    const text = await page.evaluate(
-      () =>
-        document.querySelector('.umi-ui-pages-project-components-list-index_project-title')
-          .innerHTML,
-    );
-    const gaScript = await page.evaluate(() => {
-      const ga = document.querySelector('script[src*=analytics]');
-      return ga && ga.src;
+      const text = await page.evaluate(
+        () => document.querySelector('[data-test-id="project-title"]').innerHTML,
+      );
+      const gaScript = await page.evaluate(() => {
+        const ga = document.querySelector('script[src*=analytics]');
+        return ga && ga.src;
+      });
+
+      expect(text).toEqual('项目列表');
+      expect(gaScript).toBeNull();
     });
-
-    expect(text).toEqual('项目列表');
-    expect(gaScript).toBeNull();
   });
 });

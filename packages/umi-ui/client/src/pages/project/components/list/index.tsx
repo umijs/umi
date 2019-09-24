@@ -266,7 +266,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           className={styles['project-list-layout-content-header']}
         >
           <Col>
-            <h2 className={styles['project-title']}>
+            <h2 data-test-id="project-title" className={styles['project-title']}>
               {formatMessage({
                 id: 'org.umi.ui.global.project.list.title',
               })}
@@ -274,7 +274,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           </Col>
           <Col>
             <div className={styles['project-action']}>
-              <Button onClick={() => setCurrent('import')}>
+              <Button data-test-id="project-action-import" onClick={() => setCurrent('import')}>
                 <ImportIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
@@ -283,7 +283,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 </span>
               </Button>
               {window.g_bigfish ? null : (
-                <Button type="primary" onClick={() => setCurrent('create')}>
+                <Button
+                  data-test-id="project-action-create"
+                  type="primary"
+                  onClick={() => setCurrent('create')}
+                >
                   <Plus />
                   <span className={styles['project-add']}>
                     {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
