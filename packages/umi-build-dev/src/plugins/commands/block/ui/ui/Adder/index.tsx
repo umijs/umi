@@ -21,11 +21,15 @@ const Adder: React.FC<Props> = props => {
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState<boolean>(false);
+  const defaultName = block.url.split('/').pop();
 
+  /**
+   * 默认值，自动拼接一下 name
+   */
   const initialValues = {
-    path: '/',
-    routePath: '/',
-    name: block.url.split('/').pop(),
+    path: `/${defaultName}`,
+    routePath: `/${defaultName}`,
+    name: defaultName,
     transformJS: false,
     removeLocale: false,
   };
@@ -116,7 +120,29 @@ const Adder: React.FC<Props> = props => {
             <Form.Item
               name="routePath"
               label="选择路由"
-              rules={[{ required: true, message: '路由必选' }]}
+              rules={[
+                { required: true, message: '路由必选' },
+                {
+                  validator: async (rule, value) => {
+                    if (value === '/') {
+                      return '';
+                    }
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistRouter',
+                      payload: {
+                        path: value,
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      return Promise.reject(new Error('路由路径已存在'));
+                    }
+                    // eslint-disable-next-line
+                    return '';
+                  },
+                },
+              ]}
             >
               <TreeSelect placeholder="请选择路由" selectable treeData={routePathTreeData} />
             </Form.Item>
@@ -126,12 +152,14 @@ const Adder: React.FC<Props> = props => {
               rules={[
                 { required: true, message: '安装路径必选' },
                 {
-                  validator: async (rule, value) => {
-                    const name = form.getFieldValue('name');
+                  validator: async (rule, path) => {
+                    if (path === '/') {
+                      return Promise.reject(new Error('安装文件夹不能为根目录'));
+                    }
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistFilePath',
                       payload: {
-                        path: `${value}/${name}`.replace(/\/\//g, '/'),
+                        path,
                       },
                     })) as {
                       exists: boolean;
@@ -140,14 +168,14 @@ const Adder: React.FC<Props> = props => {
                       return Promise.reject(new Error('文件路径已存在'));
                     }
                     // eslint-disable-next-line
-                    return;
+                    return '';
                   },
                 },
               ]}
             >
               <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name="name"
               label="名称"
               rules={[
@@ -173,7 +201,7 @@ const Adder: React.FC<Props> = props => {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item name="transformJS" label="编译为 JS">
               <Switch />
             </Form.Item>

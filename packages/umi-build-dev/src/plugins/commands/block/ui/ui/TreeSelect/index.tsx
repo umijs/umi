@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Tree, Select } from 'antd';
+import { Tree, Input, Select } from 'antd';
 import { TreeProps, AntTreeNodeProps } from 'antd/es/tree';
 
 import styles from './index.module.less';
@@ -7,13 +7,22 @@ import styles from './index.module.less';
 interface Props extends TreeProps {
   value?: string;
   placeholder?: string;
+  selectable?: boolean;
   onChange?: (value: string) => void;
 }
+const InputGroup = Input.Group;
 
 const TreeSelect: React.FC<Props> = props => {
-  const { value, placeholder, onChange } = props;
+  const { value, placeholder, onChange: propOnChange } = props;
   const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);
+  const onChange = (path: string, fileName: string) => {
+    propOnChange(`${path}/${fileName}`.replace(/\/\//g, '/'));
+  };
+  const fileArray = value.split('/');
+
+  const name = fileArray.pop();
+  const filePath = fileArray.join('/') || '/';
   return (
     <div
       ref={ref}
@@ -21,29 +30,37 @@ const TreeSelect: React.FC<Props> = props => {
         position: 'relative',
       }}
     >
-      <Select
-        getPopupContainer={() => ref.current || document.body}
-        style={{ width: '100%' }}
-        value={value}
-        onDropdownVisibleChange={setOpen}
-        placeholder={placeholder}
-        open={open}
-        dropdownRender={() => {
-          return (
+      <InputGroup compact>
+        <Select
+          style={{ width: '50%' }}
+          getPopupContainer={() => ref.current || document.body}
+          value={filePath}
+          onDropdownVisibleChange={setOpen}
+          placeholder={placeholder}
+          open={open}
+          dropdownRender={() => (
             <Tree
               className={styles.tree}
               onClick={() => setOpen(false)}
-              selectedKeys={value ? [value] : []}
+              selectedKeys={filePath ? [filePath] : []}
               onSelect={(_, { node }: { node: AntTreeNodeProps }) => {
                 if (onChange) {
-                  onChange(node.value);
+                  onChange(node.value, name);
                 }
               }}
               {...props}
             />
-          );
-        }}
-      />
+          )}
+        />
+
+        <Input
+          style={{ width: '50%' }}
+          value={name}
+          onChange={e => {
+            onChange(filePath, e.target.value);
+          }}
+        />
+      </InputGroup>
     </div>
   );
 };
