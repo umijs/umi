@@ -1,0 +1,9 @@
+{
+  "name": "umijs.org",
+  "version": 2,
+  "builds": [{ "src": "package.json", "use": "@now/static-build" }],
+  "github": {
+    "silent": true
+  },
+  "alias": ["umijs.now.sh", "umijs.org"]
+}
