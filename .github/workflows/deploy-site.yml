@@ -1,4 +1,4 @@
-name: Deploy website
+name: Deploy Doc Site
 on: [push]
 
 jobs:
@@ -7,9 +7,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: build
-      run: cd ./website && npm install && npm run build
-    - name: deploy
-      run: npm install now -g && now switch umijs --token=${ZEIT_TOKEN} && now --local-config=./website/now.json && now alias
+    - name: node
+      uses: actions/setup-node@v1
+      with:
+        version: 10.x
+    - name: install, build, and deploy
+      run: |
+        cd ./website && npm run build
+        npm install
+        npm run build
+        npm install now -g
+        now switch umijs --token=${ZEIT_TOKEN}
+        now
+        now alias
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
