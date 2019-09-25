@@ -7,15 +7,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - uses: actions/setup-node@v1
-      with:
-        version: 12.x
-    - name: install, build, and deploy
+    - name: build
       run: |
         cd ./website
         npm install
         npm run build
-        now --scope=umijs --token=${ZEIT_TOKEN}
-        now alias --scope=umijs --token=${ZEIT_TOKEN}
+    - name: deploy
+      uses: actions/zeit-now@master
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+    - name: deploy
+      uses: actions/zeit-now@master
+      env:
+        ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+      with:
+        args: alias
