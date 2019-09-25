@@ -13,6 +13,8 @@ jobs:
     - name: install, build, and deploy
       run: |
         cd ./website
+        npm install
+        npm run build
         now --scope=umijs --token=${ZEIT_TOKEN}
         now alias --scope=umijs --token=${ZEIT_TOKEN}
       env:
