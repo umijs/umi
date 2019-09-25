@@ -26,9 +26,7 @@ const TreeSelect: React.FC<Props> = props => {
             className={styles.tree}
             onClick={() => setOpen(false)}
             selectedKeys={value ? [value] : []}
-            onSelect={selectedKeys => {
-              onChange && onChange(selectedKeys[0]);
-            }}
+            onSelect={(_, { node }) => onChange && onChange(node.value)}
             {...props}
           />
         );

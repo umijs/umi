@@ -208,6 +208,7 @@ export default api => {
       this.routePath = opts.routePath || opts.path;
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
+      this.execution = opts.execution;
       this.needCreateNewRoute = this.isPageBlock;
       this.blockFolderName = upperCamelCase(this.blockName);
       // 这个参数是区块的 index.tsx | js
@@ -231,6 +232,9 @@ export default api => {
       }
 
       while (this.isPageBlock && existsSync(targetPath)) {
+        if (this.execution === 'auto') {
+          throw new Error(`path ${this.path} already exist, press input a new path for it`);
+        }
         // eslint-disable-next-line no-await-in-loop
         this.path = (await this.prompt({
           type: 'input',
@@ -249,6 +253,11 @@ export default api => {
 
       // 如果路由重复，重新输入
       while (this.isPageBlock && routeExists(this.routePath, this.routes)) {
+        if (this.execution === 'auto') {
+          throw new Error(
+            `router path ${this.routePath} already exist, press input a new path for it`,
+          );
+        }
         // eslint-disable-next-line no-await-in-loop
         this.routePath = (await this.prompt({
           type: 'input',

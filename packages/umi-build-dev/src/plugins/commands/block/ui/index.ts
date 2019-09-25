@@ -101,11 +101,6 @@ export default (api: IApiBlock) => {
         log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
         // eslint-disable-next-line
         const routers = depthRouterConfig(api.config.routes);
-        routers.push({
-          title: '/',
-          value: '/',
-          key: '/',
-        });
         success({
           data: routers,
           success: true,
@@ -117,7 +112,7 @@ export default (api: IApiBlock) => {
         log(`🕵️‍ get pageFolders from ${chalk.yellow(api.paths.absPagesPath)}`);
         // eslint-disable-next-line
         const folderTreeData = getFolderTreeData(api.paths.absPagesPath);
-        folderTreeData.push({
+        folderTreeData.unshift({
           title: '/',
           value: '/',
           key: '/',
@@ -184,7 +179,7 @@ export default (api: IApiBlock) => {
 
           uiLog('info', `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`);
           try {
-            const addInfo = await addBlock({ ...payload, url }, {}, api);
+            const addInfo = await addBlock({ ...payload, url, execution: 'auto' }, {}, api);
             success({
               data: {
                 log: addInfo.logs,

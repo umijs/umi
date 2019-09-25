@@ -58,6 +58,9 @@ export interface AddBlockOption {
   js?: boolean;
   // 删除区块的 i18n 代码
   uni18n?: boolean;
+  // 执行环境，默认是 shell ，如果是 auto，发生冲突直接报错
+  // 在 ci 与 function 中执行可以设置为 auto
+  execution?: 'shell' | 'auto';
 
   // 传输 log 用
   remoteLog?: (log: string) => void;
@@ -158,6 +161,7 @@ async function add(
     layout: isLayout,
     registry = registryUrl,
     js,
+    execution = 'shell',
     uni18n,
   } = args;
 
@@ -243,6 +247,7 @@ async function add(
     blockName: getNameFromPkg(ctx.pkg),
     isPageBlock,
     dryRun,
+    execution,
     env: {
       cwd: api.cwd,
     },

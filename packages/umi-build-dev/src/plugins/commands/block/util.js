@@ -5,6 +5,7 @@ import execa from 'execa';
 import ora from 'ora';
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
+import { flatMap } from 'lodash';
 
 /**
  * 全局使用的 loading
@@ -244,20 +245,21 @@ export const depthRouterConfig = routes => {
    */
   return (
     Object.keys(routerConfig)
+      .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
       .map(key => {
         key
           .split('/')
           .filter(routerKey => routerKey)
           .forEach((_, index, array) => {
-            const routerKey = array.slice(0, index).join('/');
-            if (routerKey) {
-              routerConfig[`/${routerKey}`] = routerConfig[key];
+            const routerKey = array.slice(0, index + 1).join('/');
+            if (routerKey.includes('/')) {
+              delete routerConfig[`/${routerKey}`];
             }
           });
         return routerConfig[key];
       })
       // 删除没有 children 的数据
-      .filter(item => item && item.children && item.children.length)
+      .filter(item => item)
   );
 };
 
