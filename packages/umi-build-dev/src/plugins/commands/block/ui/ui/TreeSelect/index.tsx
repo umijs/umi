@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Tree, Select } from 'antd';
 import { TreeProps } from 'antd/es/tree';
 
@@ -12,26 +12,35 @@ interface Props extends TreeProps {
 
 const TreeSelect: React.FC<Props> = props => {
   const { value, placeholder, onChange } = props;
+  const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Select
-      style={{ width: '100%' }}
-      value={value}
-      onDropdownVisibleChange={setOpen}
-      placeholder={placeholder}
-      open={open}
-      dropdownRender={() => {
-        return (
-          <Tree
-            className={styles.tree}
-            onClick={() => setOpen(false)}
-            selectedKeys={value ? [value] : []}
-            onSelect={(_, { node }) => onChange && onChange(node.value)}
-            {...props}
-          />
-        );
+    <div
+      ref={ref}
+      style={{
+        position: 'relative',
       }}
-    />
+    >
+      <Select
+        getPopupContainer={() => ref.current || document.body}
+        style={{ width: '100%' }}
+        value={value}
+        onDropdownVisibleChange={setOpen}
+        placeholder={placeholder}
+        open={open}
+        dropdownRender={() => {
+          return (
+            <Tree
+              className={styles.tree}
+              onClick={() => setOpen(false)}
+              selectedKeys={value ? [value] : []}
+              onSelect={(_, { node }) => onChange && onChange(node.value)}
+              {...props}
+            />
+          );
+        }}
+      />
+    </div>
   );
 };
 

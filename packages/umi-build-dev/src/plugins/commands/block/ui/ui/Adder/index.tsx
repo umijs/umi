@@ -30,34 +30,6 @@ const Adder: React.FC<Props> = props => {
     removeLocale: false,
   };
 
-  // TODO check exists
-  // let path = defaultPath;
-  // const { exists } = await callRemote({
-  //   type: 'org.umi.block.checkexist',
-  //   payload: {
-  //     path,
-  //   },
-  // });
-
-  // block 存在时加数字后缀找一个不存在的
-  // if (exists) {
-  //   let count = 2;
-  //   while (true) {
-  //     const { exists } = await callRemote({
-  //       type: 'org.umi.block.checkexist',
-  //       payload: {
-  //         path: `${path}-${count}`,
-  //       },
-  //     });
-  //     if (exists) {
-  //       count += 1;
-  //     } else {
-  //       path = `${path}-${count}`;
-  //       break;
-  //     }
-  //   }
-  // }
-
   const { data: routePathTreeData } = useCallData(
     () =>
       callRemote({
@@ -88,14 +60,12 @@ const Adder: React.FC<Props> = props => {
   };
 
   const getPathFromFilename = filename => {
-    console.log('filename', filename);
     // /Users/usename/code/test/umi-block-test/src/page(s)/xxx/index.ts
     // -> /xxx
     const path = filename
       .replace(api.currentProject.path, '')
       .replace(/pages?\//, '')
       .replace(/(index)?((\.ts?)|(\.jsx?))$/, '');
-    console.log(path);
     return path;
   };
 
@@ -157,7 +127,31 @@ const Adder: React.FC<Props> = props => {
             >
               <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
             </Form.Item>
-            <Form.Item name="name" label="名称" rules={[{ required: true, message: '名称必填' }]}>
+            <Form.Item
+              name="name"
+              label="名称"
+              validateTrigger={['routePath']}
+              rules={[
+                { required: true, message: '名称必填' },
+                {
+                  validator: async (rule, value) => {
+                    const routePath = form.getFieldValue('routePath');
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkexist',
+                      payload: {
+                        path: `${routePath}/${value}`.replace(/\/\//g, '/'),
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      return Promise.reject(new Error('路径已存在'));
+                    }
+                    return '';
+                  },
+                },
+              ]}
+            >
               <Input />
             </Form.Item>
             <Form.Item name="transformJS" label="编译为 JS">

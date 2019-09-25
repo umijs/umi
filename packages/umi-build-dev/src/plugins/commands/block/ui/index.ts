@@ -33,12 +33,6 @@ const getBlocks = async (): Promise<BlockData> => {
 
 export default (api: IApiBlock) => {
   const { log } = api.log;
-  function getRoutes() {
-    return [];
-    // const RoutesManager = getRouteManager(api.service);
-    // RoutesManager.fetchRoutes();
-    // return RoutesManager.routes;
-  }
 
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
@@ -82,7 +76,6 @@ export default (api: IApiBlock) => {
   ];
 
   api.onUISocket(({ action, failure, success, send, ...rest }) => {
-    const routes = getRoutes();
     const { type, payload = {} } = action;
 
     /**
@@ -200,7 +193,7 @@ export default (api: IApiBlock) => {
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
         success({
-          exists: routeExists((payload as AddBlockParams).path, routes),
+          exists: routeExists((payload as AddBlockParams).path, api.config.routes),
           success: true,
         });
         break;

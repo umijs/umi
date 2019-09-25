@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 
 const useCallData = <T, U = {}>(
   getData: (
-    params: { pageSize: number; pageIndex: number },
+    params: {
+      pageSize: number;
+      pageIndex: number;
+    },
   ) => Promise<{ data: T; success: boolean }>,
   effects?: any[],
   options?: {
@@ -36,7 +39,7 @@ const useCallData = <T, U = {}>(
         const newList = {
           ...data,
         };
-        Object.keys(data).forEach(key => {
+        Object.keys(data || {}).forEach(key => {
           // 自动合并返回中的数组
           if (Array.isArray(data[key]) && list[key]) {
             newList[key] = list[key].concat(data[key]);
@@ -49,7 +52,7 @@ const useCallData = <T, U = {}>(
 
       // 判断是否还有更多
       let totalCount = 0;
-      Object.keys(data).forEach(key => {
+      Object.keys(data || {}).forEach(key => {
         // 后端返回的总数的字段都是类似 totalOrderCount 这样格式的
         if (/total\S+Count/.test(key) && typeof data[key] === 'number') {
           totalCount = data[key];
