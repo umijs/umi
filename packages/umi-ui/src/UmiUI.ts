@@ -26,6 +26,8 @@ import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
 
 const debug = require('debug')('umiui:UmiUI');
+const debugSocket = debug.extend('socket');
+
 process.env.UMI_UI = 'true';
 
 export default class UmiUI {
@@ -851,7 +853,7 @@ export default class UmiUI {
       const conns = {};
       function send(action) {
         const message = JSON.stringify(action);
-        console.log(chalk.green.bold('>>>>'), formatLogMessage(message));
+        debugSocket(chalk.green.bold('>>>>'), formatLogMessage(message));
         Object.keys(conns).forEach(id => {
           conns[id].write(message);
         });
@@ -865,7 +867,7 @@ export default class UmiUI {
 
       ss.on('connection', conn => {
         conns[conn.id] = conn;
-        console.log(`🔗 ${chalk.green('Connected to')}: ${conn.id}`);
+        debugSocket(`🔗 ${chalk.green('Connected to')}: ${conn.id}`);
         function success(type, payload) {
           send({ type: `${type}/success`, payload });
         }
@@ -884,7 +886,9 @@ export default class UmiUI {
             type,
             message,
           };
-          console[type === 'error' ? 'error' : 'log'](`${chalk.gray(`[${type}]`)} ${message}`);
+          const msg = `${chalk.gray(`[${type}]`)} ${message}`;
+          const logFunc = type === 'error' ? console.error : debugSocket;
+          logFunc(msg);
           this.logs.push(payload);
           send({
             type: '@@log/message',
@@ -893,13 +897,13 @@ export default class UmiUI {
         };
 
         conn.on('close', () => {
-          console.log(`😿 ${chalk.red('Disconnected to')}: ${conn.id}`);
+          debugSocket(`😿 ${chalk.red('Disconnected to')}: ${conn.id}`);
           delete conns[conn.id];
         });
         conn.on('data', message => {
           try {
             const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
-            console.log(chalk.blue.bold('<<<<'), formatLogMessage(message));
+            debugSocket(chalk.blue.bold('<<<<'), formatLogMessage(message));
             if (type.startsWith('@@')) {
               this.handleCoreData(
                 { type, payload, lang, key },

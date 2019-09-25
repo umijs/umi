@@ -102,6 +102,9 @@ $ y ui:build --watch
 # Then run umi ui under a umi project.
 $ umi ui
 
+# if want to debug for more defail, using
+$ DEBUG=umiui:UmiUI* umi ui
+
 # Or
 $ umi dev --ui
 ```
