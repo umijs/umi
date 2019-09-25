@@ -542,6 +542,8 @@ export interface IApi {
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
+  addBlockUIResource: IAdd<object>;
+  modifyBlockUIResources: IModify<object[]>;
   _modifyBlockPackageJSONPath: IModify<string>;
   _modifyBlockDependencies: IModify<IBlockDependencies>;
   _modifyBlockFile: IModify<string, IModifyBlockFileArgs>;
