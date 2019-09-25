@@ -3,7 +3,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "website/package.json",
+      "src": "./website/package.json",
       "use": "@now/static-build",
       "config": {
         "includeFiles": "docs/**",
@@ -11,6 +11,7 @@
       }
     }
   ],
+  "routes": [{ "src": "/(.*)", "dest": "website/$1" }],
   "github": {
     "silent": true
   },
