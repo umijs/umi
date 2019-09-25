@@ -7,7 +7,7 @@
       "use": "@now/static-build",
       "config": {
         "includeFiles": "docs/**",
-        "distDir": "./website/dist"
+        "distDir": "./dist"
       }
     }
   ],

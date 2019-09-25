@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "now-build": "npm run build",
+    "now-build": "npm run build && ls",
     "deploy": "npm run build && now && now alias",
     "build": "vuepress build ../docs --dest ./dist"
   },
