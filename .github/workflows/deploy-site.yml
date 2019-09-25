@@ -14,11 +14,13 @@ jobs:
         npm run build
     - name: deploy
       uses: actions/zeit-now@master
+      with:
+        args: --scope umijs
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
-    - name: deploy
+    - name: alias
       uses: actions/zeit-now@master
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
       with:
-        args: alias
+        args: alias --scope umijs
