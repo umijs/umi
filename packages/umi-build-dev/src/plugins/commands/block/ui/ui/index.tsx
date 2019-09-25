@@ -66,7 +66,7 @@ const BlocksViewer: React.FC<Props> = props => {
   const matchedResources = resources.filter(r => r.blockType === type);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="block-list-view">
       <Search
         placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
         onSearch={value => console.log(value)}

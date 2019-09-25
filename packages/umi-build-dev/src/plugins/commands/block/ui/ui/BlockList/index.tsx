@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Col, Empty, Row, Spin, Typography, Tag, Button } from 'antd';
 import { IUiApi } from 'umi-types';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -42,6 +43,16 @@ const BlockList: React.FC<BlockListProps> = props => {
     },
     [list],
   );
+
+  useEffect(() => {
+    document.getElementById('block-list-view').addEventListener(
+      'scroll',
+      () => {
+        forceCheck();
+      },
+      { passive: true },
+    );
+  }, []);
 
   const [selectedTag, setSelectedTag] = useState<string>('');
 
@@ -93,7 +104,14 @@ const BlockList: React.FC<BlockListProps> = props => {
                       )}
                     </div>
                   )}
-                  <img src={item.img} alt={item.url} />
+                  <LazyLoad
+                    height={type === 'block' ? '20%' : '25%'}
+                    key={item.url}
+                    scrollContainer={document.getElementById('block-list-view')}
+                    offset={100}
+                  >
+                    <img src={item.img} alt={item.url} />
+                  </LazyLoad>
                 </div>
 
                 <div className={styles.content}>
