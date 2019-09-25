@@ -226,7 +226,10 @@ export default (api: IApiBlock) => {
   function getRouteComponents(routes) {
     return routes.reduce((memo, route) => {
       if (route.component && !route.component.startsWith('()')) {
-        memo.push(api.winPath(require.resolve(join(api.cwd, route.component))));
+        const component = api.winPath(require.resolve(join(api.cwd, route.component)));
+        if (!component.includes('src/layout')) {
+          memo.push(component);
+        }
       }
       if (route.routes) {
         memo = memo.concat(getRouteComponents(route.routes));

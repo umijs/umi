@@ -1,8 +1,29 @@
 import assert from 'assert';
 
 export default function({ types: t }) {
+  function isReactCreateElement(node) {
+    return (
+      t.isCallExpression(node) &&
+      t.isMemberExpression(node.callee) &&
+      t.isIdentifier(node.callee.object, { name: 'React' }) &&
+      t.isIdentifier(node.callee.property, { name: 'createElement' })
+    );
+  }
+
+  function isJSXElement(node) {
+    return t.isJSXElement(node) || isReactCreateElement(node);
+  }
+
+  function haveChildren(node) {
+    if (t.isJSXElement(node)) {
+      return node.children && node.children.length;
+    } else {
+      return !!node.arguments[2];
+    }
+  }
+
   function findReturnNode(node) {
-    if (t.isJSXElement(node.body)) {
+    if (isJSXElement(node.body)) {
       return {
         node: node.body,
         replace(newNode) {
@@ -22,7 +43,7 @@ export default function({ types: t }) {
         }
       }
     }
-    throw new Error(`Find return statement failed, unsupported node type ${node.type}.`);
+    throw new Error(`Find return statement failed, unsupported node type ${node.body.type}.`);
   }
 
   function findRenderStatement(node) {
@@ -34,45 +55,88 @@ export default function({ types: t }) {
     throw new Error(`Find render statement failed`);
   }
 
-  function buildGUmiUIFlag({ index, filename }) {
-    return t.JSXElement(
-      t.JSXOpeningElement(t.JSXIdentifier('GUmiUIFlag'), [
-        t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral('' + filename)),
-        t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral('' + index)),
-      ]),
-      t.JSXClosingElement(t.JSXIdentifier('GUmiUIFlag')),
-      [],
-    );
+  function buildGUmiUIFlag({ index, filename, jsx }) {
+    if (jsx) {
+      return t.JSXElement(
+        t.JSXOpeningElement(t.JSXIdentifier('GUmiUIFlag'), [
+          t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral('' + filename)),
+          t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral('' + index)),
+        ]),
+        t.JSXClosingElement(t.JSXIdentifier('GUmiUIFlag')),
+        [],
+      );
+    } else {
+      return t.CallExpression(
+        t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
+        [
+          t.Identifier('GUmiUIFlag'),
+          t.ObjectExpression([
+            t.ObjectProperty(t.Identifier('filename'), t.StringLiteral('' + filename)),
+            t.ObjectProperty(t.Identifier('index'), t.StringLiteral('' + index)),
+          ]),
+        ],
+      );
+    }
   }
 
-  function addFlagToIndex(nodes, i, { index, filename }) {
-    nodes.splice(i, 0, buildGUmiUIFlag({ index, filename }));
+  function addFlagToIndex(nodes, i, { index, filename, jsx }) {
+    nodes.splice(i, 0, buildGUmiUIFlag({ index, filename, jsx }));
   }
 
   function addUmiUIFlag(node, { filename, replace }) {
-    if (t.isJSXElement(node)) {
-      if (node.children && node.children.length) {
-        let index = node.children.filter(n => t.isJSXElement(n)).length;
-        let i = node.children.length - 1;
-        while (i >= 0) {
-          const child = node.children[i];
-          if (t.isJSXElement(child) || i === 0) {
-            addFlagToIndex(node.children, i === 0 ? i : i + 1, {
-              index,
-              filename,
-            });
-            index -= 1;
+    if (isJSXElement(node)) {
+      if (haveChildren(node)) {
+        if (t.isJSXElement(node)) {
+          let index = node.children.filter(n => isJSXElement(n)).length;
+          let i = node.children.length - 1;
+          while (i >= 0) {
+            const child = node.children[i];
+            if (isJSXElement(child) || i === 0) {
+              addFlagToIndex(node.children, i === 0 ? i : i + 1, {
+                index,
+                filename,
+                jsx: true,
+              });
+              index -= 1;
+            }
+            i -= 1;
           }
-          i -= 1;
+        } else {
+          const args = node.arguments;
+          let i = args.length - 1;
+          while (i >= 1) {
+            const arg = args[i];
+            let index = args.filter(n => isReactCreateElement(n)).length;
+            if (isReactCreateElement(arg) || i === 1) {
+              addFlagToIndex(args, i, {
+                index,
+                filename,
+                jsx: false,
+              });
+              index -= 1;
+            }
+            i -= 1;
+          }
         }
       } else {
         // root 节点没有 children，则在外面套一层
         replace(
-          t.JSXFragment(t.JSXOpeningFragment(), t.JSXClosingFragment(), [
-            buildGUmiUIFlag({ index: 0, filename }),
-            node,
-            buildGUmiUIFlag({ index: 1, filename }),
-          ]),
+          t.isJSXElement(node)
+            ? t.JSXFragment(t.JSXOpeningFragment(), t.JSXClosingFragment(), [
+                buildGUmiUIFlag({ index: 0, filename, jsx: true }),
+                node,
+                buildGUmiUIFlag({ index: 1, filename, jsx: true }),
+              ])
+            : t.CallExpression(
+                t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
+                [
+                  t.MemberExpression(t.Identifier('React'), t.Identifier('Fragment')),
+                  t.NullLiteral(),
+                  buildGUmiUIFlag({ index: 0, filename, jsx: false }),
+                  node,
+                  buildGUmiUIFlag({ index: 1, filename, jsx: false }),
+                ],
+              ),
         );
       }
     } else {
