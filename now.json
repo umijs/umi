@@ -13,5 +13,5 @@
   "github": {
     "autoAlias": false
   },
-  "alias": ["test-umijs.org", "umijs.org"]
+  "alias": ["umijs.now.sh", "umijs.org"]
 }
