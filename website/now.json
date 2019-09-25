@@ -10,7 +10,7 @@
       }
     }
   ],
-  "scope": "umijs/umi",
+  "scope": "umijs",
   "github": {
     "silent": true
   },
