@@ -1,7 +1,7 @@
 [build]
   publish = "./pro_site/dist"
   functions = "./pro_site/functions"
-  command = "yarn && yarn bootstrap && yarn build && yarn ui:build && cd packages/umi && yarn link && cd ../.. && git clone https://github.com/ant-design/ant-design-pro --depth=1 ./pro_site && cd pro_site && yarn && yarn link umi && yarn build"
+  command = "yarn && yarn bootstrap && yarn build && yarn ui:build && cd packages/umi && yarn link && cd ../.. && git clone https://github.com/ant-design/ant-design-pro --depth=1 ./pro_site && cd pro_site && yarn && yarn link umi && yarn site"
 
 [[redirects]]
   from = "/api/*"
