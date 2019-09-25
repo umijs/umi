@@ -75,6 +75,7 @@ export default class Draggable extends React.Component {
     this.node = null;
 
     this.intervalStart = 0;
+
     this.resizeX = null;
     this.resizeY = null;
     this.deltaX = 0;
@@ -103,32 +104,35 @@ export default class Draggable extends React.Component {
 
   handleResize = () => {
     const node = ReactDOM.findDOMNode(this);
-    const { left, top } = node.getBoundingClientRect();
-    const { translateX, translateY } = this.state;
-    // if (left <= 0) {
-    //   // remember translateX
-    //   if (this.resizeX === null) {
-    //     this.resizeX = translateX;
-    //   }
-    //   this.setState(prev => ({
-    //     translateX: prev.translateX - left,
-    //   }))
-    // }
-    // if (top <= 0) {
-    //   // remember translateY
-    //   if (this.resizeY === null) {
-    //     this.resizeY = translateY;
-    //   }
-    //   this.setState(prev => ({
-    //     translateY: prev.translateY - top,
-    //   }))
-    // }
+    const clientRect = node.getBoundingClientRect();
+    const { width, height } = clientRect;
+    const { right: styleRight, bottom: styleBottom } = window.getComputedStyle(node);
+    let right = Number(styleRight.replace('px', ''));
+    let bottom = Number(styleBottom.replace('px', ''));
 
-    // console.log('node.getBoundingClientRect()', node.getBoundingClientRect());
-    // console.log('left', left);
-    // console.log('top', top);
-    // console.log('translateX', translateX);
-    // console.log('translateY', translateY);
+    const clientWidth = getClientWidth();
+    const clientHeight = getClientHeight();
+
+    const deltaX = clientWidth - right - width;
+    const deltaY = clientHeight - bottom - height;
+
+    // console.log('resize obj', {
+    //   deltaX,
+    //   deltaY,
+    //   right,
+    //   bottom,
+    //   clientRect,
+    // });
+
+    if (deltaX < 0) {
+      right += deltaX;
+    }
+    if (deltaY < 0) {
+      bottom += deltaY;
+    }
+
+    node.style.bottom = `${bottom}px`;
+    node.style.right = `${right}px`;
   };
 
   handleMouseDown = e => {
@@ -178,34 +182,38 @@ export default class Draggable extends React.Component {
     const scroll = getScrollOffsets();
     const clientWidth = getClientWidth();
     const clientHeight = getClientHeight();
-    const { width, height } = node.getBoundingClientRect();
+    const { width, height, right: rectRight, bottom: rectBottom } = node.getBoundingClientRect();
 
     const left = clientX - scroll.x - deltaX;
     const top = clientY - scroll.y - deltaY;
-    const right = clientWidth - left - width;
-    const bottom = clientHeight - top - height;
-
-    const logObj = {
-      left,
-      top,
-      right,
-      bottom,
-      clientX,
-      clientY,
-      scrollX: scroll.x,
-      scrollY: scroll.y,
-      deltaX,
-      deltaY,
-      width,
-      height,
-      hide,
-    };
-    console.log('logObj', logObj);
+    let right = clientWidth - left - width;
+    let bottom = clientHeight - top - height;
 
     // boundary detection
-    // if (left < 0) {
-    //   right
-    // }
+    if (right > clientWidth - width) {
+      right = clientWidth - width;
+    }
+    if (bottom > clientHeight - height) {
+      bottom = clientHeight - height;
+    }
+
+    // console.log('logObj', {
+    //   left,
+    //   top,
+    //   clientWidth,
+    //   clientHeight,
+    //   clientX,
+    //   clientY,
+    //   scrollX: scroll.x,
+    //   scrollY: scroll.y,
+    //   deltaX,
+    //   deltaY,
+    //   rectRight,
+    //   rectBottom,
+    //   width,
+    //   height,
+    //   hide,
+    // });
 
     // for better performance
     node.style.right = `${right}px`;
