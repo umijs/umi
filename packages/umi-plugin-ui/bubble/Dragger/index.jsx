@@ -1,18 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { css } from 'styled-components';
-import Hide, { HideWrapper } from '../Hide';
+import styled from 'styled-components';
+import { HideWrapper } from '../Hide';
+import { getScrollOffsets, getClientWidth, getClientHeight } from './utils';
 
-const Container = styled.div.attrs({
-  style: ({ x, y }) => ({
-    transform: `translate(${x}px, ${y}px)`,
-  }),
-})`
-  cursor: ${({ open }) => (open ? 'pointer' : 'grab')};
+const Container = styled.div`
+  cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
-  right: 12px;
-  bottom: 28px;
+  right: 60px;
+  bottom: 30px;
   &:before {
     width: 0;
     height: 0;
@@ -38,7 +35,7 @@ const Container = styled.div.attrs({
     background: rgba(0, 0, 0, 0.75);
     border-radius: 2px;
     color: #fff;
-    content: '此图标只在 dev 环境下展现';
+    content: '图标只在 dev 环境下展现';
     padding: 0.5em 1em;
     position: absolute;
     white-space: nowrap;
@@ -57,12 +54,7 @@ const Container = styled.div.attrs({
   * {
     box-sizing: border-box;
   }
-  ${({ isDragging, open }) =>
-    isDragging &&
-    !open &&
-    css`
-      cursor: grabbing;
-    `};
+
   &:hover {
     ${HideWrapper} {
       opacity: 1;
@@ -80,26 +72,26 @@ const Container = styled.div.attrs({
 export default class Draggable extends React.Component {
   constructor(props) {
     super(props);
+    this.node = null;
+
     this.intervalStart = 0;
-    this.resizeX = null;
-    this.resizeY = null;
+
+    this.deltaX = 0;
+    this.deltaY = 0;
 
     this.state = {
-      isDragging: false,
-
-      originalX: 0,
-      originalY: 0,
-
-      translateX: 0,
-      translateY: 0,
-
-      lastTranslateX: 0,
-      lastTranslateY: 0,
+      dragged: false,
+      width: 0,
     };
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false);
+    const node = ReactDOM.findDOMNode(this);
+    const { width } = node.getBoundingClientRect();
+    this.setState({
+      width,
+    });
   }
 
   componentWillUnmount() {
@@ -110,70 +102,133 @@ export default class Draggable extends React.Component {
 
   handleResize = () => {
     const node = ReactDOM.findDOMNode(this);
-    const { left, top } = node.getBoundingClientRect();
-    const { translateX, translateY } = this.state;
-    // if (left <= 0) {
-    //   // remember translateX
-    //   if (this.resizeX === null) {
-    //     this.resizeX = translateX;
-    //   }
-    //   this.setState(prev => ({
-    //     translateX: prev.translateX - left,
-    //   }))
-    // }
-    // if (top <= 0) {
-    //   // remember translateY
-    //   if (this.resizeY === null) {
-    //     this.resizeY = translateY;
-    //   }
-    //   this.setState(prev => ({
-    //     translateY: prev.translateY - top,
-    //   }))
-    // }
+    const clientRect = node.getBoundingClientRect();
+    const { width, height } = clientRect;
+    const { right: styleRight, bottom: styleBottom } = window.getComputedStyle(node);
+    let right = Number(styleRight.replace('px', ''));
+    let bottom = Number(styleBottom.replace('px', ''));
 
-    // console.log('node.getBoundingClientRect()', node.getBoundingClientRect());
-    // console.log('left', left);
-    // console.log('top', top);
-    // console.log('translateX', translateX);
-    // console.log('translateY', translateY);
+    const clientWidth = getClientWidth();
+    const clientHeight = getClientHeight();
+
+    const deltaX = clientWidth - right - width;
+    const deltaY = clientHeight - bottom - height;
+
+    // console.log('resize obj', {
+    //   deltaX,
+    //   deltaY,
+    //   right,
+    //   bottom,
+    //   clientRect,
+    // });
+
+    // drag boundary detection
+    if (deltaX < 0) {
+      right += deltaX;
+    }
+    if (deltaY < 0) {
+      bottom += deltaY;
+    }
+
+    node.style.bottom = `${bottom}px`;
+    node.style.right = `${right}px`;
   };
 
   handleMouseDown = e => {
-    e.preventDefault();
-    e.stopPropagation();
     this.intervalStart = new Date().getTime();
-    const { clientX, clientY } = e;
-    window.addEventListener('mousemove', this.handleMouseMove, false);
-    window.addEventListener('mouseup', this.handleMouseUp, false);
+    const scroll = getScrollOffsets();
+    const node = ReactDOM.findDOMNode(this.node);
+    const startX = e.clientX + scroll.x;
+    const startY = e.clientY + scroll.y;
+
+    const origX = node.offsetLeft;
+    const origY = node.offsetTop;
+
+    this.deltaX = startX - origX;
+    this.deltaY = startY - origY;
+
+    window.addEventListener('mousemove', this.handleMouseMove, true);
+    window.addEventListener('mouseup', this.handleMouseUp, true);
 
     if (this.props.onDragStart) {
       this.props.onDragStart();
     }
 
     this.setState({
-      originalX: clientX,
-      originalY: clientY,
-      isDragging: true,
+      dragged: true,
     });
+
+    // We've handled this event. Don't let anybody else see it.
+    if (e.stopPropagation) e.stopPropagation();
+    // Standard model
+    else e.cancelBubble = true; // IE
+
+    // Now prevent any default action.
+    if (e.preventDefault) e.preventDefault();
+    // Standard model
+    else e.returnValue = false; // IE
   };
 
   handleMouseMove = ({ clientX, clientY }) => {
-    const { isDragging } = this.state;
+    const { dragged } = this.state;
+    const { deltaX, deltaY } = this;
+    const node = ReactDOM.findDOMNode(this.node);
     const { onDrag, hide } = this.props;
-    if (!isDragging || !!hide) {
+    if (!dragged || !!hide) {
       return;
     }
 
+    const scroll = getScrollOffsets();
+    const clientWidth = getClientWidth();
+    const clientHeight = getClientHeight();
+    const { width, height, right: rectRight, bottom: rectBottom } = node.getBoundingClientRect();
+
+    const left = clientX - scroll.x - deltaX;
+    const top = clientY - scroll.y - deltaY;
+    let right = clientWidth - left - width;
+    let bottom = clientHeight - top - height;
+
+    // boundary detection
+    if (right > clientWidth - width) {
+      right = clientWidth - width;
+    }
+    if (bottom > clientHeight - height) {
+      bottom = clientHeight - height;
+    }
+
+    // console.log('logObj', {
+    //   left,
+    //   top,
+    //   clientWidth,
+    //   clientHeight,
+    //   clientX,
+    //   clientY,
+    //   scrollX: scroll.x,
+    //   scrollY: scroll.y,
+    //   deltaX,
+    //   deltaY,
+    //   rectRight,
+    //   rectBottom,
+    //   width,
+    //   height,
+    //   hide,
+    // });
+
+    // for better performance
+    node.style.right = `${right}px`;
+    node.style.bottom = `${bottom}px`;
+
     this.setState(
-      prevState => ({
-        translateX: clientX - prevState.originalX + prevState.lastTranslateX,
-        translateY: clientY - prevState.originalY + prevState.lastTranslateY,
-      }),
+      {
+        dragged: true,
+        // right,
+        // bottom,
+      },
       () => {
         if (onDrag) {
           onDrag({
-            translateX: this.state.translateX,
-            translateY: this.state.translateY,
+            right,
+            bottom,
           });
         }
       },
@@ -181,22 +236,21 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseUp = e => {
-    window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove, true);
+    window.removeEventListener('mouseup', this.handleMouseUp, true);
+
     const interval = new Date().getTime() - this.intervalStart;
     if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);
+      this.setState({
+        dragged: false,
+      });
       return;
     }
 
     this.setState(
       {
-        originalX: 0,
-        originalY: 0,
-        lastTranslateX: this.state.translateX,
-        lastTranslateY: this.state.translateY,
-
-        isDragging: false,
+        dragged: false,
       },
       () => {
         if (this.props.onDragEnd) {
@@ -206,20 +260,23 @@ export default class Draggable extends React.Component {
     );
   };
 
+  saveRef = node => {
+    if (node) {
+      this.node = node;
+    }
+  };
+
   render() {
     const { children, hide, open } = this.props;
-    const { translateX, translateY, isDragging } = this.state;
-    console.log('render isDragging', isDragging);
-
+    const { dragged, width } = this.state;
     return (
       <Container
+        ref={this.saveRef}
         onMouseDown={this.handleMouseDown}
-        x={hide ? 50 : translateX}
-        y={translateY}
-        isDragging={isDragging}
+        dragged={dragged}
+        style={hide ? { right: -width / 1.5 } : {}}
         open={open}
         hide={hide}
-        onClick={this.onClick}
       >
         {children}
       </Container>
