@@ -16,9 +16,9 @@ export interface IApiBlock extends IApi {
  * 获取区块列表
  * https://github.com/ant-design/pro-blocks 是 pro 的官方区块
  */
-const getBlocks = async (api: IApiBlock): Promise<BlockData> => {
+const getBlocks = async (): Promise<BlockData> => {
   try {
-    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
+    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
     return {
       data: blocks,
       success: true,
@@ -44,7 +44,7 @@ export default (api: IApiBlock) => {
       name: 'Ant Design Pro',
       resourceType: 'custom',
       blockType: 'template',
-      getData: () => getBlocks(api),
+      getData: () => getBlocks(),
     },
     {
       id: 'umijs-template',

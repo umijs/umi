@@ -1,5 +1,6 @@
 import assert from 'assert';
 import chalk from 'chalk';
+import { IApi } from 'umi-types';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import ora from 'ora';
@@ -14,6 +15,54 @@ import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
 import installDependencies from './installDependencies';
 
+export interface CtxTypes {
+  repo?: any;
+  branch?: any;
+  path?: string;
+  id?: string;
+  routePath?: string;
+  isLocal?: boolean;
+  sourcePath?: string;
+  repoExists?: boolean;
+  filePath?: string;
+  templateTmpDirPath?: string;
+  pkg?: { blockConfig: { [key: string]: any } };
+}
+export interface AddBlockOption {
+  // 从命令行传入会有这个
+  _?: string[];
+  // 区块的名称和安装的地址
+  url?: string;
+  // 安装区块需要的分支
+  branch?: string;
+
+  // 安装的文件地址
+  path?: string;
+  // 安装的路由地址
+  routePath?: string;
+  // 包管理器
+  npmClient?: string;
+  // 测试运行
+  dryRun?: boolean;
+  // 跳过安装依赖
+  skipDependencies?: boolean;
+  // 跳过修改路由
+  skipModifyRoutes?: boolean;
+  // 是不是区块
+  page?: boolean;
+  // 如果是 layout 会在路由中生成一个 children
+  layout?: boolean;
+  // npm 源
+  registry?: string;
+  // 把 ts 转化为 js
+  js?: boolean;
+  // 删除区块的 i18n 代码
+  uni18n?: boolean;
+
+  // 传输 log 用
+  remoteLog?: (log: string) => void;
+}
+
 // fix demo => /demo
 export const addPrefix = path => {
   if (!/^\//.test(path)) {
@@ -22,11 +71,11 @@ export const addPrefix = path => {
   return path;
 };
 
-export async function getCtx(url, args = {}, api = {}) {
+export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise<CtxTypes> {
   const { debug, config } = api;
   debug(`get url ${url}`);
 
-  const ctx = await getParsedData(url, { ...(config.block || {}), ...args });
+  const ctx: CtxTypes = await getParsedData(url, { ...(config.block || {}), ...args });
 
   if (!ctx.isLocal) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
@@ -49,29 +98,37 @@ export async function getCtx(url, args = {}, api = {}) {
   return ctx;
 }
 
-async function add(args = {}, opts = {}, api = {}) {
-  const { log, paths, debug, config, applyPlugins, uiLog } = api;
-  const blockConfig = config.block || {};
+async function add(
+  args: AddBlockOption = {},
+  opts: AddBlockOption = {},
+  api: IApi,
+): Promise<{
+  generator?: any;
+  ctx?: CtxTypes;
+  logs?: string[];
+}> {
+  const { log, paths, debug, config, applyPlugins } = api;
+  const blockConfig: {
+    npmClient?: string;
+  } = config.block || {};
   const addLogs = [];
 
-  const getSpinner = uiLog => {
+  const getSpinner = () => {
     const spinner = ora();
     return {
       ...spinner,
-      succeed: info => spinner.succeed(info),
+      succeed: (info?: string) => spinner.succeed(info),
       start: info => {
         spinner.start(info);
         addLogs.push(info);
-        if (uiLog) {
-          uiLog('info', info);
-        }
       },
-      fail: (...rest) => spinner.fail(rest),
-      stopAndPersist: (...rest) => spinner.stopAndPersist(rest),
+      fail: (info?: string) => spinner.fail(info),
+      stopAndPersist: (option?: any) => spinner.stopAndPersist(option),
     };
   };
 
-  const spinner = getSpinner(uiLog);
+  const spinner = getSpinner();
+
   if (!opts.remoteLog) {
     opts.remoteLog = () => {};
   }
@@ -140,7 +197,8 @@ async function add(args = {}, opts = {}, api = {}) {
   if (!path) {
     const blockName = getNameFromPkg(ctx.pkg);
     if (!blockName) {
-      return log.error("not find name in block's package.json");
+      log.error("not find name in block's package.json");
+      return;
     }
     ctx.filePath = `/${blockName}`;
     log.info(`Not find --path, use block name '${ctx.filePath}' as the target path.`);
@@ -149,6 +207,8 @@ async function add(args = {}, opts = {}, api = {}) {
   }
 
   ctx.filePath = addPrefix(ctx.filePath);
+
+  //如果 ctx.routePath 不存在，使用 filePath
   if (!routePath) {
     ctx.routePath = ctx.filePath;
   }
@@ -200,7 +260,7 @@ async function add(args = {}, opts = {}, api = {}) {
     const subBlocks = ctx.pkg.blockConfig.dependencies;
     try {
       await Promise.all(
-        subBlocks.map(block => {
+        subBlocks.map((block: string) => {
           const subBlockPath = join(ctx.templateTmpDirPath, block);
           debug(`subBlockPath: ${subBlockPath}`);
           return new BlockGenerator(args._.slice(2), {
