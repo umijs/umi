@@ -205,7 +205,7 @@ export async function gitClone(ctx, spinner) {
 export const genRouterToTreeData = routes =>
   routes
     .map(item =>
-      item.path
+      item.path || item.routes
         ? {
             title: item.path,
             value: item.path,
@@ -286,6 +286,7 @@ export const depthRouterConfig = routes => {
  */
 export function routeExists(path, routes = []) {
   const routerConfig = reduceData(genRouterToTreeData(routes));
+  console.log(routerConfig);
   if (routerConfig[path]) {
     return true;
   }

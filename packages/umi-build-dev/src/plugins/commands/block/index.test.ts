@@ -1,4 +1,4 @@
-import { routeExists } from '../util';
+import { routeExists } from './util';
 
 test('not exists', () => {
   expect(routeExists('/foo', [{ path: '/bar' }])).toEqual(false);

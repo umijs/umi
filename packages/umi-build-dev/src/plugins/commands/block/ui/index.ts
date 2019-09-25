@@ -6,7 +6,6 @@ import { getFolderTreeData } from './util';
 import { Resource, BlockData, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
-// import getRouteManager from '../../../getRouteManager';
 
 export interface IApiBlock extends IApi {
   uiLog: (logType: 'error' | 'info', info: string) => void;
