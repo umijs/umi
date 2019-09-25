@@ -178,6 +178,8 @@ interface IWinPath {
   (path: string): string;
 }
 
+type IRelativeToTmp = (path: string) => string;
+
 interface IFind {
   (baseDir: string, fileNameWithoutExtname: string): string | null;
 }
@@ -470,6 +472,7 @@ export interface IApi {
   log: { [key in DefaultMethods]: ILog<any> };
   _: typeof lodash;
   winPath: IWinPath;
+  relativeToTmp: IRelativeToTmp;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
   getRoutes: IGetRoutes;

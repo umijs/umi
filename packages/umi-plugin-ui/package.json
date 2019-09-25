@@ -7,7 +7,6 @@
     "src"
   ],
   "dependencies": {
-    "umi-utils": "1.6.0",
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
     "classnames": "^2.2.6",
