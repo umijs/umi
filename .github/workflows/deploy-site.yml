@@ -12,7 +12,7 @@ jobs:
     - name: deploy
       uses: actions/zeit-now@master
       with:
-        args: --local-config ./website/now.json
+        args: switch umijs --local-config ./website/now.json
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
     - name: alias
@@ -20,4 +20,4 @@ jobs:
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
       with:
-        args: alias --local-config ./website/now.json
+        args: switch umijs alias --local-config ./website/now.json
