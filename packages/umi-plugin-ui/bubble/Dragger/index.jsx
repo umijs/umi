@@ -12,9 +12,9 @@ const Container = styled.div`
     if (props.hide) {
       return -props.width / 1.5;
     }
-    return props.right;
+    return 16;
   }}px;
-  bottom: ${props => props.bottom}px;
+  bottom: 16px;
   &:before {
     width: 0;
     height: 0;
@@ -88,8 +88,6 @@ export default class Draggable extends React.Component {
     this.state = {
       dragged: false,
       width: 0,
-      right: 16,
-      bottom: 16,
     };
   }
 
@@ -174,7 +172,8 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseMove = ({ clientX, clientY }) => {
-    const { dragged, deltaX, deltaY } = this.state;
+    const { dragged } = this.state;
+    const { deltaX, deltaY } = this;
     const node = ReactDOM.findDOMNode(this.node);
     const { onDrag, hide } = this.props;
     if (!dragged || !!hide) {
@@ -191,10 +190,27 @@ export default class Draggable extends React.Component {
     const right = clientWidth - left - width;
     const bottom = clientHeight - top - height;
 
+    // log
+    // const logObj = {
+    //   clientX,
+    //   clientY,
+    //   scrollX: scroll.x,
+    //   scrollY: scroll.y,
+    //   deltaX,
+    //   deltaY,
+    //   width,
+    //   height,
+    // }
+
+    // for better performance
+    node.style.right = `${right}px`;
+    node.style.bottom = `${bottom}px`;
+
     this.setState(
       {
-        right,
-        bottom,
+        dragged: true,
+        // right,
+        // bottom,
       },
       () => {
         if (onDrag) {
@@ -241,8 +257,6 @@ export default class Draggable extends React.Component {
       <Container
         ref={node => (this.node = node)}
         onMouseDown={this.handleMouseDown}
-        right={right}
-        bottom={bottom}
         dragged={dragged}
         open={open}
         hide={hide}
