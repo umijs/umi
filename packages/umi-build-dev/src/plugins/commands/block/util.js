@@ -286,7 +286,6 @@ export const depthRouterConfig = routes => {
  */
 export function routeExists(path, routes = []) {
   const routerConfig = reduceData(genRouterToTreeData(routes));
-  console.log(routerConfig);
   if (routerConfig[path]) {
     return true;
   }
