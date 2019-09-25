@@ -1,7 +1,15 @@
 {
   "name": "umijs.org",
   "version": 2,
-  "builds": [{ "src": "website/package.json", "use": "@now/static-build" }],
+  "builds": [
+    {
+      "src": "website/package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "website/dist"
+      }
+    }
+  ],
   "github": {
     "autoAlias": false
   },
