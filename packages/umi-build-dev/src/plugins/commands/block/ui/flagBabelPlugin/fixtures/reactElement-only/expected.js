@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _default = function _default() {
-  return React.createElement('div', React.createElement(GUmiUIFlag, {
+  return React.createElement('div', null, React.createElement(GUmiUIFlag, {
     filename: "/tmp/origin.tsx",
-    index: "2"
-  }), null, React.createElement(GUmiUIFlag, {
+    index: "0"
+  }), React.createElement('h1', null, 'foo'), React.createElement(GUmiUIFlag, {
     filename: "/tmp/origin.tsx",
     index: "1"
-  }), React.createElement('h1', null, 'foo'));
+  }));
 };
 
 exports.default = _default;

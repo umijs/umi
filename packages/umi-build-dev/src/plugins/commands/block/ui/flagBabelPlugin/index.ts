@@ -103,12 +103,12 @@ export default function({ types: t }) {
           }
         } else {
           const args = node.arguments;
+          let index = args.filter(n => isReactCreateElement(n)).length;
           let i = args.length - 1;
           while (i >= 1) {
             const arg = args[i];
-            let index = args.filter(n => isReactCreateElement(n)).length;
             if (isReactCreateElement(arg) || i === 1) {
-              addFlagToIndex(args, i, {
+              addFlagToIndex(args, i + 1, {
                 index,
                 filename,
                 jsx: false,
@@ -191,7 +191,7 @@ export default function({ types: t }) {
             } else if (t.isClassDeclaration(d) || t.isClassExpression(d)) {
               ret = findReturnNode(findRenderStatement(d.body));
             } else {
-              console.log(d);
+              // TODO: unexpect
             }
 
             if (ret) {

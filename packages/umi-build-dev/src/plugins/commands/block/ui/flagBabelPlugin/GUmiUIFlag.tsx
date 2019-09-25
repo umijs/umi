@@ -28,6 +28,7 @@ export default function({ filename, index }) {
         fontSize: '14px',
         lineHeight: '60px',
         cursor: 'pointer',
+        overflow: 'hidden',
         fontFamily:
           'Chinese Quote,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif',
       }}
