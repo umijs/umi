@@ -5,7 +5,8 @@ import execa from 'execa';
 import ora from 'ora';
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
-import { flatMap } from 'lodash';
+
+import { getFastGithub } from 'umi-utils';
 
 /**
  * 全局使用的 loading
@@ -71,16 +72,31 @@ export function printBlocks(blocks, hasLink) {
 export const getBlockListFromGit = async gitUrl => {
   const got = require('got');
   const ignoreFile = ['_scripts', 'tests'];
-  const { name, owner } = GitUrlParse(gitUrl);
-  spinner.succeed();
+  const { name, owner, resource } = GitUrlParse(gitUrl);
+
+  if (spinner.isSpinning) {
+    spinner.succeed();
+  }
   spinner.start(`🔍  find block list form ${chalk.yellow(gitUrl)}`);
-  if (name === 'pro-blocks' && owner === 'ant-design') {
-    const { body } = await got(
-      'https://raw.githubusercontent.com/ant-design/pro-blocks/master/blockList.json',
-    );
+
+  // 满足这个条件，说明是 github 的 pro-block 的仓库，直接使用仓库中生成的代码
+  if (name === 'pro-blocks' && owner === 'ant-design' && resource === 'github.com') {
+    const fastGithub = await getFastGithub();
+    let url = 'https://raw.githubusercontent.com/ant-design/pro-blocks/master/blockList.json';
+    if (fastGithub === 'gitee.com') {
+      url = 'https://gitee.com/ant-design/pro-blocks/raw/master/blockList.json';
+    }
+    const { body } = await got(url);
     spinner.succeed();
     return JSON.parse(body);
   }
+
+  // 如果不是 github 不支持这个方法，返回一个空
+  // 可以搞一些约定，下次 下次
+  if (resource !== 'github.com') {
+    return [];
+  }
+
   // 一个 github 的 api,可以获得文件树
   const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
   const filesTree = JSON.parse(body)
