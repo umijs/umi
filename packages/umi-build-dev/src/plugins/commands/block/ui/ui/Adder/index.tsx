@@ -87,13 +87,32 @@ const Adder: React.FC<Props> = props => {
     return `${base}/${name};`;
   };
 
+  const getPathFromFilename = filename => {
+    console.log('filename', filename);
+    // /Users/usename/code/test/umi-block-test/src/page(s)/xxx/index.ts
+    // -> /xxx
+    const path = filename
+      .replace(api.currentProject.path, '')
+      .replace(/pages?\//, '')
+      .replace(/(index)?((\.ts?)|(\.jsx?))$/, '');
+    console.log(path);
+    return path;
+  };
+
   return (
     <>
       <Button
         type="primary"
         onClick={() => {
           if (api.isMini() && blockType === 'block') {
-            getInsertPosition(api).then(() => {});
+            getInsertPosition(api).then(position => {
+              onAdded({
+                url: block.url,
+                name: initialValues.name,
+                path: getPathFromFilename(position.filename),
+                index: position.index,
+              });
+            });
           } else {
             setVisible(true);
           }

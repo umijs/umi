@@ -30,10 +30,11 @@ export interface Resource {
 
 export interface AddBlockParams {
   url: string;
-  routePath: string;
+  routePath?: string;
   name?: string;
   path?: string;
   isPage?: boolean;
   transformJS?: boolean;
   removeLocale?: boolean;
+  index?: number;
 }
