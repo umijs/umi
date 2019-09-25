@@ -10,14 +10,6 @@ jobs:
     - name: build
       run: cd ./website && npm install && npm run build
     - name: deploy
-      uses: actions/zeit-now@master
-      with:
-        args: switch umijs --local-config ./website/now.json
+      run: npm install now -g && now switch umijs --token=${ZEIT_TOKEN} && now --local-config=./website/now.json && now alias
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
-    - name: alias
-      uses: actions/zeit-now@master
-      env:
-        ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
-      with:
-        args: switch umijs alias --local-config ./website/now.json
