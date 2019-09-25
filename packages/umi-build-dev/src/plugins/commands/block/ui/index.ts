@@ -181,7 +181,7 @@ export default (api: IApiBlock) => {
             const addInfo = await addBlock({ ...payload, url }, {}, api);
             success({
               data: {
-                log: addInfo.log,
+                log: addInfo.logs,
                 message: '🎊 Adding block is success',
               },
               success: true,
@@ -192,8 +192,8 @@ export default (api: IApiBlock) => {
               message: error.message,
               success: false,
             } as any);
-            log('error', `😰  Adding block is fail ${error.message}`);
-            console.log(error);
+            uiLog('error', `😰  Adding block is fail ${error.message}`);
+            log(error);
           }
         })();
         break;
