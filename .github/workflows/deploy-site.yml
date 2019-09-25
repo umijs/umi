@@ -15,7 +15,7 @@ jobs:
         cd ./website
         npm install
         npm run build
-        now switch umijs --token=${ZEIT_TOKEN}
+        now --scope=umijs --token=${ZEIT_TOKEN}
         now
         now alias
       env:
