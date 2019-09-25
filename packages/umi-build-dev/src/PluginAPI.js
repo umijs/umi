@@ -111,6 +111,8 @@ export default class PluginAPI {
       'addRuntimePlugin',
       'addRuntimePluginKey',
       'beforeBlockWriting',
+      'addBlockUIResource',
+      'modifyBlockUIResources',
       '_modifyBlockPackageJSONPath',
       '_modifyBlockDependencies',
       '_modifyBlockFile',
