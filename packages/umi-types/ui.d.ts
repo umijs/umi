@@ -225,7 +225,7 @@ declare namespace IUI {
     getLocale: IGetLocale;
     getCwd: IGetCwd;
     /** current is in Mini version */
-    isMini: boolean;
+    isMini: () => boolean;
     /** intl */
     intl: IIntl;
     /** add plugin Panel */

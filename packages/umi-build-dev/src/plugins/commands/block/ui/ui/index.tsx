@@ -34,7 +34,6 @@ const BlocksViewer: React.FC<Props> = props => {
 
   const current: Resource | undefined =
     activeResource || resources.filter(item => item.blockType === type)[0];
-
   const { data: blocks, loading } = useCallData<Block[]>(
     () => {
       if (!current) {
@@ -43,16 +42,15 @@ const BlocksViewer: React.FC<Props> = props => {
       return callRemote({
         type: 'org.umi.block.list',
         payload: {
-          reource: current.id,
+          resource: current.id,
         },
       }) as any;
     },
-    [current],
+    [(current && current.id) || ''],
     {
       defaultData: [],
     },
   );
-
   function addHandler(params) {
     (async () => {
       const { url } = params;

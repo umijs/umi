@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Tree, Select } from 'antd';
-import { TreeProps } from 'antd/es/tree';
+import { TreeProps, AntTreeNodeProps } from 'antd/es/tree';
 
 import styles from './index.module.less';
 
@@ -34,7 +34,11 @@ const TreeSelect: React.FC<Props> = props => {
               className={styles.tree}
               onClick={() => setOpen(false)}
               selectedKeys={value ? [value] : []}
-              onSelect={(_, { node }) => onChange && onChange(node.value)}
+              onSelect={(_, { node }: { node: AntTreeNodeProps }) => {
+                if (onChange) {
+                  onChange(node.value);
+                }
+              }}
               {...props}
             />
           );

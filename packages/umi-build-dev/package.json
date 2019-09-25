@@ -78,7 +78,8 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@types/webpack-node-externals": "1.6.3",
-    "umi-types": "0.4.1"
+    "umi-types": "0.4.1",
+    "antd": "^4.0.0-alpha.0"
   },
   "repository": {
     "type": "git",

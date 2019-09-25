@@ -60,7 +60,7 @@ const Adder: React.FC<Props> = props => {
   };
 
   const getPathFromFilename = filename => {
-    // /Users/usename/code/test/umi-block-test/src/page(s)/xxx/index.ts
+    // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
     // -> /xxx
     const path = filename
       .replace(api.currentProject.path, '')
@@ -123,31 +123,51 @@ const Adder: React.FC<Props> = props => {
             <Form.Item
               name="path"
               label="选择安装路径"
-              rules={[{ required: true, message: '安装路径必选' }]}
+              rules={[
+                { required: true, message: '安装路径必选' },
+                {
+                  validator: async (rule, value) => {
+                    const name = form.getFieldValue('name');
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistFilePath',
+                      payload: {
+                        path: `${value}/${name}`.replace(/\/\//g, '/'),
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      return Promise.reject(new Error('文件路径已存在'));
+                    }
+                    // eslint-disable-next-line
+                    return;
+                  },
+                },
+              ]}
             >
               <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
             </Form.Item>
             <Form.Item
               name="name"
               label="名称"
-              validateTrigger={['routePath']}
               rules={[
                 { required: true, message: '名称必填' },
                 {
                   validator: async (rule, value) => {
                     const routePath = form.getFieldValue('routePath');
                     const { exists } = (await callRemote({
-                      type: 'org.umi.block.checkexist',
+                      type: 'org.umi.block.checkExistRouter',
                       payload: {
-                        path: `${routePath}/${value}`.replace(/\/\//g, '/'),
+                        path: `${routePath}/${value}`.replace(/\/\//g, '/').toLocaleLowerCase(),
                       },
                     })) as {
                       exists: boolean;
                     };
                     if (exists) {
-                      return Promise.reject(new Error('路径已存在'));
+                      return Promise.reject(new Error('路由路径已存在'));
                     }
-                    return '';
+                    // eslint-disable-next-line
+                    return;
                   },
                 },
               ]}

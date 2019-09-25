@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { join } from 'path';
 import { winPath } from 'umi-utils';
+import { getBlockListFromGit } from '../util';
+import { BlockData } from '../data.d';
 
 export interface TreeData {
   title: string;
@@ -40,4 +42,24 @@ export const getFolderTreeData = (
       return undefined;
     })
     .filter(obj => obj);
+};
+
+/**
+ * pro-blocks 获取区块列表
+ * https://github.com/ant-design/pro-blocks 是 pro 的官方区块
+ */
+export const fetchProBlockList = async (): Promise<BlockData> => {
+  try {
+    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+    return {
+      data: blocks,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
 };
