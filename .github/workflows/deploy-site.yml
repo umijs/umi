@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
-        version: 10.x
+        version: 12.x
     - name: install, build, and deploy
       run: |
         cd ./website
