@@ -266,7 +266,7 @@ export const depthRouterConfig = routes => {
  * @param {*} path string
  * @param {*} routes
  */
-export function routeExists(path, routes) {
+export function routeExists(path, routes = []) {
   const routerConfig = reduceData(genRouterToTreeData(routes));
   if (routerConfig[path]) {
     return true;

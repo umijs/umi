@@ -214,6 +214,7 @@ export default api => {
       this.entryPath = null;
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
+      this.routes = opts.routes || [];
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
       });
@@ -247,7 +248,7 @@ export default api => {
       }
 
       // 如果路由重复，重新输入
-      while (this.isPageBlock && routeExists(this.routePath)) {
+      while (this.isPageBlock && routeExists(this.routePath, this.routes)) {
         // eslint-disable-next-line no-await-in-loop
         this.routePath = (await this.prompt({
           type: 'input',

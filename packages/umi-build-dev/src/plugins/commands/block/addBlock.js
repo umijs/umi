@@ -32,6 +32,7 @@ export async function getCtx(url, args = {}, api = {}) {
     const blocksTempPath = makeSureMaterialsTempPathExist(args.dryRun);
     const templateTmpDirPath = join(blocksTempPath, ctx.id);
     merge(ctx, {
+      routePath: args.routePath,
       sourcePath: join(templateTmpDirPath, ctx.path),
       branch: args.branch || ctx.branch,
       templateTmpDirPath,
@@ -40,6 +41,7 @@ export async function getCtx(url, args = {}, api = {}) {
     });
   } else {
     merge(ctx, {
+      routePath: args.routePath,
       templateTmpDirPath: dirname(url),
     });
   }
@@ -51,6 +53,7 @@ async function add(args = {}, opts = {}, api = {}) {
   const { log, paths, debug, config, applyPlugins, uiLog } = api;
   const blockConfig = config.block || {};
   const addLogs = [];
+
   const getSpinner = uiLog => {
     const spinner = ora();
     return {
@@ -63,6 +66,7 @@ async function add(args = {}, opts = {}, api = {}) {
           uiLog('info', info);
         }
       },
+      fail: (...rest) => spinner.fail(rest),
       stopAndPersist: (...rest) => spinner.stopAndPersist(rest),
     };
   };
@@ -101,6 +105,7 @@ async function add(args = {}, opts = {}, api = {}) {
   } = args;
 
   const ctx = await getCtx(url, args, api);
+
   spinner.succeed();
 
   // 2. clone git repo
@@ -144,12 +149,11 @@ async function add(args = {}, opts = {}, api = {}) {
   }
 
   ctx.filePath = addPrefix(ctx.filePath);
-
   if (!routePath) {
     ctx.routePath = ctx.filePath;
   }
-  ctx.routePath = addPrefix(ctx.routePath);
 
+  ctx.routePath = addPrefix(ctx.routePath);
   // 4. install additional dependencies
   // check dependencies conflict and install dependencies
   // install
@@ -175,6 +179,7 @@ async function add(args = {}, opts = {}, api = {}) {
   const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
     sourcePath: ctx.sourcePath,
     path: ctx.filePath,
+    routePath: ctx.routePath,
     blockName: getNameFromPkg(ctx.pkg),
     isPageBlock,
     dryRun,
@@ -208,6 +213,7 @@ async function add(args = {}, opts = {}, api = {}) {
             env: {
               cwd: api.cwd,
             },
+            routes: api.config.routes,
             resolved: winPath(__dirname),
           }).run();
         }),
