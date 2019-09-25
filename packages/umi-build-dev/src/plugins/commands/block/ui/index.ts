@@ -244,7 +244,9 @@ export default (api: IApiBlock) => {
     api.addEntryCode(`
 (() => {
   // Runtime block add component
-  window.GUmiUIFlag = require('${require.resolve('./flagBabelPlugin/GUmiUIFlag')}').default;
+  window.GUmiUIFlag = require('${api.relativeToTmp(
+    require.resolve('./flagBabelPlugin/GUmiUIFlag'),
+  )}').default;
 
   // Enable/Disable block add edit mode
   const el = document.createElement('style');
