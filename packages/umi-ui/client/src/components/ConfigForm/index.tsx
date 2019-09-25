@@ -46,21 +46,22 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
-      await updateData();
-    })();
-    setLoading(false);
-    return () => {
-      handleSearchDebounce.cancel();
-    };
-  }, []);
+  useEffect(
+    () => {
+      updateData();
+      return () => {
+        handleSearchDebounce.cancel();
+      };
+    },
+    [props.title, props.list, props.edit],
+  );
 
   async function updateData() {
+    setLoading(true);
     const { data } = await callRemote({
       type: props.list,
     });
+    setLoading(false);
     setData(data);
   }
 
@@ -112,10 +113,6 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
 
   const initialValues = arrayToObject(searchData);
   const [allValues, setAllValues] = useState();
-
-  if (loading) {
-    return <Spin />;
-  }
 
   const getChangedValue = vv => {
     return getDiffItems(vv, arrayToObject(data, false), data);
@@ -238,7 +235,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
               onChange={e => handleSearchDebounce(e.target.value)}
             />
           </div>
-          {!data ? (
+          {!data || loading ? (
             <Spin />
           ) : (
             searchData.length > 0 && (
