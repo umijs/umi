@@ -13,12 +13,6 @@ jobs:
     - name: deploy
       uses: actions/zeit-now@master
       with:
-        args: --scope umijs
-      env:
-        ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
-    - name: alias
-      uses: actions/zeit-now@master
-      with:
-        args: alias --scope umijs
+        args: --prod --scope umijs
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}

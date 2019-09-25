@@ -11,8 +11,5 @@
     }
   ],
   "scope": "umijs",
-  "github": {
-    "silent": true
-  },
   "alias": ["umijs.now.sh"]
 }
