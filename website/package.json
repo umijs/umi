@@ -1,10 +1,13 @@
 {
   "scripts": {
-    "now-build": "echo empty build",
+    "now-build": "npm run build",
     "deploy": "npm run build && now && now alias",
     "build": "vuepress build ../docs --dest ./dist"
   },
   "devDependencies": {
     "vuepress": "^0.14.8"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
