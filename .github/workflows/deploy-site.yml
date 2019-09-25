@@ -7,8 +7,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: node
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
       with:
         version: 10.x
     - name: install, build, and deploy
@@ -16,7 +15,6 @@ jobs:
         cd ./website
         npm install
         npm run build
-        npm install now -g
         now switch umijs --token=${ZEIT_TOKEN}
         now
         now alias
