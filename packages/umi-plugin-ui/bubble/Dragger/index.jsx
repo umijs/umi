@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { css } from 'styled-components';
-import Hide, { HideWrapper } from '../Hide';
+import styled from 'styled-components';
+import { HideWrapper } from '../Hide';
+import { getScrollOffsets, getClientWidth, getClientHeight } from './utils';
 
-const Container = styled.div.attrs({
-  style: ({ x, y }) => ({
-    transform: `translate(${x}px, ${y}px)`,
-  }),
-})`
+const Container = styled.div`
   cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
-  right: 12px;
-  bottom: 28px;
+  right: ${props => {
+    if (props.hide) {
+      return -props.width / 1.5;
+    }
+    return props.right;
+  }}px;
+  bottom: ${props => props.bottom}px;
   &:before {
     width: 0;
     height: 0;
@@ -75,26 +77,29 @@ const Container = styled.div.attrs({
 export default class Draggable extends React.Component {
   constructor(props) {
     super(props);
+    this.node = null;
+
     this.intervalStart = 0;
     this.resizeX = null;
     this.resizeY = null;
+    this.deltaX = 0;
+    this.deltaY = 0;
 
     this.state = {
       dragged: false,
-
-      originalX: 0,
-      originalY: 0,
-
-      translateX: 0,
-      translateY: 0,
-
-      lastTranslateX: 0,
-      lastTranslateY: 0,
+      width: 0,
+      right: 16,
+      bottom: 16,
     };
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false);
+    const node = ReactDOM.findDOMNode(this);
+    const { width } = node.getBoundingClientRect();
+    this.setState({
+      width,
+    });
   }
 
   componentWillUnmount() {
@@ -134,41 +139,68 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseDown = e => {
-    e.preventDefault();
-    e.stopPropagation();
     this.intervalStart = new Date().getTime();
-    const { clientX, clientY } = e;
-    window.addEventListener('mousemove', this.handleMouseMove, false);
-    window.addEventListener('mouseup', this.handleMouseUp, false);
+    const scroll = getScrollOffsets();
+    const node = ReactDOM.findDOMNode(this.node);
+    const startX = e.clientX + scroll.x;
+    const startY = e.clientY + scroll.y;
+
+    const origX = node.offsetLeft;
+    const origY = node.offsetTop;
+
+    this.deltaX = startX - origX;
+    this.deltaY = startY - origY;
+
+    window.addEventListener('mousemove', this.handleMouseMove, true);
+    window.addEventListener('mouseup', this.handleMouseUp, true);
 
     if (this.props.onDragStart) {
       this.props.onDragStart();
     }
 
     this.setState({
-      originalX: clientX,
-      originalY: clientY,
       dragged: true,
     });
+
+    // We've handled this event. Don't let anybody else see it.
+    if (e.stopPropagation) e.stopPropagation();
+    // Standard model
+    else e.cancelBubble = true; // IE
+
+    // Now prevent any default action.
+    if (e.preventDefault) e.preventDefault();
+    // Standard model
+    else e.returnValue = false; // IE
   };
 
   handleMouseMove = ({ clientX, clientY }) => {
-    const { dragged } = this.state;
+    const { dragged, deltaX, deltaY } = this.state;
+    const node = ReactDOM.findDOMNode(this.node);
     const { onDrag, hide } = this.props;
     if (!dragged || !!hide) {
       return;
     }
 
+    const scroll = getScrollOffsets();
+    const clientWidth = getClientWidth();
+    const clientHeight = getClientHeight();
+    const { width, height } = node.getBoundingClientRect();
+
+    const left = clientX - scroll.x - deltaX;
+    const top = clientY - scroll.y - deltaY;
+    const right = clientWidth - left - width;
+    const bottom = clientHeight - top - height;
+
     this.setState(
-      prevState => ({
-        translateX: clientX - prevState.originalX + prevState.lastTranslateX,
-        translateY: clientY - prevState.originalY + prevState.lastTranslateY,
-      }),
+      {
+        right,
+        bottom,
+      },
       () => {
         if (onDrag) {
           onDrag({
-            translateX: this.state.translateX,
-            translateY: this.state.translateY,
+            right,
+            bottom,
           });
         }
       },
@@ -176,8 +208,9 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseUp = e => {
-    window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove, true);
+    window.removeEventListener('mouseup', this.handleMouseUp, true);
+
     const interval = new Date().getTime() - this.intervalStart;
     if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);
@@ -189,11 +222,6 @@ export default class Draggable extends React.Component {
 
     this.setState(
       {
-        originalX: 0,
-        originalY: 0,
-        lastTranslateX: this.state.translateX,
-        lastTranslateY: this.state.translateY,
-
         dragged: false,
       },
       () => {
@@ -206,17 +234,19 @@ export default class Draggable extends React.Component {
 
   render() {
     const { children, hide, open } = this.props;
-    const { translateX, translateY, dragged } = this.state;
+    const { dragged, right, bottom, width } = this.state;
     console.log('render dragged', dragged);
 
     return (
       <Container
+        ref={node => (this.node = node)}
         onMouseDown={this.handleMouseDown}
-        x={hide ? 50 : translateX}
-        y={translateY}
+        right={right}
+        bottom={bottom}
         dragged={dragged}
         open={open}
         hide={hide}
+        width={width}
       >
         {children}
       </Container>
