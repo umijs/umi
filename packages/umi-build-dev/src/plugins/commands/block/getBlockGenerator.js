@@ -8,6 +8,7 @@ import upperCamelCase from 'uppercamelcase';
 import rimraf from 'rimraf';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
+import { routeExists } from './util';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
 
@@ -204,6 +205,7 @@ export default api => {
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.path = opts.path;
+      this.routePath = opts.routePath || opts.path;
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
       this.needCreateNewRoute = this.isPageBlock;
@@ -243,7 +245,22 @@ export default api => {
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
+
+      // 如果路由重复，重新输入
+      while (this.isPageBlock && routeExists(this.routePath)) {
+        // eslint-disable-next-line no-await-in-loop
+        this.routePath = (await this.prompt({
+          type: 'input',
+          name: 'routePath',
+          message: `router path ${this.routePath} already exist, press input a new path for it`,
+          required: true,
+          default: this.routePath,
+        })).routePath;
+        debug(`router path exist get new targetPath ${this.routePath}`);
+      }
+
       this.blockFolderPath = targetPath;
+
       const blockPath = this.path;
 
       applyPlugins('beforeBlockWriting', {

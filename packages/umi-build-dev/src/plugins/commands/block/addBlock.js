@@ -14,6 +14,14 @@ import appendBlockToContainer from './appendBlockToContainer';
 import { gitClone, gitUpdate } from './util';
 import installDependencies from './installDependencies';
 
+// fix demo => /demo
+export const addPrefix = path => {
+  if (!/^\//.test(path)) {
+    return `/${path}`;
+  }
+  return path;
+};
+
 export async function getCtx(url, args = {}, api = {}) {
   const { debug, config } = api;
   debug(`get url ${url}`);
@@ -80,6 +88,7 @@ async function add(args = {}, opts = {}, api = {}) {
 
   const {
     path,
+    routePath,
     npmClient = defaultNpmClient,
     dryRun,
     skipDependencies,
@@ -128,16 +137,18 @@ async function add(args = {}, opts = {}, api = {}) {
     if (!blockName) {
       return log.error("not find name in block's package.json");
     }
-    ctx.routePath = `/${blockName}`;
-    log.info(`Not find --path, use block name '${ctx.routePath}' as the target path.`);
+    ctx.filePath = `/${blockName}`;
+    log.info(`Not find --path, use block name '${ctx.filePath}' as the target path.`);
   } else {
-    ctx.routePath = winPath(path);
+    ctx.filePath = winPath(path);
   }
 
-  // fix demo => /demo
-  if (!/^\//.test(ctx.routePath)) {
-    ctx.routePath = `/${ctx.routePath}`;
+  ctx.filePath = addPrefix(ctx.filePath);
+
+  if (!routePath) {
+    ctx.routePath = ctx.filePath;
   }
+  ctx.routePath = addPrefix(ctx.routePath);
 
   // 4. install additional dependencies
   // check dependencies conflict and install dependencies
@@ -163,7 +174,7 @@ async function add(args = {}, opts = {}, api = {}) {
   debug(`isPageBlock: ${isPageBlock}`);
   const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
     sourcePath: ctx.sourcePath,
-    path: ctx.routePath,
+    path: ctx.filePath,
     blockName: getNameFromPkg(ctx.pkg),
     isPageBlock,
     dryRun,
@@ -225,13 +236,14 @@ async function add(args = {}, opts = {}, api = {}) {
   // 6. write routes
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
     opts.remoteLog('Write route');
-    spinner.start(`⛱  Write route ${generator.path} to ${api.service.userConfig.file}`);
+
+    spinner.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
       initialValue: {
-        path: generator.path.toLowerCase(),
-        component: `.${generator.path}`,
+        path: generator.routePath.toLowerCase(),
+        component: `.${generator.routePath}`,
         ...(isLayout ? { routes: [] } : {}),
       },
     });

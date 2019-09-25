@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import { IApi } from 'umi-types';
 import { join } from 'path';
-import { getBlockListFromGit } from '../util';
-import { getFolderTreeData, depthRouterConfig, routeExists } from './util';
+import { getBlockListFromGit, depthRouterConfig, routeExists } from '../util';
+import { getFolderTreeData } from './util';
 import { Resource, BlockData, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
