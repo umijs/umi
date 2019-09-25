@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.5",
+    "@babel/preset-typescript": "7.3.3",
     "babel-eslint": "10.0.1",
     "chokidar": "3.0.1",
     "coveralls": "3.0.2",

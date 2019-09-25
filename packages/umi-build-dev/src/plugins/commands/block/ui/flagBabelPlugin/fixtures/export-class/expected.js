@@ -40,10 +40,10 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", null, _react.default.createElement(GUmiUIFlag, {
-        filename: "undefined",
+        filename: "/tmp/origin.js",
         index: "0"
       }), _react.default.createElement("h1", null, "foo"), _react.default.createElement(GUmiUIFlag, {
-        filename: "undefined",
+        filename: "/tmp/origin.js",
         index: "1"
       }));
     }

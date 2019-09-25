@@ -11,10 +11,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = function _default() {
   return _react.default.createElement("div", null, _react.default.createElement(GUmiUIFlag, {
-    filename: "/tmp/origin.js",
+    filename: "/tmp/origin.tsx",
     index: "0"
-  }), _react.default.createElement("h1", null, "foo"), _react.default.createElement(GUmiUIFlag, {
-    filename: "/tmp/origin.js",
+  }), _react.default.createElement("h1", null, "HAHAHA"), _react.default.createElement(GUmiUIFlag, {
+    filename: "/tmp/origin.tsx",
     index: "1"
   }));
 };

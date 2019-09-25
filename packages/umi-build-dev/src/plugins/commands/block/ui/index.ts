@@ -30,12 +30,25 @@ const getBlocks = async (): Promise<BlockData> => {
       success: false,
     };
   }
+  return false;
+}
+
+const getBlocks = async (api: IApiBlock): Promise<BlockData> => {
+  const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
+  return {
+    data: blocks,
+  };
 };
 
 export default (api: IApiBlock) => {
   const { log } = api.log;
+  function getRoutes() {
+    return [];
+    // const RoutesManager = getRouteManager(api.service);
+    // RoutesManager.fetchRoutes();
+    // return RoutesManager.routes;
+  }
 
-  // 这么写有点hack，临时方案
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
   const reources: Resource[] = [
@@ -78,6 +91,7 @@ export default (api: IApiBlock) => {
   ];
 
   api.onUISocket(({ action, failure, success, send, ...rest }) => {
+    const routes = getRoutes();
     const { type, payload = {} } = action;
 
     /**
@@ -200,7 +214,7 @@ export default (api: IApiBlock) => {
       // 检查路由是否存在
       case 'org.umi.block.checkexist':
         success({
-          exists: routeExists((payload as AddBlockParams).path, api.config.routes),
+          exists: routeExists((payload as AddBlockParams).path, routes),
           success: true,
         });
         break;
@@ -212,7 +226,7 @@ export default (api: IApiBlock) => {
   function getRouteComponents(routes) {
     return routes.reduce((memo, route) => {
       if (route.component && !route.component.startsWith('()')) {
-        memo.push(api.winPath(join(api.cwd, route.component)));
+        memo.push(api.winPath(require.resolve(join(api.cwd, route.component))));
       }
       if (route.routes) {
         memo = memo.concat(getRouteComponents(route.routes));
@@ -268,6 +282,14 @@ export default (api: IApiBlock) => {
       }
     } catch(e) {}
   }, false);
+  
+  // TODO: remove this before publish
+  window.g_enableUmiUIBlockAddEditMode = function() {
+    el.innerHTML = '';
+  };
+  window.g_disableUmiUIBlockAddEditMode = function() {
+    el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
+  };
 })();
     `);
   }
