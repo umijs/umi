@@ -11,6 +11,8 @@ jobs:
       run: cd ./website && npm install && npm run build
     - name: deploy
       uses: actions/zeit-now@master
+      with:
+        args: --local-config ./website/now.json
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
     - name: alias
@@ -18,4 +20,4 @@ jobs:
       env:
         ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
       with:
-        args: alias
+        args: alias --local-config ./website/now.json
