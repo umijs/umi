@@ -152,6 +152,16 @@ export default function({ types: t }) {
     }
   }
 
+  function getVariableDeclarator(node, path) {
+    if (t.isIdentifier(node) && path.scope.hasBinding(node.name)) {
+      const bindingNode = path.scope.getBinding(node.name).path.node;
+      if (t.isVariableDeclarator(bindingNode)) {
+        node = bindingNode.init;
+      }
+    }
+    return node;
+  }
+
   return {
     visitor: {
       Program: {
@@ -165,12 +175,12 @@ export default function({ types: t }) {
             let d = findExportDefaultDeclaration(node);
             let ret;
 
-            if (t.isIdentifier(d)) {
-              d = path.scope.getBinding(d.name).path.node;
-              if (t.isVariableDeclarator(d)) {
-                d = d.init;
-              }
+            // Support decorator
+            if (t.isCallExpression(d)) {
+              d = d.arguments[0];
             }
+
+            d = getVariableDeclarator(d, path);
 
             if (
               t.isArrowFunctionExpression(d) ||
@@ -178,16 +188,20 @@ export default function({ types: t }) {
               t.isFunctionExpression(d)
             ) {
               ret = findReturnNode(d);
-            } else if (t.isClassDeclaration(d)) {
+            } else if (t.isClassDeclaration(d) || t.isClassExpression(d)) {
               ret = findReturnNode(findRenderStatement(d.body));
+            } else {
+              console.log(d);
             }
 
-            const { node: retNode, replace } = ret;
-            if (retNode) {
-              addUmiUIFlag(retNode, {
-                filename,
-                replace,
-              });
+            if (ret) {
+              const { node: retNode, replace } = ret;
+              if (retNode) {
+                addUmiUIFlag(retNode, {
+                  filename,
+                  replace,
+                });
+              }
             }
           }
         },

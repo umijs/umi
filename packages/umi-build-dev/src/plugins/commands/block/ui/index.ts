@@ -30,14 +30,6 @@ const getBlocks = async (): Promise<BlockData> => {
       success: false,
     };
   }
-  return false;
-}
-
-const getBlocks = async (api: IApiBlock): Promise<BlockData> => {
-  const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks', api);
-  return {
-    data: blocks,
-  };
 };
 
 export default (api: IApiBlock) => {
