@@ -92,63 +92,67 @@ export default (api: IApiBlock) => {
     switch (type) {
       // 区块获得项目的路由
       case 'org.umi.block.routes':
-        try {
-          log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-          const routers = depthRouterConfig(api.config.routes);
-          success({
-            data: routers,
-            success: true,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
-
+        (async () => {
+          try {
+            log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
+            const routers = depthRouterConfig(api.config.routes);
+            success({
+              data: routers,
+              success: true,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
 
       // 获得项目 page 下的目录结构
       case 'org.umi.block.pageFolders':
-        try {
-          log(`🕵️‍ get pageFolders from ${chalk.yellow(api.paths.absPagesPath)}`);
-          const folderTreeData = getFolderTreeData(api.paths.absPagesPath);
-          folderTreeData.unshift({
-            title: '/',
-            value: '/',
-            key: '/',
-          });
-          success({
-            data: folderTreeData,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
-
+        (async () => {
+          try {
+            log(`🕵️‍ get pageFolders from ${chalk.yellow(api.paths.absPagesPath)}`);
+            const folderTreeData = getFolderTreeData(api.paths.absPagesPath);
+            folderTreeData.unshift({
+              title: '/',
+              value: '/',
+              key: '/',
+            });
+            success({
+              data: folderTreeData,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
 
       // 清空缓存
       case 'org.umi.block.clear':
-        log('block: clear cache');
-        try {
-          const info = clearGitCache(payload, api);
-          uiLog('info', info);
-          success({
-            message: info,
-            success: true,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
+        (async () => {
+          try {
+            log('block: clear cache');
+            const info = clearGitCache(payload, api);
+            uiLog('info', info);
+            success({
+              message: info,
+              success: true,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
 
       // 区块获得数据源 写死的展示不用处理错误逻辑
@@ -161,80 +165,93 @@ export default (api: IApiBlock) => {
 
       // 获取区块列表
       case 'org.umi.block.list':
-        try {
-          const data = await getBlockList(payload as { resource: string }, resources);
-          success({
-            data,
-            success: true,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
+        (async () => {
+          try {
+            const data = await getBlockList(payload as { resource: string }, resources);
+            success({
+              data,
+              success: true,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
 
       // 区块添加
       case 'org.umi.block.add':
-        const { url, path } = payload as AddBlockParams;
-        uiLog('info', `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`);
-        try {
-          const addInfo = await addBlock({ ...payload, url, execution: 'auto' }, {}, api);
-          const successMessage = `🎊 Adding block '${url}' is success`;
-          success({
-            data: {
-              log: addInfo.logs,
-              message: successMessage,
-            },
-            success: true,
-          });
-          uiLog('info', successMessage);
-        } catch (error) {
-          failure({
-            message: error.message,
-            success: false,
-          });
-          uiLog('error', `😰  Adding block is fail ${error.message}`);
-          log(error);
-        }
+        (async () => {
+          const { url, path } = payload as AddBlockParams;
+          const addLogMessage = `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`;
+          uiLog('info', addLogMessage);
+          log(addLogMessage);
+          try {
+            const addInfo = await addBlock({ ...payload, url, execution: 'auto' }, {}, api);
+            const successMessage = `🎊 Adding block '${url}' is success`;
+            success({
+              data: {
+                log: addInfo.logs,
+                message: successMessage,
+              },
+              success: true,
+            });
+            log(successMessage);
+            uiLog('info', successMessage);
+          } catch (error) {
+            failure({
+              message: error.message,
+              success: false,
+            });
+            uiLog('error', `😰  Adding block is fail ${error.message}`);
+            log(error);
+          }
+        })();
         break;
 
       // 检查路由是否存在
-      case 'org.umi.block.checkExistRouter':
-        try {
-          success({
-            exists: routeExists((payload as AddBlockParams).path, api.config.routes),
-            success: true,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
+      case 'org.umi.block.checkExistRoute':
+        (async () => {
+          try {
+            const { path } = payload as AddBlockParams;
+            log(`check exist route ${path}`);
+            success({
+              exists: routeExists(path, api.config.routes),
+              success: true,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
 
       // 检查文件路径是否存在
       case 'org.umi.block.checkExistFilePath':
-        try {
-          // 拼接真实的路径，应该是项目的 pages 目录下
-          const absPath = api.winPath(
-            join(api.paths.absPagesPath, (payload as AddBlockParams).path),
-          );
-          success({
-            exists: existsSync(absPath),
-            success: true,
-          });
-        } catch (error) {
-          log(error);
-          failure({
-            message: error.message,
-            success: false,
-          });
-        }
+        (async () => {
+          try {
+            const { path } = payload as AddBlockParams;
+            log(`check exist file path ${path}`);
+            // 拼接真实的路径，应该是项目的 pages 目录下
+            const absPath = api.winPath(join(api.paths.absPagesPath, path));
+            success({
+              exists: existsSync(absPath),
+              success: true,
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
         break;
       default:
         break;
