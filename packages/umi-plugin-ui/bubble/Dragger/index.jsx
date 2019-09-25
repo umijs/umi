@@ -122,6 +122,7 @@ export default class Draggable extends React.Component {
     //   clientRect,
     // });
 
+    // drag boundary detection
     if (deltaX < 0) {
       right += deltaX;
     }
