@@ -29,11 +29,15 @@ export async function executeCommand(
       },
     });
     child.stdout.on('data', buffer => {
-      process.stdout.write(buffer);
+      if (process.env.DEBUG) {
+        process.stdout.write(buffer);
+      }
       if (opts.onData) opts.onData(buffer.toString());
     });
     child.stderr.on('data', buffer => {
-      process.stderr.write(buffer);
+      if (process.env.DEBUG) {
+        process.stderr.write(buffer);
+      }
       if (opts.onData) opts.onData(buffer.toString());
     });
     child.on('close', code => {
