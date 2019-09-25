@@ -8,12 +8,7 @@ const Container = styled.div`
   cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
-  right: ${props => {
-    if (props.hide) {
-      return -props.width / 1.5;
-    }
-    return 16;
-  }}px;
+  right: 16px;
   bottom: 16px;
   &:before {
     width: 0;
@@ -40,7 +35,7 @@ const Container = styled.div`
     background: rgba(0, 0, 0, 0.75);
     border-radius: 2px;
     color: #fff;
-    content: '此图标只在 dev 环境下展现';
+    content: '图标只在 dev 环境下展现';
     padding: 0.5em 1em;
     position: absolute;
     white-space: nowrap;
@@ -190,16 +185,26 @@ export default class Draggable extends React.Component {
     const right = clientWidth - left - width;
     const bottom = clientHeight - top - height;
 
-    // log
-    // const logObj = {
-    //   clientX,
-    //   clientY,
-    //   scrollX: scroll.x,
-    //   scrollY: scroll.y,
-    //   deltaX,
-    //   deltaY,
-    //   width,
-    //   height,
+    const logObj = {
+      left,
+      top,
+      right,
+      bottom,
+      clientX,
+      clientY,
+      scrollX: scroll.x,
+      scrollY: scroll.y,
+      deltaX,
+      deltaY,
+      width,
+      height,
+      hide,
+    };
+    console.log('logObj', logObj);
+
+    // boundary detection
+    // if (left < 0) {
+    //   right
     // }
 
     // for better performance
@@ -252,15 +257,16 @@ export default class Draggable extends React.Component {
     const { children, hide, open } = this.props;
     const { dragged, right, bottom, width } = this.state;
     console.log('render dragged', dragged);
+    console.log('render hide', hide);
 
     return (
       <Container
         ref={node => (this.node = node)}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
+        style={hide ? { right: -width / 1.5 } : {}}
         open={open}
         hide={hide}
-        width={width}
       >
         {children}
       </Container>
