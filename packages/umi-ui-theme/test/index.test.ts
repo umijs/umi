@@ -107,6 +107,7 @@ describe('theme', () => {
     expect(dark).toEqual({
       light: '#fff',
       dark: '#000',
+      'heading-3-size': '16px',
       'heading-color': 'fade(@light, 85)',
       'text-color': 'fade(@light, 65)',
       'text-color-secondary': 'fade(@light, 45)',
