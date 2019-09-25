@@ -6,9 +6,12 @@
       "src": "website/package.json",
       "use": "@now/static-build",
       "config": {
-        "distDir": "website/dist"
+        "distDir": "./website/dist"
       }
     }
   ],
+  "github": {
+    "silent": true
+  },
   "alias": ["umijs.now.sh", "umijs.org"]
 }
