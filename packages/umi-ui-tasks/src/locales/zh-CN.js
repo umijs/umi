@@ -14,6 +14,8 @@ export default {
   'org.umi.ui.tasks.env.detail': '查看详情',
   'org.umi.ui.tasks.terminal.clear': '清空日志 ',
   'org.umi.ui.tasks.terminal.bottom': '至底部',
+  'org.umi.ui.tasks.log': '日志',
+  'org.umi.ui.tasks.analyze': '分析',
 
   // dev
   'org.umi.ui.tasks.dev.startError': '启动项目失败',
@@ -21,6 +23,7 @@ export default {
   'org.umi.ui.tasks.dev.start': '启动',
   'org.umi.ui.tasks.dev.cancel': '停止',
   'org.umi.ui.tasks.dev.state.starting': '启动中...',
+  'org.umi.ui.tasks.dev.state.starting.error': '编译失败',
   'org.umi.ui.tasks.dev.state.success': '启动于：',
   'org.umi.ui.tasks.dev.state.fail': '启动失败',
   'org.umi.ui.tasks.envs': '环境变量',
@@ -102,4 +105,7 @@ export default {
   'org.umi.ui.tasks.notify.install.success.message': '成功',
   'org.umi.ui.tasks.notify.install.fail.title': '安装依赖失败',
   'org.umi.ui.tasks.notify.install.fail.message': '失败',
+
+  // analyze
+  'org.umi.ui.tasks.analyze.empty': '任务成功后展示...',
 };

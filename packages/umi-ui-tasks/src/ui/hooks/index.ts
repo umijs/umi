@@ -1,6 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
-export * from './tasks';
 export * from './terminal';
 
 export const usePrevious = (value: any) => {
@@ -12,4 +11,18 @@ export const usePrevious = (value: any) => {
     [value],
   );
   return ref.current;
+};
+
+export const useInit = dep => {
+  const [init, setInit] = useState(false);
+  useEffect(
+    () => {
+      if (init || Object.keys(dep).length === 0) {
+        return;
+      }
+      setInit(true);
+    },
+    [dep],
+  );
+  return [init];
 };
