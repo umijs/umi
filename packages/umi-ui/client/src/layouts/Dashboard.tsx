@@ -157,7 +157,11 @@ export default withRouter(props => {
                     </Tooltip>
                   </Col>
                   <Col className={styles.gotoUi}>
-                    <a target="_blank" rel="noopener noreferrer" href={window.location.origin}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${window.location.origin}${window.location.pathname}`}
+                    >
                       <Redirect />
                       <FormattedMessage id="org.umi.ui.global.dashboard.mini.full" />
                     </a>

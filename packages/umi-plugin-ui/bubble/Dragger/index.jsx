@@ -8,8 +8,8 @@ const Container = styled.div`
   cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
-  right: 16px;
-  bottom: 16px;
+  right: 60px;
+  bottom: 30px;
   &:before {
     width: 0;
     height: 0;
@@ -261,15 +261,18 @@ export default class Draggable extends React.Component {
     );
   };
 
+  saveRef = node => {
+    if (node) {
+      this.node = node;
+    }
+  };
+
   render() {
     const { children, hide, open } = this.props;
-    const { dragged, right, bottom, width } = this.state;
-    console.log('render dragged', dragged);
-    console.log('render hide', hide);
-
+    const { dragged, width } = this.state;
     return (
       <Container
-        ref={node => (this.node = node)}
+        ref={this.saveRef}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
         style={hide ? { right: -width / 1.5 } : {}}
