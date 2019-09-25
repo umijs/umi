@@ -13,7 +13,7 @@ jobs:
         version: 10.x
     - name: install, build, and deploy
       run: |
-        cd ./website && npm run build
+        cd ./website
         npm install
         npm run build
         npm install now -g
