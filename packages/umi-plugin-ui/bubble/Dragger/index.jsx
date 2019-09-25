@@ -8,7 +8,7 @@ const Container = styled.div.attrs({
     transform: `translate(${x}px, ${y}px)`,
   }),
 })`
-  cursor: ${({ open }) => (open ? 'pointer' : 'grab')};
+  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
   right: 12px;
@@ -57,12 +57,7 @@ const Container = styled.div.attrs({
   * {
     box-sizing: border-box;
   }
-  ${({ isDragging, open }) =>
-    isDragging &&
-    !open &&
-    css`
-      cursor: grabbing;
-    `};
+
   &:hover {
     ${HideWrapper} {
       opacity: 1;
@@ -186,6 +181,9 @@ export default class Draggable extends React.Component {
     const interval = new Date().getTime() - this.intervalStart;
     if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);
+      this.setState({
+        isDragging: false,
+      });
       return;
     }
 
@@ -219,7 +217,6 @@ export default class Draggable extends React.Component {
         isDragging={isDragging}
         open={open}
         hide={hide}
-        onClick={this.onClick}
       >
         {children}
       </Container>
