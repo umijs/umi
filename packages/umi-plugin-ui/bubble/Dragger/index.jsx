@@ -8,7 +8,7 @@ const Container = styled.div.attrs({
     transform: `translate(${x}px, ${y}px)`,
   }),
 })`
-  cursor: ${({ isDragging }) => (isDragging ? 'grab' : 'pointer')};
+  cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
   right: 12px;
@@ -80,7 +80,7 @@ export default class Draggable extends React.Component {
     this.resizeY = null;
 
     this.state = {
-      isDragging: false,
+      dragged: false,
 
       originalX: 0,
       originalY: 0,
@@ -148,14 +148,14 @@ export default class Draggable extends React.Component {
     this.setState({
       originalX: clientX,
       originalY: clientY,
-      isDragging: true,
+      dragged: true,
     });
   };
 
   handleMouseMove = ({ clientX, clientY }) => {
-    const { isDragging } = this.state;
+    const { dragged } = this.state;
     const { onDrag, hide } = this.props;
-    if (!isDragging || !!hide) {
+    if (!dragged || !!hide) {
       return;
     }
 
@@ -182,7 +182,7 @@ export default class Draggable extends React.Component {
     if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);
       this.setState({
-        isDragging: false,
+        dragged: false,
       });
       return;
     }
@@ -194,7 +194,7 @@ export default class Draggable extends React.Component {
         lastTranslateX: this.state.translateX,
         lastTranslateY: this.state.translateY,
 
-        isDragging: false,
+        dragged: false,
       },
       () => {
         if (this.props.onDragEnd) {
@@ -206,15 +206,15 @@ export default class Draggable extends React.Component {
 
   render() {
     const { children, hide, open } = this.props;
-    const { translateX, translateY, isDragging } = this.state;
-    console.log('render isDragging', isDragging);
+    const { translateX, translateY, dragged } = this.state;
+    console.log('render dragged', dragged);
 
     return (
       <Container
         onMouseDown={this.handleMouseDown}
         x={hide ? 50 : translateX}
         y={translateY}
-        isDragging={isDragging}
+        dragged={dragged}
         open={open}
         hide={hide}
       >
