@@ -76,8 +76,6 @@ export default class Draggable extends React.Component {
 
     this.intervalStart = 0;
 
-    this.resizeX = null;
-    this.resizeY = null;
     this.deltaX = 0;
     this.deltaY = 0;
 
