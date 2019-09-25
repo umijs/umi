@@ -195,6 +195,7 @@ declare namespace IUI {
   type IShowMini = () => void;
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
+  type IGetSharedDataDir = () => Promise<string>;
 
   interface IContext {
     theme: ITheme;
@@ -257,6 +258,8 @@ declare namespace IUI {
     hideMini: IHideMini;
     send: ISend;
     connect: IConnect;
+    /** get the current project's temp dir path */
+    getSharedDataDir: IGetSharedDataDir;
   }
 
   type IApi = InstanceType<typeof IApiClass>;
