@@ -11,5 +11,5 @@
     }
   ],
   "scope": "umijs",
-  "alias": ["umijs.now.sh", "umijs.org"]
+  "alias": ["umijs.org"]
 }
