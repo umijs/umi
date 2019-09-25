@@ -1,5 +1,9 @@
 name: Deploy Doc Site
-on: [push]
+on:
+  release:
+    types: [published]
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
