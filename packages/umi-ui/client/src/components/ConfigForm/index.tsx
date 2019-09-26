@@ -12,12 +12,13 @@ import Context from '@/layouts/Context';
 import { callRemote } from '@/socket';
 import Field from '@/components/Field';
 import useToggle from './common/useToggle';
+import debug from '@/debug';
 import Toc from './common/Toc';
 import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
 import styles from './index.less';
 
 const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
-  const _log = g_uiDebug.extend('ConfigForm');
+  const _log = debug.extend('ConfigForm');
   const { enableToc = true } = props;
   const containerRef = useRef();
   const [data, setData] = useState<object[] | undefined>();

@@ -2,7 +2,7 @@ import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col, Dropdown } from 'antd';
 import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import get from 'lodash/get';
 import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
@@ -13,7 +13,9 @@ import { callRemote } from '@/socket';
 import { handleBack, getProjectStatus } from '@/utils';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
+import events, { MESSAGES } from '@/message';
 import UiLayout from './Layout';
+import debug from '@/debug';
 import styles from './Dashboard.less';
 
 const { Content, Sider, Header } = Layout;
@@ -28,15 +30,13 @@ function getActivePanel(pathname) {
 }
 
 export default withRouter(props => {
-  const _log = window.g_uiDebug.extend('Dashboard');
+  const _log = debug.extend('Dashboard');
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   const [actions, setActionPanel] = useState<IUi.IPanelAction>();
-  // Base UI mounted before plugin Component load
-  const [children, setChildren] = useState<boolean>(false);
 
-  useEffect(
+  useLayoutEffect(
     () => {
       const currPanel = getActivePanel(pathname);
       setSelectedKeys([currPanel ? currPanel.path : '/']);
@@ -44,12 +44,10 @@ export default withRouter(props => {
       const handleActionChange = (actionPanels: IUi.IPanelAction) => {
         setActionPanel(actionPanels);
       };
-      window.g_uiEventEmitter.on('CHANGE_GLOBAL_ACTION', handleActionChange);
-
-      setChildren(props.children);
+      events.on(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
 
       return () => {
-        window.g_uiEventEmitter.removeListener('CHANGE_GLOBAL_ACTION', handleActionChange);
+        events.off(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
       };
     },
     [pathname],
@@ -331,7 +329,7 @@ export default withRouter(props => {
                     {/* key pathname change transition will crash  */}
                     <div key={activePanel.path || '/'} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                        {children}
+                        {props.children}
                       </ErrorBoundary>
                     </div>
                   </Content>

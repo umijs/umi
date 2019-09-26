@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FolderFilled, Check } from '@ant-design/icons';
 import cls from 'classnames';
 import { IDirectoryType } from '@/enums';
+import debug from '@/debug';
 
 import styles from './index.less';
 
@@ -14,7 +15,7 @@ export interface DirectoryItemProps {
 }
 
 const DirectoryItem: React.SFC<DirectoryItemProps> = props => {
-  const _log = window.g_uiDebug.extend('DirectoryItem');
+  const _log = debug.extend('DirectoryItem');
   const { onClick, fileName, onDoubleClick, clicked } = props;
   const itemCls = cls(styles['directoryForm-list-item'], {
     [styles['directoryForm-list-item-active']]: !!clicked,

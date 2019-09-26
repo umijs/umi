@@ -5,6 +5,7 @@ import StepForm from '@/components/StepForm';
 import { message } from 'antd';
 import cls from 'classnames';
 import { APP_LANGUAGE, APP_TYPE } from '@/enums';
+import debug from '@/debug';
 import { IProjectProps } from '../index';
 import Form1 from './Form1';
 import Form2 from './Form2';
@@ -39,7 +40,7 @@ export interface ICreaetProjectValue {
 }
 
 const CreateProject: React.SFC<IProjectProps> = props => {
-  const _log = window.g_uiDebug.extend('CreateProject');
+  const _log = debug.extend('CreateProject');
   const { cwd } = props;
   const { formatMessage, setCurrent, current } = useContext(ProjectContext);
 

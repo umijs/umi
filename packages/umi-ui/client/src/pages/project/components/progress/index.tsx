@@ -6,6 +6,7 @@ import { Beforeunload } from 'react-beforeunload';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal from '@/components/Terminal';
+import debug from '@/debug';
 import LoadingPage from '@/components/Loading';
 import { listenCreateProject, setCurrentProject, createProject } from '@/services/project';
 import { handleBack } from '@/utils';
@@ -17,7 +18,7 @@ const { useContext, useEffect, useState } = React;
 const { Step } = Steps;
 
 const ProgressStage: React.FC<IProjectProps> = props => {
-  const _log = window.g_uiDebug.extend('ProgressStage');
+  const _log = debug.extend('ProgressStage');
   _log('ProgressStage props', props);
   const { currentData, projectList } = props;
   const [logs, setLogs] = useState<string>('');

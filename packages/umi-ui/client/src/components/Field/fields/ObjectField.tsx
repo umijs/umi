@@ -4,6 +4,7 @@ import cls from 'classnames';
 import { Delete, Plus } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
+import debug from '@/debug';
 import { objToArray, arrayToObj } from '../utils';
 
 import styles from './styles.module.less';
@@ -11,7 +12,7 @@ import styles from './styles.module.less';
 const { useState } = React;
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:ObjectField');
+  const _log = debug.extend('Field:ObjectField');
   const { value = {}, onChange, options: originOptions, defaultValue } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {

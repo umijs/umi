@@ -4,6 +4,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FieldProps } from './index';
 import ObjectField from './fields/ObjectField';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
@@ -13,7 +14,7 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
  *       保存的时候再将 object[] => object
  */
 const ObjectComp: React.FC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:ObjectComp');
+  const _log = debug.extend('Field:ObjectComp');
   const { name, options, defaultValue = {}, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {

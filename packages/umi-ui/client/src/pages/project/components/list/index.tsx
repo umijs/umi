@@ -30,6 +30,7 @@ import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
 import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
 import { IProjectProps } from '../index';
+import debug from '@/debug';
 
 import styles from './index.less';
 
@@ -44,7 +45,7 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
-  const _log = g_uiDebug.extend('projectList');
+  const _log = debug.extend('projectList');
   const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;

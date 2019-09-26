@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Form, Switch } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:BooleanComp');
+  const _log = debug.extend('Field:BooleanComp');
   const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
