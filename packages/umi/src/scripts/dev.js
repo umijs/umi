@@ -13,6 +13,10 @@ child.on('message', data => {
   }
 });
 
+process.on('SIGTERM', () => {
+  child.kill('SIGTERM');
+});
+
 process.on('SIGINT', () => {
   child.kill('SIGINT');
 });
