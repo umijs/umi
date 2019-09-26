@@ -58,16 +58,20 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
                 {React.isValidElement(s.icon) && s.icon}
               </div>
               <div className={styles.title_desc}>
-                <div className={styles.title}>
-                  {formatMessage({
-                    id: s.title,
-                  })}
-                </div>
-                <div className={styles.description}>
-                  {formatMessage({
-                    id: s.description,
-                  })}
-                </div>
+                {s.title && (
+                  <div className={styles.title}>
+                    {formatMessage({
+                      id: s.title,
+                    })}
+                  </div>
+                )}
+                {s.description && (
+                  <div className={styles.description}>
+                    {formatMessage({
+                      id: s.description,
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           );
