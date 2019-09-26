@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import getUserConfig from 'umi-core/lib/getUserConfig';
+import registerBabel from 'umi-core/lib/registerBabel';
 
 function hasDep(pkg, name) {
   if (pkg.dependencies && pkg.dependencies[name]) return true;
@@ -16,6 +17,7 @@ function hasFiles(cwd, files) {
 }
 
 export default function(cwd) {
+  registerBabel(cwd);
   const config = getUserConfig({ cwd });
 
   if (process.env.BIGFISH_COMPAT) {
