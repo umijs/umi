@@ -42,7 +42,7 @@ const BlocksViewer: React.FC<Props> = props => {
       return callRemote({
         type: 'org.umi.block.list',
         payload: {
-          resource: current.id,
+          resourceId: current.id,
         },
       }) as any;
     },

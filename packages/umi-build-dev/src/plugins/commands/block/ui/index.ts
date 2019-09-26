@@ -17,11 +17,11 @@ export interface IApiBlock extends IApi {
  */
 const getBlockList = async (
   payload: {
-    resource: string;
+    resourceId: string;
   },
   list: Resource[],
 ) => {
-  const { resource: resourceId } = payload;
+  const { resourceId } = payload;
   const resource = list.find(item => item.id === resourceId);
   if (resource) {
     if (resource.resourceType === 'custom') {
@@ -38,7 +38,7 @@ export default (api: IApiBlock) => {
 
   api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
 
-  const resources: Resource[] = [
+  const defaultResources: Resource[] = [
     {
       id: 'ant-design-pro',
       name: 'Ant Design Pro',
@@ -88,6 +88,14 @@ export default (api: IApiBlock) => {
      */
     const uiLog = (logType: 'error' | 'info', info: string) =>
       rest.log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
+
+    let resources: Resource[] = [];
+    resources = api.applyPlugins('addBlockUIResource', {
+      initialValue: defaultResources,
+    });
+    resources = api.applyPlugins('modifyBlockUIResources', {
+      initialValue: resources,
+    });
 
     switch (type) {
       // 区块获得项目的路由
@@ -167,7 +175,7 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.list':
         (async () => {
           try {
-            const data = await getBlockList(payload as { resource: string }, resources);
+            const data = await getBlockList(payload as { resourceId: string }, resources);
             success({
               data,
               success: true,
@@ -320,7 +328,7 @@ export default (api: IApiBlock) => {
       }
     } catch(e) {}
   }, false);
-  
+
   // TODO: remove this before publish
   window.g_enableUmiUIBlockAddEditMode = function() {
     el.innerHTML = '';
