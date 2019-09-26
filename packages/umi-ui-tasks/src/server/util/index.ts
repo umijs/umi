@@ -153,6 +153,9 @@ function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
     const envs = {};
     const args = []; // TODO: args 应该取 bin 之后的
     script.split(' ').forEach(item => {
+      if (['bigfish', 'umi'].indexOf(item) > -1) {
+        return;
+      }
       if (/=/.test(item)) {
         const [envKey, envValue] = item.split('=');
         envs[envKey] = envValue;
@@ -165,6 +168,7 @@ function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
       succes: true,
       bin,
       envs,
+      args,
     };
   } catch (e) {
     return {
