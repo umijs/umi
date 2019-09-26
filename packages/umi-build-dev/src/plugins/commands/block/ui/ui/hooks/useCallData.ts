@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { message as antdMessage } from 'antd';
 
 const useCallData = <T, U = {}>(
   getData: (
@@ -6,7 +7,7 @@ const useCallData = <T, U = {}>(
       pageSize: number;
       pageIndex: number;
     },
-  ) => Promise<{ data: T; success: boolean }>,
+  ) => Promise<{ data: T; success: boolean; message?: string }>,
   effects?: any[],
   options?: {
     defaultData?: T;
@@ -30,7 +31,7 @@ const useCallData = <T, U = {}>(
   const { pageSize = 20 } = options && options.fetchMore ? options.fetchMore : {};
   const fetchList = async (isAppend?: boolean) => {
     setLoading(true);
-    const { data, success } = await getData({
+    const { data, success, message } = await getData({
       pageIndex,
       pageSize,
     });
@@ -65,7 +66,7 @@ const useCallData = <T, U = {}>(
         setHasMore(false);
       }
     } else {
-      // TODO show error
+      antdMessage.error(message);
     }
     setLoading(false);
   };
