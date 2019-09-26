@@ -125,7 +125,6 @@ async function add(
       succeed: (info?: string) => spinner.succeed(info),
       start: info => {
         if (sendLog) {
-          console.log('run');
           sendLog(info);
         }
         spinner.start(info);

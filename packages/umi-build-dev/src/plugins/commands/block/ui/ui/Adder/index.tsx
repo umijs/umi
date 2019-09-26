@@ -121,7 +121,8 @@ const Adder: React.FC<Props> = props => {
             onAddClick(params);
             try {
               await addBlock(api, params);
-              setVisible(false);
+              // setVisible(false);
+              message.success('区块安装成功！');
             } catch (error) {
               message.error(error.message);
             }
