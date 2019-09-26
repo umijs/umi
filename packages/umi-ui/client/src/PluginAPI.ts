@@ -4,7 +4,7 @@ import lodash from 'lodash';
 import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import querystring from 'querystring';
@@ -118,6 +118,7 @@ export default class PluginAPI {
   };
 
   intl: IUi.IIntl = formatMessage;
+  FormattedMessage = FormattedMessage;
 
   getLocale: IUi.IGetLocale = () => {
     return window.g_lang;

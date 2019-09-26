@@ -158,6 +158,7 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = typeof formatMessage;
+  type IFormattedMessage = typeof FormattedMessage;
   type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
@@ -205,8 +206,8 @@ declare namespace IUI {
     theme: ITheme;
     locale: ILang;
     currentProject?: ICurrentProject;
-    formatMessage: typeof formatMessage;
-    FormattedMessage: typeof FormattedMessage;
+    formatMessage: IIntl;
+    FormattedMessage: IFormattedMessage;
     setLocale: typeof setLocale;
     setTheme: (theme: ITheme) => void;
     /** open footer log panel */
@@ -230,8 +231,10 @@ declare namespace IUI {
     getCwd: IGetCwd;
     /** current is in Mini version */
     isMini: () => boolean;
-    /** intl */
+    /** intl, formatMessage */
     intl: IIntl;
+    /** FormattedMessage Component  */
+    FormattedMessage: IFormattedMessage;
     /** add plugin Panel */
     addPanel: IAddPanel;
     /** register dva model Panel */

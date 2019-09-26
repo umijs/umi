@@ -33,6 +33,15 @@ export default withRouter(props => {
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   const [actions, setActionPanel] = useState<IUi.IPanelAction>();
+  // Base UI mounted before plugin Component load
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => {
+      setMounted(false);
+    };
+  }, []);
 
   useEffect(
     () => {
@@ -326,7 +335,7 @@ export default withRouter(props => {
                     {/* key pathname change transition will crash  */}
                     <div key={activePanel.path || '/'} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                        {props.children}
+                        {mounted && props.children}
                       </ErrorBoundary>
                     </div>
                   </Content>

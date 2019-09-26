@@ -16,7 +16,7 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl } = api;
+  const { redirect, currentProject, _, intl, FormattedMessage } = api;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
 
@@ -39,7 +39,7 @@ const DashboardUI: React.FC<IProps> = props => {
       ),
       body: (
         <div onClick={() => redirect('/tasks')}>
-          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
+          <FormattedMessage id="org.umi.ui.dashboard.panel.goto.task" />
         </div>
       ),
     },

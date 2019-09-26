@@ -346,6 +346,32 @@ export default (api) => {
 };
 ```
 
+### api.FormattedMessage
+
+国际化组件，前提也是通过 [api.addLocale](#api.addLocales()) 添加国际化字段。
+
+
+参数：
+
+`api.FormattedMessage` 与 [FormattedMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/Components.md#formattedmessage) 参数一致。
+
+示例：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+
+export default (api) => {
+  const { FormattedMessage } = api;
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    component: <FormattedMessage id="org.sorrycc.react.name" />,
+  });
+};
+```
+
 ### api.getLocale()
 
 返回当前语言，`zh-CN`、`en-US` 等。

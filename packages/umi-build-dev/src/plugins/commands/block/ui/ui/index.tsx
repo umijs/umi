@@ -4,6 +4,7 @@ import { IUiApi } from 'umi-types';
 import { Resource, Block } from '../../data.d';
 import Context from './context';
 import BlockList from './BlockList';
+import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 
@@ -39,6 +40,10 @@ const BlocksViewer: React.FC<Props> = props => {
     }).then(({ data }: { data: string }) => {
       setBlockAdding(data);
     });
+    api.setActionPanel(actions => [
+      <GlobalSearch onChange={value => console.log('valuevalue', value)} api={api} />,
+      ...actions,
+    ]);
   }, []);
 
   const current: Resource | undefined =
