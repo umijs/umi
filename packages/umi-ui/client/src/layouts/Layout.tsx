@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
+import event, { MESSAGES } from '@/message';
 import { isMiniUI } from '@/utils/index';
 import Footer from './Footer';
 import { THEME } from '@/enums';
@@ -30,6 +31,10 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     };
   }
 
+  componentWillUnmount() {
+    event.removeAllListeners();
+  }
+
   setTheme = (theme: IUi.ITheme) => {
     if (Object.keys(THEME).includes(theme)) {
       this.setState({
@@ -39,14 +44,14 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   };
 
   showLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('SHOW_LOG');
+    if (event) {
+      event.emit(MESSAGES.SHOW_LOG);
     }
   };
 
   hideLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('HIDE_LOG');
+    if (event) {
+      event.emit(MESSAGES.HIDE_LOG);
     }
   };
 

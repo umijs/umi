@@ -12,12 +12,13 @@ import Context from '@/layouts/Context';
 import { callRemote } from '@/socket';
 import Field from '@/components/Field';
 import useToggle from './common/useToggle';
+import debug from '@/debug';
 import Toc from './common/Toc';
 import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
 import styles from './index.less';
 
 const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
-  const _log = g_uiDebug.extend('ConfigForm');
+  const _log = debug.extend('ConfigForm');
   const { enableToc = true } = props;
   const containerRef = useRef();
   const [data, setData] = useState<object[] | undefined>();
@@ -26,7 +27,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   const [search, setSearch] = useState<string>('');
   const searchInputRef = useRef();
   const [showSearch, toggleSearch] = useToggle(false);
-  const { theme } = useContext(Context);
+  const { theme, locale } = useContext(Context);
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
@@ -53,7 +54,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
         handleSearchDebounce.cancel();
       };
     },
-    [props.title, props.list, props.edit],
+    [props.title, props.list, props.edit, locale],
   );
 
   async function updateData() {

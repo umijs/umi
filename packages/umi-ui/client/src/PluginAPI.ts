@@ -1,19 +1,18 @@
 import { notification } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
+import event, { MESSAGES } from '@/message';
+import { pluginDebug } from '@/debug';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import Field from './components/Field';
-
-const _debug = debug('umiui');
 
 // PluginAPI
 export default class PluginAPI {
@@ -35,7 +34,7 @@ export default class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.debug = _debug.extend('UIPlugin');
+    this.debug = pluginDebug;
     this.currentProject =
       {
         ...currentProject
@@ -86,14 +85,15 @@ export default class PluginAPI {
   };
 
   showLogPanel: IUi.IShowLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('SHOW_LOG');
-    }
+    event.emit(MESSAGES.SHOW_LOG);
   };
+
+  setActionPanel: IUi.ISetActionPanel = actions => {
+    event.emit(MESSAGES.CHANGE_GLOBAL_ACTION, actions);
+  };
+
   hideLogPanel: IUi.IHideLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('HIDE_LOG');
-    }
+    event.emit(MESSAGES.HIDE_LOG);
   };
 
   getSharedDataDir = async () => {
@@ -111,6 +111,7 @@ export default class PluginAPI {
   };
 
   intl: IUi.IIntl = formatMessage;
+  FormattedMessage = FormattedMessage;
 
   getLocale: IUi.IGetLocale = () => {
     return window.g_lang;

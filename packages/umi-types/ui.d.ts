@@ -48,13 +48,13 @@ declare namespace IUI {
     onClick?: () => void;
   }
 
-  type IPanelAction = IPanelConfigAction | ReactNode;
+  type IPanelAction = (IPanelConfigAction | ReactNode | FC)[];
 
   interface IPanel extends IRoute {
     path: string;
     component: ReactNode;
     icon: IconType | string;
-    actions?: IPanelAction[];
+    actions?: IPanelAction;
     beta?: boolean;
   }
 
@@ -63,6 +63,8 @@ declare namespace IUI {
     locales: ILocale[];
     configSections: any[];
   }
+
+  type SetFactory<T> = ((state: T) => T) | T;
 
   interface IAction<T = object, K = void> {
     type: string;
@@ -156,6 +158,7 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IIntl = typeof formatMessage;
+  type IFormattedMessage = typeof FormattedMessage;
   type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
@@ -188,6 +191,7 @@ declare namespace IUI {
     npmClient?: string;
     taobaoSpeedUp?: boolean;
   }
+
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
   type IConnect = typeof connect;
@@ -196,13 +200,14 @@ declare namespace IUI {
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
   type IGetSharedDataDir = () => Promise<string>;
+  type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
 
   interface IContext {
     theme: ITheme;
     locale: ILang;
     currentProject?: ICurrentProject;
-    formatMessage: typeof formatMessage;
-    FormattedMessage: typeof FormattedMessage;
+    formatMessage: IIntl;
+    FormattedMessage: IFormattedMessage;
     setLocale: typeof setLocale;
     setTheme: (theme: ITheme) => void;
     /** open footer log panel */
@@ -226,8 +231,10 @@ declare namespace IUI {
     getCwd: IGetCwd;
     /** current is in Mini version */
     isMini: () => boolean;
-    /** intl */
+    /** intl, formatMessage */
     intl: IIntl;
+    /** FormattedMessage Component  */
+    FormattedMessage: IFormattedMessage;
     /** add plugin Panel */
     addPanel: IAddPanel;
     /** register dva model Panel */
@@ -252,6 +259,7 @@ declare namespace IUI {
     showLogPanel: IShowLogPanel;
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
+    setActionPanel: ISetActionPanel;
     /** show Mini Modal */
     showMini: IShowMini;
     /** hide Mini Modal */

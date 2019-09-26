@@ -2,10 +2,11 @@ import React from 'react';
 import { Form, Input } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:StringComp');
+  const _log = debug.extend('Field:StringComp');
   const { name, form, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {

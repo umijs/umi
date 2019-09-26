@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Tabs, Spin, Radio } from 'antd';
+import React, { useState, useContext, useEffect } from 'react';
+import { Tabs, Spin, Radio, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 import { Resource, Block } from '../../data.d';
+import Context from './context';
 import BlockList from './BlockList';
+import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 
-const { Search } = Input;
 const { TabPane } = Tabs;
 
-interface Props {
-  api: IUiApi;
-}
+interface Props {}
 
 const BlocksViewer: React.FC<Props> = props => {
-  const { api } = props;
+  const { api } = useContext(Context);
   const { callRemote, intl } = api;
   const [blockAdding, setBlockAdding] = useState(null);
   const [type, setType] = useState<Resource['blockType']>('block');
   const [activeResource, setActiveResource] = useState<Resource>(null);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const { data: resources } = useCallData<Resource[]>(
     () =>
@@ -41,6 +41,13 @@ const BlocksViewer: React.FC<Props> = props => {
     }).then(({ data }: { data: string }) => {
       setBlockAdding(data);
     });
+    const handleSearchChange = (v: string) => {
+      setSearchValue(v);
+    };
+    api.setActionPanel(actions => [
+      <GlobalSearch onChange={handleSearchChange} api={api} />,
+      ...actions,
+    ]);
   }, []);
 
   const current: Resource | undefined =
@@ -65,12 +72,17 @@ const BlocksViewer: React.FC<Props> = props => {
 
   const matchedResources = resources.filter(r => r.blockType === type);
 
+  const filterList = data => {
+    // according Search Input to filter
+    if (searchValue && Array.isArray(data)) {
+      const filterData = data.filter(item => (item.title || '').indexOf(searchValue) > -1);
+      return filterData;
+    }
+    return data;
+  };
+
   return (
     <div className={styles.container} id="block-list-view">
-      <Search
-        placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
-        onSearch={value => console.log(value)}
-      />
       {current ? (
         <div className={styles.blocklist}>
           <Tabs
@@ -103,7 +115,7 @@ const BlocksViewer: React.FC<Props> = props => {
               loading={loading}
               type={type}
               addingBlock={blockAdding}
-              list={blocks}
+              list={filterList(blocks)}
               onAddClick={params => {
                 setBlockAdding(params.url);
               }}

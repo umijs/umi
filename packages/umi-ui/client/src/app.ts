@@ -1,28 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import debug from 'debug';
 import 'antd/dist/antd.less';
-import EventEmitter from 'events';
 import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
 import querystring from 'querystring';
 import { init as initSocket, callRemote } from './socket';
+import debug from '@/debug';
 import PluginAPI from './PluginAPI';
 
-const _debug = debug('umiui');
-
-window.g_uiLocales = {};
 // TODO pluginAPI add debug('plugin:${key}') for developer
-window.g_uiDebug = _debug.extend('BaseUI');
-const _log = window.g_uiDebug.extend('init');
-
-// register event
-if (!window.g_uiEventEmitter) {
-  window.g_uiEventEmitter = new EventEmitter();
-  // avoid oom
-  window.g_uiEventEmitter.setMaxListeners(20);
-}
+const _log = debug.extend('init');
 
 // Service for Plugin API
 // eslint-disable-next-line no-multi-assign
@@ -166,9 +154,8 @@ export const locale = {
       });
       return curr;
     }, {});
-    window.g_uiLocales = messages;
-    _log('locale messages', window.g_uiLocales);
-    return window.g_uiLocales;
+    _log('locale messages', messages);
+    return messages;
   },
 };
 

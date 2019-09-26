@@ -22,6 +22,7 @@ import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
+import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
 
 import styles from './Footer.less';
@@ -105,19 +106,19 @@ const Footer: React.SFC<IFooterProps> = props => {
       });
     })();
 
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.on('SHOW_LOG', () => {
+    event.on(MESSAGES.SHOW_LOG, () => {
+      setLogVisible(true);
+    });
+    event.on(MESSAGES.HIDE_LOG, () => {
+      setLogVisible(false);
+    });
+    return () => {
+      event.off(MESSAGES.SHOW_LOG, () => {
         setLogVisible(true);
       });
-      window.g_uiEventEmitter.on('HIDE_LOG', () => {
+      event.off(MESSAGES.HIDE_LOG, () => {
         setLogVisible(false);
       });
-    }
-    return () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
-        window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
-      }
     };
   }, []);
 

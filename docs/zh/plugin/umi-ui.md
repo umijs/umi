@@ -222,7 +222,7 @@ api.addPanel({
   // 图标，同 antd icon
   icon: IconType | string;
   // 全局操作按钮，位于插件面板右上角
-  actions?: ReactNode | {
+  actions?: ReactNode | React.FC | {
     // 标题
     title: string;
     // 按钮样式
@@ -255,7 +255,7 @@ export default (api) => {
 };
 ```
 
-添加插件全局操作区：
+添加插件全局操作区（动态修改全局操作区，参考 [api.setActionPanel](#api-setactionpanel)）：
 
 ```js
 // ui.(jsx|tsx)
@@ -271,16 +271,19 @@ export default (api) => {
     title: '插件模板',
     path: '/plugin-bar',
     icon: 'environment',
-    actions: [ActionComp, {
-      title: '打开编辑器',
-      type: 'default',
-      action: {
-        // 通过 api.onUISocket 定义
-        type: '@@actions/openConfigFile',
-        payload: {
-          projectPath: api.currentProject.path,
-        },
-      }
+    actions: [
+      ActionComp,
+      <button>Button</button>,
+      {
+        title: '打开编辑器',
+        type: 'default',
+        action: {
+          // 通过 api.onUISocket 定义
+          type: '@@actions/openConfigFile',
+          payload: {
+            projectPath: api.currentProject.path,
+          },
+        }
     }]
     // api 透传至组件
     component: () => <Template api={api} />,
@@ -321,7 +324,7 @@ export default (api) => {
 
 ### api.intl()
 
-使用国际化，使用 [api.addLocale](#api.addLocales()) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
+使用国际化，使用 [api.addLocale](#api-addlocales) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
 
 参数：
 
@@ -339,6 +342,32 @@ export default (api) => {
     path: '/plugin-bar',
     icon: 'environment',
     component: <div>{api.intl({ id: 'org.sorrycc.react.name' })}</div>,
+  });
+};
+```
+
+### api.FormattedMessage
+
+国际化组件，前提也是通过 [api.addLocale](#api-addlocales) 添加国际化字段。
+
+
+参数：
+
+`api.FormattedMessage` 与 [FormattedMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/Components.md#formattedmessage) 参数一致。
+
+示例：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+
+export default (api) => {
+  const { FormattedMessage } = api;
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    component: <FormattedMessage id="org.sorrycc.react.name" />,
   });
 };
 ```
@@ -785,3 +814,52 @@ const isMini = api.isMini();  // true / false
 ### api.hideMini()
 
 关闭 Umi UI mini 窗口（mini 环境下启用）。
+
+### api.setActionPanel()
+
+运行时动态修改右上角全局操作区，与 React 中 `setState` 类似。
+
+参数如下：
+
+示例：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+
+export default (api) => {
+  // init Action
+  const ActionComp = () => (
+    <Input />
+  )
+
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    actions: [
+      ActionComp
+    ]
+    // api 透传至组件
+    component: () => {
+      const handleClick = () => {
+        // 类似于 React 中 setState
+        api.setActionPanel((actions) => {
+            return [
+              ...actions,
+              () => <Button onClick={() => alert('hello')}>New Button</Button>
+            ]
+          })
+        }}
+      }
+      return (
+        <Button onClick={handleClick}>
+          添加一个新操作按钮
+        </Button>
+      )
+    },
+  });
+};
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/1xxzJVcNZK/add.gif)
