@@ -47,12 +47,10 @@ export default (api: IUiApi) => {
     path: '/blocks',
     icon: 'block',
     actions: [
-      () => <GlobalSearch api={api} />,
-      () => (
-        <Button onClick={() => clearCache(api)}>
-          <Delete />
-        </Button>
-      ),
+      <GlobalSearch api={api} />,
+      <Button onClick={() => clearCache(api)}>
+        <Delete />
+      </Button>,
       {
         title: 'org.umi.ui.blocks.actions.clear',
         type: 'default',

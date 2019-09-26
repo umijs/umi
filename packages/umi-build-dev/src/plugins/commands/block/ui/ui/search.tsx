@@ -4,8 +4,6 @@ import { Search as SearchIcon } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import styles from './search.module.less';
 
-const { Search } = Input;
-
 interface IGlobalSearch {
   api: IUiApi;
 }
