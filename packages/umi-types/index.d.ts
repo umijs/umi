@@ -522,7 +522,7 @@ export interface IApi {
   addUIPlugin: IAdd<string>;
   addRouterImport: IAdd<IAddImportOpts>;
   addRouterImportAhead: IAdd<IAddImportOpts>;
-  addRendererWrapperWithComponent: IAdd<IAddImportOpts>;
+  addRendererWrapperWithComponent: IAdd<string, () => string>;
   addRendererWrapperWithModule: IAdd<string>;
   modifyEntryRender: IModify<string>;
   modifyEntryHistory: IModify<string>;
