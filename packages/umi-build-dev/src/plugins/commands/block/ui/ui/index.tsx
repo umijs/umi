@@ -18,6 +18,7 @@ const BlocksViewer: React.FC<Props> = props => {
   const [blockAdding, setBlockAdding] = useState(null);
   const [type, setType] = useState<Resource['blockType']>('block');
   const [activeResource, setActiveResource] = useState<Resource>(null);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const { data: resources } = useCallData<Resource[]>(
     () =>
@@ -40,8 +41,11 @@ const BlocksViewer: React.FC<Props> = props => {
     }).then(({ data }: { data: string }) => {
       setBlockAdding(data);
     });
+    const handleSearchChange = (v: string) => {
+      setSearchValue(v);
+    };
     api.setActionPanel(actions => [
-      <GlobalSearch onChange={value => console.log('valuevalue', value)} api={api} />,
+      <GlobalSearch onChange={handleSearchChange} api={api} />,
       ...actions,
     ]);
   }, []);
@@ -67,6 +71,14 @@ const BlocksViewer: React.FC<Props> = props => {
   );
 
   const matchedResources = resources.filter(r => r.blockType === type);
+
+  const filterListSearch = data => {
+    if (searchValue && Array.isArray(data)) {
+      const filterData = data.filter(item => (item.title || '').indexOf(searchValue) > -1);
+      return filterData;
+    }
+    return data;
+  };
 
   return (
     <div className={styles.container} id="block-list-view">
@@ -102,7 +114,7 @@ const BlocksViewer: React.FC<Props> = props => {
               loading={loading}
               type={type}
               addingBlock={blockAdding}
-              list={blocks}
+              list={filterListSearch(blocks)}
               onAddClick={params => {
                 setBlockAdding(params.url);
               }}

@@ -11,12 +11,15 @@ interface IGlobalSearch {
 
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {
   const { api, onChange } = props;
-  const { intl } = api;
+  const { intl, _ } = api;
+  const handleChangeDebounce = _.debounce(v => {
+    onChange(v);
+  }, 500);
   return (
     <Input
       prefix={<SearchIcon />}
       className={styles.search}
-      onChange={e => onChange(e.target)}
+      onChange={e => handleChangeDebounce(e.target.value)}
       placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
     />
   );
