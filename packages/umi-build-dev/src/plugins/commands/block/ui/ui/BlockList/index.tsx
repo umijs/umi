@@ -69,7 +69,6 @@ const BlockList: React.FC<BlockListProps> = props => {
   const isEmpty = !list || list.length === 0;
 
   let contents;
-
   if (loading) {
     contents = (
       <div className={styles.emptyWrapper}>

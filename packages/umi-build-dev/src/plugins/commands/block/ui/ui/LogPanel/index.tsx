@@ -26,7 +26,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ api }) => {
       type: 'org.umi.block.get-pre-blocks-log',
       onMessage: ({ data }: { data: string[] }) => {
         if (data) {
-          setLogs(data);
+          setLogs([...data]);
         }
       },
     });

@@ -77,7 +77,6 @@ const Adder: React.FC<Props> = props => {
       .replace(/(index)?((\.ts?)|(\.jsx?))$/, '');
     return path;
   };
-
   return (
     <>
       <Button

@@ -7,6 +7,7 @@ import { getFolderTreeData, fetchProBlockList } from './util';
 import { Resource, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
+import LogServe from './LogServer';
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -79,6 +80,7 @@ export default (api: IApiBlock) => {
 
   api.onUISocket(async ({ action, failure, success, send, ...rest }) => {
     const { type, payload = {} } = action;
+    const logServe = new LogServe();
 
     /**
      * 初始化一些特殊的 function
@@ -103,6 +105,8 @@ export default (api: IApiBlock) => {
      * 向 客户端发送日志。
      */
     const sendAddBlockLog = logStr => {
+      // 暂存到内存中
+      logServe.push(logStr);
       send({
         type: 'org.umi.block.add-blocks-log',
         payload: {
@@ -205,10 +209,31 @@ export default (api: IApiBlock) => {
         })();
         break;
 
+      // 获取缓存中的日志
+      case 'org.umi.block.get-pre-blocks-log':
+        success({
+          data: logServe.getList(),
+          success: true,
+        });
+        break;
+
+      // 获取缓存中的日志
+      case 'org.umi.block.get-adding-block-url':
+        success({
+          data: logServe.getBlockUrl(),
+          success: true,
+        });
+        break;
+
       // 区块添加
       case 'org.umi.block.add':
         (async () => {
           const { url, path } = payload as AddBlockParams;
+          // 初始化区块
+          logServe.clear();
+          logServe.setBlockUrl(url);
+
+          // 执行逻辑
           const addLogMessage = `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`;
           uiLog('info', addLogMessage);
           log(addLogMessage);
@@ -223,6 +248,8 @@ export default (api: IApiBlock) => {
               },
               success: true,
             });
+            // 成功之后清空
+            logServe.clear();
             log(successMessage);
             uiLog('info', successMessage);
           } catch (error) {

@@ -31,6 +31,15 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
+  useEffect(() => {
+    callRemote({
+      type: 'org.umi.block.get-adding-block-url',
+    }).then(({ data }: { data: string }) => {
+      console.log(data);
+      setBlockAdding(data);
+    });
+  }, []);
+
   const current: Resource | undefined =
     activeResource || resources.filter(item => item.blockType === type)[0];
   const { data: blocks, loading } = useCallData<Block[]>(

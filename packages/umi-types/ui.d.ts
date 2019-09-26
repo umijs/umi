@@ -150,7 +150,7 @@ declare namespace IUI {
     fuseOpts?: FuseOptions<number>;
   }
 
-  type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
+  type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => Promise<K>;
 
   type ICallRemote<T = unknown, P = unknown> = IApiActionFactory<T, P>;
   type IListenRemote = IApiActionFactory<{}, () => void>;
