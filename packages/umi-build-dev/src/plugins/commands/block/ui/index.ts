@@ -289,7 +289,7 @@ export default (api: IApiBlock) => {
     memo.extraBabelPlugins = [
       ...(memo.extraBabelPlugins || []),
       [
-        require.resolve('./flagBabelPlugin'),
+        require.resolve('../sdk/flagBabelPlugin'),
         {
           doTransform(filename) {
             return routeComponents.includes(api.winPath(filename));
@@ -305,7 +305,7 @@ export default (api: IApiBlock) => {
 (() => {
   // Runtime block add component
   window.GUmiUIFlag = require('${api.relativeToTmp(
-    require.resolve('./flagBabelPlugin/GUmiUIFlag'),
+    require.resolve('../sdk/flagBabelPlugin/GUmiUIFlag'),
   )}').default;
 
   // Enable/Disable block add edit mode
