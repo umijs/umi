@@ -72,7 +72,8 @@ const BlocksViewer: React.FC<Props> = props => {
 
   const matchedResources = resources.filter(r => r.blockType === type);
 
-  const filterListSearch = data => {
+  const filterList = data => {
+    // according Search Input to filter
     if (searchValue && Array.isArray(data)) {
       const filterData = data.filter(item => (item.title || '').indexOf(searchValue) > -1);
       return filterData;
@@ -114,7 +115,7 @@ const BlocksViewer: React.FC<Props> = props => {
               loading={loading}
               type={type}
               addingBlock={blockAdding}
-              list={filterListSearch(blocks)}
+              list={filterList(blocks)}
               onAddClick={params => {
                 setBlockAdding(params.url);
               }}
