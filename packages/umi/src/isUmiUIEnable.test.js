@@ -15,6 +15,6 @@ test('ant-design-pro 2 with files', () => {
   expect(isUmiUIEnable(join(fixtures, 'ant-design-pro-2-file'))).toEqual(true);
 });
 
-test('tech-ui', () => {
+xtest('tech-ui', () => {
   expect(isUmiUIEnable(join(fixtures, 'tech-ui'))).toEqual(true);
 });
