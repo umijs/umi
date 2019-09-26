@@ -1,6 +1,7 @@
 import yParser from 'yargs-parser';
 import UmiUI from 'umi-ui/lib/UmiUI';
 import buildDevOpts from '../buildDevOpts';
+import isUmiUIEnable from '../isUmiUIEnable';
 
 let closed = false;
 
@@ -19,11 +20,16 @@ function onSignal() {
 
 (async () => {
   // Start umi ui
-  if (process.env.UMI_UI_SERVER !== 'none') {
+  const cwd = process.cwd();
+  const enableUmiUI = process.env.UMI_UI || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
+  if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
     process.env.UMI_UI_BROWSER = 'none';
     const umiui = new UmiUI();
     const { port } = await umiui.start();
     process.env.UMI_UI_PORT = port;
+  }
+  if (!enableUmiUI) {
+    process.env.UMI_UI = 'none';
   }
 
   // Start origin umi dev
