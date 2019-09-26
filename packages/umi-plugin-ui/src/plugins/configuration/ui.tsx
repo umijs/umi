@@ -1,3 +1,4 @@
+import React from 'react';
 import { IUiApi } from 'umi-types';
 import { IPanelAction } from 'umi-types/ui';
 import ConfigManager from './ui/index';

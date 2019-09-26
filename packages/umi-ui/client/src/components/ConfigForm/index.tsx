@@ -27,7 +27,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   const [search, setSearch] = useState<string>('');
   const searchInputRef = useRef();
   const [showSearch, toggleSearch] = useToggle(false);
-  const { theme } = useContext(Context);
+  const { theme, locale } = useContext(Context);
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
@@ -54,7 +54,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
         handleSearchDebounce.cancel();
       };
     },
-    [props.title, props.list, props.edit],
+    [props.title, props.list, props.edit, locale],
   );
 
   async function updateData() {
