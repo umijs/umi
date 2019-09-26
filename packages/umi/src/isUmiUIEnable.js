@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import getUserConfig from 'umi-core/lib/getUserConfig';
 
 function hasDep(pkg, name) {
   if (pkg.dependencies && pkg.dependencies[name]) return true;
@@ -15,6 +16,13 @@ function hasFiles(cwd, files) {
 }
 
 export default function(cwd) {
+  const config = getUserConfig({ cwd });
+
+  if (process.env.BIGFISH_COMPAT) {
+    if (config.appType !== 'console') return false;
+    if (config.deployMode === 'chair') return false;
+  }
+
   const pkgFile = join(cwd, 'package.json');
   const pkg = existsSync(pkgFile) ? JSON.parse(readFileSync(pkgFile, 'utf-8')) : {};
 
@@ -30,5 +38,7 @@ export default function(cwd) {
   }
 
   // project with tech-ui in alipay
-  if (hasDep(pkg, '@alipay/tech-ui')) return true;
+  if (process.env.BIGFISH_COMPAT) {
+    if (hasDep(pkg, '@alipay/tech-ui' && config.appType !== 'console')) return true;
+  }
 }

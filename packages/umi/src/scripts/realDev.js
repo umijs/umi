@@ -19,8 +19,11 @@ function onSignal() {
 }
 
 (async () => {
+  const args = yParser(process.argv.slice(2));
+  const opts = buildDevOpts(args);
+
   // Start umi ui
-  const cwd = process.cwd();
+  const { cwd } = opts;
   const enableUmiUI = process.env.UMI_UI || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
   if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
     process.env.UMI_UI_BROWSER = 'none';
@@ -34,8 +37,7 @@ function onSignal() {
 
   // Start origin umi dev
   process.env.NODE_ENV = 'development';
-  const args = yParser(process.argv.slice(2));
   // Service 的引入不能用 import，因为有些要依赖 development 这个 NODE_ENV
   const Service = require('umi-build-dev/lib/Service').default;
-  new Service(buildDevOpts(args)).run('dev', args);
+  new Service(opts).run('dev', args);
 })();
