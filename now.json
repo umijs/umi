@@ -13,7 +13,7 @@
   ],
   "routes": [{ "src": "/(.*)", "dest": "website/$1" }],
   "github": {
-    "silent": true,
-    "autoAlias": false
-  }
+    "silent": true
+  },
+  "alias": ["umijs.org"]
 }
