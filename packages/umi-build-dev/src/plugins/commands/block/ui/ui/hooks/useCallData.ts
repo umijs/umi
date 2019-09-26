@@ -21,6 +21,7 @@ const useCallData = <T, U = {}>(
   hasMore: boolean;
   fetch: () => void;
   fetchMore: () => void;
+  setList: (data: T) => void;
 } => {
   const [list, setList] = useState<T>(options.defaultData as any);
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,6 +87,7 @@ const useCallData = <T, U = {}>(
     fetch: fetchList,
     fetchMore,
     hasMore,
+    setList,
   };
 };
 

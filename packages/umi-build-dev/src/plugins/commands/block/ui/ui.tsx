@@ -1,7 +1,7 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
 import { Button, message } from 'antd';
-import { Delete } from '@ant-design/icons';
+import { Reload } from '@ant-design/icons';
 
 import Context from './ui/context';
 import BlocksViewer from './ui/index';
@@ -46,16 +46,21 @@ export default (api: IUiApi) => {
     path: '/blocks',
     icon: 'block',
     actions: [
-      <Button onClick={() => clearCache(api)}>
-        <Delete />
-      </Button>,
-      {
-        title: 'org.umi.ui.blocks.actions.clear',
-        type: 'default',
-        action: {
-          type: 'org.umi.block.clear',
-        },
-      },
+      () => (
+        <Button
+          onClick={() => clearCache(api)}
+          style={{
+            padding: '0 8px',
+          }}
+        >
+          <img
+            width={16}
+            height={16}
+            alt="clear"
+            src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
+          />
+        </Button>
+      ),
     ],
     component: () => (
       <Context.Provider

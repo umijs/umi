@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Tabs, Spin, Radio, Button } from 'antd';
-import { IUiApi } from 'umi-types';
+import { Reload } from '@ant-design/icons';
 import { Resource, Block } from '../../data.d';
 import Context from './context';
 import BlockList from './BlockList';
@@ -8,13 +8,25 @@ import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 
+/**
+ * 从 id 的 dom 滚动到 target 的 dom
+ * @param id
+ * @param target
+ */
+export const scrollToById = (id: string, target: string) => {
+  const dom = document.getElementById(id);
+  const targetDom = document.getElementById(target);
+  if (dom && targetDom) {
+    const axis = dom.getBoundingClientRect();
+    targetDom.scrollTop = axis.top + axis.height / 2;
+  }
+};
+
 const { TabPane } = Tabs;
 
-interface Props {}
-
-const BlocksViewer: React.FC<Props> = props => {
+const BlocksViewer: React.FC<{}> = () => {
   const { api } = useContext(Context);
-  const { callRemote, intl } = api;
+  const { callRemote } = api;
   const [blockAdding, setBlockAdding] = useState(null);
   const [type, setType] = useState<Resource['blockType']>('block');
   const [activeResource, setActiveResource] = useState<Resource>(null);
@@ -31,28 +43,9 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
-  useEffect(() => {
-    /**
-     * 获取上次的安装的区块 url
-     * 成功之后会被清除
-     */
-    callRemote({
-      type: 'org.umi.block.get-adding-block-url',
-    }).then(({ data }: { data: string }) => {
-      setBlockAdding(data);
-    });
-    const handleSearchChange = (v: string) => {
-      setSearchValue(v);
-    };
-    api.setActionPanel(actions => [
-      <GlobalSearch onChange={handleSearchChange} api={api} />,
-      ...actions,
-    ]);
-  }, []);
-
   const current: Resource | undefined =
     activeResource || resources.filter(item => item.blockType === type)[0];
-  const { data: blocks, loading } = useCallData<Block[]>(
+  const { data: blocks, loading, fetch, setList } = useCallData<Block[]>(
     () => {
       if (!current) {
         return [];
@@ -70,6 +63,32 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
+  useEffect(() => {
+    /**
+     * 获取上次的安装的区块 url
+     * 成功之后会被清除
+     */
+    callRemote({
+      type: 'org.umi.block.get-adding-block-url',
+    }).then(({ data }: { data: string }) => {
+      setBlockAdding(data);
+      // 我把每个 item 都加了一个 id，就是他的 url
+      scrollToById(data, 'block-list-view');
+    });
+    const handleSearchChange = (v: string) => {
+      setSearchValue(v);
+    };
+    if (api.setActionPanel) {
+      api.setActionPanel(actions => [
+        <GlobalSearch onChange={handleSearchChange} api={api} />,
+        <Button style={{ padding: '0 8px' }} onClick={() => fetch()}>
+          <Reload />
+        </Button>,
+        ...actions,
+      ]);
+    }
+  }, []);
+
   const matchedResources = resources.filter(r => r.blockType === type);
 
   const filterList = data => {
@@ -86,8 +105,10 @@ const BlocksViewer: React.FC<Props> = props => {
       {current ? (
         <div className={styles.blocklist}>
           <Tabs
+            className={styles.tabs}
             activeKey={type}
             onChange={activeKey => {
+              setList([]);
               setType(activeKey as Resource['blockType']);
             }}
           >
@@ -98,6 +119,7 @@ const BlocksViewer: React.FC<Props> = props => {
             <Radio.Group
               value={current.id}
               onChange={e => {
+                setList([]);
                 setActiveResource(matchedResources.find(r => r.id === e.target.value));
               }}
             >
@@ -119,7 +141,7 @@ const BlocksViewer: React.FC<Props> = props => {
               onAddClick={params => {
                 setBlockAdding(params.url);
               }}
-              onAddSuccess={params => {
+              onAddSuccess={() => {
                 setBlockAdding(null);
               }}
             />

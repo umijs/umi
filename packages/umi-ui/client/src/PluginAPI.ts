@@ -53,9 +53,7 @@ export default class PluginAPI {
     window.g_app.model(model);
   };
 
-  isMini: IUi.IMini = () => {
-    return 'mini' in (querystring.parse(window.location.search.slice(1)) || {});
-  };
+  isMini: IUi.IMini = () => 'mini' in (querystring.parse(window.location.search.slice(1)) || {});
 
   showMini: IUi.IShowMini = () => {
     if (this.isMini) {

@@ -33,7 +33,7 @@ const Meats: React.FC<{
   item: Block;
   keyword?: string;
 }> = ({ item, keyword }) => (
-  <div className={styles.metas}>
+  <div className={styles.meats}>
     <span className={styles.tags}>
       {item.tags &&
         item.tags.map((tag: string) => (
@@ -60,11 +60,13 @@ const BlockItem: React.FC<BlockItemProps> = ({
 }) => {
   const isBlock = type === 'block';
   const style = {
-    flex: `0 1 ${isBlock ? '20%' : '25%'}`,
+    flex: '0 1 20%',
   };
+  const isMini = api.isMini();
+
   return (
     <Col style={style} key={item.url}>
-      <div className={isBlock ? styles.blockCard : styles.templateCard}>
+      <div id={item.url} className={isBlock ? styles.blockCard : styles.templateCard}>
         <Spin spinning={item.url === addingBlock} tip="Adding...">
           <div className={styles.demo}>
             <div className={styles.addProject}>
@@ -85,12 +87,17 @@ const BlockItem: React.FC<BlockItemProps> = ({
             </div>
 
             <LazyLoad
-              height={type === 'block' ? '20%' : '25%'}
+              height="20vh"
               key={item.url}
               scrollContainer={document.getElementById('block-list-view')}
               offset={100}
             >
-              <img src={item.img} alt={item.url} />
+              <div
+                className={styles.img}
+                style={{
+                  backgroundImage: `url(${item.img})`,
+                }}
+              />
             </LazyLoad>
           </div>
         </Spin>
@@ -99,7 +106,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
           <div className={styles.title}>
             <HighlightedText text={item.name} highlight={keyword} />
           </div>
-          {type === 'template' && (
+          {item.description && !isMini && (
             <Typography.Paragraph
               className={styles.description}
               ellipsis={{ rows: 2, expandable: false }}
@@ -107,7 +114,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <HighlightedText text={item.description} highlight={keyword} />
             </Typography.Paragraph>
           )}
-          <Meats item={item} keyword={keyword} />
+          {!isMini && <Meats item={item} keyword={keyword} />}
         </div>
       </div>
     </Col>
@@ -119,13 +126,11 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   const { uniq, flatten } = api._;
 
-  const tags: string[] = useMemo<string[]>(
-    () => {
-      return uniq(flatten(list.map(item => item.tags)));
-    },
-    [list],
-  );
+  const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
+    list,
+  ]);
 
+  // lazy load 的强制加载，不然 load 不刷新
   useEffect(() => {
     document.getElementById('block-list-view').addEventListener(
       'scroll',
