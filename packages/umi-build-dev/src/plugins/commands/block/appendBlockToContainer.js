@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import insertComponent from './insertComponent';
+import insertComponent from './sdk/insertComponent';
 
 const debug = require('debug')('umi-build-dev:appendBlockToContainer');
 

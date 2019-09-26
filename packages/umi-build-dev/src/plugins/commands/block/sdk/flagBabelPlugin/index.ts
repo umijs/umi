@@ -1,60 +1,14 @@
 import assert from 'assert';
+import {
+  findExportDefaultDeclaration,
+  getIdentifierDeclaration,
+  isReactCreateElement,
+  getReturnNode,
+  isJSXElement,
+  haveChildren,
+} from '../util';
 
 export default function({ types: t }) {
-  function isReactCreateElement(node) {
-    return (
-      t.isCallExpression(node) &&
-      t.isMemberExpression(node.callee) &&
-      t.isIdentifier(node.callee.object, { name: 'React' }) &&
-      t.isIdentifier(node.callee.property, { name: 'createElement' })
-    );
-  }
-
-  function isJSXElement(node) {
-    return t.isJSXElement(node) || isReactCreateElement(node);
-  }
-
-  function haveChildren(node) {
-    if (t.isJSXElement(node)) {
-      return node.children && node.children.length;
-    } else {
-      return !!node.arguments[2];
-    }
-  }
-
-  function findReturnNode(node) {
-    if (isJSXElement(node.body)) {
-      return {
-        node: node.body,
-        replace(newNode) {
-          node.body = newNode;
-        },
-      };
-    }
-    if (t.isBlockStatement(node.body)) {
-      for (const n of node.body.body) {
-        if (t.isReturnStatement(n)) {
-          return {
-            node: n.argument,
-            replace(newNode) {
-              n.argument = newNode;
-            },
-          };
-        }
-      }
-    }
-    throw new Error(`Find return statement failed, unsupported node type ${node.body.type}.`);
-  }
-
-  function findRenderStatement(node) {
-    for (const n of node.body) {
-      if (t.isClassMethod(n) && t.isIdentifier(n.key) && n.key.name === 'render') {
-        return n;
-      }
-    }
-    throw new Error(`Find render statement failed`);
-  }
-
   function buildGUmiUIFlag({ index, filename, jsx }) {
     if (jsx) {
       return t.JSXElement(
@@ -86,7 +40,7 @@ export default function({ types: t }) {
   function addUmiUIFlag(node, { filename, replace }) {
     if (isJSXElement(node)) {
       if (haveChildren(node)) {
-        if (t.isJSXElement(node)) {
+        if (t.isJSXElement(node) || t.isJSXFragment(node)) {
           let index = node.children.filter(n => isJSXElement(n)).length;
           let i = node.children.length - 1;
           while (i >= 0) {
@@ -144,24 +98,6 @@ export default function({ types: t }) {
     }
   }
 
-  function findExportDefaultDeclaration(node) {
-    for (const n of node.body) {
-      if (t.isExportDefaultDeclaration(n)) {
-        return n.declaration;
-      }
-    }
-  }
-
-  function getVariableDeclarator(node, path) {
-    if (t.isIdentifier(node) && path.scope.hasBinding(node.name)) {
-      const bindingNode = path.scope.getBinding(node.name).path.node;
-      if (t.isVariableDeclarator(bindingNode)) {
-        node = bindingNode.init;
-      }
-    }
-    return node;
-  }
-
   return {
     visitor: {
       Program: {
@@ -173,27 +109,15 @@ export default function({ types: t }) {
             const { node } = path;
 
             let d = findExportDefaultDeclaration(node);
-            let ret;
 
             // Support decorator
             if (t.isCallExpression(d)) {
               d = d.arguments[0];
             }
 
-            d = getVariableDeclarator(d, path);
+            d = getIdentifierDeclaration(d, path);
 
-            if (
-              t.isArrowFunctionExpression(d) ||
-              t.isFunctionDeclaration(d) ||
-              t.isFunctionExpression(d)
-            ) {
-              ret = findReturnNode(d);
-            } else if (t.isClassDeclaration(d) || t.isClassExpression(d)) {
-              ret = findReturnNode(findRenderStatement(d.body));
-            } else {
-              // TODO: unexpect
-            }
-
+            const ret = getReturnNode(d);
             if (ret) {
               const { node: retNode, replace } = ret;
               if (retNode) {
