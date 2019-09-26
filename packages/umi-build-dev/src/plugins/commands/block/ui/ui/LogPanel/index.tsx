@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { IUiApi } from 'umi-types';
-import { Spin } from 'antd';
 import { Loading } from '@ant-design/icons';
 import styles from './index.module.less';
 

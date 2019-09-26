@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Col, Empty, Row, Spin, Typography, Tag, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 import LazyLoad, { forceCheck } from 'react-lazyload';
+import { Loading } from '@ant-design/icons';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -149,7 +150,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   if (loading) {
     contents = (
       <div className={styles.emptyWrapper}>
-        <Spin />
+        <Spin size="large" />
       </div>
     );
   } else if (isEmpty) {
@@ -196,6 +197,7 @@ const BlockList: React.FC<BlockListProps> = props => {
             {tag}
           </CheckableTag>
         ))}
+        {loading && <Loading />}
       </div>
       <div className={styles.cardContainer}>{contents}</div>
     </>

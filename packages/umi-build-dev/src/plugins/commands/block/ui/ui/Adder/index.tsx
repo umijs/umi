@@ -57,6 +57,8 @@ const Adder: React.FC<AdderProps> = props => {
   // 生成 defaultName
   const defaultName = block.url.split('/').pop();
 
+  // 如果不是 min 或者 是区块，就显示路由配置
+  const needRouterConfig = !api.isMini() || blockType === 'template';
   /**
    * 默认值，自动拼接一下 name
    */
@@ -176,33 +178,35 @@ const Adder: React.FC<AdderProps> = props => {
             display: addStatus !== 'form' && 'none',
           }}
         >
-          <Form.Item
-            name="routePath"
-            label="选择路由"
-            rules={[
-              { required: true, message: '路由必选' },
-              {
-                validator: async (rule, value) => {
-                  if (value === '/') {
-                    return;
-                  }
-                  const { exists } = (await callRemote({
-                    type: 'org.umi.block.checkExistRoute',
-                    payload: {
-                      path: value,
-                    },
-                  })) as {
-                    exists: boolean;
-                  };
-                  if (exists) {
-                    throw new Error('路由路径已存在');
-                  }
+          {needRouterConfig && (
+            <Form.Item
+              name="routePath"
+              label="选择路由"
+              rules={[
+                { required: true, message: '路由必选' },
+                {
+                  validator: async (rule, value) => {
+                    if (value === '/') {
+                      return;
+                    }
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistRoute',
+                      payload: {
+                        path: value,
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      throw new Error('路由路径已存在');
+                    }
+                  },
                 },
-              },
-            ]}
-          >
-            <TreeSelect placeholder="请选择路由" selectable treeData={routePathTreeData} />
-          </Form.Item>
+              ]}
+            >
+              <TreeSelect placeholder="请选择路由" selectable treeData={routePathTreeData} />
+            </Form.Item>
+          )}
           <Form.Item
             name="path"
             label="选择安装路径"
