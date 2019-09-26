@@ -222,7 +222,7 @@ api.addPanel({
   // 图标，同 antd icon
   icon: IconType | string;
   // 全局操作按钮，位于插件面板右上角
-  actions?: ReactNode | {
+  actions?: ReactNode | React.FC | {
     // 标题
     title: string;
     // 按钮样式
@@ -271,16 +271,19 @@ export default (api) => {
     title: '插件模板',
     path: '/plugin-bar',
     icon: 'environment',
-    actions: [ActionComp, {
-      title: '打开编辑器',
-      type: 'default',
-      action: {
-        // 通过 api.onUISocket 定义
-        type: '@@actions/openConfigFile',
-        payload: {
-          projectPath: api.currentProject.path,
-        },
-      }
+    actions: [
+      ActionComp,
+      <button>Button</button>,
+      {
+        title: '打开编辑器',
+        type: 'default',
+        action: {
+          // 通过 api.onUISocket 定义
+          type: '@@actions/openConfigFile',
+          payload: {
+            projectPath: api.currentProject.path,
+          },
+        }
     }]
     // api 透传至组件
     component: () => <Template api={api} />,

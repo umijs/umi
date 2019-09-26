@@ -48,7 +48,7 @@ declare namespace IUI {
     onClick?: () => void;
   }
 
-  type IPanelAction = (IPanelConfigAction | (() => ReactNode))[];
+  type IPanelAction = (IPanelConfigAction | ReactNode | FC)[];
 
   interface IPanel extends IRoute {
     path: string;

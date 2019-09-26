@@ -291,11 +291,14 @@ export default withRouter(props => {
                       {Array.isArray(actions) && actions.length > 0 && (
                         <Row type="flex" className={styles['header-actions']}>
                           {actions.map((panelAction, j) => {
+                            if (React.isValidElement(panelAction)) {
+                              return panelAction;
+                            }
                             if (
                               typeof panelAction === 'function' &&
-                              React.isValidElement(panelAction())
+                              React.isValidElement(panelAction({}))
                             ) {
-                              return panelAction();
+                              return panelAction({});
                             }
                             const { title, action, onClick, ...btnProps } = panelAction;
                             const handleClick = async () => {
