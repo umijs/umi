@@ -19,17 +19,18 @@ const LogPanel: React.FC<LogPanelProps> = ({ api }) => {
         setLogs([...tempLogs]);
       },
     });
+
     /**
      * 获取上次安装的日志
+     * 安装完成会清空
      */
-    api.listenRemote({
-      type: 'org.umi.block.get-pre-blocks-log',
-      onMessage: ({ data }: { data: string[] }) => {
-        if (data) {
-          setLogs([...data]);
-        }
-      },
-    });
+    api
+      .callRemote({
+        type: 'org.umi.block.get-pre-blocks-log',
+      })
+      .then(({ data }) => {
+        setLogs([...data]);
+      });
     return () => {
       // 组件结束挂载之后，清空
       setLogs([]);

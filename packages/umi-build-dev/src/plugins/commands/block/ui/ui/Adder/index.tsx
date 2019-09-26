@@ -32,7 +32,7 @@ const Adder: React.FC<Props> = props => {
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState<boolean>(false);
-  const [addStatus, setAddStatus] = useState<'form' | 'log'>('form');
+  const [addStatus, setAddStatus] = useState<'form' | 'log'>('log');
   const defaultName = block.url.split('/').pop();
 
   /**

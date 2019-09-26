@@ -32,10 +32,13 @@ const BlocksViewer: React.FC<Props> = props => {
   );
 
   useEffect(() => {
+    /**
+     * 获取上次的安装的区块 url
+     * 成功之后会被清除
+     */
     callRemote({
       type: 'org.umi.block.get-adding-block-url',
     }).then(({ data }: { data: string }) => {
-      console.log(data);
       setBlockAdding(data);
     });
   }, []);

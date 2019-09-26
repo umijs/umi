@@ -211,6 +211,7 @@ export default (api: IApiBlock) => {
 
       // 获取缓存中的日志
       case 'org.umi.block.get-pre-blocks-log':
+        log(`🏸 find logs ${logServe.getList().join('\n')}`);
         success({
           data: logServe.getList(),
           success: true,
