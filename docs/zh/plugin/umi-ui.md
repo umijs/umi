@@ -255,7 +255,7 @@ export default (api) => {
 };
 ```
 
-添加插件全局操作区：
+添加插件全局操作区（动态修改全局操作区，参考 [api.setActionPanel](#api-setactionpanel)）：
 
 ```js
 // ui.(jsx|tsx)
@@ -785,3 +785,52 @@ const isMini = api.isMini();  // true / false
 ### api.hideMini()
 
 关闭 Umi UI mini 窗口（mini 环境下启用）。
+
+### api.setActionPanel()
+
+运行时动态修改右上角全局操作区，与 React 中 `setState` 类似。
+
+参数如下：
+
+示例：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+
+export default (api) => {
+  // init Action
+  const ActionComp = () => (
+    <Input />
+  )
+
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    actions: [
+      ActionComp
+    ]
+    // api 透传至组件
+    component: () => {
+      const handleClick = () => {
+        // 类似于 React 中 setState
+        api.setActionPanel((actions) => {
+            return [
+              ...actions,
+              () => <Button onClick={() => alert('hello')}>New Button</Button>
+            ]
+          })
+        }}
+      }
+      return (
+        <Button onClick={handleClick}>
+          添加一个新操作按钮
+        </Button>
+      )
+    },
+  });
+};
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/1xxzJVcNZK/add.gif)
