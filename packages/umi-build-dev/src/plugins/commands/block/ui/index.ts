@@ -142,7 +142,7 @@ export default (api: IApiBlock) => {
             const info = clearGitCache(payload, api);
             uiLog('info', info);
             success({
-              message: info,
+              data: info.replace(/\[33m/g, '').replace(/\[39m/g, ''),
               success: true,
             });
           } catch (error) {

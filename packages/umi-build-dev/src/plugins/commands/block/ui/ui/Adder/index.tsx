@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Input, Switch, Form } from 'antd';
+import { Modal, Button, Switch, Form } from 'antd';
 
 import getInsertPosition from './getInsertPosition';
 // antd 4.0 not support TreeSelect now.
@@ -125,7 +125,7 @@ const Adder: React.FC<Props> = props => {
                 {
                   validator: async (rule, value) => {
                     if (value === '/') {
-                      return '';
+                      return;
                     }
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistRouter',
@@ -136,10 +136,8 @@ const Adder: React.FC<Props> = props => {
                       exists: boolean;
                     };
                     if (exists) {
-                      return Promise.reject(new Error('路由路径已存在'));
+                      throw new Error('路由路径已存在');
                     }
-                    // eslint-disable-next-line
-                    return '';
                   },
                 },
               ]}
@@ -154,7 +152,7 @@ const Adder: React.FC<Props> = props => {
                 {
                   validator: async (rule, path) => {
                     if (path === '/') {
-                      return Promise.reject(new Error('安装文件夹不能为根目录'));
+                      throw new Error('安装文件夹不能为根目录');
                     }
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistFilePath',
@@ -165,10 +163,8 @@ const Adder: React.FC<Props> = props => {
                       exists: boolean;
                     };
                     if (exists) {
-                      return Promise.reject(new Error('文件路径已存在'));
+                      throw new Error('文件路径已存在');
                     }
-                    // eslint-disable-next-line
-                    return '';
                   },
                 },
               ]}
@@ -180,24 +176,6 @@ const Adder: React.FC<Props> = props => {
               label="名称"
               rules={[
                 { required: true, message: '名称必填' },
-                {
-                  validator: async (rule, value) => {
-                    const routePath = form.getFieldValue('routePath');
-                    const { exists } = (await callRemote({
-                      type: 'org.umi.block.checkExistRouter',
-                      payload: {
-                        path: `${routePath}/${value}`.replace(/\/\//g, '/').toLocaleLowerCase(),
-                      },
-                    })) as {
-                      exists: boolean;
-                    };
-                    if (exists) {
-                      return Promise.reject(new Error('路由路径已存在'));
-                    }
-                    // eslint-disable-next-line
-                    return;
-                  },
-                },
               ]}
             >
               <Input />
