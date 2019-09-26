@@ -324,7 +324,7 @@ export default (api) => {
 
 ### api.intl()
 
-使用国际化，使用 [api.addLocale](#api.addLocales()) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
+使用国际化，使用 [api.addLocale](#api-addlocales) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
 
 参数：
 
@@ -348,7 +348,7 @@ export default (api) => {
 
 ### api.FormattedMessage
 
-国际化组件，前提也是通过 [api.addLocale](#api.addLocales()) 添加国际化字段。
+国际化组件，前提也是通过 [api.addLocale](#api-addlocales) 添加国际化字段。
 
 
 参数：
