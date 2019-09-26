@@ -1,5 +1,6 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
+import { message } from 'antd';
 
 import BlocksViewer from './ui/index';
 import zhCN from './locales/zh-CN';
@@ -36,6 +37,16 @@ export default (api: IUiApi) => {
         type: 'default',
         action: {
           type: 'org.umi.block.clear',
+        },
+        onClick: async () => {
+          try {
+            await api.callRemote({
+              type: 'org.umi.block.clear',
+            });
+            message.success('清空缓存成功！');
+          } catch (error) {
+            message.error(error.message);
+          }
         },
       },
     ],
