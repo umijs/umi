@@ -104,13 +104,15 @@ export async function getCtx(url, args: AddBlockOption = {}, api: IApi): Promise
 async function add(
   args: AddBlockOption = {},
   opts: AddBlockOption = {},
-  api: IApi,
+  api: IApi & {
+    sendLog: (info: string) => void;
+  },
 ): Promise<{
   generator?: any;
   ctx?: CtxTypes;
   logs?: string[];
 }> {
-  const { log, paths, debug, config, applyPlugins } = api;
+  const { log, paths, debug, config, applyPlugins, sendLog } = api;
   const blockConfig: {
     npmClient?: string;
   } = config.block || {};
@@ -122,6 +124,10 @@ async function add(
       ...spinner,
       succeed: (info?: string) => spinner.succeed(info),
       start: info => {
+        if (sendLog) {
+          console.log('run');
+          sendLog(info);
+        }
         spinner.start(info);
         addLogs.push(info);
       },

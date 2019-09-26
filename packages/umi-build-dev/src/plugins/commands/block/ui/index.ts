@@ -9,7 +9,7 @@ import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
 
 export interface IApiBlock extends IApi {
-  uiLog: (logType: 'error' | 'info', info: string) => void;
+  sendLog: (info: string) => void;
 }
 
 /**
@@ -77,7 +77,7 @@ export default (api: IApiBlock) => {
     },
   ];
 
-  api.onUISocket(async ({ action, failure, success, ...rest }) => {
+  api.onUISocket(async ({ action, failure, success, send, ...rest }) => {
     const { type, payload = {} } = action;
 
     /**
@@ -89,6 +89,7 @@ export default (api: IApiBlock) => {
     const uiLog = (logType: 'error' | 'info', info: string) =>
       rest.log(logType, `${chalk.hex('#40a9ff')('block:')} ${info}`);
 
+    // 交给插件来修改这些数据
     let resources: Resource[] = [];
     resources = api.applyPlugins('addBlockUIResource', {
       initialValue: defaultResources,
@@ -96,6 +97,20 @@ export default (api: IApiBlock) => {
     resources = api.applyPlugins('modifyBlockUIResources', {
       initialValue: resources,
     });
+    // ---- end ----
+
+    /**
+     * 向 客户端发送日志。
+     */
+    const sendAddBlockLog = logStr => {
+      send({
+        type: 'org.umi.block.add-blocks-log',
+        payload: {
+          data: logStr,
+          success: true,
+        },
+      });
+    };
 
     switch (type) {
       // 区块获得项目的路由
@@ -197,6 +212,7 @@ export default (api: IApiBlock) => {
           const addLogMessage = `🌼  Adding block ${chalk.magenta(url || path)} as ${path} ...`;
           uiLog('info', addLogMessage);
           log(addLogMessage);
+          api.sendLog = sendAddBlockLog;
           try {
             const addInfo = await addBlock({ ...payload, url, execution: 'auto' }, {}, api);
             const successMessage = `🎊 Adding block '${url}' is success`;
@@ -225,7 +241,7 @@ export default (api: IApiBlock) => {
         (async () => {
           try {
             const { path } = payload as AddBlockParams;
-            log(`check exist route ${path}`);
+            log(`🔎 check exist route ${chalk.yellow(path)}`);
             success({
               exists: routeExists(path, api.config.routes),
               success: true,
@@ -245,7 +261,7 @@ export default (api: IApiBlock) => {
         (async () => {
           try {
             const { path } = payload as AddBlockParams;
-            log(`check exist file path ${path}`);
+            log(`🔎 check exist file path ${chalk.yellow(path)}`);
             // 拼接真实的路径，应该是项目的 pages 目录下
             const absPath = api.winPath(join(api.paths.absPagesPath, path));
             success({

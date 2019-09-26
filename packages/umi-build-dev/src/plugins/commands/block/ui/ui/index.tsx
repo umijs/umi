@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Tabs, Spin, Radio } from 'antd';
 import { IUiApi } from 'umi-types';
-
 import { Resource, Block } from '../../data.d';
 import BlockList from './BlockList';
 import useCallData from './hooks/useCallData';
@@ -51,17 +50,6 @@ const BlocksViewer: React.FC<Props> = props => {
       defaultData: [],
     },
   );
-  function addHandler(params) {
-    (async () => {
-      const { url } = params;
-      setBlockAdding(url);
-      await callRemote({
-        type: 'org.umi.block.add',
-        payload: params,
-      });
-      setBlockAdding(null);
-    })();
-  }
 
   const matchedResources = resources.filter(r => r.blockType === type);
 
@@ -104,8 +92,11 @@ const BlocksViewer: React.FC<Props> = props => {
               type={type}
               addingBlock={blockAdding}
               list={blocks}
-              onAdd={params => {
-                addHandler(params);
+              onAddClick={params => {
+                setBlockAdding(params.url);
+              }}
+              onAddSuccess={params => {
+                setBlockAdding(null);
               }}
             />
           ) : (

@@ -16,7 +16,8 @@ interface BlockListProps {
   type: Resource['blockType'];
   list: Block[];
   addingBlock: string;
-  onAdd: (params: AddBlockParams) => void;
+  onAddClick: (params: AddBlockParams) => void;
+  onAddSuccess: (params: AddBlockParams) => void;
   loading?: boolean;
   keyword?: string;
 }
@@ -35,7 +36,16 @@ const renderMetas = (item: any, keyword?: string) => (
 );
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], type = 'block', addingBlock, loading, keyword, onAdd, api } = props;
+  const {
+    list = [],
+    type = 'block',
+    addingBlock,
+    loading,
+    keyword,
+    onAddClick,
+    onAddSuccess,
+    api,
+  } = props;
   const { uniq, flatten } = api._;
   const tags: string[] = useMemo<string[]>(
     () => {
@@ -85,12 +95,16 @@ const BlockList: React.FC<BlockListProps> = props => {
               key={item.url}
             >
               <div className={type === 'block' ? styles.blockCard : styles.templateCard}>
-                <div className={styles.demo}>
-                  {item.url === addingBlock ? (
-                    <Spin className={styles.spin} tip="Adding..." />
-                  ) : (
+                <Spin spinning={item.url === addingBlock} tip="Adding...">
+                  <div className={styles.demo}>
                     <div className={styles.addProject}>
-                      <Adder api={api} blockType={type} block={item} onAdded={onAdd}>
+                      <Adder
+                        api={api}
+                        blockType={type}
+                        block={item}
+                        onAddClick={onAddClick}
+                        onAddSuccess={onAddSuccess}
+                      >
                         添加到项目
                       </Adder>
                       {item.previewUrl && (
@@ -103,16 +117,17 @@ const BlockList: React.FC<BlockListProps> = props => {
                         </Button>
                       )}
                     </div>
-                  )}
-                  <LazyLoad
-                    height={type === 'block' ? '20%' : '25%'}
-                    key={item.url}
-                    scrollContainer={document.getElementById('block-list-view')}
-                    offset={100}
-                  >
-                    <img src={item.img} alt={item.url} />
-                  </LazyLoad>
-                </div>
+
+                    <LazyLoad
+                      height={type === 'block' ? '20%' : '25%'}
+                      key={item.url}
+                      scrollContainer={document.getElementById('block-list-view')}
+                      offset={100}
+                    >
+                      <img src={item.img} alt={item.url} />
+                    </LazyLoad>
+                  </div>
+                </Spin>
 
                 <div className={styles.content}>
                   <div className={styles.title}>

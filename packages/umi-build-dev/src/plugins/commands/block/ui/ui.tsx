@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IUiApi } from 'umi-types';
 import { Button, message } from 'antd';
 import { Delete } from '@ant-design/icons';
