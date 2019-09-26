@@ -103,7 +103,7 @@ const BlocksViewer: React.FC<{}> = () => {
   return (
     <div className={styles.container} id="block-list-view">
       {current ? (
-        <div className={styles.blocklist}>
+        <div className={styles.blockList}>
           <Tabs
             className={styles.tabs}
             activeKey={type}

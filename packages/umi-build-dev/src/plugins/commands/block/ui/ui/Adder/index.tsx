@@ -9,30 +9,52 @@ import useCallData from '../hooks/useCallData';
 import { AddBlockParams, Block, Resource } from '../../../data.d';
 import LogPanel from '../LogPanel';
 
-interface Props {
+interface AdderProps {
   onAddSuccess?: (params: AddBlockParams) => void;
   onAddClick?: (params: AddBlockParams) => void;
-
   block: Block;
   api: IUiApi;
   blockType: Resource['blockType'];
 }
 
 const addBlock = async (api: IUiApi, params: AddBlockParams) => {
-  const info = await api.callRemote({
+  const { data: info = { message: '' } } = (await api.callRemote({
     type: 'org.umi.block.add',
     payload: params,
-  });
-  return info;
+  })) as {
+    data: {
+      message: string;
+      logs: string[];
+    };
+  };
+  return info.message;
 };
 
-const Adder: React.FC<Props> = props => {
+const renderOkText = (addStatus: 'form' | 'log', loading: boolean) => {
+  if (addStatus === 'log' && !loading) {
+    return '完成';
+  }
+  if (addStatus === 'log') {
+    return '停止';
+  }
+  return '确认';
+};
+
+const Adder: React.FC<AdderProps> = props => {
   const { onAddSuccess, onAddClick, block, children, blockType, api } = props;
   const { callRemote } = api;
 
   const [form] = Form.useForm();
+  // 窗口展示
   const [visible, setVisible] = useState<boolean>(false);
+  // 是不是正在安装区块
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // 展示哪个界面
+  // log 日志  form 表单
   const [addStatus, setAddStatus] = useState<'form' | 'log'>('form');
+
+  // 生成 defaultName
   const defaultName = block.url.split('/').pop();
 
   /**
@@ -105,11 +127,27 @@ const Adder: React.FC<Props> = props => {
         onCancel={() => {
           setVisible(false);
         }}
+        okText={renderOkText(addStatus, loading)}
         onOk={() => {
-          if (addStatus === 'log') {
+          if (addStatus === 'log' && !loading) {
+            setVisible(false);
             return;
           }
-          form.validateFields().then(async (values: any) => {
+          if (addStatus === 'log') {
+            Modal.confirm({
+              title: '停止安装',
+              content: '确定要停止安装区块吗？',
+              okType: 'danger',
+              okText: '确认',
+              cancelText: '取消',
+              onOk: () => {
+                console.log('run stop add');
+              },
+            });
+            return;
+          }
+          form.validateFields().then(async (values: AddBlockParams) => {
+            setLoading(true);
             setAddStatus('log');
             const params = {
               url: block.url,
@@ -119,13 +157,12 @@ const Adder: React.FC<Props> = props => {
             };
             onAddClick(params);
             try {
-              await addBlock(api, params);
-              // setVisible(false);
-              message.success('区块安装成功！');
+              const info = await addBlock(api, params);
+              message.success(info);
             } catch (error) {
               message.error(error.message);
             }
-
+            setLoading(false);
             onAddSuccess(params);
           });
         }}
@@ -210,7 +247,7 @@ const Adder: React.FC<Props> = props => {
             <Switch />
           </Form.Item>
         </Form>
-        {addStatus === 'log' && <LogPanel api={api} />}
+        {addStatus === 'log' && <LogPanel api={api} loading={loading} />}
       </Modal>
     </>
   );

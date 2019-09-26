@@ -252,6 +252,7 @@ export default (api: IApiBlock) => {
             // 成功之后清空
             logServe.clear();
             log(successMessage);
+            sendAddBlockLog(successMessage);
             uiLog('info', successMessage);
           } catch (error) {
             failure({

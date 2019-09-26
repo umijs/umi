@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { IUiApi } from 'umi-types';
+import { Spin } from 'antd';
+import { Loading } from '@ant-design/icons';
+import styles from './index.module.less';
 
 interface LogPanelProps {
   api: IUiApi;
+  loading?: boolean;
 }
 
-const LogPanel: React.FC<LogPanelProps> = ({ api }) => {
+const LogPanel: React.FC<LogPanelProps> = ({ api, loading }) => {
   const [logs, setLogs] = useState<string[]>([]);
   useEffect(() => {
     const tempLogs = [];
@@ -37,10 +41,11 @@ const LogPanel: React.FC<LogPanelProps> = ({ api }) => {
     };
   }, []);
   return (
-    <div>
+    <div className={styles.terminal}>
       {logs.map(log => (
         <div>{log}</div>
       ))}
+      {loading && <Loading />}
     </div>
   );
 };
