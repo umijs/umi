@@ -24,7 +24,8 @@ function onSignal() {
 
   // Start umi ui
   const { cwd } = opts;
-  const enableUmiUI = process.env.UMI_UI || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
+  const enableUmiUI =
+    process.env.UMI_UI || (process.env.UMI_UI !== 'none' && isUmiUIEnable({ cwd }));
   if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
     process.env.UMI_UI_BROWSER = 'none';
     const umiui = new UmiUI();
