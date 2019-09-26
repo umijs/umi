@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Tabs, Spin, Radio } from 'antd';
+import React, { useState, useContext, useEffect } from 'react';
+import { Tabs, Spin, Radio, Button } from 'antd';
 import { IUiApi } from 'umi-types';
 import { Resource, Block } from '../../data.d';
+import Context from './context';
 import BlockList from './BlockList';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 
-const { Search } = Input;
 const { TabPane } = Tabs;
 
-interface Props {
-  api: IUiApi;
-}
+interface Props {}
 
 const BlocksViewer: React.FC<Props> = props => {
-  const { api } = props;
+  const { api } = useContext(Context);
   const { callRemote, intl } = api;
   const [blockAdding, setBlockAdding] = useState(null);
   const [type, setType] = useState<Resource['blockType']>('block');
@@ -67,10 +65,6 @@ const BlocksViewer: React.FC<Props> = props => {
 
   return (
     <div className={styles.container} id="block-list-view">
-      <Search
-        placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
-        onSearch={value => console.log(value)}
-      />
       {current ? (
         <div className={styles.blocklist}>
           <Tabs

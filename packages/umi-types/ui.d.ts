@@ -48,13 +48,13 @@ declare namespace IUI {
     onClick?: () => void;
   }
 
-  type IPanelAction = IPanelConfigAction | ReactNode;
+  type IPanelAction = (IPanelConfigAction | (() => ReactNode))[];
 
   interface IPanel extends IRoute {
     path: string;
     component: ReactNode;
     icon: IconType | string;
-    actions?: IPanelAction[];
+    actions?: IPanelAction;
     beta?: boolean;
   }
 
@@ -63,6 +63,8 @@ declare namespace IUI {
     locales: ILocale[];
     configSections: any[];
   }
+
+  type SetFactory<T> = ((state: T) => T) | T;
 
   interface IAction<T = object, K = void> {
     type: string;
@@ -188,6 +190,7 @@ declare namespace IUI {
     npmClient?: string;
     taobaoSpeedUp?: boolean;
   }
+
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
   type IConnect = typeof connect;
@@ -196,6 +199,7 @@ declare namespace IUI {
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
   type IGetSharedDataDir = () => Promise<string>;
+  type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
 
   interface IContext {
     theme: ITheme;
@@ -252,6 +256,7 @@ declare namespace IUI {
     showLogPanel: IShowLogPanel;
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
+    setActionPanel: ISetActionPanel;
     /** show Mini Modal */
     showMini: IShowMini;
     /** hide Mini Modal */

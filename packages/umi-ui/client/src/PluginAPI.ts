@@ -90,6 +90,13 @@ export default class PluginAPI {
       window.g_uiEventEmitter.emit('SHOW_LOG');
     }
   };
+
+  setActionPanel: IUi.ISetActionPanel = actions => {
+    if (window.g_uiEventEmitter) {
+      window.g_uiEventEmitter.emit('CHANGE_GLOBAL_ACTION', actions);
+    }
+  };
+
   hideLogPanel: IUi.IHideLogPanel = () => {
     if (window.g_uiEventEmitter) {
       window.g_uiEventEmitter.emit('HIDE_LOG');

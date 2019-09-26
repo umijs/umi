@@ -4,6 +4,7 @@ import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
+import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
@@ -31,11 +32,20 @@ export default withRouter(props => {
   const { pathname } = props.location;
   const activePanel = getActivePanel(pathname) ? getActivePanel(pathname) : {};
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
+  const [actions, setActionPanel] = useState<IUi.IPanelAction>();
 
   useEffect(
     () => {
       const currPanel = getActivePanel(pathname);
       setSelectedKeys([currPanel ? currPanel.path : '/']);
+      setActionPanel(currPanel && currPanel.actions ? currPanel.actions : []);
+      const handleActionChange = (actionPanels: IUi.IPanelAction) => {
+        setActionPanel(actionPanels);
+      };
+      window.g_uiEventEmitter.on('CHANGE_GLOBAL_ACTION', handleActionChange);
+      return () => {
+        window.g_uiEventEmitter.removeListener('CHANGE_GLOBAL_ACTION', handleActionChange);
+      };
     },
     [pathname],
   );
@@ -278,9 +288,9 @@ export default withRouter(props => {
                   <Content className={styles.main}>
                     <div className={styles.header}>
                       <h1>{activePanel && title}</h1>
-                      {Array.isArray(activePanel.actions) && activePanel.actions.length > 0 && (
+                      {Array.isArray(actions) && actions.length > 0 && (
                         <Row type="flex" className={styles['header-actions']}>
-                          {activePanel.actions.map((panelAction, j) => {
+                          {actions.map((panelAction, j) => {
                             if (
                               typeof panelAction === 'function' &&
                               React.isValidElement(panelAction())

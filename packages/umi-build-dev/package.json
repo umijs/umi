@@ -76,6 +76,7 @@
     "yeoman-generator": "4.0.1"
   },
   "devDependencies": {
+    "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/lodash": "^4.14.136",
     "@types/webpack-node-externals": "1.6.3",
     "umi-types": "0.4.1",

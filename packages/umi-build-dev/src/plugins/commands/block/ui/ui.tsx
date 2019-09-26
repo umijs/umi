@@ -3,7 +3,9 @@ import { IUiApi } from 'umi-types';
 import { Button, message } from 'antd';
 import { Delete } from '@ant-design/icons';
 
+import Context from './ui/context';
 import BlocksViewer from './ui/index';
+import GlobalSearch from './ui/search';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
@@ -45,12 +47,28 @@ export default (api: IUiApi) => {
     path: '/blocks',
     icon: 'block',
     actions: [
+      () => <GlobalSearch api={api} />,
       () => (
         <Button onClick={() => clearCache(api)}>
           <Delete />
         </Button>
       ),
+      {
+        title: 'org.umi.ui.blocks.actions.clear',
+        type: 'default',
+        action: {
+          type: 'org.umi.block.clear',
+        },
+      },
     ],
-    component: () => <BlocksViewer api={api} />,
+    component: () => (
+      <Context.Provider
+        value={{
+          api,
+        }}
+      >
+        <BlocksViewer />
+      </Context.Provider>
+    ),
   });
 };
