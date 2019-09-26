@@ -5,7 +5,7 @@ import querystring from 'querystring';
 import { IProjectList, IProjectItem } from '@/enums';
 
 export const isMiniUI = () => {
-  const qs = querystring.parse(window.location.search.slice(1));
+  const qs = querystring.parse(window.location.search.slice(1)) || {};
   return 'mini' in qs;
 };
 

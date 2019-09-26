@@ -59,7 +59,7 @@ export async function render(oldRender) {
   // mini 模式下允许通过加 key 的参数打开
   // 比如: ?mini&key=xxx
   let miniKey = null;
-  const qs = querystring.parse(location.search.slice(1));
+  const qs = querystring.parse(location.search.slice(1) || {});
   const isMini = 'mini' in qs;
   if (isMini && qs.key) {
     miniKey = qs.key;
