@@ -1,4 +1,3 @@
-name: Rebase Action
 on:
   issue_comment:
     types: [created]
