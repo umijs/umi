@@ -145,7 +145,7 @@ $ COMPRESS=none umi build
 
 ### BROWSER
 
-默认自动开浏览器，值为 none 时不自动打开，dev 时有效。比如：
+默认自动开浏览器，值为 `none` 时不自动打开，dev 时有效。比如：
 
 ```bash
 $ BROWSER=none umi dev
@@ -161,7 +161,11 @@ $ BROWSER=none umi dev
 
 ### HMR
 
-默认开启 HMR，值为 none 时禁用，值为 reload 时文件有变化时刷新浏览器。
+默认开启 HMR，值为 `none` 时禁用，值为 `reload` 时文件有变化时刷新浏览器。
+
+### ERROR_OVERLAY
+
+默认开启 ERROR_OVERLAY，值为 `none` 时禁用，禁用后则`react-error-overlay`不会弹出错误遮罩层。
 
 ### BABELRC
 
