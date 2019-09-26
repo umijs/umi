@@ -44,7 +44,9 @@ export default class Config {
 
   constructor(opts: IOpts = {}) {
     const { dbPath, onSave } = opts;
-    this.dbPath = dbPath || join(homedir(), '.umi/ui/data.json');
+    this.dbPath =
+      dbPath ||
+      join(homedir(), `.umi/ui/${process.env.BIGFISH_COMPAT ? 'bigfish-data' : 'data'}.json`);
     this.onSave = onSave;
     mkdirp.sync(dirname(this.dbPath));
     this.load();
