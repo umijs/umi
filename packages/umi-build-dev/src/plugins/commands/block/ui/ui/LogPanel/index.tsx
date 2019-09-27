@@ -41,9 +41,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ api, loading }) => {
   }, []);
   return (
     <div className={styles.terminal}>
-      {logs.map(log => (
-        <div>{log}</div>
-      ))}
+      <pre>{logs.join('\n')}</pre>
       {loading && <Loading />}
     </div>
   );

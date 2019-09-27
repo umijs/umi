@@ -62,6 +62,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   const isBlock = type === 'block';
   const style = {
     flex: '0 1 20%',
+    overflow: 'hidden',
   };
   const isMini = api.isMini();
 

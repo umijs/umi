@@ -131,6 +131,7 @@ export async function gitUpdate(ctx, spinner) {
   try {
     await execa(`git`, ['fetch'], {
       cwd: ctx.templateTmpDirPath,
+      stdio: 'inherit',
     });
   } catch (e) {
     spinner.fail();
@@ -143,6 +144,7 @@ export async function gitUpdate(ctx, spinner) {
   try {
     await execa(`git`, ['checkout', ctx.branch], {
       cwd: ctx.templateTmpDirPath,
+      stdio: 'inherit',
     });
   } catch (e) {
     spinner.fail();
@@ -154,6 +156,7 @@ export async function gitUpdate(ctx, spinner) {
   try {
     await execa(`git`, [`pull`], {
       cwd: ctx.templateTmpDirPath,
+      stdio: 'inherit',
     });
     // 如果是 git pull 之后有了
     // git module 只能通过这种办法来初始化一下
@@ -165,11 +168,13 @@ export async function gitUpdate(ctx, spinner) {
       await execa(`git`, ['submodule', 'init'], {
         cwd: ctx.templateTmpDirPath,
         env: process.env,
+        stdio: 'inherit',
       });
 
       spinner.start(`👀  update submodule`);
       await execa(`git`, ['submodule', 'update', '--recursive'], {
         cwd: ctx.templateTmpDirPath,
+        stdio: 'inherit',
       });
     }
   } catch (e) {
@@ -193,6 +198,7 @@ export async function gitClone(ctx, spinner) {
       {
         cwd: ctx.blocksTempPath,
         env: process.env,
+        stdio: 'inherit',
       },
     );
   } catch (e) {
