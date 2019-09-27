@@ -16,7 +16,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     const newRouteConfig = api.applyPlugins('_modifyBlockNewRouteConfig', {
       initialValue: {
         path: generator.routePath.toLowerCase(),
-        component: `.${generator.routePath}`,
+        component: `.${generator.path}`,
         ...(isLayout ? { routes: [] } : {}),
       },
     });

@@ -120,7 +120,7 @@ declare namespace IUI {
 
   interface ITerminalProps {
     /** Terminal title */
-    title?: string;
+    title?: React.ReactNode;
     className?: string;
     terminalClassName?: string;
     /** defaultValue in Terminal */
@@ -297,6 +297,7 @@ declare namespace IUI {
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;
+    detectNpmClients: () => Promise<string[]>;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

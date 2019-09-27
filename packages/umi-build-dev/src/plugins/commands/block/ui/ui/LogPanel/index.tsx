@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Loading } from '@ant-design/icons';
-import styles from './index.module.less';
+import { Terminal as XTerminal } from 'xterm';
 
+import styles from './index.module.less';
 import Context from '../UIApiContext';
 
 interface LogPanelProps {
@@ -11,19 +12,29 @@ interface LogPanelProps {
 const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
   const { api } = useContext(Context);
   const [logs, setLogs] = useState<string[]>([]);
-  useEffect(() => {
-    const tempLogs = [];
-    /**
-     *监听日志，每次会 push 一条
-     */
-    api.listenRemote({
-      type: 'org.umi.block.add-blocks-log',
-      onMessage: ({ data }) => {
-        tempLogs.push(data);
-        setLogs([...tempLogs]);
-      },
-    });
+  const [terminalRef, setTerminalRef] = useState<XTerminal>(null);
+  const { Terminal } = api;
+  useEffect(
+    () => {
+      const tempLogs = [];
+      /**
+       *监听日志，每次会 push 一条
+       */
+      api.listenRemote({
+        type: 'org.umi.block.add-blocks-log',
+        onMessage: ({ data }) => {
+          tempLogs.push(data);
+          if (terminalRef) {
+            terminalRef.writeln(data);
+          }
+          setLogs([...tempLogs]);
+        },
+      });
+    },
+    [terminalRef],
+  );
 
+  useEffect(() => {
     /**
      * 获取上次安装的日志
      * 安装完成会清空
@@ -40,10 +51,16 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
       setLogs([]);
     };
   }, []);
+  if (!Terminal) {
+    return null;
+  }
   return (
     <div className={styles.terminal}>
-      <pre>{logs.join('\n')}</pre>
-      {loading && <Loading />}
+      <Terminal
+        title={loading ? <Loading /> : ' '}
+        defaultValue={logs.join('\n')}
+        onInit={terminal => setTerminalRef(terminal)}
+      />
     </div>
   );
 };

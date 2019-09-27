@@ -30,6 +30,17 @@ class Block {
         },
       });
     });
+
+    this.flow.on('success', ({ data }) => {
+      this.send({
+        type: 'org.umi.block.add-blocks-success',
+        payload: {
+          data,
+          id: this.flow.logger.id,
+          success: true,
+        },
+      });
+    });
     return this.flow.run(args);
   }
 
@@ -72,7 +83,7 @@ class Block {
   }
 
   public routeExists(path: string) {
-    return routeExists(path, this.api.config.routes);
+    return routeExists(path, this.api.getRoutes());
   }
 
   public getBlockUrl() {

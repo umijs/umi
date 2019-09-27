@@ -63,6 +63,9 @@ class Flow extends EventEmitter {
       return this.ctx.result;
     }
 
+    // 完成之后触发一下完成事件，前端更新一下按钮状态
+    this.emit('success', args);
+
     this.state = FlowState.SUCCESS;
     // 清空日志
     this.logger.clear();
@@ -73,7 +76,7 @@ class Flow extends EventEmitter {
     this.isCancel = true;
     this.state = FlowState.CANCEL;
     this.emit('log', {
-      data: 'Task terminated succcess',
+      data: '🛑  Stopped task success!',
     });
     if (this.proc) {
       this.proc.kill('SIGTERM');

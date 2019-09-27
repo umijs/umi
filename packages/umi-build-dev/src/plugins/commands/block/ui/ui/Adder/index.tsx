@@ -19,6 +19,8 @@ interface AdderProps {
   blockType?: Resource['blockType'];
   onHideModal?: () => void;
   blockTarget?: string;
+  path?: string;
+  index?: string;
 }
 
 const InfoToolTip: React.FC<{ title: string; placeholder: string }> = ({ title, placeholder }) => (
@@ -67,12 +69,30 @@ const renderOkText = (addStatus: 'form' | 'log', loading: boolean) => {
   return '确认';
 };
 
+const cancelAddBlockTask = (api: IUiApi) => {
+  return api.callRemote({
+    type: 'org.umi.block.cancel',
+  });
+};
+
 const Adder: React.FC<AdderProps> = props => {
-  const { visible, blockTarget, onHideModal, block = { url: '' }, blockType } = props;
+  const { visible, blockTarget, onHideModal, path, index, block = { url: '' }, blockType } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
-  const loading = !!block;
+
+  const [taskLoading, setTaskLoading] = useState<boolean>(false);
+  // 防止重复提交
+  const [fromCheck, setFromCheck] = useState<boolean>(false);
+
   const [form] = Form.useForm();
+  // const [npmClients, setNpmClients] = useState<string[]>(['npm']);
+  // useEffect(() => {
+  //   if (api.detectNpmClients) {
+  //     api.detectNpmClients().then(clients => {
+  //       setNpmClients(clients);
+  //     });
+  //   }
+  // }, []);
 
   // 展示哪个界面
   // log 日志  form 表单
@@ -105,34 +125,6 @@ const Adder: React.FC<AdderProps> = props => {
     },
   );
 
-  const { data: npmClients = [] } = useCallData(
-    async () => {
-      if (visible) {
-        const msg = (await callRemote({
-          type: '@@project/getNpmClients',
-        })) as { data: string[]; success: boolean };
-        if (msg.data && msg.data.length > 0) {
-          const selectNpmClient = form.getFieldValue('npmClient');
-          form.setFieldsValue({
-            npmClient: selectNpmClient || msg.data[0],
-          });
-        }
-        return msg;
-      }
-      return {
-        data: [],
-        success: true,
-      };
-    },
-    [visible],
-    {
-      defaultData: ['npm'],
-    },
-  );
-
-  /**
-   * 默认值，自动拼接一下 name
-   */
   if (api.detectLanguage) {
     api.detectLanguage().then(language => {
       form.setFieldsValue({
@@ -140,6 +132,44 @@ const Adder: React.FC<AdderProps> = props => {
       });
     });
   }
+
+  const { data: npmClients = [] } = useCallData(
+    async () => {
+      const msg = (await callRemote({
+        type: '@@project/getNpmClients',
+      })) as { data: string[]; success: boolean };
+      if (msg.data && msg.data.length > 0) {
+        const selectNpmClient = form.getFieldValue('npmClient');
+        form.setFieldsValue({
+          npmClient: selectNpmClient || msg.data[0],
+        });
+      }
+      return msg;
+    },
+    [],
+    {
+      defaultData: ['npm'],
+    },
+  );
+
+  useEffect(() => {
+    /**
+     * 成功之后清理状态
+     */
+    api.listenRemote({
+      type: 'org.umi.block.add-blocks-success',
+      onMessage: () => {
+        setTaskLoading(false);
+      },
+    });
+  }, []);
+
+  useEffect(
+    () => {
+      form.setFieldsValue({ path, index });
+    },
+    [path, index],
+  );
 
   if (!block || !block.url) {
     return null;
@@ -151,12 +181,16 @@ const Adder: React.FC<AdderProps> = props => {
   // 如果不是 min 或者 是区块，就显示路由配置
   const needRouterConfig = !api.isMini() || blockType === 'template';
 
+  /**
+   * 默认值，自动拼接一下 name
+   */
   const initialValues = {
     path: `/${defaultName}`,
     routePath: `/${defaultName}`,
     name: upperCamelCase(defaultName),
     transformJS: false,
     removeLocale: false,
+    npmClient: 'npm',
   };
 
   return (
@@ -166,17 +200,18 @@ const Adder: React.FC<AdderProps> = props => {
       destroyOnClose
       onCancel={() => {
         onHideModal();
-        if (!loading) {
+        if (!taskLoading) {
           setAddStatus('form');
         }
       }}
+      confirmLoading={fromCheck}
       bodyStyle={{
         maxHeight: '60vh',
         overflow: 'auto',
       }}
-      okText={renderOkText(addStatus, loading)}
+      okText={renderOkText(addStatus, taskLoading)}
       onOk={() => {
-        if (addStatus === 'log' && !loading) {
+        if (addStatus === 'log' && !taskLoading) {
           onHideModal();
           setAddStatus('form');
           return;
@@ -188,31 +223,39 @@ const Adder: React.FC<AdderProps> = props => {
             okType: 'danger',
             okText: '确认',
             cancelText: '取消',
-            onOk: () => {
-              console.log('run stop add');
+            onOk: async () => {
+              await cancelAddBlockTask(api);
+              setTaskLoading(false);
             },
           });
           return;
         }
-        form.validateFields().then(async (values: any) => {
-          setAddStatus('log');
-          const params: AddBlockParams = {
-            ...values,
-            url: block.url,
-            path: blockType === 'block' ? values.path : values.path,
-            routePath: blockType === 'template' ? values.routePath : undefined,
-            isPage: false,
-            index: parseInt(values.index || '0', 0),
-            name: values.name,
-          };
-          try {
-            const info = await addBlock(api, params);
-            message.success(info);
-            localStorage.setItem('umi-ui-block-npmClient', params.npmClient);
-          } catch (error) {
-            message.error(error.message);
-          }
-        });
+
+        // loading 状态更新
+        setTaskLoading(true);
+        setFromCheck(true);
+
+        form
+          .validateFields()
+          .then(async (values: any) => {
+            setAddStatus('log');
+            const params: AddBlockParams = {
+              ...values,
+              url: block.url,
+              path: blockType === 'block' ? values.path : values.path,
+              routePath: blockType === 'template' ? values.routePath : undefined,
+              isPage: false,
+              index: parseInt(values.index || '0', 0),
+              name: values.name,
+            };
+            try {
+              addBlock(api, params);
+            } catch (error) {
+              message.error(error.message);
+            }
+          })
+          .catch(() => setTaskLoading(false))
+          .finally(() => setFromCheck(false));
       }}
     >
       <Form
@@ -283,14 +326,14 @@ const Adder: React.FC<AdderProps> = props => {
             rules={[
               { required: true, message: '安装路径为必填项！' },
               {
-                validator: async (rule, path) => {
-                  if (path === '/') {
+                validator: async (rule, filePath) => {
+                  if (filePath === '/') {
                     throw new Error('安装文件夹不能为根目录！');
                   }
                   const { exists } = (await callRemote({
                     type: 'org.umi.block.checkExistFilePath',
                     payload: {
-                      path,
+                      path: filePath,
                     },
                   })) as {
                     exists: boolean;
@@ -370,7 +413,7 @@ const Adder: React.FC<AdderProps> = props => {
           <input type="hidden" />
         </Form.Item>
       </Form>
-      {addStatus === 'log' && <LogPanel loading={loading} />}
+      {addStatus === 'log' && <LogPanel loading={taskLoading} />}
     </Modal>
   );
 };

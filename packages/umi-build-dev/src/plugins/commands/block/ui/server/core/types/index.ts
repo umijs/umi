@@ -47,6 +47,11 @@ export interface IAddBlockOption {
 
   // 传输 log 用
   remoteLog?: (log: string) => void;
+
+  /**
+   * 加到文件中的变量
+   */
+  name: string;
 }
 
 export interface ICtxTypes {

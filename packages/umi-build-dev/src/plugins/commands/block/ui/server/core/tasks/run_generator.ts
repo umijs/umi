@@ -56,8 +56,10 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
           return new BlockGenerator(args._.slice(2), {
             sourcePath: subBlockPath,
             path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
-            // eslint-disable-next-line
-            blockName: getNameFromPkg(require(join(subBlockPath, 'package.json'))),
+            blockName: getBlockGenerator.getNameFromPkg(
+              // eslint-disable-next-line
+              require(join(subBlockPath, 'package.json')),
+            ),
             isPageBlock: false,
             dryRun,
             env: {
