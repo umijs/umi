@@ -202,8 +202,14 @@ declare namespace IUI {
   type IGetSharedDataDir = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type LaunchEditorTypes = 'project' | 'config';
+
+  interface ILaunchEditorParams {
+    type: LaunchEditorTypes;
+    lineNumber?: number;
+    editor?: string;
+  }
   // beta API, not show in doc
-  type ILaunchEditor = (type: LaunchEditorTypes, lineNumber?: number, editor?: string) => void;
+  type ILaunchEditor = (params: ILaunchEditorParams) => void;
 
   interface IContext {
     theme: ITheme;

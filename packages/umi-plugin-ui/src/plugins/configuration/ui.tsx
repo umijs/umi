@@ -10,7 +10,9 @@ export default (api: IUiApi) => {
   const ConfigAction = () => (
     <Button
       onClick={() => {
-        api.launchEditor('config');
+        api.launchEditor({
+          type: 'config',
+        });
       }}
       type="default"
     >
