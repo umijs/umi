@@ -1,21 +1,22 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
-import { IPanelAction } from 'umi-types/ui';
+import { Button } from 'antd';
 import ConfigManager from './ui/index';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
 export default (api: IUiApi) => {
-  const openConfigAction: IPanelAction = {
-    title: 'org.umi.ui.configuration.actions.open.config',
-    type: 'default',
-    action: {
-      type: '@@actions/openConfigFile',
-      payload: {
-        projectPath: api.currentProject.path,
-      },
-    },
-  };
+  const { FormattedMessage } = api;
+  const ConfigAction = () => (
+    <Button
+      onClick={() => {
+        api.launchEditor('config');
+      }}
+      type="default"
+    >
+      <FormattedMessage id="org.umi.ui.configuration.actions.open.config" />
+    </Button>
+  );
 
   api.addLocales({
     'zh-CN': zhCN,
@@ -23,12 +24,12 @@ export default (api: IUiApi) => {
   });
   api.addPanel({
     title: 'org.umi.ui.configuration.panel',
-    actions: [openConfigAction],
+    actions: [ConfigAction],
     path: '/configuration',
     icon: {
       type: 'control',
       theme: 'filled',
     },
-    component: () => <ConfigManager api={api} openConfigAction={openConfigAction} />,
+    component: () => <ConfigManager api={api} />,
   });
 };

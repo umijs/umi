@@ -1,5 +1,6 @@
 export default {
   'org.umi.ui.dashboard.panel': 'Dashboard',
+  'org.umi.ui.dashboard.launch.editor': 'Launch Editor',
   'org.umi.ui.dashboard.panel.welcome.title': 'Welcome to {name} project',
   'org.umi.ui.dashboard.panel.welcome.desc':
     'Umi UI is a new generation of GUI development method for Ant Financial, which develops and manages projects through web interaction to achieve the goal of improving R&D efficiency.',

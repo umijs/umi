@@ -5,7 +5,6 @@ import styles from './index.module.less';
 
 interface IConfigManager {
   api: IUiApi;
-  openConfigAction: object;
 }
 
 function getSections(api: IUiApi) {
@@ -42,7 +41,7 @@ function getSections(api: IUiApi) {
   return sections;
 }
 
-const ConfigManager: React.SFC<IConfigManager> = ({ api, openConfigAction }) => {
+const ConfigManager: React.SFC<IConfigManager> = ({ api }) => {
   const { TwoColumnPanel, getContext, debug, intl } = api;
   const { theme } = useContext(getContext());
   return (
@@ -51,7 +50,6 @@ const ConfigManager: React.SFC<IConfigManager> = ({ api, openConfigAction }) => 
         api,
         debug: debug.extend('configuration'),
         theme,
-        openConfigAction,
       }}
     >
       <TwoColumnPanel

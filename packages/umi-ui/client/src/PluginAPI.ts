@@ -12,6 +12,7 @@ import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
+import { openInEditor, openConfigFile } from '@/services/project';
 import Field from './components/Field';
 
 // PluginAPI
@@ -51,6 +52,20 @@ export default class PluginAPI {
 
   registerModel = model => {
     window.g_app.model(model);
+  };
+
+  launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
+    if (type === 'project') {
+      await openInEditor({
+        key: this.currentProject.key,
+      });
+    }
+    if (type === 'config') {
+      await openConfigFile({
+        projectPath: this.currentProject.path,
+      });
+    }
+    // TODO
   };
 
   isMini: IUi.IMini = () => 'mini' in (querystring.parse(window.location.search.slice(1)) || {});
