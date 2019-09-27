@@ -124,11 +124,12 @@ const BlocksViewer: React.FC<Props> = props => {
       };
       if (api.setActionPanel) {
         api.setActionPanel(() => [
-          <GlobalSearch onChange={handleSearchChange} api={api} />,
-          <Button style={{ padding: buttonPadding }} onClick={() => reloadData()}>
+          <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
+          <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
             <Reload />
           </Button>,
           <Button
+            key="clear"
             onClick={() => clearCache(api)}
             style={{
               padding: buttonPadding,
