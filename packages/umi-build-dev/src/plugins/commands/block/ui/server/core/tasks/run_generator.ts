@@ -1,7 +1,6 @@
 import { winPath } from 'umi-utils';
 import { join } from 'path';
 import { IFlowContext, IAddBlockOption } from '../types';
-import { getNameFromPkg } from '../../../../getBlockGenerator';
 
 const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, api } = ctx;
@@ -9,11 +8,12 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
 
-  // opts.remoteLog('Generate files');  // TODO: 增加日志
   logger.start('🔥  Generate files');
   logger.stopAndPersist();
 
-  const BlockGenerator = require('../../../../getBlockGenerator').default(ctx.api);
+  const getBlockGenerator = require('../../../../getBlockGenerator');
+  const BlockGenerator = getBlockGenerator.default(ctx.api);
+
   const { pkg, sourcePath, filePath, routePath, templateTmpDirPath } = ctx.stages.blockCtx;
 
   let isPageBlock = pkg.blockConfig && pkg.blockConfig.specVersion === '0.1';
@@ -22,18 +22,21 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
     isPageBlock = isPage;
   }
   debug(`isPageBlock: ${isPageBlock}`);
+
+  const latestPkgPath = winPath(join(__dirname, '../../../../../../../../package.json'));
+
   const generator = new BlockGenerator(args._ ? args._.slice(2) : [], {
     sourcePath,
     path: filePath,
     routePath,
-    blockName: getNameFromPkg(pkg),
+    blockName: args.name || getBlockGenerator.getNameFromPkg(pkg),
     isPageBlock,
     dryRun,
     execution,
     env: {
       cwd: api.cwd,
     },
-    resolved: winPath(__dirname),
+    resolved: latestPkgPath,
   });
   try {
     await generator.run();
@@ -61,7 +64,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
               cwd: api.cwd,
             },
             routes: api.config.routes,
-            resolved: winPath(__dirname),
+            resolved: latestPkgPath,
           }).run();
         }),
       );

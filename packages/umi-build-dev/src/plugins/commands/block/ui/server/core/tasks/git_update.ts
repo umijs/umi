@@ -110,6 +110,8 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   }
 
   ctx.stages.blockCtx.routePath = addPrefix(ctx.stages.blockCtx.routePath);
+  console.log(22222);
+  console.log(JSON.stringify(ctx.stages, null, 2));
 };
 
 export default clone;

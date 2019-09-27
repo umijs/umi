@@ -47,7 +47,7 @@ async function installDependencies(
   },
   ctx,
 ) {
-  execa = selfExeca || execa;
+  const exec = selfExeca || execa;
 
   // read project package.json
   const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
@@ -139,7 +139,7 @@ async function installDependencies(
 
       // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
       // 加个环境变量规避一下
-      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
+      await exec(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save'], {
         cwd: dirname(projectPkgPath),
         env: {
           ...process.env,
@@ -168,7 +168,7 @@ async function installDependencies(
     try {
       let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
       npmArgs = [...npmArgs, ...devDeps, `--registry=${registry}`];
-      await execa(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
+      await exec(npmClient, npmClient.includes('yarn') ? npmArgs : [...npmArgs, '--save-dev'], {
         cwd: dirname(projectPkgPath),
       });
     } catch (e) {

@@ -2,7 +2,8 @@ import { IApi } from 'umi-types';
 import { Resource } from '../../../data.d';
 import Flow from './Flow';
 
-import { getFolderTreeData, depthRouterConfig, getBlockList, routeExists } from '../util';
+import { getFolderTreeData, getBlockList } from '../util';
+import { routeExists, depthRouterConfig } from '../../../util';
 
 class Block {
   public api: IApi;

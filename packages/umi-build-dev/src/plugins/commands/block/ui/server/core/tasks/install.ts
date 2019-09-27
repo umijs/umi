@@ -5,6 +5,7 @@ const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa, api } = ctx;
   logger.start('📦  install dependencies package');
   const { npmClient, registry } = ctx.stages;
+
   await installDependencies(
     {
       npmClient,
@@ -19,6 +20,7 @@ const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
     },
     ctx.stages.blockCtx,
   );
+
   logger.succeed();
 };
 
