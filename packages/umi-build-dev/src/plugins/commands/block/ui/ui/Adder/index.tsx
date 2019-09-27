@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Switch, Form, message, Input } from 'antd';
+import { Modal, Button, Switch, Tooltip, Form, message, Input } from 'antd';
+import { QuestionCircle } from '@ant-design/icons';
 import upperCamelCase from 'uppercamelcase';
 
 import getInsertPosition from './getInsertPosition';
@@ -18,6 +19,24 @@ interface AdderProps {
   api: IUiApi;
   blockType: Resource['blockType'];
 }
+
+const InfoToolTip: React.FC<{ title: string; placeholder: string }> = ({ title, placeholder }) => (
+  <Tooltip title={placeholder}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      {title}
+      <QuestionCircle
+        style={{
+          marginLeft: 8,
+        }}
+      />
+    </div>
+  </Tooltip>
+);
 
 const addBlock = async (api: IUiApi, params: AddBlockParams) => {
   const { data: info = { message: '' } } = (await api.callRemote({
@@ -210,7 +229,12 @@ const Adder: React.FC<AdderProps> = props => {
           {needRouterConfig && (
             <Form.Item
               name="routePath"
-              label="选择路由"
+              label={
+                <InfoToolTip
+                  title="路由路径"
+                  placeholder="路由路径代表你通过 url 访问到这个页面的路径，会写入 config.ts 中。"
+                />
+              }
               rules={[
                 { required: true, message: '路由必选' },
                 {
@@ -252,7 +276,12 @@ const Adder: React.FC<AdderProps> = props => {
           ) : (
             <Form.Item
               name="path"
-              label="选择安装路径"
+              label={
+                <InfoToolTip
+                  title="安装路径"
+                  placeholder="安装路径代表相对于 src/pages 的文件路径，区块的源码将放在这个地方"
+                />
+              }
               rules={[
                 { required: true, message: '安装路径必选' },
                 {
