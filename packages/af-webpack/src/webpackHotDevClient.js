@@ -45,8 +45,24 @@ var hadRuntimeError = false;
 ErrorOverlay.startReportingRuntimeErrors({
   onError: function() {
     hadRuntimeError = true;
+
+    // workaround since react-error-overlay doesn't provide any option to suppress overlay.
+    // we still need runtime error notification because of the recovery process
+    if (process.env.ERROR_OVERLAY === 'none') {
+      suppressErrorOverlay();
+    }
   },
 });
+
+function suppressErrorOverlay() {
+  setTimeout(() => {
+    if (document.querySelector('iframe')) {
+      ErrorOverlay.dismissBuildError();
+      ErrorOverlay.dismissRuntimeErrors();
+      return;
+    }
+  });
+}
 
 if (module.hot && typeof module.hot.dispose === 'function') {
   module.hot.dispose(function() {
