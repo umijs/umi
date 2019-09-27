@@ -1,10 +1,12 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi-types';
+import uppercamelcase from 'uppercamelcase';
 import { Resource, AddBlockParams } from '../../data.d';
 import clearGitCache from '../../clearGitCache';
 import Block from './core/Block';
 import { DEFAULT_RESOURCES } from './util';
+import haveRootBinding from '../../sdk/haveRootBinding';
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -171,6 +173,26 @@ export default (api: IApi) => {
           });
         }
         break;
+
+      // 检查文件里使用某个变量名是否可以
+      case 'org.umi.block.checkBindingInFile':
+        (async () => {
+          try {
+            const { path, name } = payload;
+            const absPath = api.winPath(join(api.paths.absPagesPath, path));
+            success({
+              exists: haveRootBinding(absPath, uppercamelcase(name)),
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
+        break;
+
       default:
         break;
     }
