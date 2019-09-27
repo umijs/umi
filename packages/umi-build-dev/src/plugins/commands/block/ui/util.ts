@@ -45,12 +45,11 @@ export const getFolderTreeData = (
 };
 
 /**
- * pro-blocks 获取区块列表
- * https://github.com/ant-design/pro-blocks 是 pro 的官方区块
+ * get BlockList from blockList.json in github repo
  */
-export const fetchProBlockList = async (): Promise<BlockData> => {
+export const fetchBlockList = async (repo: string): Promise<BlockData> => {
   try {
-    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
+    const blocks = await getBlockListFromGit(`https://github.com/${repo}`, true);
     return {
       data: blocks,
       success: true,

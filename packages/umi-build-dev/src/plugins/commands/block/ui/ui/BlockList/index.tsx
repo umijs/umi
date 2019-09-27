@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Col, Empty, Row, Spin, Typography, Tag, Button } from 'antd';
+import { Col, Empty, Row, Spin, Typography, Tag, Button, Pagination } from 'antd';
 import { IUiApi } from 'umi-types';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import { Loading } from '@ant-design/icons';
@@ -125,8 +125,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
 
 const BlockList: React.FC<BlockListProps> = props => {
   const { list = [], loading, api } = props;
-
   const { uniq, flatten } = api._;
+  const pageSize = 30;
 
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,
@@ -144,6 +144,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   }, []);
 
   const [selectedTag, setSelectedTag] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const isEmpty = !list || list.length === 0;
 
@@ -161,14 +162,32 @@ const BlockList: React.FC<BlockListProps> = props => {
       </div>
     );
   } else {
+    const filteredList = list.filter(item => !selectedTag || item.tags.includes(selectedTag));
     contents = (
-      <Row gutter={20} type="flex">
-        {list
-          .filter(item => !selectedTag || item.tags.includes(selectedTag))
-          .map(item => (
-            <BlockItem item={item} {...props} />
-          ))}
-      </Row>
+      <>
+        <Row gutter={20} type="flex">
+          {filteredList
+            .slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize > filteredList.length
+                ? filteredList.length
+                : currentPage * pageSize,
+            )
+            .map(item => (
+              <BlockItem item={item} {...props} />
+            ))}
+        </Row>
+        {filteredList.length > pageSize && (
+          <Row type="flex" justify="end">
+            <Pagination
+              current={currentPage}
+              onChange={setCurrentPage}
+              total={filteredList.length}
+              pageSize={pageSize}
+            />
+          </Row>
+        )}
+      </>
     );
   }
 

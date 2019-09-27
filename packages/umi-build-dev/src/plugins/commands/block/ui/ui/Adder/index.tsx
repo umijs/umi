@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Switch, Form, message } from 'antd';
+import { Modal, Button, Switch, Form, message, Input } from 'antd';
 
 import getInsertPosition from './getInsertPosition';
 // antd 4.0 not support TreeSelect now.
@@ -92,13 +92,17 @@ const Adder: React.FC<AdderProps> = props => {
     },
   );
 
+  console.log('pageFoldersTreeData', pageFoldersTreeData);
+
   const getPathFromFilename = filename => {
+    // TODO get PagesPath from server add test case
     // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
+    // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
     // -> /xxx
     const path = filename
       .replace(api.currentProject.path, '')
-      .replace(/pages?\//, '')
-      .replace(/(index)?((\.ts?)|(\.jsx?))$/, '');
+      .replace(/(src\/)?pages?\//, '')
+      .replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
     return path;
   };
   return (
@@ -108,12 +112,13 @@ const Adder: React.FC<AdderProps> = props => {
         onClick={() => {
           if (api.isMini() && blockType === 'block') {
             getInsertPosition(api).then(position => {
-              addBlock(api, {
-                url: block.url,
-                name: initialValues.name,
-                path: getPathFromFilename(position.filename),
+              const targetPath = getPathFromFilename(position.filename);
+              form.setFieldsValue({
+                path: targetPath,
                 index: position.index,
               });
+              console.log('getPathFromFilename', targetPath);
+              setVisible(true);
             });
           } else {
             setVisible(true);
@@ -207,48 +212,78 @@ const Adder: React.FC<AdderProps> = props => {
               <TreeSelect placeholder="请选择路由" selectable treeData={routePathTreeData} />
             </Form.Item>
           )}
-          <Form.Item
-            name="path"
-            label="选择安装路径"
-            rules={[
-              { required: true, message: '安装路径必选' },
-              {
-                validator: async (rule, path) => {
-                  if (path === '/') {
-                    throw new Error('安装文件夹不能为根目录');
-                  }
-                  const { exists } = (await callRemote({
-                    type: 'org.umi.block.checkExistFilePath',
-                    payload: {
-                      path,
-                    },
-                  })) as {
-                    exists: boolean;
-                  };
-                  if (exists) {
-                    throw new Error('文件路径已存在');
-                  }
-                  console.log(path);
-                },
-              },
-            ]}
-          >
-            <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
-          </Form.Item>
-          {/* <Form.Item
-              name="name"
-              label="名称"
+          {api.isMini() ? (
+            <Form.Item
+              name="path"
+              label="安装路径"
+              rules={[{ required: true, message: '安装路径必选' }]}
+            >
+              <Input disabled />
+            </Form.Item>
+          ) : (
+            <Form.Item
+              name="path"
+              label="选择安装路径"
               rules={[
-                { required: true, message: '名称必填' },
+                { required: true, message: '安装路径必选' },
+                {
+                  validator: async (rule, path) => {
+                    if (path === '/') {
+                      throw new Error('安装文件夹不能为根目录');
+                    }
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistFilePath',
+                      payload: {
+                        path,
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      throw new Error('文件路径已存在');
+                    }
+                    console.log(path);
+                  },
+                },
               ]}
             >
-              <Input />
-            </Form.Item> */}
+              <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+            </Form.Item>
+          )}
+          {api.isMini() && (
+            <Form.Item
+              name="name"
+              label="请输入名称"
+              rules={[
+                { required: true, message: '名称必填' },
+                {
+                  validator: async (rule, name) => {
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistFilePath',
+                      payload: {
+                        path: `${form.getFieldValue('path')}/${name}`,
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      throw new Error('模板路径已存在');
+                    }
+                  },
+                },
+              ]}
+            >
+              <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+            </Form.Item>
+          )}
           <Form.Item name="transformJS" label="编译为 JS">
             <Switch />
           </Form.Item>
           <Form.Item name="removeLocale" label="移除国际化">
             <Switch />
+          </Form.Item>
+          <Form.Item name="index">
+            <input type="hidden" />
           </Form.Item>
         </Form>
         {addStatus === 'log' && <LogPanel api={api} loading={loading} />}

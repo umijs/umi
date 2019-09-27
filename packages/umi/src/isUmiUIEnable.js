@@ -31,6 +31,9 @@ export default function(cwd) {
   // antdpro@4
   if (hasDep(pkg, '@ant-design/pro-layout')) return true;
 
+  // antdpro@3
+  if (hasDep(pkg, 'ant-design-pro')) return true;
+
   // antdpro@2
   if (
     hasDep(pkg, 'antd-pro-merge-less') ||
