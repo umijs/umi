@@ -1,7 +1,7 @@
 [build]
   publish = "./pro_site/dist"
   functions = "./pro_site/functions"
-  command = "wget -O - https://gist.githubusercontent.com/ycjcl868/544c15481fb61b2d762918d4f401a855/raw/d46f41f120e26af9ed3f137f5a629834db1f8cc2/pre-antd-pro.sh | bash"
+  command = "sh ./scripts/antd-pro.sh"
 
 [[redirects]]
   from = "/api/*"
