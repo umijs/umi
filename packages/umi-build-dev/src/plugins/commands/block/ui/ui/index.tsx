@@ -4,7 +4,7 @@ import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 
 import { Resource, Block } from '../../data.d';
-import Context from './context';
+import Context from './UIApiContext';
 import BlockList from './BlockList';
 import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
@@ -181,7 +181,6 @@ const BlocksViewer: React.FC<{}> = () => {
           {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
           {matchedResources.length > 0 ? (
             <BlockList
-              api={api}
               loading={loading}
               type={type}
               addingBlock={blockAdding}

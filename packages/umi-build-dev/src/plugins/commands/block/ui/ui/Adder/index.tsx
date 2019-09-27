@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { IUiApi } from 'umi-types';
 import { Modal, Button, Switch, Form, message, Input } from 'antd';
 import upperCamelCase from 'uppercamelcase';
 
 import getInsertPosition from './getInsertPosition';
+import Context from '../UIApiContext';
 // antd 4.0 not support TreeSelect now.
 import TreeSelect from '../TreeSelect';
 import useCallData from '../hooks/useCallData';
@@ -42,7 +43,8 @@ const renderOkText = (addStatus: 'form' | 'log', loading: boolean) => {
 };
 
 const Adder: React.FC<AdderProps> = props => {
-  const { onAddSuccess, onAddClick, block, children, blockType, api } = props;
+  const { onAddSuccess, onAddClick, block, children, blockType } = props;
+  const { api } = useContext(Context);
   const { callRemote } = api;
 
   const [form] = Form.useForm();
@@ -317,7 +319,7 @@ const Adder: React.FC<AdderProps> = props => {
             <input type="hidden" />
           </Form.Item>
         </Form>
-        {addStatus === 'log' && <LogPanel api={api} loading={loading} />}
+        {addStatus === 'log' && <LogPanel loading={loading} />}
       </Modal>
     </>
   );

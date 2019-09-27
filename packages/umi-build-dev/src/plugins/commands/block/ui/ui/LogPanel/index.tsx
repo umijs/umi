@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { IUiApi } from 'umi-types';
 import { Loading } from '@ant-design/icons';
 import styles from './index.module.less';
 
+import Context from '../UIApiContext';
+
 interface LogPanelProps {
-  api: IUiApi;
   loading?: boolean;
 }
 
-const LogPanel: React.FC<LogPanelProps> = ({ api, loading }) => {
+const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
+  const { api } = useContext(Context);
   const [logs, setLogs] = useState<string[]>([]);
   useEffect(() => {
     const tempLogs = [];

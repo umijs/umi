@@ -1,20 +1,24 @@
-import * as React from 'react';
+import React from 'react';
 import { Input } from 'antd';
-import { Search as SearchIcon } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
+
+import { Search as SearchIcon } from '@ant-design/icons';
 import styles from './search.module.less';
 
 interface IGlobalSearch {
-  api: IUiApi;
   onChange: (v: string) => void;
+  api: IUiApi;
 }
 
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {
-  const { api, onChange } = props;
+  const { onChange, api } = props;
   const { intl, _ } = api;
-  const handleChangeDebounce = _.debounce(v => {
-    onChange(v);
-  }, 500);
+
+  // 时间太长会造成卡顿的感觉，200-300 比较合适
+  const handleChangeDebounce = _.debounce((value: string) => {
+    onChange(value);
+  }, 300);
+
   return (
     <Input
       prefix={<SearchIcon />}

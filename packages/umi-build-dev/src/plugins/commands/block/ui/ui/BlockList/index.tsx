@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { Col, Empty, Row, Spin, Typography, Tag, Button, Pagination } from 'antd';
 import { IUiApi } from 'umi-types';
 import LazyLoad, { forceCheck } from 'react-lazyload';
@@ -8,11 +8,11 @@ import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import Adder from '../Adder';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
+import Context from '../UIApiContext';
 
 const { CheckableTag } = Tag;
 
 interface BlockItemProps {
-  api: IUiApi;
   type: Resource['blockType'];
   addingBlock: string;
   item: Block;
@@ -54,11 +54,11 @@ const BlockItem: React.FC<BlockItemProps> = ({
   type,
   item,
   addingBlock,
-  api,
   onAddClick,
   keyword,
   onAddSuccess,
 }) => {
+  const { api } = useContext(Context);
   const isBlock = type === 'block';
   const style = {
     flex: '0 1 20%',
@@ -124,7 +124,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
 };
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], loading, api } = props;
+  const { list = [], loading } = props;
+  const { api } = useContext(Context);
   const { uniq, flatten } = api._;
   const pageSize = 30;
 
