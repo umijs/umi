@@ -181,7 +181,7 @@ const Adder: React.FC<AdderProps> = props => {
               path: blockType === 'block' ? values.path : values.path,
               routePath: blockType === 'template' ? values.routePath : undefined,
               isPage: false,
-              index: parseInt(values.index),
+              index: parseInt(values.index || '0', 0),
               name: values.name,
             };
             onAddClick(params);
@@ -219,7 +219,7 @@ const Adder: React.FC<AdderProps> = props => {
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistRoute',
                       payload: {
-                        path: value,
+                        path: value.toLowerCase(),
                       },
                     })) as {
                       exists: boolean;
