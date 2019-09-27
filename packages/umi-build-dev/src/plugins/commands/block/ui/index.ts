@@ -370,9 +370,9 @@ export default (api: IApiBlock) => {
           break;
         case 'umi.ui.checkValidEditSection':
           const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;
-          const el = document.getElementById('umi-ui-bubble');
-          if (el && el.contentWindow) {
-            el.contentWindow.postMessage(
+          const frame = document.getElementById('umi-ui-bubble');
+          if (frame && frame.contentWindow) {
+            frame.contentWindow.postMessage(
               JSON.stringify({
                 action: 'umi.ui.checkValidEditSection.success',
                 payload: {
@@ -385,7 +385,9 @@ export default (api: IApiBlock) => {
         default:
           break;
       }
-    } catch(e) {}
+    } catch(e) {
+      console.error(e);
+    }
   }, false);
 
   // TODO: remove this before publish
