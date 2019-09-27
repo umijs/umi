@@ -12,6 +12,7 @@ import styles from './index.module.less';
 const { Terminal } = window;
 
 export interface ITerminalProps {
+  title?: string;
   className?: string;
   terminalClassName?: string;
   defaultValue?: string;
@@ -22,7 +23,7 @@ export interface ITerminalProps {
 
 const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
   const domContainer = useRef<HTMLDivElement>(null);
-  const { className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
+  const { title, className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
@@ -96,9 +97,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       {xterm ? (
         <Row className={styles.titleWrapper}>
           <Col span={8} className={styles.formmatGroup}>
-            {intl({
-              id: 'org.umi.ui.global.log',
-            })}
+            {title || intl({ id: 'org.umi.ui.global.log' })}
           </Col>
           <Col span={4} offset={12} className={styles.actionGroup}>
             <span className={styles.icon}>

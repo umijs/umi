@@ -427,11 +427,70 @@ api.addPanel({
 });
 ```
 
+### api.Terminal
+
+Terminal component.
+
+parameters are as follows:
+
+```ts
+interface ITerminalProps {
+  /** Terminal title */
+  title?: string;
+  className?: string;
+  terminalClassName?: string;
+  /** default value in Terminal */
+  defaultValue?: string;
+  /** get xterm instance */
+  getIns?: (ins: XTerminal) => void;
+  /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
+  terminalConfig?: object;
+  [key: string]: any;
+}
+```
+
+For example:
+
+```js
+import React, { useState } from 'react'
+
+export default (api) => {
+  const { Terminal } = api;
+
+  function Component() {
+    const [terminal, setTerminal] = useState();
+
+    useEffect(() => {
+      if (terminal) {
+        terminal.write('Hello World');
+      }
+    }, [terminal);
+
+    return (
+      <Terminal
+        title="插件日志"
+        getIns={ins => {
+          setTerminal(ins);
+        }}
+      />
+    );
+  }
+
+  api.addPanel({
+    component: Component,
+  });
+}
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65759665-09d28100-e14e-11e9-960b-3c600a5485e1.png)
+
+more usage see the [docs](https://xtermjs.org/docs/)
+
 ### api.Field
 
 Configure form components, used in combination with [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) to simplify form components and generate forms using profiles .
 
-`api.Field` parameters are as follows：
+`api.Field` parameters are as follows:
 
 ```ts
  interface IFieldProps {

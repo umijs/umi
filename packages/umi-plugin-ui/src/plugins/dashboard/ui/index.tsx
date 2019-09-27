@@ -16,9 +16,19 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl, FormattedMessage } = api;
+  const { redirect, currentProject, _, intl, FormattedMessage, Terminal } = api;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
+  const [xterm, setXterm] = useState();
+
+  useEffect(
+    () => {
+      if (xterm) {
+        xterm.write('Hello World');
+      }
+    },
+    [xterm],
+  );
 
   const handleClose = () => {
     setClosed(true);
@@ -103,6 +113,12 @@ const DashboardUI: React.FC<IProps> = props => {
 
   return (
     <div className={styles.container}>
+      <Terminal
+        title="插件日志"
+        getIns={ins => {
+          setXterm(ins);
+        }}
+      />
       <Row type="flex" gutter={24}>
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;

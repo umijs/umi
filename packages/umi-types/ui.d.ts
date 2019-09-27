@@ -2,6 +2,7 @@ import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent } from 'react';
+import { Terminal as XTerminal } from 'xterm';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
@@ -115,6 +116,20 @@ declare namespace IUI {
     }>;
     disableLeftOverflow?: boolean;
     disableRightOverflow?: boolean;
+  }
+
+  interface ITerminalProps {
+    /** Terminal title */
+    title?: string;
+    className?: string;
+    terminalClassName?: string;
+    /** default value in Terminal */
+    defaultValue?: string;
+    /** get xterm instance */
+    getIns?: (ins: XTerminal) => void;
+    /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
+    terminalConfig?: object;
+    [key: string]: any;
   }
 
   // from fuzz.js
@@ -260,6 +275,8 @@ declare namespace IUI {
     callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;
+    /** Terminal Component */
+    Terminal: FC<ITerminalProps>;
     /** React Config Form Component */
     ConfigForm: FC<IConfigFormProps>;
     /** Antd Form Field */
