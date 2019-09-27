@@ -1,6 +1,7 @@
 import { IApi } from 'umi-types';
 import { Resource } from '../../../data.d';
 import Flow from './Flow';
+import { FlowState } from './enum';
 
 import { getFolderTreeData, getBlockList } from '../util';
 import { routeExists, depthRouterConfig } from '../../../util';
@@ -79,6 +80,13 @@ class Block {
       return this.flow.getBlockUrl();
     }
     return '';
+  }
+
+  public hasRunningFlow(): boolean {
+    if (!this.flow) {
+      return false;
+    }
+    return this.flow.state === FlowState.ING;
   }
 
   public init(send) {
