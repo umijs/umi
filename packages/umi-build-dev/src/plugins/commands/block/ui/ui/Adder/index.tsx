@@ -108,12 +108,11 @@ const Adder: React.FC<AdderProps> = props => {
         onClick={() => {
           if (api.isMini() && blockType === 'block') {
             getInsertPosition(api).then(position => {
-              addBlock(api, {
-                url: block.url,
-                name: initialValues.name,
+              form.setFieldsValue({
                 path: getPathFromFilename(position.filename),
                 index: position.index,
               });
+              setVisible(true);
             });
           } else {
             setVisible(true);
@@ -233,7 +232,12 @@ const Adder: React.FC<AdderProps> = props => {
               },
             ]}
           >
-            <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+            <TreeSelect
+              disabled={api.isMini()}
+              placeholder="请选择安装路径"
+              selectable
+              treeData={pageFoldersTreeData}
+            />
           </Form.Item>
           {/* <Form.Item
               name="name"
@@ -249,6 +253,9 @@ const Adder: React.FC<AdderProps> = props => {
           </Form.Item>
           <Form.Item name="removeLocale" label="移除国际化">
             <Switch />
+          </Form.Item>
+          <Form.Item name="index">
+            <input type="hidden" />
           </Form.Item>
         </Form>
         {addStatus === 'log' && <LogPanel api={api} loading={loading} />}
