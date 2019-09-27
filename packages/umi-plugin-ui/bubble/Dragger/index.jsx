@@ -183,8 +183,8 @@ export default class Draggable extends React.Component {
     const clientHeight = getClientHeight();
     const { width, height, right: rectRight, bottom: rectBottom } = node.getBoundingClientRect();
 
-    const left = clientX - scroll.x - deltaX;
-    const top = clientY - scroll.y - deltaY;
+    const left = clientX + scroll.x - deltaX;
+    const top = clientY + scroll.y - deltaY;
     let right = clientWidth - left - width;
     let bottom = clientHeight - top - height;
 

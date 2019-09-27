@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Dragger from './Dragger';
 import Hide from './Hide';
@@ -61,7 +62,8 @@ class Bubble extends React.Component {
     );
   };
 
-  showBubble = () => {
+  showBubble = e => {
+    const node = ReactDOM.findDOMNode(this);
     const { toggleMiniOpen } = this.props;
     if (this.state.hide) {
       // isHide
@@ -73,7 +75,7 @@ class Bubble extends React.Component {
           window.localStorage.removeItem(ENUM.STORE_BUBBLE_HIDE);
         },
       );
-    } else {
+    } else if (e.target === node) {
       // not hide, show iframe
       toggleMiniOpen();
     }
