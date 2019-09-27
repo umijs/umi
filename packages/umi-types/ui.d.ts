@@ -201,6 +201,9 @@ declare namespace IUI {
   type IGetLocale = () => ILang;
   type IGetSharedDataDir = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
+  type LaunchEditorTypes = 'project' | 'config';
+  // beta API, not show in doc
+  type ILaunchEditor = (type: LaunchEditorTypes, lineNumber?: number, editor?: string) => void;
 
   interface IContext {
     theme: ITheme;
@@ -255,6 +258,7 @@ declare namespace IUI {
     /** Antd Form Field */
     Field: FC<IFieldProps>;
     listenRemote: IListenRemote;
+    launchEditor: ILaunchEditor;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;
     /** close footer log panel */

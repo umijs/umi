@@ -3,8 +3,8 @@ import { Export } from '@ant-design/icons';
 import { message, Form } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Context from '@/layouts/Context';
-import { callRemote } from '@/socket';
 import debug from '@/debug';
+import { openConfigFile } from '@/services/project';
 import { getFormItemShow } from './utils';
 import { FieldProps } from './index';
 import styles from './styles.module.less';
@@ -14,17 +14,7 @@ const AnyComp: React.SFC<FieldProps> = props => {
   const { name, ...restFormItemProps } = props;
   const { currentProject } = React.useContext(Context);
   const { parentConfig } = getFormItemShow(name);
-  const openConfigAction = {
-    title: 'org.umi.ui.configuration.actions.open.config',
-    type: 'default',
-    action: {
-      type: '@@actions/openConfigFile',
-      payload: {
-        projectPath: currentProject ? currentProject.path : '',
-      },
-    },
-  };
-  const { action } = openConfigAction;
+
   const basicItem = {
     name,
     valuePropName: 'checked',
@@ -33,7 +23,9 @@ const AnyComp: React.SFC<FieldProps> = props => {
 
   const handleClick = async () => {
     try {
-      await callRemote(action);
+      await openConfigFile({
+        projectPath: currentProject ? currentProject.path : '',
+      });
     } catch (e) {
       message.error(
         e && e.message

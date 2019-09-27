@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import emptyDir from 'empty-dir';
 import clearModule from 'clear-module';
 import { join, resolve, dirname } from 'path';
-import launchEditor from 'launch-editor';
+import launchEditor from '@umijs/launch-editor';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
@@ -208,7 +208,7 @@ export default class UmiUI {
     });
   }
 
-  openProjectInEditor(
+  async openProjectInEditor(
     key: string,
     callback: { failure?: (any) => void; success?: () => void } = {},
     lang: string = 'zh-CN',
@@ -234,33 +234,20 @@ export default class UmiUI {
         callback.success();
       }
     } else {
-      launchEditor(launchPath, (fileName, errorMsg) => {
-        // log error if any
-        if (!errorMsg) return;
-        let msg = {
-          'zh-CN': `打开编辑器失败 ${launchPath}`,
-          'en-US': `Open Editor Failure, ${launchPath}`,
-        };
-        if (errorMsg === 'spawn code ENOENT.') {
-          msg = {
-            'zh-CN': `打开编辑器失败，需要全局安装'code'，你可以打开VS Code，然后运行Shell Command: Install 'code' command in Path`,
-            'en-US': `Open Editor Failure, need install 'code' command in Path. you can open VS Code, and run >Shell Command: Install 'code' command in Path`,
-          };
+      try {
+        const res = await launchEditor(launchPath);
+        if (res && res.success) {
+          callback.success(res);
+        } else {
+          callback.failure(res);
         }
-        if (callback.failure) {
-          console.error(chalk.red(msg[lang]));
-          callback.failure({
-            message: msg[lang],
-          });
-        }
-        if (callback.success) {
-          callback.success();
-        }
-      });
+      } catch (e) {
+        callback.failure(e);
+      }
     }
   }
 
-  openConfigFileInEditor(projectPath: string) {
+  async openConfigFileInEditor(projectPath: string, { success, failure }) {
     let configFile;
     const configFiles = ['.umirc.js', '.umirc.ts', 'config/config.js', 'config/config.ts'];
     for (const file of configFiles) {
@@ -271,7 +258,16 @@ export default class UmiUI {
     }
 
     assert(configFile, `configFile not exists`);
-    launchEditor(configFile);
+    try {
+      const res = await launchEditor(configFile);
+      if (res && res.success) {
+        success(res);
+      } else {
+        failure(res);
+      }
+    } catch (e) {
+      failure(e);
+    }
   }
 
   getExtraAssets({ key }) {
@@ -709,8 +705,12 @@ export default class UmiUI {
         });
         break;
       case '@@actions/openConfigFile':
-        this.openConfigFileInEditor(payload.projectPath);
-        success();
+        try {
+          this.openConfigFileInEditor(payload.projectPath, {
+            success,
+            failure,
+          });
+        } catch (e) {}
         break;
       case '@@actions/openProjectInEditor':
         this.openProjectInEditor(
