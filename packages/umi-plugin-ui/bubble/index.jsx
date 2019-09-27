@@ -1,32 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import isMobile from 'is-mobile';
 import { callRemote, init as initSocket } from './socket';
-import * as ENUM from './enum';
 import Bubble from './Bubble';
+import Modal from './Modal';
 import Loading from './Loading';
 import Error from './Error';
-
-const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const fadeOutDown = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-`;
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -36,29 +16,6 @@ const LoadingWrapper = styled.div`
   text-align: center;
   color: #fff;
   height: 100%;
-`;
-
-const IframeWrapper = styled('div')`
-  position: absolute;
-  z-index: 1001;
-  bottom: 72px;
-  right: 0;
-  box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
-  background: #23232d;
-  width: 68vw;
-  height: 80vh;
-  display: ${props => (props.visible ? 'block' : 'none')};
-  animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
-  opacity: ${props => (props.visible ? 1 : 0)};
-  & > * {
-    animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
-    opacity: ${props => (props.visible ? 1 : 0)};
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-  }
 `;
 
 class App extends React.Component {
@@ -181,7 +138,7 @@ class App extends React.Component {
     return (
       <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
         {open !== undefined && (
-          <IframeWrapper visible={open}>
+          <Modal visible={open}>
             {!uiLoaded && (
               <LoadingWrapper>
                 <Loading />
@@ -203,7 +160,7 @@ class App extends React.Component {
                 title="iframe_umi_ui"
               />
             )}
-          </IframeWrapper>
+          </Modal>
         )}
       </Bubble>
     );
