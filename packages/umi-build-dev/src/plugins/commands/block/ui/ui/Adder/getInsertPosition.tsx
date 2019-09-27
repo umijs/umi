@@ -5,10 +5,9 @@ export interface PositionData {
 }
 
 export default (api): Promise<PositionData> => {
-  api.hideMini();
   window.parent.postMessage(
     JSON.stringify({
-      action: 'umi.ui.enableBlockEditMode',
+      action: 'umi.ui.checkValidEditSection',
     }),
     '*',
   );
@@ -29,6 +28,18 @@ export default (api): Promise<PositionData> => {
             }),
             '*',
           );
+        } else if (action === 'umi.ui.checkValidEditSection.success') {
+          if (payload.haveValid) {
+            api.hideMini();
+            window.parent.postMessage(
+              JSON.stringify({
+                action: 'umi.ui.enableBlockEditMode',
+              }),
+              '*',
+            );
+          } else {
+            reject(new Error('Can not find insert position'));
+          }
         }
       } catch (e) {
         console.error(`[Block] parse message error`, e);
