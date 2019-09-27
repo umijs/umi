@@ -126,6 +126,13 @@ export default class PluginAPI {
     return language;
   };
 
+  detectNpmClients = async () => {
+    const { npmClients } = await callRemote({
+      type: '@@project/detectNpmClients',
+    });
+    return npmClients;
+  };
+
   getCwd: IUi.IGetCwd = async () => {
     const { cwd } = await callRemote({
       type: '@@fs/getCwd',

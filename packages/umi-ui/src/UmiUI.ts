@@ -25,6 +25,7 @@ import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } fro
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
 import detectLanguage from './detectLanguage';
+import detectNpmClients from './detectNpmClients';
 
 const debug = require('debug')('umiui:UmiUI');
 const debugSocket = debug.extend('socket');
@@ -667,6 +668,20 @@ export default class UmiUI {
             language: detectLanguage(service.cwd, {
               routeComponents: service.getRouteComponents(),
             }),
+          });
+        } catch (e) {
+          console.error(e);
+          failure({
+            message: e.message,
+          });
+        }
+        break;
+      case '@@project/detectNpmClients':
+        try {
+          assert(key && this.servicesByKey[key], `Detect language failed, key must be supplied.`);
+          const service = this.servicesByKey[key];
+          success({
+            npmClients: detectNpmClients(service.cwd),
           });
         } catch (e) {
           console.error(e);

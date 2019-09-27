@@ -845,6 +845,17 @@ const language = await api.detectLanguage();
 // "JavaScript" | "TypeScript"
 ```
 
+### api.detectNpmClients()
+
+获取当前项目可能在用的 npm 客户端数组。
+
+示例：
+
+```js
+const npmClients = await api.detectNpmClients();
+// ["tnpm", "ayarn", "npm", "yarn"]
+```
+
 ### api.addConfigSection()
 
 添加配置区块。
