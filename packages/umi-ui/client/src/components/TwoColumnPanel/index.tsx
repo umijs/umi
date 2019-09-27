@@ -12,28 +12,23 @@ import styles from './index.less';
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const { sections, disableRightOverflow = false, disableLeftOverflow = false, className } = props;
 
-  const { pathname, query } = history.location;
+  const { pathname } = history.location;
 
-  const keys = sections.map(item => (item || {}).key);
-  let activeIndex = 0;
-  if (query.active) {
-    const index = keys.indexOf(query.active);
-    activeIndex = index === -1 ? 0 : index;
-  }
+  const queryParams = parse(window.location.search, { ignoreQueryPrefix: true });
+  const { active } = queryParams;
 
-  const [currentIndex, setCurrentIndex] = useState(activeIndex);
+  const defaultKey = sections.find(section => section.key === active)
+    ? active
+    : get(sections, '0.key');
 
-  useEffect(() => {
-    // first render set query active panel
-    setCurrentIndex(activeIndex);
-  }, []);
+  const [current, setCurrent] = useState(defaultKey);
 
-  const toggleSectionHandler = index => {
-    setCurrentIndex(index);
-    if (keys[index] !== query.active) {
+  const toggleSectionHandler = key => {
+    setCurrent(key);
+    if (key !== current) {
       const search = stringify({
-        ...(parse(window.location.search, { ignoreQueryPrefix: true }) || {}),
-        active: keys[index],
+        ...queryParams,
+        active: key,
       });
       history.push(`${pathname}?${search}`);
     }
@@ -48,22 +43,23 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const panelCls = cls(styles.normal, className);
 
-  const renderComponent = get(sections, `${currentIndex}.component`);
+  const currentSection = sections.find(section => section.key === current) || sections[0];
+  const children = get(currentSection, 'component');
 
   return (
     <div className={panelCls}>
       <div className={leftCls} id="two-column-panel-left">
-        {sections.map((s, index) => {
+        {sections.map(s => {
           const triggerCls = cls({
             [styles.trigger]: true,
-            [styles.triggerActive]: index === currentIndex,
+            [styles.triggerActive]: s.key === current,
           });
           return (
             <Row
               className={triggerCls}
-              key={s.title}
+              key={s.key}
               type="flex"
-              onClick={() => toggleSectionHandler(index)}
+              onClick={() => toggleSectionHandler(s.key)}
             >
               <Col className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
@@ -90,7 +86,8 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
         })}
       </div>
       <div className={rightCls} id="two-column-panel-right">
-        {renderComponent(props)}
+        {typeof children === 'function' && React.isValidElement(children(props)) && children(props)}
+        {React.isValidElement(children) && children}
       </div>
     </div>
   );
