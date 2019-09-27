@@ -323,7 +323,7 @@ async function add(
     const newRouteConfig = applyPlugins('_modifyBlockNewRouteConfig', {
       initialValue: {
         path: generator.routePath.toLowerCase(),
-        component: `.${generator.routePath}`,
+        component: `.${generator.path}`,
         ...(isLayout ? { routes: [] } : {}),
       },
     });

@@ -113,7 +113,7 @@ const Adder: React.FC<AdderProps> = props => {
     const path = filename
       .replace(api.currentProject.path, '')
       .replace(/(src\/)?pages?\//, '')
-      .replace(/\/[^\/]+((\.tsx?)|(\.jsx?))$/, '');
+      .replace(/\/[^/]+((\.tsx?)|(\.jsx?))$/, '');
     return path;
   };
 
