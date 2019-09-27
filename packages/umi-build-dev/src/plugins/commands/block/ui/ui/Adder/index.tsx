@@ -123,15 +123,19 @@ const Adder: React.FC<AdderProps> = props => {
         type="primary"
         onClick={() => {
           if (api.isMini() && blockType === 'block') {
-            getInsertPosition(api).then(position => {
-              const targetPath = getPathFromFilename(position.filename);
-              form.setFieldsValue({
-                path: targetPath,
-                index: position.index,
+            getInsertPosition(api)
+              .then(position => {
+                const targetPath = getPathFromFilename(position.filename);
+                form.setFieldsValue({
+                  path: targetPath,
+                  index: position.index,
+                });
+                setBlockTarget(getBlockTargetFromFilename(position.filename));
+                setVisible(true);
+              })
+              .catch(e => {
+                message.error(e.message);
               });
-              setBlockTarget(getBlockTargetFromFilename(position.filename));
-              setVisible(true);
-            });
           } else {
             setVisible(true);
           }
@@ -165,15 +169,15 @@ const Adder: React.FC<AdderProps> = props => {
             });
             return;
           }
-          form.validateFields().then(async (values: AddBlockParams) => {
+          form.validateFields().then(async (values: any) => {
             setLoading(true);
             setAddStatus('log');
-            const params = {
+            const params: AddBlockParams = {
               url: block.url,
               path: blockType === 'block' ? values.path : values.path,
               routePath: blockType === 'template' ? values.routePath : undefined,
               isPage: false,
-              index: values.index,
+              index: parseInt(values.index),
               name: values.name,
             };
             onAddClick(params);
@@ -281,7 +285,6 @@ const Adder: React.FC<AdderProps> = props => {
                 { required: true, message: '名称必填' },
                 {
                   validator: async (rule, name) => {
-                    console.log('blockTarget', blockTarget);
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistFilePath',
                       payload: {
