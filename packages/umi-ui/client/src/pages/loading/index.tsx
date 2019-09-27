@@ -101,7 +101,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           }}
         >
           <Terminal
-            getIns={t => {
+            onInit={t => {
               this.xterm = t;
             }}
             defaultValue={error.stack}

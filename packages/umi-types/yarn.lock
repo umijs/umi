@@ -112,6 +112,13 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
+"@types/xterm@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/xterm/-/xterm-3.0.0.tgz#5b177010903ee1dc26fdc25d6e4e1f2490d44ce6"
+  integrity sha512-+VaAJQmE7E1d1ebkIh/Zdc2mbXBVwxZGGSgqwzDPpk/HKo0mNT+iX5ZrnswztHSV+CDV+bURl7Yg7PWF7IZfXQ==
+  dependencies:
+    xterm "*"
+
 csstype@^2.2.0:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
@@ -176,3 +183,8 @@ webpack-chain@*:
   dependencies:
     deepmerge "^1.5.2"
     javascript-stringify "^2.0.0"
+
+xterm@*:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.0.2.tgz#c6a1b9586c0786627625e2ee9e78ad519dbc8c99"
+  integrity sha512-NIr11b6C782TZznU8e6K/IMfmwlWMWRI6ba9GEDG9uX25SadkpjoMnzvxOS0Z/15sfrbn0rghPiarGDmmP0uhQ==

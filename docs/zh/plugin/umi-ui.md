@@ -426,6 +426,68 @@ api.addPanel({
 });
 ```
 
+### api.Terminal
+
+终端命令行组件。
+
+参数如下：
+
+```ts
+interface ITerminalProps {
+  /** Terminal title */
+  title?: string;
+  className?: string;
+  terminalClassName?: string;
+  /** defaultValue in Terminal */
+  defaultValue?: string;
+  /** get xterm instance */
+  onInit?: (ins: XTerminal) => void;
+  /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
+  config?: ITerminalOptions;
+  [key: string]: any;
+}
+```
+
+示例：
+
+使用终端实例，调用日志输出函数：
+
+```js
+import React, { useState } from 'react'
+
+export default (api) => {
+  const { Terminal } = api;
+
+  function Component() {
+    let terminal;
+
+    const handleClick = () => {
+      terminal.write('Hello World');
+    }
+
+    return (
+      <div>
+        <Terminal
+          title="插件日志"
+          onInit={ins => {
+            terminal = ins;
+          }}
+        />
+        <button onClick={handleClick}>开始</button>
+      </div>
+    );
+  }
+
+  api.addPanel({
+    component: Component,
+  });
+}
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65759665-09d28100-e14e-11e9-960b-3c600a5485e1.png)
+
+终端更多用法见 [文档](https://xtermjs.org/docs/)
+
 
 ### api.Field
 

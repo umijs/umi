@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { Beforeunload } from 'react-beforeunload';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
-import Terminal from '@/components/Terminal';
+import Terminal, { TerminalType } from '@/components/Terminal';
 import debug from '@/debug';
 import LoadingPage from '@/components/Loading';
 import { listenCreateProject, setCurrentProject, createProject } from '@/services/project';
@@ -20,8 +20,8 @@ const { Step } = Steps;
 const ProgressStage: React.FC<IProjectProps> = props => {
   const _log = debug.extend('ProgressStage');
   _log('ProgressStage props', props);
+  let terminal: TerminalType;
   const { currentData, projectList } = props;
-  const [logs, setLogs] = useState<string>('');
   const { formatMessage, locale } = useContext(ProjectContext);
   const [retryLoading, setRetryLoading] = useState<boolean>(false);
   const key = get(currentData, 'key');
@@ -44,28 +44,30 @@ const ProgressStage: React.FC<IProjectProps> = props => {
       }
       if (progress.failure) {
         const { code: errorCode, message: errorMsg, path: errorPath } = progress.failure;
+        let msg = '';
         if (progress.failure.code === 'EACCES') {
-          setLogs(
-            formatMessage(
-              {
-                id: 'org.umi.ui.global.project.create.steps.EACCES',
-              },
-              {
-                path: errorPath,
-                code: errorCode,
-              },
-            ),
+          msg = formatMessage(
+            {
+              id: 'org.umi.ui.global.project.create.steps.EACCES',
+            },
+            {
+              path: errorPath,
+              code: errorCode,
+            },
           );
         } else {
-          setLogs(errorMsg);
+          msg = errorMsg;
+        }
+        if (terminal) {
+          terminal.write(msg.replace(/\n/g, '\r\n'));
         }
       }
 
       const unsubscribe = listenCreateProject({
         onMessage: data => {
           _log('listen createProject', data);
-          if (data.install) {
-            setLogs(data.install);
+          if (data.install && terminal) {
+            terminal.write(data.install.replace(/\n/g, '\r\n'));
           }
         },
       });
@@ -146,11 +148,14 @@ const ProgressStage: React.FC<IProjectProps> = props => {
           </Steps>
         )}
         {/* {progress.success ? <div>创建成功</div> : null} */}
-        {logs && (
-          <div style={{ marginTop: 16 }}>
-            <Terminal terminalClassName={styles.terminal} defaultValue={logs} />
-          </div>
-        )}
+        <div style={{ marginTop: 16 }}>
+          <Terminal
+            terminalClassName={styles.terminal}
+            onInit={ins => {
+              terminal = ins;
+            }}
+          />
+        </div>
         {progress.failure && (
           <div className={styles['project-progress-fail']}>
             <Button loading={retryLoading} type="primary" onClick={handleRetry}>

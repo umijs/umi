@@ -3,7 +3,8 @@ import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
 import cls from 'classnames';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, forwardRef } from 'react';
+import { IUi } from 'umi-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
@@ -11,37 +12,29 @@ import styles from './index.module.less';
 
 const { Terminal } = window;
 
-export interface ITerminalProps {
-  className?: string;
-  terminalClassName?: string;
-  defaultValue?: string;
-  getIns?: (ins: XTerminal) => void;
-  terminalConfig?: object;
-  [key: string]: any;
-}
+export type TerminalType = XTerminal;
 
-const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
-  const domContainer = useRef<HTMLDivElement>(null);
-  const { className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
+const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
+  const domContainer = ref || useRef<HTMLDivElement>(null);
+  const { title, className, defaultValue, onInit, config = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
 
   useEffect(() => {
-    setXterm(
-      new (Terminal as typeof XTerminal)({
-        allowTransparency: true,
-        fontSize: 14,
-        theme: {
-          background: '#15171C',
-          foreground: '#ffffff73',
-        },
-        cursorBlink: false,
-        cursorStyle: 'underline',
-        disableStdin: true,
-        ...terminalConfig,
-      }),
-    );
+    const terminal = new (Terminal as typeof XTerminal)({
+      allowTransparency: true,
+      fontSize: 14,
+      theme: {
+        background: '#15171C',
+        foreground: '#ffffff73',
+      },
+      cursorBlink: false,
+      cursorStyle: 'underline',
+      disableStdin: true,
+      ...config,
+    });
+    setXterm(terminal);
   }, []);
 
   useEffect(
@@ -49,8 +42,8 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       if (domContainer.current && xterm) {
         xterm.loadAddon(new WebLinksAddon());
         xterm.open(domContainer.current);
-        if (getIns) {
-          getIns(xterm);
+        if (onInit) {
+          onInit(xterm);
         }
         fit(xterm);
       }
@@ -73,7 +66,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
         xterm.write(defaultValue.replace(/\n/g, '\r\n'));
       }
     },
-    [defaultValue, xterm],
+    [xterm],
   );
 
   const clear = () => {
@@ -96,9 +89,7 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       {xterm ? (
         <Row className={styles.titleWrapper}>
           <Col span={8} className={styles.formmatGroup}>
-            {intl({
-              id: 'org.umi.ui.global.log',
-            })}
+            {title || intl({ id: 'org.umi.ui.global.log' })}
           </Col>
           <Col span={4} offset={12} className={styles.actionGroup}>
             <span className={styles.icon}>
@@ -126,6 +117,6 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       <div ref={domContainer} className={terminalCls} />
     </div>
   );
-};
+});
 
 export default TerminalComponent;

@@ -10,6 +10,7 @@ import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
+import Terminal from '@/components/Terminal';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
@@ -25,6 +26,7 @@ export default class PluginAPI {
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  Terminal: FC<IUi.ITerminalProps>;
   ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
@@ -41,6 +43,7 @@ export default class PluginAPI {
         ...currentProject
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
+    this.Terminal = Terminal;
     this.Field = Field;
     this.ConfigForm = ConfigForm;
     this.connect = connect as IUi.IConnect;
