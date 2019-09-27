@@ -8,6 +8,7 @@ interface Props extends TreeProps {
   value?: string;
   placeholder?: string;
   selectable?: boolean;
+  filterPlaceholder?: string;
   onChange?: (value: string) => void;
 }
 const InputGroup = Input.Group;
@@ -34,7 +35,7 @@ const filterTreeData = (data: TreeProps['treeData'], keyWord: string) => {
 };
 
 const TreeSelect: React.FC<Props> = props => {
-  const { value, placeholder, onChange: propOnChange } = props;
+  const { value, placeholder, onChange: propOnChange, filterPlaceholder } = props;
   const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -79,6 +80,7 @@ const TreeSelect: React.FC<Props> = props => {
                   onChange={e => {
                     setKeyWord(e.target.value);
                   }}
+                  placeholder={filterPlaceholder}
                 />
               </div>
               <Tree

@@ -6,7 +6,7 @@ import styles from './search.module.less';
 
 interface IGlobalSearch {
   api: IUiApi;
-  onChange: (v: any) => void;
+  onChange: (v: string) => void;
 }
 
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {

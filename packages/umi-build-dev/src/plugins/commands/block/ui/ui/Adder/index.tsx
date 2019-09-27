@@ -209,7 +209,12 @@ const Adder: React.FC<AdderProps> = props => {
                 },
               ]}
             >
-              <TreeSelect placeholder="请选择路由" selectable treeData={routePathTreeData} />
+              <TreeSelect
+                placeholder="请选择路由"
+                filterPlaceholder="筛选路由"
+                selectable
+                treeData={routePathTreeData}
+              />
             </Form.Item>
           )}
           {api.isMini() ? (
@@ -247,7 +252,12 @@ const Adder: React.FC<AdderProps> = props => {
                 },
               ]}
             >
-              <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+              <TreeSelect
+                placeholder="请选择安装路径"
+                filterPlaceholder="筛选安装路径"
+                selectable
+                treeData={pageFoldersTreeData}
+              />
             </Form.Item>
           )}
           {api.isMini() && (
