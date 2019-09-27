@@ -89,9 +89,10 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
     try {
       const { body } = await got(url);
       spinner.succeed();
-      // body = {list:[]}
-
-      return JSON.parse(body).list;
+      // body = {blocks: [], templates: []}
+      const data = JSON.parse(body);
+      // TODO update format logic
+      return data.list || data.blocks || data.template;
     } catch (error) {
       // if file 404
     }
