@@ -69,7 +69,7 @@ export function printBlocks(blocks, hasLink) {
   return blockArray;
 }
 
-export const getBlockListFromGit = async gitUrl => {
+export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
   const got = require('got');
   const ignoreFile = ['_scripts', 'tests'];
   const { name, owner, resource } = GitUrlParse(gitUrl);
@@ -77,15 +77,15 @@ export const getBlockListFromGit = async gitUrl => {
   if (spinner.isSpinning) {
     spinner.succeed();
   }
-  spinner.start(`🔍  find block list form ${chalk.yellow(gitUrl)}`);
 
-  // 满足这个条件，说明是 github 的 pro-block 的仓库，直接使用仓库中生成的代码
-  if (name === 'pro-blocks' && owner === 'ant-design' && resource === 'github.com') {
+  if (useBuiltJSON) {
+    // use blockList.json in git repo
     const fastGithub = await getFastGithub();
-    let url = 'https://raw.githubusercontent.com/ant-design/pro-blocks/master/blockList.json';
+    let url = `https://raw.githubusercontent.com/${owner}/${name}/master/blockList.json`;
     if (fastGithub === 'gitee.com') {
-      url = 'https://gitee.com/ant-design/pro-blocks/raw/master/blockList.json';
+      url = `https://gitee.com/${owner}/${name}/raw/master/blockList.json`;
     }
+    spinner.start(`🔍  find block list form ${chalk.yellow(url)}`);
     const { body } = await got(url);
     spinner.succeed();
     return JSON.parse(body);
@@ -98,7 +98,9 @@ export const getBlockListFromGit = async gitUrl => {
   }
 
   // 一个 github 的 api,可以获得文件树
-  const { body } = await got(`https://api.github.com/repos/${owner}/${name}/git/trees/master`);
+  const url = `https://api.github.com/repos/${owner}/${name}/git/trees/master`;
+  spinner.start(`🔍  find block list form ${chalk.yellow(url)}`);
+  const { body } = await got(url);
   const filesTree = JSON.parse(body)
     .tree.filter(
       file =>
