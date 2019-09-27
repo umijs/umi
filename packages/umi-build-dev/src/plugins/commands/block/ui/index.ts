@@ -368,6 +368,20 @@ export default (api: IApiBlock) => {
         case 'umi.ui.disableBlockEditMode':
           el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
           break;
+        case 'umi.ui.checkValidEditSection':
+          const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;
+          const el = document.getElementById('umi-ui-bubble');
+          if (el && el.contentWindow) {
+            el.contentWindow.postMessage(
+              JSON.stringify({
+                action: 'umi.ui.checkValidEditSection.success',
+                payload: {
+                  haveValid,
+                },
+              }),
+              '*',
+            );
+          }
         default:
           break;
       }
