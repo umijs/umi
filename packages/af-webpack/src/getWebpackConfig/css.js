@@ -51,6 +51,7 @@ export default function(webpackConfig, opts) {
   };
   const cssModulesConfig = {
     modules: true,
+    localsConvention: 'camelCase',
     localIdentName:
       cssOpts.localIdentName ||
       (isDev ? '[name]__[local]___[hash:base64:5]' : '[local]___[hash:base64:5]'),
