@@ -38,6 +38,9 @@ export interface AddBlockOption {
 
   // 安装的文件地址
   path?: string;
+  // 区块安装的名称
+  // --page false 是有效
+  name?: string;
   // 安装的路由地址
   routePath?: string;
   // 包管理器
@@ -157,6 +160,7 @@ async function add(
 
   const {
     path,
+    name,
     routePath,
     npmClient = defaultNpmClient,
     dryRun,
@@ -249,7 +253,7 @@ async function add(
     sourcePath: ctx.sourcePath,
     path: ctx.filePath,
     routePath: ctx.routePath,
-    blockName: getNameFromPkg(ctx.pkg),
+    blockName: name || getNameFromPkg(ctx.pkg),
     isPageBlock,
     dryRun,
     execution,

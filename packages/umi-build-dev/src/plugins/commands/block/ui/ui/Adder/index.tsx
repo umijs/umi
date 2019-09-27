@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IUiApi } from 'umi-types';
 import { Modal, Button, Switch, Form, message, Input } from 'antd';
+import upperCamelCase from 'uppercamelcase';
 
 import getInsertPosition from './getInsertPosition';
 // antd 4.0 not support TreeSelect now.
@@ -54,6 +55,10 @@ const Adder: React.FC<AdderProps> = props => {
   // log 日志  form 表单
   const [addStatus, setAddStatus] = useState<'form' | 'log'>('form');
 
+  // 区块添加的目标文件夹
+  // 用来判断是区块目标目录是否冲突
+  const [blockTarget, setBlockTarget] = useState<string>();
+
   // 生成 defaultName
   const defaultName = block.url.split('/').pop();
 
@@ -65,7 +70,7 @@ const Adder: React.FC<AdderProps> = props => {
   const initialValues = {
     path: `/${defaultName}`,
     routePath: `/${defaultName}`,
-    name: defaultName,
+    name: upperCamelCase(defaultName),
     transformJS: false,
     removeLocale: false,
   };
@@ -92,8 +97,6 @@ const Adder: React.FC<AdderProps> = props => {
     },
   );
 
-  console.log('pageFoldersTreeData', pageFoldersTreeData);
-
   const getPathFromFilename = filename => {
     // TODO get PagesPath from server add test case
     // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
@@ -105,6 +108,15 @@ const Adder: React.FC<AdderProps> = props => {
       .replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
     return path;
   };
+  const getBlockTargetFromFilename = filename => {
+    // TODO 更优雅的实现
+    const path = filename
+      .replace(api.currentProject.path, '')
+      .replace(/(src\/)?pages?\//, '')
+      .replace(/\/[^\/]+((\.tsx?)|(\.jsx?))$/, '');
+    return path;
+  };
+
   return (
     <>
       <Button
@@ -117,7 +129,7 @@ const Adder: React.FC<AdderProps> = props => {
                 path: targetPath,
                 index: position.index,
               });
-              console.log('getPathFromFilename', targetPath);
+              setBlockTarget(getBlockTargetFromFilename(position.filename));
               setVisible(true);
             });
           } else {
@@ -268,22 +280,23 @@ const Adder: React.FC<AdderProps> = props => {
                 { required: true, message: '名称必填' },
                 {
                   validator: async (rule, name) => {
+                    console.log('blockTarget', blockTarget);
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistFilePath',
                       payload: {
-                        path: `${form.getFieldValue('path')}/${name}`,
+                        path: `${blockTarget}/${name}`,
                       },
                     })) as {
                       exists: boolean;
                     };
                     if (exists) {
-                      throw new Error('模板路径已存在');
+                      throw new Error('目标路径已存在');
                     }
                   },
                 },
               ]}
             >
-              <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+              <Input placeholder="请输入名称" />
             </Form.Item>
           )}
           <Form.Item name="transformJS" label="编译为 JS">
