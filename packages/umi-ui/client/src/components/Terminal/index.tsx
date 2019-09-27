@@ -4,6 +4,7 @@ import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
 import cls from 'classnames';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
+import { IUi } from 'umi-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
@@ -11,19 +12,11 @@ import styles from './index.module.less';
 
 const { Terminal } = window;
 
-export interface ITerminalProps {
-  title?: string;
-  className?: string;
-  terminalClassName?: string;
-  value?: string;
-  getIns?: (ins: XTerminal) => void;
-  terminalConfig?: object;
-  [key: string]: any;
-}
+export type TerminalType = XTerminal;
 
-const TerminalComponent: React.FC<ITerminalProps> = forwardRef((props = {}, ref) => {
+const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
   const domContainer = ref || useRef<HTMLDivElement>(null);
-  const { title, className, value, getIns, terminalConfig = {}, terminalClassName } = props;
+  const { title, className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
@@ -69,11 +62,11 @@ const TerminalComponent: React.FC<ITerminalProps> = forwardRef((props = {}, ref)
 
   useEffect(
     () => {
-      if (xterm && value) {
-        xterm.write(value.replace(/\n/g, '\r\n'));
+      if (xterm && defaultValue) {
+        xterm.write(defaultValue.replace(/\n/g, '\r\n'));
       }
     },
-    [value, xterm],
+    [xterm],
   );
 
   const clear = () => {

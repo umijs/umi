@@ -123,8 +123,8 @@ declare namespace IUI {
     title?: string;
     className?: string;
     terminalClassName?: string;
-    /** value in Terminal, controlled mode */
-    value?: string;
+    /** defaultValue in Terminal */
+    defaultValue?: string;
     /** get xterm instance */
     getIns?: (ins: XTerminal) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
