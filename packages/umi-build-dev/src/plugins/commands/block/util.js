@@ -86,11 +86,16 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
       url = `https://gitee.com/${owner}/${name}/raw/master/umi-block.json`;
     }
     spinner.start(`🔍  find block list form ${chalk.yellow(url)}`);
-    const { body } = await got(url);
-    spinner.succeed();
+    try {
+      const { body } = await got(url);
+      spinner.succeed();
+      // body = {list:[]}
 
-    // {list:[]}
-    return JSON.parse(body).list;
+      return JSON.parse(body).list;
+    } catch (error) {
+      // if file 404
+    }
+    return [];
   }
 
   // 如果不是 github 不支持这个方法，返回一个空
