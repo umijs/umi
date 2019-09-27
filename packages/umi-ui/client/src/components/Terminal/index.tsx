@@ -16,7 +16,7 @@ export type TerminalType = XTerminal;
 
 const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
   const domContainer = ref || useRef<HTMLDivElement>(null);
-  const { title, className, defaultValue, getIns, config = {}, terminalClassName } = props;
+  const { title, className, defaultValue, onInit, config = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
@@ -42,8 +42,8 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
       if (domContainer.current && xterm) {
         xterm.loadAddon(new WebLinksAddon());
         xterm.open(domContainer.current);
-        if (getIns) {
-          getIns(xterm);
+        if (onInit) {
+          onInit(xterm);
         }
         fit(xterm);
       }

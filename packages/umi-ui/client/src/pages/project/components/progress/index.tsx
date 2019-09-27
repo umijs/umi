@@ -151,7 +151,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         <div style={{ marginTop: 16 }}>
           <Terminal
             terminalClassName={styles.terminal}
-            getIns={ins => {
+            onInit={ins => {
               terminal = ins;
             }}
           />

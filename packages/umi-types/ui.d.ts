@@ -125,8 +125,8 @@ declare namespace IUI {
     terminalClassName?: string;
     /** defaultValue in Terminal */
     defaultValue?: string;
-    /** get xterm instance */
-    getIns?: (ins: XTerminal) => void;
+    /** terminal init event */
+    onInit?: (ins: XTerminal) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
     [key: string]: any;

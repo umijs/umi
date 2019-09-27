@@ -441,8 +441,8 @@ interface ITerminalProps {
   terminalClassName?: string;
   /** defaultValue in Terminal */
   defaultValue?: string;
-  /** get xterm instance */
-  getIns?: (ins: XTerminal) => void;
+  /** terminal init event */
+  onInit?: (ins: XTerminal) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
   config?: ITerminalOptions;
   [key: string]: any;
@@ -495,7 +495,7 @@ export default (api) => {
       <div>
         <Terminal
           title="插件日志"
-          getIns={ins => {
+          onInit={ins => {
             terminal = ins;
           }}
         />
