@@ -1,7 +1,5 @@
 import yParser from 'yargs-parser';
-import UmiUI from 'umi-ui/lib/UmiUI';
 import buildDevOpts from '../buildDevOpts';
-import isUmiUIEnable from '../isUmiUIEnable';
 
 let closed = false;
 
@@ -18,27 +16,10 @@ function onSignal() {
   process.exit(0);
 }
 
-(async () => {
-  const args = yParser(process.argv.slice(2));
-  const opts = buildDevOpts(args);
+const args = yParser(process.argv.slice(2));
+const opts = buildDevOpts(args);
+process.env.NODE_ENV = 'development';
 
-  // Start umi ui
-  const { cwd } = opts;
-  const enableUmiUI =
-    process.env.UMI_UI === '1' || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
-  if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
-    process.env.UMI_UI_BROWSER = 'none';
-    const umiui = new UmiUI();
-    const { port } = await umiui.start();
-    process.env.UMI_UI_PORT = port;
-  }
-  if (!enableUmiUI) {
-    process.env.UMI_UI = 'none';
-  }
-
-  // Start origin umi dev
-  process.env.NODE_ENV = 'development';
-  // Service 的引入不能用 import，因为有些要依赖 development 这个 NODE_ENV
-  const Service = require('umi-build-dev/lib/Service').default;
-  new Service(opts).run('dev', args);
-})();
+// Service 的引入不能用 import，因为有些要依赖 development 这个 NODE_ENV
+const Service = require('umi-build-dev/lib/Service').default;
+new Service(opts).run('dev', args);
