@@ -3,7 +3,6 @@ export interface Block {
   name: string;
   description: string;
   img: string;
-  defaultPath: string;
   tags: string[];
   previewUrl?: string;
 }
