@@ -105,6 +105,6 @@ export function findIndex(arr, index, fn) {
 export function parseContent(code) {
   return parser.parse(code, {
     sourceType: 'module',
-    plugins: ['jsx', 'decorators-legacy', 'typescript', 'classProperties'],
+    plugins: ['jsx', 'decorators-legacy', 'typescript', 'classProperties', 'dynamicImport'],
   });
 }
