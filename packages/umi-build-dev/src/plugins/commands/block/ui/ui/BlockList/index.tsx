@@ -127,10 +127,9 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { uniq, flatten } = api._;
   const pageSize = 30;
 
-  const tags: string[] = useMemo<string[]>(
-    () => uniq(flatten(list.map(item => item.tags))).slice(0, 30),
-    [list],
-  );
+  const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
+    list,
+  ]);
 
   // lazy load 的强制加载，不然 load 不刷新
   useEffect(() => {

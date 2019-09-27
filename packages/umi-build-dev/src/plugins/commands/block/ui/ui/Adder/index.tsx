@@ -250,6 +250,32 @@ const Adder: React.FC<AdderProps> = props => {
               <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
             </Form.Item>
           )}
+          {api.isMini() && (
+            <Form.Item
+              name="name"
+              label="请输入名称"
+              rules={[
+                { required: true, message: '名称必填' },
+                {
+                  validator: async (rule, name) => {
+                    const { exists } = (await callRemote({
+                      type: 'org.umi.block.checkExistFilePath',
+                      payload: {
+                        path: `${form.getFieldValue('path')}/${name}`,
+                      },
+                    })) as {
+                      exists: boolean;
+                    };
+                    if (exists) {
+                      throw new Error('模板路径已存在');
+                    }
+                  },
+                },
+              ]}
+            >
+              <TreeSelect placeholder="请选择安装路径" selectable treeData={pageFoldersTreeData} />
+            </Form.Item>
+          )}
           <Form.Item name="transformJS" label="编译为 JS">
             <Switch />
           </Form.Item>

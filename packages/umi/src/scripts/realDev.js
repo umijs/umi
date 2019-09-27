@@ -24,14 +24,15 @@ function onSignal() {
 
   // Start umi ui
   const { cwd } = opts;
-  const enableUmiUI = process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd);
+  const enableUmiUI =
+    process.env.UMI_UI === '1' || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
   if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
     process.env.UMI_UI_BROWSER = 'none';
     const umiui = new UmiUI();
     const { port } = await umiui.start();
     process.env.UMI_UI_PORT = port;
   }
-  if (!process.env.UMI_UI && !enableUmiUI) {
+  if (!enableUmiUI) {
     process.env.UMI_UI = 'none';
   }
 
