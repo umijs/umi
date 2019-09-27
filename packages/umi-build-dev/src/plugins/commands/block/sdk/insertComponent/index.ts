@@ -1,11 +1,10 @@
-import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import assert from 'assert';
 import prettier from 'prettier';
 import { findLastIndex } from 'lodash';
-import upperCamelCase from 'uppercamelcase';
+import uppercamelcase from 'uppercamelcase';
 import {
   findExportDefaultDeclaration,
   getIdentifierDeclaration,
@@ -13,6 +12,7 @@ import {
   haveChildren,
   isJSXElement,
   findIndex,
+  parseContent,
 } from '../util';
 
 export default function(content, opts) {
@@ -57,10 +57,7 @@ export default function(content, opts) {
     }
   }
 
-  const ast = parser.parse(content, {
-    sourceType: 'module',
-    plugins: ['jsx', 'decorators-legacy', 'typescript'],
-  });
+  const ast = parseContent(content);
   traverse(ast, {
     Program(path) {
       const { node } = path;
@@ -74,7 +71,7 @@ export default function(content, opts) {
       const ret = getReturnNode(d);
       assert(ret, `Can not find return node`);
 
-      const id = upperCamelCase(identifier);
+      const id = uppercamelcase(identifier);
       // TODO: check id exists
 
       // Add imports

@@ -1,4 +1,5 @@
 import * as t from '@babel/types';
+import * as parser from '@babel/parser';
 
 export function findExportDefaultDeclaration(node) {
   for (const n of node.body) {
@@ -99,4 +100,11 @@ export function findIndex(arr, index, fn) {
   }
 
   throw new Error(`Invalid find index params.`);
+}
+
+export function parseContent(code) {
+  return parser.parse(code, {
+    sourceType: 'module',
+    plugins: ['jsx', 'decorators-legacy', 'typescript'],
+  });
 }

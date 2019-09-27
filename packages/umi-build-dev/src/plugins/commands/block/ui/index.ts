@@ -2,12 +2,14 @@ import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { IApi } from 'umi-types';
 import { join } from 'path';
+import uppercamelcase from 'uppercamelcase';
 import { depthRouterConfig, routeExists } from '../util';
 import { getFolderTreeData, fetchProBlockList } from './util';
 import { Resource, AddBlockParams } from '../data.d';
 import clearGitCache from '../clearGitCache';
 import addBlock from '../addBlock';
 import LogServe from './LogServer';
+import haveRootBinding from '../sdk/haveRootBinding';
 
 export interface IApiBlock extends IApi {
   sendLog: (info: string) => void;
@@ -306,6 +308,26 @@ export default (api: IApiBlock) => {
           }
         })();
         break;
+
+      // 检查文件里使用某个变量名是否可以
+      case 'org.umi.block.checkBindingInFile':
+        (async () => {
+          try {
+            const { path, name } = payload;
+            const absPath = api.winPath(join(api.paths.absPagesPath, path));
+            success({
+              exists: haveRootBinding(absPath, uppercamelcase(name)),
+            });
+          } catch (error) {
+            log(error);
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
+        break;
+
       default:
         break;
     }
