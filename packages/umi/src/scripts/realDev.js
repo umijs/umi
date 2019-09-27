@@ -31,7 +31,7 @@ function onSignal() {
     const { port } = await umiui.start();
     process.env.UMI_UI_PORT = port;
   }
-  if (!enableUmiUI) {
+  if (!process.env.UMI_UI && !enableUmiUI) {
     process.env.UMI_UI = 'none';
   }
 
