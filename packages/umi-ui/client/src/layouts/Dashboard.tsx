@@ -198,10 +198,17 @@ export default withRouter(props => {
                             overlay={recentMenu}
                             className={styles['sidebar-name-dropdown']}
                           >
-                            <div>
-                              <p>{currentProject ? currentProject.name : ''}</p>
-                              <CaretDown className={styles['sidebar-name-expand-icon']} />
-                            </div>
+                            {currentProject.name.length > 16 ? (
+                              <Tooltip title={currentProject.name}>
+                                <p>{currentProject.name}</p>
+                                <CaretDown className={styles['sidebar-name-expand-icon']} />
+                              </Tooltip>
+                            ) : (
+                              <div>
+                                <p>{currentProject.name}</p>
+                                <CaretDown className={styles['sidebar-name-expand-icon']} />
+                              </div>
+                            )}
                           </Dropdown>
                         </div>
                       )}
