@@ -6,7 +6,6 @@ export interface PositionData {
 
 export default (api): Promise<PositionData> => {
   api.hideMini();
-  console.log('postMessage');
   window.parent.postMessage(
     JSON.stringify({
       action: 'umi.ui.enableBlockEditMode',
