@@ -2,6 +2,7 @@ import { IApi } from 'umi-types';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
+import { FlowState } from './enum';
 import Logger from './Logger';
 import execa from '../util/exec';
 
@@ -14,6 +15,7 @@ class Flow extends EventEmitter {
   public isCancel: boolean = false;
   public logger: Logger;
   public proc: ChildProcess;
+  public state: FlowState = FlowState.INIT;
 
   constructor({ api }: { api: IApi }) {
     super();
@@ -36,6 +38,7 @@ class Flow extends EventEmitter {
   }
 
   public async run(args) {
+    this.state = FlowState.ING;
     let hasBreak = false;
     for (const task of this.tasks) {
       // 用户取消任务
@@ -52,6 +55,7 @@ class Flow extends EventEmitter {
         await task(this.ctx, args);
       } catch (e) {
         hasBreak = true;
+        this.state = FlowState.FAIL;
         break;
       }
     }
@@ -59,6 +63,7 @@ class Flow extends EventEmitter {
       return this.ctx.result;
     }
 
+    this.state = FlowState.SUCCESS;
     // 清空日志
     this.logger.clear();
     return this.ctx.result;
@@ -66,6 +71,10 @@ class Flow extends EventEmitter {
 
   public cancel() {
     this.isCancel = true;
+    this.state = FlowState.CANCEL;
+    this.emit('log', {
+      data: 'Task terminated succcess',
+    });
     if (this.proc) {
       this.proc.kill('SIGTERM');
     }

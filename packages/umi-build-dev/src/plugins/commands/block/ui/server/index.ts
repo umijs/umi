@@ -125,10 +125,17 @@ export default (api: IApi) => {
           success: true,
         });
         break;
-      // 获取区块 url
+      // 取消任务
       case 'org.umi.block.cancel':
         success({
           data: blockService.cancel(),
+          success: true,
+        });
+        break;
+      // 查询是否有正在执行的任务
+      case 'org.umi.block.hasRunningTask':
+        success({
+          data: blockService.hasRunningFlow(),
           success: true,
         });
         break;
