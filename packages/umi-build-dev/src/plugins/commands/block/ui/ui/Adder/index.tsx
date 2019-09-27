@@ -173,6 +173,8 @@ const Adder: React.FC<AdderProps> = props => {
               path: blockType === 'block' ? values.path : values.path,
               routePath: blockType === 'template' ? values.routePath : undefined,
               isPage: false,
+              index: values.index,
+              name: values.name,
             };
             onAddClick(params);
             try {
