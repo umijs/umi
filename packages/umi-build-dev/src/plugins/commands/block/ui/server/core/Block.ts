@@ -27,7 +27,7 @@ class Block {
     this.flow.cancel();
   }
 
-  public async getLog() {
+  public getLog() {
     if (!this.flow) {
       return '';
     }

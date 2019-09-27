@@ -5,12 +5,14 @@ class Logger {
   public id: string;
   public spinner: any;
   public log: string = '';
+  public ws: MemoryStream = null;
 
   constructor() {
+    this.ws = new MemoryStream({
+      onData: this.onSpinnerData.bind(this),
+    });
     this.spinner = ora({
-      stream: new MemoryStream({
-        onData: this.onSpinnerData,
-      }),
+      stream: this.ws,
     });
   }
 
@@ -56,9 +58,7 @@ class Logger {
   }
 
   private onSpinnerData(chunk) {
-    // TODO: 将 spinner 中的数据进行存储
-    console.log('--- onSpinnerData ---');
-    console.log(chunk.toString());
+    this.log = `${this.log}${chunk.toString()}`;
   }
 }
 

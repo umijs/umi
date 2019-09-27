@@ -44,8 +44,6 @@ class Flow {
       try {
         await task(this.ctx, args);
       } catch (e) {
-        console.log('0000');
-        console.log(e.stack);
         hasBreak = true;
         break;
       }
