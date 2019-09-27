@@ -8,18 +8,26 @@ import isUmiUIEnable from '../isUmiUIEnable';
   const args = yParser(process.argv.slice(2));
   const opts = buildDevOpts(args);
 
+  let umiui;
+
   // Start umi ui
   const { cwd } = opts;
   const enableUmiUI =
     process.env.UMI_UI === '1' || (process.env.UMI_UI !== 'none' && isUmiUIEnable(cwd));
   if (process.env.UMI_UI_SERVER !== 'none' && enableUmiUI) {
     process.env.UMI_UI_BROWSER = 'none';
-    const umiui = new UmiUI();
+    umiui = new UmiUI();
     const { port } = await umiui.start();
     process.env.UMI_UI_PORT = port;
   }
   if (!enableUmiUI) {
     process.env.UMI_UI = 'none';
+  }
+
+  function killUmiUI() {
+    if (umiui && umiui.server) {
+      umiui.server.close();
+    }
   }
 
   // Start real umi dev
@@ -38,9 +46,13 @@ import isUmiUIEnable from '../isUmiUIEnable';
 
   process.on('SIGTERM', () => {
     child.kill('SIGTERM');
+    killUmiUI();
+    process.exit();
   });
 
   process.on('SIGINT', () => {
     child.kill('SIGINT');
+    killUmiUI();
+    process.exit();
   });
 })();
