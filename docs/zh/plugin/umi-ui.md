@@ -438,8 +438,8 @@ interface ITerminalProps {
   title?: string;
   className?: string;
   terminalClassName?: string;
-  /** default value in Terminal */
-  defaultValue?: string;
+  /** value in Terminal, controlled mode */
+  value?: string;
   /** get xterm instance */
   getIns?: (ins: XTerminal) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
@@ -449,6 +449,33 @@ interface ITerminalProps {
 ```
 
 示例：
+
+使用 `value`，组件内部会根据 `value` 的变化来增加日志：
+
+```js
+import React, { useState } from 'react'
+
+export default (api) => {
+  const { Terminal } = api;
+
+  function Component() {
+    return (
+      <div>
+        <Terminal
+          title="插件日志"
+          value="Hello World"
+        />
+      </div>
+    );
+  }
+
+  api.addPanel({
+    component: Component,
+  });
+}
+```
+
+使用终端实例，调用日志输出函数：
 
 ```js
 import React, { useState } from 'react'

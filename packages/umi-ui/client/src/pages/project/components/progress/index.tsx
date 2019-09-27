@@ -148,7 +148,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
         {/* {progress.success ? <div>创建成功</div> : null} */}
         {logs && (
           <div style={{ marginTop: 16 }}>
-            <Terminal terminalClassName={styles.terminal} defaultValue={logs} />
+            <Terminal terminalClassName={styles.terminal} value={logs} />
           </div>
         )}
         {progress.failure && (

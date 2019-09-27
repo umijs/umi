@@ -104,7 +104,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
             getIns={t => {
               this.xterm = t;
             }}
-            defaultValue={error.stack}
+            value={error.stack}
           />
         </div>
         <div className={styles['loading-error-action']}>

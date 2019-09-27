@@ -439,8 +439,8 @@ interface ITerminalProps {
   title?: string;
   className?: string;
   terminalClassName?: string;
-  /** default value in Terminal */
-  defaultValue?: string;
+  /** value in Terminal, controlled mode */
+  value?: string;
   /** get xterm instance */
   getIns?: (ins: XTerminal) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
@@ -451,6 +451,8 @@ interface ITerminalProps {
 
 For example:
 
+Use `value`, components inside will increase according to the change of `value` logs:
+
 ```js
 import React, { useState } from 'react'
 
@@ -458,21 +460,47 @@ export default (api) => {
   const { Terminal } = api;
 
   function Component() {
-    const [terminal, setTerminal] = useState();
+    return (
+      <div>
+        <Terminal
+          title="插件日志"
+          value="Hello World"
+        />
+      </div>
+    );
+  }
 
-    useEffect(() => {
-      if (terminal) {
-        terminal.write('Hello World');
-      }
-    }, [terminal);
+  api.addPanel({
+    component: Component,
+  });
+}
+```
+
+use the instance, call the output functions:
+
+```js
+import React, { useState } from 'react'
+
+export default (api) => {
+  const { Terminal } = api;
+
+  function Component() {
+    let terminal;
+
+    const handleClick = () => {
+      terminal.write('Hello World');
+    }
 
     return (
-      <Terminal
-        title="插件日志"
-        getIns={ins => {
-          setTerminal(ins);
-        }}
-      />
+      <div>
+        <Terminal
+          title="插件日志"
+          getIns={ins => {
+            terminal = ins;
+          }}
+        />
+        <button onClick={handleClick}>开始</button>
+      </div>
     );
   }
 

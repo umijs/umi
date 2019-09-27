@@ -3,7 +3,7 @@ import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import { fit } from 'xterm/lib/addons/fit/fit';
 import cls from 'classnames';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
@@ -15,34 +15,33 @@ export interface ITerminalProps {
   title?: string;
   className?: string;
   terminalClassName?: string;
-  defaultValue?: string;
+  value?: string;
   getIns?: (ins: XTerminal) => void;
   terminalConfig?: object;
   [key: string]: any;
 }
 
-const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
-  const domContainer = useRef<HTMLDivElement>(null);
-  const { title, className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
+const TerminalComponent: React.FC<ITerminalProps> = forwardRef((props = {}, ref) => {
+  const domContainer = ref || useRef<HTMLDivElement>(null);
+  const { title, className, value, getIns, terminalConfig = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
 
   useEffect(() => {
-    setXterm(
-      new (Terminal as typeof XTerminal)({
-        allowTransparency: true,
-        fontSize: 14,
-        theme: {
-          background: '#15171C',
-          foreground: '#ffffff73',
-        },
-        cursorBlink: false,
-        cursorStyle: 'underline',
-        disableStdin: true,
-        ...terminalConfig,
-      }),
-    );
+    const terminal = new (Terminal as typeof XTerminal)({
+      allowTransparency: true,
+      fontSize: 14,
+      theme: {
+        background: '#15171C',
+        foreground: '#ffffff73',
+      },
+      cursorBlink: false,
+      cursorStyle: 'underline',
+      disableStdin: true,
+      ...terminalConfig,
+    });
+    setXterm(terminal);
   }, []);
 
   useEffect(
@@ -70,11 +69,11 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
 
   useEffect(
     () => {
-      if (xterm && defaultValue) {
-        xterm.write(defaultValue.replace(/\n/g, '\r\n'));
+      if (xterm && value) {
+        xterm.write(value.replace(/\n/g, '\r\n'));
       }
     },
-    [defaultValue, xterm],
+    [value, xterm],
   );
 
   const clear = () => {
@@ -125,6 +124,6 @@ const TerminalComponent: React.FC<ITerminalProps> = (props = {}) => {
       <div ref={domContainer} className={terminalCls} />
     </div>
   );
-};
+});
 
 export default TerminalComponent;
