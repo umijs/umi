@@ -3,13 +3,14 @@ import { Tabs, Spin, Radio, Button, message } from 'antd';
 import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 
-import { Resource } from '../../data.d';
+import { Resource, Block, AddBlockParams } from '../../data.d';
 import Context from './UIApiContext';
 import BlockList from './BlockList';
 import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
-import model, { ModelState } from './model';
+import Adder from './Adder';
+import { ModelState, namespace } from './model';
 
 const clearCache = async (api: IUiApi) => {
   try {
@@ -50,10 +51,12 @@ interface Props {
 }
 
 const BlocksViewer: React.FC<Props> = props => {
-  const { dispatch, block, loading } = props;
+  const { dispatch, block, loading: fetchDataLoading } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
-  const [blockAdding, setBlockAdding] = useState(null);
+  const [addingBlock, setAddBlock] = useState<Block>(null);
+  const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
+  const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
   const [type, setType] = useState<Resource['blockType']>('block');
   const [activeResource, setActiveResource] = useState<Resource>(null);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -79,7 +82,7 @@ const BlocksViewer: React.FC<Props> = props => {
     () => {
       if (current) {
         dispatch({
-          type: `${model.namespace}/fetch`,
+          type: `${namespace}/fetch`,
           payload: {
             resourceId: current.id,
           },
@@ -91,7 +94,7 @@ const BlocksViewer: React.FC<Props> = props => {
 
   const reloadData = () => {
     dispatch({
-      type: `${model.namespace}/fetch`,
+      type: `${namespace}/fetch`,
       payload: {
         resourceId: current.id,
         reload: true,
@@ -106,10 +109,12 @@ const BlocksViewer: React.FC<Props> = props => {
      */
     callRemote({
       type: 'org.umi.block.get-adding-block-url',
-    }).then(({ data }: { data: string }) => {
-      setBlockAdding(data);
-      // 我把每个 item 都加了一个 id，就是他的 url
-      scrollToById(data, 'block-list-view');
+    }).then(({ data }: { data: Block }) => {
+      if (data) {
+        setAddBlock(data);
+        // 我把每个 item 都加了一个 id，就是他的 url
+        scrollToById(data.url, 'block-list-view');
+      }
     });
   }, []);
 
@@ -151,58 +156,75 @@ const BlocksViewer: React.FC<Props> = props => {
   const matchedResources = resources.filter(r => r.blockType === type);
 
   return (
-    <div className={styles.container} id="block-list-view">
-      {current ? (
-        <div className={styles.blockList}>
-          <Tabs
-            className={styles.tabs}
-            activeKey={type}
-            onChange={activeKey => {
-              setType(activeKey as Resource['blockType']);
-            }}
-          >
-            <TabPane tab="区块" key="block" />
-            <TabPane tab="模板" key="template" />
-          </Tabs>
-          {matchedResources.length > 1 && (
-            <Radio.Group
-              value={current.id}
-              onChange={e => {
-                setActiveResource(matchedResources.find(r => r.id === e.target.value));
+    <>
+      <div className={styles.container} id="block-list-view">
+        {current ? (
+          <div className={styles.blockList}>
+            <Tabs
+              className={styles.tabs}
+              activeKey={type}
+              onChange={activeKey => {
+                setType(activeKey as Resource['blockType']);
               }}
             >
-              {matchedResources.map(r => (
-                <Radio.Button key={r.id} value={r.id}>
-                  {r.name}
-                </Radio.Button>
-              ))}
-            </Radio.Group>
-          )}
-          {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
-          {matchedResources.length > 0 ? (
-            <BlockList
-              loading={loading}
-              type={type}
-              keyword={searchValue}
-              addingBlock={blockAdding}
-              list={blocks}
-              onAddClick={params => {
-                setBlockAdding(params.url);
-              }}
-              onAddSuccess={() => {
-                setBlockAdding(null);
-              }}
-            />
-          ) : (
-            <div>没有找到数据源</div>
-          )}
-        </div>
-      ) : (
-        <div className={styles.loading}>
-          <Spin />
-        </div>
-      )}
-    </div>
+              <TabPane tab="区块" key="block" />
+              <TabPane tab="模板" key="template" />
+            </Tabs>
+            {matchedResources.length > 1 && (
+              <Radio.Group
+                value={current.id}
+                onChange={e => {
+                  setActiveResource(matchedResources.find(r => r.id === e.target.value));
+                }}
+              >
+                {matchedResources.map(r => (
+                  <Radio.Button key={r.id} value={r.id}>
+                    {r.name}
+                  </Radio.Button>
+                ))}
+              </Radio.Group>
+            )}
+            {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
+            {matchedResources.length > 0 ? (
+              <BlockList
+                type={type}
+                keyword={searchValue}
+                addingBlock={addingBlock}
+                list={blocks}
+                onShowModal={(currentBlock, option) => {
+                  setAddModalVisible(true);
+                  setAddBlock(currentBlock);
+                  setBlockParams(option);
+                }}
+                loading={fetchDataLoading}
+                onHideModal={() => {
+                  setAddModalVisible(false);
+                  setAddBlock(undefined);
+                  setBlockParams(undefined);
+                }}
+              />
+            ) : (
+              <div>没有找到数据源</div>
+            )}
+          </div>
+        ) : (
+          <div className={styles.loading}>
+            <Spin />
+          </div>
+        )}
+      </div>
+      <Adder
+        block={addingBlock}
+        blockType={type}
+        {...blockParams}
+        visible={addModalVisible}
+        onHideModal={() => {
+          setAddModalVisible(false);
+          setAddBlock(undefined);
+          setBlockParams(undefined);
+        }}
+      />
+    </>
   );
 };
 

@@ -1,9 +1,9 @@
 export interface Block {
-  url: string;
-  name: string;
-  description: string;
-  img: string;
-  tags: string[];
+  url?: string;
+  name?: string;
+  description?: string;
+  img?: string;
+  tags?: string[];
   previewUrl?: string;
 }
 
@@ -28,7 +28,7 @@ export interface Resource {
 }
 
 export interface AddBlockParams {
-  url: string;
+  url?: string;
   routePath?: string;
   name?: string;
   path?: string;
@@ -37,4 +37,5 @@ export interface AddBlockParams {
   removeLocale?: boolean;
   index?: number;
   npmClient?: string;
+  blockTarget?: string;
 }

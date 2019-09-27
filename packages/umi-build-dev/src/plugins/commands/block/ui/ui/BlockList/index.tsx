@@ -1,23 +1,44 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
-import { Col, Empty, Row, Spin, Typography, Tag, Button, Pagination } from 'antd';
+import { Col, Empty, Row, message, Spin, Typography, Tag, Button, Pagination } from 'antd';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import { Loading } from '@ant-design/icons';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
-import Adder from '../Adder';
+import getInsertPosition from './getInsertPosition';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
 
 const { CheckableTag } = Tag;
 
+const getPathFromFilename = (api, filename: string) => {
+  // TODO get PagesPath from server add test case
+  // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
+  // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
+  // -> /xxx
+  const path = filename
+    .replace(api.currentProject.path, '')
+    .replace(/(src\/)?pages?\//, '')
+    .replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
+  return path;
+};
+
+const getBlockTargetFromFilename = (api, filename) => {
+  // TODO 更优雅的实现
+  const path = filename
+    .replace(api.currentProject.path, '')
+    .replace(/(src\/)?pages?\//, '')
+    .replace(/\/[^/]+((\.tsx?)|(\.jsx?))$/, '');
+  return path || '/';
+};
+
 interface BlockItemProps {
   type: Resource['blockType'];
-  addingBlock: string;
+  addingBlock?: Block;
   item: Block;
-  onAddClick: (params: AddBlockParams) => void;
-  onAddSuccess: (params: AddBlockParams) => void;
   loading?: boolean;
+  onShowModal?: (Block: Block, option: AddBlockParams) => void;
+  onHideModal?: () => void;
   keyword?: string;
 }
 interface BlockListProps extends Omit<BlockItemProps, 'item'> {
@@ -49,14 +70,7 @@ const Meats: React.FC<{
  * 子区块的展示逻辑
  * @param param0
  */
-const BlockItem: React.FC<BlockItemProps> = ({
-  type,
-  item,
-  addingBlock,
-  onAddClick,
-  keyword,
-  onAddSuccess,
-}) => {
+const BlockItem: React.FC<BlockItemProps> = ({ type, item, loading, onShowModal, keyword }) => {
   const { api } = useContext(Context);
   const isBlock = type === 'block';
   const style = {
@@ -64,22 +78,37 @@ const BlockItem: React.FC<BlockItemProps> = ({
     overflow: 'hidden',
   };
   const isMini = api.isMini();
-
   return (
     <Col style={style} key={item.url}>
       <div id={item.url} className={isBlock ? styles.blockCard : styles.templateCard}>
-        <Spin spinning={item.url === addingBlock} tip="Adding...">
+        <Spin spinning={!!loading} tip="Adding...">
           <div className={styles.demo}>
             <div className={styles.addProject}>
-              <Adder
-                api={api}
-                blockType={type}
-                block={item}
-                onAddClick={onAddClick}
-                onAddSuccess={onAddSuccess}
+              <Button
+                type="primary"
+                onClick={() => {
+                  if (api.isMini() && type === 'block') {
+                    getInsertPosition(api)
+                      .then(position => {
+                        const targetPath = getPathFromFilename(api, position.filename);
+                        const option = {
+                          path: targetPath,
+                          index: position.index,
+                          blockTarget: getBlockTargetFromFilename(api, position.filename),
+                        };
+                        onShowModal(item, option);
+                      })
+                      .catch(e => {
+                        message.error(e.message);
+                      });
+                  } else {
+                    onShowModal(item, {});
+                  }
+                }}
               >
                 添加到项目
-              </Adder>
+              </Button>
+
               {item.previewUrl && (
                 <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
                   预览
@@ -123,7 +152,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
 };
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], loading, keyword } = props;
+  const { list = [], addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
   const pageSize = 15;
@@ -147,15 +176,14 @@ const BlockList: React.FC<BlockListProps> = props => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const filteredList: Block[] = useMemo<Block[]>(
-    () => {
-      return list.filter(({ name = '', description = '', tags = [] }) => {
+    () =>
+      list.filter(({ name = '', description = '', tags: listTags = [] }) => {
         return (
-          (!selectedTag || tags.includes(selectedTag)) &&
+          (!selectedTag || listTags.join('').includes(selectedTag)) &&
           (!keyword || name.includes(keyword) || description.includes(keyword))
         );
-      });
-    },
-    [keyword, selectedTag, list],
+      }),
+    [keyword, selectedTag, list.map(({ url }) => url).join('/')],
   );
 
   const currentPageList: Block[] = useMemo<Block[]>(
@@ -188,7 +216,12 @@ const BlockList: React.FC<BlockListProps> = props => {
       <>
         <Row gutter={20} type="flex">
           {currentPageList.map(item => (
-            <BlockItem key={item.url} item={item} {...props} />
+            <BlockItem
+              key={item.url}
+              item={item}
+              {...props}
+              loading={addingBlock && item.url === addingBlock.url}
+            />
           ))}
         </Row>
         {filteredList.length > pageSize && (
