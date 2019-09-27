@@ -5,8 +5,11 @@ import Context from './ui/UIApiContext';
 import BlocksViewer from './ui/index';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
+import model, { initApiToGloal } from './ui/model';
 
 export default (api: IUiApi) => {
+  initApiToGloal(api);
+
   if (api.isMini()) {
     window.addEventListener('message', e => {
       // try {
@@ -26,6 +29,11 @@ export default (api: IUiApi) => {
     'en-US': enUS,
   });
 
+  const ConnectedBlockViewer = api.connect((state: any) => ({
+    block: state[model.namespace],
+    loading: state.loading.models[model.namespace],
+  }))(BlocksViewer);
+
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
@@ -37,8 +45,11 @@ export default (api: IUiApi) => {
           api,
         }}
       >
-        <BlocksViewer />
+        <ConnectedBlockViewer />
       </Context.Provider>
     ),
   });
+
+  // 注册 model
+  api.registerModel(model);
 };
