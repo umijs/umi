@@ -36,4 +36,5 @@ export interface AddBlockParams {
   transformJS?: boolean;
   removeLocale?: boolean;
   index?: number;
+  npmClient?: string;
 }

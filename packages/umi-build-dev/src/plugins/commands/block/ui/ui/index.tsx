@@ -17,6 +17,9 @@ const clearCache = async (api: IUiApi) => {
     })) as {
       data: string;
     };
+
+    // 用户上次使用的包管理器
+    localStorage.remove('umi-ui-block-npmClient');
     message.success(data);
   } catch (e) {
     message.error(e.message);
@@ -118,19 +121,22 @@ const BlocksViewer: React.FC<{}> = () => {
   // 区块右上角的区域 三个按钮
   useEffect(
     () => {
+      const isMini = api.isMini();
+      const buttonPadding = isMini ? '0 4px' : '0 8px';
+
       const handleSearchChange = (v: string) => {
         setSearchValue(v);
       };
       if (api.setActionPanel) {
         api.setActionPanel(() => [
           <GlobalSearch onChange={handleSearchChange} api={api} />,
-          <Button style={{ padding: '0 8px' }} onClick={() => reloadData()}>
+          <Button style={{ padding: buttonPadding }} onClick={() => reloadData()}>
             <Reload />
           </Button>,
           <Button
             onClick={() => clearCache(api)}
             style={{
-              padding: '0 8px',
+              padding: buttonPadding,
             }}
           >
             <img

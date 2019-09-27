@@ -181,7 +181,7 @@ interface IWinPath {
 type IRelativeToTmp = (path: string) => string;
 
 interface IFind {
-  (baseDir: string, fileNameWithoutExtname: string): string | null;
+  (baseDir: string, fileNameWithoutExtname?: string): string | null;
 }
 
 interface ICompatDirname<T = any> {

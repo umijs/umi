@@ -112,13 +112,14 @@ const Adder: React.FC<AdderProps> = props => {
       defaultData: [],
     },
   );
+
   const { data: npmClients = [] } = useCallData(
     async () => {
       if (visible) {
         const msg = (await callRemote({
           type: '@@project/getNpmClients',
         })) as { data: string[]; success: boolean };
-        if (msg.data && msg.data.length > 0) {
+        if (msg.data && msg.data.length > 0 && !localStorage.getItem('umi-ui-block-npmClient')) {
           const selectNpmClient = form.getFieldValue('npmClient');
           form.setFieldsValue({
             npmClient: selectNpmClient || msg.data[0],
@@ -164,8 +165,9 @@ const Adder: React.FC<AdderProps> = props => {
     path: `/${defaultName}`,
     routePath: `/${defaultName}`,
     name: upperCamelCase(defaultName),
-    transformJS: false,
+    transformJS: api.detectLanguage && api.detectLanguage() === 'JavaScript',
     removeLocale: false,
+    npmClient: localStorage.getItem('umi-ui-block-npmClient'),
   };
 
   return (
@@ -240,6 +242,7 @@ const Adder: React.FC<AdderProps> = props => {
             try {
               const info = await addBlock(api, params);
               message.success(info);
+              localStorage.setItem('umi-ui-block-npmClient', params.npmClient);
             } catch (error) {
               message.error(error.message);
             }
@@ -296,11 +299,11 @@ const Adder: React.FC<AdderProps> = props => {
               />
             </Form.Item>
           )}
-          {api.isMini() ? (
+          {!needRouterConfig ? (
             <Form.Item
               name="path"
-              label="安装路径"
-              rules={[{ required: true, message: '安装路径必选' }]}
+              label={<InfoToolTip title="安装路径" placeholder="安装路径当前选中页面的路径" />}
+              rules={[{ required: true, message: '安装路径为必填项！' }]}
             >
               <Input disabled />
             </Form.Item>
@@ -314,11 +317,11 @@ const Adder: React.FC<AdderProps> = props => {
                 />
               }
               rules={[
-                { required: true, message: '安装路径必选' },
+                { required: true, message: '安装路径为必填项！' },
                 {
                   validator: async (rule, path) => {
                     if (path === '/') {
-                      throw new Error('安装文件夹不能为根目录');
+                      throw new Error('安装文件夹不能为根目录！');
                     }
                     const { exists } = (await callRemote({
                       type: 'org.umi.block.checkExistFilePath',
@@ -329,7 +332,7 @@ const Adder: React.FC<AdderProps> = props => {
                       exists: boolean;
                     };
                     if (exists) {
-                      throw new Error('文件路径已存在');
+                      throw new Error('安装文件路径已存在文件！');
                     }
                   },
                 },
@@ -343,12 +346,17 @@ const Adder: React.FC<AdderProps> = props => {
               />
             </Form.Item>
           )}
-          {api.isMini() && blockType === 'block' && (
+          {!needRouterConfig && (
             <Form.Item
               name="name"
-              label="请输入名称"
+              label={
+                <InfoToolTip
+                  title="名称"
+                  placeholder="区块的源代码将会放在 [安装路径]\[名称]的位置，并且将作为变量名加入页面中。"
+                />
+              }
               rules={[
-                { required: true, message: '名称必填' },
+                { required: true, message: '名称为必填项!' },
                 {
                   validator: async (rule, name) => {
                     const { exists } = (await callRemote({
@@ -360,13 +368,23 @@ const Adder: React.FC<AdderProps> = props => {
                       exists: boolean;
                     };
                     if (exists) {
-                      throw new Error('目标路径已存在');
+                      throw new Error('目标路径已存在文件!');
+                    }
+                    const { exists: varExists } = (await callRemote({
+                      type: 'org.umi.block.checkExistFilePath',
+                      payload: {
+                        path: blockTarget,
+                        name,
+                      },
+                    })) as { exists: boolean };
+                    if (varExists) {
+                      throw new Error('变量已存在于目标页面!');
                     }
                   },
                 },
               ]}
             >
-              <Input placeholder="请输入名称" />
+              <Input placeholder="请输入名称！" />
             </Form.Item>
           )}
           <Form.Item name="transformJS" label="编译为 JS">

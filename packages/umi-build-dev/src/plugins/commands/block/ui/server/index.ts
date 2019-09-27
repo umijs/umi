@@ -93,7 +93,10 @@ export default (api: IApi) => {
       case 'org.umi.block.list':
         (async () => {
           try {
-            const data = await blockService.getBlockList(payload.resourceId, resources);
+            const data = await blockService.getBlockList(
+              (payload as { resourceId: string }).resourceId,
+              resources,
+            );
             success({
               data,
               success: true,
@@ -178,13 +181,18 @@ export default (api: IApi) => {
       case 'org.umi.block.checkBindingInFile':
         (async () => {
           try {
-            const { path, name } = payload;
-            const absPath = api.winPath(join(api.paths.absPagesPath, path));
+            const { path: targetPath, name } = payload as {
+              path: string;
+              name: string;
+            };
+            // 找到具体的 js
+            const entryPath = api.findJS(targetPath, 'index') || api.findJS(targetPath);
+            const absPath = api.winPath(join(api.paths.absPagesPath, entryPath));
             success({
-              exists: haveRootBinding(absPath, uppercamelcase(name)),
+              exists: haveRootBinding(absPath, name),
+              success: true,
             });
           } catch (error) {
-            log(error);
             failure({
               message: error.message,
               success: false,
