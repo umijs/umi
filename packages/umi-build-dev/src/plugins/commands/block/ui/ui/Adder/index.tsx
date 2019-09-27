@@ -155,7 +155,7 @@ const Adder: React.FC<AdderProps> = props => {
       .replace(api.currentProject.path, '')
       .replace(/(src\/)?pages?\//, '')
       .replace(/\/[^/]+((\.tsx?)|(\.jsx?))$/, '');
-    return path;
+    return path || '/';
   };
 
   /**
@@ -370,10 +370,11 @@ const Adder: React.FC<AdderProps> = props => {
                     if (exists) {
                       throw new Error('目标路径已存在文件!');
                     }
+                    const blockFileTarget = form.getFieldValue('path');
                     const { exists: varExists } = (await callRemote({
-                      type: 'org.umi.block.checkExistFilePath',
+                      type: 'org.umi.block.checkBindingInFile',
                       payload: {
-                        path: blockTarget,
+                        path: blockFileTarget,
                         name,
                       },
                     })) as { exists: boolean };

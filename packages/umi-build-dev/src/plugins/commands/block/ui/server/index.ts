@@ -184,10 +184,11 @@ export default (api: IApi) => {
               name: string;
             };
             // 找到具体的 js
-            const entryPath = api.findJS(targetPath, 'index') || api.findJS(targetPath);
-            const absPath = api.winPath(join(api.paths.absPagesPath, entryPath));
+            const absTargetPath = api.winPath(join(api.paths.absPagesPath, targetPath));
+            const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
+
             success({
-              exists: haveRootBinding(absPath, name),
+              exists: haveRootBinding(entryPath, name),
               success: true,
             });
           } catch (error) {
