@@ -95,9 +95,16 @@ export default (api: IUiApi) => {
         },
       });
     }, []);
+    const sections = Object.keys(SCRIPTS).filter(item => {
+      if (api.isMini() && item === TaskType.DEV) {
+        return false;
+      }
+      return true;
+    });
+
     return (
       <TwoColumnPanel
-        sections={Object.keys(SCRIPTS).map((taskType: string) => {
+        sections={sections.map((taskType: string) => {
           const { key, title, icon, description, Component } = SCRIPTS[taskType];
           const currentProjectKey = api.currentProject.path;
           const detail =

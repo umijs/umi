@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IUi } from 'umi-types';
+import get from 'lodash/get';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
@@ -13,7 +14,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const { pathname, query } = history.location;
 
-  const keys = sections.map(({ key }) => key);
+  const keys = sections.map(item => (item || {}).key);
   let activeIndex = 0;
   if (query.active) {
     const index = keys.indexOf(query.active);
@@ -34,7 +35,6 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
         ...(parse(window.location.search, { ignoreQueryPrefix: true }) || {}),
         active: keys[index],
       });
-      console.log('search', search);
       history.push(`${pathname}?${search}`);
     }
   };
@@ -48,7 +48,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const panelCls = cls(styles.normal, className);
 
-  const renderComponent = sections[currentIndex].component;
+  const renderComponent = get(sections, `${currentIndex}.component`);
 
   return (
     <div className={panelCls}>
