@@ -88,22 +88,6 @@ const BlocksViewer: React.FC<{}> = () => {
     fetch();
   };
 
-  // 同理，需要放在这里
-  const filterList = (data: Block[]) => {
-    // according Search Input to filter
-    if (searchValue && Array.isArray(data)) {
-      const filterData = data.filter(
-        // 描述 名字 tag 都应该匹配一下
-        ({ name = '', description, tags }) =>
-          name.includes(searchValue) ||
-          description.includes(searchValue) ||
-          tags.join(',').includes(searchValue),
-      );
-      return filterData;
-    }
-    return data;
-  };
-
   useEffect(() => {
     /**
      * 获取上次的安装的区块 url
@@ -189,8 +173,9 @@ const BlocksViewer: React.FC<{}> = () => {
             <BlockList
               loading={loading}
               type={type}
+              keyword={searchValue}
               addingBlock={blockAdding}
-              list={filterList(blocks)}
+              list={blocks}
               onAddClick={params => {
                 setBlockAdding(params.url);
               }}
