@@ -24,6 +24,7 @@ describe('Umi UI e2e', () => {
 
   describe('project manager page', () => {
     it('project list normal', async () => {
+      console.log('ui server url: ', url);
       await page.goto(`${url}/project/select`, { waitUntil: 'networkidle2' });
 
       const text = await page.evaluate(
@@ -36,6 +37,6 @@ describe('Umi UI e2e', () => {
 
       expect(text).toEqual('项目列表');
       expect(gaScript).toBeNull();
-    });
+    }, 10000);
   });
 });
