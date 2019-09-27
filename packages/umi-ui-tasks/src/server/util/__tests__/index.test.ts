@@ -69,7 +69,7 @@ describe('packages/umi-ui-tasks/src/server/util/index.ts', () => {
           love: 'love',
         },
         bin: 'umi',
-        args: [],
+        args: ['build'],
       });
     });
   });
