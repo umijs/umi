@@ -1,12 +1,27 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Tabs, Spin, Radio, Button } from 'antd';
+import { Tabs, Spin, Radio, Button, message } from 'antd';
 import { Reload } from '@ant-design/icons';
+import { IUiApi } from 'umi-types';
+
 import { Resource, Block } from '../../data.d';
 import Context from './context';
 import BlockList from './BlockList';
 import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
+
+const clearCache = async (api: IUiApi) => {
+  try {
+    const { data } = (await api.callRemote({
+      type: 'org.umi.block.clear',
+    })) as {
+      data: string;
+    };
+    message.success(data);
+  } catch (e) {
+    message.error(e.message);
+  }
+};
 
 /**
  * 从 id 的 dom 滚动到 target 的 dom
@@ -32,6 +47,7 @@ const BlocksViewer: React.FC<{}> = () => {
   const [activeResource, setActiveResource] = useState<Resource>(null);
   const [searchValue, setSearchValue] = useState<string>('');
 
+  // 获取数据源
   const { data: resources } = useCallData<Resource[]>(
     () =>
       callRemote({
@@ -63,6 +79,28 @@ const BlocksViewer: React.FC<{}> = () => {
     },
   );
 
+  // 对于 hooks 来说闭包会缓存 fetch ，所以这里定义一个
+  // 这样每次都会新建一个 reloadData
+  const reloadData = () => {
+    fetch();
+  };
+
+  // 同理，需要放在这里
+  const filterList = (data: Block[]) => {
+    // according Search Input to filter
+    if (searchValue && Array.isArray(data)) {
+      const filterData = data.filter(
+        // 描述 名字 tag 都应该匹配一下
+        ({ name = '', description, tags }) =>
+          name.includes(searchValue) ||
+          description.includes(searchValue) ||
+          tags.join(',').includes(searchValue),
+      );
+      return filterData;
+    }
+    return data;
+  };
+
   useEffect(() => {
     /**
      * 获取上次的安装的区块 url
@@ -75,30 +113,40 @@ const BlocksViewer: React.FC<{}> = () => {
       // 我把每个 item 都加了一个 id，就是他的 url
       scrollToById(data, 'block-list-view');
     });
-    const handleSearchChange = (v: string) => {
-      setSearchValue(v);
-    };
-    if (api.setActionPanel) {
-      api.setActionPanel(actions => [
-        <GlobalSearch onChange={handleSearchChange} api={api} />,
-        <Button style={{ padding: '0 8px' }} onClick={() => fetch()}>
-          <Reload />
-        </Button>,
-        ...actions,
-      ]);
-    }
   }, []);
 
-  const matchedResources = resources.filter(r => r.blockType === type);
+  // 区块右上角的区域 三个按钮
+  useEffect(
+    () => {
+      const handleSearchChange = (v: string) => {
+        setSearchValue(v);
+      };
+      if (api.setActionPanel) {
+        api.setActionPanel(() => [
+          <GlobalSearch onChange={handleSearchChange} api={api} />,
+          <Button style={{ padding: '0 8px' }} onClick={() => reloadData()}>
+            <Reload />
+          </Button>,
+          <Button
+            onClick={() => clearCache(api)}
+            style={{
+              padding: '0 8px',
+            }}
+          >
+            <img
+              width={16}
+              height={16}
+              alt="clear"
+              src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
+            />
+          </Button>,
+        ]);
+      }
+    },
+    [(current && current.id) || ''],
+  );
 
-  const filterList = data => {
-    // according Search Input to filter
-    if (searchValue && Array.isArray(data)) {
-      const filterData = data.filter(item => (item.title || '').indexOf(searchValue) > -1);
-      return filterData;
-    }
-    return data;
-  };
+  const matchedResources = resources.filter(r => r.blockType === type);
 
   return (
     <div className={styles.container} id="block-list-view">
