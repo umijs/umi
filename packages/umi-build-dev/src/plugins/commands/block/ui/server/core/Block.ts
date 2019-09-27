@@ -8,6 +8,8 @@ import { routeExists, depthRouterConfig } from '../../../util';
 class Block {
   public api: IApi;
   public flow: Flow;
+  public send;
+  public initFlag: boolean = false;
 
   constructor(api: IApi) {
     this.api = api;
@@ -16,6 +18,16 @@ class Block {
   public async run(args) {
     this.flow = new Flow({
       api: this.api,
+    });
+    this.flow.on('log', ({ data }) => {
+      this.send({
+        type: 'org.umi.block.add-blocks-log',
+        payload: {
+          data,
+          id: this.flow.logger.id,
+          success: true,
+        },
+      });
     });
     return this.flow.run(args);
   }
@@ -67,6 +79,14 @@ class Block {
       return this.flow.getBlockUrl();
     }
     return '';
+  }
+
+  public init(send) {
+    if (this.initFlag) {
+      return;
+    }
+    this.send = send;
+    this.initFlag = true;
   }
 }
 

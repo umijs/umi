@@ -1,7 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi-types';
-import uppercamelcase from 'uppercamelcase';
 import { Resource, AddBlockParams } from '../../data.d';
 import clearGitCache from '../../clearGitCache';
 import Block from './core/Block';
@@ -15,7 +14,8 @@ export interface IApiBlock extends IApi {
 export default (api: IApi) => {
   const blockService = new Block(api);
 
-  api.onUISocket(async ({ action, failure, success }) => {
+  api.onUISocket(async ({ action, failure, success, send }) => {
+    blockService.init(send);
     const { type, payload = {} } = action;
 
     // 区块资源可配置

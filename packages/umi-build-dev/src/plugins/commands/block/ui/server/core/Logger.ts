@@ -1,13 +1,15 @@
 import ora from 'ora';
+import { EventEmitter } from 'events';
 import MemoryStream from './MemoryStream';
 
-class Logger {
+class Logger extends EventEmitter {
   public id: string;
   public spinner: any;
   public log: string = '';
   public ws: MemoryStream = null;
 
   constructor() {
+    super();
     this.ws = new MemoryStream({
       onData: this.onSpinnerData.bind(this),
     });
@@ -52,13 +54,12 @@ class Logger {
     return this.log;
   }
 
-  public appendLog(log) {
-    const data = Buffer.isBuffer(log) ? log.toString() : log;
-    this.log = `${this.log}${data}`;
-  }
-
   private onSpinnerData(chunk) {
-    this.log = `${this.log}${chunk.toString()}`;
+    const data = chunk.toString();
+    this.log = `${this.log}${data}`;
+    this.emit('log', {
+      data,
+    });
   }
 }
 

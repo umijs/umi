@@ -39,6 +39,8 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
   ctx.logger.start('😁  Parse url and args');
 
   const { url } = args;
+
+  ctx.logger.setId(url);
   ctx.result.blockUrl = url; // 记录当前的 url
 
   assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
