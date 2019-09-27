@@ -443,7 +443,7 @@ interface ITerminalProps {
   /** get xterm instance */
   getIns?: (ins: XTerminal) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
-  terminalConfig?: object;
+  config?: ITerminalOptions;
   [key: string]: any;
 }
 ```

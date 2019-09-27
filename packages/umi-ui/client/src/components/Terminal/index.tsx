@@ -16,7 +16,7 @@ export type TerminalType = XTerminal;
 
 const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
   const domContainer = ref || useRef<HTMLDivElement>(null);
-  const { title, className, defaultValue, getIns, terminalConfig = {}, terminalClassName } = props;
+  const { title, className, defaultValue, getIns, config = {}, terminalClassName } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
 
   const size = useWindowSize();
@@ -32,7 +32,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
       cursorBlink: false,
       cursorStyle: 'underline',
       disableStdin: true,
-      ...terminalConfig,
+      ...config,
     });
     setXterm(terminal);
   }, []);

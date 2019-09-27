@@ -2,7 +2,7 @@ import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent } from 'react';
-import { Terminal as XTerminal } from 'xterm';
+import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import { formatMessage, FormattedMessage, setLocale } from './locale';
 import { IRoute } from './';
 
@@ -128,7 +128,7 @@ declare namespace IUI {
     /** get xterm instance */
     getIns?: (ins: XTerminal) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
-    terminalConfig?: object;
+    config?: ITerminalOptions;
     [key: string]: any;
   }
 
