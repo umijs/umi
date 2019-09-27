@@ -277,7 +277,7 @@ const Adder: React.FC<AdderProps> = props => {
               />
             </Form.Item>
           )}
-          {api.isMini() && (
+          {api.isMini() && blockType === 'block' && (
             <Form.Item
               name="name"
               label="请输入名称"
