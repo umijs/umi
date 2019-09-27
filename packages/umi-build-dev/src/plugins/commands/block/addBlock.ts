@@ -162,6 +162,7 @@ async function add(
     path,
     name,
     routePath,
+    index,
     npmClient = defaultNpmClient,
     dryRun,
     skipDependencies,
@@ -348,6 +349,7 @@ async function add(
         entryPath: generator.entryPath,
         blockFolderName: generator.blockFolderName,
         dryRun,
+        index,
       });
     } catch (e) {
       spinner.fail();
