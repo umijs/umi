@@ -125,6 +125,13 @@ export default (api: IApi) => {
           success: true,
         });
         break;
+      // 获取区块 url
+      case 'org.umi.block.cancel':
+        success({
+          data: blockService.cancel(),
+          success: true,
+        });
+        break;
 
       // 区块添加
       case 'org.umi.block.add':

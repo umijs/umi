@@ -1,11 +1,9 @@
-import { ChildProcess } from 'child_process';
 import { IApi } from 'umi-types';
 import Logger from '../Logger';
 
 export interface IFlowContext {
   terminated: boolean;
   terminatedMsg?: string;
-  currentProc?: ChildProcess;
   logger: Logger; // 输出日志
   api: IApi;
   execa: any;
