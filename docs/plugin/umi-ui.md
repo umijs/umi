@@ -451,31 +451,6 @@ interface ITerminalProps {
 
 For example:
 
-Use `value`, components inside will increase according to the change of `value` logs:
-
-```js
-import React, { useState } from 'react'
-
-export default (api) => {
-  const { Terminal } = api;
-
-  function Component() {
-    return (
-      <div>
-        <Terminal
-          title="插件日志"
-          value="Hello World"
-        />
-      </div>
-    );
-  }
-
-  api.addPanel({
-    component: Component,
-  });
-}
-```
-
 use the instance, call the output functions:
 
 ```js
