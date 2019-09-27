@@ -3,12 +3,13 @@ import { Tabs, Spin, Radio, Button, message } from 'antd';
 import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 
-import { Resource, Block } from '../../data.d';
+import { Resource } from '../../data.d';
 import Context from './UIApiContext';
 import BlockList from './BlockList';
 import GlobalSearch from './search';
 import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
+import model, { ModelState } from './model';
 
 const clearCache = async (api: IUiApi) => {
   try {
@@ -42,7 +43,14 @@ export const scrollToById = (id: string, target: string) => {
 
 const { TabPane } = Tabs;
 
-const BlocksViewer: React.FC<{}> = () => {
+interface Props {
+  dispatch: (params: any) => {};
+  loading: boolean;
+  block: ModelState;
+}
+
+const BlocksViewer: React.FC<Props> = props => {
+  const { dispatch, block, loading } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
   const [blockAdding, setBlockAdding] = useState(null);
@@ -64,28 +72,31 @@ const BlocksViewer: React.FC<{}> = () => {
 
   const current: Resource | undefined =
     activeResource || resources.filter(item => item.blockType === type)[0];
-  const { data: blocks, loading, fetch, setList } = useCallData<Block[]>(
+  const blocks = current && block.blockData[current.id] ? block.blockData[current.id] : [];
+
+  // 初始化 block dva model data
+  useEffect(
     () => {
-      if (!current) {
-        return [];
+      if (current) {
+        dispatch({
+          type: `${model.namespace}/fetch`,
+          payload: {
+            resourceId: current.id,
+          },
+        });
       }
-      return callRemote({
-        type: 'org.umi.block.list',
-        payload: {
-          resourceId: current.id,
-        },
-      }) as any;
     },
-    [(current && current.id) || ''],
-    {
-      defaultData: [],
-    },
+    [current],
   );
 
-  // 对于 hooks 来说闭包会缓存 fetch ，所以这里定义一个
-  // 这样每次都会新建一个 reloadData
   const reloadData = () => {
-    fetch();
+    dispatch({
+      type: `${model.namespace}/fetch`,
+      payload: {
+        resourceId: current.id,
+        reload: true,
+      },
+    });
   };
 
   useEffect(() => {
@@ -146,7 +157,6 @@ const BlocksViewer: React.FC<{}> = () => {
             className={styles.tabs}
             activeKey={type}
             onChange={activeKey => {
-              setList([]);
               setType(activeKey as Resource['blockType']);
             }}
           >
@@ -157,7 +167,6 @@ const BlocksViewer: React.FC<{}> = () => {
             <Radio.Group
               value={current.id}
               onChange={e => {
-                setList([]);
                 setActiveResource(matchedResources.find(r => r.id === e.target.value));
               }}
             >
