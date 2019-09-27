@@ -81,14 +81,16 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
   if (useBuiltJSON) {
     // use blockList.json in git repo
     const fastGithub = await getFastGithub();
-    let url = `https://raw.githubusercontent.com/${owner}/${name}/master/blockList.json`;
+    let url = `https://raw.githubusercontent.com/${owner}/${name}/master/umi-block.json`;
     if (fastGithub === 'gitee.com') {
-      url = `https://gitee.com/${owner}/${name}/raw/master/blockList.json`;
+      url = `https://gitee.com/${owner}/${name}/raw/master/umi-block.json`;
     }
     spinner.start(`🔍  find block list form ${chalk.yellow(url)}`);
     const { body } = await got(url);
     spinner.succeed();
-    return JSON.parse(body);
+
+    // {list:[]}
+    return JSON.parse(body).list;
   }
 
   // 如果不是 github 不支持这个方法，返回一个空
