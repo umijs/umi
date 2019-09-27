@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, lstatSync, statSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import mkdirp from 'mkdirp';
 import semver from 'semver';
 import crequire from 'crequire';
@@ -305,7 +305,7 @@ export default api => {
       }
 
       // create container
-      this.entryPath = findJS(targetPath, 'index');
+      this.entryPath = findJS(targetPath, 'index') || findJS(targetPath);
       if (!this.entryPath) {
         this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
@@ -351,7 +351,7 @@ export default api => {
         if (this.isPageBlock) {
           targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
         } else {
-          targetFolder = join(targetPath, this.blockFolderName);
+          targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
         const options = {
           process(content, targetPath) {
