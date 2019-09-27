@@ -1,4 +1,5 @@
 import { IApi } from 'umi-types';
+import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
 import Logger from './Logger';
@@ -12,6 +13,7 @@ class Flow extends EventEmitter {
   public tasks: any[] = [];
   public isCancel: boolean = false;
   public logger: Logger;
+  public proc: ChildProcess;
 
   constructor({ api }: { api: IApi }) {
     super();
@@ -22,12 +24,11 @@ class Flow extends EventEmitter {
     });
 
     this.ctx = {
-      execa: execa(this.logger),
+      execa: execa(this.logger, this.setProcRef.bind(this)),
       api: this.api,
       logger: this.logger,
       terminated: false,
       terminatedMsg: '',
-      currentProc: null,
       stages: {},
       result: {},
     };
@@ -65,8 +66,8 @@ class Flow extends EventEmitter {
 
   public cancel() {
     this.isCancel = true;
-    if (!this.ctx.currentProc) {
-      this.ctx.currentProc.kill('SIGTERM');
+    if (this.proc) {
+      this.proc.kill('SIGTERM');
     }
   }
 
@@ -82,6 +83,10 @@ class Flow extends EventEmitter {
     [parseUrl, gitClone, gitUpdate, install, runGenerator, writeRoutes].forEach(task => {
       this.tasks.push(task);
     });
+  }
+
+  private setProcRef(proc) {
+    this.proc = proc;
   }
 }
 

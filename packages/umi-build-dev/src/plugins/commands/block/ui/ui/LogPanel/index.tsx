@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { IUiApi } from 'umi-types';
 import { Loading } from '@ant-design/icons';
 import styles from './index.module.less';
 
