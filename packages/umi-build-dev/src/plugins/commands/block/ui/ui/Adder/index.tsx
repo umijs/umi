@@ -261,7 +261,6 @@ const Adder: React.FC<AdderProps> = props => {
                     if (exists) {
                       throw new Error('文件路径已存在');
                     }
-                    console.log(path);
                   },
                 },
               ]}

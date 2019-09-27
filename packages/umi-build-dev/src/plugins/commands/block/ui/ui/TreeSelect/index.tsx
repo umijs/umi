@@ -76,6 +76,7 @@ const TreeSelect: React.FC<Props> = props => {
                 }}
               >
                 <Input
+                  className={styles.filterInput}
                   value={keyWord}
                   onChange={e => {
                     setKeyWord(e.target.value);
