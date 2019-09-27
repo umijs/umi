@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { IUiApi } from 'umi-types';
-import { Modal, Button, Switch, Tooltip, Form, message, Input } from 'antd';
+import { Modal, Button, Switch, Select, Tooltip, Form, message, Input } from 'antd';
 import { QuestionCircle } from '@ant-design/icons';
 import upperCamelCase from 'uppercamelcase';
 
@@ -85,34 +85,53 @@ const Adder: React.FC<AdderProps> = props => {
 
   // 如果不是 min 或者 是区块，就显示路由配置
   const needRouterConfig = !api.isMini() || blockType === 'template';
-  /**
-   * 默认值，自动拼接一下 name
-   */
-  const initialValues = {
-    path: `/${defaultName}`,
-    routePath: `/${defaultName}`,
-    name: upperCamelCase(defaultName),
-    transformJS: false,
-    removeLocale: false,
-  };
 
+  /**
+   * 这两个在 visible 的时候回重新加载一下
+   */
   const { data: routePathTreeData } = useCallData(
-    () =>
-      callRemote({
+    async () =>
+      visible &&
+      (callRemote({
         type: 'org.umi.block.routes',
-      }) as any,
-    [],
+      }) as any),
+    [visible],
     {
       defaultData: [],
     },
   );
 
   const { data: pageFoldersTreeData } = useCallData(
-    () =>
-      callRemote({
+    async () =>
+      visible &&
+      (callRemote({
         type: 'org.umi.block.pageFolders',
-      }) as any,
-    [],
+      }) as any),
+    [visible],
+    {
+      defaultData: [],
+    },
+  );
+  const { data: npmClients = [] } = useCallData(
+    async () => {
+      if (visible) {
+        const msg = (await callRemote({
+          type: '@@project/getNpmClients',
+        })) as { data: string[]; success: boolean };
+        if (msg.data && msg.data.length > 0) {
+          const selectNpmClient = form.getFieldValue('npmClient');
+          form.setFieldsValue({
+            npmClient: selectNpmClient || msg.data[0],
+          });
+        }
+        return msg;
+      }
+      return {
+        data: [],
+        success: true,
+      };
+    },
+    [visible],
     {
       defaultData: [],
     },
@@ -136,6 +155,17 @@ const Adder: React.FC<AdderProps> = props => {
       .replace(/(src\/)?pages?\//, '')
       .replace(/\/[^/]+((\.tsx?)|(\.jsx?))$/, '');
     return path;
+  };
+
+  /**
+   * 默认值，自动拼接一下 name
+   */
+  const initialValues = {
+    path: `/${defaultName}`,
+    routePath: `/${defaultName}`,
+    name: upperCamelCase(defaultName),
+    transformJS: false,
+    removeLocale: false,
   };
 
   return (
@@ -198,6 +228,7 @@ const Adder: React.FC<AdderProps> = props => {
             setLoading(true);
             setAddStatus('log');
             const params: AddBlockParams = {
+              ...values,
               url: block.url,
               path: blockType === 'block' ? values.path : values.path,
               routePath: blockType === 'template' ? values.routePath : undefined,
@@ -344,6 +375,14 @@ const Adder: React.FC<AdderProps> = props => {
           <Form.Item name="removeLocale" label="移除国际化">
             <Switch />
           </Form.Item>
+          <Form.Item name="npmClient" label="包管理器">
+            <Select>
+              {npmClients.map(client => (
+                <Select.Option value={client}>{client}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
           <Form.Item name="index">
             <input type="hidden" />
           </Form.Item>

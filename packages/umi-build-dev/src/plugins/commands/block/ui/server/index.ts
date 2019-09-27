@@ -129,7 +129,7 @@ export default (api: IApi) => {
           const { url } = payload as AddBlockParams;
           // 执行逻辑
           try {
-            await blockService.run({ url });
+            await blockService.run({ ...payload });
             success({
               data: {
                 message: `🎊 Adding block '${url}' is success`,
