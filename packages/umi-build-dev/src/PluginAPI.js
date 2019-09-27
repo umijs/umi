@@ -60,6 +60,7 @@ export default class PluginAPI {
       ],
       'onStart',
       'onStartAsync',
+      'onRouteChange',
       'onDevCompileDone',
       'onBuildSuccess',
       'onBuildSuccessAsync',

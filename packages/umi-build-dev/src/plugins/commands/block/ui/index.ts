@@ -326,11 +326,19 @@ export default (api: IApiBlock) => {
     }, []);
   }
 
-  api.modifyAFWebpackOpts(memo => {
-    // TODO: 处理路由的热更新
-    const routes = api.getRoutes();
-    const routeComponents = getRouteComponents(routes);
+  let routeComponents = null;
 
+  function generateRouteComponents() {
+    const routes = api.getRoutes();
+    routeComponents = getRouteComponents(routes);
+  }
+
+  api.onRouteChange(() => {
+    generateRouteComponents();
+  });
+
+  api.modifyAFWebpackOpts(memo => {
+    generateRouteComponents();
     memo.extraBabelPlugins = [
       ...(memo.extraBabelPlugins || []),
       [

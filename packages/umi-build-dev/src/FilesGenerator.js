@@ -315,6 +315,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
     if (this.routesContent !== routesContent) {
       writeFileSync(absRouterJSPath, prettierFile(`${routesContent.trim()}\n`), 'utf-8');
       this.routesContent = routesContent;
+      this.service.applyPlugins('onRouteChange');
     }
   }
 
