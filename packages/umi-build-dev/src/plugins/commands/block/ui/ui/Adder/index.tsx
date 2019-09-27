@@ -144,16 +144,20 @@ const Adder: React.FC<AdderProps> = props => {
         {children}
       </Button>
       <Modal
-        title="添加区块"
+        title="添加"
         visible={visible}
         destroyOnClose
         onCancel={() => {
           setVisible(false);
+          if (!loading) {
+            setAddStatus('form');
+          }
         }}
         okText={renderOkText(addStatus, loading)}
         onOk={() => {
           if (addStatus === 'log' && !loading) {
             setVisible(false);
+            setAddStatus('form');
             return;
           }
           if (addStatus === 'log') {

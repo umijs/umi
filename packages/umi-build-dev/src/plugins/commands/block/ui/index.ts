@@ -102,7 +102,7 @@ export default (api: IApiBlock) => {
         (async () => {
           try {
             log(`🕵️‍ get routes from ${chalk.yellow(api.cwd)}`);
-            const routers = depthRouterConfig(api.config.routes);
+            const routers = depthRouterConfig(api.getRoutes());
             success({
               data: routers,
               success: true,
@@ -252,7 +252,7 @@ export default (api: IApiBlock) => {
             const { path } = payload as AddBlockParams;
             log(`🔎 check exist route ${chalk.yellow(path)}`);
             success({
-              exists: routeExists(path, api.config.routes),
+              exists: routeExists(path, api.getRoutes()),
               success: true,
             });
           } catch (error) {
@@ -291,7 +291,7 @@ export default (api: IApiBlock) => {
       case 'org.umi.block.checkBindingInFile':
         (async () => {
           try {
-            const { path, name } = payload;
+            const { path, name } = payload as { path: string; name: string };
             const absPath = api.winPath(join(api.paths.absPagesPath, path));
             success({
               exists: haveRootBinding(absPath, uppercamelcase(name)),
