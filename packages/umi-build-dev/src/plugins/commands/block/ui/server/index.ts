@@ -140,8 +140,6 @@ export default (api: IApi) => {
               success: true,
             });
           } catch (error) {
-            console.log(99999);
-            console.error(error);
             failure({
               message: error.message,
               success: false,
