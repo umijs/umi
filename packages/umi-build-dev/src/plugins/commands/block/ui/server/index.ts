@@ -1,4 +1,4 @@
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from 'umi-types';
 import { Resource, AddBlockParams } from '../../data.d';
@@ -201,9 +201,11 @@ export default (api: IApi) => {
             const absTargetPath = api.winPath(join(api.paths.absPagesPath, targetPath));
             const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
 
-            success({
-              exists: haveRootBinding(entryPath, name),
-              success: true,
+            haveRootBinding(readFileSync(entryPath, 'utf-8'), name).then(exists => {
+              success({
+                exists,
+                success: true,
+              });
             });
           } catch (error) {
             failure({
