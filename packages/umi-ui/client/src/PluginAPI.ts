@@ -116,6 +116,13 @@ export default class PluginAPI {
     return tmpDir;
   };
 
+  detectLanguage = async () => {
+    const { language } = await callRemote({
+      type: '@@project/detectLanguage',
+    });
+    return language;
+  };
+
   getCwd: IUi.IGetCwd = async () => {
     const { cwd } = await callRemote({
       type: '@@fs/getCwd',

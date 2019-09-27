@@ -3,7 +3,7 @@ import { join, dirname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
-import { assign, cloneDeep } from 'lodash';
+import { assign, cloneDeep, uniq } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
 import { deprecate, winPath } from 'umi-utils';
@@ -114,6 +114,7 @@ plugin must export a function, e.g.
               '_applyPluginsAsync',
               'writeTmpFile',
               'getRoutes',
+              'getRouteComponents',
               // properties
               'cwd',
               'config',
@@ -270,6 +271,25 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const RoutesManager = getRouteManager(this);
     RoutesManager.fetchRoutes();
     return RoutesManager.routes;
+  }
+
+  getRouteComponents() {
+    const routes = this.getRoutes();
+
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = winPath(require.resolve(join(this.cwd, route.component)));
+          memo.push(component);
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return uniq(getComponents(routes));
   }
 
   init() {

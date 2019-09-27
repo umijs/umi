@@ -200,6 +200,7 @@ declare namespace IUI {
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
   type IGetSharedDataDir = () => Promise<string>;
+  type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type LaunchEditorTypes = 'project' | 'config';
 
@@ -278,6 +279,7 @@ declare namespace IUI {
     connect: IConnect;
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
+    detectLanguage: IDetectLanguage;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

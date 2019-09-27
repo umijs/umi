@@ -765,6 +765,17 @@ const dir = await api.getSharedDataDir();
 // "/Users/xxxxx/.umi/ui/shared-data/5bc6bd"
 ```
 
+### api.detectLanguage()
+
+获取当前项目的语言类型。
+
+示例：
+
+```js
+const language = await api.detectLanguage();
+// "JavaScript" | "TypeScript"
+```
+
 ### api.addConfigSection()
 
 添加配置区块。

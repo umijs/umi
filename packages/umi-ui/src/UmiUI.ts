@@ -24,6 +24,7 @@ import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } fro
 
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
+import detectLanguage from './detectLanguage';
 
 const debug = require('debug')('umiui:UmiUI');
 const debugSocket = debug.extend('socket');
@@ -657,6 +658,22 @@ export default class UmiUI {
         success({
           tmpDir: join(dirname(this.config.dbPath), 'shared-data', key),
         });
+        break;
+      case '@@project/detectLanguage':
+        try {
+          assert(key && this.servicesByKey[key], `Detect language failed, key must be supplied.`);
+          const service = this.servicesByKey[key];
+          success({
+            language: detectLanguage(service.cwd, {
+              routeComponents: service.getRouteComponents(),
+            }),
+          });
+        } catch (e) {
+          console.error(e);
+          failure({
+            message: e.message,
+          });
+        }
         break;
       case '@@fs/getCwd':
         success({
