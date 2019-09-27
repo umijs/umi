@@ -34,9 +34,21 @@ const depsArrayToObject = loc =>
  * @param {*} ctx
  */
 async function installDependencies(
-  { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
+  {
+    npmClient,
+    registry,
+    applyPlugins,
+    paths,
+    debug,
+    dryRun,
+    spinner,
+    skipDependencies,
+    execa: selfExeca,
+  },
   ctx,
 ) {
+  execa = selfExeca || execa;
+
   // read project package.json
   const projectPkgPath = applyPlugins('_modifyBlockPackageJSONPath', {
     initialValue: join(paths.cwd, 'package.json'),
