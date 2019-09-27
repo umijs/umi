@@ -1,11 +1,12 @@
 import { IApi } from 'umi-types';
+import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
 import Logger from './Logger';
 import execa from '../util/exec';
 
 import { parseUrl, gitClone, gitUpdate, runGenerator, writeRoutes, install } from './tasks';
 
-class Flow {
+class Flow extends EventEmitter {
   public api: IApi;
   public ctx: IFlowContext;
   public tasks: any[] = [];
@@ -13,8 +14,13 @@ class Flow {
   public logger: Logger;
 
   constructor({ api }: { api: IApi }) {
+    super();
     this.api = api;
     this.logger = new Logger();
+    this.logger.on('log', data => {
+      this.emit('log', data);
+    });
+
     this.ctx = {
       execa: execa(this.logger),
       api: this.api,
