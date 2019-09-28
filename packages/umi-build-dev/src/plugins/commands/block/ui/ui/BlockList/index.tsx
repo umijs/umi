@@ -187,16 +187,15 @@ const BlockList: React.FC<BlockListProps> = props => {
   );
 
   const currentPageList: Block[] = useMemo<Block[]>(
-    () => {
-      return filteredList.slice(
+    () =>
+      filteredList.slice(
         (currentPage - 1) * pageSize,
         currentPage * pageSize > filteredList.length ? filteredList.length : currentPage * pageSize,
-      );
-    },
+      ),
     [filteredList, currentPage],
   );
 
-  const isEmpty = !list || list.length === 0;
+  const isEmpty = !currentPageList || currentPageList.length === 0;
 
   let contents;
   if (loading) {
@@ -208,7 +207,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   } else if (isEmpty) {
     contents = (
       <div className={styles.emptyWrapper}>
-        <Empty />
+        <Empty description={keyword ? '未搜索到任何数据' : '暂无数据'} />
       </div>
     );
   } else {
