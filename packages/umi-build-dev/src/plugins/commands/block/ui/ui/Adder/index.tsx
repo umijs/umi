@@ -416,10 +416,10 @@ const Adder: React.FC<AdderProps> = props => {
             <Input placeholder="请输入名称！" />
           </Form.Item>
         )}
-        <Form.Item name="transformJS" label="编译为 JS">
+        <Form.Item name="transformJS" label="编译为 JS" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item name="removeLocale" label="移除国际化">
+        <Form.Item name="removeLocale" label="移除国际化" valuePropName="checked">
           <Switch />
         </Form.Item>
         <Form.Item name="npmClient" label="包管理器">
