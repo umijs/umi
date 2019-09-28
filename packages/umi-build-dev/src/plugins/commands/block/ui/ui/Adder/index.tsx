@@ -86,13 +86,15 @@ const Adder: React.FC<AdderProps> = props => {
 
   const [form] = Form.useForm();
   // const [npmClients, setNpmClients] = useState<string[]>(['npm']);
-  // useEffect(() => {
-  //   if (api.detectNpmClients) {
-  //     api.detectNpmClients().then(clients => {
-  //       setNpmClients(clients);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (api.detectNpmClients) {
+      api.detectNpmClients().then(clients => {
+        form.setFieldsValue({
+          npmClient: clients[0],
+        });
+      });
+    }
+  }, []);
 
   // 展示哪个界面
   // log 日志  form 表单
@@ -126,18 +128,10 @@ const Adder: React.FC<AdderProps> = props => {
   );
 
   const { data: npmClients = [] } = useCallData(
-    async () => {
-      const msg = (await callRemote({
+    () =>
+      callRemote({
         type: '@@project/getNpmClients',
-      })) as { data: string[]; success: boolean };
-      if (msg.data && msg.data.length > 0) {
-        const selectNpmClient = form.getFieldValue('npmClient');
-        form.setFieldsValue({
-          npmClient: selectNpmClient || msg.data[0],
-        });
-      }
-      return msg;
-    },
+      }) as any,
     [],
     {
       defaultData: ['npm'],
