@@ -1,7 +1,7 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { Col, Empty, Row, message, Spin, Typography, Tag, Button, Pagination } from 'antd';
 import LazyLoad, { forceCheck } from 'react-lazyload';
-import { Loading } from '@ant-design/icons';
+import { Loading, SecurityScanTwoTone } from '@ant-design/icons';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -174,6 +174,13 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(
+    () => {
+      setSelectedTag('');
+    },
+    [list],
+  );
 
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
