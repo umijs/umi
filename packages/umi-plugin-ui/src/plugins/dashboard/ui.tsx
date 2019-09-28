@@ -27,7 +27,7 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: 'org.umi.ui.dashboard.panel',
     path: '/dashboard',
-    actions: [ConfigAction],
+    actions: api.mini ? [] : [ConfigAction],
     icon: {
       type: 'dashboard',
       theme: 'filled',
