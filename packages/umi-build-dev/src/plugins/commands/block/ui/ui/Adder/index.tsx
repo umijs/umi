@@ -125,14 +125,6 @@ const Adder: React.FC<AdderProps> = props => {
     },
   );
 
-  if (api.detectLanguage) {
-    api.detectLanguage().then(language => {
-      form.setFieldsValue({
-        transformJS: language === 'JavaScript',
-      });
-    });
-  }
-
   const { data: npmClients = [] } = useCallData(
     async () => {
       const msg = (await callRemote({
@@ -166,7 +158,17 @@ const Adder: React.FC<AdderProps> = props => {
 
   useEffect(
     () => {
+      const setTransformJS = async () => {
+        // detect language
+        if (api.detectLanguage) {
+          const language = await api.detectLanguage();
+          form.setFieldsValue({
+            transformJS: language === 'JavaScript',
+          });
+        }
+      };
       form.setFieldsValue({ path, index });
+      setTransformJS();
     },
     [path, index],
   );
