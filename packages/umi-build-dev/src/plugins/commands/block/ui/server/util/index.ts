@@ -46,24 +46,55 @@ export const getFolderTreeData = (
     .filter(obj => obj);
 };
 
+export const getPathFromFilename = (filename: string) => {
+  // TODO get PagesPath from server add test case
+  // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
+  // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
+  // -> /xxx
+  const path = filename.replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
+  return path;
+};
 /**
- * pro-blocks 获取区块列表
- * https://github.com/ant-design/pro-blocks 是 pro 的官方区块
+ * 遍历文件地址
+ * 包含文件
+ * @param path
  */
-const fetchProBlockList = async (): Promise<BlockData> => {
-  try {
-    const blocks = await getBlockListFromGit('https://github.com/ant-design/pro-blocks');
-    return {
-      data: blocks,
-      success: true,
-    };
-  } catch (error) {
-    return {
-      message: error.message,
-      data: undefined,
-      success: false,
-    };
-  }
+export const getFilesTreeData = (
+  path: string,
+  parentPath: string = '/',
+  depth: number = 0,
+): TreeData[] => {
+  const files = fs.readdirSync(winPath(path));
+  return files
+    .map((fileName: string) => {
+      const status = fs.statSync(join(path, fileName));
+      const isDirectory = status.isDirectory();
+      // 是文件夹 并且不已 . 开头, 且最深三层
+      if (fileName.indexOf('.') !== 0 && depth < 5) {
+        if (
+          !isDirectory &&
+          !fileName.includes('.tsx') &&
+          !fileName.includes('.jsx') &&
+          !fileName.includes('.js')
+        ) {
+          return undefined;
+        }
+        const absPath = winPath(join(path, fileName));
+        const absPagePath = winPath(join(parentPath, fileName));
+        const children = isDirectory ? getFolderTreeData(absPath, absPagePath, depth + 1) : [];
+        if (children && children.length > 0) {
+          return {
+            key: absPagePath,
+            title: fileName,
+            value: getPathFromFilename(absPagePath),
+            children,
+          };
+        }
+        return { title: fileName, value: absPagePath, key: absPagePath };
+      }
+      return undefined;
+    })
+    .filter(obj => obj);
 };
 
 export const DEFAULT_RESOURCES: Resource[] = [

@@ -63,6 +63,24 @@ export default (api: IApi) => {
         })();
         break;
 
+      // 获得项目 page 下的目录结构
+      // 包含文件
+      case 'org.umi.block.pageFiles':
+        (async () => {
+          try {
+            success({
+              data: blockService.getFilesTreeData(),
+              success: true,
+            });
+          } catch (error) {
+            failure({
+              message: error.message,
+              success: false,
+            });
+          }
+        })();
+        break;
+
       // 清空缓存
       case 'org.umi.block.clear':
         (async () => {

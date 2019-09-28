@@ -3,7 +3,7 @@ import { Resource } from '../../../data.d';
 import Flow from './Flow';
 import { FlowState } from './enum';
 
-import { getFolderTreeData, getBlockList } from '../util';
+import { getFolderTreeData, getBlockList, getFilesTreeData } from '../util';
 import { routeExists, depthRouterConfig } from '../../../util';
 
 class Block {
@@ -76,6 +76,14 @@ class Block {
       key: '/',
     });
     return folderTreeData;
+  }
+
+  /**
+   * 获取 page 下的目录结构
+   * 包含文件
+   */
+  public getFilesTreeData() {
+    return getFilesTreeData(this.api.paths.absPagesPath);
   }
 
   public async getBlockList(resourceId: string, list: Resource[]) {

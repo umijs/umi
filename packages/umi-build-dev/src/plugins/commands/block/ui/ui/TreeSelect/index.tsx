@@ -9,6 +9,7 @@ export interface TreeSelectProps extends TreeProps {
   placeholder?: string;
   selectable?: boolean;
   filterPlaceholder?: string;
+  onlySelectLeaf?: boolean;
   onChange?: (value: string) => void;
 }
 const InputGroup = Input.Group;
@@ -35,7 +36,13 @@ const filterTreeData = (data: TreeProps['treeData'], keyWord: string) => {
 };
 
 const TreeSelect: React.FC<TreeSelectProps> = props => {
-  const { value = '', placeholder, onChange: propOnChange, filterPlaceholder } = props;
+  const {
+    value = '',
+    placeholder,
+    onChange: propOnChange,
+    onlySelectLeaf,
+    filterPlaceholder,
+  } = props;
   const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -48,7 +55,58 @@ const TreeSelect: React.FC<TreeSelectProps> = props => {
 
   const name = fileArray.pop();
   const filePath = fileArray.join('/') || '/';
-
+  const selectDom = (
+    <Select
+      style={{ width: onlySelectLeaf ? '100%' : '50%' }}
+      getPopupContainer={() => ref.current || document.body}
+      value={onlySelectLeaf ? value : filePath}
+      onDropdownVisibleChange={setOpen}
+      placeholder={placeholder}
+      open={open}
+      dropdownRender={() => (
+        <div
+          style={{
+            backgroundColor: '#23232e',
+          }}
+        >
+          <div
+            style={{
+              padding: 8,
+            }}
+          >
+            <Input
+              className={styles.filterInput}
+              value={keyWord}
+              onChange={e => {
+                setKeyWord(e.target.value);
+              }}
+              placeholder={filterPlaceholder}
+            />
+          </div>
+          <Tree
+            blockNode
+            className={styles.tree}
+            onClick={() => setOpen(false)}
+            selectedKeys={filePath ? [filePath] : []}
+            onSelect={(_, { node }: { node: AntTreeNodeProps }) => {
+              if (onlySelectLeaf && node.children && (node.children as any[]).length > 0) {
+                return;
+              }
+              if (onlySelectLeaf) {
+                propOnChange(node.value);
+                return;
+              }
+              if (onChange) {
+                onChange(node.value, name);
+              }
+            }}
+            {...props}
+            treeData={filterTreeData(props.treeData || [], keyWord)}
+          />
+        </div>
+      )}
+    />
+  );
   return (
     <div
       ref={ref}
@@ -56,58 +114,20 @@ const TreeSelect: React.FC<TreeSelectProps> = props => {
         position: 'relative',
       }}
     >
-      <InputGroup compact>
-        <Select
-          style={{ width: '50%' }}
-          getPopupContainer={() => ref.current || document.body}
-          value={filePath}
-          onDropdownVisibleChange={setOpen}
-          placeholder={placeholder}
-          open={open}
-          dropdownRender={() => (
-            <div
-              style={{
-                backgroundColor: '#23232e',
-              }}
-            >
-              <div
-                style={{
-                  padding: 8,
-                }}
-              >
-                <Input
-                  className={styles.filterInput}
-                  value={keyWord}
-                  onChange={e => {
-                    setKeyWord(e.target.value);
-                  }}
-                  placeholder={filterPlaceholder}
-                />
-              </div>
-              <Tree
-                className={styles.tree}
-                onClick={() => setOpen(false)}
-                selectedKeys={filePath ? [filePath] : []}
-                onSelect={(_, { node }: { node: AntTreeNodeProps }) => {
-                  if (onChange) {
-                    onChange(node.value, name);
-                  }
-                }}
-                {...props}
-                treeData={filterTreeData(props.treeData || [], keyWord)}
-              />
-            </div>
-          )}
-        />
-
-        <Input
-          style={{ width: '50%' }}
-          value={name}
-          onChange={e => {
-            onChange(filePath, e.target.value);
-          }}
-        />
-      </InputGroup>
+      {onlySelectLeaf ? (
+        selectDom
+      ) : (
+        <InputGroup compact>
+          {selectDom}
+          <Input
+            style={{ width: '50%' }}
+            value={name}
+            onChange={e => {
+              onChange(filePath, e.target.value);
+            }}
+          />
+        </InputGroup>
+      )}
     </div>
   );
 };

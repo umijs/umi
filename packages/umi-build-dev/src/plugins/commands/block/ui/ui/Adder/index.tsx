@@ -12,6 +12,7 @@ import LogPanel from '../LogPanel';
 import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
+import { getPathFromFilename } from '../BlockList/BlockItem';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
@@ -170,7 +171,7 @@ const Adder: React.FC<AdderProps> = props => {
        * 默认值，自动拼接一下 name
        */
       const initialValues = {
-        path: `/${defaultName}`,
+        path: blockType !== 'template' ? '/' : `/${defaultName}`,
         routePath: `/${defaultName.toLocaleLowerCase()}`,
         name: upperCamelCase(defaultName),
       };
@@ -244,7 +245,7 @@ const Adder: React.FC<AdderProps> = props => {
             const params: AddBlockParams = {
               ...values,
               url: block.url,
-              path: blockType === 'block' ? values.path : values.path,
+              path: getPathFromFilename(api, values.path),
               routePath: blockType === 'template' ? values.routePath : undefined,
               isPage: false,
               index: parseInt(values.index || '0', 0),
@@ -272,9 +273,7 @@ const Adder: React.FC<AdderProps> = props => {
         }}
       >
         {blockType === 'template' && <AddTemplateForm visible={visible} blockType={blockType} />}
-        {blockType === 'block' && !api.isMini() && (
-          <AddBlockFormForUI form={form} blockTarget={blockTarget} />
-        )}
+        {blockType === 'block' && !api.isMini() && <AddBlockForm form={form} visible={visible} />}
         {blockType === 'block' && api.isMini() && (
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}

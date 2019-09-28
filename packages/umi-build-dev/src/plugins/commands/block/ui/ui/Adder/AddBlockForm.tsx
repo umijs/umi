@@ -8,20 +8,27 @@ import { FormInstance } from 'antd/es/form/util';
 
 import Context from '../UIApiContext';
 import InfoToolTip from './InfoToolTip';
+import PageFilesTreeData from './PageFilesTreeData';
+import { getPathFromFilename } from '../BlockList/BlockItem';
 
 const AddBlockFormForUI: React.FC<{
-  blockTarget: string;
   form: FormInstance;
-}> = ({ blockTarget, form }) => {
+  visible: boolean;
+}> = ({ form, visible }) => {
   const { api } = useContext(Context);
   return (
     <>
       <Form.Item
         name="path"
-        label={<InfoToolTip title="安装路径" placeholder="安装路径当前选中页面的路径" />}
-        rules={[{ required: true, message: '安装路径为必填项！' }]}
+        label={
+          <InfoToolTip
+            title="文件安装路径"
+            placeholder="文件安装路径表示区块要添加到的文件地址！"
+          />
+        }
+        rules={[{ required: true, message: '文件安装路径为必填项！' }]}
       >
-        <Input disabled />
+        <PageFilesTreeData visible={visible} />
       </Form.Item>
       <Form.Item
         name="name"
@@ -35,10 +42,11 @@ const AddBlockFormForUI: React.FC<{
           { required: true, message: '名称为必填项!' },
           {
             validator: async (rule, name) => {
+              const filePath = getPathFromFilename(api, form.getFieldValue('path'));
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
                 payload: {
-                  path: `${blockTarget}/${name}`,
+                  path: `${filePath}/${name}`,
                 },
               })) as {
                 exists: boolean;
@@ -46,11 +54,10 @@ const AddBlockFormForUI: React.FC<{
               if (exists) {
                 throw new Error('目标路径已存在文件!');
               }
-              const blockFileTarget = form.getFieldValue('path');
               const { exists: varExists } = (await api.callRemote({
                 type: 'org.umi.block.checkBindingInFile',
                 payload: {
-                  path: blockFileTarget,
+                  path: filePath,
                   name,
                 },
               })) as { exists: boolean };

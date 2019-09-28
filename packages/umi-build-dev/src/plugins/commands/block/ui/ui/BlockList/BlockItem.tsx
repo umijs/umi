@@ -40,7 +40,7 @@ export interface BlockItemProps {
   keyword?: string;
 }
 
-const getPathFromFilename = (api, filename: string) => {
+export const getPathFromFilename = (api, filename: string) => {
   // TODO get PagesPath from server add test case
   // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
   // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
@@ -52,7 +52,7 @@ const getPathFromFilename = (api, filename: string) => {
   return path;
 };
 
-const getBlockTargetFromFilename = (api, filename) => {
+export const getBlockTargetFromFilename = (api, filename) => {
   // TODO 更优雅的实现
   const path = filename
     .replace(api.currentProject.path, '')
