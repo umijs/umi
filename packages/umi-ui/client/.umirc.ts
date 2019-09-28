@@ -74,6 +74,10 @@ const config: IConfig = {
           webpackChunkName: true,
           loadingComponent: './components/Loading',
         },
+        title: {
+          defaultTitle: 'Umi UI',
+          useLocale: true,
+        },
         locale: {
           default: 'zh-CN',
           antd: true,
