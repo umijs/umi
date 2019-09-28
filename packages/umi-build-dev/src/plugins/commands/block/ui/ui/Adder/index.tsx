@@ -20,7 +20,7 @@ interface AdderProps {
   onHideModal?: () => void;
   blockTarget?: string;
   path?: string;
-  index?: string;
+  index?: number;
 }
 
 const InfoToolTip: React.FC<{ title: string; placeholder: string }> = ({ title, placeholder }) => (
