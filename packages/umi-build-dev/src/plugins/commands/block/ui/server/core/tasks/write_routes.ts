@@ -7,7 +7,7 @@ import appendBlockToContainer from '../../../../appendBlockToContainer';
 const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { generator } = ctx.stages;
   const { api, logger } = ctx;
-  const { skipModifyRoutes, layout: isLayout, dryRun } = args;
+  const { skipModifyRoutes, layout: isLayout, dryRun, index } = args;
 
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
     logger.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
@@ -40,6 +40,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
         entryPath: generator.entryPath,
         blockFolderName: generator.blockFolderName,
         dryRun,
+        index,
       });
     } catch (e) {
       logger.fail();
