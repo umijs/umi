@@ -4,7 +4,7 @@ import { TreeProps, AntTreeNodeProps } from 'antd/es/tree';
 
 import styles from './index.module.less';
 
-interface Props extends TreeProps {
+export interface TreeSelectProps extends TreeProps {
   value?: string;
   placeholder?: string;
   selectable?: boolean;
@@ -34,7 +34,7 @@ const filterTreeData = (data: TreeProps['treeData'], keyWord: string) => {
   return [];
 };
 
-const TreeSelect: React.FC<Props> = props => {
+const TreeSelect: React.FC<TreeSelectProps> = props => {
   const { value = '', placeholder, onChange: propOnChange, filterPlaceholder } = props;
   const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);

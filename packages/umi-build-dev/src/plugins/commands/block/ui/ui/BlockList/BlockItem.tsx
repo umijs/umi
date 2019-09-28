@@ -78,9 +78,9 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
       blockTarget: getBlockTargetFromFilename(api, position.filename),
     };
     onShowModal(item, option);
-  } else {
-    onShowModal(item, {});
+    return;
   }
+  onShowModal(item, {});
 };
 
 const ToolTipAddButton: React.FC<ButtonProps> = ({ disabled, children, ...reset }) => {
