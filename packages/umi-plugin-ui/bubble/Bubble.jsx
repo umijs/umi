@@ -88,7 +88,7 @@ class Bubble extends React.Component {
     const Logo = logoDecorator({ isBigfish });
 
     return (
-      <Dragger open={open} hide={hide} onClick={this.showBubble}>
+      <Dragger open={open} hide={hide} onClick={this.showBubble} onOverlap={this.hideBubble}>
         <BubbleWrapper open={open}>
           <Logo open={open} />
           <CloseComponent open={open} />

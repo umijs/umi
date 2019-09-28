@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { HideWrapper } from '../Hide';
-import { getScrollOffsets, getClientWidth, getClientHeight } from './utils';
+import { getScrollOffsets, getClientWidth, getClientHeight, isRelativeToViewport } from './utils';
+
+const initRight = 60;
+const initBottom = 30;
 
 const Container = styled.div`
   cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
   position: fixed;
   z-index: 999;
-  right: 60px;
-  bottom: 30px;
+  right: ${initRight}px;
+  bottom: ${initBottom}px;
   &:before {
     width: 0;
     height: 0;
@@ -85,18 +88,53 @@ export default class Draggable extends React.Component {
     };
   }
 
+  isFixedElem = element => {
+    const position =
+      element && window.getComputedStyle(element) && window.getComputedStyle(element).position
+        ? window.getComputedStyle(element).position
+        : 'static';
+    return position === 'fixed';
+  };
+
+  overlapDetection = () => {
+    const node = ReactDOM.findDOMNode(this);
+    const { left, top, right, bottom, width, height } = node.getBoundingClientRect();
+    const aroundElems = [
+      document.elementFromPoint(left, top),
+      document.elementFromPoint(right, bottom),
+    ];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const elem of aroundElems) {
+      if (elem !== node && this.isFixedElem(elem)) {
+        // other element
+        // const { width: aroundW, height: aroundH } = elem.getBoundingClientRect();
+        // const adjustRight = width / 2 + aroundW / 2 + initRight;
+        // const adjustBottom = height / 2 + aroundH / 2 + initBottom;
+        // console.log('offsetRight', adjustRight, 'offsetBottom', adjustBottom);
+        // node.style.right = `${adjustRight}px`;
+        // node.style.bottom = `${adjustBottom}px`;
+        if (this.props.onOverlap) {
+          this.props.onOverlap();
+        }
+        break;
+      }
+    }
+  };
+
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false);
     const node = ReactDOM.findDOMNode(this);
     const { width } = node.getBoundingClientRect();
+    window.addEventListener('load', this.overlapDetection, false);
     this.setState({
       width,
     });
   }
 
   componentWillUnmount() {
-    window.removeEventListener('mousemove', this.handleMouseMove, false);
-    window.removeEventListener('mouseup', this.handleMouseUp, false);
+    window.removeEventListener('load', this.overlapDetection, false);
+    this.removeMouseEventListener();
     window.removeEventListener('resize', this.handleResize, false);
   }
 
@@ -147,8 +185,7 @@ export default class Draggable extends React.Component {
     this.deltaX = startX - origX;
     this.deltaY = startY - origY;
 
-    window.addEventListener('mousemove', this.handleMouseMove, true);
-    window.addEventListener('mouseup', this.handleMouseUp, true);
+    this.addMouseEventListener();
 
     if (this.props.onDragStart) {
       this.props.onDragStart();
@@ -169,7 +206,29 @@ export default class Draggable extends React.Component {
     else e.returnValue = false; // IE
   };
 
-  handleMouseMove = ({ clientX, clientY }) => {
+  handleContextMenu = () => {
+    this.removeMouseEventListener();
+  };
+
+  addMouseEventListener = () => {
+    window.addEventListener('contextmenu', this.handleContextMenu, false);
+    window.addEventListener('mousemove', this.handleMouseMove, false);
+    window.addEventListener('mouseup', this.handleMouseUp, false);
+  };
+
+  removeMouseEventListener = () => {
+    window.removeEventListener('contextmenu', this.handleContextMenu, false);
+    window.removeEventListener('mousemove', this.handleMouseMove, false);
+    window.removeEventListener('mouseup', this.handleMouseUp, false);
+  };
+
+  handleMouseMove = e => {
+    const { clientX, clientY } = e;
+    if (e.button !== 0) {
+      // not left mouse down
+      this.removeMouseEventListener();
+      return;
+    }
     const { dragged } = this.state;
     const { deltaX, deltaY } = this;
     const node = ReactDOM.findDOMNode(this.node);
@@ -236,9 +295,7 @@ export default class Draggable extends React.Component {
   };
 
   handleMouseUp = e => {
-    window.removeEventListener('mousemove', this.handleMouseMove, true);
-    window.removeEventListener('mouseup', this.handleMouseUp, true);
-
+    this.removeMouseEventListener();
     const interval = new Date().getTime() - this.intervalStart;
     if (interval < 150 && e.target.id !== 'umi-ui-mini-hide') {
       this.props.onClick(e);

@@ -91,7 +91,7 @@ class App extends React.Component {
 
   initUIService = async () => {
     const { currentProject, path } = this.props;
-    console.log('currentProject', currentProject);
+    // console.log('currentProject', currentProject);
     if (this.state.connected) {
       // open iframe UmiUI
       if (!currentProject.key) {
