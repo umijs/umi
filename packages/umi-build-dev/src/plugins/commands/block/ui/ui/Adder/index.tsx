@@ -217,6 +217,7 @@ const Adder: React.FC<AdderProps> = props => {
         maxHeight: '60vh',
         overflow: 'auto',
       }}
+      centered
       okText={renderOkText(addStatus, taskLoading)}
       onOk={() => {
         if (addStatus === 'log' && !taskLoading) {
