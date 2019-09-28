@@ -206,9 +206,12 @@ const Adder: React.FC<AdderProps> = props => {
     return null;
   }
 
+  /**
+   * 计算初始值
+   */
   const initialValues = {
     transformJS: false,
-    removeLocale: false,
+    removeLocale: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
   // 如果不是 min 或者 是区块，就显示路由配置
@@ -272,6 +275,7 @@ const Adder: React.FC<AdderProps> = props => {
             };
             try {
               addBlock(api, params);
+              localStorage.setItem('umi-ui-block-removeLocale', values.removeLocale);
             } catch (error) {
               message.error(error.message);
             }

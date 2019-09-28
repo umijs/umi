@@ -20,8 +20,8 @@ const clearCache = async (api: IUiApi) => {
       data: string;
     };
 
-    // 用户上次使用的包管理器
-    localStorage.remove('umi-ui-block-npmClient');
+    // 用户记忆的参数
+    localStorage.remove('umi-ui-block-removeLocale');
     message.success(data);
   } catch (e) {
     message.error(e.message);
