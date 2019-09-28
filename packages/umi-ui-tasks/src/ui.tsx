@@ -96,7 +96,7 @@ export default (api: IUiApi) => {
       });
     }, []);
     const sections = Object.keys(SCRIPTS).filter(item => {
-      if (api.isMini() && item === TaskType.DEV) {
+      if (api.mini && item === TaskType.DEV) {
         return false;
       }
       return true;
