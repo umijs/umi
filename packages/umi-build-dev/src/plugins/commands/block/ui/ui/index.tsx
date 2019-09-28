@@ -120,39 +120,36 @@ const BlocksViewer: React.FC<Props> = props => {
   }, []);
 
   // 区块右上角的区域 三个按钮
-  useEffect(
-    () => {
-      const isMini = api.isMini();
-      const buttonPadding = isMini ? '0 4px' : '0 8px';
+  useEffect(() => {
+    const isMini = api.isMini();
+    const buttonPadding = isMini ? '0 4px' : '0 8px';
 
-      const handleSearchChange = (v: string) => {
-        setSearchValue(v);
-      };
-      if (api.setActionPanel) {
-        api.setActionPanel(() => [
-          <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
-          <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
-            <Reload />
-          </Button>,
-          <Button
-            key="clear"
-            onClick={() => clearCache(api)}
-            style={{
-              padding: buttonPadding,
-            }}
-          >
-            <img
-              width={16}
-              height={16}
-              alt="clear"
-              src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
-            />
-          </Button>,
-        ]);
-      }
-    },
-    [(current && current.id) || ''],
-  );
+    const handleSearchChange = (v: string) => {
+      setSearchValue(v);
+    };
+    if (api.setActionPanel) {
+      api.setActionPanel(() => [
+        <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
+        <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
+          <Reload />
+        </Button>,
+        <Button
+          key="clear"
+          onClick={() => clearCache(api)}
+          style={{
+            padding: buttonPadding,
+          }}
+        >
+          <img
+            width={16}
+            height={16}
+            alt="clear"
+            src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
+          />
+        </Button>,
+      ]);
+    }
+  }, []);
 
   const matchedResources = resources.filter(r => r.blockType === type);
 

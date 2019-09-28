@@ -38,4 +38,5 @@ export interface AddBlockParams {
   index?: number;
   npmClient?: string;
   blockTarget?: string;
+  block?: Block;
 }
