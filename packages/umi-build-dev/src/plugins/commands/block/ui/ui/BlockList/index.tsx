@@ -47,7 +47,6 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   useEffect(
     () => {
       setSelectedTag('');

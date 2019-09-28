@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Tabs, Spin, Radio, Button, message } from 'antd';
 import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
+import { stringify, parse } from 'qs';
 
 import { Resource, Block, AddBlockParams } from '../../data.d';
 import Context from './UIApiContext';
@@ -11,6 +12,33 @@ import useCallData from './hooks/useCallData';
 import styles from './index.module.less';
 import Adder from './Adder';
 import { ModelState, namespace } from './model';
+
+/**
+ * get substr from url
+ */
+const getQueryConfig = () => {
+  const { type, resource } = parse(window.location.search.substr(1));
+  return {
+    type,
+    resource,
+  };
+};
+
+/**
+ *  更新 search
+ * @param params
+ */
+const updateUrlQuery = (params: { type: string; resource?: string }) => {
+  const defaultParas = getQueryConfig();
+  window.history.pushState(
+    {},
+    '',
+    `?${stringify({
+      ...defaultParas,
+      ...params,
+    })}`,
+  );
+};
 
 const clearCache = async (api: IUiApi) => {
   try {
@@ -62,6 +90,17 @@ const BlocksViewer: React.FC<Props> = props => {
   const [activeResource, setActiveResource] = useState<Resource>(null);
   const [searchValue, setSearchValue] = useState<string>('');
 
+  useEffect(() => {
+    const query = getQueryConfig();
+    if (query.type) {
+      setType(query.type);
+    } else {
+      updateUrlQuery({ type });
+    }
+    if (query.resource) {
+      setActiveResource(query.resource);
+    }
+  }, []);
   // 获取数据源
   const { data: resources } = useCallData<Resource[]>(
     () =>
@@ -163,6 +202,10 @@ const BlocksViewer: React.FC<Props> = props => {
               activeKey={type}
               onChange={activeKey => {
                 setType(activeKey as Resource['blockType']);
+                updateUrlQuery({
+                  type: activeKey,
+                  resource: activeResource ? activeResource.id : undefined,
+                });
               }}
             >
               <TabPane tab="区块" key="block" />
@@ -172,7 +215,9 @@ const BlocksViewer: React.FC<Props> = props => {
               <Radio.Group
                 value={current.id}
                 onChange={e => {
-                  setActiveResource(matchedResources.find(r => r.id === e.target.value));
+                  const resource = matchedResources.find(r => r.id === e.target.value);
+                  setActiveResource(resource);
+                  updateUrlQuery({ type, resource: resource.id });
                 }}
               >
                 {matchedResources.map(r => (

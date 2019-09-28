@@ -6,7 +6,8 @@ export const namespace = 'org.umi.block';
 
 let callRemote;
 
-export function initApiToGloal(api: IUiApi) {
+export function initApiToGlobal(api: IUiApi) {
+  // eslint-disable-next-line
   callRemote = api.callRemote;
 }
 
@@ -29,24 +30,23 @@ export default {
       const { resourceId, reload } = payload;
       if (blockData[resourceId] && !reload) {
         return blockData[resourceId];
-      } else {
-        console.log('fetch list');
-        const { data: list } = yield call(() => {
-          return callRemote({
-            type: 'org.umi.block.list',
-            payload: {
-              resourceId,
-            },
-          });
-        });
-        yield put({
-          type: 'saveData',
+      }
+      const { data: list } = yield call(() => {
+        return callRemote({
+          type: 'org.umi.block.list',
           payload: {
             resourceId,
-            list,
           },
         });
-      }
+      });
+      yield put({
+        type: 'saveData',
+        payload: {
+          resourceId,
+          list,
+        },
+      });
+      return [];
     },
   },
   reducers: {

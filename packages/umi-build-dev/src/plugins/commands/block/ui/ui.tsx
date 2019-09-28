@@ -5,10 +5,10 @@ import Context from './ui/UIApiContext';
 import BlocksViewer from './ui/index';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
-import model, { initApiToGloal, namespace } from './ui/model';
+import model, { initApiToGlobal, namespace } from './ui/model';
 
 export default (api: IUiApi) => {
-  initApiToGloal(api);
+  initApiToGlobal(api);
 
   api.addLocales({
     'zh-CN': zhCN,
