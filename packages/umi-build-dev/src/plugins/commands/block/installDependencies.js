@@ -134,7 +134,7 @@ async function installDependencies(
       )} with ${npmClient} --registry ${registry}`,
     );
     try {
-      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install'];
+      let npmArgs = npmClient.includes('yarn') ? ['add'] : ['install', '-d'];
       npmArgs = [...npmArgs, ...deps, `--registry=${registry}`];
 
       // 安装区块的时候不需要安装 puppeteer, 因为 yarn 会全量安装一次所有依赖。
