@@ -110,15 +110,15 @@ export default (api: IApi) => {
         })();
         break;
 
-      // 获取缓存中的日志
-      case 'org.umi.block.get-pre-blocks-log':
+      // 获取安装中的日志
+      case 'org.umi.block.get-adding-blocks-log':
         success({
           data: blockService.getLog(),
           success: true,
         });
         break;
 
-      // 获取区块 url
+      // 获取安装中区块 url
       case 'org.umi.block.get-adding-block-url':
         success({
           data: blockService.getBlockUrl(),
@@ -129,13 +129,6 @@ export default (api: IApi) => {
       case 'org.umi.block.cancel':
         success({
           data: blockService.cancel(),
-          success: true,
-        });
-        break;
-      // 查询是否有正在执行的任务
-      case 'org.umi.block.hasRunningTask':
-        success({
-          data: blockService.hasRunningFlow(),
           success: true,
         });
         break;

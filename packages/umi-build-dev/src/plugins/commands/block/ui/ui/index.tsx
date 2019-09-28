@@ -149,14 +149,22 @@ const BlocksViewer: React.FC<Props> = props => {
      */
     callRemote({
       type: 'org.umi.block.get-adding-block-url',
-    }).then(({ data }: { data: Block }) => {
+    }).then(({ data }: { data: string }) => {
       if (data) {
-        setWillAddBlock(data);
-        // 我把每个 item 都加了一个 id，就是他的 url
-        scrollToById(data.url, 'block-list-view');
+        setAddBlock({ url: data });
       }
     });
   }, []);
+
+  useEffect(
+    () => {
+      if (willAddBlock) {
+        // 我把每个 item 都加了一个 id，就是他的 url
+        scrollToById(willAddBlock.url, 'block-list-view');
+      }
+    },
+    [fetchDataLoading],
+  );
 
   // 区块右上角的区域 三个按钮
   useEffect(() => {

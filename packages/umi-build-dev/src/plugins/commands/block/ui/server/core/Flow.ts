@@ -88,6 +88,9 @@ class Flow extends EventEmitter {
   }
 
   public getBlockUrl() {
+    if (this.state !== FlowState.ING) {
+      return '';
+    }
     return this.ctx.result.blockUrl;
   }
 

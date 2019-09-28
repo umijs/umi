@@ -102,7 +102,7 @@ const ToolTipAddButton: React.FC<ButtonProps> = ({ disabled, children, ...reset 
 const BlockItem: React.FC<BlockItemProps> = ({
   type,
   item,
-  loading,
+  loading = false,
   disabled,
   onShowModal,
   keyword,
@@ -118,7 +118,15 @@ const BlockItem: React.FC<BlockItemProps> = ({
 
   return (
     <Col style={style} key={item.url}>
-      <div id={item.url} className={isBlock ? styles.blockCard : styles.templateCard}>
+      <div
+        id={item.url}
+        className={isBlock ? styles.blockCard : styles.templateCard}
+        onClick={() => {
+          if (loading) {
+            onShowModal(item, {});
+          }
+        }}
+      >
         <Spin spinning={loading} tip="添加中...">
           <div className={styles.demo}>
             <div className={styles.addProject}>

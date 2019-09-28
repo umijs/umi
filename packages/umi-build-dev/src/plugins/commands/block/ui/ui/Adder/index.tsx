@@ -159,6 +159,8 @@ const Adder: React.FC<AdderProps> = props => {
       },
     });
 
+    onAddBlockChange(undefined);
+
     const setTransformJS = async () => {
       // detect language
       if (api.detectLanguage) {
@@ -168,6 +170,18 @@ const Adder: React.FC<AdderProps> = props => {
         });
       }
     };
+    /**
+     * 获取上次的安装的区块 url
+     * 成功之后会被清除
+     */
+    callRemote({
+      type: 'org.umi.block.get-adding-block-url',
+    }).then(({ data }: { data: string }) => {
+      if (data) {
+        setAddStatus('log');
+        setTaskLoading(true);
+      }
+    });
     setTransformJS();
   }, []);
 

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Loading } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
-
-import styles from './index.module.less';
 import Context from '../UIApiContext';
 
 interface LogPanelProps {
@@ -14,8 +12,26 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
   const [logs, setLogs] = useState<string[]>([]);
   const [terminalRef, setTerminalRef] = useState<XTerminal>(null);
   const { Terminal } = api;
+
   useEffect(
     () => {
+      if (!terminalRef) {
+        return;
+      }
+      /**
+       * 获取上次安装的日志
+       * 安装完成会清空
+       */
+      api
+        .callRemote({
+          type: 'org.umi.block.get-adding-blocks-log',
+        })
+        .then(({ data }) => {
+          if (terminalRef) {
+            terminalRef.writeln(data);
+          }
+        });
+
       const tempLogs = [];
       /**
        *监听日志，每次会 push 一条
@@ -34,31 +50,16 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
     [terminalRef],
   );
 
-  useEffect(() => {
-    /**
-     * 获取上次安装的日志
-     * 安装完成会清空
-     */
-    api
-      .callRemote({
-        type: 'org.umi.block.get-pre-blocks-log',
-      })
-      .then(({ data }) => {
-        setLogs([...data]);
-      });
-    return () => {
-      // 组件结束挂载之后，清空
-      setLogs([]);
-    };
-  }, []);
   if (!Terminal) {
     return null;
   }
   return (
     <Terminal
       title={loading ? <Loading /> : ' '}
-      defaultValue={logs.join('\n')}
-      onInit={terminal => setTerminalRef(terminal)}
+      defaultValue={logs.join('')}
+      onInit={terminal => {
+        setTerminalRef(terminal);
+      }}
       config={api.isMini() ? { fontSize: 12, lineHeight: 0.8 } : {}}
     />
   );
