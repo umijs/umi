@@ -36,23 +36,23 @@ export default (api: IApiBlock) => {
     generateRouteComponents();
   });
 
-  api.modifyAFWebpackOpts(memo => {
-    generateRouteComponents();
-    memo.extraBabelPlugins = [
-      ...(memo.extraBabelPlugins || []),
-      [
-        require.resolve('../sdk/flagBabelPlugin'),
-        {
-          doTransform(filename) {
-            return routeComponents.includes(api.winPath(filename));
-          },
-        },
-      ],
-    ];
-    return memo;
-  });
-
   if (process.env.NODE_ENV === 'development') {
+    api.modifyAFWebpackOpts(memo => {
+      generateRouteComponents();
+      memo.extraBabelPlugins = [
+        ...(memo.extraBabelPlugins || []),
+        [
+          require.resolve('../sdk/flagBabelPlugin'),
+          {
+            doTransform(filename) {
+              return routeComponents.includes(api.winPath(filename));
+            },
+          },
+        ],
+      ];
+      return memo;
+    });
+
     api.addEntryCode(`
 (() => {
   // Runtime block add component
