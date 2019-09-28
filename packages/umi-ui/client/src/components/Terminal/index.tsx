@@ -1,7 +1,6 @@
 import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
-import { fit } from 'xterm/lib/addons/fit/fit';
 import cls from 'classnames';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
@@ -22,6 +21,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
   const size = useWindowSize();
 
   useEffect(() => {
+    (Terminal as any).applyAddon(fit);
     const terminal = new (Terminal as typeof XTerminal)({
       allowTransparency: true,
       fontSize: 14,
@@ -42,10 +42,12 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
       if (domContainer.current && xterm) {
         xterm.loadAddon(new WebLinksAddon());
         xterm.open(domContainer.current);
+        if (xterm.fit) {
+          xterm.fit();
+        }
         if (onInit) {
           onInit(xterm);
         }
-        fit(xterm);
       }
     },
     [domContainer, xterm],
@@ -53,8 +55,8 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
 
   useEffect(
     () => {
-      if (xterm) {
-        fit(xterm);
+      if (xterm && xterm.fit) {
+        xterm.fit();
       }
     },
     [size.width, size.height],
