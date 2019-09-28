@@ -249,6 +249,8 @@ declare namespace IUI {
     readonly _: ILodash;
     /** debug for client */
     readonly debug: IDebug;
+    /** can use as vars */
+    readonly mini: boolean;
     /** currentProject  */
     currentProject: ICurrentProject;
     /** get current locale: zh-CN or en-US */

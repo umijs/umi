@@ -14,6 +14,7 @@ import Terminal from '@/components/Terminal';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
+import { isMiniUI } from '@/utils';
 import Field from './components/Field';
 
 // PluginAPI
@@ -30,6 +31,7 @@ export default class PluginAPI {
   ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
+  mini: boolean;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -47,6 +49,7 @@ export default class PluginAPI {
     this.Field = Field;
     this.ConfigForm = ConfigForm;
     this.connect = connect as IUi.IConnect;
+    this.mini = isMiniUI();
   }
 
   addConfigSection(section) {
@@ -71,7 +74,7 @@ export default class PluginAPI {
     // TODO
   };
 
-  isMini: IUi.IMini = () => 'mini' in (querystring.parse(window.location.search.slice(1)) || {});
+  isMini: IUi.IMini = () => isMiniUI();
 
   showMini: IUi.IShowMini = () => {
     if (this.isMini) {

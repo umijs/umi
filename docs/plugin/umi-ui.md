@@ -871,7 +871,7 @@ api.addConfigSection({
 });
 ```
 
-### api.isMini()
+### api.isMini() / api.mini
 
 Get whether the current environment is Umi UI mini.
 
@@ -879,6 +879,7 @@ For example:
 
 ```js
 const isMini = api.isMini();  // true / false
+// or const isMini = api.mini
 ```
 
 ![image](https://user-images.githubusercontent.com/13595509/65216522-c2ac1680-dae3-11e9-868a-80ec7bd32e1d.png)

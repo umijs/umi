@@ -60,6 +60,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
         title={loading ? <Loading /> : ' '}
         defaultValue={logs.join('\n')}
         onInit={terminal => setTerminalRef(terminal)}
+        config={api.isMini() ? { fontSize: 12 } : {}}
       />
     </div>
   );
