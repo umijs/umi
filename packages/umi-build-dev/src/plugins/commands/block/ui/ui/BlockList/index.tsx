@@ -8,6 +8,7 @@ import HighlightedText from './HighlightedText';
 import getInsertPosition from './getInsertPosition';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
+import TagSelect from '../TagSelect';
 
 const { CheckableTag } = Tag;
 
@@ -246,32 +247,12 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   return (
     <>
-      <div className={styles.tagContainer}>
-        <CheckableTag
-          checked={selectedTag === ''}
-          onChange={() => {
-            setSelectedTag('');
-          }}
-        >
-          全部
-        </CheckableTag>
-        {tags.map(tag => (
-          <CheckableTag
-            checked={selectedTag === tag}
-            key={tag}
-            onChange={checked => {
-              if (checked) {
-                setSelectedTag(tag);
-              } else {
-                setSelectedTag('');
-              }
-            }}
-          >
-            {tag}
-          </CheckableTag>
-        ))}
-        {loading && <Loading />}
-      </div>
+      <TagSelect
+        tagList={tags}
+        value={selectedTag}
+        loading={loading}
+        onChange={tagValue => setSelectedTag(tagValue)}
+      />
       <div className={styles.cardContainer}>{contents}</div>
     </>
   );

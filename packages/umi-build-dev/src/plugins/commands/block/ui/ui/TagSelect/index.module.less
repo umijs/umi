@@ -1,0 +1,29 @@
+.tagContainer {
+  margin-bottom: 16px;
+  float: right;
+  margin-right: -8px;
+  max-width: 61vw;
+  margin-top: 0;
+  text-align: left;
+  position: relative;
+  :global {
+    .ant-tag:not(.ant-tag-checkable-checked) {
+      border: 1px solid fade(#ffffff, 15);
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+  }
+}
+
+.tagContainer.hasExpandButton {
+  padding-right: 42px;
+}
+.expandButton {
+  position: absolute;
+  right: 0;
+  top: 8px;
+}
+.expand {
+  overflow: hidden;
+  max-height: 32px;
+}
