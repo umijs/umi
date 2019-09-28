@@ -179,27 +179,39 @@ const Adder: React.FC<AdderProps> = props => {
     [index],
   );
 
+  useEffect(
+    () => {
+      if (!block || !block.url) {
+        return;
+      }
+      // 生成 defaultName
+      const defaultName = block.url.split('/').pop();
+
+      /**
+       * 默认值，自动拼接一下 name
+       */
+      const initialValues = {
+        path: `/${defaultName}`,
+        routePath: `/${defaultName}`,
+        name: upperCamelCase(defaultName),
+      };
+
+      form.setFieldsValue(initialValues);
+    },
+    [block ? block.url : ''],
+  );
+
   if (!block || !block.url) {
     return null;
   }
 
-  // 生成 defaultName
-  const defaultName = block.url.split('/').pop();
-
-  // 如果不是 min 或者 是区块，就显示路由配置
-  const needRouterConfig = !api.isMini() || blockType === 'template';
-
-  /**
-   * 默认值，自动拼接一下 name
-   */
   const initialValues = {
-    path: `/${defaultName}`,
-    routePath: `/${defaultName}`,
-    name: upperCamelCase(defaultName),
     transformJS: false,
     removeLocale: false,
     npmClient: 'npm',
   };
+  // 如果不是 min 或者 是区块，就显示路由配置
+  const needRouterConfig = !api.isMini() || blockType === 'template';
 
   return (
     <Modal
