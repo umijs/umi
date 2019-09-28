@@ -25,12 +25,15 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
   const { theme } = React.useContext(Context);
   const anchorCls = cls(styles['ui-toc'], styles[`ui-toc-${theme}`], className);
 
-  React.useEffect(() => {
-    const { hash } = window.location;
-    if (hash && anchorRef.current) {
-      anchorRef.current.handleScrollTo(hash);
-    }
-  });
+  React.useEffect(
+    () => {
+      const { hash } = window.location;
+      if (hash && anchorRef.current) {
+        anchorRef.current.handleScrollTo(hash);
+      }
+    },
+    [anchors, window.location.hash],
+  );
 
   const getAnchorHref = href => {
     return `#${href.replace('#', '')}`;
