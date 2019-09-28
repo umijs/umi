@@ -187,8 +187,8 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.dev' })}</h1>
       <>
-        <Row>
-          <Col span={20} className={styles.buttonGroup}>
+        <Row type="flex" justify="space-between">
+          <Col className={styles.buttonGroup}>
             <Button type="primary" onClick={isTaskRunning ? cancelDev : dev}>
               {isTaskRunning ? (
                 <>
@@ -316,7 +316,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
               </div>
             </Modal>
           </Col>
-          <Col span={4} className={styles.formatGroup}>
+          <Col className={styles.formatGroup}>
             <Radio.Group defaultValue="log" value={view} buttonStyle="solid" onChange={toggleView}>
               <Radio.Button value="log">{intl({ id: 'org.umi.ui.tasks.log' })}</Radio.Button>
               <Radio.Button value="analyze">
