@@ -192,7 +192,7 @@ const Adder: React.FC<AdderProps> = props => {
        */
       const initialValues = {
         path: `/${defaultName}`,
-        routePath: `/${defaultName}`,
+        routePath: `/${upperCamelCase(defaultName)}`,
         name: upperCamelCase(defaultName),
       };
 

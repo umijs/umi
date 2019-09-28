@@ -74,11 +74,12 @@ const Meats: React.FC<{
 const BlockItem: React.FC<BlockItemProps> = ({ type, item, loading, onShowModal, keyword }) => {
   const { api } = useContext(Context);
   const isBlock = type === 'block';
+  const isMini = api.isMini();
+
   const style = {
-    flex: '0 1 20%',
+    flex: `0 1 ${isMini ? '25%' : '20%'}`,
     overflow: 'hidden',
   };
-  const isMini = api.isMini();
   return (
     <Col style={style} key={item.url}>
       <div id={item.url} className={isBlock ? styles.blockCard : styles.templateCard}>
