@@ -35,7 +35,7 @@ const filterTreeData = (data: TreeProps['treeData'], keyWord: string) => {
 };
 
 const TreeSelect: React.FC<Props> = props => {
-  const { value, placeholder, onChange: propOnChange, filterPlaceholder } = props;
+  const { value = '', placeholder, onChange: propOnChange, filterPlaceholder } = props;
   const ref = useRef();
   const [open, setOpen] = useState<boolean>(false);
 

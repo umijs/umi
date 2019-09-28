@@ -169,9 +169,20 @@ const Adder: React.FC<AdderProps> = props => {
 
   useEffect(
     () => {
-      form.setFieldsValue({ path, index });
+      if (path) {
+        form.setFieldsValue({ path });
+      }
     },
-    [path, index],
+    [path],
+  );
+
+  useEffect(
+    () => {
+      if (index !== null && index !== undefined) {
+        form.setFieldsValue({ index });
+      }
+    },
+    [index],
   );
 
   if (!block || !block.url) {
