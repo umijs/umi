@@ -110,8 +110,8 @@ export default function({ types: t }) {
 
             let d = findExportDefaultDeclaration(node);
 
-            // Support decorator
-            if (t.isCallExpression(d)) {
+            // Support hoc
+            while (t.isCallExpression(d)) {
               d = d.arguments[0];
             }
 

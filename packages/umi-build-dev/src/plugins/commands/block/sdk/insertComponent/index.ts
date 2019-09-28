@@ -63,7 +63,8 @@ export default function(content, opts) {
       const { node } = path;
 
       let d = findExportDefaultDeclaration(node);
-      if (t.isCallExpression(d)) {
+      // support hoc
+      while (t.isCallExpression(d)) {
         d = d.arguments[0];
       }
       d = getIdentifierDeclaration(d, path);
