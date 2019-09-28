@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Anchor } from 'antd';
 import cls from 'classnames';
+import history from '@tmp/history';
 import Context from '@/layouts/Context';
 // import { AnchorProps } from 'antd/lib/anchor';
 import styles from './Toc.less';
@@ -24,14 +25,24 @@ const UiToc: React.SFC<UiTocProps> = React.memo(props => {
   const { theme } = React.useContext(Context);
   const anchorCls = cls(styles['ui-toc'], styles[`ui-toc-${theme}`], className);
 
+  React.useEffect(() => {
+    const { hash } = window.location;
+    if (hash && anchorRef.current) {
+      anchorRef.current.handleScrollTo(hash);
+    }
+  });
+
   const getAnchorHref = href => {
-    return href.startsWith('#') ? href : `#${href}`;
+    return `#${href.replace('#', '')}`;
   };
 
   const handleClick = (e, { href }) => {
     e.preventDefault();
     if (anchorRef.current) {
-      anchorRef.current.handleScrollTo(href);
+      // anchorRef.current.handleScrollTo(href);
+      history.push({
+        hash: href,
+      });
     }
   };
 

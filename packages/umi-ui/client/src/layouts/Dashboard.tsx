@@ -296,7 +296,7 @@ export default withRouter(props => {
                     )}
                   </Sider>
                   <Content className={styles.main}>
-                    <div className={styles.header}>
+                    <div key="header" className={styles.header}>
                       <h1>{activePanel && title}</h1>
                       {Array.isArray(actions) && actions.length > 0 && (
                         <Row type="flex" className={styles['header-actions']}>
@@ -308,7 +308,9 @@ export default withRouter(props => {
                               typeof panelAction === 'function' &&
                               React.isValidElement(panelAction({}))
                             ) {
-                              return panelAction({});
+                              return React.cloneElement(panelAction({}), {
+                                key: j.toString(),
+                              });
                             }
                             const { title, action, onClick, ...btnProps } = panelAction;
                             const handleClick = async () => {
