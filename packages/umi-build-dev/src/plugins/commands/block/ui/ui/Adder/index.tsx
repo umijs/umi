@@ -12,8 +12,7 @@ import { AddBlockParams, Block, Resource } from '../../../data.d';
 import LogPanel from '../LogPanel';
 
 interface AdderProps {
-  onAddSuccess?: (params: AddBlockParams) => void;
-  onAddClick?: (params: AddBlockParams) => void;
+  onAddBlockChange?: (block: Block) => void;
   block: Block;
   visible?: boolean;
   blockType?: Resource['blockType'];
@@ -76,7 +75,16 @@ const cancelAddBlockTask = (api: IUiApi) => {
 };
 
 const Adder: React.FC<AdderProps> = props => {
-  const { visible, blockTarget, onHideModal, path, index, block = { url: '' }, blockType } = props;
+  const {
+    visible,
+    blockTarget,
+    onAddBlockChange,
+    onHideModal,
+    path,
+    index,
+    block = { url: '' },
+    blockType,
+  } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
 
@@ -146,6 +154,7 @@ const Adder: React.FC<AdderProps> = props => {
       type: 'org.umi.block.add-blocks-success',
       onMessage: () => {
         setTaskLoading(false);
+        onAddBlockChange(undefined);
         message.success('添加完成！');
       },
     });
@@ -251,6 +260,7 @@ const Adder: React.FC<AdderProps> = props => {
             onOk: async () => {
               await cancelAddBlockTask(api);
               setTaskLoading(false);
+              onAddBlockChange(undefined);
             },
           });
           return;
@@ -276,6 +286,7 @@ const Adder: React.FC<AdderProps> = props => {
             try {
               addBlock(api, params);
               localStorage.setItem('umi-ui-block-removeLocale', values.removeLocale);
+              onAddBlockChange(block);
             } catch (error) {
               message.error(error.message);
             }

@@ -54,6 +54,7 @@ const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
+  const [willAddBlock, setWillAddBlock] = useState<Block>(null);
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
@@ -111,7 +112,7 @@ const BlocksViewer: React.FC<Props> = props => {
       type: 'org.umi.block.get-adding-block-url',
     }).then(({ data }: { data: Block }) => {
       if (data) {
-        setAddBlock(data);
+        setWillAddBlock(data);
         // 我把每个 item 都加了一个 id，就是他的 url
         scrollToById(data.url, 'block-list-view');
       }
@@ -189,17 +190,17 @@ const BlocksViewer: React.FC<Props> = props => {
               <BlockList
                 type={type}
                 keyword={searchValue}
-                addingBlock={addingBlock}
+                addingBlock={willAddBlock || addingBlock}
                 list={blocks}
                 onShowModal={(currentBlock, option) => {
                   setAddModalVisible(true);
-                  setAddBlock(currentBlock);
+                  setWillAddBlock(currentBlock);
                   setBlockParams(option);
                 }}
                 loading={fetchDataLoading}
                 onHideModal={() => {
                   setAddModalVisible(false);
-                  setAddBlock(undefined);
+                  setWillAddBlock(undefined);
                   setBlockParams(undefined);
                 }}
               />
@@ -214,13 +215,14 @@ const BlocksViewer: React.FC<Props> = props => {
         )}
       </div>
       <Adder
-        block={addingBlock}
+        block={willAddBlock}
         blockType={type}
         {...blockParams}
         visible={addModalVisible}
+        onAddBlockChange={addBlock => setAddBlock(addBlock)}
         onHideModal={() => {
           setAddModalVisible(false);
-          setAddBlock(undefined);
+          setWillAddBlock(undefined);
           setBlockParams(undefined);
         }}
       />

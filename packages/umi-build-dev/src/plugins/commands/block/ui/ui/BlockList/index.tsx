@@ -1,7 +1,6 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { Col, Empty, Row, message, Spin, Typography, Tag, Button, Pagination } from 'antd';
 import LazyLoad, { forceCheck } from 'react-lazyload';
-import { Loading } from '@ant-design/icons';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -9,8 +8,6 @@ import getInsertPosition from './getInsertPosition';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
 import TagSelect from '../TagSelect';
-
-const { CheckableTag } = Tag;
 
 const getPathFromFilename = (api, filename: string) => {
   // TODO get PagesPath from server add test case
