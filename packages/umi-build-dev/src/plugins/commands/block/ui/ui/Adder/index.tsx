@@ -146,6 +146,7 @@ const Adder: React.FC<AdderProps> = props => {
       type: 'org.umi.block.add-blocks-success',
       onMessage: () => {
         setTaskLoading(false);
+        message.success('添加完成！');
       },
     });
 
