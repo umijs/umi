@@ -154,21 +154,22 @@ const Adder: React.FC<AdderProps> = props => {
         setTaskLoading(false);
       },
     });
+
+    const setTransformJS = async () => {
+      // detect language
+      if (api.detectLanguage) {
+        const language = await api.detectLanguage();
+        form.setFieldsValue({
+          transformJS: language === 'JavaScript',
+        });
+      }
+    };
+    setTransformJS();
   }, []);
 
   useEffect(
     () => {
-      const setTransformJS = async () => {
-        // detect language
-        if (api.detectLanguage) {
-          const language = await api.detectLanguage();
-          form.setFieldsValue({
-            transformJS: language === 'JavaScript',
-          });
-        }
-      };
       form.setFieldsValue({ path, index });
-      setTransformJS();
     },
     [path, index],
   );
