@@ -147,10 +147,6 @@ export default (api: IApi) => {
           // 执行逻辑
           try {
             await blockService.run({ ...payload });
-
-            // dva model 有时会不生效，重新生成一遍临时文件
-            api.rebuildTmpFiles();
-
             success({
               data: {
                 message: `🎊 Adding block '${url}' is success`,

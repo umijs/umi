@@ -4,7 +4,7 @@ import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
 import chalk from 'chalk';
-import { debounce, uniq } from 'lodash';
+import { throttle, uniq } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, findJS, prettierFile } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
@@ -53,7 +53,7 @@ export default class FilesGenerator {
     });
     watcher.on(
       'all',
-      debounce((event, path) => {
+      throttle((event, path) => {
         debug(`${event} ${path}`);
         this.rebuild();
       }, 100),
