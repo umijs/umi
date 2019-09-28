@@ -155,7 +155,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { list = [], addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
-  const pageSize = 15;
+  const pageSize = 10;
 
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,
