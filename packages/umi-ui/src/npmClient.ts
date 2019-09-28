@@ -5,15 +5,13 @@ const getSpeedUpEnv = () => {
   return BinaryMirrorConfig.china.ENVS;
 };
 
-export async function executeCommand(
-  npmClient,
-  args,
-  targetDir,
-  opts: {
-    unsafePerm: false;
-    taobaoSpeedUp: true;
-  },
-) {
+interface IOpts {
+  unsafePerm: false;
+  taobaoSpeedUp: true;
+  onData?: () => {};
+}
+
+export async function executeCommand(npmClient, args, targetDir, opts: IOpts) {
   const extraEnv = getSpeedUpEnv();
   return new Promise((resolve, reject) => {
     // 详细日志
