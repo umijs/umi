@@ -16,7 +16,7 @@ export default (api: IApi) => {
 
   api.onUISocket(async ({ action, failure, success, send }) => {
     blockService.init(send);
-    const { type, payload = {} } = action;
+    const { type, payload = {}, lang } = action;
 
     // 区块资源可配置
     let resources: Resource[] = [];
@@ -171,6 +171,19 @@ export default (api: IApi) => {
             });
           }
         })();
+        break;
+
+      case 'org.umi.block.checkIfCanAdd':
+        if (!api.config.routes) {
+          failure({
+            message:
+              lang === 'zh-CN'
+                ? `区块添加不支持约定式路由，请转成配置式路由。`
+                : 'The block adding does not support the conventional route, please convert to a configuration route.',
+          });
+        } else {
+          success({});
+        }
         break;
 
       // 检查路由是否存在

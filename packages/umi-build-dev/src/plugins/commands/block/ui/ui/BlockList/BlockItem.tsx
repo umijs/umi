@@ -66,6 +66,15 @@ export const getBlockTargetFromFilename = (api, filename) => {
  * @param param 参数
  */
 const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
+  try {
+    await api.callRemote({
+      type: 'org.umi.block.checkIfCanAdd',
+    });
+  } catch (e) {
+    message.error(e.message);
+    return;
+  }
+
   if (api.isMini() && type === 'block') {
     // umi ui 中区块有自己独有的打开方式
     const position = (await getInsertPosition(api).catch(e => {
@@ -80,6 +89,7 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
     onShowModal(item, option);
     return;
   }
+
   onShowModal(item, {});
 };
 
