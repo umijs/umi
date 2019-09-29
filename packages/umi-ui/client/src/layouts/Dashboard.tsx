@@ -302,7 +302,9 @@ export default withRouter(props => {
                         <Row type="flex" className={styles['header-actions']}>
                           {actions.map((panelAction, j) => {
                             if (React.isValidElement(panelAction)) {
-                              return panelAction;
+                              return React.cloneElement(panelAction, {
+                                key: j.toString(),
+                              });
                             }
                             if (
                               typeof panelAction === 'function' &&

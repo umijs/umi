@@ -102,6 +102,7 @@ export default class Draggable extends React.Component {
     const aroundElems = [
       document.elementFromPoint(left, top),
       document.elementFromPoint(right, bottom),
+      document.elementFromPoint(left + width / 2, top + height / 2),
     ];
 
     // eslint-disable-next-line no-restricted-syntax
