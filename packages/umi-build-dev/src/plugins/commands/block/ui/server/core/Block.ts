@@ -31,16 +31,20 @@ class Block {
       });
     });
 
-    this.flow.on('success', ({ data }) => {
+    this.flow.on('state', ({ state, data }) => {
       this.send({
-        type: 'org.umi.block.add-blocks-success',
+        type:
+          state === FlowState.SUCCESS
+            ? 'org.umi.block.add-blocks-success'
+            : 'org.umi.block.add-blocks-fail',
         payload: {
-          data,
           id: this.flow.logger.id,
+          data,
           success: true,
         },
       });
     });
+
     return this.flow.run(args);
   }
 
