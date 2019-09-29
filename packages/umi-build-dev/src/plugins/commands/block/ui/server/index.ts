@@ -180,84 +180,107 @@ export default (api: IApi) => {
         break;
 
       case 'org.umi.block.checkIfCanAdd':
-        function haveFeature(feature) {
-          return payload.item.features && payload.item.features.includes(feature);
-        }
+        (async () => {
+          const { item } = payload as {
+            item: {
+              features: string[];
+            };
+            type: string;
+          };
 
-        if (!api.config.routes) {
-          return failure({
-            message:
-              lang === 'zh-CN'
-                ? '区块添加不支持约定式路由，请转成配置式路由。'
-                : 'The block adding does not support the conventional route, please convert to a configuration route.',
-          });
-        }
+          /**
+           * 获取config 中 react 的判断
+           * @param reactPlugin   reactPlugin<any>
+           */
+          function genReactPluginOpts(reactPlugin?: any) {
+            if (reactPlugin && typeof reactPlugin !== 'string') {
+              return reactPlugin[1];
+            }
+            return {};
+          }
 
-        const payloadType = payload.type === 'block' ? '区块' : '模板';
-        const isBigfish = !!process.env.BIGFISH_COMPAT;
-        const reactPlugin = api.config.plugins.find(p => {
-          return p === 'umi-plugin-react' || p[0] === 'umi-plugin-react';
-        });
-        const reactPluginOpts = reactPlugin
-          ? typeof reactPlugin === 'string'
-            ? {}
-            : reactPlugin[1]
-          : {};
+          /**
+           * 是不是有这个 feature tag
+           * @param feature
+           */
+          function haveFeature(feature) {
+            return item.features && item.features.includes(feature);
+          }
 
-        // antd 特性依赖
-        // bigfish 默认开了 antd
-        if (haveFeature('antd') && !isBigfish) {
-          if (!reactPlugin || !reactPluginOpts.antd) {
-            return failure({
+          if (!api.config.routes) {
+            failure({
               message:
                 lang === 'zh-CN'
-                  ? `${payloadType}依赖 antd，请安装 umi-plugin-react 插件并开启 antd 。`
-                  : 'Block depends on antd, please install umi-plugin-react and enable antd.',
+                  ? '区块添加不支持约定式路由，请转成配置式路由。'
+                  : 'The block adding does not support the conventional route, please convert to a configuration route.',
             });
+            return;
           }
-        }
 
-        // dva 特性依赖
-        if (haveFeature('dva')) {
-          if (isBigfish) {
-            if (!api.config.dva) {
-              return failure({
-                message: `${payloadType}依赖 dva，请开启 dva 配置。`,
+          const payloadType = (payload as { type: string }).type === 'block' ? '区块' : '模板';
+          const isBigfish = !!process.env.BIGFISH_COMPAT;
+          const reactPlugin = api.config.plugins.find(p => {
+            return p === 'umi-plugin-react' || p[0] === 'umi-plugin-react';
+          });
+          const reactPluginOpts = genReactPluginOpts(reactPlugin);
+
+          // antd 特性依赖
+          // bigfish 默认开了 antd
+          if (haveFeature('antd') && !isBigfish) {
+            if (!reactPlugin || !reactPluginOpts.antd) {
+              failure({
+                message:
+                  lang === 'zh-CN'
+                    ? `${payloadType}依赖 antd，请安装 umi-plugin-react 插件并开启 antd 。`
+                    : 'Block depends on antd, please install umi-plugin-react and enable antd.',
               });
+              return;
             }
-          } else {
+          }
+
+          // dva 特性依赖
+          if (haveFeature('dva')) {
+            if (isBigfish) {
+              if (!api.config.dva) {
+                failure({
+                  message: `${payloadType}依赖 dva，请开启 dva 配置。`,
+                });
+                return;
+              }
+            }
             if (!reactPlugin || !reactPluginOpts.locale) {
-              return failure({
+              failure({
                 message:
                   lang === 'zh-CN'
                     ? `${payloadType}依赖 dva，请安装 umi-plugin-react 插件并开启 dva 。`
                     : 'Block depends on dva, please install umi-plugin-react and enable dva.',
               });
+              return;
             }
           }
-        }
 
-        // locale 特性依赖
-        if (haveFeature('i18n')) {
-          if (isBigfish) {
-            if (!api.config.locale) {
-              return failure({
-                message: `${payloadType}依赖 locale，请开启 locale 配置。`,
-              });
+          // locale 特性依赖
+          if (haveFeature('i18n')) {
+            if (isBigfish) {
+              if (!api.config.locale) {
+                failure({
+                  message: `${payloadType}依赖 locale，请开启 locale 配置。`,
+                });
+                return;
+              }
             }
-          } else {
             if (!reactPlugin || !reactPluginOpts.locale) {
-              return failure({
+              failure({
                 message:
                   lang === 'zh-CN'
                     ? `${payloadType}依赖国际化（i18n），请安装 umi-plugin-react 插件并开启 locale 。`
                     : 'Block depends on i18n, please install umi-plugin-react and enable locale.',
               });
+              return;
             }
           }
-        }
-
-        success({});
+          success({ data: true, success: true });
+        })();
         break;
 
       // 检查路由是否存在

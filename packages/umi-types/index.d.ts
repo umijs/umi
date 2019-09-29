@@ -434,6 +434,7 @@ export interface IApi {
   pkg: IPkg;
   webpackConfig: IWebpack.Configuration;
   service: any;
+  locale: any;
   paths: {
     cwd: string;
     outputPath: string;
