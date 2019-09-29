@@ -1,6 +1,6 @@
 {
   "name": "umi-ui-theme",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Umi UI theme for antd",
   "main": "lib/index.js",
   "files": [
