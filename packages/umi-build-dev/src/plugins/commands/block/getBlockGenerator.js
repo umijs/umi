@@ -273,6 +273,7 @@ export default api => {
       this.blockFolderPath = targetPath;
 
       const blockPath = this.path;
+      debug(`blockPath is ${blockPath}`);
 
       applyPlugins('beforeBlockWriting', {
         args: {

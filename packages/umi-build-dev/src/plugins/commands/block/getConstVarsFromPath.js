@@ -14,7 +14,10 @@ export default function(path) {
   if (path.includes('-') || path.includes('_')) {
     ROUTE_PATH = toLower(path);
   }
-  const PAGE_NAME = ROUTE_PATH.split('/').pop();
+  const PAGE_NAME =
+    ROUTE_PATH.split('/')
+      .filter(str => str)
+      .pop() || 'NewPage';
   const BLOCK_NAME = stripFirstSlash(ROUTE_PATH).replace(/\//g, '-');
 
   return new Map([
