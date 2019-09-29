@@ -63,6 +63,13 @@ class Bubble extends React.Component {
   };
 
   showBubble = e => {
+    // 显示 bubble 时取消页面的编辑模式
+    window.postMessage(
+      JSON.stringify({
+        action: 'umi.ui.disableBlockEditMode',
+      }),
+    );
+
     const node = ReactDOM.findDOMNode(this);
     const { toggleMiniOpen } = this.props;
     if (this.state.hide) {
