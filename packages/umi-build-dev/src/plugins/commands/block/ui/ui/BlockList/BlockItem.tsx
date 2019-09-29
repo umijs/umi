@@ -70,6 +70,10 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
   try {
     await api.callRemote({
       type: 'org.umi.block.checkIfCanAdd',
+      payload: {
+        item,
+        type,
+      },
     });
   } catch (e) {
     message.error(e.message);
