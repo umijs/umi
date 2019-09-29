@@ -28,7 +28,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
         })
         .then(({ data }) => {
           if (terminalRef) {
-            terminalRef.writeln(data);
+            terminalRef.write(data.replace(/\n/g, '\r\n'));
           }
         });
 
@@ -41,7 +41,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
         onMessage: ({ data }) => {
           tempLogs.push(data);
           if (terminalRef) {
-            terminalRef.writeln(data);
+            terminalRef.write(data.replace(/\n/g, '\r\n'));
           }
           setLogs([...tempLogs]);
         },

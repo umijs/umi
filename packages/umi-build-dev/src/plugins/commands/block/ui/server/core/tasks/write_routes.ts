@@ -1,4 +1,3 @@
-import clipboardy from 'clipboardy';
 import chalk from 'chalk';
 import { IFlowContext, IAddBlockOption } from '../types';
 import writeNewRoute from '../../../../../../../utils/writeNewRoute';
@@ -10,7 +9,9 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { skipModifyRoutes, layout: isLayout, dryRun, index } = args;
 
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-    logger.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
+    logger.appendLog(
+      `Start write route from ${generator.routePath} to ${api.service.userConfig.file}`,
+    );
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = api.applyPlugins('_modifyBlockNewRouteConfig', {
@@ -25,15 +26,15 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
         writeNewRoute(newRouteConfig, api.service.userConfig.file, api.paths.absSrcPath);
       }
     } catch (e) {
-      logger.fail();
+      logger.appendLog(`Faild to write route: ${e.message}\n`);
       throw new Error(e);
     }
-    logger.succeed();
+    logger.appendLog('Success write route\n');
   }
 
   if (!generator.isPageBlock) {
-    logger.start(
-      `Write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
+    logger.appendLog(
+      `Start write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
     );
     try {
       appendBlockToContainer({
@@ -43,24 +44,15 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
         index,
       });
     } catch (e) {
-      logger.fail();
+      logger.appendLog(`Faild write block component: ${e.message}\n`);
       throw new Error(e);
     }
-    logger.succeed();
+    logger.appendLog('Success write block component \n');
   }
 
   // Final: show success message
   const viewUrl = `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`;
-  try {
-    clipboardy.writeSync(viewUrl); // TODO: clipboardy 相关应该去掉
-    logger.success(
-      `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
-        '(copied to clipboard)',
-      )} for view the block.`,
-    );
-  } catch (e) {
-    logger.error('copy to clipboard failed');
-  }
+  logger.appendLog(`Probable url ${chalk.cyan(viewUrl)} for view the block.`);
 };
 
 export default writeRoutes;

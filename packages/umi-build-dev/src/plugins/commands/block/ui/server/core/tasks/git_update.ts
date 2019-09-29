@@ -16,33 +16,33 @@ const addPrefix = path => {
 
 const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa } = ctx;
-
   const { branch, templateTmpDirPath, sourcePath, routePath } = ctx.stages.blockCtx as ICtxTypes;
 
-  logger.start('🚒  Git fetch');
+  logger.appendLog('Start git fetch');
   try {
     await execa('git', ['fetch'], {
       cwd: templateTmpDirPath,
     });
   } catch (e) {
-    logger.fail();
+    logger.appendLog(`Faild git fetch: ${e.message}`);
     throw new Error(e);
   }
-  logger.succeed();
+  logger.appendLog('Success git fetch\n');
 
-  logger.start(`🚛  Git checkout ${branch}`);
-
+  logger.appendLog(`Start git checkout ${branch}`);
   try {
     await execa('git', ['checkout', branch], {
       cwd: templateTmpDirPath,
     });
   } catch (e) {
-    logger.fail();
+    logger.appendLog(`Faild git checkout: ${e.message}\n`);
     throw new Error(e);
   }
-  logger.succeed();
 
-  logger.start('🚀  Git pull');
+  logger.appendLog(`Success git checkout ${branch}\n`);
+
+  logger.appendLog('Start git pull');
+
   try {
     await execa('git', ['pull'], {
       cwd: templateTmpDirPath,
@@ -51,7 +51,6 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     // git module 只能通过这种办法来初始化一下
     if (isSubmodule(templateTmpDirPath)) {
       // 结束  git pull 的 spinner
-      logger.succeed();
 
       // 如果是分支切换过来，可能没有初始化，初始化一下
       await execa('git', ['submodule', 'init'], {
@@ -59,19 +58,18 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
         env: process.env,
       });
 
-      logger.start('👀  update submodule');
       await execa('git', ['submodule', 'update', '--recursive'], {
         cwd: templateTmpDirPath,
       });
     }
   } catch (e) {
-    logger.fail();
+    logger.appendLog(`Faild git pull: ${e.message}\n`);
     throw new Error(e);
   }
-  logger.succeed();
+
+  logger.appendLog('Success git pull\n');
 
   assert(existsSync(sourcePath), `${sourcePath} don't exists`);
-
   let pkg;
   // get block's package.json
   const pkgPath = join(sourcePath, 'package.json');
@@ -89,15 +87,14 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   if (!path) {
     const blockName = getNameFromPkg(pkg);
     if (!blockName) {
-      logger.error("not find name in block's package.json");
+      const errMsg = "Can not find name in block's package.json";
+      logger.appendLog(errMsg);
       ctx.terminated = true;
-      ctx.terminatedMsg = "not find name in block's package.json";
+      ctx.terminatedMsg = errMsg;
       return;
     }
 
     filePath = `/${blockName}`;
-    // logger(`Not find --path, use block name
-    // '${ctx.stages.blockCtx.filePath}' as the target path.`);
   } else {
     filePath = winPath(path);
   }

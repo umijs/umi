@@ -78,6 +78,7 @@ class Flow extends EventEmitter {
     if (this.proc) {
       this.proc.kill('SIGTERM');
     }
+    // TODO: 这样子也是有问题的。signal 传递并不是同步的
     this.emit('log', {
       data: '🛑  Stopped task success!',
     });
