@@ -24,5 +24,5 @@ export default function clearGitCache(args: { dryRun?: boolean }, { log }: { log
     spinner.stop();
   }
 
-  return info;
+  return `🗑  start clear: ${blocksTempPath}`;
 }
