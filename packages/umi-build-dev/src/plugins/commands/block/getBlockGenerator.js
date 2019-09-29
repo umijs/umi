@@ -6,6 +6,7 @@ import crequire from 'crequire';
 import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
 import rimraf from 'rimraf';
+import { winPath } from 'umi-utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
 import { routeExists } from './util';
@@ -222,7 +223,7 @@ export default api => {
     }
 
     async writing() {
-      let targetPath = join(paths.absPagesPath, this.path);
+      let targetPath = winPath(join(paths.absPagesPath, this.path));
       debug(`get targetPath ${targetPath}`);
 
       // for old page block check for duplicate path

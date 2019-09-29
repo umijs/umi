@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
 import LazyLoad from 'react-lazyload';
+import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
@@ -40,26 +41,26 @@ export interface BlockItemProps {
   keyword?: string;
 }
 
-export const getPathFromFilename = (api, filename: string) => {
-  // TODO get PagesPath from server add test case
+/**
+ * 将绝对路径转化为相对路径
+ * @param api
+ * @param filenamePath
+ */
+export const getPathFromFilename = async (api: IUiApi, filenamePath: string): Promise<string> => {
+  const { data } = (await api.callRemote({
+    type: 'org.umi.block.getRelativePagesPath',
+    payload: {
+      path: filenamePath,
+    },
+  })) as {
+    data: string;
+  };
   // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
   // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
   // -> /xxx
-  const path = filename
-    .replace(api.currentProject.path, '')
-    .replace(/(src\/)?pages?\//, '')
-    .replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
-  return path;
+  return data.replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
 };
 
-export const getBlockTargetFromFilename = (api, filename) => {
-  // TODO 更优雅的实现
-  const path = filename
-    .replace(api.currentProject.path, '')
-    .replace(/(src\/)?pages?\//, '')
-    .replace(/\/[^/]+((\.tsx?)|(\.jsx?))$/, '');
-  return path || '/';
-};
 /**
  * 打开 modal 框之前的一些处理
  * @param api  umi ui 的 api 全局对象
@@ -80,11 +81,11 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
     const position = (await getInsertPosition(api).catch(e => {
       message.error(e.message);
     })) as PositionData;
-    const targetPath = getPathFromFilename(api, position.filename);
+    const targetPath = await getPathFromFilename(api, position.filename);
     const option = {
       path: targetPath,
       index: position.index,
-      blockTarget: getBlockTargetFromFilename(api, position.filename),
+      blockTarget: targetPath,
     };
     onShowModal(item, option);
     return;

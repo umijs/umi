@@ -46,14 +46,6 @@ export const getFolderTreeData = (
     .filter(obj => obj);
 };
 
-export const getPathFromFilename = (filename: string) => {
-  // TODO get PagesPath from server add test case
-  // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
-  // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
-  // -> /xxx
-  const path = filename.replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
-  return path;
-};
 /**
  * 遍历文件地址
  * 包含文件
@@ -86,7 +78,7 @@ export const getFilesTreeData = (
           return {
             key: absPagePath,
             title: fileName,
-            value: getPathFromFilename(absPagePath),
+            value: absPagePath,
             children,
           };
         }

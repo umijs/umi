@@ -42,7 +42,7 @@ const AddBlockFormForUI: React.FC<{
           { required: true, message: '名称为必填项!' },
           {
             validator: async (rule, name) => {
-              const filePath = getPathFromFilename(api, form.getFieldValue('path'));
+              const filePath = await getPathFromFilename(api, form.getFieldValue('path'));
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
                 payload: {

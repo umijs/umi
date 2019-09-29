@@ -147,7 +147,7 @@ const Adder: React.FC<AdderProps> = props => {
     if (api.detectLanguage) {
       api.detectLanguage().then(language => {
         form.setFieldsValue({
-          transformJS: language === 'JavaScript',
+          js: language === 'JavaScript',
         });
       });
     }
@@ -257,7 +257,7 @@ const Adder: React.FC<AdderProps> = props => {
             const params: AddBlockParams = {
               ...values,
               url: block.url,
-              path: getPathFromFilename(api, values.path),
+              path: await getPathFromFilename(api, values.path),
               routePath: blockType === 'template' ? values.routePath : undefined,
               isPage: false,
               index: parseInt(values.index || '0', 0),
@@ -265,7 +265,7 @@ const Adder: React.FC<AdderProps> = props => {
             };
             try {
               addBlock(api, params);
-              localStorage.setItem('umi-ui-block-removeLocale', values.removeLocale);
+              localStorage.setItem('umi-ui-block-removeLocale', values.uni18n);
               onAddBlockChange(block);
             } catch (error) {
               message.error(error.message);

@@ -165,7 +165,7 @@ export default (api: IApi) => {
             await blockService.run({ ...payload });
             success({
               data: {
-                message: `🎊 Adding block '${url}' is success`,
+                message: `🎊 ${url} block is adding`,
               },
               success: true,
             });
@@ -228,7 +228,10 @@ export default (api: IApi) => {
             };
             // 找到具体的 js
             const absTargetPath = api.winPath(
-              join(api.paths.absPagesPath, targetPath.replace(api.paths.absPagesPath, '')),
+              join(
+                api.paths.absPagesPath,
+                api.winPath(targetPath).replace(api.winPath(api.paths.pagesPath), ''),
+              ),
             );
             const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
             if (!entryPath) {
@@ -252,6 +255,28 @@ export default (api: IApi) => {
         })();
         break;
 
+      /**
+       *  C:\GitHub\ant-design-pro\src\pages\Welcome\index.tsx
+       * --->
+       *   Welcome\index.tsx
+       *  用与将路径变化为相对路径
+       *  */
+      case 'org.umi.block.getRelativePagesPath':
+        (async () => {
+          const { path: targetPath } = payload as {
+            path: string;
+          };
+
+          success({
+            data: api
+              .winPath(targetPath)
+              .replace(api.winPath(api.cwd), '')
+              .replace(api.winPath(api.paths.pagesPath), '')
+              .replace(/\//g, '/'),
+            success: true,
+          });
+        })();
+        break;
       default:
         break;
     }
