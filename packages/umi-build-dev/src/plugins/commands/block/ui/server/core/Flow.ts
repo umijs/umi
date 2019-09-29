@@ -75,12 +75,12 @@ class Flow extends EventEmitter {
   public cancel() {
     this.isCancel = true;
     this.state = FlowState.CANCEL;
-    this.emit('log', {
-      data: '🛑  Stopped task success!',
-    });
     if (this.proc) {
       this.proc.kill('SIGTERM');
     }
+    this.emit('log', {
+      data: '🛑  Stopped task success!',
+    });
   }
 
   public getLog() {
