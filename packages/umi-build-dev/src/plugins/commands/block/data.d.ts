@@ -1,5 +1,5 @@
 export interface Block {
-  url?: string;
+  url: string;
   name?: string;
   description?: string;
   img?: string;

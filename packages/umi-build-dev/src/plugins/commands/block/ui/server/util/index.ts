@@ -2,9 +2,8 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { winPath } from 'umi-utils';
-import { getBlockListFromGit } from '../../../util';
 import { fetchBlockList } from '../../util';
-import { BlockData, Resource } from '../../../data.d';
+import { Resource } from '../../../data.d';
 
 export interface TreeData {
   title: string;
@@ -61,7 +60,7 @@ export const getFilesTreeData = (
     .map((fileName: string) => {
       const status = fs.statSync(join(path, fileName));
       const isDirectory = status.isDirectory();
-      // 是文件夹 并且不已 . 开头, 且最深三层
+      // 是文件夹 并且不已 . 开头, 且最深五层
       if (fileName.indexOf('.') !== 0 && depth < 5) {
         if (
           !isDirectory &&
@@ -75,15 +74,13 @@ export const getFilesTreeData = (
         const absPath = winPath(join(path, fileName));
         const absPagePath = winPath(join(parentPath, fileName));
         const children = isDirectory ? getFilesTreeData(absPath, absPagePath, depth + 1) : [];
-        if (children && children.length > 0) {
-          return {
-            key: absPagePath,
-            title: fileName,
-            value: absPagePath,
-            children,
-          };
-        }
-        return { title: fileName, value: absPagePath, key: absPagePath };
+        return {
+          selectable: !isDirectory,
+          key: absPagePath,
+          title: fileName,
+          value: absPagePath,
+          children,
+        };
       }
       return undefined;
     })

@@ -34,9 +34,6 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
         label: realValue,
       }}
       onSelect={(_, node) => {
-        if (onlySelectLeaf && node.children && (node.children as any[]).length > 0) {
-          return;
-        }
         if (onlySelectLeaf) {
           propOnChange(node.value as string);
           return;
