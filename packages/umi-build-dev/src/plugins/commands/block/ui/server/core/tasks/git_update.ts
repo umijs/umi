@@ -63,8 +63,14 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
       });
     }
   } catch (e) {
-    logger.appendLog(`Faild git pull: ${e.message}\n`);
-    throw new Error(e);
+    if (e.killed) {
+      const err = new Error('Cancel git pull');
+      err.name = 'GitUpdateError';
+      logger.appendLog('Cancel git pull\n');
+      throw err;
+    }
+    logger.appendLog(`Faild git pull: ${e.message || ''}\n`);
+    throw e;
   }
 
   logger.appendLog('Success git pull\n');

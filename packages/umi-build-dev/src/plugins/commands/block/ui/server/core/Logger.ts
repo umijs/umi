@@ -56,6 +56,9 @@ class Logger extends EventEmitter {
 
   // 主动添加日志
   public appendLog(data: string = '') {
+    if (!data) {
+      return;
+    }
     this.log = `${this.log}${data}\n`;
     this.emit('log', {
       data: `${data}\n`,
@@ -69,6 +72,9 @@ class Logger extends EventEmitter {
    */
   private onChildProcessData(chunk) {
     const data = chunk.toString();
+    if (!data) {
+      return;
+    }
     this.log = `${this.log}${data}`;
     this.emit('log', {
       data,
