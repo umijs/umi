@@ -93,7 +93,6 @@ export default (api: IApiBlock) => {
           break;
       }
     } catch(e) {
-      console.error(e);
     }
   }, false);
 
