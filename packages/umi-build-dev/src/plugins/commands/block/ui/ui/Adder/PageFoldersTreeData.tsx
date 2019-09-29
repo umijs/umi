@@ -1,27 +1,28 @@
 import React, { useContext } from 'react';
-import TreeSelect, { TreeSelectProps } from '../TreeSelect';
+import TreeSelect, { CustomTreeSelectProps } from '../CustomTreeSelect';
 import useCallData from '../hooks/useCallData';
 import Context from '../UIApiContext';
 
 const RoutePathTree: React.FC<
   {
     visible: boolean;
-  } & TreeSelectProps
+  } & CustomTreeSelectProps
 > = props => {
   const { api } = useContext(Context);
+  const { visible, ...restProps } = props;
   /**
    * 这两个在 visible 的时候回重新加载一下
    */
   const { data: pageFoldersTreeData } = useCallData(
     async () => {
-      if (props.visible) {
+      if (visible) {
         return api.callRemote({
           type: 'org.umi.block.pageFolders',
         });
       }
       return pageFoldersTreeData;
     },
-    [props.visible],
+    [visible],
     {
       defaultData: [],
     },
@@ -30,10 +31,9 @@ const RoutePathTree: React.FC<
   return (
     <TreeSelect
       placeholder="请选择安装路径"
-      filterPlaceholder="筛选安装路径"
-      selectable
+      searchPlaceholder="筛选安装路径"
       treeData={pageFoldersTreeData}
-      {...props}
+      {...restProps}
     />
   );
 };

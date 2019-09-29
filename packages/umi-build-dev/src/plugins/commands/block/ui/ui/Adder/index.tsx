@@ -5,7 +5,6 @@ import { Modal, Switch, Select, Form, message } from 'antd';
 import upperCamelCase from 'uppercamelcase';
 
 import Context from '../UIApiContext';
-// antd 4.0 not support TreeSelect now.
 import useCallData from '../hooks/useCallData';
 import { AddBlockParams, Block, Resource } from '../../../data.d';
 import LogPanel from '../LogPanel';
@@ -300,7 +299,9 @@ const Adder: React.FC<AdderProps> = props => {
         <Form.Item name="npmClient" label="包管理器">
           <Select>
             {npmClients.map(client => (
-              <Select.Option value={client}>{client}</Select.Option>
+              <Select.Option key={client} value={client}>
+                {client}
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
