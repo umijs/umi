@@ -226,6 +226,7 @@ const BlocksViewer: React.FC<Props> = props => {
               activeKey={type}
               onChange={activeKey => {
                 setType(activeKey as Resource['blockType']);
+                setActiveResource(null);
                 updateUrlQuery({
                   type: activeKey,
                   resource: activeResource ? activeResource.id : undefined,
