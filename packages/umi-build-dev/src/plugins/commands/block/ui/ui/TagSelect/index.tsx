@@ -49,14 +49,16 @@ const TagSelect: React.FC<{
         styles.hasExpandButton}`}
       ref={ref}
     >
-      <CheckableTag
-        checked={value === ''}
-        onChange={() => {
-          onChange('');
-        }}
-      >
-        全部
-      </CheckableTag>
+      {!loading && (
+        <CheckableTag
+          checked={value === ''}
+          onChange={() => {
+            onChange('');
+          }}
+        >
+          全部
+        </CheckableTag>
+      )}
       {[...tagList]
         .sort(sortTag)
         .filter(tagName => tagName !== '废弃')
