@@ -55,7 +55,14 @@ class Flow extends EventEmitter {
         await task(this.ctx, args);
       } catch (e) {
         hasBreak = true;
-        this.state = FlowState.FAIL;
+        /**
+         * 抛错有两种情况
+         *  1. 任务执行出错
+         *  2. 用户取消后，会杀死子进程，子进程可能 edit(1)
+         */
+        if (!this.isCancel) {
+          this.state = FlowState.FAIL;
+        }
         break;
       }
     }
@@ -73,15 +80,21 @@ class Flow extends EventEmitter {
   }
 
   public cancel() {
+    if (this.state !== FlowState.ING) {
+      const err = new Error(`Error state(${this.state}) to terminated`);
+      err.name = 'FlowError';
+      throw err;
+    }
     this.isCancel = true;
     this.state = FlowState.CANCEL;
     if (this.proc) {
       this.proc.kill('SIGTERM');
     }
-    // TODO: 这样子也是有问题的。signal 传递并不是同步的
-    this.emit('log', {
-      data: '🛑  Stopped task success!',
-    });
+    setTimeout(() => {
+      this.emit('log', {
+        data: '\n🛑  Stopped task success!\n',
+      });
+    }, 2000);
   }
 
   public getLog() {
