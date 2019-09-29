@@ -14,6 +14,9 @@ export interface IApiBlock extends IApi {
 export default (api: IApi) => {
   const blockService = new Block(api);
 
+  // 区块列表缓存
+  const blockListCache = {};
+
   api.onUISocket(async ({ action, failure, success, send }) => {
     blockService.init(send);
     const { type, payload = {}, lang } = action;
@@ -111,10 +114,12 @@ export default (api: IApi) => {
       case 'org.umi.block.list':
         (async () => {
           try {
-            const data = await blockService.getBlockList(
-              (payload as { resourceId: string }).resourceId,
-              resources,
-            );
+            const resourceId = (payload as { resourceId: string }).resourceId;
+            let data = blockListCache[resourceId];
+            if (!data || (payload as { force: boolean }).force) {
+              data = await blockService.getBlockList(resourceId, resources);
+              blockListCache[resourceId] = data;
+            }
             success({
               data,
               success: true,
