@@ -14,6 +14,7 @@
     "url": "https://github.com/umijs/umi/issues"
   },
   "files": [
+    "ui",
     "lib",
     "src",
     "locale/index.js",
