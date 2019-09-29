@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
 const shell = require('shelljs');
+const { existsSync } = require('fs');
 const { join } = require('path');
 const { fork } = require('child_process');
+
+// check ui dist umd, or publish will be forbidden
+checkUiDist();
 
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
@@ -50,9 +54,26 @@ cp.on('close', code => {
     console.error('Failed: lerna publish');
     process.exit(1);
   }
-
   publishToNpm();
 });
+
+// check dist existed
+function checkUiDist() {
+  const uiDist = [
+    'packages/umi-build-dev/src/plugins/commands/block/ui/dist/ui.umd.js',
+    'packages/umi-ui-tasks/src/dist/ui.umd.js',
+    'packages/umi-plugin-ui/src/plugins/configuration/dist/ui.umd.js',
+    'packages/umi-plugin-ui/src/plugins/dashboard/dist/ui.umd.js',
+    'packages/umi-ui/client/dist/index.html',
+  ];
+  uiDist.forEach(dist => {
+    const distPath = join(process.cwd(), dist);
+    if (!existsSync(distPath)) {
+      console.error(`ui dist: ${distPath} not exist`);
+      process.exit(1);
+    }
+  });
+}
 
 function publishToNpm() {
   console.log(`repos to publish: ${updatedRepos.join(', ')}`);
