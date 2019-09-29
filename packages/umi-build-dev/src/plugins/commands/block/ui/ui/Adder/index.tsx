@@ -126,7 +126,7 @@ const Adder: React.FC<AdderProps> = props => {
       onMessage: () => {
         setTaskLoading(false);
         onAddBlockChange(undefined);
-        message.success('添加失败，请重试！');
+        message.error('添加失败，请重试！');
       },
     });
 

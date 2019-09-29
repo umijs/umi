@@ -178,7 +178,7 @@ export default (api: IApi) => {
           failure({
             message:
               lang === 'zh-CN'
-                ? `区块添加不支持约定式路由，请转成配置式路由。`
+                ? '区块添加不支持约定式路由，请转成配置式路由。'
                 : 'The block adding does not support the conventional route, please convert to a configuration route.',
           });
         } else {
@@ -222,9 +222,16 @@ export default (api: IApi) => {
               name: string;
             };
             // 找到具体的 js
-            const absTargetPath = api.winPath(join(api.paths.absPagesPath, targetPath));
+            const absTargetPath = api.winPath(
+              join(api.paths.absPagesPath, targetPath.replace(api.paths.absPagesPath, '')),
+            );
             const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
-
+            if (!entryPath) {
+              failure({
+                message: `未找到文件 ${absTargetPath}!`,
+                success: false,
+              });
+            }
             haveRootBinding(readFileSync(entryPath, 'utf-8'), name).then(exists => {
               success({
                 exists,
