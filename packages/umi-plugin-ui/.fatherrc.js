@@ -2,9 +2,9 @@ import glob from 'glob';
 import { join } from 'path';
 import slash from 'slash2';
 
-const src = join(__dirname, 'src', 'plugins');
+const src = join(__dirname, 'src');
 const files = glob.sync('**/*.@(tsx|jsx)', { cwd: src });
-const browserFiles = files.map(filePath => slash(join('src', 'plugins', filePath)));
+const browserFiles = files.map(filePath => slash(join('src', filePath)));
 
 export default {
   target: 'node',

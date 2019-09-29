@@ -7,7 +7,7 @@ export default (api: IApi) => {
   if (process.env.NODE_ENV === 'development') {
     api.addEntryCode(`
 // Umi UI Bubble
-require('${relativeToTmp(join(__dirname, '../bubble'))}').default({
+require('${relativeToTmp(join(__dirname, './bubble'))}').default({
   port: ${process.env.UMI_UI_PORT},
   path: '${winPath(api.cwd)}',
   currentProject: '${process.env.UMI_UI_CURRENT_PROJECT || ''}',
