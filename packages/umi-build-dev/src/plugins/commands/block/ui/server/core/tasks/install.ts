@@ -3,11 +3,11 @@ import installDependencies from '../../../../installDependencies';
 
 const install = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa, api } = ctx;
-  const { npmClient, registry } = ctx.stages;
+  const { registry } = ctx.stages;
 
   await installDependencies(
     {
-      npmClient,
+      npmClient: args.npmClient,
       registry,
       applyPlugins: api.applyPlugins,
       paths: api.paths,

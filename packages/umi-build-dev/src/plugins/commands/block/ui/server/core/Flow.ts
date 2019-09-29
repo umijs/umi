@@ -62,6 +62,10 @@ class Flow extends EventEmitter {
          */
         if (!this.isCancel) {
           this.state = FlowState.FAIL;
+          this.emit('state', {
+            ...args,
+            state: FlowState.FAIL,
+          });
         }
         break;
       }
@@ -71,9 +75,12 @@ class Flow extends EventEmitter {
     }
 
     // 完成之后触发一下完成事件，前端更新一下按钮状态
-    this.emit('success', args);
-
     this.state = FlowState.SUCCESS;
+    this.emit('state', {
+      ...args,
+      state: FlowState.SUCCESS,
+    });
+
     // 清空日志
     this.logger.clear();
     return this.ctx.result;
