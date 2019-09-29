@@ -36,6 +36,7 @@ const updateUrlQuery = (params: { type: string; resource?: string }) => {
 
 const clearCache = async (api: IUiApi) => {
   try {
+    const hide = message.loading('缓存清理中！');
     const { data } = (await api.callRemote({
       type: 'org.umi.block.clear',
     })) as {
@@ -44,7 +45,11 @@ const clearCache = async (api: IUiApi) => {
 
     // 用户记忆的参数
     localStorage.removeItem('umi-ui-block-removeLocale');
-    message.success(data);
+    hide();
+    // 等动画播放完
+    setTimeout(() => {
+      message.success(data);
+    }, 30);
   } catch (e) {
     message.error(e.message);
   }
