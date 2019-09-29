@@ -50,6 +50,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   useEffect(
     () => {
       setSelectedTag('');
+      setCurrentPage(1);
     },
     [list],
   );

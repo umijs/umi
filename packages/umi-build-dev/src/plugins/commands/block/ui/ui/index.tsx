@@ -111,10 +111,15 @@ const BlocksViewer: React.FC<Props> = props => {
     () => {
       return activeResource || resources.filter(item => item.blockType === type)[0];
     },
-    [resources, activeResource],
+    [resources, activeResource, type],
   );
 
-  const blocks = current && block.blockData[current.id] ? block.blockData[current.id] : [];
+  const blocks = useMemo<Block[]>(
+    () => {
+      return current && block.blockData[current.id] ? block.blockData[current.id] : [];
+    },
+    [block, current],
+  );
 
   // 初始化 block dva model data
   useEffect(
