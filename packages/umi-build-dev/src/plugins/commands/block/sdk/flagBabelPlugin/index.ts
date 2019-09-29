@@ -117,6 +117,11 @@ export default function({ types: t }) {
 
             d = getIdentifierDeclaration(d, path);
 
+            // Support hoc again
+            while (t.isCallExpression(d)) {
+              d = d.arguments[0];
+            }
+
             const ret = getReturnNode(d);
             if (ret) {
               const { node: retNode, replace } = ret;

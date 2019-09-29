@@ -63,11 +63,18 @@ export default function(content, opts) {
       const { node } = path;
 
       let d = findExportDefaultDeclaration(node);
+
       // support hoc
       while (t.isCallExpression(d)) {
         d = d.arguments[0];
       }
+
       d = getIdentifierDeclaration(d, path);
+
+      // Support hoc again
+      while (t.isCallExpression(d)) {
+        d = d.arguments[0];
+      }
 
       const ret = getReturnNode(d);
       assert(ret, `Can not find return node`);
