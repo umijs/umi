@@ -10,7 +10,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
     logger.appendLog(
-      `Start write route from ${generator.routePath} to ${api.service.userConfig.file}`,
+      `🛠 Start write route from ${generator.routePath} to ${api.service.userConfig.file}`,
     );
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
     // 未来可以做下自动写入注释配置，支持约定式路由
@@ -29,12 +29,14 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
       logger.appendLog(`Faild to write route: ${e.message}\n`);
       throw new Error(e);
     }
-    logger.appendLog('Success write route\n');
+    logger.appendLog('🎉  Success write route\n');
   }
 
   if (!generator.isPageBlock) {
     logger.appendLog(
-      `Start write block component ${generator.blockFolderName} import to ${generator.entryPath}`,
+      `🍽  Start write block component ${generator.blockFolderName} import to ${
+        generator.entryPath
+      }`,
     );
     try {
       appendBlockToContainer({
@@ -47,12 +49,12 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
       logger.appendLog(`Faild write block component: ${e.message}\n`);
       throw new Error(e);
     }
-    logger.appendLog('Success write block component \n');
+    logger.appendLog('🎉  Success write block component \n');
   }
 
   // Final: show success message
   const viewUrl = `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`;
-  logger.appendLog(`Probable url ${chalk.cyan(viewUrl)} for view the block.`);
+  logger.appendLog(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
 };
 
 export default writeRoutes;

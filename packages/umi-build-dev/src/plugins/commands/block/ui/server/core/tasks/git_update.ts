@@ -18,7 +18,7 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { logger, execa } = ctx;
   const { branch, templateTmpDirPath, sourcePath, routePath } = ctx.stages.blockCtx as ICtxTypes;
 
-  logger.appendLog('Start git fetch');
+  logger.appendLog('⚓  Start git fetch');
   try {
     await execa('git', ['fetch'], {
       cwd: templateTmpDirPath,
@@ -27,9 +27,9 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     logger.appendLog(`Faild git fetch: ${e.message}`);
     throw new Error(e);
   }
-  logger.appendLog('Success git fetch\n');
+  logger.appendLog('🎉  Success git fetch\n');
 
-  logger.appendLog(`Start git checkout ${branch}`);
+  logger.appendLog(`⚓  Start git checkout ${branch}`);
   try {
     await execa('git', ['checkout', branch], {
       cwd: templateTmpDirPath,
@@ -39,9 +39,9 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     throw new Error(e);
   }
 
-  logger.appendLog(`Success git checkout ${branch}\n`);
+  logger.appendLog(`🎉  Success git checkout ${branch}\n`);
 
-  logger.appendLog('Start git pull');
+  logger.appendLog('⚓  Start git pull');
 
   try {
     await execa('git', ['pull'], {
@@ -73,7 +73,7 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     throw e;
   }
 
-  logger.appendLog('Success git pull\n');
+  logger.appendLog('🎉  Success git pull\n');
 
   assert(existsSync(sourcePath), `${sourcePath} don't exists`);
   let pkg;

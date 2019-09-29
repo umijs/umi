@@ -45,6 +45,9 @@ export interface IAddBlockOption {
   // 在 ci 与 function 中执行可以设置为 auto
   execution?: 'shell' | 'auto';
 
+  // 区块的位置
+  index?: number;
+
   // 传输 log 用
   remoteLog?: (log: string) => void;
 

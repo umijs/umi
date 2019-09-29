@@ -9,7 +9,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
 
   logger.appendLog();
-  logger.appendLog('Start generate files');
+  logger.appendLog('📦  Start generate files');
 
   const getBlockGenerator = require('../../../../getBlockGenerator');
   const BlockGenerator = getBlockGenerator.default(ctx.api);
@@ -76,20 +76,20 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
     }
   }
 
-  logger.appendLog('Success generate files\n');
+  logger.appendLog('🎉  Success generate files\n');
 
   // 调用 sylvanas 转化 ts
   if (js) {
     // opts.remoteLog('TypeScript to JavaScript'); // TODO: add log
-    logger.appendLog('Start TypeScript to JavaScript');
+    logger.appendLog('🎭  Start TypeScript to JavaScript');
     require('../../../../tsTojs').default(generator.blockFolderPath);
-    logger.appendLog('Success TypeScript to JavaScript\n');
+    logger.appendLog('🎉  Success TypeScript to JavaScript\n');
   }
 
   if (uni18n) {
-    logger.appendLog('Start remove i18n code');
+    logger.appendLog('🌏  Start remove i18n code');
     require('../../../../remove-locale').default(generator.blockFolderPath, uni18n);
-    logger.appendLog('Success remove i18n code\n');
+    logger.appendLog('🎉  Success remove i18n code\n');
   }
 
   ctx.stages.generator = generator;

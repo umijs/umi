@@ -65,6 +65,8 @@ export interface AddBlockOption {
   // 在 ci 与 function 中执行可以设置为 auto
   execution?: 'shell' | 'auto';
 
+  index?: number;
+
   // 传输 log 用
   remoteLog?: (log: string) => void;
 }
@@ -363,12 +365,12 @@ async function add(
   try {
     clipboardy.writeSync(viewUrl);
     log.success(
-      `probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
+      `✨  Probable url ${chalk.cyan(viewUrl)} ${chalk.dim(
         '(copied to clipboard)',
       )} for view the block.`,
     );
   } catch (e) {
-    log.success(`probable url ${chalk.cyan(viewUrl)} for view the block.`);
+    log.success(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
     log.error('copy to clipboard failed');
   }
 

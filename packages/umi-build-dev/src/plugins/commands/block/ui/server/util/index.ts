@@ -67,13 +67,14 @@ export const getFilesTreeData = (
           !isDirectory &&
           !fileName.includes('.tsx') &&
           !fileName.includes('.jsx') &&
-          !fileName.includes('.js')
+          !fileName.includes('.js') &&
+          !fileName.includes('.ts')
         ) {
           return undefined;
         }
         const absPath = winPath(join(path, fileName));
         const absPagePath = winPath(join(parentPath, fileName));
-        const children = isDirectory ? getFolderTreeData(absPath, absPagePath, depth + 1) : [];
+        const children = isDirectory ? getFilesTreeData(absPath, absPagePath, depth + 1) : [];
         if (children && children.length > 0) {
           return {
             key: absPagePath,

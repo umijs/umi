@@ -114,7 +114,7 @@ export default (api: IApi) => {
       case 'org.umi.block.list':
         (async () => {
           try {
-            const resourceId = (payload as { resourceId: string }).resourceId;
+            const { resourceId } = payload as { resourceId: string };
             let data = blockListCache[resourceId];
             if (!data || (payload as { force: boolean }).force) {
               data = await blockService.getBlockList(resourceId, resources);
