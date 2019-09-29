@@ -126,7 +126,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   const logCls = cls(actionCls, styles.log);
 
   const LocaleText = ({ locale: textLocale, checked, style }) => (
-    <span style={style} data-test-id={`locale_switch_${locale}`}>
+    <span style={style}>
       {typeof checked !== 'undefined' && (
         <CheckIcon style={{ marginRight: 8, opacity: checked ? 1 : 0 }} />
       )}
@@ -142,7 +142,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       }}
     >
       {Object.keys(LOCALES).map((lang: any) => (
-        <Menu.Item key={lang}>
+        <Menu.Item className={`ui-locale-${lang}`} key={lang}>
           <LocaleText locale={lang} checked={locale === lang} />
         </Menu.Item>
       ))}
