@@ -36,11 +36,8 @@ async function getCtx(url, args: IAddBlockOption = {}, api: IApi): Promise<ICtxT
 }
 
 const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
-  ctx.logger.start('😁  Parse url and args');
-
   const { url } = args;
-
-  ctx.logger.setId(url);
+  ctx.logger.setId(url); // 设置这次 flow 的 log trace id
   ctx.result.blockUrl = url; // 记录当前的 url
 
   assert(url, `run ${chalk.cyan.underline('umi help block')} to checkout the usage`);
@@ -51,9 +48,7 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   const useYarn = existsSync(join(paths.cwd, 'yarn.lock'));
   const defaultNpmClient = blockConfig.npmClient || (useYarn ? 'yarn' : 'npm');
-
   const registryUrl = await getNpmRegistry();
-
   const blockCtx = await getCtx(
     url,
     {
@@ -62,7 +57,6 @@ const parseUrl = async (ctx: IFlowContext, args: IAddBlockOption) => {
     },
     ctx.api,
   );
-  ctx.logger.succeed();
 
   ctx.stages.blockCtx = blockCtx;
   ctx.stages.npmClient = args.npmClient || defaultNpmClient;

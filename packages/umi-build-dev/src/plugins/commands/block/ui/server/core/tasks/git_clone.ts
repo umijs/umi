@@ -7,13 +7,12 @@ const clone = async (ctx: IFlowContext) => {
     return;
   }
 
-  logger.start(`🔍  clone git repo from ${repo}`);
+  logger.appendLog(`Start git clone from ${repo}`);
   await execa('git', ['clone', repo, id, '--single-branch', '--recurse-submodules', '-b', branch], {
     cwd: blocksTempPath,
     env: process.env,
   });
-
-  logger.succeed();
+  logger.appendLog('Success git clone\n');
 };
 
 export default clone;

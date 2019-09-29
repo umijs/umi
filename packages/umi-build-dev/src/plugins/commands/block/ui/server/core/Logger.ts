@@ -11,7 +11,7 @@ class Logger extends EventEmitter {
   constructor() {
     super();
     this.ws = new MemoryStream({
-      onData: this.onSpinnerData.bind(this),
+      onData: this.onChildProcessData.bind(this),
     });
     this.spinner = ora({
       stream: this.ws,
@@ -54,7 +54,20 @@ class Logger extends EventEmitter {
     return this.log;
   }
 
-  private onSpinnerData(chunk) {
+  // 主动添加日志
+  public appendLog(data: string = '') {
+    this.log = `${this.log}${data}\n`;
+    this.emit('log', {
+      data: `${data}\n`,
+    });
+  }
+
+  /**
+   * 接受来自子进程的日志
+   *  1. ora: spinner 进程
+   *  2. execa: 子进程日志
+   */
+  private onChildProcessData(chunk) {
     const data = chunk.toString();
     this.log = `${this.log}${data}`;
     this.emit('log', {

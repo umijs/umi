@@ -8,8 +8,8 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   const { dryRun, page: isPage, js, execution = 'shell', uni18n } = args;
 
-  logger.start('🔥  Generate files');
-  logger.stopAndPersist();
+  logger.appendLog();
+  logger.appendLog('Start generate files');
 
   const getBlockGenerator = require('../../../../getBlockGenerator');
   const BlockGenerator = getBlockGenerator.default(ctx.api);
@@ -41,7 +41,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
   try {
     await generator.run();
   } catch (e) {
-    logger.fail();
+    logger.appendLog(`Faild generate files: ${e.message}\n`);
     throw new Error(e);
   }
 
@@ -71,24 +71,25 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
         }),
       );
     } catch (e) {
-      logger.fail();
+      logger.appendLog(`Faild generate files: ${e.message}\n`);
       throw new Error(e);
     }
   }
-  logger.succeed();
+
+  logger.appendLog('Success generate files\n');
 
   // 调用 sylvanas 转化 ts
   if (js) {
     // opts.remoteLog('TypeScript to JavaScript'); // TODO: add log
-    logger.start('🤔  TypeScript to JavaScript');
+    logger.appendLog('Start TypeScript to JavaScript');
     require('../../../../tsTojs').default(generator.blockFolderPath);
-    logger.succeed();
+    logger.appendLog('Success TypeScript to JavaScript\n');
   }
 
   if (uni18n) {
-    logger.start('🌎  remove i18n code');
+    logger.appendLog('Start remove i18n code');
     require('./remove-locale').default(generator.blockFolderPath, uni18n);
-    logger.succeed();
+    logger.appendLog('Success remove i18n code\n');
   }
 
   ctx.stages.generator = generator;
