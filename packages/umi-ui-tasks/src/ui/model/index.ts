@@ -81,7 +81,6 @@ export default {
     updateTaskDetail(state, { payload }) {
       const { taskType, detail, cwd } = payload;
       const { stats, ...rest } = detail;
-
       return {
         ...state,
         tasks: {
@@ -89,6 +88,7 @@ export default {
           [cwd]: {
             ...state.tasks[cwd],
             [taskType]: {
+              ...state.tasks[cwd][taskType],
               ...rest,
               analyze: stats ? new Analyze(stats) : null,
             },

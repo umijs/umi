@@ -44,24 +44,26 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
       if (!init) {
         return () => {};
       }
-      dispatch({
-        type: `${namespace}/getTaskDetail`,
-        payload: {
-          taskType,
-          log: true,
-          dbPath,
-          callback: ({ log }) => {
-            setLog(log);
+      if (view === 'log') {
+        dispatch({
+          type: `${namespace}/getTaskDetail`,
+          payload: {
+            taskType,
+            log: true,
+            dbPath,
+            callback: ({ log }) => {
+              setLog(log);
+            },
           },
-        },
-      });
+        });
+      }
       return () => {
         form.resetFields();
         const terminal = getTerminalIns(taskType);
         terminal && terminal.clear();
       };
     },
-    [init],
+    [init, view],
   );
 
   async function build() {

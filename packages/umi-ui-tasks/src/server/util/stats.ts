@@ -60,7 +60,7 @@ export function parseChartData(stats) {
     return null;
   }
   let chartData;
-  const analyzer = require('webpack-bundle-analyzer/lib/analyzer');
+  const analyzer = require('umi-webpack-bundle-analyzer/lib/analyzer');
 
   try {
     /**
