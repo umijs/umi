@@ -16,6 +16,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     // 未来可以做下自动写入注释配置，支持约定式路由
     const newRouteConfig = api.applyPlugins('_modifyBlockNewRouteConfig', {
       initialValue: {
+        name: args.name,
         path: generator.routePath.toLowerCase(),
         component: `.${generator.path}`,
         ...(isLayout ? { routes: [] } : {}),
