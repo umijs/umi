@@ -118,6 +118,19 @@ const Adder: React.FC<AdderProps> = props => {
     });
 
     /**
+     * 失败之后清理状态
+     * 应该保留日志，所以进行页面的切换
+     */
+    api.listenRemote({
+      type: 'org.umi.block.add-blocks-fail',
+      onMessage: () => {
+        setTaskLoading(false);
+        onAddBlockChange(undefined);
+        message.success('添加失败，请重试！');
+      },
+    });
+
+    /**
      * 获取上次的安装的区块 url
      */
     callRemote({
