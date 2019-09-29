@@ -53,7 +53,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
         subBlocks.map((block: string) => {
           const subBlockPath = join(templateTmpDirPath, block);
           debug(`subBlockPath: ${subBlockPath}`);
-          return new BlockGenerator(args._.slice(2), {
+          return new BlockGenerator(args._ ? args._.slice(2) : [], {
             sourcePath: subBlockPath,
             path: isPageBlock ? generator.path : join(generator.path, generator.blockFolderName),
             blockName: getBlockGenerator.getNameFromPkg(

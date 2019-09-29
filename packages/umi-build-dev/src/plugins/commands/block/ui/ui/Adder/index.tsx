@@ -206,7 +206,7 @@ const Adder: React.FC<AdderProps> = props => {
    * 计算初始值
    */
   const initialValues = {
-    transformJS: false,
+    js: false,
     uni18n: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
@@ -264,7 +264,7 @@ const Adder: React.FC<AdderProps> = props => {
               url: block.url,
               path: await getPathFromFilename(api, values.path),
               routePath: blockType === 'template' ? values.routePath : undefined,
-              isPage: false,
+              page: blockType === 'template',
               index: parseInt(values.index || '0', 0),
               name: values.name,
             };
