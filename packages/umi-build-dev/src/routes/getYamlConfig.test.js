@@ -76,4 +76,22 @@ alert(1);
     `),
     ).toEqual({});
   });
+
+  it('ignore invalid yaml comment with filepath', () => {
+    const { warn } = console;
+    console.warn = msg => {
+      warn(msg);
+      expect(msg.includes('/data/test.js')).toBeTruthy();
+    };
+
+    getYamlConfig(
+      `/**
+    *
+    * @param {{onClick: Function, text: string}} opts
+    */`,
+      '/data/test.js',
+    );
+
+    console.warn = warn;
+  });
 });
