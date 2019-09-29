@@ -15,6 +15,7 @@ export interface ModelState {
   blockData: {
     [resourceId: string]: Block[];
   };
+  currentResourceId?: string;
 }
 
 export default {
@@ -22,12 +23,13 @@ export default {
   // TODO fill state
   state: {
     blockData: {},
+    currentResourceId: null,
   },
   effects: {
     // 获取数据
     *fetch({ payload }, { call, put, select }) {
-      const blockData = yield select(state => state[namespace].blockData);
-      const { resourceId, reload } = payload;
+      const { blockData, currentResourceId } = yield select(state => state[namespace]);
+      const { resourceId = currentResourceId, reload } = payload;
       if (blockData[resourceId] && !reload) {
         return blockData[resourceId];
       }
@@ -36,6 +38,7 @@ export default {
           type: 'org.umi.block.list',
           payload: {
             resourceId,
+            force: reload,
           },
         });
       });
@@ -57,6 +60,7 @@ export default {
           ...blockData,
           [resourceId]: list,
         },
+        currentResourceId: resourceId,
       };
       return newState;
     },

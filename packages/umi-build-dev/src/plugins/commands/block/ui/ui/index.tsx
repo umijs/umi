@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
@@ -107,8 +107,13 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
-  const current: Resource | undefined =
-    activeResource || resources.filter(item => item.blockType === type)[0];
+  const current = useMemo<Resource>(
+    () => {
+      return activeResource || resources.filter(item => item.blockType === type)[0];
+    },
+    [resources, activeResource],
+  );
+
   const blocks = current && block.blockData[current.id] ? block.blockData[current.id] : [];
 
   // 初始化 block dva model data
@@ -125,16 +130,6 @@ const BlocksViewer: React.FC<Props> = props => {
     },
     [current],
   );
-
-  const reloadData = () => {
-    dispatch({
-      type: `${namespace}/fetch`,
-      payload: {
-        resourceId: current.id,
-        reload: true,
-      },
-    });
-  };
 
   useEffect(() => {
     /**
@@ -172,7 +167,18 @@ const BlocksViewer: React.FC<Props> = props => {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
         <Tooltip title="重新加载列表">
-          <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
+          <Button
+            key="reload"
+            style={{ padding: buttonPadding }}
+            onClick={() => {
+              dispatch({
+                type: `${namespace}/fetch`,
+                payload: {
+                  reload: true,
+                },
+              });
+            }}
+          >
             <Reload />
           </Button>
         </Tooltip>,
