@@ -219,7 +219,7 @@ export default (api: IApi) => {
 
           const payloadType = (payload as { type: string }).type === 'block' ? '区块' : '模板';
           const isBigfish = !!process.env.BIGFISH_COMPAT;
-          const reactPlugin = api.config.plugins.find(p => {
+          const reactPlugin = (api.config.plugins || []).find(p => {
             return p === 'umi-plugin-react' || p[0] === 'umi-plugin-react';
           });
           const reactPluginOpts = genReactPluginOpts(reactPlugin);
