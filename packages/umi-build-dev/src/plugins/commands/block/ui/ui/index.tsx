@@ -178,6 +178,7 @@ const BlocksViewer: React.FC<Props> = props => {
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
         <Tooltip title="重新加载列表">
           <Button
+            size={isMini ? 'small' : 'default'}
             key="reload"
             style={{ padding: buttonPadding }}
             onClick={() => {
@@ -194,6 +195,7 @@ const BlocksViewer: React.FC<Props> = props => {
         </Tooltip>,
         <Tooltip title="清除区块的本地缓存">
           <Button
+            size={isMini ? 'small' : 'default'}
             key="clear"
             onClick={() => clearCache(api)}
             style={{

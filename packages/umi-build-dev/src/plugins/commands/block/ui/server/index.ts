@@ -90,7 +90,7 @@ export default (api: IApi) => {
           try {
             const info = clearGitCache(payload, api);
             success({
-              data: info.replace(/\[33m/g, '').replace(/\[39m/g, ''),
+              data: info,
               success: true,
             });
           } catch (error) {

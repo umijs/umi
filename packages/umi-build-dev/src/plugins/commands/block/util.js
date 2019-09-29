@@ -69,9 +69,25 @@ export function printBlocks(blocks, hasLink) {
   return blockArray;
 }
 
+//https://gitee.com/ant-design/pro-blocks/raw/master/AccountCenter/snapshot.png
+//https://raw.githubusercontent.com/ant-design/pro-blocks/master/AccountCenter/snapshot.png?raw=true
+export const imgFilter = (list, { name, owner }, useGitee) => {
+  if (!useGitee) {
+    return list;
+  }
+  return list.map(item => ({
+    ...item,
+    img: item.img.replace(
+      `https://raw.githubusercontent.com/${owner}/${name}/master/`,
+      `https://gitee.com/${owner}/${name}/raw/master/`,
+    ),
+  }));
+};
+
 export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
   const got = require('got');
   const ignoreFile = ['_scripts', 'tests'];
+
   const { name, owner, resource } = GitUrlParse(gitUrl);
 
   if (spinner.isSpinning) {
@@ -92,7 +108,14 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
       // body = {blocks: [], templates: []}
       const data = JSON.parse(body);
       // TODO update format logic
-      return data.list || data.blocks || data.template;
+      return imgFilter(
+        data.list || data.blocks || data.template,
+        {
+          name,
+          owner,
+        },
+        fastGithub === 'gitee.com',
+      );
     } catch (error) {
       // if file 404
     }
