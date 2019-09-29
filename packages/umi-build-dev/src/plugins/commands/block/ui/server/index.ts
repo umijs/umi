@@ -364,7 +364,8 @@ export default (api: IApi) => {
               .winPath(targetPath)
               .replace(api.winPath(api.cwd), '')
               .replace(api.winPath(api.paths.pagesPath), '')
-              .replace(/\//g, '/'),
+              .replace(/\//g, '/')
+              .replace(/\/\//g, '/'),
             success: true,
           });
         })();
