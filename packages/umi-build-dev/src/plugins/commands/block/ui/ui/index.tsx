@@ -16,13 +16,7 @@ import { ModelState, namespace } from './model';
 /**
  * get substr from url
  */
-const getQueryConfig = () => {
-  const { type, resource } = parse(window.location.search.substr(1));
-  return {
-    type,
-    resource,
-  };
-};
+const getQueryConfig = () => parse(window.location.search.substr(1));
 
 /**
  *  更新 search
