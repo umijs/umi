@@ -33,10 +33,12 @@ const ErrorWrapper = styled.div`
   }
 `;
 
-export default ({ isBigfish }) => (
+export default ({ isBigfish, message }) => (
   <ErrorWrapper>
     <ErrorSvg />
-    <p>{isBigfish ? 'Bigfish' : 'Umi'} UI 连接失败</p>
-    <span>请尝试重启 dev 服务</span>
+    <p>
+      {isBigfish ? 'Bigfish' : 'Umi'} {message.offline}
+    </p>
+    <span>{message.restart}</span>
   </ErrorWrapper>
 );

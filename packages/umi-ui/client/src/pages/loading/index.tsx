@@ -3,7 +3,6 @@ import { Spin } from 'antd';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
-import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
 import intl from '@/utils/intl';

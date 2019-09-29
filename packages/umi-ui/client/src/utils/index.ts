@@ -2,7 +2,15 @@ import get from 'lodash/get';
 import history from '@tmp/history';
 import { IUi } from 'umi-types';
 import querystring from 'querystring';
-import { IProjectList, IProjectItem } from '@/enums';
+import { getLocale as umiGetLocale } from 'umi-plugin-react/locale';
+import { IProjectList, IProjectItem, LOCALES } from '@/enums';
+
+export const getLocale = () => {
+  // handle url /?locale= from mini
+  const { locale: searchLocale = '' } = querystring.parse(window.location.search.slice(1));
+  // search in first
+  return Object.keys(LOCALES).indexOf(searchLocale as string) > -1 ? searchLocale : umiGetLocale();
+};
 
 export const isMiniUI = (): boolean => {
   const qs = querystring.parse(window.location.search.slice(1)) || {};

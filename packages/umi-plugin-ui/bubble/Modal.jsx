@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { getScrollBarSize } from './Dragger/utils';
+import { getScrollBarSize } from './utils';
 
 const fadeInUp = keyframes`
   from {
