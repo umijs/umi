@@ -8,6 +8,7 @@ import Context from '../UIApiContext';
 import useCallData from '../hooks/useCallData';
 import { AddBlockParams, Block, Resource } from '../../../data.d';
 import LogPanel from '../LogPanel';
+import ResultPanel from './ResultPanel';
 import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
@@ -42,7 +43,7 @@ const addBlock = async (api: IUiApi, params: AddBlockParams) => {
   return info.message;
 };
 
-const renderOkText = (addStatus: 'form' | 'log', loading: boolean) => {
+const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
   if (addStatus === 'log' && !loading) {
     return '完成';
   }
@@ -56,6 +57,21 @@ const cancelAddBlockTask = (api: IUiApi) => {
   return api.callRemote({
     type: 'org.umi.block.cancel',
   });
+};
+
+const CodeTag: React.FC<{}> = ({ children }) => {
+  return (
+    <code
+      style={{
+        backgroundColor: '#3b3b4d',
+        margin: '0 8px',
+        padding: '2px 8px',
+        borderRadius: 4,
+      }}
+    >
+      {children}
+    </code>
+  );
 };
 
 const Adder: React.FC<AdderProps> = props => {
@@ -80,7 +96,13 @@ const Adder: React.FC<AdderProps> = props => {
 
   // 展示哪个界面
   // log 日志  form 表单
-  const [addStatus, setAddStatus] = useState<'form' | 'log'>('form');
+  const [addStatus, setAddStatus] = useState<'form' | 'log' | 'result'>('form');
+
+  // 预览界面需要消费的日志
+  const [successedBlock, setSuccessedBlock] = useState<{
+    previewUrl: string;
+    name: string;
+  }>(undefined);
 
   const { data: npmClients = [] } = useCallData(
     () =>
@@ -114,10 +136,13 @@ const Adder: React.FC<AdderProps> = props => {
      */
     api.listenRemote({
       type: 'org.umi.block.add-blocks-success',
-      onMessage: () => {
+      onMessage: msg => {
         setTaskLoading(false);
         onAddBlockChange(undefined);
-        message.success('添加完成，稍后页面将会更新！');
+
+        // 设置预览界面
+        setAddStatus('result');
+        setSuccessedBlock(msg.data);
       },
     });
 
@@ -187,12 +212,12 @@ const Adder: React.FC<AdderProps> = props => {
       /**
        * 默认值，自动拼接一下 name
        */
+      const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
       const initialValues = {
-        path: blockType !== 'template' ? '/' : `/${defaultName}`,
+        path: initPath,
         routePath: `/${defaultName.toLocaleLowerCase()}`,
         name: upperCamelCase(defaultName),
       };
-
       form.setFieldsValue(initialValues);
     },
     [block ? block.url : ''],
@@ -210,10 +235,18 @@ const Adder: React.FC<AdderProps> = props => {
     uni18n: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
-
   return (
     <Modal
-      title="添加"
+      title={
+        <div
+          style={{
+            display: 'flex',
+          }}
+        >
+          添加 <CodeTag>{block.name}</CodeTag>
+        </div>
+      }
+      closable
       visible={visible}
       destroyOnClose
       onCancel={() => {
@@ -222,10 +255,12 @@ const Adder: React.FC<AdderProps> = props => {
           setAddStatus('form');
         }
       }}
+      footer={addStatus === 'result' ? null : undefined}
       confirmLoading={fromCheck}
       bodyStyle={{
-        maxHeight: '60vh',
+        height: '60vh',
         overflow: 'auto',
+        transition: '.3s',
       }}
       centered
       okText={renderOkText(addStatus, taskLoading)}
@@ -233,6 +268,7 @@ const Adder: React.FC<AdderProps> = props => {
         if (addStatus === 'log' && !taskLoading) {
           onHideModal();
           setAddStatus('form');
+          setSuccessedBlock(undefined);
           return;
         }
         if (addStatus === 'log') {
@@ -266,7 +302,7 @@ const Adder: React.FC<AdderProps> = props => {
               routePath: blockType === 'template' ? values.routePath : undefined,
               page: blockType === 'template',
               index: parseInt(values.index || '0', 0),
-              name: values.name,
+              name: blockType === 'template' ? block.name : values.name,
             };
             try {
               addBlock(api, params);
@@ -318,6 +354,18 @@ const Adder: React.FC<AdderProps> = props => {
         </Form.Item>
       </Form>
       {addStatus === 'log' && <LogPanel loading={taskLoading} />}
+      {addStatus === 'result' && successedBlock && (
+        <ResultPanel
+          onFinish={() => {
+            onHideModal();
+            setAddStatus('form');
+            setSuccessedBlock(undefined);
+            api.hideMini();
+          }}
+          name={successedBlock.name || block.name}
+          url={successedBlock.previewUrl}
+        />
+      )}
     </Modal>
   );
 };

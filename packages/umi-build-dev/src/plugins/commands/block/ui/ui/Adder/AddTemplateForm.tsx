@@ -52,12 +52,12 @@ const AddBlockForm: React.FC<{
         name="path"
         label={
           <InfoToolTip
-            title="安装路径"
-            placeholder="安装路径代表相对于 src/pages 的文件路径，区块的源码将放在这个地方"
+            title="添加到"
+            placeholder="表示相对于 src/pages 的文件路径，区块的源码将放在这个地方"
           />
         }
         rules={[
-          { required: true, message: '安装路径为必填项！' },
+          { required: true, message: '添加路径为必填项！' },
           {
             validator: async (rule, filePath) => {
               if (filePath === '/') {

@@ -76,8 +76,12 @@ class Flow extends EventEmitter {
 
     // 完成之后触发一下完成事件，前端更新一下按钮状态
     this.state = FlowState.SUCCESS;
+    const { generator } = this.ctx.stages;
     this.emit('state', {
-      ...args,
+      data: {
+        ...args,
+        previewUrl: `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`,
+      },
       state: FlowState.SUCCESS,
     });
 

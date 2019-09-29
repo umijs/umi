@@ -23,6 +23,7 @@ const GlobalSearch: React.SFC<IGlobalSearch> = props => {
     <Input
       prefix={<SearchIcon />}
       className={styles.search}
+      allowClear
       onChange={e => handleChangeDebounce(e.target.value)}
       placeholder={intl({ id: 'org.umi.ui.blocks.content.search_block' })}
     />
