@@ -48,17 +48,19 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
       if (!init) {
         return () => {};
       }
-      dispatch({
-        type: `${namespace}/getTaskDetail`,
-        payload: {
-          taskType,
-          log: true,
-          dbPath,
-          callback: ({ log, stats }) => {
-            setLog(log);
+      if (view === 'log') {
+        dispatch({
+          type: `${namespace}/getTaskDetail`,
+          payload: {
+            taskType,
+            log: true,
+            dbPath,
+            callback: ({ log }) => {
+              setLog(log);
+            },
           },
-        },
-      });
+        });
+      }
       // UnMount: reset form
       return () => {
         form.resetFields();
@@ -66,7 +68,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
         terminal && terminal.clear();
       };
     },
-    [init],
+    [init, view],
   );
 
   async function dev() {
@@ -341,7 +343,11 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
               ) : (
                 <Analyze
                   api={api}
-                  src={detail.analyzePort ? `http://127.0.0.1:${detail.analyzePort}` : null}
+                  src={
+                    detail.analyzePort
+                      ? `http://${window.location.hostname}:${detail.analyzePort}`
+                      : null
+                  }
                 />
               )
             }

@@ -4,6 +4,7 @@ import Tooltip from './Tooltip';
 import filesize from 'filesize';
 import styles from './index.module.less';
 import { Analyze } from '../../util/analyze';
+import { Reload } from '@ant-design/icons';
 
 const SIZE_SWITCH_ITEMS = [
   { label: 'Stat', prop: 'statSize' },
@@ -19,6 +20,12 @@ interface IProps {
 
 class AnalyzeComponent extends Component<IProps> {
   treemap = null;
+  iframeRef = null;
+
+  constructor(props) {
+    super(props);
+    this.iframeRef = React.createRef();
+  }
 
   saveRef = treemap => {
     this.treemap = treemap;
@@ -27,6 +34,7 @@ class AnalyzeComponent extends Component<IProps> {
   state = {
     showTooltip: false,
     tooltipContent: '',
+    showReloadFlag: false,
   };
 
   handleMouseLeaveTreemap = () => {
@@ -91,8 +99,28 @@ class AnalyzeComponent extends Component<IProps> {
     });
   };
 
+  showReload = () => {
+    this.setState({
+      showReloadFlag: true,
+    });
+  };
+
+  hideReload = () => {
+    this.setState({
+      showReloadFlag: false,
+    });
+  };
+
+  reloadIframe = () => {
+    if (!this.iframeRef || !this.iframeRef.current) {
+      return;
+    }
+    this.iframeRef.current.contentWindow.location = this.props.src;
+  };
+
   render() {
     const { analyze, src, api } = this.props;
+    const { showReloadFlag } = this.state;
     const { intl } = api;
 
     if (!src && !analyze) {
@@ -104,9 +132,20 @@ class AnalyzeComponent extends Component<IProps> {
     }
 
     return (
-      <div className={styles.container}>
+      <div
+        className={styles.container}
+        onMouseEnter={this.showReload}
+        onMouseLeave={this.hideReload}
+      >
         {src ? (
-          <iframe className={styles.iframe} src={src} />
+          <div className={styles.iframeContainer}>
+            {showReloadFlag ? (
+              <div className={styles.reload} onClick={this.reloadIframe}>
+                <Reload />
+              </div>
+            ) : null}
+            <iframe ref={this.iframeRef} className={styles.iframe} src={src} />
+          </div>
         ) : (
           <>
             <Treemap
