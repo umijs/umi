@@ -109,7 +109,7 @@ const config: IConfig = {
             src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.5/dist/antd.min.js',
+            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.6/dist/antd.min.js',
           },
           { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
           { src: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },

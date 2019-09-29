@@ -1,27 +1,28 @@
 import React, { useContext } from 'react';
-import TreeSelect, { TreeSelectProps } from '../TreeSelect';
+import TreeSelect, { CustomTreeSelectProps } from '../CustomTreeSelect';
 import useCallData from '../hooks/useCallData';
 import Context from '../UIApiContext';
 
 const RoutePathTree: React.FC<
   {
     visible: boolean;
-  } & TreeSelectProps
+  } & CustomTreeSelectProps
 > = props => {
+  const { visible, ...resetProps } = props;
   const { api } = useContext(Context);
   /**
    * 这两个在 visible 的时候回重新加载一下
    */
   const { data: routePathTreeData } = useCallData(
     async () => {
-      if (props.visible) {
+      if (visible) {
         return api.callRemote({
           type: 'org.umi.block.routes',
         });
       }
       return routePathTreeData;
     },
-    [props.visible],
+    [visible],
     {
       defaultData: [],
     },
@@ -30,10 +31,9 @@ const RoutePathTree: React.FC<
   return (
     <TreeSelect
       placeholder="请选择路由"
-      filterPlaceholder="筛选路由"
-      selectable
+      searchPlaceholder="筛选路由"
       treeData={routePathTreeData}
-      {...props}
+      {...resetProps}
     />
   );
 };

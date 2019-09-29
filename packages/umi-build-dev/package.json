@@ -79,9 +79,9 @@
     "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/lodash": "^4.14.136",
     "@types/webpack-node-externals": "1.6.3",
-    "umi-types": "0.4.1",
-    "antd": "^4.0.0-alpha.0",
-    "react-lazyload": "^2.6.2"
+    "antd": "^4.0.0-alpha.6",
+    "react-lazyload": "^2.6.2",
+    "umi-types": "0.4.1"
   },
   "repository": {
     "type": "git",
