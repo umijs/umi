@@ -43,7 +43,7 @@ const clearCache = async (api: IUiApi) => {
     };
 
     // 用户记忆的参数
-    localStorage.remove('umi-ui-block-removeLocale');
+    localStorage.removeItem('umi-ui-block-removeLocale');
     message.success(data);
   } catch (e) {
     message.error(e.message);
