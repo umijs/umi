@@ -88,7 +88,7 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   if (uni18n) {
     logger.appendLog('Start remove i18n code');
-    require('./remove-locale').default(generator.blockFolderPath, uni18n);
+    require('../../../../remove-locale').default(generator.blockFolderPath, uni18n);
     logger.appendLog('Success remove i18n code\n');
   }
 

@@ -113,7 +113,7 @@ const Adder: React.FC<AdderProps> = props => {
       onMessage: () => {
         setTaskLoading(false);
         onAddBlockChange(undefined);
-        message.success('添加完成！');
+        message.success('添加完成，稍后页面将会更新！');
       },
     });
 
@@ -190,7 +190,7 @@ const Adder: React.FC<AdderProps> = props => {
    */
   const initialValues = {
     transformJS: false,
-    removeLocale: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
+    uni18n: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
 
@@ -278,10 +278,10 @@ const Adder: React.FC<AdderProps> = props => {
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}
 
-        <Form.Item name="transformJS" label="编译为 JS" valuePropName="checked">
+        <Form.Item name="js" label="编译为 JS" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item name="removeLocale" label="移除国际化" valuePropName="checked">
+        <Form.Item name="uni18n" label="移除国际化" valuePropName="checked">
           <Switch />
         </Form.Item>
         <Form.Item name="npmClient" label="包管理器">

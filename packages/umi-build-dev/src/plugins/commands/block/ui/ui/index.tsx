@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Tabs, Spin, Radio, Button, message } from 'antd';
+import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
@@ -171,23 +171,27 @@ const BlocksViewer: React.FC<Props> = props => {
     if (api.setActionPanel) {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
-        <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
-          <Reload />
-        </Button>,
-        <Button
-          key="clear"
-          onClick={() => clearCache(api)}
-          style={{
-            padding: buttonPadding,
-          }}
-        >
-          <img
-            width={16}
-            height={16}
-            alt="clear"
-            src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
-          />
-        </Button>,
+        <Tooltip title="重新加载列表">
+          <Button key="reload" style={{ padding: buttonPadding }} onClick={() => reloadData()}>
+            <Reload />
+          </Button>
+        </Tooltip>,
+        <Tooltip title="清除区块的本地缓存">
+          <Button
+            key="clear"
+            onClick={() => clearCache(api)}
+            style={{
+              padding: buttonPadding,
+            }}
+          >
+            <img
+              width={16}
+              height={16}
+              alt="clear"
+              src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
+            />
+          </Button>
+        </Tooltip>,
       ]);
     }
   }, []);
