@@ -77,16 +77,6 @@ const Adder: React.FC<AdderProps> = props => {
   const [fromCheck, setFromCheck] = useState<boolean>(false);
 
   const [form] = Form.useForm();
-  // const [npmClients, setNpmClients] = useState<string[]>(['npm']);
-  useEffect(() => {
-    if (api.detectNpmClients) {
-      api.detectNpmClients().then(clients => {
-        form.setFieldsValue({
-          npmClient: clients[0],
-        });
-      });
-    }
-  }, []);
 
   // 展示哪个界面
   // log 日志  form 表单
@@ -101,6 +91,21 @@ const Adder: React.FC<AdderProps> = props => {
     {
       defaultData: ['npm'],
     },
+  );
+
+  useEffect(
+    () => {
+      if (api.detectNpmClients) {
+        api.detectNpmClients().then(clients => {
+          form.setFieldsValue({
+            npmClient: clients.find(c => {
+              return npmClients.includes(c);
+            }),
+          });
+        });
+      }
+    },
+    [npmClients],
   );
 
   useEffect(() => {
@@ -290,12 +295,14 @@ const Adder: React.FC<AdderProps> = props => {
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}
 
-        <Form.Item name="js" label="编译为 JS" valuePropName="checked">
+        <Form.Item name="js" label="编译为 JS" valuePropName="checked" style={{ display: 'none' }}>
           <Switch />
         </Form.Item>
-        <Form.Item name="uni18n" label="移除国际化" valuePropName="checked">
-          <Switch />
-        </Form.Item>
+        {blockType === 'template' && (
+          <Form.Item name="uni18n" label="移除国际化" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        )}
         <Form.Item name="npmClient" label="包管理器">
           <Select>
             {npmClients.map(client => (
