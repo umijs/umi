@@ -21,12 +21,9 @@ const AddBlockFormForUI: React.FC<{
       <Form.Item
         name="path"
         label={
-          <InfoToolTip
-            title="文件安装路径"
-            placeholder="文件安装路径表示区块要添加到的文件地址！"
-          />
+          <InfoToolTip title="添加到" placeholder="文件添加路径表示区块代码存档的文件地址！" />
         }
-        rules={[{ required: true, message: '文件安装路径为必填项！' }]}
+        rules={[{ required: true, message: '文件添加路径为必填项！' }]}
       >
         <PageFilesTreeData visible={visible} />
       </Form.Item>
@@ -35,7 +32,7 @@ const AddBlockFormForUI: React.FC<{
         label={
           <InfoToolTip
             title="名称"
-            placeholder="区块的源代码将会放在 [安装路径]\[名称]的位置，并且将作为变量名加入页面中。"
+            placeholder="区块的源代码将会放在 [添加路径]\[名称]的位置，并且将作为变量名加入页面中。"
           />
         }
         rules={[

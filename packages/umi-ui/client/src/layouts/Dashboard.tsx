@@ -78,7 +78,7 @@ export default withRouter(props => {
   return (
     <UiLayout type="detail" title={title}>
       <Context.Consumer>
-        {({ currentProject, theme, isMini }) => {
+        {({ currentProject, theme, isMini, locale }) => {
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -127,7 +127,13 @@ export default withRouter(props => {
           const MenuItem = ({ panel, ...restProps }) => {
             const icon = typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
             return (
-              <Menu.Item key={panel.path} {...restProps}>
+              <Menu.Item
+                key={panel.path}
+                {...restProps}
+                // amtd MenuItem tooltip show/hide (maybe hack)
+                title={null}
+                level={locale === 'zh-CN' ? 2 : 1}
+              >
                 <NavLink exact to={`${panel.path}${search}`}>
                   <Icon className={styles.menuIcon} {...icon} />
                   {isMini ? (

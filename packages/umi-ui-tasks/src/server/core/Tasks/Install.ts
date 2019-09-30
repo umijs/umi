@@ -88,6 +88,9 @@ export class InstallTask extends BaseTask {
       case NpmClient.ayarn:
         script = 'ayarn';
         break;
+      case NpmClient.tyarn:
+        script = 'tyarn';
+        break;
       case NpmClient.yarn:
         script = 'yarn';
         break;

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { getScrollBarSize } from './utils';
 
@@ -31,12 +32,10 @@ const IframeWrapper = styled('div')`
   background: #23232d;
   width: 68vw;
   height: 80vh;
-  display: ${props => (props.visible ? 'block' : 'none')};
-  animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
-  opacity: ${props => (props.visible ? 1 : 0)};
+  animation: ${({ visible }) => (visible ? fadeInUp : fadeOutDown)} 400ms ease;
   & > * {
-    animation: ${props => (props.visible ? fadeInUp : fadeOutDown)} 400ms ease;
-    opacity: ${props => (props.visible ? 1 : 0)};
+    animation: ${({ visible }) => (visible ? fadeInUp : fadeOutDown)} 400ms ease;
+    opacity: ${({ visible }) => (visible ? 1 : 0)};
     position: absolute;
     width: 100%;
     height: 100%;
@@ -66,25 +65,38 @@ class Modal extends React.Component {
   };
 
   addScrollingEffect = () => {
+    const node = ReactDOM.findDOMNode(this);
     this.switchScrollingEffect();
     document.body.style['overflow-y'] = 'hidden';
+    node.style.display = 'block';
+    setTimeout(() => {
+      node.style.opacity = '1';
+    }, 150);
   };
 
   removeScrollingEffect = () => {
+    const node = ReactDOM.findDOMNode(this);
     document.body.style['overflow-y'] = '';
     this.switchScrollingEffect(true);
+    node.style.opacity = '0';
+    setTimeout(() => {
+      node.style.display = 'none';
+    }, 150);
   };
 
-  componentDidUpdate() {
-    if (this.props.visible) {
-      this.addScrollingEffect();
-    } else {
-      this.removeScrollingEffect();
+  componentDidUpdate(prevProps) {
+    if (this.props.visible !== prevProps.visible) {
+      if (this.props.visible) {
+        this.addScrollingEffect();
+      } else {
+        this.removeScrollingEffect();
+      }
     }
   }
 
   render() {
-    return <IframeWrapper {...this.props} />;
+    const { children, visible } = this.props;
+    return <IframeWrapper visible={visible}>{children}</IframeWrapper>;
   }
 }
 

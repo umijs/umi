@@ -30,8 +30,8 @@ const RoutePathTree: React.FC<
 
   return (
     <TreeSelect
-      placeholder="请选择安装路径"
-      searchPlaceholder="筛选安装路径"
+      placeholder="请选择添加到哪里"
+      searchPlaceholder="筛选路径"
       treeData={pageFoldersTreeData}
       {...restProps}
     />

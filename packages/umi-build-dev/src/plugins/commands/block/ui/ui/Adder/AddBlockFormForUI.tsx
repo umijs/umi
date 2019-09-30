@@ -42,8 +42,8 @@ const AddBlockFormForUI: React.FC<{
       <Form.Item
         noStyle
         name="path"
-        label={<InfoToolTip title="安装路径" placeholder="安装路径当前选中页面的路径" />}
-        rules={[{ required: true, message: '安装路径为必填项！' }]}
+        label={<InfoToolTip title="添加到" placeholder="当前选中页面的路径" />}
+        rules={[{ required: true, message: '添加路径为必填项！' }]}
       >
         <PathLabel />
       </Form.Item>
@@ -52,7 +52,7 @@ const AddBlockFormForUI: React.FC<{
         label={
           <InfoToolTip
             title="变量名"
-            placeholder="区块的源代码将会放在 [安装路径]\[名称]的位置，并且将作为变量名加入页面中。"
+            placeholder="区块的源代码将会放在 [添加路径]\[名称]的位置，并且将作为变量名加入页面中。"
           />
         }
         rules={[
