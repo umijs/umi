@@ -174,6 +174,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <div
                 className={styles.img}
                 style={{
+                  backgroundColor: '#FFF',
                   backgroundImage: `url(${item.img})`,
                 }}
               />

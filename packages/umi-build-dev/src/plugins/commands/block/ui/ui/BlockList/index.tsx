@@ -57,10 +57,13 @@ const BlockList: React.FC<BlockListProps> = props => {
 
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
-      list.filter(({ name = '', description = '', tags: listTags = [] }) => {
+      list.filter(({ name = '', url, description = '', tags: listTags = [] }) => {
         return (
-          (!selectedTag || listTags.join('').includes(selectedTag)) &&
-          (!keyword || name.includes(keyword) || description.includes(keyword))
+          ((!selectedTag || listTags.join('').includes(selectedTag)) &&
+            (!keyword ||
+              name.toLocaleLowerCase().includes(keyword) ||
+              description.toLocaleLowerCase().includes(keyword))) ||
+          url.toLocaleLowerCase().includes(keyword)
         );
       }),
     [keyword, selectedTag, list.map(({ url }) => url).join('/')],
