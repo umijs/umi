@@ -2,28 +2,60 @@
   margin-bottom: 16px;
   float: right;
   margin-right: -8px;
-  max-width: 54vw;
+  max-width: 50vw;
   margin-top: 0;
-  text-align: left;
+  text-align: right;
   position: relative;
+  display: flex;
   :global {
     .ant-tag:not(.ant-tag-checkable-checked) {
       border: 1px solid fade(#ffffff, 15);
+    }
+    .ant-tag {
+      flex: auto;
       border-radius: 4px;
       margin-top: 8px;
     }
   }
+
+  .upIcon {
+    transition: all 0.3s;
+    line-height: 22px;
+  }
+}
+
+.tagView {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tagContainer.hasExpandButton {
-  padding-right: 42px;
+  text-align: left;
 }
+
 .expandButton {
-  position: absolute;
   right: 0;
-  top: 8px;
+  margin-top: 8px;
+  width: 54px;
+  display: flex;
+  line-height: 22px;
+  justify-content: space-around;
+  height: 22px;
 }
+
 .expand {
   overflow: hidden;
   max-height: 32px;
+
+  .upIcon {
+    line-height: 22px;
+    transform: rotate(180deg);
+  }
+}
+
+:global(.isMini) {
+  .expandButton {
+    font-size: 12px;
+  }
 }

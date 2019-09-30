@@ -29,10 +29,13 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
         backgroundColor: '#23232e',
       }}
       labelInValue
+      dropdownMatchSelectWidth={onlySelectLeaf ? undefined : 400}
       value={{
         value: realValue,
         label: realValue,
       }}
+      // 不加这个不会跟着进度条走
+      getPopupContainer={() => ref.current || document.body}
       onSelect={(_, node) => {
         if (onlySelectLeaf) {
           propOnChange(node.value as string);

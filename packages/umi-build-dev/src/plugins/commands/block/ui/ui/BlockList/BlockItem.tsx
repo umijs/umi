@@ -123,7 +123,6 @@ const BlockItem: React.FC<BlockItemProps> = ({
   keyword,
 }) => {
   const { api } = useContext(Context);
-  const isBlock = type === 'block';
   const isMini = api.isMini();
 
   const style = {
@@ -167,7 +166,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
             </div>
 
             <LazyLoad
-              height="20vh"
+              height={130}
               key={item.url}
               scrollContainer={document.getElementById('block-list-view')}
               offset={100}
