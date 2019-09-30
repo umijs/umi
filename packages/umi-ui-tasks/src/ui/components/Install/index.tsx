@@ -112,7 +112,11 @@ const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelInstall : openModal}>
+            <Button
+              size={api.mini ? 'small' : 'default'}
+              type="primary"
+              onClick={isTaskRunning ? cancelInstall : openModal}
+            >
               {isTaskRunning ? (
                 <>
                   <Pause />

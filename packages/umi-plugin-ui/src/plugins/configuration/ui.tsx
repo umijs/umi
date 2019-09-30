@@ -14,6 +14,7 @@ export default (api: IUiApi) => {
           type: 'config',
         });
       }}
+      size={api.mini ? 'small' : 'default'}
       type="default"
     >
       <FormattedMessage id="org.umi.ui.configuration.actions.open.config" />

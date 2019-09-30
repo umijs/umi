@@ -191,7 +191,11 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
       <>
         <Row type="flex" justify="space-between">
           <Col className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelDev : dev}>
+            <Button
+              size={api.mini ? 'small' : 'default'}
+              type="primary"
+              onClick={isTaskRunning ? cancelDev : dev}
+            >
               {isTaskRunning ? (
                 <>
                   <Pause />
@@ -210,7 +214,9 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                 </>
               )}
             </Button>
-            <Button onClick={openModal}>{intl({ id: 'org.umi.ui.tasks.envs' })}</Button>
+            <Button size={api.mini ? 'small' : 'default'} onClick={openModal}>
+              {intl({ id: 'org.umi.ui.tasks.envs' })}
+            </Button>
             {outputRunningInfo(detail)}
             <Modal
               visible={modalVisible}
@@ -319,7 +325,13 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
             </Modal>
           </Col>
           <Col className={styles.formatGroup}>
-            <Radio.Group defaultValue="log" value={view} buttonStyle="solid" onChange={toggleView}>
+            <Radio.Group
+              size={api.mini ? 'small' : 'default'}
+              defaultValue="log"
+              value={view}
+              buttonStyle="solid"
+              onChange={toggleView}
+            >
               <Radio.Button value="log">{intl({ id: 'org.umi.ui.tasks.log' })}</Radio.Button>
               <Radio.Button value="analyze">
                 {intl({ id: 'org.umi.ui.tasks.analyze' })}

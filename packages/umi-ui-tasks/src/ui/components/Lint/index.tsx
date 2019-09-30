@@ -72,7 +72,11 @@ const LintComponent: React.FC<IProps> = ({ api, detail = {}, dispatch }) => {
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelLint : lint}>
+            <Button
+              size={api.mini ? 'small' : 'default'}
+              type="primary"
+              onClick={isTaskRunning ? cancelLint : lint}
+            >
               {isTaskRunning ? (
                 <>
                   <Pause />

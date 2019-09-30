@@ -27,7 +27,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   const [search, setSearch] = useState<string>('');
   const searchInputRef = useRef();
   const [showSearch, toggleSearch] = useToggle(false);
-  const { theme, locale } = useContext(Context);
+  const { theme, locale, isMini } = useContext(Context);
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
@@ -306,9 +306,16 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
           onConfirm={handleReset}
           onCancel={() => {}}
         >
-          <Button>{formatMessage({ id: 'org.umi.ui.configuration.reset' })}</Button>
+          <Button size={isMini ? 'small' : 'default'}>
+            {formatMessage({ id: 'org.umi.ui.configuration.reset' })}
+          </Button>
         </Popconfirm>
-        <Button onClick={handleSubmit} style={{ marginRight: 24 }} type="primary">
+        <Button
+          size={isMini ? 'small' : 'default'}
+          onClick={handleSubmit}
+          style={{ marginRight: 24 }}
+          type="primary"
+        >
           {formatMessage({ id: 'org.umi.ui.configuration.save' })}
         </Button>
       </div>

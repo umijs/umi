@@ -73,7 +73,11 @@ const TestComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
       <>
         <Row>
           <Col span={24} className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelTest : test}>
+            <Button
+              size={api.mini ? 'small' : 'default'}
+              type="primary"
+              onClick={isTaskRunning ? cancelTest : test}
+            >
               {isTaskRunning ? (
                 <>
                   <Pause />

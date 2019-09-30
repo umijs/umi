@@ -132,12 +132,12 @@ export default withRouter(props => {
                 {...restProps}
                 // amtd MenuItem tooltip show/hide (maybe hack)
                 title={null}
-                level={locale === 'zh-CN' ? 2 : 1}
+                level={isMini && locale === 'zh-CN' ? 2 : 1}
               >
                 <NavLink exact to={`${panel.path}${search}`}>
                   <Icon className={styles.menuIcon} {...icon} />
                   {isMini ? (
-                    <p>
+                    <p className={styles.menuText}>
                       <FormattedMessage id={panel.title} />
                     </p>
                   ) : (

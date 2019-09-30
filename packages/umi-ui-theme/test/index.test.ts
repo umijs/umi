@@ -108,6 +108,7 @@ describe('theme', () => {
       light: '#fff',
       dark: '#000',
       'heading-3-size': '16px',
+      'btn-font-size-sm': '12px',
       'heading-color': 'fade(@light, 85)',
       'text-color': 'fade(@light, 65)',
       'text-color-secondary': 'fade(@light, 45)',
