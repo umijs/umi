@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Tag } from 'antd';
 import { Loading, Up } from '@ant-design/icons';
 
@@ -35,25 +35,29 @@ const TagSelect: React.FC<{
   loading: boolean;
 }> = ({ value, tagList, onChange, loading }) => {
   const [expand, setExpandValue] = useState<boolean>(true);
+  const [hasExpandButton, setHasExpandButton] = useState<boolean>(true);
   const ref = useRef<HTMLDivElement>(undefined);
-  let hasExpandButton = false;
 
-  // 计算需不需要折行
-  if (ref && ref.current) {
-    const { clientHeight } = ref.current;
-    if (clientHeight > 30) {
-      hasExpandButton = true;
-    }
-  }
+  useEffect(
+    () => {
+      // 计算需不需要折行
+      if (ref && ref.current) {
+        const { clientHeight } = ref.current;
+        if (clientHeight > 30) {
+          setHasExpandButton(true);
+        }
+      }
+    },
+    [loading],
+  );
 
   return (
     <div
       className={`${styles.tagContainer} ${expand &&
         hasExpandButton &&
         styles.expand} ${hasExpandButton && styles.hasExpandButton}`}
-      ref={ref}
     >
-      <div className={styles.tagView}>
+      <div className={styles.tagView} ref={ref}>
         {!loading && (
           <CheckableTag
             checked={value === ''}
