@@ -2,13 +2,15 @@ import React from 'react';
 import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Helmet from 'react-helmet';
+import querystring from 'querystring';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
+import history from '@tmp/history';
 import event, { MESSAGES } from '@/message';
 import { isMiniUI, getLocale } from '@/utils/index';
 import Footer from './Footer';
-import { THEME } from '@/enums';
+import { THEME, ILocale, LOCALES } from '../enums';
 
 interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
@@ -52,6 +54,27 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   hideLogPanel = () => {
     if (event) {
       event.emit(MESSAGES.HIDE_LOG);
+    }
+  };
+
+  setLocale = (locale: ILocale) => {
+    const { locale: searchLocale = '', ...restParams } = querystring.parse(
+      window.location.search.slice(1),
+    );
+    if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
+      // existed lang
+      if (searchLocale) {
+        history.push({
+          search: querystring.stringify({
+            locale,
+            ...restParams,
+          }),
+        });
+        // need reload
+        window.location.reload();
+      } else {
+        setLocale(locale);
+      }
     }
   };
 
@@ -99,7 +122,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             showLogPanel: this.showLogPanel,
             hideLogPanel: this.hideLogPanel,
             setTheme: this.setTheme,
-            setLocale,
+            setLocale: this.setLocale,
             FormattedMessage,
           }}
         >
