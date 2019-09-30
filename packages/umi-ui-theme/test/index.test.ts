@@ -125,7 +125,7 @@ describe('theme', () => {
       'btn-ghost-color': 'fade(@light, 45)',
       'btn-ghost-border': 'fade(@light, 45)',
       'input-color': 'fade(@light, 65)',
-      'input-bg': '#3b3b4d',
+      'input-bg': '#17171f',
       'input-disabled-bg': '#4c4c61',
       'input-placeholder-color': 'fade(@light, 45)',
       'input-hover-border-color': 'fade(@light, 10)',
