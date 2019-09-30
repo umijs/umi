@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 import { winPath } from 'umi-utils';
+import got from 'got';
 import { getBlockListFromGit } from '../util';
 import { BlockData } from '../data.d';
 
@@ -50,6 +51,7 @@ export const getFolderTreeData = (
 export const fetchBlockList = async (repo: string): Promise<BlockData> => {
   try {
     const blocks = await getBlockListFromGit(`https://github.com/${repo}`, true);
+    console.log('xxx', blocks);
     return {
       data: blocks,
       success: true,
@@ -62,3 +64,19 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
     };
   }
 };
+
+export async function fetchUmiBlock(url) {
+  try {
+    const { body } = await got(url);
+    return {
+      data: JSON.parse(body).list,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
+}

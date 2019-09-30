@@ -2,7 +2,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { winPath } from 'umi-utils';
-import { fetchBlockList } from '../../util';
+import { fetchBlockList, fetchUmiBlock } from '../../util';
 import { Resource } from '../../../data.d';
 
 export interface TreeData {
@@ -101,6 +101,20 @@ export const DEFAULT_RESOURCES: Resource[] = [
     resourceType: 'custom',
     blockType: 'block',
     getData: () => fetchBlockList('ant-design/ant-design-blocks'),
+  },
+  {
+    id: 'umi-blocks',
+    name: 'Umi Community',
+    resourceType: 'custom',
+    blockType: 'block',
+    getData: () => fetchUmiBlock('https://blocks.umijs.org/blocks.json'),
+  },
+  {
+    id: 'umi-blocks-template',
+    name: 'Umi Community',
+    resourceType: 'custom',
+    blockType: 'template',
+    getData: () => fetchUmiBlock('https://blocks.umijs.org/templates.json'),
   },
 ];
 
