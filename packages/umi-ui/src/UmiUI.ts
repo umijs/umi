@@ -508,6 +508,10 @@ export default class UmiUI {
       ret.push('ayarn');
     } catch (e) {}
     try {
+      execSync('tyarn --version', { stdio: 'ignore' });
+      ret.push('tyarn');
+    } catch (e) {}
+    try {
       execSync('yarn --version', { stdio: 'ignore' });
       ret.push('yarn');
     } catch (e) {}

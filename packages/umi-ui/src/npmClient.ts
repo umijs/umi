@@ -51,7 +51,7 @@ export async function executeCommand(npmClient, args, targetDir, opts: IOpts) {
 export async function installDeps(npmClient, targetDir, opts) {
   let args = [];
 
-  if (['yarn', 'ayarn', 'pnpm'].includes(npmClient)) {
+  if (['yarn', 'tyarn', 'ayarn'].includes(npmClient)) {
     args = [];
   } else if (['tnpm', 'npm', 'cnpm', 'pnpm'].includes(npmClient)) {
     args = ['install'];
