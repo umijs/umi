@@ -121,7 +121,14 @@ class App extends React.Component {
     });
   };
 
-  toggleMiniOpen = () => {
+  toggleMiniOpen = open => {
+    if (open) {
+      this.setState({
+        open,
+      });
+      return;
+    }
+    // or use toggle
     if (typeof this.state.open === 'undefined') {
       this.initUIService();
     }

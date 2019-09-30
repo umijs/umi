@@ -88,6 +88,12 @@ class Bubble extends React.Component {
     }
   };
 
+  handleDrag = () => {
+    if (this.props.open) {
+      this.props.toggleMiniOpen(false);
+    }
+  };
+
   render() {
     const { isBigfish, open, children } = this.props;
     const { hide } = this.state;
@@ -95,7 +101,13 @@ class Bubble extends React.Component {
     const Logo = logoDecorator({ isBigfish });
 
     return (
-      <Dragger open={open} hide={hide} onClick={this.showBubble} onOverlap={this.hideBubble}>
+      <Dragger
+        open={open}
+        hide={hide}
+        onClick={this.showBubble}
+        onOverlap={this.hideBubble}
+        onDrag={this.handleDrag}
+      >
         <BubbleWrapper open={open}>
           <Logo open={open} />
           <CloseComponent open={open} />

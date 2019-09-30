@@ -233,7 +233,7 @@ export default class Draggable extends React.Component {
     const { dragged } = this.state;
     const { deltaX, deltaY } = this;
     const node = ReactDOM.findDOMNode(this.node);
-    const { onDrag, hide } = this.props;
+    const { hide } = this.props;
     if (!dragged || !!hide) {
       return;
     }
@@ -241,7 +241,7 @@ export default class Draggable extends React.Component {
     const scroll = getScrollOffsets();
     const clientWidth = getClientWidth();
     const clientHeight = getClientHeight();
-    const { width, height, right: rectRight, bottom: rectBottom } = node.getBoundingClientRect();
+    const { width, height } = node.getBoundingClientRect();
 
     const left = clientX + scroll.x - deltaX;
     const top = clientY + scroll.y - deltaY;
@@ -249,11 +249,21 @@ export default class Draggable extends React.Component {
     let bottom = clientHeight - top - height;
 
     // boundary detection
+    // left boundary
     if (right > clientWidth - width) {
       right = clientWidth - width;
     }
+    // top boundary
     if (bottom > clientHeight - height) {
       bottom = clientHeight - height;
+    }
+    // right boundary
+    if (right < 0) {
+      right = 0;
+    }
+    // bottom boundary
+    if (bottom < 0) {
+      bottom = 0;
     }
 
     // console.log('logObj', {
@@ -285,8 +295,8 @@ export default class Draggable extends React.Component {
         // bottom,
       },
       () => {
-        if (onDrag) {
-          onDrag({
+        if (this.props.onDrag) {
+          this.props.onDrag({
             right,
             bottom,
           });
