@@ -16,6 +16,7 @@ const PathLabel: React.FC<{
   <div
     style={{
       display: 'flex',
+      marginBottom: 24,
     }}
   >
     区块将被安装到

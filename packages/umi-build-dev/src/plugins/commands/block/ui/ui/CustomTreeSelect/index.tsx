@@ -24,7 +24,7 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
   const selectDom = (
     <TreeSelect
       showSearch
-      style={{ width: onlySelectLeaf ? '100%' : '50%' }}
+      style={{ width: onlySelectLeaf ? '100%' : '30%' }}
       dropdownStyle={{
         backgroundColor: '#23232e',
       }}
@@ -58,7 +58,7 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
         <InputGroup compact>
           {selectDom}
           <Input
-            style={{ width: '50%' }}
+            style={{ width: '70%' }}
             value={name}
             onChange={e => {
               onChange(filePath, e.target.value);

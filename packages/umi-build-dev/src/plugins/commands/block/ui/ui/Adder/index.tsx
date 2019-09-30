@@ -243,7 +243,7 @@ const Adder: React.FC<AdderProps> = props => {
             display: 'flex',
           }}
         >
-          添加 <CodeTag>{block.name}</CodeTag>
+          添加{blockType !== 'template' ? '区块' : '模板'}
         </div>
       }
       closable

@@ -28,7 +28,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
   const isMini = api.isMini();
-  const pageSize = isMini ? 8 : 10;
+  const pageSize = isMini ? 80 : 10;
 
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,
@@ -85,14 +85,24 @@ const BlockList: React.FC<BlockListProps> = props => {
       </div>
     );
   } else if (isEmpty) {
+    // 切换为黑色背景图片
     contents = (
       <div className={styles.emptyWrapper}>
-        <Empty description={keyword ? '未搜索到任何数据' : '暂无数据'} />
+        <Empty
+          image="https://gw.alipayobjects.com/mdn/rms_4f0d74/afts/img/A*LinHSLLEHUAAAAAAAAAAAABkARQnAQ"
+          description={keyword ? '未搜索到任何数据' : '暂无数据'}
+        />
       </div>
     );
   } else {
     contents = (
-      <>
+      <div
+        style={{
+          display: 'flex',
+          height: '100%',
+          flexDirection: 'column',
+        }}
+      >
         <Row gutter={20} type="flex">
           {currentPageList.map(item => (
             <BlockItem
@@ -107,6 +117,7 @@ const BlockList: React.FC<BlockListProps> = props => {
         {filteredList.length > pageSize && (
           <Row type="flex" justify="end">
             <Pagination
+              size={isMini ? 'small' : undefined}
               current={currentPage}
               onChange={setCurrentPage}
               total={filteredList.length}
@@ -114,7 +125,7 @@ const BlockList: React.FC<BlockListProps> = props => {
             />
           </Row>
         )}
-      </>
+      </div>
     );
   }
 

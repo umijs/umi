@@ -135,7 +135,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
     <Col style={style} key={item.url}>
       <div
         id={item.url}
-        className={isBlock ? styles.blockCard : styles.templateCard}
+        className={styles.templateCard}
         onClick={() => {
           if (loading) {
             onShowModal(item, {});

@@ -81,6 +81,14 @@ const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api } = useContext(Context);
   const { callRemote } = api;
+  /**
+   * 是不是umi
+   */
+  const isMini = api.isMini();
+
+  /**
+   * 用到的各种状态
+   */
   const [willAddBlock, setWillAddBlock] = useState<Block>(null);
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
@@ -167,7 +175,6 @@ const BlocksViewer: React.FC<Props> = props => {
 
   // 区块右上角的区域 三个按钮
   useEffect(() => {
-    const isMini = api.isMini();
     const buttonPadding = isMini ? '0 4px' : '0 8px';
 
     const handleSearchChange = (v: string) => {
@@ -218,7 +225,7 @@ const BlocksViewer: React.FC<Props> = props => {
 
   return (
     <>
-      <div className={styles.container} id="block-list-view">
+      <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
         {current ? (
           <div className={styles.blockList}>
             <Tabs
@@ -252,7 +259,15 @@ const BlocksViewer: React.FC<Props> = props => {
                 ))}
               </Radio.Group>
             )}
-            {matchedResources.length === 1 && <h3>{matchedResources[0].name}</h3>}
+            {matchedResources.length === 1 && (
+              <h3
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                {matchedResources[0].name}
+              </h3>
+            )}
             {matchedResources.length > 0 ? (
               <BlockList
                 type={type}
