@@ -1,5 +1,5 @@
 import { IUi } from 'umi-types';
-import { getLocale } from 'umi-plugin-react/locale';
+import { getLocale } from '@/utils/index';
 
 let sock;
 let retries = 0;

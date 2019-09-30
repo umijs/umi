@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
 import querystring from 'querystring';
+import { getLocale } from '@/utils';
 import { init as initSocket, callRemote } from './socket';
 import debug from '@/debug';
 import PluginAPI from './PluginAPI';
@@ -169,6 +170,7 @@ export const locale = {
     _log('locale messages', messages);
     return messages;
   },
+  default: getLocale,
 };
 
 // for ga analyse

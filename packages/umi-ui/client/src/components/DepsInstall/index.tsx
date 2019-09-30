@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Modal, Form, Select, Spin } from 'antd';
-import { getLocale } from 'umi-plugin-react/locale';
+import { getLocale } from '@/utils/index';
 import { ButtonProps } from 'antd/lib/button';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import intl from '@/utils/intl';

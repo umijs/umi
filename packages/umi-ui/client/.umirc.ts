@@ -80,8 +80,9 @@ const config: IConfig = {
         },
         locale: {
           default: 'zh-CN',
-          antd: true,
           baseNavigator: false,
+          useLocalStorage: false,
+          antd: true,
         },
         routes: {
           exclude: [/models\//, /component\//, /components\//],

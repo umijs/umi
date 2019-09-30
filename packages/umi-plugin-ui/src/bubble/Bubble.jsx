@@ -68,6 +68,7 @@ class Bubble extends React.Component {
       JSON.stringify({
         action: 'umi.ui.disableBlockEditMode',
       }),
+      '*',
     );
 
     const node = ReactDOM.findDOMNode(this);
@@ -95,7 +96,7 @@ class Bubble extends React.Component {
   };
 
   render() {
-    const { isBigfish, open, children } = this.props;
+    const { isBigfish, open, children, message } = this.props;
     const { hide } = this.state;
 
     const Logo = logoDecorator({ isBigfish });
@@ -106,6 +107,7 @@ class Bubble extends React.Component {
         hide={hide}
         onClick={this.showBubble}
         onOverlap={this.hideBubble}
+        message={message}
         onDrag={this.handleDrag}
       >
         <BubbleWrapper open={open}>

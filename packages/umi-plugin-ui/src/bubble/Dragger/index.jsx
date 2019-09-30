@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { HideWrapper } from '../Hide';
-import { getScrollOffsets, getClientWidth, getClientHeight, isRelativeToViewport } from './utils';
+import { getScrollOffsets, getClientWidth, getClientHeight } from '../utils';
 
 const initRight = 60;
 const initBottom = 30;
@@ -38,7 +38,7 @@ const Container = styled.div`
     background: rgba(0, 0, 0, 0.75);
     border-radius: 2px;
     color: #fff;
-    content: '图标只在 dev 环境下展现';
+    content: "${({ message }) => message.tooltip}";
     padding: 0.5em 1em;
     position: absolute;
     white-space: nowrap;
@@ -335,11 +335,12 @@ export default class Draggable extends React.Component {
   };
 
   render() {
-    const { children, hide, open } = this.props;
+    const { children, hide, open, message } = this.props;
     const { dragged, width } = this.state;
     return (
       <Container
         ref={this.saveRef}
+        message={message}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
         style={hide ? { right: -width / 1.5 } : {}}

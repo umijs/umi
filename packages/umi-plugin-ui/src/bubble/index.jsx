@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import isMobile from 'is-mobile';
 import { callRemote, init as initSocket } from './socket';
+import { getLocale } from './utils';
+import messages from './bubble-locale';
 import Bubble from './Bubble';
 import Modal from './Modal';
 import Loading from './Loading';
@@ -37,8 +39,9 @@ class App extends React.Component {
 
   getMiniUrl = () => {
     const { port } = this.props;
+    const locale = getLocale();
     const { currentProject } = this.state;
-    return `http://localhost:${port}/?mini${
+    return `http://localhost:${port}/?mini&locale=${locale}&${
       currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
     }`;
   };
@@ -141,19 +144,29 @@ class App extends React.Component {
     const { open, currentProject, connected, uiLoaded, errMsg } = this.state;
     const { port, isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
+    // get locale when first render
+    // switch in the project can't be listened, the lifecycle can't be trigger
+    // TODO: use Context but need to compatible with other React version
+    const locale = getLocale();
+    const message = messages[locale] || messages['zh-CN'];
 
     return (
-      <Bubble isBigfish={isBigfish} toggleMiniOpen={this.toggleMiniOpen} open={open}>
+      <Bubble
+        isBigfish={isBigfish}
+        toggleMiniOpen={this.toggleMiniOpen}
+        open={open}
+        message={message}
+      >
         {open !== undefined && (
           <Modal visible={open}>
             {!uiLoaded && (
               <LoadingWrapper>
                 <Loading />
-                <p style={{ marginTop: 8 }}>加载中</p>
+                <p style={{ marginTop: 8 }}>{message.loading}</p>
               </LoadingWrapper>
             )}
             {!connected ? (
-              <Error isBigfish={isBigfish} />
+              <Error message={message} isBigfish={isBigfish} />
             ) : (
               <iframe
                 id="umi-ui-bubble"

@@ -1,12 +1,12 @@
 import React from 'react';
-import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Helmet from 'react-helmet';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
 import event, { MESSAGES } from '@/message';
-import { isMiniUI } from '@/utils/index';
+import { isMiniUI, getLocale } from '@/utils/index';
 import Footer from './Footer';
 import { THEME } from '@/enums';
 
@@ -57,6 +57,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
   render() {
     const locale = getLocale();
+    console.log('localelocalelocale', locale);
     const { theme } = this.state;
     const { type, className, title } = this.props;
     const currentProject = window.g_uiCurrentProject || {};
