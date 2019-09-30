@@ -59,21 +59,6 @@ const cancelAddBlockTask = (api: IUiApi) => {
   });
 };
 
-const CodeTag: React.FC<{}> = ({ children }) => {
-  return (
-    <code
-      style={{
-        backgroundColor: '#3b3b4d',
-        margin: '0 8px',
-        padding: '2px 8px',
-        borderRadius: 4,
-      }}
-    >
-      {children}
-    </code>
-  );
-};
-
 const Adder: React.FC<AdderProps> = props => {
   const {
     visible,
@@ -99,7 +84,7 @@ const Adder: React.FC<AdderProps> = props => {
   const [addStatus, setAddStatus] = useState<'form' | 'log' | 'result'>('form');
 
   // 预览界面需要消费的日志
-  const [successedBlock, setSuccessedBlock] = useState<{
+  const [succeededBlock, setSucceededBlock] = useState<{
     previewUrl: string;
     name: string;
   }>(undefined);
@@ -137,12 +122,15 @@ const Adder: React.FC<AdderProps> = props => {
     api.listenRemote({
       type: 'org.umi.block.add-blocks-success',
       onMessage: msg => {
-        setTaskLoading(false);
-        onAddBlockChange(undefined);
+        // 如果标签页不激活，不处理它
+        if (document.visibilityState !== 'hidden') {
+          setTaskLoading(false);
+          onAddBlockChange(undefined);
 
-        // 设置预览界面
-        setAddStatus('result');
-        setSuccessedBlock(msg.data);
+          // 设置预览界面
+          setAddStatus('result');
+          setSucceededBlock(msg.data);
+        }
       },
     });
 
@@ -155,7 +143,10 @@ const Adder: React.FC<AdderProps> = props => {
       onMessage: () => {
         setTaskLoading(false);
         onAddBlockChange(undefined);
-        message.error('添加失败，请重试！');
+        // 如果标签页不激活，不处理它
+        if (document.visibilityState !== 'hidden') {
+          message.error('添加失败，请重试！');
+        }
       },
     });
 
@@ -268,7 +259,7 @@ const Adder: React.FC<AdderProps> = props => {
         if (addStatus === 'log' && !taskLoading) {
           onHideModal();
           setAddStatus('form');
-          setSuccessedBlock(undefined);
+          setSucceededBlock(undefined);
           return;
         }
         if (addStatus === 'log') {
@@ -354,16 +345,16 @@ const Adder: React.FC<AdderProps> = props => {
         </Form.Item>
       </Form>
       {addStatus === 'log' && <LogPanel loading={taskLoading} />}
-      {addStatus === 'result' && successedBlock && (
+      {addStatus === 'result' && succeededBlock && (
         <ResultPanel
           onFinish={() => {
             onHideModal();
             setAddStatus('form');
-            setSuccessedBlock(undefined);
+            setSucceededBlock(undefined);
             api.hideMini();
           }}
-          name={successedBlock.name || block.name}
-          url={successedBlock.previewUrl}
+          name={succeededBlock.name || block.name}
+          url={succeededBlock.previewUrl}
         />
       )}
     </Modal>
