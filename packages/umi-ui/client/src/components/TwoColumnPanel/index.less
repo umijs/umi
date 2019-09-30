@@ -3,8 +3,17 @@
   height: 100%;
 }
 
-:global(.isMini) .left {
-  width: 204px;
+:global(.isMini) {
+  .left {
+    width: 204px;
+  }
+  .trigger {
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
 }
 
 .left {
@@ -39,10 +48,14 @@
   flex-wrap: wrap;
 
   .icon {
-    width: 44px;
+    width: 32px;
     height: 32px;
     margin-left: 8px;
     margin-top: 4px;
+    margin-right: 12px;
+    img {
+      height: 100%;
+    }
   }
   .title_desc {
     flex: 1;

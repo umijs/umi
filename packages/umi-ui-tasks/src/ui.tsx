@@ -17,8 +17,8 @@ export default (api: IUiApi) => {
 
   const { TwoColumnPanel } = api;
   const imgProperty = {
-    width: '32',
-    height: '32',
+    width: api.mini ? '24' : '32',
+    height: api.mini ? '24' : '32',
   };
 
   const SCRIPTS = {

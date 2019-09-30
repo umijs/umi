@@ -124,7 +124,7 @@ class App extends React.Component {
     });
   };
 
-  toggleMiniOpen = open => {
+  toggleMiniOpen = async open => {
     if (open) {
       this.setState({
         open,
@@ -133,7 +133,7 @@ class App extends React.Component {
     }
     // or use toggle
     if (typeof this.state.open === 'undefined') {
-      this.initUIService();
+      await this.initUIService();
     }
     this.setState(prevState => ({
       open: !prevState.open,
@@ -143,6 +143,7 @@ class App extends React.Component {
   render() {
     const { open, currentProject, connected, uiLoaded, errMsg } = this.state;
     const { port, isBigfish = false } = this.props;
+    console.log('currentProject', currentProject);
     const miniUrl = this.getMiniUrl();
     // get locale when first render
     // switch in the project can't be listened, the lifecycle can't be trigger
@@ -153,6 +154,7 @@ class App extends React.Component {
     return (
       <Bubble
         isBigfish={isBigfish}
+        // TODO: loading when currentProject not loaded
         toggleMiniOpen={this.toggleMiniOpen}
         open={open}
         message={message}

@@ -9,12 +9,22 @@
   }
 }
 :global(.isMini) {
-  .configForm-submit {
-    bottom: 0;
-    height: 41px;
-  }
   .configForm {
     padding: 12px 20px;
+    &-submit {
+      bottom: -8px;
+      height: 41px;
+    }
+    &-header {
+      h2 {
+        font-size: @font-size-base;
+      }
+    }
+    .group {
+      h2 {
+        font-size: @font-size-base;
+      }
+    }
   }
   @media @mobile {
     .toc {

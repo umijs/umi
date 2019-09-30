@@ -16,8 +16,8 @@ function getSections(api: IUiApi) {
       icon: (
         <img
           src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
-          width={32}
-          height={32}
+          width={api.mini ? 24 : 32}
+          height={api.mini ? 24 : 32}
         />
       ),
       description: api.intl(

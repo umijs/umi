@@ -59,6 +59,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
               className={triggerCls}
               key={s.key}
               type="flex"
+              align="middle"
               onClick={() => toggleSectionHandler(s.key)}
             >
               <Col className={styles.icon}>
