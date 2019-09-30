@@ -28,7 +28,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
   const isMini = api.isMini();
-  const pageSize = isMini ? 80 : 10;
+  const pageSize = isMini ? 8 : 10;
 
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,
