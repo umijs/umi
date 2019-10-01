@@ -51,7 +51,6 @@ export const getFolderTreeData = (
 export const fetchBlockList = async (repo: string): Promise<BlockData> => {
   try {
     const blocks = await getBlockListFromGit(`https://github.com/${repo}`, true);
-    console.log('xxx', blocks);
     return {
       data: blocks,
       success: true,

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
-import { Reload } from '@ant-design/icons';
+import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
 
@@ -215,6 +215,18 @@ const BlocksViewer: React.FC<Props> = props => {
               alt="clear"
               src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
             />
+          </Button>
+        </Tooltip>,
+        <Tooltip title="提交自己的区块">
+          <Button
+            size={isMini ? 'small' : 'default'}
+            key="clear"
+            onClick={() => clearCache(api)}
+            style={{
+              padding: buttonPadding,
+            }}
+          >
+            <Plus />
           </Button>
         </Tooltip>,
       ]);
