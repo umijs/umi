@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
-import LazyLoad from 'react-lazyload';
 import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
@@ -9,6 +8,7 @@ import HighlightedText from './HighlightedText';
 import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
+import ImageLoad from './ImageLoad';
 
 /**
  * 子区块 的 tag
@@ -165,20 +165,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               )}
             </div>
 
-            <LazyLoad
-              height={130}
-              key={item.url}
-              scrollContainer={document.getElementById('block-list-view')}
-              offset={100}
-            >
-              <div
-                className={styles.img}
-                style={{
-                  backgroundColor: '#FFF',
-                  backgroundImage: `url(${item.img})`,
-                }}
-              />
-            </LazyLoad>
+            <ImageLoad src={item.img} />
           </div>
         </Spin>
 
