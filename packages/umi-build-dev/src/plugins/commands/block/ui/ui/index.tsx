@@ -217,7 +217,7 @@ const BlocksViewer: React.FC<Props> = props => {
             />
           </Button>
         </Tooltip>,
-        <Tooltip title="提交自己的区块">
+        <Tooltip title="提交新的区块">
           <Button
             size={isMini ? 'small' : 'default'}
             key="clear"
