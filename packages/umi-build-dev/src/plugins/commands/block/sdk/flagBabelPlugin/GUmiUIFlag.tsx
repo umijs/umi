@@ -22,7 +22,7 @@ export default ({ filename, index }) => {
       onClick={clickHandler}
       style={{
         background: 'rgba(24,144,255,0.15)',
-        border: '1px dashed #1890ff',
+        border: '1px solid #1890ff',
         margin: '10px 0',
         height: '60px',
         textAlign: 'center',
