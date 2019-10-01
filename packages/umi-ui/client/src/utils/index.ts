@@ -8,8 +8,10 @@ import { IProjectList, IProjectItem, LOCALES } from '@/enums';
 export const getLocale = () => {
   // handle url /?locale= from mini
   const { locale: searchLocale = '' } = querystring.parse(window.location.search.slice(1));
+  const locale =
+    Object.keys(LOCALES).indexOf(searchLocale as string) > -1 ? searchLocale : umiGetLocale();
   // search in first
-  return Object.keys(LOCALES).indexOf(searchLocale as string) > -1 ? searchLocale : umiGetLocale();
+  return locale || LOCALES['zh-CN'];
 };
 
 export const isMiniUI = (): boolean => {
