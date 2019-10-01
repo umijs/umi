@@ -105,9 +105,7 @@ const Adder: React.FC<AdderProps> = props => {
       if (api.detectNpmClients) {
         api.detectNpmClients().then(clients => {
           form.setFieldsValue({
-            npmClient: clients.find(c => {
-              return npmClients.includes(c);
-            }),
+            npmClient: clients.find(c => npmClients.includes(c)),
           });
         });
       }
