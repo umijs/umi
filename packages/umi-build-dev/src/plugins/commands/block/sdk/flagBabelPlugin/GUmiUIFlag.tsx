@@ -30,6 +30,7 @@ export default ({ filename, index }) => {
         fontSize: '14px',
         lineHeight: '60px',
         cursor: 'pointer',
+        transition: 'all .3s',
         overflow: 'hidden',
         fontFamily:
           'Chinese Quote,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif',
