@@ -502,6 +502,7 @@ export interface IApi {
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
   onUISocket: IOnUISocket;
+  onRouteChange: (callback: () => void) => void;
 
   /**
    * Application class API

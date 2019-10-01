@@ -29,10 +29,9 @@ function testTransform(dir) {
     expect(code.trim()).toEqual(expected.trim());
   } else {
     if (process.env.PRINT_CODE) {
-      console.log(code);
-    } else {
-      writeFileSync(expectedFile, code, 'utf-8');
+      // console.log(code);
     }
+    writeFileSync(expectedFile, code, 'utf-8');
   }
 }
 

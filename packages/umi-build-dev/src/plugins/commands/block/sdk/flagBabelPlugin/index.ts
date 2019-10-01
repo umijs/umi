@@ -8,29 +8,28 @@ import {
   haveChildren,
 } from '../util';
 
-export default function({ types: t }) {
+export default ({ types: t }) => {
   function buildGUmiUIFlag({ index, filename, jsx }) {
     if (jsx) {
       return t.JSXElement(
         t.JSXOpeningElement(t.JSXIdentifier('GUmiUIFlag'), [
-          t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral('' + filename)),
-          t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral('' + index)),
+          t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral(`${filename}`)),
+          t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral(`${index}`)),
         ]),
         t.JSXClosingElement(t.JSXIdentifier('GUmiUIFlag')),
         [],
       );
-    } else {
-      return t.CallExpression(
-        t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
-        [
-          t.Identifier('GUmiUIFlag'),
-          t.ObjectExpression([
-            t.ObjectProperty(t.Identifier('filename'), t.StringLiteral('' + filename)),
-            t.ObjectProperty(t.Identifier('index'), t.StringLiteral('' + index)),
-          ]),
-        ],
-      );
     }
+    return t.CallExpression(
+      t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
+      [
+        t.Identifier('GUmiUIFlag'),
+        t.ObjectExpression([
+          t.ObjectProperty(t.Identifier('filename'), t.StringLiteral(`${filename}`)),
+          t.ObjectProperty(t.Identifier('index'), t.StringLiteral(`${index}`)),
+        ]),
+      ],
+    );
   }
 
   function addFlagToIndex(nodes, i, { index, filename, jsx }) {
@@ -103,15 +102,16 @@ export default function({ types: t }) {
       Program: {
         enter(path, state) {
           const { filename, opts = {} } = state;
-          assert(opts.doTransform, `opts.doTransform must supplied`);
+          assert(opts.doTransform, 'opts.doTransform must supplied');
 
           if (opts.doTransform(filename)) {
             const { node } = path;
 
-            let d = findExportDefaultDeclaration(node);
+            let d: any = findExportDefaultDeclaration(node);
 
             // Support hoc
             while (t.isCallExpression(d)) {
+              // eslint-disable-next-line
               d = d.arguments[0];
             }
 
@@ -119,6 +119,7 @@ export default function({ types: t }) {
 
             // Support hoc again
             while (t.isCallExpression(d)) {
+              // eslint-disable-next-line
               d = d.arguments[0];
             }
 
@@ -137,4 +138,4 @@ export default function({ types: t }) {
       },
     },
   };
-}
+};

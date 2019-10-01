@@ -3,7 +3,6 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import execa from 'execa';
 import ora from 'ora';
-import got from 'got';
 
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
@@ -43,8 +42,8 @@ export const genBlockName = name =>
  */
 export function printBlocks(blocks, hasLink) {
   const blockArray = [];
-  const loopBlocks = (blocks, parentPath = '') => {
-    blocks.forEach(block => {
+  const loopBlocks = (blockItems, parentPath = '') => {
+    blockItems.forEach(block => {
       if (block.type === 'block') {
         const blockName = join(parentPath, block.path);
         const { previewUrl } = block;
@@ -72,8 +71,8 @@ export function printBlocks(blocks, hasLink) {
   return blockArray;
 }
 
-//https://gitee.com/ant-design/pro-blocks/raw/master/AccountCenter/snapshot.png
-//https://raw.githubusercontent.com/ant-design/pro-blocks/master/AccountCenter/snapshot.png?raw=true
+// https://gitee.com/ant-design/pro-blocks/raw/master/AccountCenter/snapshot.png
+// https://raw.githubusercontent.com/ant-design/pro-blocks/master/AccountCenter/snapshot.png?raw=true
 export const imgFilter = (list, { name, owner }, useGitee) => {
   if (!useGitee) {
     return list;
@@ -140,19 +139,17 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
       file =>
         file.type === 'tree' && !ignoreFile.includes(file.path) && file.path.indexOf('.') !== 0,
     )
-    .map(({ path }) => {
-      return {
-        url: `${gitUrl}/tree/master/${path}`,
-        type: 'block',
-        path,
-        isPage: true,
-        defaultPath: `/${path}`,
-        img: `https://github.com/ant-design/pro-blocks/raw/master/${path}/snapshot.png`,
-        tags: ['Ant Design Pro'],
-        name: path,
-        previewUrl: `https://preview.pro.ant.design/${genBlockName(path)}`,
-      };
-    });
+    .map(({ path }) => ({
+      url: `${gitUrl}/tree/master/${path}`,
+      type: 'block',
+      path,
+      isPage: true,
+      defaultPath: `/${path}`,
+      img: `https://github.com/ant-design/pro-blocks/raw/master/${path}/snapshot.png`,
+      tags: ['Ant Design Pro'],
+      name: path,
+      previewUrl: `https://preview.pro.ant.design/${genBlockName(path)}`,
+    }));
   spinner.succeed();
   return filesTree;
 };
@@ -160,37 +157,37 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
 /**
  * clone 下来的 git 会缓存。这个方法可以更新缓存
  * @param {*} ctx
- * @param {*} spinner
+ * @param {*} mySpinner
  */
-export async function gitUpdate(ctx, spinner) {
-  spinner.start('🚒  Git fetch');
+export async function gitUpdate(ctx, mySpinner) {
+  mySpinner.start('🚒  Git fetch');
   try {
-    await execa(`git`, ['fetch'], {
+    await execa('git', ['fetch'], {
       cwd: ctx.templateTmpDirPath,
       stdio: 'inherit',
     });
   } catch (e) {
-    spinner.fail();
+    mySpinner.fail();
     throw new Error(e);
   }
-  spinner.succeed();
+  mySpinner.succeed();
 
-  spinner.start(`🚛  Git checkout ${ctx.branch}`);
+  mySpinner.start(`🚛  Git checkout ${ctx.branch}`);
 
   try {
-    await execa(`git`, ['checkout', ctx.branch], {
+    await execa('git', ['checkout', ctx.branch], {
       cwd: ctx.templateTmpDirPath,
       stdio: 'inherit',
     });
   } catch (e) {
-    spinner.fail();
+    mySpinner.fail();
     throw new Error(e);
   }
-  spinner.succeed();
+  mySpinner.succeed();
 
-  spinner.start('🚀  Git pull');
+  mySpinner.start('🚀  Git pull');
   try {
-    await execa(`git`, [`pull`], {
+    await execa('git', ['pull'], {
       cwd: ctx.templateTmpDirPath,
       stdio: 'inherit',
     });
@@ -198,26 +195,26 @@ export async function gitUpdate(ctx, spinner) {
     // git module 只能通过这种办法来初始化一下
     if (isSubmodule(ctx.templateTmpDirPath)) {
       // 结束  git pull 的 spinner
-      spinner.succeed();
+      mySpinner.succeed();
 
-      //如果是分支切换过来，可能没有初始化，初始化一下
-      await execa(`git`, ['submodule', 'init'], {
+      // 如果是分支切换过来，可能没有初始化，初始化一下
+      await execa('git', ['submodule', 'init'], {
         cwd: ctx.templateTmpDirPath,
         env: process.env,
         stdio: 'inherit',
       });
 
-      spinner.start(`👀  update submodule`);
-      await execa(`git`, ['submodule', 'update', '--recursive'], {
+      mySpinner.start('👀  update submodule');
+      await execa('git', ['submodule', 'update', '--recursive'], {
         cwd: ctx.templateTmpDirPath,
         stdio: 'inherit',
       });
     }
   } catch (e) {
-    spinner.fail();
+    mySpinner.fail();
     throw new Error(e);
   }
-  spinner.succeed();
+  mySpinner.succeed();
 }
 
 /**
@@ -251,14 +248,14 @@ const reduceData = treeData =>
 /**
  * 克隆区块的地址
  * @param {*} ctx
- * @param {*} spinner
+ * @param {*} mySpinner
  */
-export async function gitClone(ctx, spinner) {
-  spinner.start(`🔍  clone git repo from ${ctx.repo}`);
+export async function gitClone(ctx, mySpinner) {
+  mySpinner.start(`🔍  clone git repo from ${ctx.repo}`);
   try {
     await execa(
-      `git`,
-      [`clone`, ctx.repo, ctx.id, `--single-branch`, `--recurse-submodules`, `-b`, ctx.branch],
+      'git',
+      ['clone', ctx.repo, ctx.id, '--single-branch', '--recurse-submodules', '-b', ctx.branch],
       {
         cwd: ctx.blocksTempPath,
         env: process.env,
@@ -266,10 +263,10 @@ export async function gitClone(ctx, spinner) {
       },
     );
   } catch (e) {
-    spinner.fail();
+    mySpinner.fail();
     throw new Error(e);
   }
-  spinner.succeed();
+  mySpinner.succeed();
 }
 
 export const genRouterToTreeData = routes =>
@@ -410,6 +407,7 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
 
 export async function fetchUmiBlock(url) {
   try {
+    const got = require('got');
     const { body } = await got(url);
     return {
       data: JSON.parse(body).list,

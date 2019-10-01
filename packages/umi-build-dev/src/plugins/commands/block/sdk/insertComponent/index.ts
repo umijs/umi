@@ -15,23 +15,21 @@ import {
   parseContent,
 } from '../util';
 
-export default function(content, opts) {
+export default (content, opts) => {
   const { relativePath, identifier, index = 0, latest } = opts;
 
   function addImport(node, id) {
     const { body } = node;
-    const lastImportSit = findLastIndex(body, item => {
-      return t.isImportDeclaration(item);
-    });
-    const newImport = t.ImportDeclaration(
-      [t.ImportDefaultSpecifier(t.identifier(id))],
+    const lastImportSit = findLastIndex(body, (item: object) => t.isImportDeclaration(item));
+    const newImport = t.importDeclaration(
+      [t.importDefaultSpecifier(t.identifier(id))],
       t.stringLiteral(relativePath),
     );
     body.splice(lastImportSit + 1, 0, newImport);
   }
 
   function addBlockToJSX({ node, replace, id }) {
-    assert(isJSXElement(node), `add block to jsx failed, not valid jsx element`);
+    assert(isJSXElement(node), 'add block to jsx failed, not valid jsx element');
 
     const newNode = t.jsxElement(
       t.jsxOpeningElement(t.jsxIdentifier(id), [], true),
@@ -62,10 +60,11 @@ export default function(content, opts) {
     Program(path) {
       const { node } = path;
 
-      let d = findExportDefaultDeclaration(node);
+      let d = findExportDefaultDeclaration(node) as any;
 
       // support hoc
       while (t.isCallExpression(d)) {
+        // eslint-disable-next-line
         d = d.arguments[0];
       }
 
@@ -73,11 +72,12 @@ export default function(content, opts) {
 
       // Support hoc again
       while (t.isCallExpression(d)) {
+        // eslint-disable-next-line
         d = d.arguments[0];
       }
 
       const ret = getReturnNode(d);
-      assert(ret, `Can not find return node`);
+      assert(ret, 'Can not find return node');
 
       const id = uppercamelcase(identifier);
       // TODO: check id exists
@@ -99,4 +99,4 @@ export default function(content, opts) {
     printWidth: 100,
     parser: 'typescript',
   });
-}
+};

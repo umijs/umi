@@ -1,6 +1,8 @@
-export default function({ filename, index }) {
+import React from 'react';
+
+export default ({ filename, index }) => {
   function clickHandler() {
-    const el = document.getElementById('umi-ui-bubble');
+    const el = document.getElementById('umi-ui-bubble') as HTMLIFrameElement;
     if (el && el.contentWindow) {
       el.contentWindow.postMessage(
         JSON.stringify({
@@ -19,8 +21,8 @@ export default function({ filename, index }) {
     <div
       onClick={clickHandler}
       style={{
-        background: '#c7e4ff',
-        border: '1px dashed #329bff',
+        background: 'rgba(24,144,255,0.15)',
+        border: '1px dashed #1890ff',
         margin: '10px 0',
         height: '60px',
         textAlign: 'center',
@@ -37,4 +39,4 @@ export default function({ filename, index }) {
       + 添加到这里（{filename} 的第 {index} 个位置）
     </div>
   );
-}
+};

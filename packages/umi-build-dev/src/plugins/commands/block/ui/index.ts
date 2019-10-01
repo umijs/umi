@@ -62,8 +62,12 @@ export default (api: IApiBlock) => {
 
   // Enable/Disable block add edit mode
   const el = document.createElement('style');
-  el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
+  el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; } ';
+  const hoverEl = document.createElement('style');
+  hoverEl.innerHTML='.g_umiuiBlockAddEditMode:hover {background: rgba(24, 144, 255, 0.25) !important;}'
+  document.querySelector('head').appendChild(hoverEl);
   document.querySelector('head').appendChild(el);
+
 
   window.addEventListener('message', (event) => {
     try {
