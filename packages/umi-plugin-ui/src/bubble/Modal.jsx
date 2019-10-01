@@ -65,32 +65,38 @@ class Modal extends React.Component {
   };
 
   addScrollingEffect = () => {
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.nodeDom;
     this.switchScrollingEffect();
     document.body.style['overflow-y'] = 'hidden';
     node.style.display = 'block';
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       node.style.opacity = '1';
-    }, 150);
+    });
   };
 
   removeScrollingEffect = () => {
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.nodeDom;
     document.body.style['overflow-y'] = '';
     this.switchScrollingEffect(true);
     node.style.opacity = '0';
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       node.style.display = 'none';
-    }, 150);
+    });
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.visible !== prevProps.visible) {
-      if (this.props.visible) {
-        this.addScrollingEffect();
-      } else {
-        this.removeScrollingEffect();
-      }
+  componentDidMount() {
+    // eslint-disable-next-line
+    this.nodeDom = ReactDOM.findDOMNode(this);
+    // DidMount 的时候就是true，因为默认是未定义。
+    // 所以强行调用一下 componentDidUpdate，可以防止闪动
+    this.componentDidUpdate();
+  }
+
+  componentDidUpdate() {
+    if (this.props.visible) {
+      this.addScrollingEffect();
+    } else {
+      this.removeScrollingEffect();
     }
   }
 

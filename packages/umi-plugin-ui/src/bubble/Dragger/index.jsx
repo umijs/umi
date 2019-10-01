@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { HideWrapper } from '../Hide';
-import { getScrollOffsets, getClientWidth, getClientHeight } from '../utils';
+import { getScrollOffsets, getClientWidth, getScrollBarSize, getClientHeight } from '../utils';
 
 const initRight = 60;
 const initBottom = 30;
@@ -97,7 +97,7 @@ export default class Draggable extends React.Component {
   };
 
   overlapDetection = () => {
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.nodeDom;
     const { left, top, right, bottom, width, height } = node.getBoundingClientRect();
     const aroundElems = [
       document.elementFromPoint(left, top),
@@ -125,12 +125,44 @@ export default class Draggable extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false);
-    const node = ReactDOM.findDOMNode(this);
-    const { width } = node.getBoundingClientRect();
+    // eslint-disable-next-line
+    this.nodeDom = ReactDOM.findDOMNode(this);
+    const { width } = this.nodeDom.getBoundingClientRect();
     window.addEventListener('load', this.overlapDetection, false);
     this.setState({
       width,
     });
+  }
+
+  componentDidUpdate(preProps) {
+    const { open: preOpen } = preProps;
+    const { open } = this.props;
+    const bodyIsOverflowing =
+      document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight) &&
+      window.innerWidth > document.body.offsetWidth;
+
+    // 关闭到打开 增加 right
+    if (!preOpen && open) {
+      const scrollBarSize = getScrollBarSize();
+      const dom = this.nodeDom;
+      const right = dom.style.right || '60px';
+      if (dom && bodyIsOverflowing) {
+        requestAnimationFrame(() => {
+          dom.style.right = `${parseInt(right.replace('px', ''), 0) + scrollBarSize}px`;
+        });
+      }
+    }
+    // 打开到关闭，减少right
+    if (preOpen && !open) {
+      const scrollBarSize = getScrollBarSize();
+      const dom = this.nodeDom;
+      const right = dom.style.right || '60px';
+      if (dom && bodyIsOverflowing) {
+        requestAnimationFrame(() => {
+          dom.style.right = `${parseInt(right.replace('px', ''), 0) - scrollBarSize}px`;
+        });
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -140,7 +172,7 @@ export default class Draggable extends React.Component {
   }
 
   handleResize = () => {
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.nodeDom;
     const clientRect = node.getBoundingClientRect();
     const { width, height } = clientRect;
     const { right: styleRight, bottom: styleBottom } = window.getComputedStyle(node);
@@ -176,7 +208,7 @@ export default class Draggable extends React.Component {
   handleMouseDown = e => {
     this.intervalStart = new Date().getTime();
     const scroll = getScrollOffsets();
-    const node = ReactDOM.findDOMNode(this.node);
+    const node = this.nodeDom;
     const startX = e.clientX + scroll.x;
     const startY = e.clientY + scroll.y;
 
@@ -232,7 +264,7 @@ export default class Draggable extends React.Component {
     }
     const { dragged } = this.state;
     const { deltaX, deltaY } = this;
-    const node = ReactDOM.findDOMNode(this.node);
+    const node = this.nodeDom;
     const { hide } = this.props;
     if (!dragged || !!hide) {
       return;
@@ -265,24 +297,6 @@ export default class Draggable extends React.Component {
     if (bottom < 0) {
       bottom = 0;
     }
-
-    // console.log('logObj', {
-    //   left,
-    //   top,
-    //   clientWidth,
-    //   clientHeight,
-    //   clientX,
-    //   clientY,
-    //   scrollX: scroll.x,
-    //   scrollY: scroll.y,
-    //   deltaX,
-    //   deltaY,
-    //   rectRight,
-    //   rectBottom,
-    //   width,
-    //   height,
-    //   hide,
-    // });
 
     // for better performance
     node.style.right = `${right}px`;
@@ -337,6 +351,7 @@ export default class Draggable extends React.Component {
   render() {
     const { children, hide, open, message } = this.props;
     const { dragged, width } = this.state;
+
     return (
       <Container
         ref={this.saveRef}
