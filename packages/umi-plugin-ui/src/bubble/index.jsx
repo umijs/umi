@@ -27,7 +27,6 @@ class App extends React.Component {
       open: undefined,
       connected: false,
       uiLoaded: false,
-      errMsg: '',
       currentProject: props.currentProject,
     };
     window.addEventListener('message', this.handleMessage, false);
@@ -48,7 +47,7 @@ class App extends React.Component {
 
   handleMessage = event => {
     try {
-      const { action, data } = JSON.parse(event.data);
+      const { action } = JSON.parse(event.data);
       switch (action) {
         // 显示 mini
         case 'umi.ui.showMini': {
@@ -64,10 +63,12 @@ class App extends React.Component {
           });
           break;
         }
-        default: {
-        }
+        default:
+        // no thing
       }
-    } catch (_) {}
+    } catch (_) {
+      // no thing
+    }
     return false;
   };
 
@@ -75,7 +76,7 @@ class App extends React.Component {
     const { port } = this.props;
     try {
       await initSocket(`http://localhost:${port}/umiui`, {
-        onError: e => {
+        onError: () => {
           this.setState({
             connected: false,
           });
@@ -141,9 +142,8 @@ class App extends React.Component {
   };
 
   render() {
-    const { open, currentProject, connected, uiLoaded, errMsg } = this.state;
-    const { port, isBigfish = false } = this.props;
-    console.log('currentProject', currentProject);
+    const { open, connected, uiLoaded } = this.state;
+    const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
     // switch in the project can't be listened, the lifecycle can't be trigger
