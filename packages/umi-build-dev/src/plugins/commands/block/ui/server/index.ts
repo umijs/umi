@@ -66,13 +66,12 @@ export default (api: IApi) => {
         })();
         break;
 
-      // 获得项目 page 下的目录结构
-      // 包含文件
-      case 'org.umi.block.pageFiles':
+      // 获得项目的路由配置和默认的组件
+      case 'org.umi.block.routeFiles':
         (async () => {
           try {
             success({
-              data: blockService.getFilesTreeData(),
+              data: blockService.depthRouteComponentConfig(),
               success: true,
             });
           } catch (error) {
@@ -370,6 +369,7 @@ export default (api: IApi) => {
           });
         })();
         break;
+
       default:
         break;
     }

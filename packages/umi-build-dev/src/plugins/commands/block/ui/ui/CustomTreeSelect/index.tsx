@@ -21,6 +21,7 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
   const name = fileArray.pop();
   const filePath = fileArray.join('/') || '/';
   const realValue = onlySelectLeaf ? value : filePath;
+
   const selectDom = (
     <TreeSelect
       showSearch
@@ -32,7 +33,6 @@ const CustomTreeSelect: React.FC<CustomTreeSelectProps> = props => {
       dropdownMatchSelectWidth={onlySelectLeaf ? undefined : 400}
       value={{
         value: realValue,
-        label: realValue,
       }}
       // 不加这个不会跟着进度条走
       getPopupContainer={() => ref.current || document.body}

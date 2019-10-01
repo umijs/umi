@@ -8,7 +8,7 @@ import { FormInstance } from 'antd/es/form/util';
 
 import Context from '../UIApiContext';
 import InfoToolTip from './InfoToolTip';
-import PageFilesTreeData from './PageFilesTreeData';
+import RouteFilesTreeData from './RouteFilesTreeData';
 import { getPathFromFilename } from '../BlockList/BlockItem';
 
 const AddBlockFormForUI: React.FC<{
@@ -25,7 +25,7 @@ const AddBlockFormForUI: React.FC<{
         }
         rules={[{ required: true, message: '文件添加路径为必填项！' }]}
       >
-        <PageFilesTreeData visible={visible} />
+        <RouteFilesTreeData visible={visible} />
       </Form.Item>
       <Form.Item
         name="name"

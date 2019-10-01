@@ -3,16 +3,16 @@
  *  不需要选择安装的具体文件位置
  *  min ui 提供了可视化的方案来选择
  */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Input } from 'antd';
 import { FormInstance } from 'antd/es/form/util';
-
 import Context from '../UIApiContext';
 import InfoToolTip from './InfoToolTip';
 
 const PathLabel: React.FC<{
   value?: string;
-}> = ({ value }) => (
+  name?: string;
+}> = ({ value, name }) => (
   <div
     style={{
       display: 'flex',
@@ -28,7 +28,7 @@ const PathLabel: React.FC<{
         borderRadius: 4,
       }}
     >
-      {value}
+      {`${value}/${name}`.replace(/\//g, '/').replace(/\/\//g, '/')}
     </code>
   </div>
 );
@@ -38,6 +38,7 @@ const AddBlockFormForUI: React.FC<{
   form: FormInstance;
 }> = ({ blockTarget, form }) => {
   const { api } = useContext(Context);
+  const [varName, setValueName] = useState<string>(form.getFieldValue('name'));
   return (
     <>
       <Form.Item
@@ -46,7 +47,7 @@ const AddBlockFormForUI: React.FC<{
         label={<InfoToolTip title="添加到" placeholder="当前选中页面的路径" />}
         rules={[{ required: true, message: '添加路径为必填项！' }]}
       >
-        <PathLabel />
+        <PathLabel name={varName} />
       </Form.Item>
       <Form.Item
         name="name"
@@ -94,7 +95,12 @@ const AddBlockFormForUI: React.FC<{
           },
         ]}
       >
-        <Input placeholder="请输入名称！" />
+        <Input
+          placeholder="请输入名称！"
+          onChange={e => {
+            setValueName(e.target.value);
+          }}
+        />
       </Form.Item>
     </>
   );

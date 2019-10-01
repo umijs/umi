@@ -13,6 +13,7 @@ import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
 import { getPathFromFilename } from '../BlockList/BlockItem';
+import { getNoExitVar } from '../../uiUtil';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
@@ -174,11 +175,37 @@ const Adder: React.FC<AdderProps> = props => {
 
   useEffect(
     () => {
-      if (path) {
-        form.setFieldsValue({ path });
+      if (!block || !block.url) {
+        return;
       }
+      // 生成 defaultName
+      const defaultName = block.url.split('/').pop();
+      const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
+      const resetInitialValues = async () => {
+        let noExitVar = upperCamelCase(defaultName);
+
+        // 自动生成一个不存在的变量名
+        if (blockTarget) {
+          noExitVar = await getNoExitVar({
+            name: upperCamelCase(noExitVar),
+            path: blockTarget || initPath,
+            api,
+          });
+        }
+        /**
+         * 默认值，自动拼接一下 name
+         * blockTarget 是 umi min ui 中选出来的以它为主要
+         */
+        const initialValues = {
+          path: blockTarget || initPath,
+          routePath: `/${defaultName.toLocaleLowerCase()}`,
+          name: noExitVar,
+        };
+        form.setFieldsValue(initialValues);
+      };
+      resetInitialValues();
     },
-    [path],
+    [block ? block.url : '', blockTarget || ''],
   );
 
   useEffect(
@@ -188,28 +215,6 @@ const Adder: React.FC<AdderProps> = props => {
       }
     },
     [index],
-  );
-
-  useEffect(
-    () => {
-      if (!block || !block.url) {
-        return;
-      }
-      // 生成 defaultName
-      const defaultName = block.url.split('/').pop();
-
-      /**
-       * 默认值，自动拼接一下 name
-       */
-      const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
-      const initialValues = {
-        path: initPath,
-        routePath: `/${defaultName.toLocaleLowerCase()}`,
-        name: upperCamelCase(defaultName),
-      };
-      form.setFieldsValue(initialValues);
-    },
-    [block ? block.url : ''],
   );
 
   if (!block || !block.url) {

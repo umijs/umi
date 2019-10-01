@@ -17,7 +17,7 @@ const RoutePathTree: React.FC<
     async () => {
       if (visible) {
         return api.callRemote({
-          type: 'org.umi.block.pageFiles',
+          type: 'org.umi.block.routeFiles',
         });
       }
       return pageFoldersTreeData;
@@ -29,8 +29,8 @@ const RoutePathTree: React.FC<
   );
   return (
     <TreeSelect
-      placeholder="选择安装文件路径"
-      searchPlaceholder="筛选安装文件路径"
+      placeholder="添加到"
+      searchPlaceholder="筛选添加路径"
       onlySelectLeaf
       treeData={pageFoldersTreeData}
       {...resetProps}

@@ -4,7 +4,7 @@ import Flow from './Flow';
 import { FlowState } from './enum';
 
 import { getFolderTreeData, getBlockList, getFilesTreeData } from '../util';
-import { routeExists, depthRouterConfig } from '../../../util';
+import { routeExists, depthRouterConfig, depthRouteComponentConfig } from '../../../util';
 
 class Block {
   public api: IApi;
@@ -80,6 +80,20 @@ class Block {
       key: '/',
     });
     return folderTreeData;
+  }
+
+  /**
+   * 获取路由结构
+   */
+  public depthRouteConfig() {
+    return depthRouterConfig(this.api.getRoutes());
+  }
+
+  /**
+   * 获取路由的结构，但是获取 component
+   */
+  public depthRouteComponentConfig() {
+    return depthRouteComponentConfig(this.api.getRoutes());
   }
 
   /**

@@ -14,7 +14,7 @@ export default (api): Promise<PositionData> => {
 
   return new Promise((resolve, reject) => {
     const messageHandler = e => {
-      console.log('[Block] Received message', e.data);
+      // console.log('[Block] Received message', e.data);
       try {
         const { action, payload } = JSON.parse(e.data);
         if (action === 'umi.ui.block.addBlock') {

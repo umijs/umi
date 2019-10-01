@@ -3,10 +3,13 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import execa from 'execa';
 import ora from 'ora';
+import got from 'got';
+
 import GitUrlParse from 'git-url-parse';
 import terminalLink from 'terminal-link';
-
 import { getFastGithub } from 'umi-utils';
+
+import { BlockData } from './data.d';
 
 /**
  * 全局使用的 loading
@@ -284,6 +287,25 @@ export const genRouterToTreeData = routes =>
     .filter(item => item);
 
 /**
+ * 根据 router 来获取  component
+ * 用于区块的插入
+ * @param {*} routes
+ */
+export const genComponentToTreeData = routes =>
+  routes
+    .map(item =>
+      item.path || item.routes
+        ? {
+            title: item.path,
+            value: item.component,
+            key: item.path,
+            children: genComponentToTreeData(item.routes || []),
+          }
+        : undefined,
+    )
+    .filter(item => item);
+
+/**
  * 判断路由是否存在
  * @param {*} path string
  * @param {*} routes
@@ -330,3 +352,74 @@ export const depthRouterConfig = routes => {
       .filter(item => item)
   );
 };
+
+/**
+ * 获取路由的 Component
+ * @param {*} routes
+ */
+export const depthRouteComponentConfig = routes => {
+  const routerConfig = reduceData(genComponentToTreeData(routes));
+  /**
+   * 这里可以拼接可以减少一次循环
+   */
+  return (
+    Object.keys(routerConfig)
+      .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
+      .map(key => {
+        key
+          .split('/')
+          .filter(routerKey => routerKey)
+          .forEach((_, index, array) => {
+            const routerKey = array.slice(0, index + 1).join('/');
+            if (routerKey.includes('/')) {
+              delete routerConfig[`/${routerKey}`];
+            }
+          });
+        return routerConfig[key];
+      })
+      // 删除没有 children 的数据
+      .filter(item => item)
+  );
+};
+
+export interface TreeData {
+  title: string;
+  value: string;
+  key: string;
+  children?: TreeData[];
+}
+
+/**
+ * get BlockList from blockList.json in github repo
+ */
+export const fetchBlockList = async (repo: string): Promise<BlockData> => {
+  try {
+    const blocks = await getBlockListFromGit(`https://github.com/${repo}`, true);
+    return {
+      data: blocks,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
+};
+
+export async function fetchUmiBlock(url) {
+  try {
+    const { body } = await got(url);
+    return {
+      data: JSON.parse(body).list,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
+}

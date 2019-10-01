@@ -2,7 +2,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { join } from 'path';
 import { winPath } from 'umi-utils';
-import { fetchBlockList, fetchUmiBlock } from '../../util';
+import { fetchBlockList, fetchUmiBlock } from '../../../util';
 import { Resource } from '../../../data.d';
 
 export interface TreeData {
