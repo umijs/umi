@@ -13,7 +13,7 @@
   }
   .gotoUi {
     &:hover a::before {
-      width: 100%;
+      opacity: 1;
     }
     a {
       font-size: 12px;
@@ -21,10 +21,10 @@
       position: relative;
       &::before {
         position: absolute;
-        transition: width 0.3s ease-in;
         left: 0;
         bottom: 0;
-        width: 0;
+        width: 100%;
+        opacity: 0;
         height: 1px;
         background-color: @text-color;
         content: '';
@@ -276,6 +276,12 @@
 :global(.isMini) .main {
   .header {
     height: @ui-min-header-title-height;
+    &-actions {
+      padding-right: 20px;
+      & > button {
+        margin-left: 8px;
+      }
+    }
   }
   .content {
     height: calc(~'100% - @{ui-status-bar-height} - @{ui-min-header-title-height}');
