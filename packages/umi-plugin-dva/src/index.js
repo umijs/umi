@@ -232,23 +232,6 @@ app.use(require('${winPath(require.resolve('dva-immer'))}')());
     })
     : require('${importPath}').default
       `.trim();
-      // ssr in browser will attach getInitialProps into Dynamic Component
-      // TODO: dva/dymaic should support config pass down
-      if (api.config.ssr) {
-        ret = `(() => {
-          if (__IS_BROWSER) {
-            const cp = _dvaDynamic({
-              <%= MODELS %>
-              component: () => import(${extendStr}'${importPath}'),
-              ${loadingOpts}
-            });
-            // attach
-            cp.getInitialProps = require('${importPath}').default && require('${importPath}').default.getInitialProps;
-            return cp;
-          }
-          return require('${importPath}').default
-        })()`.trim();
-      }
       const models = getPageModels(join(paths.absTmpDirPath, importPath), api);
       if (models && models.length) {
         ret = ret.replace(

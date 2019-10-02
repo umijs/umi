@@ -278,4 +278,79 @@ describe('ssr', () => {
       );
     });
   });
+
+  describe('ssr dynamicImport', () => {
+    const dynamicImportPort = 12344;
+    beforeEach(async () => {
+      // TODO: maybe using umi/server, reset global
+      global.window = {};
+    });
+
+    it('routes', async () => {
+      const ssrFile = join(
+        winPath(__dirname),
+        'fixtures',
+        'dev',
+        'ssr-dynamicImport',
+        'dist',
+        'umi.server.js',
+      );
+      const manifestFile = join(
+        winPath(__dirname),
+        'fixtures',
+        'dev',
+        'ssr-dynamicImport',
+        'dist',
+        'ssr-client-mainifest.json',
+      );
+      expect(existsSync(ssrFile)).toBeTruthy();
+      expect(existsSync(manifestFile)).toBeTruthy();
+
+      const serverRender = require('./fixtures/dev/ssr-dynamicImport/dist/umi.server');
+      const manifest = require('./fixtures/dev/ssr-dynamicImport/dist/ssr-client-mainifest.json');
+      // export react-dom/server to avoid React hooks ssr error
+      const { ReactDOMServer } = serverRender;
+
+      expect(manifest).toEqual({
+        '/': {
+          js: ['umi.js'],
+          css: ['umi.css'],
+        },
+        '/news': {
+          js: ['umi.js'],
+          css: ['umi.css'],
+        },
+        __404: {
+          js: ['umi.js'],
+          css: ['umi.css'],
+        },
+      });
+
+      const ctx = {
+        req: {
+          url: '/',
+        },
+      };
+
+      const { rootContainer } = await serverRender.default(ctx);
+      const ssrHtml = ReactDOMServer.renderToString(rootContainer);
+
+      expect(ssrHtml).toEqual(
+        '<div class="wrapper" data-reactroot=""><h1>Hello UmiJS SSR Styles</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>',
+      );
+
+      const ctx2 = {
+        req: {
+          url: '/news',
+        },
+      };
+
+      const { rootContainer: rootContainerNews } = await serverRender.default(ctx2);
+      const ssrHtmlNews = ReactDOMServer.renderToString(rootContainerNews);
+
+      expect(ssrHtmlNews).toContain(
+        '<div class="news" data-reactroot=""><h1>Hello UmiJS SSR Styles</h1></div>',
+      );
+    });
+  });
 });

@@ -30,6 +30,7 @@ function start() {
     [12341, '../packages/umi/test/fixtures/dev/normal'],
     [12342, '../packages/umi/test/fixtures/dev/ssr'],
     [12343, '../packages/umi/test/fixtures/dev/ssr-styles'],
+    [12344, '../packages/umi/test/fixtures/dev/ssr-dynamicImport'],
   ].map(([port, cwd]) => {
     return startDevServer({ port, cwd: join(__dirname, cwd) });
   });
