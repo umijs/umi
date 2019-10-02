@@ -36,6 +36,6 @@ export default function(api, options) {
     if (options.webpackChunkName) {
       extendStr = `/* webpackChunkName: ^${webpackChunkName}^ */`;
     }
-    return `__IS_BROWSER ? dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts} }) : require('${importPath}').default`;
+    return `__IS_BROWSER ? dynamic({ loader: () => import(${extendStr}'${importPath}')${loadingOpts}, getInitialProps: require('${importPath}').default && require('${importPath}').default.getInitialProps }) : require('${importPath}').default`;
   });
 }

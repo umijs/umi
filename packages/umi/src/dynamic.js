@@ -62,5 +62,9 @@ export default function(dynamicOptions, options) {
     loadableOptions.loader = loadModules;
   }
 
+  if (loadableOptions.getInitialProps) {
+    loadableFn.getInitialProps = loadableOptions.getInitialProps;
+  }
+
   return loadableFn(loadableOptions);
 }
