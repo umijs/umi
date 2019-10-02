@@ -64,17 +64,11 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
       // existed lang
       if (searchLocale) {
-        history.push({
-          search: querystring.stringify({
-            locale,
-            ...restParams,
-          }),
+        history.replace({
+          search: querystring.stringify(restParams),
         });
-        // need reload
-        window.location.reload();
-      } else {
-        setLocale(locale);
       }
+      setLocale(locale, false);
     }
   };
 
