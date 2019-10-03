@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'umi';
 
 function Page(props) {
   const { list } = props;
   return (
-    <div className={styles.normal}>
+    <div>
+      <Link to="/">index</Link>
       <h1>Page users</h1>
       <h2>users</h2>
       <ul>

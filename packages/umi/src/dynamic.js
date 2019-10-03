@@ -1,8 +1,8 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from '@umijs/react-loadable';
 
 // Thanks to next.js
-// ref: https://github.com/zeit/next.js/blob/canary/lib/dynamic.js
+// ref: https://github.com/zeit/next.js/blob/a73fb5d04a90f03ec5b53225ffa19e84f9c7ab14/packages/next/next-server/lib/dynamic.tsx
 export default function(dynamicOptions, options) {
   let loadableFn = Loadable;
   let loadableOptions = {

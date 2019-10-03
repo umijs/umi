@@ -3,7 +3,7 @@ export default {
   ssr: true,
   plugins: [
     ['../../../../../umi-plugin-react/lib/index.js', {
-      dva: true,
+      dva: false,
       dynamicImport: {
         webpackChunkName: true,
       },

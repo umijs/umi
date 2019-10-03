@@ -12,7 +12,7 @@
     "dotenv": "8.0.0",
     "is-windows": "1.0.2",
     "lodash": "4.17.13",
-    "react-loadable": "5.5.0",
+    "@umijs/react-loadable": "~1.0.0",
     "resolve-cwd": "3.0.0",
     "semver": "6.1.1",
     "signale": "1.4.0",
