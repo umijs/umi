@@ -131,7 +131,8 @@ export async function render(oldRender) {
 
       // Init the plugins
       window.g_uiPlugins.forEach(uiPlugin => {
-        uiPlugin(new PluginAPI(service, currentProject));
+        // only readable
+        uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
       });
     } else {
       history.replace('/project/select');
