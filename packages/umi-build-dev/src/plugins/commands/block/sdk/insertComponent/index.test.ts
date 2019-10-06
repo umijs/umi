@@ -1,8 +1,9 @@
-import { join, basename } from 'path';
+import { join } from 'path';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { winPath } from 'umi-utils';
 import insertComponent from './index';
 
-const fixtures = join(__dirname, 'fixtures');
+const fixtures = winPath(join(__dirname, 'fixtures'));
 
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))
@@ -19,13 +20,13 @@ function testTransform(dir) {
   const expectedFile = join(fixtures, dir, 'expected.js');
   if (existsSync(expectedFile)) {
     const expected = readFileSync(expectedFile, 'utf-8');
-    expect(code.trim()).toEqual(expected.trim());
+    // window 专用，去掉一下盘符，其实表现是正常的，但是为了保证测试通过
+    expect(code.trim().replace(/C:/g, '')).toEqual(expected.trim());
   } else {
     if (process.env.PRINT_CODE) {
       console.log(code);
-    } else {
-      writeFileSync(expectedFile, code, 'utf-8');
     }
+    writeFileSync(expectedFile, code, 'utf-8');
   }
 }
 

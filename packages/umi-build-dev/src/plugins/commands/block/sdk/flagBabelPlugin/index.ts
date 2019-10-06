@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { winPath } from 'umi-utils';
 import {
   findExportDefaultDeclaration,
   getIdentifierDeclaration,
@@ -128,7 +129,7 @@ export default ({ types: t }) => {
               const { node: retNode, replace } = ret;
               if (retNode) {
                 addUmiUIFlag(retNode, {
-                  filename,
+                  filename: winPath(filename),
                   replace,
                 });
               }
