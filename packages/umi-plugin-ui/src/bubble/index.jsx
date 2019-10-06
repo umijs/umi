@@ -27,6 +27,7 @@ class App extends React.Component {
       open: undefined,
       connected: false,
       uiLoaded: false,
+      loading: false,
       currentProject: props.currentProject,
     };
     window.addEventListener('message', this.handleMessage, false);
@@ -61,6 +62,13 @@ class App extends React.Component {
           this.setState({
             open: false,
           });
+          break;
+        }
+        // 切换loading
+        case 'umi.ui.toggleIconLoading': {
+          this.setState(({ loading }) => ({
+            loading: !loading,
+          }));
           break;
         }
         default:
@@ -142,7 +150,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { open, connected, uiLoaded } = this.state;
+    const { open, connected, uiLoaded, loading } = this.state;
     const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
@@ -157,6 +165,7 @@ class App extends React.Component {
         // TODO: loading when currentProject not loaded
         toggleMiniOpen={this.toggleMiniOpen}
         open={open}
+        loading={loading}
         message={message}
       >
         {open !== undefined && (

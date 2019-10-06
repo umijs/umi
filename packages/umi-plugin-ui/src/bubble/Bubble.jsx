@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Dragger from './Dragger';
 import Hide from './Hide';
 import logoDecorator from './Logo';
+import IconLoading from './IconLoading';
 import * as ENUM from './enum';
 import Close from './Close';
 
@@ -62,6 +63,14 @@ class Bubble extends React.Component {
     );
   };
 
+  /**
+   * 初始化dom
+   */
+  componentDidMount() {
+    // eslint-disable-next-line
+    this.nodeDom = ReactDOM.findDOMNode(this);
+  }
+
   showBubble = e => {
     // 显示 bubble 时取消页面的编辑模式
     window.postMessage(
@@ -71,7 +80,6 @@ class Bubble extends React.Component {
       '*',
     );
 
-    const node = ReactDOM.findDOMNode(this);
     const { toggleMiniOpen } = this.props;
     if (this.state.hide) {
       // isHide
@@ -83,7 +91,7 @@ class Bubble extends React.Component {
           window.localStorage.removeItem(ENUM.STORE_BUBBLE_HIDE);
         },
       );
-    } else if (e.target === node) {
+    } else if (e.target === this.nodeDom) {
       // not hide, show iframe
       toggleMiniOpen();
     }
@@ -96,11 +104,10 @@ class Bubble extends React.Component {
   };
 
   render() {
-    const { isBigfish, open, children, message } = this.props;
+    const { isBigfish, open, loading, children, message } = this.props;
     const { hide } = this.state;
 
     const Logo = logoDecorator({ isBigfish });
-
     return (
       <Dragger
         open={open}
@@ -111,6 +118,7 @@ class Bubble extends React.Component {
         onDrag={this.handleDrag}
       >
         <BubbleWrapper open={open}>
+          {loading && <IconLoading />}
           <Logo open={open} />
           <CloseComponent open={open} />
         </BubbleWrapper>
