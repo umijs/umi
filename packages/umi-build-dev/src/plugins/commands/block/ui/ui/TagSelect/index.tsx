@@ -59,39 +59,42 @@ const TagSelect: React.FC<{
     >
       <div className={styles.tagView} ref={ref}>
         {!loading && (
-          <CheckableTag
-            checked={value === ''}
-            onChange={() => {
-              onChange('');
-            }}
-          >
-            全部
-          </CheckableTag>
-        )}
-        {[...tagList]
-          .sort(sortTag)
-          .filter(tagName => tagName !== '废弃')
-          .map(tag => (
+          <>
             <CheckableTag
-              checked={value === tag}
-              key={tag}
-              onChange={checked => {
-                if (checked) {
-                  onChange(tag);
-                } else {
-                  onChange('');
-                }
+              checked={value === ''}
+              onChange={() => {
+                onChange('');
               }}
             >
-              {tag}
+              全部
             </CheckableTag>
-          ))}
+            {[...tagList]
+              .sort(sortTag)
+              .filter(tagName => tagName !== '废弃')
+              .map(tag => (
+                <CheckableTag
+                  checked={value === tag}
+                  key={tag}
+                  onChange={checked => {
+                    if (checked) {
+                      onChange(tag);
+                    } else {
+                      onChange('');
+                    }
+                  }}
+                >
+                  {tag}
+                </CheckableTag>
+              ))}
+            <span
+              style={{
+                flex: 999,
+              }}
+            />
+          </>
+        )}
+
         {loading && <Loading />}
-        <span
-          style={{
-            flex: 999,
-          }}
-        />
       </div>
       {!loading && hasExpandButton ? (
         <a
