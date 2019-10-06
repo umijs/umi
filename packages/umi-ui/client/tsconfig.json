@@ -18,5 +18,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures"]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures", "examples"]
 }
