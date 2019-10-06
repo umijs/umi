@@ -12,6 +12,7 @@ export const HideWrapper = styled('div')`
   cursor: pointer;
   display: flex;
   z-index: 999;
+  transition: all 0.3s;
   justify-content: center;
   align-items: center;
   transition: all 0.18s ease-out 0.18s;
