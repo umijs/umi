@@ -13,7 +13,6 @@ const Container = styled.div`
   z-index: 999;
   right: ${initRight}px;
   bottom: ${initBottom}px;
-  transition: all .3s;
   &:before {
     width: 0;
     height: 0;
