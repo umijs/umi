@@ -175,8 +175,24 @@ declare namespace IUI {
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
   type IFormatMessage = typeof intl.formatMessage;
-  type IIntl<T = typeof intl> = { [key in keyof T]: T[key] } & typeof intl.formatMessage;
-  type IFormattedMessage = typeof intl.FormattedMessage;
+  type PickIntl = Pick<
+    typeof intl,
+    | 'FormattedDate'
+    | 'FormattedTime'
+    | 'FormattedRelative'
+    | 'FormattedNumber'
+    | 'FormattedPlural'
+    | 'FormattedMessage'
+    | 'FormattedHTMLMessage'
+    | 'formatMessage'
+    | 'formatHTMLMessage'
+    | 'formatDate'
+    | 'formatTime'
+    | 'formatRelative'
+    | 'formatNumber'
+    | 'formatPlural'
+  >;
+  type IIntl<T = PickIntl> = { [key in keyof T]: T[key] } & typeof intl.formatMessage;
   type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
@@ -235,7 +251,7 @@ declare namespace IUI {
     locale: ILang;
     currentProject?: ICurrentProject;
     formatMessage: typeof intl.formatMessage;
-    FormattedMessage: IFormattedMessage;
+    FormattedMessage: typeof intl.FormattedMessage;
     setLocale: typeof intl.setLocale;
     setTheme: (theme: ITheme) => void;
     /** open footer log panel */
@@ -265,8 +281,6 @@ declare namespace IUI {
     isMini: () => boolean;
     /** intl, formatMessage */
     intl: IIntl;
-    /** FormattedMessage Component  */
-    FormattedMessage: IFormattedMessage;
     /** add plugin Panel */
     addPanel: IAddPanel;
     /** register dva model Panel */
