@@ -253,6 +253,8 @@ declare namespace IUI {
     readonly debug: IDebug;
     /** can use as vars */
     readonly mini: boolean;
+    /** whether Bigfish */
+    readonly bigfish: boolean;
     /** currentProject  */
     currentProject: ICurrentProject;
     /** get current locale: zh-CN or en-US */

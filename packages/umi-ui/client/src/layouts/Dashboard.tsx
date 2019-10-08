@@ -1,5 +1,5 @@
 import { Icon } from '@ant-design/compatible';
-import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col, Dropdown } from 'antd';
+import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect } from 'react';
@@ -10,7 +10,7 @@ import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { Redirect } from '@/components/icons';
 import { callRemote } from '@/socket';
-import { handleBack, getProjectStatus } from '@/utils';
+import { handleBack, getProjectStatus, renderLocale } from '@/utils';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
 import events, { MESSAGES } from '@/message';
@@ -18,7 +18,7 @@ import UiLayout from './Layout';
 import debug from '@/debug';
 import styles from './Dashboard.less';
 
-const { Content, Sider, Header } = Layout;
+const { Content, Sider } = Layout;
 
 function getActivePanel(pathname) {
   for (const panel of window.g_service.panels) {
@@ -28,6 +28,9 @@ function getActivePanel(pathname) {
   }
   return null;
 }
+
+const renderLocaleText = renderLocale(formatMessage);
+const renderLocaleComp = renderLocale(FormattedMessage);
 
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
@@ -70,7 +73,7 @@ export default withRouter(props => {
     }
   };
 
-  const title = activePanel.title ? formatMessage({ id: activePanel.title }) : '';
+  const title = activePanel.title ? renderLocaleText({ id: activePanel.title }) : '';
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
@@ -149,13 +152,9 @@ export default withRouter(props => {
                 <NavLink exact to={`${panel.path}${search}`}>
                   {renderIcon()}
                   {isMini ? (
-                    <p className={styles.menuText}>
-                      <FormattedMessage id={panel.title} />
-                    </p>
+                    <p className={styles.menuText}>{renderLocaleComp(panel.title)}</p>
                   ) : (
-                    <span className={styles.menuItem}>
-                      <FormattedMessage id={panel.title} />
-                    </span>
+                    <span className={styles.menuItem}>{renderLocaleComp(panel.title)}</span>
                   )}
                 </NavLink>
               </Menu.Item>
@@ -279,7 +278,7 @@ export default withRouter(props => {
                                     <NavLink exact to={`${panel.path}${search}`}>
                                       <Icon className={styles.menuIcon} {...icon} />
                                       <span className={styles.menuItem}>
-                                        <FormattedMessage id={panel.title} />
+                                        {renderLocaleComp(panel.title)}
                                       </span>
                                     </NavLink>
                                   </Menu.Item>
@@ -347,7 +346,7 @@ export default withRouter(props => {
                             return (
                               title && (
                                 <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                  {formatMessage({ id: title })}
+                                  {renderLocaleText({ id: title })}
                                 </Button>
                               )
                             );
