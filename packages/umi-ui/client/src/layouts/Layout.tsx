@@ -74,7 +74,6 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
   render() {
     const locale = getLocale();
-    console.log('localelocalelocale', locale);
     const { theme } = this.state;
     const { type, className, title } = this.props;
     const currentProject = window.g_uiCurrentProject || {};
