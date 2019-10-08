@@ -55,6 +55,10 @@ const clearCache = async (api: IUiApi) => {
   }
 };
 
+const openUmiBlocks = () => {
+  window.open('https://github.com/umijs/umi-blocks');
+};
+
 /**
  * 从 id 的 dom 滚动到 target 的 dom
  * @param id
@@ -221,7 +225,7 @@ const BlocksViewer: React.FC<Props> = props => {
           <Button
             size={isMini ? 'small' : 'default'}
             key="clear"
-            onClick={() => clearCache(api)}
+            onClick={() => openUmiBlocks()}
             style={{
               padding: buttonPadding,
             }}
