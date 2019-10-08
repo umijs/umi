@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IUi } from 'umi-types';
 import get from 'lodash/get';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
 import { stringify, parse } from 'qs';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import history from '@tmp/history';
+import { renderLocale } from '@/utils';
 import styles from './index.less';
 
 const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
@@ -45,6 +46,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const currentSection = sections.find(section => section.key === current) || sections[0];
   const children = get(currentSection, 'component');
+  const renderMessage = renderLocale(FormattedMessage);
 
   return (
     <div className={panelCls}>
@@ -67,19 +69,9 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
                 {React.isValidElement(s.icon) && s.icon}
               </Col>
               <Col className={styles.title_desc}>
-                {s.title && (
-                  <div className={styles.title}>
-                    {formatMessage({
-                      id: s.title,
-                    })}
-                  </div>
-                )}
+                {s.title && <div className={styles.title}>{renderMessage(s.title)}</div>}
                 {s.description && (
-                  <div className={styles.description}>
-                    {formatMessage({
-                      id: s.description,
-                    })}
-                  </div>
+                  <div className={styles.description}>{renderMessage(s.description)}</div>
                 )}
               </Col>
             </Row>

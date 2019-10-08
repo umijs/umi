@@ -1,8 +1,13 @@
 import get from 'lodash/get';
+import React from 'react';
 import history from '@tmp/history';
 import { IUi } from 'umi-types';
 import querystring from 'querystring';
-import { getLocale as umiGetLocale } from 'umi-plugin-react/locale';
+import {
+  getLocale as umiGetLocale,
+  MessageDescriptor,
+  MessageValue,
+} from 'umi-plugin-react/locale';
 import { IProjectList, IProjectItem, LOCALES } from '@/enums';
 
 export const getLocale = () => {
@@ -75,10 +80,10 @@ export const sortProjectList = (list: IListItem[]): IListItem[] => {
     let prevWeight = 0;
     let nextWeight = 0;
     if (prev.active) {
-      prevWeight += Number.MAX_VALUE;
+      prevWeight += Number.MAX_SAFE_INTEGER;
     }
     if (next.active) {
-      nextWeight += Number.MAX_VALUE;
+      nextWeight += Number.MAX_SAFE_INTEGER;
     }
     if (prev.created_at) {
       prevWeight += prev.created_at;
@@ -97,4 +102,38 @@ export const sortProjectList = (list: IListItem[]): IListItem[] => {
 
     return nextWeight - prevWeight;
   });
+};
+
+/**
+ * 用于渲染动态国际化 key
+ * Usage:
+ * import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+ * 1. renderLocale(FormattedMessage)('use.id.key.string')
+ *
+ * 2. renderLocale(formatMessage)({
+ *      id: 'use.obj.key.id',
+ *      defaultMessage: 'foo.bar'
+ *    }, { values: '' })
+ * 3. renderLocale(formatMessage)(() => formatMessage({ id: 'use.define.format' }))
+ */
+export const renderLocale = (formatUtil: any) => (
+  descriptor: Function | string | MessageDescriptor,
+  values: { [key: string]: MessageValue | JSX.Element } = {},
+) => {
+  if (typeof descriptor === 'function') return descriptor();
+  const firstArg =
+    typeof descriptor === 'string' ? { id: descriptor, defaultMessage: descriptor } : descriptor;
+  const firstChar: string = formatUtil && formatUtil.name ? formatUtil.name.charAt(0) : '';
+
+  const isComponent = firstChar.toUpperCase() === firstChar;
+  if (isComponent) {
+    const FormatUtil = formatUtil;
+    const props = {
+      ...firstArg,
+      ...values,
+    };
+    return <FormatUtil {...props} />;
+  }
+  // function util
+  return formatUtil(firstArg, values);
 };

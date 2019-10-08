@@ -31,6 +31,7 @@ export default class PluginAPI {
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
   mini: boolean;
+  bigfish: boolean;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -47,6 +48,7 @@ export default class PluginAPI {
     this.Terminal = Terminal;
     this.Field = Field;
     this.ConfigForm = ConfigForm;
+    this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
     this.mini = isMiniUI();
   }
