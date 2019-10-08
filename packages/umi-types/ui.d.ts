@@ -177,7 +177,7 @@ declare namespace IUI {
   type IFormatMessage = typeof intl.formatMessage;
   type PickIntl = Pick<
     typeof intl,
-    | 'FormattedDate'
+    'FormattedDate'
     | 'FormattedTime'
     | 'FormattedRelative'
     | 'FormattedNumber'
