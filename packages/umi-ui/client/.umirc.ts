@@ -80,8 +80,6 @@ const config: IConfig = {
         },
         locale: {
           default: 'zh-CN',
-          baseNavigator: false,
-          useLocalStorage: false,
           antd: true,
         },
         routes: {
