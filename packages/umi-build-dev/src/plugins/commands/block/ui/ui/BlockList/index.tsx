@@ -59,16 +59,15 @@ const BlockList: React.FC<BlockListProps> = props => {
     () =>
       list.filter(({ name = '', url, description = '', tags: listTags = [] }) => {
         return (
-          ((!selectedTag || listTags.join('').includes(selectedTag)) &&
-            (!keyword ||
-              name.toLocaleLowerCase().includes(keyword) ||
-              description.toLocaleLowerCase().includes(keyword))) ||
-          url.toLocaleLowerCase().includes(keyword)
+          (!selectedTag || listTags.join('').includes(selectedTag)) &&
+          (!keyword ||
+            name.toLocaleLowerCase().includes(keyword) ||
+            description.toLocaleLowerCase().includes(keyword) ||
+            url.toLocaleLowerCase().includes(keyword))
         );
       }),
     [keyword, selectedTag, list.map(({ url }) => url).join('/')],
   );
-
   const currentPageList: Block[] = useMemo<Block[]>(
     () =>
       filteredList.slice(

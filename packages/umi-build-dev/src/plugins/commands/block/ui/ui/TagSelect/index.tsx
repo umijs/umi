@@ -35,7 +35,7 @@ const TagSelect: React.FC<{
   loading: boolean;
 }> = ({ value, tagList, onChange, loading }) => {
   const [expand, setExpandValue] = useState<boolean>(true);
-  const [hasExpandButton, setHasExpandButton] = useState<boolean>(true);
+  const [hasExpandButton, setHasExpandButton] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(undefined);
 
   useEffect(
