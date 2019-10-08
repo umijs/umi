@@ -170,21 +170,32 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   initPlugins() {
-    this.plugins.forEach(plugin => {
-      this.initPlugin(plugin);
-    });
-
+    // Plugin depth
     let count = 0;
-    while (this.extraPlugins.length) {
+    const initExtraPlugins = () => {
+      if (!this.extraPlugins.length) {
+        return;
+      }
       const extraPlugins = cloneDeep(this.extraPlugins);
       this.extraPlugins = [];
       extraPlugins.forEach(plugin => {
         this.initPlugin(plugin);
         this.plugins.push(plugin);
+        initExtraPlugins();
       });
       count += 1;
       assert(count <= 10, `插件注册死循环？`);
-    }
+    };
+
+    const plugins = cloneDeep(this.plugins);
+    this.plugins = [];
+    plugins.forEach(plugin => {
+      this.initPlugin(plugin);
+      this.plugins.push(plugin);
+      // reset count
+      count = 0;
+      initExtraPlugins();
+    });
 
     // Throw error for methods that can't be called after plugins is initialized
     this.plugins.forEach(plugin => {
