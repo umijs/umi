@@ -24,7 +24,7 @@ const AddBlockFormForUI: React.FC<{
           marginBottom: 24,
         }}
       >
-        在 min ui 中添加区块，操作更加流畅。
+        在 min ui 中添加，获取更好的使用体验。
       </div>
       <Form.Item
         name="path"
