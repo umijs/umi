@@ -1,7 +1,8 @@
 import { isPlainObject, isEmpty } from 'lodash';
-import { existsSync, mkdirSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import portfinder from 'portfinder';
+import mkdirp from 'mkdirp';
 
 interface IGetAnalyzeEnvOpts {
   analyze: boolean;
@@ -38,9 +39,7 @@ export const getBuildAnalyzeEnv = async ({ analyze, dbPath, fileName }: IGetAnal
 
   // 创建 db 目录
   try {
-    if (!existsSync(dbPath)) {
-      mkdirSync(dbPath);
-    }
+    mkdirp.sync(dbPath);
 
     const analyzeStatsPath = join(dbPath, fileName);
     return {

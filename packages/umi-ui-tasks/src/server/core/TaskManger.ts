@@ -1,7 +1,7 @@
 import { IApi } from 'umi-types';
 import { BuildTask, DevTask, LintTask, TestTask, BaseTask, InstallTask } from './Tasks';
-import { TaskType } from './enums';
-import { ITasks, ICollectorData, ITaskDetail } from './types';
+import { TaskType, TaskState } from './enums';
+import { ITasks, ICollectorData } from './types';
 
 /**
  * Tasks 管理，根据 cwd 做区分
@@ -62,6 +62,12 @@ class TaskManager {
       res[type] = await currentProjectTasks[type].getDetail();
     }
     return res;
+  }
+
+  public async isDevServerAlive() {
+    const currentProjectTasks = this.tasks[this.currentCwd];
+    const devTask = currentProjectTasks && currentProjectTasks[TaskType.DEV];
+    return devTask && devTask.state === TaskState.ING;
   }
 
   private collector(currentCwd: string, send) {

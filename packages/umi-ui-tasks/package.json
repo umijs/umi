@@ -18,6 +18,7 @@
     "binary-mirror-config": "1.20.3",
     "classnames": "^2.2.6",
     "filesize": "^4.2.0",
+    "mkdirp": "^0.5.1",
     "portfinder": "^1.0.24",
     "react-sizeme": "^2.6.7",
     "rimraf": "^3.0.0",
