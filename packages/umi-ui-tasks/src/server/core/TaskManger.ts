@@ -65,9 +65,12 @@ class TaskManager {
   }
 
   public async isDevServerAlive() {
+    if (!this.currentCwd) {
+      return false;
+    }
     const currentProjectTasks = this.tasks[this.currentCwd];
     const devTask = currentProjectTasks && currentProjectTasks[TaskType.DEV];
-    return devTask && devTask.state === TaskState.ING;
+    return devTask && devTask.state === TaskState.SUCCESS;
   }
 
   private collector(currentCwd: string, send) {
