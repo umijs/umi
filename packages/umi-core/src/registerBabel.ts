@@ -13,6 +13,7 @@ export default function(cwd, extraFiles = []) {
         },
       ],
     ],
+    ignore: [/node_modules/],
     only: [join(cwd, 'config'), join(cwd, '.umirc.js'), join(cwd, '.umirc.ts')]
       .concat(extraFiles)
       .map(file => slash2(file)),
