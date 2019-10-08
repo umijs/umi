@@ -44,6 +44,6 @@ export default function(cwd) {
 
   // project with tech-ui in alipay
   if (process.env.BIGFISH_COMPAT) {
-    if (hasDep(pkg, '@alipay/tech-ui' && config.appType !== 'console')) return true;
+    if (hasDep(pkg, '@alipay/tech-ui') && config.appType === 'console') return true;
   }
 }
