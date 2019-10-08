@@ -3,7 +3,7 @@
  *  需要选择安装的具体文件位置
  */
 import React, { useContext } from 'react';
-import { Form, Input } from 'antd';
+import { Form, Alert, Input } from 'antd';
 import { FormInstance } from 'antd/es/form/util';
 
 import Context from '../UIApiContext';
@@ -18,12 +18,23 @@ const AddBlockFormForUI: React.FC<{
   const { api } = useContext(Context);
   return (
     <>
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 24,
+        }}
+      >
+        在 min ui 中添加区块，操作更加流畅。
+      </div>
       <Form.Item
         name="path"
         label={
-          <InfoToolTip title="添加到" placeholder="文件添加路径表示区块代码存档的文件地址！" />
+          <InfoToolTip
+            title="添加到"
+            placeholder="此处选择的是 config.js 中的路由，他会根据路由来找到需要添加到的文件！"
+          />
         }
-        rules={[{ required: true, message: '文件添加路径为必填项！' }]}
+        rules={[{ required: true, message: '添加路由为必填项！' }]}
       >
         <RouteFilesTreeData visible={visible} />
       </Form.Item>

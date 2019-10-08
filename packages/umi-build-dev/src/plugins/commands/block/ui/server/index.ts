@@ -327,7 +327,7 @@ export default (api: IApi) => {
             const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
             if (!entryPath) {
               failure({
-                message: `未找到文件 ${absTargetPath}!`,
+                message: `未在 ${absTargetPath} 目录下找到 index.(ts|tsx|js|jsx) !`,
                 success: false,
               });
             }
