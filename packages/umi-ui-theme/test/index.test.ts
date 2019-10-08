@@ -107,6 +107,7 @@ describe('theme', () => {
     expect(dark).toEqual({
       light: '#fff',
       dark: '#000',
+      'select-item-active-bg': '#4c4c61',
       'heading-3-size': '16px',
       'btn-font-size-sm': '12px',
       'heading-color': 'fade(@light, 85)',

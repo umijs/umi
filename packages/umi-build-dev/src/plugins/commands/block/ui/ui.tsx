@@ -3,6 +3,7 @@ import { IUiApi } from 'umi-types';
 
 import Context from './ui/UIApiContext';
 import BlocksViewer from './ui/index';
+import Icon from './ui/icon';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 import model, { initApiToGlobal, namespace } from './ui/model';
@@ -23,7 +24,7 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     path: '/blocks',
-    icon: 'block',
+    icon: <Icon />,
     actions: [],
     component: () => (
       <Context.Provider

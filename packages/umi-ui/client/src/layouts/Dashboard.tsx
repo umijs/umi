@@ -125,7 +125,19 @@ export default withRouter(props => {
           );
 
           const MenuItem = ({ panel, ...restProps }) => {
-            const icon = typeof panel.icon === 'object' ? panel.icon : { type: panel.icon };
+            const renderIcon = () => {
+              const icon = typeof panel.icon === 'string' ? { type: panel.icon } : panel.icon;
+
+              if (typeof icon === 'function' && React.isValidElement(icon())) {
+                return icon();
+              }
+              if (React.isValidElement(icon)) {
+                return icon;
+              }
+
+              return <Icon {...icon} />;
+            };
+
             return (
               <Menu.Item
                 key={panel.path}
@@ -135,7 +147,7 @@ export default withRouter(props => {
                 level={isMini && locale === 'zh-CN' ? 2 : 1}
               >
                 <NavLink exact to={`${panel.path}${search}`}>
-                  <Icon className={styles.menuIcon} {...icon} />
+                  {renderIcon()}
                   {isMini ? (
                     <p className={styles.menuText}>
                       <FormattedMessage id={panel.title} />

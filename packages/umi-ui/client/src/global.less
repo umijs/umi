@@ -106,7 +106,10 @@ body {
       color: @text-color;
     }
   }
-
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    // TODO: antd @select-item-active-bg
+    background-color: @select-item-active-bg;
+  }
   .ant-select-dropdown-menu-item {
     transition: all @duration-fast @ease-base-out;
   }
