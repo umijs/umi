@@ -8,7 +8,7 @@ import { isPlainObject } from 'lodash';
 import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
-import send, { STARTING, DONE, ERROR, STATS } from './send';
+import send, { STARTING, DONE, ERROR } from './send';
 import getPort from './getPort';
 
 const isInteractive = process.stdout.isTTY;
@@ -62,7 +62,8 @@ export default function dev({
       const IS_CI = !!process.env.CI;
       const SILENT = !!process.env.SILENT;
       const urls = prepareUrls(PROTOCOL, HOST, port, base, history);
-      compiler.hooks.done.tap('af-webpack dev', stats => {
+
+      compiler.hooks.done.tap('af-webpack done', stats => {
         if (stats.hasErrors()) {
           // make sound
           // ref: https://github.com/JannesMeyer/system-bell-webpack-plugin/blob/bb35caf/SystemBellPlugin.js#L14

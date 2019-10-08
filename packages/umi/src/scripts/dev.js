@@ -31,7 +31,14 @@ import isUmiUIEnable from '../isUmiUIEnable';
   }
 
   // Start real umi dev
-  const child = fork(require.resolve('./realDev.js'));
+  const child = fork(require.resolve('./realDev.js'), {
+    onMessage(data) {
+      const { type } = data;
+      if (type && type.startsWith('org.umi.ui.bubble') && global.g_send) {
+        global.g_send({ type, payload: { projectPath: cwd } });
+      }
+    },
+  });
   child.on('exit', code => {
     if (code === 1) {
       process.exit(1);

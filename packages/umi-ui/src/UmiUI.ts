@@ -922,6 +922,8 @@ export default class UmiUI {
         }
 
         this.send = send;
+        // 给 packages/umi/src/scripts/dev.js 用
+        global.g_send = send;
 
         const log = (type, message) => {
           const payload = {

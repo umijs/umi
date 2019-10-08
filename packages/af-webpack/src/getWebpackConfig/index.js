@@ -277,17 +277,18 @@ export default function(opts) {
     }
   }
 
+  // 没用到，先注释了。
   // plugins -> progress report
-  webpackConfig.plugin('progressReport').use(ProgressPlugin, [
-    percentage => {
-      send({
-        type: STARTING,
-        progress: {
-          percentage,
-        },
-      });
-    },
-  ]);
+  // webpackConfig.plugin('progressReport').use(ProgressPlugin, [
+  //   percentage => {
+  //     send({
+  //       type: STARTING,
+  //       progress: {
+  //         percentage,
+  //       },
+  //     });
+  //   },
+  // ]);
 
   // plugins -> ignore moment locale
   if (opts.ignoreMomentLocale) {

@@ -95,13 +95,30 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    const { port } = this.props;
+    const { port, path } = this.props;
     try {
       await initSocket(`http://localhost:${port}/umiui`, {
         onError: () => {
           this.setState({
             connected: false,
           });
+        },
+        onMessage: ({ type, payload }) => {
+          // 区分不同项目
+          if (!payload || payload.projectPath !== path) return;
+          switch (type) {
+            case 'org.umi.ui.bubble.showLoading':
+              this.setState({
+                loading: true,
+              });
+              break;
+            case 'org.umi.ui.bubble.hideLoading':
+              this.setState({
+                loading: false,
+              });
+            default:
+              break;
+          }
         },
       });
       this.setState({

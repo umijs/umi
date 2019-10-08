@@ -19,6 +19,10 @@ require('${relativeToTmp(join(__dirname, './bubble'))}').default({
       memo.extraBabelIncludes = [...(memo.extraBabelIncludes || []), join(__dirname, '../bubble')];
       return memo;
     });
+
+    api.chainWebpackConfig(config => {
+      config.plugin('umi-ui-compile-status').use(require('./CompileStatusWebpackPlugin').default);
+    });
   }
 
   require('./plugins/dashboard/index').default(api);
