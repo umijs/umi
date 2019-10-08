@@ -13,7 +13,7 @@ const { useState } = React;
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const _log = debug.extend('Field:ObjectField');
-  const { value = {}, onChange, options: originOptions, defaultValue } = props;
+  const { value = {}, onChange, options: originOptions, defaultValue, size = 'default' } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -75,6 +75,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             <ObjectItemField
               className={fieldObjCls}
               value={field}
+              size={size}
               disabled={isRequired}
               onChange={v => handleChange(v, i)}
               options={options.map(option => ({
@@ -107,6 +108,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           block
           className={styles.addBtn}
           onClick={handleAdd}
+          size={size}
           style={{
             width: 'calc(100% - 22px)',
             minWidth: fieldsValue.length === 0 ? '100%' : 'unset',

@@ -99,6 +99,8 @@ declare namespace IUI {
     form: object;
     /** antd label, if object using <Label /> */
     label: string | ReactNode | IFieldLabel;
+    /** size, default */
+    size?: 'default' | 'small' | 'large';
     /** same as antd Form.Item props */
     [key: string]: any;
   }

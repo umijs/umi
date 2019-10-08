@@ -511,6 +511,8 @@ Configure form components, used in combination with [antd 4.x](https://4-0-prepa
   /** antd label, if it is object, use the built-in <Label /> component */
   /** object params { title: string, description: string, link?: string } */
   label: string | ReactNode | IFieldLabel;
+  /** Field size, default */
+  size?: 'default' | 'small' | 'large';
   /** Other types are consistent with Form.Item */
   [key: string]: any;
 }

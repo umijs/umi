@@ -8,7 +8,7 @@ import { getFormItemShow } from './utils';
 
 const StringArrayComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:StringArrayComp');
-  const { name, ...restFormItemProps } = props;
+  const { name, size = 'default', ...restFormItemProps } = props;
 
   const { parentConfig } = getFormItemShow(name);
 
@@ -29,7 +29,12 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
               ]}
               noStyle
             >
-              <Input autoComplete="off" defaultValue="" style={{ width: 320, marginRight: 8 }} />
+              <Input
+                size={size}
+                autoComplete="off"
+                defaultValue=""
+                style={{ width: 320, marginRight: 8 }}
+              />
             </Form.Item>
             {fields.length > 0 ? (
               <MinusCircle

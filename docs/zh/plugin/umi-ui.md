@@ -511,6 +511,8 @@ interface IFieldProps {
   /** antd label, 如果是 object，则使用内置的 <Label /> 组件 */
   /** object 参数有 { title: string, description: string, link?: string } */
   label: string | ReactNode | IFieldLabel;
+  /** 控件大小, 默认是 default */
+  size?: 'default' | 'small' | 'large';
   /** 其它类型与 Form.Item 一致 */
   [key: string]: any;
 }

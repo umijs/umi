@@ -8,7 +8,7 @@ const { Option } = Select;
 
 const ListComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:ListComp');
-  const { name, form, options, ...restFormItemProps } = props;
+  const { name, form, size = 'default', options, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -16,7 +16,11 @@ const ListComp: React.SFC<FieldProps> = props => {
   };
 
   const formControl = (
-    <Select style={{ maxWidth: 320 }} getPopupContainer={triggerNode => triggerNode.parentNode}>
+    <Select
+      size={size}
+      style={{ maxWidth: 320 }}
+      getPopupContainer={triggerNode => triggerNode.parentNode}
+    >
       {Array.isArray(options) &&
         options.map(opt => (
           <Option key={opt} value={opt}>

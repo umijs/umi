@@ -7,7 +7,7 @@ import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:StringComp');
-  const { name, form, ...restFormItemProps } = props;
+  const { name, form, size = 'default', ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -22,7 +22,7 @@ const StringComp: React.SFC<FieldProps> = props => {
     ...restFormItemProps,
   };
 
-  const formControl = <Input autoComplete="off" style={{ maxWidth: 320 }} />;
+  const formControl = <Input size={size} autoComplete="off" style={{ maxWidth: 320 }} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>

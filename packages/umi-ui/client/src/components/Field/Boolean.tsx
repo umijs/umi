@@ -7,7 +7,7 @@ import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:BooleanComp');
-  const { name, form, ...restFormItemProps } = props;
+  const { name, form, size = 'default', ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -25,6 +25,8 @@ const BooleanComp: React.SFC<FieldProps> = props => {
     });
   }, []);
 
+  const formControl = <Switch size={size as any} />;
+
   return parentConfig ? (
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
       {({ getFieldValue }) => {
@@ -40,16 +42,14 @@ const BooleanComp: React.SFC<FieldProps> = props => {
         return (
           isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
-              <Switch size="small" />
+              {formControl}
             </Form.Item>
           )
         );
       }}
     </Form.Item>
   ) : (
-    <Form.Item {...basicItem}>
-      <Switch size="small" />
-    </Form.Item>
+    <Form.Item {...basicItem}>{formControl}</Form.Item>
   );
 };
 
