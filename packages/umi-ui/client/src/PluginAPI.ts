@@ -6,7 +6,6 @@ import history from '@tmp/history';
 import * as intl from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
-import pick from 'lodash/pick';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
@@ -83,7 +82,6 @@ export default class PluginAPI {
     Object.keys(proxyIntl).forEach(intlApi => {
       this.intl[intlApi] = intl[intlApi];
     });
-    debugger;
   }
 
   addConfigSection(section) {
