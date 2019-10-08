@@ -8,7 +8,7 @@ const { TextArea } = Input;
 
 const TextAreaComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:TextAreaComp');
-  const { name, form, size = 'default', ...restFormItemProps } = props;
+  const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,

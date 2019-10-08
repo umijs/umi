@@ -7,7 +7,7 @@ import { getFormItemShow } from './utils';
 
 const StringComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:StringComp');
-  const { name, form, size = 'default', ...restFormItemProps } = props;
+  const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,

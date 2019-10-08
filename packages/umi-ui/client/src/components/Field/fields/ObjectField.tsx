@@ -13,7 +13,7 @@ const { useState } = React;
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
   const _log = debug.extend('Field:ObjectField');
-  const { value = {}, onChange, options: originOptions, defaultValue, size = 'default' } = props;
+  const { value = {}, onChange, options: originOptions, defaultValue, size } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({

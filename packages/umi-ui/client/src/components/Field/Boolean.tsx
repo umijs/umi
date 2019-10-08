@@ -7,7 +7,7 @@ import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:BooleanComp');
-  const { name, form, size = 'default', ...restFormItemProps } = props;
+  const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,

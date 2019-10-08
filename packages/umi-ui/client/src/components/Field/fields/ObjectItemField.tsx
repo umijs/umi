@@ -47,7 +47,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
     className,
     disableOptionsExtend = true,
     disabled,
-    size = 'default',
+    size,
   } = props;
   const [fieldValue, setFieldValue] = useState<IValue>(value);
   const [[k, v]] = Object.entries(fieldValue);

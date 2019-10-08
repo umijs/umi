@@ -8,7 +8,7 @@ const { Option } = Select;
 
 const ListComp: React.SFC<FieldProps> = props => {
   const _log = debug.extend('Field:ListComp');
-  const { name, form, size = 'default', options, ...restFormItemProps } = props;
+  const { name, form, size, options, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,

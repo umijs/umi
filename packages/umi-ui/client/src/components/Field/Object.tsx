@@ -15,7 +15,7 @@ const COMMON_BROWSER = ['chrome', 'safari', 'firefox'];
  */
 const ObjectComp: React.FC<FieldProps> = props => {
   const _log = debug.extend('Field:ObjectComp');
-  const { name, options, defaultValue = {}, size = 'default', ...restFormItemProps } = props;
+  const { name, options, defaultValue = {}, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
