@@ -109,7 +109,7 @@ const BlocksViewer: React.FC<Props> = props => {
       updateUrlQuery({ type });
     }
     if (query.resource) {
-      setActiveResource(query.resource);
+      setActiveResource({ id: query.resource });
     }
   }, []);
   // 获取数据源
@@ -189,7 +189,7 @@ const BlocksViewer: React.FC<Props> = props => {
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
         <Tooltip
           title="重新加载列表"
-          getPopupContainer={node => node.parentNode}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button
@@ -210,7 +210,7 @@ const BlocksViewer: React.FC<Props> = props => {
         </Tooltip>,
         <Tooltip
           title="清除区块的本地缓存"
-          getPopupContainer={node => node.parentNode}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button
@@ -231,7 +231,7 @@ const BlocksViewer: React.FC<Props> = props => {
         </Tooltip>,
         <Tooltip
           title="提交新的区块"
-          getPopupContainer={node => node.parentNode}
+          getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
           <Button

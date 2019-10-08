@@ -20,9 +20,9 @@ export interface RequestParams {
 
 export interface Resource {
   id: string;
-  name: string;
-  blockType: 'template' | 'block';
-  resourceType: 'github' | 'custom';
+  name?: string;
+  blockType?: 'template' | 'block';
+  resourceType?: 'github' | 'custom';
   url?: string;
   getData?: (params?: RequestParams) => Promise<BlockData>;
 }
