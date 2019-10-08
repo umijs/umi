@@ -69,11 +69,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
                 {React.isValidElement(s.icon) && s.icon}
               </Col>
               <Col className={styles.title_desc}>
-                {s.title && (
-                  <div className={styles.title}>
-                    {renderMessage(s.title, { values: { hello: 'eqwfew' } })}
-                  </div>
-                )}
+                {s.title && <div className={styles.title}>{renderMessage(s.title)}</div>}
                 {s.description && (
                   <div className={styles.description}>{renderMessage(s.description)}</div>
                 )}
