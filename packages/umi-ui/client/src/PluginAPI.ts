@@ -6,7 +6,6 @@ import history from '@tmp/history';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
-import querystring from 'querystring';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
