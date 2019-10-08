@@ -23,14 +23,29 @@ const LoadingWrapper = styled.div`
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const locale = getLocale();
     this.state = {
       open: undefined,
       connected: false,
       uiLoaded: false,
       loading: false,
       currentProject: props.currentProject,
+      locale,
     };
     window.addEventListener('message', this.handleMessage, false);
+  }
+
+  handleLocale = locale => {
+    this.setState({
+      locale,
+    });
+  };
+
+  componentDidUpdate() {
+    const nextLocale = getLocale();
+    if (this.state.locale !== nextLocale) {
+      this.handleLocale(nextLocale);
+    }
   }
 
   componentWillUnmount() {
@@ -149,13 +164,12 @@ class App extends React.Component {
   };
 
   render() {
-    const { open, connected, uiLoaded, loading } = this.state;
+    const { open, connected, uiLoaded, loading, locale } = this.state;
     const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
     // switch in the project can't be listened, the lifecycle can't be trigger
     // TODO: use Context but need to compatible with other React version
-    const locale = getLocale();
     const message = messages[locale] || messages['zh-CN'];
 
     return (
@@ -166,6 +180,7 @@ class App extends React.Component {
         open={open}
         loading={loading}
         message={message}
+        locale={locale}
       >
         {open !== undefined && (
           <Modal visible={open}>

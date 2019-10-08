@@ -90,8 +90,9 @@ const BigfishLogo = props => (
 
 export { UmiLogo, BigfishLogo };
 
-export default ({ isBigfish }) =>
-  styled(isBigfish ? BigfishLogo : UmiLogo)`
+export default ({ isBigfish }) => {
+  const logo = isBigfish ? BigfishLogo : UmiLogo;
+  return styled(logo)`
     position: absolute;
     width: 28px;
     height: 28px;
@@ -102,3 +103,4 @@ export default ({ isBigfish }) =>
     opacity: ${props => (props.open ? 0 : 1)};
     transition: all 0.3s linear;
   `;
+};

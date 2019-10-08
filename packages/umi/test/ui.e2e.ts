@@ -25,7 +25,7 @@ describe('Umi UI e2e', () => {
   describe('project manager page', () => {
     it('project list normal', async () => {
       console.log('ui server url: ', url);
-      await page.goto(`${url}/project/select?locale=zh-CN`, { waitUntil: 'networkidle2' });
+      await page.goto(`${url}/project/select`, { waitUntil: 'networkidle2' });
 
       const text = await page.evaluate(
         () => document.querySelector('[data-test-id="project-title"]').innerHTML,
@@ -36,13 +36,13 @@ describe('Umi UI e2e', () => {
         return ga && ga.src;
       });
 
-      expect(text).toEqual('项目列表');
+      expect(text).toEqual('Project List');
       expect(gaScript).toBeNull();
     }, 10000);
   });
 
   it('project import', async () => {
-    await page.goto(`${url}/project/select?locale=zh-CN`);
+    await page.goto(`${url}/project/select`);
 
     await page.setViewport({ width: 1680, height: 866 });
 

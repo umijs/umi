@@ -104,7 +104,7 @@ class Bubble extends React.Component {
   };
 
   render() {
-    const { isBigfish, open, loading, children, message } = this.props;
+    const { isBigfish, open, loading, children, message, locale } = this.props;
     const { hide } = this.state;
 
     const Logo = logoDecorator({ isBigfish });
@@ -116,6 +116,7 @@ class Bubble extends React.Component {
         onOverlap={this.hideBubble}
         message={message}
         onDrag={this.handleDrag}
+        locale={locale}
       >
         <BubbleWrapper open={open}>
           {loading && <IconLoading />}
