@@ -263,6 +263,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
                             choices = [],
                             description,
                             link,
+                            type,
                             ...restItemProps
                           }) => {
                             const label = {
@@ -270,11 +271,18 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
                               description,
                               link,
                             };
+                            const getSize = (fieldType: any) => {
+                              // Switch uses small whenever, mini env also uses `small`
+                              if (fieldType === 'boolean' || isMini) return 'small';
+                              return 'default';
+                            };
                             return (
                               <Field
                                 key={name}
                                 label={label}
                                 options={choices}
+                                type={type}
+                                size={getSize(type)}
                                 name={name}
                                 defaultValue={defaultValue}
                                 {...restItemProps}

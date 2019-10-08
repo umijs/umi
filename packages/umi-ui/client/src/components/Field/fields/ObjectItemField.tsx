@@ -24,6 +24,7 @@ export interface ObjectItemFieldProps {
   value: IValue;
   options: IOption[];
   disabled?: boolean;
+  size?: 'default' | 'small' | 'large';
   defaultValue?: IValue;
   disableOptionsExtend?: boolean;
   setOptions?: () => void;
@@ -39,7 +40,15 @@ const iconMappings = {
 };
 
 const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
-  const { options, value, onChange, className, disableOptionsExtend = true, disabled } = props;
+  const {
+    options,
+    value,
+    onChange,
+    className,
+    disableOptionsExtend = true,
+    disabled,
+    size,
+  } = props;
   const [fieldValue, setFieldValue] = useState<IValue>(value);
   const [[k, v]] = Object.entries(fieldValue);
 
@@ -102,6 +111,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
           disabled={disabled}
           getPopupContainer={triggerNode => triggerNode.parentNode}
           onChange={handleSelect}
+          size={size}
           placeholder="请选择"
         >
           {Array.isArray(options) &&
@@ -117,7 +127,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
         {/* {typeof v === 'string' && (
           <Input autoComplete="off" onChange={e => handleInput(e.target.value)} defaultValue={v} />
         )} */}
-        <InputNumber onChange={v => handleInput(v)} defaultValue={v} />
+        <InputNumber size={size} onChange={v => handleInput(v)} defaultValue={v} />
       </div>
     </InputGroup>
   );
