@@ -46,45 +46,59 @@
     line-height: 1.5;
   }
 }
-:global(.isMini) .sidebar {
-  li {
-    &:global(.ant-menu-submenu) {
-      & > div {
-        padding: 0 16px !important;
-        text-align: center;
-        line-height: normal;
-      }
-    }
-    &:global(.ant-menu-item) {
-      &:first-child {
-        margin-top: 16px;
-      }
-      margin-bottom: 24px;
-      height: auto;
-      overflow: inherit;
-      padding: 0 16px !important;
-      text-align: center;
-      & > a {
-        line-height: 1.5;
-        word-break: break-all;
-        & > p {
-          white-space: pre-wrap;
+:global(.isMini) {
+  &:global(.zh-CN) {
+    .sidebar {
+      :global(.ant-menu-item) {
+        & > a {
+          & > p {
+            white-space: pre-wrap;
+          }
         }
       }
-      &::before {
-        background-color: transparent;
+    }
+  }
+  .sidebar {
+    li {
+      &:global(.ant-menu-submenu) {
+        & > div {
+          padding: 0 16px !important;
+          text-align: center;
+          line-height: normal;
+        }
       }
-    }
-    &:global(.ant-menu-item) .menuIcon {
-      font-size: 16px;
-      line-height: inherit;
-    }
-    &:global(.ant-menu-item-selected) {
-      background-color: transparent;
-      span,
-      svg {
-        color: @light;
-        font-weight: 500;
+      &:global(.ant-menu-item) {
+        &:first-child {
+          margin-top: 16px;
+        }
+        margin-bottom: 24px;
+        height: auto;
+        overflow: inherit;
+        padding: 0 !important;
+        text-align: center;
+        & > a {
+          line-height: 1.5;
+          word-break: break-all;
+          & > p {
+            max-width: 48px;
+            .omit;
+          }
+        }
+        &::before {
+          background-color: transparent;
+        }
+      }
+      &:global(.ant-menu-item) .menuIcon {
+        font-size: 16px;
+        line-height: inherit;
+      }
+      &:global(.ant-menu-item-selected) {
+        background-color: transparent;
+        span,
+        svg {
+          color: @light;
+          font-weight: 500;
+        }
       }
     }
   }
