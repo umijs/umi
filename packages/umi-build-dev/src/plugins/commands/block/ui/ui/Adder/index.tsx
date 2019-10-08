@@ -13,7 +13,7 @@ import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
 import { getPathFromFilename } from '../BlockList/BlockItem';
-import { getNoExitVar } from '../../uiUtil';
+import { getNoExitVar, getNoExitRoute, getNoExitPath } from '../../uiUtil';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
@@ -66,7 +66,6 @@ const Adder: React.FC<AdderProps> = props => {
     blockTarget,
     onAddBlockChange,
     onHideModal,
-    path,
     index,
     block = { url: '' },
     blockType,
@@ -182,23 +181,30 @@ const Adder: React.FC<AdderProps> = props => {
       const defaultName = block.url.split('/').pop();
       const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
       const resetInitialValues = async () => {
-        let noExitVar = upperCamelCase(defaultName);
-
         // 自动生成一个不存在的变量名
-        if (blockTarget) {
-          noExitVar = await getNoExitVar({
-            name: upperCamelCase(noExitVar),
-            path: blockTarget || initPath,
-            api,
-          });
-        }
+        const noExitVar = await getNoExitVar({
+          name: upperCamelCase(defaultName),
+          path: blockTarget || initPath,
+          api,
+          need: !!blockTarget,
+        });
+
         /**
          * 默认值，自动拼接一下 name
          * blockTarget 是 umi min ui 中选出来的以它为主要
          */
         const initialValues = {
-          path: blockTarget || initPath,
-          routePath: `/${defaultName.toLocaleLowerCase()}`,
+          path: await getNoExitPath({
+            path: blockTarget || initPath,
+            api,
+            need: blockType === 'template',
+          }),
+          // 自动生成一个不存在路由
+          routePath: await getNoExitRoute({
+            path: `/${defaultName.toLocaleLowerCase()}`,
+            api,
+            need: blockType === 'template',
+          }),
           name: noExitVar,
         };
         form.setFieldsValue(initialValues);
