@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 
 const debug = require('debug')('umi-build-dev:getYamlConfig');
 
-export default function(code) {
+export default function(code, componentFile = '') {
   const comments = extractComments(code);
   return comments
     .slice(0, 1)
@@ -19,7 +19,7 @@ export default function(code) {
           ...yamlResult,
         };
       } catch (e) {
-        console.error(`yaml load failed: ${e}`);
+        console.warn(`Annotation fails to parse - ${componentFile}: ${e}`);
       }
       return memo;
     }, {});
