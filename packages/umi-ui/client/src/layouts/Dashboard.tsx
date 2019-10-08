@@ -1,7 +1,7 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
-import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect } from 'react';
 import get from 'lodash/get';
 import { IUi } from 'umi-types';
@@ -30,7 +30,6 @@ function getActivePanel(pathname) {
 }
 
 const renderLocaleText = renderLocale(formatMessage);
-const renderLocaleComp = renderLocale(FormattedMessage);
 
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
@@ -152,9 +151,9 @@ export default withRouter(props => {
                 <NavLink exact to={`${panel.path}${search}`}>
                   {renderIcon()}
                   {isMini ? (
-                    <p className={styles.menuText}>{renderLocaleComp(panel.title)}</p>
+                    <p className={styles.menuText}>{renderLocaleText(panel.title)}</p>
                   ) : (
-                    <span className={styles.menuItem}>{renderLocaleComp(panel.title)}</span>
+                    <span className={styles.menuItem}>{renderLocaleText(panel.title)}</span>
                   )}
                 </NavLink>
               </Menu.Item>
@@ -278,7 +277,7 @@ export default withRouter(props => {
                                     <NavLink exact to={`${panel.path}${search}`}>
                                       <Icon className={styles.menuIcon} {...icon} />
                                       <span className={styles.menuItem}>
-                                        {renderLocaleComp(panel.title)}
+                                        {renderLocaleText(panel.title)}
                                       </span>
                                     </NavLink>
                                   </Menu.Item>
