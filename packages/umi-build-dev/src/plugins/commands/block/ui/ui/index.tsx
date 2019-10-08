@@ -187,7 +187,11 @@ const BlocksViewer: React.FC<Props> = props => {
     if (api.setActionPanel) {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
-        <Tooltip title="重新加载列表">
+        <Tooltip
+          title="重新加载列表"
+          getPopupContainer={node => node.parentNode}
+          placement="bottom"
+        >
           <Button
             size={isMini ? 'small' : 'default'}
             key="reload"
@@ -204,7 +208,11 @@ const BlocksViewer: React.FC<Props> = props => {
             <Reload />
           </Button>
         </Tooltip>,
-        <Tooltip title="清除区块的本地缓存">
+        <Tooltip
+          title="清除区块的本地缓存"
+          getPopupContainer={node => node.parentNode}
+          placement="bottom"
+        >
           <Button
             size={isMini ? 'small' : 'default'}
             key="clear"
@@ -221,7 +229,11 @@ const BlocksViewer: React.FC<Props> = props => {
             />
           </Button>
         </Tooltip>,
-        <Tooltip title="提交新的区块">
+        <Tooltip
+          title="提交新的区块"
+          getPopupContainer={node => node.parentNode}
+          placement="bottom"
+        >
           <Button
             size={isMini ? 'small' : 'default'}
             key="clear"
@@ -262,6 +274,7 @@ const BlocksViewer: React.FC<Props> = props => {
             {matchedResources.length > 1 && (
               <Radio.Group
                 value={current.id}
+                size={isMini ? 'small' : 'default'}
                 onChange={e => {
                   const resource = matchedResources.find(r => r.id === e.target.value);
                   setActiveResource(resource);
