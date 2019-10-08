@@ -76,6 +76,16 @@ export default (api: IApi) => {
           });
         })();
         break;
+      case 'tasks/is_dev_server_alive':
+        (async () => {
+          send({
+            type: 'tasks/clearLog/success',
+            payload: {
+              alive: await taskManger.isDevServerAlive(),
+            },
+          });
+        })();
+        break;
       default:
     }
   });
