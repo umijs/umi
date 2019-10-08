@@ -1243,10 +1243,10 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^4.0.0-alpha.0:
-  version "4.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-4.0.0-alpha.4.tgz#541eef52f211eb9d2a6b0a53854816bebd6aa290"
-  integrity sha512-UcsHfaqJHm838cet5Vlixh9n7qzvm6xVLs+e4dpR/Dg97e1ECRIXruUJctWroROYLRGWOz1hbayAmYTTh00u6g==
+antd@^4.0.0-alpha.6:
+  version "4.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-4.0.0-alpha.6.tgz#6a47c19b506b74ca3010932a52ca891e81514b7c"
+  integrity sha512-FII7eAytPa413Wy3PZCsGk3PR3K2HK+ro+AMaGahGNm6egkw+YfvDJHM3ENIbsI/lF4yNunXkCDHNBtfEufEmQ==
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
     "@ant-design/icons" "^4.0.0-alpha.7"
@@ -1283,7 +1283,7 @@ antd@^4.0.0-alpha.0:
     rc-pagination "~1.20.5"
     rc-progress "~2.5.0"
     rc-rate "~2.5.0"
-    rc-select "~10.0.0-alpha.15"
+    rc-select "~10.0.0-alpha.27"
     rc-slider "~8.6.11"
     rc-steps "~3.5.0"
     rc-switch "~1.9.0"
@@ -1291,8 +1291,8 @@ antd@^4.0.0-alpha.0:
     rc-tabs "~9.6.4"
     rc-time-picker "~3.7.1"
     rc-tooltip "~3.7.3"
-    rc-tree "~3.0.0-alpha.22"
-    rc-tree-select "~2.9.1"
+    rc-tree "~3.0.0-alpha.37"
+    rc-tree-select "~3.0.0-alpha.5"
     rc-trigger "^2.6.2"
     rc-upload "~2.7.0"
     rc-util "^4.10.0"
@@ -3117,7 +3117,7 @@ faye-websocket@^0.10.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
-fbjs@^0.8.15, fbjs@^0.8.16, fbjs@^0.8.9:
+fbjs@^0.8.15, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -5579,7 +5579,7 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-rc-align@^2.4.0, rc-align@^2.4.1:
+rc-align@^2.4.0:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/rc-align/-/rc-align-2.4.5.tgz#c941a586f59d1017f23a428f0b468663fb7102ab"
   integrity sha512-nv9wYUYdfyfK+qskThf4BQUSIadeI/dCsfaMZfNEoxm9HwOIioQ+LyqmMK6jWHAZQgOzMLaqawhuBXlF63vgjw==
@@ -5589,7 +5589,7 @@ rc-align@^2.4.0, rc-align@^2.4.1:
     prop-types "^15.5.8"
     rc-util "^4.0.4"
 
-rc-animate@2.x, rc-animate@^2.10.0, rc-animate@^2.3.0, rc-animate@^2.6.0, rc-animate@^2.8.2, rc-animate@^2.8.3, rc-animate@^2.9.2:
+rc-animate@2.x, rc-animate@^2.10.0, rc-animate@^2.3.0, rc-animate@^2.8.3, rc-animate@^2.9.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/rc-animate/-/rc-animate-2.10.0.tgz#d2224cee4700cc9e9836700eb47af6b6e41a080c"
   integrity sha512-gZM3WteZO0e3X8B71KP0bs95EY2tAPRuiZyKnlhdLpOjTX/64SrhDZM3pT2Z8mJjKWNiiB5q2SSSf+BD8ljwVw==
@@ -5600,20 +5600,6 @@ rc-animate@2.x, rc-animate@^2.10.0, rc-animate@^2.3.0, rc-animate@^2.6.0, rc-ani
     prop-types "15.x"
     raf "^3.4.0"
     rc-util "^4.8.0"
-    react-lifecycles-compat "^3.0.4"
-
-rc-animate@^3.0.0-rc.1:
-  version "3.0.0-rc.6"
-  resolved "https://registry.yarnpkg.com/rc-animate/-/rc-animate-3.0.0-rc.6.tgz#04288eefa118e0cae214536c8a903ffaac1bc3fb"
-  integrity sha512-oBLPpiT6Q4t6YvD/pkLcmofBP1p01TX0Otse8Q4+Mxt8J+VSDflLZGIgf62EwkvRwsQUkLPjZVFBsldnPKLzjg==
-  dependencies:
-    babel-runtime "6.x"
-    classnames "^2.2.5"
-    component-classes "^1.2.6"
-    fbjs "^0.8.16"
-    prop-types "15.x"
-    raf "^3.4.0"
-    rc-util "^4.5.0"
     react-lifecycles-compat "^3.0.4"
 
 rc-calendar@~9.15.5:
@@ -5833,10 +5819,10 @@ rc-rate@~2.5.0:
     rc-util "^4.3.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-select@~10.0.0-alpha.15:
-  version "10.0.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-10.0.0-alpha.23.tgz#c912b4eeed54a5354128f86f939fec5c87427202"
-  integrity sha512-2RTCQESrRoOHh2pUOICRwCfdNSTkn4Ud19JXLx7sqprVCN0d3R/eaoe6toie+U6N1uGk8W9204I+tI6pwrPq6Q==
+rc-select@^10.0.0-alpha.24, rc-select@~10.0.0-alpha.27:
+  version "10.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-10.0.0-alpha.27.tgz#b0ac7e50c6d95f7b81cda07351915f26d85981f8"
+  integrity sha512-qZz8N3s6HRHfNmWZ7RjYX+pFSqVczVkoFXD6983wieDAhYFo4GgIK2Px5Uu/E+AscXpAtd0JTuz2x1MiriS0BA==
   dependencies:
     classnames "2.x"
     rc-animate "^2.10.0"
@@ -5931,40 +5917,20 @@ rc-tooltip@^3.7.0, rc-tooltip@~3.7.3:
     prop-types "^15.5.8"
     rc-trigger "^2.2.2"
 
-rc-tree-select@~2.9.1:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/rc-tree-select/-/rc-tree-select-2.9.1.tgz#d076b8ce5bf432df3fdd8a6a01cdd9c93c8e7399"
-  integrity sha512-AfJQC1ZzaeH+Onmx84TtVLUL2guBZe7exA8XSfj1RRB1doDbYGTtybzpP3CEw/tuSftSRnz+iPt+iaxRTrgXRw==
+rc-tree-select@~3.0.0-alpha.5:
+  version "3.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/rc-tree-select/-/rc-tree-select-3.0.0-alpha.5.tgz#14836489c0981441520389d6681bd21b74db02fd"
+  integrity sha512-uvUrRqFnpKdFV9/9zv7Ry7bOnPut4f2kb0IjksEjClTGEH9rKnv/nEIwsnpd5cRWFQ8lG8ciqKZpzhFcx7bfEw==
   dependencies:
-    classnames "^2.2.1"
-    dom-scroll-into-view "^1.2.1"
-    prop-types "^15.5.8"
-    raf "^3.4.0"
-    rc-animate "^2.8.2"
-    rc-tree "~2.0.0"
-    rc-trigger "^3.0.0-rc.2"
-    rc-util "^4.5.0"
-    react-lifecycles-compat "^3.0.4"
-    shallowequal "^1.0.2"
-    warning "^4.0.1"
-
-rc-tree@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-2.0.0.tgz#68fc4c9ab696943b279a143619e2ecf05918fb53"
-  integrity sha512-DAT/jsbnFbHqG9Df9OaVG93CAVtTsJVnJiwKX+wqsG8TChpty3s6QX3zJZ+gBgjkq4ikLbu1kuFJtX63EKhSAA==
-  dependencies:
-    babel-runtime "^6.23.0"
     classnames "2.x"
-    prop-types "^15.5.8"
-    rc-animate "^2.6.0"
-    rc-util "^4.5.1"
-    react-lifecycles-compat "^3.0.4"
-    warning "^3.0.0"
+    rc-select "^10.0.0-alpha.24"
+    rc-tree "^3.0.0-alpha.35"
+    rc-util "^4.9.0"
 
-rc-tree@~3.0.0-alpha.22:
-  version "3.0.0-alpha.35"
-  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-3.0.0-alpha.35.tgz#5e2cfaeec67be81bfe5527e4626c95b0d550ada8"
-  integrity sha512-Z2mQvzBdCTGal0QOaiHeLoW056kywQiFrQI3reMwCYhMvvLd/3uRwfejdcDyOAEnuEqTWZLhVch4nf0iv3B9XA==
+rc-tree@^3.0.0-alpha.35, rc-tree@~3.0.0-alpha.37:
+  version "3.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/rc-tree/-/rc-tree-3.0.0-alpha.37.tgz#7a70b6358d7836be032ef9c9adc0f8f36c4c9f96"
+  integrity sha512-HYKA1dpKJLzCnivOg2urjQ2JKrx6lZkARvJBxB4rd/SvyCzBWubjTzFeI1xN0Ywr4VuYAc9rjwO+e9MsKhJ/fA==
   dependencies:
     classnames "2.x"
     prop-types "^15.5.8"
@@ -5986,19 +5952,6 @@ rc-trigger@^2.2.0, rc-trigger@^2.2.2, rc-trigger@^2.3.0, rc-trigger@^2.5.1, rc-t
     rc-util "^4.4.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-trigger@^3.0.0-rc.2:
-  version "3.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-3.0.0-rc.3.tgz#35842df1674d25315e1426a44882a4c97652258b"
-  integrity sha512-4vB6cpxcUdm2qO5VtB9q1TZz0MoWm9BzFLvGknulphGrl1qI6uxUsPDCvqnmujdpDdAKGGfjxntFpA7RtAwkFQ==
-  dependencies:
-    babel-runtime "6.x"
-    classnames "^2.2.6"
-    prop-types "15.x"
-    raf "^3.4.0"
-    rc-align "^2.4.1"
-    rc-animate "^3.0.0-rc.1"
-    rc-util "^4.4.0"
-
 rc-upload@~2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/rc-upload/-/rc-upload-2.7.0.tgz#f279b758655eb5f99ebf82a5a2648d80d88e0ff4"
@@ -6009,7 +5962,7 @@ rc-upload@~2.7.0:
     prop-types "^15.5.7"
     warning "4.x"
 
-rc-util@^4.0.4, rc-util@^4.1.0, rc-util@^4.1.1, rc-util@^4.10.0, rc-util@^4.11.0, rc-util@^4.3.0, rc-util@^4.4.0, rc-util@^4.5.0, rc-util@^4.5.1, rc-util@^4.6.0, rc-util@^4.7.0, rc-util@^4.8.0, rc-util@^4.8.1, rc-util@^4.9.0:
+rc-util@^4.0.4, rc-util@^4.1.0, rc-util@^4.1.1, rc-util@^4.10.0, rc-util@^4.11.0, rc-util@^4.3.0, rc-util@^4.4.0, rc-util@^4.5.1, rc-util@^4.6.0, rc-util@^4.7.0, rc-util@^4.8.0, rc-util@^4.8.1, rc-util@^4.9.0:
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.11.0.tgz#cf437dcff74ca08a8565ae14f0368acb3a650796"
   integrity sha512-nB29kXOXsSVjBkWfH+Z1GVh6tRg7XGZtZ0Yfie+OI0stCDixGQ1cPrS6iYxlg+AV2St6COCK5MFrCmpTgghh0w==
@@ -7453,10 +7406,10 @@ umi-notify@^0.1.1:
     chalk "^2.4.1"
     is-ali-env "^0.1.4"
 
-umi-uni18n@^1.0.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/umi-uni18n/-/umi-uni18n-1.1.2.tgz#bebeba8a5a7ab6f5d5691883a8c51516c24039f9"
-  integrity sha512-b26P/3BovYFPL1Sl8C+LElX0xbC2JP6Lhl1GkbH3msdapG1BnThpDKyjI06GUsu/qykkHqZ9AHU7apPsXq+ANw==
+umi-uni18n@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/umi-uni18n/-/umi-uni18n-1.1.6.tgz#dc1f0c2f0e708279991e20e8f80047211f5fcca6"
+  integrity sha512-mrOCKw43c1qndcxf5/zNi/oRd7VuAiM629fT5VPSL6Zv4D3DREJAfTH+lA5iCv2YafWQ3OiPl08gUqRCcBIgqg==
   dependencies:
     "@babel/core" "^7.5.4"
     "@babel/generator" "^7.5.0"
