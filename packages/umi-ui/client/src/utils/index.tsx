@@ -123,9 +123,11 @@ export const renderLocale = (formatUtil: any) => (
   if (typeof descriptor === 'function') return descriptor();
   const firstArg =
     typeof descriptor === 'string' ? { id: descriptor, defaultMessage: descriptor } : descriptor;
-  const firstChar: string = formatUtil && formatUtil.name ? formatUtil.name.charAt(0) : '';
+  // default is formatMessage because of umi-plugin-locale Proxy function utils
+  const firstChar: string = formatUtil && formatUtil.name ? formatUtil.name.charAt(0) : 'f';
 
   const isComponent = firstChar.toUpperCase() === firstChar;
+
   if (isComponent) {
     const FormatUtil = formatUtil;
     const props = {
