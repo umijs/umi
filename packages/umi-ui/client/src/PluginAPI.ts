@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
 import history from '@tmp/history';
@@ -61,17 +61,20 @@ export default class PluginAPI {
   };
 
   launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
-    if (type === 'project') {
-      await openInEditor({
-        key: this.currentProject.key,
-      });
+    try {
+      if (type === 'project') {
+        await openInEditor({
+          key: this.currentProject.key,
+        });
+      }
+      if (type === 'config') {
+        await openConfigFile({
+          projectPath: this.currentProject.path,
+        });
+      }
+    } catch (e) {
+      message.error(e.message);
     }
-    if (type === 'config') {
-      await openConfigFile({
-        projectPath: this.currentProject.path,
-      });
-    }
-    // TODO
   };
 
   isMini: IUi.IMini = () => isMiniUI();

@@ -249,7 +249,7 @@ export default class UmiUI {
     }
   }
 
-  async openConfigFileInEditor(projectPath: string, { success, failure }) {
+  async openConfigFileInEditor(projectPath: string, { success, failure, lang }) {
     let configFile;
     const configFiles = ['.umirc.js', '.umirc.ts', 'config/config.js', 'config/config.ts'];
     for (const file of configFiles) {
@@ -259,8 +259,13 @@ export default class UmiUI {
       }
     }
 
-    assert(configFile, `configFile not exists`);
     try {
+      assert(
+        configFile,
+        lang === 'zh-CN'
+          ? '在编辑器中打开失败，因为配置文件不存在。'
+          : `Open failed with editor, since configFile not exists.`,
+      );
       const res = await launchEditor(configFile);
       if (res && res.success) {
         success(res);
@@ -268,7 +273,10 @@ export default class UmiUI {
         failure(res);
       }
     } catch (e) {
-      failure(e);
+      console.error(e);
+      failure({
+        message: e.message,
+      });
     }
   }
 
@@ -741,12 +749,11 @@ export default class UmiUI {
         });
         break;
       case '@@actions/openConfigFile':
-        try {
-          this.openConfigFileInEditor(payload.projectPath, {
-            success,
-            failure,
-          });
-        } catch (e) {}
+        this.openConfigFileInEditor(payload.projectPath, {
+          success,
+          failure,
+          lang,
+        });
         break;
       case '@@actions/openProjectInEditor':
         this.openProjectInEditor(

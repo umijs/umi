@@ -25,6 +25,7 @@ export default (api: IUiApi) => {
     'zh-CN': zhCN,
     'en-US': enUS,
   });
+
   api.addPanel({
     title: 'org.umi.ui.configuration.panel',
     actions: [ConfigAction],
