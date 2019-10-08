@@ -1,7 +1,7 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect } from 'react';
 import get from 'lodash/get';
 import { IUi } from 'umi-types';
