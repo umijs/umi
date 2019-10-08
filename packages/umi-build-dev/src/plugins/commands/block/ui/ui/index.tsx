@@ -101,6 +101,9 @@ const BlocksViewer: React.FC<Props> = props => {
   const [activeResource, setActiveResource] = useState<Resource>(null);
   const [searchValue, setSearchValue] = useState<string>('');
 
+  /**
+   * 获取 query 中的设置
+   */
   useEffect(() => {
     const query = getQueryConfig();
     if (query.type) {
@@ -112,6 +115,7 @@ const BlocksViewer: React.FC<Props> = props => {
       setActiveResource({ id: query.resource });
     }
   }, []);
+
   // 获取数据源
   const { data: resources } = useCallData<Resource[]>(
     () =>
@@ -124,6 +128,7 @@ const BlocksViewer: React.FC<Props> = props => {
     },
   );
 
+  // 当前的数据源列表
   const current = useMemo<Resource>(
     () => {
       return activeResource || resources.filter(item => item.blockType === type)[0];
@@ -131,6 +136,7 @@ const BlocksViewer: React.FC<Props> = props => {
     [resources, activeResource, type],
   );
 
+  // 计算选中的区块
   const blocks = useMemo<Block[]>(
     () => {
       return current && block.blockData[current.id] ? block.blockData[current.id] : [];
@@ -167,6 +173,7 @@ const BlocksViewer: React.FC<Props> = props => {
     });
   }, []);
 
+  // 如果区块不在屏幕范围内，滚动过去
   useEffect(
     () => {
       if (willAddBlock) {

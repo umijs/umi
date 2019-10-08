@@ -91,6 +91,11 @@ const BlockList: React.FC<BlockListProps> = props => {
     contents = (
       <div className={styles.emptyWrapper}>
         <Empty
+          imageStyle={{
+            width: 64,
+            height: 41,
+            margin: '8px auto',
+          }}
           image="https://gw.alipayobjects.com/mdn/rms_4f0d74/afts/img/A*LinHSLLEHUAAAAAAAAAAAABkARQnAQ"
           description={keyword ? '未搜索到任何数据' : '暂无数据'}
         />
