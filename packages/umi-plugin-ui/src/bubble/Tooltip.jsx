@@ -8,6 +8,10 @@ export const TooltipWrapper = styled.div`
   text-indent: 0;
   font-size: 12px;
   background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  text-align: left;
+  word-wrap: break-word;
   border-radius: 2px;
   color: #fff;
   padding: 0.5em 1em;
