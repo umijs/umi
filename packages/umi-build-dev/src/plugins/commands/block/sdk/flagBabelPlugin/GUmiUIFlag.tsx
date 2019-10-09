@@ -37,7 +37,7 @@ export default ({ filename, index }) => {
       }}
       className="g_umiuiBlockAddEditMode"
     >
-      + 添加到这里（{filename} 的第 {index} 个位置）
+      + Add to here
     </div>
   );
 };
