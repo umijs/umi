@@ -281,7 +281,7 @@ const BlocksViewer: React.FC<Props> = props => {
             {matchedResources.length > 1 && (
               <Radio.Group
                 value={current.id}
-                size={isMini ? 'small' : 'default'}
+                size="small"
                 onChange={e => {
                   const resource = matchedResources.find(r => r.id === e.target.value);
                   setActiveResource(resource);

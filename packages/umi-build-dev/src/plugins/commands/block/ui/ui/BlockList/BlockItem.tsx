@@ -137,7 +137,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   const isMini = api.isMini();
 
   return (
-    <Col className={`${styles.col} ${styles.minCol}`} key={item.url}>
+    <Col className={styles.col} key={item.url}>
       <div
         id={item.url}
         className={styles.templateCard}

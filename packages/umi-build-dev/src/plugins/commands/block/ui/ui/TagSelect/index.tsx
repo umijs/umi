@@ -48,6 +48,8 @@ const TagSelect: React.FC<{
         const { clientHeight } = ref.current;
         if (clientHeight > 30) {
           setHasExpandButton(true);
+        } else {
+          setHasExpandButton(false);
         }
       }
     },
