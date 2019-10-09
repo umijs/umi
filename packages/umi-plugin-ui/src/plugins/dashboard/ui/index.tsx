@@ -93,9 +93,29 @@ const DashboardUI: React.FC<IProps> = props => {
             )}
           </p>
           <div>
-            {window.g_bigfish
-              ? intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })
-              : intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
+            {window.g_bigfish ? (
+              <>
+                <a
+                  href="https://umijs.org/guide/umi-ui.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Bigfish UI
+                </a>
+                {intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })}
+              </>
+            ) : (
+              <>
+                <a
+                  href="https://umijs.org/guide/umi-ui.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Umi UI
+                </a>
+                {intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })}
+              </>
+            )}
           </div>
         </div>
       ),

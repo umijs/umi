@@ -186,6 +186,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
     );
   };
 
+  const detailHost = `https://umijs.org/${isEnglish ? '' : 'zh'}`;
   return (
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.dev' })}</h1>
@@ -235,7 +236,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelPolyfill"
                         desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-polyfill"
+                        link={`${detailHost}/guide/env-variables.html#babel-polyfill`}
                       />
                     }
                     name="BABEL_POLYFILL"
@@ -248,7 +249,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.hmr"
                         desc="org.umi.ui.tasks.envs.hmr.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#hmr"
+                        link={`${detailHost}/guide/env-variables.html#hmr`}
                       />
                     }
                     name="HMR"
@@ -261,7 +262,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelCache"
                         desc="org.umi.ui.tasks.envs.babelCache.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-cache"
+                        link={`${detailHost}/guide/env-variables.html#babel-cache`}
                       />
                     }
                     name="BABEL_CACHE"
@@ -274,7 +275,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.mock"
                         desc="org.umi.ui.tasks.envs.mock.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#mock"
+                        link={`${detailHost}/guide/env-variables.html#mock`}
                       />
                     }
                     name="MOCK"
@@ -287,7 +288,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.BROWSER"
                         desc="org.umi.ui.tasks.envs.BROWSER.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#browser"
+                        link={`${detailHost}/guide/env-variables.html#browser`}
                       />
                     }
                     name="BROWSER"
@@ -300,7 +301,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.clear"
                         desc="org.umi.ui.tasks.envs.clear.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#clear-console"
+                        link={`${detailHost}/guide/env-variables.html#clear-console`}
                       />
                     }
                     name="CLEAR_CONSOLE"
@@ -313,7 +314,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.tsCheck"
                         desc="org.umi.ui.tasks.envs.tsCheck.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#fork-ts-checker"
+                        link={`${detailHost}/guide/env-variables.html#fork-ts-checker`}
                       />
                     }
                     name="FORK_TS_CHECKER"
@@ -326,7 +327,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.umiUI"
                         desc="org.umi.ui.tasks.envs.umiUI.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#umi-ui"
+                        link={`${detailHost}/guide/env-variables.html#umi-ui`}
                       />
                     }
                     name="UMI_UI"

@@ -137,6 +137,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
   };
 
   const isTaskRunning = detail.state === TaskState.ING;
+  const detailHost = `https://umijs.org/${isEnglish ? '' : 'zh'}`;
   return (
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.build' })}</h1>
@@ -182,7 +183,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.compress"
                         desc="org.umi.ui.tasks.envs.compress.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#compress"
+                        link={`${detailHost}/guide/env-variables.html#compress`}
                       />
                     }
                     name="COMPRESS"
@@ -195,7 +196,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.cssCompress"
                         desc="org.umi.ui.tasks.envs.cssCompress.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#css-compress"
+                        link={`${detailHost}/guide/env-variables.html#css-compress`}
                       />
                     }
                     name="CSS_COMPRESS"
@@ -208,7 +209,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelPolyfill"
                         desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-polyfill"
+                        link={`${detailHost}/guide/env-variables.html#babel-polyfill`}
                       />
                     }
                     name="BABEL_POLYFILL"
@@ -221,7 +222,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelCache"
                         desc="org.umi.ui.tasks.envs.babelCache.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-cache"
+                        link={`${detailHost}/guide/env-variables.html#babel-cache`}
                       />
                     }
                     name="BABEL_CACHE"
@@ -234,7 +235,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.html"
                         desc="org.umi.ui.tasks.envs.html.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#html"
+                        link={`${detailHost}/guide/env-variables.html#html`}
                       />
                     }
                     name="HTML"
@@ -247,7 +248,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.tsCheck"
                         desc="org.umi.ui.tasks.envs.tsCheck.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#fork-ts-checker"
+                        link={`${detailHost}/guide/env-variables.html#fork-ts-checker`}
                       />
                     }
                     name="FORK_TS_CHECKER"
