@@ -5,9 +5,6 @@ const { existsSync } = require('fs');
 const { join } = require('path');
 const { fork } = require('child_process');
 
-// check ui dist umd, or publish will be forbidden
-checkUiDist();
-
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
   process.exit(1);
@@ -36,6 +33,9 @@ if (UIBuildCode === 1) {
   console.error('Failed: npm run ui:build');
   process.exit(1);
 }
+
+// check ui dist umd, or publish will be forbidden
+checkUiDist();
 
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
