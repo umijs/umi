@@ -85,23 +85,16 @@ export function filterDependenciesRepeat(blockDeps, projectDeps) {
   return filterDependencies;
 }
 
-/**
- * 合并重复依赖
- * @param {*} blockDeps
- * @param {*} projectDeps
- */
-export function mergeDependencies(blockDeps, projectDeps) {
-  return {
-    ...blockDeps,
-    ...projectDeps,
-  };
-}
-
 export function getAllBlockDependencies(rootDir, pkg) {
   const { blockConfig = {}, dependencies = {} } = pkg;
   const { dependencies: depBlocks = [] } = blockConfig;
   const allDependencies = {};
 
+  /**
+   * 合并重复依赖
+   * @param {*} blockDeps
+   * @param {*} projectDeps
+   */
   function mergeDependencies(parent, sub) {
     const [lacks, conflicts] = checkConflict(sub, parent);
     if (conflicts.length) {
@@ -180,7 +173,7 @@ export function getMockDependencies(mockContent, blockPkg) {
   return deps;
 }
 
-const singularReg = new RegExp(`[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`, 'g');
+const singularReg = new RegExp(`['"](@/|[\\./]+)(${SINGULAR_SENSLTIVE.join('|')})/`, 'g');
 
 export function parseContentToSingular(content) {
   return content.replace(singularReg, (all, prefix, match) => {
@@ -343,6 +336,8 @@ export default api => {
       // copy block to target
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       debug('start copy block file to your project...');
+
+      // 替换 相对路径
       ['src', '@'].forEach(folder => {
         if (!this.isPageBlock && folder === '@') {
           // @ folder not support anymore in new specVersion
@@ -356,7 +351,7 @@ export default api => {
           targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
         const options = {
-          process(content, targetPath) {
+          process(content, itemTargetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
@@ -368,7 +363,7 @@ export default api => {
               initialValue: content,
               args: {
                 blockPath,
-                targetPath,
+                targetPath: itemTargetPath,
               },
             });
           },

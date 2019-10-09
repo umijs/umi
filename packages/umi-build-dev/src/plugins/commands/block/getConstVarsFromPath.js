@@ -4,12 +4,11 @@ import upperCamelCase from 'uppercamelcase';
 function stripFirstSlash(path) {
   if (path.charAt(0) === '/') {
     return path.slice(1);
-  } else {
-    return path;
   }
+  return path;
 }
 
-export default function(path) {
+export default path => {
   let ROUTE_PATH = path;
   if (path.includes('-') || path.includes('_')) {
     ROUTE_PATH = toLower(path);
@@ -29,4 +28,4 @@ export default function(path) {
     ['PAGE_NAME_UPPER_CAMEL_CASE', upperCamelCase(PAGE_NAME)],
     ['PAGE_NAME', toLower(PAGE_NAME)],
   ]);
-}
+};
