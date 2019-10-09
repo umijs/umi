@@ -228,11 +228,11 @@ const Adder: React.FC<AdderProps> = props => {
     npmClient: 'npm',
   };
 
-  const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
-    if (addStatus === 'log' && !loading) {
+  const renderOkText = (status: 'form' | 'log' | 'result', loading: boolean) => {
+    if (status === 'log' && !loading) {
       return intl({ id: 'org.umi.ui.blocks.adder.stop' });
     }
-    if (addStatus === 'log') {
+    if (status === 'log') {
       return intl({ id: 'org.umi.ui.blocks.adder.stop' });
     }
     return intl({ id: 'org.umi.ui.blocks.adder.ok' });
@@ -340,7 +340,7 @@ const Adder: React.FC<AdderProps> = props => {
           valuePropName="checked"
           style={{ display: 'none' }}
         >
-          <Switch size="small"/>
+          <Switch size="small" />
         </Form.Item>
         {blockType === 'template' && (
           <Form.Item
@@ -348,7 +348,7 @@ const Adder: React.FC<AdderProps> = props => {
             label={intl({ id: 'org.umi.ui.blocks.adder.uni18n' })}
             valuePropName="checked"
           >
-            <Switch size="small"/>
+            <Switch size="small" />
           </Form.Item>
         )}
         <Form.Item name="npmClient" label={intl({ id: 'org.umi.ui.blocks.adder.npmClient' })}>

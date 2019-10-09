@@ -58,7 +58,7 @@ export const getPathFromFilename = async (api: IUiApi, filenamePath: string): Pr
   // /Users/userName/code/test/umi-block-test/src/page(s)/xxx/index.ts
   // or /Users/userName/code/test/umi-pro/src/page(s)/xxx.js
   // -> /xxx
-  return data.replace(/(index)?((\.tsx?)|(\.jsx?))$/, '');
+  return data.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, '');
 };
 
 /**
