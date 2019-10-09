@@ -322,13 +322,30 @@ export default (api) => {
 };
 ```
 
-### api.intl()
+### api.intl.*
 
-使用国际化，使用 [api.addLocale](#api-addlocales) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
+使用国际化，使用 [api.addLocale](#api-addlocales) 添加国际化字段后，可以在组件里使用 `api.intl.*` 处理国际化。
 
-参数：
+提供的国际化方法如下：
 
-`api.intl` 与 [formatMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md#formatmessage) 参数一致。
+```ts
+type PickIntl = Pick<typeof intl,
+  'FormattedDate' |
+  'FormattedTime' |
+  'FormattedRelative' |
+  'FormattedNumber' |
+  'FormattedPlural' |
+  'FormattedMessage' |
+  'FormattedHTMLMessage' |
+  'formatMessage' |
+  'formatHTMLMessage' |
+  'formatDate' |
+  'formatTime' |
+  'formatRelative' |
+  'formatNumber' |
+  'formatPlural'
+>
+```
 
 例如：
 
@@ -337,40 +354,31 @@ export default (api) => {
 import React from 'react';
 
 export default (api) => {
+  // 用法 api 参考 https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md
+  const {
+    FormattedMessage,
+    formatMessage,
+  } = api.intl;
+  const Component = (
+    <div>
+      <p>{formatMessage({ id: 'org.sorrycc.react.home' })}</p>
+      <FormattedMessage id="org.sorrycc.react.foo" />
+      <p>api.intl alias `api.intl.formatMessage`: {api.intl({ id: 'org.sorrycc.react.name' })}</p>
+    </div>
+  )
   api.addPanel({
     title: '插件模板',
     path: '/plugin-bar',
     icon: 'environment',
-    component: <div>{api.intl({ id: 'org.sorrycc.react.name' })}</div>,
+    component: ,
   });
 };
 ```
 
-### api.FormattedMessage
+> `api.intl()` 与 [formatMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md#formatmessage) 参数一致，`api.intl()` 与 `api.intl.formatMessage()` 等价。
 
-国际化组件，前提也是通过 [api.addLocale](#api-addlocales) 添加国际化字段。
+![image](https://user-images.githubusercontent.com/13595509/66404196-9288d100-ea1a-11e9-9ada-1204744018d2.png)
 
-
-参数：
-
-`api.FormattedMessage` 与 [FormattedMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/Components.md#formattedmessage) 参数一致。
-
-示例：
-
-```js
-// ui.(jsx|tsx)
-import React from 'react';
-
-export default (api) => {
-  const { FormattedMessage } = api;
-  api.addPanel({
-    title: '插件模板',
-    path: '/plugin-bar',
-    icon: 'environment',
-    component: <FormattedMessage id="org.sorrycc.react.name" />,
-  });
-};
-```
 
 ### api.getLocale()
 

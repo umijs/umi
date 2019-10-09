@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import lodash from 'lodash';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
-import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import * as intl from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
@@ -51,6 +51,37 @@ export default class PluginAPI {
     this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
     this.mini = isMiniUI();
+
+    const proxyIntl = new Proxy(intl, {
+      get: (target, prop: any) => {
+        if (
+          [
+            'FormattedDate',
+            'FormattedTime',
+            'FormattedRelative',
+            'FormattedNumber',
+            'FormattedPlural',
+            'FormattedMessage',
+            'FormattedHTMLMessage',
+            'formatMessage',
+            'formatHTMLMessage',
+            'formatDate',
+            'formatTime',
+            'formatRelative',
+            'formatNumber',
+            'formatPlural',
+          ].includes(prop)
+        ) {
+          return intl[prop];
+        }
+        return undefined;
+      },
+    });
+
+    // mount react-intl API∂
+    Object.keys(proxyIntl).forEach(intlApi => {
+      this.intl[intlApi] = intl[intlApi];
+    });
   }
 
   addConfigSection(section) {
@@ -147,8 +178,7 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl = formatMessage;
-  FormattedMessage = FormattedMessage;
+  intl: IUi.IIntl = intl.formatMessage;
 
   getLocale: IUi.IGetLocale = () => {
     return window.g_lang;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
-import { formatMessage, FormattedMessage, setLocale } from './locale';
+import * as intl from './locale';
 import { IRoute } from './';
 
 declare namespace IUI {
@@ -174,8 +174,25 @@ declare namespace IUI {
   type ICallRemote<T = unknown, P = unknown> = IApiActionFactory<T, P>;
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
-  type IIntl = typeof formatMessage;
-  type IFormattedMessage = typeof FormattedMessage;
+  type IFormatMessage = typeof intl.formatMessage;
+  type PickIntl = Pick<
+    typeof intl,
+    'FormattedDate'
+    | 'FormattedTime'
+    | 'FormattedRelative'
+    | 'FormattedNumber'
+    | 'FormattedPlural'
+    | 'FormattedMessage'
+    | 'FormattedHTMLMessage'
+    | 'formatMessage'
+    | 'formatHTMLMessage'
+    | 'formatDate'
+    | 'formatTime'
+    | 'formatRelative'
+    | 'formatNumber'
+    | 'formatPlural'
+  >;
+  type IIntl<T = PickIntl> = { [key in keyof T]: T[key] } & typeof intl.formatMessage;
   type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
@@ -233,9 +250,9 @@ declare namespace IUI {
     theme: ITheme;
     locale: ILang;
     currentProject?: ICurrentProject;
-    formatMessage: IIntl;
-    FormattedMessage: IFormattedMessage;
-    setLocale: typeof setLocale;
+    formatMessage: typeof intl.formatMessage;
+    FormattedMessage: typeof intl.FormattedMessage;
+    setLocale: typeof intl.setLocale;
     setTheme: (theme: ITheme) => void;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;
@@ -264,8 +281,6 @@ declare namespace IUI {
     isMini: () => boolean;
     /** intl, formatMessage */
     intl: IIntl;
-    /** FormattedMessage Component  */
-    FormattedMessage: IFormattedMessage;
     /** add plugin Panel */
     addPanel: IAddPanel;
     /** register dva model Panel */

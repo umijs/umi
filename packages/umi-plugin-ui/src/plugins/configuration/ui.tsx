@@ -6,7 +6,8 @@ import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
 export default (api: IUiApi) => {
-  const { FormattedMessage } = api;
+  const { intl } = api;
+  const { FormattedMessage } = intl;
   const ConfigAction = () => (
     <Button
       onClick={() => {
