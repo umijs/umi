@@ -124,6 +124,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   keyword,
 }) => {
   const { api } = useContext(Context);
+  const { intl } = api;
   const isMini = api.isMini();
 
   return (
@@ -151,12 +152,14 @@ const BlockItem: React.FC<BlockItemProps> = ({
                   })
                 }
               >
-                {loading ? '查看日志' : '添加到项目'}
+                {loading
+                  ? intl({ id: 'org.umi.ui.blocks.list.viewlog' })
+                  : intl({ id: 'org.umi.ui.blocks.list.add' })}
               </ToolTipAddButton>
 
               {item.previewUrl && (
                 <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
-                  预览
+                  {intl({ id: 'org.umi.ui.blocks.list.preview' })}
                 </Button>
               )}
             </div>

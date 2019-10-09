@@ -84,7 +84,7 @@ interface Props {
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api } = useContext(Context);
-  const { callRemote } = api;
+  const { callRemote, intl } = api;
   /**
    * 是不是umi
    */
@@ -195,7 +195,7 @@ const BlocksViewer: React.FC<Props> = props => {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
         <Tooltip
-          title="重新加载列表"
+          title={intl({ id: 'org.umi.ui.blocks.actions.reload' })}
           getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
@@ -216,7 +216,7 @@ const BlocksViewer: React.FC<Props> = props => {
           </Button>
         </Tooltip>,
         <Tooltip
-          title="清除区块的本地缓存"
+          title={intl({ id: 'org.umi.ui.blocks.actions.clear' })}
           getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
@@ -237,7 +237,7 @@ const BlocksViewer: React.FC<Props> = props => {
           </Button>
         </Tooltip>,
         <Tooltip
-          title="提交新的区块"
+          title={intl({ id: 'org.umi.ui.blocks.actions.submit' })}
           getPopupContainer={node => (node ? (node.parentNode as HTMLElement) : document.body)}
           placement="bottom"
         >
@@ -275,8 +275,8 @@ const BlocksViewer: React.FC<Props> = props => {
                 });
               }}
             >
-              <TabPane tab="区块" key="block" />
-              <TabPane tab="模板" key="template" />
+              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
+              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
             </Tabs>
             {matchedResources.length > 1 && (
               <Radio.Group

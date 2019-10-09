@@ -31,9 +31,12 @@ const sortTag = (a, b) => {
 const TagSelect: React.FC<{
   value: string;
   onChange: (tag: string) => void;
+  expandText: string;
+  allText: string;
+  collapseText: string;
   tagList: string[];
   loading: boolean;
-}> = ({ value, tagList, onChange, loading }) => {
+}> = ({ value, tagList, onChange, loading, expandText, allText, collapseText }) => {
   const [expand, setExpandValue] = useState<boolean>(true);
   const [hasExpandButton, setHasExpandButton] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(undefined);
@@ -66,7 +69,7 @@ const TagSelect: React.FC<{
                 onChange('');
               }}
             >
-              全部
+              {allText}
             </CheckableTag>
             {[...tagList]
               .sort(sortTag)
@@ -104,7 +107,7 @@ const TagSelect: React.FC<{
           }}
         >
           <>
-            {expand ? '展开' : '收起'} <Up className={styles.upIcon} />
+            {expand ? expandText : collapseText} <Up className={styles.upIcon} />
           </>
         </a>
       ) : (
