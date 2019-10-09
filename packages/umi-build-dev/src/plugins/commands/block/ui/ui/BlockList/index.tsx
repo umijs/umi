@@ -15,7 +15,6 @@ interface BlockItemProps {
   disabled?: boolean;
   loading?: boolean;
   onShowModal?: (Block: Block, option: AddBlockParams) => void;
-  onHideModal?: () => void;
   keyword?: string;
 }
 interface BlockListProps extends Omit<BlockItemProps, 'item'> {

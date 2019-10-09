@@ -81,6 +81,54 @@ interface Props {
   block: ModelState;
 }
 
+/**
+ * 渲染 数据源选择器
+ * @param param0
+ */
+const renderActiveResourceTag = ({
+  type,
+  matchedResources = [],
+  current = { id: '' },
+  setActiveResource,
+}: {
+  type: string;
+  current: Resource;
+  matchedResources: Resource[];
+  setActiveResource: (value: Resource) => void;
+}) => {
+  if (matchedResources.length > 1) {
+    return (
+      <Radio.Group
+        value={current.id}
+        size="small"
+        onChange={e => {
+          const resource = matchedResources.find(r => r.id === e.target.value);
+          setActiveResource(resource);
+          updateUrlQuery({ type, resource: resource.id });
+        }}
+      >
+        {matchedResources.map(r => (
+          <Radio.Button key={r.id} value={r.id}>
+            {r.name}
+          </Radio.Button>
+        ))}
+      </Radio.Group>
+    );
+  }
+  if (matchedResources.length === 1) {
+    return (
+      <h3
+        style={{
+          marginTop: 8,
+        }}
+      >
+        {matchedResources[0].name}
+      </h3>
+    );
+  }
+  return null;
+};
+
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
   const { api } = useContext(Context);
@@ -191,6 +239,7 @@ const BlocksViewer: React.FC<Props> = props => {
     const handleSearchChange = (v: string) => {
       setSearchValue(v.toLocaleLowerCase());
     };
+
     if (api.setActionPanel) {
       api.setActionPanel(() => [
         <GlobalSearch key="global-search" onChange={handleSearchChange} api={api} />,
@@ -269,6 +318,10 @@ const BlocksViewer: React.FC<Props> = props => {
               onChange={activeKey => {
                 setType(activeKey as Resource['blockType']);
                 setActiveResource(null);
+                /**
+                 * 修改 url 中的参数，数据源改变时
+                 * 清空 resource
+                 */
                 updateUrlQuery({
                   type: activeKey,
                   resource: undefined,
@@ -278,32 +331,13 @@ const BlocksViewer: React.FC<Props> = props => {
               <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
               <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
             </Tabs>
-            {matchedResources.length > 1 && (
-              <Radio.Group
-                value={current.id}
-                size="small"
-                onChange={e => {
-                  const resource = matchedResources.find(r => r.id === e.target.value);
-                  setActiveResource(resource);
-                  updateUrlQuery({ type, resource: resource.id });
-                }}
-              >
-                {matchedResources.map(r => (
-                  <Radio.Button key={r.id} value={r.id}>
-                    {r.name}
-                  </Radio.Button>
-                ))}
-              </Radio.Group>
-            )}
-            {matchedResources.length === 1 && (
-              <h3
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                {matchedResources[0].name}
-              </h3>
-            )}
+
+            {renderActiveResourceTag({
+              type,
+              matchedResources,
+              setActiveResource,
+              current,
+            })}
             {matchedResources.length > 0 ? (
               <BlockList
                 type={type}
@@ -316,11 +350,6 @@ const BlocksViewer: React.FC<Props> = props => {
                   setBlockParams(option);
                 }}
                 loading={fetchDataLoading}
-                onHideModal={() => {
-                  setAddModalVisible(false);
-                  setWillAddBlock(undefined);
-                  setBlockParams(undefined);
-                }}
               />
             ) : (
               <div>没有找到数据源</div>
