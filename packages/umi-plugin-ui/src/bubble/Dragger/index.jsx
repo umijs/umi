@@ -46,6 +46,8 @@ export default class Draggable extends React.Component {
     this.deltaX = 0;
     this.deltaY = 0;
 
+    this.defaultScrollBarSize = getScrollBarSize();
+
     this.state = {
       dragged: false,
       width: 0,
@@ -233,12 +235,10 @@ export default class Draggable extends React.Component {
     if (!dragged || !!hide) {
       return;
     }
-
     const scroll = getScrollOffsets();
     const clientWidth = getClientWidth();
     const clientHeight = getClientHeight();
     const { width, height } = node.getBoundingClientRect();
-
     const left = clientX + scroll.x - deltaX;
     const top = clientY + scroll.y - deltaY;
     let right = clientWidth - left - width;
@@ -263,7 +263,7 @@ export default class Draggable extends React.Component {
     }
 
     // for better performance
-    node.style.right = `${right}px`;
+    node.style.right = `${right - this.defaultScrollBarSize}px`;
     node.style.bottom = `${bottom}px`;
 
     this.setState(
