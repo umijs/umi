@@ -8,6 +8,7 @@ import querystring from 'querystring';
 import { getLocale } from '@/utils';
 import { init as initSocket, callRemote } from './socket';
 import debug from '@/debug';
+import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
 
 // TODO pluginAPI add debug('plugin:${key}') for developer
@@ -25,6 +26,30 @@ const service = (window.g_service = {
 const geval = eval; // eslint-disable-line
 
 export async function render(oldRender) {
+  // mini 模式下允许通过加 key 的参数打开
+  // 比如: ?mini&key=xxx
+  let miniKey = null;
+  const { search = '' } = window.location;
+  const qs = querystring.parse(search.slice(1));
+  const isMini = 'mini' in qs;
+
+  // proxy console.* in mini
+  proxyConsole(!!isMini);
+
+  // mini open not in project
+  // redirect full version
+  if (isMini && window.self === window.parent) {
+    const { mini, key, ...restProps } = qs;
+    const query = querystring.stringify(restProps);
+    history.push(`${history.location.pathname}${query ? `?${query}` : ''}`);
+    window.location.reload();
+    return false;
+  }
+
+  if (isMini && qs.key) {
+    miniKey = qs.key;
+  }
+
   // Init Socket Connection
   try {
     await initSocket({
@@ -44,27 +69,6 @@ export async function render(oldRender) {
     React.createElement(require('./pages/loading').default, {}),
     document.getElementById('root'),
   );
-
-  // mini 模式下允许通过加 key 的参数打开
-  // 比如: ?mini&key=xxx
-  let miniKey = null;
-  const { search = '' } = window.location;
-  const qs = querystring.parse(search.slice(1));
-  const isMini = 'mini' in qs;
-
-  // mini open not in project
-  // redirect full version
-  if (isMini && window.self === window.parent) {
-    const { mini, key, ...restProps } = qs;
-    const query = querystring.stringify(restProps);
-    history.push(`${history.location.pathname}${query ? `?${query}` : ''}`);
-    window.location.reload();
-    return false;
-  }
-
-  if (isMini && qs.key) {
-    miniKey = qs.key;
-  }
 
   if (history.location.pathname.startsWith('/project/')) {
     // console.log("It's Project Manager");
