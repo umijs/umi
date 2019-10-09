@@ -4,6 +4,7 @@ import { render } from './utils';
 
 export const TooltipWrapper = styled.div`
   opacity: 0;
+  visibility: hidden;
   transition: all 0.18s ease-out 0.18s;
   text-indent: 0;
   font-size: 12px;

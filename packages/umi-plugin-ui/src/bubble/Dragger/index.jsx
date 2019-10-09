@@ -30,6 +30,7 @@ const Container = styled.div`
     }
     ${TooltipWrapper} {
       opacity: ${({ open, hide }) => (open || hide ? 0 : 1)};
+      visibility: visible;
       transform: translate(-50%, 0);
     }
   }
