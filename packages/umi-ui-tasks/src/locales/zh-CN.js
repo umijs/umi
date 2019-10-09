@@ -45,6 +45,8 @@ export default {
   'org.umi.ui.tasks.envs.clear.desc': '启动日志自动清除。',
   'org.umi.ui.tasks.envs.tsCheck': 'TS 类型检查',
   'org.umi.ui.tasks.envs.tsCheck.desc': 'TS 类型定义检查（适用于 TS 项目）。',
+  'org.umi.ui.tasks.envs.umiUI': 'UmiUI',
+  'org.umi.ui.tasks.envs.umiUI.desc': '打开 umi ui。',
   // build
   'org.umi.ui.tasks.build.buildError': '执行构建失败',
   'org.umi.ui.tasks.build.cancelError': '取消构建失败',

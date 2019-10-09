@@ -43,6 +43,8 @@ export default {
   'org.umi.ui.tasks.envs.clear.desc': 'Clear terminal log.',
   'org.umi.ui.tasks.envs.tsCheck': 'TS Check',
   'org.umi.ui.tasks.envs.tsCheck.desc': 'Type Script definition check.',
+  'org.umi.ui.tasks.envs.umiUI': 'UmiUI',
+  'org.umi.ui.tasks.envs.umiUI.desc': 'Open umi ui.',
 
   // build
   'org.umi.ui.tasks.build.buildError': 'Build project error',
