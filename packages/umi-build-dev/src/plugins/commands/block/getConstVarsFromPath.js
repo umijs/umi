@@ -17,7 +17,7 @@ export default path => {
     ROUTE_PATH.split('/')
       .filter(str => str)
       .pop() || 'NewPage';
-  const BLOCK_NAME = stripFirstSlash(ROUTE_PATH).replace(/\//g, '-');
+  const BLOCK_NAME = stripFirstSlash(ROUTE_PATH).replace(/\//g, 'And');
 
   return new Map([
     ['ROUTE_PATH', toLower(ROUTE_PATH)],
