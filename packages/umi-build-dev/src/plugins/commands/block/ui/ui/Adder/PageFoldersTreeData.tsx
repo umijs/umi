@@ -28,14 +28,7 @@ const RoutePathTree: React.FC<
     },
   );
 
-  return (
-    <TreeSelect
-      placeholder="请选择添加到哪里"
-      searchPlaceholder="筛选路径"
-      treeData={pageFoldersTreeData}
-      {...restProps}
-    />
-  );
+  return <TreeSelect treeData={pageFoldersTreeData} {...restProps} />;
 };
 
 export default RoutePathTree;

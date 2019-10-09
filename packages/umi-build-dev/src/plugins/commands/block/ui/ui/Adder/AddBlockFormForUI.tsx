@@ -38,14 +38,20 @@ const AddBlockFormForUI: React.FC<{
   form: FormInstance;
 }> = ({ blockTarget, form }) => {
   const { api } = useContext(Context);
+  const { intl } = api;
   const [varName, setValueName] = useState<string>(form.getFieldValue('name'));
   return (
     <>
       <Form.Item
         noStyle
         name="path"
-        label={<InfoToolTip title="添加到" placeholder="当前选中页面的路径" />}
-        rules={[{ required: true, message: '添加路径为必填项！' }]}
+        label={
+          <InfoToolTip
+            title={intl({ id: 'org.umi.ui.blocks.adder.path' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.path.minitooltip' })}
+          />
+        }
+        rules={[{ required: true, message: intl({ id: 'org.umi.ui.blocks.adder.path.rule' }) }]}
       >
         <PathLabel name={varName} />
       </Form.Item>
@@ -53,21 +59,21 @@ const AddBlockFormForUI: React.FC<{
         name="name"
         label={
           <InfoToolTip
-            title="变量名"
-            placeholder="区块的源代码将会放在 [添加路径]\[名称]的位置，并且将作为变量名加入页面中。"
+            title={intl({ id: 'org.umi.ui.blocks.adder.name' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.name.tooltip' })}
           />
         }
         rules={[
           {
             validator: async (rule, name) => {
               if (!name) {
-                throw new Error('变量名为必填项!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.required' }));
               }
               if (!/^[a-zA-Z$_][a-zA-Z\d_]*$/.test(name)) {
-                throw new Error('变量名不合法!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegal' }));
               }
               if (!/^(?:[A-Z][a-z]+)+$/.test(name)) {
-                throw new Error('变量名不是一个合法的 React 组件名!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegalReact' }));
               }
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
@@ -78,7 +84,7 @@ const AddBlockFormForUI: React.FC<{
                 exists: boolean;
               };
               if (exists) {
-                throw new Error('目标路径已存在文件!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.pathexist' }));
               }
               const blockFileTarget = form.getFieldValue('path');
               const { exists: varExists } = (await api.callRemote({
@@ -89,14 +95,14 @@ const AddBlockFormForUI: React.FC<{
                 },
               })) as { exists: boolean };
               if (varExists) {
-                throw new Error('变量已存在于目标页面!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.varexist' }));
               }
             },
           },
         ]}
       >
         <Input
-          placeholder="请输入名称！"
+          placeholder={intl({ id: 'org.umi.ui.blocks.adder.name.placeholder' })}
           onChange={e => {
             setValueName(e.target.value);
           }}

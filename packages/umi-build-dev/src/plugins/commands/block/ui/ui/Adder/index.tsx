@@ -44,16 +44,6 @@ const addBlock = async (api: IUiApi, params: AddBlockParams) => {
   return info.message;
 };
 
-const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
-  if (addStatus === 'log' && !loading) {
-    return '完成';
-  }
-  if (addStatus === 'log') {
-    return '停止';
-  }
-  return '确认';
-};
-
 const cancelAddBlockTask = (api: IUiApi) => {
   return api.callRemote({
     type: 'org.umi.block.cancel',
@@ -71,7 +61,7 @@ const Adder: React.FC<AdderProps> = props => {
     blockType,
   } = props;
   const { api } = useContext(Context);
-  const { callRemote } = api;
+  const { callRemote, intl } = api;
 
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   // 防止重复提交
@@ -145,7 +135,7 @@ const Adder: React.FC<AdderProps> = props => {
         onAddBlockChange(undefined);
         // 如果标签页不激活，不处理它
         if (document.visibilityState !== 'hidden') {
-          message.error('添加失败，请重试！');
+          message.error(intl({ id: 'org.umi.ui.blocks.adder.failed' }));
         }
       },
     });
@@ -237,6 +227,17 @@ const Adder: React.FC<AdderProps> = props => {
     uni18n: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
+
+  const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
+    if (addStatus === 'log' && !loading) {
+      return intl({ id: 'org.umi.ui.blocks.adder.stop' });
+    }
+    if (addStatus === 'log') {
+      return intl({ id: 'org.umi.ui.blocks.adder.stop' });
+    }
+    return intl({ id: 'org.umi.ui.blocks.adder.ok' });
+  };
+
   return (
     <Modal
       title={
@@ -245,7 +246,7 @@ const Adder: React.FC<AdderProps> = props => {
             display: 'flex',
           }}
         >
-          添加{blockType !== 'template' ? '区块' : '模板'}
+          {intl({ id: `org.umi.ui.blocks.adder.title.${blockType}` })}
         </div>
       }
       closable
@@ -275,11 +276,11 @@ const Adder: React.FC<AdderProps> = props => {
         }
         if (addStatus === 'log') {
           Modal.confirm({
-            title: '停止安装',
-            content: '确定要停止安装区块吗？',
+            title: intl({ id: 'org.umi.ui.blocks.adder.stop.title' }),
+            content: intl({ id: 'org.umi.ui.blocks.adder.stop.content' }),
             okType: 'danger',
-            okText: '确认',
-            cancelText: '取消',
+            okText: intl({ id: 'org.umi.ui.blocks.adder.stop.okText' }),
+            cancelText: intl({ id: 'org.umi.ui.blocks.adder.stop.cancelText' }),
             onOk: async () => {
               await cancelAddBlockTask(api);
               setTaskLoading(false);
@@ -333,15 +334,24 @@ const Adder: React.FC<AdderProps> = props => {
           <AddBlockFormForUI form={form} blockTarget={blockTarget} />
         )}
 
-        <Form.Item name="js" label="编译为 JS" valuePropName="checked" style={{ display: 'none' }}>
-          <Switch size="small" />
+        <Form.Item
+          name="js"
+          label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
+          valuePropName="checked"
+          style={{ display: 'none' }}
+        >
+          <Switch size="small"/>
         </Form.Item>
         {blockType === 'template' && (
-          <Form.Item name="uni18n" label="移除国际化" valuePropName="checked">
-            <Switch size="small" />
+          <Form.Item
+            name="uni18n"
+            label={intl({ id: 'org.umi.ui.blocks.adder.uni18n' })}
+            valuePropName="checked"
+          >
+            <Switch size="small"/>
           </Form.Item>
         )}
-        <Form.Item name="npmClient" label="包管理器">
+        <Form.Item name="npmClient" label={intl({ id: 'org.umi.ui.blocks.adder.npmClient' })}>
           <Select>
             {npmClients.map(client => (
               <Select.Option key={client} value={client}>

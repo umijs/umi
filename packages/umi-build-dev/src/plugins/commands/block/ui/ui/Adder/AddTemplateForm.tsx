@@ -14,18 +14,19 @@ const AddBlockForm: React.FC<{
   visible: boolean;
 }> = ({ visible }) => {
   const { api } = useContext(Context);
+  const { intl } = api;
   return (
     <>
       <Form.Item
         name="routePath"
         label={
           <InfoToolTip
-            title="路由路径"
-            placeholder="路由路径代表你通过 url 访问到这个页面的路径，会写入 config.ts 中。"
+            title={intl({ id: 'org.umi.ui.blocks.adder.routePath' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.routePath.placeholder' })}
           />
         }
         rules={[
-          { required: true, message: '路由必选' },
+          { required: true, message: intl({ id: 'org.umi.ui.blocks.adder.routePath.required' }) },
           {
             validator: async (rule, value) => {
               if (value === '/') {
@@ -40,7 +41,7 @@ const AddBlockForm: React.FC<{
                 exists: boolean;
               };
               if (exists) {
-                throw new Error('路由路径已存在');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.routePath.exist' }));
               }
             },
           },
@@ -52,16 +53,19 @@ const AddBlockForm: React.FC<{
         name="path"
         label={
           <InfoToolTip
-            title="添加到"
-            placeholder="表示相对于 src/pages 的文件路径，区块的源码将放在这个地方"
+            title={intl({ id: 'org.umi.ui.blocks.adder.templatePath' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.templatePath.tooltip' })}
           />
         }
         rules={[
-          { required: true, message: '添加路径为必填项！' },
+          {
+            required: true,
+            message: intl({ id: 'org.umi.ui.blocks.adder.templatePath.required' }),
+          },
           {
             validator: async (rule, filePath) => {
               if (filePath === '/') {
-                throw new Error('安装文件夹不能为根目录！');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.templatePath.root' }));
               }
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
@@ -72,7 +76,7 @@ const AddBlockForm: React.FC<{
                 exists: boolean;
               };
               if (exists) {
-                throw new Error('安装文件路径已存在文件！');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.templatePath.exist' }));
               }
             },
           },

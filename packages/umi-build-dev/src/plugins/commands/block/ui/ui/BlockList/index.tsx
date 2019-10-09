@@ -26,6 +26,7 @@ interface BlockListProps extends Omit<BlockItemProps, 'item'> {
 const BlockList: React.FC<BlockListProps> = props => {
   const { list = [], addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
+  const { intl } = api;
   const { uniq, flatten } = api._;
   const isMini = api.isMini();
   const pageSize = isMini ? 8 : 10;
@@ -97,7 +98,11 @@ const BlockList: React.FC<BlockListProps> = props => {
             margin: '8px auto',
           }}
           image="https://gw.alipayobjects.com/mdn/rms_4f0d74/afts/img/A*LinHSLLEHUAAAAAAAAAAAABkARQnAQ"
-          description={keyword ? '未搜索到任何数据' : '暂无数据'}
+          description={
+            keyword
+              ? intl({ id: 'org.umi.ui.blocks.list.nofound' })
+              : intl({ id: 'org.umi.ui.blocks.list.nodata' })
+          }
         />
       </div>
     );
@@ -140,6 +145,9 @@ const BlockList: React.FC<BlockListProps> = props => {
     <>
       <TagSelect
         tagList={tags}
+        allText={intl({ id: 'org.umi.ui.blocks.tag.all' })}
+        collapseText={intl({ id: 'org.umi.ui.blocks.tag.collapse' })}
+        expandText={intl({ id: 'org.umi.ui.blocks.tag.expand' })}
         value={selectedTag}
         loading={loading}
         onChange={tagValue => setSelectedTag(tagValue)}

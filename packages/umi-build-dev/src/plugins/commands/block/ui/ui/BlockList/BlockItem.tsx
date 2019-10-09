@@ -98,18 +98,27 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
   onShowModal(item, {});
 };
 
-const ToolTipAddButton: React.FC<ButtonProps> = ({ disabled, children, ...reset }) => {
+interface ToolTipAddButtonProps extends ButtonProps {
+  disabledTitle?: string;
+}
+
+const ToolTipAddButton: React.FC<ToolTipAddButtonProps> = ({
+  disabledTitle,
+  disabled,
+  children,
+  ...reset
+}) => {
   if (disabled) {
     return (
-      <Tooltip title="同一时间只能进行一个添加任务">
-        <Button type="primary" disabled={disabled} {...reset}>
+      <Tooltip title={disabledTitle}>
+        <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
           {children}
         </Button>
       </Tooltip>
     );
   }
   return (
-    <Button type="primary" disabled={disabled} {...reset}>
+    <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
       {children}
     </Button>
   );
@@ -124,6 +133,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   keyword,
 }) => {
   const { api } = useContext(Context);
+  const { intl } = api;
   const isMini = api.isMini();
 
   return (
@@ -143,6 +153,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <ToolTipAddButton
                 type="primary"
                 disabled={disabled}
+                disabledTitle={intl({ id: 'org.umi.ui.blocks.adder.disabledTitle' })}
                 onClick={() =>
                   onBeforeOpenModal(api, {
                     type,
@@ -151,12 +162,14 @@ const BlockItem: React.FC<BlockItemProps> = ({
                   })
                 }
               >
-                {loading ? '查看日志' : '添加到项目'}
+                {loading
+                  ? intl({ id: 'org.umi.ui.blocks.list.viewlog' })
+                  : intl({ id: 'org.umi.ui.blocks.list.add' })}
               </ToolTipAddButton>
 
               {item.previewUrl && (
                 <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
-                  预览
+                  {intl({ id: 'org.umi.ui.blocks.list.preview' })}
                 </Button>
               )}
             </div>

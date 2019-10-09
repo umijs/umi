@@ -3,7 +3,7 @@
  *  需要选择安装的具体文件位置
  */
 import React, { useContext } from 'react';
-import { Form, Alert, Input } from 'antd';
+import { Form, Input } from 'antd';
 import { FormInstance } from 'antd/es/form/util';
 
 import Context from '../UIApiContext';
@@ -16,6 +16,7 @@ const AddBlockFormForUI: React.FC<{
   visible: boolean;
 }> = ({ form, visible }) => {
   const { api } = useContext(Context);
+  const { intl } = api;
   return (
     <>
       <div
@@ -24,17 +25,17 @@ const AddBlockFormForUI: React.FC<{
           marginBottom: 24,
         }}
       >
-        在 min ui 中添加，获取更好的使用体验。
+        {intl({ id: 'org.umi.ui.blocks.adder.minirecommend' })}
       </div>
       <Form.Item
         name="path"
         label={
           <InfoToolTip
-            title="添加到"
-            placeholder="此处选择的是 config.js 中的路由，他会根据路由来找到需要添加到的文件！"
+            title={intl({ id: 'org.umi.ui.blocks.adder.path' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.path.tooltip' })}
           />
         }
-        rules={[{ required: true, message: '添加路由为必填项！' }]}
+        rules={[{ required: true, message: intl({ id: 'org.umi.ui.blocks.adder.path.rule' }) }]}
       >
         <RouteFilesTreeData visible={visible} />
       </Form.Item>
@@ -42,14 +43,23 @@ const AddBlockFormForUI: React.FC<{
         name="name"
         label={
           <InfoToolTip
-            title="名称"
-            placeholder="区块的源代码将会放在 [添加路径]\[名称]的位置，并且将作为变量名加入页面中。"
+            title={intl({ id: 'org.umi.ui.blocks.adder.name' })}
+            placeholder={intl({ id: 'org.umi.ui.blocks.adder.name.tooltip' })}
           />
         }
         rules={[
-          { required: true, message: '名称为必填项!' },
           {
             validator: async (rule, name) => {
+              if (!name) {
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.required' }));
+              }
+              if (!/^[a-zA-Z$_][a-zA-Z\d_]*$/.test(name)) {
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegal' }));
+              }
+              if (!/^(?:[A-Z][a-z]+)+$/.test(name)) {
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegalReact' }));
+              }
+
               const filePath = await getPathFromFilename(api, form.getFieldValue('path'));
               const { exists } = (await api.callRemote({
                 type: 'org.umi.block.checkExistFilePath',
@@ -60,23 +70,25 @@ const AddBlockFormForUI: React.FC<{
                 exists: boolean;
               };
               if (exists) {
-                throw new Error('目标路径已存在文件!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.pathexist' }));
               }
+
+              const blockFileTarget = form.getFieldValue('path');
               const { exists: varExists } = (await api.callRemote({
                 type: 'org.umi.block.checkBindingInFile',
                 payload: {
-                  path: filePath,
+                  path: blockFileTarget,
                   name,
                 },
               })) as { exists: boolean };
               if (varExists) {
-                throw new Error('变量已存在于目标页面!');
+                throw new Error(intl({ id: 'org.umi.ui.blocks.adder.varexist' }));
               }
             },
           },
         ]}
       >
-        <Input placeholder="请输入名称！" />
+        <Input placeholder={intl({ id: 'org.umi.ui.blocks.adder.name.placeholder' })} />
       </Form.Item>
     </>
   );
