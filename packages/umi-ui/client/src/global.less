@@ -240,10 +240,26 @@ p {
   border: 3px solid transparent;
   background-clip: padding-box;
   border-radius: 5px;
+  border: solid transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  height: 0;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track-piece {
   background: 0 0;
+}
+
+::-webkit-scrollbar-track {
+  background-clip: padding-box;
+  border: solid transparent;
+  border-width: 0 0 0 4px;
 }
 
 .bigTitle {
