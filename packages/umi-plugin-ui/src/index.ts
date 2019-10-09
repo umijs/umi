@@ -4,7 +4,7 @@ import { join } from 'path';
 export default (api: IApi) => {
   const { relativeToTmp, winPath } = api;
   // TODO: 区分生产和开发环境，生产环境引打包好的，或者通过异步远程加载也可以
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' && !api.config.ssr) {
     api.addEntryCode(`
     try {
       // Umi UI Bubble
