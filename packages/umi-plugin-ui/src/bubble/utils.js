@@ -1,3 +1,7 @@
+// render locale format
+export const render = (template, model) =>
+  template.replace(/{{ (\w+) }}/g, (str, key) => model[key]);
+
 export const getLocale = () => {
   // support SSR
   const { g_langSeparator = '-', g_lang } = window;

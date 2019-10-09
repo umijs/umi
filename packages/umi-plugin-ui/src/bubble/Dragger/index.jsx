@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { HideWrapper } from '../Hide';
+import { TooltipWrapper } from '../Tooltip';
 import { getScrollOffsets, getClientWidth, getScrollBarSize, getClientHeight } from '../utils';
 
 const initRight = 60;
@@ -13,42 +14,6 @@ const Container = styled.div`
   z-index: 999;
   right: ${initRight}px;
   bottom: ${initBottom}px;
-  &:before {
-    width: 0;
-    height: 0;
-    border: 5px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.75);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.18s ease-out 0.18s;
-    content: '';
-    position: absolute;
-    z-index: 10;
-    bottom: 100%;
-    left: 50%;
-    transform: translate(-50%, 4px);
-    transform-origin: top;
-  }
-  &:after {
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.18s ease-out 0.18s;
-    text-indent: 0;
-    font-size: 12px;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 2px;
-    color: #fff;
-    content: "${({ message }) => message.tooltip}";
-    padding: 0.5em 1em;
-    position: absolute;
-    white-space: nowrap;
-    z-index: 10;
-    bottom: 100%;
-    left: 50%;
-    margin-bottom: 10px;
-    transform: translate(-50%, 4px);
-    transform-origin: top;
-  }
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -63,10 +28,8 @@ const Container = styled.div`
       opacity: 1;
       transform: scale(1);
     }
-    &:before,
-    &:after {
+    ${TooltipWrapper} {
       opacity: ${({ open, hide }) => (open || hide ? 0 : 1)};
-      pointer-events: none;
       transform: translate(-50%, 0);
     }
   }
@@ -349,13 +312,12 @@ export default class Draggable extends React.Component {
   };
 
   render() {
-    const { children, hide, open, message } = this.props;
+    const { children, hide, open } = this.props;
     const { dragged, width } = this.state;
 
     return (
       <Container
         ref={this.saveRef}
-        message={message}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
         style={hide ? { right: -width / 1.5 } : {}}

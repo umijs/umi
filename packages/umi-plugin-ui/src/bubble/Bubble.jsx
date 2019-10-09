@@ -6,10 +6,11 @@ import Hide from './Hide';
 import logoDecorator from './Logo';
 import IconLoading from './IconLoading';
 import * as ENUM from './enum';
+import Tooltip from './Tooltip';
 import Close from './Close';
 
 const BubbleWrapper = styled('div')`
-  background-color: ${props => (props.open ? '#30303D' : '#454550')};
+  background-color: ${props => (props.open ? '#30303D' : '#4c4c61')};
   height: 60px;
   width: 60px;
   pointer-events: none;
@@ -116,8 +117,10 @@ class Bubble extends React.Component {
         onOverlap={this.hideBubble}
         message={message}
         onDrag={this.handleDrag}
+        isBigfish={isBigfish}
         locale={locale}
       >
+        <Tooltip isBigfish={isBigfish} message={message} />
         <BubbleWrapper open={open}>
           {loading && <IconLoading />}
           <Logo open={open} />

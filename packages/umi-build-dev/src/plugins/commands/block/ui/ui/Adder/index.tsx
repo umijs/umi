@@ -334,11 +334,11 @@ const Adder: React.FC<AdderProps> = props => {
         )}
 
         <Form.Item name="js" label="编译为 JS" valuePropName="checked" style={{ display: 'none' }}>
-          <Switch />
+          <Switch size="small" />
         </Form.Item>
         {blockType === 'template' && (
           <Form.Item name="uni18n" label="移除国际化" valuePropName="checked">
-            <Switch />
+            <Switch size="small" />
           </Form.Item>
         )}
         <Form.Item name="npmClient" label="包管理器">
