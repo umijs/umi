@@ -28,7 +28,7 @@ const PathLabel: React.FC<{
         borderRadius: 4,
       }}
     >
-      {`${value}/${name}`.replace(/\//g, '/').replace(/\/\//g, '/')}
+      {`${value}/${name || ''}`.replace(/\//g, '/').replace(/\/\//g, '/')}
     </code>
   </div>
 );
