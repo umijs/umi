@@ -55,6 +55,9 @@ const BlockList: React.FC<BlockListProps> = props => {
     [list],
   );
 
+  /**
+   * 筛选区块列表
+   */
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
       list.filter(({ name = '', url, description = '', tags: listTags = [] }) => {
@@ -68,6 +71,10 @@ const BlockList: React.FC<BlockListProps> = props => {
       }),
     [keyword, selectedTag, list.map(({ url }) => url).join('/')],
   );
+
+  /**
+   * 当前的列表项目，区块分页就是在这里做
+   */
   const currentPageList: Block[] = useMemo<Block[]>(
     () =>
       filteredList.slice(
@@ -77,6 +84,9 @@ const BlockList: React.FC<BlockListProps> = props => {
     [filteredList, currentPage],
   );
 
+  /**
+   * 是不是数据为空
+   */
   const isEmpty = !currentPageList || currentPageList.length === 0;
 
   let contents;

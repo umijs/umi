@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
@@ -141,27 +141,23 @@ const BlocksViewer: React.FC<Props> = props => {
   /**
    * 用到的各种状态
    */
+  const query = getQueryConfig();
   const [willAddBlock, setWillAddBlock] = useState<Block>(null);
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
-  const [type, setType] = useState<Resource['blockType']>('block');
-  const [activeResource, setActiveResource] = useState<Resource>(null);
+  const [type, setType] = useState<Resource['blockType']>(query.type);
+  const [activeResource, setActiveResource] = useState<Resource>(
+    query.resource ? { id: query.resource } : null,
+  );
   const [searchValue, setSearchValue] = useState<string>('');
 
   /**
    * 获取 query 中的设置
    */
-  useEffect(() => {
-    const query = getQueryConfig();
-    if (query.type) {
-      setType(query.type);
-    } else {
-      updateUrlQuery({ type });
-    }
-    if (query.resource) {
-      setActiveResource({ id: query.resource });
-    }
+  useLayoutEffect(() => {
+    // 更新一下url，让他们同步一下
+    updateUrlQuery({ type });
   }, []);
 
   // 获取数据源
