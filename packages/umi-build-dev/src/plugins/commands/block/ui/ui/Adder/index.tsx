@@ -120,14 +120,16 @@ const Adder: React.FC<AdderProps> = props => {
     api.listenRemote({
       type: 'org.umi.block.add-blocks-success',
       onMessage: msg => {
+        setTaskLoading(false);
+        onAddBlockChange(undefined);
+
         // 如果标签页不激活，不处理它
         if (document.visibilityState !== 'hidden') {
-          setTaskLoading(false);
-          onAddBlockChange(undefined);
-
           // 设置预览界面
           setAddStatus('result');
           setSucceededBlock(msg.data);
+        } else {
+          setAddStatus('form');
         }
       },
     });
