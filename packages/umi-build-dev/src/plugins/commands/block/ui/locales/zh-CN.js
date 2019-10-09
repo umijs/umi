@@ -17,6 +17,8 @@ export default {
   'org.umi.ui.blocks.adder.failed': '添加失败，请重试！',
   'org.umi.ui.blocks.adder.title.template': '添加模板',
   'org.umi.ui.blocks.adder.title.block': '添加区块',
+  'org.umi.ui.blocks.adder.stop': '停止',
+  'org.umi.ui.blocks.adder.ok': '确认',
   'org.umi.ui.blocks.adder.stop.title': '停止安装',
   'org.umi.ui.blocks.adder.stop.content': '确定要停止安装区块吗？',
   'org.umi.ui.blocks.adder.stop.okText': '确认',
