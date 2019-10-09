@@ -24,6 +24,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     (Terminal as any).applyAddon(fit);
     const terminal = new (Terminal as typeof XTerminal)({
       allowTransparency: true,
+      fontFamily: `operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace`,
       fontSize: 14,
       theme: {
         background: '#15171C',

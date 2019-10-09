@@ -19,6 +19,7 @@ function initTerminal() {
       background: '#15171C',
       foreground: '#ffffff73',
     },
+    fontFamily: `operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace`,
     cursorBlink: false,
     cursorStyle: 'underline',
     disableStdin: true,
