@@ -44,16 +44,6 @@ const addBlock = async (api: IUiApi, params: AddBlockParams) => {
   return info.message;
 };
 
-const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
-  if (addStatus === 'log' && !loading) {
-    return '完成';
-  }
-  if (addStatus === 'log') {
-    return '停止';
-  }
-  return '确认';
-};
-
 const cancelAddBlockTask = (api: IUiApi) => {
   return api.callRemote({
     type: 'org.umi.block.cancel',
@@ -237,6 +227,17 @@ const Adder: React.FC<AdderProps> = props => {
     uni18n: localStorage.getItem('umi-ui-block-removeLocale') === 'true',
     npmClient: 'npm',
   };
+
+  const renderOkText = (addStatus: 'form' | 'log' | 'result', loading: boolean) => {
+    if (addStatus === 'log' && !loading) {
+      return intl({ id: 'org.umi.ui.blocks.adder.stop' });
+    }
+    if (addStatus === 'log') {
+      return intl({ id: 'org.umi.ui.blocks.adder.stop' });
+    }
+    return intl({ id: 'org.umi.ui.blocks.adder.ok' });
+  };
+
   return (
     <Modal
       title={
@@ -344,7 +345,7 @@ const Adder: React.FC<AdderProps> = props => {
         {blockType === 'template' && (
           <Form.Item
             name="uni18n"
-            label={intl({ id: 'org.umi.ui.blocks.adder.js' })}
+            label={intl({ id: 'org.umi.ui.blocks.adder.uni18n' })}
             valuePropName="checked"
           >
             <Switch size="small"/>

@@ -17,6 +17,8 @@ export default {
   'org.umi.ui.blocks.adder.failed': 'Add failed, please retry!',
   'org.umi.ui.blocks.adder.title.template': 'Add Template',
   'org.umi.ui.blocks.adder.title.block': 'Add Block',
+  'org.umi.ui.blocks.adder.stop': 'Stop',
+  'org.umi.ui.blocks.adder.ok': 'OK',
   'org.umi.ui.blocks.adder.stop.title': 'Stop add',
   'org.umi.ui.blocks.adder.stop.content': 'Are you sure you want to stop adding the block?',
   'org.umi.ui.blocks.adder.stop.okText': 'Confirm',
