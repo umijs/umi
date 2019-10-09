@@ -291,10 +291,10 @@ export const genRouterToTreeData = routes =>
 export const genComponentToTreeData = routes =>
   routes
     .map(item =>
-      item.path || item.routes
+      item.component && (item.path || item.routes)
         ? {
             title: item.path,
-            value: item.component,
+            value: item.component.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, ''),
             key: item.path,
             children: genComponentToTreeData(item.routes || []),
           }

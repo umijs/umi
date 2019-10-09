@@ -9,7 +9,7 @@ const RoutePathTree: React.FC<
   } & CustomTreeSelectProps
 > = props => {
   const { api } = useContext(Context);
-  const { visible, onChange, ...resetProps } = props;
+  const { visible, ...resetProps } = props;
   /**
    * 这两个在 visible 的时候回重新加载一下
    */
@@ -30,7 +30,6 @@ const RoutePathTree: React.FC<
   return (
     <TreeSelect
       // index.js -> index
-      onChange={value => onChange(value.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, ''))}
       onlySelectLeaf
       treeData={pageFoldersTreeData}
       {...resetProps}
