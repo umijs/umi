@@ -104,11 +104,11 @@ const DashboardUI: React.FC<IProps> = props => {
 
   return (
     <div className={styles.container}>
-      <Row type="flex" gutter={24}>
+      <Row className={styles['container-row']} type="flex" gutter={24}>
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;
           return (
-            <Col key={i} className={className} xs={24} sm={24} md={24} lg={8} xl={6}>
+            <Col key={i.toString()} className={className} xs={12} sm={12} md={12} lg={12} xl={6}>
               <Card
                 className={styles.card}
                 bordered={false}
