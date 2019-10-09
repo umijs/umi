@@ -126,7 +126,10 @@ class AnalyzeComponent extends Component<IProps> {
     if (!src && !analyze) {
       return (
         <div className={styles.empty}>
-          <span>{intl({ id: 'org.umi.ui.tasks.analyze.empty' })}</span>
+          <div>
+            <div className="icon" />
+            <span>{intl({ id: 'org.umi.ui.tasks.analyze.empty' })}</span>
+          </div>
         </div>
       );
     }
