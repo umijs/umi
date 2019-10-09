@@ -232,17 +232,17 @@ export default (api: IApi) => {
 
           // antd 特性依赖
           // bigfish 默认开了 antd
-          if (haveFeature('antd') && !isBigfish) {
-            if (!reactPlugin || !reactPluginOpts.antd) {
-              failure({
-                message:
-                  lang === 'zh-CN'
-                    ? `${payloadType}依赖 antd，请安装 umi-plugin-react 插件并开启 antd 。`
-                    : 'Block depends on antd, please install umi-plugin-react and enable antd.',
-              });
-              return;
-            }
-          }
+          // if (haveFeature('antd') && !isBigfish) {
+          //   if (!reactPlugin || !reactPluginOpts.antd) {
+          //     failure({
+          //       message:
+          //         lang === 'zh-CN'
+          //           ? `${payloadType}依赖 antd，请安装 umi-plugin-react 插件并开启 antd 。`
+          //           : 'Block depends on antd, please install umi-plugin-react and enable antd.',
+          //     });
+          //     return;
+          //   }
+          // }
 
           // dva 特性依赖
           if (haveFeature('dva')) {
