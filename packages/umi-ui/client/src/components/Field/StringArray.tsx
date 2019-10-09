@@ -49,6 +49,7 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
           <Button
             type="dashed"
             ghost
+            size={size}
             onClick={() => {
               add();
             }}
