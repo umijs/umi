@@ -18,6 +18,7 @@ const LoadingWrapper = styled.div`
   text-align: center;
   color: #fff;
   height: 100%;
+  font-size: 14px;
 `;
 
 class App extends React.Component {
@@ -31,6 +32,8 @@ class App extends React.Component {
       loading: false,
       currentProject: props.currentProject,
       locale,
+      edit: false,
+      editText: {},
     };
     window.addEventListener('message', this.handleMessage, false);
   }
@@ -62,12 +65,22 @@ class App extends React.Component {
 
   handleMessage = event => {
     try {
-      const { action } = JSON.parse(event.data);
+      const { action, payload = {} } = JSON.parse(event.data);
       switch (action) {
+        // 编辑态改变文字
+        case 'umi.ui.changeEdit': {
+          this.setState({
+            edit: true,
+            editText: payload,
+          });
+          break;
+        }
         // 显示 mini
         case 'umi.ui.showMini': {
           this.setState({
             open: true,
+            edit: false,
+            editText: {},
           });
           break;
         }
@@ -180,8 +193,15 @@ class App extends React.Component {
     }));
   };
 
+  resetEdit = () => {
+    this.setState({
+      edit: false,
+      editText: {},
+    });
+  };
+
   render() {
-    const { open, connected, uiLoaded, loading, locale } = this.state;
+    const { open, connected, uiLoaded, loading, locale, edit, editText } = this.state;
     const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
@@ -194,9 +214,12 @@ class App extends React.Component {
         isBigfish={isBigfish}
         // TODO: loading when currentProject not loaded
         toggleMiniOpen={this.toggleMiniOpen}
+        resetEdit={this.resetEdit}
         open={open}
         loading={loading}
         message={message}
+        edit={edit}
+        editText={editText}
         locale={locale}
       >
         {open !== undefined && (

@@ -14,6 +14,7 @@ const Container = styled.div`
   z-index: 999;
   right: ${initRight}px;
   bottom: ${initBottom}px;
+  font-size: 14px;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -88,6 +89,7 @@ export default class Draggable extends React.Component {
   };
 
   componentDidMount() {
+    const { hide } = this.props;
     window.addEventListener('resize', this.handleResize, false);
     // eslint-disable-next-line
     this.nodeDom = ReactDOM.findDOMNode(this);
