@@ -7,6 +7,7 @@ const STATS_FILE_NAME = 'webpack-stats-build.json';
 
 export class BuildTask extends BaseTask {
   private dbPath: string; // 项目的 db 路径
+  private webpackStats: any;
 
   constructor(opts: ITaskOptions) {
     super(opts);
@@ -14,6 +15,7 @@ export class BuildTask extends BaseTask {
   }
 
   public async run(args, env: any = {}) {
+    this.webpackStats = null;
     await super.run();
     const { script, envs: scriptEnvs } = this.getScript();
 
@@ -60,7 +62,11 @@ export class BuildTask extends BaseTask {
     if (this.state !== TaskState.SUCCESS || !this.dbPath) {
       return null;
     }
-    return getChartData(join(this.dbPath, STATS_FILE_NAME));
+    if (this.webpackStats) {
+      return this.webpackStats;
+    }
+    this.webpackStats = getChartData(join(this.dbPath, STATS_FILE_NAME));
+    return this.webpackStats;
   }
 
   private getScript(): { script: string; envs: object } {
