@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { spawn, SpawnOptions, execSync } from 'child_process';
+import { spawn, SpawnOptions, execSync, fork } from 'child_process';
 import { NpmClient } from '../core/enums';
 
 export const error = (msg: string, name = 'TaskError') => {
@@ -17,29 +17,48 @@ export const runCommand = (script: string, options: SpawnOptions = {}, ipc = fal
   };
 
   options.cwd = options.cwd || process.cwd();
-  options.stdio = ipc ? [null, null, null, 'ipc'] : 'pipe';
+  options.stdio = 'pipe';
 
-  let sh = 'sh';
-  let shFlag = '-c';
+  if (!ipc) {
+    options.env = {
+      ...process.env,
+      ...options.env,
+      FORCE_COLOR: '1',
+    };
 
-  if (process.platform === 'win32') {
-    sh = process.env.comspec || 'cmd';
-    shFlag = '/d /s /c';
-    options.windowsVerbatimArguments = true;
-    if (
-      script.indexOf('./') === 0 ||
-      script.indexOf('.\\') === 0 ||
-      script.indexOf('../') === 0 ||
-      script.indexOf('..\\') === 0
-    ) {
-      const splits = script.split(' ');
-      splits[0] = join(options.cwd, splits[0]);
-      script = splits.join(' ');
+    options.cwd = options.cwd || process.cwd();
+
+    let sh = 'sh';
+    let shFlag = '-c';
+
+    if (process.platform === 'win32') {
+      sh = process.env.comspec || 'cmd';
+      shFlag = '/d /s /c';
+      options.windowsVerbatimArguments = true;
+      if (
+        script.indexOf('./') === 0 ||
+        script.indexOf('.\\') === 0 ||
+        script.indexOf('../') === 0 ||
+        script.indexOf('..\\') === 0
+      ) {
+        const splits = script.split(' ');
+        splits[0] = join(options.cwd, splits[0]);
+        script = splits.join(' ');
+      }
     }
+
+    const proc = spawn(sh, [shFlag, script], options);
+    return proc;
   }
 
-  const proc = spawn(sh, [shFlag, script], options);
-  return proc;
+  const binPath = require.resolve(
+    script.indexOf('umi') > -1 ? 'umi/bin/umi' : '@alipay/bigfish/bin/bigfish',
+    {
+      paths: [options.cwd],
+    },
+  );
+  const child = fork(binPath, ['dev'], options);
+  return child;
 };
 
 export const isScriptKeyExist = (pkgPath: string, key: string): boolean => {
