@@ -1,9 +1,8 @@
 import { IApi } from 'umi-types';
 import Logger from '../Logger';
+import { StepState } from '../enum';
 
 export interface IFlowContext {
-  terminated: boolean;
-  terminatedMsg?: string;
   logger: Logger; // 输出日志
   api: IApi;
   execa: any;

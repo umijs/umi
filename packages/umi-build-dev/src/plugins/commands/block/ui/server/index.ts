@@ -155,6 +155,13 @@ export default (api: IApi) => {
           success: true,
         });
         break;
+      // 取消任务
+      case 'org.umi.block.retry':
+        success({
+          data: blockService.retry({ ...payload }),
+          success: true,
+        });
+        break;
 
       // 区块添加
       case 'org.umi.block.add':
