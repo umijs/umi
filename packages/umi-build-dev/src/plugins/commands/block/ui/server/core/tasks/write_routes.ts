@@ -52,9 +52,9 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
     }
     logger.appendLog('🎉  Success write block component \n');
   }
-
+  const { PORT, BASE_PORT } = process.env;
   // Final: show success message
-  const viewUrl = `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`;
+  const viewUrl = `http://localhost:${BASE_PORT || PORT || '8000'}${generator.path.toLowerCase()}`;
   logger.appendLog(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
 };
 

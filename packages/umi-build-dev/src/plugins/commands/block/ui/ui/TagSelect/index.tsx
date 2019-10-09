@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { Tag } from 'antd';
 import { Loading, Up } from '@ant-design/icons';
 
@@ -38,7 +38,7 @@ const TagSelect: React.FC<{
   const [hasExpandButton, setHasExpandButton] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(undefined);
 
-  useEffect(
+  useLayoutEffect(
     () => {
       // 计算需不需要折行
       if (ref && ref.current) {
@@ -48,7 +48,7 @@ const TagSelect: React.FC<{
         }
       }
     },
-    [loading],
+    [loading, tagList.length],
   );
 
   return (

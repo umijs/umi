@@ -112,11 +112,7 @@ async function add(
   api: IApi & {
     sendLog: (info: string) => void;
   },
-): Promise<{
-  generator?: any;
-  ctx?: CtxTypes;
-  logs?: string[];
-}> {
+) {
   const { log, paths, debug, config, applyPlugins, sendLog } = api;
   const blockConfig: {
     npmClient?: string;
@@ -224,7 +220,7 @@ async function add(
 
   ctx.filePath = addPrefix(ctx.filePath);
 
-  //如果 ctx.routePath 不存在，使用 filePath
+  // 如果 ctx.routePath 不存在，使用 filePath
   if (!routePath) {
     ctx.routePath = ctx.filePath;
   }
@@ -233,8 +229,8 @@ async function add(
   // 4. install additional dependencies
   // check dependencies conflict and install dependencies
   // install
-  opts.remoteLog('Install extra dependencies');
-  spinner.start(`📦  install dependencies package`);
+  opts.remoteLog('📦  Install extra dependencies');
+  spinner.start('📦  install dependencies package');
   await installDependencies(
     { npmClient, registry, applyPlugins, paths, debug, dryRun, spinner, skipDependencies },
     ctx,
@@ -242,8 +238,8 @@ async function add(
   spinner.succeed();
 
   // 5. run generator
-  opts.remoteLog('Generate files');
-  spinner.start(`🔥  Generate files`);
+  opts.remoteLog('🔥  Generate files');
+  spinner.start('🔥  Generate files');
   spinner.stopAndPersist();
   const BlockGenerator = require('./getBlockGenerator').default(api);
   let isPageBlock = ctx.pkg.blockConfig && ctx.pkg.blockConfig.specVersion === '0.1';
@@ -304,13 +300,14 @@ async function add(
 
   // 调用 sylvanas 转化 ts
   if (js) {
-    opts.remoteLog('TypeScript to JavaScript');
+    opts.remoteLog('🤔  TypeScript to JavaScript');
     spinner.start('🤔  TypeScript to JavaScript');
     require('./tsTojs').default(generator.blockFolderPath);
     spinner.succeed();
   }
 
   if (uni18n) {
+    opts.remoteLog('🌎  remove i18n code');
     spinner.start('🌎  remove i18n code');
     require('./remove-locale').default(generator.blockFolderPath, uni18n);
     spinner.succeed();
@@ -318,7 +315,7 @@ async function add(
 
   // 6. write routes
   if (generator.needCreateNewRoute && api.config.routes && !skipModifyRoutes) {
-    opts.remoteLog('Write route');
+    opts.remoteLog('⛱  Write route');
 
     spinner.start(`⛱  Write route ${generator.routePath} to ${api.service.userConfig.file}`);
     // 当前 _modifyBlockNewRouteConfig 只支持配置式路由
@@ -361,7 +358,10 @@ async function add(
   }
 
   // Final: show success message
-  const viewUrl = `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`;
+  const { PORT, BASE_PORT } = process.env;
+  // Final: show success message
+  const viewUrl = `http://localhost:${BASE_PORT || PORT || '8000'}${generator.path.toLowerCase()}`;
+
   try {
     clipboardy.writeSync(viewUrl);
     log.success(
@@ -373,12 +373,12 @@ async function add(
     log.success(`✨  Probable url ${chalk.cyan(viewUrl)} for view the block.`);
     log.error('copy to clipboard failed');
   }
-
+  // return ctx and generator for test
   return {
     generator,
     ctx,
     logs: addLogs,
-  }; // return ctx and generator for test
+  };
 }
 
 export default add;
