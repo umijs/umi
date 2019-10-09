@@ -26,14 +26,18 @@ export class DevTask extends BaseTask {
     const analyzeEnv = await getDevAnalyzeEnv();
     this.analyzePort = analyzeEnv.ANALYZE_PORT;
 
-    this.proc = await runCommand(script, {
-      cwd: this.cwd,
-      env: {
-        ...env, // 前端 env
-        ...analyzeEnv, // analyze env
-        ...scriptEnvs, // script 解析到的
+    this.proc = await runCommand(
+      script,
+      {
+        cwd: this.cwd,
+        env: {
+          ...env, // 前端 env
+          ...analyzeEnv, // analyze env
+          ...scriptEnvs, // script 解析到的
+        },
       },
-    });
+      true,
+    );
 
     this.handleChildProcess(this.proc);
   }

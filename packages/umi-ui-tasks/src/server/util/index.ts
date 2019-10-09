@@ -9,7 +9,7 @@ export const error = (msg: string, name = 'TaskError') => {
   throw err;
 };
 
-export const runCommand = (script: string, options: SpawnOptions = {}) => {
+export const runCommand = (script: string, options: SpawnOptions = {}, ipc = false) => {
   options.env = {
     ...process.env,
     ...options.env,
@@ -17,7 +17,7 @@ export const runCommand = (script: string, options: SpawnOptions = {}) => {
   };
 
   options.cwd = options.cwd || process.cwd();
-  options.stdio = [null, null, null, 'ipc'];
+  options.stdio = ipc ? [null, null, null, 'ipc'] : [null, null, null];
 
   let sh = 'sh';
   let shFlag = '-c';
