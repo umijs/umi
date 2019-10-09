@@ -230,6 +230,17 @@ export default (api: IApi) => {
           });
           const reactPluginOpts = genReactPluginOpts(reactPlugin);
 
+          // 提前判断是否有 package.json，区块添加时如果没有会报错
+          if (!existsSync(join(api.cwd, 'package.json'))) {
+            failure({
+              message:
+                lang === 'zh-CN'
+                  ? `${payloadType}添加需要在项目根目录有 package.json`
+                  : `package.json is required to add ${payloadType}`,
+            });
+            return;
+          }
+
           // antd 特性依赖
           // bigfish 默认开了 antd
           // if (haveFeature('antd') && !isBigfish) {
