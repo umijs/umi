@@ -114,6 +114,7 @@ const ToolTipAddButton: React.FC<ButtonProps> = ({ disabled, children, ...reset 
     </Button>
   );
 };
+
 const BlockItem: React.FC<BlockItemProps> = ({
   type,
   item,
@@ -125,14 +126,8 @@ const BlockItem: React.FC<BlockItemProps> = ({
   const { api } = useContext(Context);
   const isMini = api.isMini();
 
-  const style = {
-    flex: `0 1 ${isMini ? '25%' : '20%'}`,
-    overflow: 'hidden',
-    minWidth: '200px',
-  };
-
   return (
-    <Col style={style} key={item.url}>
+    <Col className={`${styles.col} ${styles.minCol}`} key={item.url}>
       <div
         id={item.url}
         className={styles.templateCard}

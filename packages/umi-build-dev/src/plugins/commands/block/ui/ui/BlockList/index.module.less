@@ -43,6 +43,38 @@
   }
 }
 
+.col {
+  flex: 0 1 20%;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1200px) {
+  .col {
+    flex: 0 1 25%;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .col {
+    flex: 0 1 33.33%;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .col {
+    flex: 0 1 50%;
+    overflow: hidden;
+  }
+}
+@media screen and (max-width: 576px) {
+  .col {
+    flex: 0 1 100%;
+    overflow: hidden;
+  }
+}
+
 .templateCard {
   width: 100%;
   cursor: pointer;
