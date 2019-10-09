@@ -27,15 +27,7 @@ const RoutePathTree: React.FC<
       defaultData: [],
     },
   );
-  return (
-    <TreeSelect
-      placeholder="添加到"
-      searchPlaceholder="筛选添加路径"
-      onlySelectLeaf
-      treeData={pageFoldersTreeData}
-      {...resetProps}
-    />
-  );
+  return <TreeSelect onlySelectLeaf treeData={pageFoldersTreeData} {...resetProps} />;
 };
 
 export default RoutePathTree;

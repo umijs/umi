@@ -98,18 +98,27 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
   onShowModal(item, {});
 };
 
-const ToolTipAddButton: React.FC<ButtonProps> = ({ disabled, children, ...reset }) => {
+interface ToolTipAddButtonProps extends ButtonProps {
+  disabledTitle?: string;
+}
+
+const ToolTipAddButton: React.FC<ToolTipAddButtonProps> = ({
+  disabledTitle,
+  disabled,
+  children,
+  ...reset
+}) => {
   if (disabled) {
     return (
-      <Tooltip title="同一时间只能进行一个添加任务">
-        <Button type="primary" disabled={disabled} {...reset}>
+      <Tooltip title={disabledTitle}>
+        <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
           {children}
         </Button>
       </Tooltip>
     );
   }
   return (
-    <Button type="primary" disabled={disabled} {...reset}>
+    <Button className={styles.addBtn} type="primary" disabled={disabled} {...reset}>
       {children}
     </Button>
   );
@@ -144,6 +153,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <ToolTipAddButton
                 type="primary"
                 disabled={disabled}
+                disabledTitle={intl({ id: 'org.umi.ui.blocks.adder.disabledTitle' })}
                 onClick={() =>
                   onBeforeOpenModal(api, {
                     type,

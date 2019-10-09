@@ -28,14 +28,7 @@ const RoutePathTree: React.FC<
     },
   );
 
-  return (
-    <TreeSelect
-      placeholder="请选择路由"
-      searchPlaceholder="筛选路由"
-      treeData={routePathTreeData}
-      {...resetProps}
-    />
-  );
+  return <TreeSelect treeData={routePathTreeData} {...resetProps} />;
 };
 
 export default RoutePathTree;
