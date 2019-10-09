@@ -9,6 +9,7 @@ import Bubble from './Bubble';
 import Modal from './Modal';
 import Loading from './Loading';
 import Error from './Error';
+import ErrorBoundary from './ErrorBoundary';
 
 const winPath = input => {
   if (!input) {
@@ -250,6 +251,11 @@ doc.body.appendChild(node);
 
 export default props => {
   if (!isMobile(navigator.userAgent)) {
-    ReactDOM.render(<App {...props} />, node);
+    ReactDOM.render(
+      <ErrorBoundary>
+        <App {...props} />
+      </ErrorBoundary>,
+      node,
+    );
   }
 };
