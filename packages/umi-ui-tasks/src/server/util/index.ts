@@ -17,9 +17,9 @@ export const runCommand = (script: string, options: SpawnOptions = {}, ipc = fal
   };
 
   options.cwd = options.cwd || process.cwd();
-  options.stdio = 'pipe';
 
-  if (!ipc) {
+  if (process.platform !== 'win32' || !ipc) {
+    options.stdio = ipc ? [null, null, null, 'ipc'] : 'pipe';
     options.env = {
       ...process.env,
       ...options.env,
@@ -31,26 +31,11 @@ export const runCommand = (script: string, options: SpawnOptions = {}, ipc = fal
     let sh = 'sh';
     let shFlag = '-c';
 
-    if (process.platform === 'win32') {
-      sh = process.env.comspec || 'cmd';
-      shFlag = '/d /s /c';
-      options.windowsVerbatimArguments = true;
-      if (
-        script.indexOf('./') === 0 ||
-        script.indexOf('.\\') === 0 ||
-        script.indexOf('../') === 0 ||
-        script.indexOf('..\\') === 0
-      ) {
-        const splits = script.split(' ');
-        splits[0] = join(options.cwd, splits[0]);
-        script = splits.join(' ');
-      }
-    }
-
     const proc = spawn(sh, [shFlag, script], options);
     return proc;
   }
 
+  options.stdio = 'pipe';
   const binPath = require.resolve(
     script.indexOf('umi') > -1 ? 'umi/bin/umi' : '@alipay/bigfish/bin/bigfish',
     {
