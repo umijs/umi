@@ -147,7 +147,7 @@ const BlocksViewer: React.FC<Props> = props => {
   // 初始化 block dva model data
   useEffect(
     () => {
-      if (current) {
+      if (current && current.id) {
         dispatch({
           type: `${namespace}/fetch`,
           payload: {
@@ -271,7 +271,7 @@ const BlocksViewer: React.FC<Props> = props => {
                 setActiveResource(null);
                 updateUrlQuery({
                   type: activeKey,
-                  resource: activeResource ? activeResource.id : undefined,
+                  resource: undefined,
                 });
               }}
             >
