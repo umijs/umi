@@ -40,6 +40,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
     CLEAR_CONSOLE: true,
     PORT: null,
     FORK_TS_CHECKER: false,
+    UMI_UI: null,
   });
   const [init] = useInit(detail);
 
@@ -316,6 +317,19 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                       />
                     }
                     name="FORK_TS_CHECKER"
+                    valuePropName="checked"
+                  >
+                    <Switch size="small" />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <EnvLabel
+                        title="org.umi.ui.tasks.envs.umiUI"
+                        desc="org.umi.ui.tasks.envs.umiUI.desc"
+                        link="https://umijs.org/zh/guide/env-variables.html#umi-ui"
+                      />
+                    }
+                    name="UMI_UI"
                     valuePropName="checked"
                   >
                     <Switch size="small" />
