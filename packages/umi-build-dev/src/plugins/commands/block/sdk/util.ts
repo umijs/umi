@@ -49,7 +49,10 @@ export function getReturnNode(node) {
   ) {
     return findReturnNode(node);
   } else if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
-    return findReturnNode(findRenderStatement(node.body));
+    const renderStatement = findRenderStatement(node.body);
+    if (renderStatement) {
+      return findReturnNode(renderStatement);
+    }
   }
 }
 
@@ -83,7 +86,7 @@ function findRenderStatement(node) {
       return n;
     }
   }
-  throw new Error(`Find render statement failed`);
+  // throw new Error(`Find render statement failed`);
 }
 
 export function findIndex(arr, index, fn) {
