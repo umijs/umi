@@ -55,6 +55,13 @@ class Block {
     this.flow.cancel();
   }
 
+  public async retry(args) {
+    if (!this.flow) {
+      return null;
+    }
+    return this.flow.retry(args);
+  }
+
   public getLog() {
     if (!this.flow) {
       return '';

@@ -2,7 +2,7 @@ import { IApi } from 'umi-types';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { IFlowContext } from './types';
-import { FlowState } from './enum';
+import { FlowState, StepState } from './enum';
 import Logger from './Logger';
 import execa from '../util/exec';
 
@@ -12,7 +12,7 @@ class Flow extends EventEmitter {
   public api: IApi;
   public ctx: IFlowContext;
   public tasks: any[] = [];
-  public isCancel: boolean = false;
+  public isCancel: boolean = false; // 用户取消
   public logger: Logger;
   public proc: ChildProcess;
   public state: FlowState = FlowState.INIT;
@@ -29,8 +29,6 @@ class Flow extends EventEmitter {
       execa: execa(this.logger, this.setProcRef.bind(this)),
       api: this.api,
       logger: this.logger,
-      terminated: false,
-      terminatedMsg: '',
       stages: {},
       result: {},
     };
@@ -40,19 +38,22 @@ class Flow extends EventEmitter {
   public async run(args) {
     this.state = FlowState.ING;
     let hasBreak = false;
-    for (const task of this.tasks) {
+
+    for (const { name, task, state } of this.tasks) {
       // 用户取消任务
       if (this.isCancel) {
         hasBreak = true;
+        this.setStepState(name, StepState.CANCEL);
         break;
       }
-      // 子任务执行结束
-      if (this.ctx.terminated) {
-        hasBreak = true;
-        break;
+
+      if (state === StepState.SUCCESS) {
+        continue;
       }
+
       try {
         await task(this.ctx, args);
+        this.setStepState(name, StepState.SUCCESS);
       } catch (e) {
         hasBreak = true;
         /**
@@ -62,6 +63,7 @@ class Flow extends EventEmitter {
          */
         if (!this.isCancel) {
           this.state = FlowState.FAIL;
+          this.setStepState(name, StepState.FAIL);
           this.emit('state', {
             ...args,
             state: FlowState.FAIL,
@@ -70,6 +72,7 @@ class Flow extends EventEmitter {
         break;
       }
     }
+
     if (hasBreak) {
       return this.ctx.result;
     }
@@ -108,6 +111,18 @@ class Flow extends EventEmitter {
     }, 2000);
   }
 
+  /**
+   * 重试
+   */
+  public async retry(args) {
+    if (this.state !== FlowState.FAIL) {
+      const err = new Error(`Error state(${this.state}) to retry`);
+      err.name = 'FlowError';
+      throw err;
+    }
+    return this.run(args);
+  }
+
   public getLog() {
     return this.logger.getLog();
   }
@@ -119,9 +134,28 @@ class Flow extends EventEmitter {
     return this.ctx.result.blockUrl;
   }
 
+  private setStepState(taskName: string, state: StepState) {
+    const curTask = this.tasks.find(({ name }) => name === taskName);
+    if (!curTask) {
+      return;
+    }
+    curTask.state = state;
+  }
+
   private registryTasks() {
-    [parseUrl, gitClone, gitUpdate, install, runGenerator, writeRoutes].forEach(task => {
-      this.tasks.push(task);
+    [
+      { name: 'parseUrl', task: parseUrl },
+      { name: 'gitClone', task: gitClone },
+      { name: 'gitUpdate', task: gitUpdate },
+      { name: 'install', task: install },
+      { name: 'runGenerator', task: runGenerator },
+      { name: 'writeRoutes', task: writeRoutes },
+    ].forEach(({ name, task }) => {
+      this.tasks.push({
+        name,
+        task,
+        state: StepState.INIT,
+      });
     });
   }
 

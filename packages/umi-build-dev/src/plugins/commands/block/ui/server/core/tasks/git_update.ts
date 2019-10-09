@@ -95,9 +95,8 @@ const clone = async (ctx: IFlowContext, args: IAddBlockOption) => {
     if (!blockName) {
       const errMsg = "Can not find name in block's package.json";
       logger.appendLog(errMsg);
-      ctx.terminated = true;
-      ctx.terminatedMsg = errMsg;
-      return;
+      const err = new Error(errMsg);
+      throw err;
     }
 
     filePath = `/${blockName}`;
