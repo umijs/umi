@@ -10,6 +10,19 @@ import Modal from './Modal';
 import Loading from './Loading';
 import Error from './Error';
 
+const winPath = input => {
+  if (!input) {
+    return '';
+  }
+  const isExtendedLengthPath = /^\\\\\?\\/.test(input);
+
+  if (isExtendedLengthPath) {
+    return input;
+  }
+
+  return input.replace(/\\/g, '/');
+};
+
 const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -105,7 +118,8 @@ class App extends React.Component {
         },
         onMessage: ({ type, payload }) => {
           // 区分不同项目
-          if (!payload || payload.projectPath !== path) return;
+          if (!payload || winPath(payload.projectPath) !== winPath(path)) return;
+
           switch (type) {
             case 'org.umi.ui.bubble.showLoading':
               this.setState({
@@ -116,6 +130,7 @@ class App extends React.Component {
               this.setState({
                 loading: false,
               });
+              break;
             default:
               break;
           }
