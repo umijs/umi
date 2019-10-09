@@ -283,19 +283,21 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
                   >
                     <Switch size="small" />
                   </Form.Item>
-                  <Form.Item
-                    label={
-                      <EnvLabel
-                        title="org.umi.ui.tasks.envs.BROWSER"
-                        desc="org.umi.ui.tasks.envs.BROWSER.desc"
-                        link={`${detailHost}/guide/env-variables.html#browser`}
-                      />
-                    }
-                    name="BROWSER"
-                    valuePropName="checked"
-                  >
-                    <Switch size="small" />
-                  </Form.Item>
+                  {window.g_bigfish ? null : (
+                    <Form.Item
+                      label={
+                        <EnvLabel
+                          title="org.umi.ui.tasks.envs.BROWSER"
+                          desc="org.umi.ui.tasks.envs.BROWSER.desc"
+                          link={`${detailHost}/guide/env-variables.html#browser`}
+                        />
+                      }
+                      name="BROWSER"
+                      valuePropName="checked"
+                    >
+                      <Switch size="small" />
+                    </Form.Item>
+                  )}
                   <Form.Item
                     label={
                       <EnvLabel
