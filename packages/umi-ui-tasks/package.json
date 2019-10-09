@@ -22,7 +22,7 @@
     "portfinder": "^1.0.24",
     "react-sizeme": "^2.6.7",
     "rimraf": "^3.0.0",
-    "umi-webpack-bundle-analyzer": "^3.3.3",
+    "umi-webpack-bundle-analyzer": "^3.5.0",
     "xterm-addon-web-links": "^0.1.0"
   },
   "devDependencies": {

@@ -5586,10 +5586,10 @@ ua-parser-js@^0.7.18:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.20.tgz#7527178b82f6a62a0f243d1f94fd30e3e3c21098"
   integrity sha512-8OaIKfzL5cpx8eCMAhhvTlft8GYF8b2eQr6JkCyVdrgjcytyOmPCXrqXFcUnhonRpLlh5yxEZVohm6mzaowUOw==
 
-umi-webpack-bundle-analyzer@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.3.tgz#79080fd34f2d5d319b24e074426fd47643a43c6c"
-  integrity sha512-U1S5Naukk+RKG9sdy5qt2EQ7kBU4I36Ht5kcKNuUPNvbxE589bBCHLUiAYb/n7dL5kcGol7paIdZ3IBAj/9jXg==
+umi-webpack-bundle-analyzer@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.5.0.tgz#35f9d0e75c01d8a636667386cd213a130bda63b6"
+  integrity sha512-L0LkJ+W1jQywkxyrIegg2m/hWuYTpQEXATqOM292QOZdmyYGUchMUuQoWRd4/IzGzGfZRNlweZhl4qbTvP2NLg==
   dependencies:
     acorn "^6.0.7"
     acorn-walk "^6.1.1"
@@ -5600,7 +5600,7 @@ umi-webpack-bundle-analyzer@^3.3.3:
     express "^4.16.3"
     filesize "^3.6.1"
     gzip-size "^5.0.0"
-    lodash "^4.17.10"
+    lodash "^4.17.15"
     mkdirp "^0.5.1"
     opener "^1.5.1"
     ws "^6.0.0"

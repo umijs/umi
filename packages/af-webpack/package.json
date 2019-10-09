@@ -78,7 +78,7 @@
     "typescript": "3.5.2",
     "uglifyjs-webpack-plugin": "1.3.0",
     "umi-url-pnp-loader": "1.1.2",
-    "umi-webpack-bundle-analyzer": "^3.3.3",
+    "umi-webpack-bundle-analyzer": "^3.5.0",
     "webpack": "4.38.0",
     "webpack-chain": "6.0.0",
     "webpack-dev-middleware": "3.7.0",

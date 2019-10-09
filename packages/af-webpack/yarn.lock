@@ -5054,7 +5054,7 @@ lodash@4.17.13:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
   integrity sha512-vm3/XWXfWtRua0FkUyEHBZy8kCPjErNBT9fJx8Zvs+U6zjqPbTUOpkaoum3O5uiA8sm+yNMHXfYkTUHFoMxFNA==
 
-"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.4, lodash@^4.17.5, lodash@~4.17.10:
+"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.17.5, lodash@~4.17.10:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -8317,10 +8317,10 @@ umi-url-pnp-loader@1.1.2:
     mime "^2.0.3"
     schema-utils "^1.0.0"
 
-umi-webpack-bundle-analyzer@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.3.3.tgz#79080fd34f2d5d319b24e074426fd47643a43c6c"
-  integrity sha512-U1S5Naukk+RKG9sdy5qt2EQ7kBU4I36Ht5kcKNuUPNvbxE589bBCHLUiAYb/n7dL5kcGol7paIdZ3IBAj/9jXg==
+umi-webpack-bundle-analyzer@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/umi-webpack-bundle-analyzer/-/umi-webpack-bundle-analyzer-3.5.0.tgz#35f9d0e75c01d8a636667386cd213a130bda63b6"
+  integrity sha512-L0LkJ+W1jQywkxyrIegg2m/hWuYTpQEXATqOM292QOZdmyYGUchMUuQoWRd4/IzGzGfZRNlweZhl4qbTvP2NLg==
   dependencies:
     acorn "^6.0.7"
     acorn-walk "^6.1.1"
@@ -8331,7 +8331,7 @@ umi-webpack-bundle-analyzer@^3.3.3:
     express "^4.16.3"
     filesize "^3.6.1"
     gzip-size "^5.0.0"
-    lodash "^4.17.10"
+    lodash "^4.17.15"
     mkdirp "^0.5.1"
     opener "^1.5.1"
     ws "^6.0.0"
