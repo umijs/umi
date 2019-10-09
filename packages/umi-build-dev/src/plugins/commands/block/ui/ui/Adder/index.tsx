@@ -118,7 +118,7 @@ const Adder: React.FC<AdderProps> = props => {
      * 成功之后清理状态
      */
     api.listenRemote({
-      type: 'org.umi.block.add-blocks-',
+      type: 'org.umi.block.add-blocks-success',
       onMessage: msg => {
         setTaskLoading(false);
         onAddBlockChange(undefined);
