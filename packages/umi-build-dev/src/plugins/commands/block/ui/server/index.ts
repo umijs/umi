@@ -247,7 +247,7 @@ export default (api: IApi) => {
           // dva 特性依赖
           if (haveFeature('dva')) {
             if (isBigfish) {
-              if (!api.config.dva) {
+              if (api.config.dva === false) {
                 failure({
                   message: `${payloadType}依赖 dva，请开启 dva 配置。`,
                 });
