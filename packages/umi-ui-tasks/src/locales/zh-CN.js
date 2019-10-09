@@ -33,8 +33,6 @@ export default {
   'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel 补丁。',
   'org.umi.ui.tasks.envs.hmr': 'HMR',
   'org.umi.ui.tasks.envs.hmr.desc': 'Webpack 热更新。',
-  'org.umi.ui.tasks.envs.babelPolyfill': 'Babel 缓存',
-  'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel 缓存，加速开发和构建。',
   'org.umi.ui.tasks.envs.babelCache': 'BABEL_CACHE',
   'org.umi.ui.tasks.envs.babelCache.desc': 'Babel 缓存。',
   'org.umi.ui.tasks.envs.mock': 'MOCK',
