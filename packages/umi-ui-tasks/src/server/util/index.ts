@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { existsSync } from 'fs';
 import { spawn, SpawnOptions, execSync, fork } from 'child_process';
 import { NpmClient } from '../core/enums';

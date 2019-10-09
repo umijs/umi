@@ -68,6 +68,9 @@ class Flow extends EventEmitter {
             ...args,
             state: FlowState.FAIL,
           });
+          this.emit('log', {
+            data: `\n🚧  Execute task error: ${e.message}\n`,
+          });
         }
         break;
       }
