@@ -1,6 +1,5 @@
 import React, { useMemo, useContext, useState, useEffect } from 'react';
 import { Empty, Row, Spin, Pagination } from 'antd';
-import { forceCheck } from 'react-lazyload';
 
 import styles from './index.module.less';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
@@ -33,17 +32,6 @@ const BlockList: React.FC<BlockListProps> = props => {
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,
   ]);
-
-  // lazy load 的强制加载，不然 load 不刷新
-  useEffect(() => {
-    document.getElementById('block-list-view').addEventListener(
-      'scroll',
-      () => {
-        forceCheck();
-      },
-      { passive: true },
-    );
-  }, []);
 
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);

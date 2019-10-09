@@ -146,7 +146,7 @@ const BlocksViewer: React.FC<Props> = props => {
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
-  const [type, setType] = useState<Resource['blockType']>(query.type);
+  const [type, setType] = useState<Resource['blockType']>(query.type || 'block');
   const [activeResource, setActiveResource] = useState<Resource>(
     query.resource ? { id: query.resource } : null,
   );
@@ -157,7 +157,9 @@ const BlocksViewer: React.FC<Props> = props => {
    */
   useLayoutEffect(() => {
     // 更新一下url，让他们同步一下
-    updateUrlQuery({ type });
+    if (type) {
+      updateUrlQuery({ type });
+    }
   }, []);
 
   // 获取数据源
@@ -171,7 +173,6 @@ const BlocksViewer: React.FC<Props> = props => {
       defaultData: [],
     },
   );
-
   // 当前的数据源列表
   const current = useMemo<Resource>(
     () => {
@@ -179,7 +180,6 @@ const BlocksViewer: React.FC<Props> = props => {
     },
     [resources, activeResource, type],
   );
-
   // 计算选中的区块
   const blocks = useMemo<Block[]>(
     () => {
@@ -302,7 +302,6 @@ const BlocksViewer: React.FC<Props> = props => {
   }, []);
 
   const matchedResources = resources.filter(r => r.blockType === type);
-
   return (
     <>
       <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
