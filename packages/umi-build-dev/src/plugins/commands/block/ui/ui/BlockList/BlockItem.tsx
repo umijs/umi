@@ -128,6 +128,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   const style = {
     flex: `0 1 ${isMini ? '25%' : '20%'}`,
     overflow: 'hidden',
+    minWidth: '200px',
   };
 
   return (
