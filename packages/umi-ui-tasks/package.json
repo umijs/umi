@@ -13,19 +13,19 @@
     "src"
   ],
   "dependencies": {
-    "@ant-design/compatible": "^0.0.1-alpha.1",
-    "@ant-design/icons": "^4.0.0-alpha.8",
     "binary-mirror-config": "1.20.3",
-    "classnames": "^2.2.6",
-    "filesize": "^4.2.0",
     "mkdirp": "^0.5.1",
     "portfinder": "^1.0.24",
-    "react-sizeme": "^2.6.7",
     "rimraf": "^3.0.0",
-    "umi-webpack-bundle-analyzer": "^3.5.0",
-    "xterm-addon-web-links": "^0.1.0"
+    "umi-webpack-bundle-analyzer": "^3.5.0"
   },
   "devDependencies": {
+    "classnames": "^2.2.6",
+    "@ant-design/compatible": "^0.0.1-alpha.1",
+    "@ant-design/icons": "^4.0.0-alpha.8",
+    "xterm-addon-web-links": "^0.1.0",
+    "filesize": "^4.2.0",
+    "react-sizeme": "^2.6.7",
     "@umijs/fabric": "^1.1.9",
     "antd": "4.0.0-alpha.2",
     "concurrently": "^4.1.1",
