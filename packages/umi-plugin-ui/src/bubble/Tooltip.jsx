@@ -66,8 +66,7 @@ const Link = styled.a`
 export default props => {
   const { isBigfish, message } = props;
   const helpDocUrl = isBigfish
-    ? // TODO: bigfish doc
-      'https://umijs.org/guide/umi-ui.html'
+    ? 'https://yuque.antfin-inc.com/bigfish/doc/bigfish_ui'
     : 'https://umijs.org/guide/umi-ui.html';
 
   const { intro, tooltip, helpDoc } = message;

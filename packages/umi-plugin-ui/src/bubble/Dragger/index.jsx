@@ -15,6 +15,7 @@ const Container = styled.div`
   right: ${initRight}px;
   bottom: ${initBottom}px;
   font-size: 14px;
+  ${({ hide }) => (hide ? 'transition: all .3s;' : '')}
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -28,6 +29,7 @@ const Container = styled.div`
   }
 
   &:hover {
+    ${({ hide, dragged }) => (hide && !dragged ? 'right: 0!important;' : '')}
     ${HideWrapper} {
       opacity: 1;
       transform: scale(1);
@@ -322,14 +324,14 @@ export default class Draggable extends React.Component {
   render() {
     const { children, hide, open } = this.props;
     const { dragged, width } = this.state;
-
     return (
       <Container
         ref={this.saveRef}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
-        style={hide ? { right: -width / 1.5 } : {}}
+        width={width}
         open={open}
+        style={hide ? { right: -width / 1.5 } : {}}
         hide={hide}
       >
         {children}
