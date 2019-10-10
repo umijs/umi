@@ -76,7 +76,7 @@ export default (content, opts) => {
         d = d.arguments[0];
       }
 
-      const ret = getReturnNode(d);
+      const ret = getReturnNode(d, path);
       assert(ret, 'Can not find return node');
 
       const id = uppercamelcase(identifier);

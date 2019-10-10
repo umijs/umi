@@ -41,22 +41,22 @@ export function haveChildren(node) {
   }
 }
 
-export function getReturnNode(node) {
+export function getReturnNode(node, path) {
   if (
     t.isArrowFunctionExpression(node) ||
     t.isFunctionDeclaration(node) ||
     t.isFunctionExpression(node)
   ) {
-    return findReturnNode(node);
+    return findReturnNode(node, path);
   } else if (t.isClassDeclaration(node) || t.isClassExpression(node)) {
     const renderStatement = findRenderStatement(node.body);
     if (renderStatement) {
-      return findReturnNode(renderStatement);
+      return findReturnNode(renderStatement, path);
     }
   }
 }
 
-function findReturnNode(node) {
+function findReturnNode(node, path) {
   if (isJSXElement(node.body)) {
     return {
       node: node.body,
@@ -77,6 +77,11 @@ function findReturnNode(node) {
       }
     }
   }
+  // if (t.isConditionalExpression(node.body)) {
+  //   return getReturnNode({
+  //     body: getIdentifierDeclaration(node.body.consequent, path),
+  //   }, path);
+  // }
   throw new Error(`Find return statement failed, unsupported node type ${node.body.type}.`);
 }
 

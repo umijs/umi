@@ -94,7 +94,7 @@ export default ({ types: t }) => {
         );
       }
     } else {
-      throw new Error(`Add umi ui flag failed, unsupported node type ${node.type}.`);
+      // throw new Error(`Add umi ui flag failed, unsupported node type ${node.type}.`);
     }
   }
 
@@ -124,7 +124,7 @@ export default ({ types: t }) => {
               d = d.arguments[0];
             }
 
-            const ret = getReturnNode(d);
+            const ret = getReturnNode(d, path);
             if (ret) {
               const { node: retNode, replace } = ret;
               if (retNode) {
