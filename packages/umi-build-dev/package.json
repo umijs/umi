@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.13.6",
+  "version": "1.13.7",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.4.4",
@@ -63,7 +63,7 @@
     "umi-history": "0.1.2",
     "umi-mock": "2.1.1",
     "umi-notify": "^0.1.1",
-    "umi-plugin-ui": "1.2.6",
+    "umi-plugin-ui": "1.2.7",
     "umi-test": "1.8.1",
     "umi-uni18n": "^1.1.6",
     "umi-utils": "1.7.1",
