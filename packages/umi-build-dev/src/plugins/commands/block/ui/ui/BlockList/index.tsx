@@ -6,6 +6,7 @@ import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
 import TagSelect from '../TagSelect';
 import BlockItem from './BlockItem';
+import { sendGaEvent } from '../../uiUtil';
 
 interface BlockItemProps {
   type: Resource['blockType'];
@@ -147,7 +148,13 @@ const BlockList: React.FC<BlockListProps> = props => {
         expandText={intl({ id: 'org.umi.ui.blocks.tag.expand' })}
         value={selectedTag}
         loading={loading}
-        onChange={tagValue => setSelectedTag(tagValue)}
+        onChange={tagValue => {
+          setSelectedTag(tagValue);
+          sendGaEvent({
+            action: 'selected tag',
+            label: tagValue,
+          });
+        }}
       />
       <div className={styles.cardContainer}>{contents}</div>
     </>

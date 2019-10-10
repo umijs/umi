@@ -13,7 +13,7 @@ import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
 import { getPathFromFilename } from '../BlockList/BlockItem';
-import { getNoExitVar, getNoExitRoute, getNoExitPath } from '../../uiUtil';
+import { getNoExitVar, getNoExitRoute, getNoExitPath, sendAddGaEvent } from '../../uiUtil';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
@@ -41,6 +41,7 @@ const addBlock = async (api: IUiApi, params: AddBlockParams) => {
       logs: string[];
     };
   };
+
   return info.message;
 };
 
@@ -110,6 +111,11 @@ const Adder: React.FC<AdderProps> = props => {
     api.listenRemote({
       type: 'org.umi.block.add-blocks-success',
       onMessage: msg => {
+        sendAddGaEvent({
+          action: 'add-blocks-success',
+          item: msg.data,
+          params: msg.data,
+        });
         setTaskLoading(false);
         onAddBlockChange(undefined);
 
@@ -130,8 +136,13 @@ const Adder: React.FC<AdderProps> = props => {
      */
     api.listenRemote({
       type: 'org.umi.block.add-blocks-fail',
-      onMessage: () => {
+      onMessage: msg => {
         setTaskLoading(false);
+        sendAddGaEvent({
+          action: 'add-blocks-fail',
+          item: msg.data,
+          params: msg.data,
+        });
         onAddBlockChange(undefined);
         // 如果标签页不激活，不处理它
         if (document.visibilityState !== 'hidden') {
@@ -309,6 +320,7 @@ const Adder: React.FC<AdderProps> = props => {
             };
             try {
               addBlock(api, params);
+              sendAddGaEvent({ action: 'install', item: block, params });
               localStorage.setItem('umi-ui-block-removeLocale', values.uni18n);
               onAddBlockChange(block);
             } catch (error) {

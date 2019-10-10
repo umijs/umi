@@ -1,6 +1,7 @@
 import { IUiApi } from 'umi-types';
 
 import { Block } from '../../../data.d';
+import { sendGaEvent } from '../../uiUtil';
 
 export const namespace = 'org.umi.block';
 
@@ -33,6 +34,12 @@ export default {
       if (blockData[resourceId] && !reload) {
         return blockData[resourceId];
       }
+
+      sendGaEvent({
+        action: 'fetch data',
+        label: resourceId,
+      });
+
       const { data: list } = yield call(() => {
         return callRemote({
           type: 'org.umi.block.list',
