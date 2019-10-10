@@ -7,6 +7,7 @@ import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
+import { sendAddGaEvent } from '../../uiUtil';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import ImageLoad from './ImageLoad';
 
@@ -91,10 +92,24 @@ const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
       index: position.index,
       blockTarget: targetPath,
     };
+    sendAddGaEvent({
+      action: 'will add',
+      item,
+      params: {
+        path: targetPath,
+      },
+    });
     onShowModal(item, option);
     return;
   }
-
+  const defaultName = item.url.split('/').pop();
+  sendAddGaEvent({
+    action: 'will add',
+    item,
+    params: {
+      path: `${defaultName}`,
+    },
+  });
   onShowModal(item, {});
 };
 

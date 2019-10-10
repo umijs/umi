@@ -1,4 +1,5 @@
 import { IUiApi } from 'umi-types';
+import { Block, AddBlockParams } from '../data';
 
 const defaultNameArray = ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
 
@@ -153,4 +154,34 @@ export const getNoExitPath = async ({
   }
 
   return path;
+};
+
+/**
+ * google 发送统计信息
+ * @param param0
+ */
+export const sendGaEvent = ({ label, action }: { label: string; action: string }) => {
+  const ga = window && window.ga;
+  if (ga) {
+    ga('send', 'event', {
+      eventCategory: 'block',
+      eventAction: action,
+      eventLabel: label,
+    });
+  }
+};
+
+export const sendAddGaEvent = ({
+  item,
+  params,
+  action,
+}: {
+  item: Block;
+  params: AddBlockParams;
+  action: string;
+}) => {
+  sendGaEvent({
+    action: `${action} ${item.name}`,
+    label: params.path,
+  });
 };

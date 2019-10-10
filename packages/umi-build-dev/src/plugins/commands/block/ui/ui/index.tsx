@@ -3,6 +3,7 @@ import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
+import { sendGaEvent } from '../uiUtil';
 
 import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
@@ -50,8 +51,16 @@ const clearCache = async (api: IUiApi) => {
     // 等动画播放完
     setTimeout(() => {
       message.success(data);
+      sendGaEvent({
+        action: 'clear cache',
+        label: 'success',
+      });
     }, 30);
   } catch (e) {
+    sendGaEvent({
+      action: 'clear cache',
+      label: `error: ${e.message}`,
+    });
     message.error(e.message);
   }
 };
@@ -106,6 +115,10 @@ const renderActiveResourceTag = ({
           const resource = matchedResources.find(r => r.id === e.target.value);
           setActiveResource(resource);
           updateUrlQuery({ type, resource: resource.id });
+          sendGaEvent({
+            action: 'change block resource',
+            label: resource.id,
+          });
         }}
       >
         {matchedResources.map(r => (
@@ -313,6 +326,10 @@ const BlocksViewer: React.FC<Props> = props => {
                  * 修改 url 中的参数，数据源改变时
                  * 清空 resource
                  */
+                sendGaEvent({
+                  action: 'change block type',
+                  label: activeKey,
+                });
                 updateUrlQuery({
                   type: activeKey,
                   resource: undefined,
