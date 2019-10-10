@@ -168,6 +168,13 @@ export default withRouter(props => {
             </Menu>
           );
 
+          const openFullUmiUI = async url => {
+            await setCurrentProject({
+              key: currentProject.key,
+            });
+            window.open(url);
+          };
+
           return (
             <div className={styles.normal}>
               {isMini && (
@@ -187,9 +194,12 @@ export default withRouter(props => {
                   </Col>
                   <Col className={styles.gotoUi}>
                     <a
-                      target="_blank"
                       rel="noopener noreferrer"
-                      href={`${window.location.origin}${window.location.pathname}`}
+                      onClick={openFullUmiUI.bind(
+                        null,
+                        `${window.location.origin}${window.location.pathname}`,
+                      )}
+                      href="javascript:;"
                     >
                       <Redirect />
                       <FormattedMessage id="org.umi.ui.global.dashboard.mini.full" />
