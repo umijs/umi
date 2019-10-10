@@ -21,6 +21,8 @@ export default function(cwd) {
   registerBabel(cwd);
   const config = getUserConfig({ cwd });
 
+  if (config.ssr) return false;
+
   if (process.env.BIGFISH_COMPAT) {
     if (config.appType !== 'console') return false;
     if (config.deployMode === 'chair') return false;
