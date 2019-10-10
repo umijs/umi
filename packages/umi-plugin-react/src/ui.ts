@@ -39,39 +39,43 @@ export default (api: IApi) => {
 
   function validateConfig(config) {}
 
-  api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+  if (api.addUIPlugin) {
+    api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+  }
 
-  api.onUISocket(({ action, failure, success }) => {
-    const { type, payload, lang } = action;
-    switch (type) {
-      case 'org.umi.umi-plugin-react.config.list':
-        success({
-          data: getConfig(lang),
-        });
-        break;
-      case 'org.umi.umi-plugin-react.config.edit':
-        let config = payload.key;
-        if (typeof payload.key === 'string') {
-          config = {
-            [payload.key]: payload.value,
-          };
-        }
-        try {
-          validateConfig(config);
-          api.service.runCommand('config', {
-            _: ['set', config],
-            plugin: 'umi-plugin-react',
+  if (api.onUISocket) {
+    api.onUISocket(({ action, failure, success }) => {
+      const { type, payload, lang } = action;
+      switch (type) {
+        case 'org.umi.umi-plugin-react.config.list':
+          success({
+            data: getConfig(lang),
           });
-          success({});
-        } catch (e) {
-          failure({
-            message: e.message,
-            errors: e.errors,
-          });
-        }
-        break;
-      default:
-        break;
-    }
-  });
+          break;
+        case 'org.umi.umi-plugin-react.config.edit':
+          let config = payload.key;
+          if (typeof payload.key === 'string') {
+            config = {
+              [payload.key]: payload.value,
+            };
+          }
+          try {
+            validateConfig(config);
+            api.service.runCommand('config', {
+              _: ['set', config],
+              plugin: 'umi-plugin-react',
+            });
+            success({});
+          } catch (e) {
+            failure({
+              message: e.message,
+              errors: e.errors,
+            });
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
 };
