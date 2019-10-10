@@ -330,7 +330,6 @@ export default class Draggable extends React.Component {
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
         style={hide ? { right: -width / 1.5 } : {}}
-        width={width}
         open={open}
         hide={hide}
       >
