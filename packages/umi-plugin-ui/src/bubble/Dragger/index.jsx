@@ -324,6 +324,7 @@ export default class Draggable extends React.Component {
   render() {
     const { children, hide, open } = this.props;
     const { dragged, width } = this.state;
+
     return (
       <Container
         ref={this.saveRef}
