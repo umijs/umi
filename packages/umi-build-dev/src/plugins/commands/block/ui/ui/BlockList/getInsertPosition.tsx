@@ -37,6 +37,16 @@ export default (api): Promise<PositionData> => {
               }),
               '*',
             );
+            window.parent.postMessage(
+              JSON.stringify({
+                action: 'umi.ui.changeEdit',
+                payload: {
+                  'zh-CN': '取消编辑',
+                  'en-US': 'Cancel Edit',
+                },
+              }),
+              '*',
+            );
           } else {
             reject(new Error('Can not find insert position'));
           }

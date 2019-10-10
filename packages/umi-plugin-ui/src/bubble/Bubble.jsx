@@ -9,6 +9,15 @@ import * as ENUM from './enum';
 import Tooltip from './Tooltip';
 import Close from './Close';
 
+const EditText = styled.p`
+  font-size: 12px;
+  color: rgba(255,255,255,.85);
+  line-height: 20px
+  margin: 0;
+  margin-left: 1px;
+  text-align: center;
+`;
+
 const BubbleWrapper = styled('div')`
   background-color: ${props => (props.open ? '#30303D' : '#4c4c61')};
   height: 60px;
@@ -80,8 +89,11 @@ class Bubble extends React.Component {
       }),
       '*',
     );
-
-    const { toggleMiniOpen } = this.props;
+    const { toggleMiniOpen, resetEdit, edit } = this.props;
+    if (edit) {
+      resetEdit();
+      return false;
+    }
     if (this.state.hide) {
       // isHide
       this.setState(
@@ -105,7 +117,7 @@ class Bubble extends React.Component {
   };
 
   render() {
-    const { isBigfish, open, loading, children, message, locale } = this.props;
+    const { isBigfish, open, loading, children, message, locale, edit, editText } = this.props;
     const { hide } = this.state;
 
     const Logo = logoDecorator({ isBigfish });
@@ -120,14 +132,20 @@ class Bubble extends React.Component {
         isBigfish={isBigfish}
         locale={locale}
       >
-        <Tooltip isBigfish={isBigfish} message={message} />
+        {!edit && <Tooltip isBigfish={isBigfish} message={message} />}
         <BubbleWrapper open={open}>
           {loading && <IconLoading />}
-          <Logo open={open} />
-          <CloseComponent open={open} />
+          {edit ? (
+            <EditText>{editText[locale] || editText['zh-CN'] || ''}</EditText>
+          ) : (
+            <>
+              <Logo open={open} />
+              <CloseComponent open={open} />
+            </>
+          )}
         </BubbleWrapper>
 
-        {!open && <Hide onClick={this.hideBubble} />}
+        {!edit && !open && <Hide onClick={this.hideBubble} />}
         {children}
       </Dragger>
     );
