@@ -329,9 +329,9 @@ export default class Draggable extends React.Component {
         ref={this.saveRef}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
+        style={hide ? { right: -width / 1.5 } : {}}
         width={width}
         open={open}
-        style={hide ? { right: -width / 1.5 } : {}}
         hide={hide}
       >
         {children}
