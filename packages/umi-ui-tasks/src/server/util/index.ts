@@ -166,7 +166,7 @@ function parseKeyScript(key: string, script: string): IParseKeyScriptRes {
       if (/=/.test(item)) {
         const [envKey, envValue] = item.split('=');
         envs[envKey] = envValue;
-      } else {
+      } else if (/(dev|build|test|lint)/.test(item)) {
         args.push(item);
       }
     });
