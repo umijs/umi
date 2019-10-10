@@ -80,9 +80,12 @@ const generatorFunc = async (ctx: IFlowContext, args: IAddBlockOption) => {
 
   // 调用 sylvanas 转化 ts
   if (js) {
-    // opts.remoteLog('TypeScript to JavaScript'); // TODO: add log
+    // 区块需要拼接一下 blockName
+    const relayPath = generator.isPageBlock
+      ? generator.blockFolderPath
+      : `${generator.blockFolderPath}/${generator.blockName}`;
     logger.appendLog('🎭  Start TypeScript to JavaScript');
-    require('../../../../tsTojs').default(generator.blockFolderPath);
+    require('../../../../tsTojs').default(relayPath);
     logger.appendLog('🎉  Success TypeScript to JavaScript\n');
   }
 
