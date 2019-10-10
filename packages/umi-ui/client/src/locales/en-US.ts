@@ -98,4 +98,17 @@ export default {
   'org.umi.ui.configuration.edit.in.editor': 'Edit in editor',
   'org.umi.ui.configuration.detail': 'View Detail',
   'org.umi.ui.configuration.string.required': 'Please input value',
+  'org.umi.ui.configuration.search.placeholder': 'Search',
+  'org.umi.ui.configuration.okText': 'Yes',
+  'org.umi.ui.configuration.cancelText': 'No',
+  'org.umi.ui.configuration.save': 'Save',
+  'org.umi.ui.configuration.reset': 'Reset',
+  'org.umi.ui.configuration.reset.tooltip':
+    'Are you sure you want to reset the above configuration？',
+  'org.umi.ui.configuration.reset.tooltip.desc': 'Current configuration {value} have been modified',
+  'org.umi.ui.configuration.reset.tooltip.desc.empty': 'Configuration has not been modified',
+  'org.umi.ui.configuration.edit.success': 'Edit Success',
+  'org.umi.ui.configuration.edit.loading': 'Editing',
+  'org.umi.ui.global.dashboard.mini.full': 'Go to the full app',
+  'org.umi.ui.global.dashboard.lab': 'Lab',
 };

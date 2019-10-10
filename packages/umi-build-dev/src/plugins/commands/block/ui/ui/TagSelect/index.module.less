@@ -1,0 +1,85 @@
+.tagContainer {
+  margin-bottom: 16px;
+  float: right;
+  margin-right: -8px;
+  max-width: 50vw;
+  margin-top: 0;
+  text-align: right;
+  position: relative;
+  display: flex;
+  :global {
+    .ant-tag:not(.ant-tag-checkable-checked) {
+      border: 1px solid fade(#ffffff, 15);
+      text-align: center;
+    }
+
+    .ant-tag-checkable-checked {
+      background-color: #1890ff;
+    }
+
+    .ant-tag {
+      flex: auto;
+      margin-bottom: 8px;
+    }
+  }
+
+  .upIcon {
+    transition: all 0.3s;
+    line-height: 22px;
+    font-size: 12px;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .tagContainer {
+    float: none;
+    max-width: 100%;
+    width: 100%;
+    margin: 16px 0;
+  }
+}
+
+.tagView {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tagContainer.hasExpandButton {
+  text-align: left;
+}
+
+.expandButton {
+  right: 0;
+  width: 54px;
+  display: flex;
+  line-height: 22px;
+  justify-content: space-around;
+  align-items: center;
+  height: 22px;
+}
+
+.expand {
+  overflow: hidden;
+  max-height: 30px;
+
+  .upIcon {
+    transform: rotate(180deg);
+  }
+}
+
+:global(.isMini) {
+  .expandButton {
+    font-size: 12px;
+    width: 42px;
+  }
+  .upIcon {
+    transform: scale(0.8);
+  }
+  .expand {
+    .upIcon {
+      transform: rotate(180deg) scale(0.8);
+    }
+  }
+}

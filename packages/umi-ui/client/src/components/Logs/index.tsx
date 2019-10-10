@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { formatDate, formatMessage, getLocale } from 'umi-plugin-react/locale';
+import { formatDate, formatMessage } from 'umi-plugin-react/locale';
+import { getLocale } from '@/utils/index';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';
 import Ansi from 'ansi-to-react';

@@ -44,7 +44,9 @@ export default class Config {
 
   constructor(opts: IOpts = {}) {
     const { dbPath, onSave } = opts;
-    this.dbPath = dbPath || join(homedir(), '.umi/ui/data.json');
+    this.dbPath =
+      dbPath ||
+      join(homedir(), `.umi/ui/${process.env.BIGFISH_COMPAT ? 'bigfish-data' : 'data'}.json`);
     this.onSave = onSave;
     mkdirp.sync(dirname(this.dbPath));
     this.load();
@@ -149,15 +151,24 @@ export default class Config {
     this.save();
   }
 
-  addProjectAndSetCurrent(projectPath: string) {
-    const absProjectPath = join(process.cwd(), projectPath);
+  addProjectWithPath(projectPath: string) {
+    const absProjectPath = join(projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
-    const key = this.addProject({
+    return this.addProject({
       name: projectName,
       path: absProjectPath,
       ignoreExistsCheck: true,
     });
-    this.setCurrentProject(key);
+  }
+
+  getKeyOrAddWithPath(projectPath: string) {
+    const keys = Object.keys(this.data.projectsByKey);
+    for (const key of keys) {
+      if (this.data.projectsByKey[key].path === projectPath) {
+        return key;
+      }
+    }
+    return this.addProjectWithPath(projectPath);
   }
 }

@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Modal, Form, Switch } from 'antd';
+import { Row, Col, Button, Modal, Form, Switch, Radio } from 'antd';
 import { CaretRight, Pause } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
-import { exec, cancel, isCaredEvent, getTerminalIns, TriggerState, clearLog } from '../../util';
-import { useTaskDetail } from '../../hooks';
+import { getTerminalIns, clearLog } from '../../util';
+import { useInit } from '../../hooks';
+import { namespace } from '../../model';
 import Terminal from '../Terminal';
 import { ITaskDetail } from '../../../server/core/types';
+import Analyze from '../Analyze';
 
 interface IProps {
-  detail: ITaskDetail;
   api: IUiApi;
-  state?: TaskState;
+  detail: ITaskDetail;
+  dbPath: string;
+  dispatch: any;
 }
 
 const { SizeMe } = withSize;
 const taskType = TaskType.BUILD;
 
-const BuildComponent: React.FC<IProps> = ({ api }) => {
+const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) => {
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
-  const [taskDetail, setTaskDetail] = useState({ state: TaskState.INIT, type: taskType, log: '' });
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
+  const [log, setLog] = useState('');
+  const [view, setView] = useState('log');
   const [env, setEnv] = useState({
     BABEL_CACHE: true,
     BABEL_POLYFILL: true,
@@ -33,61 +37,56 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     HTML: true,
     FORK_TS_CHECKER: false,
   });
+  const [init] = useInit(detail);
 
-  // Mount: 获取 task detail
-  const { detail } = useTaskDetail(taskType);
-
-  // Mount: 监听 task state 改变
   useEffect(
     () => {
-      setTaskDetail(detail as any);
-      const unsubscribe = api.listenRemote({
-        type: 'org.umi.task.state',
-        onMessage: ({ detail: result, taskType: type }) => {
-          if (!isCaredEvent(type, taskType)) {
-            return null;
-          }
-          if (result) {
-            setTaskDetail(result);
-          }
-        },
-      });
+      if (!init) {
+        return () => {};
+      }
+      if (view === 'log') {
+        dispatch({
+          type: `${namespace}/getTaskDetail`,
+          payload: {
+            taskType,
+            log: true,
+            dbPath,
+            callback: ({ log }) => {
+              setLog(log);
+            },
+          },
+        });
+      }
       return () => {
-        unsubscribe && unsubscribe();
+        form.resetFields();
+        const terminal = getTerminalIns(taskType);
+        terminal && terminal.clear();
       };
     },
-    [detail],
+    [init, view],
   );
 
-  // UnMount: reset form
-  useEffect(() => {
-    return () => {
-      form.resetFields();
-      const terminal = getTerminalIns(taskType);
-      terminal && terminal.clear();
-    };
-  }, []);
-
   async function build() {
-    const { triggerState, errMsg } = await exec(taskType, env);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        type: 'error',
-        title: `${api.currentProject.name} ${intl({ id: 'org.umi.ui.tasks.build.buildError' })}`,
-        message: errMsg,
-      });
-    }
+    dispatch({
+      type: `${namespace}/exec`,
+      payload: {
+        taskType,
+        args: {
+          analyze: true,
+          dbPath,
+        },
+        env,
+      },
+    });
   }
 
   async function cancelBuild() {
-    const { triggerState, errMsg } = await cancel(taskType);
-    if (triggerState === TriggerState.FAIL) {
-      api.notify({
-        title: `${api.currentProject.name} ${intl({ id: 'org.umi.ui.tasks.build.cancelError' })}`,
-        message: errMsg,
-      });
-      return;
-    }
+    dispatch({
+      type: `${namespace}/cancel`,
+      payload: {
+        taskType,
+      },
+    });
   }
 
   const openModal = () => {
@@ -132,14 +131,24 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
     </div>
   );
 
-  const isTaskRunning = taskDetail && taskDetail.state === TaskState.ING;
+  const toggleView = e => {
+    const { value } = e.target;
+    setView(value);
+  };
+
+  const isTaskRunning = detail.state === TaskState.ING;
+  const detailHost = `https://umijs.org/${isEnglish ? '' : 'zh'}`;
   return (
     <>
       <h1 className={styles.title}>{intl({ id: 'org.umi.ui.tasks.build' })}</h1>
       <>
-        <Row>
-          <Col span={24} className={styles.buttonGroup}>
-            <Button type="primary" onClick={isTaskRunning ? cancelBuild : build}>
+        <Row type="flex" justify="space-between">
+          <Col className={styles.buttonGroup}>
+            <Button
+              size={api.mini ? 'small' : 'default'}
+              type="primary"
+              onClick={isTaskRunning ? cancelBuild : build}
+            >
               {isTaskRunning ? (
                 <>
                   <Pause />
@@ -158,7 +167,9 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                 </>
               )}
             </Button>
-            <Button onClick={openModal}>{intl({ id: 'org.umi.ui.tasks.envs' })}</Button>
+            <Button size={api.mini ? 'small' : 'default'} onClick={openModal}>
+              {intl({ id: 'org.umi.ui.tasks.envs' })}
+            </Button>
             <Modal
               visible={modalVisible}
               title={intl({ id: 'org.umi.ui.tasks.envs' })}
@@ -172,7 +183,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.compress"
                         desc="org.umi.ui.tasks.envs.compress.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#compress"
+                        link={`${detailHost}/guide/env-variables.html#compress`}
                       />
                     }
                     name="COMPRESS"
@@ -185,7 +196,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.cssCompress"
                         desc="org.umi.ui.tasks.envs.cssCompress.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#css-compress"
+                        link={`${detailHost}/guide/env-variables.html#css-compress`}
                       />
                     }
                     name="CSS_COMPRESS"
@@ -198,7 +209,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelPolyfill"
                         desc="org.umi.ui.tasks.envs.babelPolyfill.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-polyfill"
+                        link={`${detailHost}/guide/env-variables.html#babel-polyfill`}
                       />
                     }
                     name="BABEL_POLYFILL"
@@ -211,7 +222,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.babelCache"
                         desc="org.umi.ui.tasks.envs.babelCache.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#babel-cache"
+                        link={`${detailHost}/guide/env-variables.html#babel-cache`}
                       />
                     }
                     name="BABEL_CACHE"
@@ -224,7 +235,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.html"
                         desc="org.umi.ui.tasks.envs.html.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#html"
+                        link={`${detailHost}/guide/env-variables.html#html`}
                       />
                     }
                     name="HTML"
@@ -237,7 +248,7 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
                       <EnvLabel
                         title="org.umi.ui.tasks.envs.tsCheck"
                         desc="org.umi.ui.tasks.envs.tsCheck.desc"
-                        link="https://umijs.org/zh/guide/env-variables.html#fork-ts-checker"
+                        link={`${detailHost}/guide/env-variables.html#fork-ts-checker`}
                       />
                     }
                     name="FORK_TS_CHECKER"
@@ -249,25 +260,38 @@ const BuildComponent: React.FC<IProps> = ({ api }) => {
               </div>
             </Modal>
           </Col>
-          {/* <Col span={4} offset={12} className={styles.formatGroup}>
-            <Radio.Group defaultValue="log" buttonStyle="solid">
-              <Radio.Button value="log">输出</Radio.Button>
+          <Col className={styles.formatGroup}>
+            <Radio.Group
+              size={api.mini ? 'small' : 'default'}
+              defaultValue="log"
+              value={view}
+              buttonStyle="solid"
+              onChange={toggleView}
+            >
+              <Radio.Button value="log">{intl({ id: 'org.umi.ui.tasks.log' })}</Radio.Button>
+              <Radio.Button value="analyze">
+                {intl({ id: 'org.umi.ui.tasks.analyze' })}
+              </Radio.Button>
             </Radio.Group>
-          </Col> */}
+          </Col>
         </Row>
         <div className={styles.logContainer}>
           <SizeMe monitorWidth monitorHeight>
-            {({ size }) => (
-              <Terminal
-                api={api}
-                size={size}
-                terminal={getTerminalIns(taskType)}
-                log={taskDetail.log}
-                onClear={() => {
-                  clearLog(taskType);
-                }}
-              />
-            )}
+            {({ size }) =>
+              view === 'log' ? (
+                <Terminal
+                  api={api}
+                  size={size}
+                  terminal={getTerminalIns(taskType)}
+                  log={log}
+                  onClear={() => {
+                    clearLog(taskType);
+                  }}
+                />
+              ) : (
+                <Analyze api={api} analyze={detail.analyze} />
+              )
+            }
           </SizeMe>
         </div>
       </>

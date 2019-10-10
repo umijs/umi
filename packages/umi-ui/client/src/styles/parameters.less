@@ -1,5 +1,7 @@
 @import '~umi-ui-theme/dark.less';
 
+@input-number-hover-border-color: @primary-5;
+
 // animation
 @ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
 @ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
@@ -40,6 +42,7 @@
 @select-item-selected-bg: #272733;
 @checkbox-check-inner-color: @light;
 @anchor-border-color: fade(@light, 15);
+@ui-menu-divider-color: fade(@light, 15);
 
 @modal-footer-border-color-split: #17171f;
 @card-bg-color: #30303d;
@@ -51,6 +54,11 @@
 @message-background: #2d2d3b;
 @notification-background: #2d2d3b;
 
+// size
+@ui-heading-1-size: 20px;
+@ui-min-heading-1-size: 16px;
+
+@ui-directory-bg: #3b3b4d;
 @ui-directory-list-item-hover-bg: #2d2d3b;
 @ui-directory-list-item-checked-icon-color: #61616c;
 @ui-modal-shadow: 0 2px 8px fade(@dark, 25);
@@ -59,6 +67,7 @@
 @ui-tag-error-color: #f5222d;
 @ui-status-bar-height: 28px;
 @ui-header-title-height: 62px;
+@ui-min-header-title-height: 40px;
 @ui-status-bar-bg: #17171f;
 @ui-footer-bar-hover-bg: #2d2d3b;
 @ui-status-bar-color: fade(@light, 85);
@@ -67,6 +76,8 @@
 @ui-sidebar-menu-divider-color: fade(@light, 10);
 @ui-sidebar-menu-hover-bg: #4c4c61;
 @ui-footer-actions-divider-color: #15171c;
+@ui-terminal-bg: #15171c;
+@ui-terminal-color: fade(@light, 65);
 
 // PC 宽度 >= 1208
 @pc: ~'only screen and (min-width: @{screen-xl})';

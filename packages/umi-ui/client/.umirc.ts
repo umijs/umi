@@ -1,4 +1,5 @@
 import { join } from 'path';
+import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 import { dark } from 'umi-ui-theme';
@@ -18,7 +19,7 @@ const uglifyJSOptions =
     : {};
 
 const config: IConfig = {
-  history: 'hash',
+  history: 'browser',
   hash: NODE_ENV === 'production',
   treeShaking: true,
   uglifyJSOptions,
@@ -73,10 +74,13 @@ const config: IConfig = {
           webpackChunkName: true,
           loadingComponent: './components/Loading',
         },
+        title: {
+          defaultTitle: 'Umi UI',
+          useLocale: true,
+        },
         locale: {
           default: 'zh-CN',
           antd: true,
-          baseNavigator: false,
         },
         routes: {
           exclude: [/models\//, /component\//, /components\//],
@@ -104,7 +108,7 @@ const config: IConfig = {
             src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.3/dist/antd.min.js',
+            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.6/dist/antd.min.js',
           },
           { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
           { src: '//gw.alipayobjects.com/os/lib/xterm/3.14.5/dist/xterm.js' },
@@ -113,6 +117,35 @@ const config: IConfig = {
       },
     ],
   ],
+  cssLoaderOptions: {
+    modules: true,
+    getLocalIdent: (
+      context: {
+        resourcePath: string;
+      },
+      _: string,
+      localName: string,
+    ) => {
+      if (
+        context.resourcePath.includes('node_modules') ||
+        context.resourcePath.includes('global.less')
+      ) {
+        return localName;
+      }
+      const match = context.resourcePath.match(/src(.*)/);
+
+      if (match && match[1]) {
+        const umiUiPath = match[1].replace('.less', '');
+        const arr = slash(umiUiPath)
+          .split('/')
+          .map((a: string) => a.replace(/([A-Z])/g, '-$1'))
+          .map((a: string) => a.toLowerCase());
+        return `umi-ui${arr.join('-')}_${localName}`.replace(/--/g, '-');
+      }
+
+      return localName;
+    },
+  },
   chainWebpack(config, { webpack }) {
     if (NODE_ENV === 'development') {
       config.output.publicPath('http://localhost:8002/');

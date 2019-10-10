@@ -7,7 +7,7 @@ import { parse } from 'dotenv';
 export default function(opts = {}) {
   loadDotEnv();
 
-  let cwd = opts.cwd || process.env.APP_ROOT;
+  let cwd = opts.cwd || process.env.APP_ROOT || process.cwd();
   if (cwd) {
     if (!isAbsolute(cwd)) {
       cwd = join(process.cwd(), cwd);

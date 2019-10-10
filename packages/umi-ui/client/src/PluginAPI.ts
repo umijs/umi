@@ -1,17 +1,20 @@
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
-import { formatMessage } from 'umi-plugin-react/locale';
+import * as intl from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
+import event, { MESSAGES } from '@/message';
+import { pluginDebug } from '@/debug';
+import Terminal from '@/components/Terminal';
+import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
+import { openInEditor, openConfigFile } from '@/services/project';
+import { isMiniUI } from '@/utils';
 import Field from './components/Field';
-
-const _debug = debug('umiui');
 
 // PluginAPI
 export default class PluginAPI {
@@ -23,9 +26,12 @@ export default class PluginAPI {
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  Terminal: FC<IUi.ITerminalProps>;
+  ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
-  registerModel: IUi.registerModel;
-  connect: iUi.connect;
+  connect: IUi.IConnect;
+  mini: boolean;
+  bigfish: boolean;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -33,18 +39,99 @@ export default class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.debug = _debug.extend('UIPlugin');
+    this.debug = pluginDebug;
     this.currentProject =
       {
         ...currentProject
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
+    this.Terminal = Terminal;
     this.Field = Field;
-    this.registerModel = model => {
-      window.g_app.model(model);
-    };
-    this.connect = connect;
+    this.ConfigForm = ConfigForm;
+    this.bigfish = !!window.g_bigfish;
+    this.connect = connect as IUi.IConnect;
+    this.mini = isMiniUI();
+
+    const proxyIntl = new Proxy(intl, {
+      get: (target, prop: any) => {
+        if (
+          [
+            'FormattedDate',
+            'FormattedTime',
+            'FormattedRelative',
+            'FormattedNumber',
+            'FormattedPlural',
+            'FormattedMessage',
+            'FormattedHTMLMessage',
+            'formatMessage',
+            'formatHTMLMessage',
+            'formatDate',
+            'formatTime',
+            'formatRelative',
+            'formatNumber',
+            'formatPlural',
+          ].includes(prop)
+        ) {
+          return intl[prop];
+        }
+        return undefined;
+      },
+    });
+
+    // mount react-intl API∂
+    Object.keys(proxyIntl).forEach(intlApi => {
+      this.intl[intlApi] = intl[intlApi];
+    });
   }
+
+  addConfigSection(section) {
+    this.service.configSections.push(section);
+  }
+
+  registerModel = model => {
+    window.g_app.model(model);
+  };
+
+  launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
+    try {
+      if (type === 'project') {
+        await openInEditor({
+          key: this.currentProject.key,
+        });
+      }
+      if (type === 'config') {
+        await openConfigFile({
+          projectPath: this.currentProject.path,
+        });
+      }
+    } catch (e) {
+      message.error(e.message);
+    }
+  };
+
+  isMini: IUi.IMini = () => isMiniUI();
+
+  showMini: IUi.IShowMini = () => {
+    if (this.isMini) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.showMini',
+        }),
+        '*',
+      );
+    }
+  };
+
+  hideMini: IUi.IHideMini = () => {
+    if (this.isMini) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.hideMini',
+        }),
+        '*',
+      );
+    }
+  };
 
   redirect: IUi.IRedirect = url => {
     history.push(url);
@@ -52,14 +139,36 @@ export default class PluginAPI {
   };
 
   showLogPanel: IUi.IShowLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('SHOW_LOG');
-    }
+    event.emit(MESSAGES.SHOW_LOG);
   };
+
+  setActionPanel: IUi.ISetActionPanel = actions => {
+    event.emit(MESSAGES.CHANGE_GLOBAL_ACTION, actions);
+  };
+
   hideLogPanel: IUi.IHideLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('HIDE_LOG');
-    }
+    event.emit(MESSAGES.HIDE_LOG);
+  };
+
+  getSharedDataDir = async () => {
+    const { tmpDir } = await callRemote({
+      type: '@@project/getSharedDataDir',
+    });
+    return tmpDir;
+  };
+
+  detectLanguage = async () => {
+    const { language } = await callRemote({
+      type: '@@project/detectLanguage',
+    });
+    return language;
+  };
+
+  detectNpmClients = async () => {
+    const { npmClients } = await callRemote({
+      type: '@@project/detectNpmClients',
+    });
+    return npmClients;
   };
 
   getCwd: IUi.IGetCwd = async () => {
@@ -69,9 +178,9 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl = formatMessage;
+  intl: IUi.IIntl = intl.formatMessage;
 
-  getLocale = () => {
+  getLocale: IUi.IGetLocale = () => {
     return window.g_lang;
   };
 

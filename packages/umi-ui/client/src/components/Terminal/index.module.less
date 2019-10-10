@@ -1,19 +1,26 @@
 .wrapper {
-  background-color: #15171c;
+  background-color: @ui-terminal-bg;
   border-radius: 2px;
-  padding: 12px 16px;
+  padding: 42px 16px 12px;
+  margin-bottom: 8px;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.65);
+  color: @ui-terminal-color;
   line-height: 22px;
+  position: relative;
   height: 100%;
+  overflow: hidden;
 }
 
 .titleWrapper {
-  margin-bottom: 8px;
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  width: calc(~'100% - 32px');
 }
 
 .actionGroup {
   text-align: right;
+  height: 22px;
   > i {
     margin-left: 16px;
   }
@@ -21,7 +28,7 @@
 
 .logContainer {
   padding: 0;
-  height: 100%;
+  // height: calc(~"100% - 22px");
 }
 
 .icon {

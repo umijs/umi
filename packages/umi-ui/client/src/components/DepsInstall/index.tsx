@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Modal, Form, Select, Spin } from 'antd';
-import { getLocale } from 'umi-plugin-react/locale';
+import { getLocale } from '@/utils/index';
 import { ButtonProps } from 'antd/lib/button';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import intl from '@/utils/intl';
@@ -113,14 +113,7 @@ const DepsInstallBtn: React.SFC<DepsInstallProps & ButtonProps> = props => {
       <Button {...restProps} onClick={handleClick} loading={loading}>
         {loading && loadingChild ? loadingChild : children}
       </Button>
-      <Modal
-        visible={modalVisible}
-        onOk={onOk}
-        maskClosable={false}
-        okText={intl({ id: 'org.umi.ui.global.okText' })}
-        cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
-        onCancel={closeModal}
-      >
+      <Modal visible={modalVisible} onOk={onOk} maskClosable={false} onCancel={closeModal}>
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <Form.Item
             label={intl({ id: 'org.umi.ui.global.project.create.steps.info.npmClient' })}

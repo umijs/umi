@@ -19,7 +19,4 @@ module.exports = {
     '@typescript-eslint/no-object-literal-type-assertion': [0],
     'eslint-comments/no-unlimited-disable': [0],
   },
-  globals: {
-    g_uiDebug: true,
-  },
 };

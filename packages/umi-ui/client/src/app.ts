@@ -1,39 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import debug from 'debug';
 import 'antd/dist/antd.less';
-import EventEmitter from 'events';
 import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
+import querystring from 'querystring';
+import { getLocale } from '@/utils';
 import { init as initSocket, callRemote } from './socket';
+import debug from '@/debug';
+import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
 
-const _debug = debug('umiui');
-
-window.g_uiLocales = {};
 // TODO pluginAPI add debug('plugin:${key}') for developer
-window.g_uiDebug = _debug.extend('BaseUI');
-const _log = window.g_uiDebug.extend('init');
-
-// register event
-if (!window.g_uiEventEmitter) {
-  window.g_uiEventEmitter = new EventEmitter();
-  // avoid oom
-  window.g_uiEventEmitter.setMaxListeners(20);
-}
+const _log = debug.extend('init');
 
 // Service for Plugin API
 // eslint-disable-next-line no-multi-assign
 const service = (window.g_service = {
   panels: [],
   locales: [],
+  configSections: [],
 });
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
 
 export async function render(oldRender) {
+  // mini 模式下允许通过加 key 的参数打开
+  // 比如: ?mini&key=xxx
+  let miniKey = null;
+  const { search = '' } = window.location;
+  const qs = querystring.parse(search.slice(1));
+  const isMini = 'mini' in qs;
+
+  // proxy console.* in mini
+  proxyConsole(!!isMini);
+
+  // mini open not in project
+  // redirect full version
+  if (isMini && window.self === window.parent) {
+    const { mini, key, ...restProps } = qs;
+    const query = querystring.stringify(restProps);
+    history.push(`${history.location.pathname}${query ? `?${query}` : ''}`);
+    window.location.reload();
+    return false;
+  }
+
+  if (isMini && qs.key) {
+    miniKey = qs.key;
+  }
+
   // Init Socket Connection
   try {
     await initSocket({
@@ -54,18 +70,6 @@ export async function render(oldRender) {
     document.getElementById('root'),
   );
 
-  // 不同路由在渲染前的初始化逻辑
-  if (history.location.pathname === '/') {
-    const { data } = await callRemote({ type: '@@project/list' });
-    if (data.currentProject) {
-      history.replace('/dashboard');
-    } else {
-      history.replace('/project/select');
-    }
-    window.location.reload();
-    return;
-  }
-
   if (history.location.pathname.startsWith('/project/')) {
     // console.log("It's Project Manager");
   }
@@ -81,16 +85,19 @@ export async function render(oldRender) {
     const props = {
       data,
     };
-    if (data.currentProject) {
+    let key = miniKey || data.currentProject;
+    if (key) {
+      // 在 callRemote 里使用
+      window.g_currentProject = key;
       const currentProject = {
-        key: data.currentProject,
-        ...get(data, `projectsByKey.${data.currentProject}`, {}),
+        key,
+        ...get(data, `projectsByKey.${key}`, {}),
       };
       _log('apps data', data);
       window.g_uiCurrentProject =
         {
           ...currentProject,
-          key: data.currentProject,
+          key,
         } || {};
       _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
       // types 和 api 上先不透露
@@ -98,8 +105,14 @@ export async function render(oldRender) {
       try {
         await callRemote({
           type: '@@project/open',
-          payload: { key: data.currentProject },
+          payload: { key },
         });
+        if (!isMini) {
+          await callRemote({
+            type: '@@project/setCurrentProject',
+            payload: { key },
+          });
+        }
       } catch (e) {
         props.error = e;
       }
@@ -122,12 +135,15 @@ export async function render(oldRender) {
 
       // Init the plugins
       window.g_uiPlugins.forEach(uiPlugin => {
-        uiPlugin(new PluginAPI(service, currentProject));
+        // only readable
+        uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
       });
     } else {
       history.replace('/project/select');
     }
   }
+
+  window.g_callRemote = callRemote;
 
   // Do render
   oldRender();
@@ -156,19 +172,20 @@ export const locale = {
       });
       return curr;
     }, {});
-    window.g_uiLocales = messages;
-    _log('locale messages', window.g_uiLocales);
-    return window.g_uiLocales;
+    _log('locale messages', messages);
+    return messages;
   },
+  default: getLocale,
 };
 
 // for ga analyse
 export const onRouteChange = params => {
   const { location } = params;
-  const { pathname } = location;
+  const { pathname, search = '' } = location;
   if (window.gtag && pathname) {
+    const isMini = search.indexOf('mini') > -1 ? '?mini' : '';
     window.gtag('config', 'UA-145890626-1', {
-      page_path: pathname,
+      page_path: `${pathname}${isMini}`,
     });
   }
 };

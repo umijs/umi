@@ -1,0 +1,101 @@
+.container {
+  align-items: stretch;
+  display: flex;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.map {
+  flex: 1;
+}
+
+.sidebarGroup {
+  font: var(--main-font);
+  margin-bottom: 20px;
+}
+
+.showOption {
+  margin-top: 5px;
+}
+
+.activeSize {
+  font-weight: bold;
+}
+
+.foundModulesInfo {
+  display: flex;
+  font: var(--main-font);
+  margin: 8px 0 0;
+}
+
+.foundModulesInfoItem + .foundModulesInfoItem {
+  margin-left: 15px;
+}
+
+.foundModulesContainer {
+  margin-top: 15px;
+  max-height: 600px;
+  overflow: auto;
+}
+
+.foundModulesChunk + .foundModulesChunk {
+  margin-top: 15px;
+}
+
+.foundModulesChunkName {
+  cursor: pointer;
+  font: var(--main-font);
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.foundModulesList {
+  margin-left: 7px;
+}
+
+.iframeContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.reload {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+  cursor: pointer;
+  color: #aaa;
+  width: 24px;
+  height: 24px;
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.empty {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: table;
+  background: #2d2d3b;
+  border-radius: 2px;
+  > div {
+    display: table-cell;
+    vertical-align: middle;
+    > div {
+      background: url(https://gw.alipayobjects.com/zos/basement_prod/53593be6-ee02-4ad8-85fe-d1245f9e6710.svg);
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 12px;
+    }
+    > span {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 22px;
+    }
+  }
+}

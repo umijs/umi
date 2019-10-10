@@ -10,6 +10,7 @@ function buildUIApp(opts = {}) {
     env: {
       APP_ROOT: './packages/umi-ui/client',
       UMI_UI: 'none',
+      UMI_UI_SERVER: 'none',
     },
   });
   process.on('SIGINT', () => {
@@ -35,9 +36,10 @@ function buildPlugins(roots, opts = {}) {
       buildPlugins(
         [
           'packages/umi-plugin-ui/src/plugins/dashboard',
-          'packages/umi-plugin-ui/src/plugins/blocks',
           'packages/umi-plugin-ui/src/plugins/configuration',
           'packages/umi-ui-tasks/src',
+          'packages/umi-build-dev/src/plugins/commands/block/ui',
+          'packages/umi-plugin-react/ui',
         ],
         {
           watch,

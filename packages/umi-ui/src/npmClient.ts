@@ -27,11 +27,15 @@ export async function executeCommand(npmClient, args, targetDir, opts: IOpts) {
       },
     });
     child.stdout.on('data', buffer => {
-      process.stdout.write(buffer);
+      if (process.env.DEBUG) {
+        process.stdout.write(buffer);
+      }
       if (opts.onData) opts.onData(buffer.toString());
     });
     child.stderr.on('data', buffer => {
-      process.stderr.write(buffer);
+      if (process.env.DEBUG) {
+        process.stderr.write(buffer);
+      }
       if (opts.onData) opts.onData(buffer.toString());
     });
     child.on('close', code => {
@@ -47,7 +51,7 @@ export async function executeCommand(npmClient, args, targetDir, opts: IOpts) {
 export async function installDeps(npmClient, targetDir, opts) {
   let args = [];
 
-  if (['yarn', 'ayarn', 'pnpm'].includes(npmClient)) {
+  if (['yarn', 'tyarn', 'ayarn'].includes(npmClient)) {
     args = [];
   } else if (['tnpm', 'npm', 'cnpm', 'pnpm'].includes(npmClient)) {
     args = ['install'];

@@ -8,12 +8,13 @@ const JS_EXTNAMES = ['.js', '.jsx', '.ts', '.tsx'];
  * @param baseDir base path
  * @param fileNameWithoutExtname file name
  */
-export default function(baseDir: string, fileNameWithoutExtname: string): string {
+export default function(baseDir: string, fileNameWithoutExtname?: string): string {
   let i = 0;
   while (i < JS_EXTNAMES.length) {
     const extname = JS_EXTNAMES[i];
-    const fileName = `${fileNameWithoutExtname}${extname}`;
-    const absFilePath = join(baseDir, fileName);
+    const absFilePath = fileNameWithoutExtname
+      ? join(baseDir, `${fileNameWithoutExtname}${extname}`)
+      : `${baseDir}${extname}`;
     if (existsSync(absFilePath)) {
       return absFilePath;
     }

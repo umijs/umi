@@ -14,12 +14,16 @@ function startDevServer(opts = {}) {
         UV_THREADPOOL_SIZE: '100',
         BROWSER: 'none',
         PROGRESS: 'none',
+        UMI_UI: 'none',
+        UMI_UI_SERVER: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
       },
     });
     child.on('message', args => {
       if (args.type === 'DONE') {
-        resolve(child);
+        resolve({
+          child,
+        });
       }
     });
   });

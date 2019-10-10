@@ -30,6 +30,7 @@ import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
 import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
 import { IProjectProps } from '../index';
+import debug from '@/debug';
 
 import styles from './index.less';
 
@@ -44,7 +45,7 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
-  const _log = g_uiDebug.extend('projectList');
+  const _log = debug.extend('projectList');
   const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
@@ -156,8 +157,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             handleOnAction('delete', { key: item.key });
           }}
           onCancel={() => {}}
-          okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-          cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
         >
           <a>
             <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
@@ -268,7 +267,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           className={styles['project-list-layout-content-header']}
         >
           <Col>
-            <h2 className={styles['project-title']}>
+            <h2 data-test-id="project-title" className={styles['project-title']}>
               {formatMessage({
                 id: 'org.umi.ui.global.project.list.title',
               })}
@@ -276,7 +275,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           </Col>
           <Col>
             <div className={styles['project-action']}>
-              <Button onClick={() => setCurrent('import')}>
+              <Button data-test-id="project-action-import" onClick={() => setCurrent('import')}>
                 <ImportIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
@@ -285,7 +284,11 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 </span>
               </Button>
               {window.g_bigfish ? null : (
-                <Button type="primary" onClick={() => setCurrent('create')}>
+                <Button
+                  data-test-id="project-action-create"
+                  type="primary"
+                  onClick={() => setCurrent('create')}
+                >
                   <Plus />
                   <span className={styles['project-add']}>
                     {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
@@ -318,8 +321,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         visible={modalVisible}
         restModelProps={{
           title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
-          okText: formatMessage({ id: 'org.umi.ui.global.okText' }),
-          cancelText: formatMessage({ id: 'org.umi.ui.global.cancelText' }),
         }}
         initialValues={initialValues}
         onOk={async (formKey, payload) => {

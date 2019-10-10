@@ -1,15 +1,15 @@
 import { IApi } from 'umi-types';
 import { BuildTask, DevTask, LintTask, TestTask, BaseTask, InstallTask } from './Tasks';
-import { TaskType } from './enums';
-import { ITasks, ICollectorData, ITaskDetail } from './types';
+import { TaskType, TaskState } from './enums';
+import { ITasks, ICollectorData } from './types';
 
 /**
  * Tasks 管理，根据 cwd 做区分
  */
 class TaskManager {
   public api: IApi;
+  public currentCwd: string = '';
   private tasks: ITasks = {};
-  private currentCwd: string = '';
   private send: any; // 客户端消息触发器
 
   public async init(cwd: string, send) {
@@ -37,22 +37,40 @@ class TaskManager {
     });
   }
 
-  public getTask(type: TaskType): BaseTask {
-    const currentProjectTasks = this.tasks[this.currentCwd];
-    return currentProjectTasks[type];
+  public async getTask(type: TaskType): Promise<BaseTask> {
+    return new Promise(resolve => {
+      if (this.currentCwd) {
+        const currentProjectTasks = this.tasks[this.currentCwd];
+        resolve(currentProjectTasks[type]);
+        return;
+      }
+      // TODO: 这儿写的不是很好
+      setTimeout(() => {
+        const currentProjectTasks = this.tasks[this.currentCwd];
+        resolve(currentProjectTasks[type]);
+      }, 1000);
+    });
   }
 
   /**
    * 获取全部 task 的状态
    */
   public async getTasksState() {
+    const res = {};
     const currentProjectTasks = this.tasks[this.currentCwd];
-    return Object.keys(currentProjectTasks).map(type => currentProjectTasks[type].getDetail());
+    for (const type of Object.keys(currentProjectTasks)) {
+      res[type] = await currentProjectTasks[type].getDetail();
+    }
+    return res;
   }
 
-  public getTaskDetail(type: TaskType): ITaskDetail {
+  public async isDevServerAlive() {
+    if (!this.currentCwd) {
+      return false;
+    }
     const currentProjectTasks = this.tasks[this.currentCwd];
-    return currentProjectTasks[type].getDetail();
+    const devTask = currentProjectTasks && currentProjectTasks[TaskType.DEV];
+    return devTask && devTask.state === TaskState.SUCCESS;
   }
 
   private collector(currentCwd: string, send) {

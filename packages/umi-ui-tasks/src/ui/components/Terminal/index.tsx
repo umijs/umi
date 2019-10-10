@@ -27,6 +27,9 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
       if (log) {
         terminal.write(log.replace(/\n/g, '\r\n'));
       }
+      return () => {
+        terminal.clear();
+      };
     },
     [log],
   );

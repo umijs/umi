@@ -3,7 +3,8 @@ tmp
 /ui/node_modules
 /ui/yarn.lock
 /node_modules
-/packages/**/node_modules
+/packages/*/node_modules
+/packages/umi-ui/client/node_modules
 /packages/**/.leagcy-dist
 /examples/*/node_modules
 package-lock.json

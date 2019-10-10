@@ -71,6 +71,8 @@ async function build(cwd: string, name: string) {
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
+      UMI_UI: 'none',
+      UMI_UI_SERVER: 'none',
     } as any;
     if (name.includes('app_root')) {
       env.APP_ROOT = './root';

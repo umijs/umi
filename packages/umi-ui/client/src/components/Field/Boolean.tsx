@@ -2,15 +2,17 @@ import * as React from 'react';
 import { Form, Switch } from 'antd';
 import isPlainObject from 'lodash/isPlainObject';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const BooleanComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:BooleanComp');
-  const { name, form, ...restFormItemProps } = props;
+  const _log = debug.extend('Field:BooleanComp');
+  const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
     valuePropName: 'checked',
+    normalize: (value: boolean | object) => !!value,
     ...restFormItemProps,
   };
 
@@ -22,6 +24,8 @@ const BooleanComp: React.SFC<FieldProps> = props => {
       [name]: initVal === true || !!isPlainObject(initVal),
     });
   }, []);
+
+  const formControl = <Switch size={size as any} />;
 
   return parentConfig ? (
     <Form.Item noStyle shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]}>
@@ -38,16 +42,14 @@ const BooleanComp: React.SFC<FieldProps> = props => {
         return (
           isShow && (
             <Form.Item {...basicItem} dependencies={[parentConfig]}>
-              <Switch size="small" />
+              {formControl}
             </Form.Item>
           )
         );
       }}
     </Form.Item>
   ) : (
-    <Form.Item {...basicItem}>
-      <Switch size="small" />
-    </Form.Item>
+    <Form.Item {...basicItem}>{formControl}</Form.Item>
   );
 };
 

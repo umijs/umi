@@ -1,12 +1,16 @@
 import React from 'react';
-import { formatMessage, FormattedMessage, getLocale, setLocale } from 'umi-plugin-react/locale';
+import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Helmet from 'react-helmet';
+import querystring from 'querystring';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
+import history from '@tmp/history';
+import event, { MESSAGES } from '@/message';
+import { isMiniUI, getLocale } from '@/utils/index';
 import Footer from './Footer';
-import { THEME } from '@/enums';
+import { THEME, ILocale, LOCALES } from '../enums';
 
 interface ILayoutProps {
   /** Layout 类型（项目列表、项目详情，loading 页） */
@@ -20,11 +24,17 @@ interface ILayoutState {
 }
 
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
+  public isMini: boolean;
   constructor(props: ILayoutProps) {
     super(props);
+    this.isMini = isMiniUI();
     this.state = {
       theme: 'dark',
     };
+  }
+
+  componentWillUnmount() {
+    event.removeAllListeners();
   }
 
   setTheme = (theme: IUi.ITheme) => {
@@ -36,14 +46,29 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   };
 
   showLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('SHOW_LOG');
+    if (event) {
+      event.emit(MESSAGES.SHOW_LOG);
     }
   };
 
   hideLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('HIDE_LOG');
+    if (event) {
+      event.emit(MESSAGES.HIDE_LOG);
+    }
+  };
+
+  setLocale = (locale: ILocale) => {
+    const { locale: searchLocale = '', ...restParams } = querystring.parse(
+      window.location.search.slice(1),
+    );
+    if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
+      // existed lang
+      if (searchLocale) {
+        history.replace({
+          search: querystring.stringify(restParams),
+        });
+      }
+      setLocale(locale, false);
     }
   };
 
@@ -52,7 +77,14 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     const { theme } = this.state;
     const { type, className, title } = this.props;
     const currentProject = window.g_uiCurrentProject || {};
-    const layoutCls = cls(locale, 'ui-layout', className);
+    const layoutCls = cls(
+      locale,
+      'ui-layout',
+      {
+        isMini: !!this.isMini,
+      },
+      className,
+    );
     window.g_uiContext = Context;
     // TODO: using config plugin register
     const framework = window.g_bigfish ? 'Bigfish UI' : 'Umi UI';
@@ -77,16 +109,18 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
           value={{
             locale,
             theme,
+            isMini: this.isMini,
             formatMessage,
             currentProject,
             showLogPanel: this.showLogPanel,
             hideLogPanel: this.hideLogPanel,
             setTheme: this.setTheme,
-            setLocale,
+            setLocale: this.setLocale,
             FormattedMessage,
           }}
         >
           <Helmet>
+            <html lang={locale === 'zh-CN' ? 'zh' : 'en'} />
             <title>{getTitle()}</title>
             <link rel="shortcut icon" href={icon} type="image/x-icon" />
           </Helmet>

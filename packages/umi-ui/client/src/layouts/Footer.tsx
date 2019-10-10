@@ -22,6 +22,7 @@ import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import { handleBack } from '@/utils';
+import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
 
 import styles from './Footer.less';
@@ -48,7 +49,7 @@ const FOOTER_RIGHT = [
 
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
-  const { locale, setLocale, currentProject } = useContext(Context);
+  const { locale, setLocale, currentProject, isMini } = useContext(Context);
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -105,19 +106,19 @@ const Footer: React.SFC<IFooterProps> = props => {
       });
     })();
 
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.on('SHOW_LOG', () => {
+    event.on(MESSAGES.SHOW_LOG, () => {
+      setLogVisible(true);
+    });
+    event.on(MESSAGES.HIDE_LOG, () => {
+      setLogVisible(false);
+    });
+    return () => {
+      event.off(MESSAGES.SHOW_LOG, () => {
         setLogVisible(true);
       });
-      window.g_uiEventEmitter.on('HIDE_LOG', () => {
+      event.off(MESSAGES.HIDE_LOG, () => {
         setLogVisible(false);
       });
-    }
-    return () => {
-      if (window.g_uiEventEmitter) {
-        window.g_uiEventEmitter.removeListener('SHOW_LOG', () => {});
-        window.g_uiEventEmitter.removeListener('HIDE_LOG', () => {});
-      }
     };
   }, []);
 
@@ -141,7 +142,7 @@ const Footer: React.SFC<IFooterProps> = props => {
       }}
     >
       {Object.keys(LOCALES).map((lang: any) => (
-        <Menu.Item key={lang}>
+        <Menu.Item className={`ui-locale-${lang}`} key={lang}>
           <LocaleText locale={lang} checked={locale === lang} />
         </Menu.Item>
       ))}
@@ -168,16 +169,18 @@ const Footer: React.SFC<IFooterProps> = props => {
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
-        <div
-          onClick={() => {
-            handleBack(type === 'loading');
-          }}
-          className={actionCls}
-        >
-          <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
-            <HomeFilled style={{ marginRight: 4 }} />
-          </Tooltip>
-        </div>
+        {!isMini && (
+          <div
+            onClick={() => {
+              handleBack(type === 'loading');
+            }}
+            className={actionCls}
+          >
+            <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
+              <HomeFilled style={{ marginRight: 4 }} />
+            </Tooltip>
+          </div>
+        )}
         {type !== 'list' && path && name && (
           <>
             <div className={actionCls} onClick={() => handleCopyPath(path)}>
@@ -225,7 +228,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             </a>
           </div>
         ))}
-        <div className={styles.section} style={{ cursor: 'pointer' }}>
+        <div data-test-id="locale_wrapper" className={styles.section} style={{ cursor: 'pointer' }}>
           <Dropdown overlay={menu} placement="topCenter">
             <p>
               <LocaleText locale={locale} />
@@ -250,8 +253,6 @@ const Footer: React.SFC<IFooterProps> = props => {
               <Popconfirm
                 title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
                 onConfirm={handleClearLog}
-                okText={intl({ id: 'org.umi.ui.global.okText' })}
-                cancelText={intl({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
                   <Delete />

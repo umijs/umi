@@ -3,11 +3,11 @@ import { Spin } from 'antd';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
-import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
 import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
+import debug from '@/debug';
 import actions from './actions';
 import styles from './index.less';
 import Fail from './fail';
@@ -27,7 +27,7 @@ interface ILoadingState {
 
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
   logs = '';
-  _log = window.g_uiDebug.extend('Loading');
+  _log = debug.extend('Loading');
   private xterm: XTerminal;
   state = {
     actionLoading: false,
@@ -100,7 +100,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           }}
         >
           <Terminal
-            getIns={t => {
+            onInit={t => {
               this.xterm = t;
             }}
             defaultValue={error.stack}

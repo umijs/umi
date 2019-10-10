@@ -1,3 +1,4 @@
+import { ProgressPlugin } from 'webpack';
 import Config from 'webpack-chain';
 import { join, resolve, relative } from 'path';
 import { existsSync } from 'fs';
@@ -5,6 +6,7 @@ import { EOL } from 'os';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
+import send, { STARTING } from '../send';
 
 function makeArray(item) {
   if (Array.isArray(item)) return item;
@@ -275,6 +277,19 @@ export default function(opts) {
     }
   }
 
+  // 没用到，先注释了。
+  // plugins -> progress report
+  // webpackConfig.plugin('progressReport').use(ProgressPlugin, [
+  //   percentage => {
+  //     send({
+  //       type: STARTING,
+  //       progress: {
+  //         percentage,
+  //       },
+  //     });
+  //   },
+  // ]);
+
   // plugins -> ignore moment locale
   if (opts.ignoreMomentLocale) {
     webpackConfig
@@ -290,10 +305,12 @@ export default function(opts) {
         {
           analyzerMode: process.env.ANALYZE_MODE || 'server',
           analyzerPort: process.env.ANALYZE_PORT || 8888,
-          openAnalyzer: true,
+          openAnalyzer: process.env.ANALYZE_OPEN !== 'none',
           // generate stats file while ANALYZE_DUMP exist
           generateStatsFile: !!process.env.ANALYZE_DUMP,
           statsFilename: process.env.ANALYZE_DUMP || 'stats.json',
+          logLevel: process.env.ANALYZE_LOG_LEVEL || 'info',
+          defaultSizes: 'parsed', // stat  // gzip
         },
       ]);
   }

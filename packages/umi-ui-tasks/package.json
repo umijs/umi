@@ -1,6 +1,6 @@
 {
   "name": "umi-ui-tasks",
-  "version": "1.0.6",
+  "version": "1.1.4",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -16,8 +16,13 @@
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
     "binary-mirror-config": "1.20.3",
+    "classnames": "^2.2.6",
+    "filesize": "^4.2.0",
+    "mkdirp": "^0.5.1",
+    "portfinder": "^1.0.24",
     "react-sizeme": "^2.6.7",
     "rimraf": "^3.0.0",
+    "umi-webpack-bundle-analyzer": "^3.5.0",
     "xterm-addon-web-links": "^0.1.0"
   },
   "devDependencies": {
@@ -25,8 +30,8 @@
     "antd": "4.0.0-alpha.2",
     "concurrently": "^4.1.1",
     "eslint": "^6.1.0",
-    "umi": "2.9.6",
-    "umi-types": "0.4.1",
+    "umi": "2.10.0-beta.5",
+    "umi-types": "0.5.2",
     "xterm": "^3.14.5"
   },
   "repository": {
