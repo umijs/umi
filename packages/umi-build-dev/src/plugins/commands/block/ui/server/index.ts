@@ -217,7 +217,7 @@ export default (api: IApi) => {
             failure({
               message:
                 lang === 'zh-CN'
-                  ? '区块添加不支持约定式路由，请转成配置式路由。'
+                  ? '区块添加暂不支持约定式路由，请先转成配置式路由。'
                   : 'The block adding does not support the conventional route, please convert to a configuration route.',
             });
             return;
