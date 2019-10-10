@@ -3,19 +3,23 @@ import { Result, Button } from 'antd';
 import Context from '../UIApiContext';
 import styles from './ResultPanel.module.less';
 
-export default ({ name, url, onFinish }: { name: string; url: string; onFinish: () => void }) => {
+export default ({ name, onFinish, url }: { name: string; url: string; onFinish: () => void }) => {
   const { api } = useContext(Context);
   const { intl } = api;
   const [alive, setAlive] = useState<boolean>(false);
+  const [localUrl, setLocalUrl] = useState<string>('');
   const isMini = api.isMini();
   useEffect(() => {
     (async () => {
-      const msg = (await api.callRemote({
+      const res = (await api.callRemote({
         type: 'tasks/is_dev_server_alive',
       })) as {
         alive: boolean;
+        localUrl: string;
+        lanUrl: string;
       };
-      setAlive(msg.alive);
+      setAlive(res.alive);
+      setLocalUrl(res.localUrl);
     })();
   }, []);
   return (

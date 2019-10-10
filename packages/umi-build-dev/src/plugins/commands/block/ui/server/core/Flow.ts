@@ -86,7 +86,7 @@ class Flow extends EventEmitter {
     this.emit('state', {
       data: {
         ...args,
-        previewUrl: `http://localhost:${process.env.PORT || '8000'}${generator.path.toLowerCase()}`,
+        previewUrl: generator.path.toLowerCase(),
       },
       state: FlowState.SUCCESS,
     });

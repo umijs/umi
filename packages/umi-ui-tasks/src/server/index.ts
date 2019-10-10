@@ -78,11 +78,13 @@ export default (api: IApi) => {
         break;
       case 'tasks/is_dev_server_alive':
         (async () => {
-          const alive = await taskManger.isDevServerAlive();
+          const { alive, localUrl, lanUrl } = await taskManger.isDevServerAlive();
           send({
             type: 'tasks/is_dev_server_alive/success',
             payload: {
               alive,
+              localUrl,
+              lanUrl,
             },
           });
         })();

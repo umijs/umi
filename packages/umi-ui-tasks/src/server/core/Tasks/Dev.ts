@@ -4,12 +4,12 @@ import { TaskState, TaskEventType, TaskType } from '../enums';
 import { runCommand, parseScripts, getDevAnalyzeEnv } from '../../util';
 
 export class DevTask extends BaseTask {
+  // local url
+  public localUrl: string = '';
+  // lan url
+  public lanUrl: string = '';
   // 是否已经启动
   private started: boolean = false;
-  // local url
-  private localUrl: string = '';
-  // lan url
-  private lanUrl: string = '';
   // 启动中也会有 hasError 的情况
   private hasError: boolean = false;
   // analyze port
