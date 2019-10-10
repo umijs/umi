@@ -36,7 +36,8 @@ export default (api: IApiBlock) => {
     generateRouteComponents();
   });
 
-  if (process.env.NODE_ENV === 'development' && !api.config.ssr) {
+  const command = process.argv.slice(2)[0];
+  if (process.env.NODE_ENV === 'development' && !api.config.ssr && command === 'dev') {
     api.modifyAFWebpackOpts(memo => {
       generateRouteComponents();
       memo.extraBabelPlugins = [
