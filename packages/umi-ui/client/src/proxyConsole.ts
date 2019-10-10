@@ -5,7 +5,7 @@ export default (enable: boolean = false) => {
       get: (target, key: keyof Console) => {
         // escape console.error throw error
         if (key === 'error') return target[key];
-        // debugMini=umiui
+        // localStorage set debugMini=umiui & debug=umiui* to debug mini all
         const storageDebug = window.localStorage.getItem('debugMini');
         if (storageDebug && storageDebug.indexOf('umiui') > -1) {
           return target[key];

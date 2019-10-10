@@ -811,6 +811,10 @@ export default () => {
 
 ![image](https://gw.alipayobjects.com/zos/antfincdn/0%26OBjUyZHz/01bc8117-fa3a-4421-b2f1-e8784883ffff.png)
 
+如果需要调试 `mini` 版日志，再增加一个 `debugMini: umiui`。
+
+![image](https://user-images.githubusercontent.com/13595509/66537320-928bec80-eb52-11e9-93ed-8b921b4a30a6.png)
+
 > 不建议在插件里使用 `console.log` 调用。
 
 
