@@ -5,9 +5,9 @@ export default (enable: boolean = false) => {
       get: (target, key: keyof Console) => {
         // escape console.error throw error
         if (key === 'error') return target[key];
-        // debug=umiui:console
-        const storageDebug = window.localStorage.getItem('debug');
-        if (storageDebug && storageDebug.indexOf('umiui:console') > -1) {
+        // localStorage set debugMini=umiui & debug=umiui* to debug mini all
+        const storageDebug = window.localStorage.getItem('debugMini');
+        if (storageDebug && storageDebug.indexOf('umiui') > -1) {
           return target[key];
         }
         return () => {};

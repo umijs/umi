@@ -819,6 +819,10 @@ export default () => {
 
 ![image](https://user-images.githubusercontent.com/13595509/63997643-aa268d00-cb31-11e9-9d42-117abd7267c9.png)
 
+如果需要调试 `mini` 版日志，再增加一个 `debugMini: umiui`。
+
+![image](https://user-images.githubusercontent.com/13595509/66537320-928bec80-eb52-11e9-93ed-8b921b4a30a6.png)
+
 > 不建议在插件里使用 `console.log` 调用。
 
 

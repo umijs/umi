@@ -52,6 +52,7 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
       updateData();
       return () => {
         handleSearchDebounce.cancel();
+        setData(undefined);
       };
     },
     [props.title, props.list, props.edit, locale],
