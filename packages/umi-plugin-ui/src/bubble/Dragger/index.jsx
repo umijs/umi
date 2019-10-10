@@ -22,6 +22,9 @@ const Container = styled.div`
 
   * {
     box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+      'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol';
   }
 
   &:hover {
@@ -140,6 +143,8 @@ export default class Draggable extends React.Component {
   }
 
   handleResize = () => {
+    // update defaultScrollBarSize
+    this.defaultScrollBarSize = getScrollBarSize();
     const node = this.nodeDom;
     const clientRect = node.getBoundingClientRect();
     const { width, height } = clientRect;
