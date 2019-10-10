@@ -15,6 +15,7 @@ const Container = styled.div`
   right: ${initRight}px;
   bottom: ${initBottom}px;
   font-size: 14px;
+  ${({ hide }) => (hide ? 'transition: all .3s;' : '')}
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -28,6 +29,7 @@ const Container = styled.div`
   }
 
   &:hover {
+    ${({ hide, dragged }) => (hide && !dragged ? 'right: 0!important;' : '')}
     ${HideWrapper} {
       opacity: 1;
       transform: scale(1);
