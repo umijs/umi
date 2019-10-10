@@ -9,7 +9,7 @@ export default api => {
     description: '配置 dva、antd、国际化等等',
     icon: (
       <img
-        src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
+        src="https://img.alicdn.com/tfs/TB1oAwoiET1gK0jSZFhXXaAtVXa-64-64.png"
         width={api.mini ? 24 : 32}
         height={api.mini ? 24 : 32}
       />
