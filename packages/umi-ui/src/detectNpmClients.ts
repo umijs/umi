@@ -25,8 +25,7 @@ export default function(cwd) {
   }
 
   // 有 yarn.lock
-  if (haveFile(cwd, 'yarn.lock')) {
-    haveFile(cwd, 'node_modules/.yarn-integrity');
+  if (haveFile(cwd, 'yarn.lock') && haveFile(cwd, 'node_modules/.yarn-integrity')) {
     const isAliRegistry = readFileSync(join(cwd, 'node_modules/.yarn-integrity'), 'utf-8').includes(
       'registry.npm.alibaba-inc.com',
     );
