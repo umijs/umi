@@ -236,9 +236,8 @@ const reduceData = treeData =>
     }
 
     if (!router) {
-      pre[current.key] = current;
+      pre[current.key] = { ...current, children: undefined };
     }
-
     return {
       ...pre,
       ...childrenKeys,
@@ -269,18 +268,33 @@ export async function gitClone(ctx, mySpinner) {
   mySpinner.succeed();
 }
 
-export const genRouterToTreeData = routes =>
+/**
+ * 增加路由前缀
+ * data -> /data
+ * @param path
+ * @param parentPath
+ */
+const addRoutePrefix = (path = '/', parentPath = '/') => {
+  if (path.indexOf('/') !== 0) {
+    return parentPath + path;
+  }
+  return path;
+};
+
+export const genRouterToTreeData = (routes, parents = { path: '/' }) =>
   routes
-    .map(item =>
-      item.path || item.routes
-        ? {
-            title: item.path,
-            value: item.path,
-            key: item.path,
-            children: genRouterToTreeData(item.routes || []),
-          }
-        : undefined,
-    )
+    .map(item => {
+      const prefixPath = addRoutePrefix(item.path, parents.path);
+      if (item.path || item.routes) {
+        return {
+          title: prefixPath,
+          value: prefixPath,
+          key: prefixPath,
+          children: genRouterToTreeData(item.routes || []),
+        };
+      }
+      return undefined;
+    })
     .filter(item => item);
 
 /**
@@ -288,15 +302,17 @@ export const genRouterToTreeData = routes =>
  * 用于区块的插入
  * @param {*} routes
  */
-export const genComponentToTreeData = routes =>
+export const genComponentToTreeData = (routes, parents = { path: '/' }) =>
   routes
     .map(item =>
-      item.component && (item.path || item.routes)
+      item.path || item.routes || item.component
         ? {
-            title: item.path,
-            value: item.component.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, ''),
-            key: item.path,
-            children: genComponentToTreeData(item.routes || []),
+            title: addRoutePrefix(item.path, parents.path),
+            value: item.component
+              ? item.component.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, '')
+              : '',
+            key: addRoutePrefix(item.path, parents.path),
+            children: genComponentToTreeData(item.routes || [], routes),
           }
         : undefined,
     )
@@ -330,24 +346,25 @@ export const depthRouterConfig = routes => {
   /**
    * 这里可以拼接可以减少一次循环
    */
-  return (
-    Object.keys(routerConfig)
-      .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
-      .map(key => {
-        key
-          .split('/')
-          .filter(routerKey => routerKey)
-          .forEach((_, index, array) => {
-            const routerKey = array.slice(0, index + 1).join('/');
-            if (routerKey.includes('/')) {
-              delete routerConfig[`/${routerKey}`];
-            }
-          });
-        return routerConfig[key];
-      })
-      // 删除没有 children 的数据
-      .filter(item => item)
-  );
+  const getParentKey = key => {
+    const routerKeyArray = key.split('/').filter(routerKey => routerKey);
+    routerKeyArray.pop();
+    return `/${routerKeyArray.join('/')}`;
+  };
+  Object.keys(routerConfig)
+    .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
+    .forEach(key => {
+      const parentKey = getParentKey(key);
+      if (!routerConfig[parentKey]) {
+        return;
+      }
+      if (!routerConfig[parentKey].children) {
+        routerConfig[parentKey].children = [];
+      }
+      routerConfig[parentKey].children.push(routerConfig[key]);
+      delete routerConfig[key];
+    });
+  return Object.keys(routerConfig).map(key => routerConfig[key]);
 };
 
 /**
@@ -355,28 +372,30 @@ export const depthRouterConfig = routes => {
  * @param {*} routes
  */
 export const depthRouteComponentConfig = routes => {
+  console.log(JSON.stringify(genComponentToTreeData(routes), null, 2));
   const routerConfig = reduceData(genComponentToTreeData(routes));
   /**
    * 这里可以拼接可以减少一次循环
    */
-  return (
-    Object.keys(routerConfig)
-      .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
-      .map(key => {
-        key
-          .split('/')
-          .filter(routerKey => routerKey)
-          .forEach((_, index, array) => {
-            const routerKey = array.slice(0, index + 1).join('/');
-            if (routerKey.includes('/')) {
-              delete routerConfig[`/${routerKey}`];
-            }
-          });
-        return routerConfig[key];
-      })
-      // 删除没有 children 的数据
-      .filter(item => item)
-  );
+  const getParentKey = key => {
+    const routerKeyArray = key.split('/').filter(routerKey => routerKey);
+    routerKeyArray.pop();
+    return `/${routerKeyArray.join('/')}`;
+  };
+  Object.keys(routerConfig)
+    .sort((a, b) => a.split('/').length - b.split('/').length + a.length - b.length)
+    .forEach(key => {
+      const parentKey = getParentKey(key);
+      if (!routerConfig[parentKey]) {
+        return;
+      }
+      if (!routerConfig[parentKey].children) {
+        routerConfig[parentKey].children = [];
+      }
+      routerConfig[parentKey].children.push(routerConfig[key]);
+      delete routerConfig[key];
+    });
+  return Object.keys(routerConfig).map(key => routerConfig[key]);
 };
 
 export interface TreeData {
