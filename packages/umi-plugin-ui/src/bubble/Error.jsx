@@ -30,15 +30,18 @@ const ErrorWrapper = styled.div`
   span {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.65);
+    font-weight: 300;
   }
 `;
 
-export default ({ isBigfish, message }) => (
+export default ({ isBigfish, message, tips }) => (
   <ErrorWrapper>
-    <ErrorSvg />
-    <p>
-      {isBigfish ? 'Bigfish' : 'Umi'} {message.offline}
-    </p>
-    <span>{message.restart}</span>
+    <div style={{ maxWidth: '45%' }}>
+      <ErrorSvg />
+      <p>
+        {isBigfish ? 'Bigfish' : 'Umi'} {message.offline}
+      </p>
+      <span>{tips || message.restart}</span>
+    </div>
   </ErrorWrapper>
 );
