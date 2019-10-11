@@ -2,6 +2,10 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 export default function(cwd, { routeComponents }) {
+  if (process.env.DETECT_LANGUAGE) {
+    return process.env.DETECT_LANGUAGE;
+  }
+
   // 没有 tsconfig.json -> JavaScript
   if (!existsSync(join(cwd, 'tsconfig.json'))) return 'JavaScript';
 
