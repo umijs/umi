@@ -72,7 +72,7 @@ class App extends React.Component {
   getMiniUrl = () => {
     const { port } = this.props;
     const { currentProject } = this.state;
-    return `http://localhost:${port}/?mini&${
+    return `http://127.0.0.1:${port}/?mini&${
       currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
     }`;
   };
