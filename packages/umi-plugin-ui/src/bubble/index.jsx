@@ -50,6 +50,9 @@ class App extends React.Component {
       editText: {},
     };
     window.addEventListener('message', this.handleMessage, false);
+    const { hostname, protocol } = window.location;
+    const { port } = this.props;
+    this.baseUrl = `${protocol}//${hostname}:${port}`;
   }
 
   handleLocale = locale => {
@@ -70,9 +73,8 @@ class App extends React.Component {
   }
 
   getMiniUrl = () => {
-    const { port } = this.props;
     const { currentProject } = this.state;
-    return `http://127.0.0.1:${port}/?mini&${
+    return `${this.baseUrl}/?mini&${
       currentProject && currentProject.key ? `&key=${currentProject.key}` : ''
     }`;
   };
@@ -122,9 +124,9 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    const { port, path } = this.props;
+    const { path } = this.props;
     try {
-      await initSocket(`http://localhost:${port}/umiui`, {
+      await initSocket(`${this.baseUrl}/umiui`, {
         onError: () => {
           this.setState({
             connected: false,
