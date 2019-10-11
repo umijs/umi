@@ -264,8 +264,7 @@ export default (api: IApi) => {
                 });
                 return;
               }
-            }
-            if (!reactPlugin || !reactPluginOpts.locale) {
+            } else if (!reactPlugin || !reactPluginOpts.dva) {
               failure({
                 message:
                   lang === 'zh-CN'
