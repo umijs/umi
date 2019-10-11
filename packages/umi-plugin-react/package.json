@@ -39,7 +39,7 @@
     "umi-plugin-routes": "1.6.3",
     "umi-plugin-ui": "1.2.7",
     "umi-utils": "1.7.1",
-    "webpack": "4.38.0",
+    "webpack": "4.41.1",
     "workbox-webpack-plugin": "3.6.3"
   },
   "devDependencies": {
