@@ -4,6 +4,7 @@ import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
 
+import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
 import Context from './UIApiContext';
 import BlockList from './BlockList';
@@ -273,12 +274,7 @@ const BlocksViewer: React.FC<Props> = props => {
               padding: buttonPadding,
             }}
           >
-            <img
-              width={16}
-              height={16}
-              alt="clear"
-              src="https://gw.alipayobjects.com/zos/antfincdn/qI6Asiilu4/clear.svg"
-            />
+            <Clear />
           </Button>
         </Tooltip>,
         <Tooltip
