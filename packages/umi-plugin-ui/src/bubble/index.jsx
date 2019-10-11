@@ -48,6 +48,7 @@ class App extends React.Component {
       locale,
       edit: false,
       editText: {},
+      tips: '',
     };
     window.addEventListener('message', this.handleMessage, false);
     const { hostname, protocol } = window.location;
@@ -69,6 +70,9 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    this.setState({
+      tips: '',
+    });
     window.removeEventListener('message', this.handleMessage, false);
   }
 
@@ -125,11 +129,16 @@ class App extends React.Component {
 
   async componentDidMount() {
     const { path } = this.props;
+    const message = this.getMessage();
     try {
       await initSocket(`${this.baseUrl}/umiui`, {
-        onError: () => {
+        onError: e => {
+          // https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent
+          // 非 localhost 访问
+          const { code } = e;
           this.setState({
             connected: false,
+            tips: message[`code_${code}`] || '',
           });
         },
         onMessage: ({ type, payload }) => {
@@ -218,14 +227,19 @@ class App extends React.Component {
     });
   };
 
+  getMessage = () => {
+    const { locale } = this.state;
+    return messages[locale] || messages['zh-CN'];
+  };
+
   render() {
-    const { open, connected, uiLoaded, loading, locale, edit, editText } = this.state;
+    const { open, connected, uiLoaded, loading, locale, edit, editText, tips } = this.state;
     const { isBigfish = false } = this.props;
     const miniUrl = this.getMiniUrl();
     // get locale when first render
     // switch in the project can't be listened, the lifecycle can't be trigger
     // TODO: use Context but need to compatible with other React version
-    const message = messages[locale] || messages['zh-CN'];
+    const message = this.getMessage();
 
     return (
       <Bubble
@@ -242,14 +256,14 @@ class App extends React.Component {
       >
         {open !== undefined && (
           <Modal visible={open}>
-            {!uiLoaded && (
+            {!uiLoaded && !tips && (
               <LoadingWrapper>
                 <Loading />
                 <p style={{ marginTop: 8 }}>{message.loading}</p>
               </LoadingWrapper>
             )}
             {!connected ? (
-              <Error message={message} isBigfish={isBigfish} />
+              <Error message={message} tips={tips} isBigfish={isBigfish} />
             ) : (
               <iframe
                 id="umi-ui-bubble"
