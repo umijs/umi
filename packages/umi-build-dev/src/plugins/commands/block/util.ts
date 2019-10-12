@@ -271,14 +271,19 @@ export async function gitClone(ctx, mySpinner) {
 }
 
 /**
+ * 删除重复的下划线什么的
+ * @param path
+ */
+export const removePrefix = path => path.replace(/\//g, '/').replace(/\/\//g, '/');
+/**
  * 增加路由前缀
  * data -> /data
  * @param path
  * @param parentPath
  */
-const addRoutePrefix = (path = '/', parentPath = '/') => {
+export const addRoutePrefix = (path = '/', parentPath = '/') => {
   if (path.indexOf('/') !== 0) {
-    return `${parentPath}/${path}`.replace(/\//g, '/').replace(/\/\//g, '/');
+    return removePrefix(`${parentPath}/${path}`);
   }
   return path;
 };
@@ -289,10 +294,10 @@ export const genRouterToTreeData = (routes, path = '/') =>
       const prefixPath = addRoutePrefix(item.path, path);
       if (item.path || item.routes) {
         return {
-          title: item.path,
+          title: removePrefix(prefixPath.replace(path, '')),
           value: prefixPath,
           key: prefixPath,
-          children: genRouterToTreeData(item.routes || [], item),
+          children: genRouterToTreeData(item.routes || [], prefixPath),
         };
       }
       return undefined;
@@ -306,18 +311,19 @@ export const genRouterToTreeData = (routes, path = '/') =>
  */
 export const genComponentToTreeData = (routes, path = '/') =>
   routes
-    .map(item =>
-      item.path || item.routes || item.component
+    .map(item => {
+      const prefixPath = addRoutePrefix(item.path, path);
+      return item.path || item.routes || item.component
         ? {
-            title: item.path,
+            title: removePrefix(prefixPath.replace(path, '/')),
             value: item.component
               ? item.component.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, '')
               : '',
-            key: addRoutePrefix(item.path, path),
-            children: genComponentToTreeData(item.routes || [], addRoutePrefix(item.path, path)),
+            key: prefixPath,
+            children: genComponentToTreeData(item.routes || [], prefixPath),
           }
-        : undefined,
-    )
+        : undefined;
+    })
     .filter(item => item);
 
 /**
