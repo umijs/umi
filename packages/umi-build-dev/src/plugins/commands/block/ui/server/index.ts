@@ -341,12 +341,21 @@ export default (api: IApi) => {
                 api.winPath(targetPath).replace(api.winPath(api.paths.pagesPath), ''),
               ),
             );
+            if (existsSync(absTargetPath)) {
+              failure({
+                message: ` ${absTargetPath} 目录不存在!`,
+                success: false,
+              });
+              return;
+            }
+
             const entryPath = api.findJS(absTargetPath, 'index') || api.findJS(absTargetPath, '');
             if (!entryPath) {
               failure({
                 message: `未在 ${absTargetPath} 目录下找到 index.(ts|tsx|js|jsx) !`,
                 success: false,
               });
+              return;
             }
             haveRootBinding(readFileSync(entryPath, 'utf-8'), name).then(exists => {
               success({
