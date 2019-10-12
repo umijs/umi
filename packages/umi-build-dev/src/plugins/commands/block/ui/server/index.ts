@@ -341,7 +341,8 @@ export default (api: IApi) => {
                 api.winPath(targetPath).replace(api.winPath(api.paths.pagesPath), ''),
               ),
             );
-            if (existsSync(absTargetPath)) {
+            // 有些用户路由下载路径是不在的，这里拦住他们
+            if (!existsSync(absTargetPath)) {
               failure({
                 message: ` ${absTargetPath} 目录不存在!`,
                 success: false,

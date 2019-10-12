@@ -294,7 +294,7 @@ export const genRouterToTreeData = (routes, path = '/') =>
       const prefixPath = addRoutePrefix(item.path, path);
       if (item.path || item.routes) {
         return {
-          title: removePrefix(prefixPath.replace(path, '')),
+          title: removePrefix(prefixPath.replace(path, '')) || '/',
           value: prefixPath,
           key: prefixPath,
           children: genRouterToTreeData(item.routes || [], prefixPath),
@@ -315,7 +315,7 @@ export const genComponentToTreeData = (routes, path = '/') =>
       const prefixPath = addRoutePrefix(item.path, path);
       return item.path || item.routes || item.component
         ? {
-            title: removePrefix(prefixPath.replace(path, '/')),
+            title: removePrefix(prefixPath.replace(path, '/')) || '/',
             value: item.component
               ? item.component.replace(/(index)?((\.js?)|(\.tsx?)|(\.jsx?))$/, '')
               : '',
