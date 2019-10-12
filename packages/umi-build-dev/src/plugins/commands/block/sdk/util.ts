@@ -77,12 +77,14 @@ function findReturnNode(node, path) {
       }
     }
   }
+
   // if (t.isConditionalExpression(node.body)) {
   //   return getReturnNode({
   //     body: getIdentifierDeclaration(node.body.consequent, path),
   //   }, path);
   // }
-  throw new Error(`Find return statement failed, unsupported node type ${node.body.type}.`);
+
+  // throw new Error(`Find return statement failed, unsupported node type ${node.body.type}.`);
 }
 
 function findRenderStatement(node) {
