@@ -1,5 +1,5 @@
 import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
@@ -14,6 +14,7 @@ import { EXT_LIST } from './constants';
 import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
 import htmlToJSX from './htmlToJSX';
 import getRoutePaths from './routes/getRoutePaths';
+import writeContent from './utils/writeContent.js';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -275,7 +276,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
       htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: winPath(require.resolve('./findRoute')),
     });
-    writeFileSync(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`), 'utf-8');
+    writeContent(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`));
   }
 
   generateHistory() {
@@ -298,11 +299,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       globalVariables: !this.service.config.disableGlobalVariables,
       history,
     });
-    writeFileSync(
-      join(paths.absTmpDirPath, 'history.js'),
-      prettierFile(`${content.trim()}\n`),
-      'utf-8',
-    );
+    writeContent(join(paths.absTmpDirPath, 'history.js'), prettierFile(`${content.trim()}\n`));
   }
 
   generateRouterJS() {

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { join, dirname } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import { assign, cloneDeep, uniq } from 'lodash';
@@ -14,6 +14,7 @@ import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
 import getCodeFrame from './utils/getCodeFrame';
+import writeContent from './utils/writeContent';
 import getRouteManager from './plugins/commands/getRouteManager';
 
 const debug = require('debug')('umi-build-dev:Service');
@@ -275,7 +276,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const { paths } = this;
     const path = join(paths.absTmpDirPath, file);
     mkdirp.sync(dirname(path));
-    writeFileSync(path, content, 'utf-8');
+    writeContent(path, content);
   }
 
   getRoutes() {
