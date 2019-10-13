@@ -5,6 +5,8 @@ import insertComponent from './index';
 
 const fixtures = winPath(join(__dirname, 'fixtures'));
 
+const removeUnicode = str => str.replace(/[\uE000-\uF8FF]/g, '');
+
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))
     ? join(fixtures, dir, 'origin.js')
@@ -21,7 +23,7 @@ function testTransform(dir) {
   if (existsSync(expectedFile)) {
     const expected = readFileSync(expectedFile, 'utf-8');
     // window 专用，去掉一下盘符，其实表现是正常的，但是为了保证测试通过
-    expect(code.trim().replace(/C:/g, '')).toEqual(expected.trim());
+    expect(removeUnicode(code.trim().replace(/C:/g, ''))).toEqual(removeUnicode(expected.trim()));
   } else {
     if (process.env.PRINT_CODE) {
       console.log(code);
