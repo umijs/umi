@@ -84,6 +84,26 @@ export default class PluginAPI {
     });
   }
 
+  // api._analyze(({ gtag }) => )
+  _analyze = (functor: Function) => {
+    functor({
+      // recommend gtag rather than ga
+      // https://developers.google.com/analytics/devguides/collection/gtagjs/migration?hl=zh-cn
+      gtag: window.gtag || (() => {}),
+      ga: window.ga || (() => {}),
+      // Tracert Object will include whatever Bigfish or Umi
+      // because Umi and Bigfish use it to log error stack, Bigfish use it to logPv
+      Tracert: new Proxy(window.Tracert || {}, {
+        get: (target, key) => {
+          if (key in target && this.bigfish) {
+            return target[key];
+          }
+          return () => {};
+        },
+      }),
+    });
+  };
+
   addConfigSection(section) {
     this.service.configSections.push(section);
   }

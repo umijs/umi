@@ -177,7 +177,7 @@ declare namespace IUI {
   type IFormatMessage = typeof intl.formatMessage;
   type PickIntl = Pick<
     typeof intl,
-    'FormattedDate'
+    | 'FormattedDate'
     | 'FormattedTime'
     | 'FormattedRelative'
     | 'FormattedNumber'
@@ -237,6 +237,8 @@ declare namespace IUI {
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type LaunchEditorTypes = 'project' | 'config';
+  type IFunctor = (params: { ga: Function; gtag: Function; Tracert: object }) => void;
+  type IAnalyze = (functor: IFunctor) => void;
 
   interface ILaunchEditorParams {
     type: LaunchEditorTypes;
@@ -319,6 +321,8 @@ declare namespace IUI {
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;
     detectNpmClients: () => Promise<string[]>;
+    /** data analyze for the specific scene */
+    _analyze: IAnalyze;
   }
 
   type IApi = InstanceType<typeof IApiClass>;
