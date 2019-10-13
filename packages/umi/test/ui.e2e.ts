@@ -27,9 +27,9 @@ describe('Umi UI e2e', () => {
     it('project list normal', async () => {
       console.log('ui server url: ', url);
       await page.goto(`${url}/project/select`, { waitUntil: 'networkidle2' });
-
+      await page.waitForSelector('[data-test-id="project-title"]');
       const text = await page.evaluate(
-        () => document.querySelector('[data-test-id="project-title"]').innerHTML,
+        () => document.querySelector('[data-test-id="project-title"]').textContent,
       );
       // not inject analyze script
       const gaScript = await page.evaluate(() => {
