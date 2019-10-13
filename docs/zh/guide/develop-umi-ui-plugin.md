@@ -132,6 +132,8 @@ export default (api) => {
 
 `package.json`
 
+> 因为 Umi UI 对 `react`、`react-dom`、`antd` 库做了 [external](https://webpack.js.org/configuration/externals/)，开发插件包时，`peerDependencies` 里的包不会构建到 `umd` 中，减少插件额外的重复依赖。
+
 ```diff
 {
   "peerDependencies": {

@@ -131,6 +131,8 @@ export default (api) => {
 
 `package.json`
 
+> Because Umi UI does [external](https://webpack.js.org/configuration/externals/) for `react`, `react-dom`, `antd` libraries, when developing plugin packages, in `peerDependencies` Packages are not built into `umd`, reducing the extra repetitive dependencies of the plugin.
+
 ```diff
 {
   "peerDependencies": {
