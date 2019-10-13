@@ -1,15 +1,15 @@
 import { IUiApi } from 'umi-types';
 
 import { Block } from '../../../data.d';
-import { sendGaEvent } from '../../uiUtil';
+import { sendGaEventDecorator } from '../../uiUtil';
 
 export const namespace = 'org.umi.block';
 
-let callRemote;
+let api: IUiApi;
 
-export function initApiToGlobal(api: IUiApi) {
+export function initApiToGlobal(uiApi: IUiApi) {
   // eslint-disable-next-line
-  callRemote = api.callRemote;
+  api = uiApi;
 }
 
 export interface ModelState {
@@ -29,6 +29,7 @@ export default {
   effects: {
     // 获取数据
     *fetch({ payload }, { call, put, select }) {
+      const sendGaEvent = sendGaEventDecorator(api);
       const { blockData, currentResourceId } = yield select(state => state[namespace]);
       const { resourceId = currentResourceId, reload } = payload;
       if (blockData[resourceId] && !reload) {
@@ -41,7 +42,7 @@ export default {
       });
 
       const { data: list } = yield call(() => {
-        return callRemote({
+        return api.callRemote({
           type: 'org.umi.block.list',
           payload: {
             resourceId,

@@ -6,7 +6,7 @@ import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
 import TagSelect from '../TagSelect';
 import BlockItem from './BlockItem';
-import { sendGaEvent } from '../../uiUtil';
+import { sendGaEventDecorator } from '../../uiUtil';
 
 interface BlockItemProps {
   type: Resource['blockType'];
@@ -29,6 +29,8 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { uniq, flatten } = api._;
   const isMini = api.isMini();
   const pageSize = isMini ? 8 : 10;
+
+  const sendGaEvent = sendGaEventDecorator(api);
 
   const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
     list,

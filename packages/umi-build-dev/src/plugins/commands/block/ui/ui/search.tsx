@@ -4,7 +4,7 @@ import { IUiApi } from 'umi-types';
 
 import { Search as SearchIcon } from '@ant-design/icons';
 import styles from './search.module.less';
-import { sendGaEvent } from '../uiUtil';
+import { sendGaEventDecorator } from '../uiUtil';
 
 interface IGlobalSearch {
   onChange: (v: string) => void;
@@ -14,7 +14,7 @@ interface IGlobalSearch {
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {
   const { onChange, api } = props;
   const { intl, _ } = api;
-
+  const sendGaEvent = sendGaEventDecorator(api);
   // 时间太长会造成卡顿的感觉，200-300 比较合适
   const handleChangeDebounce = _.debounce((value: string) => {
     onChange(value);

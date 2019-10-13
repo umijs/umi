@@ -3,7 +3,7 @@ import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
-import { sendGaEvent } from '../uiUtil';
+import { sendGaEventDecorator } from '../uiUtil';
 
 import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
@@ -37,6 +37,7 @@ const updateUrlQuery = (params: { type: string; resource?: string }) => {
 };
 
 const clearCache = async (api: IUiApi) => {
+  const sendGaEvent = sendGaEventDecorator(api);
   try {
     const hide = message.loading('缓存清理中！');
     const { data } = (await api.callRemote({
@@ -100,12 +101,15 @@ const renderActiveResourceTag = ({
   matchedResources = [],
   current = { id: '' },
   setActiveResource,
+  api,
 }: {
   type: string;
   current: Resource;
   matchedResources: Resource[];
+  api: IUiApi;
   setActiveResource: (value: Resource) => void;
 }) => {
+  const sendGaEvent = sendGaEventDecorator(api);
   if (matchedResources.length > 1) {
     return (
       <Radio.Group
@@ -165,6 +169,7 @@ const BlocksViewer: React.FC<Props> = props => {
     query.resource ? { id: query.resource } : null,
   );
   const [searchValue, setSearchValue] = useState<string>('');
+  const sendGaEvent = sendGaEventDecorator(api);
 
   /**
    * 获取 query 中的设置
@@ -345,6 +350,7 @@ const BlocksViewer: React.FC<Props> = props => {
               matchedResources,
               setActiveResource,
               current,
+              api,
             })}
             {matchedResources.length > 0 ? (
               <BlockList

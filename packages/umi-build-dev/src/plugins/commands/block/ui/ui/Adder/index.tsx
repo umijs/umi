@@ -13,7 +13,7 @@ import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
 import { getPathFromFilename } from '../BlockList/BlockItem';
-import { getNoExitVar, getNoExitRoute, getNoExitPath, sendAddGaEvent } from '../../uiUtil';
+import { getNoExitVar, getNoExitRoute, getNoExitPath, sendAddGaEventDecorator } from '../../uiUtil';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
@@ -63,6 +63,7 @@ const Adder: React.FC<AdderProps> = props => {
   } = props;
   const { api } = useContext(Context);
   const { callRemote, intl } = api;
+  const sendAddGaEvent = sendAddGaEventDecorator(api);
 
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   // 防止重复提交

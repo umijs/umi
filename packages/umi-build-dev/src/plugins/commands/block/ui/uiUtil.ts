@@ -160,18 +160,23 @@ export const getNoExitPath = async ({
  * google 发送统计信息
  * @param param0
  */
-export const sendGaEvent = ({ label, action }: { label: string; action: string }) => {
-  const ga = window && window.ga;
-  if (ga) {
-    ga('send', 'event', {
+export const sendGaEventDecorator = (api: IUiApi) => ({
+  label,
+  action,
+}: {
+  label: string;
+  action: string;
+}) => {
+  api._analyze(({ gtag }) => {
+    gtag('event', {
       eventCategory: 'block',
       eventAction: action,
       eventLabel: label,
     });
-  }
+  });
 };
 
-export const sendAddGaEvent = ({
+export const sendAddGaEventDecorator = (api: IUiApi) => ({
   item,
   params,
   action,
@@ -180,8 +185,11 @@ export const sendAddGaEvent = ({
   params: AddBlockParams;
   action: string;
 }) => {
-  sendGaEvent({
-    action: `${action} ${item.name}`,
-    label: params.path,
+  api._analyze(({ gtag }) => {
+    gtag('event', {
+      eventCategory: 'block',
+      eventAction: `${action} ${item.name}`,
+      eventLabel: params.path,
+    });
   });
 };

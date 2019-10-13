@@ -237,7 +237,7 @@ declare namespace IUI {
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type LaunchEditorTypes = 'project' | 'config';
-  type IFunctor = (params: { ga: Function; gtag: Function; Tracert: object }) => void;
+  type IFunctor = (params: { gtag: Function; Tracert: object }) => void;
   type IAnalyze = (functor: IFunctor) => void;
 
   interface ILaunchEditorParams {

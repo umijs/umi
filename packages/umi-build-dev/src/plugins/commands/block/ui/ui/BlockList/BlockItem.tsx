@@ -7,7 +7,7 @@ import styles from './index.module.less';
 import HighlightedText from './HighlightedText';
 import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
-import { sendAddGaEvent } from '../../uiUtil';
+import { sendAddGaEventDecorator } from '../../uiUtil';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import ImageLoad from './ImageLoad';
 
@@ -68,6 +68,7 @@ export const getPathFromFilename = async (api: IUiApi, filenamePath: string): Pr
  * @param param 参数
  */
 const onBeforeOpenModal = async (api, { item, type, onShowModal }) => {
+  const sendAddGaEvent = sendAddGaEventDecorator(api);
   try {
     await api.callRemote({
       type: 'org.umi.block.checkIfCanAdd',
