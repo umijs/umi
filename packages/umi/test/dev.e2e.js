@@ -171,6 +171,10 @@ describe('ssr', () => {
     global.window = {};
   });
 
+  afterAll(done => {
+    done();
+  });
+
   it('routes', async () => {
     const ssrFile = join(winPath(__dirname), 'fixtures', 'dev', 'ssr', 'dist', 'umi.server.js');
     const manifestFile = join(
@@ -210,6 +214,10 @@ describe('ssr', () => {
     beforeEach(async () => {
       // TODO: maybe using umi/server, reset global
       global.window = {};
+    });
+
+    afterAll(done => {
+      done();
     });
 
     it('routes', async () => {
