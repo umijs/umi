@@ -16,10 +16,11 @@ describe('Umi UI e2e', () => {
     page = await browser.newPage();
   });
 
-  afterAll(() => {
+  afterAll(done => {
     if (browser) {
       browser.close();
     }
+    done();
   });
 
   describe('project manager page', () => {

@@ -20,10 +20,11 @@ describe('normal', () => {
     page = await browser.newPage();
   });
 
-  afterAll(() => {
+  afterAll(done => {
     if (browser) {
       browser.close();
     }
+    done();
   });
 
   it('index page', async () => {
