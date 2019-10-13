@@ -4,7 +4,7 @@ import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
-const removeUnicode = str => str.replace(/[\uE000-\uF8FF]/g, '');
+const removeUnicode = str => str.replace(/[\uE000-\uF8FF|·]/g, '');
 
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))

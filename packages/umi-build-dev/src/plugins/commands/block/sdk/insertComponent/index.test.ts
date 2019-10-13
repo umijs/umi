@@ -5,7 +5,7 @@ import insertComponent from './index';
 
 const fixtures = winPath(join(__dirname, 'fixtures'));
 
-const removeUnicode = str => str.replace(/[\uE000-\uF8FF]/g, '');
+const removeUnicode = str => str.replace(/[\uE000-\uF8FF|·]/g, '');
 
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))
