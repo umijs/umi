@@ -134,6 +134,12 @@ export default (api) => {
 
 ```diff
 {
+  "peerDependencies": {
+    "antd": "4.x",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "umi": "2.x || ^2.9.0-0"
+  },
   "dependencies": {
 -   "classnames": "^2.2.6",
 -   "@ant-design/compatible": "^0.0.1-alpha.1"
