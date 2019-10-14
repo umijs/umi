@@ -7,6 +7,7 @@ import history from '@tmp/history';
 import querystring from 'querystring';
 import { getLocale } from '@/utils';
 import { init as initSocket, callRemote } from './socket';
+import { setCurrentProject, clearCurrentProject } from '@/services/project';
 import debug from '@/debug';
 import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
@@ -28,9 +29,9 @@ const geval = eval; // eslint-disable-line
 export async function render(oldRender) {
   // mini 模式下允许通过加 key 的参数打开
   // 比如: ?mini&key=xxx
-  let miniKey = null;
   const { search = '' } = window.location;
   const qs = querystring.parse(search.slice(1));
+  const miniKey = qs.key || null;
   const isMini = 'mini' in qs;
 
   // proxy console.* in mini
@@ -44,10 +45,6 @@ export async function render(oldRender) {
     history.push(`${history.location.pathname}${query ? `?${query}` : ''}`);
     window.location.reload();
     return false;
-  }
-
-  if (isMini && qs.key) {
-    miniKey = qs.key;
   }
 
   // Init Socket Connection
@@ -74,7 +71,8 @@ export async function render(oldRender) {
   const props = {
     data,
   };
-  let key = miniKey || data.currentProject;
+  const key = miniKey || data.currentProject;
+
   if (key) {
     // 在 callRemote 里使用
     window.g_currentProject = key;
@@ -97,20 +95,21 @@ export async function render(oldRender) {
         payload: { key },
       });
       if (!isMini) {
-        await callRemote({
-          type: '@@project/setCurrentProject',
-          payload: { key },
+        await setCurrentProject({
+          key,
         });
       }
     } catch (e) {
       props.error = e;
     }
     if (props.error) {
+      history.replace(`/error?key=${key}`);
       ReactDOM.render(
         React.createElement(require('./pages/loading').default, props),
         document.getElementById('root'),
       );
-      return;
+      await clearCurrentProject();
+      return false;
     }
 
     // Get script and style from server, and run
@@ -132,6 +131,12 @@ export async function render(oldRender) {
   }
 
   window.g_callRemote = callRemote;
+
+  // 已经解决项目报错
+  if (history.location.pathname === '/error') {
+    debugger;
+    history.replace('/dashboard');
+  }
 
   // Do render
   oldRender();

@@ -146,6 +146,11 @@ export default class Config {
     this.save();
   }
 
+  clearCurrentProject() {
+    this.data.currentProject = null;
+    this.save();
+  }
+
   setProjectNpmClient({ npmClient, key }: { npmClient: string; key: string }) {
     this.data.projectsByKey[key].npmClient = npmClient;
     this.save();
