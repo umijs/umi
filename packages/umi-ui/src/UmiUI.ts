@@ -624,6 +624,10 @@ export default class UmiUI {
         this.config.setCurrentProject(payload.key);
         success();
         break;
+      case '@@project/clearCurrentProject':
+        this.config.clearCurrentProject();
+        success();
+        break;
       case '@@project/create':
         log('info', `Create project: ${this.getProjectName(payload.key)}`);
         this.createProject(payload, {

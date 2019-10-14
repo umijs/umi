@@ -14,7 +14,6 @@ import {
   Enter,
   Delete,
 } from '@ant-design/icons';
-import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
 import { LOCALES, LOCALES_ICON } from '@/enums';
