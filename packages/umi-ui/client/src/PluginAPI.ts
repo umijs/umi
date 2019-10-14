@@ -112,7 +112,7 @@ export default class PluginAPI {
   isMini: IUi.IMini = () => isMiniUI();
 
   showMini: IUi.IShowMini = () => {
-    if (this.isMini) {
+    if (this.isMini()) {
       window.parent.postMessage(
         JSON.stringify({
           action: 'umi.ui.showMini',
@@ -123,7 +123,7 @@ export default class PluginAPI {
   };
 
   hideMini: IUi.IHideMini = () => {
-    if (this.isMini) {
+    if (this.isMini()) {
       window.parent.postMessage(
         JSON.stringify({
           action: 'umi.ui.hideMini',
