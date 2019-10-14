@@ -100,6 +100,8 @@ Debug `umi ui` in local.
 $ y ui:build --watch
 
 # Then run umi ui under a umi project.
+$ y link umi 
+
 $ umi ui
 
 # if want to debug for more defail, using
