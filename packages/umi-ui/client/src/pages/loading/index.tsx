@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 import { Spin, ConfigProvider } from 'antd';
+import querystring from 'querystring';
 import enUS from 'antd/es/locale/en_US';
 import zhCN from 'antd/es/locale/zh_CN';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { Terminal as XTerminal } from 'xterm';
+import { setCurrentProject } from '@/services/project';
 import history from '@tmp/history';
 import Terminal from '@/components/Terminal';
 import Context from '@/layouts/Context';
@@ -42,31 +44,18 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     actionLoading: false,
     isClear: false,
   };
-  handleInstallDeps = async () => {
-    this.setState({
-      actionLoading: true,
-    });
-    await callRemote({
-      type: '@@actions/installDependencies',
-      payload: {
-        npmClient: 'yarn',
-        projectPath: '/private/tmp/foooo',
-      },
-      onProgress(data) {
-        this._log(`Install: ${data.install}`);
-      },
-    });
-    this.setState({
-      actionLoading: false,
-    });
-  };
-
-  handleSuccess = () => {
+  handleSuccess = async () => {
     this._log('success');
     this.setState({
       actionLoading: false,
     });
-    history.replace('/');
+    const { key } = querystring.parse(window.location.search.slice(1));
+    if (key) {
+      await setCurrentProject({
+        key: key as string,
+      });
+    }
+    history.replace('/dashboard');
     window.location.reload();
   };
 
