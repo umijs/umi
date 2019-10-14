@@ -1,6 +1,6 @@
 {
   "name": "umi-core",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "dependencies": {
     "@babel/preset-typescript": "7.3.3",
     "@babel/register": "7.4.4",
