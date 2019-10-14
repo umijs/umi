@@ -85,7 +85,7 @@ export default {
 启用后自动配置 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 实现 antd, antd-mobile 和 antd-pro 的按需编译，并且内置 antd, antd-mobile 依赖，无需手动在项目中安装。
 
 ::: warning
-如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。
+ 如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。 
 :::
 
 ### routes
@@ -203,6 +203,13 @@ window.addEventListener('sw.updated', () => {
 });
 ```
 
+```js
+window.addEventListener('sw.registered', e => {
+  // e.detail.update() 可触发手动更新。
+  // 配置适当的轮询并配合 sw.updated 事件, 无需用户刷新或打开新选项卡即可更新。
+});
+```
+
 另外，当网络环境发生改变时，也可以给予用户显式反馈：
 
 ```js
@@ -210,6 +217,8 @@ window.addEventListener('sw.offline', () => {
   // 置灰某些组件
 });
 ```
+
+最后 `sw.*` 事件与 [register-service-worker](https://www.npmjs.com/package/register-service-worker) 中的事件同步，更多使用方法请参考上述链接。
 
 ### hd
 
