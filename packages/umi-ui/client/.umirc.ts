@@ -31,6 +31,7 @@ const config: IConfig = {
     'xterm/lib/addons/fit/fit': 'window.fit',
   },
   theme: dark,
+  generateCssModulesTypings: true,
   routes: [
     {
       path: '/project',
