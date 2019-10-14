@@ -10,12 +10,16 @@ import {
 } from 'umi-plugin-react/locale';
 import { IProjectList, IProjectItem, LOCALES } from '@/enums';
 
+const localeMapping: any = {
+  en: 'en-US',
+  'en-us': 'en-US',
+  zh: 'zh-CN',
+  'zh-cn': 'zh-CN',
+};
+
 export const getLocale = () => {
-  // handle url /?locale= from mini
-  // const { locale: searchLocale = '' } = querystring.parse(window.location.search.slice(1));
-  // const locale = Object.keys(LOCALES).indexOf(searchLocale as string) > -1 ? searchLocale : umiGetLocale();
-  // search in first
-  return umiGetLocale() || LOCALES['zh-CN'];
+  const locale = umiGetLocale() || '';
+  return localeMapping[locale.toLowerCase()] || 'zh-CN';
 };
 
 export const isMiniUI = (): boolean => {

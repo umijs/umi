@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
-import { Spin } from 'antd';
+import { Spin, ConfigProvider } from 'antd';
+import enUS from 'antd/es/locale/en_US';
+import zhCN from 'antd/es/locale/zh_CN';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { Terminal as XTerminal } from 'xterm';
 import Terminal from '@/components/Terminal';
+import Context from '@/layouts/Context';
 import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
 import debug from '@/debug';
@@ -24,6 +27,11 @@ interface ILoadingState {
   actionLoading?: boolean;
   isClear?: boolean;
 }
+
+const antdLocaleMap: any = {
+  'zh-CN': zhCN,
+  'en-US': enUS,
+};
 
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
   logs = '';
@@ -154,18 +162,24 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
     return error ? (
       <Layout type="loading">
-        <div className={styles.loading}>
-          <Fail
-            title={
-              actionLoading
-                ? intl({ id: 'org.umi.ui.loading.onloading' })
-                : intl({ id: 'org.umi.ui.loading.error' })
-            }
-            loading={actionLoading}
-            subTitle={renderSubTitle(error)}
-            extra={actionsDeps}
-          />
-        </div>
+        <Context.Consumer>
+          {context => (
+            <ConfigProvider locale={antdLocaleMap[context.locale]}>
+              <div className={styles.loading}>
+                <Fail
+                  title={
+                    actionLoading
+                      ? intl({ id: 'org.umi.ui.loading.onloading' })
+                      : intl({ id: 'org.umi.ui.loading.error' })
+                  }
+                  loading={actionLoading}
+                  subTitle={renderSubTitle(error)}
+                  extra={actionsDeps}
+                />
+              </div>
+            </ConfigProvider>
+          )}
+        </Context.Consumer>
       </Layout>
     ) : (
       <div className={styles.loading}>

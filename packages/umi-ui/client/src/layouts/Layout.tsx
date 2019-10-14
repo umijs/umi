@@ -5,8 +5,8 @@ import Helmet from 'react-helmet';
 import querystring from 'querystring';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Context from './Context';
 import history from '@tmp/history';
+import Context from './Context';
 import event, { MESSAGES } from '@/message';
 import { isMiniUI, getLocale } from '@/utils/index';
 import Footer from './Footer';
@@ -57,18 +57,9 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     }
   };
 
-  setLocale = (locale: ILocale) => {
-    const { locale: searchLocale = '', ...restParams } = querystring.parse(
-      window.location.search.slice(1),
-    );
+  setLocale = (locale: ILocale, reload = false) => {
     if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
-      // existed lang
-      if (searchLocale) {
-        history.replace({
-          search: querystring.stringify(restParams),
-        });
-      }
-      setLocale(locale, false);
+      setLocale(locale, reload);
     }
   };
 
