@@ -22,14 +22,16 @@ const buildPlugins = async (plugins, opts = {}) => {
     for (const plugin of plugins) {
       console.log(`current build plugin: ${plugin}`);
       const { watch } = opts;
-      // eslint-disable-next-line no-await-in-loop
-      build({
-        cwd: join(__dirname, '..', plugin),
-        watch,
-      }).catch(e => {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await build({
+          cwd: join(__dirname, '..', plugin),
+          watch,
+        });
+      } catch (e) {
         console.error('current build plugin error: ', e);
         reject(e);
-      });
+      }
     }
     console.log('Build for plugins done');
     resolve();
