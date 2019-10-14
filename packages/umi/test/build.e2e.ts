@@ -56,13 +56,14 @@ for (const dir of dirs) {
   );
 }
 
-afterAll(() => {
+afterAll(done => {
   Object.keys(servers).forEach(name => {
     servers[name].server.close();
   });
   if (browser) {
     browser.close();
   }
+  done();
 });
 
 async function build(cwd: string, name: string) {

@@ -21,8 +21,9 @@ afterEach(() => {
   spy.mockRestore();
 });
 
-afterAll(() => {
+afterAll(done => {
   writeFileSync(dbPath, '{}', 'utf-8');
+  done();
 });
 
 test('addProject', () => {

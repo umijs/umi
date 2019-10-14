@@ -70,77 +70,65 @@ export async function render(oldRender) {
     document.getElementById('root'),
   );
 
-  if (history.location.pathname.startsWith('/project/')) {
-    // console.log("It's Project Manager");
-  }
-
-  // Project Manager
-  else if (history.location.pathname.startsWith('/test')) {
-    _log('Test Only');
-  }
-
-  // Project View
-  else {
-    const { data } = await callRemote({ type: '@@project/list' });
-    const props = {
-      data,
+  const { data } = await callRemote({ type: '@@project/list' });
+  const props = {
+    data,
+  };
+  let key = miniKey || data.currentProject;
+  if (key) {
+    // 在 callRemote 里使用
+    window.g_currentProject = key;
+    const currentProject = {
+      key,
+      ...get(data, `projectsByKey.${key}`, {}),
     };
-    let key = miniKey || data.currentProject;
-    if (key) {
-      // 在 callRemote 里使用
-      window.g_currentProject = key;
-      const currentProject = {
+    _log('apps data', data);
+    window.g_uiCurrentProject =
+      {
+        ...currentProject,
         key,
-        ...get(data, `projectsByKey.${key}`, {}),
-      };
-      _log('apps data', data);
-      window.g_uiCurrentProject =
-        {
-          ...currentProject,
-          key,
-        } || {};
-      _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
-      // types 和 api 上先不透露
-      window.g_uiProjects = data.projectsByKey || {};
-      try {
+      } || {};
+    _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
+    // types 和 api 上先不透露
+    window.g_uiProjects = data.projectsByKey || {};
+    try {
+      await callRemote({
+        type: '@@project/open',
+        payload: { key },
+      });
+      if (!isMini) {
         await callRemote({
-          type: '@@project/open',
+          type: '@@project/setCurrentProject',
           payload: { key },
         });
-        if (!isMini) {
-          await callRemote({
-            type: '@@project/setCurrentProject',
-            payload: { key },
-          });
-        }
-      } catch (e) {
-        props.error = e;
       }
-      if (props.error) {
-        ReactDOM.render(
-          React.createElement(require('./pages/loading').default, props),
-          document.getElementById('root'),
-        );
-        return;
-      }
-
-      // Get script and style from server, and run
-      const { script } = await callRemote({ type: '@@project/getExtraAssets' });
-      try {
-        geval(`;(function(window){;${script}\n})(window);`);
-      } catch (e) {
-        console.error(`Error occurs while executing script from plugins`);
-        console.error(e);
-      }
-
-      // Init the plugins
-      window.g_uiPlugins.forEach(uiPlugin => {
-        // only readable
-        uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
-      });
-    } else {
-      history.replace('/project/select');
+    } catch (e) {
+      props.error = e;
     }
+    if (props.error) {
+      ReactDOM.render(
+        React.createElement(require('./pages/loading').default, props),
+        document.getElementById('root'),
+      );
+      return;
+    }
+
+    // Get script and style from server, and run
+    const { script } = await callRemote({ type: '@@project/getExtraAssets' });
+    try {
+      geval(`;(function(window){;${script}\n})(window);`);
+    } catch (e) {
+      console.error(`Error occurs while executing script from plugins`);
+      console.error(e);
+    }
+
+    // Init the plugins
+    window.g_uiPlugins.forEach(uiPlugin => {
+      // only readable
+      uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
+    });
+  } else {
+    history.replace('/project/select');
   }
 
   window.g_callRemote = callRemote;

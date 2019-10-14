@@ -1,6 +1,7 @@
 import { transform } from '@babel/core';
 import { join, basename } from 'path';
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
+import { winEOL } from 'umi-utils';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -27,7 +28,7 @@ function testTransform(dir) {
   if (existsSync(expectedFile)) {
     const expected = readFileSync(expectedFile, 'utf-8');
     // window 专用，去掉一下盘符，其实表现是正常的，但是为了保证测试通过
-    expect(code.trim().replace(/C:/g, '')).toEqual(expected.trim());
+    expect(winEOL(code.trim().replace(/[A-Z]:/g, ''))).toEqual(winEOL(expected.trim()));
   } else {
     if (process.env.PRINT_CODE) {
       // console.log(code);

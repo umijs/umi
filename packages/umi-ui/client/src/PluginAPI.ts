@@ -13,7 +13,7 @@ import Terminal from '@/components/Terminal';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
-import { isMiniUI } from '@/utils';
+import { isMiniUI, getDuplicateKeys } from '@/utils';
 import Field from './components/Field';
 
 // PluginAPI
@@ -231,37 +231,12 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
-  private getDuplicateKeys(locales: IUi.ILocale[]): string[] {
-    if (!Array.isArray(locales)) return [];
-    const allLocaleKeys = locales.reduce(
-      (curr, acc) => {
-        // { key: value, key2, value }
-        const localeObj = Object.values(acc).reduce(
-          (c, locale) => ({
-            ...c,
-            ...locale,
-          }),
-          {},
-        );
-        const localeKeys = Object.keys(localeObj);
-        return curr.concat(localeKeys);
-      },
-      [] as string[],
-    );
-
-    const _seen = new Set();
-    const _store: string[] = [];
-    return allLocaleKeys.filter(
-      item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
-    );
-  }
-
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
   };
 
   addLocales: IUi.IAddLocales = locale => {
-    const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
+    const duplicateKeys = getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
       // 不影响渲染主流程

@@ -137,3 +137,32 @@ export const renderLocale = (formatUtil: any) => (
   // function util
   return formatUtil(firstArg, values);
 };
+
+/**
+ *
+ * @param locales locale duplicate keys
+ */
+export const getDuplicateKeys = (locales: IUi.ILocale[]): string[] => {
+  if (!Array.isArray(locales)) return [];
+  const allLocaleKeys = locales.reduce(
+    (curr, acc) => {
+      // { key: value, key2, value }
+      const localeObj = Object.values(acc).reduce(
+        (c, locale) => ({
+          ...c,
+          ...locale,
+        }),
+        {},
+      );
+      const localeKeys = Object.keys(localeObj);
+      return curr.concat(localeKeys);
+    },
+    [] as string[],
+  );
+
+  const _seen = new Set();
+  const _store: string[] = [];
+  return allLocaleKeys.filter(
+    item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
+  );
+};
