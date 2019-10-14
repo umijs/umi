@@ -134,6 +134,7 @@ export default function dev({
         historyApiFallback: false,
         overlay: false,
         host: HOST,
+        sockPort: port,
         proxy,
         https: !!process.env.HTTPS,
         cert: CERT,
