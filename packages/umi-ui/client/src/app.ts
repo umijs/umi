@@ -71,7 +71,7 @@ export async function render(oldRender) {
   const props = {
     data,
   };
-  const key = miniKey || data.currentProject;
+  const key = isMini ? miniKey : data.currentProject;
 
   if (key) {
     // 在 callRemote 里使用
