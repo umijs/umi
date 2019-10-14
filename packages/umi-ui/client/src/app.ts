@@ -134,7 +134,6 @@ export async function render(oldRender) {
 
   // 已经解决项目报错
   if (history.location.pathname === '/error') {
-    debugger;
     history.replace('/dashboard');
   }
 
