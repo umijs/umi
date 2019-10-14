@@ -6,6 +6,7 @@ import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
 import { Terminal as XTerminal } from 'xterm';
+import history from '@tmp/history';
 import Terminal from '@/components/Terminal';
 import Context from '@/layouts/Context';
 import intl from '@/utils/intl';
@@ -65,6 +66,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
     this.setState({
       actionLoading: false,
     });
+    history.replace('/');
     window.location.reload();
   };
 

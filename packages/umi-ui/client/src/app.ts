@@ -131,12 +131,6 @@ export async function render(oldRender) {
   }
 
   window.g_callRemote = callRemote;
-
-  // 已经解决项目报错
-  if (history.location.pathname === '/error') {
-    history.replace('/dashboard');
-  }
-
   // Do render
   oldRender();
 }
