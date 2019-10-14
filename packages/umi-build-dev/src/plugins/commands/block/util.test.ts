@@ -1,4 +1,11 @@
-import { routeExists, genBlockName } from './util';
+import {
+  routeExists,
+  genBlockName,
+  depthRouterConfig,
+  genRouterToTreeData,
+  reduceData,
+} from './util';
+import routerConfig from '../../fixtures/util/routerConfig';
 
 test('not exists', () => {
   expect(routeExists('/foo', [{ path: '/bar' }])).toEqual(false);
@@ -69,4 +76,8 @@ test('pro routes exists', () => {
 
 test('genBlockName test', () => {
   expect(genBlockName('DashboardAnalysis')).toEqual('dashboard/analysis');
+});
+
+test('gen router config', () => {
+  expect(depthRouterConfig(reduceData(genRouterToTreeData(routerConfig)))).toMatchSnapshot();
 });
