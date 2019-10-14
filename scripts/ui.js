@@ -14,7 +14,10 @@ function buildUIApp(opts = {}) {
       UMI_UI_SERVER: 'none',
     },
   });
-  return child;
+  process.on('SIGINT', () => {
+    console.log('Build for all done');
+    child.kill('SIGINT');
+  });
 }
 
 const buildPlugins = async (plugins, opts = {}) => {
@@ -49,14 +52,9 @@ const buildPlugins = async (plugins, opts = {}) => {
   ];
 
   // 并行执行 ui plugins build 和 UI App build
-  const child = await Promise.all([
+  await Promise.all([
     // 串行执行 ui plugins 避免插件过多时 OOM
     buildPlugins(plugins, { watch }),
     buildUIApp({ watch }),
   ]);
-
-  process.on('SIGINT', () => {
-    console.log('Build for all done');
-    child.kill('SIGINT');
-  });
 })();
