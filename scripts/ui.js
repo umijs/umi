@@ -1,5 +1,6 @@
 const { fork } = require('child_process');
 const { join } = require('path');
+const { build } = require('father-build/lib/build');
 
 const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
 
@@ -14,43 +15,46 @@ function buildUIApp(opts = {}) {
     },
   });
   process.on('SIGINT', () => {
+    console.log('Build for all done');
     child.kill('SIGINT');
   });
 }
 
-function buildPlugins(roots, opts = {}) {
-  return roots.map(root => {
-    console.log(`Build for ${root}`);
-    const { watch } = opts;
-    return require('father-build/lib/build').build({
-      cwd: join(__dirname, '..', root),
-      watch,
-    });
+const buildPlugins = async (plugins, opts = {}) => {
+  return new Promise(async (resolve, reject) => {
+    for (const plugin of plugins) {
+      console.log(`current build plugin: ${plugin}`);
+      const { watch } = opts;
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await build({
+          cwd: join(__dirname, '..', plugin),
+          watch,
+        });
+      } catch (e) {
+        console.error('current build plugin error: ', e);
+        reject(e);
+      }
+    }
+    console.log('Build for plugins done');
+    resolve();
   });
-}
+};
 
 (async () => {
   const watch = process.argv.includes('-w') || process.argv.includes('--watch');
-  try {
-    await Promise.all(
-      buildPlugins(
-        [
-          'packages/umi-plugin-ui/src/plugins/dashboard',
-          'packages/umi-plugin-ui/src/plugins/configuration',
-          'packages/umi-ui-tasks/src',
-          'packages/umi-build-dev/src/plugins/commands/block/ui',
-          'packages/umi-plugin-react/ui',
-        ],
-        {
-          watch,
-        },
-      ),
-    );
-  } catch (e) {
-    console.error('Build plugins failed', e);
-  }
-  console.log('Build for plugins done');
-  buildUIApp({
-    watch,
-  });
+  const plugins = [
+    'packages/umi-plugin-ui/src/plugins/dashboard',
+    'packages/umi-plugin-ui/src/plugins/configuration',
+    'packages/umi-ui-tasks/src',
+    'packages/umi-build-dev/src/plugins/commands/block/ui',
+    'packages/umi-plugin-react/ui',
+  ];
+
+  // 并行执行 ui plugins build 和 UI App build
+  await Promise.all([
+    // 串行执行 ui plugins 避免插件过多时 OOM
+    buildPlugins(plugins, { watch }),
+    buildUIApp({ watch }),
+  ]);
 })();
