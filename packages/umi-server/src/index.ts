@@ -17,7 +17,7 @@ type IArgs = {
   chunkMap: ICunkMap;
   load: (html: string) => ReturnType<typeof load>;
 } & Pick<IConfig, 'publicPath'>;
-export type IHandler = (html: string, args: IArgs) => string;
+export type IHandler<T = string> = (html: string, args: IArgs) => T;
 export interface IConfig {
   /** dist path */
   root: string;
@@ -82,11 +82,14 @@ const server: IServer = config => {
     };
     // compose all html handlers
     const ssrHtml = compose(
+      renderString,
+      handlerOpts,
+    )(
       injectChunkMaps,
       patchDoctype,
       // user define handler
       postProcessHtml,
-    )(renderString, handlerOpts);
+    );
 
     // enable render rootContainer
     // const ssrHtmlElement =

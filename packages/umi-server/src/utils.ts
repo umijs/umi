@@ -35,10 +35,10 @@ export const injectChunkMaps: IHandler = (html, args) => {
   return $.html();
 };
 
-type ICompose = (...handler: IHandler[]) => IHandler;
+type ICompose = IHandler<(...handler: any[]) => string>;
 
-export const compose: ICompose = (...handler) =>
-  handler.reduce((acc, curr) => (html, args) => curr(acc(html, args), args));
+export const compose: ICompose = (html, args) => (...handler) =>
+  handler.reduce((acc, curr) => curr(acc(html, args), args));
 
 export const patchDoctype = (html: string) => {
   return /^<!DOCTYPE html>/.test(html) ? html : `<!DOCTYPE html>${html}`;
