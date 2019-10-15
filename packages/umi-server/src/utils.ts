@@ -1,6 +1,11 @@
 import { join } from 'path';
 import ssrPolyfill from 'ssr-polyfill';
+import { parse, format } from 'url';
 import { existsSync } from 'fs';
+
+declare var global: {
+  [key: string]: any;
+};
 
 export const patchDoctype = (html: string) => {
   return /^<!DOCTYPE html>/.test(html) ? html : `<!DOCTYPE html>${html}`;
@@ -13,46 +18,48 @@ export const findFile = (baseDir, fileName) => {
   }
 };
 
-export const nodePolyfill = (enable = false) => (url, context): any => {
-  const mountGlobal = ['document', 'location', 'navigator', 'Image', 'self'];
-  let params = {};
-  if (typeof context === 'object') {
-    params = context;
-  } else if (typeof context === 'function') {
-    params = context();
-  }
+export type INodePolyfillDecorator = (
+  enable: boolean,
+  url?: string,
+) => (url?: string, context?: {}) => void;
 
-  const mockWin = ssrPolyfill({
-    url,
-    ...params,
-  });
-
-  if (!enable) {
-    (global as any).window = {};
+export const nodePolyfillDecorator: INodePolyfillDecorator = (
+  enable = false,
+  origin = 'http://localhost',
+) => {
+  // init
+  global.window = {};
+  if (enable) {
+    const mockWin = ssrPolyfill({
+      url: origin,
+    });
+    const mountGlobal = ['document', 'location', 'navigator', 'Image', 'self'];
     mountGlobal.forEach(mount => {
       global[mount] = mockWin[mount];
     });
-    return (global as any).window;
+
+    global.window = mockWin;
+
+    // using window.document, window.location to mock document, location
+    mountGlobal.forEach(mount => {
+      global[mount] = mockWin[mount];
+    });
+
+    // if use pathname to mock location.pathname
+    return (url, context = {}) => {
+      const { pathname, query } = parse(url);
+      const urlObj = {
+        ...parse(origin),
+        pathname,
+        query,
+      };
+      Object.defineProperty(window, 'location', {
+        writable: true,
+        value: urlObj,
+      });
+    };
   }
-
-  // mock first
-  (global as any).window = mockWin;
-
-  // mock global
-  mountGlobal.forEach(mount => {
-    global[mount] = mockWin[mount];
-  });
-
-  // merge user global params
-  Object.keys(params).forEach(key => {
-    // just mount global key (filter mountGlobal)
-    // like { USER_BAR: "foo" }
-    // => global.USER_BAR = "foo";
-    // => global.window.USER_BAR = "foo";
-    if (!mountGlobal.includes(key)) {
-      global[key] = params[key];
-    }
-  });
-
-  return mockWin;
+  return () => {
+    // noop
+  };
 };

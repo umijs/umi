@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { nodePolyfill, patchDoctype } from './utils';
+import { nodePolyfillDecorator, patchDoctype } from './utils';
 
 export interface IConfig {
   root?: string;
@@ -7,7 +7,7 @@ export interface IConfig {
   filename?: string;
   /** default false */
   polyfill?: boolean;
-  runInMockContext?: {};
+  // runInMockContext?: {};
   // use renderToStaticMarkup
   staticMarkup?: boolean;
   // htmlSuffix
@@ -34,10 +34,9 @@ const server: IServer = config => {
     manifest = join(root, 'ssr-client-mainifest.json'),
     filename = join(root, 'umi.server'),
     staticMarkup = false,
-    runInMockContext = {},
     polyfill = false,
   } = config;
-  nodePolyfill(polyfill)('http://localhost', runInMockContext);
+  const nodePolyfill = nodePolyfillDecorator(!!polyfill, 'http://localhost');
   // eslint-disable-next-line import/no-dynamic-require
   const serverRender = require(filename);
   const { ReactDOMServer } = serverRender;
@@ -46,7 +45,8 @@ const server: IServer = config => {
     const {
       req: { url },
     } = ctx;
-
+    // polyfill pathname
+    nodePolyfill(url);
     const { htmlElement, rootContainer, matchPath } = await serverRender.default(ctx);
     const ssrHtml = patchDoctype(
       ReactDOMServer[staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](htmlElement),
