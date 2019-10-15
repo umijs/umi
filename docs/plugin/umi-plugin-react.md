@@ -194,6 +194,13 @@ window.addEventListener('sw.updated', () => {
 });
 ```
 
+```js
+window.addEventListener('sw.registered', e => {
+  // e.detail.update()  // trigger a manual update
+  // Configure the appropriate polling and match the sw.updated event, without the user refreshing or opening a new tab to update.
+});
+```
+
 You can also react to network environment changes, such as offline/online:
 
 ```js
@@ -201,6 +208,8 @@ window.addEventListener('sw.offline', () => {
   // make some components gray
 });
 ```
+
+`sw.*` Events are synchronized with events in [register-service-worker] (https://www.npmjs.com/package/register-service-worker). For more usage, please refer to the link above.
 
 ### hd
 
