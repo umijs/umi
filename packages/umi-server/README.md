@@ -12,9 +12,10 @@ npm install umi-server -S
 
 ```js
 const server = require('umi-server');
+const { join } = require('path');
 
 const render = server({
-  root: process.cwd(),
+  root: join(__dirname, 'dist'),
   publicPath: '/',
 })
 
