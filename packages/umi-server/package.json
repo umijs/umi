@@ -6,10 +6,8 @@
     "umi-server": "./bin/umi-server.js"
   },
   "main": "lib/index.js",
-  "module": "es/index.js",
   "files": [
     "bin",
-    "es",
     "lib"
   ],
   "dependencies": {
