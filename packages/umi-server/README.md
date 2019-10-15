@@ -14,17 +14,8 @@ npm install umi-server -S
 const server = require('umi-server');
 
 const render = server({
-  cwd: process.cwd(),
-  serverFile: './dist/umi.server',
-  manifestFileName: './dist/ssr-client-mainifest.json',
+  root: process.cwd(),
   publicPath: '/',
-  // default set false, maybe breakChange
-  polyfill: false,
-  // use renderToStaticMarkup, default renderToString
-  staticMarkup: false,
-  postProcessHtml: () => {},
-  // TODO: serverless
-  serverless: true,
 })
 
 // your server
@@ -45,9 +36,29 @@ http.createServer(async (req, res) => {
 })
 ```
 
-Static Server:
+## Usage
 
-```bash
-$ npm install umi-server -g
-$ umi-server
+The type definition:
+
+```js
+interface IConfig {
+  /** dist path */
+  root: string;
+  /** static assets publicPath */
+  publicPath: string;
+  /** ssr manifest, default: `${root}/ssr-client-mainifest.json` */
+  manifest?: string;
+  /** umi ssr server file, default: `${root}/umi.server.js` */
+  filename?: string;
+  /** default false */
+  polyfill?: boolean;
+  /** use renderToStaticMarkup  */
+  staticMarkup?: boolean;
+  /** handler function for user to modify render html */
+  postProcessHtml?: IHandler;
+  /** TODO: serverless */
+  serverless?: boolean;
+}
+
+type IHandler = (html: string, args: IArgs) => string;
 ```

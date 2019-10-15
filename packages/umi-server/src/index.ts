@@ -1,31 +1,51 @@
+/* eslint-disable import/no-dynamic-require */
 import { join } from 'path';
-import { nodePolyfillDecorator, patchDoctype } from './utils';
+import { load } from 'cheerio';
+import {
+  nodePolyfillDecorator,
+  patchDoctype,
+  compose,
+  injectChunkMaps,
+  _getDocumentHandler,
+} from './utils';
 
+interface ICunkMap {
+  js: string[];
+  css: string[];
+}
+type IArgs = {
+  chunkMap: ICunkMap;
+  load: (html: string) => ReturnType<typeof load>;
+} & Pick<IConfig, 'publicPath'>;
+export type IHandler = (html: string, args: IArgs) => string;
 export interface IConfig {
-  root?: string;
+  /** dist path */
+  root: string;
+  /** static assets publicPath */
+  publicPath: string;
+  /** ssr manifest, default: `${root}/ssr-client-mainifest.json` */
   manifest?: string;
+  /** umi ssr server file, default: `${root}/umi.server.js` */
   filename?: string;
   /** default false */
   polyfill?: boolean;
-  // runInMockContext?: {};
-  // use renderToStaticMarkup
+  /** use renderToStaticMarkup  */
   staticMarkup?: boolean;
-  // htmlSuffix
-  htmlSuffix?: boolean;
-  // modify render html function
+  /** handler function for user to modify render html */
+  postProcessHtml?: IHandler;
+  /** TODO: serverless */
+  serverless?: boolean;
 }
-
 export interface IContext {
   req: {
     url: string;
   };
 }
-
 export interface IResult {
   ssrHtml: string;
   matchPath: string;
+  chunkMap: ICunkMap;
 }
-
 type IServer = (config: IConfig) => (ctx: IContext) => Promise<IResult>;
 
 const server: IServer = config => {
@@ -35,10 +55,12 @@ const server: IServer = config => {
     filename = join(root, 'umi.server'),
     staticMarkup = false,
     polyfill = false,
+    postProcessHtml = html => html,
+    publicPath = '/',
   } = config;
   const nodePolyfill = nodePolyfillDecorator(!!polyfill, 'http://localhost');
-  // eslint-disable-next-line import/no-dynamic-require
   const serverRender = require(filename);
+  const manifestFile = require(manifest);
   const { ReactDOMServer } = serverRender;
 
   return async ctx => {
@@ -47,15 +69,31 @@ const server: IServer = config => {
     } = ctx;
     // polyfill pathname
     nodePolyfill(url);
-    const { htmlElement, rootContainer, matchPath } = await serverRender.default(ctx);
-    const ssrHtml = patchDoctype(
-      ReactDOMServer[staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](htmlElement),
+    const { htmlElement, matchPath } = await serverRender.default(ctx);
+    const renderString = ReactDOMServer[staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](
+      htmlElement,
     );
+    const chunkMap: ICunkMap = manifestFile[matchPath];
+
+    const handlerOpts = {
+      publicPath,
+      chunkMap,
+      load: _getDocumentHandler,
+    };
+    // compose all html handlers
+    const ssrHtml = compose(
+      injectChunkMaps,
+      patchDoctype,
+      // user define handler
+      postProcessHtml,
+    )(renderString, handlerOpts);
+
     // enable render rootContainer
     // const ssrHtmlElement =
     return {
       ssrHtml,
       matchPath,
+      chunkMap,
     };
   };
 };

@@ -1,11 +1,44 @@
 import { join } from 'path';
 import ssrPolyfill from 'ssr-polyfill';
-import { parse, format } from 'url';
+import { parse } from 'url';
+import { load } from 'cheerio';
 import { existsSync } from 'fs';
+import { IHandler } from './index';
+
+export const _getDocumentHandler = (html: string, option: object = {}): ReturnType<typeof load> => {
+  return load(html, {
+    decodeEntities: false,
+    recognizeSelfClosing: true,
+    ...option,
+  });
+};
 
 declare var global: {
   [key: string]: any;
 };
+
+export const injectChunkMaps: IHandler = (html, args) => {
+  const { publicPath, chunkMap, load } = args;
+  const { js, css } = chunkMap;
+  const $ = load(html);
+  // filter umi.css and umi.*.css, htmlMap have includes
+  const styles = css.filter(style => !/^umi\.\w+\.css$/g.test(style)) || [];
+  styles.forEach(style => {
+    $('head').append(`<link rel="stylesheet" href="${publicPath}${style}" />`);
+  });
+  // filter umi.js and umi.*.js
+  const scripts = js.filter(script => !/^umi([.\w]*)?\.js$/g.test(script)) || [];
+  scripts.forEach(script => {
+    $('head').append(`<link rel="preload" href="${publicPath}${script}" as="script"/>`);
+  });
+
+  return $.html();
+};
+
+type ICompose = (...handler: IHandler[]) => IHandler;
+
+export const compose: ICompose = (...handler) =>
+  handler.reduce((acc, curr) => (html, args) => curr(acc(html, args), args));
 
 export const patchDoctype = (html: string) => {
   return /^<!DOCTYPE html>/.test(html) ? html : `<!DOCTYPE html>${html}`;

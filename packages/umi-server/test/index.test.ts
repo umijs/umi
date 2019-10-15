@@ -19,6 +19,7 @@ async function build({ cwd }) {
     child.on('exit', code => {
       if (code === 1) {
         reject(new Error('Build failed'));
+        process.exit(code);
       } else {
         resolve();
       }
@@ -43,6 +44,7 @@ describe('build', () => {
   it('ssr', async () => {
     const render = server({
       root: join(fixtures, 'ssr', 'dist'),
+      publicPath: '/',
     });
     const { ssrHtml } = await render({
       req: {
@@ -55,6 +57,7 @@ describe('build', () => {
   it('ssr-styles', async () => {
     const render = server({
       root: join(fixtures, 'ssr-styles', 'dist'),
+      publicPath: '/',
     });
 
     const { ssrHtml: indexHtml } = await render({
@@ -71,5 +74,38 @@ describe('build', () => {
       },
     });
     expect(newsHtml).toMatchSnapshot();
+  });
+
+  it('ssr-dynamicImport', async () => {
+    const render = server({
+      root: join(fixtures, 'ssr-dynamicImport', 'dist'),
+      publicPath: '/',
+    });
+    const { ssrHtml, chunkMap } = await render({
+      req: {
+        url: '/',
+      },
+    });
+    expect(ssrHtml).toMatchSnapshot();
+    expect(chunkMap).toEqual({
+      css: [],
+      js: ['umi.js', 'p__index.async.js'],
+    });
+
+    const renderPostProcessHtml = server({
+      root: join(fixtures, 'ssr-dynamicImport', 'dist'),
+      publicPath: '/',
+      postProcessHtml: (html, { load }) => {
+        const $ = load(html);
+        $('html').attr('lang', 'zh');
+        return $.html();
+      },
+    });
+    const { ssrHtml: ssrHtmlPostProcessHtml } = await renderPostProcessHtml({
+      req: {
+        url: '/',
+      },
+    });
+    expect(ssrHtmlPostProcessHtml).toMatchSnapshot();
   });
 });
