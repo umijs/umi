@@ -547,6 +547,7 @@ export default class UmiUI {
         );
         break;
       case '@@project/list':
+        this.config.checkValid();
         success({
           data: this.config.data,
         });
