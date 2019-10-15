@@ -53,7 +53,7 @@ jobs:
         displayName: build
       - script: yarn ui:build
         displayName: ui:build
-      - script: yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true
