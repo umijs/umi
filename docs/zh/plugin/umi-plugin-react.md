@@ -85,7 +85,7 @@ export default {
 启用后自动配置 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 实现 antd, antd-mobile 和 antd-pro 的按需编译，并且内置 antd, antd-mobile 依赖，无需手动在项目中安装。
 
 ::: warning
- 如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。 
+如果项目中有 antd 或者 antd-mobile 依赖，则优先使用项目中的依赖。 
 :::
 
 ### routes
