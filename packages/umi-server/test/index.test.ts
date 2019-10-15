@@ -31,11 +31,9 @@ const fixtures = join(winPath(__dirname), 'fixtures');
 describe('build', () => {
   beforeAll(async () => {
     const dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
-    console.log('dirs', dirs);
-    for (const dir of dirs) {
-      // eslint-disable-next-line no-await-in-loop
-      await build({ cwd: join(fixtures, dir) });
-    }
+
+    const buildPromise = dirs.map(dir => build({ cwd: join(fixtures, dir) }));
+    await Promise.all(buildPromise);
   });
 
   afterAll(done => {
