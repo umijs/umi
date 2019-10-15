@@ -1,18 +1,11 @@
 import { join } from 'path';
 import { fork } from 'child_process';
-import { existsSync, readdirSync } from 'fs';
+import { winEOL } from 'umi-utils';
+import server from '..';
 
-const fixtures = join(__dirname, 'fixtures');
-let dirs = readdirSync(fixtures).filter(dir => dir.charAt(0) !== '.');
-const testOnly = dirs.some(dir => /-only/.test(dir));
-if (testOnly) {
-  dirs = dirs.filter(dir => /-only/.test(dir));
-}
-dirs = dirs.filter(dir => !/^x-/.test(dir));
-
-async function umiBuild(cwd) {
+async function build({ cwd }) {
   return new Promise((resolve, reject) => {
-    const umiPath = require('umi/bin/umi');
+    const umiPath = join(__dirname, '..', 'node_modules', '.bin', 'umi');
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
@@ -32,11 +25,34 @@ async function umiBuild(cwd) {
   });
 }
 
-describe('build fixtures', () => {
-  require('test-build-result')({
-    root: join(__dirname, './fixtures'),
-    build: async ({ cwd, dir }) => {
-      await umiBuild(cwd);
-    },
+const fixtures = join(__dirname, 'fixtures');
+
+describe('build', () => {
+  beforeAll(() => {
+    require('test-build-result')({
+      root: fixtures,
+      build({ cwd, dir }) {
+        return new Promise((resolve, reject) => {
+          build({ cwd });
+        });
+      },
+      replaceContent(content) {
+        return winEOL(content.replace(/\/\/ EXTERNAL MODULE[^\n]+/g, '// $EXTERNAL_MODULE$'));
+      },
+    });
+  });
+  afterAll(done => {
+    done();
+  });
+  it('ssr', async () => {
+    const render = server({
+      root: join(fixtures, 'ssr', 'dist'),
+    });
+    const { ssrHtml } = await render({
+      req: {
+        url: '/',
+      },
+    });
+    expect(ssrHtml).toMatch(/Hello UmiJS SSR/);
   });
 });

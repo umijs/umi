@@ -1,7 +1,8 @@
+import { join } from 'path';
 import { nodePolyfill, patchDoctype } from './utils';
 
 export interface IConfig {
-  cwd?: string;
+  root?: string;
   manifest?: string;
   filename?: string;
   /** default false */
@@ -20,11 +21,18 @@ export interface IContext {
   };
 }
 
-const server = (config: IConfig) => {
+export interface IResult {
+  ssrHtml: string;
+  matchPath: string;
+}
+
+type IServer = (config: IConfig) => (ctx: IContext) => Promise<IResult>;
+
+const server: IServer = config => {
   const {
-    cwd,
-    manifest,
-    filename = '',
+    root,
+    manifest = join(root, 'ssr-client-mainifest.json'),
+    filename = join(root, 'umi.server'),
     staticMarkup = false,
     runInMockContext = {},
     polyfill = false,
@@ -34,7 +42,7 @@ const server = (config: IConfig) => {
   const serverRender = require(filename);
   const { ReactDOMServer } = serverRender;
 
-  return async (ctx: IContext) => {
+  return async ctx => {
     const {
       req: { url },
     } = ctx;
