@@ -6,7 +6,7 @@ import server from '..';
 
 async function build({ cwd }) {
   return new Promise((resolve, reject) => {
-    const umiPath = join(winPath(__dirname), '..', 'node_modules', '.bin', 'umi');
+    const umiPath = join(winPath(__dirname), '..', '..', 'umi', 'bin', 'umi');
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
