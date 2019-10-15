@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.2.0",
+    "markdown-it-plantuml": "^1.4.1",
     "vuepress": "^1.2.0"
   },
   "engines": {
