@@ -1,0 +1,28 @@
+{
+  "name": "umi-server",
+  "version": "0.0.1",
+  "bin": {
+    "umi-server": "./bin/umi-server.js"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "bin",
+    "es",
+    "lib"
+  ],
+  "dependencies": {
+    "chalk": "2.4.2",
+    "serve-static": "1.14.1",
+    "yargs-parser": "13.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/umijs/umi",
+    "directory": "packages/umi-server"
+  },
+  "authors": [
+    "ycjcl868 <chaolinjin@gmail.com> (https://github.com/ycjcl868)"
+  ],
+  "license": "MIT"
+}
