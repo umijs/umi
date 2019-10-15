@@ -102,6 +102,13 @@ $ y ui:build --watch
 # Then run umi ui under a umi project.
 $ umi ui
 
+# if want to debug for more defail, using
+$ DEBUG=umiui:UmiUI* umi ui
+
 # Or
 $ umi dev --ui
 ```
+
+PR rebase automatically using `/rebase` comment.
+
+![image](https://user-images.githubusercontent.com/13595509/65825000-14069380-e2a4-11e9-9186-e3c31d265b5f.png)

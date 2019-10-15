@@ -51,10 +51,10 @@ ROUTE_PATH-bar
     ).toEqual(
       `
 /foo/bar
-foo-bar
+fooandbar
 bar
 Bar
-fooBar
+fooAndbar
 /foo/bar_foo
 /foo/bar-bar
     `.trim(),

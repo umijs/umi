@@ -8,7 +8,7 @@ export class LintTask extends BaseTask {
     this.type = TaskType.LINT;
   }
 
-  public async run(env: any = {}) {
+  public async run(args = {}, env: any = {}) {
     await super.run();
     this.proc = runCommand(this.getScript(), {
       cwd: this.cwd,

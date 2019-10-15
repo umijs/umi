@@ -222,7 +222,7 @@ api.addPanel({
   // 图标，同 antd icon
   icon: IconType | string;
   // 全局操作按钮，位于插件面板右上角
-  actions?: {
+  actions?: ReactNode | React.FC | {
     // 标题
     title: string;
     // 按钮样式
@@ -232,10 +232,12 @@ api.addPanel({
     // 额外的点击事件
     onClick?: () => void;
   }[];
+  // 实验室插件，开启后插件会加入到实验室中，默认 false
+  beta?: boolean;
 });
 ```
 
-示例：
+简单示例：
 
 ```js
 // ui.(jsx|tsx)
@@ -252,6 +254,45 @@ export default (api) => {
   });
 };
 ```
+
+添加插件全局操作区示例（动态修改全局操作区，参考 [api.setActionPanel](#api-setactionpanel)）：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+import Template from './ui/index';
+
+export default (api) => {
+  const ActionComp = () => (
+    <Input.Search />
+  )
+
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    actions: [
+      ActionComp,
+      <button>Button</button>,
+      {
+        title: '打开编辑器',
+        type: 'default',
+        action: {
+          // 通过 api.onUISocket 定义
+          type: '@@actions/openConfigFile',
+          payload: {
+            projectPath: api.currentProject.path,
+          },
+        }
+      }
+    ],
+    // api 透传至组件
+    component: () => <Template api={api} />,
+  });
+};
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65385510-0b710300-dd62-11e9-8f92-99c3eff45833.png)
 
 ### api.addLocales()
 
@@ -282,13 +323,30 @@ export default (api) => {
 };
 ```
 
-### api.intl()
+### api.intl.*
 
-使用国际化，使用 [api.addLocale](#api.addLocales()) 添加国际化字段后，可以在组件里使用 `api.intl` 使用国际化。
+使用国际化，使用 [api.addLocale](#api-addlocales) 添加国际化字段后，可以在组件里使用 `api.intl.*` 处理国际化。
 
-参数：
+提供的国际化方法如下：
 
-`api.intl` 与 [formatMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md#formatmessage) 参数一致。
+```ts
+type PickIntl = Pick<typeof intl,
+  'FormattedDate' |
+  'FormattedTime' |
+  'FormattedRelative' |
+  'FormattedNumber' |
+  'FormattedPlural' |
+  'FormattedMessage' |
+  'FormattedHTMLMessage' |
+  'formatMessage' |
+  'formatHTMLMessage' |
+  'formatDate' |
+  'formatTime' |
+  'formatRelative' |
+  'formatNumber' |
+  'formatPlural'
+>
+```
 
 例如：
 
@@ -297,14 +355,30 @@ export default (api) => {
 import React from 'react';
 
 export default (api) => {
+  // 用法 api 参考 https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md
+  const {
+    FormattedMessage,
+    formatMessage,
+  } = api.intl;
+  const Component = (
+    <div>
+      <p>{formatMessage({ id: 'org.sorrycc.react.home' })}</p>
+      <FormattedMessage id="org.sorrycc.react.foo" />
+      <p>api.intl alias `api.intl.formatMessage`: {api.intl({ id: 'org.sorrycc.react.name' })}</p>
+    </div>
+  )
   api.addPanel({
     title: '插件模板',
     path: '/plugin-bar',
     icon: 'environment',
-    component: <div>{api.intl({ id: 'org.sorrycc.react.name' })}</div>,
+    component: ,
   });
 };
 ```
+
+> `api.intl()` 与 [formatMessage](https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md#formatmessage) 参数一致，`api.intl()` 与 `api.intl.formatMessage()` 等价。
+
+![image](https://user-images.githubusercontent.com/13595509/66404196-9288d100-ea1a-11e9-9ada-1204744018d2.png)
 
 ### api.getLocale()
 
@@ -360,11 +434,73 @@ api.addPanel({
 });
 ```
 
+### api.Terminal
+
+Terminal component.
+
+parameters are as follows:
+
+```ts
+interface ITerminalProps {
+  /** Terminal title */
+  title?: string;
+  className?: string;
+  terminalClassName?: string;
+  /** defaultValue in Terminal */
+  defaultValue?: string;
+  /** terminal init event */
+  onInit?: (ins: XTerminal) => void;
+  /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
+  config?: ITerminalOptions;
+  [key: string]: any;
+}
+```
+
+For example:
+
+use the instance, call the output functions:
+
+```js
+import React, { useState } from 'react'
+
+export default (api) => {
+  const { Terminal } = api;
+
+  function Component() {
+    let terminal;
+
+    const handleClick = () => {
+      terminal.write('Hello World');
+    }
+
+    return (
+      <div>
+        <Terminal
+          title="插件日志"
+          onInit={ins => {
+            terminal = ins;
+          }}
+        />
+        <button onClick={handleClick}>开始</button>
+      </div>
+    );
+  }
+
+  api.addPanel({
+    component: Component,
+  });
+}
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65759665-09d28100-e14e-11e9-960b-3c600a5485e1.png)
+
+more usage see the [docs](https://xtermjs.org/docs/)
+
 ### api.Field
 
 Configure form components, used in combination with [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) to simplify form components and generate forms using profiles .
 
-`api.Field` parameters are as follows：
+`api.Field` parameters are as follows:
 
 ```ts
  interface IFieldProps {
@@ -382,6 +518,8 @@ Configure form components, used in combination with [antd 4.x](https://4-0-prepa
   /** antd label, if it is object, use the built-in <Label /> component */
   /** object params { title: string, description: string, link?: string } */
   label: string | ReactNode | IFieldLabel;
+  /** Field size, default */
+  size?: 'default' | 'small' | 'large';
   /** Other types are consistent with Form.Item */
   [key: string]: any;
 }
@@ -451,6 +589,120 @@ api.addPanel({
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/ynwTwNrNjv/6af464b4-742b-4ce8-9ee2-92c826f2e51b.png)
 
+
+
+### api.ConfigForm
+
+配置表单页面，对 [api.Field](#api-field) 的上层封装，增加查询、修改接口即可生成表单页面：
+
+
+`api.ConfigForm` 参数如下：
+
+```js
+interface IConfigFormProps {
+  /** config title in the top */
+  title: string;
+  /** list config interface */
+  list: string;
+  /** edit config interface */
+  edit: string;
+  /** enable Toc, default false */
+  enableToc?: boolean;
+  /** Search fuse options, detail in https://github.com/krisk/Fuse */
+  fuseOpts?: FuseOptions<number>;
+}
+```
+
+使用示例：
+
+服务端
+
+```js
+// server
+export default (api) => {
+  // more options in `api.Field` IFieldProps
+  const data = [
+    {
+      "name": "base",
+      "group": "Group1",
+      "type": "string",
+      "default": "/",
+      "title": "group1",
+      "description": "description1",
+    },
+    {
+      "group": "Group2",
+      "name": "group2",
+      "title": "title2",
+      "description": "description2",
+      "type": "boolean",
+      "default": false,
+    },
+    {
+      "group": "Group2",
+      // if you want link parent config, use `.` dot split
+      "name": "group2.bar",
+      "title": "title3",
+      "description": "description3",
+      "type": "boolean",
+      "default": false,
+    },
+  ]
+
+  api.onUISocket(({ action, failure, success }) => {
+    const { type, payload, lang } = action;
+    switch (type) {
+      case 'org.umi.plugin.bar.config.list':
+        success({
+          data,
+        });
+        break;
+      case 'org.umi.plugin.bar.config.edit':
+        let config = payload.key;
+        if (typeof payload.key === 'string') {
+          config = {
+            [payload.key]: payload.value,
+          };
+        }
+        try {
+          // your validate function
+          // validateConfig(config);
+          // (api as any).service.runCommand('config', {
+          //   _: ['set', config],
+          // });
+          success();
+        } catch (e) {
+          failure({
+            message: e.message,
+            errors: e.errors,
+          });
+        }
+        break;
+      default:
+        break;
+    }
+  });
+}
+```
+
+客户端
+
+```jsx
+// client
+const { ConfigForm } = api;
+
+api.addPanel({
+  component: (
+    <ConfigForm
+      title="title Config"
+      list="org.umi.plugin.bar.config.list"
+      edit="org.umi.plugin.bar.config.edit"
+    />
+  ),
+});
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65481497-2fe6ef80-dec8-11e9-946f-7a8097c1e05e.png)
 
 ### api.notify
 
@@ -559,6 +811,10 @@ export default () => {
 
 ![image](https://gw.alipayobjects.com/zos/antfincdn/0%26OBjUyZHz/01bc8117-fa3a-4421-b2f1-e8784883ffff.png)
 
+如果需要调试 `mini` 版日志，再增加一个 `debugMini: umiui`。
+
+![image](https://user-images.githubusercontent.com/13595509/66537320-928bec80-eb52-11e9-93ed-8b921b4a30a6.png)
+
 > 不建议在插件里使用 `console.log` 调用。
 
 
@@ -569,14 +825,133 @@ export default () => {
 示例：
 
 ```js
-const { getCwd } = api;
+const cwd = await api.getCwd();
+// "/private/tmp/xxxx"
+```
 
-export default () => {
-  useEffect(() => {
-    (async () => {
-      const cwd = await getCwd();
-      // set
-    })
-  }, []);
+### api.getSharedDataDir()
+
+获取当前项目的临时目录。
+
+示例：
+
+```js
+const dir = await api.getSharedDataDir();
+// "/Users/xxxxx/.umi/ui/shared-data/5bc6bd"
+```
+
+### api.detectLanguage()
+
+获取当前项目的语言类型。
+
+示例：
+
+```js
+const language = await api.detectLanguage();
+// "JavaScript" | "TypeScript"
+```
+
+### api.detectNpmClients()
+
+获取当前项目可能在用的 npm 客户端数组。
+
+示例：
+
+```js
+const npmClients = await api.detectNpmClients();
+// ["tnpm", "ayarn", "npm", "yarn"]
+```
+
+### api.addConfigSection()
+
+添加配置区块。
+
+示例：
+
+```js
+api.addConfigSection({
+  key: 'umi-plugin-react',
+  title: 'umi-plugin-react 配置',
+  description: '配置 dva、antd、按需加载、国际化等',
+  icon: (
+    <img
+      src="https://img.alicdn.com/tfs/TB1aqdSeEY1gK0jSZFMXXaWcVXa-64-64.png"
+      width={32}
+      height={32}
+    />
+  ),
+  component: () => <div>TODO</div>,
+});
+```
+
+### api.isMini() / api.mini
+
+Get whether the current environment is Umi UI mini.
+
+For example:
+
+```js
+const isMini = api.isMini();  // true / false
+// or const isMini = api.mini
+```
+
+![image](https://user-images.githubusercontent.com/13595509/65216522-c2ac1680-dae3-11e9-868a-80ec7bd32e1d.png)
+
+### api.showMini()
+
+Open Umi UI mini window (using in mini environment).
+
+
+### api.hideMini()
+
+Close Umi UI mini window (using in mini environment).
+
+
+### api.setActionPanel()
+
+运行时动态修改右上角全局操作区，与 React 中 `setState` 类似。
+
+参数如下：
+
+示例：
+
+```js
+// ui.(jsx|tsx)
+import React from 'react';
+
+export default (api) => {
+  // init Action
+  const ActionComp = () => (
+    <Input />
+  )
+
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    actions: [
+      ActionComp
+    ]
+    // api 透传至组件
+    component: () => {
+      const handleClick = () => {
+        // 类似于 React 中 setState
+        api.setActionPanel((actions) => {
+            return [
+              ...actions,
+              () => <Button onClick={() => alert('hello')}>New Button</Button>
+            ]
+          })
+        }}
+      }
+      return (
+        <Button onClick={handleClick}>
+          添加一个新操作按钮
+        </Button>
+      )
+    },
+  });
 };
 ```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/1xxzJVcNZK/add.gif)

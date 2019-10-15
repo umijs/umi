@@ -56,13 +56,14 @@ for (const dir of dirs) {
   );
 }
 
-afterAll(() => {
+afterAll(done => {
   Object.keys(servers).forEach(name => {
     servers[name].server.close();
   });
   if (browser) {
     browser.close();
   }
+  done();
 });
 
 async function build(cwd: string, name: string) {
@@ -71,6 +72,8 @@ async function build(cwd: string, name: string) {
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
+      UMI_UI: 'none',
+      UMI_UI_SERVER: 'none',
     } as any;
     if (name.includes('app_root')) {
       env.APP_ROOT = './root';

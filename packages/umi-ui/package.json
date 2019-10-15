@@ -1,6 +1,6 @@
 {
   "name": "umi-ui",
-  "version": "1.0.6",
+  "version": "1.1.10",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -9,7 +9,7 @@
   ],
   "devDependencies": {
     "@types/node-notifier": "^5.4.0",
-    "umi-types": "0.4.1",
+    "umi-types": "0.5.3",
     "umi-ui-theme": "^1.0.0-beta.2"
   },
   "repository": {
@@ -22,6 +22,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@umijs/launch-editor": "^1.0.0",
     "binary-mirror-config": "1.20.3",
     "chalk": "2.4.2",
     "clear-module": "4.0.0",
@@ -31,7 +32,6 @@
     "empty-dir": "2.0.0",
     "express": "4.17.1",
     "got": "9.6.0",
-    "launch-editor": "^2.2.1",
     "lodash": "^4.17.15",
     "macaddress": "0.2.9",
     "mkdirp": "0.5.1",
@@ -42,9 +42,10 @@
     "resolve-cwd": "3.0.0",
     "resolve-from": "5.0.0",
     "rimraf": "3.0.0",
+    "semver": "6.3.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.12.0",
-    "umi-ui-theme": "1.0.0",
+    "umi-build-dev": "1.13.10",
+    "umi-ui-theme": "1.1.2",
     "user-home": "2.0.0"
   }
 }

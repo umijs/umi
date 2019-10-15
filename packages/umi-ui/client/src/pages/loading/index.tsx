@@ -1,13 +1,19 @@
 import React, { Fragment } from 'react';
-import { Spin } from 'antd';
+import { Spin, ConfigProvider } from 'antd';
+import querystring from 'querystring';
+import enUS from 'antd/es/locale/en_US';
+import zhCN from 'antd/es/locale/zh_CN';
 import { callRemote } from '@/socket';
 import Layout from '@/layouts/Layout';
 import get from 'lodash/get';
-import { getLocale } from 'umi-plugin-react/locale';
 import { Terminal as XTerminal } from 'xterm';
+import { setCurrentProject } from '@/services/project';
+import history from '@tmp/history';
 import Terminal from '@/components/Terminal';
+import Context from '@/layouts/Context';
 import intl from '@/utils/intl';
 import { DINGTALK_MEMBERS } from '@/enums';
+import debug from '@/debug';
 import actions from './actions';
 import styles from './index.less';
 import Fail from './fail';
@@ -25,38 +31,31 @@ interface ILoadingState {
   isClear?: boolean;
 }
 
+const antdLocaleMap: any = {
+  'zh-CN': zhCN,
+  'en-US': enUS,
+};
+
 export default class Loading extends React.Component<ILoadingProps, ILoadingState> {
   logs = '';
-  _log = window.g_uiDebug.extend('Loading');
+  _log = debug.extend('Loading');
   private xterm: XTerminal;
   state = {
     actionLoading: false,
     isClear: false,
   };
-  handleInstallDeps = async () => {
-    this.setState({
-      actionLoading: true,
-    });
-    await callRemote({
-      type: '@@actions/installDependencies',
-      payload: {
-        npmClient: 'yarn',
-        projectPath: '/private/tmp/foooo',
-      },
-      onProgress(data) {
-        this._log(`Install: ${data.install}`);
-      },
-    });
-    this.setState({
-      actionLoading: false,
-    });
-  };
-
-  handleSuccess = () => {
+  handleSuccess = async () => {
     this._log('success');
     this.setState({
       actionLoading: false,
     });
+    const { key } = querystring.parse(window.location.search.slice(1));
+    if (key) {
+      await setCurrentProject({
+        key: key as string,
+      });
+    }
+    history.replace('/dashboard');
     window.location.reload();
   };
 
@@ -100,7 +99,7 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
           }}
         >
           <Terminal
-            getIns={t => {
+            onInit={t => {
               this.xterm = t;
             }}
             defaultValue={error.stack}
@@ -154,18 +153,24 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
 
     return error ? (
       <Layout type="loading">
-        <div className={styles.loading}>
-          <Fail
-            title={
-              actionLoading
-                ? intl({ id: 'org.umi.ui.loading.onloading' })
-                : intl({ id: 'org.umi.ui.loading.error' })
-            }
-            loading={actionLoading}
-            subTitle={renderSubTitle(error)}
-            extra={actionsDeps}
-          />
-        </div>
+        <Context.Consumer>
+          {context => (
+            <ConfigProvider locale={antdLocaleMap[context.locale]}>
+              <div className={styles.loading}>
+                <Fail
+                  title={
+                    actionLoading
+                      ? intl({ id: 'org.umi.ui.loading.onloading' })
+                      : intl({ id: 'org.umi.ui.loading.error' })
+                  }
+                  loading={actionLoading}
+                  subTitle={renderSubTitle(error)}
+                  extra={actionsDeps}
+                />
+              </div>
+            </ConfigProvider>
+          )}
+        </Context.Consumer>
       </Layout>
     ) : (
       <div className={styles.loading}>

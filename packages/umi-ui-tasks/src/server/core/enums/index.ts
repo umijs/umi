@@ -29,6 +29,7 @@ export enum NpmClient {
   cnpm = 'cnpm',
   npm = 'npm',
   ayarn = 'ayarn',
+  tyarn = 'tyarn',
   yarn = 'yarn',
   pnpm = 'pnpm',
 }

@@ -145,7 +145,7 @@ export default () => {
 举例:
 
 ```js
-import { setLocale } from 'umi-plugin-locale';
+import { setLocale } from 'umi-plugin-react/locale';
 
 // 十秒后设置当前语言为en-US
 setTimeout(() => {
@@ -160,7 +160,7 @@ setTimeout(() => {
 举例:
 
 ```js
-import { getLocale } from 'umi-plugin-locale';
+import { getLocale } from 'umi-plugin-react/locale';
 
 // 打印当前使用语言
 console.log(getLocale());
@@ -168,7 +168,7 @@ console.log(getLocale());
 
 #### 使用 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) 提供的组件
 
-你可以直接从 `umi-plugin-locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) 提供的如下组件：
+你可以直接从 `umi-plugin-react/locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) 提供的如下组件：
 
 ```js
 import {
@@ -179,7 +179,7 @@ import {
   FormattedPlural,
   FormattedMessage,
   FormattedHTMLMessage,
-} from 'umi-plugin-locale';
+} from 'umi-plugin-react/locale';
 
 export default () => {
   return <FormattedMessage id="TEST_TITLE" />;
@@ -188,7 +188,7 @@ export default () => {
 
 #### 使用 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) 提供的方法
 
-你可以直接从 `umi-plugin-locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) 提供的如下方法：
+你可以直接从 `umi-plugin-react/locale` 引入由 [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) 提供的如下方法：
 
 ```js
 import {
@@ -199,12 +199,53 @@ import {
   formatPlural,
   formatMessage,
   formatHTMLMessage
-} from 'umi-plugin-locale';
+} from 'umi-plugin-react/locale';
 
 
 export default () => {
   return <p>{formatMessage({ id="TEST_TITLE" })}</p>;
 }
+```
+
+#### 目录及约定
+
+```
+.
+├── dist/
+├── mock/
+└── src/
+    ├── layouts/index.js
+    ├── pages/
+    └── locales               // 多语言文件存放目录，里面的文件会被umi自动读取
+        ├── zh-CN.js
+        └── en-US.js
+├── .umirc.js
+├── .env
+└── package.json
+```
+
+> 如果`.umirc.js`里配置了`singular: true`，`locales`要改成`locale`
+
+#### 多语言文件约定
+
+多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.js`
+
+多语言文件的内容规范：键-值组成的字面量，如下：
+
+zh-CN.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: '{name}，欢迎光临umi的世界',
+};
+```
+
+en-US.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: "{name}, welcome to umi's world",
+};
 ```
 
 ## 性能

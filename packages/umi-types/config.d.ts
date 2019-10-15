@@ -102,6 +102,8 @@ interface IConfig extends IAFWebpackConfig {
   singular?: boolean;
   mock?: IMockOpts;
   treeShaking?: boolean;
+  dva?: any;
+  locale?: any;
 
   // implemented in plugins
   base?: string;

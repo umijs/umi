@@ -26,6 +26,17 @@ export async function setCurrentProject(payload: { key: string }) {
   }
 }
 
+export async function clearCurrentProject() {
+  try {
+    // for active immediately, set active asynchronous
+    await callRemote({
+      type: '@@project/clearCurrentProject',
+    });
+  } catch (e) {
+    message.error(e.message);
+  }
+}
+
 export async function deleteProject(payload) {
   return callRemote({
     type: '@@project/delete',

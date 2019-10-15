@@ -145,7 +145,7 @@ Specify the application language. While `realReload = false`, locale can be set 
 Example:
 
 ```js
-import { setLocale } from 'umi-plugin-locale';
+import { setLocale } from 'umi-plugin-react/locale';
 
 // Set the language to English after 10 seconds
 setTimeout(() => {
@@ -160,7 +160,7 @@ Get the current using language
 Example:
 
 ```js
-import { getLocale } from 'umi-plugin-locale';
+import { getLocale } from 'umi-plugin-react/locale';
 
 // print the current using language
 console.log(getLocale());
@@ -168,7 +168,7 @@ console.log(getLocale());
 
 #### Components from [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components)
 
-Components exposed via [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) can be used from `umi-plugin-locale` as well.
+Components exposed via [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/Components.md#components) can be used from `umi-plugin-react/locale` as well.
 
 Example:
 
@@ -181,7 +181,7 @@ import {
   FormattedPlural,
   FormattedMessage,
   FormattedHTMLMessage,
-} from 'umi-plugin-locale';
+} from 'umi-plugin-react/locale';
 
 export default () => {
   return <FormattedMessage id="TEST_TITLE" />;
@@ -190,7 +190,7 @@ export default () => {
 
 #### Methods from [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api)
 
-Methods exposed via [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) can be used from `umi-plugin-locale` as well.
+Methods exposed via [react-intl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#api) can be used from `umi-plugin-react/locale` as well.
 
 Example:
 
@@ -203,12 +203,53 @@ import {
   formatPlural,
   formatMessage,
   formatHTMLMessage
-} from 'umi-plugin-locale';
+} from 'umi-plugin-react/locale';
 
 
 export default () => {
   return <p>{formatMessage({ id="TEST_TITLE" })}</p>;
 }
+```
+
+#### Directory and Convention
+
+```
+.
+├── dist/
+├── mock/
+└── src/
+    ├── layouts/index.js
+    ├── pages/
+    └── locales               // lang files will be loaded by umi
+        ├── zh-CN.js
+        └── en-US.js
+├── .umirc.js
+├── .env
+└── package.json
+```
+
+> `locales` should be changed to `locale` while `singular: true` is specified in `.umirc.js`.
+
+#### Language and Convention
+
+Rule of language file naming：`<lang><separator（via baseSeparator in .umirc）><COUNTRY>.js`
+
+Rule of language file content: key-value pattern
+
+zh-CN.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: '{name}，欢迎光临umi的世界',
+};
+```
+
+en-US.js
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: "{name}, welcome to umi's world",
+};
 ```
 
 ## Performance

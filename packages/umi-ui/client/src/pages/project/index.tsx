@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Layout, message } from 'antd';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
+import debug from '@/debug';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
 import * as ProjectMap from './components';
 import styles from './index.less';
@@ -9,7 +10,7 @@ import styles from './index.less';
 const { Content } = Layout;
 
 const Project: React.FC<{}> = () => {
-  const _log = window.g_uiDebug.extend('Project');
+  const _log = debug.extend('Project');
   const [data, setData] = useState<IProjectList>({});
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);

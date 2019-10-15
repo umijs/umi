@@ -5,7 +5,8 @@
     "build": "vuepress build ../docs --dest ./dist"
   },
   "devDependencies": {
-    "vuepress": "^0.14.8"
+    "@vuepress/plugin-google-analytics": "^1.2.0",
+    "vuepress": "^1.2.0"
   },
   "engines": {
     "node": "10.x"

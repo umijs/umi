@@ -9,9 +9,12 @@ export default (api: IApi) => {
       case 'plugin/init':
         (async () => {
           await taskManger.init(api.cwd, send);
+          const states = await taskManger.getTasksState();
           send({
             type: `${type}/success`,
-            payload: {},
+            payload: {
+              states,
+            },
           });
         })();
         break;
@@ -25,13 +28,14 @@ export default (api: IApi) => {
         break;
       case 'tasks/detail': // 初始化操作
         (async () => {
-          const task = taskManger.getTask(payload.type);
+          const task = await taskManger.getTask(payload.type);
+          const detail = await task.getDetail(payload.dbPath);
           send({
             type: 'tasks/detail/success',
             payload: {
-              ...taskManger.getTaskDetail(payload.type),
-              ...task.getDetail(),
-              log: task.getLog(),
+              ...detail,
+              log: payload.log ? task.getLog() : null,
+              currentCwd: taskManger.currentCwd,
             },
           });
         })();
@@ -39,8 +43,8 @@ export default (api: IApi) => {
       case 'tasks/run':
         (async () => {
           log('info', `Run task: ${payload.type} `);
-          const task = taskManger.getTask(payload.type);
-          await task.run(formatEnv(payload.env));
+          const task = await taskManger.getTask(payload.type);
+          await task.run(payload.args, formatEnv(payload.env));
           send({
             type: 'tasks/run/success',
             payload: {
@@ -52,7 +56,7 @@ export default (api: IApi) => {
       case 'tasks/cancel':
         (async () => {
           log('info', `Cancel task: ${payload.type} `);
-          const task = taskManger.getTask(payload.type);
+          const task = await taskManger.getTask(payload.type);
           await task.cancel();
           send({
             type: 'tasks/cancel/success',
@@ -63,12 +67,25 @@ export default (api: IApi) => {
         })();
         break;
       case 'tasks/clearLog':
-        const task = taskManger.getTask(payload.type);
-        task.clearLog();
-        send({
-          type: 'tasks/clearLog/success',
-          payload: {},
-        });
+        (async () => {
+          const task = await taskManger.getTask(payload.type);
+          task.clearLog();
+          send({
+            type: 'tasks/clearLog/success',
+            payload: {},
+          });
+        })();
+        break;
+      case 'tasks/is_dev_server_alive':
+        (async () => {
+          const alive = await taskManger.isDevServerAlive();
+          send({
+            type: 'tasks/is_dev_server_alive/success',
+            payload: {
+              alive,
+            },
+          });
+        })();
         break;
       default:
     }

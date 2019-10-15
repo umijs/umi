@@ -4,6 +4,7 @@ import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
+import debug from '@/debug';
 import { path2Arr, arr2Path, trimSlash } from './pathUtils';
 import emptyImg from './emptyImg.png';
 import DirectoryItem, { DirectoryItemProps } from './item';
@@ -19,7 +20,7 @@ interface DirectoryFormProps {
 }
 
 const DirectoryForm: React.FC<DirectoryFormProps> = props => {
-  const _log = g_uiDebug.extend('DirectoryForm');
+  const _log = debug.extend('DirectoryForm');
   const { value: originValue, onChange } = props;
   const value = slash2(originValue || '');
   const [dirPathEdit, setDirPathEdit] = useState<boolean>(false);

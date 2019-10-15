@@ -11,19 +11,16 @@ declare global {
     xterm: any;
     gtag?: any;
     Tracert?: any;
+    g_app?: any;
     Terminal?: typeof Terminal;
     fit?: any;
-    g_uiUserId?: string;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };
-    g_uiDebug: Debugger;
     g_uiPlugins?: any[];
     g_bigfish?: boolean;
     g_uiContext: Context<IUi.IContext>;
-    g_uiLocales: Partial<IUi.ILocale>;
     g_service: IUi.IService;
-    g_uiEventEmitter: EventEmitter;
   }
 }
 

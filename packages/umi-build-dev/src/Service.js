@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import { join, dirname } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
-import { assign, cloneDeep } from 'lodash';
+import { assign, cloneDeep, uniq } from 'lodash';
 import { parse } from 'dotenv';
 import signale from 'signale';
 import { deprecate, winPath } from 'umi-utils';
@@ -14,6 +14,7 @@ import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
 import getCodeFrame from './utils/getCodeFrame';
+import writeContent from './utils/writeContent';
 import getRouteManager from './plugins/commands/getRouteManager';
 
 const debug = require('debug')('umi-build-dev:Service');
@@ -114,6 +115,7 @@ plugin must export a function, e.g.
               '_applyPluginsAsync',
               'writeTmpFile',
               'getRoutes',
+              'getRouteComponents',
               // properties
               'cwd',
               'config',
@@ -170,21 +172,32 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   initPlugins() {
-    this.plugins.forEach(plugin => {
-      this.initPlugin(plugin);
-    });
-
+    // Plugin depth
     let count = 0;
-    while (this.extraPlugins.length) {
+    const initExtraPlugins = () => {
+      if (!this.extraPlugins.length) {
+        return;
+      }
       const extraPlugins = cloneDeep(this.extraPlugins);
       this.extraPlugins = [];
       extraPlugins.forEach(plugin => {
         this.initPlugin(plugin);
         this.plugins.push(plugin);
+        initExtraPlugins();
       });
       count += 1;
       assert(count <= 10, `插件注册死循环？`);
-    }
+    };
+
+    const plugins = cloneDeep(this.plugins);
+    this.plugins = [];
+    plugins.forEach(plugin => {
+      this.initPlugin(plugin);
+      this.plugins.push(plugin);
+      // reset count
+      count = 0;
+      initExtraPlugins();
+    });
 
     // Throw error for methods that can't be called after plugins is initialized
     this.plugins.forEach(plugin => {
@@ -263,13 +276,32 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const { paths } = this;
     const path = join(paths.absTmpDirPath, file);
     mkdirp.sync(dirname(path));
-    writeFileSync(path, content, 'utf-8');
+    writeContent(path, content);
   }
 
   getRoutes() {
     const RoutesManager = getRouteManager(this);
     RoutesManager.fetchRoutes();
     return RoutesManager.routes;
+  }
+
+  getRouteComponents() {
+    const routes = this.getRoutes();
+
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = winPath(require.resolve(join(this.cwd, route.component)));
+          memo.push(component);
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return uniq(getComponents(routes));
   }
 
   init() {

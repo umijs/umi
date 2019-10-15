@@ -178,8 +178,10 @@ interface IWinPath {
   (path: string): string;
 }
 
+type IRelativeToTmp = (path: string) => string;
+
 interface IFind {
-  (baseDir: string, fileNameWithoutExtname: string): string | null;
+  (baseDir: string, fileNameWithoutExtname?: string): string | null;
 }
 
 interface ICompatDirname<T = any> {
@@ -431,6 +433,8 @@ export interface IApi {
   cwd: string;
   pkg: IPkg;
   webpackConfig: IWebpack.Configuration;
+  service: any;
+  locale: any;
   paths: {
     cwd: string;
     outputPath: string;
@@ -469,6 +473,7 @@ export interface IApi {
   log: { [key in DefaultMethods]: ILog<any> };
   _: typeof lodash;
   winPath: IWinPath;
+  relativeToTmp: IRelativeToTmp;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
   getRoutes: IGetRoutes;
@@ -497,6 +502,7 @@ export interface IApi {
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
   onUISocket: IOnUISocket;
+  onRouteChange: (callback: () => void) => void;
 
   /**
    * Application class API
@@ -538,6 +544,8 @@ export interface IApi {
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
+  addBlockUIResource: IAdd<object>;
+  modifyBlockUIResources: IModify<object[]>;
   _modifyBlockPackageJSONPath: IModify<string>;
   _modifyBlockDependencies: IModify<IBlockDependencies>;
   _modifyBlockFile: IModify<string, IModifyBlockFileArgs>;
