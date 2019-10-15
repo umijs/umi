@@ -80,16 +80,14 @@ const server: IServer = config => {
       chunkMap,
       load: _getDocumentHandler,
     };
-    // compose all html handlers
-    const ssrHtml = compose(
-      renderString,
-      handlerOpts,
-    )(
+    const composeRender = compose(
       injectChunkMaps,
       patchDoctype,
       // user define handler
       postProcessHtml,
     );
+    // compose all html handlers
+    const ssrHtml = composeRender(renderString, handlerOpts);
 
     // enable render rootContainer
     // const ssrHtmlElement =
