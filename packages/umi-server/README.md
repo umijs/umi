@@ -62,3 +62,5 @@ interface IConfig {
 
 type IHandler = (html: string, args: IArgs) => string;
 ```
+
+more example usages in [test cases](https://github.com/umijs/umi/blob/master/packages/umi-server/test/index.test.ts).

@@ -1,5 +1,6 @@
 {
   "name": "umi-server",
+  "description": "A render tool for Umijs Server-Side Rendering.",
   "version": "0.0.1",
   "bin": {
     "umi-server": "./bin/umi-server.js"
