@@ -176,4 +176,17 @@ export default class Config {
     }
     return this.addProjectWithPath(projectPath);
   }
+
+  checkValid() {
+    for (const key of Object.keys(this.data.projectsByKey)) {
+      const { path } = this.data.projectsByKey[key];
+      // 删除不存在的项目
+      if (!existsSync(path)) {
+        delete this.data.projectsByKey[key];
+        if (this.data.currentProject === key) {
+          this.data.currentProject = null;
+        }
+      }
+    }
+  }
 }
