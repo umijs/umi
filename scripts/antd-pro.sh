@@ -10,15 +10,15 @@ else
   git clone https://github.com/ant-design/ant-design-pro --depth=1 ./pro_site
 fi
 
-yarn
-yarn bootstrap
-yarn build
-yarn ui:build
+npm run
+npm run bootstrap
+npm run build
+npm run ui:build
 cd packages/umi
-yarn link
+npm run link
 cd ../..
 cd pro_site
-yarn
-yarn link umi
-yarn build
-yarn functions:build
+npm run
+npm run link umi
+npm run build
+npm run functions:build
