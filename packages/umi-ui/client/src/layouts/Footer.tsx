@@ -39,7 +39,7 @@ const FOOTER_RIGHT = [
     href:
       // TODO: refactor
       window.g_bigfish
-        ? 'https://bigfish.antfin-inc.com/doc/nt1c4v'
+        ? 'https://bigfish.antfin-inc.com/doc/bigfish-ui'
         : window.g_lang === 'zh-CN'
         ? 'https://umijs.org/zh/guide/umi-ui.html'
         : 'https://umijs.org/guide/umi-ui.html',
