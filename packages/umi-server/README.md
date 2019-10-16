@@ -18,10 +18,12 @@ const http = require('http');
 const { readFileSync } = require('fs');
 const { join, extname } = require('path');
 
-// write your own dist static file root path
-const root = join(__dirname, 'fixtures', 'ssr', 'dist');
 const render = server({
-  root,
+  filename: join(__dirname, 'dist', 'umi.server.js'),
+  manifest: join(__dirname, 'dist', 'ssr-client-mainifest.json'),
+  // you can use root rather than filename and manifest
+  // if both in the same directory
+  // root: join(__dirname, 'dist');
   publicPath: '/',
 })
 const headerMap = {
@@ -63,14 +65,14 @@ The type definition:
 
 ```js
 interface IConfig {
-  /** dist path */
+  /** umi ssr server file, default: `${root}/umi.server.js` */
+  filename?: string;
+  /** ssr manifest, default: `${root}/ssr-client-mainifest.json` */
+  manifest?: string;
+  /** prefix path for `filename` and `manifest`, if both in the same directory */
   root: string;
   /** static assets publicPath */
   publicPath: string;
-  /** ssr manifest, default: `${root}/ssr-client-mainifest.json` */
-  manifest?: string;
-  /** umi ssr server file, default: `${root}/umi.server.js` */
-  filename?: string;
   /** default false */
   polyfill?: boolean;
   /** use renderToStaticMarkup  */

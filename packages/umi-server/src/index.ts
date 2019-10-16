@@ -14,7 +14,7 @@ type IArgs = {
 } & Pick<IConfig, 'publicPath'>;
 export type IHandler<T = string> = (html: string, args: IArgs) => T;
 export interface IConfig {
-  /** dist path */
+  /** prefix path for `filename` and `manifest`, if both in the same directory */
   root: string;
   /** static assets publicPath */
   publicPath: string;
