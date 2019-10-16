@@ -21,6 +21,7 @@ module.exports = {
     '/packages/umi-build-dev/src/routes/fixtures',
     '/packages/umi-plugin-dva/src/fixtures',
     '/packages/umi-utils/src/fixtures',
+    '/packages/umi-ui-tasks/src/dist',
     '/packages/umi/test/fixtures',
   ],
   setupFilesAfterEnv: ['./jasmine.js'],
