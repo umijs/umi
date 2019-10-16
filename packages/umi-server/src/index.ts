@@ -1,13 +1,8 @@
 /* eslint-disable import/no-dynamic-require */
 import { join } from 'path';
 import { load } from 'cheerio';
-import {
-  nodePolyfillDecorator,
-  patchDoctype,
-  compose,
-  injectChunkMaps,
-  _getDocumentHandler,
-} from './utils';
+import compose from './compose';
+import { nodePolyfillDecorator, patchDoctype, injectChunkMaps, _getDocumentHandler } from './utils';
 
 interface ICunkMap {
   js: string[];
@@ -99,4 +94,4 @@ const server: IServer = config => {
   };
 };
 
-export { server as default, server };
+export default server;

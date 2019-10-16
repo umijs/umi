@@ -35,18 +35,8 @@ export const injectChunkMaps: IHandler = (html, args) => {
   return $.html();
 };
 
-export const compose: (...handler: IHandler[]) => IHandler = (...handler) =>
-  handler.reduce((acc, curr) => (html, args) => curr(acc(html, args), args));
-
 export const patchDoctype = (html: string) => {
   return /^<!DOCTYPE html>/.test(html) ? html : `<!DOCTYPE html>${html}`;
-};
-
-export const findFile = (baseDir, fileName) => {
-  const absFilePath = join(baseDir, fileName);
-  if (existsSync(absFilePath)) {
-    return absFilePath;
-  }
 };
 
 export type INodePolyfillDecorator = (
