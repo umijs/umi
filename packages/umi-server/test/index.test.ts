@@ -54,6 +54,20 @@ describe('build', () => {
     expect(ssrHtml).toMatch(/Hello UmiJS SSR/);
   });
 
+  it('ssr commonjs require', async () => {
+    const serverCjs = require('..');
+    const render = serverCjs({
+      root: join(fixtures, 'ssr', 'dist'),
+      publicPath: '/',
+    });
+    const { ssrHtml } = await render({
+      req: {
+        url: '/',
+      },
+    });
+    expect(ssrHtml).toMatch(/Hello UmiJS SSR/);
+  });
+
   it('ssr-styles', async () => {
     const render = server({
       root: join(fixtures, 'ssr-styles', 'dist'),
