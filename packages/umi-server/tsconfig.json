@@ -1,23 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "lib",
-    "module": "commonJS",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "sourceMap": false,
-    "baseUrl": ".",
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true,
-    "rootDir": "src",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": ["src/**/*", "bin/**/*"]
+    "esModuleInterop": true
+  }
 }

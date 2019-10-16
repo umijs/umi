@@ -1,5 +1,9 @@
+import { nodePolyfill, patchDoctype } from './utils';
+
 export interface IConfig {
-  exclude?: string[];
+  cwd?: string;
+  manifest?: string;
+  filename?: string;
   /** default false */
   polyfill?: boolean;
   runInMockContext?: {};
@@ -16,9 +20,36 @@ export interface IContext {
   };
 }
 
-const server = (config: IConfig) => (ctx: IContext) => {
-  console.log('config', ctx);
-  return config;
+const server = (config: IConfig) => {
+  const {
+    cwd,
+    manifest,
+    filename = '',
+    staticMarkup = false,
+    runInMockContext = {},
+    polyfill = false,
+  } = config;
+  nodePolyfill(polyfill)('http://localhost', runInMockContext);
+  // eslint-disable-next-line import/no-dynamic-require
+  const serverRender = require(filename);
+  const { ReactDOMServer } = serverRender;
+
+  return async (ctx: IContext) => {
+    const {
+      req: { url },
+    } = ctx;
+
+    const { htmlElement, rootContainer, matchPath } = await serverRender.default(ctx);
+    const ssrHtml = patchDoctype(
+      ReactDOMServer[staticMarkup ? 'renderToStaticMarkup' : 'renderToString'](htmlElement),
+    );
+    // enable render rootContainer
+    // const ssrHtmlElement =
+    return {
+      ssrHtml,
+      matchPath,
+    };
+  };
 };
 
-module.exports = server;
+export { server as default };
