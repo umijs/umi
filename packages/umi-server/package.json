@@ -1,6 +1,6 @@
 {
   "name": "umi-server",
-  "description": "A render tool for Umijs Server-Side Rendering.",
+  "description": "A runtime render tool for Umijs Server-Side Rendering.",
   "version": "0.0.1",
   "main": "lib/index.js",
   "files": [

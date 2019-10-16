@@ -1,6 +1,6 @@
 # umi-server
 
-A render tool for Umijs Server-Side Rendering.
+A runtime render tool for Umijs Server-Side Rendering.
 
 ## Quick Start
 
