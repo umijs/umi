@@ -2,12 +2,12 @@ import { IHandler } from './index';
 
 /**
  * render html handlers pipe
- * const resultHtml = compose(html, args)(
+ * const resultHtml = compose(
  *   handler1,
  *   handler2,
  *   hanlder3,
  *   ...
- * );
+ * )(html, args);
  *
  * @param handler (html, args) => html
  */
