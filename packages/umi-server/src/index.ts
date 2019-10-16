@@ -99,4 +99,4 @@ const server: IServer = config => {
   };
 };
 
-export { server as default };
+export { server as default, server };
