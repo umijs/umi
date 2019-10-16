@@ -33,11 +33,14 @@ export function connectServer(onSuccess) {
       return;
     }
 
-    fetch(window.location.href)
-      .then(onSuccess)
-      .catch(() => {
-        setTimeout(retry, 1000);
-      });
+    if (window.fetch) {
+      window
+        .fetch(window.location.href)
+        .then(onSuccess)
+        .catch(() => {
+          setTimeout(retry, 1000);
+        });
+    }
   }
 
   retry();
