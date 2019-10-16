@@ -13,7 +13,7 @@ npm install umi-server -S
 ```js
 // if using ES6 / TypeScript
 // import server from 'umi-server';
-const server = require('umi-server').default;
+const server = require('umi-server');
 const http = require('http');
 const { readFileSync } = require('fs');
 const { join, extname } = require('path');
