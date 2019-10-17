@@ -23,6 +23,7 @@ module.exports = {
     '/packages/umi-utils/src/fixtures',
     '/packages/umi-ui-tasks/src/dist',
     '/packages/umi/test/fixtures',
+    '/packages/umi-server/test/fixtures',
   ],
   setupFilesAfterEnv: ['./jasmine.js'],
   collectCoverageFrom: [

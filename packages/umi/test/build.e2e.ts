@@ -25,9 +25,10 @@ if (testOnly) {
 dirs = dirs.filter(dir => !/^x-/.test(dir));
 
 beforeAll(async () => {
-  for (const dir of dirs) {
-    await buildAndServe(dir);
-  }
+  // 并行 build，加速 ci
+  const buildAndServePromise = dirs.map(dir => buildAndServe(dir));
+  await Promise.all(buildAndServePromise);
+
   browser = await puppeteer.launch({
     args: [
       '--disable-gpu',

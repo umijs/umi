@@ -4,13 +4,15 @@ const { useState } = React;
 
 const Home = (props) => {
   const [count, setCount] = useState(0);
-  const { list = [] } = props;
+  const { list = [], location: { search } } = props;
+
   const handleClick = () => {
     setCount(count => count + 1);
   }
   return (
-    <div>
+    <div className="wrapper">
       <h1>Hello UmiJS SSR</h1>
+      {search && <p>searchPath: {search}</p>}
       {Array.isArray(list) && list.length > 0 &&
         <ul>
           {list.map((item, i) => (
