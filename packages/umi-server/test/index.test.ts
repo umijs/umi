@@ -8,6 +8,7 @@ async function build({ cwd }) {
   return new Promise((resolve, reject) => {
     const umiPath = join(winPath(__dirname), '..', '..', 'umi', 'bin', 'umi');
     const env = {
+      UMI_UI: 'none',
       COMPRESS: 'none',
       PROGRESS: 'none',
       COVERAGE: 1,
