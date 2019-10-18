@@ -37,7 +37,8 @@ export const getScrollOffsets = () => {
   };
 };
 
-export const getClientHeight = () => document.documentElement.clientHeight;
+export const getClientHeight = () =>
+  window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
 export const getClientWidth = () => {
   if (window.innerWidth) {
