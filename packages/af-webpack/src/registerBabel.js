@@ -1,6 +1,6 @@
 export default function registerBabel(opts = {}) {
   const { only, ignore, babelPreset, babelPlugins, disablePreventTest } = opts;
-  if (disablePreventTest || process.env.NODE_ENV !== 'test') {
+  if (disablePreventTest) {
     require('@babel/register')({
       presets: [require.resolve('@babel/preset-typescript'), babelPreset],
       plugins: babelPlugins || [],
