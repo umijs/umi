@@ -142,6 +142,7 @@ export default function(api) {
       absNodeModulesPath: paths.absNodeModulesPath,
       outputPath: paths.absOutputPath,
       disableDynamicImport: true,
+      extraBabelPlugins: [...(memo.extraBabelPlugins || []), ...(config.extraBabelPlugins || [])],
       babel: config.babel || {
         presets: [
           [

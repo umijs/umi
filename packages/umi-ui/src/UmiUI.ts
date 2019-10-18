@@ -996,7 +996,7 @@ export default class UmiUI {
           reject(err);
         } else {
           const url = `http://localhost:${port}/`;
-          console.log(`🧨  Ready on ${url}`);
+          console.log(`⛽️ Ready on ${url}`);
           if (process.env.UMI_UI_BROWSER !== 'none') {
             openBrowser(url);
           }

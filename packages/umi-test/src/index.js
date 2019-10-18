@@ -6,6 +6,7 @@ import { existsSync } from 'fs';
 const debug = require('debug')('umi-test');
 
 process.env.NODE_ENV = 'test';
+process.env.IS_FROM_UMI_TEST = 1;
 
 export default function(originOpts = {}) {
   const opts = { ...originOpts };

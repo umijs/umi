@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { winPath } from 'umi-utils';
+import * as t from '@babel/types';
 import {
   findExportDefaultDeclaration,
   getIdentifierDeclaration,
@@ -9,25 +10,27 @@ import {
   haveChildren,
 } from '../util';
 
-export default ({ types: t }) => {
+export default () => {
   function buildGUmiUIFlag({ index, filename, jsx }) {
     if (jsx) {
-      return t.JSXElement(
-        t.JSXOpeningElement(t.JSXIdentifier('GUmiUIFlag'), [
-          t.JSXAttribute(t.JSXIdentifier('filename'), t.StringLiteral(`${filename}`)),
-          t.JSXAttribute(t.JSXIdentifier('index'), t.StringLiteral(`${index}`)),
+      return t.jsxElement(
+        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), [
+          t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
+          t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
         ]),
-        t.JSXClosingElement(t.JSXIdentifier('GUmiUIFlag')),
+        t.jsxClosingElement(t.jsxIdentifier('GUmiUIFlag')),
         [],
+        false,
       );
     }
-    return t.CallExpression(
-      t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
+
+    return t.callExpression(
+      t.memberExpression(t.identifier('React'), t.identifier('createElement')),
       [
-        t.Identifier('GUmiUIFlag'),
-        t.ObjectExpression([
-          t.ObjectProperty(t.Identifier('filename'), t.StringLiteral(`${filename}`)),
-          t.ObjectProperty(t.Identifier('index'), t.StringLiteral(`${index}`)),
+        t.identifier('GUmiUIFlag'),
+        t.objectExpression([
+          t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
+          t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
         ]),
       ],
     );
@@ -76,16 +79,16 @@ export default ({ types: t }) => {
         // root 节点没有 children，则在外面套一层
         replace(
           t.isJSXElement(node)
-            ? t.JSXFragment(t.JSXOpeningFragment(), t.JSXClosingFragment(), [
-                buildGUmiUIFlag({ index: 0, filename, jsx: true }),
+            ? t.jsxFragment(t.jsxOpeningFragment(), t.jsxClosingFragment(), [
+                buildGUmiUIFlag({ index: 0, filename, jsx: true }) as any,
                 node,
                 buildGUmiUIFlag({ index: 1, filename, jsx: true }),
               ])
-            : t.CallExpression(
-                t.MemberExpression(t.Identifier('React'), t.Identifier('createElement')),
+            : t.callExpression(
+                t.memberExpression(t.identifier('React'), t.identifier('createElement')),
                 [
-                  t.MemberExpression(t.Identifier('React'), t.Identifier('Fragment')),
-                  t.NullLiteral(),
+                  t.memberExpression(t.identifier('React'), t.identifier('Fragment')),
+                  t.nullLiteral(),
                   buildGUmiUIFlag({ index: 0, filename, jsx: false }),
                   node,
                   buildGUmiUIFlag({ index: 1, filename, jsx: false }),
@@ -95,6 +98,37 @@ export default ({ types: t }) => {
       }
     } else {
       // throw new Error(`Add umi ui flag failed, unsupported node type ${node.type}.`);
+    }
+  }
+
+  function isInBlackList(node, path) {
+    if (t.isJSXElement(node)) {
+      const name = node.openingElement.name.name;
+      if (path.scope.hasBinding(name)) {
+        const p = path.scope.getBinding(name).path;
+        const { source } = p.parentPath.node;
+        if (source.value === 'react-document-title') {
+          return true;
+        }
+
+        // antd 和 @alipay/tech-ui 里除部分用于布局的组件之外，其他组件作为根组件不会插入编辑区
+        if (
+          source.value === 'antd' &&
+          t.isImportSpecifier(p.node) &&
+          t.isIdentifier(p.node.imported) &&
+          !['Card', 'Grid', 'Layout'].includes(p.node.imported.name)
+        ) {
+          return true;
+        }
+        if (
+          source.value === '@alipay/tech-ui' &&
+          t.isImportSpecifier(p.node) &&
+          t.isIdentifier(p.node.imported) &&
+          !['PageContainer'].includes(p.node.imported.name)
+        ) {
+          return true;
+        }
+      }
     }
   }
 
@@ -127,7 +161,7 @@ export default ({ types: t }) => {
             const ret = getReturnNode(d, path);
             if (ret) {
               const { node: retNode, replace } = ret;
-              if (retNode) {
+              if (retNode && !isInBlackList(retNode, path)) {
                 addUmiUIFlag(retNode, {
                   filename: winPath(filename),
                   replace,
