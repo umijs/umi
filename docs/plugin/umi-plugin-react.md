@@ -209,7 +209,7 @@ window.addEventListener('sw.offline', () => {
 });
 ```
 
-`sw.*` Events are synchronized with events in [register-service-worker] (https://www.npmjs.com/package/register-service-worker). For more usage, please refer to the link above.
+`sw.*` Events are synchronized with events in [register-service-worker](https://www.npmjs.com/package/register-service-worker). For more usage, please refer to the link above.
 
 ### hd
 
