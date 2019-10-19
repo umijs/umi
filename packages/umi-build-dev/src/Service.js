@@ -1,12 +1,10 @@
 import chalk from 'chalk';
 import { join, dirname } from 'path';
-import { existsSync, readFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import { assign, cloneDeep, uniq } from 'lodash';
-import { parse } from 'dotenv';
 import signale from 'signale';
-import { deprecate, winPath } from 'umi-utils';
+import { deprecate, winPath, loadDotEnv } from 'umi-utils';
 import { UmiError, printUmiError } from 'umi-core/lib/error';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
@@ -252,24 +250,7 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   loadEnv() {
-    const basePath = join(this.cwd, '.env');
-    const localPath = `${basePath}.local`;
-
-    const load = path => {
-      if (existsSync(path)) {
-        debug(`load env from ${path}`);
-        const parsed = parse(readFileSync(path, 'utf-8'));
-        Object.keys(parsed).forEach(key => {
-          // eslint-disable-next-line no-prototype-builtins
-          if (!process.env.hasOwnProperty(key)) {
-            process.env[key] = parsed[key];
-          }
-        });
-      }
-    };
-
-    load(basePath);
-    load(localPath);
+    loadDotEnv({ cwd: this.cwd });
   }
 
   writeTmpFile(file, content) {

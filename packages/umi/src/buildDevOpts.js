@@ -1,11 +1,9 @@
 import { join, isAbsolute } from 'path';
-import { readFileSync, existsSync } from 'fs';
 import isWindows from 'is-windows';
-import { winPath } from 'umi-utils';
-import { parse } from 'dotenv';
+import { winPath, loadDotEnv } from 'umi-utils';
 
 export default function(opts = {}) {
-  loadDotEnv();
+  loadDotEnv({ cwd: process.cwd() });
 
   let cwd = opts.cwd || process.env.APP_ROOT || process.cwd();
   if (cwd) {
@@ -22,24 +20,4 @@ export default function(opts = {}) {
   return {
     cwd,
   };
-}
-
-function loadDotEnv() {
-  const baseEnvPath = join(process.cwd(), '.env');
-  const localEnvPath = `${baseEnvPath}.local`;
-
-  const loadEnv = envPath => {
-    if (existsSync(envPath)) {
-      const parsed = parse(readFileSync(envPath, 'utf-8'));
-      Object.keys(parsed).forEach(key => {
-        // eslint-disable-next-line no-prototype-builtins
-        if (!process.env.hasOwnProperty(key)) {
-          process.env[key] = parsed[key];
-        }
-      });
-    }
-  };
-
-  loadEnv(baseEnvPath);
-  loadEnv(localEnvPath);
 }
