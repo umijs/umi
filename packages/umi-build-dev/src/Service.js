@@ -250,7 +250,10 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   }
 
   loadEnv() {
-    loadDotEnv({ cwd: this.cwd });
+    const basePath = join(this.cwd, '.env');
+    const localPath = `${basePath}.local`;
+    loadDotEnv(basePath);
+    loadDotEnv(localPath);
   }
 
   writeTmpFile(file, content) {

@@ -3,7 +3,7 @@ import isWindows from 'is-windows';
 import { winPath, loadDotEnv } from 'umi-utils';
 
 export default function(opts = {}) {
-  loadDotEnv({ cwd: process.cwd() });
+  loadEnv();
 
   let cwd = opts.cwd || process.env.APP_ROOT || process.cwd();
   if (cwd) {
@@ -20,4 +20,11 @@ export default function(opts = {}) {
   return {
     cwd,
   };
+}
+
+function loadEnv() {
+  const basePath = join(process.cwd(), '.env');
+  const localPath = `${basePath}.local`;
+  loadDotEnv(basePath);
+  loadDotEnv(localPath);
 }
