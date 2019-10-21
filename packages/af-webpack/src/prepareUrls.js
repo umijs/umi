@@ -30,9 +30,14 @@ export default function prepareUrls(protocol, host, port, base, history) {
       // This can only return an IPv4 address
       lanUrlForConfig = address.ip();
       if (lanUrlForConfig) {
+        // check if use public ip
+        const USE_PUBLIC_IP = process.env.USE_PUBLIC_IP === 'true';
         // Check if the address is a private ip
         // https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
-        if (/^10[.]|^30[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(lanUrlForConfig)) {
+        if (
+          USE_PUBLIC_IP ||
+          /^10[.]|^30[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(lanUrlForConfig)
+        ) {
           // Address is private, format it for later use
           lanUrlForTerminal = prettyPrintUrl(lanUrlForConfig, true);
           rawLanUrl = prettyPrintUrl(lanUrlForConfig, false);
