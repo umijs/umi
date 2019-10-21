@@ -216,3 +216,11 @@ socket server, default window.location.host. such as:
 ```bash
 $ SOCKET_SERVER=http://localhost:8000 umi dev
 ```
+
+### USE_PUBLIC_IP
+
+bind public ip when then value is `true`. Default `false`.
+
+```bash
+$ USE_PUBLIC_IP=true umi dev
+```

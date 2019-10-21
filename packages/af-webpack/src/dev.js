@@ -90,7 +90,7 @@ export default function dev({
             [
               `  App running at:`,
               `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
-              `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+              urls.lanUrlForTerminal ? `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}` : '',
             ].join('\n'),
           );
           console.log();

@@ -206,3 +206,11 @@ $ HTML=none umi build
 ```bash
 $ FORK_TS_CHECKER=1 umi dev
 ```
+
+### USE_PUBLIC_IP
+
+默认不绑定公网IP，值为 `true` 时允许绑定公网IP。比如：
+
+```bash
+$ USE_PUBLIC_IP=true umi dev
+```
