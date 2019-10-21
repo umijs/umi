@@ -107,6 +107,10 @@ export default () => {
       if (path.scope.hasBinding(name)) {
         const p = path.scope.getBinding(name).path;
         const { source } = p.parentPath.node;
+
+        // 只处理 import 的声明
+        if (!t.isImportDeclaration(p.parentPath.node)) return;
+
         if (source.value === 'react-document-title') {
           return true;
         }
