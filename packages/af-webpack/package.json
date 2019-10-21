@@ -1,6 +1,6 @@
 {
   "name": "af-webpack",
-  "version": "1.11.6",
+  "version": "1.11.7",
   "bin": {
     "af-webpack": "./bin/af-webpack.js"
   },
