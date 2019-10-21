@@ -97,15 +97,16 @@ $ y doc:deploy
 Debug `umi ui` in local.
 
 ```bash
+# First, run umi dev --watch to start static dev server: http://localhost:8002/
 $ y ui:build --watch
 
 # Then run umi ui under a umi project.
-$ umi ui
+$ LOCAL_DEBUG=1 umi ui
 
 # if want to debug for more defail, using
-$ DEBUG=umiui:UmiUI* umi ui
+$ LOCAL_DEBUG=1 DEBUG=umiui:UmiUI* umi ui
 
-# Or
+# Or Run `umi dev --ui` in examples/func-test.
 $ umi dev --ui
 ```
 

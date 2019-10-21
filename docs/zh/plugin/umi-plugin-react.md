@@ -203,6 +203,13 @@ window.addEventListener('sw.updated', () => {
 });
 ```
 
+```js
+window.addEventListener('sw.registered', e => {
+  // e.detail.update() 可触发手动更新。
+  // 配置适当的轮询并配合 sw.updated 事件, 无需用户刷新或打开新选项卡即可更新。
+});
+```
+
 另外，当网络环境发生改变时，也可以给予用户显式反馈：
 
 ```js
@@ -210,6 +217,8 @@ window.addEventListener('sw.offline', () => {
   // 置灰某些组件
 });
 ```
+
+最后 `sw.*` 事件与 [register-service-worker](https://www.npmjs.com/package/register-service-worker) 中的事件同步，更多使用方法请参考上述链接。
 
 ### hd
 
