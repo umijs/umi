@@ -7,9 +7,11 @@ export interface IApiBlock extends IApi {
 }
 
 export default (api: IApiBlock) => {
+  // 客户端
   api.addUIPlugin(
     require.resolve('../../../../../src/plugins/commands/block/ui/dist/client.umd.js'),
   );
+  // 服务端
   server(api);
 
   function getRouteComponents(routes) {
@@ -38,25 +40,23 @@ export default (api: IApiBlock) => {
     generateRouteComponents();
   });
 
-  const command = process.argv.slice(2)[0];
-  if (process.env.NODE_ENV === 'development' && !api.config.ssr && command === 'dev') {
-    api.modifyAFWebpackOpts(memo => {
-      generateRouteComponents();
-      memo.extraBabelPlugins = [
-        ...(memo.extraBabelPlugins || []),
-        [
-          require.resolve('../sdk/flagBabelPlugin'),
-          {
-            doTransform(filename) {
-              return routeComponents.includes(api.winPath(filename));
-            },
+  api.modifyAFWebpackOpts(memo => {
+    generateRouteComponents();
+    memo.extraBabelPlugins = [
+      ...(memo.extraBabelPlugins || []),
+      [
+        require.resolve('../sdk/flagBabelPlugin'),
+        {
+          doTransform(filename) {
+            return routeComponents.includes(api.winPath(filename));
           },
-        ],
-      ];
-      return memo;
-    });
+        },
+      ],
+    ];
+    return memo;
+  });
 
-    api.addEntryCode(`
+  api.addEntryCode(`
 (() => {
   // Runtime block add component
   window.GUmiUIFlag = require('${api.relativeToTmp(
@@ -110,6 +110,5 @@ export default (api: IApiBlock) => {
     el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
   };
 })();
-    `);
-  }
+  `);
 };

@@ -7,7 +7,16 @@ import listBlock from './list';
 
 export default api => {
   // 注册 区块的 ui
-  if (process.env.UMI_UI !== 'none') {
+  // 以下场景不启动 ui 功能:
+  // 1. ssr 时
+  // 2. 非 dev 时
+  const command = process.argv.slice(2)[0];
+  if (
+    process.env.UMI_UI !== 'none' &&
+    process.env.NODE_ENV !== 'development' &&
+    !api.config.ssr &&
+    command === 'dev'
+  ) {
     require('./ui/index').default(api);
   }
 
