@@ -25,6 +25,7 @@ jobs:
           command: yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: yarn coveralls
+      - run: bash <(curl -s https://codecov.io/bash)
   cnpm_build:
     executor: node
     steps:
@@ -38,6 +39,7 @@ jobs:
           command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: cnpm run coveralls
+      - run: bash <(curl -s https://codecov.io/bash)
   npm_build:
     executor: node
     steps:
@@ -50,6 +52,7 @@ jobs:
           command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: npm run coveralls
+      - run: bash <(curl -s https://codecov.io/bash)
 
 workflows:
   version: 2
