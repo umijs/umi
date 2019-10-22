@@ -1,25 +1,47 @@
 # Javascript Node CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
-version: 2.0
-jobs:
-  build:
+version: 2.1
+executors:
+  node:
     docker:
-      # specify the version you desire here
       - image: circleci/node:latest-browsers
-    environment:
-      CI: true
-      NODE_ENV: test
-      NODE_OPTIONS: --max_old_space_size=4096
-      NPM_CONFIG_LOGLEVEL: error
-      JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
+    working_directory: ~/umi
+environment:
+  CI: true
+  NODE_ENV: test
+  NODE_OPTIONS: --max_old_space_size=4096
+  NPM_CONFIG_LOGLEVEL: error
+  JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
+
+jobs:
+  yarn_build:
+    executor: node
     branches:
       ignore:
         - gh-pages # list of branches to ignore
         - /release\/.*/ # or ignore regexes
-    working_directory: ~/umi
-
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-modules-{{ checksum "package.json" }}
+      - run: yarn bootstrap
+      - run: yarn build
+      - run: yarn ui:build
+      - run:
+          command: yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          no_output_timeout: 300m
+      - run: yarn coveralls
+      - save_cache:
+          key: node-modules-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+  cnpm_build:
+    executor: node
+    branches:
+      ignore:
+        - gh-pages # list of branches to ignore
+        - /release\/.*/ # or ignore regexes
     steps:
       - checkout
       - restore_cache:
@@ -32,6 +54,7 @@ jobs:
       - run:
           command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
+      - run: cnpm run coveralls
       - save_cache:
           key: node-modules-{{ checksum "package.json" }}
           paths:
