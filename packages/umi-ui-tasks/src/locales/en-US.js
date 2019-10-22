@@ -27,7 +27,6 @@ export default {
   'org.umi.ui.tasks.dev.state.starting.error': 'Compile error',
   'org.umi.ui.tasks.dev.state.success': 'Started at: ',
   'org.umi.ui.tasks.dev.state.fail': 'Started failed',
-  'org.umi.ui.tasks.envs': 'ENVS',
   'org.umi.ui.tasks.envs.port': 'PORT',
   'org.umi.ui.tasks.envs.babelPolyfill': '@babel/polyfill',
   'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel polyfill.',
@@ -42,9 +41,9 @@ export default {
   'org.umi.ui.tasks.envs.clear': 'CLEAR CONSOLE',
   'org.umi.ui.tasks.envs.clear.desc': 'Clear terminal log.',
   'org.umi.ui.tasks.envs.tsCheck': 'TS Check',
-  'org.umi.ui.tasks.envs.tsCheck.desc': 'Type Script definition check.',
+  'org.umi.ui.tasks.envs.tsCheck.desc': 'TypeScript definition check.',
   'org.umi.ui.tasks.envs.umiUI': 'UmiUI',
-  'org.umi.ui.tasks.envs.umiUI.desc': 'Open umi ui.',
+  'org.umi.ui.tasks.envs.umiUI.desc': 'Open Umi UI.',
 
   // build
   'org.umi.ui.tasks.build.buildError': 'Build project error',
