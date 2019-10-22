@@ -97,7 +97,13 @@ export function getNpmClient(): NpmClient {
 }
 
 // 默认关闭的环境变量，
-const DEFAULT_CLOSE_ENV = ['ANALYZE', 'ANALYZE_REPORT', 'SPEED_MEASURE', 'FORK_TS_CHECKER'];
+const DEFAULT_CLOSE_ENV = [
+  'UMI_UI',
+  'ANALYZE',
+  'ANALYZE_REPORT',
+  'SPEED_MEASURE',
+  'FORK_TS_CHECKER',
+];
 
 export function formatEnv(env: object): object {
   const res = {} as any;
