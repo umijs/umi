@@ -7,7 +7,9 @@ export interface IApiBlock extends IApi {
 }
 
 export default (api: IApiBlock) => {
-  api.addUIPlugin(require.resolve('../../../../../src/plugins/commands/block/ui/dist/ui.umd.js'));
+  api.addUIPlugin(
+    require.resolve('../../../../../src/plugins/commands/block/ui/dist/client.umd.js'),
+  );
   server(api);
 
   function getRouteComponents(routes) {
@@ -68,7 +70,6 @@ export default (api: IApiBlock) => {
   hoverEl.innerHTML='.g_umiuiBlockAddEditMode:hover {background: rgba(24, 144, 255, 0.25) !important;}'
   document.querySelector('head').appendChild(hoverEl);
   document.querySelector('head').appendChild(el);
-
 
   window.addEventListener('message', (event) => {
     try {

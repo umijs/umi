@@ -1,12 +1,12 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
 
-import Context from './ui/UIApiContext';
-import BlocksViewer from './ui/index';
-import Icon from './ui/icon';
+import Context from './client/UIApiContext';
+import BlocksViewer from './client/index';
+import Icon from './client/icon';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
-import model, { initApiToGlobal, namespace } from './ui/model';
+import model, { initApiToGlobal, namespace } from './client/model';
 
 export default (api: IUiApi) => {
   initApiToGlobal(api);

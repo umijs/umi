@@ -1,5 +1,5 @@
 export default {
-  entry: 'ui.tsx',
+  entry: 'client.tsx',
   umd: {
     name: 'blocks',
     minFile: false,
