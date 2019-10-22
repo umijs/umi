@@ -49,12 +49,6 @@ workflows:
               ignore:
                 - gh-pages
                 - /release\/.*/
-      - npm_build:
-        filters:
-          branches:
-            ignore:
-              - gh-pages
-              - /release\/.*/
       - cnpm_build:
           filters:
             branches:
