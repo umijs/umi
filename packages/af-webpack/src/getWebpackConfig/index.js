@@ -6,7 +6,7 @@ import { EOL } from 'os';
 import assert from 'assert';
 import { getPkgPath, shouldTransform } from './es5ImcompatibleVersions';
 import resolveDefine from './resolveDefine';
-import send, { STARTING } from '../send';
+// import send, { STARTING } from '../send';
 
 function makeArray(item) {
   if (Array.isArray(item)) return item;
@@ -96,7 +96,7 @@ export default function(opts) {
     .exclude.add(/\.json$/)
     .add(/\.(js|jsx|ts|tsx|mjs|wasm)$/)
     .add(/\.(graphql|gql)$/)
-    .add(/\.(css|less|scss|sass)$/);
+    .add(/\.(css|less|scss|sass|styl(us)?)$/);
   if (opts.urlLoaderExcludes) {
     opts.urlLoaderExcludes.forEach(exclude => {
       rule.add(exclude);
