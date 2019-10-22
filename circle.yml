@@ -1,12 +1,10 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-version: 2
+version: 2.1
 executors:
   node:
     docker:
       - image: circleci/node:latest-browsers
     working_directory: ~/umi
+
 environment:
   CI: true
   NODE_ENV: test
