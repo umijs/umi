@@ -15,10 +15,6 @@ environment:
 jobs:
   yarn_build:
     executor: node
-    branches:
-      ignore:
-        - gh-pages # list of branches to ignore
-        - /release\/.*/ # or ignore regexes
     steps:
       - checkout
       - restore_cache:
@@ -36,10 +32,6 @@ jobs:
             - ./node_modules
   cnpm_build:
     executor: node
-    branches:
-      ignore:
-        - gh-pages # list of branches to ignore
-        - /release\/.*/ # or ignore regexes
     steps:
       - checkout
       - restore_cache:
@@ -57,3 +49,20 @@ jobs:
           key: node-modules-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - yarn_build
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - /release\/.*/
+      - cnpm_build:
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - /release\/.*/
