@@ -214,14 +214,13 @@ export default class PluginAPI {
     } catch (e) {
       console.error('UI notification  error', e);
       if (this._.get(window, 'Tracert.logError')) {
+        const frameName = this.service.basicUI.get('name') || 'Umi';
         if (e && e.message) {
-          e.message = `${window.g_bigfish ? 'Bigfish' : 'Umi'}: params: ${JSON.stringify(
-            payload,
-          )} ${e.message}`;
+          e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;
         }
         window.Tracert.logError(e, {
           // framework use umi ui
-          d1: window.g_bigfish ? 'Bigfish' : 'Umi',
+          d1: frameName,
         });
       }
     }
@@ -233,6 +232,15 @@ export default class PluginAPI {
 
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
+  };
+
+  // modify basic UI api.modifyBasicUI({  })
+  modifyBasicUI: IUi.IModifyBasicUI = memo => {
+    Object.keys(memo).forEach(extend => {
+      if (memo[extend]) {
+        this.service.basicUI.set(extend, memo[extend]);
+      }
+    });
   };
 
   addLocales: IUi.IAddLocales = locale => {

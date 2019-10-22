@@ -18,11 +18,9 @@ import {
   Empty,
 } from 'antd';
 import { AppstoreFilled, Edit, Delete, Plus, Import as ImportIcon } from '@ant-design/icons';
-// TODO from server
-import umiIconSvg from '@/assets/umi.svg';
-import bigfishIconSvg from '@/assets/bigfish.svg';
-import editorSvg from '@/assets/code.svg';
 import get from 'lodash/get';
+import umiIconSvg from '@/assets/umi.svg';
+import editorSvg from '@/assets/code.svg';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
@@ -46,10 +44,9 @@ interface IProjectListItem extends IProjectItem {
 
 const ProjectList: React.SFC<IProjectProps> = props => {
   const _log = debug.extend('projectList');
-  const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
-  const { setCurrent } = useContext(ProjectContext);
+  const { setCurrent, basicUI } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -216,14 +213,15 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     </Row>
   );
 
+  const frameworkName = basicUI.get('name') || 'Umi';
+  const emptyTip = frameworkName
+    ? `org.umi.ui.global.project.list.empty.tip.${frameworkName}`
+    : 'org.umi.ui.global.project.list.empty.tip';
+
   const EmptyDescription = (
     <div>
       <FormattedMessage
-        id={
-          window.g_bigfish
-            ? 'org.umi.ui.global.project.list.empty.tip.bigfish'
-            : 'org.umi.ui.global.project.list.empty.tip'
-        }
+        id={emptyTip}
         values={{
           import: (
             <a onClick={() => setCurrent('import')}>
@@ -245,15 +243,16 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     // TODO: tmp use active
     [styles['project-list-layout-sider-item-active']]: true,
   });
+  const titleCls = cls(styles['project-list-layout-sider-title'], {
+    [`project-list-layout-sider-title-${frameworkName.toLowerCase()}`]: !!frameworkName.toLowerCase(),
+  });
 
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
-        <div
-          className={styles[`project-list-layout-sider-title${window.g_bigfish ? '-bigfish' : ''}`]}
-        >
-          <img src={iconSvg} alt="logo" />
-          <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
+        <div className={titleCls}>
+          {basicUI.get('logo') || <img src={umiIconSvg} alt="logo" />}
+          <h1>{frameworkName} UI</h1>
         </div>
         <div className={itemCls}>
           <AppstoreFilled />
@@ -283,7 +282,8 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                   })}
                 </span>
               </Button>
-              {window.g_bigfish ? null : (
+
+              {basicUI.get('create.project.button') || (
                 <Button
                   data-test-id="project-action-create"
                   type="primary"
@@ -309,7 +309,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             style={{
               paddingTop: '20vh',
             }}
-            image={iconSvg}
+            image={umiIconSvg}
             description={EmptyDescription}
           />
         ) : (

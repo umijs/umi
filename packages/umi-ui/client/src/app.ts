@@ -21,10 +21,41 @@ const service = (window.g_service = {
   panels: [],
   locales: [],
   configSections: [],
+  basicUI: new Map(),
 });
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
+
+const initUIExtend = async () => {
+  const { script: basicUIScript } = await callRemote({ type: '@@project/getBasicAssets' });
+  if (basicUIScript) {
+    geval(`;(function(window){;${basicUIScript}\n})(window);`);
+    // Init the baseUI
+    window.g_uiBasicUI.forEach(basicUI => {
+      // only readable
+      basicUI(Object.freeze(new PluginAPI(service)));
+    });
+  }
+};
+
+const initUIPlugin = async (initOpts = {}) => {
+  const { currentProject } = initOpts;
+  // Get script and style from server, and run
+  const { script } = await callRemote({ type: '@@project/getExtraAssets' });
+  try {
+    geval(`;(function(window){;${script}\n})(window);`);
+  } catch (e) {
+    console.error(`Error occurs while executing script from plugins`);
+    console.error(e);
+  }
+
+  // Init the plugins
+  window.g_uiPlugins.forEach(uiPlugin => {
+    // only readable
+    uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
+  });
+};
 
 export async function render(oldRender) {
   // mini 模式下允许通过加 key 的参数打开
@@ -66,7 +97,7 @@ export async function render(oldRender) {
     React.createElement(require('./pages/loading').default, {}),
     document.getElementById('root'),
   );
-
+  await initUIExtend();
   const { data } = await callRemote({ type: '@@project/list' });
   const props = {
     data,
@@ -112,26 +143,12 @@ export async function render(oldRender) {
       return false;
     }
 
-    // Get script and style from server, and run
-    const { script } = await callRemote({ type: '@@project/getExtraAssets' });
-    try {
-      geval(`;(function(window){;${script}\n})(window);`);
-    } catch (e) {
-      console.error(`Error occurs while executing script from plugins`);
-      console.error(e);
-    }
-
-    // Init the plugins
-    window.g_uiPlugins.forEach(uiPlugin => {
-      // only readable
-      uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
+    await initUIPlugin({
+      currentProject,
     });
   } else {
     history.replace('/project/select');
   }
-
-  window.g_callRemote = callRemote;
-
   // Do render
   oldRender();
 }

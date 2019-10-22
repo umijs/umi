@@ -15,7 +15,7 @@ import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
 import Config from './Config';
-import getClientScript from './getClientScript';
+import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
@@ -31,6 +31,11 @@ const debug = require('debug')('umiui:UmiUI');
 const debugSocket = debug.extend('socket');
 
 process.env.UMI_UI = 'true';
+
+interface IOpts {
+  /** assets for framework load */
+  baseUI?: string;
+}
 
 export default class UmiUI {
   cwd: string;
@@ -51,8 +56,13 @@ export default class UmiUI {
 
   npmClients: string[] = [];
 
-  constructor() {
+  baseUI: string;
+
+  constructor(opts: IOpts = {}) {
     this.cwd = process.cwd();
+    // 兼容旧版 Bigfish
+    const defaultBaseUI = process.env.BIGFISH_COMPAT ? require.resolve('../ui/dist/ui.umd.js') : '';
+    this.baseUI = opts.baseUI || defaultBaseUI;
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -78,6 +88,21 @@ export default class UmiUI {
       this.initNpmClients();
     });
   }
+
+  getService = cwd => {
+    const serviceModule = process.env.BIGFISH_COMPAT
+      ? '@alipay/bigfish/_Service.js'
+      : 'umi/_Service.js';
+    const servicePath = process.env.LOCAL_DEBUG
+      ? 'umi-build-dev/lib/Service'
+      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+    debug(`Service path: ${servicePath}`);
+    // eslint-disable-next-line import/no-dynamic-require
+    const Service = require(servicePath).default;
+    return new Service({
+      cwd,
+    });
+  };
 
   openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
@@ -136,9 +161,6 @@ export default class UmiUI {
       // Attach Service
       debug(`Attach service for ${key}`);
       // Use local service and detect version compatibility
-      const serviceModule = process.env.BIGFISH_COMPAT
-        ? '@alipay/bigfish/_Service.js'
-        : 'umi/_Service.js';
       const binModule = process.env.BIGFISH_COMPAT
         ? '@alipay/bigfish/bin/bigfish.js'
         : 'umi/bin/umi.js';
@@ -164,14 +186,7 @@ export default class UmiUI {
       }
 
       try {
-        const servicePath = process.env.LOCAL_DEBUG
-          ? 'umi-build-dev/lib/Service'
-          : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
-        debug(`Service path: ${servicePath}`);
-        const Service = require(servicePath).default;
-        const service = new Service({
-          cwd: project.path,
-        });
+        const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
@@ -286,6 +301,13 @@ export default class UmiUI {
       initialValue: [],
     });
     const script = getClientScript(uiPlugins);
+    return {
+      script,
+    };
+  }
+
+  getBasicAssets() {
+    const script = this.baseUI ? getBasicScriptContent(this.baseUI) : '';
     return {
       script,
     };
@@ -539,6 +561,9 @@ export default class UmiUI {
 
   handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
+      case '@@project/getBasicAssets':
+        success(this.getBasicAssets());
+        break;
       case '@@project/getExtraAssets':
         success(
           this.getExtraAssets({

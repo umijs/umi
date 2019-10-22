@@ -49,6 +49,7 @@ const buildPlugins = async (plugins, opts = {}) => {
     'packages/umi-ui-tasks/src',
     'packages/umi-build-dev/src/plugins/commands/block/ui',
     'packages/umi-plugin-react/ui',
+    'packages/umi-ui/ui',
   ];
 
   // 并行执行 ui plugins build 和 UI App build

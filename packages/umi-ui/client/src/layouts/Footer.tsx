@@ -32,23 +32,9 @@ export interface IFooterProps {
   type: 'list' | 'detail' | 'loading';
 }
 
-const FOOTER_RIGHT = [
-  {
-    title: 'org.umi.ui.global.help',
-    icon: <QuestionCircle style={{ marginRight: 4 }} />,
-    href:
-      // TODO: refactor
-      window.g_bigfish
-        ? 'https://bigfish.antfin-inc.com/doc/bigfish-ui'
-        : window.g_lang === 'zh-CN'
-        ? 'https://umijs.org/zh/guide/umi-ui.html'
-        : 'https://umijs.org/guide/umi-ui.html',
-  },
-];
-
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
-  const { locale, setLocale, currentProject, isMini } = useContext(Context);
+  const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
   const { path, name } = currentProject || {};
   const [logVisible, setLogVisible] = useState<boolean>(false);
   const [logs, dispatch] = useReducer((state, action) => {
@@ -165,6 +151,17 @@ const Footer: React.SFC<IFooterProps> = props => {
     }
   };
 
+  const feedback = basicUI.get('feedback') || {
+    width: 230,
+    height: 150,
+    src: '//img.alicdn.com/tfs/TB1n__6eFP7gK0jSZFjXXc5aXXa-737-479.png',
+  };
+
+  const helpDoc = basicUI.get('helpDoc') || {
+    'zh-CN': 'https://umijs.org/zh/guide/umi-ui.html',
+    'en-US': 'https://umijs.org/guide/umi-ui.html',
+  };
+
   return (
     <div className={styles.footer}>
       <div className={styles.statusBar}>
@@ -199,15 +196,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             overlayClassName={styles.help}
             content={
               <div className={styles.feedback}>
-                <img
-                  width={window.g_bigfish ? 150 : 230}
-                  height={window.g_bigfish ? 200 : 150}
-                  src={
-                    window.g_bigfish
-                      ? '//gw-office.alipayobjects.com/basement_prod/bd018d14-7cfd-4410-97dc-84bfd7bb6a8c.jpg'
-                      : '//img.alicdn.com/tfs/TB1n__6eFP7gK0jSZFjXXc5aXXa-737-479.png'
-                  }
-                />
+                <img {...feedback} />
               </div>
             }
           >
@@ -220,13 +209,15 @@ const Footer: React.SFC<IFooterProps> = props => {
           </Popover>
         </div>
 
-        {FOOTER_RIGHT.map((item, i) => (
-          <div className={styles.section} key={i.toString()}>
-            <a href={item.href} target="_blank" rel="noopener noreferrer">
-              {item.icon} {intl({ id: item.title })}
-            </a>
-          </div>
-        ))}
+        <div className={styles.section}>
+          <a
+            href={typeof helpDoc === 'object' ? helpDoc[window.g_lang] : helpDoc}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <QuestionCircle style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.help' })}
+          </a>
+        </div>
         <div data-test-id="locale_wrapper" className={styles.section} style={{ cursor: 'pointer' }}>
           <Dropdown overlay={menu} placement="topCenter">
             <p>

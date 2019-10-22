@@ -64,6 +64,7 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
     };
   }
   componentDidCatch(error, info) {
+    const frameworkName = window.g_service.basicUI.get('name') || 'Umi';
     this.setState({
       error,
       info,
@@ -74,15 +75,13 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
     }
     if (get(window, 'Tracert.logError')) {
       const err = new Error(
-        error.message
-          ? `${window.g_bigfish ? 'Bigfish' : 'Umi'}: ${JSON.stringify(error.message)}`
-          : '',
+        error.message ? `${frameworkName}: ${JSON.stringify(error.message)}` : '',
       );
       const umiVersion = get(window, 'g_umi.version', '');
       const bigfishVersion = get(window, 'g_bigfish.version', '');
       const logParams = {
         // framework use umi ui
-        d1: window.g_bigfish ? 'Bigfish' : 'Umi',
+        d1: frameworkName,
         // framework version
         d2: window.g_bigfish
           ? `bigfish: ${bigfishVersion}, umi: ${umiVersion}`

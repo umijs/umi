@@ -5,9 +5,11 @@
   "files": [
     "lib",
     "client/dist",
+    "ui/dist",
     "src"
   ],
   "devDependencies": {
+    "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/node-notifier": "^5.4.0",
     "umi-types": "0.5.3",
     "umi-ui-theme": "^1.0.0-beta.2"

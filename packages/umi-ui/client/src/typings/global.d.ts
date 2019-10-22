@@ -21,6 +21,7 @@ declare global {
     g_bigfish?: boolean;
     g_uiContext: Context<IUi.IContext>;
     g_service: IUi.IService;
+    g_uiBasicUI: Function[];
   }
 }
 

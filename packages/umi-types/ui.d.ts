@@ -28,6 +28,15 @@ declare namespace IUI {
     'any' = 'any',
   }
 
+  export enum EXTEND_UI {
+    'create.project.button' = 'create.project.button',
+  }
+
+  export enum EXTEND_CONFIG {
+    name = 'name',
+    logo = 'logo',
+  }
+
   type ILang = keyof typeof LOCALES;
   type ITheme = keyof typeof THEME;
 
@@ -63,6 +72,7 @@ declare namespace IUI {
     panels: IPanel[];
     locales: ILocale[];
     configSections: any[];
+    basicUI: Map<string, ReactNode>;
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -112,7 +122,7 @@ declare namespace IUI {
     sections: Array<{
       key?: string;
       title: string;
-      icon: string | React.ReactNode;
+      icon: string | ReactNode;
       description: string;
       component: FunctionComponent<any>;
     }>;
@@ -122,7 +132,7 @@ declare namespace IUI {
 
   interface ITerminalProps {
     /** Terminal title */
-    title?: React.ReactNode;
+    title?: ReactNode;
     className?: string;
     terminalClassName?: string;
     /** defaultValue in Terminal */
@@ -177,7 +187,7 @@ declare namespace IUI {
   type IFormatMessage = typeof intl.formatMessage;
   type PickIntl = Pick<
     typeof intl,
-    'FormattedDate'
+    | 'FormattedDate'
     | 'FormattedTime'
     | 'FormattedRelative'
     | 'FormattedNumber'
@@ -226,6 +236,8 @@ declare namespace IUI {
     taobaoSpeedUp?: boolean;
   }
 
+  type IModifyBasicUIParam = Record<{ [K in keyof typeof EXTEND_UI]: ReactNode | FC }>;
+
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
   type IConnect = typeof connect;
@@ -236,6 +248,7 @@ declare namespace IUI {
   type IGetSharedDataDir = () => Promise<string>;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
+  type IModifyBasicUI = (memo: IModifyBasicUIParam) => void;
   type LaunchEditorTypes = 'project' | 'config';
 
   interface ILaunchEditorParams {
@@ -259,6 +272,7 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     isMini: boolean;
+    service: IService;
   }
 
   class IApiClass {
@@ -319,6 +333,7 @@ declare namespace IUI {
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;
     detectNpmClients: () => Promise<string[]>;
+    modifyBasicUI: IModifyBasicUI;
   }
 
   type IApi = InstanceType<typeof IApiClass>;
