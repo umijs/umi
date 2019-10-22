@@ -44,7 +44,7 @@ jobs:
     steps:
       - checkout
       - run: npm install --no-package-lock
-      - run: npm run bootstrap -- --npm-client=npm --no-package-lock
+      - run: npm run bootstrap -- --npm-client=npm
       - run: npm run build
       - run: npm run ui:build
       - run:
