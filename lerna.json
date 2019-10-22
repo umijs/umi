@@ -16,7 +16,7 @@
       "exact": true
     },
     "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]
+      "npmClientArgs": ["--no-package-lock", "--no-ci"]
     }
   },
   "npmClient": "yarn",
