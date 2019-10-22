@@ -17,9 +17,7 @@ jobs:
     executor: node
     steps:
       - checkout
-      - restore_cache:
-          key: node-modules-{{ checksum "package.json" }}
-      - run: yarn
+      - run: yarn install
       - run: yarn bootstrap
       - run: yarn build
       - run: yarn ui:build
@@ -27,16 +25,10 @@ jobs:
           command: yarn test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: yarn coveralls
-      - save_cache:
-          key: node-modules-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
   cnpm_build:
     executor: node
     steps:
       - checkout
-      - restore_cache:
-          key: node-modules-{{ checksum "package.json" }}
       - run: sudo npm install -g cnpm
       - run: cnpm install --registry=https://registry.npmjs.org
       - run: cnpm run bootstrap -- --npm-client=cnpm
@@ -46,16 +38,10 @@ jobs:
           command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: cnpm run coveralls
-      - save_cache:
-          key: node-modules-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
   npm_build:
     executor: node
     steps:
       - checkout
-      - restore_cache:
-          key: node-modules-{{ checksum "package.json" }}
       - run: npm install
       - run: npm run bootstrap -- --npm-client=npm
       - run: npm run build
@@ -64,10 +50,6 @@ jobs:
           command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
       - run: npm run coveralls
-      - save_cache:
-          key: node-modules-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
 
 workflows:
   version: 2
