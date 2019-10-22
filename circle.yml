@@ -39,20 +39,6 @@ jobs:
           no_output_timeout: 300m
       - run: cnpm run coveralls
       - run: bash <(curl -s https://codecov.io/bash)
-  npm_build:
-    executor: node
-    steps:
-      - checkout
-      - run: npm install --no-ci
-      - run: npm run bootstrap -- --npm-client=npm
-      - run: npm run build
-      - run: npm run ui:build
-      - run:
-          command: npm run test -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
-          no_output_timeout: 300m
-      - run: npm run coveralls
-      - run: bash <(curl -s https://codecov.io/bash)
-
 workflows:
   version: 2
   build-test:
