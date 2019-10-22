@@ -6,8 +6,6 @@ import { Resource } from '../../data';
 import { DEFAULT_RESOURCES } from './util';
 
 export default (api: IApi) => {
-  const blockService = new Block(api);
-
   // 区块资源可扩展
   let resources: Resource[] = [];
   resources = api.applyPlugins('addBlockUIResource', {
@@ -18,6 +16,7 @@ export default (api: IApi) => {
   });
 
   api.onUISocket(async ({ action, failure, success, send }) => {
+    const blockService = new Block(api);
     blockService.init(send);
     const { type, payload = {}, lang } = action;
 

@@ -9,7 +9,7 @@ export default api => {
   // 注册 区块的 ui
   // 以下场景不启动 ui 功能:
   // 1. ssr 时
-  // 2. 非 dev 时
+  // 2. 非 dev 或 ui 时
   const command = process.argv.slice(2)[0];
   if (
     process.env.UMI_UI !== 'none' &&
@@ -93,7 +93,7 @@ Examples:
       details,
     },
     (args, opts) => {
-      // reture only for test
+      // return only for test
       return block(args, opts).catch(e => {
         log.error(e);
       });
