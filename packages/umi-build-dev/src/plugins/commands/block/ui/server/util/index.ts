@@ -4,7 +4,6 @@ import { join } from 'path';
 import { winPath } from 'umi-utils';
 import { fetchBlockList, fetchUmiBlock } from '../../../util';
 import { Resource } from '../../../data.d';
-import { StepState } from '../core/enum';
 
 export interface TreeData {
   title: string;

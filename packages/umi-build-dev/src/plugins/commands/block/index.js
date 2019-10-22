@@ -15,7 +15,7 @@ export default api => {
     process.env.UMI_UI !== 'none' &&
     process.env.NODE_ENV !== 'development' &&
     !api.config.ssr &&
-    command === 'dev'
+    (command === 'dev' || command === 'ui')
   ) {
     require('./ui/index').default(api);
   }
