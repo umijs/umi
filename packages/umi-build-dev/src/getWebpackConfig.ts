@@ -65,6 +65,7 @@ export default function(service: IApi, opts: IOpts = {}) {
       ...(typeof ssr === 'object' && ssr.nodeExternalsOpts ? ssr.nodeExternalsOpts : {}),
     };
 
+    webpackConfig.target = 'node';
     debug(`nodeExternalOpts:`, nodeExternalsOpts);
     const defaultExternals =
       (typeof ssr === 'object' && ssr.disableExternalWhiteList) || webpackConfig.externals || [];
