@@ -48,7 +48,7 @@ $ BASE_PORT=8001 umi dev
 ```
 
 ### UMI_UI
-dev时是否启动 umi ui
+dev 时是否启动 umi ui
 
 ```bash
 // 不启动
