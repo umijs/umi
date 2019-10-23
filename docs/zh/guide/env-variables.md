@@ -47,6 +47,14 @@ $ PORT=8001 umi dev
 $ BASE_PORT=8001 umi dev
 ```
 
+### UMI_UI
+dev时是否启动 umi ui
+
+```bash
+// 不启动
+$ UMI_UI=none umi dev
+```
+
 ### HOST
 
 默认是 `0.0.0.0`。
