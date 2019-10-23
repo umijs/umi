@@ -8,9 +8,9 @@ import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
 import Context from './UIApiContext';
 import BlockList from './BlockList';
-import GlobalSearch from './search';
+import GlobalSearch from './GlobalSearch';
 import useCallData from './hooks/useCallData';
-import styles from './index.module.less';
+import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
 import { ModelState, namespace } from './model';
 

@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { IUiApi } from 'umi-types';
 
 import { Search as SearchIcon } from '@ant-design/icons';
-import styles from './search.module.less';
+import styles from './GlobalSearch.module.less';
 
 interface IGlobalSearch {
   onChange: (v: string) => void;

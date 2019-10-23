@@ -13,7 +13,7 @@ import AddTemplateForm from './AddTemplateForm';
 import AddBlockFormForUI from './AddBlockFormForUI';
 import AddBlockForm from './AddBlockForm';
 import { getPathFromFilename } from '../BlockList/BlockItem';
-import { getNoExitVar, getNoExitRoute, getNoExitPath } from '../../uiUtil';
+import { getNoExitVar, getNoExitRoute, getNoExitPath } from '../util';
 
 interface AdderProps {
   onAddBlockChange?: (block: Block) => void;
