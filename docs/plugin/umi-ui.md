@@ -371,7 +371,7 @@ export default (api) => {
     title: '插件模板',
     path: '/plugin-bar',
     icon: 'environment',
-    component: ,
+    component: Component,
   });
 };
 ```

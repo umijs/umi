@@ -153,6 +153,75 @@ export default (api) => {
 }
 ```
 
+### 国际化
+
+Umi UI 支持插件国际化，提供中文（zh-CN）、English（en-US）两种语言，通过底部右下角菜单进行语言切换。
+
+使用 [api.addLocales()](/zh/plugin/umi-ui.html#api-addlocales) 和 [api.intl.*](/zh/plugin/umi-ui.html#api-intl) 让插件拥有国际化能力。
+
+添加国际化字段：
+
+```jsx
+// ui/index.js
+import React from 'react';
+
+export default (api) => {
+  // or
+  // import zh from './your-locale/zh.js'
+  // import en from './your-locale/en.js'
+  // { 'zh-CN': zh, 'en-US': en }
+  api.addLocales({
+    'zh-CN': {
+      'org.sorrycc.react.name': '陈成',
+    },
+    'en-US': {
+      'org.sorrycc.react.name': 'chencheng',
+    },
+  });
+};
+```
+
+使用国际化字段，[api.intl.*](/zh/plugin/umi-ui.html#api-intl) 提供一系列工具方法供选择：
+
+```jsx
+import React from 'react';
+
+export default (api) => {
+  api.addLocales({
+    'zh-CN': {
+      'org.sorrycc.react.name': '陈成',
+    },
+    'en-US': {
+      'org.sorrycc.react.name': 'chencheng',
+    },
+  });
+  // 用法 api 参考 https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md
+  const {
+    FormattedMessage,
+    formatMessage,
+  } = api.intl;
+  const Component = (
+    <div>
+      <p>{formatMessage({ id: 'org.sorrycc.react.name' })}</p>
+      <FormattedMessage id="org.sorrycc.react.name" />
+      {/* api.intl alias `api.intl.formatMessage`:  */ }
+      <p>{intl({ id: 'org.sorrycc.react.name' })}</p>
+    </div>
+  )
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    component: Component,
+  });
+};
+```
+
+效果如下：
+
+![](https://user-images.githubusercontent.com/13595509/67362409-8154ce00-f59d-11e9-94b0-384fbaa2fb67.gif)
+
+
 ### 使用 Umi UI 主题
 
 Umi UI 提供了一套 antd 主题变量，可供第三方组件库在非 Umi UI 运行环境下，开发插件。

@@ -152,6 +152,73 @@ export default (api) => {
 }
 ```
 
+### Internationalization
+
+Umi UI supports plug-in internationalization, and provides Chinese(zh-CN) and English(en-US) languages. The language is switched through the bottom right corner menu.
+
+Make the plugin using [api.addLocales()](/plugin/umi-ui.html#api-addlocales) and [api.intl.*](/plugin/umi-ui.html#api-intl) Have internationalization capabilities.
+
+Register the internationalization fields:
+
+```jsx
+// ui/index.js
+import React from 'react';
+
+export default (api) => {
+  // or
+  // import zh from './your-locale/zh.js'
+  // import en from './your-locale/en.js'
+  // { 'zh-CN': zh, 'en-US': en }
+  api.addLocales({
+    'zh-CN': {
+      'org.sorrycc.react.name': '陈成',
+    },
+    'en-US': {
+      'org.sorrycc.react.name': 'chencheng',
+    },
+  });
+};
+```
+
+Using internationalization fields, [api.intl.*](/plugin/umi-ui.html#api-intl) provides a range of tool methods to choose from:
+
+```jsx
+import React from 'react';
+
+export default (api) => {
+  api.addLocales({
+    'zh-CN': {
+      'org.sorrycc.react.name': '陈成',
+    },
+    'en-US': {
+      'org.sorrycc.react.name': 'chencheng',
+    },
+  });
+  // Usage api reference https://github.com/formatjs/react-intl/blob/1c7b6f87d5cc49e6ef3f5133cacf8b066df53bde/docs/API.md
+  const {
+    FormattedMessage,
+    formatMessage,
+  } = api.intl;
+  const Component = (
+    <div>
+      <p>{formatMessage({ id: 'org.sorrycc.react.name' })}</p>
+      <FormattedMessage id="org.sorrycc.react.name" />
+      {/* api.intl alias `api.intl.formatMessage`:  */ }
+      <p>{intl({ id: 'org.sorrycc.react.name' })}</p>
+    </div>
+  )
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    component: Component,
+  });
+};
+```
+
+The result is as follows:
+
+![](https://user-images.githubusercontent.com/13595509/67362409-8154ce00-f59d-11e9-94b0-384fbaa2fb67.gif)
 
 
 ### Use Umi UI theme

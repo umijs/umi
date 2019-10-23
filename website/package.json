@@ -2,7 +2,8 @@
   "scripts": {
     "now-build": "npm run build",
     "deploy": "npm run build && now && now alias",
-    "build": "vuepress build ../docs --dest ./dist"
+    "build": "vuepress build ../docs --dest ./dist",
+    "dev": "vuepress dev ../docs"
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.2.0",
