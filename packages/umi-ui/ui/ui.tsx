@@ -1,7 +1,6 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
 import Logo from './components/logo';
-import CreateButton from './components/createButton';
 
 /**
  * Bigfish Compact Config
@@ -18,6 +17,7 @@ export default (api: IUiApi) => {
       height: 200,
     },
     helpDoc: 'https://bigfish.antfin-inc.com/doc/bigfish-ui',
-    'create.project.button': <CreateButton api={api} />,
+    // 创建按钮隐藏
+    'create.project.button': <></>,
   });
 };

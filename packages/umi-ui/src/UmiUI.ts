@@ -39,19 +39,6 @@ interface IOpts {
   services?: IOnUISocketFunc[];
 }
 
-const tmpLang = ({ action, success }) => {
-  const { type } = action;
-  switch (type) {
-    case 'org.baseUI.bigfish.aaa':
-      success({
-        hello: 'Bigfish Service',
-      });
-      break;
-    default:
-      break;
-  }
-};
-
 export default class UmiUI {
   cwd: string;
 
@@ -79,9 +66,8 @@ export default class UmiUI {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
     const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../ui/dist/ui.umd.js') : '';
-    const defaultBaseUIServices = process.env.BIGFISH_COMPAT ? [tmpLang] : [];
     this.baseUI = opts.baseUI || defaultBaseUI;
-    this.baseUIServices = opts.services || defaultBaseUIServices;
+    this.baseUIServices = opts.services || [];
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
