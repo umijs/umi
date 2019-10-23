@@ -14,6 +14,7 @@ import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
+import { IOnUISocketFunc } from 'umi-types';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -35,7 +36,21 @@ process.env.UMI_UI = 'true';
 interface IOpts {
   /** assets for framework load */
   baseUI?: string;
+  services?: IOnUISocketFunc[];
 }
+
+const tmpLang = ({ action, success }) => {
+  const { type } = action;
+  switch (type) {
+    case 'org.baseUI.bigfish.aaa':
+      success({
+        hello: 'Bigfish Service',
+      });
+      break;
+    default:
+      break;
+  }
+};
 
 export default class UmiUI {
   cwd: string;
@@ -58,11 +73,15 @@ export default class UmiUI {
 
   baseUI: string;
 
+  baseUIServices: IOnUISocketFunc[];
+
   constructor(opts: IOpts = {}) {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
     const defaultBaseUI = process.env.BIGFISH_COMPAT ? require.resolve('../ui/dist/ui.umd.js') : '';
+    const defaultBaseUIServices = process.env.BIGFISH_COMPAT ? [tmpLang] : [];
     this.baseUI = opts.baseUI || defaultBaseUI;
+    this.baseUIServices = opts.services || defaultBaseUIServices;
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -979,6 +998,15 @@ export default class UmiUI {
           try {
             const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             debugSocket(chalk.blue.bold('<<<<'), formatLogMessage(message));
+            const serviceArgs = {
+              action: { type, payload, lang },
+              log,
+              send,
+              success: success.bind(this, type),
+              failure: failure.bind(this, type),
+              progress: progress.bind(this, type),
+            };
+
             if (type.startsWith('@@')) {
               this.handleCoreData(
                 { type, payload, lang, key },
@@ -990,18 +1018,16 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
+            } else if (Array.isArray(this.baseUIServices) && this.baseUIServices.length > 0) {
+              // register framework services
+              this.baseUIServices.forEach(baseUIService => {
+                baseUIService(serviceArgs);
+              });
             } else {
               assert(this.servicesByKey[key], `service of key ${key} not exists.`);
               const service = this.servicesByKey[key];
               service.applyPlugins('onUISocket', {
-                args: {
-                  action: { type, payload, lang },
-                  log,
-                  send,
-                  success: success.bind(this, type),
-                  failure: failure.bind(this, type),
-                  progress: progress.bind(this, type),
-                },
+                args: serviceArgs,
               });
             }
             // eslint-disable-next-line no-empty
