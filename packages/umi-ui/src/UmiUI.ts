@@ -78,7 +78,7 @@ export default class UmiUI {
   constructor(opts: IOpts = {}) {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
-    const defaultBaseUI = process.env.BIGFISH_COMPAT ? require.resolve('../ui/dist/ui.umd.js') : '';
+    const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../ui/dist/ui.umd.js') : '';
     const defaultBaseUIServices = process.env.BIGFISH_COMPAT ? [tmpLang] : [];
     this.baseUI = opts.baseUI || defaultBaseUI;
     this.baseUIServices = opts.services || defaultBaseUIServices;
