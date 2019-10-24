@@ -1,8 +1,9 @@
 module.exports = {
   title: 'UmiJS',
   markdown: {
-    config: md => {
+    extendMarkdown: md => {
       md.use(require('../../website/node_modules/markdown-it-plantuml'));
+      md.use(require('../../website/node_modules/markdown-it-task-lists'));
     },
   },
   locales: {
