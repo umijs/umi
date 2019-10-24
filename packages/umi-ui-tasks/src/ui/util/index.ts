@@ -1,4 +1,3 @@
-import { IUiApi } from 'umi-types';
 import { TaskState, TaskType } from '../../server/core/enums';
 
 export const isCaredEvent = (taskType: TaskType, caredTaskType: TaskType): boolean => {
@@ -71,19 +70,7 @@ export function getNoticeMessage(
   };
 }
 
-let callRemote;
-let listenRemote;
-let notify;
-let intl;
-export function initApiToGloal(api: IUiApi) {
-  callRemote = api.callRemote; // eslint-disable-line
-  listenRemote = api.listenRemote;
-  notify = api.notify;
-  intl = api.intl;
-}
-
-export { callRemote, listenRemote, notify, intl };
-
+export * from './initApiToGlobal';
 export * from './task';
 export * from './terminal';
 export * from './analyze';
