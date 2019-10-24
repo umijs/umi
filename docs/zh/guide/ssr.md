@@ -166,13 +166,14 @@ console.log('http://localhost:3000');
 
 [umi-example-ssr-with-egg/app/controller/home.js](https://github.com/umijs/umi-example-ssr-with-egg/blob/master/app/controller/home.js)
 
-## 配置及插件
+### 预渲染（Pre Render）
 
-## FAQ
+预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。无需使用 web 服务器实时动态编译 HTML，**适用于静态站点**。
 
-### 与预渲染的区别
-预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。
+umi 提供 [@umijs/plugin-prerender](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender) 插件，帮助用户在构建时预渲染出页面。更多用法参考[文档](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender)。
 
-无需使用 web 服务器实时动态编译 HTML，**适用于静态站点**。
-
-你可以参考 umi 的官方示例 [umi-example-ssr](https://github.com/umijs/umi-example-ssr) 了解更多。
+```js
+export default {
+  plugins: [['@umijs/plugin-prerender', options]],
+};
+```
