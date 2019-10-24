@@ -47,6 +47,15 @@ Specify the base port number, umi will find available port to start dev server. 
 $ BASE_PORT=8001 umi dev
 ```
 
+### UMI_UI
+Whether run `umi dev` with `umi ui`
+
+```bash
+// dev without ui
+$ UMI_UI=none umi dev
+```
+
+
 ### HOST
 
 The default is `0.0.0.0`.
