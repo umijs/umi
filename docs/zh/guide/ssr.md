@@ -164,7 +164,7 @@ console.log('http://localhost:3000');
 
 #### Egg.js
 
-[examples/eggjs](https://github.com/umijs/umi-server/tree/master/examples/eggjs)
+可参考 [examples/eggjs](https://github.com/umijs/umi-server/tree/master/examples/eggjs)
 
 ### 预渲染（Pre Render）
 
