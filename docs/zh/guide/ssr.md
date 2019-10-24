@@ -153,7 +153,7 @@ http.createServer(async (req, res) => {
 console.log('http://localhost:3000');
 ```
 
-运行 `node bar.js`，访问 [http://localhost:3000](http://localhost:3000)，就是一个简单的服务端渲染例子。
+运行 `node bar.js`，访问 [http://localhost:3000](http://localhost:3000)，就是一个简单的服务端渲染例子。详细可见 [examples/normal](https://github.com/umijs/umi-server/tree/master/examples/normal)
 
 ![image](https://user-images.githubusercontent.com/13595509/67446985-0e069700-f645-11e9-85c6-b2ce7f977f74.png)
 

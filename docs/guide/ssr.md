@@ -153,7 +153,7 @@ http.createServer(async (req, res) => {
 console.log('http://localhost:3000');
 ```
 
-Running `node bar.js` and accessing [http://localhost:3000](http://localhost:3000) is a simple example of server-side rendering.
+Running `node bar.js` and accessing [http://localhost:3000](http://localhost:3000) is a simple example of server-side rendering. learn more [examples/normal](https://github.com/umijs/umi-server/tree/master/examples/normal)
 
 ![image](https://user-images.githubusercontent.com/13595509/67446985-0e069700-f645-11e9-85c6-b2ce7f977f74.png)
 
