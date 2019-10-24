@@ -71,7 +71,7 @@ The advantages of SSR are:
 
 ## Usage
 
-### umi configuration
+### Umi Configuration
 
 Turn on `ssr: true` in [config file](/guide/config.html#configuration-file), [more Configuration](/config/#ssr):
 
@@ -97,7 +97,7 @@ After enable, running `umi build` will generate the following files:
 
 Regardless of the server-side framework, Umijs focuses on application **UI layer rendering**, which is not coupled to the server-side framework.
 
-In order to reduce the server framework access threshold, umi provides [umi-server](https://npmjs.com/package/umi-server) and uses the common Node.js server framework ([Koajs](https://koajs.com), [Express](https://expressjs.com/), [Egg.js](https://eggjs.org/)), for example, give specific access methods.
+In order to reduce the server framework access threshold, Umi provides [umi-server](https://npmjs.com/package/umi-server) and uses the common Node.js server framework ([Koajs](https://koajs.com), [Express](https://expressjs.com/), [Egg.js](https://eggjs.org/)), for example, give specific access methods.
 
 #### Use http module
 

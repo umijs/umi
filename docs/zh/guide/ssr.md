@@ -71,7 +71,7 @@ SSR 优势在于：
 
 ## 使用
 
-### umi 配置
+### Umi 配置
 
 在[配置文件](/zh/guide/config.html#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)开启 `ssr: true`，[更多配置](/zh/config/#ssr)：
 
@@ -95,9 +95,9 @@ export default {
 
 ### 服务端
 
-由于与服务端框架无关，Umijs 关注是应用 **UI 层渲染**，与服务端框架不耦合。
+由于与服务端框架无关，Umi 关注是应用 **UI 层渲染**，与服务端框架不耦合。
 
-为了降低服务端框架接入门槛，umi 提供 [umi-server](https://npmjs.com/package/umi-server)，并以常见的 Node.js 服务端框架（[Koajs](https://koajs.com)、[Express](https://expressjs.com/)、[Egg.js](https://eggjs.org/)）为例，给出具体接入方式。
+为了降低服务端框架接入门槛，Umi 提供 [umi-server](https://npmjs.com/package/umi-server)，并以常见的 Node.js 服务端框架（[Koajs](https://koajs.com)、[Express](https://expressjs.com/)、[Egg.js](https://eggjs.org/)）为例，给出具体接入方式。
 
 #### 使用原生 http 模块
 
@@ -170,7 +170,7 @@ console.log('http://localhost:3000');
 
 预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。无需使用 web 服务器实时动态编译 HTML，**适用于静态站点**。
 
-umi 提供 [@umijs/plugin-prerender](https://www.npmjs.com/package/@umijs/plugin-prerender) 插件，帮助用户在构建时预渲染出页面。更多用法参考[文档](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender)。
+Umi 提供 [@umijs/plugin-prerender](https://www.npmjs.com/package/@umijs/plugin-prerender) 插件，帮助用户在构建时预渲染出页面。更多用法参考[文档](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender)。
 
 ```js
 export default {
