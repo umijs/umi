@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 umi ui\"",
+    "dev": "concurrently \"npm run build -- --watch\" \"CURRENT_PROJECT=example DEVELOP_MODE=1 ../umi/bin/umi.js ui\"",
     "build": "node scripts/build.js",
     "lint": "eslint --ext .ts,.tsx src"
   },
@@ -29,7 +29,6 @@
     "eslint": "^6.1.0",
     "filesize": "^4.2.0",
     "react-sizeme": "^2.6.7",
-    "umi": "2.10.7",
     "umi-types": "0.5.3",
     "xterm": "^3.14.5",
     "xterm-addon-web-links": "^0.1.0"
@@ -37,7 +36,7 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/umijs/umi",
-    "directory": "packages/umi-plugin-ui"
+    "directory": "packages/umi-plugin-task"
   },
   "author": "ikobe",
   "license": "MIT"
