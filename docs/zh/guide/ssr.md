@@ -170,7 +170,7 @@ console.log('http://localhost:3000');
 
 预渲染（Pre Render）在构建时执行渲染，将渲染后的 HTML 片段生成静态 html 文件。无需使用 web 服务器实时动态编译 HTML，**适用于静态站点**。
 
-umi 提供 [@umijs/plugin-prerender](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender) 插件，帮助用户在构建时预渲染出页面。更多用法参考[文档](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender)。
+umi 提供 [@umijs/plugin-prerender](https://www.npmjs.com/package/@umijs/plugin-prerender) 插件，帮助用户在构建时预渲染出页面。更多用法参考[文档](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender)。
 
 ```js
 export default {

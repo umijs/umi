@@ -170,7 +170,7 @@ refer to [examples/eggjs](https://github.com/umijs/umi-server/tree/master/exampl
 
 Pre Render performs rendering at build time, and renders the rendered HTML snippet into a static html file. No need to use a web server to dynamically compile HTML in real time, **for static sites**.
 
-Umi provides the [@umijs/plugin-prerender](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender) plugin to help users pre-render the page at build time. For more usage, please refer to [documentation](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender).
+Umi provides the [@umijs/plugin-prerender](https://www.npmjs.com/package/@umijs/plugin-prerender) plugin to help users pre-render the page at build time. For more usage, please refer to [documentation](https://github.com/umijs/umi-server/tree/master/packages/umi-plugin-prerender).
 
 ```js
 export default {
