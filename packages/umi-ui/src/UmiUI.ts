@@ -33,12 +33,6 @@ const debugSocket = debug.extend('socket');
 
 process.env.UMI_UI = 'true';
 
-interface IOpts {
-  /** assets for framework load */
-  baseUI?: string;
-  services?: IOnUISocketFunc[];
-}
-
 export default class UmiUI {
   cwd: string;
 
@@ -58,16 +52,16 @@ export default class UmiUI {
 
   npmClients: string[] = [];
 
-  baseUI: string;
+  basicUIPath: string;
 
-  baseUIServices: IOnUISocketFunc[];
+  basicServicePath: string;
 
-  constructor(opts: IOpts = {}) {
+  constructor() {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
     const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../ui/dist/ui.umd.js') : '';
-    this.baseUI = opts.baseUI || defaultBaseUI;
-    this.baseUIServices = opts.services || [];
+    this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
+    this.basicServicePath = process.env.BASIC_SERVICE_PATH || '';
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -312,7 +306,7 @@ export default class UmiUI {
   }
 
   getBasicAssets() {
-    const script = this.baseUI ? getBasicScriptContent(this.baseUI) : '';
+    const script = this.basicUIPath ? getBasicScriptContent(this.basicUIPath) : '';
     return {
       script,
     };
@@ -1004,11 +998,17 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
-            } else if (Array.isArray(this.baseUIServices) && this.baseUIServices.length > 0) {
-              // register framework services
-              this.baseUIServices.forEach(baseUIService => {
-                baseUIService(serviceArgs);
-              });
+            } else if (this.basicServicePath) {
+              // eslint-disable-next-line import/no-dynamic-require
+              const basicService =
+                require(this.basicServicePath).default || require(this.basicServicePath);
+              console.log();
+              if (Array.isArray(basicService) && basicService.length > 0) {
+                // register framework services
+                basicService.forEach(baseUIService => {
+                  baseUIService(serviceArgs);
+                });
+              }
             } else {
               assert(this.servicesByKey[key], `service of key ${key} not exists.`);
               const service = this.servicesByKey[key];
