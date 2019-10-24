@@ -208,10 +208,17 @@ export default Header;
 
 ### document is not defined, navigator is not defined, \* is not not defined
 
-原因：umiJS SSR 先执行服务端代码，再执行客户端。`document`、`navigator` 等对象只在客户端使用。解决方案：
+原因：Umi SSR 先执行服务端代码，再执行客户端。`document`、`navigator` 等对象只在客户端使用。解决方案：
 
 1. 建议将使用到客户端对象的代码，放在 `componentDidMount`、`useEffect` 中（服务端不会执行），避免过多副作用代码影响服务端渲染。
 1. 在这些对象前加上判断 `typeof navigator !== 'undefined'` 或 `typeof document !== 'undefined'`
+
+### SSR 没有样式，样式加载不对
+
+原因：Umijs 配置的 [publicPath](https://umijs.org/zh/config/#publicpath) 未匹配服务端的路由。导致访问 `/umi.js` 等资源路径时，未正确映射到指定文件。解决方案：
+
+1. 试着访问链接 `http://yourHost/umi.js` 或 `http://yourHost/dist/umi.js` 看哪个链接能返回正确的 js/css 文件内容。
+1. 对应修改 `publicPath` 路径。
 
 ## UMI UI
 

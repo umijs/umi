@@ -99,7 +99,7 @@ export default {
 
 为了降低服务端框架接入门槛，umi 提供 [umi-server](https://npmjs.com/package/umi-server)，并以常见的 Node.js 服务端框架（[Koajs](https://koajs.com)、[Express](https://expressjs.com/)、[Egg.js](https://eggjs.org/)）为例，给出具体接入方式。
 
-#### 直接使用
+#### 使用原生 http 模块
 
 用 Node.js 原生 [http](http://nodejs.cn/api/http.html#http_http) 模块做服务端渲染。
 
@@ -159,12 +159,12 @@ console.log('http://localhost:3000');
 
 #### Koa.js
 
-可参考 [umi-example-ssr/blob/master/server.js](https://github.com/umijs/umi-example-ssr/blob/master/server.js)
+可参考 [examples/koajs](https://github.com/umijs/umi-server/tree/master/examples/koajs)
 
 
 #### Egg.js
 
-[umi-example-ssr-with-egg/app/controller/home.js](https://github.com/umijs/umi-example-ssr-with-egg/blob/master/app/controller/home.js)
+[examples/eggjs](https://github.com/umijs/umi-server/tree/master/examples/eggjs)
 
 ### 预渲染（Pre Render）
 
@@ -177,3 +177,7 @@ export default {
   plugins: [['@umijs/plugin-prerender', options]],
 };
 ```
+
+### 常见问题
+
+见 [FAQ](https://umijs.org/zh/guide/faq.html#ssr)

@@ -208,10 +208,17 @@ Use in css, be careful not to use absolute paths
 
 ### document is not defined, navigator is not defined, \* is not not defined
 
-Why: umiJS SSR executes code first server-side, then client-side. The `document`, `navigator` object is only present client-side. Solution:
+Why: Umi SSR executes code first server-side, then client-side. The `document`, `navigator` object is only present client-side. Solution:
 
 1. you absolutely need to have access to it in some React component, you should put that code in `componentDidMount` or `useEffect`. This lifecycle method will only be executed on the client.
 1. add the judgment with something like `typeof navigator !== 'undefined'` or `typeof document !== 'undefined'`
+
+### SSR has no style, style loading is wrong
+
+Why: The [publicPath](https://umijs.org/config/#publicpath) of the Umijs configuration does not match the route of the server. When the resource path such as `/umi.js` is accessed, it is not mapped correctly to the specified file. solution:
+
+1. Try to access the link `http://yourHost/umi.js` or `http://yourHost/dist/umi.js` to see which link returns the correct js/css file contents.
+1. Correspond to modify the `publicPath` path.
 
 ## UMI UI
 
