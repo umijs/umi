@@ -72,7 +72,7 @@ declare namespace IUI {
     panels: IPanel[];
     locales: ILocale[];
     configSections: any[];
-    basicUI: Map<string, ReactNode>;
+    basicUI: Map<string, string>;
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -272,6 +272,7 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     isMini: boolean;
+    basicUI: Map<string, any>;
     service: IService;
   }
 

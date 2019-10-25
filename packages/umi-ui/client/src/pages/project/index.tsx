@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Layout, message } from 'antd';
+import isPlainObject from 'lodash/isPlainObject';
 import ProjectContext from '@/layouts/ProjectContext';
 import { IProjectList } from '@/enums';
 import debug from '@/debug';
 import { fetchProject, getCwd, listDirectory } from '@/services/project';
-import * as ProjectMap from './components';
+import * as projectMap from './components';
 import styles from './index.less';
 
 const { Content } = Layout;
@@ -15,7 +16,7 @@ const Project: React.FC<{}> = () => {
   const [cwd, setCwd] = useState();
   const [files, setFiles] = useState([]);
 
-  const { current, currentData } = useContext(ProjectContext);
+  const { current, currentData, basicUI } = useContext(ProjectContext);
 
   async function getProject() {
     const { data } = await fetchProject({
@@ -80,8 +81,11 @@ const Project: React.FC<{}> = () => {
       }
     })();
   }, []);
-
-  const ProjectComp = ProjectMap[current];
+  const extendProjectPage = basicUI.get('project.pages');
+  const mergedProjectMap = isPlainObject(extendProjectPage)
+    ? Object.assign({}, projectMap, extendProjectPage)
+    : projectMap;
+  const ProjectComp = mergedProjectMap[current];
   const projectProps = getComponentProps(current);
 
   return (

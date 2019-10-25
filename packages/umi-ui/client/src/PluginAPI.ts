@@ -138,6 +138,10 @@ export default class PluginAPI {
     // window.location.reload();
   };
 
+  setProjectCurrent = (...args) => {
+    event.emit(MESSAGES.CHANGE_PROJECT_CURRENT, ...args);
+  };
+
   showLogPanel: IUi.IShowLogPanel = () => {
     event.emit(MESSAGES.SHOW_LOG);
   };
