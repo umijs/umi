@@ -234,8 +234,17 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
-  getService = () => {
-    return this.service;
+  getBasicUI = () => {
+    const { basicUI } = this.service;
+    return new Proxy(this.service.basicUI, {
+      get: (target, prop: any) => {
+        // only readable, can't write
+        if (['get', 'has'].includes(prop)) {
+          return basicUI[prop].bind(basicUI);
+        }
+        return undefined;
+      },
+    });
   };
 
   addPanel: IUi.IAddPanel = panel => {

@@ -6,6 +6,12 @@ import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import * as intl from './locale';
 import { IRoute } from './';
 
+type ValueOf<T> = T[keyof T];
+interface UIMap<K> {
+  get(key: keyof K): ValueOf<K>;
+  has(key: keyof K): boolean;
+}
+
 declare namespace IUI {
   export enum LOCALES {
     'zh-CN' = '中文',
@@ -28,8 +34,28 @@ declare namespace IUI {
     'any' = 'any',
   }
 
-  export enum EXTEND_UI {
-    'create.project.button' = 'create.project.button',
+  // export enum BASIC_UI {
+  //   name = 'name',
+  //   logo = 'logo',
+  //   logo_remote = 'logo_remote',
+  //   feedback = 'feedback',
+  //   'create.project.button' = 'create.project.button',
+  // }
+
+  interface BASIC_UI {
+    name: string;
+    logo: string;
+    logo_remote: string;
+    feedback: {
+      src: string;
+      width: number;
+      height: number;
+    };
+    'create.project.button': string;
+    helpDoc: string;
+    'project.pages': {
+      create: ReactNode;
+    };
   }
 
   export enum EXTEND_CONFIG {
@@ -67,12 +93,12 @@ declare namespace IUI {
     actions?: IPanelAction;
     beta?: boolean;
   }
-
+  type IBasicUI = UIMap<BASIC_UI>;
   interface IService {
     panels: IPanel[];
     locales: ILocale[];
     configSections: any[];
-    basicUI: Map<string, string>;
+    basicUI: IBasicUI;
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -272,7 +298,7 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     isMini: boolean;
-    basicUI: Map<string, any>;
+    basicUI: IBasicUI;
     service: IService;
   }
 
@@ -305,7 +331,7 @@ declare namespace IUI {
     /** react component context */
     getContext(): Context<IContext>;
     /** get Plugin UI Service */
-    getService(): IService;
+    getBasicUI(): IBasicUI;
     /** system notify */
     notify: INotify;
     /** redirect */

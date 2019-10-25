@@ -16,11 +16,11 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl, getService } = api;
+  const { redirect, currentProject, _, intl, getBasicUI } = api;
   const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
-  const { basicUI } = getService();
+  const basicUI = getBasicUI();
 
   // const handleClose = () => {
   //   setClosed(true);
