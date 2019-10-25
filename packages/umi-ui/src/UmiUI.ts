@@ -999,10 +999,9 @@ export default class UmiUI {
                 },
               );
             } else if (this.basicServicePath) {
-              // eslint-disable-next-line import/no-dynamic-require
               const basicService =
+                // eslint-disable-next-line import/no-dynamic-require
                 require(this.basicServicePath).default || require(this.basicServicePath);
-              console.log();
               if (Array.isArray(basicService) && basicService.length > 0) {
                 // register framework services
                 basicService.forEach(baseUIService => {
