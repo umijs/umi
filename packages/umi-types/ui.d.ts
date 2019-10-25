@@ -293,7 +293,7 @@ declare namespace IUI {
     getLocale: IGetLocale;
     getCwd: IGetCwd;
     /** current is in Mini version */
-    isMini: () => boolean;
+    isMini(): boolean;
     /** intl, formatMessage */
     intl: IIntl;
     /** add plugin Panel */
@@ -304,6 +304,8 @@ declare namespace IUI {
     addLocales: IAddLocales;
     /** react component context */
     getContext(): Context<IContext>;
+    /** get Plugin UI Service */
+    getService(): IService;
     /** system notify */
     notify: INotify;
     /** redirect */

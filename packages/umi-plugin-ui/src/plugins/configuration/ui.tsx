@@ -5,10 +5,10 @@ import ConfigManager from './ui/index';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
-export default (api: IUiApi) => {
+const ConfigAction = ({ api }: { api: IUiApi }) => {
   const { intl } = api;
   const { FormattedMessage } = intl;
-  const ConfigAction = () => (
+  return (
     <Button
       onClick={() => {
         api.launchEditor({
@@ -21,7 +21,9 @@ export default (api: IUiApi) => {
       <FormattedMessage id="org.umi.ui.configuration.actions.open.config" />
     </Button>
   );
+};
 
+export default (api: IUiApi) => {
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
@@ -29,7 +31,7 @@ export default (api: IUiApi) => {
 
   api.addPanel({
     title: 'org.umi.ui.configuration.panel',
-    actions: [ConfigAction],
+    actions: [<ConfigAction api={api} />],
     path: '/configuration',
     icon: {
       type: 'control',

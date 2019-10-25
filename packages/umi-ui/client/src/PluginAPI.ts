@@ -234,6 +234,10 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
+  getService = () => {
+    return this.service;
+  };
+
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
   };

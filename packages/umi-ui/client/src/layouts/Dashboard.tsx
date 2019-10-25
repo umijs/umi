@@ -2,7 +2,7 @@ import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
 import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, Fragment } from 'react';
 import get from 'lodash/get';
 import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
@@ -199,7 +199,6 @@ export default withRouter(props => {
                         null,
                         `${window.location.origin}${window.location.pathname}`,
                       )}
-                      href="javascript:;"
                     >
                       <Redirect />
                       <FormattedMessage id="org.umi.ui.global.dashboard.mini.full" />
@@ -328,17 +327,13 @@ export default withRouter(props => {
                         <Row type="flex" className={styles['header-actions']}>
                           {actions.map((panelAction, j) => {
                             if (React.isValidElement(panelAction)) {
-                              return React.cloneElement(panelAction, {
-                                key: j.toString(),
-                              });
+                              return <Fragment key={j.toString()}>{panelAction}</Fragment>;
                             }
                             if (
                               typeof panelAction === 'function' &&
                               React.isValidElement(panelAction({}))
                             ) {
-                              return React.cloneElement(panelAction({}), {
-                                key: j.toString(),
-                              });
+                              return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
                             }
                             const { title, action, onClick, ...btnProps } = panelAction;
                             const handleClick = async () => {

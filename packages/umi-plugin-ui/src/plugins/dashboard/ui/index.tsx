@@ -16,15 +16,16 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl } = api;
+  const { redirect, currentProject, _, intl, getService } = api;
   const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
+  const { basicUI } = getService();
 
-  const handleClose = () => {
-    setClosed(true);
-    window.localStorage.setItem('umi_ui_dashboard_welcome', 'true');
-  };
+  // const handleClose = () => {
+  //   setClosed(true);
+  //   window.localStorage.setItem('umi_ui_dashboard_welcome', 'true');
+  // };
 
   const actionCards = [
     {
@@ -93,29 +94,10 @@ const DashboardUI: React.FC<IProps> = props => {
             )}
           </p>
           <div>
-            {window.g_bigfish ? (
-              <>
-                <a
-                  href="https://umijs.org/guide/umi-ui.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Bigfish UI
-                </a>
-                {intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })}
-              </>
-            ) : (
-              <>
-                <a
-                  href="https://umijs.org/guide/umi-ui.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Umi UI
-                </a>
-                {intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })}
-              </>
-            )}
+            <a href="https://umijs.org/guide/umi-ui.html" target="_blank" rel="noopener noreferrer">
+              {basicUI.get('name') || 'Umi'} UI
+            </a>
+            {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
           </div>
         </div>
       ),
