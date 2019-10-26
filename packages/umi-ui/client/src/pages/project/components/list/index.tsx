@@ -213,7 +213,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     </Row>
   );
 
-  const frameworkName = basicUI.get('name') || 'Umi';
+  const frameworkName = basicUI.name || 'Umi';
   const emptyTip = frameworkName
     ? `org.umi.ui.global.project.list.empty.tip.${frameworkName}`
     : 'org.umi.ui.global.project.list.empty.tip';
@@ -251,7 +251,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
         <div className={titleCls}>
-          {basicUI.get('logo') || <img src={umiIconSvg} alt="logo" />}
+          {basicUI.logo || <img src={umiIconSvg} alt="logo" />}
           <h1>{frameworkName} UI</h1>
         </div>
         <div className={itemCls}>
@@ -283,7 +283,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                 </span>
               </Button>
 
-              {basicUI.get('create.project.button') || (
+              {basicUI['create.project.button'] || (
                 <Button
                   data-test-id="project-action-create"
                   type="primary"

@@ -21,13 +21,13 @@ const service = (window.g_service = {
   panels: [],
   locales: [],
   configSections: [],
-  basicUI: new Map(),
+  basicUI: {},
 });
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
 
-const initUIExtend = async () => {
+const initBasicUI = async () => {
   const { script: basicUIScript } = await callRemote({ type: '@@project/getBasicAssets' });
   if (basicUIScript) {
     geval(`;(function(window){;${basicUIScript}\n})(window);`);
@@ -97,7 +97,7 @@ export async function render(oldRender) {
     React.createElement(require('./pages/loading').default, {}),
     document.getElementById('root'),
   );
-  await initUIExtend();
+  await initBasicUI();
   const { data } = await callRemote({ type: '@@project/list' });
   const props = {
     data,

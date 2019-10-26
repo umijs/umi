@@ -14,7 +14,6 @@ import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
-import { IOnUISocketFunc } from 'umi-types';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -54,14 +53,15 @@ export default class UmiUI {
 
   basicUIPath: string;
 
-  basicServicePath: string;
+  basicConfigPath: string;
 
   constructor() {
     this.cwd = process.cwd();
     // 兼容旧版 Bigfish
     const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../ui/dist/ui.umd.js') : '';
     this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
-    this.basicServicePath = process.env.BASIC_SERVICE_PATH || '';
+    // export default { serices, ... }
+    this.basicConfigPath = process.env.BASIC_CONFIG_PATH || '';
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -998,13 +998,13 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
-            } else if (this.basicServicePath) {
-              const basicService =
+            } else if (this.basicConfigPath) {
+              const { services } =
                 // eslint-disable-next-line import/no-dynamic-require
-                require(this.basicServicePath).default || require(this.basicServicePath);
-              if (Array.isArray(basicService) && basicService.length > 0) {
+                require(this.basicConfigPath).default || require(this.basicConfigPath) || {};
+              if (Array.isArray(services) && services.length > 0) {
                 // register framework services
-                basicService.forEach(baseUIService => {
+                services.forEach(baseUIService => {
                   baseUIService(serviceArgs);
                 });
               }

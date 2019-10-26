@@ -81,7 +81,7 @@ const Project: React.FC<{}> = () => {
       }
     })();
   }, []);
-  const extendProjectPage = basicUI.get('project.pages');
+  const extendProjectPage = basicUI['project.pages'];
   const mergedProjectMap = isPlainObject(extendProjectPage)
     ? Object.assign({}, projectMap, extendProjectPage)
     : projectMap;

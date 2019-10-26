@@ -6,12 +6,6 @@ import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import * as intl from './locale';
 import { IRoute } from './';
 
-type ValueOf<T> = T[keyof T];
-interface UIMap<K> {
-  get(key: keyof K): ValueOf<K>;
-  has(key: keyof K): boolean;
-}
-
 declare namespace IUI {
   export enum LOCALES {
     'zh-CN' = '中文',
@@ -34,26 +28,29 @@ declare namespace IUI {
     'any' = 'any',
   }
 
-  // export enum BASIC_UI {
-  //   name = 'name',
-  //   logo = 'logo',
-  //   logo_remote = 'logo_remote',
-  //   feedback = 'feedback',
-  //   'create.project.button' = 'create.project.button',
-  // }
-
-  interface BASIC_UI {
+  interface IBasicUI {
+    /** framework name, Umi / Bigfish */
     name: string;
-    logo: string;
+    /** framework logo ReactNode */
+    logo: ReactNode;
+    /** framework logo image url */
     logo_remote: string;
+    /** feedback Image */
     feedback: {
+      /** Image src */
       src: string;
+      /** Image width */
       width: number;
+      /** Image height */
       height: number;
     };
-    'create.project.button': string;
+    /** create Project Button ReactNode */
+    'create.project.button': ReactNode;
+    /** helpDoc link */
     helpDoc: string;
+    /** project pages current step */
     'project.pages': {
+      /** create step */
       create: ReactNode;
     };
   }
@@ -93,12 +90,11 @@ declare namespace IUI {
     actions?: IPanelAction;
     beta?: boolean;
   }
-  type IBasicUI = UIMap<BASIC_UI>;
   interface IService {
     panels: IPanel[];
     locales: ILocale[];
     configSections: any[];
-    basicUI: IBasicUI;
+    basicUI: Partial<IBasicUI>;
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -262,8 +258,6 @@ declare namespace IUI {
     taobaoSpeedUp?: boolean;
   }
 
-  type IModifyBasicUIParam = Record<{ [K in keyof typeof EXTEND_UI]: ReactNode | FC }>;
-
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
   type IConnect = typeof connect;
@@ -274,7 +268,7 @@ declare namespace IUI {
   type IGetSharedDataDir = () => Promise<string>;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
-  type IModifyBasicUI = (memo: IModifyBasicUIParam) => void;
+  type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
 
   interface ILaunchEditorParams {

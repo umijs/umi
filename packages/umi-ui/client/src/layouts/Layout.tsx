@@ -78,10 +78,9 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     );
     window.g_uiContext = Context;
     const { basicUI } = window.g_service;
-    const frameworkName = basicUI.get('name');
+    const frameworkName = basicUI.name;
     const framework = `${frameworkName} UI`;
-    const icon =
-      basicUI.get('logo_remote') || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
+    const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
     const getTitle = () => {
       if (title) {

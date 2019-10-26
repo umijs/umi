@@ -95,7 +95,7 @@ const DashboardUI: React.FC<IProps> = props => {
           </p>
           <div>
             <a href="https://umijs.org/guide/umi-ui.html" target="_blank" rel="noopener noreferrer">
-              {basicUI.get('name') || 'Umi'} UI
+              {basicUI.name || 'Umi'} UI
             </a>
             {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
           </div>

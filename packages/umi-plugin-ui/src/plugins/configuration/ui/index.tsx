@@ -27,7 +27,7 @@ function getSections(api: IUiApi) {
             id: 'org.umi.ui.configuration.project.config.desc',
           },
           {
-            library: basicUI.get('name') || 'Umi',
+            library: basicUI.name || 'Umi',
           },
         ),
       component: () => (

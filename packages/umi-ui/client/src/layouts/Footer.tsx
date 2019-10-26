@@ -151,13 +151,13 @@ const Footer: React.SFC<IFooterProps> = props => {
     }
   };
 
-  const feedback = basicUI.get('feedback') || {
+  const feedback = basicUI.feedback || {
     width: 230,
     height: 150,
     src: '//img.alicdn.com/tfs/TB1n__6eFP7gK0jSZFjXXc5aXXa-737-479.png',
   };
 
-  const helpDoc = basicUI.get('helpDoc') || {
+  const helpDoc = basicUI.helpDoc || {
     'zh-CN': 'https://umijs.org/zh/guide/umi-ui.html',
     'en-US': 'https://umijs.org/guide/umi-ui.html',
   };

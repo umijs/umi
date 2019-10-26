@@ -218,7 +218,7 @@ export default class PluginAPI {
     } catch (e) {
       console.error('UI notification  error', e);
       if (this._.get(window, 'Tracert.logError')) {
-        const frameName = this.service.basicUI.get('name') || 'Umi';
+        const frameName = this.service.basicUI.name || 'Umi';
         if (e && e.message) {
           e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;
         }
@@ -236,15 +236,7 @@ export default class PluginAPI {
 
   getBasicUI = () => {
     const { basicUI } = this.service;
-    return new Proxy(this.service.basicUI, {
-      get: (target, prop: any) => {
-        // only readable, can't write
-        if (['get', 'has'].includes(prop)) {
-          return basicUI[prop].bind(basicUI);
-        }
-        return undefined;
-      },
-    });
+    return Object.freeze(basicUI);
   };
 
   addPanel: IUi.IAddPanel = panel => {
@@ -255,7 +247,7 @@ export default class PluginAPI {
   modifyBasicUI: IUi.IModifyBasicUI = memo => {
     Object.keys(memo).forEach(extend => {
       if (memo[extend]) {
-        this.service.basicUI.set(extend, memo[extend]);
+        (this.service.basicUI as any)[extend] = memo[extend];
       }
     });
   };
