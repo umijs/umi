@@ -99,7 +99,27 @@ Debug `umi ui` in local.
 ```bash
 # First, run umi dev --watch to start static dev server: http://localhost:8002/
 $ y ui:build --watch
+```
 
+If the server starts on a different port, such as 8003 or 8004, this is because another process is currently running on port 8002.
+
+It's a better idea to find the running process and kill it.
+
+```bash
+# Mac/Linux: 
+$ lsof -i tcp:3000
+# Find the ID of the process
+$ kill <process id>
+
+# Windows
+$ netstat -ano | findstr :3000
+# Find the ID of the process
+$ taskkill /PID typeyourPIDhere /F
+```
+
+Then,
+
+```
 # Then run umi ui under a umi project.
 $ LOCAL_DEBUG=1 umi ui
 
