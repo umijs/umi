@@ -1,7 +1,7 @@
 const { fork } = require('child_process');
 const { join } = require('path');
 const { build } = require('father-build/lib/build');
-const uiPlugins = require('./uiPlugins');
+const { uiPlugins } = require('./uiPlugins');
 
 const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
 
