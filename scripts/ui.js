@@ -1,6 +1,7 @@
 const { fork } = require('child_process');
 const { join } = require('path');
 const { build } = require('father-build/lib/build');
+const uiPlugins = require('./uiPlugins');
 
 const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
 
@@ -43,19 +44,11 @@ const buildPlugins = async (plugins, opts = {}) => {
 
 (async () => {
   const watch = process.argv.includes('-w') || process.argv.includes('--watch');
-  const plugins = [
-    'packages/umi-plugin-ui/src/plugins/dashboard',
-    'packages/umi-plugin-ui/src/plugins/configuration',
-    'packages/umi-ui-tasks/src',
-    'packages/umi-build-dev/src/plugins/commands/block/ui',
-    'packages/umi-plugin-react/ui',
-    'packages/umi-ui/ui',
-  ];
 
   // 并行执行 ui plugins build 和 UI App build
   await Promise.all([
     // 串行执行 ui plugins 避免插件过多时 OOM
-    buildPlugins(plugins, { watch }),
+    buildPlugins(uiPlugins, { watch }),
     buildUIApp({ watch }),
   ]);
 })();

@@ -22,11 +22,6 @@ const DashboardUI: React.FC<IProps> = props => {
   const welcomeCardCls = cls(styles.card, styles.welcome);
   const basicUI = getBasicUI();
 
-  // const handleClose = () => {
-  //   setClosed(true);
-  //   window.localStorage.setItem('umi_ui_dashboard_welcome', 'true');
-  // };
-
   const actionCards = [
     {
       className: actionCardCls,

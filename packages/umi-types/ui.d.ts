@@ -55,11 +55,6 @@ declare namespace IUI {
     };
   }
 
-  export enum EXTEND_CONFIG {
-    name = 'name',
-    logo = 'logo',
-  }
-
   type ILang = keyof typeof LOCALES;
   type ITheme = keyof typeof THEME;
 
@@ -90,6 +85,7 @@ declare namespace IUI {
     actions?: IPanelAction;
     beta?: boolean;
   }
+
   interface IService {
     panels: IPanel[];
     locales: ILocale[];

@@ -4,6 +4,7 @@ const shell = require('shelljs');
 const { existsSync } = require('fs');
 const { join } = require('path');
 const { fork } = require('child_process');
+const { uiDist } = require('./uiPlugins');
 
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
@@ -59,13 +60,6 @@ cp.on('close', code => {
 
 // check dist existed
 function checkUiDist() {
-  const uiDist = [
-    'packages/umi-build-dev/src/plugins/commands/block/ui/dist/ui.umd.js',
-    'packages/umi-ui-tasks/src/dist/ui.umd.js',
-    'packages/umi-plugin-ui/src/plugins/configuration/dist/ui.umd.js',
-    'packages/umi-plugin-ui/src/plugins/dashboard/dist/ui.umd.js',
-    'packages/umi-ui/client/dist/index.html',
-  ];
   uiDist.forEach(dist => {
     const distPath = join(process.cwd(), dist);
     if (!existsSync(distPath)) {

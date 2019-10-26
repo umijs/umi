@@ -15,10 +15,6 @@ export enum LOCALES {
   'en-US' = 'English',
 }
 
-export enum EXTEND_UI {
-  'create.project.button' = 'create.project.button',
-}
-
 export enum DINGTALK_MEMBERS {
   '云谦' = 'dingtalk://dingtalkclient/action/sendmsg?dingtalk_id=mlc11tv',
   '啸生' = 'dingtalk://dingtalkclient/action/sendmsg?dingtalk_id=ikobe621',
