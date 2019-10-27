@@ -220,6 +220,17 @@ export default Header;
 1. 试着访问链接 `http://yourHost/umi.js` 或 `http://yourHost/dist/umi.js` 看哪个链接能返回正确的 js/css 文件内容。
 1. 对应修改 `publicPath` 路径。
 
+### styled-components 编译失败
+
+添加 [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components) babel 插件。[#3508](https://github.com/umijs/umi/issues/3508#issuecomment-546610547)
+
+```js
+// .umirc.js
+extraBabelPlugins: [
+  "babel-plugin-styled-components"
+],
+```
+
 ## UMI UI
 
 ### Umi 版本过低，请升级到最新

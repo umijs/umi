@@ -220,6 +220,18 @@ Why: The [publicPath](https://umijs.org/config/#publicpath) of the Umijs configu
 1. Try to access the link `http://yourHost/umi.js` or `http://yourHost/dist/umi.js` to see which link returns the correct js/css file contents.
 1. Correspond to modify the `publicPath` path.
 
+### styled-components build error
+
+Add [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components) babel pluign. [#3508](https://github.com/umijs/umi/issues/3508#issuecomment-546610547)
+
+```js
+// .umirc.js
+extraBabelPlugins: [
+  "babel-plugin-styled-components"
+],
+```
+
+
 ## UMI UI
 
 ### Umi version is too low, please upgrade to umi@2.9 or above
