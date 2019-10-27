@@ -1,0 +1,24 @@
+{
+  "name": "umi-vue",
+  "version": "0.0.7",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {},
+  "license": "MIT",
+  "files": [
+    "lib",
+    "dynamic.d.ts",
+    "index.d.ts"
+  ],
+  "dependencies": {
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.4",
+    "typescript": "^3.1.1",
+    "vue": "^2.6.10"
+  },
+  "gitHead": "2fe2cd760aa29173a0b0b455048f41333598f732"
+}

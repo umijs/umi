@@ -1,0 +1,19 @@
+import Vue from 'vue';
+import umiVue from 'umi-vue';
+import createVuexLoadingPlugin from "vuex-plugin-loading";
+
+const runtimeVuex = window.g_plugins.mergeConfig('vuex');
+
+let app = umiVue({
+  plugins: [createVuexLoadingPlugin({{{LoadingPluginOption}}})],
+  ...(runtimeVuex.config || {}),
+  Vue: Vue
+});
+
+{{#globalVariables}}
+window.g_app = app;
+{{/globalVariables}}
+
+{{{RegisterPlugins}}}
+{{{RegisterModels}}}
+

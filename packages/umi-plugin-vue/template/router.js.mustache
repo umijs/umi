@@ -1,0 +1,21 @@
+{{{ importsAhead }}}
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+{{{ imports }}}
+
+Vue.use(VueRouter)
+
+let mode = `{{{ RouterRootComponent }}}`;
+
+let routes = {{{ routes }}};
+
+const router = new VueRouter({
+  mode,
+  routes
+})
+
+{{#globalVariables}}
+window.g_router = router
+{{/globalVariables}}
+
+export default router
