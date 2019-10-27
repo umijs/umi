@@ -3,10 +3,7 @@
   "version": "0.0.7",
   "description": "A umi plugin for support vuejs",
   "main": "./lib/index.js",
-  "scripts": {
-    "test": "ts-mocha  src/**/*.spec.ts",
-    "prepublish": "tsc && cp -r ./src/generators/vue/templates ./lib/generators/vue/"
-  },
+  "scripts": {},
   "license": "MIT",
   "files": [
     "lib",
