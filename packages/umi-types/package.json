@@ -11,6 +11,7 @@
     "@types/react-redux": "^7.1.2",
     "@types/signale": "^1.2.1",
     "@types/webpack": "^4.4.23",
+    "@types/xterm": "^3.0.0",
     "@types/webpack-chain": "^5.0.1"
   },
   "repository": {
@@ -21,8 +22,5 @@
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
-  "license": "MIT",
-  "devDependencies": {
-    "@types/xterm": "^3.0.0"
-  }
+  "license": "MIT"
 }
