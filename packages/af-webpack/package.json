@@ -89,7 +89,9 @@
   },
   "devDependencies": {
     "node-sass": "4.12.0",
-    "sass-loader": "7.1.0"
+    "sass-loader": "7.1.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2"
   },
   "repository": {
     "type": "git",

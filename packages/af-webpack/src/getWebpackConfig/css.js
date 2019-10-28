@@ -9,9 +9,6 @@ const DEFAULT_BROWSERS = [
   'not ie < 9', // React doesn't support IE8 anyway
 ];
 
-const DEFAULT_STYLUS_LOADER = 'stylus-loader';
-const DEFAULT_STYLUS_OPTIONS = { preferPathResolver: 'webpack' };
-
 export default function(webpackConfig, opts) {
   const isDev = process.env.NODE_ENV === 'development';
   const cssOpts = {
@@ -137,8 +134,8 @@ export default function(webpackConfig, opts) {
     // 开始添加 stylus 支持
     if (stylus) {
       const {
-        loader: stylusLoader = DEFAULT_STYLUS_LOADER,
-        options: stylusOptions = DEFAULT_STYLUS_OPTIONS,
+        loader: stylusLoader = 'stylus-loader',
+        options: stylusOptions = { preferPathResolver: 'webpack' },
         poststylus,
       } = opts.stylus || {};
 
