@@ -216,8 +216,8 @@ $ USE_PUBLIC_IP=true umi dev
 ```
 
 ### SOCKET_SERVER
-HMR 的 socket 服务, 默认为: window.location.host.
-例如:
+HMR 的 socket 服务, 默认为: window.location.host。比如：
+
 ```bash
 $ SOCKET_SERVER=http://localhost:8000 umi dev
 ```
