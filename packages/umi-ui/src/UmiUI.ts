@@ -618,6 +618,7 @@ export default class UmiUI {
         log('info', `Edit project: ${this.getProjectName(payload.key)}`);
         this.config.editProject(payload.key, {
           name: payload.name,
+          cloudUrl: payload.cloudUrl,
         });
         success();
         break;
