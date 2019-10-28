@@ -44,13 +44,17 @@ const buildPlugins = async (plugins, opts = {}) => {
   }
   process.on('exit', () => {
     buildChildren.forEach(child => {
-      child.kill('SIGTERM');
+      if (child) {
+        child.kill('SIGTERM');
+      }
     });
     process.exit();
   });
   process.on('SIGINT', () => {
     buildChildren.forEach(child => {
-      child.kill('SIGTERM');
+      if (child) {
+        child.kill('SIGTERM');
+      }
     });
     process.exit();
   });

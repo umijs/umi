@@ -16,7 +16,7 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl, getBasicUI } = api;
+  const { redirect, currentProject, _, intl, getBasicUI, DirectoryForm } = api;
   const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
@@ -101,6 +101,7 @@ const DashboardUI: React.FC<IProps> = props => {
 
   return (
     <div className={styles.container}>
+      <DirectoryForm />
       <Row className={styles['container-row']} type="flex" gutter={24}>
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;

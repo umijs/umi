@@ -10,6 +10,7 @@ import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
 import Terminal from '@/components/Terminal';
+import DirectoryForm from '@/components/DirectoryForm';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
@@ -27,6 +28,7 @@ export default class PluginAPI {
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Terminal: FC<IUi.ITerminalProps>;
+  DirectoryForm: FC<IUi.IDirectoryForm>;
   ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
@@ -46,6 +48,7 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Terminal = Terminal;
+    this.DirectoryForm = DirectoryForm;
     this.Field = Field;
     this.ConfigForm = ConfigForm;
     this.bigfish = !!window.g_bigfish;

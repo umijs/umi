@@ -162,6 +162,12 @@ declare namespace IUI {
     [key: string]: any;
   }
 
+  interface IDirectoryForm {
+    /** path / cwd */
+    value?: string;
+    onChange?: (value: string) => void;
+  }
+
   // from fuzz.js
   export interface FuseOptions<T> {
     id?: keyof T;
@@ -331,6 +337,7 @@ declare namespace IUI {
     TwoColumnPanel: FC<ITwoColumnPanel>;
     /** Terminal Component */
     Terminal: FC<ITerminalProps>;
+    DirectoryForm: FC<IDirectoryForm>;
     /** React Config Form Component */
     ConfigForm: FC<IConfigFormProps>;
     /** Antd Form Field */
