@@ -1,12 +1,10 @@
 const { fork } = require('child_process');
 const { join } = require('path');
-const { build } = require('father-build/lib/build');
 const { uiPlugins } = require('./uiPlugins');
-
-const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
 
 function buildUIApp(opts = {}) {
   console.log(`Build ui app`);
+  const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
   const { watch } = opts;
   const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
     env: {
@@ -15,31 +13,48 @@ function buildUIApp(opts = {}) {
       UMI_UI_SERVER: 'none',
     },
   });
+  process.on('exit', () => {
+    child.kill('SIGTERM');
+    console.log('exit build UIApp');
+    process.exit();
+  });
   process.on('SIGINT', () => {
     console.log('Build for all done');
-    child.kill('SIGINT');
+    child.kill('SIGTERM');
+    process.exit();
   });
 }
 
 const buildPlugins = async (plugins, opts = {}) => {
-  return new Promise(async (resolve, reject) => {
-    for (const plugin of plugins) {
-      console.log(`current build plugin: ${plugin}`);
-      const { watch } = opts;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        await build({
-          cwd: join(__dirname, '..', plugin),
-          watch,
-        });
-      } catch (e) {
-        console.error('current build plugin error: ', e);
-        reject(e);
-      }
+  const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
+  const buildChildren = [];
+  for (const plugin of plugins) {
+    console.log(`current build plugin: ${plugin}`);
+    const { watch } = opts;
+    try {
+      const child = fork(FATHER_BUILD_BIN, watch ? ['--watch'] : [], {
+        cwd: join(__dirname, '..', plugin),
+      });
+      buildChildren.push(child);
+      // eslint-disable-next-line no-await-in-loop
+      // console.log('childchild', child);
+    } catch (e) {
+      console.error('current build plugin error: ', e);
     }
-    console.log('Build for plugins done');
-    resolve();
+  }
+  process.on('exit', () => {
+    buildChildren.forEach(child => {
+      child.kill('SIGTERM');
+    });
+    process.exit();
   });
+  process.on('SIGINT', () => {
+    buildChildren.forEach(child => {
+      child.kill('SIGTERM');
+    });
+    process.exit();
+  });
+  console.log('Build for plugins done');
 };
 
 (async () => {
