@@ -548,6 +548,31 @@ export default () => {
 
 ![image](https://user-images.githubusercontent.com/13595509/67653846-34e70500-f986-11e9-81be-16a9ac219cde.png)
 
+### api.StepForm
+
+步骤表单组件
+
+使用示例：
+
+```js
+<StepForm onFinish={handleSubmit} className={stepCls}>
+  <StepForm.StepItem title="a-form">
+    <Form>
+      <Form.Item name="a">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+
+  <StepForm.StepItem title="b-form">
+    <Form>
+      <Form.Item name="b">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+</StepForm>
+```
 
 ### api.Field
 

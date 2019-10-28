@@ -548,6 +548,32 @@ export default () => {
 
 ![image](https://user-images.githubusercontent.com/13595509/67653846-34e70500-f986-11e9-81be-16a9ac219cde.png)
 
+### api.StepForm
+
+Step Form Component
+
+For example:
+
+```js
+<StepForm onFinish={handleSubmit} className={stepCls}>
+  <StepForm.StepItem title="a-form">
+    <Form>
+      <Form.Item name="a">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+
+  <StepForm.StepItem title="b-form">
+    <Form>
+      <Form.Item name="b">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+</StepForm>
+```
+
 ### api.Field
 
 Configure form components, used in combination with [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) to simplify form components and generate forms using profiles .

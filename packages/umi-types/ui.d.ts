@@ -1,7 +1,7 @@
 import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
-import { ReactNode, Context, FC, FunctionComponent } from 'react';
+import { ReactNode, Context, FC, FunctionComponent, ReactElement } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import * as intl from './locale';
 import { IRoute } from './';
@@ -167,6 +167,30 @@ declare namespace IUI {
     value?: string;
     onChange?: (value: string) => void;
   }
+
+  interface IStepItemForm {
+    currentStep: number;
+    handleFinish: () => void;
+    goNext: () => void;
+    goPrev: () => void;
+    index: number;
+    active: boolean;
+    [key: string]: any;
+  }
+
+  interface IStepItemProps {
+    children: ReactElement<Partial<IStepItemForm>>;
+    [key: string]: any;
+  }
+
+  interface IStepFormProps {
+    onFinish: (values: object) => void;
+    className?: string;
+    children: ReactElement<IStepItemForm>[];
+  }
+  type IStepForm = FC<IStepFormProps> & {
+    StepItem: FC<IStepItemProps>;
+  };
 
   // from fuzz.js
   export interface FuseOptions<T> {
@@ -338,6 +362,7 @@ declare namespace IUI {
     /** Terminal Component */
     Terminal: FC<ITerminalProps>;
     DirectoryForm: FC<IDirectoryForm>;
+    StepForm: IStepForm;
     /** React Config Form Component */
     ConfigForm: FC<IConfigFormProps>;
     /** Antd Form Field */
