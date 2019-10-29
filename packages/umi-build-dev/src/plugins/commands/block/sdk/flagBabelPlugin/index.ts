@@ -117,7 +117,7 @@ export default () => {
 
         // antd 和 @alipay/tech-ui 里除部分用于布局的组件之外，其他组件作为根组件不会插入编辑区
         if (
-          source.value === 'antd' &&
+          (source.value === 'antd' || source.value === '@alipay/bigfish/antd') &&
           t.isImportSpecifier(p.node) &&
           t.isIdentifier(p.node.imported) &&
           !['Card', 'Grid', 'Layout'].includes(p.node.imported.name)
