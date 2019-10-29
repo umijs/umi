@@ -1,16 +1,23 @@
 import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
-import { Terminal as XTerminal } from 'xterm';
+import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
+import SockJS from 'sockjs-client';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
-import { WebLinksAddon } from 'xterm-addon-web-links';
-import { AttachAddon } from 'xterm-addon-attach';
+import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
+import * as attach from 'xterm/lib/addons/attach/attach';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
 
-const { Terminal, SockJS } = window;
+const { Terminal } = window;
+
+if (Terminal) {
+  Terminal.applyAddon(attach);
+  Terminal.applyAddon(fit);
+  Terminal.applyAddon(webLinks);
+}
 
 export type TerminalType = XTerminal;
 
@@ -31,74 +38,60 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
   const size = useWindowSize();
 
   useEffect(() => {
-    (Terminal as any).applyAddon(fit);
-    const terminal = new (Terminal as typeof XTerminal)({
+    const terminalOpts: ITerminalOptions = {
       allowTransparency: true,
-      fontFamily: `operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace`,
+      fontFamily: 'operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace',
       fontSize: 14,
       theme: {
         background: '#15171C',
         foreground: '#ffffff73',
       },
-      cursorBlink: false,
       cursorStyle: 'underline',
-      disableStdin: true,
-      ...config,
-    });
+      // if use shell, disable
+      cursorBlink: !shell,
+      disableStdin: !shell,
+      ...(config || {}),
+    };
+    const terminal = new Terminal(terminalOpts);
+    console.log('terminal', terminal);
     setXterm(terminal);
   }, []);
 
+  const copyShortcut = (e: KeyboardEvent): boolean => {
+    // Ctrl + Shift + C
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+      e.preventDefault();
+      document.execCommand('copy');
+      return false;
+    }
+    return true;
+  };
+
   useEffect(
     () => {
+      let socket: any;
       if (domContainer.current && xterm) {
-        xterm.loadAddon(new WebLinksAddon());
-        if (shell) {
-          const socket = new window.SockJS('/terminal');
-          xterm.loadAddon(new AttachAddon(socket));
-          socket.onopen = () => {
-            console.log('open');
-          };
-          socket.onmessage = e => {
-            xterm.write(e.data);
-          };
-          socket.onclose = () => {
-            console.log('close');
-          };
-          // Move curr_line outside of async scope.
-          let curr_line = '';
-
-          xterm.onKey((e: { key: string; domEvent: KeyboardEvent }) => {
-            const ev = e.domEvent;
-            const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
-
-            if (ev.keyCode === 13) {
-              xterm.prompt();
-              socket.send(curr_line);
-              console.log('curr_line', curr_line);
-              curr_line = '';
-            } else if (ev.keyCode === 8) {
-              // Do not delete the prompt
-              // if (xterm._core.buffer.x > 2) {
-              //   xterm.write('\b \b');
-              // }
-            } else if (printable) {
-              curr_line += ev.key;
-              xterm.write(e.key);
-            }
-          });
-
-          xterm.on('paste', data => {
-            xterm.write(data);
-          });
-        }
-        xterm.open(domContainer.current);
-        if (xterm.fit) {
-          xterm.fit();
-        }
         if (onInit) {
           onInit(xterm);
         }
+        xterm.open(domContainer.current);
+        xterm.fit();
+        xterm.webLinksInit();
+        xterm.attachCustomKeyEventHandler(copyShortcut);
+        if (shell) {
+          socket = new SockJS('/terminal');
+          xterm.attach(socket);
+          xterm.focus();
+        }
       }
+      return () => {
+        if (socket) {
+          xterm.detach(socket);
+        }
+        if (xterm) {
+          xterm.dispose();
+        }
+      };
     },
     [domContainer, xterm],
   );

@@ -1,5 +1,6 @@
 import sockjs, { Connection } from 'sockjs';
 import { spawn } from 'node-pty';
+import { sync as osLocaleSync } from 'os-locale';
 // umiui:UmiUI:terminal
 import { debugTerminal as _log } from './debug';
 
@@ -23,14 +24,6 @@ export const getDefaultShell = () => {
 };
 
 export const connectionHandler = (conn: Connection, opts: IOpts) => {
-  /**
-   * send data into client
-   * @param data
-   */
-  const send = (data: string) => {
-    conn.write(data);
-  };
-
   const { cwd } = opts;
   const defaultShell = getDefaultShell();
   const defaultShellArgs = ['--login'];
@@ -39,26 +32,32 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
     cols: 80,
     rows: 30,
     cwd,
-    env: process.env,
+    env: {
+      ...process.env,
+      LANG: `${osLocaleSync()}.UTF-8`,
+      TERM: 'xterm-256color',
+      COLORTERM: 'truecolor',
+    },
   });
-
   /**
    * stringify command shell string
    * @param command ls/... shell commands
    */
-  const ptySend = (command: string) => pty.write(`${command}\r`);
-
-  conn.on('data', data => {
-    _log('terminal conn data', data);
-    ptySend(data);
+  pty.onData(chunk => {
+    _log('ptyProcess data', chunk);
+    conn.write(chunk);
   });
-
-  pty.on('data', data => {
-    _log('ptyProcess data', data);
-    send(data);
-  });
-
+  // pty.onExit(() => { })
   pty.resize(100, 40);
+
+  // === socket listener ===
+  conn.on('data', data => {
+    _log('terminal conn message', data);
+    pty.write(data);
+  });
+  conn.on('close', () => {
+    pty.kill();
+  });
 };
 
 /**
