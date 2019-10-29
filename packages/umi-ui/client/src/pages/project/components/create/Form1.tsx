@@ -5,7 +5,7 @@ import { trimSlash, validateDirPath } from '@/components/DirectoryForm/pathUtils
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
 import { checkDirValid } from '@/services/project';
-import { isValidFolderName } from '@/utils/isValid';
+import { isValidFolderName } from '@/utils';
 import ProjectContext from '@/layouts/ProjectContext';
 import styles from './index.less';
 
