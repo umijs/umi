@@ -9,6 +9,7 @@ module.exports = {
       : [`${testMatchPrefix}/?*.(spec|test|e2e).(j|t)s?(x)`],
   moduleNameMapper: {
     '^umi/_runtimePlugin$': require.resolve('./packages/umi/lib/runtimePlugin'),
+    '^@tmp/history': require.resolve('./packages/umi/lib/createHistory'),
   },
   testPathIgnorePatterns: [
     '/.git/',
