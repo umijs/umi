@@ -1,4 +1,4 @@
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/es/createBrowserHistory';
 import { normalizePath } from './utils';
 
 export default function(opts) {
