@@ -11,7 +11,7 @@ export default function() {
         `Configure item outputPath should be String, but got ${val}.`,
       );
       assert(
-        !blacklist.includes(val.slice(0) === '/' ? val : `/${val}`),
+        !blacklist.includes(val.startsWith('/') ? val : `/${val}`),
         `The outputPath config is not allowed to be set to ${val}, ${val} is convention directory`,
       );
     },
