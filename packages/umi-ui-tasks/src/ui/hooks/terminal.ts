@@ -7,7 +7,9 @@ const useTerminal = ({ terminal, ref: container }) => {
         return;
       }
       terminal.open(container);
-      terminal.fit();
+      if (terminal.fit) {
+        terminal.fit();
+      }
     },
     [container],
   );

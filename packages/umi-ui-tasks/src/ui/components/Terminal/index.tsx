@@ -40,7 +40,9 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
     () => {
       if (prevSize) {
         if (prevSize.width !== size.width || prevSize.height !== size.height) {
-          terminal.fit();
+          if (terminal.fit) {
+            terminal.fit();
+          }
         }
       }
     },
