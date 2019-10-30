@@ -436,7 +436,7 @@ api.addPanel({
 
 ### api.Terminal
 
-终端命令行组件。
+终端命令行组件，基于 [xterm.js@4.x](https://xtermjs.org/)。
 
 参数如下：
 
