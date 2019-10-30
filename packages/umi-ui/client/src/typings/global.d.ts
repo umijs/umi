@@ -6,17 +6,13 @@ import { IUi } from 'umi-types';
 import { Terminal } from 'xterm';
 import zhCN from '../locales/zh-CN';
 
-declare class ITerminal extends Terminal {
-  static applyAddon(plugin: any): void;
-}
-
 declare global {
   interface Window {
     xterm: any;
     gtag?: any;
     Tracert?: any;
     g_app?: any;
-    Terminal: typeof ITerminal;
+    Terminal: typeof Terminal;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };
