@@ -1,5 +1,5 @@
 import sockjs, { Connection } from 'sockjs';
-import { spawn } from 'node-pty';
+import { spawn } from 'node-pty-prebuilt-multiarch';
 import { sync as osLocaleSync } from 'os-locale';
 // umiui:UmiUI:terminal
 import { debugTerminal as _log } from './debug';
