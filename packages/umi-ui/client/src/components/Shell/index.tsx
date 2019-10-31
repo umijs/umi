@@ -8,25 +8,14 @@ import Terminal, { TerminalType } from '@/components/Terminal';
 
 import styles from './index.less';
 
-interface LogProps {
-  logs?: object[];
+interface ShellProps {
   style?: React.CSSProperties;
   className?: string;
-  type?: string;
 }
 
-const TAG_MAP = {
-  error: {
-    color: '#f04134',
-  },
-  info: {
-    color: '#1890ff',
-  },
-};
-
-const Logs: React.SFC<LogProps> = props => {
+const Shell: React.SFC<ShellProps> = (props, ref) => {
   const { style, className } = props;
-  const logsCls = cls(styles.logs, className);
+  const shellCls = cls(styles.shell, className);
   const [terminalRef, setTerminalRef] = React.useState<TerminalType>(null);
 
   React.useEffect(
@@ -41,10 +30,16 @@ const Logs: React.SFC<LogProps> = props => {
   );
 
   return (
-    <div className={logsCls} style={style}>
+    <div className={shellCls} style={style}>
       <Terminal
-        onInit={t => setTerminalRef(t)}
+        onInit={(t, fitAddon) => {
+          if (typeof ref === 'function') {
+            ref(t, fitAddon);
+          }
+          setTerminalRef(t);
+        }}
         toolbar={false}
+        className={styles.terminalWrapper}
         terminalClassName={styles.terminal}
         shell
       />
@@ -52,4 +47,4 @@ const Logs: React.SFC<LogProps> = props => {
   );
 };
 
-export default Logs;
+export default React.forwardRef(Shell);

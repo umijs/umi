@@ -70,6 +70,7 @@ export default {
   'org.umi.ui.global.log': '日志',
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
+  'org.umi.ui.global.terminal.upperCase': '终端',
   'org.umi.ui.global.log.clear.confirm': '是否清空日志？',
   'org.umi.ui.global.log.clear.tooltip': '清空日志',
   'org.umi.ui.global.log.enter.tooltip': '至底部',

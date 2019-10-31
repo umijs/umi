@@ -20,6 +20,8 @@
 }
 
 .statusBar {
+  position: relative;
+  z-index: 999;
   background: @ui-status-bar-bg;
   color: @ui-status-bar-color;
   height: @ui-status-bar-height;
@@ -65,52 +67,36 @@
 
 .section {
   &-drawer {
+    &-container {
+      position: relative;
+      z-index: 1;
+    }
     &-logs {
+      height: 100%;
       ul {
         padding-left: 16px;
         padding-right: 16px;
       }
     }
+    &-shell {
+      // padding-right: 6px;
+    }
     :global {
       .ant-drawer-body {
         padding: 0;
+        height: calc(~'100% - @{ui-status-bar-height}');
+      }
+      .ant-drawer-wrapper-body {
+        height: 100%;
       }
       .ant-drawer-content {
         background-color: @drawer-content-bg;
+        transform: translateY(-@ui-status-bar-height);
       }
       .ant-drawer-header {
-        padding: 8px 8px 8px 16px;
+        padding: 0;
         background-color: @drawer-header-bg;
         border-bottom-color: @ui-footer-actions-divider-color;
-      }
-    }
-    &-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      h1 {
-        flex: 100% 1 1;
-        font-size: 14px;
-      }
-      &-action {
-        flex: auto 1 1;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        :global(.ant-divider) {
-          color: @ui-footer-actions-divider-color;
-          margin: 0 4px;
-        }
-        :global(.anticon) {
-          cursor: pointer;
-          font-size: @font-size-base;
-          margin: 0 8px;
-          color: fade(@light, 70);
-          transition: color 0.3s;
-          &:hover {
-            color: fade(@light, 100);
-          }
-        }
       }
     }
   }

@@ -79,17 +79,9 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
         xterm.open(domContainer.current);
         fitAddon.fit();
         if (onInit) {
-          onInit(xterm);
+          onInit(xterm, fitAddon);
         }
       }
-      return () => {
-        if (socket) {
-          xterm.detach(socket);
-        }
-        if (xterm) {
-          xterm.dispose();
-        }
-      };
     },
     [domContainer, xterm],
   );

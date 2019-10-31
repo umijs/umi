@@ -157,7 +157,7 @@ declare namespace IUI {
     /** defaultValue in Terminal */
     defaultValue?: string;
     /** terminal init event */
-    onInit?: (ins: XTerminal) => void;
+    onInit?: (ins: XTerminal, fitAddon: any) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
     [key: string]: any;

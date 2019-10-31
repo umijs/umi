@@ -10,9 +10,6 @@ import {
   Tag as TagIcon,
   QuestionCircle,
   Message,
-  Close,
-  Enter,
-  Delete,
 } from '@ant-design/icons';
 import cls from 'classnames';
 import history from '@tmp/history';
@@ -20,14 +17,18 @@ import { LOCALES, LOCALES_ICON } from '@/enums';
 import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
+import FooterToolbar from './FooterToolbar';
 import Shell from '@/components/Shell';
+import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
 
 import styles from './Footer.less';
 
-const { useState, useEffect, useReducer, useContext } = React;
+const { useEffect, useReducer, useContext } = React;
+
+type IPanel = 'log' | 'terminal';
 
 export interface IFooterProps {
   type: 'list' | 'detail' | 'loading';
@@ -36,43 +37,33 @@ export interface IFooterProps {
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
+  const drawerContainerRef = React.createRef();
   const { path, name } = currentProject || {};
-  const [logVisible, setLogVisible] = useState<boolean>(false);
-  const [shellVisible, setShellVisible] = useState<boolean>(false);
-  const [logs, dispatch] = useReducer((state, action) => {
-    if (action.type === 'add') {
-      return [...state, action.payload];
-    }
-    if (action.type === 'setHistory') {
-      return action.payload;
-    }
-  }, []);
-
-  const showLogPanel = () => {
-    setLogVisible(true);
-  };
-
-  const hideLogPanel = () => {
-    setLogVisible(false);
-  };
-
-  const showShellPanel = () => {
-    setShellVisible(true);
-  };
-
-  const hideShellPanel = () => {
-    setShellVisible(false);
-  };
+  const [{ logs, terminal, fitAddon, terminalHeight, logHeight, visible }, dispatch] = useReducer(
+    (state, action) => reducers[action.type](state, action),
+    states,
+  );
 
   const redirect = (url: string) => {
     history.push(url);
+  };
+
+  const togglePanel = (panel: IPanel) => {
+    dispatch({
+      type: 'togglePanel',
+      payload: {
+        panel,
+      },
+    });
   };
 
   const getLogs = async () => {
     const { data: historyLogs } = await getHistory();
     dispatch({
       type: 'setHistory',
-      payload: historyLogs,
+      payload: {
+        logs: historyLogs,
+      },
     });
   };
 
@@ -95,24 +86,26 @@ const Footer: React.SFC<IFooterProps> = props => {
         onMessage(log) {
           dispatch({
             type: 'add',
-            payload: log,
+            payload: {
+              logs: log,
+            },
           });
         },
       });
     })();
 
-    event.on(MESSAGES.SHOW_LOG, () => {
-      setLogVisible(true);
+    event.on(MESSAGES.SHOW_LOG, (panel: IPanel) => {
+      togglePanel(panel || 'log');
     });
-    event.on(MESSAGES.HIDE_LOG, () => {
-      setLogVisible(false);
+    event.on(MESSAGES.HIDE_LOG, (panel: IPanel) => {
+      togglePanel(panel || 'log');
     });
     return () => {
-      event.off(MESSAGES.SHOW_LOG, () => {
-        setLogVisible(true);
+      event.off(MESSAGES.SHOW_LOG, (panel: IPanel) => {
+        togglePanel(panel || 'log');
       });
-      event.off(MESSAGES.HIDE_LOG, () => {
-        setLogVisible(false);
+      event.off(MESSAGES.HIDE_LOG, (panel: IPanel) => {
+        togglePanel(panel || 'log');
       });
     };
   }, []);
@@ -175,6 +168,79 @@ const Footer: React.SFC<IFooterProps> = props => {
 
   return (
     <div className={styles.footer}>
+      <div ref={drawerContainerRef} className={styles['section-drawer-container']}>
+        <Drawer
+          title={
+            <FooterToolbar
+              resizeAxis="y"
+              onResize={size => {
+                const newHeight = logHeight + size.deltaY;
+                dispatch({
+                  type: 'changeSize',
+                  payload: {
+                    logHeight: newHeight,
+                  },
+                });
+              }}
+              onClear={handleClearLog}
+              onScrollBottom={handleScorllBottom}
+              onClose={() => togglePanel('log')}
+            />
+          }
+          getContainer={drawerContainerRef.current}
+          closable={false}
+          visible={visible.log}
+          placement="bottom"
+          mask={false}
+          className={styles['section-drawer']}
+          height={logHeight}
+        >
+          <Logs logs={logs} type={type} className={styles['section-drawer-logs']} />
+        </Drawer>
+        <Drawer
+          title={
+            <FooterToolbar
+              resizeAxis="y"
+              onResize={size => {
+                const newHeight = terminalHeight + size.deltaY;
+                dispatch({
+                  type: 'changeSize',
+                  payload: {
+                    terminalHeight: newHeight,
+                  },
+                });
+                if (fitAddon) {
+                  fitAddon.fit();
+                }
+              }}
+              onClose={() => togglePanel('terminal')}
+              onClear={() => terminal.clear()}
+              onScrollBottom={() => terminal.scrollToBottom()}
+            />
+          }
+          getContainer={drawerContainerRef.current}
+          destroyOnClose={false}
+          closable={false}
+          visible={visible.terminal}
+          placement="bottom"
+          mask={false}
+          className={styles['section-drawer']}
+          height={terminalHeight}
+        >
+          <Shell
+            ref={(ref, fitAddon) =>
+              dispatch({
+                type: 'initTerminal',
+                payload: {
+                  terminal: ref,
+                  fitAddon,
+                },
+              })
+            }
+            className={styles['section-drawer-shell']}
+          />
+        </Drawer>
+      </div>
       <div className={styles.statusBar}>
         {!isMini && (
           <div
@@ -195,11 +261,11 @@ const Footer: React.SFC<IFooterProps> = props => {
             </div>
           </>
         )}
-        <div onClick={logVisible ? hideLogPanel : showLogPanel} className={logCls}>
+        <div onClick={() => togglePanel('log')} className={logCls}>
           <ProfileFilled style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.log' })}
         </div>
 
-        <div className={shellCls} onClick={shellVisible ? hideShellPanel : showShellPanel}>
+        <div className={shellCls} onClick={() => togglePanel('terminal')}>
           打开终端
         </div>
 
@@ -250,79 +316,6 @@ const Footer: React.SFC<IFooterProps> = props => {
           </span>
         </div>
       </div>
-      <Drawer
-        title={
-          <div className={styles['section-drawer-title']}>
-            <h1>{intl({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
-            <div className={styles['section-drawer-title-action']}>
-              <Popconfirm
-                title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
-                onConfirm={handleClearLog}
-              >
-                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
-                  <Delete />
-                </Tooltip>
-              </Popconfirm>
-              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-                <Enter onClick={handleScorllBottom} />
-              </Tooltip>
-              <Divider type="vertical" />
-              <Close onClick={hideLogPanel} />
-            </div>
-          </div>
-        }
-        closable={false}
-        visible={logVisible}
-        placement="bottom"
-        mask={false}
-        className={styles['section-drawer']}
-        height={300}
-      >
-        <Logs
-          logs={logs}
-          type={type}
-          className={styles['section-drawer-logs']}
-          style={{
-            height: 225,
-          }}
-        />
-      </Drawer>
-      <Drawer
-        title={
-          <div className={styles['section-drawer-title']}>
-            <h1>{intl({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
-            <div className={styles['section-drawer-title-action']}>
-              <Popconfirm
-                title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
-                onConfirm={handleClearLog}
-              >
-                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
-                  <Delete />
-                </Tooltip>
-              </Popconfirm>
-              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-                <Enter onClick={handleScorllBottom} />
-              </Tooltip>
-              <Divider type="vertical" />
-              <Close onClick={hideShellPanel} />
-            </div>
-          </div>
-        }
-        closable={false}
-        visible={shellVisible}
-        placement="bottom"
-        mask={false}
-        className={styles['section-drawer']}
-        height={300}
-      >
-        <Shell
-          type={type}
-          className={styles['section-drawer-logs']}
-          style={{
-            height: 225,
-          }}
-        />
-      </Drawer>
     </div>
   );
 };
