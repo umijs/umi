@@ -38,6 +38,7 @@
     "macaddress": "0.2.9",
     "mkdirp": "0.5.1",
     "node-notifier": "^5.4.1",
+    "node-pty": "^0.9.0",
     "portfinder": "1.0.21",
     "react-dev-utils": "9.0.1",
     "regenerator-runtime": "0.13.2",

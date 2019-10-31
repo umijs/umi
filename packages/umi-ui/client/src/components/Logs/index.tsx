@@ -3,6 +3,7 @@ import { formatDate, formatMessage } from 'umi-plugin-react/locale';
 import { getLocale } from '@/utils/index';
 import zhCN from '@/locales/zh-CN';
 import enUS from '@/locales/en-US';
+import Terminal, { TerminalType } from '@/components/Terminal';
 import Ansi from 'ansi-to-react';
 import { Tag } from 'antd';
 import cls from 'classnames';
@@ -62,12 +63,24 @@ export const Log = logItem => {
 const Logs: React.SFC<LogProps> = props => {
   const { logs, style, className, type } = props;
   const logsCls = cls(styles.logs, className);
+  const [terminalRef, setTerminalRef] = React.useState<TerminalType>(null);
   const localeMessages = getLocale() === 'zh-CN' ? zhCN : enUS;
+
+  React.useEffect(
+    () => {
+      if (terminalRef) {
+        terminalRef.prompt = () => {
+          terminalRef.write('\r\n$ ');
+        };
+      }
+    },
+    [terminalRef],
+  );
 
   return (
     <div className={logsCls} style={style}>
       {/* TODO: for ref */}
-      <ul id="ui-footer-logs">
+      {/* <ul id="ui-footer-logs">
         {Array.isArray(logs) && logs.length > 0 ? (
           logs.map((log, i) => <Log {...log} key={i} />)
         ) : (
@@ -77,7 +90,13 @@ const Logs: React.SFC<LogProps> = props => {
               : formatMessage({ id: 'org.umi.ui.global.log.empty' })}
           </li>
         )}
-      </ul>
+      </ul> */}
+      <Terminal
+        onInit={t => setTerminalRef(t)}
+        toolbar={false}
+        terminalClassName={styles.terminal}
+        shell
+      />
     </div>
   );
 };

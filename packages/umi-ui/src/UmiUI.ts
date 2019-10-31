@@ -9,6 +9,7 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
+import * as os from 'os';
 import { pick } from 'lodash';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
@@ -921,7 +922,9 @@ export default class UmiUI {
       }
 
       const sockjs = require('sockjs');
+      const pty = require('node-pty');
       const ss = sockjs.createServer();
+      const terminalSS = sockjs.createServer();
 
       const conns = {};
       function send(action) {
@@ -937,6 +940,31 @@ export default class UmiUI {
         ret = ret.replace(/{"type":"(.+?)"/, `{"type":"${chalk.magenta.bold('$1')}"`);
         return ret;
       }
+
+      terminalSS.on('connection', conn => {
+        const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+
+        const ptyProcess = pty.spawn(shell, [], {
+          name: 'xterm-color',
+          cols: 80,
+          rows: 30,
+          cwd: this.cwd,
+          env: process.env,
+        });
+
+        conn.on('data', function(data) {
+          console.log('ptyProcess data', data);
+          ptyProcess.write(data);
+        });
+
+        ptyProcess.on('data', function(data) {
+          conn.write(data);
+        });
+
+        // ptyProcess.write('ls\r');
+        ptyProcess.resize(100, 40);
+        // ptyProcess.write('ls\r');
+      });
 
       ss.on('connection', conn => {
         conns[conn.id] = conn;
@@ -1056,6 +1084,10 @@ export default class UmiUI {
       });
       ss.installHandlers(server, {
         prefix: '/umiui',
+        log: () => {},
+      });
+      terminalSS.installHandlers(server, {
+        prefix: '/terminal',
         log: () => {},
       });
       this.socketServer = ss;
