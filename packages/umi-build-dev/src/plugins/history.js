@@ -50,9 +50,9 @@ export default function(api) {
 
     if (historyType === 'hash') {
       const hashOpts = JSON.stringify({ basename: config.base || '/', ...opts } || {});
-      return `require('history/es/createHashHistory').default(${hashOpts})`;
+      return `require('history/createHashHistory').default(${hashOpts})`;
     } else if (historyType === 'memory') {
-      return `require('history/es/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
+      return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
     }
     return memo;
   });
