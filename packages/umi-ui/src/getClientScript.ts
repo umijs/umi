@@ -30,7 +30,11 @@ export const getBasicScriptContent = script => {
   };
   define.amd = true;
 
-  ${content}
+  try {
+    ${content}
+  } catch (e) {
+    console.error('basic script error', e);
+  }
 
   window.define = oldDefine;`.trim();
 };
@@ -65,6 +69,10 @@ window.define = oldDefine;
 function getFromScript(script, index) {
   return `
 /* Plugin: ${index} */
-${script}
+try {
+  ${script}
+} catch (e) {
+  console.error('plugin ${index} error', e);
+}
   `.trim();
 }
