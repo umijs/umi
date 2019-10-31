@@ -24,8 +24,9 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^24.0.5",
     "@babel/preset-typescript": "7.3.3",
+    "@types/jest": "^24.0.5",
+    "@types/signale": "^1.2.1",
     "babel-eslint": "10.0.1",
     "chokidar": "3.0.1",
     "cross-spawn": "^6.0.5",
@@ -57,6 +58,7 @@
     "serve-handler": "5.0.8",
     "serve-static": "^1.13.2",
     "shelljs": "0.8.3",
+    "signale": "^1.4.0",
     "slash2": "2.0.0",
     "stringify-object": "3.3.0",
     "test-build-result": "^1.1.2"
