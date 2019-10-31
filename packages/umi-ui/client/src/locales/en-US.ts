@@ -71,6 +71,7 @@ export default {
   'org.umi.ui.global.log.clear.error': 'Clear log failed',
   'org.umi.ui.global.home': 'Back to Home',
   'org.umi.ui.global.log': 'Log',
+  'org.umi.ui.global.terminal': 'Terminal',
   'org.umi.ui.global.log.empty': 'Log Empty',
   'org.umi.ui.global.log.upperCase': 'LOG',
   'org.umi.ui.global.terminal.upperCase': 'Terminal',

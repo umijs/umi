@@ -68,6 +68,7 @@ export default {
   'org.umi.ui.global.log.clear.error': '清空日志失败',
   'org.umi.ui.global.home': '返回主页',
   'org.umi.ui.global.log': '日志',
+  'org.umi.ui.global.terminal': '终端',
   'org.umi.ui.global.log.empty': '日志为空',
   'org.umi.ui.global.log.upperCase': '日志',
   'org.umi.ui.global.terminal.upperCase': '终端',
