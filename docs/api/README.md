@@ -291,3 +291,11 @@ const App = dynamic({
 ### umi/babel
 
 Make umi's babel configuration extensible.
+
+## Server-Side Render
+
+### umi-server
+
+```bash
+$ npm install umi-server -S
+```

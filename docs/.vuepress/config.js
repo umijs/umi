@@ -1,5 +1,11 @@
 module.exports = {
   title: 'UmiJS',
+  markdown: {
+    extendMarkdown: md => {
+      md.use(require('../../website/node_modules/markdown-it-plantuml'));
+      md.use(require('../../website/node_modules/markdown-it-task-lists'));
+    },
+  },
   locales: {
     '/': {
       lang: 'en-US',
@@ -62,6 +68,7 @@ module.exports = {
                 'with-dva',
                 'load-on-demand',
                 'runtime-config',
+                'ssr',
                 'block',
                 'deploy',
                 'develop-umi-ui-plugin',
@@ -133,6 +140,7 @@ module.exports = {
                 'with-dva',
                 'load-on-demand',
                 'runtime-config',
+                'ssr',
                 'block',
                 'deploy',
                 'develop-umi-ui-plugin',
