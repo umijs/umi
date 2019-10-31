@@ -1,5 +1,4 @@
 import sockjs, { Connection } from 'sockjs';
-import { spawn } from 'node-pty-prebuilt';
 import { sync as osLocaleSync } from 'os-locale';
 // umiui:UmiUI:terminal
 import { debugTerminal as _log } from './debug';
@@ -39,6 +38,15 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
   const { cwd } = opts;
   // insecurity env to run shell
   const safe = securityCheck(conn);
+  let spawn;
+  try {
+    // eslint-disable-next-line prefer-destructuring
+    spawn = require('node-pty-prebuilt').spawn;
+  } catch (e) {
+    // TODO: docs if Windows user can't install node-pty
+    conn.write('Terminal need node-pty module, please see docs: //');
+    return false;
+  }
   if (safe) {
     const defaultShell = getDefaultShell();
     const defaultShellArgs = ['--login'];
