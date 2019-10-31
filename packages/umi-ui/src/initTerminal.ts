@@ -23,40 +23,56 @@ export const getDefaultShell = () => {
   return process.env.SHELL || '/bin/sh';
 };
 
+/**
+ * Security Check
+ *
+ */
+const securityCheck = (conn: Connection) => {
+  if (process.env.HOST === '0.0.0.0') {
+    conn.write('The current environment is not safe.');
+    return false;
+  }
+  return true;
+};
+
 export const connectionHandler = (conn: Connection, opts: IOpts) => {
   const { cwd } = opts;
-  const defaultShell = getDefaultShell();
-  const defaultShellArgs = ['--login'];
-  const pty = spawn(defaultShell, defaultShellArgs, {
-    name: 'xterm-color',
-    cols: 80,
-    rows: 30,
-    cwd,
-    env: {
-      ...process.env,
-      LANG: `${osLocaleSync()}.UTF-8`,
-      TERM: 'xterm-256color',
-      COLORTERM: 'truecolor',
-    },
-  });
-  /**
-   * stringify command shell string
-   * @param command ls/... shell commands
-   */
-  pty.onData(chunk => {
-    _log('ptyProcess data', chunk);
-    conn.write(chunk);
-  });
-  pty.resize(100, 40);
+  // insecurity env to run shell
+  const safe = securityCheck(conn);
+  if (safe) {
+    const defaultShell = getDefaultShell();
+    const defaultShellArgs = ['--login'];
+    const pty = spawn(defaultShell, defaultShellArgs, {
+      name: 'xterm-color',
+      cols: 80,
+      rows: 30,
+      cwd,
+      env: {
+        ...process.env,
+        LANG: `${osLocaleSync()}.UTF-8`,
+        TERM: 'xterm-256color',
+        COLORTERM: 'truecolor',
+      },
+    });
+    /**
+     * stringify command shell string
+     * @param command ls/... shell commands
+     */
+    pty.onData(chunk => {
+      _log('ptyProcess data', chunk);
+      conn.write(chunk);
+    });
+    pty.resize(100, 40);
 
-  // === socket listener ===
-  conn.on('data', data => {
-    _log('terminal conn message', data);
-    pty.write(data);
-  });
-  conn.on('close', () => {
-    pty.kill();
-  });
+    // === socket listener ===
+    conn.on('data', data => {
+      _log('terminal conn message', data);
+      pty.write(data);
+    });
+    conn.on('close', () => {
+      pty.kill();
+    });
+  }
 };
 
 /**
