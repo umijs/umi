@@ -302,7 +302,7 @@ interface IOnPatchRoute {
 interface IAction<T = object> {
   type: string;
   payload?: T;
-  lang?: string;
+  lang?: IUi.ILang;
 }
 
 export type ISend = (action: IAction<{}>) => void;
@@ -323,7 +323,7 @@ export interface IOnUISocketFunc {
   ): void;
 }
 
-interface IOnUISocket {
+export interface IOnUISocket {
   (fn: IOnUISocketFunc): void;
 }
 

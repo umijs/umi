@@ -1,7 +1,7 @@
 import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
-import { ReactNode, Context, FC, FunctionComponent } from 'react';
+import { ReactNode, Context, FC, FunctionComponent, ReactElement } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import * as intl from './locale';
 import { IRoute } from './';
@@ -26,6 +26,33 @@ declare namespace IUI {
     'list' = 'list',
     'textarea' = 'textarea',
     'any' = 'any',
+  }
+
+  interface IBasicUI {
+    /** framework name, Umi / Bigfish */
+    name: string;
+    /** framework logo ReactNode */
+    logo: ReactNode;
+    /** framework logo image url */
+    logo_remote: string;
+    /** feedback Image */
+    feedback: {
+      /** Image src */
+      src: string;
+      /** Image width */
+      width: number;
+      /** Image height */
+      height: number;
+    };
+    /** create Project Button ReactNode */
+    'create.project.button': ReactNode;
+    /** helpDoc link */
+    helpDoc: string;
+    /** project pages current step */
+    'project.pages': {
+      /** create step */
+      create: ReactNode;
+    };
   }
 
   type ILang = keyof typeof LOCALES;
@@ -63,6 +90,7 @@ declare namespace IUI {
     panels: IPanel[];
     locales: ILocale[];
     configSections: any[];
+    basicUI: Partial<IBasicUI>;
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -112,7 +140,7 @@ declare namespace IUI {
     sections: Array<{
       key?: string;
       title: string;
-      icon: string | React.ReactNode;
+      icon: string | ReactNode;
       description: string;
       component: FunctionComponent<any>;
     }>;
@@ -122,7 +150,7 @@ declare namespace IUI {
 
   interface ITerminalProps {
     /** Terminal title */
-    title?: React.ReactNode;
+    title?: ReactNode;
     className?: string;
     terminalClassName?: string;
     /** defaultValue in Terminal */
@@ -133,6 +161,36 @@ declare namespace IUI {
     config?: ITerminalOptions;
     [key: string]: any;
   }
+
+  interface IDirectoryForm {
+    /** path / cwd */
+    value?: string;
+    onChange?: (value: string) => void;
+  }
+
+  interface IStepItemForm {
+    currentStep: number;
+    handleFinish: () => void;
+    goNext: () => void;
+    goPrev: () => void;
+    index: number;
+    active: boolean;
+    [key: string]: any;
+  }
+
+  interface IStepItemProps {
+    children: ReactElement<Partial<IStepItemForm>>;
+    [key: string]: any;
+  }
+
+  interface IStepFormProps {
+    onFinish: (values: object) => void;
+    className?: string;
+    children: ReactElement<IStepItemForm>[];
+  }
+  type IStepForm = FC<IStepFormProps> & {
+    StepItem: FC<IStepItemProps>;
+  };
 
   // from fuzz.js
   export interface FuseOptions<T> {
@@ -177,7 +235,7 @@ declare namespace IUI {
   type IFormatMessage = typeof intl.formatMessage;
   type PickIntl = Pick<
     typeof intl,
-    'FormattedDate'
+    | 'FormattedDate'
     | 'FormattedTime'
     | 'FormattedRelative'
     | 'FormattedNumber'
@@ -236,6 +294,7 @@ declare namespace IUI {
   type IGetSharedDataDir = () => Promise<string>;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
+  type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
 
   interface ILaunchEditorParams {
@@ -259,6 +318,8 @@ declare namespace IUI {
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
     isMini: boolean;
+    basicUI: IBasicUI;
+    service: IService;
   }
 
   class IApiClass {
@@ -278,7 +339,7 @@ declare namespace IUI {
     getLocale: IGetLocale;
     getCwd: IGetCwd;
     /** current is in Mini version */
-    isMini: () => boolean;
+    isMini(): boolean;
     /** intl, formatMessage */
     intl: IIntl;
     /** add plugin Panel */
@@ -289,6 +350,8 @@ declare namespace IUI {
     addLocales: IAddLocales;
     /** react component context */
     getContext(): Context<IContext>;
+    /** get Plugin UI Service */
+    getBasicUI(): IBasicUI;
     /** system notify */
     notify: INotify;
     /** redirect */
@@ -298,6 +361,8 @@ declare namespace IUI {
     TwoColumnPanel: FC<ITwoColumnPanel>;
     /** Terminal Component */
     Terminal: FC<ITerminalProps>;
+    DirectoryForm: FC<IDirectoryForm>;
+    StepForm: IStepForm;
     /** React Config Form Component */
     ConfigForm: FC<IConfigFormProps>;
     /** Antd Form Field */
@@ -319,6 +384,7 @@ declare namespace IUI {
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;
     detectNpmClients: () => Promise<string[]>;
+    modifyBasicUI: IModifyBasicUI;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

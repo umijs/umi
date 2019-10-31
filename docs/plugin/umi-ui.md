@@ -496,6 +496,84 @@ export default (api) => {
 
 more usage see the [docs](https://xtermjs.org/docs/)
 
+### api.DirectoryForm
+
+Directory selector form control
+
+parameters are as follows:
+
+```js
+interface IDirectoryForm {
+  /** path, default  */
+  value?: string;
+  onChange?: (value: string) => void;
+}
+```
+
+For example:
+
+```js
+import React from 'react';
+import { Form } from 'antd';
+
+export default () => {
+  const [form] = Form.useForm();
+  return (
+    <Form
+      form={form}
+      onFinish={values => {
+        console.log('values', values)
+      }}
+      initialValues={{
+        baseDir: cwd,
+      }}
+    >
+      <Form.Item
+        label={null}
+        name="baseDir"
+        rules={[
+          {
+            validator: async (rule, value) => {
+              await validateDirPath(value);
+            },
+          },
+        ]}
+      >
+        <DirectoryForm />
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+![image](https://user-images.githubusercontent.com/13595509/67653846-34e70500-f986-11e9-81be-16a9ac219cde.png)
+
+### api.StepForm
+
+Step Form Component
+
+For example:
+
+```js
+<StepForm onFinish={handleSubmit} className={stepCls}>
+  <StepForm.StepItem title="a-form">
+    <Form>
+      <Form.Item name="a">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+
+  <StepForm.StepItem title="b-form">
+    <Form>
+      <Form.Item name="b">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+</StepForm>
+```
+
 ### api.Field
 
 Configure form components, used in combination with [antd 4.x](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) to simplify form components and generate forms using profiles .

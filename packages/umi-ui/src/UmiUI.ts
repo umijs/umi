@@ -15,7 +15,7 @@ import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
 import Config from './Config';
-import getClientScript from './getClientScript';
+import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
 import installCreator from './installCreator';
 import { installDeps } from './npmClient';
@@ -51,8 +51,17 @@ export default class UmiUI {
 
   npmClients: string[] = [];
 
+  basicUIPath: string;
+
+  basicConfigPath: string;
+
   constructor() {
     this.cwd = process.cwd();
+    // 兼容旧版 Bigfish
+    const defaultBaseUI = process.env.BIGFISH_COMPAT ? join(__dirname, '../ui/dist/ui.umd.js') : '';
+    this.basicUIPath = process.env.BASIC_UI_PATH || defaultBaseUI;
+    // export default { serices, ... }
+    this.basicConfigPath = process.env.BASIC_CONFIG_PATH || '';
     this.servicesByKey = {};
     this.server = null;
     this.socketServer = null;
@@ -78,6 +87,21 @@ export default class UmiUI {
       this.initNpmClients();
     });
   }
+
+  getService = cwd => {
+    const serviceModule = process.env.BIGFISH_COMPAT
+      ? '@alipay/bigfish/_Service.js'
+      : 'umi/_Service.js';
+    const servicePath = process.env.LOCAL_DEBUG
+      ? 'umi-build-dev/lib/Service'
+      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+    debug(`Service path: ${servicePath}`);
+    // eslint-disable-next-line import/no-dynamic-require
+    const Service = require(servicePath).default;
+    return new Service({
+      cwd,
+    });
+  };
 
   openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
@@ -136,9 +160,6 @@ export default class UmiUI {
       // Attach Service
       debug(`Attach service for ${key}`);
       // Use local service and detect version compatibility
-      const serviceModule = process.env.BIGFISH_COMPAT
-        ? '@alipay/bigfish/_Service.js'
-        : 'umi/_Service.js';
       const binModule = process.env.BIGFISH_COMPAT
         ? '@alipay/bigfish/bin/bigfish.js'
         : 'umi/bin/umi.js';
@@ -164,14 +185,7 @@ export default class UmiUI {
       }
 
       try {
-        const servicePath = process.env.LOCAL_DEBUG
-          ? 'umi-build-dev/lib/Service'
-          : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
-        debug(`Service path: ${servicePath}`);
-        const Service = require(servicePath).default;
-        const service = new Service({
-          cwd: project.path,
-        });
+        const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
@@ -286,6 +300,13 @@ export default class UmiUI {
       initialValue: [],
     });
     const script = getClientScript(uiPlugins);
+    return {
+      script,
+    };
+  }
+
+  getBasicAssets() {
+    const script = this.basicUIPath ? getBasicScriptContent(this.basicUIPath) : '';
     return {
       script,
     };
@@ -539,6 +560,9 @@ export default class UmiUI {
 
   handleCoreData({ type, payload, lang, key }, { log, send, success, failure, progress }) {
     switch (type) {
+      case '@@project/getBasicAssets':
+        success(this.getBasicAssets());
+        break;
       case '@@project/getExtraAssets':
         success(
           this.getExtraAssets({
@@ -954,6 +978,15 @@ export default class UmiUI {
           try {
             const { type, payload, $lang: lang, $key: key } = JSON.parse(message);
             debugSocket(chalk.blue.bold('<<<<'), formatLogMessage(message));
+            const serviceArgs = {
+              action: { type, payload, lang },
+              log,
+              send,
+              success: success.bind(this, type),
+              failure: failure.bind(this, type),
+              progress: progress.bind(this, type),
+            };
+
             if (type.startsWith('@@')) {
               this.handleCoreData(
                 { type, payload, lang, key },
@@ -965,18 +998,21 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
+            } else if (this.basicConfigPath) {
+              const { services } =
+                // eslint-disable-next-line import/no-dynamic-require
+                require(this.basicConfigPath).default || require(this.basicConfigPath) || {};
+              if (Array.isArray(services) && services.length > 0) {
+                // register framework services
+                services.forEach(baseUIService => {
+                  baseUIService(serviceArgs);
+                });
+              }
             } else {
               assert(this.servicesByKey[key], `service of key ${key} not exists.`);
               const service = this.servicesByKey[key];
               service.applyPlugins('onUISocket', {
-                args: {
-                  action: { type, payload, lang },
-                  log,
-                  send,
-                  success: success.bind(this, type),
-                  failure: failure.bind(this, type),
-                  progress: progress.bind(this, type),
-                },
+                args: serviceArgs,
               });
             }
             // eslint-disable-next-line no-empty

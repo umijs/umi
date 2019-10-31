@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Left, Edit, Reload } from '@ant-design/icons';
 import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
+import { IUi } from 'umi-types';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { getCwd, listDirectory } from '@/services/project';
 import debug from '@/debug';
@@ -13,13 +14,7 @@ import styles from './index.less';
 
 const { useState, useEffect, useRef } = React;
 
-interface DirectoryFormProps {
-  /** path / cwd */
-  value?: string;
-  onChange?: (value: string) => void;
-}
-
-const DirectoryForm: React.FC<DirectoryFormProps> = props => {
+const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
   const _log = debug.extend('DirectoryForm');
   const { value: originValue, onChange } = props;
   const value = slash2(originValue || '');

@@ -77,11 +77,10 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       className,
     );
     window.g_uiContext = Context;
-    // TODO: using config plugin register
-    const framework = window.g_bigfish ? 'Bigfish UI' : 'Umi UI';
-    const icon = window.g_bigfish
-      ? '//gw.alipayobjects.com/zos/antfincdn/hGDyUOjsDS/430be478-0a70-4e82-99cc-b2ec526bfff2.png'
-      : '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
+    const { basicUI } = window.g_service;
+    const frameworkName = basicUI.name;
+    const framework = `${frameworkName} UI`;
+    const icon = basicUI.logo_remote || '//gw.alipayobjects.com/zos/antfincdn/KjbXlRsRBz/umi.png';
 
     const getTitle = () => {
       if (title) {
@@ -108,6 +107,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             setTheme: this.setTheme,
             setLocale: this.setLocale,
             FormattedMessage,
+            basicUI,
           }}
         >
           <Helmet>

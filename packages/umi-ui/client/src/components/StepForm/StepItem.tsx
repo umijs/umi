@@ -1,21 +1,7 @@
 import * as React from 'react';
+import { IUi } from 'umi-types';
 
-export interface IStepItemForm {
-  currentStep: number;
-  handleFinish: () => void;
-  goNext: () => void;
-  goPrev: () => void;
-  index: number;
-  active: boolean;
-  [key: string]: any;
-}
-
-interface StepItemProps {
-  children: React.ReactElement<Partial<IStepItemForm>>;
-  [key: string]: any;
-}
-
-const StepItem: React.SFC<StepItemProps> = props => {
+const StepItem: React.SFC<IUi.IStepItemProps> = props => {
   const {
     count,
     handleCurrentStep,

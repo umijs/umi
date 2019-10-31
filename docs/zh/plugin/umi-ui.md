@@ -496,6 +496,83 @@ export default (api) => {
 
 终端更多用法见 [文档](https://xtermjs.org/docs/)
 
+### api.DirectoryForm
+
+目录选择表单控件
+
+参数如下：
+
+```js
+interface IDirectoryForm {
+  /** path, default  */
+  value?: string;
+  onChange?: (value: string) => void;
+}
+```
+
+示例：
+
+```js
+import React from 'react';
+import { Form } from 'antd';
+
+export default () => {
+  const [form] = Form.useForm();
+  return (
+    <Form
+      form={form}
+      onFinish={values => {
+        console.log('values', values)
+      }}
+      initialValues={{
+        baseDir: cwd,
+      }}
+    >
+      <Form.Item
+        label={null}
+        name="baseDir"
+        rules={[
+          {
+            validator: async (rule, value) => {
+              await validateDirPath(value);
+            },
+          },
+        ]}
+      >
+        <DirectoryForm />
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+![image](https://user-images.githubusercontent.com/13595509/67653846-34e70500-f986-11e9-81be-16a9ac219cde.png)
+
+### api.StepForm
+
+步骤表单组件
+
+使用示例：
+
+```js
+<StepForm onFinish={handleSubmit} className={stepCls}>
+  <StepForm.StepItem title="a-form">
+    <Form>
+      <Form.Item name="a">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+
+  <StepForm.StepItem title="b-form">
+    <Form>
+      <Form.Item name="b">
+        <input />
+      </Form.Item>
+    </Form>
+  </StepForm.StepItem>
+</StepForm>
+```
 
 ### api.Field
 

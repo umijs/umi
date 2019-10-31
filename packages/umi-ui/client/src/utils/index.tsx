@@ -170,3 +170,12 @@ export const getDuplicateKeys = (locales: IUi.ILocale[]): string[] => {
     item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
   );
 };
+
+export const isValidFolderName = (name: string): boolean => {
+  return (
+    typeof name === 'string' &&
+    !name.match(/[/@\s+%:]|^[_.]/) &&
+    encodeURIComponent(name) === name &&
+    name.length <= 100
+  );
+};

@@ -10,6 +10,8 @@ import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
 import Terminal from '@/components/Terminal';
+import StepForm from '@/components/StepForm';
+import DirectoryForm from '@/components/DirectoryForm';
 import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
@@ -27,6 +29,8 @@ export default class PluginAPI {
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
   Terminal: FC<IUi.ITerminalProps>;
+  DirectoryForm: FC<IUi.IDirectoryForm>;
+  StepForm: IUi.IStepForm;
   ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
   connect: IUi.IConnect;
@@ -46,6 +50,8 @@ export default class PluginAPI {
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Terminal = Terminal;
+    this.DirectoryForm = DirectoryForm;
+    this.StepForm = StepForm;
     this.Field = Field;
     this.ConfigForm = ConfigForm;
     this.bigfish = !!window.g_bigfish;
@@ -138,6 +144,10 @@ export default class PluginAPI {
     // window.location.reload();
   };
 
+  setProjectCurrent = (...args) => {
+    event.emit(MESSAGES.CHANGE_PROJECT_CURRENT, ...args);
+  };
+
   showLogPanel: IUi.IShowLogPanel = () => {
     event.emit(MESSAGES.SHOW_LOG);
   };
@@ -214,14 +224,13 @@ export default class PluginAPI {
     } catch (e) {
       console.error('UI notification  error', e);
       if (this._.get(window, 'Tracert.logError')) {
+        const frameName = this.service.basicUI.name || 'Umi';
         if (e && e.message) {
-          e.message = `${window.g_bigfish ? 'Bigfish' : 'Umi'}: params: ${JSON.stringify(
-            payload,
-          )} ${e.message}`;
+          e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;
         }
         window.Tracert.logError(e, {
           // framework use umi ui
-          d1: window.g_bigfish ? 'Bigfish' : 'Umi',
+          d1: frameName,
         });
       }
     }
@@ -231,8 +240,22 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
+  getBasicUI = () => {
+    const { basicUI } = this.service;
+    return Object.freeze(basicUI);
+  };
+
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
+  };
+
+  // modify basic UI api.modifyBasicUI({  })
+  modifyBasicUI: IUi.IModifyBasicUI = memo => {
+    Object.keys(memo).forEach(extend => {
+      if (memo[extend]) {
+        (this.service.basicUI as any)[extend] = memo[extend];
+      }
+    });
   };
 
   addLocales: IUi.IAddLocales = locale => {

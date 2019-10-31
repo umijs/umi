@@ -8,7 +8,8 @@ interface IConfigManager {
 }
 
 function getSections(api: IUiApi) {
-  const { ConfigForm } = api;
+  const { ConfigForm, getBasicUI } = api;
+  const basicUI = getBasicUI();
   const sections = [
     {
       key: 'project',
@@ -26,7 +27,7 @@ function getSections(api: IUiApi) {
             id: 'org.umi.ui.configuration.project.config.desc',
           },
           {
-            library: api.bigfish ? 'Bigfish' : 'Umi',
+            library: basicUI.name || 'Umi',
           },
         ),
       component: () => (

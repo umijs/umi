@@ -1,60 +1,67 @@
 const { fork } = require('child_process');
+const signale = require('signale');
 const { join } = require('path');
-const { build } = require('father-build/lib/build');
+const { uiPlugins } = require('./uiPlugins');
 
 const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
+const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
+const watch = process.argv.includes('-w') || process.argv.includes('--watch');
+const opts = {
+  watch,
+};
 
-function buildUIApp(opts = {}) {
-  console.log(`Build ui app`);
+const uiApp = () => {
+  signale.pending('UI App building');
   const { watch } = opts;
-  const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
-    env: {
-      APP_ROOT: './packages/umi-ui/client',
-      UMI_UI: 'none',
-      UMI_UI_SERVER: 'none',
-    },
-  });
-  process.on('SIGINT', () => {
-    console.log('Build for all done');
-    child.kill('SIGINT');
-  });
-}
-
-const buildPlugins = async (plugins, opts = {}) => {
-  return new Promise(async (resolve, reject) => {
-    for (const plugin of plugins) {
-      console.log(`current build plugin: ${plugin}`);
-      const { watch } = opts;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        await build({
-          cwd: join(__dirname, '..', plugin),
-          watch,
-        });
-      } catch (e) {
-        console.error('current build plugin error: ', e);
-        reject(e);
-      }
+  return new Promise((resolve, reject) => {
+    try {
+      const child = fork(UMI_BIN, [watch ? 'dev' : 'build', ...(watch ? ['--watch'] : [])], {
+        env: {
+          APP_ROOT: './packages/umi-ui/client',
+          UMI_UI: 'none',
+          UMI_UI_SERVER: 'none',
+        },
+      });
+      child.on('exit', code => {
+        if (code === 1) {
+          signale.fatal('UI App build error');
+          process.exit(1);
+        }
+        signale.complete('UI App done');
+        resolve(child);
+      });
+    } catch (e) {
+      reject(e);
     }
-    console.log('Build for plugins done');
-    resolve();
+  });
+};
+
+const buildPlugin = plugin => {
+  const { watch } = opts;
+  return new Promise((resolve, reject) => {
+    try {
+      const pluginProcess = fork(FATHER_BUILD_BIN, watch ? ['--watch'] : [], {
+        cwd: join(__dirname, '..', plugin),
+      });
+      pluginProcess.on('exit', code => {
+        if (code === 1) {
+          process.exit(1);
+        }
+        resolve(pluginProcess);
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 
 (async () => {
-  const watch = process.argv.includes('-w') || process.argv.includes('--watch');
-  const plugins = [
-    'packages/umi-plugin-ui/src/plugins/dashboard',
-    'packages/umi-plugin-ui/src/plugins/configuration',
-    'packages/umi-ui-tasks/src',
-    'packages/umi-build-dev/src/plugins/commands/block/ui',
-    'packages/umi-plugin-react/ui',
-  ];
+  // exit by Ctrl/Cmd + C
+  process.on('SIGINT', () => {
+    signale.info('exit build by user');
+    process.exit(0);
+  });
 
-  // 并行执行 ui plugins build 和 UI App build
-  await Promise.all([
-    // 串行执行 ui plugins 避免插件过多时 OOM
-    buildPlugins(plugins, { watch }),
-    buildUIApp({ watch }),
-  ]);
+  const buildQueue = [uiApp(), ...uiPlugins.map(buildPlugin)];
+  await Promise.all(buildQueue);
 })();
