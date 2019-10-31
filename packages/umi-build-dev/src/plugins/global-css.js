@@ -4,6 +4,8 @@ import { existsSync } from 'fs';
 export default function(api) {
   const { paths, winPath } = api;
   const cssFiles = [
+    join(paths.absSrcPath, 'global.styl'),
+    join(paths.absSrcPath, 'global.stylus'),
     join(paths.absSrcPath, 'global.sass'),
     join(paths.absSrcPath, 'global.scss'),
     join(paths.absSrcPath, 'global.less'),
