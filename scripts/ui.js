@@ -26,7 +26,6 @@ const uiApp = () => {
         if (code === 1) {
           signale.fatal('UI App build error');
           process.exit(1);
-          reject(child);
         }
         signale.complete('UI App done');
         resolve(child);
@@ -47,7 +46,6 @@ const buildPlugin = plugin => {
       pluginProcess.on('exit', code => {
         if (code === 1) {
           process.exit(1);
-          reject(pluginProcess);
         }
         resolve(pluginProcess);
       });
