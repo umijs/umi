@@ -8,7 +8,7 @@ interface IConfigManager {
 }
 
 function getSections(api: IUiApi) {
-  const { ConfigForm, getBasicUI } = api;
+  const { ConfigForm, getBasicUI = () => ({}) } = api;
   const basicUI = getBasicUI();
   const sections = [
     {
