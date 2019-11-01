@@ -14,6 +14,14 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.3.tgz#856c99cdc1551d22c22b18b5402719affec9839a"
   integrity sha512-cS5owqtwzLN5kY+l+KgKdRJ/Cee8tlmQoGQuIE9tWnSmS3JMKzmxo2HIAk2wODMifGwO20d62xZQLYz+RLfXmw==
 
+"@types/hoist-non-react-statics@^3.3.0":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/isomorphic-fetch@^0.0.35":
   version "0.0.35"
   resolved "https://registry.yarnpkg.com/@types/isomorphic-fetch/-/isomorphic-fetch-0.0.35.tgz#c1c0d402daac324582b6186b91f8905340ea3361"
@@ -23,6 +31,16 @@
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.2.tgz#0e58ae66773d7fd7c372a493aff740878ec9ceaa"
   integrity sha512-f8JzJNWVhKtc9dg/dyDNfliTKNOJSLa7Oht/ElZdF/UbMUmAH3rLmAk3ODNjw0mZajDEgatA03tRjB4+Dp/tzA==
+
+"@types/react-redux@^7.1.0":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.5.tgz#c7a528d538969250347aa53c52241051cf886bd3"
+  integrity sha512-ZoNGQMDxh5ENY7PzU7MVonxDzS1l/EWiy8nUhDqxFqUZn4ovboCyvk4Djf68x6COb7vhGTKjyjxHxtFdAA5sUA==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.0"
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+    redux "^4.0.0"
 
 "@types/react-router-dom@^4.3.1":
   version "4.3.5"
@@ -84,7 +102,7 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-connected-react-router@^6.3.2:
+connected-react-router@6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/connected-react-router/-/connected-react-router-6.5.2.tgz#422af70f86cb276681e20ab4295cf27dd9b6c7e3"
   integrity sha512-qzsLPZCofSI80fwy+HgxtEgSGS4ndYUUZAWaw1dqaOGPLKX/FVwIOEb7q+hjHdnZ4v5pKZcNv5GG4urjujIoyA==
@@ -110,10 +128,10 @@ dom-walk@^0.1.0:
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
   integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
 
-dva-core@1.6.0-beta.5:
-  version "1.6.0-beta.5"
-  resolved "https://registry.yarnpkg.com/dva-core/-/dva-core-1.6.0-beta.5.tgz#368d2d291740934f27bc19f984c8b67d5e7911e4"
-  integrity sha512-V1GwC4pORkVrjArwvEmaSng/vs3GEbYgkEnKMxS18b+nSRH6oYbj9gu4Nzb/JwoVFw7DHseCp0jQ5VR11ymoYg==
+dva-core@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/dva-core/-/dva-core-2.0.0.tgz#7fce737f4df1c9f6043c3385210fdfc0f0332042"
+  integrity sha512-kvlQRhHJ/JN/cmH2QngemIaMIa0oZFMgzgov4OjXAcdsxquknXf10ateNYmMGDT0ybGkYJ1voUAoaBFbSxnTNQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     flatten "^1.0.2"
@@ -138,16 +156,17 @@ dva-loading@3.0.6:
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-dva@2.6.0-beta.6:
-  version "2.6.0-beta.6"
-  resolved "https://registry.yarnpkg.com/dva/-/dva-2.6.0-beta.6.tgz#fc8b9fc3869a5b72e08634402bdc5aa056d4511d"
-  integrity sha512-GNOt3Sl5xTGLD58K/MEbi3HLw2pZtw1rOVZO6+YRjMm8882BBQ5OV3qk06HGPp2JbRKzDV4OQ3E4GJG1RSsF/w==
+dva@2.6.0-beta.16:
+  version "2.6.0-beta.16"
+  resolved "https://registry.yarnpkg.com/dva/-/dva-2.6.0-beta.16.tgz#2620420c9c11b0e145f7e2e77ee4f47c673f2365"
+  integrity sha512-mWK+agd62ofRBi1DVyFSxC+tHefoiqkXkhkinWufEh77+mn7OnuIapHACGO22PfqnyjrYQCTXGlEoDGou/SK0w==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@types/isomorphic-fetch" "^0.0.35"
+    "@types/react-redux" "^7.1.0"
     "@types/react-router-dom" "^4.3.1"
-    connected-react-router "^6.3.2"
-    dva-core "1.6.0-beta.5"
+    connected-react-router "6.5.2"
+    dva-core "2.0.0"
     global "^4.3.2"
     history "^4.7.2"
     invariant "^2.2.4"
@@ -442,7 +461,7 @@ redux-saga@^0.16.0:
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
 
-redux@^4.0.1:
+redux@^4.0.0, redux@^4.0.1:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.4.tgz#4ee1aeb164b63d6a1bcc57ae4aa0b6e6fa7a3796"
   integrity sha512-vKv4WdiJxOWKxK0yRoaK3Y4pxxB0ilzVx6dszU2W8wLxlb2yikRph4iV/ymtdJ6ZxpBLFbyrxklnT5yBbQSl3Q==
