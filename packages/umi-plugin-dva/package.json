@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-dva",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "main": "./lib/index.js",
   "dependencies": {
     "babel-plugin-dva-hmr": "0.4.2",
