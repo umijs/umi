@@ -7,7 +7,7 @@ import {
   intlShape,
   LangContext,
   _setLocaleContext
-} from 'umi-plugin-locale';
+} from 'umi-plugin-locale/lib/locale';
 
 const InjectedWrapper = (() => {
   let sfc = (props, context) => {

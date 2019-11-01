@@ -1,1 +1,1 @@
-module.exports = require('umi-plugin-locale');
+module.exports = require('umi-plugin-locale/lib/locale');
