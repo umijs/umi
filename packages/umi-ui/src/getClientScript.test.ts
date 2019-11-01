@@ -1,6 +1,6 @@
 import { getFromScriptContent } from './getClientScript';
 
-test('normal', () => {
+xtest('normal', () => {
   expect(getFromScriptContent(['alert(1);', 'alert(2);'])).toEqual(
     `
 window.g_uiPlugins = [];
