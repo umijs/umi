@@ -41,7 +41,7 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
   let spawn;
   try {
     // eslint-disable-next-line prefer-destructuring
-    spawn = require('node-pty-prebuilt').spawn;
+    spawn = require('node-pty').spawn;
   } catch (e) {
     // TODO: docs if Windows user can't install node-pty
     conn.write('Terminal need node-pty module, please see docs: //');
