@@ -17,7 +17,6 @@ declare global {
     Tracert?: any;
     g_app?: any;
     Terminal: typeof ITerminal;
-    fit?: any;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };

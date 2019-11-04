@@ -7,6 +7,7 @@ import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
 import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
 import * as attach from 'xterm/lib/addons/attach/attach';
+import * as fit from 'xterm/lib/addons/fit/fit';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';

@@ -26,9 +26,7 @@
     "react-helmet": "^5.2.1",
     "serialize-javascript": "^2.1.0",
     "slash2": "2.0.0",
-    "xterm": "^3.14.4",
-    "xterm-addon-attach": "^0.3.0",
-    "xterm-addon-web-links": "^0.1.0"
+    "xterm": "^3.14.4"
   },
   "private": true,
   "devDependencies": {
