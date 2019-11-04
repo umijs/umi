@@ -54,6 +54,10 @@ end note
 
 @enduml
 
+Compare [SPA Site](https://ssr-demo-normal-spa.umijs.org/) with [SSR Site](https://ssr-demo-normal.umijs.org/) in SEO difference:
+
+![image](https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png)
+
 The advantages of SSR are:
 
 - **More friendly SEO** : The crawler can directly grab the rendered page. The first time the CSR returns the HTML document, it is an empty node (root) and contains no content. The SSR returns the HTML fragment after rendering, the content is complete, so it can be better analyzed and indexed by the crawler.
