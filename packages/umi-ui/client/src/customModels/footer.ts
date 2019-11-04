@@ -24,9 +24,11 @@ const reducers = {
     };
   },
   add: (state, { payload }) => {
+    const { logs = [] } = state;
+    const { logs: payloadLogs = [] } = payload;
     return {
-      ...state.logs,
-      logs: [...state.logs, ...payload.logs],
+      ...logs,
+      logs: [...logs, ...payloadLogs],
     };
   },
   setHistory: (state, { payload }) => {
