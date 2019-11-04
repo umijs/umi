@@ -1,5 +1,5 @@
 import sockjs, { Connection } from 'sockjs';
-import { sync as osLocaleSync } from 'os-locale';
+// import { sync as osLocaleSync } from 'os-locale';
 // umiui:UmiUI:terminal
 import { debugTerminal as _log } from './debug';
 
@@ -58,8 +58,7 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
       cwd,
       env: {
         ...process.env,
-        LANG: `${osLocaleSync()}.UTF-8`,
-        LC_ALL: `${osLocaleSync()}.UTF-8`,
+        // LANG: `${osLocaleSync()}.UTF-8`,
         TERM: 'xterm-256color',
         COLORTERM: 'truecolor',
       },
