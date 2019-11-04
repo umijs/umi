@@ -5855,11 +5855,6 @@ xtend@^4.0.1:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
-xterm-addon-web-links@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/xterm-addon-web-links/-/xterm-addon-web-links-0.1.0.tgz#413e4cf6b04d7a084a9e0e9cbc2d3c5a8cde10f8"
-  integrity sha512-n8/CzSw3sk0BQKDWeMzWaKjLoOomtQ+0EryAlG06k2OZJUnAgykOIwRlAe1gRXYKfriyAlL4wuC5lTYCNrpM5w==
-
 xterm@^3.14.5:
   version "3.14.5"
   resolved "https://registry.yarnpkg.com/xterm/-/xterm-3.14.5.tgz#c9d14e48be6873aa46fb429f22f2165557fd2dea"
