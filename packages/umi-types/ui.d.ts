@@ -1,7 +1,7 @@
 import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
-import { ReactNode, Context, FC, FunctionComponent, ReactElement } from 'react';
+import { ReactNode, Context, FC, FunctionComponent, ReactElement, ComponentClass } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import * as intl from './locale';
 import { IRoute } from './';
@@ -80,7 +80,7 @@ declare namespace IUI {
 
   interface IPanel extends IRoute {
     path: string;
-    component: ReactNode;
+    component: FunctionComponent | ComponentClass;
     icon: IconType | string;
     actions?: IPanelAction;
     beta?: boolean;
@@ -134,6 +134,7 @@ declare namespace IUI {
   }
 
   type IConfigTypes = keyof typeof CONFIG_TYPES;
+  type ITerminal = XTerminal;
 
   interface ITwoColumnPanel {
     className?: string;
@@ -156,9 +157,11 @@ declare namespace IUI {
     /** defaultValue in Terminal */
     defaultValue?: string;
     /** terminal init event */
-    onInit?: (ins: XTerminal) => void;
+    onInit?: (ins: XTerminal, fitAddon: any) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
+    shell?: boolean;
+    shellServer?: string;
     [key: string]: any;
   }
 

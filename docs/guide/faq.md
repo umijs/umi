@@ -249,3 +249,10 @@ The solution is to upgrade to the latest version.
 Umi UI needs to have permission to create projects.
 
 The solution is to raise the prompted path permissions and give execute permissions.。
+
+### Terminal need node-pty module
+
+The Umi UI is not installed or compiled successfully [node-pty](https://www.npmjs.com/package/node-pty) module, the solution is as follows:
+
+* For Windows users, execute `npm install --global --production windows-build-tools` in PowerShell as administrator.
+* Reinstall node_moduless

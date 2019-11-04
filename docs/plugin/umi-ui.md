@@ -436,7 +436,7 @@ api.addPanel({
 
 ### api.Terminal
 
-Terminal component.
+Terminal component based on [xterm.js@4.x](https://xtermjs.org/).
 
 parameters are as follows:
 

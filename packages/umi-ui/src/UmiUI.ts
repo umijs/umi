@@ -14,6 +14,7 @@ import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
+import get from 'lodash/get';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -24,11 +25,10 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
+import initTerminal from './initTerminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
-
-const debug = require('debug')('umiui:UmiUI');
-const debugSocket = debug.extend('socket');
+import debug, { debugSocket } from './debug';
 
 process.env.UMI_UI = 'true';
 
@@ -868,6 +868,11 @@ export default class UmiUI {
       });
 
       app.use('/*', async (req, res) => {
+        const { currentProject, projectsByKey } = this.config.data;
+        const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
+        initTerminal(this.server, {
+          cwd: currentProjectCwd || this.cwd,
+        });
         const scripts = await getScripts();
         if (process.env.LOCAL_DEBUG) {
           try {
