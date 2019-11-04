@@ -88,6 +88,21 @@ export default class UmiUI {
     });
   }
 
+  getService = cwd => {
+    const serviceModule = process.env.BIGFISH_COMPAT
+      ? '@alipay/bigfish/_Service.js'
+      : 'umi/_Service.js';
+    const servicePath = process.env.LOCAL_DEBUG
+      ? 'umi-build-dev/lib/Service'
+      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+    debug(`Service path: ${servicePath}`);
+    // eslint-disable-next-line import/no-dynamic-require
+    const Service = require(servicePath).default;
+    return new Service({
+      cwd,
+    });
+  };
+
   openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
     const project = this.config.data.projectsByKey[key];
@@ -170,15 +185,7 @@ export default class UmiUI {
       }
 
       try {
-        const servicePath = process.env.LOCAL_DEBUG
-          ? 'umi-build-dev/lib/Service'
-          : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
-        debug(`Service path: ${servicePath}`);
-        // eslint-disable-next-line import/no-dynamic-require
-        const Service = require(servicePath).default;
-        const service = new Service({
-          cwd: project.path,
-        });
+        const service = this.getService(cwd);
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
