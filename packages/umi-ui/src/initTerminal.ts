@@ -43,8 +43,9 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
     // eslint-disable-next-line prefer-destructuring
     spawn = require('node-pty').spawn;
   } catch (e) {
-    // TODO: docs if Windows user can't install node-pty
-    conn.write('Terminal need node-pty module, please see docs: //');
+    conn.write(
+      'Failed to install or prebuild node-pty module, please see docs: https://umijs.org/guide/faq.html#terminal-need-node-pty-module',
+    );
     return false;
   }
   if (safe) {
