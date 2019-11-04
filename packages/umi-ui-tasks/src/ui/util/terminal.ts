@@ -1,6 +1,6 @@
 import { TaskType } from '../../server/core/enums';
-import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
-import * as fit from 'xterm/lib/addons/fit/fit';
+import { WebLinksAddon } from 'xterm-addon-web-links';
+import { FitAddon } from 'xterm-addon-fit';
 
 declare global {
   interface Window {
@@ -11,8 +11,6 @@ declare global {
 const { Terminal } = window;
 
 function initTerminal() {
-  (Terminal as any).applyAddon(webLinks);
-  (Terminal as any).applyAddon(fit);
   const terminal = new (Terminal as any)({
     allowTransparency: true,
     theme: {
@@ -24,9 +22,8 @@ function initTerminal() {
     cursorStyle: 'underline',
     disableStdin: true,
   });
-  if (terminal.webLinksInit) {
-    terminal.webLinksInit();
-  }
+  terminal.loadAddon(new WebLinksAddon());
+  terminal.loadAddon(new FitAddon());
   return terminal;
 }
 

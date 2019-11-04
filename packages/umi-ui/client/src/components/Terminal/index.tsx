@@ -5,20 +5,14 @@ import cls from 'classnames';
 import SockJS from 'sockjs-client';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
-import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
-import * as attach from 'xterm/lib/addons/attach/attach';
-import * as fit from 'xterm/lib/addons/fit/fit';
+import { WebLinksAddon } from 'xterm-addon-web-links';
+import { AttachAddon } from 'xterm-addon-attach';
+import { FitAddon } from 'xterm-addon-fit';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
 
 const { Terminal } = window;
-
-if (Terminal) {
-  Terminal.applyAddon(attach);
-  Terminal.applyAddon(fit);
-  Terminal.applyAddon(webLinks);
-}
 
 export type TerminalType = XTerminal;
 
@@ -54,7 +48,6 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
       ...(config || {}),
     };
     const terminal = new Terminal(terminalOpts);
-    console.log('terminal', terminal);
     setXterm(terminal);
   }, []);
 
@@ -76,12 +69,12 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
           onInit(xterm);
         }
         xterm.open(domContainer.current);
-        xterm.fit();
-        xterm.webLinksInit();
+        xterm.loadAddon(new FitAddon());
+        xterm.loadAddon(new WebLinksAddon());
         xterm.attachCustomKeyEventHandler(copyShortcut);
         if (shell) {
           socket = new SockJS('/terminal');
-          xterm.attach(socket);
+          xterm.loadAddon(new AttachAddon(socket));
           xterm.focus();
         }
       }
