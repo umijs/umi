@@ -11,6 +11,7 @@
   "devDependencies": {
     "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/node-notifier": "^5.4.0",
+    "@types/sockjs": "^0.3.31",
     "umi-types": "0.5.4",
     "umi-ui-theme": "^1.0.0-beta.2"
   },

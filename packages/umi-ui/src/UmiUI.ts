@@ -9,7 +9,6 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
-import * as os from 'os';
 import { pick } from 'lodash';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
@@ -25,11 +24,10 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
+import initTerminal from './initTerminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
-
-const debug = require('debug')('umiui:UmiUI');
-const debugSocket = debug.extend('socket');
+import debug, { debugSocket } from './debug';
 
 process.env.UMI_UI = 'true';
 
@@ -88,21 +86,6 @@ export default class UmiUI {
       this.initNpmClients();
     });
   }
-
-  getService = cwd => {
-    const serviceModule = process.env.BIGFISH_COMPAT
-      ? '@alipay/bigfish/_Service.js'
-      : 'umi/_Service.js';
-    const servicePath = process.env.LOCAL_DEBUG
-      ? 'umi-build-dev/lib/Service'
-      : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
-    debug(`Service path: ${servicePath}`);
-    // eslint-disable-next-line import/no-dynamic-require
-    const Service = require(servicePath).default;
-    return new Service({
-      cwd,
-    });
-  };
 
   openProject(key: string, service?: any, opts?: any) {
     const { lang } = opts || {};
@@ -186,7 +169,15 @@ export default class UmiUI {
       }
 
       try {
-        const service = this.getService(cwd);
+        const servicePath = process.env.LOCAL_DEBUG
+          ? 'umi-build-dev/lib/Service'
+          : resolveFrom.silent(cwd, serviceModule) || 'umi-build-dev/lib/Service';
+        debug(`Service path: ${servicePath}`);
+        // eslint-disable-next-line import/no-dynamic-require
+        const Service = require(servicePath).default;
+        const service = new Service({
+          cwd: project.path,
+        });
         debug(`Attach service for ${key} after new and before init()`);
         service.init();
         debug(`Attach service for ${key} ${chalk.green('SUCCESS')}`);
@@ -923,7 +914,6 @@ export default class UmiUI {
 
       const sockjs = require('sockjs');
       const ss = sockjs.createServer();
-      const terminalSS = sockjs.createServer();
 
       const conns = {};
       function send(action) {
@@ -939,30 +929,6 @@ export default class UmiUI {
         ret = ret.replace(/{"type":"(.+?)"/, `{"type":"${chalk.magenta.bold('$1')}"`);
         return ret;
       }
-
-      terminalSS.on('connection', conn => {
-        const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
-        const pty = require('node-pty');
-        const ptyProcess = pty.spawn(shell, [], {
-          name: 'xterm-color',
-          cols: 80,
-          rows: 30,
-          cwd: this.cwd,
-          env: process.env,
-        });
-
-        conn.on('data', function(data) {
-          console.log('conn data', data);
-          ptyProcess.write(`${data}\r`);
-        });
-
-        ptyProcess.on('data', function(data) {
-          console.log('ptyProcess data', data);
-          conn.write(data);
-        });
-
-        ptyProcess.resize(100, 40);
-      });
 
       ss.on('connection', conn => {
         conns[conn.id] = conn;
@@ -1080,12 +1046,11 @@ export default class UmiUI {
           }
         }
       });
+      initTerminal(server, {
+        cwd: this.cwd,
+      });
       ss.installHandlers(server, {
         prefix: '/umiui',
-        log: () => {},
-      });
-      terminalSS.installHandlers(server, {
-        prefix: '/terminal',
         log: () => {},
       });
       this.socketServer = ss;
