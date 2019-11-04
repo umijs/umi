@@ -166,6 +166,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     'zh-CN': 'https://umijs.org/zh/guide/umi-ui.html',
     'en-US': 'https://umijs.org/guide/umi-ui.html',
   };
+  const projectDashboard = type !== 'list' && path && name;
 
   return (
     <div className={styles.footer}>
@@ -243,32 +244,36 @@ const Footer: React.SFC<IFooterProps> = props => {
         </Drawer>
       </div>
       <div className={styles.statusBar}>
-        {!isMini && (
-          <div
-            onClick={() => {
-              handleBack(type === 'loading');
-            }}
-            className={actionCls}
-          >
-            <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
-              <HomeFilled style={{ marginRight: 4 }} />
-            </Tooltip>
-          </div>
-        )}
-        {type !== 'list' && path && name && (
-          <>
-            <div className={actionCls} onClick={() => handleCopyPath(path)}>
-              <FolderFilled style={{ marginRight: 4 }} /> {path}
+        <div className={styles['statusBar-left']}>
+          {!isMini && (
+            <div
+              onClick={() => {
+                handleBack(type === 'loading');
+              }}
+              className={actionCls}
+            >
+              <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
+                <HomeFilled style={{ marginRight: 4 }} />
+              </Tooltip>
             </div>
-          </>
-        )}
-        <div onClick={() => togglePanel('log')} className={logCls}>
-          <ProfileFilled style={{ marginRight: 4 }} />{' '}
-          {formatMessage({ id: 'org.umi.ui.global.log' })}
-        </div>
-
-        <div className={shellCls} onClick={() => togglePanel('terminal')}>
-          <Code style={{ marginRight: 4 }} /> {formatMessage({ id: 'org.umi.ui.global.terminal' })}
+          )}
+          {projectDashboard && (
+            <>
+              <div className={actionCls} onClick={() => handleCopyPath(path)}>
+                <FolderFilled style={{ marginRight: 4 }} /> {path}
+              </div>
+            </>
+          )}
+          <div onClick={() => togglePanel('log')} className={logCls}>
+            <ProfileFilled style={{ marginRight: 4 }} />{' '}
+            {formatMessage({ id: 'org.umi.ui.global.log' })}
+          </div>
+          {projectDashboard && (
+            <div className={shellCls} onClick={() => togglePanel('terminal')}>
+              <Code style={{ marginRight: 4 }} />{' '}
+              {formatMessage({ id: 'org.umi.ui.global.terminal' })}
+            </div>
+          )}
         </div>
 
         <div className={styles.section}>

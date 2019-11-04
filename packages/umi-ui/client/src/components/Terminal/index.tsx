@@ -6,8 +6,8 @@ import SockJS from 'sockjs-client';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
-import { AttachAddon } from 'xterm-addon-attach';
 import { FitAddon } from 'xterm-addon-fit';
+import { AttachAddon } from './addons/attachAddon';
 import intl from '@/utils/intl';
 import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
@@ -27,6 +27,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     config = {},
     terminalClassName,
     shell = false,
+    shellServer = '/terminal',
     toolbar = true,
   } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
@@ -64,14 +65,14 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
 
   useEffect(
     () => {
-      let socket: any;
+      let socket: InstanceType<typeof SockJS>;
       if (domContainer.current && xterm) {
         const webLinksAddon = new WebLinksAddon();
         xterm.loadAddon(fitAddon);
         xterm.loadAddon(webLinksAddon);
         xterm.attachCustomKeyEventHandler(copyShortcut);
         if (shell) {
-          socket = new SockJS('/terminal');
+          socket = new SockJS(shellServer);
           xterm.loadAddon(new AttachAddon(socket));
           xterm.focus();
         }

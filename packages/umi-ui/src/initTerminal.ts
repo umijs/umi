@@ -47,7 +47,6 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
     _log('ptyProcess data', chunk);
     conn.write(chunk);
   });
-  // pty.onExit(() => { })
   pty.resize(100, 40);
 
   // === socket listener ===

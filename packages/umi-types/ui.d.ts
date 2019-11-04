@@ -160,6 +160,8 @@ declare namespace IUI {
     onInit?: (ins: XTerminal, fitAddon: any) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
+    shell?: boolean;
+    shellServer?: string;
     [key: string]: any;
   }
 

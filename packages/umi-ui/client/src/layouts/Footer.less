@@ -59,9 +59,14 @@
     cursor: pointer;
     user-select: none;
   }
-  .section.shell {
-    width: 0;
+  &-left {
+    display: flex;
+    flex-direction: row;
     flex: 100% 1 1;
+    .section:last-child {
+      width: 0;
+      flex: 100% 1 1;
+    }
   }
 }
 
