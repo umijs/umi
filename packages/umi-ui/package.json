@@ -11,7 +11,6 @@
   "devDependencies": {
     "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/node-notifier": "^5.4.0",
-    "@types/os-locale": "^4.0.2",
     "@types/sockjs": "^0.3.31",
     "umi-types": "0.5.4",
     "umi-ui-theme": "^1.0.0-beta.2"
@@ -43,7 +42,6 @@
     "macaddress": "0.2.9",
     "mkdirp": "0.5.1",
     "node-notifier": "^5.4.1",
-    "os-locale": "^4.0.0",
     "portfinder": "1.0.21",
     "react-dev-utils": "9.0.1",
     "regenerator-runtime": "0.13.2",
