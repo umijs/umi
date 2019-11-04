@@ -11,6 +11,7 @@
   "devDependencies": {
     "@ant-design/icons": "^4.0.0-alpha.8",
     "@types/node-notifier": "^5.4.0",
+    "@types/sockjs": "^0.3.31",
     "umi-types": "0.5.4",
     "umi-ui-theme": "^1.0.0-beta.2"
   },
@@ -23,6 +24,9 @@
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
   "license": "MIT",
+  "optionalDependencies": {
+    "node-pty": "^0.10.0-beta3"
+  },
   "dependencies": {
     "@umijs/launch-editor": "^1.0.0",
     "binary-mirror-config": "1.20.3",

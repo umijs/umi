@@ -21,7 +21,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
   useEffect(() => {
     setInit(true);
   }, []);
-  useTerminal({ terminal, ref: domContainer.current });
+  const { fitAddon } = useTerminal({ terminal, ref: domContainer.current });
   useEffect(
     () => {
       if (log) {
@@ -40,7 +40,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
     () => {
       if (prevSize) {
         if (prevSize.width !== size.width || prevSize.height !== size.height) {
-          terminal.fit();
+          fitAddon.fit();
         }
       }
     },
