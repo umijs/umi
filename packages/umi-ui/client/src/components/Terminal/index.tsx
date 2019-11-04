@@ -17,6 +17,7 @@ const { Terminal } = window;
 export type TerminalType = XTerminal;
 
 const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, ref) => {
+  const fitAddon = new FitAddon();
   const domContainer = ref || useRef<HTMLDivElement>(null);
   const {
     title,
@@ -65,17 +66,20 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     () => {
       let socket: any;
       if (domContainer.current && xterm) {
-        if (onInit) {
-          onInit(xterm);
-        }
-        xterm.open(domContainer.current);
-        xterm.loadAddon(new FitAddon());
-        xterm.loadAddon(new WebLinksAddon());
+        const webLinksAddon = new WebLinksAddon();
+        xterm.loadAddon(fitAddon);
+        xterm.loadAddon(webLinksAddon);
         xterm.attachCustomKeyEventHandler(copyShortcut);
         if (shell) {
           socket = new SockJS('/terminal');
           xterm.loadAddon(new AttachAddon(socket));
           xterm.focus();
+        }
+        // last open
+        xterm.open(domContainer.current);
+        fitAddon.fit();
+        if (onInit) {
+          onInit(xterm);
         }
       }
       return () => {
@@ -92,11 +96,11 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
 
   useEffect(
     () => {
-      if (xterm && xterm.fit) {
-        xterm.fit();
+      if (xterm) {
+        fitAddon.fit();
       }
     },
-    [size.width, size.height],
+    [size.width, size.height, xterm],
   );
 
   useEffect(

@@ -31,6 +31,7 @@
     "react-sizeme": "^2.6.7",
     "umi-types": "0.5.4",
     "xterm": "^3.14.5",
+    "xterm-addon-fit": "^0.3.0",
     "xterm-addon-web-links": "^0.1.0"
   },
   "repository": {
