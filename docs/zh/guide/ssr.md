@@ -54,6 +54,10 @@ end note
 
 @enduml
 
+对比 [SPA 站点](https://ssr-demo-normal-spa.umijs.org/) 和 [SSR 站点](https://ssr-demo-normal.umijs.org/) 在 SEO 区别：
+
+![image](https://user-images.githubusercontent.com/13595509/68102160-5e66da00-ff0c-11e9-82e8-7c73cca1b20f.png)
+
 SSR 优势在于：
 
 - **更友好的 SEO**：爬虫可以直接抓取渲染之后的页面，CSR 首次返回的 HTML 文档中，是空节点（root），不包含内容。而 SSR 返回渲染之后的 HTML 片段，内容完整，所以能更好地被爬虫分析与索引。
