@@ -215,7 +215,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
 
   const frameworkName = basicUI.name || 'Umi';
   const emptyTip = frameworkName
-    ? `org.umi.ui.global.project.list.empty.tip.${frameworkName}`
+    ? `org.umi.ui.global.project.list.empty.tip.${frameworkName.toLowerCase()}`
     : 'org.umi.ui.global.project.list.empty.tip';
 
   const EmptyDescription = (
