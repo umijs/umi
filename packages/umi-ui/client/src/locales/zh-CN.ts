@@ -21,7 +21,8 @@ export default {
   'org.umi.ui.global.content.hello': '你好',
   'org.umi.ui.global.project.siderbar.title': '项目',
   'org.umi.ui.global.project.list.creating': '创建中',
-  'org.umi.ui.global.project.list.empty.tip': '项目列表为空，试试 {create} 或 {import} 一个项目。',
+  'org.umi.ui.global.project.list.empty.tip.umi':
+    '项目列表为空，试试 {create} 或 {import} 一个项目。',
   'org.umi.ui.global.project.list.empty.tip.bigfish': '项目列表为空，试试 {import} 一个项目。',
   'org.umi.ui.global.project.list.empty.tip.create': '创建',
   'org.umi.ui.global.project.list.empty.tip.import': '导入',
