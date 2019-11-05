@@ -213,15 +213,64 @@ window.addEventListener('sw.offline', () => {
 
 ### hd
 
-- Type `Boolean`
+- Type `Boolean` or `Object`
 
-Turn on the HD solution.
+Turn on [the HD solution](https://github.com/umijs/umi-hd#%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D), by default, follow the 750px design draft (1rem=100px).
+
+```js
+// .umirc.js or config/config.js
+export default {
+  hd: true,
+};
+```
+
+`hd: true` equipped to the following configuration:
+
+```js
+// .umirc.js or config/config.js
+export default {
+  // equipped to hd: true
+  hd: {
+    theme: {
+      // antd-mobile HD solution
+      '@hd': '2px',
+    },
+    // more: https://github.com/pigcan/postcss-plugin-px2rem#configuration
+    px2rem: {
+      rootValue: 100,
+      minPixelValue: 2,
+    },
+  }
+};
+```
+
+At the same time, you can customize the adaptation scheme:
+
+```js
+// default, 750px design draft
+// src/hd.(tsx|ts|js|jsx)
+import vw from 'umi-hd/lib/vw';
+import flex from 'umi-hd/lib/flex';
+
+// Fix document undefined when ssr. #2571
+if (typeof document !== 'undefined') {
+  if (document.documentElement.clientWidth >= 750) {
+    vw(100, 750);
+  } else {
+    flex();
+  }
+
+  // hd solution for antd-mobile@2
+  // ref: https://mobile.ant.design/docs/react/upgrade-notes-cn#%E9%AB%98%E6%B8%85%E6%96%B9%E6%A1%88
+  document.documentElement.setAttribute('data-scale', true);
+}
+```
 
 ### fastClick
 
 - Type `Boolean`
 
-Enable fastClick.
+Enable [fastClick](https://github.com/ftlabs/fastclick), solve the prevent the 300ms click delay on mobile devices.
 
 ### title
 
