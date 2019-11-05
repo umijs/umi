@@ -2,8 +2,8 @@ import React from 'react';
 import cls from 'classnames';
 import { IUiApi } from 'umi-types';
 import Masonry from 'react-masonry-component';
-import { Close, Smile } from '@ant-design/icons';
-import { Card, Row, Col } from 'antd';
+import { Smile } from '@ant-design/icons';
+import { Card, Col } from 'antd';
 import styles from './ui.module.less';
 
 const { useState, useRef, useEffect } = React;
