@@ -213,7 +213,7 @@ window.addEventListener('sw.offline', () => {
 
 ### hd
 
-- Type `Boolean`
+- Type `Boolean` or `Object`
 
 Turn on [the HD solution](https://github.com/umijs/umi-hd#%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D), by default, follow the 750px design draft (1rem=100px).
 
