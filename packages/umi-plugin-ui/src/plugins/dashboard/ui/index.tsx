@@ -1,6 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
 import { IUiApi } from 'umi-types';
+import Masonry from 'react-masonry-component';
 import { Close, Smile } from '@ant-design/icons';
 import { Card, Row, Col } from 'antd';
 import styles from './ui.module.less';
@@ -98,25 +99,22 @@ const DashboardUI: React.FC<IProps> = props => {
       ),
     });
   }
-
+  const containerCls = cls(styles['container-row'], 'ant-row', 'ant-row-flex');
   return (
     <div className={styles.container}>
-      <Row className={styles['container-row']} type="flex" gutter={24}>
+      <Masonry className={containerCls}>
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;
+          const colCls = cls(className, styles['container-col']);
           return (
-            <Col key={i.toString()} className={className} xs={12} sm={12} md={12} lg={12} xl={6}>
-              <Card
-                className={styles.card}
-                bordered={false}
-                hoverable={false}
-                children={body}
-                {...restProps}
-              />
+            <Col key={i.toString()} className={colCls} xs={24} sm={12} lg={12} xl={8}>
+              <Card className={styles.card} bordered={false} hoverable={false} {...restProps}>
+                {body}
+              </Card>
             </Col>
           );
         })}
-      </Row>
+      </Masonry>
     </div>
   );
 };
