@@ -164,7 +164,6 @@ ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
         console.error(e);        
-        debug(e);
         process.exit(1);
       }
     }
