@@ -59,6 +59,7 @@ export default class PluginAPI {
         },
       ],
       'onStart',
+      'onExit',
       'onStartAsync',
       'onRouteChange',
       'onDevCompileDone',
