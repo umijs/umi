@@ -330,6 +330,10 @@ api.afterDevServer(({ serve, devServerPort }) => {
 
 `umi dev` 或者 `umi build` 开始时触发。
 
+### onExit
+
+`umi dev`编译后杀死进程或 `ctrl-c` 退出进程时触发。
+
 ### onDevCompileDone
 
 `umi dev` 编译完成后触发。

@@ -336,6 +336,10 @@ api.afterDevServer(({ serve, devServerPort }) => {
 
 Triggered when `umi dev` or `umi build` start.
 
+### onExit
+
+Triggered when killing process or ctrl-c in `umi dev`.
+
 ### onDevCompileDone
 
 Triggered after `umi dev` compilation is complete.
