@@ -156,7 +156,6 @@ plugin must export a function, e.g.
       if (process.env.UMI_TEST) {
         throw new Error(e);
       } else {
-        console.error(e);
         signale.error(
           `
 Plugin ${chalk.cyan.underline(id)} initialize failed
@@ -164,6 +163,7 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
+        console.error(e);        
         debug(e);
         process.exit(1);
       }
