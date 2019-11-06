@@ -163,7 +163,7 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
-        console.error(e);        
+        console.error(e);
         process.exit(1);
       }
     }
