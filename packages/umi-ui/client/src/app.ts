@@ -22,6 +22,7 @@ const service = (window.g_service = {
   locales: [],
   configSections: [],
   basicUI: {},
+  dashboard: [],
 });
 
 // Avoid scope problem

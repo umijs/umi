@@ -4,6 +4,7 @@ import lodash from 'lodash';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import * as intl from 'umi-plugin-react/locale';
+import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
@@ -247,6 +248,19 @@ export default class PluginAPI {
 
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
+  };
+
+  getDashboard = () => {
+    return this.service.dashboard;
+  };
+
+  addDashboard: any = config => {
+    if (!isPlainObject(config) && !Array.isArray(config)) {
+      console.error('api.addDashboard config error', config);
+      return;
+    }
+    const configs = Array.isArray(config) ? config : [];
+    this.service.dashboard.push(...configs);
   };
 
   // modify basic UI api.modifyBasicUI({  })

@@ -17,11 +17,14 @@
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
     "@umijs/fabric": "^1.1.9",
+    "antd": "^4.0.0-alpha.8",
     "classnames": "^2.2.6",
     "decamelize": "3.2.0",
     "react-masonry-component": "^6.2.1",
     "serialize-javascript": "^1.7.0",
-    "umi-types": "0.5.4"
+    "umi-request": "^1.2.8",
+    "umi-types": "0.5.4",
+    "umi-ui-theme": "^1.0.0-beta.2"
   },
   "repository": {
     "type": "git",
