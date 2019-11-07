@@ -24,12 +24,26 @@ function dispatchServiceWorkerEvent(eventName, eventData) {
 
 export default function(swDest) {
   register(`${process.env.BASE_URL}${swDest}`, {
+    ready(registration) {
+      dispatchServiceWorkerEvent('sw.ready', registration);
+    },
+    registered(registration) {
+      dispatchServiceWorkerEvent('sw.registered', registration);
+    },
+    cached(registration) {
+      dispatchServiceWorkerEvent('sw.cached', registration);
+    },
+    updatefound(registration) {
+      dispatchServiceWorkerEvent('sw.updatefound', registration);
+    },
     updated(registration) {
       dispatchServiceWorkerEvent('sw.updated', registration);
     },
-
     offline() {
       dispatchServiceWorkerEvent('sw.offline', {});
+    },
+    error(error) {
+      dispatchServiceWorkerEvent('sw.error', error);
     },
   });
 }

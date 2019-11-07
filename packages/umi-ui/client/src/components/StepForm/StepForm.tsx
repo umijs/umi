@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { Steps } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import StepItem, { IStepItemForm } from './StepItem';
+import { IUi } from 'umi-types';
+import StepItem from './StepItem';
 
 const { useState } = React;
 const { Step } = Steps;
 
-export interface InternalStepFormProps {
-  onFinish: (values: object) => void;
-  className?: string;
-  children: React.ReactElement<IStepItemForm>[];
-}
-
-const StepForm: React.SFC<InternalStepFormProps> = props => {
+const StepForm: React.SFC<IUi.IStepFormProps> = props => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const forms: FormInstance[] = [];
 

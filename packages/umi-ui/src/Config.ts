@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
 import { get } from 'lodash';
 import { basename, dirname, join } from 'path';
-import userHome from 'user-home';
+import { homedir } from 'os';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 
@@ -44,7 +44,9 @@ export default class Config {
 
   constructor(opts: IOpts = {}) {
     const { dbPath, onSave } = opts;
-    this.dbPath = dbPath || join(userHome, '.umi/ui/data.json');
+    this.dbPath =
+      dbPath ||
+      join(homedir(), `.umi/ui/${process.env.BIGFISH_COMPAT ? 'bigfish-data' : 'data'}.json`);
     this.onSave = onSave;
     mkdirp.sync(dirname(this.dbPath));
     this.load();
@@ -144,20 +146,47 @@ export default class Config {
     this.save();
   }
 
+  clearCurrentProject() {
+    this.data.currentProject = null;
+    this.save();
+  }
+
   setProjectNpmClient({ npmClient, key }: { npmClient: string; key: string }) {
     this.data.projectsByKey[key].npmClient = npmClient;
     this.save();
   }
 
-  addProjectAndSetCurrent(projectPath: string) {
-    const absProjectPath = join(process.cwd(), projectPath);
+  addProjectWithPath(projectPath: string) {
+    const absProjectPath = join(projectPath);
     const pathArray = absProjectPath.split('/');
     const projectName = pathArray[pathArray.length - 1];
-    const key = this.addProject({
+    return this.addProject({
       name: projectName,
       path: absProjectPath,
       ignoreExistsCheck: true,
     });
-    this.setCurrentProject(key);
+  }
+
+  getKeyOrAddWithPath(projectPath: string) {
+    const keys = Object.keys(this.data.projectsByKey);
+    for (const key of keys) {
+      if (this.data.projectsByKey[key].path === projectPath) {
+        return key;
+      }
+    }
+    return this.addProjectWithPath(projectPath);
+  }
+
+  checkValid() {
+    for (const key of Object.keys(this.data.projectsByKey)) {
+      const { path } = this.data.projectsByKey[key];
+      // 删除不存在的项目
+      if (!existsSync(path)) {
+        delete this.data.projectsByKey[key];
+        if (this.data.currentProject === key) {
+          this.data.currentProject = null;
+        }
+      }
+    }
   }
 }

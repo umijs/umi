@@ -3,11 +3,12 @@ import { Form, Input, Button } from 'antd';
 import { MinusCircle, Plus } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const StringArrayComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:StringArrayComp');
-  const { name, ...restFormItemProps } = props;
+  const _log = debug.extend('Field:StringArrayComp');
+  const { name, size, ...restFormItemProps } = props;
 
   const { parentConfig } = getFormItemShow(name);
 
@@ -28,7 +29,12 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
               ]}
               noStyle
             >
-              <Input autoComplete="off" defaultValue="" style={{ width: 320, marginRight: 8 }} />
+              <Input
+                size={size}
+                autoComplete="off"
+                defaultValue=""
+                style={{ width: 320, marginRight: 8 }}
+              />
             </Form.Item>
             {fields.length > 0 ? (
               <MinusCircle
@@ -43,6 +49,7 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
           <Button
             type="dashed"
             ghost
+            size={size}
             onClick={() => {
               add();
             }}

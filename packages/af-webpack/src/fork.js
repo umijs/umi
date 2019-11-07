@@ -4,7 +4,8 @@ import send, { RESTART } from './send';
 const usedPorts = [];
 let CURRENT_PORT = undefined;
 
-export default function start(scriptPath) {
+export default function start(scriptPath, opts = {}) {
+  const { onMessage } = opts;
   const execArgv = process.execArgv.slice(0);
   const inspectArgvIndex = execArgv.findIndex(argv => argv.includes('--inspect-brk'));
 
@@ -42,6 +43,9 @@ export default function start(scriptPath) {
     } else if (type === 'UPDATE_PORT') {
       // set current used port
       CURRENT_PORT = data.port;
+    }
+    if (onMessage) {
+      onMessage(data);
     }
     send(data);
   });

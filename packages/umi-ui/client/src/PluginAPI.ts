@@ -1,17 +1,22 @@
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { connect } from 'dva';
 import lodash from 'lodash';
-import debug from 'debug';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
-import { formatMessage } from 'umi-plugin-react/locale';
+import * as intl from 'umi-plugin-react/locale';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import { send, callRemote, listenRemote } from './socket';
+import event, { MESSAGES } from '@/message';
+import { pluginDebug } from '@/debug';
+import Terminal from '@/components/Terminal';
+import StepForm from '@/components/StepForm';
+import DirectoryForm from '@/components/DirectoryForm';
+import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
+import { openInEditor, openConfigFile } from '@/services/project';
+import { isMiniUI, getDuplicateKeys } from '@/utils';
 import Field from './components/Field';
-
-const _debug = debug('umiui');
 
 // PluginAPI
 export default class PluginAPI {
@@ -23,9 +28,14 @@ export default class PluginAPI {
   send: IUi.ISend;
   currentProject: IUi.ICurrentProject;
   TwoColumnPanel: FC<IUi.ITwoColumnPanel>;
+  Terminal: FC<IUi.ITerminalProps>;
+  DirectoryForm: FC<IUi.IDirectoryForm>;
+  StepForm: IUi.IStepForm;
+  ConfigForm: FC<IUi.IConfigFormProps>;
   Field: FC<IUi.IFieldProps>;
-  registerModel: IUi.registerModel;
-  connect: iUi.connect;
+  connect: IUi.IConnect;
+  mini: boolean;
+  bigfish: boolean;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -33,33 +43,142 @@ export default class PluginAPI {
     this.listenRemote = listenRemote;
     this.send = send;
     this._ = lodash;
-    this.debug = _debug.extend('UIPlugin');
+    this.debug = pluginDebug;
     this.currentProject =
       {
         ...currentProject
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
+    this.Terminal = Terminal;
+    this.DirectoryForm = DirectoryForm;
+    this.StepForm = StepForm;
     this.Field = Field;
-    this.registerModel = model => {
-      window.g_app.model(model);
-    };
-    this.connect = connect;
+    this.ConfigForm = ConfigForm;
+    this.bigfish = !!window.g_bigfish;
+    this.connect = connect as IUi.IConnect;
+    this.mini = isMiniUI();
+
+    const proxyIntl = new Proxy(intl, {
+      get: (target, prop: any) => {
+        if (
+          [
+            'FormattedDate',
+            'FormattedTime',
+            'FormattedRelative',
+            'FormattedNumber',
+            'FormattedPlural',
+            'FormattedMessage',
+            'FormattedHTMLMessage',
+            'formatMessage',
+            'formatHTMLMessage',
+            'formatDate',
+            'formatTime',
+            'formatRelative',
+            'formatNumber',
+            'formatPlural',
+          ].includes(prop)
+        ) {
+          return intl[prop];
+        }
+        return undefined;
+      },
+    });
+
+    // mount react-intl API∂
+    Object.keys(proxyIntl).forEach(intlApi => {
+      this.intl[intlApi] = intl[intlApi];
+    });
   }
+
+  addConfigSection(section) {
+    this.service.configSections.push(section);
+  }
+
+  registerModel = model => {
+    window.g_app.model(model);
+  };
+
+  launchEditor = async ({ type = 'project', lineNumber = 0, editor }) => {
+    try {
+      if (type === 'project') {
+        await openInEditor({
+          key: this.currentProject.key,
+        });
+      }
+      if (type === 'config') {
+        await openConfigFile({
+          projectPath: this.currentProject.path,
+        });
+      }
+    } catch (e) {
+      message.error(e.message);
+    }
+  };
+
+  isMini: IUi.IMini = () => isMiniUI();
+
+  showMini: IUi.IShowMini = () => {
+    if (this.isMini()) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.showMini',
+        }),
+        '*',
+      );
+    }
+  };
+
+  hideMini: IUi.IHideMini = () => {
+    if (this.isMini()) {
+      window.parent.postMessage(
+        JSON.stringify({
+          action: 'umi.ui.hideMini',
+        }),
+        '*',
+      );
+    }
+  };
 
   redirect: IUi.IRedirect = url => {
     history.push(url);
     // window.location.reload();
   };
 
-  showLogPanel: IUi.IShowLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('SHOW_LOG');
-    }
+  setProjectCurrent = (...args) => {
+    event.emit(MESSAGES.CHANGE_PROJECT_CURRENT, ...args);
   };
+
+  showLogPanel: IUi.IShowLogPanel = () => {
+    event.emit(MESSAGES.SHOW_LOG);
+  };
+
+  setActionPanel: IUi.ISetActionPanel = actions => {
+    event.emit(MESSAGES.CHANGE_GLOBAL_ACTION, actions);
+  };
+
   hideLogPanel: IUi.IHideLogPanel = () => {
-    if (window.g_uiEventEmitter) {
-      window.g_uiEventEmitter.emit('HIDE_LOG');
-    }
+    event.emit(MESSAGES.HIDE_LOG);
+  };
+
+  getSharedDataDir = async () => {
+    const { tmpDir } = await callRemote({
+      type: '@@project/getSharedDataDir',
+    });
+    return tmpDir;
+  };
+
+  detectLanguage = async () => {
+    const { language } = await callRemote({
+      type: '@@project/detectLanguage',
+    });
+    return language;
+  };
+
+  detectNpmClients = async () => {
+    const { npmClients } = await callRemote({
+      type: '@@project/detectNpmClients',
+    });
+    return npmClients;
   };
 
   getCwd: IUi.IGetCwd = async () => {
@@ -69,9 +188,9 @@ export default class PluginAPI {
     return cwd;
   };
 
-  intl: IUi.IIntl = formatMessage;
+  intl: IUi.IIntl = intl.formatMessage;
 
-  getLocale = () => {
+  getLocale: IUi.IGetLocale = () => {
     return window.g_lang;
   };
 
@@ -105,14 +224,13 @@ export default class PluginAPI {
     } catch (e) {
       console.error('UI notification  error', e);
       if (this._.get(window, 'Tracert.logError')) {
+        const frameName = this.service.basicUI.name || 'Umi';
         if (e && e.message) {
-          e.message = `${window.g_bigfish ? 'Bigfish' : 'Umi'}: params: ${JSON.stringify(
-            payload,
-          )} ${e.message}`;
+          e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;
         }
         window.Tracert.logError(e, {
           // framework use umi ui
-          d1: window.g_bigfish ? 'Bigfish' : 'Umi',
+          d1: frameName,
         });
       }
     }
@@ -122,37 +240,26 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
-  private getDuplicateKeys(locales: IUi.ILocale[]): string[] {
-    if (!Array.isArray(locales)) return [];
-    const allLocaleKeys = locales.reduce(
-      (curr, acc) => {
-        // { key: value, key2, value }
-        const localeObj = Object.values(acc).reduce(
-          (c, locale) => ({
-            ...c,
-            ...locale,
-          }),
-          {},
-        );
-        const localeKeys = Object.keys(localeObj);
-        return curr.concat(localeKeys);
-      },
-      [] as string[],
-    );
-
-    const _seen = new Set();
-    const _store: string[] = [];
-    return allLocaleKeys.filter(
-      item => _seen.size === _seen.add(item).size && !_store.includes(item) && _store.push(item),
-    );
-  }
+  getBasicUI = () => {
+    const { basicUI } = this.service;
+    return Object.freeze(basicUI);
+  };
 
   addPanel: IUi.IAddPanel = panel => {
     this.service.panels.push(panel);
   };
 
+  // modify basic UI api.modifyBasicUI({  })
+  modifyBasicUI: IUi.IModifyBasicUI = memo => {
+    Object.keys(memo).forEach(extend => {
+      if (memo[extend]) {
+        (this.service.basicUI as any)[extend] = memo[extend];
+      }
+    });
+  };
+
   addLocales: IUi.IAddLocales = locale => {
-    const duplicateKeys = this.getDuplicateKeys(this.service.locales.concat(locale)) || [];
+    const duplicateKeys = getDuplicateKeys(this.service.locales.concat(locale)) || [];
     if (duplicateKeys.length > 0) {
       const errorMsg = `Conflict locale keys found in ['${duplicateKeys.join("', '")}']`;
       // 不影响渲染主流程

@@ -1,12 +1,10 @@
 import chalk from 'chalk';
 import { join, dirname } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
-import { assign, cloneDeep } from 'lodash';
-import { parse } from 'dotenv';
+import { assign, cloneDeep, uniq } from 'lodash';
 import signale from 'signale';
-import { deprecate, winPath } from 'umi-utils';
+import { deprecate, winPath, loadDotEnv } from 'umi-utils';
 import { UmiError, printUmiError } from 'umi-core/lib/error';
 import getPaths from './getPaths';
 import getPlugins from './getPlugins';
@@ -14,6 +12,7 @@ import PluginAPI from './PluginAPI';
 import UserConfig from './UserConfig';
 import registerBabel from './registerBabel';
 import getCodeFrame from './utils/getCodeFrame';
+import writeContent from './utils/writeContent';
 import getRouteManager from './plugins/commands/getRouteManager';
 
 const debug = require('debug')('umi-build-dev:Service');
@@ -114,6 +113,7 @@ plugin must export a function, e.g.
               '_applyPluginsAsync',
               'writeTmpFile',
               'getRoutes',
+              'getRouteComponents',
               // properties
               'cwd',
               'config',
@@ -163,28 +163,39 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
-        debug(e);
+        console.error(e);
         process.exit(1);
       }
     }
   }
 
   initPlugins() {
-    this.plugins.forEach(plugin => {
-      this.initPlugin(plugin);
-    });
-
+    // Plugin depth
     let count = 0;
-    while (this.extraPlugins.length) {
+    const initExtraPlugins = () => {
+      if (!this.extraPlugins.length) {
+        return;
+      }
       const extraPlugins = cloneDeep(this.extraPlugins);
       this.extraPlugins = [];
       extraPlugins.forEach(plugin => {
         this.initPlugin(plugin);
         this.plugins.push(plugin);
+        initExtraPlugins();
       });
       count += 1;
       assert(count <= 10, `插件注册死循环？`);
-    }
+    };
+
+    const plugins = cloneDeep(this.plugins);
+    this.plugins = [];
+    plugins.forEach(plugin => {
+      this.initPlugin(plugin);
+      this.plugins.push(plugin);
+      // reset count
+      count = 0;
+      initExtraPlugins();
+    });
 
     // Throw error for methods that can't be called after plugins is initialized
     this.plugins.forEach(plugin => {
@@ -241,35 +252,40 @@ ${getCodeFrame(e, { cwd: this.cwd })}
   loadEnv() {
     const basePath = join(this.cwd, '.env');
     const localPath = `${basePath}.local`;
-
-    const load = path => {
-      if (existsSync(path)) {
-        debug(`load env from ${path}`);
-        const parsed = parse(readFileSync(path, 'utf-8'));
-        Object.keys(parsed).forEach(key => {
-          // eslint-disable-next-line no-prototype-builtins
-          if (!process.env.hasOwnProperty(key)) {
-            process.env[key] = parsed[key];
-          }
-        });
-      }
-    };
-
-    load(basePath);
-    load(localPath);
+    loadDotEnv(basePath);
+    loadDotEnv(localPath);
   }
 
   writeTmpFile(file, content) {
     const { paths } = this;
     const path = join(paths.absTmpDirPath, file);
     mkdirp.sync(dirname(path));
-    writeFileSync(path, content, 'utf-8');
+    writeContent(path, content);
   }
 
   getRoutes() {
     const RoutesManager = getRouteManager(this);
     RoutesManager.fetchRoutes();
     return RoutesManager.routes;
+  }
+
+  getRouteComponents() {
+    const routes = this.getRoutes();
+
+    const getComponents = routes => {
+      return routes.reduce((memo, route) => {
+        if (route.component && !route.component.startsWith('()')) {
+          const component = winPath(require.resolve(join(this.cwd, route.component)));
+          memo.push(component);
+        }
+        if (route.routes) {
+          memo = memo.concat(getComponents(route.routes));
+        }
+        return memo;
+      }, []);
+    };
+
+    return uniq(getComponents(routes));
   }
 
   init() {

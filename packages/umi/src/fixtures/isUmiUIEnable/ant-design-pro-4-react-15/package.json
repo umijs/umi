@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ant-design/pro-layout": "1",
+    "react": "15"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "umi-test",
-  "version": "1.7.0",
+  "version": "1.8.2",
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },
@@ -28,7 +28,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "babel-plugin-module-resolver": "3.2.0",
-    "babel-preset-umi": "1.7.0",
+    "babel-preset-umi": "1.8.1",
     "core-js": "3.1.4",
     "debug": "4.1.1",
     "enzyme": "^3.10.0",
@@ -42,7 +42,7 @@
     "react-dom": "^16.8.6",
     "regenerator-runtime": "0.13.2",
     "typescript": "^3.5.2",
-    "umi-utils": "1.6.0",
+    "umi-utils": "1.7.2",
     "yargs-parser": "13.1.1"
   }
 }

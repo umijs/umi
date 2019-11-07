@@ -1,10 +1,17 @@
 {
   "scripts": {
-    "now-build": "echo empty build",
+    "now-build": "npm run build",
     "deploy": "npm run build && now && now alias",
-    "build": "vuepress build ../docs --dest ./dist"
+    "build": "vuepress build ../docs --dest ./dist",
+    "dev": "vuepress dev ../docs"
   },
   "devDependencies": {
-    "vuepress": "^0.14.8"
+    "@vuepress/plugin-google-analytics": "^1.2.0",
+    "markdown-it-plantuml": "^1.4.1",
+    "vuepress": "^1.2.0",
+    "markdown-it-task-lists": "^2.1.1"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }

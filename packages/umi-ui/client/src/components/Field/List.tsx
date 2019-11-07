@@ -1,13 +1,14 @@
 import React from 'react';
 import { Form, Select } from 'antd';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const { Option } = Select;
 
 const ListComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:ListComp');
-  const { name, form, options, ...restFormItemProps } = props;
+  const _log = debug.extend('Field:ListComp');
+  const { name, form, size, options, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -15,7 +16,11 @@ const ListComp: React.SFC<FieldProps> = props => {
   };
 
   const formControl = (
-    <Select style={{ maxWidth: 320 }} getPopupContainer={triggerNode => triggerNode.parentNode}>
+    <Select
+      size={size}
+      style={{ maxWidth: 320 }}
+      getPopupContainer={triggerNode => triggerNode.parentNode}
+    >
       {Array.isArray(options) &&
         options.map(opt => (
           <Option key={opt} value={opt}>

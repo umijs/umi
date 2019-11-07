@@ -1,3 +1,112 @@
+.mini-header {
+  background-color: @layout-sider-background;
+  margin-bottom: 1px;
+  padding: 10px 16px;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  &-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .gotoUi {
+    &:hover a::before {
+      opacity: 1;
+    }
+    a {
+      font-size: 12px;
+      color: @text-color;
+      position: relative;
+      &::before {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        opacity: 0;
+        height: 1px;
+        background-color: @text-color;
+        content: '';
+      }
+      svg {
+        font-size: 14px;
+        padding-right: 4px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+:global(.isMini) .sidebar .sidebar-lab {
+  padding-top: 16px;
+  &::before {
+    width: calc(~'100% - 24px');
+  }
+  .menuIcon {
+    line-height: 1.5;
+  }
+}
+:global(.isMini) {
+  &:global(.zh-CN) {
+    .sidebar {
+      :global(.ant-menu-item) {
+        & > a {
+          & > p {
+            white-space: pre-wrap;
+          }
+        }
+      }
+    }
+  }
+  .sidebar {
+    li {
+      &:global(.ant-menu-submenu) {
+        & > div {
+          padding: 0 16px !important;
+          text-align: center;
+          line-height: normal;
+        }
+      }
+      &:global(.ant-menu-item) {
+        &:first-child {
+          margin-top: 16px;
+        }
+        margin-bottom: 24px;
+        overflow: inherit;
+        padding: 0 !important;
+        text-align: center;
+        & > a {
+          line-height: 1.5;
+          word-break: break-all;
+          & > span {
+            line-height: 1.5;
+          }
+          & > p {
+            max-width: 48px;
+            .omit;
+          }
+        }
+        &::before {
+          background-color: transparent;
+        }
+      }
+      &:global(.ant-menu-item) .menuIcon {
+        font-size: 16px;
+        line-height: inherit;
+      }
+      &:global(.ant-menu-item-selected) {
+        background-color: transparent;
+        span,
+        p,
+        svg {
+          color: @light;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
 .normal {
   height: 100%;
   display: flex;
@@ -11,11 +120,18 @@
   height: 100%;
 }
 
+.menuIcon {
+  margin-right: 12px;
+}
+
 .wrapper {
   flex: auto 1 1;
   overflow: hidden;
-  height: 100%;
-  display: flex;
+  height: 100vh;
+}
+
+:global(.isMini) .wrapper {
+  height: calc(~'100vh - @{layout-header-height}');
 }
 
 .sidebar {
@@ -29,6 +145,46 @@
       .ant-menu-item {
         margin-top: 0;
         margin-bottom: 0;
+      }
+    }
+    .ant-layout-sider-children {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+  &-lab {
+    margin-bottom: @ui-status-bar-height;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    position: relative;
+    &::before {
+      width: calc(~'100% - 48px');
+      height: 1px;
+      background: @ui-menu-divider-color;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    :global(.ant-dropdown-menu-item) {
+      color: @text-color;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 0;
+      a {
+        width: 100%;
+        background-color: transparent;
+      }
+      &:hover {
+        background-color: @menu-item-active-bg;
+      }
+    }
+    :global(.ant-dropdown-menu-item-selected) {
+      &,
+      a {
+        color: @heading-color;
       }
     }
   }
@@ -101,10 +257,13 @@
   li {
     margin-bottom: 6px;
     a {
-      padding-left: 5px;
-      display: block;
+      display: inline-block;
+    }
+    .menuItem a {
+      color: @text-color;
     }
     position: relative;
+
     &:global(.ant-menu-item) {
       padding-left: 24px;
       &::before {
@@ -119,10 +278,30 @@
     }
     &:global(.ant-menu-item-selected) {
       font-weight: 500;
+      span,
+      svg {
+        color: @heading-color;
+        font-weight: 500;
+      }
       &::before {
         height: 100%;
       }
     }
+  }
+}
+
+:global(.isMini) .main {
+  .header {
+    height: @ui-min-header-title-height;
+    &-actions {
+      padding-right: 20px;
+      & > button {
+        margin-left: 8px;
+      }
+    }
+  }
+  .content {
+    height: calc(~'100% - @{ui-status-bar-height} - @{ui-min-header-title-height}');
   }
 }
 
@@ -137,12 +316,13 @@
     align-items: center;
     &-actions {
       padding-right: 24px;
+      display: flex;
+      align-items: center;
       & > button {
-        margin-left: 16px;
+        margin-left: 8px;
       }
     }
     h1 {
-      font-size: 20px;
       font-weight: 400;
       line-height: 40px;
       padding: 10px 20px;

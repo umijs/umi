@@ -4,6 +4,7 @@ import cls from 'classnames';
 import { Delete, Plus } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
+import debug from '@/debug';
 import { objToArray, arrayToObj } from '../utils';
 
 import styles from './styles.module.less';
@@ -11,8 +12,8 @@ import styles from './styles.module.less';
 const { useState } = React;
 
 const ObjectField: React.FC<ObjectItemFieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:ObjectField');
-  const { value = {}, onChange, options: originOptions, defaultValue } = props;
+  const _log = debug.extend('Field:ObjectField');
+  const { value = {}, onChange, options: originOptions, defaultValue, size } = props;
   const [fieldsValue, setFieldsValue] = useState<IValue[]>(objToArray(value));
   const getOptionalOptions = () => {
     const newOptions = originOptions.map(option => ({
@@ -74,6 +75,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             <ObjectItemField
               className={fieldObjCls}
               value={field}
+              size={size}
               disabled={isRequired}
               onChange={v => handleChange(v, i)}
               options={options.map(option => ({
@@ -86,8 +88,6 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
               <Popconfirm
                 title={formatMessage({ id: 'org.umi.ui.configuration.object.item.delete.confirm' })}
                 onConfirm={() => handleRemove(i)}
-                okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-                cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
               >
                 <Tooltip
                   title={formatMessage({
@@ -108,6 +108,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
           block
           className={styles.addBtn}
           onClick={handleAdd}
+          size={size}
           style={{
             width: 'calc(100% - 22px)',
             minWidth: fieldsValue.length === 0 ? '100%' : 'unset',

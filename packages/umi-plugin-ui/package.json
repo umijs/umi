@@ -1,23 +1,26 @@
 {
   "name": "umi-plugin-ui",
-  "version": "1.0.5",
+  "version": "1.3.1",
   "main": "./lib/index.js",
   "files": [
     "lib",
     "src"
   ],
   "dependencies": {
-    "@ant-design/compatible": "^0.0.1-alpha.1",
-    "@ant-design/icons": "^4.0.0-alpha.8",
-    "classnames": "^2.2.6",
-    "fuse.js": "^3.4.5",
-    "umi-ui-tasks": "1.0.5"
+    "is-mobile": "2.1.0",
+    "react-portal": "^4.2.0",
+    "sockjs-client": "1.3.0",
+    "styled-components": "^4.4.0",
+    "umi-ui-tasks": "1.2.0"
   },
   "devDependencies": {
+    "@ant-design/compatible": "^0.0.1-alpha.1",
+    "@ant-design/icons": "^4.0.0-alpha.8",
     "@umijs/fabric": "^1.1.9",
+    "classnames": "^2.2.6",
     "decamelize": "3.2.0",
     "serialize-javascript": "^1.7.0",
-    "umi-types": "0.4.1"
+    "umi-types": "0.5.4"
   },
   "repository": {
     "type": "git",

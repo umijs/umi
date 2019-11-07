@@ -203,6 +203,13 @@ window.addEventListener('sw.updated', () => {
 });
 ```
 
+```js
+window.addEventListener('sw.registered', e => {
+  // e.detail.update() 可触发手动更新。
+  // 配置适当的轮询并配合 sw.updated 事件, 无需用户刷新或打开新选项卡即可更新。
+});
+```
+
 另外，当网络环境发生改变时，也可以给予用户显式反馈：
 
 ```js
@@ -211,17 +218,68 @@ window.addEventListener('sw.offline', () => {
 });
 ```
 
+最后 `sw.*` 事件与 [register-service-worker](https://www.npmjs.com/package/register-service-worker) 中的事件同步，更多使用方法请参考上述链接。
+
 ### hd
 
-- 类型：`Boolean`
+- 类型：`Boolean` 或者 `Object`
 
-开启高清方案。
+开启[移动端高清 1px 方案](https://github.com/umijs/umi-hd#%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D)，默认情况下，按照 750px 设计稿（1rem=100px）。
+
+```js
+// .umirc.js or config/config.js
+export default {
+  hd: true,
+};
+```
+
+`hd: true` 等价于如下配置：
+
+```js
+// .umirc.js or config/config.js
+export default {
+  // 等价于 hd: true
+  hd: {
+    theme: {
+      // antd-mobile 高清方案
+      '@hd': '2px',
+    },
+    // more: https://github.com/pigcan/postcss-plugin-px2rem#configuration
+    px2rem: {
+      rootValue: 100,
+      minPixelValue: 2,
+    },
+  }
+};
+```
+
+同时可以自定义适配方案：
+
+```js
+// 默认适配方案，750px 设计稿
+// src/hd.(tsx|ts|js|jsx)
+import vw from 'umi-hd/lib/vw';
+import flex from 'umi-hd/lib/flex';
+
+// Fix document undefined when ssr. #2571
+if (typeof document !== 'undefined') {
+  if (document.documentElement.clientWidth >= 750) {
+    vw(100, 750);
+  } else {
+    flex();
+  }
+
+  // hd solution for antd-mobile@2
+  // ref: https://mobile.ant.design/docs/react/upgrade-notes-cn#%E9%AB%98%E6%B8%85%E6%96%B9%E6%A1%88
+  document.documentElement.setAttribute('data-scale', true);
+}
+```
 
 ### fastClick
 
 - 类型：`Boolean`
 
-启用 fastClick。
+启用 [fastClick](https://github.com/ftlabs/fastclick)，解决移动端点击延迟问题。
 
 ### title
 

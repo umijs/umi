@@ -1,39 +1,83 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import debug from 'debug';
 import 'antd/dist/antd.less';
-import EventEmitter from 'events';
 import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
+import querystring from 'querystring';
+import { getLocale } from '@/utils';
 import { init as initSocket, callRemote } from './socket';
+import { setCurrentProject, clearCurrentProject } from '@/services/project';
+import debug from '@/debug';
+import proxyConsole from './proxyConsole';
 import PluginAPI from './PluginAPI';
 
-const _debug = debug('umiui');
-
-window.g_uiLocales = {};
 // TODO pluginAPI add debug('plugin:${key}') for developer
-window.g_uiDebug = _debug.extend('BaseUI');
-const _log = window.g_uiDebug.extend('init');
-
-// register event
-if (!window.g_uiEventEmitter) {
-  window.g_uiEventEmitter = new EventEmitter();
-  // avoid oom
-  window.g_uiEventEmitter.setMaxListeners(20);
-}
+const _log = debug.extend('init');
 
 // Service for Plugin API
 // eslint-disable-next-line no-multi-assign
 const service = (window.g_service = {
   panels: [],
   locales: [],
+  configSections: [],
+  basicUI: {},
 });
 
 // Avoid scope problem
 const geval = eval; // eslint-disable-line
 
+const initBasicUI = async () => {
+  const { script: basicUIScript } = await callRemote({ type: '@@project/getBasicAssets' });
+  if (basicUIScript) {
+    geval(`;(function(window){;${basicUIScript}\n})(window);`);
+    // Init the baseUI
+    window.g_uiBasicUI.forEach(basicUI => {
+      // only readable
+      basicUI(Object.freeze(new PluginAPI(service)));
+    });
+  }
+};
+
+const initUIPlugin = async (initOpts = {}) => {
+  const { currentProject } = initOpts;
+  // Get script and style from server, and run
+  const { script } = await callRemote({ type: '@@project/getExtraAssets' });
+  try {
+    geval(`;(function(window){;${script}\n})(window);`);
+  } catch (e) {
+    console.error(`Error occurs while executing script from plugins`);
+    console.error(e);
+  }
+
+  // Init the plugins
+  window.g_uiPlugins.forEach(uiPlugin => {
+    // only readable
+    uiPlugin(Object.freeze(new PluginAPI(service, currentProject)));
+  });
+};
+
 export async function render(oldRender) {
+  // mini 模式下允许通过加 key 的参数打开
+  // 比如: ?mini&key=xxx
+  const { search = '' } = window.location;
+  const qs = querystring.parse(search.slice(1));
+  const miniKey = qs.key || null;
+  const isMini = 'mini' in qs;
+
+  // proxy console.* in mini
+  proxyConsole(!!isMini);
+
+  // mini open not in project
+  // redirect full version
+  if (isMini && window.self === window.parent) {
+    const { mini, key, ...restProps } = qs;
+    const query = querystring.stringify(restProps);
+    history.push(`${history.location.pathname}${query ? `?${query}` : ''}`);
+    window.location.reload();
+    return false;
+  }
+
   // Init Socket Connection
   try {
     await initSocket({
@@ -53,82 +97,58 @@ export async function render(oldRender) {
     React.createElement(require('./pages/loading').default, {}),
     document.getElementById('root'),
   );
+  await initBasicUI();
+  const { data } = await callRemote({ type: '@@project/list' });
+  const props = {
+    data,
+  };
+  const key = isMini ? miniKey : data.currentProject;
 
-  // 不同路由在渲染前的初始化逻辑
-  if (history.location.pathname === '/') {
-    const { data } = await callRemote({ type: '@@project/list' });
-    if (data.currentProject) {
-      history.replace('/dashboard');
-    } else {
-      history.replace('/project/select');
-    }
-    window.location.reload();
-    return;
-  }
-
-  if (history.location.pathname.startsWith('/project/')) {
-    // console.log("It's Project Manager");
-  }
-
-  // Project Manager
-  else if (history.location.pathname.startsWith('/test')) {
-    _log('Test Only');
-  }
-
-  // Project View
-  else {
-    const { data } = await callRemote({ type: '@@project/list' });
-    const props = {
-      data,
+  if (key) {
+    // 在 callRemote 里使用
+    window.g_currentProject = key;
+    const currentProject = {
+      key,
+      ...get(data, `projectsByKey.${key}`, {}),
     };
-    if (data.currentProject) {
-      const currentProject = {
-        key: data.currentProject,
-        ...get(data, `projectsByKey.${data.currentProject}`, {}),
-      };
-      _log('apps data', data);
-      window.g_uiCurrentProject =
-        {
-          ...currentProject,
-          key: data.currentProject,
-        } || {};
-      _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
-      // types 和 api 上先不透露
-      window.g_uiProjects = data.projectsByKey || {};
-      try {
-        await callRemote({
-          type: '@@project/open',
-          payload: { key: data.currentProject },
-        });
-      } catch (e) {
-        props.error = e;
-      }
-      if (props.error) {
-        ReactDOM.render(
-          React.createElement(require('./pages/loading').default, props),
-          document.getElementById('root'),
-        );
-        return;
-      }
-
-      // Get script and style from server, and run
-      const { script } = await callRemote({ type: '@@project/getExtraAssets' });
-      try {
-        geval(`;(function(window){;${script}\n})(window);`);
-      } catch (e) {
-        console.error(`Error occurs while executing script from plugins`);
-        console.error(e);
-      }
-
-      // Init the plugins
-      window.g_uiPlugins.forEach(uiPlugin => {
-        uiPlugin(new PluginAPI(service, currentProject));
+    _log('apps data', data);
+    window.g_uiCurrentProject =
+      {
+        ...currentProject,
+        key,
+      } || {};
+    _log('window.g_uiCurrentProject', window.g_uiCurrentProject);
+    // types 和 api 上先不透露
+    window.g_uiProjects = data.projectsByKey || {};
+    try {
+      await callRemote({
+        type: '@@project/open',
+        payload: { key },
       });
-    } else {
-      history.replace('/project/select');
+      if (!isMini) {
+        await setCurrentProject({
+          key,
+        });
+      }
+    } catch (e) {
+      props.error = e;
     }
-  }
+    if (props.error) {
+      history.replace(`/error?key=${key}`);
+      ReactDOM.render(
+        React.createElement(require('./pages/loading').default, props),
+        document.getElementById('root'),
+      );
+      await clearCurrentProject();
+      return false;
+    }
 
+    await initUIPlugin({
+      currentProject,
+    });
+  } else {
+    history.replace('/project/select');
+  }
   // Do render
   oldRender();
 }
@@ -156,19 +176,20 @@ export const locale = {
       });
       return curr;
     }, {});
-    window.g_uiLocales = messages;
-    _log('locale messages', window.g_uiLocales);
-    return window.g_uiLocales;
+    _log('locale messages', messages);
+    return messages;
   },
+  default: getLocale,
 };
 
 // for ga analyse
 export const onRouteChange = params => {
   const { location } = params;
-  const { pathname } = location;
+  const { pathname, search = '' } = location;
   if (window.gtag && pathname) {
+    const isMini = search.indexOf('mini') > -1 ? '?mini' : '';
     window.gtag('config', 'UA-145890626-1', {
-      page_path: pathname,
+      page_path: `${pathname}${isMini}`,
     });
   }
 };

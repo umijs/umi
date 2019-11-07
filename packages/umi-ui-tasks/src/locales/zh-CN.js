@@ -14,6 +14,8 @@ export default {
   'org.umi.ui.tasks.env.detail': '查看详情',
   'org.umi.ui.tasks.terminal.clear': '清空日志 ',
   'org.umi.ui.tasks.terminal.bottom': '至底部',
+  'org.umi.ui.tasks.log': '日志',
+  'org.umi.ui.tasks.analyze': '分析',
 
   // dev
   'org.umi.ui.tasks.dev.startError': '启动项目失败',
@@ -21,6 +23,7 @@ export default {
   'org.umi.ui.tasks.dev.start': '启动',
   'org.umi.ui.tasks.dev.cancel': '停止',
   'org.umi.ui.tasks.dev.state.starting': '启动中...',
+  'org.umi.ui.tasks.dev.state.starting.error': '编译失败',
   'org.umi.ui.tasks.dev.state.success': '启动于：',
   'org.umi.ui.tasks.dev.state.fail': '启动失败',
   'org.umi.ui.tasks.envs': '环境变量',
@@ -30,8 +33,6 @@ export default {
   'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel 补丁。',
   'org.umi.ui.tasks.envs.hmr': 'HMR',
   'org.umi.ui.tasks.envs.hmr.desc': 'Webpack 热更新。',
-  'org.umi.ui.tasks.envs.babelPolyfill': 'Babel 缓存',
-  'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel 缓存，加速开发和构建。',
   'org.umi.ui.tasks.envs.babelCache': 'BABEL_CACHE',
   'org.umi.ui.tasks.envs.babelCache.desc': 'Babel 缓存。',
   'org.umi.ui.tasks.envs.mock': 'MOCK',
@@ -40,14 +41,15 @@ export default {
   'org.umi.ui.tasks.envs.BROWSER.desc': '自动打开浏览器。',
   'org.umi.ui.tasks.envs.clear': '日志清屏',
   'org.umi.ui.tasks.envs.clear.desc': '启动日志自动清除。',
-  'org.umi.ui.tasks.envs.tsCheck': 'TS 类型检查',
-  'org.umi.ui.tasks.envs.tsCheck.desc': 'TS 类型定义检查（适用于 TS 项目）。',
+  'org.umi.ui.tasks.envs.tsCheck': 'TypeScript 类型检查',
+  'org.umi.ui.tasks.envs.tsCheck.desc': 'TypeScript 类型定义检查（适用于 TypeScript 项目）。',
+  'org.umi.ui.tasks.envs.umiUI': 'UmiUI',
+  'org.umi.ui.tasks.envs.umiUI.desc': '打开 Umi UI。',
   // build
   'org.umi.ui.tasks.build.buildError': '执行构建失败',
   'org.umi.ui.tasks.build.cancelError': '取消构建失败',
   'org.umi.ui.tasks.build.start': '构建',
   'org.umi.ui.tasks.build.cancel': '停止',
-  'org.umi.ui.tasks.envs': '环境变量',
   'org.umi.ui.tasks.envs.compress': 'JS 压缩',
   'org.umi.ui.tasks.envs.compress.desc': '压缩 JS 文件。',
   'org.umi.ui.tasks.envs.cssCompress': 'CSS 压缩',
@@ -102,4 +104,7 @@ export default {
   'org.umi.ui.tasks.notify.install.success.message': '成功',
   'org.umi.ui.tasks.notify.install.fail.title': '安装依赖失败',
   'org.umi.ui.tasks.notify.install.fail.message': '失败',
+
+  // analyze
+  'org.umi.ui.tasks.analyze.empty': '任务成功后展示...',
 };

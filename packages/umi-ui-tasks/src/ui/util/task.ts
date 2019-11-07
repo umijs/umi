@@ -13,7 +13,7 @@ export interface IExecResult {
   result?: ITaskDetail;
 }
 
-const runTask = async (taskType: TaskType, env?: any) => {
+const runTask = async (taskType: TaskType, args = {}, env?: any) => {
   let result = {};
   let errMsg = '';
   let triggerState = TriggerState.SUCCESS;
@@ -23,6 +23,7 @@ const runTask = async (taskType: TaskType, env?: any) => {
       type: 'tasks/run',
       payload: {
         type: taskType,
+        args,
         env: env ? env : {},
       },
     });
@@ -62,28 +63,15 @@ const cancelTask = async (taskType: TaskType) => {
   };
 };
 
-const getTaskDetail = async (taskType: TaskType) => {
-  let result = {};
-  let errMsg = '';
-  let triggerState = TriggerState.SUCCESS;
-
-  try {
-    result = await callRemote({
-      type: 'tasks/detail',
-      payload: {
-        type: taskType,
-      },
-    });
-  } catch (e) {
-    errMsg = e.message;
-    triggerState = TriggerState.FAIL;
-  }
-
-  return {
-    triggerState,
-    result,
-    errMsg,
-  };
+const getTaskDetail = async (taskType: TaskType, log = true, dbPath = '') => {
+  return await callRemote({
+    type: 'tasks/detail',
+    payload: {
+      type: taskType,
+      log,
+      dbPath,
+    },
+  });
 };
 
 const exec = async (taskType: TaskType, env?: any): Promise<IExecResult> => {

@@ -6,7 +6,7 @@ export default function(api) {
     validate(val) {
       assert(
         typeof val === 'boolean',
-        `disableGlobalVariables should be Boolean, but got ${val.toString()}.`,
+        `Configure item disableGlobalVariables should be Boolean, but got ${val.toString()}.`,
       );
     },
     onChange() {

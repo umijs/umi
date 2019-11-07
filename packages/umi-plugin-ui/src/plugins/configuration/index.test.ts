@@ -123,12 +123,14 @@ test('formatConfigs', () => {
 });
 
 test('formatConfigs match with type', () => {
-  expect(formatConfigs([{ name: 'a', type: 'string' }])).toEqual([{ name: 'a', type: 'string' }]);
+  expect(formatConfigs([{ name: 'a', type: 'string' }])).toEqual([
+    { group: 'Ungrouped', name: 'a', type: 'string' },
+  ]);
 });
 
 test('formatConfigs match filter props', () => {
   expect(formatConfigs([{ name: 'a', type: 'string', foo: 'bar' }])).toEqual([
-    { name: 'a', type: 'string' },
+    { group: 'Ungrouped', name: 'a', type: 'string' },
   ]);
 });
 
@@ -149,13 +151,16 @@ test('formatConfigs match with lang', () => {
         lang: 'zh-CN',
       },
     ),
-  ).toEqual([{ name: 'a', type: 'string', title: 'abc' }]);
+  ).toEqual([{ group: '未分组', name: 'a', type: 'string', title: 'abc' }]);
 });
 
 test('formatConfigs match with type (multiple)', () => {
   expect(
     formatConfigs([{ name: 'a', type: 'foo' }, { name: 'b', type: 'bar' }, { name: 'c' }]),
-  ).toEqual([{ name: 'a', type: 'foo' }, { name: 'b', type: 'bar' }]);
+  ).toEqual([
+    { group: 'Ungrouped', name: 'a', type: 'foo' },
+    { group: 'Ungrouped', name: 'b', type: 'bar' },
+  ]);
 });
 
 test('formatConfigs child configs', () => {
@@ -163,5 +168,8 @@ test('formatConfigs child configs', () => {
     formatConfigs([
       { name: 'a', configs: [{ name: 'a.b', type: 'foo' }, { name: 'a.c', type: 'bar' }] },
     ]),
-  ).toEqual([{ name: 'a.b', type: 'foo' }, { name: 'a.c', type: 'bar' }]);
+  ).toEqual([
+    { group: 'Ungrouped', name: 'a.b', type: 'foo' },
+    { group: 'Ungrouped', name: 'a.c', type: 'bar' },
+  ]);
 });

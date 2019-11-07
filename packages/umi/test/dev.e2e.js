@@ -20,10 +20,11 @@ describe('normal', () => {
     page = await browser.newPage();
   });
 
-  afterAll(() => {
+  afterAll(done => {
     if (browser) {
       browser.close();
     }
+    done();
   });
 
   it('index page', async () => {
@@ -160,120 +161,5 @@ describe('normal', () => {
     await page.waitForSelector('h1');
     const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(indexText).toEqual('index');
-  });
-});
-
-describe('ssr', () => {
-  // port: 12342, not use puppeteer
-  beforeEach(async () => {
-    // TODO: maybe using umi/server, reset global
-    global.window = {};
-  });
-
-  it('routes', async () => {
-    const ssrFile = join(winPath(__dirname), 'fixtures', 'dev', 'ssr', 'dist', 'umi.server.js');
-    const manifestFile = join(
-      winPath(__dirname),
-      'fixtures',
-      'dev',
-      'ssr',
-      'dist',
-      'ssr-client-mainifest.json',
-    );
-    expect(existsSync(ssrFile)).toBeTruthy();
-    expect(existsSync(manifestFile)).toBeTruthy();
-
-    const serverRender = require('./fixtures/dev/ssr/dist/umi.server');
-    const manifest = require('./fixtures/dev/ssr/dist/ssr-client-mainifest.json');
-    // export react-dom/server to avoid React hooks ssr error
-    const { ReactDOMServer } = serverRender;
-
-    const ctx = {
-      req: {
-        url: '/',
-      },
-    };
-
-    const { rootContainer } = await serverRender.default(ctx);
-    const ssrHtml = ReactDOMServer.renderToString(rootContainer);
-
-    expect(ssrHtml).toContain('Hello UmiJS SSR');
-    expect(ssrHtml).toContain('<ul><li>Alice</li><li>Jack</li><li>Tony</li></ul>');
-    expect(manifest).toEqual({
-      '/': { js: ['umi.js'], css: ['umi.css'] },
-      __404: { js: ['umi.js'], css: ['umi.css'] },
-    });
-  });
-
-  describe('ssr styles', () => {
-    beforeEach(async () => {
-      // TODO: maybe using umi/server, reset global
-      global.window = {};
-    });
-
-    it('routes', async () => {
-      const ssrFile = join(
-        winPath(__dirname),
-        'fixtures',
-        'dev',
-        'ssr-styles',
-        'dist',
-        'umi.server.js',
-      );
-      const manifestFile = join(
-        winPath(__dirname),
-        'fixtures',
-        'dev',
-        'ssr-styles',
-        'dist',
-        'ssr-client-mainifest.json',
-      );
-      expect(existsSync(ssrFile)).toBeTruthy();
-      expect(existsSync(manifestFile)).toBeTruthy();
-
-      const serverRender = require('./fixtures/dev/ssr-styles/dist/umi.server');
-      const manifest = require('./fixtures/dev/ssr-styles/dist/ssr-client-mainifest.json');
-      // export react-dom/server to avoid React hooks ssr error
-      const { ReactDOMServer } = serverRender;
-
-      expect(manifest).toEqual({
-        '/': {
-          js: ['umi.js'],
-          css: ['umi.css'],
-        },
-        '/news': {
-          js: ['umi.js'],
-          css: ['umi.css'],
-        },
-        __404: {
-          js: ['umi.js'],
-          css: ['umi.css'],
-        },
-      });
-
-      const ctx = {
-        req: {
-          url: '/',
-        },
-      };
-
-      const { rootContainer } = await serverRender.default(ctx);
-      const ssrHtml = ReactDOMServer.renderToString(rootContainer);
-
-      expect(ssrHtml).toEqual(
-        '<div class="wrapper"><h1>Hello UmiJS SSR Styles</h1><ul><li>Alice</li><li>Jack</li><li>Tony</li></ul><button>0</button></div>',
-      );
-
-      const ctx2 = {
-        req: {
-          url: '/news',
-        },
-      };
-
-      const { rootContainer: rootContainerNews } = await serverRender.default(ctx2);
-      const ssrHtmlNews = ReactDOMServer.renderToString(rootContainerNews);
-
-      expect(ssrHtmlNews).toContain('<div class="news"><h1>Hello UmiJS SSR Styles</h1></div>');
-    });
   });
 });

@@ -56,7 +56,7 @@ export default function(service: IApi, opts: IOpts = {}) {
     );
     const nodeExternalsOpts = {
       whitelist: [
-        /\.(css|less|sass|scss)$/,
+        /\.(css|less|sass|scss|styl(us)?)$/,
         /^umi(\/.*)?$/,
         'umi-plugin-locale',
         ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
@@ -65,6 +65,7 @@ export default function(service: IApi, opts: IOpts = {}) {
       ...(typeof ssr === 'object' && ssr.nodeExternalsOpts ? ssr.nodeExternalsOpts : {}),
     };
 
+    webpackConfig.target = 'node';
     debug(`nodeExternalOpts:`, nodeExternalsOpts);
     const defaultExternals =
       (typeof ssr === 'object' && ssr.disableExternalWhiteList) || webpackConfig.externals || [];

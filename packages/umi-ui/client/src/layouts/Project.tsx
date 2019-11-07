@@ -2,7 +2,7 @@ import React from 'react';
 import { PageHeader } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { PROJECT_STATUS, IProjectStatus } from '@/enums';
-import get from 'lodash/get';
+import events, { MESSAGES } from '@/message';
 import Layout from './Layout';
 import Context from './Context';
 import ProjectContext from './ProjectContext';
@@ -25,6 +25,19 @@ class Project extends React.PureComponent<IProjectProps, IProjectState> {
       current: PROJECT_STATUS.list,
     };
   }
+
+  handleCurrentChange = (current: IProjectStatus, currentData?: object) => {
+    this.setCurrent(current, currentData);
+  };
+
+  componentDidMount() {
+    events.on(MESSAGES.CHANGE_PROJECT_CURRENT, this.handleCurrentChange);
+  }
+
+  componentWillUnmount() {
+    events.off(MESSAGES.CHANGE_PROJECT_CURRENT, this.handleCurrentChange);
+  }
+
   setCurrent = (current: IProjectStatus, currentData?: object) => {
     this.setState({
       current,

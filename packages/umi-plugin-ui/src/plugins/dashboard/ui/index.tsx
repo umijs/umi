@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import cls from 'classnames';
 import { IUiApi } from 'umi-types';
 import { Close, Smile } from '@ant-design/icons';
@@ -17,14 +16,11 @@ const DashboardUI: React.FC<IProps> = props => {
   const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api } = props;
-  const { redirect, currentProject, _, intl } = api;
+  const { redirect, currentProject, _, intl, getBasicUI = () => ({}) } = api;
+  const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
-
-  const handleClose = () => {
-    setClosed(true);
-    window.localStorage.setItem('umi_ui_dashboard_welcome', 'true');
-  };
+  const basicUI = getBasicUI();
 
   const actionCards = [
     {
@@ -40,7 +36,7 @@ const DashboardUI: React.FC<IProps> = props => {
       ),
       body: (
         <div onClick={() => redirect('/tasks')}>
-          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
+          <FormattedMessage id="org.umi.ui.dashboard.panel.goto.task" />
         </div>
       ),
     },
@@ -93,9 +89,10 @@ const DashboardUI: React.FC<IProps> = props => {
             )}
           </p>
           <div>
-            {window.g_bigfish
-              ? intl({ id: 'org.umi.ui.dashboard.panel.welcome.bigfish.desc' })
-              : intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
+            <a href="https://umijs.org/guide/umi-ui.html" target="_blank" rel="noopener noreferrer">
+              {basicUI.name || 'Umi'} UI
+            </a>
+            {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
           </div>
         </div>
       ),
@@ -104,11 +101,11 @@ const DashboardUI: React.FC<IProps> = props => {
 
   return (
     <div className={styles.container}>
-      <Row type="flex" gutter={24}>
+      <Row className={styles['container-row']} type="flex" gutter={24}>
         {actionCards.map((card, i) => {
           const { className, body, ...restProps } = card;
           return (
-            <Col key={i} className={className} xs={24} sm={24} md={24} lg={8} xl={6}>
+            <Col key={i.toString()} className={className} xs={12} sm={12} md={12} lg={12} xl={6}>
               <Card
                 className={styles.card}
                 bordered={false}

@@ -1,13 +1,13 @@
-import glob from 'glob';
-import { join } from 'path';
+const { readdirSync } = require('fs');
+const { join } = require('path');
 
-const src = join(__dirname, 'src', 'plugins');
-const files = glob.sync('**/*.@(tsx|jsx)', { cwd: src });
-const browserFiles = files.map(filePath => join('src', 'plugins', filePath));
+const localeFiles = readdirSync(join(__dirname, 'src/bubble/bubble-locale'))
+  .filter(f => f.charAt(0) !== '.')
+  .map(f => `src/bubble/bubble-locale/${f}`);
 
 export default {
   target: 'node',
   cjs: { type: 'babel', lazy: true },
-  browserFiles,
+  browserFiles: ['src/bubble/socket.js', 'src/bubble/utils.js', ...localeFiles],
   disableTypeCheck: true,
 };

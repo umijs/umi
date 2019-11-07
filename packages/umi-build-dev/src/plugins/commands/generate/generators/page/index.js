@@ -2,9 +2,11 @@ import { join, basename } from 'path';
 import randomColor from 'random-color';
 import assert from 'assert';
 import chalk from 'chalk';
+import { getConfigFile } from 'umi-core/lib/getUserConfig';
+import writeNewRoute from '../../../../../utils/writeNewRoute';
 
 export default api => {
-  const { paths, config, log } = api;
+  const { paths, config, log, cwd } = api;
   return class Generator extends api.Generator {
     constructor(args, options) {
       super(args, options);
@@ -19,14 +21,6 @@ Example:
   umi g page users
         `.trim(),
       );
-      if (config.routes) {
-        log.warn(
-          `You should config the routes in config.routes manunally since ${chalk.red(
-            'config.routes',
-          )} exists`,
-        );
-        console.log();
-      }
     }
 
     writing() {
@@ -50,6 +44,23 @@ Example:
         join(paths.absPagesPath, `${path}.${cssExt}`),
         context,
       );
+
+      if (config.routes) {
+        writeNewRoute(
+          {
+            path: `/${path === 'index' ? '' : path}`,
+            component: `./${path}`,
+          },
+          getConfigFile(cwd),
+          paths.absSrcPath,
+        );
+        // log.warn(
+        //   `You should config the routes in config.routes manunally since ${chalk.red(
+        //     'config.routes',
+        //   )} exists`,
+        // );
+        console.log();
+      }
     }
   };
 };

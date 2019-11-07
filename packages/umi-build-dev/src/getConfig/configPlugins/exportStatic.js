@@ -7,7 +7,7 @@ export default function(api) {
     validate(val) {
       assert(
         isPlainObject(val) || typeof val === 'boolean',
-        `Configure item context should be Plain Object, but got ${val}.`,
+        `Configure item exportStatic should be Boolean or Plain Object, but got ${val}.`,
       );
     },
     onChange() {

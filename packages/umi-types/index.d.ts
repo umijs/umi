@@ -178,8 +178,10 @@ interface IWinPath {
   (path: string): string;
 }
 
+type IRelativeToTmp = (path: string) => string;
+
 interface IFind {
-  (baseDir: string, fileNameWithoutExtname: string): string | null;
+  (baseDir: string, fileNameWithoutExtname?: string): string | null;
 }
 
 interface ICompatDirname<T = any> {
@@ -300,7 +302,7 @@ interface IOnPatchRoute {
 interface IAction<T = object> {
   type: string;
   payload?: T;
-  lang?: string;
+  lang?: IUi.ILang;
 }
 
 export type ISend = (action: IAction<{}>) => void;
@@ -321,7 +323,7 @@ export interface IOnUISocketFunc {
   ): void;
 }
 
-interface IOnUISocket {
+export interface IOnUISocket {
   (fn: IOnUISocketFunc): void;
 }
 
@@ -431,6 +433,8 @@ export interface IApi {
   cwd: string;
   pkg: IPkg;
   webpackConfig: IWebpack.Configuration;
+  service: any;
+  locale: any;
   paths: {
     cwd: string;
     outputPath: string;
@@ -469,6 +473,7 @@ export interface IApi {
   log: { [key in DefaultMethods]: ILog<any> };
   _: typeof lodash;
   winPath: IWinPath;
+  relativeToTmp: IRelativeToTmp;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
   getRoutes: IGetRoutes;
@@ -497,6 +502,7 @@ export interface IApi {
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
   onUISocket: IOnUISocket;
+  onRouteChange: (callback: () => void) => void;
 
   /**
    * Application class API
@@ -522,7 +528,7 @@ export interface IApi {
   addUIPlugin: IAdd<string>;
   addRouterImport: IAdd<IAddImportOpts>;
   addRouterImportAhead: IAdd<IAddImportOpts>;
-  addRendererWrapperWithComponent: IAdd<IAddImportOpts>;
+  addRendererWrapperWithComponent: IAdd<string, () => string>;
   addRendererWrapperWithModule: IAdd<string>;
   modifyEntryRender: IModify<string>;
   modifyEntryHistory: IModify<string>;
@@ -538,6 +544,8 @@ export interface IApi {
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
+  addBlockUIResource: IAdd<object>;
+  modifyBlockUIResources: IModify<object[]>;
   _modifyBlockPackageJSONPath: IModify<string>;
   _modifyBlockDependencies: IModify<IBlockDependencies>;
   _modifyBlockFile: IModify<string, IModifyBlockFileArgs>;

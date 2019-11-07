@@ -1,10 +1,10 @@
 import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
 import chalk from 'chalk';
-import { debounce, uniq } from 'lodash';
+import { throttle, uniq } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, findJS, prettierFile } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
@@ -14,6 +14,7 @@ import { EXT_LIST } from './constants';
 import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
 import htmlToJSX from './htmlToJSX';
 import getRoutePaths from './routes/getRoutePaths';
+import writeContent from './utils/writeContent.js';
 
 const debug = require('debug')('umi:FilesGenerator');
 
@@ -53,7 +54,7 @@ export default class FilesGenerator {
     });
     watcher.on(
       'all',
-      debounce((event, path) => {
+      throttle((event, path) => {
         debug(`${event} ${path}`);
         this.rebuild();
       }, 100),
@@ -275,7 +276,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
       htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: winPath(require.resolve('./findRoute')),
     });
-    writeFileSync(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`), 'utf-8');
+    writeContent(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`));
   }
 
   generateHistory() {
@@ -298,11 +299,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       globalVariables: !this.service.config.disableGlobalVariables,
       history,
     });
-    writeFileSync(
-      join(paths.absTmpDirPath, 'history.js'),
-      prettierFile(`${content.trim()}\n`),
-      'utf-8',
-    );
+    writeContent(join(paths.absTmpDirPath, 'history.js'), prettierFile(`${content.trim()}\n`));
   }
 
   generateRouterJS() {
@@ -315,6 +312,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
     if (this.routesContent !== routesContent) {
       writeFileSync(absRouterJSPath, prettierFile(`${routesContent.trim()}\n`), 'utf-8');
       this.routesContent = routesContent;
+      this.service.applyPlugins('onRouteChange');
     }
   }
 

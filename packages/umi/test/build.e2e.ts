@@ -25,9 +25,10 @@ if (testOnly) {
 dirs = dirs.filter(dir => !/^x-/.test(dir));
 
 beforeAll(async () => {
-  for (const dir of dirs) {
-    await buildAndServe(dir);
-  }
+  // 并行 build，加速 ci
+  const buildAndServePromise = dirs.map(dir => buildAndServe(dir));
+  await Promise.all(buildAndServePromise);
+
   browser = await puppeteer.launch({
     args: [
       '--disable-gpu',
@@ -56,13 +57,14 @@ for (const dir of dirs) {
   );
 }
 
-afterAll(() => {
+afterAll(done => {
   Object.keys(servers).forEach(name => {
     servers[name].server.close();
   });
   if (browser) {
     browser.close();
   }
+  done();
 });
 
 async function build(cwd: string, name: string) {
@@ -71,6 +73,8 @@ async function build(cwd: string, name: string) {
     const env = {
       COMPRESS: 'none',
       PROGRESS: 'none',
+      UMI_UI: 'none',
+      UMI_UI_SERVER: 'none',
     } as any;
     if (name.includes('app_root')) {
       env.APP_ROOT = './root';

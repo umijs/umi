@@ -114,6 +114,8 @@ const routes = [
 ];
 ```
 
+> 建议在插件事件周期中进行调用 `api.routes` ，因为初始化得到的路由信息，可能与周期内返回的不同。
+
 ## 系统级 API
 
 ### registerPlugin
@@ -287,6 +289,8 @@ api.winPath('/path/to.js');
 
 ### debug
 
+同 [debug](https://github.com/visionmedia/debug)，查看所有插件日志可加上环境变量 `DEBUG=umi-plugin: *`，可根据插件文件路径再做进一步 debug 。
+
 ```js
 api.debug('msg');
 ```
@@ -325,6 +329,10 @@ api.afterDevServer(({ serve, devServerPort }) => {
 ### onStart
 
 `umi dev` 或者 `umi build` 开始时触发。
+
+### onExit
+
+`umi dev`编译后杀死进程或 `ctrl-c` 退出进程时触发。
 
 ### onDevCompileDone
 

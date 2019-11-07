@@ -1,13 +1,14 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { FieldProps } from './index';
+import debug from '@/debug';
 import { getFormItemShow } from './utils';
 
 const { TextArea } = Input;
 
 const TextAreaComp: React.SFC<FieldProps> = props => {
-  const _log = g_uiDebug.extend('Field:TextAreaComp');
-  const { name, form, ...restFormItemProps } = props;
+  const _log = debug.extend('Field:TextAreaComp');
+  const { name, form, size, ...restFormItemProps } = props;
   const { parentConfig } = getFormItemShow(name);
   const basicItem = {
     name,
@@ -16,7 +17,13 @@ const TextAreaComp: React.SFC<FieldProps> = props => {
     ...restFormItemProps,
   };
 
-  const formControl = <TextArea autoComplete="off" rows={4} style={{ maxWidth: 320 }} />;
+  const sizeMap = {
+    large: 380,
+    default: 320,
+    small: 260,
+  };
+
+  const formControl = <TextArea autoComplete="off" rows={4} style={{ maxWidth: sizeMap[size] }} />;
 
   return parentConfig ? (
     <Form.Item shouldUpdate={(prev, curr) => prev[parentConfig] !== curr[parentConfig]} noStyle>

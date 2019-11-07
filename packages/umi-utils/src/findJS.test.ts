@@ -19,6 +19,10 @@ test('tsx', () => {
   expect(relative(fixture, findJS(fixture, 'd'))).toEqual('d.tsx');
 });
 
+test('withoutname', () => {
+  expect(relative(fixture, findJS(`${fixture}/d`))).toEqual('d.tsx');
+});
+
 test('not found', () => {
   expect(findJS(fixture, 'e')).toEqual(null);
 });

@@ -18,11 +18,9 @@ import {
   Empty,
 } from 'antd';
 import { AppstoreFilled, Edit, Delete, Plus, Import as ImportIcon } from '@ant-design/icons';
-// TODO from server
-import umiIconSvg from '@/assets/umi.svg';
-import bigfishIconSvg from '@/assets/bigfish.svg';
-import editorSvg from '@/assets/code.svg';
 import get from 'lodash/get';
+import umiIconSvg from '@/assets/umi.svg';
+import editorSvg from '@/assets/code.svg';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
 import ProjectContext from '@/layouts/ProjectContext';
 import Loading from '@/pages/loading';
@@ -30,6 +28,7 @@ import ModalForm from './ModalForm';
 import { IProjectItem } from '@/enums';
 import { getProjectStatus, sortProjectList, handleBack } from '@/utils';
 import { IProjectProps } from '../index';
+import debug from '@/debug';
 
 import styles from './index.less';
 
@@ -44,11 +43,10 @@ interface IProjectListItem extends IProjectItem {
 }
 
 const ProjectList: React.SFC<IProjectProps> = props => {
-  const _log = g_uiDebug.extend('projectList');
-  const iconSvg = window.g_bigfish ? bigfishIconSvg : umiIconSvg;
+  const _log = debug.extend('projectList');
   const { projectList } = props;
   const { currentProject, projectsByKey = {} } = projectList;
-  const { setCurrent } = useContext(ProjectContext);
+  const { setCurrent, basicUI } = useContext(ProjectContext);
   const [initialValues, setInitiaValues] = useState({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -156,8 +154,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             handleOnAction('delete', { key: item.key });
           }}
           onCancel={() => {}}
-          okText={formatMessage({ id: 'org.umi.ui.global.okText' })}
-          cancelText={formatMessage({ id: 'org.umi.ui.global.cancelText' })}
         >
           <a>
             <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
@@ -217,14 +213,15 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     </Row>
   );
 
+  const frameworkName = basicUI.name || 'Umi';
+  const emptyTip = frameworkName
+    ? `org.umi.ui.global.project.list.empty.tip.${frameworkName}`
+    : 'org.umi.ui.global.project.list.empty.tip';
+
   const EmptyDescription = (
     <div>
       <FormattedMessage
-        id={
-          window.g_bigfish
-            ? 'org.umi.ui.global.project.list.empty.tip.bigfish'
-            : 'org.umi.ui.global.project.list.empty.tip'
-        }
+        id={emptyTip}
         values={{
           import: (
             <a onClick={() => setCurrent('import')}>
@@ -246,15 +243,16 @@ const ProjectList: React.SFC<IProjectProps> = props => {
     // TODO: tmp use active
     [styles['project-list-layout-sider-item-active']]: true,
   });
+  const titleCls = cls(styles['project-list-layout-sider-title'], {
+    [`project-list-layout-sider-title-${frameworkName.toLowerCase()}`]: !!frameworkName.toLowerCase(),
+  });
 
   return (
     <Layout className={styles['project-list-layout']}>
       <Sider theme="dark" trigger={null} width={72} className={styles['project-list-layout-sider']}>
-        <div
-          className={styles[`project-list-layout-sider-title${window.g_bigfish ? '-bigfish' : ''}`]}
-        >
-          <img src={iconSvg} alt="logo" />
-          <h1>{window.g_bigfish ? 'Bigfish' : 'Umi'} UI</h1>
+        <div className={titleCls}>
+          {basicUI.logo || <img src={umiIconSvg} alt="logo" />}
+          <h1>{frameworkName} UI</h1>
         </div>
         <div className={itemCls}>
           <AppstoreFilled />
@@ -268,7 +266,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           className={styles['project-list-layout-content-header']}
         >
           <Col>
-            <h2 className={styles['project-title']}>
+            <h2 data-test-id="project-title" className={styles['project-title']}>
               {formatMessage({
                 id: 'org.umi.ui.global.project.list.title',
               })}
@@ -276,7 +274,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           </Col>
           <Col>
             <div className={styles['project-action']}>
-              <Button onClick={() => setCurrent('import')}>
+              <Button data-test-id="project-action-import" onClick={() => setCurrent('import')}>
                 <ImportIcon />
                 <span className={styles['project-add']}>
                   {formatMessage({
@@ -284,8 +282,13 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                   })}
                 </span>
               </Button>
-              {window.g_bigfish ? null : (
-                <Button type="primary" onClick={() => setCurrent('create')}>
+
+              {basicUI['create.project.button'] || (
+                <Button
+                  data-test-id="project-action-create"
+                  type="primary"
+                  onClick={() => setCurrent('create')}
+                >
                   <Plus />
                   <span className={styles['project-add']}>
                     {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
@@ -306,7 +309,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
             style={{
               paddingTop: '20vh',
             }}
-            image={iconSvg}
+            image={umiIconSvg}
             description={EmptyDescription}
           />
         ) : (
@@ -318,8 +321,6 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         visible={modalVisible}
         restModelProps={{
           title: formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' }),
-          okText: formatMessage({ id: 'org.umi.ui.global.okText' }),
-          cancelText: formatMessage({ id: 'org.umi.ui.global.cancelText' }),
         }}
         initialValues={initialValues}
         onOk={async (formKey, payload) => {

@@ -69,7 +69,7 @@ export function formatConfigs(configs, opts: IFormatConfigOpts = {}) {
               }
             }
             if (!memo.group) {
-              (memo.group === lang) === 'zh-CN' ? '未分组' : 'Ungrouped';
+              memo.group = lang === 'zh-CN' ? '未分组' : 'Ungrouped';
             }
             return memo;
           }, {}),

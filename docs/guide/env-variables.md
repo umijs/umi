@@ -163,7 +163,11 @@ The output directory will be removed by default before each build, you can set i
 
 ### HMR
 
-The HMR is enabled by default, the value is disabled when none, and the value is refreshed when the file changes when reload.
+The HMR is enabled by default, the value is disabled when `none`, and the value is refreshed when the file changes when reload.
+
+### ERROR_OVERLAY
+
+The ERROR_OVERLAY is enabled by default, the value is disabled when `none`, the `react-error-overlay` won't display overlay whenever disabled.
 
 ### BABELRC
 
@@ -211,4 +215,12 @@ socket server, default window.location.host. such as:
 
 ```bash
 $ SOCKET_SERVER=http://localhost:8000 umi dev
+```
+
+### USE_PUBLIC_IP
+
+bind public ip when then value is `true`. Default `false`.
+
+```bash
+$ USE_PUBLIC_IP=true umi dev
 ```

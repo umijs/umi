@@ -1,8 +1,9 @@
 import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
-import { ReactNode, Context, FC, FunctionComponent } from 'react';
-import { formatMessage, FormattedMessage, setLocale } from './locale';
+import { ReactNode, Context, FC, FunctionComponent, ReactElement } from 'react';
+import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
+import * as intl from './locale';
 import { IRoute } from './';
 
 declare namespace IUI {
@@ -27,20 +28,35 @@ declare namespace IUI {
     'any' = 'any',
   }
 
+  interface IBasicUI {
+    /** framework name, Umi / Bigfish */
+    name: string;
+    /** framework logo ReactNode */
+    logo: ReactNode;
+    /** framework logo image url */
+    logo_remote: string;
+    /** feedback Image */
+    feedback: {
+      /** Image src */
+      src: string;
+      /** Image width */
+      width: number;
+      /** Image height */
+      height: number;
+    };
+    /** create Project Button ReactNode */
+    'create.project.button': ReactNode;
+    /** helpDoc link */
+    helpDoc: string;
+    /** project pages current step */
+    'project.pages': {
+      /** create step */
+      create: ReactNode;
+    };
+  }
+
   type ILang = keyof typeof LOCALES;
   type ITheme = keyof typeof THEME;
-
-  interface IContext {
-    theme: ITheme;
-    locale: ILang;
-    currentProject?: ICurrentProject;
-    formatMessage: typeof formatMessage;
-    FormattedMessage: typeof FormattedMessage;
-    setLocale: typeof setLocale;
-    setTheme: (theme: ITheme) => void;
-    showLogPanel: () => void;
-    hideLogPanel: () => void;
-  }
 
   type Locale = { [key in string]: string };
 
@@ -53,24 +69,31 @@ declare namespace IUI {
     twoToneColor?: string;
   }
 
-  interface IPanelAction {
+  interface IPanelConfigAction {
     title: string;
     type?: 'default' | 'primary';
     action?: IAction;
     onClick?: () => void;
   }
 
+  type IPanelAction = (IPanelConfigAction | ReactNode | FC)[];
+
   interface IPanel extends IRoute {
     path: string;
     component: ReactNode;
     icon: IconType | string;
-    actions?: IPanelAction[];
+    actions?: IPanelAction;
+    beta?: boolean;
   }
 
   interface IService {
     panels: IPanel[];
     locales: ILocale[];
+    configSections: any[];
+    basicUI: Partial<IBasicUI>;
   }
+
+  type SetFactory<T> = ((state: T) => T) | T;
 
   interface IAction<T = object, K = void> {
     type: string;
@@ -104,6 +127,8 @@ declare namespace IUI {
     form: object;
     /** antd label, if object using <Label /> */
     label: string | ReactNode | IFieldLabel;
+    /** size, default */
+    size?: 'default' | 'small' | 'large';
     /** same as antd Form.Item props */
     [key: string]: any;
   }
@@ -115,7 +140,7 @@ declare namespace IUI {
     sections: Array<{
       key?: string;
       title: string;
-      icon: string | React.ReactNode;
+      icon: string | ReactNode;
       description: string;
       component: FunctionComponent<any>;
     }>;
@@ -123,13 +148,110 @@ declare namespace IUI {
     disableRightOverflow?: boolean;
   }
 
-  type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => K;
+  interface ITerminalProps {
+    /** Terminal title */
+    title?: ReactNode;
+    className?: string;
+    terminalClassName?: string;
+    /** defaultValue in Terminal */
+    defaultValue?: string;
+    /** terminal init event */
+    onInit?: (ins: XTerminal) => void;
+    /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
+    config?: ITerminalOptions;
+    [key: string]: any;
+  }
 
-  type ICallRemote = IApiActionFactory;
+  interface IDirectoryForm {
+    /** path / cwd */
+    value?: string;
+    onChange?: (value: string) => void;
+  }
+
+  interface IStepItemForm {
+    currentStep: number;
+    handleFinish: () => void;
+    goNext: () => void;
+    goPrev: () => void;
+    index: number;
+    active: boolean;
+    [key: string]: any;
+  }
+
+  interface IStepItemProps {
+    children: ReactElement<Partial<IStepItemForm>>;
+    [key: string]: any;
+  }
+
+  interface IStepFormProps {
+    onFinish: (values: object) => void;
+    className?: string;
+    children: ReactElement<IStepItemForm>[];
+  }
+  type IStepForm = FC<IStepFormProps> & {
+    StepItem: FC<IStepItemProps>;
+  };
+
+  // from fuzz.js
+  export interface FuseOptions<T> {
+    id?: keyof T;
+    caseSensitive?: boolean;
+    includeMatches?: boolean;
+    includeScore?: boolean;
+    shouldSort?: boolean;
+    sortFn?: (a: { score: number }, b: { score: number }) => number;
+    getFn?: (obj: any, path: string) => any;
+    keys?: (keyof T)[] | T[keyof T] | { name: keyof T; weight: number }[];
+    verbose?: boolean;
+    tokenize?: boolean;
+    tokenSeparator?: RegExp;
+    matchAllTokens?: boolean;
+    location?: number;
+    distance?: number;
+    threshold?: number;
+    maxPatternLength?: number;
+    minMatchCharLength?: number;
+    findAllMatches?: boolean;
+  }
+
+  interface IConfigFormProps {
+    /** config title in the top */
+    title: string;
+    /** list config interface */
+    list: string;
+    /** edit config interface */
+    edit: string;
+    /** enable Toc, default false */
+    enableToc?: boolean;
+    /** Search fuse options */
+    fuseOpts?: FuseOptions<number>;
+  }
+
+  type IApiActionFactory<P = {}, K = {}> = (action: IAction<P, K>) => Promise<K>;
+
+  type ICallRemote<T = unknown, P = unknown> = IApiActionFactory<T, P>;
   type IListenRemote = IApiActionFactory<{}, () => void>;
   type ISend = IApiActionFactory<{}, void>;
-  type IIntl = typeof formatMessage;
-  type IGetCwd = () => string;
+  type IFormatMessage = typeof intl.formatMessage;
+  type PickIntl = Pick<
+    typeof intl,
+    | 'FormattedDate'
+    | 'FormattedTime'
+    | 'FormattedRelative'
+    | 'FormattedNumber'
+    | 'FormattedPlural'
+    | 'FormattedMessage'
+    | 'FormattedHTMLMessage'
+    | 'formatMessage'
+    | 'formatHTMLMessage'
+    | 'formatDate'
+    | 'formatTime'
+    | 'formatRelative'
+    | 'formatNumber'
+    | 'formatPlural'
+  >;
+  type IIntl<T = PickIntl> = { [key in keyof T]: T[key] } & typeof intl.formatMessage;
+  type IGetCwd = () => Promise<string>;
 
   interface INotifyParams {
     title: string;
@@ -161,8 +283,44 @@ declare namespace IUI {
     npmClient?: string;
     taobaoSpeedUp?: boolean;
   }
+
   type IRedirect = (url: string) => void;
   type IDebug = Debugger;
+  type IConnect = typeof connect;
+  type IMini = () => boolean;
+  type IShowMini = () => void;
+  type IHideMini = () => void;
+  type IGetLocale = () => ILang;
+  type IGetSharedDataDir = () => Promise<string>;
+  type IDetectLanguage = () => Promise<string>;
+  type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
+  type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
+  type LaunchEditorTypes = 'project' | 'config';
+
+  interface ILaunchEditorParams {
+    type: LaunchEditorTypes;
+    lineNumber?: number;
+    editor?: string;
+  }
+  // beta API, not show in doc
+  type ILaunchEditor = (params: ILaunchEditorParams) => void;
+
+  interface IContext {
+    theme: ITheme;
+    locale: ILang;
+    currentProject?: ICurrentProject;
+    formatMessage: typeof intl.formatMessage;
+    FormattedMessage: typeof intl.FormattedMessage;
+    setLocale: typeof intl.setLocale;
+    setTheme: (theme: ITheme) => void;
+    /** open footer log panel */
+    showLogPanel: IShowLogPanel;
+    /** close footer log panel */
+    hideLogPanel: IHideLogPanel;
+    isMini: boolean;
+    basicUI: IBasicUI;
+    service: IService;
+  }
 
   class IApiClass {
     constructor(service: IService);
@@ -171,10 +329,18 @@ declare namespace IUI {
     readonly _: ILodash;
     /** debug for client */
     readonly debug: IDebug;
+    /** can use as vars */
+    readonly mini: boolean;
+    /** whether Bigfish */
+    readonly bigfish: boolean;
     /** currentProject  */
     currentProject: ICurrentProject;
+    /** get current locale: zh-CN or en-US */
+    getLocale: IGetLocale;
     getCwd: IGetCwd;
-    /** intl */
+    /** current is in Mini version */
+    isMini(): boolean;
+    /** intl, formatMessage */
     intl: IIntl;
     /** add plugin Panel */
     addPanel: IAddPanel;
@@ -184,6 +350,8 @@ declare namespace IUI {
     addLocales: IAddLocales;
     /** react component context */
     getContext(): Context<IContext>;
+    /** get Plugin UI Service */
+    getBasicUI(): IBasicUI;
     /** system notify */
     notify: INotify;
     /** redirect */
@@ -191,15 +359,32 @@ declare namespace IUI {
     callRemote: ICallRemote;
     /** React Two Column Panel Layout */
     TwoColumnPanel: FC<ITwoColumnPanel>;
+    /** Terminal Component */
+    Terminal: FC<ITerminalProps>;
+    DirectoryForm: FC<IDirectoryForm>;
+    StepForm: IStepForm;
+    /** React Config Form Component */
+    ConfigForm: FC<IConfigFormProps>;
     /** Antd Form Field */
     Field: FC<IFieldProps>;
     listenRemote: IListenRemote;
+    launchEditor: ILaunchEditor;
     /** open footer log panel */
     showLogPanel: IShowLogPanel;
     /** close footer log panel */
     hideLogPanel: IHideLogPanel;
+    setActionPanel: ISetActionPanel;
+    /** show Mini Modal */
+    showMini: IShowMini;
+    /** hide Mini Modal */
+    hideMini: IHideMini;
     send: ISend;
-    connect: typeof connect;
+    connect: IConnect;
+    /** get the current project's temp dir path */
+    getSharedDataDir: IGetSharedDataDir;
+    detectLanguage: IDetectLanguage;
+    detectNpmClients: () => Promise<string[]>;
+    modifyBasicUI: IModifyBasicUI;
   }
 
   type IApi = InstanceType<typeof IApiClass>;

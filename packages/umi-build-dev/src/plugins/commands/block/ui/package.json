@@ -1,0 +1,7 @@
+{
+  "peerDependencies": {
+    "antd": "^4.0.0-alpha.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

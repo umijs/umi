@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 const shell = require('shelljs');
+const { existsSync } = require('fs');
 const { join } = require('path');
 const { fork } = require('child_process');
+const { uiDist } = require('./uiPlugins');
 
 if (!shell.exec('npm config get registry').stdout.includes('https://registry.npmjs.org/')) {
   console.error('Failed: set npm registry to https://registry.npmjs.org/ first');
@@ -33,6 +35,9 @@ if (UIBuildCode === 1) {
   process.exit(1);
 }
 
+// check ui dist umd, or publish will be forbidden
+checkUiDist();
+
 const cp = fork(
   join(process.cwd(), 'node_modules/.bin/lerna'),
   ['version'].concat(process.argv.slice(2)),
@@ -50,9 +55,19 @@ cp.on('close', code => {
     console.error('Failed: lerna publish');
     process.exit(1);
   }
-
   publishToNpm();
 });
+
+// check dist existed
+function checkUiDist() {
+  uiDist.forEach(dist => {
+    const distPath = join(process.cwd(), dist);
+    if (!existsSync(distPath)) {
+      console.error(`ui dist: ${distPath} not exist`);
+      process.exit(1);
+    }
+  });
+}
 
 function publishToNpm() {
   console.log(`repos to publish: ${updatedRepos.join(', ')}`);

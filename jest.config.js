@@ -2,12 +2,14 @@ const testMatchPrefix = process.env.PACKAGE ? `**/packages/${process.env.PACKAGE
 const collectCoveragePrefix = process.env.PACKAGE ? process.env.PACKAGE : '**';
 
 module.exports = {
+  // testEnvironment: 'node',
   testMatch:
     process.env.E2E === 'none'
       ? [`${testMatchPrefix}/?*.(spec|test).(j|t)s?(x)`]
       : [`${testMatchPrefix}/?*.(spec|test|e2e).(j|t)s?(x)`],
   moduleNameMapper: {
     '^umi/_runtimePlugin$': require.resolve('./packages/umi/lib/runtimePlugin'),
+    '^@tmp/history': require.resolve('./packages/umi/lib/createHistory'),
   },
   testPathIgnorePatterns: [
     '/.git/',
@@ -20,6 +22,7 @@ module.exports = {
     '/packages/umi-build-dev/src/routes/fixtures',
     '/packages/umi-plugin-dva/src/fixtures',
     '/packages/umi-utils/src/fixtures',
+    '/packages/umi-ui-tasks/src/dist',
     '/packages/umi/test/fixtures',
   ],
   setupFilesAfterEnv: ['./jasmine.js'],

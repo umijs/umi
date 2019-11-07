@@ -360,9 +360,41 @@ describe('Service', () => {
           });
         },
       },
+      {
+        id: 'user:aa',
+        apply: api => {
+          api.registerPlugin({
+            id: 'aa',
+            apply(api) {
+              api.registerPlugin({
+                id: 'bb',
+                apply() {},
+              });
+            },
+          });
+          api.registerPlugin({
+            id: 'aaa',
+            apply(api) {
+              api.registerPlugin({
+                id: 'bbb',
+                apply() {},
+              });
+            },
+          });
+        },
+      },
     ];
     service.initPlugins();
-    expect(service.plugins.map(p => p.id)).toEqual(['user:a', 'a', 'b']);
+    expect(service.plugins.map(p => p.id)).toEqual([
+      'user:a',
+      'a',
+      'b',
+      'user:aa',
+      'aa',
+      'bb',
+      'aaa',
+      'bbb',
+    ]);
   });
 
   it('registerPlugin failed without id or apply', () => {

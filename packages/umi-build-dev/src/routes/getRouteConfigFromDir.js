@@ -165,7 +165,7 @@ function normalizePath(path) {
 function addRoute(memo, route, { componentFile }) {
   const code = readFileSync(componentFile, 'utf-8');
   debug(`parse yaml from ${componentFile}`);
-  const config = getYamlConfig(code);
+  const config = getYamlConfig(code, componentFile);
   ['path', 'exact', 'component', 'routes'].forEach(key => {
     assert(!(key in config), `Unexpected key ${key} in file ${componentFile}`);
   });

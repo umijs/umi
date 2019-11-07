@@ -1,6 +1,6 @@
 {
   "name": "umi-utils",
-  "version": "1.6.0",
+  "version": "1.7.2",
   "main": "./lib/index.js",
   "typings": "./src/index.d.ts",
   "repository": {
@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "chalk": "2.4.2",
+    "dotenv": "^8.2.0",
     "is-url": "1.2.4",
     "node-fetch": "2.6.0",
     "prettier": "1.15.3",

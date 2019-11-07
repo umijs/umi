@@ -1,8 +1,23 @@
 const spawn = require('cross-spawn');
 const startDevServers = require('./startDevServers');
+const startUiServers = require('./startUiServers');
 
-startDevServers()
-  .then(devServers => {
+const killServerProcess = (servers, code) => {
+  servers.forEach(child => {
+    if (child) {
+      try {
+        child.kill('SIGINT');
+      } catch (e) {
+        console.error('server child kill error', e);
+      }
+    }
+  });
+  process.exit(code);
+};
+
+(async () => {
+  try {
+    const serverRes = await Promise.all([startUiServers(), startDevServers()]);
     const argv = process.argv.slice(2) || [];
     const testCmd = spawn(
       'npm',
@@ -14,17 +29,20 @@ startDevServers()
         stdio: 'inherit',
       },
     );
-    testCmd.on('exit', code => {
-      devServers.forEach(devServer => {
-        if (devServer) {
-          devServer.kill('SIGINT');
-        }
-      });
 
-      console.log('testCmd exit', code);
-      process.exit(code);
+    const servers = serverRes
+      .reduce((acc, curr) => [...acc, ...(Array.isArray(curr) ? curr : [curr])], [])
+      .map(({ child }) => child)
+      .filter(item => item);
+
+    testCmd.on('error', code => {
+      killServerProcess(servers, code);
     });
-  })
-  .catch(e => {
-    console.log('startDevServer error', e);
-  });
+    testCmd.on('exit', code => {
+      console.log('code', code);
+      killServerProcess(servers, code);
+    });
+  } catch (e) {
+    console.error('startServer error', e);
+  }
+})();
