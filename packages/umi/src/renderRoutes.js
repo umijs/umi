@@ -23,6 +23,7 @@ const RouteWithProps = ({
   location,
   sensitive,
   keepAlive,
+  multiple,
   ...rest
 }) => {
   if (keepAlive) {
@@ -30,6 +31,7 @@ const RouteWithProps = ({
       <CacheRoute
         when="always"
         cacheKey={path}
+        multiple={multiple}
         path={path}
         exact={exact}
         strict={strict}
@@ -171,6 +173,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             keepAlive={route.keepAlive}
+            multiple={route.multiple || false}
             render={props => {
               const childRoutes = renderRoutes(route.routes, extraProps, {
                 location: props.location,
