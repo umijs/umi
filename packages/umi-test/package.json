@@ -41,7 +41,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "regenerator-runtime": "0.13.2",
-    "typescript": "^3.5.2",
+    "typescript": "^3.7.2",
     "umi-utils": "1.7.2",
     "yargs-parser": "13.1.1"
   }
