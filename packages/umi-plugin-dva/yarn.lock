@@ -128,10 +128,10 @@ dom-walk@^0.1.0:
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
   integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
 
-dva-core@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/dva-core/-/dva-core-2.0.0.tgz#7fce737f4df1c9f6043c3385210fdfc0f0332042"
-  integrity sha512-kvlQRhHJ/JN/cmH2QngemIaMIa0oZFMgzgov4OjXAcdsxquknXf10ateNYmMGDT0ybGkYJ1voUAoaBFbSxnTNQ==
+dva-core@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/dva-core/-/dva-core-2.0.1.tgz#7cd33f11225c099f1962b4862b8c7d10ea66283c"
+  integrity sha512-tLcf+mRxGOSlWAJNRdAHn+9hZs/ng2NOmjef4gyjR23l3Jx7uI8rzelq+5v+bybERK5xTYx2ixhzJVFuVOftXg==
   dependencies:
     "@babel/runtime" "^7.0.0"
     flatten "^1.0.2"
@@ -156,17 +156,17 @@ dva-loading@3.0.6:
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-dva@2.6.0-beta.16:
-  version "2.6.0-beta.16"
-  resolved "https://registry.yarnpkg.com/dva/-/dva-2.6.0-beta.16.tgz#2620420c9c11b0e145f7e2e77ee4f47c673f2365"
-  integrity sha512-mWK+agd62ofRBi1DVyFSxC+tHefoiqkXkhkinWufEh77+mn7OnuIapHACGO22PfqnyjrYQCTXGlEoDGou/SK0w==
+dva@^2.6.0-beta.16:
+  version "2.6.0-beta.17"
+  resolved "https://registry.yarnpkg.com/dva/-/dva-2.6.0-beta.17.tgz#10f8923126e94d446de926115960468fd69a1df7"
+  integrity sha512-tFnWnGC8MkSZKTWXibOEhCjNDlR/pvC+amzvCnhF5hvgmLNmuoRDFcqk7OqCZfTc8+2CD7nAhBRXBIQRAdi6yw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@types/isomorphic-fetch" "^0.0.35"
     "@types/react-redux" "^7.1.0"
     "@types/react-router-dom" "^4.3.1"
     connected-react-router "6.5.2"
-    dva-core "2.0.0"
+    dva-core "2.0.1"
     global "^4.3.2"
     history "^4.7.2"
     invariant "^2.2.4"
