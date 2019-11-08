@@ -1,6 +1,6 @@
 import * as React from 'react';
 import cls from 'classnames';
-import { List } from 'antd';
+import { List, Tag } from 'antd';
 import Context from '../context';
 import styles from './dailyReport.module.less';
 
@@ -11,33 +11,43 @@ interface DailyReportProps {}
 const DailyReport: React.SFC<DailyReportProps> = props => {
   const { api } = React.useContext(Context);
   const [list, setList] = React.useState();
+  const [detail, setDetail] = React.useState();
   useEffect(() => {
-    const getList = async () => {
+    const getDetail = async () => {
       const result = await api.callRemote({
         type: 'org.umi.dashboard.zaobao.list',
       });
-      if (result && Number(result.status) === 200) {
-        setList(result.data);
+      const id = api._.get(result, 'data.0.id');
+      console.log('id', id);
+      const detail = await api.callRemote({
+        type: 'org.umi.dashboard.zaobao.list.detail',
+        payload: {
+          id,
+        },
+      });
+      console.log('detail', detail);
+      if (detail && Number(detail.status) === 200) {
+        setDetail(detail.data);
       }
     };
-    getList();
+    getDetail();
   }, []);
 
   return (
     <List
       itemLayout="horizontal"
-      loading={!list}
+      loading={!detail}
       split={false}
-      dataSource={list}
+      dataSource={detail}
       renderItem={item => (
         <List.Item className={styles.listItem}>
           <List.Item.Meta
             title={
-              <a target="_blank" rel="noopener noreferrer" href={item.html_url}>
-                {item.title}
+              <a target="_blank" rel="noopener noreferrer" href={item.href}>
+                {item.title} <Tag color="geekblue">{item.tag}</Tag>
               </a>
             }
-            description="描述"
+            description={item.description}
           />
         </List.Item>
       )}
