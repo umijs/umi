@@ -110,6 +110,8 @@ export default {
 
 Specifies the output path.
 
+> It is not allowed to set the contract directories such as `src` 、 `public` 、 `pages` 、 `mock` 、 `config`
+
 ### base
 
 - Type: `String`
