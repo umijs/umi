@@ -2,8 +2,8 @@
   "name": "umi-core",
   "version": "1.8.0",
   "dependencies": {
-    "@babel/preset-typescript": "7.3.3",
-    "@babel/register": "7.4.4",
+    "@babel/preset-typescript": "7.7.2",
+    "@babel/register": "7.7.0",
     "@umijs/error-code-map": "^1.0.0",
     "babel-preset-umi": "1.8.1",
     "chalk": "2.4.2",

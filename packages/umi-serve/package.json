@@ -8,8 +8,8 @@
     "bin"
   ],
   "dependencies": {
-    "@babel/preset-typescript": "7.3.3",
-    "@babel/register": "7.4.4",
+    "@babel/preset-typescript": "7.7.2",
+    "@babel/register": "7.7.0",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-preset-umi": "1.8.1",
     "boxen": "2.1.0",
