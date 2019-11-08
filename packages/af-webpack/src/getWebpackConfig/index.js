@@ -115,7 +115,7 @@ export default function(opts) {
     // Tell babel to guess the type, instead assuming all files are modules
     // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
     sourceType: 'unambiguous',
-    cacheDirectory: process.env.BABEL_CACHE !== 'none', // enable by default
+    cacheDirectory: false, // process.env.BABEL_CACHE !== 'none', // enable by default
     babelrc: !!process.env.BABELRC, // disable by default
     customize: require.resolve('babel-preset-umi/lib/webpack-overrides'),
   };

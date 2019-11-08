@@ -73,7 +73,14 @@ function ssrBuild(opts, done) {
     ...opts,
     ...userConfig,
     babel: {
-      presets: [require.resolve('babel-preset-umi')],
+      presets: [
+        [
+          require.resolve('babel-preset-umi'),
+          {
+            env: { modules: false },
+          },
+        ],
+      ],
     },
     entry: {
       index: getEntry(opts.cwd),

@@ -27,7 +27,7 @@ export default function(context, opts = {}) {
 
   const plugins = [
     require.resolve('babel-plugin-react-require'),
-    require.resolve('@babel/plugin-syntax-dynamic-import'),
+    // require.resolve('@babel/plugin-syntax-dynamic-import'),
     [require.resolve('@babel/plugin-proposal-object-rest-spread'), { loose, useBuiltIns }],
     require.resolve('@babel/plugin-proposal-optional-catch-binding'),
     require.resolve('@babel/plugin-proposal-async-generator-functions'),
