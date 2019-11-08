@@ -300,9 +300,13 @@ async function add(
 
   // 调用 sylvanas 转化 ts
   if (js) {
+    // 区块需要拼接一下 blockName，避免把路由入口文件也转换了
+    const relayPath = generator.isPageBlock
+      ? generator.blockFolderPath
+      : `${generator.blockFolderPath}/${generator.blockName}`;
     opts.remoteLog('🤔  TypeScript to JavaScript');
     spinner.start('🤔  TypeScript to JavaScript');
-    require('./tsTojs').default(generator.blockFolderPath);
+    require('./tsTojs').default(relayPath);
     spinner.succeed();
   }
 
