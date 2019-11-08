@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-const blacklist = ['src', 'public', 'pages', 'mock', 'config'];
+const blacklist = ['src', 'public', 'pages', 'page', 'mock', 'config'];
 
 export default function() {
   return {
@@ -10,7 +10,10 @@ export default function() {
         typeof val === 'string',
         `Configure item outputPath should be String, but got ${val}.`,
       );
-      assert(!val.startsWith('/'), `The outputPath config should not start with '/'`);
+
+      // 可能有 break change，等 umi@3
+      // assert(!val.startsWith('/'), `The outputPath config should not start with '/'`);
+
       assert(
         !blacklist.includes(val),
         `The outputPath config is not allowed to be set to ${val}, ${val} is convention directory`,
