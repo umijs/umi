@@ -37,7 +37,6 @@ export default class Service {
     this.pluginMethods = {};
     this.generators = {};
     this.UmiError = UmiError;
-    this.printUmiError = printUmiError;
 
     // resolve user config
     this.config = UserConfig.getConfig({
