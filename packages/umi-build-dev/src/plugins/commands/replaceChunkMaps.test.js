@@ -1,6 +1,7 @@
 import { join, basename } from 'path';
 import { winPath } from 'umi-utils';
 import replaceChunkMaps from './replaceChunkMaps';
+
 const fs = require('fs');
 
 describe('replaceChunkMaps', () => {
@@ -17,7 +18,10 @@ describe('replaceChunkMaps', () => {
       () => `
       serverRender = async ctx => {
         const htmlTemplateMap = {
-          '/': _react.default.createElement("html", null, _react.default.createElement("head", null, _react.default.createElement("link", {
+          '/': _react.default.createElement("html", null, _react.default.createElement("head", null,_react.default.createElement("link", {
+            rel: "stylesheet",
+            href: "antd.css"
+          }), _react.default.createElement("link", {
             rel: "stylesheet",
             href: "/umiPublic/__UMI_SERVER__.css"
           }), _react.default.createElement("script", {
@@ -79,7 +83,39 @@ describe('replaceChunkMaps', () => {
       },
     };
     replaceChunkMaps(service, clientStat);
-    expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.baa67d11\.css/);
-    expect(result['umi.server.js']).toMatch(/\/umiPublic\/umi\.6791e2ab\.js/);
+    expect(result['umi.server.js']).toMatchSnapshot();
+  });
+
+  it('common umi.js without umi.css', () => {
+    const service = {
+      paths: {
+        absOutputPath: join(winPath(__dirname), 'fixtures/chunkMaps'),
+      },
+      config: {
+        ssr: true,
+      },
+      routes: [
+        {
+          path: '/',
+          routes: [],
+        },
+      ],
+    };
+    const clientStat = {
+      compilation: {
+        chunkGroups: [
+          {
+            name: 'umi',
+            chunks: [
+              {
+                files: ['umi.6791e2ab.js'],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    replaceChunkMaps(service, clientStat);
+    expect(result['umi.server.js']).toMatchSnapshot();
   });
 });
