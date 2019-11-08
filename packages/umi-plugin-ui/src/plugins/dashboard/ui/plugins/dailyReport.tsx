@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cls from 'classnames';
 import useSWR from 'swr';
-import { List, Tag } from 'antd';
+import { List, Tag, Button } from 'antd';
 import Context from '../context';
 import styles from './dailyReport.module.less';
 
@@ -9,16 +9,19 @@ const { useState, useEffect } = React;
 
 interface DailyReportProps {}
 
+const PAGE_SIZE = 5;
+
 const DailyReport: React.SFC<DailyReportProps> = props => {
   const { api } = React.useContext(Context);
   const { _ } = api;
+  const [size, setSize] = React.useState(PAGE_SIZE);
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
       type: 'org.umi.dashboard.zaobao.list',
     });
     return data;
   });
-  const currentId = api._.get(list, '0.id');
+  const currentId = _.get(list, '0.id');
 
   const { data: detail } = useSWR(
     () => `zaobao.list.detail.${currentId}`,
@@ -33,6 +36,24 @@ const DailyReport: React.SFC<DailyReportProps> = props => {
       return data;
     },
   );
+  const length = Array.isArray(detail) ? detail.length : 0;
+
+  const onLoadMore = () => {
+    setSize(value => value + PAGE_SIZE);
+  };
+
+  const LoadMore = size < length && (
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: 12,
+        height: 32,
+        lineHeight: '32px',
+      }}
+    >
+      <Button onClick={onLoadMore}>加载更多</Button>
+    </div>
+  );
 
   return (
     <List
@@ -40,7 +61,8 @@ const DailyReport: React.SFC<DailyReportProps> = props => {
       loading={!detail}
       className={styles.list}
       split={false}
-      dataSource={detail}
+      dataSource={Array.isArray(detail) ? detail.slice(0, size) : detail}
+      loadMore={LoadMore}
       renderItem={item => (
         <List.Item className={styles.listItem}>
           <List.Item.Meta

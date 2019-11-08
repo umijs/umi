@@ -5,6 +5,7 @@ import Dashboard from './ui/index';
 import ConfigAction from './ui/action';
 import Context from './ui/context';
 import DailyReport from './ui/plugins/dailyReport';
+import DailyReportHeader from './ui/plugins/dailyReportHeader';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
 
@@ -34,6 +35,7 @@ export default (api: IUiApi) => {
       title: '云谦早报',
       description: '这是一段本地启动的描述信息',
       icon: 'https://avatars1.githubusercontent.com/u/35128?v=4',
+      right: <DailyReportHeader />,
       enable: true,
       span: {
         xl: 12,

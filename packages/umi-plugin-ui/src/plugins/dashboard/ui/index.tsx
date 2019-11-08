@@ -146,7 +146,7 @@ const DashboardUI: React.FC<{}> = props => {
             lg: 12,
             xl: 6,
           };
-          const { title = '', description, content, icon, span = defaultSpan } = card;
+          const { title = '', description, content, icon, span = defaultSpan, right } = card;
           const colCls = cls(actionCardCls, styles['container-col']);
           const Title = (
             <div className={styles.main}>
@@ -155,6 +155,7 @@ const DashboardUI: React.FC<{}> = props => {
                 <h4>{title}</h4>
                 <p>{description}</p>
               </div>
+              {right}
             </div>
           );
           const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };
