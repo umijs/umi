@@ -1,7 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
 import Masonry from 'react-masonry-component';
-import { Smile } from '@ant-design/icons';
 import { Card, Row, Col, Avatar } from 'antd';
 import Context from './context';
 import styles from './index.module.less';
@@ -108,7 +107,7 @@ const DashboardUI: React.FC<{}> = props => {
               key={i.toString()}
               span={Math.floor(24 / content.length)}
             >
-              {renderCard(child)}
+              {child}
             </Col>
           ))}
         </Row>

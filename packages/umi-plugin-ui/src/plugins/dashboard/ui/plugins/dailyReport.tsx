@@ -1,5 +1,6 @@
 import * as React from 'react';
 import cls from 'classnames';
+import useSWR from 'swr';
 import { List, Tag } from 'antd';
 import Context from '../context';
 import styles from './dailyReport.module.less';
@@ -10,33 +11,34 @@ interface DailyReportProps {}
 
 const DailyReport: React.SFC<DailyReportProps> = props => {
   const { api } = React.useContext(Context);
-  const [list, setList] = React.useState();
-  const [detail, setDetail] = React.useState();
-  useEffect(() => {
-    const getDetail = async () => {
-      const result = await api.callRemote({
-        type: 'org.umi.dashboard.zaobao.list',
-      });
-      const id = api._.get(result, 'data.0.id');
-      console.log('id', id);
-      const detail = await api.callRemote({
+  const { _ } = api;
+  const { data: list } = useSWR('zaobao.list', async () => {
+    const { data } = await api.callRemote({
+      type: 'org.umi.dashboard.zaobao.list',
+    });
+    return data;
+  });
+  const currentId = api._.get(list, '0.id');
+
+  const { data: detail } = useSWR(
+    () => `zaobao.list.detail.${currentId}`,
+    async query => {
+      const id = Number(query.replace('zaobao.list.detail.', ''));
+      const { data } = await api.callRemote({
         type: 'org.umi.dashboard.zaobao.list.detail',
         payload: {
           id,
         },
       });
-      console.log('detail', detail);
-      if (detail && Number(detail.status) === 200) {
-        setDetail(detail.data);
-      }
-    };
-    getDetail();
-  }, []);
+      return data;
+    },
+  );
 
   return (
     <List
       itemLayout="horizontal"
       loading={!detail}
+      className={styles.list}
       split={false}
       dataSource={detail}
       renderItem={item => (
