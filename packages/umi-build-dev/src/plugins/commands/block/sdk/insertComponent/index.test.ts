@@ -5,6 +5,10 @@ import insertComponent from './index';
 
 const fixtures = winPath(join(__dirname, 'fixtures'));
 
+function formatCode(code) {
+  return winEOL(code.trim().replace(/[A-Z]:/g, ''));
+}
+
 function testTransform(dir) {
   const filename = existsSync(join(fixtures, dir, 'origin.js'))
     ? join(fixtures, dir, 'origin.js')
@@ -21,7 +25,7 @@ function testTransform(dir) {
   if (existsSync(expectedFile)) {
     const expected = readFileSync(expectedFile, 'utf-8');
     // window 专用，去掉一下盘符，其实表现是正常的，但是为了保证测试通过
-    expect(winEOL(code.trim().replace(/[A-Z]:/g, ''))).toEqual(winEOL(expected.trim()));
+    expect(formatCode(code)).toEqual(formatCode(expected));
   } else {
     if (process.env.PRINT_CODE) {
       console.log(code);
