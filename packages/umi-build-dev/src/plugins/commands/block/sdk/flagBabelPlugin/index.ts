@@ -9,31 +9,42 @@ import {
   isJSXElement,
   haveChildren,
 } from '../util';
+import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
 export default () => {
-  function buildGUmiUIFlag({ index, filename, jsx }) {
+  function buildGUmiUIFlag(opts) {
+    const { index, filename, jsx, inline, content } = opts;
     if (jsx) {
+      const attrs = [
+        t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
+        t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
+      ];
+      if (inline) {
+        attrs.push(t.jsxAttribute(t.jsxIdentifier('inline'), t.stringLiteral('true')));
+      }
       return t.jsxElement(
-        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), [
-          t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
-          t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
-        ]),
+        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), attrs),
         t.jsxClosingElement(t.jsxIdentifier('GUmiUIFlag')),
-        [],
+        content ? [t.jsxText(content)] : [],
         false,
       );
+    } else {
+      const attrs = [
+        t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
+        t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
+      ];
+      if (inline) {
+        attrs.push(t.objectProperty(t.identifier('inline'), t.stringLiteral('true')));
+      }
+      return t.callExpression(
+        t.memberExpression(t.identifier('React'), t.identifier('createElement')),
+        [
+          t.identifier('GUmiUIFlag'),
+          t.objectExpression(attrs),
+          ...(content ? [t.stringLiteral(content)] : []),
+        ],
+      );
     }
-
-    return t.callExpression(
-      t.memberExpression(t.identifier('React'), t.identifier('createElement')),
-      [
-        t.identifier('GUmiUIFlag'),
-        t.objectExpression([
-          t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
-          t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
-        ]),
-      ],
-    );
   }
 
   function addFlagToIndex(nodes, i, { index, filename, jsx }) {
@@ -191,9 +202,8 @@ export default () => {
         // e.g.
         // _react.default.createElement("div", null, "INSERT_BLOCK_PLACEHOLDER")
         if (
-          t.isLiteral(args[2], {
-            value: 'INSERT_BLOCK_PLACEHOLDER',
-          }) &&
+          t.isLiteral(args[2]) &&
+          args[2].value.startsWith(INSERT_BLOCK_PLACEHOLDER) &&
           t.isMemberExpression(callee) &&
           t.isIdentifier(callee.property, {
             name: 'createElement',
@@ -204,10 +214,16 @@ export default () => {
           }
 
           const index = layoutIndexByFilename[filename];
+          let content = null;
+          if (args[2].value.startsWith(`${INSERT_BLOCK_PLACEHOLDER}:`)) {
+            content = args[2].value.replace(`${INSERT_BLOCK_PLACEHOLDER}:`, '');
+          }
           args[2] = buildGUmiUIFlag({
-            index: `l-${index}`,
+            index: `${BLOCK_LAYOUT_PREFIX}${index}`,
             filename,
             jsx: false,
+            inline: true,
+            content,
           });
 
           layoutIndexByFilename[filename] += 1;
