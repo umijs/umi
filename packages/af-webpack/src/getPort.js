@@ -8,8 +8,8 @@ export default async port => {
     return parseInt(process.env.PORT, 10);
   }
 
-  portfinder.basePort = process.env.BASE_PORT || 8000;
-  portfinder.highestPort = 9000;
+  portfinder.basePort = parseInt(process.env.BASE_PORT) || 8000;
+  portfinder.highestPort = portfinder.basePort + 1000;
 
   return portfinder.getPortPromise();
 };

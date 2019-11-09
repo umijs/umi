@@ -103,7 +103,10 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) 
     form
       .validateFields()
       .then(values => {
-        setEnv(values as any);
+        setEnv({
+          ...env,
+          ...(values as any),
+        });
         setModalVisible(false);
       })
       .catch(_ => {});
