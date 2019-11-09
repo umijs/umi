@@ -193,8 +193,10 @@ export default () => {
 
       CallExpression(path, state) {
         const { filename, opts = {} } = state;
-        assert(opts.doTransform, 'opts.doTransform must supplied');
-        if (!opts.doTransform(filename)) return;
+
+        // 不限于路由组件，因为添加进来的区块不是路由组件
+        // assert(opts.doTransform, 'opts.doTransform must supplied');
+        // if (!opts.doTransform(filename)) return;
 
         const { node } = path;
         const { callee, arguments: args } = node;
