@@ -96,6 +96,9 @@ body {
   }
   .ant-select-dropdown {
     background-color: @select-dropdown-bg;
+    div::-webkit-scrollbar-thumb {
+      background-color: fade(@dark, 8);
+    }
   }
   .ant-select-dropdown-menu-item-selected {
     background-color: @select-item-selected-bg;

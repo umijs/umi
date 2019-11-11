@@ -1,5 +1,4 @@
 import * as React from 'react';
-import cls from 'classnames';
 import useSWR from 'swr';
 import moment from 'moment';
 import { Select } from 'antd';
@@ -20,12 +19,12 @@ const DailyReportHeader: React.SFC<DailyReportProps> = props => {
     });
     return data;
   });
-  console.log('moment', moment);
+
   return (
     Array.isArray(list) && (
-      <Select>
+      <Select defaultValue={_.get(list, '0.id')}>
         {(list || []).map(item => (
-          <Select.Option key={`${item.id}`}>
+          <Select.Option key={`${item.id}`} value={item.id}>
             {moment(item.createdAt).format('YYYY-MM-DD')}
           </Select.Option>
         ))}
