@@ -2,17 +2,15 @@ import * as React from 'react';
 import useSWR from 'swr';
 import moment from 'moment';
 import { Select } from 'antd';
+import { MESSAGES } from './dailyReport';
 import Context from '../context';
+import styles from './dailyReport.module.less';
 
 const { useState, useEffect } = React;
 
-interface DailyReportProps {}
-
-const PAGE_SIZE = 5;
-
-const DailyReportHeader: React.SFC<DailyReportProps> = props => {
+const DailyReportHeader: React.SFC<{}> = props => {
   const { api } = React.useContext(Context);
-  const { _, intl } = api;
+  const { _, event } = api;
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
       type: 'org.umi.dashboard.zaobao.list',
@@ -20,16 +18,26 @@ const DailyReportHeader: React.SFC<DailyReportProps> = props => {
     return data;
   });
 
+  const handleOnChange = value => {
+    event.emit(MESSAGES.CHANGE_DAILY_ID, value);
+  };
+
   return (
-    Array.isArray(list) && (
-      <Select defaultValue={_.get(list, '0.id')}>
-        {(list || []).map(item => (
-          <Select.Option key={`${item.id}`} value={item.id}>
-            {moment(item.createdAt).format('YYYY-MM-DD')}
-          </Select.Option>
-        ))}
-      </Select>
-    )
+    <div className={styles['select-wrapper']}>
+      {Array.isArray(list) && (
+        <Select
+          className={styles.select}
+          defaultValue={_.get(list, '0.id')}
+          onChange={handleOnChange}
+        >
+          {(list || []).map(item => (
+            <Select.Option key={`${item.id}`} value={item.id}>
+              {moment(item.createdAt).format('YYYY-MM-DD')}
+            </Select.Option>
+          ))}
+        </Select>
+      )}
+    </div>
   );
 };
 

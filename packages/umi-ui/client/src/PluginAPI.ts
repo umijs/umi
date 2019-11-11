@@ -37,6 +37,7 @@ export default class PluginAPI {
   connect: IUi.IConnect;
   mini: boolean;
   bigfish: boolean;
+  event: typeof event;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -58,6 +59,7 @@ export default class PluginAPI {
     this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
     this.mini = isMiniUI();
+    this.event = event;
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {
