@@ -35,6 +35,7 @@ const DailyReport: React.SFC<{}> = props => {
   const changeCurrentId = newId => {
     if (newId) {
       setCurrentId(newId);
+      setSize(PAGE_SIZE);
     }
   };
 
@@ -43,7 +44,6 @@ const DailyReport: React.SFC<{}> = props => {
       const id = _.get(list, '0.id');
       if (id) {
         setCurrentId(id);
-        setSize(PAGE_SIZE);
       }
     },
     [list],
