@@ -204,7 +204,7 @@ export default () => {
         // e.g.
         // _react.default.createElement("div", null, "INSERT_BLOCK_PLACEHOLDER")
         if (
-          t.isLiteral(args[2]) &&
+          t.isStringLiteral(args[2]) &&
           args[2].value.startsWith(INSERT_BLOCK_PLACEHOLDER) &&
           t.isMemberExpression(callee) &&
           t.isIdentifier(callee.property, {

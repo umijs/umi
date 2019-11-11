@@ -13,6 +13,7 @@ import useCallData from './hooks/useCallData';
 import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
 import { ModelState, namespace } from './model';
+import Container from './Container';
 
 /**
  * get substr from url
@@ -132,7 +133,7 @@ const renderActiveResourceTag = ({
 
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
-  const { api } = useContext(Context);
+  const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
   const { callRemote, intl } = api;
   /**
    * 是不是umi
@@ -142,15 +143,10 @@ const BlocksViewer: React.FC<Props> = props => {
   /**
    * 用到的各种状态
    */
-  const query = getQueryConfig();
   const [willAddBlock, setWillAddBlock] = useState<Block>(null);
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
-  const [type, setType] = useState<Resource['blockType']>(query.type || 'block');
-  const [activeResource, setActiveResource] = useState<Resource>(
-    query.resource ? { id: query.resource } : null,
-  );
   const [searchValue, setSearchValue] = useState<string>('');
 
   /**
@@ -303,26 +299,6 @@ const BlocksViewer: React.FC<Props> = props => {
       <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
         {current ? (
           <div className={styles.blockList}>
-            <Tabs
-              className={styles.tabs}
-              activeKey={type}
-              onChange={activeKey => {
-                setType(activeKey as Resource['blockType']);
-                setActiveResource(null);
-                /**
-                 * 修改 url 中的参数，数据源改变时
-                 * 清空 resource
-                 */
-                updateUrlQuery({
-                  type: activeKey,
-                  resource: undefined,
-                });
-              }}
-            >
-              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
-              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
-            </Tabs>
-
             {renderActiveResourceTag({
               type,
               matchedResources,
