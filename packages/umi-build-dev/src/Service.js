@@ -37,7 +37,6 @@ export default class Service {
     this.pluginMethods = {};
     this.generators = {};
     this.UmiError = UmiError;
-    this.printUmiError = printUmiError;
 
     // resolve user config
     this.config = UserConfig.getConfig({
@@ -163,7 +162,7 @@ Plugin ${chalk.cyan.underline(id)} initialize failed
 ${getCodeFrame(e, { cwd: this.cwd })}
         `.trim(),
         );
-        debug(e);
+        console.error(e);
         process.exit(1);
       }
     }

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`replaceChunkMaps common umi.js without umi.css 1`] = `
+"
+      serverRender = async ctx => {
+        const htmlTemplateMap = {
+          '/': _react.default.createElement(\\"html\\", null, _react.default.createElement(\\"head\\", null, _react.default.createElement(\\"script\\", {
+            src: \\"/umiPublic/umi.6791e2ab.js\\"
+          }))),
+        };
+        return {
+          htmlElement: htmlTemplateMap[pathname],
+          rootContainer
+        };
+      }; // using project react-dom version
+      // https://github.com/facebook/react/issues/13991
+
+
+      exports.ReactDOMServer = ReactDOMServer = __webpack_require__(/*! react-dom/server */ \\"react-dom/server\\");
+      "
+`;
+
+exports[`replaceChunkMaps common umi.js, umi.css 1`] = `
+"
+      serverRender = async ctx => {
+        const htmlTemplateMap = {
+          '/': _react.default.createElement(\\"html\\", null, _react.default.createElement(\\"head\\", null,_react.default.createElement(\\"link\\", {
+            rel: \\"stylesheet\\",
+            href: \\"antd.css\\"
+          }), _react.default.createElement(\\"link\\", {
+            rel: \\"stylesheet\\",
+            href: \\"/umiPublic/umi.baa67d11.css\\"
+          }), _react.default.createElement(\\"script\\", {
+            src: \\"/umiPublic/umi.6791e2ab.js\\"
+          }))),
+        };
+        return {
+          htmlElement: htmlTemplateMap[pathname],
+          rootContainer
+        };
+      }; // using project react-dom version
+      // https://github.com/facebook/react/issues/13991
+
+
+      exports.ReactDOMServer = ReactDOMServer = __webpack_require__(/*! react-dom/server */ \\"react-dom/server\\");
+      "
+`;

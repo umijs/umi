@@ -9,31 +9,42 @@ import {
   isJSXElement,
   haveChildren,
 } from '../util';
+import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
 export default () => {
-  function buildGUmiUIFlag({ index, filename, jsx }) {
+  function buildGUmiUIFlag(opts) {
+    const { index, filename, jsx, inline, content } = opts;
     if (jsx) {
+      const attrs = [
+        t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
+        t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
+      ];
+      if (inline) {
+        attrs.push(t.jsxAttribute(t.jsxIdentifier('inline'), t.stringLiteral('true')));
+      }
       return t.jsxElement(
-        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), [
-          t.jsxAttribute(t.jsxIdentifier('filename'), t.stringLiteral(`${filename}`)),
-          t.jsxAttribute(t.jsxIdentifier('index'), t.stringLiteral(`${index}`)),
-        ]),
+        t.jsxOpeningElement(t.jsxIdentifier('GUmiUIFlag'), attrs),
         t.jsxClosingElement(t.jsxIdentifier('GUmiUIFlag')),
-        [],
+        content ? [t.jsxText(content)] : [],
         false,
       );
+    } else {
+      const attrs = [
+        t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
+        t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
+      ];
+      if (inline) {
+        attrs.push(t.objectProperty(t.identifier('inline'), t.stringLiteral('true')));
+      }
+      return t.callExpression(
+        t.memberExpression(t.identifier('React'), t.identifier('createElement')),
+        [
+          t.identifier('GUmiUIFlag'),
+          t.objectExpression(attrs),
+          ...(content ? [t.stringLiteral(content)] : []),
+        ],
+      );
     }
-
-    return t.callExpression(
-      t.memberExpression(t.identifier('React'), t.identifier('createElement')),
-      [
-        t.identifier('GUmiUIFlag'),
-        t.objectExpression([
-          t.objectProperty(t.identifier('filename'), t.stringLiteral(`${filename}`)),
-          t.objectProperty(t.identifier('index'), t.stringLiteral(`${index}`)),
-        ]),
-      ],
-    );
   }
 
   function addFlagToIndex(nodes, i, { index, filename, jsx }) {
@@ -136,44 +147,89 @@ export default () => {
     }
   }
 
+  let layoutIndexByFilename = {};
+
   return {
     visitor: {
       Program: {
         enter(path, state) {
+          // hmr 时会重复编译相同文件
+          layoutIndexByFilename = {};
+
           const { filename, opts = {} } = state;
           assert(opts.doTransform, 'opts.doTransform must supplied');
 
-          if (opts.doTransform(filename)) {
-            const { node } = path;
+          if (!opts.doTransform(filename)) return;
+          const { node } = path;
 
-            let d: any = findExportDefaultDeclaration(node);
+          let d: any = findExportDefaultDeclaration(node);
 
-            // Support hoc
-            while (t.isCallExpression(d)) {
-              // eslint-disable-next-line
-              d = d.arguments[0];
-            }
+          // Support hoc
+          while (t.isCallExpression(d)) {
+            // eslint-disable-next-line
+            d = d.arguments[0];
+          }
 
-            d = getIdentifierDeclaration(d, path);
+          d = getIdentifierDeclaration(d, path);
 
-            // Support hoc again
-            while (t.isCallExpression(d)) {
-              // eslint-disable-next-line
-              d = d.arguments[0];
-            }
+          // Support hoc again
+          while (t.isCallExpression(d)) {
+            // eslint-disable-next-line
+            d = d.arguments[0];
+          }
 
-            const ret = getReturnNode(d, path);
-            if (ret) {
-              const { node: retNode, replace } = ret;
-              if (retNode && !isInBlackList(retNode, path)) {
-                addUmiUIFlag(retNode, {
-                  filename: winPath(filename),
-                  replace,
-                });
-              }
+          const ret = getReturnNode(d, path);
+          if (ret) {
+            const { node: retNode, replace } = ret;
+            if (retNode && !isInBlackList(retNode, path)) {
+              addUmiUIFlag(retNode, {
+                filename: winPath(filename),
+                replace,
+              });
             }
           }
         },
+      },
+
+      CallExpression(path, state) {
+        const { filename, opts = {} } = state;
+
+        // 不限于路由组件，因为添加进来的区块不是路由组件
+        // assert(opts.doTransform, 'opts.doTransform must supplied');
+        // if (!opts.doTransform(filename)) return;
+
+        const { node } = path;
+        const { callee, arguments: args } = node;
+
+        // e.g.
+        // _react.default.createElement("div", null, "INSERT_BLOCK_PLACEHOLDER")
+        if (
+          t.isLiteral(args[2]) &&
+          args[2].value.startsWith(INSERT_BLOCK_PLACEHOLDER) &&
+          t.isMemberExpression(callee) &&
+          t.isIdentifier(callee.property, {
+            name: 'createElement',
+          })
+        ) {
+          if (!layoutIndexByFilename[filename]) {
+            layoutIndexByFilename[filename] = 0;
+          }
+
+          const index = layoutIndexByFilename[filename];
+          let content = null;
+          if (args[2].value.startsWith(`${INSERT_BLOCK_PLACEHOLDER}:`)) {
+            content = args[2].value.replace(`${INSERT_BLOCK_PLACEHOLDER}:`, '');
+          }
+          args[2] = buildGUmiUIFlag({
+            index: `${BLOCK_LAYOUT_PREFIX}${index}`,
+            filename,
+            jsx: false,
+            inline: true,
+            content,
+          });
+
+          layoutIndexByFilename[filename] += 1;
+        }
       },
     },
   };

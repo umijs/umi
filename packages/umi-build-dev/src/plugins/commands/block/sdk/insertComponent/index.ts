@@ -14,6 +14,7 @@ import {
   findIndex,
   parseContent,
 } from '../util';
+import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
 export default (content, opts) => {
   const { relativePath, identifier, index = 0, latest } = opts;
@@ -56,42 +57,71 @@ export default (content, opts) => {
   }
 
   const ast = parseContent(content);
-  traverse(ast, {
-    Program(path) {
-      const { node } = path;
 
-      let d = findExportDefaultDeclaration(node) as any;
+  if (typeof index === 'string' && index.startsWith(BLOCK_LAYOUT_PREFIX)) {
+    const targetIndex = parseInt(index.replace(BLOCK_LAYOUT_PREFIX, ''), 10);
+    let currIndex = 0;
+    traverse(ast, {
+      JSXText(path) {
+        const { node } = path;
+        const { value } = node;
+        if (value.trim().startsWith(INSERT_BLOCK_PLACEHOLDER)) {
+          if (targetIndex === currIndex) {
+            // 添加过之后无需提示
+            node.value = INSERT_BLOCK_PLACEHOLDER;
 
-      // support hoc
-      while (t.isCallExpression(d)) {
-        // eslint-disable-next-line
-        d = d.arguments[0];
-      }
+            const id = uppercamelcase(identifier);
+            addImport(path.findParent(p => p.isProgram()).node, id);
+            const newNode = t.jsxElement(
+              t.jsxOpeningElement(t.jsxIdentifier(id), [], true),
+              null,
+              [],
+              true,
+            );
+            path.parent.children.push(newNode);
+          }
+          currIndex += 1;
+        }
+      },
+    });
+  } else {
+    traverse(ast, {
+      Program(path) {
+        const { node } = path;
 
-      d = getIdentifierDeclaration(d, path);
+        let d = findExportDefaultDeclaration(node) as any;
 
-      // Support hoc again
-      while (t.isCallExpression(d)) {
-        // eslint-disable-next-line
-        d = d.arguments[0];
-      }
+        // support hoc
+        while (t.isCallExpression(d)) {
+          // eslint-disable-next-line
+          d = d.arguments[0];
+        }
 
-      const ret = getReturnNode(d, path);
-      assert(ret, 'Can not find return node');
+        d = getIdentifierDeclaration(d, path);
 
-      const id = uppercamelcase(identifier);
-      // TODO: check id exists
+        // Support hoc again
+        while (t.isCallExpression(d)) {
+          // eslint-disable-next-line
+          d = d.arguments[0];
+        }
 
-      // Add imports
-      addImport(node, id);
+        const ret = getReturnNode(d, path);
+        assert(ret, 'Can not find return node');
 
-      // Add xxxx
-      addBlockToJSX({
-        ...ret,
-        id,
-      });
-    },
-  });
+        const id = uppercamelcase(identifier);
+        // TODO: check id exists
+
+        // Add imports
+        addImport(node, id);
+
+        // Add xxxx
+        addBlockToJSX({
+          ...ret,
+          id,
+        });
+      },
+    });
+  }
   const newCode = generate(ast, {}).code;
   return prettier.format(newCode, {
     singleQuote: true,

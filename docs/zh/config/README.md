@@ -112,6 +112,8 @@ export default {
 
 指定输出路径。
 
+> 不允许设置 `src` 、 `public` 、 `pages` 、 `mock` 、 `config` 等约定目录
+
 ### base
 
 - 类型：`String`

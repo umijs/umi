@@ -20,14 +20,17 @@ export default (service: IApi, clientStat: IWebpack.Stats) => {
   // get umi.js / umi.css
   const { chunks: umiChunk = [] } = chunkGroupData.find(chunk => chunk.name === 'umi') || {};
 
+  const umiJS = umiChunk.find(chunk => isAssetsType('js', chunk)) || '';
+  const umiCSS = umiChunk.find(chunk => isAssetsType('css', chunk)) || '';
+
+  const replaceUmiJS = [/__UMI_SERVER__\.js/g, umiJS];
+  const replaceUmiCSS = umiCSS
+    ? [/__UMI_SERVER__\.css/g, umiCSS]
+    : [/,[^,]*createElement\("link".*?__UMI_SERVER__\.css.*?\)/gs, ''];
+
   const umiServerPath = join(absOutputPath, 'umi.server.js');
   const umiServer = getContent(umiServerPath);
-  const result = umiServer
-    .replace(/__UMI_SERVER__\.js/g, umiChunk.find(chunk => isAssetsType('js', chunk)) || '')
-    .replace(
-      /__UMI_SERVER__\.css/g,
-      // umi.css may not exist when using dynamic Routing
-      umiChunk.find(chunk => isAssetsType('css', chunk)) || '',
-    );
+
+  const result = umiServer.replace(...replaceUmiJS).replace(...replaceUmiCSS);
   writeFileSync(umiServerPath, result, 'utf-8');
 };
