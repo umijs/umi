@@ -1,5 +1,4 @@
 import * as React from 'react';
-import cls from 'classnames';
 import useSWR from 'swr';
 import { List, Tag, Button } from 'antd';
 import Context from '../context';
@@ -7,11 +6,9 @@ import styles from './dailyReport.module.less';
 
 const { useState, useEffect } = React;
 
-interface DailyReportProps {}
-
 const PAGE_SIZE = 5;
 
-const DailyReport: React.SFC<DailyReportProps> = props => {
+const DailyReport: React.SFC<{}> = props => {
   const { api } = React.useContext(Context);
   const { _ } = api;
   const [size, setSize] = React.useState(PAGE_SIZE);
@@ -27,13 +24,15 @@ const DailyReport: React.SFC<DailyReportProps> = props => {
     () => `zaobao.list.detail.${currentId}`,
     async query => {
       const id = Number(query.replace('zaobao.list.detail.', ''));
-      const { data } = await api.callRemote({
-        type: 'org.umi.dashboard.zaobao.list.detail',
-        payload: {
-          id,
-        },
-      });
-      return data;
+      if (id) {
+        const { data } = await api.callRemote({
+          type: 'org.umi.dashboard.zaobao.list.detail',
+          payload: {
+            id,
+          },
+        });
+        return data;
+      }
     },
   );
   const length = Array.isArray(detail) ? detail.length : 0;
@@ -63,18 +62,20 @@ const DailyReport: React.SFC<DailyReportProps> = props => {
       split={false}
       dataSource={Array.isArray(detail) ? detail.slice(0, size) : detail}
       loadMore={LoadMore}
-      renderItem={item => (
-        <List.Item className={styles.listItem}>
-          <List.Item.Meta
-            title={
-              <a target="_blank" rel="noopener noreferrer" href={item.href}>
-                {item.title} <Tag color="geekblue">{item.tag}</Tag>
-              </a>
-            }
-            description={item.description}
-          />
-        </List.Item>
-      )}
+      renderItem={item =>
+        _.isPlainObject(item) && (
+          <List.Item className={styles.listItem}>
+            <List.Item.Meta
+              title={
+                <a target="_blank" rel="noopener noreferrer" href={item.href}>
+                  {item.title} <Tag color="geekblue">{item.tag}</Tag>
+                </a>
+              }
+              description={item.description}
+            />
+          </List.Item>
+        )
+      }
     />
   );
 };

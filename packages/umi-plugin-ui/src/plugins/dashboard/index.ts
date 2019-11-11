@@ -37,15 +37,13 @@ export default (api: IApi) => {
         break;
       }
       case 'org.umi.dashboard.zaobao.list': {
-        const result = await request('https://umi-ui-rss-git-feat-use-v4.umijs.now.sh/api/zaobao');
+        const result = await request('https://ui.umijs.org/api/zaobao');
         success(result);
         break;
       }
       case 'org.umi.dashboard.zaobao.list.detail': {
         const { id } = payload;
-        const result = await request(
-          `https://umi-ui-rss-git-feat-use-v4.umijs.now.sh/api/zaobao/${id}`,
-        );
+        const result = await request(`https://ui.umijs.org/api/zaobao/${id}`);
         success(result);
         break;
       }

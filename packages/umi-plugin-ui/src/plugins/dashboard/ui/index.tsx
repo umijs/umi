@@ -149,14 +149,22 @@ const DashboardUI: React.FC<{}> = props => {
           const { title = '', description, content, icon, span = defaultSpan, right } = card;
           const colCls = cls(actionCardCls, styles['container-col']);
           const Title = (
-            <div className={styles.main}>
-              <div className={cls(styles.icon)}>{renderAvatar(icon, title.charAt(0))}</div>
-              <div className={styles.info}>
-                <h4>{title}</h4>
-                <p>{description}</p>
-              </div>
-              {right}
-            </div>
+            <Row
+              className={styles.main}
+              type="flex"
+              gutter={16}
+              align="top"
+              justify="space-between"
+            >
+              <Col style={{ display: 'flex' }}>
+                <div className={cls(styles.icon)}>{renderAvatar(icon, title.charAt(0))}</div>
+                <div className={styles.info}>
+                  <h4>{title}</h4>
+                  <p>{description}</p>
+                </div>
+              </Col>
+              {right && <Col className={styles.right}>{right}</Col>}
+            </Row>
           );
           const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };
           return (
