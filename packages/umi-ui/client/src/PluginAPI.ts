@@ -259,7 +259,15 @@ export default class PluginAPI {
     }
     const configs = Array.isArray(config) ? config : [config];
     const tweakConfigs = configs.map(c => ({ ...c, enable: true }));
-    this.service.dashboard.push(...tweakConfigs);
+    tweakConfigs.forEach(tweakConfig => {
+      const repeatConfig = this.service.dashboard.find(card => card.key === tweakConfig.key);
+      if (!repeatConfig) {
+        this.service.dashboard.push(tweakConfig);
+      } else {
+        // repeat key error
+        console.error(`Umi UI dashboard card key must be unique, but found ${repeatConfig.key}`);
+      }
+    });
   };
 
   // modify basic UI api.modifyBasicUI({  })
