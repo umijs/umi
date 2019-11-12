@@ -1,4 +1,13 @@
-import { init, use, getItem, apply, compose, applyForEach, mergeConfig } from './runtimePlugin';
+import {
+  apply,
+  applyForEach,
+  compose,
+  getItem,
+  init,
+  mergeConfigAsync,
+  mergeConfig,
+  use,
+} from './runtimePlugin';
 
 describe('runtimePlugin', () => {
   it('getItem', () => {
@@ -170,5 +179,22 @@ describe('runtimePlugin', () => {
     expect(() => {
       mergeConfig('foo');
     }).toThrow(/Config is not plain object/);
+  });
+
+  it('mergeAsyncConfig', async () => {
+    init({
+      validKeys: ['foo'],
+    });
+    use({
+      foo: Promise.resolve({ a: 1, b: 2 }),
+    });
+    use({
+      foo: { a: 2, c: 3 },
+    });
+    expect(await mergeConfigAsync('foo')).toEqual({
+      a: 2,
+      b: 2,
+      c: 3,
+    });
   });
 });

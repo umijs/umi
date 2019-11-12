@@ -1,16 +1,17 @@
-import React from 'react';
-
-const App = () => {
-  return <div>Hello UmiJS SSR</div>;
+const App = props => {
+  const [data, setData] = React.useState(props.data || '');
+  useEffect(() => {
+    (async () => {
+      const res = await request('/api/data');
+      setData(res.data);
+    })();
+  }, []);
+  return <div>Hello UmiJS SSR {data}</div>;
 };
 
 App.getInitialProps = async () => {
-  return Promise.all({
-    data: {
-      ssr: 'http://127.0.0.1:7001',
-      csr: 'http://127.0.0.1:8000',
-    },
-  });
+  const data = await request('/api/data');
+  return {
+    data,
+  };
 };
-
-export default App;

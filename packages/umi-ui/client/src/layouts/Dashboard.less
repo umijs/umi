@@ -1,0 +1,337 @@
+.mini-header {
+  background-color: @layout-sider-background;
+  margin-bottom: 1px;
+  padding: 10px 16px;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  &-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .gotoUi {
+    &:hover a::before {
+      opacity: 1;
+    }
+    a {
+      font-size: 12px;
+      color: @text-color;
+      position: relative;
+      &::before {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        opacity: 0;
+        height: 1px;
+        background-color: @text-color;
+        content: '';
+      }
+      svg {
+        font-size: 14px;
+        padding-right: 4px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+:global(.isMini) .sidebar .sidebar-lab {
+  padding-top: 16px;
+  &::before {
+    width: calc(~'100% - 24px');
+  }
+  .menuIcon {
+    line-height: 1.5;
+  }
+}
+:global(.isMini) {
+  &:global(.zh-CN) {
+    .sidebar {
+      :global(.ant-menu-item) {
+        & > a {
+          & > p {
+            white-space: pre-wrap;
+          }
+        }
+      }
+    }
+  }
+  .sidebar {
+    li {
+      &:global(.ant-menu-submenu) {
+        & > div {
+          padding: 0 16px !important;
+          text-align: center;
+          line-height: normal;
+        }
+      }
+      &:global(.ant-menu-item) {
+        &:first-child {
+          margin-top: 16px;
+        }
+        margin-bottom: 24px;
+        overflow: inherit;
+        padding: 0 !important;
+        text-align: center;
+        & > a {
+          line-height: 1.5;
+          word-break: break-all;
+          & > span {
+            line-height: 1.5;
+          }
+          & > p {
+            max-width: 48px;
+            .omit;
+          }
+        }
+        &::before {
+          background-color: transparent;
+        }
+      }
+      &:global(.ant-menu-item) .menuIcon {
+        font-size: 16px;
+        line-height: inherit;
+      }
+      &:global(.ant-menu-item-selected) {
+        background-color: transparent;
+        span,
+        p,
+        svg {
+          color: @light;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.normal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .dashboard-error-boundary {
+    max-width: 800px;
+  }
+}
+.ui-dashboard-transition {
+  position: relative;
+  height: 100%;
+}
+
+.menuIcon {
+  margin-right: 12px;
+}
+
+.wrapper {
+  flex: auto 1 1;
+  overflow: hidden;
+  height: 100vh;
+}
+
+:global(.isMini) .wrapper {
+  height: calc(~'100vh - @{layout-header-height}');
+}
+
+.sidebar {
+  width: 210px;
+  z-index: 2;
+  :global {
+    // strange why vars not working
+    // @menu-item-vertical-margin: 0px;
+    // @menu-item-boundary-margin: 0px;
+    .ant-menu {
+      .ant-menu-item {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+    .ant-layout-sider-children {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+  &-lab {
+    margin-bottom: @ui-status-bar-height;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    position: relative;
+    &::before {
+      width: calc(~'100% - 48px');
+      height: 1px;
+      background: @ui-menu-divider-color;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    :global(.ant-dropdown-menu-item) {
+      color: @text-color;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 0;
+      a {
+        width: 100%;
+        background-color: transparent;
+      }
+      &:hover {
+        background-color: @menu-item-active-bg;
+      }
+    }
+    :global(.ant-dropdown-menu-item-selected) {
+      &,
+      a {
+        color: @heading-color;
+      }
+    }
+  }
+  &-recentMenu {
+    width: 144px;
+    background-color: @ui-sidebar-menu-bg;
+    :global(.ant-dropdown-menu-item-divider) {
+      background-color: @ui-sidebar-menu-divider-color;
+    }
+    :global(.ant-dropdown-menu-item-group-list) {
+      padding-left: 0;
+    }
+    :global(.ant-dropdown-menu-item-group-title) {
+      color: @disabled-color;
+    }
+    :global(.ant-dropdown-menu-item) {
+      p {
+        .omit;
+      }
+    }
+  }
+  .logo {
+    text-align: center;
+    padding: 20px 0;
+    img {
+      width: 50px;
+    }
+  }
+  &-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0 30px;
+    width: 144px;
+    margin: 0 auto;
+    &-dropdown > p {
+      font-weight: bold;
+      color: @heading-color;
+    }
+    &-back {
+      margin-right: 12px;
+      cursor: pointer;
+      &:hover {
+        color: fade(#fff, 85);
+      }
+    }
+    &-dropdown {
+      cursor: pointer;
+      flex: 100% 1 1;
+      display: flex;
+      align-items: center;
+      p {
+        width: 94px;
+        .omit;
+      }
+    }
+    &-expand-icon {
+      margin-left: 8px;
+      &:hover {
+        color: fade(#fff, 85);
+      }
+    }
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    font-size: 20px;
+    line-height: 33px;
+  }
+  li {
+    margin-bottom: 6px;
+    a {
+      display: inline-block;
+    }
+    .menuItem a {
+      color: @text-color;
+    }
+    position: relative;
+
+    &:global(.ant-menu-item) {
+      padding-left: 24px;
+      &::before {
+        height: 0;
+        width: 6px;
+        background-color: @primary-color;
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+      }
+    }
+    &:global(.ant-menu-item-selected) {
+      font-weight: 500;
+      span,
+      svg {
+        color: @heading-color;
+        font-weight: 500;
+      }
+      &::before {
+        height: 100%;
+      }
+    }
+  }
+}
+
+:global(.isMini) .main {
+  .header {
+    height: @ui-min-header-title-height;
+    &-actions {
+      padding-right: 20px;
+      & > button {
+        margin-left: 8px;
+      }
+    }
+  }
+  .content {
+    height: calc(~'100% - @{ui-status-bar-height} - @{ui-min-header-title-height}');
+  }
+}
+
+.main {
+  flex: 1;
+  overflow: hidden;
+  max-height: 100%;
+  .header {
+    height: @ui-header-title-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &-actions {
+      padding-right: 24px;
+      display: flex;
+      align-items: center;
+      & > button {
+        margin-left: 8px;
+      }
+    }
+    h1 {
+      font-weight: 400;
+      line-height: 40px;
+      padding: 10px 20px;
+    }
+    border-bottom: 1px solid #000;
+  }
+
+  .content {
+    height: calc(~'100% - @{ui-status-bar-height} - @{ui-header-title-height}');
+    position: relative;
+  }
+}

@@ -77,7 +77,7 @@ function precedingDot(p) {
   return p.startsWith('.') ? p : `./${p}`;
 }
 
-function normalizeEntry(entry) {
+export function normalizeEntry(entry) {
   return entry
     .replace(/^.(\/|\\)/, '')
     .replace(/(\/|\\)/g, '__')

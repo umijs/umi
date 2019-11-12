@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import signale from 'signale';
 import marked from 'marked';
 import TerminalRenderer from 'marked-terminal';
+import { existsSync, writeFileSync } from 'fs';
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -68,5 +69,24 @@ export function printUmiError(e, opts = {}) {
         .slice(1)
         .join('\n')}`,
     );
+  }
+
+  // 将错误信息输出到文件
+  if (process.env.DUMP_ERROR_PATH) {
+    try {
+      if (existsSync(process.env.DUMP_ERROR_PATH)) {
+        return;
+      }
+      writeFileSync(
+        process.env.DUMP_ERROR_PATH,
+        JSON.stringify({
+          code,
+          message,
+          stack: e.stack,
+        }),
+      );
+    } catch (_) {
+      //
+    }
   }
 }

@@ -1,14 +1,49 @@
-import { existsSync, readdirSync, statSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readdirSync, lstatSync, statSync, readFileSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
 import mkdirp from 'mkdirp';
 import semver from 'semver';
 import crequire from 'crequire';
 import Mustache from 'mustache';
 import upperCamelCase from 'uppercamelcase';
+import rimraf from 'rimraf';
+import { winPath } from 'umi-utils';
 import replaceContent from './replaceContent';
 import { SINGULAR_SENSLTIVE } from '../../../constants';
+import { routeExists } from './util';
 
 const debug = require('debug')('umi-build-dev:getBlockGenerator');
+
+/**
+ * 判断一个路径是否为空
+ * 只要有一个文件就算非空
+ * @param {*} path
+ */
+export const isEmptyFolder = path => {
+  let isEmpty = true;
+
+  if (!existsSync(path)) {
+    return true;
+  }
+  if (lstatSync(path).isFile()) {
+    return false;
+  }
+
+  const files = readdirSync(path);
+  files.forEach(file => {
+    if (!isEmpty) {
+      return;
+    }
+    const stat = lstatSync(join(path, file));
+    if (stat.isFile()) {
+      isEmpty = false;
+      return;
+    }
+    if (stat.isDirectory()) {
+      isEmpty = isEmptyFolder(join(path, file));
+    }
+  });
+  return isEmpty;
+};
 
 export function getNameFromPkg(pkg) {
   if (!pkg.name) {
@@ -17,6 +52,11 @@ export function getNameFromPkg(pkg) {
   return pkg.name.split('/').pop();
 }
 
+/**
+ * 检查两个依赖之间的冲突
+ * @param {*} blockDeps
+ * @param {*} projectDeps
+ */
 function checkConflict(blockDeps, projectDeps) {
   const lacks = [];
   const conflicts = [];
@@ -30,11 +70,31 @@ function checkConflict(blockDeps, projectDeps) {
   return [lacks, conflicts];
 }
 
+/**
+ * 删除重复依赖，projectDeps 中的依赖从 blockDeps 中删除
+ * @param {*} blockDeps
+ * @param {*} projectDeps
+ */
+export function filterDependenciesRepeat(blockDeps, projectDeps) {
+  const filterDependencies = {};
+  Object.keys(blockDeps).forEach(key => {
+    if (!projectDeps[key]) {
+      filterDependencies[key] = blockDeps[key];
+    }
+  });
+  return filterDependencies;
+}
+
 export function getAllBlockDependencies(rootDir, pkg) {
   const { blockConfig = {}, dependencies = {} } = pkg;
   const { dependencies: depBlocks = [] } = blockConfig;
   const allDependencies = {};
 
+  /**
+   * 合并重复依赖
+   * @param {*} blockDeps
+   * @param {*} projectDeps
+   */
   function mergeDependencies(parent, sub) {
     const [lacks, conflicts] = checkConflict(sub, parent);
     if (conflicts.length) {
@@ -65,6 +125,13 @@ export function getAllBlockDependencies(rootDir, pkg) {
   return allDependencies;
 }
 
+/**
+ * 检查依赖项之间的冲突
+ * @param {*}} blockPkgDeps
+ * @param {*} projectPkgDeps
+ * @param {*} blockPkgDevDeps
+ * @param {*} projectPkgAllDeps
+ */
 export function dependenciesConflictCheck(
   blockPkgDeps = {},
   projectPkgDeps = {},
@@ -81,6 +148,11 @@ export function dependenciesConflictCheck(
   };
 }
 
+/**
+ * 获取 mock 的依赖
+ * @param {*} mockContent
+ * @param {*} blockPkg
+ */
 export function getMockDependencies(mockContent, blockPkg) {
   const allDependencies = {
     ...blockPkg.devDependencies,
@@ -101,7 +173,7 @@ export function getMockDependencies(mockContent, blockPkg) {
   return deps;
 }
 
-const singularReg = new RegExp(`[\'\"](@\/|[\\.\/]+)(${SINGULAR_SENSLTIVE.join('|')})\/`, 'g');
+const singularReg = new RegExp(`['"](@/|[\\./]+)(${SINGULAR_SENSLTIVE.join('|')})/`, 'g');
 
 export function parseContentToSingular(content) {
   return content.replace(singularReg, (all, prefix, match) => {
@@ -127,25 +199,36 @@ export default api => {
       this.sourcePath = opts.sourcePath;
       this.dryRun = opts.dryRun;
       this.path = opts.path;
+      this.routePath = opts.routePath || opts.path;
       this.blockName = opts.blockName;
       this.isPageBlock = opts.isPageBlock;
+      this.execution = opts.execution;
       this.needCreateNewRoute = this.isPageBlock;
       this.blockFolderName = upperCamelCase(this.blockName);
       // 这个参数是区块的 index.tsx | js
       this.entryPath = null;
       // 这个参数是当前区块的目录
       this.blockFolderPath = join(paths.absPagesPath, this.path);
+      this.routes = opts.routes || [];
       this.on('error', e => {
         debug(e); // handle the error for aviod throw generator default error stack
       });
     }
 
     async writing() {
-      let targetPath = join(paths.absPagesPath, this.path);
+      let targetPath = winPath(join(paths.absPagesPath, this.path));
       debug(`get targetPath ${targetPath}`);
+
       // for old page block check for duplicate path
       // if there is, prompt for input a new path
+      if (isEmptyFolder(targetPath)) {
+        rimraf.sync(targetPath);
+      }
+
       while (this.isPageBlock && existsSync(targetPath)) {
+        if (this.execution === 'auto') {
+          throw new Error(`path ${this.path} already exist, press input a new path for it`);
+        }
         // eslint-disable-next-line no-await-in-loop
         this.path = (await this.prompt({
           type: 'input',
@@ -161,8 +244,29 @@ export default api => {
         targetPath = join(paths.absPagesPath, this.path);
         debug(`targetPath exist get new targetPath ${targetPath}`);
       }
+
+      // 如果路由重复，重新输入
+      while (this.isPageBlock && routeExists(this.routePath, this.routes)) {
+        if (this.execution === 'auto') {
+          throw new Error(
+            `router path ${this.routePath} already exist, press input a new path for it`,
+          );
+        }
+        // eslint-disable-next-line no-await-in-loop
+        this.routePath = (await this.prompt({
+          type: 'input',
+          name: 'routePath',
+          message: `router path ${this.routePath} already exist, press input a new path for it`,
+          required: true,
+          default: this.routePath,
+        })).routePath;
+        debug(`router path exist get new targetPath ${this.routePath}`);
+      }
+
       this.blockFolderPath = targetPath;
+
       const blockPath = this.path;
+      debug(`blockPath is ${blockPath}`);
 
       applyPlugins('beforeBlockWriting', {
         args: {
@@ -196,7 +300,7 @@ export default api => {
       }
 
       // create container
-      this.entryPath = findJS(targetPath, 'index');
+      this.entryPath = findJS(targetPath, 'index') || findJS(targetPath);
       if (!this.entryPath) {
         this.entryPath = join(targetPath, `index.${this.isTypeScript ? 'tsx' : 'js'}`);
       }
@@ -232,6 +336,8 @@ export default api => {
       // copy block to target
       // you can find the copy api detail in https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy.js
       debug('start copy block file to your project...');
+
+      // 替换 相对路径
       ['src', '@'].forEach(folder => {
         if (!this.isPageBlock && folder === '@') {
           // @ folder not support anymore in new specVersion
@@ -242,10 +348,10 @@ export default api => {
         if (this.isPageBlock) {
           targetFolder = folder === 'src' ? targetPath : paths.absSrcPath;
         } else {
-          targetFolder = join(targetPath, this.blockFolderName);
+          targetFolder = join(dirname(this.entryPath), this.blockFolderName);
         }
         const options = {
-          process(content, targetPath) {
+          process(content, itemTargetPath) {
             content = String(content);
             if (config.singular) {
               content = parseContentToSingular(content);
@@ -257,7 +363,7 @@ export default api => {
               initialValue: content,
               args: {
                 blockPath,
-                targetPath,
+                targetPath: itemTargetPath,
               },
             });
           },

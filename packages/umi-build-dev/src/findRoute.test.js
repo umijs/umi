@@ -1,4 +1,4 @@
-import findRoute from './findRoute';
+import findRoute, { getUrlQuery } from './findRoute';
 
 test('normal', () => {
   expect(
@@ -126,4 +126,78 @@ test('dynamic routes', () => {
       id: '1',
     },
   });
+});
+
+test('nested routes', () => {
+  expect(
+    findRoute(
+      [
+        {
+          path: '/',
+          routes: [
+            {
+              path: '/index.html',
+              name: 'welcome',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              path: '/',
+              name: 'welcome',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              path: '/user(.html)?',
+              name: 'User',
+              icon: 'smile',
+              routes: [
+                {
+                  name: 'aaa',
+                  path: '/user/aaa.html',
+                  icon: 'smile',
+                  exact: true,
+                },
+              ],
+            },
+            {
+              name: 'count',
+              path: '/count.html',
+              icon: 'smile',
+              exact: true,
+            },
+            {
+              exact: true,
+            },
+          ],
+        },
+        {
+          exact: true,
+        },
+      ],
+      '/count.html',
+    ),
+  ).toEqual({
+    name: 'count',
+    path: '/count.html',
+    icon: 'smile',
+    exact: true,
+    params: {},
+  });
+});
+
+test('test getUrlQuery', () => {
+  expect(getUrlQuery('?locale=zh-CN')).toEqual({
+    locale: 'zh-CN',
+  });
+
+  expect(getUrlQuery('?locale=zh-CN&username=umi')).toEqual({
+    locale: 'zh-CN',
+    username: 'umi',
+  });
+
+  expect(getUrlQuery('?')).toEqual({});
+  expect(getUrlQuery('')).toEqual({});
+  expect(getUrlQuery(undefined)).toEqual({});
+  expect(getUrlQuery(null)).toEqual({});
 });

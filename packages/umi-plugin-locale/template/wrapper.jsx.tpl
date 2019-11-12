@@ -7,7 +7,7 @@ import {
   intlShape,
   LangContext,
   _setLocaleContext
-} from 'umi-plugin-locale';
+} from 'umi-plugin-locale/lib/locale';
 
 const InjectedWrapper = (() => {
   let sfc = (props, context) => {
@@ -30,10 +30,11 @@ import 'moment/locale/{{momentLocale}}';
 {{/localeList}}
 
 const baseNavigator = {{{baseNavigator}}};
+const baseSeparator = '{{{baseSeparator}}}';
 const useLocalStorage = {{{useLocalStorage}}};
 
 {{#antd}}
-import { LocaleProvider } from 'antd';
+import { LocaleProvider, version } from 'antd';
 import moment from 'moment';
 {{#defaultMomentLocale}}
 import 'moment/locale/{{defaultMomentLocale}}';
@@ -89,9 +90,20 @@ class LocaleWrapper extends React.Component{
       appLocale = localeInfo['{{defaultLocale}}'] || appLocale;
     }
     window.g_lang = appLocale.locale;
+    window.g_langSeparator = baseSeparator || '-';
     {{#localeList.length}}
     appLocale.data && addLocaleData(appLocale.data);
     {{/localeList.length}}
+
+    // support dynamic add messages for umi ui
+    // { 'zh-CN': { key: value }, 'en-US': { key: value } }
+    const runtimeLocaleMessagesType = typeof runtimeLocale.messages;
+    if (runtimeLocaleMessagesType === 'object' || runtimeLocaleMessagesType === 'function') {
+      const runtimeMessage = runtimeLocaleMessagesType === 'object'
+        ? runtimeLocale.messages[appLocale.locale]
+        : runtimeLocale.messages()[appLocale.locale];
+      Object.assign(appLocale.messages, runtimeMessage || {});
+    }
 
     return appLocale;
   }
@@ -104,13 +116,15 @@ class LocaleWrapper extends React.Component{
 
   render(){
     const appLocale = this.getAppLocale();
+    // react-intl must use `-` separator
+    const reactIntlLocale = appLocale.locale.split(baseSeparator).join('-');
     const LangContextValue = {
-      locale: appLocale.locale,
+      locale: reactIntlLocale,
       reloadAppLocale: this.reloadAppLocale,
     };
     let ret = this.props.children;
     {{#localeList.length}}
-    ret = (<IntlProvider locale={appLocale.locale} messages={appLocale.messages}>
+    ret = (<IntlProvider locale={reactIntlLocale} messages={appLocale.messages}>
       <InjectedWrapper>
         <LangContext.Provider value={LangContextValue}>
           <LangContext.Consumer>{(value) => {
@@ -122,9 +136,20 @@ class LocaleWrapper extends React.Component{
     </IntlProvider>)
     {{/localeList.length}}
     {{#antd}}
-     return (<LocaleProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
+     // avoid antd ConfigProvider not found
+     let AntdProvider = LocaleProvider;
+     const [major, minor] = `${version || ''}`.split('.');
+     // antd 3.21.0 use ConfigProvider not LocaleProvider
+     const isConfigProvider = Number(major) > 3 || (Number(major) >= 3 && Number(minor) >= 21);
+     if (isConfigProvider) {
+       try {
+         AntdProvider = require('antd/lib/config-provider').default;
+       } catch (e) {}
+     }
+
+     return (<AntdProvider locale={appLocale.antd ? (appLocale.antd.default || appLocale.antd) : defaultAntd}>
       {ret}
-    </LocaleProvider>);
+    </AntdProvider>);
     {{/antd}}
     return ret;
   }

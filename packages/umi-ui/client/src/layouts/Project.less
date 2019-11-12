@@ -1,0 +1,31 @@
+.project-l {
+  &-header {
+    padding: 0;
+    border-bottom: 1px solid @border-color-split;
+    :global(.ant-divider) {
+      display: none;
+    }
+    :global(.ant-page-header-back) {
+      padding: 22px;
+      border-right: 1px solid @border-color-split;
+      &:hover {
+        .anticon {
+          color: @icon-color-hover;
+        }
+      }
+    }
+    :global(.ant-page-header-heading-title) {
+      padding: 22px 0;
+    }
+    :global(.ant-page-header-heading) {
+      // padding-left: 24px;
+    }
+    :global(.ant-page-header-back-button) {
+      color: @light;
+      &:hover,
+      &:focus {
+        color: @icon-color-hover;
+      }
+    }
+  }
+}

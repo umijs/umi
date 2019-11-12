@@ -1,6 +1,9 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import { Stats, Configuration } from 'webpack';
+import * as IUi from './ui';
+import { DefaultMethods } from 'signale';
+import * as lodash from 'lodash';
+import * as IWebpack from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
 
 /**
@@ -13,7 +16,15 @@ declare enum API_TYPE {
   EVENT,
 }
 
-export { IConfig, IPlugin, IRoute, IWebpackChainConfig };
+// for multiStats, multiply webpack configs
+export interface MultiStats {
+  stats: IWebpack.Stats[];
+  hash: string;
+}
+// for ui plugin developer
+type IUiApi = IUi.IApi;
+
+export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi, IUiApi };
 
 /**
  * System level API
@@ -159,12 +170,18 @@ interface IWriteTmpFile {
   (file: string, content: string): void;
 }
 
+interface IGetRoutes {
+  (): IRoute[];
+}
+
 interface IWinPath {
   (path: string): string;
 }
 
+type IRelativeToTmp = (path: string) => string;
+
 interface IFind {
-  (baseDir: string, fileNameWithoutExtname: string): string | null;
+  (baseDir: string, fileNameWithoutExtname?: string): string | null;
 }
 
 interface ICompatDirname<T = any> {
@@ -176,11 +193,16 @@ interface ICompatDirname<T = any> {
  * https://umijs.org/plugin/develop.html#event-class-api
  */
 export interface IBeforeDevServerFunc {
-  (args: { service: any }): void;
+  (args: { server: any }): void;
 }
 
 export interface IAfterDevServerFunc {
-  (args: { service: any }): void;
+  (
+    args: {
+      server: any;
+      devServerPort: number;
+    },
+  ): void;
 }
 
 export interface IBeforeBlockWritingFunc {
@@ -222,7 +244,7 @@ interface IEventAsync {
 }
 
 export interface IOnDevCompileDoneFunc {
-  (args: { isFirstCompile: boolean; stats: Stats }): void;
+  (args: { isFirstCompile: boolean; stats: IWebpack.Stats }): void;
 }
 
 interface IOnDevCompileDone {
@@ -238,7 +260,7 @@ interface IOnOptionChange {
 }
 
 export interface IOnBuildSuccessFunc {
-  (args: { stats: Stats[] }): void;
+  (args: { stats: IWebpack.Stats[] }): void;
 }
 
 interface IOnBuildSuccess {
@@ -250,7 +272,7 @@ interface IOnBuildSuccessAsync {
 }
 
 export interface IOnBuildFailFunc {
-  (args: { stats: Stats[]; err: Error }): void;
+  (args: { stats: IWebpack.Stats[]; err: Error }): void;
 }
 
 interface IOnBuildFail {
@@ -275,6 +297,34 @@ export interface IOnPatchRouteFunc {
 
 interface IOnPatchRoute {
   (fn: IOnPatchRouteFunc): void;
+}
+
+interface IAction<T = object> {
+  type: string;
+  payload?: T;
+  lang?: IUi.ILang;
+}
+
+export type ISend = (action: IAction<{}>) => void;
+export type ISuccess<T = object> = (payload: T) => void;
+export type IFailure<T = object> = (payload: T) => void;
+type IUiLogType = 'error' | 'info';
+export type IUiLog = (type: IUiLogType, payload: string) => void;
+
+export interface IOnUISocketFunc {
+  (
+    args: {
+      action: IAction;
+      send: ISend;
+      success: ISuccess<{}>;
+      failure: IFailure<{}>;
+      log: IUiLog;
+    },
+  ): void;
+}
+
+export interface IOnUISocket {
+  (fn: IOnUISocketFunc): void;
 }
 
 export interface IChangeWebpackConfigFunc<T, U> {
@@ -382,7 +432,9 @@ export interface IApi {
   config: IConfig;
   cwd: string;
   pkg: IPkg;
-  webpackConfig: Configuration;
+  webpackConfig: IWebpack.Configuration;
+  service: any;
+  locale: any;
   paths: {
     cwd: string;
     outputPath: string;
@@ -418,19 +470,13 @@ export interface IApi {
    * Tool class API
    * https://umijs.org/plugin/develop.html#tool-class-api
    */
-  log: {
-    info: ILog;
-    warn: ILog;
-    error: ILog<string | Error>;
-    fatal: ILog;
-    success: ILog;
-    complete: ILog;
-    pending: ILog;
-    log: ILog;
-  };
+  log: { [key in DefaultMethods]: ILog<any> };
+  _: typeof lodash;
   winPath: IWinPath;
+  relativeToTmp: IRelativeToTmp;
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
+  getRoutes: IGetRoutes;
   findJS: IFind;
   findCSS: IFind;
   compatDirname: ICompatDirname;
@@ -455,6 +501,8 @@ export interface IApi {
   onHTMLRebuild: IOnHTMLRebuild;
   onGenerateFiles: IOnGenerateFiles;
   onPatchRoute: IOnPatchRoute;
+  onUISocket: IOnUISocket;
+  onRouteChange: (callback: () => void) => void;
 
   /**
    * Application class API
@@ -477,15 +525,16 @@ export interface IApi {
   addEntryImport: IAdd<IAddImportOpts>;
   addEntryCodeAhead: IAdd<string>;
   addEntryCode: IAdd<string>;
+  addUIPlugin: IAdd<string>;
   addRouterImport: IAdd<IAddImportOpts>;
   addRouterImportAhead: IAdd<IAddImportOpts>;
-  addRendererWrapperWithComponent: IAdd<IAddImportOpts>;
+  addRendererWrapperWithComponent: IAdd<string, () => string>;
   addRendererWrapperWithModule: IAdd<string>;
   modifyEntryRender: IModify<string>;
   modifyEntryHistory: IModify<string>;
   modifyRouteComponent: IModify<string, IModifyRouteComponentArgs>;
   modifyRouterRootComponent: IModify<string>;
-  modifyWebpackConfig: IModify<Configuration>;
+  modifyWebpackConfig: IModify<IWebpack.Configuration>;
   modifyAFWebpackOpts: IModify<IAFWebpackConfig>;
   chainWebpackConfig: IChangeWebpackConfig<IWebpackChainConfig, IAFWebpackConfig>;
   addMiddleware: IAdd<IMiddlewareFunction>;
@@ -495,6 +544,8 @@ export interface IApi {
   addVersionInfo: IAdd<string>;
   addRuntimePlugin: IAdd<string>;
   addRuntimePluginKey: IAdd<string>;
+  addBlockUIResource: IAdd<object>;
+  modifyBlockUIResources: IModify<object[]>;
   _modifyBlockPackageJSONPath: IModify<string>;
   _modifyBlockDependencies: IModify<IBlockDependencies>;
   _modifyBlockFile: IModify<string, IModifyBlockFileArgs>;

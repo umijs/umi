@@ -25,6 +25,7 @@ export default () => {
     <div style={{ margin: 16, lineHeight: 2 }}>
       <button
         style={{ marginRight: 8 }}
+        id="btn_en"
         onClick={() => {
           setLocale('en-US');
         }}
@@ -32,11 +33,20 @@ export default () => {
         en-US
       </button>
       <button
+        id="btn_zh"
         onClick={() => {
           setLocale('zh-CN');
         }}
       >
         zh-CN
+      </button>
+      <button
+        id="btn_sk"
+        onClick={() => {
+          setLocale('sk');
+        }}
+      >
+        sk
       </button>
       <br />
       <FormattedMessage id="test" values={{ name: 'antd' }} />

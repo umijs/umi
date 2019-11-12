@@ -42,6 +42,15 @@ $ y debug .test.(t|j)s
 
 # Test specified file and watch
 $ y debug getMockData.test.js -w
+
+# Test specified package
+$ PACKAGE=umi-mock y debug
+
+# Don't run e2e test
+$ E2E=none y debug
+
+# Generate coverage
+$ y debug --coverage
 ```
 
 Run `umi dev` in examples/func-test.
@@ -66,7 +75,10 @@ $ COMPRESS=none umi build
 Publish to npm.
 
 ```bash
-# Can't use yarn for this command.
+# Generator the changelog first.
+$ y changelog
+
+# Do not use yarn for this command.
 $ n run publish
 ```
 
@@ -82,6 +94,42 @@ Deploy doc to [umijs.org](https://umijs.org/).
 $ y doc:deploy
 ```
 
-## Tips
+Debug `umi ui` in local.
 
-Please use node@10, node@11 is not supported.
+```bash
+# First, run umi dev --watch to start static dev server: http://localhost:8002/
+$ y ui:build --watch
+```
+
+If the server starts on a different port, such as 8003 or 8004, this is because another process is currently running on port 8002.
+
+It's a better idea to find the running process and kill it.
+
+```bash
+# Mac/Linux: 
+$ lsof -i tcp:3000
+# Find the ID of the process
+$ kill <process id>
+
+# Windows
+$ netstat -ano | findstr :3000
+# Find the ID of the process
+$ taskkill /PID typeyourPIDhere /F
+```
+
+Then,
+
+```
+# Then run umi ui under a umi project.
+$ LOCAL_DEBUG=1 umi ui
+
+# if want to debug for more defail, using
+$ LOCAL_DEBUG=1 DEBUG=umiui:UmiUI* umi ui
+
+# Or Run `umi dev --ui` in examples/func-test.
+$ umi dev --ui
+```
+
+PR rebase automatically using `/rebase` comment.
+
+![image](https://user-images.githubusercontent.com/13595509/65825000-14069380-e2a4-11e9-9186-e3c31d265b5f.png)

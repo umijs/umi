@@ -2,17 +2,18 @@ import getConfig from 'af-webpack/getConfig';
 import assert from 'assert';
 import chalk from 'chalk';
 import { IExportSSROpts } from 'umi-types/config';
-import { IApi } from 'umi-types';
+import { IApi, IWebpack } from 'umi-types';
 import nodeExternals from 'webpack-node-externals';
 
 const debug = require('debug')('umi-build-dev:getWebpackConfig');
 
 interface IOpts {
   ssr?: IExportSSROpts;
+  watch?: boolean;
 }
 
 export default function(service: IApi, opts: IOpts = {}) {
-  const { ssr } = opts;
+  const { ssr, watch } = opts;
   const { config } = service;
 
   const afWebpackOpts = service.applyPlugins('modifyAFWebpackOpts', {
@@ -39,7 +40,7 @@ export default function(service: IApi, opts: IOpts = {}) {
     }
   };
 
-  const webpackConfig = service.applyPlugins('modifyWebpackConfig', {
+  const webpackConfig: IWebpack.Configuration = service.applyPlugins('modifyWebpackConfig', {
     initialValue: getConfig({
       ...afWebpackOpts,
       ssr,
@@ -55,22 +56,39 @@ export default function(service: IApi, opts: IOpts = {}) {
     );
     const nodeExternalsOpts = {
       whitelist: [
-        /\.(css|less|sass|scss)$/,
+        /\.(css|less|sass|scss|styl(us)?)$/,
         /^umi(\/.*)?$/,
         'umi-plugin-locale',
         ...(typeof ssr === 'object' && ssr.externalWhitelist ? ssr.externalWhitelist : []),
       ],
+      // for unit test
+      ...(typeof ssr === 'object' && ssr.nodeExternalsOpts ? ssr.nodeExternalsOpts : {}),
     };
+
+    webpackConfig.target = 'node';
     debug(`nodeExternalOpts:`, nodeExternalsOpts);
-    webpackConfig.externals = nodeExternals(nodeExternalsOpts);
+    const defaultExternals =
+      (typeof ssr === 'object' && ssr.disableExternalWhiteList) || webpackConfig.externals || [];
+    webpackConfig.externals =
+      typeof ssr === 'object' && ssr.disableExternal
+        ? defaultExternals
+        : [nodeExternals(nodeExternalsOpts)];
     webpackConfig.output.libraryTarget = 'commonjs2';
     webpackConfig.output.filename = '[name].server.js';
     webpackConfig.output.chunkFilename = '[name].server.async.js';
     webpackConfig.plugins.push(
       new (require('write-file-webpack-plugin'))({
-        test: /umi\.server\.js/,
+        // not only `umi.server.js`
+        // if addEntry across chainWebpack
+        test: /\.server\.js/,
       }),
     );
+  }
+
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!isDev && watch) {
+    webpackConfig.devtool = 'eval-source-map';
+    webpackConfig.watch = true;
   }
 
   return webpackConfig;

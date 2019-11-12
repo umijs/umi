@@ -208,7 +208,42 @@ export default Header;
 
 ### document is not defined, navigator is not defined, \* is not not defined
 
-原因：umiJS SSR 先执行服务端代码，再执行客户端。`document`、`navigator` 等对象只在客户端使用。解决方案：
+原因：Umi SSR 先执行服务端代码，再执行客户端。`document`、`navigator` 等对象只在客户端使用。解决方案：
 
 1. 建议将使用到客户端对象的代码，放在 `componentDidMount`、`useEffect` 中（服务端不会执行），避免过多副作用代码影响服务端渲染。
 1. 在这些对象前加上判断 `typeof navigator !== 'undefined'` 或 `typeof document !== 'undefined'`
+
+### SSR 没有样式，样式加载不对
+
+原因：Umijs 配置的 [publicPath](https://umijs.org/zh/config/#publicpath) 未匹配服务端的路由。导致访问 `/umi.js` 等资源路径时，未正确映射到指定文件。解决方案：
+
+1. 试着访问链接 `http://yourHost/umi.js` 或 `http://yourHost/dist/umi.js` 看哪个链接能返回正确的 js/css 文件内容。
+1. 对应修改 `publicPath` 路径。
+
+### styled-components 编译失败
+
+添加 [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components) babel 插件。[#3508](https://github.com/umijs/umi/issues/3508#issuecomment-546610547)
+
+```js
+// .umirc.js
+extraBabelPlugins: [
+  "babel-plugin-styled-components"
+],
+```
+
+## UMI UI
+
+### Umi 版本过低，请升级到最新
+
+Umi UI 需要 umi@2.9 或以上，如果本地项目的版本不匹配，会报这个错误。
+
+解决方案就是升级到最新版。
+
+* 如果 package.json 中的 umi 依赖是能自动匹配到最新版的，比如 `^2.9` 或者 `2.x`，删除 `node_modules` 重装依赖即可
+* 如果 package.json 中的 umi 依赖不能匹配到最新版，比如 `~2.8` 或者 `2.8.0-beta.1`，那么需改成 `^2.9` 或其他能匹配到最新版的写法，然后删除 `node_modules` 再重装依赖
+
+### EACCES: permission denied create-umi
+
+Umi UI 创建项目需要有执行的权限。
+
+解决方案是将提示的路径权限提升，给予执行权限。

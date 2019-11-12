@@ -31,6 +31,7 @@ export default function(api) {
         });
     } catch (e) {
       log.error(`Generate failed, ${e.message}`);
+      console.log(e);
     }
   }
 

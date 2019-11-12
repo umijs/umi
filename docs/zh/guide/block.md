@@ -2,11 +2,11 @@
 
 <Badge text="2.3.0+ 中支持"/>
 
-在 umi 中，区块是指页面级别的可复用的代码。umi 定义了一个区块的规范，你可以通过 umi 能够快速简单的在你的项目中添加区块，用于快速的开始一个页面的开发。
+在 umi 中，区块是快速搭建页面的代码片段。umi 定义了一个区块的规范，你可以开发自己的区块，也可以使用其它来源的区块。通过 umi 你能够快速简单的在你的项目中添加 umi 区块，用于快速初始化代码。
 
 ## 使用区块
 
-在项目根目录使用如下命令可以添加一个区块到到你的项目中：
+在项目根目录使用如下命令可以添加一个区块到你的项目中：
 
 ```bash
 $ umi block add [block url]  --path=[target path]
@@ -60,7 +60,7 @@ npx umi block add DashboardAnalysis --npm-client cnpm
  npx umi block add DashboardAnalysis  --registry myregistryUrl
 ```
 
-> 注：在 umi 2.7 之前，同一个路径下只能添加一个区块，区块会作为整个页面的代码添加到你的项目中。在 2.7 及它之后我们支持重复添加区块，或者添加到当前项目中已有的页面中。对于原有的区块你可以通过在区块的 `package.json` 中配置 `blockConfig.specVersion` 为 `0.1` 来兼容或者通过 `--mode` 来指定添加的方式。
+> 注：在 umi 2.7 之前，同一个路径下只能添加一个区块，区块会作为整个页面的代码添加到你的项目中。在 2.7 及它之后我们支持重复添加区块，或者添加到当前项目中已有的页面中。对于原因的区块你可以通过在区块的 `package.json` 中配置 `blockConfig.specVersion` 为 `0.1` 来兼容或者通过 `--page` 来指定添加的方式。
 
 ## 区块开发
 
@@ -69,7 +69,7 @@ npx umi block add DashboardAnalysis --npm-client cnpm
 你可以通过 [create-umi](https://github.com/umijs/create-umi) 快速创建一个区块的模板：
 
 ```bash
-$ yarn create umi --block
+$ yarn create umi --type=block
 ```
 
 区块的目录结构如下：
@@ -126,6 +126,33 @@ $ yarn create umi --block
 - PAGE_NAME `hello-block`
 - PAGE_NAME_UPPER_CAMEL_CASE `HelloBlock`
 - BLOCK_NAME_CAMEL_CASE `testHelloHelloBlock`
+
+### 区块配置
+
+在区块的 `package.json` 中你可以添加一些配置来指定一些特殊的逻辑，该字段通常是可以缺省的。
+
+配置示例说明：
+
+```json
+{
+  "name": "youblockname",
+  "blockConfig": {
+    // 区块标准版本，默认是 1，当它为 0.1 时默认会把区块当做页面级区块添加
+    // 未来不再推荐配置该字段，添加区块是你可以通过 --page 参数来实现作为页面添加
+    "specVersion": "0.1",
+    // 区块可以依赖其它区块，通常用于小的区块组成页面级的区块时使用
+    // dependencies 中的路径相对于区块 git 仓库根目录
+    // 添加依赖配置后你可以在区块中使用类似 `import SubBlock1 from SubBlock1` 的方式来引用其它区块
+    "dependencies": ["path/to/subBlock1", "path/to/SubBlock2"]
+  },
+  "dependencies": {
+    // 区块的依赖，在添加区块时会自动检测依赖冲突和安装缺少的依赖
+    "antd": "^3.0.0"
+  }
+}
+```
+
+你可以参考 umi 的官方示例 [demo-with-dependencies](https://github.com/umijs/umi-blocks/tree/master/demo-with-dependencies) 了解更多。
 
 ### 区块调试
 

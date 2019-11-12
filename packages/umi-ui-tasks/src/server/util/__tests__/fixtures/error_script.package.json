@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "echo 'love is love' && umi build"
+  }
+}

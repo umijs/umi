@@ -112,6 +112,8 @@ export default {
 
 指定输出路径。
 
+> 不允许设置 `src` 、 `public` 、 `pages` 、 `mock` 、 `config` 等约定目录
+
 ### base
 
 - 类型：`String`
@@ -262,17 +264,54 @@ export default {
 
 用于服务端渲染（Server-Side Render）。
 
-开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 文件。
+开启后，生成客户端静态文件的同时，也会生成 `umi.server.js` 和 `ssr-client-mainifest.json` 文件。
 
 ```js
 export default {
   ssr: {
     // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
+    externalWhitelist?: [];
+    // webpack-node-externals 配置，排除 whiteList
+    nodeExternalsOpts?: {};
+    // 客户端资源 manifest 文件名，默认是 ssr-client-mainifest.json
+    manifestFileName: 'ssr-client-mainifest.json',
+    // 关闭 ssr external，全量打入 umi.server.js
+    disableExternal: false,
+    // 关闭 ssr external 时，白名单模块将进入 externa
+    // 可用于 react-helmet, react-document-title
+    disableExternalWhiteList?: string[] | object;
   },
-  // 需要开启
-  manifest: {},
 };
+```
+
+其中 `ssr-client-mainifest.json` 是按路由级别的资源映射文件，例如：
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 在 Node.js 中使用如下：
@@ -297,6 +336,10 @@ async function UmiServerRender(ctx) {
     rootContainer,
     // 页面模板
     htmlElement,
+    // 匹配成功的前端路由，比如 /user/:id
+    matchPath,
+    // 初始化 store 数据，若使用 dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // 元素渲染成 html
@@ -326,12 +369,17 @@ const News = props => {
  * @param {*}
  * {
  *  route （当前路由信息）
+ *  location (history 对象有 location, query, ...)
  *  store（需开启 `dva: true`，`store.dispatch()` 会返回 Promise）
  *  isServer (是否为服务端执行环境)
+ *  req (HTTP Request 对象，只存在于 Server 端)
+ *  res (HTTP Response 对象，只存在于 Server 端)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer }) => {
+News.getInitialProps = async ({ route, location, store, isServer, req, res }) => {
   const { id } = route.params;
+  // ?locale=en-US => query: { locale: 'en-US' }
+  const { query } = location;
   const data = [
     {
       id: 0,
@@ -491,6 +539,10 @@ const config = {
 
 指定项目目录下的文件不走 css modules，格式为数组，项必须是 css 或 less 文件。
 
+### generateCssModulesTypings
+
+开启针对在 typescript 文件中引用的 css modules 文件，自动生成对应的.d.ts 文件，支持 css, less, sass 格式.
+
 ### copy
 
 定义需要单纯做复制的文件列表，格式为数组，项的格式参考 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin) 的配置。
@@ -520,7 +572,7 @@ const config = {
 }
 ```
 
-然后访问 /api/users` 就能访问到 http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
+然后访问 `/api/users` 就能访问到 [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
 
 ### sass
 
@@ -553,7 +605,7 @@ const config = {
 配置传给 [autoprefixer](https://github.com/postcss/autoprefixer#options) 的配置项。
 
 - 类型：`Object`
-- 默认：`{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2019' }`
+- 默认：`{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2009' }`
 
 如果你想兼容旧版本 iOS Safari 的 flexbox，应该需要配置上 `flexbox: true`。
 

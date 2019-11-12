@@ -1,0 +1,139 @@
+.container {
+  padding: 20px;
+  height: 100%;
+  overflow: auto;
+  .card {
+    margin-bottom: 16px;
+    min-width: 282px;
+  }
+}
+
+.close {
+  transition: all 0.3s;
+  &:hover {
+    color: fade(#fff, 85);
+  }
+}
+
+.card {
+  :global {
+    .ant-card-head {
+      border-bottom: none;
+    }
+  }
+  &-action {
+    :global {
+      .ant-card-head-title {
+        padding: 26px 0;
+      }
+      .ant-card-body {
+        border-top: 1px solid #1d1d26;
+        text-align: center;
+        padding: 0;
+        cursor: pointer;
+        color: fade(#fff, 65);
+        transition: all 0.3s;
+        &:hover {
+          background-color: #383847;
+        }
+        & > div {
+          padding: 16px 0;
+        }
+      }
+    }
+  }
+}
+
+.main {
+  display: flex;
+  p {
+    font-size: 12px;
+  }
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 3px;
+  margin-right: 12px;
+  h4 {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 22px;
+    margin-bottom: 4px;
+  }
+  p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 20px;
+  }
+  &.build {
+    background: url('https://gw.alipayobjects.com/zos/basement_prod/6000d285-334d-4513-a405-2d9f890f56e9.svg');
+    background-size: contain;
+    background-position: center;
+  }
+  &.dev {
+    background: url('https://gw.alipayobjects.com/zos/basement_prod/6000d285-334d-4513-a405-2d9f890f56e9.svg');
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+.future {
+  margin: 26px auto;
+  text-align: center;
+  div {
+    margin-bottom: 7px;
+    font-size: 16px;
+  }
+  p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 22px;
+  }
+}
+
+.welcome {
+  :global {
+    .ant-card-body {
+      padding: 24px;
+      h2 {
+        font-size: 24px;
+        color: #fff;
+        line-height: 32px;
+        margin-bottom: 24px;
+      }
+      p {
+        font-size: 24px;
+        color: #fff;
+        line-height: 32px;
+        margin-bottom: 72px;
+      }
+      div {
+        font-size: 14px;
+        color: rgba(255, 252, 252, 0.65);
+        line-height: 22px;
+      }
+    }
+  }
+}
+
+:global(.isMini) {
+  :global {
+    .ant-card-body {
+      h2 {
+        margin-bottom: 4px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      p {
+        margin-bottom: 8px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      div {
+        font-size: 12px;
+      }
+    }
+  }
+}

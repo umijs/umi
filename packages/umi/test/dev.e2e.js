@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import got from 'got';
 import FormData from 'form-data';
 import { existsSync } from 'fs';
+import { winPath } from 'umi-utils';
 import { join } from 'path';
 
 describe('normal', () => {
@@ -10,11 +11,20 @@ describe('normal', () => {
   const port = 12341;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox'],
+    });
   });
 
   beforeEach(async () => {
     page = await browser.newPage();
+  });
+
+  afterAll(done => {
+    if (browser) {
+      browser.close();
+    }
+    done();
   });
 
   it('index page', async () => {
@@ -151,38 +161,5 @@ describe('normal', () => {
     await page.waitForSelector('h1');
     const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(indexText).toEqual('index');
-  });
-
-  afterAll(() => {
-    browser.close();
-  });
-});
-
-describe('ssr', () => {
-  // port: 12342, not use puppeteer
-  beforeEach(async () => {
-    // TODO: maybe using umi/server, reset global
-    global.window = {};
-  });
-
-  it('routes', async () => {
-    const ssrFile = join(__dirname, 'fixtures', 'dev', 'ssr', 'dist', 'umi.server.js');
-    expect(existsSync(ssrFile)).toBeTruthy();
-
-    const serverRender = require('./fixtures/dev/ssr/dist/umi.server');
-    // export react-dom/server to avoid React hooks ssr error
-    const { ReactDOMServer } = serverRender;
-
-    const ctx = {
-      req: {
-        url: '/',
-      },
-    };
-
-    const { rootContainer } = await serverRender.default(ctx);
-    const ssrHtml = ReactDOMServer.renderToString(rootContainer);
-
-    expect(ssrHtml).toContain('Hello UmiJS SSR');
-    expect(ssrHtml).toContain('<ul><li>Alice</li><li>Jack</li><li>Tony</li></ul>');
   });
 });

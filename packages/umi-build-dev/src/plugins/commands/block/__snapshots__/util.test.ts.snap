@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gen router config 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "/",
+    "parentKey": null,
+    "title": "/",
+    "value": "/",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "key": "/data/new",
+        "parentKey": "/data",
+        "title": "data/new",
+        "value": "/data/new",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "key": "/data/:dataId/edit",
+            "parentKey": "/data/:dataId",
+            "title": "data/:dataId/edit",
+            "value": "/data/:dataId/edit",
+          },
+        ],
+        "key": "/data/:dataId",
+        "parentKey": "/data",
+        "title": "data/:dataId",
+        "value": "/data/:dataId",
+      },
+    ],
+    "key": "/data",
+    "parentKey": null,
+    "title": "data",
+    "value": "/data",
+  },
+  Object {
+    "children": Array [],
+    "key": "/login",
+    "parentKey": null,
+    "title": "login",
+    "value": "/login",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "key": "/project/new",
+        "parentKey": "/project",
+        "title": "project/new",
+        "value": "/project/new",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "key": "/project/:projectId/edit",
+            "parentKey": "/project/:projectId",
+            "title": "/edit",
+            "value": "/project/:projectId/edit",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "key": "/project/:projectId/safeModel/sampleset/:samplesetId/filter",
+                        "parentKey": "/project/:projectId/safeModel/sampleset/:samplesetId",
+                        "title": "/sampleset/:samplesetId/filter",
+                        "value": "/project/:projectId/safeModel/sampleset/:samplesetId/filter",
+                      },
+                    ],
+                    "key": "/project/:projectId/safeModel/sampleset/:samplesetId",
+                    "parentKey": "/project/:projectId/safeModel/sampleset",
+                    "title": "/sampleset/:samplesetId",
+                    "value": "/project/:projectId/safeModel/sampleset/:samplesetId",
+                  },
+                ],
+                "key": "/project/:projectId/safeModel/sampleset",
+                "parentKey": "/project/:projectId/safeModel",
+                "title": "/sampleset",
+                "value": "/project/:projectId/safeModel/sampleset",
+              },
+              Object {
+                "children": Array [],
+                "key": "/project/:projectId/safeModel/virtualFuse",
+                "parentKey": "/project/:projectId/safeModel",
+                "title": "/virtualFuse",
+                "value": "/project/:projectId/safeModel/virtualFuse",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "key": "/project/:projectId/safeModel/securityModel/new",
+                    "parentKey": "/project/:projectId/safeModel/securityModel",
+                    "title": "/securityModel/new",
+                    "value": "/project/:projectId/safeModel/securityModel/new",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "key": "/project/:projectId/safeModel/securityModel/:modelId/edit",
+                        "parentKey": "/project/:projectId/safeModel/securityModel/:modelId",
+                        "title": "/securityModel/:modelId/edit",
+                        "value": "/project/:projectId/safeModel/securityModel/:modelId/edit",
+                      },
+                    ],
+                    "key": "/project/:projectId/safeModel/securityModel/:modelId",
+                    "parentKey": "/project/:projectId/safeModel/securityModel",
+                    "title": "/securityModel/:modelId",
+                    "value": "/project/:projectId/safeModel/securityModel/:modelId",
+                  },
+                ],
+                "key": "/project/:projectId/safeModel/securityModel",
+                "parentKey": "/project/:projectId/safeModel",
+                "title": "/securityModel",
+                "value": "/project/:projectId/safeModel/securityModel",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "key": "/project/:projectId/safeModel/virtualDataSet/new",
+                    "parentKey": "/project/:projectId/safeModel/virtualDataSet",
+                    "title": "/virtualDataSet/new",
+                    "value": "/project/:projectId/safeModel/virtualDataSet/new",
+                  },
+                  Object {
+                    "children": Array [],
+                    "key": "/project/:projectId/safeModel/virtualDataSet/:sampleId",
+                    "parentKey": "/project/:projectId/safeModel/virtualDataSet",
+                    "title": "/virtualDataSet/:sampleId",
+                    "value": "/project/:projectId/safeModel/virtualDataSet/:sampleId",
+                  },
+                ],
+                "key": "/project/:projectId/safeModel/virtualDataSet",
+                "parentKey": "/project/:projectId/safeModel",
+                "title": "/virtualDataSet",
+                "value": "/project/:projectId/safeModel/virtualDataSet",
+              },
+            ],
+            "key": "/project/:projectId/safeModel",
+            "parentKey": "/project/:projectId",
+            "title": "/safeModel",
+            "value": "/project/:projectId/safeModel",
+          },
+        ],
+        "key": "/project/:projectId",
+        "parentKey": "/project",
+        "title": "project/:projectId",
+        "value": "/project/:projectId",
+      },
+    ],
+    "key": "/project",
+    "parentKey": null,
+    "title": "project",
+    "value": "/project",
+  },
+]
+`;

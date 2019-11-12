@@ -1,12 +1,18 @@
 {
   "name": "umi-types",
-  "version": "0.3.13",
+  "version": "0.5.4",
   "description": "Type definitions for umi.",
   "types": "index",
   "dependencies": {
     "@types/cheerio": "^0.22.10",
+    "@types/debug": "^4.1.5",
+    "@types/lodash": "^4.14.136",
+    "@types/react": "^16.8.25",
+    "@types/react-redux": "^7.1.2",
+    "@types/signale": "^1.2.1",
     "@types/webpack": "^4.4.23",
-    "@types/webpack-chain": "^5.0.1"
+    "@types/webpack-chain": "^5.0.1",
+    "@types/xterm": "^3.0.0"
   },
   "repository": {
     "type": "git",

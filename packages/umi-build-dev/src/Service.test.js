@@ -1,6 +1,8 @@
 import { join } from 'path';
 import pick from 'lodash/pick';
 import { winPath } from 'umi-utils';
+import { writeFileSync } from 'fs';
+import rimraf from 'rimraf';
 
 import Service from './Service';
 
@@ -358,9 +360,41 @@ describe('Service', () => {
           });
         },
       },
+      {
+        id: 'user:aa',
+        apply: api => {
+          api.registerPlugin({
+            id: 'aa',
+            apply(api) {
+              api.registerPlugin({
+                id: 'bb',
+                apply() {},
+              });
+            },
+          });
+          api.registerPlugin({
+            id: 'aaa',
+            apply(api) {
+              api.registerPlugin({
+                id: 'bbb',
+                apply() {},
+              });
+            },
+          });
+        },
+      },
     ];
     service.initPlugins();
-    expect(service.plugins.map(p => p.id)).toEqual(['user:a', 'a', 'b']);
+    expect(service.plugins.map(p => p.id)).toEqual([
+      'user:a',
+      'a',
+      'b',
+      'user:aa',
+      'aa',
+      'bb',
+      'aaa',
+      'bbb',
+    ]);
   });
 
   it('registerPlugin failed without id or apply', () => {
@@ -439,7 +473,7 @@ describe('Service', () => {
     );
     service.runCommand('build');
 
-    expect(service.config).toEqual({ ssr: true, manifest: {} });
+    expect(service.config).toEqual({ ssr: true });
     expect(service.webpackConfig).toBeTruthy();
     expect(
       pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
@@ -475,5 +509,48 @@ describe('Service', () => {
       filename: '[name].server.js',
       chunkFilename: '[name].server.async.js',
     });
+  });
+
+  it('runCommand ssr disableExternal', () => {
+    const service = new Service({
+      cwd: join(fixtures, 'plugin-ssr', 'disableExternal'),
+    });
+    const callback = jest.fn(() => {});
+    service.registerCommand(
+      'build',
+      {
+        webpack: {},
+      },
+      callback,
+    );
+    service.runCommand('build');
+
+    expect(service.ssrWebpackConfig.externals).toEqual([]);
+    expect(service.webpackConfig).toBeTruthy();
+    expect(
+      pick(service.ssrWebpackConfig.output, ['libraryTarget', 'filename', 'chunkFilename']),
+    ).toEqual({
+      libraryTarget: 'commonjs2',
+      filename: '[name].server.js',
+      chunkFilename: '[name].server.async.js',
+    });
+  });
+
+  it('getRoutes', () => {
+    const cwd = join(fixtures, 'get-routes');
+    const service = new Service({
+      cwd,
+    });
+    service.init();
+    expect(service.getRoutes()).toEqual([
+      { path: '/', exact: true, component: './pages/index.js' },
+    ]);
+    const usersPagePath = join(cwd, 'pages', 'users.js');
+    writeFileSync(usersPagePath, '.keep', 'utf-8');
+    expect(service.getRoutes()).toEqual([
+      { path: '/', exact: true, component: './pages/index.js' },
+      { path: '/users', exact: true, component: './pages/users.js' },
+    ]);
+    rimraf.sync(usersPagePath);
   });
 });

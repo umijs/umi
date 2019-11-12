@@ -1,0 +1,86 @@
+.normal {
+  display: flex;
+  height: 100%;
+}
+
+:global(.isMini) {
+  .left {
+    width: 204px;
+  }
+  .trigger {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+}
+
+.left {
+  width: 255px;
+  margin-right: 20px;
+  height: 100%;
+  border-right: 1px solid @dark;
+  transition: width 0.3s;
+  @media @mobile {
+    width: 204px;
+  }
+  &-scroll {
+    overflow: auto;
+  }
+}
+
+:global(.isMini) .right {
+  width: 100%;
+}
+
+.right {
+  flex: 1;
+  height: 100%;
+  &-scroll {
+    overflow: auto;
+  }
+}
+
+.trigger {
+  cursor: pointer;
+  padding: 12px;
+  flex-wrap: wrap;
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    margin-top: 4px;
+    margin-right: 12px;
+    img {
+      height: 100%;
+    }
+  }
+  .title_desc {
+    flex: 1;
+    font-size: 12px;
+    margin: 4px 0;
+  }
+  .title {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 4px;
+  }
+  .description {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.triggerActive {
+  background: rgba(255, 255, 255, 0.04);
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}

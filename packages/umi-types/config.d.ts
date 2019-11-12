@@ -1,13 +1,14 @@
 // https://umijs.org/config/
 import { ExternalsElement, Condition } from 'webpack';
 import * as IWebpackChainConfig from 'webpack-chain';
+import { ReactNode } from 'react';
 import { IChangeWebpackConfigFunc } from './index';
 
 export type IPlugin<T = any> = string | [string, T];
 
 export interface IRoute {
   path?: string;
-  component?: string;
+  component?: ReactNode;
   routes?: IRoute[];
   Routes?: string[];
   redirect?: string;
@@ -32,6 +33,7 @@ export interface IAFWebpackConfig {
   cssModulesWithAffix?: boolean;
   cssnano?: object;
   cssPublicPath?: string;
+  generateCssModulesTypings?: boolean;
   define?: object;
   devServer?: object; // https://webpack.js.org/configuration/dev-server/#devserver
   devtool?: string | false; // https://webpack.js.org/configuration/devtool/
@@ -66,9 +68,24 @@ export interface IAFWebpackConfig {
 }
 
 type WhitelistOption = string | RegExp;
-export type IExportSSROpts = {
-  externalWhitelist?: WhitelistOption[];
-} | boolean;
+export type IExportSSROpts =
+  | {
+      /** not external library, https://github.com/liady/webpack-node-externals#optionswhitelist- */
+      externalWhitelist?: WhitelistOption[];
+      /** webpack-node-externals config */
+      nodeExternalsOpts?: object;
+      /** client chunkMaps manifest, default: ssr-client-mainifest.json */
+      manifestFileName?: string;
+      /** disable ssr external */
+      disableExternal?: boolean;
+      /** disable ssr external, build all modules in `umi.server.js` */
+      disableExternalWhiteList?: string[] | object;
+    }
+  | boolean;
+
+export interface IMockOpts {
+  exclude?: string[] | string;
+}
 
 interface IConfig extends IAFWebpackConfig {
   // basic config
@@ -83,7 +100,10 @@ interface IConfig extends IAFWebpackConfig {
   routes?: IRoute[] | null;
   runtimePublicPath?: boolean;
   singular?: boolean;
+  mock?: IMockOpts;
   treeShaking?: boolean;
+  dva?: any;
+  locale?: any;
 
   // implemented in plugins
   base?: string;

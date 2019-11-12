@@ -4,15 +4,15 @@ import webpack from 'webpack';
 import assert from 'assert';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import { isPlainObject } from 'lodash';
 import prepareUrls from './prepareUrls';
 import clearConsole from './clearConsole';
 import errorOverlayMiddleware from './errorOverlayMiddleware';
-import send, { STARTING, DONE } from './send';
-import choosePort from './choosePort';
-import { isPlainObject } from 'lodash';
+import send, { STARTING, DONE, ERROR } from './send';
+import getPort from './getPort';
 
 const isInteractive = process.stdout.isTTY;
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8000;
+
 const HOST = process.env.HOST || '0.0.0.0';
 const PROTOCOL = process.env.HTTPS ? 'https' : 'http';
 const CERT = process.env.HTTPS && process.env.CERT ? fs.readFileSync(process.env.CERT) : '';
@@ -46,7 +46,7 @@ export default function dev({
     isPlainObject(webpackConfig) || Array.isArray(webpackConfig),
     'webpackConfig should be plain object or array.',
   );
-  choosePort(port || DEFAULT_PORT)
+  getPort(port)
     .then(port => {
       if (port === null) {
         return;
@@ -56,18 +56,23 @@ export default function dev({
       process.send({ type: 'UPDATE_PORT', port });
 
       const compiler = webpack(webpackConfig);
+      let server = null;
 
       let isFirstCompile = true;
       const IS_CI = !!process.env.CI;
       const SILENT = !!process.env.SILENT;
       const urls = prepareUrls(PROTOCOL, HOST, port, base, history);
-      compiler.hooks.done.tap('af-webpack dev', stats => {
+
+      compiler.hooks.done.tap('af-webpack done', stats => {
         if (stats.hasErrors()) {
           // make sound
           // ref: https://github.com/JannesMeyer/system-bell-webpack-plugin/blob/bb35caf/SystemBellPlugin.js#L14
           if (process.env.SYSTEM_BELL !== 'none') {
             process.stdout.write('\x07');
           }
+          send({
+            type: ERROR,
+          });
           onFail({ stats });
           return;
         }
@@ -85,21 +90,31 @@ export default function dev({
             [
               `  App running at:`,
               `  - Local:   ${chalk.cyan(urls.localUrlForTerminal)} ${copied}`,
-              `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}`,
+              urls.lanUrlForTerminal ? `  - Network: ${chalk.cyan(urls.lanUrlForTerminal)}` : '',
             ].join('\n'),
           );
           console.log();
         }
 
         onCompileDone({
+          port,
           isFirstCompile,
           stats,
+          server,
         });
 
         if (isFirstCompile) {
           isFirstCompile = false;
           openBrowser(urls.localUrlForBrowser);
-          send({ type: DONE });
+          send({
+            type: DONE,
+            urls: {
+              local: urls.localUrlForTerminal,
+              lan: urls.lanUrlForTerminal,
+              rawLocal: urls.localUrlForBrowser,
+              rawLanUrl: urls.rawLanUrl,
+            },
+          });
         }
       });
 
@@ -142,7 +157,7 @@ export default function dev({
         ...serverConfigFromOpts,
         ...(getWebpackConfig(webpackConfig).devServer || {}),
       };
-      const server = new WebpackDevServer(compiler, serverConfig);
+      server = new WebpackDevServer(compiler, serverConfig);
 
       ['SIGINT', 'SIGTERM'].forEach(signal => {
         process.on(signal, () => {

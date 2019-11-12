@@ -14,7 +14,8 @@ export default function(api) {
       webpack: true,
       description: 'building for production',
     },
-    () => {
+    args => {
+      const watch = args.w || args.watch;
       notify.onBuildStart({ name: 'umi', version: 2 });
 
       const RoutesManager = getRouteManager(service);
@@ -24,11 +25,24 @@ export default function(api) {
         process.env.NODE_ENV = 'production';
         service.applyPlugins('onStart');
         service._applyPluginsAsync('onStartAsync').then(() => {
+          service.rebuildTmpFiles = () => {
+            filesGenerator.rebuild();
+          };
+          service.rebuildHTML = () => {
+            service.applyPlugins('onHTMLRebuild');
+          };
+
           const filesGenerator = getFilesGenerator(service, {
             RoutesManager,
             mountElementId: config.mountElementId,
           });
           filesGenerator.generate();
+
+          function startWatch() {
+            filesGenerator.watch();
+            service.userConfig.setConfig(service.config);
+            service.userConfig.watchWithDevServer();
+          }
 
           if (process.env.HTML !== 'none') {
             const HtmlGeneratorPlugin = require('../getHtmlGeneratorPlugin').default(service);
@@ -40,6 +54,7 @@ export default function(api) {
           service._applyPluginsAsync('beforeBuildCompileAsync').then(() => {
             require('af-webpack/build').default({
               cwd,
+              watch,
               // before: service.webpackConfig
               // now: [ service.webpackConfig, ... ] , for ssr or more configs
               webpackConfig: [
@@ -50,14 +65,20 @@ export default function(api) {
               // [ clientStats, ...otherStats ]
               onSuccess({ stats }) {
                 debug('Build success');
-                if (process.env.RM_TMPDIR !== 'none') {
+                if (watch) {
+                  startWatch();
+                }
+                if (process.env.RM_TMPDIR !== 'none' && !watch) {
                   debug(`Clean tmp dir ${service.paths.tmpDirPath}`);
                   rimraf.sync(paths.absTmpDirPath);
                 }
                 if (service.ssrWebpackConfig) {
                   // replace using manifest
                   // __UMI_SERVER__.js/css => umi.${hash}.js/css
-                  replaceChunkMaps(service);
+                  const clientStat = Array.isArray(stats.stats) ? stats.stats[0] : stats;
+                  if (clientStat) {
+                    replaceChunkMaps(service, clientStat);
+                  }
                 }
                 service.applyPlugins('onBuildSuccess', {
                   args: {

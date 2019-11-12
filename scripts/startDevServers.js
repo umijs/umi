@@ -10,30 +10,31 @@ function startDevServer(opts = {}) {
     const child = fork(DEV_SCRIPT, ['dev', '--port', port, '--cwd', cwd], {
       env: {
         ...process.env,
+        // https://github.com/webpack/webpack-dev-server/issues/128
+        UV_THREADPOOL_SIZE: '100',
         BROWSER: 'none',
         PROGRESS: 'none',
+        UMI_UI: 'none',
+        UMI_UI_SERVER: 'none',
         UMI_DIR: dirname(require.resolve('../packages/umi/package')),
       },
     });
     child.on('message', args => {
       if (args.type === 'DONE') {
-        resolve(child);
+        resolve({
+          child,
+        });
       }
     });
   });
 }
 
 function start() {
-  const devServers = [
-    [12341, '../packages/umi/test/fixtures/dev/normal'],
-    [12342, '../packages/umi/test/fixtures/dev/ssr'],
-  ];
+  const devServers = [[12341, '../packages/umi/test/fixtures/dev/normal']].map(([port, cwd]) => {
+    return startDevServer({ port, cwd: join(__dirname, cwd) });
+  });
 
-  return Promise.all(
-    devServers.map(([port, cwd]) => {
-      return startDevServer({ port, cwd: join(__dirname, cwd) });
-    }),
-  );
+  return Promise.all(devServers);
 }
 
 module.exports = start;

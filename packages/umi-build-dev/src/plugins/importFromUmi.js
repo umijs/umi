@@ -68,5 +68,6 @@ export default function(api) {
       })
       .map(generateExports);
     api.writeTmpFile('umiExports.js', umiExports.join('\n'));
+    api.writeTmpFile('umiExports.d.ts', umiExports.join('\n'));
   };
 }

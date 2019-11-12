@@ -94,10 +94,11 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
     // 前端路由切换时，也需要执行 getInitialProps
     async getInitialProps() {
       // the values may be different with findRoute.js
-      const { match } = this.props;
+      const { match, location } = this.props;
       const extraProps = await WrappedComponent.getInitialProps({
         isServer: false,
         route: match,
+        location,
         ...initialProps,
       });
       this.setState({

@@ -208,7 +208,44 @@ Use in css, be careful not to use absolute paths
 
 ### document is not defined, navigator is not defined, \* is not not defined
 
-Why: umiJS SSR executes code first server-side, then client-side. The `document`, `navigator` object is only present client-side. Solution:
+Why: Umi SSR executes code first server-side, then client-side. The `document`, `navigator` object is only present client-side. Solution:
 
 1. you absolutely need to have access to it in some React component, you should put that code in `componentDidMount` or `useEffect`. This lifecycle method will only be executed on the client.
 1. add the judgment with something like `typeof navigator !== 'undefined'` or `typeof document !== 'undefined'`
+
+### SSR has no style, style loading is wrong
+
+Why: The [publicPath](https://umijs.org/config/#publicpath) of the Umijs configuration does not match the route of the server. When the resource path such as `/umi.js` is accessed, it is not mapped correctly to the specified file. solution:
+
+1. Try to access the link `http://yourHost/umi.js` or `http://yourHost/dist/umi.js` to see which link returns the correct js/css file contents.
+1. Correspond to modify the `publicPath` path.
+
+### styled-components build error
+
+Add [babel-plugin-styled-components](https://github.com/styled-components/babel-plugin-styled-components) babel pluign. [#3508](https://github.com/umijs/umi/issues/3508#issuecomment-546610547)
+
+```js
+// .umirc.js
+extraBabelPlugins: [
+  "babel-plugin-styled-components"
+],
+```
+
+
+## UMI UI
+
+### Umi version is too low, please upgrade to umi@2.9 or above
+
+Umi UI requires umi@2.9 or above, and this error will be reported if the version of the local project does not match.
+
+The solution is to upgrade to the latest version.
+
+* If the umi dependency in package.json is automatically matched to the latest version, such as `^ 2.9` or `2.x`, delete the `node_modules` reload dependency.
+* If the umi dependency in package.json does not match the latest version, such as `~2.8` or `2.8.0-beta.1`, then it needs to be changed to `^ 2.9` or other matching to the latest version, then Remove `node_modules` and reload dependencies
+
+
+### EACCES: permission denied create-umi
+
+Umi UI needs to have permission to create projects.
+
+The solution is to raise the prompted path permissions and give execute permissions.。

@@ -120,7 +120,7 @@ module.exports = _interopRequireDefault;
 /* 3 */
 /***/ (function(module) {
 
-module.exports = {"a":"bbbbbb"};
+module.exports = JSON.parse("{\"a\":\"bbbbbb\"}");
 
 /***/ })
 /******/ ]);

@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-umi",
-  "version": "1.6.0",
+  "version": "1.8.1",
   "main": "./lib/index",
   "repository": {
     "type": "git",

@@ -1,0 +1,35 @@
+.label {
+  span,
+  p {
+    line-height: 22px;
+  }
+  p {
+  }
+  &-dark {
+    span {
+      color: @heading-color;
+      line-height: 22px;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    p {
+      color: @text-color-secondary;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+  &-light {
+  }
+}
+
+.any-field {
+  // TODO: use umi-ui-theme
+  color: @primary-color;
+  &:hover {
+    color: @primary-5;
+  }
+  a {
+    margin-left: 4px;
+    text-decoration: underline;
+  }
+}

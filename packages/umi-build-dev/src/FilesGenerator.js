@@ -1,10 +1,10 @@
 import { join, relative } from 'path';
-import { writeFileSync, readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import chokidar from 'chokidar';
 import assert from 'assert';
 import chalk from 'chalk';
-import { debounce, uniq } from 'lodash';
+import { throttle, uniq } from 'lodash';
 import Mustache from 'mustache';
 import { winPath, findJS, prettierFile } from 'umi-utils';
 import stripJSONQuote from './routes/stripJSONQuote';
@@ -14,10 +14,18 @@ import { EXT_LIST } from './constants';
 import getHtmlGenerator from './plugins/commands/getHtmlGenerator';
 import htmlToJSX from './htmlToJSX';
 import getRoutePaths from './routes/getRoutePaths';
+import writeContent from './utils/writeContent.js';
 
 const debug = require('debug')('umi:FilesGenerator');
 
 export const watcherIgnoreRegExp = /(^|[\/\\])(_mock.js$|\..)/;
+
+function normalizePath(path, base = '/') {
+  if (path.startsWith(base)) {
+    path = path.replace(base, '/');
+  }
+  return path;
+}
 
 export default class FilesGenerator {
   constructor(opts) {
@@ -46,7 +54,7 @@ export default class FilesGenerator {
     });
     watcher.on(
       'all',
-      debounce((event, path) => {
+      throttle((event, path) => {
         debug(`${event} ${path}`);
         this.rebuild();
       }, 100),
@@ -89,6 +97,7 @@ export default class FilesGenerator {
 
   rebuild() {
     const { refreshBrowser, printError } = this.service;
+    const isDev = process.env.NODE_ENV === 'development';
     try {
       this.service.applyPlugins('onGenerateFiles', {
         args: {
@@ -101,12 +110,12 @@ export default class FilesGenerator {
       this.generateHistory();
 
       if (this.hasRebuildError) {
-        refreshBrowser();
+        if (isDev) refreshBrowser();
         this.hasRebuildError = false;
       }
     } catch (e) {
       // 向浏览器发送出错信息
-      printError([e.message]);
+      if (isDev) printError([e.message]);
 
       this.hasRebuildError = true;
       this.routesContent = null; // why?
@@ -148,6 +157,7 @@ export default class FilesGenerator {
       props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: false,
+        location,
         ...initialProps,
       }) : {};
     }
@@ -201,14 +211,13 @@ export default class FilesGenerator {
 
     let htmlTemplateMap = [];
     if (config.ssr) {
-      assert(config.manifest, `manifest must be config when using ssr`);
       const isProd = process.env.NODE_ENV === 'production';
       const routePaths = getRoutePaths(this.RoutesManager.routes);
       htmlTemplateMap = routePaths.map(routePath => {
         let ssrHtml = '<></>';
         const hg = getHtmlGenerator(this.service, {
           chunksMap: {
-            // TODO, for manifest
+            // TODO, for dynamic chunks
             // placeholder waiting manifest
             umi: [
               isProd ? '__UMI_SERVER__.js' : 'umi.js',
@@ -224,7 +233,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
             },
           ],
         });
-        const content = hg.getMatchedContent(routePath);
+        const content = hg.getMatchedContent(normalizePath(routePath, config.base));
         ssrHtml = htmlToJSX(content).replace(
           `<div id="${config.mountElementId || 'root'}"></div>`,
           `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
@@ -267,7 +276,7 @@ window.g_initialData = \${require('${winPath(require.resolve('serialize-javascri
       htmlTemplateMap: htmlTemplateMap.join('\n'),
       findRoutePath: winPath(require.resolve('./findRoute')),
     });
-    writeFileSync(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`), 'utf-8');
+    writeContent(paths.absLibraryJSPath, prettierFile(`${entryContent.trim()}\n`));
   }
 
   generateHistory() {
@@ -290,11 +299,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       globalVariables: !this.service.config.disableGlobalVariables,
       history,
     });
-    writeFileSync(
-      join(paths.absTmpDirPath, 'history.js'),
-      prettierFile(`${content.trim()}\n`),
-      'utf-8',
-    );
+    writeContent(join(paths.absTmpDirPath, 'history.js'), prettierFile(`${content.trim()}\n`));
   }
 
   generateRouterJS() {
@@ -307,6 +312,7 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
     if (this.routesContent !== routesContent) {
       writeFileSync(absRouterJSPath, prettierFile(`${routesContent.trim()}\n`), 'utf-8');
       this.routesContent = routesContent;
+      this.service.applyPlugins('onRouteChange');
     }
   }
 

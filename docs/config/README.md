@@ -110,6 +110,8 @@ export default {
 
 Specifies the output path.
 
+> It is not allowed to set the contract directories such as `src` 、 `public` 、 `pages` 、 `mock` 、 `config`
+
 ### base
 
 - Type: `String`
@@ -260,17 +262,54 @@ export default {
 
 Configure whether to enable Server-Side Render, which is off by default.
 
-When enabled, `umi.server.js` file is also generated when the client static file is generated.
+When enabled, `umi.server.js` and `ssr-client-mainifest.json` files are also generated when the client static file is generated.
 
 ```js
 export default {
   ssr: {
-    // https://github.com/liady/webpack-node-externals#optionswhitelist-
-    externalWhitelist: [],
+    // not external library, https://github.com/liady/webpack-node-externals#optionswhitelist
+    externalWhitelist?: [];
+    // webpack-node-externals config, exclude whiteList
+    nodeExternalsOpts?: {};
+    // client chunkMaps manifest, default: ssr-client-mainifest.json
+    manifestFileName?: 'ssr-client-mainifest.json';
+    // disable ssr external, build all modules in `umi.server.js`
+    disableExternal?: false;
+    // disable ssr external whiteList module
+    // you can use this for `react-helmet`, `react-document-title`
+    disableExternalWhiteList?: string[] | object;
   },
-  // need enable
-  manifest: {},
 };
+```
+
+`ssr-client-mainifest.json` is a resource mapping file by routing level, for example:
+
+```json
+{
+  "/": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__index.c2bcd95d.async.js"
+    ],
+    "css": [
+      "umi.baa67d11.css",
+      "vendors.431f0bf4.chunk.css",
+      "layouts__index.0ab34177.chunk.css",
+      "p__index.1353f910.chunk.css"
+    ]
+  },
+  "/news/:id": {
+    "js": [
+      "umi.6791e2ab.js",
+      "vendors.aed9ac63.async.js",
+      "layouts__index.12df59f1.async.js",
+      "p__news__$id.204a3fac.async.js"
+    ],
+    "css": ["umi.baa67d11.css", "vendors.431f0bf4.chunk.css", "layouts__index.0ab34177.chunk.css"]
+  }
+}
 ```
 
 Use the following in Node.js:
@@ -296,6 +335,10 @@ async function UmiServerRender(ctx) {
     rootContainer,
     // page template
     htmlElement,
+    // match router path, like /user/:id
+    matchPath,
+    // initial store data when you use dva
+    g_initialData,
   } = await serverRender.default(ctx);
 
   // Render the element into html
@@ -325,12 +368,17 @@ const News = props => {
  * @param {*}
  * {
  *  route (current active route)
+ *  location (history object with location, query, ...)
  *  store (need enable `dva: true`, return the Promise via `store.dispatch()` )
  *  isServer (whether run in Server)
+ *  req (HTTP server Request object, only exist in Server)
+ *  res (HTTP server Response object, only exist in Server)
  * }
  */
-News.getInitialProps = async ({ route, store, isServer }) => {
+News.getInitialProps = async ({ route, location, store, isServer, req, res }) => {
   const { id } = route.params;
+  // ?locale=en-US => query: { locale: 'en-US' }
+  const { query } = location;
   const data = [
     {
       id: 0,
@@ -490,6 +538,10 @@ const config = {
 
 The files in the specified project directory do not go css modules, the format is an array, and the items must be css or less files.
 
+### generateCssModulesTypings
+
+Enable generate .d.ts fils for css/less/sass file when use css modules with typescript.
+
 ### copy
 
 Define a list of files that need to be copied simply. The format is an array. The format of the item refers to the configuration of [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin).
@@ -552,7 +604,7 @@ Additional configuration items for [css-loader](https://github.com/webpack-contr
 Configuration for [autoprefixer](https://github.com/postcss/autoprefixer#options) .
 
 - Type: `Object`
-- Default: `{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2019' }`
+- Default: `{ browsers: DEFAULT_BROWSERS, flexbox: 'no-2009' }`
 
 If you want to be compatible with older versions of iOS Safari's flexbox, try to configure `flexbox: true`.
 

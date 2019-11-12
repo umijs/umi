@@ -39,6 +39,14 @@ $ echo PORT=3000 > .env
 $ PORT=8001 umi dev
 ```
 
+### BASE_PORT
+
+指定基础端口号，umi 会基于这个值去寻找可用的端口号，默认是 `8000`。比如：
+
+```bash
+$ BASE_PORT=8001 umi dev
+```
+
 ### HOST
 
 默认是 `0.0.0.0`。
@@ -67,6 +75,14 @@ $ APP_ROOT=src/renderer umi dev
 $ ANALYZE=1 umi build
 ```
 
+### ANALYZE_SSR
+
+默认关闭。分析 `umi.server.js` 构成，ssr build 时有效。比如：
+
+```bash
+$ ANALYZE_SSR=1 umi build
+```
+
 ### ANALYZE_MODE
 
 默认为 server. 若开启 ANALYZE，且选择了 server 模式，会启动一个 HTTP server 展示 webpack bundle 报告。如果是 disabled，只会生成 stats 文件
@@ -87,8 +103,7 @@ $ ANALYZE=1 ANALYZE_MODE=server umi build
 $ ANALYZE_REPORT=1 umi build
 ```
 
-与开启 `ANALYZE` 并指定 `ANALYZE_DUMP` 后生成的 stat 文件不同，ANALYZE 会直接将 [
-[Webpack Stat](https://webpack.js.org/configuration/stats/) 数据转存成目标文件，而 `ANALYZE_REPORT` 会先对 Webpack Stat 进行解析与裁剪，把可以直接用于分析与可视化的报告数据生成报告文件。
+与开启 `ANALYZE` 并指定 `ANALYZE_DUMP` 后生成的 stat 文件不同，ANALYZE 会直接将 [ [Webpack Stat](https://webpack.js.org/configuration/stats/) 数据转存成目标文件，而 `ANALYZE_REPORT` 会先对 Webpack Stat 进行解析与裁剪，把可以直接用于分析与可视化的报告数据生成报告文件。
 
 这样做的好处是，我们可以得到更小（仅有 stat 文件 1% 大小）的数据文件。
 
@@ -130,7 +145,7 @@ $ COMPRESS=none umi build
 
 ### BROWSER
 
-默认自动开浏览器，值为 none 时不自动打开，dev 时有效。比如：
+默认自动开浏览器，值为 `none` 时不自动打开，dev 时有效。比如：
 
 ```bash
 $ BROWSER=none umi dev
@@ -140,9 +155,17 @@ $ BROWSER=none umi dev
 
 默认清屏，值为 none 时不清屏。
 
+### CLEAR_OUTPUT
+
+默认情况下，输出目录会在每次构建之前被清除，当此值为 `none` 时则不会执行此操作。
+
 ### HMR
 
-默认开启 HMR，值为 none 时禁用，值为 reload 时文件有变化时刷新浏览器。
+默认开启 HMR，值为 `none` 时禁用，值为 `reload` 时文件有变化时刷新浏览器。
+
+### ERROR_OVERLAY
+
+默认开启 ERROR_OVERLAY，值为 `none` 时禁用，禁用后则`react-error-overlay`不会弹出错误遮罩层。
 
 ### BABELRC
 
@@ -177,8 +200,17 @@ $ HTML=none umi build
 ### RM_TMPDIR
 
 ### FORK_TS_CHECKER
-默认不开启TypeScript检查，值为1时启用。比如：
+
+默认不开启 TypeScript 检查，值为 1 时启用。比如：
 
 ```bash
 $ FORK_TS_CHECKER=1 umi dev
+```
+
+### USE_PUBLIC_IP
+
+默认不绑定公网IP，值为 `true` 时允许绑定公网IP。比如：
+
+```bash
+$ USE_PUBLIC_IP=true umi dev
 ```

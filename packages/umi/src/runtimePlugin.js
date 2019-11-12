@@ -1,5 +1,6 @@
 import assert from 'assert';
 import isPlainObject from 'lodash/isPlainObject';
+import { isPromiseLike } from './utils';
 
 let plugins = null;
 let validKeys = [];
@@ -64,4 +65,21 @@ export function mergeConfig(item) {
     assert(isPlainObject(config), `Config is not plain object`);
     return { ...memo, ...config };
   }, {});
+}
+
+export async function mergeConfigAsync(item) {
+  if (typeof item === 'string') item = getItem(item);
+  assert(Array.isArray(item), `item must be Array`);
+
+  let mergedConfig = {};
+  for (let config of item) {
+    if (isPromiseLike(config)) {
+      // eslint-disable-next-line no-await-in-loop
+      config = await config;
+    }
+    assert(isPlainObject(config), `Config is not plain object`);
+    mergedConfig = { ...mergedConfig, ...config };
+  }
+
+  return mergedConfig;
 }

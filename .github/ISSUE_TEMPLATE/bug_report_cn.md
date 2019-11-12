@@ -4,7 +4,6 @@ about: '反馈问题以帮助我们改进'
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 <!--
@@ -19,13 +18,13 @@ assignees: ''
 
 > 请使用 `yarn create umi` 创建，并上传到你的 GitHub 仓库
 
+<!-- 为节约大家的时间，无复现步骤的 ISSUE 会被关闭，提供之后再 REOPEN -->
 <!-- https://github.com/YOUR_REPOSITORY_URL -->
 
 ## 复现步骤，错误日志以及相关配置
 
 <!-- 请提供复现步骤，错误日志以及相关配置 -->
 <!-- 可以尝试不要锁版本，重新安装依赖试试先 -->
-
 
 ## 相关环境信息
 

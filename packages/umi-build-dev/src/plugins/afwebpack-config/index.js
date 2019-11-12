@@ -18,7 +18,7 @@ export default function(api) {
   api._registerConfig(() => {
     return plugins
       .filter(p => !excludes.includes(p.name))
-      .map(({ name, validate = noop }) => {
+      .map(({ name, validate = noop, ...extraOpts }) => {
         return api => ({
           name,
           validate,
@@ -32,6 +32,7 @@ export default function(api) {
               api.service.restart(`${name} changed`);
             }
           },
+          ...extraOpts,
         });
       });
   });
@@ -65,7 +66,8 @@ export default function(api) {
         ),
       )
       .set('@', paths.absSrcPath)
-      .set('@tmp', paths.absTmpDirPath);
+      .set('@tmp', paths.absTmpDirPath)
+      .set('umi', process.env.UMI_DIR);
   });
 
   /* eslint-disable import/no-dynamic-require */
@@ -140,6 +142,7 @@ export default function(api) {
       absNodeModulesPath: paths.absNodeModulesPath,
       outputPath: paths.absOutputPath,
       disableDynamicImport: true,
+      extraBabelPlugins: [...(memo.extraBabelPlugins || []), ...(config.extraBabelPlugins || [])],
       babel: config.babel || {
         presets: [
           [

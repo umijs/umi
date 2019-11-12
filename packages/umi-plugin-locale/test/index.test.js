@@ -7,6 +7,9 @@ import localePlugin, { getLocaleFileList, isNeedPolyfill } from '../src/index';
 const absSrcPath = winPath(join(__dirname, '../examples/base/src'));
 const absPagesPath = winPath(join(__dirname, '../examples/base/src/page'));
 
+const absSeparatorSrcPath = winPath(join(__dirname, '../examples/base-separator/src'));
+const absSeparatorPagesPath = winPath(join(__dirname, '../examples/base-separator/src/page'));
+
 let wrapperFile;
 
 const api = {
@@ -38,7 +41,7 @@ describe('test plugin', () => {
 
     const ret = readFileSync(wrapperFile, 'utf-8');
 
-    expect(ret).toEqual(expect.stringContaining('<LocaleProvider'));
+    expect(ret).toEqual(expect.stringContaining('<AntdProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
     expect(ret).toEqual(expect.stringContaining('antd/lib/locale-provider/en_US'));
@@ -56,7 +59,7 @@ test('antd is false', () => {
 
   const ret = readFileSync(wrapperFile, 'utf-8');
 
-  expect(ret).not.toEqual(expect.stringContaining('<LocaleProvider'));
+  expect(ret).not.toEqual(expect.stringContaining('<AntdProvider'));
   expect(ret).toEqual(expect.stringContaining('<IntlProvider'));
   expect(ret).not.toEqual(expect.stringContaining('antd/lib/locale-provider/zh_CN'));
   expect(ret).not.toEqual(expect.stringContaining('moment/locale/zh-cn'));
@@ -75,10 +78,55 @@ describe('test func with singular true', () => {
         momentLocale: '',
       },
       {
+        lang: 'sk',
+        country: 'SK',
+        name: 'sk',
+        paths: [`${absSrcPath}/locale/sk.js`, `${absPagesPath}/temp/locale/sk.js`],
+        momentLocale: 'sk',
+      },
+      {
         lang: 'zh',
         country: 'CN',
         name: 'zh-CN',
         paths: [`${absSrcPath}/locale/zh-CN.js`, `${absPagesPath}/temp/locale/zh-CN.js`],
+        momentLocale: 'zh-cn',
+      },
+    ]);
+  });
+});
+
+describe('test func with baseSeparator', () => {
+  test('getLocaleFileList', () => {
+    const list = getLocaleFileList(absSeparatorSrcPath, absSeparatorPagesPath, false, '_');
+    expect(list).toEqual([
+      {
+        lang: 'en',
+        country: 'US',
+        name: 'en_US',
+        paths: [
+          `${absSeparatorSrcPath}/locales/en_US.js`,
+          `${absSeparatorPagesPath}/temp/locales/en_US.js`,
+        ],
+        momentLocale: '',
+      },
+      {
+        lang: 'sk',
+        country: 'SK',
+        name: 'sk',
+        paths: [
+          `${absSeparatorSrcPath}/locales/sk.js`,
+          `${absSeparatorPagesPath}/temp/locales/sk.js`,
+        ],
+        momentLocale: 'sk',
+      },
+      {
+        lang: 'zh',
+        country: 'CN',
+        name: 'zh_CN',
+        paths: [
+          `${absSeparatorSrcPath}/locales/zh_CN.js`,
+          `${absSeparatorPagesPath}/temp/locales/zh_CN.js`,
+        ],
         momentLocale: 'zh-cn',
       },
     ]);

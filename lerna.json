@@ -10,12 +10,13 @@
     "repo": "umijs/umi",
     "cacheDir": ".changelog"
   },
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*", "packages/umi-ui/client"],
   "command": {
     "version": {
       "exact": true
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-package-lock", "--no-ci"]
     }
   },
   "npmClient": "yarn",

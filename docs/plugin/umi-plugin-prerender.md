@@ -19,7 +19,6 @@ Configured in `.umirc.js`:
 ```js
 export default {
   ssr: true,
-  manifest: {},
   plugins: [['@umijs/plugin-prerender']],
 };
 ```
@@ -40,7 +39,9 @@ exclude routes that aren't prerendered. e.g. `[ '/user', '/about', '/news/:id' ]
 
 mock `window` browser variable environment in Node Server.
 
-::: warning Project code is best compatible with Server-Side rendering, add `typeof bar !== 'undefined'` judgment when using in the Server-side render lifecycle where `bar` is a browser variable or method. :::
+:::warning
+Project code is best compatible with Server-Side rendering, add `typeof bar !== 'undefined'` judgment when using in the Server-side render lifecycle where `bar` is a browser variable or method.
+:::
 
 ### visible（TODO）
 

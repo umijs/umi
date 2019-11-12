@@ -19,29 +19,32 @@ Configured in `.umirc.js`:
 ```js
 export default {
   plugins: [
-    ['umi-plugin-react', {
-      dva: {
-        immer: true,
+    [
+      'umi-plugin-react',
+      {
+        dva: {
+          immer: true,
+        },
+        antd: true,
+        routes: {
+          exclude: [/models\//],
+        },
+        polyfills: ['ie9'],
+        locale: {},
+        library: 'react',
+        dynamicImport: {
+          webpackChunkName: true,
+          loadingComponent: './components/Loading.js',
+        },
+        dll: {
+          exclude: [],
+        },
+        pwa: true,
+        hd: true,
+        fastClick: true,
+        title: 'default title',
       },
-      antd: true,
-      routes: {
-        exclude: [/models\//],
-      },
-      polyfills: ['ie9'],
-      locale: {},
-      library: 'react',
-      dynamicImport: {
-        webpackChunkName: true,
-        loadingComponent: './components/Loading.js',
-      },
-      dll: {
-        exclude: [],
-      },
-      pwa: true,
-      hd: true,
-      fastClick: true,
-      title: 'default title',
-    }],
+    ],
   ],
 };
 ```
@@ -52,15 +55,15 @@ All features are turned off by default and will be enabled if there is a true va
 
 ### dva
 
-* Type: `Object`
+- Type: `Object`
 
 Based on [umi-plugin-dva](https://github.com/umijs/umi/tree/master/packages/umi-plugin-dva), see the details at [Use with dva](/guide/with-dva.html)。
 
 Configuration items includes:
 
-* `immer`, Whether to enable [dva-immer](https://github.com/dvajs/dva/tree/master/packages/dva-immer)
-* `dynamicImport`, Whether to enable dynamic import, options same as [#dynamicImport](#dynamicImport), and if you configure it in [#dynamicImport](#dynamicImport), the options items will be inherited into dva
-* `hmr`, Whether to enable dva hmr
+- `immer`, Whether to enable [dva-immer](https://github.com/dvajs/dva/tree/master/packages/dva-immer)
+- `dynamicImport`, Whether to enable dynamic import, options same as [#dynamicImport](#dynamicImport), and if you configure it in [#dynamicImport](#dynamicImport), the options items will be inherited into dva
+- `hmr`, Whether to enable dva hmr
 
 ::: warning
 If there is a dva dependency in the project, the dependencies in the project are prioritized.
@@ -68,7 +71,7 @@ If there is a dva dependency in the project, the dependencies in the project are
 
 ### antd
 
-* Type: `Boolean`
+- Type: `Boolean`
 
 Automatically configure [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) to enable on-demand compilation of antd, antd-mobile and antd-pro, with built-in antd and antd-mobile dependencies, There is no need to manually install in the project.
 
@@ -78,18 +81,18 @@ If there is an ant or antd-mobile dependency in the project, the dependencies in
 
 ### routes
 
-* Type: `Object`
+- Type: `Object`
 
 based on [umi-plugin-routes](https://github.com/umijs/umi/tree/master/packages/umi-plugin-routes), used to modify routes in batches.
 
 options include:
 
-* `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
-* `update`, type is `Function`, for update routes.
+- `exclude`, type is `Array(RegExp)`, used to ignore certain routes, such as using dva, usually need to ignore the models, components, services, etc.
+- `update`, type is `Function`, for update routes.
 
 ### polyfills (deprecated)
 
-* Type: `Array(String)`
+- Type: `Array(String)`
 
 > Please use [config.targets](https://umijs.org/config/#targets) instead
 
@@ -99,44 +102,45 @@ Currently supports configuration of `['ie9']`, `['ie10']` or `['ie11']` for quic
 
 ### locale
 
-* Type `Object`
+- Type `Object`
 
 Based on [umi-plugin-locale](https://github.com/umijs/umi/tree/master/packages/umi-plugin-locale) and [react-intl](https://github.com/yahoo/react-intl), used to resolve internationalization.
 
 options include:
 
-* `default`: 'zh-CN', // default zh-CN
-* `baseNavigator`: true, // default true, when it is true, will use `navigator.language` overwrite default
-* `antd`: true, // use antd, default is true
+- `default: 'zh-CN'`, // default zh-CN, if baseSeparator set `_`，default zh_CN
+- `baseNavigator: true`, // default true, when it is true, will use `navigator.language` overwrite default
+- `antd: true`, // use antd, default is true
+- `baseSeparator: '-'`, // the separator between `lang` and `language`, default `-`
 
 ### library
 
-* Type: `String`
+- Type: `String`
 
 It is possible to switch the underlying library to either preact or react.
 
 ### dynamicImport
 
-* Type: `Object`
+- Type: `Object`
 
 Implement routing-level code splitting, which specifies which level of on-demand loading is required.
 
 options include:
 
-* `webpackChunkName`, Whether to add a meaningful file name
-* `loadingComponent`, Specify the component path at load time
-* `level`, specifying the route level to code splitting
+- `webpackChunkName`, Whether to add a meaningful file name
+- `loadingComponent`, Specify the component path at load time
+- `level`, specifying the route level to code splitting
 
 ### dll
 
-* Type: `Object`
+- Type: `Object`
 
 Increase the second startup speed by webpack dll plugin.
 
 options include:
 
-* `include`
-* `exclude`
+- `include`
+- `exclude`
 
 ### hardSource
 
@@ -144,22 +148,22 @@ options include:
 
 ### pwa
 
-* Type `Object`
+- Type `Object`
 
 Enable some PWA features including:
 
-* Generate a `manifest.json`
-* Generate a Service Worker on `PRODUCTION` mode
+- Generate a `manifest.json`
+- Generate a Service Worker on `PRODUCTION` mode
 
 options include:
 
-* `manifestOptions` Type: `Object`, includes following options:
-  * `srcPath` path of manifest, Type: `String`, Default `src/manifest.json`
-* `workboxPluginMode` Workbox mode, Type: `String`, Default `GenerateSW`(generate a brand new Service Worker); or `InjectManifest`(inject code to existed Service Worker)
-* `workboxOptions` Check Workbox [Config](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config) for advanced usage. Few important options:
-  * `swSrc` Type: `String`, Default `src/service-worker.js`, applicable only in `InjectManifest` mode
-  * `swDest` Type: `String`, Defaults to `service-worker.js` or the same with basename in `swSrc` if provided
-  * `importWorkboxFrom` Type: `String`，Workbox loads from Google CDN by default, you can choose to `'local'` mode which will let Workbox loads from local copies
+- `manifestOptions` Type: `Object`, includes following options:
+  - `srcPath` path of manifest, Type: `String`, Default `src/manifest.json`
+- `workboxPluginMode` Workbox mode, Type: `String`, Default `GenerateSW`(generate a brand new Service Worker); or `InjectManifest`(inject code to existed Service Worker)
+- `workboxOptions` Check Workbox [Config](https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_generatesw_config) for advanced usage. Few important options:
+  - `swSrc` Type: `String`, Default `src/service-worker.js`, applicable only in `InjectManifest` mode
+  - `swDest` Type: `String`, Defaults to `service-worker.js` or the same with basename in `swSrc` if provided
+  - `importWorkboxFrom` Type: `String`，Workbox loads from Google CDN by default, you can choose to `'local'` mode which will let Workbox loads from local copies
 
 You can refer to [Workbox](https://developers.google.com/web/tools/workbox/) for more API usages.
 
@@ -170,25 +174,30 @@ Here's a simple example:
 export default {
   pwa: {
     manifestOptions: {
-      srcPath: 'path/to/manifest.webmanifest'
+      srcPath: 'path/to/manifest.webmanifest',
     },
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       importWorkboxFrom: 'local',
       swSrc: 'path/to/service-worker.js',
-      swDest: 'my-dest-sw.js'
-    }
-  }
-}
+      swDest: 'my-dest-sw.js',
+    },
+  },
+};
 ```
 
-You can also listen to some `CustomEvent` when Service Worker has updated old contents in cache.
-It's the perfect time to display some message like "New content is available; please refresh.".
-For example, you can listen to `sw.updated` event in such UI component:
+You can also listen to some `CustomEvent` when Service Worker has updated old contents in cache. It's the perfect time to display some message like "New content is available; please refresh.". For example, you can listen to `sw.updated` event in such UI component:
 
 ```js
 window.addEventListener('sw.updated', () => {
   // show message
+});
+```
+
+```js
+window.addEventListener('sw.registered', e => {
+  // e.detail.update()  // trigger a manual update
+  // Configure the appropriate polling and match the sw.updated event, without the user refreshing or opening a new tab to update.
 });
 ```
 
@@ -200,30 +209,81 @@ window.addEventListener('sw.offline', () => {
 });
 ```
 
+`sw.*` Events are synchronized with events in [register-service-worker](https://www.npmjs.com/package/register-service-worker). For more usage, please refer to the link above.
+
 ### hd
 
-* Type `Boolean`
+- Type `Boolean` or `Object`
 
-Turn on the HD solution.
+Turn on [the HD solution](https://github.com/umijs/umi-hd#%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D), by default, follow the 750px design draft (1rem=100px).
+
+```js
+// .umirc.js or config/config.js
+export default {
+  hd: true,
+};
+```
+
+`hd: true` equipped to the following configuration:
+
+```js
+// .umirc.js or config/config.js
+export default {
+  // equipped to hd: true
+  hd: {
+    theme: {
+      // antd-mobile HD solution
+      '@hd': '2px',
+    },
+    // more: https://github.com/pigcan/postcss-plugin-px2rem#configuration
+    px2rem: {
+      rootValue: 100,
+      minPixelValue: 2,
+    },
+  }
+};
+```
+
+At the same time, you can customize the adaptation scheme:
+
+```js
+// default, 750px design draft
+// src/hd.(tsx|ts|js|jsx)
+import vw from 'umi-hd/lib/vw';
+import flex from 'umi-hd/lib/flex';
+
+// Fix document undefined when ssr. #2571
+if (typeof document !== 'undefined') {
+  if (document.documentElement.clientWidth >= 750) {
+    vw(100, 750);
+  } else {
+    flex();
+  }
+
+  // hd solution for antd-mobile@2
+  // ref: https://mobile.ant.design/docs/react/upgrade-notes-cn#%E9%AB%98%E6%B8%85%E6%96%B9%E6%A1%88
+  document.documentElement.setAttribute('data-scale', true);
+}
+```
 
 ### fastClick
 
-* Type `Boolean`
+- Type `Boolean`
 
-Enable fastClick.
+Enable [fastClick](https://github.com/ftlabs/fastclick), solve the prevent the 300ms click delay on mobile devices.
 
 ### title
 
-* Type `String` or `Object`
+- Type `String` or `Object`
 
 Enable title plugin for set HTML title:
 
 options include:
 
-* `defaultTitle`: 'default tile', // required, when option type is String, will use option as the default title
-* `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
-* `separator`: ' - ', // default ' - '
-* `useLocale: true`, // default false, whether to use `locale` for multi-language support. If set `useLocale: true`, title displayed will be picked from `locales/*.js`
+- `defaultTitle`: 'default tile', // required, when option type is String, will use option as the default title
+- `format`: '{parent}{separator}{current}', // default {parent}{separator}{current}, title format
+- `separator`: ' - ', // default ' - '
+- `useLocale: true`, // default false, whether to use `locale` for multi-language support. If set `useLocale: true`, title displayed will be picked from `locales/*.js`
 
 When the title plugin is enabled you can configure the title in the route configuration or in the page component in pages folder.
 
@@ -232,12 +292,14 @@ For example, with configuration file:
 ```js
 // .umirc.js or config/config.js
 export default {
-  routes: [{
-    path: '/testpage',
-    component: './testpage',
-    title: 'test page',
-  }],
-}
+  routes: [
+    {
+      path: '/testpage',
+      component: './testpage',
+      title: 'test page',
+    },
+  ],
+};
 ```
 
 or with convensional routing
@@ -248,7 +310,7 @@ or with convensional routing
  */
 export default () => {
   return <div>testpage</div>;
-}
+};
 ```
 
 > `title/route configuration` must be at the top of the routing page component, otherwise it will be ignored by `umi`
@@ -259,7 +321,7 @@ If you defined `src/pages/document.ejs` by your own, please make sure the snippe
 
 ### chunks
 
-* Type：`Array(String)`
+- Type：`Array(String)`
 
 `default`: ['umi'], modifiable，e,g: require to load vendors.js before umi.js if split code into vendor chunk
 
@@ -299,22 +361,22 @@ export default {
 
 ### scripts
 
-* Type：`Array(Object) or Array(String)`
+- Type：`Array(Object) or Array(String)`
 
 Replace in `<body>`, after umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
 
 ### headScripts
 
-* Type：`Array(Object) or Array(String)`
+- Type：`Array(Object) or Array(String)`
 
 Replace in `<head>`, before umi.js, use <%= PUBLIC_PATH %> specifies the publicPath
 
 ### metas
 
-* Type：`Array(Object)`
+- Type：`Array(Object)`
 
 ### links
 
-* Type：`Array(Object)`
+- Type：`Array(Object)`
 
 Use <%= PUBLIC_PATH %> specifies the publicPath

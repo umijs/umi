@@ -1,11 +1,13 @@
 /* eslint-disable no-undef, prefer-rest-params */
 const ReactIntl = require('react-intl');
-const React = require('react');
+const createContext = require('@ant-design/create-react-context');
 
 let localeContext;
 
 function setLocale(lang, realReload = true) {
-  if (lang !== undefined && !/^([a-z]{2})-([A-Z]{2})$/.test(lang)) {
+  const { g_langSeparator = '-' } = window;
+  const localeExp = new RegExp(`^([a-z]{2})${g_langSeparator}?([A-Z]{2})?$`);
+  if (lang !== undefined && !localeExp.test(lang)) {
     // for reset when lang === undefined
     throw new Error('setLocale lang format error');
   }
@@ -30,12 +32,17 @@ function setLocale(lang, realReload = true) {
 
 function getLocale() {
   // support SSR
+  const { g_langSeparator = '-', g_lang } = window;
   const lang = typeof localStorage !== 'undefined' ? window.localStorage.getItem('umi_locale') : '';
-  const browserLang = typeof navigator !== 'undefined' ? navigator.language : '';
-  return lang || window.g_lang || browserLang;
+  const isNavigatorLanguageValid =
+    typeof navigator !== 'undefined' && typeof navigator.language === 'string';
+  const browserLang = isNavigatorLanguageValid
+    ? navigator.language.split('-').join(g_langSeparator)
+    : '';
+  return lang || g_lang || browserLang;
 }
 
-const LangContext = React.createContext({
+const LangContext = createContext({
   lang: getLocale(),
 });
 

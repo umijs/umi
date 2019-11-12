@@ -7,7 +7,7 @@ export default function(api) {
     validate(val) {
       assert(
         isPlainObject(val) || typeof val === 'boolean',
-        `Configure item ssr should be true, false or Plain Object, but got ${val}.`,
+        `Configure item ssr should be Boolean or Plain Object, but got ${val}.`,
       );
     },
     onChange() {
