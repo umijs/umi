@@ -130,7 +130,7 @@ const DashboardUI: React.FC<{}> = props => {
                 <div className={cls(styles.icon)}>{renderAvatar(card)}</div>
                 <div className={styles.info}>
                   <h4>{title}</h4>
-                  <p>{description}</p>
+                  {description && <p>{description}</p>}
                 </div>
               </Col>
               {right && <Col className={styles.right}>{right}</Col>}

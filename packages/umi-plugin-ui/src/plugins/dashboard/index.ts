@@ -56,7 +56,6 @@ export default (api: IApi) => {
       case 'org.umi.dashboard.card.list.change': {
         try {
           const { dbPath, key, enable } = payload;
-          console.log('change payload', payload);
           const list = await getData(dbPath);
           const newList = p(list, draft => {
             draft[key] = {

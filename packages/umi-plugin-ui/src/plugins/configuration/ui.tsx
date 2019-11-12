@@ -30,12 +30,18 @@ export default (api: IUiApi) => {
     'en-US': enUS,
   });
 
+  const { FormattedMessage } = api.intl;
+
   api.addDashboard({
     key: 'org.umi.dashboard.card.config',
-    title: api.intl({ id: 'org.umi.ui.configuration.panel' }),
-    description: '这是一段构建的描述信息',
+    title: <FormattedMessage id="org.umi.ui.configuration.panel" />,
+    description: <FormattedMessage id="org.umi.ui.configuration.panel.description" />,
     icon: <ControlFilled />,
-    content: [<a onClick={() => api.redirect('/configuration')}>项目配置</a>],
+    content: [
+      <a onClick={() => api.redirect('/configuration')}>
+        <FormattedMessage id="org.umi.ui.configuration.project.config.title" />
+      </a>,
+    ],
   });
 
   api.addPanel({

@@ -135,16 +135,24 @@ export default (api: IUiApi) => {
     'en-US': enUS,
   });
 
+  const { FormattedMessage } = api.intl;
+
   api.addDashboard({
     // 唯一标识，org.umi.dashboard.card.${key}
     key: 'org.umi.dashboard.card.task',
-    title: api.intl({ id: 'org.umi.ui.tasks.title' }),
-    description: '这是一段构建的描述信息',
+    title: <FormattedMessage id="org.umi.ui.tasks.title" />,
+    description: <FormattedMessage id="org.umi.ui.tasks.description" />,
     icon: <Setting />,
     content: [
-      <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>启动</a>,
-      <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>构建</a>,
-      <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>检查</a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.dev" />
+      </a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.build" />
+      </a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.lint" />
+      </a>,
     ],
   });
 

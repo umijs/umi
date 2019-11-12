@@ -20,7 +20,7 @@ export default (api: IUiApi) => {
   api.addDashboard({
     key: 'org.umi.dashboard.card.zaobao',
     title: <DailyReportTitle />,
-    description: '这是一段本地启动的描述信息',
+    description: <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.description" />,
     icon: 'https://avatars1.githubusercontent.com/u/35128?v=4',
     right: <DailyReportHeader />,
     span: {

@@ -12,6 +12,7 @@ import Container from './Container';
 
 export default (api: IUiApi) => {
   initApiToGlobal(api);
+  const { FormattedMessage } = api.intl;
 
   api.addLocales({
     'zh-CN': zhCN,
@@ -26,12 +27,16 @@ export default (api: IUiApi) => {
   api.addDashboard({
     // 唯一标识，org.umi.dashboard.card.${key}
     key: 'org.umi.dashboard.card.block',
-    title: api.intl({ id: 'org.umi.ui.blocks.content.title' }),
-    description: '这是一段构建的描述信息',
+    title: <FormattedMessage id="org.umi.ui.blocks.content.title" />,
+    description: <FormattedMessage id="org.umi.ui.blocks.content.description" />,
     icon: <Icon />,
     content: [
-      <a onClick={() => api.redirect('/blocks?type=block')}>区块</a>,
-      <a onClick={() => api.redirect('/blocks?type=template')}>模板</a>,
+      <a onClick={() => api.redirect('/blocks?type=block')}>
+        <FormattedMessage id="org.umi.ui.blocks.tabs.blocks" />
+      </a>,
+      <a onClick={() => api.redirect('/blocks?type=template')}>
+        <FormattedMessage id="org.umi.ui.blocks.tabs.templates" />
+      </a>,
     ],
   });
 
