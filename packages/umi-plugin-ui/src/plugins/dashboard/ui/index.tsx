@@ -5,7 +5,7 @@ import { Card, Row, Col, Avatar, Spin } from 'antd';
 import Context from './context';
 import styles from './index.module.less';
 
-const { useState, useCallback, useEffect } = React;
+const { useCallback, useEffect } = React;
 
 export const renderAvatar = item => {
   const { icon, title } = item;
@@ -45,7 +45,6 @@ const DashboardUI: React.FC<{}> = props => {
   const { event, currentProject, intl, getBasicUI = () => ({}) } = api;
   const [, updateState] = React.useState();
   const forceUpdate = useCallback(() => updateState({}), []);
-  const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
   const basicUI = getBasicUI();

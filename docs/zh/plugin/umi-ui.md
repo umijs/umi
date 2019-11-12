@@ -453,6 +453,14 @@ export default (api) => {
 
 隐藏 Umi UI 底部日志栏。
 
+### api.moment
+
+与 [moment](https://github.com/moment/moment/) 一致。
+
+### api.event
+
+与 [events](https://github.com/Gozala/events) 一致。
+
 ### api.TwoColumnPanel
 
 两栏布局组件

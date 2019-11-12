@@ -1,10 +1,11 @@
 import * as React from 'react';
 import useSWR from 'swr';
-import { List, Tag, Button } from 'antd';
 import cls from 'classnames';
+import { List, Tag, Typography } from 'antd';
 import Context from '../context';
 import styles from './dailyReport.module.less';
 
+const { Paragraph } = Typography;
 const { useState, useEffect } = React;
 
 const PAGE_SIZE = 5;
@@ -24,6 +25,7 @@ const DailyReport: React.SFC<{}> = props => {
   const { forceUpdate } = props;
   const { api } = React.useContext(Context);
   const { _, event } = api;
+  const { FormattedMessage } = api.intl;
   const [size, setSize] = React.useState(PAGE_SIZE);
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
@@ -82,7 +84,7 @@ const DailyReport: React.SFC<{}> = props => {
 
   const length = Array.isArray(data) ? data.length : 0;
 
-  const onLoadMore = () => {
+  const handleLoadMore = () => {
     setSize(value => value + PAGE_SIZE);
   };
 
@@ -95,7 +97,9 @@ const DailyReport: React.SFC<{}> = props => {
         lineHeight: '32px',
       }}
     >
-      <Button onClick={onLoadMore}>加载更多</Button>
+      <a className={styles.more} onClick={handleLoadMore}>
+        <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.loadMore" />
+      </a>
     </div>
   );
 
@@ -119,7 +123,10 @@ const DailyReport: React.SFC<{}> = props => {
               className={styles['listItem-meta']}
               title={
                 <a target="_blank" rel="noopener noreferrer" href={item.href}>
-                  {item.title} <Tag className={getTagCls(item.tag)}>{item.tag}</Tag>
+                  <Paragraph className={styles.paragraph} ellipsis>
+                    {item.title}
+                  </Paragraph>{' '}
+                  <Tag className={getTagCls(item.tag)}>{item.tag}</Tag>
                 </a>
               }
               description={item.description}

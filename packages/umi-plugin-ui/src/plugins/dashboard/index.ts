@@ -1,10 +1,14 @@
-import request from 'umi-request';
+import { extend } from 'umi-request';
 import * as path from 'path';
 import * as fs from 'fs';
 import p from 'immer';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 import { IApi } from 'umi-types';
+
+const request = extend({
+  timeout: 10000,
+});
 
 export default (api: IApi) => {
   const getDataPath = dbPath => {
@@ -50,7 +54,6 @@ export default (api: IApi) => {
         } catch (e) {
           failure(e);
         }
-
         break;
       }
       case 'org.umi.dashboard.card.list.change': {
@@ -63,18 +66,21 @@ export default (api: IApi) => {
               enable: !!enable,
             };
           });
-
           writeData(dbPath, newList);
           success(newList);
         } catch (e) {
           failure(e);
         }
-
         break;
       }
       case 'org.umi.dashboard.zaobao.list': {
-        const result = await request('https://ui.umijs.org/api/zaobao');
-        success(result);
+        try {
+          const result = await request('https://ui.umijs.org/api/zaobao');
+          success(result);
+        } catch (e) {
+          console.error('zaobao.list error', e);
+          failure(e);
+        }
         break;
       }
       case 'org.umi.dashboard.zaobao.list.detail': {
