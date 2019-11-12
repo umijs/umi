@@ -1,5 +1,6 @@
 export default {
   'org.umi.ui.dashboard.panel': 'Dashboard',
+  'org.umi.ui.dashboard.settings.title': 'Setting',
   'org.umi.ui.dashboard.card.zaobao': 'DailyReport',
   'org.umi.ui.dashboard.card.zaobao.description': 'DailyReport description',
   'org.umi.ui.dashboard.card.zaobao.loadMore': 'More',
