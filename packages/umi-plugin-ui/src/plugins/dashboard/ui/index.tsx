@@ -39,6 +39,13 @@ const DEFAULT_SPAN = {
   xl: 6,
 };
 
+const DEFAULT_SPAN_MINI = {
+  xs: 12,
+  sm: 8,
+  lg: 8,
+  xl: 8,
+};
+
 const DashboardUI: React.FC<{}> = props => {
   // const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   // const [closed, setClosed] = useState<boolean>(!!isClosed);
@@ -87,10 +94,11 @@ const DashboardUI: React.FC<{}> = props => {
   if (loading) {
     return <Spin />;
   }
+  const defaultSpan = api.mini ? DEFAULT_SPAN_MINI : DEFAULT_SPAN;
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        <Col {...DEFAULT_SPAN}>
+        <Col {...defaultSpan}>
           <Card className={welcomeCardCls}>
             <h2>Hi</h2>
             <p>
@@ -116,7 +124,7 @@ const DashboardUI: React.FC<{}> = props => {
           </Card>
         </Col>
         {enableCards.map(card => {
-          const { title = '', description, key, content, span = DEFAULT_SPAN, right } = card;
+          const { title = '', description, key, content, span = defaultSpan, right } = card;
           const colCls = cls(actionCardCls, styles['container-col']);
           const Title = (
             <Row
@@ -136,7 +144,7 @@ const DashboardUI: React.FC<{}> = props => {
               {right && <Col className={styles.right}>{right}</Col>}
             </Row>
           );
-          const colSpan = api._.isPlainObject(span) ? { ...DEFAULT_SPAN, ...span } : { span };
+          const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };
           return (
             <Col key={key} className={colCls} {...colSpan}>
               <Card title={Title} className={styles.card} bordered={false} hoverable={false}>
