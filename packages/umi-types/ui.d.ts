@@ -293,12 +293,12 @@ declare namespace IUI {
       /** default 24 */
       xs: number;
     }>;
-    content: ReactNode;
+    content: ReactNode | ReactNode[];
   }
 
   type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
-  type IAddDashboard = (dashboard: IDashboard) => void;
+  type IAddDashboard = (dashboard: IDashboard | IDashboard[]) => void;
   type IRegisterModel = (model: any) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;

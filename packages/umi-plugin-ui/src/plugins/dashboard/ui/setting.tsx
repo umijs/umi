@@ -3,13 +3,11 @@ import cls from 'classnames';
 import { Drawer, List, Switch } from 'antd';
 import Context from './context';
 import { renderAvatar, MESSAGES } from './index';
-import styles from './setting.less';
-
-const { useEffect } = React;
+import styles from './setting.module.less';
 
 const Setting: React.FC<{}> = (props, ref) => {
   const { api, dbPath, dashboardCards, setCardSettings } = React.useContext(Context);
-  const { visible, closeDrawer, openDrawer, ...restConfig } = ref.current;
+  const { visible, closeDrawer, openDrawer, className, ...restConfig } = ref.current;
 
   const handleOnChange = async (key, checked) => {
     const result = await api.callRemote({
@@ -24,11 +22,20 @@ const Setting: React.FC<{}> = (props, ref) => {
     setCardSettings(result);
   };
 
+  const drawerCls = cls(className, styles.drawer);
+
   return (
-    <Drawer visible={visible} onClose={closeDrawer} title="面板设置" {...restConfig}>
+    <Drawer
+      className={drawerCls}
+      visible={visible}
+      onClose={closeDrawer}
+      title="面板设置"
+      {...restConfig}
+    >
       <List
         dataSource={dashboardCards || []}
         loading={!dashboardCards}
+        className={styles.list}
         renderItem={item => (
           <List.Item
             key={item.key}
