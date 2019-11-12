@@ -1,100 +1,53 @@
 import React from 'react';
 import cls from 'classnames';
 import Masonry from 'react-masonry-component';
-import { Card, Row, Col, Avatar } from 'antd';
+import { Card, Row, Col, Avatar, Spin } from 'antd';
 import Context from './context';
 import styles from './index.module.less';
 
 const { useState, useRef, useEffect } = React;
 
+export const renderAvatar = item => {
+  const { icon, title } = item;
+  const defaultChar = title.charAt(0);
+  const commonAvatarProps = {
+    style: { backgroundColor: '#459BF7' },
+    shape: 'square',
+    className: styles.avatar,
+  };
+  if (React.isValidElement(icon)) {
+    return <Avatar {...commonAvatarProps} icon={icon} />;
+  }
+  if (typeof icon === 'string') {
+    return <Avatar {...commonAvatarProps} src={icon} />;
+  }
+  // 默认返回 title 第一个字符
+  if (defaultChar) {
+    return <Avatar {...commonAvatarProps}>{defaultChar}</Avatar>;
+  }
+};
+
+export const MESSAGES = {
+  CHANGE_CARDS: Symbol('CHANGE_CARDS'),
+};
+
+const DEFAULT_SPAN = {
+  xs: 24,
+  sm: 12,
+  lg: 12,
+  xl: 6,
+};
+
 const DashboardUI: React.FC<{}> = props => {
-  const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
-  const [closed, setClosed] = useState<boolean>(!!isClosed);
-  const { api } = React.useContext(Context);
-  const { redirect, currentProject, intl, getBasicUI = () => ({}), getDashboard } = api;
+  // const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
+  // const [closed, setClosed] = useState<boolean>(!!isClosed);
+  const { api, loading, dashboardCards, setCardSettings } = React.useContext(Context);
+  const { redirect, currentProject, intl, getBasicUI = () => ({}) } = api;
   const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
   const basicUI = getBasicUI();
-  const dashboardCards = getDashboard();
-  console.log('dashboardCards', dashboardCards);
 
-  const actionCards = [
-    {
-      className: actionCardCls,
-      title: (
-        <div className={styles.main}>
-          <div className={cls(styles.icon)} />
-          <div className={styles.info}>
-            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.dev.title' })}</h4>
-            <p>{intl({ id: 'org.umi.ui.dashboard.panel.dev.desc' })}</p>
-          </div>
-        </div>
-      ),
-      body: (
-        <div onClick={() => redirect('/tasks')}>
-          <FormattedMessage id="org.umi.ui.dashboard.panel.goto.task" />
-        </div>
-      ),
-    },
-    {
-      className: actionCardCls,
-      title: (
-        <div className={styles.main}>
-          <div className={cls(styles.icon, styles.build)} />
-          <div className={styles.info}>
-            <h4>{intl({ id: 'org.umi.ui.dashboard.panel.build.title' })}</h4>
-            <p>{intl({ id: 'org.umi.ui.dashboard.panel.build.desc' })}</p>
-          </div>
-        </div>
-      ),
-      body: (
-        <div onClick={() => redirect('/tasks?active=build')}>
-          {intl({ id: 'org.umi.ui.dashboard.panel.goto.task' })}
-        </div>
-      ),
-    },
-    // {
-    //   className: actionCardCls,
-    //   title: (
-    //     <div className={styles.future}>
-    //       <div>
-    //         <Smile />
-    //       </div>
-    //       <p>{intl({ id: 'org.umi.ui.dashboard.panel.coming.soon' })}</p>
-    //     </div>
-    //   ),
-    // },
-  ];
-
-  if (!closed) {
-    actionCards.unshift({
-      className: welcomeCardCls,
-      size: 'small',
-      // extra: <Close className={styles.close} onClick={handleClose} />,
-      body: (
-        <div>
-          <h2>Hi</h2>
-          <p>
-            {intl(
-              {
-                id: 'org.umi.ui.dashboard.panel.welcome.title',
-              },
-              {
-                name: currentProject.name,
-              },
-            )}
-          </p>
-          <div>
-            <a href="https://umijs.org/guide/umi-ui.html" target="_blank" rel="noopener noreferrer">
-              {basicUI.name || 'Umi'} UI
-            </a>
-            {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
-          </div>
-        </div>
-      ),
-    });
-  }
   const containerCls = cls(styles['container-row'], 'ant-row', 'ant-row-flex');
   const renderCard = content => {
     if (Array.isArray(content)) {
@@ -118,35 +71,46 @@ const DashboardUI: React.FC<{}> = props => {
     }
   };
 
-  const renderAvatar = (icon, defaultChar) => {
-    const commonAvatarProps = {
-      style: { backgroundColor: '#459BF7' },
-      shape: 'square',
-      className: styles.avatar,
+  useEffect(() => {
+    api.event.on(MESSAGES.CHANGE_CARDS, setCardSettings);
+    return () => {
+      api.event.off(MESSAGES.CHANGE_CARDS, setCardSettings);
     };
-    if (React.isValidElement(icon)) {
-      return <Avatar {...commonAvatarProps} icon={icon} />;
-    }
-    if (typeof icon === 'string') {
-      return <Avatar {...commonAvatarProps} src={icon} />;
-    }
-    // 默认返回 title 第一个字符
-    if (defaultChar) {
-      return <Avatar {...commonAvatarProps}>{defaultChar}</Avatar>;
-    }
-  };
-
+  }, []);
+  const enableCards = (dashboardCards || []).filter(card => !!card.enable);
+  if (loading) {
+    return <Spin />;
+  }
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        {dashboardCards.map((card, i) => {
-          const defaultSpan = {
-            xs: 24,
-            sm: 12,
-            lg: 12,
-            xl: 6,
-          };
-          const { title = '', description, content, icon, span = defaultSpan, right } = card;
+        <Col {...DEFAULT_SPAN}>
+          <Card className={welcomeCardCls}>
+            <h2>Hi</h2>
+            <p>
+              {intl(
+                {
+                  id: 'org.umi.ui.dashboard.panel.welcome.title',
+                },
+                {
+                  name: currentProject.name,
+                },
+              )}
+            </p>
+            <div>
+              <a
+                href="https://umijs.org/guide/umi-ui.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {basicUI.name || 'Umi'} UI
+              </a>
+              {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
+            </div>
+          </Card>
+        </Col>
+        {enableCards.map(card => {
+          const { title = '', description, key, content, span = DEFAULT_SPAN, right } = card;
           const colCls = cls(actionCardCls, styles['container-col']);
           const Title = (
             <Row
@@ -157,7 +121,7 @@ const DashboardUI: React.FC<{}> = props => {
               justify="space-between"
             >
               <Col style={{ display: 'flex' }}>
-                <div className={cls(styles.icon)}>{renderAvatar(icon, title.charAt(0))}</div>
+                <div className={cls(styles.icon)}>{renderAvatar(card)}</div>
                 <div className={styles.info}>
                   <h4>{title}</h4>
                   <p>{description}</p>
@@ -166,9 +130,9 @@ const DashboardUI: React.FC<{}> = props => {
               {right && <Col className={styles.right}>{right}</Col>}
             </Row>
           );
-          const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };
+          const colSpan = api._.isPlainObject(span) ? { ...DEFAULT_SPAN, ...span } : { span };
           return (
-            <Col key={i.toString()} className={colCls} {...colSpan}>
+            <Col key={key} className={colCls} {...colSpan}>
               <Card title={Title} className={styles.card} bordered={false} hoverable={false}>
                 {renderCard(content)}
               </Card>

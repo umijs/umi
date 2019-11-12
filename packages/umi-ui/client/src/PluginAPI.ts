@@ -193,9 +193,7 @@ export default class PluginAPI {
 
   intl: IUi.IIntl = intl.formatMessage;
 
-  getLocale: IUi.IGetLocale = () => {
-    return window.g_lang;
-  };
+  getLocale: IUi.IGetLocale = () => window.g_lang;
 
   notify: IUi.INotify = async payload => {
     const { title, message, subtitle, ...restPayload } = payload;
@@ -252,9 +250,7 @@ export default class PluginAPI {
     this.service.panels.push(panel);
   };
 
-  getDashboard = () => {
-    return this.service.dashboard;
-  };
+  getDashboard = () => this.service.dashboard;
 
   addDashboard: any = config => {
     if (!isPlainObject(config) && !Array.isArray(config)) {
@@ -262,7 +258,8 @@ export default class PluginAPI {
       return;
     }
     const configs = Array.isArray(config) ? config : [];
-    this.service.dashboard.push(...configs);
+    const tweakConfigs = configs.map(c => ({ ...c, enable: true }));
+    this.service.dashboard.push(...tweakConfigs);
   };
 
   // modify basic UI api.modifyBasicUI({  })

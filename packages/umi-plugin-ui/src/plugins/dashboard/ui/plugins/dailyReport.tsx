@@ -92,7 +92,7 @@ const DailyReport: React.SFC<{}> = props => {
 
   const getTagCls = name =>
     cls(styles['listItem-meta-tag'], {
-      [styles[`listItem-meta-tag-${TAG_MAP[name]}`]]: !!name,
+      [styles[`listItem-meta-tag-${TAG_MAP[name] || TAG_MAP.Star}`]]: !!name,
     });
 
   return (
