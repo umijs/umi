@@ -31,7 +31,7 @@ const ConfigAction: React.FC<{}> = props => {
           <FormattedMessage id="org.umi.ui.dashboard.launch.editor" />
         </Button>
       )}
-      <Button onClick={handleSetting}>
+      <Button size={api.mini ? 'small' : 'default'} onClick={handleSetting}>
         <SettingIcon />
       </Button>
       <SettingDrawer ref={drawerRef} />
