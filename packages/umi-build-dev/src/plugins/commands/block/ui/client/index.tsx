@@ -38,8 +38,10 @@ export default (api: IUiApi) => {
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     titleComponent: () => <TitleTab />,
-    provider: props => (
-      <Container.Provider initialState={{ api }}>{props.children}</Container.Provider>
+    provider: ({ children, ...restProps }) => (
+      <Container.Provider initialState={{ api }} {...restProps}>
+        {children}
+      </Container.Provider>
     ),
     path: '/blocks',
     icon: <Icon />,
