@@ -257,7 +257,7 @@ export default class PluginAPI {
       console.error('api.addDashboard config error', config);
       return;
     }
-    const configs = Array.isArray(config) ? config : [];
+    const configs = Array.isArray(config) ? config : [config];
     const tweakConfigs = configs.map(c => ({ ...c, enable: true }));
     this.service.dashboard.push(...tweakConfigs);
   };

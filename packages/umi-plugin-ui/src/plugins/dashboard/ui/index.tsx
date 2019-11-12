@@ -5,7 +5,7 @@ import { Card, Row, Col, Avatar, Spin } from 'antd';
 import Context from './context';
 import styles from './index.module.less';
 
-const { useState, useRef, useEffect } = React;
+const { useState, useCallback, useEffect } = React;
 
 export const renderAvatar = item => {
   const { icon, title } = item;
@@ -42,7 +42,9 @@ const DashboardUI: React.FC<{}> = props => {
   // const isClosed = window.localStorage.getItem('umi_ui_dashboard_welcome') || false;
   // const [closed, setClosed] = useState<boolean>(!!isClosed);
   const { api, loading, dashboardCards, setCardSettings } = React.useContext(Context);
-  const { redirect, currentProject, intl, getBasicUI = () => ({}) } = api;
+  const { event, currentProject, intl, getBasicUI = () => ({}) } = api;
+  const [, updateState] = React.useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
   const { FormattedMessage } = intl;
   const actionCardCls = cls(styles.card, styles['card-action']);
   const welcomeCardCls = cls(styles.card, styles.welcome);
@@ -50,6 +52,10 @@ const DashboardUI: React.FC<{}> = props => {
 
   const containerCls = cls(styles['container-row'], 'ant-row', 'ant-row-flex');
   const renderCard = content => {
+    const childProps = {
+      // 用于动态卡片 DidMount 后，重新计算瀑布流
+      forceUpdate,
+    };
     if (Array.isArray(content)) {
       // 横向排列快捷入口
       return (
@@ -60,21 +66,21 @@ const DashboardUI: React.FC<{}> = props => {
               key={i.toString()}
               span={Math.floor(24 / content.length)}
             >
-              {child}
+              {React.cloneElement(child, childProps)}
             </Col>
           ))}
         </Row>
       );
     }
     if (React.isValidElement(content)) {
-      return content;
+      return React.cloneElement(content, childProps);
     }
   };
 
   useEffect(() => {
-    api.event.on(MESSAGES.CHANGE_CARDS, setCardSettings);
+    event.on(MESSAGES.CHANGE_CARDS, setCardSettings);
     return () => {
-      api.event.off(MESSAGES.CHANGE_CARDS, setCardSettings);
+      event.off(MESSAGES.CHANGE_CARDS, setCardSettings);
     };
   }, []);
   const enableCards = (dashboardCards || []).filter(card => !!card.enable);

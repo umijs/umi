@@ -7,15 +7,6 @@ import assert from 'assert';
 import { IApi } from 'umi-types';
 
 export default (api: IApi) => {
-  // let resources: Resource[] = [];
-  // resources = api.applyPlugins('addBlockUIResource', {
-  //   initialValue: DEFAULT_RESOURCES,
-  // });
-  // resources = api.applyPlugins('modifyBlockUIResources', {
-  //   initialValue: resources,
-  // });
-  // register backend service API
-
   const getDataPath = dbPath => {
     return path.join(dbPath, 'dashboard.json');
   };

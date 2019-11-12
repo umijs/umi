@@ -1,5 +1,6 @@
 import React from 'react';
 import { IUiApi } from 'umi-types';
+import { Setting } from '@ant-design/icons';
 import { Button } from 'antd';
 import ConfigManager from './ui/index';
 import zhCN from './locales/zh-CN';
@@ -27,6 +28,14 @@ export default (api: IUiApi) => {
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
+  });
+
+  api.addDashboard({
+    key: 'org.umi.dashboard.card.config',
+    title: '配置',
+    description: '这是一段构建的描述信息',
+    icon: 'https://gw.alipayobjects.com/zos/antfincdn/IkJdCIioc7/bigfish.svg',
+    content: [<a onClick={() => api.redirect('/configuration')}>项目配置</a>],
   });
 
   api.addPanel({

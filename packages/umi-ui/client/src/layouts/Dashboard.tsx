@@ -60,7 +60,7 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  const { active, ...restSearchParams } = parse(window.location.search, {
+  const { active, iife, type, ...restSearchParams } = parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
   const search = Object.keys(restSearchParams).length > 0 ? `?${stringify(restSearchParams)}` : '';

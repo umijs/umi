@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { IUiApi } from 'umi-types';
+import { Setting } from '@ant-design/icons';
 import Dev from './ui/components/Dev';
 import Build from './ui/components/Build';
 import Lint from './ui/components/Lint';
@@ -132,6 +133,19 @@ export default (api: IUiApi) => {
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
+  });
+
+  api.addDashboard({
+    // 唯一标识，org.umi.dashboard.card.task
+    key: 'org.umi.dashboard.card.task',
+    title: '任务',
+    description: '这是一段构建的描述信息',
+    icon: <Setting />,
+    content: [
+      <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>启动</a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>构建</a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>检查</a>,
+    ],
   });
 
   api.addPanel({

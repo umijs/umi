@@ -21,6 +21,7 @@ export const MESSAGES = {
 };
 
 const DailyReport: React.SFC<{}> = props => {
+  const { forceUpdate } = props;
   const { api } = React.useContext(Context);
   const { _, event } = api;
   const [size, setSize] = React.useState(PAGE_SIZE);
@@ -71,6 +72,14 @@ const DailyReport: React.SFC<{}> = props => {
       }
     },
   );
+
+  useEffect(
+    () => {
+      forceUpdate();
+    },
+    [data],
+  );
+
   const length = Array.isArray(data) ? data.length : 0;
 
   const onLoadMore = () => {
