@@ -9,7 +9,6 @@ const { useState, useCallback, useEffect } = React;
 
 export const renderAvatar = item => {
   const { icon, title } = item;
-  const defaultChar = title.charAt(0);
   const commonAvatarProps = {
     style: { backgroundColor: '#459BF7' },
     shape: 'square',
@@ -22,6 +21,7 @@ export const renderAvatar = item => {
     return <Avatar {...commonAvatarProps} src={icon} />;
   }
   // 默认返回 title 第一个字符
+  const defaultChar = typeof title === 'string' ? title.charAt(0) : 'Umi';
   if (defaultChar) {
     return <Avatar {...commonAvatarProps}>{defaultChar}</Avatar>;
   }

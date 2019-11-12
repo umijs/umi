@@ -32,7 +32,7 @@ export default (api: IUiApi) => {
 
   api.addDashboard({
     key: 'org.umi.dashboard.card.config',
-    title: '配置',
+    title: api.intl({ id: 'org.umi.ui.configuration.panel' }),
     description: '这是一段构建的描述信息',
     icon: <ControlFilled />,
     content: [<a onClick={() => api.redirect('/configuration')}>项目配置</a>],

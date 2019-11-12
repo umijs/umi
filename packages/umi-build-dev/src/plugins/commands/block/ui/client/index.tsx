@@ -26,7 +26,7 @@ export default (api: IUiApi) => {
   api.addDashboard({
     // 唯一标识，org.umi.dashboard.card.${key}
     key: 'org.umi.dashboard.card.block',
-    title: '资产',
+    title: api.intl({ id: 'org.umi.ui.blocks.content.title' }),
     description: '这是一段构建的描述信息',
     icon: <Icon />,
     content: [

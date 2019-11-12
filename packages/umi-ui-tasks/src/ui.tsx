@@ -138,7 +138,7 @@ export default (api: IUiApi) => {
   api.addDashboard({
     // 唯一标识，org.umi.dashboard.card.${key}
     key: 'org.umi.dashboard.card.task',
-    title: '任务',
+    title: api.intl({ id: 'org.umi.ui.tasks.title' }),
     description: '这是一段构建的描述信息',
     icon: <Setting />,
     content: [

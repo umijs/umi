@@ -241,7 +241,7 @@ export default class PluginAPI {
     return window.g_uiContext;
   }
 
-  getBasicUI = () => {
+  getBasicUI: IUi.IGetBasicUI = () => {
     const { basicUI } = this.service;
     return Object.freeze(basicUI);
   };
@@ -250,9 +250,9 @@ export default class PluginAPI {
     this.service.panels.push(panel);
   };
 
-  getDashboard = () => this.service.dashboard;
+  getDashboard: IUi.IGetDashboard = () => this.service.dashboard;
 
-  addDashboard: any = config => {
+  addDashboard: IUi.IAddDashboard = config => {
     if (!isPlainObject(config) && !Array.isArray(config)) {
       console.error('api.addDashboard config error', config);
       return;

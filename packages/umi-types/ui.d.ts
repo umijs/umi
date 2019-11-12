@@ -91,6 +91,7 @@ declare namespace IUI {
     locales: ILocale[];
     configSections: any[];
     basicUI: Partial<IBasicUI>;
+    dashboard: IDashboard[];
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -270,8 +271,34 @@ declare namespace IUI {
     /** notify type, default info */
     type?: 'error' | 'info' | 'warning' | 'success';
   }
+  interface IDashboard {
+    /** uniq dashboard Card id, required */
+    key: string;
+    /** card title */
+    title: ReactNode;
+    /** card description */
+    description: ReactNode;
+    /** icon */
+    icon: ReactNode;
+    /** card Right button */
+    right?: ReactNode;
+    /** same as antd Grid, xs,sm,lg,xl */
+    span?: Partial<{
+      /** default 6 */
+      xl: number;
+      /** default 12 */
+      sm: number;
+      /** default 12 */
+      lg: number;
+      /** default 24 */
+      xs: number;
+    }>;
+    content: ReactNode;
+  }
+
   type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
+  type IAddDashboard = (dashboard: IDashboard) => void;
   type IRegisterModel = (model: any) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;
@@ -294,6 +321,8 @@ declare namespace IUI {
   type IShowMini = () => void;
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
+  type IGetDashboard = () => IDashboard[];
+  type IGetBasicUI = () => IBasicUI;
   type IGetSharedDataDir = () => Promise<string>;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
@@ -328,6 +357,8 @@ declare namespace IUI {
   class IApiClass {
     constructor(service: IService);
     service: IService;
+    /** event */
+    event: NodeJS.EventEmitter;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */
@@ -347,6 +378,7 @@ declare namespace IUI {
     intl: IIntl;
     /** add plugin Panel */
     addPanel: IAddPanel;
+    addDashboard: IAddDashboard;
     /** register dva model Panel */
     registerModel: IRegisterModel;
     /** add plugin locales { zh-CN: {}, en-US: {} } */
@@ -354,7 +386,7 @@ declare namespace IUI {
     /** react component context */
     getContext(): Context<IContext>;
     /** get Plugin UI Service */
-    getBasicUI(): IBasicUI;
+    getBasicUI: IGetBasicUI;
     /** system notify */
     notify: INotify;
     /** redirect */
@@ -383,6 +415,8 @@ declare namespace IUI {
     hideMini: IHideMini;
     send: ISend;
     connect: IConnect;
+    /** get dashboard list */
+    getDashboard: IGetDashboard;
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;
