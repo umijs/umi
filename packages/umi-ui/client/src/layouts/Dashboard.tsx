@@ -32,7 +32,7 @@ function getActivePanel(pathname) {
 const renderLocaleText = renderLocale(formatMessage);
 
 const DefaultProvider = props => {
-  return <div>{props.children}</div>;
+  return <div {...props}>{props.children}</div>;
 };
 
 export default withRouter(props => {
@@ -326,7 +326,7 @@ export default withRouter(props => {
                     )}
                   </Sider>
                   <Content className={styles.main}>
-                    <Provider>
+                    <Provider style={{ height: '100%' }}>
                       <div key="header" className={styles.header}>
                         <h1>
                           {activePanel &&
