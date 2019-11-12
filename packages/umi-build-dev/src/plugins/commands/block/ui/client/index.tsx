@@ -23,6 +23,18 @@ export default (api: IUiApi) => {
     loading: state.loading.models[namespace],
   }))(BlocksViewer);
 
+  api.addDashboard({
+    // 唯一标识，org.umi.dashboard.card.task
+    key: 'org.umi.dashboard.card.block',
+    title: '资产',
+    description: '这是一段构建的描述信息',
+    icon: <Icon />,
+    content: [
+      <a onClick={() => api.redirect('/blocks?type=block')}>区块</a>,
+      <a onClick={() => api.redirect('/blocks?type=template')}>模板</a>,
+    ],
+  });
+
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     titleComponent: () => <TitleTab />,
