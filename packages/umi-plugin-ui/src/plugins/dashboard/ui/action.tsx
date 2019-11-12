@@ -25,17 +25,17 @@ const ConfigAction: React.FC<{}> = props => {
   };
 
   return (
-    !mini && (
-      <>
+    <>
+      {!mini && (
         <Button onClick={handleLaunchEditor}>
           <FormattedMessage id="org.umi.ui.dashboard.launch.editor" />
         </Button>
-        <Button onClick={handleSetting}>
-          <SettingIcon />
-        </Button>
-        <SettingDrawer ref={drawerRef} />
-      </>
-    )
+      )}
+      <Button onClick={handleSetting}>
+        <SettingIcon />
+      </Button>
+      <SettingDrawer ref={drawerRef} />
+    </>
   );
 };
 

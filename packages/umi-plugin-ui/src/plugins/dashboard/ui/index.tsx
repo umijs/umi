@@ -7,12 +7,13 @@ import styles from './index.module.less';
 
 const { useCallback, useEffect } = React;
 
-export const renderAvatar = item => {
+export const renderAvatar = (item, isMini = false) => {
   const { icon, title } = item;
   const commonAvatarProps = {
     style: { backgroundColor: '#459BF7' },
     shape: 'square',
     className: styles.avatar,
+    size: isMini ? 'small' : 'default',
   };
   if (React.isValidElement(icon)) {
     return <Avatar {...commonAvatarProps} icon={icon} />;
@@ -126,7 +127,7 @@ const DashboardUI: React.FC<{}> = props => {
               justify="space-between"
             >
               <Col style={{ display: 'flex' }}>
-                <div className={cls(styles.icon)}>{renderAvatar(card)}</div>
+                <div className={cls(styles.icon)}>{renderAvatar(card, api.mini)}</div>
                 <div className={styles.info}>
                   <h4>{title}</h4>
                   {description && <p>{description}</p>}

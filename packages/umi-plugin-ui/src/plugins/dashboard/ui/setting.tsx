@@ -49,7 +49,7 @@ const Setting: React.FC<{}> = (props, ref) => {
             }
           >
             <List.Item.Meta
-              avatar={renderAvatar(item)}
+              avatar={renderAvatar(item, api.mini)}
               title={item.title}
               description={item.description}
             />
