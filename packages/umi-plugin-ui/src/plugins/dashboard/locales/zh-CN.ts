@@ -1,5 +1,7 @@
 export default {
   'org.umi.ui.dashboard.panel': '总览',
+  'org.umi.ui.dashboard.card.zaobao': '云谦早报',
+  'org.umi.ui.dashboard.card.zaobao.description': '早报描述',
   'org.umi.ui.dashboard.launch.editor': '打开编辑器',
   'org.umi.ui.dashboard.panel.welcome.title': '欢迎来到 {name} 项目',
   'org.umi.ui.dashboard.panel.welcome.desc':
