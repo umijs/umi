@@ -70,6 +70,15 @@
   }
 }
 
+:global(.isMini) {
+  .main .avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    line-height: 24px;
+  }
+}
+
 .main {
   flex-wrap: nowrap;
   .avatar {
@@ -84,19 +93,17 @@
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
   border-radius: 3px;
   margin-right: 12px;
   h4 {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: @heading-color;
     line-height: 22px;
     margin-bottom: 4px;
   }
   p {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.45);
+    color: @text-color-secondary;
     line-height: 20px;
   }
 }
