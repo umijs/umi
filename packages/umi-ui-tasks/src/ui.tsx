@@ -145,13 +145,13 @@ export default (api: IUiApi) => {
     icon: <Setting />,
     content: [
       <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>
-        <FormattedMessage id="org.umi.ui.tasks.dev" />
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.dev" />
       </a>,
       <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>
-        <FormattedMessage id="org.umi.ui.tasks.build" />
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.build" />
       </a>,
       <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>
-        <FormattedMessage id="org.umi.ui.tasks.lint" />
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.lint" />
       </a>,
     ],
   });

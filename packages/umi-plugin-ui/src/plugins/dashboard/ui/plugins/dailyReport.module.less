@@ -6,9 +6,30 @@
   line-height: 28px;
 }
 
+.more {
+  color: @text-color;
+}
+
 .listItem {
   padding: 0 24px 24px;
+  .paragraph {
+    margin-bottom: 0;
+    transition: all 0.3s;
+    max-width: 85%;
+    &:hover {
+      color: @primary-5;
+    }
+  }
+  .paragraph,
+  &-meta-tag {
+    display: inline-block;
+    vertical-align: middle;
+  }
   &-meta {
+    &,
+    :global(.ant-list-item-meta-content) {
+      width: 100%;
+    }
     &-tag {
       &-publish {
         background: #443c38;
@@ -37,8 +58,13 @@
 }
 
 .list {
-  :global(.ant-spin-blur) {
-    opacity: 0;
+  :global {
+    .ant-spin-blur {
+      opacity: 0;
+    }
+    .ant-spin-container > .ant-list-items > .ant-list-item:last-child {
+      border-bottom: 1px solid transparent;
+    }
   }
 }
 .select-wrapper {

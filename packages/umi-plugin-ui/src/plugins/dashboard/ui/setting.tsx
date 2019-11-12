@@ -29,7 +29,7 @@ const Setting: React.FC<{}> = (props, ref) => {
       className={drawerCls}
       visible={visible}
       onClose={closeDrawer}
-      title="面板设置"
+      title={api.intl({ id: 'org.umi.ui.dashboard.settings.title' })}
       {...restConfig}
     >
       <List

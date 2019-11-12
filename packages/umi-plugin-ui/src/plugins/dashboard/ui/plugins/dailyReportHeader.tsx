@@ -1,6 +1,5 @@
 import * as React from 'react';
 import useSWR from 'swr';
-import moment from 'moment';
 import { Select } from 'antd';
 import { MESSAGES } from './dailyReport';
 import Context from '../context';
@@ -10,7 +9,7 @@ const { useState, useEffect } = React;
 
 const DailyReportHeader: React.SFC<{}> = props => {
   const { api } = React.useContext(Context);
-  const { _, event } = api;
+  const { _, event, moment } = api;
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
       type: 'org.umi.dashboard.zaobao.list',
