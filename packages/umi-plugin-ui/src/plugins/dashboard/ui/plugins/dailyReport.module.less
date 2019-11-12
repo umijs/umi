@@ -1,0 +1,53 @@
+@import '../../../../../node_modules/umi-ui-theme/dark.less';
+
+.title {
+  color: @heading-color;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.listItem {
+  padding: 0 24px 24px;
+  &-meta {
+    &-tag {
+      &-publish {
+        background: #443c38;
+        color: #faad14;
+      }
+      &-article {
+        background: #2d3950;
+        color: #1890ff;
+      }
+      &-star {
+        background: fade(@light, 8);
+        color: fade(@light, 65);
+      }
+      &-tweets {
+        background: #2d3950;
+        color: #1890ff;
+      }
+    }
+    a {
+      font-weight: 500;
+      color: @heading-color;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+}
+
+.list {
+  :global(.ant-spin-blur) {
+    opacity: 0;
+  }
+}
+.select-wrapper {
+  .select {
+    background-color: transparent;
+    & > div {
+      background-color: transparent !important;
+      border: 1px solid transparent !important;
+      box-shadow: none !important;
+    }
+  }
+}

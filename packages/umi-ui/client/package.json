@@ -5,11 +5,12 @@
   "peerDependencies": {
     "umi-types": "^0.4.0-beta.4",
     "umi-build-dev": "^1.13.0",
-    "umi-ui-theme": "^1.0.0-beta.2"
+    "umi-ui-theme": "^1.1.2"
   },
   "dependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.8",
+    "@umijs/hooks": "^1.3.2",
     "ansi-to-react": "^5.0.0",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.2.0",

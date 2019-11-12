@@ -1,5 +1,6 @@
 export default {
   'org.umi.ui.tasks.title': 'Task',
+  'org.umi.ui.tasks.description': 'Task description',
   'org.umi.ui.tasks.dev': 'DEV',
   'org.umi.ui.tasks.build': 'BUILD',
   'org.umi.ui.tasks.test': 'TEST',

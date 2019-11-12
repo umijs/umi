@@ -207,6 +207,65 @@ unlisten();
 
 发送消息到服务端。
 
+### api.addDashboard()
+
+添加入口卡片到『总览』页
+
+调用参数如下：
+
+```js
+(dashboard: IDashboard | IDashboard[]) => void;
+interface IDashboard {
+  /** card key 唯一标识，约定格式为：org.umi.dashboard.card.${key} */
+  key: string;
+  /** card 标题 */
+  title: ReactNode;
+  /** card 描述 */
+  description: ReactNode;
+  /** icon 图标 */
+  icon: ReactNode;
+  /** card body */
+  content: ReactNode | ReactNode[];
+  /** card 右侧区域扩展 */
+  right?: ReactNode;
+  /** 栅格，默认为 { xl: 6, sm: 12, lg: 12, xs: 24 } */
+  span?: Partial<{
+    /** default 6 */
+    xl: number;
+    /** default 12 */
+    sm: number;
+    /** default 12 */
+    lg: number;
+    /** default 24 */
+    xs: number;
+  }>;
+}
+```
+
+示例：
+
+```js
+import React from 'react';
+import { ControlFilled } from '@ant-design/icons';
+
+export default () => {
+  api.addDashboard({
+    key: 'org.umi.dashboard.card.testId',
+    title: '卡片标题',
+    description: '卡片描述',
+    icon: <ControlFilled />,
+    content: [
+      <a onClick={() => alert('部署成功')}>
+        一键部署
+      </a>,
+    ],
+  });
+}
+
+```
+
+![image](https://user-images.githubusercontent.com/13595509/68654829-bf745a80-0569-11ea-9311-28cc169de74b.png)
+
 ### api.addPanel()
 
 添加客户端插件入口及路由，调用此方法会在 Umi UI 中增加一级菜单。

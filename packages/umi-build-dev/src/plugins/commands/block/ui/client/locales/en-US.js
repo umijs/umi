@@ -1,5 +1,6 @@
 export default {
   'org.umi.ui.blocks.content.title': 'Assets',
+  'org.umi.ui.blocks.content.description': 'Assets Description',
   'org.umi.ui.blocks.content.search_block': 'Search Assets',
   'org.umi.ui.blocks.actions.clear': 'Clear blocks local cache',
   'org.umi.ui.blocks.actions.submit': 'Submit new block',

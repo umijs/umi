@@ -32,7 +32,7 @@ function getActivePanel(pathname) {
 const renderLocaleText = renderLocale(formatMessage);
 
 const DefaultProvider = props => {
-  return <div>{props.children}</div>;
+  return <div {...props}>{props.children}</div>;
 };
 
 export default withRouter(props => {
@@ -60,7 +60,7 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  const { active, ...restSearchParams } = parse(window.location.search, {
+  const { active, iife, type, ...restSearchParams } = parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
   const search = Object.keys(restSearchParams).length > 0 ? `?${stringify(restSearchParams)}` : '';
@@ -326,7 +326,7 @@ export default withRouter(props => {
                     )}
                   </Sider>
                   <Content className={styles.main}>
-                    <Provider>
+                    <Provider style={{ height: '100%' }}>
                       <div key="header" className={styles.header}>
                         <h1>
                           {activePanel &&
