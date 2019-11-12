@@ -66,7 +66,7 @@ const DashboardUI: React.FC<{}> = props => {
               key={i.toString()}
               span={Math.floor(24 / content.length)}
             >
-              {React.cloneElement(child, childProps)}
+              {child}
             </Col>
           ))}
         </Row>
