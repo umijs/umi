@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
@@ -6,12 +6,12 @@ import { stringify, parse } from 'qs';
 
 import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
-import Context from './UIApiContext';
 import BlockList from './BlockList';
 import GlobalSearch from './GlobalSearch';
 import useCallData from './hooks/useCallData';
 import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
+import AssetsMenu from './AssetsMenu';
 import { ModelState, namespace } from './model';
 import Container from './Container';
 
@@ -74,8 +74,6 @@ export const scrollToById = (id: string, target: string) => {
     targetDom.scrollTop = axis.top + axis.height / 2;
   }
 };
-
-const { TabPane } = Tabs;
 
 interface Props {
   dispatch: (params: any) => {};
@@ -148,6 +146,7 @@ const BlocksViewer: React.FC<Props> = props => {
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
 
   /**
    * 获取 query 中的设置
@@ -296,37 +295,49 @@ const BlocksViewer: React.FC<Props> = props => {
   const matchedResources = resources.filter(r => r.blockType === type);
   return (
     <>
-      <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
-        {current ? (
-          <div className={styles.blockList}>
-            {renderActiveResourceTag({
-              type,
-              matchedResources,
-              setActiveResource,
-              current,
-            })}
-            {matchedResources.length > 0 ? (
-              <BlockList
-                type={type}
-                keyword={searchValue}
-                addingBlock={willAddBlock || addingBlock}
-                list={blocks}
-                onShowModal={(currentBlock, option) => {
-                  setAddModalVisible(true);
-                  setWillAddBlock(currentBlock);
-                  setBlockParams(option);
-                }}
-                loading={fetchDataLoading}
-              />
+      <div className={styles.wrapper}>
+        <div className={styles.side}>
+          <AssetsMenu
+            type={type}
+            matchedResources={matchedResources}
+            setActiveResource={setActiveResource}
+            updateUrlQuery={updateUrlQuery}
+            setSelectedTag={setSelectedTag}
+            selectedTag={selectedTag}
+            current={current}
+            blocks={blocks}
+          />
+        </div>
+        <div className={styles.main}>
+          <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
+            {current ? (
+              <div className={styles.blockList}>
+                {matchedResources.length > 0 ? (
+                  <BlockList
+                    type={type}
+                    keyword={searchValue}
+                    addingBlock={willAddBlock || addingBlock}
+                    list={blocks}
+                    setSelectedTag={setSelectedTag}
+                    selectedTag={selectedTag}
+                    onShowModal={(currentBlock, option) => {
+                      setAddModalVisible(true);
+                      setWillAddBlock(currentBlock);
+                      setBlockParams(option);
+                    }}
+                    loading={fetchDataLoading}
+                  />
+                ) : (
+                  <div>没有找到数据源</div>
+                )}
+              </div>
             ) : (
-              <div>没有找到数据源</div>
+              <div className={styles.loading}>
+                <Spin />
+              </div>
             )}
           </div>
-        ) : (
-          <div className={styles.loading}>
-            <Spin />
-          </div>
-        )}
+        </div>
       </div>
       <Adder
         block={willAddBlock}

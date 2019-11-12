@@ -68,3 +68,21 @@
     white-space: pre;
   }
 }
+
+// 左右两栏布局
+.wrapper {
+  display: flex;
+  height: 100%;
+  overflow: auto;
+
+  .side {
+    width: 256px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #000;
+  }
+
+  .main {
+    flex: 1;
+  }
+}

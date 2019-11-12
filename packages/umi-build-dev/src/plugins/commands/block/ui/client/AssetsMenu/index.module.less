@@ -1,0 +1,55 @@
+.resource {
+  height: 60px;
+  background: #23232e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    width: 67px;
+    text-align: center;
+  }
+  .titleAndDescription {
+    flex: 1;
+
+    .title {
+      color: #dfdfe1;
+      font-size: 14px;
+    }
+    .description {
+      color: #8a8a90;
+      font-size: 12px;
+    }
+  }
+  .switcher {
+    width: 32px;
+  }
+
+  &:hover {
+    background: #2b2b36;
+  }
+
+  &.current {
+    background: #2b2b36;
+  }
+}
+
+.cats {
+  flex: 1;
+  background: #2b2b36;
+  border-bottom: 1px solid #000;
+  overflow: auto;
+}
+
+.cat {
+  color: #b5b5b8;
+  cursor: pointer;
+  height: 38px;
+  line-height: 38px;
+  text-indent: 24px;
+  &:hover,
+  &.current {
+    background: #33333d;
+    color: #fff;
+  }
+}
