@@ -7,6 +7,7 @@ import * as intl from 'umi-plugin-react/locale';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
+import moment from 'moment';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
@@ -21,9 +22,9 @@ import Field from './components/Field';
 
 // PluginAPI
 export default class PluginAPI {
-  public service: IUi.IService;
-  public _: IUi.ILodash;
-  public debug: IUi.IDebug;
+  service: IUi.IService;
+  _: IUi.ILodash;
+  debug: IUi.IDebug;
   callRemote: IUi.ICallRemote;
   listenRemote: IUi.IListenRemote;
   send: IUi.ISend;
@@ -38,6 +39,7 @@ export default class PluginAPI {
   mini: boolean;
   bigfish: boolean;
   event: IUi.IEvent;
+  moment: IUi.IMoment;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -60,6 +62,7 @@ export default class PluginAPI {
     this.connect = connect as IUi.IConnect;
     this.mini = isMiniUI();
     this.event = event;
+    this.moment = moment;
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {

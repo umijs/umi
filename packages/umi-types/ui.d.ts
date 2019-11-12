@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent, ReactElement, ComponentClass } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
+import moment from 'moment';
 import * as intl from './locale';
 import { IRoute } from './';
 
@@ -329,6 +330,7 @@ declare namespace IUI {
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
+  type IMoment = typeof moment;
 
   interface ILaunchEditorParams {
     type: LaunchEditorTypes;
@@ -390,6 +392,8 @@ declare namespace IUI {
     getBasicUI: IGetBasicUI;
     /** system notify */
     notify: INotify;
+    /** moment */
+    moment: IMoment;
     /** redirect */
     redirect: IRedirect;
     callRemote: ICallRemote;
