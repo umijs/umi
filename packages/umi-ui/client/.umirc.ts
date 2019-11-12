@@ -28,6 +28,7 @@ const config: IConfig = {
     'react-dom': 'window.ReactDOM',
     antd: 'window.antd',
     xterm: 'window.Terminal',
+    moment: 'moment',
   },
   theme: dark,
   generateCssModulesTypings: true,

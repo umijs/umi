@@ -24,7 +24,7 @@ export default (api: IUiApi) => {
   }))(BlocksViewer);
 
   api.addDashboard({
-    // 唯一标识，org.umi.dashboard.card.task
+    // 唯一标识，org.umi.dashboard.card.${key}
     key: 'org.umi.dashboard.card.block',
     title: '资产',
     description: '这是一段构建的描述信息',
