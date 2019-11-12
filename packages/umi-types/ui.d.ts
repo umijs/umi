@@ -315,6 +315,7 @@ declare namespace IUI {
   }
 
   type IRedirect = (url: string) => void;
+  type IEvent = NodeJS.EventEmitter;
   type IDebug = Debugger;
   type IConnect = typeof connect;
   type IMini = () => boolean;
@@ -358,7 +359,7 @@ declare namespace IUI {
     constructor(service: IService);
     service: IService;
     /** event */
-    event: NodeJS.EventEmitter;
+    event: IEvent;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */

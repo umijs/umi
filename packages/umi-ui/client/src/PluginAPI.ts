@@ -37,7 +37,7 @@ export default class PluginAPI {
   connect: IUi.IConnect;
   mini: boolean;
   bigfish: boolean;
-  event: typeof event;
+  event: IUi.IEvent;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
