@@ -24,22 +24,6 @@ export default (api: IUiApi) => {
     loading: state.loading.models[namespace],
   }))(BlocksViewer);
 
-  api.addDashboard({
-    // 唯一标识，org.umi.dashboard.card.${key}
-    key: 'org.umi.dashboard.card.block',
-    title: <FormattedMessage id="org.umi.ui.blocks.content.title" />,
-    description: <FormattedMessage id="org.umi.ui.blocks.content.description" />,
-    icon: <Icon />,
-    content: [
-      <a onClick={() => api.redirect('/blocks?type=block')}>
-        <FormattedMessage id="org.umi.ui.blocks.tabs.blocks" />
-      </a>,
-      <a onClick={() => api.redirect('/blocks?type=template')}>
-        <FormattedMessage id="org.umi.ui.blocks.tabs.templates" />
-      </a>,
-    ],
-  });
-
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
     titleComponent: () => <TitleTab />,

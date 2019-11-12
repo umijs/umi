@@ -1,7 +1,6 @@
 import * as React from 'react';
 import useSWR from 'swr';
 import { List, Tag, Button } from 'antd';
-import cls from 'classnames';
 import Context from '../context';
 import styles from './dailyReport.module.less';
 
@@ -24,6 +23,7 @@ const DailyReport: React.SFC<{}> = props => {
   const { forceUpdate } = props;
   const { api } = React.useContext(Context);
   const { _, event } = api;
+  const { FormattedMessage } = api.intl;
   const [size, setSize] = React.useState(PAGE_SIZE);
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
@@ -95,7 +95,9 @@ const DailyReport: React.SFC<{}> = props => {
         lineHeight: '32px',
       }}
     >
-      <Button onClick={onLoadMore}>加载更多</Button>
+      <a onClick={onLoadMore}>
+        <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.loadMore" />
+      </a>
     </div>
   );
 
