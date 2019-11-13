@@ -519,6 +519,7 @@ export interface IApi {
   modifyHTMLChunks: IModify<string[], { route?: IRoute }>;
   modifyHTMLWithAST: IModifyHTMLWithAST;
   modifyHTMLContext: IModify<object, { route?: IRoute }>;
+  modifyPublicPathStr: IModify<string>;
   modifyRoutes: IModify<IRoute[]>;
   addEntryImportAhead: IAdd<IAddImportOpts>;
   addEntryPolyfillImports: IAdd<IAddImportOpts>;

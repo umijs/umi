@@ -510,6 +510,16 @@ api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
 
 修改 html ejs 渲染时的环境参数。
 
+### modifyPublicPathStr
+
+修改运行时的 `window.publicPath` 对应的变量值。
+
+```js
+api.modifyPublicPathStr('window.__self_injected_public_path__');
+```
+
+这将会导致 `window.publicPath = window.__self_injected_public_path__`.
+
 ```js
 api.modifyHTMLContext((memo, { route }) => {
   return {

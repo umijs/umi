@@ -20,8 +20,10 @@ export default (service, opts = {}) => {
     modifyRouterBaseStr(str) {
       return str;
     },
-    modifyPublicPathStr(str) {
-      return str;
+    modifyPublicPathStr(memo) {
+      return service.applyPlugins('modifyPublicPathStr', {
+        initialValue: memo,
+      });
     },
     modifyChunks(memo, opts = {}) {
       const { route } = opts;
