@@ -95,11 +95,13 @@ const DashboardUI: React.FC<{}> = props => {
     return <Spin />;
   }
   const defaultSpan = api.mini ? DEFAULT_SPAN_MINI : DEFAULT_SPAN;
+  const colCls = cls(actionCardCls, styles['container-col']);
+
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        <Col {...defaultSpan}>
-          <Card className={welcomeCardCls}>
+        <Col className={colCls} {...defaultSpan}>
+          <Card className={welcomeCardCls} bordered={false} hoverable={false}>
             <h2>Hi</h2>
             <p>
               {intl(
@@ -125,7 +127,6 @@ const DashboardUI: React.FC<{}> = props => {
         </Col>
         {enableCards.map(card => {
           const { title = '', description, key, content, span = defaultSpan, right } = card;
-          const colCls = cls(actionCardCls, styles['container-col']);
           const Title = (
             <Row
               className={styles.main}
