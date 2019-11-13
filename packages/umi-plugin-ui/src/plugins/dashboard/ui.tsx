@@ -21,7 +21,8 @@ export default (api: IUiApi) => {
     key: 'org.umi.dashboard.card.zaobao',
     title: <DailyReportTitle />,
     description: <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.description" />,
-    icon: 'https://avatars1.githubusercontent.com/u/35128?v=4',
+    icon:
+      'https://gw.alipayobjects.com/zos/antfincdn/BoAdUppBiK/058e7fd0-780c-47af-8ae5-d2db31e373fc.png',
     right: <DailyReportHeader />,
     span: {
       xl: 12,
