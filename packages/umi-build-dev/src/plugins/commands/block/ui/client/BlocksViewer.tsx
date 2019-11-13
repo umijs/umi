@@ -306,6 +306,7 @@ const BlocksViewer: React.FC<Props> = props => {
             selectedTag={selectedTag}
             current={current}
             blocks={blocks}
+            loading={fetchDataLoading}
           />
         </div>
         <div className={styles.main}>
