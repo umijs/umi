@@ -27,7 +27,7 @@ const BlockList: React.FC<BlockListProps> = props => {
   const { api } = useContext(Context);
   const { intl } = api;
   const isMini = api.isMini();
-  const pageSize = isMini ? 8 : 10;
+  const pageSize = isMini ? 6 : 8;
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
