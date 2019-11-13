@@ -1,5 +1,6 @@
 import React, { useMemo, useContext } from 'react';
 import { Up, Down } from '@ant-design/icons';
+import { Spin } from 'antd';
 import styles from './index.module.less';
 import Context from '../UIApiContext';
 
@@ -13,6 +14,7 @@ export default function(props) {
     blocks,
     selectedTag,
     setSelectedTag,
+    loading,
   } = props;
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
@@ -45,6 +47,13 @@ export default function(props) {
   // };
 
   function renderCats() {
+    if (loading) {
+      return (
+        <div className={`${styles.cats} ${loading ? styles.catsLoading : ''}`}>
+          <Spin size="large" />
+        </div>
+      );
+    }
     return (
       <div className={styles.cats}>
         <div
