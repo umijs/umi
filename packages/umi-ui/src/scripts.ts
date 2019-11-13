@@ -81,7 +81,8 @@ const deer = `
   });
   Tracert.call('before', 'logPv', function() {
     Tracert.set({
-      fullURL: 'http://ui.bigfish.com/' + location.pathname + location.search.indexOf('mini') > -1 ? '?mini' : '',
+      pathName: location.pathname,
+      fullURL: 'http://ui.bigfish.com/',
     });
   });
 </script>
