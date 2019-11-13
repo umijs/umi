@@ -8,14 +8,17 @@ import { DEFAULT_RESOURCES } from './util';
 export default (api: IApi) => {
   // 区块资源可扩展
   let resources: Resource[] = [];
-  resources = api.applyPlugins('addBlockUIResource', {
-    initialValue: DEFAULT_RESOURCES,
-  });
-  resources = api.applyPlugins('modifyBlockUIResources', {
-    initialValue: resources,
-  });
 
   api.onUISocket(async ({ action, failure, success, send }) => {
+    if (!resources.length) {
+      resources = api.applyPlugins('addBlockUIResource', {
+        initialValue: DEFAULT_RESOURCES,
+      });
+      resources = api.applyPlugins('modifyBlockUIResources', {
+        initialValue: resources,
+      });
+    }
+
     const blockService = new Block(api);
     blockService.init(send);
     const { type, payload = {}, lang } = action;
