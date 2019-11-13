@@ -572,6 +572,7 @@ export default class UmiUI {
         break;
       case '@@project/list':
         this.config.checkValid();
+        this.config.load();
         success({
           data: this.config.data,
         });
@@ -647,6 +648,7 @@ export default class UmiUI {
         success();
         break;
       case '@@project/setCurrentProject':
+        this.config.load(); // 重新 load
         this.config.setCurrentProject(payload.key);
         success();
         break;

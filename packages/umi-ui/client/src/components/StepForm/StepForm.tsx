@@ -61,6 +61,7 @@ const StepForm: React.SFC<IUi.IStepFormProps> = props => {
           handleFinish,
           active: currentStep === j,
           index: j,
+          forms,
           saveFormRef: saveFormRef(j),
         }),
       )}

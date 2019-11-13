@@ -11,6 +11,7 @@ const StepItem: React.SFC<IUi.IStepItemProps> = props => {
     currentStep,
     active,
     handleFinish,
+    forms,
   } = props;
   const goNext = () => {
     handleCurrentStep(currentStep + 1);
@@ -26,6 +27,7 @@ const StepItem: React.SFC<IUi.IStepItemProps> = props => {
     goPrev,
     index,
     active,
+    forms,
     style: {
       display: index === currentStep ? 'block' : 'none',
     },
