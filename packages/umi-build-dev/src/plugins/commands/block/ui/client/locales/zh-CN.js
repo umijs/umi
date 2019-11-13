@@ -1,6 +1,5 @@
 export default {
   'org.umi.ui.blocks.content.title': '资产',
-  'org.umi.ui.blocks.content.description': '资产描述',
   'org.umi.ui.blocks.content.search_block': '搜索资产',
   'org.umi.ui.blocks.actions.clear': '清除区块的本地缓存',
   'org.umi.ui.blocks.actions.submit': '提交新的区块',
