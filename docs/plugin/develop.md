@@ -524,6 +524,16 @@ api.modifyHTMLContext((memo, { route }) => {
 });
 ```
 
+### modifyPublicPathStr
+
+Modify the runtime public path variable string, which represents the value of `window.publicPath`.
+
+```js
+api.modifyPublicPathStr('window.__self_injected_public_path__');
+```
+
+It will make `window.publicPath = window.__self_injected_public_path__`.
+
 ### modifyRoutes
 
 Modify the routing configuration.

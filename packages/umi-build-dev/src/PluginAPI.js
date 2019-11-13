@@ -97,6 +97,7 @@ export default class PluginAPI {
       'modifyRoutes',
       'onPatchRoute',
       'modifyHTMLContext',
+      'modifyPublicPathStr',
       'addHTMLMeta',
       'addHTMLLink',
       'addHTMLScript',
