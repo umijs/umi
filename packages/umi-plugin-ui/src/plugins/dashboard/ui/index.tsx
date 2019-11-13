@@ -1,6 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
 import Masonry from 'react-masonry-component';
+import isPlainObject from 'lodash/isPlainObject';
 import { Card, Row, Col, Avatar, Spin } from 'antd';
 import Context from './context';
 import styles from './index.module.less';
@@ -20,6 +21,9 @@ export const renderAvatar = (item, isMini = false) => {
   }
   if (typeof icon === 'string') {
     return <Avatar {...commonAvatarProps} src={icon} />;
+  }
+  if (isPlainObject(icon)) {
+    return <Avatar {...commonAvatarProps} {...icon} />;
   }
   // 默认返回 title 第一个字符
   const defaultChar = typeof title === 'string' ? title.charAt(0) : 'Umi';

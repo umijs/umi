@@ -48,6 +48,9 @@
 
 .card {
   :global {
+    .ant-card-body {
+      padding: 0 24px;
+    }
     .ant-card-head {
       border-bottom: none;
     }
@@ -59,7 +62,6 @@
       }
       .ant-card-body {
         border-top: 1px solid #1d1d26;
-        padding: 0;
         color: fade(#fff, 65);
         transition: all 0.3s;
         & > div {
@@ -71,6 +73,13 @@
 }
 
 :global(.isMini) {
+  .card {
+    :global {
+      .ant-card-body {
+        padding: 0 16px;
+      }
+    }
+  }
   .main .avatar {
     width: 24px;
     height: 24px;
