@@ -38,6 +38,7 @@ export default class PluginAPI {
   connect: IUi.IConnect;
   mini: boolean;
   bigfish: boolean;
+  history: any;
   event: IUi.IEvent;
   moment: IUi.IMoment;
 
@@ -63,6 +64,7 @@ export default class PluginAPI {
     this.mini = isMiniUI();
     this.event = event;
     this.moment = moment;
+    this.history = history;
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {
