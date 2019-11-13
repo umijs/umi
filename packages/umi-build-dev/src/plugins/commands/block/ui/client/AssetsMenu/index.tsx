@@ -17,9 +17,10 @@ export default function(props) {
   const { api } = useContext(Context);
   const { uniq, flatten } = api._;
 
-  const tags: string[] = useMemo<string[]>(() => uniq(flatten(blocks.map(item => item.tags))), [
-    blocks,
-  ]);
+  const tags: string[] = useMemo<string[]>(
+    () => uniq(flatten(blocks.map(item => (item.category ? [item.category] : item.tags)))),
+    [blocks],
+  );
 
   // const sortTagMap = {
   //   表格: 10,
