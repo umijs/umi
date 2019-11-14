@@ -15,7 +15,7 @@ export default (api: IApi) => {
     return path.join(dbPath, 'dashboard.json');
   };
 
-  const writeData = (dbPath, data = {}) => {
+  const writeData = (dbPath, data = []) => {
     const dbDataPath = getDataPath(dbPath);
     fs.writeFileSync(dbDataPath, JSON.stringify(data, null, 2), 'utf-8');
   };
@@ -32,15 +32,20 @@ export default (api: IApi) => {
     }
     // remove cache
     delete require.cache[dbData];
-    // eslint-disable-next-line import/no-dynamic-require
-    const list = require(dbData);
-    if (!api._.isPlainObject(list)) {
+    let list = [];
+    try {
+      // eslint-disable-next-line import/no-dynamic-require
+      list = require(dbData);
+    } catch (e) {
+      console.error('dbData requrie error', e);
+    }
+    if (!Array.isArray(list)) {
       // reset data into right structure
       writeData(dbPath);
-      return {};
+      return [];
       // throw new Error(`dbData error ${JSON.stringify(list)}`);
     }
-    return list;
+    return list || [];
   };
 
   api.onUISocket(async ({ action, failure, success, send }) => {
@@ -60,11 +65,19 @@ export default (api: IApi) => {
         try {
           const { dbPath, key, enable } = payload;
           const list = await getData(dbPath);
+          // [ { key: '', enable: false } ]
           const newList = p(list, draft => {
-            draft[key] = {
-              ...(draft[key] || {}),
+            const cardIndex = draft.findIndex(item => item.key === key);
+            const newCardData = {
+              key,
               enable: !!enable,
             };
+            if (cardIndex > -1 && draft[cardIndex]) {
+              // delete
+              draft.splice(cardIndex, 1);
+            }
+            draft.push(newCardData);
+            return draft;
           });
           writeData(dbPath, newList);
           success(newList);

@@ -6,7 +6,7 @@ import { renderAvatar, MESSAGES } from './index';
 import styles from './setting.module.less';
 
 const Setting: React.FC<{}> = (props, ref) => {
-  const { api, dbPath, dashboardCards, setCardSettings } = React.useContext(Context);
+  const { api, dbPath, cards, setCardSettings } = React.useContext(Context);
   const { visible, closeDrawer, openDrawer, className, ...restConfig } = ref.current;
 
   const handleOnChange = async (key, checked) => {
@@ -33,8 +33,8 @@ const Setting: React.FC<{}> = (props, ref) => {
       {...restConfig}
     >
       <List
-        dataSource={dashboardCards || []}
-        loading={!dashboardCards}
+        dataSource={cards || []}
+        loading={!cards}
         className={styles.list}
         renderItem={item => (
           <List.Item
