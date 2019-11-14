@@ -12,7 +12,7 @@ class TaskManager {
   private tasks: ITasks = {};
   private send: any; // 客户端消息触发器
 
-  public async init(cwd: string, send) {
+  public async init(cwd: string, send, key: string) {
     this.currentCwd = cwd;
     this.send = send;
 
@@ -21,6 +21,7 @@ class TaskManager {
     }
     const opts = {
       cwd,
+      key,
     };
     this.tasks[cwd] = {
       [TaskType.BUILD]: new BuildTask(opts),

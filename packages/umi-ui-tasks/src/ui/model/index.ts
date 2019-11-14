@@ -29,6 +29,9 @@ export default {
       const { currentProject, getSharedDataDir } = payload;
       const { states: taskStates } = yield callRemote({
         type: 'plugin/init',
+        payload: {
+          key: currentProject.key,
+        },
       });
       const dir = yield getSharedDataDir();
       yield put({
@@ -60,6 +63,21 @@ export default {
         type: 'updateWebpackStats',
         payload: result,
       });
+    },
+
+    // 更新日志
+    *writeLog({ payload }, { select }) {
+      const { taskType, log, key: projectKey } = payload;
+      const modal = yield select(state => state[namespace]);
+      const key = modal && modal.currentProject && modal.currentProject.key;
+      if (!key) {
+        return;
+      }
+      const ins = getTerminalIns(taskType, projectKey);
+      if (!ins) {
+        return;
+      }
+      ins.write(log.replace(/\n/g, '\r\n'));
     },
   },
   reducers: {
@@ -151,12 +169,26 @@ export default {
           // 日志更新
           listenRemote({
             type: 'org.umi.task.log',
-            onMessage: ({ log = '', taskType }: { log: string; taskType: TaskType }) => {
+            onMessage: ({
+              log = '',
+              taskType,
+              key,
+            }: {
+              log: string;
+              taskType: TaskType;
+              key: string;
+            }) => {
               if (!log) {
                 return;
               }
-              // TODO: 多项目之间的 terminalIns 是否已经是混用的了？
-              getTerminalIns(taskType).write(log.replace(/\n/g, '\r\n'));
+              dispatch({
+                type: 'writeLog',
+                payload: {
+                  taskType,
+                  log,
+                  key,
+                },
+              });
             },
           });
         }

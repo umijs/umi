@@ -59,7 +59,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
       }
       return () => {
         form.resetFields();
-        const terminal = getTerminalIns(taskType);
+        const terminal = getTerminalIns(taskType, api.currentProject.key);
         terminal && terminal.clear();
       };
     },
@@ -282,7 +282,7 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
                 <Terminal
                   api={api}
                   size={size}
-                  terminal={getTerminalIns(taskType)}
+                  terminal={getTerminalIns(taskType, api.currentProject.key)}
                   log={log}
                   onClear={() => {
                     clearLog(taskType);

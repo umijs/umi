@@ -32,10 +32,19 @@ const TASKS = [TaskType.BUILD, TaskType.DEV, TaskType.LINT, TaskType.TEST, TaskT
 
 const TERMINAL_MAPS = {};
 
-TASKS.forEach(taskType => {
-  TERMINAL_MAPS[taskType] = initTerminal();
-});
+const getTerminalIns = (taskType: TaskType, key: string) => {
+  if (!key || !taskType) {
+    return null;
+  }
+  if (TERMINAL_MAPS[key]) {
+    return TERMINAL_MAPS[key][taskType];
+  }
 
-const getTerminalIns = (taskType: TaskType) => TERMINAL_MAPS[taskType];
+  TERMINAL_MAPS[key] = {};
+  TASKS.forEach(taskType => {
+    TERMINAL_MAPS[key][taskType] = initTerminal();
+  });
+  return TERMINAL_MAPS[key][taskType];
+};
 
 export { getTerminalIns };
