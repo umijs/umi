@@ -40,7 +40,7 @@ const LintComponent: React.FC<IProps> = ({ api, detail = {}, dispatch }) => {
         },
       });
       return () => {
-        const terminal = getTerminalIns(taskType);
+        const terminal = getTerminalIns(taskType, api.currentProject.key);
         terminal && terminal.clear();
       };
     },
@@ -108,7 +108,7 @@ const LintComponent: React.FC<IProps> = ({ api, detail = {}, dispatch }) => {
               <Terminal
                 api={api}
                 size={size}
-                terminal={getTerminalIns(taskType)}
+                terminal={getTerminalIns(taskType, api.currentProject.key)}
                 log={log}
                 onClear={() => {
                   clearLog(taskType);

@@ -6,6 +6,7 @@ import { ChildProcess } from 'child_process';
 
 export interface ITaskOptions {
   cwd: string;
+  key: string;
 }
 /**
  * BaseTask
@@ -15,6 +16,7 @@ export interface ITaskOptions {
  */
 export class BaseTask extends EventEmitter {
   public cwd: string = '';
+  public key: string = '';
   public state: TaskState = TaskState.INIT;
   public type: TaskType;
   public log: string = ''; // 日志
@@ -26,9 +28,10 @@ export class BaseTask extends EventEmitter {
   protected pkgPath: string = '';
   protected isBigfishProject: boolean = false;
 
-  constructor({ cwd }: ITaskOptions) {
+  constructor({ cwd, key }: ITaskOptions) {
     super();
     this.cwd = cwd;
+    this.key = key;
     this.pkgPath = join(cwd, 'package.json');
     this.isBigfishProject = !!process.env.BIGFISH_COMPAT;
   }
@@ -44,6 +47,7 @@ export class BaseTask extends EventEmitter {
         cwd: this.cwd,
         type: 'org.umi.task.log',
         payload: {
+          key: this.key,
           taskType: this.type,
           log: data,
         },
@@ -57,6 +61,8 @@ export class BaseTask extends EventEmitter {
         type: 'org.umi.task.log',
         payload: {
           taskType: this.type,
+          key: this.key,
+          cwd: this.cwd,
           log: data,
         },
       });

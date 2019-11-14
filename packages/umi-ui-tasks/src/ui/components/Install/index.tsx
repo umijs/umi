@@ -61,7 +61,7 @@ const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
   useEffect(() => {
     return () => {
       form.resetFields();
-      const terminal = getTerminalIns(taskType);
+      const terminal = getTerminalIns(taskType, api.currentProject.key);
       terminal && terminal.clear();
     };
   }, []);
@@ -169,7 +169,7 @@ const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
               <Terminal
                 api={api}
                 size={size}
-                terminal={getTerminalIns(taskType)}
+                terminal={getTerminalIns(taskType, api.currentProject.key)}
                 log={log}
                 onClear={() => {
                   clearLog(taskType);
