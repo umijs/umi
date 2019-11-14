@@ -870,12 +870,24 @@ export default class UmiUI {
         }
       });
 
-      app.use('/*', async (req, res) => {
+      app.use('/terminal', async (req, res, next) => {
         const { currentProject, projectsByKey } = this.config.data;
         const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
+        const rows = parseInt(req.query.rows || 100);
+        const cols = parseInt(req.query.cols || 40);
+
         initTerminal(this.server, {
           cwd: currentProjectCwd || this.cwd,
+          rows,
+          cols,
         });
+        res.send({
+          rows,
+          cols,
+        });
+      });
+
+      app.use('/*', async (req, res) => {
         const scripts = await getScripts();
         if (process.env.LOCAL_DEBUG) {
           try {

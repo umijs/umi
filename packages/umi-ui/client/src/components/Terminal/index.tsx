@@ -3,6 +3,7 @@ import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
 import SockJS from 'sockjs-client';
+import request from 'umi-request';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
@@ -63,26 +64,35 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     return true;
   };
 
+  const resizeTerminal = async () => {
+    const { rows, cols } = xterm;
+    fitAddon.fit();
+    await request(`${shellServer}?rows=${rows}&cols=${cols}`);
+  };
+
   useEffect(
     () => {
-      let socket: InstanceType<typeof SockJS>;
-      if (domContainer.current && xterm) {
-        const webLinksAddon = new WebLinksAddon();
-        xterm.loadAddon(fitAddon);
-        xterm.loadAddon(webLinksAddon);
-        xterm.attachCustomKeyEventHandler(copyShortcut);
-        if (shell) {
-          socket = new SockJS(shellServer);
-          xterm.loadAddon(new AttachAddon(socket));
-          xterm.focus();
+      (async () => {
+        let socket: InstanceType<typeof SockJS>;
+        if (domContainer.current && xterm) {
+          const webLinksAddon = new WebLinksAddon();
+          xterm.loadAddon(fitAddon);
+          xterm.loadAddon(webLinksAddon);
+          xterm.attachCustomKeyEventHandler(copyShortcut);
+          if (shell) {
+            await resizeTerminal();
+            socket = new SockJS(shellServer);
+            xterm.loadAddon(new AttachAddon(socket));
+            xterm.focus();
+          }
+          // last open
+          xterm.open(domContainer.current);
+          fitAddon.fit();
+          if (onInit) {
+            onInit(xterm, fitAddon);
+          }
         }
-        // last open
-        xterm.open(domContainer.current);
-        fitAddon.fit();
-        if (onInit) {
-          onInit(xterm, fitAddon);
-        }
-      }
+      })();
     },
     [domContainer, xterm],
   );
@@ -90,7 +100,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
   useEffect(
     () => {
       if (xterm) {
-        fitAddon.fit();
+        resizeTerminal();
       }
     },
     [size.width, size.height, xterm],

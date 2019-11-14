@@ -5,6 +5,8 @@ import { debugTerminal as _log } from './debug';
 
 export interface IOpts {
   cwd: string;
+  rows: number;
+  cols: number;
 }
 
 /**
@@ -35,7 +37,7 @@ const securityCheck = (conn: Connection) => {
 };
 
 export const connectionHandler = (conn: Connection, opts: IOpts) => {
-  const { cwd } = opts;
+  const { cwd, rows, cols } = opts;
   // insecurity env to run shell
   const safe = securityCheck(conn);
   let spawn;
@@ -53,8 +55,8 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
     const defaultShellArgs = ['--login'];
     const pty = spawn(defaultShell, defaultShellArgs, {
       name: 'xterm-color',
-      cols: 80,
-      rows: 30,
+      cols,
+      rows,
       cwd,
       env: {
         ...process.env,
@@ -71,7 +73,6 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
       _log('ptyProcess data', chunk);
       conn.write(chunk);
     });
-    pty.resize(100, 40);
 
     // === socket listener ===
     conn.on('data', data => {
@@ -87,10 +88,10 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
 /**
  * export terminal socket init needs bind express app server
  */
-export default (app, opts: IOpts = { cwd: process.cwd() }) => {
+export default (server, opts: IOpts = { cwd: process.cwd() }) => {
   const terminalSS = sockjs.createServer();
   terminalSS.on('connection', conn => connectionHandler(conn, opts));
-  terminalSS.installHandlers(app, {
+  terminalSS.installHandlers(server, {
     prefix: '/terminal',
     log: () => {},
   });

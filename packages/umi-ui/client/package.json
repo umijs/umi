@@ -27,6 +27,7 @@
     "react-helmet": "^5.2.1",
     "serialize-javascript": "^2.1.0",
     "slash2": "2.0.0",
+    "umi-request": "^1.2.9",
     "xterm": "4.1.0"
   },
   "private": true,
