@@ -1006,7 +1006,16 @@ export default class UmiUI {
                   progress: progress.bind(this, type),
                 },
               );
-            } else if (this.basicConfigPath) {
+            } else {
+              assert(this.servicesByKey[key], `service of key ${key} not exists.`);
+              const service = this.servicesByKey[key];
+              service.applyPlugins('onUISocket', {
+                args: serviceArgs,
+              });
+            }
+
+            // Bigfish extend service
+            if (this.basicConfigPath) {
               const { services } =
                 // eslint-disable-next-line import/no-dynamic-require
                 require(this.basicConfigPath).default || require(this.basicConfigPath) || {};
@@ -1016,12 +1025,6 @@ export default class UmiUI {
                   baseUIService(serviceArgs);
                 });
               }
-            } else {
-              assert(this.servicesByKey[key], `service of key ${key} not exists.`);
-              const service = this.servicesByKey[key];
-              service.applyPlugins('onUISocket', {
-                args: serviceArgs,
-              });
             }
             // eslint-disable-next-line no-empty
           } catch (e) {
