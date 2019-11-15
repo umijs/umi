@@ -88,7 +88,7 @@ export default (api: IApi) => {
       }
       case 'org.umi.dashboard.zaobao.list': {
         try {
-          const result = await request('https://unpkg.com/umi-ui-rss/data/index.json');
+          const result = await request('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json');
           success(result);
         } catch (e) {
           console.error('zaobao.list error', e);
@@ -98,7 +98,9 @@ export default (api: IApi) => {
       }
       case 'org.umi.dashboard.zaobao.list.detail': {
         const { id } = payload;
-        const result = await request(`https://unpkg.com/umi-ui-rss/data/detail/${id}.json`);
+        const result = await request(
+          `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
+        );
         success(result);
         break;
       }
