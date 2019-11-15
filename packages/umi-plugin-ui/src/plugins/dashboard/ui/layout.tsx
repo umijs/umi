@@ -19,7 +19,7 @@ const Layout = props => {
           },
         });
         setDbPath(path);
-        setCardSettings(list);
+        setCardSettings(list || []);
       } catch (e) {
         console.error('getDashboardSettings error', e);
       } finally {
