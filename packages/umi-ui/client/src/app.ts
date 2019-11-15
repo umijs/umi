@@ -29,14 +29,18 @@ const service = (window.g_service = {
 const geval = eval; // eslint-disable-line
 
 const initBasicUI = async () => {
-  const { script: basicUIScript } = await callRemote({ type: '@@project/getBasicAssets' });
-  if (basicUIScript) {
-    geval(`;(function(window){;${basicUIScript}\n})(window);`);
-    // Init the baseUI
-    window.g_uiBasicUI.forEach(basicUI => {
-      // only readable
-      basicUI(Object.freeze(new PluginAPI(service)));
-    });
+  try {
+    const { script: basicUIScript } = await callRemote({ type: '@@project/getBasicAssets' });
+    if (basicUIScript) {
+      geval(`;(function(window){;${basicUIScript}\n})(window);`);
+      // Init the baseUI
+      window.g_uiBasicUI.forEach(basicUI => {
+        // only readable
+        basicUI(Object.freeze(new PluginAPI(service)));
+      });
+    }
+  } catch (e) {
+    console.error('init basic UI error', e);
   }
 };
 
