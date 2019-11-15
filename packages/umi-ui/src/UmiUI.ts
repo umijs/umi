@@ -822,6 +822,7 @@ export default class UmiUI {
         break;
       default:
         log('error', chalk.red(`Unhandled message type ${type}`));
+        failure();
         break;
     }
   }
