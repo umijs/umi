@@ -1,14 +1,10 @@
-import { extend } from 'umi-request';
 import * as path from 'path';
 import * as fs from 'fs';
+import got from 'got';
 import p from 'immer';
 import mkdirp from 'mkdirp';
 import assert from 'assert';
 import { IApi } from 'umi-types';
-
-const request = extend({
-  timeout: 10000,
-});
 
 export default (api: IApi) => {
   const getDataPath = dbPath => {
@@ -88,8 +84,10 @@ export default (api: IApi) => {
       }
       case 'org.umi.dashboard.zaobao.list': {
         try {
-          const result = await request('https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json');
-          success(result);
+          const { body = '{}' } = await got(
+            'https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json',
+          );
+          success(JSON.parse(body));
         } catch (e) {
           console.error('zaobao.list error', e);
           failure(e);
@@ -98,10 +96,10 @@ export default (api: IApi) => {
       }
       case 'org.umi.dashboard.zaobao.list.detail': {
         const { id } = payload;
-        const result = await request(
+        const { body = '{}' } = await got(
           `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
         );
-        success(result);
+        success(JSON.parse(body));
         break;
       }
       default:
