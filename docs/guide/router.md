@@ -33,6 +33,7 @@ Then, umi will automatically generate the routing configuration as follows:
   { path: '/users/list', component: './pages/users/list.js' },
 ]
 ```
+> Note：If router in file `.umirc.(ts|js) ` or `config/config.(ts|js)` is configured, basic routing will be invalid and new page you create will not be compiled automatically，Umi will use [Configuration Routing](#configuration-routing)。
 
 ### Dynamic Routing
 
