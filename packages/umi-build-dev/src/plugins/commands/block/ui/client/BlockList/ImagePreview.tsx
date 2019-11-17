@@ -8,7 +8,6 @@ export default props => {
   const { intl } = api;
   const { cls, img } = props;
   const [visible, setVisible] = useState(false);
-  const;
 
   return (
     <>
