@@ -92,7 +92,7 @@ export default props => {
         [styles.current]: !!isCurrent,
       });
       return (
-        <div key={r.id}>
+        <React.Fragment key={r.id}>
           <div className={resourceCls} onClick={resourceSwitchHandler.bind(null, r)}>
             <div className={styles.icon}>
               <img src={r.icon} style={{ width: '32px', height: '32px' }} />
@@ -110,7 +110,7 @@ export default props => {
             </div>
           </div>
           {isCurrent ? renderCats() : null}
-        </div>
+        </React.Fragment>
       );
     });
   }
