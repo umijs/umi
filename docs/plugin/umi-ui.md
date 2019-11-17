@@ -510,15 +510,16 @@ parameters are as follows:
 ```ts
 interface ITerminalProps {
   /** Terminal title */
-  title?: string;
+  title?: ReactNode;
   className?: string;
   terminalClassName?: string;
   /** defaultValue in Terminal */
   defaultValue?: string;
   /** terminal init event */
-  onInit?: (ins: XTerminal) => void;
+  onInit?: (ins: XTerminal, fitAddon: any) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
   config?: ITerminalOptions;
+  onResize?: (ins: XTerminal) => void;
   [key: string]: any;
 }
 ```

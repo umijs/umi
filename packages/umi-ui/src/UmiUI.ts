@@ -14,7 +14,6 @@ import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
 import semver from 'semver';
-import get from 'lodash/get';
 import Config from './Config';
 import getClientScript, { getBasicScriptContent } from './getClientScript';
 import listDirectory from './listDirectory';
@@ -25,7 +24,7 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
-import initTerminal from './initTerminal';
+import terminalRoutes from './routes/terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
@@ -834,6 +833,7 @@ export default class UmiUI {
       const url = require('url');
       const express = require('express');
       const compression = require('compression');
+      const sockjs = require('sockjs');
       const app = express();
       app.use(compression());
 
@@ -848,6 +848,18 @@ export default class UmiUI {
           }),
         );
       }
+
+      const terminalSS = sockjs.createServer();
+      // terminal routes handler
+      // /terminal, /terminal/resize
+      app.use(
+        '/terminal',
+        terminalRoutes({
+          socket: terminalSS,
+          cwd: this.cwd,
+          data: this.config.data,
+        }),
+      );
 
       app.get('/', async (req, res) => {
         const isMini = 'mini' in req.query;
@@ -871,11 +883,6 @@ export default class UmiUI {
       });
 
       app.use('/*', async (req, res) => {
-        const { currentProject, projectsByKey } = this.config.data;
-        const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
-        initTerminal(this.server, {
-          cwd: currentProjectCwd || this.cwd,
-        });
         const scripts = await getScripts();
         if (process.env.LOCAL_DEBUG) {
           try {
@@ -928,7 +935,6 @@ export default class UmiUI {
         return html;
       }
 
-      const sockjs = require('sockjs');
       const ss = sockjs.createServer();
 
       const conns = {};
@@ -1068,6 +1074,10 @@ export default class UmiUI {
       });
       ss.installHandlers(server, {
         prefix: '/umiui',
+        log: () => {},
+      });
+      terminalSS.installHandlers(server, {
+        prefix: '/terminal-socket',
         log: () => {},
       });
       this.socketServer = ss;

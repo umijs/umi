@@ -2,14 +2,12 @@ import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
 import { Delete, Enter } from '@ant-design/icons';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
-import SockJS from 'sockjs-client';
+import debounce from 'lodash/debounce';
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
 import { IUi } from 'umi-types';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { FitAddon } from 'xterm-addon-fit';
-import { AttachAddon } from './addons/attachAddon';
 import intl from '@/utils/intl';
-import useWindowSize from '@/components/hooks/useWindowSize';
 import styles from './index.module.less';
 
 const { Terminal } = window;
@@ -26,13 +24,14 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     onInit,
     config = {},
     terminalClassName,
-    shell = false,
-    shellServer = '/terminal',
+    onResize = () => {},
+    // default use true
+    visible = true,
+    // shell = false,
+    // shellServer = '/terminal',
     toolbar = true,
   } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
-
-  const size = useWindowSize();
 
   useEffect(() => {
     const terminalOpts: ITerminalOptions = {
@@ -44,9 +43,8 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
         foreground: '#ffffff73',
       },
       cursorStyle: 'underline',
-      // if use shell, disable
-      cursorBlink: !shell,
-      disableStdin: !shell,
+      cursorBlink: false,
+      disableStdin: true,
       ...(config || {}),
     };
     const terminal = new Terminal(terminalOpts);
@@ -65,35 +63,35 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
 
   useEffect(
     () => {
-      let socket: InstanceType<typeof SockJS>;
-      if (domContainer.current && xterm) {
-        const webLinksAddon = new WebLinksAddon();
-        xterm.loadAddon(fitAddon);
-        xterm.loadAddon(webLinksAddon);
-        xterm.attachCustomKeyEventHandler(copyShortcut);
-        if (shell) {
-          socket = new SockJS(shellServer);
-          xterm.loadAddon(new AttachAddon(socket));
-          xterm.focus();
+      const hanldeResizeTerminal = debounce(() => {
+        if (visible) {
+          fitAddon.fit();
+          if (onResize) {
+            onResize(xterm);
+          }
         }
-        // last open
-        xterm.open(domContainer.current);
-        fitAddon.fit();
-        if (onInit) {
-          onInit(xterm, fitAddon);
+      }, 380);
+      const handleTerminalInit = async () => {
+        if (domContainer.current && xterm) {
+          const webLinksAddon = new WebLinksAddon();
+          xterm.loadAddon(fitAddon);
+          xterm.loadAddon(webLinksAddon);
+          xterm.attachCustomKeyEventHandler(copyShortcut);
+          // last open
+          xterm.open(domContainer.current);
+          fitAddon.fit();
+          if (onInit) {
+            onInit(xterm, fitAddon);
+          }
         }
-      }
+      };
+      handleTerminalInit();
+      window.addEventListener('resize', hanldeResizeTerminal);
+      return () => {
+        window.removeEventListener('resize', hanldeResizeTerminal);
+      };
     },
-    [domContainer, xterm],
-  );
-
-  useEffect(
-    () => {
-      if (xterm) {
-        fitAddon.fit();
-      }
-    },
-    [size.width, size.height, xterm],
+    [domContainer, xterm, visible],
   );
 
   useEffect(
