@@ -27,8 +27,6 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     onResize = () => {},
     // default use true
     visible = true,
-    // shell = false,
-    // shellServer = '/terminal',
     toolbar = true,
   } = props;
   const [xterm, setXterm] = useState<XTerminal>(null);
@@ -85,15 +83,17 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
   useEffect(
     () => {
       const hanldeResizeTerminal = debounce(() => {
-        if (visible) {
-          fitAddon.fit();
-          if (onResize) {
-            onResize(xterm);
-          }
+        fitAddon.fit();
+        if (onResize) {
+          onResize(xterm);
+        }
+        if (xterm) {
           xterm.focus();
         }
       }, 380);
-      window.addEventListener('resize', hanldeResizeTerminal);
+      if (visible) {
+        window.addEventListener('resize', hanldeResizeTerminal);
+      }
       return () => {
         window.removeEventListener('resize', hanldeResizeTerminal);
       };
