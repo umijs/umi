@@ -90,7 +90,6 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
 export const resizeTerminal = (opts: Pick<IOpts, 'cols' | 'rows'>) => {
   const { cols, rows } = opts;
   if (pty && cols && rows) {
-    console.log('cols', cols, rows);
     pty.resize(cols, rows);
   }
 };

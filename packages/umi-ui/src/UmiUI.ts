@@ -899,7 +899,6 @@ export default class UmiUI {
       app.get('/terminal-resize', async (req, res, next) => {
         const rows = parseInt(req.query.rows || 30);
         const cols = parseInt(req.query.cols || 180);
-        console.log('terminal/resize');
         res.status(200);
         res.send({
           success: true,
