@@ -33,6 +33,7 @@ umi 会根据 `pages` 目录自动生成路由配置。
   { path: '/users/list', component: './pages/users/list.js' },
 ]
 ```
+> 注意：若 `.umirc.(ts|js) ` 或 `config/config.(ts|js)` 文件中对 router 进行了配置，约定式路由将失效、新添的页面不会自动被 umi 编译，umi 将使用[配置式路由](#配置式路由)。
 
 ### 动态路由
 
