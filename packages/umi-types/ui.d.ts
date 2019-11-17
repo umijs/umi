@@ -162,8 +162,7 @@ declare namespace IUI {
     onInit?: (ins: XTerminal, fitAddon: any) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
-    shell?: boolean;
-    shellServer?: string;
+    onResize?: (ins: XTerminal) => void;
     [key: string]: any;
   }
 
@@ -275,6 +274,7 @@ declare namespace IUI {
   interface IDashboard {
     /** uniq dashboard Card id, required */
     key: string;
+    enable?: boolean;
     /** card title */
     title: ReactNode;
     /** card description */

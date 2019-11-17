@@ -28,7 +28,10 @@
     "serialize-javascript": "^2.1.0",
     "slash2": "2.0.0",
     "umi-request": "^1.2.9",
-    "xterm": "4.1.0"
+    "xterm": "4.1.0",
+    "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-web-links": "^0.2.1",
+    "xterm-addon-attach": "^0.3.0"
   },
   "private": true,
   "devDependencies": {
@@ -53,8 +56,6 @@
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-recommended": "^2.2.0",
     "umi-plugin-react": "1.12.0-beta.1",
-    "webpack-less-theme-plugin": "^2.1.0",
-    "xterm-addon-fit": "^0.3.0",
-    "xterm-addon-web-links": "^0.2.1"
+    "webpack-less-theme-plugin": "^2.1.0"
   }
 }

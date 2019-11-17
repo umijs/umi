@@ -3,6 +3,8 @@ import sockjs, { Connection } from 'sockjs';
 // umiui:UmiUI:terminal
 import { debugTerminal as _log } from './debug';
 
+let pty;
+
 export interface IOpts {
   cwd: string;
   rows: number;
@@ -53,7 +55,7 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
   if (safe) {
     const defaultShell = getDefaultShell();
     const defaultShellArgs = ['--login'];
-    const pty = spawn(defaultShell, defaultShellArgs, {
+    pty = spawn(defaultShell, defaultShellArgs, {
       name: 'xterm-color',
       cols,
       rows,
@@ -70,18 +72,26 @@ export const connectionHandler = (conn: Connection, opts: IOpts) => {
      * @param command ls/... shell commands
      */
     pty.onData(chunk => {
-      _log('ptyProcess data', chunk);
+      // _log('ptyProcess data', chunk);
       conn.write(chunk);
     });
 
     // === socket listener ===
     conn.on('data', data => {
-      _log('terminal conn message', data);
+      // _log('terminal conn message', data);
       pty.write(data);
     });
     conn.on('close', () => {
       pty.kill();
     });
+  }
+};
+
+export const resizeTerminal = (opts: Pick<IOpts, 'cols' | 'rows'>) => {
+  const { cols, rows } = opts;
+  if (pty && cols && rows) {
+    console.log('cols', cols, rows);
+    pty.resize(cols, rows);
   }
 };
 

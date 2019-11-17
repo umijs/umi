@@ -25,7 +25,7 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
-import initTerminal from './initTerminal';
+import initTerminal, { resizeTerminal } from './terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
@@ -870,21 +870,43 @@ export default class UmiUI {
         }
       });
 
-      app.use('/terminal', async (req, res, next) => {
+      /**
+       * Terminal shell init server
+       */
+      app.get('/terminal-init', async (req, res, next) => {
         const { currentProject, projectsByKey } = this.config.data;
         const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
-        const rows = parseInt(req.query.rows || 100);
-        const cols = parseInt(req.query.cols || 40);
+        const rows = parseInt(req.query.rows || 30);
+        const cols = parseInt(req.query.cols || 180);
 
         initTerminal(this.server, {
           cwd: currentProjectCwd || this.cwd,
           rows,
           cols,
         });
+        res.status(200);
         res.send({
+          success: true,
           rows,
           cols,
         });
+        next();
+      });
+
+      /**
+       * Terminal shell resize server
+       */
+      app.get('/terminal-resize', async (req, res, next) => {
+        const rows = parseInt(req.query.rows || 30);
+        const cols = parseInt(req.query.cols || 180);
+        console.log('terminal/resize');
+        res.status(200);
+        res.send({
+          success: true,
+          rows,
+          cols,
+        });
+        next();
       });
 
       app.use('/*', async (req, res) => {

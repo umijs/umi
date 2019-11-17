@@ -89,9 +89,8 @@ export default function(props) {
     return matchedResources.map(r => {
       const isCurrent = current.id === r.id;
       return (
-        <>
+        <div key={r.id}>
           <div
-            key={r.id}
             className={`${styles.resource} ${isCurrent ? styles.current : ''}`}
             onClick={resourceSwitchHandler.bind(null, r)}
           >
@@ -111,7 +110,7 @@ export default function(props) {
             </div>
           </div>
           {isCurrent ? renderCats() : null}
-        </>
+        </div>
       );
     });
   }

@@ -34,6 +34,8 @@ export default (api: IUiApi) => {
 
   api.addDashboard({
     key: 'org.umi.dashboard.card.config',
+    // default enable
+    enable: false,
     title: <FormattedMessage id="org.umi.ui.configuration.panel" />,
     description: <FormattedMessage id="org.umi.ui.configuration.panel.description" />,
     icon: <ControlFilled />,
