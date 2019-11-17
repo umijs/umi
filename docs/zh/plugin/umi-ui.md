@@ -510,15 +510,16 @@ api.addPanel({
 ```ts
 interface ITerminalProps {
   /** Terminal title */
-  title?: string;
+  title?: ReactNode;
   className?: string;
   terminalClassName?: string;
   /** defaultValue in Terminal */
   defaultValue?: string;
-  /** get xterm instance */
-  onInit?: (ins: XTerminal) => void;
+  /** terminal init event */
+  onInit?: (ins: XTerminal, fitAddon: any) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
   config?: ITerminalOptions;
+  onResize?: (ins: XTerminal) => void;
   [key: string]: any;
 }
 ```

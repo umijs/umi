@@ -229,18 +229,23 @@ const Footer: React.SFC<IFooterProps> = props => {
           className={styles['section-drawer']}
           height={terminalHeight}
         >
-          <Shell
-            ref={(ref, fitAddon) =>
-              dispatch({
-                type: 'initTerminal',
-                payload: {
-                  terminal: ref,
-                  fitAddon,
-                },
-              })
-            }
-            className={styles['section-drawer-shell']}
-          />
+          {typeof visible.terminal === 'boolean' && (
+            // init shell socket when open Drawer
+            <Shell
+              // style hide / show, not dom
+              visible={!!visible.terminal}
+              ref={(ref, fitAddon) =>
+                dispatch({
+                  type: 'initTerminal',
+                  payload: {
+                    terminal: ref,
+                    fitAddon,
+                  },
+                })
+              }
+              className={styles['section-drawer-shell']}
+            />
+          )}
         </Drawer>
       </div>
       <div className={styles.statusBar}>
@@ -303,7 +308,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <QuestionCircle style={{ marginRight: 4 }} /> {formatMessage({ id: 'org.umi.ui.global.help' })}
+            <QuestionCircle style={{ marginRight: 4 }} />{' '}
+            {formatMessage({ id: 'org.umi.ui.global.help' })}
           </a>
         </div>
         <div data-test-id="locale_wrapper" className={styles.section} style={{ cursor: 'pointer' }}>
