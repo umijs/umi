@@ -224,6 +224,8 @@ interface IDashboard {
   description: ReactNode;
   /** icon */
   icon: ReactNode;
+  /** icon background color, default #459BF7 */
+  backgroundColor?: string;
   /** card body */
   content: ReactNode | ReactNode[];
   /** card right extend ReactNode */

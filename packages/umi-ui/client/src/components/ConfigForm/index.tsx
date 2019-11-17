@@ -223,82 +223,84 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
     <>
       <div className={themeCls} ref={containerRef}>
         <div className={styles.form}>
-          <div className={styles['configForm-header']}>
-            <h2>{formatMessage({ id: props.title })}</h2>
-            <span className={searchIconCls}>
-              <SearchIcon onClick={handleSearchShow} />
-            </span>
-            <Input
-              prefix={<SearchIcon />}
-              ref={searchInputRef}
-              suffix={search && <CloseCircleFilled onClick={resetSearch} />}
-              placeholder={formatMessage({ id: 'org.umi.ui.configuration.search.placeholder' })}
-              className={inputCls}
-              onChange={e => handleSearchDebounce(e.target.value)}
-            />
-          </div>
-          {!data || loading ? (
-            <Spin />
-          ) : (
-            searchData.length > 0 && (
-              <div>
-                <Form
-                  layout="vertical"
-                  form={form}
-                  onFinish={handleFinish}
-                  onFinishFailed={handleFinishFailed}
-                  initialValues={initialValues}
-                  onValuesChange={(changedValues, allValues) => {
-                    setAllValues(allValues);
-                  }}
-                >
-                  {Object.keys(groupedData).map(group => {
-                    return (
-                      <div className={styles.group} key={group}>
-                        <h2 id={group}>{group}</h2>
-                        {groupedData[group].map(
-                          ({
-                            default: defaultValue,
-                            name,
-                            title,
-                            choices = [],
-                            description,
-                            link,
-                            type,
-                            ...restItemProps
-                          }) => {
-                            const label = {
+          <div className={styles['form-inner']}>
+            <div className={styles['configForm-header']}>
+              <h2>{formatMessage({ id: props.title })}</h2>
+              <span className={searchIconCls}>
+                <SearchIcon onClick={handleSearchShow} />
+              </span>
+              <Input
+                prefix={<SearchIcon />}
+                ref={searchInputRef}
+                suffix={search && <CloseCircleFilled onClick={resetSearch} />}
+                placeholder={formatMessage({ id: 'org.umi.ui.configuration.search.placeholder' })}
+                className={inputCls}
+                onChange={e => handleSearchDebounce(e.target.value)}
+              />
+            </div>
+            {!data || loading ? (
+              <Spin />
+            ) : (
+              searchData.length > 0 && (
+                <div>
+                  <Form
+                    layout="vertical"
+                    form={form}
+                    onFinish={handleFinish}
+                    onFinishFailed={handleFinishFailed}
+                    initialValues={initialValues}
+                    onValuesChange={(changedValues, allValues) => {
+                      setAllValues(allValues);
+                    }}
+                  >
+                    {Object.keys(groupedData).map(group => {
+                      return (
+                        <div className={styles.group} key={group}>
+                          <h2 id={group}>{group}</h2>
+                          {groupedData[group].map(
+                            ({
+                              default: defaultValue,
+                              name,
                               title,
+                              choices = [],
                               description,
                               link,
-                            };
-                            const getSize = (fieldType: any) => {
-                              // Switch uses small whenever, mini env also uses `small`
-                              if (fieldType === 'boolean' || isMini) return 'small';
-                              return 'default';
-                            };
-                            return (
-                              <Field
-                                key={name}
-                                label={label}
-                                options={choices}
-                                type={type}
-                                size={getSize(type)}
-                                name={name}
-                                defaultValue={defaultValue}
-                                {...restItemProps}
-                                form={form}
-                              />
-                            );
-                          },
-                        )}
-                      </div>
-                    );
-                  })}
-                </Form>
-              </div>
-            )
-          )}
+                              type,
+                              ...restItemProps
+                            }) => {
+                              const label = {
+                                title,
+                                description,
+                                link,
+                              };
+                              const getSize = (fieldType: any) => {
+                                // Switch uses small whenever, mini env also uses `small`
+                                if (fieldType === 'boolean' || isMini) return 'small';
+                                return 'default';
+                              };
+                              return (
+                                <Field
+                                  key={name}
+                                  label={label}
+                                  options={choices}
+                                  type={type}
+                                  size={getSize(type)}
+                                  name={name}
+                                  defaultValue={defaultValue}
+                                  {...restItemProps}
+                                  form={form}
+                                />
+                              );
+                            },
+                          )}
+                        </div>
+                      );
+                    })}
+                  </Form>
+                </div>
+              )
+            )}
+          </div>
         </div>
         {enableToc && (
           <Toc

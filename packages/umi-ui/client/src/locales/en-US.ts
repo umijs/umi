@@ -13,6 +13,7 @@ export default {
   'org.umi.ui.global.panel.recent.open': 'Recently Open',
   'org.umi.ui.global.panel.recent.open.empty': 'No recent project',
   'org.umi.ui.global.project.title': 'Project Manager',
+  'org.umi.ui.global.project.import.hint': 'Select directory and import',
   'org.umi.ui.global.project.editor.open': 'Open in the editor',
   'org.umi.ui.global.project.editor.failure': 'Open failed in the editor ',
   'org.umi.ui.global.project.directory.tip': 'Tips: Click to select, double click to enter',

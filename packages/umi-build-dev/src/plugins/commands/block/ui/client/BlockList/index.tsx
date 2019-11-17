@@ -108,7 +108,7 @@ const BlockList: React.FC<BlockListProps> = props => {
           flexDirection: 'column',
         }}
       >
-        <Row gutter={20} type="flex">
+        <Row gutter={[20, 20]} type="flex">
           {currentPageList.map(item => (
             <BlockItem
               key={item.url}
@@ -120,7 +120,7 @@ const BlockList: React.FC<BlockListProps> = props => {
           ))}
         </Row>
         {filteredList.length > pageSize && (
-          <Row type="flex" justify="end">
+          <Row className={styles.pagination} type="flex" justify="end">
             <Pagination
               size={isMini ? 'small' : undefined}
               current={currentPage}

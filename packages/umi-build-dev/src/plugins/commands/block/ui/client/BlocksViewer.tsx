@@ -148,6 +148,8 @@ const BlocksViewer: React.FC<Props> = props => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
 
+  console.log('selectedTagselectedTag', selectedTag);
+
   /**
    * 获取 query 中的设置
    */

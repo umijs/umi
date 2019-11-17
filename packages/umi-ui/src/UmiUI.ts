@@ -9,7 +9,7 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
-import { pick } from 'lodash';
+import { pick, get } from 'lodash';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';
@@ -24,7 +24,7 @@ import { BackToHomeAction, OpenProjectAction, ReInstallDependencyAction } from '
 import { isDepLost, isPluginLost, isUmiProject, isUsingBigfish, isUsingUmi } from './checkProject';
 import getScripts from './scripts';
 import isDepFileExists from './utils/isDepFileExists';
-import terminalRoutes from './routes/terminal';
+import initTerminal, { resizeTerminal } from './terminal';
 import detectLanguage from './detectLanguage';
 import detectNpmClients from './detectNpmClients';
 import debug, { debugSocket } from './debug';
@@ -849,17 +849,51 @@ export default class UmiUI {
         );
       }
 
-      const terminalSS = sockjs.createServer();
-      // terminal routes handler
-      // /terminal, /terminal/resize
-      app.use(
-        '/terminal',
-        terminalRoutes({
-          socket: terminalSS,
-          cwd: this.cwd,
-          data: this.config.data,
-        }),
-      );
+      /**
+       * Terminal shell init server
+       */
+      app.get('/terminal', async (req, res) => {
+        const { currentProject, projectsByKey } = this.config.data;
+        const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
+        const rows = parseInt(req.query.rows || 30);
+        const cols = parseInt(req.query.cols || 180);
+
+        initTerminal(this.server, {
+          cwd: currentProjectCwd || this.cwd,
+          rows,
+          cols,
+        });
+        res.status(200);
+        res.send({
+          success: true,
+          rows,
+          cols,
+        });
+      });
+
+      /**
+       * Terminal shell resize server
+       */
+      app.get('/terminal/resize', async (req, res, next) => {
+        const rows = parseInt(req.query.rows || 30);
+        const cols = parseInt(req.query.cols || 180);
+        res.status(200);
+        try {
+          resizeTerminal({ rows, cols });
+          res.send({
+            success: true,
+            rows,
+            cols,
+          });
+        } catch (e) {
+          console.error('resize error', e);
+          res.send({
+            success: false,
+            rows,
+            cols,
+          });
+        }
+      });
 
       app.get('/', async (req, res) => {
         const isMini = 'mini' in req.query;
@@ -1074,10 +1108,6 @@ export default class UmiUI {
       });
       ss.installHandlers(server, {
         prefix: '/umiui',
-        log: () => {},
-      });
-      terminalSS.installHandlers(server, {
-        prefix: '/terminal-socket',
         log: () => {},
       });
       this.socketServer = ss;

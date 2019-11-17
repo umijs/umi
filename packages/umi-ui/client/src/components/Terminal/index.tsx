@@ -1,5 +1,5 @@
 import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
-import { Delete, Enter } from '@ant-design/icons';
+import { Delete, VerticalAlignBottom } from '@ant-design/icons';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
 import debounce from 'lodash/debounce';
@@ -63,14 +63,6 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
 
   useEffect(
     () => {
-      const hanldeResizeTerminal = debounce(() => {
-        if (visible) {
-          fitAddon.fit();
-          if (onResize) {
-            onResize(xterm);
-          }
-        }
-      }, 380);
       const handleTerminalInit = async () => {
         if (domContainer.current && xterm) {
           const webLinksAddon = new WebLinksAddon();
@@ -86,12 +78,27 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
         }
       };
       handleTerminalInit();
+    },
+    [domContainer, xterm],
+  );
+
+  useEffect(
+    () => {
+      const hanldeResizeTerminal = debounce(() => {
+        if (visible) {
+          fitAddon.fit();
+          if (onResize) {
+            onResize(xterm);
+          }
+          xterm.focus();
+        }
+      }, 380);
       window.addEventListener('resize', hanldeResizeTerminal);
       return () => {
         window.removeEventListener('resize', hanldeResizeTerminal);
       };
     },
-    [domContainer, xterm, visible],
+    [xterm, visible],
   );
 
   useEffect(
@@ -146,7 +153,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
                 </span>
                 <span className={styles.icon}>
                   <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-                    <Enter onClick={toBottom} />
+                    <VerticalAlignBottom onClick={toBottom} />
                   </Tooltip>
                 </span>
               </Col>

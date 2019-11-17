@@ -3,12 +3,12 @@ import { Eye } from '@ant-design/icons';
 import { Tooltip, Button, Modal } from 'antd';
 import Context from '../UIApiContext';
 
-export default function(props) {
+export default props => {
   const { api } = useContext(Context);
   const { intl } = api;
   const { cls, img } = props;
   const [visible, setVisible] = useState(false);
-  const [width] = useState(document.documentElement.clientWidth * 0.8);
+  const;
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function(props) {
         visible={visible}
         destroyOnClose
         centered
-        width={width}
+        width="80vw"
         bodyStyle={{
           overflow: 'auto',
         }}
@@ -46,9 +46,9 @@ export default function(props) {
             overflow: 'auto',
           }}
         >
-          <img src={img} />
+          <img style={{ width: '100%' }} src={img} />
         </div>
       </Modal>
     </>
   );
-}
+};
