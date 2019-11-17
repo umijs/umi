@@ -851,7 +851,7 @@ export default class UmiUI {
 
       const terminalSS = sockjs.createServer();
       // terminal routes handler
-      // /terminal/init, /terminal/resize
+      // /terminal, /terminal/resize
       app.use(
         '/terminal',
         terminalRoutes({
