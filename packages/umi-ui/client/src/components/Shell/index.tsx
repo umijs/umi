@@ -36,8 +36,8 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
     setTerminalRef(xterm);
     // init /terminal socket server
     const { rows, cols } = xterm;
-    await request(`/terminal-init?rows=${rows}&cols=${cols}`);
-    const socket = new SockJS('/terminal');
+    await request(`/terminal?rows=${rows}&cols=${cols}`);
+    const socket = new SockJS('/terminal-socket');
     xterm.loadAddon(new AttachAddon(socket));
     xterm.focus();
   };
@@ -45,7 +45,7 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
   const handleResize = async xterm => {
     const { rows, cols } = xterm;
     try {
-      await request(`/terminal-resize?rows=${rows}&cols=${cols}`);
+      await request(`/terminal/resize?rows=${rows}&cols=${cols}`);
     } catch (e) {
       console.error('resize Terminal error', e);
     }
