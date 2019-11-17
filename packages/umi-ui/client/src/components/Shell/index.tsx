@@ -18,26 +18,11 @@ let socket: any;
 const Shell: React.SFC<ShellProps> = (props, ref) => {
   const { style, className, visible } = props;
   const shellCls = cls(styles.shell, className);
-  const [terminalRef, setTerminalRef] = React.useState<TerminalType>(null);
-
-  React.useEffect(
-    () => {
-      if (terminalRef) {
-        terminalRef.prompt = () => {
-          terminalRef.write('\r\n$ ');
-        };
-      }
-    },
-    [terminalRef],
-  );
 
   const handleInit = async (xterm, fitAddon) => {
     if (typeof ref === 'function') {
       ref(xterm, fitAddon);
     }
-    setTerminalRef(xterm);
-    const { rows, cols } = xterm;
-    await request(`/terminal?rows=${rows}&cols=${cols}`);
     if (!socket) {
       socket = new SockJS('/terminal-socket');
       xterm.loadAddon(new AttachAddon(socket));
