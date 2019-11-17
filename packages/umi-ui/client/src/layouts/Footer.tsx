@@ -10,23 +10,26 @@ import {
   Tag as TagIcon,
   QuestionCircle,
   Message,
-  Close,
-  Enter,
-  Delete,
+  Code,
 } from '@ant-design/icons';
+import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
 import history from '@tmp/history';
 import { LOCALES, LOCALES_ICON } from '@/enums';
-import intl from '@/utils/intl';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
+import FooterToolbar from './FooterToolbar';
+import Shell from '@/components/Shell';
+import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
 
 import styles from './Footer.less';
 
-const { useState, useEffect, useReducer, useContext } = React;
+const { useEffect, useReducer, useContext } = React;
+
+type IPanel = 'log' | 'terminal';
 
 export interface IFooterProps {
   type: 'list' | 'detail' | 'loading';
@@ -35,34 +38,33 @@ export interface IFooterProps {
 const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
+  const drawerContainerRef = React.createRef();
   const { path, name } = currentProject || {};
-  const [logVisible, setLogVisible] = useState<boolean>(false);
-  const [logs, dispatch] = useReducer((state, action) => {
-    if (action.type === 'add') {
-      return [...state, action.payload];
-    }
-    if (action.type === 'setHistory') {
-      return action.payload;
-    }
-  }, []);
-
-  const showLogPanel = () => {
-    setLogVisible(true);
-  };
-
-  const hideLogPanel = () => {
-    setLogVisible(false);
-  };
+  const [{ logs, terminal, fitAddon, terminalHeight, logHeight, visible }, dispatch] = useReducer(
+    (state, action) => reducers[action.type](state, action),
+    states,
+  );
 
   const redirect = (url: string) => {
     history.push(url);
+  };
+
+  const togglePanel = (panel: IPanel) => {
+    dispatch({
+      type: 'togglePanel',
+      payload: {
+        panel,
+      },
+    });
   };
 
   const getLogs = async () => {
     const { data: historyLogs } = await getHistory();
     dispatch({
       type: 'setHistory',
-      payload: historyLogs,
+      payload: {
+        logs: historyLogs,
+      },
     });
   };
 
@@ -71,9 +73,9 @@ const Footer: React.SFC<IFooterProps> = props => {
     if (p) {
       try {
         copy(p || '');
-        message.success(intl({ id: 'org.umi.ui.global.copy.success' }));
+        message.success(formatMessage({ id: 'org.umi.ui.global.copy.success' }));
       } catch (e) {
-        message.error(intl({ id: 'org.umi.ui.global.copy.failure' }));
+        message.error(formatMessage({ id: 'org.umi.ui.global.copy.failure' }));
       }
     }
   };
@@ -85,30 +87,33 @@ const Footer: React.SFC<IFooterProps> = props => {
         onMessage(log) {
           dispatch({
             type: 'add',
-            payload: log,
+            payload: {
+              logs: log,
+            },
           });
         },
       });
     })();
 
-    event.on(MESSAGES.SHOW_LOG, () => {
-      setLogVisible(true);
+    event.on(MESSAGES.SHOW_LOG, (panel: IPanel) => {
+      togglePanel(panel || 'log');
     });
-    event.on(MESSAGES.HIDE_LOG, () => {
-      setLogVisible(false);
+    event.on(MESSAGES.HIDE_LOG, (panel: IPanel) => {
+      togglePanel(panel || 'log');
     });
     return () => {
-      event.off(MESSAGES.SHOW_LOG, () => {
-        setLogVisible(true);
+      event.off(MESSAGES.SHOW_LOG, (panel: IPanel) => {
+        togglePanel(panel || 'log');
       });
-      event.off(MESSAGES.HIDE_LOG, () => {
-        setLogVisible(false);
+      event.off(MESSAGES.HIDE_LOG, (panel: IPanel) => {
+        togglePanel(panel || 'log');
       });
     };
   }, []);
 
   const actionCls = cls(styles.section, styles.action);
   const logCls = cls(actionCls, styles.log);
+  const shellCls = cls(actionCls, styles.shell);
 
   const LocaleText = ({ locale: textLocale, checked, style }) => (
     <span style={style}>
@@ -138,7 +143,7 @@ const Footer: React.SFC<IFooterProps> = props => {
     try {
       await clearLog();
     } catch (e) {
-      message.error(intl({ id: 'org.umi.ui.global.log.clear.error' }));
+      message.error(formatMessage({ id: 'org.umi.ui.global.log.clear.error' }));
     } finally {
       await getLogs();
     }
@@ -161,31 +166,119 @@ const Footer: React.SFC<IFooterProps> = props => {
     'zh-CN': 'https://umijs.org/zh/guide/umi-ui.html',
     'en-US': 'https://umijs.org/guide/umi-ui.html',
   };
+  const projectDashboard = type !== 'list' && path && name;
 
   return (
     <div className={styles.footer}>
+      <div ref={drawerContainerRef} className={styles['section-drawer-container']}>
+        <Drawer
+          title={
+            <FooterToolbar
+              resizeAxis="y"
+              onResize={size => {
+                const newHeight = logHeight + size.deltaY;
+                dispatch({
+                  type: 'changeSize',
+                  payload: {
+                    logHeight: newHeight,
+                  },
+                });
+              }}
+              onClear={handleClearLog}
+              onScrollBottom={handleScorllBottom}
+              onClose={() => togglePanel('log')}
+            />
+          }
+          getContainer={drawerContainerRef.current}
+          closable={false}
+          visible={visible.log}
+          placement="bottom"
+          mask={false}
+          className={styles['section-drawer']}
+          height={logHeight}
+        >
+          <Logs logs={logs} type={type} className={styles['section-drawer-logs']} />
+        </Drawer>
+        <Drawer
+          title={
+            <FooterToolbar
+              resizeAxis="y"
+              onResize={size => {
+                const newHeight = terminalHeight + size.deltaY;
+                dispatch({
+                  type: 'changeSize',
+                  payload: {
+                    terminalHeight: newHeight,
+                  },
+                });
+                if (fitAddon) {
+                  fitAddon.fit();
+                }
+              }}
+              onClose={() => togglePanel('terminal')}
+              onClear={() => terminal.clear()}
+              onScrollBottom={() => terminal.scrollToBottom()}
+            />
+          }
+          getContainer={drawerContainerRef.current}
+          destroyOnClose={false}
+          closable={false}
+          visible={visible.terminal}
+          placement="bottom"
+          mask={false}
+          className={styles['section-drawer']}
+          height={terminalHeight}
+        >
+          {typeof visible.terminal === 'boolean' && (
+            // init shell socket when open Drawer
+            <Shell
+              // style hide / show, not dom
+              visible={!!visible.terminal}
+              ref={(ref, fitAddon) =>
+                dispatch({
+                  type: 'initTerminal',
+                  payload: {
+                    terminal: ref,
+                    fitAddon,
+                  },
+                })
+              }
+              className={styles['section-drawer-shell']}
+            />
+          )}
+        </Drawer>
+      </div>
       <div className={styles.statusBar}>
-        {!isMini && (
-          <div
-            onClick={() => {
-              handleBack(type === 'loading');
-            }}
-            className={actionCls}
-          >
-            <Tooltip title={intl({ id: 'org.umi.ui.global.home' })}>
-              <HomeFilled style={{ marginRight: 4 }} />
-            </Tooltip>
-          </div>
-        )}
-        {type !== 'list' && path && name && (
-          <>
-            <div className={actionCls} onClick={() => handleCopyPath(path)}>
-              <FolderFilled style={{ marginRight: 4 }} /> {path}
+        <div className={styles['statusBar-left']}>
+          {!isMini && (
+            <div
+              onClick={() => {
+                handleBack(type === 'loading');
+              }}
+              className={actionCls}
+            >
+              <Tooltip title={formatMessage({ id: 'org.umi.ui.global.home' })}>
+                <HomeFilled style={{ marginRight: 4 }} />
+              </Tooltip>
             </div>
-          </>
-        )}
-        <div onClick={() => (logVisible ? hideLogPanel() : showLogPanel())} className={logCls}>
-          <ProfileFilled style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.log' })}
+          )}
+          {projectDashboard && (
+            <>
+              <div className={actionCls} onClick={() => handleCopyPath(path)}>
+                <FolderFilled style={{ marginRight: 4 }} /> {path}
+              </div>
+            </>
+          )}
+          <div onClick={() => togglePanel('log')} className={logCls}>
+            <ProfileFilled style={{ marginRight: 4 }} />{' '}
+            {formatMessage({ id: 'org.umi.ui.global.log' })}
+          </div>
+          {projectDashboard && (
+            <div className={shellCls} onClick={() => togglePanel('terminal')}>
+              <Code style={{ marginRight: 4 }} />{' '}
+              {formatMessage({ id: 'org.umi.ui.global.terminal' })}
+            </div>
+          )}
         </div>
 
         <div className={styles.section}>
@@ -203,8 +296,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             <a>
               <Message style={{ marginRight: 4 }} />{' '}
               {type === 'loading'
-                ? intl({ id: 'org.umi.ui.global.feedback' })
-                : intl({ id: 'org.umi.ui.global.feedback' })}
+                ? formatMessage({ id: 'org.umi.ui.global.feedback' })
+                : formatMessage({ id: 'org.umi.ui.global.feedback' })}
             </a>
           </Popover>
         </div>
@@ -215,7 +308,8 @@ const Footer: React.SFC<IFooterProps> = props => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <QuestionCircle style={{ marginRight: 4 }} /> {intl({ id: 'org.umi.ui.global.help' })}
+            <QuestionCircle style={{ marginRight: 4 }} />{' '}
+            {formatMessage({ id: 'org.umi.ui.global.help' })}
           </a>
         </div>
         <div data-test-id="locale_wrapper" className={styles.section} style={{ cursor: 'pointer' }}>
@@ -235,43 +329,6 @@ const Footer: React.SFC<IFooterProps> = props => {
           </span>
         </div>
       </div>
-      <Drawer
-        title={
-          <div className={styles['section-drawer-title']}>
-            <h1>{intl({ id: 'org.umi.ui.global.log.upperCase' })}</h1>
-            <div className={styles['section-drawer-title-action']}>
-              <Popconfirm
-                title={intl({ id: 'org.umi.ui.global.log.clear.confirm' })}
-                onConfirm={handleClearLog}
-              >
-                <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
-                  <Delete />
-                </Tooltip>
-              </Popconfirm>
-              <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-                <Enter onClick={handleScorllBottom} />
-              </Tooltip>
-              <Divider type="vertical" />
-              <Close onClick={hideLogPanel} />
-            </div>
-          </div>
-        }
-        closable={false}
-        visible={logVisible}
-        placement="bottom"
-        mask={false}
-        className={styles['section-drawer']}
-        height={300}
-      >
-        <Logs
-          logs={logs}
-          type={type}
-          className={styles['section-drawer-logs']}
-          style={{
-            height: 225,
-          }}
-        />
-      </Drawer>
     </div>
   );
 };

@@ -247,3 +247,10 @@ Umi UI 需要 umi@2.9 或以上，如果本地项目的版本不匹配，会报�
 Umi UI 创建项目需要有执行的权限。
 
 解决方案是将提示的路径权限提升，给予执行权限。
+
+### Terminal need node-pty module
+
+Umi UI 未安装或编译成功 [node-pty](https://www.npmjs.com/package/node-pty) 模块，解决方案如下：
+
+* 若是 Windows 用户，请以管理员身份在 PowerShell 执行 `npm install --global --production windows-build-tools`。
+* 重装 node_modules

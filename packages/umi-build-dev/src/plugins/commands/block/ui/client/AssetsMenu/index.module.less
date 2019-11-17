@@ -1,0 +1,60 @@
+.resource {
+  height: 60px;
+  background: #23232e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+
+  .icon {
+    padding-right: 12px;
+    text-align: center;
+  }
+  .titleAndDescription {
+    flex: 1;
+
+    .title {
+      color: #dfdfe1;
+      font-size: 14px;
+    }
+    .description {
+      color: #8a8a90;
+      font-size: 12px;
+    }
+  }
+  .switcher {
+  }
+
+  &:hover {
+    background: #2b2b36;
+  }
+
+  &.current {
+    background: #2b2b36;
+  }
+}
+
+.cats {
+  flex: 1;
+  background: #2b2b36;
+  border-bottom: 1px solid #000;
+  overflow: auto;
+}
+.catsLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat {
+  color: #b5b5b8;
+  cursor: pointer;
+  height: 38px;
+  line-height: 38px;
+  text-indent: 24px;
+  &:hover,
+  &.current {
+    background: #33333d;
+    color: #fff;
+  }
+}

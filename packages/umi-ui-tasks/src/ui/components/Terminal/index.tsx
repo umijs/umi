@@ -1,5 +1,5 @@
 import { Row, Col, Tooltip } from 'antd';
-import { Delete, Enter } from '@ant-design/icons';
+import { Delete, VerticalAlignBottom } from '@ant-design/icons';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
 import { useTerminal, usePrevious } from '../../hooks';
@@ -21,7 +21,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
   useEffect(() => {
     setInit(true);
   }, []);
-  useTerminal({ terminal, ref: domContainer.current });
+  const { fitAddon } = useTerminal({ terminal, ref: domContainer.current });
   useEffect(
     () => {
       if (log) {
@@ -40,7 +40,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
     () => {
       if (prevSize) {
         if (prevSize.width !== size.width || prevSize.height !== size.height) {
-          terminal.fit();
+          fitAddon.fit();
         }
       }
     },
@@ -70,7 +70,7 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
           </span>
           <span className={styles.icon}>
             <Tooltip title={intl({ id: 'org.umi.ui.tasks.terminal.bottom' })}>
-              <Enter onClick={toBottom} />
+              <VerticalAlignBottom onClick={toBottom} />
             </Tooltip>
           </span>
         </Col>

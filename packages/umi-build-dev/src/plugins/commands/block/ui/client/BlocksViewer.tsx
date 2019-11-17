@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
 import { Reload, Plus } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
@@ -6,13 +6,14 @@ import { stringify, parse } from 'qs';
 
 import { Clear } from './icon';
 import { Resource, Block, AddBlockParams } from '../../data.d';
-import Context from './UIApiContext';
 import BlockList from './BlockList';
 import GlobalSearch from './GlobalSearch';
 import useCallData from './hooks/useCallData';
 import styles from './BlocksViewer.module.less';
 import Adder from './Adder';
+import AssetsMenu from './AssetsMenu';
 import { ModelState, namespace } from './model';
+import Container from './Container';
 
 /**
  * get substr from url
@@ -74,8 +75,6 @@ export const scrollToById = (id: string, target: string) => {
   }
 };
 
-const { TabPane } = Tabs;
-
 interface Props {
   dispatch: (params: any) => {};
   loading: boolean;
@@ -132,7 +131,7 @@ const renderActiveResourceTag = ({
 
 const BlocksViewer: React.FC<Props> = props => {
   const { dispatch, block, loading: fetchDataLoading } = props;
-  const { api } = useContext(Context);
+  const { api, type, setType, activeResource, setActiveResource } = Container.useContainer();
   const { callRemote, intl } = api;
   /**
    * 是不是umi
@@ -142,16 +141,12 @@ const BlocksViewer: React.FC<Props> = props => {
   /**
    * 用到的各种状态
    */
-  const query = getQueryConfig();
   const [willAddBlock, setWillAddBlock] = useState<Block>(null);
   const [addingBlock, setAddBlock] = useState<Block>(null);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
   const [blockParams, setBlockParams] = useState<AddBlockParams>(null);
-  const [type, setType] = useState<Resource['blockType']>(query.type || 'block');
-  const [activeResource, setActiveResource] = useState<Resource>(
-    query.resource ? { id: query.resource } : null,
-  );
   const [searchValue, setSearchValue] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string>('');
 
   /**
    * 获取 query 中的设置
@@ -300,57 +295,50 @@ const BlocksViewer: React.FC<Props> = props => {
   const matchedResources = resources.filter(r => r.blockType === type);
   return (
     <>
-      <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
-        {current ? (
-          <div className={styles.blockList}>
-            <Tabs
-              className={styles.tabs}
-              activeKey={type}
-              onChange={activeKey => {
-                setType(activeKey as Resource['blockType']);
-                setActiveResource(null);
-                /**
-                 * 修改 url 中的参数，数据源改变时
-                 * 清空 resource
-                 */
-                updateUrlQuery({
-                  type: activeKey,
-                  resource: undefined,
-                });
-              }}
-            >
-              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.blocks' })} key="block" />
-              <TabPane tab={intl({ id: 'org.umi.ui.blocks.tabs.templates' })} key="template" />
-            </Tabs>
-
-            {renderActiveResourceTag({
-              type,
-              matchedResources,
-              setActiveResource,
-              current,
-            })}
-            {matchedResources.length > 0 ? (
-              <BlockList
-                type={type}
-                keyword={searchValue}
-                addingBlock={willAddBlock || addingBlock}
-                list={blocks}
-                onShowModal={(currentBlock, option) => {
-                  setAddModalVisible(true);
-                  setWillAddBlock(currentBlock);
-                  setBlockParams(option);
-                }}
-                loading={fetchDataLoading}
-              />
+      <div className={styles.wrapper}>
+        <div className={styles.side}>
+          <AssetsMenu
+            type={type}
+            matchedResources={matchedResources}
+            setActiveResource={setActiveResource}
+            updateUrlQuery={updateUrlQuery}
+            setSelectedTag={setSelectedTag}
+            selectedTag={selectedTag}
+            current={current}
+            blocks={blocks}
+            loading={fetchDataLoading}
+          />
+        </div>
+        <div className={styles.main}>
+          <div className={`${styles.container} ${isMini && styles.min}`} id="block-list-view">
+            {current ? (
+              <div className={styles.blockList}>
+                {matchedResources.length > 0 ? (
+                  <BlockList
+                    type={type}
+                    keyword={searchValue}
+                    addingBlock={willAddBlock || addingBlock}
+                    list={blocks}
+                    setSelectedTag={setSelectedTag}
+                    selectedTag={selectedTag}
+                    onShowModal={(currentBlock, option) => {
+                      setAddModalVisible(true);
+                      setWillAddBlock(currentBlock);
+                      setBlockParams(option);
+                    }}
+                    loading={fetchDataLoading}
+                  />
+                ) : (
+                  <div>没有找到数据源</div>
+                )}
+              </div>
             ) : (
-              <div>没有找到数据源</div>
+              <div className={styles.loading}>
+                <Spin />
+              </div>
             )}
           </div>
-        ) : (
-          <div className={styles.loading}>
-            <Spin />
-          </div>
-        )}
+        </div>
       </div>
       <Adder
         block={willAddBlock}

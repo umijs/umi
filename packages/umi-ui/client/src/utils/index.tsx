@@ -60,10 +60,17 @@ interface IProjectListItem extends IProjectItem {
 }
 
 export const getProjectStatus = (item: IProjectListItem): 'success' | 'failure' | 'progress' => {
-  if (get(item, 'creatingProgress.success')) return 'success';
-  if (get(item, 'creatingProgress.failure')) return 'failure';
-  if (item.creatingProgress) return 'progress';
-  return 'success';
+  if (!Array.isArray(item.creatingProgress)) {
+    if (get(item, 'creatingProgress.success')) return 'success';
+    if (get(item, 'creatingProgress.failure')) return 'failure';
+    if (item.creatingProgress) return 'progress';
+    return 'success';
+  }
+  const isSuccess = item.creatingProgress.every(i => i.status === 'SUCCESS');
+  if (isSuccess) return 'success';
+  const isFail = item.creatingProgress.some(i => i.status === 'FAIL');
+  if (isFail) return 'failure';
+  return 'progress';
 };
 
 interface IListItem extends IUi.ICurrentProject {

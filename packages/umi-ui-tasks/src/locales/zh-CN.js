@@ -1,5 +1,9 @@
 export default {
   'org.umi.ui.tasks.title': '任务',
+  'org.umi.ui.tasks.description': '项目的启动、构建、检查功能',
+  'org.umi.ui.tasks.dashboard.dev': '启动',
+  'org.umi.ui.tasks.dashboard.build': '构建',
+  'org.umi.ui.tasks.dashboard.lint': '检查',
   'org.umi.ui.tasks.dev': '本地开发',
   'org.umi.ui.tasks.build': '构建',
   'org.umi.ui.tasks.test': '测试',

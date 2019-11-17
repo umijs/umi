@@ -12,8 +12,7 @@ declare global {
     gtag?: any;
     Tracert?: any;
     g_app?: any;
-    Terminal?: typeof Terminal;
-    fit?: any;
+    Terminal: typeof Terminal;
     g_lang: IUi.ILang;
     g_uiCurrentProject: IUi.ICurrentProject;
     g_uiProjects?: { [key: string]: IUi.ICurrentProject };

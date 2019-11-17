@@ -1,0 +1,38 @@
+.section-drawer-toolbar {
+  padding: 8px 8px 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &-resize {
+    &-x {
+      cursor: col-resize;
+    }
+    &-y {
+      cursor: row-resize;
+    }
+  }
+  &-title {
+    flex: 100% 1 1;
+    font-size: 14px;
+  }
+  &-action {
+    flex: auto 1 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    :global(.ant-divider) {
+      color: @ui-footer-actions-divider-color;
+      margin: 0 4px;
+    }
+    :global(.anticon) {
+      cursor: pointer;
+      font-size: @font-size-base;
+      margin: 0 8px;
+      color: fade(@light, 70);
+      transition: color 0.3s;
+      &:hover {
+        color: fade(@light, 100);
+      }
+    }
+  }
+}

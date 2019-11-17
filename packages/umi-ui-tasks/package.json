@@ -1,6 +1,6 @@
 {
   "name": "umi-ui-tasks",
-  "version": "1.2.1",
+  "version": "1.3.0-beta.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -29,8 +29,9 @@
     "eslint": "^6.1.0",
     "filesize": "^4.2.0",
     "react-sizeme": "^2.6.7",
-    "umi-types": "0.5.4",
-    "xterm": "^3.14.5",
+    "umi-types": "0.5.5-beta.1",
+    "xterm": "4.1.0",
+    "xterm-addon-fit": "^0.3.0",
     "xterm-addon-web-links": "^0.1.0"
   },
   "repository": {

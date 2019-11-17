@@ -207,6 +207,67 @@ unlisten();
 
 发送消息到服务端。
 
+### api.addDashboard()
+
+Add an entry card to the 『Dashboard』 page
+
+The parameters are as follows:
+
+```js
+(dashboard: IDashboard | IDashboard[]) => void;
+interface IDashboard {
+  /** card key, general is `org.umi.dashboard.card.${key}` */
+  key: string;
+  /** card title */
+  title: ReactNode;
+  /** card description */
+  description: ReactNode;
+  /** icon */
+  icon: ReactNode;
+  /** icon background color, default #459BF7 */
+  backgroundColor?: string;
+  /** card body */
+  content: ReactNode | ReactNode[];
+  /** card right extend ReactNode */
+  right?: ReactNode;
+  /** Grid, default { xl: 6, sm: 12, lg: 12, xs: 24 } */
+  span?: Partial<{
+    /** default 6 */
+    xl: number;
+    /** default 12 */
+    sm: number;
+    /** default 12 */
+    lg: number;
+    /** default 24 */
+    xs: number;
+  }>;
+}
+```
+
+For example:
+
+```js
+import React from 'react';
+import { ControlFilled } from '@ant-design/icons';
+
+export default () => {
+  api.addDashboard({
+    key: 'org.umi.dashboard.card.testId',
+    title: '卡片标题',
+    description: '卡片描述',
+    icon: <ControlFilled />,
+    content: [
+      <a onClick={() => alert('部署成功')}>
+        一键部署
+      </a>,
+    ],
+  });
+}
+
+```
+
+![image](https://user-images.githubusercontent.com/13595509/68654829-bf745a80-0569-11ea-9311-28cc169de74b.png)
+
 ### api.addPanel()
 
 添加客户端插件入口及路由，调用此方法会在 Umi UI 中增加一级菜单。
@@ -394,6 +455,14 @@ export default (api) => {
 
 隐藏 Umi UI 底部日志栏。
 
+### api.moment
+
+与 [moment](https://github.com/moment/moment/) 一致。
+
+### api.event
+
+与 [events](https://github.com/Gozala/events) 一致。
+
 ### api.TwoColumnPanel
 
 两栏布局组件
@@ -436,22 +505,23 @@ api.addPanel({
 
 ### api.Terminal
 
-Terminal component.
+Terminal component based on [xterm.js@4.x](https://xtermjs.org/).
 
 parameters are as follows:
 
 ```ts
 interface ITerminalProps {
   /** Terminal title */
-  title?: string;
+  title?: ReactNode;
   className?: string;
   terminalClassName?: string;
   /** defaultValue in Terminal */
   defaultValue?: string;
   /** terminal init event */
-  onInit?: (ins: XTerminal) => void;
+  onInit?: (ins: XTerminal, fitAddon: any) => void;
   /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
   config?: ITerminalOptions;
+  onResize?: (ins: XTerminal) => void;
   [key: string]: any;
 }
 ```

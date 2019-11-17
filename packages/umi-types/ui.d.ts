@@ -1,8 +1,9 @@
 import lodash from 'lodash';
 import { connect } from 'react-redux';
 import { Debugger } from 'debug';
-import { ReactNode, Context, FC, FunctionComponent, ReactElement } from 'react';
+import { ReactNode, Context, FC, FunctionComponent, ReactElement, ComponentClass } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
+import moment from 'moment';
 import * as intl from './locale';
 import { IRoute } from './';
 
@@ -80,7 +81,7 @@ declare namespace IUI {
 
   interface IPanel extends IRoute {
     path: string;
-    component: ReactNode;
+    component: FunctionComponent | ComponentClass;
     icon: IconType | string;
     actions?: IPanelAction;
     beta?: boolean;
@@ -91,6 +92,7 @@ declare namespace IUI {
     locales: ILocale[];
     configSections: any[];
     basicUI: Partial<IBasicUI>;
+    dashboard: IDashboard[];
   }
 
   type SetFactory<T> = ((state: T) => T) | T;
@@ -134,6 +136,7 @@ declare namespace IUI {
   }
 
   type IConfigTypes = keyof typeof CONFIG_TYPES;
+  type ITerminal = XTerminal;
 
   interface ITwoColumnPanel {
     className?: string;
@@ -156,9 +159,10 @@ declare namespace IUI {
     /** defaultValue in Terminal */
     defaultValue?: string;
     /** terminal init event */
-    onInit?: (ins: XTerminal) => void;
+    onInit?: (ins: XTerminal, fitAddon: any) => void;
     /** https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ */
     config?: ITerminalOptions;
+    onResize?: (ins: XTerminal) => void;
     [key: string]: any;
   }
 
@@ -267,8 +271,37 @@ declare namespace IUI {
     /** notify type, default info */
     type?: 'error' | 'info' | 'warning' | 'success';
   }
+  interface IDashboard {
+    /** uniq dashboard Card id, required */
+    key: string;
+    enable?: boolean;
+    /** card title */
+    title: ReactNode;
+    /** card description */
+    description: ReactNode;
+    /** icon */
+    icon: ReactNode;
+    /** card Right button */
+    right?: ReactNode;
+    /** same as antd Grid, xs,sm,lg,xl */
+    span?: Partial<{
+      /** default 6 */
+      xl: number;
+      /** default 12 */
+      sm: number;
+      /** default 12 */
+      lg: number;
+      /** default 24 */
+      xs: number;
+    }>;
+    /** icon background color, default #459BF7 */
+    backgroundColor?: string;
+    content: ReactNode | ReactNode[];
+  }
+
   type INotify = (params: INotifyParams) => void | boolean;
   type IAddPanel = (panel: IPanel) => void;
+  type IAddDashboard = (dashboard: IDashboard | IDashboard[]) => void;
   type IRegisterModel = (model: any) => void;
   type IAddLocales = (locale: ILocale) => void;
   type IShowLogPanel = () => void;
@@ -285,17 +318,21 @@ declare namespace IUI {
   }
 
   type IRedirect = (url: string) => void;
+  type IEvent = NodeJS.EventEmitter;
   type IDebug = Debugger;
   type IConnect = typeof connect;
   type IMini = () => boolean;
   type IShowMini = () => void;
   type IHideMini = () => void;
   type IGetLocale = () => ILang;
+  type IGetDashboard = () => IDashboard[];
+  type IGetBasicUI = () => IBasicUI;
   type IGetSharedDataDir = () => Promise<string>;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
+  type IMoment = typeof moment;
 
   interface ILaunchEditorParams {
     type: LaunchEditorTypes;
@@ -325,6 +362,8 @@ declare namespace IUI {
   class IApiClass {
     constructor(service: IService);
     service: IService;
+    /** event */
+    event: IEvent;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */
@@ -344,6 +383,7 @@ declare namespace IUI {
     intl: IIntl;
     /** add plugin Panel */
     addPanel: IAddPanel;
+    addDashboard: IAddDashboard;
     /** register dva model Panel */
     registerModel: IRegisterModel;
     /** add plugin locales { zh-CN: {}, en-US: {} } */
@@ -351,9 +391,11 @@ declare namespace IUI {
     /** react component context */
     getContext(): Context<IContext>;
     /** get Plugin UI Service */
-    getBasicUI(): IBasicUI;
+    getBasicUI: IGetBasicUI;
     /** system notify */
     notify: INotify;
+    /** moment */
+    moment: IMoment;
     /** redirect */
     redirect: IRedirect;
     callRemote: ICallRemote;
@@ -380,6 +422,8 @@ declare namespace IUI {
     hideMini: IHideMini;
     send: ISend;
     connect: IConnect;
+    /** get dashboard list */
+    getDashboard: IGetDashboard;
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
     detectLanguage: IDetectLanguage;

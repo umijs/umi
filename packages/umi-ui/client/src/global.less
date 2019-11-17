@@ -20,11 +20,8 @@ body {
   .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
     color: @light;
   }
-  .ant-input-number {
-    &:hover {
-      // TODO: antd less
-      border-color: @input-number-hover-border-color;
-    }
+  .ant-checkbox-group svg {
+    color: fade(@dark, 65);
   }
   .ant-select-selection {
     // TODO: antd less
@@ -102,6 +99,9 @@ body {
   }
   .ant-select-dropdown {
     background-color: @select-dropdown-bg;
+    div::-webkit-scrollbar-thumb {
+      background-color: fade(@dark, 12);
+    }
   }
   .ant-select-dropdown-menu-item-selected {
     background-color: @select-item-selected-bg;

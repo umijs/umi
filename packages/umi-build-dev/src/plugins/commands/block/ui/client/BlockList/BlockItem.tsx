@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
+import { Export } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
@@ -9,6 +10,7 @@ import getInsertPosition, { PositionData } from './getInsertPosition';
 import Context from '../UIApiContext';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import ImageLoad from './ImageLoad';
+import ImagePreview from './ImagePreview';
 
 /**
  * 子区块 的 tag
@@ -39,6 +41,7 @@ export interface BlockItemProps {
   onShowModal?: (Block: Block, option: AddBlockParams) => void;
   onHideModal?: () => void;
   keyword?: string;
+  selectedTag?: string;
 }
 
 /**
@@ -131,6 +134,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   disabled,
   onShowModal,
   keyword,
+  selectedTag,
 }) => {
   const { api } = useContext(Context);
   const { intl } = api;
@@ -167,11 +171,20 @@ const BlockItem: React.FC<BlockItemProps> = ({
                   : intl({ id: 'org.umi.ui.blocks.list.add' })}
               </ToolTipAddButton>
 
-              {item.previewUrl && (
-                <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
-                  {intl({ id: 'org.umi.ui.blocks.list.preview' })}
-                </Button>
-              )}
+              <div className={`${styles.btnGroup} ${item.previewUrl ? styles.hasPreview : ''}`}>
+                <ImagePreview img={item.img} cls={styles.previewBtn} />
+                <div className={styles.btnSep} />
+                {item.previewUrl && (
+                  <Tooltip
+                    title={intl({ id: 'org.umi.ui.blocks.list.preview.demo' })}
+                    placement="bottom"
+                  >
+                    <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
+                      <Export />
+                    </Button>
+                  </Tooltip>
+                )}
+              </div>
             </div>
 
             <ImageLoad src={item.img} />
@@ -190,7 +203,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <HighlightedText text={item.description} highlight={keyword} />
             </Typography.Paragraph>
           )}
-          {!isMini && <Meats item={item} keyword={keyword} />}
+          {!isMini && selectedTag === '' && <Meats item={item} keyword={keyword} />}
         </div>
       </div>
     </Col>

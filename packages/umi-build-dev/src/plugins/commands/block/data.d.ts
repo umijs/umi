@@ -21,9 +21,11 @@ export interface RequestParams {
 export interface Resource {
   id: string;
   name?: string;
+  icon?: string;
   blockType?: 'template' | 'block';
   resourceType?: 'github' | 'custom';
   url?: string;
+  description?: string;
   getData?: (params?: RequestParams) => Promise<BlockData>;
 }
 

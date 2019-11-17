@@ -31,6 +31,10 @@ function getActivePanel(pathname) {
 
 const renderLocaleText = renderLocale(formatMessage);
 
+const DefaultProvider = props => {
+  return <div {...props}>{props.children}</div>;
+};
+
 export default withRouter(props => {
   const _log = debug.extend('Dashboard');
   const { pathname } = props.location;
@@ -56,7 +60,7 @@ export default withRouter(props => {
   );
 
   const projectMaps = window.g_uiProjects || {};
-  const { active, ...restSearchParams } = parse(window.location.search, {
+  const { active, iife, type, ...restSearchParams } = parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
   const search = Object.keys(restSearchParams).length > 0 ? `?${stringify(restSearchParams)}` : '';
@@ -76,6 +80,7 @@ export default withRouter(props => {
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
+  const Provider = activePanel.provider ? activePanel.provider : DefaultProvider;
 
   return (
     <UiLayout type="detail" title={title}>
@@ -321,49 +326,54 @@ export default withRouter(props => {
                     )}
                   </Sider>
                   <Content className={styles.main}>
-                    <div key="header" className={styles.header}>
-                      <h1>{activePanel && title}</h1>
-                      {Array.isArray(actions) && actions.length > 0 && (
-                        <Row type="flex" className={styles['header-actions']}>
-                          {actions.map((panelAction, j) => {
-                            if (React.isValidElement(panelAction)) {
-                              return <Fragment key={j.toString()}>{panelAction}</Fragment>;
-                            }
-                            if (
-                              typeof panelAction === 'function' &&
-                              React.isValidElement(panelAction({}))
-                            ) {
-                              return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
-                            }
-                            const { title, action, onClick, ...btnProps } = panelAction;
-                            const handleClick = async () => {
-                              // TODO: try catch handler
-                              try {
-                                await callRemote(action);
-                                if (onClick) {
-                                  onClick();
-                                }
-                              } catch (e) {
-                                message.error(e && e.message ? e.message : 'error');
+                    <Provider style={{ height: '100%' }}>
+                      <div key="header" className={styles.header}>
+                        <h1>
+                          {activePanel &&
+                            (activePanel.titleComponent ? activePanel.titleComponent() : title)}
+                        </h1>
+                        {Array.isArray(actions) && actions.length > 0 && (
+                          <Row type="flex" className={styles['header-actions']}>
+                            {actions.map((panelAction, j) => {
+                              if (React.isValidElement(panelAction)) {
+                                return <Fragment key={j.toString()}>{panelAction}</Fragment>;
                               }
-                            };
-                            return (
-                              title && (
-                                <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                  {renderLocaleText({ id: title })}
-                                </Button>
-                              )
-                            );
-                          })}
-                        </Row>
-                      )}
-                    </div>
-                    {/* key pathname change transition will crash  */}
-                    <div key={activePanel.path || '/'} className={styles.content}>
-                      <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                        {props.children}
-                      </ErrorBoundary>
-                    </div>
+                              if (
+                                typeof panelAction === 'function' &&
+                                React.isValidElement(panelAction({}))
+                              ) {
+                                return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
+                              }
+                              const { title, action, onClick, ...btnProps } = panelAction;
+                              const handleClick = async () => {
+                                // TODO: try catch handler
+                                try {
+                                  await callRemote(action);
+                                  if (onClick) {
+                                    onClick();
+                                  }
+                                } catch (e) {
+                                  message.error(e && e.message ? e.message : 'error');
+                                }
+                              };
+                              return (
+                                title && (
+                                  <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                    {renderLocaleText({ id: title })}
+                                  </Button>
+                                )
+                              );
+                            })}
+                          </Row>
+                        )}
+                      </div>
+                      {/* key pathname change transition will crash  */}
+                      <div key={activePanel.path || '/'} className={styles.content}>
+                        <ErrorBoundary className={styles['dashboard-error-boundary']}>
+                          {props.children}
+                        </ErrorBoundary>
+                      </div>
+                    </Provider>
                   </Content>
                 </Row>
               </Layout>

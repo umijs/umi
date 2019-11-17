@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { IUiApi } from 'umi-types';
+import { Setting } from '@ant-design/icons';
 import Dev from './ui/components/Dev';
 import Build from './ui/components/Build';
 import Lint from './ui/components/Lint';
@@ -132,6 +133,27 @@ export default (api: IUiApi) => {
   api.addLocales({
     'zh-CN': zhCN,
     'en-US': enUS,
+  });
+
+  const { FormattedMessage } = api.intl;
+
+  api.addDashboard({
+    // 唯一标识，org.umi.dashboard.card.${key}
+    key: 'org.umi.dashboard.card.task',
+    title: <FormattedMessage id="org.umi.ui.tasks.title" />,
+    description: <FormattedMessage id="org.umi.ui.tasks.description" />,
+    icon: <Setting />,
+    content: [
+      <a onClick={() => api.redirect('/tasks?type=block&active=dev&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.dev" />
+      </a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=build&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.build" />
+      </a>,
+      <a onClick={() => api.redirect('/tasks?type=block&active=lint&iife=true')}>
+        <FormattedMessage id="org.umi.ui.tasks.dashboard.lint" />
+      </a>,
+    ],
   });
 
   api.addPanel({

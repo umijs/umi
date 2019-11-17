@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { createHash } from 'crypto';
-import { get } from 'lodash';
+import { get, pickBy, identity } from 'lodash';
 import { basename, dirname, join } from 'path';
 import { homedir } from 'os';
 import mkdirp from 'mkdirp';
@@ -113,7 +113,7 @@ export default class Config {
   editProject(key, newProps: Object) {
     this.data.projectsByKey[key] = {
       ...this.data.projectsByKey[key],
-      ...newProps,
+      ...pickBy(newProps, identity),
     };
     this.save();
   }

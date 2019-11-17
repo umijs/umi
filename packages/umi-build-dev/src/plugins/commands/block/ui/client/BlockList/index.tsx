@@ -4,7 +4,6 @@ import { Empty, Row, Spin, Pagination } from 'antd';
 import styles from './index.module.less';
 import { Block, AddBlockParams, Resource } from '../../../data.d';
 import Context from '../UIApiContext';
-import TagSelect from '../TagSelect';
 import BlockItem from './BlockItem';
 
 interface BlockItemProps {
@@ -18,22 +17,18 @@ interface BlockItemProps {
 }
 interface BlockListProps extends Omit<BlockItemProps, 'item'> {
   name?: string;
+  selectedTag?: any;
+  setSelectedTag?: any;
   list: Block[];
 }
 
 const BlockList: React.FC<BlockListProps> = props => {
-  const { list = [], addingBlock, keyword, loading } = props;
+  const { list = [], setSelectedTag, selectedTag, addingBlock, keyword, loading } = props;
   const { api } = useContext(Context);
   const { intl } = api;
-  const { uniq, flatten } = api._;
   const isMini = api.isMini();
-  const pageSize = isMini ? 8 : 10;
+  const pageSize = isMini ? 6 : 8;
 
-  const tags: string[] = useMemo<string[]>(() => uniq(flatten(list.map(item => item.tags))), [
-    list,
-  ]);
-
-  const [selectedTag, setSelectedTag] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
@@ -48,9 +43,10 @@ const BlockList: React.FC<BlockListProps> = props => {
    */
   const filteredList: Block[] = useMemo<Block[]>(
     () =>
-      list.filter(({ name = '', url, description = '', tags: listTags = [] }) => {
+      list.filter(({ name = '', url, description = '', category, tags: listTags = [] }) => {
         return (
-          (!selectedTag || listTags.join('').includes(selectedTag)) &&
+          (!selectedTag ||
+            (category ? category === selectedTag : listTags.join('').includes(selectedTag))) &&
           (!keyword ||
             name.toLocaleLowerCase().includes(keyword) ||
             description.toLocaleLowerCase().includes(keyword) ||
@@ -112,7 +108,7 @@ const BlockList: React.FC<BlockListProps> = props => {
           flexDirection: 'column',
         }}
       >
-        <Row gutter={20} type="flex">
+        <Row gutter={[20, 20]} type="flex">
           {currentPageList.map(item => (
             <BlockItem
               key={item.url}
@@ -120,11 +116,12 @@ const BlockList: React.FC<BlockListProps> = props => {
               {...props}
               loading={addingBlock && item.url === addingBlock.url}
               disabled={addingBlock && addingBlock.url && item.url !== addingBlock.url}
+              selectedTag={selectedTag}
             />
           ))}
         </Row>
         {filteredList.length > pageSize && (
-          <Row type="flex" justify="end">
+          <Row className={styles.pagination} type="flex" justify="end">
             <Pagination
               size={isMini ? 'small' : undefined}
               current={currentPage}
@@ -138,20 +135,7 @@ const BlockList: React.FC<BlockListProps> = props => {
     );
   }
 
-  return (
-    <>
-      <TagSelect
-        tagList={tags}
-        allText={intl({ id: 'org.umi.ui.blocks.tag.all' })}
-        collapseText={intl({ id: 'org.umi.ui.blocks.tag.collapse' })}
-        expandText={intl({ id: 'org.umi.ui.blocks.tag.expand' })}
-        value={selectedTag}
-        loading={loading}
-        onChange={tagValue => setSelectedTag(tagValue)}
-      />
-      <div className={styles.cardContainer}>{contents}</div>
-    </>
-  );
+  return <div className={styles.cardContainer}>{contents}</div>;
 };
 
 export default BlockList;
