@@ -116,6 +116,7 @@ const BlockList: React.FC<BlockListProps> = props => {
               {...props}
               loading={addingBlock && item.url === addingBlock.url}
               disabled={addingBlock && addingBlock.url && item.url !== addingBlock.url}
+              selectedTag={selectedTag}
             />
           ))}
         </Row>

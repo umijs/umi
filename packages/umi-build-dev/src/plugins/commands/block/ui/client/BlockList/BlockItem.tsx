@@ -41,6 +41,7 @@ export interface BlockItemProps {
   onShowModal?: (Block: Block, option: AddBlockParams) => void;
   onHideModal?: () => void;
   keyword?: string;
+  selectedTag?: string;
 }
 
 /**
@@ -133,6 +134,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
   disabled,
   onShowModal,
   keyword,
+  selectedTag,
 }) => {
   const { api } = useContext(Context);
   const { intl } = api;
@@ -201,7 +203,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
               <HighlightedText text={item.description} highlight={keyword} />
             </Typography.Paragraph>
           )}
-          {!isMini && <Meats item={item} keyword={keyword} />}
+          {!isMini && selectedTag === '' && <Meats item={item} keyword={keyword} />}
         </div>
       </div>
     </Col>
