@@ -6,23 +6,22 @@
   }
   h4 {
     margin-bottom: 0;
+    line-height: normal;
   }
 }
 .container {
-  padding: 20px;
+  padding: 20px 24px;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   &-row {
-    margin-left: -8px;
-    margin-right: -8px;
+    margin: -12px;
   }
   &-col {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 12px;
   }
   .card {
-    margin-bottom: 8px;
+    // margin-bottom: 8px;
     // min-width: 282px;
   }
 }
@@ -93,6 +92,9 @@
 
 .main {
   flex-wrap: nowrap;
+  &-col {
+    display: flex;
+  }
   .avatar {
     width: 48px;
     height: 48px;
@@ -143,6 +145,7 @@
   min-height: 325px;
   :global {
     .ant-card-body {
+      border: 0;
       padding: 24px;
       height: 100%;
       h2 {

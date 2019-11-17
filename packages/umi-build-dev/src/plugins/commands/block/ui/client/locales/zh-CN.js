@@ -11,7 +11,7 @@ export default {
   'org.umi.ui.blocks.list.viewlog': '查看日志',
   'org.umi.ui.blocks.list.add': '添加到项目',
   'org.umi.ui.blocks.list.preview.image': '预览图片',
-  'org.umi.ui.blocks.list.preview.demo': '预览 Demo',
+  'org.umi.ui.blocks.list.preview.demo': '查看 demo 文档',
   'org.umi.ui.blocks.tag.all': '全部',
   'org.umi.ui.blocks.tag.collapse': '收起',
   'org.umi.ui.blocks.tag.expand': '展开',

@@ -36,6 +36,8 @@ const Setting: React.FC<{}> = (props, ref) => {
         dataSource={cards || []}
         loading={!cards}
         className={styles.list}
+        bordered={false}
+        split={false}
         renderItem={item => (
           <List.Item
             key={item.key}

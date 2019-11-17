@@ -294,6 +294,8 @@ declare namespace IUI {
       /** default 24 */
       xs: number;
     }>;
+    /** icon background color, default #459BF7 */
+    backgroundColor?: string;
     content: ReactNode | ReactNode[];
   }
 

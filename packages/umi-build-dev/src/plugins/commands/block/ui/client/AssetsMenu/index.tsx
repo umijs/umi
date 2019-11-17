@@ -1,10 +1,11 @@
 import React, { useMemo, useContext } from 'react';
 import { Up, Down } from '@ant-design/icons';
+import cls from 'classnames';
 import { Spin } from 'antd';
 import styles from './index.module.less';
 import Context from '../UIApiContext';
 
-export default function(props) {
+export default props => {
   const {
     type,
     matchedResources,
@@ -54,24 +55,20 @@ export default function(props) {
         </div>
       );
     }
+    const getTagCls = selected =>
+      cls(styles.cat, {
+        [styles.current]: selectedTag === selected,
+      });
     return (
       <div className={styles.cats}>
-        <div
-          key={'全部'}
-          className={`${styles.cat} ${'' === selectedTag ? styles.current : ''}`}
-          onClick={setSelectedTag.bind(null, '')}
-        >
+        <div key="全部" className={getTagCls('')} onClick={() => setSelectedTag('')}>
           全部
         </div>
         {tags
           // .sort(sortTag)
           .filter(tag => tag !== '废弃')
           .map(tag => (
-            <div
-              key={tag}
-              className={`${styles.cat} ${tag === selectedTag ? styles.current : ''}`}
-              onClick={setSelectedTag.bind(null, tag)}
-            >
+            <div key={tag} className={getTagCls(tag)} onClick={() => setSelectedTag(tag)}>
               {tag}
             </div>
           ))}
@@ -81,19 +78,22 @@ export default function(props) {
 
   function renderResources() {
     function resourceSwitchHandler(r) {
-      if (r.id === current.id) return;
+      if (r.id === current.id) {
+        setActiveResource({ id: null });
+        return;
+      }
       setActiveResource(r);
       updateUrlQuery({ type, resource: r.id });
     }
 
     return matchedResources.map(r => {
       const isCurrent = current.id === r.id;
+      const resourceCls = cls(styles.resource, {
+        [styles.current]: !!isCurrent,
+      });
       return (
         <div key={r.id}>
-          <div
-            className={`${styles.resource} ${isCurrent ? styles.current : ''}`}
-            onClick={resourceSwitchHandler.bind(null, r)}
-          >
+          <div className={resourceCls} onClick={resourceSwitchHandler.bind(null, r)}>
             <div className={styles.icon}>
               <img src={r.icon} style={{ width: '32px', height: '32px' }} />
             </div>
@@ -116,4 +116,4 @@ export default function(props) {
   }
 
   return <>{renderResources()}</>;
-}
+};

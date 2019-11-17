@@ -27,7 +27,6 @@
       border-top-color: transparent;
       border-bottom-color: transparent;
       border-left-color: transparent;
-      border-radius: unset;
     }
     .edit,
     .refresh {
@@ -44,17 +43,17 @@
       }
     }
     &-back {
+      border-right: 0;
       margin-right: 8px;
     }
     &-back,
     &-bread,
     &-bread button,
-    .edit,
-    .refresh {
+    .edit button,
+    .refresh button {
       background-color: @ui-directory-bg;
     }
     &-bread {
-      margin-left: 8px;
       flex: 100% 1 1;
       display: flex;
       align-items: center;
@@ -63,7 +62,6 @@
         border-top-color: transparent;
         border-bottom-color: transparent;
         border-left-color: transparent;
-        border-radius: unset;
         .omit;
       }
       button {

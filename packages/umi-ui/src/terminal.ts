@@ -1,18 +1,11 @@
-import express from 'express';
 import sockjs, { Connection } from 'sockjs';
-import get from 'lodash/get';
+// import { sync as osLocaleSync } from 'os-locale';
 // umiui:UmiUI:terminal
-import { debugTerminal as _log } from '../debug';
+import { debugTerminal as _log } from './debug';
 
 let pty;
 
 export interface IOpts {
-  cwd: string;
-  socket: any;
-  data: any;
-}
-
-interface IHandlerOpts {
   cwd: string;
   rows: number;
   cols: number;
@@ -22,7 +15,7 @@ interface IHandlerOpts {
  * get user default shell
  * /bin/zsh /bin/bash
  */
-const getDefaultShell = () => {
+export const getDefaultShell = () => {
   if (process.platform === 'darwin') {
     return process.env.SHELL || '/bin/bash';
   }
@@ -45,7 +38,7 @@ const securityCheck = (conn: Connection) => {
   return true;
 };
 
-const connectionHandler = (conn: Connection, opts: IHandlerOpts) => {
+export const connectionHandler = (conn: Connection, opts: IOpts) => {
   const { cwd, rows, cols } = opts;
   // insecurity env to run shell
   const safe = securityCheck(conn);
@@ -94,48 +87,21 @@ const connectionHandler = (conn: Connection, opts: IHandlerOpts) => {
   }
 };
 
+export const resizeTerminal = (opts: Pick<IOpts, 'cols' | 'rows'>) => {
+  const { cols, rows } = opts;
+  if (pty && cols && rows) {
+    pty.resize(cols, rows);
+  }
+};
+
 /**
  * export terminal socket init needs bind express app server
  */
-export default (opts: IOpts) => {
-  const { cwd = process.cwd(), socket } = opts;
-  const { currentProject, projectsByKey } = opts.data;
-  const currentProjectCwd = get(projectsByKey, `${currentProject}.path`);
-  const router = express.Router();
-
-  // terminal init
-  router.get('/', (req, res) => {
-    const rows = parseInt(req.query.rows || 30);
-    const cols = parseInt(req.query.cols || 180);
-    socket.on('connection', conn =>
-      connectionHandler(conn, {
-        rows,
-        cols,
-        cwd: currentProjectCwd || cwd,
-      }),
-    );
-    res.status(200);
-    res.send({
-      success: true,
-      rows,
-      cols,
-    });
+export default (server, opts: IOpts = { cwd: process.cwd() }) => {
+  const terminalSS = sockjs.createServer();
+  terminalSS.on('connection', conn => connectionHandler(conn, opts));
+  terminalSS.installHandlers(server, {
+    prefix: '/terminal-socket',
+    log: () => {},
   });
-
-  // define the about route
-  router.get('/resize', (req, res) => {
-    const rows = parseInt(req.query.rows || 30);
-    const cols = parseInt(req.query.cols || 180);
-    if (pty && cols && rows) {
-      pty.resize(cols, rows);
-    }
-    res.status(200);
-    res.send({
-      success: true,
-      rows,
-      cols,
-    });
-  });
-
-  return router;
 };

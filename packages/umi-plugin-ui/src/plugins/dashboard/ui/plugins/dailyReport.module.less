@@ -10,6 +10,14 @@
   color: @text-color;
 }
 
+:global(.isMini) {
+  .listItem {
+    .paragraph {
+      max-width: 80%;
+    }
+  }
+}
+
 .listItem {
   padding: 0 0 24px;
   .paragraph {
@@ -69,8 +77,14 @@
   }
 }
 .select-wrapper {
+  :global {
+    .ant-select-single .ant-select-selector .ant-select-selection-search {
+      width: 112px;
+    }
+  }
   .select {
     background-color: transparent;
+    margin-top: -8px;
     & > div {
       background-color: transparent !important;
       border: 1px solid transparent !important;

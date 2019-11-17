@@ -13,6 +13,8 @@ interface ShellProps {
   className?: string;
 }
 
+let socket: any;
+
 const Shell: React.SFC<ShellProps> = (props, ref) => {
   const { style, className, visible } = props;
   const shellCls = cls(styles.shell, className);
@@ -34,12 +36,14 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
       ref(xterm, fitAddon);
     }
     setTerminalRef(xterm);
-    // init /terminal socket server
     const { rows, cols } = xterm;
     await request(`/terminal?rows=${rows}&cols=${cols}`);
-    const socket = new SockJS('/terminal-socket');
-    xterm.loadAddon(new AttachAddon(socket));
-    xterm.focus();
+    if (!socket) {
+      socket = new SockJS('/terminal-socket');
+      xterm.loadAddon(new AttachAddon(socket));
+      xterm.focus();
+      await handleResize(xterm);
+    }
   };
 
   const handleResize = async xterm => {
