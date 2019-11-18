@@ -257,7 +257,9 @@ Umi UI 未安装或编译成功 [node-pty](https://www.npmjs.com/package/node-pt
 > Windows 用户确保已安装 [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) 并且 [Node.js](https://nodejs.org/en/download/) 版本在 10.x 以上。
 
 * 请以管理员身份在 PowerShell 执行 `npm install --global --production windows-build-tools`。
-* 重装 node_modules
+* 重装 umi 依赖
+
+<img src="https://user-images.githubusercontent.com/13595509/69021231-1955a400-09f2-11ea-8551-4a6dcf8fe28f.png" width="400" />
 
 #### Linux/Ubuntu
 
