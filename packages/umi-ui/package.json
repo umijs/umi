@@ -51,6 +51,7 @@
     "semver": "6.3.0",
     "sockjs": "0.3.19",
     "umi-build-dev": "1.16.1",
+    "umi-ui-theme": "1.2.0",
     "user-home": "2.0.0"
   }
 }
