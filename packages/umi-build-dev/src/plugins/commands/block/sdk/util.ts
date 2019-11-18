@@ -43,8 +43,34 @@ function combineSpecifiers(newImportNode, originImportNode) {
   });
 }
 
-export function combineImportNodes(programNode, originImportNodes, newImportNodes, absolutePath) {
+export function getValidStylesName(path) {
+  let name = 'styles';
+  let count = 1;
+  while (path.scope.hasBinding(name)) {
+    name = `styles${count}`;
+    count += 1;
+  }
+  return name;
+}
+
+export function combineImportNodes(
+  programNode,
+  originImportNodes,
+  newImportNodes,
+  absolutePath,
+  stylesName,
+) {
   newImportNodes.forEach(newImportNode => {
+    // replace stylesName
+    // TODO: 自动生成新的 name，不仅仅是 styles
+    if (stylesName !== 'styles' && newImportNode.source.value.charAt(0) === '.') {
+      newImportNode.specifiers.forEach(specifier => {
+        if (t.isImportDefaultSpecifier(specifier) && specifier.local.name === 'styles') {
+          specifier.local.name = stylesName;
+        }
+      });
+    }
+
     const importSource = newImportNode.source.value;
     if (importSource.charAt(0) === '.') {
       // /a/b/c.js -> b

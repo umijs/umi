@@ -18,6 +18,7 @@ import {
   findIndex,
   parseContent,
   combineImportNodes,
+  getValidStylesName,
 } from '../util';
 import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
@@ -45,7 +46,7 @@ export default (content, opts) => {
     body.splice(lastImportSit + 1, 0, newImport);
   }
 
-  function getExtractBlockNode() {
+  function getExtractBlockNode(stylesName) {
     const code = readFileSync(absolutePath, 'utf-8');
     const ast = parseContent(code);
     let returnNode = null;
@@ -60,6 +61,12 @@ export default (content, opts) => {
         returnNode = ret.node;
 
         importNodes = findImportNodes(node);
+      },
+      Identifier(path) {
+        const { node } = path;
+        if (node.name === 'styles') {
+          node.name = stylesName;
+        }
       },
     });
     return {
@@ -151,16 +158,20 @@ export default (content, opts) => {
         // TODO: check id exists
 
         if (isExtractBlock) {
-          const { returnNode, importNodes } = getExtractBlockNode();
+          const stylesName = getValidStylesName(path);
+
+          const { returnNode, importNodes } = getExtractBlockNode(stylesName);
           const originImportNodes = findImportNodes(node);
 
-          combineImportNodes(node, originImportNodes, importNodes, absolutePath);
+          combineImportNodes(node, originImportNodes, importNodes, absolutePath, stylesName);
 
           addBlockToJSX({
             ...ret,
             id,
             newNode: returnNode,
           });
+
+          // 清理目录
           if (!dontRemoveExtractedBlock) {
             rimraf.sync(absolutePath);
             if (readdirSync(dirname(absolutePath)).length === 0) {
