@@ -146,7 +146,7 @@ const DashboardUI: React.FC<{}> = props => {
                   {description && <p>{description}</p>}
                 </div>
               </Col>
-              {right && <Col className={styles.right}>{right}</Col>}
+              {right && <div className={styles.right}>{right}</div>}
             </Row>
           );
           const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };

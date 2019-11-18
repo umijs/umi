@@ -25,7 +25,7 @@ const DailyReport: React.SFC<{}> = props => {
   const { forceUpdate } = props;
   const { api } = React.useContext(Context);
   const { _, event } = api;
-  const { FormattedMessage } = api.intl;
+  const { formatMessage } = api.intl;
   const [size, setSize] = React.useState(PAGE_SIZE);
   const { data: list } = useSWR('zaobao.list', async () => {
     const { data } = await api.callRemote({
@@ -100,7 +100,7 @@ const DailyReport: React.SFC<{}> = props => {
       }}
     >
       <a className={styles.more} onClick={handleLoadMore}>
-        <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.loadMore" />
+        {formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao.loadMore' })}
       </a>
     </div>
   );

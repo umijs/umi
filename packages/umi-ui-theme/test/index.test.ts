@@ -70,6 +70,8 @@ describe('theme', () => {
       'success-color': '#00a854',
       'info-color': '#1890ff',
       'warning-color': '#ffbf00',
+      'zindex-modal': '1001',
+      'zindex-modal-mask': '1001',
       'error-color': '#f04134',
       'menu-bg': '#30303d',
       'menu-collapsed-width': '64px',
