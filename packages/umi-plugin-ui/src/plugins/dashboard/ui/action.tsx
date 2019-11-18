@@ -7,7 +7,7 @@ import useDrawer from './hooks/useDrawer';
 
 const ConfigAction: React.FC<{}> = props => {
   const { api } = React.useContext(Context);
-  const { intl, mini, launchEditor } = api;
+  const { intl, mini, launchEditor, _analyze } = api;
   const { FormattedMessage } = intl;
   const drawerRef = useDrawer({
     width: 308,
@@ -22,6 +22,12 @@ const ConfigAction: React.FC<{}> = props => {
   };
   const handleSetting = () => {
     drawerRef.current.openDrawer();
+    // open setting log
+    const { gtag } = _analyze;
+    gtag('event', 'click_actions', {
+      event_category: 'dashboard',
+      event_label: '配置',
+    });
   };
 
   return (

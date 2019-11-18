@@ -334,6 +334,10 @@ declare namespace IUI {
   type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
   type IMoment = typeof moment;
+  interface IAnalyze {
+    gtag: any;
+    Tracert: any;
+  }
 
   interface ILaunchEditorParams {
     type: LaunchEditorTypes;
@@ -373,6 +377,7 @@ declare namespace IUI {
     readonly mini: boolean;
     /** whether Bigfish */
     readonly bigfish: boolean;
+    readonly _analyze: IAnalyze;
     /** currentProject  */
     currentProject: ICurrentProject;
     /** get current locale: zh-CN or en-US */
