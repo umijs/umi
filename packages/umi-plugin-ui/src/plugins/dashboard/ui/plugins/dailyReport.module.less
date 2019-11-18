@@ -1,9 +1,22 @@
 @import '../../../../../node_modules/umi-ui-theme/dark.less';
 
 .title {
-  color: @heading-color;
-  font-size: 20px;
-  line-height: 28px;
+  &,
+  & > span {
+    color: @heading-color;
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+:global(.isMini) {
+  .title {
+    &,
+    & > span {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
 }
 
 .more {
@@ -13,7 +26,7 @@
 :global(.isMini) {
   .listItem {
     .paragraph {
-      max-width: 80%;
+      margin-right: 8px;
     }
   }
 }
@@ -23,7 +36,7 @@
   .paragraph {
     margin-bottom: 0;
     transition: all 0.3s;
-    max-width: 85%;
+    margin-right: 12px;
     &:hover {
       color: @primary-5;
     }
@@ -61,6 +74,7 @@
       color: @heading-color;
       font-size: 14px;
       line-height: 22px;
+      display: flex;
     }
   }
 }

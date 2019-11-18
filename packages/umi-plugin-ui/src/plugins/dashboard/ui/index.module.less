@@ -3,10 +3,16 @@
 .info {
   p {
     white-space: pre-wrap;
+    color: @text-color-secondary;
   }
   h4 {
     margin-bottom: 0;
     line-height: normal;
+    &,
+    & > span {
+      color: @heading-color;
+      font-size: 14px;
+    }
   }
 }
 .container {
@@ -55,6 +61,7 @@
     }
     .ant-card-head {
       border-bottom: none;
+      position: relative;
     }
   }
   &-action {
@@ -104,6 +111,12 @@
   p {
     font-size: 12px;
   }
+}
+
+.right {
+  position: absolute;
+  top: auto;
+  right: 0;
 }
 
 .icon {
