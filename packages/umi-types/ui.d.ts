@@ -85,6 +85,10 @@ declare namespace IUI {
     icon: IconType | string;
     actions?: IPanelAction;
     beta?: boolean;
+    /** header title, default use `title` */
+    headerTitle?: ReactNode;
+    /** custom title Component */
+    renderTitle?: (title: string) => ReactNode;
   }
 
   interface IService {

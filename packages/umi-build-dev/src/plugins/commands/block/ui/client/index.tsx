@@ -26,7 +26,7 @@ export default (api: IUiApi) => {
 
   api.addPanel({
     title: 'org.umi.ui.blocks.content.title',
-    titleComponent: () => <TitleTab />,
+    headerTitle: <TitleTab />,
     provider: ({ children, ...restProps }) => (
       <Container.Provider initialState={{ api }} {...restProps}>
         {children}

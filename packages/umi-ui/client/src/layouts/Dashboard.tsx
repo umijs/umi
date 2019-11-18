@@ -132,6 +132,7 @@ export default withRouter(props => {
           );
 
           const MenuItem = ({ panel, ...restProps }) => {
+            const { renderTitle } = panel;
             const renderIcon = () => {
               const icon = typeof panel.icon === 'string' ? { type: panel.icon } : panel.icon;
 
@@ -145,6 +146,9 @@ export default withRouter(props => {
               return <Icon {...icon} />;
             };
 
+            const titleText = renderLocaleText(panel.title);
+            const titleNode = renderTitle ? renderTitle(titleText) : titleText;
+
             return (
               <Menu.Item
                 key={panel.path}
@@ -156,9 +160,9 @@ export default withRouter(props => {
                 <NavLink exact to={`${panel.path}${search}`}>
                   {renderIcon()}
                   {isMini ? (
-                    <p className={styles.menuText}>{renderLocaleText(panel.title)}</p>
+                    <p className={styles.menuText}>{titleNode}</p>
                   ) : (
-                    <span className={styles.menuItem}>{renderLocaleText(panel.title)}</span>
+                    <span className={styles.menuItem}>{titleNode}</span>
                   )}
                 </NavLink>
               </Menu.Item>
@@ -330,7 +334,7 @@ export default withRouter(props => {
                       <div key="header" className={styles.header}>
                         <h1>
                           {activePanel &&
-                            (activePanel.titleComponent ? activePanel.titleComponent() : title)}
+                            (activePanel.headerTitle ? activePanel.headerTitle : title)}
                         </h1>
                         {Array.isArray(actions) && actions.length > 0 && (
                           <Row type="flex" className={styles['header-actions']}>
