@@ -254,5 +254,19 @@ The solution is to raise the prompted path permissions and give execute permissi
 
 The Umi UI is not installed or compiled successfully [node-pty](https://www.npmjs.com/package/node-pty) module, the solution is as follows:
 
+#### Windows
+
+> [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) and [Node.js](https://nodejs.org/en/download/) 10+ are needed.
+
 * For Windows users, execute `npm install --global --production windows-build-tools` in PowerShell as administrator.
-* Reinstall node_moduless
+* Reinstall `node_modules`
+
+#### Linux/Ubuntu
+
+> [python](https://www.python.org/downloads/) and [Node.js](https://nodejs.org/en/download/) 10+ are needed.
+
+run:
+
+```
+$ sudo apt install -y make python build-essential
+```

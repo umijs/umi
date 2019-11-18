@@ -86,6 +86,8 @@ const DailyReport: React.SFC<{}> = props => {
 
   const handleLoadMore = () => {
     setSize(value => value + PAGE_SIZE);
+    // 重新计算瀑布流
+    forceUpdate();
   };
 
   const LoadMore = size < length && (

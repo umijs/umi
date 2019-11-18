@@ -85,7 +85,7 @@ export default (api: IApi) => {
       case 'org.umi.dashboard.zaobao.list': {
         try {
           const { body = '{}' } = await got(
-            'https://cdn.jsdelivr.net/npm/umi-ui-rss/data/index.json',
+            'https://cdn.jsdelivr.net/npm/umi-ui-rss@latest/data/index.json',
           );
           success(JSON.parse(body));
         } catch (e) {
@@ -97,7 +97,7 @@ export default (api: IApi) => {
       case 'org.umi.dashboard.zaobao.list.detail': {
         const { id } = payload;
         const { body = '{}' } = await got(
-          `https://cdn.jsdelivr.net/npm/umi-ui-rss/data/detail/${id}.json`,
+          `https://cdn.jsdelivr.net/npm/umi-ui-rss@latest/data/detail/${id}.json`,
         );
         success(JSON.parse(body));
         break;

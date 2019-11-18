@@ -252,5 +252,19 @@ Umi UI 创建项目需要有执行的权限。
 
 Umi UI 未安装或编译成功 [node-pty](https://www.npmjs.com/package/node-pty) 模块，解决方案如下：
 
-* 若是 Windows 用户，请以管理员身份在 PowerShell 执行 `npm install --global --production windows-build-tools`。
+#### Windows
+
+> Windows 用户确保已安装 [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) 并且 [Node.js](https://nodejs.org/en/download/) 版本在 10.x 以上。
+
+* 请以管理员身份在 PowerShell 执行 `npm install --global --production windows-build-tools`。
 * 重装 node_modules
+
+#### Linux/Ubuntu
+
+> 确保 python 已安装，并且 Node 版本在 10.x 以上。
+
+执行以下命令：
+
+```
+$ sudo apt install -y make python build-essential
+```
