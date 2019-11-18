@@ -27,7 +27,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
         writeNewRoute(newRouteConfig, api.service.userConfig.file, api.paths.absSrcPath);
       }
     } catch (e) {
-      logger.appendLog(`Faild to write route: ${e.message}\n`);
+      logger.appendLog(`Failed to write route: ${e.message}\n`);
       throw new Error(e);
     }
     logger.appendLog('🎉  Success write route\n');
@@ -47,7 +47,7 @@ const writeRoutes = async (ctx: IFlowContext, args: IAddBlockOption) => {
         index,
       });
     } catch (e) {
-      logger.appendLog(`Faild write block component: ${e.message}\n`);
+      logger.appendLog(`Failed write block component: ${e.message}\n`);
       throw new Error(e);
     }
     logger.appendLog('🎉  Success write block component \n');

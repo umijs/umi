@@ -72,7 +72,7 @@ const AddBlockFormForUI: React.FC<{
               if (!/^[a-zA-Z$_][a-zA-Z\d_]*$/.test(name)) {
                 throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegal' }));
               }
-              if (!/^(?:[A-Z][a-z]+)+$/.test(name)) {
+              if (!/^(?:[A-Z][a-z\d]+)+$/.test(name)) {
                 throw new Error(intl({ id: 'org.umi.ui.blocks.adder.name.illegalReact' }));
               }
               const { exists } = (await api.callRemote({

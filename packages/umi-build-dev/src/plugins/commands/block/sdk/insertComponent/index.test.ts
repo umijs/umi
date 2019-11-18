@@ -9,8 +9,17 @@ function formatCode(code) {
   return winEOL(code.trim().replace(/[A-Z]:/g, ''));
 }
 
+function findFooFile(base) {
+  if (existsSync(join(base, 'Foo.jsx'))) return join(base, 'Foo.jsx');
+  if (existsSync(join(base, 'Foo.js'))) return join(base, 'Foo.js');
+  if (existsSync(join(base, 'Foo.tsx'))) return join(base, 'Foo.tsx');
+  if (existsSync(join(base, 'Foo.ts'))) return join(base, 'Foo.ts');
+  return null;
+}
+
 function testTransform(dir) {
-  const filename = existsSync(join(fixtures, dir, 'origin.js'))
+  const filePath = join(fixtures, dir, 'origin.js');
+  const filename = existsSync(filePath)
     ? join(fixtures, dir, 'origin.js')
     : join(fixtures, dir, 'origin.tsx');
   const origin = readFileSync(filename, 'utf-8');
@@ -18,7 +27,10 @@ function testTransform(dir) {
   const config = existsSync(configFile) ? require(join(configFile)) : {};
   const code = insertComponent(origin, {
     identifier: 'Foo',
+    filePath: '',
     relativePath: './Foo',
+    absolutePath: findFooFile(join(fixtures, dir)),
+    dontRemoveExtractedBlock: true,
     ...config,
   });
   const expectedFile = join(fixtures, dir, 'expected.js');

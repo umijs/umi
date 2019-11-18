@@ -5,19 +5,36 @@ import assert from 'assert';
 import prettier from 'prettier';
 import { findLastIndex } from 'lodash';
 import uppercamelcase from 'uppercamelcase';
+import { readFileSync, readdirSync } from 'fs';
+import { dirname } from 'path';
+import rimraf from 'rimraf';
 import {
   findExportDefaultDeclaration,
+  findImportNodes,
   getIdentifierDeclaration,
   getReturnNode,
   haveChildren,
   isJSXElement,
   findIndex,
   parseContent,
+  combineImportNodes,
+  getValidStylesName,
 } from '../util';
 import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
 export default (content, opts) => {
-  const { relativePath, identifier, index = 0, latest } = opts;
+  const {
+    // 绝对路径，提取插入时用
+    absolutePath,
+    // 是否提取区块到当前文件，完成后删除具体的区块及其目录
+    isExtractBlock,
+    // 测试时不删除
+    dontRemoveExtractedBlock,
+    relativePath,
+    identifier,
+    index = 0,
+    latest,
+  } = opts;
 
   function addImport(node, id) {
     const { body } = node;
@@ -29,16 +46,45 @@ export default (content, opts) => {
     body.splice(lastImportSit + 1, 0, newImport);
   }
 
-  function addBlockToJSX({ node, replace, id }) {
+  function getExtractBlockNode(stylesName) {
+    const code = readFileSync(absolutePath, 'utf-8');
+    const ast = parseContent(code);
+    let returnNode = null;
+    let importNodes = [];
+    traverse(ast, {
+      Program(path) {
+        const { node } = path;
+        let d = findExportDefaultDeclaration(node) as any;
+        d = getIdentifierDeclaration(d, path);
+
+        const ret = getReturnNode(d, path);
+        returnNode = ret.node;
+
+        importNodes = findImportNodes(node);
+      },
+      Identifier(path) {
+        const { node } = path;
+        if (node.name === 'styles') {
+          node.name = stylesName;
+        }
+      },
+    });
+    return {
+      returnNode,
+      importNodes,
+    };
+  }
+
+  function addBlockToJSX({ newNode, node, replace, id }) {
     assert(isJSXElement(node), 'add block to jsx failed, not valid jsx element');
 
-    const newNode = t.jsxElement(
-      t.jsxOpeningElement(t.jsxIdentifier(id), [], true),
-      null,
-      [],
-      true,
-    );
+    // Build new node
+    if (!newNode) {
+      newNode = t.jsxElement(t.jsxOpeningElement(t.jsxIdentifier(id), [], true), null, [], true);
+    }
+
     if (haveChildren(node)) {
+      // 是否最后插入
       if (latest) {
         node.children.push(newNode);
       } else {
@@ -111,17 +157,39 @@ export default (content, opts) => {
         const id = uppercamelcase(identifier);
         // TODO: check id exists
 
-        // Add imports
-        addImport(node, id);
+        if (isExtractBlock) {
+          const stylesName = getValidStylesName(path);
 
-        // Add xxxx
-        addBlockToJSX({
-          ...ret,
-          id,
-        });
+          const { returnNode, importNodes } = getExtractBlockNode(stylesName);
+          const originImportNodes = findImportNodes(node);
+
+          combineImportNodes(node, originImportNodes, importNodes, absolutePath, stylesName);
+
+          addBlockToJSX({
+            ...ret,
+            id,
+            newNode: returnNode,
+          });
+
+          // 清理目录
+          if (!dontRemoveExtractedBlock) {
+            rimraf.sync(absolutePath);
+            if (readdirSync(dirname(absolutePath)).length === 0) {
+              rimraf.sync(dirname(absolutePath));
+            }
+          }
+        } else {
+          addImport(node, id);
+          addBlockToJSX({
+            ...ret,
+            id,
+            newNode: null,
+          });
+        }
       },
     });
   }
+  // console.log(JSON.stringify(ast, null, 2));
   const newCode = generate(ast, {}).code;
   return prettier.format(newCode, {
     singleQuote: true,
