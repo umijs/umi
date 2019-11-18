@@ -169,7 +169,6 @@ export default class UmiUI {
       const localBin = isDepFileExists(cwd, binModule);
       if (process.env.UI_CHECK_LOCAL !== 'none' && localBin) {
         const { version } = JSON.parse(readFileSync(join(cwd, 'node_modules', pkgModule), 'utf-8'));
-        console.log('version', version);
         if (!semver.gt(version, process.env.BIGFISH_COMPAT ? '2.23.0' : '2.12.0-beta.2')) {
           throw new ActiveProjectError({
             title: process.env.BIGFISH_COMPAT
