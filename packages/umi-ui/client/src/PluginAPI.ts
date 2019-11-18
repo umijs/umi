@@ -8,6 +8,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import moment from 'moment';
+import qs from 'qs';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
@@ -166,6 +167,13 @@ export default class PluginAPI {
 
   hideLogPanel: IUi.IHideLogPanel = () => {
     event.emit(MESSAGES.HIDE_LOG);
+  };
+
+  /**
+   * get query params /?bar=&foo=&mini
+   */
+  getSearchParams: IUi.IGetSearchParams = () => {
+    return qs.parse(window.location.search, { ignoreQueryPrefix: true });
   };
 
   getSharedDataDir = async () => {

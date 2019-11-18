@@ -328,6 +328,7 @@ declare namespace IUI {
   type IGetDashboard = () => IDashboard[];
   type IGetBasicUI = () => IBasicUI;
   type IGetSharedDataDir = () => Promise<string>;
+  type IGetSearchParams = () => any;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
@@ -426,6 +427,8 @@ declare namespace IUI {
     getDashboard: IGetDashboard;
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
+    /** get location search params  */
+    getSearchParams: IGetSearchParams;
     detectLanguage: IDetectLanguage;
     detectNpmClients: () => Promise<string[]>;
     modifyBasicUI: IModifyBasicUI;
