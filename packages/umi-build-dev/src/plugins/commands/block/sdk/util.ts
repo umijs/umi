@@ -1,12 +1,63 @@
 import * as t from '@babel/types';
 import * as parser from '@babel/parser';
+import { join, basename } from 'path';
 
-export function findExportDefaultDeclaration(node) {
-  for (const n of node.body) {
+export function findExportDefaultDeclaration(programNode) {
+  for (const n of programNode.body) {
     if (t.isExportDefaultDeclaration(n)) {
       return n.declaration;
     }
   }
+}
+
+export function findImportNodes(programNode) {
+  return programNode.body.filter(n => {
+    return t.isImportDeclaration(n);
+  });
+}
+
+function findImportWithSource(importNodes, source) {
+  for (const importNode of importNodes) {
+    if (importNode.source.value === source) {
+      return importNode;
+    }
+  }
+}
+
+function findSpecifier(importNode, specifier) {
+  for (const s of importNode.specifiers) {
+    if (t.isImportDefaultSpecifier(specifier) && t.isImportDefaultSpecifier(s)) return true;
+    if (specifier.imported.name === s.imported.name) {
+      if (specifier.local.name === s.local.name) return true;
+      throw new Error('specifier conflicts');
+    }
+  }
+  return false;
+}
+
+function combineSpecifiers(newImportNode, originImportNode) {
+  newImportNode.specifiers.forEach(specifier => {
+    if (!findSpecifier(originImportNode, specifier)) {
+      originImportNode.specifiers.push(specifier);
+    }
+  });
+}
+
+export function combineImportNodes(programNode, originImportNodes, newImportNodes, absolutePath) {
+  newImportNodes.forEach(newImportNode => {
+    const importSource = newImportNode.source.value;
+    if (importSource.charAt(0) === '.') {
+      // /a/b/c.js -> b
+      const dir = basename(join(absolutePath, '..'));
+      newImportNode.source = t.stringLiteral(`./${join(dir, importSource)}`);
+    }
+    const originImportNode = findImportWithSource(originImportNodes, newImportNode.source.value);
+    if (!originImportNode) {
+      programNode.body.unshift(newImportNode);
+    } else {
+      combineSpecifiers(newImportNode, originImportNode);
+    }
+  });
 }
 
 export function getIdentifierDeclaration(node, path) {
