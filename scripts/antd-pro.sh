@@ -18,6 +18,7 @@ cd packages/umi
 npm run link
 cd ../..
 cd pro_site
+rm -rf package-lock.json yarn.lock
 npm run
 npm run link umi
 npm run build

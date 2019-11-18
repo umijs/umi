@@ -16,7 +16,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const { pathname } = history.location;
 
   const queryParams = parse(window.location.search, { ignoreQueryPrefix: true });
-  const { active } = queryParams;
+  const { active, iife, ...restQueryParams } = queryParams;
 
   const defaultKey = sections.find(section => section.key === active)
     ? active
@@ -28,7 +28,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
     setCurrent(key);
     if (key !== current) {
       const search = stringify({
-        ...queryParams,
+        ...restQueryParams,
         active: key,
       });
       history.push(`${pathname}?${search}`);

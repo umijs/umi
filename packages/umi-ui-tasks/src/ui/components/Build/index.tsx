@@ -22,7 +22,7 @@ interface IProps {
 const { SizeMe } = withSize;
 const taskType = TaskType.BUILD;
 
-const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }) => {
+const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath, iife }) => {
   const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
   const [form] = Form.useForm();
@@ -57,13 +57,16 @@ const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath }
           },
         });
       }
+      if (iife) {
+        build();
+      }
       return () => {
         form.resetFields();
         const terminal = getTerminalIns(taskType, api.currentProject.key);
         terminal && terminal.clear();
       };
     },
-    [init, view],
+    [init, view, iife],
   );
 
   async function build() {

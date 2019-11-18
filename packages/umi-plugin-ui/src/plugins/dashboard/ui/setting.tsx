@@ -1,9 +1,11 @@
 import * as React from 'react';
 import cls from 'classnames';
-import { Drawer, List, Switch } from 'antd';
+import { Drawer, List, Switch, Typography } from 'antd';
 import Context from './context';
 import { renderAvatar, MESSAGES } from './index';
 import styles from './setting.module.less';
+
+const { Paragraph } = Typography;
 
 const Setting: React.FC<{}> = (props, ref) => {
   const { api, dbPath, cards, setCardSettings } = React.useContext(Context);
@@ -44,6 +46,7 @@ const Setting: React.FC<{}> = (props, ref) => {
             className={styles.item}
             extra={
               <Switch
+                style={{ marginLeft: 8 }}
                 size="small"
                 onChange={checked => handleOnChange(item.key, checked)}
                 defaultChecked={!!item.enable}
@@ -53,7 +56,7 @@ const Setting: React.FC<{}> = (props, ref) => {
             <List.Item.Meta
               avatar={renderAvatar(item, api.mini)}
               title={item.title}
-              description={item.description}
+              description={<Paragraph ellipsis>{item.description}</Paragraph>}
             />
           </List.Item>
         )}

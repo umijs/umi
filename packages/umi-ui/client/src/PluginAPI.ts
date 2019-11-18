@@ -8,6 +8,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import moment from 'moment';
+import qs from 'qs';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
 import { pluginDebug } from '@/debug';
@@ -18,6 +19,7 @@ import ConfigForm from './components/ConfigForm';
 import TwoColumnPanel from './components/TwoColumnPanel';
 import { openInEditor, openConfigFile } from '@/services/project';
 import { isMiniUI, getDuplicateKeys } from '@/utils';
+import getAnalyze from './getAnalyze';
 import Field from './components/Field';
 
 // PluginAPI
@@ -41,6 +43,7 @@ export default class PluginAPI {
   history: any;
   event: IUi.IEvent;
   moment: IUi.IMoment;
+  _analyze: IUi.IAnalyze;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -65,6 +68,8 @@ export default class PluginAPI {
     this.event = event;
     this.moment = moment;
     this.history = history;
+    // 统计
+    this._analyze = getAnalyze();
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {
@@ -166,6 +171,13 @@ export default class PluginAPI {
 
   hideLogPanel: IUi.IHideLogPanel = () => {
     event.emit(MESSAGES.HIDE_LOG);
+  };
+
+  /**
+   * get query params /?bar=&foo=&mini
+   */
+  getSearchParams: IUi.IGetSearchParams = () => {
+    return qs.parse(window.location.search, { ignoreQueryPrefix: true });
   };
 
   getSharedDataDir = async () => {

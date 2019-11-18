@@ -94,8 +94,6 @@ export default ({ isBigfish }) => {
   const logo = isBigfish ? BigfishLogo : UmiLogo;
   return styled(logo)`
     position: absolute;
-    width: 28px;
-    height: 28px;
     top: 50%;
     user-select: none;
     transform: ${props =>

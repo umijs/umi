@@ -103,6 +103,10 @@ export default (api: IUiApi) => {
       return true;
     });
 
+    // 立即执行参数
+    const { iife: searchIIFE } = api.getSearchParams();
+    const iife = searchIIFE === 'true';
+
     return (
       <TwoColumnPanel
         sections={sections.map((taskType: string) => {
@@ -118,7 +122,13 @@ export default (api: IUiApi) => {
             description,
             component: () => (
               <div className={styles.section}>
-                <Component api={api} detail={detail} dispatch={dispatch} dbPath={dbPath} />
+                <Component
+                  iife={iife}
+                  api={api}
+                  detail={detail}
+                  dispatch={dispatch}
+                  dbPath={dbPath}
+                />
               </div>
             ),
           };

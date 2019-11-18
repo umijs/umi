@@ -328,11 +328,16 @@ declare namespace IUI {
   type IGetDashboard = () => IDashboard[];
   type IGetBasicUI = () => IBasicUI;
   type IGetSharedDataDir = () => Promise<string>;
+  type IGetSearchParams = () => any;
   type IDetectLanguage = () => Promise<string>;
   type ISetActionPanel = (action: SetFactory<IPanelAction>) => void;
   type IModifyBasicUI = (memo: Partial<IBasicUI>) => void;
   type LaunchEditorTypes = 'project' | 'config';
   type IMoment = typeof moment;
+  interface IAnalyze {
+    gtag: any;
+    Tracert: any;
+  }
 
   interface ILaunchEditorParams {
     type: LaunchEditorTypes;
@@ -372,6 +377,7 @@ declare namespace IUI {
     readonly mini: boolean;
     /** whether Bigfish */
     readonly bigfish: boolean;
+    readonly _analyze: IAnalyze;
     /** currentProject  */
     currentProject: ICurrentProject;
     /** get current locale: zh-CN or en-US */
@@ -426,6 +432,8 @@ declare namespace IUI {
     getDashboard: IGetDashboard;
     /** get the current project's temp dir path */
     getSharedDataDir: IGetSharedDataDir;
+    /** get location search params  */
+    getSearchParams: IGetSearchParams;
     detectLanguage: IDetectLanguage;
     detectNpmClients: () => Promise<string[]>;
     modifyBasicUI: IModifyBasicUI;

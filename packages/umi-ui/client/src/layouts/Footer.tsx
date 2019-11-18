@@ -24,6 +24,7 @@ import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
+import getAnalyze from '@/getAnalyze';
 
 import styles from './Footer.less';
 
@@ -55,6 +56,11 @@ const Footer: React.SFC<IFooterProps> = props => {
       payload: {
         panel,
       },
+    });
+    const { gtag } = getAnalyze();
+    gtag('event', 'click_footer', {
+      event_category: panel,
+      event_label: !!visible[panel],
     });
   };
 

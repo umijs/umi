@@ -259,7 +259,9 @@ The Umi UI is not installed or compiled successfully [node-pty](https://www.npmj
 > [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) and [Node.js](https://nodejs.org/en/download/) 10+ are needed.
 
 * For Windows users, execute `npm install --global --production windows-build-tools` in PowerShell as administrator.
-* Reinstall `node_modules`
+* reinstall umi dependencies
+
+<img src="https://user-images.githubusercontent.com/13595509/69021231-1955a400-09f2-11ea-8551-4a6dcf8fe28f.png" width="400" />
 
 #### Linux/Ubuntu
 
