@@ -18,6 +18,7 @@ let socket: any;
 const Shell: React.SFC<ShellProps> = (props, ref) => {
   const { style, className, visible } = props;
   const shellCls = cls(styles.shell, className);
+  const [terminalRef, setTerminalRef] = React.useState();
 
   const handleInit = async (xterm, fitAddon) => {
     if (typeof ref === 'function') {
@@ -29,6 +30,7 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
       xterm.focus();
       await handleResize(xterm);
     }
+    setTerminalRef(xterm);
   };
 
   const handleResize = async xterm => {
@@ -39,6 +41,15 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
       console.error('resize Terminal error', e);
     }
   };
+
+  React.useEffect(
+    () => {
+      if (visible && terminalRef) {
+        terminalRef.focus();
+      }
+    },
+    [visible],
+  );
 
   return (
     <div className={shellCls} style={style}>
