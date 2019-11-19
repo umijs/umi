@@ -6,6 +6,7 @@ import useNpmClients from '@/components/hooks/useNpmClients';
 import CardForm, { IOption } from '@/components/CardForm';
 import { REACT_FEATURES, SPEEDUP_CLIENTS, REACT_FEATURES_TIP } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
+import styles from './index.less';
 
 const { useContext, useEffect } = React;
 const { Option } = Select;
@@ -108,7 +109,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                 <Checkbox.Group style={{ width: '100%' }}>
                   <Row>
                     {Object.keys(REACT_FEATURES).map((feature: any) => (
-                      <Col key={feature} span={8} style={{ marginBottom: 8 }}>
+                      <Col className={styles['feature-col']} key={feature} span={8}>
                         <Checkbox value={feature}>{REACT_FEATURES[feature]}&nbsp;</Checkbox>
                         <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
                           <QuestionCircle style={{ cursor: 'pointer' }} />
