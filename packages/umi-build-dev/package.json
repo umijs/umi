@@ -39,6 +39,7 @@
     "mustache": "3.0.1",
     "ora": "3.4.0",
     "path-to-regexp": "1.7.0",
+    "portfinder": "1.0.21",
     "prettier": "1.18.2",
     "random-color": "1.0.1",
     "react": "^16.8.6",

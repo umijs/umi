@@ -55,7 +55,6 @@
     "lodash": "4.17.13",
     "mini-css-extract-plugin": "0.7.0",
     "pkg-up": "3.1.0",
-    "portfinder": "1.0.21",
     "postcss": "7.0.17",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
