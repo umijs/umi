@@ -19,7 +19,7 @@ Where `[block url]` can be a Github or Gitlab address, a Git repository address,
 For example, you can run:
 
 ```bash
-$ umi block add https://github.com/umijs/umi-blocks/tree/master/demo
+$ umi block add https://github.com/umijs/umi-blocks/tree/master/blocks/demo
 ```
 
 to download demo blocks from the official block repo to your local project. For blocks under the [official block repo](https://github.com/umijs/umi-blocks) you can use a more shotcut command, such as `umi block add demo` to download.
