@@ -350,6 +350,10 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       ).join('\n'),
       routes,
       routerContent,
+      // @todo
+      historyOpt: `{
+        basename: window.routerBase,
+      }`,
       RouterRootComponent: this.service.applyPlugins('modifyRouterRootComponent', {
         initialValue: 'DefaultRouter',
       }),
