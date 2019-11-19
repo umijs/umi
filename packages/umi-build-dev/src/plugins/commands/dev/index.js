@@ -5,6 +5,7 @@ import createRouteMiddleware from './createRouteMiddleware';
 import { unwatch } from '../../../getConfig/watch';
 import getRouteManager from '../getRouteManager';
 import getFilesGenerator from '../getFilesGenerator';
+import getPort from './getPort';
 
 export default function(api) {
   const { service, config, log, debug, printUmiError, UmiError } = api;
@@ -26,16 +27,19 @@ export default function(api) {
       webpack: true,
       description: 'start a dev server for development',
     },
-    (args = {}) => {
+    async (args = {}) => {
       notify.onDevStart({ name: 'umi', version: 2 });
 
       const RoutesManager = getRouteManager(service);
       RoutesManager.fetchRoutes();
 
-      const { port, ui } = args;
+      const { port: portFromArgs, ui } = args;
       if (ui) {
         hasUIArg = true;
       }
+
+      const port = await getPort(portFromArgs);
+      service.port = port;
 
       process.env.NODE_ENV = 'development';
       service.applyPlugins('onStart');
