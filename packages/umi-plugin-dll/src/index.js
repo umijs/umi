@@ -5,9 +5,10 @@ import buildDll from './buildDll';
 export default function(api, opts = {}) {
   if (process.env.NODE_ENV !== 'development' || api.config.ssr) return;
 
-  const { debug, paths } = api;
+  const { cwd, debug, paths } = api;
 
-  const dllDir = join(paths.absNodeModulesPath, 'umi-dlls');
+  // 始终用当前的 node_modules，考虑有配 APP_ROOT 的场景
+  const dllDir = join(cwd, 'node_modules', 'umi-dlls');
   const dllManifest = join(dllDir, 'umi.json');
 
   api.register('_beforeDevServerAsync', () => {
