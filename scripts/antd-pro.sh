@@ -4,7 +4,7 @@ npm run bootstrap
 npm run build
 npm run ui:build
 cd packages/umi
-npm run link
+npm link
 cd ../..
 
 if [ -d ./pro_site ]
@@ -20,6 +20,6 @@ fi
 cd pro_site
 rm -rf package-lock.json yarn.lock
 npm update
-npm run link umi
+npm link umi
 npm run build
 npm run functions:build
