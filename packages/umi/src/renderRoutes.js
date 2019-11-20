@@ -1,4 +1,6 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 const RouteInstanceMap = {
@@ -119,6 +121,36 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
   };
 }
 
+let warned = false;
+
+class CompatComponent extends React.Component {
+  static childContextTypes = {
+    router: PropTypes.object,
+  };
+
+  getChildContext() {
+    if (!warned && process.env.NODE_ENV === 'development') {
+      console.error('this.context.router will be deprecated, please use withRouter instead');
+      warned = true;
+    }
+    const { history, match } = this.props;
+    return {
+      router: {
+        history,
+        route: {
+          location: history.location,
+          match: match || {},
+        },
+      },
+    };
+  }
+
+  render() {
+    const { children } = this.props;
+    return children;
+  }
+}
+
 export default function renderRoutes(routes, extraProps = {}, switchProps = {}) {
   const plugins = require('umi/_runtimePlugin');
   return routes ? (
@@ -168,9 +200,11 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   Component = wrapWithInitialProps(Component, initialProps);
                 }
                 return (
-                  <Component {...newProps} route={route}>
-                    {childRoutes}
-                  </Component>
+                  <CompatComponent match={newProps.match} history={newProps.history}>
+                    <Component {...newProps} route={route}>
+                      {childRoutes}
+                    </Component>
+                  </CompatComponent>
                 );
               } else {
                 return childRoutes;

@@ -1,9 +1,6 @@
 import puppeteer from 'puppeteer';
 import got from 'got';
 import FormData from 'form-data';
-import { existsSync } from 'fs';
-import { winPath } from 'umi-utils';
-import { join } from 'path';
 
 describe('normal', () => {
   let browser;
@@ -161,5 +158,18 @@ describe('normal', () => {
     await page.waitForSelector('h1');
     const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
     expect(indexText).toEqual('index');
+  });
+
+  it('compat react-router 4', async () => {
+    await page.goto(`http://localhost:${port}/router4`, { waitUntil: 'networkidle2' });
+    await page.waitForSelector('h1');
+    const listText = await page.evaluate(() => document.querySelector('h1').innerHTML);
+    expect(listText).toEqual('/router4');
+    // redirect /list
+    await page.click('button');
+    page.waitForNavigation();
+    await page.waitForSelector('h1');
+    const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
+    expect(indexText).toEqual('list');
   });
 });
