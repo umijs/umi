@@ -12,7 +12,6 @@ then
   echo "pro_site existed"
   cd ./pro_site
   git pull
-  cd ..
 else
   git clone https://github.com/ant-design/ant-design-pro --depth=1 ./pro_site
 fi
