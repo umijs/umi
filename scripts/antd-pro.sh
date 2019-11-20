@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+npm install
+npm run bootstrap
+npm run build
+npm run ui:build
+cd packages/umi
+npm run link
+cd ../..
 
 if [ -d ./pro_site ]
 then
@@ -10,16 +17,9 @@ else
   git clone https://github.com/ant-design/ant-design-pro --depth=1 ./pro_site
 fi
 
-npm run
-npm run bootstrap
-npm run build
-npm run ui:build
-cd packages/umi
-npm run link
-cd ../..
 cd pro_site
 rm -rf package-lock.json yarn.lock
-npm run
+npm update
 npm run link umi
 npm run build
 npm run functions:build
