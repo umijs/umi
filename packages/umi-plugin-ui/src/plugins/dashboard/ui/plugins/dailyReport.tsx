@@ -131,7 +131,7 @@ const DailyReport: React.SFC<{}> = props => {
                   <Tag className={getTagCls(item.tag)}>{item.tag}</Tag>
                 </a>
               }
-              description={item.description}
+              description={<Paragraph ellipsis={{ rows: 3 }}>{item.description}</Paragraph>}
             />
           </List.Item>
         )
