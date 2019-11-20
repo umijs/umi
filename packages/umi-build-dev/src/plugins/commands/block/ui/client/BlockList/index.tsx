@@ -37,6 +37,12 @@ const BlockList: React.FC<BlockListProps> = props => {
     },
     [list],
   );
+  useEffect(
+    () => {
+      setCurrentPage(1);
+    },
+    [selectedTag],
+  );
 
   /**
    * 筛选区块列表
