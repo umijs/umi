@@ -26,6 +26,9 @@ const Shell: React.SFC<ShellProps> = (props, ref) => {
     }
     if (!socket) {
       socket = new SockJS('/terminal-socket');
+      socket.onclose = () => {
+        socket = null;
+      };
       xterm.loadAddon(new AttachAddon(socket));
       xterm.focus();
       await handleResize(xterm);
