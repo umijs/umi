@@ -307,19 +307,21 @@ const Adder: React.FC<AdderProps> = props => {
           .validateFields()
           .then(async (values: any) => {
             setAddStatus('log');
-            const params: AddBlockParams = {
-              ...values,
-              url: block.url,
-              path: await getPathFromFilename(api, values.path),
-              routePath: blockType === 'template' ? values.routePath : undefined,
-              page: blockType === 'template',
-              // support: l-${index} or ${index}
-              index: values.index.startsWith('l-')
-                ? values.index
-                : parseInt(values.index || '0', 10),
-              name: blockType === 'template' ? block.name : values.name,
-            };
             try {
+              const params: AddBlockParams = {
+                ...values,
+                url: block.url,
+                path: await getPathFromFilename(api, values.path),
+                routePath: blockType === 'template' ? values.routePath : undefined,
+                page: blockType === 'template',
+                // support: l-${index} or ${index}
+                index:
+                  values.index && values.index.startsWith('l-')
+                    ? values.index
+                    : parseInt(values.index || '0', 10),
+                name: blockType === 'template' ? block.name : values.name,
+              };
+
               addBlock(api, params);
               localStorage.setItem('umi-ui-block-removeLocale', values.uni18n);
               onAddBlockChange(block);
