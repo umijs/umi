@@ -8,8 +8,6 @@ export default async function ({ page, host }) {
   expect(listText).toEqual('/');
   // redirect /list
   await page.click('button');
-  page.waitForNavigation();
-  await page.waitForSelector('h1');
   const indexText = await page.evaluate(() => document.querySelector('h1').innerHTML);
   expect(indexText).toEqual('/list');
 };
