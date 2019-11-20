@@ -8,6 +8,7 @@
     "@types/react": "~16.9.1",
     "@types/react-router-dom": "~4.3.4",
     "babel-preset-umi": "1.8.1",
+    "prop-types": "^15.7.2",
     "debug": "4.1.1",
     "dotenv": "8.0.0",
     "is-windows": "1.0.2",

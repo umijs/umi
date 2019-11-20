@@ -47,7 +47,6 @@
     "react-router": "5.1.2",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.1.2",
-    "prop-types": "^15.7.2",
     "regenerator-runtime": "0.13.2",
     "requireindex": "1.2.0",
     "resolve": "1.11.0",
