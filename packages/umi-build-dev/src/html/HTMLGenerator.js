@@ -220,6 +220,7 @@ export default class HTMLGenerator {
     let html = ejs.render(tpl, context, {
       _with: false,
       localsName: 'context',
+      filename: 'document.ejs',
     });
 
     // validate tpl
