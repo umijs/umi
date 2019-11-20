@@ -303,7 +303,7 @@ Install dependencies first,
 $ yarn add react-router-breadcrumbs-hoc
 ```
 
-Then implement a `Breakcrumbs.js`, such as:
+Then implement a `Breadcrumbs.js`, such as:
 
 ```js
 import NavLink from 'umi/navlink';

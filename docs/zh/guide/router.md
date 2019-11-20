@@ -303,7 +303,7 @@ export default withRouter(
 $ yarn add react-router-breadcrumbs-hoc
 ```
 
-然后实现一个 `Breakcrumbs.js`，比如：
+然后实现一个 `Breadcrumbs.js`，比如：
 
 ```js
 import NavLink from 'umi/navlink';
