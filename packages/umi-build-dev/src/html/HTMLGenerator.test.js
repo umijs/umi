@@ -617,4 +617,47 @@ describe('HG', () => {
     expect(c2.includes('"/umi.js"') && c2.includes('"/umi.css"')).toEqual(true);
     expect(c2.includes('<title>bctitle-/b/c</title>')).toEqual(true);
   });
+
+  it('getContent with include', () => {
+    const hg = new HTMLGenerator({
+      env: 'production',
+      minify: false,
+      chunksMap: {
+        umi: ['umi.js', 'umi.css'],
+      },
+      config: {
+        mountElementId: 'root',
+      },
+      paths: {
+        cwd: '/a',
+        absPageDocumentPath: '/tmp/files-not-exists',
+        defaultDocumentPath: join(__dirname, 'fixtures/document-with-include.ejs'),
+      },
+    });
+    const content = hg.getContent({
+      path: '/',
+    });
+
+    expect(winEOL(content.trim())).toEqual(
+      `
+<head>
+
+<link rel="stylesheet" href="/umi.css" />
+
+  <title>custom</title>
+  <script>
+window.inject = {
+  foo: 'bar'
+}
+</script><script>
+  window.routerBase = "/";
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script src="/umi.js"></script>
+</body>
+    `.trim(),
+    );
+  });
 });
