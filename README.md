@@ -27,7 +27,9 @@ English | [简体中文](./README_zh-CN.md)
 - 🐠 **Polyfill solution**, add JS and CSS polyfill with [targets](https://umijs.org/config/#targets) config, lowest to IE9
 - 🍁 **Support TypeScript**, including d.ts definition and `umi test`
 - 🌴 **Deep integration with [dva](https://dvajs.com/)**, including duck directory support, automatic loading of model, code splitting, etc
-- ⛄️ **Support MPA**，based on [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
+- ⛄️ **Support MPA**, based on [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
+- 💄 **Visual Assist Programming**, using [Umi UI](https://umijs.org/guide/umi-ui.html) to improve development efficiency.
+- 🌈 **Support SSR**, [usage](https://umijs.org/guide/ssr.html).
 
 [And more.](https://www.npmjs.com/search?q=umi-plugin)
 
