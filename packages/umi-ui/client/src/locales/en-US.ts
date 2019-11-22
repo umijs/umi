@@ -68,6 +68,7 @@ export default {
     'Error Code: {code} \nPath {path} has no write permission. \nReference: http://umijs.org/guide/faq.html#eacces-permission-denied-create-umi',
   'org.umi.ui.global.project.import.title': 'Import Project',
   'org.umi.ui.global.feedback': 'Feedback',
+  'org.umi.ui.global.open.editor': 'Open editor',
   'org.umi.ui.global.help': 'Help',
   'org.umi.ui.global.log.clear.error': 'Clear log failed',
   'org.umi.ui.global.home': 'Back to Home',

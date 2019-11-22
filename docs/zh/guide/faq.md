@@ -270,3 +270,18 @@ Umi UI 未安装或编译成功 [node-pty](https://www.npmjs.com/package/node-pt
 ```
 $ sudo apt install -y make python build-essential
 ```
+
+#### MacOS
+
+若未安装 Xcode Command Line Tools，执行：
+
+```bash
+$ xcode-select --install
+```
+
+已安装 Xcode Command Line Tools，执行：
+
+```bash
+$ sudo rm -rf $(xcode-select -print-path)
+$ xcode-select --install
+```
