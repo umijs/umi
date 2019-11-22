@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
-import { Check as CheckIcon, Code as CodeIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 import get from 'lodash/get';
 import {
@@ -9,6 +8,7 @@ import {
   HomeFilled,
   Tag as TagIcon,
   QuestionCircle,
+  Check as CheckIcon,
   Message,
   Code,
 } from '@ant-design/icons';
@@ -18,6 +18,7 @@ import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import FooterToolbar from './FooterToolbar';
+import EditorIcon from '@/components/icons/Editor';
 import Shell from '@/components/Shell';
 import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
@@ -297,7 +298,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         {type === 'detail' && (
           <div className={styles.section}>
             <a onClick={handleOpenEditor}>
-              <CodeIcon style={{ marginRight: 4 }} />{' '}
+              <EditorIcon style={{ marginRight: 4 }} />{' '}
               {formatMessage({ id: 'org.umi.ui.global.open.editor' })}
             </a>
           </div>
