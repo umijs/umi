@@ -26,21 +26,23 @@ export default function(api, options = {}) {
 
   api.modifyAFWebpackOpts((memo, opts = {}) => {
     // antd ssr not enabled
-    memo.babel.plugins = [
-      ...(memo.babel.plugins || []),
-      importPlugin('antd', options),
-      importPlugin('antd-mobile', options),
-      [
-        require.resolve('babel-plugin-import'),
-        {
-          libraryName: 'ant-design-pro',
-          libraryDirectory: 'lib',
-          style: opts.ssr ? 'css' : true,
-          camel2DashComponentName: false,
-        },
-        'ant-design-pro',
-      ],
-    ];
+    if (!opts.ssr) {
+      memo.babel.plugins = [
+        ...(memo.babel.plugins || []),
+        importPlugin('antd', options),
+        importPlugin('antd-mobile', options),
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: 'ant-design-pro',
+            libraryDirectory: 'lib',
+            style: true,
+            camel2DashComponentName: false,
+          },
+          'ant-design-pro',
+        ],
+      ];
+    }
     return memo;
   });
 
