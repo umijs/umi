@@ -231,9 +231,7 @@ export default class FilesGenerator {
           ],
           scripts: [
             {
-              content: `window.g_initialData = \${require('${winPath(
-                require.resolve('serialize-javascript'),
-              )}')(props)};`.trim(),
+              content: `window.g_initialData = \${stringify(props)};`.trim(),
             },
           ],
         });

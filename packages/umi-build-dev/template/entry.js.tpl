@@ -72,6 +72,7 @@ if (!__IS_BROWSER) {
         res: ctx.res || {},
         ...initialProps,
       });
+      // please use return, avoid return all model
       props = plugins.apply('initialProps', {
          initialValue: props,
       });
@@ -86,6 +87,7 @@ if (!__IS_BROWSER) {
     const rootContainer = plugins.apply('rootContainer', {
       initialValue: React.createElement(require('./router').default, props),
     });
+    const stringify = require('serialize-javascript');
     const htmlTemplateMap = {
       {{{ htmlTemplateMap }}}
     };
