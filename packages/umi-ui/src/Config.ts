@@ -57,7 +57,6 @@ export default class Config {
       try {
         this.data = JSON.parse(readFileSync(this.dbPath, 'utf-8'));
       } catch (e) {
-        console.error('parse ui data error', e);
         this.data = {};
       }
     } else {
