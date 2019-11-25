@@ -28,6 +28,7 @@ afterEach(() => {
 
 afterAll(done => {
   writeFileSync(dbPath, '{}', 'utf-8');
+  writeFileSync(illegalDbPath, 'error illegal', 'utf-8');
   done();
 });
 
