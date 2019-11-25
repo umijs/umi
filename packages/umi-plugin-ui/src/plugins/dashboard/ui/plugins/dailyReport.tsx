@@ -84,8 +84,9 @@ const DailyReport: React.SFC<{}> = props => {
 
   const length = Array.isArray(data) ? data.length : 0;
 
-  const handleLoadMore = () => {
-    setSize(value => value + PAGE_SIZE);
+  const handleLoadAll = () => {
+    // load all
+    setSize(length);
     // 重新计算瀑布流
     forceUpdate();
   };
@@ -99,8 +100,8 @@ const DailyReport: React.SFC<{}> = props => {
         lineHeight: '32px',
       }}
     >
-      <a className={styles.more} onClick={handleLoadMore}>
-        {formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao.loadMore' })}
+      <a className={styles.more} onClick={handleLoadAll}>
+        {formatMessage({ id: 'org.umi.ui.dashboard.card.zaobao.loadAll' })}
       </a>
     </div>
   );
