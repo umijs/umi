@@ -59,7 +59,6 @@ export default class Config {
       } catch (e) {
         console.error('parse ui data error', e);
         this.data = {};
-        writeFileSync(this.dbPath, JSON.stringify(this.data, null, 2), 'utf-8');
       }
     } else {
       this.data = {};
