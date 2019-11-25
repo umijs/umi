@@ -54,7 +54,13 @@ export default class Config {
 
   load() {
     if (existsSync(this.dbPath)) {
-      this.data = JSON.parse(readFileSync(this.dbPath, 'utf-8'));
+      try {
+        this.data = JSON.parse(readFileSync(this.dbPath, 'utf-8'));
+      } catch (e) {
+        console.error('parse ui data error', e);
+        this.data = {};
+        writeFileSync(this.dbPath, JSON.stringify(this.data, null, 2), 'utf-8');
+      }
     } else {
       this.data = {};
     }
