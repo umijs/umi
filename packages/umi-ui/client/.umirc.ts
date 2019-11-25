@@ -3,6 +3,7 @@ import slash from 'slash2';
 import LessThemePlugin from 'webpack-less-theme-plugin';
 import { IConfig } from 'umi-types';
 import { dark } from 'umi-ui-theme';
+import { version } from 'antd';
 
 const { NODE_ENV } = process.env;
 
@@ -109,7 +110,7 @@ const config: IConfig = {
             src: '//gw.alipayobjects.com/os/lib/moment/2.22.2/min/moment.min.js',
           },
           {
-            src: '//gw.alipayobjects.com/os/lib/antd/4.0.0-alpha.9/dist/antd.min.js',
+            src: `//gw.alipayobjects.com/os/lib/antd/${version}/dist/antd.min.js`,
           },
           { src: '//gw.alipayobjects.com/os/lib/sockjs-client/1.3.0/dist/sockjs.min.js' },
           { src: '//gw.alipayobjects.com/os/lib/xterm/4.1.0/lib/xterm.js' },
