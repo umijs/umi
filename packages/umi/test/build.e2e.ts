@@ -85,7 +85,7 @@ async function build(cwd: string, name: string) {
     });
     child.on('exit', code => {
       if (code === 1) {
-        reject(new Error('Build failed'));
+        reject(new Error(`Project ${name} build failed`));
       } else {
         resolve();
       }

@@ -211,7 +211,11 @@ export default function(opts) {
   });
 
   // module -> tsx?
-  const tsConfigFile = opts.tsConfigFile || join(opts.cwd, 'tsconfig.json');
+  const tsConfigFile =
+    opts.tsConfigFile ||
+    (existsSync(join(opts.cwd, 'tsconfig.json'))
+      ? join(opts.cwd, 'tsconfig.json')
+      : join(__dirname, 'tsconfig.default.json'));
   webpackConfig.module
     .rule('ts')
     .test(/\.tsx?$/)

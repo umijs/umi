@@ -67,7 +67,6 @@ export default function(api) {
         initialValue: [],
       })
       .map(generateExports);
-    api.writeTmpFile('umiExports.js', umiExports.join('\n'));
-    api.writeTmpFile('umiExports.d.ts', umiExports.join('\n'));
+    api.writeTmpFile('umiExports.ts', umiExports.join('\n'));
   };
 }
