@@ -52,7 +52,7 @@ export default function getRouteConfigFromDir(paths) {
         if (
           file.charAt(0) === '.' ||
           file.charAt(0) === '_' ||
-          /\.(test|spec)\.(j|t)sx?$/.test(file)
+          /\.(test|spec|d)\.(j|t)sx?$/.test(file)
         )
           return false;
         return true;
