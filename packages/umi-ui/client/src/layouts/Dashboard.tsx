@@ -98,10 +98,6 @@ export default withRouter(props => {
 
           const recentMenu = (
             <Menu theme={theme} className={styles['sidebar-recentMenu']}>
-              <Menu.Item key="openInEdit" onClick={openEditor}>
-                <p>{formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}</p>
-              </Menu.Item>
-              {projects.length > 0 && <Menu.Divider />}
               <Menu.ItemGroup
                 key="projects"
                 title={

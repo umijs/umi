@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Popover, Drawer, Dropdown, Menu, Divider, Popconfirm, message, Tooltip } from 'antd';
-import { Check as CheckIcon } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 import get from 'lodash/get';
 import {
@@ -9,21 +8,23 @@ import {
   HomeFilled,
   Tag as TagIcon,
   QuestionCircle,
+  Check as CheckIcon,
   Message,
   Code,
 } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
-import history from '@tmp/history';
 import { LOCALES, LOCALES_ICON } from '@/enums';
 import Context from '@/layouts/Context';
 import Logs from '@/components/Logs';
 import FooterToolbar from './FooterToolbar';
+import EditorIcon from '@/components/icons/Editor';
 import Shell from '@/components/Shell';
 import { states, reducers } from '@/customModels/footer';
 import { handleBack } from '@/utils';
 import event, { MESSAGES } from '@/message';
 import { getHistory, listenMessage, clearLog } from '@/services/logs';
+import { openInEditor } from '@/services/project';
 import getAnalyze from '@/getAnalyze';
 
 import styles from './Footer.less';
@@ -40,14 +41,22 @@ const Footer: React.SFC<IFooterProps> = props => {
   const { type } = props;
   const { locale, setLocale, currentProject, isMini, basicUI } = useContext(Context);
   const drawerContainerRef = React.createRef();
-  const { path, name } = currentProject || {};
+  const { path, name, key } = currentProject || {};
+  const { gtag } = getAnalyze();
   const [{ logs, terminal, fitAddon, terminalHeight, logHeight, visible }, dispatch] = useReducer(
     (state, action) => reducers[action.type](state, action),
     states,
   );
 
-  const redirect = (url: string) => {
-    history.push(url);
+  const handleOpenEditor = async () => {
+    if (key) {
+      await openInEditor({
+        key,
+      });
+      gtag('event', 'click_footer', {
+        event_category: 'openEditor',
+      });
+    }
   };
 
   const togglePanel = (panel: IPanel) => {
@@ -57,7 +66,6 @@ const Footer: React.SFC<IFooterProps> = props => {
         panel,
       },
     });
-    const { gtag } = getAnalyze();
     gtag('event', 'click_footer', {
       event_category: panel,
       event_label: !!visible[panel],
@@ -286,6 +294,15 @@ const Footer: React.SFC<IFooterProps> = props => {
             </div>
           )}
         </div>
+
+        {type === 'detail' && (
+          <div className={styles.section}>
+            <a onClick={handleOpenEditor}>
+              <EditorIcon style={{ marginRight: 4 }} />{' '}
+              {formatMessage({ id: 'org.umi.ui.global.open.editor' })}
+            </a>
+          </div>
+        )}
 
         <div className={styles.section}>
           {/* TODO: register with framework, bigfish use office network */}

@@ -64,7 +64,7 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
     };
   }
   componentDidCatch(error, info) {
-    const frameworkName = window.g_service.basicUI.name || 'Umi';
+    const frameworkName = get(window, 'g_service.basicUI.name') || 'Umi';
     this.setState({
       error,
       info,

@@ -89,7 +89,7 @@ test('watch', async () => {
   rimraf.sync(absTmpFile);
 });
 
-test('watch with error', async () => {
+xtest('watch with error', async () => {
   const absTmpFile = join(cwd, 'mock/tmp2.js');
   writeFileSync(absTmpFile, `export defaul;`, 'utf-8');
   await delay(500);

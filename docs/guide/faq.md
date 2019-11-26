@@ -272,3 +272,18 @@ run:
 ```
 $ sudo apt install -y make python build-essential
 ```
+
+#### MacOS
+
+If Xcode Command Line Tools is not installed, execute:
+
+```bash
+$ xcode-select --install
+```
+
+Xcode Command Line Tools is installed and executes:
+
+```bash
+$ sudo rm -rf $(xcode-select -print-path)
+$ xcode-select --install
+```
