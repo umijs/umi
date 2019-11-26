@@ -3,13 +3,18 @@ import { writeFileSync } from 'fs';
 import Config from './Config';
 
 const dbPath = join(__dirname, 'fixtures/Config/normal.json');
+const illegalDbPath = join(__dirname, 'fixtures/Config/illegal.json');
 let config;
+let illegalConfig;
 
 let spy;
 
 beforeAll(() => {
   config = new Config({
     dbPath,
+  });
+  illegalConfig = new Config({
+    dbPath: illegalDbPath,
   });
 });
 beforeEach(() => {
@@ -23,7 +28,12 @@ afterEach(() => {
 
 afterAll(done => {
   writeFileSync(dbPath, '{}', 'utf-8');
+  writeFileSync(illegalDbPath, 'error illegal', 'utf-8');
   done();
+});
+
+test('parse illegalConfig', () => {
+  expect(illegalConfig.data).toEqual({ projectsByKey: {} });
 });
 
 test('addProject', () => {
