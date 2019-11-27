@@ -8,7 +8,7 @@ English | [简体中文](./README_zh-CN.md)
 [![Build Status](https://chenshuai2144.visualstudio.com/umi/_apis/build/status/umijs.umi?branchName=master)](https://chenshuai2144.visualstudio.com/umi/_build/latest?definitionId=1&branchName=master)
 [![GitHub Actions status](https://github.com/umijs/umi/workflows/Node%20CI/badge.svg)](https://github.com/umijs/umi)
 [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org)
 
 🌋 Pluggable enterprise-level react application framework.
 
