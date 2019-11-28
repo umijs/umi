@@ -104,7 +104,7 @@ const DashboardUI: React.FC<{}> = props => {
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        <Col className={colCls} {...defaultSpan}>
+        <Col flex="none" className={colCls} {...defaultSpan}>
           <Card className={welcomeCardCls} bordered={false} hoverable={false}>
             <h2>Hi</h2>
             <p>
@@ -139,7 +139,7 @@ const DashboardUI: React.FC<{}> = props => {
               align="top"
               justify="space-between"
             >
-              <Col className={styles['main-col']}>
+              <Col flex="none" className={styles['main-col']}>
                 <div className={cls(styles.icon)}>{renderAvatar(card, api.mini)}</div>
                 <div className={styles.info}>
                   <h4>{title}</h4>
@@ -151,7 +151,7 @@ const DashboardUI: React.FC<{}> = props => {
           );
           const colSpan = api._.isPlainObject(span) ? { ...defaultSpan, ...span } : { span };
           return (
-            <Col key={key} className={colCls} {...colSpan}>
+            <Col flex="none" key={key} className={colCls} {...colSpan}>
               <Card title={Title} className={styles.card} bordered={false} hoverable={false}>
                 {renderCard(content)}
               </Card>
