@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
-import { QuestionCircle } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const InfoToolTip: React.FC<{ title: string; placeholder: string }> = ({ title, placeholder }) => (
   <Tooltip title={placeholder}>
@@ -11,7 +11,7 @@ const InfoToolTip: React.FC<{ title: string; placeholder: string }> = ({ title, 
       }}
     >
       {title}
-      <QuestionCircle
+      <QuestionCircleOutlined
         style={{
           marginLeft: 8,
         }}

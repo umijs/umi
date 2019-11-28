@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QuestionCircle, Check as CheckIcon } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Switch, Tooltip } from 'antd';
 import { IStepItemForm } from '@/components/StepForm/StepItem';
 import useNpmClients from '@/components/hooks/useNpmClients';
@@ -112,7 +112,7 @@ const Form2: React.FC<IStepItemForm> = (props, ref) => {
                       <Col className={styles['feature-col']} key={feature} span={8}>
                         <Checkbox value={feature}>{REACT_FEATURES[feature]}&nbsp;</Checkbox>
                         <Tooltip title={formatMessage({ id: REACT_FEATURES_TIP[feature] })}>
-                          <QuestionCircle style={{ cursor: 'pointer' }} />
+                          <QuestionCircleOutlined style={{ cursor: 'pointer' }} />
                         </Tooltip>
                       </Col>
                     ))}

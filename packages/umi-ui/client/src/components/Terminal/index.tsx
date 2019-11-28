@@ -1,5 +1,5 @@
 import { Row, Col, Spin, Tooltip, Popconfirm } from 'antd';
-import { Delete, VerticalAlignBottom } from '@ant-design/icons';
+import { DeleteOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
 import cls from 'classnames';
 import debounce from 'lodash/debounce';
@@ -147,13 +147,13 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
                     onConfirm={clear}
                   >
                     <Tooltip title={intl({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
-                      <Delete />
+                      <DeleteOutlined />
                     </Tooltip>
                   </Popconfirm>
                 </span>
                 <span className={styles.icon}>
                   <Tooltip title={intl({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-                    <VerticalAlignBottom onClick={toBottom} />
+                    <VerticalAlignBottomOutlined onClick={toBottom} />
                   </Tooltip>
                 </span>
               </Col>

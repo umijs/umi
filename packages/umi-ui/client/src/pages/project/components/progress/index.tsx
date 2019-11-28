@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Loading } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { Steps, Button, message } from 'antd';
 import get from 'lodash/get';
 import { Beforeunload } from 'react-beforeunload';
@@ -141,7 +141,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
                 <Step
                   key={i.toString()}
                   title={step}
-                  icon={progress.stepStatus === 1 && progress.step === i && <Loading />}
+                  icon={progress.stepStatus === 1 && progress.step === i && <LoadingOutlined />}
                 />
               );
             })}

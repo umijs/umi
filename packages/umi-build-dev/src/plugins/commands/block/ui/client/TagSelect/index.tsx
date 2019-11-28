@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { Tag } from 'antd';
-import { Loading, Up } from '@ant-design/icons';
+import { LoadingOutlined, UpOutlined } from '@ant-design/icons';
 
 import styles from './index.module.less';
 
@@ -99,7 +99,7 @@ const TagSelect: React.FC<{
           </>
         )}
 
-        {loading && <Loading />}
+        {loading && <LoadingOutlined />}
       </div>
       {!loading && hasExpandButton ? (
         <a
@@ -109,7 +109,7 @@ const TagSelect: React.FC<{
           }}
         >
           <>
-            {expand ? expandText : collapseText} <Up className={styles.upIcon} />
+            {expand ? expandText : collapseText} <UpOutlined className={styles.upIcon} />
           </>
         </a>
       ) : (

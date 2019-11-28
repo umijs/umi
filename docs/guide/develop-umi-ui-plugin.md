@@ -105,7 +105,7 @@ E.g:
 ```js
 // ui/index.js
 // antd 4.x Icon
-import { Plus } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 
 import styles from './index.module.less'
@@ -115,7 +115,7 @@ export default (api) => {
     const wrapperCls = classnames(styles.bar, styles.foo);
     return (
       <div className={wrapperCls}>
-        <Plus />
+        <PlusOutlined />
       </div>
     );
   }
@@ -143,11 +143,11 @@ export default (api) => {
   },
   "dependencies": {
 -   "classnames": "^2.2.6",
--   "@ant-design/compatible": "^0.0.1-alpha.1"
+-   "@ant-design/icons": "^4.0.0-alpha.11"
   },
   "devDependencies": {
 +   "classnames": "^2.2.6",
-+   "@ant-design/compatible": "^0.0.1-alpha.1"
++   "@ant-design/icons": "^4.0.0-alpha.11"
   }
 }
 ```

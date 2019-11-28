@@ -4,20 +4,20 @@
 
 "@ant-design/colors@^3.1.0":
   version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@ant-design/colors/-/colors-3.2.2.tgz#5ad43d619e911f3488ebac303d606e66a8423903"
-  integrity sha512-YKgNbG2dlzqMhA9NtI3/pbY16m3Yl/EeWBRa+lB1X1YaYxHrxNexiQYCLTWO/uDvAjLFMEDU+zR901waBtMtjQ==
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/colors/download/@ant-design/colors-3.2.2.tgz#5ad43d619e911f3488ebac303d606e66a8423903"
+  integrity sha1-WtQ9YZ6RHzSI66wwPWBuZqhCOQM=
   dependencies:
     tinycolor2 "^1.4.1"
 
 "@ant-design/icons-svg@^4.0.0-alpha.0":
   version "4.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@ant-design/icons-svg/-/icons-svg-4.0.0-alpha.0.tgz#c9e2607f463291a1fc73418969b7708cceceffb9"
-  integrity sha512-uK0/hQvXShhcXfSoNZqG4wWQx8l13FoKCqICC/kkeguXyKixueJEC+C6/X26HAtqXJcBmMZEuaT2AlLYs8xdZg==
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/icons-svg/download/@ant-design/icons-svg-4.0.0-alpha.0.tgz#c9e2607f463291a1fc73418969b7708cceceffb9"
+  integrity sha1-yeJgf0YykaH8c0GJabdwjM7O/7k=
 
-"@ant-design/icons@^4.0.0-alpha.8":
-  version "4.0.0-alpha.9"
-  resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.0.0-alpha.9.tgz#94fa7d59ac0d84d2f91001da9d8c809611977837"
-  integrity sha512-NRP/N/TZyCVKvM2bqhmCycAZpo3JEymrj08t0VBeCj8+zZgm/dCkkhXTEgHtI+FdJ8ZpYH6N12i8zGj20h6W0A==
+"@ant-design/icons@^4.0.0-alpha.11":
+  version "4.0.0-alpha.11"
+  resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.0.0-alpha.11.tgz#c7d8e5910c88f3fb7a85aa31502a1a8685828e13"
+  integrity sha512-3xcSup7O9QNeA+Nqg0xzR/YwJML9EUC5lsDxD3jslvVxeIDbhG3jLrNU6cddyRcLcl4KAlK0JkGbJk6MSOB/bA==
   dependencies:
     "@ant-design/colors" "^3.1.0"
     "@ant-design/icons-svg" "^4.0.0-alpha.0"
@@ -27,15 +27,15 @@
 
 "@babel/code-frame@7.0.0":
   version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
-  integrity sha512-OfC2uemaknXr87bdLUkWog7nYuliM9Ij5HUcajsVcMCpQrcLmtxRbVFTIqmcSkSeYRBFBRxs2FiUqFJDLdiebA==
+  resolved "https://registry.npm.alibaba-inc.com/@babel/code-frame/download/@babel/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
+  integrity sha1-BuKrGb21NThVWaq7W6WXKUgoAPg=
   dependencies:
     "@babel/highlight" "^7.0.0"
 
 "@babel/highlight@^7.0.0":
   version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.5.0.tgz#56d11312bd9248fa619591d02472be6e8cb32540"
-  integrity sha512-7dV4eu9gBxoM0dAnj/BCFDW9LFU0zvTrkq0ugM7pnHEgguOEeOz1so2ZghEdzviYzQEED0r4EAgpsBChKy1TRQ==
+  resolved "https://registry.npm.alibaba-inc.com/@babel/highlight/download/@babel/highlight-7.5.0.tgz#56d11312bd9248fa619591d02472be6e8cb32540"
+  integrity sha1-VtETEr2SSPphlZHQJHK+boyzJUA=
   dependencies:
     chalk "^2.0.0"
     esutils "^2.0.2"
@@ -43,52 +43,52 @@
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
-  integrity sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g==
+  resolved "https://registry.npm.alibaba-inc.com/@mrmlnc/readdir-enhanced/download/@mrmlnc/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
+  integrity sha1-UkryQNGjYFJ7cwR17PoTRKpUDd4=
   dependencies:
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
-  integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
+  resolved "https://registry.npm.alibaba-inc.com/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
+  integrity sha1-K1o6s/kYzKSKjHVMCBaOPwPrphs=
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
-  integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
+  resolved "https://registry.npm.alibaba-inc.com/@sindresorhus/is/download/@sindresorhus/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
+  integrity sha1-n7OjzzEyMoFR81PeRjLgHlIQK+o=
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
-  integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
+  resolved "https://registry.npm.alibaba-inc.com/@szmarczak/http-timer/download/@szmarczak/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
+  integrity sha1-sWZeLEYaLNkvTBu/UNVFTeDUtCE=
   dependencies:
     defer-to-connect "^1.0.1"
 
 "@types/node-notifier@^5.4.0":
   version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@types/node-notifier/-/node-notifier-5.4.0.tgz#4e66c85eb41cce8387b4cd9c6c67852be41a99db"
-  integrity sha512-M1XvCG6Rwej6+W0+kWultE46YS7erOy+W7suRmXtKwLGT3ytj6YEe9lqo47nRfL1xILzg9xJpKeNczIsWR8ymw==
+  resolved "https://registry.npm.alibaba-inc.com/@types/node-notifier/download/@types/node-notifier-5.4.0.tgz#4e66c85eb41cce8387b4cd9c6c67852be41a99db"
+  integrity sha1-TmbIXrQczoOHtM2cbGeFK+Qamds=
   dependencies:
     "@types/node" "*"
 
 "@types/node@*":
-  version "12.12.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.5.tgz#66103d2eddc543d44a04394abb7be52506d7f290"
-  integrity sha512-KEjODidV4XYUlJBF3XdjSH5FWoMCtO0utnhtdLf1AgeuZLOrRbvmU/gaRCVg7ZaQDjVf3l84egiY0mRNe5xE4A==
+  version "12.12.14"
+  resolved "https://registry.npm.alibaba-inc.com/@types/node/download/@types/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
+  integrity sha1-HB1uPHXbpGbgMmlI1W6L1yoZA9I=
 
 "@types/sockjs@^0.3.31":
   version "0.3.31"
-  resolved "https://registry.yarnpkg.com/@types/sockjs/-/sockjs-0.3.31.tgz#9b3df36d2a202bfe9c238d90bafee290e3009415"
-  integrity sha512-6d+6cH187jHWoUP07fzDQkC1fATu7TXMNJaCKwMwpcjkRvAK4T7bDw8sukL3rE8A/ZEPmo94YghsgCkI2/V8kw==
+  resolved "https://registry.npm.alibaba-inc.com/@types/sockjs/download/@types/sockjs-0.3.31.tgz#9b3df36d2a202bfe9c238d90bafee290e3009415"
+  integrity sha1-mz3zbSogK/6cI42Quv7ikOMAlBU=
   dependencies:
     "@types/node" "*"
 
 "@umijs/launch-editor@^1.0.0":
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@umijs/launch-editor/-/launch-editor-1.0.1.tgz#602c2a1210bb0417470c575d19cd184cbbae3255"
-  integrity sha512-slyYS1BH3Rwic49J641dXSYeDwtkD/A1Cfp4SbQlz1v8GfLeZ1hC952O6hvK98ZTxqk4BogYFObyZcI/RqQVEw==
+  resolved "https://registry.npm.alibaba-inc.com/@umijs/launch-editor/download/@umijs/launch-editor-1.0.1.tgz#602c2a1210bb0417470c575d19cd184cbbae3255"
+  integrity sha1-YCwqEhC7BBdHDFddGc0YTLuuMlU=
   dependencies:
     cross-spawn "^7.0.0"
     debug "^4.1.1"
@@ -96,167 +96,167 @@
 
 abbrev@1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
-  integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
+  resolved "https://registry.npm.alibaba-inc.com/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
+  integrity sha1-+PLIh60Qv2f2NPAFtph/7TF5qsg=
 
 accepts@~1.3.5, accepts@~1.3.7:
   version "1.3.7"
-  resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.7.tgz#531bc726517a3b2b41f850021c6cc15eaab507cd"
-  integrity sha512-Il80Qs2WjYlJIBNzNkK6KYqlVMTbZLXgHx2oT0pU/fjRHyEp+PEfEPY0R3WCwAGVOtauxh1hOxNgIf5bv7dQpA==
+  resolved "https://registry.npm.alibaba-inc.com/accepts/download/accepts-1.3.7.tgz#531bc726517a3b2b41f850021c6cc15eaab507cd"
+  integrity sha1-UxvHJlF6OytB+FACHGzBXqq1B80=
   dependencies:
     mime-types "~2.1.24"
     negotiator "0.6.2"
 
 add-dom-event-listener@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/add-dom-event-listener/-/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
-  integrity sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==
+  resolved "https://registry.npm.alibaba-inc.com/add-dom-event-listener/download/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
+  integrity sha1-apLbOg3Qq8JU4JXA8dwUrLuq4xA=
   dependencies:
     object-assign "4.x"
 
 address@1.0.3:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/address/-/address-1.0.3.tgz#b5f50631f8d6cec8bd20c963963afb55e06cbce9"
-  integrity sha512-z55ocwKBRLryBs394Sm3ushTtBeg6VAeuku7utSoSnsJKvKcnXFIyC6vh27n3rXyxSgkJBBCAvyOn7gSUcTYjg==
+  resolved "https://registry.npm.alibaba-inc.com/address/download/address-1.0.3.tgz#b5f50631f8d6cec8bd20c963963afb55e06cbce9"
+  integrity sha1-tfUGMfjWzsi9IMljljr7VeBsvOk=
 
 address@^1.0.1:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
-  integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
+  resolved "https://registry.npm.alibaba-inc.com/address/download/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
+  integrity sha1-vxEWycdYxRt6kz0pa3LCIe2UKLY=
 
 ansi-escapes@^3.2.0:
   version "3.2.0"
-  resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.2.0.tgz#8780b98ff9dbf5638152d1f1fe5c1d7b4442976b"
-  integrity sha512-cBhpre4ma+U0T1oM5fXg7Dy1Jw7zzwv7lt/GoCpr+hDQJoYnKVPLL4dCvSEFMmQurOQvSrwT7SL/DAlhBI97RQ==
+  resolved "https://registry.npm.alibaba-inc.com/ansi-escapes/download/ansi-escapes-3.2.0.tgz#8780b98ff9dbf5638152d1f1fe5c1d7b4442976b"
+  integrity sha1-h4C5j/nb9WOBUtHx/lwde0RCl2s=
 
 ansi-regex@^2.0.0:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
+  resolved "https://registry.npm.alibaba-inc.com/ansi-regex/download/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
   integrity sha1-w7M6te42DYbg5ijwRorn7yfWVN8=
 
 ansi-regex@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
+  resolved "https://registry.npm.alibaba-inc.com/ansi-regex/download/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
   integrity sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
 
 ansi-regex@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-4.1.0.tgz#8b9f8f08cf1acb843756a839ca8c7e3168c51997"
-  integrity sha512-1apePfXM1UOSqw0o9IiFAovVz9M5S1Dg+4TrDwfMewQ6p/rmMueb7tWZjQ1rx4Loy1ArBggoqGpfqqdI4rondg==
+  resolved "https://registry.npm.alibaba-inc.com/ansi-regex/download/ansi-regex-4.1.0.tgz#8b9f8f08cf1acb843756a839ca8c7e3168c51997"
+  integrity sha1-i5+PCM8ay4Q3Vqg5yox+MWjFGZc=
 
 ansi-styles@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
+  resolved "https://registry.npm.alibaba-inc.com/ansi-styles/download/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
   integrity sha1-tDLdM1i2NM914eRmQ2gkBTPB3b4=
 
 ansi-styles@^3.2.1:
   version "3.2.1"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
-  integrity sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
+  resolved "https://registry.npm.alibaba-inc.com/ansi-styles/download/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
+  integrity sha1-QfuyAkPlCxK+DwS43tvwdSDOhB0=
   dependencies:
     color-convert "^1.9.0"
 
 anymatch@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-2.0.0.tgz#bcb24b4f37934d9aa7ac17b4adaf89e7c76ef2eb"
-  integrity sha512-5teOsQWABXHHBFP9y3skS5P3d/WfWXpv3FUpy+LorMrNYaT9pI4oLMQX7jzQ2KklNpGpWHzdCXTDT2Y3XGlZBw==
+  resolved "https://registry.npm.alibaba-inc.com/anymatch/download/anymatch-2.0.0.tgz#bcb24b4f37934d9aa7ac17b4adaf89e7c76ef2eb"
+  integrity sha1-vLJLTzeTTZqnrBe0ra+J58du8us=
   dependencies:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
 aproba@^1.0.3:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
-  integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
+  resolved "https://registry.npm.alibaba-inc.com/aproba/download/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
+  integrity sha1-aALmJk79GMeQobDVF/DyYnvyyUo=
 
 are-we-there-yet@~1.1.2:
   version "1.1.5"
-  resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
-  integrity sha512-5hYdAkZlcG8tOLujVDTgCT+uPX0VnpAH28gWsLfzpXYm7wP6mp5Q/gYyR7YQ0cKVJcXJnl3j2kpBan13PtQf6w==
+  resolved "https://registry.npm.alibaba-inc.com/are-we-there-yet/download/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
+  integrity sha1-SzXClE8GKov82mZBB2A1D+nd/CE=
   dependencies:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
 arr-diff@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-4.0.0.tgz#d6461074febfec71e7e15235761a329a5dc7c520"
+  resolved "https://registry.npm.alibaba-inc.com/arr-diff/download/arr-diff-4.0.0.tgz#d6461074febfec71e7e15235761a329a5dc7c520"
   integrity sha1-1kYQdP6/7HHn4VI1dhoyml3HxSA=
 
 arr-flatten@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/arr-flatten/-/arr-flatten-1.1.0.tgz#36048bbff4e7b47e136644316c99669ea5ae91f1"
-  integrity sha512-L3hKV5R/p5o81R7O02IGnwpDmkp6E982XhtbuwSe3O4qOtMMMtodicASA1Cny2U+aCXcNpml+m4dPsvsJ3jatg==
+  resolved "https://registry.npm.alibaba-inc.com/arr-flatten/download/arr-flatten-1.1.0.tgz#36048bbff4e7b47e136644316c99669ea5ae91f1"
+  integrity sha1-NgSLv/TntH4TZkQxbJlmnqWukfE=
 
 arr-union@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/arr-union/-/arr-union-3.1.0.tgz#e39b09aea9def866a8f206e288af63919bae39c4"
+  resolved "https://registry.npm.alibaba-inc.com/arr-union/download/arr-union-3.1.0.tgz#e39b09aea9def866a8f206e288af63919bae39c4"
   integrity sha1-45sJrqne+Gao8gbiiK9jkZuuOcQ=
 
 array-filter@~0.0.0:
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/array-filter/-/array-filter-0.0.1.tgz#7da8cf2e26628ed732803581fd21f67cacd2eeec"
+  resolved "https://registry.npm.alibaba-inc.com/array-filter/download/array-filter-0.0.1.tgz#7da8cf2e26628ed732803581fd21f67cacd2eeec"
   integrity sha1-fajPLiZijtcygDWB/SH2fKzS7uw=
 
 array-flatten@1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
+  resolved "https://registry.npm.alibaba-inc.com/array-flatten/download/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
 
 array-map@~0.0.0:
   version "0.0.0"
-  resolved "https://registry.yarnpkg.com/array-map/-/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
+  resolved "https://registry.npm.alibaba-inc.com/array-map/download/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
   integrity sha1-iKK6tz0c97zVwbEYoAP2b2ZfpmI=
 
 array-reduce@~0.0.0:
   version "0.0.0"
-  resolved "https://registry.yarnpkg.com/array-reduce/-/array-reduce-0.0.0.tgz#173899d3ffd1c7d9383e4479525dbe278cab5f2b"
+  resolved "https://registry.npm.alibaba-inc.com/array-reduce/download/array-reduce-0.0.0.tgz#173899d3ffd1c7d9383e4479525dbe278cab5f2b"
   integrity sha1-FziZ0//Rx9k4PkR5Ul2+J4yrXys=
 
 array-union@^1.0.1:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/array-union/-/array-union-1.0.2.tgz#9a34410e4f4e3da23dea375be5be70f24778ec39"
+  resolved "https://registry.npm.alibaba-inc.com/array-union/download/array-union-1.0.2.tgz#9a34410e4f4e3da23dea375be5be70f24778ec39"
   integrity sha1-mjRBDk9OPaI96jdb5b5w8kd47Dk=
   dependencies:
     array-uniq "^1.0.1"
 
 array-uniq@^1.0.1:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.3.tgz#af6ac877a25cc7f74e058894753858dfdb24fdb6"
+  resolved "https://registry.npm.alibaba-inc.com/array-uniq/download/array-uniq-1.0.3.tgz#af6ac877a25cc7f74e058894753858dfdb24fdb6"
   integrity sha1-r2rId6Jcx/dOBYiUdThY39sk/bY=
 
 array-unique@^0.3.2:
   version "0.3.2"
-  resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
+  resolved "https://registry.npm.alibaba-inc.com/array-unique/download/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
 arrify@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
+  resolved "https://registry.npm.alibaba-inc.com/arrify/download/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
 assign-symbols@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
+  resolved "https://registry.npm.alibaba-inc.com/assign-symbols/download/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha1-WWZ/QfrdTyDMvCu5a41Pf3jsA2c=
 
 async-each@^1.0.1:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.3.tgz#b727dbf87d7651602f06f4d4ac387f47d91b0cbf"
-  integrity sha512-z/WhQ5FPySLdvREByI2vZiTWwCnF0moMJ1hK9YQwDTHKh6I7/uSckMetoRGb5UBZPC1z0jlw+n/XCgjeH7y1AQ==
+  resolved "https://registry.npm.alibaba-inc.com/async-each/download/async-each-1.0.3.tgz#b727dbf87d7651602f06f4d4ac387f47d91b0cbf"
+  integrity sha1-tyfb+H12UWAvBvTUrDh/R9kbDL8=
 
 async@^1.5.2:
   version "1.5.2"
-  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
+  resolved "https://registry.npm.alibaba-inc.com/async/download/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
 
 atob@^2.1.1:
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
-  integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+  resolved "https://registry.npm.alibaba-inc.com/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
+  integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
 babel-code-frame@^6.22.0:
   version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
+  resolved "https://registry.npm.alibaba-inc.com/babel-code-frame/download/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
   integrity sha1-Y/1D99weO7fONZR9uP42mj9Yx0s=
   dependencies:
     chalk "^1.1.3"
@@ -265,7 +265,7 @@ babel-code-frame@^6.22.0:
 
 babel-runtime@6.x:
   version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
+  resolved "https://registry.npm.alibaba-inc.com/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
   dependencies:
     core-js "^2.4.0"
@@ -273,13 +273,13 @@ babel-runtime@6.x:
 
 balanced-match@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+  resolved "https://registry.npm.alibaba-inc.com/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
 base@^0.11.1:
   version "0.11.2"
-  resolved "https://registry.yarnpkg.com/base/-/base-0.11.2.tgz#7bde5ced145b6d551a90db87f83c558b4eb48a8f"
-  integrity sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg==
+  resolved "https://registry.npm.alibaba-inc.com/base/download/base-0.11.2.tgz#7bde5ced145b6d551a90db87f83c558b4eb48a8f"
+  integrity sha1-e95c7RRbbVUakNuH+DxVi060io8=
   dependencies:
     cache-base "^1.0.1"
     class-utils "^0.3.5"
@@ -291,23 +291,23 @@ base@^0.11.1:
 
 big.js@^5.2.2:
   version "5.2.2"
-  resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
-  integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+  resolved "https://registry.npm.alibaba-inc.com/big.js/download/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
+  integrity sha1-ZfCvOC9Xi83HQr2cKB6cstd2gyg=
 
 binary-extensions@^1.0.0:
   version "1.13.1"
-  resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
-  integrity sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==
+  resolved "https://registry.npm.alibaba-inc.com/binary-extensions/download/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
+  integrity sha1-WYr+VHVbKGilMw0q/51Ou1Mgm2U=
 
 binary-mirror-config@1.20.3:
   version "1.20.3"
-  resolved "https://registry.yarnpkg.com/binary-mirror-config/-/binary-mirror-config-1.20.3.tgz#b07a2ae2c8eee3b6b4f18a5aeb36d155026255c1"
-  integrity sha512-yz/iVTjWQ2ewtnYf3k56Ya0OUch0hdIMPdanXl2Za3gmRLaQGlzit7ZTs+/3S6T0iBud7nQrrldFihf4XVrvlw==
+  resolved "https://registry.npm.alibaba-inc.com/binary-mirror-config/download/binary-mirror-config-1.20.3.tgz#b07a2ae2c8eee3b6b4f18a5aeb36d155026255c1"
+  integrity sha1-sHoq4sju47a08Ypa6zbRVQJiVcE=
 
 body-parser@1.19.0:
   version "1.19.0"
-  resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
-  integrity sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
+  resolved "https://registry.npm.alibaba-inc.com/body-parser/download/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
+  integrity sha1-lrJwnlfJxOCab9Zqj9l5hE9p8Io=
   dependencies:
     bytes "3.1.0"
     content-type "~1.0.4"
@@ -322,16 +322,16 @@ body-parser@1.19.0:
 
 brace-expansion@^1.1.7:
   version "1.1.11"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
-  integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+  resolved "https://registry.npm.alibaba-inc.com/brace-expansion/download/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
+  integrity sha1-PH/L9SnYcibz0vUrlm/1Jx60Qd0=
   dependencies:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
 braces@^2.3.1, braces@^2.3.2:
   version "2.3.2"
-  resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
-  integrity sha512-aNdbnj9P8PjdXU4ybaWLK2IF3jc/EoDYbC7AazW6to3TRsfXxscC9UXOB5iDiEQrkyIbWp2SLQda4+QAa7nc3w==
+  resolved "https://registry.npm.alibaba-inc.com/braces/download/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
+  integrity sha1-WXn9PxTNUxVl5fot8av/8d+u5yk=
   dependencies:
     arr-flatten "^1.1.0"
     array-unique "^0.3.2"
@@ -346,8 +346,8 @@ braces@^2.3.1, braces@^2.3.2:
 
 browserslist@4.5.4:
   version "4.5.4"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.5.4.tgz#166c4ecef3b51737a42436ea8002aeea466ea2c7"
-  integrity sha512-rAjx494LMjqKnMPhFkuLmLp8JWEX0o8ADTGeAbOqaF+XCvYLreZrG5uVjnPBlAQ8REZK4pzXGvp0bWgrFtKaag==
+  resolved "https://registry.npm.alibaba-inc.com/browserslist/download/browserslist-4.5.4.tgz#166c4ecef3b51737a42436ea8002aeea466ea2c7"
+  integrity sha1-FmxOzvO1FzekJDbqgAKu6kZuosc=
   dependencies:
     caniuse-lite "^1.0.30000955"
     electron-to-chromium "^1.3.122"
@@ -355,18 +355,18 @@ browserslist@4.5.4:
 
 bytes@3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
+  resolved "https://registry.npm.alibaba-inc.com/bytes/download/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
   integrity sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=
 
 bytes@3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
-  integrity sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
+  resolved "https://registry.npm.alibaba-inc.com/bytes/download/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
+  integrity sha1-9s95M6Ng4FiPqf3oVlHNx/gF0fY=
 
 cache-base@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
-  integrity sha512-AKcdTnFSWATd5/GCPRxr2ChwIJ85CeyrEyjRHlKxQ56d4XJMGym0uAiKn0xbLOGOl3+yRpOTi484dVCEc5AUzQ==
+  resolved "https://registry.npm.alibaba-inc.com/cache-base/download/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
+  integrity sha1-Cn9GQWgxyLZi7jb+TnxZ129marI=
   dependencies:
     collection-visit "^1.0.0"
     component-emitter "^1.2.1"
@@ -380,8 +380,8 @@ cache-base@^1.0.1:
 
 cacheable-request@^6.0.0:
   version "6.1.0"
-  resolved "https://registry.yarnpkg.com/cacheable-request/-/cacheable-request-6.1.0.tgz#20ffb8bd162ba4be11e9567d823db651052ca912"
-  integrity sha512-Oj3cAGPCqOZX7Rz64Uny2GYAZNliQSqfbePrgAQ1wKAihYmCUnraBtJtKcGR4xz7wF+LoJC+ssFZvv5BgF9Igg==
+  resolved "https://registry.npm.alibaba-inc.com/cacheable-request/download/cacheable-request-6.1.0.tgz#20ffb8bd162ba4be11e9567d823db651052ca912"
+  integrity sha1-IP+4vRYrpL4R6VZ9gj22UQUsqRI=
   dependencies:
     clone-response "^1.0.2"
     get-stream "^5.1.0"
@@ -393,23 +393,23 @@ cacheable-request@^6.0.0:
 
 call-me-maybe@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/call-me-maybe/-/call-me-maybe-1.0.1.tgz#26d208ea89e37b5cbde60250a15f031c16a4d66b"
+  resolved "https://registry.npm.alibaba-inc.com/call-me-maybe/download/call-me-maybe-1.0.1.tgz#26d208ea89e37b5cbde60250a15f031c16a4d66b"
   integrity sha1-JtII6onje1y95gJQoV8DHBak1ms=
 
 callsites@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
-  integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
+  resolved "https://registry.npm.alibaba-inc.com/callsites/download/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
+  integrity sha1-s2MKvYlDQy9Us/BRkjjjPNffL3M=
 
 caniuse-lite@^1.0.30000955:
-  version "1.0.30001008"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001008.tgz#b8841b1df78a9f5ed9702537ef592f1f8772c0d9"
-  integrity sha512-b8DJyb+VVXZGRgJUa30cbk8gKHZ3LOZTBLaUEEVr2P4xpmFigOCc62CO4uzquW641Ouq1Rm9N+rWLWdSYDaDIw==
+  version "1.0.30001012"
+  resolved "https://registry.npm.alibaba-inc.com/caniuse-lite/download/caniuse-lite-1.0.30001012.tgz#653ec635e815b9e0fb801890923b0c2079eb34ec"
+  integrity sha1-ZT7GNegVueD7gBiQkjsMIHnrNOw=
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
-  integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
+  resolved "https://registry.npm.alibaba-inc.com/chalk/download/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
+  integrity sha1-zUJUFnelQzPPVBpJEIwUMrRMlCQ=
   dependencies:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
@@ -417,7 +417,7 @@ chalk@2.4.2, chalk@^2.0.0, chalk@^2.4.1, chalk@^2.4.2:
 
 chalk@^1.1.3:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
+  resolved "https://registry.npm.alibaba-inc.com/chalk/download/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
   integrity sha1-qBFcVeSnAv5NFQq9OHKCKn4J/Jg=
   dependencies:
     ansi-styles "^2.2.1"
@@ -428,13 +428,13 @@ chalk@^1.1.3:
 
 chardet@^0.7.0:
   version "0.7.0"
-  resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
-  integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+  resolved "https://registry.npm.alibaba-inc.com/chardet/download/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
+  integrity sha1-kAlISfCTfy7twkJdDSip5fDLrZ4=
 
 chokidar@^2.0.4:
   version "2.1.8"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
-  integrity sha512-ZmZUazfOzf0Nve7duiCKD23PFSCs4JPoYyccjUFF3aQkQadqBhfzhjkwBH2mNOG9cTBwhamM37EIsIkZw3nRgg==
+  resolved "https://registry.npm.alibaba-inc.com/chokidar/download/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
+  integrity sha1-gEs6e2qZNYw8XGHnHYco8EHP+Rc=
   dependencies:
     anymatch "^2.0.0"
     async-each "^1.0.1"
@@ -452,13 +452,13 @@ chokidar@^2.0.4:
 
 chownr@^1.1.1:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.3.tgz#42d837d5239688d55f303003a508230fa6727142"
-  integrity sha512-i70fVHhmV3DtTl6nqvZOnIjbY0Pe4kAUjwHj8z0zAdgBtYrJyYwLKCCuRBQ5ppkyL0AkN7HKRnETdmdp1zqNXw==
+  resolved "https://registry.npm.alibaba-inc.com/chownr/download/chownr-1.1.3.tgz#42d837d5239688d55f303003a508230fa6727142"
+  integrity sha1-Qtg31SOWiNVfMDADpQgjD6ZycUI=
 
 class-utils@^0.3.5:
   version "0.3.6"
-  resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
-  integrity sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg==
+  resolved "https://registry.npm.alibaba-inc.com/class-utils/download/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
+  integrity sha1-+TNprouafOAv1B+q0MqDAzGQxGM=
   dependencies:
     arr-union "^3.1.0"
     define-property "^0.2.5"
@@ -467,44 +467,44 @@ class-utils@^0.3.5:
 
 classnames@^2.2.6:
   version "2.2.6"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
-  integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+  resolved "https://registry.npm.alibaba-inc.com/classnames/download/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
 
 clear-module@4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/clear-module/-/clear-module-4.0.0.tgz#9bfc5f5370c7aea2dc9eacd559bd25a106bd10fe"
-  integrity sha512-JiLAmWcshGbujtuyOdDE9GRmdSV5Ud2x+4kJ79hAZSllWs2Kwaf8NY0wq9DOswypcvSL09FGkVq2JoVgaXKbsw==
+  resolved "https://registry.npm.alibaba-inc.com/clear-module/download/clear-module-4.0.0.tgz#9bfc5f5370c7aea2dc9eacd559bd25a106bd10fe"
+  integrity sha1-m/xfU3DHrqLcnqzVWb0loQa9EP4=
   dependencies:
     parent-module "^2.0.0"
     resolve-from "^5.0.0"
 
 cli-cursor@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"
+  resolved "https://registry.npm.alibaba-inc.com/cli-cursor/download/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"
   integrity sha1-s12sN2R5+sw+lHR9QdDQ9SOP/LU=
   dependencies:
     restore-cursor "^2.0.0"
 
 cli-width@^2.0.0:
   version "2.2.0"
-  resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
+  resolved "https://registry.npm.alibaba-inc.com/cli-width/download/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
   integrity sha1-/xnt6Kml5XkyQUewwR8PvLq+1jk=
 
 clone-response@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/clone-response/-/clone-response-1.0.2.tgz#d1dc973920314df67fbeb94223b4ee350239e96b"
+  resolved "https://registry.npm.alibaba-inc.com/clone-response/download/clone-response-1.0.2.tgz#d1dc973920314df67fbeb94223b4ee350239e96b"
   integrity sha1-0dyXOSAxTfZ/vrlCI7TuNQI56Ws=
   dependencies:
     mimic-response "^1.0.0"
 
 code-point-at@^1.0.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
+  resolved "https://registry.npm.alibaba-inc.com/code-point-at/download/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
 collection-visit@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"
+  resolved "https://registry.npm.alibaba-inc.com/collection-visit/download/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"
   integrity sha1-S8A3PBZLwykbTTaMgpzxqApZ3KA=
   dependencies:
     map-visit "^1.0.0"
@@ -512,32 +512,32 @@ collection-visit@^1.0.0:
 
 color-convert@^1.9.0:
   version "1.9.3"
-  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
-  integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
+  resolved "https://registry.npm.alibaba-inc.com/color-convert/download/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
+  integrity sha1-u3GFBpDh8TZWfeYp0tVHHe2kweg=
   dependencies:
     color-name "1.1.3"
 
 color-name@1.1.3:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
+  resolved "https://registry.npm.alibaba-inc.com/color-name/download/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
   integrity sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
 
 component-emitter@^1.2.1:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
-  integrity sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
+  resolved "https://registry.npm.alibaba-inc.com/component-emitter/download/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
+  integrity sha1-FuQHD7qK4ptnnyIVhT7hgasuq8A=
 
 compressible@~2.0.16:
   version "2.0.17"
-  resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.17.tgz#6e8c108a16ad58384a977f3a482ca20bff2f38c1"
-  integrity sha512-BGHeLCK1GV7j1bSmQQAi26X+GgWcTjLr/0tzSvMCl3LH1w1IJ4PFSPoV5316b30cneTziC+B1a+3OjoSUcQYmw==
+  resolved "https://registry.npm.alibaba-inc.com/compressible/download/compressible-2.0.17.tgz#6e8c108a16ad58384a977f3a482ca20bff2f38c1"
+  integrity sha1-bowQihatWDhKl386SCyiC/8vOME=
   dependencies:
     mime-db ">= 1.40.0 < 2"
 
 compression@1.7.4:
   version "1.7.4"
-  resolved "https://registry.yarnpkg.com/compression/-/compression-1.7.4.tgz#95523eff170ca57c29a0ca41e6fe131f41e5bb8f"
-  integrity sha512-jaSIDzP9pZVS4ZfQ+TzvtiWhdpFhE2RDHz8QJkpX9SIpLq88VueF5jJw6t+6CUQcAoA6t+x89MLrWAqpfDE8iQ==
+  resolved "https://registry.npm.alibaba-inc.com/compression/download/compression-1.7.4.tgz#95523eff170ca57c29a0ca41e6fe131f41e5bb8f"
+  integrity sha1-lVI+/xcMpXwpoMpB5v4TH0Hlu48=
   dependencies:
     accepts "~1.3.5"
     bytes "3.0.0"
@@ -549,55 +549,55 @@ compression@1.7.4:
 
 concat-map@0.0.1:
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
+  resolved "https://registry.npm.alibaba-inc.com/concat-map/download/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
+  resolved "https://registry.npm.alibaba-inc.com/console-control-strings/download/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
 content-disposition@0.5.3:
   version "0.5.3"
-  resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.3.tgz#e130caf7e7279087c5616c2007d0485698984fbd"
-  integrity sha512-ExO0774ikEObIAEV9kDo50o+79VCUdEB6n6lzKgGwupcVeRlhrj3qGAfwq8G6uBJjkqLrhT0qEYFcWng8z1z0g==
+  resolved "https://registry.npm.alibaba-inc.com/content-disposition/download/content-disposition-0.5.3.tgz#e130caf7e7279087c5616c2007d0485698984fbd"
+  integrity sha1-4TDK9+cnkIfFYWwgB9BIVpiYT70=
   dependencies:
     safe-buffer "5.1.2"
 
 content-type@~1.0.4:
   version "1.0.4"
-  resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
-  integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
+  resolved "https://registry.npm.alibaba-inc.com/content-type/download/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
+  integrity sha1-4TjMdeBAxyexlm/l5fjJruJW/js=
 
 cookie-signature@1.0.6:
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
+  resolved "https://registry.npm.alibaba-inc.com/cookie-signature/download/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
   integrity sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
 
 cookie@0.4.0:
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
-  integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
+  resolved "https://registry.npm.alibaba-inc.com/cookie/download/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
+  integrity sha1-vrQ35wIrO21JAZ0IhmUwPr6cFLo=
 
 copy-descriptor@^0.1.0:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
+  resolved "https://registry.npm.alibaba-inc.com/copy-descriptor/download/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
 core-js@^2.4.0:
   version "2.6.10"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.10.tgz#8a5b8391f8cc7013da703411ce5b585706300d7f"
-  integrity sha512-I39t74+4t+zau64EN1fE5v2W31Adtc/REhzWN+gWRRXg6WH5qAsZm62DHpQ1+Yhe4047T55jvzz7MUqF/dBBlA==
+  resolved "https://registry.npm.alibaba-inc.com/core-js/download/core-js-2.6.10.tgz#8a5b8391f8cc7013da703411ce5b585706300d7f"
+  integrity sha1-iluDkfjMcBPacDQRzltYVwYwDX8=
 
 core-util-is@~1.0.0:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
+  resolved "https://registry.npm.alibaba-inc.com/core-util-is/download/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
 cross-spawn@6.0.5:
   version "6.0.5"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
-  integrity sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==
+  resolved "https://registry.npm.alibaba-inc.com/cross-spawn/download/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
+  integrity sha1-Sl7Hxk364iw6FBJNus3uhG2Ay8Q=
   dependencies:
     nice-try "^1.0.4"
     path-key "^2.0.1"
@@ -607,8 +607,8 @@ cross-spawn@6.0.5:
 
 cross-spawn@^7.0.0:
   version "7.0.1"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
-  integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
+  resolved "https://registry.npm.alibaba-inc.com/cross-spawn/download/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
+  integrity sha1-CrVihuD3wk4VPQTMKqAn5DqaXRQ=
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
@@ -616,177 +616,177 @@ cross-spawn@^7.0.0:
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
-  integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
+  resolved "https://registry.npm.alibaba-inc.com/debug/download/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
+  integrity sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8=
   dependencies:
     ms "2.0.0"
 
 debug@4.1.1, debug@^4.1.1:
   version "4.1.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
-  integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
+  resolved "https://registry.npm.alibaba-inc.com/debug/download/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
+  integrity sha1-O3ImAlUQnGtYnO4FDx1RYTlmR5E=
   dependencies:
     ms "^2.1.1"
 
 debug@^3.2.5, debug@^3.2.6:
   version "3.2.6"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
-  integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
+  resolved "https://registry.npm.alibaba-inc.com/debug/download/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
+  integrity sha1-6D0X3hbYp++3cX7b5fsQE17uYps=
   dependencies:
     ms "^2.1.1"
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+  resolved "https://registry.npm.alibaba-inc.com/decode-uri-component/download/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
 decompress-response@^3.3.0:
   version "3.3.0"
-  resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
+  resolved "https://registry.npm.alibaba-inc.com/decompress-response/download/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
   integrity sha1-gKTdMjdIOEv6JICDYirt7Jgq3/M=
   dependencies:
     mimic-response "^1.0.0"
 
 deep-extend@^0.6.0:
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
-  integrity sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==
+  resolved "https://registry.npm.alibaba-inc.com/deep-extend/download/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
+  integrity sha1-xPp8lUBKF6nD6Mp+FTcxK3NjMKw=
 
 defer-to-connect@^1.0.1:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-1.1.0.tgz#b41bd7efa8508cef13f8456975f7a278c72833fd"
-  integrity sha512-WE2sZoctWm/v4smfCAdjYbrfS55JiMRdlY9ZubFhsYbteCK9+BvAx4YV7nPjYM6ZnX5BcoVKwfmyx9sIFTgQMQ==
+  resolved "https://registry.npm.alibaba-inc.com/defer-to-connect/download/defer-to-connect-1.1.0.tgz#b41bd7efa8508cef13f8456975f7a278c72833fd"
+  integrity sha1-tBvX76hQjO8T+EVpdfeieMcoM/0=
 
 define-property@^0.2.5:
   version "0.2.5"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"
+  resolved "https://registry.npm.alibaba-inc.com/define-property/download/define-property-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"
   integrity sha1-w1se+RjsPJkPmlvFe+BKrOxcgRY=
   dependencies:
     is-descriptor "^0.1.0"
 
 define-property@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-1.0.0.tgz#769ebaaf3f4a63aad3af9e8d304c9bbe79bfb0e6"
+  resolved "https://registry.npm.alibaba-inc.com/define-property/download/define-property-1.0.0.tgz#769ebaaf3f4a63aad3af9e8d304c9bbe79bfb0e6"
   integrity sha1-dp66rz9KY6rTr56NMEybvnm/sOY=
   dependencies:
     is-descriptor "^1.0.0"
 
 define-property@^2.0.2:
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-2.0.2.tgz#d459689e8d654ba77e02a817f8710d702cb16e9d"
-  integrity sha512-jwK2UV4cnPpbcG7+VRARKTZPUWowwXA8bzH5NP6ud0oeAxyYPuGZUAC7hMugpCdz4BeSZl2Dl9k66CHJ/46ZYQ==
+  resolved "https://registry.npm.alibaba-inc.com/define-property/download/define-property-2.0.2.tgz#d459689e8d654ba77e02a817f8710d702cb16e9d"
+  integrity sha1-1Flono1lS6d+AqgX+HENcCyxbp0=
   dependencies:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
 delegates@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
+  resolved "https://registry.npm.alibaba-inc.com/delegates/download/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
 depd@~1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
+  resolved "https://registry.npm.alibaba-inc.com/depd/download/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
 
 destroy@~1.0.4:
   version "1.0.4"
-  resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
+  resolved "https://registry.npm.alibaba-inc.com/destroy/download/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
 detect-libc@^1.0.2:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
+  resolved "https://registry.npm.alibaba-inc.com/detect-libc/download/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
 
 detect-port-alt@1.1.6:
   version "1.1.6"
-  resolved "https://registry.yarnpkg.com/detect-port-alt/-/detect-port-alt-1.1.6.tgz#24707deabe932d4a3cf621302027c2b266568275"
-  integrity sha512-5tQykt+LqfJFBEYaDITx7S7cR7mJ/zQmLXZ2qt5w04ainYZw6tBf9dBunMjVeVOdYVRUzUOE4HkY5J7+uttb5Q==
+  resolved "https://registry.npm.alibaba-inc.com/detect-port-alt/download/detect-port-alt-1.1.6.tgz#24707deabe932d4a3cf621302027c2b266568275"
+  integrity sha1-JHB96r6TLUo89iEwICfCsmZWgnU=
   dependencies:
     address "^1.0.1"
     debug "^2.6.0"
 
 dir-glob@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-2.0.0.tgz#0b205d2b6aef98238ca286598a8204d29d0a0034"
-  integrity sha512-37qirFDz8cA5fimp9feo43fSuRo2gHwaIn6dXL8Ber1dGwUosDrGZeCCXq57WnIqE4aQ+u3eQZzsk1yOzhdwag==
+  resolved "https://registry.npm.alibaba-inc.com/dir-glob/download/dir-glob-2.0.0.tgz#0b205d2b6aef98238ca286598a8204d29d0a0034"
+  integrity sha1-CyBdK2rvmCOMooZZioIE0p0KADQ=
   dependencies:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
 duplexer3@^0.1.4:
   version "0.1.4"
-  resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
+  resolved "https://registry.npm.alibaba-inc.com/duplexer3/download/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
 
 duplexer@^0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
+  resolved "https://registry.npm.alibaba-inc.com/duplexer/download/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
   integrity sha1-rOb/gIwc5mtX0ev5eXessCM0z8E=
 
 ee-first@1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+  resolved "https://registry.npm.alibaba-inc.com/ee-first/download/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.122:
-  version "1.3.302"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.302.tgz#4c7ba3d56166507a56f7eb603fdde1ed701f5ac8"
-  integrity sha512-1qConyiVEbj4xZRBXqtGR003+9tV0rJF0PS6aeO0Ln/UL637js9hdwweCl07meh/kJoI2N4W8q3R3g3F5z46ww==
+  version "1.3.314"
+  resolved "https://registry.npm.alibaba-inc.com/electron-to-chromium/download/electron-to-chromium-1.3.314.tgz#c186a499ed2c9057bce9eb8dca294d6d5450facc"
+  integrity sha1-wYakme0skFe86euNyilNbVRQ+sw=
 
 emojis-list@^2.0.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
+  resolved "https://registry.npm.alibaba-inc.com/emojis-list/download/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
 
 empty-dir@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/empty-dir/-/empty-dir-2.0.0.tgz#c59b4e73b9909d3c4bd49c1fbdaea52031fe22ac"
-  integrity sha512-XAedXlNAQZxMmbllXY9cxuESlNVjZ8xd67bSIUZwbS7VoLyhlNehVN3Iy35yDTGFHKR1opBRgORkp3am0so+WQ==
+  resolved "https://registry.npm.alibaba-inc.com/empty-dir/download/empty-dir-2.0.0.tgz#c59b4e73b9909d3c4bd49c1fbdaea52031fe22ac"
+  integrity sha1-xZtOc7mQnTxL1Jwfva6lIDH+Iqw=
 
 encodeurl@~1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
+  resolved "https://registry.npm.alibaba-inc.com/encodeurl/download/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
   integrity sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
 
 end-of-stream@^1.1.0:
   version "1.4.4"
-  resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
-  integrity sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==
+  resolved "https://registry.npm.alibaba-inc.com/end-of-stream/download/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
+  integrity sha1-WuZKX0UFe682JuwU2gyl5LJDHrA=
   dependencies:
     once "^1.4.0"
 
 escape-html@~1.0.3:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
+  resolved "https://registry.npm.alibaba-inc.com/escape-html/download/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
 
 escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
-  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+  resolved "https://registry.npm.alibaba-inc.com/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
 esutils@^2.0.2:
   version "2.0.3"
-  resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
-  integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
+  resolved "https://registry.npm.alibaba-inc.com/esutils/download/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
+  integrity sha1-dNLrTeC42hKTcRkQ1Qd1ubcQ72Q=
 
 etag@~1.8.1:
   version "1.8.1"
-  resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
+  resolved "https://registry.npm.alibaba-inc.com/etag/download/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
 eventsource@^1.0.7:
   version "1.0.7"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.0.7.tgz#8fbc72c93fcd34088090bc0a4e64f4b5cee6d8d0"
-  integrity sha512-4Ln17+vVT0k8aWq+t/bF5arcS3EpT9gYtW66EPacdj/mAFevznsnyoHLPy2BA8gbIQeIHoPsvwmfBftfcG//BQ==
+  resolved "https://registry.npm.alibaba-inc.com/eventsource/download/eventsource-1.0.7.tgz#8fbc72c93fcd34088090bc0a4e64f4b5cee6d8d0"
+  integrity sha1-j7xyyT/NNAiAkLwKTmT0tc7m2NA=
   dependencies:
     original "^1.0.0"
 
 expand-brackets@^2.1.4:
   version "2.1.4"
-  resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
+  resolved "https://registry.npm.alibaba-inc.com/expand-brackets/download/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
   integrity sha1-t3c14xXOMPa27/D4OwQVGiJEliI=
   dependencies:
     debug "^2.3.3"
@@ -799,8 +799,8 @@ expand-brackets@^2.1.4:
 
 express@4.17.1:
   version "4.17.1"
-  resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
-  integrity sha512-mHJ9O79RqluphRrcw2X/GTh3k9tVv8YcoyY4Kkh4WDMUYKRZUq0h1o0w2rrrxBqM7VoeUVqgb27xlEMXTnYt4g==
+  resolved "https://registry.npm.alibaba-inc.com/express/download/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
+  integrity sha1-RJH8OGBc9R+GKdOcK10Cb5ikwTQ=
   dependencies:
     accepts "~1.3.7"
     array-flatten "1.1.1"
@@ -835,14 +835,14 @@ express@4.17.1:
 
 extend-shallow@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/extend-shallow/-/extend-shallow-2.0.1.tgz#51af7d614ad9a9f610ea1bafbb989d6b1c56890f"
+  resolved "https://registry.npm.alibaba-inc.com/extend-shallow/download/extend-shallow-2.0.1.tgz#51af7d614ad9a9f610ea1bafbb989d6b1c56890f"
   integrity sha1-Ua99YUrZqfYQ6huvu5idaxxWiQ8=
   dependencies:
     is-extendable "^0.1.0"
 
 extend-shallow@^3.0.0, extend-shallow@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/extend-shallow/-/extend-shallow-3.0.2.tgz#26a71aaf073b39fb2127172746131c2704028db8"
+  resolved "https://registry.npm.alibaba-inc.com/extend-shallow/download/extend-shallow-3.0.2.tgz#26a71aaf073b39fb2127172746131c2704028db8"
   integrity sha1-Jqcarwc7OfshJxcnRhMcJwQCjbg=
   dependencies:
     assign-symbols "^1.0.0"
@@ -850,8 +850,8 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
 
 external-editor@^3.0.3:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/external-editor/-/external-editor-3.1.0.tgz#cb03f740befae03ea4d283caed2741a83f335495"
-  integrity sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==
+  resolved "https://registry.npm.alibaba-inc.com/external-editor/download/external-editor-3.1.0.tgz#cb03f740befae03ea4d283caed2741a83f335495"
+  integrity sha1-ywP3QL764D6k0oPK7SdBqD8zVJU=
   dependencies:
     chardet "^0.7.0"
     iconv-lite "^0.4.24"
@@ -859,8 +859,8 @@ external-editor@^3.0.3:
 
 extglob@^2.0.4:
   version "2.0.4"
-  resolved "https://registry.yarnpkg.com/extglob/-/extglob-2.0.4.tgz#ad00fe4dc612a9232e8718711dc5cb5ab0285543"
-  integrity sha512-Nmb6QXkELsuBr24CJSkilo6UHHgbekK5UiZgfE6UHD3Eb27YC6oD+bhcT+tJ6cl8dmsgdQxnWlcry8ksBIBLpw==
+  resolved "https://registry.npm.alibaba-inc.com/extglob/download/extglob-2.0.4.tgz#ad00fe4dc612a9232e8718711dc5cb5ab0285543"
+  integrity sha1-rQD+TcYSqSMuhxhxHcXLWrAoVUM=
   dependencies:
     array-unique "^0.3.2"
     define-property "^1.0.0"
@@ -873,8 +873,8 @@ extglob@^2.0.4:
 
 fast-glob@^2.0.2:
   version "2.2.7"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-2.2.7.tgz#6953857c3afa475fff92ee6015d52da70a4cd39d"
-  integrity sha512-g1KuQwHOZAmOZMuBtHdxDtju+T2RT8jgCC9aANsbpdiDDTSnjgfuVsIBNKbUeJI3oKMRExcfNDtJl4OhbffMsw==
+  resolved "https://registry.npm.alibaba-inc.com/fast-glob/download/fast-glob-2.2.7.tgz#6953857c3afa475fff92ee6015d52da70a4cd39d"
+  integrity sha1-aVOFfDr6R1//ku5gFdUtpwpM050=
   dependencies:
     "@mrmlnc/readdir-enhanced" "^2.2.1"
     "@nodelib/fs.stat" "^1.1.2"
@@ -885,33 +885,33 @@ fast-glob@^2.0.2:
 
 faye-websocket@^0.10.0:
   version "0.10.0"
-  resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
+  resolved "https://registry.npm.alibaba-inc.com/faye-websocket/download/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
   integrity sha1-TkkvjQTftviQA1B/btvy1QHnxvQ=
   dependencies:
     websocket-driver ">=0.5.1"
 
 faye-websocket@~0.11.1:
   version "0.11.3"
-  resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.3.tgz#5c0e9a8968e8912c286639fde977a8b209f2508e"
-  integrity sha512-D2y4bovYpzziGgbHYtGCMjlJM36vAl/y+xUyn1C+FVx8szd1E+86KwVw6XvYSzOP8iMpm1X0I4xJD+QtUb36OA==
+  resolved "https://registry.npm.alibaba-inc.com/faye-websocket/download/faye-websocket-0.11.3.tgz#5c0e9a8968e8912c286639fde977a8b209f2508e"
+  integrity sha1-XA6aiWjokSwoZjn96XeosgnyUI4=
   dependencies:
     websocket-driver ">=0.5.1"
 
 figures@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/figures/-/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"
+  resolved "https://registry.npm.alibaba-inc.com/figures/download/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"
   integrity sha1-OrGi0qYsi/tDGgyUy3l6L84nyWI=
   dependencies:
     escape-string-regexp "^1.0.5"
 
 filesize@3.6.1:
   version "3.6.1"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-3.6.1.tgz#090bb3ee01b6f801a8a8be99d31710b3422bb317"
-  integrity sha512-7KjR1vv6qnicaPMi1iiTcI85CyYwRO/PSFCu6SvqL8jN2Wjt/NIYQTFtFs7fSDCYOstUkEWIQGFUg5YZQfjlcg==
+  resolved "https://registry.npm.alibaba-inc.com/filesize/download/filesize-3.6.1.tgz#090bb3ee01b6f801a8a8be99d31710b3422bb317"
+  integrity sha1-CQuz7gG2+AGoqL6Z0xcQs0Irsxc=
 
 fill-range@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
+  resolved "https://registry.npm.alibaba-inc.com/fill-range/download/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
   integrity sha1-1USBHUKPmOsGpj3EAtJAPDKMOPc=
   dependencies:
     extend-shallow "^2.0.1"
@@ -921,8 +921,8 @@ fill-range@^4.0.0:
 
 finalhandler@~1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-1.1.2.tgz#b7e7d000ffd11938d0fdb053506f6ebabe9f587d"
-  integrity sha512-aAWcW57uxVNrQZqFXjITpW3sIUQmHGG3qSb9mUah9MgMC4NeWhNOlNjXEYq3HjRAvL6arUviZGGJsBg6z0zsWA==
+  resolved "https://registry.npm.alibaba-inc.com/finalhandler/download/finalhandler-1.1.2.tgz#b7e7d000ffd11938d0fdb053506f6ebabe9f587d"
+  integrity sha1-t+fQAP/RGTjQ/bBTUG9uur6fWH0=
   dependencies:
     debug "2.6.9"
     encodeurl "~1.0.2"
@@ -934,27 +934,27 @@ finalhandler@~1.1.2:
 
 find-up@3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/find-up/-/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
-  integrity sha512-1yD6RmLI1XBfxugvORwlck6f75tYL+iR0jqwsOrOxMZyGYqUuDhJ0l4AXdO1iX/FTs9cBAMEk1gWSEx1kSbylg==
+  resolved "https://registry.npm.alibaba-inc.com/find-up/download/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
+  integrity sha1-SRafHXmTQwZG2mHsxa41XCHJe3M=
   dependencies:
     locate-path "^3.0.0"
 
 find-up@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
+  resolved "https://registry.npm.alibaba-inc.com/find-up/download/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
   integrity sha1-RdG35QbHF93UgndaK3eSCjwMV6c=
   dependencies:
     locate-path "^2.0.0"
 
 for-in@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
+  resolved "https://registry.npm.alibaba-inc.com/for-in/download/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
 fork-ts-checker-webpack-plugin@1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-1.1.1.tgz#caf2a210778fb1e171b6993ca0a40f9b6589e3b7"
-  integrity sha512-gqWAEMLlae/oeVnN6RWCAhesOJMswAN1MaKNqhhjXHV5O0/rTUjWI4UbgQHdlrVbCnb+xLotXmJbBlC66QmpFw==
+  resolved "https://registry.npm.alibaba-inc.com/fork-ts-checker-webpack-plugin/download/fork-ts-checker-webpack-plugin-1.1.1.tgz#caf2a210778fb1e171b6993ca0a40f9b6589e3b7"
+  integrity sha1-yvKiEHePseFxtpk8oKQPm2WJ47c=
   dependencies:
     babel-code-frame "^6.22.0"
     chalk "^2.4.1"
@@ -967,44 +967,44 @@ fork-ts-checker-webpack-plugin@1.1.1:
 
 forwarded@~0.1.2:
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
+  resolved "https://registry.npm.alibaba-inc.com/forwarded/download/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
 fragment-cache@^0.2.1:
   version "0.2.1"
-  resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
+  resolved "https://registry.npm.alibaba-inc.com/fragment-cache/download/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
   integrity sha1-QpD60n8T6Jvn8zeZxrxaCr//DRk=
   dependencies:
     map-cache "^0.2.2"
 
 fresh@0.5.2:
   version "0.5.2"
-  resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
+  resolved "https://registry.npm.alibaba-inc.com/fresh/download/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
   integrity sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
 
 fs-minipass@^1.2.5:
   version "1.2.7"
-  resolved "https://registry.yarnpkg.com/fs-minipass/-/fs-minipass-1.2.7.tgz#ccff8570841e7fe4265693da88936c55aed7f7c7"
-  integrity sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==
+  resolved "https://registry.npm.alibaba-inc.com/fs-minipass/download/fs-minipass-1.2.7.tgz#ccff8570841e7fe4265693da88936c55aed7f7c7"
+  integrity sha1-zP+FcIQef+QmVpPaiJNsVa7X98c=
   dependencies:
     minipass "^2.6.0"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
+  resolved "https://registry.npm.alibaba-inc.com/fs.realpath/download/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 fsevents@^1.2.7:
   version "1.2.9"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.9.tgz#3f5ed66583ccd6f400b5a00db6f7e861363e388f"
-  integrity sha512-oeyj2H3EjjonWcFjD5NvZNE9Rqe4UW+nQBU2HNeKw0koVLEFIhtyETyAakeAM3de7Z/SW5kcA+fZUait9EApnw==
+  resolved "https://registry.npm.alibaba-inc.com/fsevents/download/fsevents-1.2.9.tgz#3f5ed66583ccd6f400b5a00db6f7e861363e388f"
+  integrity sha1-P17WZYPM1vQAtaANtvfoYTY+OI8=
   dependencies:
     nan "^2.12.1"
     node-pre-gyp "^0.12.0"
 
 gauge@~2.7.3:
   version "2.7.4"
-  resolved "https://registry.yarnpkg.com/gauge/-/gauge-2.7.4.tgz#2c03405c7538c39d7eb37b317022e325fb018bf7"
+  resolved "https://registry.npm.alibaba-inc.com/gauge/download/gauge-2.7.4.tgz#2c03405c7538c39d7eb37b317022e325fb018bf7"
   integrity sha1-LANAXHU4w51+s3sxcCLjJfsBi/c=
   dependencies:
     aproba "^1.0.3"
@@ -1018,26 +1018,26 @@ gauge@~2.7.3:
 
 get-stream@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-4.1.0.tgz#c1b255575f3dc21d59bfc79cd3d2b46b1c3a54b5"
-  integrity sha512-GMat4EJ5161kIy2HevLlr4luNjBgvmj413KaQA7jt4V8B4RDsfpHk7WQ9GVqfYyyx8OS/L66Kox+rJRNklLK7w==
+  resolved "https://registry.npm.alibaba-inc.com/get-stream/download/get-stream-4.1.0.tgz#c1b255575f3dc21d59bfc79cd3d2b46b1c3a54b5"
+  integrity sha1-wbJVV189wh1Zv8ec09K0axw6VLU=
   dependencies:
     pump "^3.0.0"
 
 get-stream@^5.1.0:
   version "5.1.0"
-  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-5.1.0.tgz#01203cdc92597f9b909067c3e656cc1f4d3c4dc9"
-  integrity sha512-EXr1FOzrzTfGeL0gQdeFEvOMm2mzMOglyiOXSTpPC+iAjAKftbr3jpCMWynogwYnM+eSj9sHGc6wjIcDvYiygw==
+  resolved "https://registry.npm.alibaba-inc.com/get-stream/download/get-stream-5.1.0.tgz#01203cdc92597f9b909067c3e656cc1f4d3c4dc9"
+  integrity sha1-ASA83JJZf5uQkGfD5lbMH008Tck=
   dependencies:
     pump "^3.0.0"
 
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
-  resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
+  resolved "https://registry.npm.alibaba-inc.com/get-value/download/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
 
 glob-parent@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
+  resolved "https://registry.npm.alibaba-inc.com/glob-parent/download/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
   integrity sha1-nmr2KZ2NO9K9QEMIMr0RPfkGxa4=
   dependencies:
     is-glob "^3.1.0"
@@ -1045,13 +1045,13 @@ glob-parent@^3.1.0:
 
 glob-to-regexp@^0.3.0:
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
+  resolved "https://registry.npm.alibaba-inc.com/glob-to-regexp/download/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
   integrity sha1-jFoUlNIGbFcMw7/kSWF1rMTVAqs=
 
 glob@^7.1.2, glob@^7.1.3:
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.5.tgz#6714c69bee20f3c3e64c4dd905553e532b40cdc0"
-  integrity sha512-J9dlskqUXK1OeTOYBEn5s8aMukWMwWfs+rPTn/jn50Ux4MNXVhubL1wu/j2t+H4NVI+cXEcCaYellqaPVGXNqQ==
+  version "7.1.6"
+  resolved "https://registry.npm.alibaba-inc.com/glob/download/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
+  integrity sha1-FB8zuBp8JJLhJVlDB0gMRmeSeKY=
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -1062,15 +1062,15 @@ glob@^7.1.2, glob@^7.1.3:
 
 global-modules@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/global-modules/-/global-modules-2.0.0.tgz#997605ad2345f27f51539bea26574421215c7780"
-  integrity sha512-NGbfmJBp9x8IxyJSd1P+otYK8vonoJactOogrVfFRIAEY1ukil8RSKDz2Yo7wh1oihl51l/r6W4epkeKJHqL8A==
+  resolved "https://registry.npm.alibaba-inc.com/global-modules/download/global-modules-2.0.0.tgz#997605ad2345f27f51539bea26574421215c7780"
+  integrity sha1-mXYFrSNF8n9RU5vqJldEISFcd4A=
   dependencies:
     global-prefix "^3.0.0"
 
 global-prefix@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/global-prefix/-/global-prefix-3.0.0.tgz#fc85f73064df69f50421f47f883fe5b913ba9b97"
-  integrity sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==
+  resolved "https://registry.npm.alibaba-inc.com/global-prefix/download/global-prefix-3.0.0.tgz#fc85f73064df69f50421f47f883fe5b913ba9b97"
+  integrity sha1-/IX3MGTfafUEIfR/iD/luRO6m5c=
   dependencies:
     ini "^1.3.5"
     kind-of "^6.0.2"
@@ -1078,8 +1078,8 @@ global-prefix@^3.0.0:
 
 globby@8.0.2:
   version "8.0.2"
-  resolved "https://registry.yarnpkg.com/globby/-/globby-8.0.2.tgz#5697619ccd95c5275dbb2d6faa42087c1a941d8d"
-  integrity sha512-yTzMmKygLp8RUpG1Ymu2VXPSJQZjNAZPD4ywgYEaG7e4tBJeUQBO8OpXrf1RCNcEs5alsoJYPAMiIHP0cmeC7w==
+  resolved "https://registry.npm.alibaba-inc.com/globby/download/globby-8.0.2.tgz#5697619ccd95c5275dbb2d6faa42087c1a941d8d"
+  integrity sha1-VpdhnM2VxSdduy1vqkIIfBqUHY0=
   dependencies:
     array-union "^1.0.1"
     dir-glob "2.0.0"
@@ -1091,8 +1091,8 @@ globby@8.0.2:
 
 got@9.6.0:
   version "9.6.0"
-  resolved "https://registry.yarnpkg.com/got/-/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
-  integrity sha512-R7eWptXuGYxwijs0eV+v3o6+XH1IqVK8dJOEecQfTmkncw9AV4dcw/Dhxi8MdlqPthxxpZyizMzyg8RTmEsG+Q==
+  resolved "https://registry.npm.alibaba-inc.com/got/download/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
+  integrity sha1-7fRefWf5lUVwXeH3u+7rEhdl7YU=
   dependencies:
     "@sindresorhus/is" "^0.14.0"
     "@szmarczak/http-timer" "^1.1.2"
@@ -1108,42 +1108,42 @@ got@9.6.0:
 
 graceful-fs@^4.1.11:
   version "4.2.3"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
-  integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
+  resolved "https://registry.npm.alibaba-inc.com/graceful-fs/download/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
+  integrity sha1-ShL/G2A3bvCYYsIJPt2Qgyi+hCM=
 
 growly@^1.3.0:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
+  resolved "https://registry.npm.alibaba-inc.com/growly/download/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
 gzip-size@5.0.0:
   version "5.0.0"
-  resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-5.0.0.tgz#a55ecd99222f4c48fd8c01c625ce3b349d0a0e80"
-  integrity sha512-5iI7omclyqrnWw4XbXAmGhPsABkSIDQonv2K0h61lybgofWa6iZyvrI3r2zsJH4P8Nb64fFVzlvfhs0g7BBxAA==
+  resolved "https://registry.npm.alibaba-inc.com/gzip-size/download/gzip-size-5.0.0.tgz#a55ecd99222f4c48fd8c01c625ce3b349d0a0e80"
+  integrity sha1-pV7NmSIvTEj9jAHGJc47NJ0KDoA=
   dependencies:
     duplexer "^0.1.1"
     pify "^3.0.0"
 
 has-ansi@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
+  resolved "https://registry.npm.alibaba-inc.com/has-ansi/download/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
   integrity sha1-NPUEnOHs3ysGSa8+8k5F7TVBbZE=
   dependencies:
     ansi-regex "^2.0.0"
 
 has-flag@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
+  resolved "https://registry.npm.alibaba-inc.com/has-flag/download/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
   integrity sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
 
 has-unicode@^2.0.0:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
+  resolved "https://registry.npm.alibaba-inc.com/has-unicode/download/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha1-4Ob+aijPUROIVeCG0Wkedx3iqLk=
 
 has-value@^0.3.1:
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/has-value/-/has-value-0.3.1.tgz#7b1f58bada62ca827ec0a2078025654845995e1f"
+  resolved "https://registry.npm.alibaba-inc.com/has-value/download/has-value-0.3.1.tgz#7b1f58bada62ca827ec0a2078025654845995e1f"
   integrity sha1-ex9YutpiyoJ+wKIHgCVlSEWZXh8=
   dependencies:
     get-value "^2.0.3"
@@ -1152,7 +1152,7 @@ has-value@^0.3.1:
 
 has-value@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/has-value/-/has-value-1.0.0.tgz#18b281da585b1c5c51def24c930ed29a0be6b177"
+  resolved "https://registry.npm.alibaba-inc.com/has-value/download/has-value-1.0.0.tgz#18b281da585b1c5c51def24c930ed29a0be6b177"
   integrity sha1-GLKB2lhbHFxR3vJMkw7SmgvmsXc=
   dependencies:
     get-value "^2.0.6"
@@ -1161,12 +1161,12 @@ has-value@^1.0.0:
 
 has-values@^0.1.4:
   version "0.1.4"
-  resolved "https://registry.yarnpkg.com/has-values/-/has-values-0.1.4.tgz#6d61de95d91dfca9b9a02089ad384bff8f62b771"
+  resolved "https://registry.npm.alibaba-inc.com/has-values/download/has-values-0.1.4.tgz#6d61de95d91dfca9b9a02089ad384bff8f62b771"
   integrity sha1-bWHeldkd/Km5oCCJrThL/49it3E=
 
 has-values@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/has-values/-/has-values-1.0.0.tgz#95b0b63fec2146619a6fe57fe75628d5a39efe4f"
+  resolved "https://registry.npm.alibaba-inc.com/has-values/download/has-values-1.0.0.tgz#95b0b63fec2146619a6fe57fe75628d5a39efe4f"
   integrity sha1-lbC2P+whRmGab+V/51Yo1aOe/k8=
   dependencies:
     is-number "^3.0.0"
@@ -1174,13 +1174,13 @@ has-values@^1.0.0:
 
 http-cache-semantics@^4.0.0:
   version "4.0.3"
-  resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.0.3.tgz#495704773277eeef6e43f9ab2c2c7d259dda25c5"
-  integrity sha512-TcIMG3qeVLgDr1TEd2XvHaTnMPwYQUQMIBLy+5pLSDKYFc7UIqj39w8EGzZkaxoLv/l2K8HaI0t5AVA+YYgUew==
+  resolved "https://registry.npm.alibaba-inc.com/http-cache-semantics/download/http-cache-semantics-4.0.3.tgz#495704773277eeef6e43f9ab2c2c7d259dda25c5"
+  integrity sha1-SVcEdzJ37u9uQ/mrLCx9JZ3aJcU=
 
 http-errors@1.7.2:
   version "1.7.2"
-  resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.7.2.tgz#4f5029cf13239f31036e5b2e55292bcfbcc85c8f"
-  integrity sha512-uUQBt3H/cSIVfch6i1EuPNy/YsRSOUBXTVfZ+yR7Zjez3qjBz6i9+i4zjNaoqcoFVI4lQJ5plg63TvGfRSDCRg==
+  resolved "https://registry.npm.alibaba-inc.com/http-errors/download/http-errors-1.7.2.tgz#4f5029cf13239f31036e5b2e55292bcfbcc85c8f"
+  integrity sha1-T1ApzxMjnzEDblsuVSkrz7zIXI8=
   dependencies:
     depd "~1.1.2"
     inherits "2.0.3"
@@ -1190,8 +1190,8 @@ http-errors@1.7.2:
 
 http-errors@~1.7.2:
   version "1.7.3"
-  resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
-  integrity sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==
+  resolved "https://registry.npm.alibaba-inc.com/http-errors/download/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
+  integrity sha1-bGGeT5xgMIw4UZSYwU+7EKrOuwY=
   dependencies:
     depd "~1.1.2"
     inherits "2.0.4"
@@ -1201,36 +1201,36 @@ http-errors@~1.7.2:
 
 "http-parser-js@>=0.4.0 <0.4.11":
   version "0.4.10"
-  resolved "https://registry.yarnpkg.com/http-parser-js/-/http-parser-js-0.4.10.tgz#92c9c1374c35085f75db359ec56cc257cbb93fa4"
+  resolved "https://registry.npm.alibaba-inc.com/http-parser-js/download/http-parser-js-0.4.10.tgz#92c9c1374c35085f75db359ec56cc257cbb93fa4"
   integrity sha1-ksnBN0w1CF912zWexWzCV8u5P6Q=
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
-  integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
+  resolved "https://registry.npm.alibaba-inc.com/iconv-lite/download/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
+  integrity sha1-ICK0sl+93CHS9SSXSkdKr+czkIs=
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
 ignore-walk@^3.0.1:
   version "3.0.3"
-  resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-3.0.3.tgz#017e2447184bfeade7c238e4aefdd1e8f95b1e37"
-  integrity sha512-m7o6xuOaT1aqheYHKf8W6J5pYH85ZI9w077erOzLje3JsB1gkafkAhHHY19dqjulgIZHFm32Cp5uNZgcQqdJKw==
+  resolved "https://registry.npm.alibaba-inc.com/ignore-walk/download/ignore-walk-3.0.3.tgz#017e2447184bfeade7c238e4aefdd1e8f95b1e37"
+  integrity sha1-AX4kRxhL/q3nwjjkrv3R6PlbHjc=
   dependencies:
     minimatch "^3.0.4"
 
 ignore@^3.3.5:
   version "3.3.10"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
-  integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
+  resolved "https://registry.npm.alibaba-inc.com/ignore/download/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
+  integrity sha1-Cpf7h2mG6AgcYxFg+PnziRV/AEM=
 
 immer@1.10.0:
   version "1.10.0"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
-  integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
+  resolved "https://registry.npm.alibaba-inc.com/immer/download/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
+  integrity sha1-utZ2BbqcgQJ12R4cKkfUWC6YKG0=
 
 inflight@^1.0.4:
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
+  resolved "https://registry.npm.alibaba-inc.com/inflight/download/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
   integrity sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk=
   dependencies:
     once "^1.3.0"
@@ -1238,23 +1238,23 @@ inflight@^1.0.4:
 
 inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@~2.0.3:
   version "2.0.4"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
-  integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+  resolved "https://registry.npm.alibaba-inc.com/inherits/download/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
+  integrity sha1-D6LGT5MpF8NDOg3tVTY6rjdBa3w=
 
 inherits@2.0.3:
   version "2.0.3"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
+  resolved "https://registry.npm.alibaba-inc.com/inherits/download/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 ini@^1.3.5, ini@~1.3.0:
   version "1.3.5"
-  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
-  integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+  resolved "https://registry.npm.alibaba-inc.com/ini/download/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
+  integrity sha1-7uJfVtscnsYIXgwid4CD9Zar+Sc=
 
 inquirer@6.2.2:
   version "6.2.2"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-6.2.2.tgz#46941176f65c9eb20804627149b743a218f25406"
-  integrity sha512-Z2rREiXA6cHRR9KBOarR3WuLlFzlIfAEIiB45ll5SSadMg7WqOh1MKEjjndfuH5ewXdixWCxqnVfGOQzPeiztA==
+  resolved "https://registry.npm.alibaba-inc.com/inquirer/download/inquirer-6.2.2.tgz#46941176f65c9eb20804627149b743a218f25406"
+  integrity sha1-RpQRdvZcnrIIBGJxSbdDohjyVAY=
   dependencies:
     ansi-escapes "^3.2.0"
     chalk "^2.4.2"
@@ -1272,58 +1272,58 @@ inquirer@6.2.2:
 
 insert-css@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/insert-css/-/insert-css-2.0.0.tgz#eb5d1097b7542f4c79ea3060d3aee07d053880f4"
+  resolved "https://registry.npm.alibaba-inc.com/insert-css/download/insert-css-2.0.0.tgz#eb5d1097b7542f4c79ea3060d3aee07d053880f4"
   integrity sha1-610Ql7dUL0x56jBg067gfQU4gPQ=
 
 ipaddr.js@1.9.0:
   version "1.9.0"
-  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
-  integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
+  resolved "https://registry.npm.alibaba-inc.com/ipaddr.js/download/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
+  integrity sha1-N9905DCg5HVQ/lSi3v4w2KzZX2U=
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
-  resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"
+  resolved "https://registry.npm.alibaba-inc.com/is-accessor-descriptor/download/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"
   integrity sha1-qeEss66Nh2cn7u84Q/igiXtcmNY=
   dependencies:
     kind-of "^3.0.2"
 
 is-accessor-descriptor@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-1.0.0.tgz#169c2f6d3df1f992618072365c9b0ea1f6878656"
-  integrity sha512-m5hnHTkcVsPfqx3AKlyttIPb7J+XykHvJP2B9bZDjlhLIoEq4XoK64Vg7boZlVWYK6LUY94dYPEE7Lh0ZkZKcQ==
+  resolved "https://registry.npm.alibaba-inc.com/is-accessor-descriptor/download/is-accessor-descriptor-1.0.0.tgz#169c2f6d3df1f992618072365c9b0ea1f6878656"
+  integrity sha1-FpwvbT3x+ZJhgHI2XJsOofaHhlY=
   dependencies:
     kind-of "^6.0.0"
 
 is-binary-path@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-1.0.1.tgz#75f16642b480f187a711c814161fd3a4a7655898"
+  resolved "https://registry.npm.alibaba-inc.com/is-binary-path/download/is-binary-path-1.0.1.tgz#75f16642b480f187a711c814161fd3a4a7655898"
   integrity sha1-dfFmQrSA8YenEcgUFh/TpKdlWJg=
   dependencies:
     binary-extensions "^1.0.0"
 
 is-buffer@^1.1.5:
   version "1.1.6"
-  resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
-  integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
+  resolved "https://registry.npm.alibaba-inc.com/is-buffer/download/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
+  integrity sha1-76ouqdqg16suoTqXsritUf776L4=
 
 is-data-descriptor@^0.1.4:
   version "0.1.4"
-  resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"
+  resolved "https://registry.npm.alibaba-inc.com/is-data-descriptor/download/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"
   integrity sha1-C17mSDiOLIYCgueT8YVv7D8wG1Y=
   dependencies:
     kind-of "^3.0.2"
 
 is-data-descriptor@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-1.0.0.tgz#d84876321d0e7add03990406abbbbd36ba9268c7"
-  integrity sha512-jbRXy1FmtAoCjQkVmIVYwuuqDFUbaOeDjmed1tOGPrsMhtJA4rD9tkgA0F1qJ3gRFRXcHYVkdeaP50Q5rE/jLQ==
+  resolved "https://registry.npm.alibaba-inc.com/is-data-descriptor/download/is-data-descriptor-1.0.0.tgz#d84876321d0e7add03990406abbbbd36ba9268c7"
+  integrity sha1-2Eh2Mh0Oet0DmQQGq7u9NrqSaMc=
   dependencies:
     kind-of "^6.0.0"
 
 is-descriptor@^0.1.0:
   version "0.1.6"
-  resolved "https://registry.yarnpkg.com/is-descriptor/-/is-descriptor-0.1.6.tgz#366d8240dde487ca51823b1ab9f07a10a78251ca"
-  integrity sha512-avDYr0SB3DwO9zsMov0gKCESFYqCnE4hq/4z3TdUlukEy5t9C0YRq7HLrsN52NAcqXKaepeCD0n+B0arnVG3Hg==
+  resolved "https://registry.npm.alibaba-inc.com/is-descriptor/download/is-descriptor-0.1.6.tgz#366d8240dde487ca51823b1ab9f07a10a78251ca"
+  integrity sha1-Nm2CQN3kh8pRgjsaufB6EKeCUco=
   dependencies:
     is-accessor-descriptor "^0.1.6"
     is-data-descriptor "^0.1.4"
@@ -1331,8 +1331,8 @@ is-descriptor@^0.1.0:
 
 is-descriptor@^1.0.0, is-descriptor@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/is-descriptor/-/is-descriptor-1.0.2.tgz#3b159746a66604b04f8c81524ba365c5f14d86ec"
-  integrity sha512-2eis5WqQGV7peooDyLmNEPUrps9+SXX5c9pL3xEB+4e9HnGuDa7mB7kHxHw4CbqS9k1T2hOH3miL8n8WtiYVtg==
+  resolved "https://registry.npm.alibaba-inc.com/is-descriptor/download/is-descriptor-1.0.2.tgz#3b159746a66604b04f8c81524ba365c5f14d86ec"
+  integrity sha1-OxWXRqZmBLBPjIFSS6NlxfFNhuw=
   dependencies:
     is-accessor-descriptor "^1.0.0"
     is-data-descriptor "^1.0.0"
@@ -1340,170 +1340,170 @@ is-descriptor@^1.0.0, is-descriptor@^1.0.2:
 
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
+  resolved "https://registry.npm.alibaba-inc.com/is-extendable/download/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
   integrity sha1-YrEQ4omkcUGOPsNqYX1HLjAd/Ik=
 
 is-extendable@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
-  integrity sha512-arnXMxT1hhoKo9k1LZdmlNyJdDDfy2v0fXjFlmok4+i8ul/6WlbVge9bhM74OpNPQPMGUToDtz+KXa1PneJxOA==
+  resolved "https://registry.npm.alibaba-inc.com/is-extendable/download/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
+  integrity sha1-p0cPnkJnM9gb2B4RVSZOOjUHyrQ=
   dependencies:
     is-plain-object "^2.0.4"
 
 is-extglob@^2.1.0, is-extglob@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
+  resolved "https://registry.npm.alibaba-inc.com/is-extglob/download/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
   integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
 
 is-fullwidth-code-point@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-1.0.0.tgz#ef9e31386f031a7f0d643af82fde50c457ef00cb"
+  resolved "https://registry.npm.alibaba-inc.com/is-fullwidth-code-point/download/is-fullwidth-code-point-1.0.0.tgz#ef9e31386f031a7f0d643af82fde50c457ef00cb"
   integrity sha1-754xOG8DGn8NZDr4L95QxFfvAMs=
   dependencies:
     number-is-nan "^1.0.0"
 
 is-fullwidth-code-point@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz#a3b30a5c4f199183167aaab93beefae3ddfb654f"
+  resolved "https://registry.npm.alibaba-inc.com/is-fullwidth-code-point/download/is-fullwidth-code-point-2.0.0.tgz#a3b30a5c4f199183167aaab93beefae3ddfb654f"
   integrity sha1-o7MKXE8ZkYMWeqq5O+764937ZU8=
 
 is-glob@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-3.1.0.tgz#7ba5ae24217804ac70707b96922567486cc3e84a"
+  resolved "https://registry.npm.alibaba-inc.com/is-glob/download/is-glob-3.1.0.tgz#7ba5ae24217804ac70707b96922567486cc3e84a"
   integrity sha1-e6WuJCF4BKxwcHuWkiVnSGzD6Eo=
   dependencies:
     is-extglob "^2.1.0"
 
 is-glob@^4.0.0:
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-4.0.1.tgz#7567dbe9f2f5e2467bc77ab83c4a29482407a5dc"
-  integrity sha512-5G0tKtBTFImOqDnLB2hG6Bp2qcKEFduo4tZu9MT/H6NQv/ghhy30o55ufafxJ/LdH79LLs2Kfrn85TLKyA7BUg==
+  resolved "https://registry.npm.alibaba-inc.com/is-glob/download/is-glob-4.0.1.tgz#7567dbe9f2f5e2467bc77ab83c4a29482407a5dc"
+  integrity sha1-dWfb6fL14kZ7x3q4PEopSCQHpdw=
   dependencies:
     is-extglob "^2.1.1"
 
 is-number@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/is-number/-/is-number-3.0.0.tgz#24fd6201a4782cf50561c810276afc7d12d71195"
+  resolved "https://registry.npm.alibaba-inc.com/is-number/download/is-number-3.0.0.tgz#24fd6201a4782cf50561c810276afc7d12d71195"
   integrity sha1-JP1iAaR4LPUFYcgQJ2r8fRLXEZU=
   dependencies:
     kind-of "^3.0.2"
 
 is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
-  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
-  integrity sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==
+  resolved "https://registry.npm.alibaba-inc.com/is-plain-object/download/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
+  integrity sha1-LBY7P6+xtgbZ0Xko8FwqHDjgdnc=
   dependencies:
     isobject "^3.0.1"
 
 is-promise@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
+  resolved "https://registry.npm.alibaba-inc.com/is-promise/download/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
   integrity sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
 
 is-root@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-root/-/is-root-2.0.0.tgz#838d1e82318144e5a6f77819d90207645acc7019"
-  integrity sha512-F/pJIk8QD6OX5DNhRB7hWamLsUilmkDGho48KbgZ6xg/lmAZXHxzXQ91jzB3yRSw5kdQGGGc4yz8HYhTYIMWPg==
+  resolved "https://registry.npm.alibaba-inc.com/is-root/download/is-root-2.0.0.tgz#838d1e82318144e5a6f77819d90207645acc7019"
+  integrity sha1-g40egjGBROWm93gZ2QIHZFrMcBk=
 
 is-windows@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
-  integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
+  resolved "https://registry.npm.alibaba-inc.com/is-windows/download/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
+  integrity sha1-0YUOuXkezRjmGCzhKjDzlmNLsZ0=
 
 is-wsl@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
+  resolved "https://registry.npm.alibaba-inc.com/is-wsl/download/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
   integrity sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0=
 
 isarray@1.0.0, isarray@~1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
+  resolved "https://registry.npm.alibaba-inc.com/isarray/download/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
 isexe@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
+  resolved "https://registry.npm.alibaba-inc.com/isexe/download/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
 isobject@^2.0.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/isobject/-/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"
+  resolved "https://registry.npm.alibaba-inc.com/isobject/download/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"
   integrity sha1-8GVWEJaj8dou9GJy+BXIQNh+DIk=
   dependencies:
     isarray "1.0.0"
 
 isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
+  resolved "https://registry.npm.alibaba-inc.com/isobject/download/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
-  integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
+  resolved "https://registry.npm.alibaba-inc.com/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+  integrity sha1-GSA/tZmR35jjoocFDUZHzerzJJk=
 
 js-tokens@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
+  resolved "https://registry.npm.alibaba-inc.com/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
 json-buffer@3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
+  resolved "https://registry.npm.alibaba-inc.com/json-buffer/download/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
   integrity sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=
 
 json3@^3.3.2:
   version "3.3.3"
-  resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.3.tgz#7fc10e375fc5ae42c4705a5cc0aa6f62be305b81"
-  integrity sha512-c7/8mbUsKigAbLkD5B010BK4D9LZm7A1pNItkEwiUZRpIN66exu/e7YQWysGun+TRKaJp8MhemM+VkfWv42aCA==
+  resolved "https://registry.npm.alibaba-inc.com/json3/download/json3-3.3.3.tgz#7fc10e375fc5ae42c4705a5cc0aa6f62be305b81"
+  integrity sha1-f8EON1/FrkLEcFpcwKpvYr4wW4E=
 
 json5@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
-  integrity sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==
+  resolved "https://registry.npm.alibaba-inc.com/json5/download/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
+  integrity sha1-d5+wAYYE+oVOrL9iUhgNg1Q+Pb4=
   dependencies:
     minimist "^1.2.0"
 
 jsonify@~0.0.0:
   version "0.0.0"
-  resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
+  resolved "https://registry.npm.alibaba-inc.com/jsonify/download/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
 keyv@^3.0.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/keyv/-/keyv-3.1.0.tgz#ecc228486f69991e49e9476485a5be1e8fc5c4d9"
-  integrity sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA==
+  resolved "https://registry.npm.alibaba-inc.com/keyv/download/keyv-3.1.0.tgz#ecc228486f69991e49e9476485a5be1e8fc5c4d9"
+  integrity sha1-7MIoSG9pmR5J6UdkhaW+Ho/FxNk=
   dependencies:
     json-buffer "3.0.0"
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
+  resolved "https://registry.npm.alibaba-inc.com/kind-of/download/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
   integrity sha1-MeohpzS6ubuw8yRm2JOupR5KPGQ=
   dependencies:
     is-buffer "^1.1.5"
 
 kind-of@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-4.0.0.tgz#20813df3d712928b207378691a45066fae72dd57"
+  resolved "https://registry.npm.alibaba-inc.com/kind-of/download/kind-of-4.0.0.tgz#20813df3d712928b207378691a45066fae72dd57"
   integrity sha1-IIE989cSkosgc3hpGkUGb65y3Vc=
   dependencies:
     is-buffer "^1.1.5"
 
 kind-of@^5.0.0:
   version "5.1.0"
-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-5.1.0.tgz#729c91e2d857b7a419a1f9aa65685c4c33f5845d"
-  integrity sha512-NGEErnH6F2vUuXDh+OlbcKW7/wOcfdRHaZ7VWtqCztfHri/++YKmP51OdWeGPuqCOba6kk2OTe5d02VmTB80Pw==
+  resolved "https://registry.npm.alibaba-inc.com/kind-of/download/kind-of-5.1.0.tgz#729c91e2d857b7a419a1f9aa65685c4c33f5845d"
+  integrity sha1-cpyR4thXt6QZofmqZWhcTDP1hF0=
 
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
-  integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
+  resolved "https://registry.npm.alibaba-inc.com/kind-of/download/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+  integrity sha1-ARRrNqYhjmTljzqNZt5df8b20FE=
 
 loader-utils@1.2.3:
   version "1.2.3"
-  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.2.3.tgz#1ff5dc6911c9f0a062531a4c04b609406108c2c7"
-  integrity sha512-fkpz8ejdnEMG3s37wGL07iSBDg99O9D5yflE9RGNH3hRdx9SOwYfnGYdZOUIZitN8E+E2vkq3MUMYMvPYl5ZZA==
+  resolved "https://registry.npm.alibaba-inc.com/loader-utils/download/loader-utils-1.2.3.tgz#1ff5dc6911c9f0a062531a4c04b609406108c2c7"
+  integrity sha1-H/XcaRHJ8KBiUxpMBLYJQGEIwsc=
   dependencies:
     big.js "^5.2.2"
     emojis-list "^2.0.0"
@@ -1511,7 +1511,7 @@ loader-utils@1.2.3:
 
 locate-path@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
+  resolved "https://registry.npm.alibaba-inc.com/locate-path/download/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
   integrity sha1-K1aLJl7slExtnA3pw9u7ygNUzY4=
   dependencies:
     p-locate "^2.0.0"
@@ -1519,104 +1519,80 @@ locate-path@^2.0.0:
 
 locate-path@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"
-  integrity sha512-7AO748wWnIhNqAuaty2ZWHkQHRSNfPVIsPIfwEOWO22AmaoVrWavlOcMR5nzTLNYvp36X220/maaRsrec1G65A==
+  resolved "https://registry.npm.alibaba-inc.com/locate-path/download/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"
+  integrity sha1-2+w7OrdZdYBxtY/ln8QYca8hQA4=
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-lodash._getnative@^3.0.0:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
-  integrity sha1-VwvH3t5G1hzc3mh9ZdPuy6o6r/U=
-
-lodash.isarguments@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
-  integrity sha1-L1c9hcaiQon/AGY7SRwdM4/zRYo=
-
-lodash.isarray@^3.0.0:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
-  integrity sha1-eeTriMNqgSKvhvhEqpvNhRtfu1U=
-
-lodash.keys@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
-  integrity sha1-TbwEcrFWvlCgsoaFXRvQsMZWCYo=
-  dependencies:
-    lodash._getnative "^3.0.0"
-    lodash.isarguments "^3.0.0"
-    lodash.isarray "^3.0.0"
-
 lodash@^4.17.11, lodash@^4.17.15:
   version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  resolved "https://registry.npm.alibaba-inc.com/lodash/download/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
 
 loose-envify@^1.4.0:
   version "1.4.0"
-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
-  integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
+  resolved "https://registry.npm.alibaba-inc.com/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
+  integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
 lowercase-keys@^1.0.0, lowercase-keys@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
-  integrity sha512-G2Lj61tXDnVFFOi8VZds+SoQjtQC3dgokKdDG2mTm1tx4m50NUHBOZSBwQQHyy0V12A0JTG4icfZQH+xPyh8VA==
+  resolved "https://registry.npm.alibaba-inc.com/lowercase-keys/download/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
+  integrity sha1-b54wtHCE2XGnyCD/FabFFnt0wm8=
 
 lowercase-keys@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-2.0.0.tgz#2603e78b7b4b0006cbca2fbcc8a3202558ac9479"
-  integrity sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
+  resolved "https://registry.npm.alibaba-inc.com/lowercase-keys/download/lowercase-keys-2.0.0.tgz#2603e78b7b4b0006cbca2fbcc8a3202558ac9479"
+  integrity sha1-JgPni3tLAAbLyi+8yKMgJVislHk=
 
 macaddress@0.2.9:
   version "0.2.9"
-  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.9.tgz#3579b8b9acd5b96b4553abf0f394185a86813cb3"
-  integrity sha512-k4F1JUof6cQXxNFzx3thLby4oJzXTXQueAOOts944Vqizn+Rjc2QNFenT9FJSLU1CH3PmrHRSyZs2E+Cqw+P2w==
+  resolved "https://registry.npm.alibaba-inc.com/macaddress/download/macaddress-0.2.9.tgz#3579b8b9acd5b96b4553abf0f394185a86813cb3"
+  integrity sha1-NXm4uazVuWtFU6vw85QYWoaBPLM=
 
 map-cache@^0.2.2:
   version "0.2.2"
-  resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
+  resolved "https://registry.npm.alibaba-inc.com/map-cache/download/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
   integrity sha1-wyq9C9ZSXZsFFkW7TyasXcmKDb8=
 
 map-visit@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
+  resolved "https://registry.npm.alibaba-inc.com/map-visit/download/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
   integrity sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
   dependencies:
     object-visit "^1.0.0"
 
 media-typer@0.3.0:
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
+  resolved "https://registry.npm.alibaba-inc.com/media-typer/download/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
 merge-descriptors@1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
+  resolved "https://registry.npm.alibaba-inc.com/merge-descriptors/download/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
   integrity sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=
 
 merge2@^1.2.3:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.3.0.tgz#5b366ee83b2f1582c48f87e47cf1a9352103ca81"
-  integrity sha512-2j4DAdlBOkiSZIsaXk4mTE3sRS02yBHAtfy127xRV3bQUFqXkjHCHLW6Scv7DwNRbIWNHH8zpnz9zMaKXIdvYw==
+  resolved "https://registry.npm.alibaba-inc.com/merge2/download/merge2-1.3.0.tgz#5b366ee83b2f1582c48f87e47cf1a9352103ca81"
+  integrity sha1-WzZu6DsvFYLEj4fkfPGpNSEDyoE=
 
 methods@~1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
+  resolved "https://registry.npm.alibaba-inc.com/methods/download/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
 microevent.ts@~0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/microevent.ts/-/microevent.ts-0.1.1.tgz#70b09b83f43df5172d0205a63025bce0f7357fa0"
-  integrity sha512-jo1OfR4TaEwd5HOrt5+tAZ9mqT4jmpNAusXtyfNzqVm9uiSYFZlKM1wYL4oU7azZW/PxQW53wM0S6OR1JHNa2g==
+  resolved "https://registry.npm.alibaba-inc.com/microevent.ts/download/microevent.ts-0.1.1.tgz#70b09b83f43df5172d0205a63025bce0f7357fa0"
+  integrity sha1-cLCbg/Q99RctAgWmMCW84Pc1f6A=
 
 micromatch@^3.1.10, micromatch@^3.1.4:
   version "3.1.10"
-  resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-3.1.10.tgz#70859bc95c9840952f359a068a3fc49f9ecfac23"
-  integrity sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==
+  resolved "https://registry.npm.alibaba-inc.com/micromatch/download/micromatch-3.1.10.tgz#70859bc95c9840952f359a068a3fc49f9ecfac23"
+  integrity sha1-cIWbyVyYQJUvNZoGij/En57PrCM=
   dependencies:
     arr-diff "^4.0.0"
     array-unique "^0.3.2"
@@ -1632,114 +1608,109 @@ micromatch@^3.1.10, micromatch@^3.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-mime-db@1.40.0:
-  version "1.40.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.40.0.tgz#a65057e998db090f732a68f6c276d387d4126c32"
-  integrity sha512-jYdeOMPy9vnxEqFRRo6ZvTZ8d9oPb+k18PKoYNYUe2stVEBPPwsln/qWzdbmaIvnhZ9v2P+CuecK+fpUfsV2mA==
-
-"mime-db@>= 1.40.0 < 2":
+mime-db@1.42.0, "mime-db@>= 1.40.0 < 2":
   version "1.42.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.42.0.tgz#3e252907b4c7adb906597b4b65636272cf9e7bac"
-  integrity sha512-UbfJCR4UAVRNgMpfImz05smAXK7+c+ZntjaA26ANtkXLlOe947Aag5zdIcKQULAiF9Cq4WxBi9jUs5zkA84bYQ==
+  resolved "https://registry.npm.alibaba-inc.com/mime-db/download/mime-db-1.42.0.tgz#3e252907b4c7adb906597b4b65636272cf9e7bac"
+  integrity sha1-PiUpB7THrbkGWXtLZWNics+ee6w=
 
 mime-types@~2.1.24:
-  version "2.1.24"
-  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.24.tgz#b6f8d0b3e951efb77dedeca194cff6d16f676f81"
-  integrity sha512-WaFHS3MCl5fapm3oLxU4eYDw77IQM2ACcxQ9RIxfaC3ooc6PFuBMGZZsYpvoXS5D5QTWPieo1jjLdAm3TBP3cQ==
+  version "2.1.25"
+  resolved "https://registry.npm.alibaba-inc.com/mime-types/download/mime-types-2.1.25.tgz#39772d46621f93e2a80a856c53b86a62156a6437"
+  integrity sha1-OXctRmIfk+KoCoVsU7hqYhVqZDc=
   dependencies:
-    mime-db "1.40.0"
+    mime-db "1.42.0"
 
 mime@1.6.0:
   version "1.6.0"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
-  integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
+  resolved "https://registry.npm.alibaba-inc.com/mime/download/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
+  integrity sha1-Ms2eXGRVO9WNGaVor0Uqz/BJgbE=
 
 mimic-fn@^1.0.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
-  integrity sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ==
+  resolved "https://registry.npm.alibaba-inc.com/mimic-fn/download/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
+  integrity sha1-ggyGo5M0ZA6ZUWkovQP8qIBX0CI=
 
 mimic-response@^1.0.0, mimic-response@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
-  integrity sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==
+  resolved "https://registry.npm.alibaba-inc.com/mimic-response/download/mimic-response-1.0.1.tgz#4923538878eef42063cb8a3e3b0798781487ab1b"
+  integrity sha1-SSNTiHju9CBjy4o+OweYeBSHqxs=
 
 minimatch@3.0.4, minimatch@^3.0.4:
   version "3.0.4"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
-  integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
+  resolved "https://registry.npm.alibaba-inc.com/minimatch/download/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
+  integrity sha1-UWbihkV/AzBgZL5Ul+jbsMPTIIM=
   dependencies:
     brace-expansion "^1.1.7"
 
 minimist@0.0.8:
   version "0.0.8"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
+  resolved "https://registry.npm.alibaba-inc.com/minimist/download/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
   integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
 
 minimist@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+  resolved "https://registry.npm.alibaba-inc.com/minimist/download/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
   integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
 
 minipass@^2.6.0, minipass@^2.8.6, minipass@^2.9.0:
   version "2.9.0"
-  resolved "https://registry.yarnpkg.com/minipass/-/minipass-2.9.0.tgz#e713762e7d3e32fed803115cf93e04bca9fcc9a6"
-  integrity sha512-wxfUjg9WebH+CUDX/CdbRlh5SmfZiy/hpkxaRI16Y9W56Pa75sWgd/rvFilSgrauD9NyFymP/+JFV3KwzIsJeg==
+  resolved "https://registry.npm.alibaba-inc.com/minipass/download/minipass-2.9.0.tgz#e713762e7d3e32fed803115cf93e04bca9fcc9a6"
+  integrity sha1-5xN2Ln0+Mv7YAxFc+T4EvKn8yaY=
   dependencies:
     safe-buffer "^5.1.2"
     yallist "^3.0.0"
 
 minizlib@^1.2.1:
   version "1.3.3"
-  resolved "https://registry.yarnpkg.com/minizlib/-/minizlib-1.3.3.tgz#2290de96818a34c29551c8a8d301216bd65a861d"
-  integrity sha512-6ZYMOEnmVsdCeTJVE0W9ZD+pVnE8h9Hma/iOwwRDsdQoePpoX56/8B6z3P9VNwppJuBKNRuFDRNRqRWexT9G9Q==
+  resolved "https://registry.npm.alibaba-inc.com/minizlib/download/minizlib-1.3.3.tgz#2290de96818a34c29551c8a8d301216bd65a861d"
+  integrity sha1-IpDeloGKNMKVUcio0wEha9Zahh0=
   dependencies:
     minipass "^2.9.0"
 
 mixin-deep@^1.2.0:
   version "1.3.2"
-  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.2.tgz#1120b43dc359a785dce65b55b82e257ccf479566"
-  integrity sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==
+  resolved "https://registry.npm.alibaba-inc.com/mixin-deep/download/mixin-deep-1.3.2.tgz#1120b43dc359a785dce65b55b82e257ccf479566"
+  integrity sha1-ESC0PcNZp4Xc5ltVuC4lfM9HlWY=
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
 
 mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1:
   version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
+  resolved "https://registry.npm.alibaba-inc.com/mkdirp/download/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
 
 ms@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+  resolved "https://registry.npm.alibaba-inc.com/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
 ms@2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
-  integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
+  resolved "https://registry.npm.alibaba-inc.com/ms/download/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
+  integrity sha1-MKWGTrPrsKZvLr5tcnrwagnYbgo=
 
 ms@^2.1.1:
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
-  integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
+  resolved "https://registry.npm.alibaba-inc.com/ms/download/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
+  integrity sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=
 
 mute-stream@0.0.7:
   version "0.0.7"
-  resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
+  resolved "https://registry.npm.alibaba-inc.com/mute-stream/download/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
 nan@^2.12.1, nan@^2.14.0:
   version "2.14.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
-  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
+  resolved "https://registry.npm.alibaba-inc.com/nan/download/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
+  integrity sha1-eBj3IgJ7JFmobwKV1DTR/CM2xSw=
 
 nanomatch@^1.2.9:
   version "1.2.13"
-  resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
-  integrity sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA==
+  resolved "https://registry.npm.alibaba-inc.com/nanomatch/download/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
+  integrity sha1-uHqKpPwN6P5r6IiVs4mD/yZb0Rk=
   dependencies:
     arr-diff "^4.0.0"
     array-unique "^0.3.2"
@@ -1755,8 +1726,8 @@ nanomatch@^1.2.9:
 
 needle@^2.2.1:
   version "2.4.0"
-  resolved "https://registry.yarnpkg.com/needle/-/needle-2.4.0.tgz#6833e74975c444642590e15a750288c5f939b57c"
-  integrity sha512-4Hnwzr3mi5L97hMYeNl8wRW/Onhy4nUKR/lVemJ8gJedxxUyBLm9kkrDColJvoSfwi0jCNhD+xCdOtiGDQiRZg==
+  resolved "https://registry.npm.alibaba-inc.com/needle/download/needle-2.4.0.tgz#6833e74975c444642590e15a750288c5f939b57c"
+  integrity sha1-aDPnSXXERGQlkOFadQKIxfk5tXw=
   dependencies:
     debug "^3.2.6"
     iconv-lite "^0.4.4"
@@ -1764,18 +1735,18 @@ needle@^2.2.1:
 
 negotiator@0.6.2:
   version "0.6.2"
-  resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
-  integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
+  resolved "https://registry.npm.alibaba-inc.com/negotiator/download/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
+  integrity sha1-/qz3zPUlp3rpY0Q2pkiD/+yjRvs=
 
 nice-try@^1.0.4:
   version "1.0.5"
-  resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
-  integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
+  resolved "https://registry.npm.alibaba-inc.com/nice-try/download/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
+  integrity sha1-ozeKdpbOfSI+iPybdkvX7xCJ42Y=
 
 node-notifier@^5.4.1:
   version "5.4.3"
-  resolved "https://registry.yarnpkg.com/node-notifier/-/node-notifier-5.4.3.tgz#cb72daf94c93904098e28b9c590fd866e464bd50"
-  integrity sha512-M4UBGcs4jeOK9CjTsYwkvH6/MzuUmGCyTW+kCY7uO+1ZVr0+FHGdPdIf5CCLqAaxnRrWidyoQlNkMIIVwbKB8Q==
+  resolved "https://registry.npm.alibaba-inc.com/node-notifier/download/node-notifier-5.4.3.tgz#cb72daf94c93904098e28b9c590fd866e464bd50"
+  integrity sha1-y3La+UyTkECY4oucWQ/YZuRkvVA=
   dependencies:
     growly "^1.3.0"
     is-wsl "^1.1.0"
@@ -1785,8 +1756,8 @@ node-notifier@^5.4.1:
 
 node-pre-gyp@^0.12.0:
   version "0.12.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
-  integrity sha512-4KghwV8vH5k+g2ylT+sLTjy5wmUOb9vPhnM8NHvRf9dHmnW/CndrFXy2aRPaPST6dugXSdHXfeaHQm77PIz/1A==
+  resolved "https://registry.npm.alibaba-inc.com/node-pre-gyp/download/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
+  integrity sha1-ObpLsUOdoDApX4meO1ILd4V2YUk=
   dependencies:
     detect-libc "^1.0.2"
     mkdirp "^0.5.1"
@@ -1801,21 +1772,21 @@ node-pre-gyp@^0.12.0:
 
 node-pty@^0.10.0-beta3:
   version "0.10.0-beta3"
-  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.10.0-beta3.tgz#a33c9fc67c9e4d4f124111e1da2a72b0783008e7"
-  integrity sha512-j7MoJ3K999jrT9gAVs7JvM/skAQXQITrZK/PhL9B4W4GAPkANKwdu9uEtNvYionQ9dV8gRGte7lg9D2cRDdAiA==
+  resolved "https://registry.npm.alibaba-inc.com/node-pty/download/node-pty-0.10.0-beta3.tgz#a33c9fc67c9e4d4f124111e1da2a72b0783008e7"
+  integrity sha1-ozyfxnyeTU8SQRHh2ipysHgwCOc=
   dependencies:
     nan "^2.14.0"
 
 node-releases@^1.1.13:
-  version "1.1.39"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.39.tgz#c1011f30343aff5b633153b10ff691d278d08e8d"
-  integrity sha512-8MRC/ErwNCHOlAFycy9OPca46fQYUjbJRDcZTHVWIGXIjYLM73k70vv3WkYutVnM4cCo4hE0MqBVVZjP6vjISA==
+  version "1.1.41"
+  resolved "https://registry.npm.alibaba-inc.com/node-releases/download/node-releases-1.1.41.tgz#57674a82a37f812d18e3b26118aefaf53a00afed"
+  integrity sha1-V2dKgqN/gS0Y47JhGK769ToAr+0=
   dependencies:
     semver "^6.3.0"
 
 nopt@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
+  resolved "https://registry.npm.alibaba-inc.com/nopt/download/nopt-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
   integrity sha1-0NRoWv1UFRk8jHUFYC0NF81kR00=
   dependencies:
     abbrev "1"
@@ -1823,38 +1794,38 @@ nopt@^4.0.1:
 
 normalize-path@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.1.1.tgz#1ab28b556e198363a8c1a6f7e6fa20137fe6aed9"
+  resolved "https://registry.npm.alibaba-inc.com/normalize-path/download/normalize-path-2.1.1.tgz#1ab28b556e198363a8c1a6f7e6fa20137fe6aed9"
   integrity sha1-GrKLVW4Zg2Oowab35vogE3/mrtk=
   dependencies:
     remove-trailing-separator "^1.0.1"
 
 normalize-path@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
-  integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+  resolved "https://registry.npm.alibaba-inc.com/normalize-path/download/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
+  integrity sha1-Dc1p/yOhybEf0JeDFmRKA4ghamU=
 
 normalize-url@^4.1.0:
   version "4.5.0"
-  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
-  integrity sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
+  resolved "https://registry.npm.alibaba-inc.com/normalize-url/download/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
+  integrity sha1-RTNUCH5sqWlXvY9br3U/WYIUISk=
 
 npm-bundled@^1.0.1:
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
-  integrity sha512-8/JCaftHwbd//k6y2rEWp6k1wxVfpFzB6t1p825+cUb7Ym2XQfhwIC5KwhrvzZRJu+LtDE585zVaS32+CGtf0g==
+  resolved "https://registry.npm.alibaba-inc.com/npm-bundled/download/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
+  integrity sha1-57qarc75YrthJI+RchzZMrP+a90=
 
 npm-packlist@^1.1.6:
   version "1.4.6"
-  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.6.tgz#53ba3ed11f8523079f1457376dd379ee4ea42ff4"
-  integrity sha512-u65uQdb+qwtGvEJh/DgQgW1Xg7sqeNbmxYyrvlNznaVTjV3E5P6F/EFjM+BVHXl7JJlsdG8A64M0XI8FI/IOlg==
+  resolved "https://registry.npm.alibaba-inc.com/npm-packlist/download/npm-packlist-1.4.6.tgz#53ba3ed11f8523079f1457376dd379ee4ea42ff4"
+  integrity sha1-U7o+0R+FIwefFFc3bdN57k6kL/Q=
   dependencies:
     ignore-walk "^3.0.1"
     npm-bundled "^1.0.1"
 
 npmlog@^4.0.2:
   version "4.1.2"
-  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
-  integrity sha512-2uUqazuKlTaSI/dC8AzicUck7+IrEaOnN/e0jd3Xtt1KcGpwx30v50mL7oPyr/h9bL3E4aZccVwpwP+5W9Vjkg==
+  resolved "https://registry.npm.alibaba-inc.com/npmlog/download/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
+  integrity sha1-CKfyqL9zRgR3mp76StXMcXq7lUs=
   dependencies:
     are-we-there-yet "~1.1.2"
     console-control-strings "~1.1.0"
@@ -1863,17 +1834,17 @@ npmlog@^4.0.2:
 
 number-is-nan@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+  resolved "https://registry.npm.alibaba-inc.com/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
 object-assign@4.x, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
+  resolved "https://registry.npm.alibaba-inc.com/object-assign/download/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
 object-copy@^0.1.0:
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/object-copy/-/object-copy-0.1.0.tgz#7e7d858b781bd7c991a41ba975ed3812754e998c"
+  resolved "https://registry.npm.alibaba-inc.com/object-copy/download/object-copy-0.1.0.tgz#7e7d858b781bd7c991a41ba975ed3812754e998c"
   integrity sha1-fn2Fi3gb18mRpBupde04EnVOmYw=
   dependencies:
     copy-descriptor "^0.1.0"
@@ -1882,189 +1853,189 @@ object-copy@^0.1.0:
 
 object-visit@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/object-visit/-/object-visit-1.0.1.tgz#f79c4493af0c5377b59fe39d395e41042dd045bb"
+  resolved "https://registry.npm.alibaba-inc.com/object-visit/download/object-visit-1.0.1.tgz#f79c4493af0c5377b59fe39d395e41042dd045bb"
   integrity sha1-95xEk68MU3e1n+OdOV5BBC3QRbs=
   dependencies:
     isobject "^3.0.0"
 
 object.pick@^1.3.0:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/object.pick/-/object.pick-1.3.0.tgz#87a10ac4c1694bd2e1cbf53591a66141fb5dd747"
+  resolved "https://registry.npm.alibaba-inc.com/object.pick/download/object.pick-1.3.0.tgz#87a10ac4c1694bd2e1cbf53591a66141fb5dd747"
   integrity sha1-h6EKxMFpS9Lhy/U1kaZhQftd10c=
   dependencies:
     isobject "^3.0.1"
 
 on-finished@~2.3.0:
   version "2.3.0"
-  resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"
+  resolved "https://registry.npm.alibaba-inc.com/on-finished/download/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"
   integrity sha1-IPEzZIGwg811M3mSoWlxqi2QaUc=
   dependencies:
     ee-first "1.1.1"
 
 on-headers@~1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/on-headers/-/on-headers-1.0.2.tgz#772b0ae6aaa525c399e489adfad90c403eb3c28f"
-  integrity sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
+  resolved "https://registry.npm.alibaba-inc.com/on-headers/download/on-headers-1.0.2.tgz#772b0ae6aaa525c399e489adfad90c403eb3c28f"
+  integrity sha1-dysK5qqlJcOZ5Imt+tkMQD6zwo8=
 
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
   version "1.4.0"
-  resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
+  resolved "https://registry.npm.alibaba-inc.com/once/download/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
   dependencies:
     wrappy "1"
 
 onetime@^2.0.0:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/onetime/-/onetime-2.0.1.tgz#067428230fd67443b2794b22bba528b6867962d4"
+  resolved "https://registry.npm.alibaba-inc.com/onetime/download/onetime-2.0.1.tgz#067428230fd67443b2794b22bba528b6867962d4"
   integrity sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
   dependencies:
     mimic-fn "^1.0.0"
 
 opn@5.4.0:
   version "5.4.0"
-  resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
-  integrity sha512-YF9MNdVy/0qvJvDtunAOzFw9iasOQHpVthTCvGzxt61Il64AYSGdK+rYwld7NAfk9qJ7dt+hymBNSc9LNYS+Sw==
+  resolved "https://registry.npm.alibaba-inc.com/opn/download/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
+  integrity sha1-y1Reeqt4VivrEao7+rxwQuF2EDU=
   dependencies:
     is-wsl "^1.1.0"
 
 original@^1.0.0:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/original/-/original-1.0.2.tgz#e442a61cffe1c5fd20a65f3261c26663b303f25f"
-  integrity sha512-hyBVl6iqqUOJ8FqRe+l/gS8H+kKYjrEndd5Pm1MfBtsEKA038HkkdbAl/72EAXGyonD/PFsvmVG+EvcIpliMBg==
+  resolved "https://registry.npm.alibaba-inc.com/original/download/original-1.0.2.tgz#e442a61cffe1c5fd20a65f3261c26663b303f25f"
+  integrity sha1-5EKmHP/hxf0gpl8yYcJmY7MD8l8=
   dependencies:
     url-parse "^1.4.3"
 
 os-homedir@^1.0.0:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
+  resolved "https://registry.npm.alibaba-inc.com/os-homedir/download/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
   integrity sha1-/7xJiDNuDoM94MFox+8VISGqf7M=
 
 os-tmpdir@^1.0.0, os-tmpdir@~1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
+  resolved "https://registry.npm.alibaba-inc.com/os-tmpdir/download/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
   integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
 
 osenv@^0.1.4:
   version "0.1.5"
-  resolved "https://registry.yarnpkg.com/osenv/-/osenv-0.1.5.tgz#85cdfafaeb28e8677f416e287592b5f3f49ea410"
-  integrity sha512-0CWcCECdMVc2Rw3U5w9ZjqX6ga6ubk1xDVKxtBQPK7wis/0F2r9T6k4ydGYhecl7YUBxBVxhL5oisPsNxAPe2g==
+  resolved "https://registry.npm.alibaba-inc.com/osenv/download/osenv-0.1.5.tgz#85cdfafaeb28e8677f416e287592b5f3f49ea410"
+  integrity sha1-hc36+uso6Gd/QW4odZK18/SepBA=
   dependencies:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
 p-cancelable@^1.0.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-1.1.0.tgz#d078d15a3af409220c886f1d9a0ca2e441ab26cc"
-  integrity sha512-s73XxOZ4zpt1edZYZzvhqFa6uvQc1vwUa0K0BdtIZgQMAJj9IbebH+JkgKZc9h+B05PKHLOTl4ajG1BmNrVZlw==
+  resolved "https://registry.npm.alibaba-inc.com/p-cancelable/download/p-cancelable-1.1.0.tgz#d078d15a3af409220c886f1d9a0ca2e441ab26cc"
+  integrity sha1-0HjRWjr0CSIMiG8dmgyi5EGrJsw=
 
 p-limit@^1.1.0:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.3.0.tgz#b86bd5f0c25690911c7590fcbfc2010d54b3ccb8"
-  integrity sha512-vvcXsLAJ9Dr5rQOPk7toZQZJApBl2K4J6dANSsEuh6QI41JYcsS/qhTGa9ErIUUgK3WNQoJYvylxvjqmiqEA9Q==
+  resolved "https://registry.npm.alibaba-inc.com/p-limit/download/p-limit-1.3.0.tgz#b86bd5f0c25690911c7590fcbfc2010d54b3ccb8"
+  integrity sha1-uGvV8MJWkJEcdZD8v8IBDVSzzLg=
   dependencies:
     p-try "^1.0.0"
 
 p-limit@^2.0.0:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.1.tgz#aa07a788cc3151c939b5131f63570f0dd2009537"
-  integrity sha512-85Tk+90UCVWvbDavCLKPOLC9vvY8OwEX/RtKF+/1OADJMVlFfEHOiMTPVyxg7mk/dKa+ipdHm0OUkTvCpMTuwg==
+  resolved "https://registry.npm.alibaba-inc.com/p-limit/download/p-limit-2.2.1.tgz#aa07a788cc3151c939b5131f63570f0dd2009537"
+  integrity sha1-qgeniMwxUck5tRMfY1cPDdIAlTc=
   dependencies:
     p-try "^2.0.0"
 
 p-locate@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
+  resolved "https://registry.npm.alibaba-inc.com/p-locate/download/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
   integrity sha1-IKAQOyIqcMj9OcwuWAaA893l7EM=
   dependencies:
     p-limit "^1.1.0"
 
 p-locate@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-3.0.0.tgz#322d69a05c0264b25997d9f40cd8a891ab0064a4"
-  integrity sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==
+  resolved "https://registry.npm.alibaba-inc.com/p-locate/download/p-locate-3.0.0.tgz#322d69a05c0264b25997d9f40cd8a891ab0064a4"
+  integrity sha1-Mi1poFwCZLJZl9n0DNiokasAZKQ=
   dependencies:
     p-limit "^2.0.0"
 
 p-try@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
+  resolved "https://registry.npm.alibaba-inc.com/p-try/download/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
   integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
 
 p-try@^2.0.0:
   version "2.2.0"
-  resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
-  integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+  resolved "https://registry.npm.alibaba-inc.com/p-try/download/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
+  integrity sha1-yyhoVA4xPWHeWPr741zpAE1VQOY=
 
 parent-module@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-2.0.0.tgz#fa71f88ff1a50c27e15d8ff74e0e3a9523bf8708"
-  integrity sha512-uo0Z9JJeWzv8BG+tRcapBKNJ0dro9cLyczGzulS6EfeyAdeC9sbojtW6XwvYxJkEne9En+J2XEl4zyglVeIwFg==
+  resolved "https://registry.npm.alibaba-inc.com/parent-module/download/parent-module-2.0.0.tgz#fa71f88ff1a50c27e15d8ff74e0e3a9523bf8708"
+  integrity sha1-+nH4j/GlDCfhXY/3Tg46lSO/hwg=
   dependencies:
     callsites "^3.1.0"
 
 parseurl@~1.3.3:
   version "1.3.3"
-  resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
-  integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
+  resolved "https://registry.npm.alibaba-inc.com/parseurl/download/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
+  integrity sha1-naGee+6NEt/wUT7Vt2lXeTvC6NQ=
 
 pascalcase@^0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
+  resolved "https://registry.npm.alibaba-inc.com/pascalcase/download/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
 path-dirname@^1.0.0:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/path-dirname/-/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
+  resolved "https://registry.npm.alibaba-inc.com/path-dirname/download/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
   integrity sha1-zDPSTVJeCZpTiMAzbG4yuRYGCeA=
 
 path-exists@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/path-exists/-/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
+  resolved "https://registry.npm.alibaba-inc.com/path-exists/download/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
   integrity sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=
 
 path-is-absolute@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
+  resolved "https://registry.npm.alibaba-inc.com/path-is-absolute/download/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
   integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
 
 path-key@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
+  resolved "https://registry.npm.alibaba-inc.com/path-key/download/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
   integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
 
 path-key@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/path-key/-/path-key-3.1.0.tgz#99a10d870a803bdd5ee6f0470e58dfcd2f9a54d3"
-  integrity sha512-8cChqz0RP6SHJkMt48FW0A7+qUOn+OsnOsVtzI59tZ8m+5bCSk7hzwET0pulwOM2YMn9J1efb07KB9l9f30SGg==
+  version "3.1.1"
+  resolved "https://registry.npm.alibaba-inc.com/path-key/download/path-key-3.1.1.tgz#581f6ade658cbba65a0d3380de7753295054f375"
+  integrity sha1-WB9q3mWMu6ZaDTOA3ndTKVBU83U=
 
 path-to-regexp@0.1.7:
   version "0.1.7"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
+  resolved "https://registry.npm.alibaba-inc.com/path-to-regexp/download/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
   integrity sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
 
 path-type@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/path-type/-/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
-  integrity sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==
+  resolved "https://registry.npm.alibaba-inc.com/path-type/download/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
+  integrity sha1-zvMdyOCho7sNEFwM2Xzzv0f0428=
   dependencies:
     pify "^3.0.0"
 
 pify@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
+  resolved "https://registry.npm.alibaba-inc.com/pify/download/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
   integrity sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
 
 pkg-up@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-2.0.0.tgz#c819ac728059a461cab1c3889a2be3c49a004d7f"
+  resolved "https://registry.npm.alibaba-inc.com/pkg-up/download/pkg-up-2.0.0.tgz#c819ac728059a461cab1c3889a2be3c49a004d7f"
   integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
   dependencies:
     find-up "^2.1.0"
 
 portfinder@1.0.21:
   version "1.0.21"
-  resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.21.tgz#60e1397b95ac170749db70034ece306b9a27e324"
-  integrity sha512-ESabpDCzmBS3ekHbmpAIiESq3udRsCBGiBZLsC+HgBKv2ezb0R4oG+7RnYEVZ/ZCfhel5Tx3UzdNWA0Lox2QCA==
+  resolved "https://registry.npm.alibaba-inc.com/portfinder/download/portfinder-1.0.21.tgz#60e1397b95ac170749db70034ece306b9a27e324"
+  integrity sha1-YOE5e5WsFwdJ23ADTs4wa5on4yQ=
   dependencies:
     async "^1.5.2"
     debug "^2.2.0"
@@ -2072,23 +2043,23 @@ portfinder@1.0.21:
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
+  resolved "https://registry.npm.alibaba-inc.com/posix-character-classes/download/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
 prepend-http@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
+  resolved "https://registry.npm.alibaba-inc.com/prepend-http/download/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
-  integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
+  resolved "https://registry.npm.alibaba-inc.com/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
+  integrity sha1-eCDZsWEgzFXKmud5JoCufbptf+I=
 
 prop-types@^15.5.10:
   version "15.7.2"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
-  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  resolved "https://registry.npm.alibaba-inc.com/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
+  integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
   dependencies:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
@@ -2096,39 +2067,39 @@ prop-types@^15.5.10:
 
 proxy-addr@~2.0.5:
   version "2.0.5"
-  resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.5.tgz#34cbd64a2d81f4b1fd21e76f9f06c8a45299ee34"
-  integrity sha512-t/7RxHXPH6cJtP0pRG6smSr9QJidhB+3kXu0KgXnbGYMgzEnUxRQ4/LDdfOwZEMyIh3/xHb8PX3t+lfL9z+YVQ==
+  resolved "https://registry.npm.alibaba-inc.com/proxy-addr/download/proxy-addr-2.0.5.tgz#34cbd64a2d81f4b1fd21e76f9f06c8a45299ee34"
+  integrity sha1-NMvWSi2B9LH9IedvnwbIpFKZ7jQ=
   dependencies:
     forwarded "~0.1.2"
     ipaddr.js "1.9.0"
 
 pump@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/pump/-/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
-  integrity sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==
+  resolved "https://registry.npm.alibaba-inc.com/pump/download/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
+  integrity sha1-tKIRaBW94vTh6mAjVOjHVWUQemQ=
   dependencies:
     end-of-stream "^1.1.0"
     once "^1.3.1"
 
 qs@6.7.0:
   version "6.7.0"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
-  integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
+  resolved "https://registry.npm.alibaba-inc.com/qs/download/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
+  integrity sha1-QdwaAV49WB8WIXdr4xr7KHapsbw=
 
 querystringify@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
-  integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
+  resolved "https://registry.npm.alibaba-inc.com/querystringify/download/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
+  integrity sha1-YOWl/WSn+L+k0qsu1v30yFutFU4=
 
 range-parser@~1.2.1:
   version "1.2.1"
-  resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
-  integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
+  resolved "https://registry.npm.alibaba-inc.com/range-parser/download/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
+  integrity sha1-PPNwI9GZ4cJNGlW4SADC8+ZGgDE=
 
 raw-body@2.4.0:
   version "2.4.0"
-  resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.4.0.tgz#a1ce6fb9c9bc356ca52e89256ab59059e13d0332"
-  integrity sha512-4Oz8DUIwdvoa5qMJelxipzi/iJIi40O5cGV1wNYp5hvZP8ZN0T+jiNkL0QepXs+EsQ9XJ8ipEDoiH70ySUJP3Q==
+  resolved "https://registry.npm.alibaba-inc.com/raw-body/download/raw-body-2.4.0.tgz#a1ce6fb9c9bc356ca52e89256ab59059e13d0332"
+  integrity sha1-oc5vucm8NWylLoklarWQWeE9AzI=
   dependencies:
     bytes "3.1.0"
     http-errors "1.7.2"
@@ -2136,20 +2107,20 @@ raw-body@2.4.0:
     unpipe "1.0.0"
 
 rc-util@^4.9.0:
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.14.4.tgz#e7e009559e93bba022c49b0d0aec62665d6a0e7f"
-  integrity sha512-GQgEn6ywJYZq1NEoZ6NZzeaE2U6mT6DhdqrtRV5IBNM3yTZZW8HRjIiMOpXOhTEUj10bnHnKWKZpC36RoNmS9Q==
+  version "4.15.7"
+  resolved "https://registry.npm.alibaba-inc.com/rc-util/download/rc-util-4.15.7.tgz#8380b05765952d08dd9fdb836e19dda437cceab7"
+  integrity sha1-g4CwV2WVLQjdn9uDbhndpDfM6rc=
   dependencies:
     add-dom-event-listener "^1.1.0"
     babel-runtime "6.x"
     prop-types "^15.5.10"
     react-lifecycles-compat "^3.0.4"
-    shallowequal "^0.2.2"
+    shallowequal "^1.1.0"
 
 rc@^1.2.7:
   version "1.2.8"
-  resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
-  integrity sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==
+  resolved "https://registry.npm.alibaba-inc.com/rc/download/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
+  integrity sha1-zZJL9SAKB1uDwYjNa54hG3/A0+0=
   dependencies:
     deep-extend "^0.6.0"
     ini "~1.3.0"
@@ -2158,8 +2129,8 @@ rc@^1.2.7:
 
 react-dev-utils@9.0.1:
   version "9.0.1"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-9.0.1.tgz#5c03d85a0b2537d0c46af7165c24a7dfb274bef2"
-  integrity sha512-pnaeMo/Pxel8aZpxk1WwxT3uXxM3tEwYvsjCYn5R7gNxjhN1auowdcLDzFB8kr7rafAj2rxmvfic/fbac5CzwQ==
+  resolved "https://registry.npm.alibaba-inc.com/react-dev-utils/download/react-dev-utils-9.0.1.tgz#5c03d85a0b2537d0c46af7165c24a7dfb274bef2"
+  integrity sha1-XAPYWgslN9DEavcWXCSn37J0vvI=
   dependencies:
     "@babel/code-frame" "7.0.0"
     address "1.0.3"
@@ -2189,23 +2160,23 @@ react-dev-utils@9.0.1:
 
 react-error-overlay@^5.1.6:
   version "5.1.6"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
-  integrity sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==
+  resolved "https://registry.npm.alibaba-inc.com/react-error-overlay/download/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
+  integrity sha1-DNc0B8XRQfljiuHgxj57K/fpkp0=
 
 react-is@^16.8.1:
-  version "16.11.0"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
-  integrity sha512-gbBVYR2p8mnriqAwWx9LbuUrShnAuSCNnuPGyc7GJrMVQtPDAh8iLpv7FRuMPFb56KkaVZIYSz1PrjI9q0QPCw==
+  version "16.12.0"
+  resolved "https://registry.npm.alibaba-inc.com/react-is/download/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
+  integrity sha1-LMD+D7p0LZf9UnxCoTvsTusGJBw=
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
-  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+  resolved "https://registry.npm.alibaba-inc.com/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
 readable-stream@^2.0.2, readable-stream@^2.0.6:
   version "2.3.6"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
-  integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
+  resolved "https://registry.npm.alibaba-inc.com/readable-stream/download/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
+  integrity sha1-sRwn2IuP8fvgcGQ8+UsMea4bCq8=
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.3"
@@ -2217,8 +2188,8 @@ readable-stream@^2.0.2, readable-stream@^2.0.6:
 
 readdirp@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-2.2.1.tgz#0e87622a3325aa33e892285caf8b4e846529a525"
-  integrity sha512-1JU/8q+VgFZyxwrJ+SVIOsh+KywWGpds3NTqikiKpDMZWScmAYyKIgqkO+ARvNWJfXeXR1zxz7aHF4u4CyH6vQ==
+  resolved "https://registry.npm.alibaba-inc.com/readdirp/download/readdirp-2.2.1.tgz#0e87622a3325aa33e892285caf8b4e846529a525"
+  integrity sha1-DodiKjMlqjPokihcr4tOhGUppSU=
   dependencies:
     graceful-fs "^4.1.11"
     micromatch "^3.1.10"
@@ -2226,76 +2197,76 @@ readdirp@^2.2.1:
 
 recursive-readdir@2.2.2:
   version "2.2.2"
-  resolved "https://registry.yarnpkg.com/recursive-readdir/-/recursive-readdir-2.2.2.tgz#9946fb3274e1628de6e36b2f6714953b4845094f"
-  integrity sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg==
+  resolved "https://registry.npm.alibaba-inc.com/recursive-readdir/download/recursive-readdir-2.2.2.tgz#9946fb3274e1628de6e36b2f6714953b4845094f"
+  integrity sha1-mUb7MnThYo3m42svZxSVO0hFCU8=
   dependencies:
     minimatch "3.0.4"
 
 regenerator-runtime@0.13.2:
   version "0.13.2"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
-  integrity sha512-S/TQAZJO+D3m9xeN1WTI8dLKBBiRgXBlTJvbWjCThHWZj9EvHK70Ff50/tYj2J/fvBY6JtFVwRuazHN2E7M9BA==
+  resolved "https://registry.npm.alibaba-inc.com/regenerator-runtime/download/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
+  integrity sha1-MuWcmm+5saSv8JtJMMotRHc0NEc=
 
 regenerator-runtime@^0.11.0:
   version "0.11.1"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
-  integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
+  resolved "https://registry.npm.alibaba-inc.com/regenerator-runtime/download/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+  integrity sha1-vgWtf5v30i4Fb5cmzuUBf78Z4uk=
 
 regex-not@^1.0.0, regex-not@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/regex-not/-/regex-not-1.0.2.tgz#1f4ece27e00b0b65e0247a6810e6a85d83a5752c"
-  integrity sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==
+  resolved "https://registry.npm.alibaba-inc.com/regex-not/download/regex-not-1.0.2.tgz#1f4ece27e00b0b65e0247a6810e6a85d83a5752c"
+  integrity sha1-H07OJ+ALC2XgJHpoEOaoXYOldSw=
   dependencies:
     extend-shallow "^3.0.2"
     safe-regex "^1.1.0"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
+  resolved "https://registry.npm.alibaba-inc.com/remove-trailing-separator/download/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
 repeat-element@^1.1.2:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/repeat-element/-/repeat-element-1.1.3.tgz#782e0d825c0c5a3bb39731f84efee6b742e6b1ce"
-  integrity sha512-ahGq0ZnV5m5XtZLMb+vP76kcAM5nkLqk0lpqAuojSKGgQtn4eRi4ZZGm2olo2zKFH+sMsWaqOCW1dqAnOru72g==
+  resolved "https://registry.npm.alibaba-inc.com/repeat-element/download/repeat-element-1.1.3.tgz#782e0d825c0c5a3bb39731f84efee6b742e6b1ce"
+  integrity sha1-eC4NglwMWjuzlzH4Tv7mt0Lmsc4=
 
 repeat-string@^1.6.1:
   version "1.6.1"
-  resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
+  resolved "https://registry.npm.alibaba-inc.com/repeat-string/download/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
   integrity sha1-jcrkcOHIirwtYA//Sndihtp15jc=
 
 requires-port@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+  resolved "https://registry.npm.alibaba-inc.com/requires-port/download/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
 resolve-cwd@3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
-  integrity sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==
+  resolved "https://registry.npm.alibaba-inc.com/resolve-cwd/download/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
+  integrity sha1-DwB18bslRHZs9zumpuKt/ryxPy0=
   dependencies:
     resolve-from "^5.0.0"
 
 resolve-from@5.0.0, resolve-from@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-5.0.0.tgz#c35225843df8f776df21c57557bc087e9dfdfc69"
-  integrity sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==
+  resolved "https://registry.npm.alibaba-inc.com/resolve-from/download/resolve-from-5.0.0.tgz#c35225843df8f776df21c57557bc087e9dfdfc69"
+  integrity sha1-w1IlhD3493bfIcV1V7wIfp39/Gk=
 
 resolve-url@^0.2.1:
   version "0.2.1"
-  resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
+  resolved "https://registry.npm.alibaba-inc.com/resolve-url/download/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
 responselike@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/responselike/-/responselike-1.0.2.tgz#918720ef3b631c5642be068f15ade5a46f4ba1e7"
+  resolved "https://registry.npm.alibaba-inc.com/responselike/download/responselike-1.0.2.tgz#918720ef3b631c5642be068f15ade5a46f4ba1e7"
   integrity sha1-kYcg7ztjHFZCvgaPFa3lpG9Loec=
   dependencies:
     lowercase-keys "^1.0.0"
 
 restore-cursor@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/restore-cursor/-/restore-cursor-2.0.0.tgz#9f7ee287f82fd326d4fd162923d62129eee0dfaf"
+  resolved "https://registry.npm.alibaba-inc.com/restore-cursor/download/restore-cursor-2.0.0.tgz#9f7ee287f82fd326d4fd162923d62129eee0dfaf"
   integrity sha1-n37ih/gv0ybU/RYpI9YhKe7g368=
   dependencies:
     onetime "^2.0.0"
@@ -2303,78 +2274,78 @@ restore-cursor@^2.0.0:
 
 ret@~0.1.10:
   version "0.1.15"
-  resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
-  integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
+  resolved "https://registry.npm.alibaba-inc.com/ret/download/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
+  integrity sha1-uKSCXVvbH8P29Twrwz+BOIaBx7w=
 
 rimraf@3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.0.tgz#614176d4b3010b75e5c390eb0ee96f6dc0cebb9b"
-  integrity sha512-NDGVxTsjqfunkds7CqsOiEnxln4Bo7Nddl3XhS4pXg5OzwkLqJ971ZVAAnB+DDLnF76N+VnDEiBHaVV8I06SUg==
+  resolved "https://registry.npm.alibaba-inc.com/rimraf/download/rimraf-3.0.0.tgz#614176d4b3010b75e5c390eb0ee96f6dc0cebb9b"
+  integrity sha1-YUF21LMBC3Xlw5DrDulvbcDOu5s=
   dependencies:
     glob "^7.1.3"
 
 rimraf@^2.6.1:
   version "2.7.1"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
-  integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
+  resolved "https://registry.npm.alibaba-inc.com/rimraf/download/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
+  integrity sha1-NXl/E6f9rcVmFCwp1PB8ytSD4+w=
   dependencies:
     glob "^7.1.3"
 
 run-async@^2.2.0:
   version "2.3.0"
-  resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
+  resolved "https://registry.npm.alibaba-inc.com/run-async/download/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
   integrity sha1-A3GrSuC91yDUFm19/aZP96RFpsA=
   dependencies:
     is-promise "^2.1.0"
 
 rxjs@^6.4.0:
   version "6.5.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
-  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+  resolved "https://registry.npm.alibaba-inc.com/rxjs/download/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
+  integrity sha1-UQ4mMX9NuRp+sd532d2boKSJmjo=
   dependencies:
     tslib "^1.9.0"
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
-  integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
+  resolved "https://registry.npm.alibaba-inc.com/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
+  integrity sha1-mR7GnSluAxN0fVm9/St0XDX4go0=
 
 safe-buffer@>=5.1.0, safe-buffer@^5.1.2:
   version "5.2.0"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
-  integrity sha512-fZEwUGbVl7kouZs1jCdMLdt95hdIv0ZeHg6L7qPeciMZhZ+/gdesW4wgTARkrFWEpspjEATAzUGPG8N2jJiwbg==
+  resolved "https://registry.npm.alibaba-inc.com/safe-buffer/download/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
+  integrity sha1-t02uxJsRSPiMZLaNSbHoFcHy9Rk=
 
 safe-regex@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/safe-regex/-/safe-regex-1.1.0.tgz#40a3669f3b077d1e943d44629e157dd48023bf2e"
+  resolved "https://registry.npm.alibaba-inc.com/safe-regex/download/safe-regex-1.1.0.tgz#40a3669f3b077d1e943d44629e157dd48023bf2e"
   integrity sha1-QKNmnzsHfR6UPURinhV91IAjvy4=
   dependencies:
     ret "~0.1.10"
 
 "safer-buffer@>= 2.1.2 < 3":
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
-  integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+  resolved "https://registry.npm.alibaba-inc.com/safer-buffer/download/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+  integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
 sax@^1.2.4:
   version "1.2.4"
-  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
-  integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
+  resolved "https://registry.npm.alibaba-inc.com/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
+  integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
 
 semver@6.3.0, semver@^6.3.0:
   version "6.3.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
-  integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+  resolved "https://registry.npm.alibaba-inc.com/semver/download/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
+  integrity sha1-7gpkyK9ejO6mdoexM3YeG+y9HT0=
 
 semver@^5.3.0, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
-  integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
+  resolved "https://registry.npm.alibaba-inc.com/semver/download/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
+  integrity sha1-qVT5Ma66UI0we78Gnv8MAclhFvc=
 
 send@0.17.1:
   version "0.17.1"
-  resolved "https://registry.yarnpkg.com/send/-/send-0.17.1.tgz#c1d8b059f7900f7466dd4938bdc44e11ddb376c8"
-  integrity sha512-BsVKsiGcQMFwT8UxypobUKyv7irCNRHk1T0G680vk88yf6LBByGcZJOTJCrTP2xVN6yI+XjPJcNuE3V4fT9sAg==
+  resolved "https://registry.npm.alibaba-inc.com/send/download/send-0.17.1.tgz#c1d8b059f7900f7466dd4938bdc44e11ddb376c8"
+  integrity sha1-wdiwWfeQD3Rm3Uk4vcROEd2zdsg=
   dependencies:
     debug "2.6.9"
     depd "~1.1.2"
@@ -2392,8 +2363,8 @@ send@0.17.1:
 
 serve-static@1.14.1:
   version "1.14.1"
-  resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
-  integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==
+  resolved "https://registry.npm.alibaba-inc.com/serve-static/download/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
+  integrity sha1-Zm5jbcTwEPfvKZcKiKZ0MgiYsvk=
   dependencies:
     encodeurl "~1.0.2"
     escape-html "~1.0.3"
@@ -2402,13 +2373,13 @@ serve-static@1.14.1:
 
 set-blocking@~2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
+  resolved "https://registry.npm.alibaba-inc.com/set-blocking/download/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
   integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/set-value/-/set-value-2.0.1.tgz#a18d40530e6f07de4228c7defe4227af8cad005b"
-  integrity sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw==
+  resolved "https://registry.npm.alibaba-inc.com/set-value/download/set-value-2.0.1.tgz#a18d40530e6f07de4228c7defe4227af8cad005b"
+  integrity sha1-oY1AUw5vB95CKMfe/kInr4ytAFs=
   dependencies:
     extend-shallow "^2.0.1"
     is-extendable "^0.1.1"
@@ -2417,43 +2388,41 @@ set-value@^2.0.0, set-value@^2.0.1:
 
 setprototypeof@1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
-  integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
+  resolved "https://registry.npm.alibaba-inc.com/setprototypeof/download/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
+  integrity sha1-fpWsskqpL1iF4KvvW6ExMw1K5oM=
 
-shallowequal@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-0.2.2.tgz#1e32fd5bcab6ad688a4812cb0cc04efc75c7014e"
-  integrity sha1-HjL9W8q2rWiKSBLLDMBO/HXHAU4=
-  dependencies:
-    lodash.keys "^3.1.2"
+shallowequal@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.alibaba-inc.com/shallowequal/download/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
+  integrity sha1-GI1SHelbkIdAT9TctosT3wrk5/g=
 
 shebang-command@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
+  resolved "https://registry.npm.alibaba-inc.com/shebang-command/download/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
   integrity sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=
   dependencies:
     shebang-regex "^1.0.0"
 
 shebang-command@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
-  integrity sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==
+  resolved "https://registry.npm.alibaba-inc.com/shebang-command/download/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
+  integrity sha1-zNCvT4g1+9wmW4JGGq8MNmY/NOo=
   dependencies:
     shebang-regex "^3.0.0"
 
 shebang-regex@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
+  resolved "https://registry.npm.alibaba-inc.com/shebang-regex/download/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
 shebang-regex@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
-  integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
+  resolved "https://registry.npm.alibaba-inc.com/shebang-regex/download/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
+  integrity sha1-rhbxZE2HPsrYQ7AwexQzYtTEIXI=
 
 shell-quote@1.6.1:
   version "1.6.1"
-  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.6.1.tgz#f4781949cce402697127430ea3b3c5476f481767"
+  resolved "https://registry.npm.alibaba-inc.com/shell-quote/download/shell-quote-1.6.1.tgz#f4781949cce402697127430ea3b3c5476f481767"
   integrity sha1-9HgZSczkAmlxJ0MOo7PFR29IF2c=
   dependencies:
     array-filter "~0.0.0"
@@ -2463,23 +2432,23 @@ shell-quote@1.6.1:
 
 shellwords@^0.1.1:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
-  integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
+  resolved "https://registry.npm.alibaba-inc.com/shellwords/download/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
+  integrity sha1-1rkYHBpI05cyTISHHvvPxz/AZUs=
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
+  resolved "https://registry.npm.alibaba-inc.com/signal-exit/download/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
 slash@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
+  resolved "https://registry.npm.alibaba-inc.com/slash/download/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
   integrity sha1-xB8vbDn8FtHNF61LXYlhFK5HDVU=
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
-  integrity sha512-O27l4xaMYt/RSQ5TR3vpWCAB5Kb/czIcqUFOM/C4fYcLnbZUc1PkjTAMjof2pBWaSTwOUd6qUHcFGVGj7aIwnw==
+  resolved "https://registry.npm.alibaba-inc.com/snapdragon-node/download/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
+  integrity sha1-bBdfhv8UvbByRWPo88GwIaKGhTs=
   dependencies:
     define-property "^1.0.0"
     isobject "^3.0.0"
@@ -2487,15 +2456,15 @@ snapdragon-node@^2.0.1:
 
 snapdragon-util@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/snapdragon-util/-/snapdragon-util-3.0.1.tgz#f956479486f2acd79700693f6f7b805e45ab56e2"
-  integrity sha512-mbKkMdQKsjX4BAL4bRYTj21edOf8cN7XHdYUJEe+Zn99hVEYcMvKPct1IqNe7+AZPirn8BCDOQBHQZknqmKlZQ==
+  resolved "https://registry.npm.alibaba-inc.com/snapdragon-util/download/snapdragon-util-3.0.1.tgz#f956479486f2acd79700693f6f7b805e45ab56e2"
+  integrity sha1-+VZHlIbyrNeXAGk/b3uAXkWrVuI=
   dependencies:
     kind-of "^3.2.0"
 
 snapdragon@^0.8.1:
   version "0.8.2"
-  resolved "https://registry.yarnpkg.com/snapdragon/-/snapdragon-0.8.2.tgz#64922e7c565b0e14204ba1aa7d6964278d25182d"
-  integrity sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==
+  resolved "https://registry.npm.alibaba-inc.com/snapdragon/download/snapdragon-0.8.2.tgz#64922e7c565b0e14204ba1aa7d6964278d25182d"
+  integrity sha1-ZJIufFZbDhQgS6GqfWlkJ40lGC0=
   dependencies:
     base "^0.11.1"
     debug "^2.2.0"
@@ -2508,8 +2477,8 @@ snapdragon@^0.8.1:
 
 sockjs-client@1.3.0:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/sockjs-client/-/sockjs-client-1.3.0.tgz#12fc9d6cb663da5739d3dc5fb6e8687da95cb177"
-  integrity sha512-R9jxEzhnnrdxLCNln0xg5uGHqMnkhPSTzUZH2eXcR03S/On9Yvoq2wyUZILRUhZCNVu2PmwWVoyuiPz8th8zbg==
+  resolved "https://registry.npm.alibaba-inc.com/sockjs-client/download/sockjs-client-1.3.0.tgz#12fc9d6cb663da5739d3dc5fb6e8687da95cb177"
+  integrity sha1-EvydbLZj2lc509xftuhofalcsXc=
   dependencies:
     debug "^3.2.5"
     eventsource "^1.0.7"
@@ -2520,16 +2489,16 @@ sockjs-client@1.3.0:
 
 sockjs@0.3.19:
   version "0.3.19"
-  resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.19.tgz#d976bbe800af7bd20ae08598d582393508993c0d"
-  integrity sha512-V48klKZl8T6MzatbLlzzRNhMepEys9Y4oGFpypBFFn1gLI/QQ9HtLLyWJNbPlwGLelOVOEijUbTTJeLLI59jLw==
+  resolved "https://registry.npm.alibaba-inc.com/sockjs/download/sockjs-0.3.19.tgz#d976bbe800af7bd20ae08598d582393508993c0d"
+  integrity sha1-2Xa76ACve9IK4IWY1YI5NQiZPA0=
   dependencies:
     faye-websocket "^0.10.0"
     uuid "^3.0.1"
 
 source-map-resolve@^0.5.0:
   version "0.5.2"
-  resolved "https://registry.yarnpkg.com/source-map-resolve/-/source-map-resolve-0.5.2.tgz#72e2cc34095543e43b2c62b2c4c10d4a9054f259"
-  integrity sha512-MjqsvNwyz1s0k81Goz/9vRBe9SZdB09Bdw+/zYyO+3CuPk6fouTaxscHkgtE8jKvf01kVfl8riHzERQ/kefaSA==
+  resolved "https://registry.npm.alibaba-inc.com/source-map-resolve/download/source-map-resolve-0.5.2.tgz#72e2cc34095543e43b2c62b2c4c10d4a9054f259"
+  integrity sha1-cuLMNAlVQ+Q7LGKyxMENSpBU8lk=
   dependencies:
     atob "^2.1.1"
     decode-uri-component "^0.2.0"
@@ -2539,24 +2508,24 @@ source-map-resolve@^0.5.0:
 
 source-map-url@^0.4.0:
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
+  resolved "https://registry.npm.alibaba-inc.com/source-map-url/download/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
   integrity sha1-PpNdfd1zYxuXZZlW1VEo6HtQhKM=
 
 source-map@^0.5.6:
   version "0.5.7"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
+  resolved "https://registry.npm.alibaba-inc.com/source-map/download/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
-  integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
+  resolved "https://registry.npm.alibaba-inc.com/split-string/download/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
+  integrity sha1-fLCd2jqGWFcFxks5pkZgOGguj+I=
   dependencies:
     extend-shallow "^3.0.0"
 
 static-extend@^0.1.1:
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/static-extend/-/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"
+  resolved "https://registry.npm.alibaba-inc.com/static-extend/download/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"
   integrity sha1-YICcOcv/VTNyJv1eC1IPNB8ftcY=
   dependencies:
     define-property "^0.2.5"
@@ -2564,12 +2533,12 @@ static-extend@^0.1.1:
 
 "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
-  resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
+  resolved "https://registry.npm.alibaba-inc.com/statuses/download/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
 string-width@^1.0.1:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
+  resolved "https://registry.npm.alibaba-inc.com/string-width/download/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
   integrity sha1-EYvfW4zcUaKn5w0hHgfisLmxB9M=
   dependencies:
     code-point-at "^1.0.0"
@@ -2578,66 +2547,66 @@ string-width@^1.0.1:
 
 "string-width@^1.0.2 || 2", string-width@^2.1.0:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-2.1.1.tgz#ab93f27a8dc13d28cac815c462143a6d9012ae9e"
-  integrity sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==
+  resolved "https://registry.npm.alibaba-inc.com/string-width/download/string-width-2.1.1.tgz#ab93f27a8dc13d28cac815c462143a6d9012ae9e"
+  integrity sha1-q5Pyeo3BPSjKyBXEYhQ6bZASrp4=
   dependencies:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
 
 string_decoder@~1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
-  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+  resolved "https://registry.npm.alibaba-inc.com/string_decoder/download/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  integrity sha1-nPFhG6YmhdcDCunkujQUnDrwP8g=
   dependencies:
     safe-buffer "~5.1.0"
 
 strip-ansi@5.2.0, strip-ansi@^5.0.0:
   version "5.2.0"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-5.2.0.tgz#8c9a536feb6afc962bdfa5b104a5091c1ad9c0ae"
-  integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
+  resolved "https://registry.npm.alibaba-inc.com/strip-ansi/download/strip-ansi-5.2.0.tgz#8c9a536feb6afc962bdfa5b104a5091c1ad9c0ae"
+  integrity sha1-jJpTb+tq/JYr36WxBKUJHBrZwK4=
   dependencies:
     ansi-regex "^4.1.0"
 
 strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
+  resolved "https://registry.npm.alibaba-inc.com/strip-ansi/download/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
   integrity sha1-ajhfuIU9lS1f8F0Oiq+UJ43GPc8=
   dependencies:
     ansi-regex "^2.0.0"
 
 strip-ansi@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-4.0.0.tgz#a8479022eb1ac368a871389b635262c505ee368f"
+  resolved "https://registry.npm.alibaba-inc.com/strip-ansi/download/strip-ansi-4.0.0.tgz#a8479022eb1ac368a871389b635262c505ee368f"
   integrity sha1-qEeQIusaw2iocTibY1JixQXuNo8=
   dependencies:
     ansi-regex "^3.0.0"
 
 strip-json-comments@~2.0.1:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+  resolved "https://registry.npm.alibaba-inc.com/strip-json-comments/download/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
 supports-color@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
+  resolved "https://registry.npm.alibaba-inc.com/supports-color/download/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
   integrity sha1-U10EXOa2Nj+kARcIRimZXp3zJMc=
 
 supports-color@^5.3.0:
   version "5.5.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
-  integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
+  resolved "https://registry.npm.alibaba-inc.com/supports-color/download/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
+  integrity sha1-4uaaRKyHcveKHsCzW2id9lMO/I8=
   dependencies:
     has-flag "^3.0.0"
 
 tapable@^1.0.0:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
-  integrity sha512-4WK/bYZmj8xLr+HUCODHGF1ZFzsYffasLUgEiMBY4fgtltdO6B4WJtlSbPaDTLpYTcGVwM2qLnFTICEcNxs3kA==
+  resolved "https://registry.npm.alibaba-inc.com/tapable/download/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
+  integrity sha1-ofzMBrWNth/XpF2i2kT186Pme6I=
 
 tar@^4:
   version "4.4.13"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
-  integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
+  resolved "https://registry.npm.alibaba-inc.com/tar/download/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
+  integrity sha1-Q7NkvFKIjVVSmGN7ENYHkCVKtSU=
   dependencies:
     chownr "^1.1.1"
     fs-minipass "^1.2.5"
@@ -2649,41 +2618,41 @@ tar@^4:
 
 text-table@0.2.0:
   version "0.2.0"
-  resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
+  resolved "https://registry.npm.alibaba-inc.com/text-table/download/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
 through@^2.3.6:
   version "2.3.8"
-  resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+  resolved "https://registry.npm.alibaba-inc.com/through/download/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
 tinycolor2@^1.4.1:
   version "1.4.1"
-  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+  resolved "https://registry.npm.alibaba-inc.com/tinycolor2/download/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
 
 tmp@^0.0.33:
   version "0.0.33"
-  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
-  integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
+  resolved "https://registry.npm.alibaba-inc.com/tmp/download/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
+  integrity sha1-bTQzWIl2jSGyvNoKonfO07G/rfk=
   dependencies:
     os-tmpdir "~1.0.2"
 
 to-object-path@^0.3.0:
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/to-object-path/-/to-object-path-0.3.0.tgz#297588b7b0e7e0ac08e04e672f85c1f4999e17af"
+  resolved "https://registry.npm.alibaba-inc.com/to-object-path/download/to-object-path-0.3.0.tgz#297588b7b0e7e0ac08e04e672f85c1f4999e17af"
   integrity sha1-KXWIt7Dn4KwI4E5nL4XB9JmeF68=
   dependencies:
     kind-of "^3.0.2"
 
 to-readable-stream@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/to-readable-stream/-/to-readable-stream-1.0.0.tgz#ce0aa0c2f3df6adf852efb404a783e77c0475771"
-  integrity sha512-Iq25XBt6zD5npPhlLVXGFN3/gyR2/qODcKNNyTMd4vbm39HUaOiAM4PMq0eMVC/Tkxz+Zjdsc55g9yyz+Yq00Q==
+  resolved "https://registry.npm.alibaba-inc.com/to-readable-stream/download/to-readable-stream-1.0.0.tgz#ce0aa0c2f3df6adf852efb404a783e77c0475771"
+  integrity sha1-zgqgwvPfat+FLvtASng+d8BHV3E=
 
 to-regex-range@^2.1.0:
   version "2.1.1"
-  resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-2.1.1.tgz#7c80c17b9dfebe599e27367e0d4dd5590141db38"
+  resolved "https://registry.npm.alibaba-inc.com/to-regex-range/download/to-regex-range-2.1.1.tgz#7c80c17b9dfebe599e27367e0d4dd5590141db38"
   integrity sha1-fIDBe53+vlmeJzZ+DU3VWQFB2zg=
   dependencies:
     is-number "^3.0.0"
@@ -2691,8 +2660,8 @@ to-regex-range@^2.1.0:
 
 to-regex@^3.0.1, to-regex@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/to-regex/-/to-regex-3.0.2.tgz#13cfdd9b336552f30b51f33a8ae1b42a7a7599ce"
-  integrity sha512-FWtleNAtZ/Ki2qtqej2CXTOayOH9bHDQF+Q48VpWyDXjbYxA4Yz8iDB31zXOBUlOHHKidDbqGVrTUvQMPmBGBw==
+  resolved "https://registry.npm.alibaba-inc.com/to-regex/download/to-regex-3.0.2.tgz#13cfdd9b336552f30b51f33a8ae1b42a7a7599ce"
+  integrity sha1-E8/dmzNlUvMLUfM6iuG0Knp1mc4=
   dependencies:
     define-property "^2.0.2"
     extend-shallow "^3.0.2"
@@ -2701,26 +2670,26 @@ to-regex@^3.0.1, to-regex@^3.0.2:
 
 toidentifier@1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
-  integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+  resolved "https://registry.npm.alibaba-inc.com/toidentifier/download/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
+  integrity sha1-fhvjRw8ed5SLxD2Uo8j013UrpVM=
 
 tslib@^1.9.0:
   version "1.10.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
-  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+  resolved "https://registry.npm.alibaba-inc.com/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
-  resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
-  integrity sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==
+  resolved "https://registry.npm.alibaba-inc.com/type-is/download/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
+  integrity sha1-TlUs0F3wlGfcvE73Od6J8s83wTE=
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
 union-value@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.1.tgz#0b6fe7b835aecda61c6ea4d4f02c14221e109847"
-  integrity sha512-tJfXmxMeWYnczCVs7XAEvIV7ieppALdyepWMkHkwciRpZraG/xwT+s2JN8+pr1+8jCRf80FFzvr+MpQeeoF4Xg==
+  resolved "https://registry.npm.alibaba-inc.com/union-value/download/union-value-1.0.1.tgz#0b6fe7b835aecda61c6ea4d4f02c14221e109847"
+  integrity sha1-C2/nuDWuzaYcbqTU8CwUIh4QmEc=
   dependencies:
     arr-union "^3.1.0"
     get-value "^2.0.6"
@@ -2729,12 +2698,12 @@ union-value@^1.0.0:
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
+  resolved "https://registry.npm.alibaba-inc.com/unpipe/download/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
   integrity sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
 
 unset-value@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/unset-value/-/unset-value-1.0.0.tgz#8376873f7d2335179ffb1e6fc3a8ed0dfc8ab559"
+  resolved "https://registry.npm.alibaba-inc.com/unset-value/download/unset-value-1.0.0.tgz#8376873f7d2335179ffb1e6fc3a8ed0dfc8ab559"
   integrity sha1-g3aHP30jNRef+x5vw6jtDfyKtVk=
   dependencies:
     has-value "^0.3.1"
@@ -2742,65 +2711,65 @@ unset-value@^1.0.0:
 
 upath@^1.1.1:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
-  integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
+  resolved "https://registry.npm.alibaba-inc.com/upath/download/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
+  integrity sha1-j2bbzVWog6za5ECK+LA1pQRMGJQ=
 
 urix@^0.1.0:
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
+  resolved "https://registry.npm.alibaba-inc.com/urix/download/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
 url-parse-lax@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/url-parse-lax/-/url-parse-lax-3.0.0.tgz#16b5cafc07dbe3676c1b1999177823d6503acb0c"
+  resolved "https://registry.npm.alibaba-inc.com/url-parse-lax/download/url-parse-lax-3.0.0.tgz#16b5cafc07dbe3676c1b1999177823d6503acb0c"
   integrity sha1-FrXK/Afb42dsGxmZF3gj1lA6yww=
   dependencies:
     prepend-http "^2.0.0"
 
 url-parse@^1.4.3:
   version "1.4.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
-  integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
+  resolved "https://registry.npm.alibaba-inc.com/url-parse/download/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
+  integrity sha1-qKg1NejACjFuQDpdtKwbm4U64ng=
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
 use@^3.1.0:
   version "3.1.1"
-  resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
-  integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+  resolved "https://registry.npm.alibaba-inc.com/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
+  integrity sha1-1QyMrHmhn7wg8pEfVuuXP04QBw8=
 
 user-home@2.0.0, user-home@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/user-home/-/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
+  resolved "https://registry.npm.alibaba-inc.com/user-home/download/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
   integrity sha1-nHC/2Babwdy/SGBODwS4tJzenp8=
   dependencies:
     os-homedir "^1.0.0"
 
 util-deprecate@~1.0.1:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+  resolved "https://registry.npm.alibaba-inc.com/util-deprecate/download/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
 utils-merge@1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
+  resolved "https://registry.npm.alibaba-inc.com/utils-merge/download/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
 uuid@^3.0.1:
   version "3.3.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
-  integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+  resolved "https://registry.npm.alibaba-inc.com/uuid/download/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
+  integrity sha1-RWjwIW54dg7h2/Ok0s9T4iQRKGY=
 
 vary@~1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+  resolved "https://registry.npm.alibaba-inc.com/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
 websocket-driver@>=0.5.1:
   version "0.7.3"
-  resolved "https://registry.yarnpkg.com/websocket-driver/-/websocket-driver-0.7.3.tgz#a2d4e0d4f4f116f1e6297eba58b05d430100e9f9"
-  integrity sha512-bpxWlvbbB459Mlipc5GBzzZwhoZgGEZLuqPaR0INBGnPAY1vdBX6hPnoFXiw+3yWxDuHyQjO2oXTMyS8A5haFg==
+  resolved "https://registry.npm.alibaba-inc.com/websocket-driver/download/websocket-driver-0.7.3.tgz#a2d4e0d4f4f116f1e6297eba58b05d430100e9f9"
+  integrity sha1-otTg1PTxFvHmKX66WLBdQwEA6fk=
   dependencies:
     http-parser-js ">=0.4.0 <0.4.11"
     safe-buffer ">=5.1.0"
@@ -2808,43 +2777,43 @@ websocket-driver@>=0.5.1:
 
 websocket-extensions@>=0.1.1:
   version "0.1.3"
-  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
-  integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
+  resolved "https://registry.npm.alibaba-inc.com/websocket-extensions/download/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
+  integrity sha1-XS/yKXcAPsaHpLhwc9+7rBRszyk=
 
 which@^1.2.9, which@^1.3.0, which@^1.3.1:
   version "1.3.1"
-  resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
-  integrity sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==
+  resolved "https://registry.npm.alibaba-inc.com/which/download/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
+  integrity sha1-pFBD1U9YBTFtqNYvn1CRjT2nCwo=
   dependencies:
     isexe "^2.0.0"
 
 which@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/which/-/which-2.0.1.tgz#f1cf94d07a8e571b6ff006aeb91d0300c47ef0a4"
-  integrity sha512-N7GBZOTswtB9lkQBZA4+zAXrjEIWAUOB93AvzUiudRzRxhUdLURQ7D/gAIMY1gatT/LTbmbcv8SiYazy3eYB7w==
+  version "2.0.2"
+  resolved "https://registry.npm.alibaba-inc.com/which/download/which-2.0.2.tgz#7c6a8dd0a636a0327e10b59c9286eee93f3f51b1"
+  integrity sha1-fGqN0KY2oDJ+ELWckobu6T8/UbE=
   dependencies:
     isexe "^2.0.0"
 
 wide-align@^1.1.0:
   version "1.1.3"
-  resolved "https://registry.yarnpkg.com/wide-align/-/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
-  integrity sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
+  resolved "https://registry.npm.alibaba-inc.com/wide-align/download/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
+  integrity sha1-rgdOa9wMFKQx6ATmJFScYzsABFc=
   dependencies:
     string-width "^1.0.2 || 2"
 
 worker-rpc@^0.1.0:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/worker-rpc/-/worker-rpc-0.1.1.tgz#cb565bd6d7071a8f16660686051e969ad32f54d5"
-  integrity sha512-P1WjMrUB3qgJNI9jfmpZ/htmBEjFh//6l/5y8SD9hg1Ef5zTTVVoRjTrTEzPrNBQvmhMxkoTsjOXN10GWU7aCg==
+  resolved "https://registry.npm.alibaba-inc.com/worker-rpc/download/worker-rpc-0.1.1.tgz#cb565bd6d7071a8f16660686051e969ad32f54d5"
+  integrity sha1-y1Zb1tcHGo8WZgaGBR6WmtMvVNU=
   dependencies:
     microevent.ts "~0.1.1"
 
 wrappy@1:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+  resolved "https://registry.npm.alibaba-inc.com/wrappy/download/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
 yallist@^3.0.0, yallist@^3.0.3:
   version "3.1.1"
-  resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
-  integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+  resolved "https://registry.npm.alibaba-inc.com/yallist/download/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
+  integrity sha1-27fa+b/YusmrRev2ArjLrQ1dCP0=

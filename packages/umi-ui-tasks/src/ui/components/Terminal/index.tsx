@@ -1,5 +1,5 @@
 import { Row, Col, Tooltip } from 'antd';
-import { Delete, VerticalAlignBottom } from '@ant-design/icons';
+import { DeleteOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Terminal } from 'xterm';
 import React, { useRef, useState, useEffect } from 'react';
 import { useTerminal, usePrevious } from '../../hooks';
@@ -65,12 +65,12 @@ const TerminalComponent: React.FC<IProps> = ({ terminal, log, onClear, size = {}
         <Col span={4} offset={12} className={styles.actionGroup}>
           <span className={styles.icon}>
             <Tooltip title={intl({ id: 'org.umi.ui.tasks.terminal.clear' })}>
-              <Delete onClick={clear} />
+              <DeleteOutlined onClick={clear} />
             </Tooltip>
           </span>
           <span className={styles.icon}>
             <Tooltip title={intl({ id: 'org.umi.ui.tasks.terminal.bottom' })}>
-              <VerticalAlignBottom onClick={toBottom} />
+              <VerticalAlignBottomOutlined onClick={toBottom} />
             </Tooltip>
           </span>
         </Col>

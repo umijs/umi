@@ -1,6 +1,11 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
-import { Left, CaretDown, Export, ExperimentFilled } from '@ant-design/icons';
+import {
+  LeftOutlined,
+  CaretDownOutlined,
+  ExportOutlined,
+  ExperimentFilled,
+} from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import get from 'lodash/get';
@@ -194,7 +199,7 @@ export default withRouter(props => {
                       {currentProject ? currentProject.name : ''}
                     </p>
                     <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
-                      <Export onClick={openEditor} />
+                      <ExportOutlined onClick={openEditor} />
                     </Tooltip>
                   </Col>
                   <Col className={styles.gotoUi}>
@@ -218,7 +223,7 @@ export default withRouter(props => {
                     <div className={styles['sidebar-top']}>
                       {!isMini && (
                         <div className={styles['sidebar-name']}>
-                          <Left
+                          <LeftOutlined
                             onClick={() => handleBack(false)}
                             className={styles['sidebar-name-back']}
                           />
@@ -231,12 +236,12 @@ export default withRouter(props => {
                             {get(currentProject, 'name.length') > 16 ? (
                               <Tooltip title={currentProject.name}>
                                 <p>{currentProject.name}</p>
-                                <CaretDown className={styles['sidebar-name-expand-icon']} />
+                                <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
                               </Tooltip>
                             ) : (
                               <div>
                                 <p>{currentProject.name}</p>
-                                <CaretDown className={styles['sidebar-name-expand-icon']} />
+                                <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
                               </div>
                             )}
                           </Dropdown>

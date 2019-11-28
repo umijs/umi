@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import cls from 'classnames';
-import { Delete, Plus } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import ObjectItemField, { IValue, ObjectItemFieldProps, IOption } from './ObjectItemField';
 import debug from '@/debug';
@@ -94,7 +94,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
                     id: 'org.umi.ui.configuration.object.item.delete.tooltip',
                   })}
                 >
-                  <Delete className={styles['itemField-icon']} />
+                  <DeleteOutlined className={styles['itemField-icon']} />
                 </Tooltip>
               </Popconfirm>
             )}
@@ -114,7 +114,7 @@ const ObjectField: React.FC<ObjectItemFieldProps> = props => {
             minWidth: fieldsValue.length === 0 ? '100%' : 'unset',
           }}
         >
-          <Plus /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
+          <PlusOutlined /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
         </Button>
       )}
     </span>

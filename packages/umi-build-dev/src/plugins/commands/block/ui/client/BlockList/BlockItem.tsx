@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Col, message, Spin, Typography, Button, Tooltip } from 'antd';
 import { ButtonProps } from 'antd/es/button';
-import { Export } from '@ant-design/icons';
+import { ExportOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 
 import styles from './index.module.less';
@@ -180,7 +180,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
                     placement="bottom"
                   >
                     <Button className={styles.previewBtn} target="_blank" href={item.previewUrl}>
-                      <Export />
+                      <ExportOutlined />
                     </Button>
                   </Tooltip>
                 )}

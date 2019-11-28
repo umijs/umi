@@ -1,5 +1,5 @@
 import React, { useMemo, useContext } from 'react';
-import { Up, Down } from '@ant-design/icons';
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import cls from 'classnames';
 import { Spin } from 'antd';
 import styles from './index.module.less';
@@ -103,9 +103,9 @@ export default props => {
             </div>
             <div className={styles.switcher}>
               {isCurrent ? (
-                <Up style={{ fontSize: '12px' }} />
+                <UpOutlined style={{ fontSize: '12px' }} />
               ) : (
-                <Down style={{ fontSize: '12px' }} />
+                <DownOutlined style={{ fontSize: '12px' }} />
               )}
             </div>
           </div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FolderFilled, Check } from '@ant-design/icons';
+import { FolderFilled, CheckOutlined } from '@ant-design/icons';
 import cls from 'classnames';
 import { IDirectoryType } from '@/enums';
 import debug from '@/debug';
@@ -41,7 +41,7 @@ const DirectoryItem: React.SFC<DirectoryItemProps> = props => {
     <div className={itemCls} onDoubleClick={handleDoubleClick} onClick={handleClick}>
       <FolderFilled className={foldIconCls} />
       <div className={styles['directoryForm-list-item-name']}>{fileName}</div>
-      <Check className={iconCls} />
+      <CheckOutlined className={iconCls} />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Popconfirm, Tooltip, Divider } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
-import { Close, VerticalAlignBottom, Delete } from '@ant-design/icons';
+import { CloseOutlined, VerticalAlignBottomOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './FooterToolbar.less';
 
 type noop = () => void;
@@ -71,14 +71,14 @@ const FooterToolbar: React.FC<IFooterToolbarProps> = props => {
           onConfirm={onClear}
         >
           <Tooltip title={formatMessage({ id: 'org.umi.ui.global.log.clear.tooltip' })}>
-            <Delete />
+            <DeleteOutlined />
           </Tooltip>
         </Popconfirm>
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.log.enter.tooltip' })}>
-          <VerticalAlignBottom onClick={onScrollBottom} />
+          <VerticalAlignBottomOutlined onClick={onScrollBottom} />
         </Tooltip>
         <Divider type="vertical" />
-        <Close onClick={onClose} />
+        <CloseOutlined onClick={onClose} />
       </div>
     </div>
   );

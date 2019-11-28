@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { IUiApi } from 'umi-types';
-import { Setting } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 import Dev from './ui/components/Dev';
 import Build from './ui/components/Build';
 import Lint from './ui/components/Lint';
@@ -161,7 +161,7 @@ export default (api: IUiApi) => {
     key: 'org.umi.dashboard.card.task',
     title: <FormattedMessage id="org.umi.ui.tasks.title" />,
     description: <FormattedMessage id="org.umi.ui.tasks.description" />,
-    icon: <Setting />,
+    icon: <SettingOutlined />,
     content: api.mini
       ? // mini 下没有 dev
         commonContent

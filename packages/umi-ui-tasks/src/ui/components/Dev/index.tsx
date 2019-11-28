@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Form, Switch, Input, Modal, Badge, Radio } from 'antd';
-import { CaretRight, Pause } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -206,7 +206,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath, ii
             >
               {isTaskRunning ? (
                 <>
-                  <Pause />
+                  <PauseOutlined />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.dev.cancel' })}
@@ -214,7 +214,7 @@ const DevComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath, ii
                 </>
               ) : (
                 <>
-                  <CaretRight />
+                  <CaretRightOutlined />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.dev.start' })}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useLayoutEffect } from 'react';
-import { Tabs, Spin, Radio, Button, message, Tooltip } from 'antd';
-import { Reload, Plus } from '@ant-design/icons';
+import { Spin, Radio, Button, message, Tooltip } from 'antd';
+import { ReloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import { stringify, parse } from 'qs';
 
@@ -253,7 +253,7 @@ const BlocksViewer: React.FC<Props> = props => {
               });
             }}
           >
-            <Reload />
+            <ReloadOutlined />
           </Button>
         </Tooltip>,
         <Tooltip
@@ -285,7 +285,7 @@ const BlocksViewer: React.FC<Props> = props => {
               padding: buttonPadding,
             }}
           >
-            <Plus />
+            <PlusOutlined />
           </Button>
         </Tooltip>,
       ]);

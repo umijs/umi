@@ -9,7 +9,7 @@
     "src"
   ],
   "devDependencies": {
-    "@ant-design/icons": "^4.0.0-alpha.8",
+    "@ant-design/icons": "4.0.0-alpha.11",
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
     "umi-types": "0.5.7",
