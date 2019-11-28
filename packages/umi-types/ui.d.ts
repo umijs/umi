@@ -287,17 +287,8 @@ declare namespace IUI {
     icon: ReactNode;
     /** card Right button */
     right?: ReactNode;
-    /** same as antd Grid, xs,sm,lg,xl */
-    span?: Partial<{
-      /** default 6 */
-      xl: number;
-      /** default 12 */
-      sm: number;
-      /** default 12 */
-      lg: number;
-      /** default 24 */
-      xs: number;
-    }>;
+    /** col wrapper container className */
+    colClassName?: string;
     /** icon background color, default #459BF7 */
     backgroundColor?: string;
     content: ReactNode | ReactNode[];

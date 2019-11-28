@@ -1,3 +1,4 @@
+@import '~antd/dist/antd.less';
 @import '../../../../node_modules/umi-ui-theme/dark.less';
 
 .info {
@@ -65,6 +66,15 @@
     }
   }
   &-action {
+    @media screen and (max-width: @screen-sm) {
+      width: 100%;
+    }
+    @media screen and (min-width: @screen-sm) and (max-width: @screen-xl) {
+      width: 50%;
+    }
+    @media screen and (min-width: @screen-xl) {
+      width: 25%;
+    }
     :global {
       .ant-card-head-title {
         padding: 26px 0;
@@ -87,6 +97,17 @@
     :global {
       .ant-card-body {
         padding: 0 16px;
+      }
+    }
+    &-action {
+      @media screen and (max-width: @screen-sm) {
+        width: 50%;
+      }
+      @media screen and (min-width: @screen-sm) and (max-width: @screen-xl) {
+        width: 33.333%;
+      }
+      @media screen and (min-width: @screen-xl) {
+        width: 33.333%;
       }
     }
   }
@@ -200,5 +221,11 @@
         font-size: 12px;
       }
     }
+  }
+}
+
+.zaobao-col {
+  @media screen and (min-width: @screen-xl) {
+    width: 50%;
   }
 }
