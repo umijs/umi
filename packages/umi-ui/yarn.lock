@@ -14,7 +14,7 @@
   resolved "https://registry.npm.alibaba-inc.com/@ant-design/icons-svg/download/@ant-design/icons-svg-4.0.0-alpha.0.tgz#c9e2607f463291a1fc73418969b7708cceceffb9"
   integrity sha1-yeJgf0YykaH8c0GJabdwjM7O/7k=
 
-"@ant-design/icons@^4.0.0-alpha.11":
+"@ant-design/icons@4.0.0-alpha.11":
   version "4.0.0-alpha.11"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.0.0-alpha.11.tgz#c7d8e5910c88f3fb7a85aa31502a1a8685828e13"
   integrity sha512-3xcSup7O9QNeA+Nqg0xzR/YwJML9EUC5lsDxD3jslvVxeIDbhG3jLrNU6cddyRcLcl4KAlK0JkGbJk6MSOB/bA==
