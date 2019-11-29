@@ -5,4 +5,4 @@ export { default as dynamic } from './dynamic';
 export { default as router } from './router';
 export { default as withRouter } from './withRouter';
 export { default as Route } from './Route';
-export * from '@tmp/umiExports';
+export * from '@@/umiExports';

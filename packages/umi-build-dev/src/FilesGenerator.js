@@ -147,7 +147,7 @@ export default class FilesGenerator {
     props = window.g_initialData;
   } else {
     const pathname = location.pathname;
-    const activeRoute = findRoute(require('@tmp/router').routes, pathname);
+    const activeRoute = findRoute(require('@@/router').routes, pathname);
     // 在客户端渲染前，执行 getInitialProps 方法
     // 拿到初始数据
     if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {

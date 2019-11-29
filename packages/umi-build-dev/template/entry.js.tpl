@@ -53,7 +53,7 @@ if (!__IS_BROWSER) {
   serverRender = async (ctx = {}) => {
     // ctx.req.url may be `/bar?locale=en-US`
     const [pathname] = (ctx.req.url || '').split('?');
-    const history = require('@tmp/history').default;
+    const history = require('@@/history').default;
     history.replace(ctx.req.url);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;

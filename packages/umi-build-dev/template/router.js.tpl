@@ -3,7 +3,7 @@ import React from 'react';
 import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
-import history from '@tmp/history';
+import history from '@@/history';
 {{{ imports }}}
 
 const Router = {{{ RouterRootComponent }}};

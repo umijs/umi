@@ -17,5 +17,5 @@ export default {
     'src/utils.js',
     'src/withRouter.js',
   ],
-  extraExternals: ['@tmp', 'react-router-dom', 'react'],
+  extraExternals: ['@@', 'react-router-dom', 'react'],
 };

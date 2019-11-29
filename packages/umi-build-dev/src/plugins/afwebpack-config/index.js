@@ -67,6 +67,7 @@ export default function(api) {
       )
       .set('@', paths.absSrcPath)
       .set('@tmp', paths.absTmpDirPath)
+      .set('@@', paths.absTmpDirPath)
       .set('umi', process.env.UMI_DIR);
   });
 
