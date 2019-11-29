@@ -1,5 +1,5 @@
 /* global window */
-import history from '@tmp/history';
+import history from '@@/history';
 
 export function push(...args) {
   history.push(...args);

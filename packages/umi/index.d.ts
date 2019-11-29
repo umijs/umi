@@ -10,4 +10,4 @@ export { default as withRouter } from './withRouter';
 export { default as RouterTypes } from './routerTypes';
 
 // @ts-ignore
-export * from '@tmp/umiExports';
+export * from '@@/umiExports';
