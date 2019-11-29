@@ -68,7 +68,7 @@ export default function build(opts = {}) {
 }
 
 function getErrorInfo(err, stats) {
-  if (!stats.stats) {
+  if (err || !stats.stats) {
     return {
       err: err || (stats.compilation && stats.compilation.errors && stats.compilation.errors[0]),
       stats,
