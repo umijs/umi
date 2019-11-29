@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import cls from 'classnames';
-import { Search as SearchIcon, CloseCircleFilled } from '@ant-design/icons';
+import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
 import { IUi } from 'umi-types';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
@@ -227,10 +227,10 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
             <div className={styles['configForm-header']}>
               <h2>{formatMessage({ id: props.title })}</h2>
               <span className={searchIconCls}>
-                <SearchIcon onClick={handleSearchShow} />
+                <SearchOutlined onClick={handleSearchShow} />
               </span>
               <Input
-                prefix={<SearchIcon />}
+                prefix={<SearchOutlined />}
                 ref={searchInputRef}
                 suffix={search && <CloseCircleFilled onClick={resetSearch} />}
                 placeholder={formatMessage({ id: 'org.umi.ui.configuration.search.placeholder' })}

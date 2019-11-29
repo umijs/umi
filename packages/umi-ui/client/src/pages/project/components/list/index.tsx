@@ -17,7 +17,13 @@ import {
   Layout,
   Empty,
 } from 'antd';
-import { AppstoreFilled, Edit, Delete, Plus, Import as ImportIcon } from '@ant-design/icons';
+import {
+  AppstoreFilled,
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ImportOutlined,
+} from '@ant-design/icons';
 import get from 'lodash/get';
 import umiIconSvg from '@/assets/umi.svg';
 import editorSvg from '@/assets/code.svg';
@@ -144,7 +150,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         }}
       >
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.edit.name' })}>
-          <Edit />
+          <EditOutlined />
         </Tooltip>
       </a>,
       <div onClick={e => e.stopPropagation()}>
@@ -157,7 +163,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
         >
           <a>
             <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.list.delete' })}>
-              <Delete />
+              <DeleteOutlined />
             </Tooltip>
           </a>
         </Popconfirm>
@@ -275,7 +281,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
           <Col>
             <div className={styles['project-action']}>
               <Button data-test-id="project-action-import" onClick={() => setCurrent('import')}>
-                <ImportIcon />
+                <ImportOutlined />
                 <span className={styles['project-add']}>
                   {formatMessage({
                     id: 'org.umi.ui.global.project.import.title',
@@ -289,7 +295,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
                   type="primary"
                   onClick={() => setCurrent('create')}
                 >
-                  <Plus />
+                  <PlusOutlined />
                   <span className={styles['project-add']}>
                     {formatMessage({ id: 'org.umi.ui.global.project.create.title' })}
                   </span>

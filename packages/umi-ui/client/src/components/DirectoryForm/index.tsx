@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Left, Edit, Reload } from '@ant-design/icons';
+import { LeftOutlined, EditOutlined, ReloadOutlined } from '@ant-design/icons';
 import slash2 from 'slash2';
 import { Button, Empty, Spin, Input, message, Tooltip } from 'antd';
 import { IUi } from 'umi-types';
@@ -139,7 +139,7 @@ const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
     <div className={styles.directoryForm}>
       <div className={styles['directoryForm-toolbar']}>
         <Button className={styles['directoryForm-toolbar-back']} onClick={handleParentDirectory}>
-          <Left onClick={handleParentDirectory} />
+          <LeftOutlined onClick={handleParentDirectory} />
         </Button>
         <div className={styles['directoryForm-toolbar-bread']}>
           {dirPathEdit ? (
@@ -172,14 +172,14 @@ const DirectoryForm: React.FC<IUi.IDirectoryForm> = props => {
         <div className={styles.edit}>
           <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.directory.edit' })}>
             <Button onClick={handleEdit}>
-              <Edit />
+              <EditOutlined />
             </Button>
           </Tooltip>
         </div>
         <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.directory.refresh' })}>
           <div className={styles.refresh}>
             <Button onClick={handleReload}>
-              <Reload />
+              <ReloadOutlined Outlined />
             </Button>
           </div>
         </Tooltip>

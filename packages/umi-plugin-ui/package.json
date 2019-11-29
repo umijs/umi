@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
-    "@ant-design/icons": "^4.0.0-alpha.8",
+    "@ant-design/icons": "^4.0.0-alpha.11",
     "@types/got": "9.6.0",
     "@umijs/fabric": "^1.1.9",
-    "antd": "^4.0.0-alpha.8",
+    "antd": "^4.0.0-alpha.10",
     "classnames": "^2.2.6",
     "decamelize": "3.2.0",
     "react-masonry-component": "^6.2.1",

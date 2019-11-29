@@ -2,7 +2,7 @@ import * as React from 'react';
 import get from 'lodash/get';
 import { Result, Typography } from 'antd';
 import cls from 'classnames';
-import { CloseCircle } from '@ant-design/icons';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import styles from './index.less';
 
@@ -40,7 +40,7 @@ const defaultFallbackComponent = ({ componentStack, error, className }) => (
     subTitle={error.toString()}
   >
     <Paragraph className={styles.stack}>
-      <CloseCircle /> {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：
+      <CloseCircleOutlined /> {formatMessage({ id: 'org.umi.ui.global.error.stack' })}：
       <pre>{componentStack}</pre>
     </Paragraph>
   </Result>

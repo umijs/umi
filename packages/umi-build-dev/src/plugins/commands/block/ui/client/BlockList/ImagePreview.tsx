@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Eye } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import { Tooltip, Button, Modal } from 'antd';
 import Context from '../UIApiContext';
 
@@ -18,7 +18,7 @@ export default props => {
             setVisible(true);
           }}
         >
-          <Eye />
+          <EyeOutlined />
         </Button>
       </Tooltip>
       <Modal

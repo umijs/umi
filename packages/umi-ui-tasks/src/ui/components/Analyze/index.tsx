@@ -4,7 +4,7 @@ import Tooltip from './Tooltip';
 import filesize from 'filesize';
 import styles from './index.module.less';
 import { Analyze } from '../../util/analyze';
-import { Reload } from '@ant-design/icons';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const SIZE_SWITCH_ITEMS = [
   { label: 'Stat', prop: 'statSize' },
@@ -144,7 +144,7 @@ class AnalyzeComponent extends Component<IProps> {
           <div className={styles.iframeContainer}>
             {showReloadFlag ? (
               <div className={styles.reload} onClick={this.reloadIframe}>
-                <Reload />
+                <ReloadOutlined />
               </div>
             ) : null}
             <iframe ref={this.iframeRef} className={styles.iframe} src={src} />

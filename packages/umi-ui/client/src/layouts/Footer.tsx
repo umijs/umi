@@ -6,11 +6,11 @@ import {
   FolderFilled,
   ProfileFilled,
   HomeFilled,
-  Tag as TagIcon,
-  QuestionCircle,
-  Check as CheckIcon,
-  Message,
-  Code,
+  TagOutlined,
+  QuestionCircleOutlined,
+  CheckOutlined,
+  MessageOutlined,
+  CodeOutlined,
 } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import cls from 'classnames';
@@ -132,7 +132,7 @@ const Footer: React.SFC<IFooterProps> = props => {
   const LocaleText = ({ locale: textLocale, checked, style }) => (
     <span style={style}>
       {typeof checked !== 'undefined' && (
-        <CheckIcon style={{ marginRight: 8, opacity: checked ? 1 : 0 }} />
+        <CheckOutlined style={{ marginRight: 8, opacity: checked ? 1 : 0 }} />
       )}
       {LOCALES_ICON[textLocale]} {LOCALES[textLocale]}
     </span>
@@ -289,7 +289,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           </div>
           {projectDashboard && (
             <div className={shellCls} onClick={() => togglePanel('terminal')}>
-              <Code style={{ marginRight: 4 }} />{' '}
+              <CodeOutlined style={{ marginRight: 4 }} />{' '}
               {formatMessage({ id: 'org.umi.ui.global.terminal' })}
             </div>
           )}
@@ -317,7 +317,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             }
           >
             <a>
-              <Message style={{ marginRight: 4 }} />{' '}
+              <MessageOutlined style={{ marginRight: 4 }} />{' '}
               {type === 'loading'
                 ? formatMessage({ id: 'org.umi.ui.global.feedback' })
                 : formatMessage({ id: 'org.umi.ui.global.feedback' })}
@@ -331,7 +331,7 @@ const Footer: React.SFC<IFooterProps> = props => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <QuestionCircle style={{ marginRight: 4 }} />{' '}
+            <QuestionCircleOutlined style={{ marginRight: 4 }} />{' '}
             {formatMessage({ id: 'org.umi.ui.global.help' })}
           </a>
         </div>
@@ -347,7 +347,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         </div>
         <div className={styles.version}>
           <span>
-            <TagIcon style={{ marginRight: 4 }} />
+            <TagOutlined style={{ marginRight: 4 }} />
             {window.g_bigfish ? get(window, 'g_bigfish.version') : get(window, 'g_umi.version')}
           </span>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { IUiApi } from 'umi-types';
 
-import { Search as SearchIcon } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import styles from './GlobalSearch.module.less';
 
 interface IGlobalSearch {
@@ -21,7 +21,7 @@ const GlobalSearch: React.SFC<IGlobalSearch> = props => {
 
   return (
     <Input
-      prefix={<SearchIcon />}
+      prefix={<SearchOutlined />}
       className={styles.search}
       allowClear
       onChange={e => handleChangeDebounce(e.target.value)}

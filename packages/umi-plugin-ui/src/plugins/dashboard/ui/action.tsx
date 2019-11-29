@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button } from 'antd';
-import { Setting as SettingIcon } from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 import Context from './context';
 import SettingDrawer from './setting';
 import useDrawer from './hooks/useDrawer';
@@ -27,7 +27,7 @@ const ConfigAction: React.FC<{}> = props => {
   return (
     <>
       <Button size={api.mini ? 'small' : 'default'} onClick={handleSetting}>
-        <SettingIcon />
+        <SettingOutlined />
       </Button>
       <SettingDrawer ref={drawerRef} />
     </>

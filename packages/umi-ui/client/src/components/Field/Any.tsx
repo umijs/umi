@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Export } from '@ant-design/icons';
+import { ExportOutlined } from '@ant-design/icons';
 import { message, Form } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Context from '@/layouts/Context';
@@ -38,7 +38,7 @@ const AnyComp: React.SFC<FieldProps> = props => {
 
   const formControl = (
     <div className={styles['any-field']}>
-      <Export />
+      <ExportOutlined />
       <a onClick={handleClick}>
         {formatMessage({ id: 'org.umi.ui.configuration.edit.in.editor' })}
       </a>

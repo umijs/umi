@@ -8,6 +8,7 @@ import DailyReport from './ui/plugins/dailyReport';
 import DailyReportHeader from './ui/plugins/dailyReportHeader';
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
+import styles from './ui/index.module.less';
 
 export default (api: IUiApi) => {
   api.addLocales({
@@ -23,9 +24,7 @@ export default (api: IUiApi) => {
     description: <FormattedMessage id="org.umi.ui.dashboard.card.zaobao.description" />,
     icon: 'https://img.alicdn.com/tfs/TB1JJ12nbr1gK0jSZFDXXb9yVXa-225-225.png',
     right: <DailyReportHeader />,
-    span: {
-      xl: 12,
-    },
+    colClassName: styles['zaobao-col'],
     content: <DailyReport />,
   });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import { MinusCircle, Plus } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { FieldProps } from './index';
 import debug from '@/debug';
@@ -37,7 +37,7 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
               />
             </Form.Item>
             {fields.length > 0 ? (
-              <MinusCircle
+              <MinusCircleOutlined
                 onClick={() => {
                   remove(field.name);
                 }}
@@ -55,7 +55,7 @@ const StringArrayComp: React.SFC<FieldProps> = props => {
             }}
             style={{ width: 320 }}
           >
-            <Plus /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
+            <PlusOutlined /> {formatMessage({ id: 'org.umi.ui.configuration.add.column' })}
           </Button>
         </Form.Item>
       </Form.Item>

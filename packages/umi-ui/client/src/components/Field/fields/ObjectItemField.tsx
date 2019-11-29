@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Input, Select, InputNumber, Divider, Form } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
-import { Plus } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.less';
 
 const { Group: InputGroup } = Input;
@@ -80,7 +80,7 @@ const ObjectItemField: React.SFC<ObjectItemFieldProps> = props => {
           {menu}
           <Divider style={{ margin: '4px 0' }} />
           <div style={{ padding: '8px', cursor: 'pointer' }}>
-            <Plus /> 添加
+            <PlusOutlined /> 添加
           </div>
         </div>
       )

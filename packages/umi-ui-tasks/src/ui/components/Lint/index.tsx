@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
-import { CaretRight, Pause } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
@@ -82,7 +82,7 @@ const LintComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, iife }) =
             >
               {isTaskRunning ? (
                 <>
-                  <Pause />
+                  <PauseOutlined />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.lint.cancel' })}
@@ -90,7 +90,7 @@ const LintComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, iife }) =
                 </>
               ) : (
                 <>
-                  <CaretRight />
+                  <CaretRightOutlined />
                   <span className={styles.runningText}>
                     {' '}
                     {intl({ id: 'org.umi.ui.tasks.lint.start' })}

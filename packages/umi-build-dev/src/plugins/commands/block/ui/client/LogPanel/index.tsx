@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Loading } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { Terminal as XTerminal } from 'xterm';
 import Context from '../UIApiContext';
 
@@ -55,7 +55,7 @@ const LogPanel: React.FC<LogPanelProps> = ({ loading }) => {
   }
   return (
     <Terminal
-      title={loading ? <Loading /> : ' '}
+      title={loading ? <LoadingOutlined /> : ' '}
       defaultValue={logs.join('')}
       onInit={terminal => {
         setTerminalRef(terminal);

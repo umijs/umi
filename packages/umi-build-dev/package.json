@@ -77,10 +77,10 @@
     "yeoman-generator": "4.0.1"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.0.0-alpha.8",
+    "@ant-design/icons": "^4.0.0-alpha.11",
     "@types/lodash": "^4.14.136",
     "@types/webpack-node-externals": "1.6.3",
-    "antd": "^4.0.0-alpha.6",
+    "antd": "^4.0.0-alpha.10",
     "react-lazyload": "^2.6.2",
     "umi-types": "0.5.7"
   },
