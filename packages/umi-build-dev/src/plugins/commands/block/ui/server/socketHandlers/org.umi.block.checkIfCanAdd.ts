@@ -99,8 +99,7 @@ export default function({ success, payload, api, lang, failure }) {
         });
         return;
       }
-    }
-    if (!reactPlugin || !reactPluginOpts.locale) {
+    } else if (!reactPlugin || !reactPluginOpts.locale) {
       failure({
         message:
           lang === 'zh-CN'
