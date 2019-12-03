@@ -1,6 +1,6 @@
 {
   "name": "umi-core",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "dependencies": {
     "@babel/preset-typescript": "7.3.3",
     "@babel/register": "7.4.4",
@@ -16,7 +16,7 @@
     "umi-utils": "1.7.2"
   },
   "devDependencies": {
-    "umi-types": "0.5.7"
+    "umi-types": "0.5.8"
   },
   "files": [
     "lib",

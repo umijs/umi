@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-ui",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -13,7 +13,7 @@
     "mkdirp": "^0.5.1",
     "sockjs-client": "1.3.0",
     "styled-components": "^4.4.0",
-    "umi-ui-tasks": "1.3.3"
+    "umi-ui-tasks": "1.3.4"
   },
   "devDependencies": {
     "@ant-design/compatible": "^0.0.1-alpha.1",
@@ -26,7 +26,7 @@
     "react-masonry-component": "^6.2.1",
     "serialize-javascript": "^1.7.0",
     "swr": "^0.1.8",
-    "umi-types": "0.5.7",
+    "umi-types": "0.5.8",
     "umi-ui-theme": "1.2.1"
   },
   "repository": {
