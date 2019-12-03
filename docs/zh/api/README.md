@@ -268,7 +268,7 @@ const App = dynamic({
       setTimeout(() => {
         resolve(() => <div>I will render after 1s</div>);
       }, /* 1s */1000);
-    }));
+    });
   },
 });
 
