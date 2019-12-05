@@ -1,3 +1,5 @@
+import { matchPath } from 'react-router-dom';
+
 export default function findRoute(routes, path) {
   for (const route of routes) {
     if (route.routes) {
@@ -5,9 +7,9 @@ export default function findRoute(routes, path) {
       if (routesMatch) {
         return routesMatch;
       }
-    } else if (require('react-router-dom').matchPath(path, route)) {
+    } else if (matchPath(path, route)) {
       // for get params (/news/1 => { params: { id： 1 } })
-      const { params } = require('react-router-dom').matchPath(path, route);
+      const { params } = matchPath(path, route);
       return {
         ...route,
         params,

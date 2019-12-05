@@ -1,6 +1,6 @@
 {{{ importsAhead }}}
 import React from 'react';
-import { Router as DefaultRouter, Route, Switch } from 'react-router-dom';
+import { Router as DefaultRouter, Route, Switch, StaticRouter } from 'react-router-dom';
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
 import history from '@@/history';
