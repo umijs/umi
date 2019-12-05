@@ -5,7 +5,7 @@ import history from './history';
 {{{ importsAhead }}}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import findRoute, { getUrlQuery } from '{{{ findRoutePath }}}';
+import findRoute, { getUrlQuery, parsePath } from '{{{ findRoutePath }}}';
 {{{ imports }}}
 
 // runtime plugins
@@ -53,8 +53,7 @@ if (!__IS_BROWSER) {
   serverRender = async (ctx = {}) => {
     // ctx.req.url may be `/bar?locale=en-US`
     const [pathname] = (ctx.req.url || '').split('?');
-    const history = require('@@/history').default;
-    history.replace(ctx.req.url);
+    const pathUrl = parsePath(ctx.req.url);
     let props = {};
     const activeRoute = findRoute(require('./router').routes, pathname) || false;
     if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
@@ -62,7 +61,7 @@ if (!__IS_BROWSER) {
         initialValue: {},
       });
       // patch query object
-      const location = history.location ? { ...history.location, query: getUrlQuery(history.location.search) } : {};
+      const location = pathUrl ? { ...pathUrl, query: getUrlQuery(pathUrl.search) } : {};
       props = await activeRoute.component.getInitialProps({
         route: activeRoute,
         isServer: true,
