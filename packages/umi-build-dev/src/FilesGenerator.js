@@ -191,7 +191,7 @@ export default class FilesGenerator {
         return winPath(relative(paths.absTmpDirPath, plugin));
       });
     if (findJS(paths.absSrcPath, 'app')) {
-      plugins.push('@/app');
+      plugins.push(join(paths.absSrcPath, 'app'));
     }
     const validKeys = this.service.applyPlugins('addRuntimePluginKey', {
       initialValue: [
