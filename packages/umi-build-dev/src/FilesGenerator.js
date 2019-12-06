@@ -294,7 +294,10 @@ require('umi/lib/createHistory').default({
     });
     if (config.ssr) {
       history = `
-__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
+__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory({
+  // for history object in dva
+  initialEntries: [global.req ? global.req.url : '/']
+})
       `.trim();
     }
     const content = Mustache.render(tpl, {

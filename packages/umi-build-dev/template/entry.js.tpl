@@ -58,26 +58,35 @@ if (!__IS_BROWSER) {
   const router = require('./router');
 
   /**
-   * Get Component initialProps function data
-   * convert Component props
+   * 1. Load dynamicImport Component
+   * 2. Get Component initialProps function data
+   * return Component props
    * @param pathname
    * @param props
    */
-  const getInitialProps = (pathname, props) => {
+  const getInitialProps = async (pathname, props) => {
     const { routes } = router;
+    const matchedComponents = matchRoutes(routes, pathname).map(({ route }) => !route.component.preload
+      // 同步
+      ? route.component
+      // 异步，支持 dynamicImport
+      : route.component.preload().then(component => component.default));
+    const loadedComponents = await Promise.all(matchedComponents);
+
+    // get Store
     const initialProps = plugins.apply('modifyInitialProps', {
       initialValue: {},
     });
-    const branch = matchRoutes(routes, pathname) || false;
-    const promises = branch.map(({ route }) => {
-      if (route.component && route.component.getInitialProps) {
-        return route.component.getInitialProps({
+    // support getInitialProps
+    const promises = loadedComponents.map(component => {
+      if (component && component.getInitialProps) {
+        return component.getInitialProps({
           isServer: true,
           ...props,
           ...initialProps,
         });
       }
-      return Promise.resolve({});
+      return Promise.resolve(null);
     });
 
     return Promise.all(promises);
@@ -86,6 +95,10 @@ if (!__IS_BROWSER) {
   serverRender = async (ctx = {}) => {
     // ctx.req.url may be `/bar?locale=en-US`
     const [pathname] = (ctx.req.url || '').split('?');
+    // global
+    global.req = {
+      url: ctx.req.url,
+    }
     const location = parsePath(ctx.req.url);
     const activeRoute = findRoute(router.routes, pathname) || {};
     // omit component
@@ -99,17 +112,20 @@ if (!__IS_BROWSER) {
         context,
         location,
     });
+
+    // 当前路由（不包含 Layout）的 getInitialProps 有返回值
+    // Page 没有值时，return dva model
+    dataArr[dataArr.length - 1] = plugins.apply('initialProps', {
+      initialValue: dataArr[dataArr.length - 1],
+    });
+
     // reduce all match component getInitialProps
     // in the same object key
     // page data key will override layout key
-    let props = Array.isArray(dataArr) ? dataArr.reduce((acc, curr) => ({
+    const props = Array.isArray(dataArr) ? dataArr.reduce((acc, curr) => ({
       ...acc,
       ...curr,
     }), {}) : {};
-    // please use return, avoid return all model
-    props = plugins.apply('initialProps', {
-      initialValue: props,
-    });
 
     const App = React.createElement(StaticRouter, {
       location: ctx.req.url,
