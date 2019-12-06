@@ -72,6 +72,14 @@ function withRoutes(route) {
   return ret;
 }
 
+let _this = null;
+const popStateFn = () => {
+  // 使用popStateFn保存函数防止addEventListener重复注册
+  if (_this && _this.getInitialProps) {
+    _this.getInitialProps();
+  }
+}
+
 function wrapWithInitialProps(WrappedComponent, initialProps) {
   return class extends React.Component {
     constructor(props) {
@@ -83,9 +91,8 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
 
     async componentDidMount() {
       const { history } = this.props;
-      window.onpopstate = () => {
-        this.getInitialProps();
-      };
+      _this = this;
+      window.addEventListener('popstate', popStateFn);
       if (history.action !== 'POP') {
         this.getInitialProps();
       }
