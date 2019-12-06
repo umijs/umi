@@ -238,7 +238,7 @@ export default class FilesGenerator {
         const content = hg.getMatchedContent(normalizePath(routePath, config.base));
         ssrHtml = htmlToJSX(content).replace(
           `<div id="${config.mountElementId || 'root'}"></div>`,
-          `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
+          `<div id="${config.mountElementId || 'root'}">{rootContainer}</div>`,
         );
         return `'${routePath}': (${ssrHtml}),`;
       });

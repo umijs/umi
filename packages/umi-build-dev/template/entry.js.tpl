@@ -104,24 +104,27 @@ if (!__IS_BROWSER) {
       url: ctx.req.url,
     }
     const location = parsePath(ctx.req.url);
-    const activeRoute = findRoute(router.routes, pathname) || {};
+    const activeRoute = findRoute(router.routes, pathname);
     // omit component
-    const { component, ...restRoute } = activeRoute;
+    const { component, ...restRoute } = activeRoute || {};
+    // router context hook
+    // get current router status 40x / 30x, share with server
     const context = {};
-    const dataArr = await getInitialProps(pathname, {
-        route: restRoute,
-        // only exist in server
-        req: ctx.req || {},
-        res: ctx.res || {},
-        context,
-        location,
+    // TODO: getInitialProps timeout handle
+    const initialData = await getInitialProps(pathname, {
+      route: restRoute,
+      // only exist in server
+      req: ctx.req || {},
+      res: ctx.res || {},
+      context,
+      location,
     });
 
     // 当前路由（不包含 Layout）的 getInitialProps 有返回值
     // Page 值为 undefined 时，有 getInitialProps 无返回，此时 return dva model
-    const pageData = dataArr[dataArr.length - 1];
+    const pageData = initialData[initialData.length - 1];
     if (pageData === undefined) {
-      dataArr[dataArr.length - 1] = plugins.apply('initialProps', {
+      initialData[initialData.length - 1] = plugins.apply('initialProps', {
         initialValue: pageData,
       });
     }
@@ -129,7 +132,7 @@ if (!__IS_BROWSER) {
     // reduce all match component getInitialProps
     // in the same object key
     // page data key will override layout key
-    const props = Array.isArray(dataArr) ? dataArr.reduce((acc, curr) => ({
+    const props = Array.isArray(initialData) ? initialData.reduce((acc, curr) => ({
       ...acc,
       ...curr,
     }), {}) : {};
@@ -146,12 +149,13 @@ if (!__IS_BROWSER) {
     const htmlTemplateMap = {
       {{{ htmlTemplateMap }}}
     };
-    const matchPath = activeRoute.path;
+    const matchPath = activeRoute ? activeRoute.path : undefined;
     return {
       htmlElement: matchPath ? htmlTemplateMap[matchPath] : '',
       rootContainer,
       matchPath,
       g_initialData: props,
+      context,
     };
   }
   // using project react-dom version

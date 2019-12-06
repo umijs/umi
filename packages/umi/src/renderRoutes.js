@@ -78,7 +78,7 @@ const popStateFn = () => {
   if (_this && _this.getInitialProps) {
     _this.getInitialProps();
   }
-}
+};
 
 function wrapWithInitialProps(WrappedComponent, initialProps) {
   return class extends React.Component {
@@ -151,6 +151,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
+              // TODO: ssr StaticRoute context hook, handle 40x / 30x
               const childRoutes = renderRoutes(route.routes, extraProps, {
                 location: props.location,
               });
