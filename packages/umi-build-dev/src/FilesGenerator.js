@@ -373,11 +373,17 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
   }
 
   getRouterContent(rendererWrappers) {
-    const defaultRenderer = `
-    __IS_BROWSER
-      ? <Router history={history}>{renderRoutes(routes, props)}</Router>
-      : renderRoutes(routes, props)
+    const { config } = this.service;
+    let defaultRenderer = `
+      <Router history={history}>{renderRoutes(routes, props)}</Router>
     `.trim();
+    if (config.ssr) {
+      defaultRenderer = `
+      __IS_BROWSER
+        ? <Router history={history}>{renderRoutes(routes, props)}</Router>
+        : renderRoutes(routes, props)
+      `.trim();
+    }
     return rendererWrappers.reduce((memo, wrapper) => {
       return `
         <${wrapper.specifier}>
