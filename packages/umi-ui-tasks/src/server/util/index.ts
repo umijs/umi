@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
-import { spawn, SpawnOptions, execSync, fork } from 'child_process';
+import { SpawnOptions, execSync, fork } from 'child_process';
+import spawn from 'cross-spawn';
 import { NpmClient } from '../core/enums';
 
 export const error = (msg: string, name = 'TaskError') => {
