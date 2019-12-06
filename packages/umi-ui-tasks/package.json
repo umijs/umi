@@ -16,6 +16,7 @@
     "binary-mirror-config": "1.20.3",
     "mkdirp": "^0.5.1",
     "portfinder": "^1.0.24",
+    "cross-spawn": "^6.0.5",
     "rimraf": "^3.0.0",
     "umi-webpack-bundle-analyzer": "^3.5.0"
   },
