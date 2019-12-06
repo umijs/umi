@@ -52,6 +52,7 @@ let serverRender, ReactDOMServer;
 if (!__IS_BROWSER) {
   const { matchRoutes } = require('react-router-config');
   const { StaticRouter } = require('react-router')
+  // difference: umi-history has query object
   const { createLocation } = require('umi-history');
   // don't remove, use stringify html map
   const stringify = require('serialize-javascript');
