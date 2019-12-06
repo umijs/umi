@@ -378,10 +378,16 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
       <Router history={history}>{renderRoutes(routes, props)}</Router>
     `.trim();
     if (config.ssr) {
+      // 若有 RendererWrapper ，是使用 {__IS_BROWSER ? : }
+      // 没有时得使用 __IS_BROWSER ? :
+      // 所以使用 Fragment 包一下
       defaultRenderer = `
-      __IS_BROWSER
-        ? <Router history={history}>{renderRoutes(routes, props)}</Router>
-        : renderRoutes(routes, props)
+      <>
+        {__IS_BROWSER
+          ? <Router history={history}>{renderRoutes(routes, props)}</Router>
+          : renderRoutes(routes, props)
+        }
+      </>
       `.trim();
     }
     return rendererWrappers.reduce((memo, wrapper) => {
