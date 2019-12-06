@@ -238,7 +238,7 @@ export default class FilesGenerator {
         const content = hg.getMatchedContent(normalizePath(routePath, config.base));
         ssrHtml = htmlToJSX(content).replace(
           `<div id="${config.mountElementId || 'root'}"></div>`,
-          `<div id="${config.mountElementId || 'root'}">{ rootContainer }</div>`,
+          `<div id="${config.mountElementId || 'root'}">{rootContainer}</div>`,
         );
         return `'${routePath}': (${ssrHtml}),`;
       });
@@ -294,7 +294,10 @@ require('umi/lib/createHistory').default({
     });
     if (config.ssr) {
       history = `
-__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
+__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory({
+  // for history object in dva
+  initialEntries: [global.req ? global.req.url : '/']
+})
       `.trim();
     }
     const content = Mustache.render(tpl, {
@@ -373,11 +376,23 @@ __IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory()
   }
 
   getRouterContent(rendererWrappers) {
-    const defaultRenderer = `
-    <Router history={history}>
-      { renderRoutes(routes, props) }
-    </Router>
+    const { config } = this.service;
+    let defaultRenderer = `
+      <Router history={history}>{renderRoutes(routes, props)}</Router>
     `.trim();
+    if (config.ssr) {
+      // 若有 RendererWrapper ，是使用 {__IS_BROWSER ? : }
+      // 没有时得使用 __IS_BROWSER ? :
+      // 所以使用 Fragment 包一下
+      defaultRenderer = `
+      <>
+        {__IS_BROWSER
+          ? <Router history={history}>{renderRoutes(routes, props)}</Router>
+          : renderRoutes(routes, props)
+        }
+      </>
+      `.trim();
+    }
     return rendererWrappers.reduce((memo, wrapper) => {
       return `
         <${wrapper.specifier}>
