@@ -118,10 +118,13 @@ if (!__IS_BROWSER) {
     });
 
     // 当前路由（不包含 Layout）的 getInitialProps 有返回值
-    // Page 没有值时，return dva model
-    dataArr[dataArr.length - 1] = plugins.apply('initialProps', {
-      initialValue: dataArr[dataArr.length - 1],
-    });
+    // Page 值为 undefined 时，有 getInitialProps 无返回，此时 return dva model
+    const pageData = dataArr[dataArr.length - 1];
+    if (pageData === undefined) {
+      dataArr[dataArr.length - 1] = plugins.apply('initialProps', {
+        initialValue: pageData,
+      });
+    }
 
     // reduce all match component getInitialProps
     // in the same object key
