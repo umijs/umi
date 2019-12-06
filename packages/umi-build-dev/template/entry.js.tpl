@@ -66,11 +66,15 @@ if (!__IS_BROWSER) {
    */
   const getInitialProps = async (pathname, props) => {
     const { routes } = router;
-    const matchedComponents = matchRoutes(routes, pathname).map(({ route }) => !route.component.preload
-      // 同步
-      ? route.component
-      // 异步，支持 dynamicImport
-      : route.component.preload().then(component => component.default));
+    const matchedComponents = matchRoutes(routes, pathname).map(({ route }) => {
+      if (route.component) {
+        return !route.component.preload
+          // 同步
+          ? route.component
+          // 异步，支持 dynamicImport
+          : route.component.preload().then(component => component.default);
+      }
+    }).filter(c => c);
     const loadedComponents = await Promise.all(matchedComponents);
 
     // get Store
