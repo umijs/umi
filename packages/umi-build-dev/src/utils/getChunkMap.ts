@@ -61,7 +61,8 @@ export const patchDataWithRoutes: IPatchDataWithRoutes = (
     const webpackChunkName = normalizeEntry(route.component || 'common_component')
       .replace(/^src__/, '')
       .replace(/^pages__/, 'p__')
-      .replace(/^page__/, 'p__');
+      .replace(/^page__/, 'p__')
+      .replace(/\$/g, '_');
 
     const chunks = flatten(
       chunkGroupData

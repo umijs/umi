@@ -91,7 +91,8 @@ function patchRoute(route, webpackChunkName) {
       webpackChunkName = normalizeEntry(route.component || 'common_component')
         .replace(/^src__/, '')
         .replace(/^pages__/, 'p__')
-        .replace(/^page__/, 'p__');
+        .replace(/^page__/, 'p__')
+        .replace(/\$/g, '_');
     }
     route.component = [route.component || 'common_component', webpackChunkName, route.path].join(
       '^^',
