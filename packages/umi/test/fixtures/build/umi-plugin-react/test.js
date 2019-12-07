@@ -1,3 +1,6 @@
+import { join } from 'path';
+import { existsSync } from 'fs';
+
 export default async function ({ page, host }) {
   //////////////////////////////
   // page /
@@ -58,4 +61,8 @@ export default async function ({ page, host }) {
     () => document.querySelector('title').innerHTML,
   );
   expect(pageATitleText).toEqual('标题测试');
+
+  // check filepath in prod
+  // $ -> _
+  expect(existsSync(join(__dirname, 'dist', 'p___user.async.js'))).toEqual(true);
 }

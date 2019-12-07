@@ -41,11 +41,11 @@ describe('test getChunkMap utils', () => {
       ],
     },
     {
-      name: 'p__news__$id',
+      name: 'p__news___id',
       chunks: [
         'vendors.431f0bf4.chunk.css',
         'vendors.aed9ac63.async.js',
-        'p__news__$id.204a3fac.async.js',
+        'p__news___id.204a3fac.async.js',
       ],
     },
   ];
@@ -102,7 +102,7 @@ describe('test getChunkMap utils', () => {
           'umi.6791e2ab.js',
           'vendors.431f0bf4.chunk.css',
           'vendors.aed9ac63.async.js',
-          'p__news__$id.204a3fac.async.js',
+          'p__news___id.204a3fac.async.js',
         ],
       });
     });
@@ -141,7 +141,7 @@ describe('test getChunkMap utils', () => {
           'umi.6791e2ab.js',
           'vendors.431f0bf4.chunk.css',
           'vendors.aed9ac63.async.js',
-          'p__news__$id.204a3fac.async.js',
+          'p__news___id.204a3fac.async.js',
         ],
       });
     });
@@ -171,7 +171,7 @@ describe('test getChunkMap utils', () => {
           'umi.6791e2ab.js',
           'vendors.431f0bf4.chunk.css',
           'vendors.aed9ac63.async.js',
-          'p__news__$id.204a3fac.async.js',
+          'p__news___id.204a3fac.async.js',
         ],
       });
       expect(assetsMap).toEqual({
@@ -189,7 +189,7 @@ describe('test getChunkMap utils', () => {
         },
         '/news/:id': {
           css: ['umi.baa67d11.css', 'vendors.431f0bf4.chunk.css'],
-          js: ['umi.6791e2ab.js', 'vendors.aed9ac63.async.js', 'p__news__$id.204a3fac.async.js'],
+          js: ['umi.6791e2ab.js', 'vendors.aed9ac63.async.js', 'p__news___id.204a3fac.async.js'],
         },
       });
     });
