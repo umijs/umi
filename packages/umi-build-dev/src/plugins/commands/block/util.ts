@@ -98,12 +98,13 @@ export const getBlockListFromGit = async (gitUrl, useBuiltJSON) => {
   }
 
   if (useBuiltJSON) {
-    // use blockList.json in git repo
     const fastGithub = await getFastGithub();
-    let url = `https://raw.githubusercontent.com/${owner}/${name}/master/umi-block.json`;
-    if (fastGithub === 'gitee.com') {
-      url = `https://gitee.com/${owner}/${name}/raw/master/umi-block.json`;
-    }
+    // use blockList.json in git repo
+    const url =
+      fastGithub === 'gitee.com'
+        ? `https://gitee.com/${owner}/${name}/raw/master/umi-block.json`
+        : `https://raw.githubusercontent.com/${owner}/${name}/master/umi-block.json`;
+
     spinner.start(`🔍  find block list form ${chalk.yellow(url)}`);
     try {
       const { body } = await got(url);
@@ -393,6 +394,23 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
     };
   }
 };
+
+export async function fetchBlockListFromCDN(url) {
+  try {
+    const got = require('got');
+    const { body } = await got(url);
+    return {
+      data: JSON.parse(body).list,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      data: undefined,
+      success: false,
+    };
+  }
+}
 
 export async function fetchUmiBlock(url) {
   try {
