@@ -295,7 +295,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           )}
         </div>
 
-        {type === 'detail' && (
+        {!!key && (
           <div className={styles.section}>
             <a onClick={handleOpenEditor}>
               <EditorIcon style={{ marginRight: 4 }} />{' '}

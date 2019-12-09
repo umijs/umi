@@ -19,6 +19,7 @@ tmp
 /packages/*/lib
 /packages/*/dist
 /packages/af-webpack/test/bundlestats.json
+/packages/umi-ui/client/yarn.lock
 /bundlestats.json
 dist
 coverage

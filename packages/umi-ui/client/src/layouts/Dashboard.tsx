@@ -194,7 +194,7 @@ export default withRouter(props => {
                   justify="space-between"
                   className={styles['mini-header']}
                 >
-                  <Col flex="none">
+                  <Col>
                     <p className={styles['mini-header-name']}>
                       {currentProject ? currentProject.name : ''}
                     </p>
@@ -202,7 +202,7 @@ export default withRouter(props => {
                       <ExportOutlined onClick={openEditor} />
                     </Tooltip>
                   </Col>
-                  <Col flex="none" className={styles.gotoUi}>
+                  <Col className={styles.gotoUi}>
                     <a
                       rel="noopener noreferrer"
                       onClick={openFullUmiUI.bind(
