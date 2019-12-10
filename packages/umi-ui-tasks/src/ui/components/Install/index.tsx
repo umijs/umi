@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Select, Form } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
-import withSize from 'react-sizeme';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
 import { ITaskDetail } from '../../../server/core/types';
-import { getTerminalIns, clearLog } from '../../util';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
 import { namespace } from '../../model';
 import { useInit } from '../../hooks';
-
-import Terminal from '../Terminal';
 
 interface IProps {
   api: IUiApi;
@@ -18,12 +15,11 @@ interface IProps {
   dispatch: any;
 }
 
-const { SizeMe } = withSize;
 const taskType = TaskType.INSTALL;
 const { Option } = Select;
 
 const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
-  const { intl } = api;
+  const { intl, Terminal } = api;
   const [log, setLog] = useState('');
   const [npmClients, setNpmClients] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,8 +57,10 @@ const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
   useEffect(() => {
     return () => {
       form.resetFields();
-      const terminal = getTerminalIns(taskType, api.currentProject.key);
-      terminal && terminal.clear();
+      const terminal = getTerminalRefIns(taskType, api.currentProject.key);
+      if (terminal) {
+        terminal.clear();
+      }
     };
   }, []);
 
@@ -164,19 +162,15 @@ const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
           </Col>
         </Row>
         <div className={styles.logContainer}>
-          <SizeMe monitorWidth monitorHeight>
-            {({ size }) => (
-              <Terminal
-                api={api}
-                size={size}
-                terminal={getTerminalIns(taskType, api.currentProject.key)}
-                log={log}
-                onClear={() => {
-                  clearLog(taskType);
-                }}
-              />
-            )}
-          </SizeMe>
+          <Terminal
+            defaultValue={log}
+            onInit={ins => {
+              if (ins) {
+                setTerminalRefIns(taskType, api.currentProject.key, ins);
+              }
+            }}
+          />
+          )}
         </div>
       </>
     </>
