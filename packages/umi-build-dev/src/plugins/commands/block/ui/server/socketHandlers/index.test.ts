@@ -113,7 +113,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(params.failure.mock.calls[0][0].message).toMatch(/dva/);
+      expect(params.failure.mock.calls[0][0].message).toMatch(/umi-plugin-react 插件并开启 dva/);
 
       const params2 = {
         success: jest.fn(),
@@ -173,7 +173,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(params.failure.mock.calls[0][0].message).toMatch(/i18n/);
+      expect(params.failure.mock.calls[0][0].message).toMatch(/umi-plugin-react 插件并开启 locale/);
 
       const params2 = {
         success: jest.fn(),
@@ -226,7 +226,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(params.failure.mock.calls[0][0].message).toMatch(/locale/);
+      expect(params.failure.mock.calls[0][0].message).toMatch(/请开启 locale 配置/);
 
       const params2 = {
         success: jest.fn(),
@@ -246,7 +246,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params2);
-      expect(params2.failure.mock.calls[0][0].message).toMatch(/dva/);
+      expect(params2.failure.mock.calls[0][0].message).toMatch(/请开启 dva 配置/);
 
       const params3 = {
         success: jest.fn(),
@@ -269,6 +269,26 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params3);
       expect(params3.failure).not.toHaveBeenCalled();
       expect(params3.success).toHaveBeenCalledWith({ data: true, success: true });
+
+      const params4 = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'en-US',
+        payload: {
+          item: {
+            features: ['dva', 'i18n'],
+          },
+        },
+        api: {
+          cwd: '/test/',
+          config: {
+            dva: false,
+            routes: [{ path: '/', component: './Index' }],
+          },
+        },
+      };
+      checkIfCanAdd(params4);
+      expect(params4.failure.mock.calls[0][0].message).toMatch(/请开启 dva 配置/);
     });
   });
 });
