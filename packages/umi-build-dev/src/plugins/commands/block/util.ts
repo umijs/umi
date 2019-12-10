@@ -395,23 +395,6 @@ export const fetchBlockList = async (repo: string): Promise<BlockData> => {
   }
 };
 
-export async function fetchBlockListFromCDN(url) {
-  try {
-    const got = require('got');
-    const { body } = await got(url);
-    return {
-      data: JSON.parse(body).list,
-      success: true,
-    };
-  } catch (error) {
-    return {
-      message: error.message,
-      data: undefined,
-      success: false,
-    };
-  }
-}
-
 export async function fetchUmiBlock(url) {
   try {
     const got = require('got');
