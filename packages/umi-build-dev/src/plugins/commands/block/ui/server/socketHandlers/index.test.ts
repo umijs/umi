@@ -69,10 +69,11 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params);
       expect(existsSyncMock).toHaveBeenCalledWith('/test/package.json');
       expect(params.failure.mock.calls[0][0].message).toMatch(/package\.json/);
+      existsSyncMock.mockRestore();
     });
 
     it('dva', () => {
-      jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
+      const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
       const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
@@ -129,10 +130,11 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params2);
       expect(params2.failure).not.toHaveBeenCalled();
       expect(params2.success).toHaveBeenCalledWith({ data: true, success: true });
+      existsSyncMock.mockRestore();
     });
 
     it('i18n', () => {
-      jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
+      const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
       const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
@@ -189,10 +191,11 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params2);
       expect(params2.failure).not.toHaveBeenCalled();
       expect(params2.success).toHaveBeenCalledWith({ data: true, success: true });
+      existsSyncMock.mockRestore();
     });
 
     it('Bigfish', () => {
-      jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
+      const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
       process.env.BIGFISH_COMPAT = 'true';
       const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
@@ -276,6 +279,7 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params4);
       expect(params4.failure.mock.calls[0][0].message).toMatch(/请开启 dva 配置/);
       process.env.BIGFISH_COMPAT = null;
+      existsSyncMock.mockRestore();
     });
   });
 });
