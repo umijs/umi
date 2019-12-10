@@ -189,6 +189,7 @@ const Footer: React.SFC<IFooterProps> = props => {
           title={
             <FooterToolbar
               resizeAxis="y"
+              title={formatMessage({ id: 'org.umi.ui.global.log.upperCase' })}
               onResize={size => {
                 const newHeight = logHeight + size.deltaY;
                 dispatch({
@@ -216,6 +217,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         <Drawer
           title={
             <FooterToolbar
+              title={formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
               resizeAxis="y"
               onResize={size => {
                 const newHeight = terminalHeight + size.deltaY;

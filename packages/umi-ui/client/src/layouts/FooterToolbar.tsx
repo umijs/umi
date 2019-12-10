@@ -9,6 +9,7 @@ type noop = () => void;
 type OnResizeType = (params: { deltaX: number; deltaY: number }) => void;
 
 export interface IFooterToolbarProps {
+  title: string;
   className?: string;
   resizeAxis?: 'x' | 'y' | boolean;
   onResize?: OnResizeType;
@@ -19,7 +20,15 @@ export interface IFooterToolbarProps {
 
 const FooterToolbar: React.FC<IFooterToolbarProps> = props => {
   const ref = React.createRef<HTMLDivElement>();
-  const { className, onClear, onScrollBottom, resizeAxis = false, onResize, onClose } = props;
+  const {
+    title,
+    className,
+    onClear,
+    onScrollBottom,
+    resizeAxis = false,
+    onResize,
+    onClose,
+  } = props;
   const defaultAxis = typeof resizeAxis === 'boolean' ? 'y' : resizeAxis;
   const resizeCls = cls({
     [styles['section-drawer-toolbar-resize']]: !!resizeAxis,
@@ -62,9 +71,7 @@ const FooterToolbar: React.FC<IFooterToolbarProps> = props => {
 
   return (
     <div ref={ref} className={toolbarCls} onMouseDown={resizeAxis ? handleMouseDown : () => {}}>
-      <h1 className={styles['section-drawer-toolbar-title']}>
-        {formatMessage({ id: 'org.umi.ui.global.terminal.upperCase' })}
-      </h1>
+      <h1 className={styles['section-drawer-toolbar-title']}>{title}</h1>
       <div className={styles['section-drawer-toolbar-action']}>
         <Popconfirm
           title={formatMessage({ id: 'org.umi.ui.global.log.clear.confirm' })}
