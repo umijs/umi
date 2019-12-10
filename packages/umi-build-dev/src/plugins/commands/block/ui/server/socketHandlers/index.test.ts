@@ -17,8 +17,7 @@ describe('block interface socketHandlers test', () => {
 
   describe('org.umi.block.checkIfCanAdd', () => {
     it('约定式路由报错', () => {
-      const checkIfCanAdd = require('../ui/server/socketHandlers/org.umi.block.checkIfCanAdd')
-        .default;
+      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -62,8 +61,7 @@ describe('block interface socketHandlers test', () => {
 
     it('没有 package.json', () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => false);
-      const checkIfCanAdd = require('../ui/server/socketHandlers/org.umi.block.checkIfCanAdd')
-        .default;
+      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -89,8 +87,7 @@ describe('block interface socketHandlers test', () => {
 
     it('dva', () => {
       jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
-      const checkIfCanAdd = require('../ui/server/socketHandlers/org.umi.block.checkIfCanAdd')
-        .default;
+      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -150,8 +147,7 @@ describe('block interface socketHandlers test', () => {
 
     it('i18n', () => {
       jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
-      const checkIfCanAdd = require('../ui/server/socketHandlers/org.umi.block.checkIfCanAdd')
-        .default;
+      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -212,8 +208,7 @@ describe('block interface socketHandlers test', () => {
     it('Bigfish', () => {
       jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
       process.env.BIGFISH_COMPAT = 'true';
-      const checkIfCanAdd = require('../ui/server/socketHandlers/org.umi.block.checkIfCanAdd')
-        .default;
+      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
