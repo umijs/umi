@@ -4,7 +4,7 @@ import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
 import { TaskType, TaskState } from '../../../server/core/enums';
-import { getTerminalIns, clearLog, getTerminalRefIns, setTerminalRefIns } from '../../util';
+import { getTerminalRefIns, setTerminalRefIns } from '../../util';
 import { useInit } from '../../hooks';
 import { ITaskDetail } from '../../../server/core/types';
 import { namespace } from '../../model';
