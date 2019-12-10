@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-export default ({ success, payload, api, lang, failure }) => {
+export default function({ success, payload, api, lang, failure }) {
   const { item } = payload as {
     item: {
       features: string[];
@@ -93,4 +93,4 @@ export default ({ success, payload, api, lang, failure }) => {
   });
 
   success({ data: true, success: true });
-};
+}
