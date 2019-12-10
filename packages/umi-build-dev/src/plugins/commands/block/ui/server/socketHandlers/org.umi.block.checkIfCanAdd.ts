@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-export default function({ success, payload, api, lang, failure }) {
+export default ({ success, payload, api, lang, failure }) => {
   const { item } = payload as {
     item: {
       features: string[];
@@ -28,7 +28,9 @@ export default function({ success, payload, api, lang, failure }) {
     return item.features && item.features.includes(feature);
   }
 
-  if (!api.config.routes) {
+  const configRoutes = Array.isArray(api.config.routes) && api.config.routes.length > 0;
+  // 不支持约定式路由
+  if (!configRoutes) {
     failure({
       message:
         lang === 'zh-CN'
@@ -110,4 +112,4 @@ export default function({ success, payload, api, lang, failure }) {
     }
   }
   success({ data: true, success: true });
-}
+};
