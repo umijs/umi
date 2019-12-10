@@ -49,6 +49,28 @@ body {
       }
     }
   }
+  h1,
+  h2,
+  h3,
+  p,
+  a {
+    font-weight: 400;
+  }
+  h1 {
+    font-size: @ui-heading-1-size;
+    margin: 0;
+  }
+  h2 {
+    font-size: @font-size-lg;
+    margin: 0;
+  }
+  h3 {
+    font-size: @font-size-base;
+  }
+  p {
+    margin-bottom: 0;
+    color: @text-color;
+  }
 
   .ui-layout {
     height: 100%;
@@ -190,19 +212,15 @@ h3 {
 .isMini {
   h1 {
     font-size: @ui-min-heading-1-size;
-    margin-bottom: 0;
   }
   h2 {
     font-size: @font-size-lg;
-    margin-bottom: 0;
   }
   h3 {
     font-size: @font-size-base;
-    margin-bottom: 0;
   }
   p {
     font-size: @font-size-sm;
-    margin-bottom: 0;
   }
   span:not(.ant-spin-dot) {
     font-size: @font-size-sm;
@@ -216,28 +234,6 @@ h3 {
   //     font-size: @font-size-sm;
   //   }
   // }
-}
-h1,
-h2,
-h3,
-p,
-a {
-  font-weight: 400;
-}
-h1 {
-  font-size: @ui-heading-1-size;
-  margin: 0;
-}
-h2 {
-  font-size: @font-size-lg;
-  margin: 0;
-}
-h3 {
-  font-size: @font-size-base;
-}
-p {
-  margin: 0;
-  color: @text-color;
 }
 
 ::-webkit-scrollbar {

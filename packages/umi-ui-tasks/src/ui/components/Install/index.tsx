@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Select, Form } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
-import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
-import { TaskType, TaskState } from '../../../server/core/enums';
-import { ITaskDetail } from '../../../server/core/types';
+import { TaskState } from '../../../server/core/enums';
 import { getTerminalRefIns, setTerminalRefIns } from '../../util';
-import { namespace } from '../../model';
+import { TaskComponentProps } from '..';
 import { useInit } from '../../hooks';
 
-interface IProps {
-  api: IUiApi;
-  detail: ITaskDetail;
-  dispatch: any;
-}
-
-const taskType = TaskType.INSTALL;
 const { Option } = Select;
 
-const InstallComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
-  const { intl, Terminal } = api;
+const InstallComponent: React.FC<TaskComponentProps> = ({
+  taskType,
+  namespace,
+  api,
+  dispatch,
+  detail = {},
+  Terminal,
+}) => {
+  const { intl } = api;
   const [log, setLog] = useState('');
   const [npmClients, setNpmClients] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);

@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Modal, Form, Switch, Radio } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
-import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
-import { TaskType, TaskState } from '../../../server/core/enums';
+import { TaskState } from '../../../server/core/enums';
 import { getTerminalRefIns, setTerminalRefIns } from '../../util';
 import { useInit } from '../../hooks';
-import { namespace } from '../../model';
-import { ITaskDetail } from '../../../server/core/types';
+import { TaskComponentProps } from '..';
 import Analyze from '../Analyze';
 
-interface IProps {
-  api: IUiApi;
-  detail: ITaskDetail;
-  dbPath: string;
-  dispatch: any;
-}
-
-const taskType = TaskType.BUILD;
-
-const BuildComponent: React.FC<IProps> = ({ api, detail = {}, dispatch, dbPath, iife }) => {
-  const { intl, Terminal } = api;
+const BuildComponent: React.FC<TaskComponentProps> = ({
+  taskType,
+  namespace,
+  api,
+  detail = {},
+  dispatch,
+  dbPath,
+  iife,
+  Terminal,
+}) => {
+  const { intl } = api;
   const isEnglish = api.getLocale() === 'en-US';
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);

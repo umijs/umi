@@ -85,6 +85,22 @@ export default (api: IUiApi) => {
     },
   };
 
+  const { Terminal: ApiTerminal } = api;
+
+  const Terminal = props => (
+    <ApiTerminal
+      config={{
+        allowTransparency: true,
+        fontFamily: `operator mono,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace`,
+        cursorBlink: false,
+        cursorStyle: 'underline',
+        disableStdin: true,
+        ...(api.isMini() ? { fontSize: 12 } : {}),
+      }}
+      {...props}
+    />
+  );
+
   const TasksView = ({ taskManager, dispatch }) => {
     // 初始化 taskManager dva model
     useEffect(() => {
@@ -123,11 +139,14 @@ export default (api: IUiApi) => {
             component: () => (
               <div className={styles.section}>
                 <Component
+                  taskType={taskType}
                   iife={iife}
                   api={api}
                   detail={detail}
                   dispatch={dispatch}
                   dbPath={dbPath}
+                  Terminal={Terminal}
+                  namespace={model.namespace}
                 />
               </div>
             ),

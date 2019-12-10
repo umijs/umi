@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
-import { IUiApi } from 'umi-types';
 import styles from '../../ui.module.less';
-import { TaskType, TaskState } from '../../../server/core/enums';
+import { TaskState } from '../../../server/core/enums';
 import { getTerminalRefIns, setTerminalRefIns } from '../../util';
-import { ITaskDetail } from '../../../server/core/types';
-import { namespace } from '../../model';
+import { TaskComponentProps } from '..';
 import { useInit } from '../../hooks';
 
-interface IProps {
-  api: IUiApi;
-  detail: ITaskDetail;
-  dispatch: any;
-}
-
-const taskType = TaskType.TEST;
-
-const TestComponent: React.FC<IProps> = ({ api, dispatch, detail = {} }) => {
-  const { intl, Terminal } = api;
+const TestComponent: React.FC<TaskComponentProps> = ({
+  taskType,
+  namespace,
+  api,
+  dispatch,
+  detail = {},
+  Terminal,
+}) => {
+  const { intl } = api;
   const [log, setLog] = useState('');
   const [init] = useInit(detail);
 
