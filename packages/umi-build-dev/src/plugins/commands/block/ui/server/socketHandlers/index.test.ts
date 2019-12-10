@@ -1,20 +1,6 @@
 const fs = require('fs');
 
 describe('block interface socketHandlers test', () => {
-  const OLD_ENV = process.env;
-
-  beforeEach(() => {
-    jest.resetModules();
-    process.env = {
-      ...OLD_ENV,
-    };
-    delete process.env.BIGFISH_COMPAT;
-  });
-
-  afterEach(() => {
-    process.env = OLD_ENV;
-  });
-
   describe('org.umi.block.checkIfCanAdd', () => {
     it('约定式路由报错', () => {
       const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
@@ -289,6 +275,7 @@ describe('block interface socketHandlers test', () => {
       };
       checkIfCanAdd(params4);
       expect(params4.failure.mock.calls[0][0].message).toMatch(/请开启 dva 配置/);
+      process.env.BIGFISH_COMPAT = null;
     });
   });
 });
