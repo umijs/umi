@@ -1,7 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
 
-export * from './terminal';
-
 export const usePrevious = (value: any) => {
   const ref = useRef();
   useEffect(

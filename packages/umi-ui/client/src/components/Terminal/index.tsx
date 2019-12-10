@@ -107,7 +107,7 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
         xterm.write(defaultValue.replace(/\n/g, '\r\n'));
       }
     },
-    [xterm],
+    [xterm, defaultValue],
   );
 
   const clear = () => {

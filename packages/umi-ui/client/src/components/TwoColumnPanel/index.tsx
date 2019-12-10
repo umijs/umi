@@ -64,11 +64,11 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
               align="middle"
               onClick={() => toggleSectionHandler(s.key)}
             >
-              <Col flex="none" className={styles.icon}>
+              <Col className={styles.icon}>
                 {typeof s.icon === 'string' && <Icon type={s.icon} width={64} height={64} />}
                 {React.isValidElement(s.icon) && s.icon}
               </Col>
-              <Col flex="none" className={styles.title_desc}>
+              <Col className={styles.title_desc}>
                 {s.title && <div className={styles.title}>{renderMessage(s.title)}</div>}
                 {s.description && (
                   <div className={styles.description}>{renderMessage(s.description)}</div>

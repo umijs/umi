@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Steps, Button, message } from 'antd';
 import get from 'lodash/get';
-import { Beforeunload } from 'react-beforeunload';
+import Prompt from 'umi/prompt';
 import { ICreateProgress } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import Terminal, { TerminalType } from '@/components/Terminal';
@@ -127,7 +127,13 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   _log('status', status);
   _log('progressSteps', progressSteps);
   return (
-    <Beforeunload onBeforeunload={() => 'You will lose data'}>
+    <>
+      <Prompt
+        when
+        message={() => {
+          return window.confirm('confirm to leave the project creating?');
+        }}
+      />
       <div className={styles['project-progress']}>
         <h3>{getTitle()}</h3>
         {progress && (
@@ -164,7 +170,7 @@ const ProgressStage: React.FC<IProjectProps> = props => {
           </div>
         )}
       </div>
-    </Beforeunload>
+    </>
   );
 };
 

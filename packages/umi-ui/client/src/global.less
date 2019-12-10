@@ -41,6 +41,7 @@ body {
   }
   .anticon {
     transition: color 0.3s;
+    color: inherit;
   }
   a {
     .anticon {
@@ -48,6 +49,28 @@ body {
         color: @icon-color-hover;
       }
     }
+  }
+  h1,
+  h2,
+  h3,
+  p,
+  a {
+    font-weight: 400;
+  }
+  h1 {
+    font-size: @ui-heading-1-size;
+    margin: 0;
+  }
+  h2 {
+    font-size: @font-size-lg;
+    margin: 0;
+  }
+  h3 {
+    font-size: @font-size-base;
+  }
+  p {
+    margin-bottom: 0;
+    color: @text-color;
   }
 
   .ui-layout {
@@ -212,28 +235,6 @@ h3 {
   //     font-size: @font-size-sm;
   //   }
   // }
-}
-h1,
-h2,
-h3,
-p,
-a {
-  font-weight: 400;
-}
-h1 {
-  font-size: @ui-heading-1-size;
-  margin: 0;
-}
-h2 {
-  font-size: @font-size-lg;
-  margin: 0;
-}
-h3 {
-  font-size: @font-size-base;
-}
-p {
-  margin: 0;
-  color: @text-color;
 }
 
 ::-webkit-scrollbar {

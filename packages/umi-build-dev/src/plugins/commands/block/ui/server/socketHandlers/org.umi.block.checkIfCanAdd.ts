@@ -28,7 +28,9 @@ export default function({ success, payload, api, lang, failure }) {
     return item.features && item.features.includes(feature);
   }
 
-  if (!api.config.routes) {
+  const configRoutes = Array.isArray(api.config.routes) && api.config.routes.length > 0;
+  // 不支持约定式路由
+  if (!configRoutes) {
     failure({
       message:
         lang === 'zh-CN'
@@ -56,58 +58,39 @@ export default function({ success, payload, api, lang, failure }) {
     return;
   }
 
-  // antd 特性依赖
-  // bigfish 默认开了 antd
-  // if (haveFeature('antd') && !isBigfish) {
-  //   if (!reactPlugin || !reactPluginOpts.antd) {
-  //     failure({
-  //       message:
-  //         lang === 'zh-CN'
-  //           ? `${payloadType}依赖 antd，请安装 umi-plugin-react 插件并开启 antd 。`
-  //           : 'Block depends on antd, please install umi-plugin-react and enable antd.',
-  //     });
-  //     return;
-  //   }
-  // }
+  const checkConfigRules = {
+    dva: {
+      enable: isBigfish ? api.config.dva !== false : reactPlugin && reactPluginOpts.dva,
+      message: {
+        'zh-CN': isBigfish
+          ? `${payloadType}依赖 dva，请开启 dva 配置。`
+          : `${payloadType}依赖 dva，请安装 umi-plugin-react 插件并开启 dva 。`,
+        'en-US': isBigfish
+          ? ''
+          : 'Block depends on dva, please install umi-plugin-react and enable dva.',
+      },
+    },
+    i18n: {
+      enable: isBigfish ? !!api.config.locale : reactPlugin && reactPluginOpts.locale,
+      message: {
+        'zh-CN': isBigfish
+          ? `${payloadType}依赖 locale，请开启 locale 配置。`
+          : `${payloadType}依赖国际化（i18n），请安装 umi-plugin-react 插件并开启 locale 。`,
+        'en-US': isBigfish
+          ? ''
+          : 'Block depends on i18n, please install umi-plugin-react and enable locale.',
+      },
+    },
+  };
 
-  // dva 特性依赖
-  if (haveFeature('dva')) {
-    if (isBigfish) {
-      if (api.config.dva === false) {
-        failure({
-          message: `${payloadType}依赖 dva，请开启 dva 配置。`,
-        });
-        return;
-      }
-    } else if (!reactPlugin || !reactPluginOpts.dva) {
+  Object.keys(checkConfigRules).forEach(rule => {
+    if (haveFeature(rule) && checkConfigRules[rule] && !checkConfigRules[rule].enable) {
       failure({
-        message:
-          lang === 'zh-CN'
-            ? `${payloadType}依赖 dva，请安装 umi-plugin-react 插件并开启 dva 。`
-            : 'Block depends on dva, please install umi-plugin-react and enable dva.',
+        message: checkConfigRules[rule].message[lang] || checkConfigRules[rule].message['zh-CN'],
       });
-      return;
+      return false;
     }
-  }
+  });
 
-  // locale 特性依赖
-  if (haveFeature('i18n')) {
-    if (isBigfish) {
-      if (!api.config.locale) {
-        failure({
-          message: `${payloadType}依赖 locale，请开启 locale 配置。`,
-        });
-        return;
-      }
-    } else if (!reactPlugin || !reactPluginOpts.locale) {
-      failure({
-        message:
-          lang === 'zh-CN'
-            ? `${payloadType}依赖国际化（i18n），请安装 umi-plugin-react 插件并开启 locale 。`
-            : 'Block depends on i18n, please install umi-plugin-react and enable locale.',
-      });
-      return;
-    }
-  }
   success({ data: true, success: true });
 }

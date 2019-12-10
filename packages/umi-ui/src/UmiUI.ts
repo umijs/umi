@@ -9,7 +9,7 @@ import openBrowser from 'react-dev-utils/openBrowser';
 import { existsSync, readFileSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import got from 'got';
-import { pick, get } from 'lodash';
+import { pick } from 'lodash';
 import rimraf from 'rimraf';
 import portfinder from 'portfinder';
 import resolveFrom from 'resolve-from';

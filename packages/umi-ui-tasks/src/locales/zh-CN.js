@@ -32,6 +32,7 @@ export default {
   'org.umi.ui.tasks.dev.state.fail': '启动失败',
   'org.umi.ui.tasks.envs': '环境变量',
   'org.umi.ui.tasks.envs.port': '端口号',
+  'org.umi.ui.tasks.envs.port.placeholder': '默认端口号为 8000',
   'org.umi.ui.tasks.envs.port.desc': '本地开发端口号。',
   'org.umi.ui.tasks.envs.babelPolyfill': '@babel/polyfill',
   'org.umi.ui.tasks.envs.babelPolyfill.desc': 'Babel 补丁。',

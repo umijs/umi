@@ -97,7 +97,7 @@ const config: IConfig = {
           // polyfill
           {
             src:
-              '//polyfill.alicdn.com/polyfill.min.js?features=default,es2015,es2016,es2017,RegeneratorRuntime,IntersectionObserver,NodeList.prototype.forEach',
+              '//b.alicdn.com/s/polyfill.min.js?features=default,es2015,es2016,es2017,fetch,IntersectionObserver,NodeList.prototype.forEach,NodeList.prototype.@@iterator,EventSource,MutationObserver,ResizeObserver,HTMLCanvasElement.prototype.toBlob',
           },
           {
             src: `//gw.alipayobjects.com/os/lib/??react/16.8.6/umd/react.${

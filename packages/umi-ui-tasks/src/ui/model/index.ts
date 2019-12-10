@@ -1,7 +1,7 @@
 import {
   callRemote,
   listenRemote,
-  getTerminalIns,
+  getTerminalRefIns,
   getNoticeMessage,
   intl,
   notify,
@@ -73,7 +73,7 @@ export default {
       if (!key) {
         return;
       }
-      const ins = getTerminalIns(taskType, projectKey);
+      const ins = getTerminalRefIns(taskType, projectKey);
       if (!ins) {
         return;
       }
