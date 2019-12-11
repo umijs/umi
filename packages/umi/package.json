@@ -5,8 +5,8 @@
   "dependencies": {
     "@babel/core": "7.4.5",
     "@babel/runtime": "7.4.5",
-    "@types/react": "~16.9.1",
-    "@types/react-router-dom": "~4.3.4",
+    "@types/react": "^16.9.1",
+    "@types/react-router-dom": "~5.1.2",
     "babel-preset-umi": "1.8.1",
     "debug": "4.1.1",
     "dotenv": "8.0.0",
