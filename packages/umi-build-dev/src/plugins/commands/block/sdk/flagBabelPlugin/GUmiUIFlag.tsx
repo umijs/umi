@@ -21,35 +21,37 @@ export default class GUmiUIFlag extends React.Component<GUmiUIFlagProps, GUmiUIF
     };
   }
 
+  handleMessage = event => {
+    try {
+      const { action } = JSON.parse(event.data);
+      switch (action) {
+        case 'umi.ui.enableBlockEditMode':
+          this.setState({
+            visible: true,
+          });
+          break;
+        case 'umi.ui.disableBlockEditMode':
+          this.setState({
+            visible: false,
+          });
+          break;
+        case 'umi.ui.enable.GUmiUIFlag':
+          this.setState({
+            visible: true,
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (_) {}
+  };
+
   componentDidMount() {
-    window.addEventListener(
-      'message',
-      event => {
-        try {
-          const { action } = JSON.parse(event.data);
-          switch (action) {
-            case 'umi.ui.enableBlockEditMode':
-              this.setState({
-                visible: true,
-              });
-              break;
-            case 'umi.ui.disableBlockEditMode':
-              this.setState({
-                visible: false,
-              });
-              break;
-            case 'umi.ui.enable.GUmiUIFlag':
-              this.setState({
-                visible: true,
-              });
-              break;
-            default:
-              break;
-          }
-        } catch (_) {}
-      },
-      false,
-    );
+    window.addEventListener('message', this.handleMessage, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('message', this.handleMessage, false);
   }
 
   toggleHover = () => {
