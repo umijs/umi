@@ -7,6 +7,12 @@ export interface PositionData {
 export default (api): Promise<PositionData> => {
   window.parent.postMessage(
     JSON.stringify({
+      action: 'umi.ui.enable.GUmiUIFlag',
+    }),
+    '*',
+  );
+  window.parent.postMessage(
+    JSON.stringify({
       action: 'umi.ui.checkValidEditSection',
     }),
     '*',

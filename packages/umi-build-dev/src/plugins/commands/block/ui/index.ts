@@ -64,23 +64,10 @@ export default (api: IApiBlock) => {
   )}').default;
 
   // Enable/Disable block add edit mode
-  const el = document.createElement('style');
-  el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; } ';
-  const hoverEl = document.createElement('style');
-  hoverEl.innerHTML='.g_umiuiBlockAddEditMode:hover {background: rgba(24, 144, 255, 0.25) !important;}'
-  document.querySelector('head').appendChild(hoverEl);
-  document.querySelector('head').appendChild(el);
-
   window.addEventListener('message', (event) => {
     try {
       const { action, data } = JSON.parse(event.data);
       switch (action) {
-        case 'umi.ui.enableBlockEditMode':
-          el.innerHTML = '';
-          break;
-        case 'umi.ui.disableBlockEditMode':
-          el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
-          break;
         case 'umi.ui.checkValidEditSection':
           const haveValid = !!document.querySelectorAll('div.g_umiuiBlockAddEditMode').length;
           const frame = document.getElementById('umi-ui-bubble');
@@ -101,14 +88,6 @@ export default (api: IApiBlock) => {
     } catch(e) {
     }
   }, false);
-
-  // TODO: remove this before publish
-  window.g_enableUmiUIBlockAddEditMode = function() {
-    el.innerHTML = '';
-  };
-  window.g_disableUmiUIBlockAddEditMode = function() {
-    el.innerHTML = '.g_umiuiBlockAddEditMode { display: none; }';
-  };
 })();
   `);
 };
