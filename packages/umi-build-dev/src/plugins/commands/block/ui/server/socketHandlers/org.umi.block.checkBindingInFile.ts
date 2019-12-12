@@ -2,7 +2,7 @@ import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 import haveRootBinding from '../../../sdk/haveRootBinding';
 
-export default ({ success, payload, api, failure }) => {
+export default async ({ success, payload, api, failure }) => {
   const { path: targetPath, name } = payload as {
     path: string;
     name: string;
@@ -35,10 +35,10 @@ export default ({ success, payload, api, failure }) => {
     });
     return;
   }
-  haveRootBinding(readFileSync(entryPath, 'utf-8'), name).then(exists => {
-    success({
-      exists,
-      success: true,
-    });
+  const exists = await haveRootBinding(readFileSync(entryPath, 'utf-8'), name);
+
+  success({
+    exists,
+    success: true,
   });
 };

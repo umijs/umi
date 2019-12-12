@@ -1,9 +1,15 @@
-const fs = require('fs');
+import fs from 'fs';
+import { findJS } from 'umi-utils';
+import haveRootBinding from '../../../sdk/haveRootBinding';
+
+import checkIfCanAdd from './org.umi.block.checkIfCanAdd';
+import checkBindingInFile from './org.umi.block.checkBindingInFile';
+
+jest.mock('../../../sdk/haveRootBinding');
 
 describe('block interface socketHandlers test', () => {
   describe('org.umi.block.checkIfCanAdd', () => {
     it('约定式路由报错', () => {
-      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -47,7 +53,6 @@ describe('block interface socketHandlers test', () => {
 
     it('没有 package.json', () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => false);
-      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -74,7 +79,6 @@ describe('block interface socketHandlers test', () => {
 
     it('dva', () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
-      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -135,7 +139,6 @@ describe('block interface socketHandlers test', () => {
 
     it('i18n', () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
-      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -197,7 +200,6 @@ describe('block interface socketHandlers test', () => {
     it('Bigfish', () => {
       const existsSyncMock = jest.spyOn(fs, 'existsSync').mockImplementation(res => true);
       process.env.BIGFISH_COMPAT = 'true';
-      const checkIfCanAdd = require('./org.umi.block.checkIfCanAdd').default;
       const params = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -280,6 +282,83 @@ describe('block interface socketHandlers test', () => {
       expect(params4.failure.mock.calls[0][0].message).toMatch(/请开启 dva 配置/);
       process.env.BIGFISH_COMPAT = null;
       existsSyncMock.mockRestore();
+    });
+  });
+
+  describe('org.umi.block.checkBindingInFile', () => {
+    afterAll(() => {
+      jest.unmock('../../../sdk/haveRootBinding');
+    });
+
+    it('pages/bar.jsx 页面', async () => {
+      const targetPaths = '/tmp/src/pages/bar.jsx';
+      const existsSyncMock = jest
+        .spyOn(fs, 'existsSync')
+        .mockImplementation((path: string) => targetPaths.indexOf(path) > -1);
+
+      const readFileSyncMock = jest
+        .spyOn(fs, 'readFileSync')
+        .mockImplementation((path: string) => '');
+      const haveRootBindingMock = haveRootBinding.mockImplementation(res => {
+        return Promise.resolve(false);
+      });
+
+      const params = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'zh-CN',
+        payload: {
+          path: '/bar',
+          name: 'ButtonBasic',
+        },
+        api: {
+          winPath: v => v,
+          findJS,
+          paths: {
+            absPagesPath: '/tmp/src/pages',
+          },
+        },
+      };
+      await checkBindingInFile(params);
+      expect(params.success).toHaveBeenCalledWith({ exists: false, success: true });
+      existsSyncMock.mockRestore();
+      readFileSyncMock.mockRestore();
+      haveRootBindingMock.mockRestore();
+    });
+
+    it('路径不存在', async () => {
+      const existsSyncMock = jest
+        .spyOn(fs, 'existsSync')
+        .mockImplementation((path: string) => false);
+
+      const readFileSyncMock = jest
+        .spyOn(fs, 'readFileSync')
+        .mockImplementation((path: string) => '');
+      const haveRootBindingMock = haveRootBinding.mockImplementation(res => {
+        return Promise.resolve(false);
+      });
+
+      const params = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'zh-CN',
+        payload: {
+          path: '/bar',
+          name: 'ButtonBasic',
+        },
+        api: {
+          winPath: v => v,
+          findJS,
+          paths: {
+            absPagesPath: '/tmp/src/pages',
+          },
+        },
+      };
+      await checkBindingInFile(params);
+      expect(params.failure).toHaveBeenCalled();
+      existsSyncMock.mockRestore();
+      readFileSyncMock.mockRestore();
+      haveRootBindingMock.mockRestore();
     });
   });
 });
