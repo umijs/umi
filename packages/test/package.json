@@ -1,6 +1,6 @@
 {
-  "name": "@umijs/bundler-webpack",
-  "description": "@umijs/bundler-webpack",
+  "name": "@umijs/test",
+  "description": "@umijs/test",
   "main": "lib/index.js",
   "files": [
     "lib",
@@ -18,5 +18,6 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme"
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/test#readme",
+  "dependencies": {}
 }

@@ -1,9 +1,24 @@
 {
   "name": "@umijs/cli",
-  "version": "0.1.0-alpha.1",
-  "bin": {
-    "umi-next": "./lib/cli.js"
+  "description": "@umijs/cli",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
   },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/cli#readme",
   "dependencies": {
     "@umijs/core": "0.1.0-alpha.1"
   }

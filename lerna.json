@@ -1,5 +1,16 @@
 {
   "version": "0.0.1-alpha.1",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "changelog": {
+    "repo": "umijs/umi-next",
+    "labels": {
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
+    },
+    "cacheDir": ".changelog"
+  }
 }

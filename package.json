@@ -4,21 +4,36 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
     "build": "father-build",
-    "clean": "lerna clean -y",
-    "prebootstrap": "yarn"
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "test:update": "umi-test --updateSnapshot"
   },
-  "lint-staged": {},
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "@umijs/test": "0.1.0-alpha.1",
+    "chalk": "^3.0.0",
+    "father-build": "^1.17.0",
     "lerna": "^3.19.0",
     "lint-staged": "^9.5.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "yargs-parser": "^16.1.0",
+    "yorkie": "^2.0.0"
   },
   "resolutions": {}
 }
