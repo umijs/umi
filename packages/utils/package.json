@@ -3,6 +3,7 @@
   "version": "0.0.1-alpha.1",
   "description": "@umijs/utils",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib",
     "src"
@@ -21,6 +22,11 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/utils#readme",
   "dependencies": {
-    "lodash": "4.17.15"
+    "lodash": "4.17.15",
+    "debug": "4.1.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "4.14.149",
+    "@types/debug": "4.1.5"
   }
 }

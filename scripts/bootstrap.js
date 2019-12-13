@@ -19,6 +19,7 @@ const yParser = require('yargs-parser');
         version,
         description: name,
         main: 'lib/index.js',
+        types: 'lib/index.d.ts',
         files: ['lib', 'src'],
         repository: {
           type: 'git',
@@ -35,6 +36,7 @@ const yParser = require('yargs-parser');
         if (pkg.dependencies) json.dependencies = pkg.dependencies;
         if (pkg.devDependencies) json.devDependencies = pkg.devDependencies;
         if (pkg.peerDependencies) json.peerDependencies = pkg.peerDependencies;
+        if (pkg.bin) json.bin = pkg.bin;
       }
       writeFileSync(pkgJSONPath, `${JSON.stringify(json, null, 2)}\n`);
     }
