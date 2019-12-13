@@ -1,0 +1,9 @@
+/node_modules
+/packages/*/node_modules
+/packages/*/lib
+/coverage
+/.nyc_output
+/.changelog
+.DS_Store
+.umi
+.umi-production

@@ -1,0 +1,9 @@
+{
+  "name": "@umijs/renderer-react",
+  "version": "0.1.0-alpha.1",
+  "dependencies": {
+    "react-router": "5.1.2",
+    "react-router-config": "5.1.1",
+    "react-router-dom": "5.1.2"
+  }
+}

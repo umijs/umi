@@ -1,0 +1,10 @@
+{
+  "name": "@umijs/cli",
+  "version": "0.1.0-alpha.1",
+  "bin": {
+    "umi-next": "./lib/cli.js"
+  },
+  "dependencies": {
+    "@umijs/core": "0.1.0-alpha.1"
+  }
+}
