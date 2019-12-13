@@ -1,5 +1,6 @@
 {
   "name": "@umijs/bundler-webpack",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/bundler-webpack",
   "main": "lib/index.js",
   "files": [

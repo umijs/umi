@@ -3913,10 +3913,10 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.0"
 
-father-build@^1.17.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.17.0.tgz#efa76853ec1d6a73d3cff269d9c78d08c5805b6d"
-  integrity sha512-J0248029KOcEEBVKNjKaJlwAGMgy59euc3MCn/zakSho3iOVe4+5d42QIgpuaQzUvFSzthZya48B9TCir0XH5Q==
+father-build@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/father-build/-/father-build-1.17.1.tgz#e0b92dc23dd90e2e3db85433b6f5f0ca34a7d41f"
+  integrity sha512-0I2VJVBMz9lfVPJIe0SN943O+r3+qy5TU9Ugju2T9BV09Ob20HXE1/pvCy+0urSRNDxAuEUI8YS/xsOsy/NOkQ==
   dependencies:
     "@babel/core" "7.4.5"
     "@babel/plugin-proposal-class-properties" "7.4.4"
@@ -3955,7 +3955,7 @@ father-build@^1.17.0:
     rollup-plugin-node-resolve "5.0.1"
     rollup-plugin-postcss-umi "2.0.3"
     rollup-plugin-replace "2.2.0"
-    rollup-plugin-terser "5.0.0"
+    rollup-plugin-terser "5.1.3"
     rollup-plugin-typescript2 "0.25.3"
     rollup-plugin-url "^2.2.2"
     signale "1.4.0"
@@ -5739,7 +5739,7 @@ longest@^1.0.1:
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
   integrity sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
 
-loose-envify@^1.0.0, loose-envify@^1.2.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -7433,6 +7433,15 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react@^16.12.0:
+  version "16.12.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
+  integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+
 read-cmd-shim@^1.0.1:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/read-cmd-shim/-/read-cmd-shim-1.0.5.tgz#87e43eba50098ba5a32d0ceb583ab8e43b961c16"
@@ -7937,15 +7946,16 @@ rollup-plugin-replace@2.2.0:
     magic-string "^0.25.2"
     rollup-pluginutils "^2.6.0"
 
-rollup-plugin-terser@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-terser/-/rollup-plugin-terser-5.0.0.tgz#ac50fdb703b580447a7e6b1692aeed515a6be8cf"
-  integrity sha512-W+jJ4opYnlmNyVW0vtRufs+EGf68BIJ7bnOazgz8mgz8pA9lUyrEifAhPs5y9M16wFeAyBGaRjKip4dnFBtXaw==
+rollup-plugin-terser@5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-terser/-/rollup-plugin-terser-5.1.3.tgz#5f4c4603b12b4f8d093f4b6f31c9aa5eba98a223"
+  integrity sha512-FuFuXE5QUJ7snyxHLPp/0LFXJhdomKlIx/aK7Tg88Yubsx/UU/lmInoJafXJ4jwVVNcORJ1wRUC5T9cy5yk0wA==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     jest-worker "^24.6.0"
-    serialize-javascript "^1.7.0"
-    terser "^4.0.0"
+    rollup-pluginutils "^2.8.1"
+    serialize-javascript "^2.1.2"
+    terser "^4.1.0"
 
 rollup-plugin-typescript2@0.25.3:
   version "0.25.3"
@@ -8070,10 +8080,10 @@ semver@~5.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
   integrity sha1-myzl094C0XxgEq0yaqa00M9U+U8=
 
-serialize-javascript@^1.7.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.9.1.tgz#cfc200aef77b600c47da9bb8149c943e798c2fdb"
-  integrity sha512-0Vb/54WJ6k5v8sSWN09S0ora+Hnr+cX40r9F170nT+mSkaxltoE/7R3OrIdBSUv1OoiobH1QoWQbCnAO+e8J1A==
+serialize-javascript@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-2.1.2.tgz#ecec53b0e0317bdc95ef76ab7074b7384785fa61"
+  integrity sha512-rs9OggEUF0V4jUSecXazOYsLfu7OGK2qIn3c7IPBiffz32XniEp/TX9Xmc9LQfK2nQ2QKHvZ2oygKUGU0lG4jQ==
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
@@ -8670,7 +8680,7 @@ ternary-stream@^2.0.1:
     merge-stream "^1.0.0"
     through2 "^2.0.1"
 
-terser@^4.0.0:
+terser@^4.1.0:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/terser/-/terser-4.4.2.tgz#448fffad0245f4c8a277ce89788b458bfd7706e8"
   integrity sha512-Uufrsvhj9O1ikwgITGsZ5EZS6qPokUOkCegS7fYOdGTv+OA90vndUbU6PEjr5ePqHfNUbGyMO7xyIZv2MhsALQ==

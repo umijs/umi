@@ -1,5 +1,6 @@
 {
   "name": "@umijs/cli",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/cli",
   "main": "lib/index.js",
   "files": [
@@ -20,6 +21,6 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/cli#readme",
   "dependencies": {
-    "@umijs/core": "0.1.0-alpha.1"
+    "@umijs/core": "0.0.1-alpha.1"
   }
 }

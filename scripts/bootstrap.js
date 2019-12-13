@@ -6,7 +6,7 @@ const yParser = require('yargs-parser');
 (async () => {
   const args = yParser(process.argv);
   const pkgNames = await getPackages();
-  const version = require('../package.json').version;
+  const version = require('../lerna.json').version;
 
   pkgNames.forEach(({ name }) => {
     const [_scope, shortName] = name.split('/');

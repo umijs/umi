@@ -1,5 +1,6 @@
 {
   "name": "@umijs/test",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/test",
   "main": "lib/index.js",
   "files": [

@@ -1,5 +1,6 @@
 {
   "name": "@umijs/built-in-plugins",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/built-in-plugins",
   "main": "lib/index.js",
   "files": [

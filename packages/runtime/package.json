@@ -1,5 +1,6 @@
 {
   "name": "@umijs/runtime",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/runtime",
   "main": "lib/index.js",
   "files": [

@@ -1,5 +1,6 @@
 {
   "name": "@umijs/core",
+  "version": "0.0.1-alpha.1",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "files": [
