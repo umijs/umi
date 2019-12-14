@@ -5,17 +5,10 @@ import { options as CliOptions } from 'jest-cli/build/cli/args';
 import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import defaultConfig from './defaultConfig';
+import createDefaultConfig from './createDefaultConfig';
+import { IArgs } from './types';
 
 const debug = createDebug('umi:test');
-
-interface IArgs {
-  _?: string[];
-  $0?: string;
-  version?: boolean;
-  cwd?: string;
-  debug?: boolean;
-}
 
 export default async function(args: IArgs) {
   process.env.NODE_ENV = 'test';
@@ -44,7 +37,7 @@ export default async function(args: IArgs) {
 
   // Merge configs
   // user config and args config could have value function for modification
-  const config = mergeConfig(defaultConfig, userJestConfig);
+  const config = mergeConfig(createDefaultConfig(cwd, args), userJestConfig);
   debug(`final config: ${JSON.stringify(config)}`);
 
   // Generate jest options

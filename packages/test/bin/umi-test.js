@@ -7,6 +7,10 @@ const args = yParser(process.argv.slice(2), {
     watch: ['w'],
     version: ['v'],
   },
+  boolean: ['coverage', 'watch', 'version', 'debug', 'e2e'],
+  default: {
+    e2e: true,
+  },
 });
 
 require('../lib')
