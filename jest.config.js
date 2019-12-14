@@ -12,9 +12,4 @@ module.exports = {
   collectCoverageFrom: [
     `packages/${collectCoveragePrefix}/src/**/*.{js,jsx,ts,tsx}`,
   ],
-  // moduleNameMapper: {},
-  // testPathIgnorePatterns: [],
-  // setupFilesAfterEnv: [],
-  // watchPathIgnorePatterns: [],
-  // coveragePathIgnorePatterns: [],
 };
