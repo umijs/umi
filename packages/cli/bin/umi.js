@@ -5,7 +5,7 @@ const resolveCwd = require('resolve-cwd');
 const { name, bin } = require('../package.json');
 const localCLI = resolveCwd.silent(`${name}/${bin['umi-next']}`);
 if (!process.env.USE_GLOBAL_UMI && localCLI && localCLI !== __filename) {
-  const debug = require('@umijs/utils').debug('umi');
+  const debug = require('@umijs/utils').debugFactory('umi:cli');
   debug('Using local install of umi');
   require(localCLI);
 } else {

@@ -22,11 +22,14 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/utils#readme",
   "dependencies": {
-    "lodash": "4.17.15",
-    "debug": "4.1.1"
-  },
-  "devDependencies": {
     "@types/lodash": "4.14.149",
-    "@types/debug": "4.1.5"
+    "@types/debug": "4.1.5",
+    "@types/yargs": "13.0.3",
+    "@types/yargs-parser": "13.1.0",
+    "chalk": "3.0.0",
+    "lodash": "4.17.15",
+    "debug": "4.1.1",
+    "yargs": "15.0.2",
+    "yargs-parser": "16.1.0"
   }
 }

@@ -1,7 +1,7 @@
 const { existsSync, writeFileSync } = require('fs');
 const { join } = require('path');
 const { getPackages } = require(`@lerna/project`);
-const yParser = require('yargs-parser');
+const { yParser } = require('@umijs/utils');
 
 (async () => {
   const args = yParser(process.argv);
