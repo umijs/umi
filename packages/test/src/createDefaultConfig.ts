@@ -4,9 +4,9 @@ import { join } from 'path';
 import { IArgs } from './types';
 
 export default function(cwd: string, args: IArgs) {
-  const types = ['spec', 'test'];
+  const testMatchTypes = ['spec', 'test'];
   if (args.e2e) {
-    types.push('e2e');
+    testMatchTypes.push('e2e');
   }
 
   const isLerna = isLernaPackage(cwd);
@@ -25,7 +25,9 @@ export default function(cwd: string, args: IArgs) {
     },
     setupFiles: [require.resolve('../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../helpers/setupFiles/jasmine')],
-    testMatch: [`${testMatchPrefix}**/?*.(${types.join('|')}).(j|t)s?(x)`],
+    testMatch: [
+      `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
+    ],
     testPathIgnorePatterns: ['/node_modules/'],
     transform: {
       '^.+\\.(js|jsx|ts|tsx)$': require.resolve(
