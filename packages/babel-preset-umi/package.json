@@ -1,0 +1,32 @@
+{
+  "name": "@umijs/babel-preset-umi",
+  "version": "0.0.1-alpha.1",
+  "description": "@umijs/babel-preset-umi",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-preset-umi#readme",
+  "dependencies": {
+    "@babel/preset-env": "7.7.6",
+    "@babel/preset-react": "7.7.4",
+    "@babel/preset-typescript": "7.7.4"
+  },
+  "devDependencies": {
+    "@babel/core": "7.7.5"
+  }
+}
