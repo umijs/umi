@@ -5,7 +5,7 @@ import { options as CliOptions } from 'jest-cli/build/cli/args';
 import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import createDefaultConfig from './createDefaultConfig';
+import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
 import { IArgs } from './types';
 
 const debug = createDebug('umi:test');
@@ -23,7 +23,7 @@ export default async function(args: IArgs) {
   if (args.version) {
     console.log(`umi-test@${require('../package.json').version}`);
     console.log(`jest@${require('jest/package.json').version}`);
-    process.exit(0);
+    return;
   }
 
   const cwd = args.cwd || process.cwd();

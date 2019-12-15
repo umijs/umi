@@ -46,4 +46,10 @@ module.exports = {
 
 ### Support typescript
 
+### Built-in Polyfills
+
+- core-js/stable
+- regenerator-runtime/runtime
+- whatwg-fetch
+
 ## FAQ
