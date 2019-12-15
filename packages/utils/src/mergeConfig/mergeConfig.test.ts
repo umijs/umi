@@ -1,7 +1,7 @@
 import mergeConfig from './mergeConfig';
 
 test('extend property', () => {
-  expect(mergeConfig({ a: 1 }, { b: 2 })).toEqual({
+  expect(mergeConfig({ a: 1 }, { b: 2 }, null)).toEqual({
     a: 1,
     b: 2,
   });

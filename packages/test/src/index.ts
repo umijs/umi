@@ -30,14 +30,23 @@ export default async function(args: IArgs) {
 
   // Read config from cwd/jest.config.js
   const userJestConfigFile = join(cwd, 'jest.config.js');
-  const userJestConfig = existsSync(userJestConfigFile)
-    ? require(userJestConfigFile)
-    : {};
+  const userJestConfig =
+    existsSync(userJestConfigFile) && require(userJestConfigFile);
   debug(`config from jest.config.js: ${JSON.stringify(userJestConfig)}`);
+
+  // Read jest config from package.json
+  const packageJSONPath = join(cwd, 'package.json');
+  const packageJestConfig =
+    existsSync(packageJSONPath) && require(packageJSONPath).jest;
+  debug(`jest config from package.json: ${JSON.stringify(packageJestConfig)}`);
 
   // Merge configs
   // user config and args config could have value function for modification
-  const config = mergeConfig(createDefaultConfig(cwd, args), userJestConfig);
+  const config = mergeConfig(
+    createDefaultConfig(cwd, args),
+    packageJestConfig,
+    userJestConfig,
+  );
   debug(`final config: ${JSON.stringify(config)}`);
 
   // Generate jest options

@@ -32,5 +32,6 @@ test('run jest', async () => {
   });
   expect(spy.mock.calls[0][0].notify).toEqual('notify');
   expect(spy.mock.calls[0][0].updateSnapshot).toEqual(true);
+  expect(spy.mock.calls[0][0].config).toContain('"bar":1,"hoo":2,"foo":1');
   spy.mockRestore();
 });

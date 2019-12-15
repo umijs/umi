@@ -53,4 +53,8 @@ module.exports = {
 - regenerator-runtime/runtime
 - whatwg-fetch
 
+### Support get config from jest.config.js and package.json
+
+jest.config.js 的优先级更高。
+
 ## FAQ
