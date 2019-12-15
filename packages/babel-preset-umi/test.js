@@ -1,28 +1,22 @@
-const { transform } = require('@babel/core');
-
-const { code } = transform(
-  `
-import { a } from './a';
-console.log(a);
-`,
-  {
-    filename: 'file.ts',
+module.exports = function(opts) {
+  return {
     presets: [
       [
-        require.resolve('./lib'),
-        {
-          typescript: true,
-          react: true,
-          env: {
-            targets: {
-              node: 'current',
+        require('./lib').default,
+        require('@umijs/utils').deepmerge(
+          {
+            typescript: true,
+            react: true,
+            env: {
+              targets: {
+                node: 'current',
+              },
+              modules: 'commonjs',
             },
-            modules: 'commonjs',
           },
-        },
+          opts,
+        ),
       ],
     ],
-  },
-);
-
-console.log(code);
+  };
+};

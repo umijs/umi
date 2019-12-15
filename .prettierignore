@@ -6,6 +6,3 @@ package.json
 
 # templates
 **/templates/**
-
-# 加了换行在win下测试不通过，所以忽略一下
-packages/af-webpack/test/fixtures/svgr/logo.svg

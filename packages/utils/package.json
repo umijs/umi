@@ -29,6 +29,7 @@
     "chalk": "3.0.0",
     "lodash": "4.17.15",
     "debug": "4.1.1",
+    "deepmerge": "4.2.2",
     "yargs": "15.0.2",
     "yargs-parser": "16.1.0"
   }

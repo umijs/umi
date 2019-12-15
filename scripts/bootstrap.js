@@ -41,10 +41,15 @@ const { yParser } = require('@umijs/utils');
       };
       if (pkgJSONExists) {
         const pkg = require(pkgJSONPath);
-        if (pkg.dependencies) json.dependencies = pkg.dependencies;
-        if (pkg.devDependencies) json.devDependencies = pkg.devDependencies;
-        if (pkg.peerDependencies) json.peerDependencies = pkg.peerDependencies;
-        if (pkg.bin) json.bin = pkg.bin;
+        [
+          'dependencies',
+          'devDependencies',
+          'peerDependencies',
+          'bin',
+          'files',
+        ].forEach(key => {
+          if (pkg[key]) json[key] = pkg[key];
+        });
       }
       writeFileSync(pkgJSONPath, `${JSON.stringify(json, null, 2)}\n`);
     }
