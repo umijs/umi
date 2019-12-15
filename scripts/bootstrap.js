@@ -1,17 +1,25 @@
-const { existsSync, writeFileSync } = require('fs');
+const { existsSync, writeFileSync, readdirSync } = require('fs');
 const { join } = require('path');
-const { getPackages } = require(`@lerna/project`);
 const { yParser } = require('@umijs/utils');
 
 (async () => {
   const args = yParser(process.argv);
-  const pkgNames = await getPackages();
   const version = require('../lerna.json').version;
 
-  pkgNames.forEach(({ name }) => {
-    const [_scope, shortName] = name.split('/');
+  const pkgs = readdirSync(join(__dirname, '../packages')).filter(
+    pkg => pkg.charAt(0) !== '.',
+  );
 
-    const pkgJSONPath = join(__dirname, '..', 'packages', shortName, 'package.json');
+  pkgs.forEach(shortName => {
+    const name = `@umijs/${shortName}`;
+
+    const pkgJSONPath = join(
+      __dirname,
+      '..',
+      'packages',
+      shortName,
+      'package.json',
+    );
     const pkgJSONExists = existsSync(pkgJSONPath);
     if (args.force || !pkgJSONExists) {
       const json = {
@@ -41,7 +49,13 @@ const { yParser } = require('@umijs/utils');
       writeFileSync(pkgJSONPath, `${JSON.stringify(json, null, 2)}\n`);
     }
 
-    const readmePath = join(__dirname, '..', 'packages', shortName, 'README.md');
+    const readmePath = join(
+      __dirname,
+      '..',
+      'packages',
+      shortName,
+      'README.md',
+    );
     if (args.force || !existsSync(readmePath)) {
       writeFileSync(readmePath, `# ${name}\n`);
     }
