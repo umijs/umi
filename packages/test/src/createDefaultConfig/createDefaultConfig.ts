@@ -46,6 +46,7 @@ export default function(cwd: string, args: IArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
+    testEnvironment: require.resolve('jest-environment-jsdom-fourteen'),
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
     ],

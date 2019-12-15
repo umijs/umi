@@ -4,6 +4,7 @@
 
 - `jest.config.js` 中的配置默认为覆盖，而不是扩展，如需扩展，把值改成函数的形式
 - 不再内置 enzyme 方案，推荐用 [@testing-library/react](https://github.com/testing-library/react-testing-library)
+- 使用 jsdom@14，不再支持 node 6
 
 ## Usage
 
