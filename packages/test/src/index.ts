@@ -46,7 +46,7 @@ export default async function(args: IArgs) {
     if (args[name]) argsConfig[name] = name;
 
     // Convert alias args into real one
-    const { alias } = CliOptions[name] || {};
+    const { alias } = CliOptions[name];
     if (alias && args[alias]) {
       argsConfig[name] = args[alias];
     }

@@ -22,6 +22,15 @@ test('run jest', async () => {
   });
   await umiTest({
     cwd: join(fixtures, 'normal'),
+    // for coverage
+    debug: true,
+    // @ts-ignore
+    // alias
+    u: true,
+    // CliOptions
+    notify: true,
   });
+  expect(spy.mock.calls[0][0].notify).toEqual('notify');
+  expect(spy.mock.calls[0][0].updateSnapshot).toEqual(true);
   spy.mockRestore();
 });
