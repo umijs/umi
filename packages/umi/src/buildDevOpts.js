@@ -25,6 +25,6 @@ export default function(opts = {}) {
 function loadEnv() {
   const basePath = join(process.cwd(), '.env');
   const localPath = `${basePath}.local`;
-  loadDotEnv(basePath);
   loadDotEnv(localPath);
+  loadDotEnv(basePath);
 }
