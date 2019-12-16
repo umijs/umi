@@ -58,6 +58,8 @@ export default function({ success, payload, api, lang, failure }) {
     return;
   }
 
+  const bigfishLocaleEnable = api.config.locale && api.config.locale.enable !== false;
+
   const checkConfigRules = {
     dva: {
       enable: isBigfish ? api.config.dva !== false : reactPlugin && reactPluginOpts.dva,
@@ -71,7 +73,9 @@ export default function({ success, payload, api, lang, failure }) {
       },
     },
     i18n: {
-      enable: isBigfish ? !!api.config.locale : reactPlugin && reactPluginOpts.locale,
+      enable: isBigfish
+        ? !!bigfishLocaleEnable
+        : reactPlugin && reactPluginOpts.locale && reactPluginOpts.locale.enable !== false,
       message: {
         'zh-CN': isBigfish
           ? `${payloadType}依赖 locale，请开启 locale 配置。`
