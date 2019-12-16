@@ -4,7 +4,9 @@ about: 'Report a bug to help us improve'
 title: ''
 labels: ''
 assignees: ''
----## What happens?
+---
+
+## What happens?
 
 A clear and concise description of what the bug is.
 
