@@ -49,7 +49,7 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "portfinder": "^1.0.24",
-    "prettier": "1.15.3",
+    "prettier": "^1.19.1",
     "puppeteer": "1.11.0",
     "react": "^16.8.6",
     "react-router-dom": "5.1.2",
