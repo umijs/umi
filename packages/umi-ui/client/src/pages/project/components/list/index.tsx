@@ -24,7 +24,6 @@ import {
   PlusOutlined,
   ImportOutlined,
 } from '@ant-design/icons';
-import get from 'lodash/get';
 import umiIconSvg from '@/assets/umi.svg';
 import editorSvg from '@/assets/code.svg';
 import { setCurrentProject, openInEditor, editProject, deleteProject } from '@/services/project';
@@ -57,7 +56,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const isProgress = (item: IProjectListItem) => {
-    if (get(item, 'creatingProgress.success')) return false;
+    if (item?.creatingProgress?.success) return false;
     return !!item.creatingProgress;
   };
 
@@ -69,11 +68,7 @@ const ProjectList: React.SFC<IProjectProps> = props => {
   const projects = useMemo(
     () => {
       const projectListMap = Object.keys(projectsByKey).map(key => {
-        const created_at = get(
-          projectsByKey,
-          `${key}.created_at`,
-          new Date('2002').getTime(),
-        ) as number;
+        const created_at = projectsByKey?.[key]?.created_at?.[new Date('2002').getTime()] as number;
         return {
           ...projectsByKey[key],
           key,

@@ -1,14 +1,8 @@
 import { Icon } from '@ant-design/compatible';
 import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd';
-import {
-  LeftOutlined,
-  CaretDownOutlined,
-  ExportOutlined,
-  ExperimentFilled,
-} from '@ant-design/icons';
+import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
-import get from 'lodash/get';
 import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
 import { NavLink, withRouter } from 'umi';
@@ -22,6 +16,7 @@ import events, { MESSAGES } from '@/message';
 import UiLayout from './Layout';
 import debug from '@/debug';
 import styles from './Dashboard.less';
+import BetaPlugin from './BetaPlugin';
 
 const { Content, Sider } = Layout;
 
@@ -85,12 +80,13 @@ export default withRouter(props => {
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
-  const Provider = activePanel.provider ? activePanel.provider : DefaultProvider;
+  const Provider = activePanel?.provider || DefaultProvider;
 
   return (
     <UiLayout type="detail" title={title}>
       <Context.Consumer>
-        {({ currentProject, theme, isMini, locale }) => {
+        {({ currentProject, theme, isMini, locale, basicUI }) => {
+
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -119,13 +115,13 @@ export default withRouter(props => {
                     )
                     .sort(
                       (a, b) =>
-                        get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -
-                        get(projectMaps, `${a}.opened_at`, new Date('2002').getTime()),
+                      projectMaps?.[b]?.opened_at?.[new Date('2002').getTime()] -
+                      projectMaps?.[a]?.opened_at?.[new Date('2002').getTime()]
                     )
                     .slice(0, 5)
                     .map(project => (
                       <Menu.Item key={project} onClick={changeProject}>
-                        <p>{get(projectMaps, `${project}.name`, '未命名')}</p>
+                        <p>{projectMaps?.[project]?.name || '未命名'}</p>
                       </Menu.Item>
                     ))}
               </Menu.ItemGroup>
@@ -196,7 +192,7 @@ export default withRouter(props => {
                 >
                   <Col>
                     <p className={styles['mini-header-name']}>
-                      {currentProject ? currentProject.name : ''}
+                      {currentProject?.name || ''}
                     </p>
                     <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
                       <ExportOutlined onClick={openEditor} />
@@ -216,171 +212,110 @@ export default withRouter(props => {
                   </Col>
                 </Row>
               )}
-              <Layout>
-                <Row type="flex" className={styles.wrapper}>
-                  <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
-                    {/* Projects Switch */}
-                    <div className={styles['sidebar-top']}>
-                      {!isMini && (
-                        <div className={styles['sidebar-name']}>
-                          <LeftOutlined
-                            onClick={() => handleBack(false)}
-                            className={styles['sidebar-name-back']}
-                          />
-                          <Dropdown
-                            placement="bottomRight"
-                            trigger={['click']}
-                            overlay={recentMenu}
-                            className={styles['sidebar-name-dropdown']}
-                          >
-                            {get(currentProject, 'name.length') > 16 ? (
-                              <Tooltip title={currentProject.name}>
-                                <p>{currentProject.name}</p>
-                                <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
-                              </Tooltip>
-                            ) : (
-                              <div>
-                                <p>{currentProject.name}</p>
-                                <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
-                              </div>
-                            )}
-                          </Dropdown>
-                        </div>
-                      )}
-                      <Menu
-                        theme="light"
-                        selectedKeys={selectedKeys}
-                        onClick={({ key }) => {
-                          setSelectedKeys([key]);
-                        }}
-                        style={{
-                          border: 0,
-                        }}
-                        mode="inline"
-                      >
-                        {normalPanels.map(panel => (
-                          <MenuItem key={panel.path} panel={panel} />
-                        ))}
-                      </Menu>
-                    </div>
-                    {Array.isArray(betaPanels) && betaPanels.length > 0 && (
-                      <div className={styles['sidebar-lab']}>
-                        {isMini ? (
-                          <Menu
-                            theme="light"
-                            selectedKeys={selectedKeys}
-                            style={{
-                              border: 0,
-                            }}
-                            selectable={false}
-                            mode="inline"
-                          >
-                            <Menu.SubMenu
-                              key="lab_subMenu"
-                              title={
-                                <span>
-                                  <ExperimentFilled className={styles.menuIcon} />
-                                  <p>
-                                    <FormattedMessage id="org.umi.ui.global.dashboard.lab" />
-                                  </p>
-                                </span>
-                              }
-                            >
-                              {betaPanels.map((panel, i) => {
-                                const icon =
-                                  typeof panel.icon === 'object'
-                                    ? panel.icon
-                                    : { type: panel.icon };
-                                return (
-                                  <Menu.Item key={panel.path}>
-                                    <NavLink exact to={`${panel.path}${search}`}>
-                                      <Icon className={styles.menuIcon} {...icon} />
-                                      <span className={styles.menuItem}>
-                                        {renderLocaleText(panel.title)}
-                                      </span>
-                                    </NavLink>
-                                  </Menu.Item>
-                                );
-                              })}
-                            </Menu.SubMenu>
-                          </Menu>
-                        ) : (
-                          <Dropdown
-                            overlay={getBetaMenu()}
-                            placement="topLeft"
-                            getPopupContainer={node => node.parentNode}
-                          >
-                            <Menu
-                              theme="light"
-                              style={{
-                                border: 0,
-                              }}
-                              selectable={false}
-                              mode="inline"
-                            >
-                              <Menu.Item>
-                                <ExperimentFilled className={styles.menuIcon} />
-                                <span className={styles.menuItem}>
-                                  <FormattedMessage id="org.umi.ui.global.dashboard.lab" />
-                                </span>
-                              </Menu.Item>
-                            </Menu>
-                          </Dropdown>
-                        )}
+              <Layout className={styles.wrapper}>
+                <Sider className={styles.sidebar} collapsed={isMini} collapsedWidth={64}>
+                  {/* Projects Switch */}
+                  <div className={styles['sidebar-main']}>
+                    {!isMini && (
+                      <div className={styles['sidebar-name']}>
+                        <LeftOutlined
+                          onClick={() => handleBack(false)}
+                          className={styles['sidebar-name-back']}
+                        />
+                        <Dropdown
+                          placement="bottomRight"
+                          trigger={['click']}
+                          overlay={recentMenu}
+                          className={styles['sidebar-name-dropdown']}
+                        >
+                          {currentProject?.name?.length > 16 ? (
+                            <Tooltip title={currentProject.name}>
+                              <p>{currentProject.name}</p>
+                              <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
+                            </Tooltip>
+                          ) : (
+                            <div>
+                              <p>{currentProject.name}</p>
+                              <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
+                            </div>
+                          )}
+                        </Dropdown>
                       </div>
                     )}
-                  </Sider>
-                  <Content className={styles.main}>
-                    <Provider style={{ height: '100%' }}>
-                      <div key="header" className={styles.header}>
-                        <h1>
-                          {activePanel &&
-                            (activePanel.headerTitle ? activePanel.headerTitle : title)}
-                        </h1>
-                        {Array.isArray(actions) && actions.length > 0 && (
-                          <Row type="flex" className={styles['header-actions']}>
-                            {actions.map((panelAction, j) => {
-                              if (React.isValidElement(panelAction)) {
-                                return <Fragment key={j.toString()}>{panelAction}</Fragment>;
-                              }
-                              if (
-                                typeof panelAction === 'function' &&
-                                React.isValidElement(panelAction({}))
-                              ) {
-                                return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
-                              }
-                              const { title, action, onClick, ...btnProps } = panelAction;
-                              const handleClick = async () => {
-                                // TODO: try catch handler
-                                try {
-                                  await callRemote(action);
-                                  if (onClick) {
-                                    onClick();
-                                  }
-                                } catch (e) {
-                                  message.error(e && e.message ? e.message : 'error');
+                    <Menu
+                      theme="light"
+                      selectedKeys={selectedKeys}
+                      onClick={({ key }) => {
+                        setSelectedKeys([key]);
+                      }}
+                      style={{
+                        border: 0,
+                      }}
+                      mode="inline"
+                    >
+                      {normalPanels.map(panel => (
+                        <MenuItem key={panel.path} panel={panel} />
+                      ))}
+                    </Menu>
+                  </div>
+                  <BetaPlugin
+                    overlay={getBetaMenu()}
+                    search={search}
+                    betaPanels={betaPanels}
+                    isMini={isMini}
+                    selectedKeys={selectedKeys}
+                  />
+                  {basicUI?.dashboard?.siderFooter}
+                </Sider>
+                <Content className={styles.main}>
+                  <Provider style={{ height: '100%' }}>
+                    <div key="header" className={styles.header}>
+                      <h1>
+                        {activePanel?.headerTitle || title}
+                      </h1>
+                      {actions?.length > 0 && (
+                        <Row type="flex" className={styles['header-actions']}>
+                          {actions.map((panelAction, j) => {
+                            if (React.isValidElement(panelAction)) {
+                              return <Fragment key={j.toString()}>{panelAction}</Fragment>;
+                            }
+                            if (
+                              typeof panelAction === 'function' &&
+                              React.isValidElement(panelAction({}))
+                            ) {
+                              return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
+                            }
+                            const { title, action, onClick, ...btnProps } = panelAction;
+                            const handleClick = async () => {
+                              // TODO: try catch handler
+                              try {
+                                await callRemote(action);
+                                if (onClick) {
+                                  onClick();
                                 }
-                              };
-                              return (
-                                title && (
-                                  <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                    {renderLocaleText({ id: title })}
-                                  </Button>
-                                )
-                              );
-                            })}
-                          </Row>
-                        )}
-                      </div>
-                      {/* key pathname change transition will crash  */}
-                      <div key={activePanel.path || '/'} className={styles.content}>
-                        <ErrorBoundary className={styles['dashboard-error-boundary']}>
-                          {props.children}
-                        </ErrorBoundary>
-                      </div>
-                    </Provider>
-                  </Content>
-                </Row>
+                              } catch (e) {
+                                message.error(e && e.message ? e.message : 'error');
+                              }
+                            };
+                            return (
+                              title && (
+                                <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                  {renderLocaleText({ id: title })}
+                                </Button>
+                              )
+                            );
+                          })}
+                        </Row>
+                      )}
+                    </div>
+                    {/* key pathname change transition will crash  */}
+                    <div key={activePanel?.path || '/'} className={styles.content}>
+                      <ErrorBoundary className={styles['dashboard-error-boundary']}>
+                        {props.children}
+                      </ErrorBoundary>
+                    </div>
+                  </Provider>
+                </Content>
               </Layout>
             </div>
           );

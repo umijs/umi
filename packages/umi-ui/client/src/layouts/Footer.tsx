@@ -350,7 +350,7 @@ const Footer: React.SFC<IFooterProps> = props => {
         <div className={styles.version}>
           <span>
             <TagOutlined style={{ marginRight: 4 }} />
-            {window.g_bigfish ? get(window, 'g_bigfish.version') : get(window, 'g_umi.version')}
+            {window?.g_bigfish?.version || window?.g_umi?.version || ''}
           </span>
         </div>
       </div>

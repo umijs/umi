@@ -54,6 +54,11 @@ declare namespace IUI {
       /** create step */
       create: ReactNode;
     };
+    /** Dashboard extend */
+    dashboard: {
+      /** sider Footer */
+      siderFooter: ReactNode;
+    };
   }
 
   type ILang = keyof typeof LOCALES;
