@@ -3,7 +3,6 @@ import { isLernaPackage } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
-import { IArgs } from '../types';
 
 export default function(cwd: string, args: IArgs) {
   const testMatchTypes = ['spec', 'test'];

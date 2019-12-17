@@ -1,20 +1,23 @@
-import debug from 'debug';
-import lodash from 'lodash';
 import chalk from 'chalk';
-import deepmerge from 'deepmerge';
-import yargs from 'yargs';
-import yParser from 'yargs-parser';
-import mergeConfig from './mergeConfig/mergeConfig';
-import isLernaPackage from './isLernaPackage/isLernaPackage';
-import getFile from './getFile/getFile';
-
 export { chalk };
-export { debug as createDebug };
+import createDebug from 'debug';
+export { createDebug };
+import deepmerge from 'deepmerge';
 export { deepmerge };
+import lodash from 'lodash';
 export { lodash };
+import yargs from 'yargs';
 export { yargs };
+import yParser from 'yargs-parser';
 export { yParser };
 
+import mergeConfig from './mergeConfig/mergeConfig';
 export { mergeConfig };
+import isLernaPackage from './isLernaPackage/isLernaPackage';
 export { isLernaPackage };
+import isPlainObject from './isPlainObject/isPlainObject';
+export { isPlainObject };
+import getFile from './getFile/getFile';
 export { getFile };
+import winPath from './winPath/winPath';
+export { winPath };

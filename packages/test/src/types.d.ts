@@ -1,4 +1,4 @@
-export interface IArgs {
+interface IArgs {
   _?: string[];
   $0?: string;
   version?: boolean;

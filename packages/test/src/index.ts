@@ -6,7 +6,6 @@ import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
-import { IArgs } from './types';
 
 const debug = createDebug('umi:test');
 
