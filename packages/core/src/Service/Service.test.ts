@@ -1,3 +1,1 @@
-new Service({
-  cwd,
-}).run('help');
+test('normal', () => {});
