@@ -107,10 +107,10 @@ export default class Loading extends React.Component<ILoadingProps, ILoadingStat
         </div>
         <div className={styles['loading-error-action']}>
           {(error.actions || []).map((action, index) => {
-            const browserType = get(action, 'browserHandler');
-            const handlerType = get(action, 'handler.type');
+            const browserType = action?.browserHandler;
+            const handlerType = action?.handler?.type;
             const type = browserType || handlerType;
-            const actionPayload = get(action, 'handler.payload');
+            const actionPayload = action?.handler?.payload;
             const Action = actions[type];
             if (!Action) {
               return null;

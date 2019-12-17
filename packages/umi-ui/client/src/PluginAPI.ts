@@ -241,7 +241,7 @@ export default class PluginAPI {
       }
     } catch (e) {
       console.error('UI notification  error', e);
-      if (this._.get(window, 'Tracert.logError')) {
+      if (window?.Tracert?.logError) {
         const frameName = this.service.basicUI.name || 'Umi';
         if (e && e.message) {
           e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;

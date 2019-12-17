@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.less';
-import get from 'lodash/get';
 import { IRoute } from 'umi-types';
 import history from '@tmp/history';
 import querystring from 'querystring';
@@ -88,9 +87,7 @@ export async function render(oldRender) {
     await initSocket({
       onMessage({ type, payload }) {
         if (type === '@@core/log') {
-          if (window.xterm) {
-            window.xterm.writeln(`\x1b[90m[LOG]\x1b[0m ${payload}`);
-          }
+          window?.xterm?.writeln?.(`\x1b[90m[LOG]\x1b[0m ${payload}`);
         }
       },
     });
@@ -114,7 +111,7 @@ export async function render(oldRender) {
     window.g_currentProject = key;
     const currentProject = {
       key,
-      ...get(data, `projectsByKey.${key}`, {}),
+      ...(data?.projectsByKey?.[key] || {}),
     };
     _log('apps data', data);
     window.g_uiCurrentProject =
@@ -163,7 +160,7 @@ export function patchRoutes(routes: IRoute[]) {
   if (dashboardIndex > -1) {
     service.panels.forEach(panel => {
       _log('panel', panel);
-      routes[dashboardIndex].routes.unshift({
+      routes[dashboardIndex]?.routes?.unshift({
         exact: true,
         ...panel,
       });

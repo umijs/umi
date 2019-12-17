@@ -3,7 +3,6 @@ import { Menu, Layout, Dropdown, Button, message, Tooltip, Row, Col } from 'antd
 import { LeftOutlined, CaretDownOutlined, ExportOutlined } from '@ant-design/icons';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
-import get from 'lodash/get';
 import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
 import { NavLink, withRouter } from 'umi';
@@ -81,13 +80,12 @@ export default withRouter(props => {
   const { panels } = window.g_service;
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
-  const Provider = activePanel.provider ? activePanel.provider : DefaultProvider;
+  const Provider = activePanel?.provider || DefaultProvider;
 
   return (
     <UiLayout type="detail" title={title}>
       <Context.Consumer>
         {({ currentProject, theme, isMini, locale, basicUI }) => {
-          const dashboardExtend = basicUI.dashboard || {};
 
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
@@ -117,13 +115,13 @@ export default withRouter(props => {
                     )
                     .sort(
                       (a, b) =>
-                        get(projectMaps, `${b}.opened_at`, new Date('2002').getTime()) -
-                        get(projectMaps, `${a}.opened_at`, new Date('2002').getTime()),
+                      projectMaps?.[b]?.opened_at?.[new Date('2002').getTime()] -
+                      projectMaps?.[a]?.opened_at?.[new Date('2002').getTime()]
                     )
                     .slice(0, 5)
                     .map(project => (
                       <Menu.Item key={project} onClick={changeProject}>
-                        <p>{get(projectMaps, `${project}.name`, '未命名')}</p>
+                        <p>{projectMaps?.[project]?.name || '未命名'}</p>
                       </Menu.Item>
                     ))}
               </Menu.ItemGroup>
@@ -194,7 +192,7 @@ export default withRouter(props => {
                 >
                   <Col>
                     <p className={styles['mini-header-name']}>
-                      {currentProject ? currentProject.name : ''}
+                      {currentProject?.name || ''}
                     </p>
                     <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
                       <ExportOutlined onClick={openEditor} />
@@ -230,7 +228,7 @@ export default withRouter(props => {
                           overlay={recentMenu}
                           className={styles['sidebar-name-dropdown']}
                         >
-                          {get(currentProject, 'name.length') > 16 ? (
+                          {currentProject?.name?.length > 16 ? (
                             <Tooltip title={currentProject.name}>
                               <p>{currentProject.name}</p>
                               <CaretDownOutlined className={styles['sidebar-name-expand-icon']} />
@@ -267,15 +265,15 @@ export default withRouter(props => {
                     isMini={isMini}
                     selectedKeys={selectedKeys}
                   />
-                  {dashboardExtend.siderFooter}
+                  {basicUI?.dashboard?.siderFooter}
                 </Sider>
                 <Content className={styles.main}>
                   <Provider style={{ height: '100%' }}>
                     <div key="header" className={styles.header}>
                       <h1>
-                        {activePanel && (activePanel.headerTitle ? activePanel.headerTitle : title)}
+                        {activePanel?.headerTitle || title}
                       </h1>
-                      {Array.isArray(actions) && actions.length > 0 && (
+                      {actions?.length > 0 && (
                         <Row type="flex" className={styles['header-actions']}>
                           {actions.map((panelAction, j) => {
                             if (React.isValidElement(panelAction)) {
@@ -311,7 +309,7 @@ export default withRouter(props => {
                       )}
                     </div>
                     {/* key pathname change transition will crash  */}
-                    <div key={activePanel.path || '/'} className={styles.content}>
+                    <div key={activePanel?.path || '/'} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
                         {props.children}
                       </ErrorBoundary>
