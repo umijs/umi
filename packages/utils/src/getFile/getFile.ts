@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
+import winPath from '../winPath/winPath';
 
 interface IOpts {
   base: string;
@@ -16,7 +17,7 @@ export default function(opts: IOpts) {
   const exts = extsMap[opts.type];
   for (const ext of exts) {
     const filename = `${opts.fileNameWithoutExt}${ext}`;
-    const path = join(opts.base, filename);
+    const path = winPath(join(opts.base, filename));
     if (existsSync(path)) {
       return {
         path,

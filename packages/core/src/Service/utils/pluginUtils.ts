@@ -87,7 +87,7 @@ export function pathToObj(type: PluginType, path: string) {
   // TODO: 自动 resolve 的 id 不要太长，通过一定的规则缩短
   // 1. 如果是当前项目的临时插件，可以用相对路径，比如：./plugin.ts
   // 2. 如果是依赖的子路径，可以从依赖开始用子路径，比如：@alipay/umi-plugin-bigfish/lib/plugins/deer.js
-  const id = isPkgPlugin ? pkg!.name : path;
+  const id = isPkgPlugin ? pkg!.name : winPath(path);
   const key = isPkgPlugin
     ? pkgNameToKey(pkg!.name, type)
     : nameToKey(basename(path, extname(path)));
