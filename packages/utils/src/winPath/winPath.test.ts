@@ -16,3 +16,8 @@ test('Special characters', () => {
   expect(winPath('\\$\\%')).toEqual('/$/%');
   expect(winPath('\\next\\test\\read')).toEqual('/next/test/read');
 });
+
+test('not convert extended-length paths', () => {
+  const path = '\\\\?\\c:\\aaaa\\bbbb';
+  expect(winPath(path)).toEqual(path);
+});
