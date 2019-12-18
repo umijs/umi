@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { winPath } from '@umijs/utils';
 import Service from './Service';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -27,7 +28,7 @@ test('normal', () => {
   service.init();
   const plugins = Object.keys(service.plugins).map(id => {
     const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
-    return `[${type}] ${id.replace(cwd, '.')}`;
+    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
   });
   expect(plugins).toEqual([
     '[preset] ./preset_1/index.js',
