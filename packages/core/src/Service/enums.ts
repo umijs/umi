@@ -8,6 +8,7 @@ export enum ServiceStage {
   constructor,
   initPresets,
   initPlugins,
+  initHooks,
   validateUserConfig,
   run,
 }

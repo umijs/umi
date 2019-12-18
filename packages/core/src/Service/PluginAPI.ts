@@ -1,6 +1,6 @@
 import assert from 'assert';
 import Service from './Service';
-import { isValidPlugin, pathToObj } from './utils/plugin';
+import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
 
 interface IOpts {
@@ -22,7 +22,38 @@ export default class PluginAPI {
 
   registerCommand() {}
 
-  describe() {}
+  describe({ id, key }: { id?: string; key?: string } = {}) {
+    const { plugins } = this.service;
+    if (id && this.id !== id) {
+      if (plugins[id]) {
+        throw new Error(
+          `plugin ${id} is already registered by ${plugins[id].path}, describe failed.`,
+        );
+      }
+      plugins[id].id = id;
+      plugins[id] = plugins[this.id];
+      delete plugins[this.id];
+      this.id = id;
+    }
+    if (key && this.key !== key) {
+      this.key = key;
+      plugins[this.id].key = key;
+    }
+  }
+
+  register(hook: string, fn: Function) {
+    assert(
+      typeof hook === 'string',
+      `The first argument of api.register() must be string, but got ${hook}`,
+    );
+    assert(
+      typeof fn === 'function',
+      `The second argument of api.register() must be function, but got ${fn}`,
+    );
+    this.service.hooksByPluginId[this.id] = (
+      this.service.hooksByPluginId[this.id] || []
+    ).concat({ hook, fn });
+  }
 
   registerPresets(presets: (IPreset | string)[]) {
     assert(

@@ -1,19 +1,22 @@
 import { join } from 'path';
 import assert from 'assert';
-import { pathToObj, resolvePlugins, resolvePresets } from './utils/plugin';
+import { createDebug } from '@umijs/utils';
+import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
 import { PluginType, ServiceStage } from './enums';
 
+const debug = createDebug('umi:core:Service');
+
 interface IOpts {
   cwd: string;
-  presets?: IPreset[];
-  plugins?: IPlugin[];
+  presets?: string[];
+  plugins?: string[];
   useBuiltIn?: boolean;
 }
 
 interface IConfig {
-  presets?: IPreset[];
-  plugins?: IPlugin[];
+  presets?: string[];
+  plugins?: string[];
 }
 
 export default class Service {
@@ -25,7 +28,7 @@ export default class Service {
   commands: object = {};
   // including presets and plugins
   plugins: {
-    [key: string]: IPlugin;
+    [id: string]: IPlugin;
   } = {};
   // initial presets and plugins from arguments, config, process.env, and package.json
   initialPresets: IPreset[];
@@ -35,8 +38,16 @@ export default class Service {
   _extraPlugins: IPlugin[] = [];
   // user config
   config: IConfig = {};
+  hooksByPluginId: {
+    [id: string]: IHook[];
+  } = {};
+  hooks: {
+    [hook: string]: Function[];
+  } = {};
 
   constructor(opts: IOpts) {
+    debug('opts:');
+    debug(opts);
     this.cwd = opts.cwd || process.cwd();
     this.pkg = this.resolvePackage();
 
@@ -57,6 +68,14 @@ export default class Service {
       ...baseOpts,
       plugins: [...(this.config.plugins || []), ...(opts.plugins || [])],
     });
+    debug('initial presets:');
+    debug(this.initialPresets);
+    debug('initial plugins:');
+    debug(this.initialPlugins);
+  }
+
+  setStage(stage: ServiceStage) {
+    this.stage = stage;
   }
 
   resolvePackage() {
@@ -72,22 +91,30 @@ export default class Service {
     return {};
   }
 
-  init() {
+  async init() {
     this.initPresetsAndPlugins();
 
-    this.stage = ServiceStage.validateUserConfig;
+    this.setStage(ServiceStage.initHooks);
+    Object.keys(this.hooksByPluginId).forEach(id => {
+      const hooks = this.hooksByPluginId[id];
+      hooks.forEach(({ hook, fn }) => {
+        this.hooks[hook] = (this.hooks[hook] || []).concat(fn);
+      });
+    });
+
+    this.setStage(ServiceStage.validateUserConfig);
     // TODO: validate user config
   }
 
   initPresetsAndPlugins() {
-    this.stage = ServiceStage.initPresets;
+    this.setStage(ServiceStage.initPresets);
     this._extraPresets = [...this.initialPresets];
     this._extraPlugins = [];
     while (this._extraPresets.length) {
       this.initPreset(this._extraPresets.shift()!);
     }
 
-    this.stage = ServiceStage.initPlugins;
+    this.setStage(ServiceStage.initPlugins);
     this._extraPlugins.push(...this.initialPlugins);
     while (this._extraPlugins.length) {
       this.initPlugin(this._extraPlugins.shift()!);
@@ -101,8 +128,9 @@ export default class Service {
     const api = new PluginAPI({ id, key, service: this });
     // register before apply
     this.registerPlugin(preset);
-    const { presets, plugins, ...defaultConfigs } = apply(api) || {};
+    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
 
+    // TODO: api 可能不需要
     preset.api = api;
 
     // register extra presets and plugins
@@ -138,6 +166,7 @@ export default class Service {
     this.registerPlugin(plugin);
     apply(api);
 
+    // TODO: api 可能不需要
     plugin.api = api;
   }
 
@@ -149,6 +178,8 @@ plugin from ${plugin.path} register failed.`);
     }
     this.plugins[plugin.id] = plugin;
   }
+
+  applyPlugins(hook: string, opts: { initialValue: any; args: any }) {}
 
   async run() {
     this.stage = ServiceStage.run;

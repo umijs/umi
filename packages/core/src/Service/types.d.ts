@@ -20,3 +20,8 @@ interface IPlugin {
 }
 
 interface IPreset extends IPlugin {}
+
+interface IHook {
+  hook: string;
+  fn: Function;
+}
