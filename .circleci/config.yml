@@ -24,11 +24,11 @@ jobs:
 
       - run:
           name: Run Build
-          command: npm run build
+          command: yarn build
 
       - run:
           name: Run Tests
-          command: npm run test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
           no_output_timeout: 300m
 
       - run:
