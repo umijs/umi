@@ -4,6 +4,7 @@ tmp
 /ui/yarn.lock
 /node_modules
 /packages/*/node_modules
+/packages/*/node_modules/.cache
 /packages/umi-ui/client/node_modules
 /packages/**/.leagcy-dist
 /examples/*/node_modules

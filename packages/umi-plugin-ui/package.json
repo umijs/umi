@@ -4,7 +4,8 @@
   "main": "./lib/index.js",
   "files": [
     "lib",
-    "src"
+    "src/bubble",
+    "src/plugins/*/dist"
   ],
   "dependencies": {
     "got": "9.6.0",
