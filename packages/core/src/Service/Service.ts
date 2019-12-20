@@ -1,9 +1,10 @@
 import { join } from 'path';
 import assert from 'assert';
 import { createDebug } from '@umijs/utils';
+import { AsyncSeriesWaterfallHook } from 'tapable';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
-import { PluginType, ServiceStage } from './enums';
+import { IApplyPluginsType, PluginType, ServiceStage } from './enums';
 
 const debug = createDebug('umi:core:Service');
 
@@ -38,11 +39,12 @@ export default class Service {
   _extraPlugins: IPlugin[] = [];
   // user config
   config: IConfig = {};
+  // hooks
   hooksByPluginId: {
     [id: string]: IHook[];
   } = {};
   hooks: {
-    [hook: string]: Function[];
+    [key: string]: IHook[];
   } = {};
 
   constructor(opts: IOpts) {
@@ -97,8 +99,10 @@ export default class Service {
     this.setStage(ServiceStage.initHooks);
     Object.keys(this.hooksByPluginId).forEach(id => {
       const hooks = this.hooksByPluginId[id];
-      hooks.forEach(({ hook, fn }) => {
-        this.hooks[hook] = (this.hooks[hook] || []).concat(fn);
+      hooks.forEach(hook => {
+        const { key } = hook;
+        hook.pluginId = id;
+        this.hooks[key] = (this.hooks[key] || []).concat(hook);
       });
     });
 
@@ -164,22 +168,69 @@ export default class Service {
     const api = new PluginAPI({ id, key, service: this });
     // register before apply
     this.registerPlugin(plugin);
-    apply(api);
+    apply()(api);
 
     // TODO: api 可能不需要
     plugin.api = api;
   }
 
   registerPlugin(plugin: IPlugin) {
+    // 考虑要不要去掉这里的校验逻辑
+    // 理论上不会走到这里，因为在 describe 的时候已经做了冲突校验
     if (this.plugins[plugin.id]) {
+      const name = plugin.isPreset ? 'preset' : 'plugin';
       throw new Error(`\
-plugin ${plugin.id} is already registered by ${this.plugins[plugin.id].path}, \
-plugin from ${plugin.path} register failed.`);
+${name} ${plugin.id} is already registered by ${this.plugins[plugin.id].path}, \
+${name} from ${plugin.path} register failed.`);
     }
     this.plugins[plugin.id] = plugin;
   }
 
-  applyPlugins(hook: string, opts: { initialValue: any; args: any }) {}
+  async applyPlugins(opts: {
+    key: string;
+    type: IApplyPluginsType;
+    initialValue?: any;
+    args?: any;
+  }) {
+    const hooks = this.hooks[opts.key];
+    switch (opts.type) {
+      case IApplyPluginsType.add:
+        if ('initialValue' in opts) {
+          assert(
+            Array.isArray(opts.initialValue),
+            `applyPlugins failed, opts.initialValue must be Array if opts.type is add`,
+          );
+        }
+        const tAdd = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          tAdd.tapPromise(hook.pluginId, async memo => {
+            const items = await hook.fn(opts.args);
+            return memo.concat(items);
+          });
+        }
+        return await tAdd.promise(opts.initialValue || []);
+      case IApplyPluginsType.modify:
+        const tModify = new AsyncSeriesWaterfallHook(['memo']);
+        for (const hook of hooks) {
+          tModify.tapPromise(hook.pluginId, async memo => {
+            return await hook.fn(memo, opts.args);
+          });
+        }
+        return await tModify.promise(opts.initialValue);
+      case IApplyPluginsType.event:
+        const tEvent = new AsyncSeriesWaterfallHook(['_']);
+        for (const hook of hooks) {
+          tEvent.tapPromise(hook.pluginId, async () => {
+            await hook.fn(opts.args);
+          });
+        }
+        return await tEvent.promise();
+      default:
+        throw new Error(
+          `applyPlugin failed, type is not defined or is not matched, got ${opts.type}`,
+        );
+    }
+  }
 
   async run() {
     this.stage = ServiceStage.run;

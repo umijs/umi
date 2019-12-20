@@ -26,12 +26,13 @@ export default class PluginAPI {
     const { plugins } = this.service;
     if (id && this.id !== id) {
       if (plugins[id]) {
+        const name = plugins[id].isPreset ? 'preset' : 'plugin';
         throw new Error(
-          `plugin ${id} is already registered by ${plugins[id].path}, describe failed.`,
+          `api.describe() failed, ${name} ${id} is already registered by ${plugins[id].path}.`,
         );
       }
-      plugins[id].id = id;
       plugins[id] = plugins[this.id];
+      plugins[id].id = id;
       delete plugins[this.id];
       this.id = id;
     }
@@ -41,18 +42,19 @@ export default class PluginAPI {
     }
   }
 
-  register(hook: string, fn: Function) {
+  // TODO: 考虑要不要兼容之前的写法
+  register(hook: IHook) {
     assert(
-      typeof hook === 'string',
-      `The first argument of api.register() must be string, but got ${hook}`,
+      hook.key && typeof hook.key === 'string',
+      `api.register() failed, hook.key must supplied and should be string, but got ${hook.key}`,
     );
     assert(
-      typeof fn === 'function',
-      `The second argument of api.register() must be function, but got ${fn}`,
+      hook.fn && typeof hook.fn === 'function',
+      `api.register() failed, hook.fn must supplied and should be function, but got ${hook.fn}`,
     );
     this.service.hooksByPluginId[this.id] = (
       this.service.hooksByPluginId[this.id] || []
-    ).concat({ hook, fn });
+    ).concat(hook);
   }
 
   registerPresets(presets: (IPreset | string)[]) {
@@ -74,7 +76,7 @@ export default class PluginAPI {
     assert(
       this.service.stage === ServiceStage.initPresets ||
         this.service.stage === ServiceStage.initPlugins,
-      `registerPlugins should only used in registering stage.`,
+      `api.registerPlugins() failed, it should only be used in registering stage.`,
     );
     if (!Array.isArray(plugins)) plugins = [plugins];
     const extraPlugins = plugins.map(plugin => {

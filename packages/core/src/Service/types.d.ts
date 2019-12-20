@@ -22,6 +22,9 @@ interface IPlugin {
 interface IPreset extends IPlugin {}
 
 interface IHook {
-  hook: string;
+  key: string;
   fn: Function;
+  pluginId: string;
+  before?: string;
+  stage?: number;
 }

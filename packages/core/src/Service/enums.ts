@@ -12,3 +12,12 @@ export enum ServiceStage {
   validateUserConfig,
   run,
 }
+
+export enum IApplyPluginsType {
+  add = 'add',
+  modify = 'modify',
+  addAsync = 'addAsync',
+  modifyAsync = 'modifyAsync',
+  event = 'event',
+  eventAsync = 'eventAsync',
+}
