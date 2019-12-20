@@ -1,3 +1,8 @@
 export default function() {
-  return {};
+  return {
+    presets: [
+      require.resolve('./commands/dev/dev'),
+      require.resolve('./commands/build/build'),
+    ],
+  };
 }

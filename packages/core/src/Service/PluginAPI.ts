@@ -2,6 +2,7 @@ import assert from 'assert';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
+import { ICommand, IHook, IPlugin, IPreset } from './types';
 
 interface IOpts {
   id: string;
@@ -20,7 +21,14 @@ export default class PluginAPI {
     this.service = opts.service;
   }
 
-  registerCommand() {}
+  registerCommand(command: ICommand) {
+    const { name, fn } = command;
+    assert(
+      !this.service.commands[name],
+      `api.registerCommand() failed, the command ${name} is exists.`,
+    );
+    this.service.commands[name] = command;
+  }
 
   describe({ id, key }: { id?: string; key?: string } = {}) {
     const { plugins } = this.service;
@@ -46,11 +54,11 @@ export default class PluginAPI {
   register(hook: IHook) {
     assert(
       hook.key && typeof hook.key === 'string',
-      `api.register() failed, hook.key must supplied and should be string, but got ${hook.key}`,
+      `api.register() failed, hook.key must supplied and should be string, but got ${hook.key}.`,
     );
     assert(
       hook.fn && typeof hook.fn === 'function',
-      `api.register() failed, hook.fn must supplied and should be function, but got ${hook.fn}`,
+      `api.register() failed, hook.fn must supplied and should be function, but got ${hook.fn}.`,
     );
     this.service.hooksByPluginId[this.id] = (
       this.service.hooksByPluginId[this.id] || []

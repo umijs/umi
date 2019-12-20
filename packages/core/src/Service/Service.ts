@@ -5,6 +5,8 @@ import { AsyncSeriesWaterfallHook } from 'tapable';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
 import { IApplyPluginsType, PluginType, ServiceStage } from './enums';
+import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
+import { existsSync } from 'fs';
 
 const debug = createDebug('umi:core:Service');
 
@@ -26,7 +28,9 @@ export default class Service {
   // lifecycle stage
   stage: ServiceStage = ServiceStage.uninitiialized;
   // registered commands
-  commands: object = {};
+  commands: {
+    [name: string]: ICommand;
+  } = {};
   // including presets and plugins
   plugins: {
     [id: string]: IPlugin;
@@ -52,6 +56,8 @@ export default class Service {
     debug(opts);
     this.cwd = opts.cwd || process.cwd();
     this.pkg = this.resolvePackage();
+
+    assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
 
     // get user config without validation
     this.config = this.getUserConfig();
@@ -141,7 +147,7 @@ export default class Service {
     if (presets) {
       assert(
         Array.isArray(presets),
-        `presets returned from preset ${id} must be Array`,
+        `presets returned from preset ${id} must be Array.`,
       );
       this._extraPresets.splice(
         0,
@@ -152,7 +158,7 @@ export default class Service {
     if (plugins) {
       assert(
         Array.isArray(plugins),
-        `plugins returned from preset ${id} must be Array`,
+        `plugins returned from preset ${id} must be Array.`,
       );
       this._extraPlugins.push(
         ...plugins.map(pathToObj.bind(null, PluginType.plugin)),
@@ -198,7 +204,7 @@ ${name} from ${plugin.path} register failed.`);
         if ('initialValue' in opts) {
           assert(
             Array.isArray(opts.initialValue),
-            `applyPlugins failed, opts.initialValue must be Array if opts.type is add`,
+            `applyPlugins failed, opts.initialValue must be Array if opts.type is add.`,
           );
         }
         const tAdd = new AsyncSeriesWaterfallHook(['memo']);
@@ -227,12 +233,32 @@ ${name} from ${plugin.path} register failed.`);
         return await tEvent.promise();
       default:
         throw new Error(
-          `applyPlugin failed, type is not defined or is not matched, got ${opts.type}`,
+          `applyPlugin failed, type is not defined or is not matched, got ${opts.type}.`,
         );
     }
   }
 
-  async run() {
+  async run({
+    name,
+    args,
+    rawArgs,
+  }: {
+    name: string;
+    args?: any;
+    rawArgs?: string;
+  }) {
+    this.setStage(ServiceStage.init);
+    this.init();
+
     this.stage = ServiceStage.run;
+    const command = this.commands[name];
+
+    assert(command, `run Service failed, command ${name} does not exists.`);
+    const { fn } = command;
+
+    // shift the command itself
+    args._.shift();
+
+    return await fn(args);
   }
 }

@@ -1,13 +1,13 @@
-interface IDep {
+export interface IDep {
   [name: string]: string;
 }
 
-interface IPackage {
+export interface IPackage {
   dependencies?: IDep;
   devDependencies?: IDep;
 }
 
-interface IPlugin {
+export interface IPlugin {
   id: string;
   // Currently only used for config
   key: string;
@@ -19,12 +19,17 @@ interface IPlugin {
   api?: any;
 }
 
-interface IPreset extends IPlugin {}
+export interface IPreset extends IPlugin {}
 
-interface IHook {
+export interface IHook {
   key: string;
   fn: Function;
   pluginId: string;
   before?: string;
   stage?: number;
+}
+
+export interface ICommand {
+  name: string;
+  fn: Function;
 }

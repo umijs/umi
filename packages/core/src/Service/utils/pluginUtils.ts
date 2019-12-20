@@ -5,6 +5,7 @@ import camelcase from 'camelcase';
 import assert from 'assert';
 import { createDebug, winPath } from '@umijs/utils';
 import { PluginType } from '../enums';
+import { IPackage, IPlugin } from '../types';
 
 const debug = createDebug('umi:core:Service:util:plugin');
 

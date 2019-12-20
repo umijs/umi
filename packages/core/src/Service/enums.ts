@@ -6,6 +6,7 @@ export enum PluginType {
 export enum ServiceStage {
   uninitiialized,
   constructor,
+  init,
   initPresets,
   initPlugins,
   initHooks,
