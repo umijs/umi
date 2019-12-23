@@ -6,6 +6,8 @@ import deepmerge from 'deepmerge';
 export { deepmerge };
 import lodash from 'lodash';
 export { lodash };
+import resolve from 'resolve';
+export { resolve };
 import yargs from 'yargs';
 export { yargs };
 import yParser from 'yargs-parser';

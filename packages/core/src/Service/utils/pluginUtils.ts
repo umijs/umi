@@ -3,7 +3,12 @@ import { basename, dirname, extname, join } from 'path';
 import { existsSync } from 'fs';
 import camelcase from 'camelcase';
 import assert from 'assert';
-import { createDebug, winPath, compatESModuleRequire } from '@umijs/utils';
+import {
+  createDebug,
+  winPath,
+  compatESModuleRequire,
+  resolve,
+} from '@umijs/utils';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';
 
@@ -50,7 +55,12 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
     // user config
     ...((opts[type === PluginType.preset ? 'presets' : 'plugins'] as any) ||
       []),
-  ];
+  ].map(path => {
+    return resolve.sync(path, {
+      basedir: opts.cwd,
+      extensions: ['.js'],
+    });
+  });
 }
 
 // e.g.

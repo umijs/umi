@@ -3,6 +3,7 @@ export interface IDep {
 }
 
 export interface IPackage {
+  name?: string;
   dependencies?: IDep;
   devDependencies?: IDep;
 }
