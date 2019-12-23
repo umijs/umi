@@ -89,7 +89,7 @@ const DashboardUI: React.FC<{}> = props => {
   return (
     <div className={styles.container}>
       <Masonry className={containerCls}>
-        <div className={colCls}>
+        {/* <div className={colCls}>
           <Card className={welcomeCardCls} bordered={false} hoverable={false}>
             <h2>Hi</h2>
             <p>
@@ -113,7 +113,7 @@ const DashboardUI: React.FC<{}> = props => {
               {intl({ id: 'org.umi.ui.dashboard.panel.welcome.desc' })}
             </div>
           </Card>
-        </div>
+        </div> */}
         {enableCards.map(card => {
           const { title = '', description, key, content, right, colClassName } = card;
           const Title = (
