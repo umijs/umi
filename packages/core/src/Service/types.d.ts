@@ -31,7 +31,7 @@ export interface IPreset extends IPlugin {}
 export interface IHook {
   key: string;
   fn: Function;
-  pluginId: string;
+  pluginId?: string;
   before?: string;
   stage?: number;
 }

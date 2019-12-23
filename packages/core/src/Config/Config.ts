@@ -99,11 +99,11 @@ export default class Config {
   getUserConfig() {
     const configFile = this.getConfigFile();
     if (configFile) {
-      const files = [
+      const files = ([
         configFile,
         process.env.UMI_ENV && this.addAffix(configFile, process.env.UMI_ENV),
         this.localConfig && this.addAffix(configFile, 'local'),
-      ].filter(Boolean) as string[];
+      ].filter(Boolean) as string[]).map((f: string) => join(this.cwd, f));
 
       // clear require cache and set babel register
       const requireDeps = files.reduce((memo: string[], file) => {
@@ -122,7 +122,7 @@ export default class Config {
       });
 
       // require config and merge
-      return this.mergeConfig(this.requireConfig(files));
+      return this.mergeConfig(...this.requireConfig(files));
     } else {
       return {};
     }

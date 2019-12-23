@@ -172,3 +172,58 @@ test('registerPlugin id conflict (preset)', async () => {
     /preset foo is already registered by/,
   );
 });
+
+test('skip plugins', async () => {
+  const cwd = join(fixtures, 'skip-plugins');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_1')),
+      require.resolve(join(cwd, 'plugin_2')),
+      require.resolve(join(cwd, 'plugin_3')),
+      require.resolve(join(cwd, 'plugin_4')),
+    ],
+  });
+  await service.init();
+  expect(Object.keys(service.hooksByPluginId)).toEqual(['plugin_4']);
+});
+
+test('api.registerPresets', async () => {
+  const cwd = join(fixtures, 'api-registerPresets');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve(join(cwd, 'preset_1'))],
+  });
+  await service.init();
+  const plugins = Object.keys(service.plugins).map(id => {
+    const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
+    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
+  });
+  expect(plugins).toEqual([
+    '[preset] ./preset_1.js',
+    '[preset] preset_2',
+    '[preset] ./preset_3.js',
+  ]);
+});
+
+test('api.registerPlugins', async () => {
+  const cwd = join(fixtures, 'api-registerPlugins');
+  const service = new Service({
+    cwd,
+    presets: [require.resolve(join(cwd, 'preset_1'))],
+    plugins: [require.resolve(join(cwd, 'plugin_1'))],
+  });
+  await service.init();
+  const plugins = Object.keys(service.plugins).map(id => {
+    const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
+    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
+  });
+  expect(plugins).toEqual([
+    '[preset] ./preset_1.js',
+    '[plugin] plugin_4',
+    '[plugin] ./plugin_5.js',
+    '[plugin] ./plugin_1.js',
+    '[plugin] plugin_2',
+    '[plugin] ./plugin_3.js',
+  ]);
+});

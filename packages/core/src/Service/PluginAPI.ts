@@ -79,9 +79,12 @@ export default class PluginAPI {
   registerPresets(presets: (IPreset | string)[]) {
     assert(
       this.service.stage === ServiceStage.initPresets,
-      `registerPresets should only used in presets.`,
+      `api.registerPresets() failed, it should only used in presets.`,
     );
-    if (!Array.isArray(presets)) presets = [presets];
+    assert(
+      Array.isArray(presets),
+      `api.registerPresets() failed, presets must be Array.`,
+    );
     const extraPresets = presets.map(preset => {
       return isValidPlugin(preset as any)
         ? (preset as IPreset)
@@ -97,7 +100,10 @@ export default class PluginAPI {
         this.service.stage === ServiceStage.initPlugins,
       `api.registerPlugins() failed, it should only be used in registering stage.`,
     );
-    if (!Array.isArray(plugins)) plugins = [plugins];
+    assert(
+      Array.isArray(plugins),
+      `api.registerPlugins() failed, plugins must be Array.`,
+    );
     const extraPlugins = plugins.map(plugin => {
       return isValidPlugin(plugin as any)
         ? (plugin as IPreset)

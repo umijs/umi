@@ -55,7 +55,7 @@ export default class Service {
   configInstance: Config;
   config: IConfig | null = null;
   // babel register
-  babelRegister: BabelRegister = new BabelRegister();
+  babelRegister: BabelRegister;
   // hooks
   hooksByPluginId: {
     [id: string]: IHook[];
@@ -71,6 +71,9 @@ export default class Service {
     this.pkg = this.resolvePackage();
 
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
+
+    // register babel before config parsing
+    this.babelRegister = new BabelRegister();
 
     // get user config without validation
     this.configInstance = new Config({
@@ -256,7 +259,7 @@ ${name} from ${plugin.path} register failed.`);
         }
         const tAdd = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          tAdd.tapPromise(hook.pluginId, async memo => {
+          tAdd.tapPromise(hook.pluginId!, async memo => {
             const items = await hook.fn(opts.args);
             return memo.concat(items);
           });
@@ -265,7 +268,7 @@ ${name} from ${plugin.path} register failed.`);
       case IApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          tModify.tapPromise(hook.pluginId, async memo => {
+          tModify.tapPromise(hook.pluginId!, async memo => {
             return await hook.fn(memo, opts.args);
           });
         }
@@ -273,7 +276,7 @@ ${name} from ${plugin.path} register failed.`);
       case IApplyPluginsType.event:
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
-          tEvent.tapPromise(hook.pluginId, async () => {
+          tEvent.tapPromise(hook.pluginId!, async () => {
             await hook.fn(opts.args);
           });
         }
