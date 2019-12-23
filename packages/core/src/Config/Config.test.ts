@@ -83,7 +83,7 @@ test('default config', async () => {
   expect(service.config).toEqual({ plugin: { foo: 'foo', bar: 2 } });
 });
 
-test('schema', async () => {
+test('schema validate success', async () => {
   const cwd = join(fixtures, 'schema');
   const service = new Service({
     cwd,

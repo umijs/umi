@@ -9,6 +9,7 @@ import { IApplyPluginsType, PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
 import BabelRegister from './BabelRegister';
+import { getUserConfigWithKey } from '../Config/utils/configUtils';
 
 const debug = createDebug('umi:core:Service');
 
@@ -226,7 +227,7 @@ export default class Service {
   }
 
   getPluginOptsWithKey(key: string) {
-    return this.configInstance.getUserConfigWithKey({
+    return getUserConfigWithKey({
       key,
       userConfig: this.userConfig,
     });

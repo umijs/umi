@@ -31,6 +31,7 @@
     "@umijs/utils": "0.0.1-alpha.1",
     "camelcase": "5.3.1",
     "pkg-up": "3.1.0",
+    "set-value": "3.0.1",
     "tapable": "1.1.3"
   }
 }

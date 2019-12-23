@@ -2,14 +2,18 @@ import { existsSync } from 'fs';
 import { extname, join } from 'path';
 import {
   compatESModuleRequire,
-  winPath,
   deepmerge,
   parseRequireDeps,
+  winPath,
 } from '@umijs/utils';
 import assert from 'assert';
 import joi from '@hapi/joi';
 import Service from '../Service/Service';
 import { ServiceStage } from '../Service/enums';
+import {
+  getUserConfigWithKey,
+  updateUserConfigWithKey,
+} from './utils/configUtils';
 
 interface IOpts {
   cwd: string;
@@ -38,7 +42,7 @@ export default class Config {
     const userConfig = this.getUserConfig();
     Object.keys(this.service.plugins).forEach(pluginId => {
       const { key, config = {} } = this.service.plugins[pluginId];
-      const value = this.getUserConfigWithKey({
+      const value = getUserConfigWithKey({
         key,
         userConfig,
       });
@@ -58,7 +62,7 @@ export default class Config {
 
       // update userConfig with defaultConfig
       if (config.default) {
-        this.updateUserConfigWithKey({
+        updateUserConfigWithKey({
           key,
           // TODO: 确认 deepmerge 是否可应用于任何类型，不能的话还得再封一层
           value: deepmerge(config.default, value),
@@ -68,32 +72,6 @@ export default class Config {
     });
 
     return userConfig;
-  }
-
-  // TODO: static method?
-  updateUserConfigWithKey({
-    key,
-    value,
-    userConfig,
-  }: {
-    key: string;
-    value: any;
-    userConfig: object;
-  }) {
-    // TODO: support dotted key, e.g. webpack.minimizer
-    userConfig[key] = value;
-  }
-
-  // TODO: static method?
-  getUserConfigWithKey({
-    key,
-    userConfig,
-  }: {
-    key: string;
-    userConfig: object;
-  }) {
-    // TODO: support dotted key, e.g. webpack.minimizer
-    return userConfig[key];
   }
 
   getUserConfig() {
