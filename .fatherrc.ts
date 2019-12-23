@@ -9,5 +9,6 @@ export default {
   target: 'node',
   cjs: { type: 'babel', lazy: true },
   disableTypeCheck: true,
+  // utils must build before core
   pkgs: ['utils', ...pkgs],
 };

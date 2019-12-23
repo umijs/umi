@@ -47,6 +47,7 @@ const { yParser } = require('@umijs/utils');
           'peerDependencies',
           'bin',
           'files',
+          'authors',
         ].forEach(key => {
           if (pkg[key]) json[key] = pkg[key];
         });

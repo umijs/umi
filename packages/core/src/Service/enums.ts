@@ -10,7 +10,8 @@ export enum ServiceStage {
   initPresets,
   initPlugins,
   initHooks,
-  validateUserConfig,
+  pluginReady,
+  getConfig,
   run,
 }
 

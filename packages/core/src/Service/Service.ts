@@ -2,11 +2,13 @@ import { join } from 'path';
 import assert from 'assert';
 import { createDebug } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
+import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
 import { IApplyPluginsType, PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
-import { existsSync } from 'fs';
+import Config from '../Config/Config';
+import BabelRegister from './BabelRegister';
 
 const debug = createDebug('umi:core:Service');
 
@@ -20,11 +22,18 @@ interface IOpts {
 interface IConfig {
   presets?: string[];
   plugins?: string[];
+  [key: string]: any;
 }
 
+// TODO
+// 1. load env
+// 2. onOptionChange
+// 3. watch mode
+// 4. getPaths
 export default class Service {
   cwd: string;
   pkg: IPackage;
+  skipPluginIds: Set<string> = new Set<string>();
   // lifecycle stage
   stage: ServiceStage = ServiceStage.uninitiialized;
   // registered commands
@@ -42,7 +51,11 @@ export default class Service {
   _extraPresets: IPreset[] = [];
   _extraPlugins: IPlugin[] = [];
   // user config
-  config: IConfig = {};
+  userConfig: IConfig;
+  configInstance: Config;
+  config: IConfig | null = null;
+  // babel register
+  babelRegister: BabelRegister = new BabelRegister();
   // hooks
   hooksByPluginId: {
     [id: string]: IHook[];
@@ -60,7 +73,11 @@ export default class Service {
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
 
     // get user config without validation
-    this.config = this.getUserConfig();
+    this.configInstance = new Config({
+      cwd: this.cwd,
+      service: this,
+    });
+    this.userConfig = this.configInstance.getUserConfig();
 
     // setup initial presets and plugins
     const baseOpts = {
@@ -70,11 +87,11 @@ export default class Service {
     };
     this.initialPresets = resolvePresets({
       ...baseOpts,
-      presets: [...(this.config.presets || []), ...(opts.presets || [])],
+      presets: [...(this.userConfig.presets || []), ...(opts.presets || [])],
     });
     this.initialPlugins = resolvePlugins({
       ...baseOpts,
-      plugins: [...(this.config.plugins || []), ...(opts.plugins || [])],
+      plugins: [...(this.userConfig.plugins || []), ...(opts.plugins || [])],
     });
     debug('initial presets:');
     debug(this.initialPresets);
@@ -94,14 +111,29 @@ export default class Service {
     }
   }
 
-  getUserConfig() {
-    // TODO: implement
-    return {};
-  }
-
   async init() {
+    // after init presets and plugins
+    // we should have the final hooksByPluginId which is added with api.register()
     this.initPresetsAndPlugins();
 
+    // collect false configs, then add to this.skipPluginIds
+    // skipPluginIds include two parts:
+    // 1. api.skipPlugins()
+    // 2. user config with the `false` value
+    Object.keys(this.hooksByPluginId).forEach(pluginId => {
+      const { key } = this.plugins[pluginId];
+      if (this.getPluginOptsWithKey(key) === false) {
+        this.skipPluginIds.add(pluginId);
+      }
+    });
+
+    // delete hooks from this.hooksByPluginId with this.skipPluginIds
+    for (const pluginId of this.skipPluginIds) {
+      if (this.hooksByPluginId[pluginId]) delete this.hooksByPluginId[pluginId];
+    }
+
+    // hooksByPluginId -> hooks
+    // hooks is mapped with hook key, prepared for applyPlugins()
     this.setStage(ServiceStage.initHooks);
     Object.keys(this.hooksByPluginId).forEach(id => {
       const hooks = this.hooksByPluginId[id];
@@ -112,8 +144,14 @@ export default class Service {
       });
     });
 
-    this.setStage(ServiceStage.validateUserConfig);
-    // TODO: validate user config
+    // plugin is totally ready
+    this.setStage(ServiceStage.pluginReady);
+
+    // get config, including:
+    // 1. merge default config
+    // 2. validate
+    this.setStage(ServiceStage.getConfig);
+    this.config = this.configInstance.getConfig() as any;
   }
 
   initPresetsAndPlugins() {
@@ -138,10 +176,12 @@ export default class Service {
     const api = new PluginAPI({ id, key, service: this });
     // register before apply
     this.registerPlugin(preset);
-    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
+    // TODO: ...defaultConfigs 考虑要不要支持，可能这个需求可以通过其他渠道实现
+    const { presets, plugins, ...defaultConfigs } =
+      apply()(api, this.getPluginOptsWithKey(key)) || {};
 
     // TODO: api 可能不需要
-    preset.api = api;
+    // preset.api = api;
 
     // register extra presets and plugins
     if (presets) {
@@ -174,10 +214,17 @@ export default class Service {
     const api = new PluginAPI({ id, key, service: this });
     // register before apply
     this.registerPlugin(plugin);
-    apply()(api);
+    apply()(api, this.getPluginOptsWithKey(key));
 
     // TODO: api 可能不需要
-    plugin.api = api;
+    // plugin.api = api;
+  }
+
+  getPluginOptsWithKey(key: string) {
+    return this.configInstance.getUserConfigWithKey({
+      key,
+      userConfig: this.userConfig,
+    });
   }
 
   registerPlugin(plugin: IPlugin) {
@@ -253,7 +300,7 @@ ${name} from ${plugin.path} register failed.`);
     this.stage = ServiceStage.run;
     const command = this.commands[name];
 
-    assert(command, `run Service failed, command ${name} does not exists.`);
+    assert(command, `run command failed, command ${name} does not exists.`);
     const { fn } = command;
 
     // shift the command itself

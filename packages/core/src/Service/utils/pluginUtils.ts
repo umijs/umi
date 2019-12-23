@@ -3,7 +3,7 @@ import { basename, dirname, extname, join } from 'path';
 import { existsSync } from 'fs';
 import camelcase from 'camelcase';
 import assert from 'assert';
-import { createDebug, winPath } from '@umijs/utils';
+import { createDebug, winPath, compatESModuleRequire } from '@umijs/utils';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';
 
@@ -102,7 +102,7 @@ export function pathToObj(type: PluginType, path: string) {
       try {
         const ret = require(path);
         // use the default member for es modules
-        return ret.__esModule ? ret.default : ret;
+        return compatESModuleRequire(ret);
       } catch (e) {
         throw new Error(`Register ${type} ${path} failed, since ${e.message}`);
       }

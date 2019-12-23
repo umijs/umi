@@ -11,6 +11,8 @@ export { yargs };
 import yParser from 'yargs-parser';
 export { yParser };
 
+import compatESModuleRequire from './compatESModuleRequire/compatESModuleRequire';
+export { compatESModuleRequire };
 import mergeConfig from './mergeConfig/mergeConfig';
 export { mergeConfig };
 import isLernaPackage from './isLernaPackage/isLernaPackage';
@@ -21,3 +23,5 @@ import getFile from './getFile/getFile';
 export { getFile };
 import winPath from './winPath/winPath';
 export { winPath };
+import parseRequireDeps from './parseRequireDeps/parseRequireDeps';
+export { parseRequireDeps };

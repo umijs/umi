@@ -2,7 +2,7 @@ import assert from 'assert';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
-import { ICommand, IHook, IPlugin, IPreset } from './types';
+import { ICommand, IHook, IPlugin, IPluginConfig, IPreset } from './types';
 
 interface IOpts {
   id: string;
@@ -30,8 +30,15 @@ export default class PluginAPI {
     this.service.commands[name] = command;
   }
 
-  describe({ id, key }: { id?: string; key?: string } = {}) {
+  // TODO: reversed keys
+  describe({
+    id,
+    key,
+    config,
+  }: { id?: string; key?: string; config?: IPluginConfig } = {}) {
     const { plugins } = this.service;
+    // this.id and this.key is generated automatically
+    // so we need to diff first
     if (id && this.id !== id) {
       if (plugins[id]) {
         const name = plugins[id].isPreset ? 'preset' : 'plugin';
@@ -47,6 +54,10 @@ export default class PluginAPI {
     if (key && this.key !== key) {
       this.key = key;
       plugins[this.id].key = key;
+    }
+
+    if (config) {
+      plugins[this.id].config = config;
     }
   }
 
@@ -97,5 +108,11 @@ export default class PluginAPI {
     } else {
       this.service._extraPlugins.splice(0, 0, ...extraPlugins);
     }
+  }
+
+  skipPlugins(pluginIds: string[]) {
+    pluginIds.forEach(pluginId => {
+      this.service.skipPluginIds.add(pluginId);
+    });
   }
 }

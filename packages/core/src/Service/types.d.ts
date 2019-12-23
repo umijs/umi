@@ -13,10 +13,17 @@ export interface IPlugin {
   key: string;
   path: string;
   apply: Function;
-  defaultConfig: any;
 
+  config?: IPluginConfig;
   isPreset?: boolean;
   api?: any;
+}
+
+export interface IPluginConfig {
+  default?: any;
+  schema?: Function;
+  // validate?: Function;
+  onChange?: Function;
 }
 
 export interface IPreset extends IPlugin {}
