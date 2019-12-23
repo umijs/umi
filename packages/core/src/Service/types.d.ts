@@ -22,7 +22,6 @@ export interface IPlugin {
 export interface IPluginConfig {
   default?: any;
   schema?: Function;
-  // validate?: Function;
   onChange?: Function;
 }
 

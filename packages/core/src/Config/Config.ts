@@ -99,15 +99,24 @@ export default class Config {
   getUserConfig() {
     const configFile = this.getConfigFile();
     if (configFile) {
+      let envConfigFile;
+      if (process.env.UMI_ENV) {
+        envConfigFile = this.addAffix(configFile, process.env.UMI_ENV);
+        if (!existsSync(join(this.cwd, envConfigFile))) {
+          throw new Error(
+            `get user config failed, ${envConfigFile} does not exist, but process.env.UMI_ENV is set to ${process.env.UMI_ENV}.`,
+          );
+        }
+      }
       const files = ([
         configFile,
-        process.env.UMI_ENV && this.addAffix(configFile, process.env.UMI_ENV),
+        envConfigFile,
         this.localConfig && this.addAffix(configFile, 'local'),
       ].filter(Boolean) as string[]).map((f: string) => join(this.cwd, f));
 
       // clear require cache and set babel register
       const requireDeps = files.reduce((memo: string[], file) => {
-        memo.concat(parseRequireDeps(file));
+        memo = memo.concat(parseRequireDeps(file));
         return memo;
       }, []);
       requireDeps.forEach(f => {

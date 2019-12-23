@@ -79,6 +79,8 @@ export default class Service {
     this.configInstance = new Config({
       cwd: this.cwd,
       service: this,
+      // TODO: extract isDev
+      localConfig: process.env.NODE_ENV === 'development',
     });
     this.userConfig = this.configInstance.getUserConfig();
 
