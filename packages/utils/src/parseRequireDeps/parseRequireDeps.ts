@@ -22,7 +22,7 @@ function parse(filePath: string): string[] {
 
 export default function(filePath: string) {
   const paths = [filePath];
-  const ret = [filePath];
+  const ret = [winPath(filePath)];
 
   while (paths.length) {
     const extraPaths = parse(paths.shift()!);
