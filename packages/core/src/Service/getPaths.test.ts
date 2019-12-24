@@ -1,11 +1,12 @@
 import { join } from 'path';
 import getPaths from './getPaths';
+import { winPath } from '@umijs/utils';
 
 const fixtures = join(__dirname, 'fixtures');
 
 function stripCwd(obj: object, cwd: string) {
   return Object.keys(obj).reduce((memo, key) => {
-    memo[key] = obj[key].replace(cwd, '.');
+    memo[key] = obj[key].replace(winPath(cwd), '.');
     return memo;
   }, {});
 }

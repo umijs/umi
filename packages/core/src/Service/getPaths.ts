@@ -1,8 +1,16 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
+import { winPath } from '@umijs/utils/src';
 
 function isDirectoryAndExist(path: string) {
   return existsSync(path) && statSync(path).isDirectory();
+}
+
+function normalizeWithWinPath(obj: object) {
+  return Object.keys(obj).reduce((memo, key) => {
+    memo[key] = winPath(memo[key]);
+    return memo;
+  }, {});
 }
 
 export default function({
@@ -22,7 +30,7 @@ export default function({
     ? join(absSrcPath, 'page')
     : join(absSrcPath, 'pages');
 
-  return {
+  return normalizeWithWinPath({
     cwd,
     absNodeModulesPath: join(cwd, 'node_modules'),
     absOutputPath: join(cwd, config.outputPath || './dist'),
@@ -32,5 +40,5 @@ export default function({
       absSrcPath,
       ['.umi', env !== 'development' && env].filter(Boolean).join('-'),
     ),
-  };
+  });
 }
