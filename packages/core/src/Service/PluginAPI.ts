@@ -141,7 +141,7 @@ export default class PluginAPI {
     );
     const absPath = join(this.service.paths.absTmpPath!, path);
     mkdirp.sync(dirname(absPath));
-    if (!existsSync(path) || readFileSync(path, 'utf8') !== content) {
+    if (!existsSync(path) || readFileSync(path, 'utf-8') !== content) {
       writeFileSync(absPath, content, 'utf-8');
     }
   }
