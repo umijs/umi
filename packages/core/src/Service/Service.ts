@@ -32,8 +32,7 @@ interface IConfig {
 // 1. load env
 // 2. onOptionChange
 // 3. watch mode
-// 4. getPaths
-// 5. duplicated key
+// 4. duplicated key
 export default class Service {
   cwd: string;
   pkg: IPackage;
@@ -311,15 +310,7 @@ ${name} from ${plugin.path} register failed.`);
     }
   }
 
-  async run({
-    name,
-    args,
-    rawArgs,
-  }: {
-    name: string;
-    args?: any;
-    rawArgs?: string;
-  }) {
+  async run({ name, args }: { name: string; args?: any; rawArgs?: string }) {
     this.setStage(ServiceStage.init);
     this.init();
 
