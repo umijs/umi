@@ -69,7 +69,12 @@ export default class Service {
   } = {};
   // paths
   paths: {
-    [key: string]: string;
+    cwd?: string;
+    absNodeModulesPath?: string;
+    absSrcPath?: string;
+    absPagesPath?: string;
+    absOutputPath?: string;
+    absTmpPath?: string;
   } = {};
   env: string | undefined;
 

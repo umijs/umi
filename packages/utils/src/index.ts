@@ -10,6 +10,8 @@ import resolve from 'resolve';
 export { resolve };
 import yargs from 'yargs';
 export { yargs };
+import mkdirp from 'mkdirp';
+export { mkdirp };
 import yParser from 'yargs-parser';
 export { yParser };
 

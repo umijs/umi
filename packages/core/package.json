@@ -22,6 +22,7 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
   "dependencies": {
+    "@babel/core": "7.7.7",
     "@babel/register": "7.7.7",
     "@types/hapi__joi": "16.0.4",
     "@hapi/joi": "16.1.8",

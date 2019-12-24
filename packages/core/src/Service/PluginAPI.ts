@@ -1,4 +1,7 @@
 import assert from 'assert';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { mkdirp } from '@umijs/utils';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
@@ -122,5 +125,15 @@ export default class PluginAPI {
     });
   }
 
-  writeTmpFile({ file, content }) {}
+  writeTmpFile({ path, content }: { path: string; content: string }) {
+    assert(
+      this.service.stage >= ServiceStage.pluginReady,
+      `api.writeTmpFile() should only used in api.onGenerateFiles().`,
+    );
+    const absPath = join(this.service.paths.absTmpPath!, path);
+    mkdirp.sync(dirname(absPath));
+    if (!existsSync(path) || readFileSync(path, 'utf8') !== content) {
+      writeFileSync(absPath, content, 'utf-8');
+    }
+  }
 }

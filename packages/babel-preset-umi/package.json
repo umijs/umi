@@ -40,6 +40,6 @@
     "babel-plugin-transform-react-remove-prop-types": "0.4.24"
   },
   "devDependencies": {
-    "@babel/core": "7.7.5"
+    "@babel/core": "7.7.7"
   }
 }
