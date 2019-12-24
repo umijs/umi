@@ -1,7 +1,8 @@
 import { join } from 'path';
-import { winPath } from '@umijs/utils';
+import { readFileSync } from 'fs';
+import { winPath, rimraf } from '@umijs/utils';
 import Service from './Service';
-import { IApplyPluginsType } from './enums';
+import { ApplyPluginsType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -67,7 +68,7 @@ test('normal', async () => {
 
   const ret = await service.applyPlugins({
     key: 'foo',
-    type: IApplyPluginsType.add,
+    type: ApplyPluginsType.add,
   });
   expect(ret).toEqual(['a', 'a']);
 });
@@ -96,7 +97,7 @@ test('applyPlugin with add', async () => {
   await service.init();
   const ret = await service.applyPlugins({
     key: 'test',
-    type: IApplyPluginsType.add,
+    type: ApplyPluginsType.add,
   });
   expect(ret).toEqual(['a', 'b', 'c', 'd']);
 });
@@ -111,7 +112,7 @@ test('applyPlugin with add failed with non-array initialValue', async () => {
   await expect(
     service.applyPlugins({
       key: 'test',
-      type: IApplyPluginsType.add,
+      type: ApplyPluginsType.add,
       initialValue: '',
     }),
   ).rejects.toThrow(/opts.initialValue must be Array if opts.type is add/);
@@ -126,7 +127,7 @@ test('applyPlugin with modify', async () => {
   await service.init();
   const ret = await service.applyPlugins({
     key: 'test',
-    type: IApplyPluginsType.modify,
+    type: ApplyPluginsType.modify,
     initialValue: [],
   });
   expect(ret).toEqual(['a', 'b', 'c', 'd']);
@@ -142,7 +143,7 @@ test('applyPlugin with event', async () => {
   let count = 0;
   const ret = await service.applyPlugins({
     key: 'test',
-    type: IApplyPluginsType.event,
+    type: ApplyPluginsType.event,
     args: {
       increase(step: number) {
         count += step;
@@ -161,7 +162,7 @@ test('applyPlugin with unsupported type', async () => {
   await expect(
     service.applyPlugins({
       key: 'test',
-      type: 'unsupport-event' as IApplyPluginsType,
+      type: 'unsupport-event' as ApplyPluginsType,
     }),
   ).rejects.toThrow(/type is not defined or is not matched, got/);
 });
@@ -262,6 +263,32 @@ test('api.registerCommand', async () => {
     },
   });
   expect(ret).toEqual(`hello bar`);
+});
+
+test('api.writeTmpFile error in register stage', async () => {
+  const cwd = join(fixtures, 'api-writeTmpFile');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin-error'))],
+  });
+  await expect(service.init()).rejects.toThrow(
+    /api.writeTmpFile\(\) should not execute in register stage./,
+  );
+});
+
+test.only('api.writeTmpFile', async () => {
+  const cwd = join(fixtures, 'api-writeTmpFile');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  await service.run({
+    name: 'foo',
+    args: {},
+  });
+  const tmpFile = join(cwd, '.umi-test', 'foo');
+  expect(readFileSync(tmpFile, 'utf-8')).toEqual('foo');
+  rimraf.sync(tmpFile);
 });
 
 test('plugin register throw error', async () => {

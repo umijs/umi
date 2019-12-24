@@ -1,6 +1,6 @@
 export default function() {
   return {
-    presets: [
+    plugins: [
       require.resolve('./commands/dev/dev'),
       require.resolve('./commands/build/build'),
     ],

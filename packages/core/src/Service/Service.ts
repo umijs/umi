@@ -5,7 +5,7 @@ import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
-import { IApplyPluginsType, PluginType, ServiceStage } from './enums';
+import { ApplyPluginsType, PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
 import BabelRegister from './BabelRegister';
@@ -46,6 +46,10 @@ export default class Service {
   // including presets and plugins
   plugins: {
     [id: string]: IPlugin;
+  } = {};
+  // plugin methods
+  pluginMethods: {
+    [name: string]: Function;
   } = {};
   // initial presets and plugins from arguments, config, process.env, and package.json
   initialPresets: IPreset[];
@@ -194,11 +198,31 @@ export default class Service {
     }
   }
 
+  getPluginAPI(opts: any) {
+    const pluginAPI = new PluginAPI(opts);
+    return new Proxy(pluginAPI, {
+      get: (target, prop: string) => {
+        // 由于 pluginMethods 需要在 register 阶段可用
+        // 必须通过 proxy 的方式动态获取最新，以实现边注册边使用的效果
+        if (this.pluginMethods[prop]) return this.pluginMethods[prop];
+        if (['applyPlugins'].includes(prop)) {
+          if (typeof this[prop] === 'function') {
+            return this[prop].bind(this);
+          } else {
+            return this[prop];
+          }
+        }
+        return target[prop];
+      },
+    });
+  }
+
   initPreset(preset: IPreset) {
     const { id, key, apply } = preset;
     preset.isPreset = true;
 
-    const api = new PluginAPI({ id, key, service: this });
+    const api = this.getPluginAPI({ id, key, service: this });
+
     // register before apply
     this.registerPlugin(preset);
     // TODO: ...defaultConfigs 考虑要不要支持，可能这个需求可以通过其他渠道实现
@@ -236,7 +260,8 @@ export default class Service {
   initPlugin(plugin: IPlugin) {
     const { id, key, apply } = plugin;
 
-    const api = new PluginAPI({ id, key, service: this });
+    const api = this.getPluginAPI({ id, key, service: this });
+
     // register before apply
     this.registerPlugin(plugin);
     apply()(api, this.getPluginOptsWithKey(key));
@@ -266,13 +291,13 @@ ${name} from ${plugin.path} register failed.`);
 
   async applyPlugins(opts: {
     key: string;
-    type: IApplyPluginsType;
+    type: ApplyPluginsType;
     initialValue?: any;
     args?: any;
   }) {
     const hooks = this.hooks[opts.key];
     switch (opts.type) {
-      case IApplyPluginsType.add:
+      case ApplyPluginsType.add:
         if ('initialValue' in opts) {
           assert(
             Array.isArray(opts.initialValue),
@@ -287,7 +312,7 @@ ${name} from ${plugin.path} register failed.`);
           });
         }
         return await tAdd.promise(opts.initialValue || []);
-      case IApplyPluginsType.modify:
+      case ApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
           tModify.tapPromise(hook.pluginId!, async memo => {
@@ -295,7 +320,7 @@ ${name} from ${plugin.path} register failed.`);
           });
         }
         return await tModify.promise(opts.initialValue);
-      case IApplyPluginsType.event:
+      case ApplyPluginsType.event:
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
           tEvent.tapPromise(hook.pluginId!, async () => {

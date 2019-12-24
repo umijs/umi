@@ -71,7 +71,7 @@ export default class PluginAPI {
   }
 
   registerCommand(command: ICommand) {
-    const { name, fn } = command;
+    const { name } = command;
     assert(
       !this.service.commands[name],
       `api.registerCommand() failed, the command ${name} is exists.`,
@@ -119,6 +119,15 @@ export default class PluginAPI {
     }
   }
 
+  registerMethod({ name }: { name: string }) {
+    this.service.pluginMethods[name] = (fn: Function) => {
+      this.register({
+        key: name,
+        fn,
+      });
+    };
+  }
+
   skipPlugins(pluginIds: string[]) {
     pluginIds.forEach(pluginId => {
       this.service.skipPluginIds.add(pluginId);
@@ -128,7 +137,7 @@ export default class PluginAPI {
   writeTmpFile({ path, content }: { path: string; content: string }) {
     assert(
       this.service.stage >= ServiceStage.pluginReady,
-      `api.writeTmpFile() should only used in api.onGenerateFiles().`,
+      `api.writeTmpFile() should not execute in register stage.`,
     );
     const absPath = join(this.service.paths.absTmpPath!, path);
     mkdirp.sync(dirname(absPath));

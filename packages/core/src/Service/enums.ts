@@ -16,7 +16,7 @@ export enum ServiceStage {
   run,
 }
 
-export enum IApplyPluginsType {
+export enum ApplyPluginsType {
   add = 'add',
   modify = 'modify',
   addAsync = 'addAsync',
