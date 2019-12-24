@@ -134,7 +134,6 @@ export default class Service {
   }
 
   async init() {
-    // after init presets and plugins
     // we should have the final hooksByPluginId which is added with api.register()
     this.initPresetsAndPlugins();
 
@@ -168,18 +167,31 @@ export default class Service {
 
     // plugin is totally ready
     this.setStage(ServiceStage.pluginReady);
+    this.applyPlugins({
+      key: 'onPluginReady',
+      type: ApplyPluginsType.event,
+    });
 
     // get config, including:
     // 1. merge default config
     // 2. validate
     this.setStage(ServiceStage.getConfig);
+    // TODO: 支持修改用户默认配置，或者直接修改用户配置
     this.config = this.configInstance.getConfig() as any;
 
+    // merge paths to keep the this.paths ref
     this.setStage(ServiceStage.getPaths);
-    this.paths = getPaths({
-      cwd: this.cwd,
-      config: this.config!,
-      env: this.env,
+    const paths = (await this.applyPlugins({
+      key: 'modifyPaths',
+      type: ApplyPluginsType.modify,
+      initialValue: getPaths({
+        cwd: this.cwd,
+        config: this.config!,
+        env: this.env,
+      }),
+    })) as object;
+    Object.keys(paths).forEach(key => {
+      this.paths[key] = paths[key];
     });
   }
 
@@ -200,6 +212,12 @@ export default class Service {
 
   getPluginAPI(opts: any) {
     const pluginAPI = new PluginAPI(opts);
+
+    // register built-in methods
+    ['onPluginReady', 'modifyPaths', 'onStart'].forEach(name => {
+      pluginAPI.registerMethod({ name });
+    });
+
     return new Proxy(pluginAPI, {
       get: (target, prop: string) => {
         // 由于 pluginMethods 需要在 register 阶段可用
@@ -229,9 +247,6 @@ export default class Service {
     const { presets, plugins, ...defaultConfigs } =
       apply()(api, this.getPluginOptsWithKey(key)) || {};
 
-    // TODO: api 可能不需要
-    // preset.api = api;
-
     // register extra presets and plugins
     if (presets) {
       assert(
@@ -253,8 +268,6 @@ export default class Service {
         ...plugins.map(pathToObj.bind(null, PluginType.plugin)),
       );
     }
-
-    // TODO: register default config
   }
 
   initPlugin(plugin: IPlugin) {
@@ -265,9 +278,6 @@ export default class Service {
     // register before apply
     this.registerPlugin(plugin);
     apply()(api, this.getPluginOptsWithKey(key));
-
-    // TODO: api 可能不需要
-    // plugin.api = api;
   }
 
   getPluginOptsWithKey(key: string) {
@@ -295,7 +305,7 @@ ${name} from ${plugin.path} register failed.`);
     initialValue?: any;
     args?: any;
   }) {
-    const hooks = this.hooks[opts.key];
+    const hooks = this.hooks[opts.key] || [];
     switch (opts.type) {
       case ApplyPluginsType.add:
         if ('initialValue' in opts) {
@@ -335,21 +345,27 @@ ${name} from ${plugin.path} register failed.`);
     }
   }
 
-  async run({ name, args }: { name: string; args?: any; rawArgs?: string }) {
+  async run({ name, args }: { name: string; args?: any }) {
     this.setStage(ServiceStage.init);
-    this.init();
-
-    args._ = args._ || [];
+    await this.init();
 
     this.stage = ServiceStage.run;
     const command = this.commands[name];
-
     assert(command, `run command failed, command ${name} does not exists.`);
-    const { fn } = command;
 
+    args._ = args._ || [];
     // shift the command itself
     args._.shift();
 
+    await this.applyPlugins({
+      key: 'onStart',
+      type: ApplyPluginsType.event,
+      args: {
+        args,
+      },
+    });
+
+    const { fn } = command;
     return await fn({ args });
   }
 }

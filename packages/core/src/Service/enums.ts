@@ -19,8 +19,5 @@ export enum ServiceStage {
 export enum ApplyPluginsType {
   add = 'add',
   modify = 'modify',
-  addAsync = 'addAsync',
-  modifyAsync = 'modifyAsync',
   event = 'event',
-  eventAsync = 'eventAsync',
 }

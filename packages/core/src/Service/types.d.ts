@@ -17,7 +17,6 @@ export interface IPlugin {
 
   config?: IPluginConfig;
   isPreset?: boolean;
-  api?: any;
 }
 
 export interface IPluginConfig {
