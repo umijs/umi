@@ -276,7 +276,7 @@ test('api.writeTmpFile error in register stage', async () => {
   );
 });
 
-test.only('api.writeTmpFile', async () => {
+test('api.writeTmpFile', async () => {
   const cwd = join(fixtures, 'api-writeTmpFile');
   const service = new Service({
     cwd,
