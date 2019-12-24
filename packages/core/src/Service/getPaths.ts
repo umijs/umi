@@ -8,7 +8,7 @@ function isDirectoryAndExist(path: string) {
 
 function normalizeWithWinPath(obj: object) {
   return Object.keys(obj).reduce((memo, key) => {
-    memo[key] = winPath(memo[key]);
+    memo[key] = winPath(obj[key]);
     return memo;
   }, {});
 }
