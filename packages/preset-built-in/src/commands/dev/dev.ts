@@ -1,1 +1,3 @@
-export default () => {};
+import { IApi } from '@umijs/types';
+
+export default (api: IApi) => {};

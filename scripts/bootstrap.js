@@ -48,6 +48,7 @@ const { yParser } = require('@umijs/utils');
           'bin',
           'files',
           'authors',
+          'types',
         ].forEach(key => {
           if (pkg[key]) json[key] = pkg[key];
         });
