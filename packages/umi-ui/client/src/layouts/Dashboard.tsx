@@ -5,6 +5,7 @@ import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import React, { useState, useLayoutEffect, Fragment } from 'react';
 import { IUi } from 'umi-types';
 import { stringify, parse } from 'qs';
+import cls from 'classnames';
 import { NavLink, withRouter } from 'umi';
 import { setCurrentProject, openInEditor } from '@/services/project';
 import { Redirect } from '@/components/icons';
@@ -178,6 +179,11 @@ export default withRouter(props => {
             window.open(url);
           };
 
+          const existHeader = headerTitle || actions?.length > 0;
+          const mainCls = cls(styles.main, {
+            [styles['main-hide-header']]: !existHeader,
+          });
+
           return (
             <div className={styles.normal}>
               {isMini && (
@@ -249,7 +255,11 @@ export default withRouter(props => {
                       mode="inline"
                     >
                       {normalPanels.map(panel => (
-                        <MenuItem key={panel.path} panel={panel} />
+                        <MenuItem
+                          className={styles['sidebar-menu-item']}
+                          key={panel.path}
+                          panel={panel}
+                        />
                       ))}
                     </Menu>
                   </div>
@@ -262,48 +272,47 @@ export default withRouter(props => {
                   />
                   {basicUI?.dashboard?.siderFooter}
                 </Sider>
-                <Content className={styles.main}>
+                <Content className={mainCls}>
                   <Provider style={{ height: '100%' }}>
-                    {headerTitle ||
-                      (actions?.length > 0 && (
-                        <div key="header" className={styles.header}>
-                          {headerTitle && <h1>{headerTitle}</h1>}
-                          {actions?.length > 0 && (
-                            <Row type="flex" className={styles['header-actions']}>
-                              {actions.map((panelAction, j) => {
-                                if (React.isValidElement(panelAction)) {
-                                  return <Fragment key={j.toString()}>{panelAction}</Fragment>;
-                                }
-                                if (
-                                  typeof panelAction === 'function' &&
-                                  React.isValidElement(panelAction({}))
-                                ) {
-                                  return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
-                                }
-                                const { title, action, onClick, ...btnProps } = panelAction;
-                                const handleClick = async () => {
-                                  // TODO: try catch handler
-                                  try {
-                                    await callRemote(action);
-                                    if (onClick) {
-                                      onClick();
-                                    }
-                                  } catch (e) {
-                                    message.error(e && e.message ? e.message : 'error');
+                    {existHeader && (
+                      <div key="header" className={styles.header}>
+                        {headerTitle && <h1>{headerTitle}</h1>}
+                        {actions?.length > 0 && (
+                          <Row type="flex" className={styles['header-actions']}>
+                            {actions.map((panelAction, j) => {
+                              if (React.isValidElement(panelAction)) {
+                                return <Fragment key={j.toString()}>{panelAction}</Fragment>;
+                              }
+                              if (
+                                typeof panelAction === 'function' &&
+                                React.isValidElement(panelAction({}))
+                              ) {
+                                return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
+                              }
+                              const { title, action, onClick, ...btnProps } = panelAction;
+                              const handleClick = async () => {
+                                // TODO: try catch handler
+                                try {
+                                  await callRemote(action);
+                                  if (onClick) {
+                                    onClick();
                                   }
-                                };
-                                return (
-                                  title && (
-                                    <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                      {renderLocaleText({ id: title })}
-                                    </Button>
-                                  )
-                                );
-                              })}
-                            </Row>
-                          )}
-                        </div>
-                      ))}
+                                } catch (e) {
+                                  message.error(e && e.message ? e.message : 'error');
+                                }
+                              };
+                              return (
+                                title && (
+                                  <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                    {renderLocaleText({ id: title })}
+                                  </Button>
+                                )
+                              );
+                            })}
+                          </Row>
+                        )}
+                      </div>
+                    )}
                     {/* key pathname change transition will crash  */}
                     <div key={path} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
