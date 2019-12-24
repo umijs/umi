@@ -21,7 +21,14 @@ test('empty', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './dist',
+    absPagesPath: './pages',
+    absSrcPath: '.',
+    absTmpPath: './.umi',
+    cwd: '.',
+  });
 });
 
 test('empty production', () => {
@@ -35,7 +42,14 @@ test('empty production', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './dist',
+    absPagesPath: './pages',
+    absSrcPath: '.',
+    absTmpPath: './.umi-production',
+    cwd: '.',
+  });
 });
 
 test('empty config singular', () => {
@@ -51,7 +65,14 @@ test('empty config singular', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './dist',
+    absPagesPath: './page',
+    absSrcPath: '.',
+    absTmpPath: './.umi',
+    cwd: '.',
+  });
 });
 
 test('empty config outputPath', () => {
@@ -67,7 +88,14 @@ test('empty config outputPath', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './www',
+    absPagesPath: './pages',
+    absSrcPath: '.',
+    absTmpPath: './.umi',
+    cwd: '.',
+  });
 });
 
 test('src', () => {
@@ -81,7 +109,14 @@ test('src', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './dist',
+    absPagesPath: './src/pages',
+    absSrcPath: './src',
+    absTmpPath: './src/.umi',
+    cwd: '.',
+  });
 });
 
 test('src config singular', () => {
@@ -97,5 +132,12 @@ test('src config singular', () => {
       }),
       cwd,
     ),
-  ).toMatchSnapshot();
+  ).toEqual({
+    absNodeModulesPath: './node_modules',
+    absOutputPath: './dist',
+    absPagesPath: './src/page',
+    absSrcPath: './src',
+    absTmpPath: './src/.umi',
+    cwd: '.',
+  });
 });
