@@ -42,22 +42,19 @@ export default withRouter(props => {
   const [selectedKeys, setSelectedKeys] = useState([activePanel ? activePanel.path : '/']);
   const [actions, setActionPanel] = useState<IUi.IPanelAction>();
 
-  useLayoutEffect(
-    () => {
-      const currPanel = getActivePanel(pathname);
-      setSelectedKeys([currPanel ? currPanel.path : '/']);
-      setActionPanel(currPanel && currPanel.actions ? currPanel.actions : []);
-      const handleActionChange = (actionPanels: IUi.IPanelAction) => {
-        setActionPanel(actionPanels);
-      };
-      events.on(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
+  useLayoutEffect(() => {
+    const currPanel = getActivePanel(pathname);
+    setSelectedKeys([currPanel ? currPanel.path : '/']);
+    setActionPanel(currPanel && currPanel.actions ? currPanel.actions : []);
+    const handleActionChange = (actionPanels: IUi.IPanelAction) => {
+      setActionPanel(actionPanels);
+    };
+    events.on(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
 
-      return () => {
-        events.off(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
-      };
-    },
-    [pathname],
-  );
+    return () => {
+      events.off(MESSAGES.CHANGE_GLOBAL_ACTION, handleActionChange);
+    };
+  }, [pathname]);
 
   const projectMaps = window.g_uiProjects || {};
   const { active, iife, type, ...restSearchParams } = parse(window.location.search, {
@@ -81,12 +78,12 @@ export default withRouter(props => {
   const normalPanels = panels.filter(panel => !panel.beta);
   const betaPanels = panels.filter(panel => panel.beta);
   const Provider = activePanel?.provider || DefaultProvider;
+  const { headerTitle = title, path = '/' } = activePanel;
 
   return (
     <UiLayout type="detail" title={title}>
       <Context.Consumer>
         {({ currentProject, theme, isMini, locale, basicUI }) => {
-
           const openEditor = async () => {
             if (currentProject && currentProject.key) {
               await openInEditor({
@@ -115,8 +112,8 @@ export default withRouter(props => {
                     )
                     .sort(
                       (a, b) =>
-                      projectMaps?.[b]?.opened_at?.[new Date('2002').getTime()] -
-                      projectMaps?.[a]?.opened_at?.[new Date('2002').getTime()]
+                        projectMaps?.[b]?.opened_at?.[new Date('2002').getTime()] -
+                        projectMaps?.[a]?.opened_at?.[new Date('2002').getTime()],
                     )
                     .slice(0, 5)
                     .map(project => (
@@ -191,9 +188,7 @@ export default withRouter(props => {
                   className={styles['mini-header']}
                 >
                   <Col>
-                    <p className={styles['mini-header-name']}>
-                      {currentProject?.name || ''}
-                    </p>
+                    <p className={styles['mini-header-name']}>{currentProject?.name || ''}</p>
                     <Tooltip title={formatMessage({ id: 'org.umi.ui.global.project.editor.open' })}>
                       <ExportOutlined onClick={openEditor} />
                     </Tooltip>
@@ -269,47 +264,48 @@ export default withRouter(props => {
                 </Sider>
                 <Content className={styles.main}>
                   <Provider style={{ height: '100%' }}>
-                    <div key="header" className={styles.header}>
-                      <h1>
-                        {activePanel?.headerTitle || title}
-                      </h1>
-                      {actions?.length > 0 && (
-                        <Row type="flex" className={styles['header-actions']}>
-                          {actions.map((panelAction, j) => {
-                            if (React.isValidElement(panelAction)) {
-                              return <Fragment key={j.toString()}>{panelAction}</Fragment>;
-                            }
-                            if (
-                              typeof panelAction === 'function' &&
-                              React.isValidElement(panelAction({}))
-                            ) {
-                              return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
-                            }
-                            const { title, action, onClick, ...btnProps } = panelAction;
-                            const handleClick = async () => {
-                              // TODO: try catch handler
-                              try {
-                                await callRemote(action);
-                                if (onClick) {
-                                  onClick();
+                    {headerTitle ||
+                      (actions?.length > 0 && (
+                        <div key="header" className={styles.header}>
+                          {headerTitle && <h1>{headerTitle}</h1>}
+                          {actions?.length > 0 && (
+                            <Row type="flex" className={styles['header-actions']}>
+                              {actions.map((panelAction, j) => {
+                                if (React.isValidElement(panelAction)) {
+                                  return <Fragment key={j.toString()}>{panelAction}</Fragment>;
                                 }
-                              } catch (e) {
-                                message.error(e && e.message ? e.message : 'error');
-                              }
-                            };
-                            return (
-                              title && (
-                                <Button key={j.toString()} onClick={handleClick} {...btnProps}>
-                                  {renderLocaleText({ id: title })}
-                                </Button>
-                              )
-                            );
-                          })}
-                        </Row>
-                      )}
-                    </div>
+                                if (
+                                  typeof panelAction === 'function' &&
+                                  React.isValidElement(panelAction({}))
+                                ) {
+                                  return <Fragment key={j.toString()}>{panelAction({})}</Fragment>;
+                                }
+                                const { title, action, onClick, ...btnProps } = panelAction;
+                                const handleClick = async () => {
+                                  // TODO: try catch handler
+                                  try {
+                                    await callRemote(action);
+                                    if (onClick) {
+                                      onClick();
+                                    }
+                                  } catch (e) {
+                                    message.error(e && e.message ? e.message : 'error');
+                                  }
+                                };
+                                return (
+                                  title && (
+                                    <Button key={j.toString()} onClick={handleClick} {...btnProps}>
+                                      {renderLocaleText({ id: title })}
+                                    </Button>
+                                  )
+                                );
+                              })}
+                            </Row>
+                          )}
+                        </div>
+                      ))}
                     {/* key pathname change transition will crash  */}
-                    <div key={activePanel?.path || '/'} className={styles.content}>
+                    <div key={path} className={styles.content}>
                       <ErrorBoundary className={styles['dashboard-error-boundary']}>
                         {props.children}
                       </ErrorBoundary>
