@@ -14,6 +14,7 @@
 - 新增 `api.skipPlugins(pluginIds: string[])`，用于禁用插件
 - 配置项的值为 `false` 时，相关插件也会禁用
 - 插件注册阶段只能拿到 userConfig，而不能拿到 config（config 是 merge 了 defaultConfig 之后的）
+- `api.paths` 等插件注册结束后才 ready
 
 ## Config
 

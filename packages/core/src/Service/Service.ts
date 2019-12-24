@@ -10,6 +10,7 @@ import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
 import BabelRegister from './BabelRegister';
 import { getUserConfigWithKey } from '../Config/utils/configUtils';
+import getPaths from './getPaths';
 
 const debug = createDebug('umi:core:Service');
 
@@ -18,6 +19,7 @@ interface IOpts {
   presets?: string[];
   plugins?: string[];
   useBuiltIn?: boolean;
+  env?: 'development' | 'production' | 'test';
 }
 
 interface IConfig {
@@ -65,12 +67,18 @@ export default class Service {
   hooks: {
     [key: string]: IHook[];
   } = {};
+  // paths
+  paths: {
+    [key: string]: string;
+  } = {};
+  env: string | undefined;
 
   constructor(opts: IOpts) {
     debug('opts:');
     debug(opts);
     this.cwd = opts.cwd || process.cwd();
     this.pkg = this.resolvePackage();
+    this.env = opts.env || process.env.NODE_ENV;
 
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
 
@@ -81,8 +89,7 @@ export default class Service {
     this.configInstance = new Config({
       cwd: this.cwd,
       service: this,
-      // TODO: extract isDev
-      localConfig: process.env.NODE_ENV === 'development',
+      localConfig: this.env === 'development',
     });
     this.userConfig = this.configInstance.getUserConfig();
 
@@ -159,6 +166,13 @@ export default class Service {
     // 2. validate
     this.setStage(ServiceStage.getConfig);
     this.config = this.configInstance.getConfig() as any;
+
+    this.setStage(ServiceStage.getPaths);
+    this.paths = getPaths({
+      cwd: this.cwd,
+      config: this.config!,
+      env: this.env,
+    });
   }
 
   initPresetsAndPlugins() {

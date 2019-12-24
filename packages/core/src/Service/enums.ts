@@ -12,6 +12,7 @@ export enum ServiceStage {
   initHooks,
   pluginReady,
   getConfig,
+  getPaths,
   run,
 }
 

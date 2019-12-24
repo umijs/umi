@@ -21,15 +21,6 @@ export default class PluginAPI {
     this.service = opts.service;
   }
 
-  registerCommand(command: ICommand) {
-    const { name, fn } = command;
-    assert(
-      !this.service.commands[name],
-      `api.registerCommand() failed, the command ${name} is exists.`,
-    );
-    this.service.commands[name] = command;
-  }
-
   // TODO: reversed keys
   describe({
     id,
@@ -74,6 +65,15 @@ export default class PluginAPI {
     this.service.hooksByPluginId[this.id] = (
       this.service.hooksByPluginId[this.id] || []
     ).concat(hook);
+  }
+
+  registerCommand(command: ICommand) {
+    const { name, fn } = command;
+    assert(
+      !this.service.commands[name],
+      `api.registerCommand() failed, the command ${name} is exists.`,
+    );
+    this.service.commands[name] = command;
   }
 
   registerPresets(presets: (IPreset | string)[]) {
@@ -121,4 +121,6 @@ export default class PluginAPI {
       this.service.skipPluginIds.add(pluginId);
     });
   }
+
+  writeTmpFile({ file, content }) {}
 }
