@@ -2,8 +2,8 @@
   "name": "@umijs/renderer-react",
   "version": "0.0.1-alpha.1",
   "description": "@umijs/renderer-react",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "lib",
     "src"
@@ -26,5 +26,6 @@
     "react-router": "5.1.2",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.1.2"
-  }
+  },
+  "module": "dist/index.esm.js"
 }

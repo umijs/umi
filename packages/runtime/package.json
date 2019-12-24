@@ -2,8 +2,8 @@
   "name": "@umijs/runtime",
   "version": "0.0.1-alpha.1",
   "description": "@umijs/runtime",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "lib",
     "src"
@@ -20,5 +20,14 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/runtime#readme"
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/runtime#readme",
+  "dependencies": {
+    "@types/react-router-dom": "5.1.3",
+    "@types/react-router-config": "5.0.1",
+    "@types/history": "4.7.3",
+    "react-router-dom": "5.1.2",
+    "react-router-config": "5.1.1",
+    "history": "4.10.1"
+  },
+  "module": "dist/index.esm.js"
 }

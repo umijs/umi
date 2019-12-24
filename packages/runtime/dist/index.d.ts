@@ -1,9 +1,7 @@
 import runtimePlugin from './runtimePlugin/runtimePlugin';
 export { runtimePlugin };
-
 import dynamic from './dynamic/dynamic';
 export { dynamic };
-
 import {
   Link,
   NavLink,
@@ -36,6 +34,4 @@ export {
   useParams,
   useRouteMatch,
 };
-
-// @ts-ignore
 export * from '@@/umiExports';
