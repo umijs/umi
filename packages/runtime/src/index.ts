@@ -37,5 +37,12 @@ export {
   useRouteMatch,
 };
 
+import {
+  createBrowserHistory,
+  createHashHistory,
+  createMemoryHistory,
+} from 'history';
+export { createBrowserHistory, createHashHistory, createMemoryHistory };
+
 // @ts-ignore
 export * from '@@/umiExports';
