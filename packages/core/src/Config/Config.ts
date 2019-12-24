@@ -21,6 +21,9 @@ interface IOpts {
   localConfig?: boolean;
 }
 
+// TODO:
+// 1. custom config file
+// 2. watch mode
 export default class Config {
   cwd: string;
   service: Service;
@@ -109,7 +112,7 @@ export default class Config {
       });
 
       // require config and merge
-      return this.mergeConfig(...this.requireConfig(files));
+      return this.mergeConfig(...this.requireConfigs(files));
     } else {
       return {};
     }
@@ -120,7 +123,7 @@ export default class Config {
     return file.replace(new RegExp(`${ext}$`), `.${affix}${ext}`);
   }
 
-  requireConfig(configFiles: string[]) {
+  requireConfigs(configFiles: string[]) {
     return configFiles.map(f => compatESModuleRequire(require(f)));
   }
 

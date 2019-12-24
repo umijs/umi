@@ -31,6 +31,7 @@ interface IConfig {
 // 2. onOptionChange
 // 3. watch mode
 // 4. getPaths
+// 5. duplicated key
 export default class Service {
   cwd: string;
   pkg: IPackage;
@@ -303,6 +304,8 @@ ${name} from ${plugin.path} register failed.`);
     this.setStage(ServiceStage.init);
     this.init();
 
+    args._ = args._ || [];
+
     this.stage = ServiceStage.run;
     const command = this.commands[name];
 
@@ -312,6 +315,6 @@ ${name} from ${plugin.path} register failed.`);
     // shift the command itself
     args._.shift();
 
-    return await fn(args);
+    return await fn({ args });
   }
 }

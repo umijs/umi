@@ -248,3 +248,36 @@ test('api.registerPlugins', async () => {
     '[plugin] ./plugin_3.js',
   ]);
 });
+
+test('api.registerCommand', async () => {
+  const cwd = join(fixtures, 'api-registerCommand');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  const ret = await service.run({
+    name: 'build',
+    args: {
+      projectName: 'bar',
+    },
+  });
+  expect(ret).toEqual(`hello bar`);
+});
+
+test('plugin register throw error', async () => {
+  const cwd = join(fixtures, 'plugin-register-throw-error');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  await expect(service.init()).rejects.toThrow(/foo/);
+});
+
+test('plugin syntax error', async () => {
+  const cwd = join(fixtures, 'plugin-syntax-error');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  await expect(service.init()).rejects.toThrow(/Register plugin .+? failed/);
+});
