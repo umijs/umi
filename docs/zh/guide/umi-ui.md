@@ -12,10 +12,16 @@ umi 项目的本地研发工作台。
 
 > 请确保 umi 版本在 2.9.0 或以上。
 
-在任意地方执行，
+一、在任意地方执行，
 
 ```bash
 $ umi ui
+```
+
+二、在项目中执行，
+
+```bash
+$ UMI_UI=1 umi dev
 ```
 
 详见：[Umi UI 视频介绍](https://www.bilibili.com/video/av66178967)。
