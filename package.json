@@ -27,6 +27,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^9.4.0",
     "@types/jest": "^24.0.23",
     "@umijs/test": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",

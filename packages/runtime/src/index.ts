@@ -1,16 +1,15 @@
-import Plugin from './Plugin/Plugin';
-export { Plugin };
+export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 
-import dynamic from './dynamic/dynamic';
-export { dynamic };
+export { default as dynamic } from './dynamic/dynamic';
 
-import {
+export {
   Link,
   NavLink,
   Prompt,
   Redirect,
   Route,
   Router,
+  MemoryRouter,
   Switch,
   match,
   matchPath,
@@ -20,29 +19,12 @@ import {
   useParams,
   useRouteMatch,
 } from 'react-router-dom';
-export {
-  Link,
-  NavLink,
-  Prompt,
-  Redirect,
-  Route,
-  Router,
-  Switch,
-  match,
-  matchPath,
-  withRouter,
-  useHistory,
-  useLocation,
-  useParams,
-  useRouteMatch,
-};
 
-import {
+export {
   createBrowserHistory,
   createHashHistory,
   createMemoryHistory,
 } from 'history';
-export { createBrowserHistory, createHashHistory, createMemoryHistory };
 
 // @ts-ignore
-export * from '@@/umiExports';
+// export * from '@@/umiExports';

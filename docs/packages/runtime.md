@@ -7,6 +7,7 @@
 - no global variables, 比如 `window.g_history`、`window.g_plugins` 和 `window.g_routes` 等
 - 基于 hooks（TODO：考虑切换到 preact 等 react-like 库的可能性）
 - [BREAK CHANGE] 删除 `api.addRendererWrapperWithModule()`，通过 runtime plugin 实现
+- [BREAK CHANGE] 删除路由组件的 `props.params`，从 `props.match.params` 里获取
 
 ## Usage
 

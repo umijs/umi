@@ -22,10 +22,11 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-react#readme",
   "dependencies": {
-    "react": "^16.12.0",
-    "react-router": "5.1.2",
-    "react-router-config": "5.1.1",
-    "react-router-dom": "5.1.2"
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "@umijs/runtime": "0.0.1-alpha.1",
+    "react-dom": "^16.12.0",
+    "react": "^16.12.0"
   },
   "module": "dist/index.esm.js"
 }

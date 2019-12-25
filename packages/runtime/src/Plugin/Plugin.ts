@@ -12,7 +12,7 @@ interface IPlugin {
 }
 
 interface IOpts {
-  validKeys: string[];
+  validKeys?: string[];
 }
 
 function _compose({ fns, args }: { fns: (Function | any)[]; args?: object }) {
@@ -29,8 +29,8 @@ export default class Plugin {
     [key: string]: any;
   } = {};
 
-  constructor(opts: IOpts) {
-    this.validKeys = opts.validKeys || [];
+  constructor(opts?: IOpts) {
+    this.validKeys = opts?.validKeys || [];
   }
 
   register(plugin: IPlugin) {
