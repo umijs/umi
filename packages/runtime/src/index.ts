@@ -1,5 +1,5 @@
-import runtimePlugin from './runtimePlugin/runtimePlugin';
-export { runtimePlugin };
+import Plugin from './Plugin/Plugin';
+export { Plugin };
 
 import dynamic from './dynamic/dynamic';
 export { dynamic };

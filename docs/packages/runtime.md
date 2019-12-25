@@ -19,7 +19,7 @@ import {
 
   // Helpers
   dynamic,
-  RuntimePlugin,
+  Plugin,
   createBrowserHistory, createHashHistory,
 
   // Internal refs
