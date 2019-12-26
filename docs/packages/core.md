@@ -17,6 +17,7 @@
 - `api.paths` 等插件注册结束后才 ready，paths 中仅保留 `cwd`, `absNodeModulesPath`, `absSrcPath`, `absOutputPath` 和 `absTmpPath`
 - `absTmpPath` 从 `src/pages/.umi` 调整到 `src/.umi`，因为有些应用场景没有 pages 目录，比如 father-doc
 - `api.writeTmpFile` 只能在 `api.onGenerateFiles` 中使用
+- 删除 `api.modifyEntryRender` 接口
 
 ## Config
 

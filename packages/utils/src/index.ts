@@ -12,6 +12,8 @@ import yargs from 'yargs';
 export { yargs };
 import mkdirp from 'mkdirp';
 export { mkdirp };
+import Mustache from 'mustache';
+export { Mustache };
 import rimraf from 'rimraf';
 export { rimraf };
 import yParser from 'yargs-parser';

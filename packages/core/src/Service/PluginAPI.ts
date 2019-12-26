@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { mkdirp } from '@umijs/utils';
+import utils, { mkdirp } from '@umijs/utils';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
@@ -17,11 +17,13 @@ export default class PluginAPI {
   id: string;
   key: string;
   service: Service;
+  utils: typeof utils;
 
   constructor(opts: IOpts) {
     this.id = opts.id;
     this.key = opts.key;
     this.service = opts.service;
+    this.utils = utils;
   }
 
   // TODO: reversed keys

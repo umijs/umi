@@ -223,7 +223,7 @@ export default class Service {
         // 由于 pluginMethods 需要在 register 阶段可用
         // 必须通过 proxy 的方式动态获取最新，以实现边注册边使用的效果
         if (this.pluginMethods[prop]) return this.pluginMethods[prop];
-        if (['applyPlugins'].includes(prop)) {
+        if (['applyPlugins', 'paths'].includes(prop)) {
           if (typeof this[prop] === 'function') {
             return this[prop].bind(this);
           } else {
