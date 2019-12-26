@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plugin, Switch, Route, Redirect } from '@umijs/runtime';
 import { IRoute } from './types';
 
@@ -14,6 +14,22 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
+function wrapInitialPropsFetch(WrappedComponent: any) {
+  return function Foo(props: object) {
+    const [initialProps, setInitialProps] = useState();
+    useEffect(() => {
+      (async () => {
+        const initialProps = await WrappedComponent!.getInitialProps!();
+        setInitialProps(initialProps);
+      })();
+    }, []);
+    return <WrappedComponent {...props} {...initialProps} />;
+  };
+}
+
+// TODO: custom Switch
+// 1. pass props to child routes
+// 2. keep alive
 function render({
   route,
   opts,
@@ -29,19 +45,20 @@ function render({
   });
 
   let { component: Component, Routes } = route;
-  const newProps = {
-    ...props,
-    ...opts.extraProps,
-    route,
-  };
   if (Component) {
     if (Component.getInitialProps) {
-      // TODO: 封装 Component，处理路由切换时的 getInitialProps
+      Component = wrapInitialPropsFetch(Component);
     }
+
     if (Routes) {
       // TODO: Routes 更名
       // TODO: 用 Routes 封装 Component
     }
+
+    const newProps = {
+      ...props,
+      route,
+    };
     return <Component {...newProps}>{routes}</Component>;
   } else {
     return routes;
@@ -53,6 +70,7 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
     key: route.key || index,
     exact: route.exact,
     strict: route.strict,
+    sensitive: route.sensitive,
     path: route.path,
   };
   if (route.redirect) {

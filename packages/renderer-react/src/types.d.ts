@@ -5,7 +5,7 @@ interface IComponent extends FunctionComponent {
 }
 
 export interface IRoute {
-  path: string;
+  path?: string;
   exact?: boolean;
   redirect?: string;
   component?: IComponent;
