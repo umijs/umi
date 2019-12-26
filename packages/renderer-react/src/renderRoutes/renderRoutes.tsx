@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plugin, Redirect } from '@umijs/runtime';
-import { IRoute } from './types';
+import { IRoute } from '../types';
 import Switch from './Switch';
 import Route from './Route';
 

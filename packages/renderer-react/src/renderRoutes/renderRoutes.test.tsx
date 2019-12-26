@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter, Plugin } from '@umijs/runtime';
 import { render, screen, wait, getByText } from '@testing-library/react';
 import renderRoutes from './renderRoutes';
-import { IRoute } from './types';
+import { IRoute } from '../types';
 
 function TestInitialProps({ foo }: { foo: string }) {
   return <h1 data-testid="test">{foo}</h1>;

@@ -5,10 +5,6 @@ export default function Switch(props: any) {
   return (
     <RouterContext.Consumer>
       {(context: any) => {
-        if (!context) {
-          throw new Error('You should not use <Switch> outside a <Router>');
-        }
-
         const { children, ...extraProps } = props;
         const { location } = context;
         let element: any,
