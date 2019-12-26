@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Plugin, Switch, Route, Redirect } from '@umijs/runtime';
+import { Plugin, Redirect } from '@umijs/runtime';
 import { IRoute } from './types';
+import Switch from './Switch';
+import Route from './Route';
 
 interface IOpts {
   routes: IRoute[];
@@ -28,8 +30,7 @@ function wrapInitialPropsFetch(WrappedComponent: any) {
 }
 
 // TODO: custom Switch
-// 1. pass props to child routes
-// 2. keep alive
+// 1. keep alive
 function render({
   route,
   opts,

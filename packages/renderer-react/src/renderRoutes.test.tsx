@@ -110,6 +110,20 @@ const routes = renderRoutes({
         }`}</h1>
       ),
     } as IRoute,
+    {
+      path: '/pass-props',
+      component: (props: any) => {
+        return React.Children.map(props.children, child => {
+          return React.cloneElement(child, { foo: 'bar' });
+        });
+      },
+      routes: [
+        {
+          path: '/pass-props',
+          component: (props: any) => <h1 data-testid="test">{props.foo}</h1>,
+        },
+      ],
+    },
     { component: () => <h1 data-testid="test">Fallback</h1> },
   ],
   plugin: new Plugin(),
@@ -178,6 +192,14 @@ test('/props-route', async () => {
   expect((await screen.findByTestId('test')).innerHTML).toEqual(
     '/props-route bar',
   );
+});
+
+test('/pass-props', async () => {
+  const { container } = render(
+    <MemoryRouter initialEntries={['/pass-props']}>{routes}</MemoryRouter>,
+  );
+  await wait(() => getByText(container, 'bar'));
+  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
 });
 
 test('/get-initial-props', async () => {
