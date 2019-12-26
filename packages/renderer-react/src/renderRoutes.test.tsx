@@ -18,6 +18,31 @@ TestInitialProps.getInitialProps = async () => {
   });
 };
 
+function TestInitialPropsParent({
+  foo,
+  children,
+}: {
+  foo: string;
+  children: any;
+}) {
+  return (
+    <>
+      <h1 data-testid="test-parent">{foo}</h1>
+      {children}
+    </>
+  );
+}
+
+TestInitialPropsParent.getInitialProps = async () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        foo: 'parent',
+      });
+    }, 100);
+  });
+};
+
 const routes = renderRoutes({
   routes: [
     {
@@ -66,6 +91,16 @@ const routes = renderRoutes({
     { path: '/redirect', redirect: '/d' },
     { path: '/d', component: () => <h1 data-testid="test">Redirect</h1> },
     { path: '/get-initial-props', component: TestInitialProps as any },
+    {
+      path: '/get-initial-props-embed',
+      component: TestInitialPropsParent as any,
+      routes: [
+        {
+          path: '/get-initial-props-embed',
+          component: TestInitialProps as any,
+        },
+      ],
+    },
     {
       path: '/props-route',
       foo: 'bar',
@@ -153,6 +188,20 @@ test('/get-initial-props', async () => {
   );
   await wait(() => getByText(container, 'bar'));
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
+});
+
+test('/get-initial-props-embed', async () => {
+  const { container } = render(
+    <MemoryRouter initialEntries={['/get-initial-props-embed']}>
+      {routes}
+    </MemoryRouter>,
+  );
+  await wait(() => getByText(container, 'bar'));
+  await wait(() => getByText(container, 'parent'));
+  expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
+  expect((await screen.findByTestId('test-parent')).innerHTML).toEqual(
+    'parent',
+  );
 });
 
 test('/fallback-20140924', async () => {
