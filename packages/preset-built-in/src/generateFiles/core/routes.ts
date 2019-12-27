@@ -16,4 +16,11 @@ export default function(api: IApi) {
       }),
     });
   });
+
+  api.addUmiExports(() => {
+    return {
+      specifiers: ['routes'],
+      source: '@/.umi/core/routes',
+    };
+  });
 }

@@ -8,4 +8,3 @@ plugin.register(require('{{{ . }}}'));
 {{/plugins}}
 
 export { plugin };
-

@@ -8,6 +8,10 @@ interface IModify<T, U> {
   (fn: { (initialValue: T, args: U): T }): void;
 }
 
+interface IAdd<T, U> {
+  (fn: { (args: T): U | U[] }): void;
+}
+
 export interface IApi extends PluginAPI {
   // properties
   paths: typeof Service.prototype.paths;
@@ -29,4 +33,18 @@ export interface IApi extends PluginAPI {
   modifyPaths: IModify<string[], null>;
 
   // ApplyPluginType.add
+  addUmiExports: IAdd<
+    null,
+    {
+      source: string;
+      specifiers?: (
+        | string
+        | {
+            local: string;
+            exported: string;
+          }
+      )[];
+      exportAll?: boolean;
+    }
+  >;
 }

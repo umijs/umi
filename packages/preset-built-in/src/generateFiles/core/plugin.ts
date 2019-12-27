@@ -22,4 +22,11 @@ export default function(api: IApi) {
       }),
     });
   });
+
+  api.addUmiExports(() => {
+    return {
+      specifiers: ['plugin'],
+      source: '@/.umi/core/plugin',
+    };
+  });
 }

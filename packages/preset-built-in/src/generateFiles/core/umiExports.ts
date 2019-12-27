@@ -70,7 +70,7 @@ export default function(api: IApi) {
 
     api.writeTmpFile({
       path: 'core/umiExports.ts',
-      content: umiExports.map(generateExports).join('\n'),
+      content: umiExports.map(generateExports).join('\n') + `\n`,
     });
   });
 }
