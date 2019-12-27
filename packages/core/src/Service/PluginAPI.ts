@@ -154,16 +154,4 @@ export default class PluginAPI {
       this.service.skipPluginIds.add(pluginId);
     });
   }
-
-  writeTmpFile({ path, content }: { path: string; content: string }) {
-    assert(
-      this.service.stage >= ServiceStage.pluginReady,
-      `api.writeTmpFile() should not execute in register stage.`,
-    );
-    const absPath = join(this.service.paths.absTmpPath!, path);
-    utils.mkdirp.sync(dirname(absPath));
-    if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
-      writeFileSync(absPath, content, 'utf-8');
-    }
-  }
 }

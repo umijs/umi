@@ -23,6 +23,7 @@ export interface IApi extends PluginAPI {
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
+  writeTmpFile: { (args: { path: string; content: string }): void };
 
   // ApplyPluginType.event
   onPluginReady: IEvent<null>;

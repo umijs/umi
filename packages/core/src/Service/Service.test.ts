@@ -265,32 +265,6 @@ test('api.registerCommand', async () => {
   expect(ret).toEqual(`hello bar`);
 });
 
-test('api.writeTmpFile error in register stage', async () => {
-  const cwd = join(fixtures, 'api-writeTmpFile');
-  const service = new Service({
-    cwd,
-    plugins: [require.resolve(join(cwd, 'plugin-error'))],
-  });
-  await expect(service.init()).rejects.toThrow(
-    /api.writeTmpFile\(\) should not execute in register stage./,
-  );
-});
-
-test('api.writeTmpFile', async () => {
-  const cwd = join(fixtures, 'api-writeTmpFile');
-  const service = new Service({
-    cwd,
-    plugins: [require.resolve(join(cwd, 'plugin'))],
-  });
-  await service.run({
-    name: 'foo',
-    args: {},
-  });
-  const tmpFile = join(cwd, '.umi-test', 'foo');
-  expect(readFileSync(tmpFile, 'utf-8')).toEqual('foo');
-  rimraf.sync(tmpFile);
-});
-
 test('api.registerMethod', async () => {
   const cwd = join(fixtures, 'api-registerMethod');
   const service = new Service({
