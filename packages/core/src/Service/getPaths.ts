@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
-import { winPath } from '@umijs/utils/src';
+import { winPath } from '@umijs/utils';
 
 function isDirectoryAndExist(path: string) {
   return existsSync(path) && statSync(path).isDirectory();

@@ -62,7 +62,7 @@ export function generateExports(item: any) {
 
 export default function(api: IApi) {
   api.onGenerateFiles(async () => {
-    const umiExports = await api.applyPlugin({
+    const umiExports = await api.applyPlugins({
       key: 'addUmiExports',
       type: api.ApplyPluginsType.add,
       initialValue: [],

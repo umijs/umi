@@ -13,14 +13,14 @@ export default function(api: IApi) {
     config: {
       default: { type: 'browser' },
       schema(joi) {
-        const type = joi.string().valid(['browser', 'hash', 'memory']);
-        return joi.alternatives().try([
+        const type = joi.string().allow('browser', 'hash', 'memory');
+        return joi.alternatives().try(
           type,
           joi.object({
             type,
             options: joi.object(),
           }),
-        ]);
+        );
       },
     },
   });

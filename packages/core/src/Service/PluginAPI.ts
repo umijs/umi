@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import utils, { mkdirp } from '@umijs/utils';
+import * as utils from '@umijs/utils';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
@@ -142,8 +142,8 @@ export default class PluginAPI {
       `api.writeTmpFile() should not execute in register stage.`,
     );
     const absPath = join(this.service.paths.absTmpPath!, path);
-    mkdirp.sync(dirname(absPath));
-    if (!existsSync(path) || readFileSync(path, 'utf-8') !== content) {
+    utils.mkdirp.sync(dirname(absPath));
+    if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
       writeFileSync(absPath, content, 'utf-8');
     }
   }

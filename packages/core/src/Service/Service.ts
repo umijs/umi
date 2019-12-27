@@ -215,11 +215,9 @@ export default class Service {
     const pluginAPI = new PluginAPI(opts);
 
     // register built-in methods
-    ['onPluginReady', 'modifyPaths', 'onStart', 'ApplyPluginsType'].forEach(
-      name => {
-        pluginAPI.registerMethod({ name });
-      },
-    );
+    ['onPluginReady', 'modifyPaths', 'onStart'].forEach(name => {
+      pluginAPI.registerMethod({ name });
+    });
 
     return new Proxy(pluginAPI, {
       get: (target, prop: string) => {

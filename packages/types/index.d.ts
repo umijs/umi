@@ -17,7 +17,7 @@ export interface IApi extends PluginAPI {
   env: typeof Service.prototype.env;
 
   // methods
-  applyPlugin: typeof Service.prototype.applyPlugins;
+  applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
 
   // ApplyPluginType.event

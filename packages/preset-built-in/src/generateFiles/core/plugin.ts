@@ -10,7 +10,7 @@ export default function(api: IApi) {
 
   api.onGenerateFiles(async args => {
     const pluginTpl = readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8');
-    const validKeys = await api.applyPlugin({
+    const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       type: api.ApplyPluginsType.add,
       initialValue: ['patchRoutes', 'rootContainer', 'render'],
