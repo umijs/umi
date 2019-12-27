@@ -356,7 +356,7 @@ ${name} from ${plugin.path} register failed.`);
     }
   }
 
-  async run({ name, args }: { name: string; args?: any }) {
+  async run({ name, args = {} }: { name: string; args?: any }) {
     this.setStage(ServiceStage.init);
     await this.init();
 
