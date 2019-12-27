@@ -216,7 +216,7 @@ export default class Service {
 
     // register built-in methods
     ['onPluginReady', 'modifyPaths', 'onStart'].forEach(name => {
-      pluginAPI.registerMethod({ name });
+      pluginAPI.registerMethod({ name, exitsError: false });
     });
 
     return new Proxy(pluginAPI, {

@@ -121,13 +121,32 @@ export default class PluginAPI {
     }
   }
 
-  registerMethod({ name }: { name: string }) {
-    this.service.pluginMethods[name] = (fn: Function) => {
-      this.register({
-        key: name,
-        fn,
+  registerMethod({
+    name,
+    fn,
+    exitsError = true,
+  }: {
+    name: string;
+    fn?: Function;
+    exitsError?: boolean;
+  }) {
+    if (this.service.pluginMethods[name]) {
+      if (exitsError) {
+        throw new Error(
+          `api.registerMethod() failed, method ${name} is already exist.`,
+        );
+      } else {
+        return;
+      }
+    }
+    this.service.pluginMethods[name] =
+      fn ||
+      ((fn: Function) => {
+        this.register({
+          key: name,
+          fn,
+        });
       });
-    };
   }
 
   skipPlugins(pluginIds: string[]) {

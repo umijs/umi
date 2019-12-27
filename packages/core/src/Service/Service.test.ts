@@ -291,6 +291,46 @@ test('api.writeTmpFile', async () => {
   rimraf.sync(tmpFile);
 });
 
+test('api.registerMethod', async () => {
+  const cwd = join(fixtures, 'api-registerMethod');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_1')),
+      require.resolve(join(cwd, 'plugin_2')),
+    ],
+  });
+  await service.init();
+  expect(service.pluginMethods['foo']()).toEqual('foo');
+  expect(service.pluginMethods['bar']()).toEqual('bar');
+});
+
+test('api.registerMethod fail if exist', async () => {
+  const cwd = join(fixtures, 'api-registerMethod');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_1')),
+      require.resolve(join(cwd, 'plugin_1_duplicated')),
+    ],
+  });
+  await expect(service.init()).rejects.toThrow(
+    /api.registerMethod\(\) failed, method foo is already exist/,
+  );
+});
+
+test('api.registerMethod return silently if exist and opts.exitsError is set to false', async () => {
+  const cwd = join(fixtures, 'api-registerMethod');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_1')),
+      require.resolve(join(cwd, 'plugin_1_duplicated_existsError_false')),
+    ],
+  });
+  await service.init();
+});
+
 test('plugin register throw error', async () => {
   const cwd = join(fixtures, 'plugin-register-throw-error');
   const service = new Service({

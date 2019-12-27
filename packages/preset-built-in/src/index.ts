@@ -4,6 +4,9 @@ export default function() {
       // register methods
       require.resolve('./registerMethods'),
 
+      // misc
+      require.resolve('./routes'),
+
       // generate files
       require.resolve('./generateFiles/core/history'),
       require.resolve('./generateFiles/core/plugin'),
