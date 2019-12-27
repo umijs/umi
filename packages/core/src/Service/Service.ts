@@ -80,6 +80,7 @@ export default class Service {
     absTmpPath?: string;
   } = {};
   env: string | undefined;
+  ApplyPluginsType = ApplyPluginsType;
 
   constructor(opts: IOpts) {
     debug('opts:');
@@ -214,16 +215,28 @@ export default class Service {
     const pluginAPI = new PluginAPI(opts);
 
     // register built-in methods
-    ['onPluginReady', 'modifyPaths', 'onStart'].forEach(name => {
-      pluginAPI.registerMethod({ name });
-    });
+    ['onPluginReady', 'modifyPaths', 'onStart', 'ApplyPluginsType'].forEach(
+      name => {
+        pluginAPI.registerMethod({ name });
+      },
+    );
 
     return new Proxy(pluginAPI, {
       get: (target, prop: string) => {
         // 由于 pluginMethods 需要在 register 阶段可用
         // 必须通过 proxy 的方式动态获取最新，以实现边注册边使用的效果
         if (this.pluginMethods[prop]) return this.pluginMethods[prop];
-        if (['applyPlugins', 'paths'].includes(prop)) {
+        if (
+          [
+            'applyPlugins',
+            'ApplyPluginsType',
+            'paths',
+            'cwd',
+            'pkg',
+            'config',
+            'env',
+          ].includes(prop)
+        ) {
           if (typeof this[prop] === 'function') {
             return this[prop].bind(this);
           } else {

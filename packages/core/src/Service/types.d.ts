@@ -1,3 +1,5 @@
+import joi from '@hapi/joi';
+
 export interface IDep {
   [name: string]: string;
 }
@@ -21,7 +23,9 @@ export interface IPlugin {
 
 export interface IPluginConfig {
   default?: any;
-  schema?: Function;
+  schema?: {
+    (joi: joi.Root): joi.Schema;
+  };
   onChange?: Function;
 }
 
