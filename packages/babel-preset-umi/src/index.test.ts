@@ -12,6 +12,7 @@ const DEFAULT_OPTS = {
 interface IOpts {
   typescript?: boolean;
   env?: any;
+  transformRuntime?: object;
 }
 
 function transformWithPreset(code: string, opts: IOpts) {
@@ -168,7 +169,7 @@ test('transform runtime', () => {
     },
     transformRuntime: {},
   });
-  expect(winPath(path.join(code))).toContain(
+  expect(winPath(code!)).toContain(
     `node_modules/@babel/runtime/helpers/classCallCheck"));`,
   );
 });
