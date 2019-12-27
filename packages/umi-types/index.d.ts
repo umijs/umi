@@ -174,6 +174,10 @@ interface IGetRoutes {
   (): IRoute[];
 }
 
+interface IGetRouteComponents {
+  (): string[];
+}
+
 interface IWinPath {
   (path: string): string;
 }
@@ -197,22 +201,11 @@ export interface IBeforeDevServerFunc {
 }
 
 export interface IAfterDevServerFunc {
-  (
-    args: {
-      server: any;
-      devServerPort: number;
-    },
-  ): void;
+  (args: { server: any; devServerPort: number }): void;
 }
 
 export interface IBeforeBlockWritingFunc {
-  (
-    args: {
-      service: any;
-      sourcePath: string;
-      blockPath: string;
-    },
-  ): void;
+  (args: { service: any; sourcePath: string; blockPath: string }): void;
 }
 
 interface IBeforeDevServer {
@@ -312,15 +305,13 @@ type IUiLogType = 'error' | 'info';
 export type IUiLog = (type: IUiLogType, payload: string) => void;
 
 export interface IOnUISocketFunc {
-  (
-    args: {
-      action: IAction;
-      send: ISend;
-      success: ISuccess<{}>;
-      failure: IFailure<{}>;
-      log: IUiLog;
-    },
-  ): void;
+  (args: {
+    action: IAction;
+    send: ISend;
+    success: ISuccess<{}>;
+    failure: IFailure<{}>;
+    log: IUiLog;
+  }): void;
 }
 
 export interface IOnUISocket {
@@ -477,6 +468,7 @@ export interface IApi {
   debug: ILog;
   writeTmpFile: IWriteTmpFile;
   getRoutes: IGetRoutes;
+  getRouteComponents: IGetRouteComponents;
   findJS: IFind;
   findCSS: IFind;
   compatDirname: ICompatDirname;
