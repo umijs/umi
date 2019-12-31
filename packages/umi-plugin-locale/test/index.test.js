@@ -10,6 +10,9 @@ const absPagesPath = winPath(join(__dirname, '../examples/base/src/page'));
 const absSeparatorSrcPath = winPath(join(__dirname, '../examples/base-separator/src'));
 const absSeparatorPagesPath = winPath(join(__dirname, '../examples/base-separator/src/page'));
 
+const absMultipleExtSrcPath = winPath(join(__dirname, '../examples/multiple-ext/src'));
+const absMultipleExtPagesPath = winPath(join(__dirname, '../examples/multiple-ext/src/page'));
+
 let wrapperFile;
 
 const api = {
@@ -137,6 +140,44 @@ describe('test func with singular false', () => {
   test('getLocaleFileList', () => {
     const list = getLocaleFileList(absSrcPath, absPagesPath, false);
     expect(list).toEqual([]);
+  });
+});
+
+describe('test func with multiple locale ext', () => {
+  test('getLocaleFileList', () => {
+    const list = getLocaleFileList(absMultipleExtSrcPath, absMultipleExtPagesPath, true);
+    expect(list).toEqual([
+      {
+        lang: 'en',
+        country: 'US',
+        name: 'en-US',
+        paths: [
+          `${absMultipleExtSrcPath}/locale/en-US.js`,
+          `${absMultipleExtPagesPath}/temp/locale/en-US.js`,
+        ],
+        momentLocale: '',
+      },
+      {
+        lang: 'sk',
+        country: 'SK',
+        name: 'sk',
+        paths: [
+          `${absMultipleExtSrcPath}/locale/sk.json`,
+          `${absMultipleExtPagesPath}/temp/locale/sk.json`,
+        ],
+        momentLocale: 'sk',
+      },
+      {
+        lang: 'zh',
+        country: 'CN',
+        name: 'zh-CN',
+        paths: [
+          `${absMultipleExtSrcPath}/locale/zh-CN.ts`,
+          `${absMultipleExtPagesPath}/temp/locale/zh-CN.ts`,
+        ],
+        momentLocale: 'zh-cn',
+      },
+    ]);
   });
 });
 
