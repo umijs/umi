@@ -25,16 +25,16 @@ function getMomentLocale(lang, country) {
 
 // export for test
 export function getLocaleFileList(absSrcPath, absPagesPath, singular, separator = '-') {
-  const localeFileMath = new RegExp(`^([a-z]{2})${separator}?([A-Z]{2})?\.(js|ts)$`);
+  const localeFileMath = new RegExp(`^([a-z]{2})${separator}?([A-Z]{2})?\.(js|json|ts)$`);
   const localeFolder = singular ? 'locale' : 'locales';
   const localeFiles = globby
-    .sync('*.{ts,js}', {
+    .sync('*.{ts,js,json}', {
       cwd: join(absSrcPath, localeFolder),
     })
     .map(name => join(absSrcPath, localeFolder, name))
     .concat(
       globby
-        .sync(`**/${localeFolder}/*.{ts,js}`, {
+        .sync(`**/${localeFolder}/*.{ts,js,json}`, {
           cwd: absPagesPath,
         })
         .map(name => join(absPagesPath, name)),
