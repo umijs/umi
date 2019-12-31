@@ -59,7 +59,7 @@ export const locale = {
 
 ## 多语言文件约定
 
-多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.js`
+多语言文件的命名规范：`<lang><分割符（通过 baseSeparator 配置）><COUNTRY>.{ts,js,json}`
 
 多语言文件的内容规范：键-值组成的字面量，如下：
 
@@ -77,6 +77,26 @@ en-US.js
 export default {
   WELCOME_TO_UMI_WORLD: "{name}, welcome to umi's world",
 };
+```
+
+### 支持多格式的语言文件
+
+支持 ts、js 和 json 格式的语言文件。
+
+zh-CN.js, zh-CN.ts
+
+```javascript
+export default {
+  WELCOME_TO_UMI_WORLD: '{name}，欢迎光临umi的世界',
+};
+```
+
+zh-CN.json
+
+```javascript
+{
+  "WELCOME_TO_UMI_WORLD": "{name}，欢迎光临umi的世界"
+}
 ```
 
 ## 扩展 API
