@@ -369,6 +369,8 @@ declare namespace IUI {
     service: IService;
     /** event */
     event: IEvent;
+    /** hooks */
+    readonly hooks: any;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */

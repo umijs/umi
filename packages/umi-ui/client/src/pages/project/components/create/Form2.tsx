@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Switch, Tooltip } from 'antd';
-import { IStepItemForm } from '@/components/StepForm/StepItem';
+import { Form, Checkbox, Button, Select, Row, Col, Radio, Spin, Tooltip } from 'antd';
+import { IStepItemForm } from 'umi-types/ui';
 import useNpmClients from '@/components/hooks/useNpmClients';
 import CardForm, { IOption } from '@/components/CardForm';
-import { REACT_FEATURES, SPEEDUP_CLIENTS, REACT_FEATURES_TIP } from '@/enums';
+import { REACT_FEATURES, REACT_FEATURES_TIP } from '@/enums';
 import ProjectContext from '@/layouts/ProjectContext';
 import styles from './index.less';
 
@@ -14,20 +14,17 @@ const { Option } = Select;
 const Form2: React.FC<IStepItemForm> = (props, ref) => {
   const { goPrev, handleFinish, style, active } = props;
   const { formatMessage, locale } = useContext(ProjectContext);
-  const { npmClient, error, loading } = useNpmClients({
+  const { npmClient, loading } = useNpmClients({
     active,
   });
   const [form] = Form.useForm();
-  useEffect(
-    () => {
-      if (Array.isArray(npmClient) && npmClient.length > 0) {
-        form.setFieldsValue({
-          npmClient: npmClient[0],
-        });
-      }
-    },
-    [npmClient],
-  );
+  useEffect(() => {
+    if (Array.isArray(npmClient) && npmClient.length > 0) {
+      form.setFieldsValue({
+        npmClient: npmClient[0],
+      });
+    }
+  }, [npmClient]);
   // TODO: tmp options, real from server
   const options: IOption[] = [
     {
