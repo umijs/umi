@@ -29,7 +29,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run bootstrap -- --npm-client=npm
+      - run: npm run bootstrap
       - run: npm run build
       - run: npm run ui:build
       - run:
