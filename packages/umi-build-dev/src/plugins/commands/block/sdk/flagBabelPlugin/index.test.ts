@@ -1,7 +1,6 @@
 import { transform } from '@babel/core';
 import { join, basename } from 'path';
-import { readdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
-import { winEOL, winPath } from 'umi-utils';
+import { readdirSync, readFileSync, existsSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
 
