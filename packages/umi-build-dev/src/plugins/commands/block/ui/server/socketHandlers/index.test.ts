@@ -378,7 +378,7 @@ describe('block interface socketHandlers test', () => {
     });
 
     it('pages/bar.jsx 页面', async () => {
-      const targetPaths = '/tmp/src/pages/bar.jsx';
+      const targetPaths = join('/', 'tmp', 'src', 'pages', 'bar.jsx');
       const existsSyncMock = jest
         .spyOn(fs, 'existsSync')
         .mockImplementation((path: string) => targetPaths.indexOf(path) > -1);
@@ -402,7 +402,7 @@ describe('block interface socketHandlers test', () => {
           winPath: v => v,
           findJS,
           paths: {
-            absPagesPath: '/tmp/src/pages',
+            absPagesPath: join('/', 'tmp', 'src', 'pages'),
           },
         },
       };

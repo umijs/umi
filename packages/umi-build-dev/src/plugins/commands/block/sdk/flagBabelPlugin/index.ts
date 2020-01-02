@@ -223,7 +223,7 @@ export default () => {
           }
           args[2] = buildGUmiUIFlag({
             index: `${BLOCK_LAYOUT_PREFIX}${index}`,
-            filename,
+            filename: winPath(filename),
             jsx: false,
             inline: true,
             content,
