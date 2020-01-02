@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { join } from 'path';
 import { findJS } from 'umi-utils';
 import haveRootBinding from '../../../sdk/haveRootBinding';
 
@@ -72,7 +73,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(existsSyncMock).toHaveBeenCalledWith('/test/package.json');
+      expect(existsSyncMock).toHaveBeenCalledWith(join('/', 'test', 'package.json'));
       expect(params.failure.mock.calls[0][0].message).toMatch(/package\.json/);
       existsSyncMock.mockRestore();
     });

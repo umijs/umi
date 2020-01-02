@@ -6,7 +6,7 @@ import insertComponent from './index';
 const fixtures = winPath(join(__dirname, 'fixtures'));
 
 function formatCode(code) {
-  return winEOL(code.trim().replace(/[A-Z]:/g, ''));
+  return winPath(winEOL(code.trim().replace(/[A-Z]:/g, '')));
 }
 
 function findFooFile(base) {
