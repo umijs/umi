@@ -1,50 +1,23 @@
 import * as React from 'react';
 import { Form, Input, Button } from 'antd';
-import debounce from 'lodash/debounce';
+import { useDebounceFn } from '@umijs/hooks';
+import { IStepItemForm } from 'umi-types/ui';
 import { trimSlash, validateDirPath } from '@/components/DirectoryForm/pathUtils';
-import { IStepItemForm } from '@/components/StepForm/StepItem';
 import DirectoryForm from '@/components/DirectoryForm';
 import { checkDirValid } from '@/services/project';
 import { isValidFolderName } from '@/utils';
 import ProjectContext from '@/layouts/ProjectContext';
 import styles from './index.less';
 
-const { useState, useEffect, useContext, forwardRef } = React;
+const { useContext, forwardRef } = React;
 
 const Form1: React.FC<IStepItemForm> = (props, ref) => {
-  const { cwd, goNext, goPrev, style } = props;
+  const { cwd, goNext, style } = props;
   const { formatMessage } = useContext(ProjectContext);
   const [form] = Form.useForm();
-  const handleDebounceInput = debounce(() => {
+  const { run } = useDebounceFn(() => {
     form.validateFields();
   }, 500);
-
-  useEffect(() => {
-    return () => {
-      handleDebounceInput.cancel();
-    };
-  }, []);
-
-  // const handleBaseDirChange = (value: string) => {
-  //   const name = form.getFieldValue('name') ? form.getFieldValue('name') : '';
-  //   const dir = `${value.endsWith('/') ? value : `${value}/`}${name}`;
-  //   form.setFieldsValue({
-  //     fullPath: dir,
-  //   });
-  //   setFullPath(dir);
-  // };
-
-  // const handleProjectName = e => {
-  //   const basename = fullPath
-  //     .split('/')
-  //     .slice(0, -1)
-  //     .join('/');
-  //   const dir = `${basename.endsWith('/') ? basename : `${basename}/`}${e.target.value}`;
-  //   form.setFieldsValue({
-  //     fullPath: dir,
-  //   });
-  //   setFullPath(dir);
-  // };
 
   const getFullPath = (fields = {}) => {
     const { name = form.getFieldValue('name'), baseDir = form.getFieldValue('baseDir') } = fields;
@@ -122,7 +95,7 @@ const Form1: React.FC<IStepItemForm> = (props, ref) => {
           placeholder={formatMessage({
             id: 'org.umi.ui.global.project.create.steps.input.placeholder',
           })}
-          onChange={handleDebounceInput}
+          onChange={run}
           onPressEnter={handlePressEnter}
           autoComplete="off"
         />

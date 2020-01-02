@@ -12,10 +12,11 @@ interface IGlobalSearch {
 
 const GlobalSearch: React.SFC<IGlobalSearch> = props => {
   const { onChange, api } = props;
-  const { intl, _ } = api;
+  const { intl, hooks } = api;
+  const { useDebounceFn } = hooks;
 
   // 时间太长会造成卡顿的感觉，200-300 比较合适
-  const handleChangeDebounce = _.debounce((value: string) => {
+  const { run: handleChangeDebounce } = useDebounceFn((value: string) => {
     onChange(value);
   }, 300);
 
