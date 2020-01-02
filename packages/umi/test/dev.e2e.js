@@ -1,9 +1,6 @@
 import puppeteer from 'puppeteer';
 import got from 'got';
 import FormData from 'form-data';
-import { existsSync } from 'fs';
-import { winPath } from 'umi-utils';
-import { join } from 'path';
 
 describe('normal', () => {
   let browser;
@@ -12,7 +9,13 @@ describe('normal', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      args: ['--no-sandbox'],
+      args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--no-first-run',
+        '--no-zygote',
+        '--no-sandbox',
+      ],
     });
   });
 
