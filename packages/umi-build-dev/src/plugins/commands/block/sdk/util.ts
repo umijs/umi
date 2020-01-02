@@ -118,6 +118,17 @@ export function haveChildren(node) {
   }
 }
 
+/**
+ * React child function
+ * <Bar>
+ *  {foo => <div />}
+ * </Bar>
+ * @param node
+ */
+export function isChildFunc(node) {
+  return t.isJSXElement(node) && node.children.some(child => t.isJSXExpressionContainer(child));
+}
+
 export function getReturnNode(node, path) {
   if (
     t.isArrowFunctionExpression(node) ||

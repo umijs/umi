@@ -8,6 +8,7 @@ import {
   getReturnNode,
   isJSXElement,
   haveChildren,
+  isChildFunc,
 } from '../util';
 import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
@@ -53,7 +54,7 @@ export default () => {
 
   function addUmiUIFlag(node, { filename, replace }) {
     if (isJSXElement(node)) {
-      if (haveChildren(node)) {
+      if (haveChildren(node) && !isChildFunc(node)) {
         if (t.isJSXElement(node) || t.isJSXFragment(node)) {
           let index = node.children.filter(n => isJSXElement(n)).length;
           let i = node.children.length - 1;
