@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Debugger } from 'debug';
 import { ReactNode, Context, FC, FunctionComponent, ReactElement, ComponentClass } from 'react';
 import { Terminal as XTerminal, ITerminalOptions } from 'xterm';
+import * as hooks from '@umijs/hooks';
 import moment from 'moment';
 import * as intl from './locale';
 import { IRoute } from './';
@@ -364,13 +365,19 @@ declare namespace IUI {
     service: IService;
   }
 
+  type UmiHooks = typeof hooks;
+
+  interface Hooks extends UmiHooks {
+    // extend more hooks
+  }
+
   class IApiClass {
     constructor(service: IService);
     service: IService;
     /** event */
     event: IEvent;
     /** hooks */
-    readonly hooks: any;
+    readonly hooks: Hooks;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */
