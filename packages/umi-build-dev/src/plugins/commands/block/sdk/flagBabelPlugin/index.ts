@@ -8,6 +8,7 @@ import {
   getReturnNode,
   isJSXElement,
   haveChildren,
+  isChildFunc,
 } from '../util';
 import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
 
@@ -53,6 +54,9 @@ export default () => {
 
   function addUmiUIFlag(node, { filename, replace }) {
     if (isJSXElement(node)) {
+      if (isChildFunc(node)) {
+        return;
+      }
       if (haveChildren(node)) {
         if (t.isJSXElement(node) || t.isJSXFragment(node)) {
           let index = node.children.filter(n => isJSXElement(n)).length;
@@ -222,7 +226,7 @@ export default () => {
           }
           args[2] = buildGUmiUIFlag({
             index: `${BLOCK_LAYOUT_PREFIX}${index}`,
-            filename,
+            filename: winPath(filename),
             jsx: false,
             inline: true,
             content,

@@ -118,6 +118,23 @@ export function haveChildren(node) {
   }
 }
 
+/**
+ * React child function
+ * <Bar>
+ *  {foo => <div />}
+ * </Bar>
+ *
+ * or
+ * React.createElement(Media, { query: "(max-width: 599px)" }, isMobile => {} })
+ * @param node
+ */
+export function isChildFunc(node) {
+  return (
+    (t.isJSXElement(node) && node.children.some(child => t.isJSXExpressionContainer(child))) ||
+    (isReactCreateElement(node) && node.arguments.some(arg => t.isArrowFunctionExpression(arg)))
+  );
+}
+
 export function getReturnNode(node, path) {
   if (
     t.isArrowFunctionExpression(node) ||
