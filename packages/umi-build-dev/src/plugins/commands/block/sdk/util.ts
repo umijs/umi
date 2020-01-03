@@ -123,6 +123,9 @@ export function haveChildren(node) {
  * <Bar>
  *  {foo => <div />}
  * </Bar>
+ *
+ * or
+ * React.createElement(Media, { query: "(max-width: 599px)" }, isMobile => {} })
  * @param node
  */
 export function isChildFunc(node) {
