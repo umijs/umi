@@ -54,7 +54,10 @@ export default () => {
 
   function addUmiUIFlag(node, { filename, replace }) {
     if (isJSXElement(node)) {
-      if (haveChildren(node) && !isChildFunc(node)) {
+      if (isChildFunc(node)) {
+        return;
+      }
+      if (haveChildren(node)) {
         if (t.isJSXElement(node) || t.isJSXFragment(node)) {
           let index = node.children.filter(n => isJSXElement(n)).length;
           let i = node.children.length - 1;
