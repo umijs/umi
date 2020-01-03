@@ -4,6 +4,7 @@ import lodash from 'lodash';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import * as intl from 'umi-plugin-react/locale';
+import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
@@ -44,6 +45,7 @@ export default class PluginAPI {
   event: IUi.IEvent;
   moment: IUi.IMoment;
   _analyze: IUi.IAnalyze;
+  hooks: any;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -54,7 +56,7 @@ export default class PluginAPI {
     this.debug = pluginDebug;
     this.currentProject =
       {
-        ...currentProject
+        ...currentProject,
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Terminal = Terminal;
@@ -70,6 +72,10 @@ export default class PluginAPI {
     this.history = history;
     // 统计
     this._analyze = getAnalyze();
+    /** umi hooks */
+    this.hooks = {
+      ...hooks,
+    };
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {

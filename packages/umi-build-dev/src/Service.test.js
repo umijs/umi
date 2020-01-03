@@ -562,9 +562,9 @@ describe('Service', () => {
     });
     service.init();
     expect(service.getRouteComponents()).toEqual([
-      join(page, '.umi', 'Layout.jsx'),
-      join(page, 'index.js'),
-      join(page, 'news.js'),
+      winPath(join(page, '.umi', 'Layout.jsx')),
+      winPath(join(page, 'index.js')),
+      winPath(join(page, 'news.js')),
     ]);
   });
 });

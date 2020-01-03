@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { join } from 'path';
 import { findJS } from 'umi-utils';
 import haveRootBinding from '../../../sdk/haveRootBinding';
 
@@ -72,7 +73,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(existsSyncMock).toHaveBeenCalledWith('/test/package.json');
+      expect(existsSyncMock).toHaveBeenCalledWith(join('/', 'test', 'package.json'));
       expect(params.failure.mock.calls[0][0].message).toMatch(/package\.json/);
       existsSyncMock.mockRestore();
     });
@@ -377,7 +378,7 @@ describe('block interface socketHandlers test', () => {
     });
 
     it('pages/bar.jsx 页面', async () => {
-      const targetPaths = '/tmp/src/pages/bar.jsx';
+      const targetPaths = join('/', 'tmp', 'src', 'pages', 'bar.jsx');
       const existsSyncMock = jest
         .spyOn(fs, 'existsSync')
         .mockImplementation((path: string) => targetPaths.indexOf(path) > -1);
@@ -401,7 +402,7 @@ describe('block interface socketHandlers test', () => {
           winPath: v => v,
           findJS,
           paths: {
-            absPagesPath: '/tmp/src/pages',
+            absPagesPath: join('/', 'tmp', 'src', 'pages'),
           },
         },
       };
