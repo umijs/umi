@@ -126,7 +126,10 @@ export function haveChildren(node) {
  * @param node
  */
 export function isChildFunc(node) {
-  return t.isJSXElement(node) && node.children.some(child => t.isJSXExpressionContainer(child));
+  return (
+    (t.isJSXElement(node) && node.children?.some?.(child => t.isJSXExpressionContainer(child))) ||
+    (isReactCreateElement(node) && node.arguments?.some?.(arg => t.isArrowFunctionExpression(arg)))
+  );
 }
 
 export function getReturnNode(node, path) {
