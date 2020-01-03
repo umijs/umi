@@ -1,6 +1,6 @@
 {
   "name": "umi-types",
-  "version": "0.5.10",
+  "version": "0.5.11-beta.1",
   "description": "Type definitions for umi.",
   "types": "index",
   "dependencies": {
