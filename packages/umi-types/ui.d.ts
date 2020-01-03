@@ -376,7 +376,7 @@ declare namespace IUI {
     service: IService;
     /** event */
     event: IEvent;
-    /** hooks */
+    /** React hooks for UI development */
     readonly hooks: Hooks;
     /** lodash */
     readonly _: ILodash;
