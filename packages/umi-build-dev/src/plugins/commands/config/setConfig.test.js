@@ -23,6 +23,36 @@ export default {
   rimraf.sync(file);
 });
 
+test('setConfig uppercase strings', () => {
+  const file = join(fixture, 'a.js');
+  writeFileSync(file, `export default { newApps: [] }`, 'utf-8');
+  setConfig({
+    key: 'newApps',
+    value: `[
+      { name: 'Hello', source: 'master' },
+      { name: 'World', source: 'ANTCLOUD' },
+    ]`,
+    file,
+  });
+  expect(readFileSync(file, 'utf-8').trim()).toEqual(
+    `
+export default {
+  newApps: [
+    {
+      name: 'Hello',
+      source: 'master',
+    },
+    {
+      name: 'World',
+      source: 'ANTCLOUD',
+    },
+  ],
+};
+  `.trim(),
+  );
+  rimraf.sync(file);
+});
+
 test('setConfig file not exist', () => {
   const file = join(fixture, 'b.js');
   setConfig({
@@ -189,6 +219,39 @@ export default {
   a: {
     b: false,
   },
+};
+    `.trim(),
+  );
+});
+
+// https://github.com/umijs/umi/issues/3866
+test('update config uppercase strings', () => {
+  expect(
+    update(
+      `
+export default {
+  newApps: [],
+};
+      `,
+      'newApps',
+      `[
+        { name: 'Hello', source: 'master' },
+        { name: 'World', source: 'ANTCLOUD' }
+      ]`,
+    ).trim(),
+  ).toEqual(
+    `
+export default {
+  newApps: [
+    {
+      name: 'Hello',
+      source: 'master',
+    },
+    {
+      name: 'World',
+      source: 'ANTCLOUD',
+    },
+  ],
 };
     `.trim(),
   );
