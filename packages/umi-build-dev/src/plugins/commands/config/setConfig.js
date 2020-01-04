@@ -24,7 +24,7 @@ function buildExpression(keys, str) {
   } else {
     str = `'${str}'`;
   }
-  let exp = template(`(${str})`)().expression;
+  let exp = template(`(${str})`, { placeholderPattern: false })().expression;
 
   let i = 0;
   keys = keys.reverse();
