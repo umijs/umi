@@ -33,12 +33,12 @@
 ```js
 [
   { path: '/', exact: true, component: '@/pages/index' },
-  { path: '/users/:id', exact: true, component: '@/pages/users/[id].js' },
-  { path: '/:post/', exact: true, component: '@/pages/[post]/index.js' },
+  { path: '/users/:id', exact: true, component: '@/pages/users/[id]' },
+  { path: '/:post/', exact: true, component: '@/pages/[post]/index' },
   {
     path: '/:post/comments',
     exact: true,
-    component: '@/pages/[post]/comments.js',
+    component: '@/pages/[post]/comments',
   },
 ];
 ```
@@ -49,7 +49,36 @@
 
 ### 嵌套路由
 
+约定目录下有 `_layout.js` 时会生成嵌套路由。
+
+比如：
+
+```bash
++ pages
+  + users
+    - _layout.js
+    - detail.js
+    - index.js
+```
+
+会生成路由配置，
+
+```js
+[
+  {
+    path: '/users',
+    component: '@/pages/users/_layout',
+    routes: [
+      { path: '/users/detail', exact: true, component: '@/pages/users/detail' },
+      { path: '/users', exact: true, component: '@/pages/users/index' },
+    ],
+  },
+];
+```
+
 ### 全局 layout
+
+约定 `src/layouts/index.js` 为全局 layout。
 
 ### 额外的路由配置（TODO）
 
