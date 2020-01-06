@@ -46,7 +46,7 @@ export default function(cwd: string, args: IArgs) {
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
     ],
-    testPathIgnorePatterns: ['/node_modules/'],
+    testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
     transform: {
       '^.+\\.(js|jsx|ts|tsx)$': require.resolve(
         '../../helpers/transformers/javascript',
