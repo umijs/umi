@@ -235,11 +235,9 @@ export default class Service {
             'env',
           ].includes(prop)
         ) {
-          if (typeof this[prop] === 'function') {
-            return this[prop].bind(this);
-          } else {
-            return this[prop];
-          }
+          return typeof this[prop] === 'function'
+            ? this[prop].bind(this)
+            : this[prop];
         }
         return target[prop];
       },

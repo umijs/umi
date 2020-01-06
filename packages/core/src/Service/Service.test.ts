@@ -6,6 +6,12 @@ import { ApplyPluginsType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 
+const printPluginsLog = (cwd: string, plugins: any) =>
+  Object.keys(plugins).map(id => {
+    const type = plugins[id].isPreset ? 'preset' : 'plugin';
+    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
+  });
+
 test('normal', async () => {
   const cwd = join(fixtures, 'normal');
   const service = new Service({
@@ -39,10 +45,7 @@ test('normal', async () => {
   ]);
 
   await service.init();
-  const plugins = Object.keys(service.plugins).map(id => {
-    const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
-    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
-  });
+  const plugins = printPluginsLog(cwd, service.plugins);
   expect(plugins).toEqual([
     '[preset] @umijs/preset-2',
     '[preset] umi-preset-2',
@@ -79,6 +82,7 @@ test('use built-in', () => {
     useBuiltIn: true,
   });
   expect(service.initialPresets[0].id).toEqual('@umijs/preset-built-in');
+  expect(service.initialPresets[0].key).toEqual('builtIn');
 });
 
 test('no package.json', () => {
@@ -115,7 +119,7 @@ test('applyPlugin with add failed with non-array initialValue', async () => {
       type: ApplyPluginsType.add,
       initialValue: '',
     }),
-  ).rejects.toThrow(/opts.initialValue must be Array if opts.type is add/);
+  ).rejects.toThrow(/opts\.initialValue must be Array if opts\.type is add/);
 });
 
 test('applyPlugin with modify', async () => {
@@ -217,10 +221,7 @@ test('api.registerPresets', async () => {
     presets: [require.resolve(join(cwd, 'preset_1'))],
   });
   await service.init();
-  const plugins = Object.keys(service.plugins).map(id => {
-    const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
-    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
-  });
+  const plugins = printPluginsLog(cwd, service.plugins);
   expect(plugins).toEqual([
     '[preset] ./preset_1.js',
     '[preset] preset_2',
@@ -236,10 +237,7 @@ test('api.registerPlugins', async () => {
     plugins: [require.resolve(join(cwd, 'plugin_1'))],
   });
   await service.init();
-  const plugins = Object.keys(service.plugins).map(id => {
-    const type = service.plugins[id].isPreset ? 'preset' : 'plugin';
-    return `[${type}] ${id.replace(winPath(cwd), '.')}`;
-  });
+  const plugins = printPluginsLog(cwd, service.plugins);
   expect(plugins).toEqual([
     '[preset] ./preset_1.js',
     '[plugin] plugin_4',
@@ -289,7 +287,7 @@ test('api.registerMethod fail if exist', async () => {
     ],
   });
   await expect(service.init()).rejects.toThrow(
-    /api.registerMethod\(\) failed, method foo is already exist/,
+    /api\.registerMethod\(\) failed, method foo is already exist/,
   );
 });
 
