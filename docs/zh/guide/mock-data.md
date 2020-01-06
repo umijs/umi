@@ -32,7 +32,7 @@ export default {
 },
 ```
 
-访问的本地 `/api/users` 接口：
+访问的本地 `/api/currentUser` 接口：
 
 请求头
 
