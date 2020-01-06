@@ -6,7 +6,7 @@ import { ApplyPluginsType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 
-const printPluginsLog = (cwd: string, plugins: any) =>
+const simplyPluginIds = ({ cwd, plugins }: { cwd: string; plugins: any }) =>
   Object.keys(plugins).map(id => {
     const type = plugins[id].isPreset ? 'preset' : 'plugin';
     return `[${type}] ${id.replace(winPath(cwd), '.')}`;
@@ -45,7 +45,10 @@ test('normal', async () => {
   ]);
 
   await service.init();
-  const plugins = printPluginsLog(cwd, service.plugins);
+  const plugins = simplyPluginIds({
+    cwd: cwd,
+    plugins: service.plugins,
+  });
   expect(plugins).toEqual([
     '[preset] @umijs/preset-2',
     '[preset] umi-preset-2',
@@ -221,7 +224,10 @@ test('api.registerPresets', async () => {
     presets: [require.resolve(join(cwd, 'preset_1'))],
   });
   await service.init();
-  const plugins = printPluginsLog(cwd, service.plugins);
+  const plugins = simplyPluginIds({
+    cwd: cwd,
+    plugins: service.plugins,
+  });
   expect(plugins).toEqual([
     '[preset] ./preset_1.js',
     '[preset] preset_2',
@@ -237,7 +243,10 @@ test('api.registerPlugins', async () => {
     plugins: [require.resolve(join(cwd, 'plugin_1'))],
   });
   await service.init();
-  const plugins = printPluginsLog(cwd, service.plugins);
+  const plugins = simplyPluginIds({
+    cwd: cwd,
+    plugins: service.plugins,
+  });
   expect(plugins).toEqual([
     '[preset] ./preset_1.js',
     '[plugin] plugin_4',
