@@ -7,6 +7,7 @@ export default function(api: IApi) {
   const {
     utils: { Mustache },
     paths,
+    env,
   } = api;
 
   api.onGenerateFiles(async args => {
@@ -21,6 +22,7 @@ export default function(api: IApi) {
       content: Mustache.render(routesTpl, {
         routes: route.getJSON({ routes }),
         runtimePath: require.resolve('@umijs/runtime'),
+        aliasedTmpPath: paths.aliasedTmpPath,
       }),
     });
   });
@@ -28,7 +30,7 @@ export default function(api: IApi) {
   api.addUmiExports(() => {
     return {
       specifiers: ['routes'],
-      source: '@/.umi/core/routes',
+      source: `${paths.aliasedTmpPath}/core/routes`,
     };
   });
 }

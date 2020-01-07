@@ -30,15 +30,16 @@ export default function({
     ? join(absSrcPath, 'page')
     : join(absSrcPath, 'pages');
 
+  const tmpDir = ['.umi', env !== 'development' && env]
+    .filter(Boolean)
+    .join('-');
   return normalizeWithWinPath({
     cwd,
     absNodeModulesPath: join(cwd, 'node_modules'),
     absOutputPath: join(cwd, config.outputPath || './dist'),
     absSrcPath,
     absPagesPath,
-    absTmpPath: join(
-      absSrcPath,
-      ['.umi', env !== 'development' && env].filter(Boolean).join('-'),
-    ),
+    absTmpPath: join(absSrcPath, tmpDir),
+    aliasedTmpPath: `@/${tmpDir}`,
   });
 }

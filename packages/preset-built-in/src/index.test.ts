@@ -22,6 +22,8 @@ test('normal', async () => {
   expect(existsSync(join(absTmpDir, 'core/routes.ts'))).toEqual(true);
   expect(existsSync(join(absTmpDir, 'core/umiExports.ts'))).toEqual(true);
   rimraf.sync(join(absTmpDir));
+  expect(existsSync(join(cwd, 'dist', 'umi.js'))).toEqual(true);
+  rimraf.sync(join(cwd, 'dist'));
 });
 
 test('api.writeTmpFile error in register stage', async () => {

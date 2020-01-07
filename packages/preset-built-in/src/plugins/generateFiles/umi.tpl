@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { history, plugin } from '@/.umi/core/umiExports';
+import { history, plugin } from '{{{ aliasedTmpPath }}}/core/umiExports';
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
 

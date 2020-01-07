@@ -14,6 +14,9 @@ export default function() {
       require.resolve('./plugins/generateFiles/core/umiExports'),
       require.resolve('./plugins/generateFiles/umi'),
 
+      // bundle configs
+      require.resolve('./plugins/bundle/alias'),
+
       // commands
       require.resolve('./plugins/commands/dev/dev'),
       require.resolve('./plugins/commands/build/build'),

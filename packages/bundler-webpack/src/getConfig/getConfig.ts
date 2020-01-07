@@ -16,7 +16,11 @@ export default function({ cwd, config, type, env }: IOpts) {
 
   // TODO: 处理 entry
   if (type === 'umi-csr') {
-    webpackConfig.entry('umi').add(join(cwd, '.umi', 'umi.ts'));
+    const tmpDir =
+      process.env.NODE_ENV === 'development'
+        ? '.umi'
+        : `.umi-${process.env.NODE_ENV}`;
+    webpackConfig.entry('umi').add(join(cwd, tmpDir, 'umi.ts'));
   }
 
   const isDev = env === 'development';

@@ -78,6 +78,7 @@ export default class Service {
     absPagesPath?: string;
     absOutputPath?: string;
     absTmpPath?: string;
+    aliasedTmpPath?: string;
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;
@@ -102,6 +103,13 @@ export default class Service {
       localConfig: this.env === 'development',
     });
     this.userConfig = this.configInstance.getUserConfig();
+
+    // get paths
+    this.paths = getPaths({
+      cwd: this.cwd,
+      config: this.userConfig!,
+      env: this.env,
+    });
 
     // setup initial presets and plugins
     const baseOpts = {
@@ -186,11 +194,7 @@ export default class Service {
     const paths = (await this.applyPlugins({
       key: 'modifyPaths',
       type: ApplyPluginsType.modify,
-      initialValue: getPaths({
-        cwd: this.cwd,
-        config: this.config!,
-        env: this.env,
-      }),
+      initialValue: this.paths,
     })) as object;
     Object.keys(paths).forEach(key => {
       this.paths[key] = paths[key];
