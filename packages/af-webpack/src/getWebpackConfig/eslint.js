@@ -1,4 +1,4 @@
-import eslintFormatter from 'react-dev-utils/eslintFormatter';
+import eslintFormatter from './eslintFormatter';
 
 export default function(webpackConfig, opts) {
   const eslintOptions = {
