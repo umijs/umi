@@ -20,5 +20,8 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/routes#readme"
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/routes#readme",
+  "dependencies": {
+    "@umijs/types": "0.0.1-alpha.1"
+  }
 }

@@ -1,11 +1,16 @@
 import { IApi } from '@umijs/types';
 import assert from 'assert';
-import { ServiceStage } from '@umijs/core/src/Service/enums';
 import { dirname, join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 export default function(api: IApi) {
-  ['onGenerateFiles', 'addUmiExports'].forEach(name => {
+  [
+    'onGenerateFiles',
+    'addUmiExports',
+    'modifyBundler',
+    'modifyBundleConfig',
+    'modifyBundleConfigs',
+  ].forEach(name => {
     api.registerMethod({ name });
   });
 
@@ -13,7 +18,7 @@ export default function(api: IApi) {
     name: 'writeTmpFile',
     fn({ path, content }: { path: string; content: string }) {
       assert(
-        api.service.stage >= ServiceStage.pluginReady,
+        api.service.stage >= api.ServiceStage.pluginReady,
         `api.writeTmpFile() should not execute in register stage.`,
       );
       const absPath = join(api.service.paths.absTmpPath!, path);

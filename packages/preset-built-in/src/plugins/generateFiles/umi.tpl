@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { history, plugin, ApplyPluginsType } from 'umi';
-import { renderClient } from '@umijs/renderer-react';
+import { history, plugin } from '@/.umi/core/umiExports';
+import { ApplyPluginsType } from '{{{ runtimePath }}}';
+import { renderClient } from '{{{ rendererPath }}}';
 
 let clientRender = function() {
   renderClient({
-    routes: require('./routes').default,
+    routes: require('./core/routes').default,
     plugin,
     history,
     rootElement: 'root',

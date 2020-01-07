@@ -1,8 +1,8 @@
-import { createMemoryHistory, createHashHistory, createBrowserHistory } from 'umi';
+import { createMemoryHistory, createHashHistory, createBrowserHistory } from '{{{ runtimePath }}}';
 
 const userOptions = {{{ userOptions }}};
 const history = {{{ creator }}}({
   basename: window.basename,
   ...userOptions,
 });
-export default history;
+export { history };

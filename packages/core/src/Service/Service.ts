@@ -81,6 +81,7 @@ export default class Service {
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;
+  ServiceStage = ServiceStage;
 
   constructor(opts: IOpts) {
     debug('opts:');
@@ -228,6 +229,7 @@ export default class Service {
           [
             'applyPlugins',
             'ApplyPluginsType',
+            'ServiceStage',
             'paths',
             'cwd',
             'pkg',

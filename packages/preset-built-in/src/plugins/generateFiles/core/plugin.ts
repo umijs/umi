@@ -19,6 +19,7 @@ export default function(api: IApi) {
       path: 'core/plugin.ts',
       content: Mustache.render(pluginTpl, {
         validKeys,
+        runtimePath: require.resolve('@umijs/runtime'),
       }),
     });
   });

@@ -12,6 +12,8 @@ interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
 }
 
+type env = 'development' | 'production';
+
 export interface IApi extends PluginAPI {
   // properties
   paths: typeof Service.prototype.paths;
@@ -23,6 +25,7 @@ export interface IApi extends PluginAPI {
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
+  ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
 
   // ApplyPluginType.event
@@ -32,6 +35,19 @@ export interface IApi extends PluginAPI {
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
+  modifyBundler: IModify<any, null>;
+  modifyBundleConfig: IModify<
+    object,
+    { env: env; type: string; bundler: { id: string } }
+  >;
+  modifyBundleConfigs: IModify<
+    any[],
+    {
+      env: env;
+      bundler: { id: string };
+      getConfig: ({ type }: { type: string }) => object;
+    }
+  >;
 
   // ApplyPluginType.add
   addUmiExports: IAdd<
@@ -48,4 +64,21 @@ export interface IApi extends PluginAPI {
       exportAll?: boolean;
     }
   >;
+}
+
+export interface IRoute {
+  [key: string]: any;
+}
+
+export interface IConfig {
+  outputPath: string;
+  publicPath: string;
+  devtool: string;
+  hash: boolean;
+  externals: any;
+  alias: {
+    (key: string): string;
+  };
+  ignoreMomentLocale: boolean;
+  routes?: IRoute[];
 }

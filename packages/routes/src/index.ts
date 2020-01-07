@@ -1,4 +1,5 @@
 import { lodash } from '@umijs/utils';
+import { IRoute, IConfig } from '@umijs/types';
 import assert from 'assert';
 import getConventionalRoutes from './getConventionalRoutes';
 import routesToJSON from './routesToJSON';
@@ -8,14 +9,6 @@ interface IOpts {
   onPatchRoutes?: Function;
   onPatchRouteBefore?: Function;
   onPatchRoute?: Function;
-}
-
-interface IConfig {
-  routes?: IRoute[];
-}
-
-interface IRoute {
-  [key: string]: any;
 }
 
 class Route {

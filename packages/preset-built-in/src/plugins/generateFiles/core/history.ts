@@ -36,6 +36,7 @@ export default function(api: IApi) {
       content: Mustache.render(historyTpl, {
         creator: `create${lodash.upperFirst(type)}History`,
         userOptions: JSON.stringify(options, null, 2),
+        runtimePath: require.resolve('@umijs/runtime'),
       }),
     });
   });

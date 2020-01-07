@@ -1,4 +1,5 @@
-import { plugin, ApplyPluginsType } from 'umi';
+import { ApplyPluginsType } from '{{{ runtimePath }}}';
+import { plugin } from '@/.umi/core/umiExports';
 
 const routes = {{{ routes }}};
 
@@ -9,4 +10,4 @@ plugin.applyPlugins({
   args: { routes },
 });
 
-export default routes;
+export { routes };
