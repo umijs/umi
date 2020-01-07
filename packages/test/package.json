@@ -28,7 +28,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.9.0",
     "babel-preset-react-app": "^9.1.0",
-    "core-js": "3.5.0",
+    "core-js": "3.6.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
