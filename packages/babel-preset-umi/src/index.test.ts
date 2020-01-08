@@ -40,13 +40,13 @@ test('esm', () => {
 test('typescript', () => {
   const code = transformWithPreset(
     `
-  import { a } from './a'; console.log(a);
+  const a: string = 'foo'; console.log(a);
   `,
     {
       typescript: true,
     },
   );
-  expect(code).toContain('var _a = require("./a");');
+  expect(code).toContain(`var a = 'foo';`);
 });
 
 test('dynamic import', () => {
@@ -170,6 +170,6 @@ test('transform runtime', () => {
     transformRuntime: {},
   });
   expect(winPath(join(code!))).toContain(
-    `node_modules/@babel/runtime/helpers/classCallCheck"));`,
+    `node_modules/@babel/runtime/helpers/esm/classCallCheck"));`,
   );
 });

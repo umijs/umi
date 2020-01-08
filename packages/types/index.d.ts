@@ -12,6 +12,7 @@ interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
 }
 
+type IPresetOrPlugin = string | [string, any];
 type env = 'development' | 'production';
 
 export interface IApi extends PluginAPI {
@@ -71,14 +72,16 @@ export interface IRoute {
 }
 
 export interface IConfig {
-  outputPath: string;
-  publicPath: string;
-  devtool: string;
-  hash: boolean;
-  externals: any;
-  alias: {
+  outputPath?: string;
+  publicPath?: string;
+  devtool?: string;
+  hash?: boolean;
+  externals?: any;
+  alias?: {
     (key: string): string;
   };
-  ignoreMomentLocale: boolean;
+  ignoreMomentLocale?: boolean;
+  extraBabelPresets?: IPresetOrPlugin[];
+  extraBabelPlugins?: IPresetOrPlugin[];
   routes?: IRoute[];
 }

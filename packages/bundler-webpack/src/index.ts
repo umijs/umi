@@ -17,7 +17,10 @@ class Bundler {
     this.config = config;
   }
 
-  getConfig(opts: { type: string; env: 'development' | 'production' }) {
+  getConfig(opts: {
+    type: string;
+    env: 'development' | 'production';
+  }): webpack.Configuration {
     return getConfig({
       ...opts,
       cwd: this.cwd,
@@ -28,7 +31,7 @@ class Bundler {
   async build({
     bundleConfigs,
   }: {
-    bundleConfigs: any[];
+    bundleConfigs: webpack.Configuration[];
   }): Promise<{ stats: webpack.Stats }> {
     return new Promise((resolve, reject) => {
       const compiler = webpack(bundleConfigs);

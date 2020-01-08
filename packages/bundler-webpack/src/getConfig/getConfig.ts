@@ -39,7 +39,7 @@ export default function({ cwd, config, type, env }: IOpts) {
     .path(join(cwd, config.outputPath || 'dist'))
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
-    .publicPath(config.publicPath)
+    .publicPath(config.publicPath!)
     // remove this after webpack@5
     .futureEmitAssets(true)
     .pathinfo(isDev || disableCompress);
@@ -70,32 +70,62 @@ export default function({ cwd, config, type, env }: IOpts) {
   // resolve.alias
   if (config.alias) {
     Object.keys(config.alias).forEach(key => {
-      webpackConfig.resolve.alias.set(key, config.alias[key]);
+      webpackConfig.resolve.alias.set(key, config.alias![key]);
     });
   }
 
   // 都用绝对地址，应该不用配 resolveLoader
   // webpackConfig.resolveLoader;
 
-  // modules and loaders
+  // modules and loaders ---------------------------------------------
+
+  const basicBabelLoaderOpts = {
+    // Tell babel to guess the type, instead assuming all files are modules
+    // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
+    sourceType: 'unambiguous',
+    babelrc: false,
+    cacheDirectory: process.env.BABEL_CACHE !== 'none',
+  };
+
   // prettier-ignore
   webpackConfig.module
-    .rule('javascript')
+    .rule('js')
       .test(/\.(js|mjs|jsx|ts|tsx)$/)
       .include.add(cwd).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
         .options({
-          babelrc: false,
-          cacheDirectory: process.env.BABEL_CACHE !== 'none',
+          ...basicBabelLoaderOpts,
           presets: [
             [require.resolve('@umijs/babel-preset-umi/app', {
               // @ts-ignore
               nodeEnv: env,
             })],
+            ...(config.extraBabelPresets || []),
           ],
-          plugins: [],
+          plugins: [
+            ...(config.extraBabelPlugins || []),
+          ],
+        });
+
+  // prettier-ignore
+  webpackConfig.module
+    .rule('js-in-node_modules')
+      .test(/\.(js|mjs)$/)
+      .include.add(/node_modules/).end()
+      // TODO: 处理 tnpm 下 @babel/rutnime 路径变更问题
+      .exclude.add(/@babel(?:\/|\\{1,2})runtime/).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options({
+          ...basicBabelLoaderOpts,
+          presets: [
+            [require.resolve('@umijs/babel-preset-umi/dependency', {
+              // @ts-ignore
+              nodeEnv: env,
+            })],
+          ],
         });
 
   // TODO: 处理 opts.disableDynamicImport

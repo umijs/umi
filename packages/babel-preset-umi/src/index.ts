@@ -72,11 +72,14 @@ export default (context: any, opts: IOpts = {}) => {
         require('@babel/plugin-transform-runtime').default,
         {
           version: require('@babel/runtime/package.json').version,
+          // https://babeljs.io/docs/en/babel-plugin-transform-runtime#absoluteruntime
           // lock the version of @babel/runtime
           // make sure we are using the correct version
           absoluteRuntime: dirname(
             require.resolve('@babel/runtime/package.json'),
           ),
+          // https://babeljs.io/docs/en/babel-plugin-transform-runtime#useesmodules
+          useESModules: true,
           ...toObject(opts.transformRuntime),
         },
       ],
