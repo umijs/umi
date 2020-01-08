@@ -75,7 +75,9 @@ export default function({ cwd, config, type, env }: IOpts) {
   }
 
   // 都用绝对地址，应该不用配 resolveLoader
-  // webpackConfig.resolveLoader;
+  // webpackConfig.resolveLoader.modules
+  //   .add(join(__dirname, '../../node_modules'))
+  //   .add(join(__dirname, '../../../../node_modules'));
 
   // modules and loaders ---------------------------------------------
 
@@ -105,6 +107,17 @@ export default function({ cwd, config, type, env }: IOpts) {
             ...(config.extraBabelPresets || []),
           ],
           plugins: [
+            [
+              require.resolve('babel-plugin-named-asset-import'),
+              {
+                loaderMap: {
+                  svg: {
+                    ReactComponent:
+                      `${require.resolve('@svgr/webpack')}?-svgo,+titleProp,+ref![path]`,
+                  },
+                },
+              },
+            ],
             ...(config.extraBabelPlugins || []),
           ],
         });
@@ -129,6 +142,33 @@ export default function({ cwd, config, type, env }: IOpts) {
         });
 
   // TODO: 处理 opts.disableDynamicImport
+
+  // prettier-ignore
+  webpackConfig.module
+    .rule('images')
+    .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
+    .use('url-loader')
+      .loader(require.resolve('url-loader'))
+      .options({
+        limit: config.inlineLimit || 10000,
+        name: 'static/[name].[hash:8].[ext]',
+        fallback: {
+          loader: require.resolve('file-loader'),
+          options: {
+            name: 'static/[name].[hash:8].[ext]',
+          },
+        }
+      });
+
+  // prettier-ignore
+  webpackConfig.module
+    .rule('svg')
+    .test(/\.(svg)(\?.*)?$/)
+    .use('file-loader')
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+      });
 
   // externals
   if (config.externals) {

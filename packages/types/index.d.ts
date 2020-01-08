@@ -81,6 +81,7 @@ export interface IConfig {
     (key: string): string;
   };
   ignoreMomentLocale?: boolean;
+  inlineLimit?: number;
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];
   routes?: IRoute[];

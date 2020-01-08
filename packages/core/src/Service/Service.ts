@@ -1,6 +1,6 @@
 import { join } from 'path';
 import assert from 'assert';
-import { createDebug } from '@umijs/utils';
+import { createDebug, BabelRegister } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
@@ -8,7 +8,6 @@ import PluginAPI from './PluginAPI';
 import { ApplyPluginsType, PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
-import BabelRegister from './BabelRegister';
 import { getUserConfigWithKey } from '../Config/utils/configUtils';
 import getPaths from './getPaths';
 

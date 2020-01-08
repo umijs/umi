@@ -22,10 +22,19 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "dependencies": {
-    "@types/webpack": "^4.41.1",
+    "@svgr/webpack": "4.3.3",
+    "@types/webpack": "4.41.1",
     "@umijs/types": "0.0.1-alpha.1",
+    "@umijs/utils": "0.0.1-alpha.1",
+    "babel-plugin-named-asset-import": "0.3.5",
     "babel-loader": "8.0.6",
+    "file-loader": "4.3.0",
+    "css-loader": "3.4.1",
+    "url-loader": "3.0.0",
     "webpack": "4.41.5",
     "webpack-chain": "6.3.0"
+  },
+  "bin": {
+    "bundler-webpack": "bin/bundler-webpack.js"
   }
 }

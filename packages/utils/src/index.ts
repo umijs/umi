@@ -26,3 +26,4 @@ export { default as isPlainObject } from './isPlainObject/isPlainObject';
 export { default as getFile } from './getFile/getFile';
 export { default as winPath } from './winPath/winPath';
 export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps';
+export { default as BabelRegister } from './BabelRegister/BabelRegister';

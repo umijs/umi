@@ -1,6 +1,6 @@
-import { winPath, createDebug } from '@umijs/utils';
+import { winPath, createDebug } from '../';
 
-const debug = createDebug('umi:core:BabelRegister');
+const debug = createDebug('umi:utils:BabelRegister');
 
 export default class BabelRegister {
   only: {
