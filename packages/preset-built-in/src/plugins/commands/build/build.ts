@@ -64,10 +64,12 @@ export default function(api: IApi) {
       });
 
       // build
-      const { stats } = await bundler.build({
-        bundleConfigs,
-      });
-      console.log(stats);
+      try {
+        const { stats } = await bundler.build({
+          bundleConfigs,
+        });
+        console.log(stats);
+      } catch (e) {}
     },
   });
 }

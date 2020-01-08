@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi, IConfig } from '@umijs/types';
 import { Route } from '@umijs/routes';
+import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
@@ -21,7 +22,7 @@ export default function(api: IApi) {
       path: 'core/routes.ts',
       content: Mustache.render(routesTpl, {
         routes: route.getJSON({ routes }),
-        runtimePath: require.resolve('@umijs/runtime'),
+        runtimePath: winPath(require.resolve('@umijs/runtime')),
         aliasedTmpPath: paths.aliasedTmpPath,
       }),
     });

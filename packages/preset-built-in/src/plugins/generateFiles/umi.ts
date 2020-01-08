@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
@@ -14,8 +15,8 @@ export default function(api: IApi) {
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
-        rendererPath: require.resolve('@umijs/renderer-react'),
-        runtimePath: require.resolve('@umijs/runtime'),
+        rendererPath: winPath(require.resolve('@umijs/renderer-react')),
+        runtimePath: winPath(require.resolve('@umijs/runtime')),
         aliasedTmpPath: paths.aliasedTmpPath,
       }),
     });

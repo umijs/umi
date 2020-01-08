@@ -25,7 +25,11 @@ class Bundler {
     });
   }
 
-  async build({ bundleConfigs }: { bundleConfigs: any[] }) {
+  async build({
+    bundleConfigs,
+  }: {
+    bundleConfigs: any[];
+  }): Promise<{ stats: webpack.Stats }> {
     return new Promise((resolve, reject) => {
       const compiler = webpack(bundleConfigs);
       compiler.run((err, stats) => {

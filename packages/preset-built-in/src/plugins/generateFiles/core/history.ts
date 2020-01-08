@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
@@ -36,7 +37,7 @@ export default function(api: IApi) {
       content: Mustache.render(historyTpl, {
         creator: `create${lodash.upperFirst(type)}History`,
         userOptions: JSON.stringify(options, null, 2),
-        runtimePath: require.resolve('@umijs/runtime'),
+        runtimePath: winPath(require.resolve('@umijs/runtime')),
       }),
     });
   });

@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '@umijs/types';
+import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
@@ -19,7 +20,7 @@ export default function(api: IApi) {
       path: 'core/plugin.ts',
       content: Mustache.render(pluginTpl, {
         validKeys,
-        runtimePath: require.resolve('@umijs/runtime'),
+        runtimePath: winPath(require.resolve('@umijs/runtime')),
       }),
     });
   });
