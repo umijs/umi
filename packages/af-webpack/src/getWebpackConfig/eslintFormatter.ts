@@ -1,18 +1,17 @@
 import eslintFormatter from 'react-dev-utils/eslintFormatter';
 import chalk from 'chalk';
-const path = require('path');
+import * as path from 'path';
 
 interface Message {
   warningCount: number;
   filePath: string;
 }
-interface MessageArray {
-  [index: number]: Message;
-}
+
+interface MessageArray extends Array<Message> {}
 
 export default function(messages: MessageArray) {
   const output = '\n';
-  const message = messages[0] || {};
+  const [message = {}] = messages || [];
   const warnSource =
     (message as Message).warningCount > 0
       ? `${output}${chalk.bgYellow.black(' warn ')}${chalk(
