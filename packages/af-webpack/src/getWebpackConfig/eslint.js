@@ -13,7 +13,7 @@ export default function(webpackConfig, opts) {
 
   webpackConfig.module
     .rule('eslint')
-    .test(/\.(js|jsx)$/)
+    .test(/\.(tsx|ts|js|jsx)$/)
     .include.add(opts.cwd)
     .end()
     .exclude.add(/node_modules/)
