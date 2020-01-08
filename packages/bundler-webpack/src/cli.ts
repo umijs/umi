@@ -42,7 +42,7 @@ process.env.NODE_ENV = env;
     entry = files[0]?.path!;
   }
 
-  const configPath = join(cwd, 'config.ts');
+  const configPath = join(cwd, args.config || 'config.ts');
   const babelRegister = new BabelRegister();
   babelRegister.setOnlyMap({
     key: 'config',
