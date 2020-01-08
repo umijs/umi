@@ -25,7 +25,7 @@ export default function prepareUrls(protocol, host, port, base, history) {
   const isUnspecifiedHost = host === '0.0.0.0' || host === '::';
   let prettyHost, lanUrlForConfig, lanUrlForTerminal, rawLanUrl;
   if (isUnspecifiedHost) {
-    prettyHost = 'localhost';
+    prettyHost = process.env.PRETTY_HOST || 'localhost';
     try {
       // This can only return an IPv4 address
       lanUrlForConfig = address.ip();
