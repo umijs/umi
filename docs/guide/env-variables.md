@@ -51,6 +51,14 @@ $ BASE_PORT=8001 umi dev
 
 The default is `0.0.0.0`.
 
+### PRETTY_HOST
+
+Customize the default local url based on the default host `0.0.0.0`, umi will start dev server with target url. The default is `localhost`. such as:
+
+```bash
+$ PRETTY_HOST=example.local umi dev
+```
+
 ### ESLINT <Badge text="2.4.0+"/>
 
 When ESLINT is set, the basic eslint check is done by [eslint-config-umi](https://github.com/umijs/umi/tree/master/packages/eslint-config-umi) in the dev and build commands. Avoid some simple mistakes.

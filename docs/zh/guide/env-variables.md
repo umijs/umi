@@ -51,6 +51,14 @@ $ BASE_PORT=8001 umi dev
 
 默认是 `0.0.0.0`。
 
+### PRETTY_HOST
+
+在 `HOST` 是 `0.0.0.0` 的基础上，自定义本地访问域名，默认是 `localhost`。比如:
+
+```bash
+$ PRETTY_HOST=example.local umi dev
+```
+
 ### ESLINT <Badge text="2.4.0+"/>
 
 有值时在 dev 和 build 命令里会通过 [eslint-config-umi](https://github.com/umijs/umi/tree/master/packages/eslint-config-umi) 做基础的 eslint 校验，避免一些低级错误。
