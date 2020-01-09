@@ -18,6 +18,12 @@ import rimraf from 'rimraf';
 export { rimraf };
 import yParser from 'yargs-parser';
 export { yParser };
+import * as t from '@babel/types';
+export { t };
+import * as parser from '@babel/parser';
+export { parser };
+import traverse from '@babel/traverse';
+export { traverse };
 
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';

@@ -1,0 +1,27 @@
+{
+  "name": "@umijs/babel-plugin-css-modules",
+  "version": "0.0.1-alpha.1",
+  "description": "@umijs/babel-plugin-css-modules",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umijs/umi"
+  },
+  "keywords": [
+    "umi"
+  ],
+  "authors": [
+    "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
+  ],
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-css-modules#readme",
+  "dependencies": {
+    "@umijs/utils": "0.0.1-alpha.1"
+  }
+}

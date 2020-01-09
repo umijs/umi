@@ -8,6 +8,7 @@ import {
 import { basename, extname, join } from 'path';
 import assert from 'assert';
 import { Bundler } from './index';
+import { existsSync } from 'fs';
 
 const args = yParser(process.argv.slice(2), {
   alias: {
@@ -48,7 +49,9 @@ process.env.NODE_ENV = env;
     key: 'config',
     value: [configPath],
   });
-  const config = compatESModuleRequire(require(configPath));
+  const config = existsSync(configPath)
+    ? compatESModuleRequire(require(configPath))
+    : {};
 
   const bundler = new Bundler({
     cwd,

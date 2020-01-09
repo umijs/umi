@@ -118,6 +118,7 @@ export default function({ cwd, config, type, env }: IOpts) {
                 },
               },
             ],
+            [require.resolve('@umijs/babel-plugin-css-modules'), {}],
             ...(config.extraBabelPlugins || []),
           ],
         });
@@ -169,6 +170,36 @@ export default function({ cwd, config, type, env }: IOpts) {
       .options({
         name: 'static/[name].[hash:8].[ext]',
       });
+
+  // prettier-ignore
+  webpackConfig.module
+    .rule('css')
+    .test(/\.(css)(\?.*)?$/)
+    .use('style-loader')
+      .loader(require.resolve('style-loader'))
+      .end()
+    .oneOf('CSSModules')
+      .resourceQuery(/modules/)
+      .use('css-loader')
+        .loader(require.resolve('css-loader'))
+        .options({
+          importLoaders: 1,
+          sourceMap: false,
+          modules: {
+            localIdentName: '[local]___[hash:base64:5]',
+          },
+        })
+        .end()
+      .end()
+    .oneOf('noCSSModules')
+      .use('css-loader')
+        .loader(require.resolve('css-loader'))
+        .options({
+          importLoaders: 1,
+          sourceMap: false,
+        })
+        .end()
+      .end();
 
   // externals
   if (config.externals) {

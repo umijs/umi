@@ -5,7 +5,6 @@
 1. 用户不关心背后是 webpack、parcel、rollup 或者其他的
 2. 插件可以提供能力扩展
 3. 考虑多构建示例的场景，比如 ssr、modern mode 和 dll
-4. file-loader 暂不能升 5，因为 [@svgr/webpack/src/index.js#L39](https://github.com/gregberge/svgr/blob/7f258ab/packages/webpack/src/index.js#L39) 中匹配了 `module.exports`，而 file-loader@5 中产出的是 `export default`
 
 ## Usage
 

@@ -38,8 +38,5 @@
     "@babel/preset-typescript": "7.7.4",
     "@babel/runtime": "7.7.6",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24"
-  },
-  "devDependencies": {
-    "@babel/core": "7.7.7"
   }
 }
