@@ -2,7 +2,8 @@ import { IConfig } from '@umijs/types';
 import Config from 'webpack-chain';
 import { join } from 'path';
 import { ConfigType } from '../enums';
-import { createCSSRule } from './css';
+import css from './css';
+import { getBabelDepsOpts, getBabelOpts } from './getBabelOpts';
 
 export interface IOpts {
   cwd: string;
@@ -83,14 +84,6 @@ export default function({ cwd, config, type, env }: IOpts) {
 
   // modules and loaders ---------------------------------------------
 
-  const basicBabelLoaderOpts = {
-    // Tell babel to guess the type, instead assuming all files are modules
-    // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
-    sourceType: 'unambiguous',
-    babelrc: false,
-    cacheDirectory: process.env.BABEL_CACHE !== 'none',
-  };
-
   // prettier-ignore
   webpackConfig.module
     .rule('js')
@@ -99,31 +92,10 @@ export default function({ cwd, config, type, env }: IOpts) {
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
-        .options({
-          ...basicBabelLoaderOpts,
-          presets: [
-            [require.resolve('@umijs/babel-preset-umi/app', {
-              // @ts-ignore
-              nodeEnv: env,
-            })],
-            ...(config.extraBabelPresets || []),
-          ],
-          plugins: [
-            [
-              require.resolve('babel-plugin-named-asset-import'),
-              {
-                loaderMap: {
-                  svg: {
-                    ReactComponent:
-                      `${require.resolve('@svgr/webpack')}?-svgo,+titleProp,+ref![path]`,
-                  },
-                },
-              },
-            ],
-            [require.resolve('@umijs/babel-plugin-css-modules'), {}],
-            ...(config.extraBabelPlugins || []),
-          ],
-        });
+        .options(getBabelOpts({
+          config,
+          env,
+        }));
 
   // prettier-ignore
   webpackConfig.module
@@ -134,15 +106,10 @@ export default function({ cwd, config, type, env }: IOpts) {
       .exclude.add(/@babel(?:\/|\\{1,2})runtime/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
-        .options({
-          ...basicBabelLoaderOpts,
-          presets: [
-            [require.resolve('@umijs/babel-preset-umi/dependency', {
-              // @ts-ignore
-              nodeEnv: env,
-            })],
-          ],
-        });
+        .options(getBabelDepsOpts({
+          config,
+          env,
+        }));
 
   // TODO: 处理 opts.disableDynamicImport
 
@@ -176,41 +143,7 @@ export default function({ cwd, config, type, env }: IOpts) {
       });
 
   // css
-  createCSSRule({
-    webpackConfig,
-    config,
-    isDev,
-    lang: 'css',
-    test: /\.(css)(\?.*)?$/,
-  });
-
-  // less
-  const theme = config.theme;
-  createCSSRule({
-    webpackConfig,
-    config,
-    isDev,
-    lang: 'less',
-    test: /\.(less)(\?.*)?$/,
-    loader: 'less-loader',
-    options: {
-      modifyVars: theme,
-      javascriptEnabled: true,
-    },
-  });
-
-  // extract css
-  if (!config.styleLoader) {
-    const hash = !isDev && config.hash ? '.[contenthash:8]' : '';
-    webpackConfig
-      .plugin('extract-css')
-      .use(require.resolve('mini-css-extract-plugin'), [
-        {
-          filename: `[name]${hash}.css`,
-          chunkFilename: `[name]${hash}.chunk.css`,
-        },
-      ]);
-  }
+  css({ config, webpackConfig, isDev });
 
   // externals
   if (config.externals) {

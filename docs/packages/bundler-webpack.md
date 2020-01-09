@@ -2,8 +2,9 @@
 
 ## Notes
 
-1. ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
-2. 自动识别 css modules
+- ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
+- 自动识别 css modules
+- theme 暂不支持字符串，只支持对象
 
 ## 自动识别 css modules
 

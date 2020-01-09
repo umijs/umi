@@ -82,7 +82,7 @@ export interface IConfig {
   };
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
-  theme?: string | object;
+  theme?: object;
   styleLoader?: object;
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];
