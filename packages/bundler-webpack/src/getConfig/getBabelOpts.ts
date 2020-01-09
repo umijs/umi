@@ -38,9 +38,11 @@ export function getBabelOpts({ config, env }: IOpts) {
           },
         },
       ],
-      [require.resolve('@umijs/babel-plugin-css-modules'), {}],
+      require.resolve('@umijs/babel-plugin-css-modules'),
+      config.disableDynamicImport &&
+        require.resolve('babel-plugin-dynamic-import-node'),
       ...(config.extraBabelPlugins || []),
-    ],
+    ].filter(Boolean),
   };
 }
 

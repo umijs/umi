@@ -1,5 +1,7 @@
 import Config from 'webpack-chain';
 import { IConfig } from '@umijs/types';
+// @ts-ignore
+import safePostCssParser from 'postcss-safe-parser';
 import { deepmerge } from '@umijs/utils';
 
 interface IOpts {
@@ -132,6 +134,30 @@ export default function({ config, webpackConfig, isDev }: IOpts) {
         {
           filename: `[name]${hash}.css`,
           chunkFilename: `[name]${hash}.chunk.css`,
+        },
+      ]);
+  }
+
+  if (!isDev && process.env.COMPRESS !== 'none') {
+    webpackConfig
+      .plugin('optimize-css')
+      .use(require.resolve('optimize-css-assets-webpack-plugin'), [
+        {
+          cssProcessorOptions: {
+            // https://github.com/postcss/postcss-safe-parser
+            // TODO: 待验证功能
+            parser: safePostCssParser,
+          },
+          cssProcessorPluginOptions: {
+            preset: [
+              'default',
+              // https://cssnano.co/optimisations/
+              {
+                mergeRules: false,
+                minifyFontValues: { removeQuotes: false },
+              },
+            ],
+          },
         },
       ]);
   }

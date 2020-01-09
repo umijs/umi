@@ -11,7 +11,12 @@ readdirSync(fixtures).forEach(fixture => {
   if (fixture.startsWith('.')) return;
   if (statSync(cwd).isFile()) return;
 
-  test(fixture, async () => {
+  const fn = fixture.includes('-only')
+    ? test.only
+    : fixture.startsWith('x-')
+    ? xtest
+    : test;
+  fn(fixture, async () => {
     // get user config
     let config = {};
     try {
@@ -25,8 +30,9 @@ readdirSync(fixtures).forEach(fixture => {
     });
 
     // get config
+    const env = fixture.includes('-production') ? 'production' : 'development';
     const webpackConfig = bundler.getConfig({
-      env: 'development',
+      env,
       type: ConfigType.csr,
     });
     webpackConfig.entry = {

@@ -86,5 +86,6 @@ export interface IConfig {
   styleLoader?: object;
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];
+  disableDynamicImport?: boolean;
   routes?: IRoute[];
 }
