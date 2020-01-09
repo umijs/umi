@@ -250,24 +250,25 @@ export default () => {
           const index = layoutIndexByFilename[filename];
 
           let content = null;
-          // TODO: inline
-          // let inline = false;
-          // if (t.isObjectExpression(args[1])
-          //   && args[1].properties.some(
-          //     property => t.isProperty(property)
-          //       && property.key?.name === 'inline'
-          //       && property.key?.value === true
-          //     )
-          // ) {
-          //   inline = true;
-          // }
+          let inline = false;
+          if (
+            t.isObjectExpression(args[1]) &&
+            args[1].properties.some(
+              property =>
+                t.isProperty(property) &&
+                property.key?.name === 'inline' &&
+                property.value?.value === true,
+            )
+          ) {
+            inline = true;
+          }
 
           path.replaceWith(
             buildGUmiUIFlag({
               index: `${BLOCK_LAYOUT_PREFIX}${index}`,
               filename: winPath(filename),
               jsx: false,
-              inline: false,
+              inline,
               content,
             }),
           );

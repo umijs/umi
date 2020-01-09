@@ -8,6 +8,11 @@ export default function() {
       <div><UmiUIFlag />foo</div>
       <div><UmiUIFlag />bar</div>
       <div><UmiUIFlag /></div>
+      <div>
+        <UmiUIFlag inline />
+        Hello
+        <UmiUIFlag inline />
+      </div>
     </Step>
   );
 }
