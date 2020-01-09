@@ -67,6 +67,28 @@ function createCSSRule({
           : {}),
       });
 
+    rule
+      .use('postcss-loader')
+      .loader(require.resolve('postcss-loader'))
+      .options({
+        // Necessary for external CSS imports to work
+        // https://github.com/facebookincubator/create-react-app/issues/2677
+        ident: 'postcss',
+        plugins: () => [
+          // https://github.com/luisrudge/postcss-flexbugs-fixes
+          require('postcss-flexbugs-fixes'),
+          // https://github.com/csstools/postcss-preset-env
+          require('postcss-preset-env')({
+            // TODO: set browsers
+            autoprefixer: {
+              flexbox: 'no-2009',
+            },
+            // https://cssdb.org/
+            stage: 3,
+          }),
+        ],
+      });
+
     if (loader) {
       rule
         .use(loader)

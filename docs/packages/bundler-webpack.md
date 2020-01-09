@@ -5,6 +5,7 @@
 - ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
 - 自动识别 css modules
 - theme 暂不支持字符串，只支持对象
+- postcss 默认启用 stage-3 特性
 
 ## 自动识别 css modules
 
