@@ -234,6 +234,46 @@ export default () => {
 
           layoutIndexByFilename[filename] += 1;
         }
+        // _react.default.createElement(_umi.UmiUIFlag, null)
+        if (
+          t.isMemberExpression(callee) &&
+          t.isIdentifier(callee.property, {
+            name: 'createElement',
+          }) &&
+          t.isIdentifier(args[0]) &&
+          args[0].name === 'UmiUIFlag'
+        ) {
+          if (!layoutIndexByFilename[filename]) {
+            layoutIndexByFilename[filename] = 0;
+          }
+
+          const index = layoutIndexByFilename[filename];
+
+          let content = null;
+          // TODO: inline
+          // let inline = false;
+          // if (t.isObjectExpression(args[1])
+          //   && args[1].properties.some(
+          //     property => t.isProperty(property)
+          //       && property.key?.name === 'inline'
+          //       && property.key?.value === true
+          //     )
+          // ) {
+          //   inline = true;
+          // }
+
+          path.replaceWith(
+            buildGUmiUIFlag({
+              index: `${BLOCK_LAYOUT_PREFIX}${index}`,
+              filename: winPath(filename),
+              jsx: false,
+              inline: false,
+              content,
+            }),
+          );
+
+          layoutIndexByFilename[filename] += 1;
+        }
       },
     },
   };
