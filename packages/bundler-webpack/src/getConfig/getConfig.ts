@@ -1,6 +1,7 @@
 import { IConfig } from '@umijs/types';
 import Config from 'webpack-chain';
 import { join } from 'path';
+import { ConfigType } from '../enums';
 
 export interface IOpts {
   cwd: string;
@@ -15,7 +16,7 @@ export default function({ cwd, config, type, env }: IOpts) {
   webpackConfig.mode(env);
 
   // TODO: 处理 entry
-  if (type === 'umi-csr') {
+  if (type === ConfigType.csr) {
     const tmpDir =
       process.env.NODE_ENV === 'development'
         ? '.umi'
@@ -258,7 +259,7 @@ export default function({ cwd, config, type, env }: IOpts) {
   let ret = webpackConfig.toConfig();
 
   // speed-measure-webpack-plugin
-  if (process.env.SPEED_MEASURE && type === 'umi-csr') {
+  if (process.env.SPEED_MEASURE && type === ConfigType.csr) {
     const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
     const smpOption =
       process.env.SPEED_MEASURE === 'CONSOLE'

@@ -9,6 +9,7 @@ import { basename, extname, join } from 'path';
 import assert from 'assert';
 import { Bundler } from './index';
 import { existsSync } from 'fs';
+import { ConfigType } from './enums';
 
 const args = yParser(process.argv.slice(2), {
   alias: {
@@ -60,7 +61,7 @@ process.env.NODE_ENV = env;
 
   const webpackConfig = bundler.getConfig({
     env,
-    type: 'umi-csr',
+    type: ConfigType.csr,
   });
   webpackConfig.entry = {
     [basename(entry, extname(entry))]: entry,

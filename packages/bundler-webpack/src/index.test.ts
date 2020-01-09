@@ -2,6 +2,7 @@ import { join } from 'path';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { getFile, rimraf } from '@umijs/utils';
 import { Bundler } from './index';
+import { ConfigType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -26,7 +27,7 @@ readdirSync(fixtures).forEach(fixture => {
     // get config
     const webpackConfig = bundler.getConfig({
       env: 'development',
-      type: 'umi-csr',
+      type: ConfigType.csr,
     });
     webpackConfig.entry = {
       index: getFile({
