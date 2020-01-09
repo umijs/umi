@@ -1,5 +1,5 @@
 import { IApi, IConfig } from '@umijs/types';
-import { Bundler as DefaultBundler } from '@umijs/bundler-webpack';
+import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 
 export default function(api: IApi) {
   const {
@@ -54,8 +54,8 @@ export default function(api: IApi) {
         type: api.ApplyPluginsType.modify,
         key: 'modifyBundlerConfigs',
         initialValue: [
-          await getConfig({ type: 'umi-csr' }),
-          api.config!.ssr && (await getConfig({ type: 'umi-ssr' })),
+          await getConfig({ type: ConfigType.csr }),
+          api.config!.ssr && (await getConfig({ type: ConfigType.ssr })),
         ].filter(Boolean),
         args: {
           ...bundlerArgs,

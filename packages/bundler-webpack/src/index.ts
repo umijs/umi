@@ -1,6 +1,7 @@
 import { IConfig } from '@umijs/types';
 import webpack from 'webpack';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
+import { ConfigType } from './enums';
 
 interface IOpts {
   cwd: string;
@@ -48,4 +49,4 @@ class Bundler {
   async dev() {}
 }
 
-export { Bundler };
+export { Bundler, ConfigType };
