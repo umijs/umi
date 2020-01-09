@@ -87,7 +87,10 @@ export default class GUmiUIFlag extends React.Component<GUmiUIFlagProps, GUmiUIF
           onClick={this.clickHandler}
           style={{
             ...(inline
-              ? {}
+              ? {
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                }
               : {
                   margin: '10px 0',
                   height: '60px',
