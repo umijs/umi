@@ -2,10 +2,12 @@
 
 ## Notes
 
+- node_modules 也走 babel 编译
 - ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
 - 自动识别 css modules
 - theme 暂不支持字符串，只支持对象
 - postcss 默认启用 stage-3 特性
+- css 压缩只提供 terser-webpack-plugin 的方式，因为 node_modules 走了 babel 编译，不会出现 es6 代码
 
 ## 自动识别 css modules
 

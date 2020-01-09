@@ -8,6 +8,7 @@ interface IOpts {
   webpackConfig: Config;
   config: IConfig;
   isDev: boolean;
+  disableCompress?: boolean;
 }
 
 interface ICreateCSSRuleOpts extends IOpts {
@@ -100,7 +101,12 @@ function createCSSRule({
   }
 }
 
-export default function({ config, webpackConfig, isDev }: IOpts) {
+export default function({
+  config,
+  webpackConfig,
+  isDev,
+  disableCompress,
+}: IOpts) {
   // css
   createCSSRule({
     webpackConfig,
@@ -138,7 +144,7 @@ export default function({ config, webpackConfig, isDev }: IOpts) {
       ]);
   }
 
-  if (!isDev && process.env.COMPRESS !== 'none') {
+  if (!isDev && disableCompress) {
     webpackConfig
       .plugin('optimize-css')
       .use(require.resolve('optimize-css-assets-webpack-plugin'), [

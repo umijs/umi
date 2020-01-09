@@ -1,9 +1,11 @@
 import { IConfig } from '@umijs/types';
 import Config from 'webpack-chain';
 import { join } from 'path';
+import { deepmerge } from '@umijs/utils';
 import { ConfigType } from '../enums';
 import css from './css';
 import { getBabelDepsOpts, getBabelOpts } from './getBabelOpts';
+import terserOptions from './terserOptions';
 
 export interface IOpts {
   cwd: string;
@@ -143,7 +145,7 @@ export default function({ cwd, config, type, env }: IOpts) {
       });
 
   // css
-  css({ config, webpackConfig, isDev });
+  css({ config, webpackConfig, isDev, disableCompress });
 
   // externals
   if (config.externals) {
@@ -194,7 +196,20 @@ export default function({ cwd, config, type, env }: IOpts) {
       if (disableCompress) {
         webpackConfig.optimization.minimize(false);
       } else {
-        // TODO
+        webpackConfig.optimization
+          .minimizer('terser')
+          .use(require.resolve('terser-webpack-plugin'), [
+            {
+              terserOptions: deepmerge(
+                terserOptions,
+                config.terserOptions || {},
+              ),
+              sourceMap: false,
+              cache: true,
+              parallel: true,
+              extractComments: false,
+            },
+          ]);
       }
     },
   );
