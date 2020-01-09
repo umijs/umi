@@ -1,5 +1,5 @@
 import { IExpectOpts } from '../types';
 
-export default ({ indexContent }: IExpectOpts) => {
-  expect(indexContent).toContain(`React.createElement("div", null, "111")`);
+export default ({ indexJS }: IExpectOpts) => {
+  expect(indexJS).toContain(`React.createElement("div", null, "111")`);
 }

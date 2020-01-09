@@ -2,6 +2,7 @@ import { IConfig } from '@umijs/types';
 import Config from 'webpack-chain';
 import { join } from 'path';
 import { ConfigType } from '../enums';
+import { createCSSRule } from './css';
 
 export interface IOpts {
   cwd: string;
@@ -158,6 +159,7 @@ export default function({ cwd, config, type, env }: IOpts) {
           loader: require.resolve('file-loader'),
           options: {
             name: 'static/[name].[hash:8].[ext]',
+            esModule: false,
           },
         }
       });
@@ -170,37 +172,45 @@ export default function({ cwd, config, type, env }: IOpts) {
       .loader(require.resolve('file-loader'))
       .options({
         name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
       });
 
-  // prettier-ignore
-  webpackConfig.module
-    .rule('css')
-    .test(/\.(css)(\?.*)?$/)
-    .use('style-loader')
-      .loader(require.resolve('style-loader'))
-      .end()
-    .oneOf('CSSModules')
-      .resourceQuery(/modules/)
-      .use('css-loader')
-        .loader(require.resolve('css-loader'))
-        .options({
-          importLoaders: 1,
-          sourceMap: false,
-          modules: {
-            localIdentName: '[local]___[hash:base64:5]',
-          },
-        })
-        .end()
-      .end()
-    .oneOf('noCSSModules')
-      .use('css-loader')
-        .loader(require.resolve('css-loader'))
-        .options({
-          importLoaders: 1,
-          sourceMap: false,
-        })
-        .end()
-      .end();
+  // css
+  createCSSRule({
+    webpackConfig,
+    config,
+    isDev,
+    lang: 'css',
+    test: /\.(css)(\?.*)?$/,
+  });
+
+  // less
+  const theme = config.theme;
+  createCSSRule({
+    webpackConfig,
+    config,
+    isDev,
+    lang: 'less',
+    test: /\.(less)(\?.*)?$/,
+    loader: 'less-loader',
+    options: {
+      modifyVars: theme,
+      javascriptEnabled: true,
+    },
+  });
+
+  // extract css
+  if (!config.styleLoader) {
+    const hash = !isDev && config.hash ? '.[contenthash:8]' : '';
+    webpackConfig
+      .plugin('extract-css')
+      .use(require.resolve('mini-css-extract-plugin'), [
+        {
+          filename: `[name]${hash}.css`,
+          chunkFilename: `[name]${hash}.chunk.css`,
+        },
+      ]);
+  }
 
   // externals
   if (config.externals) {

@@ -6,7 +6,7 @@ export interface IOpts {
   flag?: string;
 }
 
-const CSS_EXTNAMES = ['.css', '.less', '.sass', '.scss'];
+const CSS_EXTNAMES = ['.css', '.less', '.sass', '.scss', '.stylus', '.styl'];
 
 export default function() {
   return {

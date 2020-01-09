@@ -2,9 +2,8 @@
 
 ## Notes
 
-1. file-loader 暂不能升 5，因为 [@svgr/webpack/src/index.js#L39](https://github.com/gregberge/svgr/blob/7f258ab/packages/webpack/src/index.js#L39) 中匹配了 `module.exports`，而 file-loader@5 中产出的是 `export default`
-2. ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
-3. 自动识别 css modules
+1. ts 编译从 ts-loader 换成 babel-loader，据说会快，待验证
+2. 自动识别 css modules
 
 ## 自动识别 css modules
 

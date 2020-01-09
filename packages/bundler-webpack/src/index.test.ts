@@ -45,8 +45,13 @@ readdirSync(fixtures).forEach(fixture => {
     });
 
     // expect
+    let indexCSS = '';
+    try {
+      indexCSS = readFileSync(join(cwd, 'dist/index.css'), 'utf-8');
+    } catch (e) {}
     require(join(cwd, 'expect.ts')).default({
-      indexContent: readFileSync(join(cwd, 'dist/index.js'), 'utf-8'),
+      indexJS: readFileSync(join(cwd, 'dist/index.js'), 'utf-8'),
+      indexCSS,
       files: readdirSync(join(cwd, 'dist')).filter(f => f.charAt(0) !== '.'),
       cwd,
     });

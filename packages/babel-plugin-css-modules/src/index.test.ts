@@ -22,6 +22,12 @@ test('css modules', () => {
   expect(transformWithPlugin(`import styles from 'a.sass';`, {})).toEqual(
     `import styles from "a.sass?modules";`,
   );
+  expect(transformWithPlugin(`import styles from 'a.stylus';`, {})).toEqual(
+    `import styles from "a.stylus?modules";`,
+  );
+  expect(transformWithPlugin(`import styles from 'a.styl';`, {})).toEqual(
+    `import styles from "a.styl?modules";`,
+  );
 });
 
 test('css modules with flag', () => {

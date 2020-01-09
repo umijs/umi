@@ -1,5 +1,5 @@
 import { IExpectOpts } from '../types';
 
-export default ({ indexContent }: IExpectOpts) => {
-  expect(indexContent).toContain(`module.exports = React;`);
+export default ({ indexJS }: IExpectOpts) => {
+  expect(indexJS).toContain(`module.exports = React;`);
 }
