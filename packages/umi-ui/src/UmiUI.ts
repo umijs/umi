@@ -1047,6 +1047,7 @@ export default class UmiUI {
       const port =
         process.env.UMI_UI_PORT ||
         process.env.UMI_PORT ||
+        process.env.PORT ||
         (await portfinder.getPortPromise({
           port: 3000,
         }));
