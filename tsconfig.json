@@ -12,5 +12,12 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true
   },
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "lib", "fixtures", "examples"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "lib",
+    "fixtures",
+    "examples"
+  ]
 }
