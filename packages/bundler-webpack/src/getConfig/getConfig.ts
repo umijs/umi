@@ -22,9 +22,7 @@ export default function({ cwd, config, type, env }: IOpts) {
   // TODO: 处理 entry
   if (type === ConfigType.csr) {
     const tmpDir =
-      process.env.NODE_ENV === 'development'
-        ? '.umi'
-        : `.umi-${process.env.NODE_ENV}`;
+      env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
     webpackConfig.entry('umi').add(join(cwd, tmpDir, 'umi.ts'));
   }
 
@@ -46,6 +44,7 @@ export default function({ cwd, config, type, env }: IOpts) {
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
     .publicPath(config.publicPath!)
     // remove this after webpack@5
+    // free memory of assets after emitting
     .futureEmitAssets(true)
     .pathinfo(isDev || disableCompress);
 
@@ -113,8 +112,6 @@ export default function({ cwd, config, type, env }: IOpts) {
           env,
         }));
 
-  // TODO: 处理 opts.disableDynamicImport
-
   // prettier-ignore
   webpackConfig.module
     .rule('images')
@@ -167,11 +164,12 @@ export default function({ cwd, config, type, env }: IOpts) {
   });
 
   // plugins -> ignore moment locale
-  if (config.ignoreMomentLocale) {
-    webpackConfig
-      .plugin('ignore-moment-locale')
-      .use(require('webpack/lib/IgnorePlugin'), [/^\.\/locale$/, /moment$/]);
-  }
+  webpackConfig
+    .plugin('ignore-moment-locale')
+    .use(require.resolve('webpack/lib/IgnorePlugin'), [
+      /^\.\/locale$/,
+      /moment$/,
+    ]);
 
   // copy
   // TODO
@@ -190,7 +188,10 @@ export default function({ cwd, config, type, env }: IOpts) {
       // TODO
 
       // webpack/lib/HashedModuleIdsPlugin
-      // TODO
+      // https://webpack.js.org/plugins/hashed-module-ids-plugin/
+      webpackConfig
+        .plugin('hash-module-ids')
+        .use(require.resolve('webpack/lib/HashedModuleIdsPlugin'));
 
       // compress
       if (disableCompress) {
