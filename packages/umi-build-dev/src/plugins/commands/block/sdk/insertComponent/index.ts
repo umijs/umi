@@ -112,23 +112,25 @@ export default (content, opts) => {
     const targetIndex = parseInt(index.replace(BLOCK_LAYOUT_PREFIX, ''), 10);
     let currIndex = 0;
     traverse(ast, {
-      // remove import { UmiUIFlag } from 'umi'
-      // remove import { UmiUIFlag, AAA } from 'umi' => import { AAA } from 'umi'
-      ImportDeclaration(path) {
-        const { node } = path;
-        const specifierIndex = node.specifiers.findIndex(
-          specify =>
-            t.isImportSpecifier(specify) && specify.imported.name === UMI_UI_FLAG_PLACEHOLDER,
-        );
-        if (specifierIndex > -1) {
-          if (node.specifiers.length === 1) {
-            // import { UmiUIFlag } from 'umi'
-            path.remove();
-          } else {
-            path.get(`specifiers.${specifierIndex}`).remove();
-          }
-        }
-      },
+      // TODO: remove import { UmiUIFlag } from 'umi'
+      // TODO: remove import { UmiUIFlag, AAA } from 'umi' => import { AAA } from 'umi'
+      // ImportDeclaration: {
+      //   exit(path) {
+      //     const { node } = path;
+      //     const specifierIndex = node.specifiers.findIndex(
+      //       specify =>
+      //         t.isImportSpecifier(specify) && specify.imported.name === UMI_UI_FLAG_PLACEHOLDER,
+      //     );
+      //     if (specifierIndex > -1) {
+      //       if (node.specifiers.length === 1) {
+      //         // import { UmiUIFlag } from 'umi'
+      //         path.remove();
+      //       } else {
+      //         path.get(`specifiers.${specifierIndex}`).remove();
+      //       }
+      //     }
+      //   },
+      // },
       // support <UmiUIFlag inline={} />
       JSXElement(path) {
         const { node } = path;
