@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { Route } from './index';
+import Route from './Route';
 
 const fixtures = join(__dirname, 'fixtures');
 

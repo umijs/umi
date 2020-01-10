@@ -79,14 +79,14 @@ test('normal', async () => {
   expect(ret).toEqual(['a', 'a']);
 });
 
-test('use built-in', () => {
-  const service = new Service({
-    cwd: join(fixtures, 'normal'),
-    useBuiltIn: true,
-  });
-  expect(service.initialPresets[0].id).toEqual('@umijs/preset-built-in');
-  expect(service.initialPresets[0].key).toEqual('builtIn');
-});
+// test('use built-in', () => {
+//   const service = new Service({
+//     cwd: join(fixtures, 'normal'),
+//     useBuiltIn: true,
+//   });
+//   expect(service.initialPresets[0].id).toEqual('@umijs/preset-built-in');
+//   expect(service.initialPresets[0].key).toEqual('builtIn');
+// });
 
 test('no package.json', () => {
   const service = new Service({

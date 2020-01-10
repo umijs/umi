@@ -17,7 +17,6 @@ const debug = createDebug('umi:core:Service:util:plugin');
 interface IOpts {
   pkg: IPackage;
   cwd: string;
-  useBuiltIn: boolean;
 }
 
 interface IResolvePresetsOpts extends IOpts {
@@ -123,10 +122,7 @@ export function pathToObj(type: PluginType, path: string) {
 
 export function resolvePresets(opts: IResolvePresetsOpts) {
   const type = PluginType.preset;
-  const presets = [
-    ...(opts.useBuiltIn ? [require.resolve('@umijs/preset-built-in')] : []),
-    ...getPluginsOrPresets(type, opts),
-  ];
+  const presets = [...getPluginsOrPresets(type, opts)];
   debug(`preset paths:`);
   debug(presets);
   return presets.map(pathToObj.bind(null, type));

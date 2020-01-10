@@ -22,7 +22,7 @@ if (process.env.APP_ROOT) {
       default:
         await new Service({
           cwd,
-          useBuiltIn: true,
+          presets: [require.resolve('@umijs/preset-built-in')],
         }).run({
           name: args._[0],
           args,

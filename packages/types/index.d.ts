@@ -1,4 +1,9 @@
-import { PluginAPI, Service } from '@umijs/core';
+import {
+  PluginAPI,
+  Service,
+  IRoute,
+  IConfig as IConfigCore,
+} from '@umijs/core';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -67,11 +72,9 @@ export interface IApi extends PluginAPI {
   >;
 }
 
-export interface IRoute {
-  [key: string]: any;
-}
+export { IRoute };
 
-export interface IConfig {
+export interface IConfig extends IConfigCore {
   outputPath?: string;
   publicPath?: string;
   devtool?: string;
@@ -88,5 +91,4 @@ export interface IConfig {
   extraBabelPlugins?: IPresetOrPlugin[];
   disableDynamicImport?: boolean;
   terserOptions?: object;
-  routes?: IRoute[];
 }

@@ -17,7 +17,6 @@ interface IOpts {
   cwd: string;
   presets?: string[];
   plugins?: string[];
-  useBuiltIn?: boolean;
   env?: 'development' | 'production' | 'test';
 }
 
@@ -114,7 +113,6 @@ export default class Service {
     const baseOpts = {
       pkg: this.pkg,
       cwd: this.cwd,
-      useBuiltIn: Boolean(opts.useBuiltIn),
     };
     this.initialPresets = resolvePresets({
       ...baseOpts,

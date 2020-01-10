@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi, IConfig } from '@umijs/types';
-import { Route } from '@umijs/routes';
+import { Route } from '@umijs/core';
 import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {

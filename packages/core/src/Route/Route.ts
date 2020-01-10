@@ -1,5 +1,5 @@
 import { lodash } from '@umijs/utils';
-import { IRoute, IConfig } from '@umijs/types';
+import { IRoute, IConfig } from '..';
 import assert from 'assert';
 import getConventionalRoutes from './getConventionalRoutes';
 import routesToJSON from './routesToJSON';
@@ -82,4 +82,4 @@ class Route {
   }
 }
 
-export { Route };
+export default Route;
