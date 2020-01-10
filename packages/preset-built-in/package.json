@@ -24,7 +24,6 @@
   "dependencies": {
     "@umijs/renderer-react": "0.0.1-alpha.1",
     "@umijs/runtime": "0.0.1-alpha.1",
-    "@umijs/routes": "0.0.1-alpha.1",
     "@umijs/types": "0.0.1-alpha.1",
     "@umijs/bundler-webpack": "0.0.1-alpha.1"
   }
