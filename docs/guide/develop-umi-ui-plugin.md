@@ -277,6 +277,35 @@ api.onUISocket(async () => {
 api.addUIPlugin(require.resolve('../ui/dist/index.umd.js'));
 ```
 
+### Custom Block Slots
+
+The `UmiUIFlag` component exported from `umi` can be used as a placeholder when the block is inserted. After the block is added, `UmiUIFlag` will be automatically deleted.
+
+```jsx
+import React from 'react';
+import { UmiUIFlag } from 'umi';
+
+import { Button } from 'antd';
+
+export default () => (
+  <div>Hello
+    <div>
+      <p>World</p>
+      <UmiUIFlag />
+      <p>
+        aaaaa
+        <div>
+          <UmiUIFlag inline />Hello Inline<UmiUIFlag inline />
+        </div>
+      </p>
+    </div>
+    <Button type="primary">World</Button>
+  </div>
+);
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/9EfCMj46tx/f8a08273-4d19-46c0-91fc-fac2a5e9b4f0.png)
+
 ### Use Umi UI theme
 
 Umi UI provides a set of antd theme variables that third-party component libraries can use to develop plug-ins in non-Umi UI runtime environments.

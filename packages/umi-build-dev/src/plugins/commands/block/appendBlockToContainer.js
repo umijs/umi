@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import insertComponent from './sdk/insertComponent';
-import { INSERT_BLOCK_PLACEHOLDER, UmiUIFlag } from './sdk/constants';
+import { INSERT_BLOCK_PLACEHOLDER, UMI_UI_FLAG_PLACEHOLDER } from './sdk/constants';
 
 const debug = require('debug')('umi-build-dev:appendBlockToContainer');
 
@@ -24,7 +24,8 @@ export default ({ entryPath, blockFolderName, dryRun, index }) => {
     relativePath: `./${blockFolderName}`,
     absolutePath,
     isExtractBlock:
-      blockContent.includes(INSERT_BLOCK_PLACEHOLDER) || blockContent.includes(UmiUIFlag),
+      blockContent.includes(INSERT_BLOCK_PLACEHOLDER) ||
+      blockContent.includes(UMI_UI_FLAG_PLACEHOLDER),
     index,
   });
 

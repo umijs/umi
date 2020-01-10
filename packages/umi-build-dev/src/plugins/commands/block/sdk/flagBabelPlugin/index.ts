@@ -10,7 +10,11 @@ import {
   haveChildren,
   isChildFunc,
 } from '../util';
-import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
+import {
+  BLOCK_LAYOUT_PREFIX,
+  INSERT_BLOCK_PLACEHOLDER,
+  UMI_UI_FLAG_PLACEHOLDER,
+} from '../constants';
 
 export default () => {
   function buildGUmiUIFlag(opts) {
@@ -241,7 +245,7 @@ export default () => {
             name: 'createElement',
           }) &&
           t.isIdentifier(args[0]) &&
-          args[0].name === 'UmiUIFlag'
+          args[0].name === UMI_UI_FLAG_PLACEHOLDER
         ) {
           if (!layoutIndexByFilename[filename]) {
             layoutIndexByFilename[filename] = 0;

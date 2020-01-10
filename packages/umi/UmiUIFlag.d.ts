@@ -2,15 +2,8 @@
  * A component that provides points for umi ui
  */
 import React from 'react';
-
 export interface UmiUIFlagProps {
   inline?: boolean;
 }
-
-const UmiUIFlag: React.FunctionComponent = () => {
-  return <></>;
-};
-
-UmiUIFlag.displayName = 'INSERT_BLOCK_PLACEHOLDER';
-
+declare const UmiUIFlag: React.FunctionComponent<UmiUIFlagProps>;
 export default UmiUIFlag;
