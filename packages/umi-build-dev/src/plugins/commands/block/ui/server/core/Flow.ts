@@ -55,6 +55,7 @@ class Flow extends EventEmitter {
         await task(this.ctx, args);
         this.setStepState(name, StepState.SUCCESS);
       } catch (e) {
+        console.error('Execute task error', e);
         hasBreak = true;
         /**
          * 抛错有两种情况

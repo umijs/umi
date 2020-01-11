@@ -2,7 +2,7 @@ export default {
   target: 'node',
   cjs: { type: 'babel', lazy: true },
   esm: 'rollup',
-  disableTypeCheck: true,
+  // disableTypeCheck: true,
   browserFiles: [
     'src/createHistory.js',
     'src/dynamic.js',
@@ -15,6 +15,7 @@ export default {
     'src/router.js',
     'src/runtimePlugin.js',
     'src/utils.js',
+    'src/UmiUIFlag.tsx',
     'src/withRouter.js',
   ],
   extraExternals: ['@@', 'react-router-dom', 'react'],

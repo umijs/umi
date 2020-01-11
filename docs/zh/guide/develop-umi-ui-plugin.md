@@ -279,6 +279,35 @@ api.onUISocket(async () => {
 api.addUIPlugin(require.resolve('../ui/dist/index.umd.js'));
 ```
 
+### 自定义区块插槽
+
+从 umi 中导出 `UmiUIFlag` 组件，在区块插入时可用于占位，区块添加完成后，会自动删除 `UmiUIFlag`。
+
+```jsx
+import React from 'react';
+import { UmiUIFlag } from 'umi';
+
+import { Button } from 'antd';
+
+export default () => (
+  <div>Hello
+    <div>
+      <p>World</p>
+      <UmiUIFlag />
+      <p>
+        aaaaa
+        <div>
+          <UmiUIFlag inline />Hello Inline<UmiUIFlag inline />
+        </div>
+      </p>
+    </div>
+    <Button type="primary">World</Button>
+  </div>
+);
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/9EfCMj46tx/f8a08273-4d19-46c0-91fc-fac2a5e9b4f0.png)
+
 ### 使用 Umi UI 主题
 
 Umi UI 提供了一套 antd 主题变量，可供第三方组件库在非 Umi UI 运行环境下，开发插件。

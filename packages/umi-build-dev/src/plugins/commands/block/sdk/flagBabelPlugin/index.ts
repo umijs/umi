@@ -10,7 +10,11 @@ import {
   haveChildren,
   isChildFunc,
 } from '../util';
-import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
+import {
+  BLOCK_LAYOUT_PREFIX,
+  INSERT_BLOCK_PLACEHOLDER,
+  UMI_UI_FLAG_PLACEHOLDER,
+} from '../constants';
 
 export default () => {
   function buildGUmiUIFlag(opts) {
@@ -231,6 +235,47 @@ export default () => {
             inline: true,
             content,
           });
+
+          layoutIndexByFilename[filename] += 1;
+        }
+        // _react.default.createElement(_umi.UmiUIFlag, null)
+        if (
+          t.isMemberExpression(callee) &&
+          t.isIdentifier(callee.property, {
+            name: 'createElement',
+          }) &&
+          t.isIdentifier(args[0]) &&
+          args[0].name === UMI_UI_FLAG_PLACEHOLDER
+        ) {
+          if (!layoutIndexByFilename[filename]) {
+            layoutIndexByFilename[filename] = 0;
+          }
+
+          const index = layoutIndexByFilename[filename];
+
+          let content = null;
+          let inline = false;
+          if (
+            t.isObjectExpression(args[1]) &&
+            args[1].properties.some(
+              property =>
+                t.isProperty(property) &&
+                property.key?.name === 'inline' &&
+                property.value?.value === true,
+            )
+          ) {
+            inline = true;
+          }
+
+          path.replaceWith(
+            buildGUmiUIFlag({
+              index: `${BLOCK_LAYOUT_PREFIX}${index}`,
+              filename: winPath(filename),
+              jsx: false,
+              inline,
+              content,
+            }),
+          );
 
           layoutIndexByFilename[filename] += 1;
         }
