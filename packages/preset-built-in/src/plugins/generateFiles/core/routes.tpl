@@ -1,5 +1,5 @@
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
-import { plugin } from '{{{ aliasedTmpPath }}}/core/umiExports';
+import { plugin } from './plugin';
 
 const routes = {{{ routes }}};
 

@@ -95,7 +95,9 @@ export default class Config {
         configFile,
         envConfigFile,
         this.localConfig && this.addAffix(configFile, 'local'),
-      ].filter(Boolean) as string[]).map((f: string) => join(this.cwd, f));
+      ].filter(Boolean) as string[])
+        .map((f: string) => join(this.cwd, f))
+        .filter(f => existsSync(f));
 
       // clear require cache and set babel register
       const requireDeps = files.reduce((memo: string[], file) => {

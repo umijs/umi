@@ -2,7 +2,7 @@ import resolve from 'resolve';
 import { dirname } from 'path';
 // @ts-ignore
 import crequire from 'crequire';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import winPath from '../winPath/winPath';
 
 function parse(filePath: string): string[] {

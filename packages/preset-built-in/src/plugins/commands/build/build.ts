@@ -5,7 +5,7 @@ export default function(api: IApi) {
   const {
     cwd,
     paths,
-    utils: { rimraf },
+    utils: { rimraf, chalk },
   } = api;
 
   api.registerCommand({
@@ -48,7 +48,7 @@ export default function(api: IApi) {
       });
       const bundlerArgs = {
         env: api.env,
-        bundler: { id: Bundler.id },
+        bundler: { id: Bundler.id, version: Bundler.version },
       };
       const bundleConfigs = await api.applyPlugins({
         type: api.ApplyPluginsType.modify,
@@ -68,7 +68,8 @@ export default function(api: IApi) {
         const { stats } = await bundler.build({
           bundleConfigs,
         });
-        console.log(stats);
+        console.log(chalk.green(`Build success.`));
+        // console.log(stats);
       } catch (e) {}
     },
   });

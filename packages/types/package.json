@@ -22,6 +22,7 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/types#readme",
   "dependencies": {
+    "@types/webpack": "4.41.2",
     "@umijs/core": "0.0.1-alpha.1"
   }
 }

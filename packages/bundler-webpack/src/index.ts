@@ -10,6 +10,7 @@ interface IOpts {
 
 class Bundler {
   static id = 'webpack';
+  static version = 4;
   cwd: string;
   config: IConfig;
 

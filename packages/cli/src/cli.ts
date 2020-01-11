@@ -20,11 +20,17 @@ if (process.env.APP_ROOT) {
   try {
     switch (args._[0]) {
       default:
+        const name = args._[0];
+        if (name === 'build') {
+          process.env.NODE_ENV = 'production';
+        } else if (name === 'dev') {
+          process.env.NODE_ENV = 'development';
+        }
         await new Service({
           cwd,
           presets: [require.resolve('@umijs/preset-built-in')],
         }).run({
-          name: args._[0],
+          name,
           args,
         });
         break;

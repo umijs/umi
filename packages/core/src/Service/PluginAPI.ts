@@ -6,6 +6,7 @@ import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPlugin, IPluginConfig, IPreset } from './types';
+import Html from '../Html/Html';
 
 interface IOpts {
   id: string;
@@ -17,6 +18,7 @@ export default class PluginAPI {
   id: string;
   key: string;
   service: Service;
+  Html: typeof Html;
   utils: typeof utils;
 
   constructor(opts: IOpts) {
@@ -24,6 +26,7 @@ export default class PluginAPI {
     this.key = opts.key;
     this.service = opts.service;
     this.utils = utils;
+    this.Html = Html;
   }
 
   // TODO: reversed keys

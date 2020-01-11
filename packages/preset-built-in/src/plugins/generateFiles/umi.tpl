@@ -6,7 +6,7 @@ import { renderClient } from '{{{ rendererPath }}}';
 
 let clientRender = function() {
   renderClient({
-    routes: require('./core/routes').default,
+    routes: require('./core/routes').routes,
     plugin,
     history,
     rootElement: 'root',
@@ -18,6 +18,8 @@ clientRender = plugin.applyPlugins({
   initialValue: clientRender,
   args: {},
 });
+
+clientRender();
 
 // hot module replacement
 if (module.hot) {

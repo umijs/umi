@@ -19,6 +19,7 @@ export default function() {
 
       // commands
       require.resolve('./plugins/commands/dev/dev'),
+      require.resolve('./plugins/commands/build/applyHtmlWebpackPlugin'),
       require.resolve('./plugins/commands/build/build'),
     ],
   };

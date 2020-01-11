@@ -4,6 +4,7 @@ import {
   IRoute,
   IConfig as IConfigCore,
 } from '@umijs/core';
+import webpack from 'webpack';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -43,8 +44,8 @@ export interface IApi extends PluginAPI {
   modifyPaths: IModify<string[], null>;
   modifyBundler: IModify<any, null>;
   modifyBundleConfig: IModify<
-    object,
-    { env: env; type: string; bundler: { id: string } }
+    webpack.Configuration,
+    { env: env; type: string; bundler: { id: string; version: number } }
   >;
   modifyBundleConfigs: IModify<
     any[],
@@ -90,3 +91,5 @@ export interface IConfig extends IConfigCore {
   disableDynamicImport?: boolean;
   terserOptions?: object;
 }
+
+export { webpack };
