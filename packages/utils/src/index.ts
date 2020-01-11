@@ -24,6 +24,8 @@ import * as parser from '@babel/parser';
 export { parser };
 import traverse from '@babel/traverse';
 export { traverse };
+import prettier from 'prettier';
+export { prettier };
 
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';

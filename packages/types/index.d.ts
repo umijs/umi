@@ -75,8 +75,6 @@ export interface IApi extends PluginAPI {
 export { IRoute };
 
 export interface IConfig extends IConfigCore {
-  outputPath?: string;
-  publicPath?: string;
   devtool?: string;
   hash?: boolean;
   externals?: any;
