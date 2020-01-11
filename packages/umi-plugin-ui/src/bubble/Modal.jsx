@@ -24,14 +24,6 @@ const fadeOutDown = keyframes`
 `;
 
 const IframeWrapper = styled('div')`
-  position: absolute;
-  z-index: 1001;
-  bottom: 72px;
-  right: 0;
-  box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
-  background: #23232d;
-  width: 68vw;
-  height: 80vh;
   animation: ${({ visible }) => (visible ? fadeInUp : fadeOutDown)} 400ms ease;
   & > * {
     animation: ${({ visible }) => (visible ? fadeInUp : fadeOutDown)} 400ms ease;
@@ -102,7 +94,21 @@ class Modal extends React.Component {
 
   render() {
     const { children, visible } = this.props;
-    return <IframeWrapper visible={visible}>{children}</IframeWrapper>;
+    const style = {
+      position: 'absolute',
+      zIndex: 1001,
+      bottom: 72,
+      right: 0,
+      boxShadow: '0 4px 8px 0 rgba(13, 26, 38, 0.2)',
+      background: '#23232d',
+      width: '68vw',
+      height: '80vh',
+    };
+    return (
+      <IframeWrapper style={style} visible={visible}>
+        {children}
+      </IframeWrapper>
+    );
   }
 }
 

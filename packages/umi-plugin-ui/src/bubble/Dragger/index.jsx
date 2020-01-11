@@ -9,14 +9,6 @@ const initRight = 60;
 const initBottom = 30;
 
 const Container = styled.div`
-  cursor: ${({ dragged }) => (dragged ? 'grab' : 'pointer')};
-  position: fixed;
-  z-index: 999;
-  right: ${initRight}px;
-  bottom: ${initBottom}px;
-  font-size: 14px;
-  ${({ hide }) => (hide ? 'transition: all .3s;' : '')}
-
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -325,12 +317,22 @@ export default class Draggable extends React.Component {
     const { children, hide, open } = this.props;
     const { dragged, width } = this.state;
 
+    const style = {
+      cursor: dragged ? 'grab' : 'pointer',
+      position: 'fixed',
+      zIndex: 999,
+      right: hide ? -width / 1.5 : initRight,
+      bottom: initBottom,
+      fontSize: 14,
+      transition: hide ? 'all .3s' : '',
+    };
+
     return (
       <Container
         ref={this.saveRef}
         onMouseDown={this.handleMouseDown}
         dragged={dragged}
-        style={hide ? { right: -width / 1.5 } : {}}
+        style={style}
         open={open}
         hide={hide}
       >
