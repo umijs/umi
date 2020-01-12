@@ -1,5 +1,6 @@
 import { IConfig } from '@umijs/types';
 import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 import { ConfigType } from './enums';
 
@@ -45,6 +46,11 @@ class Bundler {
         resolve({ stats });
       });
     });
+  }
+
+  getMiddleware({ bundleConfigs }: { bundleConfigs: webpack.Configuration[] }) {
+    const compiler = webpack(bundleConfigs);
+    return webpackDevMiddleware(compiler as any);
   }
 
   async dev() {}

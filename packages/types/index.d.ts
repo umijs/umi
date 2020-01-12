@@ -5,6 +5,7 @@ import {
   IConfig as IConfigCore,
 } from '@umijs/core';
 import webpack from 'webpack';
+import { Request, Express, Response, NextFunction } from 'express';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -93,3 +94,4 @@ export interface IConfig extends IConfigCore {
 }
 
 export { webpack };
+export { Request, Express, Response, NextFunction };

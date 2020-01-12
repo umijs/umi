@@ -7,7 +7,6 @@ export {
   Router,
   MemoryRouter,
   Switch,
-  match,
   matchPath,
   withRouter,
   useHistory,

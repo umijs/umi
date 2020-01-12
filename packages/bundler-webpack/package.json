@@ -24,6 +24,7 @@
   "dependencies": {
     "@svgr/webpack": "4.3.3",
     "@types/webpack": "4.41.1",
+    "@types/webpack-dev-middleware": "2.0.3",
     "@umijs/babel-plugin-css-modules": "0.0.1-alpha.1",
     "@umijs/types": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",
@@ -45,7 +46,8 @@
     "style-loader": "1.1.2",
     "url-loader": "3.0.0",
     "webpack": "4.41.5",
-    "webpack-chain": "6.3.0"
+    "webpack-chain": "6.3.0",
+    "webpack-dev-middleware": "3.7.2"
   },
   "bin": {
     "bundler-webpack": "bin/bundler-webpack.js"

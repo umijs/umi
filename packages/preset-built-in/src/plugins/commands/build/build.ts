@@ -1,5 +1,6 @@
-import { IApi, IConfig } from '@umijs/types';
+import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
+import getBundleAndConfigs from '../getBundleAndConfigs';
 
 export default function(api: IApi) {
   const {
@@ -19,51 +20,8 @@ export default function(api: IApi) {
         type: api.ApplyPluginsType.event,
       });
 
-      // bundler
-      const Bundler = await api.applyPlugins({
-        type: api.ApplyPluginsType.modify,
-        key: 'modifyBundler',
-        initialValue: DefaultBundler,
-      });
-
-      // get config
-      async function getConfig({ type }: { type: string }) {
-        return await api.applyPlugins({
-          type: api.ApplyPluginsType.modify,
-          key: 'modifyBundleConfig',
-          initialValue: bundler.getConfig({
-            // @ts-ignore
-            env: api.env === 'production' ? 'production' : 'development',
-            type,
-          }),
-          args: {
-            ...bundlerArgs,
-            type,
-          },
-        });
-      }
-      const bundler: DefaultBundler = new Bundler({
-        cwd,
-        config: api.config,
-      });
-      const bundlerArgs = {
-        env: api.env,
-        bundler: { id: Bundler.id, version: Bundler.version },
-      };
-      const bundleConfigs = await api.applyPlugins({
-        type: api.ApplyPluginsType.modify,
-        key: 'modifyBundlerConfigs',
-        initialValue: [
-          await getConfig({ type: ConfigType.csr }),
-          api.config!.ssr && (await getConfig({ type: ConfigType.ssr })),
-        ].filter(Boolean),
-        args: {
-          ...bundlerArgs,
-          getConfig,
-        },
-      });
-
       // build
+      const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
       try {
         const { stats } = await bundler.build({
           bundleConfigs,

@@ -1,5 +1,6 @@
 import { IConfig } from '@umijs/types';
 import Config from 'webpack-chain';
+import webpack from 'webpack';
 import { join } from 'path';
 import { deepmerge } from '@umijs/utils';
 import { ConfigType } from '../enums';
@@ -14,7 +15,12 @@ export interface IOpts {
   env: 'development' | 'production';
 }
 
-export default function({ cwd, config, type, env }: IOpts) {
+export default function({
+  cwd,
+  config,
+  type,
+  env,
+}: IOpts): webpack.Configuration {
   const webpackConfig = new Config();
 
   webpackConfig.mode(env);
@@ -215,7 +221,7 @@ export default function({ cwd, config, type, env }: IOpts) {
     },
   );
 
-  let ret = webpackConfig.toConfig();
+  let ret = webpackConfig.toConfig() as webpack.Configuration;
 
   // speed-measure-webpack-plugin
   if (process.env.SPEED_MEASURE && type === ConfigType.csr) {
