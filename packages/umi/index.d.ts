@@ -12,6 +12,10 @@ export { default as withRouter } from './withRouter';
 
 export { default as UmiUIFlag } from './UmiUIFlag';
 
+/**
+ * T = props
+ * U = you need params
+ */
 export type RouteComponent<T = {}, U = {}> = React.FC<
   T &
     Partial<ImportRouterTypes> & {
@@ -22,6 +26,8 @@ export type RouteComponent<T = {}, U = {}> = React.FC<
 
 /**
  * RouteComponent by umi
+ * T = props
+ * U = you need params
  */
 export type RC<T, U> = RouteComponent<T, U>;
 
