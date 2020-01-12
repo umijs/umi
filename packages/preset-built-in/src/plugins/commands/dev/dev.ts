@@ -20,13 +20,15 @@ export default (api: IApi) => {
         }),
         beforeMiddlewares: [],
         afterMiddlewares: [createRouteMiddleware({ api })],
-        onListening: () => {},
+        onListening: () => {
+          console.log('dev server started');
+        },
       });
       const httpServer = await server.listen({
         port: 8000,
         hostname: '0.0.0.0',
       });
-      console.log('dev server started');
+      return httpServer;
     },
   });
 };

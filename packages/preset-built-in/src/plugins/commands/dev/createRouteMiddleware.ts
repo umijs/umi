@@ -1,5 +1,5 @@
 import { IApi, Request, Response, NextFunction } from '@umijs/types';
-import { extname } from 'path';
+import { extname, join } from 'path';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 
@@ -18,7 +18,9 @@ export default ({ api }: { api: IApi }) => {
       res.send(content);
     }
 
-    if (ASSET_EXTNAMES.includes(extname(req.path))) {
+    if (req.path === '/favicon.ico') {
+      res.sendFile(join(__dirname, 'umi.png'));
+    } else if (ASSET_EXTNAMES.includes(extname(req.path))) {
       next();
     } else {
       sendHtml();
