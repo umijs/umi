@@ -7,6 +7,7 @@ import { ConfigType } from '../enums';
 import css from './css';
 import { getBabelDepsOpts, getBabelOpts } from './getBabelOpts';
 import terserOptions from './terserOptions';
+import { objToStringified } from './utils';
 
 export interface IOpts {
   cwd: string;
@@ -172,13 +173,21 @@ export default function({
   // plugins -> ignore moment locale
   webpackConfig
     .plugin('ignore-moment-locale')
-    .use(require.resolve('webpack/lib/IgnorePlugin'), [
-      /^\.\/locale$/,
-      /moment$/,
-    ]);
+    .use(webpack.IgnorePlugin, [/^\.\/locale$/, /moment$/]);
 
   // copy
   // TODO
+
+  // define
+  webpackConfig.plugin('define').use(webpack.DefinePlugin, [
+    {
+      'process.env': objToStringified({
+        ...process.env,
+        NODE_ENV: env,
+      }),
+      ...objToStringified(config.define || {}),
+    },
+  ]);
 
   webpackConfig.when(
     isDev,

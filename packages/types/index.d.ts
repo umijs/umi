@@ -83,6 +83,9 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
+  define?: {
+    (key: string): any;
+  };
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   theme?: object;
