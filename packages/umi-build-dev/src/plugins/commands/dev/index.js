@@ -164,7 +164,7 @@ export default function(api) {
                       { detailsOnly: true },
                     );
                   },
-                  onCompileDone({ isFirstCompile, stats, port }) {
+                  onCompileDone({ isFirstCompile, stats, port, urls }) {
                     service.__chunks = stats.compilation.chunks;
                     service.applyPlugins('onDevCompileDone', {
                       args: {
@@ -172,6 +172,7 @@ export default function(api) {
                         stats,
                         port,
                         server,
+                        urls,
                       },
                     });
                     if (isFirstCompile) {
