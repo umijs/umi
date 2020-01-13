@@ -8,11 +8,12 @@ import css from './css';
 import { getBabelDepsOpts, getBabelOpts } from './getBabelOpts';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
+import getTargetsAndBrowsersList from './getTargetsAndBrowsersList';
 
 export interface IOpts {
   cwd: string;
   config: IConfig;
-  type: string;
+  type: ConfigType;
   env: 'development' | 'production';
   entry?: {
     [key: string]: string;
@@ -100,6 +101,11 @@ export default function({
 
   // modules and loaders ---------------------------------------------
 
+  const { targets, browserslist } = getTargetsAndBrowsersList({
+    config,
+    type,
+  });
+
   // prettier-ignore
   webpackConfig.module
     .rule('js')
@@ -111,6 +117,7 @@ export default function({
         .options(getBabelOpts({
           config,
           env,
+          targets,
         }));
 
   // prettier-ignore
@@ -157,7 +164,7 @@ export default function({
       });
 
   // css
-  css({ config, webpackConfig, isDev, disableCompress });
+  css({ config, webpackConfig, isDev, disableCompress, browserslist });
 
   // externals
   if (config.externals) {

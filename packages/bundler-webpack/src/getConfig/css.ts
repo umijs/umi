@@ -9,6 +9,7 @@ interface IOpts {
   config: IConfig;
   isDev: boolean;
   disableCompress?: boolean;
+  browserslist?: any;
 }
 
 interface ICreateCSSRuleOpts extends IOpts {
@@ -26,6 +27,7 @@ function createCSSRule({
   isDev,
   loader,
   options,
+  browserslist,
 }: ICreateCSSRuleOpts) {
   const rule = webpackConfig.module.rule(lang).test(test);
 
@@ -84,6 +86,7 @@ function createCSSRule({
           require('postcss-preset-env')({
             // TODO: set browsers
             autoprefixer: {
+              overrideBrowserslist: browserslist,
               flexbox: 'no-2009',
             },
             // https://cssdb.org/
@@ -106,6 +109,7 @@ export default function({
   webpackConfig,
   isDev,
   disableCompress,
+  browserslist,
 }: IOpts) {
   // css
   createCSSRule({
@@ -114,6 +118,7 @@ export default function({
     isDev,
     lang: 'css',
     test: /\.(css)(\?.*)?$/,
+    browserslist,
   });
 
   // less
@@ -129,6 +134,7 @@ export default function({
       modifyVars: theme,
       javascriptEnabled: true,
     },
+    browserslist,
   });
 
   // extract css

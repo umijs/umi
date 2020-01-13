@@ -21,7 +21,7 @@ class Bundler {
   }
 
   getConfig(opts: {
-    type: string;
+    type: ConfigType;
     env: 'development' | 'production';
     entry: {
       [key: string]: string;

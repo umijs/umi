@@ -19,6 +19,11 @@ interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
 }
 
+export interface ITargets {
+  browsers?: any;
+  [key: string]: number | boolean;
+}
+
 type IPresetOrPlugin = string | [string, any];
 type env = 'development' | 'production';
 
@@ -86,6 +91,7 @@ export interface IConfig extends IConfigCore {
   define?: {
     (key: string): any;
   };
+  targets?: ITargets;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   theme?: object;

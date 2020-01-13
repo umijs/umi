@@ -3,6 +3,7 @@ import { IConfig } from '@umijs/types';
 interface IOpts {
   config: IConfig;
   env: 'development' | 'production';
+  targets?: object;
 }
 
 const basicBabelLoaderOpts = {
@@ -13,7 +14,7 @@ const basicBabelLoaderOpts = {
   cacheDirectory: process.env.BABEL_CACHE !== 'none',
 };
 
-export function getBabelOpts({ config, env }: IOpts) {
+export function getBabelOpts({ config, env, targets }: IOpts) {
   return {
     ...basicBabelLoaderOpts,
     presets: [
@@ -25,6 +26,9 @@ export function getBabelOpts({ config, env }: IOpts) {
           dynamicImportNode: config.disableDynamicImport,
           autoCSSModules: true,
           svgr: true,
+          env: {
+            targets,
+          },
         },
       ],
       ...(config.extraBabelPresets || []),
