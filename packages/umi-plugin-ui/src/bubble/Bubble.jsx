@@ -10,9 +10,9 @@ import Tooltip from './Tooltip';
 import Close from './Close';
 
 const editTextStyle = {
-  fontSize: 12,
+  fontSize: '12px',
   color: 'rgba(255,255,255,.85)',
-  lineHeight: 20,
+  lineHeight: '20px',
   margin: 0,
   marginLeft: 1,
   textAlign: 'center',
