@@ -225,7 +225,5 @@ test('svgr', () => {
       svgr: {},
     },
   );
-  expect(winPath(code!)).toContain(
-    `@svgr/webpack/lib/index.js?-svgo,+titleProp,+ref!./a.svg");`,
-  );
+  expect(winPath(code!)).toContain(`index.js?-svgo,+titleProp,+ref!./a.svg");`);
 });
