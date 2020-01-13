@@ -9,6 +9,7 @@ interface IOpts {
   env?: object;
   transformRuntime?: object;
   reactRemovePropTypes?: boolean;
+  reactRequire?: boolean;
 }
 
 function toObject(obj: object | boolean) {
@@ -89,6 +90,7 @@ export default (context: any, opts: IOpts = {}) => {
           removeImport: true,
         },
       ],
+      opts.reactRequire && [require('babel-plugin-react-require').default],
     ].filter(Boolean),
   };
 };

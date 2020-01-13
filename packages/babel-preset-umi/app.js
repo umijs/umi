@@ -19,6 +19,7 @@ module.exports = function(opts) {
             },
             transformRuntime: {},
             reactRemovePropTypes: nodeEnv === 'production',
+            reactRequire: true,
           },
           opts,
         ),

@@ -13,6 +13,15 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'dev',
     fn: async function() {
+      rimraf.sync(paths.absTmpPath!);
+
+      // generate files
+      await api.applyPlugins({
+        key: 'onGenerateFiles',
+        type: api.ApplyPluginsType.event,
+      });
+
+      // dev
       const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
       const server = new Server({
         compilerMiddleware: bundler.getMiddleware({
