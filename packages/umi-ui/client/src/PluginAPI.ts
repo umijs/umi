@@ -9,6 +9,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import moment from 'moment';
+import request from 'umi-request';
 import qs from 'qs';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
@@ -46,6 +47,7 @@ export default class PluginAPI {
   moment: IUi.IMoment;
   _analyze: IUi.IAnalyze;
   hooks: any;
+  request: any;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -63,6 +65,7 @@ export default class PluginAPI {
     this.DirectoryForm = DirectoryForm;
     this.StepForm = StepForm;
     this.Field = Field;
+    this.request = request;
     this.ConfigForm = ConfigForm;
     this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
