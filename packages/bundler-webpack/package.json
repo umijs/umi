@@ -22,7 +22,7 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "dependencies": {
-    "@svgr/webpack": "4.3.3",
+    "@svgr/webpack": "5.0.1",
     "@types/webpack": "4.41.2",
     "@types/webpack-dev-middleware": "2.0.3",
     "@umijs/babel-plugin-css-modules": "0.0.1-alpha.1",

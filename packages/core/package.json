@@ -24,7 +24,7 @@
   "dependencies": {
     "@babel/core": "7.8.0",
     "@babel/register": "7.8.0",
-    "@hapi/joi": "16.1.8",
+    "@hapi/joi": "17.0.2",
     "@types/cheerio": "0.22.15",
     "@types/ejs": "3.0.0",
     "@types/hapi__joi": "16.0.6",
