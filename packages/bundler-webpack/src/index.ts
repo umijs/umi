@@ -23,6 +23,9 @@ class Bundler {
   getConfig(opts: {
     type: string;
     env: 'development' | 'production';
+    entry: {
+      [key: string]: string;
+    };
   }): webpack.Configuration {
     return getConfig({
       ...opts,

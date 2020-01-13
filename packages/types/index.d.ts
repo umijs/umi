@@ -93,6 +93,7 @@ export interface IConfig extends IConfigCore {
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];
   disableDynamicImport?: boolean;
+  runtimePublicPath?: boolean;
   terserOptions?: object;
 }
 

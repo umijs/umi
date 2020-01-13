@@ -34,14 +34,14 @@ readdirSync(fixtures).forEach(fixture => {
     const webpackConfig = bundler.getConfig({
       env,
       type: ConfigType.csr,
+      entry: {
+        index: getFile({
+          base: cwd,
+          fileNameWithoutExt: 'index',
+          type: 'javascript',
+        })!.path,
+      },
     });
-    webpackConfig.entry = {
-      index: getFile({
-        base: cwd,
-        fileNameWithoutExt: 'index',
-        type: 'javascript',
-      })!.path,
-    };
     webpackConfig.devtool = false;
 
     // build

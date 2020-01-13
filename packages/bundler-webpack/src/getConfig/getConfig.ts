@@ -14,6 +14,9 @@ export interface IOpts {
   config: IConfig;
   type: string;
   env: 'development' | 'production';
+  entry?: {
+    [key: string]: string;
+  };
 }
 
 export default function({
@@ -21,16 +24,21 @@ export default function({
   config,
   type,
   env,
+  entry,
 }: IOpts): webpack.Configuration {
   const webpackConfig = new Config();
 
   webpackConfig.mode(env);
 
-  // TODO: 处理 entry
-  if (type === ConfigType.csr) {
-    const tmpDir =
-      env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
-    webpackConfig.entry('umi').add(join(cwd, tmpDir, 'umi.ts'));
+  // entry
+  if (entry) {
+    Object.keys(entry).forEach(key => {
+      const e = webpackConfig.entry(key);
+      if (config.runtimePublicPath) {
+        e.add(require.resolve('./setPublicPath'));
+      }
+      e.add(entry[key]);
+    });
   }
 
   const isDev = env === 'development';

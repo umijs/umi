@@ -62,10 +62,10 @@ process.env.NODE_ENV = env;
   const webpackConfig = bundler.getConfig({
     env,
     type: ConfigType.csr,
+    entry: {
+      [basename(entry, extname(entry))]: entry,
+    },
   });
-  webpackConfig.entry = {
-    [basename(entry, extname(entry))]: entry,
-  };
 
   rimraf.sync(join(cwd, 'dist'));
   const { stats } = await bundler.build({
