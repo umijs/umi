@@ -16,6 +16,11 @@ if (process.env.APP_ROOT) {
   cwd = join(cwd, process.env.APP_ROOT);
 }
 
+if (args.version && !args._[0]) {
+  args._[0] = 'version';
+  console.log(`umi@${require('../package.json').version}`);
+}
+
 (async () => {
   try {
     switch (args._[0]) {
