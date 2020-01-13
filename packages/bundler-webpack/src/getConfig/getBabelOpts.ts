@@ -18,31 +18,18 @@ export function getBabelOpts({ config, env }: IOpts) {
     ...basicBabelLoaderOpts,
     presets: [
       [
-        require.resolve('@umijs/babel-preset-umi/app', {
+        require.resolve('@umijs/babel-preset-umi/app'),
+        {
           // @ts-ignore
           nodeEnv: env,
-        }),
+          dynamicImportNode: config.disableDynamicImport,
+          autoCSSModules: true,
+          svgr: true,
+        },
       ],
       ...(config.extraBabelPresets || []),
     ],
-    plugins: [
-      [
-        require.resolve('babel-plugin-named-asset-import'),
-        {
-          loaderMap: {
-            svg: {
-              ReactComponent: `${require.resolve(
-                '@svgr/webpack',
-              )}?-svgo,+titleProp,+ref![path]`,
-            },
-          },
-        },
-      ],
-      require.resolve('@umijs/babel-plugin-css-modules'),
-      config.disableDynamicImport &&
-        require.resolve('babel-plugin-dynamic-import-node'),
-      ...(config.extraBabelPlugins || []),
-    ].filter(Boolean),
+    plugins: [...(config.extraBabelPlugins || [])].filter(Boolean),
   };
 }
 

@@ -2,7 +2,7 @@
 import { mergeConfig } from '@umijs/utils';
 import { dirname } from 'path';
 
-interface IOpts {
+export interface IOpts {
   typescript?: boolean;
   react?: object;
   debug?: boolean;
@@ -10,6 +10,9 @@ interface IOpts {
   transformRuntime?: object;
   reactRemovePropTypes?: boolean;
   reactRequire?: boolean;
+  dynamicImportNode?: boolean;
+  autoCSSModules?: boolean;
+  svgr?: object;
 }
 
 function toObject(obj: object | boolean) {
@@ -85,12 +88,30 @@ export default (context: any, opts: IOpts = {}) => {
         },
       ],
       opts.reactRemovePropTypes && [
-        require('babel-plugin-transform-react-remove-prop-types').default,
+        require.resolve('babel-plugin-transform-react-remove-prop-types'),
         {
           removeImport: true,
         },
       ],
-      opts.reactRequire && [require('babel-plugin-react-require').default],
+      opts.reactRequire && [require.resolve('babel-plugin-react-require')],
+      opts.dynamicImportNode && [
+        require.resolve('babel-plugin-dynamic-import-node'),
+      ],
+      opts.autoCSSModules && [
+        require.resolve('@umijs/babel-plugin-auto-css-modules'),
+      ],
+      opts.svgr && [
+        require.resolve('babel-plugin-named-asset-import'),
+        {
+          loaderMap: {
+            svg: {
+              ReactComponent: `${require.resolve(
+                '@svgr/webpack',
+              )}?-svgo,+titleProp,+ref![path]`,
+            },
+          },
+        },
+      ],
     ].filter(Boolean),
   };
 };

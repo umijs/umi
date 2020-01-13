@@ -1,6 +1,7 @@
 import { deepmerge, winPath } from '@umijs/utils';
 import { join } from 'path';
 import { transform } from '@babel/core';
+import { IOpts } from './index';
 
 const DEFAULT_OPTS = {
   react: true,
@@ -8,14 +9,6 @@ const DEFAULT_OPTS = {
     modules: 'commonjs',
   },
 };
-
-interface IOpts {
-  typescript?: boolean;
-  env?: any;
-  transformRuntime?: object;
-  reactRemovePropTypes?: boolean;
-  reactRequire?: boolean;
-}
 
 function transformWithPreset(code: string, opts: IOpts) {
   const filename = opts.typescript ? 'file.ts' : 'file.js';
@@ -207,5 +200,32 @@ test('babel-plugin-react-require', () => {
   });
   expect(code).toContain(
     'var _react = _interopRequireDefault(require("react"));',
+  );
+});
+
+test('babel-plugin-auto-css-modules', () => {
+  const code = transformWithPreset(`import styles from './a.css';`, {
+    env: {
+      targets: { ie: 10 },
+    },
+    autoCSSModules: true,
+  });
+  expect(code).toContain(
+    `var _a = _interopRequireDefault(require("./a.css?modules"));`,
+  );
+});
+
+test('svgr', () => {
+  const code = transformWithPreset(
+    `import { ReactComponent } from './a.svg';`,
+    {
+      env: {
+        targets: { ie: 10 },
+      },
+      svgr: {},
+    },
+  );
+  expect(code).toContain(
+    `@svgr/webpack/lib/index.js?-svgo,+titleProp,+ref!./a.svg");`,
   );
 });
