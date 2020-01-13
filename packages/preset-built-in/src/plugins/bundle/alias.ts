@@ -28,6 +28,10 @@ export default (api: IApi) => {
         'react-dom':
           getUserLibDir({ library: 'react-dom' }) ||
           dirname(require.resolve('react-dom/package.json')),
+        'react-router': dirname(require.resolve('react-router/package.json')),
+        'react-router-dom': dirname(
+          require.resolve('react-router-dom/package.json'),
+        ),
         '@': paths.absSrcPath,
       },
     },

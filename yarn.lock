@@ -3495,15 +3495,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-router-config@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react-router-config/-/react-router-config-5.0.1.tgz#54da8418190ee47484dee279975e2b8038fb8b5d"
-  integrity sha512-D4srFL4XP21GjWWnM7mL8j+Nrrw13pc2TYr57WTHJxU9YTxnrXL7p1iqGtwecgwhyeXJSm4WrGwq0SOgSALVbA==
-  dependencies:
-    "@types/history" "*"
-    "@types/react" "*"
-    "@types/react-router" "*"
-
 "@types/react-router-dom@5.1.3":
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.3.tgz#b5d28e7850bd274d944c0fbbe5d57e6b30d71196"
@@ -11666,13 +11657,6 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
-
-react-router-config@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/react-router-config/-/react-router-config-5.1.1.tgz#0f4263d1a80c6b2dc7b9c1902c9526478194a988"
-  integrity sha512-DuanZjaD8mQp1ppHjgnnUnyOlqYXZVjnov/JzFhjLEwd3Z4dYjMSnqrEzzGThH47vpCOqPPwJM2FtthLeJ8Pbg==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
 
 react-router-dom@5.1.2:
   version "5.1.2"
