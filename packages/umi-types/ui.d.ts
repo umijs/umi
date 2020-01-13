@@ -378,6 +378,8 @@ declare namespace IUI {
     event: IEvent;
     /** React hooks for UI development */
     readonly hooks: Hooks;
+    /** umi-request */
+    readonly request: any;
     /** lodash */
     readonly _: ILodash;
     /** debug for client */
