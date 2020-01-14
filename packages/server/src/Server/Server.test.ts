@@ -19,7 +19,7 @@ function initSocket({
   });
 }
 
-xtest('normal', async () => {
+test('normal', async () => {
   const server = new Server({
     beforeMiddlewares: [
       (req: Request, res: Response, next: NextFunction) => {
