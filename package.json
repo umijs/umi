@@ -39,7 +39,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "7.11.1",
     "express": "^4.17.1",
-    "father-build": "^1.13.1",
+    "father-build": "^1.17.2",
     "form-data": "^2.3.3",
     "got": "9.3.2",
     "husky": "1.2.0",

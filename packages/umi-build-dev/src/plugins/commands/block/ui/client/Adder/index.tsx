@@ -91,18 +91,15 @@ const Adder: React.FC<AdderProps> = props => {
     },
   );
 
-  useEffect(
-    () => {
-      if (api.detectNpmClients) {
-        api.detectNpmClients().then(clients => {
-          form.setFieldsValue({
-            npmClient: clients.find(c => npmClients.includes(c)),
-          });
+  useEffect(() => {
+    if (api.detectNpmClients) {
+      api.detectNpmClients().then(clients => {
+        form.setFieldsValue({
+          npmClient: clients.find(c => npmClients.includes(c)),
         });
-      }
-    },
-    [npmClients],
-  );
+      });
+    }
+  }, [npmClients]);
 
   useEffect(() => {
     /**
@@ -173,56 +170,50 @@ const Adder: React.FC<AdderProps> = props => {
     }
   }, []);
 
-  useEffect(
-    () => {
-      if (!block || !block.url) {
-        return;
-      }
-      // 生成 defaultName
-      const defaultName = block.url.split('/').pop();
-      const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
-      const resetInitialValues = async () => {
-        // 自动生成一个不存在的变量名
-        const noExitVar = await getNoExitVar({
-          name: upperCamelCase(defaultName),
+  useEffect(() => {
+    if (!block || !block.url) {
+      return;
+    }
+    // 生成 defaultName
+    const defaultName = block.url.split('/').pop();
+    const initPath = blockType !== 'template' ? '/' : `/${defaultName}`;
+    const resetInitialValues = async () => {
+      // 自动生成一个不存在的变量名
+      const noExitVar = await getNoExitVar({
+        name: upperCamelCase(defaultName),
+        path: blockTarget || initPath,
+        api,
+        need: !!blockTarget,
+      });
+
+      /**
+       * 默认值，自动拼接一下 name
+       * blockTarget 是 umi min ui 中选出来的以它为主要
+       */
+      const initialValues = {
+        path: await getNoExitPath({
           path: blockTarget || initPath,
           api,
-          need: !!blockTarget,
-        });
-
-        /**
-         * 默认值，自动拼接一下 name
-         * blockTarget 是 umi min ui 中选出来的以它为主要
-         */
-        const initialValues = {
-          path: await getNoExitPath({
-            path: blockTarget || initPath,
-            api,
-            need: blockType === 'template',
-          }),
-          // 自动生成一个不存在路由
-          routePath: await getNoExitRoute({
-            path: `/${defaultName.toLocaleLowerCase()}`,
-            api,
-            need: blockType === 'template',
-          }),
-          name: noExitVar,
-        };
-        form.setFieldsValue(initialValues);
+          need: blockType === 'template',
+        }),
+        // 自动生成一个不存在路由
+        routePath: await getNoExitRoute({
+          path: `/${defaultName.toLocaleLowerCase()}`,
+          api,
+          need: blockType === 'template',
+        }),
+        name: noExitVar,
       };
-      resetInitialValues();
-    },
-    [block ? block.url : '', blockTarget || ''],
-  );
+      form.setFieldsValue(initialValues);
+    };
+    resetInitialValues();
+  }, [block ? block.url : '', blockTarget || '']);
 
-  useEffect(
-    () => {
-      if (index !== null && index !== undefined) {
-        form.setFieldsValue({ index });
-      }
-    },
-    [index],
-  );
+  useEffect(() => {
+    if (index !== null && index !== undefined) {
+      form.setFieldsValue({ index });
+    }
+  }, [index]);
 
   if (!block || !block.url) {
     return null;
@@ -369,7 +360,16 @@ const Adder: React.FC<AdderProps> = props => {
             <Switch size="small" />
           </Form.Item>
         )}
-        <Form.Item name="npmClient" label={intl({ id: 'org.umi.ui.blocks.adder.npmClient' })}>
+        <Form.Item
+          name="npmClient"
+          label={intl({ id: 'org.umi.ui.blocks.adder.npmClient' })}
+          rules={[
+            {
+              required: true,
+              message: intl({ id: 'org.umi.ui.blocks.adder.npmClient.required' }),
+            },
+          ]}
+        >
           <Select>
             {npmClients.map(client => (
               <Select.Option key={client} value={client}>

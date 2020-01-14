@@ -27,6 +27,7 @@ export default {
   'org.umi.ui.blocks.adder.js': '编译为 JS',
   'org.umi.ui.blocks.adder.uni18n': '移除国际化',
   'org.umi.ui.blocks.adder.npmClient': '包管理器',
+  'org.umi.ui.blocks.adder.npmClient.required': '请选择包管理器',
   'org.umi.ui.blocks.adder.minirecommend': '在 mini ui 中添加，获取更好的使用体验。',
   'org.umi.ui.blocks.adder.path': '添加到',
   'org.umi.ui.blocks.adder.path.tooltip':
