@@ -1,6 +1,6 @@
 {
   "name": "umi-ui",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "./lib/UmiUI.js",
   "files": [
     "lib",
@@ -12,7 +12,7 @@
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@types/node-notifier": "^5.4.0",
     "@types/sockjs": "^0.3.31",
-    "umi-types": "0.5.11",
+    "umi-types": "0.5.12",
     "umi-ui-theme": "1.1.2"
   },
   "repository": {
@@ -50,8 +50,8 @@
     "rimraf": "3.0.0",
     "semver": "6.3.0",
     "sockjs": "0.3.19",
-    "umi-build-dev": "1.17.0",
-    "umi-ui-theme": "1.2.2",
+    "umi-build-dev": "1.17.1",
+    "umi-ui-theme": "1.2.3",
     "user-home": "2.0.0"
   }
 }
