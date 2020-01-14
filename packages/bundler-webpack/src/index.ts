@@ -54,10 +54,8 @@ class Bundler {
   }
 
   setupDevServerOpts({
-    opts,
     bundleConfigs,
   }: {
-    opts: IServerOpts;
     bundleConfigs: webpack.Configuration[];
   }): IServerOpts {
     const compiler = webpack(bundleConfigs);
@@ -97,7 +95,6 @@ class Bundler {
     let _stats: webpack.Stats | null = null;
 
     return {
-      ...opts,
       compilerMiddleware,
       onListening: ({ server }) => {
         function addHooks(compiler: webpack.Compiler) {

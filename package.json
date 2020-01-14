@@ -7,7 +7,7 @@
     "bootstrap": "node ./scripts/bootstrap.js",
     "build": "father-build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "link:cli": "cd packages/cli && yarn link && cd -",
+    "link:umi": "cd packages/umi && yarn link && cd -",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "test:update": "umi-test --updateSnapshot"
@@ -42,6 +42,5 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
     "yorkie": "^2.0.0"
-  },
-  "resolutions": {}
+  }
 }

@@ -1,22 +1,23 @@
 # Contributing to umi
 
-> Notice: `y` is the alias for `yarn`, `n` is the alias for `npm`.
-
 ## Set up
 
 Install dev deps after git clone the repo.
 
 ```bash
-$ y
+$ yarn
 ```
 
 Link umi globally.
 
 ```bash
 $ cd packages/umi
-$ y link
+$ yarn link
+```
 
-# Try the umi cli
+Try the `umi` cli.
+
+```bash
 $ umi -v
 umi@0.0.1-alpha.1@local
 ```
@@ -26,21 +27,38 @@ umi@0.0.1-alpha.1@local
 Monitor file changes and transform with babel and rollup.
 
 ```bash
-$ y build --watch
+$ yarn build --watch
 ```
 
 Run test.
 
 ```bash
-# Including e2e test
-$ y test
+$ yarn test
 
 # Test specified file and watch
-$ y test getMockData.test.js -w
+$ yarn test getMockData.test.js -w
 
 # Test specified package
-$ y test --package core
+$ yarn test --package core
 
 # Generate coverage
-$ y test --coverage
+$ yarn test --coverage
+```
+
+## Create new package
+
+Such as creating package `foo`.
+
+```bash
+$ mkdir -p packages/foo
+$ yarn bootstrap
+```
+
+Then you will find the `README.md` and `package.json` is generated in `packages/foo`.
+
+```bash
+$ tree packages/foo
+packages/foo
+├── README.md
+└── package.json
 ```

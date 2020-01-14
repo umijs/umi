@@ -25,20 +25,16 @@ export default (api: IApi) => {
       const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
       const opts: IServerOpts = bundler.setupDevServerOpts({
         bundleConfigs: bundleConfigs,
-        opts: {
-          beforeMiddlewares: [],
-          afterMiddlewares: [createRouteMiddleware({ api })],
-          onListening() {
-            console.log('dev server started');
-          },
-        },
       });
-      const server = new Server(opts);
-      const httpServer = await server.listen({
+      const server = new Server({
+        ...opts,
+        beforeMiddlewares: [],
+        afterMiddlewares: [createRouteMiddleware({ api })],
+      });
+      return await server.listen({
         port: 8000,
         hostname: '0.0.0.0',
       });
-      return httpServer;
     },
   });
 };
