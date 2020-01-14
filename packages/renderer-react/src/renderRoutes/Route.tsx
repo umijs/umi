@@ -1,5 +1,5 @@
 import React from 'react';
-import { matchPath, __RouterContext as RouterContext } from '@umijs/runtime';
+import { __RouterContext as RouterContext } from '@umijs/runtime';
 
 export default function Route(props: any) {
   return (

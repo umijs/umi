@@ -2,7 +2,7 @@ import { createMemoryHistory, createHashHistory, createBrowserHistory } from '{{
 
 const userOptions = {{{ userOptions }}};
 const history = {{{ creator }}}({
-  basename: window.basename,
+  basename: (<any>window).basename,
   ...userOptions,
 });
 export { history };
