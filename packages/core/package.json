@@ -22,8 +22,8 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/core#readme",
   "dependencies": {
-    "@babel/core": "7.8.0",
-    "@babel/register": "7.8.0",
+    "@babel/core": "7.8.3",
+    "@babel/register": "7.8.3",
     "@hapi/joi": "16.1.8",
     "@types/cheerio": "0.22.15",
     "@types/ejs": "3.0.0",
