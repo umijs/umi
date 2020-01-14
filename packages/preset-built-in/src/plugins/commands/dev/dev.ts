@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { Server } from '@umijs/server';
+import { Server, IServerOpts } from '@umijs/server';
 import getBundleAndConfigs from '../getBundleAndConfigs';
 import createRouteMiddleware from './createRouteMiddleware';
 
@@ -23,16 +23,17 @@ export default (api: IApi) => {
 
       // dev
       const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
-      const server = new Server({
-        compilerMiddleware: bundler.getMiddleware({
-          bundleConfigs,
-        }),
-        beforeMiddlewares: [],
-        afterMiddlewares: [createRouteMiddleware({ api })],
-        onListening: () => {
-          console.log('dev server started');
+      const opts: IServerOpts = bundler.setupDevServerOpts({
+        bundleConfigs: bundleConfigs,
+        opts: {
+          beforeMiddlewares: [],
+          afterMiddlewares: [createRouteMiddleware({ api })],
+          onListening() {
+            console.log('dev server started');
+          },
         },
       });
+      const server = new Server(opts);
       const httpServer = await server.listen({
         port: 8000,
         hostname: '0.0.0.0',

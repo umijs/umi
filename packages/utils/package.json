@@ -38,6 +38,7 @@
     "crequire": "1.8.1",
     "debug": "4.1.1",
     "deepmerge": "4.2.2",
+    "got": "10.2.2",
     "lodash": "4.17.15",
     "mkdirp": "0.5.1",
     "mustache": "3.2.1",

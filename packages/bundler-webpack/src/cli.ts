@@ -62,6 +62,7 @@ process.env.NODE_ENV = env;
   const webpackConfig = bundler.getConfig({
     env,
     type: ConfigType.csr,
+    hot: args.hot,
     entry: {
       [basename(entry, extname(entry))]: entry,
     },

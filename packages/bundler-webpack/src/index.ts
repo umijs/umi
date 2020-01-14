@@ -1,6 +1,7 @@
 import { IConfig } from '@umijs/types';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
+import { Server, IServerOpts } from '@umijs/server';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
 import { ConfigType } from './enums';
 
@@ -20,13 +21,9 @@ class Bundler {
     this.config = config;
   }
 
-  getConfig(opts: {
-    type: ConfigType;
-    env: 'development' | 'production';
-    entry: {
-      [key: string]: string;
-    };
-  }): webpack.Configuration {
+  getConfig(
+    opts: Omit<IGetConfigOpts, 'cwd' | 'config'>,
+  ): webpack.Configuration {
     return getConfig({
       ...opts,
       cwd: this.cwd,
@@ -54,6 +51,88 @@ class Bundler {
   getMiddleware({ bundleConfigs }: { bundleConfigs: webpack.Configuration[] }) {
     const compiler = webpack(bundleConfigs);
     return webpackDevMiddleware(compiler as any);
+  }
+
+  setupDevServerOpts({
+    opts,
+    bundleConfigs,
+  }: {
+    opts: IServerOpts;
+    bundleConfigs: webpack.Configuration[];
+  }): IServerOpts {
+    const compiler = webpack(bundleConfigs);
+    const compilerMiddleware = webpackDevMiddleware(compiler);
+
+    function sendStats({
+      server,
+      sockets,
+      stats,
+    }: {
+      server: Server;
+      sockets: any;
+      stats: webpack.Stats.ToJsonOutput;
+    }) {
+      server.sockWrite({ sockets, type: 'hash', data: stats.hash });
+
+      if (stats.errors.length > 0) {
+        server.sockWrite({ sockets, type: 'errors', data: stats.errors });
+      } else if (stats.warnings.length > 0) {
+        server.sockWrite({ sockets, type: 'warnings', data: stats.warnings });
+      } else {
+        server.sockWrite({ sockets, type: 'ok' });
+      }
+    }
+
+    function getStats(stats: webpack.Stats) {
+      return stats.toJson({
+        all: false,
+        hash: true,
+        assets: true,
+        warnings: true,
+        errors: true,
+        errorDetails: false,
+      });
+    }
+
+    let _stats: webpack.Stats | null = null;
+
+    return {
+      ...opts,
+      compilerMiddleware,
+      onListening: ({ server }) => {
+        function addHooks(compiler: webpack.Compiler) {
+          const { compile, invalid, done } = compiler.hooks;
+          compile.tap('umi-dev-server', () => {
+            server.sockWrite({ type: 'invalid' });
+          });
+          invalid.tap('umi-dev-server', () => {
+            server.sockWrite({ type: 'invalid' });
+          });
+          done.tap('umi-dev-server', stats => {
+            sendStats({
+              server,
+              sockets: server.sockets,
+              stats: getStats(stats),
+            });
+            _stats = stats;
+          });
+        }
+        if (compiler.compilers) {
+          compiler.compilers.forEach(addHooks);
+        } else {
+          addHooks(compiler as any);
+        }
+      },
+      onConnection: ({ connection, server }) => {
+        if (_stats) {
+          sendStats({
+            server,
+            sockets: [connection],
+            stats: getStats(_stats),
+          });
+        }
+      },
+    };
   }
 
   async dev() {}

@@ -24,7 +24,9 @@
   "dependencies": {
     "@types/node": "13.1.6",
     "@types/express": "4.17.2",
+    "@types/sockjs": "0.3.31",
     "express": "4.17.1",
-    "portfinder": "1.0.25"
+    "portfinder": "1.0.25",
+    "sockjs": "0.3.19"
   }
 }

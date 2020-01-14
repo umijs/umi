@@ -3,8 +3,8 @@ module.exports = {
   moduleNameMapper: {},
   collectCoverageFrom(memo) {
     return memo.concat([
-      // templates
       '!packages/bundler-webpack/src/getConfig/setPublicPath.ts',
+      '!packages/bundler-webpack/src/webpackHotDevClient/*',
     ]);
   },
 };

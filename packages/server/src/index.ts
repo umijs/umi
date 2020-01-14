@@ -1,3 +1,3 @@
-import Server from './Server/Server';
+import Server, { IOpts as IServerOpts } from './Server/Server';
 
-export { Server };
+export { Server, IServerOpts };

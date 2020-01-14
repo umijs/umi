@@ -18,6 +18,7 @@ export interface IOpts {
   entry?: {
     [key: string]: string;
   };
+  hot?: boolean;
 }
 
 export default function({
@@ -26,6 +27,7 @@ export default function({
   type,
   env,
   entry,
+  hot,
 }: IOpts): webpack.Configuration {
   const webpackConfig = new Config();
 
@@ -35,6 +37,9 @@ export default function({
   if (entry) {
     Object.keys(entry).forEach(key => {
       const e = webpackConfig.entry(key);
+      if (hot) {
+        e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
+      }
       if (config.runtimePublicPath) {
         e.add(require.resolve('./setPublicPath'));
       }
@@ -206,7 +211,9 @@ export default function({
 
   webpackConfig.when(
     isDev,
-    webpackConfig => {},
+    webpackConfig => {
+      webpackConfig.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
+    },
     webpackConfig => {
       // don't emit files if have error
       webpackConfig.optimization.noEmitOnErrors(true);

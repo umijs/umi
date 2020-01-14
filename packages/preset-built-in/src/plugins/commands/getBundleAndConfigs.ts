@@ -11,7 +11,7 @@ export default async ({ api }: { api: IApi }) => {
   });
 
   // get config
-  async function getConfig({ type }: { type: string }) {
+  async function getConfig({ type }: { type: ConfigType }) {
     const tmpDir =
       api.env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
 
@@ -21,7 +21,7 @@ export default async ({ api }: { api: IApi }) => {
       initialValue: bundler.getConfig({
         env: api.env === 'production' ? 'production' : 'development',
         type,
-        // @ts-ignore
+        hot: type === ConfigType.csr,
         entry: {
           umi: join(api.cwd, tmpDir, 'umi.ts'),
         },
