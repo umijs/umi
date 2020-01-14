@@ -11,7 +11,7 @@ const { yParser } = require('@umijs/utils');
   );
 
   pkgs.forEach(shortName => {
-    const name = `@umijs/${shortName}`;
+    const name = shortName === 'umi' ? shortName : `@umijs/${shortName}`;
 
     const pkgJSONPath = join(
       __dirname,

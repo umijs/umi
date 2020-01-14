@@ -1,7 +1,7 @@
 {
-  "name": "@umijs/cli",
+  "name": "umi",
   "version": "0.0.1-alpha.1",
-  "description": "@umijs/cli",
+  "description": "umi",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/cli#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
   "dependencies": {
     "@umijs/core": "0.0.1-alpha.1",
     "@umijs/preset-built-in": "0.0.1-alpha.1",
@@ -28,6 +28,6 @@
     "resolve-cwd": "3.0.0"
   },
   "bin": {
-    "umi-next": "bin/umi.js"
+    "umi": "bin/umi.js"
   }
 }

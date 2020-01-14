@@ -1,4 +1,4 @@
-# Contributing to umi-next
+# Contributing to umi
 
 > Notice: `y` is the alias for `yarn`, `n` is the alias for `npm`.
 
@@ -13,12 +13,12 @@ $ y
 Link umi globally.
 
 ```bash
-$ cd packages/cli
+$ cd packages/umi
 $ y link
 
-# Try the umi-next cli
-$ umi-next -v
-umi@0.0.1-alpha.1
+# Try the umi cli
+$ umi -v
+umi@0.0.1-alpha.1@local
 ```
 
 ## Common Tasks
