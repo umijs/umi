@@ -2,11 +2,13 @@
   "name": "umi",
   "version": "0.0.1-alpha.1",
   "description": "umi",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "lib/cjs.d.ts",
   "files": [
     "lib",
-    "src"
+    "src",
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "dependencies": {
     "@umijs/core": "0.0.1-alpha.1",
     "@umijs/preset-built-in": "0.0.1-alpha.1",
+    "@umijs/runtime": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",
     "resolve-cwd": "3.0.0"
   },

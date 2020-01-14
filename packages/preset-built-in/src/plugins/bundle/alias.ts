@@ -33,6 +33,7 @@ export default (api: IApi) => {
           require.resolve('react-router-dom/package.json'),
         ),
         '@': paths.absSrcPath,
+        '@@': paths.absTmpPath,
       },
     },
   });

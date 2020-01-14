@@ -24,6 +24,3 @@ export {
 
 export { default as Plugin, ApplyPluginsType } from './Plugin/Plugin';
 export { default as dynamic } from './dynamic/dynamic';
-
-// @ts-ignore
-// export * from '@@/umiExports';
