@@ -60,24 +60,24 @@ test('normal', async () => {
   const { body: afterBody } = await got(`http://${hostname}:${port}/after`);
   expect(afterBody).toEqual('after');
 
-  const messages: string[] = [];
-  const sock = await initSocket({
-    url: `http://${hostname}:${port}/dev-server`,
-    onMessage: (message: { data: string }) => {
-      messages.push(message.data);
-    },
-  });
-  server.sockWrite({
-    type: 'foo',
-    data: 'bar',
-  });
-
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-  await delay(100);
-
-  expect(messages).toEqual(['{"type":"foo","data":"bar"}']);
-  sock.close();
-  await delay(100);
+  // const messages: string[] = [];
+  // const sock = await initSocket({
+  //   url: `http://${hostname}:${port}/dev-server`,
+  //   onMessage: (message: { data: string }) => {
+  //     messages.push(message.data);
+  //   },
+  // });
+  // server.sockWrite({
+  //   type: 'foo',
+  //   data: 'bar',
+  // });
+  //
+  // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  // await delay(100);
+  //
+  // expect(messages).toEqual(['{"type":"foo","data":"bar"}']);
+  // sock.close();
+  // await delay(100);
 
   server.listeningApp?.close();
 });
