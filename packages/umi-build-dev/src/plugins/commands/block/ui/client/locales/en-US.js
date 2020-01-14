@@ -27,6 +27,7 @@ export default {
   'org.umi.ui.blocks.adder.js': 'Transform to JS',
   'org.umi.ui.blocks.adder.uni18n': 'Remove i18n',
   'org.umi.ui.blocks.adder.npmClient': 'Package Manage Client',
+  'org.umi.ui.blocks.adder.npmClient.required': 'Please select a package manage client',
   'org.umi.ui.blocks.adder.minirecommend': 'Open in mini ui for add, get a better experience.',
   'org.umi.ui.blocks.adder.path': 'Add to',
   'org.umi.ui.blocks.adder.path.tooltip':
