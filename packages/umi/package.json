@@ -3,7 +3,6 @@
   "version": "0.0.1-alpha.1",
   "description": "umi",
   "main": "lib/cjs.js",
-  "module": "dist/index.esm.js",
   "types": "lib/cjs.d.ts",
   "files": [
     "lib",
@@ -32,5 +31,6 @@
   },
   "bin": {
     "umi": "bin/umi.js"
-  }
+  },
+  "module": "dist/index.esm.js"
 }

@@ -1,5 +1,5 @@
 import getTargetsAndBrowsersList from './getTargetsAndBrowsersList';
-import { ConfigType } from '../enums';
+import { ConfigType } from './enums';
 
 const configTargets = {
   ie: 10,

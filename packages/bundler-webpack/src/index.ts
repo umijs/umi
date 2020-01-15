@@ -2,8 +2,8 @@ import { IConfig } from '@umijs/types';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { Server, IServerOpts } from '@umijs/server';
+import { ConfigType } from '@umijs/bundler-utils';
 import getConfig, { IOpts as IGetConfigOpts } from './getConfig/getConfig';
-import { ConfigType } from './enums';
 
 interface IOpts {
   cwd: string;

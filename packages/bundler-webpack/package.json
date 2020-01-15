@@ -27,6 +27,7 @@
     "@types/sockjs-client": "1.1.1",
     "@umijs/types": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",
+    "@umijs/bundler-utils": "0.0.1-alpha.1",
     "babel-loader": "8.0.6",
     "css-loader": "3.4.2",
     "file-loader": "5.0.2",

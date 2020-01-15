@@ -1,8 +1,8 @@
 import { join } from 'path';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { getFile, rimraf } from '@umijs/utils';
+import { ConfigType } from '@umijs/bundler-utils';
 import { Bundler } from './index';
-import { ConfigType } from './enums';
 
 const fixtures = join(__dirname, 'fixtures');
 

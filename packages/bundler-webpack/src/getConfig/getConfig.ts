@@ -3,12 +3,15 @@ import Config from 'webpack-chain';
 import webpack from 'webpack';
 import { join } from 'path';
 import { deepmerge } from '@umijs/utils';
-import { ConfigType } from '../enums';
+import {
+  ConfigType,
+  getTargetsAndBrowsersList,
+  getBabelDepsOpts,
+  getBabelOpts,
+} from '@umijs/bundler-utils';
 import css from './css';
-import { getBabelDepsOpts, getBabelOpts } from './getBabelOpts';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
-import getTargetsAndBrowsersList from './getTargetsAndBrowsersList';
 
 export interface IOpts {
   cwd: string;
@@ -19,6 +22,10 @@ export interface IOpts {
     [key: string]: string;
   };
   hot?: boolean;
+  babelOpts?: object;
+  babelOptsForDep?: object;
+  targets?: any;
+  browserslist?: any;
 }
 
 export default function({

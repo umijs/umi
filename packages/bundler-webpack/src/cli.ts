@@ -5,11 +5,11 @@ import {
   rimraf,
   yParser,
 } from '@umijs/utils';
+import { ConfigType } from '@umijs/bundler-utils';
 import { basename, extname, join } from 'path';
 import assert from 'assert';
-import { Bundler } from './index';
 import { existsSync } from 'fs';
-import { ConfigType } from './enums';
+import { Bundler } from './index';
 
 const args = yParser(process.argv.slice(2), {
   alias: {

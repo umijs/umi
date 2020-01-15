@@ -1,4 +1,4 @@
-import { IApi } from '@umijs/types';
+import { IApi, IConfig } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
 
@@ -15,11 +15,12 @@ export default async ({ api }: { api: IApi }) => {
     const tmpDir =
       api.env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
 
+    const env = api.env === 'production' ? 'production' : 'development';
     return await api.applyPlugins({
       type: api.ApplyPluginsType.modify,
       key: 'modifyBundleConfig',
       initialValue: bundler.getConfig({
-        env: api.env === 'production' ? 'production' : 'development',
+        env,
         type,
         hot: type === ConfigType.csr,
         entry: {

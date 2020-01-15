@@ -1,5 +1,5 @@
 import { IConfig, ITargets } from '@umijs/types';
-import { ConfigType } from '../enums';
+import { ConfigType } from './enums';
 
 interface IOpts {
   config: IConfig;

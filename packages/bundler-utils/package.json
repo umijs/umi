@@ -1,7 +1,7 @@
 {
-  "name": "@umijs/bundler",
+  "name": "@umijs/bundler-utils",
   "version": "0.0.1-alpha.1",
-  "description": "@umijs/bundler",
+  "description": "@umijs/bundler-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -20,5 +20,5 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler#readme"
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme"
 }

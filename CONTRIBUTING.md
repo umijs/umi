@@ -24,10 +24,16 @@ umi@0.0.1-alpha.1@local
 
 ## Common Tasks
 
-Monitor file changes and transform with babel and rollup.
+Transform with babel and rollup.
 
 ```bash
+$ yarn build
+
+# Build and monitor file changes
 $ yarn build --watch
+
+# Build specified package only
+$ PACKAGE=core yarn build --watch
 ```
 
 Run test.
