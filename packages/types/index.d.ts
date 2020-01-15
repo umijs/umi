@@ -61,6 +61,12 @@ export interface IApi extends PluginAPI {
       getConfig: ({ type }: { type: string }) => object;
     }
   >;
+  modifyBabelOpts: IModify<
+    object,
+    {
+      env: env;
+    }
+  >;
 
   // ApplyPluginType.add
   addUmiExports: IAdd<

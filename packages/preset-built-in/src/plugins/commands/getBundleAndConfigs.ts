@@ -27,7 +27,14 @@ export default async ({ api }: { api: IApi }) => {
           umi: join(api.cwd, tmpDir, 'umi.ts'),
         },
         async modifyBabelOpts(opts: any) {
-          return opts;
+          return await api.applyPlugins({
+            type: api.ApplyPluginsType.modify,
+            key: 'modifyBabelOpts',
+            initialValue: opts,
+            args: {
+              env,
+            },
+          });
         },
       }),
       args: {
