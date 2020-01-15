@@ -31,7 +31,7 @@ readdirSync(fixtures).forEach(fixture => {
 
     // get config
     const env = fixture.includes('-production') ? 'production' : 'development';
-    const webpackConfig = bundler.getConfig({
+    const webpackConfig = await bundler.getConfig({
       env,
       type: ConfigType.csr,
       entry: {

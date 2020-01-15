@@ -26,16 +26,18 @@ export interface IOpts {
   babelOptsForDep?: object;
   targets?: any;
   browserslist?: any;
+  modifyBabelOpts?: (opts: object) => Promise<any>;
 }
 
-export default function({
+export default async function({
   cwd,
   config,
   type,
   env,
   entry,
   hot,
-}: IOpts): webpack.Configuration {
+  modifyBabelOpts,
+}: IOpts): Promise<webpack.Configuration> {
   const webpackConfig = new Config();
 
   webpackConfig.mode(env);
@@ -118,6 +120,14 @@ export default function({
     type,
   });
 
+  let babelOpts = getBabelOpts({
+    config,
+    env,
+    targets,
+  });
+  if (modifyBabelOpts) {
+    babelOpts = await modifyBabelOpts(babelOpts);
+  }
   // prettier-ignore
   webpackConfig.module
     .rule('js')
@@ -126,11 +136,7 @@ export default function({
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
-        .options(getBabelOpts({
-          config,
-          env,
-          targets,
-        }));
+        .options(babelOpts);
 
   // prettier-ignore
   webpackConfig.module

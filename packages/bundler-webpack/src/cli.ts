@@ -59,7 +59,7 @@ process.env.NODE_ENV = env;
     config,
   });
 
-  const webpackConfig = bundler.getConfig({
+  const webpackConfig = await bundler.getConfig({
     env,
     type: ConfigType.csr,
     hot: args.hot,

@@ -19,12 +19,15 @@ export default async ({ api }: { api: IApi }) => {
     return await api.applyPlugins({
       type: api.ApplyPluginsType.modify,
       key: 'modifyBundleConfig',
-      initialValue: bundler.getConfig({
+      initialValue: await bundler.getConfig({
         env,
         type,
         hot: type === ConfigType.csr,
         entry: {
           umi: join(api.cwd, tmpDir, 'umi.ts'),
+        },
+        async modifyBabelOpts(opts: any) {
+          return opts;
         },
       }),
       args: {

@@ -21,10 +21,10 @@ class Bundler {
     this.config = config;
   }
 
-  getConfig(
+  async getConfig(
     opts: Omit<IGetConfigOpts, 'cwd' | 'config'>,
-  ): webpack.Configuration {
-    return getConfig({
+  ): Promise<webpack.Configuration> {
+    return await getConfig({
       ...opts,
       cwd: this.cwd,
       config: this.config,
