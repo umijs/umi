@@ -445,6 +445,36 @@ export default (api) => {
 
 返回当前语言，`zh-CN`、`en-US` 等。
 
+## api.hooks.*
+
+集成 UI 开发中常用 hooks，更多 API 见 [http://hooks.umijs.org/]。
+
+例如：
+
+```js
+import React from 'react';
+
+export default (api) => {
+  const { useDebounceFn } = api.hooks;
+  const [value, setValue] = useState(0);
+  const { run } = useDebounceFn(() => {
+    setValue(value + 1);
+  }, 500);
+  const Component = (
+     <div>
+      <p style={{ marginTop: 16 }}> Clicked count: {value} </p>
+      <Button onClick={run}>Click fast!</Button>
+    </div>
+  )
+  api.addPanel({
+    title: '插件模板',
+    path: '/plugin-bar',
+    icon: 'environment',
+    component: Component,
+  });
+};
+```
+
 ### api.showLogPanel()
 
 打开 Umi UI 底部日志栏。

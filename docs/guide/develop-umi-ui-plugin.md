@@ -220,6 +220,91 @@ The result is as follows:
 
 ![](https://user-images.githubusercontent.com/13595509/67362409-8154ce00-f59d-11e9-94b0-384fbaa2fb67.gif)
 
+### Extended assets
+
+Add assets using `api.modifyBlockUIResources`:
+
+```js
+// src/index.(js|ts)
+
+api.modifyBlockUIResources((memo) => {
+  return [{
+    id: 'bigfish-techui-block',
+    name: 'TechUI',
+    blockType: 'block',
+    resourceType: 'custom',
+    icon: 'https://img.alicdn.com/tfs/TB1CpakmGL7gK0jSZFBXXXZZpXa-64-64.png',
+    description: '蚂蚁金融科技 UI 精选区块。',
+    getData: () => ({
+      success: true,
+      data: [
+        {
+          // git 地址
+          url: 'https://github.com/ant-design/ant-design-blocks/tree/master/form-register',
+          name: 'form-注册新用户',
+          description: '用户填写必须的信息以注册新用户。',
+          img: 'https://raw.githubusercontent.com/ant-design/ant-design-blocks/master/form-register/snapshot.png',
+          tags: [
+            '表单',
+          ],
+          previewUrl: 'https://ant.design/components/form-cn/#components-form-demo-register',
+        }
+      ]
+    }),
+  }, {
+    id: 'bigfish-techui-template',
+    name: 'TechUI',
+    blockType: 'template',
+    resourceType: 'custom',
+    icon: 'https://img.alicdn.com/tfs/TB1CpakmGL7gK0jSZFBXXXZZpXa-64-64.png',
+    description: '蚂蚁金融科技 UI 精选模板。',
+    getData: () => {
+      // same as block
+      return getBigfishBlock({
+        market: 'techui',
+        type: 'TEMPLATE',
+      }, true);
+    },
+  }, ...memo];
+});
+
+// socket api
+api.onUISocket(async () => {
+
+});
+
+// add ui umd file
+api.addUIPlugin(require.resolve('../ui/dist/index.umd.js'));
+```
+
+### Custom Block Slots
+
+The `UmiUIFlag` component exported from `umi` can be used as a placeholder when the block is inserted. After the block is added, `UmiUIFlag` will be automatically deleted.
+
+```jsx
+import React from 'react';
+import { UmiUIFlag } from 'umi';
+
+import { Button } from 'antd';
+
+export default () => (
+  <div>Hello
+    <div>
+      <p>World</p>
+      <UmiUIFlag />
+      <p>
+        aaaaa
+        <div>
+          <UmiUIFlag inline />Hello Inline<UmiUIFlag inline />
+        </div>
+      </p>
+    </div>
+    <Button type="primary">World</Button>
+  </div>
+);
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/9EfCMj46tx/f8a08273-4d19-46c0-91fc-fac2a5e9b4f0.png)
 
 ### Use Umi UI theme
 

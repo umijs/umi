@@ -27,6 +27,8 @@ describe('theme', () => {
     expect(dark).toEqual({
       light: '#fff',
       dark: '#000',
+      'background-color-light': '#3b3b4d',
+      'background-color-base': '#23232d',
       'select-item-active-bg': '#4c4c61',
       'heading-3-size': '16px',
       'btn-font-size-sm': '12px',

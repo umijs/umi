@@ -72,10 +72,6 @@ const config: IConfig = {
       {
         dva: true,
         antd: false,
-        dynamicImport: {
-          webpackChunkName: true,
-          loadingComponent: './components/Loading',
-        },
         title: {
           defaultTitle: 'Umi UI',
           useLocale: true,

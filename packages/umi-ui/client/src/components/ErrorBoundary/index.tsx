@@ -1,5 +1,4 @@
 import * as React from 'react';
-import get from 'lodash/get';
 import { Result, Typography } from 'antd';
 import cls from 'classnames';
 import { CloseCircleOutlined } from '@ant-design/icons';
@@ -64,7 +63,7 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
     };
   }
   componentDidCatch(error, info) {
-    const frameworkName = get(window, 'g_service.basicUI.name') || 'Umi';
+    const frameworkName = window?.g_service?.basicUI?.name || 'Umi';
     this.setState({
       error,
       info,
@@ -73,12 +72,12 @@ class UmiErrorBoundary extends React.Component<IProps, IState> {
     if (onError && typeof onError === 'function') {
       onError(error, info);
     }
-    if (get(window, 'Tracert.logError')) {
+    if (window?.Tracert?.logError) {
       const err = new Error(
         error.message ? `${frameworkName}: ${JSON.stringify(error.message)}` : '',
       );
-      const umiVersion = get(window, 'g_umi.version', '');
-      const bigfishVersion = get(window, 'g_bigfish.version', '');
+      const umiVersion = window?.g_umi?.version || '';
+      const bigfishVersion = window?.g_bigfish?.version || '';
       const logParams = {
         // framework use umi ui
         d1: frameworkName,

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { join } from 'path';
 import { findJS } from 'umi-utils';
 import haveRootBinding from '../../../sdk/haveRootBinding';
 
@@ -72,7 +73,7 @@ describe('block interface socketHandlers test', () => {
         },
       };
       checkIfCanAdd(params);
-      expect(existsSyncMock).toHaveBeenCalledWith('/test/package.json');
+      expect(existsSyncMock).toHaveBeenCalledWith(join('/', 'test', 'package.json'));
       expect(params.failure.mock.calls[0][0].message).toMatch(/package\.json/);
       existsSyncMock.mockRestore();
     });
@@ -166,6 +167,38 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params);
       expect(params.failure.mock.calls[0][0].message).toMatch(/umi-plugin-react 插件并开启 locale/);
 
+      const params_0 = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'zh-CN',
+        payload: {
+          item: {
+            features: ['i18n'],
+          },
+        },
+        api: {
+          cwd: '/test/',
+          config: {
+            routes: [{ path: '/', component: './Index' }],
+            plugins: [
+              [
+                'umi-plugin-react',
+                {
+                  react: true,
+                  locale: {
+                    enable: false,
+                  },
+                },
+              ],
+            ],
+          },
+        },
+      };
+      checkIfCanAdd(params_0);
+      expect(params_0.failure.mock.calls[0][0].message).toMatch(
+        /umi-plugin-react 插件并开启 locale/,
+      );
+
       const params2 = {
         success: jest.fn(),
         failure: jest.fn(),
@@ -194,6 +227,38 @@ describe('block interface socketHandlers test', () => {
       checkIfCanAdd(params2);
       expect(params2.failure).not.toHaveBeenCalled();
       expect(params2.success).toHaveBeenCalledWith({ data: true, success: true });
+
+      const params3 = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'zh-CN',
+        payload: {
+          item: {
+            features: ['i18n'],
+          },
+        },
+        api: {
+          cwd: '/test/',
+          config: {
+            routes: [{ path: '/', component: './Index' }],
+            plugins: [
+              [
+                'umi-plugin-react',
+                {
+                  react: true,
+                  locale: {
+                    enable: true,
+                  },
+                },
+              ],
+            ],
+          },
+        },
+      };
+      checkIfCanAdd(params3);
+      expect(params3.failure).not.toHaveBeenCalled();
+      expect(params3.success).toHaveBeenCalledWith({ data: true, success: true });
+
       existsSyncMock.mockRestore();
     });
 
@@ -218,6 +283,28 @@ describe('block interface socketHandlers test', () => {
       };
       checkIfCanAdd(params);
       expect(params.failure.mock.calls[0][0].message).toMatch(/请开启 locale 配置/);
+
+      const params_0 = {
+        success: jest.fn(),
+        failure: jest.fn(),
+        lang: 'zh-CN',
+        payload: {
+          item: {
+            features: ['dva', 'i18n'],
+          },
+        },
+        api: {
+          cwd: '/test/',
+          locale: {
+            enable: false,
+          },
+          config: {
+            routes: [{ path: '/', component: './Index' }],
+          },
+        },
+      };
+      checkIfCanAdd(params_0);
+      expect(params_0.failure.mock.calls[0][0].message).toMatch(/请开启 locale 配置/);
 
       const params2 = {
         success: jest.fn(),
@@ -291,7 +378,7 @@ describe('block interface socketHandlers test', () => {
     });
 
     it('pages/bar.jsx 页面', async () => {
-      const targetPaths = '/tmp/src/pages/bar.jsx';
+      const targetPaths = join('/', 'tmp', 'src', 'pages', 'bar.jsx');
       const existsSyncMock = jest
         .spyOn(fs, 'existsSync')
         .mockImplementation((path: string) => targetPaths.indexOf(path) > -1);
@@ -315,7 +402,7 @@ describe('block interface socketHandlers test', () => {
           winPath: v => v,
           findJS,
           paths: {
-            absPagesPath: '/tmp/src/pages',
+            absPagesPath: join('/', 'tmp', 'src', 'pages'),
           },
         },
       };

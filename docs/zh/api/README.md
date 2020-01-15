@@ -203,7 +203,7 @@ import {
 
 
 export default () => {
-  return <p>{formatMessage({ id="TEST_TITLE" })}</p>;
+  return <p>{formatMessage({ id: "TEST_TITLE" })}</p>;
 }
 ```
 

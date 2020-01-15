@@ -97,6 +97,7 @@ export default (api) => {
 ![](https://gw.alipayobjects.com/zos/antfincdn/tos3ooP0Dy/e985c7e0-09b7-49e1-965c-d2032a4783c5.png)
 
 ### 管理插件依赖
+
 UI 中使用到的 npm 包模块，放在 `package.json` 中的 `devDependencies` 中，避免用户安装不必要的依赖。
 
 > 因为 UI 插件包执行的 umd 编译，会将依赖的模块编译进 umd 文件中。
@@ -221,6 +222,91 @@ export default (api) => {
 
 ![](https://user-images.githubusercontent.com/13595509/67362409-8154ce00-f59d-11e9-94b0-384fbaa2fb67.gif)
 
+### 扩展资产
+
+可使用 `api.modifyBlockUIResources` 来添加资产：
+
+```js
+// src/index.(js|ts)
+
+api.modifyBlockUIResources((memo) => {
+  return [{
+    id: 'bigfish-techui-block',
+    name: 'TechUI',
+    blockType: 'block',
+    resourceType: 'custom',
+    icon: 'https://img.alicdn.com/tfs/TB1CpakmGL7gK0jSZFBXXXZZpXa-64-64.png',
+    description: '蚂蚁金融科技 UI 精选区块。',
+    getData: () => ({
+      success: true,
+      data: [
+        {
+          // git 地址
+          url: 'https://github.com/ant-design/ant-design-blocks/tree/master/form-register',
+          name: 'form-注册新用户',
+          description: '用户填写必须的信息以注册新用户。',
+          img: 'https://raw.githubusercontent.com/ant-design/ant-design-blocks/master/form-register/snapshot.png',
+          tags: [
+            '表单',
+          ],
+          previewUrl: 'https://ant.design/components/form-cn/#components-form-demo-register',
+        }
+      ]
+    }),
+  }, {
+    id: 'bigfish-techui-template',
+    name: 'TechUI',
+    blockType: 'template',
+    resourceType: 'custom',
+    icon: 'https://img.alicdn.com/tfs/TB1CpakmGL7gK0jSZFBXXXZZpXa-64-64.png',
+    description: '蚂蚁金融科技 UI 精选模板。',
+    getData: () => {
+      // 同上
+      return getBigfishBlock({
+        market: 'techui',
+        type: 'TEMPLATE',
+      }, true);
+    },
+  }, ...memo];
+});
+
+// socket api
+api.onUISocket(async () => {
+
+});
+
+// add ui umd file
+api.addUIPlugin(require.resolve('../ui/dist/index.umd.js'));
+```
+
+### 自定义区块插槽
+
+从 umi 中导出 `UmiUIFlag` 组件，在区块插入时可用于占位，区块添加完成后，会自动删除 `UmiUIFlag`。
+
+```jsx
+import React from 'react';
+import { UmiUIFlag } from 'umi';
+
+import { Button } from 'antd';
+
+export default () => (
+  <div>Hello
+    <div>
+      <p>World</p>
+      <UmiUIFlag />
+      <p>
+        aaaaa
+        <div>
+          <UmiUIFlag inline />Hello Inline<UmiUIFlag inline />
+        </div>
+      </p>
+    </div>
+    <Button type="primary">World</Button>
+  </div>
+);
+```
+
+![](https://gw.alipayobjects.com/zos/antfincdn/9EfCMj46tx/f8a08273-4d19-46c0-91fc-fac2a5e9b4f0.png)
 
 ### 使用 Umi UI 主题
 

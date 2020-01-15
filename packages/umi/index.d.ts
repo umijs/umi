@@ -9,5 +9,7 @@ export { default as withRouter } from './withRouter';
 
 export { default as RouterTypes } from './routerTypes';
 
+export { default as UmiUIFlag } from './UmiUIFlag';
+
 // @ts-ignore
 export * from '@@/umiExports';

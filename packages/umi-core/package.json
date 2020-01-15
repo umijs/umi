@@ -1,11 +1,11 @@
 {
   "name": "umi-core",
-  "version": "1.9.3",
+  "version": "1.9.7",
   "dependencies": {
     "@babel/preset-typescript": "7.3.3",
     "@babel/register": "7.4.4",
     "@umijs/error-code-map": "^1.0.0",
-    "babel-preset-umi": "1.8.1",
+    "babel-preset-umi": "1.8.3",
     "chalk": "2.4.2",
     "extend2": "1.0.0",
     "marked": "0.6.2",
@@ -16,7 +16,7 @@
     "umi-utils": "1.7.2"
   },
   "devDependencies": {
-    "umi-types": "0.5.8"
+    "umi-types": "0.5.12"
   },
   "files": [
     "lib",

@@ -1,12 +1,13 @@
 import { join, resolve } from 'path';
 import { existsSync } from 'fs';
-import { spawnSync } from 'child_process';
+import spawn from 'cross-spawn';
 import mkdirp from 'mkdirp';
 import { homedir } from 'os';
 import GitUrlParse from 'git-url-parse';
 import { getFastGithub } from 'umi-utils';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
+const spawnSync = spawn.sync;
 
 export function makeSureMaterialsTempPathExist(dryRun) {
   const userHome = process.env.NODE_ENV === 'test' ? '/Users/test' : homedir();

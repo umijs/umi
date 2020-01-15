@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { IUi } from 'umi-types';
-import get from 'lodash/get';
 import { Icon } from '@ant-design/compatible';
 import cls from 'classnames';
 import { Row, Col } from 'antd';
@@ -20,7 +19,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
 
   const defaultKey = sections.find(section => section.key === active)
     ? active
-    : get(sections, '0.key');
+    : sections?.[0]?.key;
 
   const [current, setCurrent] = useState(defaultKey);
 
@@ -45,7 +44,7 @@ const TwoColumnPanel: React.FC<IUi.ITwoColumnPanel> = props => {
   const panelCls = cls(styles.normal, className);
 
   const currentSection = sections.find(section => section.key === current) || sections[0];
-  const children = get(currentSection, 'component');
+  const children = currentSection?.component;
   const renderMessage = renderLocale(FormattedMessage);
 
   return (

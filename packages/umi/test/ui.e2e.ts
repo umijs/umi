@@ -8,7 +8,13 @@ describe('Umi UI e2e', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      args: ['--no-sandbox'],
+      args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--no-first-run',
+        '--no-zygote',
+        '--no-sandbox',
+      ],
     });
   });
 

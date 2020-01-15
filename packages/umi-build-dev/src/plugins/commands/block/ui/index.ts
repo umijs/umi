@@ -1,5 +1,4 @@
 import { IApi } from 'umi-types';
-import { join } from 'path';
 import server from './server';
 
 export interface IApiBlock extends IApi {
@@ -14,34 +13,14 @@ export default (api: IApiBlock) => {
   // 服务端
   server(api);
 
-  function getRouteComponents(routes) {
-    return routes.reduce((memo, route) => {
-      if (route.component && !route.component.startsWith('()')) {
-        const component = api.winPath(require.resolve(join(api.cwd, route.component)));
-        if (!component.includes('src/layout')) {
-          memo.push(component);
-        }
-      }
-      if (route.routes) {
-        memo = memo.concat(getRouteComponents(route.routes));
-      }
-      return memo;
-    }, []);
-  }
-
   let routeComponents = null;
 
-  function generateRouteComponents() {
-    const routes = api.getRoutes();
-    routeComponents = getRouteComponents(routes);
-  }
-
   api.onRouteChange(() => {
-    generateRouteComponents();
+    routeComponents = api.getRouteComponents();
   });
 
   api.modifyAFWebpackOpts(memo => {
-    generateRouteComponents();
+    routeComponents = api.getRouteComponents();
     memo.extraBabelPlugins = [
       ...(memo.extraBabelPlugins || []),
       [

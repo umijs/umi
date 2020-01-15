@@ -59,67 +59,50 @@ const TerminalComponent: React.FC<IUi.ITerminalProps> = forwardRef((props = {}, 
     return true;
   };
 
-  useEffect(
-    () => {
-      const handleTerminalInit = async () => {
-        if (domContainer.current && xterm) {
-          const webLinksAddon = new WebLinksAddon();
-          xterm.loadAddon(fitAddon);
-          xterm.loadAddon(webLinksAddon);
-          xterm.attachCustomKeyEventHandler(copyShortcut);
-          // last open
-          xterm.open(domContainer.current);
-          fitAddon.fit();
-          if (onInit) {
-            onInit(xterm, fitAddon);
-          }
-        }
-      };
-      handleTerminalInit();
-    },
-    [domContainer, xterm],
-  );
-
-  useEffect(
-    () => {
-      const hanldeResizeTerminal = debounce(() => {
+  useEffect(() => {
+    const handleTerminalInit = async () => {
+      if (domContainer.current && xterm) {
+        const webLinksAddon = new WebLinksAddon();
+        xterm.loadAddon(fitAddon);
+        xterm.loadAddon(webLinksAddon);
+        xterm.attachCustomKeyEventHandler(copyShortcut);
+        // last open
+        xterm.open(domContainer.current);
         fitAddon.fit();
-        if (onResize) {
-          onResize(xterm);
+        if (onInit) {
+          onInit(xterm, fitAddon);
         }
-        if (xterm) {
-          xterm.focus();
-        }
-      }, 380);
-      if (visible) {
-        window.addEventListener('resize', hanldeResizeTerminal);
       }
-      return () => {
-        window.removeEventListener('resize', hanldeResizeTerminal);
-      };
-    },
-    [xterm, visible],
-  );
+    };
+    handleTerminalInit();
+  }, [domContainer, xterm]);
 
-  useEffect(
-    () => {
-      if (xterm && defaultValue) {
-        xterm.write(defaultValue.replace(/\n/g, '\r\n'));
-      }
-    },
-    [xterm, defaultValue],
-  );
+  useEffect(() => {
+    const hanldeResizeTerminal = debounce(() => {
+      fitAddon.fit();
+      onResize?.(xterm);
+      xterm?.focus?.();
+    }, 380);
+    if (visible) {
+      window.addEventListener('resize', hanldeResizeTerminal);
+    }
+    return () => {
+      window.removeEventListener('resize', hanldeResizeTerminal);
+    };
+  }, [xterm, visible]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      xterm?.write?.(defaultValue.replace(/\n/g, '\r\n'));
+    }
+  }, [xterm, defaultValue]);
 
   const clear = () => {
-    if (xterm) {
-      xterm.clear();
-    }
+    xterm?.clear?.();
   };
 
   const toBottom = () => {
-    if (xterm) {
-      xterm.scrollToBottom();
-    }
+    xterm?.scrollToBottom?.();
   };
 
   const wrapperCls = cls(

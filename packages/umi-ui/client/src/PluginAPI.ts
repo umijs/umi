@@ -4,10 +4,12 @@ import lodash from 'lodash';
 import history from '@tmp/history';
 // eslint-disable-next-line no-multi-assign
 import * as intl from 'umi-plugin-react/locale';
+import * as hooks from '@umijs/hooks';
 import isPlainObject from 'lodash/isPlainObject';
 import { FC } from 'react';
 import { IUi } from 'umi-types';
 import moment from 'moment';
+import request from 'umi-request';
 import qs from 'qs';
 import { send, callRemote, listenRemote } from './socket';
 import event, { MESSAGES } from '@/message';
@@ -44,6 +46,8 @@ export default class PluginAPI {
   event: IUi.IEvent;
   moment: IUi.IMoment;
   _analyze: IUi.IAnalyze;
+  hooks: any;
+  request: any;
 
   constructor(service: IUi.IService, currentProject: IUi.ICurrentProject) {
     this.service = service;
@@ -54,13 +58,14 @@ export default class PluginAPI {
     this.debug = pluginDebug;
     this.currentProject =
       {
-        ...currentProject
+        ...currentProject,
       } || {};
     this.TwoColumnPanel = TwoColumnPanel;
     this.Terminal = Terminal;
     this.DirectoryForm = DirectoryForm;
     this.StepForm = StepForm;
     this.Field = Field;
+    this.request = request;
     this.ConfigForm = ConfigForm;
     this.bigfish = !!window.g_bigfish;
     this.connect = connect as IUi.IConnect;
@@ -70,6 +75,10 @@ export default class PluginAPI {
     this.history = history;
     // 统计
     this._analyze = getAnalyze();
+    /** umi hooks */
+    this.hooks = {
+      ...hooks,
+    };
 
     const proxyIntl = new Proxy(intl, {
       get: (target, prop: any) => {
@@ -241,7 +250,7 @@ export default class PluginAPI {
       }
     } catch (e) {
       console.error('UI notification  error', e);
-      if (this._.get(window, 'Tracert.logError')) {
+      if (window?.Tracert?.logError) {
         const frameName = this.service.basicUI.name || 'Umi';
         if (e && e.message) {
           e.message = `${frameName}: params: ${JSON.stringify(payload)} ${e.message}`;

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { join, dirname } from 'path';
+import { join, dirname, isAbsolute } from 'path';
 import assert from 'assert';
 import mkdirp from 'mkdirp';
 import { assign, cloneDeep, uniq } from 'lodash';
@@ -274,8 +274,10 @@ ${getCodeFrame(e, { cwd: this.cwd })}
     const getComponents = routes => {
       return routes.reduce((memo, route) => {
         if (route.component && !route.component.startsWith('()')) {
-          const component = winPath(require.resolve(join(this.cwd, route.component)));
-          memo.push(component);
+          const component = isAbsolute(route.component)
+            ? route.component
+            : require.resolve(join(this.cwd, route.component));
+          memo.push(winPath(component));
         }
         if (route.routes) {
           memo = memo.concat(getComponents(route.routes));

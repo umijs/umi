@@ -1,5 +1,5 @@
 export interface RouteData {
-  pathname: string;
+  pathname?: string;
   query?: any;
   search?: string;
   state?: any;

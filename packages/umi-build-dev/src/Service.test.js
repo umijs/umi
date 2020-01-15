@@ -553,4 +553,18 @@ describe('Service', () => {
     ]);
     rimraf.sync(usersPagePath);
   });
+
+  it('getRouteComponents', () => {
+    const cwd = join(fixtures, 'get-routes-components');
+    const page = join(cwd, 'src', 'pages');
+    const service = new Service({
+      cwd,
+    });
+    service.init();
+    expect(service.getRouteComponents()).toEqual([
+      winPath(join(page, '.umi', 'Layout.jsx')),
+      winPath(join(page, 'index.js')),
+      winPath(join(page, 'news.js')),
+    ]);
+  });
 });

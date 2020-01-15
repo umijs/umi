@@ -5,6 +5,7 @@ export default {
     name: 'blocks',
     minFile: false,
   },
+  extraExternals: ['antd', 'react', 'react-dom'],
   typescriptOpts: {
     check: false,
   },

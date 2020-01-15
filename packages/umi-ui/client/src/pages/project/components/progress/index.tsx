@@ -24,9 +24,9 @@ const ProgressStage: React.FC<IProjectProps> = props => {
   const { currentData, projectList } = props;
   const { formatMessage, locale } = useContext(ProjectContext);
   const [retryLoading, setRetryLoading] = useState<boolean>(false);
-  const key = get(currentData, 'key');
+  const key = currentData?.key || '';
   const progress: ICreateProgress =
-    get(projectList, `projectsByKey.${get(currentData, 'key')}.creatingProgress`) || {};
+  projectList?.projectsByKey?.[key]?.creatingProgress || {};
   _log('progress', progress);
   useEffect(
     () => {

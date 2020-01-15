@@ -9,45 +9,20 @@ import * as ENUM from './enum';
 import Tooltip from './Tooltip';
 import Close from './Close';
 
-const EditText = styled.p`
-  font-size: 12px;
-  color: rgba(255,255,255,.85);
-  line-height: 20px
-  margin: 0;
-  margin-left: 1px;
-  text-align: center;
-`;
+const editTextStyle = {
+  fontSize: '12px',
+  color: 'rgba(255,255,255,.85)',
+  lineHeight: '20px',
+  margin: 0,
+  marginLeft: 1,
+  textAlign: 'center',
+};
 
 const BubbleWrapper = styled('div')`
-  background-color: ${props => (props.open ? '#30303D' : '#4c4c61')};
-  height: 60px;
-  width: 60px;
-  pointer-events: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  user-select: none;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px 0 rgba(13, 26, 38, 0.2);
-  padding: 16px;
-  transition: background-color 0.2s ease 0.1s, opacity 0.2s ease 0s, transform 0.2s ease 0.1s;
   &:hover {
     background-color: rgb(21, 59, 210);
     opacity: 1;
   }
-`;
-
-const CloseComponent = styled(Close)`
-  position: absolute;
-  top: 50%;
-  user-select: none;
-  color: #fff;
-  transform: ${props =>
-    props.open ? 'translateY(-50%)' : 'translateY(-50%) scale(0.4) rotate(-45deg);'};
-  opacity: ${props => (props.open ? 1 : 0)};
-  transition: all 0.3s linear;
 `;
 
 class Bubble extends React.Component {
@@ -117,8 +92,37 @@ class Bubble extends React.Component {
   render() {
     const { isBigfish, open, loading, children, message, locale, edit, editText } = this.props;
     const { hide } = this.state;
-
     const Logo = logoDecorator({ isBigfish });
+
+    const bubbleWrapperStyle = {
+      backgroundColor: open ? '#30303D' : '#4c4c61',
+      height: 60,
+      width: 60,
+      pointerEvents: 'none',
+      cursor: 'pointer',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'relative',
+      userSelect: 'none',
+      borderRadius: '50%',
+      boxShadow: '0 4px 8px 0 rgba(13, 26, 38, 0.2)',
+      padding: 16,
+      transition: 'background-color 0.2s ease 0.1s opacity 0.2s ease 0s, transform 0.2s ease 0.1s',
+    };
+
+    const closeStyle = {
+      position: 'absolute',
+      top: '50%',
+      userSelect: 'none',
+      color: '#fff',
+      transform: open ? 'translateY(-50%)' : 'translateY(-50%) scale(0.4) rotate(-45deg)',
+      opacity: open ? 1 : 0,
+      transition: 'all 0.3s linear',
+      width: 20,
+      height: 20,
+    };
+
     return (
       <Dragger
         open={open}
@@ -131,14 +135,14 @@ class Bubble extends React.Component {
         locale={locale}
       >
         {!edit && <Tooltip isBigfish={isBigfish} message={message} />}
-        <BubbleWrapper open={open}>
+        <BubbleWrapper style={bubbleWrapperStyle} open={open}>
           {loading && <IconLoading />}
           {edit ? (
-            <EditText>{editText[locale] || editText['zh-CN'] || ''}</EditText>
+            <p style={editTextStyle}>{editText[locale] || editText['zh-CN'] || ''}</p>
           ) : (
             <>
               <Logo style={{ width: 28, height: 28 }} open={open} />
-              <CloseComponent style={{ width: 20, height: 20 }} open={open} />
+              <Close style={closeStyle} />
             </>
           )}
         </BubbleWrapper>

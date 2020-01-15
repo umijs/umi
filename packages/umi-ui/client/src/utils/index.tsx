@@ -35,7 +35,7 @@ export const getBasename = (path: string): string => {
 };
 
 export const findProjectPath = (data: IProjectList) => {
-  const path = get(data, `projectsByKey.${get(data, 'currentProject')}.path`);
+  const path = data?.projectsByKey?.[data?.currentProject]?.path;
 
   if (!path) {
     // throw new Error('findProjectPath path not existed');
@@ -61,8 +61,8 @@ interface IProjectListItem extends IProjectItem {
 
 export const getProjectStatus = (item: IProjectListItem): 'success' | 'failure' | 'progress' => {
   if (!Array.isArray(item.creatingProgress)) {
-    if (get(item, 'creatingProgress.success')) return 'success';
-    if (get(item, 'creatingProgress.failure')) return 'failure';
+    if (item?.creatingProgress?.success) return 'success';
+    if (item?.creatingProgress?.failure) return 'failure';
     if (item.creatingProgress) return 'progress';
     return 'success';
   }

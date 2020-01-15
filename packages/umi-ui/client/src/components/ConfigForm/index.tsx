@@ -4,14 +4,13 @@ import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
 import Fuse from 'fuse.js';
 import { IUi } from 'umi-types';
 import { Button, Form, Input, Spin, message, Popconfirm } from 'antd';
+import { useDebounceFn, useToggle } from '@umijs/hooks';
 import isEmpty from 'lodash/isEmpty';
-import debounce from 'lodash/debounce';
 import { formatMessage } from 'umi-plugin-react/locale';
 import serialize from 'serialize-javascript';
 import Context from '@/layouts/Context';
 import { callRemote } from '@/socket';
 import Field from '@/components/Field';
-import useToggle from './common/useToggle';
 import debug from '@/debug';
 import Toc from './common/Toc';
 import { getDiffItems, arrayToObject, getChangedDiff, getToc } from './utils';
@@ -26,13 +25,13 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
   const [form] = Form.useForm();
   const [search, setSearch] = useState<string>('');
   const searchInputRef = useRef();
-  const [showSearch, toggleSearch] = useToggle(false);
+  const { state: showSearch, toggle: toggleSearch } = useToggle(false);
   const { theme, locale, isMini } = useContext(Context);
 
   const handleSearch = (vv = '') => {
     setSearch(vv);
   };
-  const handleSearchDebounce = debounce(handleSearch, 150);
+  const { run: handleSearchDebounce } = useDebounceFn(handleSearch, 150);
   const resetSearch = () => {
     toggleSearch(false);
     setSearch('');
@@ -47,16 +46,12 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
     }
   };
 
-  useEffect(
-    () => {
-      updateData();
-      return () => {
-        handleSearchDebounce.cancel();
-        setData(undefined);
-      };
-    },
-    [props.title, props.list, props.edit, locale],
-  );
+  useEffect(() => {
+    updateData();
+    return () => {
+      setData(undefined);
+    };
+  }, [props.title, props.list, props.edit, locale]);
 
   async function updateData() {
     setLoading(true);
@@ -88,18 +83,15 @@ const ConfigForm: React.FC<IUi.IConfigFormProps> = props => {
     [data],
   );
 
-  const searchData = React.useMemo(
-    () => {
-      _log('searchsearchsearch', search);
-      const result = fuse.search(search);
-      _log('resultresultresult', result);
-      if (result.length > 0) {
-        return result;
-      }
-      return data || [];
-    },
-    [search, data],
-  );
+  const searchData = React.useMemo(() => {
+    _log('searchsearchsearch', search);
+    const result = fuse.search(search);
+    _log('resultresultresult', result);
+    if (result.length > 0) {
+      return result;
+    }
+    return data || [];
+  }, [search, data]);
 
   _log('searchData', searchData);
 

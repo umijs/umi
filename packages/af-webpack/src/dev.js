@@ -91,11 +91,19 @@ export default function dev({
       console.log();
     }
 
+    const exportedUrls = {
+      local: urls.localUrlForTerminal,
+      lan: urls.lanUrlForTerminal,
+      rawLocal: urls.localUrlForBrowser,
+      rawLanUrl: urls.rawLanUrl,
+    };
+
     onCompileDone({
       port,
       isFirstCompile,
       stats,
       server,
+      urls: exportedUrls,
     });
 
     if (isFirstCompile) {
@@ -103,12 +111,7 @@ export default function dev({
       openBrowser(urls.localUrlForBrowser);
       send({
         type: DONE,
-        urls: {
-          local: urls.localUrlForTerminal,
-          lan: urls.lanUrlForTerminal,
-          rawLocal: urls.localUrlForBrowser,
-          rawLanUrl: urls.rawLanUrl,
-        },
+        urls: exportedUrls,
       });
     }
   });

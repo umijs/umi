@@ -20,7 +20,11 @@ import {
   combineImportNodes,
   getValidStylesName,
 } from '../util';
-import { BLOCK_LAYOUT_PREFIX, INSERT_BLOCK_PLACEHOLDER } from '../constants';
+import {
+  BLOCK_LAYOUT_PREFIX,
+  INSERT_BLOCK_PLACEHOLDER,
+  UMI_UI_FLAG_PLACEHOLDER,
+} from '../constants';
 
 export default (content, opts) => {
   const {
@@ -108,6 +112,50 @@ export default (content, opts) => {
     const targetIndex = parseInt(index.replace(BLOCK_LAYOUT_PREFIX, ''), 10);
     let currIndex = 0;
     traverse(ast, {
+      // TODO: remove import { UmiUIFlag } from 'umi'
+      // TODO: remove import { UmiUIFlag, AAA } from 'umi' => import { AAA } from 'umi'
+      // ImportDeclaration: {
+      //   exit(path) {
+      //     const { node } = path;
+      //     const specifierIndex = node.specifiers.findIndex(
+      //       specify =>
+      //         t.isImportSpecifier(specify) && specify.imported.name === UMI_UI_FLAG_PLACEHOLDER,
+      //     );
+      //     if (specifierIndex > -1) {
+      //       if (node.specifiers.length === 1) {
+      //         // import { UmiUIFlag } from 'umi'
+      //         path.remove();
+      //       } else {
+      //         path.get(`specifiers.${specifierIndex}`).remove();
+      //       }
+      //     }
+      //   },
+      // },
+      // support <UmiUIFlag inline={} />
+      JSXElement(path) {
+        const { node } = path;
+        const { openingElement } = node;
+        if (
+          t.isJSXIdentifier(openingElement.name) &&
+          openingElement.name.name === UMI_UI_FLAG_PLACEHOLDER
+        ) {
+          if (targetIndex === currIndex) {
+            // 添加过之后无需提示
+            const id = uppercamelcase(identifier);
+            addImport(path.findParent(p => p.isProgram()).node, id);
+            const newNode = t.jsxElement(
+              t.jsxOpeningElement(t.jsxIdentifier(id), [], true),
+              null,
+              [],
+              true,
+            );
+            path.parent.children.push(newNode);
+            // remove <UmiUIFlag />
+            path.remove();
+          }
+          currIndex += 1;
+        }
+      },
       JSXText(path) {
         const { node } = path;
         const { value } = node;
