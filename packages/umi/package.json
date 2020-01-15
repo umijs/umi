@@ -68,6 +68,7 @@
     "router.js",
     "routerTypes.d.ts",
     "withRouter.d.ts",
+    "UmiUIFlag.d.ts",
     "withRouter.js"
   ]
 }
