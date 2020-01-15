@@ -113,6 +113,14 @@ describe('normal', () => {
     });
     expect(res.body).toEqual('{"body":{"foo":"bar","ccc":"ddd"}}');
 
+    // POST with form-data (multipart), using json mock
+    const form2 = new FormData();
+    res = await got(`http://localhost:${port}/api/users-json`, {
+      method: 'POST',
+      body: form2,
+    });
+    expect(res.body).toEqual('{"body":{"result":"success"}}');
+
     // PUT
     res = await got(`http://localhost:${port}/api/users`, {
       method: 'PUT',

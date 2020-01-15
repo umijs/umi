@@ -26,13 +26,9 @@ function createHandler(method, path, handler) {
     }
 
     function sendData() {
-      if (typeof handler === 'function') {
-        multer().any()(req, res, () => {
-          handler(req, res, next);
-        });
-      } else {
-        res.json(handler);
-      }
+      multer().any()(req, res, () => {
+        typeof handler === 'function' ? handler(req, res, next) : res.json(handler);
+      });
     }
   };
 }

@@ -7,6 +7,7 @@ export default {
       body: req.body,
     });
   },
+  'POST /api/users-json': {body: {result: 'success'}},
   'PUT /api/users': (req, res) => {
     res.json({
       body: req.body,
