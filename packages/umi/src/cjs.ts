@@ -1,2 +1,4 @@
-export { Service } from '@umijs/core';
+import { Service } from './Service';
+
 export * from './index';
+export { Service };

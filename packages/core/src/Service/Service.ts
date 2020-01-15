@@ -13,7 +13,7 @@ import getPaths from './getPaths';
 
 const debug = createDebug('umi:core:Service');
 
-interface IOpts {
+export interface IOpts {
   cwd: string;
   presets?: string[];
   plugins?: string[];

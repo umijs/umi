@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { yParser, chalk } from '@umijs/utils';
-import { Service } from '@umijs/core';
 import { existsSync } from 'fs';
+import { Service } from './Service';
 
 // process.argv: [node, umi.js, command, args]
 const args = yParser(process.argv.slice(2), {
@@ -37,7 +37,6 @@ if (args.version && !args._[0]) {
         }
         await new Service({
           cwd,
-          presets: [require.resolve('@umijs/preset-built-in')],
         }).run({
           name,
           args,
