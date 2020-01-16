@@ -29,7 +29,7 @@ export const Log = logItem => {
   const { type, date, message } = logItem;
 
   // const formatDate = moment(date).isValid() ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
-  const messageGroup = message.split('\n');
+  const messageGroup = message?.split?.('\n') || [];
   return (
     <li className={styles.log}>
       <Tag className={styles['log-tag']} {...TAG_MAP[type]}>
