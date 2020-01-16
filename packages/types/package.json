@@ -24,6 +24,7 @@
   "dependencies": {
     "@types/express": "4.17.2",
     "@types/webpack": "4.41.2",
-    "@umijs/core": "0.0.1-alpha.1"
+    "@umijs/core": "0.0.1-alpha.1",
+    "@umijs/babel-preset-umi": "0.0.1-alpha.1"
   }
 }

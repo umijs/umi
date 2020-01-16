@@ -4,6 +4,7 @@ import {
   IRoute,
   IConfig as IConfigCore,
 } from '@umijs/core';
+import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
 import { Request, Express, Response, NextFunction } from 'express';
 
@@ -70,7 +71,7 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBabelPresetOpts: IModify<
-    object,
+    IBabelPresetUmiOpts,
     {
       env: env;
     }
