@@ -4,7 +4,10 @@ const plugin = new Plugin({
   validKeys: [{{#validKeys}}'{{{ . }}}',{{/validKeys}}],
 });
 {{#plugins}}
-plugin.register(require('{{{ . }}}'));
+plugin.register({
+  apply: require('{{{ . }}}'),
+  path: '{{{ . }}}',
+});
 {{/plugins}}
 
 export { plugin };
