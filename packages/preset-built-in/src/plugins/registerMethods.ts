@@ -7,6 +7,7 @@ export default function(api: IApi) {
   [
     'onGenerateFiles',
     'addUmiExports',
+    'addProjectFirstLibraries',
     'modifyBundler',
     'modifyBundleConfig',
     'modifyBundleConfigs',

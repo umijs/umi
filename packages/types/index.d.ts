@@ -13,10 +13,12 @@ interface IEvent<T> {
 
 interface IModify<T, U> {
   (fn: { (initialValue: T, args: U): T }): void;
+  (fn: { (initialValue: T, args: U): Promise<T> }): void;
 }
 
 interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
+  (fn: { (args: T): Promise<U | U[]> }): void;
 }
 
 export interface ITargets {
@@ -83,6 +85,7 @@ export interface IApi extends PluginAPI {
       exportAll?: boolean;
     }
   >;
+  addProjectFirstLibraries: IAdd<null, string>;
 }
 
 export { IRoute };
