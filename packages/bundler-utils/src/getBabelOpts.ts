@@ -1,5 +1,7 @@
 import { IConfig } from '@umijs/types';
 
+type env = 'development' | 'production';
+
 interface IOpts {
   config: IConfig;
   env: 'development' | 'production';
@@ -14,30 +16,38 @@ const basicBabelLoaderOpts = {
   cacheDirectory: process.env.BABEL_CACHE !== 'none',
 };
 
-export function getBabelOpts({ config, env, targets }: IOpts) {
+export function getBabelPresetOpts(opts: IOpts) {
+  return {
+    // @ts-ignore
+    nodeEnv: opts.env,
+    dynamicImportNode: opts.config.disableDynamicImport,
+    autoCSSModules: true,
+    svgr: true,
+    env: {
+      targets: opts.targets,
+    },
+    import: [],
+  };
+}
+
+export function getBabelOpts({
+  config,
+  presetOpts,
+}: {
+  config: IConfig;
+  presetOpts: object;
+}) {
   return {
     ...basicBabelLoaderOpts,
     presets: [
-      [
-        require.resolve('@umijs/babel-preset-umi/app'),
-        {
-          // @ts-ignore
-          nodeEnv: env,
-          dynamicImportNode: config.disableDynamicImport,
-          autoCSSModules: true,
-          svgr: true,
-          env: {
-            targets,
-          },
-        },
-      ],
+      [require.resolve('@umijs/babel-preset-umi/app'), presetOpts],
       ...(config.extraBabelPresets || []),
     ],
     plugins: [...(config.extraBabelPlugins || [])].filter(Boolean),
   };
 }
 
-export function getBabelDepsOpts({ env }: IOpts) {
+export function getBabelDepsOpts({ env }: { env: env }) {
   return {
     ...basicBabelLoaderOpts,
     presets: [

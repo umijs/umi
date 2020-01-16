@@ -2,6 +2,12 @@
 import { mergeConfig } from '@umijs/utils';
 import { dirname } from 'path';
 
+interface IImportPluginOpts {
+  libraryName: string;
+  libraryDirectory?: string;
+  style?: boolean;
+}
+
 export interface IOpts {
   typescript?: boolean;
   react?: object;
@@ -13,6 +19,7 @@ export interface IOpts {
   dynamicImportNode?: boolean;
   autoCSSModules?: boolean;
   svgr?: object;
+  import?: IImportPluginOpts[];
 }
 
 function toObject(obj: object | boolean) {
@@ -112,6 +119,15 @@ export default (context: any, opts: IOpts = {}) => {
           },
         },
       ],
+      ...(opts.import
+        ? opts.import.map(importOpts => {
+            return [
+              require.resolve('babel-plugin-import'),
+              importOpts,
+              importOpts.libraryName,
+            ];
+          })
+        : []),
     ].filter(Boolean),
   };
 };

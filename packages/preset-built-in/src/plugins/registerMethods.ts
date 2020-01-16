@@ -12,6 +12,7 @@ export default function(api: IApi) {
     'modifyBundleConfig',
     'modifyBundleConfigs',
     'modifyBabelOpts',
+    'modifyBabelPresetOpts',
   ].forEach(name => {
     api.registerMethod({ name });
   });

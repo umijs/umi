@@ -69,6 +69,12 @@ export interface IApi extends PluginAPI {
       env: env;
     }
   >;
+  modifyBabelPresetOpts: IModify<
+    object,
+    {
+      env: env;
+    }
+  >;
 
   // ApplyPluginType.add
   addUmiExports: IAdd<

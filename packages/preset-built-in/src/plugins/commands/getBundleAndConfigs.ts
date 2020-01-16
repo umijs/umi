@@ -36,6 +36,16 @@ export default async ({ api }: { api: IApi }) => {
             },
           });
         },
+        async modifyBabelPresetOpts(opts: any) {
+          return await api.applyPlugins({
+            type: api.ApplyPluginsType.modify,
+            key: 'modifyBabelPresetOpts',
+            initialValue: opts,
+            args: {
+              env,
+            },
+          });
+        },
       }),
       args: {
         ...bundlerArgs,
