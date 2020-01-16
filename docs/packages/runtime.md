@@ -3,7 +3,7 @@
 ## Changes
 
 - 所有使用从 umi 中 import，比如 `import { Link, Switch, dynamic, ... } from 'umi';`，提供 cjs 和 esm 两种格式
-- history, plugin, routes 等内部方法获取也从 `umi` 从拿，比如 `import { history, plugin, routes } from 'umi';`
+- history, plugin, routes 等内部方法获取也从 `umi` 拿，比如 `import { history, plugin, routes } from 'umi';`
 - no global variables, 比如 `window.g_history`、`window.g_plugins` 和 `window.g_routes` 等
 - 基于 hooks（TODO：考虑切换到 preact 等 react-like 库的可能性）
 - [BREAK CHANGE] 删除 `api.addRendererWrapperWithModule()`，通过 runtime plugin 实现
