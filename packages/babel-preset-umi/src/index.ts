@@ -6,6 +6,7 @@ interface IImportPluginOpts {
   libraryName: string;
   libraryDirectory?: string;
   style?: boolean;
+  camel2DashComponentName?: boolean;
 }
 
 export interface IOpts {

@@ -36,15 +36,26 @@ export default (api: IApi) => {
   // 提供 projectFirstLibraries 的配置方式，但是不通用，先放插件层实现
   api.modifyBundleConfig(async (bundleConfig, { bundler }) => {
     if (bundler.id === 'webpack') {
-      const libraries: string[] = await api.applyPlugins({
+      const libraries: {
+        name: string;
+        path: string;
+      }[] = await api.applyPlugins({
         key: 'addProjectFirstLibraries',
         type: api.ApplyPluginsType.add,
-        initialValue: ['react', 'react-dom'],
+        initialValue: [
+          {
+            name: 'react',
+            path: dirname(require.resolve(`react/package.json`)),
+          },
+          {
+            name: 'react-dom',
+            path: dirname(require.resolve(`react-dom/package.json`)),
+          },
+        ],
       });
       const libraryAlias = libraries.reduce((memo, library) => {
-        memo[library] =
-          getUserLibDir({ library }) ||
-          dirname(require.resolve(`${library}/package.json`));
+        memo[library.name] =
+          getUserLibDir({ library: library.name }) || library.path;
         return memo;
       }, {});
       bundleConfig.resolve!.alias = {

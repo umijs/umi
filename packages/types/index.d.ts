@@ -92,7 +92,7 @@ export interface IApi extends PluginAPI {
       exportAll?: boolean;
     }
   >;
-  addProjectFirstLibraries: IAdd<null, string>;
+  addProjectFirstLibraries: IAdd<null, { name: string; path: string }>;
 }
 
 export { IRoute };

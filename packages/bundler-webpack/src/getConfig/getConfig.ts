@@ -8,11 +8,11 @@ import {
   getTargetsAndBrowsersList,
   getBabelDepsOpts,
   getBabelOpts,
+  getBabelPresetOpts,
 } from '@umijs/bundler-utils';
 import css from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
-import { getBabelPresetOpts } from '@umijs/bundler-utils/src';
 
 export interface IOpts {
   cwd: string;
