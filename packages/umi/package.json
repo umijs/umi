@@ -27,6 +27,7 @@
     "@umijs/preset-built-in": "0.0.1-alpha.1",
     "@umijs/runtime": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",
+    "@umijs/types": "0.0.1-alpha.1",
     "resolve-cwd": "3.0.0"
   },
   "bin": {

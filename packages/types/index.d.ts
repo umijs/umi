@@ -65,7 +65,13 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBabelOpts: IModify<
-    object,
+    {
+      sourceType: string;
+      babelrc: boolean;
+      cacheDirectory: boolean;
+      presets: any[];
+      plugins: any[];
+    },
     {
       env: env;
     }
@@ -116,6 +122,8 @@ export interface IConfig extends IConfigCore {
   styleLoader?: object;
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];
+  presets?: IPresetOrPlugin[];
+  plugins?: IPresetOrPlugin[];
   disableDynamicImport?: boolean;
   runtimePublicPath?: boolean;
   terserOptions?: object;
