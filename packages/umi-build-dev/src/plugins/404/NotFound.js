@@ -7,6 +7,8 @@ import guessJSFileFromPath from './guessJSFileFromPath';
 import styles from './NotFound.less';
 
 class NotFound extends React.Component {
+
+  _isMounted = true;
   constructor(props) {
     super(props);
     this.state = {
@@ -15,11 +17,16 @@ class NotFound extends React.Component {
     };
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   componentDidMount() {
+    this._isMounted = true;
     fetch('/__umiDev/routes')
       .then(res => res.json())
       .then(routes => {
-        this.setState({
+        this._isMounted && this.setState({
           loading: false,
           routes,
         });
