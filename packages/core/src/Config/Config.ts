@@ -45,10 +45,7 @@ export default class Config {
     const userConfig = this.getUserConfig();
     Object.keys(this.service.plugins).forEach(pluginId => {
       const { key, config = {} } = this.service.plugins[pluginId];
-      const value = getUserConfigWithKey({
-        key,
-        userConfig,
-      });
+      const value = getUserConfigWithKey({ key, userConfig });
 
       // do validate if have schema config
       if (config.schema) {
@@ -69,7 +66,7 @@ export default class Config {
           key,
           // TODO: 确认 deepmerge 是否可应用于任何类型，不能的话还得再封一层
           value: config.default
-            ? deepmerge(config.default, value || {})
+            ? deepmerge(config.default, value ?? {})
             : value,
           userConfig,
         });

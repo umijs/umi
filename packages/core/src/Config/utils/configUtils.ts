@@ -1,3 +1,4 @@
+import { lodash } from '@umijs/utils';
 // @ts-ignore
 import set from 'set-value';
 
@@ -20,13 +21,5 @@ export function getUserConfigWithKey({
   key: string;
   userConfig: object;
 }): any {
-  let ret = userConfig;
-  for (const k of key.split('.')) {
-    if (k in ret) {
-      ret = ret[k];
-    } else {
-      return undefined;
-    }
-  }
-  return ret;
+  return lodash.get(userConfig, key);
 }
