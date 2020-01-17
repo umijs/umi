@@ -1,12 +1,31 @@
-import express, { Express, IRouterHandler } from 'express';
+import express, { Express, RequestHandler } from 'express';
+import httpProxyMiddleware from 'http-proxy-middleware';
 import http from 'http';
 import portfinder from 'portfinder';
 import sockjs, { Server as SocketServer, Connection } from 'sockjs';
+import { lodash } from '@umijs/utils';
+
+interface IProxyConfigMap {
+  [url: string]: IProxyConfigItem;
+}
+
+type IProxyConfigItem = {
+  path?: string | string[];
+  context?: string | string[] | httpProxyMiddleware.Filter;
+  bypass?: (
+    req: Request,
+    res: Response,
+    proxyConfig: IProxyConfigItem,
+  ) => string | null;
+} & httpProxyMiddleware.Config;
+
+type IProxyConfigArray = IProxyConfigItem[];
 
 export interface IOpts {
-  compilerMiddleware?: any;
-  afterMiddlewares?: any[];
-  beforeMiddlewares?: any[];
+  compilerMiddleware?: RequestHandler;
+  afterMiddlewares?: RequestHandler[];
+  beforeMiddlewares?: RequestHandler[];
+  proxy?: IProxyConfigMap | IProxyConfigArray | IProxyConfigItem;
   onListening?: {
     ({
       port,
@@ -43,9 +62,110 @@ class Server {
     (this.opts.beforeMiddlewares || []).forEach(middleware => {
       this.app.use(middleware);
     });
-    this.app.use(this.opts.compilerMiddleware);
+    this.setupProxy();
+    if (this.opts.compilerMiddleware) {
+      this.app.use(this.opts.compilerMiddleware);
+    }
     (this.opts.afterMiddlewares || []).forEach(middleware => {
       this.app.use(middleware);
+    });
+  }
+
+  /**
+   * proxy middleware for dev
+   * not coupled with build tools (like webpack, rollup, ...)
+   */
+  setupProxy() {
+    if (!this.opts.proxy) {
+      return;
+    }
+
+    if (!Array.isArray(this.opts.proxy)) {
+      if ('target' in this.opts.proxy) {
+        this.opts.proxy = [this.opts.proxy];
+      } else {
+        this.opts.proxy = Object.keys(this.opts.proxy).map(context => {
+          let proxyOptions;
+          // For backwards compatibility reasons.
+          const correctedContext = context
+            .replace(/^\*$/, '**')
+            .replace(/\/\*$/, '');
+
+          if (typeof this.opts.proxy?.[context] === 'string') {
+            proxyOptions = {
+              context: correctedContext,
+              target: this.opts.proxy[context],
+            };
+          } else {
+            proxyOptions = {
+              ...(this.opts.proxy?.[context] || {}),
+            };
+            proxyOptions.context = correctedContext;
+          }
+
+          proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
+
+          return proxyOptions;
+        });
+      }
+    }
+
+    const getProxyMiddleware = (proxyConfig: IProxyConfigItem): any => {
+      const context = proxyConfig.context || proxyConfig.path;
+
+      // It is possible to use the `bypass` method without a `target`.
+      // However, the proxy middleware has no use in this case, and will fail to instantiate.
+      if (proxyConfig.target) {
+        return httpProxyMiddleware(context as any, proxyConfig);
+      }
+    };
+
+    this.opts.proxy.forEach((proxyConfigOrCallback: any) => {
+      let proxyMiddleware: any;
+
+      let proxyConfig =
+        typeof proxyConfigOrCallback === 'function'
+          ? proxyConfigOrCallback()
+          : proxyConfigOrCallback;
+
+      proxyMiddleware = getProxyMiddleware(proxyConfig);
+
+      if (proxyConfig.ws) {
+        this.sockets.push(proxyMiddleware);
+      }
+
+      this.app.use((req, res, next) => {
+        if (typeof proxyConfigOrCallback === 'function') {
+          const newProxyConfig = proxyConfigOrCallback();
+
+          if (newProxyConfig !== proxyConfig) {
+            proxyConfig = newProxyConfig;
+            proxyMiddleware = getProxyMiddleware(proxyConfig);
+          }
+        }
+
+        // - Check if we have a bypass function defined
+        // - In case the bypass function is defined we'll retrieve the
+        // bypassUrl from it otherwise bypassUrl would be null
+        const isByPassFuncDefined = lodash.isFunction(proxyConfig.bypass);
+        const bypassUrl = isByPassFuncDefined
+          ? proxyConfig.bypass(req, res, proxyConfig)
+          : null;
+        if (typeof bypassUrl === 'boolean') {
+          // skip the proxy
+          // @ts-ignore
+          req.url = null;
+          next();
+        } else if (typeof bypassUrl === 'string') {
+          // byPass to that url
+          req.url = bypassUrl;
+          next();
+        } else if (proxyMiddleware) {
+          return proxyMiddleware(req, res, next);
+        } else {
+          next();
+        }
+      });
     });
   }
 

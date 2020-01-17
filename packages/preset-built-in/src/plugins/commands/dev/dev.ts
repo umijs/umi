@@ -22,12 +22,14 @@ export default (api: IApi) => {
       });
 
       // dev
-      const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
+      const bundleConfig = await getBundleAndConfigs({ api });
+      const { bundler, bundleConfigs } = bundleConfig;
       const opts: IServerOpts = bundler.setupDevServerOpts({
         bundleConfigs: bundleConfigs,
       });
       const server = new Server({
         ...opts,
+        proxy: api.config?.proxy,
         beforeMiddlewares: [],
         afterMiddlewares: [createRouteMiddleware({ api })],
       });
