@@ -233,11 +233,11 @@ describe('proxy', () => {
         }
       },
       proxy: [
-        {
+        () => ({
           path: '/api2',
           target: `http://${host}:${proxyServer2Port}`,
           changeOrigin: true,
-        },
+        }),
         {
           context: '/api/users',
           target: `http://${host}:${proxyServer1Port}`,
