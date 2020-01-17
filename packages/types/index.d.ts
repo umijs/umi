@@ -101,6 +101,8 @@ export interface IApi extends PluginAPI {
   addProjectFirstLibraries: IAdd<null, { name: string; path: string }>;
   addRuntimePlugin: IAdd<null, string>;
   addRuntimePluginKey: IAdd<null, string>;
+  addEntryCode: IAdd<null, string>;
+  addEntryCodeAhead: IAdd<null, string>;
 }
 
 export { IRoute };

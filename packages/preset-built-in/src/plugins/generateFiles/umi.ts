@@ -18,6 +18,20 @@ export default function(api: IApi) {
         rendererPath: winPath(require.resolve('@umijs/renderer-react')),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
         aliasedTmpPath: paths.aliasedTmpPath,
+        entryCode: (
+          await api.applyPlugins({
+            key: 'addEntryCode',
+            type: api.ApplyPluginsType.add,
+            initialValue: [],
+          })
+        ).join('\r\n'),
+        entryCodeAhead: (
+          await api.applyPlugins({
+            key: 'addEntryCodeAhead',
+            type: api.ApplyPluginsType.add,
+            initialValue: [],
+          })
+        ).join('\r\n'),
       }),
     });
   });

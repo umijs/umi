@@ -10,6 +10,8 @@ export default function(api: IApi) {
     'addRuntimePluginKey',
     'addUmiExports',
     'addProjectFirstLibraries',
+    'addEntryCodeAhead',
+    'addEntryCode',
     'modifyBundler',
     'modifyBundleConfig',
     'modifyBundleConfigs',
