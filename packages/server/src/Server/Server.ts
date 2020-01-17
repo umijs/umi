@@ -27,6 +27,7 @@ export interface IOpts {
   afterMiddlewares?: RequestHandler[];
   beforeMiddlewares?: RequestHandler[];
   proxy?: IProxyConfigMap | IProxyConfigArray | IProxyConfigItem;
+  https?: boolean;
   onListening?: {
     ({
       port,
