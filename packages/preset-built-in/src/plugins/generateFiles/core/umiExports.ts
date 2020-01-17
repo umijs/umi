@@ -13,10 +13,21 @@ const reserveExportsNames = [
   'router',
   'withRouter',
   'Route',
-]; // reserve name
-let umiExportsHook = {}; // repeated definition
+];
 
-export function generateExports(item: any) {
+interface IUmiExport {
+  source: string;
+  exportAll?: boolean;
+  specifiers?: any[];
+}
+
+export function generateExports({
+  item,
+  umiExportsHook,
+}: {
+  item: IUmiExport;
+  umiExportsHook: object;
+}) {
   assert(item.source, 'source should be supplied.');
   assert(
     item.exportAll || item.specifiers,
@@ -31,9 +42,9 @@ export function generateExports(item: any) {
   }
   assert(
     Array.isArray(item.specifiers),
-    `specifiers should be Array, but got ${item.specifiers.toString()}.`,
+    `specifiers should be Array, but got ${item.specifiers!.toString()}.`,
   );
-  const specifiersStrArr = item.specifiers.map((specifier: any) => {
+  const specifiersStrArr = item.specifiers!.map((specifier: any) => {
     if (typeof specifier === 'string') {
       assert(
         !reserveExportsNames.includes(specifier),
@@ -68,9 +79,18 @@ export default function(api: IApi) {
       initialValue: [],
     });
 
+    let umiExportsHook = {}; // repeated definition
     api.writeTmpFile({
       path: 'core/umiExports.ts',
-      content: umiExports.map(generateExports).join('\n') + `\n`,
+      content:
+        umiExports
+          .map((item: IUmiExport) => {
+            return generateExports({
+              item,
+              umiExportsHook,
+            });
+          })
+          .join('\n') + `\n`,
     });
   });
 }

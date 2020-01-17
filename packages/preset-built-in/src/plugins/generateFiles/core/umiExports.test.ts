@@ -1,65 +1,94 @@
-import { generateExports } from './umiExports';
+import umiExports, { generateExports } from './umiExports';
 
-it('export all', () => {
+test('export all', () => {
   const exportAll = generateExports({
-    exportAll: true,
-    source: 'dva',
+    item: {
+      exportAll: true,
+      source: 'dva',
+    },
+    umiExportsHook: {},
   });
   expect(exportAll).toBe("export * from 'dva';");
 });
 
-it('export specifiers', () => {
+test('export specifiers', () => {
   const exportSpecifiers = generateExports({
-    specifiers: ['connect'],
-    source: 'dva',
+    item: {
+      specifiers: ['connect'],
+      source: 'dva',
+    },
+    umiExportsHook: {},
   });
   expect(exportSpecifiers).toBe("export { connect } from 'dva';");
 });
 
-it('export alias', () => {
+test('export alias', () => {
   const exportAlias = generateExports({
-    specifiers: [{ local: 'default', exported: 'dva' }],
-    source: 'dva',
+    item: {
+      specifiers: [{ local: 'default', exported: 'dva' }],
+      source: 'dva',
+    },
+    umiExportsHook: {},
   });
   expect(exportAlias).toBe("export { default as dva } from 'dva';");
 });
 
-it('multiple', () => {
+test('multiple', () => {
   const exportAlias = generateExports({
-    specifiers: ['a', { local: 'default', exported: 'b' }],
-    source: 'dva',
+    item: {
+      specifiers: ['a', { local: 'default', exported: 'b' }],
+      source: 'dva',
+    },
+    umiExportsHook: {},
   });
   expect(exportAlias).toEqual("export { a, default as b } from 'dva';");
 });
 
-it('reserve library', () => {
+test('reserve library', () => {
   expect(() => {
     generateExports({
-      specifiers: [
-        {
-          local: 'default',
-          exported: 'dva',
-        },
-      ],
-      source: 'umi',
+      item: {
+        specifiers: [
+          {
+            local: 'default',
+            exported: 'dva',
+          },
+        ],
+        source: 'umi',
+      },
+      umiExportsHook: {},
     });
   }).toThrow("umi is reserve library, Please don't use it.");
 });
 
-it('reserve name', () => {
+test('reserve name', () => {
   expect(() => {
     generateExports({
-      specifiers: ['Link'],
-      source: 'dva',
+      item: {
+        specifiers: ['Link'],
+        source: 'dva',
+      },
+      umiExportsHook: {},
     });
   }).toThrow("Link is reserve name, you can use 'exported' to set alias.");
 });
 
-it('repeated definition', () => {
+test('repeated definition', () => {
   expect(() => {
+    const umiExportsHook = {};
     generateExports({
-      specifiers: ['connect'],
-      source: 'abc',
+      item: {
+        specifiers: ['connect'],
+        source: 'abc',
+      },
+      umiExportsHook,
+    });
+    generateExports({
+      item: {
+        specifiers: ['connect'],
+        source: 'abc',
+      },
+      umiExportsHook,
     });
   }).toThrow("connect is Defined, you can use 'exported' to set alias.");
 });
