@@ -18,7 +18,7 @@ I often have students asking this question:
 
 > Why is my local development good, no response after deployment, and no error?
 
-**No error!** This is a typical phenomenon where an application is deployed on a non-root path. Why do you have this problem? Because the route does not match, for example, if you deploy the application under `/xxx/` and then access `/xxx/hello`, and the code matches `/hello`, then it will not match, but there is no definition. A fallback route, such as 404, will display a blank page.
+**No error!** This is a typical phenomenon where an application is deployed on a non-root path. Why do you have this problem? Because the route does not match, for example, if you deploy the application under `/xxx/` and then access `/xxx/hello`, and the code matches `/hello`, then it will not match, but there is no definition of a fallback route such as 404,  it will display a blank page.
 
 How to deal with it?
 
