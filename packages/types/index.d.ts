@@ -119,6 +119,7 @@ export interface IConfig extends IConfigCore {
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   theme?: object;
+  singular?: boolean;
   styleLoader?: object;
   extraBabelPresets?: IPresetOrPlugin[];
   extraBabelPlugins?: IPresetOrPlugin[];

@@ -2,7 +2,7 @@
   "name": "umi",
   "version": "0.0.1-alpha.1",
   "description": "umi",
-  "main": "lib/cjs.js",
+  "main": "index.js",
   "types": "lib/cjs.d.ts",
   "files": [
     "lib",

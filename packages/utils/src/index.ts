@@ -26,7 +26,7 @@ import * as t from '@babel/types';
 export { t };
 import * as parser from '@babel/parser';
 export { parser };
-import traverse from '@babel/traverse';
+import * as traverse from '@babel/traverse';
 export { traverse };
 import prettier from 'prettier';
 export { prettier };
