@@ -2,6 +2,7 @@ import React from 'react';
 import { formatMessage, FormattedMessage, setLocale } from 'umi-plugin-react/locale';
 import { IUi } from 'umi-types';
 import Helmet from 'react-helmet';
+import moment from 'moment';
 import cls from 'classnames';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Context from './Context';
@@ -31,6 +32,14 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     };
   }
 
+  setMomentLocale = (locale: ILocale = getLocale()) => {
+    moment.locale(locale === 'zh-CN' ? 'zh-cn' : 'en');
+  };
+
+  componentDidMount() {
+    this.setMomentLocale();
+  }
+
   componentWillUnmount() {
     event.removeAllListeners();
   }
@@ -58,6 +67,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   setLocale = (locale: ILocale, reload = false) => {
     if (Object.keys(LOCALES).indexOf(locale as string) > -1) {
       setLocale(locale, reload);
+      this.setMomentLocale(locale);
     }
   };
 
