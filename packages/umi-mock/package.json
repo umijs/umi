@@ -1,6 +1,6 @@
 {
   "name": "umi-mock",
-  "version": "2.1.4",
+  "version": "2.1.3",
   "main": "lib/index.js",
   "dependencies": {
     "body-parser": "1.19.0",
