@@ -284,17 +284,18 @@ export default class FilesGenerator {
   generateHistory() {
     const { paths, config } = this.service;
     const tpl = readFileSync(paths.defaultHistoryTplPath, 'utf-8');
-    const initialHistory = `
-require('umi/lib/createHistory').default({
-  basename: window.routerBase,
-})
-    `.trim();
+
     let history = this.service.applyPlugins('modifyEntryHistory', {
-      initialValue: initialHistory,
+      initialValue: '',
+      args: { ssr: false },
     });
     if (config.ssr) {
+      const browserHistory = this.service.applyPlugins('modifyEntryHistory', {
+        initialValue: '',
+        args: { ssr: true },
+      });
       history = `
-__IS_BROWSER ? ${initialHistory} : require('history').createMemoryHistory({
+__IS_BROWSER ? ${browserHistory} : require('history').createMemoryHistory({
   // for history object in dva
   initialEntries: [global.req ? global.req.url : '/']
 })

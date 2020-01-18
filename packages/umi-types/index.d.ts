@@ -378,6 +378,10 @@ export interface IAddImportOpts {
   specifier?: string;
 }
 
+interface modifyEntryHistoryArgs {
+  ssr: boolean;
+}
+
 interface IModifyRouteComponentArgs {
   importPath: string;
   webpackChunkName: string;
@@ -524,7 +528,7 @@ export interface IApi {
   addRendererWrapperWithComponent: IAdd<string, () => string>;
   addRendererWrapperWithModule: IAdd<string>;
   modifyEntryRender: IModify<string>;
-  modifyEntryHistory: IModify<string>;
+  modifyEntryHistory: IModify<string, modifyEntryHistoryArgs>;
   modifyRouteComponent: IModify<string, IModifyRouteComponentArgs>;
   modifyRouterRootComponent: IModify<string>;
   modifyWebpackConfig: IModify<IWebpack.Configuration>;

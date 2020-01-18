@@ -95,15 +95,26 @@ export default {
 - 类型：`String | [String, Object]`
 - 默认值：`browser`
 
-指定 history 类型，可选 `browser`、`hash` 和 `memory`。
+指定 history 类型和参数，类型可选 `browser`、`hash` 和 `memory`。
+
+数组第二项可配置 [对应类型 history 的参数](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md#basic-usage)。
 
 比如：
 
 ```js
 export default {
-  history: 'hash',
+  history: [
+    'hash',
+    {
+      basename: '',
+      hashType: 'noslash'
+      getUserConfirmation: './components/LeavePrompt',  // 指定getUserConfirmation方法或方法路径
+    }
+  ],
 };
 ```
+
+> options 中的 `basename` 会被 [base](#base) 覆盖
 
 ### outputPath
 

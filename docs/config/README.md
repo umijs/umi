@@ -93,15 +93,26 @@ export default {
 - Type: `String | [String, Object]`
 - Default: `browser`
 
-Specify the history type, including `browser`, `hash` and `memory`.
+Specify the history type and options, type could be `browser`, `hash` and `memory`.
+
+Options for each type can be found at [history's doc](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md#basic-usage).
 
 e.g.
 
 ```js
 export default {
-  history: 'hash',
+  history: [
+    'hash',
+    {
+      basename: '',
+      hashType: 'noslash'
+      getUserConfirmation: './components/LeavePrompt',  // method or method path
+    }
+  ],
 };
 ```
+
+> `basename` will be overridden if [base](#base) is configured.
 
 ### outputPath
 
