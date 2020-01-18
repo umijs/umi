@@ -1,6 +1,4 @@
 import assert from 'assert';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
 import * as utils from '@umijs/utils';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';

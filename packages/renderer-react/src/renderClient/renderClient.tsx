@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
-import { Plugin, ApplyPluginsType, Router } from '@umijs/runtime';
+import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import { IRoute } from '../types';
 import renderRoutes from '../renderRoutes/renderRoutes';
 

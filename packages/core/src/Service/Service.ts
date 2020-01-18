@@ -1,6 +1,6 @@
 import { join } from 'path';
 import assert from 'assert';
-import { createDebug, BabelRegister, NodeEnv } from '@umijs/utils';
+import { BabelRegister, createDebug, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';

@@ -1,4 +1,4 @@
-import umiExports, { generateExports } from './umiExports';
+import { generateExports } from './umiExports';
 
 test('export all', () => {
   const exportAll = generateExports({

@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { IApi } from '@umijs/types';
 import { lodash } from '@umijs/utils';
 import assert from 'assert';

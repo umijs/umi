@@ -1,4 +1,4 @@
-import { winPath, createDebug } from '../';
+import { createDebug, winPath } from '../';
 
 const debug = createDebug('umi:utils:BabelRegister');
 

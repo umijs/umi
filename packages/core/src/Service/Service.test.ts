@@ -1,6 +1,5 @@
 import { join } from 'path';
-import { readFileSync } from 'fs';
-import { winPath, rimraf } from '@umijs/utils';
+import { winPath } from '@umijs/utils';
 import Service from './Service';
 import { ApplyPluginsType } from './enums';
 

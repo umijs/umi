@@ -1,4 +1,4 @@
-import { Service as CoreService, IServiceOpts } from '@umijs/core';
+import { IServiceOpts, Service as CoreService } from '@umijs/core';
 
 class Service extends CoreService {
   constructor(opts: IServiceOpts) {

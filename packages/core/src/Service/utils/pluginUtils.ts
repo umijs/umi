@@ -4,10 +4,10 @@ import { existsSync } from 'fs';
 import camelcase from 'camelcase';
 import assert from 'assert';
 import {
-  createDebug,
-  winPath,
   compatESModuleRequire,
+  createDebug,
   resolve,
+  winPath,
 } from '@umijs/utils';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';

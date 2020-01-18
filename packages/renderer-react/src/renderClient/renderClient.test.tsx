@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen, wait, getByText } from '@testing-library/react';
-import { Plugin, createMemoryHistory } from '@umijs/runtime';
+import { render } from '@testing-library/react';
+import { createMemoryHistory, Plugin } from '@umijs/runtime';
 import renderClient from './renderClient';
 
 test('normal', async () => {

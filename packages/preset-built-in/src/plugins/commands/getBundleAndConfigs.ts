@@ -1,4 +1,4 @@
-import { IApi, IConfig } from '@umijs/types';
+import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
 

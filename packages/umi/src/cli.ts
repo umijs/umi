@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { yParser, chalk } from '@umijs/utils';
+import { chalk, yParser } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { Service } from './Service';
 

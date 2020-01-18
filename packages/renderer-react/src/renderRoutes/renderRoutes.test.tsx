@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter, Plugin } from '@umijs/runtime';
-import { render, screen, wait, getByText } from '@testing-library/react';
+import { getByText, render, screen, wait } from '@testing-library/react';
 import renderRoutes from './renderRoutes';
 import { IRoute } from '../types';
 

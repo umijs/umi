@@ -5,10 +5,10 @@ import { join } from 'path';
 import { deepmerge } from '@umijs/utils';
 import {
   ConfigType,
-  getTargetsAndBrowsersList,
   getBabelDepsOpts,
   getBabelOpts,
   getBabelPresetOpts,
+  getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
 import css from './css';
 import terserOptions from './terserOptions';

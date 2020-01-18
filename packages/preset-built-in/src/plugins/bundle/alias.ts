@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 import { winPath } from '@umijs/utils';
 
 export default (api: IApi) => {

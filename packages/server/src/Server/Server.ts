@@ -1,10 +1,10 @@
 // @ts-ignore
-import { PartialProps, lodash } from '@umijs/utils';
+import { lodash, PartialProps } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
 import HttpProxyMiddleware from 'http-proxy-middleware';
 import http from 'http';
 import portfinder from 'portfinder';
-import sockjs, { Server as SocketServer, Connection } from 'sockjs';
+import sockjs, { Connection, Server as SocketServer } from 'sockjs';
 
 interface IServerProxyConfigItem extends HttpProxyMiddleware.Config {
   path?: string | string[];

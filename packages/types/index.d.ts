@@ -1,12 +1,12 @@
 import {
+  IConfig as IConfigCore,
+  IRoute,
   PluginAPI,
   Service,
-  IRoute,
-  IConfig as IConfigCore,
 } from '@umijs/core';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
-import { Request, Express, Response, NextFunction } from 'express';
+import { Express, NextFunction, Request, Response } from 'express';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
