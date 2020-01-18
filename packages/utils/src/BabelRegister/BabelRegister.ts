@@ -3,9 +3,7 @@ import { winPath, createDebug } from '../';
 const debug = createDebug('umi:utils:BabelRegister');
 
 export default class BabelRegister {
-  only: {
-    [key: string]: string[];
-  } = {};
+  only: Record<string, string[]> = {};
 
   constructor() {}
 
@@ -18,9 +16,9 @@ export default class BabelRegister {
 
   register() {
     const only = Object.keys(this.only)
-      .reduce((memo, key) => {
+      .reduce<string[]>((memo, key) => {
         return memo.concat(this.only[key]);
-      }, [] as string[])
+      }, [])
       .map(winPath);
     require('@babel/register')({
       presets: [require.resolve('@umijs/babel-preset-umi/node')],

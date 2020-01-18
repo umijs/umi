@@ -9,7 +9,10 @@ test('version', async () => {
   await umiTest({
     version: true,
   });
-  expect(spy.mock.calls).toEqual([['umi-test@0.0.1-alpha.1'], ['jest@24.9.0']]);
+  expect(spy.mock.calls).toEqual([
+    [`umi-test@${require('../package.json').version}`],
+    [`jest@${require('jest/package.json').version}`],
+  ]);
   spy.mockRestore();
 });
 

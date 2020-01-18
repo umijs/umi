@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { IApi } from '@umijs/types';
-import { isPlainObject } from '@umijs/utils';
+import { lodash } from '@umijs/utils';
 import assert from 'assert';
 
 const reserveLibrarys = ['umi']; // reserve library
@@ -58,7 +58,7 @@ export function generateExports({
       return specifier;
     } else {
       assert(
-        isPlainObject(specifier),
+        lodash.isPlainObject(specifier),
         `Configure item context should be Plain Object, but got ${specifier}.`,
       );
       assert(

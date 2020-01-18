@@ -3,8 +3,9 @@ import { isLernaPackage } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
+import { IUmiTestArgs } from '../types';
 
-export default function(cwd: string, args: IArgs) {
+export default function(cwd: string, args: IUmiTestArgs) {
   const testMatchTypes = ['spec', 'test'];
   if (args.e2e) {
     testMatchTypes.push('e2e');

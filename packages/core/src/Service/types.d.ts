@@ -1,5 +1,18 @@
 import joi from '@hapi/joi';
 
+export type IServicePathKeys =
+  | 'cwd'
+  | 'absNodeModulesPath'
+  | 'absOutputPath'
+  | 'absSrcPath'
+  | 'absPagesPath'
+  | 'absTmpPath'
+  | 'aliasedTmpPath';
+
+export type IServicePaths = {
+  [key in IServicePathKeys]: string;
+};
+
 export interface IDep {
   [name: string]: string;
 }

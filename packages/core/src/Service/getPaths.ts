@@ -1,27 +1,25 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
-import { winPath } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
+import { IServicePaths } from './types';
 
 function isDirectoryAndExist(path: string) {
   return existsSync(path) && statSync(path).isDirectory();
 }
 
-function normalizeWithWinPath(obj: object) {
-  return Object.keys(obj).reduce((memo, key) => {
-    memo[key] = winPath(obj[key]);
-    return memo;
-  }, {});
+function normalizeWithWinPath<T extends Record<any, string>>(obj: T) {
+  return lodash.mapValues(obj, value => winPath(value));
 }
 
-export default function({
+export default function getServicePaths({
   cwd,
   config,
   env,
 }: {
   cwd: string;
   config: any;
-  env: string | undefined;
-}) {
+  env?: string;
+}): IServicePaths {
   let absSrcPath = cwd;
   if (isDirectoryAndExist(join(cwd, 'src'))) {
     absSrcPath = join(cwd, 'src');

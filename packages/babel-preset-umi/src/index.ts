@@ -23,7 +23,7 @@ export interface IOpts {
   import?: IImportPluginOpts[];
 }
 
-function toObject(obj: object | boolean) {
+function toObject<T extends object>(obj: T | boolean): T | Partial<T> {
   return typeof obj === 'object' ? obj : {};
 }
 

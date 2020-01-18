@@ -6,10 +6,11 @@ import assert from 'assert';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
+import { IUmiTestArgs, PickedJestCliOptions } from './types';
 
 const debug = createDebug('umi:test');
 
-export default async function(args: IArgs) {
+export default async function(args: IUmiTestArgs) {
   process.env.NODE_ENV = 'test';
 
   if (args.debug) {
@@ -49,16 +50,14 @@ export default async function(args: IArgs) {
   debug(`final config: ${JSON.stringify(config)}`);
 
   // Generate jest options
-  const argsConfig = {};
-  Object.keys(CliOptions).forEach(name => {
-    if (args[name]) argsConfig[name] = name;
+  const argsConfig = Object.keys(CliOptions).reduce((prev, name) => {
+    if (args[name]) prev[name] = name;
 
     // Convert alias args into real one
     const { alias } = CliOptions[name];
-    if (alias && args[alias]) {
-      argsConfig[name] = args[alias];
-    }
-  });
+    if (alias && args[alias]) prev[name] = args[alias];
+    return prev;
+  }, {} as PickedJestCliOptions);
   debug(`config from args: ${JSON.stringify(argsConfig)}`);
 
   // Run jest

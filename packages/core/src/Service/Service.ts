@@ -1,6 +1,6 @@
 import { join } from 'path';
 import assert from 'assert';
-import { createDebug, BabelRegister } from '@umijs/utils';
+import { createDebug, BabelRegister, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
@@ -13,11 +13,11 @@ import getPaths from './getPaths';
 
 const debug = createDebug('umi:core:Service');
 
-export interface IOpts {
+export interface IServiceOpts {
   cwd: string;
   presets?: string[];
   plugins?: string[];
-  env?: 'development' | 'production' | 'test';
+  env?: NodeEnv;
 }
 
 interface IConfig {
@@ -82,7 +82,7 @@ export default class Service {
   ApplyPluginsType = ApplyPluginsType;
   ServiceStage = ServiceStage;
 
-  constructor(opts: IOpts) {
+  constructor(opts: IServiceOpts) {
     debug('opts:');
     debug(opts);
     this.cwd = opts.cwd || process.cwd();

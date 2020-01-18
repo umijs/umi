@@ -2,18 +2,31 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import winPath from '../winPath/winPath';
 
-interface IOpts {
+/**
+ * @description
+ * - `'javascript'`: try to match the file with extname `.{ts(x)|js(x)}`
+ * - `'css'`: try to match the file with extname `.{less|sass|scss|stylus|css}`
+ */
+type FileType = 'javascript' | 'css';
+
+interface IGetFileOpts {
   base: string;
-  type: 'javascript' | 'css';
+  type: FileType;
   fileNameWithoutExt: string;
 }
 
-const extsMap = {
+const extsMap: Record<FileType, string[]> = {
   javascript: ['.ts', '.tsx', '.js', '.jsx'],
   css: ['.less', '.sass', '.scss', '.stylus', '.css'],
 };
 
-export default function(opts: IOpts) {
+/**
+ * Try to match the exact extname of the file in a specific directory.
+ * @returns
+ * - matched: `{ path: string; filename: string }`
+ * - otherwise: `null`
+ */
+export default function getFile(opts: IGetFileOpts) {
   const exts = extsMap[opts.type];
   for (const ext of exts) {
     const filename = `${opts.fileNameWithoutExt}${ext}`;

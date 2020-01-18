@@ -1,33 +1,33 @@
+// @ts-ignore
+import { PartialProps, lodash } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
-import httpProxyMiddleware from 'http-proxy-middleware';
+import HttpProxyMiddleware from 'http-proxy-middleware';
 import http from 'http';
 import portfinder from 'portfinder';
-import { Proxy } from 'http-proxy-middleware';
 import sockjs, { Server as SocketServer, Connection } from 'sockjs';
-import { lodash } from '@umijs/utils';
 
-interface IProxyConfigMap {
-  [url: string]: IProxyConfigItem;
+interface IServerProxyConfigItem extends HttpProxyMiddleware.Config {
+  path?: string | string[];
+  context?: string | string[] | HttpProxyMiddleware.Filter;
+  bypass?: (
+    req: Express.Request,
+    res: Express.Response,
+    proxyConfig: IServerProxyConfigItem,
+  ) => string | null;
 }
 
-type IProxyConfigItem = {
-  path?: string | string[];
-  context?: string | string[] | httpProxyMiddleware.Filter;
-  bypass?: (
-    req: Request,
-    res: Response,
-    proxyConfig: IProxyConfigItem,
-  ) => string | null;
-} & httpProxyMiddleware.Config;
+type IServerProxyConfig =
+  | IServerProxyConfigItem
+  | Record<string, IServerProxyConfigItem>
+  | (IServerProxyConfigItem | (() => IServerProxyConfigItem))[]
+  | null;
 
-type IProxyConfigArray = IProxyConfigItem[];
-
-export interface IOpts {
-  compilerMiddleware?: RequestHandler;
-  afterMiddlewares?: RequestHandler[];
-  beforeMiddlewares?: RequestHandler[];
-  proxy?: IProxyConfigMap | IProxyConfigArray | IProxyConfigItem;
+export interface IServerOpts {
+  afterMiddlewares?: RequestHandler<any>[];
+  beforeMiddlewares?: RequestHandler<any>[];
+  compilerMiddleware?: RequestHandler<any> | null;
   https?: boolean;
+  proxy?: IServerProxyConfig;
   onListening?: {
     ({
       port,
@@ -41,24 +41,36 @@ export interface IOpts {
       server: Server;
     }): void;
   };
-  onConnection?: {
-    ({ connection, server }: { connection: Connection; server: Server }): void;
-  };
-  onConnectionClose?: Function;
+  onConnection?: (param: { connection: Connection; server: Server }) => void;
+  onConnectionClose?: (param: { connection: Connection }) => void;
 }
+
+const defaultOpts: Required<PartialProps<IServerOpts>> = {
+  afterMiddlewares: [],
+  beforeMiddlewares: [],
+  compilerMiddleware: null,
+  https: false,
+  onListening: argv => argv,
+  onConnection: () => {},
+  onConnectionClose: () => {},
+  proxy: null,
+};
 
 class Server {
   app: Express;
-  opts: IOpts;
+  opts: Required<IServerOpts>;
   socketServer?: SocketServer;
   // @ts-ignore
   listeningApp: http.Server;
   sockets: Connection[] = [];
   // Proxy sockets
-  socketProxies: Proxy[] = [];
+  socketProxies: HttpProxyMiddleware.Proxy[] = [];
 
-  constructor(opts: IOpts) {
-    this.opts = opts;
+  constructor(opts: IServerOpts) {
+    this.opts = {
+      ...defaultOpts,
+      ...lodash.omitBy(opts, lodash.isUndefined),
+    };
     this.app = express();
     this.setupFeatures();
     this.createServer();
@@ -73,12 +85,10 @@ class Server {
   setupFeatures() {
     const features = {
       proxy: () => {
-        if (this.opts.proxy) {
-          this.setupProxy();
-        }
+        this.setupProxy();
       },
       beforeMiddlewares: () => {
-        (this.opts.beforeMiddlewares || []).forEach(middleware => {
+        this.opts.beforeMiddlewares.forEach(middleware => {
           this.app.use(middleware);
         });
       },
@@ -88,13 +98,13 @@ class Server {
         }
       },
       afterMiddlewares: () => {
-        (this.opts.afterMiddlewares || []).forEach(middleware => {
+        this.opts.afterMiddlewares.forEach(middleware => {
           this.app.use(middleware);
         });
       },
     };
 
-    Object.keys(features || {}).forEach(stage => {
+    Object.keys(features).forEach(stage => {
       features[stage]();
     });
   }
@@ -113,7 +123,7 @@ class Server {
         this.opts.proxy = [this.opts.proxy];
       } else {
         this.opts.proxy = Object.keys(this.opts.proxy).map(context => {
-          let proxyOptions;
+          let proxyOptions: IServerProxyConfigItem;
           // For backwards compatibility reasons.
           const correctedContext = context
             .replace(/^\*$/, '**')
@@ -127,8 +137,8 @@ class Server {
           } else {
             proxyOptions = {
               ...(this.opts.proxy?.[context] || {}),
+              context: correctedContext,
             };
-            proxyOptions.context = correctedContext;
           }
 
           proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
@@ -138,18 +148,20 @@ class Server {
       }
     }
 
-    const getProxyMiddleware = (proxyConfig: IProxyConfigItem): any => {
+    const getProxyMiddleware = (proxyConfig: IServerProxyConfigItem) => {
       const context = proxyConfig.context || proxyConfig.path;
 
       // It is possible to use the `bypass` method without a `target`.
       // However, the proxy middleware has no use in this case, and will fail to instantiate.
       if (proxyConfig.target) {
-        return httpProxyMiddleware(context as any, proxyConfig);
+        return HttpProxyMiddleware(context!, proxyConfig);
       }
+
+      return;
     };
 
-    this.opts.proxy.forEach((proxyConfigOrCallback: any) => {
-      let proxyMiddleware: any;
+    this.opts.proxy.forEach(proxyConfigOrCallback => {
+      let proxyMiddleware: HttpProxyMiddleware.Proxy | undefined;
 
       let proxyConfig =
         typeof proxyConfigOrCallback === 'function'
@@ -158,7 +170,7 @@ class Server {
 
       proxyMiddleware = getProxyMiddleware(proxyConfig);
 
-      if (proxyConfig.ws) {
+      if (proxyConfig.ws && proxyMiddleware) {
         this.socketProxies.push(proxyMiddleware);
       }
 
@@ -175,8 +187,7 @@ class Server {
         // - Check if we have a bypass function defined
         // - In case the bypass function is defined we'll retrieve the
         // bypassUrl from it otherwise bypassUrl would be null
-        const isByPassFuncDefined = lodash.isFunction(proxyConfig.bypass);
-        const bypassUrl = isByPassFuncDefined
+        const bypassUrl = lodash.isFunction(proxyConfig.bypass)
           ? proxyConfig.bypass(req, res, proxyConfig)
           : null;
         if (typeof bypassUrl === 'boolean') {
@@ -198,7 +209,7 @@ class Server {
   }
 
   sockWrite({
-    sockets,
+    sockets = this.sockets,
     type,
     data,
   }: {
@@ -206,13 +217,13 @@ class Server {
     type: string;
     data?: string | object;
   }) {
-    (sockets || this.sockets).forEach(socket => {
+    sockets.forEach(socket => {
       socket.write(JSON.stringify({ type, data }));
     });
   }
 
   createServer() {
-    if (this.opts?.https) {
+    if (this.opts.https) {
       // TODO
     } else {
       this.listeningApp = http.createServer(this.app);
@@ -220,10 +231,10 @@ class Server {
   }
 
   async listen({
-    port,
+    port = 8000,
     hostname,
   }: {
-    port: number;
+    port?: number;
     hostname: string;
   }): Promise<{
     port: number;
@@ -233,9 +244,7 @@ class Server {
   }> {
     const listeningApp = http.createServer(this.app);
     this.listeningApp = listeningApp;
-    const foundPort = await portfinder.getPortPromise({
-      port: port || 8000,
-    });
+    const foundPort = await portfinder.getPortPromise({ port });
     return new Promise(resolve => {
       listeningApp.listen(foundPort, hostname, 5, () => {
         this.createSocketServer();
@@ -245,7 +254,7 @@ class Server {
           listeningApp,
           server: this,
         };
-        this.opts.onListening?.(ret);
+        this.opts.onListening(ret);
         resolve(ret);
       });
     });
@@ -261,13 +270,13 @@ class Server {
       prefix: '/dev-server',
     });
     server.on('connection', connection => {
-      this.opts.onConnection?.({
+      this.opts.onConnection({
         connection,
         server: this,
       });
       this.sockets.push(connection);
       connection.on('close', () => {
-        this.opts.onConnectionClose?.({
+        this.opts.onConnectionClose({
           connection,
         });
         const index = this.sockets.indexOf(connection);

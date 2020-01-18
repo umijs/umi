@@ -1,14 +1,14 @@
-import { join } from 'path';
+import { lodash, winPath } from '@umijs/utils';
+import { join, relative } from 'path';
 import getPaths from './getPaths';
-import { winPath } from '@umijs/utils';
+import { IServicePaths } from './types';
 
 const fixtures = join(__dirname, 'fixtures');
 
-function stripCwd(obj: object, cwd: string) {
-  return Object.keys(obj).reduce((memo, key) => {
-    memo[key] = obj[key].replace(winPath(cwd), '.');
-    return memo;
-  }, {});
+function stripCwd(paths: IServicePaths, cwd: string) {
+  return lodash.mapValues(paths, value => {
+    return value.startsWith('@') ? value : winPath(relative(cwd, value));
+  });
 }
 
 test('empty', () => {
@@ -23,13 +23,13 @@ test('empty', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './dist',
-    absPagesPath: './pages',
-    absSrcPath: '.',
-    absTmpPath: './.umi',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'pages',
+    absSrcPath: '',
+    absTmpPath: '.umi',
     aliasedTmpPath: '@/.umi',
-    cwd: '.',
+    cwd: '',
   });
 });
 
@@ -45,13 +45,13 @@ test('empty production', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './dist',
-    absPagesPath: './pages',
-    absSrcPath: '.',
-    absTmpPath: './.umi-production',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'pages',
+    absSrcPath: '',
+    absTmpPath: '.umi-production',
     aliasedTmpPath: '@/.umi-production',
-    cwd: '.',
+    cwd: '',
   });
 });
 
@@ -69,13 +69,13 @@ test('empty config singular', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './dist',
-    absPagesPath: './page',
-    absSrcPath: '.',
-    absTmpPath: './.umi',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'page',
+    absSrcPath: '',
+    absTmpPath: '.umi',
     aliasedTmpPath: '@/.umi',
-    cwd: '.',
+    cwd: '',
   });
 });
 
@@ -93,13 +93,13 @@ test('empty config outputPath', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './www',
-    absPagesPath: './pages',
-    absSrcPath: '.',
-    absTmpPath: './.umi',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'www',
+    absPagesPath: 'pages',
+    absSrcPath: '',
+    absTmpPath: '.umi',
     aliasedTmpPath: '@/.umi',
-    cwd: '.',
+    cwd: '',
   });
 });
 
@@ -115,13 +115,13 @@ test('src', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './dist',
-    absPagesPath: './src/pages',
-    absSrcPath: './src',
-    absTmpPath: './src/.umi',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'src/pages',
+    absSrcPath: 'src',
+    absTmpPath: 'src/.umi',
     aliasedTmpPath: '@/.umi',
-    cwd: '.',
+    cwd: '',
   });
 });
 
@@ -139,12 +139,12 @@ test('src config singular', () => {
       cwd,
     ),
   ).toEqual({
-    absNodeModulesPath: './node_modules',
-    absOutputPath: './dist',
-    absPagesPath: './src/page',
-    absSrcPath: './src',
-    absTmpPath: './src/.umi',
+    absNodeModulesPath: 'node_modules',
+    absOutputPath: 'dist',
+    absPagesPath: 'src/page',
+    absSrcPath: 'src',
+    absTmpPath: 'src/.umi',
     aliasedTmpPath: '@/.umi',
-    cwd: '.',
+    cwd: '',
   });
 });

@@ -88,12 +88,13 @@ export default class Config {
           );
         }
       }
-      const files = ([
+      const files = [
         configFile,
         envConfigFile,
         this.localConfig && this.addAffix(configFile, 'local'),
-      ].filter(Boolean) as string[])
-        .map((f: string) => join(this.cwd, f))
+      ]
+        .filter((f): f is string => !!f)
+        .map(f => join(this.cwd, f))
         .filter(f => existsSync(f));
 
       // clear require cache and set babel register
@@ -145,7 +146,7 @@ export default class Config {
       'config/config.ts',
       'config/config.js',
     ];
-    const configFile = configFiles.filter(f => existsSync(join(this.cwd, f)));
-    return configFile.length ? winPath(configFile[0]) : null;
+    const configFile = configFiles.find(f => existsSync(join(this.cwd, f)));
+    return configFile ? winPath(configFile) : null;
   }
 }

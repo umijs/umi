@@ -14,16 +14,7 @@ test('merge property', () => {
 });
 
 test('modify with function', () => {
-  expect(
-    mergeConfig(
-      { a: 1 },
-      {
-        a(memo: number) {
-          return memo + 1;
-        },
-      },
-    ),
-  ).toEqual({
+  expect(mergeConfig({ a: 1 }, { a: memo => memo + 1 })).toEqual({
     a: 2,
   });
 });
