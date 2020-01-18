@@ -103,6 +103,7 @@ export interface IApi extends PluginAPI {
   addRuntimePluginKey: IAdd<null, string>;
   addEntryCode: IAdd<null, string>;
   addEntryCodeAhead: IAdd<null, string>;
+  addTmpGenerateWatcherPaths: IAdd<null, string>;
 }
 
 export { IRoute };

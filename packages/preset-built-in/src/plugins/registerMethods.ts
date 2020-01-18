@@ -12,6 +12,7 @@ export default function(api: IApi) {
     'addProjectFirstLibraries',
     'addEntryCodeAhead',
     'addEntryCode',
+    'addTmpGenerateWatcherPaths',
     'modifyBundler',
     'modifyBundleConfig',
     'modifyBundleConfigs',

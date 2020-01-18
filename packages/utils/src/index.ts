@@ -1,5 +1,7 @@
 import chalk from 'chalk';
 export { chalk };
+import * as chokidar from 'chokidar';
+export { chokidar };
 import createDebug from 'debug';
 export { createDebug };
 import deepmerge from 'deepmerge';

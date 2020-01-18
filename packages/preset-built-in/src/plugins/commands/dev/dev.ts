@@ -2,6 +2,7 @@ import { IApi, IConfig } from '@umijs/types';
 import { Server, IServerOpts } from '@umijs/server';
 import getBundleAndConfigs from '../getBundleAndConfigs';
 import createRouteMiddleware from './createRouteMiddleware';
+import generateFiles from '../generateFiles';
 
 export default (api: IApi) => {
   const {
@@ -16,10 +17,7 @@ export default (api: IApi) => {
       rimraf.sync(paths.absTmpPath!);
 
       // generate files
-      await api.applyPlugins({
-        key: 'onGenerateFiles',
-        type: api.ApplyPluginsType.event,
-      });
+      await generateFiles({ api });
 
       // dev
       const bundleConfig = await getBundleAndConfigs({ api });

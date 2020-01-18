@@ -37,6 +37,7 @@
     "@types/yargs": "15.0.0",
     "@types/yargs-parser": "15.0.0",
     "chalk": "3.0.0",
+    "chokidar": "3.3.1",
     "crequire": "1.8.1",
     "debug": "4.1.1",
     "deepmerge": "4.2.2",
