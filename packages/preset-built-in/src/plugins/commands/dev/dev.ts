@@ -17,7 +17,7 @@ export default (api: IApi) => {
       rimraf.sync(paths.absTmpPath!);
 
       // generate files
-      await generateFiles({ api });
+      await generateFiles({ api, watch: true });
 
       // dev
       const bundleConfig = await getBundleAndConfigs({ api });

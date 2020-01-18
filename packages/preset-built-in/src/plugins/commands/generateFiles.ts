@@ -2,7 +2,7 @@ import { IApi } from '@umijs/types';
 import { chokidar, lodash } from '@umijs/utils';
 import { join } from 'path';
 
-export default async ({ api }: { api: IApi }) => {
+export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
   const { paths } = api;
 
   async function generate() {
@@ -16,12 +16,17 @@ export default async ({ api }: { api: IApi }) => {
 
   await generate();
 
-  const watcherPaths = await api.applyPlugins({
-    key: 'addTmpGenerateWatcherPaths',
-    type: api.ApplyPluginsType.add,
-    initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layout')],
-  });
-  watcherPaths.forEach(createWatcher);
+  if (watch) {
+    const watcherPaths = await api.applyPlugins({
+      key: 'addTmpGenerateWatcherPaths',
+      type: api.ApplyPluginsType.add,
+      initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layout')],
+    });
+    watcherPaths.forEach(createWatcher);
+    process.on('SIGINT', () => {
+      unwatch();
+    });
+  }
 
   function unwatch() {
     watchers.forEach(watcher => {
@@ -43,8 +48,4 @@ export default async ({ api }: { api: IApi }) => {
       }, 100),
     );
   }
-
-  process.on('SIGINT', () => {
-    unwatch();
-  });
 };

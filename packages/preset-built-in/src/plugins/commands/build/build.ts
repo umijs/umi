@@ -1,6 +1,6 @@
 import { IApi } from '@umijs/types';
-import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import getBundleAndConfigs from '../getBundleAndConfigs';
+import generateFiles from '../generateFiles';
 
 export default function(api: IApi) {
   const {
@@ -15,10 +15,7 @@ export default function(api: IApi) {
       rimraf.sync(paths.absTmpPath!);
 
       // generate files
-      await api.applyPlugins({
-        key: 'onGenerateFiles',
-        type: api.ApplyPluginsType.event,
-      });
+      await generateFiles({ api, watch: false });
 
       // build
       const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
