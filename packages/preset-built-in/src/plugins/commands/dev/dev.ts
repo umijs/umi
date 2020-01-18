@@ -1,4 +1,4 @@
-import { IApi } from '@umijs/types';
+import { IApi, IConfig } from '@umijs/types';
 import { Server, IServerOpts } from '@umijs/server';
 import getBundleAndConfigs from '../getBundleAndConfigs';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -29,7 +29,8 @@ export default (api: IApi) => {
       });
       const server = new Server({
         ...opts,
-        proxy: api.config?.proxy,
+        // @ts-ignore
+        proxy: (api.config as IConfig)?.proxy,
         beforeMiddlewares: [],
         afterMiddlewares: [createRouteMiddleware({ api })],
       });

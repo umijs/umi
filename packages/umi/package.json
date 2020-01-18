@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha.1",
   "description": "umi",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "types.d.ts",
   "files": [
     "lib",
     "src",

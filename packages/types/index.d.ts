@@ -117,6 +117,7 @@ export interface IConfig extends IConfigCore {
   define?: {
     (key: string): any;
   };
+  proxy?: any;
   targets?: ITargets;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
