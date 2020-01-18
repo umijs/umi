@@ -5,16 +5,6 @@ import { winPath } from '@umijs/utils';
 export default (api: IApi) => {
   const { paths, pkg, cwd } = api;
 
-  function getUserLibDir({ library }: { library: string }) {
-    if (
-      (pkg.dependencies && pkg.dependencies[library]) ||
-      (pkg.devDependencies && pkg.devDependencies[library])
-    ) {
-      return winPath(join(cwd, 'node_modules', library));
-    }
-    return null;
-  }
-
   api.describe({
     key: 'alias',
     config: {
@@ -31,6 +21,16 @@ export default (api: IApi) => {
       },
     },
   });
+
+  function getUserLibDir({ library }: { library: string }) {
+    if (
+      (pkg.dependencies && pkg.dependencies[library]) ||
+      (pkg.devDependencies && pkg.devDependencies[library])
+    ) {
+      return winPath(join(cwd, 'node_modules', library));
+    }
+    return null;
+  }
 
   // 另一种实现方式:
   // 提供 projectFirstLibraries 的配置方式，但是不通用，先放插件层实现

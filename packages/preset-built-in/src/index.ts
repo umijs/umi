@@ -16,6 +16,10 @@ export default function() {
 
       // bundle configs
       require.resolve('./plugins/bundle/alias'),
+      require.resolve('./plugins/bundle/define'),
+      require.resolve('./plugins/bundle/hash'),
+      require.resolve('./plugins/bundle/ignoreMomentLocale'),
+      require.resolve('./plugins/bundle/targets'),
 
       // commands
       require.resolve('./plugins/commands/version/version'),
