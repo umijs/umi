@@ -236,6 +236,11 @@ export default async function({
   // progress
   webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
 
+  // timefix
+  // webpackConfig
+  //   .plugin('MildCompilePlugin')
+  //   .use(require('webpack-mild-compile').Plugin);
+
   // progress
   webpackConfig
     .plugin('friendly-error')

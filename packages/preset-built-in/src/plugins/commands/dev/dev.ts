@@ -17,6 +17,8 @@ export default (api: IApi) => {
   let port: number;
   let server: Server;
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   api.registerCommand({
     name: 'dev',
     fn: async function() {
@@ -29,6 +31,11 @@ export default (api: IApi) => {
 
       // generate files
       await generateFiles({ api, watch: true });
+
+      // delay dev server 启动，避免重复 compile
+      // https://github.com/webpack/watchpack/issues/25
+      // https://github.com/yessky/webpack-mild-compile
+      await delay(500);
 
       // dev
       const bundleConfig = await getBundleAndConfigs({ api, port });

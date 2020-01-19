@@ -47,11 +47,6 @@ class Bundler {
     });
   }
 
-  getMiddleware({ bundleConfigs }: { bundleConfigs: webpack.Configuration[] }) {
-    const compiler = webpack(bundleConfigs);
-    return webpackDevMiddleware(compiler as any);
-  }
-
   setupDevServerOpts({
     bundleConfigs,
   }: {
@@ -61,6 +56,9 @@ class Bundler {
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       publicPath: '/',
       logLevel: 'silent',
+      watchOptions: {
+        ignored: /node_modules/,
+      },
     });
 
     function sendStats({
