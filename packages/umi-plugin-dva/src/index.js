@@ -4,6 +4,57 @@ import globby from 'globby';
 import uniq from 'lodash.uniq';
 import isRoot from 'path-is-root';
 import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+
+export const isValidHook = filePath => {
+  const ast = parse(readFileSync(filePath, { encoding: 'utf-8' }).toString(), {
+    sourceType: 'module',
+    plugins: ['jsx', 'typescript'],
+  });
+  let valid = false;
+  let identifierName = '';
+  traverse(ast, {
+    enter(p) {
+      if (p.isExportDefaultDeclaration()) {
+        const { type } = p.node.declaration;
+        try {
+          if (type === 'ArrowFunctionExpression' || type === 'FunctionDeclaration') {
+            valid = true;
+          } else if (type === 'Identifier') {
+            identifierName = p.node.declaration.name;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    },
+  });
+
+  try {
+    if (identifierName) {
+      ast.program.body.forEach(ele => {
+        if (ele.type === 'FunctionDeclaration') {
+          if (ele.id?.name === identifierName) {
+            valid = true;
+          }
+        }
+        if (ele.type === 'VariableDeclaration') {
+          if (
+            ele.declarations[0].id.name === identifierName &&
+            ele.declarations[0].init.type === 'ArrowFunctionExpression'
+          ) {
+            valid = true;
+          }
+        }
+      });
+    }
+  } catch (e) {
+    valid = false;
+  }
+
+  return valid;
+};
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
@@ -23,7 +74,8 @@ export function getModel(cwd, api) {
         !p.endsWith('.test.js') &&
         !p.endsWith('.test.jsx') &&
         !p.endsWith('.test.ts') &&
-        !p.endsWith('.test.tsx'),
+        !p.endsWith('.test.tsx') &&
+        !isValidHook(api.winPath(join(cwd, p))),
     )
     .map(p => api.winPath(join(cwd, p)));
 }
