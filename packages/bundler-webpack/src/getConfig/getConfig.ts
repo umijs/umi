@@ -231,6 +231,9 @@ export default async function({
     },
   ]);
 
+  // progress
+  webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+
   webpackConfig.when(
     isDev,
     webpackConfig => {

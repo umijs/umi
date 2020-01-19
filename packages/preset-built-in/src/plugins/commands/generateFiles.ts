@@ -23,9 +23,10 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
       initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layout')],
     });
     watcherPaths.forEach(createWatcher);
-    process.on('SIGINT', () => {
-      unwatch();
-    });
+    // process.on('SIGINT', () => {
+    //   console.log('SIGINT');
+    //   unwatch();
+    // });
   }
 
   function unwatch() {
