@@ -1,13 +1,11 @@
 import express from 'express';
 import { Server as NetServer } from 'net';
 import http from 'http';
-import { got } from '@umijs/utils';
+import { got, delay } from '@umijs/utils';
 import portfinder from 'portfinder';
 import SockJS from 'sockjs-client';
 import sockjs, { Connection } from 'sockjs';
 import Server from './Server';
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 function initSocket({
   url,

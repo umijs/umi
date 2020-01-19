@@ -49,4 +49,5 @@ export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps
 export { default as BabelRegister } from './BabelRegister/BabelRegister';
 export { default as Generator } from './Generator/Generator';
 export { default as randomColor } from './randomColor/randomColor';
+export { default as delay } from './delay/delay';
 export * from './types';

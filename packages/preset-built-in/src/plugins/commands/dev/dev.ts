@@ -1,5 +1,6 @@
 import { IApi, IConfig } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
+import { delay } from '@umijs/utils';
 import assert from 'assert';
 import getBundleAndConfigs from '../getBundleAndConfigs';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -15,8 +16,6 @@ export default (api: IApi) => {
 
   let port: number;
   let server: Server;
-
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   api.registerCommand({
     name: 'dev',
