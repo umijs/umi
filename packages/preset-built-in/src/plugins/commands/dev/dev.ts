@@ -1,6 +1,5 @@
 import { IApi, IConfig } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
-import { portfinder } from '@umijs/utils';
 import assert from 'assert';
 import getBundleAndConfigs from '../getBundleAndConfigs';
 import createRouteMiddleware from './createRouteMiddleware';
@@ -11,7 +10,7 @@ export default (api: IApi) => {
     env,
     cwd,
     paths,
-    utils: { rimraf, chalk },
+    utils: { rimraf, chalk, portfinder },
   } = api;
 
   let port: number;

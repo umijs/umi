@@ -1,4 +1,5 @@
 import joi from '@hapi/joi';
+import { yargs } from '@umijs/utils';
 
 export type IServicePathKeys =
   | 'cwd'
@@ -55,5 +56,7 @@ export interface IHook {
 export interface ICommand {
   name: string;
   alias?: string;
-  fn: Function;
+  fn: {
+    ({ args }: { args: yargs.Arguments }): void;
+  };
 }

@@ -27,6 +27,7 @@ export default function() {
       require.resolve('./plugins/commands/dev/devCompileDone/devCompileDone'),
       require.resolve('./plugins/commands/build/build'),
       require.resolve('./plugins/commands/build/applyHtmlWebpackPlugin'),
+      require.resolve('./plugins/commands/generate/generate'),
     ],
   };
 }

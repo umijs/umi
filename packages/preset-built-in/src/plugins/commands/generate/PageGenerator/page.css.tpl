@@ -1,0 +1,7 @@
+
+.normal {
+}
+
+.title {
+  background: {{{ color }}};
+}

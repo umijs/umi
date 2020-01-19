@@ -47,4 +47,6 @@ export { default as getFile } from './getFile/getFile';
 export { default as winPath } from './winPath/winPath';
 export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps';
 export { default as BabelRegister } from './BabelRegister/BabelRegister';
+export { default as Generator } from './Generator/Generator';
+export { default as randomColor } from './randomColor/randomColor';
 export * from './types';
