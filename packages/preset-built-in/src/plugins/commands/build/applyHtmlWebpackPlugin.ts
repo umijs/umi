@@ -8,7 +8,7 @@ export default function(api: IApi) {
       const key = 'UmiHtmlGeneration';
       compiler.hooks.compilation.tap(key, compilation => {
         compilation.hooks.moduleAsset.tap(key, (module, file) => {
-          console.log(module, file);
+          // console.log(module, file);
         });
       });
       compiler.hooks.emit.tap(key, compilation => {

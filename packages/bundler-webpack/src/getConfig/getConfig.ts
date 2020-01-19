@@ -23,6 +23,7 @@ export interface IOpts {
     [key: string]: string;
   };
   hot?: boolean;
+  port?: number;
   babelOpts?: object;
   babelOptsForDep?: object;
   targets?: any;
@@ -38,6 +39,7 @@ export default async function({
   env,
   entry,
   hot,
+  port,
   modifyBabelOpts,
   modifyBabelPresetOpts,
 }: IOpts): Promise<webpack.Configuration> {
@@ -233,6 +235,15 @@ export default async function({
 
   // progress
   webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+
+  // progress
+  webpackConfig
+    .plugin('friendly-error')
+    .use(require.resolve('friendly-errors-webpack-plugin'), [
+      {
+        clearConsole: false,
+      },
+    ]);
 
   webpackConfig.when(
     isDev,

@@ -4,6 +4,7 @@ import {
   PluginAPI,
   Service,
 } from '@umijs/core';
+import { Server } from '@umijs/server';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
 import { Express, NextFunction, Request, Response } from 'express';
@@ -20,6 +21,10 @@ interface IModify<T, U> {
 interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
   (fn: { (args: T): Promise<U | U[]> }): void;
+}
+
+interface IGetter<T> {
+  (): T;
 }
 
 export interface ITargets {
@@ -43,6 +48,10 @@ export interface IApi extends PluginAPI {
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
+
+  // methods from dev command
+  getPort: IGetter<number>;
+  getServer: IGetter<Server>;
 
   // ApplyPluginType.event
   onPluginReady: IEvent<null>;

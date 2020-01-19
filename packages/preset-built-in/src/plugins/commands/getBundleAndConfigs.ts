@@ -2,7 +2,7 @@ import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
 
-export default async ({ api }: { api: IApi }) => {
+export default async ({ api, port }: { api: IApi; port: number }) => {
   // bundler
   const Bundler = await api.applyPlugins({
     type: api.ApplyPluginsType.modify,
@@ -22,6 +22,7 @@ export default async ({ api }: { api: IApi }) => {
       initialValue: await bundler.getConfig({
         env,
         type,
+        port,
         hot: type === ConfigType.csr,
         entry: {
           umi: join(api.cwd, tmpDir, 'umi.ts'),

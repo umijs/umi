@@ -1,9 +1,8 @@
 // @ts-ignore
-import { lodash, PartialProps } from '@umijs/utils';
+import { chalk, lodash, portfinder, PartialProps } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
 import HttpProxyMiddleware from 'http-proxy-middleware';
 import http from 'http';
-import portfinder from 'portfinder';
 import sockjs, { Connection, Server as SocketServer } from 'sockjs';
 
 interface IServerProxyConfigItem extends HttpProxyMiddleware.Config {
@@ -263,7 +262,8 @@ class Server {
   createSocketServer() {
     const server = sockjs.createServer({
       log: (severity, line) => {
-        console.log(line);
+        if (line.includes('bound to')) return;
+        console.log(`${chalk.gray('[sockjs]')} ${line}`);
       },
     });
     server.installHandlers(this.listeningApp!, {

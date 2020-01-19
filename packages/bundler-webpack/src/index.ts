@@ -40,7 +40,6 @@ class Bundler {
       const compiler = webpack(bundleConfigs);
       compiler.run((err, stats) => {
         if (err || stats.hasErrors()) {
-          console.log(stats.toString('errors-only'));
           return reject(new Error('build failed'));
         }
         resolve({ stats });
@@ -59,7 +58,10 @@ class Bundler {
     bundleConfigs: webpack.Configuration[];
   }): IServerOpts {
     const compiler = webpack(bundleConfigs);
-    const compilerMiddleware = webpackDevMiddleware(compiler);
+    const compilerMiddleware = webpackDevMiddleware(compiler, {
+      publicPath: '/',
+      logLevel: 'silent',
+    });
 
     function sendStats({
       server,
