@@ -271,6 +271,21 @@ test('api.registerCommand', async () => {
   expect(ret).toEqual(`hello bar`);
 });
 
+test('api.registerCommand aliased', async () => {
+  const cwd = join(fixtures, 'api-registerCommand-aliased');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin'))],
+  });
+  const ret = await service.run({
+    name: 'b',
+    args: {
+      projectName: 'bar',
+    },
+  });
+  expect(ret).toEqual(`hello bar`);
+});
+
 test('api.registerMethod', async () => {
   const cwd = join(fixtures, 'api-registerMethod');
   const service = new Service({

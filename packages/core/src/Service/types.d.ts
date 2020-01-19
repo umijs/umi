@@ -54,5 +54,6 @@ export interface IHook {
 
 export interface ICommand {
   name: string;
+  alias?: string;
   fn: Function;
 }

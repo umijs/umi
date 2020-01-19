@@ -74,12 +74,15 @@ export default class PluginAPI {
   }
 
   registerCommand(command: ICommand) {
-    const { name } = command;
+    const { name, alias } = command;
     assert(
       !this.service.commands[name],
       `api.registerCommand() failed, the command ${name} is exists.`,
     );
     this.service.commands[name] = command;
+    if (alias) {
+      this.service.commands[alias] = name;
+    }
   }
 
   registerPresets(presets: (IPreset | string)[]) {

@@ -39,7 +39,7 @@ export default class Service {
   stage: ServiceStage = ServiceStage.uninitiialized;
   // registered commands
   commands: {
-    [name: string]: ICommand;
+    [name: string]: ICommand | string;
   } = {};
   // including presets and plugins
   plugins: {
@@ -362,7 +362,10 @@ ${name} from ${plugin.path} register failed.`);
     await this.init();
 
     this.stage = ServiceStage.run;
-    const command = this.commands[name];
+    const command =
+      typeof this.commands[name] === 'string'
+        ? this.commands[this.commands[name] as string]
+        : this.commands[name];
     assert(command, `run command failed, command ${name} does not exists.`);
 
     args._ = args._ || [];
@@ -377,7 +380,7 @@ ${name} from ${plugin.path} register failed.`);
       },
     });
 
-    const { fn } = command;
+    const { fn } = command as ICommand;
     return await fn({ args });
   }
 }
