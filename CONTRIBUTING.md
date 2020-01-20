@@ -23,7 +23,7 @@ $ umi -v
 umi@0.0.1-alpha.1@local
 ```
 
-## Common Tasks
+## Build
 
 Transform with babel and rollup.
 
@@ -37,7 +37,7 @@ $ yarn build --watch
 $ PACKAGE=core yarn build --watch
 ```
 
-Run test.
+## Test
 
 ```bash
 $ yarn test
@@ -68,4 +68,10 @@ $ tree packages/foo
 packages/foo
 ├── README.md
 └── package.json
+```
+
+## Upgrade dependencies
+
+```bash
+$ yarn update:deps
 ```

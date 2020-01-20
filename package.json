@@ -10,7 +10,8 @@
     "link:umi": "cd packages/umi && yarn link && cd -",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "test:update": "umi-test --updateSnapshot"
+    "test:update": "umi-test --updateSnapshot",
+    "update:deps": "yarn upgrade-interactive --latest"
   },
   "gitHooks": {
     "pre-commit": "lint-staged",
