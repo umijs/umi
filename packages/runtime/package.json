@@ -22,7 +22,7 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/runtime#readme",
   "dependencies": {
-    "@types/history": "4.7.3",
+    "@types/history": "4.7.4",
     "@types/react-router": "5.1.4",
     "@types/react-router-dom": "5.1.3",
     "history": "4.10.1",
