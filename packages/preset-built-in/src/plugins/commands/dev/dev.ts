@@ -48,10 +48,14 @@ export default (api: IApi) => {
       await delay(500);
 
       // dev
-      const bundleConfig = await getBundleAndConfigs({ api, port });
-      const { bundler, bundleConfigs } = bundleConfig;
+      const {
+        bundler,
+        bundleConfigs,
+        bundleImplementor,
+      } = await getBundleAndConfigs({ api, port });
       const opts: IServerOpts = bundler.setupDevServerOpts({
         bundleConfigs: bundleConfigs,
+        bundleImplementor,
       });
       server = new Server({
         ...opts,

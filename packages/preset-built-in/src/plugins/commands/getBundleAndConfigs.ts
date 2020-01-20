@@ -2,12 +2,18 @@ import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
 
-export default async ({ api, port }: { api: IApi; port: number }) => {
+export default async ({ api, port }: { api: IApi; port?: number }) => {
   // bundler
   const Bundler = await api.applyPlugins({
     type: api.ApplyPluginsType.modify,
     key: 'modifyBundler',
     initialValue: DefaultBundler,
+  });
+
+  const bundleImplementor = await api.applyPlugins({
+    key: 'modifyBundlerImplementor',
+    type: api.ApplyPluginsType.modify,
+    initialValue: undefined,
   });
 
   // get config
@@ -27,6 +33,7 @@ export default async ({ api, port }: { api: IApi; port: number }) => {
         entry: {
           umi: join(api.cwd, tmpDir, 'umi.ts'),
         },
+        bundleImplementor,
         async modifyBabelOpts(opts: any) {
           return await api.applyPlugins({
             type: api.ApplyPluginsType.modify,
@@ -54,6 +61,7 @@ export default async ({ api, port }: { api: IApi; port: number }) => {
       },
     });
   }
+
   const bundler: DefaultBundler = new Bundler({
     cwd: api.cwd,
     config: api.config,
@@ -76,6 +84,7 @@ export default async ({ api, port }: { api: IApi; port: number }) => {
   });
 
   return {
+    bundleImplementor,
     bundler,
     bundleConfigs,
   };

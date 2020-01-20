@@ -94,6 +94,7 @@ export interface IApi extends PluginAPI {
       env: env;
     }
   >;
+  modifyBundlerImplementor: IModify<any, {}>;
 
   // ApplyPluginType.add
   addUmiExports: IAdd<

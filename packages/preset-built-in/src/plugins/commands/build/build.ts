@@ -18,10 +18,15 @@ export default function(api: IApi) {
       await generateFiles({ api, watch: false });
 
       // build
-      const { bundler, bundleConfigs } = await getBundleAndConfigs({ api });
+      const {
+        bundler,
+        bundleConfigs,
+        bundleImplementor,
+      } = await getBundleAndConfigs({ api });
       try {
         const { stats } = await bundler.build({
           bundleConfigs,
+          bundleImplementor,
         });
         console.log(chalk.green(`Build success.`));
         // console.log(stats);

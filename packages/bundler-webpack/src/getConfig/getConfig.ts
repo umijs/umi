@@ -1,6 +1,6 @@
 import { IConfig } from '@umijs/types';
+import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
-import webpack from 'webpack';
 import { join } from 'path';
 import { deepmerge } from '@umijs/utils';
 import {
@@ -28,6 +28,7 @@ export interface IOpts {
   babelOptsForDep?: object;
   targets?: any;
   browserslist?: any;
+  bundlerImplementor?: typeof defaultWebpack;
   modifyBabelOpts?: (opts: object) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
 }
@@ -40,9 +41,10 @@ export default async function({
   entry,
   hot,
   port,
+  bundlerImplementor = defaultWebpack,
   modifyBabelOpts,
   modifyBabelPresetOpts,
-}: IOpts): Promise<webpack.Configuration> {
+}: IOpts): Promise<defaultWebpack.Configuration> {
   const webpackConfig = new Config();
 
   webpackConfig.mode(env);
@@ -90,6 +92,7 @@ export default async function({
     .set('symlinks', true)
     .modules
       .add('node_modules')
+      .add(join(__dirname, '../../node_modules'))
       // TODO: 处理 yarn 全局安装时的 resolve 问题
       .end()
     .extensions.merge([
@@ -215,15 +218,21 @@ export default async function({
   });
 
   // plugins -> ignore moment locale
-  webpackConfig
-    .plugin('ignore-moment-locale')
-    .use(webpack.IgnorePlugin, [/^\.\/locale$/, /moment$/]);
+  // TODO: 验证 webpack@5 下的用途
+  // webpackConfig
+  //   .plugin('ignore-moment-locale')
+  //   .use(bundlerImplementor.IgnorePlugin, [
+  //     {
+  //       resourceRegExp: /^\.\/locale$/,
+  //       contextRegExp: /moment$/,
+  //     },
+  //   ]);
 
   // copy
   // TODO
 
   // define
-  webpackConfig.plugin('define').use(webpack.DefinePlugin, [
+  webpackConfig.plugin('define').use(bundlerImplementor.DefinePlugin, [
     {
       'process.env': objToStringified({
         ...process.env,
@@ -234,7 +243,7 @@ export default async function({
   ]);
 
   // progress
-  webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+  // webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
 
   // timefix
   // webpackConfig
@@ -253,7 +262,9 @@ export default async function({
   webpackConfig.when(
     isDev,
     webpackConfig => {
-      webpackConfig.plugin('hmr').use(webpack.HotModuleReplacementPlugin);
+      webpackConfig
+        .plugin('hmr')
+        .use(bundlerImplementor.HotModuleReplacementPlugin);
     },
     webpackConfig => {
       // don't emit files if have error
@@ -269,7 +280,7 @@ export default async function({
       // https://webpack.js.org/plugins/hashed-module-ids-plugin/
       webpackConfig
         .plugin('hash-module-ids')
-        .use(require.resolve('webpack/lib/HashedModuleIdsPlugin'));
+        .use(bundlerImplementor.HashedModuleIdsPlugin);
 
       // compress
       if (disableCompress) {
@@ -293,7 +304,7 @@ export default async function({
     },
   );
 
-  let ret = webpackConfig.toConfig() as webpack.Configuration;
+  let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin
   if (process.env.SPEED_MEASURE && type === ConfigType.csr) {

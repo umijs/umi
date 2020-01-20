@@ -1,5 +1,5 @@
 import { IConfig } from '@umijs/types';
-import webpack from 'webpack';
+import defaultWebpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { IServerOpts, Server } from '@umijs/server';
 import { ConfigType } from '@umijs/bundler-utils';
@@ -23,7 +23,7 @@ class Bundler {
 
   async getConfig(
     opts: Omit<IGetConfigOpts, 'cwd' | 'config'>,
-  ): Promise<webpack.Configuration> {
+  ): Promise<defaultWebpack.Configuration> {
     return await getConfig({
       ...opts,
       cwd: this.cwd,
@@ -33,11 +33,13 @@ class Bundler {
 
   async build({
     bundleConfigs,
+    bundleImplementor = defaultWebpack,
   }: {
-    bundleConfigs: webpack.Configuration[];
-  }): Promise<{ stats: webpack.Stats }> {
+    bundleConfigs: defaultWebpack.Configuration[];
+    bundleImplementor?: typeof defaultWebpack;
+  }): Promise<{ stats: defaultWebpack.Stats }> {
     return new Promise((resolve, reject) => {
-      const compiler = webpack(bundleConfigs);
+      const compiler = bundleImplementor(bundleConfigs);
       compiler.run((err, stats) => {
         if (err || stats.hasErrors()) {
           return reject(new Error('build failed'));
@@ -49,10 +51,12 @@ class Bundler {
 
   setupDevServerOpts({
     bundleConfigs,
+    bundleImplementor = defaultWebpack,
   }: {
-    bundleConfigs: webpack.Configuration[];
+    bundleConfigs: defaultWebpack.Configuration[];
+    bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
-    const compiler = webpack(bundleConfigs);
+    const compiler = bundleImplementor(bundleConfigs);
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       publicPath: '/',
       logLevel: 'silent',
@@ -68,7 +72,7 @@ class Bundler {
     }: {
       server: Server;
       sockets: any;
-      stats: webpack.Stats.ToJsonOutput;
+      stats: defaultWebpack.Stats.ToJsonOutput;
     }) {
       server.sockWrite({ sockets, type: 'hash', data: stats.hash });
 
@@ -81,7 +85,7 @@ class Bundler {
       }
     }
 
-    function getStats(stats: webpack.Stats) {
+    function getStats(stats: defaultWebpack.Stats) {
       return stats.toJson({
         all: false,
         hash: true,
@@ -92,12 +96,12 @@ class Bundler {
       });
     }
 
-    let _stats: webpack.Stats | null = null;
+    let _stats: defaultWebpack.Stats | null = null;
 
     return {
       compilerMiddleware,
       onListening: ({ server }) => {
-        function addHooks(compiler: webpack.Compiler) {
+        function addHooks(compiler: defaultWebpack.Compiler) {
           const { compile, invalid, done } = compiler.hooks;
           compile.tap('umi-dev-server', () => {
             server.sockWrite({ type: 'invalid' });
