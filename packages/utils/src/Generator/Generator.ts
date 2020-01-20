@@ -16,11 +16,11 @@ class Generator {
     this.args = args;
   }
 
-  run() {
-    this.writing();
+  async run() {
+    await this.writing();
   }
 
-  writing() {}
+  async writing() {}
 
   copyTpl(opts: { templatePath: string; target: string; context: object }) {
     const tpl = readFileSync(opts.templatePath, 'utf-8');

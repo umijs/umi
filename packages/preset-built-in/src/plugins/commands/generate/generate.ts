@@ -1,5 +1,6 @@
 import { IApi } from '@umijs/types';
 import createPageGenerator from './PageGenerator/createPageGenerator';
+import createTmpGenerator from './TmpGenerator/createTmpGenerator';
 
 interface IRegisterGenerator {
   key: string;
@@ -14,6 +15,7 @@ export default (api: IApi) => {
 
   const generators = {
     page: createPageGenerator({ api }),
+    tmp: createTmpGenerator({ api }),
   };
 
   api.registerCommand({
@@ -34,7 +36,7 @@ export default (api: IApi) => {
           _,
         },
       });
-      generator.run();
+      await generator.run();
     },
   });
 

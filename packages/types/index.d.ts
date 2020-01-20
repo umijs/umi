@@ -5,6 +5,7 @@ import {
   Service,
 } from '@umijs/core';
 import { Server } from '@umijs/server';
+import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
 import { Express, NextFunction, Request, Response } from 'express';
@@ -48,6 +49,7 @@ export interface IApi extends PluginAPI {
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
+  registerGenerator: { (args: { key: string; Generator: Generator }): void };
 
   // methods from dev command
   getPort: IGetter<number>;
