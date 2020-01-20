@@ -101,3 +101,11 @@ test('schema validate failed', async () => {
   });
   await expect(service.init()).rejects.toThrow(/"value" must be a number/);
 });
+
+test('invalid keys', async () => {
+  const cwd = join(fixtures, 'invalid-keys');
+  const service = new Service({
+    cwd,
+  });
+  await expect(service.init()).rejects.toThrow(/Invalid config key: foo/);
+});

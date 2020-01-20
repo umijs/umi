@@ -6,6 +6,9 @@ module.exports = (api) => {
       default: {
         foo: 'foo',
       },
+      schema(joi) {
+        return joi.object();
+      },
     },
   });
 };

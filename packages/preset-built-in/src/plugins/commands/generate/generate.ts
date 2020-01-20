@@ -10,7 +10,7 @@ interface IRegisterGenerator {
 export default (api: IApi) => {
   const {
     paths,
-    utils: { chalk, Generator },
+    utils: { chalk },
   } = api;
 
   const generators = {

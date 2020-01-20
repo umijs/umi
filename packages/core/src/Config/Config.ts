@@ -43,21 +43,36 @@ export default class Config {
     );
 
     const userConfig = this.getUserConfig();
+    const userConfigKeys = Object.keys(userConfig).filter(key => {
+      // ignore plugin disable config
+      return userConfig[key] !== false;
+    });
     Object.keys(this.service.plugins).forEach(pluginId => {
       const { key, config = {} } = this.service.plugins[pluginId];
+      // recognize as key if have schema config
+      if (!config.schema) return;
+
       const value = getUserConfigWithKey({ key, userConfig });
 
-      // do validate if have schema config
-      if (config.schema) {
-        const schema = config.schema(joi);
-        assert(
-          joi.isSchema(schema),
-          `schema return from plugin ${pluginId} is not valid schema.`,
+      // do validate
+      const schema = config.schema(joi);
+      assert(
+        joi.isSchema(schema),
+        `schema return from plugin ${pluginId} is not valid schema.`,
+      );
+      const { error } = schema.validate(value);
+      if (error) {
+        const e = new Error(
+          `Validate config "${key}" failed, ${error.message}`,
         );
-        const { error } = schema.validate(value);
-        if (error) {
-          throw error;
-        }
+        e.stack = error.stack;
+        throw e;
+      }
+
+      // remove key
+      const index = userConfigKeys.indexOf(key.split('.')[0]);
+      if (index !== -1) {
+        userConfigKeys.splice(index, 1);
       }
 
       // update userConfig with defaultConfig
@@ -72,6 +87,11 @@ export default class Config {
         });
       }
     });
+
+    if (userConfigKeys.length) {
+      const keys = userConfigKeys.length > 1 ? 'keys' : 'key';
+      throw new Error(`Invalid config ${keys}: ${userConfigKeys.join(', ')}`);
+    }
 
     return userConfig;
   }
