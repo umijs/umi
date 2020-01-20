@@ -6,55 +6,35 @@ import isRoot from 'path-is-root';
 import { chunkName, findJS, optsToArray, endWithSlash } from 'umi-utils';
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
+import { isObjectExpression } from '@babel/types';
 
-export const isValidHook = filePath => {
-  const ast = parse(readFileSync(filePath, { encoding: 'utf-8' }).toString(), {
+export function isValidModel(content) {
+  const ast = parse(content, {
     sourceType: 'module',
     plugins: ['jsx', 'typescript'],
   });
-  let valid = false;
-  let identifierName = '';
+
+  let isDvaModel = false;
+
   traverse(ast, {
-    enter(p) {
-      if (p.isExportDefaultDeclaration()) {
-        const { type } = p.node.declaration;
-        try {
-          if (type === 'ArrowFunctionExpression' || type === 'FunctionDeclaration') {
-            valid = true;
-          } else if (type === 'Identifier') {
-            identifierName = p.node.declaration.name;
-          }
-        } catch (e) {
-          console.error(e);
-        }
+    enter(path) {
+      const { node } = path;
+      if (
+        path.isExportDefaultDeclaration() &&
+        isObjectExpression(node.declaration) &&
+        node.declaration.properties.some(property => {
+          return ['state', 'reducers', 'subscriptions', 'effects', 'namespace'].includes(
+            property.key.name,
+          );
+        })
+      ) {
+        isDvaModel = true;
       }
     },
   });
 
-  try {
-    if (identifierName) {
-      ast.program.body.forEach(ele => {
-        if (ele.type === 'FunctionDeclaration') {
-          if (ele.id?.name === identifierName) {
-            valid = true;
-          }
-        }
-        if (ele.type === 'VariableDeclaration') {
-          if (
-            ele.declarations[0].id.name === identifierName &&
-            ele.declarations[0].init.type === 'ArrowFunctionExpression'
-          ) {
-            valid = true;
-          }
-        }
-      });
-    }
-  } catch (e) {
-    valid = false;
-  }
-
-  return valid;
-};
+  return isDvaModel;
+}
 
 export function getModel(cwd, api) {
   const { config, winPath } = api;
@@ -75,7 +55,7 @@ export function getModel(cwd, api) {
         !p.endsWith('.test.jsx') &&
         !p.endsWith('.test.ts') &&
         !p.endsWith('.test.tsx') &&
-        !isValidHook(api.winPath(join(cwd, p))),
+        isValidModel(readFileSync(api.winPath(join(cwd, p)), { encoding: 'utf-8' })),
     )
     .map(p => api.winPath(join(cwd, p)));
 }

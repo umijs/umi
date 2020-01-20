@@ -3,8 +3,9 @@
   "version": "1.11.0",
   "main": "./lib/index.js",
   "dependencies": {
-    "@babel/parser": "^7.8.3",
-    "@babel/traverse": "^7.8.3",
+    "@babel/parser": "7.8.3",
+    "@babel/traverse": "7.8.3",
+    "@babel/types": "7.8.3",
     "babel-plugin-dva-hmr": "0.4.2",
     "dva": "^2.6.0-beta.16",
     "dva-immer": "0.4.5",
