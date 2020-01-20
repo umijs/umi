@@ -872,7 +872,7 @@ export default class UmiUI {
         if (isMini || data.currentProject) {
           return res.status(302).redirect(
             url.format({
-              pathname: '/dashboard',
+              pathname: isMini ? '/blocks' : '/dashboard',
               query: req.query,
             }),
           );
