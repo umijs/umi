@@ -49,4 +49,6 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
       }, 100),
     );
   }
+
+  return unwatch;
 };

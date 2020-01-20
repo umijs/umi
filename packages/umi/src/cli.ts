@@ -2,6 +2,8 @@ import { join } from 'path';
 import { chalk, yParser } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { Service } from './ServiceWithBuiltIn';
+import fork from './utils/fork';
+import getCwd from './utils/getCwd';
 
 // process.argv: [node, umi.js, command, args]
 const args = yParser(process.argv.slice(2), {
@@ -11,11 +13,6 @@ const args = yParser(process.argv.slice(2), {
   },
   boolean: ['version'],
 });
-
-let cwd = process.cwd();
-if (process.env.APP_ROOT) {
-  cwd = join(cwd, process.env.APP_ROOT);
-}
 
 if (args.version && !args._[0]) {
   args._[0] = 'version';
@@ -28,15 +25,18 @@ if (args.version && !args._[0]) {
 (async () => {
   try {
     switch (args._[0]) {
+      case 'dev':
+        fork({
+          scriptPath: require.resolve('./forkedDev'),
+        });
+        break;
       default:
         const name = args._[0];
         if (name === 'build') {
           process.env.NODE_ENV = 'production';
-        } else if (name === 'dev') {
-          process.env.NODE_ENV = 'development';
         }
         await new Service({
-          cwd,
+          cwd: getCwd(),
         }).run({
           name,
           args,

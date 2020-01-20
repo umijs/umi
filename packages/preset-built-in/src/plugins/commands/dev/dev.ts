@@ -16,6 +16,7 @@ export default (api: IApi) => {
 
   let port: number;
   let server: Server;
+  const unwatchs: Function[] = [];
 
   api.registerCommand({
     name: 'dev',
@@ -29,16 +30,17 @@ export default (api: IApi) => {
       rimraf.sync(paths.absTmpPath!);
 
       // generate files
-      await generateFiles({ api, watch: true });
+      const unwatchGenerateFiles = await generateFiles({ api, watch: true });
+      unwatchs.push(unwatchGenerateFiles);
 
       // watch config change
       const unwatchConfig = api.service.configInstance.watch({
         userConfig: api.service.userConfig,
         onChange({ pluginChanged, userConfig, valueChanged }) {
-          console.log(`pluginChanged`, pluginChanged);
-          console.log(`valueChanged`, valueChanged);
+          api.restartServer();
         },
       });
+      unwatchs.push(unwatchConfig);
 
       // delay dev server 启动，避免重复 compile
       // https://github.com/webpack/watchpack/issues/25
@@ -84,6 +86,18 @@ export default (api: IApi) => {
         `api.getServer() is only valid in development.`,
       );
       return server;
+    },
+  });
+
+  api.registerMethod({
+    name: 'restartServer',
+    fn() {
+      console.log(chalk.gray(`Try to restart dev server...`));
+      for (const unwatch of unwatchs) {
+        unwatch();
+      }
+      server.listeningApp.close();
+      process.send?.({ type: 'RESTART' });
     },
   });
 };

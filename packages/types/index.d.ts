@@ -54,6 +54,7 @@ export interface IApi extends PluginAPI {
   // methods from dev command
   getPort: IGetter<number>;
   getServer: IGetter<Server>;
+  restartServer: Function;
 
   // ApplyPluginType.event
   onPluginReady: IEvent<null>;
