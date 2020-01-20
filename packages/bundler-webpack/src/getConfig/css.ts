@@ -60,17 +60,22 @@ function createCSSRule({
     rule
       .use('css-loader')
       .loader(require.resolve('css-loader'))
-      .options({
-        importLoaders: 1,
-        sourceMap: false,
-        ...(isCSSModules
-          ? {
-              modules: {
-                localIdentName: '[local]___[hash:base64:5]',
-              },
-            }
-          : {}),
-      });
+      .options(
+        deepmerge(
+          {
+            importLoaders: 1,
+            sourceMap: false,
+            ...(isCSSModules
+              ? {
+                  modules: {
+                    localIdentName: '[local]___[hash:base64:5]',
+                  },
+                }
+              : {}),
+          },
+          config.cssLoader || {},
+        ),
+      );
 
     rule
       .use('postcss-loader')
@@ -130,10 +135,13 @@ export default function({
     lang: 'less',
     test: /\.(less)(\?.*)?$/,
     loader: 'less-loader',
-    options: {
-      modifyVars: theme,
-      javascriptEnabled: true,
-    },
+    options: deepmerge(
+      {
+        modifyVars: theme,
+        javascriptEnabled: true,
+      },
+      config.lessLoader || {},
+    ),
     browserslist,
   });
 

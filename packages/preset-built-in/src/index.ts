@@ -16,6 +16,7 @@ export default function() {
 
       // bundle configs
       require.resolve('./plugins/features/alias'),
+      require.resolve('./plugins/features/cssLoader'),
       require.resolve('./plugins/features/define'),
       require.resolve('./plugins/features/devtool'),
       require.resolve('./plugins/features/disableDynamicImport'),
@@ -25,6 +26,7 @@ export default function() {
       require.resolve('./plugins/features/hash'),
       require.resolve('./plugins/features/ignoreMomentLocale'),
       require.resolve('./plugins/features/inlineLimit'),
+      require.resolve('./plugins/features/lessLoader'),
       require.resolve('./plugins/features/plugins'),
       require.resolve('./plugins/features/presets'),
       require.resolve('./plugins/features/proxy'),

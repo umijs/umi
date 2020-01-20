@@ -124,6 +124,7 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
+  cssLoader?: object;
   define?: {
     (key: string): any;
   };
@@ -135,6 +136,7 @@ export interface IConfig extends IConfigCore {
   hash?: boolean;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
+  lessLoader?: object;
   plugins?: IPresetOrPlugin[];
   presets?: IPresetOrPlugin[];
   proxy?: any;
