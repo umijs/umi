@@ -1,8 +1,11 @@
 import { existsSync } from 'fs';
 import { extname, join } from 'path';
 import {
+  chalk,
+  chokidar,
   compatESModuleRequire,
   deepmerge,
+  lodash,
   parseRequireDeps,
   winPath,
 } from '@umijs/utils';
@@ -14,12 +17,25 @@ import {
   getUserConfigWithKey,
   updateUserConfigWithKey,
 } from './utils/configUtils';
+import isEqual from './utils/isEqual';
+
+interface IChanged {
+  key: string;
+  pluginId: string;
+}
 
 interface IOpts {
   cwd: string;
   service: Service;
   localConfig?: boolean;
 }
+
+const CONFIG_FILES = [
+  '.umirc.ts',
+  '.umirc.js',
+  'config/config.ts',
+  'config/config.js',
+];
 
 // TODO:
 // 1. custom config file
@@ -29,6 +45,7 @@ export default class Config {
   service: Service;
   config?: object;
   localConfig?: boolean;
+  configFile?: string | null;
 
   constructor(opts: IOpts) {
     this.cwd = opts.cwd || process.cwd();
@@ -43,8 +60,9 @@ export default class Config {
     );
 
     const userConfig = this.getUserConfig();
+    // 用于提示用户哪些 key 是未定义的
+    // TODO: 考虑不排除 false 的 key
     const userConfigKeys = Object.keys(userConfig).filter(key => {
-      // ignore plugin disable config
       return userConfig[key] !== false;
     });
     Object.keys(this.service.plugins).forEach(pluginId => {
@@ -98,6 +116,9 @@ export default class Config {
 
   getUserConfig() {
     const configFile = this.getConfigFile();
+    this.configFile = configFile;
+    // 潜在问题：
+    // .local 和 .env 的配置必须有 configFile 才有效
     if (configFile) {
       let envConfigFile;
       if (process.env.UMI_ENV) {
@@ -160,13 +181,90 @@ export default class Config {
 
   getConfigFile(): string | null {
     // TODO: support custom config file
-    const configFiles = [
-      '.umirc.ts',
-      '.umirc.js',
-      'config/config.ts',
-      'config/config.js',
-    ];
-    const configFile = configFiles.find(f => existsSync(join(this.cwd, f)));
+    const configFile = CONFIG_FILES.find(f => existsSync(join(this.cwd, f)));
     return configFile ? winPath(configFile) : null;
+  }
+
+  getWatchFilesAndDirectories() {
+    const umiEnv = process.env.UMI_ENV;
+    const configFiles = lodash.clone(CONFIG_FILES);
+    CONFIG_FILES.forEach(f => {
+      if (this.localConfig) configFiles.push(this.addAffix(f, 'local'));
+      if (umiEnv) configFiles.push(this.addAffix(f, umiEnv));
+    });
+
+    const configDir = winPath(join(this.cwd, 'config'));
+
+    const files = configFiles
+      .reduce<string[]>((memo, f) => {
+        const file = winPath(join(this.cwd, f));
+        if (existsSync(file)) {
+          memo = memo.concat(parseRequireDeps(file));
+        } else {
+          memo.push(file);
+        }
+        return memo;
+      }, [])
+      .filter(f => !f.startsWith(configDir));
+
+    return [configDir].concat(files);
+  }
+
+  watch(opts: {
+    userConfig: object;
+    onChange: (args: {
+      userConfig: any;
+      pluginChanged: IChanged[];
+      valueChanged: IChanged[];
+    }) => void;
+  }) {
+    let paths = this.getWatchFilesAndDirectories();
+    let userConfig = opts.userConfig;
+    const watcher = chokidar.watch(paths, {
+      ignoreInitial: true,
+      cwd: this.cwd,
+    });
+    watcher.on('all', (event, path) => {
+      console.log(chalk.green(`[${event}] ${path}`));
+      const newPaths = this.getWatchFilesAndDirectories();
+      const diffs = lodash.difference(newPaths, paths);
+      if (diffs.length) {
+        watcher.add(diffs);
+        paths = paths.concat(diffs);
+      }
+
+      const newUserConfig = this.getUserConfig();
+      const pluginChanged: IChanged[] = [];
+      const valueChanged: IChanged[] = [];
+      Object.keys(this.service.plugins).forEach(pluginId => {
+        const { key, config = {} } = this.service.plugins[pluginId];
+        // recognize as key if have schema config
+        if (!config.schema) return;
+        if (!isEqual(newUserConfig[key], userConfig[key])) {
+          const changed = {
+            key,
+            pluginId: pluginId,
+          };
+          if (newUserConfig[key] === false || userConfig[key] === false) {
+            pluginChanged.push(changed);
+          } else {
+            valueChanged.push(changed);
+          }
+        }
+      });
+
+      if (pluginChanged.length || valueChanged.length) {
+        opts.onChange({
+          userConfig: newUserConfig,
+          pluginChanged,
+          valueChanged,
+        });
+      }
+      userConfig = newUserConfig;
+    });
+
+    return () => {
+      watcher.close();
+    };
   }
 }

@@ -23,12 +23,22 @@ export default (api: IApi) => {
       port = await portfinder.getPortPromise({
         port: process.env.PORT ? parseInt(process.env.PORT, 10) : 8000,
       });
+      console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
 
       rimraf.sync(paths.absTmpPath!);
 
       // generate files
       await generateFiles({ api, watch: true });
+
+      // watch config change
+      const unwatchConfig = api.service.configInstance.watch({
+        userConfig: api.service.userConfig,
+        onChange({ pluginChanged, userConfig, valueChanged }) {
+          console.log(`pluginChanged`, pluginChanged);
+          console.log(`valueChanged`, valueChanged);
+        },
+      });
 
       // delay dev server 启动，避免重复 compile
       // https://github.com/webpack/watchpack/issues/25

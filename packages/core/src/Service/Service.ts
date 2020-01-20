@@ -381,6 +381,6 @@ ${name} from ${plugin.path} register failed.`);
     });
 
     const { fn } = command as ICommand;
-    return await fn({ args });
+    return fn({ args });
   }
 }

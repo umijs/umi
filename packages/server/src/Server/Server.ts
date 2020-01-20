@@ -263,7 +263,7 @@ class Server {
     const server = sockjs.createServer({
       log: (severity, line) => {
         if (line.includes('bound to')) return;
-        console.log(`${chalk.gray('[sockjs]')} ${line}`);
+        // console.log(`${chalk.gray('[sockjs]')} ${line}`);
       },
     });
     server.installHandlers(this.listeningApp!, {
