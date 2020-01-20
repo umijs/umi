@@ -2,10 +2,10 @@ import { IApi } from '@umijs/types';
 
 export default (api: IApi) => {
   api.describe({
-    key: 'targets',
+    key: 'theme',
     config: {
       schema(joi) {
-        return joi.object().pattern(/.+/, joi.number());
+        return joi.object();
       },
     },
   });
