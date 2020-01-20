@@ -131,8 +131,6 @@ class Bundler {
       },
     };
   }
-
-  async dev() {}
 }
 
 export { Bundler, ConfigType };
