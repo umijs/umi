@@ -26,8 +26,14 @@ if (args.version && !args._[0]) {
   try {
     switch (args._[0]) {
       case 'dev':
-        fork({
+        const child = fork({
           scriptPath: require.resolve('./forkedDev'),
+        });
+        process.on('SIGINT', () => {
+          child.kill('SIGINT');
+        });
+        process.on('SIGTERM', () => {
+          child.kill('SIGTERM');
         });
         break;
       default:

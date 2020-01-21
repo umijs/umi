@@ -28,23 +28,26 @@ export interface IOpts {
   babelOptsForDep?: object;
   targets?: any;
   browserslist?: any;
-  bundlerImplementor?: typeof defaultWebpack;
+  bundleImplementor?: typeof defaultWebpack;
   modifyBabelOpts?: (opts: object) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
 }
 
-export default async function({
-  cwd,
-  config,
-  type,
-  env,
-  entry,
-  hot,
-  port,
-  bundlerImplementor = defaultWebpack,
-  modifyBabelOpts,
-  modifyBabelPresetOpts,
-}: IOpts): Promise<defaultWebpack.Configuration> {
+export default async function getConfig(
+  opts: IOpts,
+): Promise<defaultWebpack.Configuration> {
+  const {
+    cwd,
+    config,
+    type,
+    env,
+    entry,
+    hot,
+    port,
+    bundleImplementor = defaultWebpack,
+    modifyBabelOpts,
+    modifyBabelPresetOpts,
+  } = opts;
   const webpackConfig = new Config();
 
   webpackConfig.mode(env);
@@ -221,7 +224,7 @@ export default async function({
   // TODO: 验证 webpack@5 下的用途
   // webpackConfig
   //   .plugin('ignore-moment-locale')
-  //   .use(bundlerImplementor.IgnorePlugin, [
+  //   .use(bundleImplementor.IgnorePlugin, [
   //     {
   //       resourceRegExp: /^\.\/locale$/,
   //       contextRegExp: /moment$/,
@@ -232,7 +235,7 @@ export default async function({
   // TODO
 
   // define
-  webpackConfig.plugin('define').use(bundlerImplementor.DefinePlugin, [
+  webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
     {
       'process.env': objToStringified({
         ...process.env,
@@ -243,7 +246,10 @@ export default async function({
   ]);
 
   // progress
-  webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+  const isWebpack5 = bundleImplementor.version!.startsWith('5');
+  if (!isWebpack5) {
+    webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
+  }
 
   // timefix
   // webpackConfig
@@ -264,7 +270,7 @@ export default async function({
     webpackConfig => {
       webpackConfig
         .plugin('hmr')
-        .use(bundlerImplementor.HotModuleReplacementPlugin);
+        .use(bundleImplementor.HotModuleReplacementPlugin);
     },
     webpackConfig => {
       // don't emit files if have error
@@ -280,7 +286,7 @@ export default async function({
       // https://webpack.js.org/plugins/hashed-module-ids-plugin/
       webpackConfig
         .plugin('hash-module-ids')
-        .use(bundlerImplementor.HashedModuleIdsPlugin);
+        .use(bundleImplementor.HashedModuleIdsPlugin);
 
       // compress
       if (disableCompress) {
