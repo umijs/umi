@@ -33,6 +33,7 @@ export default async ({ api, port }: { api: IApi; port?: number }) => {
         entry: {
           umi: join(api.cwd, tmpDir, 'umi.ts'),
         },
+        // @ts-ignore
         bundleImplementor,
         async modifyBabelOpts(opts: any) {
           return await api.applyPlugins({
