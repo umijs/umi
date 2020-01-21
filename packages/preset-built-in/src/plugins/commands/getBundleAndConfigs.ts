@@ -31,7 +31,7 @@ export default async ({ api, port }: { api: IApi; port?: number }) => {
         port,
         hot: type === ConfigType.csr,
         entry: {
-          umi: join(api.cwd, tmpDir, 'umi.ts'),
+          umi: join(api.paths.absTmpPath!, 'umi.ts'),
         },
         // @ts-ignore
         bundleImplementor,
