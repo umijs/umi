@@ -15,13 +15,6 @@ test('build', async () => {
     name: 'build',
   });
 
-  const absTmpDir = join(cwd, '.umi-test');
-  expect(existsSync(join(absTmpDir, 'umi.ts'))).toEqual(true);
-  expect(existsSync(join(absTmpDir, 'core/history.ts'))).toEqual(true);
-  expect(existsSync(join(absTmpDir, 'core/plugin.ts'))).toEqual(true);
-  expect(existsSync(join(absTmpDir, 'core/routes.ts'))).toEqual(true);
-  expect(existsSync(join(absTmpDir, 'core/umiExports.ts'))).toEqual(true);
-  rimraf.sync(join(absTmpDir));
   expect(existsSync(join(cwd, 'dist', 'umi.js'))).toEqual(true);
   rimraf.sync(join(cwd, 'dist'));
 });
