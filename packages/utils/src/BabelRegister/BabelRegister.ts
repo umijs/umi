@@ -1,4 +1,4 @@
-import { createDebug, winPath } from '../';
+import { createDebug, lodash, winPath } from '../';
 
 const debug = createDebug('umi:utils:BabelRegister');
 
@@ -15,11 +15,13 @@ export default class BabelRegister {
   }
 
   register() {
-    const only = Object.keys(this.only)
-      .reduce<string[]>((memo, key) => {
-        return memo.concat(this.only[key]);
-      }, [])
-      .map(winPath);
+    const only = lodash.uniq(
+      Object.keys(this.only)
+        .reduce<string[]>((memo, key) => {
+          return memo.concat(this.only[key]);
+        }, [])
+        .map(winPath),
+    );
     require('@babel/register')({
       presets: [require.resolve('@umijs/babel-preset-umi/node')],
       ignore: [/node_modules/],
