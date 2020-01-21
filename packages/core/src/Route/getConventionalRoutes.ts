@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, statSync } from 'fs';
 import { basename, extname, join, relative } from 'path';
 import { getFile, winPath } from '@umijs/utils';
 import assert from 'assert';
@@ -13,6 +13,7 @@ interface IOpts {
 const RE_DYNAMIC_ROUTE = /^\[(.+?)\]$/;
 
 function getFiles(root: string) {
+  if (!existsSync(root)) return [];
   return readdirSync(root).filter(file => {
     if (file.charAt(0) === '.') return false;
     if (file.charAt(0) === '_') return false;

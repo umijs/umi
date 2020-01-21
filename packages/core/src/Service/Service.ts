@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { EventEmitter } from 'events';
 import assert from 'assert';
 import { BabelRegister, createDebug, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
@@ -31,7 +32,7 @@ interface IConfig {
 // 2. onOptionChange
 // 3. watch mode
 // 4. duplicated key
-export default class Service {
+export default class Service extends EventEmitter {
   cwd: string;
   pkg: IPackage;
   skipPluginIds: Set<string> = new Set<string>();
@@ -83,6 +84,8 @@ export default class Service {
   ServiceStage = ServiceStage;
 
   constructor(opts: IServiceOpts) {
+    super();
+
     debug('opts:');
     debug(opts);
     this.cwd = opts.cwd || process.cwd();

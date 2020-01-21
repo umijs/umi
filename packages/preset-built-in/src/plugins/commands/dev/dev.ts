@@ -18,6 +18,13 @@ export default (api: IApi) => {
   let server: Server;
   const unwatchs: Function[] = [];
 
+  function destroy() {
+    for (const unwatch of unwatchs) {
+      unwatch();
+    }
+    server?.listeningApp?.close();
+  }
+
   api.registerCommand({
     name: 'dev',
     fn: async function() {
@@ -28,19 +35,22 @@ export default (api: IApi) => {
       process.send?.({ type: 'UPDATE_PORT', port });
 
       rimraf.sync(paths.absTmpPath!);
+      const watch = process.env.WATCH !== 'none';
 
       // generate files
-      const unwatchGenerateFiles = await generateFiles({ api, watch: true });
-      unwatchs.push(unwatchGenerateFiles);
+      const unwatchGenerateFiles = await generateFiles({ api, watch });
+      if (unwatchGenerateFiles) unwatchs.push(unwatchGenerateFiles);
 
       // watch config change
-      const unwatchConfig = api.service.configInstance.watch({
-        userConfig: api.service.userConfig,
-        onChange({ pluginChanged, userConfig, valueChanged }) {
-          api.restartServer();
-        },
-      });
-      unwatchs.push(unwatchConfig);
+      if (watch) {
+        const unwatchConfig = api.service.configInstance.watch({
+          userConfig: api.service.userConfig,
+          onChange({ pluginChanged, userConfig, valueChanged }) {
+            api.restartServer();
+          },
+        });
+        unwatchs.push(unwatchConfig);
+      }
 
       // delay dev server 启动，避免重复 compile
       // https://github.com/webpack/watchpack/issues/25
@@ -72,10 +82,14 @@ export default (api: IApi) => {
         beforeMiddlewares,
         afterMiddlewares: [createRouteMiddleware({ api })],
       });
-      return await server.listen({
+      const listenRet = await server.listen({
         port,
         hostname: process.env.HOST || '0.0.0.0',
       });
+      return {
+        ...listenRet,
+        destroy,
+      };
     },
   });
 
@@ -105,10 +119,7 @@ export default (api: IApi) => {
     name: 'restartServer',
     fn() {
       console.log(chalk.gray(`Try to restart dev server...`));
-      for (const unwatch of unwatchs) {
-        unwatch();
-      }
-      server.listeningApp.close();
+      destroy();
       process.send?.({ type: 'RESTART' });
     },
   });

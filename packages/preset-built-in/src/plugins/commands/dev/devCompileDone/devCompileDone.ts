@@ -7,7 +7,11 @@ export default (api: IApi) => {
       bundleConfig.plugins?.push(
         new DevCompileDonePlugin({
           port: api.getPort(),
-          onCompileDone() {},
+          onCompileDone({ isFirstCompile }) {
+            if (isFirstCompile) {
+              api.service.emit('firstDevCompileDone');
+            }
+          },
           onCompileFail() {},
         }),
       );

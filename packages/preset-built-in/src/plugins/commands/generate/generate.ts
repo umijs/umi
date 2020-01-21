@@ -13,10 +13,7 @@ export default (api: IApi) => {
     utils: { chalk },
   } = api;
 
-  const generators = {
-    page: createPageGenerator({ api }),
-    tmp: createTmpGenerator({ api }),
-  };
+  const generators = {};
 
   api.registerCommand({
     name: 'generate',
@@ -25,8 +22,7 @@ export default (api: IApi) => {
       const [type, ..._] = args._;
       const Generator = generators[type];
       if (!Generator) {
-        console.error(chalk.red(`Generator ${type} not found.`));
-        return;
+        throw new Error(`Generator ${type} not found.`);
       }
 
       const generator = new Generator({
@@ -45,5 +41,17 @@ export default (api: IApi) => {
     fn: ({ key, Generator }: IRegisterGenerator) => {
       generators[key] = Generator;
     },
+  });
+
+  api.registerGenerator({
+    key: 'page',
+    // @ts-ignore
+    Generator: createPageGenerator({ api }),
+  });
+
+  api.registerGenerator({
+    key: 'tmp',
+    // @ts-ignore
+    Generator: createTmpGenerator({ api }),
   });
 };

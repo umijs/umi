@@ -3,8 +3,11 @@ import { chalk, clipboardy, address } from '@umijs/utils';
 
 interface IOpts {
   port: number;
-  onCompileDone: Function;
-  onCompileFail: Function;
+  onCompileDone: (args: {
+    isFirstCompile: boolean;
+    stats: webpack.Stats;
+  }) => void;
+  onCompileFail: (args: { stats: webpack.Stats }) => void;
 }
 
 export default class DevCompileDonePlugin {
@@ -52,8 +55,6 @@ export default class DevCompileDonePlugin {
             .filter(Boolean)
             .join('\n'),
         );
-
-        isFirstCompile = false;
       }
 
       this.opts.onCompileDone?.({
