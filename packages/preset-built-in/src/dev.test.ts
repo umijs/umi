@@ -17,7 +17,7 @@ xtest('dev', done => {
     .run({
       name: 'dev',
     })
-    .then(({ port, hostname, listeningApp, server, destroy }) => {
+    .then(({ port, hostname, listeningApp, server, destroy }: any) => {
       console.log(`test`, hostname, port);
       service.on('firstDevCompileDone', () => {
         console.log('firstDevCompileDone', 'h');
