@@ -12,6 +12,14 @@ jobs:
     timeoutInMinutes: 30
     pool:
       vmImage: 'vs2017-win2016'
+    strategy:
+      matrix:
+        node_8_x:
+          node_version: 8.x
+        node_10_x:
+          node_version: 10.x
+        node_12_x:
+          node_version: 12.x
     steps:
       - checkout: self
         clean: all
@@ -20,7 +28,7 @@ jobs:
         displayName: install
       - script: yarn build
         displayName: build
-      - script: yarn test -- --forceExit --detectOpenHandles --runInBand
+      - script: yarn test --forceExit --detectOpenHandles --runInBand
         env:
           PROGRESS: none
           CI: true

@@ -12,6 +12,7 @@ import resolve from 'resolve';
 import yargs from 'yargs';
 import mkdirp from 'mkdirp';
 import Mustache from 'mustache';
+import signale from 'signale';
 import rimraf from 'rimraf';
 import yParser from 'yargs-parser';
 import * as t from '@babel/types';
@@ -39,6 +40,7 @@ export { t };
 export { parser };
 export { traverse };
 export { prettier };
+export { signale };
 
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
 export { default as mergeConfig } from './mergeConfig/mergeConfig';

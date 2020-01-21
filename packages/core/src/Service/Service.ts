@@ -230,6 +230,7 @@ export default class Service {
           [
             'applyPlugins',
             'ApplyPluginsType',
+            'babelRegister',
             'ServiceStage',
             'paths',
             'cwd',

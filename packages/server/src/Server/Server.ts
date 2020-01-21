@@ -84,7 +84,9 @@ class Server {
   setupFeatures() {
     const features = {
       proxy: () => {
-        this.setupProxy();
+        if (this.opts.proxy) {
+          this.setupProxy();
+        }
       },
       beforeMiddlewares: () => {
         this.opts.beforeMiddlewares.forEach(middleware => {
@@ -113,15 +115,11 @@ class Server {
    * not coupled with build tools (like webpack, rollup, ...)
    */
   setupProxy() {
-    if (!this.opts.proxy) {
-      return;
-    }
-
     if (!Array.isArray(this.opts.proxy)) {
-      if ('target' in this.opts.proxy) {
+      if (this.opts.proxy && 'target' in this.opts.proxy) {
         this.opts.proxy = [this.opts.proxy];
       } else {
-        this.opts.proxy = Object.keys(this.opts.proxy).map(context => {
+        this.opts.proxy = Object.keys(this.opts.proxy || {}).map(context => {
           let proxyOptions: IServerProxyConfigItem;
           // For backwards compatibility reasons.
           const correctedContext = context

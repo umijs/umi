@@ -35,6 +35,7 @@
     "@types/prettier": "1.19.0",
     "@types/resolve": "1.14.0",
     "@types/rimraf": "2.0.3",
+    "@types/signale": "1.2.1",
     "@types/yargs": "15.0.0",
     "@types/yargs-parser": "15.0.0",
     "address": "1.1.2",
@@ -54,6 +55,7 @@
     "prettier": "1.19.1",
     "resolve": "1.14.2",
     "rimraf": "3.0.0",
+    "signale": "1.4.0",
     "yargs": "15.1.0",
     "yargs-parser": "16.1.0"
   }

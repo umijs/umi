@@ -8,7 +8,13 @@ import { Server } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
-import { Express, NextFunction, Request, Response } from 'express';
+import {
+  Express,
+  NextFunction,
+  Request,
+  Response,
+  RequestHandler,
+} from 'express';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -50,6 +56,7 @@ export interface IApi extends PluginAPI {
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
+  babelRegister: typeof Service.prototype.babelRegister;
 
   // methods from dev command
   getPort: IGetter<number>;
@@ -117,6 +124,7 @@ export interface IApi extends PluginAPI {
   addEntryCode: IAdd<null, string>;
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;
+  addBeforeMiddewares: IAdd<{ service: Service }, RequestHandler<any>>;
 }
 
 export { IRoute };
@@ -150,4 +158,4 @@ export interface IConfig extends IConfigCore {
 }
 
 export { webpack };
-export { Request, Express, Response, NextFunction };
+export { Request, Express, Response, NextFunction, RequestHandler };

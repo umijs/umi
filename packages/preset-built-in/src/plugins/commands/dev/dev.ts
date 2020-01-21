@@ -57,11 +57,19 @@ export default (api: IApi) => {
         bundleConfigs: bundleConfigs,
         bundleImplementor,
       });
-      server = new Server({
+
+      const beforeMiddlewares = await api.applyPlugins({
+        key: 'addBeforeMiddewares',
+        type: api.ApplyPluginsType.add,
+        initialValue: [],
+        args: {},
+      });
+
+      const server = new Server({
         ...opts,
         // @ts-ignore
         proxy: (api.config as IConfig)?.proxy,
-        beforeMiddlewares: [],
+        beforeMiddlewares,
         afterMiddlewares: [createRouteMiddleware({ api })],
       });
       return await server.listen({
