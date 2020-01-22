@@ -1,4 +1,4 @@
-import jest from 'jest';
+import * as jest from 'jest';
 // @ts-ignore
 import { createDebug, mergeConfig } from '@umijs/utils';
 import { options as CliOptions } from 'jest-cli/build/cli/args';
@@ -61,11 +61,15 @@ export default async function(args: IUmiTestArgs) {
   debug(`config from args: ${JSON.stringify(argsConfig)}`);
 
   // Run jest
+  // console.log('test', jest);
   const result = await jest.runCLI(
     {
+      // @ts-ignore
       _: args._ || [],
+      // @ts-ignore
       $0: args.$0 || '',
       // 必须是单独的 config 配置，值为 string，否则不生效
+      // @ts-ignore
       config: JSON.stringify(config),
       ...argsConfig,
     },
