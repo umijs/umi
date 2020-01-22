@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import getBundleAndConfigs from '../getBundleAndConfigs';
+import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import generateFiles from '../generateFiles';
 
 export default function(api: IApi) {
@@ -12,7 +12,9 @@ export default function(api: IApi) {
   api.registerCommand({
     name: 'build',
     fn: async function() {
-      rimraf.sync(paths.absTmpPath!);
+      cleanTmpPathExceptCache({
+        absTmpPath: paths.absTmpPath!,
+      });
 
       // generate files
       await generateFiles({ api, watch: false });

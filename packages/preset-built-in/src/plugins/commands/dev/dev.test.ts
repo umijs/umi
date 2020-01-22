@@ -1,8 +1,7 @@
 import { Service } from '@umijs/core';
 import { join } from 'path';
-import http from 'http';
 
-const fixtures = join(__dirname, 'fixtures');
+const fixtures = join(__dirname, '../../../fixtures');
 
 xtest('dev', done => {
   const cwd = join(fixtures, 'dev');
@@ -10,7 +9,7 @@ xtest('dev', done => {
 
   const service = new Service({
     cwd,
-    presets: [require.resolve('./index.ts')],
+    presets: [require.resolve('../../../index.ts')],
     env: 'development',
   });
   service

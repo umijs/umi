@@ -3,13 +3,13 @@ import { join } from 'path';
 import { rimraf } from '@umijs/utils';
 import { existsSync } from 'fs';
 
-const fixtures = join(__dirname, 'fixtures');
+const fixtures = join(__dirname, '../../../fixtures');
 const cwd = join(fixtures, 'generate');
 
 async function runGenerator(args: any) {
   const service = new Service({
     cwd,
-    presets: [require.resolve('./index.ts')],
+    presets: [require.resolve('../../../index.ts')],
   });
   await service.run({
     name: 'generate',

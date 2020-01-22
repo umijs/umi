@@ -1,8 +1,16 @@
 import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
+import { existsSync, readdirSync } from 'fs';
+import { rimraf } from '@umijs/utils';
 
-export default async ({ api, port }: { api: IApi; port?: number }) => {
+export async function getBundleAndConfigs({
+  api,
+  port,
+}: {
+  api: IApi;
+  port?: number;
+}) {
   // bundler
   const Bundler = await api.applyPlugins({
     type: api.ApplyPluginsType.modify,
@@ -89,4 +97,16 @@ export default async ({ api, port }: { api: IApi; port?: number }) => {
     bundler,
     bundleConfigs,
   };
-};
+}
+
+export function cleanTmpPathExceptCache({
+  absTmpPath,
+}: {
+  absTmpPath: string;
+}) {
+  if (!existsSync(absTmpPath)) return;
+  readdirSync(absTmpPath).forEach(file => {
+    if (file === `.cache`) return;
+    rimraf.sync(join(absTmpPath, file));
+  });
+}

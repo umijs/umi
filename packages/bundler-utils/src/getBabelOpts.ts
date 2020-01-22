@@ -13,7 +13,8 @@ const basicBabelLoaderOpts = {
   // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
   sourceType: 'unambiguous',
   babelrc: false,
-  cacheDirectory: process.env.BABEL_CACHE !== 'none',
+  cacheDirectory:
+    process.env.BABEL_CACHE !== 'none' ? '.umi/.cache/babel-loader' : false,
 };
 
 export function getBabelPresetOpts(opts: IOpts) {

@@ -2,7 +2,7 @@ import { IApi, IConfig } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
-import getBundleAndConfigs from '../getBundleAndConfigs';
+import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
 
@@ -34,7 +34,9 @@ export default (api: IApi) => {
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
 
-      rimraf.sync(paths.absTmpPath!);
+      cleanTmpPathExceptCache({
+        absTmpPath: paths.absTmpPath!,
+      });
       const watch = process.env.WATCH !== 'none';
 
       // generate files
