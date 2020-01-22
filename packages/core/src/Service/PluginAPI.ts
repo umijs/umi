@@ -145,12 +145,15 @@ export default class PluginAPI {
     }
     this.service.pluginMethods[name] =
       fn ||
-      ((fn: Function) => {
+      // 这里不能用 arrow function，this 需指向执行此方法的 PluginAPI
+      // 否则 pluginId 会不会，导致不能正确 skip plugin
+      function(fn: Function) {
+        // @ts-ignore
         this.register({
           key: name,
           fn,
         });
-      });
+      };
   }
 
   skipPlugins(pluginIds: string[]) {

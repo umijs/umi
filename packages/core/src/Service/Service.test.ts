@@ -277,6 +277,7 @@ test('api.registerCommand aliased', async () => {
   expect(ret).toEqual(`hello bar`);
 });
 
+// pluginMethods 不能这么调，需要找其他方式进行测试
 test('api.registerMethod', async () => {
   const cwd = join(fixtures, 'api-registerMethod');
   const service = new Service({
@@ -287,8 +288,15 @@ test('api.registerMethod', async () => {
     ],
   });
   await service.init();
-  expect(service.pluginMethods['foo']()).toEqual('foo');
-  expect(service.pluginMethods['bar']()).toEqual('bar');
+  const api = service.getPluginAPI({
+    service,
+    id: 'test',
+    key: 'test',
+  });
+  // @ts-ignore
+  expect(api.foo()).toEqual('foo');
+  // @ts-ignore
+  expect(api.bar()).toEqual('bar');
 });
 
 test('api.registerMethod fail if exist', async () => {
@@ -315,6 +323,21 @@ test('api.registerMethod return silently if exist and opts.exitsError is set to 
     ],
   });
   await service.init();
+});
+
+test('api.registerMethod should have the right plugin id', async () => {
+  const cwd = join(fixtures, 'api-registerMethod');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'plugin_3')),
+      require.resolve(join(cwd, 'plugin_3_api_foo')),
+    ],
+  });
+  await service.init();
+  expect(Object.keys(service.hooksByPluginId)[0]).toContain(
+    'plugin_3_api_foo.js',
+  );
 });
 
 test('plugin register throw error', async () => {
