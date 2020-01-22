@@ -28,7 +28,9 @@ export default function(api: IApi) {
           bundleConfigs,
           bundleImplementor,
         });
-        rimraf.sync(paths.absTmpPath!);
+        if (process.env.RM_TMPDIR !== 'none') {
+          rimraf.sync(paths.absTmpPath!);
+        }
         console.log(chalk.green(`Build success.`));
         // console.log(stats);
       } catch (e) {}

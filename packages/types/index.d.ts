@@ -46,7 +46,7 @@ export interface IApi extends PluginAPI {
   // properties
   paths: typeof Service.prototype.paths;
   cwd: typeof Service.prototype.cwd;
-  config: typeof Service.prototype.config;
+  config: IConfig;
   pkg: typeof Service.prototype.pkg;
   env: typeof Service.prototype.env;
 
