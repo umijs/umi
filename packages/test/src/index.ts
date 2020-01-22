@@ -1,4 +1,4 @@
-import * as jest from 'jest';
+import { runCLI } from 'jest';
 // @ts-ignore
 import { createDebug, mergeConfig } from '@umijs/utils';
 import { options as CliOptions } from 'jest-cli/build/cli/args';
@@ -62,7 +62,7 @@ export default async function(args: IUmiTestArgs) {
 
   // Run jest
   // console.log('test', jest);
-  const result = await jest.runCLI(
+  const result = await runCLI(
     {
       // @ts-ignore
       _: args._ || [],

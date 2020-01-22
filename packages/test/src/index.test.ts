@@ -1,11 +1,15 @@
 import { join } from 'path';
-import * as mockedJest from 'jest';
-import umiTest from './index';
 
 const fixtures = join(__dirname, 'fixtures');
 
+beforeEach(() => {
+  jest.resetModules();
+});
+
 test('version', async () => {
   const spy = jest.spyOn(global.console, 'log').mockImplementation();
+  // @ts-ignore
+  const { default: umiTest } = await import('./index');
   await umiTest({
     version: true,
   });
@@ -16,13 +20,21 @@ test('version', async () => {
   spy.mockRestore();
 });
 
-xtest('run jest', async () => {
-  // @ts-ignore
-  const spy = jest.spyOn(mockedJest, 'runCLI').mockResolvedValue({
-    results: {
-      success: true,
-    },
+test('run jest', async () => {
+  const argsArr: object[] = [];
+  jest.doMock('jest', () => {
+    return {
+      __esModule: true,
+      async runCLI(args: object) {
+        argsArr.push(args);
+        return {
+          results: { success: true },
+        };
+      },
+    };
   });
+  // @ts-ignore
+  const { default: umiTest } = await import('./index');
   await umiTest({
     cwd: join(fixtures, 'normal'),
     // for coverage
@@ -33,8 +45,11 @@ xtest('run jest', async () => {
     // CliOptions
     notify: true,
   });
-  expect(spy.mock.calls[0][0].notify).toEqual('notify');
-  expect(spy.mock.calls[0][0].updateSnapshot).toEqual(true);
-  expect(spy.mock.calls[0][0].config).toContain('"bar":1,"hoo":2,"foo":1');
-  spy.mockRestore();
+
+  // @ts-ignore
+  expect(argsArr[0].notify).toEqual('notify');
+  // @ts-ignore
+  expect(argsArr[0].updateSnapshot).toEqual(true);
+  // @ts-ignore
+  expect(argsArr[0].config).toContain('"bar":1,"hoo":2,"foo":1');
 });
