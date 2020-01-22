@@ -29,6 +29,8 @@ if (args.version && !args._[0]) {
         const child = fork({
           scriptPath: require.resolve('./forkedDev'),
         });
+        // ref:
+        // http://nodejs.cn/api/process/signal_events.html
         process.on('SIGINT', () => {
           child.kill('SIGINT');
         });
