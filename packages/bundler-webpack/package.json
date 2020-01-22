@@ -23,7 +23,7 @@
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-webpack#readme",
   "dependencies": {
     "@types/sockjs-client": "1.1.1",
-    "@types/webpack": "4.41.2",
+    "@types/webpack": "4.41.3",
     "@types/webpack-dev-middleware": "2.0.3",
     "@umijs/bundler-utils": "0.0.1-alpha.1",
     "@umijs/types": "0.0.1-alpha.1",
