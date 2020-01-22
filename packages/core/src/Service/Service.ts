@@ -6,7 +6,12 @@ import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
-import { ApplyPluginsType, PluginType, ServiceStage } from './enums';
+import {
+  ApplyPluginsType,
+  PluginType,
+  ServiceStage,
+  ConfigChangeType,
+} from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
 import { getUserConfigWithKey } from '../Config/utils/configUtils';
@@ -29,9 +34,7 @@ interface IConfig {
 
 // TODO
 // 1. load env
-// 2. onOptionChange
-// 3. watch mode
-// 4. duplicated key
+// 2. duplicated key
 export default class Service extends EventEmitter {
   cwd: string;
   pkg: IPackage;
@@ -81,6 +84,7 @@ export default class Service extends EventEmitter {
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;
+  ConfigChangeType = ConfigChangeType;
   ServiceStage = ServiceStage;
 
   constructor(opts: IServiceOpts) {
@@ -233,6 +237,7 @@ export default class Service extends EventEmitter {
           [
             'applyPlugins',
             'ApplyPluginsType',
+            'ConfigChangeType',
             'babelRegister',
             'ServiceStage',
             'paths',
@@ -260,8 +265,7 @@ export default class Service extends EventEmitter {
     // register before apply
     this.registerPlugin(preset);
     // TODO: ...defaultConfigs 考虑要不要支持，可能这个需求可以通过其他渠道实现
-    const { presets, plugins, ...defaultConfigs } =
-      apply()(api, this.getPluginOptsWithKey(key)) || {};
+    const { presets, plugins, ...defaultConfigs } = apply()(api) || {};
 
     // register extra presets and plugins
     if (presets) {
@@ -293,7 +297,7 @@ export default class Service extends EventEmitter {
 
     // register before apply
     this.registerPlugin(plugin);
-    apply()(api, this.getPluginOptsWithKey(key));
+    apply()(api);
   }
 
   getPluginOptsWithKey(key: string) {

@@ -40,7 +40,7 @@ export interface IPluginConfig {
   schema?: {
     (joi: joi.Root): joi.Schema;
   };
-  onChange?: Function;
+  onChange?: string | Function;
 }
 
 export interface IPreset extends IPlugin {}

@@ -50,3 +50,7 @@ test('function in object', () => {
     ),
   ).toEqual(true);
 });
+
+test('false', () => {
+  expect(isEqual(false, undefined)).toEqual(false);
+});

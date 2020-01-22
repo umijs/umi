@@ -53,6 +53,7 @@ export interface IApi extends PluginAPI {
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
+  ConfigChangeType: typeof Service.prototype.ConfigChangeType;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
@@ -143,6 +144,7 @@ export interface IConfig extends IConfigCore {
   extraBabelPlugins?: IPresetOrPlugin[];
   extraBabelPresets?: IPresetOrPlugin[];
   hash?: boolean;
+  history?: 'browser' | 'hash' | 'memory';
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;

@@ -23,12 +23,13 @@ export default function(api: IApi) {
           }),
         );
       },
+      onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
   });
 
   api.onGenerateFiles(async () => {
     const historyTpl = readFileSync(join(__dirname, 'history.tpl'), 'utf-8');
-    const history = api.config!.history || 'browser';
+    const history = api.config.history || 'browser';
     const { type, options = {} } =
       typeof history === 'string' ? { type: history } : history;
 

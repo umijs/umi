@@ -47,8 +47,39 @@ export default (api: IApi) => {
       if (watch) {
         const unwatchConfig = api.service.configInstance.watch({
           userConfig: api.service.userConfig,
-          onChange({ pluginChanged, userConfig, valueChanged }) {
-            api.restartServer();
+          onChange: async ({ pluginChanged, userConfig, valueChanged }) => {
+            if (pluginChanged.length) {
+              api.restartServer();
+            }
+            if (valueChanged.length) {
+              let reload = false;
+              let regenerateTmpFiles = false;
+              const fns: Function[] = [];
+              valueChanged.forEach(({ key, pluginId }) => {
+                const { onChange } = api.service.plugins[pluginId].config || {};
+                if (onChange === api.ConfigChangeType.regenerateTmpFiles) {
+                  regenerateTmpFiles = true;
+                }
+                if (!onChange || onChange === api.ConfigChangeType.reload) {
+                  reload = true;
+                }
+                if (typeof onChange === 'function') {
+                  fns.push(onChange);
+                }
+              });
+
+              if (reload) {
+                api.restartServer();
+              } else {
+                api.service.config = api.service.configInstance.getConfig();
+                if (regenerateTmpFiles) {
+                  console.log('regenerate tmp files');
+                  await generateFiles({ api });
+                } else {
+                  fns.forEach(fn => fn());
+                }
+              }
+            }
           },
         });
         unwatchs.push(unwatchConfig);

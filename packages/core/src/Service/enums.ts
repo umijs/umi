@@ -16,6 +16,11 @@ export enum ServiceStage {
   run,
 }
 
+export enum ConfigChangeType {
+  reload = 'reload',
+  regenerateTmpFiles = 'regenerateTmpFiles',
+}
+
 export enum ApplyPluginsType {
   add = 'add',
   modify = 'modify',
