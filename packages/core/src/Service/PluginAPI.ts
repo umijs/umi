@@ -58,7 +58,6 @@ export default class PluginAPI {
     }
   }
 
-  // TODO: 考虑要不要兼容之前的写法
   register(hook: IHook) {
     assert(
       hook.key && typeof hook.key === 'string',

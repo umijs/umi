@@ -40,7 +40,6 @@ const CONFIG_FILES = [
 
 // TODO:
 // 1. custom config file
-// 2. watch mode
 export default class Config {
   cwd: string;
   service: Service;
