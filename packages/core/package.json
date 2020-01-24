@@ -27,7 +27,7 @@
     "@hapi/joi": "16.1.8",
     "@types/cheerio": "0.22.15",
     "@types/ejs": "3.0.0",
-    "@types/hapi__joi": "16.0.6",
+    "@types/hapi__joi": "16.0.7",
     "@types/tapable": "1.0.5",
     "@umijs/babel-preset-umi": "0.0.1-alpha.1",
     "@umijs/utils": "0.0.1-alpha.1",

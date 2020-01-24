@@ -22,7 +22,7 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-react#readme",
   "dependencies": {
-    "@types/react": "^16.9.18",
+    "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.4",
     "@umijs/runtime": "0.0.1-alpha.1",
     "react": "^16.12.0",
