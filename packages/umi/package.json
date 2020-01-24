@@ -18,7 +18,7 @@
     "signale": "1.4.0",
     "umi-build-dev": "1.17.1",
     "umi-core": "1.9.7",
-    "umi-ui": "1.4.2",
+    "@umijs/ui": "^0.0.1",
     "umi-utils": "1.7.2",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"

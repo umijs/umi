@@ -1,5 +1,5 @@
 import { IApi } from 'umi-types';
-import { formatConfigs, useConfigKey } from 'umi-plugin-ui/lib/plugins/configuration';
+import { formatConfigs, useConfigKey } from '@umijs/plugin-ui/lib/plugins/configuration';
 import { configs, groupMap } from './config';
 
 export function getPluginConfig(plugins, name) {
