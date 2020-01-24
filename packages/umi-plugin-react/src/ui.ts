@@ -40,7 +40,7 @@ export default (api: IApi) => {
   function validateConfig(config) {}
 
   if (api.addUIPlugin) {
-    api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+    api.addUIPlugin(require.resolve('../dist/index.umd'));
   }
 
   if (api.onUISocket) {

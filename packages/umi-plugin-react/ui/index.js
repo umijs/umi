@@ -16,7 +16,7 @@ export default api => {
     ),
     component: () => (
       <ConfigForm
-        title="umi-plugin-react 配置"
+        title="umi-plugin-react 配置-test"
         list="org.umi.umi-plugin-react.config.list"
         edit="org.umi.umi-plugin-react.config.edit"
       />
