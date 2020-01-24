@@ -15,6 +15,7 @@
   },
   "files": [
     "ui",
+    "dist",
     "lib",
     "src",
     "locale/index.js",

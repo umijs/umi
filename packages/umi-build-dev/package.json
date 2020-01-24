@@ -99,6 +99,7 @@
   "license": "MIT",
   "files": [
     "lib",
+    "dist",
     "src",
     "template"
   ]
