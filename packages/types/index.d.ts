@@ -34,6 +34,11 @@ interface IGetter<T> {
   (): T;
 }
 
+interface IImport {
+  source: string;
+  specifier?: string;
+}
+
 export interface ITargets {
   browsers?: any;
   [key: string]: number | boolean;
@@ -122,6 +127,9 @@ export interface IApi extends PluginAPI {
   addProjectFirstLibraries: IAdd<null, { name: string; path: string }>;
   addRuntimePlugin: IAdd<null, string>;
   addRuntimePluginKey: IAdd<null, string>;
+  addPolyfillImports: IAdd<null, IImport>;
+  addEntryImportsAhead: IAdd<null, IImport>;
+  addEntryImports: IAdd<null, IImport>;
   addEntryCode: IAdd<null, string>;
   addEntryCodeAhead: IAdd<null, string>;
   addTmpGenerateWatcherPaths: IAdd<null, string>;

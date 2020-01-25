@@ -1,6 +1,9 @@
+{{{ polyfillImports }}}
+{{{ importsAhead }}}
 import { history, plugin } from '{{{ aliasedTmpPath }}}/core/umiExports';
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
+{{{ imports }}}
 
 {{{ entryCodeAhead }}}
 

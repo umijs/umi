@@ -3,6 +3,19 @@ import { join } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 
+export function importsToStr(
+  imports: { source: string; specifier?: string }[],
+) {
+  return imports.map(imp => {
+    const { source, specifier } = imp;
+    if (specifier) {
+      return `import ${specifier} from '${winPath(source)}';`;
+    } else {
+      return `import '${winPath(source)}';`;
+    }
+  });
+}
+
 export default function(api: IApi) {
   const {
     env,
@@ -31,6 +44,27 @@ export default function(api: IApi) {
             type: api.ApplyPluginsType.add,
             initialValue: [],
           })
+        ).join('\r\n'),
+        polyfillImports: importsToStr(
+          await api.applyPlugins({
+            key: 'addPolyfillImports',
+            type: api.ApplyPluginsType.add,
+            initialValue: [],
+          }),
+        ).join('\r\n'),
+        importsAhead: importsToStr(
+          await api.applyPlugins({
+            key: 'addEntryImportsAhead',
+            type: api.ApplyPluginsType.add,
+            initialValue: [],
+          }),
+        ).join('\r\n'),
+        imports: importsToStr(
+          await api.applyPlugins({
+            key: 'addEntryImports',
+            type: api.ApplyPluginsType.add,
+            initialValue: [],
+          }),
         ).join('\r\n'),
       }),
     });
