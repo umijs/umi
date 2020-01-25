@@ -139,6 +139,7 @@ export default async function getConfig(
     presetOpts = await modifyBabelPresetOpts(presetOpts);
   }
   let babelOpts = getBabelOpts({
+    cwd,
     config,
     presetOpts,
   });
@@ -166,6 +167,7 @@ export default async function getConfig(
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
         .options(getBabelDepsOpts({
+          cwd,
           env,
         }));
 
