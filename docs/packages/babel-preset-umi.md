@@ -34,4 +34,3 @@ module.exports = {
 - 考虑 babel-plugin-macros 的应用场景
 - 集成 [@babel/preset-modules](https://github.com/babel/preset-modules)
 - 集成 umi ui 的 flag babel 插件
-- 集成 babel-plugin-import
