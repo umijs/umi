@@ -144,7 +144,7 @@ export interface IConfig extends IConfigCore {
   };
   cssLoader?: object;
   define?: {
-    (key: string): any;
+    [key: string]: any;
   };
   devtool?: string;
   disableDynamicImport?: boolean;

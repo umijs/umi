@@ -8,6 +8,8 @@
 - theme 暂不支持字符串，只支持对象
 - postcss 默认启用 stage-3 特性
 - js 压缩只提供 terser-webpack-plugin 的方式，因为 node_modules 走了 babel 编译，不会出现 es6 代码
+- [BREAK CHANGE] less 配置 `lessLoaderOptions` 变更为 `lessLoader`
+- [BREAK CHANGE] css 配置 `cssLoaderOptions` 变更为 `cssLoader`
 
 ## 自动识别 css modules
 
