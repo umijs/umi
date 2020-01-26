@@ -8,6 +8,7 @@ test('config empty', () => {
   expect(
     route.getRoutes({
       config: { routes: [] },
+      root: '/tmp',
     }),
   ).toEqual([]);
 });
