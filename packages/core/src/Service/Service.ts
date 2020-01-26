@@ -123,11 +123,11 @@ export default class Service extends EventEmitter {
     };
     this.initialPresets = resolvePresets({
       ...baseOpts,
-      presets: [...(this.userConfig.presets || []), ...(opts.presets || [])],
+      presets: [...(opts.presets || []), ...(this.userConfig.presets || [])],
     });
     this.initialPlugins = resolvePlugins({
       ...baseOpts,
-      plugins: [...(this.userConfig.plugins || []), ...(opts.plugins || [])],
+      plugins: [...(opts.plugins || []), ...(this.userConfig.plugins || [])],
     });
     debug('initial presets:');
     debug(this.initialPresets);
