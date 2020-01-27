@@ -1682,20 +1682,20 @@
     debug "^4.1.1"
     user-home "^2.0.0"
 
-"@umijs/ui-theme@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@umijs/ui-theme/-/ui-theme-0.0.1.tgz#092010d1998365e2400853baadf8d56d6331df3f"
-  integrity sha512-tnry0LPE0mksb2jkDzq5atUtBs/kPuhp6LN1v1NaSsxCiB4XeVt6N2++L6w/2J8w/1rfWA5D+itdzPtSnTVVPQ==
+"@umijs/ui-theme@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/ui-theme/-/ui-theme-0.0.2.tgz#2a3bbedfad38f52db64d7037dd643eb21b1d1a3f"
+  integrity sha512-NlnXdrKLAfucpx0g7/MVp/U0C9XM4y5g0+dhgaVUbvi71AcA9UAO4tWAqfaRyNLAg3anGS3WCA8NNgl7y/Z0Bg==
   dependencies:
     less-vars-to-js "1.3.0"
 
-"@umijs/ui@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@umijs/ui/-/ui-0.0.1.tgz#d637e94585a4c461dae58025efe9bd7e061effad"
-  integrity sha512-pcwM32zaafsNijhzeNl1aEZuv8mPSxKcS/LcCq62Qtub9Wvum0nX4NbXTAdawVWWRgk1eh2IwZ39QQR1NcN+qw==
+"@umijs/ui@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/ui/-/ui-0.0.2.tgz#99aa78270efb4a1fe48a9d8ee15f5034624e0b57"
+  integrity sha512-EKR8/gRNo+eGzCJSbMCLCw30T52q0WRGm4E9gOCp+6UO85h22bf0wfaiFcmYWB2SOid/V5wKskEP36wRwwubPA==
   dependencies:
     "@umijs/launch-editor" "^1.0.0"
-    "@umijs/ui-theme" "0.0.1"
+    "@umijs/ui-theme" "0.0.2"
     binary-mirror-config "1.20.3"
     chalk "2.4.2"
     clear-module "4.0.0"
@@ -1717,7 +1717,7 @@
     rimraf "3.0.0"
     semver "6.3.0"
     sockjs "0.3.19"
-    umi-build-dev "1.17.1"
+    umi-build-dev "^1.17.1"
     user-home "2.0.0"
   optionalDependencies:
     node-pty "^0.10.0-beta3"
@@ -12830,7 +12830,7 @@ uglifyjs-webpack-plugin@1.3.0:
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
 
-umi-build-dev@1.17.1:
+umi-build-dev@^1.17.1:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/umi-build-dev/-/umi-build-dev-1.17.1.tgz#1c05de956af8e0d81e2b6bdfcc4e18090c88113f"
   integrity sha512-YBw1uDg6WH/kTWomz7p8/mRTic2Ntdc8OlWf5ZkTEj+CQHqlL+/m3RvwuqNDAiLeNaZdAIUtGiBLWeRD+pnPEg==
