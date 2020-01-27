@@ -52,6 +52,8 @@ export default async function getConfig(
 
   webpackConfig.mode(env);
 
+  const isWebpack5 = bundleImplementor.version!.startsWith('5');
+
   // entry
   if (entry) {
     Object.keys(entry).forEach(key => {
@@ -248,7 +250,6 @@ export default async function getConfig(
   ]);
 
   // progress
-  const isWebpack5 = bundleImplementor.version!.startsWith('5');
   if (!isWebpack5) {
     webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
   }
@@ -286,9 +287,12 @@ export default async function getConfig(
 
       // webpack/lib/HashedModuleIdsPlugin
       // https://webpack.js.org/plugins/hashed-module-ids-plugin/
-      webpackConfig
-        .plugin('hash-module-ids')
-        .use(bundleImplementor.HashedModuleIdsPlugin);
+      // webpack@5 has enabled this in prod by default
+      if (!isWebpack5) {
+        webpackConfig
+          .plugin('hash-module-ids')
+          .use(bundleImplementor.HashedModuleIdsPlugin, []);
+      }
 
       // compress
       if (disableCompress) {
