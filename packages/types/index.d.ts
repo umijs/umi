@@ -77,6 +77,10 @@ export interface IApi extends PluginAPI {
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
   modifyBundler: IModify<any, null>;
+  modifyBundleConfigOpts: IModify<
+    any,
+    { env: env; type: string; bundler: { id: string; version: number } }
+  >;
   modifyBundleConfig: IModify<
     webpack.Configuration,
     { env: env; type: string; bundler: { id: string; version: number } }
@@ -107,7 +111,7 @@ export interface IApi extends PluginAPI {
       env: env;
     }
   >;
-  modifyBundlerImplementor: IModify<any, {}>;
+  modifyBundleImplementor: IModify<any, {}>;
 
   // ApplyPluginType.add
   addUmiExports: IAdd<
@@ -165,6 +169,7 @@ export interface IConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
+  ssr?: object;
 }
 
 export { webpack };

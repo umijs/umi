@@ -18,11 +18,12 @@ export default function(api: IApi) {
     'addEntryCode',
     'addTmpGenerateWatcherPaths',
     'modifyBundler',
+    'modifyBundleConfigOpts',
     'modifyBundleConfig',
     'modifyBundleConfigs',
     'modifyBabelOpts',
     'modifyBabelPresetOpts',
-    'modifyBundlerImplementor',
+    'modifyBundleImplementor',
   ].forEach(name => {
     api.registerMethod({ name });
   });

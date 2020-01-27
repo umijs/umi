@@ -31,6 +31,8 @@ export interface IOpts {
   bundleImplementor?: typeof defaultWebpack;
   modifyBabelOpts?: (opts: object) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
+  miniCSSExtractPluginPath?: string;
+  miniCSSExtractPluginLoaderPath?: string;
 }
 
 export default async function getConfig(
@@ -47,6 +49,8 @@ export default async function getConfig(
     bundleImplementor = defaultWebpack,
     modifyBabelOpts,
     modifyBabelPresetOpts,
+    miniCSSExtractPluginPath,
+    miniCSSExtractPluginLoaderPath,
   } = opts;
   const webpackConfig = new Config();
 
@@ -203,7 +207,15 @@ export default async function getConfig(
       });
 
   // css
-  css({ config, webpackConfig, isDev, disableCompress, browserslist });
+  css({
+    config,
+    webpackConfig,
+    isDev,
+    disableCompress,
+    browserslist,
+    miniCSSExtractPluginPath,
+    miniCSSExtractPluginLoaderPath,
+  });
 
   // externals
   if (config.externals) {

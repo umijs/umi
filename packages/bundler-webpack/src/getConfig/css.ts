@@ -10,6 +10,8 @@ interface IOpts {
   isDev: boolean;
   disableCompress?: boolean;
   browserslist?: any;
+  miniCSSExtractPluginPath?: string;
+  miniCSSExtractPluginLoaderPath?: string;
 }
 
 interface ICreateCSSRuleOpts extends IOpts {
@@ -28,6 +30,7 @@ function createCSSRule({
   loader,
   options,
   browserslist,
+  miniCSSExtractPluginLoaderPath,
 }: ICreateCSSRuleOpts) {
   const rule = webpackConfig.module.rule(lang).test(test);
 
@@ -50,7 +53,10 @@ function createCSSRule({
     } else {
       rule
         .use('extract-css-loader')
-        .loader(require.resolve('mini-css-extract-plugin/dist/loader'))
+        .loader(
+          miniCSSExtractPluginLoaderPath ||
+            require.resolve('mini-css-extract-plugin/dist/loader'),
+        )
         .options({
           publicPath: './',
           hmr: isDev,
@@ -115,6 +121,8 @@ export default function({
   isDev,
   disableCompress,
   browserslist,
+  miniCSSExtractPluginPath,
+  miniCSSExtractPluginLoaderPath,
 }: IOpts) {
   // css
   createCSSRule({
@@ -124,6 +132,7 @@ export default function({
     lang: 'css',
     test: /\.(css)(\?.*)?$/,
     browserslist,
+    miniCSSExtractPluginLoaderPath,
   });
 
   // less
@@ -143,6 +152,7 @@ export default function({
       config.lessLoader || {},
     ),
     browserslist,
+    miniCSSExtractPluginLoaderPath,
   });
 
   // extract css
@@ -150,12 +160,15 @@ export default function({
     const hash = !isDev && config.hash ? '.[contenthash:8]' : '';
     webpackConfig
       .plugin('extract-css')
-      .use(require.resolve('mini-css-extract-plugin'), [
-        {
-          filename: `[name]${hash}.css`,
-          chunkFilename: `[name]${hash}.chunk.css`,
-        },
-      ]);
+      .use(
+        miniCSSExtractPluginPath || require.resolve('mini-css-extract-plugin'),
+        [
+          {
+            filename: `[name]${hash}.css`,
+            chunkFilename: `[name]${hash}.chunk.css`,
+          },
+        ],
+      );
   }
 
   if (!isDev && disableCompress) {

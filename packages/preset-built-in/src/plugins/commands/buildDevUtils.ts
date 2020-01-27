@@ -4,6 +4,8 @@ import { join } from 'path';
 import { existsSync, readdirSync } from 'fs';
 import { rimraf } from '@umijs/utils';
 
+type Env = 'development' | 'production';
+
 export async function getBundleAndConfigs({
   api,
   port,
@@ -19,7 +21,7 @@ export async function getBundleAndConfigs({
   });
 
   const bundleImplementor = await api.applyPlugins({
-    key: 'modifyBundlerImplementor',
+    key: 'modifyBundleImplementor',
     type: api.ApplyPluginsType.modify,
     initialValue: undefined,
   });
@@ -28,12 +30,11 @@ export async function getBundleAndConfigs({
   async function getConfig({ type }: { type: ConfigType }) {
     const tmpDir =
       api.env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
-
-    const env = api.env === 'production' ? 'production' : 'development';
-    return await api.applyPlugins({
+    const env: Env = api.env === 'production' ? 'production' : 'development';
+    const getConfigOpts = await api.applyPlugins({
       type: api.ApplyPluginsType.modify,
-      key: 'modifyBundleConfig',
-      initialValue: await bundler.getConfig({
+      key: 'modifyBundleConfigOpts',
+      initialValue: {
         env,
         type,
         port,
@@ -63,7 +64,16 @@ export async function getBundleAndConfigs({
             },
           });
         },
-      }),
+      },
+      args: {
+        ...bundlerArgs,
+        type,
+      },
+    });
+    return await api.applyPlugins({
+      type: api.ApplyPluginsType.modify,
+      key: 'modifyBundleConfig',
+      initialValue: await bundler.getConfig(getConfigOpts),
       args: {
         ...bundlerArgs,
         type,
