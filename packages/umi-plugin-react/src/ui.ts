@@ -1,5 +1,5 @@
 import { IApi } from 'umi-types';
-import { formatConfigs, useConfigKey } from 'umi-plugin-ui/lib/plugins/configuration';
+import { formatConfigs, useConfigKey } from '@umijs/plugin-ui/lib/plugins/configuration';
 import { configs, groupMap } from './config';
 
 export function getPluginConfig(plugins, name) {
@@ -40,7 +40,7 @@ export default (api: IApi) => {
   function validateConfig(config) {}
 
   if (api.addUIPlugin) {
-    api.addUIPlugin(require.resolve('../ui/dist/index.umd'));
+    api.addUIPlugin(require.resolve('../dist/index.umd'));
   }
 
   if (api.onUISocket) {
