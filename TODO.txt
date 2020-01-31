@@ -20,7 +20,6 @@ umi-next:
 		- 支持 SSR + Prerender @ycjcl868
 	bundler-webpack:
 		- export declaration 的问题
-			http://gitlab.alipay-inc.com/tingzhao.ytz/umi-export-test/blob/master/pages/index.tsx
 		- 验证 tree-shaking 有效性，因为某些链路里用了 require 模块的方式
 		- 验证 const enum 的问题
 			https://github.com/babel/babel/issues/8741
