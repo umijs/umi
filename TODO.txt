@@ -44,7 +44,8 @@ umi-next:
 			包含微软的 hack 补丁。
 		- umi doctor
 	CHORE:
-		- 发布脚本
+		- 发布脚本，考虑每个包的 CHANGELOG 问题
+			https://github.com/CookPete/auto-changelog
 	宣传:
 		- 整理 umi 3 特性为文章
 
