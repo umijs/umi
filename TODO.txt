@@ -5,6 +5,7 @@ umi-next:
 		- webpack-dev-server 功能查漏补缺 @ycjcl868
 	core:
 		- logger @ycjcl868
+			https://github.com/umijs/umi-next/pull/26
 		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 	preset-built-in:
 		- 支持 H5 的多页功能
