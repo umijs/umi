@@ -1,11 +1,11 @@
 umi-next:
 	server:
-		- HTTPS @team(宜鑫)
-		- socket 断开重连及客户端提示 @team(宜鑫)
-		- webpack-dev-server 功能查漏补缺 @team(宜鑫)
+		- HTTPS @ycjcl868
+		- socket 断开重连及客户端提示 @ycjcl868
+		- webpack-dev-server 功能查漏补缺 @ycjcl868
 	core:
-		- logger @team(宜鑫)
-		- 插件里可感知命令行参数，通过 api.args
+		- logger @ycjcl868
+		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 	preset-built-in:
 		- 支持 H5 的多页功能
 		dev:
@@ -16,7 +16,7 @@ umi-next:
 			- 支持 watch mode
 			- 支持 webpack 的 dynamic import
 	renderer-react:
-		- 支持 SSR + Prerender @team(宜鑫)
+		- 支持 SSR + Prerender @ycjcl868
 	bundler-webpack:
 		- export declaration 的问题
 			http://gitlab.alipay-inc.com/tingzhao.ytz/umi-export-test/blob/master/pages/index.tsx
@@ -46,6 +46,7 @@ umi-next:
 	CHORE:
 		- 发布脚本，考虑每个包的 CHANGELOG 问题
 			https://github.com/CookPete/auto-changelog
+		- 改进打包脚本，father 的 typescript 编译出错不应该退出
 	宣传:
 		- 整理 umi 3 特性为文章
 
@@ -60,7 +61,7 @@ plugins:
 		- plugin-hd
 		- plugin-dll
 	plugin-dva:
-	plugin-locale: @team(宜鑫)
+	plugin-locale: @ycjcl868
 		- 默认语言无效？
 			需要排查下
 	CHORE:

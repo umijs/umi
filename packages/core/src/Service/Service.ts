@@ -86,6 +86,7 @@ export default class Service extends EventEmitter {
   ApplyPluginsType = ApplyPluginsType;
   ConfigChangeType = ConfigChangeType;
   ServiceStage = ServiceStage;
+  args: any;
 
   constructor(opts: IServiceOpts) {
     super();
@@ -245,6 +246,7 @@ export default class Service extends EventEmitter {
             'pkg',
             'config',
             'env',
+            'args',
           ].includes(prop)
         ) {
           return typeof this[prop] === 'function'
@@ -366,6 +368,7 @@ ${name} from ${plugin.path} register failed.`);
   }
 
   async run({ name, args = {} }: { name: string; args?: any }) {
+    this.args = args;
     this.setStage(ServiceStage.init);
     await this.init();
 

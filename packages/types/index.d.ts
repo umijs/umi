@@ -54,6 +54,7 @@ export interface IApi extends PluginAPI {
   config: IConfig;
   pkg: typeof Service.prototype.pkg;
   env: typeof Service.prototype.env;
+  args: typeof Service.prototype.args;
 
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
