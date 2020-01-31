@@ -1,9 +1,10 @@
 import { join } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
-import { BabelRegister, createDebug, NodeEnv } from '@umijs/utils';
+import { BabelRegister, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
+import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import PluginAPI from './PluginAPI';
 import {
@@ -17,7 +18,7 @@ import Config from '../Config/Config';
 import { getUserConfigWithKey } from '../Config/utils/configUtils';
 import getPaths from './getPaths';
 
-const debug = createDebug('umi:core:Service');
+const logger = new Logger('umi:core:Service');
 
 export interface IServiceOpts {
   cwd: string;
@@ -91,8 +92,8 @@ export default class Service extends EventEmitter {
   constructor(opts: IServiceOpts) {
     super();
 
-    debug('opts:');
-    debug(opts);
+    logger.debug('opts:');
+    logger.debug(opts);
     this.cwd = opts.cwd || process.cwd();
     this.pkg = this.resolvePackage();
     this.env = opts.env || process.env.NODE_ENV;
@@ -130,10 +131,10 @@ export default class Service extends EventEmitter {
       ...baseOpts,
       plugins: [...(opts.plugins || []), ...(this.userConfig.plugins || [])],
     });
-    debug('initial presets:');
-    debug(this.initialPresets);
-    debug('initial plugins:');
-    debug(this.initialPlugins);
+    logger.debug('initial presets:');
+    logger.debug(this.initialPresets);
+    logger.debug('initial plugins:');
+    logger.debug(this.initialPlugins);
   }
 
   setStage(stage: ServiceStage) {
