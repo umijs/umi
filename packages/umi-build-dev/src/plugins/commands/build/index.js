@@ -122,7 +122,8 @@ export default function(api) {
               },
             });
           });
-        });
+        })
+          .catch(reject)
       });
     },
   );

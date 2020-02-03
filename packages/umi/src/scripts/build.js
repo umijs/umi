@@ -6,4 +6,10 @@ process.env.UMI_UI = 'none';
 
 const args = yParser(process.argv.slice(2));
 const Service = require('umi-build-dev/lib/Service').default;
-new Service(buildDevOpts(args)).run('build', args);
+
+new Service(buildDevOpts(args))
+  .run('build', args)
+  .catch((e) => {
+    process.exitCode = 1
+    console.error(e)
+  })
