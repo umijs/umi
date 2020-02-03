@@ -8,7 +8,7 @@ export default function({ api }: { api: IApi }) {
       super(opts);
     }
 
-    writing() {
+    async writing() {
       const [name] = this.args._;
       const jsExt = this.args.typescript ? '.tsx' : '.js';
       const cssExt = this.args.less ? '.less' : '.css';
