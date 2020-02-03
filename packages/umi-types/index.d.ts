@@ -1,6 +1,6 @@
 import 'cheerio';
 import IConfig, { IPlugin, IAFWebpackConfig, IRoute } from './config';
-import * as IUi from './ui';
+import * as IUi from '@umijs/ui-types';
 import { DefaultMethods } from 'signale';
 import * as lodash from 'lodash';
 import * as IWebpack from 'webpack';
@@ -22,7 +22,7 @@ export interface MultiStats {
   hash: string;
 }
 // for ui plugin developer
-type IUiApi = IUi.IApi;
+type IUiApi = IUi.IUiApi;
 
 export { IConfig, IPlugin, IRoute, IWebpackChainConfig, IWebpack, IUi, IUiApi };
 
