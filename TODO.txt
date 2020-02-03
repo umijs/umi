@@ -40,6 +40,8 @@ umi-next:
 			现有插件的问题是不管有没有 react component，都加了 react 的引用
 	create-umi:
 		- 迁移，只包含 app 的创建
+	CODE_MOD:
+		- 整理用户层 breakchange 的点
 	BONUS:
 		可做可不做，优先级低。
 		- 按需编译
@@ -74,6 +76,7 @@ plugins:
 	preset-react:
 		- 实现 preset-react
 	plugin-dva:
+		- 按需开启，检测到有 dva 相关 model 后再开启
 	plugin-locale: @ycjcl868
 		- 默认语言无效？
 			需要排查下
