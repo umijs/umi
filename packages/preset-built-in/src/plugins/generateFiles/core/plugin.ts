@@ -32,7 +32,7 @@ export default function(api: IApi) {
       content: Mustache.render(pluginTpl, {
         validKeys,
         runtimePath: winPath(require.resolve('@umijs/runtime')),
-        plugins,
+        plugins: plugins.map(winPath),
       }),
     });
   });
