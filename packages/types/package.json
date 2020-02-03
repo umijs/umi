@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "types": "index",
   "files": [
-    "lib",
-    "src"
+    "index.d.ts",
+    "index.js"
   ],
   "repository": {
     "type": "git",
