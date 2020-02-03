@@ -14,15 +14,6 @@ export default (api: IApi) => {
     utils: { rimraf, chalk, portfinder },
   } = api;
 
-  api.describe({
-    key: 'devServer',
-    config: {
-      schema(joi) {
-        return joi.object();
-      },
-    },
-  });
-
   let port: number;
   let server: Server;
   const unwatchs: Function[] = [];

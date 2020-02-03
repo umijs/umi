@@ -18,6 +18,7 @@ export default function() {
       require.resolve('./plugins/features/alias'),
       require.resolve('./plugins/features/cssLoader'),
       require.resolve('./plugins/features/define'),
+      require.resolve('./plugins/features/devServer'),
       require.resolve('./plugins/features/devtool'),
       require.resolve('./plugins/features/disableDynamicImport'),
       require.resolve('./plugins/features/externals'),

@@ -144,7 +144,6 @@ export interface IApi extends PluginAPI {
 export { IRoute };
 
 export interface IConfig extends IConfigCore {
-  devServer?: IServerOpts;
   alias?: {
     (key: string): string;
   };
@@ -152,6 +151,7 @@ export interface IConfig extends IConfigCore {
   define?: {
     [key: string]: any;
   };
+  devServer?: IServerOpts;
   devtool?: string;
   disableDynamicImport?: boolean;
   externals?: any;
