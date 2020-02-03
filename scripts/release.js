@@ -15,7 +15,7 @@ function printErrorAndExit(message) {
 }
 
 function logStep(name) {
-  console.log(`>> Release: ${chalk.magenta.bold(name)}`);
+  console.log(`${chalk.gray('>> Release:')} ${chalk.magenta.bold(name)}`);
 }
 
 async function release() {
@@ -82,7 +82,7 @@ async function release() {
     });
     writeFileSync(
       join(__dirname, '..', 'package.json'),
-      JSON.stringify(rootPkg, null, 2),
+      JSON.stringify(rootPkg, null, 2) + '\n',
       'utf-8',
     );
 
