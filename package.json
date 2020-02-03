@@ -8,7 +8,7 @@
     "build": "father-build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
-    "release": "PACKAGE=utils npm run build && node ./scripts/release.js",
+    "release": "node ./scripts/release.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "test:update": "umi-test --updateSnapshot",

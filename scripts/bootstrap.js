@@ -37,6 +37,9 @@ const getPackages = require('./utils/getPackages');
         license: 'MIT',
         bugs: 'http://github.com/umijs/umi/issues',
         homepage: `https://github.com/umijs/umi/tree/master/packages/${shortName}#readme`,
+        publishConfig: {
+          access: 'public',
+        },
       };
       if (pkgJSONExists) {
         const pkg = require(pkgJSONPath);

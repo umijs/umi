@@ -22,6 +22,9 @@
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-preset-umi#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-decorators": "7.8.3",

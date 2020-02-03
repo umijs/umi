@@ -1,7 +1,7 @@
 module.exports = function(version) {
   return (
-    version.include('-rc.') ||
-    version.include('-beta.') ||
-    version.include('-alpha.')
+    version.includes('-rc.') ||
+    version.includes('-beta.') ||
+    version.includes('-alpha.')
   );
 };

@@ -21,6 +21,9 @@
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/preset-built-in#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@types/multer": "1.4.0",
     "@umijs/babel-preset-umi": "3.0.0-beta.1",

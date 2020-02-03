@@ -1,6 +1,8 @@
 const { yParser, execa, chalk } = require('@umijs/utils');
+const { join } = require('path');
 const exec = require('./utils/exec');
 const getPackages = require('./utils/getPackages');
+const isNextVersion = require('./utils/isNextVersion');
 
 const cwd = process.cwd();
 const args = yParser(process.argv);
@@ -24,21 +26,22 @@ async function release() {
     printErrorAndExit(`Release failed, npm registry must be ${registry}.`);
   }
 
-  // Get updated packages
-  const updatedStdout = execa.sync(lernaCli, ['updated']).stdout;
-  const updated = updatedStdout
-    .split('\n')
-    .map(pkg => {
-      if (pkg === 'umi') return pkg;
-      else return pkg.split('/')[1];
-    })
-    .filter(Boolean);
-
-  if (!updated.length) {
-    printErrorAndExit('Release failed, no updated package is updated.');
-  }
+  let updated = null;
 
   if (!args.publishOnly) {
+    // Get updated packages
+    const updatedStdout = execa.sync(lernaCli, ['updated']).stdout;
+    updated = updatedStdout
+      .split('\n')
+      .map(pkg => {
+        if (pkg === 'umi') return pkg;
+        else return pkg.split('/')[1];
+      })
+      .filter(Boolean);
+    if (!updated.length) {
+      printErrorAndExit('Release failed, no updated package is updated.');
+    }
+
     // Clean
 
     // Build
@@ -65,19 +68,19 @@ async function release() {
   // Umi must be the latest.
   const pkgs = args.publishOnly ? getPackages() : updated;
   const currVersion = require('../lerna').version;
-  const isNext = isNextVersion(version);
+  const isNext = isNextVersion(currVersion);
   pkgs
     .sort(a => {
       return a === 'umi' ? 1 : -1;
     })
     .forEach(pkg => {
-      const cwd = join(cwd, 'packages', pkg);
-      const { name, version } = require(join(cwd, 'package.json'));
+      const pkgPath = join(cwd, 'packages', pkg);
+      const { name, version } = require(join(pkgPath, 'package.json'));
       if (version === currVersion) {
         console.log(`Publish package ${name} ${isNext ? 'with next tag' : ''}`);
         const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
         const { stdout } = execa.sync('npm', cliArgs, {
-          cwd,
+          cwd: pkgPath,
         });
         console.log(stdout);
       }

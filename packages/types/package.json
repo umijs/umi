@@ -21,6 +21,9 @@
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/types#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@types/express": "4.17.2",
     "@types/webpack": "4.41.3",
