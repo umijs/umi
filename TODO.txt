@@ -60,6 +60,7 @@ umi-next:
 		- 发布脚本，考虑每个包的 CHANGELOG 问题
 			https://github.com/CookPete/auto-changelog
 		- 改进打包脚本，father 的 typescript 编译出错不应该退出
+		- 改进每个配置项的 SCHEMA
 	宣传:
 		- 整理 umi 3 特性为文章
 

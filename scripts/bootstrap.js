@@ -1,14 +1,13 @@
 const { existsSync, writeFileSync, readdirSync } = require('fs');
 const { join } = require('path');
 const { yParser } = require('@umijs/utils');
+const getPackages = require('./utils/getPackages');
 
 (async () => {
   const args = yParser(process.argv);
   const version = require('../lerna.json').version;
 
-  const pkgs = readdirSync(join(__dirname, '../packages')).filter(
-    pkg => pkg.charAt(0) !== '.',
-  );
+  const pkgs = getPackages();
 
   pkgs.forEach(shortName => {
     const name = shortName === 'umi' ? shortName : `@umijs/${shortName}`;
