@@ -1,26 +1,34 @@
 umi-next:
-  server:
-    - ~~Compress~~ @ycjcl868 https://github.com/umijs/umi-next/pull/27
-    - ~~HTTPS~~ @ycjcl868 https://github.com/umijs/umi-next/pull/27
-    - ~~headers~~ @ycjcl868 https://github.com/umijs/umi-next/pull/27
+	server:
+		- Compress @ycjcl868 @done
+			https://github.com/umijs/umi-next/pull/27
+		- HTTPS @ycjcl868 @done
+			https://github.com/umijs/umi-next/pull/27
+		- headers @ycjcl868 @done
+			https://github.com/umijs/umi-next/pull/27
 		- webpack-dev-server 功能查漏补缺 @ycjcl868
 	core:
-		- ~~logger~~ @ycjcl868
+		- logger @ycjcl868 @done
 			https://github.com/umijs/umi-next/pull/26
 		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
+		- logger 优化
+			比如插件层如何打日志？如何过滤日志？
 	preset-built-in:
-		- 支持 H5 的多页功能
+		dev & build:
+			- 支持 H5 的多页功能
 		dev:
-			- 重启机制支持 bundle 重启
 			- ts 友好的 mock 方案
 			- mock 支持通过插件扩展，添加目录或文件
 		build:
 			- 支持 watch mode
 			- 支持 webpack 的 dynamic import
+		block:
+			- 迁移 @ycjcl868
 	renderer-react:
 		- 支持 SSR + Prerender @ycjcl868
-  bundler-webpack:
-    - ~~socket 断开重连及客户端提示~~ @ycjcl868 https://github.com/umijs/umi-next/pull/27
+	bundler-webpack:
+		- socket 断开重连及客户端提示 @ycjcl868 @done
+			https://github.com/umijs/umi-next/pull/27
 		- export declaration 的问题
 		- 验证 tree-shaking 有效性，因为某些链路里用了 require 模块的方式
 		- 验证 const enum 的问题
@@ -45,6 +53,7 @@ umi-next:
 		- eslint-config-umi
 			包含微软的 hack 补丁。
 		- umi doctor
+		- 重启机制支持 bundle 重启
 	CHORE:
 		- 发布脚本，考虑每个包的 CHANGELOG 问题
 			https://github.com/CookPete/auto-changelog
@@ -54,7 +63,7 @@ umi-next:
 
 plugins:
 	实现插件:
-		- plugin-model
+		- plugin-model @sorrycc
 		- plugin-access
 		- plugin-request
 		- plugin-layout
@@ -62,6 +71,8 @@ plugins:
 		- plugin-preact
 		- plugin-hd
 		- plugin-dll
+	preset-react:
+		- 实现 preset-react
 	plugin-dva:
 	plugin-locale: @ycjcl868
 		- 默认语言无效？
@@ -69,6 +80,9 @@ plugins:
 	CHORE:
 		- 发布脚本
 			支持单独发布某个插件
+
+plugin-ui: @ycjcl868
+	- 适配 umi@3
 
 doc:
 	- 梳理目录以及和 bigfish、插件之间的共享共建机制
