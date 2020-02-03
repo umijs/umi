@@ -1,3 +1,5 @@
+注：此文档在 TaskPaper 里查看和编辑效果最佳。
+
 umi-next:
 	server:
 		- Compress @ycjcl868 @done

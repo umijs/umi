@@ -7,7 +7,9 @@
   "files": [
     "lib",
     "src",
-    "app.js"
+    "app.js",
+    "node.js",
+    "dependency.js"
   ],
   "repository": {
     "type": "git",
