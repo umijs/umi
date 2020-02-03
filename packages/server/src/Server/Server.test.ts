@@ -91,6 +91,104 @@ test('normal', async () => {
   server.listeningApp?.close();
 });
 
+test('compress', async () => {
+  const server = new Server({
+    compress: { threshold: 0 },
+    beforeMiddlewares: [],
+    afterMiddlewares: [],
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+  const serverPort = await portfinder.getPortPromise({
+    port: 3003,
+  });
+  const { port, hostname } = await server.listen({
+    port: serverPort,
+    hostname: 'localhost',
+  });
+  const { body: compilerBody, headers } = await got(
+    `http://${hostname}:${port}/compiler`,
+    {
+      headers: {
+        'Accept-Encoding': 'gzip',
+      },
+    },
+  );
+  expect(compilerBody).toEqual('compiler');
+  expect(headers['content-encoding']).toEqual('gzip');
+
+  server.listeningApp?.close();
+});
+
+test('headers', async () => {
+  const server = new Server({
+    headers: {
+      'access-control-allow-origin': '*',
+    },
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+  const serverPort = await portfinder.getPortPromise({
+    port: 3004,
+  });
+  const { port, hostname } = await server.listen({
+    port: serverPort,
+    hostname: 'localhost',
+  });
+  await delay(100);
+  const { body: compilerBody, headers } = await got(
+    `http://${hostname}:${port}/compiler`,
+  );
+  expect(compilerBody).toEqual('compiler');
+  expect(headers['access-control-allow-origin']).toEqual('*');
+
+  server.listeningApp?.close();
+});
+
+test('https', async () => {
+  const server = new Server({
+    https: true,
+    beforeMiddlewares: [],
+    afterMiddlewares: [],
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+  const serverPort = await portfinder.getPortPromise({
+    port: 3005,
+  });
+  const { port, hostname } = await server.listen({
+    port: serverPort,
+    hostname: 'localhost',
+  });
+  const { body: compilerBody, headers } = await got(
+    `https://${hostname}:${port}/compiler`,
+    {
+      rejectUnauthorized: false,
+    },
+  );
+  expect(compilerBody).toEqual('compiler');
+
+  server.listeningApp?.close();
+});
+
 describe('proxy', () => {
   const host = 'localhost';
   let proxyServer1: http.Server;

@@ -4,7 +4,7 @@ import {
   PluginAPI,
   Service,
 } from '@umijs/core';
-import { Server } from '@umijs/server';
+import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
@@ -144,6 +144,7 @@ export interface IApi extends PluginAPI {
 export { IRoute };
 
 export interface IConfig extends IConfigCore {
+  devServer?: IServerOpts;
   alias?: {
     (key: string): string;
   };

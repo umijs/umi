@@ -19,7 +19,11 @@ import * as t from '@babel/types';
 import * as parser from '@babel/parser';
 import * as traverse from '@babel/traverse';
 import prettier from 'prettier';
+import immer from 'immer';
+import semver from 'semver';
 
+export { immer };
+export { semver };
 export { address };
 export { chalk };
 export { clipboardy };

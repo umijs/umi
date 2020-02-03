@@ -14,6 +14,15 @@ export default (api: IApi) => {
     utils: { rimraf, chalk, portfinder },
   } = api;
 
+  api.describe({
+    key: 'devServer',
+    config: {
+      schema(joi) {
+        return joi.object();
+      },
+    },
+  });
+
   let port: number;
   let server: Server;
   const unwatchs: Function[] = [];
@@ -110,10 +119,15 @@ export default (api: IApi) => {
 
       const server = new Server({
         ...opts,
+        compress: true,
+        headers: {
+          'access-control-allow-origin': '*',
+        },
         // @ts-ignore
         proxy: (api.config as IConfig)?.proxy,
         beforeMiddlewares,
         afterMiddlewares: [createRouteMiddleware({ api })],
+        ...(api.config.devServer || {}),
       });
       const listenRet = await server.listen({
         port,

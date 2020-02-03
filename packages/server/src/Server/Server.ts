@@ -1,9 +1,16 @@
 // @ts-ignore
-import { chalk, lodash, portfinder, PartialProps } from '@umijs/utils';
+import { Logger } from '@umijs/core';
+import { lodash, portfinder, PartialProps, semver } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
 import HttpProxyMiddleware from 'http-proxy-middleware';
 import http from 'http';
+import { ServerOptions } from 'spdy';
+import https from 'https';
+import compress, { CompressionOptions } from 'compression';
 import sockjs, { Connection, Server as SocketServer } from 'sockjs';
+import { getCredentials } from './utils';
+
+const logger = new Logger('@umijs/server');
 
 interface IServerProxyConfigItem extends HttpProxyMiddleware.Config {
   path?: string | string[];
@@ -21,11 +28,19 @@ type IServerProxyConfig =
   | (IServerProxyConfigItem | (() => IServerProxyConfigItem))[]
   | null;
 
+export interface IHttps extends ServerOptions {}
+
 export interface IServerOpts {
   afterMiddlewares?: RequestHandler<any>[];
   beforeMiddlewares?: RequestHandler<any>[];
   compilerMiddleware?: RequestHandler<any> | null;
-  https?: boolean;
+  https?: IHttps | boolean;
+  http2?: boolean;
+  headers?: {
+    [key: string]: string;
+  };
+  host?: string;
+  compress?: CompressionOptions | boolean;
   proxy?: IServerProxyConfig;
   onListening?: {
     ({
@@ -48,11 +63,15 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   afterMiddlewares: [],
   beforeMiddlewares: [],
   compilerMiddleware: null,
+  compress: true,
   https: false,
+  http2: false,
   onListening: argv => argv,
   onConnection: () => {},
   onConnectionClose: () => {},
   proxy: null,
+  headers: {},
+  host: 'localhost',
 };
 
 class Server {
@@ -61,6 +80,8 @@ class Server {
   socketServer?: SocketServer;
   // @ts-ignore
   listeningApp: http.Server;
+  // @ts-ignore
+  listeninspdygApp: http.Server;
   sockets: Connection[] = [];
   // Proxy sockets
   socketProxies: HttpProxyMiddleware.Proxy[] = [];
@@ -81,11 +102,48 @@ class Server {
     }, this);
   }
 
+  private getHttpsOptions(): object | undefined {
+    if (this.opts.https) {
+      const credential = getCredentials(this.opts);
+
+      // note that options.spdy never existed. The user was able
+      // to set options.https.spdy before, though it was not in the
+      // docs. Keep options.https.spdy if the user sets it for
+      // backwards compatibility, but log a deprecation warning.
+      if (typeof this.opts.https === 'object' && this.opts.https.spdy) {
+        // for backwards compatibility: if options.https.spdy was passed in before,
+        // it was not altered in any way
+        logger.warn(
+          'Providing custom spdy server options is deprecated and will be removed in the next major version.',
+        );
+        return credential;
+      } else {
+        return {
+          spdy: {
+            protocols: ['h2', 'http/1.1'],
+          },
+          ...credential,
+        };
+      }
+    }
+    return;
+  }
+
   setupFeatures() {
     const features = {
+      compress: () => {
+        if (this.opts.compress) {
+          this.setupCompress();
+        }
+      },
       proxy: () => {
         if (this.opts.proxy) {
           this.setupProxy();
+        }
+      },
+      headers: () => {
+        if (lodash.isPlainObject(this.opts.headers)) {
+          this.setupHeaders();
         }
       },
       beforeMiddlewares: () => {
@@ -108,6 +166,27 @@ class Server {
     Object.keys(features).forEach(stage => {
       features[stage]();
     });
+  }
+
+  /**
+   * response headers
+   */
+  setupHeaders() {
+    this.app.all('*', (req, res, next) => {
+      // eslint-disable-next-line
+      res.set(this.opts.headers);
+      next();
+    });
+  }
+
+  /**
+   * dev server compress to gzip assets
+   */
+  setupCompress() {
+    const compressOpts = lodash.isBoolean(this.opts.compress)
+      ? {}
+      : this.opts.compress;
+    this.app.use(compress(compressOpts));
   }
 
   /**
@@ -219,9 +298,18 @@ class Server {
     });
   }
 
+  private isHttp2() {
+    return this.opts.http2 !== false;
+  }
+
   createServer() {
-    if (this.opts.https) {
-      // TODO
+    const httpsOpts = this.getHttpsOptions();
+    if (httpsOpts) {
+      if (semver.gte(process.version, '10.0.0') && !this.isHttp2()) {
+        this.listeningApp = https.createServer(httpsOpts, this.app);
+      } else {
+        this.listeningApp = require('spdy').createServer(httpsOpts, this.app);
+      }
     } else {
       this.listeningApp = http.createServer(this.app);
     }
@@ -239,16 +327,14 @@ class Server {
     listeningApp: http.Server;
     server: Server;
   }> {
-    const listeningApp = http.createServer(this.app);
-    this.listeningApp = listeningApp;
     const foundPort = await portfinder.getPortPromise({ port });
     return new Promise(resolve => {
-      listeningApp.listen(foundPort, hostname, 5, () => {
+      this.listeningApp.listen(foundPort, hostname, 5, () => {
         this.createSocketServer();
         const ret = {
           port: foundPort,
           hostname,
-          listeningApp,
+          listeningApp: this.listeningApp,
           server: this,
         };
         this.opts.onListening(ret);

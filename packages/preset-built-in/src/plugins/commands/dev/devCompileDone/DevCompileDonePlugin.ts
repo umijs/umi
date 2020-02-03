@@ -3,6 +3,7 @@ import { chalk, clipboardy, address } from '@umijs/utils';
 
 interface IOpts {
   port: number;
+  https?: boolean;
   onCompileDone: (args: {
     isFirstCompile: boolean;
     stats: webpack.Stats;
@@ -33,7 +34,7 @@ export default class DevCompileDonePlugin {
 
       if (isFirstCompile) {
         const lanIp = address.ip();
-        const protocol = process.env.HTTPS ? 'https' : 'http';
+        const protocol = this.opts.https ? 'https' : 'http';
         const localUrl = `${protocol}://localhost:${this.opts.port}`;
         const lanUrl = `${protocol}://${lanIp}:${this.opts.port}`;
 
