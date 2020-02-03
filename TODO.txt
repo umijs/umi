@@ -57,8 +57,9 @@ umi-next:
 		- umi doctor
 		- 重启机制支持 bundle 重启
 	CHORE:
-		- 发布脚本，考虑每个包的 CHANGELOG 问题
+		- 发布脚本，考虑每个包的 CHANGELOG 问题 @done @sorrycc
 			https://github.com/CookPete/auto-changelog
+		- 改进发布脚本，同步 version 到 root 目录的 package.json，并且把 lerna version 拆了 @sorrycc @done
 		- 改进打包脚本，father 的 typescript 编译出错不应该退出
 		- 改进每个配置项的 SCHEMA
 	宣传:

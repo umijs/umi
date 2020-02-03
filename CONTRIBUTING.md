@@ -56,7 +56,8 @@ $ yarn test --coverage
 
 ```bash
 $ npm run release
-$ npm run release --publish-only
+$ npm run release -- --publish-only
+$ npm run release -- --skip-build
 ```
 
 ## Create new package

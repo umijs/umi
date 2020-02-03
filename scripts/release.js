@@ -1,5 +1,6 @@
 const { yParser, execa, chalk } = require('@umijs/utils');
 const { join } = require('path');
+const { writeFileSync } = require('fs');
 const exec = require('./utils/exec');
 const getPackages = require('./utils/getPackages');
 const isNextVersion = require('./utils/isNextVersion');
@@ -13,8 +14,13 @@ function printErrorAndExit(message) {
   process.exit(1);
 }
 
+function logStep(name) {
+  console.log(`>> Release: ${chalk.magenta.bold(name)}`);
+}
+
 async function release() {
   // Check npm registry
+  logStep('check npm registry');
   const userRegistry = execa.sync('npm', ['config', 'get', 'registry']).stdout;
   if (userRegistry.includes('https://registry.yarnpkg.com/')) {
     printErrorAndExit(
@@ -30,6 +36,7 @@ async function release() {
 
   if (!args.publishOnly) {
     // Get updated packages
+    logStep('check updated packages');
     const updatedStdout = execa.sync(lernaCli, ['updated']).stdout;
     updated = updatedStdout
       .split('\n')
@@ -43,30 +50,60 @@ async function release() {
     }
 
     // Clean
+    logStep('clean');
 
     // Build
     if (!args.skipBuild) {
+      logStep('build');
       await exec('npm', ['run', 'build']);
+    } else {
+      logStep('build is skipped, since args.skipBuild is supplied');
     }
 
     // Bump version
-    // Commit
-    // Git tag
-    // Push
+    logStep('bump version with lerna version');
     await exec(lernaCli, [
       'version',
       '--exact',
-      '--message',
-      'release: v%v',
-      // '--no-commit-hooks',
-      // '--no-git-tag-version',
-      // '--no-push',
+      '--no-commit-hooks',
+      '--no-git-tag-version',
+      '--no-push',
     ]);
+
+    const currVersion = require('../lerna').version;
+
+    // Sync version to root package.json
+    logStep('sync version to root package.json');
+    const rootPkg = require('../package');
+    Object.keys(rootPkg.devDependencies).forEach(name => {
+      if (name.startsWith('@umijs/')) {
+        rootPkg.devDependencies[name] = currVersion;
+      }
+    });
+    writeFileSync(
+      join(__dirname, '..', 'package.json'),
+      JSON.stringify(rootPkg, null, 2),
+      'utf-8',
+    );
+
+    // Commit
+    const commitMessage = `release: v${currVersion}`;
+    logStep(`git commit with ${chalk.blue(commitMessage)}`);
+    await exec('git', ['commit', '--all', '--message', commitMessage]);
+
+    // Git Tag
+    logStep(`git tag v${currVersion}`);
+    await exec('git', ['tag', `v${currVersion}`]);
+
+    // Push
+    logStep(`git push`);
+    await exec('git', ['push', 'origin', 'master', '--tags']);
   }
 
   // Publish
   // Umi must be the latest.
   const pkgs = args.publishOnly ? getPackages() : updated;
+  logStep(`publish packages: ${chalk.blue(pkgs.join(', '))}`);
   const currVersion = require('../lerna').version;
   const isNext = isNextVersion(currVersion);
   pkgs
