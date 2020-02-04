@@ -3,6 +3,7 @@
     "analyze": "ANALYZE=1 umi build"
   },
   "peerDependencies": {
+    "umi": "2.x",
     "umi-types": "^0.4.0-beta.4",
     "umi-build-dev": "^1.13.0",
     "umi-ui-theme": "^1.1.2"
