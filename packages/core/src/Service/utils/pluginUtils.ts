@@ -21,10 +21,12 @@ interface IOpts {
 
 interface IResolvePresetsOpts extends IOpts {
   presets: string[];
+  userConfigPresets: string[];
 }
 
 interface IResolvePluginsOpts extends IOpts {
   plugins: string[];
+  userConfigPlugins: string[];
 }
 
 const RE = {
@@ -45,6 +47,9 @@ function isPluginOrPreset(type: PluginType, name: string) {
 function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
   const upperCaseType = type.toUpperCase();
   return [
+    // opts
+    ...((opts[type === PluginType.preset ? 'presets' : 'plugins'] as any) ||
+      []),
     // env
     ...(process.env[`UMI_${upperCaseType}`] || '').split(',').filter(Boolean),
     // dependencies
@@ -52,8 +57,9 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
       .concat(Object.keys(opts.pkg.dependencies || {}))
       .filter(isPluginOrPreset.bind(null, type)),
     // user config
-    ...((opts[type === PluginType.preset ? 'presets' : 'plugins'] as any) ||
-      []),
+    ...((opts[
+      type === PluginType.preset ? 'userConfigPresets' : 'userConfigPlugins'
+    ] as any) || []),
   ].map(path => {
     return resolve.sync(path, {
       basedir: opts.cwd,

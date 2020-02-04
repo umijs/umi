@@ -26,21 +26,21 @@ test('normal', async () => {
   });
   expect(service.pkg.name).toEqual('foo');
   expect(service.initialPresets.map(p => p.key)).toEqual([
+    'index',
+    'index',
     '2',
     '2',
     'bigfish',
     '1',
     '1',
-    'index',
-    'index',
   ]);
   expect(service.initialPlugins.map(p => p.key)).toEqual([
-    '2',
-    '2',
-    '1',
-    '1',
     'plugin1',
     'plugin2',
+    '2',
+    '2',
+    '1',
+    '1',
   ]);
 
   await service.init();
@@ -49,24 +49,24 @@ test('normal', async () => {
     plugins: service.plugins,
   });
   expect(plugins).toEqual([
+    '[preset] ./preset_1/index.js',
+    '[preset] ./preset_1/preset_1/index.js',
+    '[preset] ./preset_2/index.js',
     '[preset] @umijs/preset-2',
     '[preset] umi-preset-2',
     '[preset] @alipay/umi-preset-bigfish',
     '[preset] @umijs/preset-1',
     '[preset] umi-preset-1',
-    '[preset] ./preset_1/index.js',
-    '[preset] ./preset_1/preset_1/index.js',
-    '[preset] ./preset_2/index.js',
     '[plugin] ./preset_1/plugin_1.js',
     '[plugin] ./preset_1/plugin_2.js',
     '[plugin] ./preset_1/preset_1/plugin_1.js',
     '[plugin] ./preset_2/plugin_1.js',
+    '[plugin] ./plugin_1.js',
+    '[plugin] ./plugin_2.js',
     '[plugin] @umijs/plugin-2',
     '[plugin] umi-plugin-2',
     '[plugin] @umijs/plugin-1',
     '[plugin] umi-plugin-1',
-    '[plugin] ./plugin_1.js',
-    '[plugin] ./plugin_2.js',
   ]);
 
   expect(service.hooks['foo'].length).toEqual(2);
