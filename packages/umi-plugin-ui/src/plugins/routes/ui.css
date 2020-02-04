@@ -1,0 +1,33 @@
+
+.client-actions {
+  margin-bottom: 18px;
+}
+
+.client-list {
+  padding: 0 0 0 30px;
+}
+
+.client-item {
+  font-size: 16px;
+  list-style: none;
+}
+
+.client-type {
+  margin-right: 12px;
+  color: blue;
+}
+
+.client-info {
+  margin-right: 10px;
+}
+.client-info strong {
+  color: #ccc;
+}
+.client-info code {
+  color: blue;
+}
+
+.client-icon {
+  color: green;
+  margin-right: 6px;
+}

@@ -1,0 +1,133 @@
+.resetTitle {
+  margin-bottom: 16px;
+  p {
+    margin-bottom: 4px;
+    color: @text-color;
+  }
+  span {
+    color: @text-color-secondary;
+  }
+}
+:global(.isMini) {
+  .configForm {
+    padding: 12px 20px;
+    &-submit {
+      bottom: -8px;
+      height: 41px;
+    }
+    &-header {
+      h2 {
+        font-size: @font-size-base;
+      }
+    }
+    .group {
+      h2 {
+        font-size: @font-size-base;
+      }
+    }
+    .toc {
+      margin-right: 0px;
+    }
+  }
+  @media @mobile {
+    .toc {
+      display: none;
+    }
+  }
+}
+
+.configForm {
+  display: flex;
+  height: calc(~'100% - 48px');
+  overflow: auto;
+  padding-top: 16px;
+  position: relative;
+  padding: 16px 24px;
+  &-header {
+    margin-bottom: 24px;
+    position: relative;
+    & > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &-searchIcon {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      color: @heading-color;
+      &-hide {
+        display: none;
+      }
+      &:hover {
+        color: #fff;
+      }
+    }
+    h2 {
+      font-size: 16px;
+      margin-right: 24px;
+    }
+    &-input {
+      display: inline-block;
+      margin-left: -11.5px;
+      vertical-align: middle;
+      width: 0;
+      opacity: 0;
+      transition: width 0.4s, opacity 0.4s;
+      &-active {
+        width: 230px;
+        opacity: 1;
+      }
+    }
+  }
+  &-submit {
+    position: relative;
+    padding: 8px 0;
+    right: 0;
+    bottom: 0;
+    height: 48px;
+    width: 100%;
+    text-align: right;
+    border-top: 1px solid #15161b;
+    background: @body-background;
+    z-index: 11;
+    button {
+      margin-right: 8px;
+    }
+  }
+  .form {
+    flex: 100% 1 1;
+    &-inner {
+      max-width: 680px;
+    }
+  }
+  .toc {
+    width: 168px;
+    max-height: 560px !important;
+    margin-top: 32px;
+    margin-right: 24px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: calc(~'100% - 55px');
+    &:hover {
+      overflow-y: auto;
+    }
+  }
+  .group {
+    margin-bottom: 30px;
+    max-width: 416px;
+    :global(.ant-form-item-label) {
+      padding-bottom: 12px;
+    }
+    h2 {
+      font-size: 16px;
+      color: @heading-color;
+      font-weight: 500;
+      margin-bottom: 16px;
+      line-height: 22px;
+    }
+    & > :global(.ant-form-item) {
+      margin-bottom: 24px;
+    }
+  }
+}

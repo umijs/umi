@@ -14,7 +14,8 @@
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "publish": "lerna-changelog && ./scripts/publish.js",
     "test": "node scripts/test.js",
-    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage"
+    "test:coverage": "node ./packages/umi-test/bin/umi-test.js --coverage",
+    "ui:build": "node ./scripts/ui.js"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,json}": [

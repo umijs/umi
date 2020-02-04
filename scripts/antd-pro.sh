@@ -13,6 +13,7 @@ fi
 npm run
 npm run bootstrap
 npm run build
+npm run ui:build
 cd packages/umi
 npm run link
 cd ../..

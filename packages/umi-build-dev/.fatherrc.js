@@ -7,5 +7,6 @@ export default {
     'src/plugins/404/NotFound.js',
     'src/plugins/404/guessJSFileFromPath.js',
     'src/plugins/commands/dev/injectUI.js',
+    'src/plugins/commands/block/sdk/flagBabelPlugin/GUmiUIFlag.tsx',
   ],
 };

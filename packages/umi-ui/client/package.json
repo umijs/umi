@@ -1,0 +1,62 @@
+{
+  "scripts": {
+    "analyze": "ANALYZE=1 umi build"
+  },
+  "peerDependencies": {
+    "umi-types": "^0.4.0-beta.4",
+    "umi-build-dev": "^1.13.0",
+    "umi-ui-theme": "^1.1.2"
+  },
+  "dependencies": {
+    "@ant-design/compatible": "^0.0.1-alpha.1",
+    "@ant-design/icons": "^4.0.0-alpha.11",
+    "@umijs/hooks": "^1.3.2",
+    "ansi-to-react": "^5.0.0",
+    "assert": "^2.0.0",
+    "classnames": "^2.2.6",
+    "copy-to-clipboard": "^3.2.0",
+    "debug": "^4.1.1",
+    "fuse.js": "^3.4.5",
+    "immer": "^3.2.0",
+    "lodash": "^4.17.15",
+    "nanoid": "^2.0.3",
+    "nprogress": "^0.2.0",
+    "qs": "^6.8.0",
+    "querystring": "^0.2.0",
+    "rc-tween-one": "^2.6.0",
+    "react-helmet": "^5.2.1",
+    "serialize-javascript": "^2.1.0",
+    "slash2": "2.0.0",
+    "umi-request": "^1.2.9",
+    "xterm": "4.1.0",
+    "xterm-addon-attach": "^0.3.0",
+    "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-web-links": "^0.2.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@ant-design/colors": "^3.1.0",
+    "@testing-library/react": "^9.3.0",
+    "@testing-library/react-hooks": "^3.1.1",
+    "@types/classnames": "^2.2.9",
+    "@types/debug": "^4.1.5",
+    "@types/lodash": "^4.14.136",
+    "@types/nanoid": "^2.0.0",
+    "@types/nprogress": "^0.2.0",
+    "@types/qs": "^6.5.3",
+    "@types/serialize-javascript": "^1.5.0",
+    "@types/sockjs-client": "^1.1.1",
+    "@umijs/fabric": "^1.1.9",
+    "antd": "^4.0.0-alpha.10",
+    "less-vars-to-js": "^1.3.0",
+    "react-dom": "^16.11.0",
+    "stylelint": "^10.1.0",
+    "stylelint-config-css-modules": "^1.4.0",
+    "stylelint-config-prettier": "^5.2.0",
+    "stylelint-config-recommended": "^2.2.0",
+    "umi-plugin-react": "1.12.0-beta.1",
+    "webpack-less-theme-plugin": "^2.1.0",
+    "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-web-links": "^0.2.1"
+  }
+}

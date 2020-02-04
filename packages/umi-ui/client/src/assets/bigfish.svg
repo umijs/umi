@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="37px" viewBox="0 0 36 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="-42.0592442%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#3852F9" offset="0%"></stop>
+            <stop stop-color="#1890FF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M21.540218,4.6672563 C30.9758723,4.6672563 37.0924351,13.6821335 39.8899065,31.7118879 L39.8899837,31.711876 C39.9238617,31.9302204 39.7743221,32.1346871 39.5559777,32.1685651 C39.5356822,32.1717141 39.5151744,32.1732957 39.4946361,32.1732957 L3.58586257,32.1733696 C3.36490784,32.1733696 3.18578864,31.9942504 3.18578864,31.7732957 C3.18578864,31.7527577 3.18737013,31.7322501 3.19051909,31.711955 C5.9879857,13.6821559 12.104552,4.6672563 21.540218,4.6672563 Z" id="path-2"></path>
+        <path d="M22.5630115,24.6666667 C26.0918489,24.6666667 28.9525368,21.8166943 28.9525368,18.3010753 C28.9525368,14.7854562 26.0918489,11.9354839 22.5630115,11.9354839 C19.034174,11.9354839 16.1734861,14.7854562 16.1734861,18.3010753 C16.1734861,21.8166943 19.034174,24.6666667 22.5630115,24.6666667 Z" id="path-4"></path>
+        <filter x="-27.4%" y="-27.5%" width="154.8%" height="155.0%" filterUnits="objectBoundingBox" id="filter-5">
+            <feMorphology radius="0.5" operator="erode" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="4.3" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.062745098   0 0 0 0 0.137254902   0 0 0 0 0.619607843  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="官网首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="标题栏-首页" transform="translate(-118.000000, -14.000000)">
+            <g id="Group-45">
+                <g id="Group-44">
+                    <g id="Group-40" transform="translate(117.000000, 14.000000)">
+                        <g id="Group-21">
+                            <g id="Group-9">
+                                <g id="Group-43">
+                                    <g id="Group-2">
+                                        <g id="Group-3" transform="translate(1.000000, 0.000000)">
+                                            <path d="M7.89671346,11.3819893 L15.0086481,25.6593388 C15.1071474,25.8570781 15.0266975,26.097227 14.8289582,26.1957263 C14.7735558,26.2233237 14.7125048,26.2376876 14.6506094,26.2376876 L0.426740144,26.2376876 C0.205826244,26.2376876 0.0267401443,26.0586015 0.0267401443,25.8376876 C0.0267401443,25.7757922 0.0411040138,25.7147412 0.0687014409,25.6593388 L7.18063606,11.3819893 C7.27913537,11.18425 7.51928422,11.1038 7.71702354,11.2022994 C7.79485983,11.2410717 7.8579411,11.304153 7.89671346,11.3819893 Z" id="Triangle-Copy-11" fill="#0D7EFF" fill-rule="nonzero" transform="translate(7.538719, 18.698969) rotate(-270.000000) translate(-7.538719, -18.698969) "></path>
+                                            <mask id="mask-3" fill="white">
+                                                <use xlink:href="#path-2"></use>
+                                            </mask>
+                                            <use id="Mask" fill="url(#linearGradient-1)" fill-rule="nonzero" transform="translate(21.540245, 18.420285) rotate(-270.000000) translate(-21.540245, -18.420285) " xlink:href="#path-2"></use>
+                                            <g id="Oval-Copy-9" fill-rule="nonzero" transform="translate(22.563011, 18.301075) rotate(-180.000000) translate(-22.563011, -18.301075) ">
+                                                <use fill="black" fill-opacity="1" filter="url(#filter-5)" xlink:href="#path-4"></use>
+                                                <path stroke="#FFFFFF" stroke-width="4.8" d="M22.5630115,22.2666667 C24.7683775,22.2666667 26.5525368,20.4891905 26.5525368,18.3010753 C26.5525368,16.11296 24.7683775,14.3354839 22.5630115,14.3354839 C20.3576454,14.3354839 18.5734861,16.11296 18.5734861,18.3010753 C18.5734861,20.4891905 20.3576454,22.2666667 22.5630115,22.2666667 Z" stroke-linejoin="square"></path>
+                                            </g>
+                                        </g>
+                                        <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="37" height="37"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,192 @@
+.project {
+  &-list {
+    max-height: calc(~'100vh - 110px');
+    padding-left: 24px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    position: relative;
+    .exportIcon {
+      margin-right: 8px;
+      margin-bottom: 1px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &-layout {
+      min-height: 100vh;
+      .tag {
+        display: inline-block;
+        border-radius: 4px;
+        vertical-align: top;
+        margin-left: 8px;
+        &-progress {
+          color: @primary-color;
+          background-color: fade(@primary-color, 10);
+          border-color: fade(@primary-color, 45);
+        }
+        &-error {
+          color: @ui-tag-error-color;
+          background-color: fade(@ui-tag-error-color, 10);
+          border-color: fade(@ui-tag-error-color, 45);
+        }
+      }
+      &-sider {
+        padding: 24px 0;
+        text-align: center;
+        color: @light;
+        &-title {
+          h1 {
+            font-size: @font-size-base;
+            line-height: 22px;
+            margin-bottom: 24px;
+            font-weight: bold;
+            margin-top: 4px;
+          }
+          &-bigfish {
+            h1 {
+              line-height: 22px;
+              margin-bottom: 24px;
+              font-weight: bold;
+              margin-top: 4px;
+              font-size: 12px;
+            }
+            img {
+              width: 32px;
+              height: 32px;
+            }
+          }
+        }
+        &-item {
+          text-align: center;
+          user-select: none;
+          svg,
+          p {
+            color: @text-color;
+          }
+          i {
+            font-size: 20px;
+          }
+          p {
+            font-size: 14px;
+            line-height: 22px;
+            margin-top: 6px;
+          }
+          &-active {
+            svg,
+            p {
+              color: @light;
+            }
+          }
+        }
+      }
+      &-content {
+        padding: 0;
+        overflow: auto;
+        width: calc(~'100% - 72px');
+        &-header {
+          margin-bottom: 26px;
+          padding: 24px;
+          padding-bottom: 0;
+          width: 100%;
+          position: relative;
+        }
+      }
+    }
+  }
+  &-title {
+    font-size: 20px;
+    line-height: 33px;
+  }
+  &-action {
+    text-align: right;
+    button {
+      margin-left: 8px;
+    }
+  }
+  &-add {
+    display: inline-block;
+    margin-left: 8px;
+  }
+  &-list {
+    &-item {
+      cursor: pointer;
+      // width: 100%;
+      margin-bottom: 32px;
+      :global {
+        .ant-spin-dot-item {
+          width: 9px;
+        }
+        .ant-card {
+          border: 0;
+          .ant-card-meta-title {
+            margin-bottom: 2px;
+          }
+          .ant-card-actions {
+            background-color: inherit;
+            & > li {
+              cursor: pointer;
+              border-color: transparent;
+              &,
+              a {
+                user-select: none;
+              }
+              a:hover {
+                color: @text-color;
+              }
+            }
+          }
+        }
+      }
+      a.disabled {
+        color: @disabled-color;
+        cursor: not-allowed;
+        &:hover :global(.anticon),
+        :global(.anticon):hover {
+          color: @disabled-color;
+        }
+      }
+      &:hover :global(.ant-card) {
+        background-color: @card-hover-border;
+      }
+      @media @mobile {
+        width: 100%;
+      }
+      &-title {
+        a {
+          color: @heading-color;
+          font-size: @font-size-lg;
+        }
+      }
+      &-desc {
+        margin-bottom: 0;
+        color: @text-color-secondary;
+        height: 66px;
+        word-break: break-all;
+      }
+      &-editor {
+        &-icon {
+          width: 14px;
+          height: 14px;
+          opacity: 0.45;
+          &:hover {
+            opacity: 0.85;
+          }
+        }
+      }
+    }
+  }
+  h1 {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 40px;
+  }
+
+  .projectItem {
+    span {
+      margin-right: 12px;
+      font-weight: bold;
+    }
+    button {
+      margin-right: 6px;
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "love=love umi build"
+  }
+}

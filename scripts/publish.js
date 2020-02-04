@@ -29,6 +29,12 @@ if (buildCode === 1) {
   process.exit(1);
 }
 
+const { code: UIBuildCode } = shell.exec('npm run ui:build');
+if (UIBuildCode === 1) {
+  console.error('Failed: npm run ui:build');
+  process.exit(1);
+}
+
 // check ui dist umd, or publish will be forbidden
 checkUiDist();
 

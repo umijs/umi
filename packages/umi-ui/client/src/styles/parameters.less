@@ -1,0 +1,98 @@
+@import '~umi-ui-theme/dark.less';
+
+// animation
+@ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
+@ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
+@ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+@ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+@ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+@ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+@ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+@ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+@ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+@ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+@ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+@ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+@ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+@ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+@ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+/** custom */
+@duration: 0.45s;
+@duration-slow: 0.6s;
+@duration-fast: 0.3s;
+
+@btn-disable-bg: transparent;
+@btn-disable-color: fade(@light, 25);
+@btn-disable-border: fade(@light, 10);
+@btn-default-hover-bg: #4c4c61;
+@btn-default-active-bg: #272733;
+@btn-primary-color: @light;
+@btn-primary-hover-bg: #40a9ff;
+@btn-primary-active-bg: #096dd9;
+@btn-ghost-hover-border: fade(@light, 65);
+
+// for project
+@select-dropdown-bg: #3b3b4d;
+@select-dropdown-hover-bg: #4c4c61;
+@select-dropdown-active-bg: #4c4c61;
+@select-item-selected-bg: #272733;
+@checkbox-check-inner-color: @light;
+@anchor-border-color: fade(@light, 15);
+@ui-menu-divider-color: fade(@light, 15);
+
+@modal-footer-border-color-split: #17171f;
+@card-bg-color: #30303d;
+@process-tail-color: fade(@light, 10);
+// drawer background-color
+@drawer-content-bg: #2d2d3b;
+@drawer-header-bg: #2d2d3b;
+@radio-button-border-color: #86868c;
+@message-background: #2d2d3b;
+@notification-background: #2d2d3b;
+
+// size
+@ui-heading-1-size: 20px;
+@ui-min-heading-1-size: 16px;
+
+@ui-directory-bg: #3b3b4d;
+@ui-directory-list-item-hover-bg: #2d2d3b;
+@ui-directory-list-item-checked-icon-color: #61616c;
+@ui-modal-shadow: 0 2px 8px fade(@dark, 25);
+@ui-log-shadow: 0 -4px 12px fade(@dark, 12);
+@ui-scroll-bg: #3b3b47;
+@ui-tag-error-color: #f5222d;
+@ui-status-bar-height: 28px;
+@ui-header-title-height: 62px;
+@ui-min-header-title-height: 40px;
+@ui-status-bar-bg: #17171f;
+@ui-footer-bar-hover-bg: #2d2d3b;
+@ui-status-bar-color: fade(@light, 85);
+@ui-sidebar-menu-bg: #343345;
+@ui-directory-split-color: fade(@light, 10);
+@ui-sidebar-menu-divider-color: fade(@light, 10);
+@ui-sidebar-menu-hover-bg: #4c4c61;
+@ui-footer-actions-divider-color: #15171c;
+@ui-terminal-bg: #15171c;
+@ui-terminal-color: fade(@light, 65);
+
+// PC 宽度 >= 1208
+@pc: ~'only screen and (min-width: @{screen-xl})';
+// 桌面 >= 1024 =< 1208
+@desktop: ~'screen and (min-width:@{screen-lg}) and (max-width:@{screen-xl})';
+// 平板 >= 768 <= 1024
+@tablet: ~'screen and (min-width: @{screen-md}) and (max-width:@{screen-lg})';
+// 移动端 <= 768
+@mobile: ~'only screen and (max-width: @{screen-md})';
+// 超小移动端 <= 375
+@smallMobile: ~'only screen and (max-width: @{screen-xs})';
+// ipad 横向
+@ipad-landscape: ~'only screen and (min-device-width: 768px)and (max-device-width : 1024px) and (orientation: landscape)';
+// ipad 纵向
+@ipad-port: ~'only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)';
+
+.omit() {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -1,0 +1,108 @@
+.footer {
+  // flex: auto 0 0;
+  // box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+  //position: fixed;
+  //left: 0;
+  //bottom: 0;
+  //width: 100%;
+  //background: #fff;
+  //border-top: 1px solid #ccc;
+}
+.help {
+  :global(.ant-popover-inner-content) {
+    padding: 12px;
+  }
+}
+
+.statusBar {
+  position: relative;
+  z-index: 999;
+  background: @ui-status-bar-bg;
+  color: @ui-status-bar-color;
+  height: @ui-status-bar-height;
+  line-height: @ui-status-bar-height;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+
+  .section {
+    flex: auto 1;
+    flex-shrink: 0;
+    padding: 0 8px;
+    cursor: default;
+    height: 100%;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: @ui-footer-bar-hover-bg;
+    }
+    p {
+      color: @heading-color;
+    }
+    a {
+      color: @heading-color;
+    }
+  }
+  .version {
+    flex: auto 1;
+    flex-shrink: 0;
+    padding: 0 8px;
+    cursor: default;
+    height: 100%;
+    transition: background-color 0.3s;
+  }
+  .section.action {
+    cursor: pointer;
+    user-select: none;
+  }
+  &-left {
+    display: flex;
+    flex-direction: row;
+    flex: 100% 1 1;
+    .section:last-child {
+      width: 0;
+      flex: 100% 1 1;
+    }
+  }
+}
+
+.section {
+  &-drawer {
+    &-container {
+      position: relative;
+      z-index: 1;
+    }
+    &-logs {
+      height: 100%;
+      ul {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+    &-shell {
+      // padding-right: 6px;
+    }
+    :global {
+      .ant-drawer-body {
+        padding: 0;
+        height: calc(~'100% - @{ui-status-bar-height}');
+      }
+      .ant-drawer-wrapper-body {
+        height: 100%;
+      }
+      .ant-drawer-content {
+        background-color: @drawer-content-bg;
+        transform: translateY(-@ui-status-bar-height);
+      }
+      .ant-drawer-header {
+        padding: 0;
+        background-color: @drawer-header-bg;
+        border-bottom-color: @ui-footer-actions-divider-color;
+      }
+    }
+  }
+}

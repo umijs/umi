@@ -1,6 +1,6 @@
 import fork from 'umi-build-dev/lib/fork';
 import yParser from 'yargs-parser';
-import UmiUI from '@umijs/ui/lib/UmiUI';
+import UmiUI from 'umi-ui/lib/UmiUI';
 import buildDevOpts from '../buildDevOpts';
 import isUmiUIEnable from '../isUmiUIEnable';
 
