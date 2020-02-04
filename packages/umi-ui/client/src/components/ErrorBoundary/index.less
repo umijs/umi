@@ -1,0 +1,35 @@
+.result {
+  max-width: 577px;
+  margin: 0 auto;
+  padding-top: 105px;
+  .stack {
+    padding: 16px;
+    background-color: @card-bg-color;
+    border-radius: @border-radius-base;
+    max-height: 500px;
+    overflow-y: auto;
+    & > :global(.anticon) {
+      color: @error-color;
+    }
+  }
+  :global {
+    .ant-result-icon {
+      margin-bottom: 8px;
+      & > .anticon {
+        font-size: 32px;
+      }
+    }
+    .ant-result-title {
+      font-size: @font-size-lg;
+      color: @heading-color;
+      padding: 0 16px;
+      line-height: 22px;
+      margin-bottom: 16px;
+    }
+    .ant-result-content {
+      margin-top: 12px;
+      background-color: @component-background;
+      padding: 0 16px;
+    }
+  }
+}

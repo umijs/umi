@@ -15,7 +15,6 @@
   },
   "files": [
     "ui",
-    "dist",
     "lib",
     "src",
     "locale/index.js",
@@ -38,7 +37,7 @@
     "umi-plugin-locale": "2.11.4",
     "umi-plugin-polyfills": "1.4.2",
     "umi-plugin-routes": "1.8.7",
-    "@umijs/plugin-ui": "^0.0.2",
+    "umi-plugin-ui": "1.5.1",
     "umi-utils": "1.7.2",
     "webpack": "4.41.1",
     "workbox-webpack-plugin": "3.6.3"

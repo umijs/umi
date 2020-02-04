@@ -1,1 +1,1 @@
-module.exports = require('@umijs/ui').default || require('@umijs/ui');
+module.exports = require('umi-ui').default || require('umi-ui');

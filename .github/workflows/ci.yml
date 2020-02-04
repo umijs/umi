@@ -18,6 +18,7 @@ jobs:
     - run: npm install
     - run: npm run bootstrap
     - run: npm run build
+    - run: npm run ui:build
     - run: npm run test -- --forceExit
       env:
         CI: true

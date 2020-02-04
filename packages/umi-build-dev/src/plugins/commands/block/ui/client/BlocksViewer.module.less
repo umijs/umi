@@ -1,0 +1,91 @@
+.container {
+  padding: 24px;
+  height: 100%;
+  overflow: auto;
+
+  &.min {
+    padding: 20px;
+  }
+}
+
+.loading {
+  text-align: center;
+  margin-top: 200px;
+}
+
+.blockList {
+  h3 {
+    display: inline-block;
+  }
+}
+
+.tabs {
+  :global {
+    .ant-tabs-bar {
+      border: 0;
+      margin-bottom: 24px;
+    }
+    .ant-tabs-tab {
+      padding: 4px 8px;
+    }
+  }
+}
+
+.block {
+  cursor: pointer;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  width: 140px;
+  height: 140px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.spin {
+  position: absolute;
+  left: 0;
+  top: 50px;
+  width: 140px;
+}
+
+.block:hover {
+  border: 1px solid #1c92ff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blockTitle {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+:global {
+  .ant-select-tree-indent {
+    white-space: pre;
+  }
+}
+
+// 左右两栏布局
+.wrapper {
+  display: flex;
+  height: 100%;
+  overflow: auto;
+
+  .side {
+    width: 256px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #000;
+    @media screen and (max-width: 768px) {
+      width: 212px;
+    }
+  }
+
+  .main {
+    flex: 1;
+  }
+}

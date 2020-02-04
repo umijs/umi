@@ -1,0 +1,57 @@
+.terminal {
+  height: 360px;
+}
+
+.project {
+  &-progress {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 0;
+    :global {
+      .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after {
+        background-color: @primary-color;
+      }
+      .ant-steps-item-error > .ant-steps-item-container > .ant-steps-item-tail::after {
+        background-color: @error-color;
+      }
+      .ant-steps-label-vertical .ant-steps-item:last-child {
+        margin-right: 0;
+        .ant-steps-item-tail {
+          display: none;
+        }
+      }
+      .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item-tail {
+        display: none;
+      }
+    }
+    @media @tablet {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    @media @mobile {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    h3 {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    &-fail {
+      padding: 16px;
+      text-align: center;
+      margin: 0 auto;
+      p {
+        color: fade(#fff, 45);
+        font-size: 14px;
+      }
+      a {
+      }
+    }
+    :global {
+      .ant-steps-item-title {
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+  }
+}

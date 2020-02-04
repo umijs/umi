@@ -1,0 +1,28 @@
+.section {
+  min-width: 600px;
+  max-width: 1208px;
+  margin: 40px auto;
+}
+
+:global(.en-US) .steps {
+  max-width: unset;
+}
+
+.steps {
+  max-width: 358px;
+  margin: 0 auto;
+  :global {
+    .ant-steps-item-finish
+      > .ant-steps-item-container
+      > .ant-steps-item-content
+      > .ant-steps-item-title::after {
+      background-color: @primary-color;
+    }
+    .ant-steps-item-error
+      > .ant-steps-item-container
+      > .ant-steps-item-content
+      > .ant-steps-item-title::after {
+      background-color: @error-color;
+    }
+  }
+}

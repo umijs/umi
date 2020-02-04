@@ -1,0 +1,40 @@
+@header-height: 64px;
+
+.project-l {
+  &-header {
+    padding: 0;
+    height: @header-height;
+    border-bottom: 1px solid @border-color-split;
+    :global(.ant-divider) {
+      display: none;
+    }
+    :global(.ant-page-header-back) {
+      margin: 0;
+      height: @header-height;
+      line-height: @header-height;
+      padding-left: 24px;
+      padding-right: 24px;
+      &:hover {
+        .anticon {
+          color: @icon-color-hover;
+        }
+      }
+    }
+    :global(.ant-page-header-heading-title) {
+      line-height: @header-height;
+      padding-left: 24px;
+      border-left: 1px solid @border-color-split;
+      font-weight: 500;
+    }
+    :global(.ant-page-header-heading) {
+      // padding-left: 24px;
+    }
+    :global(.ant-page-header-back-button) {
+      color: @light;
+      &:hover,
+      &:focus {
+        color: @icon-color-hover;
+      }
+    }
+  }
+}

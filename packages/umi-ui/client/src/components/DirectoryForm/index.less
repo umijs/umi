@@ -1,0 +1,128 @@
+.empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.directoryForm {
+  padding: 16px 0 0;
+  &-tip {
+    color: @text-color-secondary;
+    font-size: 12px;
+    margin-top: 18px;
+  }
+  &-toolbar {
+    display: flex;
+    &-back,
+    .edit,
+    .refresh {
+      flex: auto 1 1;
+    }
+    &-back,
+    .edit button,
+    .refresh button {
+      width: 32px;
+      padding: 0 8px;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+    }
+    .edit,
+    .refresh {
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 100%;
+        background-color: @ui-directory-split-color;
+      }
+    }
+    &-back {
+      border-right: 0;
+      margin-right: 8px;
+    }
+    &-back,
+    &-bread,
+    &-bread button,
+    .edit button,
+    .refresh button {
+      background-color: @ui-directory-bg;
+    }
+    &-bread {
+      flex: 100% 1 1;
+      display: flex;
+      align-items: center;
+      &,
+      button {
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        .omit;
+      }
+      button {
+        &:hover {
+          background-color: @ui-sidebar-menu-hover-bg;
+        }
+      }
+      // &-path {
+      //   &::after {
+      //     content: '/';
+      //     position: relative;
+      //   }
+      // }
+    }
+  }
+  &-list {
+    min-height: 150px;
+    height: calc(~'100vh - 500px');
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 12px;
+    :global(.ant-empty-image) {
+      margin: 8px 0;
+      height: 50px;
+    }
+    &-item {
+      padding: 8px;
+      display: flex;
+      cursor: pointer;
+      position: relative;
+      align-items: center;
+      user-select: none;
+      transition: all 0.3s, border 0s;
+      &-checked-icon {
+        font-size: 16px;
+        margin-right: 12px;
+        color: @ui-directory-list-item-checked-icon-color;
+        opacity: 0;
+        transition: color 0.3s, opacity 0.3s;
+        &.checked-icon-active {
+          color: @success-color;
+          opacity: 1;
+        }
+      }
+      &-active {
+        background: @ui-directory-list-item-hover-bg;
+      }
+      &:hover {
+        background: @ui-directory-list-item-hover-bg;
+      }
+      &:hover &-checked-icon {
+        opacity: 1;
+      }
+
+      &-icon {
+        font-size: 16px;
+      }
+      &-name {
+        margin-left: 8px;
+        flex: 100% 1 1;
+      }
+    }
+  }
+}

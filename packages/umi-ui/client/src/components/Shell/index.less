@@ -1,0 +1,37 @@
+.shell {
+  overflow: auto;
+  overflow-x: hidden;
+  height: 100%;
+  .terminalWrapper {
+    padding-right: 8px;
+  }
+  ul {
+    padding: 8px 24px;
+    li {
+      margin: 8px 0;
+    }
+  }
+  .terminal {
+    height: 100%;
+  }
+}
+
+.log {
+  display: flex;
+  font-size: 12px;
+  &-tag {
+    min-width: 56px;
+    height: 22px;
+    text-align: center;
+  }
+  &-date,
+  &-desc {
+    padding: 3px 0;
+  }
+  &-date {
+    white-space: nowrap;
+  }
+  &-desc {
+    flex: 100% auto auto;
+  }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>编组 4</title>
+    <desc>Created with Sketch.</desc>
+    <g id="项目管理" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="录入信息" transform="translate(-688.000000, -202.000000)">
+            <g id="编组-7" transform="translate(444.000000, 198.000000)">
+                <g id="编组-8">
+                    <g id="编组-8备份" transform="translate(244.000000, 4.000000)">
+                        <g id="编组-4">
+                            <polygon id="矩形" fill="#1890FF" points="0 0 20 0 20 20"></polygon>
+                            <g id="check" transform="translate(10.000000, 1.000000)" fill-rule="nonzero">
+                                <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="9" height="9"></rect>
+                                <path d="M8.015625,1.66992188 L7.40126953,1.66992188 C7.31513672,1.66992188 7.23339844,1.70947266 7.18066406,1.77714844 L3.55693359,6.36767578 L1.81933594,4.16601562 C1.76572266,4.09833984 1.68486328,4.05878906 1.59873047,4.05878906 L0.984375,4.05878906 C0.925488281,4.05878906 0.89296875,4.12646484 0.929003906,4.17216797 L3.33632813,7.22197266 C3.44882812,7.36435547 3.66503906,7.36435547 3.77841797,7.22197266 L8.07099609,1.78242188 C8.10703125,1.73759766 8.07451172,1.66992188 8.015625,1.66992188 Z" id="路径" fill="#FFFFFF"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
