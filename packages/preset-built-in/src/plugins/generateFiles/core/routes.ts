@@ -16,7 +16,7 @@ export default function(api: IApi) {
     const route = new Route();
     const routes = route.getRoutes({
       config: api.config as IConfig,
-      root: paths.absPagesPath,
+      root: paths.absPagesPath!,
     });
     api.writeTmpFile({
       path: 'core/routes.ts',
@@ -31,7 +31,7 @@ export default function(api: IApi) {
   api.addUmiExports(() => {
     return {
       specifiers: ['routes'],
-      source: `${paths.aliasedTmpPath}/core/routes`,
+      source: `./routes`,
     };
   });
 }

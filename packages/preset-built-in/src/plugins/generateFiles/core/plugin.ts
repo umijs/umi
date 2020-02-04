@@ -40,7 +40,7 @@ export default function(api: IApi) {
   api.addUmiExports(() => {
     return {
       specifiers: ['plugin'],
-      source: `${paths.aliasedTmpPath}/core/plugin`,
+      source: `./plugin`,
     };
   });
 }

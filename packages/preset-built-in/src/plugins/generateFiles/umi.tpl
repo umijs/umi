@@ -1,6 +1,6 @@
 {{{ polyfillImports }}}
 {{{ importsAhead }}}
-import { history, plugin } from '{{{ aliasedTmpPath }}}/core/umiExports';
+import { history, plugin } from './core/umiExports';
 import { ApplyPluginsType } from '{{{ runtimePath }}}';
 import { renderClient } from '{{{ rendererPath }}}';
 {{{ imports }}}
@@ -22,7 +22,7 @@ const clientRender = plugin.applyPlugins({
   args: {},
 });
 
-clientRender();
+module.exports = clientRender();
 
 {{{ entryCode }}}
 

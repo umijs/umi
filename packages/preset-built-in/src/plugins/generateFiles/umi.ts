@@ -30,7 +30,6 @@ export default function(api: IApi) {
       content: Mustache.render(umiTpl, {
         rendererPath: winPath(require.resolve('@umijs/renderer-react')),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
-        aliasedTmpPath: paths.aliasedTmpPath,
         entryCode: (
           await api.applyPlugins({
             key: 'addEntryCode',

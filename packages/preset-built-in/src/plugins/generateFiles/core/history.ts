@@ -46,7 +46,7 @@ export default function(api: IApi) {
   api.addUmiExports(() => {
     return {
       specifiers: ['history'],
-      source: `${paths.aliasedTmpPath}/core/history`,
+      source: `./history`,
     };
   });
 }
