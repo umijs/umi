@@ -12,5 +12,12 @@
       "pr(chore)": ":turtle: Chore"
     },
     "cacheDir": ".changelog"
-  }
+  },
+  "ignoreChanges": [
+    "**/*.md",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/fixtures/**",
+    "**/test/**"
+  ]
 }

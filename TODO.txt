@@ -15,6 +15,7 @@ umi-next:
 		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 		- logger 优化
 			比如插件层如何打日志？如何过滤日志？
+		- plugin 没走 babelRegister @ycjcl868
 	preset-built-in:
 		dev & build:
 			- 支持 H5 的多页功能
@@ -86,7 +87,7 @@ plugins:
 		- 默认语言无效？
 			需要排查下
 	CHORE:
-		- 发布脚本
+		- 发布脚本 @sorrycc
 			支持单独发布某个插件
 		- 完善用例
 

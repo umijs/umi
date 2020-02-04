@@ -20,9 +20,15 @@ function logStep(name) {
 
 async function release() {
   // Check git status
-  const gitStatus = execa.sync('git', ['status', '--porcelain']).stdout;
-  if (gitStatus.length) {
-    printErrorAndExit(`Your git status is not clean. Aborting.`);
+  if (!args.skipGitStatusCheck) {
+    const gitStatus = execa.sync('git', ['status', '--porcelain']).stdout;
+    if (gitStatus.length) {
+      printErrorAndExit(`Your git status is not clean. Aborting.`);
+    }
+  } else {
+    logStep(
+      'git status check is skipped, since --skip-git-status-check is supplied',
+    );
   }
 
   // Check npm registry
@@ -43,7 +49,7 @@ async function release() {
   if (!args.publishOnly) {
     // Get updated packages
     logStep('check updated packages');
-    const updatedStdout = execa.sync(lernaCli, ['updated']).stdout;
+    const updatedStdout = execa.sync(lernaCli, ['changed']).stdout;
     updated = updatedStdout
       .split('\n')
       .map(pkg => {
@@ -128,6 +134,8 @@ async function release() {
         console.log(stdout);
       }
     });
+
+  logStep('done');
 }
 
 release().catch(err => {
