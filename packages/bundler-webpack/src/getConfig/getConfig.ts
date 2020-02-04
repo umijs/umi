@@ -259,7 +259,7 @@ export default async function getConfig(
       }),
       ...objToStringified(config.define || {}),
     },
-  ]);
+  ] as any);
 
   // progress
   if (!isWebpack5) {
