@@ -70,7 +70,7 @@ umi-next:
 
 plugins:
 	实现插件:
-		- plugin-model @sorrycc
+		- plugin-model @sorrycc @done
 		- plugin-access
 		- plugin-request
 		- plugin-layout
@@ -88,6 +88,7 @@ plugins:
 	CHORE:
 		- 发布脚本
 			支持单独发布某个插件
+		- 完善用例
 
 plugin-ui: @ycjcl868
 	- 适配 umi@3
