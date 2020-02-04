@@ -19,6 +19,12 @@ function logStep(name) {
 }
 
 async function release() {
+  // Check git status
+  const gitStatus = execa.sync('git', ['status', '--porcelain']).stdout;
+  if (gitStatus.length) {
+    printErrorAndExit(`Your git status is not clean. Aborting.`);
+  }
+
   // Check npm registry
   logStep('check npm registry');
   const userRegistry = execa.sync('npm', ['config', 'get', 'registry']).stdout;
