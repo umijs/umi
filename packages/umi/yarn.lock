@@ -1682,12 +1682,20 @@
     debug "^4.1.1"
     user-home "^2.0.0"
 
-"@umijs/ui@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umijs/ui/-/ui-1.0.0.tgz#0b3f8d31ac18ca1a9477a4e4840e5f10781b4d01"
-  integrity sha512-65l7t8Kt+r2Iy6J2qqxmayCL+Efd+2oCbxR7sLBzxKxPdaIptUUqETd/NgrMEHM8ufeC/wujpSEB3aCSwE9mpw==
+"@umijs/ui-theme@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/ui-theme/-/ui-theme-0.0.2.tgz#2a3bbedfad38f52db64d7037dd643eb21b1d1a3f"
+  integrity sha512-NlnXdrKLAfucpx0g7/MVp/U0C9XM4y5g0+dhgaVUbvi71AcA9UAO4tWAqfaRyNLAg3anGS3WCA8NNgl7y/Z0Bg==
+  dependencies:
+    less-vars-to-js "1.3.0"
+
+"@umijs/ui@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/ui/-/ui-0.0.2.tgz#99aa78270efb4a1fe48a9d8ee15f5034624e0b57"
+  integrity sha512-EKR8/gRNo+eGzCJSbMCLCw30T52q0WRGm4E9gOCp+6UO85h22bf0wfaiFcmYWB2SOid/V5wKskEP36wRwwubPA==
   dependencies:
     "@umijs/launch-editor" "^1.0.0"
+    "@umijs/ui-theme" "0.0.2"
     binary-mirror-config "1.20.3"
     chalk "2.4.2"
     clear-module "4.0.0"
@@ -8010,6 +8018,13 @@ less-loader@5.0.0:
     clone "^2.1.1"
     loader-utils "^1.1.0"
     pify "^4.0.1"
+
+less-vars-to-js@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/less-vars-to-js/-/less-vars-to-js-1.3.0.tgz#c322cf43a3c8fc3fab655da3e51a14c1499ab571"
+  integrity sha512-xeiLLn/IMCGtdyCkYQnW8UuzoW2oYMCKg9boZRaGI58fLz5r90bNJDlqGzmVt/1Uqk75/DxIVtQSNCMkE5fRZQ==
+  dependencies:
+    strip-json-comments "^2.0.1"
 
 less@3.9.0:
   version "3.9.0"

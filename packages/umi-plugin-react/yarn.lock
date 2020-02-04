@@ -1403,10 +1403,10 @@
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
 
-"@umijs/plugin-ui-blocks@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui-blocks/-/plugin-ui-blocks-1.0.0.tgz#4cb2d113b0c002cf82a98085f3c6dfc719e3645d"
-  integrity sha512-s/+wNk3r+LKpi6xbkZ+3NcOS7XMRB5j+5q3d+UvCOJPhH4pbVxLXYAdo4FDBA/IWtO9d3n8ZguB+X7c4JsUZnw==
+"@umijs/plugin-ui-blocks@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui-blocks/-/plugin-ui-blocks-0.0.2.tgz#466c1fbb9234c307f7a36174210339c67236ae58"
+  integrity sha512-WKROOFFH6GeAL4vCbFxz312LxPtlyRU2SHXvZEO7LYROaViSOax4xFVZpTucDkWzXyMW2akPk+bcfGoenzcSCw==
   dependencies:
     "@babel/generator" "7.4.4"
     "@babel/parser" "7.4.5"
@@ -1437,10 +1437,10 @@
     umi-utils "^1.7.2"
     uppercamelcase "3.0.0"
 
-"@umijs/plugin-ui-tasks@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui-tasks/-/plugin-ui-tasks-1.0.0.tgz#557beab2ab9d81c477310a4777a356af6f177b3b"
-  integrity sha512-k3JHOHPMCHZrzYXyMd1mxPY0ildyeobXey2dWw/uRVZEfi8VCbaTbWajXTB60K3ly/PgWPjWhE9V9s+10Qbmww==
+"@umijs/plugin-ui-tasks@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui-tasks/-/plugin-ui-tasks-0.0.2.tgz#4a0c2f60c7c1f202a43bdf0c71565598b294d178"
+  integrity sha512-pgtUoOPeFwS6ooYErCLsMrSx27gtWbqrvUCSXYM+dFj93+rPSmKr9b9Vf06S/FlrvQJrRDL5Us+CRJ9Bkng93Q==
   dependencies:
     binary-mirror-config "1.20.3"
     cross-spawn "^6.0.5"
@@ -1449,13 +1449,13 @@
     rimraf "^3.0.0"
     umi-webpack-bundle-analyzer "^3.5.0"
 
-"@umijs/plugin-ui@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui/-/plugin-ui-1.0.0.tgz#6fbaf1db43733d0e89be652dc39f90d1d634c906"
-  integrity sha512-OmNTO8TdgsFCOqIk6kfqFJ5cW2cLHnVwLfyHt6ihSqs9hpCRmMXKlMt1zCfUuq2UT59zbmgRlSniy4stIOzhgg==
+"@umijs/plugin-ui@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@umijs/plugin-ui/-/plugin-ui-0.0.2.tgz#f4ece8d574bb91bcf1ada276a06ca64649f717e8"
+  integrity sha512-owjS9qsb7trIvwEKF6hg4j4rRi/RrEEK0PYuJN4mzEXhhD3f102ueZPbb6qMqMhDUKMNLhbrYpEAWK2F119T0Q==
   dependencies:
-    "@umijs/plugin-ui-blocks" "1.0.0"
-    "@umijs/plugin-ui-tasks" "1.0.0"
+    "@umijs/plugin-ui-blocks" "0.0.2"
+    "@umijs/plugin-ui-tasks" "0.0.2"
     got "9.6.0"
     immer "^5.0.0"
     is-mobile "2.1.0"
