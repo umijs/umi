@@ -9,5 +9,5 @@ export default ({ defaultConfig, config }: IOpts) => {
   if (lodash.isPlainObject(defaultConfig) && lodash.isPlainObject(config)) {
     return deepmerge(defaultConfig, config);
   }
-  return config ? config : defaultConfig;
+  return typeof config !== 'undefined' ? config : defaultConfig;
 };

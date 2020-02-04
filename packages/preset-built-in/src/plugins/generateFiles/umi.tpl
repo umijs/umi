@@ -11,18 +11,18 @@ const clientRender = plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
-    renderClient({
+    return renderClient({
       // @ts-ignore
       routes: require('./core/umiExports').routes,
       plugin,
       history,
-      rootElement: 'root',
+      rootElement: '{{{ rootElement }}}',
     });
   },
   args: {},
 });
 
-module.exports = clientRender();
+export default clientRender();
 
 {{{ entryCode }}}
 

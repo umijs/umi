@@ -162,6 +162,7 @@ export interface IConfig extends IConfigCore {
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;
+  mountElementId?: string;
   plugins?: IPresetOrPlugin[];
   presets?: IPresetOrPlugin[];
   proxy?: any;
