@@ -86,13 +86,6 @@ export default class Logger extends Common {
     }
   }
 
-  public debug(...args: any) {
-    if (process.env.DEBUG) {
-      process.stdout.write(chalk.black.bgYellow('DEBUG') + ' ');
-    }
-    return super.debug(...args);
-  }
-
   public warn(...args: any) {
     process.stderr.write(chalk.black.bgHex('#faad14')('WARN') + ' ');
     console.warn(...args);
