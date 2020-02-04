@@ -4,10 +4,10 @@
   },
   "peerDependencies": {
     "umi-types": "^0.4.0-beta.4",
+    "umi-build-dev": "^1.13.0",
     "umi-ui-theme": "^1.1.2"
   },
   "dependencies": {
-    "umi": "2.13.3",
     "@ant-design/compatible": "^0.0.1-alpha.1",
     "@ant-design/icons": "^4.0.0-alpha.11",
     "@umijs/hooks": "^1.3.2",
