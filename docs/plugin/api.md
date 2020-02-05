@@ -2,6 +2,8 @@
 
 ## 核心方法
 
+[Service](https://github.com/umijs/umi-next/blob/master/packages/core/src/Service/Service.ts) 和 [PluginAPI](https://github.com/umijs/umi-next/blob/master/packages/core/src/Service/PluginAPI.ts) 里定义的方法。
+
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
 注册阶段执行，用于描述插件或插件集的 id、key 和配置信息等。
@@ -69,11 +71,11 @@ console.log(foo); // ['a', 'b']
 - fn 里的内容需结合 `api.appyPlugins` 的 type 参数来看 _ 如果是 `api.ApplyPluginsType.add`，需有返回值，这些返回值最终会被合成一个数组 _ 如果是 `api.ApplyPluginsType. modify`，需对第一个参数做修改，并返回 \* 如果是 `api.ApplyPluginsType. event`，无需返回值
 - stage 和 before 都是用于调整执行顺序的，参考 [tapable](https://github.com/webpack/tapable)
 
-### api.applyPlugins({ key: string, type: api.ApplyPluginsType, initialValue?: any, args?: any })
+### applyPlugins({ key: string, type: api.ApplyPluginsType, initialValue?: any, args?: any })
 
 TODO。
 
-### api.registerCommand({ name: string, alias?: string, fn: Function })
+### registerCommand({ name: string, alias?: string, fn: Function })
 
 注册命令。
 
@@ -82,15 +84,15 @@ TODO。
 - `alias` 为别名，比如 generate 的别名 g
 - `fn` 的参数为 `{ args }`，args 的格式同 [yargs](https://github.com/yargs/yargs) 的解析结果，需要注意的是 `_` 里的 command 本身被去掉了，比如执行 `umi generate page foo`，`args._` 为 `['page', 'foo']`
 
-### api.registerPresets(presets: string[])
+### registerPresets(presets: string[])
 
 注册插件集，参数为路径数组。
 
-### api.registerPlugins(plugins: string[])
+### registerPlugins(plugins: string[])
 
 注册插件，参数为路径数组。
 
-### api.registerMethod({ name: string, fn?: Function, exitsError?: boolean })
+### registerMethod({ name: string, fn?: Function, exitsError?: boolean })
 
 往 api 上注册方法。可以是 `api.register()` 的快捷使用方式，便于调用；也可以不是，如果有提供 `fn`，则执行 `fn` 定义的函数。
 
@@ -99,7 +101,7 @@ TODO。
 - 除 @umijs/preset-build-in 外，通常不建议注册额外的方法，因为没有 ts 提示，直接使用 `api.register()` 就好
 - `exitsError` 默认为 true，如果方法存在则报错
 
-### api.skipPlugins(pluginIds: string[])
+### skipPlugins(pluginIds: string[])
 
 声明哪些插件需要被禁用，参数为插件 id 的数组。
 
@@ -111,6 +113,8 @@ api.skipPlugins(['@umijs/plugin-dva']);
 ```
 
 ## 扩展方法
+
+通过 `api.registerMethod()` 扩展的方法。
 
 ### onPluginReady
 
