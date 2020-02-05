@@ -60,6 +60,7 @@ export interface IApi extends PluginAPI {
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
   ConfigChangeType: typeof Service.prototype.ConfigChangeType;
+  stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };

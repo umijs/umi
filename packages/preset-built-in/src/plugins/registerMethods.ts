@@ -32,10 +32,10 @@ export default function(api: IApi) {
     name: 'writeTmpFile',
     fn({ path, content }: { path: string; content: string }) {
       assert(
-        api.service.stage >= api.ServiceStage.pluginReady,
+        api.stage >= api.ServiceStage.pluginReady,
         `api.writeTmpFile() should not execute in register stage.`,
       );
-      const absPath = join(api.service.paths.absTmpPath!, path);
+      const absPath = join(api.paths.absTmpPath!, path);
       api.utils.mkdirp.sync(dirname(absPath));
       if (!existsSync(absPath) || readFileSync(absPath, 'utf-8') !== content) {
         writeFileSync(absPath, content, 'utf-8');

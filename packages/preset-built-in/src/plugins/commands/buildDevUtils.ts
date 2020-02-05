@@ -28,8 +28,6 @@ export async function getBundleAndConfigs({
 
   // get config
   async function getConfig({ type }: { type: ConfigType }) {
-    const tmpDir =
-      api.env === 'development' ? '.umi' : `.umi-${process.env.NODE_ENV}`;
     const env: Env = api.env === 'production' ? 'production' : 'development';
     const getConfigOpts = await api.applyPlugins({
       type: api.ApplyPluginsType.modify,
@@ -91,7 +89,7 @@ export async function getBundleAndConfigs({
   };
   const bundleConfigs = await api.applyPlugins({
     type: api.ApplyPluginsType.modify,
-    key: 'modifyBundlerConfigs',
+    key: 'modifyBundleConfigs',
     initialValue: [
       await getConfig({ type: ConfigType.csr }),
       api.config!.ssr && (await getConfig({ type: ConfigType.ssr })),

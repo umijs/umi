@@ -38,6 +38,5 @@ export default function getServicePaths({
     absSrcPath,
     absPagesPath,
     absTmpPath: join(absSrcPath, tmpDir),
-    aliasedTmpPath: `@/${tmpDir}`,
   });
 }

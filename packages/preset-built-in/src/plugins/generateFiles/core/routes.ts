@@ -23,7 +23,6 @@ export default function(api: IApi) {
       content: Mustache.render(routesTpl, {
         routes: route.getJSON({ routes }),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
-        aliasedTmpPath: paths.aliasedTmpPath,
       }),
     });
   });

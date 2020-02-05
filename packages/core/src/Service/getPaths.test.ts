@@ -28,7 +28,6 @@ test('empty', () => {
     absPagesPath: 'pages',
     absSrcPath: '',
     absTmpPath: '.umi',
-    aliasedTmpPath: '@/.umi',
     cwd: '',
   });
 });
@@ -50,7 +49,6 @@ test('empty production', () => {
     absPagesPath: 'pages',
     absSrcPath: '',
     absTmpPath: '.umi-production',
-    aliasedTmpPath: '@/.umi-production',
     cwd: '',
   });
 });
@@ -74,7 +72,6 @@ test('empty config singular', () => {
     absPagesPath: 'page',
     absSrcPath: '',
     absTmpPath: '.umi',
-    aliasedTmpPath: '@/.umi',
     cwd: '',
   });
 });
@@ -98,7 +95,6 @@ test('empty config outputPath', () => {
     absPagesPath: 'pages',
     absSrcPath: '',
     absTmpPath: '.umi',
-    aliasedTmpPath: '@/.umi',
     cwd: '',
   });
 });
@@ -120,7 +116,6 @@ test('src', () => {
     absPagesPath: 'src/pages',
     absSrcPath: 'src',
     absTmpPath: 'src/.umi',
-    aliasedTmpPath: '@/.umi',
     cwd: '',
   });
 });
@@ -144,7 +139,6 @@ test('src config singular', () => {
     absPagesPath: 'src/page',
     absSrcPath: 'src',
     absTmpPath: 'src/.umi',
-    aliasedTmpPath: '@/.umi',
     cwd: '',
   });
 });

@@ -81,7 +81,6 @@ export default class Service extends EventEmitter {
     absPagesPath?: string;
     absOutputPath?: string;
     absTmpPath?: string;
-    aliasedTmpPath?: string;
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;
@@ -243,6 +242,7 @@ export default class Service extends EventEmitter {
             'ApplyPluginsType',
             'ConfigChangeType',
             'babelRegister',
+            'stage',
             'ServiceStage',
             'paths',
             'cwd',
@@ -371,6 +371,10 @@ ${name} from ${plugin.path} register failed.`);
   }
 
   async run({ name, args = {} }: { name: string; args?: any }) {
+    args._ = args._ || [];
+    // shift the command itself
+    args._.shift();
+
     this.args = args;
     this.setStage(ServiceStage.init);
     await this.init();
@@ -382,16 +386,9 @@ ${name} from ${plugin.path} register failed.`);
         : this.commands[name];
     assert(command, `run command failed, command ${name} does not exists.`);
 
-    args._ = args._ || [];
-    // shift the command itself
-    args._.shift();
-
     await this.applyPlugins({
       key: 'onStart',
       type: ApplyPluginsType.event,
-      args: {
-        args,
-      },
     });
 
     const { fn } = command as ICommand;
