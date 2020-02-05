@@ -31,6 +31,7 @@ export interface IOpts {
   bundleImplementor?: typeof defaultWebpack;
   modifyBabelOpts?: (opts: object) => Promise<any>;
   modifyBabelPresetOpts?: (opts: object) => Promise<any>;
+  chainWebpack?: (webpackConfig: any, args: any) => Promise<any>;
   miniCSSExtractPluginPath?: string;
   miniCSSExtractPluginLoaderPath?: string;
 }
@@ -52,7 +53,7 @@ export default async function getConfig(
     miniCSSExtractPluginPath,
     miniCSSExtractPluginLoaderPath,
   } = opts;
-  const webpackConfig = new Config();
+  let webpackConfig = new Config();
 
   webpackConfig.mode(env);
 
@@ -328,6 +329,18 @@ export default async function getConfig(
     },
   );
 
+  if (opts.chainWebpack) {
+    webpackConfig = await opts.chainWebpack(webpackConfig, {
+      webpack: bundleImplementor,
+    });
+  }
+  // 用户配置的 chainWebpack 优先级最高
+  if (config.chainWebpack) {
+    webpackConfig = config.chainWebpack(webpackConfig, {
+      env,
+      webpack: bundleImplementor,
+    });
+  }
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;
 
   // speed-measure-webpack-plugin

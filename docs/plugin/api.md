@@ -150,6 +150,22 @@ api.skipPlugins(['@umijs/plugin-dva']);
 - 不能在注册阶段使用，通常放在 `api.onGenerateFiles()` 里，这样能在需要时重新生成临时文件
 - 临时文件的写入做了缓存处理，如果内容一致，不会做写的操作，以减少触发 webpack 的重新编译
 
+### chainWebpack(config, { webpack })
+
+通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。
+
+比如：
+
+```js
+api.chainWebpack((config, { webpack }) => {
+  // Set alias
+  config.resolve.alias.set('a', 'path/to/a');
+
+  // Delete progress bar plugin
+  config.plugins.delete('progress');
+});
+```
+
 ### addBeforeMiddewares
 
 添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。

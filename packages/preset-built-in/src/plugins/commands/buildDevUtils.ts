@@ -47,9 +47,6 @@ export async function getBundleAndConfigs({
             type: api.ApplyPluginsType.modify,
             key: 'modifyBabelOpts',
             initialValue: opts,
-            args: {
-              env,
-            },
           });
         },
         async modifyBabelPresetOpts(opts: any) {
@@ -57,8 +54,15 @@ export async function getBundleAndConfigs({
             type: api.ApplyPluginsType.modify,
             key: 'modifyBabelPresetOpts',
             initialValue: opts,
+          });
+        },
+        async chainWebpack(webpackConfig: any, opts: any) {
+          return await api.applyPlugins({
+            type: api.ApplyPluginsType.modify,
+            key: 'chainWebpack',
+            initialValue: webpackConfig,
             args: {
-              env,
+              ...opts,
             },
           });
         },

@@ -148,6 +148,7 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
+  chainWebpack?: Function;
   cssLoader?: object;
   define?: {
     [key: string]: any;
