@@ -183,6 +183,7 @@ api.chainWebpack((config, { webpack }) => {
 - patchRoutes
 - rootContainer
 - render
+- onRouteChange
 
 ### addUmiExports
 

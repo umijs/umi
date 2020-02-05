@@ -14,7 +14,7 @@ export default function(api: IApi) {
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',
       type: api.ApplyPluginsType.add,
-      initialValue: ['patchRoutes', 'rootContainer', 'render'],
+      initialValue: ['patchRoutes', 'rootContainer', 'render', 'onRouteChange'],
     });
     const plugins = await api.applyPlugins({
       key: 'addRuntimePlugin',
