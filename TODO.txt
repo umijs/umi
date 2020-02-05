@@ -17,7 +17,7 @@ umi-next:
 			比如插件层如何打日志？如何过滤日志？
 		- plugin 没走 babelRegister @ycjcl868
 		- 路由相关接口 api.getRoutes 和 api.getRouteComponents
-		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置
+		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 	preset-built-in:
 		dev & build:
 			- 支持 H5 的多页功能
