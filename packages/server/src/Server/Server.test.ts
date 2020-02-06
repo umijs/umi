@@ -54,11 +54,8 @@ test('normal', async () => {
       }
     },
   });
-  const serverPort = await portfinder.getPortPromise({
-    port: 3000,
-  });
   const { port, hostname } = await server.listen({
-    port: serverPort,
+    port: 3000,
     hostname: 'localhost',
   });
   const { body: compilerBody } = await got(
@@ -91,6 +88,30 @@ test('normal', async () => {
   server.listeningApp?.close();
 });
 
+test('port', async () => {
+  const server = new Server({
+    compilerMiddleware: (req, res, next) => {
+      if (req.path === '/compiler') {
+        res.end('compiler');
+      } else {
+        next();
+      }
+    },
+  });
+  const { port, hostname } = await server.listen({
+    // not conflict
+    port: 3899,
+    hostname: 'localhost',
+  });
+  const { body: compilerBody } = await got(
+    `http://${hostname}:${port}/compiler`,
+  );
+  expect(compilerBody).toEqual('compiler');
+  expect(port).toEqual(3899);
+
+  server.listeningApp?.close();
+});
+
 test('compress', async () => {
   const server = new Server({
     compress: { threshold: 0 },
@@ -105,11 +126,8 @@ test('compress', async () => {
       }
     },
   });
-  const serverPort = await portfinder.getPortPromise({
-    port: 3003,
-  });
   const { port, hostname } = await server.listen({
-    port: serverPort,
+    port: 3003,
     hostname: 'localhost',
   });
   const { body: compilerBody, headers } = await got(
@@ -140,11 +158,8 @@ test('headers', async () => {
       }
     },
   });
-  const serverPort = await portfinder.getPortPromise({
-    port: 3004,
-  });
   const { port, hostname } = await server.listen({
-    port: serverPort,
+    port: 3004,
     hostname: 'localhost',
   });
   await delay(100);
@@ -171,11 +186,8 @@ test('https', async () => {
       }
     },
   });
-  const serverPort = await portfinder.getPortPromise({
-    port: 3005,
-  });
   const { port, hostname } = await server.listen({
-    port: serverPort,
+    port: 3005,
     hostname: 'localhost',
   });
   const { body: compilerBody, headers } = await got(

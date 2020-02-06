@@ -2,7 +2,7 @@ import { join } from 'path';
 import { writeFileSync } from 'fs';
 import { Service } from '@umijs/core';
 import { Server } from '@umijs/server';
-import { winPath } from '@umijs/utils';
+import { winPath, portfinder } from '@umijs/utils';
 import got from 'got';
 import rimraf from 'rimraf';
 import createMiddleware from './createMiddleware';
@@ -60,7 +60,7 @@ describe('createMiddleware', () => {
       },
     });
     const result = await server.listen({
-      port: 8000,
+      port: 8001,
       hostname: 'localhost',
     });
     port = result.port;

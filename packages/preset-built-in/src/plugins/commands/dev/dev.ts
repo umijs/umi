@@ -28,8 +28,9 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'dev',
     fn: async function() {
+      const defaultPort = api.config.devServer?.port || process.env.PORT;
       port = await portfinder.getPortPromise({
-        port: process.env.PORT ? parseInt(process.env.PORT, 10) : 8000,
+        port: defaultPort ? parseInt(defaultPort, 10) : 8000,
       });
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
@@ -120,9 +121,11 @@ export default (api: IApi) => {
         afterMiddlewares: [createRouteMiddleware({ api })],
         ...(api.config.devServer || {}),
       });
+      const hostname =
+        api.config.devServer?.host || process.env.HOST || '0.0.0.0';
       const listenRet = await server.listen({
         port,
-        hostname: process.env.HOST || '0.0.0.0',
+        hostname,
       });
       return {
         ...listenRet,

@@ -40,6 +40,7 @@ export interface IServerOpts {
     [key: string]: string;
   };
   host?: string;
+  port?: number;
   compress?: CompressionOptions | boolean;
   proxy?: IServerProxyConfig;
   onListening?: {
@@ -71,7 +72,9 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   onConnectionClose: () => {},
   proxy: null,
   headers: {},
+  // not use
   host: 'localhost',
+  port: 8000,
 };
 
 class Server {

@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { join } from 'path';
 import { Logger } from '@umijs/core';
-import { immer } from '@umijs/utils';
+import immer from 'immer';
 import { IServerOpts, IHttps } from './Server';
 
 const logger = new Logger('@umijs/server:utils');
