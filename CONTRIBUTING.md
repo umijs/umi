@@ -5,6 +5,7 @@
 Install dev deps after git clone the repo.
 
 ```bash
+# npm is not allowed.
 $ yarn
 ```
 
@@ -13,6 +14,7 @@ Link umi globally.
 ```bash
 $ cd packages/umi
 $ yarn link
+$ cd -
 ```
 
 Try the `umi` cli.
