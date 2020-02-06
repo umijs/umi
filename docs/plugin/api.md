@@ -307,9 +307,19 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi-n
 
 ### config
 
+用户配置。
+
 注：
 
 - 注册阶段不能获取到，所以不能在外面 `const { config } = api;` 然后在函数体里使用，而是需要在里面通过 `api.paths.cwd` 使用
+
+### userConfig
+
+纯用户配置，就是 `.umirc` 或 `config/config` 里的内容，没有经过 defaultConfig 以及插件的任何处理。
+
+注：
+
+- 和 config 的区别是，可以在注册阶段取到
 
 ### env
 
