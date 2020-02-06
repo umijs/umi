@@ -33,6 +33,7 @@ export default function() {
       require.resolve('./plugins/features/plugins'),
       require.resolve('./plugins/features/presets'),
       require.resolve('./plugins/features/proxy'),
+      require.resolve('./plugins/features/publicPath'),
       require.resolve('./plugins/features/runtimePublicPath'),
       require.resolve('./plugins/features/singular'),
       require.resolve('./plugins/features/styleLoader'),
