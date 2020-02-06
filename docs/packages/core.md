@@ -18,6 +18,7 @@
 - `absTmpPath` 从 `src/pages/.umi` 调整到 `src/.umi`，因为有些应用场景没有 pages 目录，比如 father-doc
 - `api.writeTmpFile` 只能在 `api.onGenerateFiles` 中使用
 - 删除 `api.modifyEntryRender` 接口
+- [BREAK CHANGE] html API 改为复数， `api.addHTMLStyles`、`api.addHTMLHeadScripts`、`api.addHTMLScripts`、`api.addHTMLMetas`、`api.addHTMLLinks`
 
 ## Config
 

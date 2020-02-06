@@ -348,7 +348,37 @@ Service 实例。通常不需要用到，除非你知道为啥要用。
 
 ### Html
 
-TODO。
+### addHTMLMetas
+
+在 HTML 中添加 meta 标签。
+
+### addHTMLLinks
+
+在 HTML 中添加 Link 标签。
+
+### addHTMLStyles
+
+在 HTML 中添加 Style 标签。
+
+### addHTMLScripts
+
+在 HTML 尾部添加脚本。
+
+```js
+api.addHTMLScript(() => {
+  return [
+    {
+      content: '',
+      src: '',
+      // ...attrs
+    },
+  ];
+});
+```
+
+### addHTMLHeadScripts
+
+在 HTML 头部添加脚本。
 
 ### ApplyPluginsType
 

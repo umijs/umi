@@ -3,21 +3,34 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
 import cheerio from 'cheerio';
-import { IConfig, IRoute } from '..';
 import { prettier } from '@umijs/utils';
-
-interface IOpts {
-  config: IConfig;
-}
-
-interface IMeta {
-  [key: string]: string;
-}
+import { IConfig } from '..';
+import {
+  IAddHTML,
+  IScriptConfig,
+  IHTMLTag,
+  IOpts,
+  IGetContentArgs,
+  IScript,
+} from './types';
 
 class Html {
   config: IConfig;
+  tplPath?: string;
+  addHTMLHeadScripts?: IAddHTML<IScriptConfig>;
+  addHTMLScripts?: IAddHTML<IScriptConfig>;
+  addHTMLMetas?: IAddHTML<IHTMLTag[]>;
+  addHTMLLinks?: IAddHTML<IHTMLTag[]>;
+  addHTMLStyles?: IAddHTML<IHTMLTag[]>;
+
   constructor(opts: IOpts) {
     this.config = opts.config;
+    this.tplPath = opts.tplPath;
+    this.addHTMLHeadScripts = opts.addHTMLHeadScripts;
+    this.addHTMLScripts = opts.addHTMLScripts;
+    this.addHTMLMetas = opts.addHTMLMetas;
+    this.addHTMLLinks = opts.addHTMLLinks;
+    this.addHTMLStyles = opts.addHTMLStyles;
   }
 
   getAsset({ file }: { file: string }) {
@@ -28,21 +41,47 @@ class Html {
     return `${publicPath}${file.charAt(0) === '/' ? file.slice(1) : file}`;
   }
 
-  getContent({
-    route,
-    metas = [],
-    headJSFiles = [],
-    jsFiles = [],
-    cssFiles = [],
-    tplPath,
-  }: {
-    route: IRoute;
-    metas?: IMeta[];
-    headJSFiles?: string[];
-    jsFiles?: string[];
-    cssFiles?: string[];
-    tplPath?: string;
-  }) {
+  getScriptsContent(scripts: IScript[]) {
+    return scripts
+      .map((script: any) => {
+        const { content, ...attrs } = script;
+        if (content && !attrs.src) {
+          const newAttrs = Object.keys(attrs).reduce(
+            (memo: any, key: string) => {
+              return [...memo, `${key}="${attrs[key]}"`];
+            },
+            [],
+          );
+          return [
+            `<script${newAttrs.length ? ' ' : ''}${newAttrs.join(' ')}>`,
+            content
+              .split('\n')
+              .map((line: any) => `  ${line}`)
+              .join('\n'),
+            '</script>',
+          ].join('\n');
+        } else {
+          const newAttrs = Object.keys(attrs).reduce((memo: any, key: any) => {
+            return [...memo, `${key}="${attrs[key]}"`];
+          }, []);
+          return `<script ${newAttrs.join(' ')}></script>`;
+        }
+      })
+      .join('\n');
+  }
+
+  async getContent(args: IGetContentArgs): Promise<string> {
+    const { route, tplPath = this.tplPath } = args;
+    let {
+      metas = [],
+      links = [],
+      styles = [],
+      headJSFiles = [],
+      headScripts = [],
+      scripts = [],
+      jsFiles = [],
+      cssFiles = [],
+    } = args;
     const { config } = this;
     if (tplPath) {
       assert(
@@ -65,6 +104,22 @@ class Html {
 
     const $ = cheerio.load(html);
 
+    if (this.addHTMLMetas) {
+      metas = await this.addHTMLMetas(metas, { route });
+    }
+    if (this.addHTMLLinks) {
+      links = await this.addHTMLLinks(links, { route });
+    }
+    if (this.addHTMLHeadScripts) {
+      headScripts = await this.addHTMLHeadScripts(headScripts, { route });
+    }
+    if (this.addHTMLScripts) {
+      scripts = await this.addHTMLScripts(scripts, { route });
+    }
+    if (this.addHTMLStyles) {
+      styles = await this.addHTMLStyles(styles, { route });
+    }
+
     // metas
     metas.forEach(meta => {
       $('head').append(
@@ -80,8 +135,39 @@ class Html {
 
     // title
     if (config.title && !$('head > title').length) {
-      $('head').append('<title>foo</title>');
+      $('head').append(`<title>${config.title}</title>`);
     }
+
+    // links
+    links.forEach(link => {
+      $('head').append(
+        [
+          '<link',
+          ...Object.keys(link).reduce((memo, key) => {
+            return memo.concat(`${key}="${link[key]}"`);
+          }, [] as string[]),
+          '/>',
+        ].join(' '),
+      );
+    });
+
+    // styles
+    styles.forEach(style => {
+      const { content, ...attrs } = style;
+      const newAttrs = Object.keys(attrs).reduce((memo, key) => {
+        return memo.concat(`${key}="${attrs[key]}"`);
+      }, [] as string[]);
+      $('head').append(
+        [
+          `<style${newAttrs.length ? ' ' : ''}${newAttrs.join(' ')}>`,
+          content
+            .split('\n')
+            .map(line => `  ${line}`)
+            .join('\n'),
+          '</style>',
+        ].join('\n'),
+      );
+    });
 
     // css
     cssFiles.forEach(file => {
@@ -99,12 +185,18 @@ class Html {
     }
 
     // js
+    if (headScripts.length) {
+      $('head').append(this.getScriptsContent(headScripts));
+    }
     headJSFiles.forEach(file => {
       $('head').append(`<script src="${this.getAsset({ file })}"></script>`);
     });
     jsFiles.forEach(file => {
       $('body').append(`<script src="${this.getAsset({ file })}"></script>`);
     });
+    if (scripts.length) {
+      $('body').append(this.getScriptsContent(scripts));
+    }
 
     html = $.html();
     html = prettier.format(html, {

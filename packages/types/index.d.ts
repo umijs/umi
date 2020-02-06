@@ -2,6 +2,9 @@ import {
   IConfig as IConfigCore,
   IRoute,
   PluginAPI,
+  Html,
+  IScriptConfig,
+  IHTMLTag,
   Service,
 } from '@umijs/core';
 import { Server, IServerOpts } from '@umijs/server';
@@ -117,6 +120,11 @@ export interface IApi extends PluginAPI {
   modifyBundleImplementor: IModify<any, {}>;
 
   // ApplyPluginType.add
+  addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
+  addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
+  addHTMLMetas: IAdd<{ route?: IRoute }, IHTMLTag[]>;
+  addHTMLLinks: IAdd<{ route?: IRoute }, IHTMLTag[]>;
+  addHTMLStyles: IAdd<{ route?: IRoute }, IHTMLTag[]>;
   addUmiExports: IAdd<
     null,
     {
@@ -149,6 +157,11 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
+  links?: IHTMLTag[];
+  styles?: IHTMLTag[];
+  metas?: IHTMLTag[];
+  headScripts?: IScriptConfig;
+  scripts?: IScriptConfig;
   chainWebpack?: Function;
   cssLoader?: object;
   define?: {
@@ -180,4 +193,5 @@ export interface IConfig extends IConfigCore {
 }
 
 export { webpack };
+export { Html };
 export { Request, Express, Response, NextFunction, RequestHandler };

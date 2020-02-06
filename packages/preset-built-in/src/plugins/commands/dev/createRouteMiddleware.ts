@@ -1,15 +1,14 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
 import { extname, join } from 'path';
+import { getHtmlGenerator } from '../buildDevUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 
 export default ({ api }: { api: IApi }) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    function sendHtml() {
-      const html = new api.Html({
-        config: api.config as any,
-      });
-      const content = html.getContent({
+  return async (req: Request, res: Response, next: NextFunction) => {
+    async function sendHtml() {
+      const html = getHtmlGenerator({ api });
+      const content = await html.getContent({
         route: { path: req.path },
         cssFiles: ['umi.css'],
         jsFiles: ['umi.js'],
@@ -23,7 +22,7 @@ export default ({ api }: { api: IApi }) => {
     } else if (ASSET_EXTNAMES.includes(extname(req.path))) {
       next();
     } else {
-      sendHtml();
+      await sendHtml();
     }
   };
 };

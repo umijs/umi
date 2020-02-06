@@ -23,7 +23,7 @@ umi-next:
 		- api.onExit
 		- api.routes
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
-		- umi build ，hash 在 html 中未起效 @bug
+		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
 	preset-built-in:
 		dev & build:
 			- 支持 H5 的多页功能
@@ -99,7 +99,7 @@ plugins:
 			支持单独发布某个插件
 		- 完善用例
 
-plugin-ui: @ycjcl868
+preset-ui: @ycjcl868
 	- 适配 umi@3
 
 doc:

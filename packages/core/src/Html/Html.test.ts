@@ -3,11 +3,11 @@ import { join } from 'path';
 
 const fixtures = join(__dirname, 'fixtures');
 
-test('getContent', () => {
+test('getContent', async () => {
   const html = new Html({
     config: {},
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
   });
   expect(content.trim()).toEqual(
@@ -29,70 +29,72 @@ test('getContent', () => {
   );
 });
 
-test('getContent failed if tplPath not exists', () => {
+test('getContent failed if tplPath not exists', async () => {
   const html = new Html({
     config: {},
   });
-  expect(() => {
-    html.getContent({
+  try {
+    await html.getContent({
       route: { path: '/' },
       tplPath: join(fixtures, 'not-found-tpl'),
     });
-  }).toThrow(/getContent\(\) failed, tplPath of/);
+  } catch (e) {
+    expect(e.message).toMatch(/getContent\(\) failed, tplPath of/);
+  }
 });
 
-test('getContent with config.mountElementId', () => {
+test('getContent with config.mountElementId', async () => {
   const html = new Html({
     config: {
       mountElementId: 'foo',
     },
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
     tplPath: join(fixtures, 'custome-tpl.ejs'),
   });
   expect(content).toContain(`<div id="foo"></div>`);
 });
 
-test('getContent with opts.metas', () => {
+test('getContent with opts.metas', async () => {
   const html = new Html({
     config: {},
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
     metas: [{ foo: 'bar' }],
   });
   expect(content).toContain('<meta foo="bar" />');
 });
 
-test('getContent with config.title', () => {
+test('getContent with config.title', async () => {
   const html = new Html({
     config: {
       title: 'foo',
     },
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
   });
   expect(content).toContain('<title>foo</title>');
 });
 
-test('getContent with opts.cssFiles', () => {
+test('getContent with opts.cssFiles', async () => {
   const html = new Html({
     config: {},
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
     cssFiles: ['foo.css'],
   });
   expect(content).toContain('<link rel="stylesheet" href="/foo.css" />');
 });
 
-test('getContent with opts.jsFiles', () => {
+test('getContent with opts.jsFiles', async () => {
   const html = new Html({
     config: {},
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
     jsFiles: ['foo.js'],
   });
@@ -101,17 +103,47 @@ test('getContent with opts.jsFiles', () => {
   );
 });
 
-test('getContent with opts.headJSFiles', () => {
+test('getContent with opts.headJSFiles', async () => {
   const html = new Html({
     config: {},
   });
-  const content = html.getContent({
+  const content = await html.getContent({
     route: { path: '/' },
     headJSFiles: ['foo.js'],
   });
   expect(content.split('</head>')[0]).toContain(
     '<script src="/foo.js"></script>',
   );
+});
+
+test('getContent with scripts', async () => {
+  const html = new Html({
+    config: {},
+  });
+  const content = await html.getContent({
+    route: { path: '/' },
+    headScripts: [{ content: 'console.log(123);' }],
+    scripts: [{ src: '//a.ali.com/a.js' }],
+  });
+  expect(content.split('</head>')[0]).toContain('console.log(123);');
+  expect(content.split('<body>')[1]).toContain(
+    '<script src="//a.ali.com/a.js"></script>',
+  );
+});
+
+test('getContent with css', async () => {
+  const html = new Html({
+    config: {},
+  });
+  const content = await html.getContent({
+    route: { path: '/' },
+    links: [{ rel: 'stylesheet', href: '//a.alicdn.com/a.css' }],
+    styles: [{ content: '.a{color: red;}' }],
+  });
+  expect(content.split('</head>')[0]).toContain(
+    '<link rel="stylesheet" href="//a.alicdn.com/a.css" />',
+  );
+  expect(content.split('</head>')[0]).toContain('color: red;');
 });
 
 test('getAssets', () => {

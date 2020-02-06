@@ -1,8 +1,7 @@
 import { IApi, webpack } from '@umijs/types';
+import { getHtmlGenerator, chunksToFiles } from '../buildDevUtils';
 
 export default function(api: IApi) {
-  const { Html } = api;
-
   class HtmlWebpackPlugin {
     apply(compiler: webpack.Compiler) {
       const key = 'UmiHtmlGeneration';
@@ -11,15 +10,13 @@ export default function(api: IApi) {
           // console.log(module, file);
         });
       });
-      compiler.hooks.emit.tap(key, compilation => {
-        // console.log(compilation.chunks as webpack.compilation.Chunk[]);
-        const html = new Html({
-          config: api.config as any,
-        });
-        const content = html.getContent({
+      compiler.hooks.emit.tap(key, async compilation => {
+        const { jsFiles, cssFiles } = chunksToFiles(compilation.chunks);
+        const html = getHtmlGenerator({ api });
+        const content = await html.getContent({
           route: { path: '/' },
-          cssFiles: ['umi.css'],
-          jsFiles: ['umi.js'],
+          cssFiles,
+          jsFiles,
         });
         compilation.assets['index.html'] = {
           source: () => content,

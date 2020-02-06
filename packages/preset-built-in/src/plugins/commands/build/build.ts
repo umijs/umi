@@ -1,10 +1,13 @@
 import { IApi } from '@umijs/types';
+import { existsSync } from 'fs';
+import { Logger } from '@umijs/core';
 import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import generateFiles from '../generateFiles';
 
+const logger = new Logger('umi:preset-build-in');
+
 export default function(api: IApi) {
   const {
-    cwd,
     paths,
     utils: { rimraf, chalk },
   } = api;
@@ -26,6 +29,14 @@ export default function(api: IApi) {
         bundleImplementor,
       } = await getBundleAndConfigs({ api });
       try {
+        // clear output path before exec build
+        if (process.env.CLEAR_OUTPUT !== 'none') {
+          if (paths.absOutputPath && existsSync(paths.absOutputPath || '')) {
+            logger.debug(`Clear OutputPath: ${paths.absNodeModulesPath}`);
+            rimraf.sync(paths.absOutputPath);
+          }
+        }
+
         const { stats } = await bundler.build({
           bundleConfigs,
           bundleImplementor,
