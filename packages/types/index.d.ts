@@ -118,6 +118,7 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
+  chainWebpack: IModify<any, {}>;
 
   // ApplyPluginType.add
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
