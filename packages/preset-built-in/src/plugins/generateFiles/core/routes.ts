@@ -27,10 +27,11 @@ export default function(api: IApi) {
     });
   });
 
-  api.addUmiExports(() => {
-    return {
-      specifiers: ['routes'],
-      source: `./routes`,
-    };
-  });
+  // 这个加进去会导致 patchRoutes 在最初就执行，先不加
+  // api.addUmiExports(() => {
+  //   return {
+  //     specifiers: ['routes'],
+  //     source: `./routes`,
+  //   };
+  // });
 }

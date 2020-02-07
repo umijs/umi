@@ -13,7 +13,7 @@ const clientRender = plugin.applyPlugins({
   initialValue: () => {
     return renderClient({
       // @ts-ignore
-      routes: require('./core/umiExports').routes,
+      routes: require('./core/routes').routes,
       plugin,
       history,
       rootElement: '{{{ rootElement }}}',
@@ -30,7 +30,7 @@ export default clientRender();
 // @ts-ignore
 if (module.hot) {
   // @ts-ignore
-  module.hot.accept('./core/umiExports', () => {
+  module.hot.accept('./core/routes', () => {
     clientRender();
   });
 }
