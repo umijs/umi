@@ -40,6 +40,7 @@ export default function() {
       require.resolve('./plugins/features/targets'),
       require.resolve('./plugins/features/terserOptions'),
       require.resolve('./plugins/features/theme'),
+      require.resolve('./plugins/features/umiInfo'),
 
       // html
       require.resolve('./plugins/features/html/title'),
