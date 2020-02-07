@@ -118,14 +118,15 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
+  modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
   chainWebpack: IModify<any, {}>;
 
   // ApplyPluginType.add
-  addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
-  addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
-  addHTMLMetas: IAdd<{ route?: IRoute }, IHTMLTag[]>;
-  addHTMLLinks: IAdd<{ route?: IRoute }, IHTMLTag[]>;
-  addHTMLStyles: IAdd<{ route?: IRoute }, IHTMLTag[]>;
+  addHTMLHeadScripts: IAdd<{ route: IRoute }, IScriptConfig>;
+  addHTMLScripts: IAdd<{ route: IRoute }, IScriptConfig>;
+  addHTMLMetas: IAdd<{ route: IRoute }, IHTMLTag[]>;
+  addHTMLLinks: IAdd<{ route: IRoute }, IHTMLTag[]>;
+  addHTMLStyles: IAdd<{ route: IRoute }, IHTMLTag[]>;
   addUmiExports: IAdd<
     null,
     {
