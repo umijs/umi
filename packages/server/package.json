@@ -1,6 +1,6 @@
 {
   "name": "@umijs/server",
-  "version": "3.0.0-beta.5",
+  "version": "3.0.0-beta.6",
   "description": "@umijs/server",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,11 +31,11 @@
     "@types/node": "13.7.0",
     "@types/sockjs": "0.3.31",
     "@types/spdy": "3.4.4",
-    "@umijs/utils": "3.0.0-beta.5",
-    "immer": "5.3.2",
+    "@umijs/utils": "3.0.0-beta.6",
     "compression": "1.7.4",
     "express": "4.17.1",
     "http-proxy-middleware": "0.20.0",
+    "immer": "5.3.2",
     "portfinder": "1.0.25",
     "sockjs": "0.3.19",
     "spdy": "4.0.1"
