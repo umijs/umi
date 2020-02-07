@@ -1,7 +1,7 @@
 import { getScripts } from './utils';
 
 test('getScripts string', () => {
-  const option1 = [];
+  const option1: string[] = [];
   const option2 = [
     'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
   ];

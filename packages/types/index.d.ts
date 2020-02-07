@@ -195,5 +195,5 @@ export interface IConfig extends IConfigCore {
 }
 
 export { webpack };
-export { Html };
+export { Html, IScriptConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
