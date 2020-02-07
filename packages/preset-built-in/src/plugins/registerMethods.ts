@@ -22,6 +22,7 @@ export default function(api: IApi) {
     'addHTMLHeadScripts',
     'addHTMLScripts',
     'addTmpGenerateWatcherPaths',
+    'modifyHTML',
     'modifyBundler',
     'modifyBundleConfigOpts',
     'modifyBundleConfig',

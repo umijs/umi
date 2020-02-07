@@ -380,6 +380,17 @@ api.addHTMLScript(() => {
 
 在 HTML 头部添加脚本。
 
+### modifyHTML
+
+修改 HTML，基于 [cheerio](https://github.com/cheeriojs/cheerio) 的 ast。
+
+```js
+api.modifyHTML(($, { routs }) => {
+  $('h2').addClass('welcome');
+  return $;
+});
+```
+
 ### ApplyPluginsType
 
 为 `api.applyPlugins()` 提供 type 参数的类型，包含三种：

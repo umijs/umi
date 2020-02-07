@@ -7,6 +7,7 @@ import { prettier } from '@umijs/utils';
 import { IConfig } from '..';
 import {
   IAddHTML,
+  IModifyHTML,
   IScriptConfig,
   IHTMLTag,
   IOpts,
@@ -22,6 +23,7 @@ class Html {
   addHTMLMetas?: IAddHTML<IHTMLTag[]>;
   addHTMLLinks?: IAddHTML<IHTMLTag[]>;
   addHTMLStyles?: IAddHTML<IHTMLTag[]>;
+  modifyHTML?: IModifyHTML;
 
   constructor(opts: IOpts) {
     this.config = opts.config;
@@ -31,6 +33,7 @@ class Html {
     this.addHTMLMetas = opts.addHTMLMetas;
     this.addHTMLLinks = opts.addHTMLLinks;
     this.addHTMLStyles = opts.addHTMLStyles;
+    this.modifyHTML = opts.modifyHTML;
   }
 
   getAsset({ file }: { file: string }) {
@@ -196,6 +199,10 @@ class Html {
     });
     if (scripts.length) {
       $('body').append(this.getScriptsContent(scripts));
+    }
+
+    if (this.modifyHTML) {
+      html = await this.modifyHTML(html, { route });
     }
 
     html = $.html();

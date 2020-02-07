@@ -4,6 +4,10 @@ export interface IHTMLTag {
   [key: string]: string;
 }
 
+export interface IModifyHTML {
+  (memo: any, args: any): Promise<any>;
+}
+
 export interface IAddHTML<T> {
   (memo: T, args: { route?: IRoute }): Promise<T>;
 }
@@ -22,6 +26,7 @@ export interface IOpts {
   addHTMLMetas?: IAddHTML<IHTMLTag[]>;
   addHTMLLinks?: IAddHTML<IHTMLTag[]>;
   addHTMLStyles?: IAddHTML<IHTMLTag[]>;
+  modifyHTML?: IModifyHTML;
 }
 
 export interface ILink {

@@ -181,5 +181,13 @@ export function getHtmlGenerator({
     addHTMLMetas: addHTMLFactory('addHTMLMetas'),
     addHTMLScripts: addHTMLFactory('addHTMLScripts'),
     addHTMLStyles: addHTMLFactory('addHTMLStyles'),
+    async modifyHTML(memo, args) {
+      return await api.applyPlugins({
+        key: 'modifyHTML',
+        type: api.ApplyPluginsType.modify,
+        initialValue: memo,
+        args,
+      });
+    },
   });
 }
