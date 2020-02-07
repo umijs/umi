@@ -124,9 +124,9 @@ export interface IApi extends PluginAPI {
   // ApplyPluginType.add
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
   addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
-  addHTMLMetas: IAdd<{ route?: IRoute }, IHTMLTag[]>;
-  addHTMLLinks: IAdd<{ route?: IRoute }, IHTMLTag[]>;
-  addHTMLStyles: IAdd<{ route?: IRoute }, IHTMLTag[]>;
+  addHTMLMetas: IAdd<{ route?: IRoute }, IHTMLTag>;
+  addHTMLLinks: IAdd<{ route?: IRoute }, IHTMLTag>;
+  addHTMLStyles: IAdd<{ route?: IRoute }, IHTMLTag>;
   addUmiExports: IAdd<
     null,
     {
@@ -191,6 +191,7 @@ export interface IConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   ssr?: object;
+  favicon?: string;
   [key: string]: any;
 }
 

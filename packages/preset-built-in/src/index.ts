@@ -43,12 +43,13 @@ export default function() {
       require.resolve('./plugins/features/umiInfo'),
 
       // html
-      require.resolve('./plugins/features/html/title'),
+      require.resolve('./plugins/features/html/favicon'),
+      require.resolve('./plugins/features/html/headScripts'),
       require.resolve('./plugins/features/html/links'),
       require.resolve('./plugins/features/html/metas'),
-      require.resolve('./plugins/features/html/styles'),
-      require.resolve('./plugins/features/html/headScripts'),
       require.resolve('./plugins/features/html/scripts'),
+      require.resolve('./plugins/features/html/styles'),
+      require.resolve('./plugins/features/html/title'),
 
       // commands
       require.resolve('./plugins/commands/version/version'),
