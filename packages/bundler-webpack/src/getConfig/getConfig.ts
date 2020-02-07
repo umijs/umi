@@ -336,7 +336,7 @@ export default async function getConfig(
   }
   // 用户配置的 chainWebpack 优先级最高
   if (config.chainWebpack) {
-    webpackConfig = config.chainWebpack(webpackConfig, {
+    config.chainWebpack(webpackConfig, {
       env,
       webpack: bundleImplementor,
     });

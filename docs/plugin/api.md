@@ -163,8 +163,14 @@ api.chainWebpack((config, { webpack }) => {
 
   // Delete progress bar plugin
   config.plugins.delete('progress');
+
+  return config;
 });
 ```
+
+注：
+
+- 需要有返回值
 
 ### addBeforeMiddewares
 
