@@ -30,7 +30,7 @@ export default (api: IApi) => {
     fn: async function() {
       const defaultPort = api.config.devServer?.port || process.env.PORT;
       port = await portfinder.getPortPromise({
-        port: defaultPort ? parseInt(defaultPort, 10) : 8000,
+        port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });

@@ -1,6 +1,7 @@
 import { IApi } from '@umijs/types';
 import createPageGenerator from './PageGenerator/createPageGenerator';
 import createTmpGenerator from './TmpGenerator/createTmpGenerator';
+import createHTMLGenerator from './HTMLGenerator/createHTMLGenerator';
 
 interface IRegisterGenerator {
   key: string;
@@ -48,10 +49,14 @@ export default (api: IApi) => {
     // @ts-ignore
     Generator: createPageGenerator({ api }),
   });
-
   api.registerGenerator({
     key: 'tmp',
     // @ts-ignore
     Generator: createTmpGenerator({ api }),
+  });
+  api.registerGenerator({
+    key: 'html',
+    // @ts-ignore
+    Generator: createHTMLGenerator({ api }),
   });
 };

@@ -105,7 +105,7 @@ class Html {
       filename: 'document.ejs',
     });
 
-    const $ = cheerio.load(html);
+    let $ = cheerio.load(html);
 
     if (this.addHTMLMetas) {
       metas = await this.addHTMLMetas(metas, { route });
@@ -202,7 +202,7 @@ class Html {
     }
 
     if (this.modifyHTML) {
-      html = await this.modifyHTML(html, { route });
+      $ = await this.modifyHTML($, { route });
     }
 
     html = $.html();
