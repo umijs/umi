@@ -171,7 +171,7 @@ export default function({
       );
   }
 
-  if (!isDev && disableCompress) {
+  if (!isDev && !disableCompress) {
     webpackConfig
       .plugin('optimize-css')
       .use(require.resolve('optimize-css-assets-webpack-plugin'), [
