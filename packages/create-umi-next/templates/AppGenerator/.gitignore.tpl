@@ -14,6 +14,7 @@
 .DS_Store
 
 # umi
-.umi
-.umi-production
-.umi-test
+/src/.umi
+/src/.umi-production
+/src/.umi-test
+/.env.local
