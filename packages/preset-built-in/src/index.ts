@@ -6,6 +6,8 @@ export default function() {
 
       // misc
       require.resolve('./plugins/routes'),
+      require.resolve('./plugins/features/global-js'),
+      require.resolve('./plugins/features/global-css'),
 
       // generate files
       require.resolve('./plugins/generateFiles/core/history'),

@@ -10,8 +10,9 @@ umi-next:
 			https://github.com/umijs/umi-next/pull/27
 		- webpack-dev-server 功能查漏补缺 @ycjcl868
 	core:
-		- logger @ycjcl868 @done
-			https://github.com/umijs/umi-next/pull/26
+    - logger @ycjcl868 @done
+    - .env 环境变量加载、环境变量统一 Enum @ycjcl868 @done
+      https://github.com/umijs/umi-next/pull/26
 		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 		- logger 优化
 			比如插件层如何打日志？如何过滤日志？
@@ -24,7 +25,8 @@ umi-next:
 		- api.routes
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
-	preset-built-in:
+  preset-built-in:
+    - 支持 global-css、global-js @ycjcl868 @done
 		dev & build:
 			- 支持 H5 的多页功能
 		dev:

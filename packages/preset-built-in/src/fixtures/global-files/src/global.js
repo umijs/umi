@@ -1,0 +1,1 @@
+window.customUtil = (str) => str;
