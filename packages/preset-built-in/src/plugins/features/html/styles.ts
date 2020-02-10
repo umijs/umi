@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { getStyles } from './utils';
 
 export default function(api: IApi) {
   api.describe({
@@ -9,8 +10,9 @@ export default function(api: IApi) {
       },
     },
   });
+  const { styles = [] } = api.service.userConfig || {};
+  const [linkArr = [], styleArr = []] = getStyles(styles);
 
-  api.addHTMLStyles(() => {
-    return api.config?.styles || [];
-  });
+  api.addHTMLStyles(() => styleArr);
+  api.addHTMLLinks(() => linkArr);
 }

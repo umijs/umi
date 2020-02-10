@@ -11,12 +11,14 @@ export default function(api: IApi) {
   });
 
   api.addHTMLLinks(() => {
-    return [
-      {
-        rel: 'shortcut icon',
-        type: 'image/x-icon',
-        href: api.config.favicon!,
-      },
-    ];
+    return api.config.favicon!
+      ? [
+          {
+            rel: 'shortcut icon',
+            type: 'image/x-icon',
+            href: api.config.favicon!,
+          },
+        ]
+      : [];
   });
 }

@@ -1,4 +1,4 @@
-import { getScripts } from './utils';
+import { getScripts, getStyles } from './utils';
 
 test('getScripts string', () => {
   const option1: string[] = [];
@@ -79,5 +79,42 @@ test('getScripts other', () => {
       src:
         'https://gw.alipayobjects.com/as/g/h5-lib/lottie-web/5.3.4/lottie.min.js',
     },
+  ]);
+});
+
+test('getStyles', () => {
+  expect(
+    getStyles(['//g.alipay.com/index.min.css', `.a{color: red};`]),
+  ).toEqual([
+    [
+      {
+        charset: 'utf-8',
+        rel: 'stylesheet',
+        type: 'text/css',
+        href: '//g.alipay.com/index.min.css',
+      },
+    ],
+    [{ content: '.a{color: red};' }],
+  ]);
+
+  expect(
+    getStyles([
+      '//g.alipay.com/index.min.css',
+      {
+        content: `.a{color: red};`,
+        type: 'text/css',
+        title: 'test',
+      },
+    ]),
+  ).toEqual([
+    [
+      {
+        charset: 'utf-8',
+        rel: 'stylesheet',
+        type: 'text/css',
+        href: '//g.alipay.com/index.min.css',
+      },
+    ],
+    [{ content: '.a{color: red};', type: 'text/css', title: 'test' }],
   ]);
 });

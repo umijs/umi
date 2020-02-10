@@ -3,6 +3,7 @@ import {
   IRoute,
   PluginAPI,
   Html,
+  IStyleConfig,
   IScriptConfig,
   IHTMLTag,
   Service,
@@ -159,9 +160,9 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
-  links?: IHTMLTag[];
-  styles?: IHTMLTag[];
-  metas?: IHTMLTag[];
+  links?: Partial<HTMLLinkElement>[];
+  styles?: IStyleConfig;
+  metas?: Partial<HTMLMetaElement>[];
   headScripts?: IScriptConfig;
   scripts?: IScriptConfig;
   chainWebpack?: Function;
@@ -196,5 +197,5 @@ export interface IConfig extends IConfigCore {
 }
 
 export { webpack };
-export { Html, IScriptConfig };
+export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };

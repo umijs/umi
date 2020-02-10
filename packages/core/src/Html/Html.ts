@@ -8,21 +8,21 @@ import { IConfig } from '..';
 import {
   IAddHTML,
   IModifyHTML,
-  IScriptConfig,
   IHTMLTag,
   IOpts,
   IGetContentArgs,
   IScript,
+  IStyle,
 } from './types';
 
 class Html {
   config: IConfig;
   tplPath?: string;
-  addHTMLHeadScripts?: IAddHTML<IScriptConfig>;
-  addHTMLScripts?: IAddHTML<IScriptConfig>;
+  addHTMLHeadScripts?: IAddHTML<IHTMLTag[]>;
+  addHTMLScripts?: IAddHTML<IHTMLTag[]>;
   addHTMLMetas?: IAddHTML<IHTMLTag[]>;
-  addHTMLLinks?: IAddHTML<IHTMLTag[]>;
-  addHTMLStyles?: IAddHTML<IHTMLTag[]>;
+  addHTMLLinks?: IAddHTML<Partial<HTMLLinkElement>[]>;
+  addHTMLStyles?: IAddHTML<Partial<IStyle>[]>;
   modifyHTML?: IModifyHTML;
 
   constructor(opts: IOpts) {
@@ -156,7 +156,7 @@ class Html {
 
     // styles
     styles.forEach(style => {
-      const { content, ...attrs } = style;
+      const { content = '', ...attrs } = style;
       const newAttrs = Object.keys(attrs).reduce((memo, key) => {
         return memo.concat(`${key}="${attrs[key]}"`);
       }, [] as string[]);
