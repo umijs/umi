@@ -1,5 +1,6 @@
 import assert from 'assert';
 import * as utils from '@umijs/utils';
+import Logger from '../Logger/Logger';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
 import { PluginType, ServiceStage } from './enums';
@@ -18,6 +19,7 @@ export default class PluginAPI {
   service: Service;
   Html: typeof Html;
   utils: typeof utils;
+  logger: Logger;
 
   constructor(opts: IOpts) {
     this.id = opts.id;
@@ -25,6 +27,7 @@ export default class PluginAPI {
     this.service = opts.service;
     this.utils = utils;
     this.Html = Html;
+    this.logger = new Logger(this.id || this.key);
   }
 
   // TODO: reversed keys
