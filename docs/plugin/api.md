@@ -323,6 +323,23 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi-n
 
 当前项目的 package.json，格式为 Object。
 
+### logger
+
+插件日志类，包含 `api.logger.(log|info|debug|error|warn|profile)`
+
+其中 `api.logger.profile` 可用于性能耗时记录，例如：
+
+```ts
+export default api => {
+  api.logger.profile('barId');
+  setTimeout(() => {
+    api.logger.profile('barId');
+  });
+};
+
+// => [PROFILE] Completed in *ms
+```
+
 ### config
 
 用户配置。
