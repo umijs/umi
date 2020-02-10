@@ -26,7 +26,7 @@
 - 🚄 **开发启动快**，包含支持一键开启 [dll](https://umijs.org/zh/plugin/umi-plugin-react.html#dll) 等
 - 🐠 **一键补丁方案**，通过 [targets](https://umijs.org/zh/config/#targets) 配置实现 JS 和 CSS 的自动补丁，最低可到 IE9
 - 🍁 **支持 TypeScript**，包含 umi API 的 d.ts 定义，测试方案，组件打包方案等
-- 🌴 **深入集成 [dva](https://github.com/dvajs/dva) 数据流方案但不耦合**，支持 duck directory、约定式的 model 挂载、model 的 动态加载等
+- 🌴 **深入集成 [dva](https://github.com/dvajs/dva) 数据流方案但不耦合**，支持 duck directory、约定式的 model 挂载、model 的动态加载等
 - ⛄️ **支持多页应用**，基于 [umi-plugin-mpa](https://github.com/umijs/umi-plugin-mpa)
 - 💄 **可视化辅助编程**, 使用 [Umi UI](https://umijs.org/guide/umi-ui.html) 提高开发效率
 - 🌈 **支持服务端渲染**，[使用手册](https://umijs.org/guide/ssr.html)
