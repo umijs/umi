@@ -80,7 +80,16 @@ test('default config', async () => {
   });
   await service.init();
   expect(service.userConfig).toEqual({ plugin: { bar: 2 } });
-  expect(service.config).toEqual({ plugin: { foo: 'foo', bar: 2 } });
+  expect(service.config).toEqual({
+    plugin: {
+      // api.modifyDefaultConfig
+      foo: 'foo-bar',
+      // user config
+      bar: 2,
+      // api.modifyConfig
+      hoo: 'hoo',
+    },
+  });
 });
 
 test('schema validate success', async () => {

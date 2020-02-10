@@ -53,7 +53,20 @@ export default class Config {
     this.localConfig = opts.localConfig;
   }
 
-  getConfig() {
+  async getDefaultConfig() {
+    const pluginIds = Object.keys(this.service.plugins);
+
+    // collect default config
+    let defaultConfig = pluginIds.reduce((memo, pluginId) => {
+      const { key, config = {} } = this.service.plugins[pluginId];
+      if ('default' in config) memo[key] = config.default;
+      return memo;
+    }, {});
+
+    return defaultConfig;
+  }
+
+  getConfig({ defaultConfig }: { defaultConfig: object }) {
     assert(
       this.service.stage >= ServiceStage.pluginReady,
       `Config.getConfig() failed, it should not be executed before plugin is ready.`,
@@ -65,7 +78,10 @@ export default class Config {
     const userConfigKeys = Object.keys(userConfig).filter(key => {
       return userConfig[key] !== false;
     });
-    Object.keys(this.service.plugins).forEach(pluginId => {
+
+    // get config
+    const pluginIds = Object.keys(this.service.plugins);
+    pluginIds.forEach(pluginId => {
       const { key, config = {} } = this.service.plugins[pluginId];
       // recognize as key if have schema config
       if (!config.schema) return;
@@ -94,9 +110,9 @@ export default class Config {
       }
 
       // update userConfig with defaultConfig
-      if (config.default) {
+      if (key in defaultConfig) {
         const newValue = mergeDefault({
-          defaultConfig: config.default,
+          defaultConfig: defaultConfig[key],
           config: value,
         });
         updateUserConfigWithKey({

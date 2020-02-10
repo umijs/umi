@@ -204,8 +204,18 @@ export default class Service extends EventEmitter {
     // 1. merge default config
     // 2. validate
     this.setStage(ServiceStage.getConfig);
-    // TODO: 支持修改用户默认配置，或者直接修改用户配置
-    this.config = this.configInstance.getConfig() as any;
+    const defaultConfig = await this.applyPlugins({
+      key: 'modifyDefaultConfig',
+      type: this.ApplyPluginsType.modify,
+      initialValue: await this.configInstance.getDefaultConfig(),
+    });
+    this.config = await this.applyPlugins({
+      key: 'modifyConfig',
+      type: this.ApplyPluginsType.modify,
+      initialValue: this.configInstance.getConfig({
+        defaultConfig,
+      }) as any,
+    });
 
     // merge paths to keep the this.paths ref
     this.setStage(ServiceStage.getPaths);
@@ -238,7 +248,13 @@ export default class Service extends EventEmitter {
     const pluginAPI = new PluginAPI(opts);
 
     // register built-in methods
-    ['onPluginReady', 'modifyPaths', 'onStart'].forEach(name => {
+    [
+      'onPluginReady',
+      'modifyPaths',
+      'onStart',
+      'modifyDefaultConfig',
+      'modifyConfig',
+    ].forEach(name => {
       pluginAPI.registerMethod({ name, exitsError: false });
     });
 

@@ -132,6 +132,18 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 - `initialValue`: paths 对象
 
+### modifyDefaultConfig
+
+修改默认配置。
+
+### modifyConfig
+
+修改最终配置。
+
+注：
+
+- 修改后的值不会再做 schema 校验
+
 ### onGenerateFiles
 
 生成临时文件，触发时机在 webpack 编译之前。

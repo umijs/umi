@@ -119,6 +119,8 @@ export interface IApi extends PluginAPI {
     }
   >;
   modifyBundleImplementor: IModify<any, {}>;
+  modifyConfig: IModify<IConfig, {}>;
+  modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
   chainWebpack: IModify<any, {}>;
 

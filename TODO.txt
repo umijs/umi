@@ -15,7 +15,8 @@ umi-next:
 		- plugin 没走 babelRegister @ycjcl868
 		- 路由相关接口 api.getRoutes 和 api.getRouteComponents
 		- api.modifyRoutes + api.modifyRoute
-		- api.modifyDefaultConfig
+		- api.modifyDefaultConfig + api.modifyConfig
+		-  @done
 		- api.onBuildSuccess + api.onBuildFail -> onBuildComplete
 		- api.onExit
 		- api.routes
