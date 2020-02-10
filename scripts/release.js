@@ -122,11 +122,15 @@ async function release() {
     .sort(a => {
       return a === 'umi' ? 1 : -1;
     })
-    .forEach(pkg => {
+    .forEach((pkg, index) => {
       const pkgPath = join(cwd, 'packages', pkg);
       const { name, version } = require(join(pkgPath, 'package.json'));
       if (version === currVersion) {
-        console.log(`Publish package ${name} ${isNext ? 'with next tag' : ''}`);
+        console.log(
+          `[${index + 1}/${pkgs.length}] Publish package ${name} ${
+            isNext ? 'with next tag' : ''
+          }`,
+        );
         const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
         const { stdout } = execa.sync('npm', cliArgs, {
           cwd: pkgPath,
