@@ -58,11 +58,11 @@
     "mustache": "4.0.0",
     "portfinder": "1.0.25",
     "prettier": "1.19.1",
-    "resolve": "1.15.0",
-    "rimraf": "3.0.1",
+    "resolve": "1.15.1",
+    "rimraf": "3.0.2",
     "semver": "7.1.2",
     "signale": "1.4.0",
     "yargs": "15.1.0",
-    "yargs-parser": "16.1.0"
+    "yargs-parser": "17.0.0"
   }
 }
