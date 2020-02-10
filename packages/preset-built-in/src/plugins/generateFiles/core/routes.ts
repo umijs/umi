@@ -13,15 +13,15 @@ export default function(api: IApi) {
 
   api.onGenerateFiles(async args => {
     const routesTpl = readFileSync(join(__dirname, 'routes.tpl'), 'utf-8');
-    const route = new Route();
-    const routes = route.getRoutes({
-      config: api.config as IConfig,
-      root: paths.absPagesPath!,
+    const routes = await api.applyPlugins({
+      key: 'modifyRoutes',
+      type: api.ApplyPluginsType.modify,
+      initialValue: await api.getRoutes(),
     });
     api.writeTmpFile({
       path: 'core/routes.ts',
       content: Mustache.render(routesTpl, {
-        routes: route.getJSON({ routes }),
+        routes: new Route().getJSON({ routes }),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
       }),
     });

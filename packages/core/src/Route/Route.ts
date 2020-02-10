@@ -26,7 +26,7 @@ class Route {
     this.opts = opts || {};
   }
 
-  getRoutes(opts: IGetRoutesOpts) {
+  async getRoutes(opts: IGetRoutesOpts) {
     const { config, root, componentPrefix } = opts;
     let routes = config.routes;
     let isConventional = false;
@@ -35,7 +35,7 @@ class Route {
       routes = this.getConventionRoutes({ root: root!, componentPrefix });
       isConventional = true;
     }
-    this.patchRoutes(routes, {
+    await this.patchRoutes(routes, {
       ...opts,
       isConventional,
     });
@@ -45,12 +45,17 @@ class Route {
   // TODO:
   // 1. 移动 /404 到最后，并处理 component 和 redirect
   // 2. exportStatic 时同步 / 到 /index.html
-  patchRoutes(routes: IRoute[], opts: IGetRoutesOpts) {
-    routes.forEach(route => {
-      this.patchRoute(route, opts);
-    });
+  async patchRoutes(routes: IRoute[], opts: IGetRoutesOpts) {
+    if (this.opts.onPatchRoutesBefore) {
+      await this.opts.onPatchRoutesBefore({
+        routes,
+      });
+    }
+    for (const route of routes) {
+      await this.patchRoute(route, opts);
+    }
     if (this.opts.onPatchRoutes) {
-      this.opts.onPatchRoutes({
+      await this.opts.onPatchRoutes({
         routes,
       });
     }
@@ -58,12 +63,13 @@ class Route {
 
   // TODO:
   // 1. exportStatic.htmlSuffix 时修改配置 /foo 为 /foo.html
-  patchRoute(route: IRoute, opts: IGetRoutesOpts) {
-    if (this.opts.onPatchRoute) {
-      this.opts.onPatchRoute({
+  async patchRoute(route: IRoute, opts: IGetRoutesOpts) {
+    if (this.opts.onPatchRouteBefore) {
+      await this.opts.onPatchRouteBefore({
         route,
       });
     }
+
     if (route.routes) {
       this.patchRoutes(route.routes, opts);
     }
@@ -77,6 +83,12 @@ class Route {
       !route.component.startsWith('/')
     ) {
       route.component = winPath(join(opts.root, route.component));
+    }
+
+    if (this.opts.onPatchRoute) {
+      await this.opts.onPatchRoute({
+        route,
+      });
     }
   }
 

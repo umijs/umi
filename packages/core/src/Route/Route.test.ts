@@ -3,20 +3,20 @@ import Route from './Route';
 
 const fixtures = join(__dirname, 'fixtures');
 
-test('config empty', () => {
+test('config empty', async () => {
   const route = new Route();
   expect(
-    route.getRoutes({
+    await route.getRoutes({
       config: { routes: [] },
       root: '/tmp',
     }),
   ).toEqual([]);
 });
 
-test('conventional normal', () => {
+test('conventional normal', async () => {
   const route = new Route();
   expect(
-    route.getRoutes({
+    await route.getRoutes({
       config: {},
       root: join(fixtures, 'conventional-normal/pages'),
     }),
@@ -56,10 +56,10 @@ test('conventional normal', () => {
   ]);
 });
 
-test('conventional index/index', () => {
+test('conventional index/index', async () => {
   const route = new Route();
   expect(
-    route.getRoutes({
+    await route.getRoutes({
       config: {},
       root: join(fixtures, 'conventional-index-index/pages'),
     }),
@@ -72,10 +72,10 @@ test('conventional index/index', () => {
   ]);
 });
 
-test('conventional opts.componentPrefix', () => {
+test('conventional opts.componentPrefix', async () => {
   const route = new Route();
   expect(
-    route.getRoutes({
+    await route.getRoutes({
       config: {},
       root: join(fixtures, 'conventional-opts/pages'),
       componentPrefix: '@@@/',

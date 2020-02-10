@@ -6,8 +6,6 @@ export default function() {
 
       // misc
       require.resolve('./plugins/routes'),
-      require.resolve('./plugins/features/global-js'),
-      require.resolve('./plugins/features/global-css'),
 
       // generate files
       require.resolve('./plugins/generateFiles/core/history'),
@@ -27,6 +25,8 @@ export default function() {
       require.resolve('./plugins/features/externals'),
       require.resolve('./plugins/features/extraBabelPlugins'),
       require.resolve('./plugins/features/extraBabelPresets'),
+      require.resolve('./plugins/features/globalCSS'),
+      require.resolve('./plugins/features/globalJS'),
       require.resolve('./plugins/features/hash'),
       require.resolve('./plugins/features/ignoreMomentLocale'),
       require.resolve('./plugins/features/inlineLimit'),

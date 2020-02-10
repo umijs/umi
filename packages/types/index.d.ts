@@ -70,6 +70,7 @@ export interface IApi extends PluginAPI {
   writeTmpFile: { (args: { path: string; content: string }): void };
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
   babelRegister: typeof Service.prototype.babelRegister;
+  getRoutes: () => Promise<IRoute[]>;
 
   // methods from dev command
   getPort: IGetter<number>;
@@ -80,6 +81,7 @@ export interface IApi extends PluginAPI {
   onPluginReady: IEvent<null>;
   onStart: IEvent<{ args: object }>;
   onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
+  onPatchRoute: IEvent<{ route: IRoute }>;
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
@@ -122,6 +124,7 @@ export interface IApi extends PluginAPI {
   modifyConfig: IModify<IConfig, {}>;
   modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
+  modifyRoutes: IModify<IRoute[], {}>;
   chainWebpack: IModify<any, {}>;
 
   // ApplyPluginType.add

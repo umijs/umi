@@ -13,13 +13,15 @@ umi-next:
 		- logger 优化
 			比如插件层如何打日志？如何过滤日志？
 		- plugin 没走 babelRegister @ycjcl868
-		- 路由相关接口 api.getRoutes 和 api.getRouteComponents
-		- api.modifyRoutes + api.modifyRoute
-		- api.modifyDefaultConfig + api.modifyConfig
-		-  @done
+		- 路由相关接口 api.getRouteComponents
+			考虑不提供，通过 utils 方法处理。
+		- api.getRoutes @done
+		- api.modifyRoutes + api.onPatchRoute @done
+		- api.modifyDefaultConfig + api.modifyConfig @done
 		- api.onBuildSuccess + api.onBuildFail -> onBuildComplete
 		- api.onExit
-		- api.routes
+		- route 支持 Routes 配置
+			或者有更好的方案。
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
 	preset-built-in:

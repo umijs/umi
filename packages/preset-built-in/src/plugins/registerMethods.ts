@@ -31,6 +31,7 @@ export default function(api: IApi) {
     'modifyBabelOpts',
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
+    'modifyRoutes',
   ].forEach(name => {
     api.registerMethod({ name });
   });
