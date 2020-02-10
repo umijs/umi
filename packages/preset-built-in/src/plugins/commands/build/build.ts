@@ -45,8 +45,22 @@ export default function(api: IApi) {
           rimraf.sync(paths.absTmpPath!);
         }
         console.log(chalk.green(`Build success.`));
-        // console.log(stats);
-      } catch (e) {}
+        await api.applyPlugins({
+          key: 'onBuildComplete',
+          type: api.ApplyPluginsType.event,
+          args: {
+            stats,
+          },
+        });
+      } catch (err) {
+        await api.applyPlugins({
+          key: 'onBuildComplete',
+          type: api.ApplyPluginsType.event,
+          args: {
+            err,
+          },
+        });
+      }
     },
   });
 }

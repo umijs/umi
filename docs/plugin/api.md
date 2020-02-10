@@ -144,6 +144,14 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 - 修改后的值不会再做 schema 校验
 
+### onBuildCompelete({ err?, stats? })
+
+构建完成时可以做的事。
+
+注：
+
+- 可能是失败的，注意判断 err 参数
+
 ### onGenerateFiles
 
 生成临时文件，触发时机在 webpack 编译之前。
