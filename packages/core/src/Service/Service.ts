@@ -6,6 +6,7 @@ import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
+import loadDotEnv from './utils/loadDotEnv';
 import PluginAPI from './PluginAPI';
 import {
   ApplyPluginsType,
@@ -150,7 +151,17 @@ export default class Service extends EventEmitter {
     }
   }
 
+  loadEnv() {
+    const basePath = join(this.cwd, '.env');
+    const localPath = `${basePath}.local`;
+    loadDotEnv(basePath);
+    loadDotEnv(localPath);
+  }
+
   async init() {
+    // load .env or .local.env
+    this.loadEnv();
+
     // we should have the final hooksByPluginId which is added with api.register()
     this.initPresetsAndPlugins();
 
