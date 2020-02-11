@@ -80,6 +80,7 @@ export interface IApi extends PluginAPI {
   // ApplyPluginType.event
   onPluginReady: IEvent<null>;
   onStart: IEvent<{ args: object }>;
+  onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
   onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
   onPatchRoute: IEvent<{ route: IRoute }>;
   onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;

@@ -124,6 +124,18 @@ api.skipPlugins(['@umijs/plugin-dva']);
 
 在命令注册函数执行前触发。可以使用 config 和 paths。
 
+### onExit
+
+dev 退出时触发。
+
+参数：
+
+- `signal`: 值为 SIGINT、SIGQUIT 或 SIGTERM
+
+注：
+
+- 只针对 dev 命令有效
+
 ### modifyPaths
 
 修改 paths 对象。

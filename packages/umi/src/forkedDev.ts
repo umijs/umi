@@ -4,8 +4,8 @@ import getCwd from './utils/getCwd';
 
 const args = yParser(process.argv.slice(2));
 
-(async () => {
-  try {
+try {
+  (async () => {
     process.env.NODE_ENV = 'development';
     const service = new Service({
       cwd: getCwd(),
@@ -14,9 +14,32 @@ const args = yParser(process.argv.slice(2));
       name: 'dev',
       args,
     });
-  } catch (e) {
-    console.error(chalk.red(e.message));
-    console.error(e.stack);
-    process.exit(1);
-  }
-})();
+
+    let closed = false;
+    // kill(2) Ctrl-C
+    process.once('SIGINT', () => onSignal('SIGINT'));
+    // kill(3) Ctrl-\
+    process.once('SIGQUIT', () => onSignal('SIGQUIT'));
+    // kill(15) default
+    process.once('SIGTERM', () => onSignal('SIGTERM'));
+
+    function onSignal(signal: string) {
+      if (closed) return;
+      closed = true;
+
+      // 退出时触发插件中的onExit事件
+      service.applyPlugins({
+        key: 'onExit',
+        type: service.ApplyPluginsType.event,
+        args: {
+          signal,
+        },
+      });
+      process.exit(0);
+    }
+  })();
+} catch (e) {
+  console.error(chalk.red(e.message));
+  console.error(e.stack);
+  process.exit(1);
+}
