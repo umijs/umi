@@ -20,8 +20,13 @@ umi-next:
 		- api.modifyDefaultConfig + api.modifyConfig @done
 		- api.onBuildSuccess + api.onBuildFail -> onBuildComplete @done
 		- api.onExit @done
+		- api.addMiddleware() @done
 		- route 支持 Routes 配置
 			或者有更好的方案。
+		- 未实现的接口，优先级低
+			api.rebuildTmpFiles()
+			api.onDevCompileDone()
+			api.modifyHTMLChunks()
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
 	preset-built-in:

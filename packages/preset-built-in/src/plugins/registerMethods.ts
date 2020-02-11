@@ -7,7 +7,9 @@ export default function(api: IApi) {
   [
     'onGenerateFiles',
     'onBuildComplete',
+    'onExit',
     'addBeforeMiddewares',
+    'addMiddewares',
     'addRuntimePlugin',
     'addRuntimePluginKey',
     'addUmiExports',

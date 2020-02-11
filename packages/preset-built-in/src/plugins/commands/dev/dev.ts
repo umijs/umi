@@ -108,6 +108,12 @@ export default (api: IApi) => {
         initialValue: [],
         args: {},
       });
+      const middlewares = await api.applyPlugins({
+        key: 'addMiddewares',
+        type: api.ApplyPluginsType.add,
+        initialValue: [],
+        args: {},
+      });
 
       const server = new Server({
         ...opts,
@@ -118,7 +124,7 @@ export default (api: IApi) => {
         // @ts-ignore
         proxy: (api.config as IConfig)?.proxy,
         beforeMiddlewares,
-        afterMiddlewares: [createRouteMiddleware({ api })],
+        afterMiddlewares: [...middlewares, createRouteMiddleware({ api })],
         ...(api.config.devServer || {}),
       });
       const hostname =

@@ -216,6 +216,10 @@ api.chainWebpack((config, { webpack }) => {
 
 添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。
 
+### addMiddewares
+
+添加在 webpack compiler 中间件之后的中间件，返回值格式为 express 中间件。
+
 ### addRuntimePlugin
 
 添加运行时插件，返回值格式为表示文件路径的字符串。
