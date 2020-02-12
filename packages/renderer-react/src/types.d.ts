@@ -13,5 +13,5 @@ export interface IRoute {
   key?: any;
   strict?: boolean;
   sensitive?: boolean;
-  Routes?: any[];
+  wrappers?: any[];
 }

@@ -124,6 +124,24 @@ const routes = renderRoutes({
         },
       ],
     },
+    {
+      path: '/wrappers',
+      component: () => <h1>foo</h1>,
+      wrappers: [
+        (props: any) => (
+          <>
+            <h1>wrapper 1 {props.route.path}</h1>
+            {props.children}
+          </>
+        ),
+        (props: any) => (
+          <>
+            <h1>wrapper 2</h1>
+            {props.children}
+          </>
+        ),
+      ],
+    },
     { component: () => <h1 data-testid="test">Fallback</h1> },
   ],
   plugin: new Plugin(),
@@ -223,6 +241,15 @@ test('/get-initial-props-embed', async () => {
   expect((await screen.findByTestId('test')).innerHTML).toEqual('bar');
   expect((await screen.findByTestId('test-parent')).innerHTML).toEqual(
     'parent',
+  );
+});
+
+test('/wrappers', async () => {
+  const { container } = render(
+    <MemoryRouter initialEntries={['/wrappers']}>{routes}</MemoryRouter>,
+  );
+  expect(container.innerHTML).toEqual(
+    '<h1>wrapper 1 /wrappers</h1><h1>wrapper 2</h1><h1>foo</h1>',
   );
 });
 

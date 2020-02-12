@@ -85,6 +85,13 @@ class Route {
       route.component = winPath(join(opts.root, route.component));
     }
 
+    // resolve wrappers path
+    if (route.wrappers) {
+      route.wrappers = route.wrappers.map(wrapper => {
+        return winPath(join(opts.root, wrapper));
+      });
+    }
+
     if (this.opts.onPatchRoute) {
       await this.opts.onPatchRoute({
         route,

@@ -15,7 +15,7 @@ export default function({ routes }: IOpts) {
   // 因为要往 routes 里加无用的信息，所以必须 deep clone 一下，避免污染
   const clonedRoutes = lodash.cloneDeep(routes);
 
-  function replacer(key: string, value: string) {
+  function replacer(key: string, value: any) {
     switch (key) {
       case 'component':
         if (/^\((.+)?\)(\s+)?=>/.test(value)) {
@@ -25,6 +25,11 @@ export default function({ routes }: IOpts) {
           return value;
         }
         return `require('${value}').default`;
+      case 'wrappers':
+        const wrappers = value.map((wrapper: string) => {
+          return `require('${wrapper}').default`;
+        });
+        return `[${wrappers.join(', ')}]`;
       default:
         return value;
     }

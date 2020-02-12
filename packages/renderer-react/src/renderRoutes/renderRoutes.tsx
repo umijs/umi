@@ -16,16 +16,26 @@ interface IGetRouteElementOpts {
   opts: IOpts;
 }
 
-function wrapInitialPropsFetch(WrappedComponent: any) {
-  return function Foo(props: object) {
+function wrapInitialPropsFetch(Component: any) {
+  return function ComponentWithInitialPropsFetch(props: object) {
     const [initialProps, setInitialProps] = useState();
     useEffect(() => {
       (async () => {
-        const initialProps = await WrappedComponent!.getInitialProps!();
+        const initialProps = await Component!.getInitialProps!();
         setInitialProps(initialProps);
       })();
     }, []);
-    return <WrappedComponent {...props} {...initialProps} />;
+    return <Component {...props} {...initialProps} />;
+  };
+}
+
+function wrapWrapper(Component: any, Wrapper: any) {
+  return function(props: object) {
+    return (
+      <Wrapper {...props}>
+        <Component {...props} />
+      </Wrapper>
+    );
   };
 }
 
@@ -45,15 +55,19 @@ function render({
     routes: route.routes || [],
   });
 
-  let { component: Component, Routes } = route;
+  let { component: Component, wrappers } = route;
   if (Component) {
     if (Component.getInitialProps) {
       Component = wrapInitialPropsFetch(Component);
     }
 
-    if (Routes) {
-      // TODO: Routes 更名
-      // TODO: 用 Routes 封装 Component
+    // route.wrappers
+    if (wrappers) {
+      let len = wrappers.length - 1;
+      while (len >= 0) {
+        Component = wrapWrapper(Component, wrappers[len]);
+        len -= 1;
+      }
     }
 
     const newProps = {

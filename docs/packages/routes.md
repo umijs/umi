@@ -9,6 +9,7 @@
 - [BREAK CHANGE] 动态路由通过 `[]` 表示，比如 `[userId]` 为 `:userId`
 - [BREAK CHANGE] 暂不支持可选动态路由，如果后续有需求可以通过路由组件层的配置加上
 - [BREAK CHANGE] 不再支持 yaml 配置扩展，改为通过路由文件静态属性扩展
+- [BREAK CHANGE] Routes 改名为 wrappers，从 pages 目录开始找
 
 ## 约定式路由文档
 
