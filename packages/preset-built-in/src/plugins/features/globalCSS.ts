@@ -23,9 +23,9 @@ export default (api: IApi) => {
   debug('globalCSSFile', globalCSSFile);
 
   api.addEntryCodeAhead(
-    () => `
-    ${globalCSSFile
-      .map(file => `require('${winPath(relative(absTmpPath, file))}');`)
-      .join('')}`,
+    () =>
+      `${globalCSSFile
+        .map(file => `require('${winPath(relative(absTmpPath, file))}');`)
+        .join('')}`,
   );
 };
