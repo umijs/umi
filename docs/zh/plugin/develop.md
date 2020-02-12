@@ -503,6 +503,7 @@ api.addHTMLScript({
 ```js
 api.modifyHTMLWithAST(($, { route, getChunkPath }) => {
   $('head').append(`<script src="${getChunkPath('a.js')}"></script>`);
+  return $;
 });
 ```
 

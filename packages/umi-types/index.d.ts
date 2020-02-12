@@ -362,7 +362,7 @@ interface IModifyHTMLWithASTArgs {
 }
 
 export interface IModifyHTMLWithASTFunc {
-  ($: CheerioStatic, args: IModifyHTMLWithASTArgs): void;
+  ($: CheerioStatic, args: IModifyHTMLWithASTArgs): CheerioStatic;
 }
 
 interface IModifyHTMLWithAST {
