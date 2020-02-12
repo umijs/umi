@@ -6,4 +6,5 @@ export interface IRoute {
   wrappers?: string[];
   __toMerge?: boolean;
   __isDynamic?: boolean;
+  [key: string]: any;
 }
