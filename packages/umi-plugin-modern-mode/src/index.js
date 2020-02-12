@@ -194,5 +194,7 @@ export default function(api, { isModernBuild = true, unsafeInline = false } = {}
         targetEl.remove();
       }
     });
+
+    return $;
   });
 }
