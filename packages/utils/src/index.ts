@@ -1,5 +1,6 @@
 import address from 'address';
 import chalk from 'chalk';
+import cheerio from 'cheerio';
 import spawn from 'cross-spawn';
 import * as chokidar from 'chokidar';
 import clipboardy from 'clipboardy';
@@ -27,6 +28,7 @@ export { spawn };
 export { semver };
 export { address };
 export { chalk };
+export { cheerio };
 export { clipboardy };
 export { chokidar };
 export { createDebug };
