@@ -1,6 +1,6 @@
 import address from 'address';
 import chalk from 'chalk';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import spawn from 'cross-spawn';
 import * as chokidar from 'chokidar';
 import clipboardy from 'clipboardy';
