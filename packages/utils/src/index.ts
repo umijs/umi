@@ -53,6 +53,7 @@ export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';
 export { default as getFile } from './getFile/getFile';
 export { default as winPath } from './winPath/winPath';
+export { default as winEOL } from './winEOL/winEOL';
 export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps';
 export { default as BabelRegister } from './BabelRegister/BabelRegister';
 export { default as Generator } from './Generator/Generator';
