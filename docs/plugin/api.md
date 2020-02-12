@@ -112,6 +112,27 @@ e.g.
 api.skipPlugins(['@umijs/plugin-dva']);
 ```
 
+### hasPlugins(pluginIds: string[])
+
+判断是否有注册某个插件。
+
+插件的 id 规则，
+
+- id 默认为包名
+- 文件级的插件，如果没有声明 id，默认为 name + 相对路径，比如 `@umijs/preset-react/lib/plugins/crossorigin/crossorigin`
+- 内置插件以 `@@` 为前缀，比如 `@@/registerMethod`
+
+注：
+
+- 如果在注册阶段使用，只能判断**在他之前**是否有注册某个插件
+
+e.g.
+
+```js
+// 判断是否有注册 @umijs/plugin-dva
+api.hasPlugins(['@umijs/plugin-dva']);
+```
+
 ## 扩展方法
 
 通过 `api.registerMethod()` 扩展的方法。

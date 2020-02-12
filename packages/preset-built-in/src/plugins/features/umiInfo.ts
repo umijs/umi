@@ -10,7 +10,7 @@ export default (api: IApi) => {
   api.addEntryCode(
     () => `
     window.g_umi = {
-      umi: '${process.env.UMI_VERSION}',
+      version: '${process.env.UMI_VERSION}',
     };
   `,
   );

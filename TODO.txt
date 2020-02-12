@@ -23,6 +23,7 @@ umi-next:
 		- api.addMiddleware() @done
 		- route 支持 Routes 配置
 			或者有更好的方案。
+		- api.hasPlugins(pluginIds: string[]) @done
 		- 未实现的接口，优先级低
 			api.rebuildTmpFiles()
 			api.onDevCompileDone()

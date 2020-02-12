@@ -49,20 +49,20 @@ test('normal', async () => {
     plugins: service.plugins,
   });
   expect(plugins).toEqual([
-    '[preset] ./preset_1/index.js',
-    '[preset] ./preset_1/preset_1/index.js',
-    '[preset] ./preset_2/index.js',
+    '[preset] ./preset_1/index',
+    '[preset] ./preset_1/preset_1/index',
+    '[preset] ./preset_2/index',
     '[preset] @umijs/preset-2',
     '[preset] umi-preset-2',
     '[preset] @alipay/umi-preset-bigfish',
     '[preset] @umijs/preset-1',
     '[preset] umi-preset-1',
-    '[plugin] ./preset_1/plugin_1.js',
-    '[plugin] ./preset_1/plugin_2.js',
-    '[plugin] ./preset_1/preset_1/plugin_1.js',
-    '[plugin] ./preset_2/plugin_1.js',
-    '[plugin] ./plugin_1.js',
-    '[plugin] ./plugin_2.js',
+    '[plugin] ./preset_1/plugin_1',
+    '[plugin] ./preset_1/plugin_2',
+    '[plugin] ./preset_1/preset_1/plugin_1',
+    '[plugin] ./preset_2/plugin_1',
+    '[plugin] ./plugin_1',
+    '[plugin] ./plugin_2',
     '[plugin] @umijs/plugin-2',
     '[plugin] umi-plugin-2',
     '[plugin] @umijs/plugin-1',
@@ -219,9 +219,9 @@ test('api.registerPresets', async () => {
     plugins: service.plugins,
   });
   expect(plugins).toEqual([
-    '[preset] ./preset_1.js',
+    '[preset] ./preset_1',
     '[preset] preset_2',
-    '[preset] ./preset_3.js',
+    '[preset] ./preset_3',
   ]);
 });
 
@@ -238,12 +238,12 @@ test('api.registerPlugins', async () => {
     plugins: service.plugins,
   });
   expect(plugins).toEqual([
-    '[preset] ./preset_1.js',
+    '[preset] ./preset_1',
     '[plugin] plugin_4',
-    '[plugin] ./plugin_5.js',
-    '[plugin] ./plugin_1.js',
+    '[plugin] ./plugin_5',
+    '[plugin] ./plugin_1',
     '[plugin] plugin_2',
-    '[plugin] ./plugin_3.js',
+    '[plugin] ./plugin_3',
   ]);
 });
 
@@ -351,7 +351,7 @@ test('api.registerMethod should have the right plugin id', async () => {
   });
   await service.init();
   expect(Object.keys(service.hooksByPluginId)[0]).toContain(
-    'plugin_3_api_foo.js',
+    './plugin_3_api_foo',
   );
 });
 

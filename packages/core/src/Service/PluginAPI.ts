@@ -99,7 +99,11 @@ export default class PluginAPI {
     const extraPresets = presets.map(preset => {
       return isValidPlugin(preset as any)
         ? (preset as IPreset)
-        : pathToObj(PluginType.preset, preset as string);
+        : pathToObj({
+            type: PluginType.preset,
+            path: preset as string,
+            cwd: this.service.cwd,
+          });
     });
     this.service._extraPresets.splice(0, 0, ...extraPresets);
   }
@@ -118,7 +122,11 @@ export default class PluginAPI {
     const extraPlugins = plugins.map(plugin => {
       return isValidPlugin(plugin as any)
         ? (plugin as IPreset)
-        : pathToObj(PluginType.plugin, plugin as string);
+        : pathToObj({
+            type: PluginType.plugin,
+            path: plugin as string,
+            cwd: this.service.cwd,
+          });
     });
     if (this.service.stage === ServiceStage.initPresets) {
       this.service._extraPlugins.push(...extraPlugins);
@@ -161,6 +169,12 @@ export default class PluginAPI {
   skipPlugins(pluginIds: string[]) {
     pluginIds.forEach(pluginId => {
       this.service.skipPluginIds.add(pluginId);
+    });
+  }
+
+  hasPlugins(pluginIds: string[]) {
+    return pluginIds.every(pluginId => {
+      return pluginId in this.service.plugins;
     });
   }
 }

@@ -1,5 +1,5 @@
 import pkgUp from 'pkg-up';
-import { basename, dirname, extname, join } from 'path';
+import { basename, dirname, extname, join, relative } from 'path';
 import { existsSync } from 'fs';
 import camelcase from 'camelcase';
 import assert from 'assert';
@@ -86,7 +86,15 @@ function pkgNameToKey(pkgName: string, type: PluginType) {
   return nameToKey(pkgName.replace(RE[type], ''));
 }
 
-export function pathToObj(type: PluginType, path: string) {
+export function pathToObj({
+  type,
+  path,
+  cwd,
+}: {
+  type: PluginType;
+  path: string;
+  cwd: string;
+}) {
   let pkg = null;
   let isPkgPlugin = false;
 
@@ -100,10 +108,19 @@ export function pathToObj(type: PluginType, path: string) {
       winPath(path);
   }
 
-  // TODO: 自动 resolve 的 id 不要太长，通过一定的规则缩短
-  // 1. 如果是当前项目的临时插件，可以用相对路径，比如：./plugin.ts
-  // 2. 如果是依赖的子路径，可以从依赖开始用子路径，比如：@alipay/umi-plugin-bigfish/lib/plugins/deer.js
-  const id = isPkgPlugin ? pkg!.name : winPath(path);
+  let id;
+  if (isPkgPlugin) {
+    id = pkg!.name;
+  } else if (winPath(path).startsWith(winPath(cwd))) {
+    id = `./${winPath(relative(cwd, path))}`;
+  } else if (pkgJSONPath) {
+    id = winPath(join(pkg!.name, relative(dirname(pkgJSONPath), path)));
+  } else {
+    id = winPath(path);
+  }
+  id = id.replace('@umijs/preset-built-in/lib/plugins', '@@');
+  id = id.replace(/\.js$/, '');
+
   const key = isPkgPlugin
     ? pkgNameToKey(pkg!.name, type)
     : nameToKey(basename(path, extname(path)));
@@ -131,7 +148,13 @@ export function resolvePresets(opts: IResolvePresetsOpts) {
   const presets = [...getPluginsOrPresets(type, opts)];
   debug(`preset paths:`);
   debug(presets);
-  return presets.map(pathToObj.bind(null, type));
+  return presets.map((path: string) => {
+    return pathToObj({
+      type,
+      path,
+      cwd: opts.cwd,
+    });
+  });
 }
 
 export function resolvePlugins(opts: IResolvePluginsOpts) {
@@ -139,7 +162,13 @@ export function resolvePlugins(opts: IResolvePluginsOpts) {
   const plugins = getPluginsOrPresets(type, opts);
   debug(`plugin paths:`);
   debug(plugins);
-  return plugins.map(pathToObj.bind(null, type));
+  return plugins.map((path: string) => {
+    return pathToObj({
+      type,
+      path,
+      cwd: opts.cwd,
+    });
+  });
 }
 
 export function isValidPlugin(plugin: IPlugin) {

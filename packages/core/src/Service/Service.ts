@@ -309,7 +309,13 @@ export default class Service extends EventEmitter {
       this._extraPresets.splice(
         0,
         0,
-        ...presets.map(pathToObj.bind(null, PluginType.preset)),
+        ...presets.map((path: string) => {
+          return pathToObj({
+            type: PluginType.preset,
+            path,
+            cwd: this.cwd,
+          });
+        }),
       );
     }
     if (plugins) {
@@ -318,7 +324,13 @@ export default class Service extends EventEmitter {
         `plugins returned from preset ${id} must be Array.`,
       );
       this._extraPlugins.push(
-        ...plugins.map(pathToObj.bind(null, PluginType.plugin)),
+        ...plugins.map((path: string) => {
+          return pathToObj({
+            type: PluginType.plugin,
+            path,
+            cwd: this.cwd,
+          });
+        }),
       );
     }
   }
