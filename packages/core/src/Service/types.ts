@@ -21,6 +21,7 @@ export interface IPackage {
   name?: string;
   dependencies?: IDep;
   devDependencies?: IDep;
+  [key: string]: any;
 }
 
 export interface IPlugin {

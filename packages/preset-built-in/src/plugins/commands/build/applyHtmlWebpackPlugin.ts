@@ -27,7 +27,11 @@ export default function(api: IApi) {
   }
 
   api.modifyBundleConfig((bundleConfig, { env, bundler: { id } }) => {
-    if (env === 'production' && id === 'webpack') {
+    if (
+      env === 'production' &&
+      id === 'webpack' &&
+      process.env.HTML !== 'none'
+    ) {
       bundleConfig.plugins?.unshift(new HtmlWebpackPlugin());
     }
     return bundleConfig;

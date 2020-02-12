@@ -39,7 +39,7 @@ umi-next:
 			- mock 支持通过插件扩展，添加目录或文件
 		build:
 			- 支持 watch mode
-			- 支持 webpack 的 dynamic import
+			- 支持 webpack 的 dynamic import（config.dynamicImport）
 		block:
 			- 迁移 @ycjcl868
 	renderer-react:
@@ -97,6 +97,7 @@ plugins:
 		- 实现 preset-react
 	plugin-dva:
 		- 按需开启，检测到有 dva 相关 model 后再开启
+		- 支持 page 下的 models 目录
 	plugin-locale: @ycjcl868
 		- 默认语言无效？
 			需要排查下
