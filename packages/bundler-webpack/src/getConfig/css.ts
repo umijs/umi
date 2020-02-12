@@ -103,6 +103,7 @@ function createCSSRule({
             // https://cssdb.org/
             stage: 3,
           }),
+          ...(config.extraPostCSSPlugins ? config.extraPostCSSPlugins : []),
         ],
       });
 

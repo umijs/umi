@@ -199,6 +199,7 @@ export interface IConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
+  extraPostCSSPlugins?: any[];
   ssr?: object;
   favicon?: string;
   [key: string]: any;
