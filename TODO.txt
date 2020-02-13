@@ -28,9 +28,12 @@ umi-next:
 			api.rebuildTmpFiles()
 			api.onDevCompileDone()
 			api.modifyHTMLChunks()
+		- api.modifyPublicPathStr()
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
 		- dev 时 config 值校验时 Promise 错误未捕获
+	runtime:
+		- 运行时插件 applyPlugin 支持 async @done
 	preset-built-in:
 		dev & build:
 			- 支持 global-css、global-js @ycjcl868 @done
@@ -102,6 +105,7 @@ plugins:
 	plugin-dva:
 		- 按需开启，检测到有 dva 相关 model 后再开启
 		- 支持 page 下的 models 目录
+		- 支持 immer 配置
 	plugin-locale: @ycjcl868
 		- 默认语言无效？
 			需要排查下

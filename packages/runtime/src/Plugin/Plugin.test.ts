@@ -140,6 +140,53 @@ test('applyPlugins modify', () => {
   });
 });
 
+test('applyPlugins modify support Promise', async () => {
+  const p = new Plugin({
+    validKeys: ['foo'],
+  });
+  p.register({
+    apply: {
+      async foo(memo: object, args: object) {
+        return { ...memo, a: 1, ...args };
+      },
+    },
+    path: '/foo1.js',
+  });
+  p.register({
+    apply: {
+      foo: Promise.resolve({
+        b: 1,
+        c: 1,
+      }),
+    },
+    path: '/foo3.js',
+  });
+  p.register({
+    apply: {
+      foo: {
+        d: 1,
+      },
+    },
+    path: '/foo3.js',
+  });
+  expect(
+    await p.applyPlugins({
+      key: 'foo',
+      type: ApplyPluginsType.modify,
+      async: true,
+      args: {
+        e: 1,
+      },
+    }),
+  ).toEqual({
+    a: 1,
+    b: 1,
+    c: 1,
+    d: 1,
+    e: 1,
+  });
+});
+
 test('applyPlugins event', () => {
   let count: number;
   const p = new Plugin({

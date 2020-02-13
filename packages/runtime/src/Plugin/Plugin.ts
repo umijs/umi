@@ -23,6 +23,10 @@ function _compose({ fns, args }: { fns: (Function | any)[]; args?: object }) {
   return fns.reduce((a, b) => () => b(a, args), last);
 }
 
+function isPromiseLike(obj: any) {
+  return !!obj && typeof obj === 'object' && typeof obj.then === 'function';
+}
+
 export default class Plugin {
   validKeys: string[];
   hooks: {
@@ -72,11 +76,13 @@ export default class Plugin {
     type,
     initialValue,
     args,
+    async,
   }: {
     key: string;
     type: ApplyPluginsType;
     initialValue?: any;
     args?: object;
+    async?: boolean;
   }) {
     const hooks = this.getHooks(key) || [];
 
@@ -89,18 +95,50 @@ export default class Plugin {
 
     switch (type) {
       case ApplyPluginsType.modify:
-        return hooks.reduce((memo: any, hook: Function | object) => {
-          assert(
-            typeof hook === 'function' || typeof hook === 'object',
-            `applyPlugins failed, all hooks for key ${key} must be function or plain object.`,
+        if (async) {
+          return hooks.reduce(
+            async (memo: any, hook: Function | Promise<any> | object) => {
+              assert(
+                typeof hook === 'function' ||
+                  typeof hook === 'object' ||
+                  isPromiseLike(hook),
+                `applyPlugins failed, all hooks for key ${key} must be function, plain object or Promise.`,
+              );
+              if (isPromiseLike(memo)) {
+                memo = await memo;
+              }
+              if (typeof hook === 'function') {
+                const ret = hook(memo, args);
+                if (isPromiseLike(ret)) {
+                  return await ret;
+                } else {
+                  return ret;
+                }
+              } else {
+                if (isPromiseLike(hook)) {
+                  hook = await hook;
+                }
+                return { ...memo, ...hook };
+              }
+            },
+            isPromiseLike(initialValue)
+              ? initialValue
+              : Promise.resolve(initialValue),
           );
-          if (typeof hook === 'function') {
-            return hook(memo, args);
-          } else {
-            // TODO: deepmerge?
-            return { ...memo, ...hook };
-          }
-        }, initialValue);
+        } else {
+          return hooks.reduce((memo: any, hook: Function | object) => {
+            assert(
+              typeof hook === 'function' || typeof hook === 'object',
+              `applyPlugins failed, all hooks for key ${key} must be function or plain object.`,
+            );
+            if (typeof hook === 'function') {
+              return hook(memo, args);
+            } else {
+              // TODO: deepmerge?
+              return { ...memo, ...hook };
+            }
+          }, initialValue);
+        }
 
       case ApplyPluginsType.event:
         return hooks.forEach((hook: Function) => {
