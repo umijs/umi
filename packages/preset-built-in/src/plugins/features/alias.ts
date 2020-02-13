@@ -9,7 +9,7 @@ export default (api: IApi) => {
     key: 'alias',
     config: {
       schema(joi) {
-        return joi.object().pattern(/.+/, joi.string());
+        return joi.object();
       },
       default: {
         'react-router': dirname(require.resolve('react-router/package.json')),
