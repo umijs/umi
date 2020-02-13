@@ -13,6 +13,64 @@ test('config empty', async () => {
   ).toEqual([]);
 });
 
+test('config routes', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {
+        routes: [
+          {
+            path: '/',
+            component: '../layouts/SecurityLayout',
+            routes: [
+              {
+                path: '/',
+                component: '../layouts/BasicLayout',
+                routes: [
+                  {
+                    path: '/',
+                    redirect: '/welcome',
+                  },
+                  { component: './404' },
+                ],
+              },
+              { component: './404' },
+            ],
+          },
+          { component: './404' },
+        ],
+      },
+      root: '/tmp',
+    }),
+  ).toEqual([
+    {
+      path: '/',
+      component: '/layouts/SecurityLayout',
+      routes: [
+        {
+          path: '/',
+          component: '/layouts/BasicLayout',
+          routes: [
+            {
+              path: '/',
+              redirect: '/welcome',
+            },
+            {
+              component: '/tmp/404',
+            },
+          ],
+        },
+        {
+          component: '/tmp/404',
+        },
+      ],
+    },
+    {
+      component: '/tmp/404',
+    },
+  ]);
+});
+
 test('conventional normal', async () => {
   const route = new Route();
   expect(

@@ -71,7 +71,7 @@ class Route {
     }
 
     if (route.routes) {
-      this.patchRoutes(route.routes, opts);
+      await this.patchRoutes(route.routes, opts);
     }
 
     // resolve component path
