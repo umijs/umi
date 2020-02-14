@@ -190,6 +190,7 @@ export default function({
               {
                 mergeRules: false,
                 minifyFontValues: { removeQuotes: false },
+                ...config.cssnano,
               },
             ],
           },
