@@ -99,6 +99,7 @@ function createCSSRule({
             autoprefixer: {
               overrideBrowserslist: browserslist,
               flexbox: 'no-2009',
+              ...config.autoprefixer,
             },
             // https://cssdb.org/
             stage: 3,

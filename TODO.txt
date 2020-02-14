@@ -38,8 +38,8 @@ umi-next:
 		dev & build:
 			- 支持 global-css、global-js @ycjcl868 @done
 			- 支持 H5 的多页功能
-			- base 配置
-			- outputPath 配置
+			- 配置项查漏补缺
+				autoprefixer, base, outputPath, cssnano
 		dev:
 			- ts 友好的 mock 方案
 			- mock 支持通过插件扩展，添加目录或文件
@@ -58,7 +58,6 @@ umi-next:
 			https://github.com/babel/babel/issues/8741
 		- 手写 manifest 插件
 		- 手写 copy 插件
-		- cssnano 配置
 	babel-preset-umi:
 		- 改写 babel-plugin-react-require
 			现有插件的问题是不管有没有 react component，都加了 react 的引用
