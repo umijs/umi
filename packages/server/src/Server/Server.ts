@@ -139,11 +139,6 @@ class Server {
           this.setupCompress();
         }
       },
-      proxy: () => {
-        if (this.opts.proxy) {
-          this.setupProxy();
-        }
-      },
       headers: () => {
         if (lodash.isPlainObject(this.opts.headers)) {
           this.setupHeaders();
@@ -153,6 +148,11 @@ class Server {
         this.opts.beforeMiddlewares.forEach(middleware => {
           this.app.use(middleware);
         });
+      },
+      proxy: () => {
+        if (this.opts.proxy) {
+          this.setupProxy();
+        }
       },
       compilerMiddleware: () => {
         if (this.opts.compilerMiddleware) {
@@ -233,7 +233,14 @@ class Server {
       // It is possible to use the `bypass` method without a `target`.
       // However, the proxy middleware has no use in this case, and will fail to instantiate.
       if (proxyConfig.target) {
-        return HttpProxyMiddleware(context!, proxyConfig);
+        return HttpProxyMiddleware(context!, {
+          ...proxyConfig,
+          onProxyRes(proxyRes, req) {
+            const realUrl =
+              new URL(req.url || '', proxyConfig.target)?.href || '';
+            proxyRes.headers['x-real-url'] = realUrl;
+          },
+        });
       }
 
       return;
