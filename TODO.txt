@@ -39,7 +39,20 @@ umi-next:
 			- 支持 global-css、global-js @ycjcl868 @done
 			- 支持 H5 的多页功能
 			- 配置项查漏补缺
-				autoprefixer, base, outputPath, cssnano
+				- autoprefixer @done
+				- base
+				- cssnano @done
+				- copy
+				- context
+				- exportStatic
+				- generateCssModulesTypings
+				- outputPath
+				- manifest
+				- mock
+				- outputPath
+				- tsConfigFile
+				- typescript
+				- urlLoaderExcludes
 		dev:
 			- ts 友好的 mock 方案
 			- mock 支持通过插件扩展，添加目录或文件
