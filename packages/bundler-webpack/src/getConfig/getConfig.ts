@@ -13,6 +13,7 @@ import {
 import css from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
+import { existsSync } from 'fs';
 
 export interface IOpts {
   cwd: string;
@@ -84,8 +85,10 @@ export default async function getConfig(
   );
 
   const useHash = config.hash && isProd;
+  const absOutputPath = join(cwd, config.outputPath || 'dist');
+
   webpackConfig.output
-    .path(join(cwd, config.outputPath || 'dist'))
+    .path(absOutputPath)
     .filename(useHash ? `[name].[contenthash:8].js` : `[name].js`)
     .chunkFilename(useHash ? `[name].[contenthash:8].async.js` : `[name].js`)
     .publicPath(config.publicPath!)
@@ -268,6 +271,22 @@ export default async function getConfig(
   if (!isWebpack5) {
     webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
   }
+
+  // copy
+  webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
+    [
+      existsSync(join(cwd, 'public')) && {
+        from: join(cwd, 'public'),
+        to: absOutputPath,
+      },
+      ...(config.copy
+        ? config.copy.map(from => ({
+            from: join(cwd, from),
+            to: absOutputPath,
+          }))
+        : []),
+    ].filter(Boolean),
+  ]);
 
   // timefix
   // webpackConfig

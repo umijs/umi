@@ -5,7 +5,7 @@ export default (api: IApi) => {
     key: 'plugins',
     config: {
       schema(joi) {
-        return joi.array();
+        return joi.array().items(joi.string());
       },
     },
   });

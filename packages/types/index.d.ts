@@ -166,12 +166,13 @@ export { IRoute };
 
 export interface IConfig extends IConfigCore {
   alias?: {
-    (key: string): string;
+    [key: string]: string;
   };
-  autoprefixer: object;
+  autoprefixer?: object;
   chainWebpack?: Function;
   cssLoader?: object;
-  cssnano: object;
+  cssnano?: object;
+  copy?: string[];
   define?: {
     [key: string]: any;
   };

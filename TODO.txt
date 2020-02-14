@@ -42,7 +42,7 @@ umi-next:
 				- autoprefixer @done
 				- base
 				- cssnano @done
-				- copy
+				- copy @done
 				- context
 				- exportStatic
 				- generateCssModulesTypings
