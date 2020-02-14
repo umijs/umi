@@ -2,6 +2,7 @@ const { yParser, execa, chalk } = require('@umijs/utils');
 const { join } = require('path');
 const { writeFileSync } = require('fs');
 const exec = require('./utils/exec');
+const syncTNPM = require('./syncTNPM');
 const getPackages = require('./utils/getPackages');
 const isNextVersion = require('./utils/isNextVersion');
 
@@ -140,6 +141,7 @@ async function release() {
     });
 
   logStep('done');
+  syncTNPM(pkgs);
 }
 
 release().catch(err => {
