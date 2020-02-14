@@ -328,6 +328,17 @@ export default async function getConfig(
           .use(bundleImplementor.HashedModuleIdsPlugin, []);
       }
 
+      if (config.manifest && !config.ssr) {
+        webpackConfig
+          .plugin('manifest')
+          .use(require.resolve('webpack-manifest-plugin'), [
+            {
+              fileName: 'asset-manifest.json',
+              ...config.manifest,
+            },
+          ]);
+      }
+
       // compress
       if (disableCompress) {
         webpackConfig.optimization.minimize(false);

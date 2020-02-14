@@ -47,7 +47,7 @@ umi-next:
 				- exportStatic
 				- generateCssModulesTypings
 				- outputPath @done
-				- manifest
+				- manifest @done
 				- mock
 			- fork-ts-check
 		dev:

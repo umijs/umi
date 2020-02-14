@@ -194,6 +194,7 @@ export interface IConfig extends IConfigCore {
   inlineLimit?: number;
   lessLoader?: object;
   links?: Partial<HTMLLinkElement>[];
+  manifest?: object;
   metas?: Partial<HTMLMetaElement>[];
   mountElementId?: string;
   outputPath?: string;
