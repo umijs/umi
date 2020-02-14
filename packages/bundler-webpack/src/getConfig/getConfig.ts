@@ -169,7 +169,10 @@ export default async function getConfig(
       .test(/\.(js|mjs)$/)
       .include.add(/node_modules/).end()
       // TODO: 处理 tnpm 下 @babel/rutnime 路径变更问题
-      .exclude.add(/@babel(?:\/|\\{1,2})runtime/).end()
+      .exclude
+        .add(/@babel(?:\/|\\{1,2})runtime/)
+        .add(/(react|react-dom)/)
+        .end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
         .options(getBabelDepsOpts({

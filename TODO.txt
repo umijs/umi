@@ -93,21 +93,21 @@ umi-next:
 plugins:
 	实现插件:
 		- plugin-model @sorrycc @done
-		- plugin-access
-		- plugin-request
-		- plugin-layout
-		- plugin-qiankun
+		- plugin-access @done
+		- plugin-request @done
+		- plugin-layout @done
+		- plugin-qiankun @done
 		- plugin-preact
 		- plugin-hd
 		- plugin-dll
 	preset-react:
-		- 实现 preset-react
+		- 实现 preset-react @done
 	plugin-dva:
 		- 按需开启，检测到有 dva 相关 model 后再开启
 		- 支持 page 下的 models 目录
 		- 支持 immer 配置
 	plugin-locale: @ycjcl868
-		- 默认语言无效？
+		- 默认语言无效？ @done
 			需要排查下
 	CHORE:
 		- 发布脚本 @sorrycc
@@ -115,10 +115,10 @@ plugins:
 		- 完善用例
 
 preset-ui: @ycjcl868
-	- 适配 umi@3
+	- 适配 umi@3 @done
 
 doc:
-	- 梳理目录以及和 bigfish、插件之间的共享共建机制
+	- 梳理目录以及和 bigfish、插件之间的共享共建机制 @done
 
 bigfish:
-	- 确定组织形式
+	- 确定组织形式 @done
