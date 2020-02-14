@@ -192,6 +192,7 @@ export interface IConfig extends IConfigCore {
   links?: Partial<HTMLLinkElement>[];
   metas?: Partial<HTMLMetaElement>[];
   mountElementId?: string;
+  outputPath?: string;
   plugins?: IPresetOrPlugin[];
   presets?: IPresetOrPlugin[];
   proxy?: any;

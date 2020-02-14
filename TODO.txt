@@ -46,7 +46,7 @@ umi-next:
 				- context
 				- exportStatic
 				- generateCssModulesTypings
-				- outputPath
+				- outputPath @done
 				- manifest
 				- mock
 				- outputPath
