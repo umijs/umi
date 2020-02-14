@@ -168,11 +168,6 @@ export interface IConfig extends IConfigCore {
   alias?: {
     (key: string): string;
   };
-  links?: Partial<HTMLLinkElement>[];
-  styles?: IStyleConfig;
-  metas?: Partial<HTMLMetaElement>[];
-  headScripts?: IScriptConfig;
-  scripts?: IScriptConfig;
   chainWebpack?: Function;
   cssLoader?: object;
   define?: {
@@ -184,24 +179,29 @@ export interface IConfig extends IConfigCore {
   externals?: any;
   extraBabelPlugins?: IPresetOrPlugin[];
   extraBabelPresets?: IPresetOrPlugin[];
+  extraPostCSSPlugins?: any[];
+  favicon?: string;
   hash?: boolean;
+  headScripts?: IScriptConfig;
   history?: 'browser' | 'hash' | 'memory';
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;
+  links?: Partial<HTMLLinkElement>[];
+  metas?: Partial<HTMLMetaElement>[];
   mountElementId?: string;
   plugins?: IPresetOrPlugin[];
   presets?: IPresetOrPlugin[];
   proxy?: any;
   runtimePublicPath?: boolean;
+  scripts?: IScriptConfig;
   singular?: boolean;
+  ssr?: object;
   styleLoader?: object;
+  styles?: IStyleConfig;
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
-  extraPostCSSPlugins?: any[];
-  ssr?: object;
-  favicon?: string;
   [key: string]: any;
 }
 
