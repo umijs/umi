@@ -185,7 +185,10 @@ export interface IConfig extends IConfigCore {
   favicon?: string;
   hash?: boolean;
   headScripts?: IScriptConfig;
-  history?: 'browser' | 'hash' | 'memory';
+  history?: {
+    type: 'browser' | 'hash' | 'memory';
+    options?: object;
+  };
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
   lessLoader?: object;

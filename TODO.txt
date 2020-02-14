@@ -49,10 +49,7 @@ umi-next:
 				- outputPath @done
 				- manifest
 				- mock
-				- outputPath
-				- tsConfigFile
-				- typescript
-				- urlLoaderExcludes
+			- fork-ts-check
 		dev:
 			- ts 友好的 mock 方案
 			- mock 支持通过插件扩展，添加目录或文件

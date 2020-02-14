@@ -15,13 +15,10 @@ export default function(api: IApi) {
       default: { type: 'browser' },
       schema(joi) {
         const type = joi.string().allow('browser', 'hash', 'memory');
-        return joi.alternatives().try(
+        return joi.object({
           type,
-          joi.object({
-            type,
-            options: joi.object(),
-          }),
-        );
+          options: joi.object().optional(),
+        });
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
@@ -29,9 +26,8 @@ export default function(api: IApi) {
 
   api.onGenerateFiles(async () => {
     const historyTpl = readFileSync(join(__dirname, 'history.tpl'), 'utf-8');
-    const history = api.config.history || 'browser';
-    const { type, options = {} } =
-      typeof history === 'string' ? { type: history } : history;
+    const history = api.config.history!;
+    const { type, options = {} } = history;
 
     api.writeTmpFile({
       path: 'core/history.ts',
