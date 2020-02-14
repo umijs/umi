@@ -1,8 +1,7 @@
-
 import { IConfig } from '@umijs/types';
 
 export default {
-  history: 'memory',
+  history: { type: 'memory' },
   mountElementId: '',
   routes: [
     { path: '/', component: 'index' },
