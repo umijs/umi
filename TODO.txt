@@ -31,7 +31,7 @@ umi-next:
 		- api.modifyPublicPathStr()
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
-		- dev 时 config 值校验时 Promise 错误未捕获
+		- dev 时 config 值校验时 Promise 错误未捕获 @done
 	runtime:
 		- 运行时插件 applyPlugin 支持 async @done
 	preset-built-in:

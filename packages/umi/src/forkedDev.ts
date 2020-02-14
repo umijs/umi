@@ -4,8 +4,8 @@ import getCwd from './utils/getCwd';
 
 const args = yParser(process.argv.slice(2));
 
-try {
-  (async () => {
+(async () => {
+  try {
     process.env.NODE_ENV = 'development';
     const service = new Service({
       cwd: getCwd(),
@@ -37,9 +37,9 @@ try {
       });
       process.exit(0);
     }
-  })();
-} catch (e) {
-  console.error(chalk.red(e.message));
-  console.error(e.stack);
-  process.exit(1);
-}
+  } catch (e) {
+    console.error(chalk.red(e.message));
+    console.error(e.stack);
+    process.exit(1);
+  }
+})();
