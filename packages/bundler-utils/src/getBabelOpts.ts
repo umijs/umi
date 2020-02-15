@@ -28,7 +28,7 @@ export function getBabelPresetOpts(opts: IOpts) {
   return {
     // @ts-ignore
     nodeEnv: opts.env,
-    dynamicImportNode: opts.config.disableDynamicImport,
+    dynamicImportNode: !opts.config.dynamicImport,
     autoCSSModules: true,
     svgr: true,
     env: {
@@ -57,7 +57,20 @@ export function getBabelOpts({
   };
 }
 
-export function getBabelDepsOpts({ env, cwd }: { env: env; cwd: string }) {
+export function getBabelDepsOpts({
+  env,
+  cwd,
+  config,
+}: {
+  env: env;
+  cwd: string;
+  config: IConfig;
+}) {
+  console.log('test', {
+    // @ts-ignore
+    nodeEnv: env,
+    dynamicImportNode: !config.dynamicImport,
+  });
   return {
     ...getBasicBabelLoaderOpts({ cwd }),
     presets: [
@@ -65,6 +78,8 @@ export function getBabelDepsOpts({ env, cwd }: { env: env; cwd: string }) {
         require.resolve('@umijs/babel-preset-umi/dependency', {
           // @ts-ignore
           nodeEnv: env,
+          // TODO: node_modules 下的 import() 没有被禁用掉，待排查
+          dynamicImportNode: !config.dynamicImport,
         }),
       ],
     ],

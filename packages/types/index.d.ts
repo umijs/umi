@@ -179,7 +179,7 @@ export interface IConfig extends IConfigCore {
   };
   devServer?: IServerOpts;
   devtool?: string;
-  disableDynamicImport?: boolean;
+  dynamicImport?: boolean;
   externals?: any;
   extraBabelPlugins?: IPresetOrPlugin[];
   extraBabelPresets?: IPresetOrPlugin[];

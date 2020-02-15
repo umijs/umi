@@ -181,6 +181,7 @@ export default async function getConfig(
         .options(getBabelDepsOpts({
           cwd,
           env,
+          config,
         }));
 
   // prettier-ignore
