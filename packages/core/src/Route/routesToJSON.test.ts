@@ -3,6 +3,7 @@ import routesToJSON from './routesToJSON';
 test('normal', () => {
   const ret = routesToJSON({
     routes: [{ path: '/', component: '@/pages/index.ts' }],
+    config: {},
   });
   expect(ret).toEqual(
     `
@@ -16,10 +17,30 @@ test('normal', () => {
   );
 });
 
+test('normal with dynamicImport', () => {
+  const ret = routesToJSON({
+    routes: [{ path: '/', component: '@/pages/index.ts' }],
+    config: {
+      dynamicImport: true,
+    },
+  });
+  expect(ret).toEqual(
+    `
+[
+  {
+    "path": "/",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: p__index */'@/pages/index.ts')})
+  }
+]
+  `.trim(),
+  );
+});
+
 test('component with arrow function', () => {
   expect(
     routesToJSON({
       routes: [{ path: '/', component: '()=><div>loading...</div>' }],
+      config: {},
     }),
   ).toEqual(
     `
@@ -34,6 +55,7 @@ test('component with arrow function', () => {
   expect(
     routesToJSON({
       routes: [{ path: '/', component: '(props) => <div>loading...</div>' }],
+      config: {},
     }),
   ).toEqual(
     `
@@ -56,6 +78,7 @@ test('component with function', () => {
           component: 'function(){ return <div>loading...</div>; }',
         },
       ],
+      config: {},
     }),
   ).toEqual(
     `
@@ -75,6 +98,7 @@ test('component with function', () => {
           component: 'function abc(props) { return <div>loading...</div>; }',
         },
       ],
+      config: {},
     }),
   ).toEqual(
     `

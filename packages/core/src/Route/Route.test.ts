@@ -152,6 +152,7 @@ test('getJSON()', () => {
   expect(
     route.getJSON({
       routes: [{ component: '@/foo' }],
+      config: {},
     }),
   ).toEqual(
     `

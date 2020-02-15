@@ -21,7 +21,7 @@ export default function(api: IApi) {
     api.writeTmpFile({
       path: 'core/routes.ts',
       content: Mustache.render(routesTpl, {
-        routes: new Route().getJSON({ routes }),
+        routes: new Route().getJSON({ routes, config: api.config }),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
       }),
     });
