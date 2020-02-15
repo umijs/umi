@@ -169,6 +169,7 @@ export interface IConfig extends IConfigCore {
     [key: string]: string;
   };
   autoprefixer?: object;
+  base?: string;
   chainWebpack?: Function;
   cssLoader?: object;
   cssnano?: object;

@@ -40,7 +40,7 @@ umi-next:
 			- 支持 H5 的多页功能
 			- 配置项查漏补缺
 				- autoprefixer @done
-				- base
+				- base @done
 				- cssnano @done
 				- copy @done
 				- context
@@ -57,7 +57,7 @@ umi-next:
 			- 支持 watch mode
 			- 支持 webpack 的 dynamic import（config.dynamicImport）
 		block:
-			- 迁移 @ycjcl868
+			- 迁移 @ycjcl868 @done
 	renderer-react:
 		- 支持 SSR + Prerender @ycjcl868
 	bundler-webpack:
@@ -66,8 +66,6 @@ umi-next:
 		- 验证 tree-shaking 有效性，因为某些链路里用了 require 模块的方式
 		- 验证 const enum 的问题
 			https://github.com/babel/babel/issues/8741
-		- 手写 manifest 插件
-		- 手写 copy 插件
 	babel-preset-umi:
 		- 改写 babel-plugin-react-require
 			现有插件的问题是不管有没有 react component，都加了 react 的引用
