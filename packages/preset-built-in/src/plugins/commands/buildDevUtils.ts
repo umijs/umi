@@ -1,8 +1,8 @@
-import { IApi, IRoute, Html, webpack } from '@umijs/types';
+import { IApi } from '@umijs/types';
 import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
 import { join } from 'path';
 import { existsSync, readdirSync } from 'fs';
-import { rimraf, lodash } from '@umijs/utils';
+import { rimraf } from '@umijs/utils';
 
 type Env = 'development' | 'production';
 
@@ -111,29 +111,6 @@ export async function getBundleAndConfigs({
   };
 }
 
-export function chunksToFiles(
-  chunks: webpack.compilation.Chunk[],
-): { cssFiles: string[]; jsFiles: string[] } {
-  const cssFiles: string[] = [];
-  const jsFiles: string[] = [];
-
-  chunks.forEach(chunk => {
-    const { files } = chunk;
-    files.forEach(file => {
-      if (/\.js$/.test(file)) {
-        jsFiles.push(file);
-      }
-      if (/\.css$/.test(file)) {
-        cssFiles.push(file);
-      }
-    });
-  });
-  return {
-    cssFiles: lodash.uniq(cssFiles),
-    jsFiles: lodash.uniq(jsFiles),
-  };
-}
-
 export function cleanTmpPathExceptCache({
   absTmpPath,
 }: {
@@ -143,51 +120,5 @@ export function cleanTmpPathExceptCache({
   readdirSync(absTmpPath).forEach(file => {
     if (file === `.cache`) return;
     rimraf.sync(join(absTmpPath, file));
-  });
-}
-
-export function getHtmlGenerator({
-  api,
-}: {
-  api: IApi;
-}): InstanceType<typeof Html> {
-  const getDocumentTplPath = () => {
-    const { absPagesPath } = api.paths || {};
-    const absPageDocumentPath = join(absPagesPath || '', 'document.ejs');
-
-    if (existsSync(absPageDocumentPath)) {
-      return absPageDocumentPath;
-    }
-    return '';
-  };
-
-  const addHTMLFactory = (key: string): any => {
-    return (memo: any[], args: { route: IRoute }) =>
-      api.applyPlugins({
-        key,
-        type: api.ApplyPluginsType.add,
-        initialValue: memo,
-        args,
-      });
-  };
-
-  const tplPath = getDocumentTplPath();
-
-  return new api.Html({
-    config: api.config,
-    tplPath,
-    addHTMLHeadScripts: addHTMLFactory('addHTMLHeadScripts'),
-    addHTMLLinks: addHTMLFactory('addHTMLLinks'),
-    addHTMLMetas: addHTMLFactory('addHTMLMetas'),
-    addHTMLScripts: addHTMLFactory('addHTMLScripts'),
-    addHTMLStyles: addHTMLFactory('addHTMLStyles'),
-    async modifyHTML(memo, args) {
-      return await api.applyPlugins({
-        key: 'modifyHTML',
-        type: api.ApplyPluginsType.modify,
-        initialValue: memo,
-        args,
-      });
-    },
   });
 }

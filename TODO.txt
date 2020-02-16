@@ -34,6 +34,7 @@ umi-next:
 		- dev 时 config 值校验时 Promise 错误未捕获 @done
 	runtime:
 		- 运行时插件 applyPlugin 支持 async @done
+		- umi.dynamic
 	preset-built-in:
 		dev & build:
 			- 支持 global-css、global-js @ycjcl868 @done

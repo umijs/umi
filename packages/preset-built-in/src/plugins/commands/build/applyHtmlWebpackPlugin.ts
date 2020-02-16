@@ -1,5 +1,5 @@
 import { IApi, webpack } from '@umijs/types';
-import { getHtmlGenerator, chunksToFiles } from '../buildDevUtils';
+import { getHtmlGenerator, chunksToFiles } from '../htmlUtils';
 
 export default function(api: IApi) {
   class HtmlWebpackPlugin {

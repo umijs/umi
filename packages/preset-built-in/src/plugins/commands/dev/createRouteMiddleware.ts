@@ -1,6 +1,6 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
 import { extname, join } from 'path';
-import { getHtmlGenerator } from '../buildDevUtils';
+import { getHtmlGenerator } from '../htmlUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 

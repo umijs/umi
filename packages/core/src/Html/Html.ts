@@ -17,22 +17,10 @@ import {
 class Html {
   config: IConfig;
   tplPath?: string;
-  addHTMLHeadScripts?: IAddHTML<IHTMLTag[]>;
-  addHTMLScripts?: IAddHTML<IHTMLTag[]>;
-  addHTMLMetas?: IAddHTML<IHTMLTag[]>;
-  addHTMLLinks?: IAddHTML<Partial<HTMLLinkElement>[]>;
-  addHTMLStyles?: IAddHTML<Partial<IStyle>[]>;
-  modifyHTML?: IModifyHTML;
 
   constructor(opts: IOpts) {
     this.config = opts.config;
     this.tplPath = opts.tplPath;
-    this.addHTMLHeadScripts = opts.addHTMLHeadScripts;
-    this.addHTMLScripts = opts.addHTMLScripts;
-    this.addHTMLMetas = opts.addHTMLMetas;
-    this.addHTMLLinks = opts.addHTMLLinks;
-    this.addHTMLStyles = opts.addHTMLStyles;
-    this.modifyHTML = opts.modifyHTML;
   }
 
   getAsset({ file }: { file: string }) {
@@ -105,22 +93,6 @@ class Html {
     });
 
     let $ = cheerio.load(html);
-
-    if (this.addHTMLMetas) {
-      metas = await this.addHTMLMetas(metas, { route });
-    }
-    if (this.addHTMLLinks) {
-      links = await this.addHTMLLinks(links, { route });
-    }
-    if (this.addHTMLHeadScripts) {
-      headScripts = await this.addHTMLHeadScripts(headScripts, { route });
-    }
-    if (this.addHTMLScripts) {
-      scripts = await this.addHTMLScripts(scripts, { route });
-    }
-    if (this.addHTMLStyles) {
-      styles = await this.addHTMLStyles(styles, { route });
-    }
 
     // metas
     metas.forEach(meta => {
@@ -200,8 +172,8 @@ class Html {
       $('body').append(this.getScriptsContent(scripts));
     }
 
-    if (this.modifyHTML) {
-      $ = await this.modifyHTML($, { route });
+    if (args.modifyHTML) {
+      $ = await args.modifyHTML($, { route });
     }
 
     html = $.html();
