@@ -38,7 +38,7 @@ umi-next:
 	preset-built-in:
 		dev & build:
 			- 支持 global-css、global-js @ycjcl868 @done
-			- 支持 H5 的多页功能
+			- 支持 H5 的多页功能 @done
 			- 配置项查漏补缺
 				- autoprefixer @done
 				- base @done
@@ -56,7 +56,7 @@ umi-next:
 			- mock 支持通过插件扩展，添加目录或文件
 		build:
 			- 支持 watch mode
-			- 支持 webpack 的 dynamic import（config.dynamicImport）
+			- 支持 webpack 的 dynamic import（config.dynamicImport） @done
 		block:
 			- 迁移 @ycjcl868 @done
 	renderer-react:
