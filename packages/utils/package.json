@@ -1,6 +1,6 @@
 {
   "name": "@umijs/utils",
-  "version": "3.0.0-beta.12",
+  "version": "3.0.0-beta.13",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@babel/parser": "7.8.4",
+    "@babel/register": "7.8.3",
     "@babel/traverse": "7.8.4",
     "@babel/types": "7.8.3",
-    "@babel/register": "7.8.3",
     "@types/cheerio": "0.22.16",
     "@types/color": "3.0.1",
     "@types/cross-spawn": "6.0.1",
