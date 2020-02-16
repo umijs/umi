@@ -165,6 +165,18 @@ dev 退出时触发。
 
 - `initialValue`: paths 对象
 
+### modifyPublicPathStr
+
+修改 publicPath 字符串。
+
+参数：
+
+- `route`: 当前路由
+
+注：
+
+- 仅在配置了 runtimePublicPath 或 exportStatic?.dynamicRoot 时有效
+
 ### modifyDefaultConfig
 
 修改默认配置。

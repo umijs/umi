@@ -6,4 +6,8 @@ export interface IConfig {
   title?: string;
   mountElementId?: string;
   routes?: IRoute[];
+  exportStatic?: {
+    htmlSuffix?: boolean;
+    dynamicRoot?: boolean;
+  };
 }

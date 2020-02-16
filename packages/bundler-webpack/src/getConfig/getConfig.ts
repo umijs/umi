@@ -71,7 +71,7 @@ export default async function getConfig(
         e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
       }
       if (config.runtimePublicPath) {
-        e.add(require.resolve('./setPublicPath'));
+        e.add(require.resolve('./runtimePublicPathEntry'));
       }
       e.add(entry[key]);
     });

@@ -26,6 +26,7 @@ export default function() {
       require.resolve('./plugins/features/devServer'),
       require.resolve('./plugins/features/devtool'),
       require.resolve('./plugins/features/dynamicImport'),
+      require.resolve('./plugins/features/exportStatic'),
       require.resolve('./plugins/features/externals'),
       require.resolve('./plugins/features/extraBabelPlugins'),
       require.resolve('./plugins/features/extraBabelPresets'),

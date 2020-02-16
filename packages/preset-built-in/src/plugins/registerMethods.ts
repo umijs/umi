@@ -8,6 +8,7 @@ export default function(api: IApi) {
     'onGenerateFiles',
     'onBuildComplete',
     'onExit',
+    'onPatchRoute',
     'addBeforeMiddewares',
     'addMiddewares',
     'addRuntimePlugin',
@@ -34,6 +35,7 @@ export default function(api: IApi) {
     'modifyBabelOpts',
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
+    'modifyPublicPathStr',
     'modifyRoutes',
   ].forEach(name => {
     api.registerMethod({ name });

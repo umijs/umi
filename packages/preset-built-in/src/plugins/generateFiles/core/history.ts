@@ -33,7 +33,7 @@ export default function(api: IApi) {
       path: 'core/history.ts',
       content: Mustache.render(historyTpl, {
         creator: `create${lodash.upperFirst(type)}History`,
-        userOptions: JSON.stringify(
+        options: JSON.stringify(
           {
             ...options,
             ...(type === 'browser' || type === 'hash'

@@ -4,15 +4,7 @@ import { join } from 'path';
 import assert from 'assert';
 import { prettier, cheerio } from '@umijs/utils';
 import { IConfig } from '..';
-import {
-  IAddHTML,
-  IModifyHTML,
-  IHTMLTag,
-  IOpts,
-  IGetContentArgs,
-  IScript,
-  IStyle,
-} from './types';
+import { IOpts, IGetContentArgs, IScript } from './types';
 
 class Html {
   config: IConfig;
@@ -23,12 +15,41 @@ class Html {
     this.tplPath = opts.tplPath;
   }
 
-  getAsset({ file }: { file: string }) {
-    if (/^https?:\/\//.test(file)) {
-      return file;
+  getHtmlPath(path: string) {
+    if (path === '/') {
+      return 'index.html';
     }
-    const publicPath = this.config.publicPath || '/';
-    return `${publicPath}${file.charAt(0) === '/' ? file.slice(1) : file}`;
+
+    // remove first and last slash
+    path = path.replace(/^\//, '');
+    path = path.replace(/\/$/, '');
+
+    if (this.config.exportStatic?.htmlSuffix || path === 'index.html') {
+      return `${path}`;
+    } else {
+      return `${path}/index.html`;
+    }
+  }
+
+  getRelPathToPublicPath(path: string) {
+    const htmlPath = this.getHtmlPath(path);
+    const len = htmlPath.split('/').length;
+    return (
+      Array(this.config.exportStatic?.htmlSuffix ? len : len - 1).join('../') ||
+      './'
+    );
+  }
+
+  getAsset(opts: { file: string; path?: string }) {
+    if (/^https?:\/\//.test(opts.file)) {
+      return opts.file;
+    }
+    const file = opts.file.charAt(0) === '/' ? opts.file.slice(1) : opts.file;
+    if (this.config.exportStatic?.dynamicRoot) {
+      return `${this.getRelPathToPublicPath(opts.path || '/')}${file}`;
+    } else {
+      return `${this.config.publicPath}${file}`;
+    }
   }
 
   getScriptsContent(scripts: IScript[]) {
@@ -146,7 +167,10 @@ class Html {
     // css
     cssFiles.forEach(file => {
       $('head').append(
-        `<link rel="stylesheet" href="${this.getAsset({ file })}" />`,
+        `<link rel="stylesheet" href="${this.getAsset({
+          file,
+          path: route.path,
+        })}" />`,
       );
     });
 
@@ -163,10 +187,14 @@ class Html {
       $('head').append(this.getScriptsContent(headScripts));
     }
     headJSFiles.forEach(file => {
-      $('head').append(`<script src="${this.getAsset({ file })}"></script>`);
+      $('head').append(
+        `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
+      );
     });
     jsFiles.forEach(file => {
-      $('body').append(`<script src="${this.getAsset({ file })}"></script>`);
+      $('body').append(
+        `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
+      );
     });
     if (scripts.length) {
       $('body').append(this.getScriptsContent(scripts));

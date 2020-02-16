@@ -1,8 +1,9 @@
 import { createMemoryHistory, createHashHistory, createBrowserHistory } from '{{{ runtimePath }}}';
 
-const userOptions = {{{ userOptions }}};
-const history = {{{ creator }}}({
-  basename: (<any>window).basename,
-  ...userOptions,
-});
+const options = {{{ options }}};
+if ((<any>window).routerBase) {
+  options.basename = (<any>window).routerBase;
+}
+
+const history = {{{ creator }}}(options);
 export { history };

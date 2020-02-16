@@ -87,6 +87,7 @@ export interface IApi extends PluginAPI {
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
+  modifyPublicPathStr: IModify<string, { route: IRoute }>;
   modifyBundler: IModify<any, null>;
   modifyBundleConfigOpts: IModify<
     any,
@@ -180,6 +181,10 @@ export interface IConfig extends IConfigCore {
   devServer?: IServerOpts;
   devtool?: string;
   dynamicImport?: boolean;
+  exportStatic?: {
+    htmlSuffix?: boolean;
+    dynamicRoot?: boolean;
+  };
   externals?: any;
   extraBabelPlugins?: IPresetOrPlugin[];
   extraBabelPresets?: IPresetOrPlugin[];
