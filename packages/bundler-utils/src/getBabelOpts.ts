@@ -66,11 +66,6 @@ export function getBabelDepsOpts({
   cwd: string;
   config: IConfig;
 }) {
-  console.log('test', {
-    // @ts-ignore
-    nodeEnv: env,
-    dynamicImportNode: !config.dynamicImport,
-  });
   return {
     ...getBasicBabelLoaderOpts({ cwd }),
     presets: [

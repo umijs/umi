@@ -61,7 +61,6 @@ export default async function(args: IUmiTestArgs) {
   debug(`config from args: ${JSON.stringify(argsConfig)}`);
 
   // Run jest
-  // console.log('test', jest);
   const result = await runCLI(
     {
       // @ts-ignore
