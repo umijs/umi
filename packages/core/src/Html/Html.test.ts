@@ -81,7 +81,9 @@ test('getContent with config.title', async () => {
 
 test('getContent with opts.cssFiles', async () => {
   const html = new Html({
-    config: {},
+    config: {
+      publicPath: '/',
+    },
   });
   const content = await html.getContent({
     route: { path: '/' },
@@ -92,7 +94,9 @@ test('getContent with opts.cssFiles', async () => {
 
 test('getContent with opts.jsFiles', async () => {
   const html = new Html({
-    config: {},
+    config: {
+      publicPath: '/',
+    },
   });
   const content = await html.getContent({
     route: { path: '/' },
@@ -105,7 +109,9 @@ test('getContent with opts.jsFiles', async () => {
 
 test('getContent with opts.headJSFiles', async () => {
   const html = new Html({
-    config: {},
+    config: {
+      publicPath: '/',
+    },
   });
   const content = await html.getContent({
     route: { path: '/' },
@@ -118,7 +124,9 @@ test('getContent with opts.headJSFiles', async () => {
 
 test('getContent with scripts', async () => {
   const html = new Html({
-    config: {},
+    config: {
+      publicPath: '/',
+    },
   });
   const content = await html.getContent({
     route: { path: '/' },
@@ -133,7 +141,9 @@ test('getContent with scripts', async () => {
 
 test('getContent with css', async () => {
   const html = new Html({
-    config: {},
+    config: {
+      publicPath: '/',
+    },
   });
   const content = await html.getContent({
     route: { path: '/' },
