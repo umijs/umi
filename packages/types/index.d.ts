@@ -22,16 +22,31 @@ import {
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
+  (args: { fn: { (args: T): void }; before?: string; stage?: number }): void;
 }
 
 interface IModify<T, U> {
   (fn: { (initialValue: T, args: U): T }): void;
   (fn: { (initialValue: T, args: U): Promise<T> }): void;
+  (args: {
+    fn: { (initialValue: T, args: U): T };
+    before?: string;
+    stage?: number;
+  }): void;
+  (args: {
+    fn: { (initialValue: T, args: U): Promise<T> };
+    before?: string;
+    stage?: number;
+  }): void;
 }
 
 interface IAdd<T, U> {
   (fn: { (args: T): U | U[] }): void;
   (fn: { (args: T): Promise<U | U[]> }): void;
+  (args: { fn: { (args: T): U | U[] }; before?: string; stage?: number }): void;
+  (args: {
+    fn: { (args: T): Promise<U | U[]>; before?: string; stage?: number };
+  }): void;
 }
 
 interface IGetter<T> {

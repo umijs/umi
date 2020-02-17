@@ -35,8 +35,7 @@ interface IConfig {
 }
 
 // TODO
-// 1. load env
-// 2. duplicated key
+// 1. duplicated key
 export default class Service extends EventEmitter {
   cwd: string;
   pkg: IPackage;
@@ -382,26 +381,50 @@ ${name} from ${plugin.path} register failed.`);
         }
         const tAdd = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          tAdd.tapPromise(hook.pluginId!, async memo => {
-            const items = await hook.fn(opts.args);
-            return memo.concat(items);
-          });
+          tAdd.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage,
+              // @ts-ignore
+              before: hook.before,
+            },
+            async (memo: any[]) => {
+              const items = await hook.fn(opts.args);
+              return memo.concat(items);
+            },
+          );
         }
         return await tAdd.promise(opts.initialValue || []);
       case ApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          tModify.tapPromise(hook.pluginId!, async memo => {
-            return await hook.fn(memo, opts.args);
-          });
+          tModify.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage,
+              // @ts-ignore
+              before: hook.before,
+            },
+            async (memo: any) => {
+              return await hook.fn(memo, opts.args);
+            },
+          );
         }
         return await tModify.promise(opts.initialValue);
       case ApplyPluginsType.event:
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
-          tEvent.tapPromise(hook.pluginId!, async () => {
-            await hook.fn(opts.args);
-          });
+          tEvent.tapPromise(
+            {
+              name: hook.pluginId!,
+              stage: hook.stage,
+              // @ts-ignore
+              before: hook.before,
+            },
+            async () => {
+              await hook.fn(opts.args);
+            },
+          );
         }
         return await tEvent.promise();
       default:

@@ -164,6 +164,34 @@ test('applyPlugin with unsupported type', async () => {
   ).rejects.toThrow(/type is not defined or is not matched, got/);
 });
 
+test('applyPlugin with stage', async () => {
+  const cwd = join(fixtures, 'applyPlugins');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'stage'))],
+  });
+  await service.init();
+  const ret = await service.applyPlugins({
+    key: 'test',
+    type: ApplyPluginsType.add,
+  });
+  expect(ret).toEqual(['c', 'a', 'd', 'e', 'b']);
+});
+
+test('applyPlugin with stage and registerMethod', async () => {
+  const cwd = join(fixtures, 'applyPlugins');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'stage_registerMethod'))],
+  });
+  await service.init();
+  const ret = await service.applyPlugins({
+    key: 'foo',
+    type: ApplyPluginsType.add,
+  });
+  expect(ret).toEqual(['c', 'a', 'd', 'e', 'b']);
+});
+
 test('registerPlugin id conflict', async () => {
   const cwd = join(fixtures, 'registerPlugin-conflict');
   const service = new Service({

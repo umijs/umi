@@ -158,11 +158,12 @@ export default class PluginAPI {
       // 这里不能用 arrow function，this 需指向执行此方法的 PluginAPI
       // 否则 pluginId 会不会，导致不能正确 skip plugin
       function(fn: Function) {
-        // @ts-ignore
-        this.register({
+        const hook = {
           key: name,
-          fn,
-        });
+          ...(utils.lodash.isPlainObject(fn) ? fn : { fn }),
+        };
+        // @ts-ignore
+        this.register(hook);
       };
   }
 
