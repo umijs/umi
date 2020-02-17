@@ -198,6 +198,14 @@ dev 退出时触发。
 
 - 可能是失败的，注意判断 err 参数
 
+### onDevCompileDone({ isFirstCompile: boolean, stats: webpack.Stats })
+
+编译完成时可以做的事。
+
+注：
+
+- 不包含编译失败
+
 ### onGenerateFiles
 
 生成临时文件，触发时机在 webpack 编译之前。

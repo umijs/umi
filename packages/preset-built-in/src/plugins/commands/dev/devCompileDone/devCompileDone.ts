@@ -8,10 +8,20 @@ export default (api: IApi) => {
         new DevCompileDonePlugin({
           port: api.getPort(),
           https: !!(api.config?.devServer?.https || process.env.HTTPS),
-          onCompileDone({ isFirstCompile }) {
+          onCompileDone({ isFirstCompile, stats }) {
             if (isFirstCompile) {
               api.service.emit('firstDevCompileDone');
             }
+            api
+              .applyPlugins({
+                key: 'onDevCompileDone',
+                type: api.ApplyPluginsType.event,
+                args: {
+                  isFirstCompile,
+                  stats,
+                },
+              })
+              .catch(e => {});
           },
           onCompileFail() {},
         }),

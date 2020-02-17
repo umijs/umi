@@ -99,6 +99,7 @@ export interface IApi extends PluginAPI {
   onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
   onPatchRoute: IEvent<{ route: IRoute }>;
   onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
+  onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats }>;
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;

@@ -9,6 +9,7 @@ export default function(api: IApi) {
     'onBuildComplete',
     'onExit',
     'onPatchRoute',
+    'onDevCompileDone',
     'addBeforeMiddewares',
     'addMiddewares',
     'addRuntimePlugin',
