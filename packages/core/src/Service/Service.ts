@@ -179,6 +179,7 @@ export default class Service extends EventEmitter {
     // delete hooks from this.hooksByPluginId with this.skipPluginIds
     for (const pluginId of this.skipPluginIds) {
       if (this.hooksByPluginId[pluginId]) delete this.hooksByPluginId[pluginId];
+      delete this.plugins[pluginId];
     }
 
     // hooksByPluginId -> hooks
