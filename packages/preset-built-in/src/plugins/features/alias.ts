@@ -34,35 +34,30 @@ export default (api: IApi) => {
 
   // 另一种实现方式:
   // 提供 projectFirstLibraries 的配置方式，但是不通用，先放插件层实现
-  api.modifyBundleConfig(async (bundleConfig, { bundler }) => {
-    if (bundler.id === 'webpack') {
-      const libraries: {
-        name: string;
-        path: string;
-      }[] = await api.applyPlugins({
-        key: 'addProjectFirstLibraries',
-        type: api.ApplyPluginsType.add,
-        initialValue: [
-          {
-            name: 'react',
-            path: dirname(require.resolve(`react/package.json`)),
-          },
-          {
-            name: 'react-dom',
-            path: dirname(require.resolve(`react-dom/package.json`)),
-          },
-        ],
-      });
-      const libraryAlias = libraries.reduce((memo, library) => {
-        memo[library.name] =
-          getUserLibDir({ library: library.name }) || library.path;
-        return memo;
-      }, {});
-      bundleConfig.resolve!.alias = {
-        ...bundleConfig.resolve!.alias,
-        ...libraryAlias,
-      };
-    }
-    return bundleConfig;
+  api.chainWebpack(async memo => {
+    const libraries: {
+      name: string;
+      path: string;
+    }[] = await api.applyPlugins({
+      key: 'addProjectFirstLibraries',
+      type: api.ApplyPluginsType.add,
+      initialValue: [
+        {
+          name: 'react',
+          path: dirname(require.resolve(`react/package.json`)),
+        },
+        {
+          name: 'react-dom',
+          path: dirname(require.resolve(`react-dom/package.json`)),
+        },
+      ],
+    });
+    libraries.forEach(library => {
+      memo.resolve.alias.set(
+        library.name,
+        getUserLibDir({ library: library.name }) || library.path,
+      );
+    });
+    return memo;
   });
 };

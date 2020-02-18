@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
-import { BabelRegister, NodeEnv } from '@umijs/utils';
+import { BabelRegister, NodeEnv, lodash } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
@@ -231,10 +231,9 @@ export default class Service extends EventEmitter {
 
   initPresetsAndPlugins() {
     this.setStage(ServiceStage.initPresets);
-    this._extraPresets = [...this.initialPresets];
     this._extraPlugins = [];
-    while (this._extraPresets.length) {
-      this.initPreset(this._extraPresets.shift()!);
+    while (this.initialPresets.length) {
+      this.initPreset(this.initialPresets.shift()!);
     }
 
     this.setStage(ServiceStage.initPlugins);
@@ -306,6 +305,7 @@ export default class Service extends EventEmitter {
         Array.isArray(presets),
         `presets returned from preset ${id} must be Array.`,
       );
+      // 插到最前面，下个 while 循环优先执行
       this._extraPresets.splice(
         0,
         0,
@@ -318,6 +318,14 @@ export default class Service extends EventEmitter {
         }),
       );
     }
+
+    // 深度优先
+    const extraPresets = lodash.clone(this._extraPresets);
+    this._extraPresets = [];
+    while (extraPresets.length) {
+      this.initPreset(extraPresets.shift()!);
+    }
+
     if (plugins) {
       assert(
         Array.isArray(plugins),

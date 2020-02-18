@@ -105,6 +105,7 @@ export default class PluginAPI {
             cwd: this.service.cwd,
           });
     });
+    // 插到最前面，下个 while 循环优先执行
     this.service._extraPresets.splice(0, 0, ...extraPresets);
   }
 
