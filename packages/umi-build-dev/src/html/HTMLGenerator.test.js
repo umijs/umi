@@ -272,7 +272,7 @@ describe('HG', () => {
       },
       minify: false,
       config: {
-        runtimePublicPath: '/runtimePublicPathStr/',
+        runtimePublicPath: 'window.__injected_runtime_public_path__ || "/"',
         mountElementId: 'documenttestid',
       },
       paths: {
@@ -291,7 +291,7 @@ describe('HG', () => {
 <link rel="stylesheet" href="/umi.css" />
 <script>
   window.routerBase = "/";
-  window.publicPath = "/runtimePublicPathStr/";
+  window.publicPath = window.__injected_runtime_public_path__ || "/";
 </script>
 </head>
 <body>
