@@ -60,6 +60,8 @@ export default function(api: IApi) {
             err,
           },
         });
+        // throw build error
+        throw err;
       }
     },
   });
