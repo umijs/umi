@@ -12,6 +12,7 @@ class Service extends CoreService {
         require.resolve('@umijs/preset-built-in'),
         ...(opts.presets || []),
       ],
+      plugins: [require.resolve('./plugins/umiAlias')],
     });
   }
 }
