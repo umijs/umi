@@ -522,3 +522,10 @@ Service 运行阶段。
 ### ServiceStage
 
 `stage` 的枚举类型，通常用于和 `stage` 的比较。
+
+## 环境变量
+
+可以用到的环境变量。
+
+- UMI_VERSION，umi 版本号
+- UMI_DIR，`umi/package.json` 所在的文件夹路径

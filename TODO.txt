@@ -26,8 +26,8 @@ umi-next:
 		- api.hasPlugins(pluginIds: string[]) @done
 		- 未实现的接口，优先级低
 			api.rebuildTmpFiles()
-			api.onDevCompileDone()
 			api.modifyHTMLChunks()
+		- api.onDevCompileDone() @done
 		- api.modifyPublicPathStr() @done
 		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
 		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868

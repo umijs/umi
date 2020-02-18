@@ -18,6 +18,7 @@ export default (api: IApi) => {
         ),
         '@': paths.absSrcPath,
         '@@': paths.absTmpPath,
+        umi: process.env.UMI_DIR,
       },
     },
   });

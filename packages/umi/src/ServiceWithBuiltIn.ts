@@ -1,9 +1,10 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { IServiceOpts, Service as CoreService } from '@umijs/core';
 
 class Service extends CoreService {
   constructor(opts: IServiceOpts) {
     process.env.UMI_VERSION = require('../package').version;
+    process.env.UMI_DIR = dirname(require.resolve('../package'));
 
     super({
       ...opts,
