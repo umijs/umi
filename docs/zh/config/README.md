@@ -130,10 +130,10 @@ export default {
 
 ### runtimePublicPath
 
-- 类型：`Boolean`
+- 类型：`Boolean` | `String`
 - 默认值：`false`
 
-值为 `true` 时使用 HTML 里指定的 `window.publicPath`。
+值为 `true` 时使用 HTML 里指定的 `window.publicPath`。也可以设置为指定的字符串变量，原理同 [modifyPublicPathStr](/zh/plugin/develop.html#modifypublicpathstr)。
 
 ### cssPublicPath <Badge text="2.2.5+"/>
 

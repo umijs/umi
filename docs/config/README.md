@@ -128,10 +128,10 @@ Specifies the publicPath of the webpack, pointing to the path where the static r
 
 ### runtimePublicPath
 
-- Type: `Boolean`
+- Type: `Boolean` | `String`
 - Default: `false`
 
-Use the `window.publicPath` specified in the HTML when the value is `true`.
+Use the `window.publicPath` specified in the HTML when the value is `true`. You can also set it to a specified string variable, the theory is same as [modifyPublicPathStr](/plugin/develop.html#modifyPublicPathStr).
 
 ### cssPublicPath <Badge text="2.2.5+"/>
 
