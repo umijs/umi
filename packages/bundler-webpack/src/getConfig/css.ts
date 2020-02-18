@@ -97,9 +97,8 @@ function createCSSRule({
           require('postcss-preset-env')({
             // TODO: set browsers
             autoprefixer: {
-              overrideBrowserslist: browserslist,
-              flexbox: 'no-2009',
               ...config.autoprefixer,
+              overrideBrowserslist: browserslist,
             },
             // https://cssdb.org/
             stage: 3,
