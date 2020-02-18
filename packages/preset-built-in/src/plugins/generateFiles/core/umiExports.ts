@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { lodash } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import assert from 'assert';
 
 const reserveLibrarys = ['umi']; // reserve library
@@ -66,7 +66,9 @@ export function generateExports({
       return `${specifier.local} as ${specifier.exported}`;
     }
   });
-  return `export { ${specifiersStrArr.join(', ')} } from '${item.source}';`;
+  return `export { ${specifiersStrArr.join(', ')} } from '${winPath(
+    item.source,
+  )}';`;
 }
 
 export default function(api: IApi) {
