@@ -183,15 +183,7 @@ export default function({
             parser: safePostCssParser,
           },
           cssProcessorPluginOptions: {
-            preset: [
-              'default',
-              // https://cssnano.co/optimisations/
-              {
-                mergeRules: false,
-                minifyFontValues: { removeQuotes: false },
-                ...config.cssnano,
-              },
-            ],
+            preset: ['default', config.cssnano],
           },
         },
       ]);

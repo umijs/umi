@@ -28,7 +28,7 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'dev',
     fn: async function() {
-      const defaultPort = api.config.devServer?.port || process.env.PORT;
+      const defaultPort = process.env.PORT || api.config.devServer?.port;
       port = await portfinder.getPortPromise({
         port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
@@ -128,7 +128,7 @@ export default (api: IApi) => {
         ...(api.config.devServer || {}),
       });
       const hostname =
-        api.config.devServer?.host || process.env.HOST || '0.0.0.0';
+        process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       const listenRet = await server.listen({
         port,
         hostname,

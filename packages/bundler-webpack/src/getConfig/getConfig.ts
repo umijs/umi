@@ -317,9 +317,6 @@ export default async function getConfig(
       // don't show hints when size is too large
       webpackConfig.performance.hints(false);
 
-      // manifest
-      // TODO
-
       // webpack/lib/HashedModuleIdsPlugin
       // https://webpack.js.org/plugins/hashed-module-ids-plugin/
       // webpack@5 has enabled this in prod by default
@@ -329,6 +326,7 @@ export default async function getConfig(
           .use(bundleImplementor.HashedModuleIdsPlugin, []);
       }
 
+      // manifest
       if (config.manifest && !config.ssr) {
         webpackConfig
           .plugin('manifest')

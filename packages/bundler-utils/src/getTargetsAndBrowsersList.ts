@@ -7,15 +7,7 @@ interface IOpts {
 }
 
 export default function({ config, type }: IOpts) {
-  let targets: ITargets = {
-    node: true,
-    chrome: 49,
-    firefox: 64,
-    safari: 10,
-    edge: 13,
-    ios: 10,
-    ...config.targets,
-  };
+  let targets: ITargets = config.targets!;
 
   targets = Object.keys(targets)
     .filter(key => {
