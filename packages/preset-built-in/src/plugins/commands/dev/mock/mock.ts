@@ -1,9 +1,9 @@
 import { IApi } from '@umijs/types';
 import createMiddleware from './createMiddleware';
-import { getMockData } from './utils';
+import { getMockData, IGetMockDataResult } from './utils';
 
 export default function(api: IApi) {
-  const { cwd, config } = api;
+  const { cwd, userConfig } = api;
 
   api.describe({
     key: 'mock',
@@ -31,7 +31,7 @@ export default function(api: IApi) {
     });
   };
 
-  const ignore = config?.mock?.exclude;
+  const ignore = userConfig?.mock?.exclude;
 
   // get all mock paths
   const mockResult = getMockData({
@@ -40,11 +40,20 @@ export default function(api: IApi) {
     registerBabel,
   });
 
+  // disable when not exist mock dir
+  if (!mockResult) {
+    return;
+  }
+
   api.addBeforeMiddewares(() => {
     const { middleware } = createMiddleware({
       ...mockResult,
       updateMockData: () => {
-        const result = getMockData({ cwd, ignore, registerBabel });
+        const result = getMockData({
+          cwd,
+          ignore,
+          registerBabel,
+        }) as IGetMockDataResult;
         return result;
       },
     });
