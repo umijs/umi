@@ -3,7 +3,7 @@ const signale = require('signale');
 const { join } = require('path');
 const { uiPlugins } = require('./uiPlugins');
 
-const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
+const UMI_BIN = require.resolve('../packages/umi/bin/umi');
 const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
 const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 const opts = {
