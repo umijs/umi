@@ -174,7 +174,7 @@ export default async function getConfig(
       // TODO: 处理 tnpm 下 @babel/rutnime 路径变更问题
       .exclude
         .add(/@babel(?:\/|\\{1,2})runtime/)
-        .add(/(react|react-dom)/)
+        .add(/(react|react-dom|lodash)/)
         .end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))

@@ -1,12 +1,9 @@
 {
-  "name": "@umijs/create-umi-next",
+  "name": "@umijs/create-app",
   "version": "3.0.0-beta.19",
-  "description": "@umijs/create-umi-next",
+  "description": "@umijs/create-app",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "bin": {
-    "create-umi-next": "bin/create-umi-next.js"
-  },
   "files": [
     "lib",
     "src",
@@ -24,11 +21,14 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/create-umi-next#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/create-app#readme",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "@umijs/utils": "3.0.0-beta.19"
+  },
+  "bin": {
+    "create-umi-app": "bin/create-umi-app.js"
   }
 }

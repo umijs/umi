@@ -18,8 +18,13 @@ if (args.version && !args._[0]) {
   const { name, version } = require('../package.json');
   console.log(`${name}@${version}${local}`);
 } else {
-  require('../').default({
-    cwd: process.cwd(),
-    args,
-  });
+  require('./')
+    .default({
+      cwd: process.cwd(),
+      args,
+    })
+    .catch((err: Error) => {
+      console.error(`Create failed, ${err.message}`);
+      console.error(err);
+    });
 }

@@ -1,9 +1,9 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-{{ ^convensionRoutes }}
+{{ ^conventionRoutes }}
   routes: [
     { path: '/', component: '@/pages/index' },
   ],
-{{ /convensionRoutes }}
+{{ /conventionRoutes }}
 });
