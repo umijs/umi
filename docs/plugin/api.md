@@ -134,6 +134,23 @@ e.g.
 api.hasPlugins(['@umijs/plugin-dva']);
 ```
 
+### hasPresets(presetIds: string[])
+
+判断是否有注册某个插件集。
+
+插件集的 id 规则，
+
+e.g.
+
+```js
+// 判断是否有注册 @umijs/preset-ui
+api.hasPresets(['@umijs/preset-ui']);
+```
+
+注：
+
+- 如果在注册阶段使用，只能判断**在他之前**是否有注册某个插件集
+
 ## 扩展方法
 
 通过 `api.registerMethod()` 扩展的方法。

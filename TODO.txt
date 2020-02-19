@@ -23,7 +23,8 @@ umi-next:
 		- api.addMiddleware() @done
 		- route 支持 Routes 配置 @done
 			改名为 route.wrappers
-		- api.hasPlugins(pluginIds: string[]) @done
+    - api.hasPlugins(pluginIds: string[]) @done
+    - api.hasPresets(presetIds: string[]) @done
 		- 未实现的接口，优先级低
 			api.rebuildTmpFiles()
 			api.modifyHTMLChunks()
