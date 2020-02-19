@@ -65,6 +65,7 @@ export default class DevCompileDonePlugin {
 
       if (isFirstCompile) {
         isFirstCompile = false;
+        process.send?.({ type: 'DONE' });
         // openBrowser();
       }
     });
