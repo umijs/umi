@@ -81,7 +81,10 @@ SSR 优势在于：
 
 ```js
 export default {
-  ssr: true,
+  // 默认外部包是不打包进去的，如果不需要打包进去，可以直接使用ssr: true，具体配置情况上面的链接
+  ssr: {
+    disableExternal: true,
+  },
 };
 ```
 
