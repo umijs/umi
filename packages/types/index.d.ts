@@ -12,6 +12,7 @@ import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
 import webpack from 'webpack';
+import WebpackChain from 'webpack-chain';
 import {
   Express,
   NextFunction,
@@ -144,7 +145,7 @@ export interface IApi extends PluginAPI {
   modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
   modifyRoutes: IModify<IRoute[], {}>;
-  chainWebpack: IModify<any, {}>;
+  chainWebpack: IModify<WebpackChain, { webpack: typeof webpack }>;
 
   // ApplyPluginType.add
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
@@ -187,7 +188,9 @@ export interface IConfig extends IConfigCore {
   };
   autoprefixer?: object;
   base?: string;
-  chainWebpack?: Function;
+  chainWebpack?: {
+    (memo: WebpackChain, args: { webpack: typeof webpack; env: env }): void;
+  };
   cssLoader?: object;
   cssnano?: object;
   copy?: string[];
