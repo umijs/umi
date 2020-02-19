@@ -1,9 +1,10 @@
 const { fork } = require('child_process');
 const signale = require('signale');
 const { join } = require('path');
+const { winPath } = require('../packages/umi-utils');
 const { uiPlugins } = require('./uiPlugins');
 
-const UMI_BIN = join(__dirname, '../packages/umi/bin/umi.js');
+const UMI_BIN = winPath(join(__dirname, '../packages/umi/bin/umi.js'));
 const FATHER_BUILD_BIN = require.resolve('father-build/bin/father-build.js');
 const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 const opts = {
