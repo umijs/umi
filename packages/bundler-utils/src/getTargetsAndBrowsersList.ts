@@ -7,7 +7,7 @@ interface IOpts {
 }
 
 export default function({ config, type }: IOpts) {
-  let targets: ITargets = config.targets!;
+  let targets: ITargets = config.targets || {};
 
   targets = Object.keys(targets)
     .filter(key => {

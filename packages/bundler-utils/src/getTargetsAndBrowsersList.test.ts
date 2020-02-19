@@ -18,19 +18,9 @@ test('csr', () => {
   expect(targets).toEqual({
     chrome: 0,
     firefox: true,
-    safari: 10,
-    edge: 13,
-    ios: 10,
     ie: 10,
   });
-  expect(browserslist).toEqual([
-    'chrome >= 0',
-    'firefox >= 0',
-    'safari >= 10',
-    'edge >= 13',
-    'ios >= 10',
-    'ie >= 10',
-  ]);
+  expect(browserslist).toEqual(['ie >= 10', 'chrome >= 0', 'firefox >= 0']);
 });
 
 test('ssr', () => {
