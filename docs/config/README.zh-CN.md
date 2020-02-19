@@ -1,5 +1,5 @@
 ---
-title: Config
+title: 配置
 ---
 
 以下配置项通过字母排序。

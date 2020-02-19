@@ -1,3 +1,3 @@
 ---
-title: 快速上手
+title: Getting Started
 ---

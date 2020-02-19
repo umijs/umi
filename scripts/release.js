@@ -7,7 +7,7 @@ const getPackages = require('./utils/getPackages');
 const isNextVersion = require('./utils/isNextVersion');
 
 const cwd = process.cwd();
-const args = yParser(process.argv);
+const args = yParser(process.argv.slice(2));
 const lernaCli = require.resolve('lerna/cli');
 
 function printErrorAndExit(message) {
