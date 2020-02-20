@@ -1,10 +1,11 @@
-import { createDebug } from '@umijs/utils';
+import { createDebug, Debugger } from '@umijs/utils';
 
 interface ILogErrorOpts {
   detailsOnly?: boolean;
 }
 
 abstract class Common {
+  public debug: Debugger;
   protected namespace: string;
   protected profilers: object;
   protected formatTiming(timing: number) {
@@ -20,14 +21,7 @@ abstract class Common {
     }
     this.namespace = namespace;
     this.profilers = {};
-  }
-
-  /**
-   *
-   * @param args common debug in node and browser env
-   */
-  public debug(...args: any) {
-    return createDebug(this.namespace)(args);
+    this.debug = createDebug(this.namespace);
   }
 
   abstract error(msg: string): void;

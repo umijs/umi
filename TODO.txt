@@ -12,7 +12,7 @@ umi-next:
 		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 		- logger 优化
 			比如插件层如何打日志？如何过滤日志？
-		- plugin 没走 babelRegister @ycjcl868
+		- plugin 没走 babelRegister @ycjcl868 @done
 		- 路由相关接口 api.getRouteComponents
 			考虑不提供，通过 utils 方法处理。
 		- api.getRoutes @done

@@ -132,6 +132,13 @@ export default class Service extends EventEmitter {
       plugins: opts.plugins || [],
       userConfigPlugins: this.userConfig.plugins || [],
     });
+    this.babelRegister.setOnlyMap({
+      key: 'initialPlugins',
+      value: lodash.uniq([
+        ...this.initialPresets.map(({ path }) => path),
+        ...this.initialPlugins.map(({ path }) => path),
+      ]),
+    });
     logger.debug('initial presets:');
     logger.debug(this.initialPresets);
     logger.debug('initial plugins:');
