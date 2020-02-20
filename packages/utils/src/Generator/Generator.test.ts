@@ -19,6 +19,13 @@ test('normal', async () => {
         target,
         templatePath: join(cwd, 'a.js.tpl'),
       });
+      this.copyDirectory({
+        context: {
+          foo: 'bar',
+        },
+        path: join(cwd, './dir'),
+        target: join(dist, './dir'),
+      });
     }
   }
   const g = new NormalGenerator({
@@ -27,4 +34,10 @@ test('normal', async () => {
   });
   await g.run();
   expect(readFileSync(target, 'utf-8').trim()).toEqual(`alert('bar');`);
+  expect(readFileSync(join(dist, './dir', 'a.js'), 'utf-8').trim()).toEqual(
+    `alert('bar');`,
+  );
+  expect(readFileSync(join(dist, './dir', 'b.js'), 'utf-8').trim()).toEqual(
+    `alert('abc');`,
+  );
 });
