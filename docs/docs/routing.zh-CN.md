@@ -15,17 +15,9 @@ export default {
   routes: [
     { exact: true, path: '/', component: 'index' },
     { exact: true, path: '/user', component: 'user' },
-    { exact: false, path: '/admin', component: 'admin/layout',
-      routes: [
-        { exact: true, path: '/admin', redirect: '/admin/dashboard' },
-        { exact: true, path: '/admin/dashboard', component: 'admin/dashboard' },
-      ]
-    }
-  ]
+  ],
 }
 ```
-
-其中：
 
 ### path
 

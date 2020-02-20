@@ -86,3 +86,10 @@ packages/foo
 ```bash
 $ yarn update:deps
 ```
+
+## Docs
+
+```bash
+# add doc
+$ yarn docs add docs/routing --title Routing
+```
