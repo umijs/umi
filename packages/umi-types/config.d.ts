@@ -98,7 +98,7 @@ interface IConfig extends IAFWebpackConfig {
   outputPath?: string;
   plugins?: IPlugin[];
   routes?: IRoute[] | null;
-  runtimePublicPath?: boolean;
+  runtimePublicPath?: boolean | string;
   singular?: boolean;
   mock?: IMockOpts;
   treeShaking?: boolean;

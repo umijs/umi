@@ -259,6 +259,10 @@ export default class HTMLGenerator {
       publicPathStr = this.modifyPublicPathStr(publicPathStr);
     }
 
+    if (typeof runtimePublicPath === 'string') {
+      publicPathStr = runtimePublicPath;
+    }
+
     const setPublicPath = runtimePublicPath || (exportStatic && exportStatic.dynamicRoot);
     headScripts.push({
       content: [
