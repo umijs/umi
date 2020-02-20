@@ -1,3 +1,86 @@
 ---
 title: 运行时配置
 ---
+
+运行时配置和配置的区别是他跑在浏览器端，基于此，我们可以在这里写函数、jsx、import 浏览器端依赖等等，注意不要引入 node 依赖。
+
+## 配置方式
+
+约定 `src/app.tsx`  为运行时配置。
+
+## 配置项
+
+### patchRoutes({ routes })
+
+修改路由。
+
+比如在最前面添加一个 `/foo` 路由，
+
+```bash
+export function patchRoutes({ routes }) {
+  routes.unshift({
+    path: '/foo',
+    exact: true,
+    component: require('@/extraRoutes/foo').default,
+  });
+}
+```
+
+比如和 `render` 配置配合使用，请求服务端根据响应动态更新路由，
+
+```bash
+let extraRoutes;
+
+export function patchRoutes({ routes }) {
+  merge(routes, extraRoutes);
+}
+
+export function render() {
+  fetch('/api/routes').then((res) => { extraRoutes = res.routes })
+}
+```
+
+注意：
+
+* 直接 routes，不需要返回
+
+### render(oldRender: Function)
+
+覆写 render。
+
+比如用于渲染之前做权限校验，
+
+```bash
+import { history } from 'umi';
+
+export function render(oldRender) {
+  fetch('/api/auth').then(auth => {
+    if (auth.isLogin) { oldRender() }
+    else { history.redirectTo('/login'); }
+  });
+}
+```
+
+### onRouteChange({ routes, location, action })
+
+在初始加载和路由切换时做一些事情。
+
+比如用于做埋点统计，
+
+```bash
+export function onRouteChange({ location, routes, action }) {
+  bacon(location.pathname);
+}
+```
+
+### rootContainer(LastRootContainer)
+
+修改交给 react-dom 渲染时的根组件。
+
+比如用于在外面包一个 Provider，
+
+```bash
+export function rootContainer(container) {
+  return React.createElement(ThemeProvider, null, container);
+}
+```
