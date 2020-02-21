@@ -8,6 +8,7 @@ export default function(api: IApi) {
       schema(joi) {
         return joi.array().items(joi.object());
       },
+      onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
   });
 
