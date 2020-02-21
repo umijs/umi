@@ -1,5 +1,5 @@
 import { ArgsType } from '@umijs/utils';
-import { runCLI } from 'jest-cli';
+import { runCLI } from 'jest';
 import { options as CliOptions } from 'jest-cli/build/cli/args';
 
 export interface IUmiTestArgs extends Partial<ArgsType<typeof runCLI>['0']> {
