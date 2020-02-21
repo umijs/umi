@@ -1,17 +1,30 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
 import { extname, join } from 'path';
-import { getHtmlGenerator } from '../htmlUtils';
+import { getHtmlGenerator, chunksToFiles } from '../htmlUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 
-export default ({ api }: { api: IApi }) => {
+export default ({
+  api,
+  sharedMap,
+}: {
+  api: IApi;
+  sharedMap: Map<string, any>;
+}) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     async function sendHtml() {
+      const defaultFiles = {
+        jsFiles: ['umi.js'],
+        cssFiles: ['umi.css'],
+      };
+      const { jsFiles, cssFiles } = sharedMap.get('chunks')
+        ? chunksToFiles(sharedMap.get('chunks'))
+        : defaultFiles;
       const html = getHtmlGenerator({ api });
       const content = await html.getContent({
         route: { path: req.path },
-        cssFiles: ['umi.css'],
-        jsFiles: ['umi.js'],
+        cssFiles,
+        jsFiles,
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

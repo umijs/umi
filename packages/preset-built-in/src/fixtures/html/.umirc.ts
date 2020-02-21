@@ -26,5 +26,5 @@ export default {
   headScripts: [
     '//g.alicdn.com/ga.js',
     'console.log(3)',
-  ]
+  ],
 } as IConfig;

@@ -7,6 +7,7 @@ interface IGetContentArgs {
   route: IRoute;
   jsFiles?: any[];
   cssFiles?: any[];
+  headJSFiles?: any[];
 }
 
 export function chunksToFiles(
@@ -18,7 +19,7 @@ export function chunksToFiles(
   chunks.forEach(chunk => {
     const { files } = chunk;
     files.forEach(file => {
-      if (/\.js$/.test(file)) {
+      if (/\.js$/.test(file) && !file.includes('.hot-update')) {
         jsFiles.push(file);
       }
       if (/\.css$/.test(file)) {
@@ -77,10 +78,29 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         },
       });
 
+      const jsFiles = await api.applyPlugins({
+        key: 'modifyHTMLJSFiles',
+        type: api.ApplyPluginsType.modify,
+        initialValue: args.jsFiles || [],
+        args: {
+          route: args.route,
+        },
+      });
+
+      const headJSFiles = await api.applyPlugins({
+        key: 'modifyHTMLHeadJSFiles',
+        type: api.ApplyPluginsType.modify,
+        initialValue: args.headJSFiles || [],
+        args: {
+          route: args.route,
+        },
+      });
+
       return await super.getContent({
         route: args.route,
         cssFiles: args.cssFiles || [],
-        jsFiles: args.jsFiles || [],
+        headJSFiles,
+        jsFiles,
         headScripts: await applyPlugins({
           key: 'addHTMLHeadScripts',
           initialState: [
