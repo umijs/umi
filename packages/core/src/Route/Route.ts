@@ -103,8 +103,8 @@ class Route {
     return getConventionalRoutes(opts);
   }
 
-  getJSON({ routes, config }: { routes: IRoute[]; config: IConfig }) {
-    return routesToJSON({ routes, config });
+  getJSON(opts: { routes: IRoute[]; config: IConfig; cwd: string }) {
+    return routesToJSON(opts);
   }
 
   getPaths({ routes }: { routes: IRoute[] }): string[] {

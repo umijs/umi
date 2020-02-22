@@ -153,6 +153,7 @@ test('getJSON()', () => {
     route.getJSON({
       routes: [{ component: '@/foo' }],
       config: {},
+      cwd: '/foo/bar/',
     }),
   ).toEqual(
     `

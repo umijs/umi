@@ -4,6 +4,7 @@ import { IRoute } from './types';
 interface IOpts {
   routes: IRoute[];
   config: any;
+  cwd?: string;
 }
 
 const SEPARATOR = '^^^';
@@ -12,7 +13,7 @@ const EMPTY_PATH = '_';
 // TODO:
 // 1. support dynamic import (and levels)
 // 2. require().default -> import in production? (for tree-shaking)
-export default function({ routes, config }: IOpts) {
+export default function({ routes, config, cwd }: IOpts) {
   // 因为要往 routes 里加无用的信息，所以必须 deep clone 一下，避免污染
   const clonedRoutes = lodash.cloneDeep(routes);
 
@@ -26,7 +27,13 @@ export default function({ routes, config }: IOpts) {
 
   function patchRoute(route: IRoute) {
     if (route.component && !isFunctionComponent(route.component)) {
+      console.log(
+        route.component,
+        cwd,
+        route.component.replace(new RegExp(`^${lastSlash(cwd || '/')}`), ''),
+      );
       const webpackChunkName = route.component
+        .replace(new RegExp(`^${lastSlash(cwd || '/')}`), '')
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
         .replace(/\.jsx?$/, '')
@@ -34,6 +41,7 @@ export default function({ routes, config }: IOpts) {
         .replace(/^src__/, '')
         .replace(/^pages__/, 'p__')
         .replace(/^page__/, 'p__');
+      console.log(`webpackChunkName`, webpackChunkName);
       route.component = [
         route.component,
         webpackChunkName,
@@ -78,4 +86,8 @@ export default function({ routes, config }: IOpts) {
     })
     .replace(/\\r\\n/g, '\r\n')
     .replace(/\\n/g, '\r\n');
+}
+
+function lastSlash(str: string) {
+  return str[str.length - 1] === '/' ? str : `${str}/`;
 }

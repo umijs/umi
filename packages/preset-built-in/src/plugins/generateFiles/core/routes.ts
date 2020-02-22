@@ -6,9 +6,8 @@ import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
+    cwd,
     utils: { Mustache },
-    paths,
-    env,
   } = api;
 
   api.onGenerateFiles(async args => {
@@ -21,7 +20,7 @@ export default function(api: IApi) {
     api.writeTmpFile({
       path: 'core/routes.ts',
       content: Mustache.render(routesTpl, {
-        routes: new Route().getJSON({ routes, config: api.config }),
+        routes: new Route().getJSON({ routes, config: api.config, cwd }),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
         config: api.config,
       }),

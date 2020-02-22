@@ -29,7 +29,7 @@ test('normal with dynamicImport', () => {
 [
   {
     "path": "/",
-    "component": dynamic({ loader: () => import(/* webpackChunkName: p__index */'@/pages/index.ts')})
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
   }
 ]
   `.trim(),
