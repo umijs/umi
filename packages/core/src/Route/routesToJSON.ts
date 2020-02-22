@@ -58,7 +58,7 @@ export default function({ routes, config }: IOpts) {
         if (isFunctionComponent(value)) return value;
         if (config.dynamicImport) {
           const [component, webpackChunkName, path] = value.split(SEPARATOR);
-          return `dynamic({ loader: () => import(/* webpackChunkName: ${webpackChunkName} */'${component}')})`;
+          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')})`;
         } else {
           return `require('${value}').default`;
         }

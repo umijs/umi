@@ -1,4 +1,4 @@
-import { ApplyPluginsType } from '{{{ runtimePath }}}';
+import { ApplyPluginsType{{ #config.dynamicImport }}, dynamic{{ /config.dynamicImport }} } from '{{{ runtimePath }}}';
 import { plugin } from './plugin';
 
 const routes = {{{ routes }}};

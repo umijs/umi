@@ -23,11 +23,13 @@ export default function(api: IApi) {
       content: Mustache.render(routesTpl, {
         routes: new Route().getJSON({ routes, config: api.config }),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
+        config: api.config,
       }),
     });
   });
 
-  // 这个加进去会导致 patchRoutes 在最初就执行，先不加
+  // 这个加进去会导致 patchRoutes 在最初就执行，但期望的是在 render 后执行
+  // 所以先不加
   // api.addUmiExports(() => {
   //   return {
   //     specifiers: ['routes'],

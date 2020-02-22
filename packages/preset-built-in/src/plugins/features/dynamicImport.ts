@@ -5,7 +5,7 @@ export default (api: IApi) => {
     key: 'dynamicImport',
     config: {
       schema(joi) {
-        return joi.boolean();
+        return joi.object();
       },
     },
   });
