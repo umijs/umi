@@ -27,11 +27,6 @@ export default function({ routes, config, cwd }: IOpts) {
 
   function patchRoute(route: IRoute) {
     if (route.component && !isFunctionComponent(route.component)) {
-      console.log(
-        route.component,
-        cwd,
-        route.component.replace(new RegExp(`^${lastSlash(cwd || '/')}`), ''),
-      );
       const webpackChunkName = route.component
         .replace(new RegExp(`^${lastSlash(cwd || '/')}`), '')
         .replace(/^.(\/|\\)/, '')
@@ -41,7 +36,6 @@ export default function({ routes, config, cwd }: IOpts) {
         .replace(/^src__/, '')
         .replace(/^pages__/, 'p__')
         .replace(/^page__/, 'p__');
-      console.log(`webpackChunkName`, webpackChunkName);
       route.component = [
         route.component,
         webpackChunkName,
