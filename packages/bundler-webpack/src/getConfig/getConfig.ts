@@ -2,6 +2,7 @@ import { IConfig } from '@umijs/types';
 import defaultWebpack from 'webpack';
 import Config from 'webpack-chain';
 import { join } from 'path';
+import { existsSync } from 'fs';
 import { deepmerge } from '@umijs/utils';
 import {
   ConfigType,
@@ -13,7 +14,6 @@ import {
 import css from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
-import { existsSync } from 'fs';
 
 export interface IOpts {
   cwd: string;
