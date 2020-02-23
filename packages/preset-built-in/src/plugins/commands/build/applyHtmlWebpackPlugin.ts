@@ -11,7 +11,7 @@ export default function(api: IApi) {
 
           const routeMap = api.config.exportStatic
             ? await html.getRouteMap()
-            : [{ path: '/', file: 'index.html' }];
+            : [{ route: { path: '/' }, file: 'index.html' }];
           for (const { route, file } of routeMap) {
             const content = await html.getContent({
               route,
