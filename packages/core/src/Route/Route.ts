@@ -28,7 +28,8 @@ class Route {
 
   async getRoutes(opts: IGetRoutesOpts) {
     const { config, root, componentPrefix } = opts;
-    let routes = config.routes;
+    // 避免修改配置里的 routes，导致重复 patch
+    let routes = lodash.cloneDeep(config.routes);
     let isConventional = false;
     if (!routes) {
       assert(root, `opts.root must be supplied for conventional routes.`);
@@ -61,8 +62,6 @@ class Route {
     }
   }
 
-  // TODO:
-  // 1. exportStatic.htmlSuffix 时修改配置 /foo 为 /foo.html
   async patchRoute(route: IRoute, opts: IGetRoutesOpts) {
     if (this.opts.onPatchRouteBefore) {
       await this.opts.onPatchRouteBefore({
@@ -72,6 +71,9 @@ class Route {
 
     if (route.routes) {
       await this.patchRoutes(route.routes, opts);
+    } else if (!('exact' in route)) {
+      // exact by default
+      route.exact = true;
     }
 
     // resolve component path

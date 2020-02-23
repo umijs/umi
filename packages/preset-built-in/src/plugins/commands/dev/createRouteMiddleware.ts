@@ -1,5 +1,6 @@
 import { IApi, NextFunction, Request, Response } from '@umijs/types';
 import { extname, join } from 'path';
+import { matchRoutes, RouteConfig } from 'react-router-config';
 import { getHtmlGenerator } from '../htmlUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
@@ -14,8 +15,17 @@ export default ({
   return async (req: Request, res: Response, next: NextFunction) => {
     async function sendHtml() {
       const html = getHtmlGenerator({ api });
+
+      let route: RouteConfig = { path: req.path };
+      if (api.config.exportStatic) {
+        const routes = (await api.getRoutes()) as RouteConfig[];
+        const matchedRoutes = matchRoutes(routes, req.path);
+        if (matchedRoutes.length) {
+          route = matchedRoutes[matchedRoutes.length - 1].route;
+        }
+      }
       const content = await html.getContent({
-        route: { path: req.path },
+        route,
         chunks: sharedMap.get('chunks'),
       });
       res.setHeader('Content-Type', 'text/html');

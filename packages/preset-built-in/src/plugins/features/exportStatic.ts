@@ -21,8 +21,27 @@ export default (api: IApi) => {
   });
 
   api.onPatchRoute(({ route }) => {
-    if (api.config.exportStatic?.htmlSuffix && route.path) {
+    if (!api.config.exportStatic?.htmlSuffix) return;
+    if (route.path) {
       route.path = addHtmlSuffix(route.path, !!route.routes);
+    }
+  });
+
+  api.onPatchRoutes(({ routes }) => {
+    if (!api.config.exportStatic) return;
+
+    // copy / to /index.html
+    let rootIndex = null;
+    routes.forEach((route, index) => {
+      if (route.path === '/' && route.exact) {
+        rootIndex = index;
+      }
+    });
+    if (rootIndex !== null) {
+      routes.splice(rootIndex, 0, {
+        ...routes[rootIndex],
+        path: '/index.html',
+      });
     }
   });
 

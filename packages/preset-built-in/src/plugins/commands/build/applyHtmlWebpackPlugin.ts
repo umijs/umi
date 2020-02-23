@@ -1,5 +1,5 @@
-import { IApi, webpack, IRoute } from '@umijs/types';
-import { getRoutePaths, getHtmlGenerator, chunksToFiles } from '../htmlUtils';
+import { IApi, webpack } from '@umijs/types';
+import { getHtmlGenerator } from '../htmlUtils';
 
 export default function(api: IApi) {
   class HtmlWebpackPlugin {
@@ -12,9 +12,9 @@ export default function(api: IApi) {
           const routeMap = api.config.exportStatic
             ? await html.getRouteMap()
             : [{ path: '/', file: 'index.html' }];
-          for (const { path, file } of routeMap) {
+          for (const { route, file } of routeMap) {
             const content = await html.getContent({
-              route: { path },
+              route,
               chunks: compilation.chunks,
             });
             compilation.assets[file] = {

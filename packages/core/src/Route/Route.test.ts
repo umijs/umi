@@ -52,20 +52,24 @@ test('config routes', async () => {
           component: '/layouts/BasicLayout',
           routes: [
             {
+              exact: true,
               path: '/',
               redirect: '/welcome',
             },
             {
+              exact: true,
               component: '/tmp/404',
             },
           ],
         },
         {
+          exact: true,
           component: '/tmp/404',
         },
       ],
     },
     {
+      exact: true,
       component: '/tmp/404',
     },
   ]);

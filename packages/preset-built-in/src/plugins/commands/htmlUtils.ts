@@ -24,7 +24,7 @@ export function chunksToFiles(opts: {
   chunks?: webpack.compilation.Chunk[];
   noChunk?: boolean;
 }): { cssFiles: string[]; jsFiles: string[]; headJSFiles: string[] } {
-  let chunksMap: IChunkMap;
+  let chunksMap: IChunkMap = {};
   if (opts.chunks) {
     chunksMap = opts.chunks.reduce((memo, chunk) => {
       const key = chunk.name || chunk.id;
@@ -174,13 +174,13 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
 
     async getRouteMap() {
       const routes = await api.getRoutes();
-      const paths = getRoutePaths({ routes });
+      const flatRoutes = getFlatRoutes({ routes });
 
-      return paths.map(path => {
+      return flatRoutes.map(route => {
         // @ts-ignore
-        const file = this.getHtmlPath(path);
+        const file = this.getHtmlPath(route.path);
         return {
-          path,
+          route,
           file,
         };
       });
@@ -190,19 +190,19 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
   return new Html();
 }
 
-export function getRoutePaths(opts: { routes: IRoute[] }): string[] {
+export function getFlatRoutes(opts: { routes: IRoute[] }): IRoute[] {
   return opts.routes.reduce((memo, route) => {
     const { routes, path } = route;
     if (path && !path.includes('?')) {
-      memo.push(path);
+      memo.push(route);
     }
     if (routes) {
       memo.concat(
-        getRoutePaths({
+        getFlatRoutes({
           routes,
         }),
       );
     }
     return lodash.uniq(memo);
-  }, [] as string[]);
+  }, [] as IRoute[]);
 }

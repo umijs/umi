@@ -253,6 +253,10 @@ TODO
 
 修改路由项。
 
+### onPatchRoutes({ routes })
+
+修改路由数组。
+
 ### chainWebpack(config, { webpack })
 
 通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。

@@ -9,6 +9,7 @@ export default function(api: IApi) {
     'onBuildComplete',
     'onExit',
     'onPatchRoute',
+    'onPatchRoutes',
     'onDevCompileDone',
     'addBeforeMiddewares',
     'addMiddewares',
