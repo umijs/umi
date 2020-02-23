@@ -1,6 +1,6 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "3.0.0-beta.23",
+  "version": "3.0.0-beta.24",
   "description": "@umijs/bundler-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
