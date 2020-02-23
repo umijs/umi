@@ -227,7 +227,9 @@ export default class Service extends EventEmitter {
     // merge paths to keep the this.paths ref
     this.setStage(ServiceStage.getPaths);
     // config.outputPath may be modified by plugins
-    this.paths.absOutputPath = join(this.cwd, this.config!.outputPath);
+    if (this.config!.outputPath) {
+      this.paths.absOutputPath = join(this.cwd, this.config!.outputPath);
+    }
     const paths = (await this.applyPlugins({
       key: 'modifyPaths',
       type: ApplyPluginsType.modify,
