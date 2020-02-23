@@ -1,14 +1,11 @@
-import 'cheerio';
 import { IConfig, IRoute } from '..';
 
 export interface IHTMLTag {
   [key: string]: string;
 }
 
-export type IGetChunkPath = (chunk: string) => string;
-
-export interface IModifyHTML<T> {
-  (memo: T, args: { route?: IRoute }): Promise<T>;
+export interface IModifyHTML {
+  (memo: any, args: any): Promise<any>;
 }
 
 export interface IAddHTML<T> {
@@ -33,9 +30,7 @@ export interface IOpts {
   addHTMLMetas?: IAddHTML<IHTMLTag[]>;
   addHTMLLinks?: IAddHTML<Partial<HTMLLinkElement>[]>;
   addHTMLStyles?: IAddHTML<Partial<IStyle>[]>;
-  modifyHTMLJSFiles: IModifyHTML<string[]>;
-  modifyHTMLHeadJSFiles: IModifyHTML<string[]>;
-  modifyHTML?: IModifyHTML<CheerioStatic>;
+  modifyHTML?: IModifyHTML;
 }
 
 export interface ILink {
@@ -56,5 +51,5 @@ export interface IGetContentArgs extends IHtmlConfig {
   jsFiles?: string[];
   cssFiles?: string[];
   tplPath?: string;
-  modifyHTML?: IModifyHTML<CheerioStatic>;
+  modifyHTML?: IModifyHTML;
 }

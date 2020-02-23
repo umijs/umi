@@ -7,8 +7,6 @@ import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
 
 export default (api: IApi) => {
-  // do something with data sharing
-  const sharedMap = new Map();
   const {
     env,
     cwd,
@@ -26,11 +24,6 @@ export default (api: IApi) => {
     }
     server?.listeningApp?.close();
   }
-
-  api.onDevCompileDone(({ stats }) => {
-    // store chunks
-    sharedMap.set('chunks', stats.compilation.chunks);
-  });
 
   api.registerCommand({
     name: 'dev',
@@ -131,10 +124,7 @@ export default (api: IApi) => {
         // @ts-ignore
         proxy: (api.config as IConfig)?.proxy,
         beforeMiddlewares,
-        afterMiddlewares: [
-          ...middlewares,
-          createRouteMiddleware({ api, sharedMap }),
-        ],
+        afterMiddlewares: [...middlewares, createRouteMiddleware({ api })],
         ...(api.config.devServer || {}),
       });
       const hostname =

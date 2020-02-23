@@ -29,8 +29,6 @@ export default function(api: IApi) {
     'addTmpGenerateWatcherPaths',
     'chainWebpack',
     'modifyHTML',
-    'modifyHTMLJSFiles',
-    'modifyHTMLHeadJSFiles',
     'modifyBundler',
     'modifyBundleConfigOpts',
     'modifyBundleConfig',
