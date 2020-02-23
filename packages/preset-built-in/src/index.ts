@@ -30,6 +30,7 @@ export default function() {
       require.resolve('./plugins/features/externals'),
       require.resolve('./plugins/features/extraBabelPlugins'),
       require.resolve('./plugins/features/extraBabelPresets'),
+      require.resolve('./plugins/features/extraPostCSSPlugins'),
       require.resolve('./plugins/features/globalCSS'),
       require.resolve('./plugins/features/globalJS'),
       require.resolve('./plugins/features/hash'),
