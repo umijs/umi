@@ -9,9 +9,8 @@ import generateFiles from '../generateFiles';
 export default (api: IApi) => {
   const {
     env,
-    cwd,
     paths,
-    utils: { rimraf, chalk, portfinder },
+    utils: { chalk, portfinder },
   } = api;
 
   let port: number;
@@ -24,6 +23,12 @@ export default (api: IApi) => {
     }
     server?.listeningApp?.close();
   }
+
+  const sharedMap = new Map();
+  api.onDevCompileDone(({ stats }) => {
+    // store chunks
+    sharedMap.set('chunks', stats.compilation.chunks);
+  });
 
   api.registerCommand({
     name: 'dev',
@@ -72,7 +77,21 @@ export default (api: IApi) => {
               if (reload) {
                 api.restartServer();
               } else {
-                api.service.config = api.service.configInstance.getConfig();
+                // TODO: simplify, 和 Service 里的逻辑重复了
+                // 需要 Service 露出方法
+                const defaultConfig = await api.applyPlugins({
+                  key: 'modifyDefaultConfig',
+                  type: api.ApplyPluginsType.modify,
+                  initialValue: await api.service.configInstance.getDefaultConfig(),
+                });
+                api.service.config = await api.applyPlugins({
+                  key: 'modifyConfig',
+                  type: api.ApplyPluginsType.modify,
+                  initialValue: api.service.configInstance.getConfig({
+                    defaultConfig,
+                  }) as any,
+                });
+
                 if (regenerateTmpFiles) {
                   console.log('regenerate tmp files');
                   await generateFiles({ api });
@@ -124,7 +143,10 @@ export default (api: IApi) => {
         // @ts-ignore
         proxy: (api.config as IConfig)?.proxy,
         beforeMiddlewares,
-        afterMiddlewares: [...middlewares, createRouteMiddleware({ api })],
+        afterMiddlewares: [
+          ...middlewares,
+          createRouteMiddleware({ api, sharedMap }),
+        ],
         ...(api.config.devServer || {}),
       });
       const hostname =

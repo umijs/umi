@@ -207,6 +207,10 @@ dev 退出时触发。
 
 - 修改后的值不会再做 schema 校验
 
+### modifyHTMLChunks
+
+TODO
+
 ### onBuildCompelete({ err?, stats? })
 
 构建完成时可以做的事。

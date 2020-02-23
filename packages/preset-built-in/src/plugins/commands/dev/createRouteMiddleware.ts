@@ -4,14 +4,13 @@ import { getHtmlGenerator } from '../htmlUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 
-export default ({ api }: { api: IApi }) => {
+export default ({ api, sharedMap }: { api: IApi; sharedMap: Map }) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     async function sendHtml() {
       const html = getHtmlGenerator({ api });
       const content = await html.getContent({
         route: { path: req.path },
-        cssFiles: ['umi.css'],
-        jsFiles: ['umi.js'],
+        chunks: sharedMap.get('chunks'),
       });
       res.setHeader('Content-Type', 'text/html');
       res.send(content);

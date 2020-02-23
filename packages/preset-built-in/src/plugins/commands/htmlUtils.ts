@@ -1,34 +1,63 @@
 import { IApi, IRoute, webpack } from '@umijs/types';
-import { join } from 'path';
+import { extname, join } from 'path';
 import { existsSync } from 'fs';
 import { lodash } from '@umijs/utils';
+import assert from 'assert';
+import string from './dev/mock/fixtures/mock-files/mock/string';
 
 interface IGetContentArgs {
   route: IRoute;
-  jsFiles?: any[];
-  cssFiles?: any[];
+  chunks: any;
 }
 
-export function chunksToFiles(
-  chunks: webpack.compilation.Chunk[],
-): { cssFiles: string[]; jsFiles: string[] } {
+interface IHtmlChunk {
+  name: string;
+  headScript?: boolean;
+}
+
+export function chunksToFiles(opts: {
+  htmlChunks: (string | object)[];
+  chunks: webpack.compilation.Chunk[];
+}): { cssFiles: string[]; jsFiles: string[]; headJSFiles: string[] } {
+  const chunksMap = opts.chunks.reduce((memo, chunk) => {
+    const key = chunk.name || chunk.id;
+    if (key && chunk.files) {
+      chunk.files.forEach(file => {
+        if (!file.includes('.hot-update')) {
+          memo[`${key}${extname(file)}`] = file;
+        }
+      });
+    }
+    return memo;
+  }, {} as { [key: string]: string });
+
   const cssFiles: string[] = [];
   const jsFiles: string[] = [];
+  const headJSFiles: string[] = [];
 
-  chunks.forEach(chunk => {
-    const { files } = chunk;
-    files.forEach(file => {
-      if (/\.js$/.test(file)) {
-        jsFiles.push(file);
-      }
-      if (/\.css$/.test(file)) {
-        cssFiles.push(file);
-      }
-    });
+  const htmlChunks = opts.htmlChunks.map(htmlChunk => {
+    return lodash.isPlainObject(htmlChunk) ? htmlChunk : { name: htmlChunk };
   });
+  (htmlChunks as IHtmlChunk[]).forEach(({ name, headScript }: IHtmlChunk) => {
+    const cssFile = chunksMap[`${name}.css`];
+    if (cssFile) {
+      cssFiles.push(cssFile);
+    }
+
+    const jsFile = chunksMap[`${name}.js`];
+    assert(jsFile, `chunk of ${name} not found.`);
+
+    if (headScript) {
+      headJSFiles.push(jsFile);
+    } else {
+      jsFiles.push(jsFile);
+    }
+  });
+
   return {
-    cssFiles: lodash.uniq(cssFiles),
-    jsFiles: lodash.uniq(jsFiles),
+    cssFiles,
+    jsFiles,
+    headJSFiles,
   };
 }
 
@@ -77,10 +106,24 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
         },
       });
 
+      const htmlChunks = await api.applyPlugins({
+        key: 'modifyHTMLChunks',
+        type: api.ApplyPluginsType.modify,
+        initialValue: ['umi'],
+        args: {
+          route: args.route,
+        },
+      });
+      const { cssFiles, jsFiles, headJSFiles } = chunksToFiles({
+        htmlChunks,
+        chunks: args.chunks,
+      });
+
       return await super.getContent({
         route: args.route,
-        cssFiles: args.cssFiles || [],
-        jsFiles: args.jsFiles || [],
+        cssFiles,
+        headJSFiles,
+        jsFiles,
         headScripts: await applyPlugins({
           key: 'addHTMLHeadScripts',
           initialState: [

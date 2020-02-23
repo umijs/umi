@@ -36,6 +36,7 @@ export default function(api: IApi) {
     'modifyBabelOpts',
     'modifyBabelPresetOpts',
     'modifyBundleImplementor',
+    'modifyHTMLChunks',
     'modifyPublicPathStr',
     'modifyRoutes',
   ].forEach(name => {

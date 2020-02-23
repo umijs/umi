@@ -7,7 +7,6 @@ export default function(api: IApi) {
       compiler.hooks.emit.tapPromise(
         'UmiHtmlGeneration',
         async (compilation: any) => {
-          const { jsFiles, cssFiles } = chunksToFiles(compilation.chunks);
           const html = getHtmlGenerator({ api });
 
           const routeMap = api.config.exportStatic
@@ -16,8 +15,7 @@ export default function(api: IApi) {
           for (const { path, file } of routeMap) {
             const content = await html.getContent({
               route: { path },
-              cssFiles,
-              jsFiles,
+              chunks: compilation.chunks,
             });
             compilation.assets[file] = {
               source: () => content,

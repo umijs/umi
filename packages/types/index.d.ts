@@ -145,6 +145,10 @@ export interface IApi extends PluginAPI {
   modifyDefaultConfig: IModify<IConfig, {}>;
   modifyHTML: IModify<CheerioStatic, { route: IRoute }>;
   modifyRoutes: IModify<IRoute[], {}>;
+  modifyHTMLChunks: IModify<
+    (string | { name: string; headScript?: boolean })[],
+    { route: IRoute }
+  >;
   chainWebpack: IModify<WebpackChain, { webpack: typeof webpack }>;
 
   // ApplyPluginType.add
