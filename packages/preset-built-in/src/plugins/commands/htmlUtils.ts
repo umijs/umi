@@ -3,11 +3,11 @@ import { extname, join } from 'path';
 import { existsSync } from 'fs';
 import { lodash } from '@umijs/utils';
 import assert from 'assert';
-import string from './dev/mock/fixtures/mock-files/mock/string';
 
 interface IGetContentArgs {
   route: IRoute;
-  chunks: any;
+  chunks?: any;
+  noChunk?: boolean;
 }
 
 interface IHtmlChunk {
@@ -15,21 +15,29 @@ interface IHtmlChunk {
   headScript?: boolean;
 }
 
+interface IChunkMap {
+  [key: string]: string;
+}
+
 export function chunksToFiles(opts: {
   htmlChunks: (string | object)[];
-  chunks: webpack.compilation.Chunk[];
+  chunks?: webpack.compilation.Chunk[];
+  noChunk?: boolean;
 }): { cssFiles: string[]; jsFiles: string[]; headJSFiles: string[] } {
-  const chunksMap = opts.chunks.reduce((memo, chunk) => {
-    const key = chunk.name || chunk.id;
-    if (key && chunk.files) {
-      chunk.files.forEach(file => {
-        if (!file.includes('.hot-update')) {
-          memo[`${key}${extname(file)}`] = file;
-        }
-      });
-    }
-    return memo;
-  }, {} as { [key: string]: string });
+  let chunksMap: IChunkMap;
+  if (opts.chunks) {
+    chunksMap = opts.chunks.reduce((memo, chunk) => {
+      const key = chunk.name || chunk.id;
+      if (key && chunk.files) {
+        chunk.files.forEach(file => {
+          if (!file.includes('.hot-update')) {
+            memo[`${key}${extname(file)}`] = file;
+          }
+        });
+      }
+      return memo;
+    }, {} as IChunkMap);
+  }
 
   const cssFiles: string[] = [];
   const jsFiles: string[] = [];
@@ -39,12 +47,12 @@ export function chunksToFiles(opts: {
     return lodash.isPlainObject(htmlChunk) ? htmlChunk : { name: htmlChunk };
   });
   (htmlChunks as IHtmlChunk[]).forEach(({ name, headScript }: IHtmlChunk) => {
-    const cssFile = chunksMap[`${name}.css`];
+    const cssFile = opts.noChunk ? `${name}.css` : chunksMap[`${name}.css`];
     if (cssFile) {
       cssFiles.push(cssFile);
     }
 
-    const jsFile = chunksMap[`${name}.js`];
+    const jsFile = opts.noChunk ? `${name}.js` : chunksMap[`${name}.js`];
     assert(jsFile, `chunk of ${name} not found.`);
 
     if (headScript) {
@@ -117,6 +125,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       const { cssFiles, jsFiles, headJSFiles } = chunksToFiles({
         htmlChunks,
         chunks: args.chunks,
+        noChunk: args.noChunk,
       });
 
       return await super.getContent({

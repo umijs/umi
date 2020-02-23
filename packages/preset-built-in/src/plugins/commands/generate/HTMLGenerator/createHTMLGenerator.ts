@@ -18,8 +18,7 @@ export default function({ api }: { api: IApi }) {
       const html = getHtmlGenerator({ api });
       const content = await html.getContent({
         route: { path: (this.args.path as string) || '/' },
-        cssFiles: [`umi${cssExt}`],
-        jsFiles: [`umi${jsExt}`],
+        noChunk: true,
       });
       const targetPath = join(api.paths.absOutputPath!, 'index.html');
       mkdirp.sync(dirname(targetPath));

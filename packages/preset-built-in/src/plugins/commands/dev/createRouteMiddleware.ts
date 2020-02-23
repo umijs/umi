@@ -4,7 +4,13 @@ import { getHtmlGenerator } from '../htmlUtils';
 
 const ASSET_EXTNAMES = ['.ico', '.png', '.jpg', '.jpeg', '.gif', '.svg'];
 
-export default ({ api, sharedMap }: { api: IApi; sharedMap: Map }) => {
+export default ({
+  api,
+  sharedMap,
+}: {
+  api: IApi;
+  sharedMap: Map<string, string>;
+}) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     async function sendHtml() {
       const html = getHtmlGenerator({ api });
