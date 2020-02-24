@@ -3,7 +3,7 @@ hero:
   title: UmiJS
   desc: balabala
   actions:
-    - title: Get Started →
+    - text: Get Started →
       link: /
 features:
   - title: Balabala
