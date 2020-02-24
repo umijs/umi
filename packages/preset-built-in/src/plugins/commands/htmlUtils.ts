@@ -197,12 +197,12 @@ export function getFlatRoutes(opts: { routes: IRoute[] }): IRoute[] {
       memo.push(route);
     }
     if (routes) {
-      memo.concat(
+      memo = memo.concat(
         getFlatRoutes({
           routes,
         }),
       );
     }
-    return lodash.uniq(memo);
+    return memo;
   }, [] as IRoute[]);
 }

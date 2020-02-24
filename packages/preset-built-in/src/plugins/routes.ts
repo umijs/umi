@@ -31,9 +31,13 @@ export default function(api: IApi) {
           });
         },
       });
-      return route.getRoutes({
-        config: api.config,
-        root: api.paths.absPagesPath!,
+      return await api.applyPlugins({
+        key: 'modifyRoutes',
+        type: api.ApplyPluginsType.modify,
+        initialValue: await route.getRoutes({
+          config: api.config,
+          root: api.paths.absPagesPath!,
+        }),
       });
     },
   });
