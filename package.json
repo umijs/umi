@@ -8,6 +8,7 @@
     "build": "father-build",
     "docs": "node ./scripts/docs.js",
     "docs:dev": "node ./packages/umi/bin/umi.js dev",
+    "docs:build": "node ./packages/umi/bin/umi.js build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
     "release": "node ./scripts/release.js",

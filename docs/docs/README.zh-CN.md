@@ -1,5 +1,7 @@
 ---
 title: 介绍
+nav:
+  order: 1
 ---
 
 ## 为什么用 umi？
