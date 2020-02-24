@@ -7,6 +7,7 @@
     "bootstrap": "node ./scripts/bootstrap.js",
     "build": "father-build",
     "docs": "node ./scripts/docs.js",
+    "now-build": "yarn build && yarn docs:build",
     "docs:dev": "node ./packages/umi/bin/umi.js dev",
     "docs:build": "node ./packages/umi/bin/umi.js build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",

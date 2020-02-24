@@ -5,4 +5,5 @@ export default {
     include: ['./docs'],
     previewLangs: [],
   },
+  exportStatic: {},
 };
