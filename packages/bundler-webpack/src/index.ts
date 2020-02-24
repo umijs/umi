@@ -57,6 +57,7 @@ class Bundler {
     bundleImplementor?: typeof defaultWebpack;
   }): IServerOpts {
     const compiler = bundleImplementor(bundleConfigs);
+    // @ts-ignore
     const compilerMiddleware = webpackDevMiddleware(compiler, {
       publicPath: '/',
       logLevel: 'silent',

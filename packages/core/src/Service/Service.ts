@@ -403,7 +403,7 @@ ${name} from ${plugin.path} register failed.`);
           tAdd.tapPromise(
             {
               name: hook.pluginId!,
-              stage: hook.stage,
+              stage: hook.stage || 0,
               // @ts-ignore
               before: hook.before,
             },
@@ -420,7 +420,7 @@ ${name} from ${plugin.path} register failed.`);
           tModify.tapPromise(
             {
               name: hook.pluginId!,
-              stage: hook.stage,
+              stage: hook.stage || 0,
               // @ts-ignore
               before: hook.before,
             },
@@ -436,7 +436,7 @@ ${name} from ${plugin.path} register failed.`);
           tEvent.tapPromise(
             {
               name: hook.pluginId!,
-              stage: hook.stage,
+              stage: hook.stage || 0,
               // @ts-ignore
               before: hook.before,
             },
