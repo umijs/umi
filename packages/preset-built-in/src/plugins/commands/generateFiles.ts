@@ -6,6 +6,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
   const { paths } = api;
 
   async function generate() {
+    api.logger.debug('generate files');
     await api.applyPlugins({
       key: 'onGenerateFiles',
       type: api.ApplyPluginsType.event,

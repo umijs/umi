@@ -93,7 +93,6 @@ export default (api: IApi) => {
                 });
 
                 if (regenerateTmpFiles) {
-                  console.log('regenerate tmp files');
                   await generateFiles({ api });
                 } else {
                   fns.forEach(fn => fn());

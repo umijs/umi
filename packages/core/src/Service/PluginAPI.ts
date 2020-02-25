@@ -27,7 +27,7 @@ export default class PluginAPI {
     this.service = opts.service;
     this.utils = utils;
     this.Html = Html;
-    this.logger = new Logger(this.id || this.key);
+    this.logger = new Logger(`umi:plugin:${this.id || this.key}`);
   }
 
   // TODO: reversed keys

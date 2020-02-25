@@ -462,6 +462,9 @@ ${name} from ${plugin.path} register failed.`);
     this.setStage(ServiceStage.init);
     await this.init();
 
+    logger.debug('plugins:');
+    logger.debug(this.plugins);
+
     this.stage = ServiceStage.run;
     const command =
       typeof this.commands[name] === 'string'

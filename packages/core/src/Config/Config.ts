@@ -8,6 +8,7 @@ import {
   lodash,
   parseRequireDeps,
   winPath,
+  createDebug,
 } from '@umijs/utils';
 import assert from 'assert';
 import joi from '@hapi/joi';
@@ -19,6 +20,8 @@ import {
 } from './utils/configUtils';
 import isEqual from './utils/isEqual';
 import mergeDefault from './utils/mergeDefault';
+
+const debug = createDebug('umi:core:Config');
 
 interface IChanged {
   key: string;
@@ -269,6 +272,10 @@ export default class Config {
           }
         }
       });
+      debug(`newUserConfig: ${JSON.stringify(newUserConfig)}`);
+      debug(`oldUserConfig: ${JSON.stringify(userConfig)}`);
+      debug(`pluginChanged: ${JSON.stringify(pluginChanged)}`);
+      debug(`valueChanged: ${JSON.stringify(valueChanged)}`);
 
       if (pluginChanged.length || valueChanged.length) {
         opts.onChange({
