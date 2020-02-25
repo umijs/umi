@@ -2,7 +2,7 @@
 title: 目录结构
 ---
 
-一个基础的 umi 项目大致是这样的，
+一个基础的 Umi 项目大致是这样的，
 
 	.
 	├── package.json
@@ -12,12 +12,12 @@ title: 目录结构
 	├── mock
 	├── public
 	└── src
-	│   ├── .umi
-	│   ├── layouts/index.tsx
-	│   ├── pages
-	│       ├── index.less
-	│       └── index.tsx
-	│   └── app.ts
+	    ├── .umi
+	    ├── layouts/index.tsx
+	    ├── pages
+	        ├── index.less
+	        └── index.tsx
+	    └── app.ts
 
 ## 根目录
 

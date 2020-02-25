@@ -67,7 +67,7 @@ title: 约定式路由
 
 ## 嵌套路由
 
-umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.tsx` 为该目录的 layout。layout 文件需要返回一个 React 组件，并通过 `props.children` 渲染子组件。
+Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.tsx` 为该目录的 layout。layout 文件需要返回一个 React 组件，并通过 `props.children` 渲染子组件。
 
 比如以下目录结构，
 
@@ -124,7 +124,7 @@ umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 
 ## 不同的全局 layout
 
-你可能需要针对不同路由输出不同的全局 layout，umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
+你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
 
 比如想要针对 `/login` 输出简单布局，
 
