@@ -204,7 +204,7 @@ export interface IConfig extends IConfigCore {
   };
   devServer?: IServerOpts;
   devtool?: string;
-  dynamicImport?: boolean;
+  dynamicImport?: object;
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
