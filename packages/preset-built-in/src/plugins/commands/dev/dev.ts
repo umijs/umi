@@ -32,8 +32,9 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'dev',
-    fn: async function() {
-      const defaultPort = process.env.PORT || api.config.devServer?.port;
+    fn: async function({ args }) {
+      const defaultPort =
+        process.env.PORT || args?.port || api.config.devServer?.port;
       port = await portfinder.getPortPromise({
         port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
