@@ -5,8 +5,6 @@ nav:
   order: 1
 ---
 
-# 介绍
-
 ## 为什么用 umi？
 
 * 📦 **开箱即用**，内置 react、react-router、babel、webpack 等

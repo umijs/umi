@@ -2,8 +2,6 @@
 title: API
 ---
 
-# API
-
 ## 基本 API
 
 ### dynamic
