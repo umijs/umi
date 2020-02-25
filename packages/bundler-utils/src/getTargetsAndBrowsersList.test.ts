@@ -23,6 +23,30 @@ test('csr', () => {
   expect(browserslist).toEqual(['ie >= 10', 'chrome >= 0', 'firefox >= 0']);
 });
 
+test('csr with null targets', () => {
+  const { targets, browserslist } = getTargetsAndBrowsersList({
+    config: {},
+    type: ConfigType.csr,
+  });
+  expect(targets).toEqual({});
+  expect(browserslist).toEqual([]);
+});
+
+test('csr targets with false', () => {
+  const { targets } = getTargetsAndBrowsersList({
+    config: {
+      targets: {
+        foo: 1,
+        bar: false,
+      },
+    },
+    type: ConfigType.csr,
+  });
+  expect(targets).toEqual({
+    foo: 1,
+  });
+});
+
 test('ssr', () => {
   const { targets, browserslist } = getTargetsAndBrowsersList({
     config: {

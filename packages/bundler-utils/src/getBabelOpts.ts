@@ -70,12 +70,11 @@ export function getBabelDepsOpts({
     ...getBasicBabelLoaderOpts({ cwd }),
     presets: [
       [
-        require.resolve('@umijs/babel-preset-umi/dependency', {
-          // @ts-ignore
+        require.resolve('@umijs/babel-preset-umi/dependency'),
+        {
           nodeEnv: env,
-          // TODO: node_modules 下的 import() 没有被禁用掉，待排查
           dynamicImportNode: !config.dynamicImport,
-        }),
+        },
       ],
     ],
   };
