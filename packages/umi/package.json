@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "version": "3.0.0-beta.26",
+  "version": "3.0.0-beta.27",
   "description": "umi",
   "main": "index.js",
   "types": "types.d.ts",
@@ -27,11 +27,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/core": "3.0.0-beta.26",
-    "@umijs/preset-built-in": "3.0.0-beta.26",
-    "@umijs/runtime": "3.0.0-beta.26",
-    "@umijs/types": "3.0.0-beta.26",
-    "@umijs/utils": "3.0.0-beta.26",
+    "@umijs/core": "3.0.0-beta.27",
+    "@umijs/preset-built-in": "3.0.0-beta.27",
+    "@umijs/runtime": "3.0.0-beta.27",
+    "@umijs/types": "3.0.0-beta.27",
+    "@umijs/utils": "3.0.0-beta.27",
     "resolve-cwd": "3.0.0"
   },
   "bin": {
