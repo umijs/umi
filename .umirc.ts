@@ -64,6 +64,13 @@ export default {
       '/zh-CN/docs': getMenus('zh-CN'),
       '/docs': getMenus(),
     },
+    navs: [
+      null,
+      {
+        title: 'v2.x',
+        path: 'https://v2.umijs.org',
+      },
+    ],
   },
   exportStatic: {},
 };
