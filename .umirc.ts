@@ -38,7 +38,7 @@ function getMenus(lang?: string) {
     {
       title: 'CONTRIBUTING',
       'title_zh-CN': '贡献',
-      children: ['/docs/contributing'],
+      path: '/docs/contributing',
     },
     {
       title: 'FAQ',
