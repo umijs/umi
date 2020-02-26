@@ -83,26 +83,26 @@ Starting the development server...
 
 在浏览器里打开 [http://localhost:8000/](http://localhost:8000/)，能看到以下界面，
 
-![](https://img.alicdn.com/tfs/TB1A_Gkv.T1gK0jSZFhXXaAtVXa-1808-1012.png)
+![](https://img.alicdn.com/tfs/TB1JpeLwxD1gK0jSZFsXXbldVXa-1540-950.png)
 
 ## 修改配置
 
-如果不想要外面的布局，编辑 `.umirc.ts` 配置 `layout: false`，
+默认的脚手架内置了 @umijs/preset-react，包含布局、权限、国际化、dva、简易数据流等常用功能。比如想要 ant-design-pro 的布局，编辑 `.umirc.ts` 配置 `layout: {}`，
 
 ```diff
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-+ layout: false,
++ layout: {},
   routes: [
     { path: '/', component: '@/pages/index' },
   ],
 });
 ```
 
-`yarn start` 的进程会自动重启，然后可以看到以下界面，
+不用重启 `yarn start`，webpack 会在背后增量编译，过一会就可以看到以下界面，
 
-![](https://img.alicdn.com/tfs/TB12nCnv.Y1gK0jSZFCXXcwqXXa-1808-1012.png)
+![](https://img.alicdn.com/tfs/TB1pISMwxn1gK0jSZKPXXXvUXXa-1894-1032.png)
 
 ## 部署发布
 
