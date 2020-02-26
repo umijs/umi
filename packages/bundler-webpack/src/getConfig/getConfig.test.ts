@@ -1,4 +1,5 @@
 import { ConfigType } from '@umijs/bundler-utils';
+import { winPath } from '@umijs/utils';
 import getConfig from './getConfig';
 
 test('normal', async () => {
@@ -11,7 +12,10 @@ test('normal', async () => {
   expect(config.mode).toEqual('development');
   expect(config.devtool).toEqual('cheap-module-source-map');
   expect(config.resolve!.modules![0]).toEqual('node_modules');
-  expect(config.output).toEqual({
+  expect({
+    ...config.output,
+    path: winPath(config.output!.path!),
+  }).toEqual({
     path: '/foo/dist',
     filename: '[name].js',
     chunkFilename: '[name].js',
