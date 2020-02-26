@@ -24,7 +24,7 @@
     "chalk": "2.4.2",
     "chokidar": "3.0.2",
     "clipboardy": "2.1.0",
-    "copy-webpack-plugin": "5.0.3",
+    "copy-webpack-plugin": "5.1.1",
     "css-loader": "2.1.1",
     "css-loader-1": "2.0.0",
     "css-modules-typescript-loader": "2.0.4",
