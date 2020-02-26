@@ -3,7 +3,11 @@ function getMenus(lang?: string) {
     {
       title: 'Introduce',
       'title_zh-CN': '介绍',
-      children: ['/docs/README', '/docs/getting-started'],
+      children: [
+        '/docs/README',
+        '/docs/how-umi-works',
+        '/docs/getting-started',
+      ],
     },
     {
       title: 'Umi Basic',
