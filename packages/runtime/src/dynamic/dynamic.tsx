@@ -29,13 +29,15 @@ export default function(opts: any) {
   };
 
   // Support for direct import(),
-  // eg: dynamic(import('../hello-world'))
-  if (typeof opts.then === 'function') {
-    loadableOptions.loader = () => opts;
+  // eg: dynamic(() => import('../hello-world'))
+  if (typeof opts === 'function') {
+    loadableOptions.loader = opts;
     // Support for having first argument being options,
     // eg: dynamic({loader: import('../hello-world')})
   } else if (typeof opts === 'object') {
     loadableOptions = { ...loadableOptions, ...opts };
+  } else {
+    throw new Error(`Unexpect arguments ${opts}`);
   }
 
   // Support for passing options,
