@@ -70,6 +70,10 @@ export default {
         title: 'v2.x',
         path: 'https://v2.umijs.org',
       },
+      {
+        title: 'GitHub',
+        path: 'https://github.com/umijs/umi',
+      },
     ],
   },
   exportStatic: {},

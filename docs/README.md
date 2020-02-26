@@ -1,7 +1,7 @@
 ---
 hero:
   title: UmiJS
-  desc: balabala
+  desc: 🍙 Extensible enterprise-level front-end application framework.
   actions:
     - text: Get Started →
       link: /
