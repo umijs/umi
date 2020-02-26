@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "3.0.0-beta.27",
+  "version": "3.0.0-beta.28",
   "description": "@umijs/ast",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
