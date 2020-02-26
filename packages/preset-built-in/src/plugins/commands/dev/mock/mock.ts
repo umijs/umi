@@ -24,8 +24,6 @@ export default function(api: IApi) {
     return;
   }
 
-  api.logger.info('Mock Start');
-
   const registerBabel = (paths: string[]): void => {
     // support
     // clear require cache and set babel register
