@@ -69,8 +69,8 @@ export default {
     memo.resolve.alias.set('foo', '/tmp/a/b/foo');
 
     // 删除 umi 内置插件
-    config.plugins.delete('progress');
-    config.plugins.delete('friendly-error');
+    memo.plugins.delete('progress');
+    memo.plugins.delete('friendly-error');
   }
 }
 ```
