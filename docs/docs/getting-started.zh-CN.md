@@ -36,7 +36,7 @@ $ mkdir myapp && cd myapp
 通过官方工具创建项目，
 
 ```bash
-$ yarn create @umijs/app
+$ yarn create @umijs/umi-app
 
 Copy:  .editorconfig
 Write: .gitignore
