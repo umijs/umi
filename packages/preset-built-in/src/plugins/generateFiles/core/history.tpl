@@ -5,5 +5,9 @@ if ((<any>window).routerBase) {
   options.basename = (<any>window).routerBase;
 }
 
-const history = {{{ creator }}}(options);
+let history = {{{ creator }}}(options);
+export const createHistory = () => {
+  history = {{{ creator }}}(options);
+  return history;
+};
 export { history };
