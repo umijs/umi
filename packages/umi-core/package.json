@@ -8,7 +8,7 @@
     "babel-preset-umi": "1.8.3",
     "chalk": "2.4.2",
     "extend2": "1.0.0",
-    "marked": "0.6.2",
+    "marked": "0.8.0",
     "marked-terminal": "3.2.0",
     "os-locale": "^4.0.0",
     "signale": "1.4.0",
