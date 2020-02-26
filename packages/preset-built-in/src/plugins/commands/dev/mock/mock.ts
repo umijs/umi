@@ -1,4 +1,5 @@
 import { IApi } from '@umijs/types';
+import { parseRequireDeps } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
 import { getMockData, IGetMockDataResult } from './utils';
 
@@ -23,11 +24,23 @@ export default function(api: IApi) {
     return;
   }
 
+  api.logger.info('Mock Start');
+
   const registerBabel = (paths: string[]): void => {
-    // babel compiler
+    // support
+    // clear require cache and set babel register
+    const requireDeps = paths.reduce((memo: string[], file) => {
+      memo = memo.concat(parseRequireDeps(file));
+      return memo;
+    }, []);
+    requireDeps.forEach(f => {
+      if (require.cache[f]) {
+        delete require.cache[f];
+      }
+    });
     api.babelRegister.setOnlyMap({
       key: 'mock',
-      value: paths,
+      value: [...paths, ...requireDeps],
     });
   };
 
