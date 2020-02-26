@@ -5,7 +5,6 @@ import { winPath } from '@umijs/utils';
 
 export default function(api: IApi) {
   const {
-    paths,
     utils: { Mustache, lodash },
   } = api;
 
@@ -50,7 +49,7 @@ export default function(api: IApi) {
 
   api.addUmiExports(() => {
     return {
-      specifiers: ['history', 'createHistory'],
+      specifiers: ['history'],
       source: `./history`,
     };
   });
