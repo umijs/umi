@@ -4,7 +4,9 @@ module.exports = {
   collectCoverageFrom(memo) {
     return memo.concat([
       '!packages/bundler-webpack/src/getConfig/setPublicPath.ts',
+      '!packages/bundler-webpack/src/getConfig/runtimePublicPathEntry.ts',
       '!packages/bundler-webpack/src/webpackHotDevClient/*',
+      '!packages/bundler-webpack/src/cli.ts',
     ]);
   },
 };

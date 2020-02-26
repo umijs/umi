@@ -140,8 +140,7 @@ export default (api: IApi) => {
         headers: {
           'access-control-allow-origin': '*',
         },
-        // @ts-ignore
-        proxy: (api.config as IConfig)?.proxy,
+        proxy: api.config.proxy,
         beforeMiddlewares,
         afterMiddlewares: [
           ...middlewares,

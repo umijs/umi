@@ -1,15 +1,19 @@
 import {
   BabelRegister,
+  chalk,
   compatESModuleRequire,
   getFile,
+  portfinder,
   rimraf,
   yParser,
 } from '@umijs/utils';
 import { ConfigType } from '@umijs/bundler-utils';
 import { basename, extname, join } from 'path';
+import { Server } from '@umijs/server';
 import assert from 'assert';
 import { existsSync } from 'fs';
 import { Bundler } from './index';
+import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 const args = yParser(process.argv.slice(2), {
   alias: {
@@ -19,9 +23,19 @@ const args = yParser(process.argv.slice(2), {
   boolean: ['version'],
 });
 
+const command = args._[0];
 const cwd = join(process.cwd(), args.cwd || '');
-const env = args.env || 'production';
+const env = args.env || (command === 'dev' ? 'development' : 'production');
 process.env.NODE_ENV = env;
+
+if (args.version && !command) {
+  args._[0] = 'version';
+  const local = existsSync(join(__dirname, '../.local'))
+    ? chalk.cyan('@local')
+    : '';
+  console.log(`bundler-webpack@${require('../package.json').version}${local}`);
+  process.exit(0);
+}
 
 (async () => {
   let entry: string = args.entry;
@@ -68,9 +82,32 @@ process.env.NODE_ENV = env;
     },
   });
 
-  rimraf.sync(join(cwd, 'dist'));
-  const { stats } = await bundler.build({
-    bundleConfigs: [webpackConfig],
-  });
-  console.log(stats.toString('normal'));
+  if (command === 'build') {
+    rimraf.sync(join(cwd, 'dist'));
+    const { stats } = await bundler.build({
+      bundleConfigs: [webpackConfig],
+    });
+    console.log(stats.toString('normal'));
+  } else if (command === 'dev') {
+    const port = await portfinder.getPortPromise({
+      port: 8000,
+    });
+    webpackConfig.plugins!.push(new DevCompileDonePlugin({ port }));
+    const devServerOpts = bundler.setupDevServerOpts({
+      bundleConfigs: [webpackConfig],
+    });
+    const server = new Server({
+      ...devServerOpts,
+      compress: true,
+      headers: {
+        'access-control-allow-origin': '*',
+      },
+    });
+    await server.listen({
+      port,
+      hostname: '127.0.0.1',
+    });
+  } else {
+    throw new Error(`Unsupported command ${command}.`);
+  }
 })();
