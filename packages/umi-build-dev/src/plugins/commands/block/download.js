@@ -7,10 +7,20 @@ import GitUrlParse from 'git-url-parse';
 import { getFastGithub } from 'umi-utils';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
+
 const spawnSync = spawn.sync;
 
 export function makeSureMaterialsTempPathExist(dryRun) {
   const userHome = process.env.NODE_ENV === 'test' ? '/Users/test' : homedir();
+
+  /**
+   * 增加一个环境变量，可以使用本地的目录来当区块的下载目目录
+   * 这样就可以使用任意的地址来读取区块，比如本地的目录
+   */
+  if (process.env.BLOCKS_TEMP_PATH) {
+    return process.env.BLOCKS_TEMP_PATH;
+  }
+
   const blocksTempPath = join(userHome, '.umi/blocks');
   if (dryRun) {
     return blocksTempPath;
@@ -32,7 +42,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
     // cd id && git pull
     log.info(`${url} exist in cache, start pull from git to update...`);
     if (dryRun) {
-      log.log(`dryRun is true, skip git pull`);
+      log.log('dryRun is true, skip git pull');
     } else {
       spawnSync('git', ['fetch'], {
         cwd: templateTmpDirPath,
@@ -49,7 +59,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
     // git clone url id
     log.info(`start clone code from ${url}...`);
     if (dryRun) {
-      log.log(`dryRun is true, skip git clone`);
+      log.log('dryRun is true, skip git clone');
     } else {
       spawnSync('git', ['clone', url, id, '--single-branch', '-b', branch], {
         cwd: blocksTempPath,
@@ -108,10 +118,10 @@ export async function getParsedData(url, blockConfig) {
   if (isGitUrl(url)) {
     realUrl = url;
     debug('is git url');
-  } else if (/^[\w]+[\w\-\/]*$/.test(url)) {
+  } else if (/^[\w]+[\w\-/]*$/.test(url)) {
     realUrl = `${defaultGitUrl}/tree/master/${url}`;
     debug(`will use ${realUrl} as the block url`);
-  } else if (/^[\.\/]|^[c-zC-Z]:/.test(url)) {
+  } else if (/^[./]|^[c-zC-Z]:/.test(url)) {
     // ^[c-zC-Z]:  目的是为了支持window下的绝对路径，比如 `C:\\Project\\umi`
     // locale path for test
     const sourcePath = resolve(process.cwd(), url);
