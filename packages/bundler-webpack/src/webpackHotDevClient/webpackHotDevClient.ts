@@ -17,9 +17,19 @@ const getSocketHost = () => {
   const dataFromSrc = scripts[scripts.length - 1]
     ? scripts[scripts.length - 1].getAttribute('src')
     : '';
-  const { host, protocol } = url.parse(dataFromSrc || '');
-  const socketHost = host && protocol ? url.format({ host, protocol }) : '';
-  return socketHost;
+
+  let host, protocol;
+  if (dataFromSrc && dataFromSrc.includes('umi.js')) {
+    const urlParsed = url.parse(dataFromSrc);
+    host = urlParsed.host;
+    protocol = urlParsed.protocol;
+  } else {
+    // 某些场景可能没有 umi.js，比如微前端的场景
+    host = location.host;
+    protocol = location.protocol;
+  }
+
+  return host && protocol ? url.format({ host, protocol }) : '';
 };
 
 const initSocket = () => {
