@@ -80,6 +80,7 @@ export interface IApi extends PluginAPI {
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
+  EnableBy: typeof Service.prototype.EnableBy;
   ConfigChangeType: typeof Service.prototype.ConfigChangeType;
   stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;

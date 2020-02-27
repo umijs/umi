@@ -220,7 +220,9 @@ test('registerPlugin id conflict (preset)', async () => {
   );
 });
 
-test('skip plugins', async () => {
+// 换成在 applyPlugins 里决定是否执行插件的 hooks
+// 先 skip
+test.skip('skip plugins', async () => {
   const cwd = join(fixtures, 'skip-plugins');
   const service = new Service({
     cwd,
@@ -399,4 +401,44 @@ test('plugin syntax error', async () => {
     plugins: [require.resolve(join(cwd, 'plugin'))],
   });
   await expect(service.init()).rejects.toThrow(/Register plugin .+? failed/);
+});
+
+test('enableBy', async () => {
+  const cwd = join(fixtures, 'enableBy');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'appType')),
+      require.resolve(join(cwd, 'foo')),
+      require.resolve(join(cwd, 'bar_enableByConfig')),
+      require.resolve(join(cwd, 'hoo_enableByFunction')),
+    ],
+  });
+  await service.init();
+
+  const c1 = await service.applyPlugins({
+    key: 'count',
+    type: service.ApplyPluginsType.add,
+  });
+  expect(c1).toEqual(['foo']);
+
+  // 加上配置开启
+  service.userConfig = {
+    bar: {},
+  };
+  const c2 = await service.applyPlugins({
+    key: 'count',
+    type: service.ApplyPluginsType.add,
+  });
+  expect(c2).toEqual(['foo', 'bar']);
+
+  // 再加上自定义开启
+  service.config = {
+    appType: 'console',
+  };
+  const c3 = await service.applyPlugins({
+    key: 'count',
+    type: service.ApplyPluginsType.add,
+  });
+  expect(c3).toEqual(['foo', 'bar', 'hoo']);
 });

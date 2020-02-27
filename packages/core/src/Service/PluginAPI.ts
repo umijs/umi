@@ -3,7 +3,7 @@ import * as utils from '@umijs/utils';
 import Logger from '../Logger/Logger';
 import Service from './Service';
 import { isValidPlugin, pathToObj } from './utils/pluginUtils';
-import { PluginType, ServiceStage } from './enums';
+import { EnableBy, PluginType, ServiceStage } from './enums';
 import { ICommand, IHook, IPlugin, IPluginConfig, IPreset } from './types';
 import Html from '../Html/Html';
 
@@ -35,7 +35,13 @@ export default class PluginAPI {
     id,
     key,
     config,
-  }: { id?: string; key?: string; config?: IPluginConfig } = {}) {
+    enableBy,
+  }: {
+    id?: string;
+    key?: string;
+    config?: IPluginConfig;
+    enableBy?: EnableBy;
+  } = {}) {
     const { plugins } = this.service;
     // this.id and this.key is generated automatically
     // so we need to diff first
@@ -59,6 +65,8 @@ export default class PluginAPI {
     if (config) {
       plugins[this.id].config = config;
     }
+
+    plugins[this.id].enableBy = enableBy || EnableBy.register;
   }
 
   register(hook: IHook) {

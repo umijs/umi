@@ -10,7 +10,7 @@ title: 插件 API
 
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
-注册阶段执行，用于描述插件或插件集的 id、key 和配置信息等。
+注册阶段执行，用于描述插件或插件集的 id、key、配置信息、启用方式等。
 
 e.g.
 
@@ -24,6 +24,7 @@ api.describe({
     },
     onChange: api.ConfigChangeType.regenerateTmpFiles,
   },
+  enableBy: api.EnableBy.config,
 });
 ```
 
@@ -32,6 +33,7 @@ api.describe({
 - `config.default` 为配置的默认值，用户没有配置时取这个
 - `config.schema` 用于声明配置的类型，基于 [joi](https://hapi.dev/family/joi/)，**如果你希望用户进行配置，这个是必须的**，否则用户的配置无效
 - `config.onChange` 是 dev 阶段配置被修改后的处理机制，默认会重启 dev 进程，也可以修改为 `api.ConfigChangeType.regenerateTmpFiles` 只重新生成临时文件，还可以通过函数的格式自定义
+- `enableBy` 为启用方式，默认是注册启用，可更改为 `api.EnableBy.config`，还可以用自定义函数的方式决定其启用时机（动态生效）
 
 ### api.register({ key: string, fn: Function, pluginId?: string, before?: string, stage?: number })
 

@@ -1,5 +1,6 @@
 import joi from '@hapi/joi';
 import { yargs } from '@umijs/utils';
+import { EnableBy } from './enums';
 
 export type IServicePathKeys =
   | 'cwd'
@@ -33,6 +34,7 @@ export interface IPlugin {
 
   config?: IPluginConfig;
   isPreset?: boolean;
+  enableBy?: EnableBy | Function;
 }
 
 export interface IPluginConfig {

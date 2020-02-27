@@ -10,6 +10,7 @@ import loadDotEnv from './utils/loadDotEnv';
 import PluginAPI from './PluginAPI';
 import {
   ApplyPluginsType,
+  EnableBy,
   PluginType,
   ServiceStage,
   ConfigChangeType,
@@ -84,6 +85,7 @@ export default class Service extends EventEmitter {
   } = {};
   env: string | undefined;
   ApplyPluginsType = ApplyPluginsType;
+  EnableBy = EnableBy;
   ConfigChangeType = ConfigChangeType;
   ServiceStage = ServiceStage;
   args: any;
@@ -175,18 +177,18 @@ export default class Service extends EventEmitter {
     // skipPluginIds include two parts:
     // 1. api.skipPlugins()
     // 2. user config with the `false` value
-    Object.keys(this.hooksByPluginId).forEach(pluginId => {
-      const { key } = this.plugins[pluginId];
-      if (this.getPluginOptsWithKey(key) === false) {
-        this.skipPluginIds.add(pluginId);
-      }
-    });
+    // Object.keys(this.hooksByPluginId).forEach(pluginId => {
+    //   const { key } = this.plugins[pluginId];
+    //   if (this.getPluginOptsWithKey(key) === false) {
+    //     this.skipPluginIds.add(pluginId);
+    //   }
+    // });
 
     // delete hooks from this.hooksByPluginId with this.skipPluginIds
-    for (const pluginId of this.skipPluginIds) {
-      if (this.hooksByPluginId[pluginId]) delete this.hooksByPluginId[pluginId];
-      delete this.plugins[pluginId];
-    }
+    // for (const pluginId of this.skipPluginIds) {
+    //   if (this.hooksByPluginId[pluginId]) delete this.hooksByPluginId[pluginId];
+    //   delete this.plugins[pluginId];
+    // }
 
     // hooksByPluginId -> hooks
     // hooks is mapped with hook key, prepared for applyPlugins()
@@ -277,6 +279,7 @@ export default class Service extends EventEmitter {
           [
             'applyPlugins',
             'ApplyPluginsType',
+            'EnableBy',
             'ConfigChangeType',
             'babelRegister',
             'stage',
@@ -383,6 +386,28 @@ ${name} from ${plugin.path} register failed.`);
     this.plugins[plugin.id] = plugin;
   }
 
+  isHookEnable(hook: IHook) {
+    // api.skipPlugins() 的插件
+    if (this.skipPluginIds.has(hook.pluginId!)) return false;
+
+    const { key, enableBy } = this.plugins[hook.pluginId!];
+
+    // 手动设置为 false
+    if (this.userConfig[key] === false) return false;
+
+    // 配置开启
+    if (enableBy === this.EnableBy.config && !(key in this.userConfig))
+      return false;
+
+    // 函数自定义开启
+    if (typeof enableBy === 'function') {
+      return enableBy();
+    }
+
+    // 注册开启
+    return true;
+  }
+
   async applyPlugins(opts: {
     key: string;
     type: ApplyPluginsType;
@@ -400,6 +425,9 @@ ${name} from ${plugin.path} register failed.`);
         }
         const tAdd = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
+          if (!this.isHookEnable(hook)) {
+            continue;
+          }
           tAdd.tapPromise(
             {
               name: hook.pluginId!,
@@ -417,6 +445,9 @@ ${name} from ${plugin.path} register failed.`);
       case ApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
+          if (!this.isHookEnable(hook)) {
+            continue;
+          }
           tModify.tapPromise(
             {
               name: hook.pluginId!,
@@ -433,6 +464,9 @@ ${name} from ${plugin.path} register failed.`);
       case ApplyPluginsType.event:
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
+          if (!this.isHookEnable(hook)) {
+            continue;
+          }
           tEvent.tapPromise(
             {
               name: hook.pluginId!,
