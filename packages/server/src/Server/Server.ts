@@ -2,9 +2,15 @@
 import { Logger } from '@umijs/core';
 import { lodash, portfinder, PartialProps, semver } from '@umijs/utils';
 import express, { Express, RequestHandler } from 'express';
-import HttpProxyMiddleware from 'http-proxy-middleware';
-import http from 'http';
+import {
+  createProxyMiddleware,
+  Options as ProxyOptions,
+  RequestHandler as ProxyRequestHandler,
+  Filter as ProxyFilter,
+} from 'http-proxy-middleware';
+import http, { ServerResponse } from 'http';
 import { ServerOptions } from 'spdy';
+import * as url from 'url';
 import https from 'https';
 import compress, { CompressionOptions } from 'compression';
 import sockjs, { Connection, Server as SocketServer } from 'sockjs';
@@ -12,9 +18,9 @@ import { getCredentials } from './utils';
 
 const logger = new Logger('@umijs/server');
 
-interface IServerProxyConfigItem extends HttpProxyMiddleware.Config {
+interface IServerProxyConfigItem extends ProxyOptions {
   path?: string | string[];
-  context?: string | string[] | HttpProxyMiddleware.Filter;
+  context?: string | string[] | ProxyFilter;
   bypass?: (
     req: Express.Request,
     res: Express.Response,
@@ -87,7 +93,7 @@ class Server {
   listeninspdygApp: http.Server;
   sockets: Connection[] = [];
   // Proxy sockets
-  socketProxies: HttpProxyMiddleware.Proxy[] = [];
+  socketProxies: ProxyRequestHandler[] = [];
 
   constructor(opts: IServerOpts) {
     this.opts = {
@@ -233,11 +239,14 @@ class Server {
       // It is possible to use the `bypass` method without a `target`.
       // However, the proxy middleware has no use in this case, and will fail to instantiate.
       if (proxyConfig.target) {
-        return HttpProxyMiddleware(context!, {
+        return createProxyMiddleware(context!, {
           ...proxyConfig,
-          onProxyRes(proxyRes, req) {
-            const realUrl =
-              new URL(req.url || '', proxyConfig.target)?.href || '';
+          onProxyRes(proxyRes: any, req, res) {
+            const target =
+              typeof proxyConfig.target === 'object'
+                ? url.format(proxyConfig.target)
+                : proxyConfig.target;
+            const realUrl = new URL(req.url || '', target)?.href || '';
             proxyRes.headers['x-real-url'] = realUrl;
           },
         });
@@ -247,7 +256,7 @@ class Server {
     };
 
     this.opts.proxy.forEach(proxyConfigOrCallback => {
-      let proxyMiddleware: HttpProxyMiddleware.Proxy | undefined;
+      let proxyMiddleware: ProxyRequestHandler | undefined;
 
       let proxyConfig =
         typeof proxyConfigOrCallback === 'function'
