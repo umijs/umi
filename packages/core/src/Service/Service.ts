@@ -396,8 +396,9 @@ ${name} from ${plugin.path} register failed.`);
     if (this.userConfig[key] === false) return false;
 
     // 配置开启
-    if (enableBy === this.EnableBy.config && !(key in this.userConfig))
+    if (enableBy === this.EnableBy.config && !(key in this.userConfig)) {
       return false;
+    }
 
     // 函数自定义开启
     if (typeof enableBy === 'function') {

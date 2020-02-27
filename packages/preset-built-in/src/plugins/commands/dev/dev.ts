@@ -78,6 +78,8 @@ export default (api: IApi) => {
               if (reload) {
                 api.restartServer();
               } else {
+                api.service.userConfig = api.service.configInstance.getUserConfig();
+
                 // TODO: simplify, 和 Service 里的逻辑重复了
                 // 需要 Service 露出方法
                 const defaultConfig = await api.applyPlugins({
