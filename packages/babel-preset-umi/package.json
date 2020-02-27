@@ -1,6 +1,6 @@
 {
   "name": "@umijs/babel-preset-umi",
-  "version": "3.0.0-beta.30",
+  "version": "3.0.0-beta.31",
   "description": "@umijs/babel-preset-umi",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -41,7 +41,7 @@
     "@babel/preset-typescript": "7.8.3",
     "@babel/runtime": "7.8.4",
     "@svgr/webpack": "4.3.3",
-    "@umijs/babel-plugin-auto-css-modules": "3.0.0-beta.30",
+    "@umijs/babel-plugin-auto-css-modules": "3.0.0-beta.31",
     "babel-plugin-dynamic-import-node": "2.3.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-named-asset-import": "0.3.6",
