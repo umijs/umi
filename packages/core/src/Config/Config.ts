@@ -90,6 +90,8 @@ export default class Config {
       if (!config.schema) return;
 
       const value = getUserConfigWithKey({ key, userConfig });
+      // 不校验 false 的值，此时已禁用插件
+      if (value === false) return;
 
       // do validate
       const schema = config.schema(joi);
