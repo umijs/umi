@@ -75,6 +75,21 @@ test('config routes', async () => {
   ]);
 });
 
+test('config routes', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {
+        routes: [{ path: '/foo', routes: [{ path: 'bar' }] }, { path: 'bar' }],
+      },
+      root: '/tmp',
+    }),
+  ).toEqual([
+    { path: '/foo', routes: [{ path: '/foo/bar', exact: true }] },
+    { path: '/bar', exact: true },
+  ]);
+});
+
 test('conventional normal', async () => {
   const route = new Route();
   expect(
