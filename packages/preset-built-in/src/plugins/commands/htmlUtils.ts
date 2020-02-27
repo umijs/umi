@@ -137,7 +137,8 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
           key: 'addHTMLHeadScripts',
           initialState: [
             // routerBase 只在部署路径不固定时才会用到，exportStatic.dynamicRoot
-            api.config.exportStatic?.dynamicRoot && {
+            // UPDATE: 内部 render 会依赖 routerBase，先始终生成
+            /* api.config.exportStatic?.dynamicRoot && */ {
               content: `window.routerBase = ${routerBaseStr};`,
             },
             // html 里的 publicPath
