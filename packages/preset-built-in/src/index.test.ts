@@ -91,7 +91,7 @@ test('html', async () => {
   expect(
     removeSpace(
       $('head script')
-        .eq(2)
+        .eq(3)
         .html(),
     ),
   ).toContain(`console.log(3)`);
