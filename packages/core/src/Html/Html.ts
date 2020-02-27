@@ -128,11 +128,6 @@ class Html {
       );
     });
 
-    // title
-    if (config.title && !$('head > title').length) {
-      $('head').append(`<title>${config.title}</title>`);
-    }
-
     // links
     links.forEach(link => {
       $('head').append(

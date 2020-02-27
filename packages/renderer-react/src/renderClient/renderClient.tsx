@@ -1,6 +1,7 @@
 import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
+import { matchRoutes } from 'react-router-config';
 import { IRoute } from '../types';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
@@ -9,6 +10,7 @@ interface IRouterComponentProps {
   plugin: Plugin;
   history: any;
   ssrProps?: object;
+  defaultTitle?: string;
 }
 
 interface IOpts extends IRouterComponentProps {
@@ -20,11 +22,24 @@ function RouterComponent(props: IRouterComponentProps) {
 
   useEffect(() => {
     function routeChangeHandler(location: any, action?: string) {
+      const matchedRoutes = matchRoutes(props.routes, location.pathname);
+
+      // Set title
+      if (typeof document !== 'undefined') {
+        document.title =
+          (matchedRoutes.length &&
+            // @ts-ignore
+            matchedRoutes[matchedRoutes.length - 1].route.title) ||
+          renderRoutesProps.defaultTitle ||
+          '';
+      }
+
       props.plugin.applyPlugins({
         key: 'onRouteChange',
         type: ApplyPluginsType.event,
         args: {
           routes: props.routes,
+          matchedRoutes,
           location,
           action,
         },
@@ -48,6 +63,7 @@ export default function renderClient(opts: IOpts) {
         routes={opts.routes}
         plugin={opts.plugin}
         ssrProps={opts.ssrProps}
+        defaultTitle={opts.defaultTitle}
       />
     ),
   });

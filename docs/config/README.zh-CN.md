@@ -265,7 +265,7 @@ if (false) {
 
 比如以下路由，
 
-```js
+```bash
 /
 /users
 /list
@@ -279,7 +279,7 @@ if (false) {
 
 设置 `exportStatic: {}` 后，输出，
 
-```js
+```bash
 - index.html
 - users/index.html
 - list/index.html
@@ -287,7 +287,7 @@ if (false) {
 
 设置 `exportStatic: { htmlSuffix: true }` 后，输出，
 
-```js
+```bash
 - index.html
 - users.html
 - list.html
@@ -362,7 +362,7 @@ export default {
 
 HTML 中会生成，
 
-```js
+```html
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
 ```
 
@@ -375,7 +375,7 @@ HTML 中会生成，
 
 启用 hash 后，产物通常是这样，
 
-```js
+```bash
 + dist
   - logo.sw892d.png
   - umi.df723s.js
@@ -407,7 +407,7 @@ export default {
 
 会生成 HTML，
 
-```js
+```html
 <head>
   <script>alert(1);</script>
   <script src="https://a.com/b.js"></script>
@@ -427,7 +427,7 @@ export default {
 
 会生成 HTML，
 
-```js
+```html
 <head>
   <script src="/foo.js" defer></script>
   <script charset="utf-8">alert('你好');</script>
@@ -689,7 +689,7 @@ export default {
 
 会生成 HTML，
 
-```js
+```html
 <head>
   <style>body { color: red; }</style>
   <link rel="stylesheet" href="https://a.com/b.css" />
@@ -741,3 +741,38 @@ export default {
   },
 }
 ```
+
+## title
+
+* Type: `string`
+* Default: `''`
+
+配置标题。
+
+比如：
+
+```js
+export default {
+  title: 'hi',
+}
+```
+
+此外，你还可以针对路由配置标题，比如，
+
+```js
+export default {
+  title: 'hi',
+  routes: [
+    { path: '/', title: 'Home' },  
+    { path: '/users', title: 'Users' },  
+    { path: '/foo', },  
+  ],
+}
+```
+
+然后我们访问 `/` 标题是 `Home`，访问 `/users` 标题是 `Users`，访问 `/foo` 标题是默认的 `hi`。
+
+注意：
+
+* 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
+* 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签

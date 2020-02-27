@@ -18,8 +18,6 @@ export function importsToStr(
 
 export default function(api: IApi) {
   const {
-    env,
-    paths,
     utils: { Mustache },
   } = api;
 
@@ -28,6 +26,7 @@ export default function(api: IApi) {
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
+        defaultTitle: api.config.title || '',
         rendererPath: winPath(require.resolve('@umijs/renderer-react')),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
         rootElement: api.config.mountElementId,

@@ -43,12 +43,16 @@ export default {
 比如：
 
 ```js
-// url 为 /one/two 时匹配失败
-{ path: '/one', exact: true }
-
-// url 为 /one/two 时匹配成功
-{ path: '/one' }
-{ path: '/one', exact: false }
+export default {
+  routes: [
+    // url 为 /one/two 时匹配失败
+    { path: '/one', exact: true },
+    
+    // url 为 /one/two 时匹配成功
+    { path: '/one' },
+    { path: '/one', exact: false },
+  ],
+}
 ```
 
 ### routes
@@ -69,13 +73,13 @@ export default {
         { path: '/admin', component: 'admin' },
       ],
     }, 
-  ];
+  ],
 }
 ```
 
 然后在 `src/layouts/index` 中通过 `props.children` 渲染子路由，
 
-```js
+```jsx
 export default (props) => {
   return <div style={{ padding: 20 }}>{ props.children }</div>;
 }
@@ -94,7 +98,7 @@ export default (props) => {
 ```js
 export default {
   routes: [
-    { exact: true, path: '/': redirect: '/list' },
+    { exact: true, path: '/', redirect: '/list' },
     { exact: true, path: '/list', component: 'list' },
   ],
 }
@@ -125,7 +129,7 @@ export default {
 
 然后在 `src/wrappers/auth` 中，
 
-```js
+```jsx
 export default (props) => {
   const { isLogin } = useAuth();
   if (isLogin) {
@@ -137,6 +141,12 @@ export default (props) => {
 ```
 
 这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/users`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+
+### title
+
+* Type: `string`
+
+配置路由的标题。
 
 ## 页面跳转
 
@@ -165,7 +175,7 @@ history.goBack();
 
 比如：
 
-```js
+```jsx
 import { Link } from 'umi';
 
 export default () => (

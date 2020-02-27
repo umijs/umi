@@ -18,6 +18,7 @@ const clientRender = plugin.applyPlugins({
       plugin,
       history: createHistory(),
       rootElement: '{{{ rootElement }}}',
+      defaultTitle: '{{{ defaultTitle }}}',
     });
   },
   args: {},

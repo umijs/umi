@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { createMemoryHistory, Plugin } from '@umijs/runtime';
+import { delay } from '@umijs/utils';
 import renderClient from './renderClient';
 
 test('normal', async () => {
@@ -31,6 +32,7 @@ test('normal', async () => {
     }),
   );
   expect(container.getElementsByTagName('h1')[0].innerHTML).toEqual('foo');
+
   history.push({
     pathname: '/bar',
   });

@@ -67,7 +67,8 @@ test('getContent with opts.metas', async () => {
   expect(content).toContain('<meta foo="bar" />');
 });
 
-test('getContent with config.title', async () => {
+// config.title don't generate <title> tag anymore
+xtest('getContent with config.title', async () => {
   const html = new Html({
     config: {
       title: 'foo',

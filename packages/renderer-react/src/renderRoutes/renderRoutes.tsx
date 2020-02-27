@@ -72,6 +72,7 @@ function render({
 
     const newProps = {
       ...props,
+      ...opts.extraProps,
       route,
     };
     return <Component {...newProps}>{routes}</Component>;

@@ -61,7 +61,7 @@ export function render(oldRender) {
 }
 ```
 
-### onRouteChange({ routes, location, action })
+### onRouteChange({ routes, matchedRoutes, location, action })
 
 在初始加载和路由切换时做一些事情。
 
@@ -70,6 +70,16 @@ export function render(oldRender) {
 ```bash
 export function onRouteChange({ location, routes, action }) {
   bacon(location.pathname);
+}
+```
+
+比如用于设置标题，
+
+```bash
+export function onRouteChange({ matchedRoutes }) {
+  if (matchRoutes.length) {
+    document.title = matchedRoutes[matchRoutes.length - 1].route.title || '';
+  }
 }
 ```
 
