@@ -1,4 +1,5 @@
 ---
+title: UmiJS
 hero:
   title: UmiJS
   desc: 🍙 插件化的企业级前端应用框架。
