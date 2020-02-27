@@ -60,7 +60,11 @@ export default function({ routes, config, cwd }: IOpts) {
         if (isFunctionComponent(value)) return value;
         if (config.dynamicImport) {
           const [component, webpackChunkName, path] = value.split(SEPARATOR);
-          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')})`;
+          let loading = '';
+          if (config.dynamicImport.loading) {
+            loading = `, loading: require('${config.dynamicImport.loading}').default`;
+          }
+          return `dynamic({ loader: () => import(/* webpackChunkName: '${webpackChunkName}' */'${component}')${loading}})`;
         } else {
           return `require('${value}').default`;
         }

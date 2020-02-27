@@ -204,7 +204,9 @@ export interface IConfig extends IConfigCore {
   };
   devServer?: IServerOpts;
   devtool?: string;
-  dynamicImport?: object;
+  dynamicImport?: {
+    loading?: string;
+  };
   exportStatic?: {
     htmlSuffix?: boolean;
     dynamicRoot?: boolean;
@@ -243,6 +245,7 @@ export interface IConfig extends IConfigCore {
   targets?: ITargets;
   terserOptions?: object;
   theme?: object;
+  title?: string;
   [key: string]: any;
 }
 

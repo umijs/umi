@@ -219,7 +219,7 @@ if (false) {
 
 ## dynamicImport
 
-* Type: `boolean`
+* Type: `object`
 * Default: `false`
 
 是否启用按需加载，即是否把构建产物进行拆分，在需要的时候下载额外的 JS 再执行。
@@ -228,7 +228,7 @@ if (false) {
 
 打包后通常是这样的，
 
-```js
+```bash
 + dist
   - umi.js
   - umi.css
@@ -239,7 +239,7 @@ if (false) {
 
 打包后通常是这样，
 
-```js
+```bash
 + dist
   - umi.js
   - umi.css
@@ -249,6 +249,32 @@ if (false) {
 ```
 
 这里的 `p__users_index.js` 是路由组件所在路径 `src/pages/users/index`，其中 `src` 会被忽略，`pages` 被替换为 `p`。
+
+包含以下子配置项，
+
+* loading, 类型为字符串，指向 loading 组件文件
+
+比如：
+
+```js
+export default {
+  dynamicImport: {
+    loading: '@/Loading',
+  },
+}
+```
+
+然后在 src 目录下新建 `Loading.tsx`，
+
+```jsx
+import React from 'react';
+
+export default () => {
+  return <div>加载中...</div>;
+}
+```
+
+构建之后使用低网络模拟就能看到效果。
 
 ## exportStatic
 
@@ -273,7 +299,7 @@ if (false) {
 
 不开启 `exportStatic` 时，输出，
 
-```js
+```bash
 - index.html
 ```
 

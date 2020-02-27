@@ -45,7 +45,6 @@ class Route {
 
   // TODO:
   // 1. 移动 /404 到最后，并处理 component 和 redirect
-  // 2. exportStatic 时同步 / 到 /index.html
   async patchRoutes(routes: IRoute[], opts: IGetRoutesOpts) {
     if (this.opts.onPatchRoutesBefore) {
       await this.opts.onPatchRoutesBefore({

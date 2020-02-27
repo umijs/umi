@@ -5,7 +5,9 @@ export default (api: IApi) => {
     key: 'dynamicImport',
     config: {
       schema(joi) {
-        return joi.object();
+        return joi.object({
+          loading: joi.string(),
+        });
       },
     },
   });
