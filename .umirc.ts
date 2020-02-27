@@ -59,26 +59,26 @@ function getMenus(lang?: string) {
 }
 
 export default {
-  doc: {
-    mode: 'site',
-    title: 'UmiJS',
-    include: ['./docs'],
+  mode: 'site',
+  title: 'UmiJS',
+  resolve: {
+    includes: ['./docs'],
     previewLangs: [],
-    menus: {
-      '/zh-CN/docs': getMenus('zh-CN'),
-      '/docs': getMenus(),
-    },
-    navs: [
-      null,
-      {
-        title: 'v2.x',
-        path: 'https://v2.umijs.org',
-      },
-      {
-        title: 'GitHub',
-        path: 'https://github.com/umijs/umi',
-      },
-    ],
   },
+  menus: {
+    '/zh-CN/docs': getMenus('zh-CN'),
+    '/docs': getMenus(),
+  },
+  navs: [
+    null,
+    {
+      title: 'v2.x',
+      path: 'https://v2.umijs.org',
+    },
+    {
+      title: 'GitHub',
+      path: 'https://github.com/umijs/umi',
+    },
+  ],
   exportStatic: {},
 };
