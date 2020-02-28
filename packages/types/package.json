@@ -1,6 +1,6 @@
 {
   "name": "@umijs/types",
-  "version": "3.0.0-beta.32",
+  "version": "3.0.0-beta.33",
   "description": "@umijs/types",
   "main": "lib/index.js",
   "types": "index",
@@ -28,10 +28,10 @@
     "@types/cheerio": "0.22.16",
     "@types/express": "4.17.2",
     "@types/webpack": "4.41.4",
-    "@umijs/babel-preset-umi": "3.0.0-beta.32",
-    "@umijs/core": "3.0.0-beta.32",
-    "@umijs/server": "3.0.0-beta.32",
-    "@umijs/utils": "3.0.0-beta.32",
+    "@umijs/babel-preset-umi": "3.0.0-beta.33",
+    "@umijs/core": "3.0.0-beta.33",
+    "@umijs/server": "3.0.0-beta.33",
+    "@umijs/utils": "3.0.0-beta.33",
     "webpack-chain": "6.4.0"
   }
 }
