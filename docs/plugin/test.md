@@ -1,3 +1,8 @@
+---
+title: 插件测试
+translateHelp: true
+---
+
 # 插件测试
 
 ## 为什么要测试？
