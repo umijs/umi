@@ -13,10 +13,13 @@ export default function(api: IApi) {
     config: {
       default: { type: 'browser' },
       schema(joi) {
-        const type = joi.string().allow('browser', 'hash', 'memory');
+        const type = joi
+          .string()
+          .valid('browser', 'hash', 'memory')
+          .required();
         return joi.object({
           type,
-          options: joi.object().optional(),
+          options: joi.object(),
         });
       },
       onChange: api.ConfigChangeType.regenerateTmpFiles,

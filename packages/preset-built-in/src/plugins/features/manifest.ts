@@ -5,7 +5,11 @@ export default (api: IApi) => {
     key: 'manifest',
     config: {
       schema(joi) {
-        return joi.object();
+        return joi.object({
+          fileName: joi.string(),
+          publicPath: joi.string(),
+          basePath: joi.string(),
+        });
       },
     },
   });

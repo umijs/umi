@@ -6,7 +6,10 @@ export default (api: IApi) => {
     config: {
       default: 'dist',
       schema(joi) {
-        return joi.string().allow('');
+        return joi
+          .string()
+          .not('src', 'public', 'pages', 'mock', 'config')
+          .allow('');
       },
     },
   });

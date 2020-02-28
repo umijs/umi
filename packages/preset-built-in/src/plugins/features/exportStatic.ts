@@ -6,8 +6,8 @@ export default (api: IApi) => {
     config: {
       schema(joi) {
         return joi.object({
-          htmlSuffix: joi.boolean().optional(),
-          dynamicRoot: joi.boolean().optional(),
+          htmlSuffix: joi.boolean(),
+          dynamicRoot: joi.boolean(),
         });
       },
     },

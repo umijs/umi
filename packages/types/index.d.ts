@@ -190,6 +190,12 @@ export interface IApi extends PluginAPI {
 
 export { IRoute };
 
+interface IManifest {
+  fileName: string;
+  publicPath: string;
+  basePath: string;
+}
+
 export interface IConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
@@ -206,7 +212,7 @@ export interface IConfig extends IConfigCore {
     [key: string]: any;
   };
   devServer?: IServerOpts;
-  devtool?: string;
+  devtool?: webpack.Options.Devtool;
   dynamicImport?: {
     loading?: string;
   };
@@ -229,7 +235,7 @@ export interface IConfig extends IConfigCore {
   inlineLimit?: number;
   lessLoader?: object;
   links?: Partial<HTMLLinkElement>[];
-  manifest?: object;
+  manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
   mock?: {
     exclude?: string[];

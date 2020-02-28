@@ -5,7 +5,8 @@ export default (api: IApi) => {
     key: 'externals',
     config: {
       schema(joi) {
-        return joi.object();
+        // https://webpack.js.org/configuration/externals/#externals
+        return joi.alternatives(joi.object(), joi.string(), joi.function());
       },
     },
   });

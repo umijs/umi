@@ -40,7 +40,7 @@ export default class PluginAPI {
     id?: string;
     key?: string;
     config?: IPluginConfig;
-    enableBy?: EnableBy;
+    enableBy?: EnableBy | (() => boolean);
   } = {}) {
     const { plugins } = this.service;
     // this.id and this.key is generated automatically
