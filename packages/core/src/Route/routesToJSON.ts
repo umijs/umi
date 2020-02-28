@@ -82,6 +82,9 @@ export default function({ routes, config, cwd }: IOpts) {
     .replace(/\"component\": (\"(.+?)\")/g, (global, m1, m2) => {
       return `"component": ${m2.replace(/\^/g, '"')}`;
     })
+    .replace(/\"wrappers\": (\"(.+?)\")/g, (global, m1, m2) => {
+      return `"wrappers": ${m2.replace(/\^/g, '"')}`;
+    })
     .replace(/\\r\\n/g, '\r\n')
     .replace(/\\n/g, '\r\n');
 }

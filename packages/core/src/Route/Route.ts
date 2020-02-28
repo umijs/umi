@@ -100,7 +100,11 @@ class Route {
     // resolve wrappers path
     if (route.wrappers) {
       route.wrappers = route.wrappers.map(wrapper => {
-        return winPath(join(opts.root, wrapper));
+        if (wrapper.startsWith('@/') || wrapper.startsWith('/')) {
+          return wrapper;
+        } else {
+          return winPath(join(opts.root, wrapper));
+        }
       });
     }
 
