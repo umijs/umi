@@ -1,7 +1,4 @@
 
-.normal {
-}
-
 .title {
   background: {{{ color }}};
 }
