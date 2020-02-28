@@ -1,5 +1,6 @@
 ---
 title: 插件 API
+translateHelp: true
 ---
 
 # 插件 API
