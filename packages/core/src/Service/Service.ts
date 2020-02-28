@@ -291,6 +291,8 @@ export default class Service extends EventEmitter {
             'config',
             'env',
             'args',
+            'hasPlugins',
+            'hasPresets',
           ].includes(prop)
         ) {
           return typeof this[prop] === 'function'
@@ -386,11 +388,11 @@ ${name} from ${plugin.path} register failed.`);
     this.plugins[plugin.id] = plugin;
   }
 
-  isHookEnable(hook: IHook) {
+  isPluginEnable(pluginId: string) {
     // api.skipPlugins() 的插件
-    if (this.skipPluginIds.has(hook.pluginId!)) return false;
+    if (this.skipPluginIds.has(pluginId)) return false;
 
-    const { key, enableBy } = this.plugins[hook.pluginId!];
+    const { key, enableBy } = this.plugins[pluginId];
 
     // 手动设置为 false
     if (this.userConfig[key] === false) return false;
@@ -407,6 +409,20 @@ ${name} from ${plugin.path} register failed.`);
 
     // 注册开启
     return true;
+  }
+
+  hasPlugins(pluginIds: string[]) {
+    return pluginIds.every(pluginId => {
+      const plugin = this.plugins[pluginId];
+      return plugin && !plugin.isPreset && this.isPluginEnable(pluginId);
+    });
+  }
+
+  hasPresets(presetIds: string[]) {
+    return presetIds.every(presetId => {
+      const preset = this.plugins[presetId];
+      return preset && preset.isPreset && this.isPluginEnable(presetId);
+    });
   }
 
   async applyPlugins(opts: {
@@ -426,7 +442,7 @@ ${name} from ${plugin.path} register failed.`);
         }
         const tAdd = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          if (!this.isHookEnable(hook)) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
             continue;
           }
           tAdd.tapPromise(
@@ -446,7 +462,7 @@ ${name} from ${plugin.path} register failed.`);
       case ApplyPluginsType.modify:
         const tModify = new AsyncSeriesWaterfallHook(['memo']);
         for (const hook of hooks) {
-          if (!this.isHookEnable(hook)) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
             continue;
           }
           tModify.tapPromise(
@@ -465,7 +481,7 @@ ${name} from ${plugin.path} register failed.`);
       case ApplyPluginsType.event:
         const tEvent = new AsyncSeriesWaterfallHook(['_']);
         for (const hook of hooks) {
-          if (!this.isHookEnable(hook)) {
+          if (!this.isPluginEnable(hook.pluginId!)) {
             continue;
           }
           tEvent.tapPromise(

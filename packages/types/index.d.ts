@@ -88,6 +88,8 @@ export interface IApi extends PluginAPI {
   registerGenerator: { (args: { key: string; Generator: Generator }): void };
   babelRegister: typeof Service.prototype.babelRegister;
   getRoutes: () => Promise<IRoute[]>;
+  hasPlugins: typeof Service.prototype.hasPlugins;
+  hasPresets: typeof Service.prototype.hasPresets;
 
   // methods from dev command
   getPort: IGetter<number>;

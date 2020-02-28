@@ -442,3 +442,34 @@ test('enableBy', async () => {
   });
   expect(c3).toEqual(['foo', 'bar', 'hoo']);
 });
+
+test('hasPlugins and hasPresets', async () => {
+  const cwd = join(fixtures, 'has');
+  const service = new Service({
+    cwd,
+    plugins: [
+      require.resolve(join(cwd, 'foo_plugin')),
+      require.resolve(join(cwd, 'mie_plugin_enableByConfig')),
+    ],
+    presets: [require.resolve(join(cwd, 'bar_preset'))],
+  });
+  await service.init();
+
+  // 区分 preset 和 plugin
+  expect(service.hasPlugins(['foo_id'])).toEqual(true);
+  expect(service.hasPresets(['foo_id'])).toEqual(false);
+  expect(service.hasPresets(['bar_id'])).toEqual(true);
+  expect(service.hasPlugins(['bar_id'])).toEqual(false);
+  expect(service.hasPlugins(['mie_id'])).toEqual(false);
+
+  // 不存在的插件
+  expect(service.hasPlugins(['plugin_dont_exist'])).toEqual(false);
+
+  // 禁用 bar 插件
+  service.userConfig.bar = false;
+  expect(service.hasPresets(['bar_id'])).toEqual(false);
+
+  // 启用配置开启的插件
+  service.userConfig.mie = 1;
+  expect(service.hasPlugins(['mie_id'])).toEqual(true);
+});

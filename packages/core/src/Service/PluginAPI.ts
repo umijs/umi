@@ -181,19 +181,4 @@ export default class PluginAPI {
       this.service.skipPluginIds.add(pluginId);
     });
   }
-
-  hasPlugins(pluginIds: string[]) {
-    return pluginIds.every(pluginId => {
-      return pluginId in this.service.plugins;
-    });
-  }
-
-  hasPresets(presetIds: string[]) {
-    return presetIds.every(presetId => {
-      return (
-        presetId in this.service.plugins &&
-        this.service.plugins[presetId]?.isPreset
-      );
-    });
-  }
 }
