@@ -54,6 +54,7 @@
     "webpack": "4.41.6",
     "webpack-chain": "6.4.0",
     "webpack-dev-middleware": "3.7.2",
+    "fork-ts-checker-webpack-plugin": "4.0.5",
     "webpack-manifest-plugin": "2.2.0",
     "webpackbar": "4.0.0"
   },

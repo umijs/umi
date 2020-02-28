@@ -69,3 +69,11 @@ $ umi dev
 ### UMI\_ENV
 
 指定不同环境各自的配置文件，详见[配置#多环境多份配置](TODO)。
+
+### FORK_TS_CHECKER
+
+默认不开启 TypeScript 类型检查，值为 `1` 时启用。比如：
+
+```bash
+$ FORK_TS_CHECKER=1 umi dev
+```
