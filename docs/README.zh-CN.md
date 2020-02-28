@@ -19,7 +19,7 @@ features:
     desc: 同时支持配置式路由和约定式路由，同时保持功能的完备性，比如动态路由、嵌套路由、权限路由等等。
   - title: 面向未来
     desc: 在满足需求的同时，我们也不会停止对新技术的探索。比如 modern mode、webpack@5、自动化化 external、bundler less 等等。
-  
+
 ---
 
 ## 三分钟上手 Umi
