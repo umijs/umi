@@ -3,6 +3,13 @@ import Service from '../Service/Service';
 
 const fixtures = join(__dirname, 'fixtures');
 
+const { NODE_ENV } = process.env;
+afterEach(() => {
+  // reset UMI_ENV
+  delete process.env.UMI_ENV;
+  process.env.NODE_ENV = NODE_ENV;
+});
+
 test('umirc', async () => {
   const cwd = join(fixtures, 'umirc');
   const service = new Service({
@@ -40,14 +47,40 @@ test('umi-env', async () => {
   const s1 = new Service({
     cwd,
   });
-  expect(s1.userConfig).toEqual({ foo: 1, bar: 1 });
-  const oldUmiEnv = process.env.UMI_ENV;
+  expect(s1.userConfig).toEqual({
+    foo: 1,
+    bar: 1,
+    nest: {
+      foo: {
+        bar: 2,
+      },
+    },
+  });
   process.env.UMI_ENV = 'cloud';
   const s2 = new Service({
     cwd,
   });
-  expect(s2.userConfig).toEqual({ foo: 2, bar: 1 });
-  process.env.UMI_ENV = oldUmiEnv;
+  expect(s2.userConfig).toEqual({
+    foo: 2,
+    bar: 1,
+    nest: {
+      foo: {
+        bar: 123,
+      },
+    },
+  });
+});
+
+test('umi-env-dot-env', async () => {
+  const cwd = join(fixtures, 'umi-env-dot-env');
+  const s1 = new Service({
+    cwd,
+  });
+  expect(s1.userConfig).toEqual({
+    bar: 2,
+    foo: 3,
+    nest: 4,
+  });
 });
 
 test('umi-env throw error if env affix file not exist', async () => {
@@ -58,18 +91,15 @@ test('umi-env throw error if env affix file not exist', async () => {
       cwd,
     });
   }).toThrow(/get user config failed/);
-  process.env.UMI_ENV = '';
 });
 
 test('local', async () => {
   const cwd = join(fixtures, 'local');
-  const oldNodeEnv = process.env.NODE_ENV;
   process.env.NODE_ENV = 'development';
   const service = new Service({
     cwd,
   });
   expect(service.userConfig).toEqual({ foo: 'local', bar: 1 });
-  process.env.NODE_ENV = oldNodeEnv;
 });
 
 test('default config', async () => {

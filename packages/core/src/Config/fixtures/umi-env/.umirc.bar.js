@@ -1,9 +1,9 @@
 
 module.exports = {
-  foo: 2,
+  foo: 3,
   nest: {
     foo: {
-      bar: 123
+      bar: 2
     }
   }
 };

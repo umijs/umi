@@ -104,6 +104,9 @@ export default class Service extends EventEmitter {
     // register babel before config parsing
     this.babelRegister = new BabelRegister();
 
+    // load .env or .local.env
+    this.loadEnv();
+
     // get user config without validation
     this.configInstance = new Config({
       cwd: this.cwd,
@@ -167,9 +170,6 @@ export default class Service extends EventEmitter {
   }
 
   async init() {
-    // load .env or .local.env
-    this.loadEnv();
-
     // we should have the final hooksByPluginId which is added with api.register()
     this.initPresetsAndPlugins();
 

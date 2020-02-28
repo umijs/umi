@@ -71,7 +71,7 @@ export default { c: 'local' };
 
 可以通过环境变量 `UMI_ENV` 区分不同环境来指定配置。
 
-比如，
+举个例子，
 
 ```js
 // .umirc.js
@@ -79,6 +79,27 @@ export default { a: 1, b: 2 };
 
 // .umirc.cloud.js
 export default { b: 'cloud', c: 'cloud' };
+
+// .umirc.local.js
+export default { c: 'local' };
 ```
 
-默认拿到的配置是 `{ a: 1, b: 2 }`；指定 `UMI_ENV=cloud` 后，拿到的配置是 `{ a: 1, b: 'cloud', c: 'cloud' }`。
+不指定 `UMI_ENV` 时，拿到的配置是：
+
+```js
+{
+  a: 1,
+  b: 2,
+  c: 'local',
+}
+```
+
+指定 `UMI_ENV=cloud` 时，拿到的配置是：
+
+```js
+{
+  a: 1,
+  b: 'cloud',
+  c: 'local',
+}
+```
