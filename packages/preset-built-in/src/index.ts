@@ -16,6 +16,7 @@ export default function() {
 
       // bundle configs
       require.resolve('./plugins/features/alias'),
+      require.resolve('./plugins/features/analyze'),
       require.resolve('./plugins/features/autoprefixer'),
       require.resolve('./plugins/features/base'),
       require.resolve('./plugins/features/chainWebpack'),

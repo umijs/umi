@@ -15,5 +15,11 @@ declare namespace NodeJS {
     COMPRESS: null | 'none';
     WATCH: null | 'none';
     SYSTEM_BELL: null | 'none';
+    ANALYZE: string;
+    ANALYZE_SSR: string;
+    ANALYZE_MODE: string;
+    ANALYZE_OPEN: string;
+    ANALYZE_DUMP: string;
+    ANALYZE_LOG_LEVEL: string;
   }
 }

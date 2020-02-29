@@ -8,6 +8,7 @@ import {
   IHTMLTag,
   Service,
 } from '@umijs/core';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
@@ -255,6 +256,7 @@ export interface IConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
+  analyze?: BundleAnalyzerPlugin.Options;
   [key: string]: any;
 }
 
