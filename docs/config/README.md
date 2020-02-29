@@ -3,6 +3,7 @@ nav:
   title: Config
   order: 2
 translateHelp: true
+toc: menu
 ---
 
 # Config
