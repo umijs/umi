@@ -1,8 +1,14 @@
 import { IApi } from '@umijs/types';
-import { Bundler as DefaultBundler, ConfigType } from '@umijs/bundler-webpack';
-import { join } from 'path';
-import { existsSync, readdirSync } from 'fs';
-import { rimraf } from '@umijs/utils';
+import {
+  Bundler as DefaultBundler,
+  ConfigType,
+  webpack,
+} from '@umijs/bundler-webpack';
+import { join, resolve } from 'path';
+import { existsSync, readdirSync, readFileSync } from 'fs';
+import { rimraf, chalk } from '@umijs/utils';
+import filesize from 'filesize';
+import zlib from 'zlib';
 
 type Env = 'development' | 'production';
 
@@ -121,4 +127,114 @@ export function cleanTmpPathExceptCache({
     if (file === `.cache`) return;
     rimraf.sync(join(absTmpPath, file));
   });
+}
+
+// These sizes are pretty large. We'll warn for bundles exceeding them.
+const WARN_AFTER_BUNDLE_GZIP_SIZE = 1.8 * 1024 * 1024;
+const WARN_AFTER_CHUNK_GZIP_SIZE = 1 * 1024 * 1024;
+
+export function printFileSizes(stats: webpack.Stats, dir: string) {
+  const ui = require('cliui')({ width: 80 });
+  const json = stats.toJson({
+    hash: false,
+    modules: false,
+    chunks: false,
+  });
+
+  const assets = json.assets
+    ? json.assets
+    : json?.children?.reduce((acc, child) => acc.concat(child?.assets), []);
+
+  const seenNames = new Map();
+  const isJS = (val: string) => /\.js$/.test(val);
+  const isCSS = (val: string) => /\.css$/.test(val);
+
+  const orderedAssets = assets
+    ?.map(a => {
+      a.name = a.name.split('?')[0];
+      // These sizes are pretty large
+      const isMainBundle = a.name.indexOf('umi.') === 0;
+      const maxRecommendedSize = isMainBundle
+        ? WARN_AFTER_BUNDLE_GZIP_SIZE
+        : WARN_AFTER_CHUNK_GZIP_SIZE;
+      const isLarge = maxRecommendedSize && a.size > maxRecommendedSize;
+      return {
+        ...a,
+        suggested: isLarge && isJS(a.name),
+      };
+    })
+    .filter(a => {
+      if (seenNames.has(a.name)) {
+        return false;
+      }
+      seenNames.set(a.name, true);
+      return isJS(a.name) || isCSS(a.name);
+    })
+    .sort((a, b) => {
+      if (isJS(a.name) && isCSS(b.name)) return -1;
+      if (isCSS(a.name) && isJS(b.name)) return 1;
+      return b.size - a.size;
+    });
+
+  function getGzippedSize(asset: any) {
+    const filepath = resolve(join(dir, asset.name));
+    if (existsSync(filepath)) {
+      const buffer = readFileSync(filepath);
+      return filesize(zlib.gzipSync(buffer).length);
+    }
+    return filesize(0);
+  }
+
+  function makeRow(a: string, b: string, c: string): string {
+    return ` ${a}\t      ${b}\t ${c}`;
+  }
+
+  ui.div(
+    makeRow(
+      chalk.cyan.bold(`File`),
+      chalk.cyan.bold(`Size`),
+      chalk.cyan.bold(`Gzipped`),
+    ) +
+      `\n\n` +
+      orderedAssets
+        ?.map(asset =>
+          makeRow(
+            /js$/.test(asset.name)
+              ? asset.suggested
+                ? // warning for large bundle
+                  chalk.yellow(join(dir, asset.name))
+                : chalk.green(join(dir, asset.name))
+              : chalk.blue(join(dir, asset.name)),
+            filesize(asset.size),
+            getGzippedSize(asset),
+          ),
+        )
+        .join(`\n`),
+  );
+
+  console.log(
+    `${ui.toString()}\n\n  ${chalk.gray(
+      `Images and other types of assets omitted.`,
+    )}\n`,
+  );
+
+  if (orderedAssets?.some(asset => asset.suggested)) {
+    // We'll warn for bundles exceeding them.
+    // TODO: use umi docs
+    console.log();
+    console.log(
+      chalk.yellow('The bundle size is significantly larger than recommended.'),
+    );
+    console.log(
+      chalk.yellow(
+        'Consider reducing it with code splitting: https://umijs.org/guide/code_splitting',
+      ),
+    );
+    console.log(
+      chalk.yellow(
+        'You can also analyze the project dependencies using ANALYZE=1',
+      ),
+    );
+    console.log();
+  }
 }

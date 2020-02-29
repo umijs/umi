@@ -141,4 +141,4 @@ class Bundler {
   }
 }
 
-export { Bundler, ConfigType };
+export { Bundler, ConfigType, defaultWebpack as webpack };

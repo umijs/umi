@@ -1,7 +1,12 @@
 import { IApi } from '@umijs/types';
+import { relative } from 'path';
 import { existsSync } from 'fs';
 import { Logger } from '@umijs/core';
-import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
+import {
+  cleanTmpPathExceptCache,
+  getBundleAndConfigs,
+  printFileSizes,
+} from '../buildDevUtils';
 import generateFiles from '../generateFiles';
 
 const logger = new Logger('umi:preset-build-in');
@@ -44,7 +49,7 @@ export default function(api: IApi) {
         if (process.env.RM_TMPDIR !== 'none') {
           rimraf.sync(paths.absTmpPath!);
         }
-        console.log(chalk.green(`Build success.`));
+        printFileSizes(stats, relative(api.cwd, paths.absOutputPath || ''));
         await api.applyPlugins({
           key: 'onBuildComplete',
           type: api.ApplyPluginsType.event,
