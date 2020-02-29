@@ -829,6 +829,7 @@ export default {
 ```
 
 > 建议经常在构建完后使用，更有利于应用优化。
+
 ## forkTSCheker
 
 * Type: `object`
