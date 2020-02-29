@@ -3235,10 +3235,10 @@
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
 
-"@umijs/preset-dumi@^1.0.0-beta.10":
-  version "1.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.0.0-beta.10.tgz#e092b7bf29c52387f552a76cf653db70a63867ea"
-  integrity sha512-IUlOtQQgUaYXAr4lBXY0yjr22GHvI3FrmdRdbL5pGq29x6+BQbKagS5rmJxK4nT/RmvbTVNZkqb3xuNO/YPR0A==
+"@umijs/preset-dumi@^1.0.0-beta.11":
+  version "1.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.0.0-beta.11.tgz#ae62f0f89e9a10722bcf4156b4b5308aa7b296a6"
+  integrity sha512-oNJ7KS6CikZU5ynxEn8Yj+QL1HQS9Dw9FAjGyx8qOXd8UG5+E0lAmAOrPAWuNR616DRv1kUAD/VXhFQDL/5gzA==
   dependencies:
     "@babel/core" "^7.7.2"
     "@babel/generator" "^7.7.2"
