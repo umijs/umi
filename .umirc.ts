@@ -15,6 +15,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-dva',
           '/plugins/plugin-initial-state',
           '/plugins/plugin-layout',
+          '/plugins/plugin-locale',
           '/plugins/plugin-model',
           '/plugins/plugin-qiankun',
           '/plugins/plugin-request',

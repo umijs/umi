@@ -16,5 +16,6 @@ translateHelp: true
 * [plugin-dva](./plugin-dva)，整合 dva
 * [plugin-initial-state](./plugin-initial-state)，初始化数据管理
 * [plugin-layout](./plugin-layout)，配置启用 ant-design-pro 的布局
+* [plugin-locale](./plugin-locale)，国际化能力
 * [plugin-model](./plugin-model)，基于 hooks 的简易数据流
 * [plugin-request](./plugin-request)，基于 umi-request 和 umi-hooks 的请求方案
