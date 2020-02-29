@@ -273,19 +273,6 @@ export default async function getConfig(
     webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
   }
 
-  if (process.env.FORK_TS_CHECKER) {
-    webpackConfig
-      .plugin('fork-ts-checker')
-      .use(require('fork-ts-checker-webpack-plugin'), [
-        {
-          formatter: 'codeframe',
-          // parallel
-          async: false,
-          checkSyntacticErrors: true,
-        },
-      ]);
-  }
-
   // copy
   webpackConfig.plugin('copy').use(require.resolve('copy-webpack-plugin'), [
     [

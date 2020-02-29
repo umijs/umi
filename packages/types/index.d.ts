@@ -257,6 +257,7 @@ export interface IConfig extends IConfigCore {
   theme?: object;
   title?: string;
   analyze?: BundleAnalyzerPlugin.Options;
+  forkTSCheker?: object;
   [key: string]: any;
 }
 

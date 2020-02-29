@@ -29,6 +29,7 @@
     "@types/react-router-config": "5.0.1",
     "@umijs/babel-preset-umi": "3.0.0-beta.33",
     "@umijs/bundler-webpack": "3.0.0-beta.33",
+    "fork-ts-checker-webpack-plugin": "4.0.5",
     "@umijs/renderer-react": "3.0.0-beta.33",
     "@umijs/runtime": "3.0.0-beta.33",
     "@umijs/server": "3.0.0-beta.33",
