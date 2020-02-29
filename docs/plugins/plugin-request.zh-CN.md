@@ -1,13 +1,13 @@
----
-title: 插件 @umijs/plugin-request
-translateHelp: true
----
 
 # @umijs/plugin-request
 
-`@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 @umijs/[hooks](https://github.com/umijs/umi-hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
+`@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 [@umijs/hooks](https://github.com/umijs/umi-hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
-## 约定
+## 启用方式
+
+默认启用。
+
+## 介绍
 
 错误处理是所有项目都会遇到的问题，我们约定了一个接口格式规范如下：
 
@@ -61,7 +61,7 @@ export default {
 在 `src/app.ts` 中你可以配置一些运行时的配置项来实现部分自定义需求。示例配置如下：
 
 ```typescript
-import { RequestConfig } from '@alipay/bigfish';
+import { RequestConfig } from 'umi';
 
 export const request: RequestConfig = {
   timeout: 1000,
@@ -79,7 +79,7 @@ export const request: RequestConfig = {
 示例配置如下：
 
 ```typescript
-import { RequestConfig } from '@alipay/bigfish';
+import { RequestConfig } from 'umi';
 
 export const request: RequestConfig = {
   errorConfig: {
@@ -137,7 +137,7 @@ export default () => {
     }, {
       // request options
     });
-  })
+  });
   if (loading) {
     return <PageLoading />;
   }

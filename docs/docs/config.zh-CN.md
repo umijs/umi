@@ -1,6 +1,4 @@
----
-title: 配置
----
+# 配置
 
 Umi 在 `.umirc.ts` 或 `config/config.ts` 中配置项目和插件，支持 es6。一份常见的配置如下，
 

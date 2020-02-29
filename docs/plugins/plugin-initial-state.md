@@ -1,11 +1,17 @@
 ---
-title: 插件 @umijs/plugin-initial-state
 translateHelp: true
 ---
 
 # @umijs/plugin-initial-state
 
-## 约定
+
+约定一个地方生产和消费初始化数据。
+
+## 启用方式
+
+有 `src/app.ts` 并且导出 `getInitialState` 方法时启用。
+
+## 介绍
 
 本插件不可直接使用，必须搭配 `@umijs/plugin-model` 一起使用。
 

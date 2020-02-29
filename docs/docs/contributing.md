@@ -1,7 +1,8 @@
 ---
-title: 贡献
+translateHelp: true
 ---
 
-## 如何贡献
+# Contributing
 
-## 如何创建 umi 插件
+
+TODO
