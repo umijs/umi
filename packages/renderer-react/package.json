@@ -1,6 +1,6 @@
 {
   "name": "@umijs/renderer-react",
-  "version": "3.0.0-beta.33",
+  "version": "3.0.0-beta.34",
   "description": "@umijs/renderer-react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.4",
     "@types/react-router-config": "^5.0.1",
-    "@umijs/runtime": "3.0.0-beta.33",
+    "@umijs/runtime": "3.0.0-beta.34",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router-config": "5.1.1"
