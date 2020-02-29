@@ -4,6 +4,18 @@ translateHelp: true
 
 # Env Variables
 
+
+## 设置环境变量
+
+### 执行命令时添加
+
+比如，
+
+```bash
+# OS X, Linux
+$ PORT=3000 umi dev
+
+# Windows (cmd.exe)
 $ set PORT=3000&&umi dev
 ```
 

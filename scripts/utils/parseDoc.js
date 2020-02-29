@@ -17,7 +17,7 @@ module.exports = function(docStr) {
     }
 
     // title
-    if (line.startsWith('# ')) {
+    if (line.startsWith('# ') && titleIndex === null) {
       title = line.replace('# ', '');
       titleIndex = i;
     }

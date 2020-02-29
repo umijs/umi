@@ -1,10 +1,9 @@
 ---
+title: 介绍
 nav:
   title: 文档
   order: 1
 ---
-
-# 介绍
 
 <img src="https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png" width="120" />
 

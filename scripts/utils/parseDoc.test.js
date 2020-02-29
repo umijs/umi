@@ -64,3 +64,19 @@ mie
     body: ['bar', 'mie'],
   });
 });
+
+test('multiple h1 like tag', () => {
+  const ret = parseDoc(`
+# foo
+
+bar
+# g
+mie
+  `);
+  expect(ret).toEqual({
+    hasYamlConfig: false,
+    title: 'foo',
+    yamlConfig: [],
+    body: ['', 'bar', '# g', 'mie'],
+  });
+});

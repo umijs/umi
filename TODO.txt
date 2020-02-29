@@ -2,68 +2,28 @@
 
 umi-next:
 	server:
-		- Compress @ycjcl868 @done
-		- HTTPS @ycjcl868 @done
-		- headers @ycjcl868 @done
 		- webpack-dev-server 功能查漏补缺 @ycjcl868
 	core:
-		- logger @ycjcl868 @done
-		- .env 环境变量加载、环境变量统一 Enum @ycjcl868 @done
-		- 插件里可感知命令行参数，通过 api.args @done @sorrycc
 		- logger 优化
 			比如插件层如何打日志？如何过滤日志？
-		- plugin 没走 babelRegister @ycjcl868 @done
 		- 路由相关接口 api.getRouteComponents
 			考虑不提供，通过 utils 方法处理。
-		- api.getRoutes @done
-		- api.modifyRoutes + api.onPatchRoute @done
-		- api.modifyDefaultConfig + api.modifyConfig @done
-		- api.onBuildSuccess + api.onBuildFail -> onBuildComplete @done
-		- api.onExit @done
-		- api.addMiddleware() @done
-		- route 支持 Routes 配置 @done
-			改名为 route.wrappers
-	- api.hasPlugins(pluginIds: string[]) @done
-	- api.hasPresets(presetIds: string[]) @done
 		- 未实现的接口，优先级低
 			api.rebuildTmpFiles()
-			api.modifyHTMLChunks()
-		- api.onDevCompileDone() @done
-		- api.modifyPublicPathStr() @done
-		- 添加 api.chainWebpackConfig，提供 chainWebpack 的配置 @done @sorrycc
-		- umi build ，hash 在 html 中未起效 @bug @done @ycjcl868
-		- dev 时 config 值校验时 Promise 错误未捕获 @done
 	runtime:
-		- 运行时插件 applyPlugin 支持 async @done
 		- umi.dynamic
 	preset-built-in:
 		dev & build:
-			- 支持 global-css、global-js @ycjcl868 @done
-			- 支持 H5 的多页功能 @done
 			- 配置项查漏补缺
-				- autoprefixer @done
-				- base @done
-				- cssnano @done
-				- copy @done
 				- context
-				- exportStatic @done
-				- generateCssModulesTypings
-				- outputPath @done
-				- manifest @done
-				- mock @done
-			- fork-ts-check @done
 		dev:
 			- ts 友好的 mock 方案
 			- mock 支持通过插件扩展，添加目录或文件
 		build:
 			- 支持 watch mode
-			- 支持 webpack 的 dynamic import（config.dynamicImport） @done
-		block:
-			- 迁移 @ycjcl868 @done
 	renderer-react:
 		- 支持 SSR + Prerender @ycjcl868
 	bundler-webpack:
-		- socket 断开重连及客户端提示 @ycjcl868 @done
 		- export declaration 的问题
 		- 验证 tree-shaking 有效性，因为某些链路里用了 require 模块的方式
 		- 验证 const enum 的问题
@@ -90,8 +50,6 @@ umi-next:
 		- umi doctor
 		- 重启机制支持 bundle 重启
 	CHORE:
-		- 完成发布脚本 @done @sorrycc
-		- 改进发布脚本，同步 version 到 root 目录的 package.json，并且把 lerna version 拆了 @sorrycc @done
 		- 改进发布脚本，考虑每个包的 CHANGELOG 问题
 			https://github.com/CookPete/auto-changelog
 		- 改进打包脚本，father 的 typescript 编译出错不应该退出
@@ -101,33 +59,8 @@ umi-next:
 
 plugins:
 	实现插件:
-		- plugin-model @sorrycc @done
-		- plugin-access @done
-		- plugin-request @done
-		- plugin-layout @done
-		- plugin-qiankun @done
 		- plugin-preact
 		- plugin-hd
 		- plugin-dll
-	preset-react:
-		- 实现 preset-react @done
-	plugin-dva:
-		- 按需开启，检测到有 dva 相关 model 后再开启
-		- 支持 page 下的 models 目录
-		- 支持 immer 配置
-	plugin-locale: @ycjcl868
-		- 默认语言无效？ @done
-			需要排查下
 	CHORE:
-		- 发布脚本 @sorrycc
-			支持单独发布某个插件
 		- 完善用例
-
-preset-ui: @ycjcl868
-	- 适配 umi@3 @done
-
-doc:
-	- 梳理目录以及和 bigfish、插件之间的共享共建机制 @done
-
-bigfish:
-	- 确定组织形式 @done
