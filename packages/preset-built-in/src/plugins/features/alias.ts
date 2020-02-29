@@ -16,6 +16,9 @@ export default (api: IApi) => {
         'react-router-dom': dirname(
           require.resolve('react-router-dom/package.json'),
         ),
+        // 替换成带 query 的 history
+        // 由于用了 query-string，会额外引入 7.6K（压缩后，gzip 前），考虑换轻量的实现
+        history: dirname(require.resolve('history-with-query/package.json')),
         '@': paths.absSrcPath,
         '@@': paths.absTmpPath,
       },

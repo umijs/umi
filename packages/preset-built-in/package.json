@@ -41,6 +41,7 @@
     "react-router": "5.1.2",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.1.2",
+    "history-with-query": "4.10.2",
     "umi-webpack-bundle-analyzer": "3.5.0"
   }
 }
