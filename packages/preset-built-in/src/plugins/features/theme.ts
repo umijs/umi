@@ -5,7 +5,7 @@ export default (api: IApi) => {
     key: 'theme',
     config: {
       schema(joi) {
-        return joi.object();
+        return joi.object().pattern(joi.string(), joi.string());
       },
     },
   });
