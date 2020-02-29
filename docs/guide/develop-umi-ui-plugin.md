@@ -58,7 +58,7 @@ The `example` project is the test project. Click on the entry and you will see t
 ::: warning
 Umi UI uses **antd 4.x** for development and external for antd.
 
-Please refer to [antd 4.x documentation](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) when developing plugin UI.
+Please refer to [antd 4.x documentation](https://ant.design/components/form/) when developing plugin UI.
 :::
 
 ```js
