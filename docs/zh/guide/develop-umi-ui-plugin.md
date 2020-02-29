@@ -60,7 +60,7 @@ $ yarn build && yarn start
 ::: warning
 Umi UI 使用 **antd 4.x** 进行开发，并对 antd 进行 `external`。
 
-开发插件 UI 时请参阅 [antd 4.x 文档](https://4-0-prepare--ant-design.netlify.com/components/form-cn/) 进行开发。
+开发插件 UI 时请参阅 [antd 4.x 文档](https://ant.design/components/form-cn/) 进行开发。
 :::
 
 ```js
