@@ -1,7 +1,6 @@
 ---
 nav:
   title: 指南
-translateHelp: true
 ---
 
 # 迁移 antd pro 项目到 umi@3
