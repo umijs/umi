@@ -1,5 +1,5 @@
 {
-  "name": "umi-next",
+  "name": "umi",
   "version": 2,
   "builds": [
     {
@@ -14,5 +14,5 @@
   "github": {
     "silent": true
   },
-  "alias": ["next.umijs.org"]
+  "alias": ["umijs.org"]
 }
