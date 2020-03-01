@@ -19,6 +19,7 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'generate',
     alias: 'g',
+    description: 'generate code snippets quickly',
     async fn({ args }) {
       const [type, ..._] = args._;
       const Generator = generators[type];

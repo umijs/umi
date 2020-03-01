@@ -32,6 +32,7 @@ export default (api: IApi) => {
 
   api.registerCommand({
     name: 'dev',
+    description: 'start a dev server for development',
     fn: async function({ args }) {
       const defaultPort =
         process.env.PORT || args?.port || api.config.devServer?.port;

@@ -58,6 +58,7 @@ export interface IHook {
 export interface ICommand {
   name: string;
   alias?: string;
+  description?: string;
   fn: {
     ({ args }: { args: yargs.Arguments }): void;
   };

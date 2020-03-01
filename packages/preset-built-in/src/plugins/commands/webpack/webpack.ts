@@ -4,7 +4,8 @@ import { getBundleAndConfigs } from '../buildDevUtils';
 
 export default (api: IApi) => {
   api.registerCommand({
-    name: 'inspect',
+    name: 'webpack',
+    description: 'inspect webpack configurations',
     async fn() {
       const { bundleConfigs } = await getBundleAndConfigs({ api });
 

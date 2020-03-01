@@ -19,6 +19,7 @@ export default function(api: IApi) {
 
   api.registerCommand({
     name: 'build',
+    description: 'build application for production',
     fn: async function() {
       cleanTmpPathExceptCache({
         absTmpPath: paths.absTmpPath!,

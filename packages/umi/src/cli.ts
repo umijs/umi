@@ -22,6 +22,10 @@ if (args.version && !args._[0]) {
   console.log(`umi@${require('../package.json').version}${local}`);
 }
 
+if (args.help && !args._[0]) {
+  args._[0] = 'help';
+}
+
 (async () => {
   try {
     switch (args._[0]) {
