@@ -41,7 +41,7 @@ translateHelp: true
 
 ### 配置层迁移
 
-根据 [Umi 3 配置](/zh-CN/config) ，有**修改的配置项**如下 `config/config.ts` ：
+根据 [Umi 3 配置](../config) ，有**修改的配置项**如下 `config/config.ts` ：
 
 ```typescript
 import { defineConfig, utils } from 'umi';
