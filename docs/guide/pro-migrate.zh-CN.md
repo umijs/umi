@@ -33,7 +33,6 @@ translateHelp: true
 +   "umi": "^3.0.0",
 +   "@umijs/preset-react": "^1.2.2"
 +   "@umijs/plugin-analytics": "^0.1.0",
-+   "@umijs/preset-pro": "^1.0.0",
   }
 }
 ```
