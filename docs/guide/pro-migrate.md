@@ -1,6 +1,6 @@
 ---
 nav:
-  title: Migrate Ant Design Pro
+  title: Guide
 ---
 
 # 指南
