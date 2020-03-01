@@ -49,7 +49,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/docs/convention-routing',
           '/docs/plugin',
           // '/docs/navigate-between-pages',
-          // '/docs/html-template',
+          '/docs/html-template',
           '/docs/mock',
           '/docs/env-variables',
         ],
@@ -62,7 +62,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
       {
         title: 'Umi Advanced',
         'title_zh-CN': 'Umi 进阶',
-        children: ['/docs/load-on-demand'],
+        children: ['/docs/load-on-demand', '/docs/deployment', '/docs/ssr'],
       },
       {
         title: 'API',

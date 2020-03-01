@@ -246,6 +246,7 @@ export interface IConfig extends IConfigCore {
   plugins?: IPresetOrPlugin[];
   presets?: IPresetOrPlugin[];
   proxy?: any;
+  publicPath?: string;
   runtimePublicPath?: boolean;
   scripts?: IScriptConfig;
   singular?: boolean;

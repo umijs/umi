@@ -106,6 +106,8 @@ class Html {
     );
     const context = {
       config,
+      // 不输出多个 HTML 时 route 无意义
+      ...(config.exportStatic ? { route } : {}),
     };
     let html = ejs.render(tpl, context, {
       _with: false,

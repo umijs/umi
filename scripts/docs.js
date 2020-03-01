@@ -77,7 +77,7 @@ ${targetDoc.body.join('\n')}
 
 function add({ path }) {
   const title = args.title || 'Untitled';
-  const content = `---\ntitle: ${title}\n---\n`;
+  const content = `# ${title}\n`;
   write({ path: join(docsDir, `${path}.md`), content });
   write({ path: join(docsDir, `${path}.zh-CN.md`), content });
 }

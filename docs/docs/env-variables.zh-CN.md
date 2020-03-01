@@ -52,9 +52,33 @@ $ umi dev
 
 * APP\_ROOT 不能配在 `.env` 中，只能在命令行里添加
 
+### ANALYZE
+
+用于分析 bundle 构成，默认关闭。
+
+比如：
+
+```bash
+$ ANALYZE=1 umi dev
+# 或者
+$ ANALYZE=1 umi build
+```
+
 ### COMPRESS
 
 默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
+
+### FORK_TS_CHECKER
+
+默认不开启 TypeScript 类型检查，值为 `1` 时启用。比如：
+
+```bash
+$ FORK_TS_CHECKER=1 umi dev
+```
+
+### HTML
+
+设为 `none` 时不输出 HTML，`umi build` 时有效。
 
 ### HOST
 
@@ -68,22 +92,3 @@ $ umi dev
 
 指定不同环境各自的配置文件，详见[配置#多环境多份配置](TODO)。
 
-### FORK_TS_CHECKER
-
-默认不开启 TypeScript 类型检查，值为 `1` 时启用。比如：
-
-```bash
-$ FORK_TS_CHECKER=1 umi dev
-```
-
-### ANALYZE
-
-用于分析 bundle 构成，默认关闭。
-
-比如：
-
-```bash
-$ ANALYZE=1 umi dev
-# 或者
-$ ANALYZE=1 umi build
-```
