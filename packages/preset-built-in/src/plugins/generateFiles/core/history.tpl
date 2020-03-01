@@ -7,7 +7,8 @@ if ((<any>window).routerBase) {
 
 let history = {{{ creator }}}(options);
 export const createHistory = () => {
-  history = {{{ creator }}}(options);
+  // 先注释了，加上后 HMR 后路由跳转功能会失效
+  // history = {{{ creator }}}(options);
   return history;
 };
 export { history };
