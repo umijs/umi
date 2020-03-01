@@ -31,7 +31,6 @@ nav:
 -   "umi-plugin-pro-block": "^1.3.2",
 +   "umi": "^3.0.0",
 +   "@umijs/preset-react": "^1.2.2"
-+   "@umijs/plugin-analytics": "^0.1.0",
   }
 }
 ```
