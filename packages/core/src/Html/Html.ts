@@ -188,14 +188,14 @@ class Html {
         `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
       );
     });
+    if (scripts.length) {
+      $('body').append(this.getScriptsContent(scripts));
+    }
     jsFiles.forEach(file => {
       $('body').append(
         `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
       );
     });
-    if (scripts.length) {
-      $('body').append(this.getScriptsContent(scripts));
-    }
 
     if (args.modifyHTML) {
       $ = await args.modifyHTML($, { route });

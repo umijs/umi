@@ -100,14 +100,14 @@ test('html', async () => {
   expect(
     removeSpace(
       $('body script')
-        .eq(2)
+        .eq(1)
         .html(),
     ),
   ).toContain(`console.log(1);`);
   expect(
     removeSpace(
       $('body script')
-        .eq(3)
+        .eq(2)
         .html(),
     ),
   ).toContain(`console.log(2);`);
