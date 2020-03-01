@@ -71,6 +71,7 @@ export default function() {
       require.resolve('./plugins/commands/dev/mock/mock'),
       require.resolve('./plugins/commands/generate/generate'),
       require.resolve('./plugins/commands/help/help'),
+      require.resolve('./plugins/commands/plugin/plugin'),
       require.resolve('./plugins/commands/version/version'),
       require.resolve('./plugins/commands/webpack/webpack'),
     ],
