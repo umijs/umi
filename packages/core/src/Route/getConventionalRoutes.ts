@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { basename, extname, join, relative } from 'path';
 import { getFile, winPath } from '@umijs/utils';
-import { isReactComponent } from '@umijs/ast';
+import { getExportProps, isReactComponent } from '@umijs/ast';
 import assert from 'assert';
 import { IRoute } from './types';
 
@@ -89,13 +89,16 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
 }
 
 function normalizeRoute(route: IRoute, opts: IOpts) {
-  // TODO:
-  // 1. 从 route file 里读额外信息
+  let props = {};
   if (route.component) {
+    props = getExportProps(readFileSync(route.component, 'utf-8'));
     route.component = winPath(relative(join(opts.root, '..'), route.component));
     route.component = `${opts.componentPrefix || '@/'}${route.component}`;
   }
-  return route;
+  return {
+    ...route,
+    ...props,
+  };
 }
 
 function normalizePath(path: string, opts: IOpts) {

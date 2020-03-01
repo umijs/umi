@@ -100,12 +100,12 @@ test('conventional normal', async () => {
   ).toEqual([
     {
       path: '/',
-      component: '@/layouts/index.ts',
+      component: '@/layouts/index.tsx',
       routes: [
         {
           path: '/',
           exact: true,
-          component: '@/pages/index.ts',
+          component: '@/pages/index.tsx',
         },
         {
           path: '/users',
@@ -113,20 +113,20 @@ test('conventional normal', async () => {
             {
               path: '/users/:userId',
               exact: true,
-              component: '@/pages/users/[userId].ts',
+              component: '@/pages/users/[userId].tsx',
             },
           ],
-          component: '@/pages/users/_layout.ts',
+          component: '@/pages/users/_layout.tsx',
         },
         {
           path: '/:post/comments',
           exact: true,
-          component: '@/pages/[post]/comments.ts',
+          component: '@/pages/[post]/comments.tsx',
         },
         {
           path: '/:post',
           exact: true,
-          component: '@/pages/[post]/index.ts',
+          component: '@/pages/[post]/index.tsx',
         },
       ],
     },
@@ -144,7 +144,7 @@ test('conventional index/index', async () => {
     {
       path: '/',
       exact: true,
-      component: '@/pages/index/index.ts',
+      component: '@/pages/index/index.tsx',
     },
   ]);
 });
@@ -161,7 +161,7 @@ test('conventional opts.componentPrefix', async () => {
     {
       path: '/',
       exact: true,
-      component: '@@@/pages/index.ts',
+      component: '@@@/pages/index.tsx',
     },
   ]);
 });

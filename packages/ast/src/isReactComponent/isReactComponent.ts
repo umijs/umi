@@ -1,10 +1,8 @@
-import { t, parser, traverse } from '@umijs/utils';
+import { traverse } from '@umijs/utils';
+import { parse } from '../utils/parse';
 
 export function isReactComponent(code: string) {
-  const ast = parser.parse(code, {
-    sourceType: 'module',
-    plugins: ['jsx', 'typescript'],
-  });
+  const ast = parse(code);
   let hasJSXElement = false;
   traverse.default(ast, {
     JSXElement() {

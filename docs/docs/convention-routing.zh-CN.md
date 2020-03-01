@@ -180,7 +180,7 @@ export default function(props) {
 
 ## 扩展路由属性
 
-TODO
+支持在代码层通过导出静态属性的方式扩展路由。
 
 比如：
 

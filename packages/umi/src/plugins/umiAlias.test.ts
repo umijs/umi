@@ -6,7 +6,7 @@ test('normal', async () => {
     cwd: join(__dirname, 'fixtures', 'normal'),
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       print: false,
     },
