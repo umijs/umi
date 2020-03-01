@@ -3,7 +3,7 @@ nav:
   title: 指南
 ---
 
-# 迁移 antd pro 项目到 umi@3
+# 升级 antd pro 项目到 umi@3
 
 迁移到 Umi 3 分三步，不到 10 分钟即可完成迁移：
 

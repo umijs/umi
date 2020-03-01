@@ -1,3 +1,9 @@
+---
+nav:
+  title: API
+toc: menu
+---
+
 # API
 
 ## 基本 API

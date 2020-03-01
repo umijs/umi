@@ -7,6 +7,7 @@ export default function(api: IApi) {
       schema(joi) {
         return joi.string();
       },
+      onChange: api.ConfigChangeType.regenerateTmpFiles,
     },
   });
 

@@ -4,7 +4,7 @@ nav:
 translateHelp: true
 ---
 
-# Migrate Antd Pro to Umi 3
+# Upgrade Antd Pro to Umi 3
 
 
 迁移到 Umi 3 分三步，不到 10 分钟即可完成迁移：

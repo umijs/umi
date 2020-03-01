@@ -69,8 +69,9 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
         children: ['/docs/load-on-demand', '/docs/deployment', '/docs/ssr'],
       },
       {
-        title: 'API',
-        path: '/docs/api',
+        title: 'Upgrade to Umi 3',
+        'title_zh-CN': '升级到 Umi 3',
+        path: '/docs/upgrade-to-umi-3',
       },
       {
         title: 'CONTRIBUTING',
@@ -93,7 +94,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
 }
 
 export default {
-  favicon: 'https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png',
+  favicon: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   mode: 'site',
   title: 'UmiJS',
   resolve: {
