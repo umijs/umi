@@ -136,8 +136,8 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 + const { bar, foo } = props.match.params;
 ```
 
-第三步完成后，执行下 `npm run start`，访问 [http://localhost:8000](http://localhost:8000)，能访问则表示迁移完成：
+第三步完成后，执行下 `npm run start`，访问 [http://localhost:8000](http://localhost:8000)，能访问则表示迁移完成。
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/MysqNKCYyc/ae1d7e2a-3b6e-49d8-8c0a-c306840932f6.png)
 
-> 更多迁移细节见 [PR](https://github.com/ant-design/ant-design-pro/pull/6039)
+> 更多迁移细节见 [PR](https://github.com/ant-design/ant-design-pro/pull/6039)。
