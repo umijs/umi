@@ -1,6 +1,6 @@
 {
   "name": "@umijs/ast",
-  "version": "3.0.0-beta.37",
+  "version": "3.0.0-beta.38",
   "description": "@umijs/ast",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,6 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.0.0-beta.37"
+    "@umijs/utils": "3.0.0-beta.38"
   }
 }
