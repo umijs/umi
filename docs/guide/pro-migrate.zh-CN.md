@@ -139,6 +139,6 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 
 第三步完成后，执行下 `npm run start`，访问 [http://localhost:8000](http://localhost:8000)，能访问则表示迁移完成：
 
-![](http://alipay-rmsdeploy-image.cn-hangzhou.alipay.aliyun-inc.com/antfincdn/ih13eIfYnB/aa444689-6f72-4d37-818b-f861650c70e9.png)
+![](https://gw.alipayobjects.com/zos/antfincdn/MysqNKCYyc/ae1d7e2a-3b6e-49d8-8c0a-c306840932f6.png)
 
 > 更多迁移细节见 [PR](https://github.com/ant-design/ant-design-pro/pull/6039)
