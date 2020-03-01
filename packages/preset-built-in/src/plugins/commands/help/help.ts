@@ -1,5 +1,6 @@
 import { IApi } from '@umijs/types';
 import { chalk, lodash } from '@umijs/utils';
+import assert from 'assert';
 
 function getDescriptions(commands: any) {
   return Object.keys(commands)
@@ -15,19 +16,30 @@ function getDescription(command: any) {
   )}${command.description || ''}`;
 }
 
+function padLeft(str: string) {
+  return str
+    .split('\n')
+    .map((line: string) => `    ${line}`)
+    .join('\n');
+}
+
 export default (api: IApi) => {
   api.registerCommand({
     name: 'help',
     description: 'show command helps',
     fn({ args }) {
-      const command = args._[0];
-      if (command) {
+      const commandName = args._[0];
+      if (commandName) {
+        const command = api.service.commands[commandName];
+        assert(command, `Command ${commandName} not found.`);
         console.log(`
-  Usage: umi ${command} [options]
+  Usage: umi ${commandName} [options]
 
   Options:
 
   Details:
+
+${command.details ? padLeft(command.details) : ''}
         `);
       } else {
         console.log(`

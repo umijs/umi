@@ -5,6 +5,13 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'plugin',
     description: 'inspect umi plugins',
+    details: `
+# List plugins
+$ umi plugin list
+
+# List plugins with key
+$ umi plugin list --key
+    `.trim(),
     fn({ args }) {
       const command = args._[0];
       switch (command) {
