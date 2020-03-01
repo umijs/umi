@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "antd": "3.16.3",
-    "jquery": "3",
-    "moment": "2.12.0"
-  }
-}

@@ -1,135 +1,95 @@
-# Contribute
-
-> Notice: `y` is the alias for `yarn`, `n` is the alias for `npm`.
+# Contributing to umi
 
 ## Set up
 
 Install dev deps after git clone the repo.
 
 ```bash
-$ y
-```
-
-Bootstrap every package with yarn. (Need to execute when new package is included)
-
-```bash
-$ y bootstrap
+# npm is not allowed.
+$ yarn
 ```
 
 Link umi globally.
 
 ```bash
 $ cd packages/umi
-$ y link
+$ yarn link
+$ cd -
 ```
 
-## Common Tasks
-
-Monitor file changes and transform with babel.
+Try the `umi` cli.
 
 ```bash
-$ y build --watch
+$ yarn build
+$ umi -v
+umi@0.0.1-alpha.1@local
 ```
 
-Run test.
+## Build
+
+Transform with babel and rollup.
 
 ```bash
-# Including e2e test
-$ y test
+$ yarn build
 
-# Unit test only
-$ y debug .test.(t|j)s
+# Build and monitor file changes
+$ yarn build --watch
+
+# Build specified package only
+$ PACKAGE=core yarn build --watch
+```
+
+## Test
+
+```bash
+$ yarn test
 
 # Test specified file and watch
-$ y debug getMockData.test.js -w
+$ yarn test getMockData.test.js -w
 
 # Test specified package
-$ PACKAGE=umi-mock y debug
-
-# Don't run e2e test
-$ E2E=none y debug
+$ yarn test --package core
 
 # Generate coverage
-$ y debug --coverage
+$ yarn test --coverage
 ```
 
-Run `umi dev` in examples/func-test.
+## Release
 
 ```bash
-$ cd examples/func-test
-$ umi dev
+$ npm run release
+$ npm run release -- --publish-only
+$ npm run release -- --skip-git-status-check
+$ npm run release -- --skip-build
 ```
 
-Then open http://localhost:8000/ in your browser.
+## Create new package
 
-Run `umi build` in examples/simple.
+Such as creating package `foo`.
 
 ```bash
-$ cd examples/func-test
-$ umi build
-
-# Build without compress
-$ COMPRESS=none umi build
+$ mkdir -p packages/foo
+$ yarn bootstrap
 ```
 
-Publish to npm.
+Then you will find the `README.md` and `package.json` is generated in `packages/foo`.
 
 ```bash
-# Generator the changelog first.
-$ y changelog
-
-# Do not use yarn for this command.
-$ n run publish
+$ tree packages/foo
+packages/foo
+├── README.md
+└── package.json
 ```
 
-Debug doc in local.
+## Upgrade dependencies
 
 ```bash
-$ y doc:dev
+$ yarn update:deps
 ```
 
-Deploy doc to [umijs.org](https://umijs.org/).
+## Docs
 
 ```bash
-$ y doc:deploy
+# add doc
+$ yarn docs add docs/routing --title Routing
 ```
-
-Debug `umi ui` in local.
-
-```bash
-# First, run umi dev --watch to start static dev server: http://localhost:8002/
-$ y ui:build --watch
-```
-
-If the server starts on a different port, such as 8003 or 8004, this is because another process is currently running on port 8002.
-
-It's a better idea to find the running process and kill it.
-
-```bash
-# Mac/Linux: 
-$ lsof -i tcp:3000
-# Find the ID of the process
-$ kill <process id>
-
-# Windows
-$ netstat -ano | findstr :3000
-# Find the ID of the process
-$ taskkill /PID typeyourPIDhere /F
-```
-
-Then,
-
-```
-# Then run umi ui under a umi project.
-$ LOCAL_DEBUG=1 umi ui
-
-# if want to debug for more defail, using
-$ LOCAL_DEBUG=1 DEBUG=umiui:UmiUI* umi ui
-
-# Or Run `umi dev --ui` in examples/func-test.
-$ umi dev --ui
-```
-
-PR rebase automatically using `/rebase` comment.
-
-![image](https://user-images.githubusercontent.com/13595509/65825000-14069380-e2a4-11e9-9186-e3c31d265b5f.png)

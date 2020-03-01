@@ -1,25 +1,11 @@
-**/fixtures/**/*.js
-**/fixtures/**/*.json
-**/fixtures/**/*.ts
-**/template/**/*.js
-**/template/**/*.ts
-**/templates/**/*.js
-**/templates/**/*.ts
-**/templates/**/*.json
-**/website/*.js
-packages/af-webpack/src/getConfig/index.js
-packages/af-webpack/src/getConfig/css.js	
-packages/af-webpack/src/getConfig/eslint.js	
-packages/af-webpack/src/getConfig/dev.js	
-packages/af-webpack/src/getConfig/prod.js
-**/*.svg
+**/node_modules/**
 package.json
-.umi
-.umi-production
-/dist
-.dockerignore
-.eslintignore
 
+# fixtures
+**/fixtures/**
 
-# 加了换行在win下测试不通过，所以忽略一下
-packages/af-webpack/test/fixtures/svgr/logo.svg
+# templates
+**/templates/**
+
+# docs
+**/*.md

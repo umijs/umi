@@ -1,5 +1,9 @@
 {
+  "version": "3.0.0-beta.36",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "changelog": {
+    "repo": "umijs/umi-next",
     "labels": {
       "pr(enhancement)": ":rocket: Enhancement",
       "pr(bug)": ":bug: Bug Fix",
@@ -7,18 +11,13 @@
       "pr(dependency)": ":deciduous_tree: Dependency",
       "pr(chore)": ":turtle: Chore"
     },
-    "repo": "umijs/umi",
     "cacheDir": ".changelog"
   },
-  "packages": ["packages/*", "packages/umi-ui/client"],
-  "command": {
-    "version": {
-      "exact": true
-    },
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock", "--no-ci"]
-    }
-  },
-  "npmClient": "yarn",
-  "version": "independent"
+  "ignoreChanges": [
+    "**/*.md",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/fixtures/**",
+    "**/test/**"
+  ]
 }

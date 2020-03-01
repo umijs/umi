@@ -4,7 +4,6 @@ about: 'Provide a solution for this project'
 title: '[RFC] say something'
 labels: 'type: proposals'
 assignees: ''
-
 ---
 
 ## 背景

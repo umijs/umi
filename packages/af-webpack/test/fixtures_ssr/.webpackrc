@@ -1,5 +1,0 @@
-{
-  "externals": {
-    "react": "window.React"
-  }
-}

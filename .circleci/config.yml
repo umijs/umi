@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: node-modules-{{ checksum "yarn.json" }}
+
+      - run:
+          name: Install Dependencies
+          command: yarn --frozen-lockfile
+
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+            - ~/.cache/yarn
+
+      - run:
+          name: Run Build
+          command: yarn build
+
+      - run:
+          name: Run Tests
+          command: yarn test:coverage -- --forceExit --detectOpenHandles --runInBand --maxWorkers=2
+          no_output_timeout: 300m
+
+      - run:
+          name: Generate coverage
+          command: bash <(curl -s https://codecov.io/bash)

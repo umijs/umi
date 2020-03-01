@@ -17,7 +17,6 @@ Contributors guide: https://github.com/umijs/umi/blob/master/CONTRIBUTING.md
 - [ ] documentation is changed or added
 - [ ] commit message follows commit guidelines
 
-
 ##### Description of change
 
 <!-- Provide a description of the change below this comment. -->

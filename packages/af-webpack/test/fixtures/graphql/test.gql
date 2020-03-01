@@ -1,5 +1,0 @@
-query CurrentUserForLayout {
-  currentUser {
-    login
-  }
-}

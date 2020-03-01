@@ -4,7 +4,6 @@ about: 'Suggest an idea for this project'
 title: '[Feature Request] say something'
 labels: ''
 assignees: ''
-
 ---
 
 ## Background

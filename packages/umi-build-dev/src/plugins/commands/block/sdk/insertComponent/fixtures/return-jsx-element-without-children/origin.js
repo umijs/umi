@@ -1,6 +1,0 @@
-
-export default () => {
-  return (
-    <App />
-  );
-}
