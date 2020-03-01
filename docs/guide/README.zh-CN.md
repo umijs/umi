@@ -1,8 +1,8 @@
 ---
 nav:
-  title: Guide
+  title: 指南
 ---
 
-# Guide
+# 指南
 
 > Coming soon...

@@ -35,7 +35,7 @@ export default {
 };
 ```
 
-## 使用 hashHistory
+## 使用 hash history
 
 可通过配置 [history](../config#history) 为 `hash` 为解决。 
 
