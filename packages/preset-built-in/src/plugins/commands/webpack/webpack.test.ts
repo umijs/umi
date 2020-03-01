@@ -4,14 +4,14 @@ import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
 
-test('inspect', async () => {
-  const cwd = join(fixtures, 'inspect');
+test('webpack', async () => {
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       print: false,
     },
@@ -20,14 +20,14 @@ test('inspect', async () => {
   expect(config.mode).toEqual('development');
 });
 
-test('inspect with plugins', async () => {
-  const cwd = join(fixtures, 'inspect');
+test('webpack with plugins', async () => {
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       plugins: true,
       print: false,
@@ -36,14 +36,14 @@ test('inspect with plugins', async () => {
   expect(config).toContain('define');
 });
 
-test('inspect with plugin', async () => {
-  const cwd = join(fixtures, 'inspect');
+test('webpack with plugin', async () => {
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       plugin: 'define',
       print: false,
@@ -53,14 +53,14 @@ test('inspect with plugin', async () => {
   expect(config.definitions['process.env'].NODE_ENV).toContain('development');
 });
 
-test('inspect with rules', async () => {
-  const cwd = join(fixtures, 'inspect');
+test('webpack with rules', async () => {
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       rules: true,
       print: false,
@@ -69,14 +69,14 @@ test('inspect with rules', async () => {
   expect(config).toContain('js');
 });
 
-test('inspect with rule', async () => {
-  const cwd = join(fixtures, 'inspect');
+test('webpack with rule', async () => {
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   const config = await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       rule: 'js',
       print: false,
@@ -88,13 +88,13 @@ test('inspect with rule', async () => {
 
 test('inpect + print', async () => {
   const reset = mockConsole();
-  const cwd = join(fixtures, 'inspect');
+  const cwd = join(fixtures, 'webpack');
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
   });
   await service.run({
-    name: 'inspect',
+    name: 'webpack',
     args: {
       plugins: true,
     },
