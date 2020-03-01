@@ -7,7 +7,6 @@ import {
 import { join, resolve } from 'path';
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import { rimraf, chalk } from '@umijs/utils';
-import filesize from 'filesize';
 import zlib from 'zlib';
 
 type Env = 'development' | 'production';
@@ -140,6 +139,20 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
     modules: false,
     chunks: false,
   });
+
+  const filesize = (bytes: number) => {
+    bytes = Math.abs(bytes);
+    const radix = 1024;
+    const unit = ['b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb', 'Eb', 'Zb', 'Yb'];
+    let loop = 0;
+
+    // calculate
+    while (bytes >= radix) {
+      bytes /= radix;
+      ++loop;
+    }
+    return `${bytes.toFixed(1)} ${unit[loop]}`;
+  };
 
   const assets = json.assets
     ? json.assets
