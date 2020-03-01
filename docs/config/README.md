@@ -38,6 +38,29 @@ Umi 内置了以下别名：
 * `react-router` 和 `react-router-dom`，底层路由库，锁定版本，打包时所有依赖了他们的地方使用同一个版本
 * `react` 和 `react-dom`，默认使用 `16.x` 版本，但如果项目里有依赖，会优先使用项目中依赖的版本
 
+## analyze
+
+* Type: `object`
+* Default: `{}`
+
+包模块结构分析工具，可以看到项目各模块的大小，按需优化。通过 `ANALYZE=1 umi build` 或 `ANALYZE=1 umi dev` 开启，默认 server 端口号为 `8888`，更多配置如下：
+
+```js
+{
+  // 配置具体含义见：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
+  analyze: {
+    analyzerMode: 'server',
+    analyzerPort: 8888,
+    openAnalyzer: true,
+    // generate stats file while ANALYZE_DUMP exist
+    generateStatsFile: false,
+    statsFilename: 'stats.json',
+    logLevel: 'info',
+    defaultSizes: 'parsed', // stat  // gzip
+  }
+}
+```
+
 ## autoprefixer
 
 * Type: `object`
@@ -395,6 +418,12 @@ HTML 中会生成，
 ```html
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
 ```
+
+## forkTSCheker
+
+* Type: `object`
+
+开启 TypeScript 编译时类型检查，默认关闭。
 
 ## hash
 
@@ -807,33 +836,4 @@ export default {
 * 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
 * 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
 
-## analyze
-
-* Type: `object`
-* Default: `{}`
-
-包模块结构分析工具，可以看到项目各模块的大小，按需优化。通过 `ANALYZE=1 umi build` 或 `ANALYZE=1 umi dev` 开启，默认 server 端口号为 `8888`，更多配置如下：
-
-```js
-{
-  // 配置具体含义见：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
-  analyze: {
-    analyzerMode: 'server',
-    analyzerPort: 8888,
-    openAnalyzer: true,
-    // generate stats file while ANALYZE_DUMP exist
-    generateStatsFile: false,
-    statsFilename: 'stats.json',
-    logLevel: 'info',
-    defaultSizes: 'parsed', // stat  // gzip
-  }
-}
-```
-
 > 建议经常在构建完后使用，更有利于应用优化。
-
-## forkTSCheker
-
-* Type: `object`
-
-开启 TypeScript 编译时类型检查，默认关闭。

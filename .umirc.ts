@@ -62,7 +62,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
       {
         title: 'Umi Advanced',
         'title_zh-CN': 'Umi 进阶',
-        children: [],
+        children: ['/docs/load-on-demand'],
       },
       {
         title: 'API',
