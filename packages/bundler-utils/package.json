@@ -23,5 +23,9 @@
   "homepage": "https://github.com/umijs/umi/tree/master/packages/bundler-utils#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@umijs/types": "3.0.0-beta.36",
+    "@umijs/babel-preset-umi": "3.0.0-beta.36"
   }
 }
