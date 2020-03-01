@@ -3,7 +3,7 @@
 
 ## 核心方法
 
-[Service](https://github.com/umijs/umi-next/blob/master/packages/core/src/Service/Service.ts) 和 [PluginAPI](https://github.com/umijs/umi-next/blob/master/packages/core/src/Service/PluginAPI.ts) 里定义的方法。
+[Service](https://github.com/umijs/umi/blob/master/packages/core/src/Service/Service.ts) 和 [PluginAPI](https://github.com/umijs/umi/blob/master/packages/core/src/Service/PluginAPI.ts) 里定义的方法。
 
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
@@ -394,7 +394,7 @@ api.chainWebpack((config, { webpack }) => {
 
 ### utils
 
-utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi-next/blob/master/packages/utils/src/index.ts)。
+utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。
 
 注：
 
