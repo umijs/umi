@@ -14,6 +14,7 @@ export function parse(code: string): t.File {
       'nullishCoalescingOperator',
       'objectRestSpread',
       'optionalChaining',
+      'decorators-legacy',
     ],
   });
 }
