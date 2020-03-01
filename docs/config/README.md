@@ -787,7 +787,7 @@ export default {
 ## terserOptions
 
 * Type: `object`
-* Default: [terserOptions.ts](https://github.com/umijs/umi-next/blob/master/packages/bundler-webpack/src/getConfig/terserOptions.ts)
+* Default: [terserOptions.ts](https://github.com/umijs/umi/blob/master/packages/bundler-webpack/src/getConfig/terserOptions.ts)
 
 配置[压缩器 terser 的配置项](https://github.com/terser/terser#minify-options)。
 
