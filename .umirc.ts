@@ -30,6 +30,10 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
     ],
     '/docs': [
       {
+        title: 'VERSION 3.X',
+        children: [],
+      },
+      {
         title: 'Introduce',
         'title_zh-CN': '介绍',
         children: [
