@@ -1,6 +1,7 @@
-import { existsSync, readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { basename, extname, join, relative } from 'path';
 import { getFile, winPath } from '@umijs/utils';
+import { isReactComponent } from '@umijs/ast';
 import assert from 'assert';
 import { IRoute } from './types';
 
@@ -15,12 +16,27 @@ const RE_DYNAMIC_ROUTE = /^\[(.+?)\]$/;
 function getFiles(root: string) {
   if (!existsSync(root)) return [];
   return readdirSync(root).filter(file => {
+    const absFile = join(root, file);
+    const fileStat = statSync(absFile);
+    const isDirectory = fileStat.isDirectory();
+    const isFile = fileStat.isFile();
+    if (
+      isDirectory &&
+      ['components', 'component', 'utils', 'util'].includes(file)
+    ) {
+      return false;
+    }
     if (file.charAt(0) === '.') return false;
     if (file.charAt(0) === '_') return false;
     // exclude test file
-    if (/\.(test|spec)\.(j|t)sx?$/.test(file)) return false;
+    if (/\.(test|spec|e2e)\.(j|t)sx?$/.test(file)) return false;
     // d.ts
     if (/\.d\.ts$/.test(file)) return false;
+    if (isFile) {
+      if (!/\.(j|t)sx?$/.test(file)) return false;
+      const content = readFileSync(absFile, 'utf-8');
+      if (!isReactComponent(content)) return false;
+    }
     return true;
   });
 }
@@ -55,7 +71,7 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
           }),
     };
     memo.push(normalizeRoute(route, opts));
-  } else if (/\.(j|t)sx?$/.test(file)) {
+  } else {
     const bName = basename(file, extname(file));
     memo.push(
       normalizeRoute(
