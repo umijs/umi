@@ -129,13 +129,6 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 + history.push()
 ```
 
-`props.params` 从 `props.match.params` 里获取：
-
-```diff
-- const { bar, foo } = props.params;
-+ const { bar, foo } = props.match.params;
-```
-
 第三步完成后，执行下 `npm run start`，访问 [http://localhost:8000](http://localhost:8000)，能访问则表示迁移完成。
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/MysqNKCYyc/ae1d7e2a-3b6e-49d8-8c0a-c306840932f6.png)
