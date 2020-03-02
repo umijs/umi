@@ -36,7 +36,7 @@ export function generateExports({
     `${item.source} is reserve library, Please don't use it.`,
   );
   if (item.exportAll) {
-    return `export * from '${item.source}';`;
+    return `export * from '${winPath(item.source)}';`;
   }
   assert(
     Array.isArray(item.specifiers),
