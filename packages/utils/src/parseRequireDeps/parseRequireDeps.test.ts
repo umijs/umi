@@ -23,3 +23,11 @@ test('directory index', () => {
     './src/foo.ts',
   ]);
 });
+
+test('avoid cycle', () => {
+  const fixture = join(fixtures, 'cycle');
+  const ret = parseRequireDeps(join(fixture, 'a.ts')).map(p =>
+    p.replace(winPath(fixture), '.'),
+  );
+  expect(ret).toEqual(['./a.ts', './b.ts', './c.ts']);
+});

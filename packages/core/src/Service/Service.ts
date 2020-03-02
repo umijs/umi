@@ -105,15 +105,19 @@ export default class Service extends EventEmitter {
     this.babelRegister = new BabelRegister();
 
     // load .env or .local.env
+    logger.debug('load env');
     this.loadEnv();
 
     // get user config without validation
+    logger.debug('get user config');
     this.configInstance = new Config({
       cwd: this.cwd,
       service: this,
       localConfig: this.env === 'development',
     });
     this.userConfig = this.configInstance.getUserConfig();
+    logger.debug('userConfig:');
+    logger.debug(this.userConfig);
 
     // get paths
     this.paths = getPaths({
@@ -121,6 +125,8 @@ export default class Service extends EventEmitter {
       config: this.userConfig!,
       env: this.env,
     });
+    logger.debug('paths:');
+    logger.debug(this.paths);
 
     // setup initial presets and plugins
     const baseOpts = {

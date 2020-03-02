@@ -3,6 +3,7 @@ import { dirname } from 'path';
 // @ts-ignore
 import crequire from 'crequire';
 import { readFileSync } from 'fs';
+import lodash from 'lodash';
 import winPath from '../winPath/winPath';
 
 function parse(filePath: string): string[] {
@@ -25,7 +26,8 @@ export default function parseRequireDeps(filePath: string): string[] {
   const ret = [winPath(filePath)];
 
   while (paths.length) {
-    const extraPaths = parse(paths.shift()!);
+    // 避免依赖循环
+    const extraPaths = lodash.pullAll(parse(paths.shift()!), ret);
     if (extraPaths.length) {
       paths.push(...extraPaths);
       ret.push(...extraPaths);
