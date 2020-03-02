@@ -11,3 +11,4 @@
 .umi-production
 .umi-test
 **/fixtures/**/dist
+.now
