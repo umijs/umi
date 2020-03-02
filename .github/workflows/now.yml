@@ -1,0 +1,23 @@
+name: umi-v2 - deploy
+on:
+  push:
+    branches:
+      - 2.x
+jobs:
+  angular:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        run: |
+          yarn install
+          yarn now-build
+      - uses: ./
+        id: now-deployment-production
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          zeit-token: ${{ secrets.ZEIT_TOKEN }}
+          now-org-id: ${{ secrets.NOW_ORG_ID }}
+          now-project-id: ${{ secrets.NOW_PROJECT_ID }}
+          working-directory: dist
+          now-args: '--prod'

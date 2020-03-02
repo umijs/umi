@@ -1,5 +1,6 @@
 {
   "name": "umi",
+  "scope": "umijs",
   "version": 2,
   "builds": [
     {
@@ -13,7 +14,7 @@
   ],
   "routes": [{ "src": "/(.*)", "dest": "website/$1" }],
   "github": {
-    "silent": true
+    "enabled": false
   },
   "alias": ["v2.umijs.org"]
 }
