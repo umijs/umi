@@ -13,12 +13,9 @@ jobs:
           yarn install
           yarn build
           yarn docs:build
-      - uses: amondnet/now-deployment@v2
-        id: now-deployment-production
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          zeit-token: ${{ secrets.ZEIT_TOKEN }}
-          now-org-id: ${{ secrets.NOW_ORG_ID }}
-          now-project-id: ${{ secrets.NOW_PROJECT_ID }}
-          working-directory: dist
-          now-args: '--prod'
+      - name: deploy
+        env:
+          BUILD_ID: ${{ github.sha }}
+          ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+        run: |
+          now --token=$ZEIT_TOKEN --prod --force --scope umijs

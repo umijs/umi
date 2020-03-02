@@ -16,6 +16,7 @@
     "test:coverage": "umi-test --coverage",
     "test:update": "umi-test --updateSnapshot",
     "sync:tnpm": "node -e 'require(\"./scripts/syncTNPM\")()'",
+    "now-build": "echo \"Hello\"",
     "update:deps": "yarn upgrade-interactive --latest"
   },
   "gitHooks": {
