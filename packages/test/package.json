@@ -7,7 +7,8 @@
   "files": [
     "lib",
     "src",
-    "helpers"
+    "helpers",
+    "bin"
   ],
   "repository": {
     "type": "git",
