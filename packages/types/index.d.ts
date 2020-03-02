@@ -238,9 +238,11 @@ export interface IConfig extends IConfigCore {
   links?: Partial<HTMLLinkElement>[];
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
-  mock?: {
-    exclude?: string[];
-  };
+  mock?:
+    | {
+        exclude?: string[];
+      }
+    | false;
   mountElementId?: string;
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
