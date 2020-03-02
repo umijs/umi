@@ -11,7 +11,6 @@
     "docs:dev": "node ./packages/umi/bin/umi.js dev",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "link:umi": "cd packages/umi && yarn link && cd -",
-    "now-build": "yarn build && yarn docs:build",
     "release": "node ./scripts/release.js",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",

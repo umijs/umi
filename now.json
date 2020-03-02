@@ -1,18 +1,16 @@
 {
-  "name": "umi-next",
+  "name": "umi",
+  "scope": "umijs",
   "version": 2,
   "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build"
-    }
+    { "src": "./dist/**", "use": "@now/static" }
   ],
   "routes": [
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
   ],
   "github": {
-    "silent": true
+    "enabled": false
   },
-  "alias": ["next.umijs.org"]
+  "alias": ["umijs.org"]
 }
