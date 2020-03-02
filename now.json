@@ -1,6 +1,6 @@
 {
   "name": "umi",
-  "scope": "umi",
+  "scope": "umijs",
   "version": 2,
   "builds": [
     {
