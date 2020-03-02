@@ -18,4 +18,4 @@ jobs:
           BUILD_ID: ${{ github.sha }}
           ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
         run: |
-          now --token=$ZEIT_TOKEN --prod --force --scope umijs
+          now --token=$ZEIT_TOKEN --confirm --prod --force --scope umijs
