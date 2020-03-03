@@ -7,10 +7,7 @@ exports.getChangelog = async () => {
   const log = await git.commitLogFromRevision(latest);
 
   if (!log) {
-    return {
-      hasCommits: false,
-      releaseNotes: () => {},
-    };
+    throw new Error(`get changelog failed, no new commits was found.`);
   }
 
   const commits = log.split('\n').map(commit => {
@@ -21,19 +18,8 @@ exports.getChangelog = async () => {
     };
   });
 
-  const releaseNotes = nextTag =>
+  return nextTag =>
     commits
       .map(commit => `- ${htmlEscape(commit.message)}  ${commit.id}`)
       .join('\n') + `\n\n${repoUrl}/compare/${latest}...${nextTag}`;
-
-  return releaseNotes;
 };
-
-exports
-  .getChangelog()
-  .then(releaseNotes => {
-    console.log(releaseNotes('v123'));
-  })
-  .catch(e => {
-    console.error(e);
-  });

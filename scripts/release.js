@@ -149,7 +149,8 @@ async function release() {
     });
 
   logStep('create github release');
-  const changelog = releaseNotes(`v${currVersion}`);
+  const tag = `v${currVersion}`;
+  const changelog = releaseNotes(tag);
   console.log(changelog);
   const url = newGithubReleaseUrl({
     repoUrl: 'https://github.com/umijs/umi',
