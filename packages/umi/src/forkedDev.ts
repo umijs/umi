@@ -1,6 +1,8 @@
+import { join } from 'path';
 import { chalk, yParser } from '@umijs/utils';
 import { Service } from './ServiceWithBuiltIn';
 import getCwd from './utils/getCwd';
+import getPkg from './utils/getPkg';
 
 const args = yParser(process.argv.slice(2));
 
@@ -9,6 +11,7 @@ const args = yParser(process.argv.slice(2));
     process.env.NODE_ENV = 'development';
     const service = new Service({
       cwd: getCwd(),
+      pkg: getPkg(process.cwd()),
     });
     await service.run({
       name: 'dev',
