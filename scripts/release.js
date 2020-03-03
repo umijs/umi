@@ -40,10 +40,11 @@ async function release() {
       `Release failed, please use ${chalk.blue('npm run release')}.`,
     );
   }
-  if (!userRegistry.includes('https://registry.npmjs.org/')) {
-    const registry = chalk.blue('https://registry.npmjs.org/');
-    printErrorAndExit(`Release failed, npm registry must be ${registry}.`);
-  }
+  // 因为是发布到私服，所以不需要是 https://registry.npmjs.org/
+  // if (!userRegistry.includes('https://registry.npmjs.org/')) {
+  //   const registry = chalk.blue('https://registry.npmjs.org/');
+  //   printErrorAndExit(`Release failed, npm registry must be ${registry}.`);
+  // }
 
   let updated = null;
 
