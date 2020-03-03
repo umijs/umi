@@ -18,6 +18,7 @@ Umi 项目的本地研发工作台
 在项目中执行
 
 ```bash
+$ tnpm i @umijs/preset-ui -D
 $ UMI_UI=1 umi dev
 ```
 
