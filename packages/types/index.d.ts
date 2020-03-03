@@ -81,8 +81,8 @@ export interface IApi extends PluginAPI {
   // methods
   applyPlugins: typeof Service.prototype.applyPlugins;
   ApplyPluginsType: typeof Service.prototype.ApplyPluginsType;
-  EnableBy: typeof Service.prototype.EnableBy;
   ConfigChangeType: typeof Service.prototype.ConfigChangeType;
+  EnableBy: typeof Service.prototype.EnableBy;
   stage: typeof Service.prototype.stage;
   ServiceStage: typeof Service.prototype.ServiceStage;
   writeTmpFile: { (args: { path: string; content: string }): void };
@@ -94,6 +94,7 @@ export interface IApi extends PluginAPI {
 
   // methods from dev command
   getPort: IGetter<number>;
+  getHostname: IGetter<string>;
   getServer: IGetter<Server>;
   restartServer: Function;
 

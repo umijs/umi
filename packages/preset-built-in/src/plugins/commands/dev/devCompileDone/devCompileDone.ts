@@ -7,6 +7,7 @@ export default (api: IApi) => {
       bundleConfig.plugins?.push(
         new DevCompileDonePlugin({
           port: api.getPort(),
+          hostname: api.getHostname(),
           https: !!(api.config?.devServer?.https || process.env.HTTPS),
           onCompileDone({ isFirstCompile, stats }) {
             if (isFirstCompile) {

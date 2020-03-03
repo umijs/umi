@@ -3,6 +3,7 @@ import { chalk, clipboardy, address } from '@umijs/utils';
 
 interface IOpts {
   port: number;
+  hostname: string;
   https?: boolean;
   onCompileDone: (args: {
     isFirstCompile: boolean;
@@ -35,7 +36,9 @@ export default class DevCompileDonePlugin {
       if (isFirstCompile) {
         const lanIp = address.ip();
         const protocol = this.opts.https ? 'https' : 'http';
-        const localUrl = `${protocol}://localhost:${this.opts.port}`;
+        const hostname =
+          this.opts.hostname === '0.0.0.0' ? 'localhost' : this.opts.hostname;
+        const localUrl = `${protocol}://${hostname}:${this.opts.port}`;
         const lanUrl = `${protocol}://${lanIp}:${this.opts.port}`;
 
         let copied = '';
