@@ -479,7 +479,7 @@ test('resolvePackage with APP_ROOT specified', () => {
   const repoRoot = join(fixtures, 'normal');
   const service = new Service({
     cwd: appRoot,
-    repoDir: repoRoot,
+    pkg: require(join(repoRoot, 'package.json')),
   });
   expect(service.pkg.name).toEqual('foo');
 });

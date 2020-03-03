@@ -24,7 +24,7 @@ const logger = new Logger('umi:core:Service');
 
 export interface IServiceOpts {
   cwd: string;
-  repoDir?: string;
+  pkg?: IPackage;
   presets?: string[];
   plugins?: string[];
   env?: NodeEnv;
@@ -40,7 +40,6 @@ interface IConfig {
 // 1. duplicated key
 export default class Service extends EventEmitter {
   cwd: string;
-  repoDir?: string;
   pkg: IPackage;
   skipPluginIds: Set<string> = new Set<string>();
   // lifecycle stage
@@ -99,8 +98,7 @@ export default class Service extends EventEmitter {
     logger.debug(opts);
     this.cwd = opts.cwd || process.cwd();
     // repoDir should be the root dir of repo
-    this.repoDir = opts.repoDir;
-    this.pkg = this.resolvePackage();
+    this.pkg = opts.pkg || this.resolvePackage();
     this.env = opts.env || process.env.NODE_ENV;
 
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
@@ -168,11 +166,7 @@ export default class Service extends EventEmitter {
     try {
       return require(join(this.cwd, 'package.json'));
     } catch (e) {
-      try {
-        return require(join(this.repoDir || '', 'package.json'));
-      } catch (err) {
-        return {};
-      }
+      return {};
     }
   }
 
