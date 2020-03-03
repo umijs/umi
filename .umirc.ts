@@ -119,4 +119,7 @@ export default {
     },
   ],
   exportStatic: {},
+  analytics: {
+    ga: 'UA-149864185-1',
+  },
 };

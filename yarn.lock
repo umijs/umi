@@ -3117,6 +3117,11 @@
     stylelint-declaration-block-no-ignored-properties "^2.1.0"
     stylelint-order "^3.0.0"
 
+"@umijs/plugin-analytics@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.1.1.tgz#490c99502a1154454f59bd4e16fb92d169bbba1c"
+  integrity sha512-8SBLMPzn3RVjz76BGdkgkNi6lSblQ3a/mPjbuKCf+H5y5EYGPcJSeYDI5d7ynA1q0miu+f6WcVTiEU1I06Xrgw==
+
 "@umijs/preset-dumi@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.0.0.tgz#5788bec5415ff1a8493f3cf195965aaa41827845"
