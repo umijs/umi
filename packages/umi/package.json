@@ -6,7 +6,6 @@
   "types": "types.d.ts",
   "files": [
     "lib",
-    "src",
     "dist",
     "types.d.ts",
     "bin"
