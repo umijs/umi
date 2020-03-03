@@ -106,6 +106,25 @@ Umi 3 在配置层做了大量精简，以降低大家的学习成本。以下�
 + import { Link } from 'umi';
 ```
 
+### umi/router
+
+改用 `history` 代替。
+
+```diff
+- import router from 'umi/router';
++ import { history } from 'umi';
+
+- router.push('/foo');
++ history.push('/foo');
+```
+
 ## 遇到问题
 
 Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知的所有不兼容变化和相关影响，但是有可能还是有一些场景我们没有考虑到。如果你在升级过程中遇到了问题，请到 [Github issues](https://github.com/umijs/umi/issues) 进行反馈。我们会尽快响应和相应改进这篇文档。
+
+也可以加 "Umi 3 升级问题互帮互助" 群，
+
+<img src="https://img.alicdn.com/tfs/TB1pd1ce8r0gK0jSZFnXXbRRXXa-430-430.jpg" width="60" />
+
+扫上方二维码，并回复 **umi 3**。
+
