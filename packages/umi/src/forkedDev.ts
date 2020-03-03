@@ -9,6 +9,7 @@ const args = yParser(process.argv.slice(2));
     process.env.NODE_ENV = 'development';
     const service = new Service({
       cwd: getCwd(),
+      repoDir: process.cwd(),
     });
     await service.run({
       name: 'dev',

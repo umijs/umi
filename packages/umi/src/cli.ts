@@ -49,6 +49,7 @@ if (args.help && !args._[0]) {
         }
         await new Service({
           cwd: getCwd(),
+          repoDir: process.cwd(),
         }).run({
           name,
           args,

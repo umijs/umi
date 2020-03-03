@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
 import { BabelRegister, NodeEnv, lodash } from '@umijs/utils';
@@ -24,6 +24,7 @@ const logger = new Logger('umi:core:Service');
 
 export interface IServiceOpts {
   cwd: string;
+  repoDir?: string;
   presets?: string[];
   plugins?: string[];
   env?: NodeEnv;
@@ -39,6 +40,7 @@ interface IConfig {
 // 1. duplicated key
 export default class Service extends EventEmitter {
   cwd: string;
+  repoDir?: string;
   pkg: IPackage;
   skipPluginIds: Set<string> = new Set<string>();
   // lifecycle stage
@@ -96,6 +98,8 @@ export default class Service extends EventEmitter {
     logger.debug('opts:');
     logger.debug(opts);
     this.cwd = opts.cwd || process.cwd();
+    // repoDir should be the root dir of repo
+    this.repoDir = opts.repoDir;
     this.pkg = this.resolvePackage();
     this.env = opts.env || process.env.NODE_ENV;
 
@@ -164,7 +168,11 @@ export default class Service extends EventEmitter {
     try {
       return require(join(this.cwd, 'package.json'));
     } catch (e) {
-      return {};
+      try {
+        return require(join(this.repoDir || '', 'package.json'));
+      } catch (err) {
+        return {};
+      }
     }
   }
 
