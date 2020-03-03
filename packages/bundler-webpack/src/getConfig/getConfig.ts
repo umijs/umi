@@ -202,6 +202,8 @@ export default async function getConfig(
       .options({
         limit: config.inlineLimit || 10000,
         name: 'static/[name].[hash:8].[ext]',
+        // require 图片的时候不用加 .default
+        esModule: false,
         fallback: {
           loader: require.resolve('file-loader'),
           options: {
