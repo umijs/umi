@@ -4,12 +4,11 @@ translateHelp: true
 
 # Env Variables
 
+## Setting environment variables
 
-## 设置环境变量
+### When executing CLI command
 
-### 执行命令时添加
-
-比如，
+Example:
 
 ```bash
 # OS X, Linux
@@ -19,63 +18,65 @@ $ PORT=3000 umi dev
 $ set PORT=3000&&umi dev
 ```
 
-如果要同时考虑 OS X 和 Windows，可借助三方工具 [cross-env](https://github.com/kentcdodds/cross-env)，
+If you want it to work for multiple Operating Systems, such as OS X and Windows, you can use [cross-env](https://github.com/kentcdodds/cross-env)，
 
 ```bash
 $ yarn add cross-env --dev
 $ cross-env PORT=3000 umi dev
 ```
 
-### 在 .env 文件中定义
+### .env file
 
-Umi 中约定根目录下的 `.env` 为环境变量配置文件。
+The `.env` file can be used to configure environment variables.
 
-比如：
+Example:
 
 ```bash
 PORT=3000
 BABEL_CACHE=none
 ```
 
-然后执行，
+Then execute
 
 ```bash
 $ umi dev
 ```
 
-会以 3000 端口启动 dev server，并且禁用 babel 的缓存。
+The dev server is started at port 3000, and babel's cache is disabled.
 
-## 环境变量列表
+## List of environment variables
 
-按字母排序。
+In alphabetical order
 
 ### APP\_ROOT
 
-指定项目根目录。
+Specify the project root directory.
 
-注意：
+Note:
 
-* APP\_ROOT 不能配在 `.env` 中，只能在命令行里添加
+* APP\_ROOT can not bne set in `.env` file, you can only set it via CLI
 
 ### ANALYZE
 
-用于分析 bundle 构成，默认关闭。
+Used to analyze the composition of the bundle. It is turned off by default.
 
-比如：
+Example:
 
 ```bash
 $ ANALYZE=1 umi dev
-# 或者
+# build
 $ ANALYZE=1 umi build
 ```
 
 ### COMPRESS
 
-默认压缩 CSS 和 JS，值为 none 时不压缩，build 时有效。
+By default, CSS and JS are compressed. When the value is `none`, it is not compressed. It is valid during build.
 
 ### FORK_TS_CHECKER
 
-默认不开启 TypeScript 类型检查，值为 `1` 时启用。比如：
+The default is not open TypeScript type checking is `1` enabled. 
+
+Example:
 
 ```bash
 $ FORK_TS_CHECKER=1 umi dev
@@ -83,16 +84,16 @@ $ FORK_TS_CHECKER=1 umi dev
 
 ### HTML
 
-设为 `none` 时不输出 HTML，`umi build` 时有效。
+Set `none` when output is not HTML, `umi build` is valid.
 
 ### HOST
 
-默认是 `0.0.0.0`。
+The default is `0.0.0.0`。
 
 ### PORT
 
-指定端口号，默认是 `8000`。
+Specify the port number. The default is `8000`.
 
 ### UMI\_ENV
 
-指定不同环境各自的配置文件，详见[配置#多环境多份配置](TODO)。
+Specify the respective configuration files for different environments. For details, see [TODO](TODO)。
