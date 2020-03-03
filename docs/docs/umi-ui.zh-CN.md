@@ -1,4 +1,4 @@
-# Umi UI
+# 使用 Umi UI
 
 > 由于 Umi 3 使用微内核架构，将之前 Umi UI 拆分到[独立的仓库](https://github.com/umijs/umi-ui)，通过加载 [@umijs/preset-ui](https://github.com/umijs/umi-ui#-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B) 使用 Umi UI。
 
@@ -18,11 +18,12 @@ Umi 项目的本地研发工作台
 在项目中执行
 
 ```bash
-$ tnpm i @umijs/preset-ui -D
+$ yarn add @umijs/preset-ui -D
 $ UMI_UI=1 umi dev
 ```
 
 详见：[Umi UI 视频介绍](https://www.bilibili.com/video/av66178967)。
+
 
 # 🤔 未来
 
