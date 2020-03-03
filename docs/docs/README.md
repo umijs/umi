@@ -3,12 +3,8 @@ title: Introduce
 nav:
   title: Docs
   order: 1
-translateHelp: true
 toc: content
 ---
-
-
-
 
 <img src="https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png" width="120" />
 

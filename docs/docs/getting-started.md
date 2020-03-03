@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Getting Started
 
 ## Environment setup

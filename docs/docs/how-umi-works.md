@@ -1,6 +1,3 @@
----
-translateHelp: true
----
 
 # How Umi Works
 
