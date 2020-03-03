@@ -23,7 +23,8 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/runtime#readme",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
     "@types/history": "4.7.5",

@@ -22,7 +22,8 @@
   "bugs": "http://github.com/umijs/umi/issues",
   "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-auto-css-modules#readme",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
     "@umijs/utils": "3.0.1"

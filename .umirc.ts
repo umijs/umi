@@ -1,4 +1,4 @@
-function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
+function getMenus(opts: { lang?: string; base: '/docs'| '/plugins' }) {
   const menus = {
     '/plugins': [
       {

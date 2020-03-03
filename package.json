@@ -54,5 +54,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/umijs/umi-next.git"
-  }
+  },
+  "name": "umiFork"
 }

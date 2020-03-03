@@ -39,6 +39,7 @@ const getPackages = require('./utils/getPackages');
         homepage: `https://github.com/umijs/umi/tree/master/packages/${shortName}#readme`,
         publishConfig: {
           access: 'public',
+          registry:"https://maven.jianhui.com/repository/afc_npm_snapshots/"
         },
       };
       if (pkgJSONExists) {

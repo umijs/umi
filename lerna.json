@@ -19,5 +19,8 @@
     "**/*.e2e.ts",
     "**/fixtures/**",
     "**/test/**"
+  ],
+  "packages": [
+    "packages/*"
   ]
 }

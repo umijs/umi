@@ -12,3 +12,6 @@
 .umi-test
 **/fixtures/**/dist
 .now
+/.idea/
+/umiFork.iml
+/packages/core/src/Service/fixtures/normal/node_modules/
