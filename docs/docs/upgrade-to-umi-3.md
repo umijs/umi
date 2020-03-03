@@ -75,7 +75,7 @@ export default {
 
 ## 配置层
 
-Umi 3 在配置层做了大量精简，以降低大家的学习成本。以下修改以字母排序，便于查找。
+Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查找。
 
 * 删除 browserslist，和 targets 重复了
 * 删除 babel，基本用不上
@@ -84,12 +84,13 @@ Umi 3 在配置层做了大量精简，以降低大家的学习成本。以下�
 * 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有厂家，没有必要再配
 * 删除 disableGlobalVariables，始终无全局变量，无需配置
 * 删除 disableRedirectHoist，始终不再做 redirect hoist
-* 删除 extraBabelIncludes 和 es5ImcompatibleVersions，node\_modules 也走 babel 编译后就没有意义了，无需配置
 * 删除 disableCSSModules 和 cssModulesWithAffix，Umi 3 自动识别 css modules 的使用，无需配置
+* 删除 extraBabelIncludes 和 es5ImcompatibleVersions，node\_modules 也走 babel 编译后就没有意义了，无需配置
 * 修改 history 格式为 `{ type, options }` ，不再支持 string 格式
 * 修改 lessLoaderOptions 命名为 lessLoader
 * 删除 minimizer，只保留 terserjs
-* 删除 sass，不再支持
+* 修改 plugins 的格式为字符串，需要先确保依赖的插件是否升级到 Umi 3，然后修改方式参考前面 umi-plugin-react 的修改方式
+* 删除 sass，不再支持，后续会以插件的方式提供
 * 删除 treeShaking，已内置，无需配置
 * 删除 tsConfigFile，没有必要
 * 删除 typescript，TypeScript 编译交给 babel 处理后，之前 ts-loader 的配置就没有意义了
