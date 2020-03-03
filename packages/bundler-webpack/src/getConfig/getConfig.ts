@@ -168,6 +168,15 @@ export default async function getConfig(
 
   // prettier-ignore
   webpackConfig.module
+    .rule('ts-in-node_modules')
+      .test(/\.(jsx|ts|tsx)$/)
+      .include.add(/node_modules/).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
+
+  // prettier-ignore
+  webpackConfig.module
     .rule('js-in-node_modules')
       .test(/\.(js|mjs)$/)
       .include.add(/node_modules/).end()
