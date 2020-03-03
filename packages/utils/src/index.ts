@@ -21,7 +21,6 @@ import yParser from 'yargs-parser';
 import * as t from '@babel/types';
 import * as parser from '@babel/parser';
 import * as traverse from '@babel/traverse';
-import prettier from 'prettier';
 import semver from 'semver';
 
 export { spawn };
@@ -47,7 +46,6 @@ export { yParser };
 export { t };
 export { parser };
 export { traverse };
-export { prettier };
 export { signale };
 
 export { default as compatESModuleRequire } from './compatESModuleRequire/compatESModuleRequire';
