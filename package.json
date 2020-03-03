@@ -42,7 +42,7 @@
     "@types/node": "^13.7.6",
     "@umijs/core": "3.0.2",
     "@umijs/preset-dumi": "^1.0.0",
-    "@umijs/plugin-analytics": "3.0.2",
+    "@umijs/plugin-analytics": "^0.1.1",
     "@umijs/test": "3.0.2",
     "@umijs/utils": "3.0.2",
     "escape-goat": "^3.0.0",

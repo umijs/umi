@@ -97,7 +97,7 @@ async function release() {
     logStep('sync version to root package.json');
     const rootPkg = require('../package');
     Object.keys(rootPkg.devDependencies).forEach(name => {
-      if (name.startsWith('@umijs/') && name !== '@umijs/preset-dumi') {
+      if (name.startsWith('@umijs/') && !name.startsWith('@umijs/p')) {
         rootPkg.devDependencies[name] = currVersion;
       }
     });
