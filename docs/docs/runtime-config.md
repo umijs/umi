@@ -4,20 +4,17 @@ translateHelp: true
 
 # Runtime Config
 
+The difference between runtime configuration and configuration is that he runs on the browser side. Based on this, we can write functions, jsx, import browser-side dependencies, and so on. Be careful not to introduce node dependencies.
 
-运行时配置和配置的区别是他跑在浏览器端，基于此，我们可以在这里写函数、jsx、import 浏览器端依赖等等，注意不要引入 node 依赖。
+## Configuration method
 
-## 配置方式
+Conventions `src/app.tsx` configured to run time.
 
-约定 `src/app.tsx`  为运行时配置。
-
-## 配置项
+## Configuration item
 
 ### patchRoutes({ routes })
 
-修改路由。
-
-比如在最前面添加一个 `/foo` 路由，
+Modify the route. For example, in the front to add a `/foo` route,
 
 ```bash
 export function patchRoutes({ routes }) {
@@ -29,7 +26,7 @@ export function patchRoutes({ routes }) {
 }
 ```
 
-比如和 `render` 配置配合使用，请求服务端根据响应动态更新路由，
+The `render` configuration used in conjunction with a request route server is dynamically updated based on the response
 
 ```bash
 let extraRoutes;
@@ -43,15 +40,13 @@ export function render() {
 }
 ```
 
-注意：
+Note：
 
-* 直接 routes，不需要返回
+* For direct routes, no need to return
 
 ### render(oldRender: Function)
 
-覆写 render。
-
-比如用于渲染之前做权限校验，
+Overwrite render. For example, for permission verification before rendering
 
 ```bash
 import { history } from 'umi';
@@ -66,9 +61,7 @@ export function render(oldRender) {
 
 ### onRouteChange({ routes, matchedRoutes, location, action })
 
-在初始加载和路由切换时做一些事情。
-
-比如用于做埋点统计，
+Do something during initial load and route switching. For example, it is used for buried point statistics.
 
 ```bash
 export function onRouteChange({ location, routes, action }) {
@@ -76,7 +69,7 @@ export function onRouteChange({ location, routes, action }) {
 }
 ```
 
-比如用于设置标题，
+Such as for setting the title
 
 ```bash
 export function onRouteChange({ matchedRoutes }) {
@@ -88,9 +81,7 @@ export function onRouteChange({ matchedRoutes }) {
 
 ### rootContainer(LastRootContainer)
 
-修改交给 react-dom 渲染时的根组件。
-
-比如用于在外面包一个 Provider，
+Modify the root component to render to react-dom. For example, to bread a Provider
 
 ```bash
 export function rootContainer(container) {
@@ -98,6 +89,6 @@ export function rootContainer(container) {
 }
 ```
 
-## 更多配置项
+## More configuration items
 
-Umi 允许插件注册运行时配置，如果你使用插件，肯定会插件里找到更多运行时的配置项。
+Umi allows plugins to register runtime configuration. If you use plugins, you will definitely find more runtime configuration items in the plugin.

@@ -4,8 +4,7 @@ translateHelp: true
 
 # Config
 
-
-Umi 在 `.umirc.ts` 或 `config/config.ts` 中配置项目和插件，支持 es6。一份常见的配置如下，
+Umi in `.umirc.ts` or `config/config.ts` configuration items and plug-in support es6. A common configuration is as follows
 
 ```bash
 export default {
@@ -18,15 +17,15 @@ export default {
 }
 ```
 
-## 配置文件
+## Configuration file
 
-推荐在 `.umirc.ts` 中写配置。如果配置比较复杂需要拆分，可以放到 `config/config.ts` 中，并把配置的一部分拆出去，比如路由。
+Recommended `.umirc.ts` write configuration. If the configuration requires more complicated split, it can be placed in `config/config.ts` and removed out of the part of the configuration, such as routing.
 
-两者二选一，`.umirc.ts` 优先级更高。
+Choose one of the two, with `.umirc.ts` taking higher priority.
 
-## TypeScript 提示
+## TypeScript tips
 
-如果你想在写配置时也有提示，可以通过 umi 的 `defineConfig` 方法定义配置，
+If you want to write the configuration also has tips that can umi by `defineConfig` definition method configuration
 
 ```js
 import { defineConfig } from 'umi';
@@ -40,11 +39,11 @@ export default defineConfig({
 
 ![](https://img.alicdn.com/tfs/TB1EV1pv.T1gK0jSZFhXXaAtVXa-1204-838.png)
 
-## 本地临时配置
+## Local temporary configuration
 
-可以新建 `.umirc.local.ts`，这份配置会和 `.umirc.ts` 做 deep merge 后形成最终配置。
+You can create `.umirc.local.ts` and the configuration file `.umirc.ts` will form the final configuration after doing deep merge.
 
-比如，
+Example:
 
 ```js
 // .umirc.ts
@@ -54,7 +53,7 @@ export default { a: 1, b: 2 };
 export default { c: 'local' };
 ```
 
-拿到的配置是：
+The configuration will be:
 
 ```js
 {
@@ -64,17 +63,17 @@ export default { c: 'local' };
 }
 ```
 
-注意：
+Note：
 
-* `config/config.ts` 对应的是 `config/config.local.ts`
-* `.local.ts` 是本地验证使用的临时配置，请将其添加到 `.gitignore`，**务必不要提交到 git 仓库中**
-* `.local.ts` 配置的优先级最高，比 `UMI_ENV` 指定的配置更高
+* `config/config.ts` sorresponds to `config/config.local.ts`
+* `.local.ts` is a temporary configuration used for local authentication. Please add it to it `.gitignore` and **do not submit it to the git repository**
+* `.local.tsConfiguration` has higher priority than `UMI_ENV` environment variable config
 
-## 多环境多份配置
+## Multiple environments and multiple configurations
 
-可以通过环境变量 `UMI_ENV` 区分不同环境来指定配置。
+Environmental variables can `UMI_ENV` distinguish different environments to specify configuration.
 
-举个例子，
+Example:
 
 ```js
 // .umirc.js
@@ -87,7 +86,7 @@ export default { b: 'cloud', c: 'cloud' };
 export default { c: 'local' };
 ```
 
-不指定 `UMI_ENV` 时，拿到的配置是：
+If `UMI_ENV` is not defined, the configuration is:
 
 ```js
 {
@@ -97,7 +96,7 @@ export default { c: 'local' };
 }
 ```
 
-指定 `UMI_ENV=cloud` 时，拿到的配置是：
+If `UMI_ENV=cloud`, the configuration is:
 
 ```js
 {
