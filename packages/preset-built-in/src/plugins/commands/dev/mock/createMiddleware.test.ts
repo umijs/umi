@@ -2,7 +2,7 @@ import { join } from 'path';
 import { writeFileSync } from 'fs';
 import { Service } from '@umijs/core';
 import { Server } from '@umijs/server';
-import { winPath, portfinder } from '@umijs/utils';
+import { winPath, getPkg } from '@umijs/utils';
 import got from 'got';
 import rimraf from 'rimraf';
 import createMiddleware from './createMiddleware';
@@ -26,6 +26,7 @@ describe('createMiddleware', () => {
     const service = new Service({
       cwd,
       plugins: [],
+      pkg: getPkg(cwd),
     });
     await service.init();
     const registerBabel = (paths: string[]): void => {

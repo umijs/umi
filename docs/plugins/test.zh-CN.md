@@ -152,6 +152,7 @@ export default () => <h1>{getUsername('Hello World')}</h1>;
 // src/index.test.ts
 import { join } from 'path';
 import { Service } from 'umi';
+import { getPkg } from '@umijs/utils';
 import { render } from '@testing-library/react';
 
 const fixtures = join(__dirname, './fixtures');
@@ -161,6 +162,7 @@ test('normal tmp', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve('./')],
+    pkg: getPkg(cwd),
   });
   // 用于产生临时文件
   await service.run({
@@ -189,6 +191,7 @@ test('normal html', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve('./')],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'g',

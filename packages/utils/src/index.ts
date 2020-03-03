@@ -52,6 +52,7 @@ export { default as compatESModuleRequire } from './compatESModuleRequire/compat
 export { default as mergeConfig } from './mergeConfig/mergeConfig';
 export { default as isLernaPackage } from './isLernaPackage/isLernaPackage';
 export { default as getFile } from './getFile/getFile';
+export { default as getPkg } from './getFile/getPkg';
 export { default as winPath } from './winPath/winPath';
 export { default as winEOL } from './winEOL/winEOL';
 export { default as parseRequireDeps } from './parseRequireDeps/parseRequireDeps';

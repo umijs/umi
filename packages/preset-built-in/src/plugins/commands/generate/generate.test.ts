@@ -1,6 +1,6 @@
 import { Service } from '@umijs/core';
 import { join } from 'path';
-import { rimraf } from '@umijs/utils';
+import { rimraf, getPkg } from '@umijs/utils';
 import { existsSync } from 'fs';
 
 const fixtures = join(__dirname, '../../../fixtures');
@@ -10,6 +10,7 @@ async function runGenerator(args: any) {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'generate',

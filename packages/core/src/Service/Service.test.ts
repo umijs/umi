@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { winPath } from '@umijs/utils';
+import { winPath, getPkg } from '@umijs/utils';
 import Service from './Service';
 import { ApplyPluginsType } from './enums';
 
@@ -23,6 +23,7 @@ test('normal', async () => {
       require.resolve(join(cwd, 'plugin_1')),
       require.resolve(join(cwd, 'plugin_2')),
     ],
+    pkg: getPkg(cwd),
   });
   expect(service.pkg.name).toEqual('foo');
   expect(service.initialPresets.map(p => p.key)).toEqual([
@@ -79,8 +80,10 @@ test('normal', async () => {
 });
 
 test('no package.json', () => {
+  const cwd = join(fixtures, 'no-package-json');
   const service = new Service({
-    cwd: join(fixtures, 'no-package-json'),
+    cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.pkg).toEqual({});
 });
@@ -90,6 +93,7 @@ test('applyPlugin with add', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'add'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const ret = await service.applyPlugins({
@@ -104,6 +108,7 @@ test('applyPlugin with add failed with non-array initialValue', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'add'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   await expect(
@@ -120,6 +125,7 @@ test('applyPlugin with modify', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'modify'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const ret = await service.applyPlugins({
@@ -135,6 +141,7 @@ test('applyPlugin with event', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'event'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   let count = 0;
@@ -154,6 +161,7 @@ test('applyPlugin with unsupported type', async () => {
   const cwd = join(fixtures, 'applyPlugins');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   await service.init();
   await expect(
@@ -169,6 +177,7 @@ test('applyPlugin with stage', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'stage'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const ret = await service.applyPlugins({
@@ -183,6 +192,7 @@ test('applyPlugin with stage and registerMethod', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'stage_registerMethod'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const ret = await service.applyPlugins({
@@ -200,6 +210,7 @@ test('registerPlugin id conflict', async () => {
       require.resolve(join(cwd, 'plugin_1')),
       require.resolve(join(cwd, 'plugin_2')),
     ],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(
     /plugin foo is already registered by/,
@@ -214,6 +225,7 @@ test('registerPlugin id conflict (preset)', async () => {
       require.resolve(join(cwd, 'preset_1')),
       require.resolve(join(cwd, 'preset_2')),
     ],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(
     /preset foo is already registered by/,
@@ -232,6 +244,7 @@ test.skip('skip plugins', async () => {
       require.resolve(join(cwd, 'plugin_3')),
       require.resolve(join(cwd, 'plugin_4')),
     ],
+    pkg: getPkg(cwd),
   });
   await service.init();
   expect(Object.keys(service.hooksByPluginId)).toEqual(['plugin_4']);
@@ -242,6 +255,7 @@ test('api.registerPresets', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve(join(cwd, 'preset_1'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const plugins = simplyPluginIds({
@@ -261,6 +275,7 @@ test('api.registerPlugins', async () => {
     cwd,
     presets: [require.resolve(join(cwd, 'preset_1'))],
     plugins: [require.resolve(join(cwd, 'plugin_1'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const plugins = simplyPluginIds({
@@ -282,6 +297,7 @@ test('api.registerCommand', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   const ret = await service.run({
     name: 'build',
@@ -297,6 +313,7 @@ test('api.registerCommand aliased', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   const ret = await service.run({
     name: 'b',
@@ -312,6 +329,7 @@ test('api.args', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   const ret = await service.run({
     name: 'build',
@@ -331,6 +349,7 @@ test('api.registerMethod', async () => {
       require.resolve(join(cwd, 'plugin_1')),
       require.resolve(join(cwd, 'plugin_2')),
     ],
+    pkg: getPkg(cwd),
   });
   await service.init();
   const api = service.getPluginAPI({
@@ -352,6 +371,7 @@ test('api.registerMethod fail if exist', async () => {
       require.resolve(join(cwd, 'plugin_1')),
       require.resolve(join(cwd, 'plugin_1_duplicated')),
     ],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(
     /api\.registerMethod\(\) failed, method foo is already exist/,
@@ -366,6 +386,7 @@ test('api.registerMethod return silently if exist and opts.exitsError is set to 
       require.resolve(join(cwd, 'plugin_1')),
       require.resolve(join(cwd, 'plugin_1_duplicated_existsError_false')),
     ],
+    pkg: getPkg(cwd),
   });
   await service.init();
 });
@@ -378,6 +399,7 @@ test('api.registerMethod should have the right plugin id', async () => {
       require.resolve(join(cwd, 'plugin_3')),
       require.resolve(join(cwd, 'plugin_3_api_foo')),
     ],
+    pkg: getPkg(cwd),
   });
   await service.init();
   expect(Object.keys(service.hooksByPluginId)[0]).toContain(
@@ -390,6 +412,7 @@ test('plugin register throw error', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(/foo/);
 });
@@ -399,6 +422,7 @@ test('plugin syntax error', async () => {
   const service = new Service({
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(/Register plugin .+? failed/);
 });
@@ -413,6 +437,7 @@ test('enableBy', async () => {
       require.resolve(join(cwd, 'bar_enableByConfig')),
       require.resolve(join(cwd, 'hoo_enableByFunction')),
     ],
+    pkg: getPkg(cwd),
   });
   await service.init();
 
@@ -452,6 +477,7 @@ test('hasPlugins and hasPresets', async () => {
       require.resolve(join(cwd, 'mie_plugin_enableByConfig')),
     ],
     presets: [require.resolve(join(cwd, 'bar_preset'))],
+    pkg: getPkg(cwd),
   });
   await service.init();
 
@@ -472,14 +498,4 @@ test('hasPlugins and hasPresets', async () => {
   // 启用配置开启的插件
   service.userConfig.mie = 1;
   expect(service.hasPlugins(['mie_id'])).toEqual(true);
-});
-
-test('resolvePackage with APP_ROOT specified', () => {
-  const appRoot = join(fixtures, 'normal', 'approot', 'nextlevel');
-  const repoRoot = join(fixtures, 'normal');
-  const service = new Service({
-    cwd: appRoot,
-    pkg: require(join(repoRoot, 'package.json')),
-  });
-  expect(service.pkg.name).toEqual('foo');
 });

@@ -1,4 +1,5 @@
 import { Service } from '@umijs/core';
+import { getPkg } from '@umijs/utils';
 import { mockConsole } from '@umijs/test';
 import { join } from 'path';
 
@@ -9,6 +10,7 @@ test('webpack', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',
@@ -25,6 +27,7 @@ test('webpack with plugins', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',
@@ -41,6 +44,7 @@ test('webpack with plugin', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',
@@ -58,6 +62,7 @@ test('webpack with rules', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',
@@ -74,6 +79,7 @@ test('webpack with rule', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',
@@ -92,6 +98,7 @@ test('inpect + print', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('../../../index.ts')],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'webpack',

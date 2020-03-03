@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { getPkg } from '@umijs/utils';
 import Service from '../Service/Service';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -14,6 +15,7 @@ test('umirc', async () => {
   const cwd = join(fixtures, 'umirc');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
@@ -22,6 +24,7 @@ test('umirc-typescript', async () => {
   const cwd = join(fixtures, 'umirc-typescript');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
@@ -30,6 +33,7 @@ test('config-config', async () => {
   const cwd = join(fixtures, 'config-config');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
@@ -38,6 +42,7 @@ test('config-config-typescript', async () => {
   const cwd = join(fixtures, 'config-config-typescript');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.userConfig).toEqual({ foo: 'bar' });
 });
@@ -46,6 +51,7 @@ test('umi-env', async () => {
   const cwd = join(fixtures, 'umi-env');
   const s1 = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(s1.userConfig).toEqual({
     foo: 1,
@@ -59,6 +65,7 @@ test('umi-env', async () => {
   process.env.UMI_ENV = 'cloud';
   const s2 = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(s2.userConfig).toEqual({
     foo: 2,
@@ -75,6 +82,7 @@ test('umi-env-dot-env', async () => {
   const cwd = join(fixtures, 'umi-env-dot-env');
   const s1 = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(s1.userConfig).toEqual({
     bar: 2,
@@ -89,6 +97,7 @@ test('umi-env throw error if env affix file not exist', async () => {
   expect(() => {
     new Service({
       cwd,
+      pkg: getPkg(cwd),
     });
   }).toThrow(/get user config failed/);
 });
@@ -98,6 +107,7 @@ test('local', async () => {
   process.env.NODE_ENV = 'development';
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   expect(service.userConfig).toEqual({ foo: 'local', bar: 1 });
 });
@@ -107,6 +117,7 @@ test('default config', async () => {
   const service = new Service({
     cwd,
     plugins: [join(cwd, 'plugin.js')],
+    pkg: getPkg(cwd),
   });
   await service.init();
   expect(service.userConfig).toEqual({ plugin: { bar: 2 } });
@@ -127,6 +138,7 @@ test('schema validate success', async () => {
   const service = new Service({
     cwd,
     plugins: [join(cwd, 'plugin_string.js')],
+    pkg: getPkg(cwd),
   });
   await service.init();
   expect(service.config).toEqual({ foo: 'string' });
@@ -137,6 +149,7 @@ test('schema validate failed', async () => {
   const service = new Service({
     cwd,
     plugins: [join(cwd, 'plugin_number.js')],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(/"value" must be a number/);
 });
@@ -145,6 +158,7 @@ test('invalid keys', async () => {
   const cwd = join(fixtures, 'invalid-keys');
   const service = new Service({
     cwd,
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(/Invalid config key: foo/);
 });

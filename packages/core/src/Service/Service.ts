@@ -24,7 +24,7 @@ const logger = new Logger('umi:core:Service');
 
 export interface IServiceOpts {
   cwd: string;
-  pkg?: IPackage;
+  pkg: IPackage;
   presets?: string[];
   plugins?: string[];
   env?: NodeEnv;
@@ -98,7 +98,7 @@ export default class Service extends EventEmitter {
     logger.debug(opts);
     this.cwd = opts.cwd || process.cwd();
     // repoDir should be the root dir of repo
-    this.pkg = opts.pkg || this.resolvePackage();
+    this.pkg = opts.pkg;
     this.env = opts.env || process.env.NODE_ENV;
 
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);
@@ -160,14 +160,6 @@ export default class Service extends EventEmitter {
 
   setStage(stage: ServiceStage) {
     this.stage = stage;
-  }
-
-  resolvePackage() {
-    try {
-      return require(join(this.cwd, 'package.json'));
-    } catch (e) {
-      return {};
-    }
   }
 
   loadEnv() {

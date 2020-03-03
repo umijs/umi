@@ -1,9 +1,12 @@
 import { join } from 'path';
+import { getPkg } from '@umijs/utils';
 import { Service } from '../ServiceWithBuiltIn';
 
 test('normal', async () => {
+  const cwd = join(__dirname, 'fixtures', 'normal');
   const service = new Service({
-    cwd: join(__dirname, 'fixtures', 'normal'),
+    cwd,
+    pkg: getPkg(cwd),
   });
   const config = await service.run({
     name: 'webpack',

@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { winPath } from '@umijs/utils';
+import { winPath, getPkg } from '@umijs/utils';
 import { Service } from '@umijs/core';
 import { getMockData } from './utils';
 
@@ -16,6 +16,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
 
@@ -33,6 +34,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
 
@@ -56,6 +58,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
 
@@ -76,6 +79,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
 
@@ -95,6 +99,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
       const { mockPaths } = getMockData({
@@ -110,6 +115,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
       const { mockData } = getMockData({
@@ -146,6 +152,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
       const { mockData } = getMockData({
@@ -177,6 +184,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
       expect(() => {
@@ -196,6 +204,7 @@ describe('umi-mock:getMockData', () => {
       const service = new Service({
         cwd,
         plugins: [],
+        pkg: getPkg(cwd),
       });
       await service.init();
       const { mockData } = getMockData({

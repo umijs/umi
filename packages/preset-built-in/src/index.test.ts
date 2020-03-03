@@ -2,7 +2,7 @@ import { Service } from '@umijs/core';
 import { join } from 'path';
 import cheerio from 'cheerio';
 import { render, cleanup } from '@testing-library/react';
-import { rimraf } from '@umijs/utils';
+import { rimraf, getPkg } from '@umijs/utils';
 import { readFileSync } from 'fs';
 
 const fixtures = join(__dirname, 'fixtures');
@@ -15,6 +15,7 @@ test('api.writeTmpFile error in register stage', async () => {
     cwd,
     presets: [require.resolve('./index.ts')],
     plugins: [require.resolve(join(cwd, 'plugin-error'))],
+    pkg: getPkg(cwd),
   });
   await expect(service.init()).rejects.toThrow(
     /api.writeTmpFile\(\) should not execute in register stage./,
@@ -27,6 +28,7 @@ test('api.writeTmpFile', async () => {
     cwd,
     presets: [require.resolve('./index.ts')],
     plugins: [require.resolve(join(cwd, 'plugin'))],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'foo',
@@ -42,6 +44,7 @@ test('global js', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('./index.ts')],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'g',
@@ -59,6 +62,7 @@ test('html', async () => {
   const service = new Service({
     cwd,
     presets: [require.resolve('./index.ts')],
+    pkg: getPkg(cwd),
   });
   await service.run({
     name: 'g',

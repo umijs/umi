@@ -1,8 +1,6 @@
-import { join } from 'path';
-import { chalk, yParser } from '@umijs/utils';
+import { chalk, yParser, getPkg } from '@umijs/utils';
 import { Service } from './ServiceWithBuiltIn';
 import getCwd from './utils/getCwd';
-import getPkg from './utils/getPkg';
 
 const args = yParser(process.argv.slice(2));
 

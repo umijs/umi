@@ -1,4 +1,5 @@
 import { Service } from '@umijs/core';
+import { getPkg } from '@umijs/utils';
 import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
@@ -11,6 +12,7 @@ xtest('dev', done => {
     cwd,
     presets: [require.resolve('../../../index.ts')],
     env: 'development',
+    pkg: getPkg(cwd),
   });
   service
     .run({
