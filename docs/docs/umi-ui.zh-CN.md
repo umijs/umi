@@ -24,17 +24,6 @@ $ UMI_UI=1 umi dev
 
 详见：[Umi UI 视频介绍](https://www.bilibili.com/video/av66178967)。
 
-# 👷 开发者
-
-
-插件式的架构，支持对客户端、服务端的定制，可以更自由的定制本地研发工作台。
-
-详见：
-
-- [如何开发 Umi UI 插件（文章）](https://umijs.org/guide/develop-umi-ui-plugin.html)
-- [如何开发 Umi UI 插件（视频）](https://www.bilibili.com/video/av66357891)
-- [Umi UI API 文档](https://umijs.org/plugin/umi-ui.html)
-
 # 🤔 未来
 
 更强大的本地研发工作台。
