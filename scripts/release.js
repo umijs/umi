@@ -1,10 +1,13 @@
 const { yParser, execa, chalk } = require('@umijs/utils');
 const { join } = require('path');
 const { writeFileSync } = require('fs');
+const newGithubReleaseUrl = require('new-github-release-url');
+const open = require('open');
 const exec = require('./utils/exec');
 const syncTNPM = require('./syncTNPM');
 const getPackages = require('./utils/getPackages');
 const isNextVersion = require('./utils/isNextVersion');
+const { getChangelog } = require('./utils/changelog');
 
 const cwd = process.cwd();
 const args = yParser(process.argv.slice(2));
@@ -31,6 +34,11 @@ async function release() {
       'git status check is skipped, since --skip-git-status-check is supplied',
     );
   }
+
+  // get release notes
+  logStep('get release notes');
+  const releaseNotes = await getChangelog();
+  console.log(releaseNotes(''));
 
   // Check npm registry
   logStep('check npm registry');
@@ -140,8 +148,21 @@ async function release() {
       }
     });
 
-  logStep('done');
+  logStep('create github release');
+  const changelog = releaseNotes(`v${currVersion}`);
+  console.log(changelog);
+  const url = newGithubReleaseUrl({
+    repoUrl: 'https://github.com/umijs/umi',
+    tag,
+    body: changelog,
+    isPrerelease: isNext,
+  });
+  await open(url);
+
+  logStep('sync packages to tnpm');
   syncTNPM(pkgs);
+
+  logStep('done');
 }
 
 release().catch(err => {
