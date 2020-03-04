@@ -81,6 +81,14 @@ $ ANALYZE=1 umi build
 $ FORK_TS_CHECKER=1 umi dev
 ```
 
+### FRIENDLY_ERROR
+
+设为 none 时禁用，有些场景下 [friendly-errors-webpack-plugin](https://github.com/geowarin/friendly-errors-webpack-plugin) 会把错误给吞了。
+
+```bash
+$ FRIENDLY_ERROR=none umi dev
+```
+
 ### HTML
 
 设为 `none` 时不输出 HTML，`umi build` 时有效。
@@ -93,6 +101,14 @@ $ FORK_TS_CHECKER=1 umi dev
 
 指定端口号，默认是 `8000`。
 
-### UMI\_ENV
+### PROGRESS
+
+设为 `none` 时禁用进度条。比如：
+
+```bash
+$ PROGRESS=none umi dev
+```
+
+### UMI_ENV
 
 指定不同环境各自的配置文件，详见[配置#多环境多份配置](TODO)。

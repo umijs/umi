@@ -288,7 +288,7 @@ export default async function getConfig(
   ] as any);
 
   // progress
-  if (!isWebpack5) {
+  if (!isWebpack5 && process.env.PROGRESS !== 'none') {
     webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
   }
 
@@ -313,14 +313,16 @@ export default async function getConfig(
   //   .plugin('MildCompilePlugin')
   //   .use(require('webpack-mild-compile').Plugin);
 
-  // progress
-  webpackConfig
-    .plugin('friendly-error')
-    .use(require.resolve('friendly-errors-webpack-plugin'), [
-      {
-        clearConsole: false,
-      },
-    ]);
+  // error handler
+  if (process.env.FRIENDLY_ERROR !== 'none') {
+    webpackConfig
+      .plugin('friendly-error')
+      .use(require.resolve('friendly-errors-webpack-plugin'), [
+        {
+          clearConsole: false,
+        },
+      ]);
+  }
 
   webpackConfig.when(
     isDev,
