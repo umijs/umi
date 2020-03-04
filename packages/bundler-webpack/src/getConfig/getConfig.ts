@@ -266,15 +266,16 @@ export default async function getConfig(
   });
 
   // plugins -> ignore moment locale
-  // TODO: 验证 webpack@5 下的用途
-  // webpackConfig
-  //   .plugin('ignore-moment-locale')
-  //   .use(bundleImplementor.IgnorePlugin, [
-  //     {
-  //       resourceRegExp: /^\.\/locale$/,
-  //       contextRegExp: /moment$/,
-  //     },
-  //   ]);
+  if (config.ignoreMomentLocale) {
+    webpackConfig
+      .plugin('ignore-moment-locale')
+      .use(bundleImplementor.IgnorePlugin, [
+        {
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /moment$/,
+        },
+      ]);
+  }
 
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
