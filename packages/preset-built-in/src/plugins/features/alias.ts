@@ -1,6 +1,6 @@
 import { IApi } from '@umijs/types';
 import { dirname, join } from 'path';
-import { winPath } from '@umijs/utils';
+import { winPath, resolve } from '@umijs/utils';
 
 export default (api: IApi) => {
   const { paths, pkg, cwd } = api;
@@ -30,7 +30,15 @@ export default (api: IApi) => {
       (pkg.dependencies && pkg.dependencies[library]) ||
       (pkg.devDependencies && pkg.devDependencies[library])
     ) {
-      return winPath(join(cwd, 'node_modules', library));
+      return winPath(
+        dirname(
+          // 通过 resolve 往上找，可支持 lerna 仓库
+          // lerna 仓库如果用 yarn workspace 的依赖不一定在 node_modules，可能被提到根目录，并且没有 link
+          resolve.sync(`${library}/package.json`, {
+            basedir: cwd,
+          }),
+        ),
+      );
     }
     return null;
   }
