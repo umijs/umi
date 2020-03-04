@@ -33,6 +33,7 @@
     "@umijs/runtime": "3.0.3",
     "@umijs/types": "3.0.3",
     "@umijs/utils": "3.0.3",
+    "react": "^16.13.0",
     "resolve-cwd": "3.0.0"
   },
   "bin": {

@@ -24,6 +24,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/core": "7.8.6",
     "@types/multer": "1.4.2",
     "@types/react-router-config": "5.0.1",
     "@umijs/babel-preset-umi": "3.0.3",
