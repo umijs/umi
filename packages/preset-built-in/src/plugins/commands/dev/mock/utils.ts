@@ -3,6 +3,7 @@ import { winPath, createDebug, glob } from '@umijs/utils';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
+import * as url from 'url';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import { pathToRegexp } from 'path-to-regexp';
@@ -169,7 +170,7 @@ export const normalizeConfig = (config: any) => {
     );
     const { method, path } = parseKey(key);
     const keys: any[] = [];
-    const [pathname = ''] = path?.split('?') || [];
+    const { pathname } = url.parse(path);
     if (pathname) {
       // @ts-ignore
       const re = pathToRegexp(pathname, keys);
