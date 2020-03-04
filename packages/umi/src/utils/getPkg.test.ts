@@ -4,16 +4,20 @@ import getPkg from './getPkg';
 const fixtures = join(__dirname, 'fixtures');
 
 let oldAppRoot = process.env.APP_ROOT;
+let oldCwd = process.cwd();
 
 beforeEach(() => {
   oldAppRoot = process.env.APP_ROOT;
+  oldCwd = process.cwd();
 });
 
 afterEach(() => {
   process.env.APP_ROOT = oldAppRoot;
+  process.chdir(oldCwd);
 });
 
 test('no APP_ROOT, pkg retrieved in specified dir', () => {
+  process.chdir(fixtures);
   const pkg = getPkg(join(fixtures, 'normal'));
   expect(pkg.name).toEqual('normal');
 });
