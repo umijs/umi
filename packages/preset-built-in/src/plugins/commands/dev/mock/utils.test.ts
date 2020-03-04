@@ -171,7 +171,7 @@ describe('umi-mock:getMockData', () => {
       expect(mockData[3].method).toEqual('get');
       expect(mockData[3].path).toEqual('/api/samepath');
       expect(mockData[4].method).toEqual('get');
-      expect(mockData[4].path).toEqual('/api/list');
+      expect(mockData[4].path).toEqual('/api/list?campusClassId=1002');
     });
 
     it('conflicts', async () => {
