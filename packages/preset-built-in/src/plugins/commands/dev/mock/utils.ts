@@ -3,10 +3,9 @@ import { winPath, createDebug, glob } from '@umijs/utils';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import assert from 'assert';
-import * as url from 'url';
 import bodyParser from 'body-parser';
 import multer from 'multer';
-import { pathToRegexp } from 'path-to-regexp';
+import pathToRegexp from 'path-to-regexp';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
@@ -170,18 +169,14 @@ export const normalizeConfig = (config: any) => {
     );
     const { method, path } = parseKey(key);
     const keys: any[] = [];
-    const { pathname } = url.parse(path);
-    if (pathname) {
-      // @ts-ignore
-      const re = pathToRegexp(pathname, keys);
-      memo.push({
-        method,
-        path: pathname,
-        re,
-        keys,
-        handler: createHandler(method, pathname, handler),
-      });
-    }
+    const re = pathToRegexp(path, keys);
+    memo.push({
+      method,
+      path,
+      re,
+      keys,
+      handler: createHandler(method, path, handler),
+    });
     return memo;
   }, []);
 };
