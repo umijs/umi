@@ -224,6 +224,17 @@ export default async function getConfig(
         esModule: false,
       });
 
+  // prettier-ignore
+  webpackConfig.module
+    .rule('fonts')
+    .test(/\.(eot|woff|woff2|ttf)(\?.*)?$/)
+    .use('file-loader')
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      });
+
   // css
   css({
     config,
@@ -264,9 +275,6 @@ export default async function getConfig(
   //       contextRegExp: /moment$/,
   //     },
   //   ]);
-
-  // copy
-  // TODO
 
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
