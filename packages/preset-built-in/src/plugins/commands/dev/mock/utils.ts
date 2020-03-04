@@ -169,15 +169,18 @@ export const normalizeConfig = (config: any) => {
     );
     const { method, path } = parseKey(key);
     const keys: any[] = [];
-    // @ts-ignore
-    const re = pathToRegexp(path, keys);
-    memo.push({
-      method,
-      path,
-      re,
-      keys,
-      handler: createHandler(method, path, handler),
-    });
+    const [pathname = ''] = path?.split('?') || [];
+    if (pathname) {
+      // @ts-ignore
+      const re = pathToRegexp(pathname, keys);
+      memo.push({
+        method,
+        path: pathname,
+        re,
+        keys,
+        handler: createHandler(method, pathname, handler),
+      });
+    }
     return memo;
   }, []);
 };
