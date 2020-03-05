@@ -20,6 +20,7 @@ export default function() {
       require.resolve('./plugins/features/autoprefixer'),
       require.resolve('./plugins/features/base'),
       require.resolve('./plugins/features/chainWebpack'),
+      require.resolve('./plugins/features/chunks'),
       require.resolve('./plugins/features/cssLoader'),
       require.resolve('./plugins/features/cssnano'),
       require.resolve('./plugins/features/copy'),
