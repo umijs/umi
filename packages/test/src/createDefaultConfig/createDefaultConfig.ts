@@ -66,6 +66,8 @@ export default function(cwd: string, args: IUmiTestArgs) {
       // `node_modules/(?!([^/]*?umi|[^/]*?umi-test)/)`,
     ],
     // 用于设置 jest worker 启动的个数
-    ...(process.env.MAX_WORKERS ? { maxWorkers: Number(process.env.MAX_WORKERS) } : {}),
+    ...(process.env.MAX_WORKERS
+      ? { maxWorkers: Number(process.env.MAX_WORKERS) }
+      : {}),
   };
 }
