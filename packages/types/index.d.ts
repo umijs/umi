@@ -65,7 +65,7 @@ export interface ITargets {
   [key: string]: number | boolean;
 }
 
-type IPresetOrPlugin = string | [string, any];
+type IPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
 export interface IApi extends PluginAPI {
