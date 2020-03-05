@@ -21,9 +21,7 @@ if (args.version && !args._[0]) {
     ? chalk.cyan('@local')
     : '';
   console.log(`umi@${require('../package.json').version}${local}`);
-}
-
-if (args.help && !args._[0]) {
+} else if (!args._[0]) {
   args._[0] = 'help';
 }
 

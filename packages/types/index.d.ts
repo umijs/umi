@@ -202,11 +202,13 @@ export interface IConfig extends IConfigCore {
   alias?: {
     [key: string]: string;
   };
+  analyze?: BundleAnalyzerPlugin.Options;
   autoprefixer?: object;
   base?: string;
   chainWebpack?: {
     (memo: WebpackChain, args: { webpack: typeof webpack; env: env }): void;
   };
+  chunks?: string[];
   cssLoader?: object;
   cssnano?: object;
   copy?: string[];
@@ -227,6 +229,7 @@ export interface IConfig extends IConfigCore {
   extraBabelPresets?: IPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
+  forkTSCheker?: object;
   hash?: boolean;
   headScripts?: IScriptConfig;
   history?: {
@@ -260,8 +263,6 @@ export interface IConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
-  analyze?: BundleAnalyzerPlugin.Options;
-  forkTSCheker?: object;
   [key: string]: any;
 }
 

@@ -117,7 +117,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       const htmlChunks = await api.applyPlugins({
         key: 'modifyHTMLChunks',
         type: api.ApplyPluginsType.modify,
-        initialValue: ['umi'],
+        initialValue: api.config.chunks || ['umi'],
         args: {
           route: args.route,
         },

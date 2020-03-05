@@ -75,7 +75,7 @@ test('config routes', async () => {
   ]);
 });
 
-test('config routes', async () => {
+test('config routes with relative path', async () => {
   const route = new Route();
   expect(
     await route.getRoutes({
@@ -86,6 +86,29 @@ test('config routes', async () => {
     }),
   ).toEqual([
     { path: '/foo', routes: [{ path: '/foo/bar', exact: true }] },
+    { path: '/bar', exact: true },
+  ]);
+});
+
+test('config routes with relative path (root path is also relative)', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {
+        routes: [
+          { path: 'foo', routes: [{ path: 'bar', routes: [{ path: 'bar' }] }] },
+          { path: 'bar' },
+        ],
+      },
+      root: '/tmp',
+    }),
+  ).toEqual([
+    {
+      path: '/foo',
+      routes: [
+        { path: '/foo/bar', routes: [{ exact: true, path: '/foo/bar/bar' }] },
+      ],
+    },
     { path: '/bar', exact: true },
   ]);
 });
