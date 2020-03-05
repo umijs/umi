@@ -26,8 +26,8 @@ import { defineConfig } from 'umi';
 
 export const config = defineConfig({
   layout:{
-    name: 'Ant Design'; 
-    locale: true;
+    name: 'Ant Design',
+    locale: true
   }
 });
 ```
