@@ -98,6 +98,7 @@ export default {
     // 删除 umi 内置插件
     memo.plugins.delete('progress');
     memo.plugins.delete('friendly-error');
+    memo.plugins.delete('copy');
   }
 }
 ```
