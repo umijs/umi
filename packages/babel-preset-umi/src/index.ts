@@ -54,7 +54,13 @@ export default (context: any, opts: IOpts = {}) => {
         require('@babel/preset-react').default,
         toObject(opts.react),
       ],
-      opts.typescript && [require('@babel/preset-typescript').default],
+      opts.typescript && [
+        require('@babel/preset-typescript').default,
+        {
+          // https://babeljs.io/docs/en/babel-plugin-transform-typescript#impartial-namespace-support
+          allowNamespaces: true,
+        },
+      ],
     ].filter(Boolean),
     plugins: [
       // Necessary to include regardless of the environment because
