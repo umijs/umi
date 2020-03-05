@@ -119,6 +119,22 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 + history.push('/foo');
 ```
 
+### CSS 里引用别名或三方库
+
+需要加 `~` 前缀。
+
+比如：
+
+```diff
+# 别名
+- background: url(@/assets/logo.png);
++ background: url(~@/assets/logo.png);
+
+# 三方库
+- @import url(foo/bar.css');
+- @import url(~foo/bar.css');
+```
+
 ## 遇到问题
 
 Umi v3 做了非常多的细节改进和重构，我们尽可能收集了已知的所有不兼容变化和相关影响，但是有可能还是有一些场景我们没有考虑到。如果你在升级过程中遇到了问题，请到 [Github issues](https://github.com/umijs/umi/issues) 进行反馈。我们会尽快响应和相应改进这篇文档。
