@@ -235,6 +235,13 @@ export default async function getConfig(
         esModule: false,
       });
 
+  // prettier-ignore
+  webpackConfig.module
+    .rule('plaintext')
+    .test(/\.(txt|text)$/)
+    .use('raw-loader')
+      .loader(require.resolve('raw-loader'));
+
   // css
   css({
     config,
