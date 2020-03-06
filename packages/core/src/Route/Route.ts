@@ -79,6 +79,11 @@ class Route {
     if (route.path && route.path.charAt(0) !== '/') {
       route.path = winPath(join(opts.parentRoute?.path || '/', route.path));
     }
+    if (route.redirect && route.redirect.charAt(0) !== '/') {
+      route.redirect = winPath(
+        join(opts.parentRoute?.path || '/', route.redirect),
+      );
+    }
 
     if (route.routes) {
       await this.patchRoutes(route.routes, {

@@ -80,13 +80,19 @@ test('config routes with relative path', async () => {
   expect(
     await route.getRoutes({
       config: {
-        routes: [{ path: '/foo', routes: [{ path: 'bar' }] }, { path: 'bar' }],
+        routes: [
+          { path: '/foo', routes: [{ path: 'bar', redirect: 'hoo' }] },
+          { path: 'bar', redirect: 'hoo' },
+        ],
       },
       root: '/tmp',
     }),
   ).toEqual([
-    { path: '/foo', routes: [{ path: '/foo/bar', exact: true }] },
-    { path: '/bar', exact: true },
+    {
+      path: '/foo',
+      routes: [{ path: '/foo/bar', redirect: '/foo/hoo', exact: true }],
+    },
+    { path: '/bar', exact: true, redirect: '/hoo' },
   ]);
 });
 
@@ -96,8 +102,17 @@ test('config routes with relative path (root path is also relative)', async () =
     await route.getRoutes({
       config: {
         routes: [
-          { path: 'foo', routes: [{ path: 'bar', routes: [{ path: 'bar' }] }] },
-          { path: 'bar' },
+          {
+            path: 'foo',
+            routes: [
+              {
+                path: 'bar',
+                redirect: 'hoo',
+                routes: [{ path: 'bar', redirect: 'hoo' }],
+              },
+            ],
+          },
+          { path: 'bar', redirect: 'hoo' },
         ],
       },
       root: '/tmp',
@@ -106,10 +121,16 @@ test('config routes with relative path (root path is also relative)', async () =
     {
       path: '/foo',
       routes: [
-        { path: '/foo/bar', routes: [{ exact: true, path: '/foo/bar/bar' }] },
+        {
+          path: '/foo/bar',
+          redirect: '/foo/hoo',
+          routes: [
+            { exact: true, path: '/foo/bar/bar', redirect: '/foo/bar/hoo' },
+          ],
+        },
       ],
     },
-    { path: '/bar', exact: true },
+    { path: '/bar', exact: true, redirect: '/hoo' },
   ]);
 });
 
