@@ -1,6 +1,7 @@
 import { IRoute } from '..';
 
 export interface IConfig {
+  singular?: boolean;
   outputPath?: string;
   publicPath?: string;
   title?: string;

@@ -189,6 +189,31 @@ test('conventional opts.componentPrefix', async () => {
   ]);
 });
 
+test('conventional opts.singular', async () => {
+  const route = new Route();
+  expect(
+    await route.getRoutes({
+      config: {
+        singular: true,
+      },
+      root: join(fixtures, 'conventional-singular-layout/pages'),
+      componentPrefix: '@@@/',
+    }),
+  ).toEqual([
+    {
+      path: '/',
+      component: '@@@/layout/index.tsx',
+      routes: [
+        {
+          path: '/',
+          exact: true,
+          component: '@@@/pages/index.tsx',
+        },
+      ],
+    },
+  ]);
+});
+
 test('getJSON()', () => {
   const route = new Route();
   expect(

@@ -34,7 +34,11 @@ class Route {
     let isConventional = false;
     if (!routes) {
       assert(root, `opts.root must be supplied for conventional routes.`);
-      routes = this.getConventionRoutes({ root: root!, componentPrefix });
+      routes = this.getConventionRoutes({
+        root: root!,
+        config,
+        componentPrefix,
+      });
       isConventional = true;
     }
     await this.patchRoutes(routes, {
