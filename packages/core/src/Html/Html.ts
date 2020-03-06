@@ -2,7 +2,8 @@ import ejs from 'ejs';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
-import { prettier, cheerio } from '@umijs/utils';
+import { cheerio } from '@umijs/utils';
+import prettier from 'prettier';
 import { IConfig } from '..';
 import { IOpts, IGetContentArgs, IScript } from './types';
 

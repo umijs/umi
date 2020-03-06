@@ -169,6 +169,8 @@ history.goBack();
 
 ## hash 路由
 
+详见 [配置#history](../config#history)。
+
 ## Link 组件
 
 比如：
@@ -189,10 +191,34 @@ export default () => (
 
 * `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
 
-## NavLink 组件
+## 路由组件参数
 
-TODO，考虑放 API 文档里。
+路由组件可通过 `props` 获取到以下属性，
 
-## 路由参数
+* match，当前路由和 url match 后的对象，包含 `params`、`path`、`url` 和 `isExact` 属性
+* location，表示应用当前出于哪个位置，包含 `pathname`、`search`、`query` 等属性
+* history，同 [api#history](../api#history) 接口
+* route，当前路由配置，包含 `path`、`exact`、`component`、`routes` 等
 
-TODO
+比如：
+
+```js
+export default function(props) {
+  console.log(props.route);
+  return <div>Home Page</div>;
+}
+```
+
+## 传递参数给子路由
+
+通过 cloneElement，一次就好（Umi 2 时需要两次）。
+
+```js
+import React from 'react';
+
+export default function Layout(props) {
+  return React.Children.map(props.children, child => {
+    return React.cloneElement(child, { foo: 'bar' });
+  });
+}
+```

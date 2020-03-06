@@ -1,4 +1,4 @@
-import { lodash } from '@umijs/utils';
+import { lodash, winPath } from '@umijs/utils';
 import { IRoute } from './types';
 
 interface IOpts {
@@ -28,7 +28,7 @@ export default function({ routes, config, cwd }: IOpts) {
   function patchRoute(route: IRoute) {
     if (route.component && !isFunctionComponent(route.component)) {
       const webpackChunkName = route.component
-        .replace(new RegExp(`^${lastSlash(cwd || '/')}`), '')
+        .replace(new RegExp(`^${lastSlash(winPath(cwd || '/'))}`), '')
         .replace(/^.(\/|\\)/, '')
         .replace(/(\/|\\)/g, '__')
         .replace(/\.jsx?$/, '')

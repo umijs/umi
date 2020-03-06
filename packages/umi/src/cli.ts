@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 import { Service } from './ServiceWithBuiltIn';
 import fork from './utils/fork';
 import getCwd from './utils/getCwd';
+import getPkg from './utils/getPkg';
 
 // process.argv: [node, umi.js, command, args]
 const args = yParser(process.argv.slice(2), {
@@ -20,9 +21,7 @@ if (args.version && !args._[0]) {
     ? chalk.cyan('@local')
     : '';
   console.log(`umi@${require('../package.json').version}${local}`);
-}
-
-if (args.help && !args._[0]) {
+} else if (!args._[0]) {
   args._[0] = 'help';
 }
 
@@ -49,6 +48,7 @@ if (args.help && !args._[0]) {
         }
         await new Service({
           cwd: getCwd(),
+          pkg: getPkg(process.cwd()),
         }).run({
           name,
           args,

@@ -119,6 +119,7 @@ describe('umi-mock:getMockData', () => {
           '**/a_2.js',
           '**/with-keys.js',
           '**/with-method.js',
+          '**/with-query.js',
         ],
         paths: service.paths,
       });
@@ -160,7 +161,7 @@ describe('umi-mock:getMockData', () => {
         paths: service.paths,
       });
 
-      expect(mockData.length).toEqual(4);
+      expect(mockData.length).toEqual(5);
       expect(mockData[0].method).toEqual('get');
       expect(mockData[0].path).toEqual('/api/get');
       expect(mockData[1].method).toEqual('get');
@@ -169,6 +170,8 @@ describe('umi-mock:getMockData', () => {
       expect(mockData[2].path).toEqual('/api/samepath');
       expect(mockData[3].method).toEqual('get');
       expect(mockData[3].path).toEqual('/api/samepath');
+      expect(mockData[4].method).toEqual('get');
+      expect(mockData[4].path).toEqual('/api/list?campusClassId=1002');
     });
 
     it('conflicts', async () => {

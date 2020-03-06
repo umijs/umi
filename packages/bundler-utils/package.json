@@ -1,12 +1,11 @@
 {
   "name": "@umijs/bundler-utils",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/bundler-utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -26,7 +25,7 @@
     "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
-    "@umijs/babel-preset-umi": "3.0.1",
-    "@umijs/types": "3.0.1"
+    "@umijs/babel-preset-umi": "3.0.4",
+    "@umijs/types": "3.0.4"
   }
 }

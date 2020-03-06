@@ -12,12 +12,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.ts?(x)": [
-      "prettier --parser=typescript --write",
-      "git add"
+      "prettier --parser=typescript --write"
     ]
   },
   "dependencies": {

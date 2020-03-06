@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
 import { BabelRegister, NodeEnv, lodash } from '@umijs/utils';
@@ -24,6 +24,7 @@ const logger = new Logger('umi:core:Service');
 
 export interface IServiceOpts {
   cwd: string;
+  pkg?: IPackage;
   presets?: string[];
   plugins?: string[];
   env?: NodeEnv;
@@ -96,7 +97,8 @@ export default class Service extends EventEmitter {
     logger.debug('opts:');
     logger.debug(opts);
     this.cwd = opts.cwd || process.cwd();
-    this.pkg = this.resolvePackage();
+    // repoDir should be the root dir of repo
+    this.pkg = opts.pkg || this.resolvePackage();
     this.env = opts.env || process.env.NODE_ENV;
 
     assert(existsSync(this.cwd), `cwd ${this.cwd} does not exist.`);

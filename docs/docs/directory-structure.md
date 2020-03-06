@@ -1,11 +1,7 @@
----
-translateHelp: true
----
-
 # Directory structure
 
 
-一个基础的 Umi 项目大致是这样的，
+A fundamental structure as below:
 
 	.
 	├── package.json
@@ -22,51 +18,52 @@ translateHelp: true
 	        └── index.tsx
 	    └── app.ts
 
-## 根目录
+## Root
 
 ### package.json
 
-包含插件和插件集，以 `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-` 和 `umi-plugin-` 开头的依赖会被自动注册为插件或插件集。
+All dependencies start with `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-`、`umi-plugin-` wwill be registered as plugin/plugin-preset.
 
 ### .umirc.ts
 
-配置文件，包含 umi 内置功能和插件的配置。
+Configuration file, consist of configurations for builtin/plugin provided functions.
 
 ### .env
 
-环境变量。
+Environments
 
-比如：
+For example：
 
 	PORT=8888
 	COMPRESS=none
 
-### dist 目录
+### dist
 
-执行 `umi build` 后，产物默认会存放在这里。
+Default location of outpput of `umi build`
 
-### mock 目录
+### mock
 
-存储 mock 文件，此目录下所有 js 和 ts 文件会被解析为 mock 文件。
+All `.js`、`.ts` files will be registered as `mock`.
 
-### public 目录
+### public
 
-此目录下所有文件会被 copy 到输出路径。
+All files in this directory will be copied to `dist`.
 
-## `/src` 目录
+## `/src`
 
-### .umi 目录
+### .umi
 
-临时文件目录，比如入口文件、路由等，都会被临时生成到这里。**不要提交 .umi 目录到 git 仓库，他们会在 umi dev 和 umi build 时被删除并重新生成。**
+Auto-generated directory, such as entry point, routes..., will be generated here. **Do not commit `.umi` to your `git` repo, since they will be re-generated as `umi dev` or `umi build` running.**
 
 ### layouts/index.tsx
 
-约定式路由时的全局路由文件。
+Layout module for convention routing pattern.
 
-### pages 目录
+### pages
 
-所有路由组件存放在这里。
+All router entries here.
 
 ### app.ts
 
-运行时配置文件，可以在这里扩展运行时的能力，比如修改路由、修改 render 方法等。
+Runtime configuration module, provide expansibility at runtime. Such as router, render update.
+

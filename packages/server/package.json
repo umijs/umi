@@ -1,12 +1,11 @@
 {
   "name": "@umijs/server",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/server",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -28,13 +27,13 @@
   "dependencies": {
     "@types/compression": "1.7.0",
     "@types/express": "4.17.2",
-    "@types/node": "13.7.6",
+    "@types/node": "13.7.7",
     "@types/sockjs": "0.3.31",
     "@types/spdy": "3.4.4",
-    "@umijs/utils": "3.0.1",
+    "@umijs/utils": "3.0.4",
     "compression": "1.7.4",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.0",
+    "http-proxy-middleware": "1.0.1",
     "immer": "5.3.6",
     "portfinder": "1.0.25",
     "sockjs": "0.3.19",

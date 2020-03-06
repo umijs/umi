@@ -1,12 +1,11 @@
 {
   "name": "@umijs/runtime",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/runtime",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "repository": {
     "type": "git",

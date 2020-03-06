@@ -3,48 +3,44 @@ title: Introduce
 nav:
   title: Docs
   order: 1
-translateHelp: true
 toc: content
 ---
 
-
-
-
 <img src="https://img.alicdn.com/tfs/TB1zomHwxv1gK0jSZFFXXb0sXXa-200-200.png" width="120" />
 
-## Umi 是什么？
+## What is Umi?
 
-Umi，中文可发音为**乌米**，是可扩展的企业级前端应用框架。Umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。然后配以生命周期完善的插件体系，覆盖从源码到构建产物的每个生命周期，支持各种功能扩展和业务需求。
+Umi, Chinese can be pronounced Umi , a scalable enterprise-class front-end application framework. Umi is based on routing, and supports both configuration routing and contracted routing to ensure the completeness of routing functions and to expand its functions. It is then complemented with a complete plug-in system for the life cycle, covering every life cycle from source code to build products, supporting various function extensions and business requirements.
 
-Umi 是蚂蚁金服的底层前端框架，已直接或间接地服务了 3000+ 应用，包括 java、node、H5 无线、离线（Hybrid）应用、纯前端 assets 应用、CMS 应用等。他已经很好地服务了我们的内部用户，同时希望他也能服务好外部用户。
+Umi is the underlying front-end framework of Ant Financial, and has directly or indirectly served 3000+ applications, including java, node, H5 wireless, offline (hybrid) applications, pure front-end assets applications, CMS applications, etc. He has served our internal users well, and hopes that he can also serve external users.
 
-它主要具备以下功能：
+It mainly has the following functions:
 
-* 🎉 **可扩展**，Umi 实现了完整的生命周期，并使其插件化，Umi 内部功能也全由插件完成。此外还支持插件和插件集，以满足功能和垂直域的分层需求。
-* 📦 **开箱即用**，Umi 内置了路由、构建、部署、测试等，仅需一个依赖即可上手开发。并且还提供针对 React 的集成插件集，内涵丰富的功能，可满足日常 80% 的开发需求。
-* 🐠 **企业级**，经蚂蚁内部 3000+ 项目以及阿里、优酷、网易、飞猪、口碑等公司项目的验证，值得信赖。
-* 🚀 **大量自研**，包含微前端、组件打包、文档工具、请求库、hooks 库、数据流等，满足日常项目的周边需求。
-* 🌴 **完备路由**，同时支持配置式路由和约定式路由，同时保持功能的完备性，比如动态路由、嵌套路由、权限路由等等。
-* 🚄 **面向未来**，在满足需求的同时，我们也不会停止对新技术的探索。比如 dll 提速、modern mode、webpack@5、自动化化 external、bundler less 等等。
+* 🎉 *extensible* Umi has realized the complete life cycle and made it plug-in. Umi's internal functions are also completed by plug-ins. Plug-ins and plug-in sets are also supported to meet the hierarchical needs of functionality and vertical domains.
+* 📦 *Out of the box* Umi has built-in routing, building, deployment, testing, and so on, and requires only one dependency to get started. It also provides an integrated plug-in set for React with rich content, which can meet 80% of the daily development needs.
+* 🐠 *Enterprise level* Umi has been verified by Ant's internal 3000+ projects and company projects such as Ali, Youku, Netease, Flying Pig, Word of Mouth and so on.
+* 🚀 *Based on research* including micro-front end, component packaging, documentation tools, request library, hooks library, data flow, etc., to meet the peripheral needs of daily projects.
+* 🌴 *Complete routing* which supports both configuration routing and convention routing, while maintaining functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
+* 🚄 *Facing the future* while meeting the needs, we will not stop exploring new technologies. Such as dll speedup, modern mode, webpack @ 5, automated external, bundler less and so on.
 
-## 什么时候不用 umi？
+## When is umi not used?
 
-如果你，
+If you,
 
-* 需要支持 IE 8 或更低版本的浏览器
-* 需要支持 React 16.8.0 以下的 React
-* 需要跑在 Node 10 以下的环境中
-* 有很强的 webpack 自定义需求和主观意愿
-* 需要选择不同的路由方案
+* Require a browser that supports IE 8 or lower
+* Need to support React < 16.8
+* Need to run Node < 10
+* Require a lot of webpack customization
+* Need to use a different routing scheme
 
-Umi 可能不适合你。
+Then Umi may not be right for you.
 
-## 为什么不是？
+## Why not?
 
 ### [create-react-app](https://github.com/facebook/create-react-app)
 
-create-create-app 是基于 webpack 的打包层方案，包含 build、dev、lint 等，他在打包层把体验做到了极致，但是不包含路由，不是框架，也不支持配置。所以，如果大家想基于他修改部分配置，或者希望在打包层之外也做技术收敛时，就会遇到困难。
+`create-create-app` is a webpack-based packaging layer solution that includes build, dev, lint, etc. He has achieved the ultimate experience in the packaging layer, but does not include routing, is not a framework, and does not support configuration. Therefore, if you want to modify some configurations based on him, or you want to do technical convergence outside the packaging layer, you will encounter difficulties.
 
 ### [next.js](https://github.com/zeit/next.js)
 
-next.js 是个很好的选择，Umi 很多功能是参考 next.js 做的。要说有哪些地方不如 Umi，我觉得可能是不够贴近业务，不够接地气。比如 antd、dva 的深度整合，比如国际化、权限、数据流、配置式路由、补丁方案、自动化 external 方面等等一线开发者才会遇到的问题。
+`next.js` is a good choice. Many of Umi's functions are made by referring to `next.js`. To say that there are some places that are not as good as Umi, I think it may not be close enough to the business and not grounded enough. For example, the deep integration of antd and dva, such as internationalization, permissions, data flow, configurable routing, patch schemes, external aspects of automation, etc. will only be encountered by front-line developers.

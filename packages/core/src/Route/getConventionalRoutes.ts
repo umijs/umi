@@ -4,11 +4,13 @@ import { getFile, winPath } from '@umijs/utils';
 import { getExportProps, isReactComponent } from '@umijs/ast';
 import assert from 'assert';
 import { IRoute } from './types';
+import { IConfig } from '..';
 
 interface IOpts {
   root: string;
   relDir?: string;
   componentPrefix?: string;
+  config: IConfig;
 }
 
 const RE_DYNAMIC_ROUTE = /^\[(.+?)\]$/;
@@ -166,7 +168,7 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
 }
 
 export default function getRoutes(opts: IOpts) {
-  const { root, relDir = '' } = opts;
+  const { root, relDir = '', config } = opts;
   const files = getFiles(join(root, relDir));
   const routes = normalizeRoutes(
     files.reduce(fileToRouteReducer.bind(null, opts), []),
@@ -175,7 +177,7 @@ export default function getRoutes(opts: IOpts) {
   if (!relDir) {
     const globalLayoutFile = getFile({
       base: root,
-      fileNameWithoutExt: '../layouts/index',
+      fileNameWithoutExt: `../${config.singular ? 'layout' : 'layouts'}/index`,
       type: 'javascript',
     });
     if (globalLayoutFile) {

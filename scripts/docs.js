@@ -9,7 +9,14 @@ const command = args._[0];
 const docsDir = join(cwd, 'docs');
 
 // 以下文档已翻译，无需同步中文版为英文版
-const DOC_SYNC_BLACKLIST = ['README.zh-CN.md'];
+const DOC_SYNC_BLACKLIST = [
+  'README.zh-CN.md',
+  'docs/README.zh-CN.md',
+  'docs/how-umi-works.zh-CN.md',
+  'docs/getting-started.zh-CN.md',
+  'docs/config.zh-CN.md',
+  'docs/directory-structure.zh-CN.md',
+];
 
 switch (command) {
   case 'add':

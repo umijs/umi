@@ -1,11 +1,6 @@
----
-translateHelp: true
----
-
 # Config
 
-
-Umi 在 `.umirc.ts` 或 `config/config.ts` 中配置项目和插件，支持 es6。一份常见的配置如下，
+Configuring with es6 syntax is supported in `.umirc.ts` or `config/config.ts`. A common configuration looks as below:
 
 ```bash
 export default {
@@ -18,15 +13,15 @@ export default {
 }
 ```
 
-## 配置文件
+## Configuration
 
-推荐在 `.umirc.ts` 中写配置。如果配置比较复杂需要拆分，可以放到 `config/config.ts` 中，并把配置的一部分拆出去，比如路由。
+We recommend configuring your app with `.umirc.ts`. It is possible to split your configurations into pieces and organize them in `config/config.ts` if your app requires complicated configuration. For example, if you need to configure routers, it would be a good choice to have it in an individual module alongside `config/config.ts`.
 
-两者二选一，`.umirc.ts` 优先级更高。
+You have to choose between `.umirc.ts` and `config/config.ts`, `.umirc.ts` has higher priority.
 
-## TypeScript 提示
+## TypeScript IntelliSense
 
-如果你想在写配置时也有提示，可以通过 umi 的 `defineConfig` 方法定义配置，
+If you used to working with IntelliSense even when writing configuration, import `defineConfig` from 'umi' helps.
 
 ```js
 import { defineConfig } from 'umi';
@@ -40,11 +35,11 @@ export default defineConfig({
 
 ![](https://img.alicdn.com/tfs/TB1EV1pv.T1gK0jSZFhXXaAtVXa-1204-838.png)
 
-## 本地临时配置
+## local configuration
 
-可以新建 `.umirc.local.ts`，这份配置会和 `.umirc.ts` 做 deep merge 后形成最终配置。
+Create `.umirc.local.ts`, it will be deep merged with `.umirc.ts` while using `umi dev`.
 
-比如，
+For example:
 
 ```js
 // .umirc.ts
@@ -54,7 +49,7 @@ export default { a: 1, b: 2 };
 export default { c: 'local' };
 ```
 
-拿到的配置是：
+The final configuration shall be:
 
 ```js
 {
@@ -64,17 +59,17 @@ export default { c: 'local' };
 }
 ```
 
-注意：
+Notice：
 
-* `config/config.ts` 对应的是 `config/config.local.ts`
-* `.local.ts` 是本地验证使用的临时配置，请将其添加到 `.gitignore`，**务必不要提交到 git 仓库中**
-* `.local.ts` 配置的优先级最高，比 `UMI_ENV` 指定的配置更高
+* local configuration file of `config/config.ts` is `config/config.local.ts`
+* `.local.ts` should only be used for local debugging，**Don't commit it to git repo**
+* `.local.ts` has higher priority compare with others specified with `UMI_ENV`
 
-## 多环境多份配置
+## Configuration for multiple environments
 
-可以通过环境变量 `UMI_ENV` 区分不同环境来指定配置。
+Environment variable `UMI_ENV` shall be used to identify configurations for different environemtns.
 
-举个例子，
+For example:
 
 ```js
 // .umirc.js
@@ -87,7 +82,7 @@ export default { b: 'cloud', c: 'cloud' };
 export default { c: 'local' };
 ```
 
-不指定 `UMI_ENV` 时，拿到的配置是：
+If we don't specify `UMI_ENV` , the final configuration we get will be:
 
 ```js
 {
@@ -97,7 +92,7 @@ export default { c: 'local' };
 }
 ```
 
-指定 `UMI_ENV=cloud` 时，拿到的配置是：
+If `UMI_ENV=cloud` is specified, the final configuration we get will be:
 
 ```js
 {

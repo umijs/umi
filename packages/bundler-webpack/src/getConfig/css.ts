@@ -167,6 +167,7 @@ export default function({
           {
             filename: `[name]${hash}.css`,
             chunkFilename: `[name]${hash}.chunk.css`,
+            ignoreOrder: true,
           },
         ],
       );

@@ -1,12 +1,11 @@
 {
   "name": "@umijs/preset-built-in",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/preset-built-in",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -28,17 +27,17 @@
   "dependencies": {
     "@types/multer": "1.4.2",
     "@types/react-router-config": "5.0.1",
-    "@umijs/babel-preset-umi": "3.0.1",
-    "@umijs/bundler-webpack": "3.0.1",
-    "@umijs/renderer-react": "3.0.1",
-    "@umijs/runtime": "3.0.1",
-    "@umijs/server": "3.0.1",
-    "@umijs/types": "3.0.1",
+    "@umijs/babel-preset-umi": "3.0.4",
+    "@umijs/bundler-webpack": "3.0.4",
+    "@umijs/renderer-react": "3.0.4",
+    "@umijs/runtime": "3.0.4",
+    "@umijs/server": "3.0.4",
+    "@umijs/types": "3.0.4",
     "cliui": "6.0.0",
     "fork-ts-checker-webpack-plugin": "4.0.5",
     "history-with-query": "4.10.2",
     "multer": "1.4.2",
-    "path-to-regexp": "6.1.0",
+    "path-to-regexp": "^1.7.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router": "5.1.2",

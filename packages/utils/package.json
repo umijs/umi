@@ -1,12 +1,11 @@
 {
   "name": "@umijs/utils",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/utils",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -26,10 +25,10 @@
     "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
-    "@babel/parser": "7.8.4",
-    "@babel/register": "7.8.3",
-    "@babel/traverse": "7.8.4",
-    "@babel/types": "7.8.3",
+    "@babel/parser": "7.8.6",
+    "@babel/register": "7.8.6",
+    "@babel/traverse": "7.8.6",
+    "@babel/types": "7.8.6",
     "@types/cheerio": "0.22.16",
     "@types/color": "3.0.1",
     "@types/cross-spawn": "6.0.1",
@@ -39,7 +38,6 @@
     "@types/lodash": "4.14.149",
     "@types/mkdirp": "1.0.0",
     "@types/mustache": "4.0.1",
-    "@types/prettier": "1.19.0",
     "@types/resolve": "1.14.0",
     "@types/rimraf": "2.0.3",
     "@types/semver": "7.1.0",
@@ -63,12 +61,11 @@
     "mkdirp": "1.0.3",
     "mustache": "4.0.0",
     "portfinder": "1.0.25",
-    "prettier": "1.19.1",
     "resolve": "1.15.1",
     "rimraf": "3.0.2",
     "semver": "7.1.3",
     "signale": "1.4.0",
     "yargs": "15.1.0",
-    "yargs-parser": "17.0.0"
+    "yargs-parser": "18.0.0"
   }
 }

@@ -5,7 +5,7 @@ import { existsSync } from 'fs';
 import assert from 'assert';
 import bodyParser from 'body-parser';
 import multer from 'multer';
-import { pathToRegexp } from 'path-to-regexp';
+import pathToRegexp from 'path-to-regexp';
 
 const VALID_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 const BODY_PARSED_METHODS = ['post', 'put', 'patch', 'delete'];
@@ -169,7 +169,6 @@ export const normalizeConfig = (config: any) => {
     );
     const { method, path } = parseKey(key);
     const keys: any[] = [];
-    // @ts-ignore
     const re = pathToRegexp(path, keys);
     memo.push({
       method,

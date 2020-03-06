@@ -14,6 +14,7 @@ export default (api: IApi) => {
   } = api;
 
   let port: number;
+  let hostname: string;
   let server: Server;
   const unwatchs: Function[] = [];
 
@@ -39,6 +40,7 @@ export default (api: IApi) => {
       port = await portfinder.getPortPromise({
         port: defaultPort ? parseInt(String(defaultPort), 10) : 8000,
       });
+      hostname = process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       console.log(chalk.cyan('Starting the development server...'));
       process.send?.({ type: 'UPDATE_PORT', port });
 
@@ -151,8 +153,6 @@ export default (api: IApi) => {
         ],
         ...(api.config.devServer || {}),
       });
-      const hostname =
-        process.env.HOST || api.config.devServer?.host || '0.0.0.0';
       const listenRet = await server.listen({
         port,
         hostname,
@@ -172,6 +172,17 @@ export default (api: IApi) => {
         `api.getPort() is only valid in development.`,
       );
       return port;
+    },
+  });
+
+  api.registerMethod({
+    name: 'getHostname',
+    fn() {
+      assert(
+        env === 'development',
+        `api.getHostname() is only valid in development.`,
+      );
+      return hostname;
     },
   });
 

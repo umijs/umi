@@ -168,6 +168,15 @@ export default async function getConfig(
 
   // prettier-ignore
   webpackConfig.module
+    .rule('ts-in-node_modules')
+      .test(/\.(jsx|ts|tsx)$/)
+      .include.add(/node_modules/).end()
+      .use('babel-loader')
+        .loader(require.resolve('babel-loader'))
+        .options(babelOpts);
+
+  // prettier-ignore
+  webpackConfig.module
     .rule('js-in-node_modules')
       .test(/\.(js|mjs)$/)
       .include.add(/node_modules/).end()
@@ -193,6 +202,8 @@ export default async function getConfig(
       .options({
         limit: config.inlineLimit || 10000,
         name: 'static/[name].[hash:8].[ext]',
+        // require 图片的时候不用加 .default
+        esModule: false,
         fallback: {
           loader: require.resolve('file-loader'),
           options: {
@@ -206,6 +217,17 @@ export default async function getConfig(
   webpackConfig.module
     .rule('svg')
     .test(/\.(svg)(\?.*)?$/)
+    .use('file-loader')
+      .loader(require.resolve('file-loader'))
+      .options({
+        name: 'static/[name].[hash:8].[ext]',
+        esModule: false,
+      });
+
+  // prettier-ignore
+  webpackConfig.module
+    .rule('fonts')
+    .test(/\.(eot|woff|woff2|ttf)(\?.*)?$/)
     .use('file-loader')
       .loader(require.resolve('file-loader'))
       .options({
@@ -244,18 +266,16 @@ export default async function getConfig(
   });
 
   // plugins -> ignore moment locale
-  // TODO: 验证 webpack@5 下的用途
-  // webpackConfig
-  //   .plugin('ignore-moment-locale')
-  //   .use(bundleImplementor.IgnorePlugin, [
-  //     {
-  //       resourceRegExp: /^\.\/locale$/,
-  //       contextRegExp: /moment$/,
-  //     },
-  //   ]);
-
-  // copy
-  // TODO
+  if (config.ignoreMomentLocale) {
+    webpackConfig
+      .plugin('ignore-moment-locale')
+      .use(bundleImplementor.IgnorePlugin, [
+        {
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /moment$/,
+        },
+      ]);
+  }
 
   // define
   webpackConfig.plugin('define').use(bundleImplementor.DefinePlugin, [
@@ -269,7 +289,7 @@ export default async function getConfig(
   ] as any);
 
   // progress
-  if (!isWebpack5) {
+  if (!isWebpack5 && process.env.PROGRESS !== 'none') {
     webpackConfig.plugin('progress').use(require.resolve('webpackbar'));
   }
 
@@ -294,14 +314,16 @@ export default async function getConfig(
   //   .plugin('MildCompilePlugin')
   //   .use(require('webpack-mild-compile').Plugin);
 
-  // progress
-  webpackConfig
-    .plugin('friendly-error')
-    .use(require.resolve('friendly-errors-webpack-plugin'), [
-      {
-        clearConsole: false,
-      },
-    ]);
+  // error handler
+  if (process.env.FRIENDLY_ERROR !== 'none') {
+    webpackConfig
+      .plugin('friendly-error')
+      .use(require.resolve('friendly-errors-webpack-plugin'), [
+        {
+          clearConsole: false,
+        },
+      ]);
+  }
 
   webpackConfig.when(
     isDev,

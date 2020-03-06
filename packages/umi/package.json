@@ -1,12 +1,11 @@
 {
   "name": "umi",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "umi",
   "main": "index.js",
   "types": "types.d.ts",
   "files": [
     "lib",
-    "src",
     "dist",
     "types.d.ts",
     "bin"
@@ -30,11 +29,13 @@
     "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
-    "@umijs/core": "3.0.1",
-    "@umijs/preset-built-in": "3.0.1",
-    "@umijs/runtime": "3.0.1",
-    "@umijs/types": "3.0.1",
-    "@umijs/utils": "3.0.1",
+    "@babel/core": "7.8.6",
+    "@umijs/core": "3.0.4",
+    "@umijs/preset-built-in": "3.0.4",
+    "@umijs/runtime": "3.0.4",
+    "@umijs/types": "3.0.4",
+    "@umijs/utils": "3.0.4",
+    "react": "^16.13.0",
     "resolve-cwd": "3.0.0"
   },
   "bin": {

@@ -1,5 +1,46 @@
 # 使用图片
 
+## JS 里使用图片
+
+通过 require 引用相对路径的图片。
+
+比如：
+
+```js
+export default () => <img src={require('./foo.png')} />
+```
+
+支持别名，比如通过 `@` 指向 src 目录：
+
+```js
+export default () => <img src={require('@/foo.png')} />
+```
+
+## CSS 里使用图片
+
+通过相对路径引用。
+
+比如，
+
+```css
+.logo {
+  background: url(./foo.png);
+}
+```
+
+CSS 里也支持别名，但需要在前面加 `~` 前缀，
+
+```css
+.logo {
+  background: url(~@/foo.png);
+}
+```
+
+注意：
+
+1. 这是 webpack 的规则，如果切到其他打包工具，可能会有变化
+2. less 中同样适用
+
 ## 图片路径问题
 
 项目中使用图片有两种方式，

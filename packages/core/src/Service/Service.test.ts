@@ -473,3 +473,13 @@ test('hasPlugins and hasPresets', async () => {
   service.userConfig.mie = 1;
   expect(service.hasPlugins(['mie_id'])).toEqual(true);
 });
+
+test('resolvePackage with APP_ROOT specified', () => {
+  const appRoot = join(fixtures, 'normal', 'approot', 'nextlevel');
+  const repoRoot = join(fixtures, 'normal');
+  const service = new Service({
+    cwd: appRoot,
+    pkg: require(join(repoRoot, 'package.json')),
+  });
+  expect(service.pkg.name).toEqual('foo');
+});

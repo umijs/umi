@@ -1,12 +1,11 @@
 {
   "name": "@umijs/renderer-react",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/renderer-react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -30,7 +29,7 @@
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.4",
     "@types/react-router-config": "^5.0.1",
-    "@umijs/runtime": "3.0.1",
+    "@umijs/runtime": "3.0.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router-config": "5.1.1"

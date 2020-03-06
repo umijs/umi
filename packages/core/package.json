@@ -1,12 +1,11 @@
 {
   "name": "@umijs/core",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "@umijs/core",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -26,18 +25,19 @@
     "registry":"https://maven.jianhui.com/repository/afc_npm_snapshots/"
   },
   "dependencies": {
-    "@babel/core": "7.8.4",
-    "@babel/register": "7.8.3",
+    "@babel/core": "7.8.6",
+    "@babel/register": "7.8.6",
     "@hapi/joi": "16.1.8",
-    "@types/ejs": "3.0.0",
+    "@types/ejs": "3.0.1",
     "@types/hapi__joi": "16.0.6",
     "@types/marked": "^0.7.2",
     "@types/marked-terminal": "^3.1.1",
+    "@types/prettier": "1.19.0",
     "@types/tapable": "1.0.5",
-    "@umijs/ast": "3.0.1",
-    "@umijs/babel-preset-umi": "3.0.1",
+    "@umijs/ast": "3.0.4",
+    "@umijs/babel-preset-umi": "3.0.4",
     "@umijs/error-code-map": "^1.0.1",
-    "@umijs/utils": "3.0.1",
+    "@umijs/utils": "3.0.4",
     "camelcase": "5.3.1",
     "dotenv": "8.2.0",
     "ejs": "3.0.1",
@@ -45,6 +45,7 @@
     "marked-terminal": "4.0.0",
     "os-locale": "4.0.0",
     "pkg-up": "3.1.0",
+    "prettier": "1.19.1",
     "set-value": "3.0.1",
     "tapable": "1.1.3"
   }
