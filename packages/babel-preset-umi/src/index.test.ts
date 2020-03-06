@@ -44,6 +44,20 @@ test('typescript', () => {
   expect(code).toContain(`var a = 'foo';`);
 });
 
+test('typescript with namespace', () => {
+  const code = transformWithPreset(
+    `
+  namespace N {
+    export const V = 1;
+  }
+  `,
+    {
+      typescript: true,
+    },
+  );
+  expect(code).toContain(`var V = _N.V = 1;`);
+});
+
 test('dynamic import', () => {
   const code = transformWithPreset(`import('./a');`, {});
   expect(code).toContain(`require('./a')`);

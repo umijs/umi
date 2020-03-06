@@ -15,6 +15,7 @@ const DOC_SYNC_BLACKLIST = [
   'docs/how-umi-works.zh-CN.md',
   'docs/getting-started.zh-CN.md',
   'docs/config.md',
+  'docs/directory-structure.zh-CN.md'
 ];
 
 switch (command) {

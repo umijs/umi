@@ -96,6 +96,7 @@ export default {
     // 删除 umi 内置插件
     memo.plugins.delete('progress');
     memo.plugins.delete('friendly-error');
+    memo.plugins.delete('copy');
   }
 }
 ```
@@ -105,6 +106,40 @@ export default {
 * memo，当前 webpack-chain对象
 * env，当前环境，`development`、`production` 或 `test` 等
 * webpack，webpack 实例，用于获取其内部插件
+
+## chunks
+
+默认是 `['umi']`，可修改，比如做了 vendors 依赖提取之后，会需要在 `umi.js` 之前加载 `vendors.js`。
+
+比如：
+
+```js
+export default {
+  chunks: ['vendors', 'umi']
+  chainWebpack: function (config, { webpack }) {
+    config.merge({
+      optimization: {
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 3,
+          automaticNameDelimiter: '.',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              test({ resource }) {
+                return /[\\/]node_modules[\\/]/.test(resource);
+              },
+              priority: 10,
+            },
+          },
+        },
+      }
+    });
+  },
+}
+```
 
 ## cssLoader
 

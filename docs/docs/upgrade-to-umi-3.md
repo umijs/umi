@@ -81,7 +81,7 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 * 删除 babel，基本用不上
 * 修改 cssLoaderOptions 命名为 cssLoader
 * 删除 cssLoaderVersion，只保留 css-loader@2 的版本
-* 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有厂家，没有必要再配
+* 删除 cssPublicPath，css 引用的资源文件用相对路径 `./` 可满足所有场景，没有必要再配
 * 删除 disableGlobalVariables，始终无全局变量，无需配置
 * 删除 disableRedirectHoist，始终不再做 redirect hoist
 * 删除 disableCSSModules 和 cssModulesWithAffix，Umi 3 自动识别 css modules 的使用，无需配置
@@ -122,6 +122,22 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 
 - router.push('/foo');
 + history.push('/foo');
+```
+
+### CSS 里引用别名或三方库
+
+需要加 `~` 前缀。
+
+比如：
+
+```diff
+# 别名
+- background: url(@/assets/logo.png);
++ background: url(~@/assets/logo.png);
+
+# 三方库
+- @import url(foo/bar.css');
+- @import url(~foo/bar.css');
 ```
 
 ## 遇到问题

@@ -71,6 +71,11 @@ class Route {
       });
     }
 
+    // route.path 的修改需要在子路由 patch 之前做
+    if (route.path && route.path.charAt(0) !== '/') {
+      route.path = winPath(join(opts.parentRoute?.path || '/', route.path));
+    }
+
     if (route.routes) {
       await this.patchRoutes(route.routes, {
         ...opts,
@@ -80,9 +85,6 @@ class Route {
       if (!('exact' in route)) {
         // exact by default
         route.exact = true;
-      }
-      if (route.path && route.path.charAt(0) !== '/') {
-        route.path = winPath(join(opts.parentRoute?.path || '/', route.path));
       }
     }
 
