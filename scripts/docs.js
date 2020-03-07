@@ -16,6 +16,7 @@ const DOC_SYNC_BLACKLIST = [
   'docs/getting-started.zh-CN.md',
   'docs/config.zh-CN.md',
   'docs/directory-structure.zh-CN.md',
+  'docs/load-on-demand.zh-CN.md',
 ];
 
 switch (command) {

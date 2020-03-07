@@ -1,13 +1,9 @@
----
-translateHelp: true
----
-
 # Load On Demand
 
 
-## 启用按需加载
+## How to endable
 
-为了简化部署成本，按需加载功能默认是关闭的，你需要在使用之前先通过配置开启，
+Load on demand is disabled by default in order to simplify deployment. You can enable it with below config:
 
 ```js
 export default {
@@ -15,11 +11,11 @@ export default {
 }
 ```
 
-## 使用按需加载
+## How to use
 
-### 按需加载组件
+### Load component on demand
 
-通过 Umi 的 `dynamic` 接口实现，比如：
+Load component via `dynamic`, for example:
 
 ```js
 import { dynamic } from 'umi';
@@ -34,9 +30,9 @@ const App = dynamic({
 });
 ```
 
-### 按需加载非组件
+### Load non-component stuff
 
-通过 `import()` 实现，比如：
+Load non-component stuff via `import()`, for example:
 
 ```js
 import('g2').then(() => {
