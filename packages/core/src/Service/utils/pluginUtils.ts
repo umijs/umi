@@ -63,7 +63,7 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
   ].map(path => {
     return resolve.sync(path, {
       basedir: opts.cwd,
-      extensions: ['.js'],
+      extensions: ['.js', '.ts'],
     });
   });
 }
