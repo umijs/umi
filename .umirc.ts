@@ -56,6 +56,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/docs/html-template',
           '/docs/mock',
           '/docs/env-variables',
+          '/docs/cli',
         ],
       },
       {
