@@ -65,6 +65,15 @@ export interface ITargets {
   [key: string]: number | boolean;
 }
 
+interface ICreateCSSRule {
+  (opts: {
+    lang: string;
+    test: RegExp;
+    loader?: string;
+    options?: object;
+  }): void;
+}
+
 type IPresetOrPlugin = string | [string, any];
 type env = 'development' | 'production';
 
@@ -155,7 +164,10 @@ export interface IApi extends PluginAPI {
     (string | { name: string; headScript?: boolean })[],
     { route: IRoute }
   >;
-  chainWebpack: IModify<WebpackChain, { webpack: typeof webpack }>;
+  chainWebpack: IModify<
+    WebpackChain,
+    { webpack: typeof webpack; createCSSRule: ICreateCSSRule }
+  >;
 
   // ApplyPluginType.add
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
@@ -206,7 +218,14 @@ export interface IConfig extends IConfigCore {
   autoprefixer?: object;
   base?: string;
   chainWebpack?: {
-    (memo: WebpackChain, args: { webpack: typeof webpack; env: env }): void;
+    (
+      memo: WebpackChain,
+      args: {
+        webpack: typeof webpack;
+        env: env;
+        createCSSRule: ICreateCSSRule;
+      },
+    ): void;
   };
   chunks?: string[];
   cssLoader?: object;

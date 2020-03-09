@@ -11,7 +11,7 @@ import {
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
-import css from './css';
+import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
 
@@ -391,9 +391,21 @@ export default async function getConfig(
     },
   );
 
+  function createCSSRuleFn(opts: any) {
+    createCSSRule({
+      webpackConfig,
+      config,
+      isDev,
+      browserslist,
+      miniCSSExtractPluginLoaderPath,
+      ...opts,
+    });
+  }
+
   if (opts.chainWebpack) {
     webpackConfig = await opts.chainWebpack(webpackConfig, {
       webpack: bundleImplementor,
+      createCSSRule: createCSSRuleFn,
     });
   }
   // 用户配置的 chainWebpack 优先级最高
@@ -401,6 +413,7 @@ export default async function getConfig(
     config.chainWebpack(webpackConfig, {
       env,
       webpack: bundleImplementor,
+      createCSSRule: createCSSRuleFn,
     });
   }
   let ret = webpackConfig.toConfig() as defaultWebpack.Configuration;

@@ -21,7 +21,7 @@ interface ICreateCSSRuleOpts extends IOpts {
   options?: object;
 }
 
-function createCSSRule({
+export function createCSSRule({
   webpackConfig,
   config,
   lang,

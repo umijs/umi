@@ -262,7 +262,7 @@ api.addHTMLScript(() => {
 比如：
 
 ```js
-api.chainWebpack((config, { webpack }) => {
+api.chainWebpack((config, { webpack, env, createCSSRule }) => {
   // Set alias
   config.resolve.alias.set('a', 'path/to/a');
 
