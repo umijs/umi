@@ -19,6 +19,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-model',
           '/plugins/plugin-qiankun',
           '/plugins/plugin-request',
+          '/plugins/plugin-sass',
           '/plugins/plugin-webpack-5',
         ],
       },

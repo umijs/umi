@@ -1,4 +1,3 @@
-
 # @umijs/plugin-initial-state
 
 约定一个地方生产和消费初始化数据。
