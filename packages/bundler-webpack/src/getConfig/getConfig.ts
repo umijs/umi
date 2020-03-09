@@ -335,9 +335,11 @@ export default async function getConfig(
   webpackConfig.when(
     isDev,
     webpackConfig => {
-      webpackConfig
-        .plugin('hmr')
-        .use(bundleImplementor.HotModuleReplacementPlugin);
+      if (hot) {
+        webpackConfig
+          .plugin('hmr')
+          .use(bundleImplementor.HotModuleReplacementPlugin);
+      }
     },
     webpackConfig => {
       // don't emit files if have error

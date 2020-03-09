@@ -41,7 +41,7 @@ export async function getBundleAndConfigs({
         env,
         type,
         port,
-        hot: type === ConfigType.csr,
+        hot: type === ConfigType.csr && process.env.HMR !== 'none',
         entry: {
           umi: join(api.paths.absTmpPath!, 'umi.ts'),
         },

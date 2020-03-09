@@ -84,6 +84,10 @@ $ FORK_TS_CHECKER=1 umi dev
 $ FRIENDLY_ERROR=none umi dev
 ```
 
+### HMR
+
+设为 `none` 时禁用代码热更新功能。
+
 ### HTML
 
 设为 `none` 时不输出 HTML，`umi build` 时有效。
