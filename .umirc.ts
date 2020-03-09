@@ -67,7 +67,12 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
       {
         title: 'Umi Advanced',
         'title_zh-CN': 'Umi 进阶',
-        children: ['/docs/load-on-demand', '/docs/deployment', '/docs/ssr'],
+        children: [
+          '/docs/load-on-demand',
+          '/docs/deployment',
+          '/docs/use-umi-ui',
+          '/docs/ssr',
+        ],
       },
       {
         title: 'Upgrade to Umi 3',

@@ -143,7 +143,7 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/users`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
 
 ### title
 
