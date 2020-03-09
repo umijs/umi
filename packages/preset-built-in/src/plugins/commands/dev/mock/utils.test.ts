@@ -21,7 +21,6 @@ describe('umi-mock:getMockData', () => {
 
       const { mockData } = getMockData({
         cwd: `${fixtures}/normal`,
-        paths: service.paths,
       });
       expect(mockData.length).toEqual(2);
     });
@@ -45,8 +44,8 @@ describe('umi-mock:getMockData', () => {
         'normal/mock/_c.js',
         'normal/mock/a.js',
         'normal/mock/b.js',
-        // 'normal/pages/a/_mock.js',
-        // 'normal/pages/b/_mock.js',
+        'normal/pages/a/_mock.js',
+        'normal/pages/b/_mock.js',
       ]);
     });
 

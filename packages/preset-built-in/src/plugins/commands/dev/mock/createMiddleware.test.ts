@@ -17,10 +17,10 @@ describe('createMiddleware', () => {
     });
   };
   const HOME_PAGE = 'homepage';
-  let watcher = null;
-  let port;
-  let server;
-  let hostname;
+  let watcher: any = null;
+  let port: number;
+  let server: any;
+  let hostname: string;
 
   beforeAll(async () => {
     const service = new Service({

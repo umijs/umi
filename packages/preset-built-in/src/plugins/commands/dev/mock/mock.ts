@@ -41,19 +41,12 @@ export default function(api: IApi) {
 
   const ignore = userConfig?.mock?.exclude;
 
-  // get all mock paths
-  const mockResult = getMockData({
-    cwd,
-    ignore,
-    registerBabel,
-  });
-
-  // disable when not exist mock dir
-  if (!mockResult) {
-    return;
-  }
-
   api.addBeforeMiddewares(() => {
+    const mockResult = getMockData({
+      cwd,
+      ignore,
+      registerBabel,
+    });
     const { middleware } = createMiddleware({
       ...mockResult,
       updateMockData: () => {

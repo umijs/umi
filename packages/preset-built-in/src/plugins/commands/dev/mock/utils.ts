@@ -43,27 +43,24 @@ export interface IGetMockDataResult {
  *
  * @param param
  */
-export const getMockData: (
-  opts: IGetMockPaths,
-) => IGetMockDataResult | null = ({
+export const getMockData: (opts: IGetMockPaths) => IGetMockDataResult = ({
   cwd,
   ignore = [],
   registerBabel = () => {},
 }) => {
-  const absMockPaths = glob.sync(join(cwd, 'mock/**/*.[jt]s'), {
-    ignore,
-  });
-  if (!absMockPaths.length) {
-    return null;
-  }
-  const absConfigPath = join(cwd, '.umirc.mock.js');
-  const absConfigPathWithTS = join(cwd, '.umirc.mock.ts');
-
   const mockPaths = [
-    ...(absMockPaths || []),
-    absConfigPath,
-    absConfigPathWithTS,
+    ...(glob.sync('mock/**/*.[jt]s', {
+      cwd,
+      ignore,
+    }) || []),
+    ...(glob.sync('**/_mock.[jt]s', {
+      cwd,
+      ignore,
+    }) || []),
+    '.umirc.mock.js',
+    '.umirc.mock.ts',
   ]
+    .map(path => join(cwd, path))
     .filter(path => path && existsSync(path))
     .map(path => winPath(path));
 
