@@ -112,8 +112,10 @@ export interface IApi extends PluginAPI {
   onStart: IEvent<{ args: object }>;
   onExit: IEvent<{ signal: 'SIGINT' | 'SIGQUIT' | 'SIGTERM' }>;
   onGenerateFiles: IEvent<{ isRebuild?: boolean }>;
-  onPatchRoute: IEvent<{ route: IRoute }>;
-  onPatchRoutes: IEvent<{ routes: IRoute[] }>;
+  onPatchRoute: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
+  onPatchRouteBefore: IEvent<{ route: IRoute; parentRoute?: IRoute }>;
+  onPatchRoutes: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
+  onPatchRoutesBefore: IEvent<{ routes: IRoute[]; parentRoute?: IRoute }>;
   onBuildComplete: IEvent<{ err?: Error; stats?: webpack.Stats }>;
   onDevCompileDone: IEvent<{ isFirstCompile: boolean; stats: webpack.Stats }>;
 

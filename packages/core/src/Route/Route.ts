@@ -54,6 +54,7 @@ class Route {
     if (this.opts.onPatchRoutesBefore) {
       await this.opts.onPatchRoutesBefore({
         routes,
+        parentRoute: opts.parentRoute,
       });
     }
     for (const route of routes) {

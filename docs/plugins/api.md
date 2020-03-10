@@ -373,11 +373,19 @@ TODO
 
 修改路由。
 
-### onPatchRoute({ route })
+### onPatchRoute({ route, parentRoute })
 
 修改路由项。
 
-### onPatchRoutes({ routes })
+### onPatchRouteBefore({ route, parentRoute })
+
+修改路由项。
+
+### onPatchRoutes({ routes, parentRoute })
+
+修改路由数组。
+
+### onPatchRoutesBefore({ routes, parentRoute })
 
 修改路由数组。
 
