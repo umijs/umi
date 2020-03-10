@@ -4,10 +4,10 @@ import { parse } from '../utils/parse';
 export function getExportProps(code: string) {
   const ast = parse(code);
   let props = {};
-  traverse.default(ast, {
+  traverse.default(ast as any, {
     Program: {
-      enter(path) {
-        const node: t.Program = path.node;
+      enter(path: any) {
+        const node = path.node;
         const defaultExport = findExportDefault(node);
         if (!defaultExport || !t.isIdentifier(defaultExport)) return;
 
