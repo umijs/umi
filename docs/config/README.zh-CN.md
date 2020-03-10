@@ -661,6 +661,13 @@ export default {
 
 配置项的名字通常是插件名去掉 `umi-plugin-` 或 `@umijs/plugin` 前缀。
 
+## postcssLoader
+
+* Type: `object`
+* Default: `{}`
+
+设置 [postcss-loader 配置项](https://github.com/postcss/postcss-loader#options)。
+
 ## presets
 
 * Type: `Array(string)`

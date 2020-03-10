@@ -43,6 +43,7 @@ export default function() {
       require.resolve('./plugins/features/mountElementId'),
       require.resolve('./plugins/features/outputPath'),
       require.resolve('./plugins/features/plugins'),
+      require.resolve('./plugins/features/postcssLoader'),
       require.resolve('./plugins/features/presets'),
       require.resolve('./plugins/features/proxy'),
       require.resolve('./plugins/features/publicPath'),
