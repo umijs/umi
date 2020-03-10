@@ -39,7 +39,11 @@ export default function(api: IApi) {
     });
   };
 
-  const ignore = userConfig?.mock?.exclude;
+  const ignore = [
+    // ignore mock files under node_modules
+    'node_modules/**',
+    ...(userConfig?.mock?.exclude || []),
+  ];
 
   api.addBeforeMiddewares(() => {
     const mockResult = getMockData({
