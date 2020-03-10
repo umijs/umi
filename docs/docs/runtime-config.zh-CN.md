@@ -75,8 +75,8 @@ export function onRouteChange({ location, routes, action }) {
 
 ```bash
 export function onRouteChange({ matchedRoutes }) {
-  if (matchRoutes.length) {
-    document.title = matchedRoutes[matchRoutes.length - 1].route.title || '';
+  if (matchedRoutes.length) {
+    document.title = matchedRoutes[matchedRoutes.length - 1].route.title || '';
   }
 }
 ```
