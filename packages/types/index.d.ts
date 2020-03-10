@@ -269,6 +269,7 @@ export interface IConfig extends IConfigCore {
   mountElementId?: string;
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
+  postcssLoader?: object;
   presets?: IPresetOrPlugin[];
   proxy?: any;
   publicPath?: string;
