@@ -180,7 +180,7 @@ export default async function getConfig(
     .rule('js-in-node_modules')
       .test(/\.(js|mjs)$/)
       .include.add(/node_modules/).end()
-      // TODO: 处理 tnpm 下 @babel/rutnime 路径变更问题
+      // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
       .exclude
         .add(/@babel(?:\/|\\{1,2})runtime/)
         .add(/(react|react-dom|lodash|@ant-design\/icons)/)
