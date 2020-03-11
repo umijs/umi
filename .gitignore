@@ -33,3 +33,4 @@ lerna-debug.log
 *.sw*
 *.un~
 .now
+.history
