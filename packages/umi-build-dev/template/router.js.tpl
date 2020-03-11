@@ -30,6 +30,7 @@ export default class RouterWrapper extends React.Component {
     }else {
       this.history = require('@@/history').default;
     }
+    window.g_history = this.history
 
     // route change handler
     function routeChangeHandler(location, action) {
