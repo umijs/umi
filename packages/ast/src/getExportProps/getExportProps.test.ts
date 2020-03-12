@@ -4,6 +4,7 @@ test('normal', () => {
   const props = getExportProps(
     `
 const foo = () => {};
+const bar = {};
 foo.a = 1;
 foo.b = '2';
 foo.c = function() {};
@@ -14,6 +15,7 @@ foo.e = [];
 
 foo.f = true;
 foo.g = false;
+bar.h = true;
 export default foo;
     `,
   );

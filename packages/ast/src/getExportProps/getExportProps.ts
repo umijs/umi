@@ -46,6 +46,7 @@ function findAssignmentExpressionProps(opts: {
       t.isAssignmentExpression(node) &&
       t.isMemberExpression(node.left) &&
       t.isIdentifier(node.left.object) &&
+      node.left.object.name === name &&
       (t.isStringLiteral(node.right) ||
         t.isNumericLiteral(node.right) ||
         t.isBooleanLiteral(node.right))
