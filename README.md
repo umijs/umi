@@ -37,7 +37,7 @@ $ npx umi g page index --typescript --less
 $ npx umi dev
 ```
 
-Or [Getting Started with Boilerplate](/docs/docs/getting-started.md).
+Or [Getting Started with Boilerplate](./docs/docs/getting-started.md).
 
 ## Contributors
 
