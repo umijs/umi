@@ -18,7 +18,7 @@ $ npm i yarn tyarn -g
 $ tyarn -v
 
 # install yarn and @ali/yarn globally
-$ tnpm i yarn @ali/yarn -g
+$ npm i yarn @ali/yarn -g
 # confirm ali yarn version
 $ ayarn -v
 ```
