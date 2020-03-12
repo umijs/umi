@@ -46,11 +46,12 @@ export default function(api) {
   });
 
   api.modifyEntryHistory(memo => {
-    const [historyType, opts] = getHistoryConfig(config.history);
+    const [historyType, opts = {}] = getHistoryConfig(config.history);
 
     if (historyType === 'hash') {
-      const hashOpts = JSON.stringify({ basename: config.base || '/', ...opts } || {});
-      return `require('history/createHashHistory').default(${hashOpts})`;
+      return `require('history/createHashHistory').default({ basename: ${
+        config.base
+      } || window.routerBase || '/', ...${JSON.stringify(opts)} })`;
     } else if (historyType === 'memory') {
       return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
     }
