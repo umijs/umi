@@ -54,9 +54,8 @@ CSS 里也支持别名，但需要在前面加 `~` 前缀，
 
 通过相对路径引入图片的时候，如果图片小于 10K，会被编译为 Base64，否则会被构建为独立的图片文件。
 
-10K 这个阈值可以通过 [inlineLimit 配置](/config#inlinelimit)修改。
+10K 这个阈值可以通过 [inlineLimit 配置](../config#inlinelimit)修改。
 
 ## 使用 CDN
 
 TODO
-
