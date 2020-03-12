@@ -59,6 +59,8 @@ export default function(originOpts = {}) {
       ...(userModuleNameMapper || {}),
     },
     testPathIgnorePatterns: ['/node_modules/'],
+    // 用于设置 jest worker 启动的个数
+    ...(process.env.MAX_WORKERS ? { maxWorkers: Number(process.env.MAX_WORKERS) } : {}),
     ...(restUserJestConfig || {}),
   };
 
