@@ -39,7 +39,7 @@ export default (api: IApi) => {
 
   Details:
 
-${command.details ? padLeft(command.details) : ''}
+${command.details ? padLeft(command.details.trim()) : ''}
         `);
       } else {
         console.log(`
