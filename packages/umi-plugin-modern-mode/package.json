@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-modern-mode",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0",
   "description": "A plugin for modern mode",
   "authors": {
     "name": "pigcan",
