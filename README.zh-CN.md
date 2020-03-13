@@ -37,7 +37,7 @@ $ npx umi g page index --typescript --less
 $ npx umi dev
 ```
 
-或者[通过脚手架快速上手](/zh-CN/docs/getting-started)。
+或者[通过脚手架快速上手](https://umijs.org/zh-CN/docs/getting-started)。
 
 ## 贡献
 

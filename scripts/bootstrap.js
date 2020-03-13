@@ -61,15 +61,17 @@ const getPackages = require('./utils/getPackages');
       writeFileSync(pkgJSONPath, `${JSON.stringify(json, null, 2)}\n`);
     }
 
-    const readmePath = join(
-      __dirname,
-      '..',
-      'packages',
-      shortName,
-      'README.md',
-    );
-    if (args.force || !existsSync(readmePath)) {
-      writeFileSync(readmePath, `# ${name}\n`);
+    if (shortName !== 'umi') {
+      const readmePath = join(
+        __dirname,
+        '..',
+        'packages',
+        shortName,
+        'README.md',
+      );
+      if (args.force || !existsSync(readmePath)) {
+        writeFileSync(readmePath, `# ${name}\n`);
+      }
     }
   });
 })();
