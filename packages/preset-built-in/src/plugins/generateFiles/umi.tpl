@@ -8,7 +8,7 @@ import { renderClient } from '{{{ rendererPath }}}';
 
 {{{ entryCodeAhead }}}
 
-const getClientRender = ({ hot?: boolean } = {}) => plugin.applyPlugins({
+const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
@@ -16,7 +16,7 @@ const getClientRender = ({ hot?: boolean } = {}) => plugin.applyPlugins({
       // @ts-ignore
       routes: require('./core/routes').routes,
       plugin,
-      history: createHistory(hot),
+      history: createHistory(args.hot),
       rootElement: '{{{ rootElement }}}',
       defaultTitle: '{{{ defaultTitle }}}',
     });
