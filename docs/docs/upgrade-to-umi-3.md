@@ -136,8 +136,8 @@ Umi 3 在配置层做了大量精简，以下修改以字母排序，便于查�
 + background: url(~@/assets/logo.png);
 
 # 三方库
-- @import url(foo/bar.css');
-- @import url(~foo/bar.css');
+- @import url(foo/bar.css);
++ @import url(~foo/bar.css);
 ```
 
 ## 遇到问题
