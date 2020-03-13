@@ -615,9 +615,9 @@ Contains the following sub-attributes,
 
 Specifies the id of the HTML element to which the react app renders.
 
-注意：
+note:
 
-* 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
+* If you need to package your application as a umd package for export, you need to set mountElementId to `''`
 
 ## outputPath
 
