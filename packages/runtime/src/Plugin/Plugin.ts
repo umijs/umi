@@ -17,10 +17,10 @@ interface IOpts {
 
 function _compose({ fns, args }: { fns: (Function | any)[]; args?: object }) {
   if (fns.length === 1) {
-    return fns[0];
+    return (...fnArgs: any[]) => fns[0](...fnArgs);
   }
   const last = fns.pop();
-  return fns.reduce((a, b) => () => b(a, args), last);
+  return fns.reduce((a, b) => (...fnArgs: any[]) => b(() => a(...fnArgs), args), last);
 }
 
 function isPromiseLike(obj: any) {
@@ -150,12 +150,10 @@ export default class Plugin {
         });
 
       case ApplyPluginsType.compose:
-        return () => {
-          return _compose({
-            fns: hooks.concat(initialValue),
-            args,
-          })();
-        };
+        return _compose({
+          fns: hooks.concat(initialValue),
+          args,
+        });
     }
   }
 }

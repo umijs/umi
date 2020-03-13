@@ -274,6 +274,17 @@ test('applyPlugins compose', () => {
     },
   })();
   expect(ret).toEqual([6, 5, 5, 10, 20]);
+
+  ret.length = 0;
+  p.applyPlugins({
+    key: 'foo',
+    type: ApplyPluginsType.compose,
+    initialValue(arg: number) {
+      ret.push(arg);
+    },
+  })(11);
+  expect(applyRet).toEqual('foooo');
+  expect(ret).toEqual([2, 1, 11, 10, 20]);
 });
 
 test('applyPlugins compose with only initialValue', () => {

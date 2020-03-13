@@ -11,12 +11,12 @@ import { renderClient } from '{{{ rendererPath }}}';
 const clientRender = plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
-  initialValue: () => {
+  initialValue: (hotReload) => {
     return renderClient({
       // @ts-ignore
       routes: require('./core/routes').routes,
       plugin,
-      history: createHistory(),
+      history: createHistory(hotReload),
       rootElement: '{{{ rootElement }}}',
       defaultTitle: '{{{ defaultTitle }}}',
     });
@@ -33,6 +33,6 @@ export default clientRender();
 if (module.hot) {
   // @ts-ignore
   module.hot.accept('./core/routes', () => {
-    clientRender();
+    clientRender(true);
   });
 }
