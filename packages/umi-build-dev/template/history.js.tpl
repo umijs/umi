@@ -7,10 +7,9 @@ export default history;
 
 export const createHistory = (hotReload = false) => {
   if (!hotReload) {
-    const newHistory = {{{ history }}};
-    history = newHistory;
+    history = {{{ history }}};
     {{#globalVariables}}
-    window.g_history = newHistory;
+    window.g_history = history;
     {{/globalVariables}}
   }
 
