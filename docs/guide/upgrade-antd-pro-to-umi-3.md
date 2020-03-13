@@ -7,15 +7,15 @@ translateHelp: true
 # Upgrade Antd Pro to Umi 3
 
 
-迁移到 Umi 3 分三步，不到 10 分钟即可完成迁移：
+Migrating to Umi 3 is a three-step process that can be completed in less than 10 minutes:
 
-1. **依赖处理**
-1. **配置层迁移**
-1. **代码层修改**
+1. **Dependency handling**
+1. **Configuration layer migration**
+1. **Code layer modification**
 
-### 依赖处理
+### Dependency handling
 
-项目的 `package.json` 需要升级 umi，并替换掉对应的 umi 插件。
+The `package.json` of the project needs to upgrade umi and replace the corresponding umi plugin.
 
 ```diff
 {
@@ -37,11 +37,11 @@ translateHelp: true
 }
 ```
 
-执行下 `npm install` 重装依赖。
+Run `npm install` to reinstall the dependencies.
 
-### 配置层迁移
+### Configuration layer migration
 
-根据 [Umi 3 配置](../config) ，有**修改的配置项**如下 `config/config.ts` ：
+According to [Umi 3 Configuration](../config), there are **modified configuration items** as `config/config.ts`:
 
 ```typescript
 import { defineConfig, utils } from 'umi';
@@ -49,7 +49,7 @@ import { defineConfig, utils } from 'umi';
 const { winPath } = utils;
 
 export default defineConfig({
-  // 通过 package.json 自动挂载 umi 插件，不需再次挂载
+  // Automatically mount the umi plugin through package.json, no need to mount again
   // plugins: [],
   antd: {},
   dva: {
@@ -60,15 +60,15 @@ export default defineConfig({
     baseNavigator: true,
   },
   dynamicImport: {
-    // 无需 level, webpackChunkName 配置
+    // No level, webpackChunkName configuration
     // loadingComponent: './components/PageLoading/index'
     loading: '@/components/PageLoading/index',
   },
-  // 暂时关闭
+  // Temporarily closed
   pwa: false,
   lessLoader: { javascriptEnabled: true },
   cssLoader: {
-    // 这里的 modules 可以接受 getLocalIdent
+    // The modules here can accept getLocalIdent
     modules: {
       getLocalIdent:(
         context: {
@@ -100,9 +100,9 @@ export default defineConfig({
 })
 ```
 
-### 代码层修改
+### Code layer modification
 
-Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中导入：
+Umi 3 adds `import from umi`. Common modules and tools can be imported directly from` umi`:
 
 ```diff
 - import Link from 'umi/link';
@@ -117,9 +117,9 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 + } from 'umi';
 ```
 
-**注意：**不建议直接使用 formatMessage，推荐大家使用 [useIntl](/zh-CN/plugins/plugin-locale#useintl) 或者 [injectIntl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc)，可以实现同样的功能。
+**Note:** It is not recommended to use `formatMessage` directly, it is recommended that you use [useIntl](../plugins/plugin-locale#useintl) or [injectIntl](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc), can achieve the same function.
 
-路由跳转使用 `history`：
+Route redirection uses `history`:
 
 ```diff
 - import { router } from 'umi';
@@ -129,8 +129,8 @@ Umi 3 增加 `import from umi`，常用的模块、工具可直接从 `umi` 中�
 + history.push()
 ```
 
-第三步完成后，执行下 `npm run start`，访问 [http://localhost:8000](http://localhost:8000)，能访问则表示迁移完成。
+After the third step is completed, execute `npm run start` and access [http://localhost:8000](http://localhost:8000). If you can access it, the migration is complete.
 
 ![](https://gw.alipayobjects.com/zos/antfincdn/MysqNKCYyc/ae1d7e2a-3b6e-49d8-8c0a-c306840932f6.png)
 
-> 更多迁移细节见 [PR](https://github.com/ant-design/ant-design-pro/pull/6039)。
+> See more migration details [PR](https://github.com/ant-design/ant-design-pro/pull/6039)。

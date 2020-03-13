@@ -5,11 +5,11 @@ translateHelp: true
 # Convention Routing
 
 
-除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
+In addition to configuration-based routing, Umi also supports contract-based routing. Conventional routing is also called file routing, that is, no manual configuration is needed, the file system is routing, and the routing configuration is analyzed through directories and files and their names.
 
-**如果没有 routes 配置，Umi 会进入约定式路由模式**，然后分析 `src/pages` 目录拿到路由配置。
+**If there is no routes configuration, Umi will enter the conventional routing mode**, and then analyze the `src/pages` directory to get the routing configuration.
 
-比如以下文件结构：
+For example, the following file structure:
 
 ```bash
 .
@@ -18,7 +18,7 @@ translateHelp: true
     └── users.tsx
 ```
 
-会得到以下路由配置，
+Will get the following routing configuration,
 
 ```js
 [
@@ -27,26 +27,26 @@ translateHelp: true
 ]
 ```
 
-需要注意的是，满足以下任意规则的文件不会被注册为路由，
+It should be noted that files that meet any of the following rules will not be registered as routes,
 
-* 以 `.` 或 `_` 开头的文件或目录
-* 以 `d.ts` 结尾的类型定义文件
-* 以 `test.ts`、`spec.ts`、`e2e.ts` 结尾的测试文件（适用于 `.js`、`.jsx` 和 `.tsx` 文件）
-* `components` 和 `component` 目录
-* `utils` 和 `util` 目录
-* 不是 `.js`、`.jsx`、`.ts` 或 `.tsx` 文件
-* 文件内容不包含 JSX 元素
+* Files or directories that begin with `.` or` _`
+* Type definition file ending with `d.ts`
+* Test files ending with `test.ts`,` spec.ts`, `e2e.ts` (for` .js`, `.jsx`, and` .tsx` files)
+* `components` and` component` directories
+* `utils` and` util` directories
+* Not a `.js`,` .jsx`, `.ts` or` .tsx` file
+* File content does not contain JSX elements
 
-## 动态路由
+## Dynamic routing
 
-约定 `[]` 包裹的文件或文件夹为动态路由。
+By convention, the files or folders wrapped by `[]` are dynamically routed.
 
-比如：
+such as:
 
-* `src/pages/users/[id].tsx` 会成为 `/users/:id`
-* `src/pages/users/[id]/settings.tsx` 会成为 `/users/:id/settings`
+* `src/pages/users/[id].tsx` would become `/users/:id`
+* `src/pages/users/[id]/settings.tsx` would become `/users/:id/settings`
 
-举个完整的例子，比如以下文件结构，
+For a complete example, such as the following file structure,
 
 ```bash
 .
@@ -59,7 +59,7 @@ translateHelp: true
     └── index.tsx
 ```
 
-会生成路由配置，
+Will generate routing configuration,
 
 ```js
 [
@@ -74,15 +74,15 @@ translateHelp: true
 ];
 ```
 
-## 动态可选路由
+## Dynamic optional routing
 
-暂不支持。
+Not supported at this time.
 
-## 嵌套路由
+## Nested routes
 
-Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.tsx` 为该目录的 layout。layout 文件需要返回一个 React 组件，并通过 `props.children` 渲染子组件。
+In Umi, it is agreed that when there is `_layout.tsx` in the directory, a nested route will be generated, and `_layout.tsx` is used as the layout of the directory. The layout file needs to return a React component and render the child components via `props.children`.
 
-比如以下目录结构，
+For example, the following directory structure,
 
 ```bash
 .
@@ -93,7 +93,7 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
         └── list.tsx
 ```
 
-会生成路由，
+Will generate a route,
 
 ```js
 [
@@ -106,11 +106,11 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 ]
 ```
 
-## 全局 layout
+## Global layout
 
-约定 `src/layouts/index.tsx` 为全局路由。返回一个 React 组件，并通过 `props.children` 渲染子组件。
+The convention `src/layouts/index.tsx` is a global route. Returns a React component and renders the child components via `props.children`.
 
-比如以下目录结构，
+For example, the following directory structure,
 
 ```bash
 .
@@ -122,7 +122,7 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
         └── users.tsx
 ```
 
-会生成路由，
+Will generate a route,
 
 ```js
 [
@@ -135,11 +135,11 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 ]
 ```
 
-## 不同的全局 layout
+## Different global layouts
 
-你可能需要针对不同路由输出不同的全局 layout，Umi 不支持这样的配置，但你仍可以在 `src/layouts/index.tsx` 中对 `location.path` 做区分，渲染不同的 layout 。
+You may need to output different global layouts for different routes. Umi does not support such a configuration, but you can still distinguish `location.path` in `src/layouts/index.tsx` and render different layouts.
 
-比如想要针对 `/login` 输出简单布局，
+For example, if you want to output a simple layout for `/login`,
 
 ```js
 export default function(props) {
@@ -157,11 +157,11 @@ export default function(props) {
 }
 ```
 
-## 404 路由
+## 404 routing
 
-约定 `src/pages/404.tsx` 为 404 页面，需返回 React 组件。
+The convention `src/pages/404.tsx` is a 404 page, and you need to return a React component.
 
-比如以下目录结构，
+For example, the following directory structure,
 
 ```bash
 .
@@ -171,7 +171,7 @@ export default function(props) {
     └── users.tsx
 ```
 
-会生成路由，
+Will generate a route,
 
 ```js
 [
@@ -181,13 +181,13 @@ export default function(props) {
 ]
 ```
 
-这样，如果访问 `/foo`，`/` 和 `/users` 都不能匹配，会 fallback 到 404 路由，通过 `src/pages/404.tsx` 进行渲染。
+In this way, if you visit `/foo`, neither `/` nor `/users` will match, and fallback to the 404 route will be rendered through `src/pages/404.tsx`.
 
-## 扩展路由属性
+## Extended routing attributes
 
-支持在代码层通过导出静态属性的方式扩展路由。
+Support for extending routes at the code level by exporting static attributes.
 
-比如：
+such as:
 
 ```js
 function HomePage() {
@@ -199,4 +199,4 @@ HomePage.title = 'Home Page';
 export default HomePage;
 ```
 
-其中的 `title` 会附加到路由配置中。
+The `title` will be appended to the routing configuration.

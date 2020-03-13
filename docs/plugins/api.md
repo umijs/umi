@@ -5,19 +5,19 @@ translateHelp: true
 # Plugin API
 
 
-## 核心方法
+## Core approach
 
-[Service](https://github.com/umijs/umi/blob/master/packages/core/src/Service/Service.ts) 和 [PluginAPI](https://github.com/umijs/umi/blob/master/packages/core/src/Service/PluginAPI.ts) 里定义的方法。
+[Service](https://github.com/umijs/umi/blob/master/packages/core/src/Service/Service.ts) and [PluginAPI](https://github.com/umijs/umi/blob/master/packages/core/src/Service/PluginAPI.ts).
 
 ### applyPlugins({ key: string, type: api.ApplyPluginsType, initialValue?: any, args?: any })
 
-TODO。
+TODO
 
 ### describe({ id?: string, key?: string, config?: { default, schema, onChange } })
 
-注册阶段执行，用于描述插件或插件集的 id、key、配置信息、启用方式等。
+The registration phase is performed and is used to describe the id, key, configuration information, and activation method of the plug-in or plug-in set.
 
-e.g.
+Example,
 
 ```js
 api.describe({
@@ -33,21 +33,21 @@ api.describe({
 });
 ```
 
-注：
+Note:
 
-- `config.default` 为配置的默认值，用户没有配置时取这个
-- `config.schema` 用于声明配置的类型，基于 [joi](https://hapi.dev/family/joi/)，**如果你希望用户进行配置，这个是必须的**，否则用户的配置无效
-- `config.onChange` 是 dev 阶段配置被修改后的处理机制，默认会重启 dev 进程，也可以修改为 `api.ConfigChangeType.regenerateTmpFiles` 只重新生成临时文件，还可以通过函数的格式自定义
-- `enableBy` 为启用方式，默认是注册启用，可更改为 `api.EnableBy.config`，还可以用自定义函数的方式决定其启用时机（动态生效）
+- `config.default` is the default value for configuration, this is taken when the user has not configured
+- `config.schema` is used to declare the type of configuration, based on [joi](https://hapi.dev/family/joi/), **This is required if you want the user to configure**, otherwise the configuration will be invalid.
+- `config.onChange` is the processing mechanism after the configuration of the dev stage is modified. The dev process will be restarted by default. It can also be changed to` api.ConfigChangeType.regenerateTmpFiles`. It only regenerates temporary files.
+- `enableBy` is the enable method. It is registered and enabled by default. You can change it to` api.EnableBy.config`. You can also use a custom function to determine the enable time (dynamic effect)
 
 ### register({ key: string, fn: Function, pluginId?: string, before?: string, stage?: number })
 
-为 `api.applyPlugins` 注册可供其使用的 hook。
+Register hooks for `api.applyPlugins` to use.
 
-e.g.
+Example,
 
 ```js
-// 可同步
+// Synchronizable
 api.register({
   key: 'foo',
   fn() {
@@ -55,7 +55,7 @@ api.register({
   },
 });
 
-// 可异步
+// Asynchronous
 api.register({
   key: 'foo',
   async fn() {
@@ -65,7 +65,7 @@ api.register({
 });
 ```
 
-然后通过 `api.applyPlugins` 即可拿到 `['a', 'b']`，
+Then you can get `['a', 'b']` via `api.applyPlugins`,
 
 ```js
 const foo = await api.applyPlugins({
@@ -76,127 +76,127 @@ const foo = await api.applyPlugins({
 console.log(foo); // ['a', 'b']
 ```
 
-注：
+Note:
 
-- fn 支持同步和异步，异步通过 Promise，返回值为 Promise 即为异步
-- fn 里的内容需结合 `api.appyPlugins` 的 type 参数来看 _ 如果是 `api.ApplyPluginsType.add`，需有返回值，这些返回值最终会被合成一个数组 _ 如果是 `api.ApplyPluginsType. modify`，需对第一个参数做修改，并返回 \* 如果是 `api.ApplyPluginsType. event`，无需返回值
-- stage 和 before 都是用于调整执行顺序的，参考 [tapable](https://github.com/webpack/tapable)
-- stage 默认是 0，设为 -1 或更少会提前执行，设为 1 或更多会后置执行
+- fn supports synchronous and asynchronous, asynchronous through Promise, the return value is Promise is asynchronous
+- The content in fn needs to be combined with the type parameter of api.appyPlugins _ If it is api.ApplyPluginsType.add, there is a return value, These return values ​​will eventually be combined into an array _ if it is `api.ApplyPluginsType.modify`, Need to modify the first parameter and return \* If it is `api.ApplyPluginsType.event`, no return value is required
+- stage and before are used to adjust the execution order, see [tapable](https://github.com/webpack/tapable)
+- The stage default is 0, set to -1 or less will be executed early, set to 1 or more will be executed later
 
 ### registerCommand({ name: string, alias?: string, fn: Function })
 
-注册命令。
+Registration order.
 
-注：
+Note:
 
-- `alias` 为别名，比如 generate 的别名 g
-- `fn` 的参数为 `{ args }`，args 的格式同 [yargs](https://github.com/yargs/yargs) 的解析结果，需要注意的是 `_` 里的 command 本身被去掉了，比如执行 `umi generate page foo`，`args._` 为 `['page', 'foo']`
+- `alias` is an alias, such as the alias g of generate
+- The parameter of `fn` is `{args}`. The format of args is the same as that of [yargs](https://github.com/yargs/yargs). Note that the command itself in` _` has been removed For example, execute `umi generate page foo`, and` args._` is `['page', 'foo']`
 
 ### registerMethod({ name: string, fn?: Function, exitsError?: boolean })
 
-往 api 上注册方法。可以是 `api.register()` 的快捷使用方式，便于调用；也可以不是，如果有提供 `fn`，则执行 `fn` 定义的函数。
+Register method on api. It can be a shortcut of `api.register()`, which is easy to call. Or it can be not. If `fn` is provided, the function defined by` fn` is executed.
 
-注：
+Note:
 
-- 除 @umijs/preset-build-in 外，通常不建议注册额外的方法，因为没有 ts 提示，直接使用 `api.register()` 就好
-- `exitsError` 默认为 true，如果方法存在则报错
+- Except for @umijs/preset-build-in, it is generally not recommended to register additional methods, because there is no ts prompt, just use `api.register()`.
+- `exitsError` is true by default, and an error is reported if the method exists
 
 ### registerPresets(presets: string[])
 
-注册插件集，参数为路径数组。
+Register the plugin set, the parameter is an array of paths.
 
 ### registerPlugins(plugins: string[])
 
-注册插件，参数为路径数组。
+Register the plugin, the parameter is an array of paths.
 
 ### hasPlugins(pluginIds: string[])
 
-判断是否有注册某个插件。
+Determine whether a plugin has been registered.
 
-插件的 id 规则，
+Plugin id rules,
 
-- id 默认为包名
-- 文件级的插件，如果没有声明 id，默认为 name + 相对路径，比如 `@umijs/preset-react/lib/plugins/crossorigin/crossorigin`
-- 内置插件以 `@@` 为前缀，比如 `@@/registerMethod`
+- id defaults to the package name
+- File-level plugins, if no id is declared, the default is name + relative path, such as `@ umijs/preset-react/lib/plugins/crossorigin/crossorigin`
+- Built-in plugins are prefixed with `@@`, such as `@@/registerMethod`
 
-注：
+Note:
 
-- 如果在注册阶段使用，只能判断**在他之前**是否有注册某个插件
+- If it is used during the registration phase, it can only be judged **before him** whether a certain plugin is registered
 
-e.g.
+Example,
 
 ```js
-// 判断是否有注册 @umijs/plugin-dva
+// Determine if there is a registration @umijs/plugin-dva
 api.hasPlugins(['@umijs/plugin-dva']);
 ```
 
 ### hasPresets(presetIds: string[])
 
-判断是否有注册某个插件集。
+Determine if a plugin set is registered.
 
-插件集的 id 规则，
+Plugin set id rules,
 
-e.g.
+Example,
 
 ```js
-// 判断是否有注册 @umijs/preset-ui
+// Determine if there is registration @umijs/preset-ui
 api.hasPresets(['@umijs/preset-ui']);
 ```
 
-注：
+Note:
 
-- 如果在注册阶段使用，只能判断**在他之前**是否有注册某个插件集
+- If it is used during the registration phase, it can only be judged whether **before him** has registered a certain plugin set
 
 ### skipPlugins(pluginIds: string[])
 
-声明哪些插件需要被禁用，参数为插件 id 的数组。
+Declare which plugins need to be disabled. The parameter is an array of plugin ids.
 
-e.g.
+Example,
 
 ```js
-// 禁用 plugin-dva 插件
+// Disable plugin-dva plugin
 api.skipPlugins(['@umijs/plugin-dva']);
 ```
 
-## 扩展方法
+## Extension method
 
-通过 `api.registerMethod()` 扩展的方法。
+Methods extended by `api.registerMethod()`.
 
 ### addBeforeMiddewares
 
-添加在 webpack compiler 中间件之前的中间件，返回值格式为 express 中间件。
+Add the middleware before the webpack compiler middleware, and the return value format is express middleware.
 
 ### addEntryCode
 
-在入口文件最后添加代码。
+Add code at the end of the entry file.
 
 ### addEntryCodeAhead
 
-在入口文件最前面（import 之后）添加代码。
+Add code at the top of the entry file (after import).
 
 ### addEntryImports
 
-在入口文件现有 import 的后面添加 import。
+Add import after the existing import in the entry file.
 
 ### addEntryImportsAhead
 
-在入口文件现有 import 的前面添加 import。
+Add import in front of the existing import in the entry file.
 
 ### addHTMLMetas
 
-在 HTML 中添加 meta 标签。
+Add meta tags to your HTML.
 
 ### addHTMLLinks
 
-在 HTML 中添加 Link 标签。
+Add a Link tag to your HTML.
 
 ### addHTMLStyles
 
-在 HTML 中添加 Style 标签。
+Add a Style tag to your HTML.
 
 ### addHTMLScripts
 
-在 HTML 尾部添加脚本。
+Add script at the end of the HTML.
 
 ```js
 api.addHTMLScript(() => {
@@ -212,33 +212,33 @@ api.addHTMLScript(() => {
 
 ### addHTMLHeadScripts
 
-在 HTML 头部添加脚本。
+Add a script to the HTML header.
 
 ### addMiddewares
 
-添加在 webpack compiler 中间件之后的中间件，返回值格式为 express 中间件。
+Add the middleware after the webpack compiler middleware, and the return value format is express middleware.
 
 ### addPolyfillImports
 
-添加补充相关的 import，在整个应用的最前面执行。
+Add supplementary related imports and execute them at the front of the entire application.
 
 ### addProjectFirstLibraries
 
-添加以项目依赖为优先的依赖库列表，返回值为 `{ name: string; path: string }`。
+Add a list of dependent libraries with project dependencies as the priority. The return value is `{name: string; path: string}`.
 
-比如：
+such as:
 
-- `api.addProjectFirstLibraries(() => ({ name: 'antd', path: dirname(require.resolve('antd/package.json')) }))`，然后用户依赖 antd 时，如果项目有依赖 antd，会用项目依赖的 antd，否则用内置的 antd
+- `api.addProjectFirstLibraries(() => ({ name: 'antd', path: dirname(require.resolve('antd/package.json')) }))`, and then when the user depends on antd, if the project has a dependency on antd, the project's dependent antd will be used, otherwise the built-in antd
 
 ### addRuntimePlugin
 
-添加运行时插件，返回值格式为表示文件路径的字符串。
+Add a runtime plugin, the return value is a string representing the file path.
 
 ### addRuntimePluginKey
 
-添加运行时插件的 key，返回值格式为字符串。
+Add the key of the runtime plugin, and the return value format is string.
 
-内置的初始值有：
+The built-in initial values ​​are:
 
 - patchRoutes
 - rootContainer
@@ -247,19 +247,19 @@ api.addHTMLScript(() => {
 
 ### addUmiExports
 
-添加需要 umi 额外导出的内容，返回值格式为 ``{ source: string, specifiers?: (string | { local: string, exported: string })[], exportAll?: boolean }```。
+Add the content that needs umi extra export, the return value format is ```{ source: string, specifiers?: (string | { local: string, exported: string })[], exportAll?: boolean }```.
 
-比如 `api.addUmiExports(() => { source: 'dva', specifiers: ['connect'] })`，然后就可以通过 `import { connect } from 'umi'` 使用 `dva` 的 `connect` 方法了。
+For example, `api.addUmiExports(() => {source: 'dva', specifiers: ['connect']})`, then you can use `connect` of` dva` via `import {connect} from 'umi'` Method.
 
 ### addTmpGenerateWatcherPaths
 
-添加重新临时文件生成的监听路径。
+Add the listening path generated by re-temporary files.
 
 ### chainWebpack(config, { webpack })
 
-通过 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 的方式修改 webpack 配置。
+Modify webpack configuration through [webpack-chain](https://github.com/neutrinojs/webpack-chain).
 
-比如：
+such as:
 
 ```js
 api.chainWebpack((config, { webpack, env, createCSSRule }) => {
@@ -273,70 +273,70 @@ api.chainWebpack((config, { webpack, env, createCSSRule }) => {
 });
 ```
 
-注：
+Note:
 
-- 需要有返回值
+- Requires a return value
 
 ### getPort()
 
-获取端口号，dev 时有效。
+Gets the port number. Effective for dev.
 
 ### getHostname()
 
-获取 hostname，dev 时有效。
+Get hostname, valid for dev.
 
 ### modifyBabelOpts
 
-修改 babel 配置项。
+Modify babel configuration items.
 
 ### modifyBabelPresetOpts
 
-修改 @umijs/babel-preset-umi 的配置项。
+Modify @umijs/babel-preset-umi configuration items.
 
 ### modifyBundleConfig
 
-修改 bundle 配置。
+Modify the bundle configuration.
 
-参数：
+parameter:
 
-- `initialValue`：bundleConfig，可能是 webpack 的配置，通过 `bundler.id` 区分
-- `args` _ `type`：现在有两个，ssr 和 csr _ `env`：即 api.env \* `bundler`：包含 id 和 version，比如：`{ id: 'webpack': version: 4 }`
+- `initialValue`：bundleConfig, which may be the configuration of webpack, distinguished by `bundler.id`
+- `args` _ `type`：Now there are two, ssr and csr _ `env`: ie api.env \* `bundler`: contains id and version, for example: `{id: 'webpack': version: 4}`
 
 ### modifyBundleConfigs
 
-修改 bundle 配置数组，比如可用于 dll、modern mode 的处理。
+Modify the bundle configuration array, for example, it can be used for dll and modern mode processing.
 
-参数：
+parameter:
 
-- `args` _ `getConfig()`：用于获取额外的一份配置 _ `env`：即 api.env \* `bundler`：包含 id 和 version，比如：`{ id: 'webpack': version: 4 }`
+- `args` _ `getConfig()`：Used to get an additional configuration _ `env`: ie api.env \* `bundler`: contains id and version, for example: `{id: 'webpack': version: 4}`
 
 ### modifyBundleConfigOpts
 
-修改获取 bundleConfig 的函数参数。
+Modify the function parameters to get bundleConfig.
 
 ### modifyBundleImplementor
 
-比如用于切换到 webpack@5 或其他。
+For example to switch to webpack@5 or other.
 
 ### modifyBundler
 
-比如用于切换到 parcel 或 rollup 做构建。
+For example to switch to parcel or rollup for build.
 
 ### modifyConfig
 
-修改最终配置。
+Modify the final configuration.
 
-注：
+Note:
 
-- 修改后的值不会再做 schema 校验
+- Modified values ​​will no longer undergo schema validation
 
 ### modifyDefaultConfig
 
-修改默认配置。
+Modify the default configuration.
 
 ### modifyHTML
 
-修改 HTML，基于 [cheerio](https://github.com/cheeriojs/cheerio) 的 ast。
+Modify HTML, based on ast by [cheerio](https://github.com/cheeriojs/cheerio).
 
 ```js
 api.modifyHTML(($, { routs }) => {
@@ -351,142 +351,142 @@ TODO
 
 ### modifyPaths
 
-修改 paths 对象。
+Modify the paths object.
 
-参数：
+parameter:
 
-- `initialValue`: paths 对象
+- `initialValue`: paths object
 
 ### modifyPublicPathStr
 
-修改 publicPath 字符串。
+Modify the publicPath string.
 
-参数：
+parameter:
 
-- `route`: 当前路由
+- `route`: Current route
 
-注：
+Note:
 
-- 仅在配置了 runtimePublicPath 或 exportStatic?.dynamicRoot 时有效
+- Only valid when runtimePublicPath or exportStatic?.dynamicRoot is configured
 
 ### modifyRoutes
 
-修改路由。
+Modify the route.
 
 ### onPatchRoute({ route, parentRoute })
 
-修改路由项。
+Modify routing entries.
 
 ### onPatchRouteBefore({ route, parentRoute })
 
-修改路由项。
+Modify routing entries.
 
 ### onPatchRoutes({ routes, parentRoute })
 
-修改路由数组。
+Modify the routing array.
 
 ### onPatchRoutesBefore({ routes, parentRoute })
 
-修改路由数组。
+Modify the routing array.
 
 ### onBuildCompelete({ err?, stats? })
 
-构建完成时可以做的事。
+Things you can do when the build is complete.
 
-注：
+Note:
 
-- 可能是失败的，注意判断 err 参数
+- May be failed, pay attention to judging the err parameter
 
 ### onDevCompileDone({ isFirstCompile: boolean, stats: webpack.Stats })
 
-编译完成时可以做的事。
+Things you can do when compilation is complete.
 
-注：
+Note:
 
-- 不包含编译失败
+- Does not include compilation failure
 
 ### onGenerateFiles
 
-生成临时文件，触发时机在 webpack 编译之前。
+Generate a temporary file and trigger it before webpack compiles.
 
 ### onPluginReady()
 
-在插件初始化完成触发。在 `onStart` 之前，此时还没有 config 和 paths，他们尚未解析好。
+Triggered when the plugin initialization is complete. Before `onStart`, there were no config and paths at this time, they were not resolved yet.
 
 ### onStart()
 
-在命令注册函数执行前触发。可以使用 config 和 paths。
+Fires before the command registration function executes. You can use config and paths.
 
 ### onExit()
 
-dev 退出时触发。
+Triggered when dev exits.
 
-参数：
+parameter:
 
-- `signal`: 值为 SIGINT、SIGQUIT 或 SIGTERM
+- `signal`: Values ​​are SIGINT, SIGQUIT, or SIGTERM
 
-注：
+Note:
 
-- 只针对 dev 命令有效
+- Only valid for dev commands
 
 ### writeTmpFile({ path: string, content: string })
 
-写临时文件。
+Write temporary files.
 
-参数：
+parameter:
 
-- `path`：相对于临时文件夹的路径
-- `content`：文件内容
+- `path`: Path relative to the temporary folder
+- `content`:document content
 
-注：
+Note:
 
-- 不能在注册阶段使用，通常放在 `api.onGenerateFiles()` 里，这样能在需要时重新生成临时文件
-- 临时文件的写入做了缓存处理，如果内容一致，不会做写的操作，以减少触发 webpack 的重新编译
+- Cannot be used during the registration phase, usually placed in `api.onGenerateFiles()`, so that temporary files can be regenerated when needed
+- The writing of the temporary file is cached. If the contents are consistent, the writing operation will not be performed to reduce the trigger of recompiling of webpack.
 
-## 属性
+## Attributes
 
 ### args
 
-命令行参数。
+Command line parameters.
 
 ### babelRegister.setOnlyMap({ key: string, value: string[] })
 
-设置需要走 babel 编译的文件列表。
+Set the list of files that need to be compiled by babel.
 
-注：
+Note:
 
-- 如果有 watch 操作，每次重复设置时请保持 key 相同
+- If there is a watch operation, keep the same key every time you repeat the setting
 
 ### config
 
-用户配置。
+User configuration.
 
-注：
+Note:
 
-- 注册阶段不能获取到，所以不能在外面 `const { config } = api;` 然后在函数体里使用，而是需要在里面通过 `api.paths.cwd` 使用
+- It cannot be obtained during the registration phase, so it cannot be used outside `const {config} = api;` and then used in the function body, but it needs to be used inside `api.paths.cwd`
 
 ### cwd
 
-当前路径。
+The current path.
 
 ### env
 
-即 process.env.NODE_ENV，可能有 `development`、`production` 和 `test`。
+That is, process.env.NODE_ENV, there may be `development`,` production`, and `test`.
 
-比如，
+such as,
 
-- 命令行 `umi dev --foo`，args 为 `{ _: [], foo: true }`
-- 命令行 `umi g page index --typescript --less`，args 为 `{ _: ['page', 'index'], typescript: true, less: true }`
+- Command line `umi dev --foo`, args is` {_: [], foo: true} `
+- Command Line `umi g page index --typescript --less`, args is `{ _: ['page', 'index'], typescript: true, less: true }`
 
 ### id
 
-插件 id，通常是包名。
+The plugin id, usually the package name.
 
 ### logger
 
-插件日志类，包含 `api.logger.(log|info|debug|error|warn|profile)`
+Plugin log class, containing `api.logger.(log|info|debug|error|warn|profile)`
 
-其中 `api.logger.profile` 可用于性能耗时记录，例如：
+The `api.logger.profile` can be used to record the energy consumption, for example:
 
 ```ts
 export default api => {
@@ -501,58 +501,58 @@ export default api => {
 
 ### key
 
-插件的配置 key，通常是包名的简写。
+The configuration key of the plugin, usually a shorthand for the package name.
 
-比如 `@umijs/plugin-dva`，其 key 为 `dva`；比如 `umi-plugin-antd`，其 key 为 `antd`。
+For example, `@umijs/plugin-dva`, whose key is `dva`; for example, `umi-plugin-antd`, whose key is `antd`.
 
 ### paths
 
-相关路径，包含：
+Related paths, including:
 
-- `cwd`，当前路径
-- `absSrcPath`，src 目录绝对路径，需注意 src 目录是可选的，如果没有 src 目录，`absSrcPath` 等同于 `cwd`
-- `absPagesPath`，pages 目录绝对路径
-- `absTmpPath`，临时目录绝对路径
-- `absOutputPath`，输出路径，默认是 `./dist`
-- `absNodeModulesPath`，node_modules 目录绝对路径
-- `aliasedTmpPath`，以 `@` 开头的临时路径，通常用于
+- `cwd`, ​​the current path
+- `absSrcPath`, absolute path of src directory. Note that src directory is optional. If there is no src directory,` absSrcPath` is equivalent to `cwd`.
+- `absPagesPath`, pages directory absolute path
+- `absTmpPath`, the absolute path of the temporary directory
+- `absOutputPath`, the output path, the default is`. / dist`
+- `absNodeModulesPath`, absolute path to the node_modules directory
+- `aliasedTmpPath`, a temporary path starting with` @ `, usually used
 
-注：
+Note:
 
-- 注册阶段不能获取到，所以不能在外面 `const { paths } = api;` 然后在函数体里 `paths.cwd` 使用，而是需要在里面通过 `api.paths.cwd` 使用
+- It cannot be obtained during the registration phase, so it cannot be used outside `const {paths} = api;` and then used in `paths.cwd` in the function body, but needs to be used in` api.paths.cwd` inside
 
 ### pkg
 
-当前项目的 package.json，格式为 Object。
+The package.json for the current project, in the format Object.
 
 ### service
 
-Service 实例。通常不需要用到，除非你知道为啥要用。
+Service instance. It is usually not needed unless you know why.
 
 ### stage
 
-Service 运行阶段。
+Service operation phase.
 
 ### userConfig
 
-纯用户配置，就是 `.umirc` 或 `config/config` 里的内容，没有经过 defaultConfig 以及插件的任何处理。
+Pure user configuration is the content in `.umirc` or` config/config`, without any processing by defaultConfig and plugins.
 
-注：
+Note:
 
-- 和 config 的区别是，可以在注册阶段取到
+- The difference from config is that it can be obtained during the registration phase
 
 ### utils
 
-utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts)。
+For the utils method, see [@umijs/utils/src/index.ts](https://github.com/umijs/umi/blob/master/packages/utils/src/index.ts).
 
-注：
+Note:
 
-- 原则上同类功能的方法不允许使用其他的，以降低整体尺寸，比如请求用 got，参数处理用 yargs
-- 编写插件时，除了 `api.utils`，还可通过 `import { utils } from 'umi'` 取到，通常用于非插件主入口的文件
+- In principle, methods of the same function are not allowed to use other ones to reduce the overall size, such as got for requests and yargs for parameter processing
+- When writing plugins, in addition to `api.utils`, you can also get them via` import {utils} from 'umi'`, which is usually used for files that are not the main entrance of the plugin
 
 ### ApplyPluginsType
 
-为 `api.applyPlugins()` 提供 type 参数的类型，包含三种：
+Provide the type of the type parameter for `api.applyPlugins()`, including three types:
 
 - add
 - modify
@@ -560,14 +560,14 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/b
 
 ### ConfigChangeType
 
-为 `api.describe()` 提供 config.onChange 的类型，目前包含两种：
+Provide the type of config.onChange for `api.describe ()`, currently contains two types:
 
-- restart，重启 dev 进程，默认是这个
-- regenerateTmpFiles，重新生成临时文件
+- restart, restart the dev process, the default is this
+- regenerateTmpFiles, regenerate temporary files
 
 ### EnableBy
 
-插件的启用方式，包含三种，
+There are three ways to enable the plugin,
 
 - register
 - config
@@ -577,11 +577,11 @@ utils 方法，详见 [@umijs/utils/src/index.ts](https://github.com/umijs/umi/b
 
 ### ServiceStage
 
-`stage` 的枚举类型，通常用于和 `stage` 的比较。
+The enumeration type of `stage` is usually used for comparison with` stage`.
 
-## 环境变量
+## Environment variable
 
-可以用到的环境变量。
+Environment variables that can be used.
 
-- UMI_VERSION，umi 版本号
-- UMI_DIR，`umi/package.json` 所在的文件夹路径
+- UMI_VERSION, umi version
+- UMI_DIR，`umi/package.json` folder path

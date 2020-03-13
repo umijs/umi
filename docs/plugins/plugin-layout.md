@@ -5,25 +5,25 @@ translateHelp: true
 # @umijs/plugin-layout
 
 
-## 启用方式
+## How to enable
 
-配置开启。
+Configuration is on.
 
-## 介绍
+## Introduction
 
-为了进一步降低研发成本，我们尝试将布局通过 umi 插件的方式内置，只需通过简单的配置即可拥有 Ant Design 的 Layout，包括导航以及侧边栏。从而做到用户无需关心布局。
+In order to further reduce the cost of research and development, we try to build the layout through the umi plug-in. You can have Ant Design's Layout, including navigation and sidebar, through simple configuration. So that the user does not need to care about the layout.
 
-- 默认为 Ant Design 的 Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout)，支持它全部配置项。
-- 侧边栏菜单数据根据路由中的配置自动生成。
-- 默认支持对路由的 403/404 处理和 Error Boundary。
-- 搭配 @umijs/plugin-access 插件一起使用，可以完成对路由权限的控制。
-- 搭配 @umijs/plugin-initial-state 插件和 @umijs/plugin-model 插件一起使用，可以拥有默认用户登陆信息的展示。
+- The default is Ant Design's Layout [@ant-design/pro-layout](https://www.npmjs.com/package/@ant-design/pro-layout), which supports all its configuration items.
+- The sidebar menu data is automatically generated based on the configuration in the route.
+- 403/404 processing and Error Boundary for routing are supported by default.
+- Used in conjunction with the @umijs/plugin-access plugin, you can control routing permissions.
+- Used with @umijs/plugin-initial-state plugin and @umijs/plugin-model plugin, you can have a display of the default user login information.
 
-## 配置
+## Configuration
 
-### 构建时配置
+### Build-time configuration
 
-可以通过配置文件配置 `layout` 的主题等配置。
+You can configure the theme of `layout` through the configuration file.
 
 ```ts
 import { defineConfig } from 'umi';
@@ -41,32 +41,32 @@ export const config = defineConfig({
 * Type: `string`
 * Default: `name` in package.json
 
-产品名，默认值为包名。
+Product name, default is package name.
 
 #### logo
 
 * Type: `string`
 * default: Ant Design Logo
 
-产品 Logo
+Product Logo
 
 #### theme
 
 * Type: `string`
 * Default: `pro`
 
-指定 Layout 主题，可选 `pro` 和 `tech`（`tech` 仅在蚂蚁内部框架 Bigfish 中生效）。
+Specify Layout theme, optional `pro` and` tech` (`tech` only works in Ant internal framework Bigfish).
 
 #### locale
 
 * Type: `boolean`
 * Default: `false`
 
-是否开始国际化配置。开启后路由里配置的菜单名会被当作菜单名国际化的 key，插件会去 locales 文件中查找 `menu.[key]`对应的文案，默认值为改 key。该功能需要配置 `@umijs/plugin-locale` 使用。
+Whether to start international configuration. After opening, the menu name configured in the route will be used as the key for the menu name internationalization. The plugin will search the locales file for the text corresponding to `menu.[key]`. The default value is to change the key. This function needs to configure `@umijs/plugin-locale` to use.
 
-### 运行时配置
+### Runtime configuration
 
-Layout 插件允许通过运行时的配置退出登陆、自定义 ErrorBoundary 等功能。
+The Layout plug-in allows functions such as logout and custom ErrorBoundary through runtime configuration.
 
 ```js
 // src/app.js
@@ -76,50 +76,50 @@ export const layout = {
 };
 ```
 
-除了下面的插件支持的特有配置外，运行时配置支持所有的构建时配置并透传给 `@ant-design/pro-layout`。
+Except for the specific configurations supported by the following plugins, runtime configuration supports all build-time configurations and is transparently passed to `@ant-design/pro-layout`.
 
 #### logout
 
 * Type: `() => void`
 * Default: `null`
 
-用于运行时配置默认 Layout 的 UI 中，点击退出登录的处理逻辑，默认不做处理。
+In the UI used to configure the default layout at runtime, click to log out of the processing logic. No processing is performed by default.
 
 #### rightRender
 
 * Type: `(initialState) => React.ReactNode`
-* Default: 展示用户名、头像、退出登录相关组件
+* Default: Display username, avatar, logout related components
 
-`initialState` 从 `@umijs/plugin-initial-state` 插件中获取，需要搭配一起使用。
+`initialState` is obtained from the `@umijs/plugin-initial-state` plugin and needs to be used together.
 
 #### onError
 
 * Type: `(error: Error, info: any) => void;`
 
-发生错误后的回调（可做一些错误日志上报，打点等）。
+Callback after an error occurs (you can do some error log reporting, RBI, etc.).
 
 #### ErrorComponent
 
 * Type: `(error: Error) => React.ReactElement<any>;`
 * Default: Ant Design Pro 的错误页。
 
-发生错误后展示的组件。
+The component to display after an error occurs.
 
-### 扩展的路由配置
+### Extended routing configuration
 
-Layout 插件会基于 umi 的路由，封装了更多的配置项，支持更多配置式的能力。新增：
+The Layout plug-in will encapsulate more configuration items based on umi's routing and support more configuration capabilities. Added:
 
-• 侧边栏菜单配置。
-• 布局路由级别展示/隐藏相关配置。
-• 与权限插件结合，配置式实现权限路由的功能。
+• Sidebar menu configuration.
+• Layout routing level shows/hides related configurations.
+• Combined with the permission plug-in, the profile implements the function of permission routing.
 
-新增如下配置项：
+Added the following configuration items:
 
 • menu
 • layout
 • access
 
-示例如下：
+Examples are:
 
 ```typescript
 //config/route.ts
@@ -128,7 +128,7 @@ export const routes: IBestAFSRoute[] =  [
     path: '/welcome',
     component: 'IndexPage',
     menu: {
-      name: '欢迎', // 兼容此写法
+      name: 'welcome', // Compatible with this writing
       icon: 'testicon',
     },
     layout:{
@@ -143,42 +143,42 @@ export const routes: IBestAFSRoute[] =  [
 
 * Type: `string`
 
-菜单上显示的名称，没有则不显示。
+The name displayed on the menu, otherwise it will not be displayed.
 
 #### icon
 
 * Type: `string`
 
-菜单上显示的 Icon。
+Icon displayed on the menu.
 
 #### menu
 
 * Type: `false` | `IRouteMenuConfig`
 * Default: `false`
 
-SideMenu 相关配置。默认为 false，表示在菜单中隐藏此项包括子项。
+SideMenu related configuration. The default is false, which means that this item is hidden from the menu including sub-items.
 
-menu 的可配置项包括：
+The configurable items of menu include:
 
 1. name
 
 * Type:  `string`
-当前菜单名，无默认值，必选，不填则表示不展示。
+The name of the current menu. There is no default value. It is required.
 
 2. icon
 
 * Type: `string`
-当前菜单的左侧 icon，可选 antd 的 icon name 和 url，可选。
+The icon on the left of the current menu, optional icon name and url of antd, optional.
 
 3. hideChildren
 
 * Type: `boolean`
-在菜单中隐藏他的子项，只展示自己。
+Hide his children in the menu and show only himself.
 
 4. flatMenu
 
 * Type: `boolean`
-默认为false 在菜单中只隐藏此项，子项往上提，仍旧展示。
+The default is false. Only the item is hidden in the menu, and the sub-items are raised up and still displayed.
 
 
 #### layout
@@ -186,28 +186,28 @@ menu 的可配置项包括：
 * Type: false | IRouteLayoutConfig
 * Default: false
 
-Layout 相关配置。 默认为 false， 默认展示选择的 layout 主题。
+Layout related configuration. The default is false, which displays the selected layout theme by default.
 
-layout 的可配置项包括：
+The configurable items of layout include:
 
 1. hideMenu
 
 * Type: `boolean`
 * Default: `false`
 
-当前路由隐藏左侧菜单，默认不隐藏。
+The current route hides the menu on the left. It is not hidden by default.
 
 2. hideNav
 
 * Type: `boolean`
 * Default: `false`
 
-当前路由隐藏导航头，默认不隐藏。
+The current route hides the navigation header. It is not hidden by default.
 
 #### access
 
 * Type: `string`
 
-当 Layout 插件配合 `@umijs/plugin-access` 插件使用时生效。
+Takes effect when the Layout plugin is used with the `@ umijs / plugin-access` plugin.
 
-权限插件会将用户在这里配置的 access 字符串与当前用户所有权限做匹配，如果找到相同的项，并当该权限的值为 false，则当用户访问该路由时，默认展示 403 页面。
+The permissions plugin will match the access string configured by the user with all the permissions of the current user. If the same entry is found and the value of the permission is false, when the user accesses the route, the 403 page is displayed by default.

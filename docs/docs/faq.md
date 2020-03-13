@@ -9,19 +9,19 @@ translateHelp: true
 
 ## Umi 3 只能用 TypeScript 写吗？
 
-不是。文档中的 `.ts` 替换为 `.js` 同样有效，因为不想每次都带上 `.(j|t)sx?`。
+No. Replacing `.ts` with` .js` in the document is also valid, because you don't want to bring `.(j|t)sx?` Every time.
 
-## import from umi 没有定义怎么办？
+## What to do if import from umi is not defined？
 
-比如：
+such as:
 
 ```js
 import { history } from 'umi';
 ```
 
-可能报 `xxx has no exported member 'history'`。
+May report `xxx has no exported member 'history'`。
 
-这时需要确保两件事，
+Two things need to be ensured,
 
-1. tsconfig.json 中有配置 `@@` 的路径，比如 `"@@/*": ["src/.umi/*"]`，参考 [tsconfig.json 模板](https://github.com/umijs/umi/blob/master/packages/create-umi-app/templates/AppGenerator/tsconfig.json)
-2. 确保 `src/.umi/core/umiExports.ts` 有相关内容，如果没有，可通过 `umi build`、`umi dev` 或 `umi g tmp` 任一命令生成
+1. tsconfig.json has the path to configure `@@`, such as `" @@/*": ["src/.umi/*"]`, refer to [tsconfig.json template](https://github.com/umijs/umi/blob/master/packages/create-umi-app/templates/AppGenerator/tsconfig.json)
+2. Make sure `src/.umi/core/umiExports.ts` has relevant content. If not, you can generate it by using any command` umi build`, `umi dev`, or` umi g tmp`.

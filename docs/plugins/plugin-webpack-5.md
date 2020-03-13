@@ -5,27 +5,27 @@ translateHelp: true
 # @umijs/plugin-webpack-5
 
 
-一键切换为 webpack 5。
+Switch to webpack 5 in one click.
 
-## 启用方式
+## How to enable
 
-默认开启。
+On by default.
 
-## 介绍
+## Introduction
 
-目前 webpack 5 还未正式发布，使用此插件可能会踩坑。
+Currently webpack 5 has not been officially released, using this plugin may step into the pit.
 
-包含功能：
+Contains features:
 
-1. 启用 webpack 5
-1. 启用物理缓存，极速的二次启动
-1. node 补丁，目前有 tty
+1. Enable webpack 5
+1. Enable physical cache, fast second boot
+1. node patch, currently has tty
 
-问题：
+problem:
 
-1. 看不到进度条，因为 umi 内置的进度条插件不支持 webpack 5
-2. dev 模式下 css 会被打到 js 里，而不是以单独的 css 文件出现，因为 mini-css-extract-plugin 和 webpack@5 的物理缓存有冲突
+1. I can't see the progress bar, because umi's built-in progress bar plugin does not support webpack 5
+2. In dev mode, css will be typed into js, ​​instead of appearing as a separate css file, because the physical cache of mini-css-extract-plugin conflicts with webpack @ 5
 
-## 配置
+## Configuration
 
-此插件暂无配置。
+This plugin is not configured yet.

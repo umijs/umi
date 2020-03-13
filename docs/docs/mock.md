@@ -5,13 +5,13 @@ translateHelp: true
 # Mock Data
 
 
-Mock 数据是前端开发过程中必不可少的一环，是分离前后端开发的关键链路。通过预先跟服务器端约定好的接口，模拟请求数据甚至逻辑，能够让前端开发独立自主，不会被服务端的开发所阻塞。
+Mock data is an indispensable part of the front-end development process and a key link to separate front-end and back-end development. By pre-determining the interface with the server in advance, simulating the request data and even the logic, the front-end development can be made independent and not blocked by the server-side development.
 
-## 约定式 Mock 文件
+## Conventional Mock Files
 
-Umi 约定 `src/mock` 文件夹下所有文件为 mock 文件。
+Umi agrees that all files in the `src/mock` folder are mock files.
 
-比如：
+such as:
 
 ```bash
 .
@@ -23,38 +23,38 @@ Umi 约定 `src/mock` 文件夹下所有文件为 mock 文件。
         └── index.tsx
 ```
 
-`src/mock` 下的 `api.ts` 和 `users.ts` 会被解析为 mock 文件。
+`api.ts` and` users.ts` under `src/mock` will be parsed into mock files.
 
-## 编写 Mock 文件
+## Writing mock files
 
-如果 `src/mock/api.ts` 的内容如下，
+If the contents of `src/mock/api.ts` are as follows,
 
 ```js
 export default {
-  // 支持值为 Object 和 Array
+  // Supported values ​​are Object and Array
   'GET /api/users': { users: [1, 2] },
 
-  // GET 可忽略
+  // GET can be ignored
   '/api/users/1': { id: 1 },
 
-  // 支持自定义函数，API 参考 express@4
+  // Support custom functions, API reference express@4
   'POST /api/users/create': (req, res) => {
-    // 添加跨域请求头
+    // Add cross domain request header
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.end('ok');
   },
 }
 ```
 
-然后访问 `/api/users` 就能得到 `{ users: [1,2] }` 的响应，其他以此类推。
+Then visit `/api/users` to get the response of `{ users: [1, 2] }`, and so on.
 
-## 配置 Mock
+## Configure Mock
 
-详见[配置#mock](TODO)。
+See details [configuration#mock](TODO)。
 
-## 如何关闭 Mock？
+## How to disable Mock？
 
-可以通过配置关闭，
+Can be disabled via configuration,
 
 ```js
 export default {
@@ -62,23 +62,23 @@ export default {
 };
 ```
 
-也可以通过环境变量临时关闭，
+It can also be temporarily closed through environment variables,
 
 ```bash
 $ MOCK=none umi dev
 ```
 
-## 引入 Mock.js
+## Introducing Mock.js
 
-[Mock.js](http://mockjs.com/) 是常用的辅助生成模拟数据的三方库，借助他可以提升我们的 mock 数据能力。
+[Mock.js](http://mockjs.com/) is a commonly used third-party library to assist in the generation of simulation data, with which we can improve our ability to mock data.
 
-比如：
+such as:
 
 ```js
 import mockjs from 'mockjs';
 
 export default {
-  // 使用 mockjs 等三方库
+  // Using a three-party library such as mockjs
   'GET /api/tags': mockjs.mock({
     'list|100': [{ name: '@city', 'value|1-100': 50, 'type|0-2': 1 }],
   }),

@@ -9,67 +9,67 @@ Umi plugin for [qiankun](https://github.com/umijs/qiankun).
 
 ## Examples
 
-导航是主应用，App1 和 App2 是子应用，
+Navigation is the main application, App1 and App2 are sub-applications,
 
 ![](https://img.alicdn.com/tfs/TB1ZMxEwKH2gK0jSZJnXXaT1FXa-1040-619.gif)
 
 ## Features
 
-- ✔︎ 基于 qiankun
-- ✔︎ 支持主应用和子应用都用 umi
-- ✔︎ 支持主子应用 browser、hash 等多种 history 模式
-- ✔︎ 父子应用通讯
-- ✔︎ 子应用运行时配置自定义 `bootstrap()`、`mount()` 和 `unmount()`
-- ✔︎ 主应用、子应用联调
+- ✔︎ Based on qiankun
+- ✔︎ Supports main and sub-applications using umi
+- ✔︎ Support master and sub-application browser, hash and other history modes
+- ✔︎ Parent-child communication
+- ✔︎ Configure custom `bootstrap()`, `mount()`, and `unmount()` at child application runtime
+- ✔︎ Main application and sub application joint debugging
 
 ## Usage
 
-### 主应用
+### Main application
 
-#### 构建期
+#### Construction period
 
 ```js
 export default {
   qiankun: {
     master: {
-      // 注册子应用信息
+      // Register child app information
       apps: [
         {
-          name: 'app1', // 唯一 id
+          name: 'app1', // Unique id
           entry: '//localhost:7001', // html entry
-          base: '/app1', // app1 的路由前缀，通过这个前缀判断是否要启动该应用，通常跟子应用的 base 保持一致
-          history: 'browser', // 子应用的 history 配置，默认为当前主应用 history 配置
+          base: '/app1', // app1's routing prefix. Use this prefix to determine whether to start the application, which is usually the same as the base of the sub-application.
+          history: 'browser', // Child application history configuration, default is the current main application history configuration
         },
         {
           name: 'app2',
           entry: {
-            // TODO 支持 config entry
+            // TODO: support config entry
             scripts: [],
             styles: [],
           },
           base: '/app2',
         },
       ],
-      jsSandbox: true, // 是否启用 js 沙箱，默认为 false
-      prefetch: true, // 是否启用 prefetch 特性，默认为 true
+      jsSandbox: true, // Whether to enable js sandbox, default is false
+      prefetch: true, // Whether to enable prefetch feature, default is true
     },
   },
 };
 ```
 
-Note: 当主应用跟子应用的 history 模式一致时（比如都是 browser 或 hash），插件会自动创建一些空路由来避免 404，所以建议主应用跟子应用使用相同的 history mode，否则需要自己处理这些情况。
+Note: When the history mode of the main application is the same as that of the sub-application (such as browser or hash), the plugin will automatically create some empty routes to avoid 404. Therefore, it is recommended that the main application and the sub-application use the same history mode, otherwise you need to handle these situations .
 
-#### 运行时
+#### Runtime
 
-##### 1. src/app.js 里配置
+##### 1. src/app.js Configuration
 
 ```js
-// 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
+// Get the sub-application configuration from the interface. The qiankun variable exported is a Promise
 export const qiankun = fetch('/config').then(({ apps }) => ({
-  // 注册子应用信息
+  // Register child app information
   apps,
-  jsSandbox: true, // 是否启用 js 沙箱，默认为 false
-  prefetch: true, // 是否启用 prefetch 特性，默认为 true
+  jsSandbox: true, // Whether to enable js sandbox, default is false
+  prefetch: true, // Whether to enable prefetch feature, default is true
   lifeCycles: {
     // see https://github.com/umijs/qiankun#registermicroapps
     afterMount: props => {
@@ -80,11 +80,11 @@ export const qiankun = fetch('/config').then(({ apps }) => ({
 }));
 ```
 
-##### 2. 添加子应用路由
+##### 2. Add child application route
 
 由于 umi 不支持在应用 render 之后修改路由，故运行时配置方式插件无法自动生成子应用相关路由，（见[代码](https://github.com/umijs/umi-plugin-qiankun/blob/master/src/master/index.ts#L34)）。所以这里需要用户手动添加子应用相关路由配置避免 404 情况：
 
-###### 2.1 主应用新建 pages/subAppContainer.js
+###### 2.1 New main application pages/subAppContainer.js
 
 ```js
 import React from 'react';
@@ -94,10 +94,10 @@ export default function() {
 }
 ```
 
-###### 2.2 新建 pages/subAppContainer.js
+###### 2.2 New pages/subAppContainer.js
 
 ```js
-// 主应用 config.js 中添加子应用相关路由配置
+// Add sub-app related routing configuration in main app config.js
 export default {
   routes: [
     { path: '/app1', exact: true, component: 'subAppContainer' },
@@ -106,65 +106,65 @@ export default {
 };
 ```
 
-### 配置列表
+### Configuration list
 
-| 配置 | 说明 | 类型 | 是否必填 | 默认值 |
+| Configuration | Description | Type | Is required | Default |
 | --- | --- | --- | --- | --- |
-| apps | 子应用配置 | App[] | 是 |  |
-| jsSandbox | 是否启用 js 沙箱 | boolean | 否 | false |
-| prefetch | 是否启用 prefetch 特性 | boolean | 否 | true |
-| defer | 是否异步渲染，比如子应用的渲染容器依赖主应用生成的节点，而主应用生成该节点的过程是异步的。<br />当该配置开启的时候，需要使用 `import { qiankunStart } from 'umi'` api 通知 qiankun 启动。参考 [example](https://github.com/umijs/umi-plugin-qiankun/blob/master/examples/master/models/base.js#L35) | boolean | 否 | false |
+| apps | Sub-application configuration | App[] | Yes |  |
+| jsSandbox | Whether to enable the js sandbox | boolean | no | false |
+| prefetch | Whether to enable the prefetch feature | boolean | no | true |
+| defer | Whether to render asynchronously. For example, the rendering container of a child application depends on the node generated by the main application, and the process of generating the node by the main application is asynchronous. <br />When this configuration is enabled, qiankun needs to be notified using the `import { qiankunStart } from 'umi'` api. Reference [example](https://github.com/umijs/umi-plugin-qiankun/blob/master/examples/master/models/base.js#L35) | boolean | no | false |
 
-[qiankun start](https://github.com/umijs/qiankun#start) 方法其他可接收的参数在这里也都可以配置
+[qiankun start](https://github.com/umijs/qiankun#start) Other acceptable parameters of the method can also be configured here
 
 #### App
 
-| 配置 | 说明 | 类型 | 是否必填 | 默认值 |
+| Configuration | Description | Type | Is required | Default |
 | --- | --- | --- | --- | --- |
-| name | 子应用唯一 id | string | 是 |  |
-| entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
-| base | 子应用路由前缀，通常跟子应用的 [base 配置](https://umijs.org/config/#base) 一致，框架会以这个配置作为前缀判断是否激活当前应用，支持配置一组前缀 | string \| string[] | 是 |  |
-| history | [umi history mode](https://umijs.org/config/#history) | string | 否 | 主应用 history 配置 |
-| mountElementId | 子应用挂载到主应用的哪个 id 节点上（注意不要跟子应用的 mountElementId 一致） | string | 否 | root-subapp |
-| props | 主应用传递给子应用的数据 | object | 否 | {} |
+| name | Child app unique id | string | Yes |  |
+| entry | Child application html address | string \| { script: string[], styles: [] } | Yes |  |
+| base | The sub application routing prefix is ​​usually the same as the [base configuration](https://umijs.org/config/#base) of the sub application. The framework will use this configuration as a prefix to determine whether to activate the current application. It supports the configuration of a set of prefix | string \| string[] | Yes |  |
+| history | [umi history mode](https://umijs.org/config/#history) | string | no | Main application history configuration |
+| mountElementId | Which id node of the main application the child application is mounted on (note that it is not the same as the mountElementId of the child application) | string | no | root-subapp |
+| props | Data passed from main application to child applications | object | no | {} |
 
-### 子应用
+### Sub-application
 
 ```js
 export default {
-  base: `/${appName}`, // 子应用的 base，默认为 package.json 中的 name 字段
+  base: `/${appName}`, // The child's base, which defaults to the name field in package.json
   plugins: ['@umijs/plugin-qiankun', { slave: {} }],
 };
 ```
 
-如果子应用配置项为空，即 slave: {}，则可以省略配置：
+If the child application configuration item is empty, that is, slave: {}, you can omit the configuration:
 
 ```js
 export default {
-  base: `/${appName}`, // 子应用的 base，默认为 package.json 中的 name 字段
+  base: `/${appName}`, // The child's base, which defaults to the name field in package.json
   plugins: ['@umijs/plugin-qiankun'],
 };
 ```
 
-#### 环境变量配置
+#### Environment variable configuration
 
-为了获得更好地本地开发及调试体验，我们建议您提前在子应用中指定应用启动的具体端口号，如通过`.env`指定
+In order to obtain a better local development and debugging experience, we recommend that you specify the specific port number for the application startup in the sub-application in advance, such as specified by `.env`
 
 ```yml
 PORT=8081
 ```
 
-详细配置参考：https://umijs.org/zh/guide/env-variables.html#port
+Detailed configuration reference: https://umijs.org/zh/guide/env-variables.html#port
 
-## 父子应用通讯
+## Parent-child communication
 
-有两种方式可以实现
+There are two ways to achieve this
 
-### 基于 props 传递
+### Props based
 
-类似 react 中组件间通信的方案
+Scheme similar to communication between components in react
 
-1. 主应用中配置 apps 时以 props 将数据传递下去（参考主应用运行时配置一节）
+1. When the apps are configured in the main application, data is passed as props (refer to the main application runtime configuration section)
 
    ```js
    // src/app.js
@@ -186,37 +186,37 @@ PORT=8081
    });
    ```
 
-2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
+2. The child application gets the props consumption data in the lifecycle hook (refer to the sub-application runtime configuration section)
 
-### 基于 Hooks 共享数据
+### Hooks-based data sharing
 
-由于方案基于 react hook，所以只能在 functional component 中使用相关 api，无法在 class component 中使用。
+Since the solution is based on react hooks, the relevant APIs can only be used in functional components, not in class components.
 
-1. 约定父应用中在 `src/rootExports.js` 里 export 内容
-2. 子应用中通过 `import { useRootExports } from 'umi'; const rootExports = useRootExports();` 取到
+1.Convention in the parent application to export content in `src/rootExports.js`
+2. In the sub-application, use `import { useRootExports } from 'umi'; const rootExports = useRootExports();`
 
-## 子应用运行时配置
+## Child application runtime configuration
 
-在子应用的 `src/app.js` 里输出 `qiankun`，`props` 由主应用注册子应用时提供
+Output `qiankun` in` src/app.js` of the sub-application, `props` is provided by the main application when registering the sub-application
 
 ```js
 export const qiankun = {
-  // 应用加载之前
+  // Before the app loads
   async bootstrap(props) {
     console.log('app1 bootstrap', props);
   },
-  // 应用 render 之前触发
+  // Fires before applying render
   async mount(props) {
     console.log('app1 mount', props);
   },
-  // 应用卸载之后触发
+  // Triggered after app uninstall
   async unmount(props) {
     console.log('app1 unmount', props);
   },
 };
 ```
 
-## 相关
+## Related
 
-- [RFC: 微前端（@umijs/plugin-qiankun） by sorrycc · Pull Request #3 · umijs/rfcs · GitHub](https://github.com/umijs/rfcs/pull/3)
-- [umi-example-monorepo](https://github.com/umijs/umi-example-monorepo) 之前尝试的另一种简单粗糙的微前端试验
+- [RFC: Micro Frontend (@umijs/plugin-qiankun) by sorrycc · Pull Request #3 · umijs/rfcs · GitHub](https://github.com/umijs/rfcs/pull/3)
+- [umi-example-monorepo](https://github.com/umijs/umi-example-monorepo) Another simple and rough micro-front end experiment I tried before

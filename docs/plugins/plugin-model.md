@@ -5,27 +5,27 @@ translateHelp: true
 # @umijs/plugin-model
 
 
-简易数据流，通常用于中台项目的全局共享数据。
+Simple data flow, which is commonly used for global shared data for mid-Taiwan projects.
 
-## 启用方式
+## How to enable
 
-`src/models` 目录下有 hooks model 时启用。
+Enabled when there are hooks models in the `src/models` directory.
 
-## 介绍
+## Introduction
 
-我们约定在 `src/models` 目录下的文件为项目定义的 model 文件。每个文件需要默认导出一个 function，该 function 定义了一个 Hook，不符合规范的文件我们会过滤掉。
+We agree that the files in the `src/models` directory are the model files defined by the project. Each file needs to export a function by default, which defines a Hook, and we will filter out files that do not conform to the specification.
 
-文件名则对应最终 model 的 name，你可以通过插件提供的 API 来消费 model 中的数据。
+The file name corresponds to the name of the final model. You can consume the data in the model through the API provided by the plugin.
 
-## 配置
+## Configuration
 
-该插件无配置项。
+This plugin has no configuration items.
 
 ## API
 
 ### useModel
 
-`useModel` 是一个 Hook，提供消费 Model 的能力，使用示例如下：
+`useModel` is a Hook that provides the ability to consume a Model. The usage example is as follows:
 
 ```js
 import { useModel } from 'umi';

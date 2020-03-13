@@ -5,27 +5,27 @@ translateHelp: true
 # Use Image
 
 
-## JS 里使用图片
+## Using images in JS
 
-通过 require 引用相对路径的图片。
+Refer to the relative path image via require.
 
-比如：
+such as:
 
 ```js
 export default () => <img src={require('./foo.png')} />
 ```
 
-支持别名，比如通过 `@` 指向 src 目录：
+Alias ​​support, such as pointing to the src directory via `@`:
 
 ```js
 export default () => <img src={require('@/foo.png')} />
 ```
 
-## CSS 里使用图片
+## Using images in CSS
 
-通过相对路径引用。
+Referenced by relative path.
 
-比如，
+such as,
 
 ```css
 .logo {
@@ -33,7 +33,7 @@ export default () => <img src={require('@/foo.png')} />
 }
 ```
 
-CSS 里也支持别名，但需要在前面加 `~` 前缀，
+CSS also supports aliases, but you need to prefix them with `~`.
 
 ```css
 .logo {
@@ -41,26 +41,26 @@ CSS 里也支持别名，但需要在前面加 `~` 前缀，
 }
 ```
 
-注意：
+note:
 
-1. 这是 webpack 的规则，如果切到其他打包工具，可能会有变化
-2. less 中同样适用
+1. This is the rule of webpack, if you switch to other packaging tools, it may change
+2. The same applies in less
 
-## 图片路径问题
+## Picture path problem
 
-项目中使用图片有两种方式，
+There are two ways to use pictures in your project.
 
-1. 先把图片传到 cdn，然后在 JS 和 CSS 中使用图片的绝对路径
-2. 把图片放在项目里，然后在 JS 和 CSS 中通过相对路径的方式使用
+1. First pass the image to cdn, then use the absolute path of the image in JS and CSS
+2. Put the picture in the project and use it in JS and CSS by relative path
 
-前者不会有任何问题；后者，如果在 JS 中引用相对路径的图片时，在发布时会根据 publicPath 绝对引入路径，所以就算没有开启 dynamicImport 时，也需要注意 publicPath 的正确性。
+The former will not have any problems; the latter, if you refer to a relative path picture in JS, the path will be absolutely introduced according to publicPath when publishing, so you need to pay attention to the correctness of publicPath even if dynamicImport is not enabled.
 
-## Base64 编译
+## Base64 compilation
 
-通过相对路径引入图片的时候，如果图片小于 10K，会被编译为 Base64，否则会被构建为独立的图片文件。
+When importing a picture through a relative path, if the picture is less than 10K, it will be compiled into Base64, otherwise it will be constructed as a separate picture file.
 
-10K 这个阈值可以通过 [inlineLimit 配置](TODO)修改。
+The 10K threshold can be modified by [inlineLimit Configuration](TODO).
 
-## 使用 CDN
+## Use CDN
 
 TODO

@@ -9,14 +9,14 @@ toc: menu
 # Config
 
 
-以下配置项通过字母排序。
+The following configuration items are sorted alphabetically.
 
 ## alias
 
 * Type: `object`
 * Default: `{}`
 
-配置别名，对引用路径进行隐射。
+Configure aliases to implicitly reference paths.
 
 such as:
 
@@ -28,26 +28,26 @@ export default {
 }
 ```
 
-然后 `import('foo')`，实际上是 `import('/tmp/a/b/foo')`。
+Then `import('foo')` is actually `import ('/tmp/a/b/foo')`.
 
-Umi 内置了以下别名：
+Umi has the following aliases built in:
 
-* `@`，项目 src 目录
-* `@@`，临时目录，通常是 `src/.umi` 目录
-* `umi`，当前所运行的 umi 仓库目录
-* `react-router` 和 `react-router-dom`，底层路由库，锁定版本，打包时所有依赖了他们的地方使用同一个版本
-* `react` 和 `react-dom`，默认使用 `16.x` 版本，但如果项目里有依赖，会优先使用项目中依赖的版本
+* `@`, Project src directory
+* `@@`, A temporary directory, usually the `src/.umi` directory
+* `umi`, The current umi repository directory
+* `react-router` and `react-router-dom`, The underlying routing library, the locked version, all the places that depend on them use the same version when packaging
+* `react` and `react-dom`, The default version is `16.x`, but if there is a dependency in the project, the dependent version in the project will be used first
 
 ## analyze
 
 * Type: `object`
 * Default: `{}`
 
-包模块结构分析工具，可以看到项目各模块的大小，按需优化。通过 `ANALYZE=1 umi build` 或 `ANALYZE=1 umi dev` 开启，默认 server 端口号为 `8888`，更多配置如下：
+Package module structure analysis tool, you can see the size of each module of the project, and optimize it as needed. Open it with `ANALYZE=1 umi build` or` ANALYZE=1 umi dev`. The default server port number is `8888`. More configurations are as follows:
 
 ```js
 {
-  // 配置具体含义见：https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
+  // The specific meaning of the configuration is as follows: https://github.com/umijs/umi-webpack-bundle-analyzer#options-for-plugin
   analyze: {
     analyzerMode: 'server',
     analyzerPort: 8888,
@@ -66,36 +66,36 @@ Umi 内置了以下别名：
 * Type: `object`
 * Default: `{ flexbox: 'no-2009' }`
 
-设置 [autoprefixer 的配置项](https://github.com/postcss/autoprefixer#options)。
+Set [Configuration of autoprefixer](https://github.com/postcss/autoprefixer#options)。
 
-注意：
+note:
 
-* 不要设置 `overrideBrowserslist`，此配置被内部接管，通过 `targets` 配置项选择你要兼容的浏览器。
+* Do not set the `overrideBrowserslist`. This configuration is taken over internally. Select the browser you want to be compatible with via the `targets` configuration item.
 
 ## base
 
 * Type: `string`
 * Default: `/`
 
-设置路由前缀，通常用于部署到非根目录。
+Set routing prefix, usually used for deployment to non-root directories.
 
-比如，你有路由 `/` 和 `/users`，然后设置了 base 为 `/foo/`，那么就可以通过 `/foo/` 和 `/foo/users` 访问到之前的路由。
+For example, if you have routes `/` and `/users` and then set base to `/foo/`, then you can access the previous routes through `/foo/` and `/foo/users`.
 
 ## chainWebpack
 
 * Type: `Function`
 
-通过 [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的 API 修改 webpack 配置。
+Modify the webpack configuration through the [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) API.
 
-比如：
+such as:
 
 ```js
 export default {
   chainWebpack(memo, { env, webpack, createCSSRule }) {
-    // 设置 alias
+    // Set alias
     memo.resolve.alias.set('foo', '/tmp/a/b/foo');
 
-    // 删除 umi 内置插件
+    // Remove umi built-in
     memo.plugins.delete('progress');
     memo.plugins.delete('friendly-error');
     memo.plugins.delete('copy');
@@ -103,16 +103,16 @@ export default {
 }
 ```
 
-参数有，
+The parameters are,
 
-* memo，当前 webpack-chain对象
-* env，当前环境，`development`、`production` 或 `test` 等
-* webpack，webpack 实例，用于获取其内部插件
-* createCSSRule，用于扩展其他 CSS 实现，比如 sass, stylus
+* memo, The current webpack-chain object
+* env, Current environment, `development`,` production` or `test` etc.
+* webpack, Webpack instance to get its internal plugins
+* createCSSRule, To extend other CSS implementations, such as sass, stylus
 
 ## chunks
 
-默认是 `['umi']`，可修改，比如做了 vendors 依赖提取之后，会需要在 `umi.js` 之前加载 `vendors.js`。
+The default is `['umi']`, which can be modified. For example, after vendor dependencies extraction, you need to load `vendors.js` before `umi.js`.
 
 such as:
 
@@ -149,16 +149,16 @@ export default {
 * Type: `object`
 * Default: `{}`
 
-设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
+Set [css-loader configuration item](https://github.com/webpack-contrib/css-loader#options).
 
 ## cssnano
 
 * Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
 * Default: `{}`
 
-设置 [cssnano 配置项](https://cssnano.co/optimisations/)，基于 default 的配置集合。
+Set [cssnano configuration item](https://cssnano.co/optimisations/), based on the default configuration collection.
 
-比如：`.box { background: url("./css/../img/cat.jpg"); }` 默认会被压缩成 `.box { background: url(img/cat.jpg); }` ，如果不想要这个特性，可以设置，
+For example: `.box { background: url("./css/../img/cat.jpg"); }` will be compressed into `.box { background: url(img/cat.jpg); }` by default If you don't want this feature, you can set it,
 
 ```js
 export default {
@@ -173,9 +173,9 @@ export default {
 * Type: `Array(string)`
 * Default: `[]`
 
-设置要复制到输出目录的文件或文件夹。
+Set the file or folder to be copied to the output directory.
 
-比如你的目录结构如下，
+For example, your directory structure is as follows,
 
 ```js
 + src
@@ -185,7 +185,7 @@ export default {
 - foo.js
 ```
 
-然后设置，
+Then set,
 
 ```js
 export default {
@@ -196,7 +196,7 @@ export default {
 }
 ```
 
-编译完成后，会额外输出以下文件，
+After compiling, the following files will be output additionally.
 
 ```js
 + dist
@@ -210,9 +210,9 @@ export default {
 * Type: `object`
 * Default: `{}`
 
-用于提供给代码中可用的变量。
+Used to provide variables available in the code.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -222,17 +222,17 @@ export default {
 }
 ```
 
-然后你写 `console.log(hello, FOO);` 会被编译成 `console.log(hello, 'bar')`。
+Then you write `console.log('hello', FOO);` will be compiled into `console.log('hello', 'bar');`.
 
-注意：
+note:
 
-* define 对象的属性值会经过一次 JSON.stringify 转换
+* The property value of the define object will undergo a JSON.stringify conversion
 
-内置的 define 属性，
+The built-in define attribute,
 
-* process.env.NODE\_ENV，值为 `development` 或 `production`
+* process.env.NODE\_ENV with value `development` or `production`
 
-如果你有一些不想在生成环境运行的代码，比如断言判断，可以这样，
+If you have some code that you don't want to run in the build environment, such as assertion judgment, you can do this,
 
 ```js
 if (process.env.NODE_ENV === 'development') {
@@ -240,7 +240,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-dev 时正常运行，build 后会变成为，
+dev runs normally, after build it will become,
 
 ```js
 if (false) {
@@ -248,48 +248,48 @@ if (false) {
 }
 ```
 
-进而被压缩掉，不输出在生成环境的代码中。
+It is then compressed and not output in the code of the build environment.
 
 ## devServer
 
 * Type: `object`
 * Default: `{}`
 
-配置开发服务器。
+Configure the development server.
 
-包含以下子配置项，
+Contains the following sub-configuration items,
 
-* port，端口号，默认 `8000`
-* host，默认 `0.0.0.0`
-* https，是否启用 https server
-* http2，是否启用 http2
+* port, Port number, default `8000`
+* host, Default `0.0.0.0`
+* https, Whether to enable https server
+* http2, Whether to enable http2
 
-启用 port 和 host 也可以通过环境变量 PORT 和 HOST 临时指定。
+Enabling port and host can also be temporarily specified through the environment variables PORT and HOST.
 
 ## devtool
 
 * Type: `string`
 * Default: `cheap-module-source-map` in dev, `false` in build
 
-用户配置 sourcemap 类型。
+User configured sourcemap type.
 
-常见的可选类型有：
+Common optional types are:
 
-* eval，最快的类型，但不支持低版本浏览器，如果编译慢，可以试试
-* source-map，最慢最全的类型
+* eval, The fastest type, but does not support lower versions of the browser, if the compilation is slow, you can try
+* source-map, The slowest and most complete type
 
-更多类型详见 [webpack#devtool 配置](https://webpack.js.org/configuration/devtool/#devtool)。
+For more types, see [webpack # devtool configuration](https://webpack.js.org/configuration/devtool/#devtool).
 
 ## dynamicImport
 
 * Type: `object`
 * Default: `false`
 
-是否启用按需加载，即是否把构建产物进行拆分，在需要的时候下载额外的 JS 再执行。
+Whether to enable on-demand loading, that is, whether to split the build product, download additional JS and execute it when needed.
 
-默认关闭时，只生成一个 js 和一个 css，即 `umi.js` 和 `umi.css`。优点是省心，部署方便；缺点是对用户来说初次打开网站会比较慢。
+When closed by default, only one js and one css are generated, namely `umi.js` and `umi.css`. The advantage is worry-free and easy to deploy; the disadvantage is that it is slow for users to open the website for the first time.
 
-打包后通常是这样的，
+This is usually the case after packaging,
 
 ```bash
 + dist
@@ -298,9 +298,9 @@ if (false) {
   - index.html
 ```
 
-启用之后，需要考虑 publicPath 的配置，可能还需要考虑 runtimePublicPath，因为需要知道从哪里异步加载 JS、CSS 和图片等资源。
+After enabling it, you need to consider the configuration of `publicPath`, and possibly `runtimePublicPath`, because you need to know where to asynchronously load resources such as JS, CSS, and images.
 
-打包后通常是这样，
+This is usually the case after packaging,
 
 ```bash
 + dist
@@ -311,13 +311,13 @@ if (false) {
   - p__users__index.js
 ```
 
-这里的 `p__users_index.js` 是路由组件所在路径 `src/pages/users/index`，其中 `src` 会被忽略，`pages` 被替换为 `p`。
+Here `p__users_index.js` is the path where the routing component is located `src/pages/users/index`, where `src` is ignored and `pages` is replaced with `p`.
 
-包含以下子配置项，
+Contains the following sub-configuration items,
 
-* loading, 类型为字符串，指向 loading 组件文件
+* loading, Type is string, pointing to loading component file
 
-比如：
+such as:
 
 ```js
 export default {
@@ -327,32 +327,32 @@ export default {
 }
 ```
 
-然后在 src 目录下新建 `Loading.tsx`，
+Then create a new `Loading.tsx` in the src directory,
 
 ```jsx
 import React from 'react';
 
 export default () => {
-  return <div>加载中...</div>;
+  return <div>Loading...</div>;
 }
 ```
 
-构建之后使用低网络模拟就能看到效果。
+After building, you can see the effect using low network simulation.
 
 ## exportStatic
 
 * Type: `object`
 
-配置 html 的输出形式，默认只输出 `index.html`。
+Configure the output format of html. By default, it only outputs `index.html`.
 
-如果开启 `exportStatic`，则会针对每个路由输出 html 文件。
+If `exportStatic` is turned on, html files are output for each route.
 
-包含两个子属性，
+Contains two sub-attributes,
 
-* htmlSuffix，启用 `.html` 后缀。
-* dynamicRoot，部署到任意路径。
+* htmlSuffix, enable the `.html` suffix.
+* dynamicRoot, deployed to an arbitrary path.
 
-比如以下路由，
+For example the following route,
 
 ```bash
 /
@@ -360,13 +360,13 @@ export default () => {
 /list
 ```
 
-不开启 `exportStatic` 时，输出，
+When `exportStatic` is not turned on, output,
 
 ```bash
 - index.html
 ```
 
-设置 `exportStatic: {}` 后，输出，
+Output after setting `exportStatic: {}`,
 
 ```bash
 - index.html
@@ -374,7 +374,7 @@ export default () => {
 - list/index.html
 ```
 
-设置 `exportStatic: { htmlSuffix: true }` 后，输出，
+Output after setting `exportStatic: { htmlSuffix: true }`,
 
 ```bash
 - index.html
@@ -387,9 +387,9 @@ export default () => {
 * Type: `object`
 * Default: `{}`
 
-设置哪些模块可以不被打包，通过 `<script>` 或其他方式引入，通常需要和 scripts 或 headScripts 配置同时使用。
+Sets which modules can not be packaged. They are introduced by `<script>` or other methods, and usually need to be used together with scripts or headScripts configuration.
 
-比如，
+such as,
 
 ```js
 export default {
@@ -402,16 +402,16 @@ export default {
 }
 ```
 
-简单理解的话，可以理解为 `import react from 'react'` 会被替换为 `const react = window.React`。
+In simple terms, it can be understood that `import react from 'react'` will be replaced with` const react = window.React`.
 
 ## extraBabelPlugins
 
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 babel 插件。
+Configure additional babel plugins.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -426,22 +426,22 @@ export default {
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 babel 插件集。
+Configure additional babel plugin set.
 
 ## extraPostCSSPlugins
 
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 [postcss 插件](https://github.com/postcss/postcss/blob/master/docs/plugins.md)。
+Configure additional [postcss plugin](https://github.com/postcss/postcss/blob/master/docs/plugins.md).
 
 ## favicon
 
 * Type: `string`
 
-配置 favicon 地址（href 属性）。
+Configure the favicon address (href attribute).
 
-比如，
+such as,
 
 ```js
 export default {
@@ -449,7 +449,7 @@ export default {
 }
 ```
 
-HTML 中会生成，
+Will be generated in HTML,
 
 ```html
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico" />
@@ -459,16 +459,16 @@ HTML 中会生成，
 
 * Type: `object`
 
-开启 TypeScript 编译时类型检查，默认关闭。
+Enable TypeScript compile-time type checking, and turn off by default.
 
 ## hash
 
 * Type: `boolean`
 * Default: `false`
 
-配置是否让生成的文件包含 hash 后缀，通常用于增量发布和避免浏览器加载缓存。
+Configures whether the generated file contains a hash suffix, which is usually used for incremental publishing and to prevent the browser from loading the cache.
 
-启用 hash 后，产物通常是这样，
+When hashing is enabled, the artifact usually looks like this,
 
 ```bash
 + dist
@@ -478,18 +478,18 @@ HTML 中会生成，
   - index.html
 ```
 
-注：
+Note:
 
-* html 文件始终没有 hash
+* HTML files always have no hash
 
 ## headScripts
 
 * Type: `Array`
 * Default: `[]`
 
-配置 `<head>` 里的额外脚本，数组项为字符串或对象。
+Configure additional scripts in `<head>`, array items are strings or objects.
 
-大部分场景下用字符串格式就够了，比如：
+The string format is sufficient in most scenarios, such as:
 
 ```js
 export default {
@@ -500,7 +500,7 @@ export default {
 }
 ```
 
-会生成 HTML，
+Will generate HTML,
 
 ```html
 <head>
@@ -509,7 +509,7 @@ export default {
 </head>
 ```
 
-如果要使用额外属性，可以用对象的格式，
+If you want to use extra attributes, you can use the format of the object,
 
 ```js
 export default {
@@ -520,7 +520,7 @@ export default {
 }
 ```
 
-会生成 HTML，
+Will generate HTML,
 
 ```html
 <head>
@@ -534,121 +534,121 @@ export default {
 * Type: `object`
 * Default: `{ type: 'browser' }`
 
-配置 [history 类型和配置项](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md)。
+Configure [history type and configuration items](https://github.com/ReactTraining/history/blob/master/docs/GettingStarted.md).
 
-包含以下子配置项，
+Contains the following sub-configuration items,
 
-* type，可选 `browser`、`hash` 和 `memory`
-* options，传给 create{{{ type }}}History 的配置项，每个类型器的配置项不同
+* type, optional `browser`,` hash`, and `memory`
+* options, configuration items passed to create {{{ type }}} History, each type has different configuration items
 
-注意，
+note,
 
-* options 中，`getUserConfirmation` 由于是函数的格式，暂不支持配置
-* options 中，`basename` 无需配置，通过 umi 的 `base` 配置指定
+* In options, `getUserConfirmation` is not supported because it is a function format.
+* In options, `basename` does not need to be configured. It is specified through the `base` configuration of umi.
 
 ## ignoreMomentLocale
 
 * Type: `true`
 * Default: `false`
 
-忽略 moment 的 locale 文件，用于减少尺寸。
+Ignore the locale file for moment to reduce the size.
 
 ## inlineLimit
 
 * Type: `number`
 * Default: `10000` (10k)
 
-配置图片文件是否走 base64 编译的阈值。默认是 10000 字节，少于他会被编译为 base64 编码，否则会生成单独的文件。
+Configure whether the image file complies with the base64 compilation threshold. The default is 10000 bytes, less than it will be compiled into base64 encoding, otherwise a separate file will be generated.
 
 ## lessLoader
 
 * Type: `object`
 * Default: `{}`
 
-设置 [less-loader 配置项](https://github.com/webpack-contrib/less-loader)。
+Set [less-loader configuration item](https://github.com/webpack-contrib/less-loader).
 
 ## links
 
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 link 标签。
+Configure additional link tags.
 
 ## manifest
 
 * Type: `object`
 
-配置是否需要生成额外用于描述产物的 manifest 文件，默认会生成 `asset-manifest.json`。
+Configure whether you need to generate an additional manifest file that describes the product. By default, `asset-manifest.json` is generated.
 
-包含以下子配置项，
+Contains the following sub-configuration items,
 
-* fileName，文件名，默认是 `asset-manifest.json`
-* publicPath，默认会使用 webpack 的 `output.publicPath` 配置
-* basePath，给所有文件路径加前缀
+* fileName, file name, default is `asset-manifest.json`
+* publicPath, which will use webpack's `output.publicPath` configuration by default
+* basePath, prefix all file paths
 
-注意：
+note:
 
-* 只在 `umi build` 时会生成
+* Only generated when `umi build`
 
 ## metas
 
 * Type: `Array`
 * Default: `[]`
 
-配置额外的 meta 标签。
+Configure additional meta tags.
 
 ## mock
 
 * Type: `object`
 * Default: `{}`
 
-配置 mock 属性。
+Configure mock properties.
 
-包含以下子属性，
+Contains the following sub-attributes,
 
-* exclude，格式为 `Array(string)`，用于忽略不需要走 mock 的文件
+* exclude, in the format `Array(string)`, used to ignore files that do not need to be mocked
 
 ## mountElementId
 
 * Type: `string`
 * Default: `root`
 
-指定 react app 渲染到的 HTML 元素 id。
+Specifies the id of the HTML element to which the react app renders.
 
 ## outputPath
 
 * Type: `string`
 * Default: `dist`
 
-指定输出路径。
+Specify the output path.
 
-注意：
+note:
 
-* 不允许设定为 `src`、`public`、`pages`、`mock`、`config` 等约定目录
+* Not allowed to set to `src`, `public`, `pages`, `mock`, `config`, etc.
 
 ## plugins
 
 * Type: `Array(string)`
 * Default: `[]`
 
-配置额外的 umi 插件。
+Configure additional umi plugins.
 
-数组项为指向插件的路径，可以是 npm 依赖、相对路径或绝对路径。如果是相对路径，则会从项目根目录开始找。
+The array items are paths to the plugin, which can be npm dependencies, relative paths, or absolute paths. If it is a relative path, it will start from the project root directory.
 
 ```js
 export default {
   plugins: [
-    // npm 依赖
+    // npm dependency
     'umi-plugin-hello',
-    // 相对路径
+    // relative path
     './plugin',
-    // 绝对路径
+    // Absolute path
     `${__dirname}/plugin.js`,
   ],
 };
 ```
 
-插件的参数平级的配置项声明，比如：
+Plug-in parameter level configuration item declarations, such as:
 
 ```js
 export default {
@@ -661,28 +661,28 @@ export default {
 }
 ```
 
-配置项的名字通常是插件名去掉 `umi-plugin-` 或 `@umijs/plugin` 前缀。
+The configuration item name is usually the plugin name without the `umi-plugin-` or` @ umijs / plugin` prefix.
 
 ## postcssLoader
 
 * Type: `object`
 * Default: `{}`
 
-设置 [postcss-loader 配置项](https://github.com/postcss/postcss-loader#options)。
+Set [postcss-loader configuration item](https://github.com/postcss/postcss-loader#options).
 
 ## presets
 
 * Type: `Array(string)`
 * Default: `[]`
 
-同 `plugins` 配置，用于配置额外的 umi 插件集。
+Same as `plugins` configuration, used to configure additional umi plugin set.
 
 ## proxy
 
 * Type: `object`
 * Default: `{}`
 
-配置代理能力。
+Configure proxy capabilities.
 
 ```
 export default {
@@ -696,22 +696,22 @@ export default {
 }
 ```
 
-然后访问 `/api/users` 就能访问到 [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users) 的数据。
+Then visit `/api/users` to access the data of [http://jsonplaceholder.typicode.com/users](http://jsonplaceholder.typicode.com/users).
 
 ## publicPath
 
 * Type: `publicPath`
 * Default: `/`
 
-配置 publicPath。
+Configure publicPath.
 
 ## routes
 
 * Type: `Array(route)`
 
-配置路由。
+Configure routing.
 
-umi 的路由基于 [react-router@5](https://reacttraining.com/react-router/web/guides/quick-start) 实现，配置和 react-router 基本一致，详见[路由配置](TODO)章节。
+The routing of umi is based on [react-router@5](https://reacttraining.com/react-router/web/guides/quick-start). The configuration is basically the same as that of `react-router`. For details, see [route configuration](TODO).
 
 such as:
 
@@ -730,62 +730,62 @@ export default {
 };
 ```
 
-注意：
+note:
 
-* `component` 的值如果是相对路径，会以 `src/pages` 为基础路径开始解析
-* 如果配置了 `routes`，则优先使用配置式路由，且约定式路由会不生效
+* If the value of `component` is a relative path, it will be resolved based on `src/pages`.
+* If `routes` is configured, profiled routing is preferred, and conventional routing will not take effect
 
 ## runtimePublicPath
 
 * Type: `boolean`
 * Default: `false`
 
-配置是否启用运行时 publicPath。
+Configures whether the runtime publicPath is enabled.
 
-通常用于一套代码在不同环境有不同的 publicPath 需要，然后 publicPath 由服务器通过 HTML 的 `window.publicPath` 全局变量输出。
+Usually used for a set of code that has different publicPath requirements in different environments, and then the publicPath is output by the server through the global `window.publicPath` variable of HTML.
 
-启用后，打包时会额外加上这一段，
+When enabled, this paragraph will be added when packaging,
 
 ```js
 __webpack_public_path__ = window.publicPath;
 ```
 
-然后 webpack 在异步加载 JS 等资源文件时会从 `window.publicPath` 里开始找。
+Then when webpack loads resource files such as JS asynchronously, it starts from `window.publicPath`.
 
 ## scripts
 
 * Type: `Array`
 * Default: `[]`
 
-同 [headScripts](TODO)，配置 `<body>` 里的额外脚本。
+Same as [headScripts](TODO), configure additional scripts in `<body>`.
 
 ## singular
 
 * Type: `boolean`
 * Default: `false`
 
-配置是否启用单数模式的目录。
+Configure whether to enable directories in singular mode.
 
-比如 `src/pages` 的约定在开启后为 `src/page` 目录，[@umijs/plugins](https://github.com/umijs/plugins) 里的插件也遵照此配置的约定。
+For example, the convention of `src/pages` is the `src/page` directory after opening, and the plugins in [@umijs/plugins](https://github.com/umijs/plugins) also follow the conventions of this configuration.
 
 ## ssr
 
-暂未在 umi@3 中实现。
+Not yet implemented in umi@3.
 
 ## styleLoader
 
 * Type: `object`
 
-启用并设置 [style-loader 配置项](https://github.com/webpack-contrib/style-loader)，用于让 CSS 内联打包在 JS 中，不输出额外的 CSS 文件。
+Enable and set the [style-loader configuration item](https://github.com/webpack-contrib/style-loader), which is used to make CSS inline package in JS without outputting additional CSS files.
 
 ## styles
 
 * Type: `Array(string)`
 * Default: `[]`
 
-配置额外 CSS。
+Configure additional CSS.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -796,7 +796,7 @@ export default {
 }
 ```
 
-会生成 HTML，
+Will generate HTML,
 
 ```html
 <head>
@@ -810,9 +810,9 @@ export default {
 * Type: `object`
 * Default: `{ chrome: 49, firefox: 64, safari: 10, edge: 13, ios: 10 }`
 
-配置需要兼容的浏览器最低版本，会自动引入 polyfill 和做语法转换。
+The configuration requires a compatible minimum version of the browser. Polyfills and syntax conversions are automatically introduced.
 
-比如要兼容 ie11，需配置：
+For example, to be compatible with ie11, you need to configure:
 
 ```js
 export default {
@@ -822,26 +822,26 @@ export default {
 };
 ```
 
-注意：
+note:
 
-* 配置的 targets 会和合并到默认值，不需要重复配置
-* 子项配置为 `false` 可删除默认配置的版本号
+* Configured targets will be merged with default values, no need to repeat configuration
+* The sub item is configured as `false` to delete the version number of the default configuration
 
 ## terserOptions
 
 * Type: `object`
 * Default: [terserOptions.ts](https://github.com/umijs/umi/blob/master/packages/bundler-webpack/src/getConfig/terserOptions.ts)
 
-配置[压缩器 terser 的配置项](https://github.com/terser/terser#minify-options)。
+Configure [Configuration Items of Compressor terser](https://github.com/terser/terser#minify-options).
 
 ## theme
 
 * Type: `object`
 * Default: `{}`
 
-配置主题，实际上是配 less 变量。
+The configuration theme is actually configured with the less variable.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -856,9 +856,9 @@ export default {
 * Type: `string`
 * Default: `''`
 
-配置标题。
+Configure the title.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -866,7 +866,7 @@ export default {
 }
 ```
 
-此外，你还可以针对路由配置标题，比如，
+You can also configure headers for routes, such as,
 
 ```js
 export default {
@@ -879,11 +879,11 @@ export default {
 }
 ```
 
-然后我们访问 `/` 标题是 `Home`，访问 `/users` 标题是 `Users`，访问 `/foo` 标题是默认的 `hi`。
+Then we visit `/` with the title `Home`, visit `/users` with the title `Users` and visit `/foo` with the default `hi`.
 
-注意：
+note:
 
-* 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
-* 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
+* By default, `<title>` tags will not be output in HTML, which will be obtained through dynamic rendering.
+* `ExportStatic` will output` <title>` tags for each HTML
 
-> 建议经常在构建完后使用，更有利于应用优化。
+> It is recommended to use it after building, which is more conducive to application optimization.

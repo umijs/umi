@@ -7,7 +7,7 @@ translateHelp: true
 
 ## Default Scheme
 
-Umi 默认对新手友好，所以默认不做按需加载处理，`umi build` 后输出 `index.html`、`umi.js` 和 `umi.css` 三个文件。
+Umi is friendly to novices by default, so it does not do on-demand loading by default. `umi build` outputs` index.html`, `umi.js`, and `umi.css`.
 
 ## Do Not Output HTML Files
 
@@ -27,7 +27,7 @@ I often have students asking this question:
 
 How to deal with it?
 
-可通过配置 [base](../config#base) 解决。 
+This can be solved by configuring [base](../config#base).
 
 ```bash
 export default {
@@ -37,7 +37,7 @@ export default {
 
 ## 使用 hash history
 
-可通过配置 [history](../config#history) 为 `hash` 为解决。 
+This can be solved by configuring [history](../config#history) as `hash`.
 
 ```bash
 export default {
@@ -47,7 +47,7 @@ export default {
 
 ## Load on Demand
 
-要实现按需加载，需配置 [dynamicImport](../config#dynamicimport)。
+To achieve on-demand loading, configure [dynamicImport](../config#dynamicimport).
 
 ```js
 export default {
@@ -55,9 +55,9 @@ export default {
 };
 ```
 
-## 静态资源在非根目录或 cdn
+## Static resource in non-root directory or cdn
 
-这时，就需要配置 [publicPath](../config#publicpath)。至于 publicPath 是啥？具体看 [webpack 文档](https://webpack.js.org/configuration/output/#output-publicpath)，把他指向静态资源（js、css、图片、字体等）所在的路径。
+In this case, you need to configure [publicPath](../config#publicpath). What is publicPath? Specifically see [webpack documentation](https://webpack.js.org/configuration/output/#output-publicpath), point him to the path where the static resources (js, css, images, fonts, etc.) are located.
 
 ```js
 export default {
@@ -67,7 +67,7 @@ export default {
 
 ## Using the publicPath of Runtime
 
-对于需要在 html 里管理 publicPath 的场景，比如在 html 里判断环境做不同的输出，可通过配置 [runtimePublicPath](/zh/config/#runtimepublicpath) 为解决。 
+For scenarios where publicPath needs to be managed in html, such as judging the environment in html to do different output, you can solve it by configuring [runtimePublicPath](../config#runtimepublicpath).
 
 ```bash
 export default {

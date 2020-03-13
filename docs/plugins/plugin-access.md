@@ -5,13 +5,13 @@ translateHelp: true
 # @umijs/plugin-access
 
 
-## 启用方式
+## How to enable
 
-有 `src/access.ts` 时启用。
+Enable when `src/access.ts` is present.
 
-## 介绍
+## Introduction
 
-我们约定了 `src/access.ts` 为我们的权限定义文件，该文件需要默认导出一个方法，导出的方法会在项目初始化时被执行。该方法需要返回一个对象，对象的每一个值就对应定义了一条权限。如下所示：
+We agreed on `src/access.ts` to define our permissions file. This file needs to export a method by default. The exported method will be executed when the project is initialized. This method needs to return an object, and each value of the object defines a permission. As follows:
 
 ```javascript
 // src/access.ts
@@ -28,13 +28,13 @@ export default function(initialState) {
 }
 ```
 
-其中 `initialState` 是通过初始化状态插件 `@umijs/plugin-initial-state` 提供的数据，你可以使用该数据来初始化你的用户权限。
+The `initialState` is the data provided by the initial state plugin` @umijs/plugin-initial-state`. You can use this data to initialize your user permissions.
 
-## 配置
+## Configuration
 
-### 扩展的路由配置
+### Extended routing configuration
 
-配合 Layout 插件你可以很简单是实现针对某些页码的权限控制。如下所示，只有拥有了 canReadPageA （在 `src/access.ts` 中定义）权限，用户才可以访问该页面。否则会默认渲染 Layout 插件内置的权限错误页面。
+With the Layout plugin, you can easily implement permission control for certain page numbers. As shown below, users can access the page only if they have the canReadPageA (defined in `src/access.ts`) permission. Otherwise, the permission error page built into the Layout plugin will be rendered by default.
 
 ```typescript
 // config/route.ts
@@ -42,7 +42,7 @@ export const routes =  [
   {
     path: '/pageA',
     component: 'PageA',
-    access: 'canReadPageA', // 权限定义返回值的某个 key
+    access: 'canReadPageA', // A key for the permission definition return value
   }
 ]
 ```
@@ -51,13 +51,13 @@ export const routes =  [
 
 * Type: `string`
 
-对应的权限名称。
+Corresponding permission name.
 
 ## API
 
 ### useAccess
 
-我们提供了一个 Hooks 用于在组件中获取权限相关信息，如下所示：
+We provide a Hooks to get permission related information in the component as follows:
 
 ```javascript
 import React from 'react';
@@ -68,7 +68,7 @@ const PageA = props => {
   const access = useAccess();
  
   if (access.canReadFoo) {
-    // 如果可以读取 Foo，则...
+    // If Foo can be read, then ...
   }
  
   return <>TODO</>;
@@ -77,32 +77,32 @@ const PageA = props => {
 export default PageA;
 ```
 
-配合 `Access` 组件可以很好简单的实现页面内的元素的权限控制。
+With the `Access` component, the permission control of the elements in the page can be implemented very easily.
 
 ### Access
 
-可以在业务组件中使用插件提供的 React hook `useAccess` 以及组件 `<Access />` 对应用进行权限控制了。
-组件 `Access` 支持的属性如下：
+You can use the React hook `useAccess` provided by the plug-in and the component `<Access /> `in the business component to control the permissions of the application.
+The component `Access` supports the following attributes:
 
 #### accessible
 
 * Type: `boolean`
 
-是否有权限，通常通过 `useAccess` 获取后传入进来。
+Whether there is permission, usually through `useAccess`.
 
 #### fallback
 
 * Type: `React.ReactNode`
 
-无权限时的显示，默认无权限不显示任何内容。
+Displayed when there is no permission. By default, no content is displayed.
 
 ### children
 
 * Type: `React.ReactNode`
 
-有权限时的显示。
+Displayed when authorized.
 
-完整示例如下：
+The complete example is as follows:
 
 ```javascript
 import React from 'react';
@@ -110,10 +110,10 @@ import { useAccess, Access } from 'umi';
 
 const PageA = props => {
   const { foo } = props;
-  const access = useAccess(); // access 的成员: canReadFoo, canUpdateFoo, canDeleteFoo
+  const access = useAccess(); // members of access: canReadFoo, canUpdateFoo, canDeleteFoo
  
   if (access.canReadFoo) {
-    // 如果可以读取 Foo，则...
+    // If Foo can be read, then ...
   }
  
   return (
@@ -141,4 +141,4 @@ const PageA = props => {
 };
 ```
 
-`useAccess()` 的返回值 `access` 就是第三步中定义的权限集合，可以利用它进行组件内代码执行流的控制。 `<Access>` 组件拥有 `accessible` 和 `fallback` 两个属性，当 `accessible` 为 `true` 时会渲染子组件，当 `accessible` 为 `false` 会渲染 `fallback` 属性对应的 `ReactNode`。
+The return value of `useAccess()` is the access set defined in step 3. You can use it to control the code execution flow in the component. The `<Access>` component has two attributes: `accessible` and `fallback`. When `accessible` is `true`, the child component is rendered. When `accessible` is `false`, the `ReactNode` corresponding to the `fallback`property.

@@ -7,7 +7,7 @@ translateHelp: true
 
 ## umi build
 
-编译构建 web 产物。通常需要针对部署环境，做特定的配置和环境变量修改。相关详情，请查阅[部署](./deployment)。
+Compile and build the web artifact. Usually need to do specific configuration and environment variable modification for the deployment environment. For more details, please refer to [Deployment](./deployment).
 
 ```bash
 $ umi build
@@ -21,32 +21,32 @@ Build success.
 ✨  Done in 9.77s.
 ```
 
-默认产物输出到项目的 `dist` 文件夹，你可以通过修改配置 `outputPath` 指定产物输出目录。
-默认编译时会将 `publish` 文件夹内的所有文件，原样拷贝到 `dist` 目录，如果你不需要这个特性，可以通过配置 `chainWebpack` 来删除它。
+The default output is output to the `dist` folder of the project. You can specify the output directory of the output by modifying the configuration` outputPath`.
+By default, all files in the `publish` folder are copied to the` dist` directory as they are. If you don't need this feature, you can delete it by configuring `chainWebpack`.
 
 ```js
 export default {
   chainWebpack(memo, { env, webpack }) {
-    // 删除 umi 内置插件
+    // Remove umi built-in
     memo.plugins.delete('copy');
   }
 }
 ```
 
-> 注意：如果 `publish` 里面存在产物同名文件，如 `index.html`，将会导致产物文件被覆盖。
+> Note: If a product with the same name exists in `publish`, such as` index.html`, the product file will be overwritten.
 
 ## umi dev
 
-启动本地开发服务器进行项目的开发调试
+Start local development server for project development and debugging
 
 ```bash
 $ umi dev
 ```
 
-启动在浏览器中运行的开发服务器，并监视源文件变化，自动热加载。
+Start the development server running in the browser, and monitor the source file for changes, automatically hot-loading.
 
-默认使用 `8000` 端口，如果 `8000` 端口被占用，将会使用 `8001` 端口，以此类推。
-你可以通过设置环境变量 `PORT` 来指定开发端口号。更多环境变量配置，请查阅[环境变量](/docs/env-variables)。
+The `8000` port is used by default. If the` 8000` port is occupied, the `8001` port will be used, and so on.
+You can specify the development port number by setting the environment variable `PORT`. For more environment variable configuration, please refer to [Environment Variables](/docs/env-variables)。
 
 ```bash
 umi dev
@@ -62,19 +62,19 @@ Starting the development server...
   - Network: http://192.168.50.236:8000
 ```
 
-开启开发服务还会同时提供一个 Network 的链接，你可以在能访问到你当前运行设备的其他设备中预览页面。
+Enabling the development service will also provide a Network link, and you can preview the page on other devices that have access to your currently running device.
 
-> 注意：如果是在开启了VPN，或者虚拟机等复杂的网络环境中，这个地址很可能会错误。你可以通过访问你真实可用 `ip` 的对应端口号来访问开发页面。
+> Note: If the VPN is enabled, or in a complicated network environment such as a virtual machine, this address may be wrong. You can access the development page by visiting the corresponding port number of your real available ip.
 
 ## umi generate
 
-内置的生成器功能，内置的类型有 `page` ，用于生成最简页面。支持别名调用 `umi g`。
+Built-in generator function, built-in types are `page`, which is used to generate the simplest page. Support alias calling `umi g`.
 
 ```bash
 $ umi generate <type> <name> [options]
 ```
 
-这个命令支持扩展，通过 `api.registerGenerator` 注册，你可以通过插件来实现自己常用的生成器。
+This command supports extensions. Registered via `api.registerGenerator`. You can implement your own generators through plugins.
 
 ```ts
 import { Generator, IApi } from 'umi';
@@ -100,17 +100,17 @@ umi generate page pageName --typescript
 umi generate page pageName --less
 ```
 
-更多使用类型和参数，请查阅提供生成器扩展的插件的文档。
+For more usage types and parameters, consult the documentation for plugins that provide generator extensions.
 
 ## umi plugin
 
-快速查看当前项目使用到的所有的 `umi` 插件。
+Quickly view all `umi` plugins used in the current project.
 
 ```bash
 $ umi plugin <type> [options]
 ```
 
-当前支持的 `type` 是 `list`，可选参数 `key`。
+Currently supported `type` is` list`, optional parameter `key`.
 
 ```bash
 $ umi plugin list
@@ -136,7 +136,7 @@ Plugins:
 
 ## umi help
 
-umi 命令行的简易帮助文档。
+Simple help documentation for umi command line.
 
 ```bash
 $ umi help <command>
@@ -144,7 +144,7 @@ $ umi help <command>
 
 ## umi version
 
-查看当前使用的 umi 的版本号，可以使用别名 `-v` 调用。
+To view the version number of the umi currently in use, you can call it with the alias `-v`.
 
 ```bash
 $ umi version
@@ -153,22 +153,22 @@ $ umi -v
 
 ## umi webpack
 
-查看 umi 使用的 webpack 配置。
+Check out the webpack configuration used by umi.
 
 ```bash
 $ umi webpack [options]
 ```
 
-参数，
+parameter,
 
-| 可选参数 | 说明 |
+| Optional parameter | Description |
 |  :-  | :-:  |
-| rules | 查看 webpack.module.rules 配置详情 |
-| rule=[name] |  查看 webpack.module.rules 中某个规则的配置详情 |
-| plugins |  查看 webpack.plugins 配置详情 |
-| plugin=[name] |  查看 webpack.plugins 中某个插件的配置详情 |
+| rules | View webpack.module.rules configuration details |
+| rule=[name] |  View configuration details for a rule in webpack.module.rules |
+| plugins |  View webpack.plugins configuration details |
+| plugin=[name] |  View configuration details of a plugin in webpack.plugins |
 
-示例，
+Example,
 
 ```bash
 $ umi webpack

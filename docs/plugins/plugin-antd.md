@@ -5,31 +5,31 @@ translateHelp: true
 # @umijs/plugin-antd
 
 
-整合 antd 组件库。
+Integrate antd component library.
 
-## 启用方式
+## How to enable
 
-配置开启。
+Configuration is on.
 
-## 介绍
+## Introduction
 
-包含以下功能，
+Contains the following features,
 
-1. 内置 [antd](https://ant.design/)，目前内置版本是 `^4.0.0`
-2. 内置 [antd-mobile](https://mobile.ant.design/)，目前内置版本是 `^2.3.1`
-2. 基于 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 做按需编译
-3. 使用 antd@4 时，可一键切换为暗色主题，见下图
+1. Built-in [antd](https://ant.design/), the current built-in version is `^ 4.0.0`
+2. Built-in [antd-mobile](https://mobile.ant.design/), the current built-in version is `^2.3.1`
+2. Compile on demand based on [babel-plugin-import](https://github.com/ant-design/babel-plugin-import)
+3. When using antd@4, you can switch to dark theme with one click, as shown below
 
 ![](https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*mYU9R4YFxscAAAAAAAAAAABkARQnAQ)
 
-## 配置
+## Configuration
 
 ### dark
 
 * Type: `boolean`
 * Default: `false`
 
-比如：
+such as:
 
 ```js
 export default {
@@ -39,14 +39,14 @@ export default {
 }
 ```
 
-启用暗色主题，只有 antd 使用版本 4 时才支持。
+Enable dark theme, only supported by antd with version 4.
 
 ## FAQ
 
-### 如何使用 antd 的其他版本？
+### How do I use other versions of antd?
 
-在项目中显式安装 antd 依赖。
+Explicitly install antd dependencies in your project.
 
-### 没有 TypeScript 提示怎么办？
+### What if I don't have a TypeScript prompt?
 
-在项目中安装 antd 依赖。
+Install antd dependencies in your project.

@@ -5,13 +5,13 @@ translateHelp: true
 # Routing
 
 
-在 Umi 中，应用都是[单页应用](https://en.wikipedia.org/wiki/Single-page_application)，页面地址的跳转都是在浏览器端完成的，不会重新请求服务端获取 html，html 只在应用初始化时加载一次。所有页面由不同的组件构成，页面的切换其实就是不同组件的切换，你只需要在配置中把不同的路由路径和对应的组件关联上。
+In Umi, apps are[Single page application](https://en.wikipedia.org/wiki/Single-page_application)，The redirection of the page address is done on the browser side. It does not re-request the server to get the html. The html is only loaded once when the application initializes. All pages are composed of different components. The switching of pages is actually the switching of different components. You only need to associate different routing paths with the corresponding components in the configuration.
 
-## 配置路由
+## Configure routing
 
-在配置文件中通过 `routes` 进行配置，格式为路由信息的数组。
+Configure in the configuration file by `routes`, the format is an array of routing information.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -26,32 +26,32 @@ export default {
 
 * Type: `string | string[]`
 
-配置可以被 [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) 理解的路径或路由数组。
+Configuration can be [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) Understand the path or route array.
 
 ### component
 
 * Type: `string`
 
-配置 location 和 path 匹配后用于渲染的 React 组件路径。可以是绝对路径，也可以是相对路径，如果是相对路径，会从 `src/pages` 开始找起。
+Configure the path of the React component used for rendering after location and path match. It can be an absolute path or a relative path. If it is a relative path, it will start from `src/pages`.
 
-如果指向 `src` 目录的文件，可以用 `@`，也可以用 `../`。比如 `component: '@/layouts/basic'`，或者 `component: '../layouts/basic'`，推荐用前者。
+If you point to a file in the `src` directory, you can use`@` or `../`. For example, `component: '@/layouts/basic'`, or `component: '../layouts/basic'`, the former is recommended.
 
 ### exact
 
 * Type: `boolean`
 * Default: `false`
 
-表示是否严格匹配，即 location 是否和 path 完全对应上。
+Indicates whether there is an exact match, that is, whether the location exactly matches the path.
 
-比如：
+such as:
 
 ```js
 export default {
   routes: [
-    // url 为 /one/two 时匹配失败
+    // match fails when url is /one/two
     { path: '/one', exact: true },
     
-    // url 为 /one/two 时匹配成功
+    // match when url is /one/two
     { path: '/one' },
     { path: '/one', exact: false },
   ],
@@ -60,9 +60,9 @@ export default {
 
 ### routes
 
-配置子路由，通常在需要为多个路径增加 layout 组件时使用。
+Configure sub-routes, usually used when you need to add layout components to multiple paths.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -80,7 +80,7 @@ export default {
 }
 ```
 
-然后在 `src/layouts/index` 中通过 `props.children` 渲染子路由，
+Then in `src/layouts/index` render child routes via `props.children`,
 
 ```jsx
 export default (props) => {
@@ -88,15 +88,15 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/list` 和 `/admin` 就会带上 `src/layouts/index` 这个 layout 组件。
+In this way, accessing `/list` and `/admin` will bring the `src/layouts/index` layout component.
 
 ### redirect
 
 * Type: `string`
 
-配置路由跳转。
+Configure route redirection.
 
-比如：
+such as:
 
 ```js
 export default {
@@ -107,15 +107,15 @@ export default {
 }
 ```
 
-访问 `/` 会跳转到 `/list`，并由 `src/pages/list` 文件进行渲染。
+Visiting `/` will jump to `/ list` and be rendered by the` src / pages / list` file.
 
 ### wrappers
 
 * Type: `string[]`
 
-配置路由的高阶组件封装。
+Configure higher-order component encapsulation for routing.
 
-比如，可以用于路由级别的权限校验：
+For example, it can be used to verify permissions at the route level:
 
 ```js
 export default {
@@ -130,7 +130,7 @@ export default {
 }
 ```
 
-然后在 `src/wrappers/auth` 中，
+Then in `src/wrappers/auth`,
 
 ```jsx
 export default (props) => {
@@ -143,23 +143,23 @@ export default (props) => {
 }
 ```
 
-这样，访问 `/user`，就通过 `useAuth` 做权限校验，如果通过，渲染 `src/pages/user`，否则跳转到 `/login`，由 `src/pages/login` 进行渲染。
+In this way, if you visit `/ user`, you will use` useAuth` to verify permissions. If it passes, render `src / pages / user`, otherwise jump to` / login` and render by `src / pages / login`.
 
 ### title
 
 * Type: `string`
 
-配置路由的标题。
+Configure the title of the route.
 
-## 页面跳转
+## Page jump
 
 ```js
 import { history } from 'umi';
 
-// 跳转到指定路由
+// Jump to the specified route
 history.push('/list');
 
-// 带参数跳转到指定路由
+// Jump to the specified route with parameters
 history.push('/list?a=b');
 history.push({
   pathname: '/list',
@@ -168,17 +168,17 @@ history.push({
   },
 });
 
-// 跳转到上一个路由
+// Jump to previous route
 history.goBack();
 ```
 
-## hash 路由
+## hash routing
 
-详见 [配置#history](../config#history)。
+See details [Configuration#history](../config#history)。
 
-## Link 组件
+## Link Component
 
-比如：
+such as:
 
 ```jsx
 import { Link } from 'umi';
@@ -190,22 +190,22 @@ export default () => (
 );
 ```
 
-然后点击 `Users Page` 就会跳转到 `/users` 地址。
+Then clicking on `Users Page` will jump to the `/users` address.
 
-注意：
+note:
 
-* `Link` 只用于单页应用的内部跳转，如果是外部地址跳转请使用 `a` 标签
+* `Link` is only used for internal jump of single-page application, if it is external address jump, please use `a` tag
 
-## 路由组件参数
+## Routing component parameters
 
-路由组件可通过 `props` 获取到以下属性，
+The routing component can get the following properties through `props`,
 
-* match，当前路由和 url match 后的对象，包含 `params`、`path`、`url` 和 `isExact` 属性
-* location，表示应用当前出于哪个位置，包含 `pathname`、`search`、`query` 等属性
-* history，同 [api#history](../api#history) 接口
-* route，当前路由配置，包含 `path`、`exact`、`component`、`routes` 等
+* match, the object after the current route and url match, including the `params`,` path`, `url` and` isExact` attributes
+* location, which indicates the current location of the application, including `pathname`,` search`, `query` and other attributes
+* history, interface with [api#history](../api#history)
+* route, current route configuration, including `path`,` exact`, `component`,` routes`, etc.
 
-比如：
+such as:
 
 ```js
 export default function(props) {
@@ -214,9 +214,9 @@ export default function(props) {
 }
 ```
 
-## 传递参数给子路由
+## Passing parameters to child routes
 
-通过 cloneElement，一次就好（Umi 2 时需要两次）。
+With cloneElement, once is fine (twice for Umi 2).
 
 ```js
 import React from 'react';

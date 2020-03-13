@@ -8,11 +8,11 @@ translateHelp: true
 # API
 
 
-## 基本 API
+## Basic API
 
 ### dynamic
 
-动态加载组件。
+Load components dynamically.
 
 ```js
 import { dynamic } from 'umi';
@@ -29,32 +29,32 @@ export default dynamic({
 
 ### history
 
-可用于获取当前路由信息，
+Can be used to get the current routing information,
 
 ```js
 import { history } from 'umi';
 
-// history 栈里的实体个数
+// number of entities in the history stack
 console.log(history.length);
 
-// 当前 history 跳转的 action，有 PUSH、REPLACE 和 POP 三种类型
+// The current history jump action, there are three types of PUSH, REPLACE and POP
 console.log(history.action);
 
-// location 对象，包含 pathname、search 和 hash
+// location object containing pathname, search, and hash
 console.log(history.location.pathname);
 console.log(history.location.search);
 console.log(history.location.hash);
 ```
 
-可用于路由跳转，
+Can be used for routing jumps,
 
 ```js
 import { history } from 'umi';
 
-// 跳转到指定路由
+// Jump to the specified route
 history.push('/list');
 
-// 带参数跳转到指定路由
+// Jump to the specified route with parameters
 history.push('/list?a=b');
 history.push({
   pathname: '/list',
@@ -63,11 +63,11 @@ history.push({
   },
 });
 
-// 跳转到上一个路由
+// Jump to previous route
 history.goBack();
 ```
 
-也可用于路由监听，
+Can also be used for routing listening,
 
 ```js
 import { history } from 'umi';
@@ -80,16 +80,16 @@ unlisten();
 
 ### plugin
 
-> 主要在插件利用，项目代码中一般用不到。
+> It is mainly used in plug-ins, and is generally not used in project code.
 
-运行时插件接口，是 Umi 内置的跑在浏览器里的一套插件体系。
+The runtime plug-in interface is a set of plug-in systems running in the browser built into Umi.
 
-比如：
+such as:
 
 ```js
 import { plugin, ApplyPluginsType } from 'umi';
 
-// 注册插件
+// Register plugin
 plugin.register({
   apply: { dva: { foo: 1 } },
   path: 'foo',
@@ -99,8 +99,8 @@ plugin.register({
   path: 'bar',
 });
 
-// 执行插件
-// 得到 { foo: 1, bar: 1 }
+// Execute plugin
+// Get {foo: 1, bar: 1}
 plugin.applyPlugins({
   key: 'dva',
   type: ApplyPluginsType.modify,
@@ -110,25 +110,25 @@ plugin.applyPlugins({
 });
 ```
 
-参数属性包含：
+Parameter attributes include:
 
-* **key**，坑位的 key
-* **type**，执行方式类型，详见 [ApplyPluginsType](#ApplyPluginsType)
-* **initialValue**，初始值
-* **args**，参数
-* **async**，是否异步执行且返回 Promise
+* **key**, the key of the pit
+* **type**, execution type, see [ApplyPluginsType](#ApplyPluginsType)
+* **initialValue**, Initial value
+* **args**, parameters
+* **async**，whether to execute asynchronously and return a Promise
 
 ### ApplyPluginsType
 
-> 主要在插件利用，项目代码中一般用不到。
+> It is mainly used in plug-ins, and is generally not used in project code.
 
-运行时插件执行类型，enum 类型，包含三个属性：
+Runtime plugin execution type, enum type, contains three attributes:
 
-* **compose**，用于合并执行多个函数，函数可决定前序函数的执行时机
-* **modify**，用于修改值
-* **event**，用于执行事件，前面没有依赖关系
+* **compose**, used to combine and execute multiple functions, the function can determine the execution timing of the pre-order function
+* **modify**, for modifying values
+* **event**, used to execute events, there are no dependencies in the front
 
-## 路由
+## Routing
 
 ### Link
 
@@ -150,21 +150,21 @@ plugin.applyPlugins({
 
 ## node 侧接口
 
-> 通过 package.json 的 main 字段露出，且不存在于 modules 字段里。
+> It is exposed through the main field of package.json and does not exist in the modules field.
 
 ### Service
 
-Umi 内核的 Service 方法，用于测试，或调用 Umi 底层命令。
+The Umi kernel's Service method is used for testing or calling Umi low-level commands.
 
 ### utils
 
-utils 方法，给插件使用，和插件里的 api.utils 是同一个底层库。
+The utils method is used by the plugin and is the same underlying library as the api.utils in the plugin.
 
 ### defineConfig
 
-用于校验和提示用户配置类型，详见[配置#TypeScript 提示](TODO)。
+Used to checksum prompt the user for the configuration type, see [Configuration#TypeScript Prompt](TODO) for details.
 
-## 插件类型定义
+## Plugin type definition
 
 ### IApi
 
