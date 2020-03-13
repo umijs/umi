@@ -219,6 +219,26 @@ test('registerPlugin id conflict (preset)', async () => {
     /preset foo is already registered by/,
   );
 });
+test('call describe with key more than one time in one plugin', async () => {
+  const cwd = join(fixtures, 'call-describe-more');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin_1'))],
+  });
+  await expect(service.init()).rejects.toThrow(
+    /plugin bar had been called the describe function with key bar before/,
+  );
+});
+test('call describe with id more than one time in one plugin', async () => {
+  const cwd = join(fixtures, 'call-describe-more');
+  const service = new Service({
+    cwd,
+    plugins: [require.resolve(join(cwd, 'plugin_2'))],
+  });
+  await expect(service.init()).rejects.toThrow(
+    /plugin bar had been called the describe function with id bar before/,
+  );
+});
 
 // 换成在 applyPlugins 里决定是否执行插件的 hooks
 // 先 skip

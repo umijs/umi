@@ -52,14 +52,28 @@ export default class PluginAPI {
           `api.describe() failed, ${name} ${id} is already registered by ${plugins[id].path}.`,
         );
       }
+      if (plugins[this.id].hadID) {
+        const name = plugins[this.id].isPreset ? 'preset' : 'plugin';
+        throw new Error(
+          `api.describe() failed, ${name} ${this.id} had been called the describe function with id ${this.id} before..`,
+        );
+      }
       plugins[id] = plugins[this.id];
       plugins[id].id = id;
       delete plugins[this.id];
       this.id = id;
+      plugins[this.id].hadID = true;
     }
     if (key && this.key !== key) {
+      if (plugins[this.id].hadKey) {
+        const name = plugins[this.id].isPreset ? 'preset' : 'plugin';
+        throw new Error(
+          `api.describe() failed, ${name} ${this.id} had been called the describe function with key ${this.key} before.`,
+        );
+      }
       this.key = key;
       plugins[this.id].key = key;
+      plugins[this.id].hadKey = true;
     }
 
     if (config) {

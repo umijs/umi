@@ -31,6 +31,8 @@ export interface IPlugin {
   key: string;
   path: string;
   apply: Function;
+  hadKey?: boolean;
+  hadID?: boolean;
 
   config?: IPluginConfig;
   isPreset?: boolean;
