@@ -1,5 +1,0 @@
-/*
-title: a
-path: b
- */
-

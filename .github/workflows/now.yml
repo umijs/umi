@@ -1,0 +1,22 @@
+name: umi - deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        run: |
+          yarn install
+          yarn build
+          yarn docs:build
+      - name: deploy
+        timeout-minutes: 3
+        env:
+          BUILD_ID: ${{ github.sha }}
+          ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+        run: |
+          now --token=$ZEIT_TOKEN --confirm --prod --force --scope umijs

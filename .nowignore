@@ -1,0 +1,10 @@
+.circleci
+node_modules
+.umi
+.github
+scripts
+packages
+e2e
+docs
+scripts
+!dist

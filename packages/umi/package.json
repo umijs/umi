@@ -1,56 +1,44 @@
 {
   "name": "umi",
-  "version": "2.0.3",
-  "description": "Pluggable enterprise-level react application framework.",
-  "dependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
-    "@types/react": "^16.4.9",
-    "babel-preset-umi": "^1.0.0",
-    "chai": "^4.1.2",
-    "cross-spawn": "^6.0.5",
-    "debug": "^3.1.0",
-    "dotenv": "^6.0.0",
-    "ejs": "^2.5.7",
-    "is-windows": "^1.0.2",
-    "path-is-absolute": "^1.0.1",
-    "react-loadable": "^5.5.0",
-    "resolve-cwd": "^2.0.0",
-    "slash2": "^2.0.0",
-    "umi-build-dev": "^1.0.3",
-    "update-notifier": "^2.3.0",
-    "uppercamelcase": "^3.0.0",
-    "url": "^0.11.0",
-    "yargs-parser": "^10.1.0"
-  },
-  "bin": {
-    "umi": "./bin/umi.js"
-  },
-  "license": "MIT",
+  "version": "3.0.7",
+  "description": "umi",
+  "main": "index.js",
+  "types": "types.d.ts",
+  "files": [
+    "lib",
+    "dist",
+    "types.d.ts",
+    "bin"
+  ],
+  "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/umijs/umi/tree/master/packages/umi"
+    "url": "https://github.com/umijs/umi"
   },
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi",
+  "keywords": [
+    "umi"
+  ],
   "authors": [
     "chencheng <sorrycc@gmail.com> (https://github.com/sorrycc)"
   ],
-  "bugs": {
-    "url": "https://github.com/umijs/umi/issues"
+  "license": "MIT",
+  "bugs": "http://github.com/umijs/umi/issues",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/umi#readme",
+  "publishConfig": {
+    "access": "public"
   },
-  "files": [
-    "lib",
-    "src",
-    "bin",
-    "babel.js",
-    "dynamic.d.ts",
-    "link.d.ts",
-    "navlink.d.ts",
-    "redirect.d.ts",
-    "router.d.ts",
-    "withRouter.d.ts"
-  ],
-  "devDependencies": {
-    "glob": "^7.1.2"
-  }
+  "dependencies": {
+    "@babel/core": "7.8.7",
+    "@umijs/core": "3.0.7",
+    "@umijs/preset-built-in": "3.0.7",
+    "@umijs/runtime": "3.0.7",
+    "@umijs/types": "3.0.7",
+    "@umijs/utils": "3.0.7",
+    "react": "^16.13.0",
+    "resolve-cwd": "3.0.0"
+  },
+  "bin": {
+    "umi": "bin/umi.js"
+  },
+  "module": "dist/index.esm.js"
 }

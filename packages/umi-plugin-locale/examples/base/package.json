@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "start": "CLEAR_CONSOLE=none umi dev"
-  },
-  "dependencies": {
-    "antd": "^3.7.3"
-  }
-}

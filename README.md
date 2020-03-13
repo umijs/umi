@@ -1,12 +1,10 @@
-English | [简体中文](./README_zh-CN.md)
+English | [简体中文](./README.zh-CN.md)
 
 # umi
 
-[![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi)
-[![Build Status](https://img.shields.io/travis/umijs/umi.svg?style=flat)](https://travis-ci.org/umijs/umi)
-[![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi)
+[![codecov](https://codecov.io/gh/umijs/umi/branch/master/graph/badge.svg)](https://codecov.io/gh/umijs/umi) [![NPM version](https://img.shields.io/npm/v/umi.svg?style=flat)](https://npmjs.org/package/umi) [![CircleCI](https://circleci.com/gh/umijs/umi/tree/master.svg?style=svg)](https://circleci.com/gh/umijs/umi/tree/master) [![Build Status](https://dev.azure.com/umijs/umi/_apis/build/status/umijs.umi?branchName=master)](https://dev.azure.com/umijs/umi/_build/latest?definitionId=1&branchName=master) [![GitHub Actions status](https://github.com/umijs/umi/workflows/Node%20CI/badge.svg)](https://github.com/umijs/umi) [![NPM downloads](http://img.shields.io/npm/dm/umi.svg?style=flat)](https://npmjs.org/package/umi) [![Install size](https://badgen.net/packagephobia/install/umi)](https://packagephobia.now.sh/result?p=umi)
 
-🌋 Pluggable enterprise-level react application framework.
+🍙 Extensible enterprise-level front-end application framework.
 
 > Please consider following this project's author, [sorrycc](https://github.com/sorrycc), and consider starring the project to show your ❤️ and support.
 
@@ -14,56 +12,43 @@ English | [简体中文](./README_zh-CN.md)
 
 ## Features
 
-* 📦 **Out of box**, with built-in support for react, react-router, etc.
-* 🏈 **Next.js like and [full featured](https://umijs.org/guide/router.html) routing conventions**, which also supports configured routing
-* 🎉 **Complete plugin system**, covering every lifecycle from source code to production
-* 🚀 **High performance**, with support for PWA, route-level code splitting, etc. via plugins
-* 💈 **Support for static export**, adapt to various environments, such as console app, mobile app, [egg](https://github.com/eggjs/egg), Alipay wallet, etc
-* 🚄 **Fast dev startup**, support enable [dll](https://umijs.org/plugin/umi-plugin-react.html#dll) and [hard-source-webpack-plugin](https://umijs.org/plugin/umi-plugin-react.html#hardSource) with config
-* 🐠 **Compatible with IE9**, based on [umi-plugin-polyfills](https://umijs.org/plugin/umi-plugin-react.html#polyfills)
-* 🍁 **Support TypeScript**, including d.ts definition and `umi test`
-* 🌴 **Deep integration with [dva](https://dvajs.com/)**, support duck directory, automatic loading of model, code splitting, etc
+* 🎉 **Extensible**, Umi implements the complete lifecycle and makes it extensible, and Umi's internal functions are all plugins. Umi also support plugins and presets.
+* 📦 **Out of the Box**, Umi has built-in routing, building, deployment, testing, and so on. It only requires one dependency to get started. Umi also provides an integrated preset for React with rich functionaries.
+* 🐠 **Enterprise**, It has been verified by 3000+ projects in Ant Financial and projects of Alibaba, Youku, Netease, 飞猪, KouBei and other companies.
+* 🚀 **Self Development**, Including micro frontend library, component packaging, documentation tools, request library, hooks library, data flow, etc.
+* 🌴 **Perfect Routing**, Supports both configuration routing and convention routing, while with functional completeness, such as dynamic routing, nested routing, permission routing, and so on.
+* 🚄 **Future Ready**, Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
 
 ## Getting Started
 
-```bash
-# Install deps
-$ yarn global add umi # OR npm install -g umi
+Manually,
 
-# Create application
+```bash
+# Create directory
 $ mkdir myapp && cd myapp
 
+# Install dependency
+$ yarn add umi@next
+
 # Create page
-$ umi generate page index
+$ npx umi g page index --typescript --less
 
-# Start dev server
-$ umi dev
-
-# Build and deploy
-$ umi build
+# Start development
+$ npx umi dev
 ```
 
-[Getting started with a 10 minutes video](https://youtu.be/vkAUGUlYm24)
+Or [Getting Started with Boilerplate](https://umijs.org/docs/getting-started).
 
-## Examples
+## Contributors
 
-* [Ant Design Pro](https://github.com/ant-design/ant-design-pro)
-* [Antd Admin](https://github.com/zuiidea/antd-admin)
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)]. <a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=890&button=false" /></a>
 
-## Community
+## Feedback
 
-### Telegram
+| Github Issue | 钉钉群 | 微信群 |
+| --- | --- | --- |
+| [umijs/umi/issues](https://github.com/umijs/umi/issues) | <img src="https://img.alicdn.com/tfs/TB1KxCae9f2gK0jSZFPXXXsopXa-1125-1485.jpg" width="60" /> | <img src="https://img.alicdn.com/tfs/TB1pd1ce8r0gK0jSZFnXXbRRXXa-430-430.jpg" width="60" /> |
 
-[https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ](https://t.me/joinchat/G0DdHw-44FO7Izt4K1lLFQ)
-
-### 钉钉群
-
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wsBGpRlCOkmxHzMHuyAT.jpg" width="60" />
-
-### 微信群
-
-群满 100 人，请加 `sorryccpro` 好友备注 `umi` 邀请加入。
-
-## License
+## LICENSE
 
 [MIT](https://github.com/umijs/umi/blob/master/LICENSE)
