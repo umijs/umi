@@ -17,6 +17,7 @@ export const createHistory = (hotReload = false) => {
   return history;
 }
 
+// 仅微前端场景需要，for @umijs/plugin-qiankun
 export const setBase = base => {
   window.routerBase = base;
 }
