@@ -11,12 +11,12 @@ import { renderClient } from '{{{ rendererPath }}}';
 const clientRender = plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
-  initialValue: (hotReload) => {
+  initialValue: ({ hot }: { hot?: boolean } = {}) => {
     return renderClient({
       // @ts-ignore
       routes: require('./core/routes').routes,
       plugin,
-      history: createHistory(hotReload),
+      history: createHistory(hot),
       rootElement: '{{{ rootElement }}}',
       defaultTitle: '{{{ defaultTitle }}}',
     });
@@ -33,6 +33,6 @@ export default clientRender();
 if (module.hot) {
   // @ts-ignore
   module.hot.accept('./core/routes', () => {
-    clientRender(true);
+    clientRender({ hot: true });
   });
 }
