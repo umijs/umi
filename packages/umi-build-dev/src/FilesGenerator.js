@@ -163,7 +163,7 @@ export default class FilesGenerator {
     }
   }
   const rootContainer = plugins.apply('rootContainer', {
-    initialValue: React.createElement(require('./router').default, props),
+    initialValue: React.createElement(require('./router').default, { ...props, hot }),
   });
   ReactDOM[window.g_useSSR ? 'hydrate' : 'render'](
     rootContainer,

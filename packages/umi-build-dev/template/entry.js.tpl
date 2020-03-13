@@ -23,7 +23,7 @@ plugins.use(require('{{{ . }}}'));
 {{{ codeAhead }}}
 
 // render
-let clientRender = async () => {
+let clientRender = async ({ hot } = {}) => {
   {{{ render }}}
 };
 const render = plugins.compose('render', { initialValue: clientRender });
@@ -172,6 +172,6 @@ export default __IS_BROWSER ? null : serverRender;
 // hot module replacement
 if (__IS_BROWSER && module.hot) {
   module.hot.accept('./router', () => {
-    clientRender();
+    clientRender({ hot: true });
   });
 }

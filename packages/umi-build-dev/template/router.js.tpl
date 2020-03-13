@@ -19,7 +19,7 @@ export { routes };
 
 export default class RouterWrapper extends React.Component {
 
-  history = createHistory();
+  history = createHistory(this.props.hot);
 
   unListen() {}
 

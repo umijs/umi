@@ -5,14 +5,16 @@ window.g_history = history;
 {{/globalVariables}}
 export default history;
 
-export const createHistory = () => {
-  const newHistory = {{{ history }}};
-  history = newHistory;
-  {{#globalVariables}}
-  window.g_history = newHistory;
-  {{/globalVariables}}
+export const createHistory = (hotReload = false) => {
+  if (!hotReload) {
+    const newHistory = {{{ history }}};
+    history = newHistory;
+    {{#globalVariables}}
+    window.g_history = newHistory;
+    {{/globalVariables}}
+  }
 
-  return newHistory;
+  return history;
 }
 
 export const setBase = base => {
