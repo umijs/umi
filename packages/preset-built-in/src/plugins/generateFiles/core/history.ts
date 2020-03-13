@@ -52,7 +52,7 @@ export default function(api: IApi) {
 
   api.addUmiExports(() => {
     return {
-      specifiers: ['history'],
+      specifiers: ['history', 'setCreateHistoryOptions'],
       source: `./history`,
     };
   });
