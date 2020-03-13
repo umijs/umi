@@ -147,18 +147,6 @@ describe('runtimePlugin', () => {
     );
     a();
     expect(ret).toEqual(['a']);
-
-    ret.length = 0;
-    const b = compose(
-      'foo',
-      {
-        initialValue: (arg) => {
-          ret.push(arg);
-        },
-      },
-    );
-    b(1);
-    expect(ret).toEqual([1]);
   });
 
   it('mergeConfig', () => {

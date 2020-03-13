@@ -26,15 +26,17 @@ export function getItem(key) {
 
 function _compose(...funcs) {
   if (funcs.length === 1) {
-    return (...args) => funcs[0](...args);
+    return funcs[0];
   }
   const last = funcs.pop();
-  return funcs.reduce((a, b) => (...args) => b(() => a(...args)), last);
+  return funcs.reduce((a, b) => () => b(a), last);
 }
 
 export function compose(item, { initialValue }) {
   if (typeof item === 'string') item = getItem(item);
-  return _compose(...item, initialValue);
+  return () => {
+    return _compose(...item, initialValue)();
+  };
 }
 
 export function apply(item, { initialValue, args }) {
