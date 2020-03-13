@@ -136,8 +136,8 @@ such as:
 + background: url(~@/assets/logo.png);
 
 # Third party library
-- @import url(foo/bar.css');
-- @import url(~foo/bar.css');
+- @import url(foo/bar.css);
++ @import url(~foo/bar.css);
 ```
 
 ## Encounter problems

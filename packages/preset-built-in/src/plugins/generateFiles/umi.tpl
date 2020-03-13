@@ -8,7 +8,7 @@ import { renderClient } from '{{{ rendererPath }}}';
 
 {{{ entryCodeAhead }}}
 
-const clientRender = plugin.applyPlugins({
+const getClientRender = (args: { hot?: boolean } = {}) => plugin.applyPlugins({
   key: 'render',
   type: ApplyPluginsType.compose,
   initialValue: () => {
@@ -16,14 +16,15 @@ const clientRender = plugin.applyPlugins({
       // @ts-ignore
       routes: require('./core/routes').routes,
       plugin,
-      history: createHistory(),
+      history: createHistory(args.hot),
       rootElement: '{{{ rootElement }}}',
       defaultTitle: '{{{ defaultTitle }}}',
     });
   },
-  args: {},
+  args,
 });
 
+const clientRender = getClientRender();
 export default clientRender();
 
 {{{ entryCode }}}
@@ -33,6 +34,6 @@ export default clientRender();
 if (module.hot) {
   // @ts-ignore
   module.hot.accept('./core/routes', () => {
-    clientRender();
+    getClientRender({ hot: true })();
   });
 }

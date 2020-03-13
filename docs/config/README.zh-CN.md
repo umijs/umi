@@ -613,6 +613,10 @@ export default {
 
 指定 react app 渲染到的 HTML 元素 id。
 
+注意：
+
+* 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
+
 ## outputPath
 
 * Type: `string`
