@@ -49,9 +49,9 @@ export default function(api) {
     const [historyType, opts = {}] = getHistoryConfig(config.history);
 
     if (historyType === 'hash') {
-      return `require('history/createHashHistory').default({ basename: ${
+      return `require('history/createHashHistory').default({ basename: '${
         config.base
-      } || window.routerBase || '/', ...${JSON.stringify(opts)} })`;
+      }' || window.routerBase || '/', ...${JSON.stringify(opts)} })`;
     } else if (historyType === 'memory') {
       return `require('history/createMemoryHistory').default({ initialEntries: window.g_initialEntries })`;
     }
