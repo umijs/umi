@@ -14,12 +14,19 @@ foo.d = {
   bb: true,
   cc: {
     dd: 90
-  }
+  },
+  ee: [2],
+  ff: null,
+  gg: undefined,
+  hh: () => {},
+  jj() {}
 };
-foo.e = ['hh'];
+foo.e = ['hh', { ff: 66 }, ['gg'], null, undefined, () => {}];
 
 foo.f = true;
 foo.g = false;
+foo.i = null;
+foo.j = undefined;
 bar.h = true;
 export default foo;
     `,
@@ -33,9 +40,23 @@ export default foo;
       cc: {
         dd: 90,
       },
+      ee: [2],
+      ff: null,
+      gg: undefined,
     },
-    e: ['hh'],
+    e: ['hh', { ff: 66 }, ['gg'], null, undefined],
     f: true,
     g: false,
+    i: null,
+    j: undefined,
   });
+});
+
+test('no default export', () => {
+  const props = getExportProps(
+    `
+export function foo () {}
+    `,
+  );
+  expect(props).toEqual({});
 });

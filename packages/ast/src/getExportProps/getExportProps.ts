@@ -43,6 +43,10 @@ function findObjectProperties(node: t.ObjectExpression) {
     if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
       if (isLiteral(p.value)) {
         target[p.key.name] = p.value.value;
+      } else if (t.isNullLiteral(p.value)) {
+        target[p.key.name] = null;
+      } else if (t.isIdentifier(p.value) && p.value.name === 'undefined') {
+        target[p.key.name] = undefined;
       } else if (t.isObjectExpression(p.value)) {
         target[p.key.name] = findObjectProperties(p.value);
       } else if (t.isArrayExpression(p.value)) {
@@ -58,6 +62,10 @@ function findArrayProperties(node: t.ArrayExpression) {
   node.elements.forEach(p => {
     if (isLiteral(p)) {
       target.push(p.value);
+    } else if (t.isNullLiteral(p)) {
+      target.push(null);
+    } else if (t.isIdentifier(p) && p.name === 'undefined') {
+      target.push(undefined);
     } else if (t.isObjectExpression(p)) {
       target.push(findObjectProperties(p));
     } else if (t.isArrayExpression(p)) {
@@ -86,6 +94,13 @@ function findAssignmentExpressionProps(opts: {
     ) {
       if (isLiteral(node.right)) {
         props[node.left.property.name] = node.right.value;
+      } else if (t.isNullLiteral(node.right)) {
+        props[node.left.property.name] = null;
+      } else if (
+        t.isIdentifier(node.right) &&
+        node.right.name === 'undefined'
+      ) {
+        props[node.left.property.name] = undefined;
       } else if (t.isObjectExpression(node.right)) {
         props[node.left.property.name] = findObjectProperties(node.right);
       } else if (t.isArrayExpression(node.right)) {
