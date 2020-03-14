@@ -31,6 +31,42 @@ function findExportDefault(programNode: t.Program) {
   return null;
 }
 
+function isLiteral(src: any): src is t.StringLiteral {
+  return (
+    t.isStringLiteral(src) || t.isNumericLiteral(src) || t.isBooleanLiteral(src)
+  );
+}
+
+function findObjectProperties(node: t.ObjectExpression) {
+  const target = {};
+  node.properties.forEach(p => {
+    if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
+      if (isLiteral(p.value)) {
+        target[p.key.name] = p.value.value;
+      } else if (t.isObjectExpression(p.value)) {
+        target[p.key.name] = findObjectProperties(p.value);
+      } else if (t.isArrayExpression(p.value)) {
+        target[p.key.name] = findArrayProperties(p.value);
+      }
+    }
+  });
+  return target;
+}
+
+function findArrayProperties(node: t.ArrayExpression) {
+  const target: any[] = [];
+  node.elements.forEach(p => {
+    if (isLiteral(p)) {
+      target.push(p.value);
+    } else if (t.isObjectExpression(p)) {
+      target.push(findObjectProperties(p));
+    } else if (t.isArrayExpression(p)) {
+      target.push(findArrayProperties(p));
+    }
+  });
+  return target;
+}
+
 function findAssignmentExpressionProps(opts: {
   programNode: t.Program;
   name: string;
@@ -46,12 +82,15 @@ function findAssignmentExpressionProps(opts: {
       t.isAssignmentExpression(node) &&
       t.isMemberExpression(node.left) &&
       t.isIdentifier(node.left.object) &&
-      node.left.object.name === opts.name &&
-      (t.isStringLiteral(node.right) ||
-        t.isNumericLiteral(node.right) ||
-        t.isBooleanLiteral(node.right))
+      node.left.object.name === opts.name
     ) {
-      props[node.left.property.name] = (node.right as t.StringLiteral).value;
+      if (isLiteral(node.right)) {
+        props[node.left.property.name] = node.right.value;
+      } else if (t.isObjectExpression(node.right)) {
+        props[node.left.property.name] = findObjectProperties(node.right);
+      } else if (t.isArrayExpression(node.right)) {
+        props[node.left.property.name] = findArrayProperties(node.right);
+      }
     }
   }
   return props;

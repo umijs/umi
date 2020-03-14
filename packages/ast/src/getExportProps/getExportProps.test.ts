@@ -9,9 +9,14 @@ foo.a = 1;
 foo.b = '2';
 foo.c = function() {};
 
-// TODO: support object and array
-foo.d = {};
-foo.e = [];
+foo.d = {
+  aa: '1',
+  bb: true,
+  cc: {
+    dd: 90
+  }
+};
+foo.e = ['hh'];
 
 foo.f = true;
 foo.g = false;
@@ -22,6 +27,14 @@ export default foo;
   expect(props).toEqual({
     a: 1,
     b: '2',
+    d: {
+      aa: '1',
+      bb: true,
+      cc: {
+        dd: 90,
+      },
+    },
+    e: ['hh'],
     f: true,
     g: false,
   });
