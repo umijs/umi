@@ -21,4 +21,6 @@ export const setBase = base => {
   window.routerBase = base;
 }
 
+history = createHistory();
+Object.defineProperty(exports || module.exports || (module.exports = {}), 'default', { get() { return history; }});
 console.log('test ci');
