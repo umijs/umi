@@ -152,6 +152,110 @@ hooks 的方式获取 store，dva 为 2.6.x 时有效。
 $ umi dva list model
 ```
 
+## 类型
+
+通过 umi 导出类型：`ConnectRC`，`ConnectProps`，`Dispatch`，`Action`，`Reducer`，`Effect`，`Subscription`，和所有 `model` 文件中导出的类型。
+
+### model 用例
+
+```ts
+import { Effect, Reducer, Subscription } from 'umi';
+
+export interface IndexModelState {
+  name: string;
+}
+
+export interface IndexModelType {
+  namespace: 'index';
+  state: IndexModelState;
+  effects: {
+    query: Effect;
+  };
+  reducers: {
+    save: Reducer<IndexModelState>;
+  };
+  subscriptions: { setup: Subscription };
+}
+
+const IndexModel: IndexModelType = {
+  namespace: 'index',
+
+  state: {
+    name: '',
+  },
+
+  effects: {
+    *query({ payload }, { call, put }) {
+    },
+  },
+  reducers: {
+    save(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+  },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname }) => {
+        if (pathname === '/') {
+          dispatch({
+            type: 'query',
+          })
+        }
+      });
+    }
+  }
+};
+
+export default IndexModel;
+```
+
+### page 用例
+
+```tsx
+import React, { FC } from 'react';
+import { IndexModelState, ConnectProps, Loading, connect } from 'umi';
+
+interface PageProps extends ConnectProps {
+  index: IndexModelState;
+  loading: boolean;
+}
+
+const IndexPage: FC<PageProps> = ({ index, dispatch }) => {
+  const { name } = index;
+  return <div >Hello {name}</div>;
+};
+
+export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+  index,
+  loading: loading.models.index,
+}))(IndexPage);
+
+```
+或者
+
+```tsx
+import React from 'react';
+import { IndexModelState, ConnectRC, Loading, connect } from 'umi';
+
+interface PageProps {
+  index: IndexModelState;
+  loading: boolean;
+}
+
+const IndexPage: ConnectRC<PageProps> = ({ index, dispatch }) => {
+  const { name } = index;
+  return <div >Hello {name}</div>;
+};
+
+export default connect(({ index, loading }: { index: IndexModelState; loading: Loading }) => ({
+  index,
+  loading: loading.models.index,
+}))(IndexPage);
+```
+
 ## FAQ
 
 ### import { connect 等 API } from umi 无效？

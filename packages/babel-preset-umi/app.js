@@ -20,6 +20,7 @@ module.exports = function(context, opts) {
             transformRuntime: {},
             reactRemovePropTypes: nodeEnv === 'production',
             reactRequire: true,
+            lockCoreJS3: {},
           },
           opts,
         ),
