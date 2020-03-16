@@ -57,7 +57,7 @@ function render({
       route,
     };
     // @ts-ignore
-    let ret = <Component {...newProps}>routes</Component>;
+    let ret = <Component {...newProps}>{routes}</Component>;
 
     // route.wrappers
     if (wrappers) {
