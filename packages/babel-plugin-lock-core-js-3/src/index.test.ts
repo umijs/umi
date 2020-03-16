@@ -11,7 +11,7 @@ function transformWithPlugin(code: string) {
 
 test('match', () => {
   expect(winPath(transformWithPlugin(`import 'core-js/foo'`)!)).toContain(
-    `node_modules/core-js/foo`,
+    `/core-js/foo`,
   );
 });
 
