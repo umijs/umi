@@ -131,7 +131,7 @@ import services from '@/service/oneapidemo';
 import { PageLoading } from '@alipay/tech-ui';
 
 export default () => {
-  const { data, error, loading } = useAPI(() => {
+  const { data, error, loading } = useRequest(() => {
     return services.getUserList({
       type: 'testtype',
     }, {
