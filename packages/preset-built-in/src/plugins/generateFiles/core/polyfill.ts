@@ -15,7 +15,7 @@ export default (api: IApi) => {
     },
   });
 
-  api.addPolyfillImports(() => [{ source: '@@/core/polyfill' }]);
+  api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
   api.onGenerateFiles(() => {
     api.writeTmpFile({
