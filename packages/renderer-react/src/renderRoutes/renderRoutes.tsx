@@ -29,16 +29,6 @@ function wrapInitialPropsFetch(Component: any) {
   };
 }
 
-function wrapWrapper(Component: any, Wrapper: any) {
-  return function(props: object) {
-    return (
-      <Wrapper {...props}>
-        <Component {...props} />
-      </Wrapper>
-    );
-  };
-}
-
 // TODO: custom Switch
 // 1. keep alive
 function render({
@@ -61,21 +51,24 @@ function render({
       Component = wrapInitialPropsFetch(Component);
     }
 
-    // route.wrappers
-    if (wrappers) {
-      let len = wrappers.length - 1;
-      while (len >= 0) {
-        Component = wrapWrapper(Component, wrappers[len]);
-        len -= 1;
-      }
-    }
-
     const newProps = {
       ...props,
       ...opts.extraProps,
       route,
     };
-    return <Component {...newProps}>{routes}</Component>;
+    // @ts-ignore
+    let ret = <Component {...newProps}>{routes}</Component>;
+
+    // route.wrappers
+    if (wrappers) {
+      let len = wrappers.length - 1;
+      while (len >= 0) {
+        ret = React.createElement(wrappers[len], newProps, ret);
+        len -= 1;
+      }
+    }
+
+    return ret;
   } else {
     return routes;
   }
