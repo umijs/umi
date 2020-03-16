@@ -32,7 +32,7 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
     // cd id && git pull
     log.info(`${url} exist in cache, start pull from git to update...`);
     if (dryRun) {
-      log.log(`dryRun is true, skip git pull`);
+      log.log('dryRun is true, skip git pull');
     } else {
       spawnSync('git', ['fetch'], {
         cwd: templateTmpDirPath,
@@ -49,9 +49,9 @@ export function downloadFromGit(url, id, branch = 'master', log, args = {}) {
     // git clone url id
     log.info(`start clone code from ${url}...`);
     if (dryRun) {
-      log.log(`dryRun is true, skip git clone`);
+      log.log('dryRun is true, skip git clone');
     } else {
-      spawnSync('git', ['clone', url, id, '--single-branch', '-b', branch], {
+      spawnSync('git', ['clone', url, id, '-b', branch], {
         cwd: blocksTempPath,
       });
     }
@@ -81,6 +81,26 @@ export const urlAddGit = url => {
   return `${url}.git`;
 };
 
+/**
+ * 使用 antd@3 的模板和区块
+ * @param {*} ref
+ */
+const getAntdVersion = ref => {
+  try {
+    const { version } = require('antd');
+    if (version.startsWith(3) && ref === 'master') {
+      return 'antd@3';
+    }
+  } catch (error) {
+    // return ref;
+  }
+
+  if (process.env.BLOCK_REPO_BRANCH) {
+    return process.env.BLOCK_REPO_BRANCH;
+  }
+  return ref;
+};
+
 export async function parseGitUrl(url, closeFastGithub) {
   const args = GitUrlParse(url);
   const { ref, filepath, resource, full_name: fullName } = args;
@@ -95,7 +115,7 @@ export async function parseGitUrl(url, closeFastGithub) {
 
   return {
     repo: urlAddGit(repo),
-    branch: ref || 'master',
+    branch: getAntdVersion(ref) || 'master',
     path: `/${filepath}`,
     id: `${resource}/${fullName}`, // 唯一标识一个 git 仓库
   };
