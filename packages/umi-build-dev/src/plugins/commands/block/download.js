@@ -86,9 +86,13 @@ export const urlAddGit = url => {
  * @param {*} ref
  */
 const getAntdVersion = ref => {
-  const { version } = require('antd');
-  if (version.startsWith(3) && ref === 'master') {
-    return 'antd@3';
+  try {
+    const { version } = require('antd');
+    if (version.startsWith(3) && ref === 'master') {
+      return 'antd@3';
+    }
+  } catch (error) {
+    // return ref;
   }
 
   if (process.env.BLOCK_REPO_BRANCH) {
@@ -108,7 +112,7 @@ export async function parseGitUrl(url, closeFastGithub) {
     resource === 'github.com' && !closeFastGithub
       ? args.toString().replace(`${resource}`, fastGithub)
       : args.toString();
-  console.log(getAntdVersion(ref));
+
   return {
     repo: urlAddGit(repo),
     branch: getAntdVersion(ref) || 'master',
