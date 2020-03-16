@@ -6,10 +6,7 @@ export default (api: IApi) => {
     config: {
       default: '/',
       schema(joi) {
-        return joi
-          .string()
-          .regex(/^\//)
-          .error(new Error('config.base must start with /.'));
+        return joi.string()
       },
     },
   });
