@@ -1,3 +1,4 @@
+import { winPath } from '@umijs/utils';
 import { transform } from '@babel/core';
 
 function transformWithPlugin(code: string) {
@@ -9,7 +10,7 @@ function transformWithPlugin(code: string) {
 }
 
 test('match', () => {
-  expect(transformWithPlugin(`import 'core-js/foo'`)).toContain(
+  expect(winPath(transformWithPlugin(`import 'core-js/foo'`)!)).toContain(
     `node_modules/core-js/foo`,
   );
 });
