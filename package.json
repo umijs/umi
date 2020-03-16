@@ -1,5 +1,6 @@
 {
   "private": true,
+  "name": "root",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "father-build",
