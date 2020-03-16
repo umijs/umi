@@ -8,10 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: build
-        run: |
-          yarn install
-          yarn now-build
       - uses: amondnet/now-deployment@v2
         id: now-deployment-production
         with:

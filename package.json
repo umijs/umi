@@ -6,6 +6,7 @@
     "changelog": "lerna-changelog",
     "chore:update-deps": "sh ./scripts/reinstall_deps.sh",
     "clean": "lerna clean -y",
+    "now-build": "npm run doc:deploy",
     "debug": "./packages/umi-test/bin/umi-test.js",
     "doc:deploy": "rm -rf ./website/yarn.lock && cd ./website && npm run deploy && cd -",
     "doc:dev": "cd ./website && npm run dev",
