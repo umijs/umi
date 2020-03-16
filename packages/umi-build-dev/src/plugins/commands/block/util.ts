@@ -255,15 +255,11 @@ export const reduceData = treeData =>
 export async function gitClone(ctx, mySpinner) {
   mySpinner.start(`🔍  clone git repo from ${ctx.repo}`);
   try {
-    await execa(
-      'git',
-      ['clone', ctx.repo, ctx.id, '--single-branch', '--recurse-submodules', '-b', ctx.branch],
-      {
-        cwd: ctx.blocksTempPath,
-        env: process.env,
-        stdio: 'inherit',
-      },
-    );
+    await execa('git', ['clone', ctx.repo, ctx.id, '--recurse-submodules'], {
+      cwd: ctx.blocksTempPath,
+      env: process.env,
+      stdio: 'inherit',
+    });
   } catch (e) {
     mySpinner.fail();
     throw new Error(e);
