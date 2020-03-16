@@ -2,13 +2,14 @@
 // 为了测试精准需要将换行符转化一下
 // https://github.com/cssmagic/blog/issues/22
 
+export const isWindows =
+  typeof process !== 'undefined' && process.platform === 'win32';
+
 /**
  * Convert Windows crlf to lf (\r\n to \n)
  * @param content
  */
 export default (content: string | undefined) => {
-  const isWindows =
-    typeof process !== 'undefined' && process.platform === 'win32';
   if (typeof content !== 'string') {
     return content;
   }

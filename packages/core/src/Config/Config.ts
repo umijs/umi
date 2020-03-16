@@ -5,6 +5,7 @@ import {
   chokidar,
   compatESModuleRequire,
   deepmerge,
+  cleanRequireCache,
   lodash,
   parseRequireDeps,
   winPath,
@@ -165,12 +166,7 @@ export default class Config {
         memo = memo.concat(parseRequireDeps(file));
         return memo;
       }, []);
-      requireDeps.forEach(f => {
-        // TODO: potential windows path problem?
-        if (require.cache[f]) {
-          delete require.cache[f];
-        }
-      });
+      requireDeps.forEach(cleanRequireCache);
       this.service.babelRegister.setOnlyMap({
         key: 'config',
         value: requireDeps,
