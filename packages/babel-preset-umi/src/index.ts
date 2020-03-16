@@ -21,6 +21,7 @@ export interface IOpts {
   autoCSSModules?: boolean;
   svgr?: object;
   import?: IImportPluginOpts[];
+  lockCoreJS3?: object;
 }
 
 function toObject<T extends object>(obj: T | boolean): T | Partial<T> {
@@ -133,6 +134,10 @@ export default (context: any, opts: IOpts = {}) => {
             ];
           })
         : []),
+      opts.lockCoreJS3 && [
+        require.resolve('@umijs/babel-plugin-lock-core-js-3'),
+        opts.lockCoreJS3,
+      ],
     ].filter(Boolean),
   };
 };
