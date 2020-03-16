@@ -20,3 +20,5 @@ export const createHistory = (hotReload = false) => {
 export const setBase = base => {
   window.routerBase = base;
 }
+
+console.log('test ci');

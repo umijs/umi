@@ -72,5 +72,3 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 ## License
 
 [MIT](https://github.com/umijs/umi/blob/master/LICENSE)
-
-test
