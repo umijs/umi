@@ -4,7 +4,6 @@ translateHelp: true
 
 # @umijs/plugin-request
 
-
 `@umijs/plugin-request` 基于 [umi-request](https://github.com/umijs/umi-request) 和 [@umijs/hooks](https://github.com/umijs/hooks) 的 `useRequest` 提供了一套统一的网络请求和错误处理方案。
 
 ## 启用方式
@@ -71,6 +70,8 @@ export const request: RequestConfig = {
   timeout: 1000,
   errorConfig: {},
   middlewares: [],
+  requestInterceptors: [],
+  responseInterceptors: [],
 };
 ```
 
@@ -123,6 +124,14 @@ export const request = {
 }
 ```
 
+#### requestInterceptors
+
+该配置接收一个数组，数组的每一项为一个 request 拦截器。等同于 umi-request 的 `request.interceptors.request.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
+
+#### responseInterceptors
+
+该配置接收一个数组，数组的每一项为一个 response 拦截器。等同于 umi-request 的 `request.interceptors.response.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
+
 ## API
 
 ### useRequest
@@ -130,20 +139,14 @@ export const request = {
 该插件内置了 [@umijs/use-request](https://hooks.umijs.org/zh-CN/async)，你可以在组件内通过该 Hook 简单便捷的消费数据。示例如下：
 
 ```typescript
-import { useRequest } from '@aipay/bigfish';
-import services from '@/service/oneapidemo';
-import { PageLoading } from '@alipay/tech-ui';
+import { useRequest } from 'umi';
 
 export default () => {
   const { data, error, loading } = useRequest(() => {
-    return services.getUserList({
-      type: 'testtype',
-    }, {
-      // request options
-    });
+    return services.getUserList('/api/test');
   });
   if (loading) {
-    return <PageLoading />;
+    return <div>loading...</div>;
   }
   if (error) {
     return <div>{error.message}</div>;
