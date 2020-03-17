@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Cli Commands
 
 

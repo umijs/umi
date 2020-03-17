@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Plugin API
 
 

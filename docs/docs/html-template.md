@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # HTML Template
 
 

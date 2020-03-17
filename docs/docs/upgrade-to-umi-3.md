@@ -1,7 +1,3 @@
----
-translateHelp: true
----
-
 # Upgrade to Umi 3
 
 
