@@ -669,9 +669,28 @@ export default {
 
 ## polyfill
 
-* Type: `'es' | 'stable'`
+* Type: `'es' | 'stable' | { imports: string[]}`
 
-设置按需引入 polyfill，对应core-js的[引入范围](https://github.com/zloirock/core-js#commonjs-api)，默认全部引入。
+设置按需引入 polyfill，对应core-js的[引入范围](https://github.com/zloirock/core-js#commonjs-api)，默认全量引入。
+
+```
+export default {
+  polyfill: 'stable'
+}
+```
+
+或自行按需引入：
+
+```
+export default {
+  polyfill: {
+    imports: [
+      'core-js/features/promise/try',
+      'core-js/proposals/math-extensions'
+    ]
+  },
+}
+```
 
 注意：
 
