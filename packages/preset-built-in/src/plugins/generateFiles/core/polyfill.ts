@@ -7,7 +7,7 @@ export default (api: IApi) => {
     key: 'polyfill',
     config: {
       schema(joi) {
-        return joi.object();
+        return joi.string().valid('es', 'stable');
       },
     },
     enableBy: () => {
@@ -18,10 +18,13 @@ export default (api: IApi) => {
   api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
   api.onGenerateFiles(() => {
+    const coreJsType = api.config.polyfill;
     api.writeTmpFile({
       content: api.utils.Mustache.render(
         readFileSync(join(__dirname, 'polyfill.tpl'), 'utf-8'),
-        {},
+        {
+          coreJs: `core-js${coreJsType ? `/${coreJsType}` : ''}`,
+        },
       ),
       path: 'core/polyfill.ts',
     });

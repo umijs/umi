@@ -1,2 +1,2 @@
-import 'core-js';
+import '{{{ coreJs }}}';
 import 'regenerator-runtime/runtime';
