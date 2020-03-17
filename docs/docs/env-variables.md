@@ -69,6 +69,10 @@ $ ANALYZE=1 umi dev
 $ ANALYZE=1 umi build
 ```
 
+### BABEL\_POLYFILL
+
+默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
+
 ### COMPRESS
 
 CSS and JS are compressed by default. When the value is none, it is not compressed. It is valid at build time.

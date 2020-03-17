@@ -10,12 +10,20 @@ test('normal', async () => {
   });
   const routeChanges: string[] = [];
   const plugin = new Plugin({
-    validKeys: ['onRouteChange'],
+    validKeys: ['onRouteChange', 'rootContainer'],
   });
   plugin.register({
     apply: {
       onRouteChange({ location, action }: any) {
         routeChanges.push(`${action} ${location.pathname}`);
+      },
+      rootContainer(container: any, args: any) {
+        if (!(args.history && args.plugin && args.routes)) {
+          throw new Error(
+            'history, plugin or routes not exists in the args of rootContainer',
+          );
+        }
+        return <div>{container}</div>;
       },
     },
     path: '/foo',
@@ -31,11 +39,11 @@ test('normal', async () => {
       ],
     }),
   );
-  expect(container.getElementsByTagName('h1')[0].innerHTML).toEqual('foo');
+  expect(container.innerHTML).toEqual('<div><h1>foo</h1></div>');
 
   history.push({
     pathname: '/bar',
   });
-  expect(container.getElementsByTagName('h1')[0].innerHTML).toEqual('bar');
+  expect(container.innerHTML).toEqual('<div><h1>bar</h1></div>');
   expect(routeChanges).toEqual(['POP /foo', 'PUSH /bar']);
 });

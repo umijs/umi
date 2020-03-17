@@ -1,13 +1,12 @@
 {
-  "name": "@umijs/create-umi-app",
+  "name": "@umijs/babel-plugin-lock-core-js-3",
   "version": "3.0.10",
-  "description": "@umijs/create-umi-app",
+  "description": "@umijs/babel-plugin-lock-core-js-3",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib",
-    "bin",
-    "templates"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -21,14 +20,12 @@
   ],
   "license": "MIT",
   "bugs": "http://github.com/umijs/umi/issues",
-  "homepage": "https://github.com/umijs/umi/tree/master/packages/create-umi-app#readme",
+  "homepage": "https://github.com/umijs/umi/tree/master/packages/babel-plugin-lock-core-js-3#readme",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@umijs/utils": "3.0.10"
-  },
-  "bin": {
-    "create-umi-app": "bin/create-umi-app.js"
+    "@umijs/utils": "3.0.10",
+    "core-js": "3.6.4"
   }
 }

@@ -9,7 +9,7 @@ Mock data is an indispensable part of the front-end development process and a ke
 
 ## Conventional Mock Files
 
-Umi agrees that all files in the `src/mock` folder are mock files.
+Umi agrees that all files in the `/mock` folder are mock files.
 
 such as:
 

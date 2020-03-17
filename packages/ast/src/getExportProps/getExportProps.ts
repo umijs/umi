@@ -1,5 +1,6 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
+import { RESOLVABLE_WHITELIST } from './propertyResolver';
 
 export function getExportProps(code: string) {
   const ast = parse(code);
@@ -46,12 +47,14 @@ function findAssignmentExpressionProps(opts: {
       t.isAssignmentExpression(node) &&
       t.isMemberExpression(node.left) &&
       t.isIdentifier(node.left.object) &&
-      node.left.object.name === opts.name &&
-      (t.isStringLiteral(node.right) ||
-        t.isNumericLiteral(node.right) ||
-        t.isBooleanLiteral(node.right))
+      node.left.object.name === opts.name
     ) {
-      props[node.left.property.name] = (node.right as t.StringLiteral).value;
+      const resolver = RESOLVABLE_WHITELIST.find(resolver =>
+        resolver.is(t.isAssignmentExpression(node) && node.right),
+      );
+      if (resolver) {
+        props[node.left.property.name] = resolver.get(node.right as any);
+      }
     }
   }
   return props;

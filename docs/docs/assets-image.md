@@ -59,7 +59,7 @@ The former will not have any problems; the latter, if you refer to a relative pa
 
 When importing a picture through a relative path, if the picture is less than 10K, it will be compiled into Base64, otherwise it will be constructed as a separate picture file.
 
-The 10K threshold can be modified by [inlineLimit Configuration](TODO).
+The 10K threshold can be modified by [inlineLimit Configuration](../config#inlinelimit).
 
 ## Use CDN
 
