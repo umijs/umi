@@ -81,7 +81,7 @@ export function onRouteChange({ matchedRoutes }) {
 }
 ```
 
-### rootContainer(LastRootContainer)
+### rootContainer(LastRootContainer, args)
 
 修改交给 react-dom 渲染时的根组件。
 
@@ -92,6 +92,12 @@ export function rootContainer(container) {
   return React.createElement(ThemeProvider, null, container);
 }
 ```
+
+args 包含：
+
+* routes，全量路由配置
+* plugin，运行时插件机制
+* history，history 实例
 
 ## 更多配置项
 

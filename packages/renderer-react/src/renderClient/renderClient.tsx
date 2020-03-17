@@ -66,6 +66,11 @@ export default function renderClient(opts: IOpts) {
         defaultTitle={opts.defaultTitle}
       />
     ),
+    args: {
+      history: opts.history,
+      routes: opts.routes,
+      plugin: opts.plugin,
+    },
   });
 
   if (opts.rootElement) {
