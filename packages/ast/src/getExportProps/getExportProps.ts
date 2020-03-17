@@ -1,5 +1,6 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
+import { RESOLVABLE_WHITELIST } from './propertyResolver';
 
 export function getExportProps(code: string) {
   const ast = parse(code);
@@ -31,50 +32,6 @@ function findExportDefault(programNode: t.Program) {
   return null;
 }
 
-function isLiteral(src: any): src is t.StringLiteral {
-  return (
-    t.isStringLiteral(src) || t.isNumericLiteral(src) || t.isBooleanLiteral(src)
-  );
-}
-
-function findObjectProperties(node: t.ObjectExpression) {
-  const target = {};
-  node.properties.forEach(p => {
-    if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
-      if (isLiteral(p.value)) {
-        target[p.key.name] = p.value.value;
-      } else if (t.isNullLiteral(p.value)) {
-        target[p.key.name] = null;
-      } else if (t.isIdentifier(p.value) && p.value.name === 'undefined') {
-        target[p.key.name] = undefined;
-      } else if (t.isObjectExpression(p.value)) {
-        target[p.key.name] = findObjectProperties(p.value);
-      } else if (t.isArrayExpression(p.value)) {
-        target[p.key.name] = findArrayProperties(p.value);
-      }
-    }
-  });
-  return target;
-}
-
-function findArrayProperties(node: t.ArrayExpression) {
-  const target: any[] = [];
-  node.elements.forEach(p => {
-    if (isLiteral(p)) {
-      target.push(p.value);
-    } else if (t.isNullLiteral(p)) {
-      target.push(null);
-    } else if (t.isIdentifier(p) && p.name === 'undefined') {
-      target.push(undefined);
-    } else if (t.isObjectExpression(p)) {
-      target.push(findObjectProperties(p));
-    } else if (t.isArrayExpression(p)) {
-      target.push(findArrayProperties(p));
-    }
-  });
-  return target;
-}
-
 function findAssignmentExpressionProps(opts: {
   programNode: t.Program;
   name: string;
@@ -92,19 +49,11 @@ function findAssignmentExpressionProps(opts: {
       t.isIdentifier(node.left.object) &&
       node.left.object.name === opts.name
     ) {
-      if (isLiteral(node.right)) {
-        props[node.left.property.name] = node.right.value;
-      } else if (t.isNullLiteral(node.right)) {
-        props[node.left.property.name] = null;
-      } else if (
-        t.isIdentifier(node.right) &&
-        node.right.name === 'undefined'
-      ) {
-        props[node.left.property.name] = undefined;
-      } else if (t.isObjectExpression(node.right)) {
-        props[node.left.property.name] = findObjectProperties(node.right);
-      } else if (t.isArrayExpression(node.right)) {
-        props[node.left.property.name] = findArrayProperties(node.right);
+      const resolver = RESOLVABLE_WHITELIST.find(resolver =>
+        resolver.is(t.isAssignmentExpression(node) && node.right),
+      );
+      if (resolver) {
+        props[node.left.property.name] = resolver.get(node.right as any);
       }
     }
   }
