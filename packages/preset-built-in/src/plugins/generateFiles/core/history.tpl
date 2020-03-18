@@ -16,7 +16,7 @@ export const createHistory = (hotReload = false) => {
 
 // 通常仅微前端场景需要调用这个 API
 export const setCreateHistoryOptions = (newOpts: any = {}) => {
-  options = { ...options, newOpts };
+  options = { ...options, ...newOpts };
 }
 
 export { history };
