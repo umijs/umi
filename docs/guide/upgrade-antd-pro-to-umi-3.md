@@ -13,7 +13,7 @@ Migrating to Umi 3 is a three-step process that can be completed in less than 10
 1. **Configuration Layer Migration**
 1. **Code Layer Modification**
 
-### Dependency Handling 
+### Dependency Handling
 
 Modify `package.json` upgrading umi，and removing umi plugins.
 
@@ -41,7 +41,7 @@ Run `npm install` to reinstall the dependencies.
 
 ### Configuration Layer Migration
 
-根据 [Umi 3 配置](../config) ，有**修改的配置项**如下 `config/config.ts` ：
+According to the [Umi 3 configuration](../config), the **configuration items that have been modified** are as follows `config/config.ts`
 
 ```typescript
 import { defineConfig, utils } from 'umi';
