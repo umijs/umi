@@ -39,7 +39,7 @@ Then Umi may not be right for you.
 
 ### [create-react-app](https://github.com/facebook/create-react-app)
 
-`create-create-app` is a webpack-based packaging layer solution that includes build, dev, lint, etc. He has achieved the ultimate experience in the packaging layer, but does not include routing, is not a framework, and does not support configuration. Therefore, if you want to modify some configurations based on him, or you want to do technical convergence outside the packaging layer, you will encounter difficulties.
+`create-react-app` is a webpack-based packaging layer solution that includes build, dev, lint, etc. He has achieved the ultimate experience in the packaging layer, but does not include routing, is not a framework, and does not support configuration. Therefore, if you want to modify some configurations based on him, or you want to do technical convergence outside the packaging layer, you will encounter difficulties.
 
 ### [next.js](https://github.com/zeit/next.js)
 
