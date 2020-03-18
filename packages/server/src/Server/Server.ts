@@ -313,7 +313,10 @@ class Server {
     data?: string | object;
   }) {
     sockets.forEach(socket => {
-      socket.write(JSON.stringify({ type, data }));
+      // https://github.com/ant-design/ant-design-pro/pull/6039#issuecomment-600891632
+      if (socket) {
+        socket.write(JSON.stringify({ type, data }));
+      }
     });
   }
 
