@@ -1,9 +1,7 @@
-{{#coreJs}}
-import '{{{ coreJs }}}';
-{{/coreJs}}
-{{^coreJs}}
 {{#imports}}
 import '{{{ . }}}';
 {{/imports}}
-{{/coreJs}}
+{{^imports}}
+import 'core-js'
+{{/imports}}
 import 'regenerator-runtime/runtime';

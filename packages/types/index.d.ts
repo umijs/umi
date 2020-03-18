@@ -271,7 +271,7 @@ export interface IConfig extends IConfigCore {
   mountElementId?: string;
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
-  polyfill?: 'es' | 'stable' | { imports: string[] };
+  polyfill?: { imports: string[] };
   postcssLoader?: object;
   presets?: IPresetOrPlugin[];
   proxy?: any;

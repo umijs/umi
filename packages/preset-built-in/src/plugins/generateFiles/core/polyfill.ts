@@ -7,16 +7,13 @@ export default (api: IApi) => {
     key: 'polyfill',
     config: {
       schema(joi) {
-        return joi.alternatives().try(
-          joi.string().valid('es', 'stable'),
-          joi.object().keys({
-            imports: joi
-              .array()
-              .items(joi.string())
-              .required()
-              .unique(),
-          }),
-        );
+        return joi.object().keys({
+          imports: joi
+            .array()
+            .items(joi.string())
+            .required()
+            .unique(),
+        });
       },
     },
     enableBy: () => {
@@ -27,18 +24,14 @@ export default (api: IApi) => {
   api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
   api.onGenerateFiles(() => {
-    const coreJs = api.config.polyfill;
+    const polyfills = api.config.polyfill;
 
     api.writeTmpFile({
       content: api.utils.Mustache.render(
         readFileSync(join(__dirname, 'polyfill.tpl'), 'utf-8'),
-        typeof coreJs === 'string'
-          ? {
-              coreJs: `core-js${coreJs ? `/${coreJs}` : ''}`,
-            }
-          : {
-              imports: coreJs && coreJs.imports ? coreJs.imports : [],
-            },
+        {
+          imports: polyfills && polyfills.imports ? polyfills.imports : [],
+        },
       ),
       path: 'core/polyfill.ts',
     });

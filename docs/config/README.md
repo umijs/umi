@@ -669,13 +669,19 @@ export default {
 
 ## polyfill
 
-* Type: `'es' | 'stable' | { imports: string[]}`
+* Type: `{ imports: string[]}`
 
 设置按需引入 polyfill，对应core-js的[引入范围](https://github.com/zloirock/core-js#commonjs-api)，默认全量引入。
 
+只引入稳定功能：
+
 ```
 export default {
-  polyfill: 'stable'
+  polyfill: {
+    imports: [
+      'core-js/stable',
+    ]
+  }
 }
 ```
 
