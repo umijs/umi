@@ -381,7 +381,7 @@ export default async function getConfig(
                 terserOptions,
                 config.terserOptions || {},
               ),
-              sourceMap: false,
+              sourceMap: config.devtool !== false,
               cache: true,
               parallel: true,
               extractComments: false,
