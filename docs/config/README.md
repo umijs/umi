@@ -406,7 +406,7 @@ export default {
 
 ## extraBabelPlugins
 
-* Type: `Array
+* Type: `Array`
 * Default: `[]`
 
 配置额外的 babel 插件。
