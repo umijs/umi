@@ -24,7 +24,7 @@ export default (api: IApi) => {
   api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
   api.onGenerateFiles(() => {
-    const polyfills = api.config.polyfill;
+    const polyfill = api.config.polyfill;
 
     api.writeTmpFile({
       content: api.utils.Mustache.render(
