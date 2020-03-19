@@ -30,7 +30,7 @@ export default (api: IApi) => {
       content: api.utils.Mustache.render(
         readFileSync(join(__dirname, 'polyfill.tpl'), 'utf-8'),
         {
-          imports: polyfills?.imports ? polyfills.imports : [],
+          imports: polyfill?.imports ? polyfill.imports : [],
         },
       ),
       path: 'core/polyfill.ts',
