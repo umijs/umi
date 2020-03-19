@@ -1,4 +1,4 @@
-import { createMemoryHistory, createHashHistory, createBrowserHistory } from '{{{ runtimePath }}}';
+import { {{{ creator }}} } from '{{{ runtimePath }}}';
 
 let options = {{{ options }}};
 if ((<any>window).routerBase) {
@@ -17,6 +17,6 @@ export const createHistory = (hotReload = false) => {
 // 通常仅微前端场景需要调用这个 API
 export const setCreateHistoryOptions = (newOpts: any = {}) => {
   options = { ...options, ...newOpts };
-}
+};
 
 export { history };
