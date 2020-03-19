@@ -406,7 +406,7 @@ export default {
 
 ## extraBabelPlugins
 
-* Type: `Array`
+* Type: `Array
 * Default: `[]`
 
 配置额外的 babel 插件。
@@ -669,7 +669,7 @@ export default {
 
 ## polyfill
 
-* Type: `{ imports: string[]}`
+* Type: `{ imports: string[] }`
 
 设置按需引入 polyfill，对应core-js的[引入范围](https://github.com/zloirock/core-js#commonjs-api)，默认全量引入。
 
