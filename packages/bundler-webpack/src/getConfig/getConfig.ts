@@ -183,7 +183,7 @@ export default async function getConfig(
       // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
       .exclude
         .add(/@babel(?:\/|\\{1,2})runtime/)
-        .add(/(react|react-dom|lodash|@ant-design\/icons)/)
+        .add(/(react|react-dom|lodash|echarts|bizcharts|@ant-design\/icons)/)
         .end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
