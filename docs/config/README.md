@@ -667,6 +667,41 @@ export default {
 
 配置项的名字通常是插件名去掉 `umi-plugin-` 或 `@umijs/plugin` 前缀。
 
+## polyfill
+
+* Type: `{ imports: string[] }`
+
+设置按需引入 polyfill，对应core-js的[引入范围](https://github.com/zloirock/core-js#commonjs-api)，默认全量引入。
+
+只引入稳定功能：
+
+```
+export default {
+  polyfill: {
+    imports: [
+      'core-js/stable',
+    ]
+  }
+}
+```
+
+或自行按需引入：
+
+```
+export default {
+  polyfill: {
+    imports: [
+      'core-js/features/promise/try',
+      'core-js/proposals/math-extensions'
+    ]
+  },
+}
+```
+
+注意：
+
+* 设置 `BABEL_POLYFILL=none` 环境变量后，该配置失效，且无 polyfill 引入。
+
 ## postcssLoader
 
 * Type: `object`
