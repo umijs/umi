@@ -10,19 +10,19 @@ Umi 约定 `/mock` 文件夹下所有文件为 mock 文件。
 
 ```bash
 .
+├── mock
+    ├── api.ts
+    └── users.ts
 └── src
-    ├── mock
-    │   ├── api.ts
-    │   └── users.ts
     └── pages
         └── index.tsx
 ```
 
-`src/mock` 下的 `api.ts` 和 `users.ts` 会被解析为 mock 文件。
+`/mock` 下的 `api.ts` 和 `users.ts` 会被解析为 mock 文件。
 
 ## 编写 Mock 文件
 
-如果 `src/mock/api.ts` 的内容如下，
+如果 `/mock/api.ts` 的内容如下，
 
 ```js
 export default {
