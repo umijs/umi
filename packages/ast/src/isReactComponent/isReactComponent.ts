@@ -5,8 +5,9 @@ export function isReactComponent(code: string) {
   const ast = parse(code);
   let hasJSXElement = false;
   traverse.default(ast as any, {
-    JSXElement() {
+    JSXElement(path) {
       hasJSXElement = true;
+      path.stop();
     },
   });
   return hasJSXElement;
