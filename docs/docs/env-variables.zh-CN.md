@@ -114,5 +114,12 @@ $ PROGRESS=none umi dev
 
 ### UMI_ENV
 
-指定不同环境各自的配置文件，详见[配置#多环境多份配置](TODO)。
+指定不同环境各自的配置文件，详见[配置#多环境多份配置](./config#多环境多份配置)。
 
+### WATCH
+
+设为 `none` 时不监听文件变更。比如：
+
+```bash
+$ WATCH=none umi dev
+```

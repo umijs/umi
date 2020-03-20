@@ -8,7 +8,17 @@ import Service, { IServiceOpts } from './Service/Service';
 import PluginAPI from './Service/PluginAPI';
 import UmiError from './Logger/UmiError';
 import Logger from './Logger/Logger';
+import { PluginType } from './Service/enums';
+import { isPluginOrPreset } from './Service/utils/pluginUtils';
 
-export { Config, Html, Route, Service, PluginAPI };
+export {
+  Config,
+  Html,
+  Route,
+  Service,
+  PluginAPI,
+  isPluginOrPreset,
+  PluginType,
+};
 export { IRoute, IConfig, IServiceOpts, IScriptConfig, IStyleConfig, IHTMLTag };
 export { Logger, UmiError };

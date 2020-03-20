@@ -1,10 +1,11 @@
-import { IApi, IConfig } from '@umijs/types';
+import { IApi } from '@umijs/types';
 import { IServerOpts, Server } from '@umijs/server';
 import { delay } from '@umijs/utils';
 import assert from 'assert';
 import { cleanTmpPathExceptCache, getBundleAndConfigs } from '../buildDevUtils';
 import createRouteMiddleware from './createRouteMiddleware';
 import generateFiles from '../generateFiles';
+import { watchPkg } from './watchPkg';
 
 export default (api: IApi) => {
   const {
@@ -53,18 +54,32 @@ export default (api: IApi) => {
       const unwatchGenerateFiles = await generateFiles({ api, watch });
       if (unwatchGenerateFiles) unwatchs.push(unwatchGenerateFiles);
 
-      // watch config change
       if (watch) {
+        // watch pkg changes
+        const unwatchPkg = watchPkg({
+          cwd: api.cwd,
+          onChange() {
+            console.log();
+            api.logger.info(`Plugins in package.json changed.`);
+            api.restartServer();
+          },
+        });
+        unwatchs.push(unwatchPkg);
+
+        // watch config change
         const unwatchConfig = api.service.configInstance.watch({
           userConfig: api.service.userConfig,
           onChange: async ({ pluginChanged, userConfig, valueChanged }) => {
             if (pluginChanged.length) {
+              console.log();
+              api.logger.info(`Plugins ${pluginChanged.join(', ')} changed.`);
               api.restartServer();
             }
             if (valueChanged.length) {
               let reload = false;
               let regenerateTmpFiles = false;
               const fns: Function[] = [];
+              const reloadConfigs: string[] = [];
               valueChanged.forEach(({ key, pluginId }) => {
                 const { onChange } = api.service.plugins[pluginId].config || {};
                 if (onChange === api.ConfigChangeType.regenerateTmpFiles) {
@@ -72,6 +87,7 @@ export default (api: IApi) => {
                 }
                 if (!onChange || onChange === api.ConfigChangeType.reload) {
                   reload = true;
+                  reloadConfigs.push(key);
                 }
                 if (typeof onChange === 'function') {
                   fns.push(onChange);
@@ -79,6 +95,8 @@ export default (api: IApi) => {
               });
 
               if (reload) {
+                console.log();
+                api.logger.info(`Config ${reloadConfigs.join(', ')} changed.`);
                 api.restartServer();
               } else {
                 api.service.userConfig = api.service.configInstance.getUserConfig();

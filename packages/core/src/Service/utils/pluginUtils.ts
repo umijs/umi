@@ -34,7 +34,7 @@ const RE = {
   [PluginType.preset]: /^(@umijs\/|umi-)preset-/,
 };
 
-function isPluginOrPreset(type: PluginType, name: string) {
+export function isPluginOrPreset(type: PluginType, name: string) {
   const hasScope = name.charAt(0) === '@';
   const re = RE[type];
   if (hasScope) {
