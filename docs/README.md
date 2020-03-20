@@ -51,7 +51,7 @@ Or [Getting Started with Boilerplate](/docs/getting-started).
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [Join us!](./docs/contributing)
+This project exists thanks to all the people who contribute. [Join us!](/docs/contributing)
 
 <a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=960&button=false" /></a>
 
