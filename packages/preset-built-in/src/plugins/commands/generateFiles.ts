@@ -21,7 +21,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
     const watcherPaths = await api.applyPlugins({
       key: 'addTmpGenerateWatcherPaths',
       type: api.ApplyPluginsType.add,
-      initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layout')],
+      initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layouts')],
     });
     watcherPaths.forEach(createWatcher);
     // process.on('SIGINT', () => {
