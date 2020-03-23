@@ -19,7 +19,10 @@ test('normal', () => {
 
 test('normal with dynamicImport', () => {
   const ret = routesToJSON({
-    routes: [{ path: '/', component: '@/pages/index.ts' }],
+    routes: [
+      { path: '/', component: '@/pages/index.ts' },
+      { path: '/users/:id', component: '@/pages/users/[id].ts' },
+    ],
     config: {
       dynamicImport: true,
     },
@@ -30,6 +33,10 @@ test('normal with dynamicImport', () => {
   {
     "path": "/",
     "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
+  },
+  {
+    "path": "/users/:id",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')})
   }
 ]
   `.trim(),
