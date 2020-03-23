@@ -4,7 +4,7 @@ import { chalk, lodash } from '@umijs/utils';
 export default (api: IApi) => {
   api.registerCommand({
     name: 'config',
-    description: 'inspect umi config',
+    description: 'umi config cli',
     details: `
 # List configs
 $ umi config list
@@ -19,7 +19,7 @@ $ umi config list --name history
           list();
           break;
         default:
-          throw new Error(`Unsupported sub command ${command} for umi plugin.`);
+          throw new Error(`Unsupported sub command ${command} for umi config.`);
       }
 
       function list() {
@@ -42,7 +42,6 @@ $ umi config list --name history
             throw new Error(`key ${args.name} not found`);
           }
           print(args.name as string);
-
         } else {
           // list all
           Object.keys(api.config).forEach(key => {
