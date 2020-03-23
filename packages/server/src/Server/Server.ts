@@ -71,7 +71,7 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   beforeMiddlewares: [],
   compilerMiddleware: null,
   compress: true,
-  https: false,
+  https: !!process.env.HTTPS,
   http2: false,
   onListening: (argv) => argv,
   onConnection: () => {},
