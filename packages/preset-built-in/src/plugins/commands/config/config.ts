@@ -30,8 +30,7 @@ $ umi config list --name history
           return chalk.yellow('The value data type does not support the view');
         }
         const print = (key: string) => {
-          console.log(` - ${chalk.blue(`[key: ${key}]`)}`);
-          console.log(getValue(api.config[key]));
+          console.log(` - ${chalk.blue(`[key: ${key}]`)}`, getValue(api.config[key]));
           console.log();
         }
         console.log();
