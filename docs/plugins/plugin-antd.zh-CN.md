@@ -21,6 +21,15 @@
 
 ### dark
 
+开启暗色主题。
+
+* Type: `boolean`
+* Default: `false`
+
+### compact
+
+开启紧凑主题。
+
 * Type: `boolean`
 * Default: `false`
 
@@ -30,11 +39,12 @@
 export default {
   antd: {
     dark: true,
+    compact: true,
   },
 }
 ```
 
-启用暗色主题，只有 antd 使用版本 4 时才支持。
+启用暗色主题，只有 antd 使用版本 4 时才支持。紧凑主题在 `antd@>4.1.0` 时支持。
 
 ## FAQ
 
