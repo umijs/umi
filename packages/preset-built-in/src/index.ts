@@ -69,6 +69,7 @@ export default function () {
       // commands
       require.resolve('./plugins/commands/build/build'),
       require.resolve('./plugins/commands/build/applyHtmlWebpackPlugin'),
+      require.resolve('./plugins/commands/config/config'),
       require.resolve('./plugins/commands/dev/dev'),
       require.resolve('./plugins/commands/dev/devCompileDone/devCompileDone'),
       require.resolve('./plugins/commands/dev/mock/mock'),
