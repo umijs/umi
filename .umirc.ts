@@ -129,7 +129,4 @@ export default {
   analytics: {
     ga: 'UA-149864185-1',
   },
-  chainWebpack(config) {
-    config.module.rule('plaintext').test(/\.(txt|text)$/);
-  },
 };
