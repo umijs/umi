@@ -122,7 +122,7 @@ export function cleanTmpPathExceptCache({
   absTmpPath: string;
 }) {
   if (!existsSync(absTmpPath)) return;
-  readdirSync(absTmpPath).forEach(file => {
+  readdirSync(absTmpPath).forEach((file) => {
     if (file === `.cache`) return;
     rimraf.sync(join(absTmpPath, file));
   });
@@ -163,7 +163,7 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
   const isCSS = (val: string) => /\.css$/.test(val);
 
   const orderedAssets = assets
-    ?.map(a => {
+    ?.map((a) => {
       a.name = a.name.split('?')[0];
       // These sizes are pretty large
       const isMainBundle = a.name.indexOf('umi.') === 0;
@@ -176,7 +176,7 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
         suggested: isLarge && isJS(a.name),
       };
     })
-    .filter(a => {
+    .filter((a) => {
       if (seenNames.has(a.name)) {
         return false;
       }
@@ -210,7 +210,7 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
     ) +
       `\n\n` +
       orderedAssets
-        ?.map(asset =>
+        ?.map((asset) =>
           makeRow(
             /js$/.test(asset.name)
               ? asset.suggested
@@ -231,7 +231,7 @@ export function printFileSizes(stats: webpack.Stats, dir: string) {
     )}\n`,
   );
 
-  if (orderedAssets?.some(asset => asset.suggested)) {
+  if (orderedAssets?.some((asset) => asset.suggested)) {
     // We'll warn for bundles exceeding them.
     // TODO: use umi docs
     console.log();

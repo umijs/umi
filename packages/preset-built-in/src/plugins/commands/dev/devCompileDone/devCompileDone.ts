@@ -22,7 +22,7 @@ export default (api: IApi) => {
                   stats,
                 },
               })
-              .catch(e => {});
+              .catch((e) => {});
           },
           onCompileFail() {},
         }),

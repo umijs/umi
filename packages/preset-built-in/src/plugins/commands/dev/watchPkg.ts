@@ -7,7 +7,7 @@ function getUmiPlugins(opts: { pkg: any }) {
   return Object.keys({
     ...opts.pkg.dependencies,
     ...opts.pkg.devDependencies,
-  }).filter(name => {
+  }).filter((name) => {
     return (
       isPluginOrPreset(PluginType.plugin, name) ||
       isPluginOrPreset(PluginType.preset, name)
@@ -49,7 +49,7 @@ export function watchPkgs(opts: { cwd: string; onChange: Function }) {
     unwatchs.push(watchPkg({ cwd: process.cwd(), onChange: opts.onChange }));
   }
   return () => {
-    unwatchs.forEach(unwatch => {
+    unwatchs.forEach((unwatch) => {
       unwatch();
     });
   };

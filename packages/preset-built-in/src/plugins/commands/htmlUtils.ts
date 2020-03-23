@@ -29,7 +29,7 @@ export function chunksToFiles(opts: {
     chunksMap = opts.chunks.reduce((memo, chunk) => {
       const key = chunk.name || chunk.id;
       if (key && chunk.files) {
-        chunk.files.forEach(file => {
+        chunk.files.forEach((file) => {
           if (!file.includes('.hot-update')) {
             memo[`${key}${extname(file)}`] = file;
           }
@@ -43,7 +43,7 @@ export function chunksToFiles(opts: {
   const jsFiles: string[] = [];
   const headJSFiles: string[] = [];
 
-  const htmlChunks = opts.htmlChunks.map(htmlChunk => {
+  const htmlChunks = opts.htmlChunks.map((htmlChunk) => {
     return lodash.isPlainObject(htmlChunk) ? htmlChunk : { name: htmlChunk };
   });
   (htmlChunks as IHtmlChunk[]).forEach(({ name, headScript }: IHtmlChunk) => {
@@ -99,9 +99,9 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       let publicPathStr = JSON.stringify(api.config.publicPath);
 
       if (api.config.exportStatic?.dynamicRoot) {
-        routerBaseStr = `location.pathname.split('/').slice(0, -${args.route.path!.split(
-          '/',
-        ).length - 1}).concat('').join('/')`;
+        routerBaseStr = `location.pathname.split('/').slice(0, -${
+          args.route.path!.split('/').length - 1
+        }).concat('').join('/')`;
         publicPathStr = `location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + window.routerBase`;
       }
 
@@ -177,7 +177,7 @@ export function getHtmlGenerator({ api }: { api: IApi }): any {
       const routes = await api.getRoutes();
       const flatRoutes = getFlatRoutes({ routes });
 
-      return flatRoutes.map(route => {
+      return flatRoutes.map((route) => {
         // @ts-ignore
         const file = this.getHtmlPath(route.path);
         return {

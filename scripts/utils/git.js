@@ -27,7 +27,7 @@ exports.latestTagOrFirstCommit = async () => {
   return latest;
 };
 
-exports.commitLogFromRevision = async revision => {
+exports.commitLogFromRevision = async (revision) => {
   const { stdout } = await execa('git', [
     'log',
     '--format=%s %h',

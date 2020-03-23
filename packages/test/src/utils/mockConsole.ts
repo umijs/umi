@@ -57,14 +57,14 @@ function mockConsole(
   const messages = Array.isArray(messageStore) ? messageStore : [];
   const callback = Array.isArray(messageStore) ? null : messageStore;
 
-  const resets = consoleFunctionName.map(name => {
+  const resets = consoleFunctionName.map((name) => {
     return self[name]((...args: any[]) => {
       messages.push([name, ...args]);
       if (callback) callback(name, ...args);
     });
   });
 
-  const reset = () => resets.forEach(fn => fn());
+  const reset = () => resets.forEach((fn) => fn());
   reset.messages = messages;
   return reset;
 }

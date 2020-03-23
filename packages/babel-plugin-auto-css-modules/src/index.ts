@@ -8,7 +8,7 @@ export interface IOpts {
 
 const CSS_EXTNAMES = ['.css', '.less', '.sass', '.scss', '.stylus', '.styl'];
 
-export default function() {
+export default function () {
   return {
     visitor: {
       ImportDeclaration(

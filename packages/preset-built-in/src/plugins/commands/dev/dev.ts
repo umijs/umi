@@ -35,7 +35,7 @@ export default (api: IApi) => {
   api.registerCommand({
     name: 'dev',
     description: 'start a dev server for development',
-    fn: async function({ args }) {
+    fn: async function ({ args }) {
       const defaultPort =
         process.env.PORT || args?.port || api.config.devServer?.port;
       port = await portfinder.getPortPromise({
@@ -119,7 +119,7 @@ export default (api: IApi) => {
                 if (regenerateTmpFiles) {
                   await generateFiles({ api });
                 } else {
-                  fns.forEach(fn => fn());
+                  fns.forEach((fn) => fn());
                 }
               }
             }

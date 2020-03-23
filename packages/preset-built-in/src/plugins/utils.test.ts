@@ -6,7 +6,7 @@ import { getGlobalFile } from './utils';
 test('getGlobalFile', () => {
   const existsSyncMock = jest
     .spyOn(fs, 'existsSync')
-    .mockImplementation(res => true);
+    .mockImplementation((res) => true);
   const files = getGlobalFile({
     files: ['global.ts', 'global.tsx', 'global.js'],
     absSrcPath: winPath(__dirname),

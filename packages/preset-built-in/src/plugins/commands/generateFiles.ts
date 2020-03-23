@@ -42,7 +42,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
   }
 
   function unwatch() {
-    watchers.forEach(watcher => {
+    watchers.forEach((watcher) => {
       watcher.close();
     });
   }

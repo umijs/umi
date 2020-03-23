@@ -4,13 +4,13 @@ import { IApi, IConfig } from '@umijs/types';
 import { Route } from '@umijs/core';
 import { winPath } from '@umijs/utils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   const {
     cwd,
     utils: { Mustache },
   } = api;
 
-  api.onGenerateFiles(async args => {
+  api.onGenerateFiles(async (args) => {
     const routesTpl = readFileSync(join(__dirname, 'routes.tpl'), 'utf-8');
     const routes = await api.getRoutes();
     api.writeTmpFile({

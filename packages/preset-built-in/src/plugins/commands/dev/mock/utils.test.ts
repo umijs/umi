@@ -6,7 +6,7 @@ import { getMockData } from './utils';
 describe('umi-mock:getMockData', () => {
   const fixtures = winPath(`${__dirname}/fixtures`);
   function stripPrefix(files: string[]) {
-    return files.map(file => file.replace(`${fixtures}/`, ''));
+    return files.map((file) => file.replace(`${fixtures}/`, ''));
   }
 
   describe('getMockData', () => {
@@ -206,7 +206,10 @@ describe('umi-mock:getMockData', () => {
         paths: service.paths,
       });
 
-      expect(mockData[0].keys.map(key => key.name)).toEqual(['users', 'posts']);
+      expect(mockData[0].keys.map((key) => key.name)).toEqual([
+        'users',
+        'posts',
+      ]);
     });
   });
 });

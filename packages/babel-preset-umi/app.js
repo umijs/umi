@@ -1,4 +1,4 @@
-module.exports = function(context, opts) {
+module.exports = function (context, opts) {
   const { nodeEnv } = opts;
   delete opts['nodeEnv'];
 

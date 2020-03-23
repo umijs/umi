@@ -9,10 +9,10 @@ test('normal', () => {
 test('function', () => {
   expect(
     isEqual(
-      function() {
+      function () {
         alert(1);
       },
-      function() {
+      function () {
         alert(1);
       },
     ),
@@ -22,10 +22,10 @@ test('function', () => {
 test('function with reference', () => {
   expect(
     isEqual(
-      function() {
+      function () {
         alert(1);
       },
-      function() {
+      function () {
         alert(1);
       },
     ),
@@ -36,13 +36,13 @@ test('function in object', () => {
   expect(
     isEqual(
       {
-        foo: function() {
+        foo: function () {
           alert(1);
         },
         bar: 2,
       },
       {
-        foo: function() {
+        foo: function () {
           alert(1);
         },
         bar: 2,

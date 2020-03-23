@@ -17,7 +17,7 @@ const RE_DYNAMIC_ROUTE = /^\[(.+?)\]$/;
 
 function getFiles(root: string) {
   if (!existsSync(root)) return [];
-  return readdirSync(root).filter(file => {
+  return readdirSync(root).filter((file) => {
     const absFile = join(root, file);
     const fileStat = statSync(absFile);
     const isDirectory = fileStat.isDirectory();
@@ -106,7 +106,7 @@ function normalizeRoute(route: IRoute, opts: IOpts) {
 function normalizePath(path: string, opts: IOpts) {
   path = winPath(path)
     .split('/')
-    .map(p => {
+    .map((p) => {
       // dynamic route
       p = p.replace(RE_DYNAMIC_ROUTE, ':$1');
       return p;
@@ -137,7 +137,7 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
   const exactRoutes: IRoute[] = [];
   const layoutRoutes: IRoute[] = [];
 
-  routes.forEach(route => {
+  routes.forEach((route) => {
     const { __isDynamic, exact } = route;
     delete route.__isDynamic;
     if (__isDynamic) {

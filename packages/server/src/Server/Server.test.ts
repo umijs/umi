@@ -14,12 +14,12 @@ function initSocket({
   url: string;
   onMessage?: any;
 }): Promise<WebSocket> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const sock = new SockJS(url);
     sock.onopen = () => {
       resolve(sock);
     };
-    sock.onerror = e => {
+    sock.onerror = (e) => {
       console.log('sock error', e);
     };
     sock.onmessage = onMessage || (() => {});
@@ -244,7 +244,7 @@ describe('proxy', () => {
 
     const socket = sockjs.createServer({ prefix: '/socket' });
     socket.on('connection', (conn: Connection) => {
-      conn.on('data', message => {
+      conn.on('data', (message) => {
         conn.write(message);
       });
       conn.on('close', () => {});

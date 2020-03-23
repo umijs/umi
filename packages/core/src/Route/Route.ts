@@ -111,7 +111,7 @@ class Route {
 
     // resolve wrappers path
     if (route.wrappers) {
-      route.wrappers = route.wrappers.map(wrapper => {
+      route.wrappers = route.wrappers.map((wrapper) => {
         if (wrapper.startsWith('@/') || wrapper.startsWith('/')) {
           return wrapper;
         } else {

@@ -6,7 +6,7 @@ import { IServicePaths } from './types';
 const fixtures = join(__dirname, 'fixtures');
 
 function stripCwd(paths: IServicePaths, cwd: string) {
-  return lodash.mapValues(paths, value => {
+  return lodash.mapValues(paths, (value) => {
     return value.startsWith('@') ? value : winPath(relative(cwd, value));
   });
 }

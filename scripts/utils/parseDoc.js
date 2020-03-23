@@ -1,4 +1,4 @@
-module.exports = function(docStr) {
+module.exports = function (docStr) {
   docStr = docStr.trim();
   const hasYamlConfig = docStr.startsWith('---');
   const docArr = docStr.split('\n');

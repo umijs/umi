@@ -1,7 +1,7 @@
 import { IApi } from '@umijs/types';
 import { getScripts } from './utils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   api.describe({
     key: 'scripts',
     config: {

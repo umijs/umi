@@ -13,7 +13,7 @@ export default (api: IApi) => {
     },
   });
 
-  api.modifyConfig(memo => {
+  api.modifyConfig((memo) => {
     if (memo.exportStatic?.dynamicRoot) {
       memo.runtimePublicPath = true;
     }

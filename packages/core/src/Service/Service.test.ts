@@ -6,7 +6,7 @@ import { ApplyPluginsType } from './enums';
 const fixtures = join(__dirname, 'fixtures');
 
 const simplyPluginIds = ({ cwd, plugins }: { cwd: string; plugins: any }) =>
-  Object.keys(plugins).map(id => {
+  Object.keys(plugins).map((id) => {
     const type = plugins[id].isPreset ? 'preset' : 'plugin';
     return `[${type}] ${id.replace(winPath(cwd), '.')}`;
   });
@@ -25,7 +25,7 @@ test('normal', async () => {
     ],
   });
   expect(service.pkg.name).toEqual('foo');
-  expect(service.initialPresets.map(p => p.key)).toEqual([
+  expect(service.initialPresets.map((p) => p.key)).toEqual([
     'index',
     'index',
     '2',
@@ -34,7 +34,7 @@ test('normal', async () => {
     '1',
     '1',
   ]);
-  expect(service.initialPlugins.map(p => p.key)).toEqual([
+  expect(service.initialPlugins.map((p) => p.key)).toEqual([
     'plugin1',
     'plugin2',
     '2',

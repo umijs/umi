@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const fixtures = join(__dirname, '../../../fixtures');
 
-xtest('dev', done => {
+xtest('dev', (done) => {
   const cwd = join(fixtures, 'dev');
   process.env.WATCH = 'none';
 

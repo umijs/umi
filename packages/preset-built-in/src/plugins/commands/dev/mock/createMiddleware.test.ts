@@ -12,7 +12,7 @@ describe('createMiddleware', () => {
   const cwd = winPath(join(__dirname, 'fixtures/createMiddleware'));
 
   const delay = async (time: number) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, time || 20);
     });
   };

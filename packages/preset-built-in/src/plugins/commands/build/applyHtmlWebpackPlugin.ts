@@ -1,7 +1,7 @@
 import { IApi, webpack } from '@umijs/types';
 import { getHtmlGenerator } from '../htmlUtils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   class HtmlWebpackPlugin {
     apply(compiler: webpack.Compiler) {
       compiler.hooks.emit.tapPromise(

@@ -8,7 +8,7 @@ import DevCompileDonePlugin from './DevCompileDonePlugin';
 
 const fixtures = join(__dirname, 'fixtures');
 
-readdirSync(fixtures).forEach(fixture => {
+readdirSync(fixtures).forEach((fixture) => {
   const cwd = join(fixtures, fixture);
   if (fixture.startsWith('.')) return;
   if (statSync(cwd).isFile()) return;
@@ -60,7 +60,7 @@ readdirSync(fixtures).forEach(fixture => {
     require(join(cwd, 'expect.ts')).default({
       indexJS: readFileSync(join(cwd, 'dist/index.js'), 'utf-8'),
       indexCSS,
-      files: readdirSync(join(cwd, 'dist')).filter(f => f.charAt(0) !== '.'),
+      files: readdirSync(join(cwd, 'dist')).filter((f) => f.charAt(0) !== '.'),
       cwd,
     });
   });
@@ -113,7 +113,7 @@ test.skip('dev', async () => {
     port,
     hostname: '127.0.0.1',
   });
-  process.on('message', message => {
+  process.on('message', (message) => {
     console.log('message', message);
   });
 });

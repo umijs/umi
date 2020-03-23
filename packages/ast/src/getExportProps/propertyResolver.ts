@@ -80,9 +80,9 @@ export const RESOLVABLE_WHITELIST = [
 
 function findObjectProperties(node: t.ObjectExpression) {
   const target = {};
-  node.properties.forEach(p => {
+  node.properties.forEach((p) => {
     if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
-      const resolver = RESOLVABLE_WHITELIST.find(resolver =>
+      const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
         resolver.is(p.value),
       );
       if (resolver) {
@@ -95,8 +95,8 @@ function findObjectProperties(node: t.ObjectExpression) {
 
 function findArrayProperties(node: t.ArrayExpression) {
   const target: any[] = [];
-  node.elements.forEach(p => {
-    const resolver = RESOLVABLE_WHITELIST.find(resolver => resolver.is(p));
+  node.elements.forEach((p) => {
+    const resolver = RESOLVABLE_WHITELIST.find((resolver) => resolver.is(p));
     if (resolver) {
       target.push(resolver.get(p as any));
     }

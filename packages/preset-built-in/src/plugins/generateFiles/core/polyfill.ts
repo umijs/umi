@@ -8,11 +8,7 @@ export default (api: IApi) => {
     config: {
       schema(joi) {
         return joi.object().keys({
-          imports: joi
-            .array()
-            .items(joi.string())
-            .required()
-            .unique(),
+          imports: joi.array().items(joi.string()).required().unique(),
         });
       },
     },
@@ -37,7 +33,7 @@ export default (api: IApi) => {
     });
   });
 
-  api.chainWebpack(memo => {
+  api.chainWebpack((memo) => {
     memo.resolve.alias.set(
       'regenerator-runtime',
       dirname(require.resolve('regenerator-runtime/package')),

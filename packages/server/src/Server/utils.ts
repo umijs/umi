@@ -28,9 +28,9 @@ export const getCredentials = (opts: IServerOpts): IHttps => {
       key: fs.readFileSync(serverOptions?.key as string, 'utf-8'),
       cert: fs.readFileSync(serverOptions?.cert as string, 'utf-8'),
     },
-    draft => {
+    (draft) => {
       if (typeof serverOptions === 'object' && serverOptions.ca) {
-        const newServerOptions = immer(serverOptions, optDraft => {
+        const newServerOptions = immer(serverOptions, (optDraft) => {
           // @ts-ignore
           optDraft.ca = !Array.isArray(optDraft.ca)
             ? [optDraft.ca]
@@ -39,7 +39,7 @@ export const getCredentials = (opts: IServerOpts): IHttps => {
 
         if (Array.isArray(newServerOptions.ca)) {
           // @ts-ignore
-          draft.ca = newServerOptions.ca.map(function(ca) {
+          draft.ca = newServerOptions.ca.map(function (ca) {
             return fs.readFileSync(ca, 'utf-8');
           });
         }

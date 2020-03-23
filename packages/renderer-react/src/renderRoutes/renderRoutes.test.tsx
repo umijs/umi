@@ -9,7 +9,7 @@ function TestInitialProps({ foo }: { foo: string }) {
 }
 
 TestInitialProps.getInitialProps = async () => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         foo: 'bar',
@@ -34,7 +34,7 @@ function TestInitialPropsParent({
 }
 
 TestInitialPropsParent.getInitialProps = async () => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         foo: 'parent',
@@ -47,7 +47,7 @@ const routes = renderRoutes({
   routes: [
     {
       path: '/layout',
-      component: props => (
+      component: (props) => (
         <>
           <h1 data-testid="layout">Layout</h1>
           {props.children}
@@ -68,7 +68,7 @@ const routes = renderRoutes({
     },
     {
       path: '/users/:id',
-      component: props => {
+      component: (props) => {
         return <h1 data-testid="test">{(props as any).match.params.id}</h1>;
       },
     },
@@ -104,7 +104,7 @@ const routes = renderRoutes({
     {
       path: '/props-route',
       foo: 'bar',
-      component: props => (
+      component: (props) => (
         <h1 data-testid="test">{`${(props as any).route.path} ${
           (props as any).route.foo
         }`}</h1>
@@ -113,7 +113,7 @@ const routes = renderRoutes({
     {
       path: '/pass-props',
       component: (props: any) => {
-        return React.Children.map(props.children, child => {
+        return React.Children.map(props.children, (child) => {
           return React.cloneElement(child, { foo: 'bar' });
         });
       },

@@ -45,7 +45,7 @@ export default (api: IApi) => {
 
   // 另一种实现方式:
   // 提供 projectFirstLibraries 的配置方式，但是不通用，先放插件层实现
-  api.chainWebpack(async memo => {
+  api.chainWebpack(async (memo) => {
     const libraries: {
       name: string;
       path: string;
@@ -63,7 +63,7 @@ export default (api: IApi) => {
         },
       ],
     });
-    libraries.forEach(library => {
+    libraries.forEach((library) => {
       memo.resolve.alias.set(
         library.name,
         getUserLibDir({ library: library.name }) || library.path,

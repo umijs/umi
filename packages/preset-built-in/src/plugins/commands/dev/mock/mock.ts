@@ -3,7 +3,7 @@ import { parseRequireDeps } from '@umijs/utils';
 import createMiddleware from './createMiddleware';
 import { getMockData, IGetMockDataResult } from './utils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   const { cwd, userConfig } = api;
 
   api.describe({
@@ -28,7 +28,7 @@ export default function(api: IApi) {
       memo = memo.concat(parseRequireDeps(file));
       return memo;
     }, []);
-    requireDeps.forEach(f => {
+    requireDeps.forEach((f) => {
       if (require.cache[f]) {
         delete require.cache[f];
       }

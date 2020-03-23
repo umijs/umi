@@ -49,7 +49,7 @@ function findAssignmentExpressionProps(opts: {
       t.isIdentifier(node.left.object) &&
       node.left.object.name === opts.name
     ) {
-      const resolver = RESOLVABLE_WHITELIST.find(resolver =>
+      const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
         resolver.is(t.isAssignmentExpression(node) && node.right),
       );
       if (resolver) {

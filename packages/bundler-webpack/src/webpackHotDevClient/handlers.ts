@@ -5,7 +5,7 @@ import formatWebpackMessages from './formatWebpackMessages';
 
 let hadRuntimeError = false;
 ErrorOverlay.startReportingRuntimeErrors({
-  onError: function() {
+  onError: function () {
     hadRuntimeError = true;
   },
 });
@@ -105,10 +105,10 @@ function tryApplyUpdates(onHotUpdateSuccess?: Function) {
 
   // @ts-ignore
   module.hot.check(true).then(
-    function(updatedModules: any) {
+    function (updatedModules: any) {
       handleApplyUpdates(null, updatedModules);
     },
-    function(err: Error) {
+    function (err: Error) {
       handleApplyUpdates(err, null);
     },
   );

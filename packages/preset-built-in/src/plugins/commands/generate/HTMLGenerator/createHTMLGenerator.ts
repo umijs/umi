@@ -5,7 +5,7 @@ import { writeFileSync } from 'fs';
 import { getHtmlGenerator } from '../../htmlUtils';
 import { mkdirp } from '@umijs/utils';
 
-export default function({ api }: { api: IApi }) {
+export default function ({ api }: { api: IApi }) {
   return class PageGenerator extends Generator {
     constructor(opts: any) {
       super(opts);

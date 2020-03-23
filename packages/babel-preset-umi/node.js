@@ -1,4 +1,4 @@
-module.exports = function(api, opts) {
+module.exports = function (api, opts) {
   return {
     presets: [
       [

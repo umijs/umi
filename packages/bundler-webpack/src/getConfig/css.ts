@@ -120,7 +120,7 @@ export function createCSSRule({
   }
 }
 
-export default function({
+export default function ({
   config,
   webpackConfig,
   isDev,

@@ -13,7 +13,7 @@ export default (api: IApi) => {
   debug('globalJSFile', globalJSFile);
 
   api.addEntryImportsAhead(() =>
-    globalJSFile.map(file => ({
+    globalJSFile.map((file) => ({
       source: relative(absTmpPath, file),
     })),
   );
