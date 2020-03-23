@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/cheerio": "0.22.16",
     "@types/express": "4.17.3",
-    "@types/webpack": "4.41.4",
+    "@types/webpack": "4.41.8",
     "@types/webpack-bundle-analyzer": "2.13.3",
     "@umijs/babel-preset-umi": "3.0.12",
     "@umijs/core": "3.0.12",
