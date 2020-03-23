@@ -36,7 +36,7 @@
     "jest": "^25.1.0",
     "jest-cli": "^25.1.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
-    "regenerator-runtime": "^0.13.3",
+    "regenerator-runtime": "^0.13.5",
     "whatwg-fetch": "^3.0.0"
   },
   "bin": {
