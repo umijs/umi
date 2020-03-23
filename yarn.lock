@@ -3080,7 +3080,7 @@
   resolved "https://registry.yarnpkg.com/@types/hapi__joi/-/hapi__joi-16.0.6.tgz#aa8f7dff93fdd3db6506ca2433a8302d8819fad1"
   integrity sha512-rpU8FNMGxhYIF6bUlxZYO4drNjqUWCGrf4UINABAJzdcrPs4bP+Bz5VXzp8rOPZsNynnaDXbiU/MyjOGlfeczg==
 
-"@types/history@*", "@types/history@4.7.5":
+"@types/history@*":
   version "4.7.5"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.5.tgz#527d20ef68571a4af02ed74350164e7a67544860"
   integrity sha512-wLD/Aq2VggCJXSjxEwrMafIP51Z+13H78nXIX0ABEuIGhmB5sNGbR113MOKo+yfw+RDo1ZU3DM6yfnnRF/+ouw==
@@ -8179,10 +8179,10 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-history-with-query@4.10.2:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/history-with-query/-/history-with-query-4.10.2.tgz#f767129488a3f20e70504ccfadf5d5ab431da4da"
-  integrity sha512-Qj+1QXlBxLDI1jkM4Cx8TAxjwCwugi17Qf9OITSOZe0HCzq7JTt8QddQw1okRrmLGSO34ZY87c6gJIqTbDbJNQ==
+history-with-query@4.10.3:
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/history-with-query/-/history-with-query-4.10.3.tgz#9430a6f59a223796a68a436c0c4c7590233805a6"
+  integrity sha512-oHE8+0GT5eyo0ijNXYdcHJ7+7as3vywo+RcLuv/hgxeQWtcPSNDkex+qpyjLhP5SOp3ltZAp4HL3ZYN6KWg1pw==
   dependencies:
     "@babel/runtime" "^7.1.2"
     loose-envify "^1.2.0"
@@ -8192,7 +8192,7 @@ history-with-query@4.10.2:
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
 
-history@4.10.1, history@^4.9.0:
+history@^4.9.0:
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/history/-/history-4.10.1.tgz#33371a65e3a83b267434e2b3f3b1b4c58aad4cf3"
   integrity sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==
