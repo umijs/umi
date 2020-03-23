@@ -313,10 +313,7 @@ class Server {
     data?: string | object;
   }) {
     sockets.forEach(socket => {
-      // https://github.com/ant-design/ant-design-pro/pull/6039#issuecomment-600891632
-      if (socket) {
-        socket.write(JSON.stringify({ type, data }));
-      }
+      socket.write(JSON.stringify({ type, data }));
     });
   }
 
@@ -376,6 +373,13 @@ class Server {
       prefix: '/dev-server',
     });
     server.on('connection', connection => {
+      // Windows connection might be undefined
+      // https://github.com/webpack/webpack-dev-server/issues/2199
+      // https://github.com/sockjs/sockjs-node/issues/121
+      // https://github.com/meteor/meteor/pull/10891/files
+      if (!connection) {
+        return;
+      }
       this.opts.onConnection({
         connection,
         server: this,
