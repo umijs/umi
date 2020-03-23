@@ -33,7 +33,7 @@
     "compression": "1.7.4",
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.3",
-    "immer": "5.3.6",
+    "immer": "6.0.2",
     "portfinder": "1.0.25",
     "sockjs": "0.3.20",
     "spdy": "4.0.1"
