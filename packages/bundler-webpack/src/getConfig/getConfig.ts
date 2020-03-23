@@ -238,7 +238,7 @@ export default async function getConfig(
   // prettier-ignore
   webpackConfig.module
     .rule('plaintext')
-    .test(/\.(txt|text)$/)
+    .test(/\.(txt|text|md)$/)
     .use('raw-loader')
       .loader(require.resolve('raw-loader'));
 
