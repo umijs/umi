@@ -35,6 +35,7 @@ $ mkdir myapp && cd myapp
 
 ```bash
 $ yarn create @umijs/umi-app
+# 或 npx @umijs/create-umi-app
 
 Copy:  .editorconfig
 Write: .gitignore
