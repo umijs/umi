@@ -77,7 +77,11 @@ class Route {
     }
 
     // route.path 的修改需要在子路由 patch 之前做
-    if (route.path && route.path.charAt(0) !== '/') {
+    if (
+      route.path &&
+      route.path.charAt(0) !== '/' &&
+      !/^https?:\/\//.test(route.path)
+    ) {
       route.path = winPath(join(opts.parentRoute?.path || '/', route.path));
     }
     if (route.redirect && route.redirect.charAt(0) !== '/') {

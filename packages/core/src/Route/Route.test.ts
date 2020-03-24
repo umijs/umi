@@ -83,6 +83,8 @@ test('config routes with relative path', async () => {
         routes: [
           { path: '/foo', routes: [{ path: 'bar', redirect: 'hoo' }] },
           { path: 'bar', redirect: 'hoo' },
+          { path: 'http://a.com/b', redirect: 'hoo' },
+          { path: 'https://a.com/b', redirect: 'hoo' },
         ],
       },
       root: '/tmp',
@@ -93,6 +95,8 @@ test('config routes with relative path', async () => {
       routes: [{ path: '/foo/bar', redirect: '/foo/hoo', exact: true }],
     },
     { path: '/bar', exact: true, redirect: '/hoo' },
+    { path: 'http://a.com/b', exact: true, redirect: '/hoo' },
+    { path: 'https://a.com/b', exact: true, redirect: '/hoo' },
   ]);
 });
 
