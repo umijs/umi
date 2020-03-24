@@ -66,7 +66,7 @@ export interface ITargets {
 }
 
 type IPresetOrPlugin = string | [string, any];
-type IBabelPlugin = string | [string, any, string?];
+type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
 export interface IApi extends PluginAPI {
@@ -226,8 +226,8 @@ export interface IConfig extends IConfigCore {
     dynamicRoot?: boolean;
   };
   externals?: any;
-  extraBabelPlugins?: IBabelPlugin[];
-  extraBabelPresets?: IPresetOrPlugin[];
+  extraBabelPlugins?: IBabelPresetOrPlugin[];
+  extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
   forkTSCheker?: object;
