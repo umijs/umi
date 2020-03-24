@@ -12,7 +12,6 @@ import {
   createDebug,
 } from '@umijs/utils';
 import assert from 'assert';
-import joi from '@hapi/joi';
 import Service from '../Service/Service';
 import { ServiceStage } from '../Service/enums';
 import {
@@ -93,21 +92,6 @@ export default class Config {
       const value = getUserConfigWithKey({ key, userConfig });
       // 不校验 false 的值，此时已禁用插件
       if (value === false) return;
-
-      // do validate
-      const schema = config.schema(joi);
-      assert(
-        joi.isSchema(schema),
-        `schema return from plugin ${pluginId} is not valid schema.`,
-      );
-      const { error } = schema.validate(value);
-      if (error) {
-        const e = new Error(
-          `Validate config "${key}" failed, ${error.message}`,
-        );
-        e.stack = error.stack;
-        throw e;
-      }
 
       // remove key
       const index = userConfigKeys.indexOf(key.split('.')[0]);

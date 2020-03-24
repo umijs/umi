@@ -4,6 +4,7 @@ import assert from 'assert';
 import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
+import joi from '@hapi/joi';
 import Logger from '../Logger/Logger';
 import { pathToObj, resolvePlugins, resolvePresets } from './utils/pluginUtils';
 import loadDotEnv from './utils/loadDotEnv';
@@ -227,12 +228,43 @@ export default class Service extends EventEmitter {
       type: this.ApplyPluginsType.modify,
       initialValue: await this.configInstance.getDefaultConfig(),
     });
+
     this.config = await this.applyPlugins({
       key: 'modifyConfig',
       type: this.ApplyPluginsType.modify,
       initialValue: this.configInstance.getConfig({
         defaultConfig,
       }) as any,
+    });
+
+    // get config
+    const pluginIds = Object.keys(this.plugins);
+    pluginIds.forEach((pluginId) => {
+      const { key, config = {} } = this.plugins[pluginId];
+      // recognize as key if have schema config
+      if (!config.schema) return;
+
+      const value = getUserConfigWithKey({
+        key,
+        userConfig: this.config as object,
+      });
+      // 不校验 false 的值，此时已禁用插件
+      if (value === false) return;
+
+      // do validate
+      const schema = config.schema(joi);
+      assert(
+        joi.isSchema(schema),
+        `schema return from plugin ${pluginId} is not valid schema.`,
+      );
+      const { error } = schema.validate(value);
+      if (error) {
+        const e = new Error(
+          `Validate config "${key}" failed, ${error.message},Please check your configuration or plug-in.`,
+        );
+        e.stack = error.stack;
+        throw e;
+      }
     });
 
     // merge paths to keep the this.paths ref
