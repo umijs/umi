@@ -44,7 +44,7 @@
     "marked-terminal": "4.0.0",
     "os-locale": "5.0.0",
     "pkg-up": "3.1.0",
-    "prettier": "2.0.1",
+    "prettier": "2.0.2",
     "set-value": "3.0.1",
     "tapable": "1.1.3"
   }
