@@ -92,6 +92,12 @@ export const layout = {
 
 `initialState` 从 `@umijs/plugin-initial-state` 插件中获取，需要搭配一起使用。
 
+#### childrenRender
+
+* Type: `(children) => React.ReactNode`
+
+用于对内容区做自定义的包裹处理，将 children 作为参数传给此函数。
+
 #### onError
 
 * Type: `(error: Error, info: any) => void;`
