@@ -1,13 +1,13 @@
 {
   "name": "umi",
-  "version": "2.13.7",
+  "version": "2.13.8",
   "description": "Pluggable enterprise-level react application framework.",
   "dependencies": {
     "@babel/core": "7.4.5",
     "@babel/runtime": "7.4.5",
     "@types/react": "^16.9.1",
     "@types/react-router-dom": "~5.1.2",
-    "babel-preset-umi": "1.8.3",
+    "babel-preset-umi": "1.8.4",
     "debug": "4.1.1",
     "dotenv": "8.0.0",
     "is-windows": "1.0.2",
@@ -16,9 +16,9 @@
     "resolve-cwd": "3.0.0",
     "semver": "6.1.1",
     "signale": "1.4.0",
-    "umi-build-dev": "1.18.0",
-    "umi-core": "1.9.8",
-    "umi-ui": "1.5.0",
+    "umi-build-dev": "1.18.1",
+    "umi-core": "1.9.9",
+    "umi-ui": "1.5.1",
     "umi-utils": "1.7.2",
     "update-notifier": "3.0.0",
     "yargs-parser": "13.1.1"
