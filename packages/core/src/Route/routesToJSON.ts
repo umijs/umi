@@ -83,6 +83,25 @@ export default function ({ routes, config, cwd }: IOpts) {
     }
   }
 
+  function sortRoute(routes: IRoute[]) {
+    routes.sort((a, b) => {
+      if (!a.path || b.path === '/') {
+        return 1;
+      }
+      if (!b.path || a.path === '/') {
+        return -1;
+      }
+      return b.path.localeCompare(a.path);
+    });
+    routes.forEach((route: IRoute) => {
+      if (route.routes) {
+        sortRoute(route.routes);
+      }
+    });
+  }
+
+  sortRoute(clonedRoutes);
+
   return JSON.stringify(clonedRoutes, replacer, 2)
     .replace(/\"component\": (\"(.+?)\")/g, (global, m1, m2) => {
       return `"component": ${m2.replace(/\^/g, '"')}`;

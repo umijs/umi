@@ -20,8 +20,10 @@ test('normal', () => {
 test('normal with dynamicImport', () => {
   const ret = routesToJSON({
     routes: [
-      { path: '/', component: '@/pages/index.ts' },
       { path: '/users/:id', component: '@/pages/users/[id].ts' },
+      { path: '/users/add', component: '@/pages/users/add.ts' },
+      { component: '@/pages/users/abc.ts' },
+      { path: '/', component: '@/pages/index.ts' },
     ],
     config: {
       dynamicImport: true,
@@ -35,8 +37,15 @@ test('normal with dynamicImport', () => {
     "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__index' */'@/pages/index.ts')})
   },
   {
+    "path": "/users/add",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__add' */'@/pages/users/add.ts')})
+  },
+  {
     "path": "/users/:id",
     "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__id' */'@/pages/users/[id].ts')})
+  },
+  {
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__users__abc' */'@/pages/users/abc.ts')})
   }
 ]
   `.trim(),
