@@ -1,0 +1,1493 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`body-jsx-fragment 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`body-jsx-fragment 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`body-jsxelement 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`body-jsxelement 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`export-class 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\\"Cannot call a class as a function\\"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\\"value\\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === \\"object\\" || typeof call === \\"function\\")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \\"function\\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \\"function\\" && superClass !== null) { throw new TypeError(\\"Super expression must either be null or a function\\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var _default = /*#__PURE__*/function (_React$Component) {
+  _inherits(_default, _React$Component);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: \\"render\\",
+    value: function render() {
+      return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+        filename: \\"/tmp/origin.js\\",
+        index: \\"0\\"
+      }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+        filename: \\"/tmp/origin.js\\",
+        index: \\"1\\"
+      }));
+    }
+  }]);
+
+  return _default;
+}(_react.default.Component);
+
+exports.default = _default;"
+`;
+
+exports[`export-class 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\\"Cannot call a class as a function\\"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\\"value\\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === \\"object\\" || typeof call === \\"function\\")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \\"function\\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \\"function\\" && superClass !== null) { throw new TypeError(\\"Super expression must either be null or a function\\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var _default = /*#__PURE__*/function (_React$Component) {
+  _inherits(_default, _React$Component);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: \\"render\\",
+    value: function render() {
+      return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+        filename: \\"/tmp/origin.js\\",
+        index: \\"0\\"
+      }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+        filename: \\"/tmp/origin.js\\",
+        index: \\"1\\"
+      }));
+    }
+  }]);
+
+  return _default;
+}(_react.default.Component);
+
+exports.default = _default;"
+`;
+
+exports[`export-class-without-render 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\\"Cannot call a class as a function\\"); } }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === \\"object\\" || typeof call === \\"function\\")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \\"function\\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \\"function\\" && superClass !== null) { throw new TypeError(\\"Super expression must either be null or a function\\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var _default = /*#__PURE__*/function (_React$Component) {
+  _inherits(_default, _React$Component);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  return _default;
+}(_react.default.Component);
+
+exports.default = _default;"
+`;
+
+exports[`export-class-without-render 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\\"Cannot call a class as a function\\"); } }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === \\"object\\" || typeof call === \\"function\\")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === \\"undefined\\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \\"function\\") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \\"function\\" && superClass !== null) { throw new TypeError(\\"Super expression must either be null or a function\\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var _default = /*#__PURE__*/function (_React$Component) {
+  _inherits(_default, _React$Component);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  return _default;
+}(_react.default.Component);
+
+exports.default = _default;"
+`;
+
+exports[`export-function 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+}"
+`;
+
+exports[`export-function 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+}"
+`;
+
+exports[`export-identifier-function 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+}
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`export-identifier-function 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+}
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`export-identifier-variable 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`export-identifier-variable 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`export-identifier-variable-functionexpression 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`export-identifier-variable-functionexpression 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+var _default = App;
+exports.default = _default;"
+`;
+
+exports[`ibp-component-flag 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _umi = require(\\"umi\\");
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-0\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-1\\"
+  }), \\"foo\\"), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-2\\"
+  }), \\"bar\\"), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-3\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-4\\",
+    inline: \\"true\\"
+  }), \\"Hello\\", /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-5\\",
+    inline: \\"true\\"
+  })));
+}"
+`;
+
+exports[`ibp-component-flag 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _umi = require(\\"umi\\");
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-0\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-1\\"
+  }), \\"foo\\"), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-2\\"
+  }), \\"bar\\"), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-3\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-4\\",
+    inline: \\"true\\"
+  }), \\"Hello\\", /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-5\\",
+    inline: \\"true\\"
+  })));
+}"
+`;
+
+exports[`ibp-normal 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, /*#__PURE__*/_react.default.createElement(\\"div\\", null, _react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-0\\",
+    inline: \\"true\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, _react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-1\\",
+    inline: \\"true\\"
+  }, \\"foo\\")), /*#__PURE__*/_react.default.createElement(\\"div\\", null, _react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-2\\",
+    inline: \\"true\\"
+  }, \\"bar\\")), /*#__PURE__*/_react.default.createElement(\\"div\\", null, _react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-3\\",
+    inline: \\"true\\"
+  })));
+}"
+`;
+
+exports[`ibp-normal 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = _default;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-0\\",
+    inline: \\"true\\"
+  })), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-1\\",
+    inline: \\"true\\"
+  }, \\"foo\\")), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-2\\",
+    inline: \\"true\\"
+  }, \\"bar\\")), /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"l-3\\",
+    inline: \\"true\\"
+  })));
+}"
+`;
+
+exports[`reactElement 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return React.createElement('div', null, React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), React.createElement('h1', null, 'foo'), React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`reactElement 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return React.createElement('div', null, React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), React.createElement('h1', null, 'foo'), React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`reactElement-return-one-element 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return React.createElement(React.Fragment, null, React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), React.createElement('div', null), React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`reactElement-return-one-element 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = function _default() {
+  return React.createElement(React.Fragment, null, React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), React.createElement('div', null), React.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = connect()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+});
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = connect()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+});
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc-identifier-hoc 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = Form.create()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+});
+
+var _default = connect()(App);
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc-identifier-hoc 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = Form.create()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+});
+
+var _default = connect()(App);
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc-in-hoc 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = Form.create()(connect()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+}));
+
+exports.default = _default;"
+`;
+
+exports[`return-hoc-in-hoc 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = Form.create()(connect()(function () {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+}));
+
+exports.default = _default;"
+`;
+
+exports[`return-jsxelement 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`return-jsxelement 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"foo\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`return-one-element 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(App, null), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`return-one-element 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(App, null), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactDocumentTitle = _interopRequireDefault(require(\\"react-document-title\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactDocumentTitle.default, null);
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactDocumentTitle = _interopRequireDefault(require(\\"react-document-title\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactDocumentTitle.default, null);
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-antd-card 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Card, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-antd-card 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Card, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-antd-step 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-antd-step 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _antd = require(\\"antd\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_antd.Step, null, \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-not-import 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DocumentTitle = /*#__PURE__*/_react.default.createElement(\\"div\\", null);
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(DocumentTitle, null), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-not-import 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DocumentTitle = /*#__PURE__*/_react.default.createElement(\\"div\\", null);
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(DocumentTitle, null), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-tech-ui-PageContainer 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _techUi = require(\\"@alipay/tech-ui\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_techUi.PageContainer, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-tech-ui-PageContainer 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _techUi = require(\\"@alipay/tech-ui\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_techUi.PageContainer, null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.js\\",
+    index: \\"0\\"
+  }), \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-tech-ui-StepForm 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _techUi = require(\\"@alipay/tech-ui\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_techUi.StepForm, null, \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-blacklist-tech-ui-StepForm 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _techUi = require(\\"@alipay/tech-ui\\");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_techUi.StepForm, null, \\"hi\\");
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-only-one-child 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactMedia.default, {
+    query: \\"(max-width: 599px)\\"
+  }, function (isMobile) {
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, isMobile ? 'mobile' : 'pc');
+  });
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-only-one-child 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactMedia.default, {
+    query: \\"(max-width: 599px)\\"
+  }, function (isMobile) {
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, isMobile ? 'mobile' : 'pc');
+  });
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-only-one-child-typescript 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BasicLayout = function BasicLayout(props) {
+  return _react.default.createElement(_reactMedia.default, {
+    query: '(max-width: 599px)'
+  }, function (isMobile) {
+    return _react.default.createElement('div', null, props.children);
+  });
+};
+
+var _default = BasicLayout;
+exports.default = _default;"
+`;
+
+exports[`root-only-one-child-typescript 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BasicLayout = function BasicLayout(props) {
+  return _react.default.createElement(_reactMedia.default, {
+    query: '(max-width: 599px)'
+  }, function (isMobile) {
+    return _react.default.createElement('div', null, props.children);
+  });
+};
+
+var _default = BasicLayout;
+exports.default = _default;"
+`;
+
+exports[`root-only-one-multiply 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactMedia.default, {
+    query: \\"(max-width: 599px)\\"
+  }, function (isMobile) {
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", _extends({}, props, {
+      isMobile: isMobile
+    }), /*#__PURE__*/_react.default.createElement(\\"div\\", null, \\"hello\\"));
+  });
+};
+
+exports.default = _default;"
+`;
+
+exports[`root-only-one-multiply 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+var _reactMedia = _interopRequireDefault(require(\\"react-media\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(_reactMedia.default, {
+    query: \\"(max-width: 599px)\\"
+  }, function (isMobile) {
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", _extends({}, props, {
+      isMobile: isMobile
+    }), /*#__PURE__*/_react.default.createElement(\\"div\\", null, \\"hello\\"));
+  });
+};
+
+exports.default = _default;"
+`;
+
+exports[`typescript 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"HAHAHA\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;
+
+exports[`typescript 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = function _default() {
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"0\\"
+  }), /*#__PURE__*/_react.default.createElement(\\"h1\\", null, \\"HAHAHA\\"), /*#__PURE__*/_react.default.createElement(GUmiUIFlag, {
+    filename: \\"/tmp/origin.tsx\\",
+    index: \\"1\\"
+  }));
+};
+
+exports.default = _default;"
+`;

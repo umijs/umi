@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [8.x, 10.x, 12.x]
+        node_version: [10.x, 12.x]
         os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v1
@@ -15,11 +15,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
-    - run: npm install
-    - run: npm run bootstrap
-    - run: npm run build
-    - run: npm run ui:build
-    - run: npm run test -- --forceExit
+    - run: yarn --ignore-engines
+    - run: yarn bootstrap
+    - run: yarn build
+    - run: yarn ui:build
+    - run: yarn test --forceExit
       env:
         CI: true
         HEADLESS: false
