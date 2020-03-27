@@ -132,6 +132,23 @@ function normalizePath(path: string, opts: IOpts) {
   return path;
 }
 
+function sortRoute(routes: IRoute[]) {
+  routes.sort((a, b) => {
+    if (!a.path || b.path === '/') {
+      return 1;
+    }
+    if (!b.path || a.path === '/') {
+      return -1;
+    }
+    return b.path.localeCompare(a.path);
+  });
+  routes.forEach((route: IRoute) => {
+    if (route.routes) {
+      sortRoute(route.routes);
+    }
+  });
+}
+
 function normalizeRoutes(routes: IRoute[]): IRoute[] {
   const paramsRoutes: IRoute[] = [];
   const exactRoutes: IRoute[] = [];
@@ -161,6 +178,7 @@ function normalizeRoutes(routes: IRoute[]): IRoute[] {
       } else {
         memo.push(route);
       }
+      sortRoute(memo);
       return memo;
     },
     [] as IRoute[],

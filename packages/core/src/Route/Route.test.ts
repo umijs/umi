@@ -159,6 +159,11 @@ test('conventional normal', async () => {
           path: '/users',
           routes: [
             {
+              path: '/users/add',
+              exact: true,
+              component: '@/pages/users/add.tsx',
+            },
+            {
               path: '/users/:userId',
               exact: true,
               component: '@/pages/users/[userId].tsx',
