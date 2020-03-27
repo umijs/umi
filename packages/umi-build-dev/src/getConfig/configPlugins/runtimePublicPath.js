@@ -5,8 +5,8 @@ export default function(api) {
     name: 'runtimePublicPath',
     validate(val) {
       assert(
-        typeof val === 'boolean',
-        `Configure item runtimePublicPath should be Boolean, but got ${val}.`,
+        typeof val === 'boolean' || typeof val === 'string',
+        `Configure item runtimePublicPath should be Boolean or String, but got ${val}.`,
       );
     },
     onChange() {
