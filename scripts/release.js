@@ -4,7 +4,7 @@ const { writeFileSync } = require('fs');
 const newGithubReleaseUrl = require('new-github-release-url');
 const open = require('open');
 const exec = require('./utils/exec');
-const syncTNPM = require('./syncTNPM');
+const tnpmSync = require('tnpm-sync');
 const getPackages = require('./utils/getPackages');
 const isNextVersion = require('./utils/isNextVersion');
 const { getChangelog } = require('./utils/changelog');
@@ -127,26 +127,29 @@ async function release() {
   logStep(`publish packages: ${chalk.blue(pkgs.join(', '))}`);
   const currVersion = require('../lerna').version;
   const isNext = isNextVersion(currVersion);
-  pkgs
+  const publishPkgs = pkgs
     .sort((a) => {
       return a === 'umi' ? 1 : -1;
     })
-    .forEach((pkg, index) => {
+    .map(pkg => {
       const pkgPath = join(cwd, 'packages', pkg);
-      const { name, version } = require(join(pkgPath, 'package.json'));
-      if (version === currVersion) {
-        console.log(
-          `[${index + 1}/${pkgs.length}] Publish package ${name} ${
-            isNext ? 'with next tag' : ''
-          }`,
-        );
-        const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
-        const { stdout } = execa.sync('npm', cliArgs, {
-          cwd: pkgPath,
-        });
-        console.log(stdout);
-      }
+      return require(join(pkgPath, 'package.json'))
     });
+  publishPkgs.forEach((package, index) => {
+    const { name, version } = package;
+    if (version === currVersion) {
+      console.log(
+        `[${index + 1}/${pkgs.length}] Publish package ${name} ${
+          isNext ? 'with next tag' : ''
+        }`,
+      );
+      const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+      const { stdout } = execa.sync('npm', cliArgs, {
+        cwd: pkgPath,
+      });
+      console.log(stdout);
+    }
+  });
 
   logStep('create github release');
   const tag = `v${currVersion}`;
@@ -161,7 +164,7 @@ async function release() {
   await open(url);
 
   logStep('sync packages to tnpm');
-  syncTNPM(pkgs);
+  tnpmSync(publishPkgs.map(pkg => pkg.name));
 
   logStep('done');
 }
