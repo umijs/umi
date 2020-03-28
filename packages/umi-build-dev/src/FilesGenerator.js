@@ -144,7 +144,7 @@ export default class FilesGenerator {
   // Both support SSR and CSR
   if (window.g_useSSR) {
     // 如果开启服务端渲染则客户端组件初始化 props 使用服务端注入的数据
-    props = window.g_initialData;
+    props = window.g_initialData[location.pathname];
   } else {
     const pathname = location.pathname;
     const activeRoute = findRoute(require('@@/router').routes, pathname);
@@ -231,7 +231,7 @@ export default class FilesGenerator {
           ],
           scripts: [
             {
-              content: `window.g_initialData = \${stringify(props)};`.trim(),
+              content: `window.g_initialData = { "\${location.pathname}": \${stringify(props)} };`.trim(),
             },
           ],
         });
