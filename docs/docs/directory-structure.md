@@ -22,7 +22,7 @@ A fundamental structure as below:
 
 ### package.json
 
-All dependencies start with `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-`、`umi-plugin-` wwill be registered as plugin/plugin-preset.
+All dependencies start with `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-`、`umi-plugin-` will be registered as plugin/plugin-preset.
 
 ### .umirc.ts
 
