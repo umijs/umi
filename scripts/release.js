@@ -133,22 +133,29 @@ async function release() {
     })
     .map(pkg => {
       const pkgPath = join(cwd, 'packages', pkg);
-      return require(join(pkgPath, 'package.json'))
+      return {
+        package: require(join(pkgPath, 'package.json')),
+        pkgPath,
+      }
+    })
+    .filter(pkg => {
+      const { package } = pkg;
+      const { version } = package;
+      return version === currVersion;
     });
-  publishPkgs.forEach((package, index) => {
-    const { name, version } = package;
-    if (version === currVersion) {
-      console.log(
-        `[${index + 1}/${pkgs.length}] Publish package ${name} ${
-          isNext ? 'with next tag' : ''
-        }`,
-      );
-      const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
-      const { stdout } = execa.sync('npm', cliArgs, {
-        cwd: pkgPath,
-      });
-      console.log(stdout);
-    }
+  publishPkgs.forEach((pkg, index) => {
+    const { package, pkgPath } = pkg;
+    const { name } = package;
+    console.log(
+      `[${index + 1}/${pkgs.length}] Publish package ${name} ${
+        isNext ? 'with next tag' : ''
+      }`,
+    );
+    const cliArgs = isNext ? ['publish', '--tag', 'next'] : ['publish'];
+    const { stdout } = execa.sync('npm', cliArgs, {
+      cwd: pkgPath,
+    });
+    console.log(stdout);
   });
 
   logStep('create github release');
