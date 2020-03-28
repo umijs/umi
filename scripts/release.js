@@ -171,7 +171,9 @@ async function release() {
   await open(url);
 
   logStep('sync packages to tnpm');
-  tnpmSync(publishPkgs.map(pkg => pkg.name));
+  tnpmSync({
+    packages: publishPkgs.map(pkg => pkg.name),
+  });
 
   logStep('done');
 }
