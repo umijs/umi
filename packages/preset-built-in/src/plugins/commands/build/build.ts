@@ -11,7 +11,7 @@ import generateFiles from '../generateFiles';
 
 const logger = new Logger('umi:preset-build-in');
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   const {
     paths,
     utils: { rimraf, chalk },
@@ -20,7 +20,7 @@ export default function(api: IApi) {
   api.registerCommand({
     name: 'build',
     description: 'build application for production',
-    fn: async function() {
+    fn: async function () {
       cleanTmpPathExceptCache({
         absTmpPath: paths.absTmpPath!,
       });

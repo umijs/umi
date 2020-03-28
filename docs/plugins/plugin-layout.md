@@ -88,6 +88,12 @@ In the UI used to configure the default layout at runtime, click to log out of t
 
 `initialState` is obtained from the `@umijs/plugin-initial-state` plugin and needs to be used together.
 
+#### childrenRender
+
+* Type: `(children) => React.ReactNode`
+
+用于对内容区做自定义的包裹处理，将 children 作为参数传给此函数。
+
 #### onError
 
 * Type: `(error: Error, info: any) => void;`

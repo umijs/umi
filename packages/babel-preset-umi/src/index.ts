@@ -126,7 +126,7 @@ export default (context: any, opts: IOpts = {}) => {
         },
       ],
       ...(opts.import
-        ? opts.import.map(importOpts => {
+        ? opts.import.map((importOpts) => {
             return [
               require.resolve('babel-plugin-import'),
               importOpts,

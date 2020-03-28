@@ -79,13 +79,13 @@ export default class Config {
     const userConfig = this.getUserConfig();
     // 用于提示用户哪些 key 是未定义的
     // TODO: 考虑不排除 false 的 key
-    const userConfigKeys = Object.keys(userConfig).filter(key => {
+    const userConfigKeys = Object.keys(userConfig).filter((key) => {
       return userConfig[key] !== false;
     });
 
     // get config
     const pluginIds = Object.keys(this.service.plugins);
-    pluginIds.forEach(pluginId => {
+    pluginIds.forEach((pluginId) => {
       const { key, config = {} } = this.service.plugins[pluginId];
       // recognize as key if have schema config
       if (!config.schema) return;
@@ -158,8 +158,8 @@ export default class Config {
         this.localConfig && this.addAffix(configFile, 'local'),
       ]
         .filter((f): f is string => !!f)
-        .map(f => join(this.cwd, f))
-        .filter(f => existsSync(f));
+        .map((f) => join(this.cwd, f))
+        .filter((f) => existsSync(f));
 
       // clear require cache and set babel register
       const requireDeps = files.reduce((memo: string[], file) => {
@@ -185,7 +185,7 @@ export default class Config {
   }
 
   requireConfigs(configFiles: string[]) {
-    return configFiles.map(f => compatESModuleRequire(require(f)));
+    return configFiles.map((f) => compatESModuleRequire(require(f)));
   }
 
   mergeConfig(...configs: object[]) {
@@ -199,14 +199,14 @@ export default class Config {
 
   getConfigFile(): string | null {
     // TODO: support custom config file
-    const configFile = CONFIG_FILES.find(f => existsSync(join(this.cwd, f)));
+    const configFile = CONFIG_FILES.find((f) => existsSync(join(this.cwd, f)));
     return configFile ? winPath(configFile) : null;
   }
 
   getWatchFilesAndDirectories() {
     const umiEnv = process.env.UMI_ENV;
     const configFiles = lodash.clone(CONFIG_FILES);
-    CONFIG_FILES.forEach(f => {
+    CONFIG_FILES.forEach((f) => {
       if (this.localConfig) configFiles.push(this.addAffix(f, 'local'));
       if (umiEnv) configFiles.push(this.addAffix(f, umiEnv));
     });
@@ -223,7 +223,7 @@ export default class Config {
         }
         return memo;
       }, [])
-      .filter(f => !f.startsWith(configDir));
+      .filter((f) => !f.startsWith(configDir));
 
     return [configDir].concat(files);
   }
@@ -254,7 +254,7 @@ export default class Config {
       const newUserConfig = this.getUserConfig();
       const pluginChanged: IChanged[] = [];
       const valueChanged: IChanged[] = [];
-      Object.keys(this.service.plugins).forEach(pluginId => {
+      Object.keys(this.service.plugins).forEach((pluginId) => {
         const { key, config = {} } = this.service.plugins[pluginId];
         // recognize as key if have schema config
         if (!config.schema) return;

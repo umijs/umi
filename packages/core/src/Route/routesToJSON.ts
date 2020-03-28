@@ -13,7 +13,7 @@ const EMPTY_PATH = '_';
 // TODO:
 // 1. support dynamic import (and levels)
 // 2. require().default -> import in production? (for tree-shaking)
-export default function({ routes, config, cwd }: IOpts) {
+export default function ({ routes, config, cwd }: IOpts) {
   // 因为要往 routes 里加无用的信息，所以必须 deep clone 一下，避免污染
   const clonedRoutes = lodash.cloneDeep(routes);
 
@@ -34,6 +34,9 @@ export default function({ routes, config, cwd }: IOpts) {
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
         .replace(/^src__/, '')
+        // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
+        // ref: https://github.com/umijs/umi/issues/4155
+        .replace(/[\[\]]/g, '')
         // 插件层的文件也可能是路由组件，比如 plugin-layout 插件
         .replace(/^.umi-production__/, 't__')
         .replace(/^pages__/, 'p__')

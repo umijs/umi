@@ -9,7 +9,7 @@ const getPackages = require('./utils/getPackages');
 
   const pkgs = getPackages();
 
-  pkgs.forEach(shortName => {
+  pkgs.forEach((shortName) => {
     const name = shortName === 'umi' ? shortName : `@umijs/${shortName}`;
 
     const pkgJSONPath = join(
@@ -54,7 +54,7 @@ const getPackages = require('./utils/getPackages');
           'sideEffects',
           'main',
           'module',
-        ].forEach(key => {
+        ].forEach((key) => {
           if (pkg[key]) json[key] = pkg[key];
         });
       }

@@ -41,7 +41,7 @@ const initSocket = () => {
     pending?.parentElement?.removeChild(pending);
   };
 
-  sock.onmessage = e => {
+  sock.onmessage = (e) => {
     const message = JSON.parse(e.data);
     switch (message.type) {
       case 'hash':
@@ -61,7 +61,7 @@ const initSocket = () => {
         break;
     }
   };
-  sock.onclose = e => {
+  sock.onclose = (e) => {
     if (retries === 0) {
       if (typeof console?.info === 'function') {
         console.info(

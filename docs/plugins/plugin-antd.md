@@ -22,6 +22,15 @@ Contains the following features,
 
 ### dark
 
+Turn on the dark theme.
+
+* Type: `boolean`
+* Default: `false`
+
+### compact
+
+Open compact theme.
+
 * Type: `boolean`
 * Default: `false`
 
@@ -31,11 +40,12 @@ such as:
 export default {
   antd: {
     dark: true,
+    compact: true,
   },
 }
 ```
 
-Enable dark theme, only supported by antd with version 4.
+Enable dark theme, only supported if antd is at version 4. Compact theme is supported in `antd@>4.1.0`.
 
 ## FAQ
 

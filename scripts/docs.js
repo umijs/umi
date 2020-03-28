@@ -44,7 +44,7 @@ function syncDocs() {
     cwd: join(__dirname, '../docs'),
   });
   const pulledFiles = lodash.pullAll(files, DOC_SYNC_BLACKLIST);
-  pulledFiles.forEach(path => {
+  pulledFiles.forEach((path) => {
     syncDoc({ path });
   });
 }

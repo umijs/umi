@@ -26,7 +26,7 @@ $ umi plugin list --key
         console.log();
         console.log(`  Plugins:`);
         console.log();
-        Object.keys(api.service.plugins).forEach(pluginId => {
+        Object.keys(api.service.plugins).forEach((pluginId) => {
           const plugin = api.service.plugins[pluginId];
           const keyStr = args.key
             ? ` ${chalk.blue(`[key: ${[plugin.key]}]`)}`

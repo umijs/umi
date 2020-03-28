@@ -105,9 +105,9 @@ export default class Logger extends Common {
       )} Completed in ${this.formatTiming(time - timeEnd)}`;
       console.log(msg);
     } else {
-      msg = `${chalk.black.bgCyan('PROFILE')} ${chalk.cyan(
-        `┌ ${namespace}`,
-      )} ${message || ''}`;
+      msg = `${chalk.black.bgCyan('PROFILE')} ${chalk.cyan(`┌ ${namespace}`)} ${
+        message || ''
+      }`;
       console.log(msg);
     }
 

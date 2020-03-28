@@ -1,7 +1,7 @@
-import { join, dirname } from 'path';
+import { join } from 'path';
 import { EventEmitter } from 'events';
 import assert from 'assert';
-import { BabelRegister, NodeEnv, lodash } from '@umijs/utils';
+import { BabelRegister, lodash, NodeEnv } from '@umijs/utils';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { existsSync } from 'fs';
 import Logger from '../Logger/Logger';
@@ -10,10 +10,10 @@ import loadDotEnv from './utils/loadDotEnv';
 import PluginAPI from './PluginAPI';
 import {
   ApplyPluginsType,
+  ConfigChangeType,
   EnableBy,
   PluginType,
   ServiceStage,
-  ConfigChangeType,
 } from './enums';
 import { ICommand, IHook, IPackage, IPlugin, IPreset } from './types';
 import Config from '../Config/Config';
@@ -178,6 +178,7 @@ export default class Service extends EventEmitter {
   }
 
   async init() {
+    this.setStage(ServiceStage.init);
     // we should have the final hooksByPluginId which is added with api.register()
     this.initPresetsAndPlugins();
 
@@ -201,9 +202,9 @@ export default class Service extends EventEmitter {
     // hooksByPluginId -> hooks
     // hooks is mapped with hook key, prepared for applyPlugins()
     this.setStage(ServiceStage.initHooks);
-    Object.keys(this.hooksByPluginId).forEach(id => {
+    Object.keys(this.hooksByPluginId).forEach((id) => {
       const hooks = this.hooksByPluginId[id];
-      hooks.forEach(hook => {
+      hooks.forEach((hook) => {
         const { key } = hook;
         hook.pluginId = id;
         this.hooks[key] = (this.hooks[key] || []).concat(hook);
@@ -245,7 +246,7 @@ export default class Service extends EventEmitter {
       type: ApplyPluginsType.modify,
       initialValue: this.paths,
     })) as object;
-    Object.keys(paths).forEach(key => {
+    Object.keys(paths).forEach((key) => {
       this.paths[key] = paths[key];
     });
   }
@@ -274,7 +275,7 @@ export default class Service extends EventEmitter {
       'onStart',
       'modifyDefaultConfig',
       'modifyConfig',
-    ].forEach(name => {
+    ].forEach((name) => {
       pluginAPI.registerMethod({ name, exitsError: false });
     });
 
@@ -420,14 +421,14 @@ ${name} from ${plugin.path} register failed.`);
   }
 
   hasPlugins(pluginIds: string[]) {
-    return pluginIds.every(pluginId => {
+    return pluginIds.every((pluginId) => {
       const plugin = this.plugins[pluginId];
       return plugin && !plugin.isPreset && this.isPluginEnable(pluginId);
     });
   }
 
   hasPresets(presetIds: string[]) {
-    return presetIds.every(presetId => {
+    return presetIds.every((presetId) => {
       const preset = this.plugins[presetId];
       return preset && preset.isPreset && this.isPluginEnable(presetId);
     });
@@ -515,26 +516,37 @@ ${name} from ${plugin.path} register failed.`);
   async run({ name, args = {} }: { name: string; args?: any }) {
     args._ = args._ || [];
     // shift the command itself
-    args._.shift();
+    if (args._[0] === name) args._.shift();
 
     this.args = args;
-    this.setStage(ServiceStage.init);
     await this.init();
 
     logger.debug('plugins:');
     logger.debug(this.plugins);
 
-    this.stage = ServiceStage.run;
+    this.setStage(ServiceStage.run);
+    await this.applyPlugins({
+      key: 'onStart',
+      type: ApplyPluginsType.event,
+      args: {
+        args,
+      },
+    });
+    return this.runCommand({ name, args });
+  }
+
+  async runCommand({ name, args = {} }: { name: string; args?: any }) {
+    assert(this.stage >= ServiceStage.init, `service is not initialized.`);
+
+    args._ = args._ || [];
+    // shift the command itself
+    if (args._[0] === name) args._.shift();
+
     const command =
       typeof this.commands[name] === 'string'
         ? this.commands[this.commands[name] as string]
         : this.commands[name];
     assert(command, `run command failed, command ${name} does not exists.`);
-
-    await this.applyPlugins({
-      key: 'onStart',
-      type: ApplyPluginsType.event,
-    });
 
     const { fn } = command as ICommand;
     return fn({ args });

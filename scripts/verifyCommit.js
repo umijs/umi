@@ -2,9 +2,7 @@
 
 const { chalk } = require('@umijs/utils');
 const msgPath = process.env.GIT_PARAMS;
-const msg = require('fs')
-  .readFileSync(msgPath, 'utf-8')
-  .trim();
+const msg = require('fs').readFileSync(msgPath, 'utf-8').trim();
 
 const commitRE = /^(revert: )?(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip|release|dep)(\(.+\))?: .{1,50}/;
 

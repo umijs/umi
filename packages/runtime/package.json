@@ -1,6 +1,6 @@
 {
   "name": "@umijs/runtime",
-  "version": "3.0.10",
+  "version": "3.0.14",
   "description": "@umijs/runtime",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,13 +25,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@types/history": "4.7.5",
     "@types/react-router": "5.1.4",
     "@types/react-router-dom": "5.1.3",
-    "history": "4.10.1",
+    "history-with-query": "4.10.3",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
-    "use-subscription": "1.4.0"
+    "use-subscription": "1.4.1"
   },
   "peerDependencies": {
     "react": "16.x"

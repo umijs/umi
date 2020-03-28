@@ -17,6 +17,6 @@
   ],
   "github": {
     "enabled": false
-},
+  },
   "alias": ["umijs.org"]
 }

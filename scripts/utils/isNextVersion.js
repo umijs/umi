@@ -1,4 +1,4 @@
-module.exports = function(version) {
+module.exports = function (version) {
   return (
     version.includes('-rc.') ||
     version.includes('-beta.') ||

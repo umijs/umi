@@ -60,9 +60,9 @@ export const getMockData: (opts: IGetMockPaths) => IGetMockDataResult = ({
     '.umirc.mock.js',
     '.umirc.mock.ts',
   ]
-    .map(path => join(cwd, path))
-    .filter(path => path && existsSync(path))
-    .map(path => winPath(path));
+    .map((path) => join(cwd, path))
+    .filter((path) => path && existsSync(path))
+    .map((path) => winPath(path));
 
   debug(`load mock data including files ${JSON.stringify(mockPaths)}`);
 
@@ -73,8 +73,8 @@ export const getMockData: (opts: IGetMockPaths) => IGetMockDataResult = ({
   const mockData = normalizeConfig(getMockConfig(mockPaths));
 
   const mockWatcherPaths = [...(mockPaths || []), join(cwd, 'mock')]
-    .filter(path => path && existsSync(path))
-    .map(path => winPath(path));
+    .filter((path) => path && existsSync(path))
+    .map((path) => winPath(path));
 
   return {
     mockData,
@@ -99,9 +99,9 @@ export const getMockConfig = (files: string[]): object => {
 };
 
 export const cleanRequireCache = (paths: string[]): void => {
-  Object.keys(require.cache).forEach(file => {
+  Object.keys(require.cache).forEach((file) => {
     if (
-      paths.some(path => {
+      paths.some((path) => {
         return winPath(file).indexOf(path) > -1;
       })
     ) {
@@ -129,7 +129,7 @@ function parseKey(key: string) {
 }
 
 function createHandler(method: any, path: any, handler: any): RequestHandler {
-  return function(req, res, next) {
+  return function (req, res, next) {
     if (BODY_PARSED_METHODS.includes(method)) {
       bodyParser.json({ limit: '5mb', strict: false })(req, res, () => {
         bodyParser.urlencoded({ limit: '5mb', extended: true })(

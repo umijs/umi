@@ -213,7 +213,7 @@ test('config.manifest + production', async () => {
     type: ConfigType.csr,
   });
   expect(
-    config.plugins?.filter(plugin => {
+    config.plugins?.filter((plugin) => {
       return plugin instanceof require('webpack-manifest-plugin');
     }).length,
   ).toEqual(1);
@@ -228,7 +228,7 @@ test('env SPEED_MEASURE', async () => {
     type: ConfigType.csr,
   });
   expect(
-    config.plugins?.filter(plugin => {
+    config.plugins?.filter((plugin) => {
       return plugin instanceof require('speed-measure-webpack-plugin');
     }).length,
   ).toEqual(1);
@@ -244,7 +244,7 @@ test('env SPEED_MEASURE = !CONSOLE', async () => {
     env: 'development',
     type: ConfigType.csr,
   });
-  const p = config.plugins?.filter(plugin => {
+  const p = config.plugins?.filter((plugin) => {
     return plugin instanceof require('speed-measure-webpack-plugin');
   })[0];
   // @ts-ignore

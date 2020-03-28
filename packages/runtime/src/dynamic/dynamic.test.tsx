@@ -3,7 +3,7 @@ import { getByText, render, wait } from '@testing-library/react';
 import dynamic from './dynamic';
 
 const delay = (timeout: number) =>
-  new Promise(resolve => setTimeout(resolve, timeout));
+  new Promise((resolve) => setTimeout(resolve, timeout));
 
 test('dynamic', async () => {
   const App = dynamic({

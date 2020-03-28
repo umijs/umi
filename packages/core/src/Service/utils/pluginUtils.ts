@@ -34,7 +34,7 @@ const RE = {
   [PluginType.preset]: /^(@umijs\/|umi-)preset-/,
 };
 
-function isPluginOrPreset(type: PluginType, name: string) {
+export function isPluginOrPreset(type: PluginType, name: string) {
   const hasScope = name.charAt(0) === '@';
   const re = RE[type];
   if (hasScope) {
@@ -60,7 +60,7 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
     ...((opts[
       type === PluginType.preset ? 'userConfigPresets' : 'userConfigPlugins'
     ] as any) || []),
-  ].map(path => {
+  ].map((path) => {
     return resolve.sync(path, {
       basedir: opts.cwd,
       extensions: ['.js', '.ts'],
@@ -74,7 +74,7 @@ function getPluginsOrPresets(type: PluginType, opts: IOpts): string[] {
 function nameToKey(name: string) {
   return name
     .split('.')
-    .map(part => camelcase(part))
+    .map((part) => camelcase(part))
     .join('.');
 }
 

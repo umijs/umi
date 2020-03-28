@@ -11,19 +11,19 @@ such as:
 
 ```bash
 .
+├── mock
+    ├── api.ts
+    └── users.ts
 └── src
-    ├── mock
-    │   ├── api.ts
-    │   └── users.ts
     └── pages
         └── index.tsx
 ```
 
-`api.ts` and` users.ts` under `src/mock` will be parsed into mock files.
+`api.ts` and `users.ts` under `/mock` will be parsed into mock files.
 
 ## Writing mock files
 
-If the contents of `src/mock/api.ts` are as follows,
+If the contents of `/mock/api.ts` are as follows,
 
 ```js
 export default {
@@ -66,7 +66,7 @@ $ MOCK=none umi dev
 
 ## Introducing Mock.js
 
-[Mock.js](http://mockjs.com/) is a commonly used third-party library to assist in the generation of simulation data, with which we can improve our ability to mock data.
+[Mock.js](https://mockjs.com/) is a commonly used third-party library to assist in the generation of simulation data, with which we can improve our ability to mock data.
 
 such as:
 

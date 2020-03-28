@@ -5,7 +5,7 @@ describe('Logger', () => {
   afterEach(() => {
     process.env.DEBUG = '';
   });
-  it('profile', done => {
+  it('profile', (done) => {
     const logger = new Logger('profile');
     const profilerMsg = logger.profile('id1');
     expect(profilerMsg).toMatch(/PROFILE/);

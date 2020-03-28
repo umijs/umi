@@ -75,6 +75,7 @@ interface ICreateCSSRule {
 }
 
 type IPresetOrPlugin = string | [string, any];
+type IBabelPresetOrPlugin = string | [string, any, string?];
 type env = 'development' | 'production';
 
 export interface IApi extends PluginAPI {
@@ -246,8 +247,8 @@ export interface IConfig extends IConfigCore {
     dynamicRoot?: boolean;
   };
   externals?: any;
-  extraBabelPlugins?: IPresetOrPlugin[];
-  extraBabelPresets?: IPresetOrPlugin[];
+  extraBabelPlugins?: IBabelPresetOrPlugin[];
+  extraBabelPresets?: IBabelPresetOrPlugin[];
   extraPostCSSPlugins?: any[];
   favicon?: string;
   forkTSCheker?: object;
@@ -271,6 +272,7 @@ export interface IConfig extends IConfigCore {
   mountElementId?: string;
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
+  polyfill?: { imports: string[] };
   postcssLoader?: object;
   presets?: IPresetOrPlugin[];
   proxy?: any;

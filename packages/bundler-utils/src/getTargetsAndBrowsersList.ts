@@ -6,11 +6,11 @@ interface IOpts {
   type: ConfigType;
 }
 
-export default function({ config, type }: IOpts) {
+export default function ({ config, type }: IOpts) {
   let targets: ITargets = config.targets || {};
 
   targets = Object.keys(targets)
-    .filter(key => {
+    .filter((key) => {
       // filter false and 0 targets
       if (targets[key] === false) return false;
       if (type === ConfigType.ssr) return key === 'node';
@@ -23,7 +23,7 @@ export default function({ config, type }: IOpts) {
 
   const browserslist =
     targets.browsers ||
-    Object.keys(targets).map(key => {
+    Object.keys(targets).map((key) => {
       return `${key} >= ${targets[key] === true ? '0' : targets[key]}`;
     });
 

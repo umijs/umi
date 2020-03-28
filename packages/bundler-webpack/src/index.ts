@@ -113,7 +113,7 @@ class Bundler {
           invalid.tap('umi-dev-server', () => {
             server.sockWrite({ type: 'invalid' });
           });
-          done.tap('umi-dev-server', stats => {
+          done.tap('umi-dev-server', (stats) => {
             sendStats({
               server,
               sockets: server.sockets,

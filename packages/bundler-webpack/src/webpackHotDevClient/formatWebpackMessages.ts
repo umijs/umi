@@ -44,7 +44,7 @@ function formatMessage(
     lines[0] = lines[0].substr(lines[0].lastIndexOf('!') + 1);
   }
 
-  lines = lines.filter(line => {
+  lines = lines.filter((line) => {
     // Webpack adds a list of entry points to warning messages:
     //  @ ./src/index.js
     //  @ multi react-scripts/~/react-dev-utils/webpackHotDevClient.js ...

@@ -1,5 +1,5 @@
 import { IApi } from '@umijs/types';
-import { chokidar, lodash } from '@umijs/utils';
+import { chokidar, lodash, winPath } from '@umijs/utils';
 import { join } from 'path';
 
 export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
@@ -21,9 +21,20 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
     const watcherPaths = await api.applyPlugins({
       key: 'addTmpGenerateWatcherPaths',
       type: api.ApplyPluginsType.add,
-      initialValue: [paths.absPagesPath!, join(paths.absSrcPath!, 'layout')],
+      initialValue: [
+        paths.absPagesPath!,
+        join(paths.absSrcPath!, 'layouts'),
+        join(paths.absSrcPath!, 'app.tsx'),
+        join(paths.absSrcPath!, 'app.ts'),
+        join(paths.absSrcPath!, 'app.jsx'),
+        join(paths.absSrcPath!, 'app.js'),
+      ],
     });
-    watcherPaths.forEach(createWatcher);
+    lodash
+      .uniq<string>(watcherPaths.map((p: string) => winPath(p)))
+      .forEach((p: string) => {
+        createWatcher(p);
+      });
     // process.on('SIGINT', () => {
     //   console.log('SIGINT');
     //   unwatch();
@@ -31,7 +42,7 @@ export default async ({ api, watch }: { api: IApi; watch?: boolean }) => {
   }
 
   function unwatch() {
-    watchers.forEach(watcher => {
+    watchers.forEach((watcher) => {
       watcher.close();
     });
   }

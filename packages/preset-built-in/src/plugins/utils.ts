@@ -13,7 +13,7 @@ type IGetGlobalFile = (opts: {
  */
 export const getGlobalFile: IGetGlobalFile = ({ absSrcPath, files }) => {
   return files
-    .map(file => join(absSrcPath || '', file))
-    .filter(file => existsSync(file))
+    .map((file) => join(absSrcPath || '', file))
+    .filter((file) => existsSync(file))
     .slice(0, 1);
 };

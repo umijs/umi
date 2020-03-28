@@ -71,9 +71,9 @@ const defaultOpts: Required<PartialProps<IServerOpts>> = {
   beforeMiddlewares: [],
   compilerMiddleware: null,
   compress: true,
-  https: false,
+  https: !!process.env.HTTPS,
   http2: false,
-  onListening: argv => argv,
+  onListening: (argv) => argv,
   onConnection: () => {},
   onConnectionClose: () => {},
   proxy: null,
@@ -104,7 +104,7 @@ class Server {
     this.setupFeatures();
     this.createServer();
 
-    this.socketProxies.forEach(wsProxy => {
+    this.socketProxies.forEach((wsProxy) => {
       // subscribe to http 'upgrade'
       // @ts-ignore
       this.listeningApp.on('upgrade', wsProxy.upgrade);
@@ -151,7 +151,7 @@ class Server {
         }
       },
       beforeMiddlewares: () => {
-        this.opts.beforeMiddlewares.forEach(middleware => {
+        this.opts.beforeMiddlewares.forEach((middleware) => {
           this.app.use(middleware);
         });
       },
@@ -166,13 +166,13 @@ class Server {
         }
       },
       afterMiddlewares: () => {
-        this.opts.afterMiddlewares.forEach(middleware => {
+        this.opts.afterMiddlewares.forEach((middleware) => {
           this.app.use(middleware);
         });
       },
     };
 
-    Object.keys(features).forEach(stage => {
+    Object.keys(features).forEach((stage) => {
       features[stage]();
     });
   }
@@ -207,7 +207,7 @@ class Server {
       if (this.opts.proxy && 'target' in this.opts.proxy) {
         this.opts.proxy = [this.opts.proxy];
       } else {
-        this.opts.proxy = Object.keys(this.opts.proxy || {}).map(context => {
+        this.opts.proxy = Object.keys(this.opts.proxy || {}).map((context) => {
           let proxyOptions: IServerProxyConfigItem;
           // For backwards compatibility reasons.
           const correctedContext = context
@@ -255,7 +255,7 @@ class Server {
       return;
     };
 
-    this.opts.proxy.forEach(proxyConfigOrCallback => {
+    this.opts.proxy.forEach((proxyConfigOrCallback) => {
       let proxyMiddleware: ProxyRequestHandler | undefined;
 
       let proxyConfig =
@@ -312,7 +312,7 @@ class Server {
     type: string;
     data?: string | object;
   }) {
-    sockets.forEach(socket => {
+    sockets.forEach((socket) => {
       socket.write(JSON.stringify({ type, data }));
     });
   }
@@ -347,7 +347,7 @@ class Server {
     server: Server;
   }> {
     const foundPort = await portfinder.getPortPromise({ port });
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.listeningApp.listen(foundPort, hostname, 5, () => {
         this.createSocketServer();
         const ret = {
@@ -372,7 +372,14 @@ class Server {
     server.installHandlers(this.listeningApp!, {
       prefix: '/dev-server',
     });
-    server.on('connection', connection => {
+    server.on('connection', (connection) => {
+      // Windows connection might be undefined
+      // https://github.com/webpack/webpack-dev-server/issues/2199
+      // https://github.com/sockjs/sockjs-node/issues/121
+      // https://github.com/meteor/meteor/pull/10891/files
+      if (!connection) {
+        return;
+      }
       this.opts.onConnection({
         connection,
         server: this,

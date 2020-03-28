@@ -49,6 +49,12 @@ $ npx umi dev
 
 或者[通过脚手架快速上手](/zh-CN/docs/getting-started)。
 
+## Contributors
+
+This project exists thanks to all the people who contribute. [Join us!](/zh-CN/docs/contributing)
+
+<a href="https://github.com/umijs/umi/graphs/contributors"><img src="https://opencollective.com/umi/contributors.svg?width=960&button=false" /></a>
+
 ## 反馈
 
 | Github Issue | 钉钉群 | 微信群 |

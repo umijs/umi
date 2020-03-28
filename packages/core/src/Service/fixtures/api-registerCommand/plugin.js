@@ -6,7 +6,7 @@ module.exports = (api) => {
     name: 'build',
     fn: async ({ args }) => {
       await delay(100);
-      return `hello ${args.projectName}`;
+      return `hello ${args.projectName} ${args._.join(',')}`;
     },
   });
 };

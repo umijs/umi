@@ -37,7 +37,7 @@ export default (api: IApi) => {
       );
     },
   });
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack((webpackConfig) => {
     webpackConfig
       .plugin('bundle-analyzer')
       .use(require('umi-webpack-bundle-analyzer').BundleAnalyzerPlugin, [

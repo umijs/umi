@@ -9,7 +9,7 @@ interface IOpts {
 
 export default function start({ scriptPath }: IOpts) {
   const execArgv = process.execArgv.slice(0);
-  const inspectArgvIndex = execArgv.findIndex(argv =>
+  const inspectArgvIndex = execArgv.findIndex((argv) =>
     argv.includes('--inspect-brk'),
   );
 

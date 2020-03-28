@@ -115,4 +115,12 @@ $ PROGRESS=none umi dev
 
 ### UMI_ENV
 
-Specify the configuration files for different environments. For details, see [Multi-environment Configuration](TODO).
+Specify the configuration files for different environments. For details, see [Multi-environment Configuration](./config#configuration-for-multiple-environments).
+
+### WATCH
+
+Do not listen to file changes when set to `none`. Example:
+
+```bash
+$ WATCH=none umi dev
+```

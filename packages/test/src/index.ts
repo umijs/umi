@@ -12,7 +12,7 @@ const debug = createDebug('umi:test');
 
 export * from './utils';
 
-export default async function(args: IUmiTestArgs) {
+export default async function (args: IUmiTestArgs) {
   process.env.NODE_ENV = 'test';
 
   if (args.debug) {

@@ -5,7 +5,7 @@ import { join } from 'path';
 import assert from 'assert';
 import { IUmiTestArgs } from '../types';
 
-export default function(cwd: string, args: IUmiTestArgs) {
+export default function (cwd: string, args: IUmiTestArgs) {
   const testMatchTypes = ['spec', 'test'];
   if (args.e2e) {
     testMatchTypes.push('e2e');

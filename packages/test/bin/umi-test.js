@@ -15,7 +15,7 @@ const args = yParser(process.argv.slice(2), {
 
 require('../lib')
   .default(args)
-  .catch(e => {
+  .catch((e) => {
     console.error(chalk.red(e));
     process.exit(1);
   });

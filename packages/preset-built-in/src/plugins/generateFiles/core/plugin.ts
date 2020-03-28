@@ -3,13 +3,13 @@ import { join } from 'path';
 import { IApi } from '@umijs/types';
 import { getFile, winPath } from '@umijs/utils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   const {
     paths,
     utils: { Mustache },
   } = api;
 
-  api.onGenerateFiles(async args => {
+  api.onGenerateFiles(async (args) => {
     const pluginTpl = readFileSync(join(__dirname, 'plugin.tpl'), 'utf-8');
     const validKeys = await api.applyPlugins({
       key: 'addRuntimePluginKey',

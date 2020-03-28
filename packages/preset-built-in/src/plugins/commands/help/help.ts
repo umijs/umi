@@ -4,16 +4,16 @@ import assert from 'assert';
 
 function getDescriptions(commands: any) {
   return Object.keys(commands)
-    .filter(name => typeof commands[name] !== 'string')
-    .map(name => {
+    .filter((name) => typeof commands[name] !== 'string')
+    .map((name) => {
       return getDescription(commands[name]);
     });
 }
 
 function getDescription(command: any) {
-  return `    ${chalk.green(
-    lodash.padEnd(command.name, 10),
-  )}${command.description || ''}`;
+  return `    ${chalk.green(lodash.padEnd(command.name, 10))}${
+    command.description || ''
+  }`;
 }
 
 function padLeft(str: string) {

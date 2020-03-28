@@ -119,7 +119,7 @@ class Html {
     let $ = cheerio.load(html);
 
     // metas
-    metas.forEach(meta => {
+    metas.forEach((meta) => {
       $('head').append(
         [
           '<meta',
@@ -132,7 +132,7 @@ class Html {
     });
 
     // links
-    links.forEach(link => {
+    links.forEach((link) => {
       $('head').append(
         [
           '<link',
@@ -145,7 +145,7 @@ class Html {
     });
 
     // styles
-    styles.forEach(style => {
+    styles.forEach((style) => {
       const { content = '', ...attrs } = style;
       const newAttrs = Object.keys(attrs).reduce((memo, key) => {
         return memo.concat(`${key}="${attrs[key]}"`);
@@ -155,7 +155,7 @@ class Html {
           `<style${newAttrs.length ? ' ' : ''}${newAttrs.join(' ')}>`,
           content
             .split('\n')
-            .map(line => `  ${line}`)
+            .map((line) => `  ${line}`)
             .join('\n'),
           '</style>',
         ].join('\n'),
@@ -163,7 +163,7 @@ class Html {
     });
 
     // css
-    cssFiles.forEach(file => {
+    cssFiles.forEach((file) => {
       $('head').append(
         `<link rel="stylesheet" href="${this.getAsset({
           file,
@@ -184,7 +184,7 @@ class Html {
     if (headScripts.length) {
       $('head').append(this.getScriptsContent(headScripts));
     }
-    headJSFiles.forEach(file => {
+    headJSFiles.forEach((file) => {
       $('head').append(
         `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
       );
@@ -192,7 +192,7 @@ class Html {
     if (scripts.length) {
       $('body').append(this.getScriptsContent(scripts));
     }
-    jsFiles.forEach(file => {
+    jsFiles.forEach((file) => {
       $('body').append(
         `<script src="${this.getAsset({ file, path: route.path })}"></script>`,
       );

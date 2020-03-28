@@ -6,7 +6,7 @@ import { ApplyPluginsType } from './enums';
 const fixtures = join(__dirname, 'fixtures');
 
 const simplyPluginIds = ({ cwd, plugins }: { cwd: string; plugins: any }) =>
-  Object.keys(plugins).map(id => {
+  Object.keys(plugins).map((id) => {
     const type = plugins[id].isPreset ? 'preset' : 'plugin';
     return `[${type}] ${id.replace(winPath(cwd), '.')}`;
   });
@@ -25,7 +25,7 @@ test('normal', async () => {
     ],
   });
   expect(service.pkg.name).toEqual('foo');
-  expect(service.initialPresets.map(p => p.key)).toEqual([
+  expect(service.initialPresets.map((p) => p.key)).toEqual([
     'index',
     'index',
     '2',
@@ -34,7 +34,7 @@ test('normal', async () => {
     '1',
     '1',
   ]);
-  expect(service.initialPlugins.map(p => p.key)).toEqual([
+  expect(service.initialPlugins.map((p) => p.key)).toEqual([
     'plugin1',
     'plugin2',
     '2',
@@ -283,13 +283,44 @@ test('api.registerCommand', async () => {
     cwd,
     plugins: [require.resolve(join(cwd, 'plugin'))],
   });
-  const ret = await service.run({
+
+  // runCommand() must used after init()
+  await expect(
+    service.runCommand({
+      name: 'build',
+    }),
+  ).rejects.toThrow(/service is not initialized/);
+
+  let ret;
+
+  // run()
+  ret = await service.run({
     name: 'build',
     args: {
       projectName: 'bar',
     },
   });
-  expect(ret).toEqual(`hello bar`);
+  expect(ret).toEqual(`hello bar `);
+
+  // runCommand()
+  ret = await service.runCommand({
+    name: 'build',
+    args: {
+      _: ['foo', 'bar'],
+      projectName: 'bar',
+    },
+  });
+  expect(ret).toEqual(`hello bar foo,bar`);
+
+  // runCommand() shift the first name
+  ret = await service.runCommand({
+    name: 'build',
+    args: {
+      _: ['build', 'bar'],
+      projectName: 'bar',
+    },
+  });
+  expect(ret).toEqual(`hello bar bar`);
 });
 
 test('api.registerCommand aliased', async () => {

@@ -3,7 +3,7 @@ import { isWindows } from '../';
 // 暂时无法使用 jest 进行单元测试，原因可参见
 // https://github.com/facebook/jest/issues/5741
 
-export default function(cacheKey: string): void {
+export default function (cacheKey: string): void {
   // windows 下 require.cache 中路径 key 为类似 ‘c:\demo\.umirc.ts’
   const cachePath = isWindows ? cacheKey.replace(/\//g, '\\') : cacheKey;
   if (require.cache[cachePath]) {

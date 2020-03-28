@@ -10,7 +10,7 @@ exports.getChangelog = async () => {
     throw new Error(`get changelog failed, no new commits was found.`);
   }
 
-  const commits = log.split('\n').map(commit => {
+  const commits = log.split('\n').map((commit) => {
     const splitIndex = commit.lastIndexOf(' ');
     return {
       message: commit.slice(0, splitIndex),
@@ -18,8 +18,8 @@ exports.getChangelog = async () => {
     };
   });
 
-  return nextTag =>
+  return (nextTag) =>
     commits
-      .map(commit => `- ${htmlEscape(commit.message)}  ${commit.id}`)
+      .map((commit) => `- ${htmlEscape(commit.message)}  ${commit.id}`)
       .join('\n') + `\n\n${repoUrl}/compare/${latest}...${nextTag}`;
 };

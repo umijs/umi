@@ -3,7 +3,7 @@ import { join } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   const {
     utils: { Mustache, lodash },
   } = api;
@@ -13,10 +13,7 @@ export default function(api: IApi) {
     config: {
       default: { type: 'browser' },
       schema(joi) {
-        const type = joi
-          .string()
-          .valid('browser', 'hash', 'memory')
-          .required();
+        const type = joi.string().valid('browser', 'hash', 'memory').required();
         return joi.object({
           type,
           options: joi.object(),

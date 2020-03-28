@@ -7,7 +7,9 @@ export default (api: IApi) => {
     key: 'polyfill',
     config: {
       schema(joi) {
-        return joi.object();
+        return joi.object().keys({
+          imports: joi.array().items(joi.string()).required().unique(),
+        });
       },
     },
     enableBy: () => {
@@ -18,16 +20,20 @@ export default (api: IApi) => {
   api.addPolyfillImports(() => [{ source: './core/polyfill' }]);
 
   api.onGenerateFiles(() => {
+    const polyfill = api.config.polyfill;
+
     api.writeTmpFile({
       content: api.utils.Mustache.render(
         readFileSync(join(__dirname, 'polyfill.tpl'), 'utf-8'),
-        {},
+        {
+          imports: polyfill?.imports ? polyfill.imports : [],
+        },
       ),
       path: 'core/polyfill.ts',
     });
   });
 
-  api.chainWebpack(memo => {
+  api.chainWebpack((memo) => {
     memo.resolve.alias.set(
       'regenerator-runtime',
       dirname(require.resolve('regenerator-runtime/package')),

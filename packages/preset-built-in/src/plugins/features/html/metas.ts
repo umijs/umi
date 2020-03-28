@@ -1,6 +1,6 @@
 import { IApi } from '@umijs/types';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   api.describe({
     key: 'metas',
     config: {

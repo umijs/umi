@@ -14,8 +14,8 @@ const EXP_URL = /^(http:|https:)?\/\//;
 export const getScripts = (option: IScriptConfig): IScriptConfig => {
   if (Array.isArray(option) && option.length > 0) {
     return option
-      .filter(script => !lodash.isEmpty(script))
-      .map(aScript => {
+      .filter((script) => !lodash.isEmpty(script))
+      .map((aScript) => {
         if (typeof aScript === 'string') {
           return EXP_URL.test(aScript)
             ? { src: aScript }
@@ -36,7 +36,7 @@ export const getStyles = (option: IStyleConfig): [IHTMLTag[], IHTMLTag[]] => {
   const linkArr: IHTMLTag[] = [];
   const styleObj: IHTMLTag[] = [];
   if (Array.isArray(option) && option.length > 0) {
-    option.forEach(style => {
+    option.forEach((style) => {
       if (typeof style === 'string') {
         if (EXP_URL.test(style)) {
           // is <link />

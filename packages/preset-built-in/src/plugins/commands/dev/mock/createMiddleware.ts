@@ -13,7 +13,7 @@ interface ICreateMiddleware {
   watcher: chokidar.FSWatcher;
 }
 
-export default function(opts = {} as IMockOpts): ICreateMiddleware {
+export default function (opts = {} as IMockOpts): ICreateMiddleware {
   const { mockData, mockWatcherPaths, updateMockData } = opts;
   let data = mockData;
 

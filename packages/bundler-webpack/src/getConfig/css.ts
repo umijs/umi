@@ -70,7 +70,6 @@ export function createCSSRule({
         deepmerge(
           {
             importLoaders: 1,
-            sourceMap: false,
             ...(isCSSModules
               ? {
                   modules: {
@@ -121,7 +120,7 @@ export function createCSSRule({
   }
 }
 
-export default function({
+export default function ({
   config,
   webpackConfig,
   isDev,

@@ -12,6 +12,6 @@ function funcToStr(obj: Function | object) {
   }
 }
 
-export default function(a: any, b: any) {
+export default function (a: any, b: any) {
   return lodash.isEqual(funcToStr(a), funcToStr(b));
 }

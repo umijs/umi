@@ -104,7 +104,7 @@ export default class PluginAPI {
       Array.isArray(presets),
       `api.registerPresets() failed, presets must be Array.`,
     );
-    const extraPresets = presets.map(preset => {
+    const extraPresets = presets.map((preset) => {
       return isValidPlugin(preset as any)
         ? (preset as IPreset)
         : pathToObj({
@@ -128,7 +128,7 @@ export default class PluginAPI {
       Array.isArray(plugins),
       `api.registerPlugins() failed, plugins must be Array.`,
     );
-    const extraPlugins = plugins.map(plugin => {
+    const extraPlugins = plugins.map((plugin) => {
       return isValidPlugin(plugin as any)
         ? (plugin as IPreset)
         : pathToObj({
@@ -166,7 +166,7 @@ export default class PluginAPI {
       fn ||
       // 这里不能用 arrow function，this 需指向执行此方法的 PluginAPI
       // 否则 pluginId 会不会，导致不能正确 skip plugin
-      function(fn: Function) {
+      function (fn: Function) {
         const hook = {
           key: name,
           ...(utils.lodash.isPlainObject(fn) ? fn : { fn }),
@@ -177,7 +177,7 @@ export default class PluginAPI {
   }
 
   skipPlugins(pluginIds: string[]) {
-    pluginIds.forEach(pluginId => {
+    pluginIds.forEach((pluginId) => {
       this.service.skipPluginIds.add(pluginId);
     });
   }

@@ -12,7 +12,7 @@ export default (api: IApi) => {
       (process.env.FORK_TS_CHECKER || !!api.config?.forkTSCheker) as boolean,
   });
 
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack((webpackConfig) => {
     webpackConfig
       .plugin('fork-ts-checker')
       .use(require('fork-ts-checker-webpack-plugin'), [

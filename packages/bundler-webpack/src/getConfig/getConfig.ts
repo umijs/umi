@@ -65,7 +65,7 @@ export default async function getConfig(
 
   // entry
   if (entry) {
-    Object.keys(entry).forEach(key => {
+    Object.keys(entry).forEach((key) => {
       const e = webpackConfig.entry(key);
       if (hot && isDev) {
         e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
@@ -123,7 +123,7 @@ export default async function getConfig(
 
   // resolve.alias
   if (config.alias) {
-    Object.keys(config.alias).forEach(key => {
+    Object.keys(config.alias).forEach((key) => {
       webpackConfig.resolve.alias.set(key, config.alias![key]);
     });
   }
@@ -183,7 +183,7 @@ export default async function getConfig(
       // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
       .exclude
         .add(/@babel(?:\/|\\{1,2})runtime/)
-        .add(/(react|react-dom|lodash|@ant-design\/icons)/)
+        .add(/(react|react-dom|lodash|echarts|bizcharts|@ant-design\/icons)/)
         .end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
@@ -238,7 +238,7 @@ export default async function getConfig(
   // prettier-ignore
   webpackConfig.module
     .rule('plaintext')
-    .test(/\.(txt|text)$/)
+    .test(/\.(txt|text|md)$/)
     .use('raw-loader')
       .loader(require.resolve('raw-loader'));
 
@@ -308,7 +308,7 @@ export default async function getConfig(
         to: absOutputPath,
       },
       ...(config.copy
-        ? config.copy.map(from => ({
+        ? config.copy.map((from) => ({
             from: join(cwd, from),
             to: absOutputPath,
           }))
@@ -334,14 +334,14 @@ export default async function getConfig(
 
   webpackConfig.when(
     isDev,
-    webpackConfig => {
+    (webpackConfig) => {
       if (hot) {
         webpackConfig
           .plugin('hmr')
           .use(bundleImplementor.HotModuleReplacementPlugin);
       }
     },
-    webpackConfig => {
+    (webpackConfig) => {
       // don't emit files if have error
       webpackConfig.optimization.noEmitOnErrors(true);
 
@@ -381,7 +381,7 @@ export default async function getConfig(
                 terserOptions,
                 config.terserOptions || {},
               ),
-              sourceMap: false,
+              sourceMap: config.devtool !== false,
               cache: true,
               parallel: true,
               extractComments: false,

@@ -67,6 +67,8 @@ export const request: RequestConfig = {
   timeout: 1000,
   errorConfig: {},
   middlewares: [],
+  requestInterceptors: [],
+  responseInterceptors: [],
 };
 ```
 
@@ -119,6 +121,14 @@ export const request = {
 }
 ```
 
+#### requestInterceptors
+
+该配置接收一个数组，数组的每一项为一个 request 拦截器。等同于 umi-request 的 `request.interceptors.request.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
+
+#### responseInterceptors
+
+该配置接收一个数组，数组的每一项为一个 response 拦截器。等同于 umi-request 的 `request.interceptors.response.use()`。具体见 umi-request 的[拦截器文档](https://github.com/umijs/umi-request#interceptor)。
+
 ## API
 
 ### useRequest
@@ -126,20 +136,14 @@ export const request = {
 This plug-in has [@umijs/use-request](https://hooks.umijs.org/en-US/async) built-in, and you can easily and conveniently consume data through this Hook in the component. Examples are:
 
 ```typescript
-import { useRequest } from '@aipay/bigfish';
-import services from '@/service/oneapidemo';
-import { PageLoading } from '@alipay/tech-ui';
+import { useRequest } from 'umi';
 
 export default () => {
   const { data, error, loading } = useRequest(() => {
-    return services.getUserList({
-      type: 'testtype',
-    }, {
-      // request options
-    });
+    return services.getUserList('/api/test');
   });
   if (loading) {
-    return <PageLoading />;
+    return <div>loading...</div>;
   }
   if (error) {
     return <div>{error.message}</div>;

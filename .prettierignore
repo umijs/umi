@@ -9,3 +9,8 @@ package.json
 
 # docs
 **/*.md
+
+# coverage
+/coverage
+/dist
+/.umi

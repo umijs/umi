@@ -3,7 +3,7 @@ import assert from 'assert';
 import { dirname, join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 
-export default function(api: IApi) {
+export default function (api: IApi) {
   [
     'onGenerateFiles',
     'onBuildComplete',
@@ -42,7 +42,7 @@ export default function(api: IApi) {
     'modifyHTMLChunks',
     'modifyPublicPathStr',
     'modifyRoutes',
-  ].forEach(name => {
+  ].forEach((name) => {
     api.registerMethod({ name });
   });
 
