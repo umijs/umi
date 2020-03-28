@@ -11,7 +11,7 @@ Configuration is on.
 
 Contains the following features,
 
-* **Built-in dva**, The default version is `^ 2.6.0-beta.20`, if there are dependencies in the project, the dependent version in the project will be used first.
+* **Built-in dva**, The default version is `^2.6.0-beta.20`, if there are dependencies in the project, the dependent version in the project will be used first.
 * **The convention is to organize the model**, Without having to register the model manually
 * **File name is namespace**, If the namespace is not declared in the model, the filename will be used as the namespace
 * **Built-in dva-loading**, Directly connect `loading` field can be used
@@ -35,7 +35,7 @@ such as:
     + bar/model.ts
 ```
 
-Among them, `a.ts`,` b.ts` and `model.ts` will be considered as model files if their contents are valid dva model notation.
+Among them, `a.ts`, `b.ts` and `model.ts` will be considered as model files if their contents are valid dva model notation.
 
 ### dva model validation
 
@@ -148,11 +148,11 @@ See which models are included in the project.
 $ umi dva list model
 ```
 
-## 类型
+## Types of
 
-通过 umi 导出类型：`ConnectRC`，`ConnectProps`，`Dispatch`，`Action`，`Reducer`，`Effect`，`Subscription`，和所有 `model` 文件中导出的类型。
+Export type via umi: `ConnectRC`, `ConnectProps`, `Dispatch`, `Action`, `Reducer`, `Effect`, `Subscription`, and all exported types in the `model` file.
 
-### model 用例
+### model example
 
 ```ts
 import { Effect, Reducer, Subscription } from 'umi';
@@ -208,7 +208,7 @@ const IndexModel: IndexModelType = {
 export default IndexModel;
 ```
 
-### page 用例
+### page example
 
 ```tsx
 import React, { FC } from 'react';
@@ -230,7 +230,7 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 }))(IndexPage);
 
 ```
-或者
+or
 
 ```tsx
 import React from 'react';
@@ -256,10 +256,10 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 
 ### import { connect and other APIs } from umi is undefined?
 
-an examination:
+An examination:
 
 1. Whether dva configuration is enabled, the plugin is enabled by configuration
-2. Is there a valid dva model? You can check the registration of the model by executing `umi dva list model`, or checking` src/.umi/plugin-dva/dva.ts` after executing `umi g tmp`. 
+2. Is there a valid dva model? You can check the registration of the model by executing `umi dva list model`, or checking `src/.umi/plugin-dva/dva.ts` after executing `umi g tmp`.
 
 And definition issues such as tsconfig.json, refer to [FAQ # import from umi is not defined?](../docs/faq#import-from-umi-No-definition-what-to-do?)
 

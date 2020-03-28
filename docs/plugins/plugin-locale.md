@@ -243,8 +243,8 @@ export default {
 
 When visiting the page:
 
-- `/` Route, title is `Site-Title` in Chinese and `English Title` in English
-- `/about` Route, title is `About-Title` in Chinese and `About Title` in English
+- `/` Route, title is `站点 - 标题` in Chinese and `English Title` in English
+- `/about` Route, title is `关于 - 标题` in Chinese and `About Title` in English
 
 #### baseNavigator
 
@@ -300,4 +300,4 @@ export const locale = {
 
 ### Why not use the syntactic sugar of formatMessage directly?
 
-Although formatMessage is very convenient to use, it is out of the react life cycle. The most serious problem is that it cannot trigger dom re-rendering when switching languages. To solve this problem, we will refresh the browser when switching languages. The user experience is very poor, so it is recommended that you use [`useIntl`](#useIntl) or [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc), can achieve the same function.
+Although formatMessage is very convenient to use, it is out of the react life cycle. The most serious problem is that it cannot trigger dom re-rendering when switching languages. To solve this problem, we need to refresh the browser when switching languages. The user experience is very poor, so it is recommended that you use [`useIntl`](#useIntl) or [`injectIntl`](https://github.com/formatjs/react-intl/blob/master/docs/API.md#injectintl-hoc), to achieve the same function.

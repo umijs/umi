@@ -11,7 +11,7 @@ Configuration is on.
 
 Contains the following features,
 
-1. Built-in [antd](https://ant.design/), the current built-in version is `^ 4.0.0`
+1. Built-in [antd](https://ant.design/), the current built-in version is `^4.0.0`
 2. Built-in [antd-mobile](https://mobile.ant.design/), the current built-in version is `^2.3.1`
 2. Compile on demand based on [babel-plugin-import](https://github.com/ant-design/babel-plugin-import)
 3. When using antd@4, you can switch to dark theme with one click, as shown below

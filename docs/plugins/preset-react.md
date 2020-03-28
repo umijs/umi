@@ -5,7 +5,7 @@ A set of plugins for react applications.
 
 contain:
 
-* [plugin-access](./plugin-access),authority management
+* [plugin-access](./plugin-access), authority management
 * [plugin-analytics](./plugin-analytics), Statistics management
 * [plugin-antd](./plugin-antd), Integrate antd UI components
 * [plugin-crossorigin](./plugin-crossorigin), Usually used for JS error statistics

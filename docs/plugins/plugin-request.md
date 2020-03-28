@@ -34,7 +34,7 @@ interface RequestError extends Error {
 }
 ```
 
-In addition, you can check if `Error.name` is` BizError` to determine if the error was thrown by `success` as` false`.
+In addition, you can check if `Error.name` is `BizError` to determine if the error was thrown by `success` as `false`.
 
 ## Configuration
 
@@ -70,7 +70,7 @@ export const request: RequestConfig = {
 };
 ```
 
-The configuration returns an object. Except for `errorConfig` and` middlewares`, other configurations are directly transparent to the global configuration of [umi-request](https://github.com/umijs/umi-request).
+The configuration returns an object. Except for `errorConfig` and `middlewares`, other configurations are directly transparent to the global configuration of [umi-request](https://github.com/umijs/umi-request).
 
 #### errorConfig.adaptor
 

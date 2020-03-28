@@ -5,7 +5,7 @@ Contract a local production and consumption initialization data.
 
 ## How to enable
 
-There is `src/app.ts` and enabled when exporting the` getInitialState` method.
+There is `src/app.ts` and enabled when exporting the `getInitialState` method.
 
 ## Introduction
 
@@ -21,7 +21,7 @@ The current plugin has only one runtime configuration.
 
 * Type: `() => Prommise<any>`
 
-The configuration is a function of async. It will be executed at the beginning of the entire application, and the returned value will be used as globally shared data. Layout plug-in, Access plug-in and users can get this data directly through `useModel ('@@ initialState')`.
+The configuration is a function of async. It will be executed at the beginning of the entire application, and the returned value will be used as globally shared data. Layout plug-in, Access plug-in and users can get this data directly through `useModel('@@initialState')`.
 
 ```typescript
 // src/app.ts

@@ -7,7 +7,7 @@ Analytics for [Baidu Tongji](https://tongji.baidu.com/) and [Google Analytics](h
 
 Configuration is enabled.
 
-## 配置
+## Configuration
 
 such as:
 
@@ -22,7 +22,7 @@ export default {
 
 ### ga
 
-Google Statistical code.
+Google Analytics code.
 
 ### baidu
 

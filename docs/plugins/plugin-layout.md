@@ -51,7 +51,7 @@ Product Logo
 * Type: `string`
 * Default: `pro`
 
-Specify Layout theme, optional `pro` and` tech` (`tech` only works in Ant internal framework Bigfish).
+Specify Layout theme, optional `pro` and `tech` (`tech` only works in Ant internal framework Bigfish).
 
 #### locale
 
@@ -62,7 +62,7 @@ Whether to start international configuration. After opening, the menu name confi
 
 ### Runtime configuration
 
-The Layout plug-in allows functions such as logout and custom ErrorBoundary through runtime configuration.
+The Layout plug-in allows functions such as logout and custom `ErrorBoundary` through runtime configuration.
 
 ```js
 // src/app.js
@@ -204,6 +204,6 @@ The current route hides the navigation header. It is not hidden by default.
 
 * Type: `string`
 
-Takes effect when the Layout plugin is used with the `@ umijs / plugin-access` plugin.
+Takes effect when the Layout plugin is used with the `@umijs/plugin-access` plugin.
 
 The permissions plugin will match the access string configured by the user with all the permissions of the current user. If the same entry is found and the value of the permission is false, when the user accesses the route, the 403 page is displayed by default.

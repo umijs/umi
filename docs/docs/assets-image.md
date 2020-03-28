@@ -49,7 +49,7 @@ There are two ways to use pictures in your project.
 1. First pass the image to cdn, then use the absolute path of the image in JS and CSS
 2. Put the picture in the project and use it in JS and CSS by relative path
 
-The former will not have any problems; the latter, if you refer to a relative path picture in JS, the path will be absolutely introduced according to publicPath when publishing, so you need to pay attention to the correctness of publicPath even if dynamicImport is not enabled.
+The former will not have any problems; the latter, if you refer to a relative path picture in JS, the path will be absolutely introduced according to `publicPath` when publishing, so you need to pay attention to the correctness of `publicPath` even if `dynamicImport` is not enabled.
 
 ## Base64 compilation
 
