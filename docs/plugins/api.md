@@ -573,7 +573,7 @@ There are three ways to enable the plugin,
 
 ### ServiceStage
 
-The enumeration type of `stage` is usually used for comparison with` stage`.
+The enumeration type of `stage` is usually used for comparison with `stage`.
 
 ## Environment variable
 

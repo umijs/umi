@@ -3,7 +3,7 @@
 
 ## Default Scheme
 
-Umi is friendly to novices by default, so it does not do on-demand loading by default. `umi build` outputs` index.html`, `umi.js`, and `umi.css`.
+Umi is friendly to novices by default, so it does not do on-demand loading by default. `umi build` outputs `index.html`, `umi.js`, and `umi.css`.
 
 ## Do Not Output HTML Files
 

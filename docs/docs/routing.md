@@ -1,7 +1,7 @@
 # Routing
 
 
-In Umi, apps are[Single page application](https://en.wikipedia.org/wiki/Single-page_application)，The redirection of the page address is done on the browser side. It does not re-request the server to get the html. The html is only loaded once when the application initializes. All pages are composed of different components. The switching of pages is actually the switching of different components. You only need to associate different routing paths with the corresponding components in the configuration.
+In Umi, apps are [Single page applications](https://en.wikipedia.org/wiki/Single-page_application). The redirection of the page address is done on the browser side. It does not re-request the server to get the html. The html is only loaded once when the application initializes. All pages are composed of different components. The switching of pages is actually the switching of different components. You only need to associate different routing paths with the corresponding components in the configuration.
 
 ## Configure routing
 
@@ -103,7 +103,7 @@ export default {
 }
 ```
 
-Visiting `/` will jump to `/ list` and be rendered by the` src / pages / list` file.
+Visiting `/` will jump to `/list` and be rendered by the` src/pages/list` file.
 
 ### wrappers
 
@@ -139,7 +139,7 @@ export default (props) => {
 }
 ```
 
-In this way, if you visit `/ user`, you will use` useAuth` to verify permissions. If it passes, render `src / pages / user`, otherwise jump to` / login` and render by `src / pages / login`.
+In this way, if you visit `/user`, you will use `useAuth` to verify permissions. If it passes, render `src/pages/user`, otherwise jump to `/login` and render by `src/pages/login`.
 
 ### title
 
@@ -196,10 +196,10 @@ note:
 
 The routing component can get the following properties through `props`,
 
-* match, the object after the current route and url match, including the `params`,` path`, `url` and` isExact` attributes
-* location, which indicates the current location of the application, including `pathname`,` search`, `query` and other attributes
+* match, the object after the current route and url match, including the `params`, `path`, `url` and `isExact` attributes
+* location, which indicates the current location of the application, including `pathname`, `search`, `query` and other attributes
 * history, interface with [api#history](../api#history)
-* route, current route configuration, including `path`,` exact`, `component`,` routes`, etc.
+* route, current route configuration, including `path`, `exact`, `component`, `routes`, etc.
 
 such as:
 

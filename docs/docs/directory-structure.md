@@ -22,7 +22,7 @@ A fundamental structure as below:
 
 ### package.json
 
-All dependencies start with `@umijs/preset-`、`@umijs/plugin-`、`umi-preset-`、`umi-plugin-` will be registered as plugin/plugin-preset.
+All dependencies that start with `@umijs/preset-`, `@umijs/plugin-`, `umi-preset-`, or `umi-plugin-` will be registered as plugin/plugin-preset.
 
 ### .umirc.ts
 
@@ -43,7 +43,7 @@ Default location of outpput of `umi build`
 
 ### mock
 
-All `.js`、`.ts` files will be registered as `mock`.
+All `.js`, `.ts` files will be registered as `mock`.
 
 ### public
 

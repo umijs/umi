@@ -13,7 +13,7 @@ There are multiple ways to enable plugins.
 
 ### package.json dependencies
 
-Umi will automatically detect umi plugins in `dependencies` and` devDependencies`, such as:
+Umi will automatically detect umi plugins in `dependencies` and `devDependencies`, such as:
 
 ```json
 {
@@ -27,7 +27,7 @@ Then `@ umijs/preset-react` will be registered automatically, there is no need t
 
 ### Configuration
 
-In the configuration, you can configure plugins through `presets` and` plugins`, such as:
+In the configuration, you can configure plugins through `presets` and `plugins`, such as:
 
 ```js
 export default {
@@ -47,7 +47,7 @@ note:
 
 ### Environment variable
 
-Additional plugins can also be registered via the environment variables `UMI\_PRESETS` and` UMI\_PLUGINS`.
+Additional plugins can also be registered via the environment variables `UMI\_PRESETS` and `UMI\_PLUGINS`.
 
 such as:
 
@@ -122,7 +122,7 @@ export default {
 
 The mock here is the key of the mock plugin.
 
-For another example, we install a plugin `umi-plugin-bar`, whose key is` bar` by default, which can be configured like this,
+For another example, we install a plugin `umi-plugin-bar`, whose key is `bar` by default, which can be configured like this,
 
 ```js
 export default {

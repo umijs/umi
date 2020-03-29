@@ -17,8 +17,8 @@ Build success.
 ✨  Done in 9.77s.
 ```
 
-The default output is output to the `dist` folder of the project. You can specify the output directory of the output by modifying the configuration` outputPath`.
-By default, all files in the `publish` folder are copied to the` dist` directory as they are. If you don't need this feature, you can delete it by configuring `chainWebpack`.
+The default output is output to the `dist` folder of the project. You can specify the output directory of the output by modifying the configuration `outputPath`.
+By default, all files in the `publish` folder are copied to the `dist` directory as they are. If you don't need this feature, you can delete it by configuring `chainWebpack`.
 
 ```js
 export default {
@@ -29,7 +29,7 @@ export default {
 }
 ```
 
-> Note: If a product with the same name exists in `publish`, such as` index.html`, the product file will be overwritten.
+> Note: If a product with the same name exists in `publish`, such as `index.html`, the product file will be overwritten.
 
 ## umi dev
 
@@ -106,7 +106,7 @@ Quickly view all `umi` plugins used in the current project.
 $ umi plugin <type> [options]
 ```
 
-Currently supported `type` is` list`, optional parameter `key`.
+Currently supported `type` is `list`, optional parameter `key`.
 
 ```bash
 $ umi plugin list

@@ -25,12 +25,12 @@ Will get the following routing configuration,
 
 It should be noted that files that meet any of the following rules will not be registered as routes,
 
-* Files or directories that begin with `.` or` _`
+* Files or directories that begin with `.` or `_`
 * Type definition file ending with `d.ts`
-* Test files ending with `test.ts`,` spec.ts`, `e2e.ts` (for` .js`, `.jsx`, and` .tsx` files)
-* `components` and` component` directories
-* `utils` and` util` directories
-* Not a `.js`,` .jsx`, `.ts` or` .tsx` file
+* Test files ending with `test.ts`, `spec.ts`, `e2e.ts` (for `.js`, `.jsx`, and `.tsx` files)
+* `components` and `component` directories
+* `utils` and `util` directories
+* Not a `.js`, `.jsx`, `.ts` or `.tsx` file
 * File content does not contain JSX elements
 
 ## Dynamic routing

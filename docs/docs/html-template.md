@@ -1,7 +1,7 @@
 # HTML Template
 
 
-## 修改默认模板
+## Modify the default template
 
 Create a new `src/pages/document.ejs`, umi agrees that if this file exists, it will be used as the default template, such as:
 

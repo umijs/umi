@@ -67,7 +67,7 @@ $ ANALYZE=1 umi build
 
 ### BABEL\_POLYFILL
 
-默认会根据 targets 配置打目标浏览器的全量补丁，设置为 `none` 禁用内置的补丁方案。
+By default, a full patch of the target browser will be applied according to the targets configuration. Setting to `none` disables the built-in patch scheme.
 
 ### COMPRESS
 
@@ -95,7 +95,7 @@ When set to `none`, hot code update is disabled.
 
 ### HTML
 
-When set to `none`, HTML is not output.` Umi build` is effective.
+When set to `none`, HTML is not output. `umi build` is effective.
 
 ### HOST
 
