@@ -98,7 +98,7 @@ const getAntdVersion = ref => {
   if (process.env.BLOCK_REPO_BRANCH) {
     return process.env.BLOCK_REPO_BRANCH;
   }
-  return ref;
+  return 'umi@2';
 };
 
 export async function parseGitUrl(url, closeFastGithub) {
