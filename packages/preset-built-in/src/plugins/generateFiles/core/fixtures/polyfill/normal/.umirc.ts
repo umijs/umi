@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import pkgUp from 'pkg-up';
+import { pkgUp } from '@umijs/utils';
 
 export default {
   presets: [

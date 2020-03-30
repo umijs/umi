@@ -59,6 +59,7 @@
     "lodash": "4.17.15",
     "mkdirp": "1.0.3",
     "mustache": "4.0.1",
+    "pkg-up": "3.1.0",
     "portfinder": "1.0.25",
     "resolve": "1.15.1",
     "rimraf": "3.0.2",

@@ -32,6 +32,7 @@
     "@umijs/runtime": "3.0.14",
     "@umijs/server": "3.0.14",
     "@umijs/types": "3.0.14",
+    "@umijs/utils": "3.0.14",
     "cliui": "6.0.0",
     "fork-ts-checker-webpack-plugin": "4.1.1",
     "history-with-query": "4.10.3",
@@ -45,8 +46,5 @@
     "regenerator-runtime": "0.13.5",
     "umi-webpack-bundle-analyzer": "3.5.0",
     "zlib": "1.0.5"
-  },
-  "devDependencies": {
-    "pkg-up": "3.1.0"
   }
 }

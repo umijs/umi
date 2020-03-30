@@ -14,6 +14,7 @@ import {
 import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
+import shouldExclude from './shouldExclude';
 
 export interface IOpts {
   cwd: string;
@@ -182,8 +183,9 @@ export default async function getConfig(
       .include.add(/node_modules/).end()
       // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
       .exclude
-        .add(/@babel(?:\/|\\{1,2})runtime/)
-        .add(/(react|react-dom|lodash|echarts|bizcharts|@ant-design\/icons)/)
+        .add((path) => {
+          return shouldExclude({ path });
+        })
         .end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
