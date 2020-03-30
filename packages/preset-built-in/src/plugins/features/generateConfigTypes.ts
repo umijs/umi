@@ -1,9 +1,9 @@
 import { IApi } from 'umi';
+import { lodash } from '@umijs/utils';
 import joi2Types from 'joi2types';
 import joi from '@hapi/joi';
 
 export default (api: IApi) => {
-  const { lodash } = api.utils;
   api.onGenerateFiles(async () => {
     const { service } = api;
     const properties = Object.keys(service.plugins).map(plugin => {
