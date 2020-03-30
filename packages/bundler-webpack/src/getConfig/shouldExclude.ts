@@ -20,7 +20,6 @@ const EXCLUDE_PKGS = [
 // https://github.com/umijs/umi/blob/2.x/packages/af-webpack/src/getWebpackConfig/es5ImcompatibleVersions.js
 export default function (opts: { path: string }) {
   const pkgPath = getPkgPath(opts);
-  console.log('>> ', opts.path, pkgPath);
   if (pkgPath in pkgCache) return pkgCache[pkgPath];
   const { name } = require(pkgPath); // eslint-disable-line
   pkgCache[pkgPath] = isMatch({ name });
