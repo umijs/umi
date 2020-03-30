@@ -161,7 +161,6 @@ export default async function getConfig(
   webpackConfig.module
     .rule('js')
       .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      .include.add(cwd).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
