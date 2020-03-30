@@ -1,5 +1,5 @@
 import { IApi } from 'umi';
-import { joi2JsonSchema, jsonSchema2Types } from 'joi2types';
+import joi2Types from 'joi2types';
 import joi from '@hapi/joi';
 
 export default (api: IApi) => {
@@ -11,28 +11,23 @@ export default (api: IApi) => {
        // recognize as key if have schema config
       if (!config?.schema) return;
       const schema = config.schema(joi);
-      // @ts-ignore
       if (lodash.isEmpty(schema)) {
         return;
       }
       return {
-        [key]: joi2JsonSchema(schema, { additionalProperties: false }),
-      }
+        [key]: schema,
+      };
     })
       .filter(config => config)
       .reduce((acc, curr) => ({
         ...acc,
         ...curr,
       }), {});
-    const jsonSchema = {
-      title: 'IConfigFromPlugins',
-      properties,
-      additionalProperties: false,
-    }
-    const content = await jsonSchema2Types(jsonSchema as object, 'IConfigFromPlugins', {
+    const content = await joi2Types(joi.object(properties), {
+      interfaceName: 'IConfigFromPlugins',
       bannerComment: '/** Created by Umi Plugin **/',
+      additionalProperties: false,
     });
-    console.log('write tmp');
     api.writeTmpFile({
       path: 'core/pluginConfig.ts',
       content,
