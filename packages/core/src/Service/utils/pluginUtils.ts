@@ -1,4 +1,3 @@
-import pkgUp from 'pkg-up';
 import { basename, dirname, extname, join, relative } from 'path';
 import { existsSync } from 'fs';
 import camelcase from 'camelcase';
@@ -8,6 +7,7 @@ import {
   createDebug,
   resolve,
   winPath,
+  pkgUp,
 } from '@umijs/utils';
 import { PluginType } from '../enums';
 import { IPackage, IPlugin } from '../types';
