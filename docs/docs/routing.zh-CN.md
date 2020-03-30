@@ -19,9 +19,9 @@ export default {
 
 ### path
 
-* Type: `string | string[]`
+* Type: `string`
 
-配置可以被 [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) 理解的路径或路由数组。
+配置可以被 [path-to-regexp@^1.7.0](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) 理解的路径通配符。
 
 ### component
 

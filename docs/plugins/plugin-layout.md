@@ -30,8 +30,8 @@ import { defineConfig } from 'umi';
 
 export const config = defineConfig({
   layout:{
-    name: 'Ant Design'; 
-    locale: true;
+    name: 'Ant Design', 
+    locale: true,
   }
 });
 ```
@@ -91,12 +91,6 @@ export const layout = {
 * Default: 展示用户名、头像、退出登录相关组件
 
 `initialState` 从 `@umijs/plugin-initial-state` 插件中获取，需要搭配一起使用。
-
-#### childrenRender
-
-* Type: `(children) => React.ReactNode`
-
-用于对内容区做自定义的包裹处理，将 children 作为参数传给此函数。
 
 #### onError
 
