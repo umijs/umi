@@ -56,6 +56,7 @@ export default function () {
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
       require.resolve('./plugins/features/forkTSChecker'),
+      require.resolve('./plugins/features/generateConfigTypes'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),
