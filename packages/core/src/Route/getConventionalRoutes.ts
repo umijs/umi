@@ -13,7 +13,10 @@ interface IOpts {
   config: IConfig;
 }
 
-const RE_DYNAMIC_ROUTE = /^\[(.+?)\]$/;
+// 考虑多种情况：
+// 可能是目录，没有后缀，比如 [post]/add.tsx
+// 可能是文件，有后缀，比如 [id].tsx
+const RE_DYNAMIC_ROUTE = /^\[(.+?)\]/;
 
 function getFiles(root: string) {
   if (!existsSync(root)) return [];
