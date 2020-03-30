@@ -449,6 +449,8 @@ export default {
 }
 ```
 
+> Put your image in `public` directory if you preferred local image.
+
 HTML 中会生成，
 
 ```html
