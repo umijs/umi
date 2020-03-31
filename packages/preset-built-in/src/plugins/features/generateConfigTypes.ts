@@ -1,5 +1,4 @@
 import { IApi } from 'umi';
-import { lodash } from '@umijs/utils';
 import joi2Types from 'joi2types';
 import joi from '@hapi/joi';
 
@@ -11,7 +10,7 @@ export default (api: IApi) => {
        // recognize as key if have schema config
       if (!config?.schema) return;
       const schema = config.schema(joi);
-      if (lodash.isEmpty(schema)) {
+      if (!joi.isSchema(schema)) {
         return;
       }
       return {
