@@ -449,7 +449,7 @@ export default {
 }
 ```
 
-> Put your image in `public` directory if you preferred local image.
+> 如果要使用本地的图片，图片请放到 `public` 目录
 
 HTML 中会生成，
 
