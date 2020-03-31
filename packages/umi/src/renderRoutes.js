@@ -80,6 +80,11 @@ const popStateFn = () => {
   }
 };
 
+/**
+ * A flag indicating the route changed or not
+ */
+let routeChanged = false;
+
 function wrapWithInitialProps(WrappedComponent, initialProps) {
   return class extends React.Component {
     constructor(props) {
@@ -91,6 +96,10 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
 
     async componentDidMount() {
       const { history } = this.props;
+      // Mark route as changed on route change.
+      history.listen(() => {
+        routeChanged = true;
+      });
       _this = this;
       window.addEventListener('popstate', popStateFn);
       if (history.action !== 'POP') {
@@ -151,6 +160,9 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
+              // Drop expired SSR init props, in favour of a loading indicator
+              // (SSR initial props are only valid before user navigation)
+              if (routeChanged) extraProps = { fetchingProps: true };
               // TODO: ssr StaticRoute context hook, handle 40x / 30x
               const childRoutes = renderRoutes(route.routes, extraProps, {
                 location: props.location,
