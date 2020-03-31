@@ -72,14 +72,6 @@ function withRoutes(route) {
   return ret;
 }
 
-let _this = null;
-const popStateFn = () => {
-  // 使用popStateFn保存函数防止addEventListener重复注册
-  if (_this && _this.getInitialProps) {
-    _this.getInitialProps();
-  }
-};
-
 /**
  * A flag indicating the route changed or not
  */
@@ -100,8 +92,6 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
       history.listen(() => {
         routeChanged = true;
       });
-      _this = this;
-      window.addEventListener('popstate', popStateFn);
       if (history.action !== 'POP') {
         this.getInitialProps();
       }
