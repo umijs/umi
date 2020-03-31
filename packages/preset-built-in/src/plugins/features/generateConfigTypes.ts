@@ -17,10 +17,9 @@ export default (api: IApi) => {
         [key]: schema,
       };
     })
-      .filter(config => config)
       .reduce((acc, curr) => ({
         ...acc,
-        ...curr,
+        ...(curr || {}),
       }), {});
     const content = await joi2Types(joi.object(properties), {
       interfaceName: 'IConfigFromPlugins',
