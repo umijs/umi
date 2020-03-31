@@ -13,6 +13,7 @@ export default function () {
       require.resolve('./plugins/generateFiles/core/polyfill'),
       require.resolve('./plugins/generateFiles/core/routes'),
       require.resolve('./plugins/generateFiles/core/umiExports'),
+      require.resolve('./plugins/generateFiles/core/configTypes'),
       require.resolve('./plugins/generateFiles/umi'),
 
       // bundle configs
@@ -56,7 +57,6 @@ export default function () {
       require.resolve('./plugins/features/theme'),
       require.resolve('./plugins/features/umiInfo'),
       require.resolve('./plugins/features/forkTSChecker'),
-      require.resolve('./plugins/features/generateConfigTypes'),
 
       // html
       require.resolve('./plugins/features/html/favicon'),

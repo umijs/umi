@@ -9762,6 +9762,14 @@ jest@^25.1.0:
     import-local "^3.0.2"
     jest-cli "^25.1.0"
 
+joi2types@~1.0.0-beta.6:
+  version "1.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/joi2types/-/joi2types-1.0.0-beta.7.tgz#f0269d9d189f0951ef8a7c0d6068fa49dac3af14"
+  integrity sha512-p/0QHillg1fKx0vyPIT8m+0S0CRmT7ptFa1ABVcMe/VtYQDv3+eezji7L6ZeFGr6Et/j4PvCZ1Nw+EThEDeurg==
+  dependencies:
+    "@types/hapi__joi" "16.0.6"
+    json-schema-to-typescript "^8.2.0"
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"

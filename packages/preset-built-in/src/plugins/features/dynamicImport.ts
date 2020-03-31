@@ -6,8 +6,8 @@ export default (api: IApi) => {
     config: {
       schema(joi) {
         return joi.object({
-          loading: joi.string(),
-        });
+          loading: joi.string().description('loading the component before loaded'),
+        }).description('Code splitting for performance optimization');
       },
     },
   });
