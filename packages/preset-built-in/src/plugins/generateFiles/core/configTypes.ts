@@ -1,4 +1,4 @@
-import { IApi } from 'umi';
+import { IApi } from '@umijs/types';
 import joi2Types from 'joi2types';
 import joi from '@hapi/joi';
 
