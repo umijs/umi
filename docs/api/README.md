@@ -130,23 +130,35 @@ plugin.applyPlugins({
 
 ## 路由
 
+Components, functions for routing purpose are exported directly from  [react-router](https://reacttraining.com/react-router/web/).
+
 ### Link
+
+Refer to [Link](https://reacttraining.com/react-router/web/api/Link)
 
 ### NavLink
 
+Refer to [NavLink](https://reacttraining.com/react-router/web/api/NavLink)
+
 ### Prompt
 
-### withRouter
-
-### useRouter
+Refer to [Prompt](https://reacttraining.com/react-router/web/api/Prompt)
 
 ### useHistory
 
+Refer to [useHistory](https://reacttraining.com/react-router/web/api/Hooks/usehistory)
+
 ### useLocation
+
+Refer to [useLocation](https://reacttraining.com/react-router/web/api/Hooks/uselocation)
 
 ### useParams
 
+Refer to [useParams](https://reacttraining.com/react-router/web/api/Hooks/useparams)
+
 ### useRouteMatch
+
+Refer to [useRouteMatch](https://reacttraining.com/react-router/web/api/Hooks/useroutematch)
 
 ## node 侧接口
 

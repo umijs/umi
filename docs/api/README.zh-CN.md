@@ -128,23 +128,35 @@ plugin.applyPlugins({
 
 ## 路由
 
+路由相关组件、函数皆从 [react-router](https://reacttraining.com/react-router/web/) 中直接导出。
+
 ### Link
+
+参考 [Link](https://reacttraining.com/react-router/web/api/Link)
 
 ### NavLink
 
+参考 [NavLink](https://reacttraining.com/react-router/web/api/NavLink)
+
 ### Prompt
 
-### withRouter
-
-### useRouter
+参考 [Prompt](https://reacttraining.com/react-router/web/api/Prompt)
 
 ### useHistory
 
+参考 [useHistory](https://reacttraining.com/react-router/web/api/Hooks/usehistory)
+
 ### useLocation
+
+参考 [useLocation](https://reacttraining.com/react-router/web/api/Hooks/uselocation)
 
 ### useParams
 
+参考 [useParams](https://reacttraining.com/react-router/web/api/Hooks/useparams)
+
 ### useRouteMatch
+
+参考 [useRouteMatch](https://reacttraining.com/react-router/web/api/Hooks/useroutematch)
 
 ## node 侧接口
 
