@@ -412,7 +412,7 @@ export default async function getConfig(
   }
   // 用户配置的 chainWebpack 优先级最高
   if (config.chainWebpack) {
-    config.chainWebpack(webpackConfig, {
+    await config.chainWebpack(webpackConfig, {
       env,
       webpack: bundleImplementor,
       createCSSRule: createCSSRuleFn,
