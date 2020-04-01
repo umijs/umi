@@ -1,22 +1,39 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
-import { RESOLVABLE_WHITELIST } from './propertyResolver';
+import {
+  RESOLVABLE_WHITELIST,
+  findArrayElements,
+  findObjectMembers,
+} from './propertyResolver';
 
 export function getExportProps(code: string) {
   const ast = parse(code) as babel.types.File;
-  let props: Partial<Record<keyof any, unknown>> = {};
+  let props: unknown = undefined;
   traverse.default(ast, {
     Program: {
       enter(path) {
         const node = path.node;
         const defaultExport = findExportDefault(node);
-        if (!defaultExport || !t.isIdentifier(defaultExport)) return;
+        if (!defaultExport) return;
 
-        const { name } = defaultExport;
-        props = findAssignmentExpressionProps({
-          programNode: node,
-          name,
-        });
+        if (t.isIdentifier(defaultExport)) {
+          const { name } = defaultExport;
+          props = findAssignmentExpressionProps({
+            programNode: node,
+            name,
+          });
+        } else if (t.isObjectExpression(defaultExport)) {
+          props = findObjectMembers(defaultExport);
+        } else if (t.isArrayExpression(defaultExport)) {
+          props = findArrayElements(defaultExport);
+        } else {
+          const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+            resolver.is(defaultExport),
+          );
+          if (resolver) {
+            props = resolver.get(defaultExport as any);
+          }
+        }
       },
     },
   });

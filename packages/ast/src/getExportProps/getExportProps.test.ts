@@ -55,11 +55,61 @@ export default foo;
   });
 });
 
+test('export an object directly', () => {
+  const props = getExportProps(
+    `
+export default {
+  a: {
+    aa: 0,
+    bb: '1',
+    cc() {},
+  },
+  b: [0, '1', () => {}],
+  c: () => {},
+  d() {},
+};
+    `,
+  );
+
+  expect(props).toEqual({
+    a: {
+      aa: 0,
+      bb: '1',
+      cc: expect.any(Function),
+    },
+    b: [0, '1', expect.any(Function)],
+    c: expect.any(Function),
+    d: expect.any(Function),
+  });
+});
+
+test('export an array directly', () => {
+  const props = getExportProps(
+    `
+export default [null, 1, '2', () => {}, {a: true, b() {}}];
+    `,
+  );
+  expect(props).toEqual([
+    null,
+    1,
+    '2',
+    expect.any(Function),
+    { a: true, b: expect.any(Function) },
+  ]);
+});
+
+test('export literal value', () => {
+  expect(getExportProps('export default 0;')).toEqual(0);
+  expect(getExportProps('export default "1";')).toEqual('1');
+  expect(getExportProps('export default true;')).toEqual(true);
+  expect(getExportProps('export default null;')).toEqual(null);
+});
+
 test('no default export', () => {
   const props = getExportProps(
     `
 export function foo () {}
     `,
   );
-  expect(props).toEqual({});
+  expect(props).toEqual(undefined);
 });
