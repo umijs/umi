@@ -26,6 +26,8 @@ export default function (api: IApi) {
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
+        // @ts-ignore
+        enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
         rendererPath: winPath(require.resolve('@umijs/renderer-react')),
         runtimePath: winPath(require.resolve('@umijs/runtime')),

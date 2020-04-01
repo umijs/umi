@@ -72,7 +72,11 @@ export default (api: IApi) => {
           onChange: async ({ pluginChanged, userConfig, valueChanged }) => {
             if (pluginChanged.length) {
               console.log();
-              api.logger.info(`Plugins ${pluginChanged.join(', ')} changed.`);
+              api.logger.info(
+                `Plugins of ${pluginChanged
+                  .map((p) => p.key)
+                  .join(', ')} changed.`,
+              );
               api.restartServer();
             }
             if (valueChanged.length) {

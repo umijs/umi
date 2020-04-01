@@ -25,7 +25,10 @@ function RouterComponent(props: IRouterComponentProps) {
       const matchedRoutes = matchRoutes(props.routes, location.pathname);
 
       // Set title
-      if (typeof document !== 'undefined') {
+      if (
+        typeof document !== 'undefined' &&
+        renderRoutesProps.defaultTitle !== undefined
+      ) {
         document.title =
           (matchedRoutes.length &&
             // @ts-ignore
