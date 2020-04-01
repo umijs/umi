@@ -77,7 +77,7 @@ function withRoutes(route) {
  */
 let routeChanged = false;
 
-function wrapWithInitialProps(WrappedComponent, initialProps) {
+function wrapWithInitialProps(WrappedComponent, initialProps, extraProps = {}) {
   return class SSRComponent extends React.Component {
     // A const static value marking itself as wrapped
     wrappedWithInitialProps = true;
@@ -85,7 +85,7 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
     constructor(props) {
       super(props);
       this.state = {
-        extraProps: {},
+        extraProps,
       };
       if (!routeChanged) {
         routeChanged = !window.g_useSSR || (props.history && props.history.action !== 'POP');
@@ -203,7 +203,7 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   });
                   if (!Component.wrappedWithInitialProps) {
                     // ensure the component is wrapped only once
-                    Component = wrapWithInitialProps(Component, initialProps);
+                    Component = wrapWithInitialProps(Component, initialProps, extraProps);
                     // replace the original component in the route
                     route.component = Component;
                   }
