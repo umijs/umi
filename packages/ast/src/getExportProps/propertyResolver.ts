@@ -104,7 +104,7 @@ const ArrowFunctionResolver: IResolver<t.ArrowFunctionExpression> = {
   },
 };
 
-export const RESOLVABLE_LITERAL_WHITELIST = [
+export const LITERAL_NODE_RESOLVERS = [
   StringResolver,
   NumberResolver,
   BooleanResolver,
@@ -114,7 +114,7 @@ export const RESOLVABLE_LITERAL_WHITELIST = [
   ArrayLiteralResolver,
 ];
 
-export const RESOLVABLE_WHITELIST = [
+export const NODE_RESOLVERS = [
   StringResolver,
   NumberResolver,
   BooleanResolver,
@@ -130,7 +130,7 @@ export function findObjectLiteralProperties(node: t.ObjectExpression) {
   const target = {};
   node.properties.forEach((p) => {
     if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
-      const resolver = RESOLVABLE_LITERAL_WHITELIST.find((resolver) =>
+      const resolver = LITERAL_NODE_RESOLVERS.find((resolver) =>
         resolver.is(p.value),
       );
       if (resolver) {
@@ -148,7 +148,7 @@ export function findObjectMembers(node: t.ObjectExpression) {
       if (t.isObjectMethod(p)) {
         target[p.key.name] = () => {};
       } else {
-        const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+        const resolver = NODE_RESOLVERS.find((resolver) =>
           resolver.is(p.value),
         );
         if (resolver) {
@@ -163,7 +163,7 @@ export function findObjectMembers(node: t.ObjectExpression) {
 export function findArrayLiteralElements(node: t.ArrayExpression) {
   const target: any[] = [];
   node.elements.forEach((p) => {
-    const resolver = RESOLVABLE_WHITELIST.find((resolver) => resolver.is(p));
+    const resolver = LITERAL_NODE_RESOLVERS.find((resolver) => resolver.is(p));
     if (resolver) {
       target.push(resolver.get(p as any));
     }
@@ -174,7 +174,7 @@ export function findArrayLiteralElements(node: t.ArrayExpression) {
 export function findArrayElements(node: t.ArrayExpression) {
   const target: any[] = [];
   node.elements.forEach((p) => {
-    const resolver = RESOLVABLE_WHITELIST.find((resolver) => resolver.is(p));
+    const resolver = NODE_RESOLVERS.find((resolver) => resolver.is(p));
     if (resolver) {
       target.push(resolver.get(p as any));
     }

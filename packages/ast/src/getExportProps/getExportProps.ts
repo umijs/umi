@@ -1,7 +1,7 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
 import {
-  RESOLVABLE_WHITELIST,
+  NODE_RESOLVERS,
   findArrayElements,
   findObjectMembers,
 } from './propertyResolver';
@@ -27,7 +27,7 @@ export function getExportProps(code: string) {
         } else if (t.isArrayExpression(defaultExport)) {
           props = findArrayElements(defaultExport);
         } else {
-          const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+          const resolver = NODE_RESOLVERS.find((resolver) =>
             resolver.is(defaultExport),
           );
           if (resolver) {
@@ -65,7 +65,7 @@ function findAssignmentExpressionProps(opts: {
       t.isIdentifier(node.left.object) &&
       node.left.object.name === opts.name
     ) {
-      const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+      const resolver = NODE_RESOLVERS.find((resolver) =>
         resolver.is(t.isAssignmentExpression(node) && node.right),
       );
       if (resolver) {
