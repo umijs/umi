@@ -94,7 +94,7 @@ function fileToRouteReducer(opts: IOpts, memo: IRoute[], file: string) {
 }
 
 function normalizeRoute(route: IRoute, opts: IOpts) {
-  let props = {};
+  let props: unknown = undefined;
   if (route.component) {
     props = getExportProps(readFileSync(route.component, 'utf-8'));
     route.component = winPath(relative(join(opts.root, '..'), route.component));
@@ -102,7 +102,7 @@ function normalizeRoute(route: IRoute, opts: IOpts) {
   }
   return {
     ...route,
-    ...props,
+    ...(typeof props === 'object' ? props : {}),
   };
 }
 
