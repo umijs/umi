@@ -118,19 +118,22 @@ function wrapWithInitialProps(WrappedComponent, initialProps) {
     async getInitialProps() {
       // the values may be different with findRoute.js
       const { match, location } = this.props;
+      const { extraProps } = this.state;
       this.setState({
-        extraProps: { fetchingProps: true },
+        extraProps: { ...extraProps, fetchingProps: true },
       });
-      const extraProps =
+      const nextExtraProps =
         (await WrappedComponent.getInitialProps({
           isServer: false,
           route: match,
           location,
+          // provide a copy of previous initialProps for quick reuse
+          prevInitialProps: extraProps,
           ...initialProps,
         })) || {};
-      extraProps.fetchingProps = false;
+      nextExtraProps.fetchingProps = false;
       this.setState({
-        extraProps,
+        extraProps: nextExtraProps,
       });
     }
 
@@ -172,12 +175,13 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
+              const { location } = props;
               // Drop expired SSR init props
               // (SSR initial props are only valid before user navigation)
               if (routeChanged) extraProps = {};
               // TODO: ssr StaticRoute context hook, handle 40x / 30x
               const childRoutes = renderRoutes(route.routes, extraProps, {
-                location: props.location,
+                location,
               });
               if (route.component) {
                 const compatProps = getCompatProps({
@@ -205,7 +209,8 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   }
                 }
                 return (
-                  <Component {...newProps} route={route}>
+                  // reuse component for the same umi path (could be dynamic)
+                  <Component key={route.path} {...newProps} route={route}>
                     {childRoutes}
                   </Component>
                 );
