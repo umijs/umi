@@ -130,21 +130,247 @@ plugin.applyPlugins({
 
 ### Link
 
+链接组件，例如：
+
+```tsx
+import { Link } from 'umi';
+
+export default () => {
+  return (
+    <div>
+      {/* 点击跳转到指定 /about 路由 */}
+      <Link to="/about">About</Link>
+
+      {/* 点击跳转到指定 /courses 路由，
+          附带 query { sort: 'name' }
+      */}
+      <Link to="/courses?sort=name">Courses</Link>
+
+      {/* 点击跳转到指定 /list 路由，
+          附带 query: { sort: 'name' }
+          附带 hash: 'the-hash'
+          附带 state: { fromDashboard: true }
+      */}
+      <Link
+        to={{
+          pathname: "/list",
+          search: "?sort=name",
+          hash: "#the-hash",
+          state: { fromDashboard: true },
+        }}
+      >
+        List
+      </Link>
+
+      {/* 点击跳转到指定 /profile 路由，
+          附带所有当前 location 上的参数
+      */}
+      <Link
+        to={location => {
+          return { ...location, pathname: "/profile" };
+        }}
+      />
+
+      {/* 点击跳转到指定 /courses 路由，
+          但会替换当前 history stack 中的记录
+      */}
+      <Link to="/courses" replace />
+
+      {/* 
+          innerRef 允许你获取基础组件（这里应该就是 a 标签或者 null）
+      */}
+      <Link
+        to="/courses"
+        innerRef={node => {
+          // `node` refers to the mounted DOM element
+          // or null when unmounted
+        }}
+      />
+    </div>
+  );
+};
+```
+
 ### NavLink
+
+特殊版本的 `<Link />` 。当指定路由（`to=指定路由`）命中时，可以附着特定样式。
+
+```tsx
+import { NavLink } from 'umi';
+
+export default () => {
+  return (
+    <div>
+      {/* 和 Link 等价 */}
+      <NavLink to="/about">About</NavLink>
+
+      {/* 当前路由为 /faq 时，附着 class selected */}
+      <NavLink to="/faq" activeClassName="selected">
+        FAQs
+      </NavLink>
+
+      {/* 当前路由为 /faq 时，附着 style */}
+      <NavLink
+        to="/faq"
+        activeStyle={{
+          fontWeight: "bold",
+          color: "red",
+        }}
+      >
+        FAQs
+      </NavLink>
+
+      {/* 当前路由完全匹配为 /profile 时，附着 class */}
+      <NavLink exact to="/profile" activeClassName="selected">
+        Profile
+      </NavLink>
+
+      {/* 当前路由为 /profile/ 时，附着 class */}
+      <NavLink strict to="/profile/" activeClassName="selected">
+        Profile
+      </NavLink>
+
+      {/* 当前路由为 /profile，并且 query 包含 name 时，附着 class */}
+      <NavLink
+        to="/profile"
+        exact
+        activeClassName="selected"
+        isActive={(match, location) => {
+          if (!match) {
+            return false;
+          }
+          return location.search.includes("name");
+        }}
+      >
+        Profile
+      </NavLink>
+    </div>
+  );
+};
+```
 
 ### Prompt
 
+提供一个用户离开页面时的提示选择。
+
+```tsx
+import { Prompt } from 'umi';
+
+export default () => {
+  return (
+    <div>
+      {/* 用户离开页面时提示一个选择 */}
+      <Prompt message="你确定要离开么？" />
+
+      {/* 用户要跳转到首页时，提示一个选择 */}
+      <Prompt
+        message={location => {
+          return location.pathname !== "/" ? true : `您确定要跳转到首页么？`;
+        }}
+      />
+
+      {/* 根据一个状态来确定用户离开页面时是否给一个提示选择 */}
+      <Prompt when={formIsHalfFilledOut} message="您确定半途而废么？" />
+    </div>
+  );
+};
+```
+
 ### withRouter
 
-### useRouter
+高阶组件，可以通过 `withRouter` 获取到 `history`、`location`、`match` 对象 
+
+```tsx
+import { withRouter } from "umi";
+
+export default withRouter(({ history, location, match }) => {
+  return (
+    <div>
+      <ul>
+        <li>history: {history.action}</li>
+        <li>location: {location.pathname}</li>
+        <li>match: {`${match.isExact}`}</li>
+      </ul>
+    </div>
+  );
+});
+```
 
 ### useHistory
 
+hooks，获取 `history` 对象
+
+```tsx
+import { useHistory } from "umi";
+
+export default () => {
+  const history = useHistory()
+  return (
+    <div>
+      <ul>
+        <li>history: {history.action}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
 ### useLocation
+
+hooks，获取 `location` 对象
+
+```tsx
+import { useLocation } from "umi";
+
+export default () => {
+  const location = useLocation()
+  return (
+    <div>
+      <ul>
+        <li>location: {location.pathname}</li>
+      </ul>
+    </div>
+  );
+};
+```
 
 ### useParams
 
+hooks，获取 `params` 对象。 `params` 对象为动态路由（例如：`/users/:id`）里的参数键值对。
+
+```tsx
+import { useParams } from "umi";
+
+export default () => {
+  const params = useParams()
+  return (
+    <div>
+      <ul>
+        <li>params: {JSON.stringify(params)}</li>
+      </ul>
+    </div>
+  );
+};
+```
+
 ### useRouteMatch
+
+获取当前路由的匹配信息。
+
+```tsx
+import { useRouteMatch } from "umi";
+
+export default () => {
+  const match = useRouteMatch()
+  return (
+    <div>
+      <ul>
+        <li>match: {JSON.stringify(match.params)}</li>
+      </ul>
+    </div>
+  );
+};
+```
 
 ## node 侧接口
 
