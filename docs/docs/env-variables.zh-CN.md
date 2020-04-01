@@ -131,3 +131,15 @@ $ SOCKET_SERVER=https://localhost:7001/ umi dev
 ```bash
 $ WATCH=none umi dev
 ```
+
+### WATCH_IGNORED
+
+默认不监听 node_modules 下的文件修改，如果需要，可通过此环境变量进行设置。比如：
+
+```bash
+# 整个 node_modules 都监听，会慢点
+WATCH_IGNORED=none umi dev
+
+# node_modules 下除 lodash 和 umi 监听，其他忽略
+WATCH_IGNORED=node_modules/(?!(lodash|umi)) umi dev
+```
