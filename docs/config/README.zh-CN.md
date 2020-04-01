@@ -101,6 +101,17 @@ export default {
 }
 ```
 
+支持异步，
+
+```js
+export default {
+  async chainWebpack(memo) {
+    await delay(100);
+    memo.resolve.alias.set('foo', '/tmp/a/b/foo');
+  }
+}
+```
+
 参数有，
 
 * memo，当前 webpack-chain对象
