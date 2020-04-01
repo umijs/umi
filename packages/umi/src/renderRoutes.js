@@ -78,35 +78,57 @@ function withRoutes(route) {
 let routeChanged = false;
 
 function wrapWithInitialProps(WrappedComponent, initialProps) {
-  return class extends React.Component {
+  return class SSRComponent extends React.Component {
+    // A const static value marking itself as wrapped
+    wrappedWithInitialProps = true;
+
     constructor(props) {
       super(props);
       this.state = {
         extraProps: {},
       };
+      if (!routeChanged) {
+        routeChanged = !window.g_useSSR || (props.history && props.history.action !== 'POP');
+      }
     }
 
     async componentDidMount() {
-      const { history } = this.props;
-      // Mark route as changed on route change.
-      history.listen(() => {
-        routeChanged = true;
-      });
-      if (history.action !== 'POP') {
+      if (routeChanged) {
         this.getInitialProps();
       }
+    }
+
+    componentDidUpdate(prevProps) {
+      const { location } = this.props;
+      // check if pathname changed,
+      // to catch potential case of routes reusing the same page instance
+      // TODO: also check location.search?
+      if (prevProps.location.pathname !== location.pathname) {
+        routeChanged = true;
+        this.getInitialProps();
+      }
+    }
+
+    componentWillUnmount() {
+      // Catch the case of navigating back to the root layout
+      routeChanged = true;
     }
 
     // 前端路由切换时，也需要执行 getInitialProps
     async getInitialProps() {
       // the values may be different with findRoute.js
       const { match, location } = this.props;
-      const extraProps = await WrappedComponent.getInitialProps({
-        isServer: false,
-        route: match,
-        location,
-        ...initialProps,
+      this.setState({
+        extraProps: { fetchingProps: true },
       });
+      const extraProps =
+        (await WrappedComponent.getInitialProps({
+          isServer: false,
+          route: match,
+          location,
+          ...initialProps,
+        })) || {};
+      extraProps.fetchingProps = false;
       this.setState({
         extraProps,
       });
@@ -150,9 +172,9 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
-              // Drop expired SSR init props, in favour of a loading indicator
+              // Drop expired SSR init props
               // (SSR initial props are only valid before user navigation)
-              if (routeChanged) extraProps = { fetchingProps: true };
+              if (routeChanged) extraProps = {};
               // TODO: ssr StaticRoute context hook, handle 40x / 30x
               const childRoutes = renderRoutes(route.routes, extraProps, {
                 location: props.location,
@@ -175,7 +197,12 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   const initialProps = plugins.apply('modifyInitialProps', {
                     initialValue: {},
                   });
-                  Component = wrapWithInitialProps(Component, initialProps);
+                  if (!Component.wrappedWithInitialProps) {
+                    // ensure the component is wrapped only once
+                    Component = wrapWithInitialProps(Component, initialProps);
+                    // replace the original component in the route
+                    route.component = Component;
+                  }
                 }
                 return (
                   <Component {...newProps} route={route}>
