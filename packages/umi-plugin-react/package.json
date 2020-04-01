@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-react",
-  "version": "1.15.5",
+  "version": "1.15.6",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
