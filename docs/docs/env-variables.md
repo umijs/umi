@@ -117,6 +117,14 @@ $ FRIENDLY_ERROR=none umi dev
 $ PROGRESS=none umi dev
 ```
 
+### SOCKET_SERVER
+
+指定用于 HMR 的 socket 服务器。比如：
+
+```bash
+$ SOCKET_SERVER=https://localhost:7001/ umi dev
+```
+
 ### UMI_ENV
 
 指定不同环境各自的配置文件，详见[配置#多环境多份配置](./config#多环境多份配置)。
