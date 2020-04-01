@@ -34,6 +34,7 @@ export default foo;
   expect(props).toEqual({
     a: 1,
     b: '2',
+    c: expect.any(Function),
     d: {
       aa: '1',
       bb: true,
@@ -43,8 +44,10 @@ export default foo;
       ee: [2],
       ff: null,
       gg: undefined,
+      hh: expect.any(Function),
+      jj: expect.any(Function),
     },
-    e: ['hh', { ff: 66 }, ['gg'], null, undefined],
+    e: ['hh', { ff: 66 }, ['gg'], null, undefined, expect.any(Function)],
     f: true,
     g: false,
     i: null,

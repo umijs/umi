@@ -3,11 +3,11 @@ import { parse } from '../utils/parse';
 import { RESOLVABLE_WHITELIST } from './propertyResolver';
 
 export function getExportProps(code: string) {
-  const ast = parse(code);
-  let props = {};
-  traverse.default(ast as any, {
+  const ast = parse(code) as babel.types.File;
+  let props: Partial<Record<keyof any, unknown>> = {};
+  traverse.default(ast, {
     Program: {
-      enter(path: any) {
+      enter(path) {
         const node = path.node;
         const defaultExport = findExportDefault(node);
         if (!defaultExport || !t.isIdentifier(defaultExport)) return;
@@ -36,11 +36,10 @@ function findAssignmentExpressionProps(opts: {
   programNode: t.Program;
   name: string;
 }) {
-  const props = {};
+  const props: Partial<Record<keyof any, unknown>> = {};
   for (const n of opts.programNode.body) {
-    let node = n;
+    let node: t.Node = n;
     if (t.isExpressionStatement(node)) {
-      // @ts-ignore
       node = node.expression;
     }
     if (
