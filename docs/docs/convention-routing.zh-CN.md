@@ -133,9 +133,9 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 一个自定义的全局 `layout` 如下：
 
 ```tsx
-import { ILayoutProps } from 'umi'
+import { IRouteComponentProps } from 'umi'
 
-export default function Layout({ children, location, route, history, match }: ILayoutProps) {
+export default function Layout({ children, location, route, history, match }: IRouteComponentProps) {
   return children
 }
 ```

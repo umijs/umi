@@ -18,7 +18,7 @@ export interface IRoute {
   wrappers?: any[];
 }
 
-export interface ILayoutProps {
+export interface IRouteComponentProps {
   children: JSX.Element;
   location: Location;
   route: IRoute;
