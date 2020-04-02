@@ -85,7 +85,7 @@ function wrapWithInitialProps(WrappedComponent, initialProps, extraProps = {}) {
     constructor(props) {
       super(props);
       this.state = {
-        extraProps,
+        extraProps: { ...extraProps },
       };
       if (!routeChanged) {
         routeChanged = !window.g_useSSR || (props.history && props.history.action !== 'POP');
