@@ -1,6 +1,6 @@
 {
   "name": "umi-test",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "bin": {
     "umi-test": "./bin/umi-test.js"
   },

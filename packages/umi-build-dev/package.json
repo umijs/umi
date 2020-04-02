@@ -1,6 +1,6 @@
 {
   "name": "umi-build-dev",
-  "version": "1.18.2",
+  "version": "1.18.3",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "@babel/generator": "7.4.4",
@@ -9,7 +9,7 @@
     "@babel/template": "7.4.4",
     "@babel/traverse": "7.4.5",
     "@babel/types": "7.4.4",
-    "af-webpack": "1.14.8",
+    "af-webpack": "1.14.9",
     "babel-plugin-module-resolver": "3.2.0",
     "babel-preset-umi": "1.8.4",
     "chalk": "2.4.2",
@@ -66,7 +66,7 @@
     "umi-mock": "2.1.4",
     "umi-notify": "^0.1.1",
     "umi-plugin-ui": "1.5.3",
-    "umi-test": "1.9.5",
+    "umi-test": "1.9.6",
     "umi-uni18n": "^1.1.6",
     "umi-utils": "1.7.2",
     "uppercamelcase": "3.0.0",

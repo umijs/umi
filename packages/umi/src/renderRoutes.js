@@ -72,53 +72,68 @@ function withRoutes(route) {
   return ret;
 }
 
-let _this = null;
-const popStateFn = () => {
-  // 使用popStateFn保存函数防止addEventListener重复注册
-  if (_this && _this.getInitialProps) {
-    _this.getInitialProps();
-  }
-};
-
 /**
  * A flag indicating the route changed or not
  */
 let routeChanged = false;
 
-function wrapWithInitialProps(WrappedComponent, initialProps) {
-  return class extends React.Component {
+function wrapWithInitialProps(WrappedComponent, initialProps, extraProps = {}) {
+  return class SSRComponent extends React.Component {
+    // A const static value marking itself as wrapped
+    wrappedWithInitialProps = true;
+
     constructor(props) {
       super(props);
       this.state = {
-        extraProps: {},
+        extraProps,
       };
+      if (!routeChanged) {
+        routeChanged = !window.g_useSSR || (props.history && props.history.action !== 'POP');
+      }
     }
 
     async componentDidMount() {
-      const { history } = this.props;
-      // Mark route as changed on route change.
-      history.listen(() => {
-        routeChanged = true;
-      });
-      _this = this;
-      window.addEventListener('popstate', popStateFn);
-      if (history.action !== 'POP') {
+      if (routeChanged) {
         this.getInitialProps();
       }
+    }
+
+    componentDidUpdate(prevProps) {
+      const { location } = this.props;
+      // check if pathname changed,
+      // to catch potential case of routes reusing the same page instance
+      // TODO: also check location.search?
+      if (prevProps.location.pathname !== location.pathname) {
+        routeChanged = true;
+        this.getInitialProps();
+      }
+    }
+
+    componentWillUnmount() {
+      // Catch the case of navigating back to the root layout
+      routeChanged = true;
     }
 
     // 前端路由切换时，也需要执行 getInitialProps
     async getInitialProps() {
       // the values may be different with findRoute.js
       const { match, location } = this.props;
-      const extraProps = await WrappedComponent.getInitialProps({
-        isServer: false,
-        route: match,
-        location,
-        ...initialProps,
-      });
+      const { extraProps } = this.state;
       this.setState({
-        extraProps,
+        extraProps: { ...extraProps, fetchingProps: true },
+      });
+      const nextExtraProps =
+        (await WrappedComponent.getInitialProps({
+          isServer: false,
+          route: match,
+          location,
+          // provide a copy of previous initialProps for quick reuse
+          prevInitialProps: extraProps,
+          ...initialProps,
+        })) || {};
+      nextExtraProps.fetchingProps = false;
+      this.setState({
+        extraProps: nextExtraProps,
       });
     }
 
@@ -160,12 +175,13 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
             strict={route.strict}
             sensitive={route.sensitive}
             render={props => {
-              // Drop expired SSR init props, in favour of a loading indicator
+              const { location } = props;
+              // Drop expired SSR init props
               // (SSR initial props are only valid before user navigation)
-              if (routeChanged) extraProps = { fetchingProps: true };
+              if (routeChanged) extraProps = {};
               // TODO: ssr StaticRoute context hook, handle 40x / 30x
               const childRoutes = renderRoutes(route.routes, extraProps, {
-                location: props.location,
+                location,
               });
               if (route.component) {
                 const compatProps = getCompatProps({
@@ -185,10 +201,16 @@ export default function renderRoutes(routes, extraProps = {}, switchProps = {}) 
                   const initialProps = plugins.apply('modifyInitialProps', {
                     initialValue: {},
                   });
-                  Component = wrapWithInitialProps(Component, initialProps);
+                  if (!Component.wrappedWithInitialProps) {
+                    // ensure the component is wrapped only once
+                    Component = wrapWithInitialProps(Component, initialProps, extraProps);
+                    // replace the original component in the route
+                    route.component = Component;
+                  }
                 }
                 return (
-                  <Component {...newProps} route={route}>
+                  // reuse component for the same umi path (could be dynamic)
+                  <Component key={route.path} {...newProps} route={route}>
                     {childRoutes}
                   </Component>
                 );
