@@ -30,7 +30,7 @@ describe('test block download utils', () => {
     expect(await parseGitUrl('https://github.com/umijs/umi-blocks/tree/master/demo', true)).toEqual(
       {
         repo: 'https://github.com/umijs/umi-blocks.git',
-        branch: 'master',
+        branch: 'umi@2',
         path: '/demo',
         id: 'github.com/umijs/umi-blocks',
       },
@@ -42,7 +42,7 @@ describe('test block download utils', () => {
       ),
     ).toEqual({
       repo: 'https://github.com/umijs/umi-blocks.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/ant-design-pro/Analysis',
       id: 'github.com/umijs/umi-blocks',
     });
@@ -59,13 +59,13 @@ describe('test block download utils', () => {
     });
     expect(await parseGitUrl('http://gitlab.alitest-inc.com/bigfish/hello', true)).toEqual({
       repo: 'http://gitlab.alitest-inc.com/bigfish/hello.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/',
       id: 'gitlab.alitest-inc.com/bigfish/hello',
     });
     expect(await parseGitUrl('https://github.com/umijs/umi-blocks.git', true)).toEqual({
       repo: 'https://github.com/umijs/umi-blocks.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/',
       id: 'github.com/umijs/umi-blocks',
     });
@@ -73,7 +73,7 @@ describe('test block download utils', () => {
       await parseGitUrl('http://192.169.3.19/YYJay/test-umi-block/tree/master/demo', true),
     ).toEqual({
       repo: 'http://192.169.3.19/YYJay/test-umi-block.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/demo',
       id: '192.169.3.19/YYJay/test-umi-block',
     });
@@ -92,7 +92,7 @@ describe('test block download utils', () => {
     });
 
     expect(await getParsedData('demo-test', { closeFastGithub: true })).toEqual({
-      branch: 'master',
+      branch: 'umi@2',
       id: 'github.com/umijs/umi-blocks',
       path: '/demo-test',
       repo: 'https://github.com/umijs/umi-blocks.git',
@@ -117,7 +117,7 @@ describe('test block download utils', () => {
         closeFastGithub: true,
       }),
     ).toEqual({
-      branch: 'master',
+      branch: 'umi@2',
       id: 'github.com/ant-design/pro-blocks',
       path: '/demo-test',
       repo: 'https://github.com/ant-design/pro-blocks.git',
