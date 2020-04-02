@@ -7,6 +7,7 @@ import GitUrlParse from 'git-url-parse';
 import { getFastGithub } from 'umi-utils';
 
 const debug = require('debug')('umi-build-dev:MaterialDownload');
+
 const spawnSync = spawn.sync;
 
 export function makeSureMaterialsTempPathExist(dryRun) {
@@ -98,12 +99,15 @@ const getAntdVersion = ref => {
   if (process.env.BLOCK_REPO_BRANCH) {
     return process.env.BLOCK_REPO_BRANCH;
   }
+  if (ref === 'master' || !ref) {
+    return 'umi@2';
+  }
   return ref;
 };
 
 export async function parseGitUrl(url, closeFastGithub) {
   const args = GitUrlParse(url);
-  const { ref, filepath, resource, full_name: fullName } = args;
+  const { ref, filepath, branch, resource, full_name: fullName } = args;
   const fastGithub = await getFastGithub();
 
   // 如果是 github 并且 autoFastGithub =true 使用
