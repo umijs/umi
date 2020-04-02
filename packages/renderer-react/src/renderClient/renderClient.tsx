@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import { matchRoutes } from 'react-router-config';
-import { IRoute } from '../types';
+import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IRouterComponentProps {

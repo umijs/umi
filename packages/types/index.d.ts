@@ -12,6 +12,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
+import { IRouteComponentProps } from '@umijs/renderer-react';
 import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
 import {
@@ -21,6 +22,7 @@ import {
   Response,
   RequestHandler,
 } from 'express';
+import { History, Location } from 'history-with-query';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -293,3 +295,5 @@ export interface IConfig extends IConfigCore {
 export { webpack };
 export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
+
+export { History, Location, IRouteComponentProps };
