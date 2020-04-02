@@ -31,7 +31,9 @@ bar.h = true;
 export default foo;
     `,
   );
-  expect(props).toEqual({
+
+  expect(props).toEqual(expect.any(Function));
+  expect({ ...(props as Function) }).toEqual({
     a: 1,
     b: '2',
     c: expect.any(Function),
@@ -103,6 +105,47 @@ test('export literal value', () => {
   expect(getExportProps('export default "1";')).toEqual('1');
   expect(getExportProps('export default true;')).toEqual(true);
   expect(getExportProps('export default null;')).toEqual(null);
+});
+
+test('extract initial value', () => {
+  const withoutInit = getExportProps('let a; export default a;');
+  expect(withoutInit).toEqual(undefined);
+
+  const literalValue = getExportProps('const a = true; export default a;');
+  expect(literalValue).toEqual(true);
+
+  const overridedValue = getExportProps('let a = 0; a = 1; export default a;');
+  expect(overridedValue).toEqual(1);
+
+  const overridedObject = getExportProps(`
+let foo = { a: 0 };
+foo = { a: 1 };
+foo.b = 2;
+export default foo;
+  `);
+  expect(overridedObject).toEqual({ a: 1, b: 2 });
+});
+
+test('cannot resolve', () => {
+  expect(getExportProps('export default true ? 1 : 0;')).toEqual(undefined);
+  expect(
+    getExportProps(
+      `
+let a = true ? {} : {};
+a = false ? {} : {};
+export default a;
+      `,
+    ),
+  ).toEqual(undefined);
+  expect(
+    getExportProps(
+      `
+const a = {};
+a.b = true ? {} : {};
+export default a;
+      `,
+    ),
+  ).toEqual({});
 });
 
 test('no default export', () => {

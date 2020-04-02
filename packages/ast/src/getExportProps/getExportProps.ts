@@ -1,4 +1,4 @@
-import { t, traverse } from '@umijs/utils';
+import { lodash, t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
 import {
   NODE_RESOLVERS,
@@ -9,6 +9,7 @@ import {
 export function getExportProps(code: string) {
   const ast = parse(code) as babel.types.File;
   let props: unknown = undefined;
+
   traverse.default(ast, {
     Program: {
       enter(path) {
@@ -18,10 +19,7 @@ export function getExportProps(code: string) {
 
         if (t.isIdentifier(defaultExport)) {
           const { name } = defaultExport;
-          props = findAssignmentExpressionProps({
-            programNode: node,
-            name,
-          });
+          props = findAssignmentExpressionProps(node, name);
         } else if (t.isObjectExpression(defaultExport)) {
           props = findObjectMembers(defaultExport);
         } else if (t.isArrayExpression(defaultExport)) {
@@ -49,29 +47,71 @@ function findExportDefault(programNode: t.Program) {
   return null;
 }
 
-function findAssignmentExpressionProps(opts: {
-  programNode: t.Program;
-  name: string;
-}) {
-  const props: Partial<Record<keyof any, unknown>> = {};
-  for (const n of opts.programNode.body) {
+function findAssignmentExpressionProps(programNode: t.Program, name: string) {
+  let props = findVariableDeclarationInitialValue(programNode, name);
+
+  for (const n of programNode.body) {
     let node: t.Node = n;
     if (t.isExpressionStatement(node)) {
       node = node.expression;
     }
-    if (
-      t.isAssignmentExpression(node) &&
-      t.isMemberExpression(node.left) &&
-      t.isIdentifier(node.left.object) &&
-      node.left.object.name === opts.name
-    ) {
-      const resolver = NODE_RESOLVERS.find((resolver) =>
-        resolver.is(t.isAssignmentExpression(node) && node.right),
-      );
-      if (resolver) {
-        props[node.left.property.name] = resolver.get(node.right as any);
+
+    if (t.isAssignmentExpression(node)) {
+      const assignment = node;
+
+      // `target = value;`
+      if (t.isIdentifier(assignment.left) && assignment.left.name === name) {
+        const resolver = NODE_RESOLVERS.find((resolver) =>
+          resolver.is(assignment.right),
+        );
+        if (resolver) props = resolver.get(assignment.right as any);
+      }
+
+      // `target.key = value;`
+      // the target must be assigned a value of the object type,
+      // otherwise the member value cannot be assigned
+      if (
+        t.isMemberExpression(assignment.left) &&
+        t.isIdentifier(assignment.left.object) &&
+        assignment.left.object.name === name &&
+        lodash.isObject(props)
+      ) {
+        const resolver = NODE_RESOLVERS.find((resolver) =>
+          resolver.is(assignment.right),
+        );
+        if (resolver) {
+          props[assignment.left.property.name] = resolver.get(
+            assignment.right as any,
+          );
+        }
       }
     }
   }
   return props;
+}
+
+function findVariableDeclarationInitialValue(
+  programNode: t.Program,
+  name: string,
+) {
+  let initialValue: unknown = undefined;
+
+  // find the last variable declaration
+  for (const node of programNode.body) {
+    if (!t.isVariableDeclaration(node)) continue;
+    const declaration = node.declarations.find((dec) => {
+      return t.isIdentifier(dec.id) && dec.id.name === name;
+    });
+
+    if (declaration) {
+      const resolver = NODE_RESOLVERS.find((resolver) =>
+        resolver.is(declaration.init),
+      );
+      if (resolver) {
+        initialValue = resolver.get(declaration.init as any);
+      }
+    }
+  }
+
+  return initialValue;
 }
