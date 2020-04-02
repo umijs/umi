@@ -17,13 +17,13 @@ describe('test block download utils', () => {
   it('parseGitUrl', async () => {
     expect(await parseGitUrl('git@github.com:umijs/bigfish.git', true)).toEqual({
       repo: 'git@github.com:umijs/bigfish.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/',
       id: 'github.com/umijs/bigfish',
     });
     expect(await parseGitUrl('git@gitlab.alitest-inc.com:bigfish/bigfish.git', true)).toEqual({
       repo: 'git@gitlab.alitest-inc.com:bigfish/bigfish.git',
-      branch: 'master',
+      branch: 'umi@2',
       path: '/',
       id: 'gitlab.alitest-inc.com/bigfish/bigfish',
     });
