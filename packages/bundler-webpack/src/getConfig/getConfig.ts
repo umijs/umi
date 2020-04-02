@@ -161,8 +161,7 @@ export default async function getConfig(
   webpackConfig.module
     .rule('js')
       .test(/\.(js|mjs|jsx|ts|tsx)$/)
-      // 不配置 include，因为在使用 APP_ROOT 的场景下通常会 import cwd 之外的文件
-      // ref: https://github.com/umijs/umi/pull/4327
+      .include.add(cwd).end()
       .exclude.add(/node_modules/).end()
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
