@@ -99,7 +99,7 @@ const getAntdVersion = ref => {
   if (process.env.BLOCK_REPO_BRANCH) {
     return process.env.BLOCK_REPO_BRANCH;
   }
-  if (ref === 'master') {
+  if (ref === 'master' || !ref) {
     return 'umi@2';
   }
   return ref;
