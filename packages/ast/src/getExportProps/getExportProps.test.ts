@@ -119,11 +119,12 @@ test('extract initial value', () => {
 
   const overridedObject = getExportProps(`
 let foo = { a: 0 };
-foo = { a: 1 };
-foo.b = 2;
+foo.b = 1;
+foo = { a: 2 };
+foo.b = 3;
 export default foo;
   `);
-  expect(overridedObject).toEqual({ a: 1, b: 2 });
+  expect(overridedObject).toEqual({ a: 2, b: 3 });
 });
 
 test('cannot resolve', () => {
