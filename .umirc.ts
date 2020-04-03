@@ -1,3 +1,5 @@
+// Config for dumi
+
 function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
   const menus = {
     '/plugins': [
