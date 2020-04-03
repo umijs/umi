@@ -160,6 +160,22 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+
+## cssModulesTypescriptLoader
+
+* type: `boolean | { mode: 'verify' | 'emit' }`
+* Default: `false`
+
+对按照css modules方式引入的css/less等样式文件，自动生成对应的ts类型定义文件。
+
+比如：
+
+```js
+export default {
+  cssModulesTypescriptLoader: true
+}
+```
+
 ## cssnano
 
 * Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
@@ -936,18 +952,3 @@ export default {
 * 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
 * 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
 * 如果需要自行通过 react-helment 等方式渲染 title，配 `title: false` 可禁用内置的 title 渲染机制
-
-## cssModulesTypescriptLoader
-
-* type: `boolean | { mode: 'verify' | 'emit' }`
-* Default: `false`
-
-对按照css modules方式引入的css/less等样式文件，自动生成对应的ts类型定义文件。
-
-比如：
-
-```js
-export default {
-  cssModulesTypescriptLoader: true
-}
-```

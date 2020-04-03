@@ -232,6 +232,7 @@ export interface IConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
+  cssModulesTypescriptLoader?: boolean | { mode: 'verify' | 'emit' };
   cssnano?: object;
   copy?: string[];
   define?: {
@@ -287,7 +288,6 @@ export interface IConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
-  cssModulesTypescriptLoader?: boolean | { mode: 'verify' | 'emit' };
   [key: string]: any;
 }
 
