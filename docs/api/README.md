@@ -131,7 +131,7 @@ plugin.applyPlugins({
 
 ### Link
 
-链接组件，例如：
+Provides declarative, accessible navigation around your application.
 
 ```tsx
 import { Link } from 'umi';
@@ -139,19 +139,16 @@ import { Link } from 'umi';
 export default () => {
   return (
     <div>
-      {/* 点击跳转到指定 /about 路由 */}
+      {/* A string representation of the Link location */}
       <Link to="/about">About</Link>
 
-      {/* 点击跳转到指定 /courses 路由，
-          附带 query { sort: 'name' }
+      {/* A string representation of the Link location,
+          created by concatenating the location’s pathname,
+          search, and hash properties
       */}
       <Link to="/courses?sort=name">Courses</Link>
 
-      {/* 点击跳转到指定 /list 路由，
-          附带 query: { sort: 'name' }
-          附带 hash: 'the-hash'
-          附带 state: { fromDashboard: true }
-      */}
+      {/* An object representation of the Link location */}
       <Link
         to={{
           pathname: "/list",
@@ -163,8 +160,10 @@ export default () => {
         List
       </Link>
 
-      {/* 点击跳转到指定 /profile 路由，
-          附带所有当前 location 上的参数
+      {/* A function to which current location is 
+          passed as an argument and which should
+          return location representation as a string
+          or as an object
       */}
       <Link
         to={location => {
@@ -172,13 +171,14 @@ export default () => {
         }}
       />
 
-      {/* 点击跳转到指定 /courses 路由，
-          但会替换当前 history stack 中的记录
+      {/* When true, clicking the link will replace
+          the current entry in the history stack
+          instead of adding a new one
       */}
       <Link to="/courses" replace />
 
       {/* 
-          innerRef 允许你获取基础组件（这里应该就是 a 标签或者 null）
+          forward reference
       */}
       <Link
         to="/courses"
