@@ -1,10 +1,7 @@
 import { IApi } from '@umijs/types';
-import { dirname, join } from 'path';
-import { winPath, resolve } from '@umijs/utils';
+import { dirname } from 'path';
 
 export default (api: IApi) => {
-  const { paths, pkg, cwd } = api;
-
   api.describe({
     key: 'mpa',
     config: {
@@ -16,7 +13,7 @@ export default (api: IApi) => {
   });
 
   api.modifyRendererPath(() => {
-    return require.resolve('@umijs/renderer-mpa');
+    return dirname(require.resolve('@umijs/renderer-mpa/package.json'));
   });
 
   api.modifyDefaultConfig((memo) => {
