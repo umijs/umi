@@ -938,3 +938,17 @@ export default {
 * 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
 * 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
 * 如果需要自行通过 react-helment 等方式渲染 title，配 `title: false` 可禁用内置的 title 渲染机制
+
+
+## cssModulesTypescriptLoader
+
+* type: `boolean | { mode: 'verify' | 'emit' }`
+* Default: `false`
+
+Emits TypeScript declaration files matching your CSS Modules in the same location as your source files, e.g. src/Component.css will generate src/Component.css.d.ts.
+
+```js
+export default {
+  cssModulesTypescriptLoader: true
+}
+```
