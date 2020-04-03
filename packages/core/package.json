@@ -24,14 +24,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.8.7",
-    "@babel/register": "7.8.6",
+    "@babel/core": "7.9.0",
+    "@babel/register": "7.9.0",
     "@hapi/joi": "16.1.8",
-    "@types/ejs": "3.0.1",
+    "@types/ejs": "3.0.2",
     "@types/hapi__joi": "16.0.6",
     "@types/marked": "^0.7.3",
     "@types/marked-terminal": "^3.1.1",
-    "@types/prettier": "1.19.1",
+    "@types/prettier": "2.0.0",
     "@types/tapable": "1.0.5",
     "@umijs/ast": "3.0.18",
     "@umijs/babel-preset-umi": "3.0.18",
@@ -39,12 +39,12 @@
     "@umijs/utils": "3.0.18",
     "camelcase": "5.3.1",
     "dotenv": "8.2.0",
-    "ejs": "3.0.1",
+    "ejs": "3.0.2",
     "marked": "0.8.2",
     "marked-terminal": "4.0.0",
     "os-locale": "5.0.0",
     "prettier": "2.0.2",
-    "set-value": "3.0.1",
+    "set-value": "3.0.2",
     "tapable": "1.1.3"
   }
 }
