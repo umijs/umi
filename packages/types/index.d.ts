@@ -12,7 +12,10 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
-import { IRouteComponentProps } from '@umijs/renderer-react';
+import {
+  IRouteComponentProps,
+  IRoute as IRouteProps,
+} from '@umijs/renderer-react';
 import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
 import {
@@ -296,4 +299,4 @@ export { webpack };
 export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
 
-export { History, Location, IRouteComponentProps };
+export { History, Location, IRouteProps, IRouteComponentProps };
