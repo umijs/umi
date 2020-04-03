@@ -1,3 +1,3 @@
 export default {
-    cssModulesTypescriptLoader: true
+    cssModulesTypescriptLoader: {}
 }

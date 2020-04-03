@@ -232,7 +232,7 @@ export interface IConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
-  cssModulesTypescriptLoader?: boolean | { mode: 'verify' | 'emit' };
+  cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
   cssnano?: object;
   copy?: string[];
   define?: {

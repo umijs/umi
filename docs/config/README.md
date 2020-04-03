@@ -164,14 +164,24 @@ export default {
 
 ## cssModulesTypescriptLoader
 
-* type: `boolean | { mode: 'verify' | 'emit' }`
-* Default: `false`
+* type: `{ mode: 'verify' | 'emit' }`
+* Default: `undefined`
 
 Emits TypeScript declaration files matching your CSS Modules in the same location as your source files, e.g. src/Component.css will generate src/Component.css.d.ts.
 
 ```js
 export default {
-  cssModulesTypescriptLoader: true
+  cssModulesTypescriptLoader: {}
+}
+```
+
+same as
+
+```js
+export default {
+  cssModulesTypescriptLoader: {
+    mode: 'emit'
+  }
 }
 ```
 

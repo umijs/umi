@@ -163,8 +163,8 @@ export default {
 
 ## cssModulesTypescriptLoader
 
-* type: `boolean | { mode: 'verify' | 'emit' }`
-* Default: `false`
+* type: `{ mode: 'verify' | 'emit' }`
+* Default: `undefined`
 
 对按照css modules方式引入的css/less等样式文件，自动生成对应的ts类型定义文件。
 
@@ -172,7 +172,17 @@ export default {
 
 ```js
 export default {
-  cssModulesTypescriptLoader: true
+  cssModulesTypescriptLoader: {}
+}
+```
+
+等同于
+
+```js
+export default {
+  cssModulesTypescriptLoader: {
+    mode: 'emit'
+  }
 }
 ```
 
