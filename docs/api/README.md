@@ -132,7 +132,7 @@ plugin.applyPlugins({
 
 ### Link
 
-Provides declarative, accessible navigation around your application.
+链接组件，例如：
 
 ```tsx
 import { Link } from 'umi';
@@ -140,16 +140,19 @@ import { Link } from 'umi';
 export default () => {
   return (
     <div>
-      {/* A string representation of the Link location */}
+      {/* 点击跳转到指定 /about 路由 */}
       <Link to="/about">About</Link>
 
-      {/* A string representation of the Link location,
-          created by concatenating the location’s pathname,
-          search, and hash properties
+      {/* 点击跳转到指定 /courses 路由，
+          附带 query { sort: 'name' }
       */}
       <Link to="/courses?sort=name">Courses</Link>
 
-      {/* An object representation of the Link location */}
+      {/* 点击跳转到指定 /list 路由，
+          附带 query: { sort: 'name' }
+          附带 hash: 'the-hash'
+          附带 state: { fromDashboard: true }
+      */}
       <Link
         to={{
           pathname: "/list",
@@ -161,10 +164,8 @@ export default () => {
         List
       </Link>
 
-      {/* A function to which current location is 
-          passed as an argument and which should
-          return location representation as a string
-          or as an object
+      {/* 点击跳转到指定 /profile 路由，
+          附带所有当前 location 上的参数
       */}
       <Link
         to={location => {
@@ -172,14 +173,13 @@ export default () => {
         }}
       />
 
-      {/* When true, clicking the link will replace
-          the current entry in the history stack
-          instead of adding a new one
+      {/* 点击跳转到指定 /courses 路由，
+          但会替换当前 history stack 中的记录
       */}
       <Link to="/courses" replace />
 
       {/* 
-          forward reference
+          innerRef 允许你获取基础组件（这里应该就是 a 标签或者 null）
       */}
       <Link
         to="/courses"
@@ -195,7 +195,7 @@ export default () => {
 
 ### NavLink
 
-A special version of the `<Link>` that will add styling attributes to the rendered element when it matches the current URL.
+特殊版本的 `<Link />` 。当指定路由（`to=指定路由`）命中时，可以附着特定样式。
 
 ```tsx
 import { NavLink } from 'umi';
@@ -203,18 +203,15 @@ import { NavLink } from 'umi';
 export default () => {
   return (
     <div>
-      {/* same as Link */}
+      {/* 和 Link 等价 */}
       <NavLink to="/about">About</NavLink>
 
-      {/* The class to give the element when it is active.
-          The default given class is active.
-          This will be joined with the className prop
-      */}
+      {/* 当前路由为 /faq 时，附着 class selected */}
       <NavLink to="/faq" activeClassName="selected">
         FAQs
       </NavLink>
 
-      {/* The styles to apply to the element when it is active */}
+      {/* 当前路由为 /faq 时，附着 style */}
       <NavLink
         to="/faq"
         activeStyle={{
@@ -225,26 +222,17 @@ export default () => {
         FAQs
       </NavLink>
 
-      {/* When true, the active class/style will only be applied
-          if the location is matched exactly.
-      */}
+      {/* 当前路由完全匹配为 /profile 时，附着 class */}
       <NavLink exact to="/profile" activeClassName="selected">
         Profile
       </NavLink>
 
-      {/* When true, the trailing slash on a location’s pathname
-          will be taken into consideration when determining if
-          the location matches the current URL.
-      */}
+      {/* 当前路由为 /profile/ 时，附着 class */}
       <NavLink strict to="/profile/" activeClassName="selected">
         Profile
       </NavLink>
 
-      {/* A function to add extra logic for determining whether
-          the link is active. This should be used if you want to
-          do more than verify that the link’s pathname matches
-          the current URL’s pathname.
-      */}
+      {/* 当前路由为 /profile，并且 query 包含 name 时，附着 class */}
       <NavLink
         to="/profile"
         exact
@@ -265,7 +253,7 @@ export default () => {
 
 ### Prompt
 
-Used to prompt the user before navigating away from a page. When your application enters a state that should prevent the user from navigating away (like a form is half-filled out), render a `<Prompt>`.
+提供一个用户离开页面时的提示选择。
 
 ```tsx
 import { Prompt } from 'umi';
@@ -273,27 +261,18 @@ import { Prompt } from 'umi';
 export default () => {
   return (
     <div>
-      {/* The message to prompt the user with when
-          they try to navigate away.
-      */}
-      <Prompt message="Will you leave?" />
+      {/* 用户离开页面时提示一个选择 */}
+      <Prompt message="你确定要离开么？" />
 
-      {/* Will be called with the next location and action the
-          user is attempting to navigate to. Return a string
-          to show a prompt to the user or true to allow the 
-          transition
-      */}
+      {/* 用户要跳转到首页时，提示一个选择 */}
       <Prompt
         message={location => {
-          return location.pathname !== "/" ? true : `Are are sure you want to back to home page?`;
+          return location.pathname !== "/" ? true : `您确定要跳转到首页么？`;
         }}
       />
 
-      {/* Instead of conditionally rendering a <Prompt> behind a guard,
-          you can always render it but pass when={true} or when={false}
-          to prevent or allow navigation accordingly.
-      */}
-      <Prompt when={formIsHalfFilledOut} message="Are you sure?" />
+      {/* 根据一个状态来确定用户离开页面时是否给一个提示选择 */}
+      <Prompt when={formIsHalfFilledOut} message="您确定半途而废么？" />
     </div>
   );
 };
@@ -301,7 +280,7 @@ export default () => {
 
 ### withRouter
 
-You can get access to the `history`, `location`, `match` objects via the `withRouter` higher-order component. `withRouter` will pass updated `match`, `location`, and `history` props to the wrapped component whenever it renders
+高阶组件，可以通过 `withRouter` 获取到 `history`、`location`、`match` 对象 
 
 ```tsx
 import { withRouter } from "umi";
@@ -321,7 +300,7 @@ export default withRouter(({ history, location, match }) => {
 
 ### useHistory
 
-The `useHistory` hook gives you access to the `history` instance that you may use to navigate.
+hooks，获取 `history` 对象
 
 ```tsx
 import { useHistory } from "umi";
@@ -340,7 +319,7 @@ export default () => {
 
 ### useLocation
 
-The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new location whenever the URL changes.
+hooks，获取 `location` 对象
 
 ```tsx
 import { useLocation } from "umi";
@@ -359,7 +338,7 @@ export default () => {
 
 ### useParams
 
-`useParams` returns an object of key/value pairs of URL parameters. Use it to access `match.params` of the current route.
+hooks，获取 `params` 对象。 `params` 对象为动态路由（例如：`/users/:id`）里的参数键值对。
 
 ```tsx
 import { useParams } from "umi";
@@ -378,7 +357,7 @@ export default () => {
 
 ### useRouteMatch
 
-The `useRouteMatch` hook attempts to match the current URL in the same way that a Route would. It’s mostly useful for getting access to the match data without actually rendering a `<Route />`
+获取当前路由的匹配信息。
 
 ```tsx
 import { useRouteMatch } from "umi";

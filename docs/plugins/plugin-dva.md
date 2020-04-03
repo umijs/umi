@@ -23,7 +23,7 @@ translateHelp: true
 
 ### 约定式的 model 组织方式
 
-符合以下规则到文件会被认为是 model 文件，
+符合以下规则的文件会被认为是 model 文件，
 
 * `src/models` 下的文件
 * `src/pages` 下，子目录中 models 目录下的文件

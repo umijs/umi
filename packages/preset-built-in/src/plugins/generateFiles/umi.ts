@@ -23,13 +23,18 @@ export default function (api: IApi) {
 
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
+    const rendererPath = await api.applyPlugins({
+      key: 'modifyRendererPath',
+      type: api.ApplyPluginsType.modify,
+      initialValue: require.resolve('@umijs/renderer-react'),
+    });
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
         // @ts-ignore
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
-        rendererPath: winPath(require.resolve('@umijs/renderer-react')),
+        rendererPath: winPath(rendererPath),
         runtimePath: winPath(require.resolve('@umijs/runtime')),
         rootElement: api.config.mountElementId,
         entryCode: (

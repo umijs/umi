@@ -41,6 +41,7 @@ export default function (api: IApi) {
     'modifyBundleImplementor',
     'modifyHTMLChunks',
     'modifyPublicPathStr',
+    'modifyRendererPath',
     'modifyRoutes',
   ].forEach((name) => {
     api.registerMethod({ name });
