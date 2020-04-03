@@ -26,7 +26,7 @@ export default (api: IApi) => {
   });
 
   api.modifyHTML((memo, { route }) => {
-    memo('head').prepend(`<script>window.g_path = '${route.path}';</script>`);
+    memo('head').append(`<script>window.g_path = '${route.path}';</script>`);
     return memo;
   });
 };
