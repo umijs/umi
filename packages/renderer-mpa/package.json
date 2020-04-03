@@ -1,9 +1,9 @@
 {
   "name": "@umijs/renderer-mpa",
-  "version": "3.0.16",
+  "version": "3.0.18",
   "description": "@umijs/renderer-mpa",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "lib",
     "src"
@@ -23,5 +23,14 @@
   "homepage": "https://github.com/umijs/umi/tree/master/packages/renderer-mpa#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "dependencies": {
+    "@types/react": "^16.9.32",
+    "@types/react-dom": "^16.9.6",
+    "@umijs/runtime": "3.0.18",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "sideEffects": false,
+  "module": "dist/index.esm.js"
 }

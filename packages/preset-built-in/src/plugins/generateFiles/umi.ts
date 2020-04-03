@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 
@@ -35,7 +35,9 @@ export default function (api: IApi) {
         enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
         rendererPath: winPath(rendererPath),
-        runtimePath: winPath(require.resolve('@umijs/runtime')),
+        runtimePath: winPath(
+          dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
         rootElement: api.config.mountElementId,
         entryCode: (
           await api.applyPlugins({

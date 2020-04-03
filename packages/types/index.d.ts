@@ -270,6 +270,7 @@ export interface IConfig extends IConfigCore {
   links?: Partial<HTMLLinkElement>[];
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
+  mpa?: object;
   mock?:
     | {
         exclude?: string[];
