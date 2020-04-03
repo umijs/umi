@@ -2,7 +2,6 @@
 nav:
   title: API
 toc: menu
-translateHelp: true
 ---
 
 # API
@@ -195,7 +194,7 @@ export default () => {
 
 ### NavLink
 
-特殊版本的 `<Link />` 。当指定路由（`to=指定路由`）命中时，可以附着特定样式。
+A special version of the `<Link>` that will add styling attributes to the rendered element when it matches the current URL.
 
 ```tsx
 import { NavLink } from 'umi';
@@ -203,15 +202,18 @@ import { NavLink } from 'umi';
 export default () => {
   return (
     <div>
-      {/* 和 Link 等价 */}
+      {/* same as Link */}
       <NavLink to="/about">About</NavLink>
 
-      {/* 当前路由为 /faq 时，附着 class selected */}
+      {/* The class to give the element when it is active.
+          The default given class is active.
+          This will be joined with the className prop
+      */}
       <NavLink to="/faq" activeClassName="selected">
         FAQs
       </NavLink>
 
-      {/* 当前路由为 /faq 时，附着 style */}
+      {/* The styles to apply to the element when it is active */}
       <NavLink
         to="/faq"
         activeStyle={{
@@ -222,17 +224,26 @@ export default () => {
         FAQs
       </NavLink>
 
-      {/* 当前路由完全匹配为 /profile 时，附着 class */}
+      {/* When true, the active class/style will only be applied
+          if the location is matched exactly.
+      */}
       <NavLink exact to="/profile" activeClassName="selected">
         Profile
       </NavLink>
 
-      {/* 当前路由为 /profile/ 时，附着 class */}
+      {/* When true, the trailing slash on a location’s pathname
+          will be taken into consideration when determining if
+          the location matches the current URL.
+      */}
       <NavLink strict to="/profile/" activeClassName="selected">
         Profile
       </NavLink>
 
-      {/* 当前路由为 /profile，并且 query 包含 name 时，附着 class */}
+      {/* A function to add extra logic for determining whether
+          the link is active. This should be used if you want to
+          do more than verify that the link’s pathname matches
+          the current URL’s pathname.
+      */}
       <NavLink
         to="/profile"
         exact
@@ -253,7 +264,7 @@ export default () => {
 
 ### Prompt
 
-提供一个用户离开页面时的提示选择。
+Used to prompt the user before navigating away from a page. When your application enters a state that should prevent the user from navigating away (like a form is half-filled out), render a `<Prompt>`.
 
 ```tsx
 import { Prompt } from 'umi';
@@ -261,18 +272,27 @@ import { Prompt } from 'umi';
 export default () => {
   return (
     <div>
-      {/* 用户离开页面时提示一个选择 */}
-      <Prompt message="你确定要离开么？" />
+      {/* The message to prompt the user with when
+          they try to navigate away.
+      */}
+      <Prompt message="Will you leave?" />
 
-      {/* 用户要跳转到首页时，提示一个选择 */}
+      {/* Will be called with the next location and action the
+          user is attempting to navigate to. Return a string
+          to show a prompt to the user or true to allow the 
+          transition
+      */}
       <Prompt
         message={location => {
-          return location.pathname !== "/" ? true : `您确定要跳转到首页么？`;
+          return location.pathname !== "/" ? true : `Are are sure you want to back to home page?`;
         }}
       />
 
-      {/* 根据一个状态来确定用户离开页面时是否给一个提示选择 */}
-      <Prompt when={formIsHalfFilledOut} message="您确定半途而废么？" />
+      {/* Instead of conditionally rendering a <Prompt> behind a guard,
+          you can always render it but pass when={true} or when={false}
+          to prevent or allow navigation accordingly.
+      */}
+      <Prompt when={formIsHalfFilledOut} message="Are you sure?" />
     </div>
   );
 };
@@ -280,7 +300,7 @@ export default () => {
 
 ### withRouter
 
-高阶组件，可以通过 `withRouter` 获取到 `history`、`location`、`match` 对象 
+You can get access to the `history`, `location`, `match` objects via the `withRouter` higher-order component. `withRouter` will pass updated `match`, `location`, and `history` props to the wrapped component whenever it renders
 
 ```tsx
 import { withRouter } from "umi";
@@ -300,7 +320,7 @@ export default withRouter(({ history, location, match }) => {
 
 ### useHistory
 
-hooks，获取 `history` 对象
+The `useHistory` hook gives you access to the `history` instance that you may use to navigate.
 
 ```tsx
 import { useHistory } from "umi";
@@ -319,7 +339,7 @@ export default () => {
 
 ### useLocation
 
-hooks，获取 `location` 对象
+The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new location whenever the URL changes.
 
 ```tsx
 import { useLocation } from "umi";
@@ -338,7 +358,7 @@ export default () => {
 
 ### useParams
 
-hooks，获取 `params` 对象。 `params` 对象为动态路由（例如：`/users/:id`）里的参数键值对。
+`useParams` returns an object of key/value pairs of URL parameters. Use it to access `match.params` of the current route.
 
 ```tsx
 import { useParams } from "umi";
@@ -357,7 +377,7 @@ export default () => {
 
 ### useRouteMatch
 
-获取当前路由的匹配信息。
+The `useRouteMatch` hook attempts to match the current URL in the same way that a Route would. It’s mostly useful for getting access to the match data without actually rendering a `<Route />`
 
 ```tsx
 import { useRouteMatch } from "umi";
