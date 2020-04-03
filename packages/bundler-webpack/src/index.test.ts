@@ -5,6 +5,7 @@ import { ConfigType } from '@umijs/bundler-utils';
 import { Bundler } from './index';
 import { Server } from '@umijs/server';
 import DevCompileDonePlugin from './DevCompileDonePlugin';
+import {} from 'typescript';
 
 const fixtures = join(__dirname, 'fixtures');
 

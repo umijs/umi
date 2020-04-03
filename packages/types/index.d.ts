@@ -287,6 +287,7 @@ export interface IConfig extends IConfigCore {
   terserOptions?: object;
   theme?: object;
   title?: string;
+  cssModulesTypescriptLoader?: boolean | { mode: 'verify' | 'emit' };
   [key: string]: any;
 }
 

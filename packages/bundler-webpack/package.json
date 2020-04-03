@@ -35,6 +35,7 @@
     "babel-loader": "8.1.0",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.4.2",
+    "css-modules-typescript-loader": "4.0.0",
     "file-loader": "6.0.0",
     "friendly-errors-webpack-plugin": "1.7.0",
     "less": "3.11.1",

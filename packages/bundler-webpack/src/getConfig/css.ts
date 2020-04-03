@@ -63,6 +63,17 @@ export function createCSSRule({
         });
     }
 
+    if (isDev && isCSSModules && config.cssModulesTypescriptLoader) {
+      const options =
+        typeof config.cssModulesTypescriptLoader === 'boolean'
+          ? { mode: 'emit' }
+          : config.cssModulesTypescriptLoader;
+      rule
+        .use('css-modules-typescript-loader')
+        .loader(require.resolve('css-modules-typescript-loader'))
+        .options(options);
+    }
+
     rule
       .use('css-loader')
       .loader(require.resolve('css-loader'))
