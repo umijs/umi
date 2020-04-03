@@ -1,10 +1,11 @@
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ApplyPluginsType, Plugin } from '@umijs/runtime';
 
 interface IOpts {
   routes: any[];
   plugin: Plugin;
-  history: any;
+  history?: any;
   defaultTitle?: string;
   rootElement?: string | HTMLElement;
   path?: string;
