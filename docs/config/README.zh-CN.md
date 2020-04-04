@@ -630,6 +630,23 @@ export default {
 
 * 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
 
+## mpa
+
+* Type: `object`
+
+切换渲染模式为 mpa。
+
+包含以下特征：
+
+* 为每个页面输出 html
+* 输出不包含 react-router、react-router-dom、history 等库
+* 渲染和 url 解绑，html 文件放哪都能使用
+
+注意：
+
+* 只支持一级路由配置
+* 不支持 layout 或嵌套路由的配置
+
 ## outputPath
 
 * Type: `string`
