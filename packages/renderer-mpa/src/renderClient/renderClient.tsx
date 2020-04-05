@@ -24,6 +24,15 @@ export function renderClient(opts: IOpts): any {
     path = window.g_path as string;
   }
 
+  // 暂不支持子路由
+  for (const route of opts.routes) {
+    if (route.routes) {
+      throw new Error(
+        `Render failed, child routes is not supported in mpa renderer.`,
+      );
+    }
+  }
+
   const RouteComponent = getRootContainer({ routes: opts.routes, path });
   if (!RouteComponent) {
     throw new Error(`Render failed, route of path ${path} not found.`);

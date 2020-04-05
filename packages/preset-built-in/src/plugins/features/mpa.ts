@@ -17,9 +17,12 @@ export default (api: IApi) => {
   });
 
   api.modifyDefaultConfig((memo) => {
+    // 默认导出 html，并且用 htmlSuffix
     memo.exportStatic = {
       htmlSuffix: true,
     };
+
+    // 禁用 history 功能
     // @ts-ignore
     memo.history = false;
     return memo;

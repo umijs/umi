@@ -61,3 +61,15 @@ test('normal', () => {
     });
   }).toThrow(/Render failed, route of path \/haha not found\./);
 });
+
+test('do not support child routes', () => {
+  const plugin = new Plugin({
+    validKeys: [],
+  });
+  expect(() => {
+    renderClient({
+      routes: [{ path: '/', routes: [] }],
+      plugin,
+    });
+  }).toThrow(/Render failed, child routes is not supported in mpa renderer\./);
+});
