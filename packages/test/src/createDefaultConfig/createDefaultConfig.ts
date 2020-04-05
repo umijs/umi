@@ -1,13 +1,16 @@
 // @ts-ignore
-import { isLernaPackage } from '@umijs/utils';
+import { isLernaPackage, winPath } from '@umijs/utils';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import assert from 'assert';
+
 import { IUmiTestArgs } from '../types';
 
 export default function (cwd: string, args: IUmiTestArgs) {
   const testMatchTypes = ['spec', 'test'];
-  if (args.e2e) {
+  const { e2e } = args;
+
+  if (e2e) {
     testMatchTypes.push('e2e');
   }
 
@@ -43,7 +46,7 @@ export default function (cwd: string, args: IUmiTestArgs) {
     },
     setupFiles: [require.resolve('../../helpers/setupFiles/shim')],
     setupFilesAfterEnv: [require.resolve('../../helpers/setupFiles/jasmine')],
-    testEnvironment: require.resolve('jest-environment-jsdom-fourteen'),
+    testEnvironment: winPath(join(__dirname, '../e2e/PuppeteerEnvironment')),
     testMatch: [
       `${testMatchPrefix}**/?*.(${testMatchTypes.join('|')}).(j|t)s?(x)`,
     ],

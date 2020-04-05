@@ -7,6 +7,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
 import { IUmiTestArgs, PickedJestCliOptions } from './types';
+import initPuppeteer from './e2e/initPuppeteer';
 
 const debug = createDebug('umi:test');
 
@@ -41,6 +42,9 @@ export default async function (args: IUmiTestArgs) {
   const packageJestConfig =
     existsSync(packageJSONPath) && require(packageJSONPath).jest;
   debug(`jest config from package.json: ${JSON.stringify(packageJestConfig)}`);
+
+  // if need install puppeteer
+  await initPuppeteer();
 
   // Merge configs
   // user config and args config could have value function for modification
