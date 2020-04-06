@@ -135,7 +135,7 @@ Umi 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.
 ]
 ```
 
-You can customize global `layout` as below：
+一个自定义的全局 `layout` 如下：
 
 ```tsx
 import { IRouteComponentProps } from 'umi'

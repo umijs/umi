@@ -127,6 +127,7 @@ export interface IApi extends PluginAPI {
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
+  modifyRendererPath: IModify<string, null>;
   modifyPublicPathStr: IModify<string, { route: IRoute }>;
   modifyBundler: IModify<any, null>;
   modifyBundleConfigOpts: IModify<
@@ -269,6 +270,7 @@ export interface IConfig extends IConfigCore {
   links?: Partial<HTMLLinkElement>[];
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
+  mpa?: object;
   mock?:
     | {
         exclude?: string[];

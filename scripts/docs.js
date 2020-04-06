@@ -18,6 +18,8 @@ const DOC_SYNC_BLACKLIST = [
   'docs/runtime-config.zh-CN.md',
   'docs/directory-structure.zh-CN.md',
   'docs/load-on-demand.zh-CN.md',
+  'docs/navigate-between-pages.zh-CN.md',
+  'api/README.zh-CN.md',
 ];
 
 switch (command) {

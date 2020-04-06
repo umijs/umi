@@ -2,7 +2,6 @@
 nav:
   title: API
 toc: menu
-translateHelp: true
 ---
 
 # API

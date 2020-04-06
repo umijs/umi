@@ -29,6 +29,7 @@
     "@umijs/babel-preset-umi": "3.0.18",
     "@umijs/bundler-webpack": "3.0.18",
     "@umijs/renderer-react": "3.0.18",
+    "@umijs/renderer-mpa": "3.0.18",
     "@umijs/runtime": "3.0.18",
     "@umijs/server": "3.0.18",
     "@umijs/types": "3.0.18",

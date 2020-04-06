@@ -42,6 +42,7 @@ export default function () {
       require.resolve('./plugins/features/lessLoader'),
       require.resolve('./plugins/features/manifest'),
       require.resolve('./plugins/features/mountElementId'),
+      require.resolve('./plugins/features/mpa'),
       require.resolve('./plugins/features/outputPath'),
       require.resolve('./plugins/features/plugins'),
       require.resolve('./plugins/features/postcssLoader'),

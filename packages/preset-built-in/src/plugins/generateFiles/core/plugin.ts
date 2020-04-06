@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
 import { getFile, winPath } from '@umijs/utils';
 
@@ -31,7 +31,9 @@ export default function (api: IApi) {
       path: 'core/plugin.ts',
       content: Mustache.render(pluginTpl, {
         validKeys,
-        runtimePath: winPath(require.resolve('@umijs/runtime')),
+        runtimePath: winPath(
+          dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
         plugins: plugins.map(winPath),
       }),
     });

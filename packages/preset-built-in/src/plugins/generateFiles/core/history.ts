@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 
@@ -24,7 +24,14 @@ export default function (api: IApi) {
   });
 
   api.onGenerateFiles(async () => {
-    const historyTpl = readFileSync(join(__dirname, 'history.tpl'), 'utf-8');
+    const historyTpl = readFileSync(
+      join(
+        __dirname,
+        // @ts-ignore
+        api.config.history === false ? 'history.sham.tpl' : 'history.tpl',
+      ),
+      'utf-8',
+    );
     const history = api.config.history!;
     const { type, options = {} } = history;
 
@@ -42,12 +49,17 @@ export default function (api: IApi) {
           null,
           2,
         ),
-        runtimePath: winPath(require.resolve('@umijs/runtime')),
+        runtimePath: winPath(
+          dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
       }),
     });
   });
 
   api.addUmiExports(() => {
+    // @ts-ignore
+    if (api.config.history === false) return [];
+
     return {
       specifiers: ['history', 'setCreateHistoryOptions'],
       source: `./history`,
