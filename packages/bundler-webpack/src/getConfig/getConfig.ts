@@ -17,7 +17,7 @@ import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
 import {
   isMatch,
-  ALL_EXCLUDE,
+  TYPE_ALL_EXCLUDE,
   excludeToPkgs,
   es5ImcompatibleVersionsToPkg,
 } from './nodeModulesTransform';
@@ -193,7 +193,7 @@ export default async function getConfig(
   };
   if (nodeModulesTransform.type === 'all') {
     const exclude = lodash.uniq([
-      ...ALL_EXCLUDE,
+      ...TYPE_ALL_EXCLUDE,
       ...(nodeModulesTransform.exclude || []),
     ]);
     const pkgs = excludeToPkgs({ exclude });

@@ -4,8 +4,8 @@ import { dirname } from 'path';
 const pkgPathCache = {};
 const pkgCache = {};
 
-// 以下依赖不走 babel 编译
-export const ALL_EXCLUDE = [
+// type 为 all 时以下依赖不走 babel 编译
+export const TYPE_ALL_EXCLUDE = [
   '@ant-design/icons',
   '@babel/runtime',
   'bizcharts',
