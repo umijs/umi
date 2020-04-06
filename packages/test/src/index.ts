@@ -8,6 +8,7 @@ import { existsSync } from 'fs';
 import createDefaultConfig from './createDefaultConfig/createDefaultConfig';
 import { IUmiTestArgs, PickedJestCliOptions } from './types';
 import initPuppeteer from './e2e/initPuppeteer';
+import Puppeteer from 'puppeteer-core';
 
 const debug = createDebug('umi:test');
 
@@ -84,4 +85,24 @@ export default async function (args: IUmiTestArgs) {
 
   // Throw error when run failed
   assert(result.results.success, `Test with jest failed`);
+}
+
+declare global {
+  export const waitTime: (wait: number) => Promise<void>;
+  export const browser: Puppeteer.Browser;
+  export const page: Puppeteer.Page & {
+    fullPageScreenshot: (
+      option?: Puppeteer.ScreenshotOptions,
+    ) => Promise<string | Buffer>;
+  };
+
+  namespace jest {
+    interface Matchers<R> {
+      toMatchImageSnapshot(options?: {
+        noColors?: boolean;
+        failureThreshold?: number;
+        failureThresholdType?: 'percent' | 'pixel';
+      }): R;
+    }
+  }
 }

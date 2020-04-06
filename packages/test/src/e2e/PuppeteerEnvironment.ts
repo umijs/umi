@@ -45,6 +45,14 @@ class PuppeteerEnvironment extends NodeEnvironment {
       return image;
     };
 
+    const waitTime = (timeout: number) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, timeout);
+      });
+    };
+
     // 获取用户台的输出
     page.on('console', (msg) => {
       if (msg.type.toString() === 'error') {
@@ -52,6 +60,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
       }
     });
 
+    this.global.waitTime = waitTime;
     this.global.page.fullPageScreenshot = fullPageScreenshot;
   }
 
