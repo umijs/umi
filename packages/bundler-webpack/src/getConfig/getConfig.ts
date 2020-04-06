@@ -11,10 +11,16 @@ import {
   getBabelPresetOpts,
   getTargetsAndBrowsersList,
 } from '@umijs/bundler-utils';
+import { lodash } from '@umijs/utils';
 import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
-import shouldExclude from './shouldExclude';
+import {
+  isMatch,
+  TYPE_ALL_EXCLUDE,
+  excludeToPkgs,
+  es5ImcompatibleVersionsToPkg,
+} from './nodeModulesTransform';
 
 export interface IOpts {
   cwd: string;
@@ -177,23 +183,51 @@ export default async function getConfig(
         .options(babelOpts);
 
   // prettier-ignore
-  webpackConfig.module
+  const rule = webpackConfig.module
     .rule('js-in-node_modules')
-      .test(/\.(js|mjs)$/)
-      .include.add(/node_modules/).end()
-      // TODO: 处理 tnpm 下 @babel/runtime 路径变更问题
-      .exclude
-        .add((path) => {
-          return shouldExclude({ path });
-        })
+      .test(/\.(js|mjs)$/);
+
+  const nodeModulesTransform = config.nodeModulesTransform || {
+    type: 'all',
+    exclude: [],
+  };
+  if (nodeModulesTransform.type === 'all') {
+    const exclude = lodash.uniq([
+      ...TYPE_ALL_EXCLUDE,
+      ...(nodeModulesTransform.exclude || []),
+    ]);
+    const pkgs = excludeToPkgs({ exclude });
+    // prettier-ignore
+    rule
+      .include
+        .add(/node_modules/)
         .end()
-      .use('babel-loader')
-        .loader(require.resolve('babel-loader'))
-        .options(getBabelDepsOpts({
-          cwd,
-          env,
-          config,
-        }));
+      .exclude.add((path) => {
+        return isMatch({ path, pkgs });
+      })
+        .end();
+  } else {
+    const pkgs = {
+      ...es5ImcompatibleVersionsToPkg(),
+      ...excludeToPkgs({ exclude: nodeModulesTransform.exclude || [] }),
+    };
+    rule.include
+      .add((path) => {
+        return isMatch({
+          path,
+          pkgs,
+        });
+      })
+      .end();
+  }
+
+  rule.use('babel-loader').loader(require.resolve('babel-loader')).options(
+    getBabelDepsOpts({
+      cwd,
+      env,
+      config,
+    }),
+  );
 
   // prettier-ignore
   webpackConfig.module
