@@ -45,5 +45,8 @@
   },
   "bin": {
     "umi-test": "bin/umi-test.js"
+  },
+  "devDependencies": {
+    "@types/puppeteer-core": "^2.0.0"
   }
 }
