@@ -6616,6 +6616,11 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
+es5-imcompatible-versions@^0.1.58:
+  version "0.1.58"
+  resolved "https://registry.yarnpkg.com/es5-imcompatible-versions/-/es5-imcompatible-versions-0.1.58.tgz#f0ab073e540aaac1d9f2f4d5ab004bd4e1e57435"
+  integrity sha512-1CrVo9T0YEJuN4b/DsRo5XpMWginR0sXz4IqoKZ9plyNlXusoeNhMfSSRj4Wl5XvdM0vp20/YbZRcQaxpgnI7Q==
+
 es6-promise@^4.0.3:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
