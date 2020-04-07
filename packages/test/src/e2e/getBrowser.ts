@@ -18,6 +18,7 @@ const getBrowser = async (): Promise<Puppeteer.Browser> => {
     const puppeteer = require('puppeteer');
     const browser = await puppeteer.launch({
       args: puppeteerArgs,
+      timeout: 60000,
       headless,
     });
     return browser;
@@ -33,6 +34,7 @@ const getBrowser = async (): Promise<Puppeteer.Browser> => {
     const browser = await puppeteer.launch({
       executablePath,
       headless,
+      timeout: 60000,
       args: puppeteerArgs,
     });
     return browser;
