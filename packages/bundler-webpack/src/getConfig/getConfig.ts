@@ -75,6 +75,7 @@ export default async function getConfig(
     Object.keys(entry).forEach((key) => {
       const e = webpackConfig.entry(key);
       if (hot && isDev) {
+        e.add(require.resolve('../../dist/webpackHotDevClient'));
         e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
       }
       if (config.runtimePublicPath) {

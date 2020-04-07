@@ -13,7 +13,10 @@ export default (api: IApi) => {
       },
     },
     enableBy: () => {
-      return process.env.BABEL_POLYFILL !== 'none';
+      return (
+        process.env.NODE_ENV === 'production' &&
+        process.env.BABEL_POLYFILL !== 'none'
+      );
     },
   });
 

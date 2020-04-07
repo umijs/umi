@@ -38,6 +38,16 @@ if (args.version && !command) {
 }
 
 (async () => {
+  const configPath = join(cwd, args.config || 'config.ts');
+  const babelRegister = new BabelRegister();
+  babelRegister.setOnlyMap({
+    key: 'config',
+    value: [configPath],
+  });
+  const config = existsSync(configPath)
+    ? compatESModuleRequire(require(configPath))
+    : {};
+
   let entry: string = args.entry;
   if (entry) {
     entry = join(cwd, entry);
@@ -58,16 +68,6 @@ if (args.version && !command) {
     entry = files[0]?.path!;
   }
 
-  const configPath = join(cwd, args.config || 'config.ts');
-  const babelRegister = new BabelRegister();
-  babelRegister.setOnlyMap({
-    key: 'config',
-    value: [configPath],
-  });
-  const config = existsSync(configPath)
-    ? compatESModuleRequire(require(configPath))
-    : {};
-
   const bundler = new Bundler({
     cwd,
     config,
@@ -77,7 +77,7 @@ if (args.version && !command) {
     env,
     type: ConfigType.csr,
     hot: args.hot,
-    entry: {
+    entry: config.entry || {
       [basename(entry, extname(entry))]: entry,
     },
   });
