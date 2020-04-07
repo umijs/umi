@@ -3632,10 +3632,10 @@
   resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.2.0.tgz#446098e79eb9ea6d9b168b6a302fc4921a776b08"
   integrity sha512-M0TWE/9pYIarxTs5RFoRCQrhG1x6MyURLMBTQoEVuVcJVgmeXP2P6khdoCcKXvGHdDRU48mec3ejJNShv6pGgw==
 
-"@umijs/preset-dumi@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.0.13.tgz#57f425ed83d49f40f9473fcc476c7a84ba9d3278"
-  integrity sha512-hYnOJgN66T7hO5+VXWWPToGvN+4Jj/KKZhAIIZXWKC4Z+AgfLeTM5bf8wmL2R+AG/TU7Z5BRjk2HeHjyUsANOA==
+"@umijs/preset-dumi@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@umijs/preset-dumi/-/preset-dumi-1.0.14.tgz#86ff06d29c128e54d90afd8b7610a0a9b815d89e"
+  integrity sha512-unW1Z07Tm62y1h62ADB3GMmQTyKVq/EHqHW9ue5a6yUuMBUCVX+1/4P+EzTUBFqLGVu/rE+gBu9KCgzxpSJAhw==
   dependencies:
     "@babel/core" "^7.7.2"
     "@babel/generator" "^7.7.2"

@@ -163,7 +163,7 @@ export default {
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
 
-## cssModulesTypescriptLoader
+## cssModulesTypescriptLoader <Badge>3.1+</Badge>
 
 * type: `{ mode: 'verify' | 'emit' }`
 * Default: `undefined`
@@ -658,7 +658,7 @@ export default {
 
 * 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
 
-## mpa
+## mpa <Badge>3.1+</Badge>
 
 * Type: `object`
 
@@ -675,7 +675,7 @@ export default {
 * 只支持一级路由配置
 * 不支持 layout 或嵌套路由的配置
 
-## nodeModulesTransform
+## nodeModulesTransform <Badge>3.1+</Badge>
 
 * Type: `object`
 * Default: `{ type: 'all' }`
