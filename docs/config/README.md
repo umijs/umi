@@ -171,16 +171,8 @@ Emits TypeScript declaration files matching your CSS Modules in the same locatio
 
 ```js
 export default {
-  cssModulesTypescriptLoader: {}
+  cssModulesTypescriptLoader: {},
 }
-```
-
-same as
-
-```js
-export default {
-  cssModulesTypescriptLoader: {
-    mode: 'emit'
   }
 }
 ```
