@@ -94,12 +94,14 @@ declare global {
     fullPageScreenshot: (
       option?: Puppeteer.ScreenshotOptions,
     ) => Promise<string | Buffer>;
+    setFamily: () => Promise<void>;
   };
 
   namespace jest {
     interface Matchers<R> {
       toMatchImageSnapshot(options?: {
         noColors?: boolean;
+        dumpDiffToConsole: boolean;
         failureThreshold?: number;
         failureThresholdType?: 'percent' | 'pixel';
       }): R;

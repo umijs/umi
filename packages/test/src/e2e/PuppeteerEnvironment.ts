@@ -18,26 +18,28 @@ class PuppeteerEnvironment extends NodeEnvironment {
       height: 800,
     });
 
-    await page.evaluate(
-      () =>
-        new Promise((resolve) => {
-          const link = document.createElement('style') as any;
-          link.href = 'https://fonts.googleapis.com/css?family=Roboto+Mono';
-          link.rel = 'stylesheet';
-          const style = document.createElement('style');
-          const textNode = document.createTextNode(`
-              *{
-                font-family: 'Roboto Mono', monospace !important; 
-              }
-            `);
-          style.appendChild(textNode);
-          link.onload = () => {
-            resolve();
-          };
-          document.head.appendChild(link);
-          document.head.appendChild(style);
-        }),
-    );
+    const setFamily = async () => {
+      await page.evaluate(
+        () =>
+          new Promise((resolve) => {
+            const link = document.createElement('style') as any;
+            link.href = 'https://fonts.googleapis.com/css?family=Roboto+Mono';
+            link.rel = 'stylesheet';
+            const style = document.createElement('style');
+            const textNode = document.createTextNode(`
+                *{
+                  font-family: 'Roboto Mono', monospace !important; 
+                }
+              `);
+            style.appendChild(textNode);
+            link.onload = () => {
+              resolve();
+            };
+            document.head.appendChild(link);
+            document.head.appendChild(style);
+          }),
+      );
+    };
 
     /**
      * 滑动到页面底部，然后截图
@@ -89,6 +91,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
     this.global.waitTime = waitTime;
     this.global.page.fullPageScreenshot = fullPageScreenshot;
+    this.global.page.setFamily = setFamily;
   }
 
   async teardown() {
