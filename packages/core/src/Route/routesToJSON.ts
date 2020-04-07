@@ -34,6 +34,7 @@ export default function ({ routes, config, cwd }: IOpts) {
         .replace(/\.jsx?$/, '')
         .replace(/\.tsx?$/, '')
         .replace(/^src__/, '')
+        .replace(/\.\.__/g, '')
         // 约定式路由的 [ 会导致 webpack 的 code splitting 失败
         // ref: https://github.com/umijs/umi/issues/4155
         .replace(/[\[\]]/g, '')
