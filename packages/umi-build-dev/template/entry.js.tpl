@@ -155,9 +155,7 @@ if (!__IS_BROWSER) {
       htmlElement: matchPath ? htmlTemplateMap[matchPath] : '',
       rootContainer,
       matchPath,
-      g_initialData: {
-        [ctx.req.url]: props
-      },
+      g_initialData: props,
       context,
     };
   }
