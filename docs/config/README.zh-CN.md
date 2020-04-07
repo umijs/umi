@@ -176,13 +176,13 @@ export default {
 }
 ```
 
-等同于
+等同于，
 
 ```js
 export default {
   cssModulesTypescriptLoader: {
-    mode: 'emit'
-  }
+    mode: 'emit',
+  },
 }
 ```
 
