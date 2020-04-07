@@ -166,7 +166,7 @@ export default {
 * type: `{ mode: 'verify' | 'emit' }`
 * Default: `undefined`
 
-对按照css modules方式引入的css/less等样式文件，自动生成对应的ts类型定义文件。
+对按照 css modules 方式引入的 css 或 less 等样式文件，自动生成 ts 类型定义文件。
 
 比如：
 
@@ -176,7 +176,7 @@ export default {
 }
 ```
 
-等同于，
+等同于以下配置，`mode` 默认为 `emit`，
 
 ```js
 export default {

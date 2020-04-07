@@ -162,18 +162,29 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+
 ## cssModulesTypescriptLoader
 
 * type: `{ mode: 'verify' | 'emit' }`
 * Default: `undefined`
 
-Emits TypeScript declaration files matching your CSS Modules in the same location as your source files, e.g. src/Component.css will generate src/Component.css.d.ts.
+对按照 css modules 方式引入的 css 或 less 等样式文件，自动生成 ts 类型定义文件。
+
+比如：
 
 ```js
 export default {
   cssModulesTypescriptLoader: {},
 }
-  }
+```
+
+等同于以下配置，`mode` 默认为 `emit`，
+
+```js
+export default {
+  cssModulesTypescriptLoader: {
+    mode: 'emit',
+  },
 }
 ```
 
