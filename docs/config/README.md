@@ -162,6 +162,32 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+
+## cssModulesTypescriptLoader <Badge>3.1+</Badge>
+
+* type: `{ mode: 'verify' | 'emit' }`
+* Default: `undefined`
+
+对按照 css modules 方式引入的 css 或 less 等样式文件，自动生成 ts 类型定义文件。
+
+比如：
+
+```js
+export default {
+  cssModulesTypescriptLoader: {},
+}
+```
+
+等同于以下配置，`mode` 默认为 `emit`，
+
+```js
+export default {
+  cssModulesTypescriptLoader: {
+    mode: 'emit',
+  },
+}
+```
+
 ## cssnano
 
 * Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
@@ -632,7 +658,7 @@ export default {
 
 * 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
 
-## mpa
+## mpa <Badge>3.1+</Badge>
 
 * Type: `object`
 
@@ -649,7 +675,7 @@ export default {
 * 只支持一级路由配置
 * 不支持 layout 或嵌套路由的配置
 
-## nodeModulesTransform
+## nodeModulesTransform <Badge>3.1+</Badge>
 
 * Type: `object`
 * Default: `{ type: 'all' }`

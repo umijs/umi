@@ -12,3 +12,5 @@
 .umi-test
 **/fixtures/**/dist
 .now
+**/*.less.d.ts
+**/*.css.d.ts

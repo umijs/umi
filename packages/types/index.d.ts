@@ -238,6 +238,7 @@ export interface IConfig extends IConfigCore {
   };
   chunks?: string[];
   cssLoader?: object;
+  cssModulesTypescriptLoader?: { mode: 'verify' | 'emit' };
   cssnano?: object;
   copy?: string[];
   define?: {

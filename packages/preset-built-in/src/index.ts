@@ -24,6 +24,7 @@ export default function () {
       require.resolve('./plugins/features/chainWebpack'),
       require.resolve('./plugins/features/chunks'),
       require.resolve('./plugins/features/cssLoader'),
+      require.resolve('./plugins/features/cssModulesTypescriptLoader'),
       require.resolve('./plugins/features/cssnano'),
       require.resolve('./plugins/features/copy'),
       require.resolve('./plugins/features/define'),

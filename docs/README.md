@@ -25,7 +25,7 @@ features:
   - icon: https://gw.alipayobjects.com/zos/basement_prod/d078a5a9-1cb3-4352-9f05-505c2e98bc95/k7788v4b_w102_h126.png
     title: Future Ready
     desc: Umi's community is also exploring new technologies. For example, modern mode, webpack @ 5, automated external, bundler less, etc.
-footer: Open-source MIT Licensed | Copyright © 2017-present
+footer: Open-source MIT Licensed | Copyright © 2017-present<br />Powered by [dumi](https://d.umijs.org/). 
 
 ---
 
