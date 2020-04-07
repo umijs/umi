@@ -37,6 +37,7 @@ const getBrowser = async (): Promise<Puppeteer.Browser> => {
     });
     return browser;
   } catch (error) {
+    console.log(error);
     console.log('🧲 no find chrome');
   }
   throw new Error('no find puppeteer');
