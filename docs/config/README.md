@@ -162,6 +162,21 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+## cssModulesTypescriptLoader
+
+* type: `{ mode: 'verify' | 'emit' }`
+* Default: `undefined`
+
+Emits TypeScript declaration files matching your CSS Modules in the same location as your source files, e.g. src/Component.css will generate src/Component.css.d.ts.
+
+```js
+export default {
+  cssModulesTypescriptLoader: {},
+}
+  }
+}
+```
+
 ## cssnano
 
 * Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`

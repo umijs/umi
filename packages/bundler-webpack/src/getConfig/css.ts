@@ -63,6 +63,13 @@ export function createCSSRule({
         });
     }
 
+    if (isDev && isCSSModules && config.cssModulesTypescriptLoader) {
+      rule
+        .use('css-modules-typescript-loader')
+        .loader(require.resolve('css-modules-typescript-loader'))
+        .options(config.cssModulesTypescriptLoader);
+    }
+
     rule
       .use('css-loader')
       .loader(require.resolve('css-loader'))

@@ -160,6 +160,32 @@ export default {
 
 设置 [css-loader 配置项](https://github.com/webpack-contrib/css-loader#options)。
 
+
+## cssModulesTypescriptLoader
+
+* type: `{ mode: 'verify' | 'emit' }`
+* Default: `undefined`
+
+对按照css modules方式引入的css/less等样式文件，自动生成对应的ts类型定义文件。
+
+比如：
+
+```js
+export default {
+  cssModulesTypescriptLoader: {},
+}
+```
+
+等同于，
+
+```js
+export default {
+  cssModulesTypescriptLoader: {
+    mode: 'emit',
+  },
+}
+```
+
 ## cssnano
 
 * Type: `{ mergeRules: false, minifyFontValues: { removeQuotes: false } }`
