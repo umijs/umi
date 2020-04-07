@@ -8,5 +8,6 @@ test('with img', async () => {
   expect(image).toMatchImageSnapshot({
     dumpDiffToConsole: true,
     failureThreshold: 0.2,
+    blur: 10,
   });
 });

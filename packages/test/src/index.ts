@@ -103,6 +103,7 @@ declare global {
         noColors?: boolean;
         dumpDiffToConsole: boolean;
         failureThreshold?: number;
+        blur: number;
         failureThresholdType?: 'percent' | 'pixel';
       }): R;
     }
