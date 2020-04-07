@@ -11,7 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "declaration": true
+    "declaration": true,
+    "outDir": "./dist"
   },
   "exclude": [
     "node_modules",

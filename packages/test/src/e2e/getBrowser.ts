@@ -8,6 +8,7 @@ const puppeteerArgs = [
   '--no-first-run',
   '--no-zygote',
   '--no-sandbox',
+  '--font-render-hinting=medium',
 ];
 
 const timeout = 60000;

@@ -5,6 +5,11 @@ import Puppeteer from 'puppeteer-core';
 class PuppeteerEnvironment extends NodeEnvironment {
   async setup() {
     const browser = await getBrowser();
+
+    if (this.global.page) {
+      await this.global.page.close();
+    }
+
     const page = await browser.newPage();
     this.global.browser = browser;
     this.global.page = page;
@@ -12,6 +17,27 @@ class PuppeteerEnvironment extends NodeEnvironment {
       width: 1440,
       height: 800,
     });
+
+    await page.evaluate(
+      () =>
+        new Promise((resolve) => {
+          const link = document.createElement('style') as any;
+          link.href = 'https://fonts.googleapis.com/css?family=Roboto+Mono';
+          link.rel = 'stylesheet';
+          const style = document.createElement('style');
+          const textNode = document.createTextNode(`
+              *{
+                font-family: 'Roboto Mono', monospace !important; 
+              }
+            `);
+          style.appendChild(textNode);
+          link.onload = () => {
+            resolve();
+          };
+          document.head.appendChild(link);
+          document.head.appendChild(style);
+        }),
+    );
 
     /**
      * 滑动到页面底部，然后截图
@@ -32,7 +58,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
               totalHeight += distance;
               if (totalHeight >= scrollHeight) {
                 clearInterval(timer);
-                resolve(totalHeight);
+                window.scrollBy(0, -80);
+                resolve(scrollHeight);
               }
             }, 100);
           }),
