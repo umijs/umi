@@ -65,7 +65,10 @@ class Bundler {
       publicPath: '/',
       logLevel: 'silent',
       watchOptions: {
-        ignored: /node_modules/,
+        ignored:
+          process.env.WATCH_IGNORED === 'none'
+            ? undefined
+            : new RegExp(process.env.WATCH_IGNORED || 'node_modules'),
       },
     });
 

@@ -6,7 +6,7 @@ interface IResolver<U> {
 }
 
 const StringResolver: IResolver<t.StringLiteral> = {
-  is(src: any) {
+  is(src) {
     return t.isStringLiteral(src);
   },
   get(src) {
@@ -15,7 +15,7 @@ const StringResolver: IResolver<t.StringLiteral> = {
 };
 
 const NumberResolver: IResolver<t.NumericLiteral> = {
-  is(src: any) {
+  is(src) {
     return t.isNumericLiteral(src);
   },
   get(src) {
@@ -24,7 +24,7 @@ const NumberResolver: IResolver<t.NumericLiteral> = {
 };
 
 const BooleanResolver: IResolver<t.BooleanLiteral> = {
-  is(src: any) {
+  is(src) {
     return t.isBooleanLiteral(src);
   },
   get(src) {
@@ -33,7 +33,7 @@ const BooleanResolver: IResolver<t.BooleanLiteral> = {
 };
 
 const NullResolver: IResolver<t.NullLiteral> = {
-  is(src: any) {
+  is(src) {
     return t.isNullLiteral(src);
   },
   get(src) {
@@ -42,7 +42,7 @@ const NullResolver: IResolver<t.NullLiteral> = {
 };
 
 const UndefinedResolver: IResolver<t.Identifier> = {
-  is(src: any) {
+  is(src) {
     return t.isIdentifier(src) && src.name === 'undefined';
   },
   get(src) {
@@ -50,25 +50,71 @@ const UndefinedResolver: IResolver<t.Identifier> = {
   },
 };
 
-const ObjectResolver: IResolver<t.ObjectExpression> = {
-  is(src: any) {
+const ObjectLiteralResolver: IResolver<t.ObjectExpression> = {
+  is(src) {
     return t.isObjectExpression(src);
   },
   get(src) {
-    return findObjectProperties(src);
+    return findObjectLiteralProperties(src);
+  },
+};
+
+const ObjectResolver: IResolver<t.ObjectExpression> = {
+  is(src) {
+    return t.isObjectExpression(src);
+  },
+  get(src) {
+    return findObjectMembers(src);
+  },
+};
+
+const ArrayLiteralResolver: IResolver<t.ArrayExpression> = {
+  is(src) {
+    return t.isArrayExpression(src);
+  },
+  get(src) {
+    return findArrayLiteralElements(src);
   },
 };
 
 const ArrayResolver: IResolver<t.ArrayExpression> = {
-  is(src: any) {
+  is(src) {
     return t.isArrayExpression(src);
   },
   get(src) {
-    return findArrayProperties(src);
+    return findArrayElements(src);
   },
 };
 
-export const RESOLVABLE_WHITELIST = [
+const FunctionResolver: IResolver<t.FunctionExpression> = {
+  is(src) {
+    return t.isFunctionExpression(src);
+  },
+  get(src) {
+    return function () {};
+  },
+};
+
+const ArrowFunctionResolver: IResolver<t.ArrowFunctionExpression> = {
+  is(src) {
+    return t.isArrowFunctionExpression(src);
+  },
+  get(src) {
+    return () => {};
+  },
+};
+
+export const LITERAL_NODE_RESOLVERS = [
+  StringResolver,
+  NumberResolver,
+  BooleanResolver,
+  NullResolver,
+  UndefinedResolver,
+  ObjectLiteralResolver,
+  ArrayLiteralResolver,
+];
+
+export const NODE_RESOLVERS = [
   StringResolver,
   NumberResolver,
   BooleanResolver,
@@ -76,13 +122,15 @@ export const RESOLVABLE_WHITELIST = [
   UndefinedResolver,
   ObjectResolver,
   ArrayResolver,
+  FunctionResolver,
+  ArrowFunctionResolver,
 ];
 
-function findObjectProperties(node: t.ObjectExpression) {
+export function findObjectLiteralProperties(node: t.ObjectExpression) {
   const target = {};
   node.properties.forEach((p) => {
     if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
-      const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+      const resolver = LITERAL_NODE_RESOLVERS.find((resolver) =>
         resolver.is(p.value),
       );
       if (resolver) {
@@ -93,10 +141,40 @@ function findObjectProperties(node: t.ObjectExpression) {
   return target;
 }
 
-function findArrayProperties(node: t.ArrayExpression) {
+export function findObjectMembers(node: t.ObjectExpression) {
+  const target = {};
+  node.properties.forEach((p) => {
+    if (t.isObjectMember(p) && t.isIdentifier(p.key)) {
+      if (t.isObjectMethod(p)) {
+        target[p.key.name] = () => {};
+      } else {
+        const resolver = NODE_RESOLVERS.find((resolver) =>
+          resolver.is(p.value),
+        );
+        if (resolver) {
+          target[p.key.name] = resolver.get(p.value as any);
+        }
+      }
+    }
+  });
+  return target;
+}
+
+export function findArrayLiteralElements(node: t.ArrayExpression) {
   const target: any[] = [];
   node.elements.forEach((p) => {
-    const resolver = RESOLVABLE_WHITELIST.find((resolver) => resolver.is(p));
+    const resolver = LITERAL_NODE_RESOLVERS.find((resolver) => resolver.is(p));
+    if (resolver) {
+      target.push(resolver.get(p as any));
+    }
+  });
+  return target;
+}
+
+export function findArrayElements(node: t.ArrayExpression) {
+  const target: any[] = [];
+  node.elements.forEach((p) => {
+    const resolver = NODE_RESOLVERS.find((resolver) => resolver.is(p));
     if (resolver) {
       target.push(resolver.get(p as any));
     }

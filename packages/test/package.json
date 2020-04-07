@@ -1,6 +1,6 @@
 {
   "name": "@umijs/test",
-  "version": "3.0.14",
+  "version": "3.0.18",
   "description": "@umijs/test",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,15 +26,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "7.8.7",
-    "@umijs/babel-preset-umi": "3.0.14",
-    "@umijs/utils": "3.0.14",
+    "@babel/core": "7.9.0",
+    "@umijs/babel-preset-umi": "3.0.18",
+    "@umijs/utils": "3.0.18",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^25.1.0",
+    "babel-jest": "^25.2.6",
     "core-js": "3.6.4",
     "identity-obj-proxy": "3.0.0",
-    "jest": "^25.1.0",
-    "jest-cli": "^25.1.0",
+    "jest": "^25.2.6",
+    "jest-cli": "^25.2.6",
     "jest-environment-jsdom-fourteen": "1.0.1",
     "regenerator-runtime": "^0.13.5",
     "whatwg-fetch": "^3.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "@umijs/preset-built-in",
-  "version": "3.0.14",
+  "version": "3.0.18",
   "description": "@umijs/preset-built-in",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -27,14 +27,17 @@
     "@hapi/joi": "16.1.8",
     "@types/multer": "1.4.2",
     "@types/react-router-config": "5.0.1",
-    "@umijs/babel-preset-umi": "3.0.14",
-    "@umijs/bundler-webpack": "3.0.14",
-    "@umijs/renderer-react": "3.0.14",
-    "@umijs/runtime": "3.0.14",
-    "@umijs/server": "3.0.14",
-    "@umijs/types": "3.0.14",
+    "@umijs/babel-preset-umi": "3.0.18",
+    "@umijs/bundler-webpack": "3.0.18",
+    "@umijs/renderer-react": "3.0.18",
+    "@umijs/renderer-mpa": "3.0.18",
+    "@umijs/runtime": "3.0.18",
+    "@umijs/server": "3.0.18",
+    "@umijs/types": "3.0.18",
+    "@umijs/utils": "3.0.18",
     "cliui": "6.0.0",
-    "fork-ts-checker-webpack-plugin": "4.1.1",
+    "es5-imcompatible-versions": "^0.1.58",
+    "fork-ts-checker-webpack-plugin": "4.1.2",
     "history-with-query": "4.10.3",
     "joi2types": "^1.0.0-beta.9",
     "multer": "1.4.2",
@@ -47,8 +50,5 @@
     "regenerator-runtime": "0.13.5",
     "umi-webpack-bundle-analyzer": "3.5.0",
     "zlib": "1.0.5"
-  },
-  "devDependencies": {
-    "pkg-up": "3.1.0"
   }
 }

@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { IApi } from '@umijs/types';
 import { winPath } from '@umijs/utils';
 
@@ -23,12 +23,21 @@ export default function (api: IApi) {
 
   api.onGenerateFiles(async (args) => {
     const umiTpl = readFileSync(join(__dirname, 'umi.tpl'), 'utf-8');
+    const rendererPath = await api.applyPlugins({
+      key: 'modifyRendererPath',
+      type: api.ApplyPluginsType.modify,
+      initialValue: require.resolve('@umijs/renderer-react'),
+    });
     api.writeTmpFile({
       path: 'umi.ts',
       content: Mustache.render(umiTpl, {
+        // @ts-ignore
+        enableTitle: api.config.title !== false,
         defaultTitle: api.config.title || '',
-        rendererPath: winPath(require.resolve('@umijs/renderer-react')),
-        runtimePath: winPath(require.resolve('@umijs/runtime')),
+        rendererPath: winPath(rendererPath),
+        runtimePath: winPath(
+          dirname(require.resolve('@umijs/runtime/package.json')),
+        ),
         rootElement: api.config.mountElementId,
         entryCode: (
           await api.applyPlugins({

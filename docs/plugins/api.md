@@ -357,6 +357,10 @@ TODO
 
 - `initialValue`: paths 对象
 
+### modifyRendererPath
+
+修改 renderer 路径，用于使用自定义的 renderer。
+
 ### modifyPublicPathStr
 
 修改 publicPath 字符串。

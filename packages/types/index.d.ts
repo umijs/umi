@@ -12,6 +12,10 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Server, IServerOpts } from '@umijs/server';
 import { Generator } from '@umijs/utils';
 import { IOpts as IBabelPresetUmiOpts } from '@umijs/babel-preset-umi';
+import {
+  IRouteComponentProps,
+  IRoute as IRouteProps,
+} from '@umijs/renderer-react';
 import webpack from 'webpack';
 import WebpackChain from 'webpack-chain';
 import {
@@ -21,6 +25,7 @@ import {
   Response,
   RequestHandler,
 } from 'express';
+import { History, Location } from 'history-with-query';
 
 interface IEvent<T> {
   (fn: { (args: T): void }): void;
@@ -122,6 +127,7 @@ export interface IApi extends PluginAPI {
 
   // ApplyPluginType.modify
   modifyPaths: IModify<string[], null>;
+  modifyRendererPath: IModify<string, null>;
   modifyPublicPathStr: IModify<string, { route: IRoute }>;
   modifyBundler: IModify<any, null>;
   modifyBundleConfigOpts: IModify<
@@ -264,12 +270,17 @@ export interface IConfig extends IConfigCore {
   links?: Partial<HTMLLinkElement>[];
   manifest?: Partial<IManifest>;
   metas?: Partial<HTMLMetaElement>[];
+  mpa?: object;
   mock?:
     | {
         exclude?: string[];
       }
     | false;
   mountElementId?: string;
+  nodeModulesTransform?: {
+    type: 'all' | 'none';
+    exclude: string[];
+  };
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
   polyfill?: { imports: string[] };
@@ -293,3 +304,5 @@ export interface IConfig extends IConfigCore {
 export { webpack };
 export { Html, IScriptConfig, IStyleConfig };
 export { Request, Express, Response, NextFunction, RequestHandler };
+
+export { History, Location, IRouteProps, IRouteComponentProps };

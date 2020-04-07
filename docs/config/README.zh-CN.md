@@ -101,6 +101,17 @@ export default {
 }
 ```
 
+支持异步，
+
+```js
+export default {
+  async chainWebpack(memo) {
+    await delay(100);
+    memo.resolve.alias.set('foo', '/tmp/a/b/foo');
+  }
+}
+```
+
 参数有，
 
 * memo，当前 webpack-chain对象
@@ -447,6 +458,8 @@ export default {
 }
 ```
 
+> 如果要使用本地的图片，图片请放到 `public` 目录
+
 HTML 中会生成，
 
 ```html
@@ -616,6 +629,42 @@ export default {
 注意：
 
 * 如果需要把应用打包成 umd 包导出，需设置 mountElementId 为 `''`
+
+## mpa
+
+* Type: `object`
+
+切换渲染模式为 mpa。
+
+包含以下特征：
+
+* 为每个页面输出 html
+* 输出不包含 react-router、react-router-dom、history 等库
+* 渲染和 url 解绑，html 文件放哪都能使用
+
+注意：
+
+* 只支持一级路由配置
+* 不支持 layout 或嵌套路由的配置
+
+## nodeModulesTransform
+
+* Type: `object`
+* Default: `{ type: 'all' }`
+
+设置 node\_modules 目录下依赖文件的编译方式。
+
+子配置项包含，
+
+* `type`，类型，可选 `all` 和 `none`
+* `exclude`，忽略的依赖库，包名，暂不支持绝对路径
+
+两种编译模式，
+
+* 默认是 `all`，全部编译，然后可以通过 `exclude` 忽略不需要编译的依赖库；
+* 可切换为 `none`，默认值编译 [es5-imcompatible-versions](https://github.com/umijs/es5-imcompatible-versions) 里声明的依赖，可通过 `exclude` 配置添加额外需要编译的；
+
+前者速度较慢，但可规避常见的兼容性等问题，后者反之。
 
 ## outputPath
 
@@ -922,6 +971,4 @@ export default {
 
 * 默认不会在 HTML 里输出 `<title>` 标签，通过动态渲染得到
 * 配 `exportStatic` 后会为每个 HTML 输出 `<title>` 标签
-
-> 建议经常在构建完后使用，更有利于应用优化。
-
+* 如果需要自行通过 react-helment 等方式渲染 title，配 `title: false` 可禁用内置的 title 渲染机制

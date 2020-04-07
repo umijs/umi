@@ -1,3 +1,5 @@
+// Config for dumi
+
 function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
   const menus = {
     '/plugins': [
@@ -53,7 +55,7 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/docs/routing',
           '/docs/convention-routing',
           '/docs/plugin',
-          // '/docs/navigate-between-pages',
+          '/docs/navigate-between-pages',
           '/docs/html-template',
           '/docs/mock',
           '/docs/env-variables',

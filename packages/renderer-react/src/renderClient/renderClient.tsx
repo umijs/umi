@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
 import { ApplyPluginsType, Plugin, Router } from '@umijs/runtime';
 import { matchRoutes } from 'react-router-config';
-import { IRoute } from '../types';
+import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
 interface IRouterComponentProps {
@@ -25,7 +25,10 @@ function RouterComponent(props: IRouterComponentProps) {
       const matchedRoutes = matchRoutes(props.routes, location.pathname);
 
       // Set title
-      if (typeof document !== 'undefined') {
+      if (
+        typeof document !== 'undefined' &&
+        renderRoutesProps.defaultTitle !== undefined
+      ) {
         document.title =
           (matchedRoutes.length &&
             // @ts-ignore

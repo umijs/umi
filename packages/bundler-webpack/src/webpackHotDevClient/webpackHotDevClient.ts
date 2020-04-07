@@ -12,13 +12,24 @@ let sock: InstanceType<typeof SockJS>;
 let retries: number = 0;
 let pending: HTMLDivElement | undefined;
 
-const getSocketHost = () => {
+function stripLastSlash(url: string) {
+  if (url.slice(-1) === '/') {
+    return url.slice(0, -1);
+  } else {
+    return url;
+  }
+}
+
+function getSocketHost() {
+  if (process.env.SOCKET_SERVER) {
+    return stripLastSlash(process.env.SOCKET_SERVER);
+  }
+
+  let host, protocol;
   const scripts = document.body?.querySelectorAll?.('script') || [];
   const dataFromSrc = scripts[scripts.length - 1]
     ? scripts[scripts.length - 1].getAttribute('src')
     : '';
-
-  let host, protocol;
   if (dataFromSrc && dataFromSrc.includes('umi.js')) {
     const urlParsed = url.parse(dataFromSrc);
     host = urlParsed.host;
@@ -30,9 +41,9 @@ const getSocketHost = () => {
   }
 
   return host && protocol ? url.format({ host, protocol }) : '';
-};
+}
 
-const initSocket = () => {
+function initSocket() {
   const host = getSocketHost();
   sock = new SockJS(`${host}/dev-server`);
 
@@ -85,6 +96,6 @@ const initSocket = () => {
       }, retryInMs);
     }
   };
-};
+}
 
 initSocket();

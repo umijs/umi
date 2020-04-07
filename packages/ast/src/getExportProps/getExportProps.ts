@@ -1,22 +1,39 @@
 import { t, traverse } from '@umijs/utils';
 import { parse } from '../utils/parse';
-import { RESOLVABLE_WHITELIST } from './propertyResolver';
+import {
+  NODE_RESOLVERS,
+  findArrayElements,
+  findObjectMembers,
+} from './propertyResolver';
 
 export function getExportProps(code: string) {
-  const ast = parse(code);
-  let props = {};
-  traverse.default(ast as any, {
+  const ast = parse(code) as babel.types.File;
+  let props: unknown = undefined;
+  traverse.default(ast, {
     Program: {
-      enter(path: any) {
+      enter(path) {
         const node = path.node;
         const defaultExport = findExportDefault(node);
-        if (!defaultExport || !t.isIdentifier(defaultExport)) return;
+        if (!defaultExport) return;
 
-        const { name } = defaultExport;
-        props = findAssignmentExpressionProps({
-          programNode: node,
-          name,
-        });
+        if (t.isIdentifier(defaultExport)) {
+          const { name } = defaultExport;
+          props = findAssignmentExpressionProps({
+            programNode: node,
+            name,
+          });
+        } else if (t.isObjectExpression(defaultExport)) {
+          props = findObjectMembers(defaultExport);
+        } else if (t.isArrayExpression(defaultExport)) {
+          props = findArrayElements(defaultExport);
+        } else {
+          const resolver = NODE_RESOLVERS.find((resolver) =>
+            resolver.is(defaultExport),
+          );
+          if (resolver) {
+            props = resolver.get(defaultExport as any);
+          }
+        }
       },
     },
   });
@@ -36,11 +53,10 @@ function findAssignmentExpressionProps(opts: {
   programNode: t.Program;
   name: string;
 }) {
-  const props = {};
+  const props: Partial<Record<keyof any, unknown>> = {};
   for (const n of opts.programNode.body) {
-    let node = n;
+    let node: t.Node = n;
     if (t.isExpressionStatement(node)) {
-      // @ts-ignore
       node = node.expression;
     }
     if (
@@ -49,7 +65,7 @@ function findAssignmentExpressionProps(opts: {
       t.isIdentifier(node.left.object) &&
       node.left.object.name === opts.name
     ) {
-      const resolver = RESOLVABLE_WHITELIST.find((resolver) =>
+      const resolver = NODE_RESOLVERS.find((resolver) =>
         resolver.is(t.isAssignmentExpression(node) && node.right),
       );
       if (resolver) {
