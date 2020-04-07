@@ -172,7 +172,7 @@ export default {
 
 ```js
 export default {
-  cssModulesTypescriptLoader: {}
+  cssModulesTypescriptLoader: {},
 }
 ```
 
