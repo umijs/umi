@@ -8,7 +8,9 @@ export default (api: IApi) => {
         flexbox: 'no-2009',
       },
       schema(joi) {
-        return joi.object().description('postcss autoprefixer, default flexbox: no-2009');
+        return joi
+          .object()
+          .description('postcss autoprefixer, default flexbox: no-2009');
       },
     },
   });

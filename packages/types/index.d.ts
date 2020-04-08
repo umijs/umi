@@ -179,6 +179,7 @@ export interface IApi extends PluginAPI {
   >;
 
   // ApplyPluginType.add
+  addDevScripts: IAdd<null, string>;
   addHTMLHeadScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
   addHTMLScripts: IAdd<{ route?: IRoute }, IScriptConfig>;
   addHTMLMetas: IAdd<{ route?: IRoute }, IHTMLTag>;

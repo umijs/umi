@@ -6,7 +6,8 @@
   "types": "lib/index.d.ts",
   "files": [
     "lib",
-    "bin"
+    "bin",
+    "bundled"
   ],
   "repository": {
     "type": "git",

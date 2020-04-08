@@ -14,6 +14,7 @@ export default function (api: IApi) {
     'onPatchRoutesBefore',
     'onDevCompileDone',
     'addBeforeMiddewares',
+    'addDevScripts',
     'addMiddewares',
     'addRuntimePlugin',
     'addRuntimePluginKey',

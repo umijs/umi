@@ -16,8 +16,8 @@ import css, { createCSSRule } from './css';
 import terserOptions from './terserOptions';
 import { objToStringified } from './utils';
 import {
-  isMatch,
   TYPE_ALL_EXCLUDE,
+  isMatch,
   excludeToPkgs,
   es5ImcompatibleVersionsToPkg,
 } from './nodeModulesTransform';
@@ -74,9 +74,10 @@ export default async function getConfig(
   if (entry) {
     Object.keys(entry).forEach((key) => {
       const e = webpackConfig.entry(key);
-      if (hot && isDev) {
-        e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
-      }
+      // 提供打包好的版本，不消耗 webpack 编译时间
+      // if (hot && isDev) {
+      //   e.add(require.resolve('../webpackHotDevClient/webpackHotDevClient'));
+      // }
       if (config.runtimePublicPath) {
         e.add(require.resolve('./runtimePublicPathEntry'));
       }
@@ -85,10 +86,14 @@ export default async function getConfig(
   }
 
   // devtool
+  const devtool = config.devtool as Config.DevTool;
   webpackConfig.devtool(
     isDev
-      ? (config.devtool as Config.DevTool) || 'cheap-module-source-map'
-      : (config.devtool as Config.DevTool),
+      ? // devtool 设为 false 时不 fallback 到 cheap-module-source-map
+        devtool === false
+        ? false
+        : devtool || 'cheap-module-source-map'
+      : devtool,
   );
 
   const useHash = config.hash && isProd;

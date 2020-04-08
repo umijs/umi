@@ -12,7 +12,8 @@ export default (api: IApi) => {
             https: joi.alternatives(joi.object(), joi.boolean()),
             http2: joi.boolean(),
             headers: joi.object(),
-          }).description('devServer configs')
+          })
+          .description('devServer configs')
           .unknown(true);
       },
     },
