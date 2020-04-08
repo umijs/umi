@@ -7,6 +7,7 @@ const pkgCache = {};
 // type 为 all 时以下依赖不走 babel 编译
 export const TYPE_ALL_EXCLUDE = [
   '@ant-design/icons',
+  '@ant-design/icons-svg',
   '@babel/runtime',
   'bizcharts',
   'core-js',
