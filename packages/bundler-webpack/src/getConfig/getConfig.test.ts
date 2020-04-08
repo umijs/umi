@@ -69,10 +69,11 @@ test('opts.entry + opts.hot', async () => {
     },
     hot: true,
   });
+  // webpackHotDevClient 不再有了
   // @ts-ignore
-  expect(config.entry!.bar[0]).toContain('webpackHotDevClient');
+  // expect(config.entry!.bar[0]).toContain('webpackHotDevClient');
   // @ts-ignore
-  expect(config.entry!.bar[1]).toEqual('bar.js');
+  expect(config.entry!.bar[0]).toEqual('bar.js');
 });
 
 test('config.devtool + development', async () => {

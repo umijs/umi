@@ -21,14 +21,17 @@ export default (api: IApi) => {
           .applyPlugins({
             key: 'addDevScripts',
             type: api.ApplyPluginsType.add,
-            initialValue: [
-              readFileSync(
-                require.resolve(
-                  '@umijs/bundler-webpack/bundled/webpackHotDevClient',
-                ),
-                'utf-8',
-              ),
-            ],
+            initialValue:
+              process.env.HMR !== 'none'
+                ? [
+                    readFileSync(
+                      require.resolve(
+                        '@umijs/bundler-webpack/bundled/webpackHotDevClient',
+                      ),
+                      'utf-8',
+                    ),
+                  ]
+                : [],
           })
           .then((scripts) => {
             res.end(scripts.join('\r\n\r\n'));
