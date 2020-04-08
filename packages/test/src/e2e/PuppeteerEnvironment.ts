@@ -45,7 +45,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
     const fullPageScreenshot: (
       option?: Puppeteer.ScreenshotOptions,
     ) => Promise<string | Buffer> = async (options) => {
-      const totalHeight = await page.evaluate(
+      await page.evaluate(
         () =>
           new Promise<number>((resolve) => {
             let totalHeight = 0;
@@ -62,11 +62,11 @@ class PuppeteerEnvironment extends NodeEnvironment {
             }, 100);
           }),
       );
-      page.setViewport({
-        width: 1440,
-        height: totalHeight,
+
+      const image = await page.screenshot({
+        fullPage: true,
+        ...options,
       });
-      const image = await page.screenshot(options);
       return image;
     };
 
