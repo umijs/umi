@@ -7,7 +7,7 @@
   "files": [
     "lib",
     "bin",
-    "dist"
+    "bundled"
   ],
   "repository": {
     "type": "git",

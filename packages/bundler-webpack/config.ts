@@ -1,4 +1,5 @@
 export default {
+  outputPath: './bundled/',
   entry: {
     webpackHotDevClient: './src/webpackHotDevClient/webpackHotDevClient',
   },
@@ -6,4 +7,7 @@ export default {
     type: 'none',
   },
   devtool: false,
+  define: {
+    'process.env': {},
+  },
 };
