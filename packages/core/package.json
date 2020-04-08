@@ -43,7 +43,7 @@
     "marked": "0.8.2",
     "marked-terminal": "4.0.0",
     "os-locale": "5.0.0",
-    "prettier": "2.0.2",
+    "prettier": "2.0.4",
     "set-value": "3.0.2",
     "tapable": "1.1.3"
   }
