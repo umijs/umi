@@ -28,6 +28,8 @@ export default function () {
       require.resolve('./plugins/features/cssnano'),
       require.resolve('./plugins/features/copy'),
       require.resolve('./plugins/features/define'),
+      require.resolve('./plugins/features/devScripts'),
+      require.resolve('./plugins/features/devExternals'),
       require.resolve('./plugins/features/devServer'),
       require.resolve('./plugins/features/devtool'),
       require.resolve('./plugins/features/dynamicImport'),
