@@ -245,7 +245,6 @@ export interface IConfig extends IConfigCore {
   define?: {
     [key: string]: any;
   };
-  devExternals?: string[];
   devServer?: IServerOpts;
   devtool?: webpack.Options.Devtool;
   dynamicImport?: {
