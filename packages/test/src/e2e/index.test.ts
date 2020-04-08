@@ -1,11 +1,10 @@
+const os = require('os');
 test('with img', async () => {
-  await page.goto(
-    'https://gw.alipayobjects.com/zos/antfincdn/EovdDmPhoT/index-test-ts-with-img-1-snap.png',
-  );
+  await page.goto('https://umijs.org');
 
-  await waitTime(1000);
-  const image = await page.fullPageScreenshot();
-
+  const image = await page.screenshot({
+    fullPage: true,
+  });
   expect(image).toMatchImageSnapshot({
     dumpDiffToConsole: true,
     failureThreshold: 0.2,

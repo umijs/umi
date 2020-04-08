@@ -56,8 +56,10 @@ class PuppeteerEnvironment extends NodeEnvironment {
               totalHeight += distance;
               if (totalHeight >= scrollHeight) {
                 clearInterval(timer);
-                window.scrollBy(0, -80);
-                resolve(scrollHeight);
+                window.scrollBy(0, 0);
+                setTimeout(() => {
+                  resolve(scrollHeight);
+                });
               }
             }, 100);
           }),
