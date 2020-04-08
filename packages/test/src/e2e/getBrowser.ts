@@ -15,15 +15,23 @@ const timeout = 60000;
 
 const headless = process.env.HEADLESS === 'none' ? false : true;
 
+const PuppeteerConfig = {
+  args: puppeteerArgs,
+  timeout,
+  headless,
+  defaultViewport: {
+    width: 1440,
+    height: 800,
+    deviceScaleFactor: 2,
+  },
+  dumpio: true,
+};
+
 const getBrowser = async (): Promise<Puppeteer.Browser> => {
   try {
     // eslint-disable-next-line import/no-unresolved
     const puppeteer: typeof Puppeteer = require('puppeteer');
-    const browser = await puppeteer.launch({
-      args: puppeteerArgs,
-      timeout,
-      headless,
-    });
+    const browser = await puppeteer.launch(PuppeteerConfig);
     return browser;
   } catch (error) {
     // console.log(error)
@@ -35,10 +43,8 @@ const getBrowser = async (): Promise<Puppeteer.Browser> => {
     const findChromePath = await findChrome({});
     const { executablePath } = findChromePath;
     const browser = await puppeteer.launch({
+      ...PuppeteerConfig,
       executablePath,
-      headless,
-      timeout,
-      args: puppeteerArgs,
     });
     return browser;
   } catch (error) {

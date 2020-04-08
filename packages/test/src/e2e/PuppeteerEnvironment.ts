@@ -13,10 +13,6 @@ class PuppeteerEnvironment extends NodeEnvironment {
     const page = await browser.newPage();
     this.global.browser = browser;
     this.global.page = page;
-    await page.setViewport({
-      width: 1440,
-      height: 800,
-    });
 
     const setFamily = async () => {
       await page.evaluate(
