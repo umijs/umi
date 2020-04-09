@@ -149,12 +149,12 @@ $ umi dva list model
 
 ## 类型
 
-通过 umi 导出类型：`ConnectRC`，`ConnectProps`，`Dispatch`，`Action`，`Reducer`，`Effect`，`Subscription`，和所有 `model` 文件中导出的类型。
+通过 umi 导出类型：`ConnectRC`，`ConnectProps`，`Dispatch`，`Action`，`Reducer`，`ImmerReducer`，`Effect`，`Subscription`，和所有 `model` 文件中导出的类型。
 
 ### model 用例
 
 ```ts
-import { Effect, Reducer, Subscription } from 'umi';
+import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
 
 export interface IndexModelState {
   name: string;
@@ -168,6 +168,8 @@ export interface IndexModelType {
   };
   reducers: {
     save: Reducer<IndexModelState>;
+    // 启用 immer 之后
+    // save: ImmerReducer<IndexModelState>;
   };
   subscriptions: { setup: Subscription };
 }
@@ -190,6 +192,10 @@ const IndexModel: IndexModelType = {
         ...action.payload,
       };
     },
+    // 启用 immer 之后
+    // save(state, action) {
+    //   state.name = action.payload;
+    // },
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -258,7 +264,7 @@ export default connect(({ index, loading }: { index: IndexModelState; loading: L
 检查：
 
 1. dva 配置有没有开启，该插件是配置开启的
-2. 有没有有效的 dva model，可通过执行 `umi dva list model` 检查，或者执行 `umi g tmp` 后查看 `src/.umi/plugin-dva/dva.ts` 中检查 model 注册情况 
+2. 有没有有效的 dva model，可通过执行 `umi dva list model` 检查，或者执行 `umi g tmp` 后查看 `src/.umi/plugin-dva/dva.ts` 中检查 model 注册情况
 
 以及 tsconfig.json 等定义问题，参考 [FAQ#import from umi 没有定义怎么办？](../docs/faq#import-from-umi-没有定义怎么办？)
 
