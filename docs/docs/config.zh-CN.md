@@ -19,7 +19,7 @@ export default {
 
 推荐在 `.umirc.ts` 中写配置。
 
-如果配置比较复杂需要拆分，可以放到 `config/config.ts` 中，并把配置的一部分拆出去，比如路由 `config/routes.ts`，并在 `config/config.ts` 引用 路由配置。
+如果配置比较复杂需要拆分，可以放到 `config/config.ts` 中，并把配置的一部分拆出去，比如路由 `config/routes.ts`，并在 `config/config.ts` 引用路由配置。
 
 
 ## TypeScript 提示
