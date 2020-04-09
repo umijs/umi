@@ -281,7 +281,7 @@ export interface IConfig extends IConfigCore {
   mountElementId?: string;
   nodeModulesTransform?: {
     type: 'all' | 'none';
-    exclude: string[];
+    exclude?: string[];
   };
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
