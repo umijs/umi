@@ -280,8 +280,8 @@ export interface IConfig extends IConfigCore {
     | false;
   mountElementId?: string;
   nodeModulesTransform?: {
-    type: 'all' | 'none';
-    exclude: string[];
+    type?: 'all' | 'none';
+    exclude?: string[];
   };
   outputPath?: string;
   plugins?: IPresetOrPlugin[];
