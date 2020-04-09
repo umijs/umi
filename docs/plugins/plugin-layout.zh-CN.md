@@ -166,6 +166,8 @@ menu 的可配置项包括：
 * Type: `string`
 当前菜单的左侧 icon，可选 antd 的 icon name 和 url，可选。
 
+> icon name 为 组件名小写后去掉 `outlined` 或者 `filled` 或者 `twotone`，所得值。举例：`<UserOutlined />` 的 icon name 即： `user`。
+
 3. hideChildren
 
 * Type: `boolean`

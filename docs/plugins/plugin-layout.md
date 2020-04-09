@@ -170,6 +170,8 @@ menu 的可配置项包括：
 * Type: `string`
 当前菜单的左侧 icon，可选 antd 的 icon name 和 url，可选。
 
+> icon name is evaluated as component name => toLowerCase => remove `outlined` | `filled` | `twotone`. For example: `<UserOutlined />` => `user`
+
 3. hideChildren
 
 * Type: `boolean`
