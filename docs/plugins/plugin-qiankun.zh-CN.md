@@ -1,6 +1,6 @@
 # @umijs/plugin-qiankun
 
-Umi@3 plugin for [qiankun](https://github.com/umijs/qiankun).
+Umi plugin for [qiankun](https://github.com/umijs/qiankun).
 
 [![NPM version](https://img.shields.io/npm/v/@umijs/plugin-qiankun.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-qiankun) [![Build Status](https://img.shields.io/travis/umijs/umi-plugin-qiankun.svg?style=flat)](https://travis-ci.org/umijs/umi-plugin-qiankun) [![NPM downloads](http://img.shields.io/npm/dm/@umijs/plugin-qiankun.svg?style=flat)](https://npmjs.org/package/@umijs/plugin-qiankun)
 
