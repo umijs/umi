@@ -28,7 +28,9 @@ export default (api: IApi) => {
   function getUserLibDir({ library }: { library: string }) {
     if (
       (pkg.dependencies && pkg.dependencies[library]) ||
-      (pkg.devDependencies && pkg.devDependencies[library])
+      (pkg.devDependencies && pkg.devDependencies[library]) ||
+      // egg project using `clientDependencies` in ali tnpm
+      (pkg.clientDependencies && pkg.clientDependencies[library])
     ) {
       return winPath(
         dirname(
