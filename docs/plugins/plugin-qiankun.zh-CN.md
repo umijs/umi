@@ -160,7 +160,7 @@ export default {
 }
 ```
 
-##### 使用 `<MicroApp />` 组件的方式
+##### <a name="MicroApp">使用 `<MicroApp />` 组件的方式</a>
 
 我们可以直接使用 React 标签的方式加载我们已注册过的子应用：
 
@@ -250,7 +250,6 @@ PORT=8081
          {
            name: 'app1',
            entry: '//localhost:2222',
-           base: '/app1',
            props: {
              onClick: event => console.log(event),
              ...config,
@@ -260,7 +259,7 @@ PORT=8081
      };
    });
    ```
-
+   
 2. 子应用在生命周期钩子中获取 props 消费数据（参考子应用运行时配置一节）
 
 ### 基于 Hooks 共享数据
@@ -285,6 +284,22 @@ PORT=8081
 | name | 子应用唯一 id | string | 是 |  |
 | entry | 子应用 html 地址 | string \| { script: string[], styles: [] } | 是 |  |
 | props | 主应用传递给子应用的数据 | object | 否 | {} |
+
+## CHANGELOG
+
+### 与 @umijs/plugin-qiankun 1.x 的变化
+
+* 用户注册子应用时不再需要手动配置 base 以及 mountElementId。
+
+这类方式会导致很多关联问题，最典型的是如果我们需要将子应用挂载到某一个具体的子路由下时，常出现由于挂载点还未初始化或已被销毁导致的问题。
+
+现在只需要在注册完子应用后，在期望的路由下指定需要挂载的子应用的 name 即可。
+
+* 可以直接通过 `<MicroApp />` 组件的方式在任意位置挂载自己的子应用。详见 [API 说明](#MicroApp)
+
+* 不再支持主应用是 browser 路由模式，子应用是 hash 路由的混合模式。如果有场景需要可以通过自己使用 `<MicroApp />`组件加载子应用。
+
+* 完全兼容 1.x 插件。
 
 ## 相关
 
