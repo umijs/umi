@@ -127,7 +127,7 @@ export default {
 
 ```js
 export default {
-  chunks: ['vendors', 'umi']
+  chunks: ['vendors', 'umi'],
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
