@@ -5,10 +5,12 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
     '/plugins': [
       {
         title: 'Presets',
+        'title_zh-CN': '预置',
         children: ['/plugins/preset-react'],
       },
       {
-        title: 'Plugins',
+        title: 'Offical Plugins',
+        'title_zh-CN': '官方插件',
         children: [
           '/plugins/plugin-access',
           '/plugins/plugin-analytics',
@@ -24,6 +26,11 @@ function getMenus(opts: { lang?: string; base: '/docs' | '/plugins' }) {
           '/plugins/plugin-sass',
           '/plugins/plugin-webpack-5',
         ],
+      },
+      {
+        title: 'Community Plugins',
+        'title_zh-CN': '社区插件',
+        path: '/plugins/community-plugins',
       },
       {
         title: 'Plugin Develop',
