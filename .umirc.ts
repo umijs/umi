@@ -134,7 +134,6 @@ export default {
     type: 'none',
   },
   exportStatic: {},
-  dynamicImport: {},
   analytics: isDev
     ? false
     : {
